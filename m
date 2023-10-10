@@ -2,94 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E017BF96A
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 553CC7BF9B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:28:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqAf9-000427-G6; Tue, 10 Oct 2023 07:12:31 -0400
+	id 1qqAt3-0002UN-VJ; Tue, 10 Oct 2023 07:26:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqAf6-00041h-Ju
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:12:28 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qqAsb-0002KV-Cs
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:26:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqAf4-00052r-OF
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:12:28 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qqAsZ-0007w0-NO
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:26:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696936345;
+ s=mimecast20190719; t=1696937183;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=h0ownmkuq8828q0tXnmHeldrJGi/orCiGgQGmy/hJIE=;
- b=fkIj7x4pI8N6Jg/LlDpbI9w6BEb7wKcBUcI0nBvEz2zjg2iQXIL4PeLE5eGNPQ/Dgl+0B2
- 7ild2sENCJViMeKy8Y1PKdCXjYpORHO70nlOYZx4fbhhauPzUPisItVveqjBHFOGboDPlv
- vF5WfwXgQN7Ezct72K0SluWVk8HcPqU=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-SRvAknpaOD-rlLp-GJLCFw-1; Tue, 10 Oct 2023 07:12:24 -0400
-X-MC-Unique: SRvAknpaOD-rlLp-GJLCFw-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-65af758fa1eso67064636d6.2
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 04:12:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696936344; x=1697541144;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h0ownmkuq8828q0tXnmHeldrJGi/orCiGgQGmy/hJIE=;
- b=oaNVmI8ty90CgihujoDKsmYgfmx0Sf9gcW4xr+VUkQYAWJhf8o2Z5ij1zCRDjTcJwj
- lPaAcESQoVEMxXbI7sKlfwAVmfU83HtSPGcIoa8TaJEg1qPCK84O1046Qpga6cL6s6ZP
- VsWyY1S41wRSTQhCx+IaMd4m/RV2SkGCBTGRucNCm0uSXvD6ghy1JMXKy47iSlpUPOs9
- YTzmMfnjFZ2f53EQcjFuxEiEfSFnHrFLNFEj6IdySz1IxVFmqpWOTta3umMmMm0Z8o7X
- fO7tRRHtmLtipdnb/nGlJ5qWjtbrZNS+4L6TmxNAOPxKtgsEZ4QKjJvuOKZDg1jQL8NO
- CeqA==
-X-Gm-Message-State: AOJu0YwCNZT+RZfgdPSM7uDibR6j3jB8G2MFhhW9e+CiEPYiGECmB3ex
- GrEZFSvOHYtprArlvQTWK2YqD/Xtdqv4EH8NyXWFBeD9i7dmCtJzG6NiQJPvIQyjxTZ+GWCCjiD
- CsR+KzvnNieV0dOdzqO/W3Jw=
-X-Received: by 2002:a0c:fed1:0:b0:64f:4240:8e1b with SMTP id
- z17-20020a0cfed1000000b0064f42408e1bmr18688414qvs.44.1696936344002; 
- Tue, 10 Oct 2023 04:12:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbFsESEkpg1glHrEkOLEyxCYYnrE0NvucuStGsX1rZX7TQ4P4zGWeP1KvZJ0nU+5tzVnnKrg==
-X-Received: by 2002:a0c:fed1:0:b0:64f:4240:8e1b with SMTP id
- z17-20020a0cfed1000000b0064f42408e1bmr18688400qvs.44.1696936343725; 
- Tue, 10 Oct 2023 04:12:23 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
- [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- p6-20020a0ce186000000b0065b0e724f83sm4622815qvl.6.2023.10.10.04.12.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 04:12:23 -0700 (PDT)
-Message-ID: <2f6dcd26-9a53-390a-5acc-b8021b6190c5@redhat.com>
-Date: Tue, 10 Oct 2023 13:12:20 +0200
+ content-transfer-encoding:content-transfer-encoding;
+ bh=8GoGg6hc5J++myD1czNuEMRCQZpHDrbPadiGQXzXnwA=;
+ b=OVRqy4qkwBcGAt4Zg6ihlEE19lLv5o9BzHcChN7GSXPYVbSAAE61cvzQJVJwemj2SmSyb0
+ jf9gpX5OB4KetPBjo8Lx/IAnHKz+6tvuMqJ2BPE7B8YTfMLVMAx4wwU5FTzW/c1Yir/hgM
+ D3Iag+6z+RgDJ+sN3+j+RbLxfvnJb0c=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-644-k6fYLxGFMd2A2R9KcxpIIA-1; Tue, 10 Oct 2023 07:26:12 -0400
+X-MC-Unique: k6fYLxGFMd2A2R9KcxpIIA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0ED6858F1C
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 11:26:11 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.95])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A9DDF401E6A;
+ Tue, 10 Oct 2023 11:26:11 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 7220B18009A1; Tue, 10 Oct 2023 13:26:10 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 0/6] Firmware/seabios 20231010 patches
+Date: Tue, 10 Oct 2023 13:26:04 +0200
+Message-ID: <20231010112610.2618091-1-kraxel@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] target/s390x/kvm: Turn KVM_CAP_SYNC_REGS into a
- hard requirement
-Content-Language: en-US
-To: Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-devel@nongnu.org, 
- Halil Pasic <pasic@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
-References: <20231009170745.63446-1-thuth@redhat.com>
- <20231009170745.63446-2-thuth@redhat.com>
- <e33a387a-215b-cc39-3552-16e67f8984e8@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <e33a387a-215b-cc39-3552-16e67f8984e8@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,65 +76,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/2023 13.02, Christian Borntraeger wrote:
-> 
-> 
-> Am 09.10.23 um 19:07 schrieb Thomas Huth:
->> Since we already require at least kernel 3.15 in the s390x KVM code,
->> we can assume that the KVM_CAP_SYNC_REGS capability is always there.
->> Thus turn this into a hard requirement now.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   target/s390x/kvm/kvm.c | 20 ++++++++++++++------
->>   1 file changed, 14 insertions(+), 6 deletions(-)
->>
->> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
->> index bc5c56a305..b3e2eaa2eb 100644
->> --- a/target/s390x/kvm/kvm.c
->> +++ b/target/s390x/kvm/kvm.c
->> @@ -337,21 +337,29 @@ int kvm_arch_get_default_type(MachineState *ms)
->>   int kvm_arch_init(MachineState *ms, KVMState *s)
->>   {
->> +    int required_caps[] = {
->> +        KVM_CAP_DEVICE_CTRL,
->> +        KVM_CAP_SYNC_REGS,
->> +    };
->> +
->> +    for (int i = 0; i < ARRAY_SIZE(required_caps); i++) {
->> +        if (!kvm_check_extension(s, required_caps[i])) {
->> +            error_report("KVM is missing capability #%d - "
->> +                         "please use kernel 3.15 or newer", 
->> required_caps[i]);
->> +            return -1;
->> +        }
->> +    }
->> +
->>       object_class_foreach(ccw_machine_class_foreach, TYPE_S390_CCW_MACHINE,
->>                            false, NULL);
->> -    if (!kvm_check_extension(kvm_state, KVM_CAP_DEVICE_CTRL)) {
->> -        error_report("KVM is missing capability KVM_CAP_DEVICE_CTRL - "
->> -                     "please use kernel 3.15 or newer");
->> -        return -1;
->> -    }
->>       if (!kvm_check_extension(s, KVM_CAP_S390_COW)) {
->>           error_report("KVM is missing capability KVM_CAP_S390_COW - "
->>                        "unsupported environment");
->>           return -1;
->>       }
-> 
-> Not sure if we also want to move KVM_CAP_S390_COW somehow. The message would 
-> be different.
+The following changes since commit 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d:
 
-IIRC that error could happen when you ran KVM within an older version of 
-z/VM, so the "please use kernel 3.15 or newer" message would be completely 
-misleading there.
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2023-10-05 09:01:01 -0400)
 
-> Aparch from that:
-> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+are available in the Git repository at:
 
-Thanks,
-   Thomas
+  https://gitlab.com/kraxel/qemu.git tags/firmware/seabios-20231010-pull-request
 
+for you to fetch changes up to e83f3600f9ff7d9e0d014f328e64c49bb81b945c:
+
+  tests/acpi: disable tests/data/acpi/q35/DSDT.mmio64 updates (2023-10-10 11:11:55 +0200)
+
+----------------------------------------------------------------
+seabios: update to git snapshot
+
+Give seabios a bit real world testing before tagging a release.
+Update to release will follow later in the devel cycle.
+
+v3: update mmio64 acpi test.
+
+----------------------------------------------------------------
+
+Gerd Hoffmann (6):
+  tests/bios-tables-test: tcg-emulate opteron for mmio64 test
+  tests/acpi: enable tests/data/acpi/q35/DSDT.mmio64 updates
+  seabios: update submodule to git snapshot
+  seabios: update binaries to git snapshot
+  tests/acpi: update expected data files
+  tests/acpi: disable tests/data/acpi/q35/DSDT.mmio64 updates
+
+ tests/qtest/bios-tables-test.c    |   2 ++
+ pc-bios/bios-256k.bin             | Bin 262144 -> 262144 bytes
+ pc-bios/bios-microvm.bin          | Bin 131072 -> 131072 bytes
+ pc-bios/bios.bin                  | Bin 131072 -> 131072 bytes
+ pc-bios/vgabios-ati.bin           | Bin 39936 -> 39424 bytes
+ pc-bios/vgabios-bochs-display.bin | Bin 28672 -> 28672 bytes
+ pc-bios/vgabios-cirrus.bin        | Bin 39424 -> 38912 bytes
+ pc-bios/vgabios-qxl.bin           | Bin 39936 -> 39424 bytes
+ pc-bios/vgabios-ramfb.bin         | Bin 29184 -> 28672 bytes
+ pc-bios/vgabios-stdvga.bin        | Bin 39936 -> 39424 bytes
+ pc-bios/vgabios-virtio.bin        | Bin 39936 -> 39424 bytes
+ pc-bios/vgabios-vmware.bin        | Bin 39936 -> 39424 bytes
+ pc-bios/vgabios.bin               | Bin 39424 -> 38912 bytes
+ roms/seabios                      |   2 +-
+ tests/data/acpi/q35/DSDT.mmio64   | Bin 9485 -> 9485 bytes
+ 15 files changed, 3 insertions(+), 1 deletion(-)
+
+-- 
+2.41.0
 
 
