@@ -2,96 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E78D7C41BB
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 22:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9607C41E3
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 22:50:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqJY2-0000c9-Ap; Tue, 10 Oct 2023 16:41:46 -0400
+	id 1qqJfE-0003Bk-Dz; Tue, 10 Oct 2023 16:49:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qqJXu-0000XC-T9
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 16:41:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qqJfB-0003BP-VQ
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 16:49:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qqJXt-0006gg-1S
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 16:41:38 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qqJfA-0008Hm-0i
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 16:49:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696970494;
+ s=mimecast20190719; t=1696970946;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Mlml52KYEl6hPBbxf5dC0hWl1GcKGoq7JsMQPRCXH6A=;
- b=dxKsuZ8aQNTIH8O2d+oCbHoOUCZvKd5BMQUED4Z7/6bAGXELR4G1KJrR46k25C9aR7yQN8
- OnodMbnqnlvSAvLVmhNbR+xEB9/Jkf45zc/OO0we2TV1NMZueKTmPSjrUqDktUyMIWLhZL
- w8xa/b+BaksoeMANQ7hdrrnTF1ed5ck=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-kA3cLsImMkW3V-z36TSoZw-1; Tue, 10 Oct 2023 16:41:33 -0400
-X-MC-Unique: kA3cLsImMkW3V-z36TSoZw-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-77576c78c11so698464785a.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 13:41:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696970492; x=1697575292;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Mlml52KYEl6hPBbxf5dC0hWl1GcKGoq7JsMQPRCXH6A=;
- b=tXFkEtUn89pscTZKBQUBZwDvVIkOSkNHiZFLAOqvHYKOs0Wd0ArDmbuiOHadn3mPJd
- EnqaexRIAcpbM9co8TJ4NmZLmtGOtC5hpmjifWBclUagyhT4URaOLOpsLk6SMsNeiNBZ
- lgZeL+sN91CjanKVkRBCBJGd37OmF2vHtSOTU1kp+adaCAwLq/9WyKeuI4JfnSqA0w5H
- rZ362v3Qy0zJd9UJjotLUFVSqqMJJAADShcIvos1/EWvmnktK3e1J6HmIxeOdAPd+kWO
- Zhs9AY+lQJHaCVbfW+mreXwY1IIBODU9oGVYkl84Qsbx9csXgI3aZ7rQLc2r+aotauSy
- 9vvQ==
-X-Gm-Message-State: AOJu0YzHJzqo0S5HZoMEFJRVR658vxEPbm+y7PYNo3o0VCq1PL/Xj0NU
- viIfisbP56VPc2UdWblcxO1aURm3Pjldce5H2cn7lEcnSe6bFVOZKmXdOtaR/mh7DE+VqZH7PlN
- D7MVcQAU6pw2Awqc=
-X-Received: by 2002:a05:620a:2a03:b0:776:5135:d98c with SMTP id
- o3-20020a05620a2a0300b007765135d98cmr20425223qkp.15.1696970492634; 
- Tue, 10 Oct 2023 13:41:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEHH8MSt2DkTiB2gNDJgC7qciSFmGQbQF3ZRHP1AzGk7N+9Mql4di3OcGDcwesIDHtPSi/uA==
-X-Received: by 2002:a05:620a:2a03:b0:776:5135:d98c with SMTP id
- o3-20020a05620a2a0300b007765135d98cmr20425209qkp.15.1696970492399; 
- Tue, 10 Oct 2023 13:41:32 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- m19-20020ae9e013000000b00767dcf6f4adsm4605283qkk.51.2023.10.10.13.41.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 13:41:32 -0700 (PDT)
-Message-ID: <4a6e370f-f966-8905-a4ec-338ea42da980@redhat.com>
-Date: Tue, 10 Oct 2023 22:41:29 +0200
+ bh=Z42iQUtHsDbYCHpgwAn2M3ENqXGukdvGbunAPYmKDEI=;
+ b=T9GwRbhbbGSxzMaMgj1ZTDLs4mAHdZNQ5khFoM4nKKJEJ3U0n1X9A8mtFMrq8gxdn1UGSd
+ 98/fm+WDYe7b+xEB/W651tVrs9Vb0RpOklxI/Ru3E4eV9DzRzGtRz5K57YkYP/9P7QZZto
+ pttXfwDp2qbKqA77sYb/zMcpsDHR5kM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-261-4RcxTcpXOBOyyI7tjCNUgA-1; Tue, 10 Oct 2023 16:49:02 -0400
+X-MC-Unique: 4RcxTcpXOBOyyI7tjCNUgA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 83728185A7B9;
+ Tue, 10 Oct 2023 20:49:01 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EF4ED9A;
+ Tue, 10 Oct 2023 20:49:00 +0000 (UTC)
+Date: Tue, 10 Oct 2023 16:48:50 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, eesposit@redhat.com, eblake@redhat.com,
+ pbonzini@redhat.com, vsementsov@yandex-team.ru, qemu-devel@nongnu.org
+Subject: Re: [PATCH 00/22] block: Graph locking part 5 (protect
+ children/parent links)
+Message-ID: <20231010204850.GA1773699@fedora>
+References: <20230929145157.45443-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v3] misc/pca9552: Fix for pca9552 not getting reset
-Content-Language: en-US
-To: Miles Glenn <milesg@linux.vnet.ibm.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, clg@kaod.org, andrew@codeconstruct.com.au,
- joel@jms.id.au
-References: <20231010195209.264757-1-milesg@linux.vnet.ibm.com>
- <57112a6f-2624-4bd5-b301-cd28cb197771@ilande.co.uk>
- <1fcb9e1820b2ca5c5e6b84d7186c328c1df426e8.camel@linux.vnet.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <1fcb9e1820b2ca5c5e6b84d7186c328c1df426e8.camel@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clegoate@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="9AtoWk19vuXkOAYL"
+Content-Disposition: inline
+In-Reply-To: <20230929145157.45443-1-kwolf@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,75 +80,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/23 22:35, Miles Glenn wrote:
-> On Tue, 2023-10-10 at 21:31 +0100, Mark Cave-Ayland wrote:
->> On 10/10/2023 20:52, Glenn Miles wrote:
->>
->>> Testing of the pca9552 device on the powernv platform
->>> showed that the reset method was not being called when
->>> an instance of the device was realized.  This was causing
->>> the INPUT0/INPUT1 POR values to be incorrect.
->>>
->>> Fixed by overriding the parent pca955x_realize method with a
->>> new pca9552_realize method which first calls
->>> the parent pca955x_realize method followed by the
->>> pca9552_reset function.
->>>
->>> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
->>> ---
->>>    hw/misc/pca9552.c | 7 +++++++
->>>    1 file changed, 7 insertions(+)
->>>
->>> diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
->>> index fff19e369a..4e183cc554 100644
->>> --- a/hw/misc/pca9552.c
->>> +++ b/hw/misc/pca9552.c
->>> @@ -384,6 +384,12 @@ static void pca955x_realize(DeviceState *dev,
->>> Error **errp)
->>>        qdev_init_gpio_out(dev, s->gpio, k->pin_count);
->>>    }
->>>    
->>> +static void pca9552_realize(DeviceState *dev, Error **errp)
->>> +{
->>> +    pca955x_realize(dev, errp);
->>> +    pca9552_reset(dev);
->>> +}
->>> +
->>>    static Property pca955x_properties[] = {
->>>        DEFINE_PROP_STRING("description", PCA955xState, description),
->>>        DEFINE_PROP_END_OF_LIST(),
->>> @@ -417,6 +423,7 @@ static void pca9552_class_init(ObjectClass *oc,
->>> void *data)
->>>        PCA955xClass *pc = PCA955X_CLASS(oc);
->>>    
->>>        dc->reset = pca9552_reset;
->>> +    dc->realize = pca9552_realize;
->>>        dc->vmsd = &pca9552_vmstate;
->>>        pc->max_reg = PCA9552_LS3;
->>>        pc->pin_count = 16;
->>
->> The reason that the reset function isn't being called here is because
->> TYPE_I2C_SLAVE
->> is derived from TYPE_DEVICE, and for various historical reasons the
->> DeviceClass reset
->> function is only called for devices that inherit from
->> TYPE_SYS_BUS_DEVICE.
->>
->> Probably the best way to make this work instead of mixing up the
->> reset and realize
->> parts of the object lifecycle is to convert pca9552_reset() to use
->> the new Resettable
->> interface for TYPE_PCA9552: take a look at commit d43e967f69 ("q800-
->> glue.c: convert
->> to Resettable interface") as an example, along with the documentation
->> at
->> https://www.qemu.org/docs/master/devel/reset.html.
->>
-> 
-> Ahh, that's very helpful.  Thanks, Mark!
 
-yes. My bad, I didn't look close enough. Thanks Mark
+--9AtoWk19vuXkOAYL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-C.
+On Fri, Sep 29, 2023 at 04:51:35PM +0200, Kevin Wolf wrote:
+> After all the preparation in previous series, this series reaches an
+> important milestone for the graph locking work: TSA can now verify that
+> all accesses to the children and parent lists of nodes happen under the
+> graph lock.
+>=20
+> However, this is not the end of the graph locking work yet. On the one
+> hand, graph locking annotations aren't consistently present on all
+> functions and having an unannotated function in the middle of the call
+> chain means that TSA doesn't check if the locking is consistent (in
+> fact, we know that functions like bdrv_unref() are still called in
+> places where they strictly speaking must not be called).
+>=20
+> On the other hand, the graph consists of more than just the children and
+> parent lists. While it might be possible to convince me that the global
+> node lists (graph_bdrv_states/all_bdrv_states) are safe because
+> iothreads shouldn't access them, at least BlockDriverState.file/backing
+> still need proper locking.
+>=20
+> There may be other fields in BlockDriverState that need to be covered
+> by the lock, too. For example, Stefan said that he would look into
+> annotating BlockLimits accesses to be protected by the graph lock, too.
+>=20
+> Emanuele Giuseppe Esposito (1):
+>   block: Mark drain related functions GRAPH_RDLOCK
+>=20
+> Kevin Wolf (21):
+>   test-bdrv-drain: Don't call bdrv_graph_wrlock() in coroutine context
+>   block-coroutine-wrapper: Add no_co_wrapper_bdrv_rdlock functions
+>   block: Take graph rdlock in bdrv_inactivate_all()
+>   block: Mark bdrv_first_blk() and bdrv_is_root_node() GRAPH_RDLOCK
+>   block: Mark bdrv_parent_cb_resize() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_snapshot_fallback() and callers GRAPH_RDLOCK
+>   block: Take graph rdlock in parts of reopen
+>   block: Mark bdrv_get_xdbg_block_graph() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_refresh_filename() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_primary_child() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_get_parent_name() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_amend_options() and callers GRAPH_RDLOCK
+>   qcow2: Mark qcow2_signal_corruption() and callers GRAPH_RDLOCK
+>   qcow2: Mark qcow2_inactivate() and callers GRAPH_RDLOCK
+>   qcow2: Mark check_constraints_on_bitmap() GRAPH_RDLOCK
+>   block: Mark bdrv_op_is_blocked() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_apply_auto_read_only() and callers GRAPH_RDLOCK
+>   block: Mark bdrv_get_specific_info() and callers GRAPH_RDLOCK
+>   block: Protect bs->parents with graph_lock
+>   block: Protect bs->children with graph_lock
+>   block: Add assertion for bdrv_graph_wrlock()
+>=20
+>  block/qcow2.h                               | 187 ++++++++++++--------
+>  block/vhdx.h                                |   5 +-
+>  include/block/block-common.h                |   7 +-
+>  include/block/block-global-state.h          |  34 ++--
+>  include/block/block-io.h                    |  42 +++--
+>  include/block/block_int-common.h            |  69 ++++----
+>  include/block/block_int-io.h                |   7 +-
+>  include/block/graph-lock.h                  |   3 +-
+>  include/block/qapi.h                        |  23 ++-
+>  include/block/snapshot.h                    |  24 +--
+>  include/sysemu/block-backend-global-state.h |   4 +-
+>  block.c                                     | 120 +++++++++----
+>  block/backup.c                              |   1 +
+>  block/block-backend.c                       |   9 +-
+>  block/bochs.c                               |   2 +
+>  block/cloop.c                               |   2 +
+>  block/commit.c                              |   1 +
+>  block/crypto.c                              |   4 +-
+>  block/curl.c                                |   2 +
+>  block/dmg.c                                 |   2 +
+>  block/export/export.c                       |   4 +
+>  block/gluster.c                             |   2 +
+>  block/graph-lock.c                          |   3 +-
+>  block/io.c                                  |  45 ++++-
+>  block/iscsi.c                               |   2 +
+>  block/monitor/block-hmp-cmds.c              |   5 +
+>  block/nbd.c                                 |   3 +-
+>  block/nfs.c                                 |   2 +-
+>  block/parallels.c                           |   3 +
+>  block/qapi-sysemu.c                         |  11 +-
+>  block/qapi.c                                |  11 +-
+>  block/qcow.c                                |   3 +
+>  block/qcow2-bitmap.c                        |  38 ++--
+>  block/qcow2-cache.c                         |  11 +-
+>  block/qcow2-cluster.c                       |  62 +++----
+>  block/qcow2-refcount.c                      |  80 +++++----
+>  block/qcow2.c                               |  72 +++++---
+>  block/quorum.c                              |   4 +-
+>  block/raw-format.c                          |   2 +
+>  block/rbd.c                                 |   4 +
+>  block/replication.c                         |  21 ++-
+>  block/snapshot.c                            |  54 +++++-
+>  block/vdi.c                                 |   3 +
+>  block/vhdx.c                                |   4 +
+>  block/vmdk.c                                |  53 +++---
+>  block/vpc.c                                 |   3 +
+>  block/vvfat.c                               |   2 +
+>  blockdev.c                                  |  44 +++++
+>  blockjob.c                                  |   1 +
+>  migration/block.c                           |   2 +
+>  migration/migration-hmp-cmds.c              |   2 +
+>  qemu-img.c                                  |  16 ++
+>  qemu-io-cmds.c                              |   3 +
+>  tests/unit/test-bdrv-drain.c                |  15 +-
+>  tests/unit/test-block-iothread.c            |   8 +
+>  scripts/block-coroutine-wrapper.py          |  10 +-
+>  56 files changed, 769 insertions(+), 387 deletions(-)
+>=20
+> --=20
+> 2.41.0
+>=20
+
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--9AtoWk19vuXkOAYL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUluLIACgkQnKSrs4Gr
+c8igNggApnAvx7ABXWzDpRXyCU8X600H2No5ju4oox4ta8q6UYdG3e6GyNqa0hT8
+4oMoCPFlWgohM46FcZVwRWrw31hEe1qKPEXQqnGIDfueG7ZcYtXqbMFG1ehfngA8
+aVh1KEWnEjAgwRIAcgf0O5zcsyVZzOinOi/+4RX92Yb0JcWNXnp1VjL2mXIbfyJb
+mF2InulavPerTblRDeRnjYu1nt153nIzXPUh6iSzYy94FlcsW3TgsCSbQbugIeTJ
+T4yJHP4TYRrsicUK8N6WOKMIUJxqNLf10fAIQBWZ4rYsU+sE9UE76Vw+SI8EumBR
+GElNmQnFwF22uVHfnWl7X6ntD6jPrg==
+=+67U
+-----END PGP SIGNATURE-----
+
+--9AtoWk19vuXkOAYL--
 
 
