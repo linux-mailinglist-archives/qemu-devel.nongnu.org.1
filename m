@@ -2,68 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11147BFF28
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4F77BFF35
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:27:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqDfq-00027H-Tz; Tue, 10 Oct 2023 10:25:26 -0400
+	id 1qqDhK-00051p-A6; Tue, 10 Oct 2023 10:26:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qqDfi-00021D-IJ
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:25:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qqDfh-0000Gj-9z
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:25:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696947916;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqDhH-00050D-6K
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:26:55 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqDhF-0000Vr-7C
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:26:54 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 943DC215EE;
+ Tue, 10 Oct 2023 14:26:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696948009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TApefxjm2WEaxEHFO8rc1HF2nVhBHdzR5dt4+KLCQJ0=;
- b=GrH9a1pzDl3ORBzvm4qt89NEVzZq+NVG/YQJz00q4yB1O9oxoCdr//AVvB1AkF4h7Zr/Nj
- wM0vMTV5X7V9qP0jZmtM79JcWd9LkT0KAAB/LJminMhkYV1oox8ARzgz5OQkYt1AoGG8In
- I1fBX+zP3/Fftb0s7Vitlx6Xj9L408k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-622-tPeLB-doNmavXo4SrMnqTw-1; Tue, 10 Oct 2023 10:25:02 -0400
-X-MC-Unique: tPeLB-doNmavXo4SrMnqTw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ bh=46ZTjuKhBIwDvZqALvN90HJAplqSFDrGGkDj9iVryPs=;
+ b=ii8QsLildu/rt4J9CIvbElKDh2C7IrIBam+9zFODcpovaJ3k8O6/lp4QFWbfNppPOMiSBH
+ vOiBmCXWbKZ9oC07/y5rc2/999GluQhPTd+PDEyr/q2lE2ro2XaxPwsNPbuOrV/0WqtkWe
+ zQu/FTsSEJgl8ogQPcO1OZmMH3mR7a0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696948009;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=46ZTjuKhBIwDvZqALvN90HJAplqSFDrGGkDj9iVryPs=;
+ b=DH3/KWOEGVj/MV0F/WohFW+mQIYPduD+lpHIjgaLacz5UYi+/G1a/15l5D6knP39qefh2j
+ ZmS3sw/6MCXa+9CQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB18581DA0F;
- Tue, 10 Oct 2023 14:25:00 +0000 (UTC)
-Received: from gondolin.str.redhat.com (dhcp-192-239.str.redhat.com
- [10.33.192.239])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D0DDF21CAC76;
- Tue, 10 Oct 2023 14:24:59 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v2 3/3] arm/kvm: convert to read_sys_reg64
-Date: Tue, 10 Oct 2023 16:24:53 +0200
-Message-ID: <20231010142453.224369-4-cohuck@redhat.com>
-In-Reply-To: <20231010142453.224369-1-cohuck@redhat.com>
-References: <20231010142453.224369-1-cohuck@redhat.com>
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 252FF1348E;
+ Tue, 10 Oct 2023 14:26:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id BV92OChfJWVRBAAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 10 Oct 2023 14:26:48 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v12 00/10] migration: Modify 'migrate' and
+ 'migrate-incoming' QAPI commands for migration
+In-Reply-To: <87r0m2siz7.fsf@suse.de>
+References: <20231009143615.86825-1-het.gala@nutanix.com>
+ <87wmvvjymi.fsf@suse.de>
+ <5e59637a-d6ba-46e6-9c28-cc8c16c7fa16@nutanix.com>
+ <87r0m2siz7.fsf@suse.de>
+Date: Tue, 10 Oct 2023 11:26:46 -0300
+Message-ID: <87lecasgd5.fsf@suse.de>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,40 +91,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can use read_sys_reg64 to get the SVE_VLS register instead of
-calling GET_ONE_REG directly.
+Fabiano Rosas <farosas@suse.de> writes:
 
-Suggested-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
----
- target/arm/kvm64.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+> Het Gala <het.gala@nutanix.com> writes:
+>
+>> On 10/10/2023 2:34 AM, Fabiano Rosas wrote:
+>>> Het Gala<het.gala@nutanix.com>  writes:
+>>>
+>>>> This is v12 patchset of modified 'migrate' and 'migrate-incoming' QAPI=
+ design
+>>>> for upstream review.
+>>>>
+>>>> Would like to thank all the maintainers that actively participated in =
+the v11
+>>>> patchset discussion and gave insightful suggestions to improve the pat=
+ches.
+>>>>
+>>>> Link to previous upstream community patchset links:
+>>>> v1:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3DOXhp-cq93AZ1ZR=
+IwKL5wXhx5-8ei7RfBdmmbU9KNDfg&e=3D=20=20
+>>>> v2:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3Dr7SYaB2fxLcEP2=
+DiHslsbEyaY7ZPrXxageSBRtRZ7TA&e=3D=20=20
+>>>> v3:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3DfnGhJw56ypUavn=
+slnUL6JeK4OLi7xwh7TGsafaSSZvw&e=3D=20=20
+>>>> v4:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3DSA4q18GEE4q3Eh=
+7sy5nhQ8OZO5KM8kfapiBkSPZYDxE&e=3D=20=20
+>>>> v5:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3DQRW_aAGHmTBajB=
+nu1a4jcxQFZ1lf1N3RCyLgOt82Ji4&e=3D=20=20
+>>>> v6:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3D7Dmgm47UdQ0h0Y=
+9-XffsUW_ZdeQ-eCCVzhUkigTMKbc&e=3D=20=20
+>>>> v7:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3D8a3tAfIJ-6st1t=
+lYkbjsRWEv-JvEFxokXzanf0WCqzw&e=3D=20=20
+>>>> v8:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3D4q_F05ZPdhWsPJ=
+0fa850gHS90AsVX7MbsaIHi-3OsMI&e=3D=20=20
+>>>> v9:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.or=
+g_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&d=3DDwIFaQ&c=3Ds883GpUC=
+OChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORPO=
+MqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3D1wNhJSfSvAoadG=
+06F2JKFHZ2mA4QWSgqvYpt1zRX9qw&e=3D=20=20
+>>>> v10:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.o=
+rg_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&d=3DDwIFaQ&c=3Ds883GpU=
+COChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORP=
+OMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3DguEm3FuFn7jut=
+T4ZB4RlgwttD4IMSBJy1MNh2zp3tYY&e=3D=20=20
+>>>> v11:https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.o=
+rg_archive_html_qemu-2Ddevel_2023-2D10_msg00740.html&d=3DDwIFaQ&c=3Ds883GpU=
+COChKOHiocYtGcg&r=3D-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=3Ds4FkORP=
+OMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=3DW7rbQhebtuWtT=
+2ydMuG21OOkbqlh9KxMi1ZM5yZP6Ig&e=3D=20=20
+>>>>
+>>>> v11 -> v12 changelog:
+>>>> -------------------
+>>>> - Resolved double-freeing when using g_autoptr in structures that are
+>>>>    nested into another.
+>>>> - Overwriting of pointers to an existing allocated memory is solved at
+>>>>    various places.
+>>>> - Use of g_autoptr caused make check errors in non-error path while go=
+ing
+>>>>    out of scope inside function. Added g_steal_pointer() in the non-er=
+ror
+>>>>    paths wherever required.
+>>> Please run make check before sending:
+>>> =E2=96=B6 242/355 qcow2 181  FAIL
+>>>
+>>> You can also push your code to your gitlab and run a pipeline with the
+>>> branch.
+>>
+>> I tested on my setup, and it passed all the checks.
+>
+> Ok, so this particular test must have been skipped. It's not possible
+> that the test ran and passed since the issue is a very abrupt abort().
+>
 
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 558c0b88dd69..d40c89a84752 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -500,10 +500,6 @@ uint32_t kvm_arm_sve_get_vls(CPUState *cs)
-             .target = -1,
-             .features[0] = (1 << KVM_ARM_VCPU_SVE),
-         };
--        struct kvm_one_reg reg = {
--            .id = KVM_REG_ARM64_SVE_VLS,
--            .addr = (uint64_t)&vls[0],
--        };
-         int fdarray[3], ret;
- 
-         probed = true;
-@@ -512,7 +508,7 @@ uint32_t kvm_arm_sve_get_vls(CPUState *cs)
-             error_report("failed to create scratch VCPU with SVE enabled");
-             abort();
-         }
--        ret = ioctl(fdarray[2], KVM_GET_ONE_REG, &reg);
-+        ret = read_sys_reg64(fdarray[2], &vls[0], KVM_REG_ARM64_SVE_VLS);
-         kvm_arm_destroy_scratch_host_vcpu(fdarray);
-         if (ret) {
-             error_report("failed to get KVM_REG_ARM64_SVE_VLS: %s",
--- 
-2.41.0
+Ok, so I think what is going on is that both your system and CI don't
+support postcopy_ram so this test is skipped.
 
+> Try to run 'make check-block' and watch for the test 181. Or run from the
+> build directory: ./tests/qemu-iotests/check -qcow2 181
+>
+> I started a gitlab pipeline with this code to rule out anything in my
+> own setup. Let's see:
+> https://gitlab.com/farosas/qemu/-/pipelines/1032002487
+>
+
+The issue manifested in the disable-tcg build in the qcow2 091
+test. It's the same issue as 181.
+
+There's also checkpatch issues. We have ./scripts/checkpatch.pl to help
+with those. Just give it .patch files and it will tell you if
+something's wrong with the patch.
 
