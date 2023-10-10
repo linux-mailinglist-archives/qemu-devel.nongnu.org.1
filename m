@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF727BF4E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FED77BF4F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:55:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq7YK-00052q-2n; Tue, 10 Oct 2023 03:53:16 -0400
+	id 1qq7YL-0005C2-NE; Tue, 10 Oct 2023 03:53:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7YE-0004il-FB; Tue, 10 Oct 2023 03:53:10 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1qq7YI-0004wc-Q3; Tue, 10 Oct 2023 03:53:14 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7YC-0005I0-6k; Tue, 10 Oct 2023 03:53:09 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-690f7d73a3aso4748069b3a.0; 
- Tue, 10 Oct 2023 00:53:07 -0700 (PDT)
+ id 1qq7YG-0005Ib-St; Tue, 10 Oct 2023 03:53:14 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-69fc829d7b1so2322084b3a.1; 
+ Tue, 10 Oct 2023 00:53:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696924386; x=1697529186; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696924390; x=1697529190; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W3kMfoAJbHxcTO8KNkuAf+XxPC/1KqJfhYW246npcGE=;
- b=GU5u+p8vic5m0ep7BYxbgSqDlDbtMA4k5515YixbqVNmvzPWuk3lerkbZ5HQftS5rX
- KSGkZddNpAL4HyAEeQIDHFWKtYN4qlIxjjBcM+G3ivBSm2591uAB4+AKC9E3vKSVRQDg
- JGiqAuNE1XtkMRZJN9TC166Gg8OyqXqjFFq8IFJ58drJqOgok2alg9XC+wvW66f23XQ2
- /hMpVhsVxrccCh2JAX1JSsjrwu1RFav7r0LM/LYsz4zgzcMFchSvq183Zx4maxgK/0Hc
- WKvmszCJQ1Tw7XLy2nl/lcCzQ+CT8eclaloySZwwp3yDjBENDtJ3ng+83037dKpsSUWO
- Ux6g==
+ bh=3HUbZ3BEaIDQPcjinhz07GtBsmP9XjGNwVpI8n08oeI=;
+ b=MZVTgSBn6usBtBbmwwpRib3tVs36RxYpxp0TqjvKNtpFOFBglu652BwMkZPmG0b/ke
+ EmJcQN2rwW2/MSc3QtQ4XDNvqM/dDYtTFNjR3yUPiIhJGnbmh2wAZL1OSLVe5cqq2Itz
+ eKNslsRhwETKNWAehUTc2vrcSX7sp2PNiCzzrPpRfz+8vy9GvAca+aV6lUt1hpq9EKv+
+ FYP1XemFB6OMt5P+k9PCElLu8l10Tz+5grr3DfxoEcLrPHlVTUjB3H5VFsuciL7dwxVO
+ zLtiGQXHI5uwum3XZUAOcBL4onm4zHbiAMszhULNfpxeqqMoHsQbLH4JN/jD0WfdjhOP
+ p5Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696924386; x=1697529186;
+ d=1e100.net; s=20230601; t=1696924390; x=1697529190;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W3kMfoAJbHxcTO8KNkuAf+XxPC/1KqJfhYW246npcGE=;
- b=t9ocHdEtg9iLp+ZDmiJKliOIAlmqhpT4ieAZNMj2cs0/MwfS3Yfe8nQzEMEiY/uXrl
- KlY2CmuPbEGvXTVOcAkDhcyW7S/HHMXegvI7ZMU3TdD9wook4ycMzQeeU2MrEl2E+v2f
- h8iGcdZkb9XLzW5E0ikGwAYBuIaaAhYryAS5vQxnGU27+/9PehlfZLVajk2WCgXwPlBF
- kzzr8Is3bz13NP+IfRt6cCnCRKz5n94sqy8TufjIizmOq0BY2kJnta2DoF0mGyiTSGMH
- OL63ggZD8WiTpUTNiDjM1tWqgSedTpVdZVDaavD2AoM8halSx7cFOMBSJGIggSpKz2d4
- Dr5w==
-X-Gm-Message-State: AOJu0YxB617PpoL0cywUbJyTdHfccN6Kxw/Zn09IDlZ2qNBr7hKnma8L
- YxaqEWVTZfk/NAOi2AzEgKDp8Q8JIKs=
-X-Google-Smtp-Source: AGHT+IEFAYiiyt+LyeG8F5lUAvXnd0BejZd32fdJfUearp06e4w4kAo1uiHGOfARLkHwacpI33yA5A==
-X-Received: by 2002:a05:6a20:430e:b0:16b:8498:d9bc with SMTP id
- h14-20020a056a20430e00b0016b8498d9bcmr12958320pzk.62.1696924386438; 
- Tue, 10 Oct 2023 00:53:06 -0700 (PDT)
+ bh=3HUbZ3BEaIDQPcjinhz07GtBsmP9XjGNwVpI8n08oeI=;
+ b=vQUNM+WvwnVauqT6doSpxRVJ1uAjQl8lQVVvm9zGeue8uU3YkUT1th6qEAR8Oc/QyK
+ 58n1Lx9GgVFErwjgowaAzYqBeKZTDC7QS2vdwpHdlJZgW6vD9max1mukT9rUo95zRqKK
+ ZdKLXENqbOQ9RuWDUWs5Nju/fAX2Br3c8xqC915yUU3IyVkDqSZTKxxaMATaY7jMT5Sc
+ Hg30uqOqC5pVTxX/1prYHSlD1g0ThQ9UpVcUp9DTjb+Amyb+HGHJQpJZVi5/yUD3IfYF
+ wW00sZdNsJs0NAfVHH6jmQWgNjNc9BA/ubJ/nFhWezwpMDvvDKHgX+h9ZUsPpe6/JLWE
+ Mg0g==
+X-Gm-Message-State: AOJu0YxoXU5nAPolGGU7+DTwZXiRa0wPmKqyZQbYDMsZ6RfjBNoh0t2b
+ 6UnYWkNK9IDKkxat7s3IVxIpTQvqO4M=
+X-Google-Smtp-Source: AGHT+IERyVgKMM7QeIBkJ99lcWv5MIr6x+un5MXHC9f+zKGh507QnPNlb+bHCAqcC8GAfux8ltOyoQ==
+X-Received: by 2002:a05:6a00:1da2:b0:69f:1791:70b with SMTP id
+ z34-20020a056a001da200b0069f1791070bmr8574619pfw.34.1696924390520; 
+ Tue, 10 Oct 2023 00:53:10 -0700 (PDT)
 Received: from wheely.local0.net (27-33-247-209.tpgi.com.au. [27.33.247.209])
  by smtp.gmail.com with ESMTPSA id
- a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.53.03
+ a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.53.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 00:53:06 -0700 (PDT)
+ Tue, 10 Oct 2023 00:53:10 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Subject: [RFC PATCH 05/11] testing/avocado: ppc add new BookE
- boot_linux_console.py tests
-Date: Tue, 10 Oct 2023 17:52:32 +1000
-Message-ID: <20231010075238.95646-6-npiggin@gmail.com>
+ Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org,
+ Warner Losh <imp@bsdimp.com>
+Subject: [RFC PATCH 06/11] tests/avocado: Add FreeBSD distro boot tests for ppc
+Date: Tue, 10 Oct 2023 17:52:33 +1000
+Message-ID: <20231010075238.95646-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231010075238.95646-1-npiggin@gmail.com>
 References: <20231010075238.95646-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,80 +93,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add simple Linux kernel boot tests for BookE 64-bit and 32-bit CPUs
-using Guenter Roeck's rootfs images for Linux testing, and a gitlab
-repository with kernel images that I built since there are very few
-sources of modern BookE images now.
+FreeBSD project provides qcow2 images that work well for testing QEMU.
+Add pseries tests for HPT and Radix, KVM and TCG.
 
+Other architectures could be added so this does not get a ppc_ prefix
+but is instead named similarly to boot_linux.
+
+Cc: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/avocado/boot_linux_console.py | 53 +++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 9434304cd3..dc3346ef49 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -1355,6 +1355,59 @@ def test_ppc64_e500(self):
-         tar_hash = '6951d86d644b302898da2fd701739c9406527fe1'
-         self.do_test_advcal_2018('19', tar_hash, 'uImage')
- 
-+    def test_ppc64_e6500(self):
+CC'ing Warner to check if it's okay for us to use these images and
+any comments or suggestions. avocado tests have many Linux boots so we'd
+do much better to expand test coverage by adding some other systems.
+---
+ tests/avocado/boot_freebsd.py | 109 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 109 insertions(+)
+ create mode 100644 tests/avocado/boot_freebsd.py
+
+diff --git a/tests/avocado/boot_freebsd.py b/tests/avocado/boot_freebsd.py
+new file mode 100644
+index 0000000000..9a499a28ad
+--- /dev/null
++++ b/tests/avocado/boot_freebsd.py
+@@ -0,0 +1,109 @@
++# Functional tests that boot FreeBSD in various configurations
++#
++# Copyright (c) 2023 IBM Corporation
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later. See the COPYING file in the top-level directory.
++
++import os
++
++from avocado import skipUnless
++from avocado import skipIf
++from avocado_qemu import QemuSystemTest
++from avocado_qemu import wait_for_console_pattern
++from avocado_qemu import exec_command
++from avocado.utils import archive
++from avocado.utils import process
++from avocado.utils.path import find_command
++
++class BootFreeBSDPPC64(QemuSystemTest):
++    """
++    :avocado: tags=arch:ppc64
++    """
++
++    timeout = 360
++
++    def run_pseries_test(self, force_HPT=False):
++        # We need zstd for all the tuxrun tests
++        # See https://github.com/avocado-framework/avocado/issues/5609
++        zstd = find_command('zstd', False)
++        if zstd is False:
++            self.cancel('Could not find "zstd", which is required to '
++                        'decompress rootfs')
++        self.zstd = zstd
++
++        drive_url = ('https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/a2440348eed75bb7682579af0905b652747fd016/powerpc/powerpc64le/disk.qcow2.zst')
++        drive_hash = '8ab11a05ccab3d44215fd4667a70454ed10a203f'
++        drive_path_zstd = self.fetch_asset(drive_url, asset_hash=drive_hash)
++        drive_path = os.path.join(self.workdir, 'disk.qcow2')
++        # archive.zstd_uncompress(drive_path_zstd, drive_path)
++
++        cmd = f"{self.zstd} -d {drive_path_zstd} -o {drive_path}"
++        process.run(cmd)
++
++        drive = f"file={drive_path},format=qcow2,if=virtio"
++
++        self.vm.set_console()
++        if force_HPT:
++            self.vm.add_args('-m', '4g')
++        else:
++            self.vm.add_args('-m', '1g')
++        self.vm.add_args('-smp', '4')
++        self.vm.add_args('-drive', drive)
++        self.vm.add_args('-net', 'nic,model=virtio')
++        self.vm.launch()
++
++        wait_for_console_pattern(self, 'Hit [Enter] to boot immediately, or any other key for command prompt.')
++        if force_HPT:
++            exec_command(self, 'x')
++            wait_for_console_pattern(self, 'OK')
++            exec_command(self, 'set radix_mmu=0')
++            exec_command(self, 'boot')
++            wait_for_console_pattern(self, 'cas: selected hash MMU', 'panic:')
++        else:
++            exec_command(self, '')
++            wait_for_console_pattern(self, 'cas: selected radix MMU')
++
++        wait_for_console_pattern(self, 'FreeBSD 15.0-CURRENT #0 a244034: Mon Sep 25 02:05:22 UTC 2023', 'panic:')
++        wait_for_console_pattern(self, 'FreeBSD/SMP: Multiprocessor System Detected: 4 CPUs')
++        wait_for_console_pattern(self, 'FreeBSD/powerpc (Amnesiac) (ttyu0)', 'panic:')
++
++    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    def test_pseries_tcg(self):
 +        """
 +        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:ppce500
-+        :avocado: tags=cpu:e6500
++        :avocado: tags=machine:pseries
 +        :avocado: tags=accel:tcg
 +        """
-+        kernel_url = ('https://gitlab.com/npiggin/qemu-ci-images/-/raw/main/ppc/corenet64_vmlinux?ref_type=heads&inline=false')
-+        kernel_hash = '01051590b083fec66cb3b9e2e553e95d4cf47691'
-+        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
++        self.require_accelerator("tcg")
++        self.run_pseries_test()
 +
-+        initrd_url = ('https://github.com/groeck/linux-build-test/raw/master/rootfs/ppc64/rootfs.cpio.gz')
-+        initrd_hash = '798acffc036c3b1ae6cacf95c869bba2'
-+        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash,
-+                                       algorithm="md5")
-+
-+        self.vm.set_console()
-+        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-+        self.vm.add_args('-smp', '2',
-+                         '-kernel', kernel_path,
-+                         '-initrd', initrd_path,
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
-+
-+    def test_ppc32_mpc85xx(self):
++    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    def test_pseries_hpt_tcg(self):
 +        """
-+        :avocado: tags=arch:ppc
-+        :avocado: tags=machine:ppce500
-+        :avocado: tags=cpu:mpc8568
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:pseries
 +        :avocado: tags=accel:tcg
 +        """
-+        kernel_url = ('https://gitlab.com/npiggin/qemu-ci-images/-/raw/main/ppc/mpc85xx_vmlinux?ref_type=heads&inline=false')
-+        kernel_hash = '726f7f574a491282454850b48546b3827593142b'
-+        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
++        self.require_accelerator("tcg")
++        self.run_pseries_test(force_HPT=True)
 +
-+        initrd_url = ('https://github.com/groeck/linux-build-test/raw/master/rootfs/ppc/rootfs.cpio.gz')
-+        initrd_hash = '4d30fa93b742c493e8cf2140e49bbd9a'
-+        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash,
-+                                       algorithm="md5")
++    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    def test_pseries_kvm(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:pseries
++        :avocado: tags=accel:kvm
++        """
++        self.require_accelerator("kvm")
++        self.run_pseries_test()
 +
-+        self.vm.set_console()
-+        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-initrd', initrd_path,
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
-+
-     def do_test_ppc64_powernv(self, proc):
-         self.require_accelerator("tcg")
-         images_url = ('https://github.com/open-power/op-build/releases/download/v2.7/')
++    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    def test_pseries_hpt_kvm(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:pseries
++        :avocado: tags=accel:kvm
++        """
++        self.require_accelerator("kvm")
++        self.run_pseries_test(force_HPT=True)
 -- 
 2.42.0
 
