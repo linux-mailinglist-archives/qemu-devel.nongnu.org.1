@@ -2,105 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ADA67C43A7
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 00:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0AC7C4427
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 00:32:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqL6M-0007CL-Fl; Tue, 10 Oct 2023 18:21:18 -0400
+	id 1qqLFC-0000dE-LK; Tue, 10 Oct 2023 18:30:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qqL6K-00078s-Hy; Tue, 10 Oct 2023 18:21:16 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1qqLFB-0000d4-9t
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 18:30:25 -0400
+Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qqL6H-0002t4-Vu; Tue, 10 Oct 2023 18:21:16 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39AMHO6D030711; Tue, 10 Oct 2023 22:20:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=JxWhd3mh71OEvQG8Z6jhxntAhmyXII+k/ZQke/rDAfE=;
- b=ZM/xuILnYR6jzhwZSkwKBngf0Bkzz66mkp143dZ3gxlFbjnMD6OcF1FOcxQZIPpbkbq4
- JVMr+i8MGspGicpOfs6t3N/mZ9yRcnVydRKCB6f0QEpVu1zx+xazF9q5w3ByVfs66RvB
- 9BewII9WgA+HlnezZ0HQUnilZ34Z0OhRV4bLW8rUAkdMUtVOGLosaFl+HHkMuf44cr8z
- lVtOl1x5U6YCwvzdHPQRnSbNFovH2hmZSr1cV25/bxCsZSNyB3eP+EBFNR33hjUURc1Z
- gZmMKS5Rx5Zlxh4AKBWE0qeTgnFxNK1XS57nxql88aAZ86y4CxDLdavwFZ/Fe/AR/+jo Yw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnf95r45r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 22:20:53 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39AMHemJ032078;
- Tue, 10 Oct 2023 22:20:52 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnf95r456-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 22:20:52 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39ALJMZn025859; Tue, 10 Oct 2023 22:20:51 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkjnnbmmd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 22:20:51 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39AMKoOD25297438
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Oct 2023 22:20:50 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2157E5804B;
- Tue, 10 Oct 2023 22:20:50 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 33B8F58055;
- Tue, 10 Oct 2023 22:20:49 +0000 (GMT)
-Received: from [9.61.148.249] (unknown [9.61.148.249])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 10 Oct 2023 22:20:49 +0000 (GMT)
-Message-ID: <f4ea9f6e-f8cd-46cf-b0f9-04ed5af420ad@linux.ibm.com>
-Date: Tue, 10 Oct 2023 17:20:48 -0500
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1qqLF9-000536-5x
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 18:30:24 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by ams.source.kernel.org (Postfix) with ESMTP id 24947B81EC1;
+ Tue, 10 Oct 2023 22:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B271BC433C8;
+ Tue, 10 Oct 2023 22:30:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1696977019;
+ bh=4KQ+fP5Z+CodzlHTsTZqTxQVs/IEOqNvqb0CVWSQekc=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=GmfCVSlzk9e0UsMxOdl0ZvIqU62/6FixIEi5DYFJ6SccekSiUV3pKzTd7wh6mFRgQ
+ D+VJlt3Ugakyiv2bZ31JbgDjYzNkDfSyX1UBZKPJNtBqxIoM3u72lMsuEhw/9j3phf
+ +zm8W1cD8vIirL4NDWBj3PdH1qyoWjZN294YV0Ttac24bkoujVRv5kb8wqyxH8WuWI
+ k+77To7i+CX8yLMmYwC/uuIQy+kSyghoOsm2WbyYjDiRzwAtv66vak8trCe8Ge6tJF
+ LsJVCd9EQ4JoPuwD7QxaWmO/8KWGx3nR6NO+R2r3SfsbIkL5OAHFpJzbCqkUWg5QPv
+ WdaastnJSLzVQ==
+Date: Tue, 10 Oct 2023 15:30:16 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Vikram Garhwal <vikram.garhwal@amd.com>
+cc: Stefano Stabellini <sstabellini@kernel.org>, qemu-devel@nongnu.org, 
+ Juergen Gross <jgross@suse.com>, 
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>, 
+ David Hildenbrand <david@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Subject: Re: [QEMU][PATCH v1 2/7] xen: add pseudo RAM region for grant mappings
+In-Reply-To: <ZSXBPlQF1Y2Gx5P1@amd.com>
+Message-ID: <alpine.DEB.2.22.394.2310101529280.3431292@ubuntu-linux-20-04-desktop>
+References: <20231005181629.4046-1-vikram.garhwal@amd.com>
+ <20231005181629.4046-3-vikram.garhwal@amd.com>
+ <alpine.DEB.2.22.394.2310091653270.3431292@ubuntu-linux-20-04-desktop>
+ <ZSXBPlQF1Y2Gx5P1@amd.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/10] hw/fsi: IBM's On-chip Peripheral Bus
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20230908222859.3381003-1-ninad@linux.ibm.com>
- <20230908222859.3381003-6-ninad@linux.ibm.com>
- <d82f227d-834c-1302-cf0b-11e06d09ec29@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <d82f227d-834c-1302-cf0b-11e06d09ec29@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: h6xxwma6W0XlsGs6A_XdwEw-lQxhRA_d
-X-Proofpoint-ORIG-GUID: 6_AiZFo-5_6olWBHbosMCvajPkLy8TIv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-10_18,2023-10-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 spamscore=0 clxscore=1015 mlxscore=0 mlxlogscore=999
- malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310100172
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: pass client-ip=2604:1380:4601:e00::1;
+ envelope-from=sstabellini@kernel.org; helo=ams.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,360 +82,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+On Tue, 10 Oct 2023, Vikram Garhwal wrote:
+> On Mon, Oct 09, 2023 at 05:02:14PM -0700, Stefano Stabellini wrote:
+> > On Thu, 5 Oct 2023, Vikram Garhwal wrote:
+> > > From: Juergen Gross <jgross@suse.com>
+> > > 
+> > > Add a memory region which can be used to automatically map granted
+> > > memory. It is starting at 0x8000000000000000ULL in order to be able to
+> > > distinguish it from normal RAM.
+> > > 
+> > > For this reason the xen.ram memory region is expanded, which has no
+> > > further impact as it is used just as a container of the real RAM
+> > > regions and now the grant region.
+> > > 
+> > > Signed-off-by: Juergen Gross <jgross@suse.com>
+> > > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+> > 
+> > This patch doesn't apply to staging anymore
+> Will re-base it. I rebased it against master branch.
+> > 
+> > 
+> > > ---
+> > >  hw/i386/xen/xen-hvm.c           |  3 ++
+> > >  hw/xen/xen-hvm-common.c         |  4 +--
+> > >  hw/xen/xen-mapcache.c           | 27 ++++++++++++++
+> > >  include/exec/ram_addr.h         |  1 +
+> > >  include/hw/xen/xen-hvm-common.h |  2 ++
+> > >  include/hw/xen/xen_pvdev.h      |  3 ++
+> > >  include/sysemu/xen-mapcache.h   |  3 ++
+> > >  softmmu/physmem.c               | 62 +++++++++++++++++++++------------
+> > >  8 files changed, 80 insertions(+), 25 deletions(-)
+> > > 
+> > > diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+> > > index f42621e674..67a55558a6 100644
+> > > --- a/hw/i386/xen/xen-hvm.c
+> > > +++ b/hw/i386/xen/xen-hvm.c
+> > > @@ -172,6 +172,9 @@ static void xen_ram_init(PCMachineState *pcms,
+> > >                                   x86ms->above_4g_mem_size);
+> > >          memory_region_add_subregion(sysmem, 0x100000000ULL, &ram_hi);
+> > >      }
+> > > +
+> > > +    /* Add grant mappings as a pseudo RAM region. */
+> > > +    ram_grants = *xen_init_grant_ram();
+> > >  }
+> > >  
+> > >  static XenPhysmap *get_physmapping(hwaddr start_addr, ram_addr_t size)
+> > > diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+> > > index 565dc39c8f..b7255977a5 100644
+> > > --- a/hw/xen/xen-hvm-common.c
+> > > +++ b/hw/xen/xen-hvm-common.c
+> > > @@ -9,7 +9,7 @@
+> > >  #include "hw/boards.h"
+> > >  #include "hw/xen/arch_hvm.h"
+> > >  
+> > > -MemoryRegion ram_memory;
+> > > +MemoryRegion ram_memory, ram_grants;
+> > >  
+> > >  void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+> > >                     Error **errp)
+> > > @@ -26,7 +26,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+> > >          return;
+> > >      }
+> > >  
+> > > -    if (mr == &ram_memory) {
+> > > +    if (mr == &ram_memory || mr == &ram_grants) {
+> > >          return;
+> > >      }
+> > >  
+> > > diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
+> > > index f7d974677d..8115c44c00 100644
+> > > --- a/hw/xen/xen-mapcache.c
+> > > +++ b/hw/xen/xen-mapcache.c
+> > > @@ -14,7 +14,9 @@
+> > >  
+> > >  #include <sys/resource.h>
+> > >  
+> > > +#include "hw/xen/xen-hvm-common.h"
+> > >  #include "hw/xen/xen_native.h"
+> > > +#include "hw/xen/xen_pvdev.h"
+> > >  #include "qemu/bitmap.h"
+> > >  
+> > >  #include "sysemu/runstate.h"
+> > > @@ -597,3 +599,28 @@ uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
+> > >      mapcache_unlock();
+> > >      return p;
+> > >  }
+> > > +
+> > > +MemoryRegion *xen_init_grant_ram(void)
+> > > +{
+> > > +    RAMBlock *block;
+> > > +
+> > > +    memory_region_init(&ram_grants, NULL, "xen.grants",
+> > > +                       XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE);
+> > > +    block = g_malloc0(sizeof(*block));
+> > > +    block->mr = &ram_grants;
+> > > +    block->used_length = XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE;
+> > > +    block->max_length = XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE;
+> > > +    block->fd = -1;
+> > > +    block->page_size = XC_PAGE_SIZE;
+> > > +    block->host = (void *)XEN_GRANT_ADDR_OFF;
+> > > +    block->offset = XEN_GRANT_ADDR_OFF;
+> > > +    block->flags = RAM_PREALLOC;
+> > > +    ram_grants.ram_block = block;
+> > > +    ram_grants.ram = true;
+> > > +    ram_grants.terminates = true;
+> > > +    ram_block_add_list(block);
+> > > +    memory_region_add_subregion(get_system_memory(), XEN_GRANT_ADDR_OFF,
+> > > +                                &ram_grants);
+> > > +
+> > > +    return &ram_grants;
+> > 
+> > It doesn't look like xen_init_grant_ram has anything to do with the
+> > mapcache. It should be in another file. Maybe ./hw/xen/xen-hvm-common.c
+> > or ./hw/i386/xen/xen-hvm.c (but this is x86 specific and we need grants
+> > on ARM too)
+> Do you mean to move all grant related functions? As moving this alone will not
+> be sufficient. There are lot of new grant related function added in later patches.
+> 
+> I am okay with moving all to xen-hvm-common.c
+> 
+> Following code movement will happen in this case:
+> 1. All grant related static function to xen-hvm-common.c.
+>     xen_ram_addr_from_grant_cache(), xen_ram_addr_from_mapcache(),
+>     xen_map_grant_dyn(), xen_unmap_grant_dyn and xen_init_grant_ram().
+> 2. Remove static from xen_ram_addr_from_mapcache_try().
+> 
+> Does these changes looks good?
 
-Thanks for the review.
-
-On 9/11/23 07:29, Cédric Le Goater wrote:
-> On 9/9/23 00:28, Ninad Palsule wrote:
->> This is a part of patchset where IBM's Flexible Service Interface is
->> introduced.
->>
->> The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
->> POWER processors. This now makes an appearance in the ASPEED SoC due
->> to tight integration of the FSI master IP with the OPB, mainly the
->> existence of an MMIO-mapping of the CFAM address straight onto a
->> sub-region of the OPB address space.
->>
->> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->> Reviewed-by: Joel Stanley <joel@jms.id.au>
->> ---
->> v2:
->> - Incorporated review comment by Joel.
->> ---
->>   hw/fsi/Kconfig       |   4 +
->>   hw/fsi/fsi-master.c  |   6 +-
->>   hw/fsi/meson.build   |   1 +
->>   hw/fsi/opb.c         | 194 +++++++++++++++++++++++++++++++++++++++++++
->>   include/hw/fsi/opb.h |  43 ++++++++++
->>   5 files changed, 244 insertions(+), 4 deletions(-)
->>   create mode 100644 hw/fsi/opb.c
->>   create mode 100644 include/hw/fsi/opb.h
->>
->> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
->> index 087980be22..560ce536db 100644
->> --- a/hw/fsi/Kconfig
->> +++ b/hw/fsi/Kconfig
->> @@ -1,3 +1,7 @@
->> +config OPB
->> +    bool
->> +    select CFAM
->> +
->>   config CFAM
->>       bool
->>       select FSI
->> diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
->> index fe1693539a..46103f84e9 100644
->> --- a/hw/fsi/fsi-master.c
->> +++ b/hw/fsi/fsi-master.c
->> @@ -7,14 +7,12 @@
->>     #include "qemu/osdep.h"
->>   +#include "qemu/bitops.h"
->>   #include "qapi/error.h"
->> -
->>   #include "qemu/log.h"
->>   -#include "hw/fsi/bits.h"
->>   #include "hw/fsi/fsi-master.h"
->> -
->> -#define TYPE_OP_BUS "opb"
->> +#include "hw/fsi/opb.h"
->>     #define TO_REG(x)                               ((x) >> 2)
->
->
-> These change do not belong to this patch.
-I fixed some of them but in this patch TYPE_OP_BUS is replaced by 
-correct header file.
->
->> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
->> index ca80d11cb9..cab645f4ea 100644
->> --- a/hw/fsi/meson.build
->> +++ b/hw/fsi/meson.build
->> @@ -2,3 +2,4 @@ system_ss.add(when: 'CONFIG_LBUS', if_true: 
->> files('lbus.c'))
->>   system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: 
->> files('engine-scratchpad.c'))
->>   system_ss.add(when: 'CONFIG_CFAM', if_true: files('cfam.c'))
->>   system_ss.add(when: 'CONFIG_FSI', if_true: 
->> files('fsi.c','fsi-master.c','fsi-slave.c'))
->> +system_ss.add(when: 'CONFIG_OPB', if_true: files('opb.c'))
->> diff --git a/hw/fsi/opb.c b/hw/fsi/opb.c
->> new file mode 100644
->> index 0000000000..ac7693c001
->> --- /dev/null
->> +++ b/hw/fsi/opb.c
->> @@ -0,0 +1,194 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM On-chip Peripheral Bus
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +
->> +#include "qapi/error.h"
->> +#include "qemu/log.h"
->> +
->> +#include "hw/fsi/opb.h"
->> +
->> +static MemTxResult opb_read(OPBus *opb, hwaddr addr, void *data, 
->> size_t len)
->> +{
->> +    return address_space_read(&opb->as, addr, 
->> MEMTXATTRS_UNSPECIFIED, data,
->> +                              len);
->> +}
->
-> This routine doesn't look very useful. Same for the write.
-Now I made them to qemu_log the error.
->
->> +
->> +uint8_t opb_read8(OPBus *opb, hwaddr addr)
->> +{
->> +    MemTxResult tx;
->> +    uint8_t data;
->> +
->> +    tx = opb_read(opb, addr, &data, sizeof(data));
->> +    /* FIXME: improve error handling */
->> +    assert(!tx);
->
-> should output a qemu_log_mask(LOG_GUEST_ERROR) may be ? But I don't think
-> we should assert.
-I removed tx check from all other functions.
->
->> +
->> +    return data;
->> +}
->> +
->> +uint16_t opb_read16(OPBus *opb, hwaddr addr)
->> +{
->> +    MemTxResult tx;
->> +    uint16_t data;
->> +
->> +    tx = opb_read(opb, addr, &data, sizeof(data));
->> +    /* FIXME: improve error handling */
->> +    assert(!tx);
->
-> same
-Same as above.
->
->> +
->> +    return data;
->> +}
->> +
->> +uint32_t opb_read32(OPBus *opb, hwaddr addr)
->> +{
->> +    MemTxResult tx;
->> +    uint32_t data;
->> +
->> +    tx = opb_read(opb, addr, &data, sizeof(data));
->> +    /* FIXME: improve error handling */
->> +    assert(!tx);
->> +
->> +    return data;
->> +}
->> +
->> +static MemTxResult opb_write(OPBus *opb, hwaddr addr, void *data, 
->> size_t len)
->> +{
->> +    return address_space_write(&opb->as, addr, 
->> MEMTXATTRS_UNSPECIFIED, data,
->> +                               len);
->> +}
->> +
->> +void opb_write8(OPBus *opb, hwaddr addr, uint8_t data)
->> +{
->> +    MemTxResult tx;
->> +
->> +    tx = opb_write(opb, addr, &data, sizeof(data));
->> +    /* FIXME: improve error handling */
->> +    assert(!tx);
->> +}
->> +
->> +void opb_write16(OPBus *opb, hwaddr addr, uint16_t data)
->> +{
->> +    MemTxResult tx;
->> +
->> +    tx = opb_write(opb, addr, &data, sizeof(data));
->> +    /* FIXME: improve error handling */
->> +    assert(!tx);
->> +}
->> +
->> +void opb_write32(OPBus *opb, hwaddr addr, uint32_t data)
->> +{
->> +    MemTxResult tx;
->> +
->> +    tx = opb_write(opb, addr, &data, sizeof(data));
->> +    /* FIXME: improve error handling */
->> +    assert(!tx);
->> +}
->> +
->> +void opb_fsi_master_address(OPBus *opb, hwaddr addr)
->> +{
->> +    memory_region_transaction_begin();
->> +    memory_region_set_address(&opb->fsi.iomem, addr);
->> +    memory_region_transaction_commit();
->> +}
->> +
->> +void opb_opb2fsi_address(OPBus *opb, hwaddr addr)
->> +{
->> +    memory_region_transaction_begin();
->> +    memory_region_set_address(&opb->fsi.opb2fsi, addr);
->> +    memory_region_transaction_commit();
->> +}
->> +
->> +static uint64_t opb_unimplemented_read(void *opaque, hwaddr addr, 
->> unsigned size)
->> +{
->> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
->> +                  __func__, addr, size);
->> +
->> +    return 0;
->> +}
->> +
->> +static void opb_unimplemented_write(void *opaque, hwaddr addr, 
->> uint64_t data,
->> +                                 unsigned size)
->> +{
->> +    qemu_log_mask(LOG_UNIMP, "%s: write @0x%" HWADDR_PRIx " size=%d "
->> +                  "value=%"PRIx64"\n", __func__, addr, size, data);
->> +}
->> +
->> +static const struct MemoryRegionOps opb_unimplemented_ops = {
->> +    .read = opb_unimplemented_read,
->> +    .write = opb_unimplemented_write,
->> +    .endianness = DEVICE_BIG_ENDIAN,
->> +};
->> +
->> +static void opb_realize(BusState *bus, Error **errp)
->> +{
->> +    OPBus *opb = OP_BUS(bus);
->> +    Error *err = NULL;
->> +
->> +    memory_region_init_io(&opb->mr, OBJECT(opb), 
->> &opb_unimplemented_ops, opb,
->> +                          NULL, UINT32_MAX);
->> +    address_space_init(&opb->as, &opb->mr, "opb");
->> +
->> +    object_property_set_bool(OBJECT(&opb->fsi), "realized", true, 
->> &err);
->> +    if (err) {
->> +        error_propagate(errp, err);
->> +        return;
->> +    }
->> +    memory_region_add_subregion(&opb->mr, 0x80000000, &opb->fsi.iomem);
->> +
->> +    /* OPB2FSI region */
->> +    /*
->> +     * Avoid endianness issues by mapping each slave's memory region 
->> directly.
->> +     * Manually bridging multiple address-spaces causes endian swapping
->> +     * headaches as memory_region_dispatch_read() and
->> +     * memory_region_dispatch_write() correct the endianness based 
->> on the
->> +     * target machine endianness and not relative to the device 
->> endianness on
->> +     * either side of the bridge.
->> +     */
->> +    /*
->> +     * XXX: This is a bit hairy and will need to be fixed when I 
->> sort out the
->> +     * bus/slave relationship and any changes to the CFAM modelling 
->> (multiple
->> +     * slaves, LBUS)
->> +     */
->> +    memory_region_add_subregion(&opb->mr, 0xa0000000, 
->> &opb->fsi.opb2fsi);
->> +}
->> +
->> +static void opb_init(Object *o)
->> +{
->> +    OPBus *opb = OP_BUS(o);
->> +
->> +    object_initialize_child(o, "fsi-master", &opb->fsi, 
->> TYPE_FSI_MASTER);
->> +    qdev_set_parent_bus(DEVICE(&opb->fsi), BUS(o), &error_abort);
->> +}
->> +
->> +static void opb_finalize(Object *o)
->> +{
->> +    OPBus *opb = OP_BUS(o);
->> +
->> +    address_space_destroy(&opb->as);
->> +}
->> +
->> +static void opb_class_init(ObjectClass *klass, void *data)
->> +{
->> +    BusClass *bc = BUS_CLASS(klass);
->> +    bc->realize = opb_realize;
->> +}
->> +
->> +static const TypeInfo opb_info = {
->> +    .name = TYPE_OP_BUS,
->> +    .parent = TYPE_BUS,
->> +    .instance_init = opb_init,
->> +    .instance_finalize = opb_finalize,
->> +    .instance_size = sizeof(OPBus),
->> +    .class_init = opb_class_init,
->> +    .class_size = sizeof(OPBusClass),
->> +};
->> +
->> +static void opb_register_types(void)
->> +{
->> +    type_register_static(&opb_info);
->> +}
->> +
->> +type_init(opb_register_types);
->> diff --git a/include/hw/fsi/opb.h b/include/hw/fsi/opb.h
->> new file mode 100644
->> index 0000000000..f8ce00383e
->> --- /dev/null
->> +++ b/include/hw/fsi/opb.h
->> @@ -0,0 +1,43 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM On-Chip Peripheral Bus
->> + */
->> +#ifndef FSI_OPB_H
->> +#define FSI_OPB_H
->> +
->> +#include "exec/memory.h"
->> +#include "hw/fsi/fsi-master.h"
->> +
->> +#define TYPE_OP_BUS "opb"
->> +OBJECT_DECLARE_SIMPLE_TYPE(OPBus, OP_BUS)
->> +
->> +typedef struct OPBus {
->> +        /*< private >*/
->> +        BusState bus;
->> +
->> +        /*< public >*/
->> +        MemoryRegion mr;
->> +        AddressSpace as;
->> +
->> +        /* Model OPB as dumb enough just to provide an address-space */
->> +        /* TODO: Maybe don't store device state in the bus? */
->> +        FSIMasterState fsi;
->> +} OPBus;
->> +
->> +typedef struct OPBusClass {
->> +        BusClass parent_class;
->> +} OPBusClass;
->> +
->> +uint8_t opb_read8(OPBus *opb, hwaddr addr);
->> +uint16_t opb_read16(OPBus *opb, hwaddr addr);
->> +uint32_t opb_read32(OPBus *opb, hwaddr addr);
->> +void opb_write8(OPBus *opb, hwaddr addr, uint8_t data);
->> +void opb_write16(OPBus *opb, hwaddr addr, uint16_t data);
->> +void opb_write32(OPBus *opb, hwaddr addr, uint32_t data);
->> +
->> +void opb_fsi_master_address(OPBus *opb, hwaddr addr);
->> +void opb_opb2fsi_address(OPBus *opb, hwaddr addr);
->> +
->> +#endif /* FSI_OPB_H */
->
+After reading all the patches, I think it is also OK to leave the code
+here.
 
