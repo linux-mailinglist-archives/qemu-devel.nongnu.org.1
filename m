@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36D37BFA5D
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D223F7BFA59
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:52:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBGy-0000IP-Rh; Tue, 10 Oct 2023 07:51:36 -0400
+	id 1qqBGj-0007tJ-Pz; Tue, 10 Oct 2023 07:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBGv-0000Bp-B8
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:51:33 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBGt-00078K-Mo
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:51:33 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9b275afb6abso1450779266b.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 04:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696938689; x=1697543489; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mxNNJ0+CbtGu/FtriJHh3KhiymL+ByyxtOGep+z6Z6E=;
- b=Cll0BMjaaF+NkJ4dA1sOKeOd6F7VATNi+FbkbuxmL0kCcNHdjWk1n69rpjlQqNQLEp
- tSVrQFuBtM8cWhHEaJ5abF1HiUp+mn+VrT3ygqydR92if9vcMwaFeE2RXdn2cBzd3T7y
- S3vAbKNSz3mJB29D70TpcYl5f1WIAutKHRab5GwYxXGOHT5+KljcwGEG9C780XQZoDnV
- me8pjRyxYDhpotL2k4g2173xTLrpwgt+V9HFU3OOOWsF1V7ssGqVi3TW4IyzOkF3d8MP
- IkggRsS7A9otiFc6g4UCa8AqMa9ZkMSrb19khFD47/jz/ePWQnFMM8D9eBFSGcu6cRBe
- mT1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696938689; x=1697543489;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mxNNJ0+CbtGu/FtriJHh3KhiymL+ByyxtOGep+z6Z6E=;
- b=Vyh6hOZ1lagRgdFlTCwNd6vCU9c92We3XEzNBAigTAtpjOnPlWCfMDSu/e4jsGMXMR
- eKvpT2baix/mWPgu43O2iM69ZotkJc4OG0hOUjyPU9Sc8l2yGPqkbyvqf4W9GAlCEDxE
- JuFsZ45IndJ5wW3gkw6smUFtXlXqKE7E39cpPwt+EUPKTkrDGwZ7d4lNb2umQI7Q31YI
- o/lCfDf4kG8Tdio/lJeaxPPxU8spyG4eFjtXNZNrywyKg478Oeq+Ke1kvbWePxXe4qBp
- NDfZr3beLLOKz3b4/UP3HaBG6+PPMpLOrZmfXb/XE6JW3LbdomRvJ5NV6D25SmEGTBgC
- hp0w==
-X-Gm-Message-State: AOJu0YwmBgglJfdrPolHSAKiWf90IrVjpWtKYuLv5HEusvdHuz5nIQZl
- kFqTOBm9PhkLPEMLY2cSxH8is+b3aBNY6MiLt9hONw==
-X-Google-Smtp-Source: AGHT+IEVdSBWWIbZq1bBcW+eJaOYv5yqnrsI4Jai3K1wkB1jyVLqefcRcaBANC0uMdj4M02PkvpafQ==
-X-Received: by 2002:a17:906:fe08:b0:9a1:e0b1:e919 with SMTP id
- wy8-20020a170906fe0800b009a1e0b1e919mr13143233ejb.4.1696938689797; 
- Tue, 10 Oct 2023 04:51:29 -0700 (PDT)
-Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
- [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- p26-20020a1709060dda00b009b2cc87b8c3sm8256010eji.52.2023.10.10.04.51.27
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 04:51:29 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Farman <farman@linux.ibm.com>,
- qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 6/6] hw/s390x: Clean up global variable shadowing in
- quiesce_powerdown_req()
-Date: Tue, 10 Oct 2023 13:50:48 +0200
-Message-ID: <20231010115048.11856-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231010115048.11856-1-philmd@linaro.org>
-References: <20231010115048.11856-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qqBGf-0007ow-Fx
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:51:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qqBGd-00072O-Aa
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:51:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696938671;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=ZOhCdUZSoyDy7RW411TpTrHbpiHeI9FVoha0+mNGq/8=;
+ b=eZrkIBQPEMAodMyvZFwadL1uuL8SELPCUbOrPS1isKKRxe5N3pSE3q1CNWWRx8PO+omHB6
+ RBdlOK8zgVjlqX7Wq2Pate+ekoeYCSq1ZjQJypEhF9eLE0ZoCKkTxprFxxGdQkmtY6AJLw
+ KBM4EwWiYyAC9xLZAa6vWpOl1wZKzG8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-688-_Z6j7pO0OdGQzsJlpV6pmg-1; Tue, 10 Oct 2023 07:51:08 -0400
+X-MC-Unique: _Z6j7pO0OdGQzsJlpV6pmg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 815681C0651E;
+ Tue, 10 Oct 2023 11:51:07 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.49])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1828F15C39;
+ Tue, 10 Oct 2023 11:51:04 +0000 (UTC)
+Date: Tue, 10 Oct 2023 12:51:02 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, xen-devel@lists.xenproject.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>,
+ Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>
+Subject: Re: [QEMU PATCH v5 05/13] virtio-gpu: Configure context init for
+ virglrenderer
+Message-ID: <ZSU6pqcyBxTPTcwc@redhat.com>
+References: <20230915111130.24064-1-ray.huang@amd.com>
+ <20230915111130.24064-6-ray.huang@amd.com>
+ <16520a76-7177-f97c-049b-302d8baea616@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <16520a76-7177-f97c-049b-302d8baea616@collabora.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,54 +98,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix:
+On Tue, Oct 10, 2023 at 02:41:22PM +0300, Dmitry Osipenko wrote:
+> On 9/15/23 14:11, Huang Rui wrote:
+> > Configure context init feature flag for virglrenderer.
+> > 
+> > Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> > Signed-off-by: Huang Rui <ray.huang@amd.com>
+> > ---
+> > 
+> > V4 -> V5:
+> >     - Inverted patch 5 and 6 because we should configure
+> >       HAVE_VIRGL_CONTEXT_INIT firstly. (Philippe)
+> > 
+> >  meson.build | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/meson.build b/meson.build
+> > index 98e68ef0b1..ff20d3c249 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -1068,6 +1068,10 @@ if not get_option('virglrenderer').auto() or have_system or have_vhost_user_gpu
+> >                                         prefix: '#include <virglrenderer.h>',
+> >                                         dependencies: virgl))
+> >    endif
+> > +  config_host_data.set('HAVE_VIRGL_CONTEXT_INIT',
+> > +                       cc.has_function('virgl_renderer_context_create_with_flags',
+> > +                                       prefix: '#include <virglrenderer.h>',
+> > +                                       dependencies: virgl))
+> The "cc.has_function" doesn't work properly with PKG_CONFIG_PATH. It ignores the the given pkg and uses system includes. Antonio was aware about that problem [1].
+> 
+> [1] https://gitlab.freedesktop.org/Fahien/qemu/-/commit/ea1c252a707940983ccce71e92a292b49496bfcd
+> 
+> Given that virglrenderer 1.0 has been released couple weeks ago,
+> can we make the v1.0 a mandatory requirement for qemu and remove
+> all the ifdefs? I doubt that anyone is going to test newer qemu
+> using older libviglrenderer, all that ifdef code will be bitrotting.
 
-  hw/s390x/sclpquiesce.c:90:22: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      QuiesceNotifier *qn = container_of(n, QuiesceNotifier, notifier);
-                       ^
-  hw/s390x/sclpquiesce.c:86:3: note: previous declaration is here
-  } qn;
-    ^
+We cannot do that. If is is only weeks old, no distro will
+have virglrenderer 1.0 present. QEMU has a defined set of
+platforms that it targets compatibility with:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
----
- hw/s390x/sclpquiesce.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+  https://www.qemu.org/docs/master/about/build-platforms.html
 
-diff --git a/hw/s390x/sclpquiesce.c b/hw/s390x/sclpquiesce.c
-index ce07b16884..a641089929 100644
---- a/hw/s390x/sclpquiesce.c
-+++ b/hw/s390x/sclpquiesce.c
-@@ -78,12 +78,10 @@ static const VMStateDescription vmstate_sclpquiesce = {
-      }
- };
- 
--typedef struct QuiesceNotifier QuiesceNotifier;
--
--static struct QuiesceNotifier {
-+typedef struct QuiesceNotifier {
-     Notifier notifier;
-     SCLPEvent *event;
--} qn;
-+} QuiesceNotifier;
- 
- static void quiesce_powerdown_req(Notifier *n, void *opaque)
- {
-@@ -97,6 +95,8 @@ static void quiesce_powerdown_req(Notifier *n, void *opaque)
- 
- static int quiesce_init(SCLPEvent *event)
- {
-+    static QuiesceNotifier qn;
-+
-     qn.notifier.notify = quiesce_powerdown_req;
-     qn.event = event;
- 
+For newly added functionality we can set the min version to
+something newer than the oldest QEMU target platform.
+
+For existing functionality though, we must not regress wrt
+the currently supported set of target platforms. So we can
+only bump the min version to that present in the oldest
+platform we target.
+
+With regards,
+Daniel
 -- 
-2.41.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
