@@ -2,92 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86B97BFFF0
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 17:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE5C7BFFFE
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 17:10:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqEIz-0004p6-Pq; Tue, 10 Oct 2023 11:05:53 -0400
+	id 1qqEMJ-0006NO-A4; Tue, 10 Oct 2023 11:09:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqEIj-0004my-QB
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 11:05:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qqEM1-0006MR-Rr; Tue, 10 Oct 2023 11:09:03 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqEIg-00083N-HF
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 11:05:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696950332;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lpnTtQnPi6hpGuSRNN/TzYBQudkZ06eVV35xLl8CfkQ=;
- b=YNjVANhN2WyVk9mn4gKP7LXuaPnExxS5MOWvTarJEVxczqjJV5dBlCu7Cjh4wCR5PMcwu8
- n91A/1eQwWm+wDjKtkppkil+sYgz5NpoIkrqOKIsd9CZv/f0SZCHmkWkNvypZfh/dtVdgU
- 4j6JXZ/epAYbz3PjcfEtR2gQhyUUhao=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-yd7rfT0eP3-UiIro6jPvOQ-1; Tue, 10 Oct 2023 11:05:18 -0400
-X-MC-Unique: yd7rfT0eP3-UiIro6jPvOQ-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-637948b24bdso13660406d6.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 08:05:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696950318; x=1697555118;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lpnTtQnPi6hpGuSRNN/TzYBQudkZ06eVV35xLl8CfkQ=;
- b=UttwfgIleTn6N1U+EQ15tu5dAh/LpFbOA1y1jbtYtWcYvLCzVjqgeHpWzDNz2apTuB
- /orkM9gIDnKNykzqxY7XFC2hg+eDBjLYZSY3vLfj69XDw/62d8KmE7OBxhyzK+2NG46v
- QdP3aLLgcEK5qXPtaDXQNoQl8AsDeHILA2oAzfZ/Pn80xUPKRB9rmUTirK72J9nUpnDU
- IU5Gul9e8Mj96ZOmWA0oZi9LU89JdPz1Qc2j8ptR4a24VEd3xgQRgO439yhEjXqBT/6R
- vZjxGs+PcuOGTcStzV+BS6GMDfpFgUerVN/ngM4Dr+dFxSxl7Hkwb2Fa/xEkoxG6/poD
- yMSw==
-X-Gm-Message-State: AOJu0YzxmY/h++fucBOFOtSt4V1YpOcdS9i87uxvKdA9LQnxjeIWOaTK
- YkVprWi9u8qXLNkwqMXV+Cx1n7zE0AxItsOAmLK/twogkp5ClHneIwrHah7mUze3ctofoa/tS4R
- tnUwPuPNUTY2x/y8=
-X-Received: by 2002:a05:6214:2303:b0:668:e31b:5576 with SMTP id
- gc3-20020a056214230300b00668e31b5576mr19816352qvb.1.1696950317959; 
- Tue, 10 Oct 2023 08:05:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFES3HWpd6E6Q0IFEpPRSd5ZI3GY8bHeIlS6Xs7wQ6VdO1ddIznNxD6pVrm4k00iq65pVskRg==
-X-Received: by 2002:a05:6214:2303:b0:668:e31b:5576 with SMTP id
- gc3-20020a056214230300b00668e31b5576mr19816328qvb.1.1696950317602; 
- Tue, 10 Oct 2023 08:05:17 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- a10-20020a0ce34a000000b006575372c845sm4778961qvm.119.2023.10.10.08.05.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 08:05:17 -0700 (PDT)
-Date: Tue, 10 Oct 2023 11:05:15 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v3 3/4] migration/qapi: Replace @MigrateSetParameters
- with @MigrationParameters
-Message-ID: <ZSVoK6YMgNzrDYGQ@x1n>
-References: <20230905162335.235619-1-peterx@redhat.com>
- <20230905162335.235619-4-peterx@redhat.com>
- <87fs30is78.fsf@pond.sub.org> <ZRsff7Lmy7TnggK9@x1n>
- <87sf6k2dax.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qqELy-0008Sr-57; Tue, 10 Oct 2023 11:09:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=3O6AKuRP/UFLASTxPtS1okDjl6xYQh5VeE+kW3AYs/c=; b=LPhfKFC0MqUQXIPvVANnd+nyLw
+ fe5Szh+RSZ4ChRmBSlvNSrDmVIV4Kxw73FqaCJ/8vbPDHoBj4JzT2GoXooM1AA1x9JXNo6nROEuC5
+ 9d0ztVKj2U/jTCWmr6vOfeZjRpTGMFw6nC+mRi5uDtFf69VnRMSCrtn5k5TeTdo0fBCQgltFhuGhx
+ Nypucv6J3I/v+miV4qoz9qkv1NM1zk3Fm6P5kV438nqrOTAzTcMjvIjiryPGcO9qhrOerQgXzRh4T
+ /e28v/P0Mb9+E/cAJUoaE6tmg0MBT3sGk8AU9OG4zJ3I4Cw1zSSbQ92phKEj7ckvlGCY5QaI43f3e
+ NGOTQ1He721PCKNiTT2oPzCsf7zkP388HliWvmtkUU7Zr/WwX2c1pRXAwPPHchopS2M3l24YJBBOK
+ 12hWo82d2zTSMhPyb4RMAH/Dxz22yimeKjlEuFpDQVkC2WcZxyRyG+ze4903uztP/gFf355JpJF7I
+ ISncDF4BAkZpKqfBvTltqYSBSZq6U8QusbQt6GwE+g+EaaBm7s3wPviHbXEuD6tbVSFEaRydIVgaP
+ K0HX4mbLxqzqk0pm4LQaKNHFY3rfeHlolxCRJF3tSbyHLKfZts3vCYsW84h0cSGFI46SKbhy/5fiR
+ 1dbBN3VlcDtzDmTiJKnkxNIqUYKJXZL+hHdPZmdAw=;
+Received: from host86-135-55-164.range86-135.btcentralplus.com
+ ([86.135.55.164] helo=[10.8.0.6])
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qqELk-000CUU-8q; Tue, 10 Oct 2023 16:08:48 +0100
+Message-ID: <c70d1440-a2d3-4af4-80bc-77904077e2e3@ilande.co.uk>
+Date: Tue, 10 Oct 2023 16:08:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87sf6k2dax.fsf@pond.sub.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Erik Schilling <erik.schilling@linaro.org>, Fam Zheng <fam@euphon.net>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Eric Blake <eblake@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-block@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Paolo Bonzini <pbonzini@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ virtio-fs@redhat.com, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Markus Armbruster <armbru@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20231009095937.195728-1-alex.bennee@linaro.org>
+ <20231009095937.195728-2-alex.bennee@linaro.org>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20231009095937.195728-2-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 86.135.55.164
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v4 1/6] virtio: split into vhost-user-base and
+ vhost-user-device
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,130 +115,868 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 09, 2023 at 02:25:10PM +0200, Markus Armbruster wrote:
-> I apologize for the late reply.
+On 09/10/2023 10:59, Alex Bennée wrote:
 
-Not a problem - one week is not even bad at all. :)
+> Lets keep a cleaner split between the base class and the derived
+> vhost-user-device which we can use for generic vhost-user stubs. This
+> includes an update to introduce the vq_size property so the number of
+> entries in a virtq can be defined.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> 
+> ---
+> v1
+>    - merge and re-base, reset testing/review tags
+> ---
+>   include/hw/virtio/vhost-user-base.h |  49 ++++
+>   hw/virtio/vhost-user-base.c         | 348 ++++++++++++++++++++++++++++
+>   hw/virtio/vhost-user-device-pci.c   |  10 +-
+>   hw/virtio/vhost-user-device.c       | 335 +-------------------------
+>   hw/virtio/meson.build               |   1 +
+>   5 files changed, 410 insertions(+), 333 deletions(-)
+>   create mode 100644 include/hw/virtio/vhost-user-base.h
+>   create mode 100644 hw/virtio/vhost-user-base.c
+> 
+> diff --git a/include/hw/virtio/vhost-user-base.h b/include/hw/virtio/vhost-user-base.h
+> new file mode 100644
+> index 0000000000..cad377468b
+> --- /dev/null
+> +++ b/include/hw/virtio/vhost-user-base.h
+> @@ -0,0 +1,49 @@
+> +/*
+> + * Vhost-user generic virtio device
+> + *
+> + * Copyright (c) 2023 Linaro Ltd
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef QEMU_VHOST_USER_BASE_H
+> +#define QEMU_VHOST_USER_BASE_H
+> +
+> +#include "hw/virtio/vhost.h"
+> +#include "hw/virtio/vhost-user.h"
+> +
+> +#define TYPE_VHOST_USER_BASE "vhost-user-base"
+> +
+> +OBJECT_DECLARE_TYPE(VHostUserBase, VHostUserBaseClass, VHOST_USER_BASE)
+> +
+> +struct VHostUserBase {
+> +    VirtIODevice parent;
 
-[...]
+This one should be parent_obj here.
 
-> > One thing I can do is to move qdev_prop_str_or_null impl (from you) into a
-> > separate patch.   I can drop some unnecessary changes too when possible,
-> > not yet sure what else I can split, but I can try once there.
-> 
-> Suggest to give it a quick try, then see whether you like the resulting
-> split better than what you have now.
+> +
+> +    /* Properties */
+> +    CharBackend chardev;
+> +    uint16_t virtio_id;
+> +    uint32_t num_vqs;
+> +    uint32_t vq_size; /* can't exceed VIRTIO_QUEUE_MAX */
+> +    uint32_t config_size;
+> +    /* State tracking */
+> +    VhostUserState vhost_user;
+> +    struct vhost_virtqueue *vhost_vq;
+> +    struct vhost_dev vhost_dev;
+> +    GPtrArray *vqs;
+> +    bool connected;
+> +};
+> +
+> +/*
+> + * Needed so we can use the base realize after specialisation
+> + * tweaks
+> + */
+> +struct VHostUserBaseClass {
+> +    VirtioDeviceClass parent_class;
+> +
+> +    DeviceRealize parent_realize;
+> +};
+> +
+> +
+> +#define TYPE_VHOST_USER_DEVICE "vhost-user-device"
+> +
+> +#endif /* QEMU_VHOST_USER_BASE_H */
+> diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
+> new file mode 100644
+> index 0000000000..a8b811c394
+> --- /dev/null
+> +++ b/hw/virtio/vhost-user-base.c
+> @@ -0,0 +1,348 @@
+> +/*
+> + * Base vhost-user-base implementation. This can be used to derive a
+> + * more fully specified vhost-user backend either generically (see
+> + * vhost-user-device) or via a specific stub for a device which
+> + * encapsulates some fixed parameters.
+> + *
+> + * Copyright (c) 2023 Linaro Ltd
+> + * Author: Alex Bennée <alex.bennee@linaro.org>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/virtio/virtio-bus.h"
+> +#include "hw/virtio/vhost-user-base.h"
+> +#include "qemu/error-report.h"
+> +
+> +static void vub_start(VirtIODevice *vdev)
+> +{
+> +    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
+> +    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
+> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> +    int ret, i;
+> +
+> +    if (!k->set_guest_notifiers) {
+> +        error_report("binding does not support guest notifiers");
+> +        return;
+> +    }
+> +
+> +    ret = vhost_dev_enable_notifiers(&vub->vhost_dev, vdev);
+> +    if (ret < 0) {
+> +        error_report("Error enabling host notifiers: %d", -ret);
+> +        return;
+> +    }
+> +
+> +    ret = k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, true);
+> +    if (ret < 0) {
+> +        error_report("Error binding guest notifier: %d", -ret);
+> +        goto err_host_notifiers;
+> +    }
+> +
+> +    vub->vhost_dev.acked_features = vdev->guest_features;
+> +
+> +    ret = vhost_dev_start(&vub->vhost_dev, vdev, true);
+> +    if (ret < 0) {
+> +        error_report("Error starting vhost-user-base: %d", -ret);
+> +        goto err_guest_notifiers;
+> +    }
+> +
+> +    /*
+> +     * guest_notifier_mask/pending not used yet, so just unmask
+> +     * everything here. virtio-pci will do the right thing by
+> +     * enabling/disabling irqfd.
+> +     */
+> +    for (i = 0; i < vub->vhost_dev.nvqs; i++) {
+> +        vhost_virtqueue_mask(&vub->vhost_dev, vdev, i, false);
+> +    }
+> +
+> +    return;
+> +
+> +err_guest_notifiers:
+> +    k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, false);
+> +err_host_notifiers:
+> +    vhost_dev_disable_notifiers(&vub->vhost_dev, vdev);
+> +}
+> +
+> +static void vub_stop(VirtIODevice *vdev)
+> +{
+> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> +    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
+> +    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
+> +    int ret;
+> +
+> +    if (!k->set_guest_notifiers) {
+> +        return;
+> +    }
+> +
+> +    vhost_dev_stop(&vub->vhost_dev, vdev, true);
+> +
+> +    ret = k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, false);
+> +    if (ret < 0) {
+> +        error_report("vhost guest notifier cleanup failed: %d", ret);
+> +        return;
+> +    }
+> +
+> +    vhost_dev_disable_notifiers(&vub->vhost_dev, vdev);
+> +}
+> +
+> +static void vub_set_status(VirtIODevice *vdev, uint8_t status)
+> +{
+> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> +    bool should_start = virtio_device_should_start(vdev, status);
+> +
+> +    if (vhost_dev_is_started(&vub->vhost_dev) == should_start) {
+> +        return;
+> +    }
+> +
+> +    if (should_start) {
+> +        vub_start(vdev);
+> +    } else {
+> +        vub_stop(vdev);
+> +    }
+> +}
+> +
+> +/*
+> + * For an implementation where everything is delegated to the backend
+> + * we don't do anything other than return the full feature set offered
+> + * by the daemon (module the reserved feature bit).
+> + */
+> +static uint64_t vub_get_features(VirtIODevice *vdev,
+> +                                 uint64_t requested_features, Error **errp)
+> +{
+> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> +    /* This should be set when the vhost connection initialises */
+> +    g_assert(vub->vhost_dev.features);
+> +    return vub->vhost_dev.features & ~(1ULL << VHOST_USER_F_PROTOCOL_FEATURES);
+> +}
+> +
+> +/*
+> + * To handle VirtIO config we need to know the size of the config
+> + * space. We don't cache the config but re-fetch it from the guest
+> + * every time in case something has changed.
+> + */
+> +static void vub_get_config(VirtIODevice *vdev, uint8_t *config)
+> +{
+> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> +    Error *local_err = NULL;
+> +
+> +    /*
+> +     * There will have been a warning during vhost_dev_init, but lets
+> +     * assert here as nothing will go right now.
+> +     */
+> +    g_assert(vub->config_size && vub->vhost_user.supports_config == true);
+> +
+> +    if (vhost_dev_get_config(&vub->vhost_dev, config,
+> +                             vub->config_size, &local_err)) {
+> +        error_report_err(local_err);
+> +    }
+> +}
+> +
+> +/*
+> + * When the daemon signals an update to the config we just need to
+> + * signal the guest as we re-read the config on demand above.
+> + */
+> +static int vub_config_notifier(struct vhost_dev *dev)
+> +{
+> +    virtio_notify_config(dev->vdev);
+> +    return 0;
+> +}
+> +
+> +const VhostDevConfigOps vub_config_ops = {
+> +    .vhost_dev_config_notifier = vub_config_notifier,
+> +};
+> +
+> +static void vub_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+> +{
+> +    /*
+> +     * Not normally called; it's the daemon that handles the queue;
+> +     * however virtio's cleanup path can call this.
+> +     */
+> +}
+> +
+> +static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserBase *vub)
+> +{
+> +    vhost_user_cleanup(&vub->vhost_user);
+> +
+> +    for (int i = 0; i < vub->num_vqs; i++) {
+> +        VirtQueue *vq = g_ptr_array_index(vub->vqs, i);
+> +        virtio_delete_queue(vq);
+> +    }
+> +
+> +    virtio_cleanup(vdev);
+> +}
+> +
+> +static int vub_connect(DeviceState *dev)
+> +{
+> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> +    struct vhost_dev *vhost_dev = &vub->vhost_dev;
+> +
+> +    if (vub->connected) {
+> +        return 0;
+> +    }
+> +    vub->connected = true;
+> +
+> +    /*
+> +     * If we support VHOST_USER_GET_CONFIG we must enable the notifier
+> +     * so we can ping the guest when it updates.
+> +     */
+> +    if (vub->vhost_user.supports_config) {
+> +        vhost_dev_set_config_notifier(vhost_dev, &vub_config_ops);
+> +    }
+> +
+> +    /* restore vhost state */
+> +    if (virtio_device_started(vdev, vdev->status)) {
+> +        vub_start(vdev);
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static void vub_disconnect(DeviceState *dev)
+> +{
+> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> +
+> +    if (!vub->connected) {
+> +        return;
+> +    }
+> +    vub->connected = false;
+> +
+> +    if (vhost_dev_is_started(&vub->vhost_dev)) {
+> +        vub_stop(vdev);
+> +    }
+> +}
+> +
+> +static void vub_event(void *opaque, QEMUChrEvent event)
+> +{
+> +    DeviceState *dev = opaque;
+> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> +
+> +    switch (event) {
+> +    case CHR_EVENT_OPENED:
+> +        if (vub_connect(dev) < 0) {
+> +            qemu_chr_fe_disconnect(&vub->chardev);
+> +            return;
+> +        }
+> +        break;
+> +    case CHR_EVENT_CLOSED:
+> +        vub_disconnect(dev);
+> +        break;
+> +    case CHR_EVENT_BREAK:
+> +    case CHR_EVENT_MUX_IN:
+> +    case CHR_EVENT_MUX_OUT:
+> +        /* Ignore */
+> +        break;
+> +    }
+> +}
+> +
+> +static void vub_device_realize(DeviceState *dev, Error **errp)
+> +{
+> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> +    VHostUserBase *vub = VHOST_USER_BASE(dev);
+> +    int ret;
+> +
+> +    if (!vub->chardev.chr) {
+> +        error_setg(errp, "vhost-user-base: missing chardev");
+> +        return;
+> +    }
+> +
+> +    if (!vub->virtio_id) {
+> +        error_setg(errp, "vhost-user-base: need to define device id");
+> +        return;
+> +    }
+> +
+> +    if (!vub->num_vqs) {
+> +        vub->num_vqs = 1; /* reasonable default? */
+> +    }
+> +
+> +    if (!vub->vq_size) {
+> +        vub->vq_size = 64;
+> +    }
+> +
+> +    /*
+> +     * We can't handle config requests unless we know the size of the
+> +     * config region, specialisations of the vhost-user-base will be
+> +     * able to set this.
+> +     */
+> +    if (vub->config_size) {
+> +        vub->vhost_user.supports_config = true;
+> +    }
+> +
+> +    if (!vhost_user_init(&vub->vhost_user, &vub->chardev, errp)) {
+> +        return;
+> +    }
+> +
+> +    virtio_init(vdev, vub->virtio_id, vub->config_size);
+> +
+> +    /*
+> +     * Disable guest notifiers, by default all notifications will be via the
+> +     * asynchronous vhost-user socket.
+> +     */
+> +    vdev->use_guest_notifier_mask = false;
+> +
+> +    /* Allocate queues */
+> +    vub->vqs = g_ptr_array_sized_new(vub->num_vqs);
+> +    for (int i = 0; i < vub->num_vqs; i++) {
+> +        g_ptr_array_add(vub->vqs,
+> +                        virtio_add_queue(vdev, vub->vq_size, vub_handle_output));
+> +    }
+> +
+> +    vub->vhost_dev.nvqs = vub->num_vqs;
+> +    vub->vhost_dev.vqs = g_new0(struct vhost_virtqueue, vub->vhost_dev.nvqs);
+> +
+> +    /* connect to backend */
+> +    ret = vhost_dev_init(&vub->vhost_dev, &vub->vhost_user,
+> +                         VHOST_BACKEND_TYPE_USER, 0, errp);
+> +
+> +    if (ret < 0) {
+> +        do_vhost_user_cleanup(vdev, vub);
+> +    }
+> +
+> +    qemu_chr_fe_set_handlers(&vub->chardev, NULL, NULL, vub_event, NULL,
+> +                             dev, NULL, true);
+> +}
+> +
+> +static void vub_device_unrealize(DeviceState *dev)
+> +{
+> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> +    VHostUserBase *vub = VHOST_USER_BASE(dev);
+> +    struct vhost_virtqueue *vhost_vqs = vub->vhost_dev.vqs;
+> +
+> +    /* This will stop vhost backend if appropriate. */
+> +    vub_set_status(vdev, 0);
+> +    vhost_dev_cleanup(&vub->vhost_dev);
+> +    g_free(vhost_vqs);
+> +    do_vhost_user_cleanup(vdev, vub);
+> +}
+> +
+> +static void vub_class_init(ObjectClass *klass, void *data)
+> +{
+> +    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
+> +
+> +    vdc->realize = vub_device_realize;
+> +    vdc->unrealize = vub_device_unrealize;
+> +    vdc->get_features = vub_get_features;
+> +    vdc->get_config = vub_get_config;
+> +    vdc->set_status = vub_set_status;
+> +}
+> +
+> +static const TypeInfo vub_info = {
+> +    .name = TYPE_VHOST_USER_BASE,
+> +    .parent = TYPE_VIRTIO_DEVICE,
+> +    .instance_size = sizeof(VHostUserBase),
+> +    .class_init = vub_class_init,
+> +    .class_size = sizeof(VHostUserBaseClass),
+> +    .abstract = true
+> +};
+> +
+> +static void vu_register_types(void)
+> +{
+> +    type_register_static(&vub_info);
+> +}
+> +
+> +type_init(vu_register_types)
+> diff --git a/hw/virtio/vhost-user-device-pci.c b/hw/virtio/vhost-user-device-pci.c
+> index 41f9b7905b..22a5e95b9c 100644
+> --- a/hw/virtio/vhost-user-device-pci.c
+> +++ b/hw/virtio/vhost-user-device-pci.c
+> @@ -9,21 +9,18 @@
+>   
+>   #include "qemu/osdep.h"
+>   #include "hw/qdev-properties.h"
+> -#include "hw/virtio/vhost-user-device.h"
+> +#include "hw/virtio/vhost-user-base.h"
+>   #include "hw/virtio/virtio-pci.h"
+>   
+>   struct VHostUserDevicePCI {
+>       VirtIOPCIProxy parent_obj;
+> +
+>       VHostUserBase vub;
+>   };
+>   
+> -typedef struct VHostUserDevicePCI VHostUserDevicePCI;
+> -
+>   #define TYPE_VHOST_USER_DEVICE_PCI "vhost-user-device-pci-base"
+>   
+> -DECLARE_INSTANCE_CHECKER(VHostUserDevicePCI,
+> -                         VHOST_USER_DEVICE_PCI,
+> -                         TYPE_VHOST_USER_DEVICE_PCI)
+> +OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDevicePCI, VHOST_USER_DEVICE_PCI)
+>   
+>   static void vhost_user_device_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+>   {
+> @@ -39,6 +36,7 @@ static void vhost_user_device_pci_class_init(ObjectClass *klass, void *data)
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+>       VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
+>       PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
+> +
+>       k->realize = vhost_user_device_pci_realize;
+>       set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
+>       pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
+> diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-device.c
+> index 2b028cae08..4adc1e8991 100644
+> --- a/hw/virtio/vhost-user-device.c
+> +++ b/hw/virtio/vhost-user-device.c
+> @@ -1,7 +1,10 @@
+>   /*
+> - * Generic vhost-user stub. This can be used to connect to any
+> - * vhost-user backend. All configuration details must be handled by
+> - * the vhost-user daemon itself
+> + * Generic vhost-user-device implementation for any vhost-user-backend
+> + *
+> + * This is a concrete implementation of vhost-user-base which can be
+> + * configured via properties. It is useful for development and
+> + * prototyping. It expects configuration details (if any) to be
+> + * handled by the vhost-user daemon itself.
+>    *
+>    * Copyright (c) 2023 Linaro Ltd
+>    * Author: Alex Bennée <alex.bennee@linaro.org>
+> @@ -13,329 +16,9 @@
+>   #include "qapi/error.h"
+>   #include "hw/qdev-properties.h"
+>   #include "hw/virtio/virtio-bus.h"
+> -#include "hw/virtio/vhost-user-device.h"
+> +#include "hw/virtio/vhost-user-base.h"
+>   #include "qemu/error-report.h"
+>   
+> -static void vub_start(VirtIODevice *vdev)
+> -{
+> -    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
+> -    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
+> -    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> -    int ret, i;
+> -
+> -    if (!k->set_guest_notifiers) {
+> -        error_report("binding does not support guest notifiers");
+> -        return;
+> -    }
+> -
+> -    ret = vhost_dev_enable_notifiers(&vub->vhost_dev, vdev);
+> -    if (ret < 0) {
+> -        error_report("Error enabling host notifiers: %d", -ret);
+> -        return;
+> -    }
+> -
+> -    ret = k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, true);
+> -    if (ret < 0) {
+> -        error_report("Error binding guest notifier: %d", -ret);
+> -        goto err_host_notifiers;
+> -    }
+> -
+> -    vub->vhost_dev.acked_features = vdev->guest_features;
+> -
+> -    ret = vhost_dev_start(&vub->vhost_dev, vdev, true);
+> -    if (ret < 0) {
+> -        error_report("Error starting vhost-user-device: %d", -ret);
+> -        goto err_guest_notifiers;
+> -    }
+> -
+> -    /*
+> -     * guest_notifier_mask/pending not used yet, so just unmask
+> -     * everything here. virtio-pci will do the right thing by
+> -     * enabling/disabling irqfd.
+> -     */
+> -    for (i = 0; i < vub->vhost_dev.nvqs; i++) {
+> -        vhost_virtqueue_mask(&vub->vhost_dev, vdev, i, false);
+> -    }
+> -
+> -    return;
+> -
+> -err_guest_notifiers:
+> -    k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, false);
+> -err_host_notifiers:
+> -    vhost_dev_disable_notifiers(&vub->vhost_dev, vdev);
+> -}
+> -
+> -static void vub_stop(VirtIODevice *vdev)
+> -{
+> -    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> -    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
+> -    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
+> -    int ret;
+> -
+> -    if (!k->set_guest_notifiers) {
+> -        return;
+> -    }
+> -
+> -    vhost_dev_stop(&vub->vhost_dev, vdev, true);
+> -
+> -    ret = k->set_guest_notifiers(qbus->parent, vub->vhost_dev.nvqs, false);
+> -    if (ret < 0) {
+> -        error_report("vhost guest notifier cleanup failed: %d", ret);
+> -        return;
+> -    }
+> -
+> -    vhost_dev_disable_notifiers(&vub->vhost_dev, vdev);
+> -}
+> -
+> -static void vub_set_status(VirtIODevice *vdev, uint8_t status)
+> -{
+> -    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> -    bool should_start = virtio_device_should_start(vdev, status);
+> -
+> -    if (vhost_dev_is_started(&vub->vhost_dev) == should_start) {
+> -        return;
+> -    }
+> -
+> -    if (should_start) {
+> -        vub_start(vdev);
+> -    } else {
+> -        vub_stop(vdev);
+> -    }
+> -}
+> -
+> -/*
+> - * For an implementation where everything is delegated to the backend
+> - * we don't do anything other than return the full feature set offered
+> - * by the daemon (module the reserved feature bit).
+> - */
+> -static uint64_t vub_get_features(VirtIODevice *vdev,
+> -                                 uint64_t requested_features, Error **errp)
+> -{
+> -    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> -    /* This should be set when the vhost connection initialises */
+> -    g_assert(vub->vhost_dev.features);
+> -    return vub->vhost_dev.features & ~(1ULL << VHOST_USER_F_PROTOCOL_FEATURES);
+> -}
+> -
+> -/*
+> - * To handle VirtIO config we need to know the size of the config
+> - * space. We don't cache the config but re-fetch it from the guest
+> - * every time in case something has changed.
+> - */
+> -static void vub_get_config(VirtIODevice *vdev, uint8_t *config)
+> -{
+> -    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> -    Error *local_err = NULL;
+> -
+> -    /*
+> -     * There will have been a warning during vhost_dev_init, but lets
+> -     * assert here as nothing will go right now.
+> -     */
+> -    g_assert(vub->config_size && vub->vhost_user.supports_config == true);
+> -
+> -    if (vhost_dev_get_config(&vub->vhost_dev, config,
+> -                             vub->config_size, &local_err)) {
+> -        error_report_err(local_err);
+> -    }
+> -}
+> -
+> -/*
+> - * When the daemon signals an update to the config we just need to
+> - * signal the guest as we re-read the config on demand above.
+> - */
+> -static int vub_config_notifier(struct vhost_dev *dev)
+> -{
+> -    virtio_notify_config(dev->vdev);
+> -    return 0;
+> -}
+> -
+> -const VhostDevConfigOps vub_config_ops = {
+> -    .vhost_dev_config_notifier = vub_config_notifier,
+> -};
+> -
+> -static void vub_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+> -{
+> -    /*
+> -     * Not normally called; it's the daemon that handles the queue;
+> -     * however virtio's cleanup path can call this.
+> -     */
+> -}
+> -
+> -static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserBase *vub)
+> -{
+> -    vhost_user_cleanup(&vub->vhost_user);
+> -
+> -    for (int i = 0; i < vub->num_vqs; i++) {
+> -        VirtQueue *vq = g_ptr_array_index(vub->vqs, i);
+> -        virtio_delete_queue(vq);
+> -    }
+> -
+> -    virtio_cleanup(vdev);
+> -}
+> -
+> -static int vub_connect(DeviceState *dev)
+> -{
+> -    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> -    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> -    struct vhost_dev *vhost_dev = &vub->vhost_dev;
+> -
+> -    if (vub->connected) {
+> -        return 0;
+> -    }
+> -    vub->connected = true;
+> -
+> -    /*
+> -     * If we support VHOST_USER_GET_CONFIG we must enable the notifier
+> -     * so we can ping the guest when it updates.
+> -     */
+> -    if (vub->vhost_user.supports_config) {
+> -        vhost_dev_set_config_notifier(vhost_dev, &vub_config_ops);
+> -    }
+> -
+> -    /* restore vhost state */
+> -    if (virtio_device_started(vdev, vdev->status)) {
+> -        vub_start(vdev);
+> -    }
+> -
+> -    return 0;
+> -}
+> -
+> -static void vub_disconnect(DeviceState *dev)
+> -{
+> -    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> -    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> -
+> -    if (!vub->connected) {
+> -        return;
+> -    }
+> -    vub->connected = false;
+> -
+> -    if (vhost_dev_is_started(&vub->vhost_dev)) {
+> -        vub_stop(vdev);
+> -    }
+> -}
+> -
+> -static void vub_event(void *opaque, QEMUChrEvent event)
+> -{
+> -    DeviceState *dev = opaque;
+> -    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> -    VHostUserBase *vub = VHOST_USER_BASE(vdev);
+> -
+> -    switch (event) {
+> -    case CHR_EVENT_OPENED:
+> -        if (vub_connect(dev) < 0) {
+> -            qemu_chr_fe_disconnect(&vub->chardev);
+> -            return;
+> -        }
+> -        break;
+> -    case CHR_EVENT_CLOSED:
+> -        vub_disconnect(dev);
+> -        break;
+> -    case CHR_EVENT_BREAK:
+> -    case CHR_EVENT_MUX_IN:
+> -    case CHR_EVENT_MUX_OUT:
+> -        /* Ignore */
+> -        break;
+> -    }
+> -}
+> -
+> -static void vub_device_realize(DeviceState *dev, Error **errp)
+> -{
+> -    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> -    VHostUserBase *vub = VHOST_USER_BASE(dev);
+> -    int ret;
+> -
+> -    if (!vub->chardev.chr) {
+> -        error_setg(errp, "vhost-user-device: missing chardev");
+> -        return;
+> -    }
+> -
+> -    if (!vub->virtio_id) {
+> -        error_setg(errp, "vhost-user-device: need to define device id");
+> -        return;
+> -    }
+> -
+> -    if (!vub->num_vqs) {
+> -        vub->num_vqs = 1; /* reasonable default? */
+> -    }
+> -
+> -    /*
+> -     * We can't handle config requests unless we know the size of the
+> -     * config region, specialisations of the vhost-user-device will be
+> -     * able to set this.
+> -     */
+> -    if (vub->config_size) {
+> -        vub->vhost_user.supports_config = true;
+> -    }
+> -
+> -    if (!vhost_user_init(&vub->vhost_user, &vub->chardev, errp)) {
+> -        return;
+> -    }
+> -
+> -    virtio_init(vdev, vub->virtio_id, vub->config_size);
+> -
+> -    /*
+> -     * Disable guest notifiers, by default all notifications will be via the
+> -     * asynchronous vhost-user socket.
+> -     */
+> -    vdev->use_guest_notifier_mask = false;
+> -
+> -    /* Allocate queues */
+> -    vub->vqs = g_ptr_array_sized_new(vub->num_vqs);
+> -    for (int i = 0; i < vub->num_vqs; i++) {
+> -        g_ptr_array_add(vub->vqs,
+> -                        virtio_add_queue(vdev, 4, vub_handle_output));
+> -    }
+> -
+> -    vub->vhost_dev.nvqs = vub->num_vqs;
+> -    vub->vhost_dev.vqs = g_new0(struct vhost_virtqueue, vub->vhost_dev.nvqs);
+> -
+> -    /* connect to backend */
+> -    ret = vhost_dev_init(&vub->vhost_dev, &vub->vhost_user,
+> -                         VHOST_BACKEND_TYPE_USER, 0, errp);
+> -
+> -    if (ret < 0) {
+> -        do_vhost_user_cleanup(vdev, vub);
+> -    }
+> -
+> -    qemu_chr_fe_set_handlers(&vub->chardev, NULL, NULL, vub_event, NULL,
+> -                             dev, NULL, true);
+> -}
+> -
+> -static void vub_device_unrealize(DeviceState *dev)
+> -{
+> -    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+> -    VHostUserBase *vub = VHOST_USER_BASE(dev);
+> -    struct vhost_virtqueue *vhost_vqs = vub->vhost_dev.vqs;
+> -
+> -    /* This will stop vhost backend if appropriate. */
+> -    vub_set_status(vdev, 0);
+> -    vhost_dev_cleanup(&vub->vhost_dev);
+> -    g_free(vhost_vqs);
+> -    do_vhost_user_cleanup(vdev, vub);
+> -}
+> -
+> -static void vub_class_init(ObjectClass *klass, void *data)
+> -{
+> -    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
+> -
+> -    vdc->realize = vub_device_realize;
+> -    vdc->unrealize = vub_device_unrealize;
+> -    vdc->get_features = vub_get_features;
+> -    vdc->get_config = vub_get_config;
+> -    vdc->set_status = vub_set_status;
+> -}
+> -
+> -static const TypeInfo vub_info = {
+> -    .name = TYPE_VHOST_USER_BASE,
+> -    .parent = TYPE_VIRTIO_DEVICE,
+> -    .instance_size = sizeof(VHostUserBase),
+> -    .class_init = vub_class_init,
+> -    .class_size = sizeof(VHostUserBaseClass),
+> -    .abstract = true
+> -};
+> -
+> -
+>   /*
+>    * The following is a concrete implementation of the base class which
+>    * allows the user to define the key parameters via the command line.
+> @@ -349,6 +32,7 @@ static const VMStateDescription vud_vmstate = {
+>   static Property vud_properties[] = {
+>       DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
+>       DEFINE_PROP_UINT16("virtio-id", VHostUserBase, virtio_id, 0),
+> +    DEFINE_PROP_UINT32("vq_size", VHostUserBase, vq_size, 64),
+>       DEFINE_PROP_UINT32("num_vqs", VHostUserBase, num_vqs, 1),
+>       DEFINE_PROP_UINT32("config_size", VHostUserBase, config_size, 0),
+>       DEFINE_PROP_END_OF_LIST(),
+> @@ -366,14 +50,11 @@ static void vud_class_init(ObjectClass *klass, void *data)
+>   static const TypeInfo vud_info = {
+>       .name = TYPE_VHOST_USER_DEVICE,
+>       .parent = TYPE_VHOST_USER_BASE,
+> -    .instance_size = sizeof(VHostUserBase),
+>       .class_init = vud_class_init,
+> -    .class_size = sizeof(VHostUserBaseClass),
+>   };
+>   
+>   static void vu_register_types(void)
+>   {
+> -    type_register_static(&vub_info);
+>       type_register_static(&vud_info);
+>   }
 
-OK.
+And if you're touching this part here, it's worth updating to use the DEFINE_TYPES() 
+macro instead.
 
-[...]
+> diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+> index c0055a7832..51c3f97c2d 100644
+> --- a/hw/virtio/meson.build
+> +++ b/hw/virtio/meson.build
+> @@ -17,6 +17,7 @@ if have_vhost
+>     if have_vhost_user
+>       # fixme - this really should be generic
+>       specific_virtio_ss.add(files('vhost-user.c'))
+> +    system_virtio_ss.add(files('vhost-user-base.c'))
+>       system_virtio_ss.add(files('vhost-user-device.c'))
+>       system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('vhost-user-device-pci.c'))
+>     endif
 
-> >> > diff --git a/migration/options.c b/migration/options.c
-> >> > index 6bbfd4853d..12e392f68c 100644
-> >> > --- a/migration/options.c
-> >> > +++ b/migration/options.c
-> >> > @@ -164,9 +164,12 @@ Property migration_properties[] = {
-> >> >      DEFINE_PROP_SIZE("announce-step", MigrationState,
-> >> >                        parameters.announce_step,
-> >> >                        DEFAULT_MIGRATE_ANNOUNCE_STEP),
-> >> > -    DEFINE_PROP_STRING("tls-creds", MigrationState, parameters.tls_creds),
-> >> > -    DEFINE_PROP_STRING("tls-hostname", MigrationState, parameters.tls_hostname),
-> >> > -    DEFINE_PROP_STRING("tls-authz", MigrationState, parameters.tls_authz),
-> >> > +    DEFINE_PROP_STR_OR_NULL("tls-creds", MigrationState,
-> >> > +                            parameters.tls_creds),
-> >> > +    DEFINE_PROP_STR_OR_NULL("tls-hostname", MigrationState,
-> >> > +                            parameters.tls_hostname),
-> >> > +    DEFINE_PROP_STR_OR_NULL("tls-authz", MigrationState,
-> >> > +                            parameters.tls_authz),
-> >> 
-> >> The qdev machinery now additionally accepts JSON null as property
-> >> value.
-> >> 
-> >> If that's undesirable, we need to reject it.
-> >
-> > I don't think we have a need to pass in null here, not to mention this is
-> > only for debugging purpose.
-> 
-> Not sure I understand the bit about debugging.
 
-The migration_properties here is only used by "-global migration.XXX=YYY".
-It's not expected for a normal user to use this interface; one should
-normally use QMP or even HMP.  So migration_properties as a whole is for
-debugging purpose.
+ATB,
 
-> 
-> The point I was trying to make is this.  Before the patch, we reject
-> attempts to set the property value to null.  Afterwards, we accept them,
-> i.e. the patch loses "reject null property value".  If this loss is
-> undesirable, we better replace it with suitable hand-written code.
-
-I don't even know how to set it to NULL before.. as it can only be accessed
-via cmdline "-global" as mentioned above, which must be a string anyway.
-So I assume this is not an issue.
-
-> 
-> > The real problem here, IMHO, is current patch will crash if someone
-> > specifies -global migration.tls_* fields..
-> 
-> Trips this assertion:
-> 
->     bool visit_start_alternate(Visitor *v, const char *name,
->                                GenericAlternate **obj, size_t size,
->                                Error **errp)
->     {
->         bool ok;
-> 
->         assert(obj && size >= sizeof(GenericAlternate));
->         assert(!(v->type & VISITOR_OUTPUT) || *obj);
->         trace_visit_start_alternate(v, name, obj, size);
->         if (!v->start_alternate) {
-> --->        assert(!(v->type & VISITOR_INPUT));
->             return true;
->         }
->         ok = v->start_alternate(v, name, obj, size, errp);
->         if (v->type & VISITOR_INPUT) {
->             assert(ok != !*obj);
->         }
->         return ok;
->     }
-> 
-> Documented with the start_alternate() method in visitor-impl.h:
-> 
->         /* Must be set by input and clone visitors to visit alternates */
->         bool (*start_alternate)(Visitor *v, const char *name,
->                                 GenericAlternate **obj, size_t size,
->                                 Error **errp);
-> 
-> Known restriction of the string input visitor:
-> 
->     /*
->      * The string input visitor does not implement support for visiting
->      * QAPI structs, alternates, null, or arbitrary QTypes. Only flat lists
->      * of integers (except type "size") are supported.
->      */
->     Visitor *string_input_visitor_new(const char *str);
-> 
-> A similar restriction is documented for the string output visitor.
-> 
-> > Unfortunately I'm not an expert on qapi.  Markus, does something like this
-> > look like a valid fix to you?
-> 
-> I'm not sure whether your simple patch is sufficient for lifting the
-> restriction.  Needs a deeper think, I'm afraid.  Can we make progress on
-> the remainder of the series in parallel?
-
-We can move back to using string rather than StrOrNull, but I saw there's
-another email discussing this.  Let me also read that first, before jumping
-back and forth on the solutions.
-
-Note that my goal prior to this series is introducing another migration
-parameter (avail-switchover-bandwidth).  What I think I can do is I'll
-proceed with that patch rebasing to master rather than this series; doing
-the triplication once more and decouple.  Then we can postpone this series.
-
-Thanks,
-
--- 
-Peter Xu
+Mark.
 
 
