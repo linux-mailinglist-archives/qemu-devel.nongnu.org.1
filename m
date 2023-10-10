@@ -2,64 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FD27C0319
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 19:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D142B7C049C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 21:28:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqGxo-0005yk-M5; Tue, 10 Oct 2023 13:56:12 -0400
+	id 1qqIOW-0005p5-97; Tue, 10 Oct 2023 15:27:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqGxm-0005wP-2J; Tue, 10 Oct 2023 13:56:10 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qqIOQ-0005ol-Kd; Tue, 10 Oct 2023 15:27:47 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqGxg-00031T-Qt; Tue, 10 Oct 2023 13:56:09 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c0f:4c13:0:640:3c7:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id A11C5612D0;
- Tue, 10 Oct 2023 20:55:57 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:7319::1:4] (unknown
- [2a02:6b8:b081:7319::1:4])
- by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uthKPs0OdW20-p555Qx7z; Tue, 10 Oct 2023 20:55:56 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696960556;
- bh=8mDVF4JMtHGPSowfNsfTiMHuNr0mqYGggTjc5QMBBn8=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=ggv96Aa5RY/NZjNQx/skLbXj8z0vjAlY2SNdVWy7YFVkd7N0myFEpjFdiPMPkc8Dl
- 2wx0810hpK3ewFRdu+rLxk5MJLciwnVF+85koytRvmAT2f1G0Sfq2W1lzEPELM4sJS
- hEvauV1ltLTKYneyT+qTkgk6OFi82b8RtRpWIPHM=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <a5c48627-0bef-46cd-9426-587b358fe32d@yandex-team.ru>
-Date: Tue, 10 Oct 2023 20:55:51 +0300
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qqIOA-00070o-FR; Tue, 10 Oct 2023 15:27:45 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39AJA4i4007490; Tue, 10 Oct 2023 19:27:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=fZ5TkPdnMfTvKi9oVnsNH+UL8bqKTik9qMhHkesFW44=;
+ b=NCoHPNSwTaglE7HSUu05Y+5Lw3ESOc4l5X8rErXqolHj8S1096KcLduAWC2Txcibklza
+ PMnFN1ST+KvA8Xhyd8X4h43kV/7VCDtfE6LkNvrZ3LaAARGaTigz6Z4XR005JRuiX3yo
+ rqZMBnUUSCIpJ88a6wf+rfH0Xn7JREU6gbx0IbX8p6vW/iYdlFIwGgzrsqxC56Wv3/MD
+ mkuvbL6JKfR4URVpB1EAH516CqNjAKYdky27Pr6G0c+3uv1a5Ws1t8xCce+8WuHtqrZP
+ x4DQA+SzNZ/xpcgjIwmsmivrl9H5HS+TdFkXG5b87xKi5DBgH78uXeT7wGw9vgcX42jt KQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnchgghe8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Oct 2023 19:27:20 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39AJQMkq006371;
+ Tue, 10 Oct 2023 19:27:20 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnchgghd1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Oct 2023 19:27:20 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39AH2KIg025901; Tue, 10 Oct 2023 19:27:18 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkjnna9yh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Oct 2023 19:27:18 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39AJRI6M10879596
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Oct 2023 19:27:18 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F3F5C58062;
+ Tue, 10 Oct 2023 19:27:17 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E3DD05805C;
+ Tue, 10 Oct 2023 19:27:17 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue, 10 Oct 2023 19:27:17 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
+ by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id 8490416A07F2;
+ Tue, 10 Oct 2023 12:20:19 -0500 (CDT)
+Received: (from mglenn@localhost)
+ by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 39AHKJfO4166055;
+ Tue, 10 Oct 2023 12:20:19 -0500
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-ppc@nongnu.org
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ clg@kaod.org, clegoate@redhat.com, npiggin@gmail.com, fbarrat@linux.ibm.com
+Subject: [PATCH 0/2] Add PowerNV I2C Controller Model
+Date: Tue, 10 Oct 2023 12:19:49 -0500
+Message-Id: <20231010171951.4165180-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/10] mirror: allow switching from background to
- active mode
-Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
- t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
-References: <20231009094619.469668-1-f.ebner@proxmox.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20231009094619.469668-1-f.ebner@proxmox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7uJ1VnQ_jAmHvkKYe3SDPnA38pFQaCoj
+X-Proofpoint-ORIG-GUID: J7KdigfU5sZ5hnKfpb5pO0guNeI06Rf2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-10_15,2023-10-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ adultscore=0 bulkscore=0 phishscore=0 suspectscore=0 impostorscore=0
+ malwarescore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
+ mlxlogscore=482 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310100150
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,69 +116,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.10.23 12:46, Fiona Ebner wrote:
-> Changes in v2:
->      * move bitmap to filter which allows to avoid draining when
->        changing the copy mode
->      * add patch to determine copy_to_target only once
->      * drop patches returning redundant information upon query
->      * update QEMU version in QAPI
->      * update indentation in QAPI
->      * update indentation in QAPI (like in a937b6aa73 ("qapi: Reformat
->        doc comments to conform to current conventions"))
->      * add patch to adapt iotest output
-> 
-> Discussion of v1:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-02/msg07216.html
-> 
-> With active mode, the guest write speed is limited by the synchronous
-> writes to the mirror target. For this reason, management applications
-> might want to start out in background mode and only switch to active
-> mode later, when certain conditions are met. This series adds a
-> block-job-change QMP command to achieve that, as well as
-> job-type-specific information when querying block jobs, which
-> can be used to decide when the switch should happen.
-> 
-> For now, only the direction background -> active is supported.
-> 
-> The information added upon querying is whether the target is actively
-> synced, the total data sent, and the remaining dirty bytes.
-> 
-> Initially, I tried to go for a more general 'job-change' command, but
-> I couldn't figure out a way to avoid mutual inclusion between
-> block-core.json and job.json.
-> 
+Upstreams the PowerNV I2C controller model originally
+authored by Cédric Le Goater with minor changes by
+myself to split the actual addition of the model from
+wiring it up to a power processor model.
 
-What is the problem with it? I still think that job-change would be better.
+This series only attaches the controller to the powernv9
+chip model, but is expected to eventually also be attached
+to the powernv10 chip model.
 
-> 
-> Fiona Ebner (10):
->    blockjob: introduce block-job-change QMP command
->    block/mirror: set actively_synced even after the job is ready
->    block/mirror: move dirty bitmap to filter
->    block/mirror: determine copy_to_target only once
->    mirror: implement mirror_change method
->    qapi/block-core: use JobType for BlockJobInfo's type
->    qapi/block-core: turn BlockJobInfo into a union
->    blockjob: query driver-specific info via a new 'query' driver method
->    mirror: return mirror-specific information upon query
->    iotests: adapt test output for new mirror query property
-> 
->   block/mirror.c                 | 95 +++++++++++++++++++++++-----------
->   block/monitor/block-hmp-cmds.c |  4 +-
->   blockdev.c                     | 14 +++++
->   blockjob.c                     | 26 +++++++++-
->   include/block/blockjob.h       | 11 ++++
->   include/block/blockjob_int.h   | 10 ++++
->   job.c                          |  1 +
->   qapi/block-core.json           | 59 +++++++++++++++++++--
->   qapi/job.json                  |  4 +-
->   tests/qemu-iotests/109.out     | 24 ++++-----
->   10 files changed, 199 insertions(+), 49 deletions(-)
-> 
+Cédric Le Goater (2):
+  ppc/pnv: Add an I2C controller model
+  ppc/pnv: Connect I2C controller model to powernv9 chip
+
+ hw/ppc/meson.build         |   1 +
+ hw/ppc/pnv.c               |  26 ++
+ hw/ppc/pnv_i2c.c           | 680 +++++++++++++++++++++++++++++++++++++
+ include/hw/ppc/pnv_chip.h  |   4 +
+ include/hw/ppc/pnv_i2c.h   |  41 +++
+ include/hw/ppc/pnv_xscom.h |   3 +
+ 6 files changed, 755 insertions(+)
+ create mode 100644 hw/ppc/pnv_i2c.c
+ create mode 100644 include/hw/ppc/pnv_i2c.h
 
 -- 
-Best regards,
-Vladimir
+2.31.1
 
 
