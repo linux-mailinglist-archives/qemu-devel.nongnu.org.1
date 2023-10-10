@@ -2,135 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387E27C4270
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 23:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D477C4272
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 23:26:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqKEY-0008BM-N8; Tue, 10 Oct 2023 17:25:42 -0400
+	id 1qqKF3-0008Ui-MZ; Tue, 10 Oct 2023 17:26:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qqKEV-00089L-S2
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 17:25:39 -0400
-Received: from mail-dm6nam10on2062b.outbound.protection.outlook.com
- ([2a01:111:f400:7e88::62b]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ id 1qqKF0-0008Nu-W9
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 17:26:11 -0400
+Received: from mail-dm6nam04on20615.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8b::615]
+ helo=NAM04-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qqKEN-000801-AH
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 17:25:39 -0400
+ id 1qqKEz-00085x-17
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 17:26:10 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hUSM7ViTS+OlQmHsavors+rDzVZT0LVG9CIia+r5KnXAhenr6Hv9iAj8otH3s3x1LA10dGb1/F9ZYoHtUsc/cLTqQrH+rSz6O4xuG3RaTj8w2uXb1m+Mt9yCh/5LNSGIr/30XpJq5jcKIfaDdwHEjClFJIq3gIsyUPxG2S9UGfTabAOXJTEIz4keVYcNBWke1yIbDyDakrQQC6R2gIFyeDH1PI0ASQp+RGEYqAhzLmmDV0SoGSpJXgKxnZ0hVNEWEW/jfCuvNCgpt+hdXudt1ckLaK0tG/5rBycKLE4YN/jgmL8pzZ+yEUOMypxLsy18JjAL/8SsEhjC8cfqrUuZZQ==
+ b=mPkrwo0CnZx18fkRGpX68as6FtpaMPGz3Xpx4kgq+ar2theHOxmvsmz2IT2HMJUP/aXiHcV5X7iUM4eeKeu4RCzHS0zKQWEB4OUrK8Dg5Y1WRbBeA0kbYKO5ScLWiiWIDJfRwEffn72oOQNR1fqTq+kwGfSP4KIpFcy9aoliED1n9rYWwhY6J6nYHyggrynR05uLxMLzpWye85+pGRWaXNgnMfoe0Dmbzcvor9oJyVQR/pEh0QeKiq9epzeKvHfk2derLX6rAs+ulPGEw/Y6EDDyn1LCowjd1DNncYmnwZmkkWDGKIStVrbugPtYKrRMlrnluC8E+eq7vtjYqdEIzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ru3iKP+0Xf8JpOwjbAlhgLW/NB+krGMTDzVgt1EF8bg=;
- b=Ty8dlrjUnPpEXKbusMLlzN+rdN3Qqw81RKUY8LLxUpskLuCCRXSvwrYvM9ADoqy2Tygs2gr+Ra7FMfyhC4E5PVElALae9PNURcP3pgSmcscsOjWvaiejzvpN13gexjCrRoP/GFfCwmj5vC/k15Ncyn+NyCkCAzdsjrDNuPW5rIKRzmg6aV3RfHQba4LZ8OGUu9IcrXAJAgkoX1q5yCzuE0VqU8AND6Elk2HhbT3nEkUOSTlvsYq4cu66iWkOS+q2Ofd106/HuG3M2jRFc2R0qBsh+Q2gQGATkgvvXjnWa2AX+wiJpGHF3twkE0bToI8zElo8SALIQePrn9/mCR8gNA==
+ bh=H+A+KQ8hY3qYmBLt53Xp1hEcFp/O/Sahf2Br9EOnnMQ=;
+ b=bz8IssyVWc1cxvKQQ7zRdDU0U6BLhxp47EmCr7bBwlpdkWQoASysrwtduE9KSq5a3SKzTI7LVQHMtSKgJ4gv9YqRucOffLaJqjMlbUn1vTtZhl5L1KGyawslR8x//wPR3llJ7vcH3F6jrKt3EIsY6xhkpKAgVgSyyNNCHRvpnHERirHYBwHK/TNIiziAWlfIZee1yWGe/zOqkg7WcspK3vnjXamv/xKqLftXWMtLIvkzswSc0wmC6btw+Buphe7Ztbc2uUa3PHvv5KMPNtOgh5t0SdVFHhLcGtCiNAo16dcwhAHtI4ZORMbZwJSr0q5ykgG9LKy++AzsUfMPbCMu1g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ru3iKP+0Xf8JpOwjbAlhgLW/NB+krGMTDzVgt1EF8bg=;
- b=rSuuQEUZtOb343DKq0ZxfRYDRANiSG/n+HfesDU2QOd1nIuLXrUB/Jv5adbniskH4zsCrJR7DJdQhS5P9It2xW6xJiwqEEzBnr/jRM3JG/whtn52D/Y8KKhGGOYNogarWyrMWOPa2dzsNFbvW9YDlVcyRVAHdwYrRoXJTSUcM1w=
+ bh=H+A+KQ8hY3qYmBLt53Xp1hEcFp/O/Sahf2Br9EOnnMQ=;
+ b=lqS78H1h/CBpek2p7+9fkNrrz6WaATkZKDlLH299bw7oNCKQh4+C2U6gJ1410sqA9Th83J8TDtSAHHGUq7lqlZ/XgM3ZQ+/6hIA4pAg0HTsEpjQiuU+Krc+qc8PQRykrD5964fWqIcZvx0gjTMU+kjDoWyuY3j/BUEkk0TqFYcs=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MW3PR12MB4409.namprd12.prod.outlook.com (2603:10b6:303:2d::23)
- by IA1PR12MB8286.namprd12.prod.outlook.com (2603:10b6:208:3f8::19)
+ by SJ2PR12MB7845.namprd12.prod.outlook.com (2603:10b6:a03:4ce::18)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.36; Tue, 10 Oct
- 2023 21:25:25 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.43; Tue, 10 Oct
+ 2023 21:26:05 +0000
 Received: from MW3PR12MB4409.namprd12.prod.outlook.com
  ([fe80::7c95:99c7:7f5f:c24a]) by MW3PR12MB4409.namprd12.prod.outlook.com
  ([fe80::7c95:99c7:7f5f:c24a%4]) with mapi id 15.20.6863.032; Tue, 10 Oct 2023
- 21:25:25 +0000
-Date: Tue, 10 Oct 2023 14:25:18 -0700
+ 21:26:05 +0000
+Date: Tue, 10 Oct 2023 14:26:02 -0700
 From: Vikram Garhwal <vikram.garhwal@amd.com>
 To: Stefano Stabellini <sstabellini@kernel.org>
 Cc: qemu-devel@nongnu.org, Juergen Gross <jgross@suse.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Paul Durrant <paul@xen.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Subject: Re: [QEMU][PATCH v1 2/7] xen: add pseudo RAM region for grant mappings
-Message-ID: <ZSXBPlQF1Y2Gx5P1@amd.com>
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [QEMU][PATCH v1 3/7] softmmu: let qemu_map_ram_ptr() use
+ qemu_ram_ptr_length()
+Message-ID: <ZSXBaiyLZWechQ7L@amd.com>
 References: <20231005181629.4046-1-vikram.garhwal@amd.com>
- <20231005181629.4046-3-vikram.garhwal@amd.com>
- <alpine.DEB.2.22.394.2310091653270.3431292@ubuntu-linux-20-04-desktop>
+ <20231005181629.4046-4-vikram.garhwal@amd.com>
+ <alpine.DEB.2.22.394.2310091703070.3431292@ubuntu-linux-20-04-desktop>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2310091653270.3431292@ubuntu-linux-20-04-desktop>
-X-ClientProxiedBy: SJ0PR03CA0081.namprd03.prod.outlook.com
- (2603:10b6:a03:331::26) To MW3PR12MB4409.namprd12.prod.outlook.com
+In-Reply-To: <alpine.DEB.2.22.394.2310091703070.3431292@ubuntu-linux-20-04-desktop>
+X-ClientProxiedBy: BY3PR10CA0016.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::21) To MW3PR12MB4409.namprd12.prod.outlook.com
  (2603:10b6:303:2d::23)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR12MB4409:EE_|IA1PR12MB8286:EE_
-X-MS-Office365-Filtering-Correlation-Id: 523ae2c3-c910-4e5e-ddbc-08dbc9d76b13
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4409:EE_|SJ2PR12MB7845:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22db7ab1-71ab-4ab5-d69f-08dbc9d782b5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sq9PUDKTkn8Fw+yr7nFBRgSO89/lDTYbRRsXbwJhy0DetSk3lEbuQUWN6O11cF9gLfI0FCcQrNe9Ii1q2orLpdpdhJCe6I5A0q6HY4Ck8kPFbgfU5ymGdHPysXtzIRLDdid7v2EvAAsCPj2nVgIpfvF9p63HR3SnR2z/maYWDAQTNgbZr5u/MdU4NqUjhkb/BdMux1M8PbmskAsF0ULs+2qb1DxF9CCSr9aBtoW9zxDwJFVfYhF77uhMQ1K5dGmkcZ0bVxGKx3+dQaJzLVXPFyzyOjk3r6OUsl7kPLg6Gyo/emXQmuwUatKoTXyVL8X8wEzkch5qVLXZAAkg68i4dfxXFd5At6lCYrjbDmIcavlPkUp7BrRCG8Gyl2JlZwivEHjOympRLOqRqnfE/ygwe/2LO/Yub1QSk1iGu/IiSh6BnBv/8GWZupOEuMX/A5D+W0NgphGgJSnO/DyHr0Tk4hLFa92JkkMymfGOx0kQRazxwox4OCksAwdS5nGAd4R9dzUutDAiPLJnPJkrx3njKuI53ZidKEnJXnppGJ3/N5EMVC5PgBokrazbAzESqIUg
+X-Microsoft-Antispam-Message-Info: +JkntmOHC6PPN7oJLuu/b9dZiSkDKflq9mapy4LGAaUVlByTNMMANH3+2NJiXKGQGdT7jS4wDwzrUeZfkzucZu4+G8xydI6yClbCMVMKf5NggmbsAg4FLlH1pFDHQC6mzQO9XSW3oowV/fthbCy6CiQ447lR0ilIDP4z5Dlx5TGgFy8fAHZS+HroBJCIUzF8E4+kIv/4wOUdq279RSpFaYL+mxRToix4WhiuXkVi0SvS/rC6gZ1yMCR5XONCm9BAUIFBShVJdY0SLZZ/pLCz53e1j977h7T5iSiEjgcbbFKig14ciN9aIxCwT+oQ900XD1ClC8ShZNzuc5rOZfNNcyILii3aMh1ZEsl9uCHzwlC4kUjAeo2w7hDubbALKOSqR1EG4ls/jTRcJXcRBFAowCZ+VyfwmX78GtToHcf4z30gO5zSC/hoxLsDpK1mWnlsFTqYeCZZnJDvaWRtke1+PHQHr4F+oj1oqMaRCZ4gNFsVp9d8PLLH8h8cXKzmL225c6dfeIvyhtksBzHhb0UkeKlg16DHYB7RedBHdbF6okpNdcBy0ETmzYU0pYBD5fXJ
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MW3PR12MB4409.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(376002)(346002)(39860400002)(396003)(366004)(230922051799003)(1800799009)(64100799003)(451199024)(186009)(26005)(2616005)(38100700002)(86362001)(36756003)(6512007)(4326008)(2906002)(7416002)(8936002)(6666004)(6506007)(478600001)(8676002)(44832011)(6916009)(66946007)(83380400001)(41300700001)(316002)(6486002)(66476007)(54906003)(5660300002)(66556008);
+ SFS:(13230031)(396003)(39860400002)(366004)(136003)(376002)(346002)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(4326008)(8676002)(6666004)(41300700001)(8936002)(6486002)(66476007)(6512007)(6506007)(38100700002)(2616005)(26005)(478600001)(66946007)(66556008)(44832011)(54906003)(6916009)(316002)(83380400001)(5660300002)(2906002)(86362001)(36756003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?STNuNEpvcW9BM0ROY2dxTDZqOWRyZCs5QjlMTzl0QlVXYURpZ2pHZkt1ZHFV?=
- =?utf-8?B?djQvQzdrS0cvRkJSN0xyRG1ISWU5Q2NhTFp6eElta0NZMkxmeXJ1VXNacDlx?=
- =?utf-8?B?eDM2dU4vS3RmbTRYR1ZBMXVpSUtOWUhxOWZ6RjlzR1R3QktZZ09TeHVUVGdV?=
- =?utf-8?B?WHVlQWpscTZ3ZkZoRUNnMXhCdWF0VlBXNjFCU0RyZWl2bTVqRm1rVDBzTEpx?=
- =?utf-8?B?NzZ2RnN3b2d1YUJlQkRyaEtWZFF2a1JmS01SdTZXbHN0K2tQU212QURydlJm?=
- =?utf-8?B?TUlUM3Z0cmFoSGE1bm1pcFJRQkgzc2FvbDB1VE55SmY4cEZaTEs3SHF3ekdP?=
- =?utf-8?B?NE94bUFkQ1RCMk41UWtxUlI0bnhucldOQkY5bW9BTXFMeUF0TUhENmsvWHZL?=
- =?utf-8?B?eW1YMVYvZXFMWlUxOW5TZzcvdnBSTUpsWmFmODhORXR4VTlkbEkwNG5xcFoy?=
- =?utf-8?B?OGhlSDNLZnpkKzhhUkNLd0JBSk1xRnpBSC8zZEh1NlhudEF4bzRhdEVnUUlG?=
- =?utf-8?B?L2VSTytGMG4zTFNZZGpYcXdPL0dyRHJZdi9aVUQvREx3RVlqS0pEeFVOTENS?=
- =?utf-8?B?bG1QNmx6YVlTYnp0ZlArMjJ6SzBWTUhKYlQxYjFSUDVHendvU0FuQ3o0VzVJ?=
- =?utf-8?B?ZkVXcVk1ak9SUVRiZlVJWlVnZGJwbWV4K0o3WkdaSXVpWm9STUVkVTVVWXJs?=
- =?utf-8?B?bnVvWVhNbFNNZkxFRmU3TmhzdlZReWVHY2hWV0FQa0hPYlh1dFRWbFVYUVo1?=
- =?utf-8?B?THlYWmtVcG5NV1lEdWVVRGVVaEZoSnBVYUlKTmpsYmVKa09uNmtvcFRkRXp4?=
- =?utf-8?B?VnRHVXJBWEYyVjJYNjgyWXVaN0lJNUdlaE5qSTBaNkh2TlRXK0VSUDAyZENR?=
- =?utf-8?B?MWhTeUJJUGQ3YXc3dTBOLytDR0VvZmsrZU16c21pc0JldHBDQzJ1SG44RHEz?=
- =?utf-8?B?RXlxSzh6UWF5MzdDOEVVdzZsL1Exd3VzVUtTYVFHeXUzbktlSzlubnE5RkJT?=
- =?utf-8?B?V0xwZmlrT2ZoY3dMZ1QwMFdUem90TU9tVW96ZUJMeGFDaXRnZXBISUJVMGFL?=
- =?utf-8?B?ZktOUVhXQnJCWUxCcXExckxmZDlER0FIOHJ3NHA5blJrZndBU0xrL0dNV21H?=
- =?utf-8?B?ZWw2c1FTY1RFeW1UVTF1dDZqYmNZWlpQZmpHM3lGYkIzRDJkOUdiS1hoMWdH?=
- =?utf-8?B?Qk1JYUNJY01VSUJCSFViM1RobzhZSHpTVktiM0I3SXpSWUttcm1qeGxrQ1hM?=
- =?utf-8?B?dUQ3VWdOMUwyeEFmMW9vMWhVSWxQVDRqWlNyb21JL2IrT1I5NCtUR2swZmY3?=
- =?utf-8?B?NE5GdEVtdkhvVjJ3VUhNbE9oSU16WjEzd0lvSkpOOTlwdVNpVndoNHdmY05y?=
- =?utf-8?B?dTZkRlhBcGdhUjhOTjdCRkRwcmRORUNuYmkvUzhCMWo2akxsWEltQjdVYWVE?=
- =?utf-8?B?Z3FzUVNEUTZOR2pNY3VENk9wUmZOcGFrRDUxUFMydDRFblpPZThiUm1BWVZO?=
- =?utf-8?B?cVVjUzhaeDFCNWk0Ny9Lcmx2Wk9PaitXU29kWWkzNzhtc2NiNjRCL2dNejNT?=
- =?utf-8?B?RjlYMmZYMlZrcDE5YmhhNTJRbDNhLzcrTlZUY29hSEovWDNvdU5abWpRZkRh?=
- =?utf-8?B?bGl5Y0ZSU2p6QTZoWmZnZFNiejJOR3JJSTYzdndJanFDNkRkYlVHRDdyc01I?=
- =?utf-8?B?N3pDTERZeDlBQVJzQytNSmtQV3c3SGs3eHJoQjlRckJPcDF2YldhbTU0NlFJ?=
- =?utf-8?B?UDdIaHcvdEpPT29kV0RJcVRHRklpcllFTHl2N2R5dkVMeVFKdCt6dmc0c2o2?=
- =?utf-8?B?aWxueUNIVmN2c3A5eUdVWi9KekVqZ2E2REV4VDdpL296OGdPZ1dYcGlQL1FK?=
- =?utf-8?B?SFJVZWFtSXh0KzR6aDI1STl0Y0hvVWhtZUxwdktjeE96bmY0bzNXcitlRjJj?=
- =?utf-8?B?WWJSZmErVXNaREw3OGcxb0xUNzFPR3JTN0hZWXlkMkkweFF1a1lFOFFOMW1s?=
- =?utf-8?B?Qlo1VmdpVy8vU1FQazBxeFpEd013Y285bDFKZkdxdVpqUHhuY21yWFMrMkFj?=
- =?utf-8?B?SXFSZkpSVWYvTlFGSUZEc09MYWxOYUlKaFBUdlBBdzV5Q3RqMWFBek9OSmIy?=
- =?utf-8?Q?ADfxc0oNFAJTA7X61uwiK4Iu3?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VFBtSFV3NUdRZ24zUUY0VHhJM3AwbXc1N1dPcWlTRHh6ekV0V1hNdHVJZkdv?=
+ =?utf-8?B?LzdQaitzUFlnK1JHeUE4NkYrckNUc0ZFWE5QcGFTQWc1ZGVwR21xcjFhemw3?=
+ =?utf-8?B?KzNseTFweUgxSzEvdXpCWUQyRkJFN1FjZkcxRW0wWEE4Z3c4SmRZckRoTzFM?=
+ =?utf-8?B?Zlp4RlFHRm12cGVaU0E5eU5ZQW5uZjdsR2d0NE4ycFJ5ZmRzYUc3VTJDeDQ0?=
+ =?utf-8?B?S3FON1kzRVF2M0F6QjZSRDZUd0dRV04wQVp0dUp1b1h4Qjl6S1EreHUwdUdK?=
+ =?utf-8?B?V0k0TG1sU09YUUE0MEphS2VudDQ4OXdrQ0g3alAxNU5uYjY4bnBHSmFqYTEw?=
+ =?utf-8?B?S0NhUU1EbExJUkpxZUhYOVByQXF3T0h5WFJhRXU1cEo2VGpIczl6NWl6T2ps?=
+ =?utf-8?B?NnRIMDNPUEoveUdNdWQxV1ltcFNQeGpkV1dUbWlWOVl3cklzNTJiUW1XM2lz?=
+ =?utf-8?B?K2N5d2tjZlAyOGkxT0o5WjAyZlZVR3BsZDM5dkhWMnpYdmVhMnpHQjZ3dGZh?=
+ =?utf-8?B?RTRldldUc2dxTEd6cktqaFg0aEZQUHYyazFBU1g4Z3RWdUtqRlBSeXQwdXFi?=
+ =?utf-8?B?ZVVKZVpuV213VkxRQmN4Zjh3Q1RsNE1aczlRcG5Fc3FLdmx3UG9IK1QyM01D?=
+ =?utf-8?B?a1pKNE1mUTRyQkNxaGJMMGxodGJJTGRIRkRBMWdKNEpxYnJyeC9NMFNUNWU2?=
+ =?utf-8?B?Q3o3ZTdmWWlhMGszdGY1OU5CMnlML3I2OTZXRnRZZ2RiWWtSN0laOGNkNjhF?=
+ =?utf-8?B?TmhCNitzYVZ1QWRrRzYvRURoL0kvTHNEZmlQRVNJZDA4citNNUc1V2luc1NT?=
+ =?utf-8?B?OW5tUVkrdmZYaSs5VEZUZEVOUWJ2aCtlUzdZMS90RG1qdC8vQTNMM0M0T0Z2?=
+ =?utf-8?B?N1AvRzd1TldCejRxVXZxZzdzV1RzMHpiMWVhbmN1Q2JWYVVLK0FITVFteEZ1?=
+ =?utf-8?B?R2ZENVJyR2NQVWZnMHZOSk1uam9aVGpDMVk4OWVJS1VvVE51OTRuUWg2Q1V5?=
+ =?utf-8?B?YUxhcVVJbUM3OGwyMGZyYnc4TEdZdEcwNm9nY3BCbGFiMWRTeGVGRzhsMUcy?=
+ =?utf-8?B?Slc2T3BQM09Ka1p0Y2dKUE0yZDROeXV3VW9IMUpoTFkwc3IzQS8vOUZjb3FQ?=
+ =?utf-8?B?dXRFdGl1MUJCNkdwRGhKeEJiTmhkUFY5NDF0L2luKzQ3OHlLSC83SEtRTXBJ?=
+ =?utf-8?B?b25US3FZOE1rSGtnUDFVdGxOTG5wbEppdHBjdFBPME9RRDJpKy9ISThTNzd1?=
+ =?utf-8?B?cngwUDFmd2tIVTdDeUdHWG1tQkE3NHFEWGtUT3pVc0xkWU5qWXU3QnhjZTdS?=
+ =?utf-8?B?YU8xWUIyNmZBYTJHeVBpZjRGTHdneXVrVlVVOVcwNzJnOTh4bjJGZEl0V2pa?=
+ =?utf-8?B?THh2QzFaazZ1NXdNaVFqR25vTEhEMnFEY3JnNjhUMFN1UVpOSlpsMEJ1bkRK?=
+ =?utf-8?B?ZC9ES2RwNUZiclJOQ01mcjZuTlQ0U001blpzaC9VTC9WRGlKMWNBWU94UlhJ?=
+ =?utf-8?B?blBJLytnbTdwR2VoSWtROUJMVDJ4ek5rVmxxMTlKdlRiL2hSVFpRdG1MV0dH?=
+ =?utf-8?B?MFdWZGhkUFFweGd5eXo4bnlwb1J0Y0ZDWEtlb0pRRXFRZGF6eFQ5d1piNDdl?=
+ =?utf-8?B?UW9QaS9MWGp1Q3ZXYVRuZjg2VXQ3Nzh5V1pzSTNoN0phVnd2TXlPTk1mNitv?=
+ =?utf-8?B?K2NCVGVxR2VGSE1VanZVV2lXRzlMSUxKait1bDM3bU9jNHIwRko3ekVwNzIy?=
+ =?utf-8?B?TitiaWJhSzU5TzdQOTJ6MUhheTYrZ05vSERFUThVbHhaLzNvdS95djZwZ1A3?=
+ =?utf-8?B?VGN1ZmpySWwwTFpuYXlyYTVTYUM4QVBoM1lwekFjQmV0QnFCeUhYenM5Uk5i?=
+ =?utf-8?B?cEhxOVVTbUxFR1llUjluWGhUbDZrbjUvajVZeXdhVStHNnFYSStLZkpYSTcr?=
+ =?utf-8?B?bDFXOVpFWDAyaDJuMVA3SW9kcys1bUVVd0NXSWs1WHMyMnVabmFwNUZLTUV1?=
+ =?utf-8?B?Zjd4V0x2dW5vTVcvamUrcG9ITUMxSjhPa1ZxQUNQTDhrVFgrNHl4QzJKR0NV?=
+ =?utf-8?B?NFZFRVpUeVVQZFhBM1A1NWZUL29OeFFvQ01xYmMrYmNRZk5EYzdFTExDOVlT?=
+ =?utf-8?Q?zvKrkMCM//FNxZq8GPaNmkO/X?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 523ae2c3-c910-4e5e-ddbc-08dbc9d76b13
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22db7ab1-71ab-4ab5-d69f-08dbc9d782b5
 X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4409.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2023 21:25:25.6689 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2023 21:26:05.2243 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zionzn2nzBo8BrAfmOiRHwZnmS3l+tdnWTU6l04nxO+AF2CMbkC6BVGrp7OtfjWrxn1VOxkDuwVFE1sLV++iqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8286
-Received-SPF: softfail client-ip=2a01:111:f400:7e88::62b;
+X-MS-Exchange-CrossTenant-UserPrincipalName: qNWw0g0cqB212LH7bImvE4A7lcr80IorTL5qfELmkuDO01PCyHYZT++JMawJkTdes9ckGvYxnk4LxOtFFYxpuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7845
+Received-SPF: softfail client-ip=2a01:111:f400:7e8b::615;
  envelope-from=vikram.garhwal@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+ helo=NAM04-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -152,285 +147,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefano,
-On Mon, Oct 09, 2023 at 05:02:14PM -0700, Stefano Stabellini wrote:
+On Mon, Oct 09, 2023 at 05:10:43PM -0700, Stefano Stabellini wrote:
 > On Thu, 5 Oct 2023, Vikram Garhwal wrote:
 > > From: Juergen Gross <jgross@suse.com>
 > > 
-> > Add a memory region which can be used to automatically map granted
-> > memory. It is starting at 0x8000000000000000ULL in order to be able to
-> > distinguish it from normal RAM.
-> > 
-> > For this reason the xen.ram memory region is expanded, which has no
-> > further impact as it is used just as a container of the real RAM
-> > regions and now the grant region.
+> > qemu_map_ram_ptr() and qemu_ram_ptr_length() share quite some code, so
+> > modify qemu_ram_ptr_length() a little bit and use it for
+> > qemu_map_ram_ptr(), too.
 > > 
 > > Signed-off-by: Juergen Gross <jgross@suse.com>
 > > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
 > 
-> This patch doesn't apply to staging anymore
-Will re-base it. I rebased it against master branch.
+> This patch also doesn't apply due to code movement.
+Will rebase it.
+> 
+> Other than that, the patch looks good to me
 > 
 > 
 > > ---
-> >  hw/i386/xen/xen-hvm.c           |  3 ++
-> >  hw/xen/xen-hvm-common.c         |  4 +--
-> >  hw/xen/xen-mapcache.c           | 27 ++++++++++++++
-> >  include/exec/ram_addr.h         |  1 +
-> >  include/hw/xen/xen-hvm-common.h |  2 ++
-> >  include/hw/xen/xen_pvdev.h      |  3 ++
-> >  include/sysemu/xen-mapcache.h   |  3 ++
-> >  softmmu/physmem.c               | 62 +++++++++++++++++++++------------
-> >  8 files changed, 80 insertions(+), 25 deletions(-)
+> >  softmmu/physmem.c | 58 +++++++++++++++++++----------------------------
+> >  1 file changed, 23 insertions(+), 35 deletions(-)
 > > 
-> > diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
-> > index f42621e674..67a55558a6 100644
-> > --- a/hw/i386/xen/xen-hvm.c
-> > +++ b/hw/i386/xen/xen-hvm.c
-> > @@ -172,6 +172,9 @@ static void xen_ram_init(PCMachineState *pcms,
-> >                                   x86ms->above_4g_mem_size);
-> >          memory_region_add_subregion(sysmem, 0x100000000ULL, &ram_hi);
-> >      }
-> > +
-> > +    /* Add grant mappings as a pseudo RAM region. */
-> > +    ram_grants = *xen_init_grant_ram();
-> >  }
-> >  
-> >  static XenPhysmap *get_physmapping(hwaddr start_addr, ram_addr_t size)
-> > diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-> > index 565dc39c8f..b7255977a5 100644
-> > --- a/hw/xen/xen-hvm-common.c
-> > +++ b/hw/xen/xen-hvm-common.c
-> > @@ -9,7 +9,7 @@
-> >  #include "hw/boards.h"
-> >  #include "hw/xen/arch_hvm.h"
-> >  
-> > -MemoryRegion ram_memory;
-> > +MemoryRegion ram_memory, ram_grants;
-> >  
-> >  void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-> >                     Error **errp)
-> > @@ -26,7 +26,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-> >          return;
-> >      }
-> >  
-> > -    if (mr == &ram_memory) {
-> > +    if (mr == &ram_memory || mr == &ram_grants) {
-> >          return;
-> >      }
-> >  
-> > diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-> > index f7d974677d..8115c44c00 100644
-> > --- a/hw/xen/xen-mapcache.c
-> > +++ b/hw/xen/xen-mapcache.c
-> > @@ -14,7 +14,9 @@
-> >  
-> >  #include <sys/resource.h>
-> >  
-> > +#include "hw/xen/xen-hvm-common.h"
-> >  #include "hw/xen/xen_native.h"
-> > +#include "hw/xen/xen_pvdev.h"
-> >  #include "qemu/bitmap.h"
-> >  
-> >  #include "sysemu/runstate.h"
-> > @@ -597,3 +599,28 @@ uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
-> >      mapcache_unlock();
-> >      return p;
-> >  }
-> > +
-> > +MemoryRegion *xen_init_grant_ram(void)
-> > +{
-> > +    RAMBlock *block;
-> > +
-> > +    memory_region_init(&ram_grants, NULL, "xen.grants",
-> > +                       XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE);
-> > +    block = g_malloc0(sizeof(*block));
-> > +    block->mr = &ram_grants;
-> > +    block->used_length = XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE;
-> > +    block->max_length = XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE;
-> > +    block->fd = -1;
-> > +    block->page_size = XC_PAGE_SIZE;
-> > +    block->host = (void *)XEN_GRANT_ADDR_OFF;
-> > +    block->offset = XEN_GRANT_ADDR_OFF;
-> > +    block->flags = RAM_PREALLOC;
-> > +    ram_grants.ram_block = block;
-> > +    ram_grants.ram = true;
-> > +    ram_grants.terminates = true;
-> > +    ram_block_add_list(block);
-> > +    memory_region_add_subregion(get_system_memory(), XEN_GRANT_ADDR_OFF,
-> > +                                &ram_grants);
-> > +
-> > +    return &ram_grants;
-> 
-> It doesn't look like xen_init_grant_ram has anything to do with the
-> mapcache. It should be in another file. Maybe ./hw/xen/xen-hvm-common.c
-> or ./hw/i386/xen/xen-hvm.c (but this is x86 specific and we need grants
-> on ARM too)
-Do you mean to move all grant related functions? As moving this alone will not
-be sufficient. There are lot of new grant related function added in later patches.
-
-I am okay with moving all to xen-hvm-common.c
-
-Following code movement will happen in this case:
-1. All grant related static function to xen-hvm-common.c.
-    xen_ram_addr_from_grant_cache(), xen_ram_addr_from_mapcache(),
-    xen_map_grant_dyn(), xen_unmap_grant_dyn and xen_init_grant_ram().
-2. Remove static from xen_ram_addr_from_mapcache_try().
-
-Does these changes looks good?
-> 
-> 
-> > +}
-> > diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-> > index 90676093f5..c0b5f9a7d0 100644
-> > --- a/include/exec/ram_addr.h
-> > +++ b/include/exec/ram_addr.h
-> > @@ -139,6 +139,7 @@ void qemu_ram_free(RAMBlock *block);
-> >  int qemu_ram_resize(RAMBlock *block, ram_addr_t newsize, Error **errp);
-> >  
-> >  void qemu_ram_msync(RAMBlock *block, ram_addr_t start, ram_addr_t length);
-> > +void ram_block_add_list(RAMBlock *new_block);
-> >  
-> >  /* Clear whole block of mem */
-> >  static inline void qemu_ram_block_writeback(RAMBlock *block)
-> > diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
-> > index 4e9904f1a6..0d300ba898 100644
-> > --- a/include/hw/xen/xen-hvm-common.h
-> > +++ b/include/hw/xen/xen-hvm-common.h
-> > @@ -17,6 +17,8 @@
-> >  #include <xen/hvm/ioreq.h>
-> >  
-> >  extern MemoryRegion ram_memory;
-> > +
-> > +extern MemoryRegion ram_grants;
-> >  extern MemoryListener xen_io_listener;
-> >  extern DeviceListener xen_device_listener;
-> >  
-> > diff --git a/include/hw/xen/xen_pvdev.h b/include/hw/xen/xen_pvdev.h
-> > index ddad4b9f36..0f1b5edfa9 100644
-> > --- a/include/hw/xen/xen_pvdev.h
-> > +++ b/include/hw/xen/xen_pvdev.h
-> > @@ -80,4 +80,7 @@ int xen_pv_send_notify(struct XenLegacyDevice *xendev);
-> >  void xen_pv_printf(struct XenLegacyDevice *xendev, int msg_level,
-> >                     const char *fmt, ...)  G_GNUC_PRINTF(3, 4);
-> >  
-> > +#define XEN_GRANT_ADDR_OFF    0x8000000000000000ULL
-> > +#define XEN_MAX_VIRTIO_GRANTS 65536
-> > +
-> >  #endif /* QEMU_HW_XEN_PVDEV_H */
-> > diff --git a/include/sysemu/xen-mapcache.h b/include/sysemu/xen-mapcache.h
-> > index c8e7c2f6cf..f4bedb1c11 100644
-> > --- a/include/sysemu/xen-mapcache.h
-> > +++ b/include/sysemu/xen-mapcache.h
-> > @@ -10,6 +10,7 @@
-> >  #define XEN_MAPCACHE_H
-> >  
-> >  #include "exec/cpu-common.h"
-> > +#include "exec/ram_addr.h"
-> >  
-> >  typedef hwaddr (*phys_offset_to_gaddr_t)(hwaddr phys_offset,
-> >                                           ram_addr_t size);
-> > @@ -25,6 +26,8 @@ void xen_invalidate_map_cache(void);
-> >  uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
-> >                                   hwaddr new_phys_addr,
-> >                                   hwaddr size);
-> > +MemoryRegion *xen_init_grant_ram(void);
-> > +
-> >  #else
-> >  
-> >  static inline void xen_map_cache_init(phys_offset_to_gaddr_t f,
 > > diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> > index 309653c722..e182a2fa07 100644
+> > index e182a2fa07..6e5e379dd0 100644
 > > --- a/softmmu/physmem.c
 > > +++ b/softmmu/physmem.c
-> 
-> 
-> You might want to split this change out of this patch to make it easier
-> to get the physmem.c maintainers' attention
-Understood, will create a new patch for this change.
-> 
-> 
-> > @@ -1803,12 +1803,47 @@ static void dirty_memory_extend(ram_addr_t old_ram_size,
+> > @@ -2163,38 +2163,8 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t length)
+> >  }
+> >  #endif /* !_WIN32 */
+> >  
+> > -/* Return a host pointer to ram allocated with qemu_ram_alloc.
+> > - * This should not be used for general purpose DMA.  Use address_space_map
+> > - * or address_space_rw instead. For local memory (e.g. video ram) that the
+> > - * device owns, use memory_region_get_ram_ptr.
+> > - *
+> > - * Called within RCU critical section.
+> > - */
+> > -void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)
+> > -{
+> > -    RAMBlock *block = ram_block;
+> > -
+> > -    if (block == NULL) {
+> > -        block = qemu_get_ram_block(addr);
+> > -        addr -= block->offset;
+> > -    }
+> > -
+> > -    if (xen_enabled() && block->host == NULL) {
+> > -        /* We need to check if the requested address is in the RAM
+> > -         * because we don't want to map the entire memory in QEMU.
+> > -         * In that case just map until the end of the page.
+> > -         */
+> > -        if (block->offset == 0) {
+> > -            return xen_map_cache(addr, 0, 0, false);
+> > -        }
+> > -
+> > -        block->host = xen_map_cache(block->offset, block->max_length, 1, false);
+> > -    }
+> > -    return ramblock_ptr(block, addr);
+> > -}
+> > -
+> > -/* Return a host pointer to guest's ram. Similar to qemu_map_ram_ptr
+> > - * but takes a size argument.
+> > +/*
+> > + * Return a host pointer to guest's ram.
+> >   *
+> >   * Called within RCU critical section.
+> >   */
+> > @@ -2202,7 +2172,9 @@ static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
+> >                                   hwaddr *size, bool lock)
+> >  {
+> >      RAMBlock *block = ram_block;
+> > -    if (*size == 0) {
+> > +    hwaddr len = 0;
+> > +
+> > +    if (size && *size == 0) {
+> >          return NULL;
 > >      }
+> >  
+> > @@ -2210,7 +2182,10 @@ static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
+> >          block = qemu_get_ram_block(addr);
+> >          addr -= block->offset;
+> >      }
+> > -    *size = MIN(*size, block->max_length - addr);
+> > +    if (size) {
+> > +        *size = MIN(*size, block->max_length - addr);
+> > +        len = *size;
+> > +    }
+> >  
+> >      if (xen_enabled() && block->host == NULL) {
+> >          /* We need to check if the requested address is in the RAM
+> > @@ -2218,7 +2193,7 @@ static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
+> >           * In that case just map the requested area.
+> >           */
+> >          if (block->offset == 0) {
+> > -            return xen_map_cache(addr, *size, lock, lock);
+> > +            return xen_map_cache(addr, len, lock, lock);
+> >          }
+> >  
+> >          block->host = xen_map_cache(block->offset, block->max_length, 1, lock);
+> > @@ -2227,6 +2202,19 @@ static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
+> >      return ramblock_ptr(block, addr);
 > >  }
 > >  
-> > +static void ram_block_add_list_locked(RAMBlock *new_block)
-> > + {
-> > +     RAMBlock *block;
-> > +     RAMBlock *last_block = NULL;
-> > +
-> > +    /*
-> > +     * Keep the list sorted from biggest to smallest block.  Unlike QTAILQ,
-> > +     * QLIST (which has an RCU-friendly variant) does not have insertion at
-> > +     * tail, so save the last element in last_block.
-> > +     */
-> > +    RAMBLOCK_FOREACH(block) {
-> > +        last_block = block;
-> > +        if (block->max_length < new_block->max_length) {
-> > +            break;
-> > +        }
-> > +    }
-> > +    if (block) {
-> > +        QLIST_INSERT_BEFORE_RCU(block, new_block, next);
-> > +    } else if (last_block) {
-> > +        QLIST_INSERT_AFTER_RCU(last_block, new_block, next);
-> > +    } else { /* list is empty */
-> > +        QLIST_INSERT_HEAD_RCU(&ram_list.blocks, new_block, next);
-> > +    }
-> > +    ram_list.mru_block = NULL;
-> > +
-> > +    /* Write list before version */
-> > +    smp_wmb();
-> > +    ram_list.version++;
-> > +}
-> > +
-> > +void ram_block_add_list(RAMBlock *new_block)
+> > +/*
+> > + * Return a host pointer to ram allocated with qemu_ram_alloc.
+> > + * This should not be used for general purpose DMA.  Use address_space_map
+> > + * or address_space_rw instead. For local memory (e.g. video ram) that the
+> > + * device owns, use memory_region_get_ram_ptr.
+> > + *
+> > + * Called within RCU critical section.
+> > + */
+> > +void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)
 > > +{
-> > +    qemu_mutex_lock_ramlist();
-> > +    ram_block_add_list_locked(new_block);
-> > +    qemu_mutex_unlock_ramlist();
+> > +    return qemu_ram_ptr_length(ram_block, addr, NULL, false);
 > > +}
 > > +
-> >  static void ram_block_add(RAMBlock *new_block, Error **errp)
+> >  /* Return the offset of a hostpointer within a ramblock */
+> >  ram_addr_t qemu_ram_block_host_offset(RAMBlock *rb, void *host)
 > >  {
-> >      const bool noreserve = qemu_ram_is_noreserve(new_block);
-> >      const bool shared = qemu_ram_is_shared(new_block);
-> > -    RAMBlock *block;
-> > -    RAMBlock *last_block = NULL;
-> >      ram_addr_t old_ram_size, new_ram_size;
-> >      Error *err = NULL;
-> >  
-> > @@ -1846,28 +1881,9 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-> >      if (new_ram_size > old_ram_size) {
-> >          dirty_memory_extend(old_ram_size, new_ram_size);
-> >      }
-> > -    /* Keep the list sorted from biggest to smallest block.  Unlike QTAILQ,
-> > -     * QLIST (which has an RCU-friendly variant) does not have insertion at
-> > -     * tail, so save the last element in last_block.
-> > -     */
-> > -    RAMBLOCK_FOREACH(block) {
-> > -        last_block = block;
-> > -        if (block->max_length < new_block->max_length) {
-> > -            break;
-> > -        }
-> > -    }
-> > -    if (block) {
-> > -        QLIST_INSERT_BEFORE_RCU(block, new_block, next);
-> > -    } else if (last_block) {
-> > -        QLIST_INSERT_AFTER_RCU(last_block, new_block, next);
-> > -    } else { /* list is empty */
-> > -        QLIST_INSERT_HEAD_RCU(&ram_list.blocks, new_block, next);
-> > -    }
-> > -    ram_list.mru_block = NULL;
-> >  
-> > -    /* Write list before version */
-> > -    smp_wmb();
-> > -    ram_list.version++;
-> > +    ram_block_add_list_locked(new_block);
-> > +
-> >      qemu_mutex_unlock_ramlist();
-> >  
-> >      cpu_physical_memory_set_dirty_range(new_block->offset,
 > > -- 
 > > 2.17.1
 > > 
