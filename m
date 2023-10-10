@@ -2,107 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0B87BFA78
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8156D7BFA76
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:58:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBMM-0006iD-I9; Tue, 10 Oct 2023 07:57:10 -0400
+	id 1qqBMk-00078Q-MX; Tue, 10 Oct 2023 07:57:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBML-0006hY-5V
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:57:09 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBMJ-0000EV-HE
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:57:08 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5334d78c5f6so9587683a12.2
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 04:57:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696939026; x=1697543826; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eWF+m4pmlfZLAIpIOX8F8HUE5rhtBj2ixSHT38voTQM=;
- b=IJpj6IFhbiGFgFYVguosIuf52F/3a6EKI0OZfNCDYsH8PtwW5cyuuWMoFGbeRDnFzj
- eTnKSwXGESKe/FH9h5K1negUR7z0FBhoRzqg8CkDNrpDJXq8qoxlAAqbFrgfbHIWo+p0
- PkMBRlqVfHCnyE+2+OTcNEUxA3mc5tXGzdIbexMMOO5qK0lAM5ksADrKz5Na1u2A+p0x
- MkIGVyEuXK/DiBGT1SQHIMOwxVUhuyHewacG4F02am+db4caRCnDlqse426wPBpM4eyc
- c99cW114OcUVfWez0TVpjIbH627A2b3gDE/7/OmQ/Eml7Z2zBH0r25BXnqCe+EYiI3sF
- vOOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696939026; x=1697543826;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eWF+m4pmlfZLAIpIOX8F8HUE5rhtBj2ixSHT38voTQM=;
- b=HdZndPk99M+Oa5BPO0mhdLVSedq50zYocvvGECYUnDSi8bSyP0JnAmjFSxDCfjcbtF
- 2DXGiOJopIUIdUL70y+HXPbmy5UxyqkCI8GThSTqgl2uSPuZMCLXrl7eAN0VBI1QyuFz
- x2TMgsakJeeTNwmJ5Xo8BJZXjmypP9FKI22Hzu64iyC2nnb5moUib81ZbyUmMbkTV2/T
- XHDiVsVwrNpkLj3X5kA5fyOrofRqhJEAv8s3As89RRGpfD0Q/BHOit2OQ6FHh0n8XxIi
- wQWjo/52O44LCz/DvgkjDUdEzs11NHBWk5aOdqlE2C7E2k9Ak+I0rX0IjE6R4tU+lVjK
- dL4A==
-X-Gm-Message-State: AOJu0YwivT5JcxvTkNgqACnVYV61P3VFcNlRfKbXaFMTcuXYn+0nl8d4
- InZs9rSAbWsvoAJSk6iMQYMOk+CDcMvM0NDPPQOgcA==
-X-Google-Smtp-Source: AGHT+IHfB145nG+TeoZSEt8bxGhD8xr+jSnAGmMzYeB8hHxke6AQOQFtI21tddfQo93Ic2/LaESFjQ==
-X-Received: by 2002:a05:6402:4308:b0:53d:983c:2672 with SMTP id
- m8-20020a056402430800b0053d983c2672mr1269807edc.38.1696939026191; 
- Tue, 10 Oct 2023 04:57:06 -0700 (PDT)
-Received: from [192.168.69.115]
- (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
- by smtp.gmail.com with ESMTPSA id
- c25-20020aa7d619000000b0053622a35665sm7438272edr.66.2023.10.10.04.57.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 04:57:05 -0700 (PDT)
-Message-ID: <68a6e682-3cfd-9ea9-a81e-3f244b7893da@linaro.org>
-Date: Tue, 10 Oct 2023 13:57:02 +0200
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1qqBMc-00072J-Qb
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:57:26 -0400
+Received: from madras.collabora.co.uk ([2a00:1098:0:82:1000:25:2eeb:e5ab])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1qqBMZ-0000N4-8N
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:57:26 -0400
+Received: from [192.168.2.166] (109-252-153-31.dynamic.spd-mgts.ru
+ [109.252.153.31])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ (Authenticated sender: dmitry.osipenko)
+ by madras.collabora.co.uk (Postfix) with ESMTPSA id A113366072B4;
+ Tue, 10 Oct 2023 12:57:19 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1696939041;
+ bh=wJYs30MEiuAzJZmbMZ3VI4oXBaOgMnqSjxIcpU2jV2M=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=DpsPJxqSR+ASF1Kug9+XAPPcWk91pF6GiOxnNLPkP+PruSexjirRJIrWkU3RkAmJf
+ JumiJK2Pqe8x7/D7NAA96dUAgKk5KhQvKiWi02ucceAg6Ad/YNtWydmNcySptbcgNE
+ ooovbQlD9+dty/rlR0XPR+PNtpx0ZaunHXjwotdrgdaPxuI/M4sQFyHct7JNLtXY3f
+ Q8TtXPp69qYhlXU3btZ8s76Xi7SMr80BwW1hpKIyK/XiUfKs//8rYU2G78kTD/4e5b
+ szKx1wvR0A3OiB08tiPxm2tAB6hvTSEiTas0cUe3A5ZHyHPSzz6qcFiELDjoBWOqNu
+ HsspeywEE/rLA==
+Message-ID: <ff99baee-a1c7-69cf-bc27-55cf2d0208ab@collabora.com>
+Date: Tue, 10 Oct 2023 14:57:17 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 03/25] tests/lcitool: add swtpm to the package list
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [QEMU PATCH v5 00/13] Support blob memory and venus on qemu
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>, 
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Brad Smith <brad@comstyle.com>, Radoslaw Biernacki <rad@semihalf.com>,
- David Hildenbrand <david@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-riscv@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Nicholas Piggin <npiggin@gmail.com>,
- Bin Meng <bin.meng@windriver.com>, Leif Lindholm
- <quic_llindhol@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair.francis@wdc.com>, qemu-ppc@nongnu.org,
- John Snow <jsnow@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-arm@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Peter Maydell
- <peter.maydell@linaro.org>, Yanan Wang <wangyanan55@huawei.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Beraldo Leal <bleal@redhat.com>, Yoshinori Sato
- <ysato@users.sourceforge.jp>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20231009164104.369749-1-alex.bennee@linaro.org>
- <20231009164104.369749-4-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231009164104.369749-4-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=c3=a9?=
+ <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>
+References: <20230915111130.24064-1-ray.huang@amd.com>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20230915111130.24064-1-ray.huang@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1098:0:82:1000:25:2eeb:e5ab;
+ envelope-from=dmitry.osipenko@collabora.com; helo=madras.collabora.co.uk
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
 X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,31 +91,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/10/23 18:40, Alex Bennée wrote:
-> We need this to test some TPM stuff.
+On 9/15/23 14:11, Huang Rui wrote:
+> Hi all,
 > 
-> Message-Id: <20230925144854.1872513-3-alex.bennee@linaro.org>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   .gitlab-ci.d/cirrus/macos-12.vars                    | 2 +-
->   tests/docker/dockerfiles/alpine.docker               | 1 +
->   tests/docker/dockerfiles/centos8.docker              | 1 +
->   tests/docker/dockerfiles/debian-amd64-cross.docker   | 1 +
->   tests/docker/dockerfiles/debian-amd64.docker         | 1 +
->   tests/docker/dockerfiles/debian-arm64-cross.docker   | 1 +
->   tests/docker/dockerfiles/debian-armhf-cross.docker   | 1 +
->   tests/docker/dockerfiles/debian-ppc64el-cross.docker | 1 +
->   tests/docker/dockerfiles/debian-s390x-cross.docker   | 1 +
->   tests/docker/dockerfiles/fedora-win32-cross.docker   | 1 +
->   tests/docker/dockerfiles/fedora-win64-cross.docker   | 1 +
->   tests/docker/dockerfiles/fedora.docker               | 1 +
->   tests/docker/dockerfiles/opensuse-leap.docker        | 1 +
->   tests/docker/dockerfiles/ubuntu2204.docker           | 1 +
->   tests/lcitool/libvirt-ci                             | 2 +-
->   tests/lcitool/projects/qemu.yml                      | 1 +
->   16 files changed, 16 insertions(+), 2 deletions(-)
+> Antonio Caggiano made the venus with QEMU on KVM platform last
+> September[1]. This series are inherited from his original work to support
+> the features of context init, hostmem, resource uuid, and blob resources
+> for venus.
+> At March of this year, we sent out the V1 version[2] for the review. But
+> those series are included both xen and virtio gpu. Right now, we would like
+> to divide into two parts, one is to continue the Antonio's work to upstream
+> virtio-gpu support for blob memory and venus, and another is to upstream
+> xen specific patches. This series is focusing on virtio-gpu, so we are
+> marking as V4 version here to continue Antonio's patches[1]. And we will
+> send xen specific patches separately, because they are hypervisor specific.
+> Besides of QEMU, these supports also included virglrenderer[3][4] and
+> mesa[5][6] as well. Right now, virglrenderer and mesa parts are all
+> accepted by upstream. In this qemu version, we try to address the concerns
+> around not proper cleanup during blob resource unmap and unref. Appreciate
+> it if you have any commments.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Venus uses blob buffers. In order to display Venus/VK application using
+GL display server, the VIRTIO_GPU_CMD_SET_SCANOUT_BLOB must be
+supported. Otherwise Venus itself isn't practically useful because you
+can't run VK application with a usual Linux DE because Venus will error
+out due to the unsupported command.
+
+The VIRTIO_GPU_CMD_SET_SCANOUT_BLOB support needs to be a part of this
+series, IMO. Can we add it to the next patchset version?
+
+-- 
+Best regards,
+Dmitry
 
 
