@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE18E7BFA77
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0B87BFA78
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:58:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBM9-0006bP-K0; Tue, 10 Oct 2023 07:56:57 -0400
+	id 1qqBMM-0006iD-I9; Tue, 10 Oct 2023 07:57:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBM0-0006ZJ-HD
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:56:49 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBML-0006hY-5V
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:57:09 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBLv-000054-6Z
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:56:48 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-9b29186e20aso947321866b.2
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 04:56:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBMJ-0000EV-HE
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:57:08 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5334d78c5f6so9587683a12.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 04:57:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696939001; x=1697543801; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696939026; x=1697543826; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qlfm40CNX39U3MfQmCxVxB/8tsjjTRpwPggE6Oi56Es=;
- b=hSr/zcm8wGX2U8Id3aZHuC8Thg4hfmXdwMKt6+xbSY4K2S6LiQy1RMIRTHhJCekl3p
- bTv+HTOv8/1G3j7DIUVAUXpRX/bKaCn7ssStwJdJFvtskA0y2PZmIYesxnNDdwVwVRPQ
- 3KFVsCv0St6sb23c7qXfXrxlxQ0ZMGsZW1ZyrNMo1T3M5ddT4LmOdmv5Hi7sPiWpMIqI
- P8am9Ox+YP3esEju62n3XXw6Q9xhJGaV0PtiBqs0S2zMNKip35RhBYRmblPLn9qW9qI/
- eEf+nsEWcyHXTCkv8/lllnkdY2Ms9WtB/f3Y+H9cG2sP5X4hr72KC7R7g+DM4Wz21oRa
- YlEA==
+ bh=eWF+m4pmlfZLAIpIOX8F8HUE5rhtBj2ixSHT38voTQM=;
+ b=IJpj6IFhbiGFgFYVguosIuf52F/3a6EKI0OZfNCDYsH8PtwW5cyuuWMoFGbeRDnFzj
+ eTnKSwXGESKe/FH9h5K1negUR7z0FBhoRzqg8CkDNrpDJXq8qoxlAAqbFrgfbHIWo+p0
+ PkMBRlqVfHCnyE+2+OTcNEUxA3mc5tXGzdIbexMMOO5qK0lAM5ksADrKz5Na1u2A+p0x
+ MkIGVyEuXK/DiBGT1SQHIMOwxVUhuyHewacG4F02am+db4caRCnDlqse426wPBpM4eyc
+ c99cW114OcUVfWez0TVpjIbH627A2b3gDE/7/OmQ/Eml7Z2zBH0r25BXnqCe+EYiI3sF
+ vOOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696939001; x=1697543801;
+ d=1e100.net; s=20230601; t=1696939026; x=1697543826;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qlfm40CNX39U3MfQmCxVxB/8tsjjTRpwPggE6Oi56Es=;
- b=X0EXWSk7Jnz7Cblf1onx/6J11KjIgDshjmi7xbzeAT/z45w2kK4abRNToJ6qHU9ct+
- 90R3X8bwHFXVbKubwIoy4iXfr2j3HceaV5DtaReOTlBwID3YxUXIwJHyRUdnG3U/cO09
- er+MMNkC/xUxz1FyKFryR/wSCUUZRRSgvGp1eVypr+tovXdxBD58qsZGKLk+LnZvGlYr
- m8Sbj6YvLoaX0Wky1n2w1mjWotrN+p6iBONjqGpx4k9GLcSc0ZjDaS4HhJ9wXbc8Be/U
- zkOd+mvSlxyM3EzXgczkozr64IUmVYVePFB+SNWFbqZ8GVWUEXQ49S3scuR2wKaYNbUs
- IqrQ==
-X-Gm-Message-State: AOJu0Yy9dI9w06nnbmx9mTQOO47L0m90l3O5Z4woBIb1F4K0EaDwzo0/
- 6tvrGDGn2IbQGlxSsckI0QHb+g==
-X-Google-Smtp-Source: AGHT+IF4BFuHaE3LqrKLl7o1W+AUINASUjohGYH7UDTjoiIC+sZBStWET44grVxDUUzv3JS6z77EIA==
-X-Received: by 2002:a17:907:b11:b0:9ae:699d:8a29 with SMTP id
- h17-20020a1709070b1100b009ae699d8a29mr15104733ejl.6.1696939001009; 
- Tue, 10 Oct 2023 04:56:41 -0700 (PDT)
+ bh=eWF+m4pmlfZLAIpIOX8F8HUE5rhtBj2ixSHT38voTQM=;
+ b=HdZndPk99M+Oa5BPO0mhdLVSedq50zYocvvGECYUnDSi8bSyP0JnAmjFSxDCfjcbtF
+ 2DXGiOJopIUIdUL70y+HXPbmy5UxyqkCI8GThSTqgl2uSPuZMCLXrl7eAN0VBI1QyuFz
+ x2TMgsakJeeTNwmJ5Xo8BJZXjmypP9FKI22Hzu64iyC2nnb5moUib81ZbyUmMbkTV2/T
+ XHDiVsVwrNpkLj3X5kA5fyOrofRqhJEAv8s3As89RRGpfD0Q/BHOit2OQ6FHh0n8XxIi
+ wQWjo/52O44LCz/DvgkjDUdEzs11NHBWk5aOdqlE2C7E2k9Ak+I0rX0IjE6R4tU+lVjK
+ dL4A==
+X-Gm-Message-State: AOJu0YwivT5JcxvTkNgqACnVYV61P3VFcNlRfKbXaFMTcuXYn+0nl8d4
+ InZs9rSAbWsvoAJSk6iMQYMOk+CDcMvM0NDPPQOgcA==
+X-Google-Smtp-Source: AGHT+IHfB145nG+TeoZSEt8bxGhD8xr+jSnAGmMzYeB8hHxke6AQOQFtI21tddfQo93Ic2/LaESFjQ==
+X-Received: by 2002:a05:6402:4308:b0:53d:983c:2672 with SMTP id
+ m8-20020a056402430800b0053d983c2672mr1269807edc.38.1696939026191; 
+ Tue, 10 Oct 2023 04:57:06 -0700 (PDT)
 Received: from [192.168.69.115]
  (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
  by smtp.gmail.com with ESMTPSA id
- kb4-20020a1709070f8400b009adc81bb544sm8337672ejc.106.2023.10.10.04.56.37
+ c25-20020aa7d619000000b0053622a35665sm7438272edr.66.2023.10.10.04.57.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 04:56:40 -0700 (PDT)
-Message-ID: <bbd46ddb-a848-4e6f-ac5e-dcd2cf99b5c7@linaro.org>
-Date: Tue, 10 Oct 2023 13:56:36 +0200
+ Tue, 10 Oct 2023 04:57:05 -0700 (PDT)
+Message-ID: <68a6e682-3cfd-9ea9-a81e-3f244b7893da@linaro.org>
+Date: Tue, 10 Oct 2023 13:57:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 02/25] tests/avocado: remove flaky test marking for
- test_sbsaref_edk2_firmware
+Subject: Re: [PATCH 03/25] tests/lcitool: add swtpm to the package list
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -90,20 +89,20 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
  =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
 References: <20231009164104.369749-1-alex.bennee@linaro.org>
- <20231009164104.369749-3-alex.bennee@linaro.org>
+ <20231009164104.369749-4-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231009164104.369749-3-alex.bennee@linaro.org>
+In-Reply-To: <20231009164104.369749-4-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
 X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,28 +119,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/10/23 18:40, Alex Bennée wrote:
-> After testing locally I decided to revert a5754847e0 (tests/avocado: Disable the
-> test_sbsaref_edk2_firmware by default) as the test seems pretty
-> stable:
+> We need this to test some TPM stuff.
 > 
->     env QEMU_TEST_FLAKY_TESTS=1 retry.py -n 50 -c -- \
->       ./tests/venv/bin/avocado run \
->       ./tests/avocado/machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware
-> 
-> yields:
-> 
->    Results summary:
->    0: 50 times (100.00%), avg time 2.064 (0.04 varience/0.19 deviation)
->    Ran command 50 times, 50 passes
-> 
-> Maybe f0ec14c78c (tests/avocado: Fix console data loss) has made it
-> more reliable?
-> 
+> Message-Id: <20230925144854.1872513-3-alex.bennee@linaro.org>
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Cc: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->   tests/avocado/machine_aarch64_sbsaref.py | 1 -
->   1 file changed, 1 deletion(-)
+>   .gitlab-ci.d/cirrus/macos-12.vars                    | 2 +-
+>   tests/docker/dockerfiles/alpine.docker               | 1 +
+>   tests/docker/dockerfiles/centos8.docker              | 1 +
+>   tests/docker/dockerfiles/debian-amd64-cross.docker   | 1 +
+>   tests/docker/dockerfiles/debian-amd64.docker         | 1 +
+>   tests/docker/dockerfiles/debian-arm64-cross.docker   | 1 +
+>   tests/docker/dockerfiles/debian-armhf-cross.docker   | 1 +
+>   tests/docker/dockerfiles/debian-ppc64el-cross.docker | 1 +
+>   tests/docker/dockerfiles/debian-s390x-cross.docker   | 1 +
+>   tests/docker/dockerfiles/fedora-win32-cross.docker   | 1 +
+>   tests/docker/dockerfiles/fedora-win64-cross.docker   | 1 +
+>   tests/docker/dockerfiles/fedora.docker               | 1 +
+>   tests/docker/dockerfiles/opensuse-leap.docker        | 1 +
+>   tests/docker/dockerfiles/ubuntu2204.docker           | 1 +
+>   tests/lcitool/libvirt-ci                             | 2 +-
+>   tests/lcitool/projects/qemu.yml                      | 1 +
+>   16 files changed, 16 insertions(+), 2 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
