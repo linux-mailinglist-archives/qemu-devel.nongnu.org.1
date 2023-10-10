@@ -2,68 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32687BFBCE
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11EDA7BFBD7
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:55:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqCDA-0001LO-6J; Tue, 10 Oct 2023 08:51:44 -0400
+	id 1qqCGI-00033d-F4; Tue, 10 Oct 2023 08:54:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqCD6-0001HK-UN
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:51:40 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqCD5-0004Gb-Cm
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:51:40 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-406619b53caso52027265e9.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 05:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696942298; x=1697547098; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KsJArOHAN2cwtI11AhYTzL4+oI2lHJ+UTI21gazpbN8=;
- b=hcgJ06Tc+NP0Bd9QnR4GWr920WmONb1w+LpP8zuxutF0ejp2M/yw53g7QihbuQTcpG
- BuGq2j9I8laInUeioHOxk+ZYFCPhBoWe363Eucbte/vkTPM+NUMnAeWD+Ma3rCoxgV76
- /LBoixy++Fnl+ZeSOgSzqVARlKGRzQorUXN9Njngg0Ra+DXnVVF+at3wj219u8bX3i63
- 4L534ISbzq5iKrmWzaPx7XG3V37LJAobOcGR7npmkTarsCxjgvwfEnLScvi14VKQFen0
- bpL7UfW6zgkyw21taAAFkGL1cyQrzwsx9kkY3t9quwFnRXHz5YTZAifU24EBa2FgoW7z
- HPAg==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qqCGG-00032t-GJ
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:54:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qqCGE-0004aS-RJ
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:54:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696942493;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8BacrgWD88oDSDEhglwm757BdWPfVz2B2pwFsbjsHh4=;
+ b=Narj4Qa7IwspO1UI/Hfb7PVcVttsi4wY3C2Lo+UFTvNmr/raawFCnOtGCcUAwZl4mARJEx
+ GenDfsQNzolOMHlv3s3B+X9qAdX+SXRqT7X3jLIWbDzo3oO/5TzpKzsgKIBvkrOAq1fxaX
+ rSzOPn0hTOYnM2H2YP8WRTyuWXfeW04=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-JoIhYD6DO1m8cXcZufsBEQ-1; Tue, 10 Oct 2023 08:54:36 -0400
+X-MC-Unique: JoIhYD6DO1m8cXcZufsBEQ-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-58945463375so3413097a12.0
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 05:54:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696942298; x=1697547098;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KsJArOHAN2cwtI11AhYTzL4+oI2lHJ+UTI21gazpbN8=;
- b=j22aACjylhjO0yhetp8wEVpHOJsARGKZzgX3SWjK+oazKLGdEe2NnK/Pmk8vnCizxf
- 7DPAZtgLcAiS/xekrLqa0EQOWcqsTCxo1vJYHEps3bwhnp+GWbtgex8HEgOZW4fF7OR9
- fasbaPDjv+iA/ntU3SPhW6ybb8FyaotBqRYmJkFvCKLUM7l7kMo7eH71Rwx1dQ2UZ5Vz
- IYB1kjUW4GIW+q8XrlhH/TUF4yYIB3QbkvQRA6hSqLlZ1lixgi/GIWnIH2x8ccaeTXtE
- 14RvRLEbQMGm4G0OG4mZG46XEgfi2VPpSEMWjYxTB69LLeZ34Yw99yPXM3tTX0x0Vqly
- nL1A==
-X-Gm-Message-State: AOJu0YwRa8UqOoJEM1M2TDC49Bv6u5bUr8BYX+YcubFSjLDRV/RV/acy
- naVwfWoPm0wPPieOPc4dDTLqlA==
-X-Google-Smtp-Source: AGHT+IGNdEqXEpliabHovL3RMqX7oexLhy401JdrAvNJhJlKfNLF92/BRkk+YrEgoY5grKamEdcpuw==
-X-Received: by 2002:a05:600c:20b:b0:406:177e:5de8 with SMTP id
- 11-20020a05600c020b00b00406177e5de8mr16171604wmi.35.1696942297835; 
- Tue, 10 Oct 2023 05:51:37 -0700 (PDT)
-Received: from [192.168.69.115]
- (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
+ d=1e100.net; s=20230601; t=1696942476; x=1697547276;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8BacrgWD88oDSDEhglwm757BdWPfVz2B2pwFsbjsHh4=;
+ b=nS2cXSfF81lC6lN9zW0I8hqBuPGPA+u6LEc5N3pg3L7JbgeYk0pGydUP4qfB2PBIOi
+ f1XvvofuzDrHuAGFUQCkcwxkT6dYQqq9L5QWj0Dj6nhF96jtTxl7Ik8HTVUg2uJJ6vQj
+ 8Nwi3vUWX4dVHgqUIzJOOQzDc2FvxMPIuXRk3P5YHZtZLYJPY5NTuq8N3xtlbWS9dRxZ
+ 4u/oIzGsvsmjPcTXUuBmv2q1NQMQQN0AALEIPa0whtjdvH3DV4v6zk4OxwtmE52CP0Xx
+ 6xIPSuCjTCVi24ORvNOY4XMf9h6SEu/venmSPAsl5H8hRLQ64A8gqymh7r86YeT8Ix8t
+ g/dg==
+X-Gm-Message-State: AOJu0YypNkmFicRwzOp55IDHQbcF9geoESfKwTWmGaBGEUEKhOPS+wPV
+ ZEhaZCRcD6JacPI9AvjFJ8xubxaOq9kY9EnkMla7viS0J5RoopoSZcCpYkWYB9u6HU3p88SkQIm
+ v/2uROews12bMhSs=
+X-Received: by 2002:a05:6a20:daa6:b0:16c:13b1:2c6d with SMTP id
+ iy38-20020a056a20daa600b0016c13b12c6dmr10761775pzb.56.1696942475750; 
+ Tue, 10 Oct 2023 05:54:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQpooYqSbSW/K2x2mieRVLUSZ9F4Tg225a9KYDdefjLHeEa4f+WqtB9yzsa6jASTI8qs2PvA==
+X-Received: by 2002:a05:6a20:daa6:b0:16c:13b1:2c6d with SMTP id
+ iy38-20020a056a20daa600b0016c13b12c6dmr10761763pzb.56.1696942475466; 
+ Tue, 10 Oct 2023 05:54:35 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.109.49])
  by smtp.gmail.com with ESMTPSA id
- k21-20020adfb355000000b003296b913bbesm12065937wrd.12.2023.10.10.05.51.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 05:51:37 -0700 (PDT)
-Message-ID: <6c800198-6562-afef-8d48-8d23dd45c67f@linaro.org>
-Date: Tue, 10 Oct 2023 14:51:35 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 3/6] hw/display/vga: Clean up global variable shadowing
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-To: Ani Sinha <anisinha@redhat.com>
+ t8-20020a1709028c8800b001b7ffca7dbcsm11625378plo.148.2023.10.10.05.54.30
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 10 Oct 2023 05:54:35 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: Re: [PATCH v2 2/6] hw/loader: Clean up global variable shadowing in
+ rom_add_file()
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20231010115048.11856-3-philmd@linaro.org>
+Date: Tue, 10 Oct 2023 18:24:28 +0530
 Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -74,22 +81,21 @@ Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Eric Farman <farman@linux.ibm.com>,
  qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <23FA019B-28DA-491B-A9DF-C142A5C7DD84@redhat.com>
 References: <20231010115048.11856-1-philmd@linaro.org>
- <20231010115048.11856-4-philmd@linaro.org>
- <0FFB0F58-830E-47D6-BC07-E668EDE2692C@redhat.com>
- <5e31c60b-08f9-0bb5-b35b-849695364751@linaro.org>
-In-Reply-To: <5e31c60b-08f9-0bb5-b35b-849695364751@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ <20231010115048.11856-3-philmd@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,43 +111,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/23 14:50, Philippe Mathieu-Daudé wrote:
-> On 10/10/23 14:46, Ani Sinha wrote:
->>
->>
->>> On 10-Oct-2023, at 5:20 PM, Philippe Mathieu-Daudé 
->>> <philmd@linaro.org> wrote:
->>>
->>> Rename 'address_space' -> 'legacy_io' and
->>> 'address_space_io' -> 'io' to fix:
->>
->> This works but why not replace address_space with legacy_address_space 
->> instead?
-> 
-> I'd rather avoid using 'address_space' for MemoryRegion, since we
-> also have an AddressSpace type.
-> 
-> Besides, both regions are mapped in I/O space.
 
-That said, I should clarify that in the patch description.
 
-> 
->>
->>>
->>>   hw/display/vga.c:2307:29: error: declaration shadows a variable in 
->>> the global scope [-Werror,-Wshadow]
->>>                 MemoryRegion *address_space_io, bool init_vga_ports)
->>>                             ^
->>>   include/exec/address-spaces.h:35:21: note: previous declaration is 
->>> here
->>>   extern AddressSpace address_space_io;
->>>                       ^
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>> hw/display/vga_int.h |  4 ++--
->>> hw/display/vga.c     | 12 ++++++------
->>> 2 files changed, 8 insertions(+), 8 deletions(-)
-> 
+> On 10-Oct-2023, at 5:20 PM, Philippe Mathieu-Daud=C3=A9 =
+<philmd@linaro.org> wrote:
+>=20
+> Invert 'option_rom' logic and rename it as 'option_rom_has_mr' to fix:
+>=20
+>  hw/core/loader.c:1073:27: error: declaration shadows a variable in =
+the global scope [-Werror,-Wshadow]
+>                       bool option_rom, MemoryRegion *mr,
+>                            ^
+>  include/sysemu/sysemu.h:57:22: note: previous declaration is here
+>  extern QEMUOptionRom option_rom[MAX_OPTION_ROMS];
+>                       ^
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+
+> ---
+> include/hw/loader.h | 11 ++++++-----
+> hw/core/loader.c    | 10 +++++-----
+> 2 files changed, 11 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/include/hw/loader.h b/include/hw/loader.h
+> index c4c14170ea..9dbb9f7fdb 100644
+> --- a/include/hw/loader.h
+> +++ b/include/hw/loader.h
+> @@ -272,7 +272,8 @@ void pstrcpy_targphys(const char *name,
+>=20
+> ssize_t rom_add_file(const char *file, const char *fw_dir,
+>                      hwaddr addr, int32_t bootindex,
+> -                     bool option_rom, MemoryRegion *mr, AddressSpace =
+*as);
+> +                     bool option_rom_has_mr,
+> +                     MemoryRegion *mr, AddressSpace *as);
+> MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t =
+len,
+>                            size_t max_len, hwaddr addr,
+>                            const char *fw_file_name,
+> @@ -341,15 +342,15 @@ void *rom_ptr_for_as(AddressSpace *as, hwaddr =
+addr, size_t size);
+> void hmp_info_roms(Monitor *mon, const QDict *qdict);
+>=20
+> #define rom_add_file_fixed(_f, _a, _i)          \
+> -    rom_add_file(_f, NULL, _a, _i, false, NULL, NULL)
+> +    rom_add_file(_f, NULL, _a, _i, true, NULL, NULL)
+> #define rom_add_blob_fixed(_f, _b, _l, _a)      \
+>     rom_add_blob(_f, _b, _l, _l, _a, NULL, NULL, NULL, NULL, true)
+> #define rom_add_file_mr(_f, _mr, _i)            \
+> -    rom_add_file(_f, NULL, 0, _i, false, _mr, NULL)
+> +    rom_add_file(_f, NULL, 0, _i, true, _mr, NULL)
+> #define rom_add_file_as(_f, _as, _i)            \
+> -    rom_add_file(_f, NULL, 0, _i, false, NULL, _as)
+> +    rom_add_file(_f, NULL, 0, _i, true, NULL, _as)
+> #define rom_add_file_fixed_as(_f, _a, _i, _as)          \
+> -    rom_add_file(_f, NULL, _a, _i, false, NULL, _as)
+> +    rom_add_file(_f, NULL, _a, _i, true, NULL, _as)
+> #define rom_add_blob_fixed_as(_f, _b, _l, _a, _as)      \
+>     rom_add_blob(_f, _b, _l, _l, _a, NULL, NULL, NULL, _as, true)
+>=20
+> diff --git a/hw/core/loader.c b/hw/core/loader.c
+> index 4dd5a71fb7..f0d20fd776 100644
+> --- a/hw/core/loader.c
+> +++ b/hw/core/loader.c
+> @@ -1070,8 +1070,8 @@ static void *rom_set_mr(Rom *rom, Object *owner, =
+const char *name, bool ro)
+>=20
+> ssize_t rom_add_file(const char *file, const char *fw_dir,
+>                      hwaddr addr, int32_t bootindex,
+> -                     bool option_rom, MemoryRegion *mr,
+> -                     AddressSpace *as)
+> +                     bool option_rom_has_mr,
+> +                     MemoryRegion *mr, AddressSpace *as)
+> {
+>     MachineClass *mc =3D MACHINE_GET_CLASS(qdev_get_machine());
+>     Rom *rom;
+> @@ -1139,7 +1139,7 @@ ssize_t rom_add_file(const char *file, const =
+char *fw_dir,
+>                  basename);
+>         snprintf(devpath, sizeof(devpath), "/rom@%s", fw_file_name);
+>=20
+> -        if ((!option_rom || mc->option_rom_has_mr) && =
+mc->rom_file_has_mr) {
+> +        if ((option_rom_has_mr || mc->option_rom_has_mr) && =
+mc->rom_file_has_mr) {
+>             data =3D rom_set_mr(rom, OBJECT(fw_cfg), devpath, true);
+>         } else {
+>             data =3D rom->data;
+> @@ -1239,12 +1239,12 @@ int rom_add_elf_program(const char *name, =
+GMappedFile *mapped_file, void *data,
+>=20
+> ssize_t rom_add_vga(const char *file)
+> {
+> -    return rom_add_file(file, "vgaroms", 0, -1, true, NULL, NULL);
+> +    return rom_add_file(file, "vgaroms", 0, -1, false, NULL, NULL);
+> }
+>=20
+> ssize_t rom_add_option(const char *file, int32_t bootindex)
+> {
+> -    return rom_add_file(file, "genroms", 0, bootindex, true, NULL, =
+NULL);
+> +    return rom_add_file(file, "genroms", 0, bootindex, false, NULL, =
+NULL);
+> }
+>=20
+> static void rom_reset(void *unused)
+> --=20
+> 2.41.0
+>=20
 
 
