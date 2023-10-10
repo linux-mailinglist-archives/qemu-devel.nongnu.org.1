@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410D57BF754
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E3D7BF757
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:31:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq94Q-0000di-4G; Tue, 10 Oct 2023 05:30:32 -0400
+	id 1qq95C-0001ML-RB; Tue, 10 Oct 2023 05:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq943-0000aR-W3
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:08 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94F-0000ky-EM
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:22 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq941-0007wb-Lm
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:07 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-53d9f001b35so425655a12.2
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:30:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94B-00083f-8W
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:19 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9b1ebc80d0aso925420266b.0
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:30:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696930202; x=1697535002; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696930211; x=1697535011; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nwvgJq8V3A4EcSBga8/aE9oI0VJyJynq/QeqcrvxjMA=;
- b=M/FBDsV3WEJI1A2p7uD+1WX1INrQn74vsji79O3GzNBLd5NxGjckQwL2nQW4LNdcK+
- JhX/5mkw60VTHUphOuVX8EzKukuFoEXbFtLmajNwVqt9We1amZbgYTlK1ljtTrvbA3Rb
- svxMHhw2VsaKbUOrQ2QRLKQVadpNk+7oVDD3i5zdEl+5ZMhE7qUrkRSKDQd3UOerHJQb
- MqHErIuRuDmkoLc2MuJOVjrVi1lv4FiYc+Jqc3m0C7x0qUh51cAvOTV/4JyDi3ZGnnuX
- 5KDmSfmU8UAjLPmXDqORq9t6cEpSumxiVkb3YfegWbwcblTWWvjfLQAJaymhj0XMmrxE
- vt0Q==
+ bh=7/Dazi2VzLCUVkcADynMQnmNFinEpKaq76+gzFIU2vQ=;
+ b=dFh3/cNe+On7xhRCW8nuZ6RCMK46Ax5YXxIYv8IepPwWGll2phVbZL1lwX3fwSwFLF
+ xjudtckYYeoqxE6hVpJqNbVXj8klHG5Ouh8TDp8hCXdPlRW13IyVMYrUvNr/BYyEOjI2
+ QL7OS3stmrQ63c+syx/e0FrQRDQ5EE1Te5isVHGG/Z6Kzd6rl40Cuo5O/tX9ApxovvhR
+ A5sD1XX2m5Go6t7XfauS9xfMQ0tUtSpYJKrsr2VRsVrEVGFZe9k4BUct4SnaZLm7qIHw
+ 8zZv94AXXErcyAwbUM2Hl+ex1zlDdA8msxG6GkW2DwRMn2WLByjHbb6h2N33/ZFFUwdo
+ 2DYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696930202; x=1697535002;
+ d=1e100.net; s=20230601; t=1696930211; x=1697535011;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nwvgJq8V3A4EcSBga8/aE9oI0VJyJynq/QeqcrvxjMA=;
- b=Z5wssl2/iPtFcnEbIGfmIqykHWM9ZzAAHwwJU9RYI5jdbK99ZCFbK6gJoooWWVT1cB
- X6bccO+uXwM8m9MqHGBdckFs08m/NEnxC7cw7wAqe2ZVcWJbb99Wmc56PxN6fqO3aZU4
- y6Azid4kkxMrPCHs0na4T4PENSAnFZEWmqcT/ISELwHftNOc4gD/jWorrWyYKqCyWM9h
- x0WBcqL3VgvyiptWYfKySVJFCm0M4rjy2P7RoKNhEKJpR4VTs7+kXPJCbvLFM4Hf6GOH
- zMnORFonIKSuXSZ7T4vm8WOx3qXLgzcEUpJuXRB7rlT42F0L9Ou3p7Xp0Q41SEgz6keS
- ZnOQ==
-X-Gm-Message-State: AOJu0Yw8qRPxHkeJUemG+BcNIbAhxrvDjhzrRxiWQOTe8/fUDDr7/sFZ
- qi7WtRFcbWfhYz3tUHt2KzMO+fT/ikACh0MewhD0zQ==
-X-Google-Smtp-Source: AGHT+IH4/C4D6JfPun4dMXVKZAGAn9crmf37YYJDsdbEGK20EOz0gS74xCscGbGx9qvPr9SAuMR6ww==
-X-Received: by 2002:a17:907:7790:b0:9b9:facb:d950 with SMTP id
- ky16-20020a170907779000b009b9facbd950mr9601202ejc.72.1696930202689; 
- Tue, 10 Oct 2023 02:30:02 -0700 (PDT)
+ bh=7/Dazi2VzLCUVkcADynMQnmNFinEpKaq76+gzFIU2vQ=;
+ b=Xxc/PSk1wEdyMbXVC5n13bHdXVfiOp9cJdHj1V4DSE/vIYF2M+b3BBIRLgJh35tgvE
+ r9+qEnclzBWI7iXQmm1RphYRXPtCYpKH0ZEZA3j5LgfYjNL8XtiYy2/lvbtHfz/dIfqB
+ dIJ8tcowcOe3jH5qFics1nijHqcytCLo9uDdhBdFY3GFFB7omNI1XB3helsrwfV/ZuLn
+ vimbEWjO5CIxQJnZkEqIOCPlnFE9OtjpRjGvYyko/hVVKEIV2VYwr2jzIWotWdZyB7sf
+ DA/b/Mk7euK7tE8crq9dTvsFXnVR6hNgeOH9tvJ5oid7d0qo/FIymWjLkL6rDUZglOef
+ /yng==
+X-Gm-Message-State: AOJu0YwcfeNf25Yk7x4Vvif0zmJ27Us4/fR1JKAbIi+tH88yfMBZOh6P
+ asUELa8VPKAlf3njqV9r44hECUiiM+MolWDVi1LkJw==
+X-Google-Smtp-Source: AGHT+IFHssq17A3NQW5cP9e5gb+hqJWg8Jf9CvZJzbj+LSlF9LhUBGLXRGpVvOxMbr2W1pGU22EbtQ==
+X-Received: by 2002:a17:907:2704:b0:9ae:961a:de81 with SMTP id
+ w4-20020a170907270400b009ae961ade81mr14194859ejk.27.1696930210993; 
+ Tue, 10 Oct 2023 02:30:10 -0700 (PDT)
 Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
  [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- v19-20020a1709064e9300b00988e953a586sm8108187eju.61.2023.10.10.02.29.58
+ n12-20020a170906378c00b009ade1a4f795sm8142642ejc.168.2023.10.10.02.30.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 02:30:02 -0700 (PDT)
+ Tue, 10 Oct 2023 02:30:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -87,24 +87,24 @@ Cc: David Hildenbrand <david@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-Subject: [PATCH 07/18] target/nios2: Declare QOM definitions in 'cpu-qom.h'
-Date: Tue, 10 Oct 2023 11:28:49 +0200
-Message-ID: <20231010092901.99189-8-philmd@linaro.org>
+Subject: [PATCH 08/18] target/openrisc: Declare QOM definitions in 'cpu-qom.h'
+Date: Tue, 10 Oct 2023 11:28:50 +0200
+Message-ID: <20231010092901.99189-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231010092901.99189-1-philmd@linaro.org>
 References: <20231010092901.99189-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,42 +132,46 @@ Extract QOM definitions from "cpu.h" to "cpu-qom.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/nios2/cpu-qom.h | 32 ++++++++++++++++++++++++++++++++
- target/nios2/cpu.h     | 22 +---------------------
- 2 files changed, 33 insertions(+), 21 deletions(-)
- create mode 100644 target/nios2/cpu-qom.h
+ target/openrisc/cpu-qom.h | 36 ++++++++++++++++++++++++++++++++++++
+ target/openrisc/cpu.h     | 26 +-------------------------
+ 2 files changed, 37 insertions(+), 25 deletions(-)
+ create mode 100644 target/openrisc/cpu-qom.h
 
-diff --git a/target/nios2/cpu-qom.h b/target/nios2/cpu-qom.h
+diff --git a/target/openrisc/cpu-qom.h b/target/openrisc/cpu-qom.h
 new file mode 100644
-index 0000000000..0bcf2c724f
+index 0000000000..d1930acb74
 --- /dev/null
-+++ b/target/nios2/cpu-qom.h
-@@ -0,0 +1,32 @@
++++ b/target/openrisc/cpu-qom.h
+@@ -0,0 +1,36 @@
 +/*
-+ * QEMU Nios II CPU QOM header (target agnostic)
++ * QEMU OpenRISC CPU QOM header (target agnostic)
 + *
-+ * Copyright (c) 2012 Chris Wulff <crwulff@gmail.com>
++ * Copyright (c) 2011-2012 Jia Liu <proljc@gmail.com>
 + *
 + * SPDX-License-Identifier: LGPL-2.1-or-later
 + */
 +
-+#ifndef QEMU_NIOS2_CPU_QOM_H
-+#define QEMU_NIOS2_CPU_QOM_H
++#ifndef QEMU_OPENRISC_CPU_QOM_H
++#define QEMU_OPENRISC_CPU_QOM_H
 +
 +#include "hw/core/cpu.h"
 +#include "qom/object.h"
 +
-+#define TYPE_NIOS2_CPU "nios2-cpu"
++#define TYPE_OPENRISC_CPU "or1k-cpu"
 +
-+OBJECT_DECLARE_CPU_TYPE(Nios2CPU, Nios2CPUClass, NIOS2_CPU)
++OBJECT_DECLARE_CPU_TYPE(OpenRISCCPU, OpenRISCCPUClass, OPENRISC_CPU)
++
++#define OPENRISC_CPU_TYPE_SUFFIX "-" TYPE_OPENRISC_CPU
++#define OPENRISC_CPU_TYPE_NAME(model) model OPENRISC_CPU_TYPE_SUFFIX
 +
 +/**
-+ * Nios2CPUClass:
++ * OpenRISCCPUClass:
++ * @parent_realize: The parent class' realize handler.
 + * @parent_phases: The parent class' reset phase handlers.
 + *
-+ * A Nios2 CPU model.
++ * A OpenRISC CPU model.
 + */
-+struct Nios2CPUClass {
++struct OpenRISCCPUClass {
 +    CPUClass parent_class;
 +
 +    DeviceRealize parent_realize;
@@ -175,36 +179,34 @@ index 0000000000..0bcf2c724f
 +};
 +
 +#endif
-diff --git a/target/nios2/cpu.h b/target/nios2/cpu.h
-index 70b6377a4f..e19e12b2a6 100644
---- a/target/nios2/cpu.h
-+++ b/target/nios2/cpu.h
-@@ -21,35 +21,15 @@
- #ifndef NIOS2_CPU_H
- #define NIOS2_CPU_H
+diff --git a/target/openrisc/cpu.h b/target/openrisc/cpu.h
+index 334997e9a1..2dccd67378 100644
+--- a/target/openrisc/cpu.h
++++ b/target/openrisc/cpu.h
+@@ -20,33 +20,12 @@
+ #ifndef OPENRISC_CPU_H
+ #define OPENRISC_CPU_H
  
 +#include "cpu-qom.h"
  #include "exec/cpu-defs.h"
+ #include "fpu/softfloat-types.h"
 -#include "hw/core/cpu.h"
- #include "hw/registerfields.h"
 -#include "qom/object.h"
  
- typedef struct CPUArchState CPUNios2State;
- #if !defined(CONFIG_USER_ONLY)
- #include "mmu.h"
- #endif
+ #define TCG_GUEST_DEFAULT_MO (0)
  
--#define TYPE_NIOS2_CPU "nios2-cpu"
+-#define TYPE_OPENRISC_CPU "or1k-cpu"
 -
--OBJECT_DECLARE_CPU_TYPE(Nios2CPU, Nios2CPUClass, NIOS2_CPU)
+-OBJECT_DECLARE_CPU_TYPE(OpenRISCCPU, OpenRISCCPUClass, OPENRISC_CPU)
 -
 -/**
-- * Nios2CPUClass:
+- * OpenRISCCPUClass:
+- * @parent_realize: The parent class' realize handler.
 - * @parent_phases: The parent class' reset phase handlers.
 - *
-- * A Nios2 CPU model.
+- * A OpenRISC CPU model.
 - */
--struct Nios2CPUClass {
+-struct OpenRISCCPUClass {
 -    /*< private >*/
 -    CPUClass parent_class;
 -    /*< public >*/
@@ -213,9 +215,26 @@ index 70b6377a4f..e19e12b2a6 100644
 -    ResettablePhases parent_phases;
 -};
 -
- #define TARGET_HAS_ICE 1
+ #define TARGET_INSN_START_EXTRA_WORDS 1
  
- /* Configuration options for Nios II */
+ enum {
+@@ -308,7 +287,6 @@ struct ArchCPU {
+     CPUOpenRISCState env;
+ };
+ 
+-
+ void cpu_openrisc_list(void);
+ void openrisc_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
+ int openrisc_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+@@ -343,8 +321,6 @@ void cpu_openrisc_count_start(OpenRISCCPU *cpu);
+ void cpu_openrisc_count_stop(OpenRISCCPU *cpu);
+ #endif
+ 
+-#define OPENRISC_CPU_TYPE_SUFFIX "-" TYPE_OPENRISC_CPU
+-#define OPENRISC_CPU_TYPE_NAME(model) model OPENRISC_CPU_TYPE_SUFFIX
+ #define CPU_RESOLVING_TYPE TYPE_OPENRISC_CPU
+ 
+ #include "exec/cpu-all.h"
 -- 
 2.41.0
 
