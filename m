@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25597BF4E8
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 664417BF4DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:53:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq7Y0-0004Zi-QY; Tue, 10 Oct 2023 03:52:56 -0400
+	id 1qq7Y2-0004aM-8i; Tue, 10 Oct 2023 03:52:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7Xw-0004Us-83; Tue, 10 Oct 2023 03:52:52 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qq7Xz-0004Yi-G3; Tue, 10 Oct 2023 03:52:56 -0400
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7Xu-0005FR-GH; Tue, 10 Oct 2023 03:52:51 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-690f7bf73ddso3641875b3a.2; 
- Tue, 10 Oct 2023 00:52:49 -0700 (PDT)
+ id 1qq7Xx-0005Fv-FN; Tue, 10 Oct 2023 03:52:54 -0400
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-7b5fd3d0d7eso199053241.0; 
+ Tue, 10 Oct 2023 00:52:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696924368; x=1697529168; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=roiz7qd4xg9b3Dt4lev8OwLhxv+44QA0qcR8ZsTk0kg=;
- b=AeVg++xf02rARwMCaPY89pn5kWw7MiMKltAZwiMvV3xFU7xPiySoNZykbq3qOIPpYh
- qgXWT444eN9LxFLOKJ55clNIWgKTPf0pRQUiNdNULcX7Fqq2jHVoCWQYnQkj33hPAaC1
- FuCnFakauFNlEOA68tgu+VaE19I/MO9xuxV0YEaOYlUsntji1rzww9dUbcVsFpbs8RNz
- ZVXiUOlSl44h+Uq2kjIy27dl/B/yey42aP5HozctRNKje3ewpE9hod5MbCZ9YgrMi/lK
- LJ/HyW8o13maF5IVRf4/2Upx2eiQFGAOD+8SFd6OcCqwMyeKlIqKaXcRm6a6fsvxMKtU
- HuZg==
+ d=gmail.com; s=20230601; t=1696924372; x=1697529172; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jqOeK0/4KlKokdTq+gvtYVKstLq2Zxm+SQKNVRGnoUw=;
+ b=elog3bUZmKk1Hn4JITSbCXtrQON1b9cta5647ZML9mnXV+ZdykLr80IuhpFuIGvMG+
+ OEV7R9/1eGQcKvhLuYrdEP6e1UsTy/B2KMfuqp4LA0wnWjV2vO/ek/K3kF9DdejoR1EK
+ 1lEUdFlEir6ZUEkNqhbI1ex+JFoCFG0wIXnxAurP02ymt9n+J776f4o7S6PRGnMLNTJp
+ nG35TEe3DQUpB56iQhlSltVX15KPXfsaSpk/1N33tnEKxqLV3URGZ1dWfbOiyJJbOdJW
+ 3X4Frn3RKtBXtMA4/wLNUtzhiXGvaHG35E5unLSzHqfms52CG0ErTclvvvZfULIXeLIy
+ CVIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696924368; x=1697529168;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=roiz7qd4xg9b3Dt4lev8OwLhxv+44QA0qcR8ZsTk0kg=;
- b=gYb0fXqbGTWpZdC+VMekhIs8t6CRtF8Nfeyx7Za4LTEpuVBpm5YA0KJ3UFb2XH1+xU
- HSMB03bqzZa8KKZP9x7Dv8GYRhK7FXpSwqUrQhxKowPDAs+RJW7SJkCOEfnzQxeCWGtE
- bPzadHDwQ7Fk/n/n11wFZwQ4eq/FEVUmqu3+M1fPkfAP71z9zVU9fuH/4UmZNkKCsfQx
- /Eee03fHn/k026VNWlNAwCnOgjlUuYGxmyq1UFqcAGGUCPbfeB8xr+eq+AJkd5dSXrFw
- cWMCDamVhGdqJco2utEs+Gn233dAdCVttbnI94kKI5VfRTMT3bEVSB4rMpvH4Biohe95
- DKIQ==
-X-Gm-Message-State: AOJu0Yxnurk7+rqDLmG7KQ5e65171rUhpcNzgfhHd6yX2DbmP4/tZvTW
- /F6MeDeCekRNMN//qN0XyGT1oPzZBRw=
-X-Google-Smtp-Source: AGHT+IFKR1QifVOztIOFwRLUSfdIyAAjf4Z0Op5L96WFRxYdv/23asvxFFkfvW6BP7Mz1E02PPaMIQ==
-X-Received: by 2002:a05:6a20:12d6:b0:13d:a903:88e6 with SMTP id
- v22-20020a056a2012d600b0013da90388e6mr18402510pzg.48.1696924367881; 
- Tue, 10 Oct 2023 00:52:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696924372; x=1697529172;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jqOeK0/4KlKokdTq+gvtYVKstLq2Zxm+SQKNVRGnoUw=;
+ b=g+xuEm8s3Q+G5y5YqyAHzmunbhgOf0UGYdZa15ryyzCWiAdEfBUCmXcl9JDBkxl2NG
+ YIFW8MIGoBGvq1f9O3CCKijxxnIeIUvsVA0DS1NuF/0En9abk0MpMjlERr4BfrigvTd4
+ YiIAXQZidHUfgb5Y7BHGuK/qJN410R5GpCiQ1XTicOhx9+sZ2H6m7/eRfSqLbxKFPTWs
+ MwLc8x4rTjn8/2NUa8s4QPWwspEHJrBF/1+LZoi3V887aztmmTvYKX5p/nyzLMwNM73S
+ v9RlPxuoth5kmDAYtiSlpV0ONsUNPZ18zx7OLu6WdMUGv+AA4YXmTSkRHvFvv7IwVJtw
+ Fr2g==
+X-Gm-Message-State: AOJu0YyIyChOnA2TdFjMa5pLgBXXKgznL5OuuVrMs7o6x2bwByQgd5uM
+ QGxwnNTk1QMIi7CvkiTskvZlao0WvEY=
+X-Google-Smtp-Source: AGHT+IGSxfNKGu2U1uIoBjwkp81iseKPFUM6R9ESwpnxxVH4M+PutpazvrFa3PGHu7/G5wiwE0MOOg==
+X-Received: by 2002:a1f:ddc2:0:b0:49a:36e4:5565 with SMTP id
+ u185-20020a1fddc2000000b0049a36e45565mr13319788vkg.16.1696924371714; 
+ Tue, 10 Oct 2023 00:52:51 -0700 (PDT)
 Received: from wheely.local0.net (27-33-247-209.tpgi.com.au. [27.33.247.209])
  by smtp.gmail.com with ESMTPSA id
- a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.52.44
+ a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.52.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 00:52:47 -0700 (PDT)
+ Tue, 10 Oct 2023 00:52:51 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Subject: [RFC PATCH 00/11] ppc: avocado test additions and new defaults
-Date: Tue, 10 Oct 2023 17:52:27 +1000
-Message-ID: <20231010075238.95646-1-npiggin@gmail.com>
+Subject: [RFC PATCH 01/11] tests/avocado: ppc add powernv10 boot_linux_console
+ test
+Date: Tue, 10 Oct 2023 17:52:28 +1000
+Message-ID: <20231010075238.95646-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231010075238.95646-1-npiggin@gmail.com>
+References: <20231010075238.95646-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=npiggin@gmail.com; helo=mail-ua1-x936.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,61 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry for going missing for a while, had a few things on but have
-been working on figuring out testing and git setup to get some
-things merged.
+Add a powernv POWER10 variant for boot_linux_console.py.
 
-To start with I'd like to add a few more tests. Since most of my
-own tests for missing bits (like KVM backend) are mostly just
-ad hoc scripts, I thought adding them to avocado is a better idea.
-Comments on those in particular from CI gurus would be welcome,
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ tests/avocado/boot_linux_console.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-patch 4, because it boots a Alpine distro image and installs a
-QEMU package via its package manager.
-
-patch 5, because it grabs some Linux kernel images I put up on
-another gitlab page.
-
-patch 6, because it adds a FreeBSD boot test.
-
-patch 7/8, because they add tests for non-public images (flames
-welcome).
-
-Thanks,
-Nick
-
-Nicholas Piggin (11):
-  tests/avocado: ppc add powernv10 boot_linux_console test
-  tests/avocado: Add ppc pseries and powernv Hash MMU tests
-  tests/avocado: Add pseries KVM boot_linux test
-  tests/avocado: ppc add hypervisor tests
-  testing/avocado: ppc add new BookE boot_linux_console.py tests
-  tests/avocado: Add FreeBSD distro boot tests for ppc
-  tests/avocado: Add ppc boot tests for non-free AIX images
-  tests/avocado: Add ppc MacOS tests
-  tests/avocado: Use default CPU for pseries machine
-  ppc/spapr: change pseries machine default to POWER10 CPU
-  ppc/pnv: Change powernv default to powernv10
-
- hw/ppc/pnv.c                        |   4 +-
- hw/ppc/spapr.c                      |   2 +-
- tests/avocado/boot_freebsd.py       | 109 ++++++++++++++++++
- tests/avocado/boot_linux.py         |   9 ++
- tests/avocado/boot_linux_console.py |  61 ++++++++++
- tests/avocado/migration.py          |   1 -
- tests/avocado/ppc/macos9.ppm        | Bin 0 -> 921615 bytes
- tests/avocado/ppc_aix.py            |  63 ++++++++++
- tests/avocado/ppc_hv_tests.py       | 173 ++++++++++++++++++++++++++++
- tests/avocado/ppc_macos.py          |  90 +++++++++++++++
- tests/avocado/ppc_powernv.py        |  21 +++-
- tests/avocado/ppc_pseries.py        |  20 +++-
- 12 files changed, 543 insertions(+), 10 deletions(-)
- create mode 100644 tests/avocado/boot_freebsd.py
- create mode 100644 tests/avocado/ppc/macos9.ppm
- create mode 100644 tests/avocado/ppc_aix.py
- create mode 100644 tests/avocado/ppc_hv_tests.py
- create mode 100644 tests/avocado/ppc_macos.py
-
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index 01ee149812..9434304cd3 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -1393,6 +1393,14 @@ def test_ppc_powernv9(self):
+         """
+         self.do_test_ppc64_powernv('P9')
+ 
++    def test_ppc_powernv10(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv10
++        :avocado: tags=accel:tcg
++        """
++        self.do_test_ppc64_powernv('P10')
++
+     def test_ppc_g3beige(self):
+         """
+         :avocado: tags=arch:ppc
 -- 
 2.42.0
 
