@@ -2,83 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EB97BFB7D
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2948B7BFB7C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:32:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBuU-000623-93; Tue, 10 Oct 2023 08:32:26 -0400
+	id 1qqBue-0006Lv-Qr; Tue, 10 Oct 2023 08:32:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBtm-0005xy-OR
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:31:45 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qqBuY-0006IC-IW; Tue, 10 Oct 2023 08:32:30 -0400
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBti-0008Gi-Iw
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:31:40 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9ad8a822508so1021399566b.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 05:31:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qqBuW-0008KW-8z; Tue, 10 Oct 2023 08:32:30 -0400
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-41b2bf4e9edso8467681cf.1; 
+ Tue, 10 Oct 2023 05:32:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696941096; x=1697545896; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UJRG2/nXygBJomj7vxNPgHouTBSJNJpQptVOCZpwxHg=;
- b=zUwjyd9TcwzIdXa9Gg+zKbcV8MxD++PYBBJ6ykeZJdHcrMaanrCF3Fh4XPz9P+9DCO
- 1S4WNXseUbxXCjEa/evjnbVeJVcE0BjjlNiztcKhFpFY3GiczdkbNju4wnvu7JaoPSWZ
- iX+v4AoSRKmEdg7jZLvFa9xvhj3tiNXLo/0zgcBDiGCPTW3vCzVslRrD48it1Tmi70lE
- BX99T5fqumhPJnT6emvjO6GgTPozEccLOTpAXXlwWhkJrhTZIFjoMfxN9gLLuOCG9uox
- gCcyjHLctG4BNEMP3VTH7+eqJl2IqHVJHkKoGLZyUBYg4/CChKYzSeEerdVPGp2103OP
- fi/A==
+ d=jms.id.au; s=google; t=1696941146; x=1697545946; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fnNg1WWEKE4nbQnSe80qpKag1DGJWcbRH3ffujcOVKg=;
+ b=IjHqmVYvrSqKVJ4eQ3VL/ay9lYdORtGF0EbS+2th2p/IaT5k/LkZ02nrjUkXSC15Xj
+ l5SurQgvD26jlghKvg6BKJwHClKNzo2OC83uMxuXWw7QUJVHbl/+qGv9/ek9D6xUECMl
+ An751e1z8b8jNHm7HWCMZR7omVxpLo47rle24=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696941096; x=1697545896;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UJRG2/nXygBJomj7vxNPgHouTBSJNJpQptVOCZpwxHg=;
- b=ITIorD5yJN+hh/ldQ/u+eqY1HGz6JiRF4hS62ZLy3R3ADOjexR76sD0QNXr2NvVSn2
- MzRWtOQ2Mr3rR7XFOyLs5xDXs1XpKbkShj8lj7Qb3UEqgdZI2gd1DmMWkrrhesL8xWYT
- tSsqYx9qXSsHpz0q+DT+IqlKEiWkXeFsao0R1ZNzW4mDiK8JW48vhxRXmiKm98o1k2Gg
- M6wPsDmy3EWKLFk3qhCeBmuSd/Cg2iu/Hb7awL/V81I9Lx94KLtCd+rvscQgGCJAKF4K
- t2r0o14yNdLAAJkDHK/PalUYVK/HW2obPq1kkPuiAQiAtSI0r6EUtzTIjk3MS1NMWj0q
- rF3A==
-X-Gm-Message-State: AOJu0Yz4ZfPAAaAiZeobIWJiZA+hznl8X5CIMKp6G3Yhu1wmF7w6GuRQ
- nBKMESZiy7vap4f3q5IhryWDBg==
-X-Google-Smtp-Source: AGHT+IHuuC0nRVWsl79Nl8Jdihcmr9IUOkYh2Q/P4blHvwTt5hIOhcscrT5yFmzRwbnJ+VW+5u/C6Q==
-X-Received: by 2002:a17:906:24d:b0:9a5:ca42:f3a9 with SMTP id
- 13-20020a170906024d00b009a5ca42f3a9mr17966681ejl.2.1696941096663; 
- Tue, 10 Oct 2023 05:31:36 -0700 (PDT)
-Received: from [192.168.69.115]
- (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
- by smtp.gmail.com with ESMTPSA id
- l17-20020a170906415100b009a1dbf55665sm8256466ejk.161.2023.10.10.05.31.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 05:31:36 -0700 (PDT)
-Message-ID: <d974a344-5d33-734d-26c4-aff921bd92d6@linaro.org>
-Date: Tue, 10 Oct 2023 14:31:34 +0200
+ d=1e100.net; s=20230601; t=1696941146; x=1697545946;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fnNg1WWEKE4nbQnSe80qpKag1DGJWcbRH3ffujcOVKg=;
+ b=X7r8Kb77GoRkiFwEiyIccLUhBTCah9oY8lB0lEe5h1k4dGWPqSp+qhpdgIhQd+2klD
+ Nnu75Z2m9H2vaziloDAoVP40T9KEejWczRaT4GJDpQLOTUokWN8BxoAFiv03fnbvKvaf
+ 8WcaxM9Lss6tILn2jxbxYIxyrWGpUCvrYMVdsXZ2GzJHQVBnEaoZ7mbB2TD178lcoiK2
+ jTNIXAbkfBA17GKyfcxKZpt/iUuQ+s+tk5xNIIMlDzvkPQMlIBs33de7Qy0sE2Rd2TXq
+ KWuTDmduf/w2VQWdeL9arBk7WNz+4xYGAWL4DlKtLuMtsuqBmtDfIq0Puxc14du3ABXa
+ BQtw==
+X-Gm-Message-State: AOJu0Yy1gffa3/EylK3EqGuqmP3Tui9hlgvuGxkBVOoc2e29d/2OziQy
+ UrYmsTusjUKadOQRDf01HFJErftuSFFChjJddJg=
+X-Google-Smtp-Source: AGHT+IF1mbKI0muT+a740RrkUnR9gLPC06ldWjq9lz0pi0b1IaAwfX0OYQrjDysu8WSS+Mxntxo3SmRxpoTgvQ+qKlw=
+X-Received: by 2002:a05:622a:142:b0:412:1c5f:478b with SMTP id
+ v2-20020a05622a014200b004121c5f478bmr21741987qtw.15.1696941146469; Tue, 10
+ Oct 2023 05:32:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v17 12/16] softmmu: Export qemu_ram_ptr_length
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: fei2.wu@intel.com
-References: <20231003183058.1639121-1-richard.henderson@linaro.org>
- <20231003183058.1639121-13-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231003183058.1639121-13-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+References: <20231005204129.3522685-1-milesg@linux.vnet.ibm.com>
+In-Reply-To: <20231005204129.3522685-1-milesg@linux.vnet.ibm.com>
+From: Joel Stanley <joel@jms.id.au>
+Date: Tue, 10 Oct 2023 23:02:13 +1030
+Message-ID: <CACPK8XfLSBGJvV340SN3V442YgRNS3rHXSDGFeGAyx5r1wE-9A@mail.gmail.com>
+Subject: Re: [PATCH v2] misc/pca9552: Let external devices set pca9552 inputs
+To: Glenn Miles <milesg@linux.vnet.ibm.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, andrew@codeconstruct.com.au
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=joel.stan@gmail.com; helo=mail-qt1-x82c.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,46 +83,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/10/23 20:30, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On Fri, 6 Oct 2023 at 07:23, Glenn Miles <milesg@linux.vnet.ibm.com> wrote:
+>
+> Allow external devices to drive pca9552 input pins by adding
+> input GPIO's to the model.  This allows a device to connect
+> its output GPIO's to the pca9552 input GPIO's.
+>
+> In order for an external device to set the state of a pca9552
+> pin, the pin must first be configured for high impedance (LED
+> is off).  If the pca9552 pin is configured to drive the pin low
+> (LED is on), then external input will be ignored.
+
+Does this let us use qom-set from the monitor, and have the guest see
+the state change?
+
+An example in the commit message, or even better would be a test.
+
+Some other comments below.
+
+>
+> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 > ---
->   include/exec/memory.h | 2 ++
->   softmmu/physmem.c     | 4 ++--
->   2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/exec/memory.h b/include/exec/memory.h
-> index ef23d65afc..ebdecf64a6 100644
-> --- a/include/exec/memory.h
-> +++ b/include/exec/memory.h
-> @@ -2874,6 +2874,8 @@ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
->                                      hwaddr len, hwaddr addr1, hwaddr l,
->                                      MemoryRegion *mr);
->   void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr);
-> +void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-> +                          hwaddr *size, bool lock);
->   
->   /* Internal functions, part of the implementation of address_space_read_cached
->    * and address_space_write_cached.  */
-> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> index 309653c722..69a853c27a 100644
-> --- a/softmmu/physmem.c
-> +++ b/softmmu/physmem.c
-> @@ -2182,8 +2182,8 @@ void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)
->    *
->    * Called within RCU critical section.
->    */
-> -static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-> -                                 hwaddr *size, bool lock)
-> +void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-> +                          hwaddr *size, bool lock)
->   {
->       RAMBlock *block = ram_block;
->       if (*size == 0) {
+> Based-on: <20230927203221.3286895-1-milesg@linux.vnet.ibm.com>
+> ([PATCH] misc/pca9552: Fix inverted input status)
+>  hw/misc/pca9552.c         | 39 ++++++++++++++++++++++++++++++++++-----
+>  include/hw/misc/pca9552.h |  3 ++-
+>  2 files changed, 36 insertions(+), 6 deletions(-)
+>
+> diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+> index ad811fb249..f28b5ecd7e 100644
+> --- a/hw/misc/pca9552.c
+> +++ b/hw/misc/pca9552.c
+> @@ -113,16 +113,22 @@ static void pca955x_update_pin_input(PCA955xState *=
+s)
+>          switch (config) {
+>          case PCA9552_LED_ON:
+>              /* Pin is set to 0V to turn on LED */
+> -            qemu_set_irq(s->gpio[i], 0);
+> +            qemu_set_irq(s->gpio_out[i], 0);
+>              s->regs[input_reg] &=3D ~(1 << input_shift);
+>              break;
+>          case PCA9552_LED_OFF:
+>              /*
+>               * Pin is set to Hi-Z to turn off LED and
+> -             * pullup sets it to a logical 1.
+> +             * pullup sets it to a logical 1 unless
+> +             * external device drives it low.
+>               */
+> -            qemu_set_irq(s->gpio[i], 1);
+> -            s->regs[input_reg] |=3D 1 << input_shift;
+> +            if (s->ext_state[i] =3D=3D 0) {
+> +                qemu_set_irq(s->gpio_out[i], 0);
+> +                s->regs[input_reg] &=3D ~(1 << input_shift);
+> +            } else {
+> +                qemu_set_irq(s->gpio_out[i], 1);
+> +                s->regs[input_reg] |=3D 1 << input_shift;
+> +            }
+>              break;
+>          case PCA9552_LED_PWM0:
+>          case PCA9552_LED_PWM1:
+> @@ -337,6 +343,7 @@ static const VMStateDescription pca9552_vmstate =3D {
+>          VMSTATE_UINT8(len, PCA955xState),
+>          VMSTATE_UINT8(pointer, PCA955xState),
+>          VMSTATE_UINT8_ARRAY(regs, PCA955xState, PCA955X_NR_REGS),
+> +        VMSTATE_UINT8_ARRAY(ext_state, PCA955xState, PCA955X_PIN_COUNT_M=
+AX),
+>          VMSTATE_I2C_SLAVE(i2c, PCA955xState),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -355,6 +362,7 @@ static void pca9552_reset(DeviceState *dev)
+>      s->regs[PCA9552_LS2] =3D 0x55;
+>      s->regs[PCA9552_LS3] =3D 0x55;
+>
+> +    memset(s->ext_state, 1, PCA955X_PIN_COUNT_MAX);
+>      pca955x_update_pin_input(s);
+>
+>      s->pointer =3D 0xFF;
+> @@ -377,6 +385,26 @@ static void pca955x_initfn(Object *obj)
+>      }
+>  }
+>
+> +static void pca955x_set_ext_state(PCA955xState *s, int pin, int level)
+> +{
+> +    if (s->ext_state[pin] !=3D level) {
+> +        uint16_t pins_status =3D pca955x_pins_get_status(s);
+> +        s->ext_state[pin] =3D level;
+> +        pca955x_update_pin_input(s);
+> +        pca955x_display_pins_status(s, pins_status);
+> +    }
+> +}
+> +
+> +static void pca955x_gpio_in_handler(void *opaque, int pin, int level)
+> +{
+> +
+> +    PCA955xState *s =3D PCA955X(opaque);
+> +    PCA955xClass *k =3D PCA955X_GET_CLASS(s);
+> +
+> +    assert((pin >=3D 0) && (pin < k->pin_count));
+> +    pca955x_set_ext_state(s, pin, level);
+> +}
+> +
+>  static void pca955x_realize(DeviceState *dev, Error **errp)
+>  {
+>      PCA955xClass *k =3D PCA955X_GET_CLASS(dev);
+> @@ -386,7 +414,8 @@ static void pca955x_realize(DeviceState *dev, Error *=
+*errp)
+>          s->description =3D g_strdup("pca-unspecified");
+>      }
+>
+> -    qdev_init_gpio_out(dev, s->gpio, k->pin_count);
+> +    qdev_init_gpio_out(dev, s->gpio_out, k->pin_count);
+> +    qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
+>  }
+>
+>  static Property pca955x_properties[] =3D {
+> diff --git a/include/hw/misc/pca9552.h b/include/hw/misc/pca9552.h
+> index b6f4e264fe..c36525f0c3 100644
+> --- a/include/hw/misc/pca9552.h
+> +++ b/include/hw/misc/pca9552.h
+> @@ -30,7 +30,8 @@ struct PCA955xState {
+>      uint8_t pointer;
+>
+>      uint8_t regs[PCA955X_NR_REGS];
+> -    qemu_irq gpio[PCA955X_PIN_COUNT_MAX];
+> +    qemu_irq gpio_out[PCA955X_PIN_COUNT_MAX];
 
-Pre-existing, function named with '_length' suffix but takes a 'size'
-parameter.
+I wondered if the renaming of gpio to gpio_out could be a separate
+patch, but once I'd read the entire patch it made sense, so don't
+bother.
 
-Preferably moving the docstring along with the public declaration:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I think C=C3=A9dric has some magic for sorting the header file changes at
+the start of the diff output. Here it is:
 
+https://gitlab.com/qemu-project/qemu/-/blob/master/scripts/git.orderfile?re=
+f_type=3Dheads
+
+We should add that to the tips and tricks part of
+docs/devel/submitting-a-patch.rst
+
+> +    uint8_t ext_state[PCA955X_PIN_COUNT_MAX];
+
+State is 0 or 1, representing driving the pin low, or high impedance?
+I think some #defines or enums would make the states clearer.
+
+>      char *description; /* For debugging purpose only */
+>  };
+>
+> --
+> 2.31.1
+>
+>
 
