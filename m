@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55DC7BF123
+	by mail.lfdr.de (Postfix) with ESMTPS id AAEC97BF124
 	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 05:00:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq2yJ-000463-OK; Mon, 09 Oct 2023 22:59:47 -0400
+	id 1qq2yM-00046T-5m; Mon, 09 Oct 2023 22:59:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qq2yH-00045i-Mu
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 22:59:45 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1qq2yL-00046K-22
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 22:59:49 -0400
+Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qq2yG-0007wu-1E
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 22:59:45 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-578e33b6fb7so3315594a12.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 19:59:43 -0700 (PDT)
+ id 1qq2yJ-0007x6-HQ
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 22:59:48 -0400
+Received: by mail-qk1-x730.google.com with SMTP id
+ af79cd13be357-7742da399a2so345510585a.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 19:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696906782; x=1697511582;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696906786; x=1697511586;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jkAG/GLZoDDPnb66RkDvFFcKEopH6dS+RNqnDn3VPwM=;
- b=mgIMM00AAj6C2WUbwxZ6nsgXhmWFW8D8mTJymtbg40EN5J2OmOIT4GCDyqrj5O0gBr
- fRJ7SOtl5q5/rUrlCnLXYGsjqRuGxbhK6gxczwbX0DdabwnZzE9JrbBew3Ka87gCVwTt
- vS9udkO3yMd/fGB7vGeCxYygcVdM4kIsWQDMtmGov8Ei9H5O1zhS6HFw4qvdzDuv4ziY
- VFb+oNYsnjejfI55oxRhpnDlIu1hvlsCeAgMzquXK0U3tofz8G1Ds3oTzbrOqV+BIxo6
- P/KVJQfMn7hH7YWTg6zQHnwKakBHl43jErDmNRQdWGGv4WubDx1JmdyiTYYDgsVtgEuW
- WydQ==
+ bh=4rLJUvKzJ/knH6vUIH+0Ji9GBhazQKzSi6QIe6BIJBk=;
+ b=iETMrO6OtuharinXARWol1ICpjrt4AfNn4PrKpBoD4ZXlYYw/mlvNl4TroeXftxjw9
+ UZjb9uk1AFeK94qM90w4TA2VcYeTC3/CB4CvHDCPwJOCxGRxfvg8O3knR7b/wT0EjVuN
+ 6dszMe5b82fy36eKWdAjZ/MbZw8Pz7sGBDLPPf8UM4LToSB9KnktBgI1UvJp2j8vVmxw
+ BUemVgD+56lPiW6DIWw85KT+Tu/hPsdEgt0QC/ENXku+wHEui/fKBIAaauRILMi6lQlx
+ 9yTi3nL1XIS1BJQ+cJZ5GcV1GeI09xf6z8s0Z7BArNpPoZdii5OX5mZPjUpiCoI7ROd2
+ FfwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696906782; x=1697511582;
+ d=1e100.net; s=20230601; t=1696906786; x=1697511586;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jkAG/GLZoDDPnb66RkDvFFcKEopH6dS+RNqnDn3VPwM=;
- b=lPctGJaqf4YaNsr/cmDxX8zrq38i9keIbcro8K591X4gvqmiPiIGY70b+2t9dZ4W9k
- yFQHpJRHrc5KnZqeA5/kkfzVr0soO/yrN7VWph5VhyIHL9HApxVHpPXdZv4xqnwpF+lY
- 6uDZaMKtyx0iL1MD6lPy15clU6sHEjNI0KQG1kOTQKjRmmCFvwnIyQjcumh13B0JDaG4
- So70/k/Ft8uOCLXJ8/HMrmKEvCBnQWeQojL5FVuPtClV1BE5Vi1ExDjtSC1YeALfRiDX
- KwNj+kI0Y5F/8/FccPstyCz2RKXkJSE/kryLiaJU3OSe/p56hoauSxdOQEWGyjE7S+cF
- HYvA==
-X-Gm-Message-State: AOJu0Yw27YIlnpEYntserLbZA63kj9h1QLoaGc5E49GHVPaWg4M5FhFW
- sxfrV8GDdWtwzVV7fAAHhKxks95Kn6luhvqCPFKV0w==
-X-Google-Smtp-Source: AGHT+IGHLBxX5BJfYMzV9XIc4U/l7iYjUsRp+JjGbINNW5tqLc+pnWDXFtKvu5AhBTLWCratQJFJMg==
-X-Received: by 2002:a17:90a:dc18:b0:26d:11ff:1832 with SMTP id
- i24-20020a17090adc1800b0026d11ff1832mr12752904pjv.27.1696906782592; 
- Mon, 09 Oct 2023 19:59:42 -0700 (PDT)
+ bh=4rLJUvKzJ/knH6vUIH+0Ji9GBhazQKzSi6QIe6BIJBk=;
+ b=cWjZ8U+ObSg0bW+jnPIXYlSH/BYLGL7LKhlS9TqWb/SwHkg7rhXvMOKPAZyMroYesh
+ HIOYaR4RFNb/iTcHcsstf7wohOMZVuYGt2/0XttHdedZUG/frUJ3BXJjGWgBZnUhmE+6
+ SgkAHxsW9beAhR0dzxUfW2zTjHacHcGJd5SkA/RCoPxdR9UwHu0dUzYTiQkZ6bY2d2yb
+ dLmHAqjAQ2J2gW7UkK7pUSdwtwcQX+PV6by/EyQn6EclWGcbQ8MxindjaVJr5+2V5KHb
+ AeAStuSeIJzgMOGfKju6GsRU8eYY9KcNFDXbHmJM0Cm8Nkqtm2AAKZ5rEn91oCW9Hrj+
+ RS7g==
+X-Gm-Message-State: AOJu0YwZZmf5MdB5qXO/Y0Yz2h2nMir+1N336MVzNvtH3ogcClIn7IP9
+ W6FSNze3/Mr7fdSzXt/WtH84fGHvX4/AHZbKjXj+EA==
+X-Google-Smtp-Source: AGHT+IFPbYsWqiYKWyiq+e2YVqM+T3vqQ3jSj+JF2aNVRLpO/eRLBLxIpdKKFM4MOtlchn0YRhjyvA==
+X-Received: by 2002:a05:620a:4513:b0:777:2723:ea77 with SMTP id
+ t19-20020a05620a451300b007772723ea77mr787861qkp.65.1696906786586; 
+ Mon, 09 Oct 2023 19:59:46 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with UTF8SMTPSA id
- k9-20020a170902694900b001c73eace0fesm10391294plt.157.2023.10.09.19.59.40
+ n20-20020a638f14000000b00563e1ef0491sm9155105pgd.8.2023.10.09.19.59.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 19:59:42 -0700 (PDT)
+ Mon, 09 Oct 2023 19:59:46 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 2/7] virtio-net: Copy header only when necessary
-Date: Tue, 10 Oct 2023 11:59:16 +0900
-Message-ID: <20231010025924.14593-3-akihiko.odaki@daynix.com>
+Subject: [PATCH v2 3/7] virtio-net: Disable RSS on reset
+Date: Tue, 10 Oct 2023 11:59:17 +0900
+Message-ID: <20231010025924.14593-4-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231010025924.14593-1-akihiko.odaki@daynix.com>
 References: <20231010025924.14593-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::532;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x532.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::730;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-qk1-x730.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,70 +94,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is necessary to copy the header only for byte swapping. Worse, when
-byte swapping is not needed, the header can be larger than the buffer
-due to VIRTIO_NET_F_HASH_REPORT, which results in buffer overflow.
+RSS is disabled by default.
 
-Copy the header only when byte swapping is needed.
-
-Fixes: e22f0603fb ("virtio-net: reference implementation of hash report")
+Fixes: 590790297c ("virtio-net: implement RSS configuration command")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/virtio-net.c | 26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ hw/net/virtio-net.c | 70 +++++++++++++++++++++++----------------------
+ 1 file changed, 36 insertions(+), 34 deletions(-)
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 9a93a2df01..1ba748c964 100644
+index 1ba748c964..83bac9a98a 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -361,7 +361,8 @@ static void virtio_net_vnet_endian_status(VirtIONet *n, uint8_t status)
-          * can't do it, we fallback onto fixing the headers in the core
-          * virtio-net code.
-          */
--        n->needs_vnet_hdr_swap = virtio_net_set_vnet_endian(vdev, n->nic->ncs,
-+        n->needs_vnet_hdr_swap = n->has_vnet_hdr &&
-+                                 virtio_net_set_vnet_endian(vdev, n->nic->ncs,
-                                                             queue_pairs, true);
-     } else if (virtio_net_started(n, vdev->status)) {
-         /* After using the device, we need to reset the network backend to
-@@ -2690,7 +2691,7 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
-             return -EINVAL;
-         }
+@@ -601,40 +601,6 @@ static void virtio_net_queue_enable(VirtIODevice *vdev, uint32_t queue_index)
+     }
+ }
  
--        if (n->has_vnet_hdr) {
-+        if (n->needs_vnet_hdr_swap) {
-             if (iov_to_buf(out_sg, out_num, 0, &mhdr, n->guest_hdr_len) <
-                 n->guest_hdr_len) {
-                 virtio_error(vdev, "virtio-net header incorrect");
-@@ -2698,19 +2699,16 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
-                 g_free(elem);
-                 return -EINVAL;
-             }
--            if (n->needs_vnet_hdr_swap) {
--                virtio_net_hdr_swap(vdev, (void *) &mhdr);
--                sg2[0].iov_base = &mhdr;
--                sg2[0].iov_len = n->guest_hdr_len;
--                out_num = iov_copy(&sg2[1], ARRAY_SIZE(sg2) - 1,
--                                   out_sg, out_num,
--                                   n->guest_hdr_len, -1);
--                if (out_num == VIRTQUEUE_MAX_SIZE) {
--                    goto drop;
--                }
--                out_num += 1;
--                out_sg = sg2;
-+            virtio_net_hdr_swap(vdev, (void *) &mhdr);
-+            sg2[0].iov_base = &mhdr;
-+            sg2[0].iov_len = n->guest_hdr_len;
-+            out_num = iov_copy(&sg2[1], ARRAY_SIZE(sg2) - 1, out_sg, out_num,
-+                               n->guest_hdr_len, -1);
-+            if (out_num == VIRTQUEUE_MAX_SIZE) {
-+                goto drop;
-             }
-+            out_num += 1;
-+            out_sg = sg2;
-         }
-         /*
-          * If host wants to see the guest header as is, we can
+-static void virtio_net_reset(VirtIODevice *vdev)
+-{
+-    VirtIONet *n = VIRTIO_NET(vdev);
+-    int i;
+-
+-    /* Reset back to compatibility mode */
+-    n->promisc = 1;
+-    n->allmulti = 0;
+-    n->alluni = 0;
+-    n->nomulti = 0;
+-    n->nouni = 0;
+-    n->nobcast = 0;
+-    /* multiqueue is disabled by default */
+-    n->curr_queue_pairs = 1;
+-    timer_del(n->announce_timer.tm);
+-    n->announce_timer.round = 0;
+-    n->status &= ~VIRTIO_NET_S_ANNOUNCE;
+-
+-    /* Flush any MAC and VLAN filter table state */
+-    n->mac_table.in_use = 0;
+-    n->mac_table.first_multi = 0;
+-    n->mac_table.multi_overflow = 0;
+-    n->mac_table.uni_overflow = 0;
+-    memset(n->mac_table.macs, 0, MAC_TABLE_ENTRIES * ETH_ALEN);
+-    memcpy(&n->mac[0], &n->nic->conf->macaddr, sizeof(n->mac));
+-    qemu_format_nic_info_str(qemu_get_queue(n->nic), n->mac);
+-    memset(n->vlans, 0, MAX_VLAN >> 3);
+-
+-    /* Flush any async TX */
+-    for (i = 0;  i < n->max_queue_pairs; i++) {
+-        flush_or_purge_queued_packets(qemu_get_subqueue(n->nic, i));
+-    }
+-}
+-
+ static void peer_test_vnet_hdr(VirtIONet *n)
+ {
+     NetClientState *nc = qemu_get_queue(n->nic);
+@@ -3789,6 +3755,42 @@ static void virtio_net_device_unrealize(DeviceState *dev)
+     virtio_cleanup(vdev);
+ }
+ 
++static void virtio_net_reset(VirtIODevice *vdev)
++{
++    VirtIONet *n = VIRTIO_NET(vdev);
++    int i;
++
++    /* Reset back to compatibility mode */
++    n->promisc = 1;
++    n->allmulti = 0;
++    n->alluni = 0;
++    n->nomulti = 0;
++    n->nouni = 0;
++    n->nobcast = 0;
++    /* multiqueue is disabled by default */
++    n->curr_queue_pairs = 1;
++    timer_del(n->announce_timer.tm);
++    n->announce_timer.round = 0;
++    n->status &= ~VIRTIO_NET_S_ANNOUNCE;
++
++    /* Flush any MAC and VLAN filter table state */
++    n->mac_table.in_use = 0;
++    n->mac_table.first_multi = 0;
++    n->mac_table.multi_overflow = 0;
++    n->mac_table.uni_overflow = 0;
++    memset(n->mac_table.macs, 0, MAC_TABLE_ENTRIES * ETH_ALEN);
++    memcpy(&n->mac[0], &n->nic->conf->macaddr, sizeof(n->mac));
++    qemu_format_nic_info_str(qemu_get_queue(n->nic), n->mac);
++    memset(n->vlans, 0, MAX_VLAN >> 3);
++
++    /* Flush any async TX */
++    for (i = 0;  i < n->max_queue_pairs; i++) {
++        flush_or_purge_queued_packets(qemu_get_subqueue(n->nic, i));
++    }
++
++    virtio_net_disable_rss(n);
++}
++
+ static void virtio_net_instance_init(Object *obj)
+ {
+     VirtIONet *n = VIRTIO_NET(obj);
 -- 
 2.42.0
 
