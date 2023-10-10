@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F497BF4F4
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A397BF4E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:54:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq7Yj-00060J-2h; Tue, 10 Oct 2023 03:53:41 -0400
+	id 1qq7Yk-0006Cb-Og; Tue, 10 Oct 2023 03:53:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7YX-0005pq-Tm; Tue, 10 Oct 2023 03:53:29 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1qq7Yc-0005zO-L4; Tue, 10 Oct 2023 03:53:34 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7YW-0005LP-CP; Tue, 10 Oct 2023 03:53:29 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6969b391791so3638103b3a.3; 
- Tue, 10 Oct 2023 00:53:27 -0700 (PDT)
+ id 1qq7Yb-0005NK-1o; Tue, 10 Oct 2023 03:53:34 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-584bfb14c59so3334123a12.0; 
+ Tue, 10 Oct 2023 00:53:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696924406; x=1697529206; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696924410; x=1697529210; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fLLT5ObzM5KwZn8Whir/m9IL59w1BchNaowOLYzDN5M=;
- b=KE4cataAgP/WGjg9n0IsyxguZ/S56BKt+4CGkKT8X7D4FfLCJqETnzV0HBCs7k42pR
- B8I0aVNhaXfXSogIh2+qYUF8VkI7vKIF1ocWSae4OM+uZibqmVn6dnxJ5+hlBYtO6p/i
- mIo2SAFRdEKBuSQI8Y5StA4uHtRMrzv7iV2ymRJDH/r9Bx8NGdQATQAs+HYah3qMK4e3
- fYSszkPQrtcuuZ9eY1mHTCKFtSXKg+W9EFEo9h6YNLjhUusHL+LC0M5/kkUVEBKNgS3d
- ZfT/d/YhrHBCkiOVotvM9fzxhuDzsIvZ2HtloR0NpTKhVN4U844hM0uNealdx88XZA2C
- BMDA==
+ bh=7LcO0gLbMNqViKZELBCVLMmMGMEI+C0ZUAgyxlQweSY=;
+ b=LxjDVPza5ogPhMGN7Fha+wyJMECJ/R8bDcw8cGhbf4aS7397sU5h8orIcMB2YYPUae
+ 4WoEpsN4QKe+9WRuKPDj1EqYvSLWTXap60JuDSmt0oInGflHa75qMttPK8eFerLABkSr
+ cItQFdbGLgUd9YclJFwsWgZwkWH4ILflJBW9PpSblBWlIdgcMNwb/f5hfEXfYxeXvhDS
+ hGhkPTJERJg6Kd9cr+gg1L/tWZpeRbUFixLRtBay2XCagSL/FWExWes0DaqeGuggWdxO
+ MWfZEAq+321puHNcJaz4E22RtCN9NDiaAFQw84kWDvn/A+r0czMWz8tzal4ayaNCl+La
+ MOxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696924406; x=1697529206;
+ d=1e100.net; s=20230601; t=1696924410; x=1697529210;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fLLT5ObzM5KwZn8Whir/m9IL59w1BchNaowOLYzDN5M=;
- b=W1FtAD1HChtFNIsPMmF8ScPhlTDS5FVJy2DcGhtJ+6ftHIEKH8QQVZ5DGkDI1dzleF
- IvUQd9/7Us/2uPeANSUjkhTIMYK+B4V2b47Pjtua2RK8Be7R+0cAO2xuFWSoVfc4HxNZ
- G5VHlYUVPjLTQw3u/v751n8ousP5TXdX40QszD/oIWqgZCONzO0K/1D79dDpQcJ+h9LL
- ZbiCB89VtbXTjrgcJ9v3TUWql/W5ffUve/gbgmHQNNDh9047gMFOBnpe/dpo0SCnH+6H
- dj64kReyv+yPHAOfotMMNtZuYR38F9tIt8S/Yc69RneL8T/5urj5orapL4+DfureYpKd
- eudw==
-X-Gm-Message-State: AOJu0YzcorJDj8gj34eSSKG/85uDainbtCoRCTEklHcgbrQVtGTbzRSK
- WK6WoJgvvAKRYZkv6S9jrcy9z5Mf9mc=
-X-Google-Smtp-Source: AGHT+IFoCVXayD5MC7U6976MFuH6jyYim/JWHmql35AW2Osix0YGGEuaNR6FvAQBVhlaSQzM0bdVAA==
-X-Received: by 2002:a05:6a21:191:b0:160:18d6:a3d7 with SMTP id
- le17-20020a056a21019100b0016018d6a3d7mr20195671pzb.1.1696924406592; 
- Tue, 10 Oct 2023 00:53:26 -0700 (PDT)
+ bh=7LcO0gLbMNqViKZELBCVLMmMGMEI+C0ZUAgyxlQweSY=;
+ b=cVM6cJohab2UyRh6YBwKy6HQ8NxFXexXdBYvWN3He3wjd9iDGscAfZ8cr3CXa280tx
+ k0KqoB2hu9QH/t/isCMl8hf9N8kBPkGKyINNvygOcp4HDPg6UG/tfeME4ISW7vCz+bQp
+ EHe1m6QSLE3FMMvEuiV98NBbdLEMF7SHdYIV/CfAxXyl77yDXrFXhYRbN72lb6FwvvHd
+ r/1R96hN5zqtjOcd0Z3tD6c8QEIF/am3YPjy5BywwpvntrogEQx0a1GYVz7G6Y8Ua88G
+ 9iDh9dCeYL6n3fLXxYCZXDnqRHGKnMsNINjCdtlWfQlRiZM6j5l0s6+Ae70dEkLmb+G3
+ iQRQ==
+X-Gm-Message-State: AOJu0Yx0s4Zq6ESRzstdnXOAo4WGzKyjDlWbKS7Bs+VyvqFRCYfwMsSQ
+ J3bxI67XJxrE0Pp1V8YXXLAxcN8ptRQ=
+X-Google-Smtp-Source: AGHT+IEnh+eKabeyX0ROkvd77jFpkX783986fkfcz7v9ig/Q7F5SSHoxeaucX2bzqgeZQ5CNMrrw9A==
+X-Received: by 2002:a05:6a20:144d:b0:153:39d9:56fe with SMTP id
+ a13-20020a056a20144d00b0015339d956femr15444626pzi.47.1696924410343; 
+ Tue, 10 Oct 2023 00:53:30 -0700 (PDT)
 Received: from wheely.local0.net (27-33-247-209.tpgi.com.au. [27.33.247.209])
  by smtp.gmail.com with ESMTPSA id
- a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.53.23
+ a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.53.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 00:53:26 -0700 (PDT)
+ Tue, 10 Oct 2023 00:53:30 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Subject: [RFC PATCH 10/11] ppc/spapr: change pseries machine default to
- POWER10 CPU
-Date: Tue, 10 Oct 2023 17:52:37 +1000
-Message-ID: <20231010075238.95646-11-npiggin@gmail.com>
+Subject: [RFC PATCH 11/11] ppc/pnv: Change powernv default to powernv10
+Date: Tue, 10 Oct 2023 17:52:38 +1000
+Message-ID: <20231010075238.95646-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231010075238.95646-1-npiggin@gmail.com>
 References: <20231010075238.95646-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,26 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER10 is the latest pseries CPU.
+POWER10 is the latest IBM Power machine. Although it is not offered in
+"OPAL mode" (i.e., powernv configuration), so there is a case that it
+should remain at powernv9, most of the development work is going into
+powernv10 at the moment.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/ppc/pnv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index d4230d3647..9d3475d64b 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4661,7 +4661,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index eb54f93986..f3dad5ae05 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -2195,8 +2195,6 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
  
-     smc->dr_lmb_enabled = true;
-     smc->update_dt_enabled = true;
--    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-     mc->has_hotpluggable_cpus = true;
-     mc->nvdimm_supported = true;
-     smc->resize_hpt_default = SPAPR_RESIZE_HPT_ENABLED;
+     xfc->match_nvt = pnv_match_nvt;
+ 
+-    mc->alias = "powernv";
+-
+     pmc->compat = compat;
+     pmc->compat_size = sizeof(compat);
+     pmc->dt_power_mgt = pnv_dt_power_mgt;
+@@ -2220,6 +2218,8 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+     compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
+ 
++    mc->alias = "powernv";
++
+     pmc->compat = compat;
+     pmc->compat_size = sizeof(compat);
+     pmc->dt_power_mgt = pnv_dt_power_mgt;
 -- 
 2.42.0
 
