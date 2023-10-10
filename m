@@ -2,49 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40F67C0211
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 18:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5FDC7C0219
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 18:59:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqG37-00056n-3e; Tue, 10 Oct 2023 12:57:37 -0400
+	id 1qqG41-0005yT-A9; Tue, 10 Oct 2023 12:58:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqG34-00055f-KF; Tue, 10 Oct 2023 12:57:34 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqG32-0006es-Ih; Tue, 10 Oct 2023 12:57:34 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C8F6729213;
- Tue, 10 Oct 2023 19:57:32 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B1A502E248;
- Tue, 10 Oct 2023 19:57:28 +0300 (MSK)
-Message-ID: <86c06027-87f8-47ba-8710-0769024d78f4@tls.msk.ru>
-Date: Tue, 10 Oct 2023 19:57:28 +0300
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qqG3y-0005xp-CJ
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 12:58:30 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qqG3w-0006uG-Lh
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 12:58:30 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1c7373cff01so185055ad.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 09:58:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696957106; x=1697561906; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=U7Ej2WxT7urpGSoMiUNjZN3Ad/P/DYGo4owevQYo+tU=;
+ b=fGvYEH6HMaBa9xcFKzEVgPgh+HGp6b8NL0f6JGC2nGmkU4TtWYfw9i7FxYUrvuOmec
+ +4wT+P0GSVwbAErMEbCy+ZoVTPQLO8v6eDcxpi/a99mY6hwNpdvn+8UdbtKGR8jMdAp4
+ WM4yL0YgKmr/3Ju/hpDkj1d0ly/8HW7eMaiKDnm7EPQOL9XO37+mj6jzJHC7czK2+2ih
+ 4TfT4aJPnqJEEnsGgQEEBH3ZH6kKE7zDux6PJGeKFYCSdwEa9S6Co+iIEXfchyuisdfL
+ Zjoe38skfr/Lz8BtwGpK2rByJointNUsggOgIzAVdhbyGjejWu+nzktgGa1R3njzpdhV
+ UsFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696957106; x=1697561906;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=U7Ej2WxT7urpGSoMiUNjZN3Ad/P/DYGo4owevQYo+tU=;
+ b=S7nA5P/LigFFjo8M5XzG/iLA0cs5atBD/ahLXPYo1Xif5oboKR+rzrYgWLwhfdL/pU
+ 4+O5ORajvxxcN29TvU2dVsgGUTn4lPGHSAnqGv89wKL/Fzie0WnkQpOgPL+wsBWJc3+w
+ Vt8SPK/0g2JSmo+DFXwLj/9jD9nQgK4P+BeI2e6YXU1m8R0MlXIViZI4OA9PrxNUP4PR
+ IM7wFqD4UnbtFmZxAi0ZW/8QrP/HRbb1LR9eVV1nBL2jvnzzcxqV/xwdAaHW+g7Cnbzw
+ Y05DKMSrr5E+iKe7vs7R988VOk6R7GeMOXyXqyTIecDRB4llH0nTjOJNWdWXeGxalu+R
+ oGVw==
+X-Gm-Message-State: AOJu0YyJlccyowEhk/sGtVGcJm2GzRxQazkee+jEBAfLgE4WM1LrkEbX
+ PmgIbgfVy3vapwvMQZvykpqmRQ==
+X-Google-Smtp-Source: AGHT+IHRGUgZ+g+3pHEdRkuvmleMhIu1MryFHx9a8YItxUSUJsLHAOnzqB9SCKfWe1hfcyiBn1w7JQ==
+X-Received: by 2002:a17:902:c404:b0:1c9:9fa6:ce5b with SMTP id
+ k4-20020a170902c40400b001c99fa6ce5bmr8454948plk.16.1696957106056; 
+ Tue, 10 Oct 2023 09:58:26 -0700 (PDT)
+Received: from ?IPV6:2607:fb90:b763:d52:6ee3:1cf3:f2d2:e12d?
+ ([2607:fb90:b763:d52:6ee3:1cf3:f2d2:e12d])
+ by smtp.gmail.com with ESMTPSA id
+ jb13-20020a170903258d00b001bc21222e34sm1850919plb.285.2023.10.10.09.58.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Oct 2023 09:58:25 -0700 (PDT)
+Message-ID: <22c8b7c1-d8ef-4eea-9431-d1ad3cbb681d@linaro.org>
+Date: Tue, 10 Oct 2023 09:58:22 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hw/ide/ahci: fix legacy software reset
+Subject: Re: [PATCH] target/sparc: Clean up global variable shadowing
 Content-Language: en-US
-To: Niklas Cassel <nks@flawful.org>, John Snow <jsnow@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Niklas Cassel <niklas.cassel@wdc.com>, qemu-stable <qemu-stable@nongnu.org>
-References: <20231005100407.1136484-1-nks@flawful.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20231005100407.1136484-1-nks@flawful.org>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+References: <20231009092434.50356-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231009092434.50356-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,81 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-05.10.2023 13:04, Niklas Cassel wrote:
-> From: Niklas Cassel <niklas.cassel@wdc.com>
+On 10/9/23 02:24, Philippe Mathieu-Daudé wrote:
+> Fix:
 > 
-> Legacy software contains a standard mechanism for generating a reset to a
-> Serial ATA device - setting the SRST (software reset) bit in the Device
-> Control register.
+>    target/sparc/translate.c:2823:66: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env tcg_env)
+>                                                                     ^
+>    include/tcg/tcg.h:579:17: note: previous declaration is here
+>    extern TCGv_env tcg_env;
+>                    ^
 > 
-> Serial ATA has a more robust mechanism called COMRESET, also referred to
-> as port reset. A port reset is the preferred mechanism for error
-> recovery and should be used in place of software reset.
-> 
-> Commit e2a5d9b3d9c3 ("hw/ide/ahci: simplify and document PxCI handling")
-> improved the handling of PxCI, such that PxCI gets cleared after handling
-> a non-NCQ, or NCQ command (instead of incorrectly clearing PxCI after
-> receiving an arbitrary FIS).
-> 
-> However, simply clearing PxCI after a non-NCQ, or NCQ command, is not
-> enough, we also need to clear PxCI when receiving a SRST in the Device
-> Control register.
-> 
-> This fixes an issue for FreeBSD where the device would fail to reset.
-> The problem was not noticed in Linux, because Linux uses a COMRESET
-> instead of a legacy software reset by default.
-
-I don't know neither this area of qemu nor how hardware works, but as
-far as I can tell, this change fixes the reported FreeBSD ISO failure, -
-it works fine before e2a5d9b3d9c3, it fails to see the connected drives
-after, and it works again with this patch applied.  I can't say this is
-a good testing, since obviously Niklas did the same testing locally too :)
-
-John, can you send pullreq for this to master please?
-
-Thank you Niklas for the good work!
-
-/mjt
-
-> Fixes: e2a5d9b3d9c3 ("hw/ide/ahci: simplify and document PxCI handling")
-> Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
-> Changes since v1: write the D2H FIS before clearing PxCI.
+>   target/sparc/translate.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
->   hw/ide/ahci.c | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
-> 
-> diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-> index babdd7b458..7269dabbdb 100644
-> --- a/hw/ide/ahci.c
-> +++ b/hw/ide/ahci.c
-> @@ -1254,10 +1254,26 @@ static void handle_reg_h2d_fis(AHCIState *s, int port,
->           case STATE_RUN:
->               if (cmd_fis[15] & ATA_SRST) {
->                   s->dev[port].port_state = STATE_RESET;
-> +                /*
-> +                 * When setting SRST in the first H2D FIS in the reset sequence,
-> +                 * the device does not send a D2H FIS. Host software thus has to
-> +                 * set the "Clear Busy upon R_OK" bit such that PxCI (and BUSY)
-> +                 * gets cleared. See AHCI 1.3.1, section 10.4.1 Software Reset.
-> +                 */
-> +                if (opts & AHCI_CMD_CLR_BUSY) {
-> +                    ahci_clear_cmd_issue(ad, slot);
-> +                }
->               }
->               break;
->           case STATE_RESET:
->               if (!(cmd_fis[15] & ATA_SRST)) {
-> +                /*
-> +                 * When clearing SRST in the second H2D FIS in the reset
-> +                 * sequence, the device will send a D2H FIS. See SATA 3.5a Gold,
-> +                 * section 11.4 Software reset protocol.
-> +                 */
-> +                ahci_clear_cmd_issue(ad, slot);
-> +                ahci_write_fis_d2h(ad, false);
->                   ahci_reset_port(s, port);
->               }
->               break;
+> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+> index f92ff80ac8..26ed371109 100644
+> --- a/target/sparc/translate.c
+> +++ b/target/sparc/translate.c
+> @@ -2820,19 +2820,19 @@ static void gen_fmovq(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
+>   }
+>   
+>   #ifndef CONFIG_USER_ONLY
+> -static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env tcg_env)
+> +static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env env)
 
+
+Better to eliminate the argument entirely...
+
+>   {
+>       TCGv_i32 r_tl = tcg_temp_new_i32();
+>   
+>       /* load env->tl into r_tl */
+> -    tcg_gen_ld_i32(r_tl, tcg_env, offsetof(CPUSPARCState, tl));
+> +    tcg_gen_ld_i32(r_tl, env, offsetof(CPUSPARCState, tl));
+
+... so that this *does* reference the global.
+
+
+r~
 
