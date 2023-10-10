@@ -2,79 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436937BF2ED
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 08:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE397BF352
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 08:49:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq69G-0000kP-5N; Tue, 10 Oct 2023 02:23:18 -0400
+	id 1qq6XT-0005Qv-Ni; Tue, 10 Oct 2023 02:48:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <loyou85@gmail.com>) id 1qq69E-0000jj-Cv
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 02:23:16 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <loyou85@gmail.com>) id 1qq69C-0001iP-R3
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 02:23:16 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6c4bf619b57so3641939a34.1
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 23:23:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696918993; x=1697523793; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rphDbyUQdsVRGWPVUUo4v9CZ2qJ5BooAyebZjPEJ3zk=;
- b=D7roEc1/fWmCP07kHOySRqTaUFdc/ybuJQOO01hgREdp03DUyxnVskHdlKLru+mYrW
- tteYg4iJVNOmgEweFxLZLp5GHtKXXNg5NHwHL1xsLiV83AZHVKwJOhTzSMzjJZmaA7Wf
- 4JVbZ+YsdWS1JcanA15GZte3V3jcYKK2Q9SmACzRm1h7lb9dNcIfPgHJxibDtIjH4q55
- GerNErw7xv1HNLs8Xe0xIlMjlCBL6ErigBGtbopX/AS6FwlZevk5po5U5/ko/oMGOMEm
- GwcYIA4odeW+hRq+pcesBsrizao2ye1eF4FQ2M+ULkLDfTESWgOlm0uRoN28qdZww59X
- fmDA==
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qq6XM-0005Pt-3V
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 02:48:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qq6XG-00070i-HX
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 02:48:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696920483;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tSEF2R7FcrUdJ1Ey0+Y2ay8NczyGf+w6MNePPZbfwA8=;
+ b=H/uhBKVsK7eAA5nK0o+dNg3v/iwoLkZuEGdKVPU774rAt6rIUKXWCyZ2iozJMEnyN40Zwk
+ 5MMyTBjZsXDBbpSQbE9D6jC49KarUZQJyB2TK4PhA8JKqleg6jB8g48sSuGsKoXzaf0wKC
+ YXkqVtC1th6niaB+yqWzc2UC2E2fqo8=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-447-YY2k-OGIPHKxFI_GAFKCwg-1; Tue, 10 Oct 2023 02:46:56 -0400
+X-MC-Unique: YY2k-OGIPHKxFI_GAFKCwg-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-27ce812ebecso139084a91.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 23:46:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696918993; x=1697523793;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rphDbyUQdsVRGWPVUUo4v9CZ2qJ5BooAyebZjPEJ3zk=;
- b=on8uZl1Qh4pJciVV94JTyPS9KXFJJSPdZRV7s/GYQL5Hshed9fuXzDsPp1RfZxZ/BG
- yh1AhVbDK32y0ZmkTJU7yVgV1I2UBAXW3QL57vYUyKv5HXvspcLb0mcvCQZoghEdAVx1
- tvPFCOL/lL3ic/vDMd1JCyiAUGYKIsR0TNf/p687uQiMlHqcKd81dofhxHNsj4/KegFd
- nq0T1bmd/dz3miBaLbo25il+V2y8jXp+cbyyjpmg6S+DR2ZGYNyJ147DWf310TUDhMU5
- WGiRyiOZ6b5QAeLvPxRQS/erutBLqp3ZTrmJ2wzND9lcGomiZNsMhSppZhb9bwksuS1o
- qfYg==
-X-Gm-Message-State: AOJu0Ywc/nKqOnTaGuqb1MgI8tls9BCjP6QyJVibB+RW3E1QQhhN+OPE
- 2LbHZypydtfSiVOcK+NtTuo=
-X-Google-Smtp-Source: AGHT+IEH1lgiS1WQUFpXtsU2Yi+xJCR3ebLk1qA21xTvH/Dqhb1MfBcNyDFTtdRSMfLTjlsOqta4kw==
-X-Received: by 2002:a05:6870:63aa:b0:1bf:61e3:df1 with SMTP id
- t42-20020a05687063aa00b001bf61e30df1mr21841254oap.50.1696918992922; 
- Mon, 09 Oct 2023 23:23:12 -0700 (PDT)
-Received: from localhost.localdomain ([111.164.178.89])
+ d=1e100.net; s=20230601; t=1696920415; x=1697525215;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tSEF2R7FcrUdJ1Ey0+Y2ay8NczyGf+w6MNePPZbfwA8=;
+ b=JfKexzqZVDTOdnpng87FKK/aIkslEZ29b6cdpI1fT7VAToRHKTLBz0EbvFzIPjegok
+ XhtW4b4XuSPjKDGDl6ukpd8+MG6DmEsTVsxhdWrpihZCpndBgCqqW7+DEA5a/+11URWo
+ o5tlFj4LPq0U1U4xrn0JoX5C+E3lbYXCYUO5Qt2vKlb1r0YfpXcrvnlYbzcA2XEhNrgG
+ B0PUIMIIRmFQlIGoCMGH9Z0WxvA+GO0EN5OKJunEx86Ku5UEuVXqyY/OQs2C+YAPhDyj
+ sCkW1jix0p3Acyu3LB6roR4oya34WiGRR1Zd/yaDIHkzEn+/Q4BUN+w1mXZ5tTSTLqeR
+ w2WA==
+X-Gm-Message-State: AOJu0Yx+1wOMCFUXuZAuIHisAX3qZA3wh8rN4h4LFTdMJjQ87p2LJFVS
+ YvDef+2NekfvDHYnwYU5RTaqPOfcjKMgunK1Zmojpf3izVzuPYDAi2xKQKRk68MEhZgm6Gjw2Ma
+ P/iXzYz8Cps8ZhZQ=
+X-Received: by 2002:a05:6a00:2e92:b0:692:b3d4:e6c3 with SMTP id
+ fd18-20020a056a002e9200b00692b3d4e6c3mr18875533pfb.0.1696920414889; 
+ Mon, 09 Oct 2023 23:46:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFr1PDymJ35XPQmZ/1yJ5/bxT8tXF2o7szaM6qkPT2lHFbMYYPZTGFcuOb4dlQUrdN3kpdfeg==
+X-Received: by 2002:a05:6a00:2e92:b0:692:b3d4:e6c3 with SMTP id
+ fd18-20020a056a002e9200b00692b3d4e6c3mr18875502pfb.0.1696920414475; 
+ Mon, 09 Oct 2023 23:46:54 -0700 (PDT)
+Received: from [10.66.61.39] ([43.228.180.230])
  by smtp.gmail.com with ESMTPSA id
- e4-20020a62ee04000000b006889664aa6csm7358311pfi.5.2023.10.09.23.23.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 23:23:12 -0700 (PDT)
-From: Sun Feng <loyou85@gmail.com>
-To: lvivier@redhat.com, amit@kernel.org, mst@redhat.com,
- marcandre.lureau@redhat.com, pbonzini@redhat.com
-Cc: qemu-devel@nongnu.org,
-	Sun Feng <loyou85@gmail.com>
-Subject: [PATCH] virtio-serial-bus: Discard throttled VirtQueueElement when
- virtio-serial closed
-Date: Tue, 10 Oct 2023 14:22:16 +0800
-Message-Id: <20231010062216.16144-1-loyou85@gmail.com>
-X-Mailer: git-send-email 2.33.1
+ r5-20020aa78b85000000b00690bd3c0723sm7658466pfd.99.2023.10.09.23.46.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 23:46:53 -0700 (PDT)
+Message-ID: <3632ee24-47f7-ae68-8790-26eb2cf9950b@redhat.com>
+Date: Tue, 10 Oct 2023 14:46:41 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=loyou85@gmail.com; helo=mail-ot1-x331.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH RFC V2 03/37] hw/arm/virt: Move setting of common CPU
+ properties in a function
+Content-Language: en-US
+To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
+ lpieralisi@kernel.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
+ david@redhat.com, philmd@linaro.org, eric.auger@redhat.com, will@kernel.org,
+ ardb@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
+ mst@redhat.com, gshan@redhat.com, rafael@kernel.org,
+ borntraeger@linux.ibm.com, alex.bennee@linaro.org, linux@armlinux.org.uk,
+ darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
+ vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
+ miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
+ wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
+ maobibo@loongson.cn, lixianglai@loongson.cn
+References: <20230926100436.28284-1-salil.mehta@huawei.com>
+ <20230926100436.28284-4-salil.mehta@huawei.com>
+From: Shaoqin Huang <shahuang@redhat.com>
+In-Reply-To: <20230926100436.28284-4-salil.mehta@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=shahuang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,57 +116,329 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With commit d4c19cde("virtio-serial: add missing virtio_detach_element() call"),
-when virtio serial is throttled and closed by host, port->elem should be discard with virtqueue_push,
-otherwise virtqueue will not rewind, guest will blocked finally and cannot write anymore data.
 
-It can be reproduced with following steps:
-Create a vm with virtio-serial device through libvirt:
 
-    <channel type='unix'>
-      <source mode='bind' path='/tmp/test'/>
-      <target type='virtio' name='com.test.channel.0'/>
-      <address type='virtio-serial' controller='0' bus='0' port='1'/>
-    </channel>
+On 9/26/23 18:04, Salil Mehta via wrote:
+> Factor out CPU properties code common for {hot,cold}-plugged CPUs. This allows
+> code reuse.
+> 
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> ---
+>   hw/arm/virt.c         | 220 ++++++++++++++++++++++++++----------------
+>   include/hw/arm/virt.h |   4 +
+>   2 files changed, 140 insertions(+), 84 deletions(-)
+> 
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 57fe97c242..0eb6bf5a18 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -2018,16 +2018,130 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+>       }
+>   }
+>   
+> +static void virt_cpu_set_properties(Object *cpuobj, const CPUArchId *cpu_slot,
+> +                                    Error **errp)
+> +{
 
-Host run:
-watch -n0.5 'timeout 0.5 nc -U /tmp/test'
+Hi Salil,
 
-Guest run:
-hexdump -C -v /dev/zero > /dev/vport1p1
+This patch seems break the code, the virt_cpu_set_properties() function 
+being defined but not used in this patch, so those original code in the 
+machvirt_init() just not work.
 
-After sometime, guest can not write any data to serial.
-We can see vq->last_avail_idx - vq->used_idx = 128 with gdb.
+We should use this function in the machvirt_init().
 
-(gdb) p *(struct VirtQueue *) 0x565161c5c788
-$4 = {vring = {num = 128, num_default = 128, align = 4096, desc = 4316049408, avail = 4316051456, used = 4316051776,
-    caches = 0x7fc530067e60}, used_elems = 0x565161c88dc0, last_avail_idx = 7929, last_avail_wrap_counter = true,
-  shadow_avail_idx = 7929, shadow_avail_wrap_counter = true, used_idx = 7801, used_wrap_counter = true, signalled_used = 7801,
-  signalled_used_valid = true, notification = true, queue_index = 5, inuse = 0, vector = 1,
-  handle_output = 0x56515da8aea0 <handle_output>, handle_aio_output = 0x0, vdev = 0x565161c54e30, guest_notifier = {rfd = 0,
-    wfd = 0}, host_notifier = {rfd = 74, wfd = 74}, host_notifier_enabled = true, node = {le_next = 0x565161c5c6f0,
-    le_prev = 0x565161c5c8a8}}
+> +    MachineState *ms = MACHINE(qdev_get_machine());
+> +    VirtMachineState *vms = VIRT_MACHINE(ms);
+> +    Error *local_err = NULL;
+> +    VirtMachineClass *vmc;
+> +
+> +    vmc = VIRT_MACHINE_GET_CLASS(ms);
+> +
+> +    /* now, set the cpu object property values */
+> +    numa_cpu_pre_plug(cpu_slot, DEVICE(cpuobj), &local_err);
+> +    if (local_err) {
+> +        goto out;
+> +    }
+> +
+> +    object_property_set_int(cpuobj, "mp-affinity", cpu_slot->arch_id, NULL);
+> +
+> +    if (!vms->secure) {
+> +        object_property_set_bool(cpuobj, "has_el3", false, NULL);
+> +    }
+> +
+> +    if (!vms->virt && object_property_find(cpuobj, "has_el2")) {
+> +        object_property_set_bool(cpuobj, "has_el2", false, NULL);
+> +    }
+> +
+> +    if (vmc->kvm_no_adjvtime &&
+> +        object_property_find(cpuobj, "kvm-no-adjvtime")) {
+> +        object_property_set_bool(cpuobj, "kvm-no-adjvtime", true, NULL);
+> +    }
+> +
+> +    if (vmc->no_kvm_steal_time &&
+> +        object_property_find(cpuobj, "kvm-steal-time")) {
+> +        object_property_set_bool(cpuobj, "kvm-steal-time", false, NULL);
+> +    }
+> +
+> +    if (vmc->no_pmu && object_property_find(cpuobj, "pmu")) {
+> +        object_property_set_bool(cpuobj, "pmu", false, NULL);
+> +    }
+> +
+> +    if (vmc->no_tcg_lpa2 && object_property_find(cpuobj, "lpa2")) {
+> +        object_property_set_bool(cpuobj, "lpa2", false, NULL);
+> +    }
+> +
+> +    if (object_property_find(cpuobj, "reset-cbar")) {
+> +        object_property_set_int(cpuobj, "reset-cbar",
+> +                                vms->memmap[VIRT_CPUPERIPHS].base,
+> +                                &local_err);
+> +        if (local_err) {
+> +            goto out;
+> +        }
+> +    }
+> +
+> +    /* link already initialized {secure,tag}-memory regions to this cpu */
+> +    object_property_set_link(cpuobj, "memory", OBJECT(vms->sysmem), &local_err);
+> +    if (local_err) {
+> +        goto out;
+> +    }
+> +
+> +    if (vms->secure) {
+> +        object_property_set_link(cpuobj, "secure-memory",
+> +                                 OBJECT(vms->secure_sysmem), &local_err);
+> +        if (local_err) {
+> +            goto out;
+> +        }
+> +    }
+> +
+> +    if (vms->mte) {
+> +        if (!object_property_find(cpuobj, "tag-memory")) {
+> +            error_setg(&local_err, "MTE requested, but not supported "
+> +                       "by the guest CPU");
+> +            if (local_err) {
+> +                goto out;
+> +            }
+> +        }
+> +
+> +        object_property_set_link(cpuobj, "tag-memory", OBJECT(vms->tag_sysmem),
+> +                                 &local_err);
+> +        if (local_err) {
+> +            goto out;
+> +        }
+> +
+> +        if (vms->secure) {
+> +            object_property_set_link(cpuobj, "secure-tag-memory",
+> +                                     OBJECT(vms->secure_tag_sysmem),
+> +                                     &local_err);
+> +            if (local_err) {
+> +                goto out;
+> +            }
+> +        }
+> +    }
+> +
+> +    /*
+> +     * RFC: Question: this must only be called for the hotplugged cpus. For the
+> +     * cold booted secondary cpus this is being taken care in arm_load_kernel()
+> +     * in boot.c. Perhaps we should remove that code now?
+> +     */
+> +    if (vms->psci_conduit != QEMU_PSCI_CONDUIT_DISABLED) {
+> +        object_property_set_int(cpuobj, "psci-conduit", vms->psci_conduit,
+> +                                NULL);
+> +
+> +        /* Secondary CPUs start in PSCI powered-down state */
+> +        if (CPU(cpuobj)->cpu_index > 0) {
+> +            object_property_set_bool(cpuobj, "start-powered-off", true, NULL);
+> +        }
+> +    }
 
-Fixes: d4c19cde("virtio-serial: add missing virtio_detach_element() call")
-Signed-off-by: Sun Feng <loyou85@gmail.com>
----
- hw/char/virtio-serial-bus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Besides, if this patch is just factor out the code, we could move the 
+check psci_conduit to later patch, and keep this patch clean.
 
-diff --git a/hw/char/virtio-serial-bus.c b/hw/char/virtio-serial-bus.c
-index dd619f0..30b00a4 100644
---- a/hw/char/virtio-serial-bus.c
-+++ b/hw/char/virtio-serial-bus.c
-@@ -151,7 +151,7 @@ static void discard_vq_data(VirtQueue *vq, VirtIODevice *vdev)
- static void discard_throttle_data(VirtIOSerialPort *port)
- {
-     if (port->elem) {
--        virtqueue_detach_element(port->ovq, port->elem, 0);
-+        virtqueue_push(port->ovq, port->elem, 0);
-         g_free(port->elem);
-         port->elem = NULL;
-     }
+Thanks,
+Shaoqin
+
+> +
+> +out:
+> +    if (local_err) {
+> +        error_propagate(errp, local_err);
+> +    }
+> +    return;
+> +}
+> +
+>   static void machvirt_init(MachineState *machine)
+>   {
+>       VirtMachineState *vms = VIRT_MACHINE(machine);
+>       VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(machine);
+>       MachineClass *mc = MACHINE_GET_CLASS(machine);
+>       const CPUArchIdList *possible_cpus;
+> -    MemoryRegion *sysmem = get_system_memory();
+> +    MemoryRegion *secure_tag_sysmem = NULL;
+>       MemoryRegion *secure_sysmem = NULL;
+>       MemoryRegion *tag_sysmem = NULL;
+> -    MemoryRegion *secure_tag_sysmem = NULL;
+> +    MemoryRegion *sysmem;
+>       int n, virt_max_cpus;
+>       bool firmware_loaded;
+>       bool aarch64 = true;
+> @@ -2071,6 +2185,8 @@ static void machvirt_init(MachineState *machine)
+>        */
+>       finalize_gic_version(vms);
+>   
+> +    sysmem = vms->sysmem = get_system_memory();
+> +
+>       if (vms->secure) {
+>           /*
+>            * The Secure view of the world is the same as the NonSecure,
+> @@ -2078,7 +2194,7 @@ static void machvirt_init(MachineState *machine)
+>            * containing the system memory at low priority; any secure-only
+>            * devices go in at higher priority and take precedence.
+>            */
+> -        secure_sysmem = g_new(MemoryRegion, 1);
+> +        secure_sysmem = vms->secure_sysmem = g_new(MemoryRegion, 1);
+>           memory_region_init(secure_sysmem, OBJECT(machine), "secure-memory",
+>                              UINT64_MAX);
+>           memory_region_add_subregion_overlap(secure_sysmem, 0, sysmem, -1);
+> @@ -2151,6 +2267,23 @@ static void machvirt_init(MachineState *machine)
+>           exit(1);
+>       }
+>   
+> +    if (vms->mte) {
+> +        /* Create the memory region only once, but link to all cpus later */
+> +        tag_sysmem = vms->tag_sysmem = g_new(MemoryRegion, 1);
+> +        memory_region_init(tag_sysmem, OBJECT(machine),
+> +                           "tag-memory", UINT64_MAX / 32);
+> +
+> +        if (vms->secure) {
+> +            secure_tag_sysmem = vms->secure_tag_sysmem = g_new(MemoryRegion, 1);
+> +            memory_region_init(secure_tag_sysmem, OBJECT(machine),
+> +                               "secure-tag-memory", UINT64_MAX / 32);
+> +
+> +            /* As with ram, secure-tag takes precedence over tag.  */
+> +            memory_region_add_subregion_overlap(secure_tag_sysmem, 0,
+> +                                                tag_sysmem, -1);
+> +        }
+> +    }
+> +
+>       create_fdt(vms);
+>   
+>       assert(possible_cpus->len == max_cpus);
+> @@ -2163,15 +2296,10 @@ static void machvirt_init(MachineState *machine)
+>           }
+>   
+>           cpuobj = object_new(possible_cpus->cpus[n].type);
+> -        object_property_set_int(cpuobj, "mp-affinity",
+> -                                possible_cpus->cpus[n].arch_id, NULL);
+>   
+>           cs = CPU(cpuobj);
+>           cs->cpu_index = n;
+>   
+> -        numa_cpu_pre_plug(&possible_cpus->cpus[cs->cpu_index], DEVICE(cpuobj),
+> -                          &error_fatal);
+> -
+>           aarch64 &= object_property_get_bool(cpuobj, "aarch64", NULL);
+>           object_property_set_int(cpuobj, "socket-id",
+>                                   virt_get_socket_id(machine, n), NULL);
+> @@ -2182,82 +2310,6 @@ static void machvirt_init(MachineState *machine)
+>           object_property_set_int(cpuobj, "thread-id",
+>                                   virt_get_thread_id(machine, n), NULL);
+>   
+> -        if (!vms->secure) {
+> -            object_property_set_bool(cpuobj, "has_el3", false, NULL);
+> -        }
+> -
+> -        if (!vms->virt && object_property_find(cpuobj, "has_el2")) {
+> -            object_property_set_bool(cpuobj, "has_el2", false, NULL);
+> -        }
+> -
+> -        if (vmc->kvm_no_adjvtime &&
+> -            object_property_find(cpuobj, "kvm-no-adjvtime")) {
+> -            object_property_set_bool(cpuobj, "kvm-no-adjvtime", true, NULL);
+> -        }
+> -
+> -        if (vmc->no_kvm_steal_time &&
+> -            object_property_find(cpuobj, "kvm-steal-time")) {
+> -            object_property_set_bool(cpuobj, "kvm-steal-time", false, NULL);
+> -        }
+> -
+> -        if (vmc->no_pmu && object_property_find(cpuobj, "pmu")) {
+> -            object_property_set_bool(cpuobj, "pmu", false, NULL);
+> -        }
+> -
+> -        if (vmc->no_tcg_lpa2 && object_property_find(cpuobj, "lpa2")) {
+> -            object_property_set_bool(cpuobj, "lpa2", false, NULL);
+> -        }
+> -
+> -        if (object_property_find(cpuobj, "reset-cbar")) {
+> -            object_property_set_int(cpuobj, "reset-cbar",
+> -                                    vms->memmap[VIRT_CPUPERIPHS].base,
+> -                                    &error_abort);
+> -        }
+> -
+> -        object_property_set_link(cpuobj, "memory", OBJECT(sysmem),
+> -                                 &error_abort);
+> -        if (vms->secure) {
+> -            object_property_set_link(cpuobj, "secure-memory",
+> -                                     OBJECT(secure_sysmem), &error_abort);
+> -        }
+> -
+> -        if (vms->mte) {
+> -            /* Create the memory region only once, but link to all cpus. */
+> -            if (!tag_sysmem) {
+> -                /*
+> -                 * The property exists only if MemTag is supported.
+> -                 * If it is, we must allocate the ram to back that up.
+> -                 */
+> -                if (!object_property_find(cpuobj, "tag-memory")) {
+> -                    error_report("MTE requested, but not supported "
+> -                                 "by the guest CPU");
+> -                    exit(1);
+> -                }
+> -
+> -                tag_sysmem = g_new(MemoryRegion, 1);
+> -                memory_region_init(tag_sysmem, OBJECT(machine),
+> -                                   "tag-memory", UINT64_MAX / 32);
+> -
+> -                if (vms->secure) {
+> -                    secure_tag_sysmem = g_new(MemoryRegion, 1);
+> -                    memory_region_init(secure_tag_sysmem, OBJECT(machine),
+> -                                       "secure-tag-memory", UINT64_MAX / 32);
+> -
+> -                    /* As with ram, secure-tag takes precedence over tag.  */
+> -                    memory_region_add_subregion_overlap(secure_tag_sysmem, 0,
+> -                                                        tag_sysmem, -1);
+> -                }
+> -            }
+> -
+> -            object_property_set_link(cpuobj, "tag-memory", OBJECT(tag_sysmem),
+> -                                     &error_abort);
+> -            if (vms->secure) {
+> -                object_property_set_link(cpuobj, "secure-tag-memory",
+> -                                         OBJECT(secure_tag_sysmem),
+> -                                         &error_abort);
+> -            }
+> -        }
+> -
+>           qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
+>           object_unref(cpuobj);
+>       }
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index e1ddbea96b..13163adb07 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -148,6 +148,10 @@ struct VirtMachineState {
+>       DeviceState *platform_bus_dev;
+>       FWCfgState *fw_cfg;
+>       PFlashCFI01 *flash[2];
+> +    MemoryRegion *sysmem;
+> +    MemoryRegion *secure_sysmem;
+> +    MemoryRegion *tag_sysmem;
+> +    MemoryRegion *secure_tag_sysmem;
+>       bool secure;
+>       bool highmem;
+>       bool highmem_compact;
+
 -- 
-2.7.4
+Shaoqin
 
 
