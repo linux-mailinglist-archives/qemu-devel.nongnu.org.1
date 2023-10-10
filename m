@@ -2,83 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3457BFAE6
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C587BFB62
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:26:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBc3-0004k6-Ql; Tue, 10 Oct 2023 08:13:23 -0400
+	id 1qqBnm-0002gc-Ht; Tue, 10 Oct 2023 08:25:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBc2-0004jr-A9
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:13:22 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBc0-0004O1-G9
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:13:22 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-99c3d3c3db9so926809866b.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 05:13:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696939998; x=1697544798; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0wHBD1j9QzbazpGxPn5423PKK6zv8ne76ZCWbZI3Erk=;
- b=oz1/XSeNLP4GuVFQshHbecHDMmKap9CHoZGN/TdpprCMs0iZORLKB4HpU2+ALzWsf3
- ac80ccSjFFs+OUKAvZRxp2xbiVVTsx9MEhbs+x+Hsu3W4aqvWTgQlqx3MecSGmZC3qT1
- M6box3PRyUfKvGzKAV0QU3HjufJoyR/8EZwDiXFIh4lvq3NCUGd5+c7OMbHEteazIxCu
- S95llLDK30IEyuuF5q8zwFeEz1Z0pUjrWrcJr9bc2/weemMXqsCL7sx8h4hCTgvmmqmB
- 5yRPVUPi3Wt39kE2xDwqffpRiiPN9o3ccFye+iglZMs+xUN+3vtIadlBD8i+McdXwnNe
- OGqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696939998; x=1697544798;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0wHBD1j9QzbazpGxPn5423PKK6zv8ne76ZCWbZI3Erk=;
- b=oK+7VOqtu1OKlMZMxmAamRoqrpnrr93vWj/jfJVPdbGyywYqU7+vLoF8tEWZbMf7WE
- x0MXTT3iEzUeU/oMFpxmKUcY5M/lpr8qU9FjgFmisYwDAu4AjsY0G4CF0Di5OHwgCOGx
- 5AdHFyrIVC2TT+3ut0k0PtOGRAiRGrVEICZbLbkp4Fm6acOOpNW/sGc9ciO02OGnxl5V
- Lqrgg9zZOtsTGscx/ZjnkWrwcer8NMsVcrMVUBK2fgkPWxceH3mb695BISThpLCwesqS
- LqybRgBDlizoNRp0KVuXr6OVch+yxcJlZF1vsoIplbdL2EmnMR9+2Y0DYsZJCqIyP9t3
- YwFQ==
-X-Gm-Message-State: AOJu0YwDr4b/f41U/0eDbsxVkltir/a0l3SWmbAcbcj4XHA9eJRBKzCA
- CtHbK89b30uOUY6eaxC1MFa+sA==
-X-Google-Smtp-Source: AGHT+IEErA4EWYJDNmaeDuTugHHB53EujQ7gzfJ8jEEWXkHvlMeIWeOrPu4/1lyY/LPryZze6krAgw==
-X-Received: by 2002:a17:906:5a6b:b0:9a9:e525:8705 with SMTP id
- my43-20020a1709065a6b00b009a9e5258705mr15041979ejc.57.1696939998693; 
- Tue, 10 Oct 2023 05:13:18 -0700 (PDT)
-Received: from [192.168.69.115]
- (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
- by smtp.gmail.com with ESMTPSA id
- jp20-20020a170906f75400b0099bcb44493fsm8413423ejb.147.2023.10.10.05.13.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 05:13:18 -0700 (PDT)
-Message-ID: <875f6449-cccb-ccb1-035b-6c339b7d0c3d@linaro.org>
-Date: Tue, 10 Oct 2023 14:13:16 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qqBnj-0002g8-9r; Tue, 10 Oct 2023 08:25:27 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qqBng-00078U-Lk; Tue, 10 Oct 2023 08:25:27 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 18D27756A30;
+ Tue, 10 Oct 2023 14:24:27 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id D6B47748FF4; Tue, 10 Oct 2023 14:24:26 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D481674632B;
+ Tue, 10 Oct 2023 14:24:26 +0200 (CEST)
+Date: Tue, 10 Oct 2023 14:24:26 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Volker_R=FCmelin?= <vr_qemu@t-online.de>
+cc: Gerd Hoffmann <kraxel@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Subject: Re: [PATCH 0/8] hw/audio/es1370: bug fix
+In-Reply-To: <cfc5a196-9939-44b5-8716-9525f1a08a2a@t-online.de>
+Message-ID: <74bd8b1f-7db4-9385-0d1b-64c505200cd3@eik.bme.hu>
+References: <cfc5a196-9939-44b5-8716-9525f1a08a2a@t-online.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v17 07/16] accel/tcg: Collect TB jit statistics
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: fei2.wu@intel.com, "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20231003183058.1639121-1-richard.henderson@linaro.org>
- <20231003183058.1639121-8-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231003183058.1639121-8-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-2050981125-1696940666=:43516"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,20 +61,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/10/23 20:30, Richard Henderson wrote:
-> Collect items like input and output code size, guest instruction count,
-> intermediate ops, spills, etc.
-> 
-> Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Signed-off-by: Fei Wu <fei2.wu@intel.com>
-> [rth: Consolidated at the end of translation.]
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   accel/tcg/translate-all.c | 21 +++++++++++++++++++++
->   1 file changed, 21 insertions(+)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+--3866299591-2050981125-1696940666=:43516
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
+On Sun, 17 Sep 2023, Volker Rümelin wrote:
+> Cc: qemu-stable. Patch 1/8 is a bug fix.
+> Cc: more people. The maintainer of hw/audio is busy with other projects.
+>
+> Earlier this year I was asked if I could help to debug an audio playback
+> speed issue with the es1370 device. While debugging the playback speed
+> error, I noticed that the debug code of the ES1370 device has not been
+> compiled for a long time and has bit-rotted. This patch series fixes the
+> rotten code and also fixes a bug I found while debugging the code. The
+> bug fix is in patch 1/8 and prevents corrupted data streams. The
+> playback speed issue was caused by lost interrupts. Patch 8/8 helps to
+> debug this kind of issues.
+>
+> Volker Rümelin (8):
+>   hw/audio/es1370: reset current sample counter
+>   hw/audio/es1370: replace bit-rotted code with tracepoints
+>   hw/audio/es1370: remove unused dolog macro
+>   hw/audio/es1370: remove #ifdef ES1370_DEBUG to avoid bit rot
+>   hw/audio/es1370: remove #ifdef ES1370_VERBOSE to avoid bit rot
+>   hw/audio/es1370: block structure coding style fixes
+>   hw/audio/es1370: change variable type and name
+>   hw/audio/es1370: trace lost interrupts
+>
+>  hw/audio/es1370.c     | 289 +++++++++++++++++++-----------------------
+>  hw/audio/trace-events |  11 ++
+>  2 files changed, 143 insertions(+), 157 deletions(-)
 
+Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+The whole series also got a reirwed-by from Marc-Andre already so maybe 
+Gerd should have a look merging this.
+
+Regards,
+BALATON Zoltan
+--3866299591-2050981125-1696940666=:43516--
 
