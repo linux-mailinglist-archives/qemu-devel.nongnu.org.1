@@ -2,42 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C587BFB62
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 108E77BFB72
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:31:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBnm-0002gc-Ht; Tue, 10 Oct 2023 08:25:30 -0400
+	id 1qqBsD-0004tg-72; Tue, 10 Oct 2023 08:30:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqBnj-0002g8-9r; Tue, 10 Oct 2023 08:25:27 -0400
+ id 1qqBs9-0004qg-6w; Tue, 10 Oct 2023 08:30:01 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqBng-00078U-Lk; Tue, 10 Oct 2023 08:25:27 -0400
+ id 1qqBs6-0007px-3T; Tue, 10 Oct 2023 08:30:00 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 18D27756A30;
- Tue, 10 Oct 2023 14:24:27 +0200 (CEST)
+ by localhost (Postfix) with SMTP id A6B27748FF4;
+ Tue, 10 Oct 2023 14:29:01 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id D6B47748FF4; Tue, 10 Oct 2023 14:24:26 +0200 (CEST)
+ id 7457C745681; Tue, 10 Oct 2023 14:29:00 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D481674632B;
- Tue, 10 Oct 2023 14:24:26 +0200 (CEST)
-Date: Tue, 10 Oct 2023 14:24:26 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 71E797456AA;
+ Tue, 10 Oct 2023 14:29:00 +0200 (CEST)
+Date: Tue, 10 Oct 2023 14:29:00 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Volker_R=FCmelin?= <vr_qemu@t-online.de>
-cc: Gerd Hoffmann <kraxel@redhat.com>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
+cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>, qemu-arm@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ qemu-ppc@nongnu.org, 
  =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Subject: Re: [PATCH 0/8] hw/audio/es1370: bug fix
-In-Reply-To: <cfc5a196-9939-44b5-8716-9525f1a08a2a@t-online.de>
-Message-ID: <74bd8b1f-7db4-9385-0d1b-64c505200cd3@eik.bme.hu>
-References: <cfc5a196-9939-44b5-8716-9525f1a08a2a@t-online.de>
+ "Dr. David Alan Gilbert" <dave@treblig.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 16/18] hw/sm501: allow compiling without PIXMAN
+In-Reply-To: <6365e1f5-bffe-ef11-7e9e-55077e66c4d0@eik.bme.hu>
+Message-ID: <cf0800be-046c-8073-96ce-023dd02469df@eik.bme.hu>
+References: <20231010073830.606570-1-marcandre.lureau@redhat.com>
+ <20231010073830.606570-17-marcandre.lureau@redhat.com>
+ <6365e1f5-bffe-ef11-7e9e-55077e66c4d0@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-2050981125-1696940666=:43516"
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
@@ -61,46 +67,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---3866299591-2050981125-1696940666=:43516
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Sun, 17 Sep 2023, Volker Rümelin wrote:
-> Cc: qemu-stable. Patch 1/8 is a bug fix.
-> Cc: more people. The maintainer of hw/audio is busy with other projects.
+On Tue, 10 Oct 2023, BALATON Zoltan wrote:
+>> @@ -2169,8 +2195,10 @@ static void sm501_pci_class_init(ObjectClass *klass, 
+>> void *data)
+>> 
+>> static void sm501_pci_init(Object *o)
+>> {
+>> +#ifdef CONFIG_PIXMAN
 >
-> Earlier this year I was asked if I could help to debug an audio playback
-> speed issue with the es1370 device. While debugging the playback speed
-> error, I noticed that the debug code of the ES1370 device has not been
-> compiled for a long time and has bit-rotted. This patch series fixes the
-> rotten code and also fixes a bug I found while debugging the code. The
-> bug fix is in patch 1/8 and prevents corrupted data streams. The
-> playback speed issue was caused by lost interrupts. Patch 8/8 helps to
-> debug this kind of issues.
->
-> Volker Rümelin (8):
->   hw/audio/es1370: reset current sample counter
->   hw/audio/es1370: replace bit-rotted code with tracepoints
->   hw/audio/es1370: remove unused dolog macro
->   hw/audio/es1370: remove #ifdef ES1370_DEBUG to avoid bit rot
->   hw/audio/es1370: remove #ifdef ES1370_VERBOSE to avoid bit rot
->   hw/audio/es1370: block structure coding style fixes
->   hw/audio/es1370: change variable type and name
->   hw/audio/es1370: trace lost interrupts
->
->  hw/audio/es1370.c     | 289 +++++++++++++++++++-----------------------
->  hw/audio/trace-events |  11 ++
->  2 files changed, 143 insertions(+), 157 deletions(-)
+> Do you still need the ifdef here if we keep the property even with !PIXMAN?
 
-Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-
-The whole series also got a reirwed-by from Marc-Andre already so maybe 
-Gerd should have a look merging this.
+Maybe you intended to remove this help message because the option does not 
+work as documented here. In that case maybe add an #else with help saying 
+not effective without PIXMAN, always 0 or similiar.
 
 Regards,
 BALATON Zoltan
---3866299591-2050981125-1696940666=:43516--
+
+>>     object_property_set_description(o, "x-pixman", "Use pixman for: "
+>>                                     "1: fill, 2: blit, 4: overlap blit");
+>> +#endif
+>> }
+>> 
+>> static const TypeInfo sm501_pci_info = {
+>
+
 
