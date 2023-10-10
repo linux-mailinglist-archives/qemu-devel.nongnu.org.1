@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A588B7BF7DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDAB7BF7DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:51:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq9Ns-0006L7-D4; Tue, 10 Oct 2023 05:50:36 -0400
+	id 1qq9O0-0006mC-Mv; Tue, 10 Oct 2023 05:50:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qq9NQ-00067C-IP; Tue, 10 Oct 2023 05:50:08 -0400
+ id 1qq9Ny-0006aV-Na; Tue, 10 Oct 2023 05:50:42 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qq9NO-0003lx-1j; Tue, 10 Oct 2023 05:50:08 -0400
-Received: from lhrpeml100004.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S4WJk3bnXz67L71;
- Tue, 10 Oct 2023 17:47:02 +0800 (CST)
+ id 1qq9Nw-000428-TX; Tue, 10 Oct 2023 05:50:42 -0400
+Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S4WKQ30LNz6D8cV;
+ Tue, 10 Oct 2023 17:47:38 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100004.china.huawei.com (7.191.162.219) with Microsoft SMTP Server
+ lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 10 Oct 2023 10:50:02 +0100
+ 15.1.2507.31; Tue, 10 Oct 2023 10:50:38 +0100
 Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
  lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 10 Oct 2023 10:50:02 +0100
+ Tue, 10 Oct 2023 10:50:38 +0100
 To: Shaoqin Huang <shahuang@redhat.com>, "qemu-devel@nongnu.org"
  <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
 CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
@@ -51,15 +51,17 @@ CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
  "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
  <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
  Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V4 03/10] hw/acpi: Add ACPI CPU hotplug init stub
-Thread-Topic: [PATCH V4 03/10] hw/acpi: Add ACPI CPU hotplug init stub
-Thread-Index: AQHZ+vB6AtKRuBzpNUSildIIQlsgSLBCkw6AgAA1K/A=
-Date: Tue, 10 Oct 2023 09:50:01 +0000
-Message-ID: <5201c407bd2440dc8e1b0f337f91aea9@huawei.com>
+Subject: RE: [PATCH V4 07/10] hw/acpi: Update ACPI GED framework to support
+ vCPU Hotplug
+Thread-Topic: [PATCH V4 07/10] hw/acpi: Update ACPI GED framework to support
+ vCPU Hotplug
+Thread-Index: AQHZ+vCtAkAWKYXgr0OuLtDfoazlJ7BCnfiAgAAqeOA=
+Date: Tue, 10 Oct 2023 09:50:38 +0000
+Message-ID: <9cf277f61c4b401fa39cbc88109e1db1@huawei.com>
 References: <20231009203601.17584-1-salil.mehta@huawei.com>
- <20231009203601.17584-4-salil.mehta@huawei.com>
- <af88682c-aa4b-d457-44bf-fa3bba910d3b@redhat.com>
-In-Reply-To: <af88682c-aa4b-d457-44bf-fa3bba910d3b@redhat.com>
+ <20231009203601.17584-8-salil.mehta@huawei.com>
+ <d9fdeb5b-5da2-8411-7940-e64ad7ebf91b@redhat.com>
+In-Reply-To: <d9fdeb5b-5da2-8411-7940-e64ad7ebf91b@redhat.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -95,7 +97,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 PiBGcm9tOiBTaGFvcWluIEh1YW5nIDxzaGFodWFuZ0ByZWRoYXQuY29tPg0KPiBTZW50OiBUdWVz
-ZGF5LCBPY3RvYmVyIDEwLCAyMDIzIDg6MzkgQU0NCj4gVG86IFNhbGlsIE1laHRhIDxzYWxpbC5t
+ZGF5LCBPY3RvYmVyIDEwLCAyMDIzIDk6MTggQU0NCj4gVG86IFNhbGlsIE1laHRhIDxzYWxpbC5t
 ZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOyBxZW11LQ0KPiBhcm1Abm9u
 Z251Lm9yZw0KPiBDYzogbWF6QGtlcm5lbC5vcmc7IGplYW4tcGhpbGlwcGVAbGluYXJvLm9yZzsg
 Sm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgbHBpZXJh
@@ -112,15 +114,17 @@ aHRhQG9wbnNyYy5uZXQ7IHpodWtlcWlhbg0KPiA8emh1a2VxaWFuMUBodWF3ZWkuY29tPjsgd2Fu
 Z3hpb25nZmVuZyAoQykgPHdhbmd4aW9uZ2ZlbmcyQGh1YXdlaS5jb20+Ow0KPiB3YW5neWFuYW4g
 KFkpIDx3YW5neWFuYW41NUBodWF3ZWkuY29tPjsgamlha2VybmVsMkBnbWFpbC5jb207DQo+IG1h
 b2JpYm9AbG9vbmdzb24uY247IGxpeGlhbmdsYWlAbG9vbmdzb24uY247IExpbnV4YXJtIDxsaW51
-eGFybUBodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIFY0IDAzLzEwXSBody9hY3Bp
-OiBBZGQgQUNQSSBDUFUgaG90cGx1ZyBpbml0IHN0dWINCj4gDQo+IA0KPiANCj4gT24gMTAvMTAv
-MjMgMDQ6MzUsIFNhbGlsIE1laHRhIHZpYSB3cm90ZToNCj4gPiBBQ1BJIENQVSBob3RwbHVnIHJl
-bGF0ZWQgaW5pdGlhbGl6YXRpb24gc2hvdWxkIG9ubHkgaGFwcGVuIGlmIEFDUElfQ1BVX0hPVFBM
-VUcNCj4gPiBzdXBwb3J0IGhhcyBiZWVuIGVuYWJsZWQgZm9yIHBhcnRpY3VsYXIgYXJjaGl0ZWN0
-dXJlLiBBZGQgY3B1X2hvdHBsdWdfaHdfaW5pdCgpDQo+ID4gc3R1YiB0byBhdm9pZCBjb21waWxh
-dGlvbiBicmVhay4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFNhbGlsIE1laHRhIDxzYWxpbC5t
-ZWh0YUBodWF3ZWkuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBKb25hdGhhbiBDYW1lcm9uIDxKb25h
-dGhhbi5DYW1lcm9uQGh1YXdlaS5jb20+DQo+ID4gUmV2aWV3ZWQtYnk6IEdhdmluIFNoYW4gPGdz
-aGFuQHJlZGhhdC5jb20+DQo+IFJldmlld2VkLWJ5OiBTaGFvcWluIEh1YW5nIDxzaGFodWFuZ0By
-ZWRoYXQuY29tPg0KDQpUaGFua3MNCg==
+eGFybUBodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIFY0IDA3LzEwXSBody9hY3Bp
+OiBVcGRhdGUgQUNQSSBHRUQgZnJhbWV3b3JrIHRvIHN1cHBvcnQNCj4gdkNQVSBIb3RwbHVnDQo+
+IA0KPiBPbiAxMC8xMC8yMyAwNDozNSwgU2FsaWwgTWVodGEgdmlhIHdyb3RlOg0KPiA+IEFDUEkg
+R0VEIHNoYWxsIGJlIHVzZWQgdG8gY29udmV5IHRvIHRoZSBndWVzdCBrZXJuZWwgYWJvdXQgYW55
+IENQVSBob3QtDQo+ICh1bilwbHVnDQo+ID4gZXZlbnRzLiBUaGVyZWZvcmUsIGV4aXN0aW5nIEFD
+UEkgR0VEIGZyYW1ld29yayBpbnNpZGUgUUVNVSBuZWVkcyB0byBiZQ0KPiBlbmhhbmNlZA0KPiA+
+IHRvIHN1cHBvcnQgQ1BVIGhvdHBsdWcgc3RhdGUgYW5kIGV2ZW50cy4NCj4gPg0KPiA+IENvLWRl
+dmVsb3BlZC1ieTogS2VxaWFuIFpodSA8emh1a2VxaWFuMUBodWF3ZWkuY29tPg0KPiA+IFNpZ25l
+ZC1vZmYtYnk6IEtlcWlhbiBaaHUgPHpodWtlcWlhbjFAaHVhd2VpLmNvbT4NCj4gPiBTaWduZWQt
+b2ZmLWJ5OiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4NCj4gPiBSZXZpZXdl
+ZC1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9uYXRoYW4uQ2FtZXJvbkBodWF3ZWkuY29tPg0KPiA+
+IFJldmlld2VkLWJ5OiBHYXZpbiBTaGFuIDxnc2hhbkByZWRoYXQuY29tPg0KPiBSZXZpZXdlZC1i
+eTogU2hhb3FpbiBIdWFuZyA8c2hhaHVhbmdAcmVkaGF0LmNvbT4NCg0KVGhhbmtzDQo=
 
