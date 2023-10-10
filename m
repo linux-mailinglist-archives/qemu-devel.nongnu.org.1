@@ -2,99 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E837BFB96
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AEC7BFB97
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:35:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBww-0007q6-Qj; Tue, 10 Oct 2023 08:34:58 -0400
+	id 1qqBwx-0007qT-Kl; Tue, 10 Oct 2023 08:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qqBwr-0007pM-W9
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBwr-0007pL-6v
  for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:34:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qqBwq-0000AA-3y
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:34:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696941290;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=TsgHDkiJB376Z7csyt0aSwsZz98d4fhvAIrWIkefqJs=;
- b=jVEsTn0Tae57GanwhJGT+3LTgFkWh9s6HKQVee6BZbLpj568jRT23HBE+pOP3KKI/DVk1n
- XKDoS3hZ7Xlt/uMtBNDA3Vd9KWM7MtBRm/+Pfx4govNVymgdbZ/C4lHFFvrXxZVq4U9EF1
- 1nSAc6KJsW59zkHH8NvVqkBdi1uFuOo=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-Eaodw4cRNyuV-RR9D6I7kw-1; Tue, 10 Oct 2023 08:34:47 -0400
-X-MC-Unique: Eaodw4cRNyuV-RR9D6I7kw-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-690bfae9b7eso4333013b3a.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 05:34:47 -0700 (PDT)
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBwp-0000AB-JL
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:34:52 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9b98a699f45so943772666b.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 05:34:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696941290; x=1697546090; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Vfx2Ir6cqCUlrpN4ktqrmIdQP8T+TuX78vsFoNGqhx4=;
+ b=AnGRMk6yh1JYPrLRI2K4GczFWq75/0t3HPKGu3Qdy6oQA6uThTT2ntHXNmuA5fGx6c
+ qTBwZuXJZeuwoJuifP3W7PERLlZs/Xsr2cx3dCGBToHiqk/zNukaUfawQzdyZHZXw1Ds
+ yQx72zsPAkv9uAwRWINGUHw/lzNzlGlawoxuVUIIHpfRcKkuWMacJXjg0G8ByicKZInT
+ /AcclLXHVBexgA+4ngC3naMFanNj54evJMy4EfZDVlArk2chX4lTNR8y1gD4gSykbZHu
+ t/3YUpK2YdZUcrgr4lS5285p2PLgmWmoM73hWMv1N4m11tZmTGuWfqrSKf+eAXxnN1R4
+ Z6vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696941285; x=1697546085;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TsgHDkiJB376Z7csyt0aSwsZz98d4fhvAIrWIkefqJs=;
- b=Qi/WfJx+WH4bK98m9hiJKwXQaEXZyOC9CTYYIb7lsJW6P4PyUmS7PuU3DjLYzZB8g6
- QcGQswpYUi5Ti4LUK7s5kdgUUlslbx3dSmoPCkk9vTyNvcxuW7TKS/yOeraGgoyjdwaJ
- xlwd81LGAVqbU0r83ZBOp0q13hv+KkAyASs95kIIc/okf0Tg6YRcrdJWCnePR7sEjycz
- FayJsi9+p1Jevb/JxGcH6dJd7q+6wYfOw7oXrw25iy+WKjiIVl/yGYpod0pic8zb3F/Z
- qSs6Xp0gx0TulyJXSQaeMy0AiVcyHna7vDgobMfVPnfm0UVtd1vmSU3tTDFKagBDAaRr
- SICQ==
-X-Gm-Message-State: AOJu0Ywjy/hJTLC4yxWf69fmTTHgccRLHf01nFwmXXy0569tB3zO3yEv
- Clpd+6ydZYn+QoWlg1W+zP1sxo8SeH2fUh1I7zUBcKk0JfZ4XO//JI2TPYYB43uDOIfxJWIPa1K
- fbNlp5COp/m7M8CU=
-X-Received: by 2002:a05:6a00:2e8f:b0:690:d4f5:c664 with SMTP id
- fd15-20020a056a002e8f00b00690d4f5c664mr19631990pfb.11.1696941285632; 
- Tue, 10 Oct 2023 05:34:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKE5XHF1Uove89Uuj1hf6wplmfnMet+LnPRJkqRzQ1OxDw2VjToADq14wwE4A2KBsVn82rxw==
-X-Received: by 2002:a05:6a00:2e8f:b0:690:d4f5:c664 with SMTP id
- fd15-20020a056a002e8f00b00690d4f5c664mr19631967pfb.11.1696941285254; 
- Tue, 10 Oct 2023 05:34:45 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.109.49])
+ d=1e100.net; s=20230601; t=1696941290; x=1697546090;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Vfx2Ir6cqCUlrpN4ktqrmIdQP8T+TuX78vsFoNGqhx4=;
+ b=eTIcnWOCgvqp66g8u1fRXJhs1C0sALVJITMEf3d6MtgfA62yhXxmYG6XZj/PnlSbxl
+ ffiPJKLt0Kqf60qnvQXQR7/a6WissBgRlRzZa+0CrPqf+ABjXiwZDWbEQO4idsNinULO
+ ft7mw4tNOpkdrnpbUmIs5jzVfobC+luFfmFWke4C6xVau4mwNYxotPev5XqDtjnasClp
+ 2rJoI/oDJRdrDwd1qaDb0uC1fn6UXcQo5oDJYB7/d4GIOpxsjNnRErhyhibhYntf6Las
+ rEy7FKa+nnI/184uRu70wQOEq1d9QGh74c6obQxFJfltlyspPyoK15c+NJGTxoJQ7Ik0
+ Jdvg==
+X-Gm-Message-State: AOJu0YzcASAIl+RAQJ1IrmliMtqSx+qZgPL5oJ/kEQurr9Z+4JGigkFb
+ OnYvM4RxkXoE9GMjpIeIaB7zPw==
+X-Google-Smtp-Source: AGHT+IGiEtvxGzWwTluEqCxH8ScKFi/B2ZvYZRrT1NUWzdvJfWp+GwB+2Ot321tYl/FdjAH9+KuB/A==
+X-Received: by 2002:a17:906:2d1:b0:9b2:b765:8802 with SMTP id
+ 17-20020a17090602d100b009b2b7658802mr17676912ejk.40.1696941289919; 
+ Tue, 10 Oct 2023 05:34:49 -0700 (PDT)
+Received: from [192.168.69.115]
+ (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
  by smtp.gmail.com with ESMTPSA id
- v5-20020aa78505000000b00696ca62d5f5sm8149878pfn.8.2023.10.10.05.34.39
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 10 Oct 2023 05:34:44 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH v2 1/6] hw/core/cpu: Clean up global variable shadowing
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20231010115048.11856-2-philmd@linaro.org>
-Date: Tue, 10 Oct 2023 18:04:38 +0530
-Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Farman <farman@linux.ibm.com>,
- qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3540D50E-E94F-472D-9179-A1D9034EFB65@redhat.com>
-References: <20231010115048.11856-1-philmd@linaro.org>
- <20231010115048.11856-2-philmd@linaro.org>
-To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ a23-20020a17090680d700b00993cc1242d4sm8331125ejx.151.2023.10.10.05.34.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Oct 2023 05:34:49 -0700 (PDT)
+Message-ID: <9fcdaa43-7cf4-2b0c-3a29-a71767453702@linaro.org>
+Date: Tue, 10 Oct 2023 14:34:48 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v17 10/16] util/log: Add -d tb_stats
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: fei2.wu@intel.com, "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20231003183058.1639121-1-richard.henderson@linaro.org>
+ <20231003183058.1639121-11-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231003183058.1639121-11-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,114 +95,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-> On 10-Oct-2023, at 5:20 PM, Philippe Mathieu-Daud=C3=A9 =
-<philmd@linaro.org> wrote:
->=20
-> Fix:
->=20
->  hw/core/machine.c:1302:22: error: declaration shadows a variable in =
-the global scope [-Werror,-Wshadow]
->      const CPUArchId *cpus =3D possible_cpus->cpus;
->                       ^
->  hw/core/numa.c:69:17: error: declaration shadows a variable in the =
-global scope [-Werror,-Wshadow]
->      uint16List *cpus =3D NULL;
->                  ^
->  hw/acpi/aml-build.c:2005:20: error: declaration shadows a variable in =
-the global scope [-Werror,-Wshadow]
->      CPUArchIdList *cpus =3D ms->possible_cpus;
->                     ^
->  hw/core/machine-smp.c:77:14: error: declaration shadows a variable in =
-the global scope [-Werror,-Wshadow]
->      unsigned cpus    =3D config->has_cpus ? config->cpus : 0;
->               ^
->  include/hw/core/cpu.h:589:17: note: previous declaration is here
->  extern CPUTailQ cpus;
->                  ^
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
-
+On 3/10/23 20:30, Richard Henderson wrote:
+> From: Fei Wu <fei2.wu@intel.com>
+> 
+> Enable TBStatistics collection from startup.
+> 
+> Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Fei Wu <fei2.wu@intel.com>
+> [rth: Change "tb_stats_foo" to "tb_stats:foo"]
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> include/hw/core/cpu.h     | 8 ++++----
-> cpu-common.c              | 6 +++---
-> target/s390x/cpu_models.c | 2 +-
-> 3 files changed, 8 insertions(+), 8 deletions(-)
->=20
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index e02bc5980f..d0dc0a1698 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -586,13 +586,13 @@ static inline CPUArchState *cpu_env(CPUState =
-*cpu)
-> }
->=20
-> typedef QTAILQ_HEAD(CPUTailQ, CPUState) CPUTailQ;
-> -extern CPUTailQ cpus;
-> +extern CPUTailQ cpus_queue;
->=20
-> -#define first_cpu        QTAILQ_FIRST_RCU(&cpus)
-> +#define first_cpu        QTAILQ_FIRST_RCU(&cpus_queue)
-> #define CPU_NEXT(cpu)    QTAILQ_NEXT_RCU(cpu, node)
-> -#define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus, node)
-> +#define CPU_FOREACH(cpu) QTAILQ_FOREACH_RCU(cpu, &cpus_queue, node)
-> #define CPU_FOREACH_SAFE(cpu, next_cpu) \
-> -    QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus, node, next_cpu)
-> +    QTAILQ_FOREACH_SAFE_RCU(cpu, &cpus_queue, node, next_cpu)
->=20
-> extern __thread CPUState *current_cpu;
->=20
-> diff --git a/cpu-common.c b/cpu-common.c
-> index 45c745ecf6..c81fd72d16 100644
-> --- a/cpu-common.c
-> +++ b/cpu-common.c
-> @@ -73,7 +73,7 @@ static int cpu_get_free_index(void)
->     return max_cpu_index;
-> }
->=20
-> -CPUTailQ cpus =3D QTAILQ_HEAD_INITIALIZER(cpus);
-> +CPUTailQ cpus_queue =3D QTAILQ_HEAD_INITIALIZER(cpus_queue);
-> static unsigned int cpu_list_generation_id;
->=20
-> unsigned int cpu_list_generation_id_get(void)
-> @@ -90,7 +90,7 @@ void cpu_list_add(CPUState *cpu)
->     } else {
->         assert(!cpu_index_auto_assigned);
->     }
-> -    QTAILQ_INSERT_TAIL_RCU(&cpus, cpu, node);
-> +    QTAILQ_INSERT_TAIL_RCU(&cpus_queue, cpu, node);
->     cpu_list_generation_id++;
-> }
->=20
-> @@ -102,7 +102,7 @@ void cpu_list_remove(CPUState *cpu)
->         return;
->     }
->=20
-> -    QTAILQ_REMOVE_RCU(&cpus, cpu, node);
-> +    QTAILQ_REMOVE_RCU(&cpus_queue, cpu, node);
->     cpu->cpu_index =3D UNASSIGNED_CPU_INDEX;
->     cpu_list_generation_id++;
-> }
-> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-> index 98f14c09c2..b1e77b3a2b 100644
-> --- a/target/s390x/cpu_models.c
-> +++ b/target/s390x/cpu_models.c
-> @@ -756,7 +756,7 @@ void s390_set_qemu_cpu_model(uint16_t type, =
-uint8_t gen, uint8_t ec_ga,
->     const S390CPUDef *def =3D s390_find_cpu_def(type, gen, ec_ga, =
-NULL);
->=20
->     g_assert(def);
-> -    g_assert(QTAILQ_EMPTY_RCU(&cpus));
-> +    g_assert(QTAILQ_EMPTY_RCU(&cpus_queue));
->=20
->     /* build the CPU model */
->     s390_qemu_cpu_model.def =3D def;
-> --=20
-> 2.41.0
->=20
+>   stubs/tb-stats.c  | 16 ++++++++++++++++
+>   util/log.c        | 36 +++++++++++++++++++++++++++++++-----
+>   stubs/meson.build |  1 +
+>   3 files changed, 48 insertions(+), 5 deletions(-)
+>   create mode 100644 stubs/tb-stats.c
+> 
+> diff --git a/stubs/tb-stats.c b/stubs/tb-stats.c
+> new file mode 100644
+> index 0000000000..ceaa1622ce
+> --- /dev/null
+> +++ b/stubs/tb-stats.c
+> @@ -0,0 +1,16 @@
+> +/*
+> + * TB Stats Stubs
+> + *
+> + * Copyright (c) 2019
+> + * Written by Alex Bennée <alex.bennee@linaro.org>
+> + *
+> + * This code is licensed under the GNU GPL v2, or later.
+> + */
+> +
+> +
+> +#include "qemu/osdep.h"
+> +#include "tcg/tb-stats.h"
+> +
+> +void tb_stats_init(uint32_t flags)
+> +{
+> +}
 
+We don't need this stub anymore.
 
