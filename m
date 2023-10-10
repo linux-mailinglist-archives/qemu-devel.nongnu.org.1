@@ -2,81 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2E27BFE80
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 15:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3077BFF03
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqDBT-0007LC-2g; Tue, 10 Oct 2023 09:54:03 -0400
+	id 1qqDZr-0006Ev-FR; Tue, 10 Oct 2023 10:19:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqDBP-0007KY-1o
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 09:53:59 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqDBN-0001iW-HV
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 09:53:58 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-9ba1eb73c27so383263166b.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 06:53:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696946035; x=1697550835; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mrwoFvKY1A9VObVBjO6qwtG9FanKz6ymVBR7FRz62IA=;
- b=YEWuG5pGkeO/tRohoIjAUNoeU/BywlfDfod2GtyKl04isIhp/cbcNFznr7SM/oPJ3K
- xYpwZGEAr2DMoHJNG3FljYstqMV2j+7a1TwXTAVtL6GOdcVcD/9BclTd5VW+AqkuIIz1
- /Nh44Qf8XpBuB4S1LsWUaZQcmymOMuUkSZ46Sm7cHFWAyeYY5MbPhWphZYvcdGLulnoo
- KVBqITxttHQ9w1zE0ZoTt8UvsjAKpLcsmGhaaLeeJ/AVB5ozH3f9oWl/K4+U+w7wKJ1Y
- 9nLHDrlO0fKOSKFYxdBRNxSH1U0OlEWMo5cKzyMK0+Y493XYvYqdsqFtxOU90+AwMmsP
- yT0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696946035; x=1697550835;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mrwoFvKY1A9VObVBjO6qwtG9FanKz6ymVBR7FRz62IA=;
- b=ZMPbVld/T7MkZXPO3RIdM4kgOw/SLePpe79tXBGIA4OKMQTeNj51KsttDh/fz1VYgQ
- HaMMN7hmx6GwS0PC0uSFCBPwd8W3w38p3QQug4IagUgKrPqWeIjBGG5s1WHARo8dlxG0
- /KqeL9J3teK8aoSTZ+cM5JCC54O9MA0nCjpYHXN/ezbgOip4bKWmkIJidwQBaqcFWsta
- o0vANaqu6usGNVWkXY++INtUldQmoiteANlgeAk8iQfo8mAHi0yoCx0z9PaTTXoFFtBB
- Kg9sbNKs42zKAOgk3dKhkRZPzeyBeHkgehGiPraffYllKVDCfh/ZQby5ludm+/Ex6JpK
- TGlg==
-X-Gm-Message-State: AOJu0Yy1cJBu8VhgCIehHjP2OES+SaDRrIe7A0LCWMpxktY5IN56dAAQ
- 3Y41ziUlY3l32bGSb/oAmrRmd90g0TpOcsQRcDBBlw==
-X-Google-Smtp-Source: AGHT+IGA6Nuo/I+57/O2bOFSqmqc1e9humJzZ9X/moF/n/qXojxjwKVLaJbVPO4tfTI6lloqRh+83A==
-X-Received: by 2002:a17:906:c5:b0:9ad:c763:bc7a with SMTP id
- 5-20020a17090600c500b009adc763bc7amr14606861eji.23.1696946035588; 
- Tue, 10 Oct 2023 06:53:55 -0700 (PDT)
-Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
- [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- o12-20020a17090637cc00b0099bc80d5575sm8378427ejc.200.2023.10.10.06.53.54
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 06:53:55 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/loongarch/virt: Remove unused ISA Bus
-Date: Tue, 10 Oct 2023 15:53:42 +0200
-Message-ID: <20231010135342.40219-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231010135342.40219-1-philmd@linaro.org>
-References: <20231010135342.40219-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qqDZo-0006EZ-Az
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:19:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qqDZm-0007EC-M9
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:19:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696947549;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=bCyv2eSk+eQaFmvDeOdT+5+cc+3nqJtd03wiD0WHySk=;
+ b=DfbM1pBydxNzlc6C4VToyd0ec2976hhla2nRWp3wLMY+5B0oMafXyYs8xW6BAD9p70b65Q
+ t2tSsTZ9vIx+SA+iywlv0i3qU5UxM15eBE/iKWaGsRnuOlwNDD7euU8y0sMxz0U08McnbC
+ KX+5hW3fs1XjJjFelLcXmavlaCcJQYg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-592-2RTtn2gXPLmRUEat1pi-2g-1; Tue, 10 Oct 2023 10:19:06 -0400
+X-MC-Unique: 2RTtn2gXPLmRUEat1pi-2g-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E26FA85C1A5;
+ Tue, 10 Oct 2023 14:19:05 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9E03640C6CA0;
+ Tue, 10 Oct 2023 14:19:04 +0000 (UTC)
+Date: Tue, 10 Oct 2023 10:19:03 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Jeuk Kim <jeuk20.kim@gmail.com>
+Cc: qemu-devel@nongnu.org, jeuk20.kim@samsung.com, pbonzini@redhat.com,
+ qemu-block@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
+ bmeng.cn@gmail.com
+Subject: Re: [PATCH] hw/ufs: Fix incorrect register fields
+Message-ID: <20231010141903.GD1731363@fedora>
+References: <99bfcf6de904357e6b07084b99193bb16309d46a.1696914208.git.jeuk20.kim@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="8S0oJ/oxuWE4LFeJ"
+Content-Disposition: inline
+In-Reply-To: <99bfcf6de904357e6b07084b99193bb16309d46a.1696914208.git.jeuk20.kim@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,68 +80,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The LoongArch 'virt' machine doesn't use its ISA I/O region.
 
-If a ISA device were to be mapped there, there is no support
-for ISA IRQ. Unlikely useful. Simply remove.
+--8S0oJ/oxuWE4LFeJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/loongarch/virt.h | 3 ---
- hw/loongarch/virt.c         | 5 -----
- hw/loongarch/Kconfig        | 1 -
- 3 files changed, 9 deletions(-)
+On Tue, Oct 10, 2023 at 02:11:13PM +0900, Jeuk Kim wrote:
+> From: Jeuk Kim <jeuk20.kim@samsung.com>
+>=20
+> This patch fixes invalid ufs register fields.
+> This fixes an issue reported by Bin Meng that
+> caused ufs to fail over riscv.
+>=20
+> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
+> ---
+>  include/block/ufs.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index f1659655c6..674f4655e0 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -16,8 +16,6 @@
- 
- #define LOONGARCH_MAX_CPUS      256
- 
--#define VIRT_ISA_IO_BASE        0x18000000UL
--#define VIRT_ISA_IO_SIZE        0x0004000
- #define VIRT_FWCFG_BASE         0x1e020000UL
- #define VIRT_BIOS_BASE          0x1c000000UL
- #define VIRT_BIOS_SIZE          (4 * MiB)
-@@ -38,7 +36,6 @@ struct LoongArchMachineState {
- 
-     MemoryRegion lowmem;
-     MemoryRegion highmem;
--    MemoryRegion isa_io;
-     MemoryRegion bios;
-     bool         bios_loaded;
-     /* State for other subsystems/APIs: */
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 2629128aed..91342ee3b8 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -874,11 +874,6 @@ static void loongarch_init(MachineState *machine)
-         machine_memory_devices_init(machine, device_mem_base, device_mem_size);
-     }
- 
--    /* Add isa io region */
--    memory_region_init_alias(&lams->isa_io, NULL, "isa-io",
--                             get_system_io(), 0, VIRT_ISA_IO_SIZE);
--    memory_region_add_subregion(address_space_mem, VIRT_ISA_IO_BASE,
--                                &lams->isa_io);
-     /* load the BIOS image. */
-     loongarch_firmware_init(lams);
- 
-diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
-index fcd5f2b4b6..5727efed6d 100644
---- a/hw/loongarch/Kconfig
-+++ b/hw/loongarch/Kconfig
-@@ -5,7 +5,6 @@ config LOONGARCH_VIRT
-     imply VIRTIO_VGA
-     imply PCI_DEVICES
-     imply NVDIMM
--    select ISA_BUS
-     select SERIAL
-     select VIRTIO_PCI
-     select PLATFORM_BUS
--- 
-2.41.0
+Hi,
+Please feel free to send a pull request with your unreviewed Coverity fixes=
+ and
+this reviewed fix.
+
+Enough time has passed for the community to review the Coverity fixes
+and since no one did, you can submit them.
+
+I am confident in your work and will not review future UFS patches due
+to time constraints.
+
+Thanks,
+Stefan
+
+>=20
+> diff --git a/include/block/ufs.h b/include/block/ufs.h
+> index fd884eb8ce..7631a5af10 100644
+> --- a/include/block/ufs.h
+> +++ b/include/block/ufs.h
+> @@ -111,14 +111,14 @@ REG32(UECT, offsetof(UfsReg, uect))
+>  REG32(UECDME, offsetof(UfsReg, uecdme))
+>  REG32(UTRIACR, offsetof(UfsReg, utriacr))
+>  REG32(UTRLBA, offsetof(UfsReg, utrlba))
+> -    FIELD(UTRLBA, UTRLBA, 9, 22)
+> +    FIELD(UTRLBA, UTRLBA, 10, 22)
+>  REG32(UTRLBAU, offsetof(UfsReg, utrlbau))
+>  REG32(UTRLDBR, offsetof(UfsReg, utrldbr))
+>  REG32(UTRLCLR, offsetof(UfsReg, utrlclr))
+>  REG32(UTRLRSR, offsetof(UfsReg, utrlrsr))
+>  REG32(UTRLCNR, offsetof(UfsReg, utrlcnr))
+>  REG32(UTMRLBA, offsetof(UfsReg, utmrlba))
+> -    FIELD(UTMRLBA, UTMRLBA, 9, 22)
+> +    FIELD(UTMRLBA, UTMRLBA, 10, 22)
+>  REG32(UTMRLBAU, offsetof(UfsReg, utmrlbau))
+>  REG32(UTMRLDBR, offsetof(UfsReg, utmrldbr))
+>  REG32(UTMRLCLR, offsetof(UfsReg, utmrlclr))
+> --=20
+> 2.34.1
+>=20
+
+--8S0oJ/oxuWE4LFeJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUlXVcACgkQnKSrs4Gr
+c8jZdgf8D2PEO5nwwBLNUvYqalLxg0rDlQsK3g0QFUuWHjwKcgo0x3UNT6iMYewM
+3BzMaBTqFM8+42FcGF0BFRIEF7oyjHC7GoiEMtzslo7KoFW9DywFYkyAVWkhnyI6
+fZ1CH8n9766dbCVUiS6iYGKVQH0QIGMAolSD/YkiL3I658sHzxqUrPzMGWYGdMES
+Fb187nqCF1dbbeHlTy1gXiYQEQp0H+cMuU0YmXj3vbwYFYn/sSENxxdBmhvDtCKD
+Wjud2PsvHY8ioYTN0sWZnBFQA80rPkz1wqtKXj41sH/3nFpIr9LMKuMheLda6TvX
+11THw5AULQJ3pVceCYxcKRng6eitCA==
+=1dHs
+-----END PGP SIGNATURE-----
+
+--8S0oJ/oxuWE4LFeJ--
 
 
