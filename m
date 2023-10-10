@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE96E7BF76C
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B807BF763
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:32:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq95H-0002RO-V2; Tue, 10 Oct 2023 05:31:24 -0400
+	id 1qq95D-0001bc-Oq; Tue, 10 Oct 2023 05:31:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94W-0000wL-Et
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94a-0000x0-Ku
  for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:47 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94R-00087s-L1
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:36 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-533c5d10dc7so9518980a12.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:30:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94X-0008CR-CA
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:40 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5334f9a56f6so9335017a12.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:30:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696930227; x=1697535027; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696930235; x=1697535035; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ty5A8kcVGZ5VAZ2hfMU3PH9M5Fs6Xopxrwnt8GKnicA=;
- b=zniWLfBANnCE1t8Yfh3k6j4lfrxCepBXZ8o0THtRaLla7edeeH1NbFkAte48JKXidT
- lFISkWVdlGV4ixVxmpqk5OOBY8JGNhDLEprMlfRdaUbIY/iqU1mJ48/cunEfwE3Toh8a
- olmu/vXAj9wAh3JeJTpfg8Z1zuvqI/9TaPq4biTXtfCBO3wrFLOAW4ZIF6PNqu8qDNCy
- F2BhidOWJzIw1ntRq1skTYg5mLWNgA3ZoEEtQh7r83XI8+/pESeYfMjlES5qNznT4PTk
- CslgH7olw7qAxGw0QjQJjzMCaaKXJdvXLoA216yqS8wriWDgFG0s6p663Wl9PCcSbMgM
- svBA==
+ bh=1MyuGXLiWN8UopdjDzgIKzA4UsMWUE83156ltUpzRtA=;
+ b=BT9Xud44n8xIvrKVzwCBoSajeXijG9k6H21tmRLG3wVEXR7x4TJHauLK6ZnbDDHcqy
+ 7joRHEjC3Oov6c0B7ZsDzX6LearpywX7smEVpgjS8W2/BxIWvxSoXC4Kyh3hAJPHK7D8
+ krfXPW0KEy9nm8/Ct4aOdJ2ylXZFbNk1slP7xuIc7mu8YmYMxTRGrZjbq6eqNBFToJz/
+ ckJC7oEbNG2nXQDJJbXa25DFmK0aLwIs2zXvg1NGWTkKbURNPFWxPgTDrb+/kMzkDbbb
+ y7Vqt+SDo4h562E8zjw7QgZymj9SG4VJjZRCj6CUJfTgSJnaz5Bx1qtQXo91PjAvM1S9
+ 8MYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696930227; x=1697535027;
+ d=1e100.net; s=20230601; t=1696930235; x=1697535035;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ty5A8kcVGZ5VAZ2hfMU3PH9M5Fs6Xopxrwnt8GKnicA=;
- b=uw3imbhhlmSHeXsricrpSjn2eUnYORrw6TjBngSbqaeKT3PjAXaeOwDFdY3LokuYT+
- gE55LYcZ0UvvYPQEHL8PrTYOQ2gTP+CmS6jIBQMLOg1+tFG/MHIdQwEpSIPnFwbCezDs
- gOx1chCkrw5fL+MKFZfoWT23rL2I5k6YXqT2dzyUqh0lFNe+nycYwRsPljshu8U9eRjZ
- 1pVWyv9cOovekk38D1GmoQvBB97ttH+QEnEkMA0wPQ3boBPEnoXfoWS4XtJqMWoHZc0U
- zecQ4EZu3pGKgELnKeefOWYwqhdxOxR3NvlFgYOfbfyemZm3QoO/iQD5z7aUGfLu6l1w
- GoEQ==
-X-Gm-Message-State: AOJu0Yzd2/XyZz7ekllDbgCutWPzby3wW1cOxh1dNaViTCEhVCcySj/R
- gFaJ/ut55ydGovsqG/cWXTu/h3fuujTtb2Goufj9jw==
-X-Google-Smtp-Source: AGHT+IEenp8xBxzKdWj19lDU52il/RpaW16cYHh0GWNjWrzcaBKpCXQClHFW5YIYG6MSWfbY8WdgeQ==
-X-Received: by 2002:aa7:c55a:0:b0:532:c81b:99b1 with SMTP id
- s26-20020aa7c55a000000b00532c81b99b1mr15462000edr.18.1696930227507; 
- Tue, 10 Oct 2023 02:30:27 -0700 (PDT)
+ bh=1MyuGXLiWN8UopdjDzgIKzA4UsMWUE83156ltUpzRtA=;
+ b=Hb4HQI2hhS3t/d0DUdvjLxjbQofmuGLh+PQR6rXRSQSVORQM5XyRNSdJh0kbYkaFL2
+ AGktz223Xna5paENIL/Lwu+E54wTKVxV6GQJ7LkENfeW24Nv2KxkzaS51PVLEkmUR4wC
+ YCV5rph/0Edb9BbzVx8T22pxYBgqWE/kHUpoRN+XnPPNT33KDFyhUXI3e46C8ZqC2wUS
+ JcSuljEjW9TDA5EwU2DqE7KP40XXT9HPFG5I/49zPnVxgX1u3/rZDV3YF4McmeWbYRWc
+ q9/6OYUx0kpRFCr5ELH6AcjYDNgjl7ITUWYbrmwUl3BV4HIs/NtZVEz7/MJO4xZ4FxDW
+ 8kDg==
+X-Gm-Message-State: AOJu0Yy3hIlIw/Z/7yHJxkuT89F0jy6YxLllc4HDOxgJH47LH37ovvpm
+ stlEEl7FnuuaVqu8XQpkEzSvb/d8SSWLYr3zWiuqjw==
+X-Google-Smtp-Source: AGHT+IFnwvrA6ilVA4/g//jcT9JTcax+KtBcD6tbQwOleW5h0duZ3lHgWDZgHzRPFFPkOIn7Otv/Wg==
+X-Received: by 2002:a17:906:301a:b0:9a5:b814:8254 with SMTP id
+ 26-20020a170906301a00b009a5b8148254mr15639258ejz.24.1696930235700; 
+ Tue, 10 Oct 2023 02:30:35 -0700 (PDT)
 Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
  [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- g26-20020aa7c59a000000b00530ccd180a3sm7276170edq.97.2023.10.10.02.30.23
+ u2-20020a17090617c200b009ad8084e08asm8033134eje.0.2023.10.10.02.30.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 02:30:27 -0700 (PDT)
+ Tue, 10 Oct 2023 02:30:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -87,18 +87,18 @@ Cc: David Hildenbrand <david@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-Subject: [PATCH 10/18] target/riscv: Inline target specific
- TYPE_RISCV_CPU_BASE definition
-Date: Tue, 10 Oct 2023 11:28:52 +0200
-Message-ID: <20231010092901.99189-11-philmd@linaro.org>
+Subject: [PATCH 11/18] target/i386: Declare CPU QOM types using DEFINE_TYPES()
+ macro
+Date: Tue, 10 Oct 2023 11:28:53 +0200
+Message-ID: <20231010092901.99189-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231010092901.99189-1-philmd@linaro.org>
 References: <20231010092901.99189-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,85 +121,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TYPE_RISCV_CPU_BASE depends on the TARGET_RISCV32/TARGET_RISCV64
-definitions which are target specific. Such target specific
-definition taints "cpu-qom.h".
+When multiple QOM types are registered in the same file,
+it is simpler to use the the DEFINE_TYPES() macro. In
+particular because type array declared with such macro
+are easier to review.
 
-Since "cpu-qom.h" must be target agnostic, remove its target
-specific definition uses by inlining TYPE_RISCV_CPU_BASE in the
-two machines using it.
-
-"target/riscv/cpu-qom.h" is now fully target agnostic.
+In few commits we are going to add more types, so replace
+the type_register_static() to ease further reviews.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/cpu-qom.h | 8 +-------
- hw/riscv/spike.c       | 8 +++++++-
- hw/riscv/virt.c        | 8 +++++++-
- 3 files changed, 15 insertions(+), 9 deletions(-)
+ target/i386/cpu.c | 50 ++++++++++++++++++++++-------------------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 8cb67b84a4..f607687384 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -1,5 +1,5 @@
- /*
-- * QEMU RISC-V CPU QOM header
-+ * QEMU RISC-V CPU QOM header (target agnostic)
-  *
-  * Copyright (c) 2023 Ventana Micro Systems Inc.
-  *
-@@ -43,12 +43,6 @@
- #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
- #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 9fad31b8db..8f1fd5f304 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -4989,13 +4989,6 @@ static void max_x86_cpu_initfn(Object *obj)
+                             &error_abort);
+ }
  
--#if defined(TARGET_RISCV32)
--# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
--#elif defined(TARGET_RISCV64)
--# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
--#endif
+-static const TypeInfo max_x86_cpu_type_info = {
+-    .name = X86_CPU_TYPE_NAME("max"),
+-    .parent = TYPE_X86_CPU,
+-    .instance_init = max_x86_cpu_initfn,
+-    .class_init = max_x86_cpu_class_init,
+-};
 -
- typedef struct CPUArchState CPURISCVState;
+ static char *feature_word_description(FeatureWordInfo *f, uint32_t bit)
+ {
+     assert(f->type == CPUID_FEATURE_WORD || f->type == MSR_FEATURE_WORD);
+@@ -8017,19 +8010,6 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
+     }
+ }
  
- OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
-diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
-index 81f7e53aed..eae49da6d6 100644
---- a/hw/riscv/spike.c
-+++ b/hw/riscv/spike.c
-@@ -349,7 +349,13 @@ static void spike_machine_class_init(ObjectClass *oc, void *data)
-     mc->init = spike_board_init;
-     mc->max_cpus = SPIKE_CPUS_MAX;
-     mc->is_default = true;
--    mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
-+#if defined(TARGET_RISCV32)
-+    mc->default_cpu_type = TYPE_RISCV_CPU_BASE32;
-+#elif defined(TARGET_RISCV64)
-+    mc->default_cpu_type = TYPE_RISCV_CPU_BASE64;
-+#else
-+#error unsupported target
-+#endif
-     mc->possible_cpu_arch_ids = riscv_numa_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = riscv_numa_cpu_index_to_props;
-     mc->get_default_cpu_node_id = riscv_numa_get_default_cpu_node_id;
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 5edc1d98d2..620a4e5f07 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -1685,7 +1685,13 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-     mc->desc = "RISC-V VirtIO board";
-     mc->init = virt_machine_init;
-     mc->max_cpus = VIRT_CPUS_MAX;
--    mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
-+#if defined(TARGET_RISCV32)
-+    mc->default_cpu_type = TYPE_RISCV_CPU_BASE32;
-+#elif defined(TARGET_RISCV64)
-+    mc->default_cpu_type = TYPE_RISCV_CPU_BASE64;
-+#else
-+#error unsupported target
-+#endif
-     mc->pci_allow_0_address = true;
-     mc->possible_cpu_arch_ids = riscv_numa_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = riscv_numa_cpu_index_to_props;
+-static const TypeInfo x86_cpu_type_info = {
+-    .name = TYPE_X86_CPU,
+-    .parent = TYPE_CPU,
+-    .instance_size = sizeof(X86CPU),
+-    .instance_align = __alignof(X86CPU),
+-    .instance_init = x86_cpu_initfn,
+-    .instance_post_init = x86_cpu_post_initfn,
+-
+-    .abstract = true,
+-    .class_size = sizeof(X86CPUClass),
+-    .class_init = x86_cpu_common_class_init,
+-};
+-
+ /* "base" CPU model, used by query-cpu-model-expansion */
+ static void x86_cpu_base_class_init(ObjectClass *oc, void *data)
+ {
+@@ -8041,22 +8021,38 @@ static void x86_cpu_base_class_init(ObjectClass *oc, void *data)
+     xcc->ordering = 8;
+ }
+ 
+-static const TypeInfo x86_base_cpu_type_info = {
+-        .name = X86_CPU_TYPE_NAME("base"),
+-        .parent = TYPE_X86_CPU,
+-        .class_init = x86_cpu_base_class_init,
++static const TypeInfo x86_cpu_types[] = {
++    {
++        .name           = TYPE_X86_CPU,
++        .parent         = TYPE_CPU,
++        .abstract       = true,
++        .instance_size  = sizeof(X86CPU),
++        .instance_align = __alignof(X86CPU),
++        .instance_init  = x86_cpu_initfn,
++        .instance_post_init = x86_cpu_post_initfn,
++        .class_size     = sizeof(X86CPUClass),
++        .class_init     = x86_cpu_common_class_init,
++    }, {
++        .name           = X86_CPU_TYPE_NAME("base"),
++        .parent         = TYPE_X86_CPU,
++        .class_init     = x86_cpu_base_class_init,
++    }, {
++        .name           = X86_CPU_TYPE_NAME("max"),
++        .parent         = TYPE_X86_CPU,
++        .instance_init  = max_x86_cpu_initfn,
++        .class_init     = max_x86_cpu_class_init,
++    }
+ };
+ 
++DEFINE_TYPES(x86_cpu_types)
++
+ static void x86_cpu_register_types(void)
+ {
+     int i;
+ 
+-    type_register_static(&x86_cpu_type_info);
+     for (i = 0; i < ARRAY_SIZE(builtin_x86_defs); i++) {
+         x86_register_cpudef_types(&builtin_x86_defs[i]);
+     }
+-    type_register_static(&max_x86_cpu_type_info);
+-    type_register_static(&x86_base_cpu_type_info);
+ }
+ 
+ type_init(x86_cpu_register_types)
 -- 
 2.41.0
 
