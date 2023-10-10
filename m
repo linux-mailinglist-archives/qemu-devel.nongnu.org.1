@@ -2,108 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335767BF9F6
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDD67BF9E5
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:39:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqB7A-0002Ze-84; Tue, 10 Oct 2023 07:41:28 -0400
+	id 1qqB4B-00086r-28; Tue, 10 Oct 2023 07:38:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1qqB74-0002Yj-HO; Tue, 10 Oct 2023 07:41:22 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqB3m-0007oU-8I; Tue, 10 Oct 2023 07:38:00 -0400
+Received: from out30-112.freemail.mail.aliyun.com ([115.124.30.112])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1qqB6y-00056m-Rp; Tue, 10 Oct 2023 07:41:21 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39ABf9rm023732; Tue, 10 Oct 2023 11:41:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=2KJohtrXE1S4tzfOg5Ny6hdml5q2E6CpFvZ5IMeu+mY=;
- b=gEDltXDlOu2MiSJwdStNjR3jnjXNYGmt53xyfF5PuBm5MLRaRXUhiLEXSQQPS4kZ/ELr
- zcff6WILGCqy/yEHg5v7efQejooAzDFgVVGdQQ+qh2mQw/fJsL6QjnYwEROrIEK1fqRe
- pl1sFtIcfvko2luK5hAyKb82ZC6PidpPtsv4FmGfvayAXThGsBTRtUnZBTf3OemgOi37
- AI0b0BsI5SRlgAkfq70YBo2+OPCr07MPnwyESviqauhmKqsJSJB7kyLyTA7Llu3KTXKo
- oC45BwfGvyn5JGLsbrEbFAlF7w+6nxjmiV1+Qx8OuPnMDzKpWysEPAocLUuTbNkicCh5 4g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tn5m2gdy5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 11:41:14 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39ABfDw3024213;
- Tue, 10 Oct 2023 11:41:13 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tn5m2gddm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 11:41:12 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39A9KBlX001147; Tue, 10 Oct 2023 11:36:39 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkkvjqkkr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 11:36:39 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39ABabI433751394
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Oct 2023 11:36:37 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C16F42004B;
- Tue, 10 Oct 2023 11:36:37 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A3B9320049;
- Tue, 10 Oct 2023 11:36:37 +0000 (GMT)
-Received: from [9.152.224.53] (unknown [9.152.224.53])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 10 Oct 2023 11:36:37 +0000 (GMT)
-Message-ID: <a3dbcec6-e0ef-74e7-fa20-6846caf156a6@linux.ibm.com>
-Date: Tue, 10 Oct 2023 13:36:37 +0200
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqB3j-00048w-57; Tue, 10 Oct 2023 07:37:57 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R561e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=43; SR=0;
+ TI=SMTPD_---0Vtsm3Mn_1696937857; 
+Received: from 30.221.98.57(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0Vtsm3Mn_1696937857) by smtp.aliyun-inc.com;
+ Tue, 10 Oct 2023 19:37:39 +0800
+Message-ID: <22ebaf0b-4272-481a-bfaf-5bd2d5f3fd56@linux.alibaba.com>
+Date: Tue, 10 Oct 2023 19:36:38 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] target/s390x/kvm: Turn KVM_CAP_SYNC_REGS into a
- hard requirement
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/18] target/riscv: Remove CPU_RESOLVING_TYPE from
+ 'cpu-qom.h'
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Halil Pasic <pasic@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
-References: <20231009170745.63446-1-thuth@redhat.com>
- <20231009170745.63446-2-thuth@redhat.com>
- <e33a387a-215b-cc39-3552-16e67f8984e8@linux.ibm.com>
- <2f6dcd26-9a53-390a-5acc-b8021b6190c5@redhat.com>
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <2f6dcd26-9a53-390a-5acc-b8021b6190c5@redhat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-arm@nongnu.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Bin Meng <bin.meng@windriver.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, Marek Vasut
+ <marex@denx.de>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Laurent Vivier <laurent@vivier.eu>, Stafford Horne <shorne@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Chris Wulff <crwulff@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
+References: <20231010092901.99189-1-philmd@linaro.org>
+ <20231010092901.99189-4-philmd@linaro.org>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20231010092901.99189-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: wI-yDTOByoEruRfVahGrf9SmJ-vGc3jH
-X-Proofpoint-GUID: PRAzUoneEAjGZHCF0LZ1x-AK8jSp8iLi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-10_07,2023-10-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- adultscore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0
- malwarescore=0 priorityscore=1501 mlxscore=0 clxscore=1015 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310100084
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=borntraeger@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.112;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-112.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,66 +92,44 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+On 2023/10/10 17:28, Philippe Mathieu-Daudé wrote:
+> CPU_RESOLVING_TYPE is a per-target definition, and is
+> irrelevant for other targets. Move it to "cpu.h".
+>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/riscv/cpu-qom.h | 1 -
+>   target/riscv/cpu.h     | 2 ++
+>   2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+> index 04af50983e..8cb67b84a4 100644
+> --- a/target/riscv/cpu-qom.h
+> +++ b/target/riscv/cpu-qom.h
+> @@ -27,7 +27,6 @@
+>   
+>   #define RISCV_CPU_TYPE_SUFFIX "-" TYPE_RISCV_CPU
+>   #define RISCV_CPU_TYPE_NAME(name) (name RISCV_CPU_TYPE_SUFFIX)
+> -#define CPU_RESOLVING_TYPE TYPE_RISCV_CPU
+>   
+>   #define TYPE_RISCV_CPU_ANY              RISCV_CPU_TYPE_NAME("any")
+>   #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index ef9cf21c0c..374b813f20 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -31,6 +31,8 @@
+>   #include "qapi/qapi-types-common.h"
+>   #include "cpu-qom.h"
+>   
+> +#define CPU_RESOLVING_TYPE TYPE_RISCV_CPU
 
-Am 10.10.23 um 13:12 schrieb Thomas Huth:
-> On 10/10/2023 13.02, Christian Borntraeger wrote:
->>
->>
->> Am 09.10.23 um 19:07 schrieb Thomas Huth:
->>> Since we already require at least kernel 3.15 in the s390x KVM code,
->>> we can assume that the KVM_CAP_SYNC_REGS capability is always there.
->>> Thus turn this into a hard requirement now.
->>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>>   target/s390x/kvm/kvm.c | 20 ++++++++++++++------
->>>   1 file changed, 14 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
->>> index bc5c56a305..b3e2eaa2eb 100644
->>> --- a/target/s390x/kvm/kvm.c
->>> +++ b/target/s390x/kvm/kvm.c
->>> @@ -337,21 +337,29 @@ int kvm_arch_get_default_type(MachineState *ms)
->>>   int kvm_arch_init(MachineState *ms, KVMState *s)
->>>   {
->>> +    int required_caps[] = {
->>> +        KVM_CAP_DEVICE_CTRL,
->>> +        KVM_CAP_SYNC_REGS,
->>> +    };
->>> +
->>> +    for (int i = 0; i < ARRAY_SIZE(required_caps); i++) {
->>> +        if (!kvm_check_extension(s, required_caps[i])) {
->>> +            error_report("KVM is missing capability #%d - "
->>> +                         "please use kernel 3.15 or newer", required_caps[i]);
->>> +            return -1;
->>> +        }
->>> +    }
->>> +
->>>       object_class_foreach(ccw_machine_class_foreach, TYPE_S390_CCW_MACHINE,
->>>                            false, NULL);
->>> -    if (!kvm_check_extension(kvm_state, KVM_CAP_DEVICE_CTRL)) {
->>> -        error_report("KVM is missing capability KVM_CAP_DEVICE_CTRL - "
->>> -                     "please use kernel 3.15 or newer");
->>> -        return -1;
->>> -    }
->>>       if (!kvm_check_extension(s, KVM_CAP_S390_COW)) {
->>>           error_report("KVM is missing capability KVM_CAP_S390_COW - "
->>>                        "unsupported environment");
->>>           return -1;
->>>       }
->>
->> Not sure if we also want to move KVM_CAP_S390_COW somehow. The message would be different.
-> 
-> IIRC that error could happen when you ran KVM within an older version of z/VM, so the "please use kernel 3.15 or newer" message would be completely misleading there.
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-Yes, thats what I was trying to say, we would need a different message.
-Lets go with this patch.
-> 
->> Aparch from that:
->> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> 
-> Thanks,
->    Thomas
-> 
-> 
+Zhiwei
+
+> +
+>   #define TCG_GUEST_DEFAULT_MO 0
+>   
+>   /*
 
