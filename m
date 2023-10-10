@@ -2,83 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BBE7BF2BF
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D677BF2C0
 	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 08:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq5rd-0001ln-Mq; Tue, 10 Oct 2023 02:05:05 -0400
+	id 1qq5sQ-00025o-AU; Tue, 10 Oct 2023 02:05:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qq5ra-0001lP-P4
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 02:05:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qq5sN-00021M-9X
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 02:05:51 -0400
+Received: from mgamail.intel.com ([192.55.52.88])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qq5rZ-0004yF-47
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 02:05:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696917899;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UYqWw/RwqpLJwfmK5aZGjQp0N41vM1xGrh78MRhKzE4=;
- b=URhXj5B88hnwb0OvAkPnxc41oegaaLS09b+6AxB+lad8RZ4NSbsIKtUgIcCegFrvAqsmZ5
- 8z5gmCsZHyea5RXeGdTC+OIaM/e0pgzh/B2Cr0R5SiGsK3lD/X6dYr62zqNxNjAhYKUG+L
- WUUwVMGUz5qF5HuUFf9RJvaNuD0Cg1s=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-83-_xkuct4uPJm33VdED22dLg-1; Tue, 10 Oct 2023 02:04:42 -0400
-X-MC-Unique: _xkuct4uPJm33VdED22dLg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 81F411C0515C;
- Tue, 10 Oct 2023 06:04:41 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2607C47AD4A;
- Tue, 10 Oct 2023 06:04:41 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1937921E6904; Tue, 10 Oct 2023 08:04:40 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Brian Cain <bcain@quicinc.com>,  "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>,  "anjo@rev.ng" <anjo@rev.ng>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,  "Matheus
- Bernardino (QUIC)" <quic_mathbern@quicinc.com>,  "stefanha@redhat.com"
- <stefanha@redhat.com>,  "ale@rev.ng" <ale@rev.ng>,  "Marco Liebel (QUIC)"
- <quic_mliebel@quicinc.com>,  "ltaylorsimpson@gmail.com"
- <ltaylorsimpson@gmail.com>,  Thomas Huth <thuth@redhat.com>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2 3/3] target/hexagon: avoid shadowing globals
-References: <20231005222206.2784853-1-bcain@quicinc.com>
- <20231005222206.2784853-4-bcain@quicinc.com>
- <48c5233c-c294-f50d-a438-f7f6a63c113b@linaro.org>
- <187100e7-a516-4024-1739-a08c630d76f3@linaro.org>
- <BN7PR02MB4194900078A1AA6E067FE20FB8CEA@BN7PR02MB4194.namprd02.prod.outlook.com>
- <0aa445c4-d39d-e28a-6bb0-00f7b9f12bb0@linaro.org>
-Date: Tue, 10 Oct 2023 08:04:40 +0200
-In-Reply-To: <0aa445c4-d39d-e28a-6bb0-00f7b9f12bb0@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 10 Oct 2023 07:22:31
- +0200")
-Message-ID: <87jzrvvwqv.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qq5sI-0005Fd-7d
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 02:05:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1696917946; x=1728453946;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=IRiTVEt+WNq08AAs4bzBamGsV/glfW2kqK+IBcIjGW8=;
+ b=A4vuKZZJyjyMabkclR/2QpybPXLzgGpkv3fjpacF7vD70TNHF38VuySt
+ QSSDnQaB2XzisDb4RubsywCr3JRwv1xpA9krYcHBcipWlVQEEzoGkiayW
+ /RDuyNZ5rTPsl3JQNYQbGWDTPMxJlQDlYz2sSzB9S+Y3YY0dDIW60O2tx
+ smdvCb0sl+eYWc8znUnA4VT6WyxmtTc8v1olUUv2HFQHYUW4XCFy9XG3y
+ w3gWEN1d/rhd8qQtvSgKs76VpavDkV2lSy0YMuvwMQzTLpiDEcLiQ+V1t
+ EX5Co/VFhvbF4vMMdtua6+y550rXXZv/H3kTjYMH+S7XNfv/KHazxCrlc Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="415316004"
+X-IronPort-AV: E=Sophos;i="6.03,211,1694761200"; d="scan'208";a="415316004"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2023 23:05:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="897041182"
+X-IronPort-AV: E=Sophos;i="6.03,211,1694761200"; d="scan'208";a="897041182"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by fmsmga001.fm.intel.com with ESMTP; 09 Oct 2023 23:03:59 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	xiaoyao.li@intel.com
+Subject: [PATCH] targer/i386/cpu: Fix CPUID_HT exposure
+Date: Tue, 10 Oct 2023 02:05:39 -0400
+Message-Id: <20231010060539.210258-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.88; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,21 +75,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+When explicitly booting a multiple vcpus vm with "-cpu +ht", it gets
+warning of
 
-[...]
+  warning: host doesn't support requested feature: CPUID.01H:EDX.ht [bit 28]
 
-> If we have to clean that for -Wshadow=3Dglobal, I'm tempted to rename
-> the typedef as 'vaddr_t' and keep the 'vaddr' variable names.
+Make CPUID_HT as supported unconditionally can resolve the warning.
+However it introduces another issue that it also expose CPUID_HT to
+guest when "-cpu host/max" with only 1 vcpu. To fix this, need mark
+CPUID_HT as the no_autoenable_flags.
 
-POSIX reserves suffix _t, see
-https://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html#t=
-ag_15_02_02
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+ target/i386/cpu.c     | 1 +
+ target/i386/kvm/kvm.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
-Do we care?
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index cec5d2b7b65e..32c077455f04 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -778,6 +778,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         },
+         .cpuid = {.eax = 1, .reg = R_EDX, },
+         .tcg_features = TCG_FEATURES,
++        .no_autoenable_flags = CPUID_HT,
+     },
+     [FEAT_1_ECX] = {
+         .type = CPUID_FEATURE_WORD,
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index f6c7f7e26869..ab72bcdfad13 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -373,6 +373,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+     if (function == 1 && reg == R_EDX) {
+         /* KVM before 2.6.30 misreports the following features */
+         ret |= CPUID_MTRR | CPUID_PAT | CPUID_MCE | CPUID_MCA;
++        /* KVM never reports CPUID_HT but QEMU can support when vcpus > 1 */
++        ret |= CPUID_HT;
+     } else if (function == 1 && reg == R_ECX) {
+         /* We can set the hypervisor flag, even if KVM does not return it on
+          * GET_SUPPORTED_CPUID
 
-> Richard, Anton, what do you think?
-
-[...]
+base-commit: cea3ea670fe265421131aad90c36fbb87bc4d206
+-- 
+2.34.1
 
 
