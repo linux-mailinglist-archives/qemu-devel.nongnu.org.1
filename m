@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095ED7BF75D
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 594B17BF76E
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:33:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq95I-0002VL-F1; Tue, 10 Oct 2023 05:31:24 -0400
+	id 1qq95s-0004ma-HM; Tue, 10 Oct 2023 05:32:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94z-0001Sz-8k
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:09 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq950-0001T9-Fo
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:12 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94v-0008Er-L4
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:05 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-99c1c66876aso981933666b.2
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:30:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94x-0008Im-Jx
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:06 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9ae2cc4d17eso972571766b.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696930253; x=1697535053; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696930261; x=1697535061; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BMy5FMNiGQxFcppEwI4sVWirnEfoYMzZHwDGKyKUC/Q=;
- b=vQAeosbcx/gWGLPn5elfBxfxK6Lfxbm1mUZsba/ISTIyf+z5UgNIcLhU/fxtJqMQ9j
- hFCkNOQnjq5oqQgQyfdOrgpt6pkIijrfxp3bRpHyWTejLXz3qs8xYFIerYHTx2QlkeQh
- F9EHqRNDOWqiG6SwOtyizs42mUJpCRUcF5RstWRqCCP5yP9P9Vl5Spqa9Hz/u/rqxb5B
- WC1TdIRSS9JUvVryq80rJ8VZfTDHl5Wzti2fKH7Y5WiB82avek5oGBSU7sDjCVbs+ncK
- NQ8sIUbeVW5jgNvQDbD+G5QeulTPpTP6l847fNOKPf4eNMRU23lnfohoGy9vFb25wUB6
- L+ZA==
+ bh=g9ac00GoAEt719cFFz9dDP5blE56OLyiS+6SiHpN8FY=;
+ b=VeZUhIXa7yITGBMlRC2CGpsswo4w8gObX6ZDxgI6G1p1kmiDdIKZjdtoo/7OaUgjMr
+ ZocoIgpgOw9JKxGVtVPx5JNYgx9Jb7hdwG+vzk4Jp8OwjhBl0jgBSfUTtRULfaS8a579
+ u7o20Zz+Lc6+M5ydNQcvRHKDyxAasRHivRBUs+m6DkGavdzW9ND7XRS949kitVILuao2
+ 74/vtNsBUcoEL0lQnSQG6A9J/MQ3Aq2aR83qex8YQMsLlJgmgErTLYMOb64bdFuIyvmW
+ sFOBi6ag5SmdRwh7ELHg9cf2448lN8gKJNzKKuCP623bK9YbJLe219Uy2nh1CF/jWMJy
+ f2JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696930253; x=1697535053;
+ d=1e100.net; s=20230601; t=1696930261; x=1697535061;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BMy5FMNiGQxFcppEwI4sVWirnEfoYMzZHwDGKyKUC/Q=;
- b=Kz9JukRBE62GoMy/QzIRNyQb1FnTtdyFtQ6/RFAMXkTmbQAgTutlUlEWs188RPkh8w
- CjP7KLjeLVYAf7DwtBrDq258PNlstEbzcNvIMeFdpp1r55XUnfHqiAYkKyjLdyu2oiXp
- zpF0wzY8UJ2A390smUmj5l17PL9zBsm3oazyrVE/ElN2uCdftqkAnb41rjEqL+pTceqP
- Ew8TZTjSw5kDznMrS6Vd5omUTTW3YCYCQbs7yL34QY8n17emSOKhQFitvTNEA80bMtv+
- 07XuRqUJFsJHdSemZH58PxkOoK6ebtQSDl+wnXcAb7Ofi89D/Nx8ueBnHIL4UAi3sGki
- 67YQ==
-X-Gm-Message-State: AOJu0YxPJS9toFrakqQA18eGQNGVWhnHECoeJjnCZ1DkzI8wksF71iSl
- qP1jIG4OvU78lZg4HuxbqvKLaPTkj1ygPi25ah4+SQ==
-X-Google-Smtp-Source: AGHT+IEA1P05XN7A2LA4aM/MmOnDbytHPWm6V7vwZW2u/xeBW+g03SVjvc2XsxbRioCdrqY7bsjZKA==
-X-Received: by 2002:a17:906:23e2:b0:9b9:b12c:133d with SMTP id
- j2-20020a17090623e200b009b9b12c133dmr12410325ejg.53.1696930252760; 
- Tue, 10 Oct 2023 02:30:52 -0700 (PDT)
+ bh=g9ac00GoAEt719cFFz9dDP5blE56OLyiS+6SiHpN8FY=;
+ b=UFpyAr4IJncKdjEUxJQaL87pACqdUJT6HHEe48VQw7+RGjxx4+Wy38G/TcX6eqOMuV
+ cwSHNLp6wkJndfHBP30MRwvSvOmXZVBG8guGFXvdDBgGFtTzB87JbxSnGnksOSbMO2Ey
+ LKUodp/DfISemmsJDKllrg4I7yRPK8FGrnw3Cr/uJz7UsmNJ+UwsfpIohe0++EX/6LkL
+ dA5QwgFdmchu4h5li+hcDSr7sWxmtdlZch7OPiNPWG1n3GPCDBe6/7NcKeVUSqdtCN/c
+ LjemIJOANCNFZRubcZlm791DKxL9wyombvgwcBgnosCa2ZD3ivU409M+ZlA6d5ZYvKqt
+ f1pg==
+X-Gm-Message-State: AOJu0YxAWb5v05evffDSBpG9U0m47otDMatfPIm6ZRLM+x13uaSNAS52
+ YbBojKtaNn714v5AOypLbi9aLoSSkJ/3X04weoy8rg==
+X-Google-Smtp-Source: AGHT+IHCEKFzifEYk0go6tXBA7Cg5kiurnTUEAsAtaXFlNuV7rl2Z6uHR9cY1ztH9AsYMzy4JhfLmg==
+X-Received: by 2002:a17:906:74db:b0:9ad:e0e0:d6ab with SMTP id
+ z27-20020a17090674db00b009ade0e0d6abmr17089848ejl.12.1696930261008; 
+ Tue, 10 Oct 2023 02:31:01 -0700 (PDT)
 Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
  [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- op13-20020a170906bced00b009a13fdc139fsm8181867ejb.183.2023.10.10.02.30.48
+ n12-20020a170906378c00b0099d45ed589csm8100822ejc.125.2023.10.10.02.30.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 02:30:52 -0700 (PDT)
+ Tue, 10 Oct 2023 02:31:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -87,18 +87,18 @@ Cc: David Hildenbrand <david@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-Subject: [PATCH 13/18] target/ppc: Declare CPU QOM types using DEFINE_TYPES()
- macro
-Date: Tue, 10 Oct 2023 11:28:55 +0200
-Message-ID: <20231010092901.99189-14-philmd@linaro.org>
+Subject: [PATCH 14/18] target/sparc: Declare CPU QOM types using
+ DEFINE_TYPES() macro
+Date: Tue, 10 Oct 2023 11:28:56 +0200
+Message-ID: <20231010092901.99189-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231010092901.99189-1-philmd@linaro.org>
 References: <20231010092901.99189-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -131,81 +131,52 @@ the type_register_static() to ease further reviews.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/cpu_init.c | 52 +++++++++++++++++++------------------------
- 1 file changed, 23 insertions(+), 29 deletions(-)
+ target/sparc/cpu.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 40fe14a6c2..055436c141 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7408,39 +7408,34 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
- #endif /* CONFIG_TCG */
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 8ba96ae225..1e66413e94 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -924,17 +924,21 @@ static void sparc_cpu_class_init(ObjectClass *oc, void *data)
+     cc->tcg_ops = &sparc_tcg_ops;
  }
  
--static const TypeInfo ppc_cpu_type_info = {
--    .name = TYPE_POWERPC_CPU,
+-static const TypeInfo sparc_cpu_type_info = {
+-    .name = TYPE_SPARC_CPU,
 -    .parent = TYPE_CPU,
--    .instance_size = sizeof(PowerPCCPU),
--    .instance_align = __alignof__(PowerPCCPU),
--    .instance_init = ppc_cpu_instance_init,
--    .instance_finalize = ppc_cpu_instance_finalize,
+-    .instance_size = sizeof(SPARCCPU),
+-    .instance_align = __alignof(SPARCCPU),
+-    .instance_init = sparc_cpu_initfn,
 -    .abstract = true,
--    .class_size = sizeof(PowerPCCPUClass),
--    .class_init = ppc_cpu_class_init,
-+static const TypeInfo ppc_cpu_types[] = {
+-    .class_size = sizeof(SPARCCPUClass),
+-    .class_init = sparc_cpu_class_init,
++static const TypeInfo sparc_cpu_types[] = {
 +    {
-+        .name           = TYPE_POWERPC_CPU,
++        .name           = TYPE_SPARC_CPU,
 +        .parent         = TYPE_CPU,
++        .instance_size  = sizeof(SPARCCPU),
++        .instance_align = __alignof(SPARCCPU),
++        .instance_init  = sparc_cpu_initfn,
 +        .abstract       = true,
-+        .instance_size  = sizeof(PowerPCCPU),
-+        .instance_align = __alignof__(PowerPCCPU),
-+        .instance_init  = ppc_cpu_instance_init,
-+        .instance_finalize = ppc_cpu_instance_finalize,
-+        .class_size     = sizeof(PowerPCCPUClass),
-+        .class_init     = ppc_cpu_class_init,
- #ifndef CONFIG_USER_ONLY
--    .interfaces = (InterfaceInfo[]) {
--          { TYPE_INTERRUPT_STATS_PROVIDER },
--          { }
-+        .interfaces     = (InterfaceInfo[]) {
-+              { TYPE_INTERRUPT_STATS_PROVIDER },
-+              { }
-+        },
-+#endif
-+    },
-+#ifndef CONFIG_USER_ONLY
-+    {
-+        .name           = TYPE_PPC_VIRTUAL_HYPERVISOR,
-+        .parent         = TYPE_INTERFACE,
-+        .class_size     = sizeof(PPCVirtualHypervisorClass),
-     },
- #endif
++        .class_size     = sizeof(SPARCCPUClass),
++        .class_init     = sparc_cpu_class_init,
++    }
  };
  
--#ifndef CONFIG_USER_ONLY
--static const TypeInfo ppc_vhyp_type_info = {
--    .name = TYPE_PPC_VIRTUAL_HYPERVISOR,
--    .parent = TYPE_INTERFACE,
--    .class_size = sizeof(PPCVirtualHypervisorClass),
--};
--#endif
--
--static void ppc_cpu_register_types(void)
--{
--    type_register_static(&ppc_cpu_type_info);
--#ifndef CONFIG_USER_ONLY
--    type_register_static(&ppc_vhyp_type_info);
--#endif
--}
-+DEFINE_TYPES(ppc_cpu_types)
- 
- void ppc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
++DEFINE_TYPES(sparc_cpu_types)
++
+ static void sparc_cpu_cpudef_class_init(ObjectClass *oc, void *data)
  {
-@@ -7635,4 +7630,3 @@ void ppc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- #undef RGPL
- #undef RFPL
- }
--type_init(ppc_cpu_register_types)
+     SPARCCPUClass *scc = SPARC_CPU_CLASS(oc);
+@@ -959,7 +963,6 @@ static void sparc_cpu_register_types(void)
+ {
+     int i;
+ 
+-    type_register_static(&sparc_cpu_type_info);
+     for (i = 0; i < ARRAY_SIZE(sparc_defs); i++) {
+         sparc_register_cpudef_type(&sparc_defs[i]);
+     }
 -- 
 2.41.0
 
