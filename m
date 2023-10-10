@@ -2,99 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76207BF8CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 12:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF277BF901
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 12:50:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqA7S-0006rE-Sj; Tue, 10 Oct 2023 06:37:43 -0400
+	id 1qqAJG-0004WZ-CQ; Tue, 10 Oct 2023 06:49:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqA7Q-0006mA-EK
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 06:37:40 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqA7O-0005QT-Pt
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 06:37:40 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-5041cc983f9so6630069e87.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 03:37:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696934257; x=1697539057; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tg7P1EztHNIkMXzSPhcAdvWMO8kYwgQvGwMi6seBK6Q=;
- b=GGPo+/tFNRJF4e40rFX24h5qD5wxLFcblCb1Bgee+/l0otnpQmF0wHR7QaZya3P+FE
- bgItS2TgNAIhXqU9C1jV93KCA+gwmV8aKIMm2R+N0HMuFIpTCH40ZiD814zrBhrWeX1J
- 8+9n9ICoFm882EBFkjiBxTfVv10LrufNCc5N+QaKRvJrR4YS0WhFDk2w5Fswk7x3ZWeq
- I0rqmDBnHCD/LsWcoS54X/1ZN/AYt+lyCLxmD4r7bBz6T0lKJrMepnwaaIv2XrV3WKyj
- JZCdBHUMoThIkUpTz8OfYcqBk5mxLQITEDyhIc0kqPuRQH1ILygkd/SiwPR21Flj4AlP
- 7Xhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696934257; x=1697539057;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tg7P1EztHNIkMXzSPhcAdvWMO8kYwgQvGwMi6seBK6Q=;
- b=Kjesk2vRV1SiU3VLIhIMeazLfI1Ha9oBhaIIN2uaecREaTGvJp/qn4K8jI0IwlTLgJ
- 2n26xmxIL08kddsnaV3hMzf7R/XJW9hCJZgYKP4AIM0CfuuePRBbN04l86+I5iwD9qew
- ErfBkDwLH+Wj3EDfW/uxxGURIt+ibE77ak5uA/s0wJ+OtQ2S39MgBRt5tWLBbbwT4WkY
- 9070Nlifoqc7rLBITyep9aA2Sp63b+kChu1pu/i5W5kOekvNmZVwSdrmhcEVoztKqY9e
- xaNrdTSsIyXoMZtec/4s7z/YTFnGZ9nJonkyPR5j/D0TN7rytx8Th8CD78AABAKvWK/Y
- 25OQ==
-X-Gm-Message-State: AOJu0Yy3rL0fn4ugVINqHzKHO5Cv2lAdMHNiiMYq3TUFPcgBFfWIs0ih
- uDMKBN0Fcbr0Tyb1cdE96C+crQ==
-X-Google-Smtp-Source: AGHT+IH7exa3XOZS70jR7zFie2DJ6Q9QERoMYvJEgWM979mOYX62e/xkJdGewqRYeq32iRY3abLUfg==
-X-Received: by 2002:a19:7917:0:b0:503:c51:74d7 with SMTP id
- u23-20020a197917000000b005030c5174d7mr12299260lfc.17.1696934256789; 
- Tue, 10 Oct 2023 03:37:36 -0700 (PDT)
-Received: from [192.168.69.115]
- (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
- by smtp.gmail.com with ESMTPSA id
- c12-20020a05600c0acc00b00402f713c56esm13766767wmr.2.2023.10.10.03.37.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 03:37:36 -0700 (PDT)
-Message-ID: <7e3e43ec-8b97-cd63-ce50-6859b78ca5f7@linaro.org>
-Date: Tue, 10 Oct 2023 12:37:32 +0200
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1qqAJD-0004Ux-4j
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 06:49:51 -0400
+Received: from mx.swemel.ru ([95.143.211.150])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1qqAJA-0007hl-9y
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 06:49:50 -0400
+From: Dmitry Frolov <frolov@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+ t=1696934982;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ERKNBRgpdrA6t5WeubWreFcdB8u4YHHlL72l5T0lRbg=;
+ b=dEYJD3zpAF2tX5p63xxAEzQgzBLvWzztrQmbdh+r8pHLTXOyVLNl79Myu0urVNL+tfXy5D
+ gIPExUZ65Dtri17pR6pazMJfRqOQUzpJXmHf9zxOkeMKZdq7k8yjL5UoShXKLN/bZXQlw+
+ f3lH9/EGFxdyfcO1a0qAPa157Le+OzQ=
+To: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: sdl.qemu@linuxtesting.org,
+	Dmitry Frolov <frolov@swemel.ru>
+Subject: [PATCH v1] migration: fix RAMBlock add NULL check
+Date: Tue, 10 Oct 2023 13:48:53 +0300
+Message-Id: <20231010104851.802947-1-frolov@swemel.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 4/4] tests/qtest: Use qtest_get_base_arch()
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Fam Zheng <fam@euphon.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
- Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Nicholas Piggin
- <npiggin@gmail.com>, Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Jeuk Kim
- <jeuk20.kim@samsung.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Amit Shah <amit@kernel.org>
-References: <20231010074952.79165-1-philmd@linaro.org>
- <20231010074952.79165-5-philmd@linaro.org>
- <a3ff5135-2fd1-b3dd-f576-129ef08b47be@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <a3ff5135-2fd1-b3dd-f576-129ef08b47be@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=95.143.211.150; envelope-from=frolov@swemel.ru;
+ helo=mx.swemel.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,51 +59,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/23 11:58, Thomas Huth wrote:
-> On 10/10/2023 09.49, Philippe Mathieu-Daudé wrote:
->> Additionally use qtest_get_arch_bits() when relevant.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   tests/qtest/ahci-test.c           |  5 ++---
->>   tests/qtest/am53c974-test.c       |  4 +---
->>   tests/qtest/bios-tables-test.c    |  6 +++---
->>   tests/qtest/boot-sector.c         |  6 +++---
->>   tests/qtest/device-plug-test.c    |  6 ++----
->>   tests/qtest/drive_del-test.c      | 16 ++++++----------
+qemu_ram_block_from_host() may return NULL, which will be dereferenced w/o
+check. Usualy return value is checked for this function.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
+Fixes: c7c0e72408df5e7821c0e995122fb2fe0ac001f1 ("migration/ram: Handle RAM block resizes during precopy")
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+---
+ migration/ram.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->> @@ -1867,8 +1867,7 @@ int main(int argc, char **argv)
->>       }
->>       /* Check architecture */
->> -    arch = qtest_get_arch();
->> -    if (strcmp(arch, "i386") && strcmp(arch, "x86_64")) {
->> +    if (strcmp(qtest_get_base_arch(), "x86")) {
->>           g_test_message("Skipping test for non-x86");
->>           return 0;
->>       }
-> 
-> While this change makes sense (unifying two checks into one) ...
-> 
->> diff --git a/tests/qtest/am53c974-test.c b/tests/qtest/am53c974-test.c
->> index ed3ac7db20..dc41182a38 100644
->> --- a/tests/qtest/am53c974-test.c
->> +++ b/tests/qtest/am53c974-test.c
->> @@ -253,11 +253,9 @@ static void test_reset_before_transfer_ok(void)
->>   int main(int argc, char **argv)
->>   {
->> -    const char *arch = qtest_get_arch();
->> -
->>       g_test_init(&argc, &argv, NULL);
->> -    if (strcmp(arch, "i386") == 0) {
->> +    if (!strcmp(qtest_get_base_arch(), "x86") && 
->> qtest_get_arch_bits() == 32) {
-> 
-> ... this change looks more cumbersome now (doing two checks now instead 
-> of one), at least at the current point in time. Do you urgently need 
-> this for your refactoring? If not, I'd maybe postpone such changes that 
-> make the checks more compilcated to a later point in time.
-
-I wanted to replace qtest_get_arch() completely, but not that simple :(
+diff --git a/migration/ram.c b/migration/ram.c
+index e4bfd39f08..bd4b7574e1 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -4281,6 +4281,11 @@ static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
+     RAMBlock *rb = qemu_ram_block_from_host(host, false, &offset);
+     Error *err = NULL;
+ 
++    if (!rb) {
++        error_report("RAM block not found");
++        return;
++    }
++
+     if (migrate_ram_is_ignored(rb)) {
+         return;
+     }
+-- 
+2.34.1
 
 
