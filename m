@@ -2,136 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D477C4272
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 23:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB877C42D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 23:42:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqKF3-0008Ui-MZ; Tue, 10 Oct 2023 17:26:13 -0400
+	id 1qqKTX-0003oY-EZ; Tue, 10 Oct 2023 17:41:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qqKF0-0008Nu-W9
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 17:26:11 -0400
-Received: from mail-dm6nam04on20615.outbound.protection.outlook.com
- ([2a01:111:f400:7e8b::615]
- helo=NAM04-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqKTV-0003mx-9D
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 17:41:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qqKEz-00085x-17
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 17:26:10 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mPkrwo0CnZx18fkRGpX68as6FtpaMPGz3Xpx4kgq+ar2theHOxmvsmz2IT2HMJUP/aXiHcV5X7iUM4eeKeu4RCzHS0zKQWEB4OUrK8Dg5Y1WRbBeA0kbYKO5ScLWiiWIDJfRwEffn72oOQNR1fqTq+kwGfSP4KIpFcy9aoliED1n9rYWwhY6J6nYHyggrynR05uLxMLzpWye85+pGRWaXNgnMfoe0Dmbzcvor9oJyVQR/pEh0QeKiq9epzeKvHfk2derLX6rAs+ulPGEw/Y6EDDyn1LCowjd1DNncYmnwZmkkWDGKIStVrbugPtYKrRMlrnluC8E+eq7vtjYqdEIzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H+A+KQ8hY3qYmBLt53Xp1hEcFp/O/Sahf2Br9EOnnMQ=;
- b=bz8IssyVWc1cxvKQQ7zRdDU0U6BLhxp47EmCr7bBwlpdkWQoASysrwtduE9KSq5a3SKzTI7LVQHMtSKgJ4gv9YqRucOffLaJqjMlbUn1vTtZhl5L1KGyawslR8x//wPR3llJ7vcH3F6jrKt3EIsY6xhkpKAgVgSyyNNCHRvpnHERirHYBwHK/TNIiziAWlfIZee1yWGe/zOqkg7WcspK3vnjXamv/xKqLftXWMtLIvkzswSc0wmC6btw+Buphe7Ztbc2uUa3PHvv5KMPNtOgh5t0SdVFHhLcGtCiNAo16dcwhAHtI4ZORMbZwJSr0q5ykgG9LKy++AzsUfMPbCMu1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H+A+KQ8hY3qYmBLt53Xp1hEcFp/O/Sahf2Br9EOnnMQ=;
- b=lqS78H1h/CBpek2p7+9fkNrrz6WaATkZKDlLH299bw7oNCKQh4+C2U6gJ1410sqA9Th83J8TDtSAHHGUq7lqlZ/XgM3ZQ+/6hIA4pAg0HTsEpjQiuU+Krc+qc8PQRykrD5964fWqIcZvx0gjTMU+kjDoWyuY3j/BUEkk0TqFYcs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MW3PR12MB4409.namprd12.prod.outlook.com (2603:10b6:303:2d::23)
- by SJ2PR12MB7845.namprd12.prod.outlook.com (2603:10b6:a03:4ce::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.43; Tue, 10 Oct
- 2023 21:26:05 +0000
-Received: from MW3PR12MB4409.namprd12.prod.outlook.com
- ([fe80::7c95:99c7:7f5f:c24a]) by MW3PR12MB4409.namprd12.prod.outlook.com
- ([fe80::7c95:99c7:7f5f:c24a%4]) with mapi id 15.20.6863.032; Tue, 10 Oct 2023
- 21:26:05 +0000
-Date: Tue, 10 Oct 2023 14:26:02 -0700
-From: Vikram Garhwal <vikram.garhwal@amd.com>
-To: Stefano Stabellini <sstabellini@kernel.org>
-Cc: qemu-devel@nongnu.org, Juergen Gross <jgross@suse.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [QEMU][PATCH v1 3/7] softmmu: let qemu_map_ram_ptr() use
- qemu_ram_ptr_length()
-Message-ID: <ZSXBaiyLZWechQ7L@amd.com>
-References: <20231005181629.4046-1-vikram.garhwal@amd.com>
- <20231005181629.4046-4-vikram.garhwal@amd.com>
- <alpine.DEB.2.22.394.2310091703070.3431292@ubuntu-linux-20-04-desktop>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqKTS-0002k7-3G
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 17:41:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696974064;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=94sM3VDEjFnOB250jwnCHtjQMHQ8OY6g8VSCTAV2H+0=;
+ b=du2oDeJVlo+tG1Fgew9RruNH1hIcm3h2DFUkr4VPWgNtCScm/h90WHxlZLZNPJ+ROFDF1T
+ S+/u4F9xtxKTs7kfAqmnUomkLZvJZc/pvgDEPX4jbQ0RIcRVHnSAfLBgMBKNakDtUd2h6H
+ YI2xr8fvhIpl/s39JGq0KR7lS3N2aSs=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-622-SNQCkbNXMN6wfphHRE3FFw-1; Tue, 10 Oct 2023 17:41:03 -0400
+X-MC-Unique: SNQCkbNXMN6wfphHRE3FFw-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-d81b0c9295dso1194133276.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 14:41:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696974062; x=1697578862;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=94sM3VDEjFnOB250jwnCHtjQMHQ8OY6g8VSCTAV2H+0=;
+ b=mFBS8hyJmofg+Ow4VZBcERACyRKszzwLEP6GdSB/djfqB6vNQeWFN/IfkazLLmK4Km
+ aMtWsOrrIdAnwprScFoeI0Xnl4rjRP/nQXvpWAuBdj7TKtH3tJ4019R6UkluECiXj+ul
+ HmoEXr5csDIZU/05DoeR358TcnzNGNCdEC6zmqoXaDK24SbSeGJY/StHGgmwoWSMSnot
+ X635HrBnC9f8Bgq9dOti7hXeuLSz1xfHb/qDvBX5K18YNn0bkkH+/JEXY4iHDZvxbCkb
+ jayAuTm3+8UqjEaGVn4ly+M55OOKww/4mXamYTT+sisdHlCqHHPcbfo7uTpL8AV46EOw
+ bFPw==
+X-Gm-Message-State: AOJu0Yybbs4db0p5DCr67ZitbjC3pemnA8GZ8PDqEf/Ob/4jjh8Jd5rB
+ 78VtGnRN9dNpZ7dyGuuWWOrTPuC6qwVGyEfyeQaEeMYELpMiLfm6H0qOWqnTG+TjRsiqZ+uG7GS
+ fjgsBxonwZQzIKqI=
+X-Received: by 2002:a25:69c8:0:b0:d7a:bcef:c2ab with SMTP id
+ e191-20020a2569c8000000b00d7abcefc2abmr14190262ybc.4.1696974062461; 
+ Tue, 10 Oct 2023 14:41:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtRC1R/Fmul5DQo3a3YZq7FydVuEtnTiJZCGkEgVxv1MT0X2GokADJOlErQjHd5QniInG8dA==
+X-Received: by 2002:a25:69c8:0:b0:d7a:bcef:c2ab with SMTP id
+ e191-20020a2569c8000000b00d7abcefc2abmr14190247ybc.4.1696974062025; 
+ Tue, 10 Oct 2023 14:41:02 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ lf7-20020a0562142cc700b0065d0d0c752csm5079937qvb.116.2023.10.10.14.41.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Oct 2023 14:41:01 -0700 (PDT)
+Date: Tue, 10 Oct 2023 17:40:59 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH 1/3] migration/multifd: Move channels_ready semaphore
+Message-ID: <ZSXE67YbKr+Wr1/q@x1n>
+References: <20230922145319.27380-1-farosas@suse.de>
+ <20230922145319.27380-2-farosas@suse.de> <ZSW7dfSgV2dc6n0D@x1n>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.22.394.2310091703070.3431292@ubuntu-linux-20-04-desktop>
-X-ClientProxiedBy: BY3PR10CA0016.namprd10.prod.outlook.com
- (2603:10b6:a03:255::21) To MW3PR12MB4409.namprd12.prod.outlook.com
- (2603:10b6:303:2d::23)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR12MB4409:EE_|SJ2PR12MB7845:EE_
-X-MS-Office365-Filtering-Correlation-Id: 22db7ab1-71ab-4ab5-d69f-08dbc9d782b5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +JkntmOHC6PPN7oJLuu/b9dZiSkDKflq9mapy4LGAaUVlByTNMMANH3+2NJiXKGQGdT7jS4wDwzrUeZfkzucZu4+G8xydI6yClbCMVMKf5NggmbsAg4FLlH1pFDHQC6mzQO9XSW3oowV/fthbCy6CiQ447lR0ilIDP4z5Dlx5TGgFy8fAHZS+HroBJCIUzF8E4+kIv/4wOUdq279RSpFaYL+mxRToix4WhiuXkVi0SvS/rC6gZ1yMCR5XONCm9BAUIFBShVJdY0SLZZ/pLCz53e1j977h7T5iSiEjgcbbFKig14ciN9aIxCwT+oQ900XD1ClC8ShZNzuc5rOZfNNcyILii3aMh1ZEsl9uCHzwlC4kUjAeo2w7hDubbALKOSqR1EG4ls/jTRcJXcRBFAowCZ+VyfwmX78GtToHcf4z30gO5zSC/hoxLsDpK1mWnlsFTqYeCZZnJDvaWRtke1+PHQHr4F+oj1oqMaRCZ4gNFsVp9d8PLLH8h8cXKzmL225c6dfeIvyhtksBzHhb0UkeKlg16DHYB7RedBHdbF6okpNdcBy0ETmzYU0pYBD5fXJ
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW3PR12MB4409.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(39860400002)(366004)(136003)(376002)(346002)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(4326008)(8676002)(6666004)(41300700001)(8936002)(6486002)(66476007)(6512007)(6506007)(38100700002)(2616005)(26005)(478600001)(66946007)(66556008)(44832011)(54906003)(6916009)(316002)(83380400001)(5660300002)(2906002)(86362001)(36756003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VFBtSFV3NUdRZ24zUUY0VHhJM3AwbXc1N1dPcWlTRHh6ekV0V1hNdHVJZkdv?=
- =?utf-8?B?LzdQaitzUFlnK1JHeUE4NkYrckNUc0ZFWE5QcGFTQWc1ZGVwR21xcjFhemw3?=
- =?utf-8?B?KzNseTFweUgxSzEvdXpCWUQyRkJFN1FjZkcxRW0wWEE4Z3c4SmRZckRoTzFM?=
- =?utf-8?B?Zlp4RlFHRm12cGVaU0E5eU5ZQW5uZjdsR2d0NE4ycFJ5ZmRzYUc3VTJDeDQ0?=
- =?utf-8?B?S3FON1kzRVF2M0F6QjZSRDZUd0dRV04wQVp0dUp1b1h4Qjl6S1EreHUwdUdK?=
- =?utf-8?B?V0k0TG1sU09YUUE0MEphS2VudDQ4OXdrQ0g3alAxNU5uYjY4bnBHSmFqYTEw?=
- =?utf-8?B?S0NhUU1EbExJUkpxZUhYOVByQXF3T0h5WFJhRXU1cEo2VGpIczl6NWl6T2ps?=
- =?utf-8?B?NnRIMDNPUEoveUdNdWQxV1ltcFNQeGpkV1dUbWlWOVl3cklzNTJiUW1XM2lz?=
- =?utf-8?B?K2N5d2tjZlAyOGkxT0o5WjAyZlZVR3BsZDM5dkhWMnpYdmVhMnpHQjZ3dGZh?=
- =?utf-8?B?RTRldldUc2dxTEd6cktqaFg0aEZQUHYyazFBU1g4Z3RWdUtqRlBSeXQwdXFi?=
- =?utf-8?B?ZVVKZVpuV213VkxRQmN4Zjh3Q1RsNE1aczlRcG5Fc3FLdmx3UG9IK1QyM01D?=
- =?utf-8?B?a1pKNE1mUTRyQkNxaGJMMGxodGJJTGRIRkRBMWdKNEpxYnJyeC9NMFNUNWU2?=
- =?utf-8?B?Q3o3ZTdmWWlhMGszdGY1OU5CMnlML3I2OTZXRnRZZ2RiWWtSN0laOGNkNjhF?=
- =?utf-8?B?TmhCNitzYVZ1QWRrRzYvRURoL0kvTHNEZmlQRVNJZDA4citNNUc1V2luc1NT?=
- =?utf-8?B?OW5tUVkrdmZYaSs5VEZUZEVOUWJ2aCtlUzdZMS90RG1qdC8vQTNMM0M0T0Z2?=
- =?utf-8?B?N1AvRzd1TldCejRxVXZxZzdzV1RzMHpiMWVhbmN1Q2JWYVVLK0FITVFteEZ1?=
- =?utf-8?B?R2ZENVJyR2NQVWZnMHZOSk1uam9aVGpDMVk4OWVJS1VvVE51OTRuUWg2Q1V5?=
- =?utf-8?B?YUxhcVVJbUM3OGwyMGZyYnc4TEdZdEcwNm9nY3BCbGFiMWRTeGVGRzhsMUcy?=
- =?utf-8?B?Slc2T3BQM09Ka1p0Y2dKUE0yZDROeXV3VW9IMUpoTFkwc3IzQS8vOUZjb3FQ?=
- =?utf-8?B?dXRFdGl1MUJCNkdwRGhKeEJiTmhkUFY5NDF0L2luKzQ3OHlLSC83SEtRTXBJ?=
- =?utf-8?B?b25US3FZOE1rSGtnUDFVdGxOTG5wbEppdHBjdFBPME9RRDJpKy9ISThTNzd1?=
- =?utf-8?B?cngwUDFmd2tIVTdDeUdHWG1tQkE3NHFEWGtUT3pVc0xkWU5qWXU3QnhjZTdS?=
- =?utf-8?B?YU8xWUIyNmZBYTJHeVBpZjRGTHdneXVrVlVVOVcwNzJnOTh4bjJGZEl0V2pa?=
- =?utf-8?B?THh2QzFaazZ1NXdNaVFqR25vTEhEMnFEY3JnNjhUMFN1UVpOSlpsMEJ1bkRK?=
- =?utf-8?B?ZC9ES2RwNUZiclJOQ01mcjZuTlQ0U001blpzaC9VTC9WRGlKMWNBWU94UlhJ?=
- =?utf-8?B?blBJLytnbTdwR2VoSWtROUJMVDJ4ek5rVmxxMTlKdlRiL2hSVFpRdG1MV0dH?=
- =?utf-8?B?MFdWZGhkUFFweGd5eXo4bnlwb1J0Y0ZDWEtlb0pRRXFRZGF6eFQ5d1piNDdl?=
- =?utf-8?B?UW9QaS9MWGp1Q3ZXYVRuZjg2VXQ3Nzh5V1pzSTNoN0phVnd2TXlPTk1mNitv?=
- =?utf-8?B?K2NCVGVxR2VGSE1VanZVV2lXRzlMSUxKait1bDM3bU9jNHIwRko3ekVwNzIy?=
- =?utf-8?B?TitiaWJhSzU5TzdQOTJ6MUhheTYrZ05vSERFUThVbHhaLzNvdS95djZwZ1A3?=
- =?utf-8?B?VGN1ZmpySWwwTFpuYXlyYTVTYUM4QVBoM1lwekFjQmV0QnFCeUhYenM5Uk5i?=
- =?utf-8?B?cEhxOVVTbUxFR1llUjluWGhUbDZrbjUvajVZeXdhVStHNnFYSStLZkpYSTcr?=
- =?utf-8?B?bDFXOVpFWDAyaDJuMVA3SW9kcys1bUVVd0NXSWs1WHMyMnVabmFwNUZLTUV1?=
- =?utf-8?B?Zjd4V0x2dW5vTVcvamUrcG9ITUMxSjhPa1ZxQUNQTDhrVFgrNHl4QzJKR0NV?=
- =?utf-8?B?NFZFRVpUeVVQZFhBM1A1NWZUL29OeFFvQ01xYmMrYmNRZk5EYzdFTExDOVlT?=
- =?utf-8?Q?zvKrkMCM//FNxZq8GPaNmkO/X?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22db7ab1-71ab-4ab5-d69f-08dbc9d782b5
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4409.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2023 21:26:05.2243 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qNWw0g0cqB212LH7bImvE4A7lcr80IorTL5qfELmkuDO01PCyHYZT++JMawJkTdes9ckGvYxnk4LxOtFFYxpuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7845
-Received-SPF: softfail client-ip=2a01:111:f400:7e8b::615;
- envelope-from=vikram.garhwal@amd.com;
- helo=NAM04-DM6-obe.outbound.protection.outlook.com
+In-Reply-To: <ZSW7dfSgV2dc6n0D@x1n>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,125 +98,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 09, 2023 at 05:10:43PM -0700, Stefano Stabellini wrote:
-> On Thu, 5 Oct 2023, Vikram Garhwal wrote:
-> > From: Juergen Gross <jgross@suse.com>
+On Tue, Oct 10, 2023 at 05:00:37PM -0400, Peter Xu wrote:
+> On Fri, Sep 22, 2023 at 11:53:17AM -0300, Fabiano Rosas wrote:
+> > Commit d2026ee117 ("multifd: Fix the number of channels ready") moved
+> > the "post" of channels_ready to the start of the multifd_send_thread()
+> > loop and added a missing "wait" at multifd_send_sync_main(). While it
+> > does work, the placement of the wait goes against what the rest of the
+> > code does.
 > > 
-> > qemu_map_ram_ptr() and qemu_ram_ptr_length() share quite some code, so
-> > modify qemu_ram_ptr_length() a little bit and use it for
-> > qemu_map_ram_ptr(), too.
+> > The sequence at multifd_send_thread() is:
 > > 
-> > Signed-off-by: Juergen Gross <jgross@suse.com>
-> > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-> 
-> This patch also doesn't apply due to code movement.
-Will rebase it.
-> 
-> Other than that, the patch looks good to me
-> 
-> 
-> > ---
-> >  softmmu/physmem.c | 58 +++++++++++++++++++----------------------------
-> >  1 file changed, 23 insertions(+), 35 deletions(-)
+> >     qemu_sem_post(&multifd_send_state->channels_ready);
+> >     qemu_sem_wait(&p->sem);
+> >     <work>
+> >     if (flags & MULTIFD_FLAG_SYNC) {
+> >         qemu_sem_post(&p->sem_sync);
+> >     }
 > > 
-> > diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> > index e182a2fa07..6e5e379dd0 100644
-> > --- a/softmmu/physmem.c
-> > +++ b/softmmu/physmem.c
-> > @@ -2163,38 +2163,8 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t length)
-> >  }
-> >  #endif /* !_WIN32 */
-> >  
-> > -/* Return a host pointer to ram allocated with qemu_ram_alloc.
-> > - * This should not be used for general purpose DMA.  Use address_space_map
-> > - * or address_space_rw instead. For local memory (e.g. video ram) that the
-> > - * device owns, use memory_region_get_ram_ptr.
-> > - *
-> > - * Called within RCU critical section.
-> > - */
-> > -void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)
-> > -{
-> > -    RAMBlock *block = ram_block;
-> > -
-> > -    if (block == NULL) {
-> > -        block = qemu_get_ram_block(addr);
-> > -        addr -= block->offset;
-> > -    }
-> > -
-> > -    if (xen_enabled() && block->host == NULL) {
-> > -        /* We need to check if the requested address is in the RAM
-> > -         * because we don't want to map the entire memory in QEMU.
-> > -         * In that case just map until the end of the page.
-> > -         */
-> > -        if (block->offset == 0) {
-> > -            return xen_map_cache(addr, 0, 0, false);
-> > -        }
-> > -
-> > -        block->host = xen_map_cache(block->offset, block->max_length, 1, false);
-> > -    }
-> > -    return ramblock_ptr(block, addr);
-> > -}
-> > -
-> > -/* Return a host pointer to guest's ram. Similar to qemu_map_ram_ptr
-> > - * but takes a size argument.
-> > +/*
-> > + * Return a host pointer to guest's ram.
-> >   *
-> >   * Called within RCU critical section.
-> >   */
-> > @@ -2202,7 +2172,9 @@ static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-> >                                   hwaddr *size, bool lock)
-> >  {
-> >      RAMBlock *block = ram_block;
-> > -    if (*size == 0) {
-> > +    hwaddr len = 0;
-> > +
-> > +    if (size && *size == 0) {
-> >          return NULL;
-> >      }
-> >  
-> > @@ -2210,7 +2182,10 @@ static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-> >          block = qemu_get_ram_block(addr);
-> >          addr -= block->offset;
-> >      }
-> > -    *size = MIN(*size, block->max_length - addr);
-> > +    if (size) {
-> > +        *size = MIN(*size, block->max_length - addr);
-> > +        len = *size;
-> > +    }
-> >  
-> >      if (xen_enabled() && block->host == NULL) {
-> >          /* We need to check if the requested address is in the RAM
-> > @@ -2218,7 +2193,7 @@ static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-> >           * In that case just map the requested area.
-> >           */
-> >          if (block->offset == 0) {
-> > -            return xen_map_cache(addr, *size, lock, lock);
-> > +            return xen_map_cache(addr, len, lock, lock);
-> >          }
-> >  
-> >          block->host = xen_map_cache(block->offset, block->max_length, 1, lock);
-> > @@ -2227,6 +2202,19 @@ static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-> >      return ramblock_ptr(block, addr);
-> >  }
-> >  
-> > +/*
-> > + * Return a host pointer to ram allocated with qemu_ram_alloc.
-> > + * This should not be used for general purpose DMA.  Use address_space_map
-> > + * or address_space_rw instead. For local memory (e.g. video ram) that the
-> > + * device owns, use memory_region_get_ram_ptr.
-> > + *
-> > + * Called within RCU critical section.
-> > + */
-> > +void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)
-> > +{
-> > +    return qemu_ram_ptr_length(ram_block, addr, NULL, false);
-> > +}
-> > +
-> >  /* Return the offset of a hostpointer within a ramblock */
-> >  ram_addr_t qemu_ram_block_host_offset(RAMBlock *rb, void *host)
-> >  {
-> > -- 
-> > 2.17.1
+> > Which means that the sending thread makes itself available
+> > (channels_ready) and waits for more work (sem). So the sequence in the
+> > migration thread should be to check if any channel is available
+> > (channels_ready), give it some work and set it off (sem):
 > > 
+> >     qemu_sem_wait(&multifd_send_state->channels_ready);
+> 
+> Here it means we have at least 1 free send thread, then...
+> 
+> >     <enqueue work>
+> >     qemu_sem_post(&p->sem);
+> 
+> ... here we enqueue some work to the current thread (pointed by "i"), no
+> matter it's free or not, as "i" may not always point to the free thread.
+> 
+> >     if (flags & MULTIFD_FLAG_SYNC) {
+> >         qemu_sem_wait(&p->sem_sync);
+> >     }
+> 
+> So I must confess I never fully digest how these sem/mutex/.. worked in
+> multifd, since the 1st day it's introduced.. so please take below comment
+> with a grain of salt..
+> 
+> It seems to me that the current design allows >1 pending_job for a thread.
+> Here the current code didn't do "wait(channels_ready)" because it doesn't
+> need to - it simply always queue an MULTIFD_FLAG_SYNC pending job over the
+> thread, and wait for it to run.
+> 
+> From that POV I think I can understand why "wait(channels_ready)" is not
+> needed here.  But then I'm confused because we don't have a real QUEUE to
+> put those requests; we simply apply this:
+> 
+> multifd_send_sync_main():
+>         p->flags |= MULTIFD_FLAG_SYNC;
+> 
+> Even if this send thread can be busy handling a batch of pages and
+> accessing p->flags.  I think it can actually race with the send thread
+> reading the flag at the exact same time:
+> 
+> multifd_send_thread():
+>             multifd_send_fill_packet(p);
+>             flags = p->flags;  <-------------- here
+> 
+> And whether it sees MULTIFD_FLAG_SYNC is unpredictable.  If it sees it,
+> it'll post(sem_sync) in this round.  If it doesn't see it, it'll
+> post(sem_sync) in the next round.  In whatever way, we'll generate an empty
+> multifd packet to the wire I think, even though I don't know whether that's
+> needed at all...
+
+A correction: Since it's protected by p->mutex, I think we will only get an
+empty multifd packet when we have pending_jobs==2.. because then we'll see
+pending_job==2 with p->flags==SYNC, we send pages along with flags=SYNC to
+dest, after that we kick sem_sync on src, then we found another
+pending_jobs==1 even if p->flags will be zero.  The next multifd packet
+will be only containing header (flags=0) and with no pages.
+
+> 
+> I'm not sure whether we should fix it in a more complete form, by not
+> sending that empty multifd packet at all? Because that only contains the
+> header without any real page inside, IIUC, so it seems to be a waste of
+> resource.  Here what we want is only to kick sem_sync?
+
+When thinking more about it, now I'm unsure whether sync is really working
+as expected now in general..
+
+IIUC SYNC message is used to flush all pages from source to destination.
+We need that because we want to order the different versions of guest
+pages, making sure the new version of a page always arrives later than its
+old version, hence after all pages migrated we'll be sure all guest pages
+on dest will be the latest.
+
+Let's define "version X for page Y" as PyVx.  Version 1 of page 2 is P2V1.
+
+So if without SYNC, a race can happen like this:
+
+  sender 1         sender 2           receiver 1            receiver 2
+  --------         --------           ----------            ----------
+
+  send P1V1
+          ...P1 changed content.. queued again in sender 2...
+                   send P1V2
+          ...If we got unlucky on receiving order of P1 versions...
+                                                            receive P1V2
+                                      receive P1V1
+
+So if receiver 1 got P1V1 after receiver 2 got P1V2, we'll ultimately have
+P1V1 on dst, which is an old data, causing data corrupt after migration.
+
+Now we have the SYNC packet, but would it always work?  I'll discuss with
+the latest RAM_SAVE_FLAG_MULTIFD_FLUSH sync message:
+
+  src main    sender 1     sender 2    dst main  receiver 1  receiver 2
+  --------    --------     --------    --------  ----------  ----------
+
+              send P1V1
+  send MULTIFD_FLUSH   
+          ...P1 changed.. queued again in sender 2...
+                           send P1V2
+                                       receive MULTIFD_FLUSH
+                                       (but since nothing received, flush nothing)
+                                                             receive P1V2
+                                                 receive P1V1
+
+IIUC the problem is MULTIFD_FLUSH now does not rely on dest QEMU receiving
+all existing pages sent.  Since the main channel is also a separate channel
+from other multifd channels, I don't see why above cannot happen.
+
+I think the problem will go away if e.g. src QEMU will need an SYNC_ACK
+from dest qemu, making sure dest qemu digested all the sent pages.  Or, we
+always send the same page via the same channel, e.g. by a hash(page_index).
+
+I had a feeling that we have a bug, we just never hit it, because we don't
+send P1V1 and P1V2 that close; we only do that for each whole iteration
+looping over all ramblocks in find_dirty_block().  But it seems the bug is
+possible, but I'll be very happy to be proven wrong by anyone..
+
+-- 
+Peter Xu
+
 
