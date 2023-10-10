@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7087BEFC6
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 02:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEA77BEFCA
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 02:35:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq0dN-0004ZR-Al; Mon, 09 Oct 2023 20:30:01 -0400
+	id 1qq0hT-0005d8-4o; Mon, 09 Oct 2023 20:34:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qq0dL-0004Z9-Pc
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 20:29:59 -0400
-Received: from ams.source.kernel.org ([145.40.68.75])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qq0dI-00062S-SK
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 20:29:59 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id 78098B816F6;
- Tue, 10 Oct 2023 00:29:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C526C433C7;
- Tue, 10 Oct 2023 00:29:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1696897793;
- bh=+wRMvUQqKAhGEuI+n5i2O9uzzBEO/HlE+ubvDlGkp2Q=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=BoSuOvxuBibbPpDmtKrIBuxFAiXS7rNupNCI4GvQ4ExotTQ2Fq9RtAN/ddOrwM9ii
- TkstE0C23LuTHNNnX5ZmbS1zVrlpAk+9Y2R8+UuzVza289Tmmlbds1yBoXERgPSKzl
- zyvuV8wnSg4skEm/etnckgOLYzxn3r08D7791ZKBJlyt7a9Gi2mVadLNYoEmApsmi6
- f1fCt2EXmUn0VgXIBwUh0hgLOJ74hW9n4DFei6feqhs365QsLM6gQf3uknD/AM32ZF
- /v2jiEV1YzLN/6TUAzpPwsIpuRCf65odhD79onQjlfxpISNUwNDBnfTZe4mGlMjGwP
- Uz8jJBsO731sQ==
-Date: Mon, 9 Oct 2023 17:29:50 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Stefano Stabellini <sstabellini@kernel.org>
-cc: Vikram Garhwal <vikram.garhwal@amd.com>, qemu-devel@nongnu.org, 
- Juergen Gross <jgross@suse.com>, 
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>, 
- David Hildenbrand <david@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Subject: Re: [QEMU][PATCH v1 2/7] xen: add pseudo RAM region for grant mappings
-In-Reply-To: <alpine.DEB.2.22.394.2310091653270.3431292@ubuntu-linux-20-04-desktop>
-Message-ID: <alpine.DEB.2.22.394.2310091728500.3431292@ubuntu-linux-20-04-desktop>
-References: <20231005181629.4046-1-vikram.garhwal@amd.com>
- <20231005181629.4046-3-vikram.garhwal@amd.com>
- <alpine.DEB.2.22.394.2310091653270.3431292@ubuntu-linux-20-04-desktop>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qq0hQ-0005cJ-F4
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 20:34:12 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qq0hM-0006n3-37
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 20:34:12 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-578b4981526so3214760a12.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 17:32:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1696897923; x=1697502723;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ci4Q1fBlKK/wKKRcTO+K+5sxZzXJvX/W6QQcdDAyX6w=;
+ b=RunCZjqNH0p1d0FrYqTjE9257ursWyzgveCAuohFCbTSvorBzxt5xT8s9n2KAGVZlD
+ V7hN4o9U2Elg30MO+kqeI+mBm9mioXb7YQl6ptDm5jfPpUOYPQCU40SvFfQPimu6+t7d
+ VgTHceGlaG5/c5vXlGKRZGVclU2ILyY8fzGcftPV6hG9sD7yoqu+Eum6R5wCRTk0zMWe
+ 7Ms4JRWyJnjE+Je81idzKHK2oeBDmTuz4sE84bYjf0+rtN/b378Wb/EzatuhQ8RuALV6
+ LWJ+ZwrU9+CaYKp6bfw9llt0GpqnwIE8dQampIJigu1XSPcfXkT2Df9b0WRCGy1NVMQo
+ YkDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696897923; x=1697502723;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ci4Q1fBlKK/wKKRcTO+K+5sxZzXJvX/W6QQcdDAyX6w=;
+ b=sAInTohnNhgUVOoNJ2E6SG9OdZWCZiP+PtJgiPOS6PgSlLT41Gj5H56qOsg2/e7+DQ
+ dOYscJvyMnN/ympueY3ihOnhbdVuK/oQzZXMiZyGuczUCTSuI6LVa5nkqq8TBz1PmaiS
+ m6/zaWBUFheOhjbGYMFolrbsGGNuevGlvmJn8dPYwTYep2Ey2TOaPzX2JPyr1syg/xy2
+ Lvc0r7UgJ/gBwR+kHRDIWfo/PTich1jtk9/YTTE0QQSTA62UMCHv3uF7RQ1HFdpqHyWq
+ KQOtnxyYrDr+FxFwNsQY36nNiweuPKSjonZkiduv7Fh+6Hy98NkXT22M2SCG2HGdCSd4
+ FKQw==
+X-Gm-Message-State: AOJu0Yx0EePh8YCubaQJs+3ar8AfRNledwG4Qb8spBx5EfTSZ4UJ/PZn
+ IVUGSUzp+DCX65m3ug9v628x9+FlFobE/iK9vWYhWgQ9
+X-Google-Smtp-Source: AGHT+IHEsiDQTpSxmWl5lVmuQyagQErRqHXn6DIcgH39+Zr6dRUYJDWASyuKiDi6brNkTNhE4cg7Ow==
+X-Received: by 2002:a17:90a:f48f:b0:268:557e:1848 with SMTP id
+ bx15-20020a17090af48f00b00268557e1848mr13268363pjb.2.1696897922624; 
+ Mon, 09 Oct 2023 17:32:02 -0700 (PDT)
+Received: from localhost.localdomain ([118.114.95.207])
+ by smtp.gmail.com with ESMTPSA id
+ 20-20020a17090a199400b00278f1512dd9sm11849866pji.32.2023.10.09.17.32.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Oct 2023 17:32:02 -0700 (PDT)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: Hyman Huang <yong.huang@smartx.com>
+Subject: [PULL 0/2] Dirty page rate and dirty page limit 20231010 patches
+Date: Tue, 10 Oct 2023 08:31:52 +0800
+Message-Id: <cover.1696896603.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Received-SPF: pass client-ip=145.40.68.75; envelope-from=sstabellini@kernel.org;
- helo=ams.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::532;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x532.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,120 +88,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 9 Oct 2023, Stefano Stabellini wrote:
-> On Thu, 5 Oct 2023, Vikram Garhwal wrote:
-> > From: Juergen Gross <jgross@suse.com>
-> > 
-> > Add a memory region which can be used to automatically map granted
-> > memory. It is starting at 0x8000000000000000ULL in order to be able to
-> > distinguish it from normal RAM.
-> > 
-> > For this reason the xen.ram memory region is expanded, which has no
-> > further impact as it is used just as a container of the real RAM
-> > regions and now the grant region.
-> > 
-> > Signed-off-by: Juergen Gross <jgross@suse.com>
-> > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-> 
-> This patch doesn't apply to staging anymore
-> 
-> 
-> > ---
-> >  hw/i386/xen/xen-hvm.c           |  3 ++
-> >  hw/xen/xen-hvm-common.c         |  4 +--
-> >  hw/xen/xen-mapcache.c           | 27 ++++++++++++++
-> >  include/exec/ram_addr.h         |  1 +
-> >  include/hw/xen/xen-hvm-common.h |  2 ++
-> >  include/hw/xen/xen_pvdev.h      |  3 ++
-> >  include/sysemu/xen-mapcache.h   |  3 ++
-> >  softmmu/physmem.c               | 62 +++++++++++++++++++++------------
-> >  8 files changed, 80 insertions(+), 25 deletions(-)
-> > 
-> > diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
-> > index f42621e674..67a55558a6 100644
-> > --- a/hw/i386/xen/xen-hvm.c
-> > +++ b/hw/i386/xen/xen-hvm.c
-> > @@ -172,6 +172,9 @@ static void xen_ram_init(PCMachineState *pcms,
-> >                                   x86ms->above_4g_mem_size);
-> >          memory_region_add_subregion(sysmem, 0x100000000ULL, &ram_hi);
-> >      }
-> > +
-> > +    /* Add grant mappings as a pseudo RAM region. */
-> > +    ram_grants = *xen_init_grant_ram();
-> >  }
-> >  
-> >  static XenPhysmap *get_physmapping(hwaddr start_addr, ram_addr_t size)
-> > diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-> > index 565dc39c8f..b7255977a5 100644
-> > --- a/hw/xen/xen-hvm-common.c
-> > +++ b/hw/xen/xen-hvm-common.c
-> > @@ -9,7 +9,7 @@
-> >  #include "hw/boards.h"
-> >  #include "hw/xen/arch_hvm.h"
-> >  
-> > -MemoryRegion ram_memory;
-> > +MemoryRegion ram_memory, ram_grants;
-> >  
-> >  void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-> >                     Error **errp)
-> > @@ -26,7 +26,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-> >          return;
-> >      }
-> >  
-> > -    if (mr == &ram_memory) {
-> > +    if (mr == &ram_memory || mr == &ram_grants) {
-> >          return;
-> >      }
-> >  
-> > diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-> > index f7d974677d..8115c44c00 100644
-> > --- a/hw/xen/xen-mapcache.c
-> > +++ b/hw/xen/xen-mapcache.c
-> > @@ -14,7 +14,9 @@
-> >  
-> >  #include <sys/resource.h>
-> >  
-> > +#include "hw/xen/xen-hvm-common.h"
-> >  #include "hw/xen/xen_native.h"
-> > +#include "hw/xen/xen_pvdev.h"
-> >  #include "qemu/bitmap.h"
-> >  
-> >  #include "sysemu/runstate.h"
-> > @@ -597,3 +599,28 @@ uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
-> >      mapcache_unlock();
-> >      return p;
-> >  }
-> > +
-> > +MemoryRegion *xen_init_grant_ram(void)
-> > +{
-> > +    RAMBlock *block;
-> > +
-> > +    memory_region_init(&ram_grants, NULL, "xen.grants",
-> > +                       XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE);
-> > +    block = g_malloc0(sizeof(*block));
-> > +    block->mr = &ram_grants;
-> > +    block->used_length = XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE;
-> > +    block->max_length = XEN_MAX_VIRTIO_GRANTS * XC_PAGE_SIZE;
-> > +    block->fd = -1;
-> > +    block->page_size = XC_PAGE_SIZE;
-> > +    block->host = (void *)XEN_GRANT_ADDR_OFF;
-> > +    block->offset = XEN_GRANT_ADDR_OFF;
-> > +    block->flags = RAM_PREALLOC;
-> > +    ram_grants.ram_block = block;
-> > +    ram_grants.ram = true;
-> > +    ram_grants.terminates = true;
-> > +    ram_block_add_list(block);
-> > +    memory_region_add_subregion(get_system_memory(), XEN_GRANT_ADDR_OFF,
-> > +                                &ram_grants);
-> > +
-> > +    return &ram_grants;
-> 
-> It doesn't look like xen_init_grant_ram has anything to do with the
-> mapcache. It should be in another file. Maybe ./hw/xen/xen-hvm-common.c
-> or ./hw/i386/xen/xen-hvm.c (but this is x86 specific and we need grants
-> on ARM too)
+The following changes since commit 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d:
 
-Now having seen all the other patches, it might be OK to keep this here.
-I am OK with this patch once it is rebased on the latest staging. I
-would still advise to split the physdev.c changes to a separate patch.
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2023-10-05 09:01:01 -0400)
+
+are available in the Git repository at:
+
+  https://github.com/newfriday/qemu.git tags/dirtylimit-dirtyrate-pull-request-20231010
+
+for you to fetch changes up to 320a6ccc769dc09ae7ad0b4838e322018f334bf4:
+
+  migration/dirtyrate: use QEMU_CLOCK_HOST to report start-time (2023-10-10 08:04:12 +0800)
+
+----------------------------------------------------------------
+Dirtylimit and dirtyrate 20231010 patches PULL request
+
+Dirty page rate measurement optimization.
+Please apply, thanks, Yong.
+
+----------------------------------------------------------------
+Andrei Gudkov (2):
+  migration/calc-dirty-rate: millisecond-granularity period
+  migration/dirtyrate: use QEMU_CLOCK_HOST to report start-time
+
+ migration/dirtyrate.c | 122 +++++++++++++++++++++++++++---------------
+ migration/dirtyrate.h |  12 +++--
+ qapi/migration.json   |  58 ++++++++++++++++----
+ 3 files changed, 134 insertions(+), 58 deletions(-)
+
+-- 
+2.39.1
+
 
