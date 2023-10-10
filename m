@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793187C011C
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 18:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D617C016C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 18:17:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqFAM-0004av-3m; Tue, 10 Oct 2023 12:01:02 -0400
+	id 1qqFPD-0003cG-W9; Tue, 10 Oct 2023 12:16:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqF9s-0004Oq-FO
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 12:00:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqF9i-0001sI-Dt
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 12:00:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696953621;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=rTdsUx0RKzza6xfoO6nlEm/7r0PPcWDsIhghW4Mvzfs=;
- b=e7nsErXQdQbgKGEplbJez+sIalpQU0XGjg/F2/tY/+sIRHvEm+cFOqVQ1dK5DCsz2WzgAJ
- y4/crsbwTyF8PTwTU7Xi0rFbNLaX9wqL9u9HhpLm9MeNn4rD68TjN/KB1broWlw8hGcZf9
- arHCQWlYvKXENG8G+Y4NqSnYknXkv/Y=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-0RxiNtwiN_WhSVgjyCTSAw-1; Tue, 10 Oct 2023 12:00:19 -0400
-X-MC-Unique: 0RxiNtwiN_WhSVgjyCTSAw-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-77585a78884so130109885a.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 09:00:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qqFPA-0003bd-EH
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 12:16:20 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qqFP8-0005dt-RO
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 12:16:20 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c434c33ec0so36229655ad.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 09:16:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696954576; x=1697559376; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CwnMGMlyByFPEM9cIvswAbNsUIdnBnQG6Rgnf/fzddo=;
+ b=rzbhRhNGhQe5ilSwCEWNAeiFUjFUQbenKXhRoIHnG7Zq0Rtu1zuskNFDlXR1rXYglg
+ woC/55LlMMrRC1nHNCvxO/F9Fpvv+TWZtGcWTQIqwR6Hvn2bXuo7u2SoXaaAduHAbyp/
+ PqTLJg1PT193FvnDPWomEBYPQun8VnZiJ6R6TnoQOFYJ/HRDGglZKVUbpkCYs3BU17fK
+ HynEmSHo4nW9UFYjmrgURaj8l2SkzsILBy9ay/PemZeu60eck1Cz6V+YxuSQWMUQ2cWf
+ nYRg2XkOEOoyJfd16GRYwdM+CxwaqKiLrsvZU3Pl9KLaMk031cDRcrBoJauUKKVEeJQ9
+ nuTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696953619; x=1697558419;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rTdsUx0RKzza6xfoO6nlEm/7r0PPcWDsIhghW4Mvzfs=;
- b=xLDKQH7/4DOyHmmcfBELbe4urelK43YBqEXAFrGHOWP7s4Ta9Be3eGBlEC5z0/IBWW
- bXP9cXBf37216zEHswiRWrgWR+mnxBH2BJo9+otaiDP9d9EKZzWwOHg9LSem6piDcVb+
- unKDZrJC3a2FItobPUhIOVj1zZmsgr0tFoXGd6zNkz2IgC5xprgflUx/yAirKRNduX8E
- 2bwoED2mJo8EZTUUsIEeT3QfFiWk6fo9X4LBE5y4zGyIOjrAZUsMfDHxQKcht7hhFp59
- UkCyfbEYNySjMBsxJ+eoV4zNrIzez98nLRi7yI24H28EtGQs8HP7WrIaxaFTYYyxI4TL
- 3Pew==
-X-Gm-Message-State: AOJu0YwUPxfk/MhrYDpchJUN68vcHj6O5jdLq22kD3LzfJ9uufzEoc/m
- WY1p4VeitZ87UiN8nIqXetdpjYlukfbQkykowvxvyBk0Ww83aYlJBw1Sqc6qN4oSoHe4BTJ1IAd
- xvEJRPQ1eUsF98wQ=
-X-Received: by 2002:a05:620a:372a:b0:775:c335:20dd with SMTP id
- de42-20020a05620a372a00b00775c33520ddmr21498302qkb.5.1696953619174; 
- Tue, 10 Oct 2023 09:00:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFcuPc8uS/VJt84NWKV/SRNaC291G5Er/Ey4Et38IAPziu+dv7FvrMJoKU9SkWgOOTYwQ7RLQ==
-X-Received: by 2002:a05:620a:372a:b0:775:c335:20dd with SMTP id
- de42-20020a05620a372a00b00775c33520ddmr21498273qkb.5.1696953618799; 
- Tue, 10 Oct 2023 09:00:18 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- oq25-20020a05620a611900b00774376e6475sm4439685qkn.6.2023.10.10.09.00.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 09:00:18 -0700 (PDT)
-Date: Tue, 10 Oct 2023 12:00:16 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v3 10/10] tests/migration-test: Add a test for postcopy
- hangs during RECOVER
-Message-ID: <ZSV1EGTv0V8mi/5O@x1n>
-References: <20231004220240.167175-1-peterx@redhat.com>
- <20231004220240.167175-11-peterx@redhat.com>
- <87edi9fbh5.fsf@suse.de> <878r8hfavf.fsf@suse.de>
- <ZR8iwwOeXWI+x9YX@x1n> <875y3kg4hv.fsf@suse.de>
- <ZR8uMcN5WwA2kC9k@x1n> <87zg0wenkg.fsf@suse.de>
- <87wmvveo5b.fsf@suse.de>
+ d=1e100.net; s=20230601; t=1696954576; x=1697559376;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CwnMGMlyByFPEM9cIvswAbNsUIdnBnQG6Rgnf/fzddo=;
+ b=XU7SRn/GnrNdUp8iqEAf4VVU8FnRlMyTwLKUViuNrro8BIdPM56aOFWBhDWO8GJIAf
+ VaIj16IAKj8umaf5ayUQ3ECUL1BQCghfqAkyN/HVTw1U5EHuQ0nP5/JCmAOH1BvJZBZ0
+ vksjK6t7v8VMHJSrRS1mbQOJGvniMxebhhAV5Es1PdBMXZ9OidaDp6UepzuxtWnxs6Eo
+ 7m01R8Xsys/uxFP1g8itgFuSk0UwnZSjyxlv5PNphOZc8A9uZjFDGyN7NsP6xunEfmSK
+ wMkqva6WY1J7OcnYiGIDR7ZG0bHKadMtPFLxfDa//ZlQY1/NPCSHm+XmYhHrQjQyZ/Yf
+ g9SQ==
+X-Gm-Message-State: AOJu0YxbcYtgEVef6Th/iCFK5wsJQLthiDNSyEOkjDy7HzlRNu2FQdy8
+ 0iOOqfg0lzORg4TsuuhrVOeOzQ==
+X-Google-Smtp-Source: AGHT+IHt14dFX7q6XdxGLszqMB1wJppesGaUdi4ybuFPtkKzDaIM4LdLCcBvhgVLtwn+4LDEOndzdQ==
+X-Received: by 2002:a17:90b:188c:b0:27c:d01b:6c9d with SMTP id
+ mn12-20020a17090b188c00b0027cd01b6c9dmr4109160pjb.20.1696954575932; 
+ Tue, 10 Oct 2023 09:16:15 -0700 (PDT)
+Received: from ?IPV6:2607:fb90:b763:d52:6ee3:1cf3:f2d2:e12d?
+ ([2607:fb90:b763:d52:6ee3:1cf3:f2d2:e12d])
+ by smtp.gmail.com with ESMTPSA id
+ fa9-20020a17090af0c900b0027360359b70sm12392489pjb.48.2023.10.10.09.16.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Oct 2023 09:16:15 -0700 (PDT)
+Message-ID: <692e508d-ea6f-48fa-a885-dcc32fa2f653@linaro.org>
+Date: Tue, 10 Oct 2023 09:16:10 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87wmvveo5b.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] semihosting/arm-compat: Have TARGET_SYS_EXIT[_EXTENDED]
+ return signed
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20231005062610.57351-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231005062610.57351-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,14 +96,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 09, 2023 at 01:50:08PM -0300, Fabiano Rosas wrote:
-> It seems to have fixed the issue. 3500 iterations and still going.
+On 10/4/23 23:26, Philippe Mathieu-Daudé wrote:
+> Per the "Semihosting for AArch32 and AArch64" spec. v2 (2023Q3) [*]:
+> 
+>    6.5   SYS_EXIT (0x18)
+>    6.5.2   Entry (64-bit)
+> 
+>      On entry, the PARAMETER REGISTER contains a pointer to
+>      a two-field argument block:
+> 
+>      . field 1
+>        The exception type, which is one of the set of reason
+>        codes in the above tables.
+> 
+>      . field 2
+>        A subcode, whose meaning depends on the reason code in
+>        field 1.
+> 
+>      In particular, if field 1 is ADP_Stopped_ApplicationExit
+>      then field 2 is an exit status code, as passed to the C
+>      standard library exit() function. [...]
+> 
+> Having libc exit() is declared as:
+> 
+>    LIBRARY
+>         Standard C Library (libc, -lc)
+> 
+>    SYNOPSIS
+> 
+>         void
+>         exit(int status);
+> 
+> the status is expected to be signed.
 
-I'll go with that then, but feel free to report whenever that's hit again.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Thanks a lot.
 
--- 
-Peter Xu
-
+r~
 
