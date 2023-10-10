@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F1E7C0326
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 20:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 228D67C0435
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 21:12:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqH5f-0000G4-Jv; Tue, 10 Oct 2023 14:04:19 -0400
+	id 1qqI81-0000Rn-1c; Tue, 10 Oct 2023 15:10:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqH5c-0000Ex-Hl; Tue, 10 Oct 2023 14:04:16 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ id 1qqI7x-0000Qu-UH; Tue, 10 Oct 2023 15:10:46 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqH5Z-0004vJ-Fi; Tue, 10 Oct 2023 14:04:16 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:3a8c:0:640:ec94:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id D60406020B;
- Tue, 10 Oct 2023 21:04:08 +0300 (MSK)
+ id 1qqI7v-00033S-Be; Tue, 10 Oct 2023 15:10:45 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 136356291F;
+ Tue, 10 Oct 2023 22:10:38 +0300 (MSK)
 Received: from [IPV6:2a02:6b8:b081:7319::1:4] (unknown
  [2a02:6b8:b081:7319::1:4])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 74iHgB1OlOs0-dxEDuRQM; Tue, 10 Oct 2023 21:04:08 +0300
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id aAjc8F1OfSw0-CbopxQUm; Tue, 10 Oct 2023 22:10:37 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696961048;
- bh=r5h9W6hFZx9/cdCCaWptjwF3lZqR1qgGrgat3LkPck0=;
+ s=default; t=1696965037;
+ bh=h9pBi0IDEtOqLiqxXbrxMY8T2jKNepdlyIY8N9rb+Gc=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=FY0936GjHKsYXjhSjGZVOdcfDfUGVy4FryZGqFmDEZJBSTTjPBnMlJqaJZ0ZTqL3z
- 83rC06P76Mzsevh2BWlSu7nxwjWC4b0e/286eQDn4mW6jACAK/xYLtWasvumcgA7CM
- gxF8NMJLJJzIII7FfmtPtsO7FsslYuUodTd9btxc=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ b=r3Rh10qRqqVUJPxtW9V5W5pnb8YVyyWX8qKRlal5MCM70xE5MoOlGtKEtWcH1MQpy
+ Ex6VkLUcORHxfzgv0o02iPPtRGs/ftS4KZMuTUK1w7Xd5UraO8z9ciyvciruUaps+i
+ aFgNHOoCbbBsvBCjoB2hvhMjBL43kRx26QfcsW/Q=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <088dd6c1-14de-4d25-af1c-d5e5c0f8e1bc@yandex-team.ru>
-Date: Tue, 10 Oct 2023 21:04:07 +0300
+Message-ID: <d4a52deb-d2e8-404e-af18-424f50d8846f@yandex-team.ru>
+Date: Tue, 10 Oct 2023 22:10:36 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/10] blockjob: introduce block-job-change QMP command
+Subject: Re: [PATCH v2 03/10] block/mirror: move dirty bitmap to filter
 Content-Language: en-US
 To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
  t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
 References: <20231009094619.469668-1-f.ebner@proxmox.com>
- <20231009094619.469668-2-f.ebner@proxmox.com>
+ <20231009094619.469668-4-f.ebner@proxmox.com>
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20231009094619.469668-2-f.ebner@proxmox.com>
+In-Reply-To: <20231009094619.469668-4-f.ebner@proxmox.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -76,15 +77,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 09.10.23 12:46, Fiona Ebner wrote:
-> which will allow changing job-type-specific options after job
-> creation.
+> In preparation to allow switching to active mode without draining.
+> Initialization of the bitmap in mirror_dirty_init() still happens with
+> the original/backing BlockDriverState, which should be fine, because
+> the mirror top has the same length.
 > 
-> In the JobVerbTable, the same allow bits as for set-speed are used,
-> because set-speed can be considered an existing change command.
-> 
+> Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
 
 -- 
 Best regards,
