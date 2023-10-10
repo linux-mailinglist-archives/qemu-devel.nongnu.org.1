@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AEC7BFB97
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB52B7BFBA1
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:37:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBwx-0007qT-Kl; Tue, 10 Oct 2023 08:34:59 -0400
+	id 1qqByu-0000zu-1I; Tue, 10 Oct 2023 08:37:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBwr-0007pL-6v
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:34:56 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqByr-0000zG-PS
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:36:57 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBwp-0000AB-JL
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:34:52 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9b98a699f45so943772666b.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 05:34:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqByp-0000hc-Rt
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 08:36:57 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-536b39daec1so9475041a12.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 05:36:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696941290; x=1697546090; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696941414; x=1697546214; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Vfx2Ir6cqCUlrpN4ktqrmIdQP8T+TuX78vsFoNGqhx4=;
- b=AnGRMk6yh1JYPrLRI2K4GczFWq75/0t3HPKGu3Qdy6oQA6uThTT2ntHXNmuA5fGx6c
- qTBwZuXJZeuwoJuifP3W7PERLlZs/Xsr2cx3dCGBToHiqk/zNukaUfawQzdyZHZXw1Ds
- yQx72zsPAkv9uAwRWINGUHw/lzNzlGlawoxuVUIIHpfRcKkuWMacJXjg0G8ByicKZInT
- /AcclLXHVBexgA+4ngC3naMFanNj54evJMy4EfZDVlArk2chX4lTNR8y1gD4gSykbZHu
- t/3YUpK2YdZUcrgr4lS5285p2PLgmWmoM73hWMv1N4m11tZmTGuWfqrSKf+eAXxnN1R4
- Z6vg==
+ bh=d14YGOEtU9lfuVPByezkenYbM1XtV0/Ipw3v3EV0Uls=;
+ b=qrn7W+27s1bQ9ZZczrbGS3JTw2mrKGceOaQ0qO5SnYAUP2lKxThSUpllXJbx1os6Dq
+ aksrRh+HEZ/zOszp7ImyuQluR79fV7378R9rPF0HXd6gpGaalqlKfT8dw1enGAjTzVMu
+ 4GG0x1EO54FxgCd7xMiy8qmT+un4+ojfcsYeMkC62MyQB82YDqYlH5iK6fsHDRHGdI5+
+ KHaZ9nuNGzKND5yrnsxLNTFHDVt7lhkYYh5tqTfkFltK9RNQrSOxCGjI1qV13nOKCQRf
+ bqBazub3TD/AKFr4j6p5mlQeDfhr/XeOvOZ5J2K/zGdSl7jRjxMnCKqaBQUhdTQeNS0H
+ k27g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696941290; x=1697546090;
+ d=1e100.net; s=20230601; t=1696941414; x=1697546214;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Vfx2Ir6cqCUlrpN4ktqrmIdQP8T+TuX78vsFoNGqhx4=;
- b=eTIcnWOCgvqp66g8u1fRXJhs1C0sALVJITMEf3d6MtgfA62yhXxmYG6XZj/PnlSbxl
- ffiPJKLt0Kqf60qnvQXQR7/a6WissBgRlRzZa+0CrPqf+ABjXiwZDWbEQO4idsNinULO
- ft7mw4tNOpkdrnpbUmIs5jzVfobC+luFfmFWke4C6xVau4mwNYxotPev5XqDtjnasClp
- 2rJoI/oDJRdrDwd1qaDb0uC1fn6UXcQo5oDJYB7/d4GIOpxsjNnRErhyhibhYntf6Las
- rEy7FKa+nnI/184uRu70wQOEq1d9QGh74c6obQxFJfltlyspPyoK15c+NJGTxoJQ7Ik0
- Jdvg==
-X-Gm-Message-State: AOJu0YzcASAIl+RAQJ1IrmliMtqSx+qZgPL5oJ/kEQurr9Z+4JGigkFb
- OnYvM4RxkXoE9GMjpIeIaB7zPw==
-X-Google-Smtp-Source: AGHT+IGiEtvxGzWwTluEqCxH8ScKFi/B2ZvYZRrT1NUWzdvJfWp+GwB+2Ot321tYl/FdjAH9+KuB/A==
-X-Received: by 2002:a17:906:2d1:b0:9b2:b765:8802 with SMTP id
- 17-20020a17090602d100b009b2b7658802mr17676912ejk.40.1696941289919; 
- Tue, 10 Oct 2023 05:34:49 -0700 (PDT)
+ bh=d14YGOEtU9lfuVPByezkenYbM1XtV0/Ipw3v3EV0Uls=;
+ b=wdWNYJUiTV+pR0+o0REjTaodpLEgwUjC/nqluPihQ96NhivF1cLOvZqbVWZo5/OHNY
+ PtQIUyj2QRdzCnw91/7n26wNHo5M5fo+YInWd2ZmVCmVil9FSLK4/Z4Qvbkk6lHXYCHJ
+ 2lpkD7vQcNdTluE1IJZU9ckRCalMzNg8kyAZ6FkZLZcwunAhYvdrjztr9AFKloscHi5J
+ Gcp8G+tTei5GGQXQDGhsQenwQ9K2prRgEaB8kd2yy7j6LTCYj7cejsbQWm00LrtYTVRE
+ UMONkccAXDvvZplTPfoGVQ/cO05Y+WLKXehAcp51iIe+B8Rxs0TCXM6QzeZGrz9p1TaR
+ SgEQ==
+X-Gm-Message-State: AOJu0YxyDvBiNSRmBPC8PKtqVBjTEDrxgWpLt6GREUauKXHHiE92PfjV
+ 5bxy/fK5Ipca3L9VWHtHOGj21qBtcmt5IxPJD2Y6Zw==
+X-Google-Smtp-Source: AGHT+IFIGqx/KeCKmCocs5V26IgT1zD3vHOgnigSpdxzN44F2uVVSQ0SVRZ0klzn54vqFSWDK51qAA==
+X-Received: by 2002:aa7:ca46:0:b0:533:87c9:4a7d with SMTP id
+ j6-20020aa7ca46000000b0053387c94a7dmr16532433edt.35.1696941414127; 
+ Tue, 10 Oct 2023 05:36:54 -0700 (PDT)
 Received: from [192.168.69.115]
  (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
  by smtp.gmail.com with ESMTPSA id
- a23-20020a17090680d700b00993cc1242d4sm8331125ejx.151.2023.10.10.05.34.48
+ f26-20020a50ee9a000000b0052e1783ab25sm7646478edr.70.2023.10.10.05.36.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 05:34:49 -0700 (PDT)
-Message-ID: <9fcdaa43-7cf4-2b0c-3a29-a71767453702@linaro.org>
-Date: Tue, 10 Oct 2023 14:34:48 +0200
+ Tue, 10 Oct 2023 05:36:53 -0700 (PDT)
+Message-ID: <b8911ed0-9eae-a0d0-1b32-61876d4ee55a@linaro.org>
+Date: Tue, 10 Oct 2023 14:36:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v17 10/16] util/log: Add -d tb_stats
+Subject: Re: [PATCH v17 16/16] accel/tcg: Dump hot TBs at the end of the
+ execution
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: fei2.wu@intel.com, "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+Cc: fei2.wu@intel.com
 References: <20231003183058.1639121-1-richard.henderson@linaro.org>
- <20231003183058.1639121-11-richard.henderson@linaro.org>
+ <20231003183058.1639121-17-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231003183058.1639121-11-richard.henderson@linaro.org>
+In-Reply-To: <20231003183058.1639121-17-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -98,42 +98,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 3/10/23 20:30, Richard Henderson wrote:
 > From: Fei Wu <fei2.wu@intel.com>
 > 
-> Enable TBStatistics collection from startup.
+> Dump the hottest TBs if -d tb_stats:{all,jit,exec}[:dump_num_at_exit]
 > 
-> Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > Signed-off-by: Fei Wu <fei2.wu@intel.com>
-> [rth: Change "tb_stats_foo" to "tb_stats:foo"]
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   stubs/tb-stats.c  | 16 ++++++++++++++++
->   util/log.c        | 36 +++++++++++++++++++++++++++++++-----
->   stubs/meson.build |  1 +
->   3 files changed, 48 insertions(+), 5 deletions(-)
->   create mode 100644 stubs/tb-stats.c
-> 
-> diff --git a/stubs/tb-stats.c b/stubs/tb-stats.c
-> new file mode 100644
-> index 0000000000..ceaa1622ce
-> --- /dev/null
-> +++ b/stubs/tb-stats.c
-> @@ -0,0 +1,16 @@
-> +/*
-> + * TB Stats Stubs
-> + *
-> + * Copyright (c) 2019
-> + * Written by Alex Bennée <alex.bennee@linaro.org>
-> + *
-> + * This code is licensed under the GNU GPL v2, or later.
-> + */
-> +
-> +
-> +#include "qemu/osdep.h"
+>   bsd-user/bsd-proc.h    |  2 ++
+>   include/tcg/tb-stats.h | 10 +++++++++-
+>   accel/tcg/monitor.c    |  8 +++++---
+>   accel/tcg/tb-stats.c   | 27 ++++++++++++++++++++++++++-
+>   linux-user/exit.c      | 10 ++++++----
+>   softmmu/runstate.c     |  2 ++
+>   stubs/tb-stats.c       |  6 +++++-
+>   util/log.c             | 20 ++++++++++++++++----
+>   8 files changed, 71 insertions(+), 14 deletions(-)
+
+
+> diff --git a/softmmu/runstate.c b/softmmu/runstate.c
+> index 1652ed0439..2c6fb9bff1 100644
+> --- a/softmmu/runstate.c
+> +++ b/softmmu/runstate.c
+> @@ -59,6 +59,7 @@
+>   #include "sysemu/runstate-action.h"
+>   #include "sysemu/sysemu.h"
+>   #include "sysemu/tpm.h"
 > +#include "tcg/tb-stats.h"
-> +
-> +void tb_stats_init(uint32_t flags)
+>   #include "trace.h"
+>   
+>   static NotifierList exit_notifiers =
+> @@ -846,6 +847,7 @@ void qemu_cleanup(void)
+>       /* No more vcpu or device emulation activity beyond this point */
+>       vm_shutdown();
+>       replay_finish();
+> +    tb_stats_dump_atexit();
+>   
+>       /*
+>        * We must cancel all block jobs while the block layer is drained,
+> diff --git a/stubs/tb-stats.c b/stubs/tb-stats.c
+> index ceaa1622ce..f9e4ef5d04 100644
+> --- a/stubs/tb-stats.c
+> +++ b/stubs/tb-stats.c
+> @@ -11,6 +11,10 @@
+>   #include "qemu/osdep.h"
+>   #include "tcg/tb-stats.h"
+>   
+> -void tb_stats_init(uint32_t flags)
+> +void tb_stats_init(uint32_t flags, uint32_t atexit)
 > +{
 > +}
+> +
+> +void tb_stats_dump_atexit(void)
+>   {
+>   }
 
-We don't need this stub anymore.
+The stub isn't needed using:
+
+-- >8 --
+diff --git a/softmmu/runstate.c b/softmmu/runstate.c
+index 2c6fb9bff1..d05e2b8e1c 100644
+--- a/softmmu/runstate.c
++++ b/softmmu/runstate.c
+@@ -52,6 +52,7 @@
+  #include "qom/object.h"
+  #include "qom/object_interfaces.h"
+  #include "sysemu/cpus.h"
++#include "sysemu/tcg.h"
+  #include "sysemu/qtest.h"
+  #include "sysemu/replay.h"
+  #include "sysemu/reset.h"
+@@ -847,7 +848,9 @@ void qemu_cleanup(void)
+      /* No more vcpu or device emulation activity beyond this point */
+      vm_shutdown();
+      replay_finish();
+-    tb_stats_dump_atexit();
++    if (tcg_enabled()) {
++        tb_stats_dump_atexit();
++    }
+
+      /*
+       * We must cancel all block jobs while the block layer is drained,
+---
 
