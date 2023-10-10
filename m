@@ -2,89 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FCC7BFF1C
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C677BFF1E
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:25:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqDeS-00011j-9L; Tue, 10 Oct 2023 10:24:00 -0400
+	id 1qqDfX-0001ut-E1; Tue, 10 Oct 2023 10:25:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qqDeA-00010K-V4
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:23:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qqDfU-0001rG-Ev
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:25:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qqDe6-00086u-0j
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:23:39 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qqDfS-0008Ta-SD
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:25:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696947817;
+ s=mimecast20190719; t=1696947902;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=bMTe8I1GVILY6uDmksPw0nOcjDmy3KdL9EHtGWWqKn6gWhnfM6WhuK9ecjecYi9Q5yM7Kr
- mT/XnDJy54bpPDP1hc7wXDKoAaDvXTbtN+I6xiMPTGi7Vyf/9/h/0hTa7Lo8Ac3hgUJT5W
- BZR7fD+KtDITte15ZvkYhEF9al5Qb0s=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-3gvximawOOqFPzBiIUPh0Q-1; Tue, 10 Oct 2023 10:23:30 -0400
-X-MC-Unique: 3gvximawOOqFPzBiIUPh0Q-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-51d981149b5so4577144a12.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 07:23:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696947809; x=1697552609;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=qiMYIcCs8WLKmWvcUnCGvGJ7I1QF0Zhyd8QtrSyirS/Om6HXm72DbZatmCbvma0GD1
- KDwsM4ySRfSsHsp+cVmxxOqkACYN4RCLy+W0uxIBv+tGvGCoUS/WGbgU5PZyEdmg6T0f
- 02yXa6mLhpiqey2+f6XLf8G+gDZeiUoALYzPIeM78G2B0QYfRot0aCVi5p0PuLQ1DAi+
- RevRZKzIf+ubqCKMd0PVvscsTNAwvToJ50dmZos/2NA+dLYUM3JRF4QJBEDtLFvP5vk9
- L8wrF/mTXr++TqvATuB+tZixRnCc1xVzYz/9AeYWalX/7xxM8GBhQlyrI+QiHyo34Q+p
- m63w==
-X-Gm-Message-State: AOJu0YxZpSO4gV9597DbIhjHk3CmGYx9FBQ0kkQzMjppXZkN8AdqoaFO
- SFXPCwTF0HSNPfA9rEsbUZA+MyvNOXqwLdICRcqQrglArLfbppAX5xiMvfzsVEu1lbvj5xGIeR4
- DwhRu3tfFpBKDTTQ=
-X-Received: by 2002:a05:6402:1357:b0:533:4a9a:b0e6 with SMTP id
- y23-20020a056402135700b005334a9ab0e6mr16877056edw.20.1696947809100; 
- Tue, 10 Oct 2023 07:23:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1o+8tvERZWL9dJecF2S3JsOGyqi7e03f2hrGDcbO9YmlRcwQ3xim7ACk1HauoR64b88ZcEg==
-X-Received: by 2002:a05:6402:1357:b0:533:4a9a:b0e6 with SMTP id
- y23-20020a056402135700b005334a9ab0e6mr16877048edw.20.1696947808804; 
- Tue, 10 Oct 2023 07:23:28 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
- by smtp.gmail.com with ESMTPSA id
- h17-20020aa7c611000000b00534c65fd0ebsm7720218edq.90.2023.10.10.07.23.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 07:23:28 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: Yonggang Luo <luoyonggang@gmail.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-trivial@nongnu.org
-Subject: Re: [PATCH] Revert "configure: Add workaround for ccache and clang"
-Date: Tue, 10 Oct 2023 16:23:21 +0200
-Message-ID: <20231010142321.264043-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231009165113.498-1-luoyonggang@gmail.com>
-References: 
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=M1ohce11WkNNe0cgAMwi8ts3gYAezYJYisUUMXuKoVk=;
+ b=CgkLaFa03+4DpM6yTv8k4Hs0d6VRDgGrYZk1ivKyf9tRzbOwWNUTV2DlJRwxQv9USL4Jhu
+ f8ALNOh8UTrQcPTT/St6/InTSBMcNqCoI5HK0D5oIzVVi8zSQb3Ux8PasvzaLUFbr8eToe
+ j9MqM8qhaRZOij4BiQOz3QuQnuf66Rk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-46-89qBaz_dOnaFnIUeUFJLoQ-1; Tue, 10 Oct 2023 10:24:58 -0400
+X-MC-Unique: 89qBaz_dOnaFnIUeUFJLoQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 56B9C1875056;
+ Tue, 10 Oct 2023 14:24:57 +0000 (UTC)
+Received: from gondolin.str.redhat.com (dhcp-192-239.str.redhat.com
+ [10.33.192.239])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6BD3921CAC6B;
+ Tue, 10 Oct 2023 14:24:56 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>
+Subject: [PATCH v2 0/3] arm/kvm: use kvm_{get,set}_one_reg
+Date: Tue, 10 Oct 2023 16:24:50 +0200
+Message-ID: <20231010142453.224369-1-cohuck@redhat.com>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,8 +76,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+I sent this cleanup first... in mid-July (ugh). But better late than never, I guess.
 
-Paolo
+From v1:
+- fix buglets (thanks Gavin)
+- add patch 3 on top
+
+The kvm_{get,set}_one_reg functions have been around for a very long
+time, and using them instead of open-coding the ioctl invocations
+saves lines of code, and gives us a tracepoint as well. They cannot
+be used by invocations of the ioctl not acting on a CPUState, but
+that still leaves a lot of conversions in the target/arm code.
+
+target/mips and target/ppc also have some potential for conversions,
+but as I cannot test either (and they are both in 'Odd fixes' anyway),
+I left them alone.
+
+Survives some testing on a Mt. Snow.
+
+Cornelia Huck (3):
+  arm/kvm: convert to kvm_set_one_reg
+  arm/kvm: convert to kvm_get_one_reg
+  arm/kvm: convert to read_sys_reg64
+
+ target/arm/kvm.c   |  28 +++-------
+ target/arm/kvm64.c | 129 ++++++++++++---------------------------------
+ 2 files changed, 40 insertions(+), 117 deletions(-)
+
+-- 
+2.41.0
 
 
