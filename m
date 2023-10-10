@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BA67BF4F5
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F497BF4F4
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:55:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq7YW-0005ju-LA; Tue, 10 Oct 2023 03:53:28 -0400
+	id 1qq7Yj-00060J-2h; Tue, 10 Oct 2023 03:53:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7YU-0005b1-E4; Tue, 10 Oct 2023 03:53:26 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1qq7YX-0005pq-Tm; Tue, 10 Oct 2023 03:53:29 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7YS-0005K9-R2; Tue, 10 Oct 2023 03:53:26 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-692eed30152so3945899b3a.1; 
- Tue, 10 Oct 2023 00:53:24 -0700 (PDT)
+ id 1qq7YW-0005LP-CP; Tue, 10 Oct 2023 03:53:29 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6969b391791so3638103b3a.3; 
+ Tue, 10 Oct 2023 00:53:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696924403; x=1697529203; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696924406; x=1697529206; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xqotvT7s2KNx9nGdrthTh0VLKSX7c1BTmCAddFJyYLE=;
- b=aWbDbZl1M1f+tSLlQrvahn+4YnA2lqy09so2KJLCsKwZcEwj8dAvLOJboMXZxzBE6g
- usEOTOSY3mFkZb1z+/agJdykyW40KIg2vBYyDZywY8G6nRBs68sirtAF+P+ejO5kGvWp
- exoKSshWuiM/D/cIIwqbbLabOf8Xov5RGmfGS/X0jTL6vCEoTA6Py/i5LJWhUGOd+jAv
- 88qtO4ZsctUtKXu5hPzaGNeSnyb5D/hy6l04t3dUxqQb/ZUyS3d+3NkcVBjW1H2xa1Ub
- /Ul+CZ0wujA9cR3pWdaSozCxEnbb9Lmf+wdzQ81TtmZQpXSg5hMjNhEO0bpELbdBH3VO
- dEjQ==
+ bh=fLLT5ObzM5KwZn8Whir/m9IL59w1BchNaowOLYzDN5M=;
+ b=KE4cataAgP/WGjg9n0IsyxguZ/S56BKt+4CGkKT8X7D4FfLCJqETnzV0HBCs7k42pR
+ B8I0aVNhaXfXSogIh2+qYUF8VkI7vKIF1ocWSae4OM+uZibqmVn6dnxJ5+hlBYtO6p/i
+ mIo2SAFRdEKBuSQI8Y5StA4uHtRMrzv7iV2ymRJDH/r9Bx8NGdQATQAs+HYah3qMK4e3
+ fYSszkPQrtcuuZ9eY1mHTCKFtSXKg+W9EFEo9h6YNLjhUusHL+LC0M5/kkUVEBKNgS3d
+ ZfT/d/YhrHBCkiOVotvM9fzxhuDzsIvZ2HtloR0NpTKhVN4U844hM0uNealdx88XZA2C
+ BMDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696924403; x=1697529203;
+ d=1e100.net; s=20230601; t=1696924406; x=1697529206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xqotvT7s2KNx9nGdrthTh0VLKSX7c1BTmCAddFJyYLE=;
- b=vrAkmNw6xU14LiE4TlS751nxRj7gPywFqDkfTHld4XydtMPvnyX0P7yxZYvte3By+C
- czlFr1LWbXjFs744czGbakp4412EjtHQoS1tgduXlurrS6XjjuXUCZTNnSQDUNlL5vOa
- FT4auKipIlgW40kQGCIv1ILKDRZaFQOLOALlN4P08xlQ79FfxBRKdVCBmCzTdji1k2Dp
- 8nUSSqs0/a07cup5soGMCjtfeSNrPebKstyfTbme+0zNhyoQvztaGj3dDTz0i2LMt35r
- TEjURoC+LhaxwQU96cqYVaoS3zpFvudnFkzt5jkwQG8zQ5AQM2IQ3KTkfpZ8ilSStdhX
- AJPQ==
-X-Gm-Message-State: AOJu0Yysa6hvuqwFcYxMe2VSvmrosqL151lIjqvaJa48IwFN/aub0W6Z
- YcRqcMTB3tONgC18N9k0TVMR5jhDSB0=
-X-Google-Smtp-Source: AGHT+IGkoWM3U++R5fSZteHO6AILGH2qp3Nu9yK9zNVp4qR+AdDSEx3T/OrvbTeUm1SNo3vp7Yi7jw==
-X-Received: by 2002:a05:6a20:7487:b0:15d:3a10:18c6 with SMTP id
- p7-20020a056a20748700b0015d3a1018c6mr17087391pzd.45.1696924402845; 
- Tue, 10 Oct 2023 00:53:22 -0700 (PDT)
+ bh=fLLT5ObzM5KwZn8Whir/m9IL59w1BchNaowOLYzDN5M=;
+ b=W1FtAD1HChtFNIsPMmF8ScPhlTDS5FVJy2DcGhtJ+6ftHIEKH8QQVZ5DGkDI1dzleF
+ IvUQd9/7Us/2uPeANSUjkhTIMYK+B4V2b47Pjtua2RK8Be7R+0cAO2xuFWSoVfc4HxNZ
+ G5VHlYUVPjLTQw3u/v751n8ousP5TXdX40QszD/oIWqgZCONzO0K/1D79dDpQcJ+h9LL
+ ZbiCB89VtbXTjrgcJ9v3TUWql/W5ffUve/gbgmHQNNDh9047gMFOBnpe/dpo0SCnH+6H
+ dj64kReyv+yPHAOfotMMNtZuYR38F9tIt8S/Yc69RneL8T/5urj5orapL4+DfureYpKd
+ eudw==
+X-Gm-Message-State: AOJu0YzcorJDj8gj34eSSKG/85uDainbtCoRCTEklHcgbrQVtGTbzRSK
+ WK6WoJgvvAKRYZkv6S9jrcy9z5Mf9mc=
+X-Google-Smtp-Source: AGHT+IFoCVXayD5MC7U6976MFuH6jyYim/JWHmql35AW2Osix0YGGEuaNR6FvAQBVhlaSQzM0bdVAA==
+X-Received: by 2002:a05:6a21:191:b0:160:18d6:a3d7 with SMTP id
+ le17-20020a056a21019100b0016018d6a3d7mr20195671pzb.1.1696924406592; 
+ Tue, 10 Oct 2023 00:53:26 -0700 (PDT)
 Received: from wheely.local0.net (27-33-247-209.tpgi.com.au. [27.33.247.209])
  by smtp.gmail.com with ESMTPSA id
- a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.53.19
+ a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.53.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 00:53:22 -0700 (PDT)
+ Tue, 10 Oct 2023 00:53:26 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Subject: [RFC PATCH 09/11] tests/avocado: Use default CPU for pseries machine
-Date: Tue, 10 Oct 2023 17:52:36 +1000
-Message-ID: <20231010075238.95646-10-npiggin@gmail.com>
+Subject: [RFC PATCH 10/11] ppc/spapr: change pseries machine default to
+ POWER10 CPU
+Date: Tue, 10 Oct 2023 17:52:37 +1000
+Message-ID: <20231010075238.95646-11-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231010075238.95646-1-npiggin@gmail.com>
 References: <20231010075238.95646-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,26 +93,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the default CPU with the pseries machine unless there is a
-specific requirement.
+POWER10 is the latest pseries CPU.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/migration.py | 1 -
- 1 file changed, 1 deletion(-)
+ hw/ppc/spapr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/avocado/migration.py b/tests/avocado/migration.py
-index fdc1d234fb..91ac33919b 100644
---- a/tests/avocado/migration.py
-+++ b/tests/avocado/migration.py
-@@ -123,7 +123,6 @@ class PPC64(MigrationTest):
-     """
-     :avocado: tags=arch:ppc64
-     :avocado: tags=machine:pseries
--    :avocado: tags=cpu:power9_v2.0
-     """
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index d4230d3647..9d3475d64b 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4661,7 +4661,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
  
-     def test_migration_with_tcp_localhost(self):
+     smc->dr_lmb_enabled = true;
+     smc->update_dt_enabled = true;
+-    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
++    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+     mc->has_hotpluggable_cpus = true;
+     mc->nvdimm_supported = true;
+     smc->resize_hpt_default = SPAPR_RESIZE_HPT_ENABLED;
 -- 
 2.42.0
 
