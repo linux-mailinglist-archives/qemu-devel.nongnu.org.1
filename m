@@ -2,88 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45A67C43A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 00:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADA67C43A7
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 00:21:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqL4l-0006QE-8d; Tue, 10 Oct 2023 18:19:39 -0400
+	id 1qqL6M-0007CL-Fl; Tue, 10 Oct 2023 18:21:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqL4j-0006Pg-6V
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 18:19:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qqL6K-00078s-Hy; Tue, 10 Oct 2023 18:21:16 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqL4g-0002M6-KV
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 18:19:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696976372;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=nfgpIn9CMgy05/adUXMRAOEGRz4csPqjLFFOXlE5SsQ=;
- b=Bd/Pdf6v2ft/n1zQSSTjewp0ihcV3F6mDtVyvSfxi6g6x5qkDPjsFJaRRytOjfouWGye0Y
- aDgt9KRo4OvoKs5fQZYqmdPrMKPHxfnWMCFBSEXOfS91UyeqYH7zgz4IhWYYI2/BwM58Rg
- J/8XkjxTzd7hJREfi4mXo4lfgkZDFd0=
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com
- [209.85.160.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-mFVEkVffMPmPXflk3fabEg-1; Tue, 10 Oct 2023 18:19:30 -0400
-X-MC-Unique: mFVEkVffMPmPXflk3fabEg-1
-Received: by mail-oa1-f70.google.com with SMTP id
- 586e51a60fabf-1dd069c6112so1521214fac.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 15:19:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696976370; x=1697581170;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=nfgpIn9CMgy05/adUXMRAOEGRz4csPqjLFFOXlE5SsQ=;
- b=veQ/cPXzn42/oQHuEnAIZucoBFX1OZ2PlmI5rc8boOFM3NICg+ZRiJmFxGzOucpdDa
- J3ka4kc/bV5v3vtZ01970i8QfZ6wj94WoneWsaWZ52xLBRw9ktlquM9BMyqB2N2rjTmX
- BPxrgM01mt9Y8k4hB/r5Zj3L36xdP22GAe73bFxlNCM2kOBQDBCe/mdejdr1oO3JKNhP
- 5GenzufYJK4m2rX4XN8QTwOQwsbMikrcpZ34queOucCoD1p04+DPRLbfdomsl1dv4GQZ
- RzGrS0eLQyol9UD3VGki9C0pEcCZCG0pER0czKZJczz2m9Zr5oytxUTqhvtKTvgYRyYZ
- F1MQ==
-X-Gm-Message-State: AOJu0YyGhq/ak7h4YE5rz5v+wYdOTDhudGdWWevUc61K4bCYknLW6SHg
- dGqQzSadcLVUtCs5SZKVDCgqrLHkTbr8VO6fvAggrCFARNfHce+A9HrxqCZvPyW+mKJUbSZh7hq
- 2SUVQ1fTlKZeH9LZrTI/CS5BWYL9orc51p/Pi13rFrgaywK8yw5Bws0HsE7AS7QANJjS/vItY
-X-Received: by 2002:a05:6870:798c:b0:1e9:83d5:9227 with SMTP id
- he12-20020a056870798c00b001e983d59227mr1487723oab.3.1696976369630; 
- Tue, 10 Oct 2023 15:19:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLOAuGqSoF7xlkiffuT4gB4Yq5+mk8zKq5EJf0UdNxM8uzSeQ6Pg7jN1JSNFjq7+uXCtPW9Q==
-X-Received: by 2002:a05:6870:798c:b0:1e9:83d5:9227 with SMTP id
- he12-20020a056870798c00b001e983d59227mr1487694oab.3.1696976369068; 
- Tue, 10 Oct 2023 15:19:29 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- i15-20020a05620a074f00b0076c96e571f3sm4713601qki.26.2023.10.10.15.19.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 15:19:28 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- Chensheng Dong <chdong@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Zhiyi Guo <zhguo@redhat.com>,
- Eric Blake <eblake@redhat.com>, Joao Martins <joao.m.martins@oracle.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4] migration: Allow user to specify available switchover
- bandwidth
-Date: Tue, 10 Oct 2023 18:19:22 -0400
-Message-ID: <20231010221922.40638-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qqL6H-0002t4-Vu; Tue, 10 Oct 2023 18:21:16 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39AMHO6D030711; Tue, 10 Oct 2023 22:20:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=JxWhd3mh71OEvQG8Z6jhxntAhmyXII+k/ZQke/rDAfE=;
+ b=ZM/xuILnYR6jzhwZSkwKBngf0Bkzz66mkp143dZ3gxlFbjnMD6OcF1FOcxQZIPpbkbq4
+ JVMr+i8MGspGicpOfs6t3N/mZ9yRcnVydRKCB6f0QEpVu1zx+xazF9q5w3ByVfs66RvB
+ 9BewII9WgA+HlnezZ0HQUnilZ34Z0OhRV4bLW8rUAkdMUtVOGLosaFl+HHkMuf44cr8z
+ lVtOl1x5U6YCwvzdHPQRnSbNFovH2hmZSr1cV25/bxCsZSNyB3eP+EBFNR33hjUURc1Z
+ gZmMKS5Rx5Zlxh4AKBWE0qeTgnFxNK1XS57nxql88aAZ86y4CxDLdavwFZ/Fe/AR/+jo Yw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnf95r45r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Oct 2023 22:20:53 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39AMHemJ032078;
+ Tue, 10 Oct 2023 22:20:52 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnf95r456-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Oct 2023 22:20:52 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39ALJMZn025859; Tue, 10 Oct 2023 22:20:51 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkjnnbmmd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Oct 2023 22:20:51 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39AMKoOD25297438
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Oct 2023 22:20:50 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2157E5804B;
+ Tue, 10 Oct 2023 22:20:50 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 33B8F58055;
+ Tue, 10 Oct 2023 22:20:49 +0000 (GMT)
+Received: from [9.61.148.249] (unknown [9.61.148.249])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 10 Oct 2023 22:20:49 +0000 (GMT)
+Message-ID: <f4ea9f6e-f8cd-46cf-b0f9-04ed5af420ad@linux.ibm.com>
+Date: Tue, 10 Oct 2023 17:20:48 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 05/10] hw/fsi: IBM's On-chip Peripheral Bus
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org
+References: <20230908222859.3381003-1-ninad@linux.ibm.com>
+ <20230908222859.3381003-6-ninad@linux.ibm.com>
+ <d82f227d-834c-1302-cf0b-11e06d09ec29@kaod.org>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <d82f227d-834c-1302-cf0b-11e06d09ec29@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: h6xxwma6W0XlsGs6A_XdwEw-lQxhRA_d
+X-Proofpoint-ORIG-GUID: 6_AiZFo-5_6olWBHbosMCvajPkLy8TIv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-10_18,2023-10-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ suspectscore=0 spamscore=0 clxscore=1015 mlxscore=0 mlxlogscore=999
+ malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310100172
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,361 +117,360 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration bandwidth is a very important value to live migration.  It's
-because it's one of the major factors that we'll make decision on when to
-switchover to destination in a precopy process.
+Hello Cedric,
 
-This value is currently estimated by QEMU during the whole live migration
-process by monitoring how fast we were sending the data.  This can be the
-most accurate bandwidth if in the ideal world, where we're always feeding
-unlimited data to the migration channel, and then it'll be limited to the
-bandwidth that is available.
+Thanks for the review.
 
-However in reality it may be very different, e.g., over a 10Gbps network we
-can see query-migrate showing migration bandwidth of only a few tens of
-MB/s just because there are plenty of other things the migration thread
-might be doing.  For example, the migration thread can be busy scanning
-zero pages, or it can be fetching dirty bitmap from other external dirty
-sources (like vhost or KVM).  It means we may not be pushing data as much
-as possible to migration channel, so the bandwidth estimated from "how many
-data we sent in the channel" can be dramatically inaccurate sometimes.
-
-With that, the decision to switchover will be affected, by assuming that we
-may not be able to switchover at all with such a low bandwidth, but in
-reality we can.
-
-The migration may not even converge at all with the downtime specified,
-with that wrong estimation of bandwidth, keeping iterations forever with a
-low estimation of bandwidth.
-
-The issue is QEMU itself may not be able to avoid those uncertainties on
-measuing the real "available migration bandwidth".  At least not something
-I can think of so far.
-
-One way to fix this is when the user is fully aware of the available
-bandwidth, then we can allow the user to help providing an accurate value.
-
-For example, if the user has a dedicated channel of 10Gbps for migration
-for this specific VM, the user can specify this bandwidth so QEMU can
-always do the calculation based on this fact, trusting the user as long as
-specified.  It may not be the exact bandwidth when switching over (in which
-case qemu will push migration data as fast as possible), but much better
-than QEMU trying to wildly guess, especially when very wrong.
-
-A new parameter "avail-switchover-bandwidth" is introduced just for this.
-So when the user specified this parameter, instead of trusting the
-estimated value from QEMU itself (based on the QEMUFile send speed), it
-trusts the user more by using this value to decide when to switchover,
-assuming that we'll have such bandwidth available then.
-
-Note that specifying this value will not throttle the bandwidth for
-switchover yet, so QEMU will always use the full bandwidth possible for
-sending switchover data, assuming that should always be the most important
-way to use the network at that time.
-
-This can resolve issues like "unconvergence migration" which is caused by
-hilarious low "migration bandwidth" detected for whatever reason.
-
-Reported-by: Zhiyi Guo <zhguo@redhat.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
-v4:
-- Rebase to master, with duplicated documentations
----
- qapi/migration.json            | 34 +++++++++++++++++++++++++++++++++-
- migration/migration.h          |  2 +-
- migration/options.h            |  1 +
- migration/migration-hmp-cmds.c | 14 ++++++++++++++
- migration/migration.c          | 24 +++++++++++++++++++++---
- migration/options.c            | 28 ++++++++++++++++++++++++++++
- migration/trace-events         |  2 +-
- 7 files changed, 99 insertions(+), 6 deletions(-)
-
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8843e74b59..0c897a99b1 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -759,6 +759,16 @@
- # @max-bandwidth: to set maximum speed for migration.  maximum speed
- #     in bytes per second.  (Since 2.8)
- #
-+# @avail-switchover-bandwidth: to set the available bandwidth that
-+#     migration can use during switchover phase.  NOTE!  This does not
-+#     limit the bandwidth during switchover, but only for calculations when
-+#     making decisions to switchover.  By default, this value is zero,
-+#     which means QEMU will estimate the bandwidth automatically.  This can
-+#     be set when the estimated value is not accurate, while the user is
-+#     able to guarantee such bandwidth is available when switching over.
-+#     When specified correctly, this can make the switchover decision much
-+#     more accurate.  (Since 8.2)
-+#
- # @downtime-limit: set maximum tolerated downtime for migration.
- #     maximum downtime in milliseconds (Since 2.8)
- #
-@@ -840,7 +850,7 @@
-            'cpu-throttle-initial', 'cpu-throttle-increment',
-            'cpu-throttle-tailslow',
-            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
--           'downtime-limit',
-+           'avail-switchover-bandwidth', 'downtime-limit',
-            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
-            'block-incremental',
-            'multifd-channels',
-@@ -925,6 +935,16 @@
- # @max-bandwidth: to set maximum speed for migration.  maximum speed
- #     in bytes per second.  (Since 2.8)
- #
-+# @avail-switchover-bandwidth: to set the available bandwidth that
-+#     migration can use during switchover phase.  NOTE!  This does not
-+#     limit the bandwidth during switchover, but only for calculations when
-+#     making decisions to switchover.  By default, this value is zero,
-+#     which means QEMU will estimate the bandwidth automatically.  This can
-+#     be set when the estimated value is not accurate, while the user is
-+#     able to guarantee such bandwidth is available when switching over.
-+#     When specified correctly, this can make the switchover decision much
-+#     more accurate.  (Since 8.2)
-+#
- # @downtime-limit: set maximum tolerated downtime for migration.
- #     maximum downtime in milliseconds (Since 2.8)
- #
-@@ -1018,6 +1038,7 @@
-             '*tls-hostname': 'StrOrNull',
-             '*tls-authz': 'StrOrNull',
-             '*max-bandwidth': 'size',
-+            '*avail-switchover-bandwidth': 'size',
-             '*downtime-limit': 'uint64',
-             '*x-checkpoint-delay': { 'type': 'uint32',
-                                      'features': [ 'unstable' ] },
-@@ -1128,6 +1149,16 @@
- # @max-bandwidth: to set maximum speed for migration.  maximum speed
- #     in bytes per second.  (Since 2.8)
- #
-+# @avail-switchover-bandwidth: to set the available bandwidth that
-+#     migration can use during switchover phase.  NOTE!  This does not
-+#     limit the bandwidth during switchover, but only for calculations when
-+#     making decisions to switchover.  By default, this value is zero,
-+#     which means QEMU will estimate the bandwidth automatically.  This can
-+#     be set when the estimated value is not accurate, while the user is
-+#     able to guarantee such bandwidth is available when switching over.
-+#     When specified correctly, this can make the switchover decision much
-+#     more accurate.  (Since 8.2)
-+#
- # @downtime-limit: set maximum tolerated downtime for migration.
- #     maximum downtime in milliseconds (Since 2.8)
- #
-@@ -1218,6 +1249,7 @@
-             '*tls-hostname': 'str',
-             '*tls-authz': 'str',
-             '*max-bandwidth': 'size',
-+            '*avail-switchover-bandwidth': 'size',
-             '*downtime-limit': 'uint64',
-             '*x-checkpoint-delay': { 'type': 'uint32',
-                                      'features': [ 'unstable' ] },
-diff --git a/migration/migration.h b/migration/migration.h
-index 972597f4de..475f442fe6 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -294,7 +294,7 @@ struct MigrationState {
-     /*
-      * The final stage happens when the remaining data is smaller than
-      * this threshold; it's calculated from the requested downtime and
--     * measured bandwidth
-+     * measured bandwidth, or avail-switchover-bandwidth if specified.
-      */
-     int64_t threshold_size;
- 
-diff --git a/migration/options.h b/migration/options.h
-index 045e2a41a2..93ee938ab8 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -80,6 +80,7 @@ int migrate_decompress_threads(void);
- uint64_t migrate_downtime_limit(void);
- uint8_t migrate_max_cpu_throttle(void);
- uint64_t migrate_max_bandwidth(void);
-+uint64_t migrate_avail_switchover_bandwidth(void);
- uint64_t migrate_max_postcopy_bandwidth(void);
- int migrate_multifd_channels(void);
- MultiFDCompression migrate_multifd_compression(void);
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index c115ef2d23..2291b1b9b1 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -321,6 +321,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "%s: %" PRIu64 " bytes/second\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_MAX_BANDWIDTH),
-             params->max_bandwidth);
-+        assert(params->has_avail_switchover_bandwidth);
-+        monitor_printf(mon, "%s: %" PRIu64 " bytes/second\n",
-+            MigrationParameter_str(MIGRATION_PARAMETER_AVAIL_SWITCHOVER_BANDWIDTH),
-+            params->avail_switchover_bandwidth);
-         assert(params->has_downtime_limit);
-         monitor_printf(mon, "%s: %" PRIu64 " ms\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_DOWNTIME_LIMIT),
-@@ -574,6 +578,16 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         }
-         p->max_bandwidth = valuebw;
-         break;
-+    case MIGRATION_PARAMETER_AVAIL_SWITCHOVER_BANDWIDTH:
-+        p->has_avail_switchover_bandwidth = true;
-+        ret = qemu_strtosz_MiB(valuestr, NULL, &valuebw);
-+        if (ret < 0 || valuebw > INT64_MAX
-+            || (size_t)valuebw != valuebw) {
-+            error_setg(&err, "Invalid size %s", valuestr);
-+            break;
-+        }
-+        p->avail_switchover_bandwidth = valuebw;
-+        break;
-     case MIGRATION_PARAMETER_DOWNTIME_LIMIT:
-         p->has_downtime_limit = true;
-         visit_type_size(v, param, &p->downtime_limit, &err);
-diff --git a/migration/migration.c b/migration/migration.c
-index 585d3c8f55..2ec4a761cc 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2667,17 +2667,33 @@ static void migration_update_counters(MigrationState *s,
- {
-     uint64_t transferred, transferred_pages, time_spent;
-     uint64_t current_bytes; /* bytes transferred since the beginning */
-+    uint64_t switchover_bw;
-+    /* Expected bandwidth when switching over to destination QEMU */
-+    double expected_bw_per_ms;
-     double bandwidth;
- 
-     if (current_time < s->iteration_start_time + BUFFER_DELAY) {
-         return;
-     }
- 
-+    switchover_bw = migrate_avail_switchover_bandwidth();
-     current_bytes = migration_transferred_bytes(s->to_dst_file);
-     transferred = current_bytes - s->iteration_initial_bytes;
-     time_spent = current_time - s->iteration_start_time;
-     bandwidth = (double)transferred / time_spent;
--    s->threshold_size = bandwidth * migrate_downtime_limit();
-+
-+    if (switchover_bw) {
-+        /*
-+         * If the user specified a switchover bandwidth, let's trust the
-+         * user so that can be more accurate than what we estimated.
-+         */
-+        expected_bw_per_ms = switchover_bw / 1000;
-+    } else {
-+        /* If the user doesn't specify bandwidth, we use the estimated */
-+        expected_bw_per_ms = bandwidth;
-+    }
-+
-+    s->threshold_size = expected_bw_per_ms * migrate_downtime_limit();
- 
-     s->mbps = (((double) transferred * 8.0) /
-                ((double) time_spent / 1000.0)) / 1000.0 / 1000.0;
-@@ -2694,7 +2710,7 @@ static void migration_update_counters(MigrationState *s,
-     if (stat64_get(&mig_stats.dirty_pages_rate) &&
-         transferred > 10000) {
-         s->expected_downtime =
--            stat64_get(&mig_stats.dirty_bytes_last_sync) / bandwidth;
-+            stat64_get(&mig_stats.dirty_bytes_last_sync) / expected_bw_per_ms;
-     }
- 
-     migration_rate_reset(s->to_dst_file);
-@@ -2702,7 +2718,9 @@ static void migration_update_counters(MigrationState *s,
-     update_iteration_initial_status(s);
- 
-     trace_migrate_transferred(transferred, time_spent,
--                              bandwidth, s->threshold_size);
-+                              /* Both in unit bytes/ms */
-+                              bandwidth, switchover_bw / 1000,
-+                              s->threshold_size);
- }
- 
- static bool migration_can_switchover(MigrationState *s)
-diff --git a/migration/options.c b/migration/options.c
-index 1d1e1321b0..da87652791 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -125,6 +125,8 @@ Property migration_properties[] = {
-                       parameters.cpu_throttle_tailslow, false),
-     DEFINE_PROP_SIZE("x-max-bandwidth", MigrationState,
-                       parameters.max_bandwidth, MAX_THROTTLE),
-+    DEFINE_PROP_SIZE("avail-switchover-bandwidth", MigrationState,
-+                      parameters.avail_switchover_bandwidth, 0),
-     DEFINE_PROP_UINT64("x-downtime-limit", MigrationState,
-                       parameters.downtime_limit,
-                       DEFAULT_MIGRATE_SET_DOWNTIME),
-@@ -780,6 +782,13 @@ uint64_t migrate_max_bandwidth(void)
-     return s->parameters.max_bandwidth;
- }
- 
-+uint64_t migrate_avail_switchover_bandwidth(void)
-+{
-+    MigrationState *s = migrate_get_current();
-+
-+    return s->parameters.avail_switchover_bandwidth;
-+}
-+
- uint64_t migrate_max_postcopy_bandwidth(void)
- {
-     MigrationState *s = migrate_get_current();
-@@ -917,6 +926,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-                                  s->parameters.tls_authz : "");
-     params->has_max_bandwidth = true;
-     params->max_bandwidth = s->parameters.max_bandwidth;
-+    params->has_avail_switchover_bandwidth = true;
-+    params->avail_switchover_bandwidth = s->parameters.avail_switchover_bandwidth;
-     params->has_downtime_limit = true;
-     params->downtime_limit = s->parameters.downtime_limit;
-     params->has_x_checkpoint_delay = true;
-@@ -1056,6 +1067,15 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
-         return false;
-     }
- 
-+    if (params->has_avail_switchover_bandwidth &&
-+        (params->avail_switchover_bandwidth > SIZE_MAX)) {
-+        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-+                   "avail_switchover_bandwidth",
-+                   "an integer in the range of 0 to "stringify(SIZE_MAX)
-+                   " bytes/second");
-+        return false;
-+    }
-+
-     if (params->has_downtime_limit &&
-         (params->downtime_limit > MAX_MIGRATE_DOWNTIME)) {
-         error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-@@ -1225,6 +1245,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-         dest->max_bandwidth = params->max_bandwidth;
-     }
- 
-+    if (params->has_avail_switchover_bandwidth) {
-+        dest->avail_switchover_bandwidth = params->avail_switchover_bandwidth;
-+    }
-+
-     if (params->has_downtime_limit) {
-         dest->downtime_limit = params->downtime_limit;
-     }
-@@ -1341,6 +1365,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-         }
-     }
- 
-+    if (params->has_avail_switchover_bandwidth) {
-+        s->parameters.avail_switchover_bandwidth = params->avail_switchover_bandwidth;
-+    }
-+
-     if (params->has_downtime_limit) {
-         s->parameters.downtime_limit = params->downtime_limit;
-     }
-diff --git a/migration/trace-events b/migration/trace-events
-index 002abe3a4e..2d266bf087 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -186,7 +186,7 @@ source_return_path_thread_shut(uint32_t val) "0x%x"
- source_return_path_thread_resume_ack(uint32_t v) "%"PRIu32
- source_return_path_thread_switchover_acked(void) ""
- migration_thread_low_pending(uint64_t pending) "%" PRIu64
--migrate_transferred(uint64_t transferred, uint64_t time_spent, uint64_t bandwidth, uint64_t size) "transferred %" PRIu64 " time_spent %" PRIu64 " bandwidth %" PRIu64 " max_size %" PRId64
-+migrate_transferred(uint64_t transferred, uint64_t time_spent, uint64_t bandwidth, uint64_t avail_bw, uint64_t size) "transferred %" PRIu64 " time_spent %" PRIu64 " bandwidth %" PRIu64 " switchover_bw %" PRIu64 " max_size %" PRId64
- process_incoming_migration_co_end(int ret, int ps) "ret=%d postcopy-state=%d"
- process_incoming_migration_co_postcopy_end_main(void) ""
- postcopy_preempt_enabled(bool value) "%d"
--- 
-2.41.0
-
+On 9/11/23 07:29, Cédric Le Goater wrote:
+> On 9/9/23 00:28, Ninad Palsule wrote:
+>> This is a part of patchset where IBM's Flexible Service Interface is
+>> introduced.
+>>
+>> The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
+>> POWER processors. This now makes an appearance in the ASPEED SoC due
+>> to tight integration of the FSI master IP with the OPB, mainly the
+>> existence of an MMIO-mapping of the CFAM address straight onto a
+>> sub-region of the OPB address space.
+>>
+>> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>> Reviewed-by: Joel Stanley <joel@jms.id.au>
+>> ---
+>> v2:
+>> - Incorporated review comment by Joel.
+>> ---
+>>   hw/fsi/Kconfig       |   4 +
+>>   hw/fsi/fsi-master.c  |   6 +-
+>>   hw/fsi/meson.build   |   1 +
+>>   hw/fsi/opb.c         | 194 +++++++++++++++++++++++++++++++++++++++++++
+>>   include/hw/fsi/opb.h |  43 ++++++++++
+>>   5 files changed, 244 insertions(+), 4 deletions(-)
+>>   create mode 100644 hw/fsi/opb.c
+>>   create mode 100644 include/hw/fsi/opb.h
+>>
+>> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+>> index 087980be22..560ce536db 100644
+>> --- a/hw/fsi/Kconfig
+>> +++ b/hw/fsi/Kconfig
+>> @@ -1,3 +1,7 @@
+>> +config OPB
+>> +    bool
+>> +    select CFAM
+>> +
+>>   config CFAM
+>>       bool
+>>       select FSI
+>> diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
+>> index fe1693539a..46103f84e9 100644
+>> --- a/hw/fsi/fsi-master.c
+>> +++ b/hw/fsi/fsi-master.c
+>> @@ -7,14 +7,12 @@
+>>     #include "qemu/osdep.h"
+>>   +#include "qemu/bitops.h"
+>>   #include "qapi/error.h"
+>> -
+>>   #include "qemu/log.h"
+>>   -#include "hw/fsi/bits.h"
+>>   #include "hw/fsi/fsi-master.h"
+>> -
+>> -#define TYPE_OP_BUS "opb"
+>> +#include "hw/fsi/opb.h"
+>>     #define TO_REG(x)                               ((x) >> 2)
+>
+>
+> These change do not belong to this patch.
+I fixed some of them but in this patch TYPE_OP_BUS is replaced by 
+correct header file.
+>
+>> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
+>> index ca80d11cb9..cab645f4ea 100644
+>> --- a/hw/fsi/meson.build
+>> +++ b/hw/fsi/meson.build
+>> @@ -2,3 +2,4 @@ system_ss.add(when: 'CONFIG_LBUS', if_true: 
+>> files('lbus.c'))
+>>   system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: 
+>> files('engine-scratchpad.c'))
+>>   system_ss.add(when: 'CONFIG_CFAM', if_true: files('cfam.c'))
+>>   system_ss.add(when: 'CONFIG_FSI', if_true: 
+>> files('fsi.c','fsi-master.c','fsi-slave.c'))
+>> +system_ss.add(when: 'CONFIG_OPB', if_true: files('opb.c'))
+>> diff --git a/hw/fsi/opb.c b/hw/fsi/opb.c
+>> new file mode 100644
+>> index 0000000000..ac7693c001
+>> --- /dev/null
+>> +++ b/hw/fsi/opb.c
+>> @@ -0,0 +1,194 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Copyright (C) 2023 IBM Corp.
+>> + *
+>> + * IBM On-chip Peripheral Bus
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +
+>> +#include "qapi/error.h"
+>> +#include "qemu/log.h"
+>> +
+>> +#include "hw/fsi/opb.h"
+>> +
+>> +static MemTxResult opb_read(OPBus *opb, hwaddr addr, void *data, 
+>> size_t len)
+>> +{
+>> +    return address_space_read(&opb->as, addr, 
+>> MEMTXATTRS_UNSPECIFIED, data,
+>> +                              len);
+>> +}
+>
+> This routine doesn't look very useful. Same for the write.
+Now I made them to qemu_log the error.
+>
+>> +
+>> +uint8_t opb_read8(OPBus *opb, hwaddr addr)
+>> +{
+>> +    MemTxResult tx;
+>> +    uint8_t data;
+>> +
+>> +    tx = opb_read(opb, addr, &data, sizeof(data));
+>> +    /* FIXME: improve error handling */
+>> +    assert(!tx);
+>
+> should output a qemu_log_mask(LOG_GUEST_ERROR) may be ? But I don't think
+> we should assert.
+I removed tx check from all other functions.
+>
+>> +
+>> +    return data;
+>> +}
+>> +
+>> +uint16_t opb_read16(OPBus *opb, hwaddr addr)
+>> +{
+>> +    MemTxResult tx;
+>> +    uint16_t data;
+>> +
+>> +    tx = opb_read(opb, addr, &data, sizeof(data));
+>> +    /* FIXME: improve error handling */
+>> +    assert(!tx);
+>
+> same
+Same as above.
+>
+>> +
+>> +    return data;
+>> +}
+>> +
+>> +uint32_t opb_read32(OPBus *opb, hwaddr addr)
+>> +{
+>> +    MemTxResult tx;
+>> +    uint32_t data;
+>> +
+>> +    tx = opb_read(opb, addr, &data, sizeof(data));
+>> +    /* FIXME: improve error handling */
+>> +    assert(!tx);
+>> +
+>> +    return data;
+>> +}
+>> +
+>> +static MemTxResult opb_write(OPBus *opb, hwaddr addr, void *data, 
+>> size_t len)
+>> +{
+>> +    return address_space_write(&opb->as, addr, 
+>> MEMTXATTRS_UNSPECIFIED, data,
+>> +                               len);
+>> +}
+>> +
+>> +void opb_write8(OPBus *opb, hwaddr addr, uint8_t data)
+>> +{
+>> +    MemTxResult tx;
+>> +
+>> +    tx = opb_write(opb, addr, &data, sizeof(data));
+>> +    /* FIXME: improve error handling */
+>> +    assert(!tx);
+>> +}
+>> +
+>> +void opb_write16(OPBus *opb, hwaddr addr, uint16_t data)
+>> +{
+>> +    MemTxResult tx;
+>> +
+>> +    tx = opb_write(opb, addr, &data, sizeof(data));
+>> +    /* FIXME: improve error handling */
+>> +    assert(!tx);
+>> +}
+>> +
+>> +void opb_write32(OPBus *opb, hwaddr addr, uint32_t data)
+>> +{
+>> +    MemTxResult tx;
+>> +
+>> +    tx = opb_write(opb, addr, &data, sizeof(data));
+>> +    /* FIXME: improve error handling */
+>> +    assert(!tx);
+>> +}
+>> +
+>> +void opb_fsi_master_address(OPBus *opb, hwaddr addr)
+>> +{
+>> +    memory_region_transaction_begin();
+>> +    memory_region_set_address(&opb->fsi.iomem, addr);
+>> +    memory_region_transaction_commit();
+>> +}
+>> +
+>> +void opb_opb2fsi_address(OPBus *opb, hwaddr addr)
+>> +{
+>> +    memory_region_transaction_begin();
+>> +    memory_region_set_address(&opb->fsi.opb2fsi, addr);
+>> +    memory_region_transaction_commit();
+>> +}
+>> +
+>> +static uint64_t opb_unimplemented_read(void *opaque, hwaddr addr, 
+>> unsigned size)
+>> +{
+>> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
+>> +                  __func__, addr, size);
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static void opb_unimplemented_write(void *opaque, hwaddr addr, 
+>> uint64_t data,
+>> +                                 unsigned size)
+>> +{
+>> +    qemu_log_mask(LOG_UNIMP, "%s: write @0x%" HWADDR_PRIx " size=%d "
+>> +                  "value=%"PRIx64"\n", __func__, addr, size, data);
+>> +}
+>> +
+>> +static const struct MemoryRegionOps opb_unimplemented_ops = {
+>> +    .read = opb_unimplemented_read,
+>> +    .write = opb_unimplemented_write,
+>> +    .endianness = DEVICE_BIG_ENDIAN,
+>> +};
+>> +
+>> +static void opb_realize(BusState *bus, Error **errp)
+>> +{
+>> +    OPBus *opb = OP_BUS(bus);
+>> +    Error *err = NULL;
+>> +
+>> +    memory_region_init_io(&opb->mr, OBJECT(opb), 
+>> &opb_unimplemented_ops, opb,
+>> +                          NULL, UINT32_MAX);
+>> +    address_space_init(&opb->as, &opb->mr, "opb");
+>> +
+>> +    object_property_set_bool(OBJECT(&opb->fsi), "realized", true, 
+>> &err);
+>> +    if (err) {
+>> +        error_propagate(errp, err);
+>> +        return;
+>> +    }
+>> +    memory_region_add_subregion(&opb->mr, 0x80000000, &opb->fsi.iomem);
+>> +
+>> +    /* OPB2FSI region */
+>> +    /*
+>> +     * Avoid endianness issues by mapping each slave's memory region 
+>> directly.
+>> +     * Manually bridging multiple address-spaces causes endian swapping
+>> +     * headaches as memory_region_dispatch_read() and
+>> +     * memory_region_dispatch_write() correct the endianness based 
+>> on the
+>> +     * target machine endianness and not relative to the device 
+>> endianness on
+>> +     * either side of the bridge.
+>> +     */
+>> +    /*
+>> +     * XXX: This is a bit hairy and will need to be fixed when I 
+>> sort out the
+>> +     * bus/slave relationship and any changes to the CFAM modelling 
+>> (multiple
+>> +     * slaves, LBUS)
+>> +     */
+>> +    memory_region_add_subregion(&opb->mr, 0xa0000000, 
+>> &opb->fsi.opb2fsi);
+>> +}
+>> +
+>> +static void opb_init(Object *o)
+>> +{
+>> +    OPBus *opb = OP_BUS(o);
+>> +
+>> +    object_initialize_child(o, "fsi-master", &opb->fsi, 
+>> TYPE_FSI_MASTER);
+>> +    qdev_set_parent_bus(DEVICE(&opb->fsi), BUS(o), &error_abort);
+>> +}
+>> +
+>> +static void opb_finalize(Object *o)
+>> +{
+>> +    OPBus *opb = OP_BUS(o);
+>> +
+>> +    address_space_destroy(&opb->as);
+>> +}
+>> +
+>> +static void opb_class_init(ObjectClass *klass, void *data)
+>> +{
+>> +    BusClass *bc = BUS_CLASS(klass);
+>> +    bc->realize = opb_realize;
+>> +}
+>> +
+>> +static const TypeInfo opb_info = {
+>> +    .name = TYPE_OP_BUS,
+>> +    .parent = TYPE_BUS,
+>> +    .instance_init = opb_init,
+>> +    .instance_finalize = opb_finalize,
+>> +    .instance_size = sizeof(OPBus),
+>> +    .class_init = opb_class_init,
+>> +    .class_size = sizeof(OPBusClass),
+>> +};
+>> +
+>> +static void opb_register_types(void)
+>> +{
+>> +    type_register_static(&opb_info);
+>> +}
+>> +
+>> +type_init(opb_register_types);
+>> diff --git a/include/hw/fsi/opb.h b/include/hw/fsi/opb.h
+>> new file mode 100644
+>> index 0000000000..f8ce00383e
+>> --- /dev/null
+>> +++ b/include/hw/fsi/opb.h
+>> @@ -0,0 +1,43 @@
+>> +/*
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + * Copyright (C) 2023 IBM Corp.
+>> + *
+>> + * IBM On-Chip Peripheral Bus
+>> + */
+>> +#ifndef FSI_OPB_H
+>> +#define FSI_OPB_H
+>> +
+>> +#include "exec/memory.h"
+>> +#include "hw/fsi/fsi-master.h"
+>> +
+>> +#define TYPE_OP_BUS "opb"
+>> +OBJECT_DECLARE_SIMPLE_TYPE(OPBus, OP_BUS)
+>> +
+>> +typedef struct OPBus {
+>> +        /*< private >*/
+>> +        BusState bus;
+>> +
+>> +        /*< public >*/
+>> +        MemoryRegion mr;
+>> +        AddressSpace as;
+>> +
+>> +        /* Model OPB as dumb enough just to provide an address-space */
+>> +        /* TODO: Maybe don't store device state in the bus? */
+>> +        FSIMasterState fsi;
+>> +} OPBus;
+>> +
+>> +typedef struct OPBusClass {
+>> +        BusClass parent_class;
+>> +} OPBusClass;
+>> +
+>> +uint8_t opb_read8(OPBus *opb, hwaddr addr);
+>> +uint16_t opb_read16(OPBus *opb, hwaddr addr);
+>> +uint32_t opb_read32(OPBus *opb, hwaddr addr);
+>> +void opb_write8(OPBus *opb, hwaddr addr, uint8_t data);
+>> +void opb_write16(OPBus *opb, hwaddr addr, uint16_t data);
+>> +void opb_write32(OPBus *opb, hwaddr addr, uint32_t data);
+>> +
+>> +void opb_fsi_master_address(OPBus *opb, hwaddr addr);
+>> +void opb_opb2fsi_address(OPBus *opb, hwaddr addr);
+>> +
+>> +#endif /* FSI_OPB_H */
+>
 
