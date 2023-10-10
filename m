@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808987BF76F
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 410D57BF754
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:31:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq93x-0000XP-LV; Tue, 10 Oct 2023 05:30:01 -0400
+	id 1qq94Q-0000di-4G; Tue, 10 Oct 2023 05:30:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq93v-0000Uk-E4
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:29:59 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq943-0000aR-W3
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:08 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq93s-0007n0-5e
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:29:59 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-9ae7383b7ecso1427151866b.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:29:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq941-0007wb-Lm
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:07 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53d9f001b35so425655a12.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:30:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696930194; x=1697534994; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696930202; x=1697535002; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NKemy3mrOQvsycwsAw7RG7OOitRzhA3E8db/8fyu+SQ=;
- b=dwBEbjyrSzUuv7XYSj8sFlC1jELSU4zOhRTpVet/BFhBoVa+rFMpP65WQ6ss03wneG
- gaVT4Bmpy8PcLADacQeGeV5M9dApeZbWNQrW919Sfo8SphzLAQql6wLEGALAGTS0MTsK
- 6CCVZQY1GDM2jOj/fr6nhYYP9bR/7SkROYJyg63udNn+7h/WW13KhFReYwsXAQDQj+9j
- mg8xcso0iIs8OpAtXfEo0jbe94s2O1sS/MPPi4XTwkW026M7V8c8eRJov2vpk8iRbCRf
- 7qzy4eFGzq4qAHcaLKe+08oGIQ0I8YfZCUA0E4cmGGN/I6XTWTrbRda17ozsPMKPKOih
- 5LZA==
+ bh=nwvgJq8V3A4EcSBga8/aE9oI0VJyJynq/QeqcrvxjMA=;
+ b=M/FBDsV3WEJI1A2p7uD+1WX1INrQn74vsji79O3GzNBLd5NxGjckQwL2nQW4LNdcK+
+ JhX/5mkw60VTHUphOuVX8EzKukuFoEXbFtLmajNwVqt9We1amZbgYTlK1ljtTrvbA3Rb
+ svxMHhw2VsaKbUOrQ2QRLKQVadpNk+7oVDD3i5zdEl+5ZMhE7qUrkRSKDQd3UOerHJQb
+ MqHErIuRuDmkoLc2MuJOVjrVi1lv4FiYc+Jqc3m0C7x0qUh51cAvOTV/4JyDi3ZGnnuX
+ 5KDmSfmU8UAjLPmXDqORq9t6cEpSumxiVkb3YfegWbwcblTWWvjfLQAJaymhj0XMmrxE
+ vt0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696930194; x=1697534994;
+ d=1e100.net; s=20230601; t=1696930202; x=1697535002;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NKemy3mrOQvsycwsAw7RG7OOitRzhA3E8db/8fyu+SQ=;
- b=UgatwHybt4e7jlhrQjnnydGpGzpKFzzgToh0Uab/kUPFJJECvzJvYujlxKVNrbFwWH
- fjq539nY0MdLxBp6QIguKA+7B8/GdBVdZFWoKyYqTd8B11ktJYHPjxkR+i94Z+0/ID6u
- MvbhEX2NIdS3coeVVk3r/uTVjKvRHu9JtQpecmIZIGNmg1ISLgFlfrcSojQqBYuJjM+Q
- ZeEw1WGhAFscx8Fv6bFIlX4n84iaFECcnI0VH41W+pjAy8Nw1gLWv+u6tUtNAM5yUR0x
- /+R7+59gGazGFcXsuzQZ5PR5FZmKYqUGO9WoHjAUVkSsYxghhWoNvY2+7n7Ggr5lr0X7
- 48fA==
-X-Gm-Message-State: AOJu0Yw59FUvmKmHnM15ns5owvxDb5IkgYJnYoE7+96WeYlpBBiac1ao
- 4HnBQ41+lZc4mD9gh6yGR1wZclSc0MfkhHHOUnamjQ==
-X-Google-Smtp-Source: AGHT+IHdC5S199QdKD6Nik1I9hUGjlx3hzLVZuJ2p21ckEXSQxgqfieIWjjvaNQyxMi7l+DRmFMW1g==
-X-Received: by 2002:a17:907:3da3:b0:9ae:614f:b159 with SMTP id
- he35-20020a1709073da300b009ae614fb159mr12111310ejc.36.1696930194440; 
- Tue, 10 Oct 2023 02:29:54 -0700 (PDT)
+ bh=nwvgJq8V3A4EcSBga8/aE9oI0VJyJynq/QeqcrvxjMA=;
+ b=Z5wssl2/iPtFcnEbIGfmIqykHWM9ZzAAHwwJU9RYI5jdbK99ZCFbK6gJoooWWVT1cB
+ X6bccO+uXwM8m9MqHGBdckFs08m/NEnxC7cw7wAqe2ZVcWJbb99Wmc56PxN6fqO3aZU4
+ y6Azid4kkxMrPCHs0na4T4PENSAnFZEWmqcT/ISELwHftNOc4gD/jWorrWyYKqCyWM9h
+ x0WBcqL3VgvyiptWYfKySVJFCm0M4rjy2P7RoKNhEKJpR4VTs7+kXPJCbvLFM4Hf6GOH
+ zMnORFonIKSuXSZ7T4vm8WOx3qXLgzcEUpJuXRB7rlT42F0L9Ou3p7Xp0Q41SEgz6keS
+ ZnOQ==
+X-Gm-Message-State: AOJu0Yw8qRPxHkeJUemG+BcNIbAhxrvDjhzrRxiWQOTe8/fUDDr7/sFZ
+ qi7WtRFcbWfhYz3tUHt2KzMO+fT/ikACh0MewhD0zQ==
+X-Google-Smtp-Source: AGHT+IH4/C4D6JfPun4dMXVKZAGAn9crmf37YYJDsdbEGK20EOz0gS74xCscGbGx9qvPr9SAuMR6ww==
+X-Received: by 2002:a17:907:7790:b0:9b9:facb:d950 with SMTP id
+ ky16-20020a170907779000b009b9facbd950mr9601202ejc.72.1696930202689; 
+ Tue, 10 Oct 2023 02:30:02 -0700 (PDT)
 Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
  [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- w13-20020a170906480d00b0098d2d219649sm8226101ejq.174.2023.10.10.02.29.50
+ v19-20020a1709064e9300b00988e953a586sm8108187eju.61.2023.10.10.02.29.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 02:29:53 -0700 (PDT)
+ Tue, 10 Oct 2023 02:30:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -87,17 +87,17 @@ Cc: David Hildenbrand <david@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-Subject: [PATCH 06/18] target/loongarch: Declare QOM definitions in 'cpu-qom.h'
-Date: Tue, 10 Oct 2023 11:28:48 +0200
-Message-ID: <20231010092901.99189-7-philmd@linaro.org>
+Subject: [PATCH 07/18] target/nios2: Declare QOM definitions in 'cpu-qom.h'
+Date: Tue, 10 Oct 2023 11:28:49 +0200
+Message-ID: <20231010092901.99189-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231010092901.99189-1-philmd@linaro.org>
 References: <20231010092901.99189-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -132,48 +132,42 @@ Extract QOM definitions from "cpu.h" to "cpu-qom.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/loongarch/cpu-qom.h | 38 ++++++++++++++++++++++++++++++++++++++
- target/loongarch/cpu.h     | 26 +-------------------------
- 2 files changed, 39 insertions(+), 25 deletions(-)
- create mode 100644 target/loongarch/cpu-qom.h
+ target/nios2/cpu-qom.h | 32 ++++++++++++++++++++++++++++++++
+ target/nios2/cpu.h     | 22 +---------------------
+ 2 files changed, 33 insertions(+), 21 deletions(-)
+ create mode 100644 target/nios2/cpu-qom.h
 
-diff --git a/target/loongarch/cpu-qom.h b/target/loongarch/cpu-qom.h
+diff --git a/target/nios2/cpu-qom.h b/target/nios2/cpu-qom.h
 new file mode 100644
-index 0000000000..d577af9f6e
+index 0000000000..0bcf2c724f
 --- /dev/null
-+++ b/target/loongarch/cpu-qom.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
++++ b/target/nios2/cpu-qom.h
+@@ -0,0 +1,32 @@
 +/*
-+ * QEMU LoongArch CPU QOM header (target agnostic)
++ * QEMU Nios II CPU QOM header (target agnostic)
 + *
-+ * Copyright (c) 2021 Loongson Technology Corporation Limited
++ * Copyright (c) 2012 Chris Wulff <crwulff@gmail.com>
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
 + */
 +
-+#ifndef LOONGARCH_CPU_QOM_H
-+#define LOONGARCH_CPU_QOM_H
++#ifndef QEMU_NIOS2_CPU_QOM_H
++#define QEMU_NIOS2_CPU_QOM_H
 +
 +#include "hw/core/cpu.h"
 +#include "qom/object.h"
 +
-+#define TYPE_LOONGARCH_CPU "loongarch-cpu"
-+#define TYPE_LOONGARCH32_CPU "loongarch32-cpu"
-+#define TYPE_LOONGARCH64_CPU "loongarch64-cpu"
++#define TYPE_NIOS2_CPU "nios2-cpu"
 +
-+OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
-+                        LOONGARCH_CPU)
-+
-+#define LOONGARCH_CPU_TYPE_SUFFIX "-" TYPE_LOONGARCH_CPU
-+#define LOONGARCH_CPU_TYPE_NAME(model) model LOONGARCH_CPU_TYPE_SUFFIX
++OBJECT_DECLARE_CPU_TYPE(Nios2CPU, Nios2CPUClass, NIOS2_CPU)
 +
 +/**
-+ * LoongArchCPUClass:
-+ * @parent_realize: The parent class' realize handler.
++ * Nios2CPUClass:
 + * @parent_phases: The parent class' reset phase handlers.
 + *
-+ * A LoongArch CPU model.
++ * A Nios2 CPU model.
 + */
-+struct LoongArchCPUClass {
++struct Nios2CPUClass {
 +    CPUClass parent_class;
 +
 +    DeviceRealize parent_realize;
@@ -181,37 +175,36 @@ index 0000000000..d577af9f6e
 +};
 +
 +#endif
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 40e70a8119..22cebc6280 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -17,6 +17,7 @@
- #include "exec/memory.h"
- #endif
- #include "cpu-csr.h"
+diff --git a/target/nios2/cpu.h b/target/nios2/cpu.h
+index 70b6377a4f..e19e12b2a6 100644
+--- a/target/nios2/cpu.h
++++ b/target/nios2/cpu.h
+@@ -21,35 +21,15 @@
+ #ifndef NIOS2_CPU_H
+ #define NIOS2_CPU_H
+ 
 +#include "cpu-qom.h"
+ #include "exec/cpu-defs.h"
+-#include "hw/core/cpu.h"
+ #include "hw/registerfields.h"
+-#include "qom/object.h"
  
- #define IOCSRF_TEMP             0
- #define IOCSRF_NODECNT          1
-@@ -383,29 +384,6 @@ struct ArchCPU {
-     const char *dtb_compatible;
- };
+ typedef struct CPUArchState CPUNios2State;
+ #if !defined(CONFIG_USER_ONLY)
+ #include "mmu.h"
+ #endif
  
--#define TYPE_LOONGARCH_CPU "loongarch-cpu"
--#define TYPE_LOONGARCH32_CPU "loongarch32-cpu"
--#define TYPE_LOONGARCH64_CPU "loongarch64-cpu"
+-#define TYPE_NIOS2_CPU "nios2-cpu"
 -
--OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
--                        LOONGARCH_CPU)
+-OBJECT_DECLARE_CPU_TYPE(Nios2CPU, Nios2CPUClass, NIOS2_CPU)
 -
 -/**
-- * LoongArchCPUClass:
-- * @parent_realize: The parent class' realize handler.
+- * Nios2CPUClass:
 - * @parent_phases: The parent class' reset phase handlers.
 - *
-- * A LoongArch CPU model.
+- * A Nios2 CPU model.
 - */
--struct LoongArchCPUClass {
+-struct Nios2CPUClass {
 -    /*< private >*/
 -    CPUClass parent_class;
 -    /*< public >*/
@@ -220,18 +213,9 @@ index 40e70a8119..22cebc6280 100644
 -    ResettablePhases parent_phases;
 -};
 -
- /*
-  * LoongArch CPUs has 4 privilege levels.
-  * 0 for kernel mode, 3 for user mode.
-@@ -482,8 +460,6 @@ void loongarch_cpu_list(void);
+ #define TARGET_HAS_ICE 1
  
- #include "exec/cpu-all.h"
- 
--#define LOONGARCH_CPU_TYPE_SUFFIX "-" TYPE_LOONGARCH_CPU
--#define LOONGARCH_CPU_TYPE_NAME(model) model LOONGARCH_CPU_TYPE_SUFFIX
- #define CPU_RESOLVING_TYPE TYPE_LOONGARCH_CPU
- 
- #endif /* LOONGARCH_CPU_H */
+ /* Configuration options for Nios II */
 -- 
 2.41.0
 
