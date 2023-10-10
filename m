@@ -2,85 +2,157 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8058E7BF237
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 07:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E05077BF287
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 07:57:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq5KC-0004XC-Gm; Tue, 10 Oct 2023 01:30:32 -0400
+	id 1qq5iW-0008K5-Uy; Tue, 10 Oct 2023 01:55:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qq5K0-0004WP-5n
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 01:30:27 -0400
-Received: from mgamail.intel.com ([192.55.52.43])
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1qq5iU-0008Jf-Eq
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 01:55:38 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qq5Jv-0006wY-QU
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 01:30:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1696915815; x=1728451815;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=6VJFbVvrQpAOu5bD0WuuWxMpxBE0tMfgXqFvuxiE6O0=;
- b=YMcwLqJEWSbeCvu4Fit8UmADwPrxix+lOX5o+xiVJCUUHNWbuFbdCpwc
- hlMNakj9+UwgEHnNHxuV4KHKQJe0yd40O0jyV6BUrXBkP5t4AcI7fnAvk
- CIuEQE6vsgfk6JlYxCktl6e4487JYRdNUMYZCKKQEoZSLADZLi8eXLYAf
- WnvkEKcdJgrLcteHGCE+OlPraYwKsp41eeers6SSTWY2uoIcSptxCdvSW
- Rc1l+fv+KQEepOXKOeORU2L6eMqv3GIFhFJQlgFAVbLKaSkoGdjVkb97x
- BFScrVcn42RX8eoueS21v5ecw5SIK1XU6OxRQ+EIWIrUMoLZc7BV1ZV7e Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="470575747"
-X-IronPort-AV: E=Sophos;i="6.03,211,1694761200"; d="scan'208";a="470575747"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2023 22:30:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="746943652"
-X-IronPort-AV: E=Sophos;i="6.03,211,1694761200"; d="scan'208";a="746943652"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.19.128])
- ([10.93.19.128])
- by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2023 22:30:01 -0700
-Message-ID: <7e8deb37-4521-090a-cc77-83ece4e3aa19@intel.com>
-Date: Tue, 10 Oct 2023 13:29:58 +0800
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1qq5iQ-0002nn-SL
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 01:55:37 -0400
+Received: from pps.filterd (m0127839.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
+ 39A3o2UN028591; Mon, 9 Oct 2023 22:55:32 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ content-type:message-id:date:subject:to:cc:references:from
+ :in-reply-to:mime-version; s=proofpoint20171006; bh=CqQRG5CX3SYS
+ MasUZLEfdF0KIoS8pVGaZ6X6NCOPRrs=; b=23AU3B2Lf0GOQ3YgR++9yF2BXXjd
+ fRZ6pvcIDFx/H6G/5HteXhZTg5x9NO0PsaTMxONzVYuPJdjPZMrTyovR6CJq++Zj
+ 0N/nneaFwaQXgCSIl2qqAqrwN6sNFAMXBQAMDJDjLBdCZJiXan187JmCZZYeRZWF
+ b9kSjDUkmh0uaO7Zs5KQha5OAU+qipD4LtD2eMMZCjCjS0PACuULCBN0ZJjORF8p
+ ygEeeKuimrHfK2mvzjMHtZMJbtR52YgDkkgS4/pxpIMoYltOMKeacVY6disoGYCG
+ Xh7sZKy7IgE+ZnC7bOBHIZoL4QBekI7J128qfTMUeOwkuLfDapbfLH6Q6A==
+Received: from nam11-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3tkhxt36dq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Oct 2023 22:55:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=L9yMzMnNH17ktkeGo58GNV09wkCM5lOolp1WgP+E8WWDndy//cC+0TLYGvnhQxeaVRpeOT908kMouGmYdktjMM4c63JikJBpIe/d0UNAvElnnMu3gD/lKD0B8n4Iwu8QPxQYE61rZcxr+yYfzK11UpocdRr4RS3qkvtbwaMZs05JKI7BLYb4ljRvEDS+QXbkodlh5g8efXKBri5mDGBPX6seC80kh86zC3C0a0iOck+qgPlVjcwcgUxxC7Uothx47TOE0ldZZXQZ5WsCAANMDEYgqx0k0h/YynmGjxafga+1DuCqW36vFAWODc8OzvGJmD4gU99meJZcTyy+xzkZ/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CqQRG5CX3SYSMasUZLEfdF0KIoS8pVGaZ6X6NCOPRrs=;
+ b=RT4sdQoTsoZvSqIe39q6/VH/xF/rKNQTt5zEn162NgRbawVY/jmKZ6n6BRAXbqgFsfXJhGlJ7nKxhoLbqWE/yf/np/duvOz/WBUxJMBvZwbddwjM/OecCkhEqFEoc1WdBWLybiQE4bCo9uZiMDgIU84/yTc2ReIshs6FxrO8SeGXFAKGmiNy9l9YcjkXjbaNyJ+UjJdKGL9mJIW9R8rTf9BCeRgGGg/b6Ph/7pKE9kRiDpXv20d7FlXb/R0BKpk8gRI+ePQ3mtnAa9zMalxP21pEEKHghqPUYGWg9Qky/Ga6Jo8KeJDKF1FQnqkA7cF424ceDWGPcA1LqSKSQ2j6CQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CqQRG5CX3SYSMasUZLEfdF0KIoS8pVGaZ6X6NCOPRrs=;
+ b=T4il1bJSu2a2uW8r+uUgiRqTxHkgp7cB339KSaQvZSdRfwzEKRUA0CZji4hgWh6SiN2Z037y0lX4Y1er9MhHSq7RjMAtD6dJQWVXMyrIO5g+ngM1p0YQfhzCNxUyKwuGaQzbHiUQ34Zd7ST2wWIRtNOxMCS2tGiHnqr2kI32NthMXVP4uRh2u4iykuiUBNBK1nJcQHXIvz1cvnuYQ8M+smOMk9BhE9JbzTbixLkgF13D8iYL8eqFfnXqxxk95sTUR3XQ3cS98hJt5XY9ZNhkXX6OBpiExk5jyWzcyusStP35qkMD13Q8ETglBUFbwrUjG6zLO2JMct+jD19u8jRrOg==
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
+ by CH2PR02MB6505.namprd02.prod.outlook.com (2603:10b6:610:34::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.38; Tue, 10 Oct
+ 2023 05:55:27 +0000
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::f13d:ea:118b:b4ae]) by SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::f13d:ea:118b:b4ae%4]) with mapi id 15.20.6863.032; Tue, 10 Oct 2023
+ 05:55:27 +0000
+Content-Type: multipart/alternative;
+ boundary="------------cT5C6lgA83XlvlY0BDDgfQtH"
+Message-ID: <5e59637a-d6ba-46e6-9c28-cc8c16c7fa16@nutanix.com>
+Date: Tue, 10 Oct 2023 11:25:25 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 00/10] migration: Modify 'migrate' and
+ 'migrate-incoming' QAPI commands for migration
+Content-Language: en-GB
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+References: <20231009143615.86825-1-het.gala@nutanix.com>
+ <87wmvvjymi.fsf@suse.de>
+From: Het Gala <het.gala@nutanix.com>
+In-Reply-To: <87wmvvjymi.fsf@suse.de>
+X-ClientProxiedBy: BYAPR06CA0023.namprd06.prod.outlook.com
+ (2603:10b6:a03:d4::36) To SJ2PR02MB9955.namprd02.prod.outlook.com
+ (2603:10b6:a03:55f::16)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 08/58] i386/tdx: Adjust the supported CPUID based on
- TDX restrictions
-Content-Language: en-US
-To: Tina Zhang <tina.zhang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Eduardo Habkost <eduardo@habkost.net>, Laszlo Ersek <lersek@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>, erdemaktas@google.com,
- Chenyi Qiang <chenyi.qiang@intel.com>
-References: <20230818095041.1973309-1-xiaoyao.li@intel.com>
- <20230818095041.1973309-9-xiaoyao.li@intel.com>
- <2175b694-c21f-464e-afee-b9ee9da154c1@intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <2175b694-c21f-464e-afee-b9ee9da154c1@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.43; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -56
-X-Spam_score: -5.7
-X-Spam_bar: -----
-X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|CH2PR02MB6505:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd972200-d13c-4d20-efc6-08dbc95580b0
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7TRYOHbPJhq/lPbNjU7M0o2/0JjquwSd5q1QQSwZCrhkAxBsVpASKLaZwEytYSzuuU9BXofNfN+inJi7KXaeW/PP1JGQKXzDIj05lL8JEwQca3vf5RkZCSeLFV0VPSIn2ZVxxnrXtK35/rB99Q25pwA6+6aAVzH38iZBZph6RJHR7BhcKqjmHXkjO48hiHV0/41X3kIb3uoMbQTXEYMuICjQyMI8EigwFOcvQiK6oza8oPZKkozGAX32OoxxK8Z/a8QWg6ie6d984S7FUWMnB+NqijSaC4K9DYtYjmlYkERvNFPR4mf/ir7zFfoFxuIeNAMnsxRB+BJx4bMQHrAup7VXxTwwOexiYBlUkIPZxlm1A86ppBAagwTVd5QHI7GR78gYDShREcwnDqMsppdTA94xzl9rk113PK8H47/HKLeINIfgrwRL7oe7dpKUzyc2KWmCzQqpHMnS+W8NHyirs652B93JP3GedquioLNPgppc4Zp7eEEDwlY+zgH1//SAVozehqN+EIo4MbICZENxVLK0LkO0+xm+frl1Vt1pR/wBa9iMK/L0R6yWdcX5OHMtLiWcgdh9POD13bgvidJdtsYixCLSv080d6nliOh/BGCKjJMSbdE+yUhAjHYVHN/CVqwQm5xLgmFYO67tJBntrA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(366004)(346002)(376002)(136003)(396003)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(31696002)(2906002)(86362001)(30864003)(6486002)(966005)(31686004)(478600001)(44832011)(5660300002)(166002)(83380400001)(26005)(4326008)(8936002)(8676002)(107886003)(2616005)(66476007)(66556008)(66946007)(38100700002)(6512007)(36756003)(6506007)(53546011)(316002)(33964004)(41300700001)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NlhaTFhNR0F6YWh2dXlHaHV5OGJBZjZMd1VqT2ZGdTkvdmxBY2JBSGhySm02?=
+ =?utf-8?B?b0N0T0MvYVFHeFoxL3hpa2JiUmdvbXRtYnRJbDdFNjYweUEwVXdEakgxZmRr?=
+ =?utf-8?B?V3dQanEyNXoreDh1c2tLb2RIUnhHbm1ob1hmZ0RwMDlMSHNhemZNNnladnRp?=
+ =?utf-8?B?WVlyZ3dCS2ZuaHJPSWsxOC9qWklnaTl3VjF3ZzZISHlRMXJXa2lQemp2TnB4?=
+ =?utf-8?B?T2lVMk9xZ1BqVEloV0RRMGtKYTYxSlRkdUQ0TllZMXdrOUVpSXlUUlJwRzJr?=
+ =?utf-8?B?MlhuR2doQWx5ZHNhSmpPNDk5dGhwSStKNGlqZUNsVnR5TVpmSElUL0MrSzZo?=
+ =?utf-8?B?R0plUHpXTnZnbGRxSkU2azlFdmNzdFI2cmhvZmdzK3RBVDBqNkJ1TVBWL0xW?=
+ =?utf-8?B?cVdEdTFJK3lsRHZWVGJDK2pCZ2dJbkNranFCd1lTM3FSTVFNZHFLUHdhRzFq?=
+ =?utf-8?B?bExZQ1oya25hVzdxZTJ3YXh2RjRhODBaYzlCTm1lcldDRzg3Ky9wVHRLNUJ2?=
+ =?utf-8?B?L2M3WjdjblIxaGMxM0crVzNvSlMvSXZuVnoyTmtjKyttOGpyMm5MTWIrNzlp?=
+ =?utf-8?B?UmtudzVWRTFaYlJMdVBpMThqOFJ5b0dlaW5ERkQzM1puamZ6TitrZmlzY0lT?=
+ =?utf-8?B?ZndiRUNzYWFSZWlDOFVyWUxIRHdQM0ZENm81b1BiVWVrMXY2V3Z5L2ttbVZK?=
+ =?utf-8?B?WjNNb3lhQzlxaGRNenBKYkh1c0dpQ29EQll0U3hwRW9nd0crekJzQk9EZEhC?=
+ =?utf-8?B?MWkzZlg4eVlmSkJqQXpLcXg0ZWpkYjhOVEFpV1EyRUZmSUkxWTJvaDE1VHZR?=
+ =?utf-8?B?MnllYkpZaHkvTVRmbWxxcmZDYTAxTldHV0NDWHc2NExOOTJHWkpGenc3TjBx?=
+ =?utf-8?B?U0tmdHpEcnNOWFJIZGlFOVZmWVJxcisrdStYamV3VllXUGRiZWR0MUZ1MFND?=
+ =?utf-8?B?TTlkVEJmVGlFeHpaZEluTlA0bzV4cGRab3p1ZFdZQWZJM0YrK3BZWU5pRUJy?=
+ =?utf-8?B?TXZqQzY1N1luZEFuZ09EUk9ib1IyRk5wVGxRNkpqN1VrdUxEMnFEOFBGVFpX?=
+ =?utf-8?B?OFl4VHdrWnM4bzZkakJiQWgzcXdOU3ZqMnc2ekoxR3hUN096d1JVdXhHa2NG?=
+ =?utf-8?B?QXFFV0hTYVZqYmV4SXdaemh2MzEzYldzZTcyT1Z6TXdOSHpiQXJSLy9xZFNj?=
+ =?utf-8?B?YWpmYnNUdkxwdXBXMWVBWWJSZDhhVkpXdjA5ajZBaThaUjRxbjZHaGVnSlNv?=
+ =?utf-8?B?Y3ZSeWg1bUZMMmZseWxlWEt4ZHdINDRoZnhTdWpsOTBEeTAyT1dnZHo1Y3VQ?=
+ =?utf-8?B?bW1DUkpjNGpIRWJ0OStnSkxVOVFOTUx4UUV3dEt0cmswOTFSM0tvVVFTTXE1?=
+ =?utf-8?B?bkZRL0lZd0JYSW9oYlpMR1RpRkxXT3kvKzJ0VElnL0JkZ2FxZ2hGWnRVcmU1?=
+ =?utf-8?B?UlZEcnZkdXFoMFJ6eWtlTUhtV0lFaCtsN0JqY3p5cmJYTnZBQ2E3bFJ3TFJG?=
+ =?utf-8?B?aENnWFVvSmcwQlU0Mmdta1loazJYZXlxUm01N2JMdmJvWEoxRkIvWTdxVFBS?=
+ =?utf-8?B?bDdLSWFnTW1rL1RoZTdsMkgwajMrQ2tHa1RRY1FISU9pNUdMZnVXL1FwOTVr?=
+ =?utf-8?B?UTRCR1lQYnBUTnVRTUFDMUVPUnBVc3JhMDEwTTRBNFBXZ0NhUFhKYXA2cHRK?=
+ =?utf-8?B?ZXlKVGJMK1NYSE1BdHBXODhIRk5VS2ZPb0tPeE9CZlIzVnNOa2tuejZ2N3JR?=
+ =?utf-8?B?Z0ErWHU3VFlZRHZJUC9vbWVxVVRia1BSdDZJR1ptY2tzZVorL1M2ZzBlVjNI?=
+ =?utf-8?B?VGk1Zk1sejFlVE9GQmdRNFlobTJISXlMUXNTQjl3MWVjd0RMTS9QdW9ZQk14?=
+ =?utf-8?B?TThTc1JpOVhaUjdrMCtCY0J2UDUxVS9Yb2liNGhIb0ZtSHFCQ1MvMzB6VG54?=
+ =?utf-8?B?VkZBZ0s3Qkljd25LazBrY2VaV1pnbHhVRWlVV2pjdzdZUHRhU01PNVJzaVB2?=
+ =?utf-8?B?N2Y0T2JtTmVHNDBmSndUYTJPbWJKNlA2U1Z1d0NLK3JTcnA0dStOUkM0dk9i?=
+ =?utf-8?B?NTUvdHdCalpZOThVU2dCRytLK1pyV21aQ0MwSFBMSmNrQ1NqUjVTMTRuSEFV?=
+ =?utf-8?Q?eVybCd+24+PT6Z3HiSIOkOYta?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd972200-d13c-4d20-efc6-08dbc95580b0
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2023 05:55:27.7045 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: szx9ldTSE/BINAPLh8h5Vg5ZBepNRpwYi4b549Syb/7cVrWuBaN5n50fLLHhBCYUv+MYUGGS7JEAemtC8hB+Gg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6505
+X-Proofpoint-GUID: YVvzQIb2OcTGdJb7SL-3-rQAqCaWt8yH
+X-Proofpoint-ORIG-GUID: YVvzQIb2OcTGdJb7SL-3-rQAqCaWt8yH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-10_04,2023-10-09_01,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
+ helo=mx0a-002c1b01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,264 +169,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/2023 9:02 AM, Tina Zhang wrote:
-> Hi,
-> 
-> On 8/18/23 17:49, Xiaoyao Li wrote:
->> According to Chapter "CPUID Virtualization" in TDX module spec, CPUID
->> bits of TD can be classified into 6 types:
->>
->> ------------------------------------------------------------------------
->> 1 | As configured | configurable by VMM, independent of native value;
->> ------------------------------------------------------------------------
->> 2 | As configured | configurable by VMM if the bit is supported natively
->>      (if native)   | Otherwise it equals as native(0).
->> ------------------------------------------------------------------------
->> 3 | Fixed         | fixed to 0/1
->> ------------------------------------------------------------------------
->> 4 | Native        | reflect the native value
->> ------------------------------------------------------------------------
->> 5 | Calculated    | calculated by TDX module.
->> ------------------------------------------------------------------------
->> 6 | Inducing #VE  | get #VE exception
->> ------------------------------------------------------------------------
->>
->> Note:
->> 1. All the configurable XFAM related features and TD attributes related
->>     features fall into type #2. And fixed0/1 bits of XFAM and TD
->>     attributes fall into type #3.
->>
->> 2. For CPUID leaves not listed in "CPUID virtualization Overview" table
->>     in TDX module spec, TDX module injects #VE to TDs when those are
->>     queried. For this case, TDs can request CPUID emulation from VMM via
->>     TDVMCALL and the values are fully controlled by VMM.
->>
->> Due to TDX module has its own virtualization policy on CPUID bits, it 
->> leads
->> to what reported via KVM_GET_SUPPORTED_CPUID diverges from the supported
->> CPUID bits for TDs. In order to keep a consistent CPUID configuration
->> between VMM and TDs. Adjust supported CPUID for TDs based on TDX
->> restrictions.
->>
->> Currently only focus on the CPUID leaves recognized by QEMU's
->> feature_word_info[] that are indexed by a FeatureWord.
->>
->> Introduce a TDX CPUID lookup table, which maintains 1 entry for each
->> FeatureWord. Each entry has below fields:
->>
->>   - tdx_fixed0/1: The bits that are fixed as 0/1;
->>
->>   - vmm_fixup:   The bits that are configurable from the view of TDX 
->> module.
->>                  But they requires emulation of VMM when they are 
->> configured
->>             as enabled. For those, they are not supported if VMM doesn't
->>         report them as supported. So they need be fixed up by
->>         checking if VMM supports them.
->>
->>   - inducing_ve: TD gets #VE when querying this CPUID leaf. The result is
->>                  totally configurable by VMM.
->>
->>   - supported_on_ve: It's valid only when @inducing_ve is true. It 
->> represents
->>             the maximum feature set supported that be emulated
->>             for TDs.
->>
->> By applying TDX CPUID lookup table and TDX capabilities reported from
->> TDX module, the supported CPUID for TDs can be obtained from following
->> steps:
->>
->> - get the base of VMM supported feature set;
->>
->> - if the leaf is not a FeatureWord just return VMM's value without
->>    modification;
->>
->> - if the leaf is an inducing_ve type, applying supported_on_ve mask and
->>    return;
->>
->> - include all native bits, it covers type #2, #4, and parts of type #1.
->>    (it also includes some unsupported bits. The following step will
->>     correct it.)
->>
->> - apply fixed0/1 to it (it covers #3, and rectifies the previous step);
->>
->> - add configurable bits (it covers the other part of type #1);
->>
->> - fix the ones in vmm_fixup;
->>
->> - filter the one has valid .supported field;
->>
->> (Calculated type is ignored since it's determined at runtime).
->>
->> Co-developed-by: Chenyi Qiang <chenyi.qiang@intel.com>
->> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> ---
->>   target/i386/cpu.h     |  16 +++
->>   target/i386/kvm/kvm.c |   4 +
->>   target/i386/kvm/tdx.c | 254 ++++++++++++++++++++++++++++++++++++++++++
->>   target/i386/kvm/tdx.h |   2 +
->>   4 files changed, 276 insertions(+)
->>
->> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
->> index e0771a10433b..c93dcd274531 100644
->> --- a/target/i386/cpu.h
->> +++ b/target/i386/cpu.h
->> @@ -780,6 +780,8 @@ uint64_t 
->> x86_cpu_get_supported_feature_word(FeatureWord w,
->>   /* Support RDFSBASE/RDGSBASE/WRFSBASE/WRGSBASE */
->>   #define CPUID_7_0_EBX_FSGSBASE          (1U << 0)
->> +/* Support for TSC adjustment MSR 0x3B */
->> +#define CPUID_7_0_EBX_TSC_ADJUST        (1U << 1)
->>   /* Support SGX */
->>   #define CPUID_7_0_EBX_SGX               (1U << 2)
->>   /* 1st Group of Advanced Bit Manipulation Extensions */
->> @@ -798,8 +800,12 @@ uint64_t 
->> x86_cpu_get_supported_feature_word(FeatureWord w,
->>   #define CPUID_7_0_EBX_INVPCID           (1U << 10)
->>   /* Restricted Transactional Memory */
->>   #define CPUID_7_0_EBX_RTM               (1U << 11)
->> +/* Cache QoS Monitoring */
->> +#define CPUID_7_0_EBX_PQM               (1U << 12)
->>   /* Memory Protection Extension */
->>   #define CPUID_7_0_EBX_MPX               (1U << 14)
->> +/* Resource Director Technology Allocation */
->> +#define CPUID_7_0_EBX_RDT_A             (1U << 15)
->>   /* AVX-512 Foundation */
->>   #define CPUID_7_0_EBX_AVX512F           (1U << 16)
->>   /* AVX-512 Doubleword & Quadword Instruction */
->> @@ -855,10 +861,16 @@ uint64_t 
->> x86_cpu_get_supported_feature_word(FeatureWord w,
->>   #define CPUID_7_0_ECX_AVX512VNNI        (1U << 11)
->>   /* Support for VPOPCNT[B,W] and VPSHUFBITQMB */
->>   #define CPUID_7_0_ECX_AVX512BITALG      (1U << 12)
->> +/* Intel Total Memory Encryption */
->> +#define CPUID_7_0_ECX_TME               (1U << 13)
->>   /* POPCNT for vectors of DW/QW */
->>   #define CPUID_7_0_ECX_AVX512_VPOPCNTDQ  (1U << 14)
->> +/* Placeholder for bit 15 */
->> +#define CPUID_7_0_ECX_FZM               (1U << 15)
->>   /* 5-level Page Tables */
->>   #define CPUID_7_0_ECX_LA57              (1U << 16)
->> +/* MAWAU for MPX */
->> +#define CPUID_7_0_ECX_MAWAU             (31U << 17)
->>   /* Read Processor ID */
->>   #define CPUID_7_0_ECX_RDPID             (1U << 22)
->>   /* Bus Lock Debug Exception */
->> @@ -869,6 +881,8 @@ uint64_t 
->> x86_cpu_get_supported_feature_word(FeatureWord w,
->>   #define CPUID_7_0_ECX_MOVDIRI           (1U << 27)
->>   /* Move 64 Bytes as Direct Store Instruction */
->>   #define CPUID_7_0_ECX_MOVDIR64B         (1U << 28)
->> +/* ENQCMD and ENQCMDS instructions */
->> +#define CPUID_7_0_ECX_ENQCMD            (1U << 29)
->>   /* Support SGX Launch Control */
->>   #define CPUID_7_0_ECX_SGX_LC            (1U << 30)
->>   /* Protection Keys for Supervisor-mode Pages */
->> @@ -886,6 +900,8 @@ uint64_t 
->> x86_cpu_get_supported_feature_word(FeatureWord w,
->>   #define CPUID_7_0_EDX_SERIALIZE         (1U << 14)
->>   /* TSX Suspend Load Address Tracking instruction */
->>   #define CPUID_7_0_EDX_TSX_LDTRK         (1U << 16)
->> +/* PCONFIG instruction */
->> +#define CPUID_7_0_EDX_PCONFIG           (1U << 18)
->>   /* Architectural LBRs */
->>   #define CPUID_7_0_EDX_ARCH_LBR          (1U << 19)
->>   /* AMX_BF16 instruction */
->> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
->> index ec5c07bffd38..46a455a1e331 100644
->> --- a/target/i386/kvm/kvm.c
->> +++ b/target/i386/kvm/kvm.c
->> @@ -539,6 +539,10 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState 
->> *s, uint32_t function,
->>           ret |= 1U << KVM_HINTS_REALTIME;
->>       }
->> +    if (is_tdx_vm()) {
->> +        tdx_get_supported_cpuid(function, index, reg, &ret);
->> +    }
->> +
->>       return ret;
->>   }
->> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
->> index 56cb826f6125..3198bc9fd5fb 100644
->> --- a/target/i386/kvm/tdx.c
->> +++ b/target/i386/kvm/tdx.c
->> @@ -15,11 +15,129 @@
->>   #include "qemu/error-report.h"
->>   #include "qapi/error.h"
->>   #include "qom/object_interfaces.h"
->> +#include "standard-headers/asm-x86/kvm_para.h"
->>   #include "sysemu/kvm.h"
->> +#include "sysemu/sysemu.h"
->>   #include "hw/i386/x86.h"
->>   #include "kvm_i386.h"
->>   #include "tdx.h"
->> +#include "../cpu-internal.h"
->> +
->> +#define TDX_SUPPORTED_KVM_FEATURES  ((1U << KVM_FEATURE_NOP_IO_DELAY) 
->> | \
->> +                                     (1U << KVM_FEATURE_PV_UNHALT) | \
->> +                                     (1U << KVM_FEATURE_PV_TLB_FLUSH) 
->> | \
->> +                                     (1U << KVM_FEATURE_PV_SEND_IPI) | \
->> +                                     (1U << KVM_FEATURE_POLL_CONTROL) 
->> | \
->> +                                     (1U << 
->> KVM_FEATURE_PV_SCHED_YIELD) | \
->> +                                     (1U << 
->> KVM_FEATURE_MSI_EXT_DEST_ID))
->> +
->> +typedef struct KvmTdxCpuidLookup {
->> +    uint32_t tdx_fixed0;
->> +    uint32_t tdx_fixed1;
->> +
->> +    /*
->> +     * The CPUID bits that are configurable from the view of TDX module
->> +     * but require VMM emulation if configured to enabled by VMM.
->> +     *
->> +     * For those bits, they cannot be enabled actually if VMM 
->> (KVM/QEMU) cannot
->> +     * virtualize them.
->> +     */
->> +    uint32_t vmm_fixup;
->> +
->> +    bool inducing_ve;
->> +    /*
->> +     * The maximum supported feature set for given inducing-#VE leaf.
->> +     * It's valid only when .inducing_ve is true.
->> +     */
->> +    uint32_t supported_on_ve;
->> +} KvmTdxCpuidLookup;
->> +
->> + /*
->> +  * QEMU maintained TDX CPUID lookup tables, which reflects how 
->> CPUIDs are
->> +  * virtualized for guest TDs based on "CPUID virtualization" of TDX 
->> spec.
->> +  *
->> +  * Note:
->> +  *
->> +  * This table will be updated runtime by tdx_caps reported by platform.
->> +  *
->> +  */
->> +static KvmTdxCpuidLookup tdx_cpuid_lookup[FEATURE_WORDS] = {
->> +    [FEAT_1_EDX] = {
->> +        .tdx_fixed0 =
->> +            BIT(10) /* Reserved */ | BIT(20) /* Reserved */ | 
->> CPUID_IA64,
->> +        .tdx_fixed1 =
->> +            CPUID_MSR | CPUID_PAE | CPUID_MCE | CPUID_APIC |
->> +            CPUID_MTRR | CPUID_MCA | CPUID_CLFLUSH | CPUID_DTS,
->> +        .vmm_fixup =
->> +            CPUID_ACPI | CPUID_PBE,
-> CPUID_HT might also be needed here, as it's disabled by QEMU when TD 
-> guest only has a single processor core.
+--------------cT5C6lgA83XlvlY0BDDgfQtH
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Add CPUID_HT here seems not correct fix. The root cause is that CPUID_HT 
-is wrongly treated as auto_enabled bit, I will sent a fix separately.
 
-> Regards,
-> -Tina
-> 
+On 10/10/2023 2:34 AM, Fabiano Rosas wrote:
+> Het Gala<het.gala@nutanix.com>  writes:
+>
+>> This is v12 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
+>> for upstream review.
+>>
+>> Would like to thank all the maintainers that actively participated in the v11
+>> patchset discussion and gave insightful suggestions to improve the patches.
+>>
+>> Link to previous upstream community patchset links:
+>> v1:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=OXhp-cq93AZ1ZRIwKL5wXhx5-8ei7RfBdmmbU9KNDfg&e=  
+>> v2:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=r7SYaB2fxLcEP2DiHslsbEyaY7ZPrXxageSBRtRZ7TA&e=  
+>> v3:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=fnGhJw56ypUavnslnUL6JeK4OLi7xwh7TGsafaSSZvw&e=  
+>> v4:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=SA4q18GEE4q3Eh7sy5nhQ8OZO5KM8kfapiBkSPZYDxE&e=  
+>> v5:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=QRW_aAGHmTBajBnu1a4jcxQFZ1lf1N3RCyLgOt82Ji4&e=  
+>> v6:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=7Dmgm47UdQ0h0Y9-XffsUW_ZdeQ-eCCVzhUkigTMKbc&e=  
+>> v7:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=8a3tAfIJ-6st1tlYkbjsRWEv-JvEFxokXzanf0WCqzw&e=  
+>> v8:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=4q_F05ZPdhWsPJ0fa850gHS90AsVX7MbsaIHi-3OsMI&e=  
+>> v9:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=1wNhJSfSvAoadG06F2JKFHZ2mA4QWSgqvYpt1zRX9qw&e=  
+>> v10:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=guEm3FuFn7jutT4ZB4RlgwttD4IMSBJy1MNh2zp3tYY&e=  
+>> v11:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D10_msg00740.html&d=DwIFaQ&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&s=W7rbQhebtuWtT2ydMuG21OOkbqlh9KxMi1ZM5yZP6Ig&e=  
+>>
+>> v11 -> v12 changelog:
+>> -------------------
+>> - Resolved double-freeing when using g_autoptr in structures that are
+>>    nested into another.
+>> - Overwriting of pointers to an existing allocated memory is solved at
+>>    various places.
+>> - Use of g_autoptr caused make check errors in non-error path while going
+>>    out of scope inside function. Added g_steal_pointer() in the non-error
+>>    paths wherever required.
+> Please run make check before sending:
+> ▶ 242/355 qcow2 181  FAIL
+>
+> You can also push your code to your gitlab and run a pipeline with the
+> branch.
 
+I tested on my setup, and it passed all the checks.
+
+[root@06f1b38a5d6a build]# make check
+/rpmbuild/SOURCES/qemu/build/pyvenv/bin/meson test  --no-rebuild -t 0  
+--num-processes 1 --print-errorlogs
+   1/348 qemu:qtest+qtest-x86_64 / 
+qtest-x86_64/qom-test                        OK 14.00s   8 subtests passed
+   2/348 qemu:qtest+qtest-x86_64 / 
+qtest-x86_64/migration-test                  OK 82.28s   13 subtests passed
+   3/348 qemu:qtest+qtest-x86_64 / 
+qtest-x86_64/bios-tables-test                OK 79.38s   51 subtests passed
+   4/348 qemu:qtest+qtest-x86_64 / 
+qtest-x86_64/test-hmp                        OK 5.67s   9 subtests passed
+   5/348 qemu:qtest+qtest-x86_64 / 
+qtest-x86_64/ahci-test                       OK 21.16s   74 subtests passed
+   6/348 qemu:qtest+qtest-x86_64 / 
+qtest-x86_64/qos-test                        OK 34.48s   119 subtests passed
+   7/348 qemu:unit / check-block-qdict OK              0.01s   10 
+subtests passed
+   8/348 qemu:unit / check-qdict OK              0.01s   15 subtests passed
+   9/348 qemu:unit / check-qnum OK              0.01s   8 subtests passed
+  10/348 qemu:unit / check-qstring OK              0.01s   4 subtests passed
+  11/348 qemu:unit / check-qlist OK              0.01s   4 subtests passed
+[...]
+340/348 qemu:softfloat+softfloat-compare / 
+fp-test-lt_quiet                    OK              0.10s
+341/348 qemu:softfloat+softfloat-ops / 
+fp-test-add                             OK              1.61s
+342/348 qemu:softfloat+softfloat-ops / 
+fp-test-sub                             OK              1.55s
+343/348 qemu:softfloat+softfloat-ops / 
+fp-test-mul                             OK              7.81s
+344/348 qemu:softfloat+softfloat-ops / 
+fp-test-div                             OK              6.84s
+345/348 qemu:softfloat+softfloat-ops / 
+fp-test-rem                             OK              4.24s
+346/348 qemu:softfloat+softfloat-ops / 
+fp-test-sqrt                            OK              0.10s
+347/348 qemu:softfloat+softfloat-ops / 
+fp-test-log2                            OK              0.25s
+348/348 qemu:qapi-schema+qapi-frontend / QAPI schema regression 
+tests          OK              0.20s
+
+Ok:                 339
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            9
+Timeout:            0
+
+I am not sure if something is different in the configuration. I have 
+never run a pipeline on gitlab though.  Can you point me out to the 
+documentation of gitlab once again
+
+Regards,
+Het Gala
+--------------cT5C6lgA83XlvlY0BDDgfQtH
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 10/10/2023 2:34 AM, Fabiano Rosas
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:87wmvvjymi.fsf@suse.de">
+      <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">This is v12 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
+for upstream review.
+
+Would like to thank all the maintainers that actively participated in the v11
+patchset discussion and gave insightful suggestions to improve the patches.
+
+Link to previous upstream community patchset links:
+v1: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=OXhp-cq93AZ1ZRIwKL5wXhx5-8ei7RfBdmmbU9KNDfg&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=OXhp-cq93AZ1ZRIwKL5wXhx5-8ei7RfBdmmbU9KNDfg&amp;e=</a> 
+v2: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=r7SYaB2fxLcEP2DiHslsbEyaY7ZPrXxageSBRtRZ7TA&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=r7SYaB2fxLcEP2DiHslsbEyaY7ZPrXxageSBRtRZ7TA&amp;e=</a> 
+v3: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=fnGhJw56ypUavnslnUL6JeK4OLi7xwh7TGsafaSSZvw&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=fnGhJw56ypUavnslnUL6JeK4OLi7xwh7TGsafaSSZvw&amp;e=</a> 
+v4: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=SA4q18GEE4q3Eh7sy5nhQ8OZO5KM8kfapiBkSPZYDxE&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=SA4q18GEE4q3Eh7sy5nhQ8OZO5KM8kfapiBkSPZYDxE&amp;e=</a> 
+v5: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=QRW_aAGHmTBajBnu1a4jcxQFZ1lf1N3RCyLgOt82Ji4&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=QRW_aAGHmTBajBnu1a4jcxQFZ1lf1N3RCyLgOt82Ji4&amp;e=</a> 
+v6: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=7Dmgm47UdQ0h0Y9-XffsUW_ZdeQ-eCCVzhUkigTMKbc&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=7Dmgm47UdQ0h0Y9-XffsUW_ZdeQ-eCCVzhUkigTMKbc&amp;e=</a> 
+v7: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=8a3tAfIJ-6st1tlYkbjsRWEv-JvEFxokXzanf0WCqzw&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=8a3tAfIJ-6st1tlYkbjsRWEv-JvEFxokXzanf0WCqzw&amp;e=</a> 
+v8: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=4q_F05ZPdhWsPJ0fa850gHS90AsVX7MbsaIHi-3OsMI&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=4q_F05ZPdhWsPJ0fa850gHS90AsVX7MbsaIHi-3OsMI&amp;e=</a> 
+v9: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=1wNhJSfSvAoadG06F2JKFHZ2mA4QWSgqvYpt1zRX9qw&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=1wNhJSfSvAoadG06F2JKFHZ2mA4QWSgqvYpt1zRX9qw&amp;e=</a> 
+v10: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=guEm3FuFn7jutT4ZB4RlgwttD4IMSBJy1MNh2zp3tYY&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=guEm3FuFn7jutT4ZB4RlgwttD4IMSBJy1MNh2zp3tYY&amp;e=</a> 
+v11: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D10_msg00740.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=W7rbQhebtuWtT2ydMuG21OOkbqlh9KxMi1ZM5yZP6Ig&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D10_msg00740.html&amp;d=DwIFaQ&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=s4FkORPOMqBTxCrkaYO6frUTsbcGM6c3K4FCdGaNAKeCIZ2GS9VaQxJGytQv0mGv&amp;s=W7rbQhebtuWtT2ydMuG21OOkbqlh9KxMi1ZM5yZP6Ig&amp;e=</a> 
+
+v11 -&gt; v12 changelog:
+-------------------
+- Resolved double-freeing when using g_autoptr in structures that are
+  nested into another.
+- Overwriting of pointers to an existing allocated memory is solved at
+  various places.
+- Use of g_autoptr caused make check errors in non-error path while going
+  out of scope inside function. Added g_steal_pointer() in the non-error
+  paths wherever required.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Please run make check before sending:
+▶ 242/355 qcow2 181  FAIL
+
+You can also push your code to your gitlab and run a pipeline with the
+branch.</pre>
+    </blockquote>
+    <p>I tested on my setup, and it passed all the checks.</p>
+    <p>[root@06f1b38a5d6a build]# make check<br>
+      /rpmbuild/SOURCES/qemu/build/pyvenv/bin/meson test&nbsp; --no-rebuild
+      -t 0&nbsp; --num-processes 1 --print-errorlogs<br>
+      &nbsp; 1/348 qemu:qtest+qtest-x86_64 /
+      qtest-x86_64/qom-test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      14.00s&nbsp;&nbsp; 8 subtests passed<br>
+      &nbsp; 2/348 qemu:qtest+qtest-x86_64 /
+      qtest-x86_64/migration-test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      82.28s&nbsp;&nbsp; 13 subtests passed<br>
+      &nbsp; 3/348 qemu:qtest+qtest-x86_64 /
+      qtest-x86_64/bios-tables-test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      79.38s&nbsp;&nbsp; 51 subtests passed<br>
+      &nbsp; 4/348 qemu:qtest+qtest-x86_64 /
+      qtest-x86_64/test-hmp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      5.67s&nbsp;&nbsp; 9 subtests passed<br>
+      &nbsp; 5/348 qemu:qtest+qtest-x86_64 /
+      qtest-x86_64/ahci-test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      21.16s&nbsp;&nbsp; 74 subtests passed<br>
+      &nbsp; 6/348 qemu:qtest+qtest-x86_64 /
+      qtest-x86_64/qos-test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      34.48s&nbsp;&nbsp; 119 subtests passed<br>
+      &nbsp; 7/348 qemu:unit /
+      check-block-qdict&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.01s&nbsp;&nbsp; 10 subtests passed<br>
+      &nbsp; 8/348 qemu:unit /
+      check-qdict&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.01s&nbsp;&nbsp; 15 subtests passed<br>
+      &nbsp; 9/348 qemu:unit /
+      check-qnum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.01s&nbsp;&nbsp; 8 subtests passed<br>
+      &nbsp;10/348 qemu:unit /
+      check-qstring&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.01s&nbsp;&nbsp; 4 subtests passed<br>
+      &nbsp;11/348 qemu:unit /
+      check-qlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.01s&nbsp;&nbsp; 4 subtests passed<br>
+      [...]<br>
+      340/348 qemu:softfloat+softfloat-compare /
+      fp-test-lt_quiet&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.10s<br>
+      341/348 qemu:softfloat+softfloat-ops /
+      fp-test-add&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.61s<br>
+      342/348 qemu:softfloat+softfloat-ops /
+      fp-test-sub&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.55s<br>
+      343/348 qemu:softfloat+softfloat-ops /
+      fp-test-mul&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7.81s<br>
+      344/348 qemu:softfloat+softfloat-ops /
+      fp-test-div&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.84s<br>
+      345/348 qemu:softfloat+softfloat-ops /
+      fp-test-rem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.24s<br>
+      346/348 qemu:softfloat+softfloat-ops /
+      fp-test-sqrt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.10s<br>
+      347/348 qemu:softfloat+softfloat-ops /
+      fp-test-log2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.25s<br>
+      348/348 qemu:qapi-schema+qapi-frontend / QAPI schema regression
+      tests&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.20s<br>
+      <br>
+      Ok:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 339<br>
+      Expected Fail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0<br>
+      Fail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0<br>
+      Unexpected Pass:&nbsp;&nbsp;&nbsp; 0<br>
+      Skipped:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9<br>
+      Timeout:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0<br>
+    </p>
+    <p>I am not sure if something is different in the configuration. I
+      have never run a pipeline on gitlab though.&nbsp; Can you point me out
+      to the documentation of gitlab once again</p>
+    <span style="white-space: pre-wrap">Regards,</span><br>
+    <span style="white-space: pre-wrap">Het Gala
+</span>
+  </body>
+</html>
+
+--------------cT5C6lgA83XlvlY0BDDgfQtH--
 
