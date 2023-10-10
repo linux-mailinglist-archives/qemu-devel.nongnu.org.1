@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112B77BF484
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A85317BF491
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:41:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq7Kw-0000rl-9K; Tue, 10 Oct 2023 03:39:26 -0400
+	id 1qq7L1-0001D9-Uo; Tue, 10 Oct 2023 03:39:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qq7Ks-0000ke-HF
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 03:39:22 -0400
+ id 1qq7Ky-00013l-Ve
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 03:39:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qq7Kr-0001kb-12
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 03:39:22 -0400
+ id 1qq7Kw-0001mK-VT
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 03:39:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696923560;
+ s=mimecast20190719; t=1696923565;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t2z+Jyqs3B+QrIMXiV5YUpL+rrIemvToEH1MmhrX9vA=;
- b=GsUjhf9W70Zwtu+Q7DHjUAHR8nNNa1/v93U5HzHuVAWe27RvfoZgipCPX7hJT3vGQ5tXzU
- 3/b3ciFh0x/spPxyJWMlhbibrlc1m02HzQI7DUnKfZBm9MqhUF0NZ0+/jZwT2cDcZO2nkw
- K7X+111lwftw67128m7BV+NLeb6rDgs=
+ bh=s5+e3JFYr7c0mztuM2EMhEesHcY+DdlysGfXNZqQu98=;
+ b=ZssLRVx3vfwD0pZjMbUKzHKtJtlZBaevvVDZ0jL9CELnAdwHyzu8dr8hQqcsAt+Fb35BXP
+ pYfCTctD+4GU07w0UOwP+2giRRle8zNrOXOHq3j6d7oHGIDYbtlA7Wo5zHuNLg5MtZIeN9
+ yLI9MWHl5xAhe7ezh3CPH4VJirJdAAk=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-369-F-Qp26oaP1uTu0rBBox6fw-1; Tue, 10 Oct 2023 03:39:01 -0400
-X-MC-Unique: F-Qp26oaP1uTu0rBBox6fw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-547-lhlL1MipNomIdgzE7hs5yQ-1; Tue, 10 Oct 2023 03:39:05 -0400
+X-MC-Unique: lhlL1MipNomIdgzE7hs5yQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C8283C40C0C;
- Tue, 10 Oct 2023 07:39:00 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A61933C40C22;
+ Tue, 10 Oct 2023 07:39:04 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.4])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9C4E149BB9A;
- Tue, 10 Oct 2023 07:38:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7AA722027019;
+ Tue, 10 Oct 2023 07:39:03 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>, qemu-arm@nongnu.org,
@@ -54,15 +54,15 @@ Cc: Eric Blake <eblake@redhat.com>, qemu-arm@nongnu.org,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 06/18] qmp/hmp: disable screendump if PIXMAN is missing
-Date: Tue, 10 Oct 2023 11:38:18 +0400
-Message-ID: <20231010073830.606570-7-marcandre.lureau@redhat.com>
+Subject: [PATCH v3 07/18] virtio-gpu: replace PIXMAN for region/rect test
+Date: Tue, 10 Oct 2023 11:38:19 +0400
+Message-ID: <20231010073830.606570-8-marcandre.lureau@redhat.com>
 In-Reply-To: <20231010073830.606570-1-marcandre.lureau@redhat.com>
 References: <20231010073830.606570-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -90,89 +90,142 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The command requires color conversion and line-by-line feeding. We could
-have a simple fallback for simple formats though.
+Use a simpler implementation for rectangle geometry & intersect, drop
+the need for (more complex) PIXMAN functions.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qapi/ui.json     | 3 ++-
- ui/ui-hmp-cmds.c | 2 ++
- ui/ui-qmp-cmds.c | 2 ++
- hmp-commands.hx  | 2 ++
- 4 files changed, 8 insertions(+), 1 deletion(-)
+ include/ui/rect.h       | 55 +++++++++++++++++++++++++++++++++++++++++
+ hw/display/virtio-gpu.c | 30 +++++++++-------------
+ 2 files changed, 66 insertions(+), 19 deletions(-)
+ create mode 100644 include/ui/rect.h
 
-diff --git a/qapi/ui.json b/qapi/ui.json
-index 006616aa77..e74cc3efb6 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -200,7 +200,8 @@
- { 'command': 'screendump',
-   'data': {'filename': 'str', '*device': 'str', '*head': 'int',
-            '*format': 'ImageFormat'},
--  'coroutine': true }
-+  'coroutine': true,
-+  'if': 'CONFIG_PIXMAN' }
- 
- ##
- # == Spice
-diff --git a/ui/ui-hmp-cmds.c b/ui/ui-hmp-cmds.c
-index c671389473..26c8ced1f2 100644
---- a/ui/ui-hmp-cmds.c
-+++ b/ui/ui-hmp-cmds.c
-@@ -437,6 +437,7 @@ void sendkey_completion(ReadLineState *rs, int nb_args, const char *str)
-     }
- }
- 
-+#ifdef CONFIG_PIXMAN
- void coroutine_fn
- hmp_screendump(Monitor *mon, const QDict *qdict)
- {
-@@ -458,6 +459,7 @@ hmp_screendump(Monitor *mon, const QDict *qdict)
- end:
-     hmp_handle_error(mon, err);
- }
+diff --git a/include/ui/rect.h b/include/ui/rect.h
+new file mode 100644
+index 0000000000..63edf7a39d
+--- /dev/null
++++ b/include/ui/rect.h
+@@ -0,0 +1,55 @@
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef QEMU_RECT_H
++#define QEMU_RECT_H
++
++#include <stdint.h>
++#include <stdbool.h>
++
++typedef struct QemuRect {
++    int16_t x;
++    int16_t y;
++    uint16_t width;
++    uint16_t height;
++} QemuRect;
++
++static inline void qemu_rect_init(QemuRect* rect, int16_t x, int16_t y, uint16_t width, uint16_t height)
++{
++    rect->x = x;
++    rect->y = x;
++    rect->width = width;
++    rect->height = height;
++}
++
++static inline void qemu_rect_translate(QemuRect* rect, int16_t dx, int16_t dy)
++{
++    rect->x += dx;
++    rect->y += dy;
++}
++
++static inline bool qemu_rect_intersect(const QemuRect* a, const QemuRect* b, QemuRect *res)
++{
++    int16_t x1, x2, y1, y2;
++
++    x1 = MAX(a->x, b->x);
++    y1 = MAX(a->y, b->y);
++    x2 = MIN(a->x + a->width, b->x + b->width);
++    y2 = MIN(a->y + a->height, b->y + b->height);
++
++    if (x1 >= x2 || y1 >= y2) {
++        if (res) {
++            qemu_rect_init(res, 0, 0, 0, 0);
++        }
++
++        return false;
++    }
++
++    if (res) {
++        qemu_rect_init(res, x1, y1, x2 - x1, y2 - y1);
++    }
++
++    return true;
++}
++
 +#endif
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 93857ad523..fdb7b25a70 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -16,6 +16,7 @@
+ #include "qemu/iov.h"
+ #include "sysemu/cpus.h"
+ #include "ui/console.h"
++#include "ui/rect.h"
+ #include "trace.h"
+ #include "sysemu/dma.h"
+ #include "sysemu/sysemu.h"
+@@ -507,7 +508,7 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
+     struct virtio_gpu_simple_resource *res;
+     struct virtio_gpu_resource_flush rf;
+     struct virtio_gpu_scanout *scanout;
+-    pixman_region16_t flush_region;
++    QemuRect flush_rect;
+     bool within_bounds = false;
+     bool update_submitted = false;
+     int i;
+@@ -569,34 +570,25 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
+         return;
+     }
  
- void hmp_client_migrate_info(Monitor *mon, const QDict *qdict)
- {
-diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
-index debc07d678..d772e1cb7f 100644
---- a/ui/ui-qmp-cmds.c
-+++ b/ui/ui-qmp-cmds.c
-@@ -212,6 +212,7 @@ void qmp_client_migrate_info(const char *protocol, const char *hostname,
-     error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "protocol", "'spice'");
- }
+-    pixman_region_init_rect(&flush_region,
+-                            rf.r.x, rf.r.y, rf.r.width, rf.r.height);
++    qemu_rect_init(&flush_rect, rf.r.x, rf.r.y, rf.r.width, rf.r.height);
+     for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
+-        pixman_region16_t region, finalregion;
+-        pixman_box16_t *extents;
++        QemuRect rect;
  
-+#ifdef CONFIG_PIXMAN
- #ifdef CONFIG_PNG
- /**
-  * png_save: Take a screenshot as PNG
-@@ -391,3 +392,4 @@ qmp_screendump(const char *filename, const char *device,
+         if (!(res->scanout_bitmask & (1 << i))) {
+             continue;
          }
+         scanout = &g->parent_obj.scanout[i];
+ 
+-        pixman_region_init(&finalregion);
+-        pixman_region_init_rect(&region, scanout->x, scanout->y,
+-                                scanout->width, scanout->height);
++        qemu_rect_init(&rect, scanout->x, scanout->y,
++                       scanout->width, scanout->height);
+ 
+-        pixman_region_intersect(&finalregion, &flush_region, &region);
+-        pixman_region_translate(&finalregion, -scanout->x, -scanout->y);
+-        extents = pixman_region_extents(&finalregion);
+         /* work out the area we need to update for each console */
+-        dpy_gfx_update(g->parent_obj.scanout[i].con,
+-                       extents->x1, extents->y1,
+-                       extents->x2 - extents->x1,
+-                       extents->y2 - extents->y1);
+-
+-        pixman_region_fini(&region);
+-        pixman_region_fini(&finalregion);
++        if (qemu_rect_intersect(&flush_rect, &rect, &rect)) {
++            qemu_rect_translate(&rect, -scanout->x, -scanout->y);
++            dpy_gfx_update(g->parent_obj.scanout[i].con,
++                           rect.x, rect.y, rect.width, rect.height);
++        }
      }
+-    pixman_region_fini(&flush_region);
  }
-+#endif /* CONFIG_PIXMAN */
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 63eac22734..c343d82fbc 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -252,6 +252,7 @@ SRST
  
- ERST
- 
-+#ifdef CONFIG_PIXMAN
-     {
-         .name       = "screendump",
-         .args_type  = "filename:F,format:-fs,device:s?,head:i?",
-@@ -267,6 +268,7 @@ SRST
- ``screendump`` *filename*
-   Save screen into PPM image *filename*.
- ERST
-+#endif
- 
-     {
-         .name       = "logfile",
+ static void virtio_unref_resource(pixman_image_t *image, void *data)
 -- 
 2.41.0
 
