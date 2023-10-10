@@ -2,99 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059417BF786
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DFF7BF7C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:47:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq9CY-0000hs-SR; Tue, 10 Oct 2023 05:38:55 -0400
+	id 1qq9KE-0002ZC-NB; Tue, 10 Oct 2023 05:46:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qq9CE-0000c1-H6
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:38:34 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qq9C9-0001cF-4j
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:38:31 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-694f3444f94so4442674b3a.2
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:38:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696930705; x=1697535505;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HoAO4MU3+HX/pu5nZVUw6NryiBkQ92zJRW3EbT9zs2M=;
- b=b3j/fYn/TdQPraqhdTqXTZ1As8rgOVPc8fGQ/vsM1lT38dJJ/0oq7nIrM3BHUI7TXE
- PiDYdk3V7a/vvih82I+zMEUiFBFKacqywpjJKNk6+o8yNmBVM/3mrfheazA7n0nXdAxH
- 0YgjWTjmyfenD5SGd8vpaOcO2heuCGdWyuQP5jCz3hTFZ5Cw746lk7iiynuQEpHQXlYD
- SNg17wtPsPyNp7QWtqhO3GWss14ntwkVg67MGqK7s5rAVQRR6I7Qnz+JAOCvaKXS967U
- E6vXKvUqLWxGjZ8rYtWNo9dvb+VU8JqPOO3sl5vNDYk3GKadzVLZ346OmBu1MdQFBVB/
- 2ftQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qq9K3-0002XS-Em
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:46:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qq9Jz-0002qZ-Pc
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:46:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696931195;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Wo4EO3b24+7/c1hPw2Stl1TkXZNmaThVkGRtUR1z80I=;
+ b=GXxsePQQb8/AZAHbbwicVLOiZoAaz0SavmiOafKZUo+LtGv2G2ZT1qsUQoy40XnkQ/nNil
+ pUz5F5w6wiZLXVlWoKw2PDbRNakNeJfVgsF5nZPWTPjON9dq3QG5UKfKyBASbCFjCC1TIj
+ L0ktGgAJSBaEtBdsS4t5UYhWDwIA73o=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-etza6JyXM6ygEfZipcnspQ-1; Tue, 10 Oct 2023 05:46:28 -0400
+X-MC-Unique: etza6JyXM6ygEfZipcnspQ-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-d8b2eec15d3so7305564276.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:46:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696930705; x=1697535505;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1696931188; x=1697535988;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HoAO4MU3+HX/pu5nZVUw6NryiBkQ92zJRW3EbT9zs2M=;
- b=iFpK06HlyM4a9j4qhtLzdzeAH/aywyn+Hs3XWY9YE0BbTQCvXKlJpHLWNJq/dWAWqI
- PVTwd9q4qjn3hA6dN3oI7q/W/a5h7UxLY4j+5HMBgGloEc/TVTVEujV0STMl1We1dhxn
- HlUC8NyIsKIaPO3mitJZBUQPcANg9B9K2Y8f77BGqFzCqMU9s2Cm3Qmvu8Mk5hqBq3Uw
- wpyaj+4PLGVSrCLcCvjxulTVDItDbJLM8VHbV6tjVE0REN/PF845x+CwdEKHRC3Zh9m8
- /DrewFj+fHH2LGsugklJ2tAdOYi+NMfCNCW9LRLrwmhodVTL4jUCYyL4jXIK3i1VP1dx
- i54Q==
-X-Gm-Message-State: AOJu0YyVZTTbAmk6lI7XpYouv/YDhL5pG4DIs70ieXSVqN7Gzzrtn4LC
- IBMFOlzFD4dQrNy0f2JlF9kkTw==
-X-Google-Smtp-Source: AGHT+IFLaMgQENjLvJkfk7pzKNhxG7HGIKa0urAQS112N7v4/1GLtegSoR+l/iVqe08cbr+zzgP60w==
-X-Received: by 2002:a05:6a20:ce8f:b0:152:cb38:5b47 with SMTP id
- if15-20020a056a20ce8f00b00152cb385b47mr17028892pzb.55.1696930705544; 
- Tue, 10 Oct 2023 02:38:25 -0700 (PDT)
-Received: from [157.82.206.10] ([157.82.206.10])
- by smtp.gmail.com with ESMTPSA id
- it9-20020a056a00458900b0069346777241sm8066145pfb.97.2023.10.10.02.38.17
+ bh=Wo4EO3b24+7/c1hPw2Stl1TkXZNmaThVkGRtUR1z80I=;
+ b=Z4luAGOkVu5iuv8/b3GqdkqDUQ9tVpxBKhwrX45+ePeH+yrKQH7hVS+/qTHFqveFq3
+ z+Qqr7SRRuUxHrpqyE8yy9J1ygvE2P0xRqFds2meVEBFp8vBHlRESElZZo/X4N1tEJIc
+ ya6LX2yxqbfMd8PjSFdCE/85y+wScuy91YweASXBdLaaAbnDp7ml6+JubLATYHVHVawt
+ vAcK2xbNqQCXJ13NmclcOrBJoIf0GQeHdvmeDbCoOatheIn9/O+pz2Mq0cHNhWMaYnVH
+ dgyMmEKo4CSRA3Fmbw6QOKgIKzdwlg0VfS8x8uwJVVPawuPUwS54RKJXSJBvRUKePZp8
+ r0gw==
+X-Gm-Message-State: AOJu0YyaKm2MkgeCsWyj+rWlGZxyOpoilb7E4K0T3dJIVoItGEg/X/uY
+ zyNj9tbl4a1uDOXYcwMw2QMyUlxqTpqoxxIP/ExhwgSuCaG3dswrqPtpGSDKwcinZkdF3wKh2Ms
+ cXZoTmwYnxsSr7R4=
+X-Received: by 2002:a25:5541:0:b0:d91:12e7:30f1 with SMTP id
+ j62-20020a255541000000b00d9112e730f1mr14757801ybb.53.1696931188162; 
+ Tue, 10 Oct 2023 02:46:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/fgYRdkEnh+3npY9ofAXdUp9swJ19bV4gWRXWRYxcmXkF0Hd+ljClFkEWlnyBXWZQmeU/bA==
+X-Received: by 2002:a25:5541:0:b0:d91:12e7:30f1 with SMTP id
+ j62-20020a255541000000b00d9112e730f1mr14757789ybb.53.1696931187892; 
+ Tue, 10 Oct 2023 02:46:27 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
+ [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
+ er19-20020a056214191300b0066cf31eef11sm390345qvb.132.2023.10.10.02.46.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 02:38:24 -0700 (PDT)
-Message-ID: <ab7ffc78-fe3d-4e99-b3c6-e66f7b0c7e18@daynix.com>
-Date: Tue, 10 Oct 2023 18:38:15 +0900
+ Tue, 10 Oct 2023 02:46:27 -0700 (PDT)
+Message-ID: <e108d282-5eec-4430-1a10-8cf3170bb18c@redhat.com>
+Date: Tue, 10 Oct 2023 11:46:24 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] tests/qtest: Use qtest_get_base_arch()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-arm@nongnu.org, qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Fam Zheng <fam@euphon.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
- Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Jeuk Kim
- <jeuk20.kim@samsung.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Amit Shah <amit@kernel.org>
-References: <20231010074952.79165-1-philmd@linaro.org>
- <20231010074952.79165-5-philmd@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/4] tests/libqtest: Introduce qtest_get_arch_bits()
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231010074952.79165-5-philmd@linaro.org>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
+ qemu-block@nongnu.org, Laurent Vivier <lvivier@redhat.com>
+References: <20231010074952.79165-1-philmd@linaro.org>
+ <20231010074952.79165-2-philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20231010074952.79165-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,10 +104,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/10 16:49, Philippe Mathieu-Daudé wrote:
-> Additionally use qtest_get_arch_bits() when relevant.
+On 10/10/2023 09.49, Philippe Mathieu-Daudé wrote:
+> Add a method to return the architecture bits (currently 8/32/64).
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   tests/qtest/libqtest.h |  8 ++++++++
+>   tests/qtest/libqtest.c | 21 +++++++++++++++++++++
+>   2 files changed, 29 insertions(+)
+> 
+> diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
+> index e53e350e3a..1e1b42241d 100644
+> --- a/tests/qtest/libqtest.h
+> +++ b/tests/qtest/libqtest.h
+> @@ -654,6 +654,14 @@ bool qtest_big_endian(QTestState *s);
+>    */
+>   const char *qtest_get_arch(void);
+>   
+> +/**
+> + * qtest_get_arch_bits:
+> + *
+> + * Returns: The architecture bits (a.k.a. word size) for the QEMU executable
+> + * under test.
+> + */
+> +unsigned qtest_get_arch_bits(void);
+> +
+>   /**
+>    * qtest_has_accel:
+>    * @accel_name: Accelerator name to check for.
+> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+> index b1eba71ffe..a643a6309c 100644
+> --- a/tests/qtest/libqtest.c
+> +++ b/tests/qtest/libqtest.c
+> @@ -925,6 +925,27 @@ const char *qtest_get_arch(void)
+>       return end + 1;
+>   }
+>   
+> +unsigned qtest_get_arch_bits(void)
+> +{
+> +    static const char *const arch64[] = {
+> +        "aarch64", "hppa", "x86_64", "loongarch64", "mips64",
+> +        "mips64el", "ppc64", "riscv64", "s390x", "sparc64",
+> +    };
+> +    const char *arch = qtest_get_arch();
+> +
+> +    if (!strcmp(arch, "avr")) {
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Just a matter of taste, but I prefer g_str_equal(), that's easier to read.
+
+> +        return 8;
+> +    }
+> +
+> +    for (unsigned i = 0; i < ARRAY_SIZE(arch64); i++) {
+> +        if (!strcmp(arch, arch64[i])) {
+> +            return 64;
+> +        }
+> +    }
+> +
+> +    return 32;
+> +}
+
+Since this function might get called multiple times, would it make sense to 
+cache the value? I.e.:
+
+   static const unsigned bits;
+
+   if (!bits) {
+       ... do all the magic to find out the right bits ...
+   }
+
+   return bits;
+
+?
+
+  Thomas
+
 
