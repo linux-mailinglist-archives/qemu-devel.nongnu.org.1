@@ -2,49 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048AA7BFF0B
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 460E47BFF0E
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:21:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqDbe-0007Jl-2c; Tue, 10 Oct 2023 10:21:08 -0400
+	id 1qqDc2-0007kV-P2; Tue, 10 Oct 2023 10:21:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqDbW-0007Ie-BW; Tue, 10 Oct 2023 10:20:58 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qqDc0-0007hS-Dc
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:21:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqDbN-0007gN-Tq; Tue, 10 Oct 2023 10:20:53 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9B55128F93;
- Tue, 10 Oct 2023 17:20:49 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A94722E1E4;
- Tue, 10 Oct 2023 17:20:45 +0300 (MSK)
-Message-ID: <e52cd038-e0e4-4049-a374-70c6b8926f24@tls.msk.ru>
-Date: Tue, 10 Oct 2023 17:20:45 +0300
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qqDby-0007p1-Rr
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:21:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696947683;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=DR1UTYaGEmCDrKk5J9Z8A7auDcr9+M79YnHNGzE1sNwuqlLJTrgvvxjDGng0D2M+vbXRQH
+ DFt0zHFank+zcqKMjQRVpk5RhcERite8MLvN05tXJ1kLCXp8+VJ7++0+P8J22GqMNlfM4S
+ SIJHdj+nCHxzrIVL5xq6TO3L1Qocehs=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-542-OcruwYz5P8moQqmTRMEO1w-1; Tue, 10 Oct 2023 10:21:12 -0400
+X-MC-Unique: OcruwYz5P8moQqmTRMEO1w-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5344aaf2703so4663495a12.0
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 07:21:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696947669; x=1697552469;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=jN5+j31/+syoiPLcUX3eT/5TYZZX7NuLC3oruAgHZXwBnOUlnXJIPJK47y4x8U4occ
+ q8COXacgoEreeLVpOjCNyRZoJ6i3uUKUPZmzhaKdTgN6xes22UstK3XmUzEhjp/1mlj5
+ HadHmplwEtFsEKsnC/IMIEYViLAtjvs9n8+koYgt84eincjsjGvG0ioIqq8IUCOt+pli
+ 36C+Qpj65e1AzJUSK3LceXeA00zw1fpcizw2pnwV3JXBmJRNW5UbIJqOr3z9whOloEVY
+ 2yKoVFd2HAZZTz46Eq5qMw/vyKjQSL9h0V370pfe01CkSWyaJDj1EuYyVMgJrC0j4Kgf
+ TAKA==
+X-Gm-Message-State: AOJu0YzkazbC4sQC9I9U1ixEYi1ara4dLdmfRo82VqKJc/upSe0VsVlg
+ lkrrUEgIpUlSOWXRSaQK2kAZum/vxbs0IBFjv6PtG/BBiicg5ew5ftF1LMR6kGpsprn2ZZbNjdR
+ G83ZxVl9u4iZF8cU=
+X-Received: by 2002:a17:906:73cd:b0:9ae:329f:11c5 with SMTP id
+ n13-20020a17090673cd00b009ae329f11c5mr17710257ejl.53.1696947669814; 
+ Tue, 10 Oct 2023 07:21:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJKLIoisJ1qa6GNJdm0/NDOF98z46CQ9++teAkSOuuUWGnajo5+uY98mqKBIVoCANjYuJdhA==
+X-Received: by 2002:a17:906:73cd:b0:9ae:329f:11c5 with SMTP id
+ n13-20020a17090673cd00b009ae329f11c5mr17710241ejl.53.1696947669478; 
+ Tue, 10 Oct 2023 07:21:09 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
+ by smtp.gmail.com with ESMTPSA id
+ gz19-20020a170906f2d300b009b2ca104988sm8488202ejb.98.2023.10.10.07.21.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Oct 2023 07:21:08 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH] targer/i386/cpu: Fix CPUID_HT exposure
+Date: Tue, 10 Oct 2023 16:20:50 +0200
+Message-ID: <20231010142050.263544-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231010060539.210258-1-xiaoyao.li@intel.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cpus: Remove unused smp_cores/smp_threads declarations
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
- Like Xu <like.xu@linux.intel.com>, Eduardo Habkost <eduardo@habkost.net>
-References: <20231009090952.48207-1-philmd@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20231009090952.48207-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,38 +99,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-09.10.2023 12:09, Philippe Mathieu-Daudé:
-> Commit a5e0b33119 ("vl.c: Replace smp global variables
-> with smp machine properties") removed the last uses of
-> the smp_cores / smp_threads variables but forgot to
-> remove their declarations. Do it now.
+Queued, thanks.
 
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-
-Applied to my trivial-patches branch.
-
-/mjt
-
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/sysemu/cpus.h | 7 -------
->   1 file changed, 7 deletions(-)
-> 
-> diff --git a/include/sysemu/cpus.h b/include/sysemu/cpus.h
-> index 0535a4c68a..b4a566cfe7 100644
-> --- a/include/sysemu/cpus.h
-> +++ b/include/sysemu/cpus.h
-> @@ -50,11 +50,4 @@ void cpu_synchronize_all_post_reset(void);
->   void cpu_synchronize_all_post_init(void);
->   void cpu_synchronize_all_pre_loadvm(void);
->   
-> -#ifndef CONFIG_USER_ONLY
-> -/* vl.c */
-> -/* *-user doesn't have configurable SMP topology */
-> -extern int smp_cores;
-> -extern int smp_threads;
-> -#endif
-> -
->   #endif
+Paolo
 
 
