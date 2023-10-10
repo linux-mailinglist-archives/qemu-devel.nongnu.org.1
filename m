@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FDC7C0219
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 18:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D387C022A
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 19:05:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqG41-0005yT-A9; Tue, 10 Oct 2023 12:58:33 -0400
+	id 1qqG9f-00084e-8i; Tue, 10 Oct 2023 13:04:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qqG3y-0005xp-CJ
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 12:58:30 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qqG9c-0007xf-WA
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 13:04:21 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qqG3w-0006uG-Lh
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 12:58:30 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c7373cff01so185055ad.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 09:58:28 -0700 (PDT)
+ id 1qqG9b-0008Ih-Ap
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 13:04:20 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-690d2441b95so30189b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 10:04:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696957106; x=1697561906; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1696957458; x=1697562258; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=U7Ej2WxT7urpGSoMiUNjZN3Ad/P/DYGo4owevQYo+tU=;
- b=fGvYEH6HMaBa9xcFKzEVgPgh+HGp6b8NL0f6JGC2nGmkU4TtWYfw9i7FxYUrvuOmec
- +4wT+P0GSVwbAErMEbCy+ZoVTPQLO8v6eDcxpi/a99mY6hwNpdvn+8UdbtKGR8jMdAp4
- WM4yL0YgKmr/3Ju/hpDkj1d0ly/8HW7eMaiKDnm7EPQOL9XO37+mj6jzJHC7czK2+2ih
- 4TfT4aJPnqJEEnsGgQEEBH3ZH6kKE7zDux6PJGeKFYCSdwEa9S6Co+iIEXfchyuisdfL
- Zjoe38skfr/Lz8BtwGpK2rByJointNUsggOgIzAVdhbyGjejWu+nzktgGa1R3njzpdhV
- UsFw==
+ bh=ZC41cvU7tbSLh3s5I52GQP/Db1iQGSjDYS21U9p8OSU=;
+ b=WQXfFXYVZzUjVzPh6wBsRf5L9b0S1Jmf0Lh0qN+l58euVTMUcYuzyTKU4/mkT4DOUl
+ rqkCjGWYsntyfS4mmf7KmAQ92vDlkJFdTkpUmY31Cbvu6uYHlmpuNgbnVZCpHGJaFuYS
+ YJK9F1WyITglVdD13luOy3YJ1QkycrNMUF9vPdpnMMNju0CBF0lxL9xqzu2xLH7mmBz9
+ Bg/xh9bkaaYQ/crG9C+Wax0mJOjLx0Vd0AEpN3KzfNBlSmWTtSPj5BwI8hMckyCRzi/c
+ f/nGoQJOt1Ga2GmQKaVunGlpOymnjVojUXvWsSzQiNriXyISMySWNKcrtFO2E2ElrGqZ
+ O7Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696957106; x=1697561906;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1696957458; x=1697562258;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U7Ej2WxT7urpGSoMiUNjZN3Ad/P/DYGo4owevQYo+tU=;
- b=S7nA5P/LigFFjo8M5XzG/iLA0cs5atBD/ahLXPYo1Xif5oboKR+rzrYgWLwhfdL/pU
- 4+O5ORajvxxcN29TvU2dVsgGUTn4lPGHSAnqGv89wKL/Fzie0WnkQpOgPL+wsBWJc3+w
- Vt8SPK/0g2JSmo+DFXwLj/9jD9nQgK4P+BeI2e6YXU1m8R0MlXIViZI4OA9PrxNUP4PR
- IM7wFqD4UnbtFmZxAi0ZW/8QrP/HRbb1LR9eVV1nBL2jvnzzcxqV/xwdAaHW+g7Cnbzw
- Y05DKMSrr5E+iKe7vs7R988VOk6R7GeMOXyXqyTIecDRB4llH0nTjOJNWdWXeGxalu+R
- oGVw==
-X-Gm-Message-State: AOJu0YyJlccyowEhk/sGtVGcJm2GzRxQazkee+jEBAfLgE4WM1LrkEbX
- PmgIbgfVy3vapwvMQZvykpqmRQ==
-X-Google-Smtp-Source: AGHT+IHRGUgZ+g+3pHEdRkuvmleMhIu1MryFHx9a8YItxUSUJsLHAOnzqB9SCKfWe1hfcyiBn1w7JQ==
-X-Received: by 2002:a17:902:c404:b0:1c9:9fa6:ce5b with SMTP id
- k4-20020a170902c40400b001c99fa6ce5bmr8454948plk.16.1696957106056; 
- Tue, 10 Oct 2023 09:58:26 -0700 (PDT)
+ bh=ZC41cvU7tbSLh3s5I52GQP/Db1iQGSjDYS21U9p8OSU=;
+ b=nbeUhSgN1ZWZs5Io/cSkoRZoIYpzb3O0+oDbPm9P/d+Dph1dMSblY3n8hQnkmoawa+
+ 8vh4UwgR6uE26Gy3Su9CljlnXfhIJ+adwrd+BgZj6uf8vibdRt8Fqi/zjUeG+HlgOK9U
+ +uh7v56a+MbSGQ7k9kRQXPzb3kyX2e2QzJYyNV7WVum5OlRe+OijEPmFo38+NDult1zQ
+ ETROXdRLS9qL/qC3jR0BDqexmsuQaz99iNC9rJP8y/K5SRznRQTSXZ+E7KaViuFmxAek
+ DrXl+jR+lrMGktbokOPuUJIbNNe7e2ZbVpBIJwPR3RjPHLnvo2OCaquL2mSA2FIEavSj
+ HjAA==
+X-Gm-Message-State: AOJu0YwnJc+EdyH2zc+V4j5mg80GDUnzje9bDej8bDhFDG8nOwiguGJi
+ ZqcE7B+V0G+aLyRcXgZcnfmwTA==
+X-Google-Smtp-Source: AGHT+IFEEncpqg+iTu6ICK8SkdbEGt8DHMZlP6L1LNG1A3LJpu+bpuoDYGt8ghtdYD1xyvQyRY9doQ==
+X-Received: by 2002:a05:6a00:14ce:b0:68f:cdb8:ae33 with SMTP id
+ w14-20020a056a0014ce00b0068fcdb8ae33mr26209091pfu.10.1696957457539; 
+ Tue, 10 Oct 2023 10:04:17 -0700 (PDT)
 Received: from ?IPV6:2607:fb90:b763:d52:6ee3:1cf3:f2d2:e12d?
  ([2607:fb90:b763:d52:6ee3:1cf3:f2d2:e12d])
  by smtp.gmail.com with ESMTPSA id
- jb13-20020a170903258d00b001bc21222e34sm1850919plb.285.2023.10.10.09.58.24
+ 15-20020aa7914f000000b00692c5b1a731sm8428752pfi.186.2023.10.10.10.04.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 09:58:25 -0700 (PDT)
-Message-ID: <22c8b7c1-d8ef-4eea-9431-d1ad3cbb681d@linaro.org>
-Date: Tue, 10 Oct 2023 09:58:22 -0700
+ Tue, 10 Oct 2023 10:04:17 -0700 (PDT)
+Message-ID: <58838379-60bf-4af4-980b-cff8ee49bfc2@linaro.org>
+Date: Tue, 10 Oct 2023 10:04:14 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/sparc: Clean up global variable shadowing
+Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20231009092434.50356-1-philmd@linaro.org>
+References: <20231009110239.66778-1-philmd@linaro.org>
+ <20231009110239.66778-3-philmd@linaro.org>
+ <8e8b6cef-efbf-42ac-975c-b523dc24a531@linux.alibaba.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231009092434.50356-1-philmd@linaro.org>
+In-Reply-To: <8e8b6cef-efbf-42ac-975c-b523dc24a531@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,43 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/9/23 02:24, Philippe Mathieu-Daudé wrote:
-> Fix:
+On 10/9/23 05:42, LIU Zhiwei wrote:
 > 
->    target/sparc/translate.c:2823:66: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
->    static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env tcg_env)
->                                                                     ^
->    include/tcg/tcg.h:579:17: note: previous declaration is here
->    extern TCGv_env tcg_env;
->                    ^
+> On 2023/10/9 19:02, Philippe Mathieu-Daudé wrote:
+>> When CPUArchState* is available (here CPURISCVState*), we
+>> can use the fast env_archcpu() macro to get ArchCPU* (here
+>> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
+>> when building with --enable-qom-cast-debug.
+>>
+>> Inspired-by: Richard W.M. Jones <rjones@redhat.com>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/sparc/translate.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 > 
-> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-> index f92ff80ac8..26ed371109 100644
-> --- a/target/sparc/translate.c
-> +++ b/target/sparc/translate.c
-> @@ -2820,19 +2820,19 @@ static void gen_fmovq(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
->   }
->   
->   #ifndef CONFIG_USER_ONLY
-> -static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env tcg_env)
-> +static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env env)
+> By the way, does the community has the plan to support heterogeneous architecture cpus in 
+> one soc?
 
+Yes.
 
-Better to eliminate the argument entirely...
+> If so, maybe we have to do this qom cast somewhere.
 
->   {
->       TCGv_i32 r_tl = tcg_temp_new_i32();
->   
->       /* load env->tl into r_tl */
-> -    tcg_gen_ld_i32(r_tl, tcg_env, offsetof(CPUSPARCState, tl));
-> +    tcg_gen_ld_i32(r_tl, env, offsetof(CPUSPARCState, tl));
-
-... so that this *does* reference the global.
+No, I don't think so.  Or at least not in these places.
 
 
 r~
