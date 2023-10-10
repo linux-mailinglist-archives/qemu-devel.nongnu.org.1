@@ -2,98 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A837BF830
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 12:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAE67BF834
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 12:11:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq9cL-00086E-Ns; Tue, 10 Oct 2023 06:05:33 -0400
+	id 1qq9gl-0002Cf-T8; Tue, 10 Oct 2023 06:10:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gmaglion@redhat.com>)
- id 1qq9cJ-00083H-8a
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 06:05:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qq9gi-0002C6-0p; Tue, 10 Oct 2023 06:10:04 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gmaglion@redhat.com>)
- id 1qq9c3-00074T-Rr
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 06:05:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696932307;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=W7MOtbSqPeCK/bLleFu9vUnR1YoV66HNIIpBiCs5pXs=;
- b=N9iPwiWsITc+MOkT91MeUxDdKK1IF87fQI42kEiImJK6WRFMX7nZMgKB6m7+meNW1/+JsI
- lP2b7Sr9XorrFOnAXnaHmkC94PZ8vkoys72HZVD91QoxXeRyNe6Yy/yYEB9FtaOMhtpPlb
- FXB2OGZZ/30NpaDUcVAITW0EkKplQts=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-L_sqvo6xPvqCSsEfQDbG_g-1; Tue, 10 Oct 2023 06:04:56 -0400
-X-MC-Unique: L_sqvo6xPvqCSsEfQDbG_g-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9b989422300so103965566b.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 03:04:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696932295; x=1697537095;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=W7MOtbSqPeCK/bLleFu9vUnR1YoV66HNIIpBiCs5pXs=;
- b=Z8xTu8p62UH7t6EtI9qFKWARqDGCQ7FBMBJjtQIvW8TGXgknWdZZQ4oFHDFA4miDdw
- K4f2HqCnuDGowdZ+wavCvZcthN0h27YpFOWeAfCFO90D4Xs8fJ/Heb2HNbVfzaBXgnXX
- /GNQa0xanE6rGy+WF69cP1IBcaPYKNhvGTXaP5Iy5fONbcrc7WKEmPHE0xda3SxS1zgy
- XN5tDQJUJd+q5rllEfgUPt+800Hsy7Ml6DPK0c8Q61765pgCYp9sKGwLRuovMEZGZ0Md
- 5ymQxFCZD3XqI9qo6MtFYfxTUkwVIED6jZ6nmByxTQcuH6zHgNDuPeeE6xwHySZCPt1u
- sqiQ==
-X-Gm-Message-State: AOJu0Yx6/CDDX+BhI4P8D7DouByk7sXWXwFt4X53A8vX8AAh4Wk8uzVJ
- nmQVn8rQvnZc9rt3ldku1vqf4z8vNql9acdzH1w/lERD7Cea4HdphZCICb7gcCemb6lUuk4Qqnk
- t8uNAX0GzMHUhpjMv7vChvsAIexeD/nk=
-X-Received: by 2002:a17:907:a48c:b0:9b9:24bb:e9c7 with SMTP id
- vp12-20020a170907a48c00b009b924bbe9c7mr14852787ejc.5.1696932295208; 
- Tue, 10 Oct 2023 03:04:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHAWatglw7sfaPz8FhB+6WpdDG7gY/OxbgMwPHzIb7YYi8yhy9jpMa2+vGH6fs6jJlUzDwC0ScD9IWm0eytkWA=
-X-Received: by 2002:a17:907:a48c:b0:9b9:24bb:e9c7 with SMTP id
- vp12-20020a170907a48c00b009b924bbe9c7mr14852764ejc.5.1696932294830; Tue, 10
- Oct 2023 03:04:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qq9gf-00087v-Ck; Tue, 10 Oct 2023 06:10:03 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id B23AF7456AC;
+ Tue, 10 Oct 2023 12:09:03 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 5F7627456AA; Tue, 10 Oct 2023 12:09:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 5D2D6745681;
+ Tue, 10 Oct 2023 12:09:03 +0200 (CEST)
+Date: Tue, 10 Oct 2023 12:09:03 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@gmail.com>
+cc: qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ "open list:sam460ex" <qemu-ppc@nongnu.org>
+Subject: Re: [PATCH v2 16/18] hw/sm501: allow compiling without PIXMAN
+In-Reply-To: <CAJ+F1CLSkdRcpkA3Mud+q3-J21SWXExKMoEARFhiWzaQAVtR9w@mail.gmail.com>
+Message-ID: <84e30518-cab1-ef52-fed2-a5b65d13d334@eik.bme.hu>
+References: <20230918135206.2739222-1-marcandre.lureau@redhat.com>
+ <20230918135206.2739222-17-marcandre.lureau@redhat.com>
+ <433e2db8-e85e-d1ce-e54f-80edadd71643@eik.bme.hu>
+ <CAJ+F1C+w3mQY2B3A=-6TQyyCT9kZT2EEprnLygK7t7rKLSwBvw@mail.gmail.com>
+ <4ea37bd5-7278-b0e7-6cd4-652ac3eb0ae7@eik.bme.hu>
+ <CAJ+F1CLSkdRcpkA3Mud+q3-J21SWXExKMoEARFhiWzaQAVtR9w@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231004125904.110781-1-hreitz@redhat.com>
- <20231004125904.110781-2-hreitz@redhat.com>
- <20231005170852.GB1342722@fedora>
- <20231005131352-mutt-send-email-mst@kernel.org>
- <00272da3-0a48-5544-6ba8-5dfde00be241@redhat.com>
- <20231006043518-mutt-send-email-mst@kernel.org>
- <a8b9d842-0925-38d0-2f0d-f2560bab251b@redhat.com>
- <20231006051802-mutt-send-email-mst@kernel.org>
- <a4af0357-12ee-fc7f-e249-239da34409b0@redhat.com>
- <20231006055229-mutt-send-email-mst@kernel.org>
- <e35f9f71-8d9d-6250-cbaa-70412b5a1149@nvidia.com>
- <CAJh=p+5OFrx4nP5rYKrgZ_y02n358wy70c4L0L4fHKQUo9fU5Q@mail.gmail.com>
- <ccfb153c-0e2e-15dd-b543-5b5a8bebbff4@nvidia.com>
-In-Reply-To: <ccfb153c-0e2e-15dd-b543-5b5a8bebbff4@nvidia.com>
-From: German Maglione <gmaglione@redhat.com>
-Date: Tue, 10 Oct 2023 12:04:18 +0200
-Message-ID: <CAJh=p+7XjQdwHFjpm5Oi-Y64MEtUhkpF0Q=RWMKqfg5bypF8iQ@mail.gmail.com>
-Subject: Re: [Virtio-fs] (no subject)
-To: Yajun Wu <yajunw@nvidia.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Hanna Czenczek <hreitz@redhat.com>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "virtio-fs@redhat.com" <virtio-fs@redhat.com>, 
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- "maxime.coquelin@redhat.com" <maxime.coquelin@redhat.com>,
- Parav Pandit <parav@nvidia.com>, Anton Kuchin <antonkuchin@yandex-team.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gmaglion@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed; boundary="3866299591-812731649-1696932543=:4084"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,295 +66,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 10, 2023 at 4:57=E2=80=AFAM Yajun Wu <yajunw@nvidia.com> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-812731649-1696932543=:4084
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Tue, 10 Oct 2023, Marc-André Lureau wrote:
+> On Tue, Oct 10, 2023 at 1:53 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
+>> On Tue, 10 Oct 2023, Marc-André Lureau wrote:
+>>> Hi Zoltan
+>>>
+>>> On Mon, Sep 18, 2023 at 9:59 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
+>>>>
+>>>> On Mon, 18 Sep 2023, marcandre.lureau@redhat.com wrote:
+>>>>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>>>>
+>>>>> Drop the "x-pixman" property and use fallback path in such case.
+>>>>>
+>>>>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>>>> ---
+>>>>> hw/display/sm501.c | 19 ++++++++++++++++---
+>>>>> 1 file changed, 16 insertions(+), 3 deletions(-)
+>>>>>
+>>>>> diff --git a/hw/display/sm501.c b/hw/display/sm501.c
+>>>>> index 0eecd00701..a897c82f04 100644
+>>>>> --- a/hw/display/sm501.c
+>>>>> +++ b/hw/display/sm501.c
+>>>>> @@ -730,7 +730,6 @@ static void sm501_2d_operation(SM501State *s)
+>>>>>     switch (cmd) {
+>>>>>     case 0: /* BitBlt */
+>>>>>     {
+>>>>> -        static uint32_t tmp_buf[16384];
+>>>>>         unsigned int src_x = (s->twoD_source >> 16) & 0x01FFF;
+>>>>>         unsigned int src_y = s->twoD_source & 0xFFFF;
+>>>>>         uint32_t src_base = s->twoD_source_base & 0x03FFFFFF;
+>>>>> @@ -828,9 +827,11 @@ static void sm501_2d_operation(SM501State *s)
+>>>>>                 de = db + (width + (height - 1) * dst_pitch) * bypp;
+>>>>>                 overlap = (db < se && sb < de);
+>>>>>             }
+>>>>> +#ifdef CONFIG_PIXMAN
+>>>>>             if (overlap && (s->use_pixman & BIT(2))) {
+>>>>>                 /* pixman can't do reverse blit: copy via temporary */
+>>>>>                 int tmp_stride = DIV_ROUND_UP(width * bypp, sizeof(uint32_t));
+>>>>> +                static uint32_t tmp_buf[16384];
+>>>>>                 uint32_t *tmp = tmp_buf;
+>>>>>
+>>>>>                 if (tmp_stride * sizeof(uint32_t) * height > sizeof(tmp_buf)) {
+>>>>> @@ -860,9 +861,12 @@ static void sm501_2d_operation(SM501State *s)
+>>>>>                                        dst_pitch * bypp / sizeof(uint32_t),
+>>>>>                                        8 * bypp, 8 * bypp, src_x, src_y,
+>>>>>                                        dst_x, dst_y, width, height);
+>>>>> -            } else {
+>>>>> +            } else
+>>>>> +#else
+>>>>> +            {
+>>>>>                 fallback = true;
+>>>>>             }
+>>>>> +#endif
+>>>>>             if (fallback) {
+>>>>>                 uint8_t *sp = s->local_mem + src_base;
+>>>>>                 uint8_t *d = s->local_mem + dst_base;
+>>>>> @@ -894,10 +898,13 @@ static void sm501_2d_operation(SM501State *s)
+>>>>>             color = cpu_to_le16(color);
+>>>>>         }
+>>>>>
+>>>>> +#ifdef CONFIG_PIXMAN
+>>>>>         if (!(s->use_pixman & BIT(0)) || (width == 1 && height == 1) ||
+>>>>>             !pixman_fill((uint32_t *)&s->local_mem[dst_base],
+>>>>>                          dst_pitch * bypp / sizeof(uint32_t), 8 * bypp,
+>>>>> -                         dst_x, dst_y, width, height, color)) {
+>>>>> +                         dst_x, dst_y, width, height, color))
+>>>>> +#endif
+>>>>> +        {
+>>>>>             /* fallback when pixman failed or we don't want to call it */
+>>>>>             uint8_t *d = s->local_mem + dst_base;
+>>>>>             unsigned int x, y, i;
+>>>>> @@ -2038,7 +2045,9 @@ static void sm501_realize_sysbus(DeviceState *dev, Error **errp)
+>>>>>
+>>>>> static Property sm501_sysbus_properties[] = {
+>>>>>     DEFINE_PROP_UINT32("vram-size", SM501SysBusState, vram_size, 0),
+>>>>> +#ifdef CONFIG_PIXMAN
+>>>>>     DEFINE_PROP_UINT8("x-pixman", SM501SysBusState, state.use_pixman, 7),
+>>>>> +#endif
+>>>>
+>>>> Do we want to omit the property when compiled without pixman? I think we
+>>>> could leave it there and it would just be ignored without pixman but the
+>>>> same command line would still work and need less ifdefs in code.
+>>>
+>>> That's a reasonable idea to me. At least, it can handle x-pixman=0
+>>> fine when !CONFIG_PIXMAN then.
+>>>
+>>> Btw, looking at it, it seems it should be DEFINE_PROP_BIT instead. I
+>>> will add a TODO :)
+>>
+>> Erm, a bit can be 1 or 0 but the default value of it is 7. It's not a
+>> single but but a bitmask the enable/disable pisman for different
+>> operations separately so I think it can't be _BIT.
 >
->
-> On 10/9/2023 6:28 PM, German Maglione wrote:
-> > External email: Use caution opening links or attachments
-> >
-> >
-> > On Sat, Oct 7, 2023 at 4:23=E2=80=AFAM Yajun Wu <yajunw@nvidia.com> wro=
-te:
-> >>
-> >> On 10/6/2023 6:34 PM, Michael S. Tsirkin wrote:
-> >>> External email: Use caution opening links or attachments
-> >>>
-> >>>
-> >>> On Fri, Oct 06, 2023 at 11:47:55AM +0200, Hanna Czenczek wrote:
-> >>>> On 06.10.23 11:26, Michael S. Tsirkin wrote:
-> >>>>> On Fri, Oct 06, 2023 at 11:15:55AM +0200, Hanna Czenczek wrote:
-> >>>>>> On 06.10.23 10:45, Michael S. Tsirkin wrote:
-> >>>>>>> On Fri, Oct 06, 2023 at 09:48:14AM +0200, Hanna Czenczek wrote:
-> >>>>>>>> On 05.10.23 19:15, Michael S. Tsirkin wrote:
-> >>>>>>>>> On Thu, Oct 05, 2023 at 01:08:52PM -0400, Stefan Hajnoczi wrote=
-:
-> >>>>>>>>>> On Wed, Oct 04, 2023 at 02:58:57PM +0200, Hanna Czenczek wrote=
-:
-> >>>>>>>>>>> There is no clearly defined purpose for the virtio status byt=
-e in
-> >>>>>>>>>>> vhost-user: For resetting, we already have RESET_DEVICE; and =
-for virtio
-> >>>>>>>>>>> feature negotiation, we have [GS]ET_FEATURES.  With the REPLY=
-_ACK
-> >>>>>>>>>>> protocol extension, it is possible for SET_FEATURES to return=
- errors
-> >>>>>>>>>>> (SET_PROTOCOL_FEATURES may be called before SET_FEATURES).
-> >>>>>>>>>>>
-> >>>>>>>>>>> As for implementations, SET_STATUS is not widely implemented.=
-  dpdk does
-> >>>>>>>>>>> implement it, but only uses it to signal feature negotiation =
-failure.
-> >>>>>>>>>>> While it does log reset requests (SET_STATUS 0) as such, it e=
-ffectively
-> >>>>>>>>>>> ignores them, in contrast to RESET_OWNER (which is deprecated=
-, and today
-> >>>>>>>>>>> means the same thing as RESET_DEVICE).
-> >>>>>>>>>>>
-> >>>>>>>>>>> While qemu superficially has support for [GS]ET_STATUS, it do=
-es not
-> >>>>>>>>>>> forward the guest-set status byte, but instead just makes it =
-up
-> >>>>>>>>>>> internally, and actually completely ignores what the back-end=
- returns,
-> >>>>>>>>>>> only using it as the template for a subsequent SET_STATUS to =
-add single
-> >>>>>>>>>>> bits to it.  Notably, after setting FEATURES_OK, it never rea=
-ds it back
-> >>>>>>>>>>> to see whether the flag is still set, which is the only way i=
-n which
-> >>>>>>>>>>> dpdk uses the status byte.
-> >>>>>>>>>>>
-> >>>>>>>>>>> As-is, no front-end or back-end can rely on the other side ha=
-ndling this
-> >>>>>>>>>>> field in a useful manner, and it also provides no practical u=
-se over
-> >>>>>>>>>>> other mechanisms the vhost-user protocol has, which are more =
-clearly
-> >>>>>>>>>>> defined.  Deprecate it.
-> >>>>>>>>>>>
-> >>>>>>>>>>> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-> >>>>>>>>>>> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> >>>>>>>>>>> ---
-> >>>>>>>>>>>       docs/interop/vhost-user.rst | 28 +++++++++++++++++++++-=
-------
-> >>>>>>>>>>>       1 file changed, 21 insertions(+), 7 deletions(-)
-> >>>>>>>>>> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> >>>>>>>>> SET_STATUS is the only way to signal failure to acknowledge FEA=
-TURES_OK.
-> >>>>>>>>> The fact current backends never check errors does not mean they=
- never
-> >>>>>>>>> will. So no, not applying this.
-> >>>>>>>> Can this not be done with REPLY_ACK?  I.e., with the following m=
-essage
-> >>>>>>>> order:
-> >>>>>>>>
-> >>>>>>>> 1. GET_FEATURES to find out whether VHOST_USER_F_PROTOCOL_FEATUR=
-ES is
-> >>>>>>>> present
-> >>>>>>>> 2. GET_PROTOCOL_FEATURES to hopefully get VHOST_USER_PROTOCOL_F_=
-REPLY_ACK
-> >>>>>>>> 3. SET_PROTOCOL_FEATURES to set VHOST_USER_PROTOCOL_F_REPLY_ACK
-> >>>>>>>> 4. SET_FEATURES with need_reply
-> >>>>>>>>
-> >>>>>>>> If not, the problem is that qemu has sent SET_STATUS 0 for a whi=
-le when the
-> >>>>>>>> vCPUs are stopped, which generally seems to request a device res=
-et.  If we
-> >>>>>>>> don=E2=80=99t state at least that SET_STATUS 0 is to be ignored,=
- back-ends that will
-> >>>>>>>> implement SET_STATUS later may break with at least these qemu ve=
-rsions.  But
-> >>>>>>>> documenting that a particular use of the status byte is to be ig=
-nored would
-> >>>>>>>> be really strange.
-> >>>>>>>>
-> >>>>>>>> Hanna
-> >>>>>>> Hmm I guess. Though just following virtio spec seems cleaner to m=
-e...
-> >>>>>>> vhost-user reconfigures the state fully on start.
-> >>>>>> Not the internal device state, though.  virtiofsd has internal sta=
-te, and
-> >>>>>> other devices like vhost-gpu back-ends would probably, too.
-> >>>>>>
-> >>>>>> Stefan has recently sent a series
-> >>>>>> (https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg00709=
-.html) to
-> >>>>>> put the reset (RESET_DEVICE) into virtio_reset() (when we really n=
-eed a
-> >>>>>> reset).
-> >>>>>>
-> >>>>>> I really don=E2=80=99t like our current approach with the status b=
-yte. Following the
-> >>>>>> virtio specification to me would mean that the guest directly cont=
-rols this
-> >>>>>> byte, which it does not.  qemu makes up values as it deems appropr=
-iate, and
-> >>>>>> this includes sending a SET_STATUS 0 when the guest is just paused=
-, i.e.
-> >>>>>> when the guest really doesn=E2=80=99t want a device reset.
-> >>>>>>
-> >>>>>> That means that qemu does not treat this as a virtio device field =
-(because
-> >>>>>> that would mean exposing it to the guest driver), but instead trea=
-ts it as
-> >>>>>> part of the vhost(-user) protocol.  It doesn=E2=80=99t feel right =
-to me that we use
-> >>>>>> a virtio-defined feature for communication on the vhost level, i.e=
-. between
-> >>>>>> front-end and back-end, and not between guest driver and device.  =
-I think
-> >>>>>> all vhost-level protocol features should be fully defined in the v=
-host-user
-> >>>>>> specification, which REPLY_ACK is.
-> >>>>> Hmm that makes sense. Maybe we should have done what stefan's patch
-> >>>>> is doing.
-> >>>>>
-> >>>>> Do look at the original commit that introduced it to understand why
-> >>>>> it was added.
-> >>>> I don=E2=80=99t understand why this was added to the stop/cont code,=
- though.  If it
-> >>>> is time consuming to make these changes, why are they done every tim=
-e the VM
-> >>>> is paused
-> >>>> and resumed?  It makes sense that this would be done for the initial
-> >>>> configuration (where a reset also wouldn=E2=80=99t hurt), but here i=
-t seems wrong.
-> >>>>
-> >>>> (To be clear, a reset in the stop/cont code is wrong, because it bre=
-aks
-> >>>> stateful devices.)
-> >>>>
-> >>>> Also, note the newer commits 6f8be29ec17 and c3716f260bf.  The reset=
- as
-> >>>> originally introduced was wrong even for non-stateful devices, becau=
-se it
-> >>>> occurred before we fetched the state (vring indices) so we could res=
-tore it
-> >>>> later.  I don=E2=80=99t know how 923b8921d21 was tested, but if the =
-back-end used
-> >>>> for testing implemented SET_STATUS 0 as a reset, it could not have s=
-urvived
-> >>>> either migration or a stop/cont in general, because the vring indice=
-s would
-> >>>> have been reset to 0.
-> >>>>
-> >>>> What I=E2=80=99m saying is, 923b8921d21 introduced SET_STATUS calls =
-that broke all
-> >>>> devices that would implement them as per virtio spec, and even today=
- it=E2=80=99s
-> >>>> broken for stateful devices.  The mentioned performance issue is lik=
-ely
-> >>>> real, but we can=E2=80=99t address it by making up SET_STATUS calls =
-that are wrong.
-> >>>>
-> >>>> I concede that I didn=E2=80=99t think about DRIVER_OK.  Personally, =
-I would do all
-> >>>> final configuration that would happen upon a DRIVER_OK once the firs=
-t vring
-> >>>> is started (i.e. receives a kick).  That has the added benefit of be=
-ing
-> >>>> asynchronous because it doesn=E2=80=99t block any vhost-user message=
-s (which are
-> >>>> synchronous, and thus block downtime).
-> >>>>
-> >>>> Hanna
-> >>> For better or worse kick is per ring. It's out of spec to start rings
-> >>> that were not kicked but I guess you could do configuration ...
-> >>> Seems somewhat asymmetrical though.
-> >>>
-> >>> Let's wait until next week, hopefully Yajun Wu will answer.
-> >> The main motivation of adding VHOST_USER_SET_STATUS is to let backend
-> >> DPDK know
-> >> when DRIVER_OK bit is valid. It's an indication of all VQ configuratio=
-n
-> >> has sent,
-> >> otherwise DPDK has to rely on first queue pair is ready, then
-> >> receiving/applying
-> >> VQ configuration one by one.
-> >>
-> >> During live migration, configuring VQ one by one is very time consumin=
-g.
-> >> For VIRTIO
-> >> net vDPA, HW needs to know how many VQs are enabled to set
-> >> RSS(Receive-Side Scaling).
-> >>
-> >> If you don=E2=80=99t want SET_STATUS message, backend can remove proto=
-col
-> >> feature bit
-> >> VHOST_USER_PROTOCOL_F_STATUS.
-> >> DPDK is ignoring SET_STATUS 0, but using GET_VRING_BASE to do device
-> >> close/reset.
-> > This is incorrect, resetting the device on GET_VRING_BASE breaks
-> > the stop/cont. Since you don't want to reset the VQs on stop/cont.
-> Sorry for the misunderstanding, dpdk vhost backend framework doesn't
-> have RESET concept(only device level .dev_conf and .dev_close). On
-> receiving DRIVER_OK does dev_conf, on receiving GET_VRING_BASE does
-> dev_close. For every VM suspend/resume, dpdk issues dev_close then dev_co=
-nf.
+> Sure, but we could have more explicitly different BIT properties
+> ("x-pixman-fill", "x-pixman-blit", "x-pixman-overlap-blit").
 
-(sorry I did not explain myself well)
-I meant that resetting the VQs upon receiveng GET_VRING_BASE makes the
-backend to fail if qemu continues after a "stop". I notice that in dpdk,
-when it receives a GET_VRING_BASE[0], it calls 'vring_invalidate(dev, vq);'=
-[1],
-resetting the VQ[2], doing that is incorrect.
+That was also proposed when I've added it and concluded that we don't want 
+that. This is a debug option for experts and adding a lot of experimental 
+options for that that are also harder to type is not an improvement so 
+having just a value is fine.
 
-[0] https://github.com/DPDK/dpdk/blob/main/lib/vhost/vhost_user.c#L2135
-[1] https://github.com/DPDK/dpdk/blob/main/lib/vhost/vhost_user.c#L2201
-[2] https://github.com/DPDK/dpdk/blob/main/lib/vhost/vhost.c#L580
-
-> >
-> >> I'm not involved in discussion about adding SET_STATUS in Vhost
-> >> protocol. This feature
-> >> is essential for vDPA(same as vhost-vdpa implements VHOST_VDPA_SET_STA=
-TUS).
-> >>
-> >> Thanks,
-> >> Yajun
-> >>>>>> Now, we could hand full control of the status byte to the guest, a=
-nd that
-> >>>>>> would make me content.  But I feel like that doesn=E2=80=99t reall=
-y work, because
-> >>>>>> qemu needs to intercept the status byte anyway (it needs to know w=
-hen there
-> >>>>>> is a reset, probably wants to know when the device is configured, =
-etc.), so
-> >>>>>> I don=E2=80=99t think having the status byte in vhost-user really =
-gains us much when
-> >>>>>> qemu could translate status byte changes to/from other vhost-user =
-commands.
-> >>>>>>
-> >>>>>> Hanna
-> >>>>> well it intercepts it but I think it could pass it on unchanged.
-> >>>>>
-> >>>>>
-> >>>>>>> I guess symmetry was the
-> >>>>>>> point. So I don't see why SET_STATUS 0 has to be ignored.
-> >>>>>>>
-> >>>>>>>
-> >>>>>>> SET_STATUS was introduced by:
-> >>>>>>>
-> >>>>>>> commit 923b8921d210763359e96246a58658ac0db6c645
-> >>>>>>> Author: Yajun Wu <yajunw@nvidia.com>
-> >>>>>>> Date:   Mon Oct 17 14:44:52 2022 +0800
-> >>>>>>>
-> >>>>>>>         vhost-user: Support vhost_dev_start
-> >>>>>>>
-> >>>>>>> CC the author.
-> >>>>>>>
-> >> _______________________________________________
-> >> Virtio-fs mailing list
-> >> Virtio-fs@redhat.com
-> >> https://listman.redhat.com/mailman/listinfo/virtio-fs
-> >
-> >
-> > --
-> > German
-> >
->
-
-
---=20
-German
-
+Regards,
+BALATON Zoltan
+--3866299591-812731649-1696932543=:4084--
 
