@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C197BF9AB
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCB47BF9AA
 	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:27:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqAsw-0002OK-1Z; Tue, 10 Oct 2023 07:26:46 -0400
+	id 1qqAsl-0002KP-H4; Tue, 10 Oct 2023 07:26:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qqAsU-0002Jn-Hw
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:26:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qqAsS-0007v7-43
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qqAsT-0002Jf-Vg
  for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:26:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qqAsS-0007v8-42
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:26:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696937174;
+ s=mimecast20190719; t=1696937175;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wTlWqAl92D+KeJgtqgmm+rYZKDOQrQh8OTn02bbWjP0=;
- b=g10U3K4l6QMj71Vn1fUM0cOINJhhIs5f3rS1P+ahpmHo3JsWZqsxc+ELTNpuMdzxH93eU1
- tpPrMd7bc7KiJxU/OHsNBmIZbt4sFsMGxtNHaVq6a2e6Q7QBmP+y+FpliS5lK5zxXseBsm
- QlUce9FFsTJpdISldQ+4Qn1mZ+FNv8A=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-518-XSJt5E7dPkSdFqfewUThxg-1; Tue, 10 Oct 2023 07:26:13 -0400
-X-MC-Unique: XSJt5E7dPkSdFqfewUThxg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=sYyO7R6f+1P6cWmXipRFq71+IvlSYKMJwwRRjZWkQBU=;
+ b=gzFkPdF9xzgkppQdAFOi2/7e85I3f1FUoJdt/29iwch6NS5Ku+0+z3TpO+SihJuPqdeP9h
+ Z2qjqNyaBFSo0fBJ2NTpRmOG5avm2duSNoKkjrGlZMnGmIc6IgQbab1eWSk/rsQm6zsiK4
+ cWPBWZO5C9wrjFFt5yjYGSp6+VmA338=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-503-bIFKuWt_PKK22Tnt-WnzQw-1; Tue, 10 Oct 2023 07:26:13 -0400
+X-MC-Unique: bIFKuWt_PKK22Tnt-WnzQw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7590181163A
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7CD092999B24
  for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 11:26:13 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.193.95])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 34E251006B6E;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3262B40C6F79;
  Tue, 10 Oct 2023 11:26:13 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 8CD8B18009A9; Tue, 10 Oct 2023 13:26:10 +0200 (CEST)
+ id 9E74518009B8; Tue, 10 Oct 2023 13:26:10 +0200 (CEST)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 2/6] tests/acpi: enable tests/data/acpi/q35/DSDT.mmio64 updates
-Date: Tue, 10 Oct 2023 13:26:06 +0200
-Message-ID: <20231010112610.2618091-3-kraxel@redhat.com>
+Subject: [PULL 3/6] seabios: update submodule to git snapshot
+Date: Tue, 10 Oct 2023 13:26:07 +0200
+Message-ID: <20231010112610.2618091-4-kraxel@redhat.com>
 In-Reply-To: <20231010112610.2618091-1-kraxel@redhat.com>
 References: <20231010112610.2618091-1-kraxel@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,18 +79,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+git shortlog
+------------
+
+Gerd Hoffmann (7):
+      disable array bounds warning
+      better kvm detection
+      detect physical address space size
+      move 64bit pci window to end of address space
+      be less conservative with the 64bit pci io window
+      qemu: log reservations in fw_cfg e820 table
+      check for e820 conflict
+
+José Martínez (1):
+      Fix high memory zone initialization in CSM mode
+
+Lukas Stockner via SeaBIOS (1):
+      virtio-blk: Fix integer overflow for large max IO sizes
+
+Mark Cave-Ayland (3):
+      esp-scsi: flush FIFO before sending SCSI command
+      esp-scsi: check for INTR_BS/INTR_FC instead of STAT_TC for command completion
+      esp-scsi: handle non-DMA SCSI commands with no data phase
+
+Niklas Cassel via SeaBIOS (1):
+      ahci: handle TFES irq correctly
+
+Tony Titus via SeaBIOS (1):
+      Increase BUILD_MAX_E820 to 128
+
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- 1 file changed, 1 insertion(+)
+ roms/seabios | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8bf4..a251b20a1bdd 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/q35/DSDT.mmio64",
+diff --git a/roms/seabios b/roms/seabios
+index ea1b7a073390..1e1da7a96300 160000
+--- a/roms/seabios
++++ b/roms/seabios
+@@ -1 +1 @@
+-Subproject commit ea1b7a0733906b8425d948ae94fba63c32b1d425
++Subproject commit 1e1da7a963007d03a4e0e9a9e0ff17990bb1608d
 -- 
 2.41.0
 
