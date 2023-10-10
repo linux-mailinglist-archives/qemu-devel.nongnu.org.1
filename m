@@ -2,110 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9707BF764
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 059417BF786
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:39:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq95z-0005RC-Pd; Tue, 10 Oct 2023 05:32:07 -0400
+	id 1qq9CY-0000hs-SR; Tue, 10 Oct 2023 05:38:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq95W-0003ea-Nw
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:43 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qq9CE-0000c1-H6
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:38:34 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq95T-0008WU-D7
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:38 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-99bdcade7fbso925207466b.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:31:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qq9C9-0001cF-4j
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:38:31 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-694f3444f94so4442674b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:38:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696930293; x=1697535093; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tk9A1YgmUEhePfUQuP/u39GWl+8N7M6SEkDP1DuJALQ=;
- b=VhZ8do2bP6xfOUFxDBsbFeEin7qokPoTz5QPOLAxYYhwD3Uj3fy38CeYpUlhoeZCuo
- wEnAedFGpo27uo+Rd7d5XKjHp5+em10wStTjDMGE2+wpuJLC5AArF0c9rMw/3zu8zFqO
- B/nJYkyL1O5pyB+619vEzO/Cls/xr+SRjf3Wl3n5wsit6NtqKAomiffK6FFP9QXckqKT
- bDoPX8E0zPlCBOYzlxh1o0KXgZZU5/ti87xnIgLjlN53fX9wLzglmq/hH1lQ/OGFELnl
- DSVDe44Nm8GqB6buCzekYz4fzsDqVlnUFLdFTBXDfeB4INY9OV9t2MtPmWTMFgr2oJBE
- iIaQ==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696930705; x=1697535505;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HoAO4MU3+HX/pu5nZVUw6NryiBkQ92zJRW3EbT9zs2M=;
+ b=b3j/fYn/TdQPraqhdTqXTZ1As8rgOVPc8fGQ/vsM1lT38dJJ/0oq7nIrM3BHUI7TXE
+ PiDYdk3V7a/vvih82I+zMEUiFBFKacqywpjJKNk6+o8yNmBVM/3mrfheazA7n0nXdAxH
+ 0YgjWTjmyfenD5SGd8vpaOcO2heuCGdWyuQP5jCz3hTFZ5Cw746lk7iiynuQEpHQXlYD
+ SNg17wtPsPyNp7QWtqhO3GWss14ntwkVg67MGqK7s5rAVQRR6I7Qnz+JAOCvaKXS967U
+ E6vXKvUqLWxGjZ8rYtWNo9dvb+VU8JqPOO3sl5vNDYk3GKadzVLZ346OmBu1MdQFBVB/
+ 2ftQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696930293; x=1697535093;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tk9A1YgmUEhePfUQuP/u39GWl+8N7M6SEkDP1DuJALQ=;
- b=Zii5TnQqQkCZo/EV9bDwIGRmCWpnvD2Et+rZQ0g7LTSw/xdSK3QQ9BhUFbw0y8TGg5
- gd4VHCCnr7IxFLFE4wdqC7/JdQTUH7NPsTYt66Ly3a3dwuxOT5obSHMlecxvGt0+kdl7
- /pOhxe7WVXeypxy6PauyoTBrvB2tI729iTHhpK3YB7TwONEdZ0pBa6UyS9INNT0ccVg1
- EsDYzhkKWuZGmjMO7P45sXdb+7QcvavFIXmrm4vz/k1YfT/ALhiJPX6Cudo5uT97QLKV
- hNbScF1FVNdfMdYVA1gbdcd1bpP6lOfgKenkkq3U45OCtPM6wZ4qigJA5e0JqNlsOD8R
- GuTw==
-X-Gm-Message-State: AOJu0YxKoRnjBEBphH3DqsI3G3N2c9nrWE+40XHS7bIW4x4ERzlkd3b2
- lKgOBGW87gfbBAzNdLPhb0dUJrHaEMWgqFeHhq4PRQ==
-X-Google-Smtp-Source: AGHT+IFOpvn1bq+HZtOFG3YNbF9S9Bc+tQ7EO922hz6RaZcVMWA8UuJKxuTKxVdWNUqRz7Q1iGo0Sw==
-X-Received: by 2002:a17:906:3119:b0:9ae:546f:d9ad with SMTP id
- 25-20020a170906311900b009ae546fd9admr15298793ejx.18.1696930293589; 
- Tue, 10 Oct 2023 02:31:33 -0700 (PDT)
-Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
- [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- e5-20020a17090681c500b00993a37aebc5sm8090599ejx.50.2023.10.10.02.31.29
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 02:31:33 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Song Gao <gaosong@loongson.cn>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-arm@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Bin Meng <bin.meng@windriver.com>, Yanan Wang <wangyanan55@huawei.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Marek Vasut <marex@denx.de>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <laurent@vivier.eu>, Stafford Horne <shorne@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Chris Wulff <crwulff@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-Subject: [PATCH 18/18] target/sparc: Make SPARC_CPU common to new
- SPARC32_CPU/SPARC64_CPU types
-Date: Tue, 10 Oct 2023 11:29:00 +0200
-Message-ID: <20231010092901.99189-19-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231010092901.99189-1-philmd@linaro.org>
-References: <20231010092901.99189-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1696930705; x=1697535505;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HoAO4MU3+HX/pu5nZVUw6NryiBkQ92zJRW3EbT9zs2M=;
+ b=iFpK06HlyM4a9j4qhtLzdzeAH/aywyn+Hs3XWY9YE0BbTQCvXKlJpHLWNJq/dWAWqI
+ PVTwd9q4qjn3hA6dN3oI7q/W/a5h7UxLY4j+5HMBgGloEc/TVTVEujV0STMl1We1dhxn
+ HlUC8NyIsKIaPO3mitJZBUQPcANg9B9K2Y8f77BGqFzCqMU9s2Cm3Qmvu8Mk5hqBq3Uw
+ wpyaj+4PLGVSrCLcCvjxulTVDItDbJLM8VHbV6tjVE0REN/PF845x+CwdEKHRC3Zh9m8
+ /DrewFj+fHH2LGsugklJ2tAdOYi+NMfCNCW9LRLrwmhodVTL4jUCYyL4jXIK3i1VP1dx
+ i54Q==
+X-Gm-Message-State: AOJu0YyVZTTbAmk6lI7XpYouv/YDhL5pG4DIs70ieXSVqN7Gzzrtn4LC
+ IBMFOlzFD4dQrNy0f2JlF9kkTw==
+X-Google-Smtp-Source: AGHT+IFLaMgQENjLvJkfk7pzKNhxG7HGIKa0urAQS112N7v4/1GLtegSoR+l/iVqe08cbr+zzgP60w==
+X-Received: by 2002:a05:6a20:ce8f:b0:152:cb38:5b47 with SMTP id
+ if15-20020a056a20ce8f00b00152cb385b47mr17028892pzb.55.1696930705544; 
+ Tue, 10 Oct 2023 02:38:25 -0700 (PDT)
+Received: from [157.82.206.10] ([157.82.206.10])
+ by smtp.gmail.com with ESMTPSA id
+ it9-20020a056a00458900b0069346777241sm8066145pfb.97.2023.10.10.02.38.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Oct 2023 02:38:24 -0700 (PDT)
+Message-ID: <ab7ffc78-fe3d-4e99-b3c6-e66f7b0c7e18@daynix.com>
+Date: Tue, 10 Oct 2023 18:38:15 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] tests/qtest: Use qtest_get_base_arch()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-ppc@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-arm@nongnu.org, qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Fam Zheng <fam@euphon.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
+ Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Jeuk Kim
+ <jeuk20.kim@samsung.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Amit Shah <amit@kernel.org>
+References: <20231010074952.79165-1-philmd@linaro.org>
+ <20231010074952.79165-5-philmd@linaro.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20231010074952.79165-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,93 +110,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"target/foo/cpu-qom.h" can not use any target specific definitions.
+On 2023/10/10 16:49, Philippe Mathieu-Daudé wrote:
+> Additionally use qtest_get_arch_bits() when relevant.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Currently "target/sparc/cpu-qom.h" defines TYPE_SPARC_CPU
-depending on the sparc(32)/sparc64 build type. This doesn't
-scale in a heterogeneous context where we need to access both
-types concurrently.
-
-In order to do that, introduce the new SPARC32_CPU / SPARC64_CPU
-types, both inheriting a common TYPE_SPARC_CPU base type.
-
-Keep the current CPU types registered in sparc_register_cpudef_type()
-as 32 or 64-bit, depending on the binary built.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/sparc/cpu-qom.h |  9 ++++-----
- target/sparc/cpu.h     |  3 +++
- target/sparc/cpu.c     | 12 +++++++++++-
- 3 files changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/target/sparc/cpu-qom.h b/target/sparc/cpu-qom.h
-index 86b24a254a..d08fbd4ddc 100644
---- a/target/sparc/cpu-qom.h
-+++ b/target/sparc/cpu-qom.h
-@@ -23,13 +23,12 @@
- #include "hw/core/cpu.h"
- #include "qom/object.h"
- 
--#ifdef TARGET_SPARC64
--#define TYPE_SPARC_CPU "sparc64-cpu"
--#else
- #define TYPE_SPARC_CPU "sparc-cpu"
--#endif
-+#define TYPE_SPARC32_CPU "sparc32-cpu"
-+#define TYPE_SPARC64_CPU "sparc64-cpu"
- 
--OBJECT_DECLARE_CPU_TYPE(SPARCCPU, SPARCCPUClass, SPARC_CPU)
-+OBJECT_DECLARE_CPU_TYPE(SPARC32CPU, SPARCCPUClass, SPARC32_CPU)
-+OBJECT_DECLARE_CPU_TYPE(SPARC64CPU, SPARCCPUClass, SPARC64_CPU)
- 
- #define SPARC_CPU_TYPE_SUFFIX "-" TYPE_SPARC_CPU
- #define SPARC_CPU_TYPE_NAME(model) model SPARC_CPU_TYPE_SUFFIX
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index 924e83b9ce..0f94e5a442 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -12,6 +12,9 @@
- #define TARGET_DPREGS 32
- #endif
- 
-+/* Abstract QOM SPARC CPU, not exposed to other targets */
-+OBJECT_DECLARE_CPU_TYPE(SPARCCPU, SPARCCPUClass, SPARC_CPU)
-+
- /*#define EXCP_INTERRUPT 0x100*/
- 
- /* Windowed register indexes.  */
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 1e66413e94..7d060ba488 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -934,6 +934,12 @@ static const TypeInfo sparc_cpu_types[] = {
-         .abstract       = true,
-         .class_size     = sizeof(SPARCCPUClass),
-         .class_init     = sparc_cpu_class_init,
-+    }, {
-+        .name           = TYPE_SPARC32_CPU,
-+        .parent         = TYPE_SPARC_CPU,
-+    }, {
-+        .name           = TYPE_SPARC64_CPU,
-+        .parent         = TYPE_SPARC_CPU,
-     }
- };
- 
-@@ -950,7 +956,11 @@ static void sparc_register_cpudef_type(const struct sparc_def_t *def)
-     char *typename = sparc_cpu_type_name(def->name);
-     TypeInfo ti = {
-         .name = typename,
--        .parent = TYPE_SPARC_CPU,
-+#ifdef TARGET_SPARC64
-+        .parent = TYPE_SPARC64_CPU,
-+#else
-+        .parent = TYPE_SPARC32_CPU,
-+#endif
-         .class_init = sparc_cpu_cpudef_class_init,
-         .class_data = (void *)def,
-     };
--- 
-2.41.0
-
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
