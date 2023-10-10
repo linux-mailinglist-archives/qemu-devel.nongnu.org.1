@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41E07BF7CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD437BF7D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:49:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq9L0-00037h-MR; Tue, 10 Oct 2023 05:47:38 -0400
+	id 1qq9M2-0004KO-F4; Tue, 10 Oct 2023 05:48:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qq9Ky-000372-40; Tue, 10 Oct 2023 05:47:36 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qq9Kv-00032c-7U; Tue, 10 Oct 2023 05:47:35 -0400
-Received: from lhrpeml100001.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S4WFn1191z6J9NZ;
- Tue, 10 Oct 2023 17:44:29 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100001.china.huawei.com (7.191.160.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 10 Oct 2023 10:47:28 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 10 Oct 2023 10:47:28 +0100
-To: Shaoqin Huang <shahuang@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "will@kernel.org"
- <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "gshan@redhat.com"
- <gshan@redhat.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
- <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
- <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
- <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
- <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
- <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
- "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
- <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
- "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
- <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "lixianglai@loongson.cn" <lixianglai@loongson.cn>
-Subject: RE: [PATCH RFC V2 03/37] hw/arm/virt: Move setting of common CPU
- properties in a function
-Thread-Topic: [PATCH RFC V2 03/37] hw/arm/virt: Move setting of common CPU
- properties in a function
-Thread-Index: AQHZ8GEaEyUsIrH+KUCDDRLt+0W0MrBCmYeAgAA5DPA=
-Date: Tue, 10 Oct 2023 09:47:28 +0000
-Message-ID: <1aa6ddfdb874451a9446d1e6347f60c0@huawei.com>
-References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-4-salil.mehta@huawei.com>
- <3632ee24-47f7-ae68-8790-26eb2cf9950b@redhat.com>
-In-Reply-To: <3632ee24-47f7-ae68-8790-26eb2cf9950b@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.174.234]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq9Ly-0004EG-OT
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:48:39 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq9Lv-0003FR-8k
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:48:37 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-9ae75ece209so985887666b.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:48:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696931310; x=1697536110; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NjRgnkdnq+Xnm7xoAs4BcpBKYlROU4PW+5xYq+lCe5E=;
+ b=NHkx0fpY+g2SXpzF46OEB0QB5s7Yp71KmRXc0SuGieKEGgQzXyiitndXa+xqdskkCv
+ o4iR/a+BAQaYkfxPOlIzE3Y0L6l0oeopTomrbu2m7M4SbyqcokYgg4CFMGmJCpLwjPSY
+ oozwtIbuPz+CHYcE8dqEVbufHHbFAVZEI+0vSPBsTH+gL3yrhoPWs+mHQA3Io3qrERDW
+ mQJBrqED6zgcE2sEa50odMOUFIsEI50PHoRCUtfJjr50H0QamvStCz0ZuA83EjxQnMFQ
+ MdsZNCKrwlVCmVMIad9dnlNvycAvcOTBUFoqvazzOi/fQnMIXDJwvuvoTiD4ivyQI+gx
+ WyGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696931310; x=1697536110;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NjRgnkdnq+Xnm7xoAs4BcpBKYlROU4PW+5xYq+lCe5E=;
+ b=NJnHwAqXed27nu81QtZMtwyBl/wCo33PTZGPPjZTKhdOx6Kc1ENl9CS/vlt6X21YuJ
+ pycGMVpoR6neePp6mkl4BjxmXc1T7kcLR2Dr62SvNpSBUVFBKWXwVZ2vgI3wrARwr5mY
+ RJ/Cw25/Z6lIxUoWDZ3U32ybs8FXA8BwPqGRKchtii1rbgSLLNHLL14P4ItVlz02LfLJ
+ C1hvrlMG48hjtB9+sHHrzGuoFen3sA+fuH5Kvw3DeDd9OT+a4/wSYuTpepPjlCmEKjGA
+ lshs87DVyly7W5mnuNXSyeZJFzxlDZkr4lIEqKZgjzre4gJpaABi9n0DI6E9olxP5aer
+ byJQ==
+X-Gm-Message-State: AOJu0YzvWIO68X6bU2zmetozT38V8HeOKz4lek1YGW+bhbcUATK16syx
+ WARx5AXo7nuq9xntFp9sw5kNzQ==
+X-Google-Smtp-Source: AGHT+IFEHsBCz24KEtiGpKDSCOQa3M3jGui/uPzOG8OKTM6Jtu+TAvshZuUSfV6Lvug6hP8HxLs/nQ==
+X-Received: by 2002:a17:907:9724:b0:9ae:50e3:7e40 with SMTP id
+ jg36-20020a170907972400b009ae50e37e40mr18923706ejc.52.1696931309984; 
+ Tue, 10 Oct 2023 02:48:29 -0700 (PDT)
+Received: from [192.168.69.115]
+ (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
+ by smtp.gmail.com with ESMTPSA id
+ i11-20020a170906a28b00b009737b8d47b6sm8137657ejz.203.2023.10.10.02.48.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Oct 2023 02:48:29 -0700 (PDT)
+Message-ID: <6fcc827a-02fb-7fad-a853-5bcdf9aaa7a1@linaro.org>
+Date: Tue, 10 Oct 2023 11:48:27 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/4] tests/libqtest: Introduce qtest_get_arch_bits()
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
+ qemu-block@nongnu.org, Laurent Vivier <lvivier@redhat.com>
+References: <20231010074952.79165-1-philmd@linaro.org>
+ <20231010074952.79165-2-philmd@linaro.org>
+ <e108d282-5eec-4430-1a10-8cf3170bb18c@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <e108d282-5eec-4430-1a10-8cf3170bb18c@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,59 +94,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgU2hhb3FpbiwNCg0KPiBGcm9tOiBTaGFvcWluIEh1YW5nIDxzaGFodWFuZ0ByZWRoYXQuY29t
-Pg0KPiBTZW50OiBUdWVzZGF5LCBPY3RvYmVyIDEwLCAyMDIzIDc6NDcgQU0NCj4gDQo+IE9uIDkv
-MjYvMjMgMTg6MDQsIFNhbGlsIE1laHRhIHZpYSB3cm90ZToNCj4gPiBGYWN0b3Igb3V0IENQVSBw
-cm9wZXJ0aWVzIGNvZGUgY29tbW9uIGZvciB7aG90LGNvbGR9LXBsdWdnZWQgQ1BVcy4gVGhpcyBh
-bGxvd3MNCj4gPiBjb2RlIHJldXNlLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogU2FsaWwgTWVo
-dGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+ID4gLS0tDQo+ID4gICBody9hcm0vdmlydC5j
-ICAgICAgICAgfCAyMjAgKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0t
-DQo+ID4gICBpbmNsdWRlL2h3L2FybS92aXJ0LmggfCAgIDQgKw0KPiA+ICAgMiBmaWxlcyBjaGFu
-Z2VkLCAxNDAgaW5zZXJ0aW9ucygrKSwgODQgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0t
-Z2l0IGEvaHcvYXJtL3ZpcnQuYyBiL2h3L2FybS92aXJ0LmMNCj4gPiBpbmRleCA1N2ZlOTdjMjQy
-Li4wZWI2YmY1YTE4IDEwMDY0NA0KPiA+IC0tLSBhL2h3L2FybS92aXJ0LmMNCj4gPiArKysgYi9o
-dy9hcm0vdmlydC5jDQo+ID4gQEAgLTIwMTgsMTYgKzIwMTgsMTMwIEBAIHN0YXRpYyB2b2lkIHZp
-cnRfY3B1X3Bvc3RfaW5pdChWaXJ0TWFjaGluZVN0YXRlDQo+ICp2bXMsIE1lbW9yeVJlZ2lvbiAq
-c3lzbWVtKQ0KPiA+ICAgICAgIH0NCj4gPiAgIH0NCj4gPg0KPiA+ICtzdGF0aWMgdm9pZCB2aXJ0
-X2NwdV9zZXRfcHJvcGVydGllcyhPYmplY3QgKmNwdW9iaiwgY29uc3QgQ1BVQXJjaElkDQo+ICpj
-cHVfc2xvdCwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRXJyb3Ig
-KiplcnJwKQ0KPiA+ICt7DQo+IA0KPiBIaSBTYWxpbCwNCj4gDQo+IFRoaXMgcGF0Y2ggc2VlbXMg
-YnJlYWsgdGhlIGNvZGUsIHRoZSB2aXJ0X2NwdV9zZXRfcHJvcGVydGllcygpIGZ1bmN0aW9uDQo+
-IGJlaW5nIGRlZmluZWQgYnV0IG5vdCB1c2VkIGluIHRoaXMgcGF0Y2gsIHNvIHRob3NlIG9yaWdp
-bmFsIGNvZGUgaW4gdGhlDQo+IG1hY2h2aXJ0X2luaXQoKSBqdXN0IG5vdCB3b3JrLg0KDQoNCkdv
-b2QgY2F0Y2guIA0KDQpCVFcsIHRoZSBjaGFuZ2UgaW4gdGhpcyBwYXRjaCBpcyBpbnRlbnRpb25h
-bCBhcyBJIHdhbnRlZCB0byBjbGVhcmx5IHNob3cNCnRoZSBtb3ZlLiBCdXQgSSB3aWxsIGZpeCB0
-aGUgY29tcGlsYXRpb24gYnJlYWsgaW4gdGhpcyBwYXRjaCB3aXRoIHNvbWUNCnRyaWNrLg0KDQpU
-aGFua3MgZm9yIGlkZW50aWZ5aW5nIQ0KU2FsaWwuDQoNCg0KPiBXZSBzaG91bGQgdXNlIHRoaXMg
-ZnVuY3Rpb24gaW4gdGhlIG1hY2h2aXJ0X2luaXQoKS4NCj4gDQo+ID4gKyAgICBNYWNoaW5lU3Rh
-dGUgKm1zID0gTUFDSElORShxZGV2X2dldF9tYWNoaW5lKCkpOw0KPiA+ICsgICAgVmlydE1hY2hp
-bmVTdGF0ZSAqdm1zID0gVklSVF9NQUNISU5FKG1zKTsNCj4gPiArICAgIEVycm9yICpsb2NhbF9l
-cnIgPSBOVUxMOw0KPiA+ICsgICAgVmlydE1hY2hpbmVDbGFzcyAqdm1jOw0KPiA+ICsNCj4gPiAr
-ICAgIHZtYyA9IFZJUlRfTUFDSElORV9HRVRfQ0xBU1MobXMpOw0KPiA+ICsNCj4gPiArICAgIC8q
-IG5vdywgc2V0IHRoZSBjcHUgb2JqZWN0IHByb3BlcnR5IHZhbHVlcyAqLw0KPiA+ICsgICAgbnVt
-YV9jcHVfcHJlX3BsdWcoY3B1X3Nsb3QsIERFVklDRShjcHVvYmopLCAmbG9jYWxfZXJyKTsNCj4g
-PiArICAgIGlmIChsb2NhbF9lcnIpIHsNCj4gPiArICAgICAgICBnb3RvIG91dDsNCj4gPiArICAg
-IH0NCj4gPiArDQo+ID4gKyAgICBvYmplY3RfcHJvcGVydHlfc2V0X2ludChjcHVvYmosICJtcC1h
-ZmZpbml0eSIsIGNwdV9zbG90LT5hcmNoX2lkLCBOVUxMKTsNCj4gPiArDQoNClsuLi5dDQoNCj4g
-PiArICAgIC8qDQo+ID4gKyAgICAgKiBSRkM6IFF1ZXN0aW9uOiB0aGlzIG11c3Qgb25seSBiZSBj
-YWxsZWQgZm9yIHRoZSBob3RwbHVnZ2VkIGNwdXMuIEZvciB0aGUNCj4gPiArICAgICAqIGNvbGQg
-Ym9vdGVkIHNlY29uZGFyeSBjcHVzIHRoaXMgaXMgYmVpbmcgdGFrZW4gY2FyZSBpbiBhcm1fbG9h
-ZF9rZXJuZWwoKQ0KPiA+ICsgICAgICogaW4gYm9vdC5jLiBQZXJoYXBzIHdlIHNob3VsZCByZW1v
-dmUgdGhhdCBjb2RlIG5vdz8NCj4gPiArICAgICAqLw0KPiA+ICsgICAgaWYgKHZtcy0+cHNjaV9j
-b25kdWl0ICE9IFFFTVVfUFNDSV9DT05EVUlUX0RJU0FCTEVEKSB7DQo+ID4gKyAgICAgICAgb2Jq
-ZWN0X3Byb3BlcnR5X3NldF9pbnQoY3B1b2JqLCAicHNjaS1jb25kdWl0Iiwgdm1zLT5wc2NpX2Nv
-bmR1aXQsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTlVMTCk7DQo+ID4g
-Kw0KPiA+ICsgICAgICAgIC8qIFNlY29uZGFyeSBDUFVzIHN0YXJ0IGluIFBTQ0kgcG93ZXJlZC1k
-b3duIHN0YXRlICovDQo+ID4gKyAgICAgICAgaWYgKENQVShjcHVvYmopLT5jcHVfaW5kZXggPiAw
-KSB7DQo+ID4gKyAgICAgICAgICAgIG9iamVjdF9wcm9wZXJ0eV9zZXRfYm9vbChjcHVvYmosICJz
-dGFydC1wb3dlcmVkLW9mZiIsIHRydWUsIE5VTEwpOw0KPiA+ICsgICAgICAgIH0NCj4gPiArICAg
-IH0NCj4gDQo+IEJlc2lkZXMsIGlmIHRoaXMgcGF0Y2ggaXMganVzdCBmYWN0b3Igb3V0IHRoZSBj
-b2RlLCB3ZSBjb3VsZCBtb3ZlIHRoZQ0KPiBjaGVjayBwc2NpX2NvbmR1aXQgdG8gbGF0ZXIgcGF0
-Y2gsIGFuZCBrZWVwIHRoaXMgcGF0Y2ggY2xlYW4uDQoNCkkgZG8gbm90IHNlZSB0aGUgcmVhc29u
-IHdoeSB3ZSBzaG91bGQgZG8gdGhhdD8NCg0KDQpUaGFua3MNClNhbGlsLg0KDQoNCg==
+On 10/10/23 11:46, Thomas Huth wrote:
+> On 10/10/2023 09.49, Philippe Mathieu-Daudé wrote:
+>> Add a method to return the architecture bits (currently 8/32/64).
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   tests/qtest/libqtest.h |  8 ++++++++
+>>   tests/qtest/libqtest.c | 21 +++++++++++++++++++++
+>>   2 files changed, 29 insertions(+)
+
+>> +unsigned qtest_get_arch_bits(void)
+>> +{
+>> +    static const char *const arch64[] = {
+>> +        "aarch64", "hppa", "x86_64", "loongarch64", "mips64",
+>> +        "mips64el", "ppc64", "riscv64", "s390x", "sparc64",
+>> +    };
+>> +    const char *arch = qtest_get_arch();
+>> +
+>> +    if (!strcmp(arch, "avr")) {
+> 
+> Just a matter of taste, but I prefer g_str_equal(), that's easier to read.
+> 
+>> +        return 8;
+>> +    }
+>> +
+>> +    for (unsigned i = 0; i < ARRAY_SIZE(arch64); i++) {
+>> +        if (!strcmp(arch, arch64[i])) {
+>> +            return 64;
+>> +        }
+>> +    }
+>> +
+>> +    return 32;
+>> +}
+> 
+> Since this function might get called multiple times, would it make sense 
+> to cache the value? I.e.:
+> 
+>    static const unsigned bits;
+> 
+>    if (!bits) {
+>        ... do all the magic to find out the right bits ...
+>    }
+> 
+>    return bits;
+> 
+> ?
+
+Fine by me, I'll do as suggested in v2.
+
 
