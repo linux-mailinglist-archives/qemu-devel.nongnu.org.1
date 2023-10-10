@@ -2,68 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3077BFF03
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 048AA7BFF0B
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:21:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqDZr-0006Ev-FR; Tue, 10 Oct 2023 10:19:15 -0400
+	id 1qqDbe-0007Jl-2c; Tue, 10 Oct 2023 10:21:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qqDZo-0006EZ-Az
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:19:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qqDbW-0007Ie-BW; Tue, 10 Oct 2023 10:20:58 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qqDZm-0007EC-M9
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:19:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696947549;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bCyv2eSk+eQaFmvDeOdT+5+cc+3nqJtd03wiD0WHySk=;
- b=DfbM1pBydxNzlc6C4VToyd0ec2976hhla2nRWp3wLMY+5B0oMafXyYs8xW6BAD9p70b65Q
- t2tSsTZ9vIx+SA+iywlv0i3qU5UxM15eBE/iKWaGsRnuOlwNDD7euU8y0sMxz0U08McnbC
- KX+5hW3fs1XjJjFelLcXmavlaCcJQYg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-592-2RTtn2gXPLmRUEat1pi-2g-1; Tue, 10 Oct 2023 10:19:06 -0400
-X-MC-Unique: 2RTtn2gXPLmRUEat1pi-2g-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E26FA85C1A5;
- Tue, 10 Oct 2023 14:19:05 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9E03640C6CA0;
- Tue, 10 Oct 2023 14:19:04 +0000 (UTC)
-Date: Tue, 10 Oct 2023 10:19:03 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Jeuk Kim <jeuk20.kim@gmail.com>
-Cc: qemu-devel@nongnu.org, jeuk20.kim@samsung.com, pbonzini@redhat.com,
- qemu-block@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
- bmeng.cn@gmail.com
-Subject: Re: [PATCH] hw/ufs: Fix incorrect register fields
-Message-ID: <20231010141903.GD1731363@fedora>
-References: <99bfcf6de904357e6b07084b99193bb16309d46a.1696914208.git.jeuk20.kim@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qqDbN-0007gN-Tq; Tue, 10 Oct 2023 10:20:53 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 9B55128F93;
+ Tue, 10 Oct 2023 17:20:49 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id A94722E1E4;
+ Tue, 10 Oct 2023 17:20:45 +0300 (MSK)
+Message-ID: <e52cd038-e0e4-4049-a374-70c6b8926f24@tls.msk.ru>
+Date: Tue, 10 Oct 2023 17:20:45 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="8S0oJ/oxuWE4LFeJ"
-Content-Disposition: inline
-In-Reply-To: <99bfcf6de904357e6b07084b99193bb16309d46a.1696914208.git.jeuk20.kim@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cpus: Remove unused smp_cores/smp_threads declarations
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
+ Like Xu <like.xu@linux.intel.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20231009090952.48207-1-philmd@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20231009090952.48207-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,79 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+09.10.2023 12:09, Philippe Mathieu-Daudé:
+> Commit a5e0b33119 ("vl.c: Replace smp global variables
+> with smp machine properties") removed the last uses of
+> the smp_cores / smp_threads variables but forgot to
+> remove their declarations. Do it now.
 
---8S0oJ/oxuWE4LFeJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
-On Tue, Oct 10, 2023 at 02:11:13PM +0900, Jeuk Kim wrote:
-> From: Jeuk Kim <jeuk20.kim@samsung.com>
->=20
-> This patch fixes invalid ufs register fields.
-> This fixes an issue reported by Bin Meng that
-> caused ufs to fail over riscv.
->=20
-> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
+Applied to my trivial-patches branch.
+
+/mjt
+
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  include/block/ufs.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-
-Hi,
-Please feel free to send a pull request with your unreviewed Coverity fixes=
- and
-this reviewed fix.
-
-Enough time has passed for the community to review the Coverity fixes
-and since no one did, you can submit them.
-
-I am confident in your work and will not review future UFS patches due
-to time constraints.
-
-Thanks,
-Stefan
-
->=20
-> diff --git a/include/block/ufs.h b/include/block/ufs.h
-> index fd884eb8ce..7631a5af10 100644
-> --- a/include/block/ufs.h
-> +++ b/include/block/ufs.h
-> @@ -111,14 +111,14 @@ REG32(UECT, offsetof(UfsReg, uect))
->  REG32(UECDME, offsetof(UfsReg, uecdme))
->  REG32(UTRIACR, offsetof(UfsReg, utriacr))
->  REG32(UTRLBA, offsetof(UfsReg, utrlba))
-> -    FIELD(UTRLBA, UTRLBA, 9, 22)
-> +    FIELD(UTRLBA, UTRLBA, 10, 22)
->  REG32(UTRLBAU, offsetof(UfsReg, utrlbau))
->  REG32(UTRLDBR, offsetof(UfsReg, utrldbr))
->  REG32(UTRLCLR, offsetof(UfsReg, utrlclr))
->  REG32(UTRLRSR, offsetof(UfsReg, utrlrsr))
->  REG32(UTRLCNR, offsetof(UfsReg, utrlcnr))
->  REG32(UTMRLBA, offsetof(UfsReg, utmrlba))
-> -    FIELD(UTMRLBA, UTMRLBA, 9, 22)
-> +    FIELD(UTMRLBA, UTMRLBA, 10, 22)
->  REG32(UTMRLBAU, offsetof(UfsReg, utmrlbau))
->  REG32(UTMRLDBR, offsetof(UfsReg, utmrldbr))
->  REG32(UTMRLCLR, offsetof(UfsReg, utmrlclr))
-> --=20
-> 2.34.1
->=20
-
---8S0oJ/oxuWE4LFeJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUlXVcACgkQnKSrs4Gr
-c8jZdgf8D2PEO5nwwBLNUvYqalLxg0rDlQsK3g0QFUuWHjwKcgo0x3UNT6iMYewM
-3BzMaBTqFM8+42FcGF0BFRIEF7oyjHC7GoiEMtzslo7KoFW9DywFYkyAVWkhnyI6
-fZ1CH8n9766dbCVUiS6iYGKVQH0QIGMAolSD/YkiL3I658sHzxqUrPzMGWYGdMES
-Fb187nqCF1dbbeHlTy1gXiYQEQp0H+cMuU0YmXj3vbwYFYn/sSENxxdBmhvDtCKD
-Wjud2PsvHY8ioYTN0sWZnBFQA80rPkz1wqtKXj41sH/3nFpIr9LMKuMheLda6TvX
-11THw5AULQJ3pVceCYxcKRng6eitCA==
-=1dHs
------END PGP SIGNATURE-----
-
---8S0oJ/oxuWE4LFeJ--
+>   include/sysemu/cpus.h | 7 -------
+>   1 file changed, 7 deletions(-)
+> 
+> diff --git a/include/sysemu/cpus.h b/include/sysemu/cpus.h
+> index 0535a4c68a..b4a566cfe7 100644
+> --- a/include/sysemu/cpus.h
+> +++ b/include/sysemu/cpus.h
+> @@ -50,11 +50,4 @@ void cpu_synchronize_all_post_reset(void);
+>   void cpu_synchronize_all_post_init(void);
+>   void cpu_synchronize_all_pre_loadvm(void);
+>   
+> -#ifndef CONFIG_USER_ONLY
+> -/* vl.c */
+> -/* *-user doesn't have configurable SMP topology */
+> -extern int smp_cores;
+> -extern int smp_threads;
+> -#endif
+> -
+>   #endif
 
 
