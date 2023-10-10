@@ -2,93 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC237BF7E1
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4235C7BF7EB
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:54:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq9OR-0007iI-Pd; Tue, 10 Oct 2023 05:51:11 -0400
+	id 1qq9Qm-0001Z8-1M; Tue, 10 Oct 2023 05:53:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qq9OQ-0007du-0t
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:51:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qq9Qk-0001YU-84; Tue, 10 Oct 2023 05:53:34 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qq9OL-00045m-Q2
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:51:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696931465;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P2Q/YWBsCpx2xy/0EQhZzEhe2g3WyDk5e5sPtL7OVlA=;
- b=DQzLeYXSe7wad2xvS1nYMxvtRvtjvZV6rYwNLh69onuTnbXhtm7SFLbno/ACLVqLdSn6Xi
- Cxhtc/RkKLrSefczyGuNhFzugsrRbYu9V1neqo71vHkOcX9WJcOPpdSUrshTxiYX2E1+pS
- R7EjzNN1C/cJpz5AxMK8Tew6o5Sk47I=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-hhpOU60uNpqSPqVprBD0xA-1; Tue, 10 Oct 2023 05:51:04 -0400
-X-MC-Unique: hhpOU60uNpqSPqVprBD0xA-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-77435bbb71dso579843385a.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:51:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696931463; x=1697536263;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P2Q/YWBsCpx2xy/0EQhZzEhe2g3WyDk5e5sPtL7OVlA=;
- b=KrNv0dug7EKZ+2t9RGpTzQbI0UxelPcNUbN3k0qeH7wprhGO38CuV8oQUhr0kO2Sr5
- F1RIuZqSO5Ws9jhLflQUHcQ1mPFW2Qiwofv7G9kJxPMTS+lYVGZzPZD/nQPPN77eNDCd
- AW0SYpYdtNcGGMxjGTyGoKZ2LEocLApLokLF4ASUAXQh8NP/2isTKsOEDL81QBybsJ4O
- X3khNX6odhoiwDhuYAti0sOpCh1uuvjd5DXlTPhKv86cCM7/QrOqcDnn9WpRwzoaKqbs
- xdDbgxxhr8d3X+JTZWPMQGvC1bqeZS+RJFXYGolmpW5F1owfGbRrvKm+zyT2ZckYFPST
- PXrQ==
-X-Gm-Message-State: AOJu0Yyk5wn/CgDFLGyA9mxIVFnNga7JV9DZ1huzgsee9cCTIVu2p0WX
- uFDplumAVRKntPFqNQAeJZOBFhNh3K2qBZmrPxaZwDwPHn8jo8SKf3vGgEBn7VnwIddDNMvpERX
- tMpnXoI+Ss5S0VOA=
-X-Received: by 2002:a05:620a:99c:b0:774:a9b:d62e with SMTP id
- x28-20020a05620a099c00b007740a9bd62emr15961276qkx.46.1696931463513; 
- Tue, 10 Oct 2023 02:51:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwggATuSm4vio0Z8MHRN+J/xGr4pMkH5MDB4gH2zVITYAi6iLdad3jMAbZdsCHoiCWKg+0Kw==
-X-Received: by 2002:a05:620a:99c:b0:774:a9b:d62e with SMTP id
- x28-20020a05620a099c00b007740a9bd62emr15961268qkx.46.1696931463236; 
- Tue, 10 Oct 2023 02:51:03 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
- [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- a12-20020a05620a102c00b007759a81d88esm4174875qkk.50.2023.10.10.02.51.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 02:51:02 -0700 (PDT)
-Message-ID: <df3fee4b-ebc1-77d2-a436-a7baf3317a42@redhat.com>
-Date: Tue, 10 Oct 2023 11:50:58 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qq9Qh-0004RH-CM; Tue, 10 Oct 2023 05:53:34 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 6C0267456AC;
+ Tue, 10 Oct 2023 11:52:35 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 287767456AA; Tue, 10 Oct 2023 11:52:35 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 269E87456A7;
+ Tue, 10 Oct 2023 11:52:35 +0200 (CEST)
+Date: Tue, 10 Oct 2023 11:52:35 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@gmail.com>
+cc: qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ "open list:sam460ex" <qemu-ppc@nongnu.org>
+Subject: Re: [PATCH v2 16/18] hw/sm501: allow compiling without PIXMAN
+In-Reply-To: <CAJ+F1C+w3mQY2B3A=-6TQyyCT9kZT2EEprnLygK7t7rKLSwBvw@mail.gmail.com>
+Message-ID: <4ea37bd5-7278-b0e7-6cd4-652ac3eb0ae7@eik.bme.hu>
+References: <20230918135206.2739222-1-marcandre.lureau@redhat.com>
+ <20230918135206.2739222-17-marcandre.lureau@redhat.com>
+ <433e2db8-e85e-d1ce-e54f-80edadd71643@eik.bme.hu>
+ <CAJ+F1C+w3mQY2B3A=-6TQyyCT9kZT2EEprnLygK7t7rKLSwBvw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 3/4] tests/libqtest: Introduce qtest_get_base_arch()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, Laurent Vivier <lvivier@redhat.com>
-References: <20231010074952.79165-1-philmd@linaro.org>
- <20231010074952.79165-4-philmd@linaro.org>
- <c3b6a3a6-a320-f2f5-c200-da5b11e18c86@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <c3b6a3a6-a320-f2f5-c200-da5b11e18c86@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-1196405666-1696931555=:4084"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,87 +65,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/2023 10.42, Philippe Mathieu-Daudé wrote:
-> On 10/10/23 09:49, Philippe Mathieu-Daudé wrote:
->> While qtest_get_arch() returns the target architecture name,
->> such "i386" or "x86_64", qtest_get_base_arch() return the
->> "base" (or real underlying) architecture, in this example
->> that is "x86".
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-1196405666-1696931555=:4084
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Tue, 10 Oct 2023, Marc-André Lureau wrote:
+> Hi Zoltan
+>
+> On Mon, Sep 18, 2023 at 9:59 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
 >>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   tests/qtest/libqtest.h |  7 +++++++
->>   tests/qtest/libqtest.c | 28 ++++++++++++++++++++++++++++
->>   2 files changed, 35 insertions(+)
+>> On Mon, 18 Sep 2023, marcandre.lureau@redhat.com wrote:
+>>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>>
+>>> Drop the "x-pixman" property and use fallback path in such case.
+>>>
+>>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>> ---
+>>> hw/display/sm501.c | 19 ++++++++++++++++---
+>>> 1 file changed, 16 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/hw/display/sm501.c b/hw/display/sm501.c
+>>> index 0eecd00701..a897c82f04 100644
+>>> --- a/hw/display/sm501.c
+>>> +++ b/hw/display/sm501.c
+>>> @@ -730,7 +730,6 @@ static void sm501_2d_operation(SM501State *s)
+>>>     switch (cmd) {
+>>>     case 0: /* BitBlt */
+>>>     {
+>>> -        static uint32_t tmp_buf[16384];
+>>>         unsigned int src_x = (s->twoD_source >> 16) & 0x01FFF;
+>>>         unsigned int src_y = s->twoD_source & 0xFFFF;
+>>>         uint32_t src_base = s->twoD_source_base & 0x03FFFFFF;
+>>> @@ -828,9 +827,11 @@ static void sm501_2d_operation(SM501State *s)
+>>>                 de = db + (width + (height - 1) * dst_pitch) * bypp;
+>>>                 overlap = (db < se && sb < de);
+>>>             }
+>>> +#ifdef CONFIG_PIXMAN
+>>>             if (overlap && (s->use_pixman & BIT(2))) {
+>>>                 /* pixman can't do reverse blit: copy via temporary */
+>>>                 int tmp_stride = DIV_ROUND_UP(width * bypp, sizeof(uint32_t));
+>>> +                static uint32_t tmp_buf[16384];
+>>>                 uint32_t *tmp = tmp_buf;
+>>>
+>>>                 if (tmp_stride * sizeof(uint32_t) * height > sizeof(tmp_buf)) {
+>>> @@ -860,9 +861,12 @@ static void sm501_2d_operation(SM501State *s)
+>>>                                        dst_pitch * bypp / sizeof(uint32_t),
+>>>                                        8 * bypp, 8 * bypp, src_x, src_y,
+>>>                                        dst_x, dst_y, width, height);
+>>> -            } else {
+>>> +            } else
+>>> +#else
+>>> +            {
+>>>                 fallback = true;
+>>>             }
+>>> +#endif
+>>>             if (fallback) {
+>>>                 uint8_t *sp = s->local_mem + src_base;
+>>>                 uint8_t *d = s->local_mem + dst_base;
+>>> @@ -894,10 +898,13 @@ static void sm501_2d_operation(SM501State *s)
+>>>             color = cpu_to_le16(color);
+>>>         }
+>>>
+>>> +#ifdef CONFIG_PIXMAN
+>>>         if (!(s->use_pixman & BIT(0)) || (width == 1 && height == 1) ||
+>>>             !pixman_fill((uint32_t *)&s->local_mem[dst_base],
+>>>                          dst_pitch * bypp / sizeof(uint32_t), 8 * bypp,
+>>> -                         dst_x, dst_y, width, height, color)) {
+>>> +                         dst_x, dst_y, width, height, color))
+>>> +#endif
+>>> +        {
+>>>             /* fallback when pixman failed or we don't want to call it */
+>>>             uint8_t *d = s->local_mem + dst_base;
+>>>             unsigned int x, y, i;
+>>> @@ -2038,7 +2045,9 @@ static void sm501_realize_sysbus(DeviceState *dev, Error **errp)
+>>>
+>>> static Property sm501_sysbus_properties[] = {
+>>>     DEFINE_PROP_UINT32("vram-size", SM501SysBusState, vram_size, 0),
+>>> +#ifdef CONFIG_PIXMAN
+>>>     DEFINE_PROP_UINT8("x-pixman", SM501SysBusState, state.use_pixman, 7),
+>>> +#endif
 >>
->> diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
->> index 1e1b42241d..54071e74ec 100644
->> --- a/tests/qtest/libqtest.h
->> +++ b/tests/qtest/libqtest.h
->> @@ -654,6 +654,13 @@ bool qtest_big_endian(QTestState *s);
->>    */
->>   const char *qtest_get_arch(void);
->> +/**
->> + * qtest_get_base_arch:
->> + *
->> + * Returns: The base architecture for the QEMU executable under test.
->> + */
->> +const char *qtest_get_base_arch(void);
->> +
->>   /**
->>    * qtest_get_arch_bits:
->>    *
->> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
->> index a643a6309c..51cc92af21 100644
->> --- a/tests/qtest/libqtest.c
->> +++ b/tests/qtest/libqtest.c
->> @@ -925,6 +925,34 @@ const char *qtest_get_arch(void)
->>       return end + 1;
->>   }
->> +const char *qtest_get_base_arch(void)
->> +{
->> +    static const struct {
->> +        const char *const arch;
->> +        const char *const base;
->> +    } basearch[] = {
->> +        { "aarch64", "arm" },
->> +        { "i386", "x86" },
->> +        { "loongarch64", "loongarch" },
->> +        { "mipsel", "mips" },
->> +        { "mips64", "mips" },
->> +        { "mips64el", "mips" },
->> +        { "ppc64", "ppc" },
->> +        { "riscv32", "riscv" },
->> +        { "riscv64", "riscv" },
->> +        { "sparc64", "sparc" },
->> +        { "x86_64", "x86" },
->> +    };
->> +    const char *arch = qtest_get_arch();
->> +
->> +    for (unsigned i = 0; i < ARRAY_SIZE(basearch); i++) {
->> +        if (!strcmp(arch, basearch[i].arch)) {
->> +            return basearch[i].base;
->> +        }
->> +    }
->> +    g_assert_not_reached();
-> 
-> Sorry, I forgot to commit this change:
-> 
-> -- >8 --
-> --- a/tests/qtest/libqtest.c
-> +++ b/tests/qtest/libqtest.c
-> @@ -950,7 +950,8 @@ const char *qtest_get_base_arch(void)
->               return basearch[i].base;
->           }
->       }
-> -    g_assert_not_reached();
-> +
-> +    return arch;
->   }
+>> Do we want to omit the property when compiled without pixman? I think we
+>> could leave it there and it would just be ignored without pixman but the
+>> same command line would still work and need less ifdefs in code.
+>
+> That's a reasonable idea to me. At least, it can handle x-pixman=0
+> fine when !CONFIG_PIXMAN then.
+>
+> Btw, looking at it, it seems it should be DEFINE_PROP_BIT instead. I
+> will add a TODO :)
 
-I'd maybe also do a caching here, as suggested in the first patch.
+Erm, a bit can be 1 or 0 but the default value of it is 7. It's not a 
+single but but a bitmask the enable/disable pisman for different 
+operations separately so I think it can't be _BIT.
 
-  Thomas
+Regards,
+BALATON Zoltan
 
-
+>>
+>> Otherwise:
+>>
+>> Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>
+>> Regards,
+>> BALATON Zoltan
+>>
+>>>     DEFINE_PROP_END_OF_LIST(),
+>>> };
+>>>
+>>> @@ -2126,7 +2135,9 @@ static void sm501_realize_pci(PCIDevice *dev, Error **errp)
+>>>
+>>> static Property sm501_pci_properties[] = {
+>>>     DEFINE_PROP_UINT32("vram-size", SM501PCIState, vram_size, 64 * MiB),
+>>> +#ifdef CONFIG_PIXMAN
+>>>     DEFINE_PROP_UINT8("x-pixman", SM501PCIState, state.use_pixman, 7),
+>>> +#endif
+>>>     DEFINE_PROP_END_OF_LIST(),
+>>> };
+>>>
+>>> @@ -2169,8 +2180,10 @@ static void sm501_pci_class_init(ObjectClass *klass, void *data)
+>>>
+>>> static void sm501_pci_init(Object *o)
+>>> {
+>>> +#ifdef CONFIG_PIXMAN
+>>>     object_property_set_description(o, "x-pixman", "Use pixman for: "
+>>>                                     "1: fill, 2: blit, 4: overlap blit");
+>>> +#endif
+>>> }
+>>>
+>>> static const TypeInfo sm501_pci_info = {
+>>>
+>
+>
+>
+> --
+> Marc-André Lureau
+>
+>
+--3866299591-1196405666-1696931555=:4084--
 
