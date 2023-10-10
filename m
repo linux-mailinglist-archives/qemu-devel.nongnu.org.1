@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F8D7BF768
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 095ED7BF75D
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:32:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq95L-0002qp-Op; Tue, 10 Oct 2023 05:31:27 -0400
+	id 1qq95I-0002VL-F1; Tue, 10 Oct 2023 05:31:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94v-0001N5-V0
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:03 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94z-0001Sz-8k
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:09 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94f-0008DV-S0
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:30:58 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-9b9ad5760b9so919267166b.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:30:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq94v-0008Er-L4
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:31:05 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-99c1c66876aso981933666b.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:30:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696930244; x=1697535044; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696930253; x=1697535053; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tGDIRmDFCC3SzHQp/xiOV97Tov37+momJ53r+jvT974=;
- b=xQd8MQoDOWF0fREbiwL/c5Kj62Jpbr9o33zDUjg1Rb8/MefzGDvunMEM3S4RltVzWu
- iuUY4Y6AxeZqXTRoaMehNG2v3/4YsyaVtwRuy/gZfr0oM2OK5ENTJU3dYzNe1rZW68Iv
- FDSBMGicR8G0j+hq6zcp4+iaDETtdJG8yfs+6R3oFmO3qBIIsn/zGLsI0iwATbQ6P+7q
- PL4ddaEbpVafWkzVxm/6eXsfVzcUNX4UBWGI7S/tt/hDqLLPcDIFKQ6KsuuyAOuHbmCO
- e5sIC7sQQ8oeK3F4n2B7bzPkxnjrYX872fnW5u7479lvVjMgyK1jN3LaK+IMC9kwfHvq
- nbnQ==
+ bh=BMy5FMNiGQxFcppEwI4sVWirnEfoYMzZHwDGKyKUC/Q=;
+ b=vQAeosbcx/gWGLPn5elfBxfxK6Lfxbm1mUZsba/ISTIyf+z5UgNIcLhU/fxtJqMQ9j
+ hFCkNOQnjq5oqQgQyfdOrgpt6pkIijrfxp3bRpHyWTejLXz3qs8xYFIerYHTx2QlkeQh
+ F9EHqRNDOWqiG6SwOtyizs42mUJpCRUcF5RstWRqCCP5yP9P9Vl5Spqa9Hz/u/rqxb5B
+ WC1TdIRSS9JUvVryq80rJ8VZfTDHl5Wzti2fKH7Y5WiB82avek5oGBSU7sDjCVbs+ncK
+ NQ8sIUbeVW5jgNvQDbD+G5QeulTPpTP6l847fNOKPf4eNMRU23lnfohoGy9vFb25wUB6
+ L+ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696930244; x=1697535044;
+ d=1e100.net; s=20230601; t=1696930253; x=1697535053;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tGDIRmDFCC3SzHQp/xiOV97Tov37+momJ53r+jvT974=;
- b=qJ54Lx8i8ekf5c+7BgWEBrw75eUXvk5zdu9AotTHunjjEqhhePrhO5UmrFimoPK4fa
- JeQFkmRANI/otzAz2vhgaJex+ozzcIC0DBUQXGq4Rva6iiFyVoF0W46K3Ubr67sVcdGs
- QlLXeumX13avXSFELSslGWFrpYyAKtNRQOayyt5vtf/3vKJlpt1mu5cgDy7SHOV7xZWV
- eJuaVHo1ZQ17nWSsCwZy6pX9d2QtZW7lXVJnAr4owRJZJHE3+mCkNa5hIDl+cV4HqIKQ
- 0FRAwvDKmsZCvi5ydJDLwFFDzH8yXDODKU8gTg8aGfKkprmeyrr8+0jpoLF02ksGfu7y
- I8eQ==
-X-Gm-Message-State: AOJu0Yye6fp8c1hrNSixzCgFy1zMbRT6NbZFYlToGBtXyIkNt7If+oAb
- yNyNMSZTmIDcJqaLgvz5AFz+mi/KK/3M4LHkwCjqiw==
-X-Google-Smtp-Source: AGHT+IH7XgVjSNOW5i+EWuhhgWfn0b9q76ni2kt3phZYbOaNn2gkvmaK4ov4hf6aPkbs+5Ce4X2x/g==
-X-Received: by 2002:a17:906:8a77:b0:9b3:308:d046 with SMTP id
- hy23-20020a1709068a7700b009b30308d046mr15417914ejc.61.1696930244444; 
- Tue, 10 Oct 2023 02:30:44 -0700 (PDT)
+ bh=BMy5FMNiGQxFcppEwI4sVWirnEfoYMzZHwDGKyKUC/Q=;
+ b=Kz9JukRBE62GoMy/QzIRNyQb1FnTtdyFtQ6/RFAMXkTmbQAgTutlUlEWs188RPkh8w
+ CjP7KLjeLVYAf7DwtBrDq258PNlstEbzcNvIMeFdpp1r55XUnfHqiAYkKyjLdyu2oiXp
+ zpF0wzY8UJ2A390smUmj5l17PL9zBsm3oazyrVE/ElN2uCdftqkAnb41rjEqL+pTceqP
+ Ew8TZTjSw5kDznMrS6Vd5omUTTW3YCYCQbs7yL34QY8n17emSOKhQFitvTNEA80bMtv+
+ 07XuRqUJFsJHdSemZH58PxkOoK6ebtQSDl+wnXcAb7Ofi89D/Nx8ueBnHIL4UAi3sGki
+ 67YQ==
+X-Gm-Message-State: AOJu0YxPJS9toFrakqQA18eGQNGVWhnHECoeJjnCZ1DkzI8wksF71iSl
+ qP1jIG4OvU78lZg4HuxbqvKLaPTkj1ygPi25ah4+SQ==
+X-Google-Smtp-Source: AGHT+IEA1P05XN7A2LA4aM/MmOnDbytHPWm6V7vwZW2u/xeBW+g03SVjvc2XsxbRioCdrqY7bsjZKA==
+X-Received: by 2002:a17:906:23e2:b0:9b9:b12c:133d with SMTP id
+ j2-20020a17090623e200b009b9b12c133dmr12410325ejg.53.1696930252760; 
+ Tue, 10 Oct 2023 02:30:52 -0700 (PDT)
 Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
  [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- st12-20020a170907c08c00b009b9f87b34b6sm6753332ejc.189.2023.10.10.02.30.40
+ op13-20020a170906bced00b009a13fdc139fsm8181867ejb.183.2023.10.10.02.30.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 02:30:43 -0700 (PDT)
+ Tue, 10 Oct 2023 02:30:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -87,18 +87,18 @@ Cc: David Hildenbrand <david@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-Subject: [PATCH 12/18] target/mips: Declare CPU QOM types using DEFINE_TYPES()
+Subject: [PATCH 13/18] target/ppc: Declare CPU QOM types using DEFINE_TYPES()
  macro
-Date: Tue, 10 Oct 2023 11:28:54 +0200
-Message-ID: <20231010092901.99189-13-philmd@linaro.org>
+Date: Tue, 10 Oct 2023 11:28:55 +0200
+Message-ID: <20231010092901.99189-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231010092901.99189-1-philmd@linaro.org>
 References: <20231010092901.99189-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -131,52 +131,81 @@ the type_register_static() to ease further reviews.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/cpu.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ target/ppc/cpu_init.c | 52 +++++++++++++++++++------------------------
+ 1 file changed, 23 insertions(+), 29 deletions(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index a0023edd43..83ee54f766 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -595,17 +595,21 @@ static void mips_cpu_class_init(ObjectClass *c, void *data)
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 40fe14a6c2..055436c141 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7408,39 +7408,34 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
  #endif /* CONFIG_TCG */
  }
  
--static const TypeInfo mips_cpu_type_info = {
--    .name = TYPE_MIPS_CPU,
+-static const TypeInfo ppc_cpu_type_info = {
+-    .name = TYPE_POWERPC_CPU,
 -    .parent = TYPE_CPU,
--    .instance_size = sizeof(MIPSCPU),
--    .instance_align = __alignof(MIPSCPU),
--    .instance_init = mips_cpu_initfn,
+-    .instance_size = sizeof(PowerPCCPU),
+-    .instance_align = __alignof__(PowerPCCPU),
+-    .instance_init = ppc_cpu_instance_init,
+-    .instance_finalize = ppc_cpu_instance_finalize,
 -    .abstract = true,
--    .class_size = sizeof(MIPSCPUClass),
--    .class_init = mips_cpu_class_init,
-+static const TypeInfo mips_cpu_types[] = {
+-    .class_size = sizeof(PowerPCCPUClass),
+-    .class_init = ppc_cpu_class_init,
++static const TypeInfo ppc_cpu_types[] = {
 +    {
-+        .name           = TYPE_MIPS_CPU,
++        .name           = TYPE_POWERPC_CPU,
 +        .parent         = TYPE_CPU,
-+        .instance_size  = sizeof(MIPSCPU),
-+        .instance_align = __alignof(MIPSCPU),
-+        .instance_init  = mips_cpu_initfn,
 +        .abstract       = true,
-+        .class_size     = sizeof(MIPSCPUClass),
-+        .class_init     = mips_cpu_class_init,
-+    }
++        .instance_size  = sizeof(PowerPCCPU),
++        .instance_align = __alignof__(PowerPCCPU),
++        .instance_init  = ppc_cpu_instance_init,
++        .instance_finalize = ppc_cpu_instance_finalize,
++        .class_size     = sizeof(PowerPCCPUClass),
++        .class_init     = ppc_cpu_class_init,
+ #ifndef CONFIG_USER_ONLY
+-    .interfaces = (InterfaceInfo[]) {
+-          { TYPE_INTERRUPT_STATS_PROVIDER },
+-          { }
++        .interfaces     = (InterfaceInfo[]) {
++              { TYPE_INTERRUPT_STATS_PROVIDER },
++              { }
++        },
++#endif
++    },
++#ifndef CONFIG_USER_ONLY
++    {
++        .name           = TYPE_PPC_VIRTUAL_HYPERVISOR,
++        .parent         = TYPE_INTERFACE,
++        .class_size     = sizeof(PPCVirtualHypervisorClass),
+     },
+ #endif
  };
  
-+DEFINE_TYPES(mips_cpu_types)
-+
- static void mips_cpu_cpudef_class_init(ObjectClass *oc, void *data)
- {
-     MIPSCPUClass *mcc = MIPS_CPU_CLASS(oc);
-@@ -630,7 +634,6 @@ static void mips_cpu_register_types(void)
- {
-     int i;
+-#ifndef CONFIG_USER_ONLY
+-static const TypeInfo ppc_vhyp_type_info = {
+-    .name = TYPE_PPC_VIRTUAL_HYPERVISOR,
+-    .parent = TYPE_INTERFACE,
+-    .class_size = sizeof(PPCVirtualHypervisorClass),
+-};
+-#endif
+-
+-static void ppc_cpu_register_types(void)
+-{
+-    type_register_static(&ppc_cpu_type_info);
+-#ifndef CONFIG_USER_ONLY
+-    type_register_static(&ppc_vhyp_type_info);
+-#endif
+-}
++DEFINE_TYPES(ppc_cpu_types)
  
--    type_register_static(&mips_cpu_type_info);
-     for (i = 0; i < mips_defs_number; i++) {
-         mips_register_cpudef_type(&mips_defs[i]);
-     }
+ void ppc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+@@ -7635,4 +7630,3 @@ void ppc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ #undef RGPL
+ #undef RFPL
+ }
+-type_init(ppc_cpu_register_types)
 -- 
 2.41.0
 
