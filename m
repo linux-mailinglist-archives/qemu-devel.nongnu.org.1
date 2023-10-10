@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A9F7BF4E6
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 580657BF4EC
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 09:54:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq7YI-0004eH-Kp; Tue, 10 Oct 2023 03:53:14 -0400
+	id 1qq7YJ-0004wu-Bh; Tue, 10 Oct 2023 03:53:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7Y8-0004dB-MX; Tue, 10 Oct 2023 03:53:04 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qq7YA-0004db-Vt; Tue, 10 Oct 2023 03:53:07 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qq7Y5-0005HA-5W; Tue, 10 Oct 2023 03:53:04 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-69fc829d7b1so2321962b3a.1; 
- Tue, 10 Oct 2023 00:53:00 -0700 (PDT)
+ id 1qq7Y8-0005HT-PN; Tue, 10 Oct 2023 03:53:06 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-692d2e8c003so4670019b3a.1; 
+ Tue, 10 Oct 2023 00:53:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696924379; x=1697529179; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696924383; x=1697529183; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rFyMnwFgzOm/mAvbUFxth7p6TWc0PhYI/tCOyvFn+Sc=;
- b=a3ESwaVW32mmYUz688o+kNMVF0LQNcin97ZQan53BptSWFse5XapTPcOW5bhOulyjB
- ET7+1E8AkYPioybPpaaISPeW78gTLCQGmbsHwTtpAJI1v/j0Lh+e1VbltpmvBo6+uwsm
- hjMjGQxMKf8rjH5BKdUu0+LuCMVFFBjAXSTOccN2oyrGm4/4GPdhsT7e1HAHWiqLHhmM
- +6V9tPQaY9v2MPYIh4wdujcrAx4otY/aGEquE4cSTYV9mBYjN+8hpwNIq5aoY5mwW9BG
- nw7Ict4tYh3sXMopj4A1ypMrI0hXcwk1edJuziD9GQ+psFftQNo8bIVQN9BDEKmwUUpy
- L3jQ==
+ bh=9KpFJaUa6C+kEpWe/K0V38sdkDOIqd7glVdiqnCv3zc=;
+ b=Jjy4cjLg7x4WYsRE3tK8qN0UrMdN7RUvTooVTHXPUDQkXiley57GEY3EcMexbDzqKc
+ YqWu0P/60nJNqb7skyzJS5WhQfW7wtFG1V2VubsJi64QmE4GltUieY9xigU+7NcFddM4
+ UoTnwBtZRoXOo8RhQs1CViXeeVIWpQB29RHIhCAeO4DcaZbeg/Wt1TN2lFlwOIwIImp8
+ kxbarbSzxvWsz1EBRIaZSRW6nOSd2bWNEmUkvYvFiBR0X+7pz9NCkQ8iyOG3OdufzFBZ
+ scdkSicviSKMl8dqqwRbskbt5Wttcz/EWTD0lN7EP5JdAwypZrWaf4ymkFkfyCvEwIor
+ Gjuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696924379; x=1697529179;
+ d=1e100.net; s=20230601; t=1696924383; x=1697529183;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rFyMnwFgzOm/mAvbUFxth7p6TWc0PhYI/tCOyvFn+Sc=;
- b=m+l4XJUFwl94K9HQvN8XxNMgBiJs+qLAqlAjhUum3OTwwUxMwk26AkRZTcWSp2LLN0
- xxUGQsE9ilQW8d85D5ZRqenV+ns+wDn82MyKA7vOI/IAy1cgPMgLIMZREfiaccUMVZiC
- CNkHeKDz7pVC/J/MdA38j2lc7gjgqri1pCYlUTVHS3ScAwi7HqiM99w09ecDuL/DJhyu
- 8D2UvhELPZTW1s67l69oKynEevoA0u+Exna0GoqO6yWCL7ddX0B3p48t9M1klZZ1KrCe
- vunmT0kDAAylBKPX6nAIunnjLzrmK61pCTpDf0PSeloO9Vwi1wdsGD/rZs7X507F9cZr
- 3jAg==
-X-Gm-Message-State: AOJu0Yy4L9EXbulej13ptLYpE9NwBlsLwqcBYOL+DOgoMVZ6bC+fYrSd
- eWFNfXiMaym5S+zbm8O4vXx2FecrS4k=
-X-Google-Smtp-Source: AGHT+IGqMe0ujA9jOeuIqfPkAtJwIOYlW0rrMPtBwdxvoXbsTbVGUwFsnxSPsr5JMODQkgfdWjJKJQ==
-X-Received: by 2002:a05:6a00:230c:b0:68a:6305:a4cc with SMTP id
- h12-20020a056a00230c00b0068a6305a4ccmr20504911pfh.5.1696924379268; 
- Tue, 10 Oct 2023 00:52:59 -0700 (PDT)
+ bh=9KpFJaUa6C+kEpWe/K0V38sdkDOIqd7glVdiqnCv3zc=;
+ b=Dzggs8ozPLa0O1bjwbNkMj1uhtw0n5CyV5rYV0CMcWsK4GNITnr5HCppFutZa6qNcL
+ ePbnjIlg3NiimDM9eo+LGt6iplrUEdktChupeF7PHInrVevlzBQngzx9USP3Wp3Bby/x
+ wE9lfQUs1/p+qA/k1GJ17lX5OwOYzY5+AVMJxDXXFlZJe94EMhFlRZgyM3YrkpyhvBx7
+ SEpr4xksO9+fl/lnVK5h25TOFOOEl5pN55jQGpIGSzcg3/TlJ+BzOaZWIUy1mVEAaiJL
+ zqGMEvAHPS0KInHMTXwt13IhKFf0m9nl98mq6mzevt1hi4IDJund8gwEl0m0fwHN+q5c
+ 6mwA==
+X-Gm-Message-State: AOJu0Yx0FUUpiy1ZiY6lhcw8LLHWLySeTqMt3wNvU/h4EKMEDq0GYR0T
+ wVmpIO5R5zaZq+BBgTwp5sDqTyZpUIM=
+X-Google-Smtp-Source: AGHT+IFfEh/MnNmOiX/0yd818trsgjzupkLNvORDhtgjTcRjEp1z6bIkw007XhbwXc7H2oy7e+La9A==
+X-Received: by 2002:a05:6a20:8e28:b0:140:d536:d434 with SMTP id
+ y40-20020a056a208e2800b00140d536d434mr22360904pzj.10.1696924382867; 
+ Tue, 10 Oct 2023 00:53:02 -0700 (PDT)
 Received: from wheely.local0.net (27-33-247-209.tpgi.com.au. [27.33.247.209])
  by smtp.gmail.com with ESMTPSA id
- a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.52.56
+ a21-20020a62e215000000b0069353ac3d3esm7548102pfi.38.2023.10.10.00.52.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 00:52:59 -0700 (PDT)
+ Tue, 10 Oct 2023 00:53:02 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Subject: [RFC PATCH 03/11] tests/avocado: Add pseries KVM boot_linux test
-Date: Tue, 10 Oct 2023 17:52:30 +1000
-Message-ID: <20231010075238.95646-4-npiggin@gmail.com>
+Subject: [RFC PATCH 04/11] tests/avocado: ppc add hypervisor tests
+Date: Tue, 10 Oct 2023 17:52:31 +1000
+Message-ID: <20231010075238.95646-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231010075238.95646-1-npiggin@gmail.com>
 References: <20231010075238.95646-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,34 +92,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is not much support for KVM backend. Add a KVM boot_linux.py
-test for pseries.
+The powernv and pseries machines both provide hypervisor facilities,
+which is a large and complicated set of features that don't get much
+system testing in CI.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Add a new test case for these which runs QEMU KVM inside the target.
 ---
- tests/avocado/boot_linux.py | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/avocado/ppc_hv_tests.py | 173 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 173 insertions(+)
+ create mode 100644 tests/avocado/ppc_hv_tests.py
 
-diff --git a/tests/avocado/boot_linux.py b/tests/avocado/boot_linux.py
-index be30dcbd58..6ce08ff6aa 100644
---- a/tests/avocado/boot_linux.py
-+++ b/tests/avocado/boot_linux.py
-@@ -103,6 +103,15 @@ def test_pseries_tcg(self):
-         self.vm.add_args("-accel", "tcg")
-         self.launch_and_wait(set_up_ssh_connection=False)
- 
-+    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-+    def test_pseries_kvm(self):
+diff --git a/tests/avocado/ppc_hv_tests.py b/tests/avocado/ppc_hv_tests.py
+new file mode 100644
+index 0000000000..16aac1d35d
+--- /dev/null
++++ b/tests/avocado/ppc_hv_tests.py
+@@ -0,0 +1,173 @@
++# Tests that specifically try to exercise hypervisor features of the
++# target machines. powernv supports the Power hypervisor ISA, and
++# pseries supports the nested-HV hypervisor spec.
++#
++# Copyright (c) 2023 IBM Corporation
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
++
++from avocado import skipIf
++from avocado.utils import archive
++from avocado_qemu import QemuSystemTest
++from avocado_qemu import wait_for_console_pattern, exec_command
++import os
++import time
++import subprocess
++
++# Alpine is a light weight distro that supports QEMU. These tests boot
++# that on the machine then run a QEMU guest inside it in KVM mode,
++# that runs the same Alpine distro image.
++# QEMU packages are downloaded and installed on each test. That's not a
++# large download, but it may be more polite to create qcow2 image with
++# QEMU already installed and use that.
++class HypervisorTest(QemuSystemTest):
++
++    timeout = 600
++    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 console=hvc0 '
++    panic_message = 'Kernel panic - not syncing'
++    good_message = 'VFS: Cannot open root device'
++
++    def extract_from_iso(self, iso, path):
 +        """
++        Extracts a file from an iso file into the test workdir
++
++        :param iso: path to the iso file
++        :param path: path within the iso file of the file to be extracted
++        :returns: path of the extracted file
++        """
++        filename = os.path.basename(path)
++
++        cwd = os.getcwd()
++        os.chdir(self.workdir)
++
++        with open(filename, "w") as outfile:
++            cmd = "isoinfo -i %s -R -x %s" % (iso, path)
++            subprocess.run(cmd.split(), stdout=outfile)
++
++        os.chdir(cwd)
++
++        # Return complete path to extracted file.  Because callers to
++        # extract_from_iso() specify 'path' with a leading slash, it is
++        # necessary to use os.path.relpath() as otherwise os.path.join()
++        # interprets it as an absolute path and drops the self.workdir part.
++        return os.path.normpath(os.path.join(self.workdir, filename))
++
++    def do_start_alpine(self):
++        iso_url = ('https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/ppc64le/alpine-standard-3.18.4-ppc64le.iso')
++
++        # Alpine use sha256 so I recalculated this myself
++        iso_sha256 = 'c26b8d3e17c2f3f0fed02b4b1296589c2390e6d5548610099af75300edd7b3ff'
++        iso_path = self.fetch_asset(iso_url, asset_hash=iso_sha256,
++                                    algorithm = "sha256")
++
++        vmlinuz = self.extract_from_iso(iso_path, '/boot/vmlinuz-lts')
++        initramfs = self.extract_from_iso(iso_path, '/boot/initramfs-lts')
++
++        self.vm.set_console()
++        self.vm.add_args("-kernel", vmlinuz)
++        self.vm.add_args("-initrd", initramfs)
++        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
++                               'console=hvc0')
++        self.require_accelerator("tcg")
++
++        self.vm.add_args("-accel", "tcg,thread=multi")
++        self.vm.add_args("-smp", "4", "-m", "2g")
++        self.vm.add_args("-drive", f"file={iso_path},format=raw,if=none,id=drive0")
++#        self.vm.add_args("-drive", f"file={iso_path},format=raw")
++
++        self.vm.launch()
++        wait_for_console_pattern(self, 'Welcome to Alpine Linux 3.18')
++        exec_command(self, 'root')
++        wait_for_console_pattern(self, 'localhost login:')
++        wait_for_console_pattern(self, 'You may change this message by editing /etc/motd.')
++        exec_command(self, 'setup-alpine -qe')
++        wait_for_console_pattern(self, 'localhost:~#')
++
++    def do_stop_alpine(self):
++        exec_command(self, 'poweroff')
++        wait_for_console_pattern(self, 'alpine:~#')
++        self.vm.wait()
++
++    def do_setup_kvm(self):
++        exec_command(self, 'echo http://dl-cdn.alpinelinux.org/alpine/v3.18/main > /etc/apk/repositories')
++        wait_for_console_pattern(self, 'alpine:~#')
++        exec_command(self, 'echo http://dl-cdn.alpinelinux.org/alpine/v3.18/community >> /etc/apk/repositories')
++        wait_for_console_pattern(self, 'alpine:~#')
++        exec_command(self, 'apk update')
++        wait_for_console_pattern(self, 'alpine:~#')
++        exec_command(self, 'apk add qemu-system-ppc64')
++        wait_for_console_pattern(self, 'alpine:~#')
++        exec_command(self, 'modprobe kvm-hv')
++        wait_for_console_pattern(self, 'alpine:~#')
++
++    def do_test_kvm(self, hpt=False):
++        if hpt:
++            append = 'disable_radix'
++        else:
++            append = ''
++        exec_command(self, 'qemu-system-ppc64 -nographic -smp 2 -m 1g '
++                           '-machine pseries,x-vof=on,accel=kvm '
++                           '-machine cap-cfpc=broken,cap-sbbc=broken,'
++                                    'cap-ibs=broken,cap-ccf-assist=off '
++                           '-drive file=/dev/nvme0n1,format=raw,readonly=on '
++                           '-initrd /media/nvme0n1/boot/initramfs-lts '
++                           '-kernel /media/nvme0n1/boot/vmlinuz-lts '
++                           '-append \'usbcore.nousb ' + append + '\'')
++        # Alpine 3.18 kernel seems to crash in XHCI USB driver.
++        wait_for_console_pattern(self, 'Welcome to Alpine Linux 3.18')
++        exec_command(self, 'root')
++        wait_for_console_pattern(self, 'localhost login:')
++        wait_for_console_pattern(self, 'You may change this message by editing /etc/motd.')
++        exec_command(self, 'poweroff >& /dev/null')
++        wait_for_console_pattern(self, 'localhost:~#')
++        wait_for_console_pattern(self, 'reboot: Power down')
++        time.sleep(1)
++        exec_command(self, '') # console has strange issue after qemu exit
++        exec_command(self, 'reset')
++        exec_command(self, 'echo VM finished')
++        wait_for_console_pattern(self, 'VM finished')
++
++    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    def test_hv_pseries(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:pseries
++        :avocado: tags=accel:tcg
++        """
++        self.vm.add_args('-device', 'nvme,serial=1234,drive=drive0')
++        self.vm.add_args("-machine", "x-vof=on,cap-nested-hv=on")
++        self.do_start_alpine()
++        self.do_setup_kvm()
++        self.do_test_kvm()
++        self.do_stop_alpine()
++
++    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    def test_hv_pseries_kvm(self):
++        """
++        :avocado: tags=arch:ppc64
 +        :avocado: tags=machine:pseries
 +        :avocado: tags=accel:kvm
 +        """
-+        self.require_accelerator("kvm")
-+        self.vm.add_args("-accel", "kvm")
-+        self.launch_and_wait(set_up_ssh_connection=False)
- 
- class BootLinuxS390X(LinuxTest):
-     """
++        self.vm.add_args('-device', 'nvme,serial=1234,drive=drive0')
++        self.vm.add_args("-machine", "x-vof=on,cap-nested-hv=on")
++        self.do_start_alpine()
++        self.do_setup_kvm()
++        self.do_test_kvm()
++        self.do_stop_alpine()
++
++    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
++    def test_hv_powernv(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv
++        :avocado: tags=accel:tcg
++        """
++        self.vm.add_args('-device', 'nvme,bus=pcie.2,addr=0x0,serial=1234,drive=drive0',
++                         '-device', 'e1000e,netdev=net0,mac=C0:FF:EE:00:00:02,bus=pcie.0,addr=0x0',
++                         '-netdev', 'user,id=net0,hostfwd=::20022-:22,hostname=alpine')
++        self.do_start_alpine()
++        self.do_setup_kvm()
++        self.do_test_kvm()
++        self.do_test_kvm(True)
++        self.do_stop_alpine()
 -- 
 2.42.0
 
