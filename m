@@ -2,158 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6247BF223
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 07:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324527BF229
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 07:23:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq5AK-0002Cr-PW; Tue, 10 Oct 2023 01:20:20 -0400
+	id 1qq5Cp-00031S-Uu; Tue, 10 Oct 2023 01:22:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qq5AH-0002CZ-DO
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 01:20:17 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qq5AE-0005QK-IC
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 01:20:16 -0400
-Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 399L5tmx029965; Mon, 9 Oct 2023 22:20:12 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- content-type:message-id:date:subject:to:cc:references:from
- :in-reply-to:mime-version; s=proofpoint20171006; bh=klGaOFfzyfxd
- 8cJPDYPdUGeEz2gABBlicSqQNtEDuI4=; b=loAimDBRn9oz9X23hHDHz25U1X7g
- 2MwL2EVyPuOI/Bx5DFE9dLgYOVALTGi96D0bfY2cHk5X5cYgEOucPL5ik2mTQkse
- stSA1yxijBoRFkhGbZ66lzScPdxoXBp3EQdwlPi98em64Q+fBPno+ADanK9SwNDJ
- aaeabYVeE4i1qgdKcMzLl3tkISCB9oVtMPohLbbEXYRCl17qwaV8ADCLUeIZxvqB
- maheMujxCyKOA6B1i0XaLINIeslcKcPyFIZqMg3IvVXhEvOuDZncZBbYPHx0K8MZ
- QQ4EB1ebppZ8wxG2n3c2Pnj+U9ZfpDAwZyIpjr70Sh+S/K3vhvAmPst9+Q==
-Received: from nam10-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3tkhu4mefx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 22:20:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CgOwjNO62oykm79KTTR1VWUSHDKcUltyJskGsdoGb4hCae1GXH4TpJHItRinbispcn9Dqe8iCLBFAuIdsU8iTOj3v9r+0MvMxDLr6Miel47dh4nJt4qIN790D05l30iGOAJt16aUO7qOWEl4XNQgN5F1cf2gR3/CoUgKaf5FM1mGvX1sAXC10rb3P+J7HTSE8XFHZ81g/mJL7+Ev2/uJIhqOhIG/p0pF/KNhw1irT1i0iB6LvqcztJ6lH9pI9FhY0WVwg35CD7TsCwgsfPQGdqMjnnoSNA2+6Tu8yHxHPQjRZPnPQk4mzcXuUblhN+Rh8OO1fCYnsOy4HgqMmm7OCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=klGaOFfzyfxd8cJPDYPdUGeEz2gABBlicSqQNtEDuI4=;
- b=RIsgSJneU0KmboIoPv0vFkAVbtp72EiOT91dEiSUG69LKZp05MjgngWSDGzNNKYpvQXrPtW7S87KfO5JFkzoNC49K9Gh3qJ+JeaPtSP8v8dlzM9TRRFY1Ykfvpcsh21Xky2BMwFYTWYBgaO/hG+QRNhhxLJ8vZwg3ALUQ6SqcnZZFZxPX6WiUhenD24+5cqj0j5d5AMrfsQ76P1+9yVecYZQGH0kEZlDUKrYYPAOACF/vmbZ86DBHoga0wxcmLnJxCnA4A70hpUn1U8Oi1VrnbBf6rnKTvbrMv/5qqZu/3+S2fuTzepjeFUfySE4gHEvgqlf2tybP7l1zGkjXn9M/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=klGaOFfzyfxd8cJPDYPdUGeEz2gABBlicSqQNtEDuI4=;
- b=yE9xjA4gTn0K1+kUyDD4jZXximaRyDJklv7Q3YjNTJ/T5uqTXNQSIv4sgHjUk/SfFoJ/Fv3/0qyT40n+zttBgf/g2sx4EakpD4DbWKAvCx3vO5/3yQp6ipchGZ8/ipL6oisfK+NWPu3byYU4BGrBgocpoegtoIiRipAD/GvQ9+fF+Idj/epw9/25uVqE0CY8ilj5o4Ab3g4hf2WBtemWzloZ8xGLaIZEe4jMC49RYfj0NtMms2X6yuyYMQkpCKnTbN5blLNbHSJa6lEv3biOhRt28H77/tXn0sl2xE8piDjXt9bMDSN9+k/ixzRif7qLxSn9G2AT7QOUNmQvfSrWEw==
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by MW4PR02MB7364.namprd02.prod.outlook.com (2603:10b6:303:64::23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.38; Tue, 10 Oct
- 2023 05:20:09 +0000
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::f13d:ea:118b:b4ae]) by SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::f13d:ea:118b:b4ae%4]) with mapi id 15.20.6863.032; Tue, 10 Oct 2023
- 05:20:09 +0000
-Content-Type: multipart/alternative;
- boundary="------------IytMo0nwEgqSOvb7vqpmRASV"
-Message-ID: <cf045403-8af7-4df6-972d-25d366c41436@nutanix.com>
-Date: Tue, 10 Oct 2023 10:50:08 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 09/10] migration: Implement MigrateChannelList to hmp
- migration flow.
-Content-Language: en-GB
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
- pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-References: <20231004075851.219173-1-het.gala@nutanix.com>
- <20231004075851.219173-10-het.gala@nutanix.com> <87bkdepfyk.fsf@suse.de>
- <f41198b2-bf86-4ef4-9bab-6c834b011ae7@nutanix.com> <874jizg8xv.fsf@suse.de>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <874jizg8xv.fsf@suse.de>
-X-ClientProxiedBy: BYAPR07CA0006.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::19) To SJ2PR02MB9955.namprd02.prod.outlook.com
- (2603:10b6:a03:55f::16)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq5Cb-0002ya-5Q
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 01:22:42 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq5CX-0005z3-Vl
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 01:22:40 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-406402933edso48813385e9.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 22:22:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696915355; x=1697520155; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=y57JulWJJyVBlYSNftJ5qGaczJiUrr1v6KJAZiF+dS4=;
+ b=YeVBuf1X/LA8/aytFKtXGB/TwjVdc/E8SK7ORUZtSZboz6gF93lC4tQqm9KadvhdmY
+ RTa/NzwuTc9GTAvIfvAY8gW/D38fyBflIHe1mrFnouhsQe529jkF2dHSKBlvrKmLRDwe
+ AEO7qwUKzn6Spobs5+J6A2bAMFv37C1svNUmHoKZMjj9+a38sEUM22sZNbIKiDCLCI8r
+ 86b+++ROQm9PdAHBrzhkQReJaNhCI2qb3mfjU8XYkkjIZXa2LIYaZ9+VMxOn9Kwow2bk
+ QHsyYipv0MtITg+IDKnZgPsrMxmpbxVHvfSdV7VdbZN7Xdzm5oYgxfbXJ8JH5I/gOWxA
+ 9+ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696915355; x=1697520155;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y57JulWJJyVBlYSNftJ5qGaczJiUrr1v6KJAZiF+dS4=;
+ b=oGvseopxy7VJR2niMoxwv0VAJoibUGljpKL+qmibddZhFSxQXN6MV8Cx1BcfbtcPvJ
+ xVY0lUfv9xRzOtFK6djs5Hl3Me7DW5vv3yLqiLXyFv3IMrn0mecjI1rzsIu1PhfrpfyI
+ sr9c1ATslQaO1HozhiWl7NuCMGJdLbhiy44IZRcg1VyRub7/AAPVFBCEtSxoZIwJCM4I
+ dERh/YN26z785BLU3GKhDPk/oyFxRzIDrRNLz7hfOEET0/oJwwkvlIoYwzN4GV7BMR9e
+ 3lpqOyiv7Z6SjhsYY6vp7U3OtocTBIoaCKK0MzaNOm8MY4B9U+WSrmq/xrhmKlv3vH3R
+ 0liA==
+X-Gm-Message-State: AOJu0YzGWRwF0mIalntlxa9gJ4kqgIu88E3iXM0BnjM06EYbK1egGJ6h
+ wJTkp0zMEnXLXmfN+JorW6FW9Q==
+X-Google-Smtp-Source: AGHT+IFyPDoTNJX+Qi5JRX4tRW+v+TG8jXp5DCpiAs/pRirrtG53OJSyPSlgLQW343n97AtnIP0kOQ==
+X-Received: by 2002:a05:600c:3502:b0:406:44e6:c00d with SMTP id
+ h2-20020a05600c350200b0040644e6c00dmr15659505wmq.2.1696915354751; 
+ Mon, 09 Oct 2023 22:22:34 -0700 (PDT)
+Received: from [10.2.0.2] ([37.19.214.4]) by smtp.gmail.com with ESMTPSA id
+ o13-20020a05600c378d00b004063cd8105csm15066909wmr.22.2023.10.09.22.22.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 22:22:34 -0700 (PDT)
+Message-ID: <0aa445c4-d39d-e28a-6bb0-00f7b9f12bb0@linaro.org>
+Date: Tue, 10 Oct 2023 07:22:31 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|MW4PR02MB7364:EE_
-X-MS-Office365-Filtering-Correlation-Id: b07b2490-b685-4c09-4309-08dbc950929f
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mciO1QnP2aFeuerunmHBedpLAmw671tAa7ximLcj1fqIXv03L/CiMPWIQohAy/WEiZJQGapkSQZVr3RG+XN5FEiKDHbCvLIB5E9GrSec0mtytDj5j6yu+ngXd2YDYaeNSOIc9qY/wxlzjrmXXXhtMuWzgmw1Bc4sfMbEhuqLmJJyZjq9r510NKH6nf0v+wlRYoHo5ekFmHoqnpCW0Chas32kesK4bKHqEMM4uIyKn/5Wji4KZq1W34Caar/XWG1NjPeJYWfbFLRmEanGAyJxTybuByOJ+lzN/Y9J/7bYe8lYoxB/vJerjwXHMbGgU0M5zYIIoEXca19nnFeLUyyEa7IWUZfqcPJRGUzwP5pfsQkTEn0y+zehRyOFJRC4CfUDUwnvYelW6e8oGrJly1vrNBU3Px8mEd+9GOupvOLpjsboT9wYZFDc3aRBFPr+jfopd/1QQNWRs9biaVXf96vcoJUmCJETECDNe0E8hyC/k05s73B82dtKWJCrkBc3IJt2uvuaPyNMyc4LQOAnvo/YeYX/1SLLCx7FGazkiI4AogyxmmxKLNpvcW3NeeOxOzZNSOmzq2NF7uw15DGaZ4PITMkA5x5aAKsljnDSEIHR36hzFD1Xp5IkiwGdnPND0jcs+fDf1K0FCsL/0BRk09VYTpR7H08fmXlj5EQNnVd7iDZ2FRJLZNOxZIFMftPwTjzi
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(136003)(39860400002)(366004)(396003)(346002)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(6512007)(33964004)(53546011)(107886003)(6506007)(2616005)(478600001)(6486002)(44832011)(26005)(2906002)(83380400001)(5660300002)(66476007)(66946007)(66556008)(4326008)(8676002)(8936002)(316002)(41300700001)(36756003)(38100700002)(31696002)(86362001)(31686004)(43740500002)(45980500001)(309714004);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OHM4Rm51alpFaXpHaHExZTFTVWZ5VGh6cWRzdHFRV2VicmswQVlTcWlXOWtG?=
- =?utf-8?B?QlN4Zm1CMnJLaVp4NDBMaWI0RGNneDNLWStBVmZENXlQYVBjOHNlTDJuU092?=
- =?utf-8?B?VnphaWdDNHRGS05Da1ZkNFRrcUNXNHJ4SGI5Y25vV080NEZBdjZlSjR1Mnpa?=
- =?utf-8?B?cEVaeEFwSTdyVTNMRXhNNDFZRS83dkdBdzhzRWY3N2xVQXNLUEV0eWpZMGFU?=
- =?utf-8?B?Vi9MZy9TTXE2cWN4RS9CekJQTis1a0lXMkhYRWtuejlHckl3dUxSVEtocEhK?=
- =?utf-8?B?cjVRL01Kb3JVRmZmZGZqb0FJaUN2Tk1KOFZKdHE3QWxxT01heC9heTlhM0x1?=
- =?utf-8?B?WW9kUlJMV284K2ZqaGVRd0s2MzNJR2RVUGllcXNQZDBDWWJjNitpNXRvL09E?=
- =?utf-8?B?clpMVWo3TXNIN3pwTm51U3VtQkJuaUU5UVNNM0FJbTJqNlVRYzh6cHFob1Mr?=
- =?utf-8?B?ZzFJQzhIdmZZdU9hblA4VUdTc3p5SWErNU5qdzU3SzMxQUJiN21PZU8ybmRy?=
- =?utf-8?B?SCt2NHMxZGFVc1VnT0dUdktLNjMrdlZobWcxWXhPM0RUMVpFM3lOemVqWG96?=
- =?utf-8?B?TVlIZWVPaGlrVHp0b0NwcWo4cXRNaDV2bmZudDNMOHhRRjBSTmV6MDF4MjRq?=
- =?utf-8?B?UTRYTmlNYnZGWnBwK1ZCcVNuSVVEQmlkZ2JnTzhoZTJWTytZWVM2cTVwSWRF?=
- =?utf-8?B?TEtXbUhRSTZ1TVJmbEYra3dVTFljakprZElxcnRGQkQ5VzljZzNmcTdBcnBl?=
- =?utf-8?B?a2VBQlBzbXA5dU80T1FWKzFXbHRJTkRtM0h3Qkdaa3hJb0xCWU44YmNRSUJU?=
- =?utf-8?B?ZWsxejV0Q1FDZWZkT1FRMlRGTHJYUnFsd2JKMUVzKzRkQ1d6eWxScmFoQzdO?=
- =?utf-8?B?cjM0UHo2MlJlbXJhRjJBQWR3Mjl0OUtYRGFweSswemdITTNLbnNZZ3ZiNlpo?=
- =?utf-8?B?RDdKWWlRMnRLckNGZzNpdUhOVlBSakxvZGlZNVp6TTQ0VTBqa0N5MWdvUXdD?=
- =?utf-8?B?cGhudXJiSU5ZT1llaThFanJyQzZrYU5xQnBvYXBuejA0ZEZRNk00QXpIUTFj?=
- =?utf-8?B?OGVGRnBEU2trNWF5K0lubEU0dmsvak8zU3VTNmkxeHl4Qksyd1U0Nkd4S3NY?=
- =?utf-8?B?eUJuWXJmcWlWVkgyWUUvWEwxOWJwMFRVbjN3WDFnUkQ4S0NwKzdCS3Z4eTJP?=
- =?utf-8?B?VTBMcWJvOVh1dWxLeGUrWWhWeTBFcnNxWW5ndWpvQU9SLzNyeDBJRTUxR2N5?=
- =?utf-8?B?SDlScnNtQTVwQ3JZa1VzTzM3UThmZ2ZmTGdTd3ZmMWpLdjNqdTNDS3d1cWlC?=
- =?utf-8?B?WjFHWWkwdmM1aW04RnJkaWF1dFBmc2lSUkw2bFlCaW05NklGdGpxRGcvQTlP?=
- =?utf-8?B?c3IwNTExWDB3eUl5bnRiU1FEc1FQZVRNT1I2MW0zc2YxY0JIRkJCb3Z6VnJp?=
- =?utf-8?B?NUVMalYyUGRKejQ0Q2F4Y3E4dWNlbVZvdkkva3ZCMnZ3QlZzVWtpVjRmL1Rh?=
- =?utf-8?B?WTZOWTY1Uzk0Mzh3aVVoZjIwMnhBK2gxOHlDZG5RTFRSSk96RllqSXc3VHkr?=
- =?utf-8?B?WkNNUXlIYWtiRTFXWkxvNnQ0VzQ2Y0tGeGl4MjhNbGhlaHZ6U2ZRNWhrUjMw?=
- =?utf-8?B?RUp4VEJUeFN1QU9mMVBtREJCdy9mWFZnVlNDNGhuUHlUK084R2cvUkw4WXJD?=
- =?utf-8?B?clp6UVVZMUR0dnR1bVpPS2Y5UWlyTXR4bkRpanlEWTlrM0tYUDBmakoyaCtB?=
- =?utf-8?B?aDJLYWlKR0dTZW81WUV3anJrN0hZeXpPZHMvUmdaaDZhYTV5aFJxMy81Ylpt?=
- =?utf-8?B?RFJVVU9ZWWdlOFZxbHdZTVp2UGJVYXl3eXFJNjdrTW9MVjNCVUNDaTkyRnZ2?=
- =?utf-8?B?dWpJbUhSQkhTdFZuc0FGUVF2ellwNFViRnRrMDdCcEJqcjkxUEZDMTZ1WGNj?=
- =?utf-8?B?amhqQmtnemJ5RUl1MHNTMXZiRHBaN1hhQ1k4SFM4b1cyRC9kdDlIbnlORU41?=
- =?utf-8?B?eVg2N3FPWFY5MmgzSGovSGRoNnRoSHlSYkFIaXFvMkhJL203YXNDYTlFOTk3?=
- =?utf-8?B?cnQ0Z29wZlZsUDRTNGRWcVdqNWpWY2pxVVR5VG9QcW1jbTZtd0tjaTdsZmxw?=
- =?utf-8?Q?vDbWGPcqkQ4/qX7Ghy293rIuE?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b07b2490-b685-4c09-4309-08dbc950929f
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2023 05:20:09.8779 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JLPyY5TDtj3ZkgKR41KlJop2di88H8nnr+r9TyuR2KWO5utGE8SrdeTRbEmeuBFmwZLkeT+rurqpNoCzP73KlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR02MB7364
-X-Proofpoint-ORIG-GUID: aJoiXZYASdsGf8ogOycYcwN_MHKopaXS
-X-Proofpoint-GUID: aJoiXZYASdsGf8ogOycYcwN_MHKopaXS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-10_03,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 3/3] target/hexagon: avoid shadowing globals
+Content-Language: en-US
+To: Brian Cain <bcain@quicinc.com>,
+ "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+ "anjo@rev.ng" <anjo@rev.ng>
+Cc: "armbru@redhat.com" <armbru@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "Matheus Bernardino (QUIC)" <quic_mathbern@quicinc.com>,
+ "stefanha@redhat.com" <stefanha@redhat.com>, "ale@rev.ng" <ale@rev.ng>,
+ "Marco Liebel (QUIC)" <quic_mliebel@quicinc.com>,
+ "ltaylorsimpson@gmail.com" <ltaylorsimpson@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <20231005222206.2784853-1-bcain@quicinc.com>
+ <20231005222206.2784853-4-bcain@quicinc.com>
+ <48c5233c-c294-f50d-a438-f7f6a63c113b@linaro.org>
+ <187100e7-a516-4024-1739-a08c630d76f3@linaro.org>
+ <BN7PR02MB4194900078A1AA6E067FE20FB8CEA@BN7PR02MB4194.namprd02.prod.outlook.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <BN7PR02MB4194900078A1AA6E067FE20FB8CEA@BN7PR02MB4194.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -170,228 +104,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---------------IytMo0nwEgqSOvb7vqpmRASV
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-
-On 10/9/2023 8:05 PM, Fabiano Rosas wrote:
-> Het Gala<het.gala@nutanix.com>  writes:
->
->> On 10/4/2023 8:55 PM, Fabiano Rosas wrote:
->>> Het Gala<het.gala@nutanix.com>   writes:
+On 9/10/23 22:53, Brian Cain wrote:
+>> On 9/10/23 08:09, Philippe Mathieu-Daudé wrote:
+>>> On 6/10/23 00:22, Brian Cain wrote:
+>>>> The typedef `vaddr` is shadowed by `vaddr` identifiers, so we rename the
+>>>> identifiers to avoid shadowing the type name.
 >>>
->>>> Integrate MigrateChannelList with all transport backends
->>>> (socket, exec and rdma) for both src and dest migration
->>>> endpoints for hmp migration.
->>>>
->>>> Suggested-by: Aravind Retnakaran<aravind.retnakaran@nutanix.com>
->>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
->>>> Reviewed-by: Daniel P. Berrangé<berrange@redhat.com>
->>>> ---
->>>>    migration/migration-hmp-cmds.c | 15 +++++++++++++--
->>>>    migration/migration.c          |  5 ++---
->>>>    migration/migration.h          |  3 ++-
->>>>    3 files changed, 17 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
->>>> index a2e6a5c51e..a1657f3d37 100644
->>>> --- a/migration/migration-hmp-cmds.c
->>>> +++ b/migration/migration-hmp-cmds.c
->>>> @@ -441,9 +441,14 @@ void hmp_migrate_incoming(Monitor *mon, const QDict *qdict)
->>>>    {
->>>>        Error *err = NULL;
->>>>        const char *uri = qdict_get_str(qdict, "uri");
->>>> +    MigrationChannelList *caps = NULL;
->>>> +    g_autoptr(MigrationChannel) channel = g_new0(MigrationChannel, 1);
->>> Just the pointer here. If I remember correctly the g_autoptr here would
->>> cause a double free when freeing the caps.
->> Yes, we'll just have 'g_autoptr(MigrationChannel) channel = NULL'.
+>>> This one surprises me, since we have other occurences:
+>>>
+>>> include/exec/memory.h:751:bool memory_get_xlat_addr(IOMMUTLBEntry
+>>> *iotlb, void **vaddr,
+>>>       include/qemu/plugin.h:199:void qemu_plugin_vcpu_mem_cb(CPUState
+>>> *cpu, uint64_t vaddr,
+>>> target/arm/internals.h:643:G_NORETURN void
+>>> arm_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
+>>> target/i386/tcg/helper-tcg.h:70:G_NORETURN void
+>>> handle_unaligned_access(CPUX86State *env, vaddr vaddr,
+>>> ...
+>>>
+>>> $ git grep -w vaddr, | wc -l
+>>>        207
+>>>
+>>> What is the error/warning like?
 >>
->> Is it because inside QAPI_LIST_PREPEND, caps will be refrencing to the
->> same memory as 'channel', we don't need to free channel ?
-> Slightly different scenario here. Here the issue is that we will free
-> the caps with qapi_free_MigrationChannel() before returning. Then, at
-> function exit the g_autoptr will try to free 'channel', which has
-> already been freed along with 'caps'. That's a double free, I think it
-> hits an assert inside glib, if I remember correctly.
->
->> I am still not
->> sure what is the right place to use g_steal_pointer(), is this a right
->> place to use (non-error paths) ?
-> It doesn't look like we need it here. As long as the qapi list has a
-> reference and we're freeing the caps, then channel should be freed by
-> that function already.
-Ack. Yes, with the discussion in earlier patches, I also don't think we 
-need g_autoptr too here. Normal pointer is enough as we are freeing the 
-memory after the function is returned.
->>>>    
->>>> -    qmp_migrate_incoming(uri, false, NULL, &err);
->>>> +    migrate_uri_parse(uri, &channel, &err);
->>>> +    QAPI_LIST_PREPEND(caps, channel);
->>>>    
->>>> +    qmp_migrate_incoming(NULL, true, caps, &err);
->>>> +    qapi_free_MigrationChannelList(caps);
->>>>        hmp_handle_error(mon, err);
->>>>    }
->>>>    
->>>> @@ -730,9 +735,15 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
->>>>        bool resume = qdict_get_try_bool(qdict, "resume", false);
->>>>        const char *uri = qdict_get_str(qdict, "uri");
->>>>        Error *err = NULL;
->>>> +    MigrationChannelList *caps = NULL;
->>>> +    g_autoptr(MigrationChannel) channel = g_new0(MigrationChannel, 1);
->>> Same here. We free the channel via caps and we attribute it below, no
->>> need to allocate.
->> Ack.
->>>>    
->>>> -    qmp_migrate(uri, false, NULL, !!blk, blk, !!inc, inc,
->>>> +    migrate_uri_parse(uri, &channel, &err);
->>>> +    QAPI_LIST_PREPEND(caps, channel);
->>>> +
->>>> +    qmp_migrate(NULL, true, caps, !!blk, blk, !!inc, inc,
->>>>                     false, false, true, resume, &err);
->>>> +    qapi_free_MigrationChannelList(caps);
->>>>        if (hmp_handle_error(mon, err)) {
+>> OK I could reproduce, I suppose you are building with Clang which
+>> doesn't support shadow-local so you get global warnings too (as
+>> mentioned in this patch subject...):
+> 
+> No -- I generally build with gcc and only double-check the clang results to make sure I don't see any new failures there.
+> 
+> But I've not tested "-Wshadow" with clang yet.  I found these by adding "-Wshadow=global" to "-Wshadow=local".  I thought it might be useful to address these too while we're here.
+> 
+>> In file included from ../../gdbstub/trace.h:1,
+>>                    from ../../gdbstub/softmmu.c:30:
+>> trace/trace-gdbstub.h: In function '_nocheck__trace_gdbstub_hit_watchpoint':
+>> trace/trace-gdbstub.h:903:106: error: declaration of 'vaddr' shadows a
+>> global declaration [-Werror=shadow]
+>>     903 | static inline void _nocheck__trace_gdbstub_hit_watchpoint(const
+>> char * type, int cpu_gdb_index, uint64_t vaddr)
+>>         |
+>>                                   ~~~~~~~~~^~~~~
+>> In file included from include/sysemu/accel-ops.h:13,
+>>                    from include/sysemu/cpus.h:4,
+>>                    from ../../gdbstub/softmmu.c:21:
+>> include/exec/cpu-common.h:21:18: note: shadowed declaration is here
+>>      21 | typedef uint64_t vaddr;
+>>         |                  ^~~~~
+>> trace/trace-gdbstub.h: In function 'trace_gdbstub_hit_watchpoint':
+>> trace/trace-gdbstub.h:923:96: error: declaration of 'vaddr' shadows a
+>> global declaration [-Werror=shadow]
+>>     923 | static inline void trace_gdbstub_hit_watchpoint(const char *
+>> type, int cpu_gdb_index, uint64_t vaddr)
+>>         |
+>>                         ~~~~~~~~~^~~~~
+>> include/exec/cpu-common.h:21:18: note: shadowed declaration is here
+>>      21 | typedef uint64_t vaddr;
+>>         |                  ^~~~~
+
+If we have to clean that for -Wshadow=global, I'm tempted to rename
+the typedef as 'vaddr_t' and keep the 'vaddr' variable names.
+
+Richard, Anton, what do you think?
+
+>> Clang users got confused by this, IIUC Markus and Thomas idea is
+>> to only enable these warnings for GCC, enforcing them for Clang
+>> users via CI (until Clang get this option supported). Personally
+>> I'd rather enable the warning once for all, waiting for Clang
+>> support (or clean/enable global shadowing for GCC too).
+> 
+> Hopefully it's helpful or at least benign if we address the shadowed globals under target/hexagon/ for now, even if "-Wshadow=global" is not enabled.
+> 
+>> See this thread:
+>> https://lore.kernel.org/qemu-devel/11abc551-188e-85c0-fe55-
+>> b2b58d35105d@redhat.com/
+>>
 >> Regards,
->> Het Gala
-Regards,
-Het Gala
---------------IytMo0nwEgqSOvb7vqpmRASV
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+>>
+>> Phil.
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 10/9/2023 8:05 PM, Fabiano Rosas
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:874jizg8xv.fsf@suse.de">
-      <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">On 10/4/2023 8:55 PM, Fabiano Rosas wrote:
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">Het Gala<a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a>  writes:
-
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Integrate MigrateChannelList with all transport backends
-(socket, exec and rdma) for both src and dest migration
-endpoints for hmp migration.
-
-Suggested-by: Aravind Retnakaran<a class="moz-txt-link-rfc2396E" href="mailto:aravind.retnakaran@nutanix.com">&lt;aravind.retnakaran@nutanix.com&gt;</a>
-Signed-off-by: Het Gala<a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a>
-Reviewed-by: Daniel P. Berrangé<a class="moz-txt-link-rfc2396E" href="mailto:berrange@redhat.com">&lt;berrange@redhat.com&gt;</a>
----
-  migration/migration-hmp-cmds.c | 15 +++++++++++++--
-  migration/migration.c          |  5 ++---
-  migration/migration.h          |  3 ++-
-  3 files changed, 17 insertions(+), 6 deletions(-)
-
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index a2e6a5c51e..a1657f3d37 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -441,9 +441,14 @@ void hmp_migrate_incoming(Monitor *mon, const QDict *qdict)
-  {
-      Error *err = NULL;
-      const char *uri = qdict_get_str(qdict, &quot;uri&quot;);
-+    MigrationChannelList *caps = NULL;
-+    g_autoptr(MigrationChannel) channel = g_new0(MigrationChannel, 1);
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Just the pointer here. If I remember correctly the g_autoptr here would
-cause a double free when freeing the caps.
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-Yes, we'll just have 'g_autoptr(MigrationChannel) channel = NULL'.
-
-Is it because inside QAPI_LIST_PREPEND, caps will be refrencing to the 
-same memory as 'channel', we don't need to free channel ?
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Slightly different scenario here. Here the issue is that we will free
-the caps with qapi_free_MigrationChannel() before returning. Then, at
-function exit the g_autoptr will try to free 'channel', which has
-already been freed along with 'caps'. That's a double free, I think it
-hits an assert inside glib, if I remember correctly.
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">I am still not 
-sure what is the right place to use g_steal_pointer(), is this a right 
-place to use (non-error paths) ?
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-It doesn't look like we need it here. As long as the qapi list has a
-reference and we're freeing the caps, then channel should be freed by
-that function already.</pre>
-    </blockquote>
-    Ack. Yes, with the discussion in earlier patches, I also don't think
-    we need g_autoptr too here. Normal pointer is enough as we are
-    freeing the memory after the function is returned.<span style="white-space: pre-wrap">
-</span>
-    <blockquote type="cite" cite="mid:874jizg8xv.fsf@suse.de">
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">  
--    qmp_migrate_incoming(uri, false, NULL, &amp;err);
-+    migrate_uri_parse(uri, &amp;channel, &amp;err);
-+    QAPI_LIST_PREPEND(caps, channel);
-  
-+    qmp_migrate_incoming(NULL, true, caps, &amp;err);
-+    qapi_free_MigrationChannelList(caps);
-      hmp_handle_error(mon, err);
-  }
-  
-@@ -730,9 +735,15 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
-      bool resume = qdict_get_try_bool(qdict, &quot;resume&quot;, false);
-      const char *uri = qdict_get_str(qdict, &quot;uri&quot;);
-      Error *err = NULL;
-+    MigrationChannelList *caps = NULL;
-+    g_autoptr(MigrationChannel) channel = g_new0(MigrationChannel, 1);
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Same here. We free the channel via caps and we attribute it below, no
-need to allocate.
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">Ack.
-</pre>
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">  
--    qmp_migrate(uri, false, NULL, !!blk, blk, !!inc, inc,
-+    migrate_uri_parse(uri, &amp;channel, &amp;err);
-+    QAPI_LIST_PREPEND(caps, channel);
-+
-+    qmp_migrate(NULL, true, caps, !!blk, blk, !!inc, inc,
-                   false, false, true, resume, &amp;err);
-+    qapi_free_MigrationChannelList(caps);
-      if (hmp_handle_error(mon, err)) {
-</pre>
-          </blockquote>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">Regards,
-Het Gala</pre>
-      </blockquote>
-    </blockquote>
-    Regards,<br>
-    Het Gala<span style="white-space: pre-wrap">
-</span>
-  </body>
-</html>
-
---------------IytMo0nwEgqSOvb7vqpmRASV--
 
