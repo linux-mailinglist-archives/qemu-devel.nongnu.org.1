@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9497C04C8
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 21:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E843F7C4064
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 21:53:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqIXp-0001Hk-S2; Tue, 10 Oct 2023 15:37:29 -0400
+	id 1qqIlU-0004RC-EH; Tue, 10 Oct 2023 15:51:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqIXn-0001HN-Cq; Tue, 10 Oct 2023 15:37:27 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ id 1qqIlM-0004QC-6U; Tue, 10 Oct 2023 15:51:28 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqIXj-0000yY-Eo; Tue, 10 Oct 2023 15:37:27 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c18:d11:0:640:6943:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 821D3612C2;
- Tue, 10 Oct 2023 22:37:15 +0300 (MSK)
+ id 1qqIlI-0003tB-4q; Tue, 10 Oct 2023 15:51:27 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 3859C618F4;
+ Tue, 10 Oct 2023 22:51:19 +0300 (MSK)
 Received: from [IPV6:2a02:6b8:b081:7319::1:4] (unknown
  [2a02:6b8:b081:7319::1:4])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id Ebj3G21Opa60-ayBczhai; Tue, 10 Oct 2023 22:37:15 +0300
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id IpjVDI1OlOs0-GnHvutoJ; Tue, 10 Oct 2023 22:51:18 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696966635;
- bh=h7514QaAwEpP62+OrYBRxXwz1KFZjOWaMnoHv9fwFwM=;
+ s=default; t=1696967478;
+ bh=NhhkFXudM6BN/l4g5mdWHfVIWNLwxrPFHbgqdGkidBM=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=m+UBS1gCpDFNtGfOcZcxeLn+CwncUBBBFCl9n+jjNhe5UEfyPopV3w+/44PhH2ZvM
- pra0X0FIQArgls3Srlen/YtFUpLzE8frYHiVvgEr7a6FUSD+skLmIlXetUnNgk2NOV
- 11d7oDENEUr8+aG7OwuzUnSMf06v/KM+2Av5w3ew=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ b=qnP4aoonOryQr1pjT0DumN9cat39demDCjnacF/NdfqhEhZX/7rZAbJcn0WERIbH2
+ ddcAX7l7eJOu7UzcT6gHR5pXNhomsr+LoIr+VgQ+HvIaPe3pFhLHWrzUI+ZUIF/Iz6
+ hxmc1KJvOf8tg/R2LBFgo7bj44etnCEOt9YNZgW4=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <f6987c95-b1c4-4bfa-ae05-931c4f946151@yandex-team.ru>
-Date: Tue, 10 Oct 2023 22:37:14 +0300
+Message-ID: <200c3721-e4ce-478d-8cd4-6c3c0fa48a0c@yandex-team.ru>
+Date: Tue, 10 Oct 2023 22:51:18 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/10] mirror: implement mirror_change method
+Subject: Re: [PATCH v2 08/10] blockjob: query driver-specific info via a new
+ 'query' driver method
 Content-Language: en-US
 To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
  t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
 References: <20231009094619.469668-1-f.ebner@proxmox.com>
- <20231009094619.469668-6-f.ebner@proxmox.com>
+ <20231009094619.469668-9-f.ebner@proxmox.com>
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20231009094619.469668-6-f.ebner@proxmox.com>
+In-Reply-To: <20231009094619.469668-9-f.ebner@proxmox.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -76,107 +77,56 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 09.10.23 12:46, Fiona Ebner wrote:
-> which allows switching the @copy-mode from 'background' to
-> 'write-blocking'.
-> 
-> This is useful for management applications, so they can start out in
-> background mode to avoid limiting guest write speed and switch to
-> active mode when certain criteria are fulfilled.
-> 
 > Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 > ---
 > 
-> Changes in v2:
->      * update QEMU version in QAPI
->      * update indentation in QAPI (like in a937b6aa73 ("qapi: Reformat
->        doc comments to conform to current conventions"))
->      * drop drained section and disable dirty bitmap call. It's already
->        disabled, because the bitmap is now attached to the filter and
->        set in bdrv_mirror_top_do_write(). See the earlier patch
->        "block/mirror: move dirty bitmap to filter"
+> No changes in v2.
 > 
->   block/mirror.c       | 22 ++++++++++++++++++++++
->   qapi/block-core.json | 13 ++++++++++++-
->   2 files changed, 34 insertions(+), 1 deletion(-)
+>   blockjob.c                   | 4 ++++
+>   include/block/blockjob_int.h | 5 +++++
+>   2 files changed, 9 insertions(+)
 > 
-> diff --git a/block/mirror.c b/block/mirror.c
-> index b84de56734..83aa4176c2 100644
-> --- a/block/mirror.c
-> +++ b/block/mirror.c
-> @@ -1246,6 +1246,27 @@ static bool commit_active_cancel(Job *job, bool force)
->       return force || !job_is_ready(job);
+> diff --git a/blockjob.c b/blockjob.c
+> index f8cf6e58e2..7e8cfad0fd 100644
+> --- a/blockjob.c
+> +++ b/blockjob.c
+> @@ -376,6 +376,7 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
+>   {
+>       BlockJobInfo *info;
+>       uint64_t progress_current, progress_total;
+> +    const BlockJobDriver *drv = block_job_driver(job);
+>   
+>       GLOBAL_STATE_CODE();
+>   
+> @@ -405,6 +406,9 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
+>                           g_strdup(error_get_pretty(job->job.err)) :
+>                           g_strdup(strerror(-job->job.ret));
+>       }
+> +    if (drv->query) {
+> +        drv->query(job, info);
+
+Other handlers are called with job lock dropped.
+
+> +    }
+>       return info;
 >   }
 >   
-> +static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
-> +                          Error **errp)
-> +{
-> +    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
-> +    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
+> diff --git a/include/block/blockjob_int.h b/include/block/blockjob_int.h
+> index f604985315..4ab88b3c97 100644
+> --- a/include/block/blockjob_int.h
+> +++ b/include/block/blockjob_int.h
+> @@ -72,6 +72,11 @@ struct BlockJobDriver {
+>        * Change the @job's options according to @opts.
+>        */
+>       void (*change)(BlockJob *job, BlockJobChangeOptions *opts, Error **errp);
 > +
-> +    if (s->copy_mode == change_opts->copy_mode) {
-> +        return;
-> +    }
-> +
-> +    if (s->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING) {
-> +        error_setg(errp, "Cannot switch away from copy mode 'write-blocking'");
-> +        return;
-> +    }
-> +
-> +    assert(s->copy_mode == MIRROR_COPY_MODE_BACKGROUND &&
-> +           change_opts->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING);
-> +
-> +    s->copy_mode = MIRROR_COPY_MODE_WRITE_BLOCKING;
-> +}
-
-So, s->copy_mode becomes shared between main thread and iothread.
-
-We should either use mutex or atomic operations.
-
-Note, that the only realization of .set_speed uses thread-safe API.
-
-> +
->   static const BlockJobDriver mirror_job_driver = {
->       .job_driver = {
->           .instance_size          = sizeof(MirrorBlockJob),
-> @@ -1260,6 +1281,7 @@ static const BlockJobDriver mirror_job_driver = {
->           .cancel                 = mirror_cancel,
->       },
->       .drained_poll           = mirror_drained_poll,
-> +    .change                 = mirror_change,
+> +    /*
+> +     * Query information specific to this kind of block job.
+> +     */
+> +    void (*query)(BlockJob *job, BlockJobInfo *info);
 >   };
 >   
->   static const BlockJobDriver commit_active_job_driver = {
-> diff --git a/qapi/block-core.json b/qapi/block-core.json
-> index c6f31a9399..01427c259a 100644
-> --- a/qapi/block-core.json
-> +++ b/qapi/block-core.json
-> @@ -3044,6 +3044,17 @@
->   { 'command': 'block-job-finalize', 'data': { 'id': 'str' },
->     'allow-preconfig': true }
->   
-> +##
-> +# @BlockJobChangeOptionsMirror:
-> +#
-> +# @copy-mode: Switch to this copy mode. Currenlty, only the switch
-> +#     from 'background' to 'write-blocking' is implemented.
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'struct': 'BlockJobChangeOptionsMirror',
-> +  'data': { 'copy-mode' : 'MirrorCopyMode' } }
-> +
->   ##
->   # @BlockJobChangeOptions:
->   #
-> @@ -3058,7 +3069,7 @@
->   { 'union': 'BlockJobChangeOptions',
->     'base': { 'id': 'str', 'type': 'JobType' },
->     'discriminator': 'type',
-> -  'data': {} }
-> +  'data': { 'mirror': 'BlockJobChangeOptionsMirror' } }
->   
->   ##
->   # @block-job-change:
+>   /*
 
 -- 
 Best regards,
