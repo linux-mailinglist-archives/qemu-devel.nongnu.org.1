@@ -2,82 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDAB7BF7DF
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC237BF7E1
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:51:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq9O0-0006mC-Mv; Tue, 10 Oct 2023 05:50:46 -0400
+	id 1qq9OR-0007iI-Pd; Tue, 10 Oct 2023 05:51:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qq9Ny-0006aV-Na; Tue, 10 Oct 2023 05:50:42 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qq9OQ-0007du-0t
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:51:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qq9Nw-000428-TX; Tue, 10 Oct 2023 05:50:42 -0400
-Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S4WKQ30LNz6D8cV;
- Tue, 10 Oct 2023 17:47:38 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 10 Oct 2023 10:50:38 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 10 Oct 2023 10:50:38 +0100
-To: Shaoqin Huang <shahuang@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V4 07/10] hw/acpi: Update ACPI GED framework to support
- vCPU Hotplug
-Thread-Topic: [PATCH V4 07/10] hw/acpi: Update ACPI GED framework to support
- vCPU Hotplug
-Thread-Index: AQHZ+vCtAkAWKYXgr0OuLtDfoazlJ7BCnfiAgAAqeOA=
-Date: Tue, 10 Oct 2023 09:50:38 +0000
-Message-ID: <9cf277f61c4b401fa39cbc88109e1db1@huawei.com>
-References: <20231009203601.17584-1-salil.mehta@huawei.com>
- <20231009203601.17584-8-salil.mehta@huawei.com>
- <d9fdeb5b-5da2-8411-7940-e64ad7ebf91b@redhat.com>
-In-Reply-To: <d9fdeb5b-5da2-8411-7940-e64ad7ebf91b@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.174.234]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qq9OL-00045m-Q2
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:51:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696931465;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=P2Q/YWBsCpx2xy/0EQhZzEhe2g3WyDk5e5sPtL7OVlA=;
+ b=DQzLeYXSe7wad2xvS1nYMxvtRvtjvZV6rYwNLh69onuTnbXhtm7SFLbno/ACLVqLdSn6Xi
+ Cxhtc/RkKLrSefczyGuNhFzugsrRbYu9V1neqo71vHkOcX9WJcOPpdSUrshTxiYX2E1+pS
+ R7EjzNN1C/cJpz5AxMK8Tew6o5Sk47I=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-hhpOU60uNpqSPqVprBD0xA-1; Tue, 10 Oct 2023 05:51:04 -0400
+X-MC-Unique: hhpOU60uNpqSPqVprBD0xA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-77435bbb71dso579843385a.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:51:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696931463; x=1697536263;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=P2Q/YWBsCpx2xy/0EQhZzEhe2g3WyDk5e5sPtL7OVlA=;
+ b=KrNv0dug7EKZ+2t9RGpTzQbI0UxelPcNUbN3k0qeH7wprhGO38CuV8oQUhr0kO2Sr5
+ F1RIuZqSO5Ws9jhLflQUHcQ1mPFW2Qiwofv7G9kJxPMTS+lYVGZzPZD/nQPPN77eNDCd
+ AW0SYpYdtNcGGMxjGTyGoKZ2LEocLApLokLF4ASUAXQh8NP/2isTKsOEDL81QBybsJ4O
+ X3khNX6odhoiwDhuYAti0sOpCh1uuvjd5DXlTPhKv86cCM7/QrOqcDnn9WpRwzoaKqbs
+ xdDbgxxhr8d3X+JTZWPMQGvC1bqeZS+RJFXYGolmpW5F1owfGbRrvKm+zyT2ZckYFPST
+ PXrQ==
+X-Gm-Message-State: AOJu0Yyk5wn/CgDFLGyA9mxIVFnNga7JV9DZ1huzgsee9cCTIVu2p0WX
+ uFDplumAVRKntPFqNQAeJZOBFhNh3K2qBZmrPxaZwDwPHn8jo8SKf3vGgEBn7VnwIddDNMvpERX
+ tMpnXoI+Ss5S0VOA=
+X-Received: by 2002:a05:620a:99c:b0:774:a9b:d62e with SMTP id
+ x28-20020a05620a099c00b007740a9bd62emr15961276qkx.46.1696931463513; 
+ Tue, 10 Oct 2023 02:51:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGwggATuSm4vio0Z8MHRN+J/xGr4pMkH5MDB4gH2zVITYAi6iLdad3jMAbZdsCHoiCWKg+0Kw==
+X-Received: by 2002:a05:620a:99c:b0:774:a9b:d62e with SMTP id
+ x28-20020a05620a099c00b007740a9bd62emr15961268qkx.46.1696931463236; 
+ Tue, 10 Oct 2023 02:51:03 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
+ [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
+ a12-20020a05620a102c00b007759a81d88esm4174875qkk.50.2023.10.10.02.51.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Oct 2023 02:51:02 -0700 (PDT)
+Message-ID: <df3fee4b-ebc1-77d2-a436-a7baf3317a42@redhat.com>
+Date: Tue, 10 Oct 2023 11:50:58 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 3/4] tests/libqtest: Introduce qtest_get_base_arch()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
+ qemu-block@nongnu.org, Laurent Vivier <lvivier@redhat.com>
+References: <20231010074952.79165-1-philmd@linaro.org>
+ <20231010074952.79165-4-philmd@linaro.org>
+ <c3b6a3a6-a320-f2f5-c200-da5b11e18c86@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <c3b6a3a6-a320-f2f5-c200-da5b11e18c86@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,40 +102,90 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBTaGFvcWluIEh1YW5nIDxzaGFodWFuZ0ByZWRoYXQuY29tPg0KPiBTZW50OiBUdWVz
-ZGF5LCBPY3RvYmVyIDEwLCAyMDIzIDk6MTggQU0NCj4gVG86IFNhbGlsIE1laHRhIDxzYWxpbC5t
-ZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOyBxZW11LQ0KPiBhcm1Abm9u
-Z251Lm9yZw0KPiBDYzogbWF6QGtlcm5lbC5vcmc7IGplYW4tcGhpbGlwcGVAbGluYXJvLm9yZzsg
-Sm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgbHBpZXJh
-bGlzaUBrZXJuZWwub3JnOw0KPiBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc7IHJpY2hhcmQuaGVu
-ZGVyc29uQGxpbmFyby5vcmc7DQo+IGltYW1tZWRvQHJlZGhhdC5jb207IGFuZHJldy5qb25lc0Bs
-aW51eC5kZXY7IGRhdmlkQHJlZGhhdC5jb207DQo+IHBoaWxtZEBsaW5hcm8ub3JnOyBlcmljLmF1
-Z2VyQHJlZGhhdC5jb207IG9saXZlci51cHRvbkBsaW51eC5kZXY7DQo+IHBib256aW5pQHJlZGhh
-dC5jb207IG1zdEByZWRoYXQuY29tOyB3aWxsQGtlcm5lbC5vcmc7IGdzaGFuQHJlZGhhdC5jb207
-DQo+IHJhZmFlbEBrZXJuZWwub3JnOyBhbGV4LmJlbm5lZUBsaW5hcm8ub3JnOyBsaW51eEBhcm1s
-aW51eC5vcmcudWs7DQo+IGRhcnJlbkBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBpbGtrYUBvcy5h
-bXBlcmVjb21wdXRpbmcuY29tOw0KPiB2aXNobnVAb3MuYW1wZXJlY29tcHV0aW5nLmNvbTsga2Fy
-bC5oZXViYXVtQG9yYWNsZS5jb207DQo+IG1pZ3VlbC5sdWlzQG9yYWNsZS5jb207IHNhbGlsLm1l
-aHRhQG9wbnNyYy5uZXQ7IHpodWtlcWlhbg0KPiA8emh1a2VxaWFuMUBodWF3ZWkuY29tPjsgd2Fu
-Z3hpb25nZmVuZyAoQykgPHdhbmd4aW9uZ2ZlbmcyQGh1YXdlaS5jb20+Ow0KPiB3YW5neWFuYW4g
-KFkpIDx3YW5neWFuYW41NUBodWF3ZWkuY29tPjsgamlha2VybmVsMkBnbWFpbC5jb207DQo+IG1h
-b2JpYm9AbG9vbmdzb24uY247IGxpeGlhbmdsYWlAbG9vbmdzb24uY247IExpbnV4YXJtIDxsaW51
-eGFybUBodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIFY0IDA3LzEwXSBody9hY3Bp
-OiBVcGRhdGUgQUNQSSBHRUQgZnJhbWV3b3JrIHRvIHN1cHBvcnQNCj4gdkNQVSBIb3RwbHVnDQo+
-IA0KPiBPbiAxMC8xMC8yMyAwNDozNSwgU2FsaWwgTWVodGEgdmlhIHdyb3RlOg0KPiA+IEFDUEkg
-R0VEIHNoYWxsIGJlIHVzZWQgdG8gY29udmV5IHRvIHRoZSBndWVzdCBrZXJuZWwgYWJvdXQgYW55
-IENQVSBob3QtDQo+ICh1bilwbHVnDQo+ID4gZXZlbnRzLiBUaGVyZWZvcmUsIGV4aXN0aW5nIEFD
-UEkgR0VEIGZyYW1ld29yayBpbnNpZGUgUUVNVSBuZWVkcyB0byBiZQ0KPiBlbmhhbmNlZA0KPiA+
-IHRvIHN1cHBvcnQgQ1BVIGhvdHBsdWcgc3RhdGUgYW5kIGV2ZW50cy4NCj4gPg0KPiA+IENvLWRl
-dmVsb3BlZC1ieTogS2VxaWFuIFpodSA8emh1a2VxaWFuMUBodWF3ZWkuY29tPg0KPiA+IFNpZ25l
-ZC1vZmYtYnk6IEtlcWlhbiBaaHUgPHpodWtlcWlhbjFAaHVhd2VpLmNvbT4NCj4gPiBTaWduZWQt
-b2ZmLWJ5OiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4NCj4gPiBSZXZpZXdl
-ZC1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9uYXRoYW4uQ2FtZXJvbkBodWF3ZWkuY29tPg0KPiA+
-IFJldmlld2VkLWJ5OiBHYXZpbiBTaGFuIDxnc2hhbkByZWRoYXQuY29tPg0KPiBSZXZpZXdlZC1i
-eTogU2hhb3FpbiBIdWFuZyA8c2hhaHVhbmdAcmVkaGF0LmNvbT4NCg0KVGhhbmtzDQo=
+On 10/10/2023 10.42, Philippe Mathieu-Daudé wrote:
+> On 10/10/23 09:49, Philippe Mathieu-Daudé wrote:
+>> While qtest_get_arch() returns the target architecture name,
+>> such "i386" or "x86_64", qtest_get_base_arch() return the
+>> "base" (or real underlying) architecture, in this example
+>> that is "x86".
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   tests/qtest/libqtest.h |  7 +++++++
+>>   tests/qtest/libqtest.c | 28 ++++++++++++++++++++++++++++
+>>   2 files changed, 35 insertions(+)
+>>
+>> diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
+>> index 1e1b42241d..54071e74ec 100644
+>> --- a/tests/qtest/libqtest.h
+>> +++ b/tests/qtest/libqtest.h
+>> @@ -654,6 +654,13 @@ bool qtest_big_endian(QTestState *s);
+>>    */
+>>   const char *qtest_get_arch(void);
+>> +/**
+>> + * qtest_get_base_arch:
+>> + *
+>> + * Returns: The base architecture for the QEMU executable under test.
+>> + */
+>> +const char *qtest_get_base_arch(void);
+>> +
+>>   /**
+>>    * qtest_get_arch_bits:
+>>    *
+>> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+>> index a643a6309c..51cc92af21 100644
+>> --- a/tests/qtest/libqtest.c
+>> +++ b/tests/qtest/libqtest.c
+>> @@ -925,6 +925,34 @@ const char *qtest_get_arch(void)
+>>       return end + 1;
+>>   }
+>> +const char *qtest_get_base_arch(void)
+>> +{
+>> +    static const struct {
+>> +        const char *const arch;
+>> +        const char *const base;
+>> +    } basearch[] = {
+>> +        { "aarch64", "arm" },
+>> +        { "i386", "x86" },
+>> +        { "loongarch64", "loongarch" },
+>> +        { "mipsel", "mips" },
+>> +        { "mips64", "mips" },
+>> +        { "mips64el", "mips" },
+>> +        { "ppc64", "ppc" },
+>> +        { "riscv32", "riscv" },
+>> +        { "riscv64", "riscv" },
+>> +        { "sparc64", "sparc" },
+>> +        { "x86_64", "x86" },
+>> +    };
+>> +    const char *arch = qtest_get_arch();
+>> +
+>> +    for (unsigned i = 0; i < ARRAY_SIZE(basearch); i++) {
+>> +        if (!strcmp(arch, basearch[i].arch)) {
+>> +            return basearch[i].base;
+>> +        }
+>> +    }
+>> +    g_assert_not_reached();
+> 
+> Sorry, I forgot to commit this change:
+> 
+> -- >8 --
+> --- a/tests/qtest/libqtest.c
+> +++ b/tests/qtest/libqtest.c
+> @@ -950,7 +950,8 @@ const char *qtest_get_base_arch(void)
+>               return basearch[i].base;
+>           }
+>       }
+> -    g_assert_not_reached();
+> +
+> +    return arch;
+>   }
+
+I'd maybe also do a caching here, as suggested in the first patch.
+
+  Thomas
+
+
 
