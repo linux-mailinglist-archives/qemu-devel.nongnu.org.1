@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067CA7C41EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 22:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374D47C41F4
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 22:58:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqJj8-0004Qc-UI; Tue, 10 Oct 2023 16:53:14 -0400
+	id 1qqJnr-0006cD-FU; Tue, 10 Oct 2023 16:58:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qqJj7-0004QH-8Q; Tue, 10 Oct 2023 16:53:13 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qqJnn-0006aA-Pd; Tue, 10 Oct 2023 16:58:03 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qqJj5-0000dw-FM; Tue, 10 Oct 2023 16:53:12 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-692d2e8c003so196104b3a.1; 
- Tue, 10 Oct 2023 13:53:10 -0700 (PDT)
+ id 1qqJnh-0001Ri-OQ; Tue, 10 Oct 2023 16:58:03 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-690fa0eea3cso5490031b3a.0; 
+ Tue, 10 Oct 2023 13:57:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696971189; x=1697575989; darn=nongnu.org;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
+ d=gmail.com; s=20230601; t=1696971475; x=1697576275; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B0Z6pAIKZFmOc2GaxXJWN2cPkG39K3drQfFFmwpIovA=;
- b=W0Dw6FPNvonR4VPr7t9p8I6ZvzJTcd0LqAqf4OTtsYf6QQzDgTq+b3suc3tr2YPiUh
- pWByF3eRMsFuchG9ZokrzOib4wOJMUkIN+SSbVrXUQaX//3EoEwJ2zATudjY2hxtge7V
- pBq7d+L1dXgyRfQ+NQ3zbcxrx3TFdvKLWTsY2fauSXgZlqDaJ3sT/6VLFSo4FTZIw8Gj
- WxW5BMRXQhYN5FnKIbK9yYukwf3/A89EGNgsCBjkfp/lW67HhDnum2FJvZlypcen8gVW
- KuV4JBU7r4+sC+sPVEr7s1kFkId6v8F1q4S45APRb7g/GbV1Z9KoHjQIa/t0dxSHKTGE
- AHOw==
+ bh=K7dmRkIS0GKwnKEsR4MYO0AB6h1LQzEcqMz8hZ40H+E=;
+ b=m8iDy/6G3jL3qBIrXnWxKqHw+jDt4FrsOZWG33fvHNZ/uKe4uQgGbXsusOpa6L+Zxu
+ MwrGFbJ+VgL3M3ZeH3S/IuKX3n+fYz3UD8llAlobAnVNwxJ3ofN3v2eZf66k/PJQGu4o
+ YrKJcm2QD3SsxCWoBREDm6Q3CrdcQzKC+QtMXwjz3f6P6e49teS0qZ1CJP3j9IuITNJS
+ KY4Bp6rqPQOS2GL2fxB3BgB1G4wTfNOaVk/FaOhB9jMU5i7b1FxLauBRP14ByBCjV+k3
+ drH3JdWDl5VZLshwoKt3eSxuz7pGxz+BWjXS0g+TnqYJUA3GT646UMLOynr46aEFAppT
+ WmsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696971189; x=1697575989;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
+ d=1e100.net; s=20230601; t=1696971475; x=1697576275;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=B0Z6pAIKZFmOc2GaxXJWN2cPkG39K3drQfFFmwpIovA=;
- b=iV6b6EA/kdJVJLMwkeBx+v1Zbifxb985uUrBeF22D70aMD2vP1j/QC9eXJBX/Qe2PX
- mU0+Ix2QJuMAqgFSnkpTNAC1AvEuouYdAwNjRErDMJnW9wDEgvM2zDoaZJFPlqjiXSCX
- ouwUja8y4Eo2WOWhJ/QOqE7WbtKHUX0fe9RNbjnfeVPBy/RzMYXD2g9VXO6LIJSjmjP7
- 9VljDX8hF+au0C9Zs+8rudN/35bcQvnRZfUccPxgtm8sJkGY0rOaGjsweZJoHGQ/A8VQ
- 4xORuMHClzSecPSPcFE7TgV4sl+lelbNsoCMXMtIgPy+fHhXtwiyOIkhffIqVgdNPRvA
- M3ZA==
-X-Gm-Message-State: AOJu0Ywx38j7ZtwUh9QWnQld5hw9JEEzYPiec7ypurdhTtb6GR2sqhGv
- i0C3ADUs1cShodwJAGMBGsI=
-X-Google-Smtp-Source: AGHT+IESzIazsqUgraxHv4GCJfcSVjgyqeCVKsJYAwkwTkg2EKu+YtbYRpXcfcizHltFkuR/Ahn1YA==
-X-Received: by 2002:a05:6a20:8415:b0:128:ffb7:dcfe with SMTP id
- c21-20020a056a20841500b00128ffb7dcfemr27926709pzd.1.1696971189529; 
- Tue, 10 Oct 2023 13:53:09 -0700 (PDT)
+ bh=K7dmRkIS0GKwnKEsR4MYO0AB6h1LQzEcqMz8hZ40H+E=;
+ b=l0D2ttsM71JZuOiBR1SUnpAmHeK9mEGA8mAMavLanJexH0FmEeqapq+zNzYxywHEfY
+ cDIDkXrx92NzS2aeRsuMdwm8kDD5f+v33Tsus4F6JSrfUokMa4eqO/qhd2lWMWCm0HT/
+ la9zlGNQ482tRNRfcth9u7ETsNFa2CEU+eeAnyrNszXQ8JXSOomuYqhvKM6O+9RJyCYb
+ 3r+je4XLFIB+J+xbx7kva68tO7oVhjUVNIpOmTjwvV1fcbgncx0Ds1KbMMa6iRbFQUvC
+ IAQbpXY11kCKQrfKVwKOOxN2XJ2oegkJu7bKvSnH5nlbyJusBVuuc0N/pZVAMagmznZw
+ ZWDQ==
+X-Gm-Message-State: AOJu0YwB8nvAt2mBF60AwOMAzJcA70ST+y0wM5Y4TCP43MtzKbo1bJQ8
+ FyD4QhKIilgRBugoOTgeGeM=
+X-Google-Smtp-Source: AGHT+IE5LSd2tg453WG0zgjDINr4zQi1qTpqSTuK/+KxXCke6qlYHDVA3dwPiDub9fLdIiIgztUFYQ==
+X-Received: by 2002:a05:6a00:cc7:b0:68e:2d9d:b0cc with SMTP id
+ b7-20020a056a000cc700b0068e2d9db0ccmr24716719pfv.6.1696971475116; 
+ Tue, 10 Oct 2023 13:57:55 -0700 (PDT)
 Received: from localhost (27-33-247-209.tpgi.com.au. [27.33.247.209])
  by smtp.gmail.com with ESMTPSA id
- fb15-20020a056a002d8f00b006932657075bsm6904799pfb.82.2023.10.10.13.53.06
+ s3-20020aa78283000000b00692b6fe1c7asm8942523pfm.179.2023.10.10.13.57.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 13:53:09 -0700 (PDT)
+ Tue, 10 Oct 2023 13:57:54 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Oct 2023 06:53:04 +1000
-Message-Id: <CW522VQRHMHA.3DKAX1WTT3YAX@wheely>
-To: "Joel Stanley" <joel@jms.id.au>, "Michael Ellerman" <mpe@ellerman.id.au>
+Date: Wed, 11 Oct 2023 06:57:49 +1000
+Message-Id: <CW526IRMLS2I.85TF1PIVGU0I@wheely>
 Cc: <qemu-ppc@nongnu.org>, "Cleber Rosa" <crosa@redhat.com>,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Wainer dos
  Santos Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
  <qemu-devel@nongnu.org>
-Subject: Re: [RFC PATCH 05/11] testing/avocado: ppc add new BookE
- boot_linux_console.py tests
+Subject: Re: [RFC PATCH 11/11] ppc/pnv: Change powernv default to powernv10
 From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Joel Stanley" <joel@jms.id.au>
 X-Mailer: aerc 0.15.2
 References: <20231010075238.95646-1-npiggin@gmail.com>
- <20231010075238.95646-6-npiggin@gmail.com>
- <CACPK8XcS05gQemgRKFTvhAaQzDLg+5MKH0sVyuU=pOs=Oo_=SA@mail.gmail.com>
-In-Reply-To: <CACPK8XcS05gQemgRKFTvhAaQzDLg+5MKH0sVyuU=pOs=Oo_=SA@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+ <20231010075238.95646-12-npiggin@gmail.com>
+ <CACPK8XeLPd3yw=+jBtc1mj94cxF3e1HAaSZ-4mubh5XV4tvgXg@mail.gmail.com>
+In-Reply-To: <CACPK8XeLPd3yw=+jBtc1mj94cxF3e1HAaSZ-4mubh5XV4tvgXg@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,53 +95,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Oct 10, 2023 at 10:03 PM AEST, Joel Stanley wrote:
-> On Tue, 10 Oct 2023 at 18:23, Nicholas Piggin <npiggin@gmail.com> wrote:
+On Tue Oct 10, 2023 at 10:05 PM AEST, Joel Stanley wrote:
+> On Tue, 10 Oct 2023 at 18:24, Nicholas Piggin <npiggin@gmail.com> wrote:
 > >
-> > Add simple Linux kernel boot tests for BookE 64-bit and 32-bit CPUs
-> > using Guenter Roeck's rootfs images for Linux testing, and a gitlab
-> > repository with kernel images that I built since there are very few
-> > sources of modern BookE images now.
+> > POWER10 is the latest IBM Power machine. Although it is not offered in
+> > "OPAL mode" (i.e., powernv configuration), so there is a case that it
+> > should remain at powernv9, most of the development work is going into
+> > powernv10 at the moment.
 > >
 > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >
 > Reviewed-by: Joel Stanley <joel@jms.id.au>
 >
-> Should we get mpe to add a https://github.com/linuxppc/qemu-ci-images
-> for you to keep those kernel images? But perhaps you'd prefer to keep
-> them on gitlab. Just a suggestion.
+> Do we need to update the docs?
 
-Not a bad idea. Or we could try for gitlab/qemu/ci-images I suppose.
+What did you have in mind? Add some powernv10 examples?
 
->
-> > ---
-> >  tests/avocado/boot_linux_console.py | 53 +++++++++++++++++++++++++++++
-> >  1 file changed, 53 insertions(+)
-> >
-> > diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_l=
-inux_console.py
-> > index 9434304cd3..dc3346ef49 100644
-> > --- a/tests/avocado/boot_linux_console.py
-> > +++ b/tests/avocado/boot_linux_console.py
-> > @@ -1355,6 +1355,59 @@ def test_ppc64_e500(self):
-> >          tar_hash =3D '6951d86d644b302898da2fd701739c9406527fe1'
-> >          self.do_test_advcal_2018('19', tar_hash, 'uImage')
-> >
-> > +    def test_ppc64_e6500(self):
-> > +        """
-> > +        :avocado: tags=3Darch:ppc64
-> > +        :avocado: tags=3Dmachine:ppce500
-> > +        :avocado: tags=3Dcpu:e6500
-> > +        :avocado: tags=3Daccel:tcg
-> > +        """
-> > +        kernel_url =3D ('https://gitlab.com/npiggin/qemu-ci-images/-/r=
-aw/main/ppc/corenet64_vmlinux?ref_type=3Dheads&inline=3Dfalse')
->
-> Is the ref_type?heads=3Dinline-false required? I seem to get the file
-> successfully with wget and those omitted.
+> We should consider updating the skiboot to the latest release too.
 
-I just copied the download link, so if it works without then
-I'll remove it.
+Yeah I will do that (and SLOF as well).
 
 Thanks,
 Nick
