@@ -2,103 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705A07C40F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 22:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E44AE7C40E7
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 22:10:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqJ9Y-0007KF-Fs; Tue, 10 Oct 2023 16:16:28 -0400
+	id 1qqJ2w-0004Sl-P6; Tue, 10 Oct 2023 16:09:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qqJ90-00079t-8s; Tue, 10 Oct 2023 16:15:57 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqJ2r-0004RX-Jl
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 16:09:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qqJ8u-0001DY-CY; Tue, 10 Oct 2023 16:15:53 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39AKFGFN029366; Tue, 10 Oct 2023 20:15:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=rjg66V/9m3A7MCc+xSVbSQoJK5e07rTv38q4EiRR+jw=;
- b=c/GrZIXKi/kERm4hl4mSzmg+FDXGarqzeCJN4YeKO4aL3nvLzJHiCnR9RSqIrRDjdUNz
- IOnR1hFhR6ab3jDIzeEb4OaF+WZzuPDI4VpYWaKhXfBvEBOvLG3va+iIbx58/pB44lLO
- HjAZacLWrHHuLdSuYkFnl9BdHT1iPpwxq1t0VLQUYGAnUdc9vTupGjkLB3AUAedPjAx0
- m7sYx8WWO4fQv6QEBnzo6BCF6DKPH7yEdNruaVQ2b8cmesaljZZkpF7PqhxVUr/Tp1CN
- NBm3oGXifIG3QRXvEvx8aLRpSF5SGxl0IvFakOitBgKjhK+3+0HkX6tkTfYSGeOb1uAd YQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tndg20003-33
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 20:15:44 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39AK1PCJ009463;
- Tue, 10 Oct 2023 20:08:41 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnd900djy-7
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 20:08:40 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39AIU5RU024498; Tue, 10 Oct 2023 20:01:47 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkhnsk1pb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Oct 2023 20:01:47 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39AK1l6t58196260
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 Oct 2023 20:01:47 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0DCB45805F;
- Tue, 10 Oct 2023 20:01:47 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8C87C58054;
- Tue, 10 Oct 2023 20:01:46 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 10 Oct 2023 20:01:46 +0000 (GMT)
-Message-ID: <7253095eb06f9147767654b1021d04d2f73ab695.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH] ppc/pnv: Add an I2C master controller model
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clegoate@redhat.com>,
- qemu-ppc@nongnu.org
-Cc: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-devel@nongnu.org, 
- npiggin@gmail.com, fbarrat@linux.ibm.com
-Date: Tue, 10 Oct 2023 15:01:46 -0500
-In-Reply-To: <b8c0d60c-fbce-3eb6-9bae-85034effec6a@redhat.com>
-References: <20231009180539.2686698-1-milesg@linux.vnet.ibm.com>
- <b8c0d60c-fbce-3eb6-9bae-85034effec6a@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vNseF4FOSYk09CpWr_KrAx1L6l2ymRzc
-X-Proofpoint-ORIG-GUID: rsbOUnIQW64AkeN93gUMlHRx8w1aMu5m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-10_16,2023-10-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 mlxscore=0
- mlxlogscore=999 priorityscore=1501 bulkscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310100156
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqJ2n-00088E-Vv
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 16:09:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696968567;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PWPxfU3L2lALSxKoxfP/EEzgMrzvak2r7ERWMsNFuM4=;
+ b=U1vGSYpLBQJwSoqMeIsg3NCa2dH8dP0+7xv96408JRM/isrXiIpKrjGu/91a1myk3XSf0N
+ 4DIIt8bZYm59tZ0hu8V4liAwP4HR4a2sYgn3UkN1lamRVfHTfcWWwRZe462j1ojA4P4GlT
+ IuqmgQRIy+YdsKMsRIIk2G3G1CKxToU=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-46-nu6Po7WQP0Kd0w29drCCOg-1; Tue, 10 Oct 2023 16:09:26 -0400
+X-MC-Unique: nu6Po7WQP0Kd0w29drCCOg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7742bd869e4so117139385a.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 13:09:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696968565; x=1697573365;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PWPxfU3L2lALSxKoxfP/EEzgMrzvak2r7ERWMsNFuM4=;
+ b=pr3yDM1XHh0C/VA5Y+GhR+75N5/7gjDnvW1HtawcV96+vHXeE1XHBqwO18i/B5uWXZ
+ zWC8YGhR+PkuOUWLmMJarmwFxnHKdCQlc3+wE1xBUQ+Ke5D3g9XlTLfUU5ZlZGBZcNxi
+ b3UmSBcmTxQhDbtnogl+gQ7laRafFn1xcXVhtxQUC2WuARVqs+Gln+qvzSsaX/6xq3uR
+ sbJRWaBjlcVqiNCcXnmJ73WVRdOGOyWE7UUs2jvBrJj0JmckfsdgXry9wiB7qePrqyVA
+ T8hAzogcL2pX5aX6ZMyXNFkpjuaXm0PBKPk581jTMYCUadNgLh0WFs1d96i9i/e+E7yh
+ cHqg==
+X-Gm-Message-State: AOJu0YzpcdI5uStJmWTmqcgdTgQVXmvYahXBg6APL4TsgQVqYvk/DRk/
+ vMevaJZ2TnUytGn7gArOfVoMhgu+Otxp+gynm+Gk/RJ4lilumSRv/ICtVQ3YRgFLQnbwjSweeUH
+ CnKX6xVt+Ftj6nFc=
+X-Received: by 2002:a05:620a:19a0:b0:76e:f686:cacb with SMTP id
+ bm32-20020a05620a19a000b0076ef686cacbmr21181485qkb.3.1696968565738; 
+ Tue, 10 Oct 2023 13:09:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGw5N2Qv32sFqDYECMuOzcN5hRBYNjsUsqZtLuAa+yq0sK46UeL2pEw4bMQcIamuyMxP2i5lw==
+X-Received: by 2002:a05:620a:19a0:b0:76e:f686:cacb with SMTP id
+ bm32-20020a05620a19a000b0076ef686cacbmr21181467qkb.3.1696968565410; 
+ Tue, 10 Oct 2023 13:09:25 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ g1-20020a05620a13c100b0076e1e2d6496sm4589828qkl.104.2023.10.10.13.09.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Oct 2023 13:09:25 -0700 (PDT)
+Date: Tue, 10 Oct 2023 16:09:06 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v3 3/4] migration/qapi: Replace @MigrateSetParameters
+ with @MigrationParameters
+Message-ID: <ZSWvYgKcGXlucXx6@x1n>
+References: <20230905162335.235619-1-peterx@redhat.com>
+ <20230905162335.235619-4-peterx@redhat.com>
+ <87fs30is78.fsf@pond.sub.org> <ZRsff7Lmy7TnggK9@x1n>
+ <87sf6k2dax.fsf@pond.sub.org> <ZSVoK6YMgNzrDYGQ@x1n>
+ <878r8ajngg.fsf@pond.sub.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <878r8ajngg.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,966 +104,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2023-10-09 at 22:42 +0200, Cédric Le Goater wrote:
-> Hello Glenn,
-> 
-> On 10/9/23 20:05, Glenn Miles wrote:
-> > From: Cédric Le Goater <clg@kaod.org>
-> > 
-> > Not supported :
-> > 
-> >   . 10 bit addresses
-> >   . multimaster
-> >   . slave
-> > 
-> > Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > [milesg: fixed formatting warning]
-> 
-> Overall it looks good ;)
-> 
-> Some suggestions for the respin :
-> 
-> * Please split the model implementation from the wiring in the board.
->    Adding a cover letter would be nice.
-> 
+Hi, Markus,
 
-Done.
+On Tue, Oct 10, 2023 at 09:18:23PM +0200, Markus Armbruster wrote:
 
-> * In the commit log, please add more details on the unit being
-> modeled,
->    how this I2C unit interacts with the rest of the machine, what is
->    modeled, what is not, etc. A simple intro in short.
-> 
+[...]
 
-Done.
+> >> The point I was trying to make is this.  Before the patch, we reject
+> >> attempts to set the property value to null.  Afterwards, we accept them,
+> >> i.e. the patch loses "reject null property value".  If this loss is
+> >> undesirable, we better replace it with suitable hand-written code.
+> >
+> > I don't even know how to set it to NULL before.. as it can only be accessed
+> > via cmdline "-global" as mentioned above, which must be a string anyway.
+> > So I assume this is not an issue.
+> 
+> Something like
+> 
+>     {"execute": "migrate-set-parameters",
+>      "arguments": {"tls-authz": null}}
+> 
+> Hmm, crashes in migrate_params_apply(), which is a bug.  I'm getting
+> more and more suspicious about user-facing migration code...
 
-> * Add a SPDX-License-Identifier tag in new files.
-> 
+Did you apply patch 1 of this series?
 
-Done.
+https://lore.kernel.org/qemu-devel/20230905162335.235619-2-peterx@redhat.com/
 
-> Thanks,
-> 
-> C.
-> 
-> PS: I am not getting your emails for some (corporate) reasons.
-> 
-> 
+QMP "migrate-set-parameters" does not go via migration_properties, so even
+if we change handling of migration_properties, it shouldn't yet affect the
+QMP interface of that.
 
-Yes, sorry about that!  I've added your redhat email.  Hopefully
-that's ok.
+> 
+> If the migration object is accessible with qom-set, then that's another
+> way to assign null values.
+
+I see what you meant.  IMHO we just don't need to worry on breaking that as
+I am not aware of anyone using that to set migration parameters, and I
+think the whole idea of migration_properties is for debugging.  The only
+legal way an user should set migration parameters should be via QMP, afaik.
+
+> In my "QAPI string visitors crashes" memo, I demonstrated that the crash
+> on funny property type predates your series.  You merely add another
+> instance.  Moreover, crashing -global is less serious than a crashing
+> monitor command, because only the latter can take down a running guest.
+> Can't see why your series needs to wait for a fix of the crash bug.
+> Makes sense?
+
+What's your suggestion to move on with this series without a fix for that
+crash bug?
+
+I started this series with making tls_* all strings (rather than StrOrNull)
+and that actually worked out, mostly.  We switched to StrOrNull just
+because we think it's cleaner and 100% not breaking anyone (even though I
+still don't think the other way will).  I don't see how I can proceed this
+series without fixing this visitor issue but keep using StrOrNull.
+
+Please don't worry on blocking my work: it won't anymore.  The thing I need is:
+
+https://lore.kernel.org/qemu-devel/20230905193802.250440-1-peterx@redhat.com/
+
+While this whole series is just paving way for it.  If I can't get
+immediate results out of this series, I'll just go with the triplications,
+leaving all the rest for later.
 
 Thanks,
 
-Glenn
-
-> > ---
-> >   hw/ppc/meson.build         |   1 +
-> >   hw/ppc/pnv.c               |  26 ++
-> >   hw/ppc/pnv_i2c.c           | 678
-> > +++++++++++++++++++++++++++++++++++++
-> >   include/hw/ppc/pnv_chip.h  |   4 +
-> >   include/hw/ppc/pnv_i2c.h   |  39 +++
-> >   include/hw/ppc/pnv_xscom.h |   3 +
-> >   6 files changed, 751 insertions(+)
-> >   create mode 100644 hw/ppc/pnv_i2c.c
-> >   create mode 100644 include/hw/ppc/pnv_i2c.h
-> > 
-> > diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-> > index 7c2c52434a..87b756a701 100644
-> > --- a/hw/ppc/meson.build
-> > +++ b/hw/ppc/meson.build
-> > @@ -43,6 +43,7 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true:
-> > files(
-> >     'pnv.c',
-> >     'pnv_xscom.c',
-> >     'pnv_core.c',
-> > +  'pnv_i2c.c',
-> >     'pnv_lpc.c',
-> >     'pnv_psi.c',
-> >     'pnv_occ.c',
-> > diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> > index eb54f93986..32b6d9889d 100644
-> > --- a/hw/ppc/pnv.c
-> > +++ b/hw/ppc/pnv.c
-> > @@ -1438,6 +1438,10 @@ static void
-> > pnv_chip_power9_instance_init(Object *obj)
-> >           object_initialize_child(obj, "pec[*]", &chip9->pecs[i],
-> >                                   TYPE_PNV_PHB4_PEC);
-> >       }
-> > +
-> > +    for (i = 0; i < PNV9_CHIP_MAX_I2C; i++) {
-> > +        object_initialize_child(obj, "i2c[*]", &chip9->i2c[i],
-> > TYPE_PNV_I2C);
-> > +    }
-> >   }
-> >   
-> >   static void pnv_chip_quad_realize_one(PnvChip *chip, PnvQuad *eq,
-> > @@ -1510,6 +1514,7 @@ static void
-> > pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-> >       PnvChip *chip = PNV_CHIP(dev);
-> >       Pnv9Psi *psi9 = &chip9->psi;
-> >       Error *local_err = NULL;
-> > +    int i;
-> >   
-> >       /* XSCOM bridge is first */
-> >       pnv_xscom_realize(chip, PNV9_XSCOM_SIZE, &local_err);
-> > @@ -1613,6 +1618,27 @@ static void
-> > pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-> >           error_propagate(errp, local_err);
-> >           return;
-> >       }
-> > +
-> > +    /*
-> > +     * I2C
-> > +     * TODO: The number of busses is specific to each platform
-> > +     */
-> > +    for (i = 0; i < PNV9_CHIP_MAX_I2C; i++) {
-> > +        Object *obj =  OBJECT(&chip9->i2c[i]);
-> > +
-> > +        object_property_set_int(obj, "engine", i + 1,
-> > &error_fatal);
-> > +        object_property_set_int(obj, "num-busses", 1,
-> > &error_fatal);
-> > +        object_property_set_link(obj, "chip", OBJECT(chip),
-> > &error_abort);
-> > +        if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-> > +            return;
-> > +        }
-> > +        pnv_xscom_add_subregion(chip, PNV9_XSCOM_I2CM_BASE +
-> > +                               chip9->i2c[i].engine *
-> > PNV9_XSCOM_I2CM_SIZE,
-> > +                                &chip9->i2c[i].xscom_regs);
-> > +        qdev_connect_gpio_out(DEVICE(&chip9->i2c[i]), 0,
-> > +                              qdev_get_gpio_in(DEVICE(&chip9-
-> > >psi),
-> > +                                               PSIHB9_IRQ_SBE_I2C)
-> > );
-> > +    }
-> >   }
-> >   
-> >   static uint32_t pnv_chip_power9_xscom_pcba(PnvChip *chip,
-> > uint64_t addr)
-> > diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
-> > new file mode 100644
-> > index 0000000000..8c191912bf
-> > --- /dev/null
-> > +++ b/hw/ppc/pnv_i2c.c
-> > @@ -0,0 +1,678 @@
-> > +/*
-> > + * QEMU PowerPC PowerNV Processor I2C model
-> > + *
-> > + * Copyright (c) 2019-2021, IBM Corporation.
-> > + *
-> > + * This code is licensed under the GPL version 2 or later. See the
-> > + * COPYING file in the top-level directory.
-> > + */
-> > +
-> > +#include "qemu/osdep.h"
-> > +#include "qemu/module.h"
-> > +#include "qemu/log.h"
-> > +#include "sysemu/reset.h"
-> > +
-> > +#include "hw/irq.h"
-> > +#include "hw/qdev-properties.h"
-> > +
-> > +#include "hw/ppc/pnv.h"
-> > +#include "hw/ppc/pnv_chip.h"
-> > +#include "hw/ppc/pnv_i2c.h"
-> > +#include "hw/ppc/pnv_xscom.h"
-> > +#include "hw/ppc/fdt.h"
-> > +
-> > +#include <libfdt.h>
-> > +
-> > +/* I2C FIFO register */
-> > +#define I2C_FIFO_REG                    0x4
-> > +#define I2C_FIFO                        PPC_BITMASK(0, 7)
-> > +
-> > +/* I2C command register */
-> > +#define I2C_CMD_REG                     0x5
-> > +#define I2C_CMD_WITH_START              PPC_BIT(0)
-> > +#define I2C_CMD_WITH_ADDR               PPC_BIT(1)
-> > +#define I2C_CMD_READ_CONT               PPC_BIT(2)
-> > +#define I2C_CMD_WITH_STOP               PPC_BIT(3)
-> > +#define I2C_CMD_INTR_STEERING           PPC_BITMASK(6, 7) /* P9 */
-> > +#define   I2C_CMD_INTR_STEER_HOST       1
-> > +#define   I2C_CMD_INTR_STEER_OCC        2
-> > +#define I2C_CMD_DEV_ADDR                PPC_BITMASK(8, 14)
-> > +#define I2C_CMD_READ_NOT_WRITE          PPC_BIT(15)
-> > +#define I2C_CMD_LEN_BYTES               PPC_BITMASK(16, 31)
-> > +#define I2C_MAX_TFR_LEN                 0xfff0ull
-> > +
-> > +/* I2C mode register */
-> > +#define I2C_MODE_REG                    0x6
-> > +#define I2C_MODE_BIT_RATE_DIV           PPC_BITMASK(0, 15)
-> > +#define I2C_MODE_PORT_NUM               PPC_BITMASK(16, 21)
-> > +#define I2C_MODE_ENHANCED               PPC_BIT(28)
-> > +#define I2C_MODE_DIAGNOSTIC             PPC_BIT(29)
-> > +#define I2C_MODE_PACING_ALLOW           PPC_BIT(30)
-> > +#define I2C_MODE_WRAP                   PPC_BIT(31)
-> > +
-> > +/* I2C watermark register */
-> > +#define I2C_WATERMARK_REG               0x7
-> > +#define I2C_WATERMARK_HIGH              PPC_BITMASK(16, 19)
-> > +#define I2C_WATERMARK_LOW               PPC_BITMASK(24, 27)
-> > +
-> > +/*
-> > + * I2C interrupt mask and condition registers
-> > + *
-> > + * NB: The function of 0x9 and 0xa changes depending on whether
-> > you're reading
-> > + *     or writing to them. When read they return the interrupt
-> > condition bits
-> > + *     and on writes they update the interrupt mask register.
-> > + *
-> > + *  The bit definitions are the same for all the interrupt
-> > registers.
-> > + */
-> > +#define I2C_INTR_MASK_REG               0x8
-> > +
-> > +#define I2C_INTR_RAW_COND_REG           0x9 /* read */
-> > +#define I2C_INTR_MASK_OR_REG            0x9 /* write*/
-> > +
-> > +#define I2C_INTR_COND_REG               0xa /* read */
-> > +#define I2C_INTR_MASK_AND_REG           0xa /* write */
-> > +
-> > +#define I2C_INTR_ALL                    PPC_BITMASK(16, 31)
-> > +#define I2C_INTR_INVALID_CMD            PPC_BIT(16)
-> > +#define I2C_INTR_LBUS_PARITY_ERR        PPC_BIT(17)
-> > +#define I2C_INTR_BKEND_OVERRUN_ERR      PPC_BIT(18)
-> > +#define I2C_INTR_BKEND_ACCESS_ERR       PPC_BIT(19)
-> > +#define I2C_INTR_ARBT_LOST_ERR          PPC_BIT(20)
-> > +#define I2C_INTR_NACK_RCVD_ERR          PPC_BIT(21)
-> > +#define I2C_INTR_DATA_REQ               PPC_BIT(22)
-> > +#define I2C_INTR_CMD_COMP               PPC_BIT(23)
-> > +#define I2C_INTR_STOP_ERR               PPC_BIT(24)
-> > +#define I2C_INTR_I2C_BUSY               PPC_BIT(25)
-> > +#define I2C_INTR_NOT_I2C_BUSY           PPC_BIT(26)
-> > +#define I2C_INTR_SCL_EQ_1               PPC_BIT(28)
-> > +#define I2C_INTR_SCL_EQ_0               PPC_BIT(29)
-> > +#define I2C_INTR_SDA_EQ_1               PPC_BIT(30)
-> > +#define I2C_INTR_SDA_EQ_0               PPC_BIT(31)
-> > +
-> > +/* I2C status register */
-> > +#define I2C_RESET_I2C_REG               0xb /* write */
-> > +#define I2C_RESET_ERRORS                0xc
-> > +#define I2C_STAT_REG                    0xb /* read */
-> > +#define I2C_STAT_INVALID_CMD            PPC_BIT(0)
-> > +#define I2C_STAT_LBUS_PARITY_ERR        PPC_BIT(1)
-> > +#define I2C_STAT_BKEND_OVERRUN_ERR      PPC_BIT(2)
-> > +#define I2C_STAT_BKEND_ACCESS_ERR       PPC_BIT(3)
-> > +#define I2C_STAT_ARBT_LOST_ERR          PPC_BIT(4)
-> > +#define I2C_STAT_NACK_RCVD_ERR          PPC_BIT(5)
-> > +#define I2C_STAT_DATA_REQ               PPC_BIT(6)
-> > +#define I2C_STAT_CMD_COMP               PPC_BIT(7)
-> > +#define I2C_STAT_STOP_ERR               PPC_BIT(8)
-> > +#define I2C_STAT_UPPER_THRS             PPC_BITMASK(9, 15)
-> > +#define I2C_STAT_ANY_I2C_INTR           PPC_BIT(16)
-> > +#define I2C_STAT_PORT_HISTORY_BUSY      PPC_BIT(19)
-> > +#define I2C_STAT_SCL_INPUT_LEVEL        PPC_BIT(20)
-> > +#define I2C_STAT_SDA_INPUT_LEVEL        PPC_BIT(21)
-> > +#define I2C_STAT_PORT_BUSY              PPC_BIT(22)
-> > +#define I2C_STAT_INTERFACE_BUSY         PPC_BIT(23)
-> > +#define I2C_STAT_FIFO_ENTRY_COUNT       PPC_BITMASK(24, 31)
-> > +
-> > +#define I2C_STAT_ANY_ERR (I2C_STAT_INVALID_CMD |
-> > I2C_STAT_LBUS_PARITY_ERR | \
-> > +                          I2C_STAT_BKEND_OVERRUN_ERR | \
-> > +                          I2C_STAT_BKEND_ACCESS_ERR |
-> > I2C_STAT_ARBT_LOST_ERR | \
-> > +                          I2C_STAT_NACK_RCVD_ERR |
-> > I2C_STAT_STOP_ERR)
-> > +
-> > +
-> > +#define I2C_INTR_ACTIVE \
-> > +        ((I2C_STAT_ANY_ERR >> 16) | I2C_INTR_CMD_COMP |
-> > I2C_INTR_DATA_REQ)
-> > +
-> > +/* Pseudo-status used for timeouts */
-> > +#define I2C_STAT_PSEUDO_TIMEOUT         PPC_BIT(63)
-> > +
-> > +/* I2C extended status register */
-> > +#define I2C_EXTD_STAT_REG               0xc
-> > +#define I2C_EXTD_STAT_FIFO_SIZE         PPC_BITMASK(0, 7)
-> > +#define I2C_EXTD_STAT_MSM_CURSTATE      PPC_BITMASK(11, 15)
-> > +#define I2C_EXTD_STAT_SCL_IN_SYNC       PPC_BIT(16)
-> > +#define I2C_EXTD_STAT_SDA_IN_SYNC       PPC_BIT(17)
-> > +#define I2C_EXTD_STAT_S_SCL             PPC_BIT(18)
-> > +#define I2C_EXTD_STAT_S_SDA             PPC_BIT(19)
-> > +#define I2C_EXTD_STAT_M_SCL             PPC_BIT(20)
-> > +#define I2C_EXTD_STAT_M_SDA             PPC_BIT(21)
-> > +#define I2C_EXTD_STAT_HIGH_WATER        PPC_BIT(22)
-> > +#define I2C_EXTD_STAT_LOW_WATER         PPC_BIT(23)
-> > +#define I2C_EXTD_STAT_I2C_BUSY          PPC_BIT(24)
-> > +#define I2C_EXTD_STAT_SELF_BUSY         PPC_BIT(25)
-> > +#define I2C_EXTD_STAT_I2C_VERSION       PPC_BITMASK(27, 31)
-> > +
-> > +/* I2C residual front end/back end length */
-> > +#define I2C_RESIDUAL_LEN_REG            0xd
-> > +#define I2C_RESIDUAL_FRONT_END          PPC_BITMASK(0, 15)
-> > +#define I2C_RESIDUAL_BACK_END           PPC_BITMASK(16, 31)
-> > +
-> > +/* Port busy register */
-> > +#define I2C_PORT_BUSY_REG               0xe
-> > +#define I2C_SET_S_SCL_REG               0xd
-> > +#define I2C_RESET_S_SCL_REG             0xf
-> > +#define I2C_SET_S_SDA_REG               0x10
-> > +#define I2C_RESET_S_SDA_REG             0x11
-> > +
-> > +#define PNV_I2C_FIFO_SIZE 8
-> > +
-> > +static I2CBus *pnv_i2c_get_bus(PnvI2C *i2c)
-> > +{
-> > +    uint8_t port = GETFIELD(I2C_MODE_PORT_NUM, i2c-
-> > >regs[I2C_MODE_REG]);
-> > +
-> > +    if (port >= i2c->num_busses) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: invalid bus number
-> > %d/%d\n", port,
-> > +                      i2c->num_busses);
-> > +        return NULL;
-> > +    }
-> > +    return i2c->busses[port];
-> > +}
-> > +
-> > +static void pnv_i2c_update_irq(PnvI2C *i2c)
-> > +{
-> > +    I2CBus *bus = pnv_i2c_get_bus(i2c);
-> > +    bool recv = !!(i2c->regs[I2C_CMD_REG] &
-> > I2C_CMD_READ_NOT_WRITE);
-> > +    uint16_t front_end = GETFIELD(I2C_RESIDUAL_FRONT_END,
-> > +                                  i2c-
-> > >regs[I2C_RESIDUAL_LEN_REG]);
-> > +    uint16_t back_end = GETFIELD(I2C_RESIDUAL_BACK_END,
-> > +                                 i2c->regs[I2C_RESIDUAL_LEN_REG]);
-> > +    uint8_t fifo_count = GETFIELD(I2C_STAT_FIFO_ENTRY_COUNT,
-> > +                                   i2c->regs[I2C_STAT_REG]);
-> > +    uint8_t fifo_free = PNV_I2C_FIFO_SIZE - fifo_count;
-> > +
-> > +    if (i2c_bus_busy(bus)) {
-> > +        i2c->regs[I2C_STAT_REG] &= ~I2C_STAT_DATA_REQ;
-> > +
-> > +        if (recv) {
-> > +            if (fifo_count >=
-> > +                GETFIELD(I2C_WATERMARK_HIGH, i2c-
-> > >regs[I2C_WATERMARK_REG])) {
-> > +                i2c->regs[I2C_EXTD_STAT_REG] |=
-> > I2C_EXTD_STAT_HIGH_WATER;
-> > +            } else {
-> > +                i2c->regs[I2C_EXTD_STAT_REG] &=
-> > ~I2C_EXTD_STAT_HIGH_WATER;
-> > +            }
-> > +
-> > +            if (((i2c->regs[I2C_EXTD_STAT_REG] &
-> > I2C_EXTD_STAT_HIGH_WATER) &&
-> > +                 fifo_count != 0) || front_end == 0) {
-> > +                i2c->regs[I2C_STAT_REG] |= I2C_STAT_DATA_REQ;
-> > +            }
-> > +        } else {
-> > +            if (fifo_count <=
-> > +                GETFIELD(I2C_WATERMARK_LOW, i2c-
-> > >regs[I2C_WATERMARK_REG])) {
-> > +                i2c->regs[I2C_EXTD_STAT_REG] |=
-> > I2C_EXTD_STAT_LOW_WATER;
-> > +            } else {
-> > +                i2c->regs[I2C_EXTD_STAT_REG] &=
-> > ~I2C_EXTD_STAT_LOW_WATER;
-> > +            }
-> > +
-> > +            if (back_end > 0 &&
-> > +                (fifo_free >= back_end ||
-> > +                 (i2c->regs[I2C_EXTD_STAT_REG] &
-> > I2C_EXTD_STAT_LOW_WATER))) {
-> > +                i2c->regs[I2C_STAT_REG] |= I2C_STAT_DATA_REQ;
-> > +            }
-> > +        }
-> > +
-> > +        if (back_end == 0 && front_end == 0) {
-> > +            i2c->regs[I2C_STAT_REG] &= ~I2C_STAT_DATA_REQ;
-> > +            i2c->regs[I2C_STAT_REG] |= I2C_STAT_CMD_COMP;
-> > +
-> > +            if (i2c->regs[I2C_CMD_REG] & I2C_CMD_WITH_STOP) {
-> > +                i2c_end_transfer(bus);
-> > +                i2c->regs[I2C_EXTD_STAT_REG] &=
-> > +                    ~(I2C_EXTD_STAT_I2C_BUSY |
-> > I2C_EXTD_STAT_SELF_BUSY);
-> > +            }
-> > +        } else {
-> > +            i2c->regs[I2C_STAT_REG] &= ~I2C_STAT_CMD_COMP;
-> > +        }
-> > +    }
-> > +
-> > +    /*
-> > +     * Status and interrupt registers have nearly the same layout.
-> > +     */
-> > +    i2c->regs[I2C_INTR_RAW_COND_REG] = i2c->regs[I2C_STAT_REG] >>
-> > 16;
-> > +    i2c->regs[I2C_INTR_COND_REG] =
-> > +        i2c->regs[I2C_INTR_RAW_COND_REG] & i2c-
-> > >regs[I2C_INTR_MASK_REG];
-> > +
-> > +    qemu_set_irq(i2c->psi_irq, i2c->regs[I2C_INTR_COND_REG] != 0);
-> > +}
-> > +
-> > +static void pnv_i2c_fifo_update_count(PnvI2C *i2c)
-> > +{
-> > +    uint64_t stat = i2c->regs[I2C_STAT_REG];
-> > +
-> > +    i2c->regs[I2C_STAT_REG] = SETFIELD(I2C_STAT_FIFO_ENTRY_COUNT,
-> > stat,
-> > +                                       fifo8_num_used(&i2c-
-> > >fifo));
-> > +}
-> > +
-> > +static void pnv_i2c_frontend_update(PnvI2C *i2c)
-> > +{
-> > +    uint64_t residual_end = i2c->regs[I2C_RESIDUAL_LEN_REG];
-> > +    uint16_t front_end = GETFIELD(I2C_RESIDUAL_FRONT_END,
-> > residual_end);
-> > +
-> > +    i2c->regs[I2C_RESIDUAL_LEN_REG] =
-> > +        SETFIELD(I2C_RESIDUAL_FRONT_END, residual_end, front_end -
-> > 1);
-> > +}
-> > +
-> > +static void pnv_i2c_fifo_flush(PnvI2C *i2c)
-> > +{
-> > +    I2CBus *bus = pnv_i2c_get_bus(i2c);
-> > +    uint8_t data;
-> > +    int ret;
-> > +
-> > +    if (!i2c_bus_busy(bus)) {
-> > +        return;
-> > +    }
-> > +
-> > +    if (i2c->regs[I2C_CMD_REG] & I2C_CMD_READ_NOT_WRITE) {
-> > +        if (fifo8_is_full(&i2c->fifo)) {
-> > +            return;
-> > +        }
-> > +
-> > +        data = i2c_recv(bus);
-> > +        fifo8_push(&i2c->fifo, data);
-> > +    } else {
-> > +        if (fifo8_is_empty(&i2c->fifo)) {
-> > +            return;
-> > +        }
-> > +
-> > +        data = fifo8_pop(&i2c->fifo);
-> > +        ret = i2c_send(bus, data);
-> > +        if (ret) {
-> > +            i2c->regs[I2C_STAT_REG] |= I2C_STAT_NACK_RCVD_ERR;
-> > +            i2c_end_transfer(bus);
-> > +        }
-> > +    }
-> > +
-> > +    pnv_i2c_fifo_update_count(i2c);
-> > +    pnv_i2c_frontend_update(i2c);
-> > +}
-> > +
-> > +static void pnv_i2c_handle_cmd(PnvI2C *i2c, uint64_t val)
-> > +{
-> > +    I2CBus *bus = pnv_i2c_get_bus(i2c);
-> > +    uint8_t addr = GETFIELD(I2C_CMD_DEV_ADDR, val);
-> > +    int recv = !!(val & I2C_CMD_READ_NOT_WRITE);
-> > +    uint32_t len_bytes = GETFIELD(I2C_CMD_LEN_BYTES, val);
-> > +
-> > +    if (!(val & I2C_CMD_WITH_START) && !(val & I2C_CMD_WITH_ADDR)
-> > &&
-> > +        !(val & I2C_CMD_WITH_STOP) && !len_bytes) {
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: invalid command
-> > 0x%"PRIx64"\n",
-> > +                      val);
-> > +        return;
-> > +    }
-> > +
-> > +    if (!(i2c->regs[I2C_STAT_REG] & I2C_STAT_CMD_COMP)) {
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: command in
-> > progress\n");
-> > +        return;
-> > +    }
-> > +
-> > +    if (!bus) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: invalid port\n");
-> > +        return;
-> > +    }
-> > +
-> > +    i2c->regs[I2C_RESIDUAL_LEN_REG] =
-> > +        SETFIELD(I2C_RESIDUAL_FRONT_END, 0ull, len_bytes) |
-> > +        SETFIELD(I2C_RESIDUAL_BACK_END, 0ull, len_bytes);
-> > +
-> > +    if (val & I2C_CMD_WITH_START) {
-> > +        if (i2c_start_transfer(bus, addr, recv)) {
-> > +            i2c->regs[I2C_STAT_REG] |= I2C_STAT_NACK_RCVD_ERR;
-> > +        } else {
-> > +            i2c->regs[I2C_EXTD_STAT_REG] |=
-> > +                (I2C_EXTD_STAT_I2C_BUSY |
-> > I2C_EXTD_STAT_SELF_BUSY);
-> > +            pnv_i2c_fifo_flush(i2c);
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +static void pnv_i2c_backend_update(PnvI2C *i2c)
-> > +{
-> > +    uint64_t residual_end = i2c->regs[I2C_RESIDUAL_LEN_REG];
-> > +    uint16_t back_end = GETFIELD(I2C_RESIDUAL_BACK_END,
-> > residual_end);
-> > +
-> > +    if (!back_end) {
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_BKEND_ACCESS_ERR;
-> > +        return;
-> > +    }
-> > +
-> > +    i2c->regs[I2C_RESIDUAL_LEN_REG] =
-> > +        SETFIELD(I2C_RESIDUAL_BACK_END, residual_end, back_end -
-> > 1);
-> > +}
-> > +
-> > +static void pnv_i2c_fifo_in(PnvI2C *i2c)
-> > +{
-> > +    uint8_t data = GETFIELD(I2C_FIFO, i2c->regs[I2C_FIFO_REG]);
-> > +    I2CBus *bus = pnv_i2c_get_bus(i2c);
-> > +
-> > +    if (!i2c_bus_busy(bus)) {
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: no command in
-> > progress\n");
-> > +        return;
-> > +    }
-> > +
-> > +    if (i2c->regs[I2C_CMD_REG] & I2C_CMD_READ_NOT_WRITE) {
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: read command in
-> > progress\n");
-> > +        return;
-> > +    }
-> > +
-> > +    if (fifo8_is_full(&i2c->fifo)) {
-> > +        if (!(i2c->regs[I2C_MODE_REG] & I2C_MODE_PACING_ALLOW)) {
-> > +            i2c->regs[I2C_STAT_REG] |= I2C_STAT_BKEND_OVERRUN_ERR;
-> > +        }
-> > +        return;
-> > +    }
-> > +
-> > +    fifo8_push(&i2c->fifo, data);
-> > +    pnv_i2c_fifo_update_count(i2c);
-> > +    pnv_i2c_backend_update(i2c);
-> > +    pnv_i2c_fifo_flush(i2c);
-> > +}
-> > +
-> > +static void pnv_i2c_fifo_out(PnvI2C *i2c)
-> > +{
-> > +    uint8_t data;
-> > +    I2CBus *bus = pnv_i2c_get_bus(i2c);
-> > +
-> > +    if (!i2c_bus_busy(bus)) {
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: no command in
-> > progress\n");
-> > +        return;
-> > +    }
-> > +
-> > +    if (!(i2c->regs[I2C_CMD_REG] & I2C_CMD_READ_NOT_WRITE)) {
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: write command in
-> > progress\n");
-> > +        return;
-> > +    }
-> > +
-> > +    if (fifo8_is_empty(&i2c->fifo)) {
-> > +        if (!(i2c->regs[I2C_MODE_REG] & I2C_MODE_PACING_ALLOW)) {
-> > +            i2c->regs[I2C_STAT_REG] |= I2C_STAT_BKEND_OVERRUN_ERR;
-> > +        }
-> > +        return;
-> > +    }
-> > +
-> > +    data = fifo8_pop(&i2c->fifo);
-> > +
-> > +    i2c->regs[I2C_FIFO_REG] = SETFIELD(I2C_FIFO, 0ull, data);
-> > +    pnv_i2c_fifo_update_count(i2c);
-> > +    pnv_i2c_backend_update(i2c);
-> > +}
-> > +
-> > +static uint64_t pnv_i2c_xscom_read(void *opaque, hwaddr addr,
-> > +                                   unsigned size)
-> > +{
-> > +    PnvI2C *i2c = PNV_I2C(opaque);
-> > +    uint32_t offset = addr >> 3;
-> > +    uint64_t val = -1;
-> > +    int i;
-> > +
-> > +    switch (offset) {
-> > +    case I2C_STAT_REG:
-> > +        val = i2c->regs[offset];
-> > +        break;
-> > +
-> > +    case I2C_FIFO_REG:
-> > +        pnv_i2c_fifo_out(i2c);
-> > +        val = i2c->regs[offset];
-> > +        break;
-> > +
-> > +    case I2C_PORT_BUSY_REG: /* compute busy bit for each port  */
-> > +        val = 0;
-> > +        for (i = 0; i < i2c->num_busses; i++) {
-> > +            val |= i2c_bus_busy(i2c->busses[i]) << i;
-> > +        }
-> > +        break;
-> > +
-> > +    case I2C_CMD_REG:
-> > +    case I2C_MODE_REG:
-> > +    case I2C_WATERMARK_REG:
-> > +    case I2C_INTR_MASK_REG:
-> > +    case I2C_INTR_RAW_COND_REG:
-> > +    case I2C_INTR_COND_REG:
-> > +    case I2C_EXTD_STAT_REG:
-> > +    case I2C_RESIDUAL_LEN_REG:
-> > +        val = i2c->regs[offset];
-> > +        break;
-> > +    default:
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: read at register:
-> > 0x%"
-> > +                      HWADDR_PRIx "\n", addr >> 3);
-> > +    }
-> > +
-> > +    pnv_i2c_update_irq(i2c);
-> > +
-> > +    return val;
-> > +}
-> > +
-> > +static void pnv_i2c_xscom_write(void *opaque, hwaddr addr,
-> > +                                uint64_t val, unsigned size)
-> > +{
-> > +    PnvI2C *i2c = PNV_I2C(opaque);
-> > +    uint32_t offset = addr >> 3;
-> > +
-> > +    switch (offset) {
-> > +    case I2C_MODE_REG:
-> > +        i2c->regs[offset] = val;
-> > +        if (i2c_bus_busy(pnv_i2c_get_bus(i2c))) {
-> > +            i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +            qemu_log_mask(LOG_GUEST_ERROR, "I2C: command in
-> > progress\n");
-> > +        }
-> > +        break;
-> > +
-> > +    case I2C_CMD_REG:
-> > +        i2c->regs[offset] = val;
-> > +        pnv_i2c_handle_cmd(i2c, val);
-> > +        break;
-> > +
-> > +    case I2C_FIFO_REG:
-> > +        i2c->regs[offset] = val;
-> > +        pnv_i2c_fifo_in(i2c);
-> > +        break;
-> > +
-> > +    case I2C_WATERMARK_REG:
-> > +        i2c->regs[offset] = val;
-> > +        break;
-> > +
-> > +    case I2C_RESET_I2C_REG:
-> > +        i2c->regs[I2C_MODE_REG] = 0;
-> > +        i2c->regs[I2C_CMD_REG] = 0;
-> > +        i2c->regs[I2C_WATERMARK_REG] = 0;
-> > +        i2c->regs[I2C_INTR_MASK_REG] = 0;
-> > +        i2c->regs[I2C_INTR_COND_REG] = 0;
-> > +        i2c->regs[I2C_INTR_RAW_COND_REG] = 0;
-> > +        i2c->regs[I2C_STAT_REG] = 0;
-> > +        i2c->regs[I2C_RESIDUAL_LEN_REG] = 0;
-> > +        i2c->regs[I2C_EXTD_STAT_REG] &=
-> > +            (I2C_EXTD_STAT_FIFO_SIZE | I2C_EXTD_STAT_I2C_VERSION);
-> > +        break;
-> > +
-> > +    case I2C_RESET_ERRORS:
-> > +        i2c->regs[I2C_STAT_REG] &= ~I2C_STAT_ANY_ERR;
-> > +        i2c->regs[I2C_RESIDUAL_LEN_REG] = 0;
-> > +        i2c->regs[I2C_EXTD_STAT_REG] &=
-> > +            (I2C_EXTD_STAT_FIFO_SIZE | I2C_EXTD_STAT_I2C_VERSION);
-> > +        fifo8_reset(&i2c->fifo);
-> > +        break;
-> > +
-> > +    case I2C_INTR_MASK_REG:
-> > +        i2c->regs[offset] = val;
-> > +        break;
-> > +
-> > +    case I2C_INTR_MASK_OR_REG:
-> > +        i2c->regs[I2C_INTR_MASK_REG] |= val;
-> > +        break;
-> > +
-> > +    case I2C_INTR_MASK_AND_REG:
-> > +        i2c->regs[I2C_INTR_MASK_REG] &= val;
-> > +        break;
-> > +
-> > +    case I2C_PORT_BUSY_REG:
-> > +    case I2C_SET_S_SCL_REG:
-> > +    case I2C_RESET_S_SCL_REG:
-> > +    case I2C_SET_S_SDA_REG:
-> > +    case I2C_RESET_S_SDA_REG:
-> > +        i2c->regs[offset] = val;
-> > +        break;
-> > +    default:
-> > +        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
-> > +        qemu_log_mask(LOG_GUEST_ERROR, "I2C: write at register:
-> > 0x%"
-> > +                      HWADDR_PRIx " val=0x%"PRIx64"\n", addr >> 3,
-> > val);
-> > +    }
-> > +
-> > +    pnv_i2c_update_irq(i2c);
-> > +}
-> > +
-> > +static const MemoryRegionOps pnv_i2c_xscom_ops = {
-> > +    .read = pnv_i2c_xscom_read,
-> > +    .write = pnv_i2c_xscom_write,
-> > +    .valid.min_access_size = 8,
-> > +    .valid.max_access_size = 8,
-> > +    .impl.min_access_size = 8,
-> > +    .impl.max_access_size = 8,
-> > +    .endianness = DEVICE_BIG_ENDIAN,
-> > +};
-> > +
-> > +static int pnv_i2c_bus_dt_xscom(PnvI2C *i2c, void *fdt,
-> > +                                int offset, int index)
-> > +{
-> > +    char *name;
-> > +    int i2c_bus_offset;
-> > +    const char i2c_compat[] =
-> > +        "ibm,opal-i2c\0ibm,power8-i2c-port\0ibm,power9-i2c-port";
-> > +    char *i2c_port_name;
-> > +
-> > +    name = g_strdup_printf("i2c-bus@%x", index);
-> > +    i2c_bus_offset = fdt_add_subnode(fdt, offset, name);
-> > +    _FDT(i2c_bus_offset);
-> > +    g_free(name);
-> > +
-> > +    _FDT((fdt_setprop_cell(fdt, i2c_bus_offset, "reg", index)));
-> > +    _FDT((fdt_setprop_cell(fdt, i2c_bus_offset, "#address-cells",
-> > 1)));
-> > +    _FDT((fdt_setprop_cell(fdt, i2c_bus_offset, "#size-cells",
-> > 0)));
-> > +    _FDT(fdt_setprop(fdt, i2c_bus_offset, "compatible",
-> > i2c_compat,
-> > +                     sizeof(i2c_compat)));
-> > +    _FDT((fdt_setprop_cell(fdt, i2c_bus_offset, "bus-frequency",
-> > 400000)));
-> > +
-> > +    i2c_port_name = g_strdup_printf("p8_%08x_e%dp%d", i2c->chip-
-> > >chip_id,
-> > +                                    i2c->engine, index);
-> > +    _FDT(fdt_setprop_string(fdt, i2c_bus_offset, "ibm,port-name",
-> > +                            i2c_port_name));
-> > +    g_free(i2c_port_name);
-> > +
-> > +    return 0;
-> > +}
-> > +
-> > +#define XSCOM_BUS_FREQUENCY 466500000
-> > +#define I2C_CLOCK_FREQUENCY (XSCOM_BUS_FREQUENCY / 4)
-> > +
-> > +static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
-> > +                            int offset)
-> > +{
-> > +    PnvI2C *i2c = PNV_I2C(dev);
-> > +    char *name;
-> > +    int i2c_offset;
-> > +    const char i2c_compat[] = "ibm,power8-i2cm\0ibm,power9-i2cm";
-> > +    uint32_t i2c_pcba = PNV9_XSCOM_I2CM_BASE +
-> > +        i2c->engine * PNV9_XSCOM_I2CM_SIZE;
-> > +    uint32_t reg[2] = {
-> > +        cpu_to_be32(i2c_pcba),
-> > +        cpu_to_be32(PNV9_XSCOM_I2CM_SIZE)
-> > +    };
-> > +    int i;
-> > +
-> > +    name = g_strdup_printf("i2cm@%x", i2c_pcba);
-> > +    i2c_offset = fdt_add_subnode(fdt, offset, name);
-> > +    _FDT(i2c_offset);
-> > +    g_free(name);
-> > +
-> > +    _FDT(fdt_setprop(fdt, i2c_offset, "reg", reg, sizeof(reg)));
-> > +
-> > +    _FDT((fdt_setprop_cell(fdt, i2c_offset, "#address-cells",
-> > 1)));
-> > +    _FDT((fdt_setprop_cell(fdt, i2c_offset, "#size-cells", 0)));
-> > +    _FDT(fdt_setprop(fdt, i2c_offset, "compatible", i2c_compat,
-> > +                     sizeof(i2c_compat)));
-> > +    _FDT((fdt_setprop_cell(fdt, i2c_offset, "chip-engine#", i2c-
-> > >engine)));
-> > +    _FDT((fdt_setprop_cell(fdt, i2c_offset, "clock-frequency",
-> > +                           I2C_CLOCK_FREQUENCY)));
-> > +
-> > +    for (i = 0; i < i2c->num_busses; i++) {
-> > +        pnv_i2c_bus_dt_xscom(i2c, fdt, i2c_offset, i);
-> > +    }
-> > +    return 0;
-> > +}
-> > +
-> > +static void pnv_i2c_reset(void *dev)
-> > +{
-> > +    PnvI2C *i2c = PNV_I2C(dev);
-> > +
-> > +    memset(i2c->regs, 0, sizeof(i2c->regs));
-> > +
-> > +    i2c->regs[I2C_STAT_REG] = I2C_STAT_CMD_COMP;
-> > +    i2c->regs[I2C_EXTD_STAT_REG] =
-> > +        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull, PNV_I2C_FIFO_SIZE)
-> > |
-> > +        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last
-> > version */
-> > +
-> > +    fifo8_reset(&i2c->fifo);
-> > +}
-> > +
-> > +static void pnv_i2c_realize(DeviceState *dev, Error **errp)
-> > +{
-> > +    PnvI2C *i2c = PNV_I2C(dev);
-> > +    int i;
-> > +
-> > +    assert(i2c->chip);
-> > +
-> > +    pnv_xscom_region_init(&i2c->xscom_regs, OBJECT(i2c),
-> > &pnv_i2c_xscom_ops,
-> > +                          i2c, "xscom-i2c", PNV9_XSCOM_I2CM_SIZE);
-> > +
-> > +    i2c->busses = g_new(I2CBus *, i2c->num_busses);
-> > +    for (i = 0; i < i2c->num_busses; i++) {
-> > +        char name[32];
-> > +
-> > +        snprintf(name, sizeof(name), TYPE_PNV_I2C ".%d", i);
-> > +        i2c->busses[i] = i2c_init_bus(dev, name);
-> > +    }
-> > +
-> > +    fifo8_create(&i2c->fifo, PNV_I2C_FIFO_SIZE);
-> > +
-> > +    qemu_register_reset(pnv_i2c_reset, dev);
-> > +
-> > +    qdev_init_gpio_out(DEVICE(dev), &i2c->psi_irq, 1);
-> > +}
-> > +
-> > +static Property pnv_i2c_properties[] = {
-> > +    DEFINE_PROP_LINK("chip", PnvI2C, chip, TYPE_PNV_CHIP, PnvChip
-> > *),
-> > +    DEFINE_PROP_UINT32("engine", PnvI2C, engine, 1),
-> > +    DEFINE_PROP_UINT32("num-busses", PnvI2C, num_busses, 1),
-> > +    DEFINE_PROP_END_OF_LIST(),
-> > +};
-> > +
-> > +static void pnv_i2c_class_init(ObjectClass *klass, void *data)
-> > +{
-> > +    DeviceClass *dc = DEVICE_CLASS(klass);
-> > +    PnvXScomInterfaceClass *xscomc =
-> > PNV_XSCOM_INTERFACE_CLASS(klass);
-> > +
-> > +    xscomc->dt_xscom = pnv_i2c_dt_xscom;
-> > +
-> > +    dc->desc = "PowerNV I2C";
-> > +    dc->realize = pnv_i2c_realize;
-> > +    device_class_set_props(dc, pnv_i2c_properties);
-> > +}
-> > +
-> > +static const TypeInfo pnv_i2c_info = {
-> > +    .name          = TYPE_PNV_I2C,
-> > +    .parent        = TYPE_DEVICE,
-> > +    .instance_size = sizeof(PnvI2C),
-> > +    .class_init    = pnv_i2c_class_init,
-> > +    .interfaces    = (InterfaceInfo[]) {
-> > +        { TYPE_PNV_XSCOM_INTERFACE },
-> > +        { }
-> > +    }
-> > +};
-> > +
-> > +static void pnv_i2c_register_types(void)
-> > +{
-> > +    type_register_static(&pnv_i2c_info);
-> > +}
-> > +
-> > +type_init(pnv_i2c_register_types);
-> > diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-> > index 53e1d921d7..3bbe2783c9 100644
-> > --- a/include/hw/ppc/pnv_chip.h
-> > +++ b/include/hw/ppc/pnv_chip.h
-> > @@ -9,6 +9,7 @@
-> >   #include "hw/ppc/pnv_psi.h"
-> >   #include "hw/ppc/pnv_sbe.h"
-> >   #include "hw/ppc/pnv_xive.h"
-> > +#include "hw/ppc/pnv_i2c.h"
-> >   #include "hw/sysbus.h"
-> >   
-> >   OBJECT_DECLARE_TYPE(PnvChip, PnvChipClass,
-> > @@ -86,6 +87,9 @@ struct Pnv9Chip {
-> >   
-> >   #define PNV9_CHIP_MAX_PEC 3
-> >       PnvPhb4PecState pecs[PNV9_CHIP_MAX_PEC];
-> > +
-> > +#define PNV9_CHIP_MAX_I2C 3
-> > +    PnvI2C      i2c[PNV9_CHIP_MAX_I2C];
-> >   };
-> >   
-> >   /*
-> > diff --git a/include/hw/ppc/pnv_i2c.h b/include/hw/ppc/pnv_i2c.h
-> > new file mode 100644
-> > index 0000000000..8bb5ecf6bc
-> > --- /dev/null
-> > +++ b/include/hw/ppc/pnv_i2c.h
-> > @@ -0,0 +1,39 @@
-> > +/*
-> > + * QEMU PowerPC PowerNV Processor I2C model
-> > + *
-> > + * Copyright (c) 2019-2021, IBM Corporation.
-> > + *
-> > + * This code is licensed under the GPL version 2 or later. See the
-> > + * COPYING file in the top-level directory.
-> > + */
-> > +
-> > +#ifndef PPC_PNV_I2C_H
-> > +#define PPC_PNV_I2C_H
-> > +
-> > +#include "hw/ppc/pnv.h"
-> > +#include "hw/i2c/i2c.h"
-> > +#include "qemu/fifo8.h"
-> > +
-> > +#define TYPE_PNV_I2C "pnv-i2c"
-> > +#define PNV_I2C(obj) OBJECT_CHECK(PnvI2C, (obj), TYPE_PNV_I2C)
-> > +
-> > +#define PNV_I2C_REGS 0x20
-> > +
-> > +typedef struct PnvI2C {
-> > +    DeviceState parent;
-> > +
-> > +    struct PnvChip *chip;
-> > +
-> > +    qemu_irq psi_irq;
-> > +
-> > +    uint64_t regs[PNV_I2C_REGS];
-> > +    uint32_t engine;
-> > +    uint32_t num_busses;
-> > +    I2CBus **busses;
-> > +
-> > +    MemoryRegion xscom_regs;
-> > +
-> > +    Fifo8 fifo;
-> > +} PnvI2C;
-> > +
-> > +#endif /* PPC_PNV_I2C_H */
-> > diff --git a/include/hw/ppc/pnv_xscom.h
-> > b/include/hw/ppc/pnv_xscom.h
-> > index 9bc6463547..0c8b873c4c 100644
-> > --- a/include/hw/ppc/pnv_xscom.h
-> > +++ b/include/hw/ppc/pnv_xscom.h
-> > @@ -90,6 +90,9 @@ struct PnvXScomInterfaceClass {
-> >       ((uint64_t)(((core) & 0x1C) + 0x40) << 22)
-> >   #define PNV9_XSCOM_EQ_SIZE        0x100000
-> >   
-> > +#define PNV9_XSCOM_I2CM_BASE      0xa0000
-> > +#define PNV9_XSCOM_I2CM_SIZE      0x1000
-> > +
-> >   #define PNV9_XSCOM_OCC_BASE       PNV_XSCOM_OCC_BASE
-> >   #define PNV9_XSCOM_OCC_SIZE       0x8000
-> >   
-> 
-> 
+-- 
+Peter Xu
 
 
