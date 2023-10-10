@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460E47BFF0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FCC7BFF1C
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 16:24:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqDc2-0007kV-P2; Tue, 10 Oct 2023 10:21:30 -0400
+	id 1qqDeS-00011j-9L; Tue, 10 Oct 2023 10:24:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qqDc0-0007hS-Dc
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:21:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qqDeA-00010K-V4
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:23:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qqDby-0007p1-Rr
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:21:28 -0400
+ id 1qqDe6-00086u-0j
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 10:23:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696947683;
+ s=mimecast20190719; t=1696947817;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
  bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=DR1UTYaGEmCDrKk5J9Z8A7auDcr9+M79YnHNGzE1sNwuqlLJTrgvvxjDGng0D2M+vbXRQH
- DFt0zHFank+zcqKMjQRVpk5RhcERite8MLvN05tXJ1kLCXp8+VJ7++0+P8J22GqMNlfM4S
- SIJHdj+nCHxzrIVL5xq6TO3L1Qocehs=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ b=bMTe8I1GVILY6uDmksPw0nOcjDmy3KdL9EHtGWWqKn6gWhnfM6WhuK9ecjecYi9Q5yM7Kr
+ mT/XnDJy54bpPDP1hc7wXDKoAaDvXTbtN+I6xiMPTGi7Vyf/9/h/0hTa7Lo8Ac3hgUJT5W
+ BZR7fD+KtDITte15ZvkYhEF9al5Qb0s=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-OcruwYz5P8moQqmTRMEO1w-1; Tue, 10 Oct 2023 10:21:12 -0400
-X-MC-Unique: OcruwYz5P8moQqmTRMEO1w-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5344aaf2703so4663495a12.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 07:21:10 -0700 (PDT)
+ us-mta-607-3gvximawOOqFPzBiIUPh0Q-1; Tue, 10 Oct 2023 10:23:30 -0400
+X-MC-Unique: 3gvximawOOqFPzBiIUPh0Q-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-51d981149b5so4577144a12.3
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 07:23:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696947669; x=1697552469;
+ d=1e100.net; s=20230601; t=1696947809; x=1697552609;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=jN5+j31/+syoiPLcUX3eT/5TYZZX7NuLC3oruAgHZXwBnOUlnXJIPJK47y4x8U4occ
- q8COXacgoEreeLVpOjCNyRZoJ6i3uUKUPZmzhaKdTgN6xes22UstK3XmUzEhjp/1mlj5
- HadHmplwEtFsEKsnC/IMIEYViLAtjvs9n8+koYgt84eincjsjGvG0ioIqq8IUCOt+pli
- 36C+Qpj65e1AzJUSK3LceXeA00zw1fpcizw2pnwV3JXBmJRNW5UbIJqOr3z9whOloEVY
- 2yKoVFd2HAZZTz46Eq5qMw/vyKjQSL9h0V370pfe01CkSWyaJDj1EuYyVMgJrC0j4Kgf
- TAKA==
-X-Gm-Message-State: AOJu0YzkazbC4sQC9I9U1ixEYi1ara4dLdmfRo82VqKJc/upSe0VsVlg
- lkrrUEgIpUlSOWXRSaQK2kAZum/vxbs0IBFjv6PtG/BBiicg5ew5ftF1LMR6kGpsprn2ZZbNjdR
- G83ZxVl9u4iZF8cU=
-X-Received: by 2002:a17:906:73cd:b0:9ae:329f:11c5 with SMTP id
- n13-20020a17090673cd00b009ae329f11c5mr17710257ejl.53.1696947669814; 
- Tue, 10 Oct 2023 07:21:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJKLIoisJ1qa6GNJdm0/NDOF98z46CQ9++teAkSOuuUWGnajo5+uY98mqKBIVoCANjYuJdhA==
-X-Received: by 2002:a17:906:73cd:b0:9ae:329f:11c5 with SMTP id
- n13-20020a17090673cd00b009ae329f11c5mr17710241ejl.53.1696947669478; 
- Tue, 10 Oct 2023 07:21:09 -0700 (PDT)
+ b=qiMYIcCs8WLKmWvcUnCGvGJ7I1QF0Zhyd8QtrSyirS/Om6HXm72DbZatmCbvma0GD1
+ KDwsM4ySRfSsHsp+cVmxxOqkACYN4RCLy+W0uxIBv+tGvGCoUS/WGbgU5PZyEdmg6T0f
+ 02yXa6mLhpiqey2+f6XLf8G+gDZeiUoALYzPIeM78G2B0QYfRot0aCVi5p0PuLQ1DAi+
+ RevRZKzIf+ubqCKMd0PVvscsTNAwvToJ50dmZos/2NA+dLYUM3JRF4QJBEDtLFvP5vk9
+ L8wrF/mTXr++TqvATuB+tZixRnCc1xVzYz/9AeYWalX/7xxM8GBhQlyrI+QiHyo34Q+p
+ m63w==
+X-Gm-Message-State: AOJu0YxZpSO4gV9597DbIhjHk3CmGYx9FBQ0kkQzMjppXZkN8AdqoaFO
+ SFXPCwTF0HSNPfA9rEsbUZA+MyvNOXqwLdICRcqQrglArLfbppAX5xiMvfzsVEu1lbvj5xGIeR4
+ DwhRu3tfFpBKDTTQ=
+X-Received: by 2002:a05:6402:1357:b0:533:4a9a:b0e6 with SMTP id
+ y23-20020a056402135700b005334a9ab0e6mr16877056edw.20.1696947809100; 
+ Tue, 10 Oct 2023 07:23:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1o+8tvERZWL9dJecF2S3JsOGyqi7e03f2hrGDcbO9YmlRcwQ3xim7ACk1HauoR64b88ZcEg==
+X-Received: by 2002:a05:6402:1357:b0:533:4a9a:b0e6 with SMTP id
+ y23-20020a056402135700b005334a9ab0e6mr16877048edw.20.1696947808804; 
+ Tue, 10 Oct 2023 07:23:28 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- gz19-20020a170906f2d300b009b2ca104988sm8488202ejb.98.2023.10.10.07.21.08
+ h17-20020aa7c611000000b00534c65fd0ebsm7720218edq.90.2023.10.10.07.23.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Oct 2023 07:21:08 -0700 (PDT)
+ Tue, 10 Oct 2023 07:23:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>,
-	qemu-devel@nongnu.org
-Subject: Re: [PATCH] targer/i386/cpu: Fix CPUID_HT exposure
-Date: Tue, 10 Oct 2023 16:20:50 +0200
-Message-ID: <20231010142050.263544-1-pbonzini@redhat.com>
+To: Yonggang Luo <luoyonggang@gmail.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-trivial@nongnu.org
+Subject: Re: [PATCH] Revert "configure: Add workaround for ccache and clang"
+Date: Tue, 10 Oct 2023 16:23:21 +0200
+Message-ID: <20231010142321.264043-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231010060539.210258-1-xiaoyao.li@intel.com>
+In-Reply-To: <20231009165113.498-1-luoyonggang@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
