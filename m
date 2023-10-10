@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6244A7BFAC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5267BFAD6
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 14:09:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBV6-0007ZV-GC; Tue, 10 Oct 2023 08:06:12 -0400
+	id 1qqBY3-0000to-B1; Tue, 10 Oct 2023 08:09:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qqBUv-0007Xb-3Y; Tue, 10 Oct 2023 08:06:01 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1qqBXr-0000t0-1d; Tue, 10 Oct 2023 08:09:03 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qqBUl-0002nu-JN; Tue, 10 Oct 2023 08:06:00 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-9a58dbd5daeso994992766b.2; 
- Tue, 10 Oct 2023 05:05:50 -0700 (PDT)
+ id 1qqBXo-0003DJ-Ke; Tue, 10 Oct 2023 08:09:02 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-9b98a699f45so938936066b.3; 
+ Tue, 10 Oct 2023 05:08:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1696939549; x=1697544349; darn=nongnu.org;
+ d=jms.id.au; s=google; t=1696939730; x=1697544530; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=LHtuht1eLKLim21FQpJTz2Yn8QXl+Dy9gJychZ8OvK0=;
- b=QRUfYfXJafV5AgRtn5v0dSmJ/hnnZNYwu4O+ApJsBVrO+g0RWjjt5q4JG4/StPRPXF
- 5mz/7NwNaShS+i2vCj0W4ezknDQw0jbAPJlZ5R9C+jvu85EScF9idJ7Uv27uD46P4riK
- aTAXEht+nmdKqDoXaA3LNLh6bv90hU+kWkJV8=
+ bh=Dtl31oo8Wia0+HlYi66ypyuAZ6FNY5PjhpiPOpWNmkk=;
+ b=lftGqyqs9JGZZUDjgwC0InoIumxfJQemqT5AaSnAlymudQOeSLwkmO7+FGWG6pRAVn
+ JHodUk3L0MQrJLwB9ZUktkgPHszXMshysdv1IYv0jIB6whNJ3qro0mQxqDpnG8dWhYVI
+ kDTIgwOCVDvHNRj38cMZONyBneTDQMmyuz4Ak=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696939549; x=1697544349;
+ d=1e100.net; s=20230601; t=1696939730; x=1697544530;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=LHtuht1eLKLim21FQpJTz2Yn8QXl+Dy9gJychZ8OvK0=;
- b=EoDwsQoqQknC/4foklCEmMQm75SSkU8yBSXTg954hoRYPuiqCi0icmKS32DWtRC8OV
- A+8VodVifScAFKot6cExZ66op0DViQl3c0ACqVvqyHWSlhrs+FsusYFwIGeckUie6uR2
- U5X0sZtqPaymK39Zyb7XoG8DUWIsliXbBJJTkQaTzZa7ftvTLnPiYZLRI1TggwIIxyMM
- 9bzH5Qqb2u5h9g6P90eEmFKpz47uA4GXPvWrM8PKESUfIoywiyOFZWfswot/HYjFiAsh
- /5+sBg8hG12XN3FVVEN7fZTXxQx6AGkTxgXISCbQJfygihDacElUeCXu/8JKbL6UsX3K
- e12A==
-X-Gm-Message-State: AOJu0YwA8fzIAZXZ5XclDDIv4h9kHkhT7fDaAzdbrJF1FJeAugMTGSzU
- PbnMmKUKal3h3G9pOcvaVBOLD5+ZIsXE9miPIqo=
-X-Google-Smtp-Source: AGHT+IGi1Fkc8blAyykpT683JHjhyWaDzTqmzbQY16dOldf85M6mrMXCGef4k3BsyrJNpL4z3sjSRTbYiXsPTrSP63s=
-X-Received: by 2002:a17:906:7382:b0:9ae:284:c93d with SMTP id
- f2-20020a170906738200b009ae0284c93dmr13479064ejl.5.1696939549251; Tue, 10 Oct
- 2023 05:05:49 -0700 (PDT)
+ bh=Dtl31oo8Wia0+HlYi66ypyuAZ6FNY5PjhpiPOpWNmkk=;
+ b=Ozg5deibdCdSjGLaNErmW3KIRqGnbhFinEHiTjhLu3KZ+Pukz1WmZ7cpn5EKeZbneE
+ 4Y2JA0rCPNvVNmA1t866ZFcYeWJ+znPGZX61jSA0I+u79txkQ42pIS9gNmPJDys5WmWw
+ yFi5Wz3/1xcetf6Oq0NF+U8vKvkjpvb2GUelQu8z8j3nX4UYTQAfwl4gmO54ZfmS5Wqu
+ 3nZP94nvRSU6M1kK/nVz+hkZC/9jtxmCTOyrcp6GUD5o8BUURAt6lVxGy5thQ+gRn7rq
+ 876dTe9Ev6YykyxZdUAAiZFyOKvdao5lQ5y+cdfKv2QOIqCl0/iRskV7F+NO2LA5OIQs
+ EPJQ==
+X-Gm-Message-State: AOJu0Yy8T1Eo8WWa4NPVQJMUqj2Mk/jbBP5VAE5nR8cH4xbrOrslNoDP
+ sdfuCpgdoFsCd/ErF/I+qX87MtUvjTZ5y4CIhEk=
+X-Google-Smtp-Source: AGHT+IGRjS8574QtF1QCnOit5VboLfAbkJSQpa0zuePhX/qn6wEv6uZQE9rkjagzouy0I16TC+KGcrERhXNxqdSbS0M=
+X-Received: by 2002:a17:906:2189:b0:9ae:6ad0:f6db with SMTP id
+ 9-20020a170906218900b009ae6ad0f6dbmr15547849eju.71.1696939729680; Tue, 10 Oct
+ 2023 05:08:49 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231010075238.95646-1-npiggin@gmail.com>
- <20231010075238.95646-12-npiggin@gmail.com>
-In-Reply-To: <20231010075238.95646-12-npiggin@gmail.com>
+ <20231010075238.95646-11-npiggin@gmail.com>
+In-Reply-To: <20231010075238.95646-11-npiggin@gmail.com>
 From: Joel Stanley <joel@jms.id.au>
-Date: Tue, 10 Oct 2023 22:35:37 +1030
-Message-ID: <CACPK8XeLPd3yw=+jBtc1mj94cxF3e1HAaSZ-4mubh5XV4tvgXg@mail.gmail.com>
-Subject: Re: [RFC PATCH 11/11] ppc/pnv: Change powernv default to powernv10
+Date: Tue, 10 Oct 2023 22:38:38 +1030
+Message-ID: <CACPK8XfXmMGuKzUxjM7HK9m7PVNUk9SE0WtkPN6B+EP8Sov=Rw@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/11] ppc/spapr: change pseries machine default to
+ POWER10 CPU
 To: Nicholas Piggin <npiggin@gmail.com>
 Cc: qemu-ppc@nongnu.org, Cleber Rosa <crosa@redhat.com>, 
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -84,48 +85,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 10 Oct 2023 at 18:24, Nicholas Piggin <npiggin@gmail.com> wrote:
+On Tue, 10 Oct 2023 at 18:25, Nicholas Piggin <npiggin@gmail.com> wrote:
 >
-> POWER10 is the latest IBM Power machine. Although it is not offered in
-> "OPAL mode" (i.e., powernv configuration), so there is a case that it
-> should remain at powernv9, most of the development work is going into
-> powernv10 at the moment.
+> POWER10 is the latest pseries CPU.
 >
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
 Reviewed-by: Joel Stanley <joel@jms.id.au>
 
-Do we need to update the docs?
-
-We should consider updating the skiboot to the latest release too.
-
-
 > ---
->  hw/ppc/pnv.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  hw/ppc/spapr.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index eb54f93986..f3dad5ae05 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -2195,8 +2195,6 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index d4230d3647..9d3475d64b 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -4661,7 +4661,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
 >
->      xfc->match_nvt = pnv_match_nvt;
->
-> -    mc->alias = "powernv";
-> -
->      pmc->compat = compat;
->      pmc->compat_size = sizeof(compat);
->      pmc->dt_power_mgt = pnv_dt_power_mgt;
-> @@ -2220,6 +2218,8 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
->      mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
->      compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
->
-> +    mc->alias = "powernv";
-> +
->      pmc->compat = compat;
->      pmc->compat_size = sizeof(compat);
->      pmc->dt_power_mgt = pnv_dt_power_mgt;
+>      smc->dr_lmb_enabled = true;
+>      smc->update_dt_enabled = true;
+> -    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
+> +    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+>      mc->has_hotpluggable_cpus = true;
+>      mc->nvdimm_supported = true;
+>      smc->resize_hpt_default = SPAPR_RESIZE_HPT_ENABLED;
 > --
 > 2.42.0
 >
