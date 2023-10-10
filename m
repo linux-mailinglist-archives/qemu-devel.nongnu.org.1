@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA79D7BFA5B
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F36D37BFA5D
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 13:52:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqBGt-0008OG-HL; Tue, 10 Oct 2023 07:51:31 -0400
+	id 1qqBGy-0000IP-Rh; Tue, 10 Oct 2023 07:51:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBGp-0008Jn-Vr
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:51:28 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBGv-0000Bp-B8
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:51:33 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBGo-00076b-3l
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:51:27 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-99357737980so961579266b.2
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 04:51:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqBGt-00078K-Mo
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 07:51:33 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-9b275afb6abso1450779266b.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 04:51:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696938683; x=1697543483; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696938689; x=1697543489; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oSRMhqRwBJPVwIvAMkL4U25xz5YfzMZvrXzYobWXOds=;
- b=aZwXzcN9K2MmNLQociQV1VDMAOblaU5WmvPoHhovxNiR1Q5MeQg9dfE0ZmLhn4oaoe
- HM8FR+ghRjW1gsXk4ofqHhn/YY1lEqRRIZdKYlDS5TFObpNf48ffviVgxAUwYzEGxavT
- kx7VRU3rnLDq1MiU5KyWpwdcNEdRmzHrnrFm1SatgeXPUBv/qvYYfJ+ArEMIdD4IJbbm
- uAMhRX7cNWSZI+w0k37A9TU5OZ3wVpyGUmT3ExKNNYJEEhgm5sb7kCO28WQ07nOVTi1f
- rcoKDLq/8aOR7nmWgSerGFvcH6J1q1tyQXjx1+hyZFBg+ycjPYn1+kNco6sRNdQDObG5
- k+bA==
+ bh=mxNNJ0+CbtGu/FtriJHh3KhiymL+ByyxtOGep+z6Z6E=;
+ b=Cll0BMjaaF+NkJ4dA1sOKeOd6F7VATNi+FbkbuxmL0kCcNHdjWk1n69rpjlQqNQLEp
+ tSVrQFuBtM8cWhHEaJ5abF1HiUp+mn+VrT3ygqydR92if9vcMwaFeE2RXdn2cBzd3T7y
+ S3vAbKNSz3mJB29D70TpcYl5f1WIAutKHRab5GwYxXGOHT5+KljcwGEG9C780XQZoDnV
+ me8pjRyxYDhpotL2k4g2173xTLrpwgt+V9HFU3OOOWsF1V7ssGqVi3TW4IyzOkF3d8MP
+ IkggRsS7A9otiFc6g4UCa8AqMa9ZkMSrb19khFD47/jz/ePWQnFMM8D9eBFSGcu6cRBe
+ mT1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696938683; x=1697543483;
+ d=1e100.net; s=20230601; t=1696938689; x=1697543489;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oSRMhqRwBJPVwIvAMkL4U25xz5YfzMZvrXzYobWXOds=;
- b=hHi9wS0G1nosKQHI3Gic6BrPc0Nh+IREho9QqK/IJj0PWePJRF3Kqg56TEc5S0LDL8
- QmuNcO/vNe4fGDNnfHSTY2FoLYKZUquuKAAS+QFL/xoh8epW02tGN5GpJYTMXW/xzz80
- kOOCAW7wPWstLCuN2IAHZUEk848XqHz1T6Aj4Iy2+Sgae4fguCF/JAlSa8MmsbMjJ2cQ
- J27T14seJ7dX2c3HNHpD7R0InF3EgpUtvG0ivD5oCExSLWHmGmQ2FrsHKFD0ZvP2cQfh
- JKpMs3cWFsEbbzTnUDu7fEG3zhfAqUaM59r6VWVjNU//+WFTBZTjAvzI1WHbBfpYzZDM
- gUVg==
-X-Gm-Message-State: AOJu0Yx2RA8gjNyoCmX9RhxljDvfj4SbetzuAJVsZ5qNVnNrgBEchmq4
- 3UuxwGLCUQ4K1vaHZaBU+P1XyptKnLcZ/bDoh/LqPQ==
-X-Google-Smtp-Source: AGHT+IHE+DpUqN1OLa+Mv0q4MvO8cgQM6Wzsq9qwKzmRHWBD9an6Qrzl/LhrIkvz8mFEIiDpoz/JVw==
-X-Received: by 2002:a17:906:53cd:b0:9ba:321b:80e3 with SMTP id
- p13-20020a17090653cd00b009ba321b80e3mr2847412ejo.20.1696938683432; 
- Tue, 10 Oct 2023 04:51:23 -0700 (PDT)
+ bh=mxNNJ0+CbtGu/FtriJHh3KhiymL+ByyxtOGep+z6Z6E=;
+ b=Vyh6hOZ1lagRgdFlTCwNd6vCU9c92We3XEzNBAigTAtpjOnPlWCfMDSu/e4jsGMXMR
+ eKvpT2baix/mWPgu43O2iM69ZotkJc4OG0hOUjyPU9Sc8l2yGPqkbyvqf4W9GAlCEDxE
+ JuFsZ45IndJ5wW3gkw6smUFtXlXqKE7E39cpPwt+EUPKTkrDGwZ7d4lNb2umQI7Q31YI
+ o/lCfDf4kG8Tdio/lJeaxPPxU8spyG4eFjtXNZNrywyKg478Oeq+Ke1kvbWePxXe4qBp
+ NDfZr3beLLOKz3b4/UP3HaBG6+PPMpLOrZmfXb/XE6JW3LbdomRvJ5NV6D25SmEGTBgC
+ hp0w==
+X-Gm-Message-State: AOJu0YwmBgglJfdrPolHSAKiWf90IrVjpWtKYuLv5HEusvdHuz5nIQZl
+ kFqTOBm9PhkLPEMLY2cSxH8is+b3aBNY6MiLt9hONw==
+X-Google-Smtp-Source: AGHT+IEVdSBWWIbZq1bBcW+eJaOYv5yqnrsI4Jai3K1wkB1jyVLqefcRcaBANC0uMdj4M02PkvpafQ==
+X-Received: by 2002:a17:906:fe08:b0:9a1:e0b1:e919 with SMTP id
+ wy8-20020a170906fe0800b009a1e0b1e919mr13143233ejb.4.1696938689797; 
+ Tue, 10 Oct 2023 04:51:29 -0700 (PDT)
 Received: from m1x-phil.lan (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr.
  [176.172.113.148]) by smtp.gmail.com with ESMTPSA id
- bq17-20020a170906d0d100b00992b8d56f3asm8405985ejb.105.2023.10.10.04.51.21
+ p26-20020a1709060dda00b009b2cc87b8c3sm8256010eji.52.2023.10.10.04.51.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 10 Oct 2023 04:51:23 -0700 (PDT)
+ Tue, 10 Oct 2023 04:51:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
@@ -68,18 +68,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 5/6] hw/pci: Clean up global variable shadowing of
- address_space_io variable
-Date: Tue, 10 Oct 2023 13:50:47 +0200
-Message-ID: <20231010115048.11856-6-philmd@linaro.org>
+Subject: [PATCH v2 6/6] hw/s390x: Clean up global variable shadowing in
+ quiesce_powerdown_req()
+Date: Tue, 10 Oct 2023 13:50:48 +0200
+Message-ID: <20231010115048.11856-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231010115048.11856-1-philmd@linaro.org>
 References: <20231010115048.11856-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,129 +104,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  hw/pci/pci.c:504:54: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-                                         MemoryRegion *address_space_io,
-                                                       ^
-  hw/pci/pci.c:533:38: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-                         MemoryRegion *address_space_io,
-                                       ^
-  hw/pci/pci.c:543:40: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-                           MemoryRegion *address_space_io,
-                                         ^
-  hw/pci/pci.c:590:45: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-                                MemoryRegion *address_space_io,
-                                              ^
-  include/exec/address-spaces.h:35:21: note: previous declaration is here
-  extern AddressSpace address_space_io;
-                      ^
+  hw/s390x/sclpquiesce.c:90:22: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      QuiesceNotifier *qn = container_of(n, QuiesceNotifier, notifier);
+                       ^
+  hw/s390x/sclpquiesce.c:86:3: note: previous declaration is here
+  } qn;
+    ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 ---
- include/hw/pci/pci.h |  9 +++------
- hw/pci/pci.c         | 25 +++++++++----------------
- 2 files changed, 12 insertions(+), 22 deletions(-)
+ hw/s390x/sclpquiesce.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index b70a0b95ff..ea5aff118b 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -279,12 +279,10 @@ bool pci_bus_is_express(const PCIBus *bus);
+diff --git a/hw/s390x/sclpquiesce.c b/hw/s390x/sclpquiesce.c
+index ce07b16884..a641089929 100644
+--- a/hw/s390x/sclpquiesce.c
++++ b/hw/s390x/sclpquiesce.c
+@@ -78,12 +78,10 @@ static const VMStateDescription vmstate_sclpquiesce = {
+      }
+ };
  
- void pci_root_bus_init(PCIBus *bus, size_t bus_size, DeviceState *parent,
-                        const char *name,
--                       MemoryRegion *address_space_mem,
--                       MemoryRegion *address_space_io,
-+                       MemoryRegion *mem, MemoryRegion *io,
-                        uint8_t devfn_min, const char *typename);
- PCIBus *pci_root_bus_new(DeviceState *parent, const char *name,
--                         MemoryRegion *address_space_mem,
--                         MemoryRegion *address_space_io,
-+                         MemoryRegion *mem, MemoryRegion *io,
-                          uint8_t devfn_min, const char *typename);
- void pci_root_bus_cleanup(PCIBus *bus);
- void pci_bus_irqs(PCIBus *bus, pci_set_irq_fn set_irq,
-@@ -304,8 +302,7 @@ int pci_swizzle_map_irq_fn(PCIDevice *pci_dev, int pin);
- PCIBus *pci_register_root_bus(DeviceState *parent, const char *name,
-                               pci_set_irq_fn set_irq, pci_map_irq_fn map_irq,
-                               void *irq_opaque,
--                              MemoryRegion *address_space_mem,
--                              MemoryRegion *address_space_io,
-+                              MemoryRegion *mem, MemoryRegion *io,
-                               uint8_t devfn_min, int nirq,
-                               const char *typename);
- void pci_unregister_root_bus(PCIBus *bus);
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index b0d21bf43a..7d09e1a39d 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -500,15 +500,14 @@ bool pci_bus_bypass_iommu(PCIBus *bus)
- }
+-typedef struct QuiesceNotifier QuiesceNotifier;
+-
+-static struct QuiesceNotifier {
++typedef struct QuiesceNotifier {
+     Notifier notifier;
+     SCLPEvent *event;
+-} qn;
++} QuiesceNotifier;
  
- static void pci_root_bus_internal_init(PCIBus *bus, DeviceState *parent,
--                                       MemoryRegion *address_space_mem,
--                                       MemoryRegion *address_space_io,
-+                                       MemoryRegion *mem, MemoryRegion *io,
-                                        uint8_t devfn_min)
+ static void quiesce_powerdown_req(Notifier *n, void *opaque)
  {
-     assert(PCI_FUNC(devfn_min) == 0);
-     bus->devfn_min = devfn_min;
-     bus->slot_reserved_mask = 0x0;
--    bus->address_space_mem = address_space_mem;
--    bus->address_space_io = address_space_io;
-+    bus->address_space_mem = mem;
-+    bus->address_space_io = io;
-     bus->flags |= PCI_BUS_IS_ROOT;
+@@ -97,6 +95,8 @@ static void quiesce_powerdown_req(Notifier *n, void *opaque)
  
-     /* host bridge */
-@@ -529,25 +528,21 @@ bool pci_bus_is_express(const PCIBus *bus)
- 
- void pci_root_bus_init(PCIBus *bus, size_t bus_size, DeviceState *parent,
-                        const char *name,
--                       MemoryRegion *address_space_mem,
--                       MemoryRegion *address_space_io,
-+                       MemoryRegion *mem, MemoryRegion *io,
-                        uint8_t devfn_min, const char *typename)
+ static int quiesce_init(SCLPEvent *event)
  {
-     qbus_init(bus, bus_size, typename, parent, name);
--    pci_root_bus_internal_init(bus, parent, address_space_mem,
--                               address_space_io, devfn_min);
-+    pci_root_bus_internal_init(bus, parent, mem, io, devfn_min);
- }
++    static QuiesceNotifier qn;
++
+     qn.notifier.notify = quiesce_powerdown_req;
+     qn.event = event;
  
- PCIBus *pci_root_bus_new(DeviceState *parent, const char *name,
--                         MemoryRegion *address_space_mem,
--                         MemoryRegion *address_space_io,
-+                         MemoryRegion *mem, MemoryRegion *io,
-                          uint8_t devfn_min, const char *typename)
- {
-     PCIBus *bus;
- 
-     bus = PCI_BUS(qbus_new(typename, parent, name));
--    pci_root_bus_internal_init(bus, parent, address_space_mem,
--                               address_space_io, devfn_min);
-+    pci_root_bus_internal_init(bus, parent, mem, io, devfn_min);
-     return bus;
- }
- 
-@@ -586,15 +581,13 @@ void pci_bus_irqs_cleanup(PCIBus *bus)
- PCIBus *pci_register_root_bus(DeviceState *parent, const char *name,
-                               pci_set_irq_fn set_irq, pci_map_irq_fn map_irq,
-                               void *irq_opaque,
--                              MemoryRegion *address_space_mem,
--                              MemoryRegion *address_space_io,
-+                              MemoryRegion *mem, MemoryRegion *io,
-                               uint8_t devfn_min, int nirq,
-                               const char *typename)
- {
-     PCIBus *bus;
- 
--    bus = pci_root_bus_new(parent, name, address_space_mem,
--                           address_space_io, devfn_min, typename);
-+    bus = pci_root_bus_new(parent, name, mem, io, devfn_min, typename);
-     pci_bus_irqs(bus, set_irq, irq_opaque, nirq);
-     pci_bus_map_irqs(bus, map_irq);
-     return bus;
 -- 
 2.41.0
 
