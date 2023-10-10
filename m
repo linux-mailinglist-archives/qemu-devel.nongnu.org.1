@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD437BF7D2
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98EE77BF7DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 11:50:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qq9M2-0004KO-F4; Tue, 10 Oct 2023 05:48:43 -0400
+	id 1qq9Mi-0005Es-FP; Tue, 10 Oct 2023 05:49:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq9Ly-0004EG-OT
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:48:39 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qq9Lv-0003FR-8k
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 05:48:37 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9ae75ece209so985887666b.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 02:48:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696931310; x=1697536110; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NjRgnkdnq+Xnm7xoAs4BcpBKYlROU4PW+5xYq+lCe5E=;
- b=NHkx0fpY+g2SXpzF46OEB0QB5s7Yp71KmRXc0SuGieKEGgQzXyiitndXa+xqdskkCv
- o4iR/a+BAQaYkfxPOlIzE3Y0L6l0oeopTomrbu2m7M4SbyqcokYgg4CFMGmJCpLwjPSY
- oozwtIbuPz+CHYcE8dqEVbufHHbFAVZEI+0vSPBsTH+gL3yrhoPWs+mHQA3Io3qrERDW
- mQJBrqED6zgcE2sEa50odMOUFIsEI50PHoRCUtfJjr50H0QamvStCz0ZuA83EjxQnMFQ
- MdsZNCKrwlVCmVMIad9dnlNvycAvcOTBUFoqvazzOi/fQnMIXDJwvuvoTiD4ivyQI+gx
- WyGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696931310; x=1697536110;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NjRgnkdnq+Xnm7xoAs4BcpBKYlROU4PW+5xYq+lCe5E=;
- b=NJnHwAqXed27nu81QtZMtwyBl/wCo33PTZGPPjZTKhdOx6Kc1ENl9CS/vlt6X21YuJ
- pycGMVpoR6neePp6mkl4BjxmXc1T7kcLR2Dr62SvNpSBUVFBKWXwVZ2vgI3wrARwr5mY
- RJ/Cw25/Z6lIxUoWDZ3U32ybs8FXA8BwPqGRKchtii1rbgSLLNHLL14P4ItVlz02LfLJ
- C1hvrlMG48hjtB9+sHHrzGuoFen3sA+fuH5Kvw3DeDd9OT+a4/wSYuTpepPjlCmEKjGA
- lshs87DVyly7W5mnuNXSyeZJFzxlDZkr4lIEqKZgjzre4gJpaABi9n0DI6E9olxP5aer
- byJQ==
-X-Gm-Message-State: AOJu0YzvWIO68X6bU2zmetozT38V8HeOKz4lek1YGW+bhbcUATK16syx
- WARx5AXo7nuq9xntFp9sw5kNzQ==
-X-Google-Smtp-Source: AGHT+IFEHsBCz24KEtiGpKDSCOQa3M3jGui/uPzOG8OKTM6Jtu+TAvshZuUSfV6Lvug6hP8HxLs/nQ==
-X-Received: by 2002:a17:907:9724:b0:9ae:50e3:7e40 with SMTP id
- jg36-20020a170907972400b009ae50e37e40mr18923706ejc.52.1696931309984; 
- Tue, 10 Oct 2023 02:48:29 -0700 (PDT)
-Received: from [192.168.69.115]
- (aif79-h01-176-172-113-148.dsl.sta.abo.bbox.fr. [176.172.113.148])
- by smtp.gmail.com with ESMTPSA id
- i11-20020a170906a28b00b009737b8d47b6sm8137657ejz.203.2023.10.10.02.48.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 02:48:29 -0700 (PDT)
-Message-ID: <6fcc827a-02fb-7fad-a853-5bcdf9aaa7a1@linaro.org>
-Date: Tue, 10 Oct 2023 11:48:27 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 1/4] tests/libqtest: Introduce qtest_get_arch_bits()
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qq9Me-0005E5-Mo; Tue, 10 Oct 2023 05:49:22 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qq9Md-0003RA-0h; Tue, 10 Oct 2023 05:49:20 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S4WLw0Lrrz67cDq;
+ Tue, 10 Oct 2023 17:48:56 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Tue, 10 Oct 2023 10:49:14 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Tue, 10 Oct 2023 10:49:14 +0100
+To: Shaoqin Huang <shahuang@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
+ <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V4 02/10] hw/acpi: Move CPU ctrl-dev MMIO region len macro
+ to common header file
+Thread-Topic: [PATCH V4 02/10] hw/acpi: Move CPU ctrl-dev MMIO region len
+ macro to common header file
+Thread-Index: AQHZ+vBtk+LhMznAKEmqa630qCVqebBCkbeAgAA2V7A=
+Date: Tue, 10 Oct 2023 09:49:14 +0000
+Message-ID: <53f75592aba94a70b671ed1ad09232a7@huawei.com>
+References: <20231009203601.17584-1-salil.mehta@huawei.com>
+ <20231009203601.17584-3-salil.mehta@huawei.com>
+ <e2141d6a-7627-d092-3930-76ba91a77e7f@redhat.com>
+In-Reply-To: <e2141d6a-7627-d092-3930-76ba91a77e7f@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, Laurent Vivier <lvivier@redhat.com>
-References: <20231010074952.79165-1-philmd@linaro.org>
- <20231010074952.79165-2-philmd@linaro.org>
- <e108d282-5eec-4430-1a10-8cf3170bb18c@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <e108d282-5eec-4430-1a10-8cf3170bb18c@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.174.234]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,56 +91,40 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/23 11:46, Thomas Huth wrote:
-> On 10/10/2023 09.49, Philippe Mathieu-Daudé wrote:
->> Add a method to return the architecture bits (currently 8/32/64).
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   tests/qtest/libqtest.h |  8 ++++++++
->>   tests/qtest/libqtest.c | 21 +++++++++++++++++++++
->>   2 files changed, 29 insertions(+)
-
->> +unsigned qtest_get_arch_bits(void)
->> +{
->> +    static const char *const arch64[] = {
->> +        "aarch64", "hppa", "x86_64", "loongarch64", "mips64",
->> +        "mips64el", "ppc64", "riscv64", "s390x", "sparc64",
->> +    };
->> +    const char *arch = qtest_get_arch();
->> +
->> +    if (!strcmp(arch, "avr")) {
-> 
-> Just a matter of taste, but I prefer g_str_equal(), that's easier to read.
-> 
->> +        return 8;
->> +    }
->> +
->> +    for (unsigned i = 0; i < ARRAY_SIZE(arch64); i++) {
->> +        if (!strcmp(arch, arch64[i])) {
->> +            return 64;
->> +        }
->> +    }
->> +
->> +    return 32;
->> +}
-> 
-> Since this function might get called multiple times, would it make sense 
-> to cache the value? I.e.:
-> 
->    static const unsigned bits;
-> 
->    if (!bits) {
->        ... do all the magic to find out the right bits ...
->    }
-> 
->    return bits;
-> 
-> ?
-
-Fine by me, I'll do as suggested in v2.
-
+PiBGcm9tOiBTaGFvcWluIEh1YW5nIDxzaGFodWFuZ0ByZWRoYXQuY29tPg0KPiBTZW50OiBUdWVz
+ZGF5LCBPY3RvYmVyIDEwLCAyMDIzIDg6MzQgQU0NCj4gVG86IFNhbGlsIE1laHRhIDxzYWxpbC5t
+ZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOyBxZW11LQ0KPiBhcm1Abm9u
+Z251Lm9yZw0KPiBDYzogbWF6QGtlcm5lbC5vcmc7IGplYW4tcGhpbGlwcGVAbGluYXJvLm9yZzsg
+Sm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgbHBpZXJh
+bGlzaUBrZXJuZWwub3JnOw0KPiBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc7IHJpY2hhcmQuaGVu
+ZGVyc29uQGxpbmFyby5vcmc7DQo+IGltYW1tZWRvQHJlZGhhdC5jb207IGFuZHJldy5qb25lc0Bs
+aW51eC5kZXY7IGRhdmlkQHJlZGhhdC5jb207DQo+IHBoaWxtZEBsaW5hcm8ub3JnOyBlcmljLmF1
+Z2VyQHJlZGhhdC5jb207IG9saXZlci51cHRvbkBsaW51eC5kZXY7DQo+IHBib256aW5pQHJlZGhh
+dC5jb207IG1zdEByZWRoYXQuY29tOyB3aWxsQGtlcm5lbC5vcmc7IGdzaGFuQHJlZGhhdC5jb207
+DQo+IHJhZmFlbEBrZXJuZWwub3JnOyBhbGV4LmJlbm5lZUBsaW5hcm8ub3JnOyBsaW51eEBhcm1s
+aW51eC5vcmcudWs7DQo+IGRhcnJlbkBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBpbGtrYUBvcy5h
+bXBlcmVjb21wdXRpbmcuY29tOw0KPiB2aXNobnVAb3MuYW1wZXJlY29tcHV0aW5nLmNvbTsga2Fy
+bC5oZXViYXVtQG9yYWNsZS5jb207DQo+IG1pZ3VlbC5sdWlzQG9yYWNsZS5jb207IHNhbGlsLm1l
+aHRhQG9wbnNyYy5uZXQ7IHpodWtlcWlhbg0KPiA8emh1a2VxaWFuMUBodWF3ZWkuY29tPjsgd2Fu
+Z3hpb25nZmVuZyAoQykgPHdhbmd4aW9uZ2ZlbmcyQGh1YXdlaS5jb20+Ow0KPiB3YW5neWFuYW4g
+KFkpIDx3YW5neWFuYW41NUBodWF3ZWkuY29tPjsgamlha2VybmVsMkBnbWFpbC5jb207DQo+IG1h
+b2JpYm9AbG9vbmdzb24uY247IGxpeGlhbmdsYWlAbG9vbmdzb24uY247IExpbnV4YXJtIDxsaW51
+eGFybUBodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIFY0IDAyLzEwXSBody9hY3Bp
+OiBNb3ZlIENQVSBjdHJsLWRldiBNTUlPIHJlZ2lvbiBsZW4NCj4gbWFjcm8gdG8gY29tbW9uIGhl
+YWRlciBmaWxlDQo+IA0KPiANCj4gDQo+IE9uIDEwLzEwLzIzIDA0OjM1LCBTYWxpbCBNZWh0YSB2
+aWEgd3JvdGU6DQo+ID4gQ1BVIGN0cmwtZGV2IE1NSU8gcmVnaW9uIGxlbmd0aCBjb3VsZCBiZSB1
+c2VkIGluIEFDUEkgR0VEIGFuZCB2YXJpb3VzDQo+IG90aGVyDQo+ID4gYXJjaGl0ZWN0dXJlIHNw
+ZWNpZmljIHBsYWNlcy4gTW92ZSBBQ1BJX0NQVV9IT1RQTFVHX1JFR19MRU4gbWFjcm8gdG8gbW9y
+ZQ0KPiA+IGFwcHJvcHJpYXRlIGNvbW1vbiBoZWFkZXIgZmlsZS4NCj4gPg0KPiA+IFNpZ25lZC1v
+ZmYtYnk6IFNhbGlsIE1laHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPg0KPiA+IFJldmlld2Vk
+LWJ5OiBBbGV4IEJlbm7DqWUgPGFsZXguYmVubmVlQGxpbmFyby5vcmc+DQo+ID4gUmV2aWV3ZWQt
+Ynk6IEpvbmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCj4gPiBS
+ZXZpZXdlZC1ieTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCj4gPiBSZXZpZXdlZC1i
+eTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+DQo+IFJldmlld2VkLWJ5OiBT
+aGFvcWluIEh1YW5nIDxzaGFodWFuZ0ByZWRoYXQuY29tPg0KDQpUaGFua3MNClNhbGlsLg0K
 
