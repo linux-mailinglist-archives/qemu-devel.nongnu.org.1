@@ -2,48 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E27307C55C2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6597C55CD
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:46:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZV1-0002xA-MV; Wed, 11 Oct 2023 09:43:43 -0400
+	id 1qqZX9-0003ta-U0; Wed, 11 Oct 2023 09:46:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqZUs-0002uz-20; Wed, 11 Oct 2023 09:43:34 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqZUq-0001Gs-E3; Wed, 11 Oct 2023 09:43:33 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 80FB3748FF4;
- Wed, 11 Oct 2023 15:42:34 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 48DC774632B; Wed, 11 Oct 2023 15:42:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 472E67456AA;
- Wed, 11 Oct 2023 15:42:34 +0200 (CEST)
-Date: Wed, 11 Oct 2023 15:42:34 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 3/5] hw/ppc/ppc4xx_pci: Declare PPC4XX_PCI in Kconfig
-In-Reply-To: <20231011132427.65001-4-philmd@linaro.org>
-Message-ID: <763c0675-5f72-5b53-0770-dba5f52692d8@eik.bme.hu>
-References: <20231011132427.65001-1-philmd@linaro.org>
- <20231011132427.65001-4-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
+ id 1qqZWZ-0003qf-TU
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:45:20 -0400
+Received: from mail-wr1-x441.google.com ([2a00:1450:4864:20::441])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
+ id 1qqZWN-0001UP-AL
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:45:19 -0400
+Received: by mail-wr1-x441.google.com with SMTP id
+ ffacd0b85a97d-31f71b25a99so6743734f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:45:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697031903; x=1697636703;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cfIKZYANERAYrk1U9u/ABQRyiAeehioXS/8BTpychyQ=;
+ b=fp2VyMlJGTGUlUybo91nkrM+h3YdWdRo66LqIqJ8qq/8kBVrUFjqmSJOCzX4HaPrw4
+ Tyo54tOzv4Wms2NgqKEQ2oa6e3K0ZDTcd6cy6fkXfyjfNIRly7FsVxVP34a8JMV84kVc
+ nZcjxmYK0rCxTOl7UYAnxtE77Qv0/BpNHCe3J4JwEVRJVE7Oze5JG288P2WSG5dvZR4z
+ DfnyRHYy4+NimD6Cvu4Yd2YdpxZn1IFCgKBTmMwBr9bXlgYrB0aJDVGWyY8n/W2DdRWx
+ 08iyAjWAXv1E6hWLQDlcxyCO5DRwq/kqqxs/5xYsPguONK80aDWBmAb4HS9Dr/Y6RX06
+ kHNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697031903; x=1697636703;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cfIKZYANERAYrk1U9u/ABQRyiAeehioXS/8BTpychyQ=;
+ b=hWiC2/C2L3wprs9WnLlLh3xJV+R6QfP8l9p8RtsVduaxI/foklyBtv8no/PWtvc5zC
+ dVTKsutVQEFbyjohVAmZqqQEGVlQDXqfZbTL3drBRYm0F2PxHXgCdqHj1IfnoDM5RLIL
+ qL2rNEHyoTlqzjnxa9KgxT81JkuM2pdhykYVCRzakowdziKgRuxdHhrCB9xinolTKXgo
+ cctBedUTT1sD9r2JOneXCxGZoFH0A0mDqqQ15nT9oXsqSWQntO7PVqYZ+3zpxS+VP1x3
+ 6SgAI/1HIuohb3G8NvvkzdIjFKr47eS3GiIT6163TLw0wJTTjSFmlhuNq0oWxKiQbL1P
+ kgwA==
+X-Gm-Message-State: AOJu0YybHPt6VGMoWAPdpRfZuYu++T2Xt3m9RUzdmArf7mvoMcklzPHi
+ XpG8uPEqp9QBx+PTSjhHT7Pehg==
+X-Google-Smtp-Source: AGHT+IG4w+2Ll2aHhYCxI6V8Hu3osnbQKeaZqw8IhJ4+CmAlzDwdVhSBegBkQX9uPlnHsyrMQOxO0g==
+X-Received: by 2002:a5d:58db:0:b0:32d:80e:689c with SMTP id
+ o27-20020a5d58db000000b0032d080e689cmr3904403wrf.39.1697031903284; 
+ Wed, 11 Oct 2023 06:45:03 -0700 (PDT)
+Received: from rkanwal-XPS-15-9520.ba.rivosinc.com
+ (cpc91760-watf12-2-0-cust235.15-2.cable.virginm.net. [81.111.69.236])
+ by smtp.gmail.com with ESMTPSA id
+ c16-20020a5d4f10000000b00324ae863ac1sm15583141wru.35.2023.10.11.06.45.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Oct 2023 06:45:02 -0700 (PDT)
+From: Rajnesh Kanwal <rkanwal@rivosinc.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, apatel@ventanamicro.com,
+ rkanwal@rivosinc.com
+Subject: [PATCH v3 0/6] target/riscv: Add RISC-V Virtual IRQs and IRQ
+ filtering support
+Date: Wed, 11 Oct 2023 14:44:44 +0100
+Message-Id: <20231011134450.117629-1-rkanwal@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-357349036-1697031754=:10652"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::441;
+ envelope-from=rkanwal@rivosinc.com; helo=mail-wr1-x441.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,70 +94,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+This series adds M and HS-mode virtual interrupt and IRQ filtering support.
+This allows inserting virtual interrupts from M/HS-mode into S/VS-mode
+using mvien/hvien and mvip/hvip csrs. IRQ filtering is a use case of
+this change, i-e M-mode can stop delegating an interrupt to S-mode and
+instead enable it in MIE and receive those interrupts in M-mode and then
+selectively inject the interrupt using mvien and mvip.
 
---3866299591-357349036-1697031754=:10652
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Also, the spec doesn't mandate the interrupt to be actually supported
+in hardware. Which allows M/HS-mode to assert virtual interrupts to
+S/VS-mode that have no connection to any real interrupt events.
 
-On Wed, 11 Oct 2023, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This is defined as part of the AIA specification [0], "5.3 Interrupt
+filtering and virtual interrupts for supervisor level" and "6.3.2 Virtual
+interrupts for VS level".
 
-Should this be squashed with next patch? It looks strange to have config 
-defined in hw/pci-host/Kconfig but used in hw/ppc/meson.build.
+Most of the testing is done by hacking around OpenSBI and linux host.
+The changes for those can be found at [1] and [2].
 
-Regards,
-BALATON Zoltan
+It's my first touch on RISC-V qemu IRQ subsystem. Any feedback would
+be much appreciated.
 
-> ---
-> hw/pci-host/Kconfig | 4 ++++
-> hw/ppc/Kconfig      | 2 +-
-> hw/ppc/meson.build  | 2 +-
-> 3 files changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
-> index a07070eddf..a9030a433b 100644
-> --- a/hw/pci-host/Kconfig
-> +++ b/hw/pci-host/Kconfig
-> @@ -6,6 +6,10 @@ config XEN_IGD_PASSTHROUGH
->     default y
->     depends on XEN && PCI_I440FX
->
-> +config PPC4XX_PCI
-> +    bool
-> +    select PCI
-> +
-> config RAVEN_PCI
->     bool
->     select PCI
-> diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-> index 5dfbf47ef5..e4e76e87a2 100644
-> --- a/hw/ppc/Kconfig
-> +++ b/hw/ppc/Kconfig
-> @@ -53,7 +53,7 @@ config PPC440
-> config PPC4XX
->     bool
->     select BITBANG_I2C
-> -    select PCI
-> +    select PPC4XX_PCI
->     select PPC_UIC
->
-> config SAM460EX
-> diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-> index 7c2c52434a..6931ba88b4 100644
-> --- a/hw/ppc/meson.build
-> +++ b/hw/ppc/meson.build
-> @@ -60,8 +60,8 @@ ppc_ss.add(when: 'CONFIG_PPC440', if_true: files(
->   'ppc440_pcix.c', 'ppc440_uc.c'))
-> ppc_ss.add(when: 'CONFIG_PPC4XX', if_true: files(
->   'ppc4xx_devs.c',
-> -  'ppc4xx_pci.c',
->   'ppc4xx_sdram.c'))
-> +ppc_ss.add(when: 'CONFIG_PPC4XX_PCI', if_true: files('ppc4xx_pci.c'))
-> ppc_ss.add(when: 'CONFIG_SAM460EX', if_true: files('sam460ex.c'))
-> # PReP
-> ppc_ss.add(when: 'CONFIG_PREP', if_true: files('prep.c'))
->
---3866299591-357349036-1697031754=:10652--
+The change can also be found on github [3].
+
+TODO: This change doesn't support delegating virtual interrupts injected
+by M-mode to VS-mode by the Hypervisor. This is true for bits 13:63 only.
+
+Thanks
+Rajnesh
+
+[0]: https://github.com/riscv/riscv-aia/releases/download/1.0-RC4/riscv-interrupts-1.0-RC4.pdf
+[1]: https://github.com/rajnesh-kanwal/opensbi/tree/dev/rkanwal/irq_filter
+[2]: https://github.com/rajnesh-kanwal/linux/commits/dev/rkanwal/aia_irq_filter
+[3]: https://github.com/rajnesh-kanwal/qemu/tree/dev/rkanwal/riscv_irq_filter
+
+v3:
+ * Rebased the patches and added reviewed-by tags.
+
+v2:
+ * Move RISCV_EXCP_SEMIHOST to switch case and remove special handling.
+ * Fix linux-user build.
+
+Rajnesh Kanwal (6):
+  target/riscv: Without H-mode mask all HS mode inturrupts in mie.
+  target/riscv: Check for async flag in case of RISCV_EXCP_SEMIHOST.
+  target/riscv: Set VS* bits to one in mideleg when H-Ext is enabled
+  target/riscv: Split interrupt logic from riscv_cpu_update_mip.
+  target/riscv: Add M-mode virtual interrupt and IRQ filtering support.
+  target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.
+
+ target/riscv/cpu.c        |  11 +-
+ target/riscv/cpu.h        |  23 ++
+ target/riscv/cpu_bits.h   |   6 +
+ target/riscv/cpu_helper.c |  99 +++++---
+ target/riscv/csr.c        | 477 ++++++++++++++++++++++++++++++++++----
+ target/riscv/machine.c    |   6 +
+ 6 files changed, 547 insertions(+), 75 deletions(-)
+
+-- 
+2.34.1
+
 
