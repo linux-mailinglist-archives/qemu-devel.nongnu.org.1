@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1700A7C5583
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3CB7C558D
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:34:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZL8-0006ld-QJ; Wed, 11 Oct 2023 09:33:33 -0400
+	id 1qqZLr-0000Gg-QV; Wed, 11 Oct 2023 09:34:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqZKO-0006gi-EN; Wed, 11 Oct 2023 09:32:45 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1qqZLU-0007ZE-VP; Wed, 11 Oct 2023 09:34:02 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqZKJ-0006w5-QN; Wed, 11 Oct 2023 09:32:43 -0400
+ id 1qqZLR-0007Qe-Cf; Wed, 11 Oct 2023 09:33:51 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 8082B756A30;
- Wed, 11 Oct 2023 15:31:40 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 0252174632B;
+ Wed, 11 Oct 2023 15:32:50 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0F6B374632B; Wed, 11 Oct 2023 15:31:40 +0200 (CEST)
+ id 8C3A37456AA; Wed, 11 Oct 2023 15:32:49 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 0D69A7456AA;
- Wed, 11 Oct 2023 15:31:40 +0200 (CEST)
-Date: Wed, 11 Oct 2023 15:31:40 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8A3E4745681;
+ Wed, 11 Oct 2023 15:32:49 +0200 (CEST)
+Date: Wed, 11 Oct 2023 15:32:49 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-trivial@nongnu.org, 
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH 2/2] hw/ppc/ppc440_uc: Remove dead l2sram_update_mappings()
-In-Reply-To: <20231011124312.60476-3-philmd@linaro.org>
-Message-ID: <46e1397e-dc3b-c90c-8b1b-f5b62807d3c0@eik.bme.hu>
-References: <20231011124312.60476-1-philmd@linaro.org>
- <20231011124312.60476-3-philmd@linaro.org>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 1/5] hw/ppc/ppc4xx_pci: Remove unused "hw/ppc/ppc.h" header
+In-Reply-To: <20231011132427.65001-2-philmd@linaro.org>
+Message-ID: <a3182963-3e65-cc95-29f7-6d68ae1c18a3@eik.bme.hu>
+References: <20231011132427.65001-1-philmd@linaro.org>
+ <20231011132427.65001-2-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: multipart/mixed;
- boundary="3866299591-1476544105-1697031100=:10652"
+ boundary="3866299591-1810067524-1697031169=:10652"
 X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -63,113 +63,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-1476544105-1697031100=:10652
+--3866299591-1810067524-1697031169=:10652
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8BIT
 
 On Wed, 11 Oct 2023, Philippe Mathieu-Daudé wrote:
-> Apparently l2sram_update_mappings() bit-rotted over time,
-> when defining MAP_L2SRAM we get:
->
->  hw/ppc/ppc440_uc.c:83:17: error: no member named 'isarc' in 'struct ppc4xx_l2sram_t'
->      if (l2sram->isarc != isarc ||
->          ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:84:18: error: no member named 'isacntl' in 'struct ppc4xx_l2sram_t'
->          (l2sram->isacntl & 0x80000000) != (isacntl & 0x80000000)) {
->           ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:85:21: error: no member named 'isacntl' in 'struct ppc4xx_l2sram_t'
->          if (l2sram->isacntl & 0x80000000) {
->              ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:88:50: error: no member named 'isarc_ram' in 'struct ppc4xx_l2sram_t'
->                                          &l2sram->isarc_ram);
->                                           ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:93:50: error: no member named 'isarc_ram' in 'struct ppc4xx_l2sram_t'
->                                          &l2sram->isarc_ram);
->                                           ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:96:17: error: no member named 'dsarc' in 'struct ppc4xx_l2sram_t'
->      if (l2sram->dsarc != dsarc ||
->          ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:97:18: error: no member named 'dsacntl' in 'struct ppc4xx_l2sram_t'
->          (l2sram->dsacntl & 0x80000000) != (dsacntl & 0x80000000)) {
->           ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:98:21: error: no member named 'dsacntl' in 'struct ppc4xx_l2sram_t'
->          if (l2sram->dsacntl & 0x80000000) {
->              ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:100:52: error: no member named 'dsarc' in 'struct ppc4xx_l2sram_t'
->              if (!(isacntl & 0x80000000) || l2sram->dsarc != isarc) {
->                                             ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:103:54: error: no member named 'dsarc_ram' in 'struct ppc4xx_l2sram_t'
->                                              &l2sram->dsarc_ram);
->                                               ~~~~~~  ^
->  hw/ppc/ppc440_uc.c:111:54: error: no member named 'dsarc_ram' in 'struct ppc4xx_l2sram_t'
->                                              &l2sram->dsarc_ram);
->                                               ~~~~~~  ^
->
-> Remove that dead code.
->
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+
 > ---
-> hw/ppc/ppc440_uc.c | 40 ----------------------------------------
-> 1 file changed, 40 deletions(-)
+> hw/ppc/ppc440_pcix.c | 1 -
+> hw/ppc/ppc4xx_pci.c  | 1 -
+> 2 files changed, 2 deletions(-)
 >
-> diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
-> index 4181c843a8..643a79e330 100644
-> --- a/hw/ppc/ppc440_uc.c
-> +++ b/hw/ppc/ppc440_uc.c
-> @@ -73,46 +73,6 @@ typedef struct ppc4xx_l2sram_t {
->     uint32_t isram0[11];
-> } ppc4xx_l2sram_t;
+> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
+> index 672090de94..e4dadbc84d 100644
+> --- a/hw/ppc/ppc440_pcix.c
+> +++ b/hw/ppc/ppc440_pcix.c
+> @@ -25,7 +25,6 @@
+> #include "qemu/module.h"
+> #include "qemu/units.h"
+> #include "hw/irq.h"
+> -#include "hw/ppc/ppc.h"
+> #include "hw/ppc/ppc4xx.h"
+> #include "hw/pci/pci_device.h"
+> #include "hw/pci/pci_host.h"
+> diff --git a/hw/ppc/ppc4xx_pci.c b/hw/ppc/ppc4xx_pci.c
+> index 6652119008..51c265f0ba 100644
+> --- a/hw/ppc/ppc4xx_pci.c
+> +++ b/hw/ppc/ppc4xx_pci.c
+> @@ -24,7 +24,6 @@
+> #include "qemu/osdep.h"
+> #include "qemu/log.h"
+> #include "hw/irq.h"
+> -#include "hw/ppc/ppc.h"
+> #include "hw/ppc/ppc4xx.h"
+> #include "migration/vmstate.h"
+> #include "qemu/module.h"
 >
-> -#ifdef MAP_L2SRAM
-> -static void l2sram_update_mappings(ppc4xx_l2sram_t *l2sram,
-> -                                   uint32_t isarc, uint32_t isacntl,
-> -                                   uint32_t dsarc, uint32_t dsacntl)
-
-If you remove this then nobody will remember this could be modelled or may 
-be fixed so maybe leave it as a reminder for now.
-
-Regards,
-BALATON Zoltan
-
-> -{
-> -    if (l2sram->isarc != isarc ||
-> -        (l2sram->isacntl & 0x80000000) != (isacntl & 0x80000000)) {
-> -        if (l2sram->isacntl & 0x80000000) {
-> -            /* Unmap previously assigned memory region */
-> -            memory_region_del_subregion(get_system_memory(),
-> -                                        &l2sram->isarc_ram);
-> -        }
-> -        if (isacntl & 0x80000000) {
-> -            /* Map new instruction memory region */
-> -            memory_region_add_subregion(get_system_memory(), isarc,
-> -                                        &l2sram->isarc_ram);
-> -        }
-> -    }
-> -    if (l2sram->dsarc != dsarc ||
-> -        (l2sram->dsacntl & 0x80000000) != (dsacntl & 0x80000000)) {
-> -        if (l2sram->dsacntl & 0x80000000) {
-> -            /* Beware not to unmap the region we just mapped */
-> -            if (!(isacntl & 0x80000000) || l2sram->dsarc != isarc) {
-> -                /* Unmap previously assigned memory region */
-> -                memory_region_del_subregion(get_system_memory(),
-> -                                            &l2sram->dsarc_ram);
-> -            }
-> -        }
-> -        if (dsacntl & 0x80000000) {
-> -            /* Beware not to remap the region we just mapped */
-> -            if (!(isacntl & 0x80000000) || dsarc != isarc) {
-> -                /* Map new data memory region */
-> -                memory_region_add_subregion(get_system_memory(), dsarc,
-> -                                            &l2sram->dsarc_ram);
-> -            }
-> -        }
-> -    }
-> -}
-> -#endif
-> -
-> static uint32_t dcr_read_l2sram(void *opaque, int dcrn)
-> {
->     ppc4xx_l2sram_t *l2sram = opaque;
->
---3866299591-1476544105-1697031100=:10652--
+--3866299591-1810067524-1697031169=:10652--
 
