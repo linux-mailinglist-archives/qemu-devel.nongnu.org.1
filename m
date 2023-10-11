@@ -2,95 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCC47C4B1C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 09:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4F57C4B23
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 09:05:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqTDb-00066f-Lf; Wed, 11 Oct 2023 03:01:19 -0400
+	id 1qqTG2-0007Ms-CO; Wed, 11 Oct 2023 03:03:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgross@suse.com>) id 1qqTDa-00065s-0K
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:01:18 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qqTFz-0007Mf-VM
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:03:47 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jgross@suse.com>) id 1qqTDY-0005Lr-9K
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:01:17 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id DAC7F1FD8A;
- Wed, 11 Oct 2023 07:01:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1697007670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=FeFVnO5jZ+ydeAI2tilH68k8+ithwRfGixKcwcHR0Pc=;
- b=M8cwxcRIpDYBZ5HHtW20MQ+fZUePXwazXqTqfMx0LpZhypGk7KJJkvxflOS6T318ARbt6t
- HRd8IF735jcPnLy1/iTaqNFbcxrTg3Vrn4ZzVpUTO8AwtYRe/zw4fMFM5HL5mK1Ffb61+T
- VMjvLUu7YriC4g5JFPIIu7QxnUi3ktA=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9E574134F5;
- Wed, 11 Oct 2023 07:01:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id vJTlJDZIJmUjcgAAMHmgww
- (envelope-from <jgross@suse.com>); Wed, 11 Oct 2023 07:01:10 +0000
-Message-ID: <9f03c5ac-939c-4f84-a19c-f53b5aa08648@suse.com>
-Date: Wed, 11 Oct 2023 09:01:09 +0200
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qqTFv-0005gq-Lt
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:03:47 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68bed2c786eso4886120b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 00:03:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697007822; x=1697612622;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=j6WZdKMFIxc5H/kOiwsW7gGtEjvS1bOXQ8xPiqDJcnI=;
+ b=GN2gxC0fT04CvRHqezKVHb5kZryPq7zOoPrtg+bK9iDAWZcmKrPPX6h/jyE5gUcShT
+ fy8HmrEITBTPNV7XY8z6TYfWPSR1Tialvx3JsDt2UzIqde6aOI0pn0jePKQrJNxip1Am
+ 4uPBnzTPUG5xq4OrBePozm4iUF3yH5O4acO2AmmrdzydZ/X9f4x5xxN6UKGVHGxbPbry
+ ULqpuRCMPTKuBC1/Hw9z7JAm3pnaLUK7BQkNjlaWXs6WQVcbUkxtRsgAmS9sAkbSsc98
+ Bau0C4zTqYf7YMqkSp6Rglbjvi64ppzXX3M3NYALC2cnvw70KVUyPrXrSrwIoIJFL29S
+ PQlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697007822; x=1697612622;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=j6WZdKMFIxc5H/kOiwsW7gGtEjvS1bOXQ8xPiqDJcnI=;
+ b=IU9sIh2XZTTfrfklHm1F0vl06yaboMkHkya4hdmboX94Xvk+Fi4zRyHrIEeq9Favf5
+ QbMjS69co1cpn6jeU7ChyCN6lCwPCz0oxtmD0S4uhGzhUb+qya7gZPuF+ufeHJzrPXSb
+ 3hN/2R9ZIJMPZlJr6047NghVVRimK6zbBXPO5LXVXVcQDdv7tvxJkN/Y1ZhPMFoWCftc
+ dtgz0F1tMWk5chwiRMzaP3LV9hI18RXeJMrEn74ELFNdYlMUWnTCNMBlhiAT1FERtvqI
+ hZ4YbzrYyu7ae9D70RySoZAI19WASINl/OWqIk5cHl34oUqr7wjnl3q0FqRSmwsfq1wG
+ 7ZJA==
+X-Gm-Message-State: AOJu0YxIpCN8Rqly7UZon7GX9e2BIIWk7HxGuwElRkQJWZt1g+b0IcW8
+ koAJxroryGhNKWy0aUtf+5IqNjn2k0pV+7b32Zk=
+X-Google-Smtp-Source: AGHT+IFlpO5TjVHvHtGW294aPXixvIHW7bLub2a9fJVaPge7iguizW0IHw3WM5UUARneWGIPxcr8WA==
+X-Received: by 2002:a05:6a20:da8c:b0:16c:b5ce:50f with SMTP id
+ iy12-20020a056a20da8c00b0016cb5ce050fmr12121265pzb.32.1697007822061; 
+ Wed, 11 Oct 2023 00:03:42 -0700 (PDT)
+Received: from localhost ([157.82.206.10]) by smtp.gmail.com with UTF8SMTPSA id
+ l2-20020a170903244200b001b891259eddsm13081720pls.197.2023.10.11.00.03.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Oct 2023 00:03:41 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>,
+ Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v9 00/23] plugins: Allow to read registers
+Date: Wed, 11 Oct 2023 16:02:46 +0900
+Message-ID: <20231011070335.14398-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU][PATCH v1 5/7] memory: add MemoryRegion map and unmap
- callbacks
-Content-Language: en-US
-To: Stefano Stabellini <sstabellini@kernel.org>,
- Vikram Garhwal <vikram.garhwal@amd.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20231005181629.4046-1-vikram.garhwal@amd.com>
- <20231005181629.4046-6-vikram.garhwal@amd.com>
- <alpine.DEB.2.22.394.2310091715430.3431292@ubuntu-linux-20-04-desktop>
-From: Juergen Gross <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <alpine.DEB.2.22.394.2310091715430.3431292@ubuntu-linux-20-04-desktop>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------XVeRpmVGBveXqw9177jJBj5s"
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=jgross@suse.com;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,126 +92,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------XVeRpmVGBveXqw9177jJBj5s
-Content-Type: multipart/mixed; boundary="------------dS9M8n0aypJMjEYGQW6DOgUg";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Stefano Stabellini <sstabellini@kernel.org>,
- Vikram Garhwal <vikram.garhwal@amd.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Message-ID: <9f03c5ac-939c-4f84-a19c-f53b5aa08648@suse.com>
-Subject: Re: [QEMU][PATCH v1 5/7] memory: add MemoryRegion map and unmap
- callbacks
-References: <20231005181629.4046-1-vikram.garhwal@amd.com>
- <20231005181629.4046-6-vikram.garhwal@amd.com>
- <alpine.DEB.2.22.394.2310091715430.3431292@ubuntu-linux-20-04-desktop>
-In-Reply-To: <alpine.DEB.2.22.394.2310091715430.3431292@ubuntu-linux-20-04-desktop>
+Based-on: <20231009164104.369749-4-alex.bennee@linaro.org>
+("[PATCH 00/25] October maintainer omnibus pre-PR (tests, gdbstub,
+plugins)")
 
---------------dS9M8n0aypJMjEYGQW6DOgUg
-Content-Type: multipart/mixed; boundary="------------RjoJSLQ0b4jFeaiB1WOLTyiU"
+I and other people in the University of Tokyo, where I research processor
+design, found TCG plugins are very useful for processor design exploration.
 
---------------RjoJSLQ0b4jFeaiB1WOLTyiU
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+The feature we find missing is the capability to read registers from
+plugins. In this series, I propose to add such a capability by reusing
+gdbstub code.
 
-T24gMTAuMTAuMjMgMDI6MTcsIFN0ZWZhbm8gU3RhYmVsbGluaSB3cm90ZToNCj4gT24gVGh1
-LCA1IE9jdCAyMDIzLCBWaWtyYW0gR2FyaHdhbCB3cm90ZToNCj4+IEZyb206IEp1ZXJnZW4g
-R3Jvc3MgPGpncm9zc0BzdXNlLmNvbT4NCj4+DQo+PiBJbiBvcmRlciB0byBzdXBwb3J0IG1h
-cHBpbmcgYW5kIHVubWFwcGluZyBndWVzdCBtZW1vcnkgZHluYW1pY2FsbHkgdG8NCj4+IGFu
-ZCBmcm9tIHFlbXUgZHVyaW5nIGFkZHJlc3Nfc3BhY2VfW3VuXW1hcCgpIG9wZXJhdGlvbnMg
-YWRkIHRoZSBtYXAoKQ0KPj4gYW5kIHVubWFwKCkgY2FsbGJhY2tzIHRvIE1lbW9yeVJlZ2lv
-bk9wcy4NCj4+DQo+PiBUaG9zZSB3aWxsIGJlIHVzZWQgZS5nLiBmb3IgWGVuIGdyYW50IG1h
-cHBpbmdzIHdoZW4gcGVyZm9ybWluZyBndWVzdA0KPj4gSS9Pcy4NCj4+DQo+PiBTaWduZWQt
-b2ZmLWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+DQo+PiBTaWduZWQtb2Zm
-LWJ5OiBWaWtyYW0gR2FyaHdhbCA8dmlrcmFtLmdhcmh3YWxAYW1kLmNvbT4NCj4gDQo+IENh
-bid0IHdlIGp1c3QgdXNlIHRoZSBleGlzdGluZyBYZW4gaG9va3MgaW4gcWVtdV9yYW1fcHRy
-X2xlbmd0aCBhbmQNCj4geGVuX2ludmFsaWRhdGVfbWFwX2NhY2hlX2VudHJ5PyBEbyB3ZSBy
-ZWFsbHkgbmVlZCBuZXcgb25lcz8NCg0KSSB0cmllZCB5b3VyIGlkZWEgZmlyc3QgYW5kIGl0
-IGRpZG4ndCB3b3JrIG91dC4NCg0KVGhlIGV4aXN0aW5nIGhvb2tzIGFyZSBpbnZva2VkIG5v
-dCBvbmx5IHdoZW4gZXhwbGljaXRseSBbdW5dbWFwcGluZyBtZW1vcnkNCnJlZ2lvbnMsIGJ1
-dCBpbiBzb21lIG90aGVyIGNhc2VzLCB0b28uIEhhdmUgYSBsb29rIGZvciBxZW11X3JhbV9w
-dHJfbGVuZ3RoKCkNCmNhbGwgaW4gZmxhdHZpZXdfd3JpdGVfY29udGludWUoKS4NCg0KDQpK
-dWVyZ2VuDQo=
---------------RjoJSLQ0b4jFeaiB1WOLTyiU
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+The reuse of gdbstub code ensures the long-term stability of the TCG plugin
+interface for register access without incurring a burden to maintain yet
+another interface for register access.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+This process to add TCG plugin involves four major changes. The first one
+is to add GDBFeature structure that represents a GDB feature, which usually
+includes registers. GDBFeature can be generated from static XML files or
+dynamically generated by architecture-specific code. In fact, this is a
+refactoring independent of the feature this series adds, and potentially
+it's benefitial even without the plugin feature. The plugin feature will
+utilize this new structure to describe registers exposed to plugins.
 
-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
-jR/i1DG86lem3iBDXzXsZDn8R38=3D
-=3D2wuH
------END PGP PUBLIC KEY BLOCK-----
+The second one is to make gdb_read_register/gdb_write_register usable
+outside of gdbstub context.
 
---------------RjoJSLQ0b4jFeaiB1WOLTyiU--
+The third one is to actually make registers readable for plugins.
 
---------------dS9M8n0aypJMjEYGQW6DOgUg--
+The last one is to allow to implement a QEMU plugin in C++. A plugin that
+I'll describe later is written in C++.
 
---------------XVeRpmVGBveXqw9177jJBj5s
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+The below is a summary of patches:
+Patch [01, 15] introduces num_regs member to GDBFeature.
+Patch 16 adds members useful to identify registers to GDBFeature.
+Patch 17 makes registers readable outside of gdbstub context.
+Patch [18, 22] add the feature to read registers from plugins.
+Patch 23 make it possible to write plugins in C++.
 
------BEGIN PGP SIGNATURE-----
+V8 -> V9:
+  Rebased to "[PATCH 00/25] October maintainer omnibus pre-PR (tests,
+  gdbstub, plugins)".
+  Added patch "target/riscv: Move MISA limits to class".
+  Added patch "target/riscv: Remove misa_mxl validation".
+  Added patch "target/riscv: Validate misa_mxl_max only once".
+  Added patch "plugins: Use different helpers when reading".
+  Moved contrib/plugins/cc.cc to tests/plugin/cc.cc.
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmUmSDUFAwAAAAAACgkQsN6d1ii/Ey93
-bwf/drYlaoQN6Uc+XdrogxwtyQ00qWXw8k5HNIOVdO75izh6T0fgX2wXI5oeEvnv7fOx8r8bcguv
-04HNgvOuO2ui3F0lfvcV+tSe7DGpmqlwh/Ao5zOIyw0hHfxvAQREUixQp+kX7GpbNwzO6Lvjxe9l
-f9SvQ7+Q6pccxiirtd8eL87qj0bjGPlB9bFhflj1ZoqdRHV2HuHkwImU6e0SacYEsIsySwtfx1pc
-G9ENkBvnVBXOPE4cKu8HCiSZa7ZiQbAgzDBts8BV/5hz/V/xwOHHVI7fLdzuIVNt9PTZyfvQQ+cY
-0zJN6dFvaQtFmvqKrxLaymV9jlxdkN2nyvO54bKwMg==
-=L4eq
------END PGP SIGNATURE-----
+V7 -> V8:
+  Rebased to "[PATCH v3 00/12] gdbstub and TCG plugin improvements".
+  Clarified that initialization and exit hooks affect TCG state.
+  Simplified by adding the core feature to gdb_regs.
 
---------------XVeRpmVGBveXqw9177jJBj5s--
+V6 -> V7:
+  Rebased to "[PATCH v2 00/11] gdbstub and TCG plugin improvements".
+  Replaced functions to get register identifiers.
+
+V5 -> V6:
+  Rebased to "[PATCH 0/8] gdbstub and TCG plugin improvements".
+
+V4 -> V5:
+  Corrected g_rw_lock_writer_lock() call. (Richard Henderson)
+  Replaced abort() with g_assert_not_reached(). (Richard Henderson)
+  Fixed CSR name leak in target/riscv. (Richard Henderson)
+  Removed gdb_has_xml variable.
+
+V3 -> V4:
+  Added execlog changes I forgot to include in the last version.
+
+V2 -> V3:
+  Added patch "hw/core/cpu: Return static value with gdb_arch_name()".
+  Added patch "gdbstub: Dynamically allocate target.xml buffer".
+  (Alex Bennée)
+  Added patch "gdbstub: Introduce GDBFeatureBuilder". (Alex Bennée)
+  Dropped Reviewed-by tags for "target/*: Use GDBFeature for dynamic XML".
+  Changed gdb_find_static_feature() to abort on failure. (Alex Bennée)
+  Changed the execlog plugin to log the register value only when changed.
+  (Alex Bennée)
+  Dropped 0x prefixes for register value logs for conciseness.
+
+V1 -> V2:
+  Added SPDX-License-Identifier: GPL-2.0-or-later. (Philippe Mathieu-Daudé)
+  Split long lines. (Philippe Mathieu-Daudé)
+  Renamed gdb_features to gdb_static_features (Philippe Mathieu-Daudé)
+  Dropped RFC.
+
+The execlog plugin will have new options to demonstrate the new feature.
+I also have a plugin that uses this new feature to generate execution
+traces for Sniper processor simulator, which is available at:
+https://github.com/shioya-lab/sniper/tree/akihikodaki/bb
+
+Akihiko Odaki (23):
+  target/riscv: Move MISA limits to class
+  target/riscv: Remove misa_mxl validation
+  target/riscv: Validate misa_mxl_max only once
+  gdbstub: Add num_regs member to GDBFeature
+  gdbstub: Introduce gdb_find_static_feature()
+  gdbstub: Introduce GDBFeatureBuilder
+  target/arm: Use GDBFeature for dynamic XML
+  target/ppc: Use GDBFeature for dynamic XML
+  target/riscv: Use GDBFeature for dynamic XML
+  gdbstub: Use GDBFeature for gdb_register_coprocessor
+  gdbstub: Use GDBFeature for GDBRegisterState
+  gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
+  gdbstub: Simplify XML lookup
+  gdbstub: Infer number of core registers from XML
+  hw/core/cpu: Remove gdb_get_dynamic_xml member
+  gdbstub: Add members to identify registers to GDBFeature
+  gdbstub: Expose functions to read registers
+  cpu: Call plugin hooks only when ready
+  plugins: Remove an extra parameter
+  plugins: Use different helpers when reading registers
+  plugins: Allow to read registers
+  contrib/plugins: Allow to log registers
+  plugins: Support C++
+
+ docs/devel/tcg-plugins.rst   |  14 +-
+ meson.build                  |   2 +-
+ accel/tcg/plugin-helpers.h   |   3 +-
+ include/exec/gdbstub.h       |  39 +++++-
+ include/exec/plugin-gen.h    |   4 +-
+ include/hw/core/cpu.h        |  11 +-
+ include/qemu/plugin.h        |   3 +
+ include/qemu/qemu-plugin.h   |  56 +++++++-
+ plugins/plugin.h             |   5 +-
+ target/arm/cpu.h             |  27 ++--
+ target/arm/internals.h       |  14 +-
+ target/hexagon/internal.h    |   4 +-
+ target/microblaze/cpu.h      |   4 +-
+ target/ppc/cpu-qom.h         |   4 +-
+ target/ppc/cpu.h             |   3 +-
+ target/riscv/cpu-qom.h       |   2 +
+ target/riscv/cpu.h           |   7 +-
+ target/s390x/cpu.h           |   2 -
+ accel/tcg/plugin-gen.c       |  50 +++++---
+ accel/tcg/translator.c       |   2 +-
+ contrib/plugins/execlog.c    | 120 ++++++++++++-----
+ cpu-target.c                 |  11 --
+ gdbstub/gdbstub.c            | 216 +++++++++++++++++++++++--------
+ hw/core/cpu-common.c         |  15 ++-
+ hw/riscv/boot.c              |   2 +-
+ plugins/api.c                |  30 ++++-
+ plugins/core.c               |  28 ++--
+ target/arm/cpu.c             |   2 -
+ target/arm/cpu64.c           |   1 -
+ target/arm/gdbstub.c         | 221 +++++++++++++++-----------------
+ target/arm/gdbstub64.c       | 117 +++++++++--------
+ target/avr/cpu.c             |   1 -
+ target/hexagon/cpu.c         |   4 +-
+ target/hexagon/gdbstub.c     |  10 +-
+ target/i386/cpu.c            |   2 -
+ target/loongarch/cpu.c       |   2 -
+ target/loongarch/gdbstub.c   |  13 +-
+ target/m68k/cpu.c            |   1 -
+ target/m68k/helper.c         |  26 +++-
+ target/microblaze/cpu.c      |   6 +-
+ target/microblaze/gdbstub.c  |   9 +-
+ target/ppc/cpu_init.c        |   5 +-
+ target/ppc/gdbstub.c         | 108 ++++++++--------
+ target/riscv/cpu.c           | 242 +++++++++++++++++++++--------------
+ target/riscv/csr.c           |   3 +-
+ target/riscv/gdbstub.c       | 147 +++++++++++----------
+ target/riscv/machine.c       |  11 +-
+ target/riscv/translate.c     |   3 +-
+ target/rx/cpu.c              |   1 -
+ target/s390x/cpu.c           |   1 -
+ target/s390x/gdbstub.c       | 105 +++++++++------
+ plugins/qemu-plugins.symbols |   3 +
+ scripts/feature_to_c.py      |  58 ++++++++-
+ tests/plugin/cc.cc           |  16 +++
+ tests/plugin/meson.build     |   5 +
+ tests/tcg/Makefile.target    |   3 +-
+ 56 files changed, 1143 insertions(+), 661 deletions(-)
+ create mode 100644 tests/plugin/cc.cc
+
+-- 
+2.42.0
+
 
