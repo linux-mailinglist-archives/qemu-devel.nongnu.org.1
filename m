@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325F27C5671
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C6B7C5675
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:12:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZwF-0004wX-Am; Wed, 11 Oct 2023 10:11:51 -0400
+	id 1qqZwd-0005ZL-PZ; Wed, 11 Oct 2023 10:12:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qqZwD-0004w9-3t
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:11:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqZwX-0005UG-8H
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:12:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qqZw9-0008GP-55
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:11:48 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqZwU-0008Oi-Kw
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:12:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697033502;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sGcsMN/2Z7KliUTkPHqRhUXU1yHEyWmmaC0LARfo/54=;
- b=OewzuwQLHjr8Nuqaqv9lfygfBM8HMzMvJVAqlY/timaPP9ot9BekRgdhLRp4aEO9USp1id
- 9SXWxu4bLaEBsCqetdtrekpCbATgiyqQHFEd1iDziRPDAKGCqcJSdmpuAk4qwcME6iVCIo
- Z3pOrpciLFZXpc9sH7ypovzAClltVC4=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697033524;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=vLsR46dWXgtRjZ/415Qw5rW9dJFZG2bH32X3/0ZtKgU=;
+ b=h8NvoIugvRBubBncP5DgG7YP++Fuso307ack2mEuwIur9Yh4RLkoHQCwrvAIgzjL0iCnjz
+ 6OUtK3a75t8pHrLQgpbL2+lKh5tBM3mUJ0Bngj6R89FpPlWZ81O0HtNBdp2Q/MZy+r2se9
+ w1khk1QTmFNAk8mCDmRG0a+qbrGkVIM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-yn_YPab5MGy_j9lmJuQILg-1; Wed, 11 Oct 2023 10:11:41 -0400
-X-MC-Unique: yn_YPab5MGy_j9lmJuQILg-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-4180b3a5119so80229291cf.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:11:41 -0700 (PDT)
+ us-mta-170-BPcjvBvTMO2DOC5LQYs6Wg-1; Wed, 11 Oct 2023 10:12:01 -0400
+X-MC-Unique: BPcjvBvTMO2DOC5LQYs6Wg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32d1ba32c95so1135292f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:12:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697033500; x=1697638300;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sGcsMN/2Z7KliUTkPHqRhUXU1yHEyWmmaC0LARfo/54=;
- b=CDvCtY0F6ZzubC/fi2Fve7OTilHepVkoN1UpvBXXrRzadXAfCZcLn5LzzEX1sCxwao
- kbNbSObxV8qRbkCO+QTh7XuB0D4so1EDO5bPjogbYRECd6jXhU1NQRMXXrd1Svyk0gtp
- Hhuki8hapT7y5xvYpY3fG3z19kfMdVVgj8g00wiL7OFOA9fz6RoNWzkFpziT+nBDGxNs
- sa+nfgn8R2iYBbvcMvJ1c8GQ8QI4eO7yU6q6jMr7ii3Zi+sYims5R5xBrhaxMyUqqsxo
- cCUE8iObVY1slUo1YddxoqVT9rDR0Q9+NDtIosEZOZDACUN80TR5J5poIonKvUnuHNJf
- oOig==
-X-Gm-Message-State: AOJu0Yz3mmOz27JwXByp4dtw4mp1HShDKAq6zavX8VJR4St75EauJ21+
- 2MkKwKHy/gOKbfC+38wGrMaP9G7AHIumKaHbbS5L3V6jZzFpnZKBjWQ/7PC93VBQT4EyFuTCGiY
- lunSEco8s2yoQE8A=
-X-Received: by 2002:a05:622a:174c:b0:419:b52a:4f2e with SMTP id
- l12-20020a05622a174c00b00419b52a4f2emr26054434qtk.15.1697033500557; 
- Wed, 11 Oct 2023 07:11:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFiFrQzrq9KWIJyUeLRf8QI0cWOeRoEf7BNcnYqfcsSK97YaVMkah5Kv2ikrQHUNLIaXkWQeg==
-X-Received: by 2002:a05:622a:174c:b0:419:b52a:4f2e with SMTP id
- l12-20020a05622a174c00b00419b52a4f2emr26054400qtk.15.1697033500131; 
- Wed, 11 Oct 2023 07:11:40 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- n10-20020ac8674a000000b004196a813639sm5366944qtp.17.2023.10.11.07.11.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 07:11:39 -0700 (PDT)
-Message-ID: <6a24e610-df9d-baaa-a6ef-7906696586b0@redhat.com>
-Date: Wed, 11 Oct 2023 16:11:37 +0200
+ d=1e100.net; s=20230601; t=1697033520; x=1697638320;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vLsR46dWXgtRjZ/415Qw5rW9dJFZG2bH32X3/0ZtKgU=;
+ b=BrwRg0KrqUP0dzV6QrpaXIEa+A9l4TpD+ANgRwCphO0F9YkHDK8/J6i6RnMPk70FeX
+ 522zeUPOQyihQlK8seeYrkOZy6MBsebSoHJ0BIZrlRzSWCbKLcti06WNnxQFxXFIWXZH
+ reGH8xaHfZdZTZIXPaRYYVtGAm5K4NVR0PZW4XCnuuzNCyeyXiHxWuoH0r5iteD7Z6dW
+ 4UxCes/w4SySVy7Icv4B4W0Px7MpNKcJ31XGrn+36HhF3NjShmd6ugqTqE67vU2FAoXl
+ vKWn1vBtRY1fLktB67iglHSNs4IF07QhgugCzpuIOFbKq1xRJRSXOM2dBGl0R4cRBe8w
+ aTOQ==
+X-Gm-Message-State: AOJu0YxW2BgjqWXE3VQWVTepW956REMev/DApxraBPgs6m3imtYQZTwQ
+ mx8gBOa2b/GU+m2kzWU2bbAH45UGt43Jqz2XoaP9kB9U3HkzxROg7pRD86Em14p7QQbCOCxIkyJ
+ sU6i7jVk5CA2phxs=
+X-Received: by 2002:a5d:50c8:0:b0:316:f24b:597a with SMTP id
+ f8-20020a5d50c8000000b00316f24b597amr18478425wrt.46.1697033520396; 
+ Wed, 11 Oct 2023 07:12:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEgb5uwesUJN9uHm4jfem7aO+/es1TabeIzwDjdFAFhzLNC5SeaEFy9A+F95lsbg6VDczLxnA==
+X-Received: by 2002:a5d:50c8:0:b0:316:f24b:597a with SMTP id
+ f8-20020a5d50c8000000b00316f24b597amr18478402wrt.46.1697033520045; 
+ Wed, 11 Oct 2023 07:12:00 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ 19-20020a05600c025300b00401d8181f8bsm19230663wmj.25.2023.10.11.07.11.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Oct 2023 07:11:59 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Laurent Vivier <lvivier@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Markus
+ Armbruster <armbru@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Li
+ Zhijian <lizhijian@fujitsu.com>,  Leonardo Bras <leobras@redhat.com>,
+ Eric Blake <eblake@redhat.com>
+Subject: Re: [PULL 06/65] tests/qtest: migration: Add support for negative
+ testing of qmp_migrate
+In-Reply-To: <87wmvt1fb2.fsf@suse.de> (Fabiano Rosas's message of "Wed, 11 Oct
+ 2023 10:04:01 -0300")
+References: <20231011092203.1266-1-quintela@redhat.com>
+ <20231011092203.1266-7-quintela@redhat.com> <87wmvt1fb2.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 11 Oct 2023 16:11:58 +0200
+Message-ID: <87edi19rkh.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] vfio/pci: rename vfio_put_device to vfio_pci_put_device
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, chao.p.peng@intel.com
-References: <20230922025223.1091821-1-zhenzhong.duan@intel.com>
- <6e3a76ea-af1f-4e45-62b5-32425b6b541f@linaro.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <6e3a76ea-af1f-4e45-62b5-32425b6b541f@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,90 +101,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/11/23 15:02, Philippe Mathieu-Daudé wrote:
-> Hi,
-> 
-> On 22/9/23 04:52, Zhenzhong Duan wrote:
->> vfio_put_device() is a VFIO PCI specific function, rename it with
->> 'vfio_pci' prefix to avoid confusing.
-> 
-> Why not, but what about the other functions?
-
-yes. Let's tackle that after the IOMMUFD earthquake :)
-
-C.
-
-
-> 
-> $ git grep -F '(VFIOPCIDevice *' hw/vfio/pci.c | grep -vF ' vfio_pci_'
-> hw/vfio/pci.c:51:static void vfio_disable_interrupts(VFIOPCIDevice *vdev);
-> hw/vfio/pci.c:52:static void vfio_mmap_set_enabled(VFIOPCIDevice *vdev, bool enabled);
-> hw/vfio/pci.c:53:static void vfio_msi_disable_common(VFIOPCIDevice *vdev);
-> hw/vfio/pci.c:117:static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
-> hw/vfio/pci.c:175:static void vfio_intx_disable_kvm(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:212:static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
-> hw/vfio/pci.c:260:static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
-> hw/vfio/pci.c:314:static void vfio_intx_disable(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:372:static int vfio_enable_vectors(VFIOPCIDevice *vdev, bool msix)
-> hw/vfio/pci.c:416:static void vfio_add_kvm_msi_virq(VFIOPCIDevice *vdev, VFIOMSIVector *vector,
-> hw/vfio/pci.c:588:static void vfio_prepare_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:595:static void vfio_commit_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:609:static void vfio_msix_enable(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:660:static void vfio_msi_enable(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:732:static void vfio_msi_disable_common(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:754:static void vfio_msix_disable(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:788:static void vfio_msi_disable(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:802:static void vfio_update_msi(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:1263:static void vfio_disable_interrupts(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:1281:static int vfio_msi_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
-> hw/vfio/pci.c:1491:static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
-> hw/vfio/pci.c:1573:static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
-> hw/vfio/pci.c:1630:static void vfio_teardown_msi(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:1645:static void vfio_mmap_set_enabled(VFIOPCIDevice *vdev, bool enabled)
-> hw/vfio/pci.c:1654:static void vfio_bar_prepare(VFIOPCIDevice *vdev, int nr)
-> hw/vfio/pci.c:1682:static void vfio_bars_prepare(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:1691:static void vfio_bar_register(VFIOPCIDevice *vdev, int nr)
-> hw/vfio/pci.c:1717:static void vfio_bars_register(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:1726:static void vfio_bars_exit(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:1746:static void vfio_bars_finalize(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:1810:static void vfio_add_emulated_word(VFIOPCIDevice *vdev, int pos,
-> hw/vfio/pci.c:1823:static void vfio_add_emulated_long(VFIOPCIDevice *vdev, int pos,
-> hw/vfio/pci.c:1906:static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
-> hw/vfio/pci.c:2036:static void vfio_check_pcie_flr(VFIOPCIDevice *vdev, uint8_t pos)
-> hw/vfio/pci.c:2046:static void vfio_check_pm_reset(VFIOPCIDevice *vdev, uint8_t pos)
-> hw/vfio/pci.c:2056:static void vfio_check_af_flr(VFIOPCIDevice *vdev, uint8_t pos)
-> hw/vfio/pci.c:2066:static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
-> hw/vfio/pci.c:2148:static int vfio_setup_rebar_ecap(VFIOPCIDevice *vdev, uint16_t pos)
-> hw/vfio/pci.c:2196:static void vfio_add_ext_cap(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:2291:static int vfio_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
-> hw/vfio/pci.c:2678:int vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
-> hw/vfio/pci.c:2746:static void vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
-> hw/vfio/pci.c:2829:static void vfio_put_device(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:2865:static void vfio_register_err_notifier(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:2892:static void vfio_unregister_err_notifier(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:2924:static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
-> hw/vfio/pci.c:2958:static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
-> 
->> No functional change.
+Fabiano Rosas <farosas@suse.de> wrote:
+> Juan Quintela <quintela@redhat.com> writes:
+>
+>> From: Fabiano Rosas <farosas@suse.de>
 >>
->> Suggested-by: Cédric Le Goater <clg@redhat.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>> There is currently no way to write a test for errors that happened in
+>> qmp_migrate before the migration has started.
+>>
+>> Add a version of qmp_migrate that ensures an error happens. To make
+>> use of it a test needs to set MigrateCommon.result as
+>> MIG_TEST_QMP_ERROR.
+>>
+>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> Message-ID: <20230712190742.22294-6-farosas@suse.de>
 >> ---
->>   hw/vfio/pci.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
->> index 3b2ca3c24ca2..b2d5010b9f0e 100644
->> --- a/hw/vfio/pci.c
->> +++ b/hw/vfio/pci.c
->> @@ -2826,7 +2826,7 @@ static void vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
->>       }
->>   }
->> -static void vfio_put_device(VFIOPCIDevice *vdev)
->> +static void vfio_pci_put_device(VFIOPCIDevice *vdev)
-> 
+>
+> Hi Juan,
+>
+> What's the plan for the last patch in that series? The one that adds the
+> actual test:
+> [PATCH v5 6/6] tests/qtest: migration-test: Add tests for file-based migration
+> https://lore.kernel.org/r/20230712190742.22294-7-farosas@suse.de
+>
+> I'm trying to keep track of what's merged and what's not because I have
+> more patches on top of it to send.
+
+You need to resend the patches that I didn't pick.
+
+If my memory is correct, it didn't apply or make check didn't work without all
+patches applied.
+
+Later, Juan.
 
 
