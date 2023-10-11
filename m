@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2237C5ABC
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 20:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8625F7C5AC1
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 20:02:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqdRl-0001q7-8E; Wed, 11 Oct 2023 13:56:37 -0400
+	id 1qqdRj-0001ng-Ph; Wed, 11 Oct 2023 13:56:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qqdRV-0001RS-Li
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qqdRO-0001Nn-Cy
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qqdRT-0006m4-UQ
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:21 -0400
+ id 1qqdRM-0006jL-Tm
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697046978;
+ s=mimecast20190719; t=1697046972;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cQOh3TI0YTa4AYWxSzAwJVF30XyjbS5t9xluX3DSjTE=;
- b=VEFu5VZyga887sfBTZXwlkRHdmE2ZXaqI8XOuSLF7AOUarK02LWWWU9hytghvk3MYXl0Qr
- lp9KRULfcODbSVyxxDSnkjmO67jlbmtbey63/kPs+xwJ/custnuo8rZ36Yd5kzELqv79iC
- KMe1PJ8sSKbN6PN4uS/pAaTJGaT5/tc=
+ bh=DoIUo/ZpRcnk2IRWay+/r0Syt0sDfoaV5wBJ7Os2/3Q=;
+ b=MdDAaDi7MufdR8xIaOnuQBDPAEhLbEHJqI8lMXsDiHDaDN7rdlN/3YoVJlldkbtldgeC7n
+ KrVahUn8+DbsnbtgQJzQjnsoeCHap/KZ2RtFyr1JB8dZwQxfos2tZ7zV82+Zn5ta3Qai/P
+ HJXIou8v18QeFdg8ql5Ro9JcvB/EW4w=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-649-tGM9vlsGMbKolg78YqfbGA-1; Wed, 11 Oct 2023 13:56:05 -0400
-X-MC-Unique: tGM9vlsGMbKolg78YqfbGA-1
+ us-mta-228-B61ngbdoNaOE1g7FjCxAjA-1; Wed, 11 Oct 2023 13:56:08 -0400
+X-MC-Unique: B61ngbdoNaOE1g7FjCxAjA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9007B8022EA;
- Wed, 11 Oct 2023 17:56:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7DFD2101AA6E;
+ Wed, 11 Oct 2023 17:56:07 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EBC56492B00;
- Wed, 11 Oct 2023 17:56:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D4C0A492C3E;
+ Wed, 11 Oct 2023 17:56:04 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
  jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
 Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
  philmd@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com
-Subject: [PATCH v3 10/13] virtio-iommu: Implement set_iova_ranges() callback
-Date: Wed, 11 Oct 2023 19:52:26 +0200
-Message-ID: <20231011175516.541374-11-eric.auger@redhat.com>
+Subject: [PATCH v3 11/13] virtio-iommu: Consolidate host reserved regions and
+ property set ones
+Date: Wed, 11 Oct 2023 19:52:27 +0200
+Message-ID: <20231011175516.541374-12-eric.auger@redhat.com>
 In-Reply-To: <20231011175516.541374-1-eric.auger@redhat.com>
 References: <20231011175516.541374-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,134 +81,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The implementation populates the array of per IOMMUDevice
-host reserved ranges.
+Up to now we were exposing to the RESV_MEM probe requests the
+reserved memory regions set though the reserved-regions array property.
 
-It is forbidden to have conflicting sets of host IOVA ranges
-to be applied onto the same IOMMU MR (implied by different
-host devices).
-
-In case the callback is called after the probe request has
-been issues by the driver, a warning is issued.
+Combine those with the host reserved memory regions if any. Those
+latter are tagged as RESERVED. We don't have more information about
+them besides then cannot be mapped. Reserved regions set by
+property have higher priority.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-
 ---
-v3 -> v4:
-- Use GList instead
-- added a warn_report in case the probe has already been issued
+ hw/virtio/virtio-iommu.c | 36 ++++++++++++++++++++++++++++++++++++
+ hw/virtio/trace-events   |  1 +
+ 2 files changed, 37 insertions(+)
 
-v1 -> v2:
-- Forbid conflicting sets of host resv regions
----
- include/hw/virtio/virtio-iommu.h |  1 +
- hw/virtio/virtio-iommu.c         | 67 ++++++++++++++++++++++++++++++++
- 2 files changed, 68 insertions(+)
-
-diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
-index 1dd11ae81a..781ebaea8f 100644
---- a/include/hw/virtio/virtio-iommu.h
-+++ b/include/hw/virtio/virtio-iommu.h
-@@ -40,6 +40,7 @@ typedef struct IOMMUDevice {
-     MemoryRegion root;          /* The root container of the device */
-     MemoryRegion bypass_mr;     /* The alias of shared memory MR */
-     GList *resv_regions;
-+    GList *host_resv_ranges;
-     bool probe_done;
- } IOMMUDevice;
- 
 diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 13c3c087fe..15aadd6fdd 100644
+index 15aadd6fdd..dede0d41aa 100644
 --- a/hw/virtio/virtio-iommu.c
 +++ b/hw/virtio/virtio-iommu.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
+@@ -21,6 +21,7 @@
  #include "qemu/log.h"
  #include "qemu/iov.h"
-+#include "qemu/range.h"
+ #include "qemu/range.h"
++#include "qemu/reserved-region.h"
  #include "exec/target_page.h"
  #include "hw/qdev-properties.h"
  #include "hw/virtio/virtio.h"
-@@ -1155,6 +1156,71 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
+@@ -1156,6 +1157,40 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
      return 0;
  }
  
 +/**
-+ * virtio_iommu_set_iova_ranges: Conveys the usable IOVA ranges
-+ *
-+ * The function turns those into reserved ranges. Once some
-+ * reserved ranges have been set, new reserved regions cannot be
-+ * added outside of the original ones.
-+ *
-+ * @mr: IOMMU MR
-+ * @iova_ranges: list of usable IOVA ranges
-+ * @errp: error handle
++ * rebuild_resv_regions: rebuild resv regions with both the
++ * info of host resv ranges and property set resv ranges
 + */
-+static int virtio_iommu_set_iova_ranges(IOMMUMemoryRegion *mr,
-+                                        GList *iova_ranges,
-+                                        Error **errp)
++static int rebuild_resv_regions(IOMMUDevice *sdev)
 +{
-+    IOMMUDevice *sdev = container_of(mr, IOMMUDevice, iommu_mr);
-+    GList *current_ranges = sdev->host_resv_ranges;
-+    GList *l, *tmp, *new_ranges = NULL;
-+    int ret = -EINVAL;
++    GList *l;
++    int i = 0;
 +
-+    /* check that each new resv region is included in an existing one */
-+    if (sdev->host_resv_ranges) {
-+        range_inverse_array(iova_ranges,
-+                            &new_ranges,
-+                            0, UINT64_MAX);
++    /* free the existing list and rebuild it from scratch */
++    g_list_free_full(sdev->resv_regions, g_free);
++    sdev->resv_regions = NULL;
 +
-+        for (tmp = new_ranges; tmp; tmp = tmp->next) {
-+            Range *newr = (Range *)tmp->data;
-+            bool included = false;
++    /* First add host reserved regions if any, all tagged as RESERVED */
++    for (l = sdev->host_resv_ranges; l; l = l->next) {
++        ReservedRegion *reg = g_new0(ReservedRegion, 1);
++        Range *r = (Range *)l->data;
 +
-+            for (l = current_ranges; l; l = l->next) {
-+                Range * r = (Range *)l->data;
-+
-+                if (range_contains_range(r, newr)) {
-+                    included = true;
-+                    break;
-+                }
-+            }
-+            if (!included) {
-+                goto error;
-+            }
-+        }
-+        /* all new reserved ranges are included in existing ones */
-+        ret = 0;
-+        goto out;
++        reg->type = VIRTIO_IOMMU_RESV_MEM_T_RESERVED;
++        range_set_bounds(&reg->range, range_lob(r), range_upb(r));
++        sdev->resv_regions = resv_region_list_insert(sdev->resv_regions, reg);
++        trace_virtio_iommu_host_resv_regions(sdev->iommu_mr.parent_obj.name, i,
++                                             range_lob(&reg->range),
++                                             range_upb(&reg->range));
++        i++;
 +    }
-+
-+    if (sdev->probe_done) {
-+        warn_report("%s: Notified about new host reserved regions after probe",
-+                    mr->parent_obj.name);
-+    }
-+
-+    range_inverse_array(iova_ranges,
-+                        &sdev->host_resv_ranges,
-+                        0, UINT64_MAX);
-+
++    /*
++     * then add higher priority reserved regions set by the machine
++     * through properties
++     */
++    add_prop_resv_regions(sdev);
 +    return 0;
-+error:
-+    error_setg(errp, "IOMMU mr=%s Conflicting host reserved ranges set!",
-+               mr->parent_obj.name);
-+out:
-+    g_list_free_full(new_ranges, g_free);
-+    return ret;
 +}
 +
- static void virtio_iommu_system_reset(void *opaque)
- {
-     VirtIOIOMMU *s = opaque;
-@@ -1450,6 +1516,7 @@ static void virtio_iommu_memory_region_class_init(ObjectClass *klass,
-     imrc->replay = virtio_iommu_replay;
-     imrc->notify_flag_changed = virtio_iommu_notify_flag_changed;
-     imrc->iommu_set_page_size_mask = virtio_iommu_set_page_size_mask;
-+    imrc->iommu_set_iova_ranges = virtio_iommu_set_iova_ranges;
- }
+ /**
+  * virtio_iommu_set_iova_ranges: Conveys the usable IOVA ranges
+  *
+@@ -1211,6 +1246,7 @@ static int virtio_iommu_set_iova_ranges(IOMMUMemoryRegion *mr,
+     range_inverse_array(iova_ranges,
+                         &sdev->host_resv_ranges,
+                         0, UINT64_MAX);
++    rebuild_resv_regions(sdev);
  
- static const TypeInfo virtio_iommu_info = {
+     return 0;
+ error:
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+index 1cb9027d1e..b49d9c4b0a 100644
+--- a/hw/virtio/trace-events
++++ b/hw/virtio/trace-events
+@@ -134,6 +134,7 @@ virtio_iommu_notify_flag_add(const char *name) "add notifier to mr %s"
+ virtio_iommu_notify_flag_del(const char *name) "del notifier from mr %s"
+ virtio_iommu_switch_address_space(uint8_t bus, uint8_t slot, uint8_t fn, bool on) "Device %02x:%02x.%x switching address space (iommu enabled=%d)"
+ virtio_iommu_freeze_granule(uint64_t page_size_mask) "granule set to 0x%"PRIx64
++virtio_iommu_host_resv_regions(const char *name, uint32_t index, uint64_t lob, uint64_t upb) "mr=%s host-resv-reg[%d] = [0x%"PRIx64",0x%"PRIx64"]"
+ 
+ # virtio-mem.c
+ virtio_mem_send_response(uint16_t type) "type=%" PRIu16
 -- 
 2.41.0
 
