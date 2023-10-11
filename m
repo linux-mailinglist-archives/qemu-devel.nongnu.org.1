@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282B77C56B5
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E597C56BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqa7O-0006pF-Ro; Wed, 11 Oct 2023 10:23:22 -0400
+	id 1qqa91-00080n-J5; Wed, 11 Oct 2023 10:25:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqa7M-0006oU-S5
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:23:20 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqa90-00080U-6Z
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:25:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqa7L-0002NM-F1
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:23:20 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qqa8y-0002eP-LO
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:25:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697034198;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=DR/d1C6sTEsjqKbSgholo6v7OAZAJb/nUeKQhO25S8U=;
- b=S+83Auih+r49iEhrJ6hK4SZMR4U2cohttDD66kMorQwBjevYm6IO+w+yODCxqB4MTDGH+e
- 9QjgutMt6388XEKkeMuVlppiF3puczSn7k4IpLDIHuiCoTdo8CrPH/+umSxPID0WMedsxf
- 7eaUjEZGIoDNFopRhyiVJFV9Y4pPObI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697034300;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VmXuULuP8drksA2GOn7/wNPQW+POBIgDUuGV496Sad0=;
+ b=hAh1Ya7+RwiWNIJctlxMzkauaqkt7EjPTEbx2YCxjdcdMA8FMeH+5HDpKxwRdEXUGdz3NU
+ PPPWFA54+XkUTBwjSIE0FQ9Fm2ig/5QHCvmgPdMoTD8HQbNA/kDNb5fFc67ZdWSRX/ESRJ
+ SYisqWtXj01Vx8Ln1Gxrlq6hq7/RP14=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-pW6ix_uNOyCAd3U_PcCbwA-1; Wed, 11 Oct 2023 10:23:17 -0400
-X-MC-Unique: pW6ix_uNOyCAd3U_PcCbwA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4054743df06so49368415e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:23:17 -0700 (PDT)
+ us-mta-659-iffVEHa4M_mElKhcBjmekw-1; Wed, 11 Oct 2023 10:24:58 -0400
+X-MC-Unique: iffVEHa4M_mElKhcBjmekw-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-419719b700aso14253091cf.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:24:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697034196; x=1697638996;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DR/d1C6sTEsjqKbSgholo6v7OAZAJb/nUeKQhO25S8U=;
- b=l6FqyeHzyPH17Xhuouh073BUqB1VBJ88sgF5nv6pxWI1ikgUvPQJ5JU8jtV6Z2Fzcn
- GDnwUUWEGuJaAfMKfjnAWmytdWz/6Knz9/qA2f99xkerf5cfr54cr+oIaNQ3zeBe5ddV
- mH3s6E7KkZu9fAydxgwG5ao2OASiqqkDH7g8bv6oYK5XlYL1U7TBnFmoePIdFYZnKcJh
- GMh56xgyrPxDr46GBiKzrZN67izJC8ZtHppTWw4pBRC2puAHWdUpwJEmxXIIJG6ZBGlv
- eRCUII4JAfOLoiF3wZbynPeTFe5xx5ebvzJLtZcpzLhR9AyeUFw5S8yagXntkgJfqIQZ
- v4Sg==
-X-Gm-Message-State: AOJu0Yzun83fLIPMvcXccXaQZAeKm+1xaXht1o+BsqZXg0EytA9kQ+KV
- EjtHmgm7qI27lw3yeXL6OatJgQeomWEHqi/zrFAYhEHeFPfpFyOcUBNTrkq/hiVl1E5dHwlq4N7
- 3NZH/HqT3zfv2zns=
-X-Received: by 2002:a05:600c:2a4e:b0:404:732b:674f with SMTP id
- x14-20020a05600c2a4e00b00404732b674fmr19227503wme.34.1697034196135; 
- Wed, 11 Oct 2023 07:23:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSdxzI3y/+mW3Vij9qJjXepzkEtU+IgH1VWcURkkJiiMij2ouqw/yaiiFewjsNEHuTBVKeUw==
-X-Received: by 2002:a05:600c:2a4e:b0:404:732b:674f with SMTP id
- x14-20020a05600c2a4e00b00404732b674fmr19227484wme.34.1697034195901; 
- Wed, 11 Oct 2023 07:23:15 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- v16-20020a1cf710000000b003fefaf299b6sm16942197wmh.38.2023.10.11.07.23.15
+ d=1e100.net; s=20230601; t=1697034298; x=1697639098;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VmXuULuP8drksA2GOn7/wNPQW+POBIgDUuGV496Sad0=;
+ b=Jwz6ubsY9ihSli67VnrSkm5WXdwb4An6oWd2HVZL0zQeCu0UDq0/MDeAbm1JANohjP
+ JUMaksjJ84X03hzqoKfDSskRZ3efZD99cYYMjXZmzS/u1AxGs5+/AFMmNYcbTGIIXqTS
+ tHNxISN+yhhqR2vQGhJWTWiauuB9QsBupz76QKzWyprjJ8up4f9fR7G3LOmNq0ZhfS33
+ yG012I0tJy8KuQ5Evg31ZG9zSUt+nDQx3qkC72Z15nJG5CE8i6wBy1tTP0lKMXKi8MtX
+ H3I6r7eelYN6rNxBf71p6K791kBtEpQ7tgqXI5MtSIVxhg8sEMgIGeY6Krv60ZFGfRmQ
+ KdTQ==
+X-Gm-Message-State: AOJu0Yz9og6pKe3EzHKM2qZafwyCASD37eCkwIIraCw42K70Nmn+1mQ5
+ wfKG2Wvxjsbene4O4E5v8nXr7IxX2kbA8LeY6kgs6iY8rh4otWgMyLkfH84zHhGXbPl7FYAcqlo
+ I5WfWvx4wcQ8nb9A=
+X-Received: by 2002:a05:622a:282:b0:40f:dcda:ea10 with SMTP id
+ z2-20020a05622a028200b0040fdcdaea10mr23011183qtw.3.1697034298204; 
+ Wed, 11 Oct 2023 07:24:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFNNkGkmE2CnmyG66M6DJVAyDrgzdLF9z3cWe0C2k0tGu1RBy8U4yV8OpzLo+wbDfuG8ydGg==
+X-Received: by 2002:a05:622a:282:b0:40f:dcda:ea10 with SMTP id
+ z2-20020a05622a028200b0040fdcdaea10mr23011167qtw.3.1697034297881; 
+ Wed, 11 Oct 2023 07:24:57 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ os22-20020a05620a811600b007757acf488esm5253883qkn.39.2023.10.11.07.24.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 07:23:15 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Daniel
- P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
- =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 5/9] tests/qtest: Introduce qtest_resolve_machine_alias
-In-Reply-To: <20231006123910.17759-6-farosas@suse.de> (Fabiano Rosas's message
- of "Fri, 6 Oct 2023 09:39:06 -0300")
-References: <20231006123910.17759-1-farosas@suse.de>
- <20231006123910.17759-6-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 11 Oct 2023 16:23:14 +0200
-Message-ID: <87pm1l8ch9.fsf@secure.mitica>
+ Wed, 11 Oct 2023 07:24:57 -0700 (PDT)
+Date: Wed, 11 Oct 2023 10:24:55 -0400
+From: Peter Xu <peterx@redhat.com>
+To: =?utf-8?B?0JTQvNC40YLRgNC40Lkg0KTRgNC+0LvQvtCy?= <frolov@swemel.ru>
+Cc: Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org,
+ sdl.qemu@linuxtesting.org
+Subject: Re: [PATCH v1] migration: fix RAMBlock add NULL check
+Message-ID: <ZSawNzXp523+/sDe@x1n>
+References: <20231010104851.802947-1-frolov@swemel.ru> <ZSWkvPH0asP8xXSu@x1n>
+ <04093899-57e7-75bf-5b16-0ec08708a2d0@swemel.ru>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <04093899-57e7-75bf-5b16-0ec08708a2d0@swemel.ru>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,25 +97,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> The migration tests are being enhanced to test migration between
-> different QEMU versions. A requirement of migration is that the
-> machine type between source and destination matches, including the
-> version.
->
-> We cannot hardcode machine types in the tests because those change
-> with each release. QEMU provides a machine type alias that has a fixed
-> name, but points to the latest machine type at each release.
->
-> Add a helper to resolve the alias into the exact machine
-> type. E.g. "-machine pc" resolves to "pc-i440fx-8.2"
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On Wed, Oct 11, 2023 at 04:20:42PM +0300, Дмитрий Фролов wrote:
+> I do not insist on accepting this patch - it is more like RFC.
+> Also, i can add more verbose message and assert, if necessary.
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+That's totally fine. It's just that then we should drop the Fixes line
+above because it doesn't need to be backported to stable.
+
+Also feel free to add more verbose print message or assert if you're
+posting a new version.
+
+Thanks,
+
+-- 
+Peter Xu
 
 
