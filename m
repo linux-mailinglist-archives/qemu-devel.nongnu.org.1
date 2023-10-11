@@ -2,51 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9087B7C56A5
+	by mail.lfdr.de (Postfix) with ESMTPS id D41167C56A6
 	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:21:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqa4o-0001zy-LS; Wed, 11 Oct 2023 10:20:42 -0400
+	id 1qqa4o-000200-Od; Wed, 11 Oct 2023 10:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qqa4l-0001zM-1g
+ id 1qqa4l-0001zV-IV
  for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qqa4h-0001pP-Fj
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:38 -0400
+ id 1qqa4h-0001pW-Qj
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697034034;
+ s=mimecast20190719; t=1697034035;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Nl4R+C0P3Km3kb9mmS/j4129WYNcHp9yYgT5tA1ti1g=;
- b=ULMuRGS+rbCzJp74WhBNBeZTKXE+n33SnlLGqyCHQxi8SfuZw0TSVYduDCKcGwgahttoeW
- ZZMLapnYOGDxpZDIB9tCoI+8YMRToQ1E7iSkaMqJ2ivJf2J8GKu55C5cj1NibJIueQlUuB
- sce0PtQjGQNoq3ves5IopflIcd2678g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-227-cDVfztQGMWCZMao9Lb9rfQ-1; Wed, 11 Oct 2023 10:20:32 -0400
-X-MC-Unique: cDVfztQGMWCZMao9Lb9rfQ-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DWaUsX5xhnfap4EOOK/undTJV2jlrdAiGktAOSyl5gM=;
+ b=hrwep7KE1AIKCyuSiSCC2A/B4TwNm8ywaO3LWZYMSn2Lt8yvSQ3Mn3I5ybCiHDyru+xsVu
+ Yn1jrArlX+XjMTOL1x0Slc77X97pbf7JNRE2X2kTGYd6XnWJqGN/WP7Z0Up1d+oMjYbdDh
+ BiNhcZcPMpDoe3oEsiHaIqruKJtXkRo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-531-sDO828cTOHub7yU1ibP8tQ-1; Wed, 11 Oct 2023 10:20:33 -0400
+X-MC-Unique: sDO828cTOHub7yU1ibP8tQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 542DD185A795;
- Wed, 11 Oct 2023 14:20:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3659E2825E9F;
+ Wed, 11 Oct 2023 14:20:33 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.133])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B6BDB111CD23;
- Wed, 11 Oct 2023 14:20:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 98EC9111CD23;
+ Wed, 11 Oct 2023 14:20:32 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 0/3]  Misc QGA patches 2023-10-11
-Date: Wed, 11 Oct 2023 17:20:27 +0300
-Message-ID: <20231011142030.112018-1-kkostiuk@redhat.com>
+Subject: [PULL 1/3] qga: Remove platform GUID definitions
+Date: Wed, 11 Oct 2023 17:20:28 +0300
+Message-ID: <20231011142030.112018-2-kkostiuk@redhat.com>
+In-Reply-To: <20231011142030.112018-1-kkostiuk@redhat.com>
+References: <20231011142030.112018-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
@@ -74,35 +77,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit cea3ea670fe265421131aad90c36fbb87bc4d206:
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-  Merge tag 'pull-vfio-20231009' of https://github.com/legoater/qemu into staging (2023-10-09 10:11:35 -0400)
+GUID_DEVINTERFACE_DISK and GUID_DEVINTERFACE_STORAGEPORT are already
+defined by MinGW-w64. They are not only unnecessary, but can lead to
+duplicate definition errors at link time with some unknown condition.
 
-are available in the Git repository at:
-
-  https://github.com/kostyanf14/qemu.git tags/qga-pull-2023-10-11
-
-for you to fetch changes up to f897ef0d47d332d4c4498aed1140c6856fe56d79:
-
-  qapi: qga: Clarify when out-data and err-data are populated (2023-10-11 14:30:54 +0300)
-
-----------------------------------------------------------------
-qga-pull-2023-10-11
-
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      qga: Remove platform GUID definitions
-
-Daniel Xu (2):
-      qga: Fix memory leak when output stream is unused
-      qapi: qga: Clarify when out-data and err-data are populated
-
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+---
  qga/commands-win32.c | 7 -------
- qga/commands.c       | 4 ++--
- qga/qapi-schema.json | 8 +++++---
- 3 files changed, 7 insertions(+), 12 deletions(-)
+ 1 file changed, 7 deletions(-)
 
---
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index 6beae659b7..697c65507c 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -501,13 +501,6 @@ static GuestDiskBusType find_bus_type(STORAGE_BUS_TYPE bus)
+     return win2qemu[(int)bus];
+ }
+ 
+-DEFINE_GUID(GUID_DEVINTERFACE_DISK,
+-        0x53f56307L, 0xb6bf, 0x11d0, 0x94, 0xf2,
+-        0x00, 0xa0, 0xc9, 0x1e, 0xfb, 0x8b);
+-DEFINE_GUID(GUID_DEVINTERFACE_STORAGEPORT,
+-        0x2accfe60L, 0xc130, 0x11d2, 0xb0, 0x82,
+-        0x00, 0xa0, 0xc9, 0x1e, 0xfb, 0x8b);
+-
+ static void get_pci_address_for_device(GuestPCIAddress *pci,
+                                        HDEVINFO dev_info)
+ {
+-- 
 2.42.0
 
 
