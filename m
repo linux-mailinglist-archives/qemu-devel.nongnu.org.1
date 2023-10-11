@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21ABD7C4F1C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2755C7C4EFD
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:31:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqVSG-0005Zj-FL; Wed, 11 Oct 2023 05:24:36 -0400
+	id 1qqVSH-0005gK-8G; Wed, 11 Oct 2023 05:24:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVS9-0005LI-6W
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:29 -0400
+ id 1qqVS9-0005Ln-L7
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVS7-0005FR-HG
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:28 -0400
+ id 1qqVS8-0005Fa-1M
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697016266;
+ s=mimecast20190719; t=1697016267;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VCC+e4hUIxC4IlRqYVZSFxB6Bcw6S+/LoUQBIHoUdtg=;
- b=jTIEpv7Nc2o+Gvb/wrghEt0sSbfCYBgRw88cjhtGBJZZynMe676Rf8WoeTWy7oftS1LEMS
- nM4dJbxidT3KBHB17mc6Z0J2mNhz88OhDQJIv5qay1r9FwScvDxiEeOB/6UdTGK7RkCUE3
- Ot491ML4ZUnua0OeIcD/xtn15zZmHnU=
+ bh=0oKcmS5F3D6ms1PTcjVPw4CdXqEB0yWzLByNx9k7Heg=;
+ b=fgHUyblaiKsNCwe/5pHRycFwFOY5tgY00AIAEEFeBxzHLstj91REvXycSIH6A+5GwLr1QK
+ 9KwaH1hbqvqZXinT3sqL0UZLFG+BZ/UrI9DG1x8XzuHNnk2Gu5TnxCTFJ8oiO6+T6nIHOd
+ +DINelamc9Yw3u/OVsDfKBdlD5946rs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-632-kqsRUxpVMKW_akGmVNKguw-1; Wed, 11 Oct 2023 05:24:08 -0400
-X-MC-Unique: kqsRUxpVMKW_akGmVNKguw-1
+ us-mta-248-VTdypbYIP1eBCw1NxEoxKw-1; Wed, 11 Oct 2023 05:24:10 -0400
+X-MC-Unique: VTdypbYIP1eBCw1NxEoxKw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34771101A53B;
- Wed, 11 Oct 2023 09:24:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 366AB811E8E;
+ Wed, 11 Oct 2023 09:24:10 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7646E1C060AE;
- Wed, 11 Oct 2023 09:24:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 78CFB1C060AE;
+ Wed, 11 Oct 2023 09:24:08 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -49,10 +49,10 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>,
  Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 60/65] migration/rdma: Replace flawed device detail dump by
- tracing
-Date: Wed, 11 Oct 2023 11:21:58 +0200
-Message-ID: <20231011092203.1266-61-quintela@redhat.com>
+Subject: [PULL 61/65] migration: Display error in query-migrate irrelevant of
+ status
+Date: Wed, 11 Oct 2023 11:21:59 +0200
+Message-ID: <20231011092203.1266-62-quintela@redhat.com>
 In-Reply-To: <20231011092203.1266-1-quintela@redhat.com>
 References: <20231011092203.1266-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -82,108 +82,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Markus Armbruster <armbru@redhat.com>
+From: Peter Xu <peterx@redhat.com>
 
-qemu_rdma_dump_id() dumps RDMA device details to stdout.
+Display it as long as being set, irrelevant of FAILED status.  E.g., it may
+also be applicable to PAUSED stage of postcopy, to provide hint on what has
+gone wrong.
 
-rdma_start_outgoing_migration() calls it via qemu_rdma_source_init()
-and qemu_rdma_resolve_host() to show source device details.
-rdma_start_incoming_migration() arranges its call via
-rdma_accept_incoming_migration() and qemu_rdma_accept() to show
-destination device details.
+The error_mutex seems to be overlooked when referencing the error, add it
+to be very safe.
 
-Two issues:
+This will change QAPI behavior by showing up error message outside !FAILED
+status, but it's intended and doesn't expect to break anyone.
 
-1. rdma_start_outgoing_migration() can run in HMP context.  The
-   information should arguably go the monitor, not stdout.
-
-2. ibv_query_port() failure is reported as error.  Its callers remain
-   unaware of this failure (qemu_rdma_dump_id() can't fail), so
-   reporting this to the user as an error is problematic.
-
-Fixable, but the device detail dump is noise, except when
-troubleshooting.  Tracing is a better fit.  Similar function
-qemu_rdma_dump_id() was converted to tracing in commit
-733252deb8b (Tracify migration/rdma.c).
-
-Convert qemu_rdma_dump_id(), too.
-
-While there, touch up qemu_rdma_dump_gid()'s outdated comment.
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2018404
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20230928132019.2544702-54-armbru@redhat.com>
+Message-ID: <20231004220240.167175-2-peterx@redhat.com>
 ---
- migration/rdma.c       | 23 ++++++++---------------
- migration/trace-events |  2 ++
- 2 files changed, 10 insertions(+), 15 deletions(-)
+ qapi/migration.json   | 5 ++---
+ migration/migration.c | 8 +++++---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/migration/rdma.c b/migration/rdma.c
-index ab2ea85c45..f6fc226c9b 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -734,38 +734,31 @@ static void rdma_delete_block(RDMAContext *rdma, RDMALocalBlock *block)
- }
- 
- /*
-- * Put in the log file which RDMA device was opened and the details
-- * associated with that device.
-+ * Trace RDMA device open, with device details.
-  */
- static void qemu_rdma_dump_id(const char *who, struct ibv_context *verbs)
- {
-     struct ibv_port_attr port;
- 
-     if (ibv_query_port(verbs, 1, &port)) {
--        error_report("Failed to query port information");
-+        trace_qemu_rdma_dump_id_failed(who);
-         return;
+diff --git a/qapi/migration.json b/qapi/migration.json
+index d8f3bbd7b0..d7dfaa5db9 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -230,9 +230,8 @@
+ #     throttled during auto-converge.  This is only present when
+ #     auto-converge has started throttling guest cpus.  (Since 2.7)
+ #
+-# @error-desc: the human readable error description string, when
+-#     @status is 'failed'. Clients should not attempt to parse the
+-#     error strings.  (Since 2.7)
++# @error-desc: the human readable error description string. Clients
++#     should not attempt to parse the error strings.  (Since 2.7)
+ #
+ # @postcopy-blocktime: total time when all vCPU were blocked during
+ #     postcopy live migration.  This is only present when the
+diff --git a/migration/migration.c b/migration/migration.c
+index 2057e42134..57f9e9ed0c 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1060,9 +1060,6 @@ static void fill_source_migration_info(MigrationInfo *info)
+         break;
+     case MIGRATION_STATUS_FAILED:
+         info->has_status = true;
+-        if (s->error) {
+-            info->error_desc = g_strdup(error_get_pretty(s->error));
+-        }
+         break;
+     case MIGRATION_STATUS_CANCELLED:
+         info->has_status = true;
+@@ -1072,6 +1069,11 @@ static void fill_source_migration_info(MigrationInfo *info)
+         break;
      }
- 
--    printf("%s RDMA Device opened: kernel name %s "
--           "uverbs device name %s, "
--           "infiniband_verbs class device path %s, "
--           "infiniband class device path %s, "
--           "transport: (%d) %s\n",
--                who,
-+    trace_qemu_rdma_dump_id(who,
-                 verbs->device->name,
-                 verbs->device->dev_name,
-                 verbs->device->dev_path,
-                 verbs->device->ibdev_path,
-                 port.link_layer,
--                (port.link_layer == IBV_LINK_LAYER_INFINIBAND) ? "Infiniband" :
--                 ((port.link_layer == IBV_LINK_LAYER_ETHERNET)
--                    ? "Ethernet" : "Unknown"));
-+                port.link_layer == IBV_LINK_LAYER_INFINIBAND ? "Infiniband"
-+                : port.link_layer == IBV_LINK_LAYER_ETHERNET ? "Ethernet"
-+                : "Unknown");
+     info->status = state;
++
++    QEMU_LOCK_GUARD(&s->error_mutex);
++    if (s->error) {
++        info->error_desc = g_strdup(error_get_pretty(s->error));
++    }
  }
  
- /*
-- * Put in the log file the RDMA gid addressing information,
-- * useful for folks who have trouble understanding the
-- * RDMA device hierarchy in the kernel.
-+ * Trace RDMA gid addressing information.
-+ * Useful for understanding the RDMA device hierarchy in the kernel.
-  */
- static void qemu_rdma_dump_gid(const char *who, struct rdma_cm_id *id)
- {
-diff --git a/migration/trace-events b/migration/trace-events
-index 6a50994402..ee9c8f4d63 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -214,6 +214,8 @@ qemu_rdma_close(void) ""
- qemu_rdma_connect_pin_all_requested(void) ""
- qemu_rdma_connect_pin_all_outcome(bool pin) "%d"
- qemu_rdma_dest_init_trying(const char *host, const char *ip) "%s => %s"
-+qemu_rdma_dump_id_failed(const char *who) "%s RDMA Device opened, but can't query port information"
-+qemu_rdma_dump_id(const char *who, const char *name, const char *dev_name, const char *dev_path, const char *ibdev_path, int transport, const char *transport_name) "%s RDMA Device opened: kernel name %s uverbs device name %s, infiniband_verbs class device path %s, infiniband class device path %s, transport: (%d) %s"
- qemu_rdma_dump_gid(const char *who, const char *src, const char *dst) "%s Source GID: %s, Dest GID: %s"
- qemu_rdma_exchange_get_response_start(const char *desc) "CONTROL: %s receiving..."
- qemu_rdma_exchange_get_response_none(const char *desc, int type) "Surprise: got %s (%d)"
+ static void fill_destination_migration_info(MigrationInfo *info)
 -- 
 2.41.0
 
