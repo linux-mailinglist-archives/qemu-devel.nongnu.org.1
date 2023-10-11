@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B691F7C5784
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFBD7C578B
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:56:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqack-0005VR-Fd; Wed, 11 Oct 2023 10:55:46 -0400
+	id 1qqadN-0005kW-M5; Wed, 11 Oct 2023 10:56:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqaci-0005VI-W2
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:55:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqadD-0005eg-Dn
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:56:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqach-0001P6-JM
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:55:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqadA-0001Ta-VM
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:56:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697036142;
+ s=mimecast20190719; t=1697036170;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KYlRm7cSd/LzrE0Q38XQuwLBrLU23b2gIpKvpCa7dTM=;
- b=ODnDhHeJcDnX1XLVCy0Lma24h+CUF+N3rnI+a/RwJW/sJSVrhQ+2UNtI7MV/bTYJv/yIeG
- T6SXlaOLI66i5+ymUtpIcRWndYXpgrwiB7KNtrgdVRxySr7uMg67cW1+kfpXg6F4i0A1Tn
- ffwl/qXUdkNzSglYR74YPJ6qy4QbAys=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HxUvjkaZTzHqxc2fNNM8E0PPe/0d2RS16kc4FcKy+/I=;
+ b=Cdd3MxZdyfBc4oISukOP2724tZKXLWoP55uCeZJct9sYo+Sbs4c81WS42JT8EHZYkxBn5Q
+ pkDK/C/2TRLujN95On3CotJ4g6+bPonPX2zGos7pQN63LoLs9US+9F8DDD0TygPSiX6ttA
+ Dx3Ks7iW/BtgJSPp9mDhfoBoW335xqs=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-w31v7ZqrOjqOY4avzT9Omw-1; Wed, 11 Oct 2023 10:55:41 -0400
-X-MC-Unique: w31v7ZqrOjqOY4avzT9Omw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66ac99ce80eso81324716d6.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:55:41 -0700 (PDT)
+ us-mta-588-X_P5b9rRPYi7oKa3BzYvmg-1; Wed, 11 Oct 2023 10:56:09 -0400
+X-MC-Unique: X_P5b9rRPYi7oKa3BzYvmg-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-66cf38c6d97so20412536d6.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:56:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697036141; x=1697640941;
+ d=1e100.net; s=20230601; t=1697036169; x=1697640969;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KYlRm7cSd/LzrE0Q38XQuwLBrLU23b2gIpKvpCa7dTM=;
- b=OgO12T8LgaDG/OELSod0HWwCtDL9ocn64O5BF60Fx7zS0PcNE1BJix48bvlZ9XsNZd
- 2cIF0OiyzK4i35XxQZ24lYQ3PPpsUaDGREV9zmhzmRblo4QfYhVqFcMLRyjgEXwIH8mN
- prThTnX+1eL8axQmk9iu3avoMW/fprsXJi8HHiAxEgKN8pVpzPs48J53z/BAUqMloIGu
- FVX0juMivCeL9jjTW6lug1zXEr/qC//QxTYObjQvGsn0cBcYjcVNMk5pGxN16SiKbOkx
- X8hb4jJ/n+gSdDZMPiyVf5bK0CJerQRER4sIqaOC4rluqvJJ8v9742h72dq2tnZLDZ/U
- MkLw==
-X-Gm-Message-State: AOJu0YxA5K/9ItGWsPnE6n+Wi8t3YNa88j07/iyqUnXWlnozR6jFpqqE
- SlNrPOULRuT9F/RLuYV6iVYDuF8ddpEN1WTf8HJyKo+9/22pS5FAL9nwtLZjGjOX3wMKvXgaOw1
- wjxNCugyly773SHw=
-X-Received: by 2002:a05:6214:2d4a:b0:658:9cd9:ec6b with SMTP id
- na10-20020a0562142d4a00b006589cd9ec6bmr20947230qvb.64.1697036141112; 
- Wed, 11 Oct 2023 07:55:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqud0Dx6S1uphHBTFRKdlE40SiDppwgo4CbOlcCAPxKyi/TaeJFbXNYqvUMbgNxguJ8oqXRA==
-X-Received: by 2002:a05:6214:2d4a:b0:658:9cd9:ec6b with SMTP id
- na10-20020a0562142d4a00b006589cd9ec6bmr20947207qvb.64.1697036140774; 
- Wed, 11 Oct 2023 07:55:40 -0700 (PDT)
+ bh=HxUvjkaZTzHqxc2fNNM8E0PPe/0d2RS16kc4FcKy+/I=;
+ b=Nh6Nm4q0fb21Xzly/o39Y/rmnLqCjz6Da4heZClqPz6AnZOCw+uXEHVUm7WVpxQ71c
+ 8Cf4Y4CrKAtulao9r9PuPvZXFrpLNSpGCgcREoQtLIKLlKMnmJjKS8UDAI1/iP8y+uIv
+ Hnah15uydS/XO+8AnvYucQCvyIO7HW2E5cs9W8gxF4zD4/o0/FejaxIV7JRqmNAkkwjg
+ SzHdHDUS8DvRjmlW19bC8eYdGC8mkjUukgIfiwx6X53I7PITXAO/Xkeu4fO4kvm+OkqR
+ 6Lds3yvtt90r0SfFQzwXevhOF03cBGYNJOZA5LeQwt8PMbHWRQ1v34Zrzdd0Lep+8NCj
+ IT9A==
+X-Gm-Message-State: AOJu0YxOjwtGM/SC2nrJNFpJinaC1RJQlQ3IYCubjdmJmaHYSW1HpHLw
+ kSz8qrFtti4VfzL2K3Mptt6w5rzCVJEm3ODr3Xxho+61oj4SQ+Cm/N3oaXq5A4MHY1paqVGTblK
+ kU3KUbJ5BbYNJ39Q=
+X-Received: by 2002:a0c:f4cf:0:b0:65b:11b3:6ef5 with SMTP id
+ o15-20020a0cf4cf000000b0065b11b36ef5mr18473190qvm.17.1697036168827; 
+ Wed, 11 Oct 2023 07:56:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVU8Ms74py2ErALZQt+8mJkO8vaSU/4OHLA6aKQcuwkkvDOF+DGALJ1CF5665k4FlhgyUuqg==
+X-Received: by 2002:a0c:f4cf:0:b0:65b:11b3:6ef5 with SMTP id
+ o15-20020a0cf4cf000000b0065b11b36ef5mr18473174qvm.17.1697036168483; 
+ Wed, 11 Oct 2023 07:56:08 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
  [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- a10-20020a0ce34a000000b006575372c845sm5707196qvm.119.2023.10.11.07.55.38
+ a10-20020a0ce34a000000b006575372c845sm5707196qvm.119.2023.10.11.07.56.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 07:55:40 -0700 (PDT)
-Message-ID: <2d7a65ab-0392-44e1-bc2e-387b5083b89c@redhat.com>
-Date: Wed, 11 Oct 2023 16:55:37 +0200
+ Wed, 11 Oct 2023 07:56:07 -0700 (PDT)
+Message-ID: <b754a691-e7bb-4800-9309-5ea2a9ccbd38@redhat.com>
+Date: Wed, 11 Oct 2023 16:56:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/9] tests/qtest: Allow qtest_qemu_binary to use a
- custom environment variable
+Subject: Re: [PATCH v2 2/9] tests/qtest: Introduce qtest_init_with_env
 Content-Language: en-US
 To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -76,7 +75,7 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
 References: <20231006123910.17759-1-farosas@suse.de>
- <20231006123910.17759-2-farosas@suse.de>
+ <20231006123910.17759-3-farosas@suse.de>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -120,17 +119,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231006123910.17759-2-farosas@suse.de>
+In-Reply-To: <20231006123910.17759-3-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -148,19 +147,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 06/10/2023 14.39, Fabiano Rosas wrote:
-> We're adding support for testing migration using two different QEMU
-> binaries. We'll provide the second binary in a new environment
-> variable.
+> Add a version of qtest_init() that takes an environment variable
+> containing the path of the QEMU binary. This allows tests to use more
+> than one QEMU binary.
 > 
-> Allow qtest_qemu_binary() to receive the name of the new variable. If
-> the new environment variable is not set, that's not an error, we use
-> QTEST_QEMU_BINARY as a fallback.
+> If no variable is provided or the environment variable does not exist,
+> that is not an error. Fallback to using QTEST_QEMU_BINARY.
 > 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->   tests/qtest/libqtest.c | 13 ++++++++++---
->   1 file changed, 10 insertions(+), 3 deletions(-)
+>   tests/qtest/libqtest.c | 26 +++++++++++++++++++-------
+>   tests/qtest/libqtest.h | 13 +++++++++++++
+>   2 files changed, 32 insertions(+), 7 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
