@@ -2,69 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32607C5ECB
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 22:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 936087C5ED3
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 22:59:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqgFb-0003xT-7U; Wed, 11 Oct 2023 16:56:15 -0400
+	id 1qqgHf-0005YW-Bh; Wed, 11 Oct 2023 16:58:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqgFU-0003ul-5z
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:56:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqgFK-0007cw-5p
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:56:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697057757;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+5OD4UnYwWhqEq1KtDkRGOc6S0FBx6ud+Zz73cAAdhM=;
- b=cCAW+QOu29OuzgV4vSHjiflvHNeR8InGd+1cmzuTFkNdACeBo8r0X8xDrhOgLDSpnVIFx1
- FALy716PeyUZl+/sKEiZfTQ7sEURhGSpCJRFP7MpDZWimZIkfok6J/hmjCa8uNI7DMhEQY
- q02gy9gipn3EnvTKNSveip2CzDrNngE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-172-ZLD2LMe5NVGGP0dB7TSSfw-1; Wed, 11 Oct 2023 16:55:52 -0400
-X-MC-Unique: ZLD2LMe5NVGGP0dB7TSSfw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DA0B71C03D91;
- Wed, 11 Oct 2023 20:55:51 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CBD5B2026D4B;
- Wed, 11 Oct 2023 20:55:50 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Juan Quintela <quintela@redhat.com>,
- Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH 1/1] migration: Non multifd migration don't care about multifd
- flushes
-Date: Wed, 11 Oct 2023 22:55:48 +0200
-Message-ID: <20231011205548.10571-2-quintela@redhat.com>
-In-Reply-To: <20231011205548.10571-1-quintela@redhat.com>
-References: <20231011205548.10571-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qqgHb-0005YH-FQ
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:58:19 -0400
+Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qqgHZ-0008Si-E4
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:58:18 -0400
+Received: by mail-oo1-xc2d.google.com with SMTP id
+ 006d021491bc7-57e4459aa29so124329eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 13:58:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697057896; x=1697662696; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NzUni2jjo7opdgSToRDZV4wea2SDovXWQEQPQLzntNk=;
+ b=S/HiWcHWsXAZ7jqgIIMSgdLNFSxvXBN6QMVsVXAO+vvxKFY8XuPNW/0qAMnyE58hZR
+ CQuib/jjzwAfmuKNWmavtR4APuk39KGir3hgD1Ky0pVBJrdg7AduNkzBOnLPUBoZLvMw
+ PEDS1A0AvVIIisfMzFQhfATaWTYlTT3UJvEReYaoy5stYw/d5ANKXLNMaQscYod0OLTi
+ woSsoOCldOCEh7lpX6pANaEgSKR7qT1pCQ6DigkEnZb2mWp9YjENUQGsbBBXP9if5kGC
+ 3s52av8cI1CScE6w0yyZO8MdnSV/dkLejOeajaF1HfDSNvVJKUNy2VvgZ7tRjh2Bir4E
+ GUQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697057896; x=1697662696;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NzUni2jjo7opdgSToRDZV4wea2SDovXWQEQPQLzntNk=;
+ b=ap0P51k0BlJHw8NMjKhVPreV9R3dbTP2zJaoidChOOjiPJd0fHhJM+Ng1C1mAkJ7ZU
+ hG70sk0PORw1A6vfM/IX5q5F6BWAPN26BC5PXuHWyJyrlezGbzZ+oB7/3nsT8jlHJ61J
+ e+JMquNR+JRogpOb8Po+W1JSr+NLoC5l6twoqGqVN+3Cpw4lEKkgpNMgu23VHMhUwS+R
+ OrWVU6xlTigVUogXxGI5JpRchDuyr0NiTX3uYkBZLsF2rt/Ghkcp4Nihiu8fpUttVnDV
+ zI1Svts47zpi3KJRG6ZOYemoFfmckxtXzSAEIbro6vBEV4gwDVwpaB+AxEIg9Gu4h4ar
+ tovQ==
+X-Gm-Message-State: AOJu0YxMXSI3hl19Ye0eDhwMre08V6wsYu59d7B2xrnhb45lpGIZFJ7w
+ gViaX4c8LtlAyZzaDtASiSf5RW6IT/qeDf64MbY=
+X-Google-Smtp-Source: AGHT+IEzcw0E9nr5aIJ4hsHFGAooB2Byqv4yebxMfkkF8FLBI0mB9pqMind6vLf4yH2X6B5+ubz9KU3dE1Aky0ynxSU=
+X-Received: by 2002:a4a:d858:0:b0:576:b301:a9b1 with SMTP id
+ g24-20020a4ad858000000b00576b301a9b1mr11915596oov.0.1697057896075; Wed, 11
+ Oct 2023 13:58:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230907130004.500601-1-pbonzini@redhat.com>
+ <20230907130004.500601-51-pbonzini@redhat.com>
+ <14ff27a8-284b-66f8-097a-5d49c94dcff8@linaro.org>
+ <ZSZhCcnn2C37uZWH@redhat.com>
+In-Reply-To: <ZSZhCcnn2C37uZWH@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 11 Oct 2023 16:58:01 -0400
+Message-ID: <CAJSP0QWZM9DuYOOzEP1hj5pF1e0T1bf8B__c79r+V7XSBWYuxw@mail.gmail.com>
+Subject: Re: [PULL 50/51] subprojects: add wrap file for libblkio
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-devel@nongnu.org, Tyler Fanelli <tfanelli@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,81 +91,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RDMA was having trouble because
-migrate_multifd_flush_after_each_section() can only be true or false,
-but we don't want to send any flush when we are not in multifd
-migration.
+On Wed, 11 Oct 2023 at 04:48, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
+ wrote:
+>
+> On Wed, Oct 11, 2023 at 07:35:24AM +0200, Philippe Mathieu-Daud=C3=A9 wro=
+te:
+> > Hi Paolo,
+> >
+> > On 7/9/23 14:59, Paolo Bonzini wrote:
+> > > This allows building libblkio at the same time as QEMU, if QEMU is
+> > > configured with --enable-blkio --enable-download.
+> > >
+> > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > > ---
+> > >   subprojects/libblkio.wrap | 6 ++++++
+> > >   1 file changed, 6 insertions(+)
+> > >   create mode 100644 subprojects/libblkio.wrap
+> > >
+> > > diff --git a/subprojects/libblkio.wrap b/subprojects/libblkio.wrap
+> > > new file mode 100644
+> > > index 00000000000..f77af72210c
+> > > --- /dev/null
+> > > +++ b/subprojects/libblkio.wrap
+> > > @@ -0,0 +1,6 @@
+> > > +[wrap-git]
+> > > +url =3D https://gitlab.com/libblkio/libblkio
+> >
+> > Tyler noticed this project isn't mirrored on QEMU gitlab namespace.
+>
+> Many other wraps aren't mirrored either, and I'm not convinced we
+> need to, unless the project is on an obscure self hosted git service
+> which is thought unreliable.
 
-CC: Fabiano Rosas <farosas@suse.de
-Fixes: 294e5a4034e81b3d8db03b4e0f691386f20d6ed3
-       multifd: Only flush once each full round of memory
-Reported-by: Li Zhijian <lizhijian@fujitsu.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- migration/ram.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+What if upstream deletes the repository or sets visibility to
+"private"? Do GitHub and GitLab guarantee availability of previously
+public repositories?
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 2f5ce4d60b..d25bff2496 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1395,7 +1395,8 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
-         pss->page = 0;
-         pss->block = QLIST_NEXT_RCU(pss->block, next);
-         if (!pss->block) {
--            if (!migrate_multifd_flush_after_each_section()) {
-+            if (migrate_multifd() &&
-+                !migrate_multifd_flush_after_each_section()) {
-                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
-                 int ret = multifd_send_sync_main(f);
-                 if (ret < 0) {
-@@ -3072,7 +3073,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-         return ret;
-     }
- 
--    if (!migrate_multifd_flush_after_each_section()) {
-+    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
-         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-     }
- 
-@@ -3184,7 +3185,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
- out:
-     if (ret >= 0
-         && migration_is_setup_or_active(migrate_get_current()->state)) {
--        if (migrate_multifd_flush_after_each_section()) {
-+        if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
-             ret = multifd_send_sync_main(rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
-             if (ret < 0) {
-                 return ret;
-@@ -3261,7 +3262,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
-         return ret;
-     }
- 
--    if (!migrate_multifd_flush_after_each_section()) {
-+    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
-         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-     }
-     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
-@@ -3768,7 +3769,7 @@ int ram_load_postcopy(QEMUFile *f, int channel)
-             break;
-         case RAM_SAVE_FLAG_EOS:
-             /* normal exit */
--            if (migrate_multifd_flush_after_each_section()) {
-+            if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
-                 multifd_recv_sync_main();
-             }
-             break;
-@@ -4046,7 +4047,8 @@ static int ram_load_precopy(QEMUFile *f)
-             break;
-         case RAM_SAVE_FLAG_EOS:
-             /* normal exit */
--            if (migrate_multifd_flush_after_each_section()) {
-+            if (migrate_multifd() &&
-+                migrate_multifd_flush_after_each_section()) {
-                 multifd_recv_sync_main();
-             }
-             break;
--- 
-2.41.0
-
+Stefan
 
