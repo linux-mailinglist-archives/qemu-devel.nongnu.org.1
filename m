@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612757C5838
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 903A47C5866
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:45:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqbIb-0000cb-Pn; Wed, 11 Oct 2023 11:39:01 -0400
+	id 1qqbOV-0003Wi-PL; Wed, 11 Oct 2023 11:45:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qqbIU-0000P4-Tq; Wed, 11 Oct 2023 11:38:56 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qqbON-0003Vr-7C
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:45:00 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qqbIT-0001je-69; Wed, 11 Oct 2023 11:38:54 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-57b6a7e0deeso4114901eaf.2; 
- Wed, 11 Oct 2023 08:38:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qqbOJ-0002pI-WA
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:44:58 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40535597f01so65488975e9.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 08:44:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697038731; x=1697643531; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1697039094; x=1697643894; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jf7GpPCsEnly/lZZa9FVIoXSWQ7Np5F4jDc1RPG5f6I=;
- b=ZU3/KO85TgAzXYol/xbwZ4XnYJSW312MMm+ctM7pJc56d/M9m7gByyn9td/CCSx47F
- v0m0YK6cohENsqBz5vui57IliZi5SGUZ65H6hlfzW3wD5eEanLoWmSN7YdPf6Z5vA26H
- mSesCHyudq5akHFA7M70u/j6M8z7AOCh4Zt0pC/UyF91N64wJc7bnIy/m2ENjk9aaGcb
- vl/2T9C/6Drb42czjZStV+K6BGc6RJjupszL1iFyBL3C7wxuPzgse5F4+J4/RbHGOFnM
- jRy5pvw8lxDRbAcu0WzNhsFukmTpJYJEM27Cv0TsB5JNhUlKT+AOa6qhiKhzoCdlzkiX
- 1mkw==
+ bh=o6WSet9g5HqLxwyVTNBDPLtD41GxwJ8wKJ3NmP1MQxY=;
+ b=qFuPqti/0SdsmYzv6emLcopNQgOa+p/V6zMzYvbj5HWlj5Va8qsv+BHZYkczR3yvRH
+ xsZtRGDREfTOG6ih5tM+STDLfryRC2UH4qdJFpjNdXH5VP1CMt/f/t7z1uzcZvBULoe9
+ WhN3csu/tmwDQ6N+5qme8NYedh5qJ8UO0W89sJ/qp8Qp96Jbao+naAGhmPEwEKxErr/1
+ vpLXlLGvBRo9eUwm8zFUCm1o1lkHJxPQMns3rnI2M57uUHR5CWoQ7/8jZkbpxMPBAssD
+ MqGtza0XcVs6xXP1+AKZBWDkwcyj1peaWBM1FZRgUH3Q89Xk8UGhGbXfTs+367sVI0SB
+ +8Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697038731; x=1697643531;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jf7GpPCsEnly/lZZa9FVIoXSWQ7Np5F4jDc1RPG5f6I=;
- b=lIzrqj196y2SyAIUpEf35iKWLHBQEDjP3u64kwef1HlQhJ7jsH4/r70eXSW4LhcTWe
- nRuN8I7PxGOSMfm0uvQ6MB7qAhJMsEbcfjsDc0BtBKFgWqg/9lpHP3h/UyMjC7+vJ2sl
- t+ZvZDFhAQqmSq72lW7CaSQjYDUhmDWMQ29QgN4GwUQ9vqXIDu4RuWr9Q8eExo16GqsG
- JAXlZkhSCafTi11LQnRask7rr96QMkCGqlEX5rq5hdruQutfnpZ4eFuxd4nsj3tp3Y7u
- MyMfJAMx1GInEpXOChl0bBHfFwwZ0bs1cMM6hUeau9B3NrMFFL0cuYv778BoEP8v7p3x
- jzKg==
-X-Gm-Message-State: AOJu0YzYbYFx169pD4yx68uSmFM4SEt897CyIFe7LayrwnD8y6wy/5Cm
- RBW2/E/ddf0MW03GssLRYlI0wfm0pl1EOEfHKHA=
-X-Google-Smtp-Source: AGHT+IG2fSoa4RI2xTP7/k4x0aAOvYPBBUql1FVFhgcRsJ3pgqxHmzlT4No3/sPL/I2qreEjBISYPcxOrR6iSq3/a+s=
-X-Received: by 2002:a4a:9d12:0:b0:56c:d297:164c with SMTP id
- w18-20020a4a9d12000000b0056cd297164cmr21964901ooj.4.1697038731096; Wed, 11
- Oct 2023 08:38:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697039094; x=1697643894;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=o6WSet9g5HqLxwyVTNBDPLtD41GxwJ8wKJ3NmP1MQxY=;
+ b=YhZp03P7V747dEJyCO2kKBrm6szDOAhO3aby3AGlvypLVqcfTZ6ufF6JerVFJtSW+S
+ Rh+ve1+JuZVEuMvmm57HybytiFni2zBcGzH94rFd9sCN31z2a+OEmDy5EyiUmuYADGQz
+ 600JQY8m/DHLLgqiQ7FHNUJhhkt139Vr7Zig50RxTvpKsk6o4r7/EEvaYgnsxQcumNNa
+ AOYIG8b5thViX6tS9FcV1T8cLp93Jf0obDhkJJh/xywoXm1vdP+dVW5m604yOX8ckrW6
+ QroMG0XU8isgsagrUL5mgeo0WkzoC8QVLileSDbpO5ABJG/p/IrCEsmvM5/edywV1cyg
+ GZBw==
+X-Gm-Message-State: AOJu0YxJCWOBC39+bEznb1jgiWWazXMGK3wAnjSWHvleD/rMjbz6StBg
+ w8wQOitHEbXdPIpMIO71u2gaxA==
+X-Google-Smtp-Source: AGHT+IGK2UIIc02t9Ue7aTI5zPDmcnCs6J4VVPw7VkPYlzK8PiNciZuwpYwHZa48Ta1Wrj4fNm7z4Q==
+X-Received: by 2002:a1c:7711:0:b0:405:959e:dc7c with SMTP id
+ t17-20020a1c7711000000b00405959edc7cmr19342600wmi.30.1697039094266; 
+ Wed, 11 Oct 2023 08:44:54 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ x2-20020a1c7c02000000b003fe23b10fdfsm19297358wmc.36.2023.10.11.08.44.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Oct 2023 08:44:54 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 623091FFBB;
+ Wed, 11 Oct 2023 16:44:53 +0100 (BST)
+References: <20231011070335.14398-1-akihiko.odaki@daynix.com>
+ <20231011070335.14398-7-akihiko.odaki@daynix.com>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
+ =?utf-8?Q?Daud=C3=A9?=
+ <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v9 06/23] gdbstub: Introduce GDBFeatureBuilder
+Date: Wed, 11 Oct 2023 16:39:12 +0100
+In-reply-to: <20231011070335.14398-7-akihiko.odaki@daynix.com>
+Message-ID: <87r0m1noy2.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20231011112054.1031975-1-mjt@tls.msk.ru>
- <20231011112054.1031975-3-mjt@tls.msk.ru>
-In-Reply-To: <20231011112054.1031975-3-mjt@tls.msk.ru>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 11 Oct 2023 11:38:38 -0400
-Message-ID: <CAJSP0QVkuu4EbW5gKmrN6Gotnhw1LG+ka=6vjuftPXBrKY+R3g@mail.gmail.com>
-Subject: Re: [PULL 02/13] hw/rdma/vmw/pvrdma_cmd: Use correct struct in
- query_port()
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
- qemu-trivial@nongnu.org, qemu-stable@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,85 +99,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 11 Oct 2023 at 07:23, Michael Tokarev <mjt@tls.msk.ru> wrote:
+
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+
+> GDBFeatureBuilder unifies the logic to generate dynamic GDBFeature.
 >
-> From: Peter Maydell <peter.maydell@linaro.org>
->
-> In query_port() we pass the address of a local pvrdma_port_attr
-> struct to the rdma_query_backend_port() function.  Unfortunately,
-> rdma_backend_query_port() wants a pointer to a struct ibv_port_attr,
-> and the two are not the same length.
->
-> Coverity spotted this (CID 1507146): pvrdma_port_attr is 48 bytes
-> long, and ibv_port_attr is 52 bytes, because it has a few extra
-> fields at the end.
->
-> Fortunately, all we do with the attrs struct after the call is to
-> read a few specific fields out of it which are all at the same
-> offsets in both structs, so we can simply make the local variable the
-> correct type.  This also lets us drop the cast (which should have
-> been a bit of a warning flag that we were doing something wrong
-> here).
->
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  hw/rdma/vmw/pvrdma_cmd.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-
-The following CI failure has occurred:
-
-../hw/rdma/vmw/pvrdma_cmd.c:144:59: error: implicit conversion from
-enumeration type 'enum ibv_port_state' to different enumeration type
-'enum pvrdma_port_state' [-Werror,-Wenum-conversion]
-resp->attrs.state =3D dev->func0->device_active ? attrs.state :
-~ ~~~~~~^~~~~
-../hw/rdma/vmw/pvrdma_cmd.c:146:33: error: implicit conversion from
-enumeration type 'enum ibv_mtu' to different enumeration type 'enum
-pvrdma_mtu' [-Werror,-Wenum-conversion]
-resp->attrs.max_mtu =3D attrs.max_mtu;
-~ ~~~~~~^~~~~~~
-../hw/rdma/vmw/pvrdma_cmd.c:147:36: error: implicit conversion from
-enumeration type 'enum ibv_mtu' to different enumeration type 'enum
-pvrdma_mtu' [-Werror,-Wenum-conversion]
-resp->attrs.active_mtu =3D attrs.active_mtu;
-~ ~~~~~~^~~~~~~~~~
-
-https://gitlab.com/qemu-project/qemu/-/jobs/5270666420
-
-Please take a look.
-
-Thanks,
-Stefan
-
+>  include/exec/gdbstub.h | 20 ++++++++++++++
+>  gdbstub/gdbstub.c      | 59 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 79 insertions(+)
 >
-> diff --git a/hw/rdma/vmw/pvrdma_cmd.c b/hw/rdma/vmw/pvrdma_cmd.c
-> index c6ed025982..d31c187593 100644
-> --- a/hw/rdma/vmw/pvrdma_cmd.c
-> +++ b/hw/rdma/vmw/pvrdma_cmd.c
-> @@ -129,14 +129,13 @@ static int query_port(PVRDMADev *dev, union pvrdma_=
-cmd_req *req,
->  {
->      struct pvrdma_cmd_query_port *cmd =3D &req->query_port;
->      struct pvrdma_cmd_query_port_resp *resp =3D &rsp->query_port_resp;
-> -    struct pvrdma_port_attr attrs =3D {};
-> +    struct ibv_port_attr attrs =3D {};
->
->      if (cmd->port_num > MAX_PORTS) {
->          return -EINVAL;
->      }
->
-> -    if (rdma_backend_query_port(&dev->backend_dev,
-> -                                (struct ibv_port_attr *)&attrs)) {
-> +    if (rdma_backend_query_port(&dev->backend_dev, &attrs)) {
->          return -ENOMEM;
->      }
->
-> --
-> 2.39.2
->
->
+> diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+> index 071021415a..d9ef2ccbff 100644
+> --- a/include/exec/gdbstub.h
+> +++ b/include/exec/gdbstub.h
+> @@ -16,6 +16,11 @@ typedef struct GDBFeature {
+>      int num_regs;
+>  } GDBFeature;
+>=20=20
+> +typedef struct GDBFeatureBuilder {
+> +    GDBFeature *feature;
+> +    GPtrArray *xml;
+> +} GDBFeatureBuilder;
+> +
+>=20=20
+>  /* Get or set a register.  Returns the size of the register.  */
+>  typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int re=
+g);
+> @@ -44,6 +49,21 @@ void gdb_register_coprocessor(CPUState *cpu,
+>   */
+>  int gdbserver_start(const char *port_or_device);
+>=20=20
+> +void gdb_feature_builder_init(GDBFeatureBuilder *builder, GDBFeature *fe=
+ature,
+> +                              const char *name, const char *xmlname);
+> +
+> +void gdb_feature_builder_append_tag(const GDBFeatureBuilder *builder,
+> +                                    const char *format, ...)
+> +    G_GNUC_PRINTF(2, 3);
+
+minor nit: it might be cleaner to put this declaration before the name,
+i.e.:
+
+  void G_GNUC_PRINTF(2, 3)
+  gdb_feature_builder_append_tag(const GDBFeatureBuilder *builder,
+                                 const char *format, ...);
+
+but the existing code base is pretty random in where it puts these
+declarations so *shrug*.
+
+<snip>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
