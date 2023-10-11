@@ -2,88 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70337C5869
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EE07C586F
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:47:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqbOY-0003bi-VU; Wed, 11 Oct 2023 11:45:10 -0400
+	id 1qqbQi-0007bu-Vk; Wed, 11 Oct 2023 11:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqbOU-0003Yk-5T
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:45:06 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqbOS-00031j-Ig
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:45:05 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-57bb6a2481fso3463974eaf.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 08:45:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697039103; x=1697643903;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5CCaqDc4/3mUPxsQn0aA0Z52njJhzwqd0bUDp7BMqt8=;
- b=LYzj4HbTnXduFWJEcVSVDAnLr49BRXSpx/AypIiW0/fVWpiOAmZwcqlKXSrsA1aGdT
- lzRNAHoCb4ZV5HunauyBs6GiknUTZjLjj798/L493yuyRfgb+EL62lYoIoMZLbm5G+sZ
- dQCPfFmJSLPIh52U2L5uMoWmxbbgWhxLr4kcdKqOlddfEbNa+0/6C4/okw5nP2j10CVw
- wwFz4SDjxOzKJQ0w5bC+PSROBIxhnADv6dIlY/O88semyLALqKOLwyAPLgCY3pH56R+r
- l7tql4zF1eOCMNF27w19ElZaSoW1GPfDFpgyzh5/5WacJlIZFKcX3CCPBGwbLdxzQLCo
- B+1A==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqbQd-0007bP-Aj
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:47:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqbQb-0003P3-KB
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:47:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697039236;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=2BIGHuNT5pdTDVAymIRVB91WSeNxsurwhrYrygl5Wy0=;
+ b=FMG31HGWG98O2HGOdEkVkJPDwLNnrxLYbEJ0bCmIPenvnYPHHNnnajk1HIcC2gGn5UXRFU
+ SFfJJchd3p4FrpGLJiUYJXAva/z+6JvwilXsSTNSJcsb3/AajHiD8T1OU5g+reJ4SJBrO7
+ 7PlzI/ztQkcCH3sag20Jb6cYKEd7aOE=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-106-btrxqNkUODOen-qSQgd5MQ-1; Wed, 11 Oct 2023 11:47:14 -0400
+X-MC-Unique: btrxqNkUODOen-qSQgd5MQ-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-59c09bcf078so106040917b3.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 08:47:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697039103; x=1697643903;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1697039234; x=1697644034;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5CCaqDc4/3mUPxsQn0aA0Z52njJhzwqd0bUDp7BMqt8=;
- b=FpH74Rzji5f2mguOWL3SxB2CthNnFLsXPSvg9m5FP0AtB4ucZd3aG+iB+SuvDJIOJJ
- ssSltnUiwKtJP+De6FGLzodLyOf2YMT2S/3qvyZ4o86cbmr5l8ypl43v1l5HhS5eC3Pb
- d5mO7Y4NnKU7+4ajv78+Zr/ZLZYL3nCeSx+cPjHR9emZsi/0mwEhlz2S9rv+H2F9mTaM
- cxnx/lX5FuQ5NJpQrkrTtZRJBIYXllXlQIsLAjD4NAtb4scFFqAgvBJa7EO/r4JeHGIl
- AMxk8K4DGlV6sAAkUVkwE8O8UbWTl1qgyeJgMw552fUTXkXWFo+Lug+FS7Y4jz5q0jZR
- CyaQ==
-X-Gm-Message-State: AOJu0Yz3MtASykkp0BVyq+6ME9ETRLBKtmZzZqLUEnglMcWDmd1K+j4f
- iOYn543pLxUn8IInq+vA0+XPMA==
-X-Google-Smtp-Source: AGHT+IE5S59r0VzKxadqyow8BWWpPR6J0w/2cT+GYTWdogk6EAMKN9Y4zvlMnaqAWc0FzDFuh4f2HA==
-X-Received: by 2002:a05:6359:310d:b0:164:8252:2609 with SMTP id
- rh13-20020a056359310d00b0016482522609mr6460613rwb.20.1697039103175; 
- Wed, 11 Oct 2023 08:45:03 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- x8-20020aa784c8000000b00690fdeb5c0dsm10168713pfn.2.2023.10.11.08.45.01
+ bh=2BIGHuNT5pdTDVAymIRVB91WSeNxsurwhrYrygl5Wy0=;
+ b=m/0QT3/TnNV/NPCccgxpU232eEuZRifCrblL5QVddEmBiCyYQZZ7dKrWxyKRWtzd08
+ t3G5NIYb6AceQjxCcqpzW+ATLX+ofV/jzPGF9v8j3oQLGA7Lbznte9N008LFZNkOettM
+ KIbtv2nQtMBxP5osLHCAmnyUTjHvOEI4x+wy1zqYAUb+P4f0PQQ4eu/gqH1JEqblxh/z
+ e1eF8TBGumEHQkCyw2g6v5FBgPZmvHy9ZpEC09DZ2vQjXlWWfg+zTlj0/IGZDsv1Jtki
+ fYKamhb/1g48phFegMxsgWfA7WieYV0w2Kh/QG4OBXO5RqPR3yLMIIFqtD7fUWInZJks
+ 7tjQ==
+X-Gm-Message-State: AOJu0YxgwuGLPCLEd/hAxMttroiJRBcgBs8x0hLPuortGM8vRF8CCVs3
+ b72h0QWxDZTJ9WSkHLlQKQnTXC+FlHGedzcgcA20TUP+idjhQlaG4QQQ8AzxtRZOFSIDIZYi56w
+ ZpMp0HYPTjhmgVMs=
+X-Received: by 2002:a81:78d3:0:b0:5a7:a817:be43 with SMTP id
+ t202-20020a8178d3000000b005a7a817be43mr7111331ywc.6.1697039234251; 
+ Wed, 11 Oct 2023 08:47:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8a9xz2+cOYnWGJRWQgmXAM0WAXQPOBZhgRYbnY2LYWXxK8MLQH0+Ty+OEQOOP5G+6lNMANA==
+X-Received: by 2002:a81:78d3:0:b0:5a7:a817:be43 with SMTP id
+ t202-20020a8178d3000000b005a7a817be43mr7111314ywc.6.1697039233982; 
+ Wed, 11 Oct 2023 08:47:13 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
+ [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
+ z7-20020a05620a100700b0076f19b9e96fsm5321367qkj.107.2023.10.11.08.47.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 08:45:02 -0700 (PDT)
-Message-ID: <6fce7508-9e9c-47da-85ab-51596f4f2522@daynix.com>
-Date: Thu, 12 Oct 2023 00:44:59 +0900
+ Wed, 11 Oct 2023 08:47:13 -0700 (PDT)
+Message-ID: <9b6aa276-e341-405a-8f85-7aee1955ab42@redhat.com>
+Date: Wed, 11 Oct 2023 17:47:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] tap: Fix virtio-net header buffer size
+Subject: Re: [PATCH v2 5/9] tests/qtest: Introduce qtest_resolve_machine_alias
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-References: <20231010025924.14593-1-akihiko.odaki@daynix.com>
- <20231010025924.14593-2-akihiko.odaki@daynix.com>
- <b80debfa-b789-400b-bc0c-a0ccc77a3530@tls.msk.ru>
- <e0f860d5-a6e9-43e6-b8f1-0395bac0c90f@daynix.com>
-In-Reply-To: <e0f860d5-a6e9-43e6-b8f1-0395bac0c90f@daynix.com>
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231006123910.17759-1-farosas@suse.de>
+ <20231006123910.17759-6-farosas@suse.de>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231006123910.17759-6-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c31;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc31.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,45 +146,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/11 15:43, Akihiko Odaki wrote:
-> On 2023/10/10 16:56, Michael Tokarev wrote:
->> 10.10.2023 05:59, Akihiko Odaki wrote:
->>> The largest possible virtio-net header is struct virtio_net_hdr_v1_hash.
->>>
->>> Fixes: fbbdbddec0 ("tap: allow extended virtio header with hash info")
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> ---
->>>   net/tap.c | 4 ++--
->>>   1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/net/tap.c b/net/tap.c
->>> index c6639d9f20..ea46feeaa8 100644
->>> --- a/net/tap.c
->>> +++ b/net/tap.c
->>> @@ -118,7 +118,7 @@ static ssize_t tap_receive_iov(NetClientState 
->>> *nc, const struct iovec *iov,
->>>       TAPState *s = DO_UPCAST(TAPState, nc, nc);
->>>       const struct iovec *iovp = iov;
->>>       struct iovec iov_copy[iovcnt + 1];
->>> -    struct virtio_net_hdr_mrg_rxbuf hdr = { };
->>> +    struct virtio_net_hdr_v1_hash hdr = { };
->>
->> BTW, can we get rid of (implicit) memzero() here and in
->> similar places, initializing only the actually used fields?
->> Not that his particular structure is very large (and this
->> change makes it 8 bytes larger), but still..
+On 06/10/2023 14.39, Fabiano Rosas wrote:
+> The migration tests are being enhanced to test migration between
+> different QEMU versions. A requirement of migration is that the
+> machine type between source and destination matches, including the
+> version.
 > 
-> These variables are rarely used so I think it's fine. In particular, 
-> these variables are used only when QEMU sends an ARP packet while 
-> virtio-net is enabled.
+> We cannot hardcode machine types in the tests because those change
+> with each release. QEMU provides a machine type alias that has a fixed
+> name, but points to the latest machine type at each release.
+> 
+> Add a helper to resolve the alias into the exact machine
+> type. E.g. "-machine pc" resolves to "pc-i440fx-8.2"
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>   tests/qtest/libqtest.c | 16 ++++++++++++++++
+>   tests/qtest/libqtest.h | 10 ++++++++++
+>   2 files changed, 26 insertions(+)
+> 
+> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+> index c0e4f05979..f2f1756de1 100644
+> --- a/tests/qtest/libqtest.c
+> +++ b/tests/qtest/libqtest.c
+> @@ -1522,6 +1522,22 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+>       }
+>   }
+>   
+> +char *qtest_resolve_machine_alias(const char *var, const char *alias)
+> +{
+> +    struct MachInfo *machines;
+> +    int i;
+> +
+> +    machines = qtest_get_machines(var);
+> +
+> +    for (i = 0; machines[i].name != NULL; i++) {
+> +        if (machines[i].alias && g_str_equal(alias, machines[i].alias)) {
+> +            return g_strdup(machines[i].name);
 
-My previous statement was not correct. These variables are used also 
-when QEMU emulates a network interface that doesn't expose virtio-net 
-headers.
+Looking at this twice, I think there is no need for the g_strdup() here, 
+since the name strings won't go away. You could then maybe also change the 
+return type to "const char *".
 
-I split the code path for these two cases in v3. The header size is 
-shrunken now for the normal code path.
+  Thomas
 
-Regards,
-Akihiko Odaki
+
+> +        }
+> +    }
+> +
+> +    return NULL;
+> +}
+> +
+>   bool qtest_has_machine_with_env(const char *var, const char *machine)
+>   {
+>       struct MachInfo *machines;
+> diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
+> index 083b2a6520..75f9310bb0 100644
+> --- a/tests/qtest/libqtest.h
+> +++ b/tests/qtest/libqtest.h
+> @@ -894,6 +894,16 @@ void qtest_qmp_fds_assert_success(QTestState *qts, int *fds, size_t nfds,
+>   void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+>                                   bool skip_old_versioned);
+>   
+> +/**
+> + * qtest_resolve_machine_alias:
+> + * @var: Environment variable from where to take the QEMU binary
+> + * @alias: The alias to resolve
+> + *
+> + * Returns: the machine type corresponding to the alias if any,
+> + * otherwise NULL.
+> + */
+> +char *qtest_resolve_machine_alias(const char *var, const char *alias);
+> +
+>   /**
+>    * qtest_has_machine:
+>    * @machine: The machine to look for
+
 
