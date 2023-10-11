@@ -2,58 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7897A7C558C
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A607C52DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 14:06:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZLj-0007hC-Vb; Wed, 11 Oct 2023 09:34:08 -0400
+	id 1qqXxa-0002XL-Lg; Wed, 11 Oct 2023 08:05:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bjorn@kernel.org>) id 1qqXgg-0007P8-Ly
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 07:47:38 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1qqXxS-0002Un-SK; Wed, 11 Oct 2023 08:04:59 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bjorn@kernel.org>) id 1qqXgf-0006j2-0T
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 07:47:38 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id C0BC861BD5;
- Wed, 11 Oct 2023 11:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073EAC433C9;
- Wed, 11 Oct 2023 11:47:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1697024848;
- bh=5eol+w9isDPPTceO0nec+Q5JC7nAOskqOPXHsIAf75Q=;
- h=From:To:Cc:Subject:Date:From;
- b=rn63VAU0/bWUAp3lCxWWpkSw9gd9a42ATMVADGPkaClKeM6rE5K2L3RtE0+uAMYeS
- 8tu7jbJSDzs+gLhP+5LZK8j8Gg4F8Zr4jd2pf1PuhaPXprA9XeS6lu5f/Kd20pxWTg
- qc5D1dnzOnztti8h0IlLDHg52+bahm8Edro1oexxTO5TnwfqWAbL8wMybH7HVghNXB
- 2v/XkKWu1P9WLthhCx5fxuV55ZKZZUflHJypPLIg/WT/62a/6c2Tume2Yc8hcl00S6
- ptFuxGkq6EEdNl3n7SW7ygbHETur+TiHQXsOpzFXjkkqLpfLjKJmHDms62y6rfV3ts
- 7BAeo8HCGH/5A==
-From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
-To: Gabriel Somlo <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>,
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1qqXxO-00025k-WC; Wed, 11 Oct 2023 08:04:57 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39BC2RhR012779; Wed, 11 Oct 2023 12:03:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=sIYZ5bpGAyhUcpOk1tLABHpXbeZNvH5YEq10fa4k71c=;
+ b=fWB9WIxsr9CsVdBP0uheww5pYXhLBwMiVm66UMp2dtLmRSlQe5aT4YTgImhKNets7UzE
+ 7yWNZVRQ8mywEas7Oipz4l/JJqGbRReeS6rbb8mJgdfGYM8J4pr5nt/Z9xX+Hap11qWU
+ Zh3NjrHqVi3LwbJ2AcmZai5u84aSGOPF/EtCe4oSFpXO1FL9geUp5zjZFyLsKejyQfiq
+ Ah9zT1pICAUgYckobCcbnnfq3j0xQF2LPXvYm40J9hfzdjt5szg+dwsH8IaDHKectRG/
+ hLoCPUv4782+pwtGrLHkQl8fNm81vb5f6MKH/m+cSnNFxHus9AvSlu1T9i9lSkFmfOfx tQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnuc2g22y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Oct 2023 12:03:36 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39BC3A71016755;
+ Wed, 11 Oct 2023 12:03:36 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnuc2g1td-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Oct 2023 12:03:36 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39B9V2kx000653; Wed, 11 Oct 2023 11:58:54 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkk5kqjne-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Oct 2023 11:58:54 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39BBwrGq24773288
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 11 Oct 2023 11:58:53 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA8E25805D;
+ Wed, 11 Oct 2023 11:58:52 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9C8F958057;
+ Wed, 11 Oct 2023 11:58:51 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.12.195]) by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 11 Oct 2023 11:58:51 +0000 (GMT)
+Message-ID: <dbb857cfde3c03aae4233ad8d8d560124e947959.camel@linux.ibm.com>
+Subject: Re: [PATCH 6/6] hw/s390x: Clean up global variable shadowing in
+ quiesce_powerdown_req()
+From: Eric Farman <farman@linux.ibm.com>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-Subject: [PATCH] riscv, qemu_fw_cfg: Add support for RISC-V architecture
-Date: Wed, 11 Oct 2023 13:47:21 +0200
-Message-Id: <20231011114721.193732-1-bjorn@kernel.org>
-X-Mailer: git-send-email 2.39.2
+Cc: Eduardo Habkost <eduardo@habkost.net>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org, Paolo Bonzini
+ <pbonzini@redhat.com>, Ani Sinha <anisinha@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Yanan Wang
+ <wangyanan55@huawei.com>, David Hildenbrand <david@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Markus Armbruster
+ <armbru@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas
+ Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, Gerd Hoffmann
+ <kraxel@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+Date: Wed, 11 Oct 2023 07:58:51 -0400
+In-Reply-To: <20231009094747.54240-7-philmd@linaro.org>
+References: <20231009094747.54240-1-philmd@linaro.org>
+ <20231009094747.54240-7-philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=bjorn@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Hfr1RREH9ZoyZvue5V3_GEVdehs1HzEU
+X-Proofpoint-ORIG-GUID: HVq94_dZt7qxXYtXpxWf7shwsuMaW1wQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-11_09,2023-10-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
+ suspectscore=0 spamscore=0 impostorscore=0 clxscore=1011 mlxscore=0
+ mlxlogscore=872 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310110106
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 11 Oct 2023 09:31:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,54 +122,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Björn Töpel <bjorn@rivosinc.com>
+On Mon, 2023-10-09 at 11:47 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
+> Fix:
+>=20
+> =C2=A0 hw/s390x/sclpquiesce.c:90:22: error: declaration shadows a variabl=
+e
+> in the global scope [-Werror,-Wshadow]
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 QuiesceNotifier *qn =3D container_of(n, Qu=
+iesceNotifier,
+> notifier);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
+> =C2=A0 hw/s390x/sclpquiesce.c:86:3: note: previous declaration is here
+> =C2=A0 } qn;
+> =C2=A0=C2=A0=C2=A0 ^
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> =C2=A0hw/s390x/sclpquiesce.c | 8 ++++----
+> =C2=A01 file changed, 4 insertions(+), 4 deletions(-)
 
-Qemu fw_cfg support was missing for RISC-V, which made it hard to do
-proper vmcore dumps from qemu.
-
-Add the missing RISC-V arch-defines.
-
-You can now do vmcore dumps from qemu. Add "-device vmcoreinfo" to the
-qemu command-line. From the qemu montior:
-  (qemu) dump-guest-memory vmcore
-
-The vmcore can now be used, e.g., with the "crash" utility.
-
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
----
- drivers/firmware/Kconfig       | 2 +-
- drivers/firmware/qemu_fw_cfg.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index b59e3041fd62..f05ff56629b3 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -155,7 +155,7 @@ config RASPBERRYPI_FIRMWARE
- 
- config FW_CFG_SYSFS
- 	tristate "QEMU fw_cfg device support in sysfs"
--	depends on SYSFS && (ARM || ARM64 || PARISC || PPC_PMAC || SPARC || X86)
-+	depends on SYSFS && (ARM || ARM64 || PARISC || PPC_PMAC || RISCV || SPARC || X86)
- 	depends on HAS_IOPORT_MAP
- 	default n
- 	help
-diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
-index a69399a6b7c0..1448f61173b3 100644
---- a/drivers/firmware/qemu_fw_cfg.c
-+++ b/drivers/firmware/qemu_fw_cfg.c
-@@ -211,7 +211,7 @@ static void fw_cfg_io_cleanup(void)
- 
- /* arch-specific ctrl & data register offsets are not available in ACPI, DT */
- #if !(defined(FW_CFG_CTRL_OFF) && defined(FW_CFG_DATA_OFF))
--# if (defined(CONFIG_ARM) || defined(CONFIG_ARM64))
-+# if (defined(CONFIG_ARM) || defined(CONFIG_ARM64) || defined(CONFIG_RISCV))
- #  define FW_CFG_CTRL_OFF 0x08
- #  define FW_CFG_DATA_OFF 0x00
- #  define FW_CFG_DMA_OFF 0x10
-
-base-commit: 1c8b86a3799f7e5be903c3f49fcdaee29fd385b5
--- 
-2.39.2
-
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
 
