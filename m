@@ -2,64 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628B07C556F
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C08E37C5570
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:29:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZG0-00046F-Md; Wed, 11 Oct 2023 09:28:13 -0400
+	id 1qqZGZ-0004lw-GJ; Wed, 11 Oct 2023 09:28:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qqZFx-00045n-PU
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:28:09 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqZGX-0004lm-Ns
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:28:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qqZFw-0005lp-1L
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:28:09 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqZGW-0005vZ-4z
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:28:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697030886;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PD3DbiJCUC1W3xeYFfS5PKzrtfvJ2UxsoCFNyY1mzXE=;
- b=EIs8u3iDSLagleG8BzJWoDiofgZQ6b5Kqyo5f8w8KTFvtdAvR4hMF7mYHYzWJzty+pKd9T
- cj1IsYfOz0TREo8mt3FiVl8SWmErFy+jFkNjNWTzEmhVukgbMItA5+n8dO49Fu6B9VfVC+
- ZbxwhJtnyuX0ZBSX3cQdDZlhUWas5Mg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-244-CjCjOFinPmulHWvu9RlMPA-1; Wed, 11 Oct 2023 09:27:49 -0400
-X-MC-Unique: CjCjOFinPmulHWvu9RlMPA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E1DC5811E86
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 13:27:48 +0000 (UTC)
-Received: from localhost (unknown [10.45.226.201])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8050D158;
- Wed, 11 Oct 2023 13:27:48 +0000 (UTC)
-Date: Wed, 11 Oct 2023 15:27:47 +0200
-From: Victor Toso <victortoso@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v1 5/9] qapi: golang: Generate qapi's union types in Go
-Message-ID: <u53pq2wpwdcyhortjzlsm5avdrjgoklmi64bb7d5k5mta7ivyw@q2il67ol6m2r>
-References: <20230927112544.85011-1-victortoso@redhat.com>
- <20230927112544.85011-6-victortoso@redhat.com>
- <ZRWMB5qq4E7Xh9ME@redhat.com>
- <xv5zrswfmkov7lwf2cbnzma3nnl5677uyty3rlkzhoqfzcdkxy@tnw4bo6pkjx2>
+ s=mimecast20190719; t=1697030923;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=7NvXWyPnHft5pEy3DWd0l35J4ASe7HvziYSApTZPZac=;
+ b=Si8LR2Chmd0/IIutFPYEi1BLKJfBLSlQ6kCgGcfohUqtqsC9UgyfJDNEsx1KwcuhmbC7IW
+ s5Q7MZ/yo1uVXi03qP1yn/09/pbOklObFRIYJOFvB0uUh3M6/ZV/T6oASwbrLj2tshepOv
+ lvGmTigrkFdjzYAbO2onr220kdHxKUA=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-156-9YtZleh-O62gTA39DUqy3g-1; Wed, 11 Oct 2023 09:28:42 -0400
+X-MC-Unique: 9YtZleh-O62gTA39DUqy3g-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-66d040c58eeso9664376d6.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:28:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697030921; x=1697635721;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7NvXWyPnHft5pEy3DWd0l35J4ASe7HvziYSApTZPZac=;
+ b=CZo9JTpCErqGjPMZ52fAyrgmc25YOm619PW8OldO4ukuL472luyUNmnYGP0XGvSm/N
+ 39VrTF26JbUSNhbQw644OlhuDpc8kmEfsxCHEL5AZtmS4kfgBUv1zFX+IIPpMMiPRrWv
+ 5E+azihFePexJNRL/5+qolMtWrhfI3rC+j+GuxDKV1RpRZ9XMEbZDb+4H9iZgo4IFNXP
+ f2D+rhLIag/a8BemdnC5uh54EnkuWqHFZVRsPCwoq0xaKC+X6IHU1uEt9N8QBm885g5Z
+ IU0d2gg+VZuN90xGQ/5+61k+J6gHaQFIU1OrOXh6jbygjgv6ZTaHiz61SwE3rooeaobY
+ rcGA==
+X-Gm-Message-State: AOJu0YzAi+6I3lKR9m6BPZySl3Kkw4h6Ed6NEb0F9iV+gzVNatcu2FMk
+ NcL6x+snQwiM9/MzsX6hAltVubCKXq3FDmWx5rvlUuxZBv11RRsTiwNLiEbSrRuyTdXfAov1Zkz
+ DGRUyGTAIcl726pY=
+X-Received: by 2002:a0c:aa0c:0:b0:66c:faa7:c5f0 with SMTP id
+ d12-20020a0caa0c000000b0066cfaa7c5f0mr3719869qvb.63.1697030921653; 
+ Wed, 11 Oct 2023 06:28:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHR/bY9A9OuSgJwV3dDFPIteaghN+x3qOvZ/BEJa5ErFLorIQ68scHxhR6ayxANsKbVrb4Rxw==
+X-Received: by 2002:a0c:aa0c:0:b0:66c:faa7:c5f0 with SMTP id
+ d12-20020a0caa0c000000b0066cfaa7c5f0mr3719844qvb.63.1697030921272; 
+ Wed, 11 Oct 2023 06:28:41 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ di12-20020ad458ec000000b0065af657ddf7sm441823qvb.144.2023.10.11.06.28.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Oct 2023 06:28:40 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 6/6] tests/qtest/migration: Add a test for the
+ analyze-migration script
+In-Reply-To: <20231009184326.15777-7-farosas@suse.de> (Fabiano Rosas's message
+ of "Mon, 9 Oct 2023 15:43:26 -0300")
+References: <20231009184326.15777-1-farosas@suse.de>
+ <20231009184326.15777-7-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 11 Oct 2023 15:28:38 +0200
+Message-ID: <87mswp9tkp.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="rcfqe3bbnsw5ch6g"
-Content-Disposition: inline
-In-Reply-To: <xv5zrswfmkov7lwf2cbnzma3nnl5677uyty3rlkzhoqfzcdkxy@tnw4bo6pkjx2>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -79,167 +101,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fabiano Rosas <farosas@suse.de> wrote:
+> Add a smoke test that migrates to a file and gives it to the
+> script. It should catch the most annoying errors such as changes in
+> the ram flags.
+>
+> After code has been merged it becomes way harder to figure out what is
+> causing the script to fail, the person making the change is the most
+> likely to know right away what the problem is.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
---rcfqe3bbnsw5ch6g
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-Hi,
 
-On Fri, Sep 29, 2023 at 03:41:27PM +0200, Victor Toso wrote:
-> Hi,
->=20
-> On Thu, Sep 28, 2023 at 03:21:59PM +0100, Daniel P. Berrang=E9 wrote:
-> > On Wed, Sep 27, 2023 at 01:25:40PM +0200, Victor Toso wrote:
-> > > This patch handles QAPI union types and generates the equivalent data
-> > > structures and methods in Go to handle it.
-> > >=20
-> > > The QAPI union type has two types of fields: The @base and the
-> > > @Variants members. The @base fields can be considered common members
-> > > for the union while only one field maximum is set for the @Variants.
-> > >=20
-> > > In the QAPI specification, it defines a @discriminator field, which is
-> > > an Enum type. The purpose of the  @discriminator is to identify which
-> > > @variant type is being used.
-> > >=20
-> > > Not that @discriminator's enum might have more values than the union's
-> > > data struct. This is fine. The union does not need to handle all cases
-> > > of the enum, but it should accept them without error. For this
-> > > specific case, we keep the @discriminator field in every union type.
-> >=20
-> > I still tend think the @discriminator field should not be
-> > present in the union structs. It feels like we're just trying
-> > to directly copy the C code in Go and so smells wrong from a
-> > Go POV.
-> >=20
-> > For most of the unions the @discriminator field will be entirely
-> > redundant, becasue the commonm case is that a @variant field
-> > exists for every possible @discriminator value.
->=20
-> You are correct.
->=20
-> > To take one example
-> >=20
-> >   type SocketAddress struct {
-> >         Type SocketAddressType `json:"type"`
-> >=20
-> >         // Variants fields
-> >         Inet  *InetSocketAddress  `json:"-"`
-> >         Unix  *UnixSocketAddress  `json:"-"`
-> >         Vsock *VsockSocketAddress `json:"-"`
-> >         Fd    *String             `json:"-"`
-> >   }
-> >=20
-> > If one was just writing Go code without the pre-existing knowledge
-> > of the QAPI C code, 'Type' is not something a Go programmer would
-> > be inclined add IMHO.
->=20
-> You don't need previous knowledge in the QAPI C code to see that
-> having optional field members and a discriminator field feels
-> very very suspicious. I wasn't too happy to add it.
->=20
-> > And yet you are right that we need a way to represent a
-> > @discriminator value that has no corresponding @variant, since
-> > QAPI allows for that scenario.
->=20
-> Thank Markus for that, really nice catch :)
->=20
->=20
-> > To deal with that I would suggest we just use an empty
-> > interface type. eg
-> >=20
-> >   type SocketAddress struct {
-> >         Type SocketAddressType `json:"type"`
-> >=20
-> >         // Variants fields
-> >         Inet  *InetSocketAddress  `json:"-"`
-> >         Unix  *UnixSocketAddress  `json:"-"`
-> >         Vsock *VsockSocketAddress `json:"-"`
-> >         Fd    *String             `json:"-"`
-> > 	Fish  *interface{}        `json:"-"`
-> > 	Food  *interface()        `json:"-"`
-> >   }
-> >=20
-> > the pointer value for 'Fish' and 'Food' fields here merely needs to
-> > be non-NULL, it doesn't matter what the actual thing assigned is.
->=20
-> I like this idea. What happens if Fish becomes a handled in the
-> future?
->=20
-> Before:
->=20
->     type SocketAddress struct {
->         // Variants fields
->         Inet  *InetSocketAddress  `json:"-"`
->         Unix  *UnixSocketAddress  `json:"-"`
->         Vsock *VsockSocketAddress `json:"-"`
->         Fd    *String             `json:"-"`
->=20
->         // Unhandled enum branches
->         Fish  *interface{}        `json:"-"`
->         Food  *interface{}        `json:"-"`
->     }
->=20
-> to
->=20
->     type SocketAddress struct {
->         // Variants fields
->         Inet  *InetSocketAddress  `json:"-"`
->         Unix  *UnixSocketAddress  `json:"-"`
->         Vsock *VsockSocketAddress `json:"-"`
->         Fd    *String             `json:"-"`
->         Fish  *FishSocketAddress  `json:"-"`
->=20
->         // Unhandled enum branches
->         Food  *interface{}        `json:"-"`
->     }
->=20
-> An application that hat s.Fish =3D &something, will now error on
-> compile due something type not being FishSocketAddress. I think
-> this is acceptable. Very corner case scenario and the user
-> probably want to use the right struct now.
->=20
-> If you agree with above, I'd instead like to try a boolean
-> instead of *interface{}. s.Fish =3D true seems better and false is
-> simply ignored.
+> ---
+>  tests/qtest/meson.build      |  2 ++
+>  tests/qtest/migration-test.c | 60 ++++++++++++++++++++++++++++++++++++
+>  2 files changed, 62 insertions(+)
+>
+> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> index 1fba07f4ed..5e82eccb62 100644
+> --- a/tests/qtest/meson.build
+> +++ b/tests/qtest/meson.build
+> @@ -356,6 +356,8 @@ foreach dir : target_dirs
+>      test_deps += [qsd]
+>    endif
+>  
+> +  qtest_env.set('PYTHON', python.full_path())
+> +
 
-I was just double checking that the Union's value for each enum
-branch needs to be a Struct. So I think it is fine to use boolean
-for unhandled enum branches. I'll be doing that in the next
-iteration.
+I accept it, but I think that this part of the test should be in a
+different patch so meson people could comment O:-)
 
-docs/devel/qapi-code-gen.rst: 350
-    The BRANCH's value defines the branch's properties, in particular its
-    type.  The type must a struct type.  The form TYPE-REF_ is shorthand
-    for :code:`{ 'type': TYPE-REF }`.
+> +
+> +    pid = fork();
 
-Cheers,
-Victor
-
---rcfqe3bbnsw5ch6g
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmUmotMACgkQl9kSPeN6
-SE89sA/6A76CQUlglK+3n5cAEWEsrDeaJ84C/kJFpsApMkW1gs9RPHDfv2fRP7PZ
-4pyfpeflYCrfVzpcYAdipae97V76fFY0yEm7ahYtLIqxgDCTJOHLu/fhnKZwnWea
-mMgKcmMvxMfC9o1n7dwbmadtyoUmht2RpfoghZAovN/YFP9ahDgj4sfWXL07GqqX
-U2uGCvVz4TGBDIw0zhgBJEut1piWNUxHaGIBhaIU1tvtuqkDpp7eXhpvhz3a/Ahr
-NLGalOgXint5RHjJTD7OEpF8XZmzxWpqyyCGE6AYmGi3vRK92HOOkOM8N9GidfF6
-ITf+RYf9JHW2rsJcKqRERlrl/4Bym2yyOCQe3t5o7HUBNZLeqvNknY9Ab3XXIEgS
-C5VzqmGZkpZyMyhMee1NIAvxaslO2Qcdk4pcj9sB7AFzEhAGPyIu6OdJ7gIW3DAs
-Lvnz8E27I0l79g/GXBXb8W/lj92HMuAo0ZbFrYP+W83qh4QZ3v3Vdt7xQQ3xW8j9
-2mg82Ig4k4RTn8+c/dXhdR9NLd//owmLXUB2t1D5E3eqtzulzGxmFLH7N973czMI
-21ZeeBRjbGjNOzP7waBDKZzb3qSP0PK7KO7Mx6G41zr70gacdPImXPtqlhZYShCu
-0c/69g50Xa5xJCp9w87L1LwSjYBCUkdjXAK9AIwvF98DLvf3RTE=
-=tXAx
------END PGP SIGNATURE-----
-
---rcfqe3bbnsw5ch6g--
+live and see, g_test and qemu don't have a function to execute a script?
+Wow.
 
 
