@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9E77C51F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 13:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9414B7C51E1
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 13:23:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqXHi-0007kC-Tm; Wed, 11 Oct 2023 07:21:51 -0400
+	id 1qqXHl-0007oG-9s; Wed, 11 Oct 2023 07:21:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqXHh-0007jd-4p; Wed, 11 Oct 2023 07:21:49 -0400
+ id 1qqXHj-0007l3-FJ; Wed, 11 Oct 2023 07:21:51 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqXHf-0000zi-DF; Wed, 11 Oct 2023 07:21:48 -0400
+ id 1qqXHh-00010I-SK; Wed, 11 Oct 2023 07:21:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E4CFD2967C;
- Wed, 11 Oct 2023 14:21:02 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0FAEC2967D;
+ Wed, 11 Oct 2023 14:21:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 57A402E702;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7BA712E703;
  Wed, 11 Oct 2023 14:20:57 +0300 (MSK)
-Received: (nullmailer pid 1032052 invoked by uid 1000);
+Received: (nullmailer pid 1032055 invoked by uid 1000);
  Wed, 11 Oct 2023 11:20:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 12/13] scripts/xml-preprocess: Make sure this script is invoked
- via the right Python
-Date: Wed, 11 Oct 2023 14:20:53 +0300
-Message-Id: <20231011112054.1031975-13-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 13/13] cpus: Remove unused smp_cores/smp_threads declarations
+Date: Wed, 11 Oct 2023 14:20:54 +0300
+Message-Id: <20231011112054.1031975-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231011112054.1031975-1-mjt@tls.msk.ru>
 References: <20231011112054.1031975-1-mjt@tls.msk.ru>
@@ -61,28 +59,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-If a script is executable and has a shebang line, Meson treats it as
-a normal executable, so that this script here is run via the "python3"
-binary in the $PATH. However, "python3" might not be in the $PATH at
-all, or it might be a wrong version, so we should make sure to run
-this script via the Python version that has been chosen for the QEMU
-build process. The best way to do this is to remove the executable bit
-from the access mode bits. (See also commit 4b424c757188f7a4)
+Commit a5e0b33119 ("vl.c: Replace smp global variables
+with smp machine properties") removed the last uses of
+the smp_cores / smp_threads variables but forgot to
+remove their declarations. Do it now.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1918
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- scripts/xml-preprocess.py | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- mode change 100755 => 100644 scripts/xml-preprocess.py
+ include/sysemu/cpus.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/scripts/xml-preprocess.py b/scripts/xml-preprocess.py
-old mode 100755
-new mode 100644
+diff --git a/include/sysemu/cpus.h b/include/sysemu/cpus.h
+index 0535a4c68a..b4a566cfe7 100644
+--- a/include/sysemu/cpus.h
++++ b/include/sysemu/cpus.h
+@@ -50,11 +50,4 @@ void cpu_synchronize_all_post_reset(void);
+ void cpu_synchronize_all_post_init(void);
+ void cpu_synchronize_all_pre_loadvm(void);
+ 
+-#ifndef CONFIG_USER_ONLY
+-/* vl.c */
+-/* *-user doesn't have configurable SMP topology */
+-extern int smp_cores;
+-extern int smp_threads;
+-#endif
+-
+ #endif
 -- 
 2.39.2
 
