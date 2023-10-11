@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1883E7C5508
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 579397C5507
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:13:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZ1v-0000bK-Ix; Wed, 11 Oct 2023 09:13:39 -0400
+	id 1qqZ0w-0000KD-R0; Wed, 11 Oct 2023 09:12:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1qqZ1X-0000Y5-T1; Wed, 11 Oct 2023 09:13:15 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1qqZ1S-0001zi-Jp; Wed, 11 Oct 2023 09:13:14 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2b9c907bc68so79042171fa.2; 
- Wed, 11 Oct 2023 06:13:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqZ0u-0000K0-S6
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:12:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqZ0s-0001vm-Vk
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:12:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697029954;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=omMFA2BFwxkht+iyiplRXUh2rwdf/BXFf9FYID90z6I=;
+ b=bkONTKcn19f7dYm5DNwWi1q14u99p28PuZyhGUjrXFHrDXoaROMcgFqsredyVBpZ9dY5MT
+ JlxNdp6swVTomJ1igVcmKyLA/LeQhcjlF8mpMfKTY5CjGUNXLWUcWUBbgPZd39yJ2WvQWx
+ zKJS5UPvOHgeJ2O3IWzt6trqliy4dUI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-504-CX2eeVDiNJqlZlDWHBJIVA-1; Wed, 11 Oct 2023 09:12:32 -0400
+X-MC-Unique: CX2eeVDiNJqlZlDWHBJIVA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-32d83fd3765so488861f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:12:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697029988; x=1697634788;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:dkim-signature:dkim-signature:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1697029951; x=1697634751;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5mwzT1dV+YP3RIHIShKUzgHG1gg00ryLyiH2+tisJ9g=;
- b=ZmGpUIBJF5TeTHOGRuofCBdfMOTjoQWyBb0F1RxNQqWQEorjOt9Ydf4ZOnOsqrlCQW
- Waw3kRHwlfZ7pRkXPMriC6DtkoKYs98e1B15LtMaR1Np/NVDHUtWxO3SIECySk04mTPY
- /ilkdSnMu56sRSjA4A/PWD++dNuxNuuW/bmyWmac6mV7rcyeZkfjRdjOO86ybrrcuvrU
- U5x+h1pj5GVmzrQLcHW0S/9f+7Adqbix+4TIBrLQAOUwW5hE50rGYWK/7ht68hd6Qthz
- ZAcimHSrdoj7olfSpn640wzsu3/2p2TvbR2yoo0+wjo/ZQyQnD9DX7uMZjActs8A9Brg
- 1hJw==
-X-Gm-Message-State: AOJu0YxS+YBEfvOca8MSKVXrklXyZGeWVtMR3hdkHxhJdgqB4MoHoUeD
- oh0TfNZ/qHfcrtDrfY/iJ7cP+uO9fX7Vqg==
-X-Google-Smtp-Source: AGHT+IGSO73/cRX9gOJHu0kfwj34nfUySmiX48Ym8qC1V/vjKd0CQcms9WBMAvUyydZws7DtCnulCQ==
-X-Received: by 2002:a2e:824c:0:b0:2c0:afd:e7ed with SMTP id
- j12-20020a2e824c000000b002c00afde7edmr17063287ljh.10.1697029987845; 
- Wed, 11 Oct 2023 06:13:07 -0700 (PDT)
-Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
- [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
- e17-20020a2e8ed1000000b002c128e45245sm2985660ljl.23.2023.10.11.06.13.07
+ bh=omMFA2BFwxkht+iyiplRXUh2rwdf/BXFf9FYID90z6I=;
+ b=MwhR91licX4ZkpMvsAbR8xhdbrQWEUIDZYDZYODTu7STxosIUmntsjxGyeLYX2DbbH
+ T+rB1YYOCOimxARvaVjXvY6Cebgzr/PbZiuXfRwtlhZuET4Xfjxlwx9EwgRgu67WfSSC
+ KSRZVUjNgwbbQqVIhfzYSSGGhK1C1grFwJNqxlQ5wgVF2RWvn7XBKSAAltbk/AOHj8IP
+ kwZJdBZYvOEGF2JH9rSPXaR4l4otYp+l0dUdOwuZ5L4cZXHGIR0dSK14e5JEzCuQwWLV
+ chFqxrhi/3YQzctNnN9wwJiKPc9odfwHw6s3aclUPR2ui3n9cW+eMiPiOrV2/Cg5rw3t
+ tM6Q==
+X-Gm-Message-State: AOJu0YysdPlXhz2wYab5wJ+pSkzD9Dkw9xCNeW7Auq2qy/nVmNcyvlwk
+ hZJz16evhj3NaiLr5vkDKSYzcx1bUR0ZKZdDdgSHpNMi7uLH2mjGgmjfHtPEFw4UGt75KKu+d1g
+ PzLtSq9814/S+a6E=
+X-Received: by 2002:a05:6000:1c09:b0:329:6b35:d141 with SMTP id
+ ba9-20020a0560001c0900b003296b35d141mr16255356wrb.44.1697029951295; 
+ Wed, 11 Oct 2023 06:12:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGn41OuXOhoeKde60W2JwGpcC01611sbpNDXadZ4NwLG33/lEFoKYBT579aXAqtgyR6skUuTg==
+X-Received: by 2002:a05:6000:1c09:b0:329:6b35:d141 with SMTP id
+ ba9-20020a0560001c0900b003296b35d141mr16255338wrb.44.1697029950981; 
+ Wed, 11 Oct 2023 06:12:30 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ b6-20020adfee86000000b0031f300a4c26sm15392683wro.93.2023.10.11.06.12.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 06:13:07 -0700 (PDT)
-Received: by flawful.org (Postfix, from userid 112)
- id 845EAA80; Wed, 11 Oct 2023 15:13:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1697029986; bh=F3oQPhMsKR40wMr+CadOwsJ3tRh25XuZhDfZ/k/ChV0=;
- h=From:To:Cc:Subject:Date:From;
- b=WOPOdOdfEHZhW0Z4cbVkziSjoXQE7ib64p6ypTfZNdVKe6Zayd2i3BV0pBvv1unsT
- 6WcRGZSFnCkzkKvIQD4zM3pOH6cngjslQmJ+FM8eFk/8JX2TATDjr1d5w3cAL/h6bB
- poz7EQqq9EsZQ9TYeJSWPYbgOuKTg4/aDKX0WWq4=
-Received: from x1-carbon.lan (OpenWrt.lan [192.168.1.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id 52ED1A86;
- Wed, 11 Oct 2023 15:12:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1697029975; bh=F3oQPhMsKR40wMr+CadOwsJ3tRh25XuZhDfZ/k/ChV0=;
- h=From:To:Cc:Subject:Date:From;
- b=GgYe8rZHT6Rs0Uibtc3+YPIRjaAZdwhnTBktHDiV2ilj6QJsWQLjuNIl15XbYr+yy
- QskYj6Ktekv+ejeycEaEMGFVTzORyb0ikbVgbZJMHm+e6i1xpNUPtsfHMhuOwKPKMl
- v67ODL+uZxb7j43pJA7+xIC0FW0cuZDSxJR+7Xy0=
-From: Niklas Cassel <nks@flawful.org>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>, Michael Tokarev <mjt@tls.msk.ru>,
- Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH] hw/ide/ahci: trigger either error IRQ or regular IRQ, not both
-Date: Wed, 11 Oct 2023 15:12:20 +0200
-Message-ID: <20231011131220.1992064-1-nks@flawful.org>
-X-Mailer: git-send-email 2.41.0
+ Wed, 11 Oct 2023 06:12:30 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,  Nikolay Borisov <nborisov@suse.com>
+Subject: Re: [PATCH v2 1/6] migration: Add the configuration vmstate to the
+ json writer
+In-Reply-To: <20231009184326.15777-2-farosas@suse.de> (Fabiano Rosas's message
+ of "Mon, 9 Oct 2023 15:43:21 -0300")
+References: <20231009184326.15777-1-farosas@suse.de>
+ <20231009184326.15777-2-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 11 Oct 2023 15:12:29 +0200
+Message-ID: <87edi1b8w2.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=nks.gnu@gmail.com; helo=mail-lj1-x22e.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,46 +100,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+Fabiano Rosas <farosas@suse.de> wrote:
+> From: Nikolay Borisov <nborisov@suse.com>
+>
+> Make the migration json writer part of MigrationState struct, allowing
+> the 'configuration' object be serialized to json.
+>
+> This will facilitate the parsing of the 'configuration' object in the
+> next patch that fixes analyze-migration.py for arm.
+>
+> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-According to AHCI 1.3.1, 5.3.8.1 RegFIS:Entry, if ERR_STAT is set,
-we jump to state ERR:FatalTaskfile, which will raise a TFES IRQ
-unconditionally, regardless if the I bit is set in the FIS or not.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-Thus, we should never raise a normal IRQ after having sent an error
-IRQ.
+queued.
 
-NOTE: for QEMU platforms that use SeaBIOS, this patch depends on QEMU
-commit 784155cdcb02 ("seabios: update submodule to git snapshot"), and
-QEMU commit 14f5a7bae4cb ("seabios: update binaries to git snapshot").
+>          qemu_put_byte(f, QEMU_VM_CONFIGURATION);
+> -        vmstate_save_state(f, &vmstate_configuration, &savevm_state, 0);
+> +
+> +        /*
+> +         * This starts the main json object and is paired with the
+> +         * json_writer_end_object in
+> +         * qemu_savevm_state_complete_precopy_non_iterable
+> +         */
+> +        json_writer_start_object(s->vmdesc, NULL);
 
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
----
- hw/ide/ahci.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+This don't depend of this patch, but it is ugly as hell.
 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index fcc5476e9e..7676e2d871 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -897,11 +897,10 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i)
-     pr->tfdata = (ad->port.ifs[0].error << 8) |
-         ad->port.ifs[0].status;
- 
-+    /* TFES IRQ is always raised if ERR_STAT is set, regardless of I bit. */
-     if (d2h_fis[2] & ERR_STAT) {
-         ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_TFES);
--    }
--
--    if (d2h_fis_i) {
-+    } else if (d2h_fis_i) {
-         ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
-     }
- 
--- 
-2.41.0
+Can we create:
+
+json_write_start_main_object(s->vmdesc);
+
+(equivalent for end)
+
+And forbid json_writer_start_object() for taking a NULL parameter?
+
+Later, Juan.
 
 
