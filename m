@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CE77C4949
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 07:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A717C49EE
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 08:16:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqRwC-0006Ph-SZ; Wed, 11 Oct 2023 01:39:16 -0400
+	id 1qqSUO-0004cS-MZ; Wed, 11 Oct 2023 02:14:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqRwA-0006PO-Aa
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 01:39:14 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqRw8-0003DD-7H
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 01:39:13 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-9b2cee40de8so115967266b.1
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 22:39:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697002749; x=1697607549; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uGNO9vAZ/FcIlaNrxN40TI7A5HUatn2CDM2A70ctlsw=;
- b=z5i6VVe5T7FdlaZO5pGW86smgtWtsEiCHI7VviK4TJ7TKcyEs4umnmljx7WXDNhWGq
- Kn9K/5O5GVH/F2cbDcnUBL7CHbIgBOa83R60gdb3fGQY3uGXxYaylDJ8HCd9CEVmTm7O
- Aok+ApOwblTJbuys1sX7EMtkwJa0B3TRpqgbIlbh9o6vYf9HJb/BQ/Nlw3Vv9KYcg5Fc
- /C8udtwMc8pY9GBzV7uqgk/A/P7aIwudFWX/oyb4SEnZHtr5++nCI3/yD3Kw/+okvvrS
- n9zSz/BsJONn9Pu/0tFSFEG4767rVh/vlElBUHz2Uphs9f9zJ7AE8jn4OEWac0UhCsLo
- 1MAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697002749; x=1697607549;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=uGNO9vAZ/FcIlaNrxN40TI7A5HUatn2CDM2A70ctlsw=;
- b=qmSzCaH5U5FWxyji2O7ccWCpq9J8d0ld0yQq+Zn2oJtv70ilFktwgrJ3vSnTG6Hzfa
- Kjd73DKDnZbobWHe/ph/6B3pybLuHtdQIG+9RLwMEjhoilra7L9b1T6JtMqGj2b0N24E
- +TtUVqGY77kWj9vdpnTSGnlgXaaOzedQ3rXLhObtlcLq3SA+3bXzIDk08jwe61wFYIon
- qVllcqnxYoEtbb2aazzlZHq3AlxJPlgdDUIis5KRv7JSccP+TnS+NGfoADJcoFeGFMYN
- X8VhQBaiawtQU43LE0/eg1Qpa13HTxdYr8kZ+L0d5CGaeGctqxH96cWLUzh7od3Plm02
- mPXw==
-X-Gm-Message-State: AOJu0YxCKhv7lKPftNOSdCgnYWDHEOP85QwZIEm7DDxX6cLsCj1WPj7a
- gmTyQvWYmkdEx1uZfuuxQsIz6A==
-X-Google-Smtp-Source: AGHT+IEBEJnPV5a71JRwbJIg0wrgyXzvKPJ8X0HKnxWH9j9u3S2oRvui4L+O30+TtF9Ltua9NT10JA==
-X-Received: by 2002:a17:907:318d:b0:9a5:c38d:6b75 with SMTP id
- xe13-20020a170907318d00b009a5c38d6b75mr15347257ejb.15.1697002749696; 
- Tue, 10 Oct 2023 22:39:09 -0700 (PDT)
-Received: from [192.168.69.115] (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
- [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
- x6-20020a170906b08600b009a19701e7b5sm9359467ejy.96.2023.10.10.22.39.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 22:39:09 -0700 (PDT)
-Message-ID: <d0e0395a-25a9-18a1-ae97-c77708a94adb@linaro.org>
-Date: Wed, 11 Oct 2023 07:39:07 +0200
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqSU2-0004ZX-Fh; Wed, 11 Oct 2023 02:14:14 -0400
+Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqSTx-0002OT-4U; Wed, 11 Oct 2023 02:14:13 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R771e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046059;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=47; SR=0;
+ TI=SMTPD_---0VtvF12m_1697004820; 
+Received: from 30.221.100.88(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VtvF12m_1697004820) by smtp.aliyun-inc.com;
+ Wed, 11 Oct 2023 14:13:42 +0800
+Message-ID: <c8bcb233-62a8-4ce3-a08d-1da49d896c86@linux.alibaba.com>
+Date: Wed, 11 Oct 2023 14:12:41 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/18] target: Declare FOO_CPU_TYPE_NAME/SUFFIX in
+ 'cpu-qom.h'
 Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Subject: wiki.qemu.org is experiencing technical difficulties
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Gavin Shan <gshan@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Brian Cain <bcain@quicinc.com>, Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-arm@nongnu.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org,
+ Bin Meng <bin.meng@windriver.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, Marek Vasut
+ <marex@denx.de>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Laurent Vivier <laurent@vivier.eu>, Stafford Horne <shorne@gmail.com>,
+ Chris Wulff <crwulff@gmail.com>, Sergio Lopez <slp@redhat.com>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
+References: <20231010092901.99189-1-philmd@linaro.org>
+ <20231010092901.99189-5-philmd@linaro.org>
+ <348eaf9c-9fb6-4674-b324-c3f3017f1851@linux.alibaba.com>
+ <f8b3cb2c-8e80-19e4-d59f-2ccacff0a413@linaro.org>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <f8b3cb2c-8e80-19e4-d59f-2ccacff0a413@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.111;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-111.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,56 +96,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
 
-https://wiki.qemu.org/ displays:
+On 2023/10/11 11:21, Philippe Mathieu-Daudé wrote:
+> Hi Zhiwei,
+>
+> On 11/10/23 04:51, LIU Zhiwei wrote:
+>>
+>> On 2023/10/10 17:28, Philippe Mathieu-Daudé wrote:
+>>> Hegerogeneous code needs access to the FOO_CPU_TYPE_NAME()
+>>> macro to resolve target CPU types.
+>>
+>> Hi Philippe,
+>>
+>> I don't understand why should we use FOO_CPU_TYPE_NAME macro to 
+>> resolve target CPU types? In my opinion, we should pass the
+>> CPU typename from command line for heterogeneous case.
+>>
+>> Could you make it clearer how should we use FOO_CPU_TYPE_NAME macro 
+>> to resolve target CPU types in heterogeneous case?
+>
+> To be honest I start to feel a bit lost with the "cpu
+> resolving type" design.
+>
+> We are not quite there yet to "create from command line"
+> or "create from QMP", so I'm prototyping in plain C.
+> One of my test is:
+>
+>   #include "target/arm/cpu-qom.h"
+>   #include "target/hexagon/cpu-qom.h"
+>   ...
+>
+>   static void
+>   my_machine3_init((MachineState *machine)
+>   {
+>     CPUState cpu[2];
+>     ...
+>
+>     cpu[0] = CPU(object_new(ARM_CPU_TYPE_NAME("cortex-a72")));
+>     cpu[1] = CPU(object_new(HEXAGON_CPU_TYPE_NAME("v68")));
+>     ...
+>   }
+>
+> The machine code need access to the per-target
+> FOO_CPU_TYPE_NAME() macros. 
 
-(Cannot access the database)
+I see what you mean. It works if we will pass the cpu model instead of 
+cpu typename to the machine state(Not yet).
 
-Backtrace:
+Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-#0 /var/www/html/includes/libs/rdbms/loadbalancer/LoadBalancer.php(972): 
-Wikimedia\Rdbms\LoadBalancer->reportConnectionError()
-#1 /var/www/html/includes/libs/rdbms/loadbalancer/LoadBalancer.php(944): 
-Wikimedia\Rdbms\LoadBalancer->getServerConnection(0, 'qemu_mediawiki', 0)
-#2 /var/www/html/includes/libs/rdbms/database/DBConnRef.php(95): 
-Wikimedia\Rdbms\LoadBalancer->getConnectionInternal(-1, Array, 
-'qemu_mediawiki', 0)
-#3 /var/www/html/includes/libs/rdbms/database/DBConnRef.php(101): 
-Wikimedia\Rdbms\DBConnRef->ensureConnection()
-#4 /var/www/html/includes/libs/rdbms/database/DBConnRef.php(706): 
-Wikimedia\Rdbms\DBConnRef->__call('getSessionLagSt...', Array)
-#5 /var/www/html/includes/libs/rdbms/database/Database.php(3151): 
-Wikimedia\Rdbms\DBConnRef->getSessionLagStatus()
-#6 /var/www/html/includes/user/User.php(527): 
-Wikimedia\Rdbms\Database::getCacheSetOptions(Object(Wikimedia\Rdbms\DBConnRef))
-#7 
-/var/www/html/includes/libs/objectcache/wancache/WANObjectCache.php(1689): 
-User->{closure}(false, 3600, Array, NULL, Array)
-#8 
-/var/www/html/includes/libs/objectcache/wancache/WANObjectCache.php(1522): 
-WANObjectCache->fetchOrRegenerate('global:user:id:...', 3600, 
-Object(Closure), Array, Array)
-#9 /var/www/html/includes/user/User.php(560): 
-WANObjectCache->getWithSetCallback('global:user:id:...', 3600, 
-Object(Closure), Array)
-#10 /var/www/html/includes/user/User.php(471): User->loadFromCache()
-#11 /var/www/html/includes/user/User.php(404): User->loadFromId(0)
-#12 /var/www/html/includes/session/UserInfo.php(92): User->load()
-#13 /var/www/html/includes/session/CookieSessionProvider.php(131): 
-MediaWiki\Session\UserInfo::newFromId('1303')
-#14 /var/www/html/includes/session/SessionManager.php(537): 
-MediaWiki\Session\CookieSessionProvider->provideSessionInfo(Object(WebRequest))
-#15 /var/www/html/includes/session/SessionManager.php(243): 
-MediaWiki\Session\SessionManager->getSessionInfoForRequest(Object(WebRequest))
-#16 /var/www/html/includes/WebRequest.php(843): 
-MediaWiki\Session\SessionManager->getSessionForRequest(Object(WebRequest))
-#17 /var/www/html/includes/session/SessionManager.php(164): 
-WebRequest->getSession()
-#18 /var/www/html/includes/Setup.php(448): 
-MediaWiki\Session\SessionManager::getGlobalSession()
-#19 /var/www/html/includes/WebStart.php(86): 
-require_once('/var/www/html/i...')
-#20 /var/www/html/index.php(44): require('/var/www/html/i...')
-#21 {main}
+Zhiwei
+
+> I'm not sure what each macro
+> expands to is considered stable, so IIUC I can't inline and use:
+>
+>     cpu[0] = CPU(object_new("cortex-a72-arm-cpu"));
+>     cpu[1] = CPU(object_new("v68"-hexagon-cpu));
+>
+> That said, maybe I'm mistaken.
+>
+> Kinda related discussion with Gavin/Igor:
+> https://lore.kernel.org/qemu-devel/35653f53-a977-02ea-28f6-6fe85b1efd5a@redhat.com/ 
+>
+> (related to 
+> https://lore.kernel.org/qemu-devel/20230907003553.1636896-1-gshan@redhat.com/).
+>
+>>
+>> Thanks,
+>> Zhiwei
+>>
+>>> Move the declaration
+>>> (along with the required FOO_CPU_TYPE_SUFFIX) to "cpu-qom.h".
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   target/alpha/cpu-qom.h   | 5 ++++-
+>>>   target/alpha/cpu.h       | 2 --
+>>>   target/avr/cpu-qom.h     | 5 ++++-
+>>>   target/avr/cpu.h         | 2 --
+>>>   target/cris/cpu-qom.h    | 5 ++++-
+>>>   target/cris/cpu.h        | 2 --
+>>>   target/i386/cpu-qom.h    | 3 +++
+>>>   target/i386/cpu.h        | 2 --
+>>>   target/m68k/cpu-qom.h    | 5 ++++-
+>>>   target/m68k/cpu.h        | 2 --
+>>>   target/mips/cpu-qom.h    | 3 +++
+>>>   target/mips/cpu.h        | 2 --
+>>>   target/rx/cpu-qom.h      | 5 ++++-
+>>>   target/rx/cpu.h          | 2 --
+>>>   target/s390x/cpu-qom.h   | 5 ++++-
+>>>   target/s390x/cpu.h       | 2 --
+>>>   target/sh4/cpu-qom.h     | 5 ++++-
+>>>   target/sh4/cpu.h         | 2 --
+>>>   target/sparc/cpu-qom.h   | 5 ++++-
+>>>   target/sparc/cpu.h       | 2 --
+>>>   target/tricore/cpu-qom.h | 5 +++++
+>>>   target/tricore/cpu.h     | 2 --
+>>>   target/xtensa/cpu-qom.h  | 5 ++++-
+>>>   target/xtensa/cpu.h      | 2 --
+>>>   24 files changed, 47 insertions(+), 33 deletions(-)
+>>>
+>>> diff --git a/target/alpha/cpu-qom.h b/target/alpha/cpu-qom.h
+>>> index 1f200724b6..d596d1b69f 100644
+>>> --- a/target/alpha/cpu-qom.h
+>>> +++ b/target/alpha/cpu-qom.h
+>>> @@ -1,5 +1,5 @@
+>>>   /*
+>>> - * QEMU Alpha CPU
+>>> + * QEMU Alpha CPU QOM header (target agnostic)
+>>>    *
+>>>    * Copyright (c) 2012 SUSE LINUX Products GmbH
+>>>    *
+>>> @@ -27,6 +27,9 @@
+>>>   OBJECT_DECLARE_CPU_TYPE(AlphaCPU, AlphaCPUClass, ALPHA_CPU)
+>>> +#define ALPHA_CPU_TYPE_SUFFIX "-" TYPE_ALPHA_CPU
+>>> +#define ALPHA_CPU_TYPE_NAME(model) model ALPHA_CPU_TYPE_SUFFIX
+>>> +
+>>>   /**
+>>>    * AlphaCPUClass:
+>>>    * @parent_realize: The parent class' realize handler.
+>>> diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
+>>> index e2a467ec17..ba0d9e3468 100644
+>>> --- a/target/alpha/cpu.h
+>>> +++ b/target/alpha/cpu.h
+>>> @@ -428,8 +428,6 @@ enum {
+>>>   void alpha_translate_init(void);
+>>> -#define ALPHA_CPU_TYPE_SUFFIX "-" TYPE_ALPHA_CPU
+>>> -#define ALPHA_CPU_TYPE_NAME(model) model ALPHA_CPU_TYPE_SUFFIX
+>>>   #define CPU_RESOLVING_TYPE TYPE_ALPHA_CPU
+>>>   void alpha_cpu_list(void);
+> [...]
 
