@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30EEA7C4E88
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B79C7C4EFB
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:31:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqVRF-0000gB-H3; Wed, 11 Oct 2023 05:23:33 -0400
+	id 1qqVRL-0001Yv-Iu; Wed, 11 Oct 2023 05:23:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVRB-0000Bg-6d
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:29 -0400
+ id 1qqVRJ-0001Mw-8I
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVR9-000530-H0
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:28 -0400
+ id 1qqVRH-000542-Lj
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697016206;
+ s=mimecast20190719; t=1697016215;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BnzUPUxq5fkgci/LmM13J/PDYHUd+i3NlZVWG1qg7Sg=;
- b=bCNJ/KXhwywksSxv+SSn6g+1A+3IneAPI2hs0K+Ka0OXITOtefsW/QSy7ZlzkUG1PZahdv
- VGIXLmUJTK62sRR9dWVQdV8aH7ylZyGry2ksd3IUwtqyKiICpONpJ8qAJJ7R/t0bGGHXii
- z1NORvpiOak3/6Cdj38oD026HLAVuWY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-523-hY8YvW-YMQivwdNJ_KanGw-1; Wed, 11 Oct 2023 05:23:21 -0400
-X-MC-Unique: hY8YvW-YMQivwdNJ_KanGw-1
+ bh=wL8LpzASj2yig45t51hQl//0FwZ36eIaEAamrIYfRf8=;
+ b=I4beFN7h1B/I2U/blKWPbKeibA0D0QlSCw0e7+NyMx6HpG1b6yRAHU0dkTCFc2IDdsTO4l
+ Cip08UJdRMG+GeUbVAahSVicIIHHVPRl5In4THMlzPBf+5K2n0U9IXEJZnuZs84FBQrAyp
+ lnz8TarFDtWaX2klETb0UUL1agBBpCw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-581-inOAkpbiNIyG2cHnPYsSNA-1; Wed, 11 Oct 2023 05:23:23 -0400
+X-MC-Unique: inOAkpbiNIyG2cHnPYsSNA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 527AB3C0E667;
- Wed, 11 Oct 2023 09:23:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4FFB3101AA42;
+ Wed, 11 Oct 2023 09:23:23 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 95B4A1C060AE;
- Wed, 11 Oct 2023 09:23:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 92CC61C060AE;
+ Wed, 11 Oct 2023 09:23:21 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -49,9 +49,10 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>,
  Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 37/65] migration/rdma: Plug a memory leak and improve a message
-Date: Wed, 11 Oct 2023 11:21:35 +0200
-Message-ID: <20231011092203.1266-38-quintela@redhat.com>
+Subject: [PULL 38/65] migration/rdma: Delete inappropriate error_report() in
+ macro ERROR()
+Date: Wed, 11 Oct 2023 11:21:36 +0200
+Message-ID: <20231011092203.1266-39-quintela@redhat.com>
 In-Reply-To: <20231011092203.1266-1-quintela@redhat.com>
 References: <20231011092203.1266-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -83,49 +84,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Markus Armbruster <armbru@redhat.com>
 
-When migration capability @rdma-pin-all is true, but the server cannot
-honor it, qemu_rdma_connect() calls macro ERROR(), then returns
-success.
+Functions that use an Error **errp parameter to return errors should
+not also report them to the user, because reporting is the caller's
+job.  When the caller does, the error is reported twice.  When it
+doesn't (because it recovered from the error), there is no error to
+report, i.e. the report is bogus.
 
-ERROR() sets an error.  Since qemu_rdma_connect() returns success, its
-caller rdma_start_outgoing_migration() duly assumes @errp is still
-clear.  The Error object leaks.
-
-ERROR() additionally reports the situation to the user as an error:
-
-    RDMA ERROR: Server cannot support pinning all memory. Will register memory dynamically.
-
-Is this an error or not?  It actually isn't; we disable @rdma-pin-all
-and carry on.  "Correcting" the user's configuration decisions that
-way feels problematic, but that's a topic for another day.
-
-Replace ERROR() by warn_report().  This plugs the memory leak, and
-emits a clearer message to the user.
+Macro ERROR() violates this principle.  Delete the error_report()
+there.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+Tested-by: Li Zhijian <lizhijian@fujitsu.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20230928132019.2544702-31-armbru@redhat.com>
+Message-ID: <20230928132019.2544702-32-armbru@redhat.com>
 ---
- migration/rdma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ migration/rdma.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index b0125b01cf..00e3c430f4 100644
+index 00e3c430f4..6c0e6cda2c 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -2637,8 +2637,8 @@ static int qemu_rdma_connect(RDMAContext *rdma, bool return_path,
-      * and disable them otherwise.
-      */
-     if (rdma->pin_all && !(cap.flags & RDMA_CAPABILITY_PIN_ALL)) {
--        ERROR(errp, "Server cannot support pinning all memory. "
--                        "Will register memory dynamically.");
-+        warn_report("RDMA: Server cannot support pinning all memory. "
-+                    "Will register memory dynamically.");
-         rdma->pin_all = false;
-     }
+@@ -40,12 +40,8 @@
+ #include "options.h"
+ #include <poll.h>
  
+-/*
+- * Print and error on both the Monitor and the Log file.
+- */
+ #define ERROR(errp, fmt, ...) \
+     do { \
+-        fprintf(stderr, "RDMA ERROR: " fmt "\n", ## __VA_ARGS__); \
+         if (errp && (*(errp) == NULL)) { \
+             error_setg(errp, "RDMA ERROR: " fmt, ## __VA_ARGS__); \
+         } \
 -- 
 2.41.0
 
