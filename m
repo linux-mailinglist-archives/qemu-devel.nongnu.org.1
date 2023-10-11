@@ -2,121 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350967C4AEF
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 08:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCC47C4B1C
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 09:02:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqSyy-0002aH-97; Wed, 11 Oct 2023 02:46:12 -0400
+	id 1qqTDb-00066f-Lf; Wed, 11 Oct 2023 03:01:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qqSyk-0002Z5-7u
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 02:46:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qqSyh-0001eW-Da
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 02:45:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697006754;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Y6Zf4eUKFYEublX2s8iYoEkuD6AiMv6ZrCpWbA4EEAI=;
- b=jVX3M9PUy9cTVuUgs54SUSxl893pBvDf85bjtlHNE2VZNoksXSiPf6Ko0ZLETtZiN7FiFw
- Cig5Fi9+X8+4bps2ZOjXB42XfFrbVrkrMY+7KyVCPp2w+ZDVh1l85pPwQku7fsa0+9M/5j
- XU8pe7IyqmqgORdk3orBI5iW00fsBQw=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-0UMafVmEMwueEt1Zww4IAg-1; Wed, 11 Oct 2023 02:45:49 -0400
-X-MC-Unique: 0UMafVmEMwueEt1Zww4IAg-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1c754c90b4bso53317885ad.2
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 23:45:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697006748; x=1697611548;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y6Zf4eUKFYEublX2s8iYoEkuD6AiMv6ZrCpWbA4EEAI=;
- b=jRFEpJpnkMWBlQ+gsnHcjg08QbEHMMYft5sMup8E8N9sRE7qaXt4FTgfVeYAShF3au
- ZfA0OrhS/wDZdo41iYC5Lr0cbH/IH0xZtjm20k/egYRK3zqbrI1hLN+65hkLPqrspctw
- MtDp53MqPGOT/mRXsarKsoMTJCeUyKCZGZmbgoL+YYXuShNP+QGMnpZ2VkHAdwJ7HIMj
- xHifTi1GduXE0u0ACpBd0F8c2a6Vrm18mnYbfCZ1720huLj7U7MCNoTh1ydQTqPq22XD
- 0hRPOmCjO5GAUN+lxYBSpqmSrFD3k6zChhZp3upRbfzpt7X5I0BSrhHakSdFymONf9Y/
- lIWQ==
-X-Gm-Message-State: AOJu0YwEkqnqoMhRoTYvufcGrZ9KUHyK0qtXL5msTNpkmZklo5VpdWCy
- snee8al+KoULnAaJd0ryKvZEmTsudVz/L8airhtEbNQXvMYcCslWdAfOzZEFJGyqu++wN3/w08K
- ZwaMRs4HLPdAuDnc=
-X-Received: by 2002:a17:903:24d:b0:1bd:c7e2:462 with SMTP id
- j13-20020a170903024d00b001bdc7e20462mr20749213plh.11.1697006747675; 
- Tue, 10 Oct 2023 23:45:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEnb/J7/SbM0B3OEtBg9ALiXiQtVJ9lOvT1wMsLXWKXNthSEk2quIs3Ngnl1b115fIcqBxPqA==
-X-Received: by 2002:a17:903:24d:b0:1bd:c7e2:462 with SMTP id
- j13-20020a170903024d00b001bdc7e20462mr20749190plh.11.1697006747351; 
- Tue, 10 Oct 2023 23:45:47 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:b890:3e54:96bb:2a15?
- ([2001:8003:e5b0:9f00:b890:3e54:96bb:2a15])
- by smtp.gmail.com with ESMTPSA id
- n12-20020a170902e54c00b001c60c8d6b4asm9706912plf.149.2023.10.10.23.45.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 23:45:46 -0700 (PDT)
-Message-ID: <c24efe4e-88e1-c6e5-9e6c-d809c26e40c8@redhat.com>
-Date: Wed, 11 Oct 2023 16:45:32 +1000
+ (Exim 4.90_1) (envelope-from <jgross@suse.com>) id 1qqTDa-00065s-0K
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:01:18 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jgross@suse.com>) id 1qqTDY-0005Lr-9K
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:01:17 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id DAC7F1FD8A;
+ Wed, 11 Oct 2023 07:01:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1697007670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=FeFVnO5jZ+ydeAI2tilH68k8+ithwRfGixKcwcHR0Pc=;
+ b=M8cwxcRIpDYBZ5HHtW20MQ+fZUePXwazXqTqfMx0LpZhypGk7KJJkvxflOS6T318ARbt6t
+ HRd8IF735jcPnLy1/iTaqNFbcxrTg3Vrn4ZzVpUTO8AwtYRe/zw4fMFM5HL5mK1Ffb61+T
+ VMjvLUu7YriC4g5JFPIIu7QxnUi3ktA=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9E574134F5;
+ Wed, 11 Oct 2023 07:01:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id vJTlJDZIJmUjcgAAMHmgww
+ (envelope-from <jgross@suse.com>); Wed, 11 Oct 2023 07:01:10 +0000
+Message-ID: <9f03c5ac-939c-4f84-a19c-f53b5aa08648@suse.com>
+Date: Wed, 11 Oct 2023 09:01:09 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 3/4] hw/cpu: Introduce CPUClass::cpu_resolving_type field
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>
-Cc: Chris Wulff <crwulff@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, qemu-s390x@nongnu.org,
- Weiwei Li <liweiwei@iscas.ac.cn>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Greg Kurz <groug@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- qemu-ppc@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marek Vasut <marex@denx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
- Michael Rolnik <mrolnik@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
- Aurelien Jarno <aurelien@aurel32.net>, Bin Meng <bin.meng@windriver.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Song Gao <gaosong@loongson.cn>,
- Stafford Horne <shorne@gmail.com>, Yanan Wang <wangyanan55@huawei.com>,
- Alistair Francis <alistair.francis@wdc.com>, Brian Cain <bcain@quicinc.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Huth <thuth@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230908112235.75914-1-philmd@linaro.org>
- <20230908112235.75914-4-philmd@linaro.org>
- <87cb0174-c652-aa44-be7c-49e78e0a5003@redhat.com>
- <af78b6c9-14e5-3256-9670-c106f4942140@linaro.org>
- <35653f53-a977-02ea-28f6-6fe85b1efd5a@redhat.com>
- <a42dd7a0-e73f-8410-d096-8298da03f70d@redhat.com>
- <676c81b6-ccaa-51a3-8d1a-65e71a7b2b92@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU][PATCH v1 5/7] memory: add MemoryRegion map and unmap
+ callbacks
 Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <676c81b6-ccaa-51a3-8d1a-65e71a7b2b92@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+To: Stefano Stabellini <sstabellini@kernel.org>,
+ Vikram Garhwal <vikram.garhwal@amd.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20231005181629.4046-1-vikram.garhwal@amd.com>
+ <20231005181629.4046-6-vikram.garhwal@amd.com>
+ <alpine.DEB.2.22.394.2310091715430.3431292@ubuntu-linux-20-04-desktop>
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <alpine.DEB.2.22.394.2310091715430.3431292@ubuntu-linux-20-04-desktop>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------XVeRpmVGBveXqw9177jJBj5s"
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=jgross@suse.com;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,105 +106,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------XVeRpmVGBveXqw9177jJBj5s
+Content-Type: multipart/mixed; boundary="------------dS9M8n0aypJMjEYGQW6DOgUg";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: Stefano Stabellini <sstabellini@kernel.org>,
+ Vikram Garhwal <vikram.garhwal@amd.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Message-ID: <9f03c5ac-939c-4f84-a19c-f53b5aa08648@suse.com>
+Subject: Re: [QEMU][PATCH v1 5/7] memory: add MemoryRegion map and unmap
+ callbacks
+References: <20231005181629.4046-1-vikram.garhwal@amd.com>
+ <20231005181629.4046-6-vikram.garhwal@amd.com>
+ <alpine.DEB.2.22.394.2310091715430.3431292@ubuntu-linux-20-04-desktop>
+In-Reply-To: <alpine.DEB.2.22.394.2310091715430.3431292@ubuntu-linux-20-04-desktop>
 
-On 10/11/23 13:28, Philippe Mathieu-Daudé wrote:
-> On 25/9/23 02:24, Gavin Shan wrote:
->> On 9/12/23 08:40, Gavin Shan wrote:
->>> On 9/11/23 19:43, Philippe Mathieu-Daudé wrote:
->>>> On 11/9/23 01:28, Gavin Shan wrote:
->>>>> On 9/8/23 21:22, Philippe Mathieu-Daudé wrote:
->>>>>> Add a field to return the QOM type name of a CPU class.
->>>>>>
->>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>>> ---
-> 
-> 
->>>>>> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
->>>>>> index 129d179937..e469efd409 100644
->>>>>> --- a/include/hw/core/cpu.h
->>>>>> +++ b/include/hw/core/cpu.h
->>>>>> @@ -100,6 +100,7 @@ struct SysemuCPUOps;
->>>>>>   /**
->>>>>>    * CPUClass:
->>>>>> + * @cpu_resolving_type: CPU QOM type name
->>>>>>    * @class_by_name: Callback to map -cpu command line model name to an
->>>>>>    *                 instantiatable CPU type.
->>>>>>    * @parse_features: Callback to parse command line arguments.
->>>>>> @@ -148,6 +149,7 @@ struct CPUClass {
->>>>>>       DeviceClass parent_class;
->>>>>>       /*< public >*/
->>>>>> +    const char *cpu_resolving_type;
->>>>>>       ObjectClass *(*class_by_name)(const char *cpu_model);
->>>>>>       void (*parse_features)(const char *typename, char *str, Error **errp);
->>>>>
->>>>> The question is why not use CPU_RESOLVING_TYPE directly? It seems CPU_RESOLVING_TYPE
->>>>> is exactly what you want here.
->>>>
->>>> Unfortunately CPU_RESOLVING_TYPE is target-specific, we want
->>>> hw/core/cpu-common.c to be target-agnostic (build once for all
->>>> targets). This is particularly important in the context of
->>>> heterogeneous QEMU, where a single binary will be able to create
->>>> CPUs from different targets.
->>>>
->>>
->>> CPU_RESOLVING_TYPE and CPUClass::cpu_resolving_type is duplicate to
->>> each other. There are two options I can figure out to avoid the
->>> duplication.
->>>
->>> (a) move cpu_class_by_name() from hw/core/cpu-common.c to cpu.c, so that
->>>      CPU_RESOLVING_TYPE can be seen. cpu.c::list_cpus() is the example.
->>>
->>> (b) remove hw/core/cpu-common.c::cpu_calss_by_name() and squeeze its
->>>      logic to cpu.c::parse_cpu_option() since there are not too much
->>>      users for it. target/arm and target/s390 needs some tweaks so that
->>>      hw/core/cpu-common.c::cpu_calss_by_name() can be removed.
->>>
->>>      [gshan@gshan q]$ git grep \ cpu_class_by_name\(
->>>      cpu.c:    oc = cpu_class_by_name(CPU_RESOLVING_TYPE, model_pieces[0]);
->>>      target/arm/arm-qmp-cmds.c:    oc = cpu_class_by_name(TYPE_ARM_CPU, model->name);
->>>      target/s390x/cpu_models_sysemu.c:    oc = cpu_class_by_name(TYPE_S390_CPU, info->name);
->>>
->>> When option (b) is taken, this series to have the checks against @oc
->>> in hw/core/cpu-common.c::cpu_calss_by_name() becomes non-sense. Instead,
->>> we need the same (and complete) checks in CPUClass::class_by_name() for
->>> individual targets. Further more, an inline helper can be provided to do
->>> the check in CPUClass::class_by_name() for individual targets.
->>>
->>>     include/hw/core/cpu.h
->>>
->>>     static inline bool cpu_class_is_valid(ObjectClass *oc, const char *parent)
->>>     {
->>>         if (!object_class_dynamic_cast(oc, parent) ||
->>>             object_class_is_abstract(oc)) {
->>>             return false;
->>>         }
->>>
->>>         return true;
->>>     }
->>>
->>
->> Since my series to make CPU type check unified depends on this series, could
->> you please share your thoughts? If you don't have bandwidth for this, I can
->> improve the code based on your thoughts, and include your patches to my series
->> so that they can be reviewed at once. Please just let me know.
-> 
-> You seem to prove (b) is not useful, so we have to do (a).
-> 
-> Unfortunately at this moment I feel hopeless with this topic.
-> 
-> I don't want to delay your work further. If you find a way to integrate
-> both series, please go ahead. Otherwise let's drop my approach and
-> continue with your previous work.
-> 
-> I apologize I kept you waiting that long.
-> 
+--------------dS9M8n0aypJMjEYGQW6DOgUg
+Content-Type: multipart/mixed; boundary="------------RjoJSLQ0b4jFeaiB1WOLTyiU"
 
-Ah, nope, nothing went to wrong here. Thanks for your reply, I will try
-to follow (a) and integrate your patches to my series. Please help to
-review my series when it's posted :)
+--------------RjoJSLQ0b4jFeaiB1WOLTyiU
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Thanks,
-Gavin
+T24gMTAuMTAuMjMgMDI6MTcsIFN0ZWZhbm8gU3RhYmVsbGluaSB3cm90ZToNCj4gT24gVGh1
+LCA1IE9jdCAyMDIzLCBWaWtyYW0gR2FyaHdhbCB3cm90ZToNCj4+IEZyb206IEp1ZXJnZW4g
+R3Jvc3MgPGpncm9zc0BzdXNlLmNvbT4NCj4+DQo+PiBJbiBvcmRlciB0byBzdXBwb3J0IG1h
+cHBpbmcgYW5kIHVubWFwcGluZyBndWVzdCBtZW1vcnkgZHluYW1pY2FsbHkgdG8NCj4+IGFu
+ZCBmcm9tIHFlbXUgZHVyaW5nIGFkZHJlc3Nfc3BhY2VfW3VuXW1hcCgpIG9wZXJhdGlvbnMg
+YWRkIHRoZSBtYXAoKQ0KPj4gYW5kIHVubWFwKCkgY2FsbGJhY2tzIHRvIE1lbW9yeVJlZ2lv
+bk9wcy4NCj4+DQo+PiBUaG9zZSB3aWxsIGJlIHVzZWQgZS5nLiBmb3IgWGVuIGdyYW50IG1h
+cHBpbmdzIHdoZW4gcGVyZm9ybWluZyBndWVzdA0KPj4gSS9Pcy4NCj4+DQo+PiBTaWduZWQt
+b2ZmLWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+DQo+PiBTaWduZWQtb2Zm
+LWJ5OiBWaWtyYW0gR2FyaHdhbCA8dmlrcmFtLmdhcmh3YWxAYW1kLmNvbT4NCj4gDQo+IENh
+bid0IHdlIGp1c3QgdXNlIHRoZSBleGlzdGluZyBYZW4gaG9va3MgaW4gcWVtdV9yYW1fcHRy
+X2xlbmd0aCBhbmQNCj4geGVuX2ludmFsaWRhdGVfbWFwX2NhY2hlX2VudHJ5PyBEbyB3ZSBy
+ZWFsbHkgbmVlZCBuZXcgb25lcz8NCg0KSSB0cmllZCB5b3VyIGlkZWEgZmlyc3QgYW5kIGl0
+IGRpZG4ndCB3b3JrIG91dC4NCg0KVGhlIGV4aXN0aW5nIGhvb2tzIGFyZSBpbnZva2VkIG5v
+dCBvbmx5IHdoZW4gZXhwbGljaXRseSBbdW5dbWFwcGluZyBtZW1vcnkNCnJlZ2lvbnMsIGJ1
+dCBpbiBzb21lIG90aGVyIGNhc2VzLCB0b28uIEhhdmUgYSBsb29rIGZvciBxZW11X3JhbV9w
+dHJfbGVuZ3RoKCkNCmNhbGwgaW4gZmxhdHZpZXdfd3JpdGVfY29udGludWUoKS4NCg0KDQpK
+dWVyZ2VuDQo=
+--------------RjoJSLQ0b4jFeaiB1WOLTyiU
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+jR/i1DG86lem3iBDXzXsZDn8R38=3D
+=3D2wuH
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------RjoJSLQ0b4jFeaiB1WOLTyiU--
+
+--------------dS9M8n0aypJMjEYGQW6DOgUg--
+
+--------------XVeRpmVGBveXqw9177jJBj5s
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmUmSDUFAwAAAAAACgkQsN6d1ii/Ey93
+bwf/drYlaoQN6Uc+XdrogxwtyQ00qWXw8k5HNIOVdO75izh6T0fgX2wXI5oeEvnv7fOx8r8bcguv
+04HNgvOuO2ui3F0lfvcV+tSe7DGpmqlwh/Ao5zOIyw0hHfxvAQREUixQp+kX7GpbNwzO6Lvjxe9l
+f9SvQ7+Q6pccxiirtd8eL87qj0bjGPlB9bFhflj1ZoqdRHV2HuHkwImU6e0SacYEsIsySwtfx1pc
+G9ENkBvnVBXOPE4cKu8HCiSZa7ZiQbAgzDBts8BV/5hz/V/xwOHHVI7fLdzuIVNt9PTZyfvQQ+cY
+0zJN6dFvaQtFmvqKrxLaymV9jlxdkN2nyvO54bKwMg==
+=L4eq
+-----END PGP SIGNATURE-----
+
+--------------XVeRpmVGBveXqw9177jJBj5s--
 
