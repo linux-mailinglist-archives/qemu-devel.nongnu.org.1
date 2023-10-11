@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D7D7C56E6
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 018B67C56E7
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:33:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqaFH-0004n1-Tg; Wed, 11 Oct 2023 10:31:31 -0400
+	id 1qqaGK-0005YD-2F; Wed, 11 Oct 2023 10:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqaFB-0004kN-H5
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:31:27 -0400
+ id 1qqaGH-0005Uy-G6
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:32:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqaF9-0004LG-8I
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:31:24 -0400
+ id 1qqaGB-0004Tz-G0
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:32:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697034680;
+ s=mimecast20190719; t=1697034731;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=XoPr7kq4lTGoDJCeGPeHUS79QVFlvDkTG4LKHgUzEoY=;
- b=WeOdyogzYR8zktDJXKh2E3mqFKioSFFwKKsEWxeh/hGwR/00yNq1V5hQMn3DM1H7OtVFZm
- YGZsQ5sGB/NmL6uhmXoZZ7tfh2sLJ1elQ3Az8dLQkQQEpuvnRO8QJjFs7Nq5ENW7liZ7d6
- QUtZ+A3eCk2Sw26wVPfmGyuO3QzPP9g=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DYjyP5L4pqIKB99D590XvQftimcrqKdSZZ8Tr6IzAO8=;
+ b=hLzcJO7wKP9ZC0F5Eya/CFRxdoT1rSqx93q0s0xAsPL3NQE6O7SVlHKfBIjw0hyDINovMp
+ ntwlBYgh/plp57wBU82tjdC712Jw+R1lLaYOzfvTWKefXRGgy5F3cYC359LIB6U6+eSbvk
+ WZK9BAUezTry9bOL6E/1j6QRVutQfLQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-140-oCFjRe7MMgKm3I0KrlTzdg-1; Wed, 11 Oct 2023 10:31:18 -0400
-X-MC-Unique: oCFjRe7MMgKm3I0KrlTzdg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32d8ac3743eso119993f8f.2
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:31:18 -0700 (PDT)
+ us-mta-606-6-mrMsPjOGaJgvaHSdhagg-1; Wed, 11 Oct 2023 10:31:59 -0400
+X-MC-Unique: 6-mrMsPjOGaJgvaHSdhagg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30932d15a30so4655360f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:31:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697034677; x=1697639477;
+ d=1e100.net; s=20230601; t=1697034718; x=1697639518;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XoPr7kq4lTGoDJCeGPeHUS79QVFlvDkTG4LKHgUzEoY=;
- b=foljqBcL8Y/Qju7RSUA5DGRou3KX550Cke5v0k1lcgZg1ZZi6KXXRu9U+oJ1XQl3Pw
- N2UWjMT3Y8r8b3E+8HLSAARaGmeFy6qARgov+sNhITdOs2lkKcxFyVt+TbSP7D3XVLUn
- gpuKKaQf10Yfg3BbDaQT12T48UnA3bkwkkVv67t5O+nlU0YZGpN7E2/A03h7AnKPEiR/
- oqtZOpFVUxNtYCM/GnQ2z7SenghT4b519QPHPgJQiF2QF1CN8PcyrA41F7+hN2Tevbu/
- Jre2rMyxiSW5/FGs+pL9qbPysx6zc2n+wDxY5cTbRwOJB1DQM7x+nNcqaFGDHER8rLrk
- 9nRw==
-X-Gm-Message-State: AOJu0YxKGzR6O8smbo+N56nlZkCrUuZDPUMMJtVMlxMU2VQRMIBdmEHp
- bZ5D/SIIB/YozAie14kbHVBbefec2yn/N61zO6VOJ/VuV+BvepiJAHZsLmEpnoplLD/rWQlesny
- +7Y4+kdF0HyJnaaM=
-X-Received: by 2002:adf:9bcd:0:b0:32d:31ee:94a4 with SMTP id
- e13-20020adf9bcd000000b0032d31ee94a4mr3618303wrc.67.1697034677395; 
- Wed, 11 Oct 2023 07:31:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWRuBbhqoUu8heifsxU4LSbnkaXIsSIg+nIAmQnH/d7KWGsHDEn2S3ln0RrL213+5AwB+7xg==
-X-Received: by 2002:adf:9bcd:0:b0:32d:31ee:94a4 with SMTP id
- e13-20020adf9bcd000000b0032d31ee94a4mr3618289wrc.67.1697034677079; 
- Wed, 11 Oct 2023 07:31:17 -0700 (PDT)
+ bh=DYjyP5L4pqIKB99D590XvQftimcrqKdSZZ8Tr6IzAO8=;
+ b=qbhRERUemf8M3V3iRy44QN/819eNEKc24ecK6hkY8onkztnEkB7e2vGdj8i5eUFUD0
+ IeSPpXED7j+CvaYHcFecxvQnVWlYijSpFUkDp3HsSlCgTvdrJ8bbMoomdSfP3//UiKWP
+ xHAK7JDeTWaYm/AOTp6rWwzaH6fHFGlqv0ovmmh58wihfIxUqtWMdoNVUIqX/sKdHa98
+ BM4vzqWjTLiUlbH0Gq/Lv7Pq9YsQiTNsOy+DknLJ64+ujU25eP7B7mUM4KH56HLY0k+V
+ lYbNu7t4ZFJyaxFV+gu6KC5Yo1212dnchuATw6TZxDGKqNcz+2SlqlqLx8ohl0PDiAbz
+ IbMg==
+X-Gm-Message-State: AOJu0Ywnf0lh3JhpFPHC2Px6uOKHcGI5rd6uAhM6v5TGYoY3fJsXR1xF
+ u8p8t7UxX95Konp8N/LHrLwYPM9GhxlUbQfrqCYsPub46aAW4iF+S3cyl23L2LUcXVtxklplFV2
+ Wwe9AMraMAsmNekM=
+X-Received: by 2002:a05:6000:1189:b0:321:6936:c217 with SMTP id
+ g9-20020a056000118900b003216936c217mr17735418wrx.14.1697034718572; 
+ Wed, 11 Oct 2023 07:31:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFO4TX6pyhWjvidK2HF3DE8sWWoxaNCGE3zrjydYoI0AdCtvcgiZ7gmluJ+V+mG1RL2F21Vog==
+X-Received: by 2002:a05:6000:1189:b0:321:6936:c217 with SMTP id
+ g9-20020a056000118900b003216936c217mr17735408wrx.14.1697034718340; 
+ Wed, 11 Oct 2023 07:31:58 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- d12-20020a5d538c000000b0032769103ae9sm15654773wrv.69.2023.10.11.07.31.16
+ e15-20020adff34f000000b0031c6e1ea4c7sm15698200wrp.90.2023.10.11.07.31.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 07:31:16 -0700 (PDT)
+ Wed, 11 Oct 2023 07:31:57 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
@@ -71,15 +71,15 @@ Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
  =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 8/9] tests/qtest/migration: Support more than one
- QEMU binary
-In-Reply-To: <20231006123910.17759-9-farosas@suse.de> (Fabiano Rosas's message
- of "Fri, 6 Oct 2023 09:39:09 -0300")
+Subject: Re: [PATCH v2 9/9] tests/qtest: Don't print messages from query
+ instances
+In-Reply-To: <20231006123910.17759-10-farosas@suse.de> (Fabiano Rosas's
+ message of "Fri, 6 Oct 2023 09:39:10 -0300")
 References: <20231006123910.17759-1-farosas@suse.de>
- <20231006123910.17759-9-farosas@suse.de>
+ <20231006123910.17759-10-farosas@suse.de>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 11 Oct 2023 16:31:15 +0200
-Message-ID: <87cyxl8c3w.fsf@secure.mitica>
+Date: Wed, 11 Oct 2023 16:31:56 +0200
+Message-ID: <878r898c2r.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
@@ -108,55 +108,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fabiano Rosas <farosas@suse.de> wrote:
-> We have strict rules around migration compatibility between different
-> QEMU versions but no test to validate the migration state between
-> different binaries.
+> Now that we can query more than one binary, the "starting QEMU..."
+> message can get a little noisy. Mute those messages unless we're
+> running with --verbose.
 >
-> Add infrastructure to allow running the migration tests with two
-> different QEMU binaries as migration source and destination.
->
-> The code now recognizes two new environment variables
-> QTEST_QEMU_BINARY_SRC and QTEST_QEMU_BINARY_DST. In the absence of
-> either of them, the test will use the QTEST_QEMU_BINARY variable. If
-> both are missing then the tests are run with single binary as
-> previously.
->
-> The machine type is selected automatically as the latest machine type
-> version that works with both binaries.
->
-> Usage:
-> QTEST_QEMU_BINARY_SRC=../build-8.2.0/qemu-system-x86_64 \
-> QTEST_QEMU_BINARY_DST=../build-8.1.0/qemu-system-x86_64 \
-> ./tests/qtest/migration-test
+> Only affects qtest_init() calls from within libqtest. The tests
+> continue to output as usual.
 >
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-
-> ---
->  tests/qtest/migration-test.c | 29 +++++++++++++++++++++++++----
->  1 file changed, 25 insertions(+), 4 deletions(-)
->
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 7c10ac925b..984f52becd 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -66,6 +66,9 @@ static bool got_dst_resume;
->   */
->  #define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
->  
-> +#define QEMU_ENV_SRC "QTEST_QEMU_BINARY_SRC"
-> +#define QEMU_ENV_DST "QTEST_QEMU_BINARY_DST"
-> +
->  #if defined(__linux__)
->  #include <sys/syscall.h>
->  #include <sys/vfs.h>
-> @@ -747,6 +750,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->      const char *arch = qtest_get_arch();
->      const char *memory_size;
->      const char *machine;
-> +    g_autofree char *machine_type = NULL;
-
-machine_name?
 
 
