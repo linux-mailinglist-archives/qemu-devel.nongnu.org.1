@@ -2,125 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C08A7C56D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B05F7C56D2
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:29:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqaBp-0001JN-2i; Wed, 11 Oct 2023 10:27:57 -0400
+	id 1qqaCx-0002UL-SL; Wed, 11 Oct 2023 10:29:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqaBh-0001In-1U
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:27:50 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqaCp-0002Lx-3A
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:28:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqaBd-0003Nx-KQ
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:27:46 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqaCm-0003XS-TO
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:28:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697034464;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=VdoJG8USBbqE19zn8X/6GZrDS0fPqFDoGsiARTHcEmA=;
- b=dN8bdB2KUQgByXFTexYCtXC4TMcSNJoatPjbm2v+D+zLbHwV7U7NOJbEsJp7TWrxFiCoTn
- nnS4B+qe/DKqHJJ6gG0xWd7dR8wqjWFNAs4QJ17YNFpVEMZJ7nGMAdNU5ZELeIC+E7RP5Z
- reN/2NEISf70ipmfSWxiAL57APR23/0=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697034536;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=SGTiz0H+3s8sBsmEOUZ09sGIOOEhyppjQL+3OgyhDyY=;
+ b=cb968RUxAxoHhxGOH4pYNp0VaeMrujZjQGaxYfzqGaHSOWakXPyaDTDmc6P7fIUNH13l1b
+ pKEyfz6cNObkZs9JFXoDA46KlhX5L86LPpLFEnvv4lWKyGdKoeNa3sR+XepCezjPsdq3AY
+ 7J3CCAFWstwi96+4AByTwPjlwaSb1pQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-pGMY1ZfcMHmr9oOuI2h6zA-1; Wed, 11 Oct 2023 10:27:38 -0400
-X-MC-Unique: pGMY1ZfcMHmr9oOuI2h6zA-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-41b19dc9ee4so38312571cf.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:27:38 -0700 (PDT)
+ us-mta-70-bGLls2LiPlqZ3CZldLJNpg-1; Wed, 11 Oct 2023 10:28:43 -0400
+X-MC-Unique: bGLls2LiPlqZ3CZldLJNpg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4066e59840eso42821025e9.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:28:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697034458; x=1697639258;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VdoJG8USBbqE19zn8X/6GZrDS0fPqFDoGsiARTHcEmA=;
- b=P3n7zjeUzCdkLiDgIG9cZ4JZ0tmBrWTbSe59n72mFqDjyd4MsgmspOjC4LhtBKAH+d
- h8TgI3tEBCBqPzZY3roR7hHg8m27OqHS/yPabltSV1UGMi477VLKjnI/0xcV8y5HiE7q
- YnRI/cXBoz4RV4h5iMY5oFWUEYwPj4KU51dhqodLBLxABV2a1yhvaJz9RTYcGcUtVMVP
- ikjLPC/Y3oCMW4+hc9urF6PvzUIrV4WDMZetmdzWpakFA7CIt7vQULPyGrh3853sv7XX
- 3O2cm8Z33HACXXZ+z2Gg3dJIzG8WPEGWfOn06jIEm/ZtQzT421bch74JbiEs5pg0MPit
- Sl+g==
-X-Gm-Message-State: AOJu0YwJFdYbpFaHPeu4l7gcAnDrcJPHQ/U1u4adfbz+lNOyWr1QrwG6
- OfI5E7s1sOC2N6e960SNYQKgDHdN9vNA3gFfjtraYMZNyVAzwDJb1Tq/fVXyRImvKAjw7vF/f7v
- 9gi+NokVVvC5FT9A=
-X-Received: by 2002:a05:622a:1d1:b0:418:797:20b6 with SMTP id
- t17-20020a05622a01d100b00418079720b6mr22204943qtw.5.1697034458166; 
- Wed, 11 Oct 2023 07:27:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGOcBjPw1N6m8VACx99uJblYj5ubMSeeY1jGRPnf6lHrZP7A8gaaHRVdXB9B8EArefKA/9gOg==
-X-Received: by 2002:a05:622a:1d1:b0:418:797:20b6 with SMTP id
- t17-20020a05622a01d100b00418079720b6mr22204929qtw.5.1697034457892; 
- Wed, 11 Oct 2023 07:27:37 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
- [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- kf13-20020a05622a2a8d00b004194c21ee85sm5400531qtb.79.2023.10.11.07.27.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 07:27:37 -0700 (PDT)
-Message-ID: <714a781c-2689-4d35-a254-e10703b70431@redhat.com>
-Date: Wed, 11 Oct 2023 16:27:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] hw/ppc/ppc4xx_pci: Move ppc4xx_pci.c to hw/pci-host/
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ d=1e100.net; s=20230601; t=1697034522; x=1697639322;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SGTiz0H+3s8sBsmEOUZ09sGIOOEhyppjQL+3OgyhDyY=;
+ b=byS4rtNBuaeB9BEHMTgW0zfwYHsR2+xqleWm3bdQNs5txufLa2vri04ltPrSkc1VTY
+ l7ddryXtuDBgtqp75suovTwfu21jwChZsymWlatm249jxTcdrUE9g+CR76QfIlBYnv9R
+ T+IN1d/udT54KvFNNBMAZ/6+i9GbifkJ+3Sr49ArtCwJtjaHiVoKCkQctKNuwZ3T75/t
+ AKDoz/ig2ae0Ap6jR1Tq1hXK4L+kMkPebhWat2OtCKRlH9mreQjmcPKLEuQlknIJztUQ
+ AWzC2No2JyUxqTwY9IAOR6mzHpH3Xl0V6TmZoiGDJoHMklPOBytIg/JsQ3pMLP8LuCuf
+ HDBw==
+X-Gm-Message-State: AOJu0YzmEkHSv45YLaF9g+51+yefqqmTMs0aRrYPs9DdF63kplmJmljv
+ NzWXxtB8Wy1MvDdPImfYXk8h4xVqVyhcThds8HnVq28Dr4XUmMOvf8r8I7oKN9Z596s9x3y57Oc
+ Fb4Hqa+gUtagOmaI=
+X-Received: by 2002:a7b:cbd5:0:b0:3ff:ca80:eda3 with SMTP id
+ n21-20020a7bcbd5000000b003ffca80eda3mr19026253wmi.10.1697034522734; 
+ Wed, 11 Oct 2023 07:28:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1cRGvDVUnVl84S8cu5L2/TQjrnO9sRVjaoZs+wLoEzj4IWESL8MQSfenIrFMChgmSUaCODA==
+X-Received: by 2002:a7b:cbd5:0:b0:3ff:ca80:eda3 with SMTP id
+ n21-20020a7bcbd5000000b003ffca80eda3mr19026234wmi.10.1697034522393; 
+ Wed, 11 Oct 2023 07:28:42 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ m7-20020a7bce07000000b003fc16ee2864sm17018325wmc.48.2023.10.11.07.28.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Oct 2023 07:28:41 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Daniel
+ P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
+ =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-References: <20231011132427.65001-1-philmd@linaro.org>
- <20231011132427.65001-5-philmd@linaro.org>
- <8ce1ba6a-f4e0-44ce-d895-81f9ff236ce5@eik.bme.hu>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <8ce1ba6a-f4e0-44ce-d895-81f9ff236ce5@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Subject: Re: [PATCH v2 7/9] tests/qtest/migration: Define a machine for all
+ architectures
+In-Reply-To: <20231006123910.17759-8-farosas@suse.de> (Fabiano Rosas's message
+ of "Fri, 6 Oct 2023 09:39:08 -0300")
+References: <20231006123910.17759-1-farosas@suse.de>
+ <20231006123910.17759-8-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 11 Oct 2023 16:28:41 +0200
+Message-ID: <87h6mx8c86.fsf@secure.mitica>
+MIME-Version: 1.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -141,22 +103,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/2023 15.41, BALATON Zoltan wrote:
-> On Wed, 11 Oct 2023, Philippe Mathieu-Daudé wrote:
->> ppc4xx_pci.c is moved from the target specific ppc_ss[] meson
->> source set to pci_ss[] which is common to all targets: the
->> object is built once.
-> 
-> At this point I'm not sure. This device is only used for PPC machines so 
-> it's kind of target specific. Why do you want to compile it for other targets?
+Fabiano Rosas <farosas@suse.de> wrote:
+> Stop relying on defaults and select a machine explicitly for every
+> architecture.
+>
+> This is a prerequisite for being able to select machine types for
+> migration using different QEMU binaries for source and destination.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  tests/qtest/migration-test.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index 46f1c275a2..7c10ac925b 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -746,6 +746,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>      const char *kvm_opts = NULL;
+>      const char *arch = qtest_get_arch();
+>      const char *memory_size;
+> +    const char *machine;
+>  
+>      if (args->use_shmem) {
+>          if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
+> @@ -758,11 +759,13 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>      got_dst_resume = false;
+>      if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
+>          memory_size = "150M";
+> +        machine = "pc";
 
-This way the object code can be shared between qemu-system-ppc64 and 
-qemu-system-ppc. I.e. we only have to compile it once instead of twice.
+I would suggest:
 
-  Thomas
+      if (strcmp(arch, "i386")) {
+          machine = "pc";
+      } else {
+          machine = "q35";
+      }
 
+New development is happening in q35, so I think this should be the more tested.
+
+> @@ -774,10 +777,12 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>                                        "'nvramrc=hex .\" _\" begin %x %x "
+>                                        "do i c@ 1 + i c! 1000 +loop .\" B\" 0 "
+>                                        "until'", end_address, start_address);
+> +        machine = "pseries";
+>          arch_opts = g_strdup("-nodefaults -machine vsmt=8");
+>      } else if (strcmp(arch, "aarch64") == 0) {
+>          memory_size = "150M";
+> -        arch_opts = g_strdup_printf("-machine virt,gic-version=max -cpu max "
+> +        machine = "virt";
+> +        arch_opts = g_strdup_printf("-machine gic-version=max -cpu max "
+
+Does this double -machine command line works?
+
+I expect yes, but who knows.
+
+Later, Juan.
 
 
