@@ -2,80 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751647C5B8E
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 20:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EFB7C5B8D
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 20:46:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqeDx-0001mL-Kj; Wed, 11 Oct 2023 14:46:25 -0400
+	id 1qqeDz-000250-RG; Wed, 11 Oct 2023 14:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqeDu-0001cV-CF
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 14:46:22 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqeDx-0001pr-DU
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 14:46:25 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqeDs-0003i1-P8
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 14:46:22 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqeDu-0003if-OI
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 14:46:25 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6D9052184F;
- Wed, 11 Oct 2023 18:46:19 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id AF00E1F37C;
+ Wed, 11 Oct 2023 18:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697049979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1697049981; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hykwTlJ9Xm5o57C1/e0u3flzezbhfATgfKIKfLqGbGs=;
- b=dIf6WqFoj8+H6baKbfEtEWKfoVxY67HETrw4Kk1PCaKt2CaVTQ+d88+Gt6CbVspJdJGRDY
- zCtvWeaR+lWRDK1Zil7tMIzVwL2RSDOYDnGcv9Xoi4Zx+flpH6Ojx/0mlm+OxX91SV8E5B
- NpWsKWgkD1Y6vo84REqPytMUttzO42k=
+ bh=EAy++NtTPppfDY+oHDsGdF5VDvFQVkIQJMFIGFKeIMs=;
+ b=JuHmLSbFaExQdYpnlzqL0rgklshagMirpyxuvxSBv1MYk+ptw3cB3Xg2972sqEjBmPwZig
+ 4MIvyauUUvy9u5KVXrqi6b4EbapqSbBPK6kpw7rQ8NfsVo7WklMqHgj90HzvO/tNZeI/kD
+ QkWb0vucgY5BKOTzRK9Y3PKMG7dSW2E=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697049979;
+ s=susede2_ed25519; t=1697049981;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hykwTlJ9Xm5o57C1/e0u3flzezbhfATgfKIKfLqGbGs=;
- b=kMoX17XhJWph4XBSphht5gHS+5r9IusGhwplBdI6k3FI4LmBKDqwwjhMBaYhEVI/Ay9FIl
- BNmhI4YmlTwKMYCQ==
+ bh=EAy++NtTPppfDY+oHDsGdF5VDvFQVkIQJMFIGFKeIMs=;
+ b=qnrwbA+Mo8q3Q17BCnBns4uk/sO5mvEbqm/p8/Rnv0WmtwbS86t7xZWks1C5d2dK062SFk
+ dZe7km+tYLV+W+Cg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1F62F134F5;
- Wed, 11 Oct 2023 18:46:17 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CB09A134F5;
+ Wed, 11 Oct 2023 18:46:19 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id uC+qNnntJmU1bQAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 11 Oct 2023 18:46:17 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id iE8SJXvtJmU1bQAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 11 Oct 2023 18:46:19 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH RESEND 6/7] migration/ram: Merge save_zero_page functions
-Date: Wed, 11 Oct 2023 15:46:03 -0300
-Message-Id: <20231011184604.32364-7-farosas@suse.de>
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH RESEND 7/7] tests/qtest: Re-enable multifd cancel test
+Date: Wed, 11 Oct 2023 15:46:04 -0300
+Message-Id: <20231011184604.32364-8-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231011184604.32364-1-farosas@suse.de>
 References: <20231011184604.32364-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: 3.90
-X-Spamd-Result: default: False [3.90 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_THREE(0.00)[4]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- R_MISSING_CHARSET(2.50)[]; BROKEN_CONTENT_TYPE(1.50)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-0.00)[29.56%]
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -98,97 +86,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't need to do this in two pieces. One single function makes it
-easier to grasp, specially since it removes the indirection on the
-return value handling.
+We've found the source of flakiness in this test, so re-enable it.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/ram.c | 46 +++++++++++++---------------------------------
- 1 file changed, 13 insertions(+), 33 deletions(-)
+ tests/qtest/migration-test.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 1177563523..24c249f944 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1136,32 +1136,6 @@ void ram_release_page(const char *rbname, uint64_t offset)
-     ram_discard_range(rbname, offset, TARGET_PAGE_SIZE);
- }
- 
--/**
-- * save_zero_page_to_file: send the zero page to the file
-- *
-- * Returns the size of data written to the file, 0 means the page is not
-- * a zero page
-- *
-- * @pss: current PSS channel
-- * @block: block that contains the page we want to send
-- * @offset: offset inside the block for the page
-- */
--static int save_zero_page_to_file(PageSearchStatus *pss, RAMBlock *block,
--                                  ram_addr_t offset)
--{
--    uint8_t *p = block->host + offset;
--    QEMUFile *file = pss->pss_channel;
--    int len = 0;
--
--    if (buffer_is_zero(p, TARGET_PAGE_SIZE)) {
--        len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_ZERO);
--        qemu_put_byte(file, 0);
--        len += 1;
--        ram_release_page(block->idstr, offset);
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 2dc6ac2f87..049463ee5e 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -3068,14 +3068,8 @@ int main(int argc, char **argv)
+     }
+     qtest_add_func("/migration/multifd/tcp/plain/none",
+                    test_multifd_tcp_none);
+-    /*
+-     * This test is flaky and sometimes fails in CI and otherwise:
+-     * don't run unless user opts in via environment variable.
+-     */
+-    if (getenv("QEMU_TEST_FLAKY_TESTS")) {
+-        qtest_add_func("/migration/multifd/tcp/plain/cancel",
+-                       test_multifd_tcp_cancel);
 -    }
--    return len;
--}
--
- /**
-  * save_zero_page: send the zero page to the stream
-  *
-@@ -1175,12 +1149,19 @@ static int save_zero_page_to_file(PageSearchStatus *pss, RAMBlock *block,
- static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
-                           ram_addr_t offset)
- {
--    int len = save_zero_page_to_file(pss, block, offset);
-+    uint8_t *p = block->host + offset;
-+    QEMUFile *file = pss->pss_channel;
-+    int len = 0;
- 
--    if (!len) {
--        return -1;
-+    if (!buffer_is_zero(p, TARGET_PAGE_SIZE)) {
-+        return 0;
-     }
- 
-+    len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_ZERO);
-+    qemu_put_byte(file, 0);
-+    len += 1;
-+    ram_release_page(block->idstr, offset);
-+
-     stat64_add(&mig_stats.zero_pages, 1);
-     ram_transferred_add(len);
- 
-@@ -1194,7 +1175,7 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
-         XBZRLE_cache_unlock();
-     }
- 
--    return 1;
-+    return len;
- }
- 
- /*
-@@ -2150,9 +2131,8 @@ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
-         return 1;
-     }
- 
--    res = save_zero_page(rs, pss, block, offset);
--    if (res > 0) {
--        return res;
-+    if (save_zero_page(rs, pss, block, offset)) {
-+        return 1;
-     }
- 
-     /*
++    qtest_add_func("/migration/multifd/tcp/plain/cancel",
++                   test_multifd_tcp_cancel);
+     qtest_add_func("/migration/multifd/tcp/plain/zlib",
+                    test_multifd_tcp_zlib);
+ #ifdef CONFIG_ZSTD
 -- 
 2.35.3
 
