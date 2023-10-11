@@ -2,48 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3CB7C558D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CE67C5585
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZLr-0000Gg-QV; Wed, 11 Oct 2023 09:34:15 -0400
+	id 1qqZLj-0007ZA-Ox; Wed, 11 Oct 2023 09:34:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqZLU-0007ZE-VP; Wed, 11 Oct 2023 09:34:02 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqZLR-0007Qe-Cf; Wed, 11 Oct 2023 09:33:51 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 0252174632B;
- Wed, 11 Oct 2023 15:32:50 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 8C3A37456AA; Wed, 11 Oct 2023 15:32:49 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 8A3E4745681;
- Wed, 11 Oct 2023 15:32:49 +0200 (CEST)
-Date: Wed, 11 Oct 2023 15:32:49 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 1/5] hw/ppc/ppc4xx_pci: Remove unused "hw/ppc/ppc.h" header
-In-Reply-To: <20231011132427.65001-2-philmd@linaro.org>
-Message-ID: <a3182963-3e65-cc95-29f7-6d68ae1c18a3@eik.bme.hu>
-References: <20231011132427.65001-1-philmd@linaro.org>
- <20231011132427.65001-2-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqZKj-0006p6-QW
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:33:14 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqZKe-00076I-I2
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:33:05 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 5305B1FEB6;
+ Wed, 11 Oct 2023 13:32:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697031176; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=m8RJGvF+xMhfxD+XKl08vS/z6sQv+VY2hEu5l0zS7Hc=;
+ b=fee849W8/rvpilDB11qez0yvMjRFp0i6PON55n9XvHcuLNe2dqPRcoPNcqTojubSmqnuZd
+ d4L07rcdkAK6kvP014UYD20xVAC6RQ0yPrtHUhS+LhpkExRVH2BAu2LeXrc6xC8HN+Yl3R
+ 4Syr3frheADIc1gusWUKMP2NuA/Uxhw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697031176;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=m8RJGvF+xMhfxD+XKl08vS/z6sQv+VY2hEu5l0zS7Hc=;
+ b=R7MCjGDsVTEn8ZwUUKuZEfs3uzULMNowbG7d7uY0NsuvyOclbiVJ/fu2UmiWrnVTEihgvz
+ UdtE7ROmwz9M+lDw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D8134134F5;
+ Wed, 11 Oct 2023 13:32:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id sb2hKAekJmXxTgAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 11 Oct 2023 13:32:55 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>, Cleber
+ Rosa <crosa@redhat.com>
+Subject: Re: [PATCH v2 4/6] migration: Fix analyze-migration.py when
+ ignore-shared is used
+In-Reply-To: <87v8bd9tsr.fsf@secure.mitica>
+References: <20231009184326.15777-1-farosas@suse.de>
+ <20231009184326.15777-5-farosas@suse.de> <87v8bd9tsr.fsf@secure.mitica>
+Date: Wed, 11 Oct 2023 10:32:53 -0300
+Message-ID: <87sf6h1dyy.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1810067524-1697031169=:10652"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,47 +87,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Juan Quintela <quintela@redhat.com> writes:
 
---3866299591-1810067524-1697031169=:10652
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Wed, 11 Oct 2023, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-
-> ---
-> hw/ppc/ppc440_pcix.c | 1 -
-> hw/ppc/ppc4xx_pci.c  | 1 -
-> 2 files changed, 2 deletions(-)
+> Fabiano Rosas <farosas@suse.de> wrote:
+>> The script is currently broken when the x-ignore-shared capability is
+>> used:
+>>
+>> Traceback (most recent call last):
+>>   File "./scripts/analyze-migration.py", line 656, in <module>
+>>     dump.read(dump_memory = args.memory)
+>>   File "./scripts/analyze-migration.py", line 593, in read
+>>     section.read()
+>>   File "./scripts/analyze-migration.py", line 163, in read
+>>     self.name = self.file.readstr(len = namelen)
+>>   File "./scripts/analyze-migration.py", line 53, in readstr
+>>     return self.readvar(len).decode('utf-8')
+>> UnicodeDecodeError: 'utf-8' codec can't decode byte 0x82 in position 55: invalid start byte
+>>
+>> We're currently adding data to the middle of the ram section depending
+>> on the presence of the capability. As a consequence, any code loading
+>> the ram section needs to know about capabilities so it can interpret
+>> the stream.
+>>
+>> Skip the byte that's added when x-ignore-shared is used to fix the
+>> script.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 >
-> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-> index 672090de94..e4dadbc84d 100644
-> --- a/hw/ppc/ppc440_pcix.c
-> +++ b/hw/ppc/ppc440_pcix.c
-> @@ -25,7 +25,6 @@
-> #include "qemu/module.h"
-> #include "qemu/units.h"
-> #include "hw/irq.h"
-> -#include "hw/ppc/ppc.h"
-> #include "hw/ppc/ppc4xx.h"
-> #include "hw/pci/pci_device.h"
-> #include "hw/pci/pci_host.h"
-> diff --git a/hw/ppc/ppc4xx_pci.c b/hw/ppc/ppc4xx_pci.c
-> index 6652119008..51c265f0ba 100644
-> --- a/hw/ppc/ppc4xx_pci.c
-> +++ b/hw/ppc/ppc4xx_pci.c
-> @@ -24,7 +24,6 @@
-> #include "qemu/osdep.h"
-> #include "qemu/log.h"
-> #include "hw/irq.h"
-> -#include "hw/ppc/ppc.h"
-> #include "hw/ppc/ppc4xx.h"
-> #include "migration/vmstate.h"
-> #include "qemu/module.h"
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 >
---3866299591-1810067524-1697031169=:10652--
+>> @@ -582,6 +586,7 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
+>>                  config_desc = self.vmsd_desc.get('configuration')
+>>                  section = ConfigurationSection(file, config_desc)
+>>                  section.read()
+>> +                ramargs['ignore_shared'] = section.has_capability('x-ignore-shared')
+>
+> should we consider s/x-ignore-shared/ignore-shared/?
+>
+
+We can consider s/ignore-shared/x-ignore-shared/ if that's what you
+mean. The way you suggested doesn't work because the cap name comes from
+QEMU with the "x-" part in it.
+
+If you meant filtering the x out when parsing the capabilities in this
+script, I think that would cause a sort of a UX issue because we need to
+use x-ignore-shared to set the cap in QMP/HMP.
 
