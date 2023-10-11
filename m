@@ -2,93 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A71C7C56B0
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2407C56AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:21:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqa5D-00029X-Bf; Wed, 11 Oct 2023 10:21:10 -0400
+	id 1qqa5U-0002Vj-Rl; Wed, 11 Oct 2023 10:21:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqa58-00025j-Rw
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:21:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqa5P-0002TC-2E
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:21:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqa57-0001sL-Df
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:21:02 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqa5M-0001xu-J4
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:21:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697034060;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=4i01pHgYOKHqWUi6TbE5vaxHGHe5OvZjHuFUyqH/vss=;
- b=H/SzM6TgTmpcmXE+Na3PA+dW/la9Ew70lV5WsmkUzLsGVqhAIcVfXUmgvbv9FyN8SyWEIr
- tr/AZYQ3mEFHMsVnzyUxi4ppYZ7dgns39YXCllmbRYxcEN2HDECYByHV8h0vz3vgz9sqhR
- zstlDxDVwYXjVFLqsHQL6Sm7Q8L4KY8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-33-uLmDb-DUMtW6g-pSvGiGoA-1; Wed, 11 Oct 2023 10:20:43 -0400
-X-MC-Unique: uLmDb-DUMtW6g-pSvGiGoA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4054743df06so49349105e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:20:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697034041; x=1697638841;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4i01pHgYOKHqWUi6TbE5vaxHGHe5OvZjHuFUyqH/vss=;
- b=dgamS6NGH9Lk1agXxouZ9YuMpqPjkvQW7WKGABCJRED6/p/cB5LjhDlojj+XwWkBHB
- zr/YRGqz/kQEWRSZbMAOiZ4ElXRoqKPJuCKlqQAOJ729rbCyOX1ZCWPCoshYc7OEt92d
- eVON3N6aNtFJGPQI5PoxtOIgtf3ArkFkCzDOot/mlOM6uc+2F955ofuG4xAs8oWMMegw
- 8ok4/JHkY83w53dKR273PltkolOMwV8Kmy1p4ZEN84QQjq04hyxiEir5AoajDNnOcHSF
- P64s9zQB1kSl2RrkGOxjBzvqE0SjOvpV8rmuV9o2oIpfdilms02nVZAMUa//uQBQq5pp
- KYww==
-X-Gm-Message-State: AOJu0YwJQvgSEG/4JkNuWurIeYyG/LnSwfQh5EUgPyHD4TUlGvJcNQl6
- ZrRVO4YkBPPX7q2JhbZcQT+uM1ptCfPuydEEqp/bx/v9cQBt55B8dCsUquGd7WPfkpzGSY2vYLz
- XkzyFbz0nBEsKc+8L81aUu48=
-X-Received: by 2002:a05:600c:c9:b0:406:4d8f:9fee with SMTP id
- u9-20020a05600c00c900b004064d8f9feemr19388852wmm.24.1697034041535; 
- Wed, 11 Oct 2023 07:20:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzXYpRVdRL+nmDI+YOxLq2nvfYQ2DWAJQMPhYn3ZLEmPStTWkSEUacw5SlJPG8kKza7H1iXA==
-X-Received: by 2002:a05:600c:c9:b0:406:4d8f:9fee with SMTP id
- u9-20020a05600c00c900b004064d8f9feemr19388820wmm.24.1697034041070; 
- Wed, 11 Oct 2023 07:20:41 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- 1-20020a05600c230100b0040644e699a0sm19303923wmo.45.2023.10.11.07.20.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 07:20:39 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Daniel
- P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
- =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 2/9] tests/qtest: Introduce qtest_init_with_env
-In-Reply-To: <20231006123910.17759-3-farosas@suse.de> (Fabiano Rosas's message
- of "Fri, 6 Oct 2023 09:39:03 -0300")
-References: <20231006123910.17759-1-farosas@suse.de>
- <20231006123910.17759-3-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 11 Oct 2023 16:20:38 +0200
-Message-ID: <875y3d9r61.fsf@secure.mitica>
+ s=mimecast20190719; t=1697034075;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IPeR+3BqL/3G6jsEcBeUtOsQNf3MRwxQ+Q0BcH5+UKA=;
+ b=ausrUrRr8HZcBotRyRbWRcLrXqsLSVBbSY3KkjHuk/wP3sKufcfQS+BxnL7O1/Qw7yObjC
+ 1RHXpYR3eLxKAaTXNvDrGsnesJZ5AqnT5ZCQ9InWPmPP208EFuQsfSZvC0nF2MDVgq9Hwf
+ dUfyE7O5t8FeTbqsBXC96AmgYRpHhsY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-596-XhhpKgNaPHqhmEAWYUM1aA-1; Wed, 11 Oct 2023 10:21:04 -0400
+X-MC-Unique: XhhpKgNaPHqhmEAWYUM1aA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D896D38125AB;
+ Wed, 11 Oct 2023 14:21:03 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9AF63C0F789;
+ Wed, 11 Oct 2023 14:21:03 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8E4F721E6904; Wed, 11 Oct 2023 16:21:02 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Fabiano
+ Rosas <farosas@suse.de>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
+ <thuth@redhat.com>
+Subject: Re: [PATCH v3 3/4] migration/qapi: Replace @MigrateSetParameters
+ with @MigrationParameters
+References: <20230905162335.235619-1-peterx@redhat.com>
+ <20230905162335.235619-4-peterx@redhat.com>
+ <87fs30is78.fsf@pond.sub.org> <ZRsff7Lmy7TnggK9@x1n>
+ <87sf6k2dax.fsf@pond.sub.org> <ZSVoK6YMgNzrDYGQ@x1n>
+ <878r8ajngg.fsf@pond.sub.org> <ZSWvYgKcGXlucXx6@x1n>
+ <875y3dixzp.fsf@pond.sub.org>
+Date: Wed, 11 Oct 2023 16:21:02 +0200
+In-Reply-To: <875y3dixzp.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Wed, 11 Oct 2023 06:28:26 +0200")
+Message-ID: <8734yhgrzl.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,20 +85,203 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> Add a version of qtest_init() that takes an environment variable
-> containing the path of the QEMU binary. This allows tests to use more
-> than one QEMU binary.
->
-> If no variable is provided or the environment variable does not exist,
-> that is not an error. Fallback to using QTEST_QEMU_BINARY.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Markus Armbruster <armbru@redhat.com> writes:
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> Hi, Markus,
+>>
+>> On Tue, Oct 10, 2023 at 09:18:23PM +0200, Markus Armbruster wrote:
+>>
+>> [...]
+>>
+>>> >> The point I was trying to make is this.  Before the patch, we reject
+>>> >> attempts to set the property value to null.  Afterwards, we accept them,
+>>> >> i.e. the patch loses "reject null property value".  If this loss is
+>>> >> undesirable, we better replace it with suitable hand-written code.
+>>> >
+>>> > I don't even know how to set it to NULL before.. as it can only be accessed
+>>> > via cmdline "-global" as mentioned above, which must be a string anyway.
+>>> > So I assume this is not an issue.
+>>> 
+>>> Something like
+>>> 
+>>>     {"execute": "migrate-set-parameters",
+>>>      "arguments": {"tls-authz": null}}
+>>> 
+>>> Hmm, crashes in migrate_params_apply(), which is a bug.  I'm getting
+>>> more and more suspicious about user-facing migration code...
+>>
+>> Did you apply patch 1 of this series?
+>
+> Since we're talking about "how to set it to NULL before", I was using
+> master.
+>
+>> https://lore.kernel.org/qemu-devel/20230905162335.235619-2-peterx@redhat.com/
+>>
+>> QMP "migrate-set-parameters" does not go via migration_properties, so even
+>> if we change handling of migration_properties, it shouldn't yet affect the
+>> QMP interface of that.
+>
+> I see.
+>
+> I want to understand the impact of the change from 'str' to 'StrOrNull'
+> on external interfaces.  The first step is to know where exactly the
+> type is exposed externally.  *Know*, not gut-feel based on intended use.
+>
+> I'll have another look at the schema change, and how the types are used.
+
+Schema changes:
+
+1. Change MigrationParameters members @tls-creds, @tls-hostname,
+   @tls-authz from 'str' to 'StrOrNull'
+
+2. Replace MigrateSetParameters by MigrationParameters.
+
+   No change, since they are identical after change 1.
+
+To determine the patch's impact, we need to examine uses of
+MigrationParameters members @tls-FOO before the patch.  These are:
+
+* Return type of query-migrate-parameters
+
+  Introspection shows the type change: the type's set of values now
+  includes JSON null.
+
+  Is JSON null possible?  See [*] below.
+
+* migrate_params_init()
+
+  Before the patch, we initialize to "".
+
+  Afterwards, we initialize to "" wrapped in a StrOrNull.
+
+  The initial value means "off" before and after.
+
+* migrate_params_check()
+
+  An error check gets updated.  Ignoring for now.
+
+* migrate_params_test_apply()
+
+  Function deleted in the patch, but you wrote that's wrong.  Ignoring
+  for now.
+
+* migrate_params_apply()
+
+  Duplicates the three parameters from argument @parameters into the
+  migration object's member parameters.
+
+  Argument @parameters comes from QMP via command
+  migrate-set-parameters.  Before the patch,
+  qmp_migrate_set_parameters() maps JSON null values to "".  Afterwards,
+  it passes the values verbatim.
+
+  Parameters stored in the migration object before and after the patch:
+
+  - When initialized and never changed: char * "", and StrOrNull
+    QTYPE_QSTRING "".
+
+  - When set to non-empty string with migrate-set-parameters or
+    equivalent: that non-empty string, and QTYPE_QSTRING with that
+    non-empty string.
+
+  - When reset with migrate-set-parameters with value "": "", and
+    QTYPE_QSTRING "".
+
+  - When reset with migrate-set-parameters with value null: "", and
+    QTYPE_QNULL.
+
+  Note that there's now a difference between passing "" and null to
+  migrate-set-parameters: the former results in value QTYPE_QSTRING "",
+  the latter QTYPE_QNULL.  Both values mean "off".  I hate this.  I very
+  much want a single C representation of "off".
+
+* MigrationState member @parameters.
+
+  Uses:
+
+  - Properties "tls-creds", "tls-hostname", "tls-authz"
+
+    These are externally accessible with -global.  The additional null
+    value is not accessible there: string input visitor limitation.  It
+    could become accessible depending on how we fix the crash bugs
+    related to that limitation, but we can worry about that when we do
+    it.
+
+    Digression: why do these properties even exist?  I believe we
+    created the "migration" (pseudo-)device just so we can use "compat
+    props" to apply machine- and accelerator-specific configuration
+    tweaks.  We then added configuration for *all* configuration
+    parameters, not just the ones that need tweaking.  The external
+    exposure of properties via -global is not something we wanted, it
+    just came with the part we wanted (compat props).  Accidental
+    external interface.  Ugh.
+
+    None of the tls-FOO are tweaked via compat props, so no worries
+    there.
+
+    I believe property access with qom-get and qom-set is not possible,
+    because the migration object is not part to the QOM tree, and
+    therefore is not reachable via any QOM path.  Aside: feels like
+    abuse of QOM.
+
+    It's also not part of the device tree rooted at the main system bus,
+    which means it isn't visible in "info qtree".  It is visible in
+    "info qdm", "device_add migration,help", and "-device
+    migration,help".  Output of the latter two changes.  All harmless.
+
+    I *think* that's all.
+
+  - migrate_tls(), migrate_tls_authz(), migrate_tls_creds(),
+    migrate_tls_hostname()
+
+    Before the patch, these return the respective migration parameter
+    directly.  I believe the value is never NULL.  Value "" is special
+    and means "off".
+
+    After the patch, these return the respective migration parameter
+    when it's a non-empty QTYPE_QSTRING, else NULL.  Value NULL means
+    off.
+
+    Note this maps both C representations of "off" to NULL.
+
+    This changes the return value for "off" from "" to NULL.
+    Improvement, because it results in a more pleasant "is off" check.
+
+  - qmp_query_migrate_parameters()
+
+    The three tls_FOO get duplicated into the return value.
+
+    Looks like the two different C representations of "off" bleed into
+    QMP (ugh!), and [*] JSON null is possible (incompatible change).
+
+* hmp_info_migrate_parameters()
+
+  The two different C representations of "off" are first mapped to NULL
+  with str_from_StrOrNull(), and then mapped to "" with a ?: operator.
+  Works.
+
+Bottom line:
+
+* Affected external interfaces:
+
+  - query-migrate-parameters: can now return either "" or null when TLS
+    is off.  null is an incompatible change.  Needs fixing.
+
+  - query-qmp-schema: shows null is now possible.  Correctly reflects
+    the backward incompatible change.  If we fix compatibility break, we
+    get a tolerable loss of typing precision instead.
+
+2. Two different C representations of "off".  Strong dislike.  I
+   recommend to fix the compatibility break by switching to a single C
+   representation.
+
+Thoughts?
+
+[...]
 
 
