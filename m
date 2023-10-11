@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87787C5AA2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 19:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 583547C5AB3
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 19:59:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqdRi-0001jD-LX; Wed, 11 Oct 2023 13:56:34 -0400
+	id 1qqdRf-0001Zo-VT; Wed, 11 Oct 2023 13:56:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qqdRN-0001NZ-3n
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:16 -0400
+ id 1qqdRD-0001Ii-VS
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qqdRL-0006iI-Id
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:12 -0400
+ id 1qqdRC-0006ci-BR
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697046970;
+ s=mimecast20190719; t=1697046961;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eTb6rdcl+c32NyMHVVUXgOQyn1VA7MoA9elnMO3rTDY=;
- b=DGM5b0pkF6uk7A9ls3tRHRk3DPn3VX8Ey24xaE4+GCsTzccd5HUUT5kiXbESt0Ib6OUWM4
- M9LBUEkk45+KYGLwxTHyXP75G2vTO5U30t1WOorAD/AOPFE0ci4kgt7eOMQ3KzPR7RGHVv
- rBP/XLZCKL7rclr5lDN/lKvxXx81Vls=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-515-Qj_Vg2HyNrafNrrQ8z_QBw-1; Wed, 11 Oct 2023 13:55:56 -0400
-X-MC-Unique: Qj_Vg2HyNrafNrrQ8z_QBw-1
+ bh=v/Ia+wknTFtXFM0YlGu3I5yrYzDAJ8TIDR+9DjqkzME=;
+ b=bngiaEdHSnTEyxPIcHJuRBDlUv7wGd4vxlCQ9OwAC31KgVFlw753hMLYpuzCFQdtYBeBLc
+ 6qEGR6XU4axfbeCXowkLtYucSn6Jqc23w9GhJZgCJqA7m6Q01ecVyMmY5roj5g7X+MLqhZ
+ eCJur/psI4L1+EXv+s+rFiNDsYGvSBc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-513-FuQgTJuJMUyMd6oZX84n_Q-1; Wed, 11 Oct 2023 13:55:59 -0400
+X-MC-Unique: FuQgTJuJMUyMd6oZX84n_Q-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D3F0728237C4;
- Wed, 11 Oct 2023 17:55:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB432858281;
+ Wed, 11 Oct 2023 17:55:58 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3FFFE492C3E;
- Wed, 11 Oct 2023 17:55:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 254F7492B00;
+ Wed, 11 Oct 2023 17:55:56 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
  jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
 Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
  philmd@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com
-Subject: [PATCH v3 07/13] virtio-iommu: Introduce per IOMMUDevice reserved
- regions
-Date: Wed, 11 Oct 2023 19:52:23 +0200
-Message-ID: <20231011175516.541374-8-eric.auger@redhat.com>
+Subject: [PATCH v3 08/13] range: Introduce range_inverse_array()
+Date: Wed, 11 Oct 2023 19:52:24 +0200
+Message-ID: <20231011175516.541374-9-eric.auger@redhat.com>
 In-Reply-To: <20231011175516.541374-1-eric.auger@redhat.com>
 References: <20231011175516.541374-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -65,7 +64,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,124 +80,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the time being the per device reserved regions are
-just a duplicate of IOMMU wide reserved regions. Subsequent
-patches will combine those with host reserved regions, if any.
+This helper reverses a list of regions within a [low, high]
+span, turning original regions into holes and original
+holes into actual regions, covering the whole UINT64_MAX span.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 
 ---
 
 v2 -> v3:
-- do the initialization of the GList when creating the IOMMUDevice
-  instead of in virtio_iommu_fill_resv_mem_prop(), which is called
-  conditionnally in driver's probe. Also use resv_region_list_insert()
----
- include/hw/virtio/virtio-iommu.h |  1 +
- hw/virtio/virtio-iommu.c         | 37 +++++++++++++++++++++++++-------
- 2 files changed, 30 insertions(+), 8 deletions(-)
+- now operate on GList's. Fix the commit msg by mentionning
+  low/high params
 
-diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
-index eea4564782..70b8ace34d 100644
---- a/include/hw/virtio/virtio-iommu.h
-+++ b/include/hw/virtio/virtio-iommu.h
-@@ -39,6 +39,7 @@ typedef struct IOMMUDevice {
-     AddressSpace  as;
-     MemoryRegion root;          /* The root container of the device */
-     MemoryRegion bypass_mr;     /* The alias of shared memory MR */
-+    GList *resv_regions;
- } IOMMUDevice;
+v1 -> v2:
+- Move range_inverse_array description comment in the header
+- Take low/high params
+---
+ include/qemu/range.h |  8 +++++++
+ util/range.c         | 55 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
+
+diff --git a/include/qemu/range.h b/include/qemu/range.h
+index aa671da143..205e1da76d 100644
+--- a/include/qemu/range.h
++++ b/include/qemu/range.h
+@@ -225,4 +225,12 @@ int range_compare(Range *a, Range *b);
  
- typedef struct IOMMUPciBus {
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 979cdb5648..0e2370663d 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -26,6 +26,7 @@
- #include "sysemu/kvm.h"
- #include "sysemu/reset.h"
- #include "sysemu/sysemu.h"
-+#include "qemu/reserved-region.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "trace.h"
-@@ -378,6 +379,19 @@ static void virtio_iommu_put_domain(gpointer data)
-     g_free(domain);
+ GList *range_list_insert(GList *list, Range *data);
+ 
++/*
++ * Inverse an array of sorted ranges over the [low, high] span, ie.
++ * original ranges becomes holes in the newly allocated inv_ranges
++ */
++void range_inverse_array(GList *in_ranges,
++                         GList **out_ranges,
++                         uint64_t low, uint64_t high);
++
+ #endif
+diff --git a/util/range.c b/util/range.c
+index 782cb8b21c..9605ccfcbe 100644
+--- a/util/range.c
++++ b/util/range.c
+@@ -66,3 +66,58 @@ GList *range_list_insert(GList *list, Range *data)
+ 
+     return list;
  }
- 
-+static void add_prop_resv_regions(IOMMUDevice *sdev)
++
++static inline
++GList *append_new_range(GList *list, uint64_t lob, uint64_t upb)
 +{
-+    VirtIOIOMMU *s = sdev->viommu;
-+    int i;
++    Range *new = g_new0(Range, 1);
 +
-+    for (i = 0; i < s->nr_prop_resv_regions; i++) {
-+        ReservedRegion *reg = g_new0(ReservedRegion, 1);
-+
-+        *reg = s->prop_resv_regions[i];
-+        sdev->resv_regions = resv_region_list_insert(sdev->resv_regions, reg);
-+    }
++    range_set_bounds(new, lob, upb);
++    return g_list_append(list, new);
 +}
 +
- static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
-                                               int devfn)
- {
-@@ -408,6 +422,7 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
- 
-         memory_region_init(&sdev->root, OBJECT(s), name, UINT64_MAX);
-         address_space_init(&sdev->as, &sdev->root, TYPE_VIRTIO_IOMMU);
-+        add_prop_resv_regions(sdev);
- 
-         /*
-          * Build the IOMMU disabled container with aliases to the
-@@ -629,17 +644,23 @@ static ssize_t virtio_iommu_fill_resv_mem_prop(VirtIOIOMMU *s, uint32_t ep,
- {
-     struct virtio_iommu_probe_resv_mem prop = {};
-     size_t size = sizeof(prop), length = size - sizeof(prop.head), total;
--    int i;
-+    IOMMUDevice *sdev;
-+    GList *l;
- 
--    total = size * s->nr_prop_resv_regions;
-+    sdev = container_of(virtio_iommu_mr(s, ep), IOMMUDevice, iommu_mr);
-+    if (!sdev) {
-+        return -EINVAL;
++
++void range_inverse_array(GList *in, GList **rev,
++                         uint64_t low, uint64_t high)
++{
++    Range *r, *rn;
++    GList *l = in, *out = *rev;
++
++    for (l = in; l && range_upb(l->data) < low; l = l->next) {
++        continue;
 +    }
- 
-+    total = size * g_list_length(sdev->resv_regions);
-     if (total > free) {
-         return -ENOSPC;
-     }
- 
--    for (i = 0; i < s->nr_prop_resv_regions; i++) {
--        unsigned subtype = s->prop_resv_regions[i].type;
--        Range *range = &s->prop_resv_regions[i].range;
-+    for (l = sdev->resv_regions; l; l = l->next) {
-+        ReservedRegion *reg = l->data;
-+        unsigned subtype = reg->type;
-+        Range *range = &reg->range;
- 
-         assert(subtype == VIRTIO_IOMMU_RESV_MEM_T_RESERVED ||
-                subtype == VIRTIO_IOMMU_RESV_MEM_T_MSI);
-@@ -857,7 +878,7 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
-     bool bypass_allowed;
-     int granule;
-     bool found;
--    int i;
-+    GList *l;
- 
-     interval.low = addr;
-     interval.high = addr + 1;
-@@ -895,8 +916,8 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
-         goto unlock;
-     }
- 
--    for (i = 0; i < s->nr_prop_resv_regions; i++) {
--        ReservedRegion *reg = &s->prop_resv_regions[i];
-+    for (l = sdev->resv_regions; l; l = l->next) {
-+        ReservedRegion *reg = l->data;
- 
-         if (range_contains(&reg->range, addr)) {
-             switch (reg->type) {
++
++    if (!l) {
++        out = append_new_range(out, low, high);
++        goto exit;
++    }
++    r = (Range *)l->data;
++
++    /* first range lob is greater than min, insert a first range */
++    if (range_lob(r) > low) {
++        out = append_new_range(out, low, MIN(range_lob(r) - 1, high));
++    }
++
++    /* insert a range inbetween each original range until we reach high */
++    for (; l->next; l = l->next) {
++        r = (Range *)l->data;
++        rn = (Range *)l->next->data;
++        if (range_lob(r) >= high) {
++            goto exit;
++        }
++        if (range_compare(r, rn)) {
++            out = append_new_range(out, range_upb(r) + 1,
++                                   MIN(range_lob(rn) - 1, high));
++        }
++    }
++
++    /* last range */
++    r = (Range *)l->data;
++
++    /* last range upb is less than max, insert a last range */
++    if (range_upb(r) <  high) {
++        out = append_new_range(out, range_upb(r) + 1, high);
++    }
++exit:
++    *rev = out;
++}
 -- 
 2.41.0
 
