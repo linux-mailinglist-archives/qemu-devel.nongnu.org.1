@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040F47C5AAA
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 19:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD677C5A98
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 19:57:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqdRf-0001RV-G9; Wed, 11 Oct 2023 13:56:31 -0400
+	id 1qqdRe-0001L7-JJ; Wed, 11 Oct 2023 13:56:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qqdRC-0001I8-61
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qqdR6-0001FK-QH
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:55:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qqdRA-0006b8-AJ
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:01 -0400
+ id 1qqdR5-0006Yi-1N
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:55:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697046959;
+ s=mimecast20190719; t=1697046953;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oz4XcpG3XDsEN2Gb30qmUwe5+qeUptHTmJ5OhaZxlzw=;
- b=SSyBLqYy6yrNDZLC/lEgwcoXUn/9dPLePa4hqO0/i02jugmqCeqp98kUUFvJoOPdlsfxjz
- tribediwa1KWaudbJxYpwBX9Oxl8Z8sGv7VjEDUQnuNFk0uE+YRUOYQuPCZRMh1G+HW0fV
- KTYzXXFPrUzrB9qV8V5/9CWTIrpdLfM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-688-e1AHgdNOO7Ky58BckyupEQ-1; Wed, 11 Oct 2023 13:55:47 -0400
-X-MC-Unique: e1AHgdNOO7Ky58BckyupEQ-1
+ bh=dPAnm5/3g206LbH2PuyKPpEUwRZ8C/v8XX4B3RVheHo=;
+ b=HWgJYV2yK0V9TpruWqlD3cZvjcGZs+A3/nMwCljC3nmwnUdRCoRE82l3bm53rL5c+JPtYC
+ Zm4IiGi+qYshF2zpBMIA9MdiO9LMzPf+wmHU+42ZregjZvxbHK4T/3VV3oLctzZTVlcoch
+ XFZM1S5BmeE/Q9AIqvdfHJlkvYbdZCE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-319-DzDsfZyJO5-qN-GQG2ik0Q-1; Wed, 11 Oct 2023 13:55:50 -0400
+X-MC-Unique: DzDsfZyJO5-qN-GQG2ik0Q-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 22E531C07541;
- Wed, 11 Oct 2023 17:55:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F59E85A5BA;
+ Wed, 11 Oct 2023 17:55:50 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 815CB492B00;
- Wed, 11 Oct 2023 17:55:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 69197492C3E;
+ Wed, 11 Oct 2023 17:55:47 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
  jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
 Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
  philmd@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com
-Subject: [PATCH v3 04/13] virtio-iommu: Rename reserved_regions into
- prop_resv_regions
-Date: Wed, 11 Oct 2023 19:52:20 +0200
-Message-ID: <20231011175516.541374-5-eric.auger@redhat.com>
+Subject: [PATCH v3 05/13] range: Make range_compare() public
+Date: Wed, 11 Oct 2023 19:52:21 +0200
+Message-ID: <20231011175516.541374-6-eric.auger@redhat.com>
 In-Reply-To: <20231011175516.541374-1-eric.auger@redhat.com>
 References: <20231011175516.541374-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,114 +81,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename VirtIOIOMMU (nb_)reserved_regions fields with the "prop_" prefix
-to highlight those fields are set through a property, at machine level.
-They are IOMMU wide.
-
-A subsequent patch will introduce per IOMMUDevice reserved regions
-that will include both those IOMMU wide property reserved
-regions plus, sometimes, host reserved regions, if the device is
-backed by a host device protected by a physical IOMMU. Also change
-nb_ prefix by nr_.
+Let's expose range_compare() in the header so that it can be
+reused outside of util/range.c
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 ---
 
-v2 -> v3:
-- added Cedric's R-b
+v1 -> v2:
+- Added Philippe's R-b
 ---
- include/hw/virtio/virtio-iommu.h |  4 ++--
- hw/virtio/virtio-iommu-pci.c     |  8 ++++----
- hw/virtio/virtio-iommu.c         | 15 ++++++++-------
- 3 files changed, 14 insertions(+), 13 deletions(-)
+ include/qemu/range.h | 6 ++++++
+ util/range.c         | 6 +-----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
-index a93fc5383e..eea4564782 100644
---- a/include/hw/virtio/virtio-iommu.h
-+++ b/include/hw/virtio/virtio-iommu.h
-@@ -55,8 +55,8 @@ struct VirtIOIOMMU {
-     GHashTable *as_by_busptr;
-     IOMMUPciBus *iommu_pcibus_by_bus_num[PCI_BUS_MAX];
-     PCIBus *primary_bus;
--    ReservedRegion *reserved_regions;
--    uint32_t nb_reserved_regions;
-+    ReservedRegion *prop_resv_regions;
-+    uint32_t nr_prop_resv_regions;
-     GTree *domains;
-     QemuRecMutex mutex;
-     GTree *endpoints;
-diff --git a/hw/virtio/virtio-iommu-pci.c b/hw/virtio/virtio-iommu-pci.c
-index 7ef2f9dcdb..9459fbf6ed 100644
---- a/hw/virtio/virtio-iommu-pci.c
-+++ b/hw/virtio/virtio-iommu-pci.c
-@@ -37,7 +37,7 @@ struct VirtIOIOMMUPCI {
- static Property virtio_iommu_pci_properties[] = {
-     DEFINE_PROP_UINT32("class", VirtIOPCIProxy, class_code, 0),
-     DEFINE_PROP_ARRAY("reserved-regions", VirtIOIOMMUPCI,
--                      vdev.nb_reserved_regions, vdev.reserved_regions,
-+                      vdev.nr_prop_resv_regions, vdev.prop_resv_regions,
-                       qdev_prop_reserved_region, ReservedRegion),
-     DEFINE_PROP_END_OF_LIST(),
- };
-@@ -54,9 +54,9 @@ static void virtio_iommu_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-                          "for the virtio-iommu-pci device");
-         return;
-     }
--    for (int i = 0; i < s->nb_reserved_regions; i++) {
--        if (s->reserved_regions[i].type != VIRTIO_IOMMU_RESV_MEM_T_RESERVED &&
--            s->reserved_regions[i].type != VIRTIO_IOMMU_RESV_MEM_T_MSI) {
-+    for (int i = 0; i < s->nr_prop_resv_regions; i++) {
-+        if (s->prop_resv_regions[i].type != VIRTIO_IOMMU_RESV_MEM_T_RESERVED &&
-+            s->prop_resv_regions[i].type != VIRTIO_IOMMU_RESV_MEM_T_MSI) {
-             error_setg(errp, "reserved region %d has an invalid type", i);
-             error_append_hint(errp, "Valid values are 0 and 1\n");
-             return;
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index e5e46e1b55..979cdb5648 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -631,22 +631,23 @@ static ssize_t virtio_iommu_fill_resv_mem_prop(VirtIOIOMMU *s, uint32_t ep,
-     size_t size = sizeof(prop), length = size - sizeof(prop.head), total;
-     int i;
+diff --git a/include/qemu/range.h b/include/qemu/range.h
+index 7e2b1cc447..aa671da143 100644
+--- a/include/qemu/range.h
++++ b/include/qemu/range.h
+@@ -217,6 +217,12 @@ static inline int ranges_overlap(uint64_t first1, uint64_t len1,
+     return !(last2 < first1 || last1 < first2);
+ }
  
--    total = size * s->nb_reserved_regions;
-+    total = size * s->nr_prop_resv_regions;
++/*
++ * Return -1 if @a < @b, 1 @a > @b, and 0 if they touch or overlap.
++ * Both @a and @b must not be empty.
++ */
++int range_compare(Range *a, Range *b);
++
+ GList *range_list_insert(GList *list, Range *data);
  
-     if (total > free) {
-         return -ENOSPC;
-     }
+ #endif
+diff --git a/util/range.c b/util/range.c
+index 098d9d2dc0..782cb8b21c 100644
+--- a/util/range.c
++++ b/util/range.c
+@@ -20,11 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/range.h"
  
--    for (i = 0; i < s->nb_reserved_regions; i++) {
--        unsigned subtype = s->reserved_regions[i].type;
-+    for (i = 0; i < s->nr_prop_resv_regions; i++) {
-+        unsigned subtype = s->prop_resv_regions[i].type;
-+        Range *range = &s->prop_resv_regions[i].range;
+-/*
+- * Return -1 if @a < @b, 1 @a > @b, and 0 if they touch or overlap.
+- * Both @a and @b must not be empty.
+- */
+-static inline int range_compare(Range *a, Range *b)
++int range_compare(Range *a, Range *b)
+ {
+     assert(!range_is_empty(a) && !range_is_empty(b));
  
-         assert(subtype == VIRTIO_IOMMU_RESV_MEM_T_RESERVED ||
-                subtype == VIRTIO_IOMMU_RESV_MEM_T_MSI);
-         prop.head.type = cpu_to_le16(VIRTIO_IOMMU_PROBE_T_RESV_MEM);
-         prop.head.length = cpu_to_le16(length);
-         prop.subtype = subtype;
--        prop.start = cpu_to_le64(range_lob(&s->reserved_regions[i].range));
--        prop.end = cpu_to_le64(range_upb(&s->reserved_regions[i].range));
-+        prop.start = cpu_to_le64(range_lob(range));
-+        prop.end = cpu_to_le64(range_upb(range));
- 
-         memcpy(buf, &prop, size);
- 
-@@ -894,8 +895,8 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
-         goto unlock;
-     }
- 
--    for (i = 0; i < s->nb_reserved_regions; i++) {
--        ReservedRegion *reg = &s->reserved_regions[i];
-+    for (i = 0; i < s->nr_prop_resv_regions; i++) {
-+        ReservedRegion *reg = &s->prop_resv_regions[i];
- 
-         if (range_contains(&reg->range, addr)) {
-             switch (reg->type) {
 -- 
 2.41.0
 
