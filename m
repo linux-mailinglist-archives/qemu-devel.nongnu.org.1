@@ -2,92 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BD47C5825
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 599947C5808
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:26:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqbEC-00038d-9L; Wed, 11 Oct 2023 11:34:28 -0400
+	id 1qqb5t-0006kA-Ig; Wed, 11 Oct 2023 11:25:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqbE2-00030t-Fo
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:34:21 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqbE0-0000uh-LR
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:34:18 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40684f53bfcso26315e9.0
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 08:34:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697038452; x=1697643252; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HhDVrRocRAbQ/g0EQox0gU29iJloD5blhZKMSXpYCTw=;
- b=HCdJnQoe4cvd52YOZOY7wEL8eWriFnGNQSZBckGH36pl+6v0bnFjfqanSI6CHUZJdk
- RRL7i31vUz4molsUnoCOV1Ejr/ABGgF4qFL8s39VJwbbqD024hIBRVX+iZwLNcjYEfit
- VVB2sfFy2Aff3ITLO3as8QVtj53flkMITa3XeIZODuusNac8FKxaWppr6B4PzNpkAsBo
- yycRg6OjzOKVQIJdwzhKunOmWGf7CY5v55gRMQQ948ZtdsQtmKAiFOxYfkL7tVCQhVtO
- Oq4JCJaoC0x0yjdA252mzG6ipl8DZcjf5uPyX48zzjCKgFFNrPxIg7v0rI4KENPbZ5Vh
- k5Fg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqb5p-0006jw-B4
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:25:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqb5l-0007jj-O0
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:25:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697037944;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=q0RsTzgRoYZTGtZrva1n+wiJ9gDOOEHCZImXRsRyemQ=;
+ b=iauqc98t/lPIjSHSLxEnlKiESdj2oA5lLOQUPSM+topmzqz63DOvfei7dDvfdidJj2G+vj
+ qIw4RE/npiBNoFYrAef9DzXErdm7mcDeTtA40jWjH1sW7IXB4GVvmdKm3Pk7wPi/3JF/4s
+ PotWLInMeAzMnrpOTnWWX1Y0nXj4fek=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-361-yt0ffNXLPLqoYZhx6-gB0g-1; Wed, 11 Oct 2023 11:25:42 -0400
+X-MC-Unique: yt0ffNXLPLqoYZhx6-gB0g-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-77586b4ae08so164503985a.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 08:25:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697038452; x=1697643252;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=HhDVrRocRAbQ/g0EQox0gU29iJloD5blhZKMSXpYCTw=;
- b=ch4Ewdz9pdt/+W+UYdPbKKXWaPLFkN7y7v4hgHnhUxbFuZkbxntnA4/WNsLY7QZ4IM
- UXylfsmulRk6xI3yJnmfM/cbdru0XeTsl6zkpRd5kjobI6lH0iBj5KauXJBYxSe9Z1lR
- 2yIuskz58XtRcsjGmGHvPXCEb3hNJjtxx7UCNOINaDOyVbgh7m3RCkD+lmFlCZotbTCn
- np37/ZZChwn9Qk283E63Us4fh1JopmTWtZE1pCRYMgWwiNe7vwk+TFlsWsGsXRohTyeV
- ke86pjOaicAAH2HWP+026GVR2Ez2WQH7namk5UyQ567lUFcOGC0CDkXBIeq+XjNhD90W
- nRGQ==
-X-Gm-Message-State: AOJu0YzK6zcUDi5Ez0b1MLtXCclyAYb8OC/Sqw1t3YZDFdCLIoUJ7p1i
- f3asXMmNAiGBAhKPT3CIaLfFjw==
-X-Google-Smtp-Source: AGHT+IGvzHGGNBNE6SdVWhU/xIFKDVF8wyrsJZXOabOv4b3+yGDMAGzce6RvSnb3ZVST1HUccEB0Ig==
-X-Received: by 2002:a1c:ed02:0:b0:401:38dc:891c with SMTP id
- l2-20020a1ced02000000b0040138dc891cmr18292007wmh.5.1697038452547; 
- Wed, 11 Oct 2023 08:34:12 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- y24-20020a7bcd98000000b004064741f855sm17078003wmj.47.2023.10.11.08.34.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 08:34:12 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 9701A1FFBB;
- Wed, 11 Oct 2023 16:34:11 +0100 (BST)
-References: <20231011070335.14398-1-akihiko.odaki@daynix.com>
- <20231011070335.14398-2-akihiko.odaki@daynix.com>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
- =?utf-8?Q?Daud=C3=A9?=
- <philmd@linaro.org>, Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
- <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>, Weiwei Li
- <liweiwei@iscas.ac.cn>, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-Subject: Re: [PATCH v9 01/23] target/riscv: Move MISA limits to class
-Date: Wed, 11 Oct 2023 16:23:15 +0100
-In-reply-to: <20231011070335.14398-2-akihiko.odaki@daynix.com>
-Message-ID: <871qe1p40c.fsf@linaro.org>
+ d=1e100.net; s=20230601; t=1697037942; x=1697642742;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=q0RsTzgRoYZTGtZrva1n+wiJ9gDOOEHCZImXRsRyemQ=;
+ b=TcFsg8Nutcv6Qlmp/Ssa7H3cGX68WHtYba70miXwqM72o+TrEt7q55LikWJ3hlRhIy
+ 7Vxnv5k50mmg/wMfwnzSNispSnhax0Iz8Qcwm5VFQwjckxlFcfYEChCcM/exEskxOT2E
+ DHuskdLdTRv+wxCcO7RVpWVzZAjaQ2YxKfwNlHV39H5M5XovLXKSYWcpKAV2WjFY3KwB
+ jnF9J2D6RRGaLTOYKyJGtAmSEZB6dDnF3Ytm+ibw6QZGGM0CsApMAzotaqSEuDN6bN35
+ 496qneif+YfPsyz22F0KgHwOI8MuuhK2epYSy/Mt7uutrnNmIf2B5+wwQH3YRDo098Hk
+ L6Pg==
+X-Gm-Message-State: AOJu0Yx30Y37gJVyzvyrU1kMnXtAs/EmPNJz7A/iO+VfmLAyr7o47ytC
+ meATYJ15np8x23zdpj+krWn3DUATZjKRK2k91B8EnaUMRhCrNK0sS6JtkZi3xFi++k5w96kuW3D
+ WxMxCPRZQ4ec3CII=
+X-Received: by 2002:a05:620a:3956:b0:773:a91c:6164 with SMTP id
+ qs22-20020a05620a395600b00773a91c6164mr24587330qkn.19.1697037942235; 
+ Wed, 11 Oct 2023 08:25:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFr8rYI77V/p0qVQgdcjARVbBu27Jf/nq19CkyCCnmSzCs3lrQ+cpL7kYWiDzZUH2iv39DDjQ==
+X-Received: by 2002:a05:620a:3956:b0:773:a91c:6164 with SMTP id
+ qs22-20020a05620a395600b00773a91c6164mr24587308qkn.19.1697037941992; 
+ Wed, 11 Oct 2023 08:25:41 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
+ [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
+ i10-20020a37c20a000000b0077589913a8bsm5222192qkm.132.2023.10.11.08.25.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Oct 2023 08:25:41 -0700 (PDT)
+Message-ID: <a262224f-c568-45dd-8f52-b30dee28dfd3@redhat.com>
+Date: Wed, 11 Oct 2023 17:25:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/9] tests/qtest: Introduce qtest_resolve_machine_alias
+Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231006123910.17759-1-farosas@suse.de>
+ <20231006123910.17759-6-farosas@suse.de>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231006123910.17759-6-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,83 +146,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-
-> MISA limits are common for all instances of a RISC-V CPU class so they
-> are better put into class.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+On 06/10/2023 14.39, Fabiano Rosas wrote:
+> The migration tests are being enhanced to test migration between
+> different QEMU versions. A requirement of migration is that the
+> machine type between source and destination matches, including the
+> version.
+> 
+> We cannot hardcode machine types in the tests because those change
+> with each release. QEMU provides a machine type alias that has a fixed
+> name, but points to the latest machine type at each release.
+> 
+> Add a helper to resolve the alias into the exact machine
+> type. E.g. "-machine pc" resolves to "pc-i440fx-8.2"
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  target/riscv/cpu-qom.h   |   2 +
->  target/riscv/cpu.h       |   2 -
->  hw/riscv/boot.c          |   2 +-
->  target/riscv/cpu.c       | 212 +++++++++++++++++++++++++++------------
->  target/riscv/csr.c       |   3 +-
->  target/riscv/gdbstub.c   |  12 ++-
->  target/riscv/machine.c   |  11 +-
->  target/riscv/translate.c |   3 +-
->  8 files changed, 167 insertions(+), 80 deletions(-)
->
-> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-> index 04af50983e..266a07f5be 100644
-> --- a/target/riscv/cpu-qom.h
-> +++ b/target/riscv/cpu-qom.h
-> @@ -67,5 +67,7 @@ struct RISCVCPUClass {
->      /*< public >*/
->      DeviceRealize parent_realize;
->      ResettablePhases parent_phases;
-> +    uint32_t misa_mxl_max;  /* max mxl for this cpu */
-> +    uint32_t misa_ext_mask; /* max ext for this cpu */
->  };
->  #endif /* RISCV_CPU_QOM_H */
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index ef9cf21c0c..9f9cb6cd2a 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -155,9 +155,7 @@ struct CPUArchState {
->=20=20
->      /* RISCVMXL, but uint32_t for vmstate migration */
->      uint32_t misa_mxl;      /* current mxl */
-> -    uint32_t misa_mxl_max;  /* max mxl for this cpu */
->      uint32_t misa_ext;      /* current extensions */
-> -    uint32_t misa_ext_mask; /* max ext for this cpu */
->      uint32_t xl;            /* current xlen */
->=20=20
->      /* 128-bit helpers upper part return value */
-> diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-> index 52bf8e67de..b7cf08f479 100644
-> --- a/hw/riscv/boot.c
-> +++ b/hw/riscv/boot.c
-> @@ -36,7 +36,7 @@
->=20=20
->  bool riscv_is_32bit(RISCVHartArrayState *harts)
->  {
-> -    return harts->harts[0].env.misa_mxl_max =3D=3D MXL_RV32;
-> +    return RISCV_CPU_GET_CLASS(&harts->harts[0])->misa_mxl_max =3D=3D
->  MXL_RV32;
+>   tests/qtest/libqtest.c | 16 ++++++++++++++++
+>   tests/qtest/libqtest.h | 10 ++++++++++
+>   2 files changed, 26 insertions(+)
 
-I'm going to defer to the RISCV maintainers here. While I agree the
-class is a good place for these parameters that are shared across
-multiple vCPUS there is a cost to RISCV_CPU_GET_CLASS() casting.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-You might notice we have this comment in include/hw/core/cpu.h:
-
-  /*
-   * The class checkers bring in CPU_GET_CLASS() which is potentially
-   * expensive given the eventual call to
-   * object_class_dynamic_cast_assert(). Because of this the CPUState
-   * has a cached value for the class in cs->cc which is set up in
-   * cpu_exec_realizefn() for use in hot code paths.
-   */
-  typedef struct CPUClass CPUClass;
-  DECLARE_CLASS_CHECKERS(CPUClass, CPU,
-                         TYPE_CPU)
-
-However I think you need to check the assumption that you will never see
-multiple cores with different RISCV properties.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
