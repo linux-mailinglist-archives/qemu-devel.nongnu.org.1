@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 115337C4F27
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5657C4F3F
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:39:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqVRa-00038n-Bl; Wed, 11 Oct 2023 05:23:54 -0400
+	id 1qqVRd-0003Kl-IG; Wed, 11 Oct 2023 05:23:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVRX-0002sz-QH
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:51 -0400
+ id 1qqVRc-0003KF-8A
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVRV-00056h-Ug
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:51 -0400
+ id 1qqVRa-00057f-FL
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697016229;
+ s=mimecast20190719; t=1697016233;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zGf38nOwvkBL5NjS/0jXTUb9ZuLvIwBLVrqNG5Bqhqw=;
- b=LU+uVpMihIXvXs8O+N9ZTDSJ8zXNwlJAaK9zoT85WhnHwZU0AuL/1ibUb2Rgfuv0nNNezr
- oD6BodSmuL/3rMTvdWwCejRu7vR8VyUmSvSx2MYPHWRHJH8y910qCTd7VbG3E+O6RfjZFn
- qWRFqe0U8k6YFWhJfymxFX8pvlSId4M=
+ bh=KbG6U8XgUFicARESq3KrdL5/u2lNT7QjdbadrORs0ro=;
+ b=LCV8Z083RUlD8L88HVgV/7MaRdz5dwulY7u4W0bv62EVLibd61kjvPWEfEyhfpWqEtBEkb
+ U5k4nBRZ2fArjSP3AzoeKR4OOCwc3G9YOz2wholuHWiT+UejcxJoaug2om5dAa2NkNo5V1
+ 4ZHs/OmpFozsRne3gUkXS6rSLd/gz84=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-678-etFWm1TnPvGa6AdfE__zYw-1; Wed, 11 Oct 2023 05:23:46 -0400
-X-MC-Unique: etFWm1TnPvGa6AdfE__zYw-1
+ us-mta-20-du8hKGsONUC04UVc8nFJGQ-1; Wed, 11 Oct 2023 05:23:48 -0400
+X-MC-Unique: du8hKGsONUC04UVc8nFJGQ-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 11ECC887E47;
- Wed, 11 Oct 2023 09:23:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 17E6D887E5A;
+ Wed, 11 Oct 2023 09:23:48 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 54E341C060AE;
- Wed, 11 Oct 2023 09:23:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 59EAF1C060AE;
+ Wed, 11 Oct 2023 09:23:46 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -49,10 +49,10 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>,
  Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 49/65] migration/rdma: Convert qemu_rdma_post_send_control() to
+Subject: [PULL 50/65] migration/rdma: Convert qemu_rdma_post_recv_control() to
  Error
-Date: Wed, 11 Oct 2023 11:21:47 +0200
-Message-ID: <20231011092203.1266-50-quintela@redhat.com>
+Date: Wed, 11 Oct 2023 11:21:48 +0200
+Message-ID: <20231011092203.1266-51-quintela@redhat.com>
 In-Reply-To: <20231011092203.1266-1-quintela@redhat.com>
 References: <20231011092203.1266-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -84,141 +84,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Markus Armbruster <armbru@redhat.com>
 
-Functions that use an Error **errp parameter to return errors should
-not also report them to the user, because reporting is the caller's
-job.  When the caller does, the error is reported twice.  When it
-doesn't (because it recovered from the error), there is no error to
-report, i.e. the report is bogus.
-
-qemu_rdma_exchange_send() violates this principle: it calls
-error_report() via qemu_rdma_post_send_control().  I elected not to
-investigate how callers handle the error, i.e. precise impact is not
-known.
-
-Clean this up by converting qemu_rdma_post_send_control() to Error.
+Just for symmetry with qemu_rdma_post_send_control().  Error messages
+lose detail I consider of no use to users.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20230928132019.2544702-43-armbru@redhat.com>
+Message-ID: <20230928132019.2544702-44-armbru@redhat.com>
 ---
- migration/rdma.c | 31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ migration/rdma.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index 9f45f6a91d..aeb0a8921e 100644
+index aeb0a8921e..41ea2edcda 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -1741,7 +1741,8 @@ err_block_for_wrid:
-  * containing some data and block until the post completes.
+@@ -1799,7 +1799,8 @@ static int qemu_rdma_post_send_control(RDMAContext *rdma, uint8_t *buf,
+  * Post a RECV work request in anticipation of some future receipt
+  * of data on the control channel.
   */
- static int qemu_rdma_post_send_control(RDMAContext *rdma, uint8_t *buf,
--                                       RDMAControlHeader *head)
-+                                       RDMAControlHeader *head,
+-static int qemu_rdma_post_recv_control(RDMAContext *rdma, int idx)
++static int qemu_rdma_post_recv_control(RDMAContext *rdma, int idx,
 +                                       Error **errp)
  {
-     int ret;
-     RDMAWorkRequestData *wr = &rdma->wr_data[RDMA_WRID_CONTROL];
-@@ -1781,13 +1782,13 @@ static int qemu_rdma_post_send_control(RDMAContext *rdma, uint8_t *buf,
-     ret = ibv_post_send(rdma->qp, &send_wr, &bad_wr);
+     struct ibv_recv_wr *bad_wr;
+     struct ibv_sge sge = {
+@@ -1816,6 +1817,7 @@ static int qemu_rdma_post_recv_control(RDMAContext *rdma, int idx)
  
-     if (ret > 0) {
--        error_report("Failed to use post IB SEND for control");
-+        error_setg(errp, "Failed to use post IB SEND for control");
+ 
+     if (ibv_post_recv(rdma->qp, &recv_wr, &bad_wr)) {
++        error_setg(errp, "error posting control recv");
          return -1;
      }
  
-     ret = qemu_rdma_block_for_wrid(rdma, RDMA_WRID_SEND_CONTROL, NULL);
-     if (ret < 0) {
--        error_report("rdma migration: send polling control error");
-+        error_setg(errp, "rdma migration: send polling control error");
-         return -1;
-     }
- 
-@@ -1945,10 +1946,9 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
-     /*
-      * Deliver the control message that was requested.
+@@ -1926,10 +1928,8 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
+      * If the user is expecting a response, post a WR in anticipation of it.
       */
--    ret = qemu_rdma_post_send_control(rdma, data, head);
-+    ret = qemu_rdma_post_send_control(rdma, data, head, errp);
- 
-     if (ret < 0) {
--        error_setg(errp, "Failed to send control buffer!");
-         return -1;
+     if (resp) {
+-        ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_DATA);
++        ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_DATA, errp);
+         if (ret < 0) {
+-            error_setg(errp, "rdma migration: error posting"
+-                    " extra control recv for anticipated result!");
+             return -1;
+         }
      }
- 
-@@ -2002,10 +2002,9 @@ static int qemu_rdma_exchange_recv(RDMAContext *rdma, RDMAControlHeader *head,
+@@ -1937,9 +1937,8 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
      /*
-      * Inform the source that we're ready to receive a message.
+      * Post a WR to replace the one we just consumed for the READY message.
       */
--    ret = qemu_rdma_post_send_control(rdma, NULL, &ready);
-+    ret = qemu_rdma_post_send_control(rdma, NULL, &ready, errp);
- 
+-    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
++    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY, errp);
      if (ret < 0) {
--        error_setg(errp, "Failed to send control buffer!");
+-        error_setg(errp, "rdma migration: error posting first control recv!");
          return -1;
      }
  
-@@ -2394,6 +2393,7 @@ static int qemu_rdma_write(RDMAContext *rdma,
+@@ -2023,9 +2022,8 @@ static int qemu_rdma_exchange_recv(RDMAContext *rdma, RDMAControlHeader *head,
+     /*
+      * Post a new RECV work request to replace the one we just consumed.
+      */
+-    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
++    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY, errp);
+     if (ret < 0) {
+-        error_setg(errp, "rdma migration: error posting second control recv!");
+         return -1;
+     }
  
- static void qemu_rdma_cleanup(RDMAContext *rdma)
+@@ -2608,9 +2606,8 @@ static int qemu_rdma_connect(RDMAContext *rdma, bool return_path,
+ 
+     caps_to_network(&cap);
+ 
+-    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
++    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY, errp);
+     if (ret < 0) {
+-        error_setg(errp, "RDMA ERROR: posting second control recv");
+         goto err_rdma_source_connect;
+     }
+ 
+@@ -3402,6 +3399,7 @@ static void rdma_cm_poll_handler(void *opaque)
+ 
+ static int qemu_rdma_accept(RDMAContext *rdma)
  {
 +    Error *err = NULL;
-     int idx;
+     RDMACapabilities cap;
+     struct rdma_conn_param conn_param = {
+                                             .responder_resources = 2,
+@@ -3538,9 +3536,9 @@ static int qemu_rdma_accept(RDMAContext *rdma)
+     rdma_ack_cm_event(cm_event);
+     rdma->connected = true;
  
-     if (rdma->cm_id && rdma->connected) {
-@@ -2405,7 +2405,9 @@ static void qemu_rdma_cleanup(RDMAContext *rdma)
-                                        .repeat = 1,
-                                      };
-             error_report("Early error. Sending error.");
--            qemu_rdma_post_send_control(rdma, NULL, &head);
-+            if (qemu_rdma_post_send_control(rdma, NULL, &head, &err) < 0) {
-+                error_report_err(err);
-+            }
-         }
+-    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
++    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY, &err);
+     if (ret < 0) {
+-        error_report("rdma migration: error posting second control recv");
++        error_report_err(err);
+         goto err_rdma_dest_wait;
+     }
  
-         rdma_disconnect(rdma->cm_id);
-@@ -3705,10 +3707,11 @@ static int qemu_rdma_registration_handle(QEMUFile *f)
- 
- 
-             ret = qemu_rdma_post_send_control(rdma,
--                                        (uint8_t *) rdma->dest_blocks, &blocks);
-+                                    (uint8_t *) rdma->dest_blocks, &blocks,
-+                                    &err);
- 
-             if (ret < 0) {
--                error_report("rdma migration: error sending remote info");
-+                error_report_err(err);
-                 goto err;
-             }
- 
-@@ -3783,10 +3786,10 @@ static int qemu_rdma_registration_handle(QEMUFile *f)
-             }
- 
-             ret = qemu_rdma_post_send_control(rdma,
--                            (uint8_t *) results, &reg_resp);
-+                            (uint8_t *) results, &reg_resp, &err);
- 
-             if (ret < 0) {
--                error_report("Failed to send control buffer");
-+                error_report_err(err);
-                 goto err;
-             }
-             break;
-@@ -3818,10 +3821,10 @@ static int qemu_rdma_registration_handle(QEMUFile *f)
-                                                        reg->key.chunk);
-             }
- 
--            ret = qemu_rdma_post_send_control(rdma, NULL, &unreg_resp);
-+            ret = qemu_rdma_post_send_control(rdma, NULL, &unreg_resp, &err);
- 
-             if (ret < 0) {
--                error_report("Failed to send control buffer");
-+                error_report_err(err);
-                 goto err;
-             }
-             break;
 -- 
 2.41.0
 
