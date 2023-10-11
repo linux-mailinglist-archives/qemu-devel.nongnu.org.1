@@ -2,95 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39647C5968
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 18:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DFD7C5998
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 18:54:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqcHq-0004ZN-8F; Wed, 11 Oct 2023 12:42:18 -0400
+	id 1qqcS9-0008VY-R0; Wed, 11 Oct 2023 12:52:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqcHn-0004ZC-CG
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 12:42:15 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqcHi-0006ug-JU
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 12:42:12 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-694ed847889so5470590b3a.2
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 09:42:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697042529; x=1697647329;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+bhuqxDEwUsp5mmSE06AZ0dD5Fg0syCRz4XehtAIKMg=;
- b=F9xeRDtqflSVgyw0fh8R2vC7wZrvYnORZDRw68VfyeZXTNNC2+k32pzPx/8M1b8xk2
- 394fPY0IiOFPyyNvQN7C8IfC0ev/3PrHuwvCJlEXb+5KGdSvxwc5jtWUZkEh8jq1Tl0I
- dyd8MNXTpouCHDve+hzm1xaziqqyCreCPpzu8eVkdeNvIoJAwTnefbqZZMm9trCwM+s+
- BKQ9fakfNmPrHtAkpRDlBkh5mHatD+9d3uECgPWMC2+UdPikZBtr0VQzbxFDGl0H+SvG
- DHFpf9xXeG9ECL5U1ozuCRJjdDmw6aoFrTb1zbmXMm7t8nel7VN982Dr/0fGyx27i5pe
- Fg5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697042529; x=1697647329;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+bhuqxDEwUsp5mmSE06AZ0dD5Fg0syCRz4XehtAIKMg=;
- b=Ov9n1zk0imkvpYpPc+edpXeNkwZ1RUlCX1SMxPAJmfE03qHrFf7Qdy5sB1nx8z8hsL
- 7SUXkMLOjtbVJ+SLLBv2l7Xv68Iu5k5H4aLyDxsRleyMYjzVnzeVwXwRoRXpWjtuBWI7
- CyRCZOiiWAZ/F44bdkr444Jn+Zkj7N/jrPHb6h1dpbFGUPDUdakVsRcUPPcuMHdUmgvD
- 2h3WEpvnx6tXZ4ztQ1flo7vIOQ59qrZoaVI0BOoRAOJYF3x7F36mIgqHNBHqt4/j2uqK
- Z8YgYqL6jXTadjlgMeueG7arUDJrQ21DwOyFE0kXb9ptGe75ncdCIR9ctSFAONdqggdZ
- UMQg==
-X-Gm-Message-State: AOJu0YzmRHO0fQ9QkbylFZ1Lgt4ZG99O0IWzgZlWSdkvpSRW138/4RTH
- BeWrk7uw0oO1qhQ5PSPhA8qf0g==
-X-Google-Smtp-Source: AGHT+IE0Zq4dnlsbbBbgIyhoU5EMQz7jmC0Sf73ItU8EKmIN+MLCvfvwyqC+qmeCJnSipqf1clE/CQ==
-X-Received: by 2002:a05:6a20:1e57:b0:15c:e0bf:40ec with SMTP id
- cy23-20020a056a201e5700b0015ce0bf40ecmr15798417pzb.17.1697042528917; 
- Wed, 11 Oct 2023 09:42:08 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- x19-20020a63b213000000b0059c3ba41db7sm87844pge.30.2023.10.11.09.42.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 09:42:08 -0700 (PDT)
-Message-ID: <69ba49f0-843f-4a74-ad00-5ce1138ee074@daynix.com>
-Date: Thu, 12 Oct 2023 01:42:04 +0900
+ (Exim 4.90_1) (envelope-from <quic_svaddagi@quicinc.com>)
+ id 1qqcS7-0008VL-HD; Wed, 11 Oct 2023 12:52:55 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_svaddagi@quicinc.com>)
+ id 1qqcS5-0000wA-6T; Wed, 11 Oct 2023 12:52:55 -0400
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39BFqhE4006699; Wed, 11 Oct 2023 16:52:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=Zp+LyRF+nJYCLmnOgk8btPd3hFzUI710Z3cxs6LSsvI=;
+ b=IKB3HqXAV/mprZgApyrUvtE6MCHKqt5XDUue1fVYCq9aU2spHrov/2M0BtvoKZmpjNtu
+ Owwclu2Yj0JqOw56UCFysoNs9nCQ3JcaiqNrdh7hWsnkK6mUwXX9EBdu6Arz0BlrluBm
+ 0BwnnBwahBXZeQKyu3KP9pKNzM1fgRhZWTAMjSXKBADMObN+JgmITaxG7smcDjl5mXvC
+ ca0I+9uhvweAQjD2QC7t/3P1L55TEURFPPH/SvDErvGSaAEkNiFSPYOh/11lAj80qc0E
+ AHsClpVexjhWtMDIWP/aJjuINsbhOim+9hTrVKEHmVNScAx7gs7/HR/ax3qp5E2S6kw4 6w== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tnv1r8k20-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Oct 2023 16:52:48 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com
+ [10.47.209.197])
+ by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39BGqmcr030247
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Oct 2023 16:52:48 GMT
+Received: from blr-ubuntu-31.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Wed, 11 Oct 2023 09:52:43 -0700
+From: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+To: <peter.maydell@linaro.org>, <alex.bennee@linaro.org>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <quic_svaddagi@quicinc.com>, <quic_tsoni@quicinc.com>,
+ <quic_pheragu@quicinc.com>, <quic_eberman@quicinc.com>,
+ <quic_yvasi@quicinc.com>, <quic_cvanscha@quicinc.com>,
+ <quic_mnalajal@quicinc.com>
+Subject: [RFC/PATCH v0 00/12] Gunyah hypervisor support
+Date: Wed, 11 Oct 2023 16:52:22 +0000
+Message-ID: <20231011165234.1323725-1-quic_svaddagi@quicinc.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 23/23] plugins: Support C++
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20231011070335.14398-1-akihiko.odaki@daynix.com>
- <20231011070335.14398-24-akihiko.odaki@daynix.com>
- <ZSZiAHtXGOZnZNas@redhat.com>
- <2c970c00-519c-4175-b0ca-9081c4aa0daf@daynix.com>
- <ffdd55c2-4ae9-4b1f-ac12-a9ad714c3f26@redhat.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <ffdd55c2-4ae9-4b1f-ac12-a9ad714c3f26@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::429;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: 7ylMCTAv2g-BG4d65Rnkhd7sDiTu0g-y
+X-Proofpoint-GUID: 7ylMCTAv2g-BG4d65Rnkhd7sDiTu0g-y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-11_12,2023-10-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 phishscore=0
+ mlxscore=0 clxscore=1011 spamscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 mlxlogscore=475 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2309180000 definitions=main-2310110148
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_svaddagi@quicinc.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,56 +97,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/12 1:21, Thomas Huth wrote:
-> On 11/10/2023 17.48, Akihiko Odaki wrote:
->> On 2023/10/11 17:51, Daniel P. Berrangé wrote:
->>> On Wed, Oct 11, 2023 at 04:03:09PM +0900, Akihiko Odaki wrote:
->>>> Make qemu-plugin.h consumable for C++ platform.
->>>>
->>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>> ---
->>>>   docs/devel/tcg-plugins.rst |  4 ++++
->>>>   meson.build                |  2 +-
->>>>   include/qemu/qemu-plugin.h |  4 ++++
->>>>   tests/plugin/cc.cc         | 16 ++++++++++++++++
->>>>   tests/plugin/meson.build   |  5 +++++
->>>>   tests/tcg/Makefile.target  |  3 +--
->>>>   6 files changed, 31 insertions(+), 3 deletions(-)
->>>>   create mode 100644 tests/plugin/cc.cc
->>>>
->>>> diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
->>>> index c9f8b27590..984d8012e9 100644
->>>> --- a/docs/devel/tcg-plugins.rst
->>>> +++ b/docs/devel/tcg-plugins.rst
->>>> @@ -283,6 +283,10 @@ run::
->>>>     160          1      0
->>>>     135          1      0
->>>> +- contrib/plugins/cc.cc
->>>> +
->>>> +A pure test plugin to ensure that the plugin API is compatible with 
->>>> C++.
->>>> +
->>>
->>> IMHO we don't need to be adding a test just to prove the
->>> existance of the G_BEGIN_DECLS/G_END_DECLS macros in the
->>> plugin header.
->>
->> Strictly speaking, if you include this header file from C++, the code 
->> will be interpreted as C++ instead of C but with C linkage. That 
->> worries me that the header file may get something not allowed in C++ 
->> in the future.
-> 
-> I think it should be enough if you add the G_BEGIN_DECLS/G_END_DECLS 
-> macros here. QEMU is a C project, and it was quite difficult to get rid 
-> of the C++ code again, so please don't soften the check in meson.build 
-> and don't introduce new .cc files.
-> If you have some code somewhere that uses C++ for plugins, I think it 
-> would be better to add a regression test there instead.
+Gunyah is an open-source Type-1 hypervisor, that is currently supported on ARM64
+architecture. Source code for it can be obtained from:
 
-It doesn't sound right to test the upstream header file in a downstream 
-project. It will take time until the fix becomes readily usable for the 
-downstream even if the downstream finds a bug.
+https://github.com/quic/gunyah-hypervisor.
 
-What about adding a check for CONFIG_PLUGIN before enabling C++? This 
-will ensure nobody dares introducing C++ code again for code else plugins.
+This patch series adds support for Gunyah hypervisor via a new
+accelerator option, 'gunyah'. This patch series is based on the Linux kernel's
+Gunyah driver, which is being actively developed and not yet merged upstream
+[1].
+
+This patch series is thus *NOT YET READY* for merge. Early version of this patch
+is being published to solicit comments from Qemu community.
+
+This patch has been tested with the open-source version of Gunyah hypervisor.
+Instructions to build hypervisor and test this patch are provided in this
+patch series.
+
+Limitations:
+
+1) SMP is not yet supported. This restriction will be removed in the next version
+of this patch series.
+
+2) virtio-pci is not yet supported. hw/virtio/virtio-pci.c seems to support only
+KVM and would need changes to support other hypervisors. If there is any ongoing
+work in this regard, would like to build upon it and add support for Gunyah
+hypervisor.
+
+
+Ref:
+
+1. https://lore.kernel.org/lkml/20230613172054.3959700-1-quic_eberman@quicinc.com/
+
+Base commit on which this series was tested:
+
+d77b7b28a8 target/arm: Fix 64-bit SSRA
+
+
+Srivatsa Vaddagiri (12):
+  hw/arm/virt: Avoid NULL pointer de-reference
+  update-linux-headers: Include gunyah.h
+  gunyah: Basic support
+  gunyah: Add VM properties
+  gunyah: Support memory assignment
+  gunyah: Add IRQFD and IOEVENTFD functions
+  gunyah: Add gicv3 interrupt controller
+  gunyah: Specific device-tree location
+  gunyah: Customize device-tree
+  gunyah: CPU execution loop
+  gunyah: Workarounds (NOT FOR MERGE)
+  gunyah: Documentation
+
+ MAINTAINERS                     |  10 +
+ accel/Kconfig                   |   3 +
+ accel/gunyah/gunyah-accel-ops.c | 168 +++++++++
+ accel/gunyah/gunyah-all.c       | 629 ++++++++++++++++++++++++++++++++
+ accel/gunyah/meson.build        |   7 +
+ accel/meson.build               |   1 +
+ accel/stubs/gunyah-stub.c       |  13 +
+ accel/stubs/meson.build         |   1 +
+ docs/about/build-platforms.rst  |   2 +-
+ docs/system/arm/gunyah.rst      | 214 +++++++++++
+ hw/arm/boot.c                   |   3 +-
+ hw/arm/virt.c                   |  27 +-
+ hw/intc/arm_gicv3_common.c      |   3 +
+ hw/intc/arm_gicv3_gunyah.c      | 106 ++++++
+ hw/intc/arm_gicv3_its_common.c  |   4 +
+ hw/intc/meson.build             |   1 +
+ include/hw/core/cpu.h           |   6 +
+ include/sysemu/gunyah.h         |  58 +++
+ include/sysemu/gunyah_int.h     |  61 ++++
+ meson.build                     |   9 +
+ meson_options.txt               |   2 +
+ scripts/meson-buildoptions.sh   |   3 +
+ scripts/update-linux-headers.sh |   3 +-
+ target/arm/cpu64.c              |   5 +-
+ target/arm/gunyah.c             | 144 ++++++++
+ target/arm/meson.build          |   4 +
+ 26 files changed, 1480 insertions(+), 7 deletions(-)
+ create mode 100644 accel/gunyah/gunyah-accel-ops.c
+ create mode 100644 accel/gunyah/gunyah-all.c
+ create mode 100644 accel/gunyah/meson.build
+ create mode 100644 accel/stubs/gunyah-stub.c
+ create mode 100644 docs/system/arm/gunyah.rst
+ create mode 100644 hw/intc/arm_gicv3_gunyah.c
+ create mode 100644 include/sysemu/gunyah.h
+ create mode 100644 include/sysemu/gunyah_int.h
+ create mode 100644 target/arm/gunyah.c
+
+-- 
+2.25.1
 
