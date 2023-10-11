@@ -2,58 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6F97C5AAF
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 19:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 040F47C5AAA
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 19:58:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqdRI-0001GS-10; Wed, 11 Oct 2023 13:56:09 -0400
+	id 1qqdRf-0001RV-G9; Wed, 11 Oct 2023 13:56:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qqdR4-0001Ej-BP
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:55:55 -0400
+ id 1qqdRC-0001I8-61
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qqdQy-0006WV-Ks
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:55:50 -0400
+ id 1qqdRA-0006b8-AJ
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 13:56:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697046947;
+ s=mimecast20190719; t=1697046959;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=96X0lGoLwUVX+WOA+XL+u2LxlgXQ0SXPU2hTM0LeabI=;
- b=Dtgz7qWJ2s/l6r4KgT/DSfPhnkkd+AVwFI4ZUPauugq/tjYjQU4tdx0BOMBIhocoXgTFN2
- IHPR+MbulR16tBfBQbN3CFq4cj8/LoJIDCWGZvH8vqoWVDdpxTVL8QjAP+N3Cp2gBWI6rq
- HzD3envjWlDlwjp3XyeiBalUSicg+2I=
+ bh=oz4XcpG3XDsEN2Gb30qmUwe5+qeUptHTmJ5OhaZxlzw=;
+ b=SSyBLqYy6yrNDZLC/lEgwcoXUn/9dPLePa4hqO0/i02jugmqCeqp98kUUFvJoOPdlsfxjz
+ tribediwa1KWaudbJxYpwBX9Oxl8Z8sGv7VjEDUQnuNFk0uE+YRUOYQuPCZRMh1G+HW0fV
+ KTYzXXFPrUzrB9qV8V5/9CWTIrpdLfM=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-258-akvFqQBiNqeg7fY4dT1PqA-1; Wed, 11 Oct 2023 13:55:44 -0400
-X-MC-Unique: akvFqQBiNqeg7fY4dT1PqA-1
+ us-mta-688-e1AHgdNOO7Ky58BckyupEQ-1; Wed, 11 Oct 2023 13:55:47 -0400
+X-MC-Unique: e1AHgdNOO7Ky58BckyupEQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3BBAA1C02D2E;
- Wed, 11 Oct 2023 17:55:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 22E531C07541;
+ Wed, 11 Oct 2023 17:55:47 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9CA29492C3E;
- Wed, 11 Oct 2023 17:55:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 815CB492B00;
+ Wed, 11 Oct 2023 17:55:44 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
  jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
 Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
  philmd@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com
-Subject: [PATCH v3 03/13] vfio: Collect container iova range info
-Date: Wed, 11 Oct 2023 19:52:19 +0200
-Message-ID: <20231011175516.541374-4-eric.auger@redhat.com>
+Subject: [PATCH v3 04/13] virtio-iommu: Rename reserved_regions into
+ prop_resv_regions
+Date: Wed, 11 Oct 2023 19:52:20 +0200
+Message-ID: <20231011175516.541374-5-eric.auger@redhat.com>
 In-Reply-To: <20231011175516.541374-1-eric.auger@redhat.com>
 References: <20231011175516.541374-1-eric.auger@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124;
@@ -80,167 +82,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Collect iova range information if VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE
-capability is supported.
+Rename VirtIOIOMMU (nb_)reserved_regions fields with the "prop_" prefix
+to highlight those fields are set through a property, at machine level.
+They are IOMMU wide.
 
-This allows to propagate the information though the IOMMU MR
-set_iova_ranges() callback so that virtual IOMMUs
-get aware of those aperture constraints. This is only done if
-the info is available and the number of iova ranges is greater than
-0.
-
-A new vfio_get_info_iova_range helper is introduced matching
-the coding style of existing vfio_get_info_dma_avail. The
-boolean returned value isn't used though. Code is aligned
-between both.
+A subsequent patch will introduce per IOMMUDevice reserved regions
+that will include both those IOMMU wide property reserved
+regions plus, sometimes, host reserved regions, if the device is
+backed by a host device protected by a physical IOMMU. Also change
+nb_ prefix by nr_.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 ---
 
 v2 -> v3:
-- Turn nr_iovas into a int initialized to -1
-- memory_region_iommu_set_iova_ranges only is called if nr_iovas > 0
-- vfio_get_info_iova_range returns a bool to match
-  vfio_get_info_dma_avail. Uniformize both code by using !hdr in
-  the check
-- rebase on top of vfio-next
+- added Cedric's R-b
 ---
- include/hw/vfio/vfio-common.h |  2 ++
- hw/vfio/common.c              |  9 +++++++
- hw/vfio/container.c           | 44 ++++++++++++++++++++++++++++++++---
- 3 files changed, 52 insertions(+), 3 deletions(-)
+ include/hw/virtio/virtio-iommu.h |  4 ++--
+ hw/virtio/virtio-iommu-pci.c     |  8 ++++----
+ hw/virtio/virtio-iommu.c         | 15 ++++++++-------
+ 3 files changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 7780b9073a..848ff47960 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -99,6 +99,8 @@ typedef struct VFIOContainer {
-     QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
-     QLIST_ENTRY(VFIOContainer) next;
-     QLIST_HEAD(, VFIODevice) device_list;
-+    int nr_iovas;
-+    GList *iova_ranges;
- } VFIOContainer;
+diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
+index a93fc5383e..eea4564782 100644
+--- a/include/hw/virtio/virtio-iommu.h
++++ b/include/hw/virtio/virtio-iommu.h
+@@ -55,8 +55,8 @@ struct VirtIOIOMMU {
+     GHashTable *as_by_busptr;
+     IOMMUPciBus *iommu_pcibus_by_bus_num[PCI_BUS_MAX];
+     PCIBus *primary_bus;
+-    ReservedRegion *reserved_regions;
+-    uint32_t nb_reserved_regions;
++    ReservedRegion *prop_resv_regions;
++    uint32_t nr_prop_resv_regions;
+     GTree *domains;
+     QemuRecMutex mutex;
+     GTree *endpoints;
+diff --git a/hw/virtio/virtio-iommu-pci.c b/hw/virtio/virtio-iommu-pci.c
+index 7ef2f9dcdb..9459fbf6ed 100644
+--- a/hw/virtio/virtio-iommu-pci.c
++++ b/hw/virtio/virtio-iommu-pci.c
+@@ -37,7 +37,7 @@ struct VirtIOIOMMUPCI {
+ static Property virtio_iommu_pci_properties[] = {
+     DEFINE_PROP_UINT32("class", VirtIOPCIProxy, class_code, 0),
+     DEFINE_PROP_ARRAY("reserved-regions", VirtIOIOMMUPCI,
+-                      vdev.nb_reserved_regions, vdev.reserved_regions,
++                      vdev.nr_prop_resv_regions, vdev.prop_resv_regions,
+                       qdev_prop_reserved_region, ReservedRegion),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+@@ -54,9 +54,9 @@ static void virtio_iommu_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+                          "for the virtio-iommu-pci device");
+         return;
+     }
+-    for (int i = 0; i < s->nb_reserved_regions; i++) {
+-        if (s->reserved_regions[i].type != VIRTIO_IOMMU_RESV_MEM_T_RESERVED &&
+-            s->reserved_regions[i].type != VIRTIO_IOMMU_RESV_MEM_T_MSI) {
++    for (int i = 0; i < s->nr_prop_resv_regions; i++) {
++        if (s->prop_resv_regions[i].type != VIRTIO_IOMMU_RESV_MEM_T_RESERVED &&
++            s->prop_resv_regions[i].type != VIRTIO_IOMMU_RESV_MEM_T_MSI) {
+             error_setg(errp, "reserved region %d has an invalid type", i);
+             error_append_hint(errp, "Valid values are 0 and 1\n");
+             return;
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index e5e46e1b55..979cdb5648 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -631,22 +631,23 @@ static ssize_t virtio_iommu_fill_resv_mem_prop(VirtIOIOMMU *s, uint32_t ep,
+     size_t size = sizeof(prop), length = size - sizeof(prop.head), total;
+     int i;
  
- typedef struct VFIOGuestIOMMU {
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 5ff5acf1d8..9d804152ba 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -699,6 +699,15 @@ static void vfio_listener_region_add(MemoryListener *listener,
-             goto fail;
-         }
+-    total = size * s->nb_reserved_regions;
++    total = size * s->nr_prop_resv_regions;
  
-+        if (container->nr_iovas > 0) {
-+            ret = memory_region_iommu_set_iova_ranges(giommu->iommu_mr,
-+                    container->iova_ranges, &err);
-+            if (ret) {
-+                g_free(giommu);
-+                goto fail;
-+            }
-+        }
-+
-         ret = memory_region_register_iommu_notifier(section->mr, &giommu->n,
-                                                     &err);
-         if (ret) {
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index adc467210f..5122ff6d92 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -382,7 +382,7 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
-     /* If the capability cannot be found, assume no DMA limiting */
-     hdr = vfio_get_iommu_type1_info_cap(info,
-                                         VFIO_IOMMU_TYPE1_INFO_DMA_AVAIL);
--    if (hdr == NULL) {
-+    if (!hdr) {
-         return false;
+     if (total > free) {
+         return -ENOSPC;
      }
  
-@@ -394,6 +394,33 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
-     return true;
- }
+-    for (i = 0; i < s->nb_reserved_regions; i++) {
+-        unsigned subtype = s->reserved_regions[i].type;
++    for (i = 0; i < s->nr_prop_resv_regions; i++) {
++        unsigned subtype = s->prop_resv_regions[i].type;
++        Range *range = &s->prop_resv_regions[i].range;
  
-+static bool vfio_get_info_iova_range(struct vfio_iommu_type1_info *info,
-+                                     VFIOContainer *container)
-+{
-+    struct vfio_info_cap_header *hdr;
-+    struct vfio_iommu_type1_info_cap_iova_range *cap;
-+
-+    hdr = vfio_get_iommu_type1_info_cap(info,
-+                                        VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE);
-+    if (!hdr) {
-+        return false;
-+    }
-+
-+    cap = (void *)hdr;
-+
-+    container->nr_iovas = cap->nr_iovas;
-+    for (int i = 0; i < cap->nr_iovas; i++) {
-+        Range *range = g_new(Range, 1);
-+
-+        range_set_bounds(range, cap->iova_ranges[i].start,
-+                         cap->iova_ranges[i].end);
-+        container->iova_ranges =
-+            range_list_insert(container->iova_ranges, range);
-+    }
-+
-+    return true;
-+}
-+
- static void vfio_kvm_device_add_group(VFIOGroup *group)
- {
-     Error *err = NULL;
-@@ -535,6 +562,12 @@ static void vfio_get_iommu_info_migration(VFIOContainer *container,
+         assert(subtype == VIRTIO_IOMMU_RESV_MEM_T_RESERVED ||
+                subtype == VIRTIO_IOMMU_RESV_MEM_T_MSI);
+         prop.head.type = cpu_to_le16(VIRTIO_IOMMU_PROBE_T_RESV_MEM);
+         prop.head.length = cpu_to_le16(length);
+         prop.subtype = subtype;
+-        prop.start = cpu_to_le64(range_lob(&s->reserved_regions[i].range));
+-        prop.end = cpu_to_le64(range_upb(&s->reserved_regions[i].range));
++        prop.start = cpu_to_le64(range_lob(range));
++        prop.end = cpu_to_le64(range_upb(range));
+ 
+         memcpy(buf, &prop, size);
+ 
+@@ -894,8 +895,8 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+         goto unlock;
      }
- }
  
-+static void vfio_free_container(VFIOContainer *container)
-+{
-+    g_list_free_full(container->iova_ranges, g_free);
-+    g_free(container);
-+}
-+
- static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-                                   Error **errp)
- {
-@@ -616,6 +649,8 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-     container->error = NULL;
-     container->dirty_pages_supported = false;
-     container->dma_max_mappings = 0;
-+    container->nr_iovas = -1;
-+    container->iova_ranges = NULL;
-     QLIST_INIT(&container->giommu_list);
-     QLIST_INIT(&container->hostwin_list);
-     QLIST_INIT(&container->vrdl_list);
-@@ -652,6 +687,9 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-         if (!vfio_get_info_dma_avail(info, &container->dma_max_mappings)) {
-             container->dma_max_mappings = 65535;
-         }
-+
-+        vfio_get_info_iova_range(info, container);
-+
-         vfio_get_iommu_info_migration(container, info);
-         g_free(info);
+-    for (i = 0; i < s->nb_reserved_regions; i++) {
+-        ReservedRegion *reg = &s->reserved_regions[i];
++    for (i = 0; i < s->nr_prop_resv_regions; i++) {
++        ReservedRegion *reg = &s->prop_resv_regions[i];
  
-@@ -765,7 +803,7 @@ enable_discards_exit:
-     vfio_ram_block_discard_disable(container, false);
- 
- free_container_exit:
--    g_free(container);
-+    vfio_free_container(container);
- 
- close_fd_exit:
-     close(fd);
-@@ -819,7 +857,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
- 
-         trace_vfio_disconnect_container(container->fd);
-         close(container->fd);
--        g_free(container);
-+        vfio_free_container(container);
- 
-         vfio_put_address_space(space);
-     }
+         if (range_contains(&reg->range, addr)) {
+             switch (reg->type) {
 -- 
 2.41.0
 
