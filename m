@@ -2,110 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A607C52DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 14:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771E67C53A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 14:22:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqXxa-0002XL-Lg; Wed, 11 Oct 2023 08:05:06 -0400
+	id 1qqYCq-0006Wd-71; Wed, 11 Oct 2023 08:20:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1qqXxS-0002Un-SK; Wed, 11 Oct 2023 08:04:59 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1qqXxO-00025k-WC; Wed, 11 Oct 2023 08:04:57 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39BC2RhR012779; Wed, 11 Oct 2023 12:03:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=sIYZ5bpGAyhUcpOk1tLABHpXbeZNvH5YEq10fa4k71c=;
- b=fWB9WIxsr9CsVdBP0uheww5pYXhLBwMiVm66UMp2dtLmRSlQe5aT4YTgImhKNets7UzE
- 7yWNZVRQ8mywEas7Oipz4l/JJqGbRReeS6rbb8mJgdfGYM8J4pr5nt/Z9xX+Hap11qWU
- Zh3NjrHqVi3LwbJ2AcmZai5u84aSGOPF/EtCe4oSFpXO1FL9geUp5zjZFyLsKejyQfiq
- Ah9zT1pICAUgYckobCcbnnfq3j0xQF2LPXvYm40J9hfzdjt5szg+dwsH8IaDHKectRG/
- hLoCPUv4782+pwtGrLHkQl8fNm81vb5f6MKH/m+cSnNFxHus9AvSlu1T9i9lSkFmfOfx tQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnuc2g22y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Oct 2023 12:03:36 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39BC3A71016755;
- Wed, 11 Oct 2023 12:03:36 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnuc2g1td-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Oct 2023 12:03:36 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39B9V2kx000653; Wed, 11 Oct 2023 11:58:54 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkk5kqjne-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Oct 2023 11:58:54 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39BBwrGq24773288
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Oct 2023 11:58:53 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA8E25805D;
- Wed, 11 Oct 2023 11:58:52 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C8F958057;
- Wed, 11 Oct 2023 11:58:51 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.12.195]) by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 11 Oct 2023 11:58:51 +0000 (GMT)
-Message-ID: <dbb857cfde3c03aae4233ad8d8d560124e947959.camel@linux.ibm.com>
-Subject: Re: [PATCH 6/6] hw/s390x: Clean up global variable shadowing in
- quiesce_powerdown_req()
-From: Eric Farman <farman@linux.ibm.com>
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org, Paolo Bonzini
- <pbonzini@redhat.com>, Ani Sinha <anisinha@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Yanan Wang
- <wangyanan55@huawei.com>, David Hildenbrand <david@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Markus Armbruster
- <armbru@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas
- Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, Gerd Hoffmann
- <kraxel@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Date: Wed, 11 Oct 2023 07:58:51 -0400
-In-Reply-To: <20231009094747.54240-7-philmd@linaro.org>
-References: <20231009094747.54240-1-philmd@linaro.org>
- <20231009094747.54240-7-philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqYCl-0006Vy-Su
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:20:48 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqYCj-0006DK-62
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:20:47 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9ae75ece209so1224505466b.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 05:20:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697026843; x=1697631643; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=MpNtfuDlhaes3G/dLNwyDGSar9tVrmw/aWa66seDdn8=;
+ b=nhIsK7h1xxmY7LGzXTMeM9K0zIgOD8k0MOoN79KoceuBTtOIOu7vcv9WKCr5nBz/es
+ wWZ/rhBmtWDRrZ8idxOv9QUgm6zGSjGKotaJQzjaAL8kLLwWX9udsjw9J/QBKa556Oxg
+ Pxzw8r65qSI4ajW0WnH63y1qVzqaZ03Jfcg2IUexNI7F4rDuQt+YbFg4N8mHmdNJQsW7
+ xwvOnwu+IiUDlIEzudyWZ5YIIOHVc85Ckv5//oRd/iUjQiQHvz0Y3bZS1ighJofWQKkU
+ BXbYCpg5s5bmt56Gb/CumJvxHHZ7RColuxJxSsDziVrPBZY+ib2HHYZEnSoX8rO2NAuD
+ uTlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697026843; x=1697631643;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MpNtfuDlhaes3G/dLNwyDGSar9tVrmw/aWa66seDdn8=;
+ b=GCKrhuvwkBgzBad96I+c2MVQ3IG+giFVmQeWQQU5DXhGesPx2dzKFfQ/NzcUxK1/fm
+ bn+AuegZ6irBMEkqKZ3qns7t7/LRgtR2Zqg4jVNxOd6YlnnVfqjgOHmNHUnYTlTsWhHL
+ ti6Ikc0S0FET2ugF0hFoJzlYDAhspLbKonI+xXW1SZcQDrYAPP+sMErf8pc31YILBeXs
+ zvKU9/m1kWOpP1rucQdgOexFCPemTzNVMdWnOMHAP3QF9O6ps8Datk2BOqqUqHlWXUqd
+ NuQ/NPpc8yFFnT8Jk6Wfo8Zfd9GNsjc4IFELNkkuEiTrl1hOnbV35/4KG1g3AAhfXOEE
+ RNkg==
+X-Gm-Message-State: AOJu0Yxj8hz9sbtFBmkGyDqQGinMGYMk0UipftiSKqHj+SQbVyoHgOZq
+ c8UPsfpwzJuhuh53ffY0B9EXMw==
+X-Google-Smtp-Source: AGHT+IFNBozNMJtMmD6pCKq7h3joQK7Pfd6w3fzjetoBj2I4+jQtcEyiVETByfquoGE9vNwblzvRSw==
+X-Received: by 2002:a17:906:7484:b0:9b9:f980:8810 with SMTP id
+ e4-20020a170906748400b009b9f9808810mr12326693ejl.34.1697026842642; 
+ Wed, 11 Oct 2023 05:20:42 -0700 (PDT)
+Received: from [192.168.69.115] (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
+ [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
+ z1-20020a1709064e0100b0099bca8b9a31sm9780957eju.100.2023.10.11.05.20.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Oct 2023 05:20:41 -0700 (PDT)
+Message-ID: <3cbe506f-5b91-4823-d0c2-a79b8917a0f2@linaro.org>
+Date: Wed, 11 Oct 2023 14:20:40 +0200
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Hfr1RREH9ZoyZvue5V3_GEVdehs1HzEU
-X-Proofpoint-ORIG-GUID: HVq94_dZt7qxXYtXpxWf7shwsuMaW1wQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-11_09,2023-10-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
- suspectscore=0 spamscore=0 impostorscore=0 clxscore=1011 mlxscore=0
- mlxlogscore=872 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310110106
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: wiki.qemu.org is experiencing technical difficulties
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ QEMU Developers <qemu-devel@nongnu.org>, Han Han <hhan@redhat.com>
+References: <d0e0395a-25a9-18a1-ae97-c77708a94adb@linaro.org>
+ <CAJSP0QXrKjJSQzVQpAKcxaqSOrRmgE4PYR7nbeRMGzKQg7JC-g@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAJSP0QXrKjJSQzVQpAKcxaqSOrRmgE4PYR7nbeRMGzKQg7JC-g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,25 +95,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2023-10-09 at 11:47 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
-> Fix:
->=20
-> =C2=A0 hw/s390x/sclpquiesce.c:90:22: error: declaration shadows a variabl=
-e
-> in the global scope [-Werror,-Wshadow]
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 QuiesceNotifier *qn =3D container_of(n, Qu=
-iesceNotifier,
-> notifier);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^
-> =C2=A0 hw/s390x/sclpquiesce.c:86:3: note: previous declaration is here
-> =C2=A0 } qn;
-> =C2=A0=C2=A0=C2=A0 ^
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> =C2=A0hw/s390x/sclpquiesce.c | 8 ++++----
-> =C2=A01 file changed, 4 insertions(+), 4 deletions(-)
+On 11/10/23 12:53, Stefan Hajnoczi wrote:
+> Hi Philippe,
+> For some reason the database was not running. It's back now.
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Thanks Stefan!
+
 
