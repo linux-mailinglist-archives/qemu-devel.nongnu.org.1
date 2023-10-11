@@ -2,70 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A437C4AAA
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 08:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A20877C4AE8
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 08:45:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqSlL-0001w6-Th; Wed, 11 Oct 2023 02:32:07 -0400
+	id 1qqSwn-0001mJ-NQ; Wed, 11 Oct 2023 02:43:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qqSl4-0001uz-1N
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 02:31:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qqSl1-0006w1-Cv
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 02:31:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697005905;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=G44gyNiz8GhAVa1gvei7fQjgrYxKV9EzbY/xkhUjfLY=;
- b=CCKO87Tmk7OVEyhbT+qr2GqXbFuOyoqJeYz9G2gA6Xy2OC04CGMBMGZfh7zcUpMtAlwpKY
- 3hLprpln9jookHbG8Y4ooAeCQ48ICcXgvcjHp8v8y3Cp0OKFL5FK98L0jnLIpnPMgyG9ZK
- ResU3w/BLQ0nXtKi+7VBU8zi9qJnFWg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-320-kg7hM2uePGKsjpSE6ZDPyw-1; Wed, 11 Oct 2023 02:31:41 -0400
-X-MC-Unique: kg7hM2uePGKsjpSE6ZDPyw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0661C101AA44;
- Wed, 11 Oct 2023 06:31:41 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.4])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 10F6D10F1BE7;
- Wed, 11 Oct 2023 06:31:39 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: kraxel@redhat.com,
-	stefanha@redhat.com,
-	vr_qemu@t-online.de
-Subject: [PULL 8/8] hw/audio/es1370: trace lost interrupts
-Date: Wed, 11 Oct 2023 10:31:01 +0400
-Message-ID: <20231011063101.258955-9-marcandre.lureau@redhat.com>
-In-Reply-To: <20231011063101.258955-1-marcandre.lureau@redhat.com>
-References: <20231011063101.258955-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qqSwl-0001lx-LI
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 02:43:55 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qqSwj-00017R-Nq
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 02:43:55 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-694ed847889so4960519b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 23:43:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697006632; x=1697611432;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1Jn+NKwWTZXJVmfPy1k1GUZNHp2gO9ceFQHoImbV4xo=;
+ b=tfQzUmt4/k+a/qwBDj35UH0ve/ErMT17yFr0KvjaeQCPgDmBhrJksSvKtoJ+VwEUFI
+ QlOex1zZQRm2MAMsGLSzkinWrSa6mcw8UnxnnCMWaiIriqKqiUKIZVKAjlV8UwSVcP7b
+ ZWbzkLqFNOa0t71Nkdpaf9R36V6O9zj3shlqOkxaaIiFs0KQwclvMoVQ3q3PFroU3/9o
+ n5kYNgosFDCcJoyt1GX4RKt10Q8XZa7l4TLleRC625LnPBm3dR3sgd004pW+EGEtBkt1
+ nsQX/ZRNpfDmLYBy/TNY8udHNPx61XlkUyl89EWbPnVzdU0E39G+eYkLH03naQ4w+j4J
+ lX0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697006632; x=1697611432;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1Jn+NKwWTZXJVmfPy1k1GUZNHp2gO9ceFQHoImbV4xo=;
+ b=tT7T7ObdPia/fjuf32kVDXo8o7uRNg60LhyESrwPKQ1z0Kl5TBRkRLzAQCI8FQuuXG
+ Cg6EgX6vCcJc+ioBt8HARJq6kpmm7CJjoOo5bdZVURAczcTp8oc059CJ6zc0w/wvveys
+ yGlh2QdQg0Xzirn/gxNdBrCozJOd1ucwpM7CACn41TgsU3TnZkk3Ex+kKoyLM67YLmuK
+ uwTKB9pBHhOHT/vD/o7AN/5SxoWBOsdDDQmd6LDtAKE/4+2JrtgYPZ3Ijm+viDisxWAQ
+ EB/68pErV7hQD7pZtzWiJJNnEVPWV9+zMY0iEUmm/1LMpqGkVan+FqjOSRmAP89a/Gd0
+ hQ8A==
+X-Gm-Message-State: AOJu0YxmsFP/8dm9djFFfOLNAYLZV/0DF+jZnK0dL5pOiMnbLK/Ram7g
+ 9AGOR6nygetwIZ7HjYa4+CA7Tw==
+X-Google-Smtp-Source: AGHT+IG7/ZoXxWxwkju4w2nk4ZKEgp/nyPKgcvZfAFBmIPWKkKQLUTsjQncVbzxEGDULd3pkv8ePTg==
+X-Received: by 2002:a05:6a20:160c:b0:163:b85e:6348 with SMTP id
+ l12-20020a056a20160c00b00163b85e6348mr20790882pzj.39.1697006632055; 
+ Tue, 10 Oct 2023 23:43:52 -0700 (PDT)
+Received: from [157.82.206.10] ([157.82.206.10])
+ by smtp.gmail.com with ESMTPSA id
+ x6-20020a170902820600b001c99b3a1e45sm5823212pln.84.2023.10.10.23.43.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Oct 2023 23:43:51 -0700 (PDT)
+Message-ID: <e0f860d5-a6e9-43e6-b8f1-0395bac0c90f@daynix.com>
+Date: Wed, 11 Oct 2023 15:43:49 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/7] tap: Fix virtio-net header buffer size
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
+References: <20231010025924.14593-1-akihiko.odaki@daynix.com>
+ <20231010025924.14593-2-akihiko.odaki@daynix.com>
+ <b80debfa-b789-400b-bc0c-a0ccc77a3530@tls.msk.ru>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <b80debfa-b789-400b-bc0c-a0ccc77a3530@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,87 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+On 2023/10/10 16:56, Michael Tokarev wrote:
+> 10.10.2023 05:59, Akihiko Odaki wrote:
+>> The largest possible virtio-net header is struct virtio_net_hdr_v1_hash.
+>>
+>> Fixes: fbbdbddec0 ("tap: allow extended virtio header with hash info")
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   net/tap.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/net/tap.c b/net/tap.c
+>> index c6639d9f20..ea46feeaa8 100644
+>> --- a/net/tap.c
+>> +++ b/net/tap.c
+>> @@ -118,7 +118,7 @@ static ssize_t tap_receive_iov(NetClientState *nc, 
+>> const struct iovec *iov,
+>>       TAPState *s = DO_UPCAST(TAPState, nc, nc);
+>>       const struct iovec *iovp = iov;
+>>       struct iovec iov_copy[iovcnt + 1];
+>> -    struct virtio_net_hdr_mrg_rxbuf hdr = { };
+>> +    struct virtio_net_hdr_v1_hash hdr = { };
+> 
+> BTW, can we get rid of (implicit) memzero() here and in
+> similar places, initializing only the actually used fields?
+> Not that his particular structure is very large (and this
+> change makes it 8 bytes larger), but still..
 
-It turns out that there are drivers which assume that interrupts
-can't be lost. E.g. the AROS sb128 driver is such a driver. Add
-a lost interrupt tracepoint to debug this kind of issues.
+These variables are rarely used so I think it's fine. In particular, 
+these variables are used only when QEMU sends an ARP packet while 
+virtio-net is enabled.
 
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-Id: <20230917065813.6692-8-vr_qemu@t-online.de>
----
- hw/audio/es1370.c     | 14 ++++++++++----
- hw/audio/trace-events |  3 ++-
- 2 files changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/hw/audio/es1370.c b/hw/audio/es1370.c
-index b47794f786..91c47330ad 100644
---- a/hw/audio/es1370.c
-+++ b/hw/audio/es1370.c
-@@ -602,7 +602,7 @@ static uint64_t es1370_read(void *opaque, hwaddr addr, unsigned size)
- }
- 
- static void es1370_transfer_audio (ES1370State *s, struct chan *d, int loop_sel,
--                                   int max, int *irq)
-+                                   int max, bool *irq)
- {
-     uint8_t tmpbuf[4096];
-     size_t to_transfer;
-@@ -657,10 +657,13 @@ static void es1370_transfer_audio (ES1370State *s, struct chan *d, int loop_sel,
-     }
- 
-     if (csc_bytes == transferred) {
--        *irq = 1;
-+        if (*irq) {
-+            trace_es1370_lost_interrupt(index);
-+        }
-+        *irq = true;
-         d->scount = sc | (sc << 16);
-     } else {
--        *irq = 0;
-+        *irq = false;
-         d->scount = sc | (((csc_bytes - transferred - 1) >> d->shift) << 16);
-     }
- 
-@@ -688,7 +691,8 @@ static void es1370_transfer_audio (ES1370State *s, struct chan *d, int loop_sel,
- static void es1370_run_channel (ES1370State *s, size_t chan, int free_or_avail)
- {
-     uint32_t new_status = s->status;
--    int max_bytes, irq;
-+    int max_bytes;
-+    bool irq;
-     struct chan *d = &s->chan[chan];
-     const struct chan_bits *b = &es1370_chan_bits[chan];
- 
-@@ -702,6 +706,8 @@ static void es1370_run_channel (ES1370State *s, size_t chan, int free_or_avail)
-         return;
-     }
- 
-+    irq = s->sctl & b->sctl_inten && s->status & b->stat_int;
-+
-     es1370_transfer_audio (s, d, b->sctl_loopsel, max_bytes, &irq);
- 
-     if (irq) {
-diff --git a/hw/audio/trace-events b/hw/audio/trace-events
-index 9ae2f717b6..059ce451f5 100644
---- a/hw/audio/trace-events
-+++ b/hw/audio/trace-events
-@@ -11,10 +11,11 @@ es1370_frame_address_rd(int ch, uint32_t addr) "ch=%d addr=0x%08x"
- es1370_frame_address_wr(int ch, uint32_t addr) "ch=%d addr=0x%08x"
- es1370_frame_count_rd(int ch, uint32_t curr, uint32_t size) "ch=%d CURR_CT=%u BUF_SIZE=%u"
- es1370_frame_count_wr(int ch, uint32_t curr, uint32_t size) "ch=%d CURR_CT=%u BUF_SIZE=%u"
-+es1370_lost_interrupt(int ch) "ch=%d lost interrupt"
- es1370_sample_count_rd(int ch, uint32_t curr, uint32_t num) "ch=%d CURR_SAMP_CT=%u SAMP_CT=%u"
- es1370_sample_count_wr(int ch, uint32_t curr, uint32_t num) "ch=%d CURR_SAMP_CT=%u SAMP_CT=%u"
- es1370_stream_format(int ch, uint32_t freq, const char *fmt, const char *mode, uint32_t shift) "ch=%d fmt=%u:%s:%s shift=%u"
--es1370_transfer_audio(int ch, uint32_t f_curr, uint32_t f_size, uint32_t s_curr, uint32_t s_num, uint32_t leftover, int irq) "ch=%d CURR_CT=%u BUF_SIZE=%u CURR_SAMP_CT=%u SAMP_CT=%u leftover=%u irq=%d"
-+es1370_transfer_audio(int ch, uint32_t f_curr, uint32_t f_size, uint32_t s_curr, uint32_t s_num, uint32_t leftover, bool irq) "ch=%d CURR_CT=%u BUF_SIZE=%u CURR_SAMP_CT=%u SAMP_CT=%u leftover=%u irq=%d"
- 
- # hda-codec.c
- hda_audio_running(const char *stream, int nr, bool running) "st %s, nr %d, run %d"
--- 
-2.41.0
-
+Regards,
+Akihiko Odaki
 
