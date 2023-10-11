@@ -2,94 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFB67C566E
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B88E27C566F
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:11:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZv9-0002ky-II; Wed, 11 Oct 2023 10:10:43 -0400
+	id 1qqZv9-0002nK-Ig; Wed, 11 Oct 2023 10:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqZun-0002ic-JK
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqZun-0002ia-HO
  for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:10:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqZuh-00083F-H5
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqZuf-00083C-Pd
  for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:10:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697033411;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ZZiSDAinDn6LJ8QEbIKl3TdcTQbVJDLtLKnCiS/RmVM=;
- b=Hk/LY8+zsjnG9Doj6cDwn4mDikS0LOvJ/htZMWuZJE5bahuJGpVH+3uwjgrCkZl3HtY2qN
- Gkx/Ae6hUobwm9Ty+iWjWyNVHn8wbO7+aUyvbSqmgj5HOb/Q62QIkIp1LKDc49NQcDHGVH
- y19AAzQikRFHUp9tl83rnC9b2bJZhCk=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-457-JLidpfJPNkqyQQsxUwYVeQ-1; Wed, 11 Oct 2023 10:10:07 -0400
-X-MC-Unique: JLidpfJPNkqyQQsxUwYVeQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-32d33e3aea5so1131057f8f.0
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:10:07 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40666aa674fso64677825e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:10:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697033410; x=1697638210; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/1+Mqew4YbCbo1Bdjzo2MrhR6N9crU/vFN8awxPHXzc=;
+ b=bPVdg2rUkiGIAm+Evu20cSKKCiaQWbszjZ3wH8j9DJaEjKewqo2lfxMW6B/EXNg15+
+ cB4ni436OsQjFdV+FHrxdfK6nivCkOfKTKmrvSWK9XGw9DJU5fjqqDZns2wJ90Ik1WRu
+ OlEsSKNxIqbkAxiegffba/q9MF/yi7LxLjYYLdF4CqSW94qaKmiPPuiMVyfxIL0UMDq5
+ /2twE4ZXYIrXlPTCy0ADyZUMp0kqddbScgj/jgWL/mR5ww2ybgUhvrKqPFXBvym5rCHI
+ OKWC1n1XoQzalg30khWuQivm9JJiIgsigLajipICN1Iowjp9HmXU2lShxTkG+eg9kp5i
+ LQJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697033406; x=1697638206;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZZiSDAinDn6LJ8QEbIKl3TdcTQbVJDLtLKnCiS/RmVM=;
- b=tK/DRPPJHcTUbkm5+LvV1ILkSELlqijSpc85XTokziySBr9WeIvvl6xYo3hBiY4XWA
- B9wYauxgyirJZNXOm2gKVqh5JO56XH+gbLX031+qMlekaF2uHHIH15x6FEnJVLQXn60d
- s3JCzh3jaexF9OyUcjA44LT1t/IzXR0cHPcUA7oIv8qkfiohKSTwj6o7sCp7cNdULGoB
- n6eD9Tmt3/oLyaAKbCLmlPrOOlStkpXAggs6rIXm60HSEsJ6zU9llC4LOZfsZC0i3iMa
- +1kqRNoqmieuyVHGDcbKs7JygYByFwL6NBdGuNrOZ3j1UzzRje/vyJ5IN/O16Khfoy0I
- 7wuw==
-X-Gm-Message-State: AOJu0YwJIQQfsjyB0kupsBwpmE9HYSrz5gUyQiL9ZIOloYIZEG73uaXu
- Ufiw7Yz0NyVjx6Dvz+RV4i8Gxmc7P99Rz1i1+RZyHkDfmPQTZs1PigfUGbWJDY7Om+h7Ar4eVri
- e5QrYLX/QydFZ4zguqTsXuHrOsQ==
-X-Received: by 2002:adf:e607:0:b0:31f:b9ea:76c with SMTP id
- p7-20020adfe607000000b0031fb9ea076cmr17572021wrm.48.1697033406095; 
- Wed, 11 Oct 2023 07:10:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6IkB2JzAcW3yKtBQvjsaGZ/pCOkxO6oGUrrYFiZW75PkmoTbBaHdKtgi0bCZnqWzG15jO2g==
-X-Received: by 2002:adf:e607:0:b0:31f:b9ea:76c with SMTP id
- p7-20020adfe607000000b0031fb9ea076cmr17571999wrm.48.1697033405715; 
- Wed, 11 Oct 2023 07:10:05 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- s4-20020a5d6a84000000b00327bf4f2f14sm15610428wru.88.2023.10.11.07.10.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 07:10:05 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>,  John Snow <jsnow@redhat.com>,  Cleber
- Rosa <crosa@redhat.com>
-Subject: Re: [PATCH v2 4/6] migration: Fix analyze-migration.py when
- ignore-shared is used
-In-Reply-To: <87sf6h1dyy.fsf@suse.de> (Fabiano Rosas's message of "Wed, 11 Oct
- 2023 10:32:53 -0300")
-References: <20231009184326.15777-1-farosas@suse.de>
- <20231009184326.15777-5-farosas@suse.de>
- <87v8bd9tsr.fsf@secure.mitica> <87sf6h1dyy.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 11 Oct 2023 16:10:04 +0200
-Message-ID: <87il7d9rnn.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1697033410; x=1697638210;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/1+Mqew4YbCbo1Bdjzo2MrhR6N9crU/vFN8awxPHXzc=;
+ b=LyreF6r+75iibA8HpqIoNWgcrmQIrjB1YIHfnzw2dATWsSzPfqOqR9o+NtugtO4elG
+ WykI2ZCTguUOs7BZCUYAw7KOXpck8qxSI3c1BJG4saUpFUZe/XhzH8XMEKpCuhekycvQ
+ 7ONwDFq1PP5B0Lza97n99xndwOlSUpN4d1Y4mzMAfcdeL3/EUIIi37yOsPK/hcM9g1Z4
+ 7Xu/Ks6J4ZpML8HlBgK0rBjpoQ73MfHLbMY+MjrPjTe+ktT8U65U+kY3qWBgCy4gOyik
+ B2Tz02vS/lIb8d8ginBwz7hsqj+2kavjDWHRjoVqgltU9hf8ZC0VOTvKaQKK1I+z5grE
+ tjzg==
+X-Gm-Message-State: AOJu0YxLvff8c0Qp0+JIM85PiHpILSzRHZAMv1qEN74G0U5cEBcJRX+I
+ RBZUU+oFweS9z7KAoVM+gfcDdQ==
+X-Google-Smtp-Source: AGHT+IHe0yHVBunmgB/RJ68Wb+8Lbiny+88s2l57u8QKt1MKra5ikK8RmddYbZzM7QfpGHsorSWNQw==
+X-Received: by 2002:a7b:cb89:0:b0:406:54e4:359c with SMTP id
+ m9-20020a7bcb89000000b0040654e4359cmr18548799wmi.19.1697033409998; 
+ Wed, 11 Oct 2023 07:10:09 -0700 (PDT)
+Received: from [192.168.69.115] (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
+ [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
+ m19-20020a7bcb93000000b003fe61c33df5sm19285023wmi.3.2023.10.11.07.10.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Oct 2023 07:10:09 -0700 (PDT)
+Message-ID: <a3020663-29b7-7de8-8efb-d3adb032de50@linaro.org>
+Date: Wed, 11 Oct 2023 16:10:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 3/5] hw/ppc/ppc4xx_pci: Declare PPC4XX_PCI in Kconfig
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
+References: <20231011132427.65001-1-philmd@linaro.org>
+ <20231011132427.65001-4-philmd@linaro.org>
+ <763c0675-5f72-5b53-0770-dba5f52692d8@eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <763c0675-5f72-5b53-0770-dba5f52692d8@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,61 +92,19 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> Juan Quintela <quintela@redhat.com> writes:
->
->> Fabiano Rosas <farosas@suse.de> wrote:
->>> The script is currently broken when the x-ignore-shared capability is
->>> used:
->>>
->>> Traceback (most recent call last):
->>>   File "./scripts/analyze-migration.py", line 656, in <module>
->>>     dump.read(dump_memory = args.memory)
->>>   File "./scripts/analyze-migration.py", line 593, in read
->>>     section.read()
->>>   File "./scripts/analyze-migration.py", line 163, in read
->>>     self.name = self.file.readstr(len = namelen)
->>>   File "./scripts/analyze-migration.py", line 53, in readstr
->>>     return self.readvar(len).decode('utf-8')
->>> UnicodeDecodeError: 'utf-8' codec can't decode byte 0x82 in position 55: invalid start byte
->>>
->>> We're currently adding data to the middle of the ram section depending
->>> on the presence of the capability. As a consequence, any code loading
->>> the ram section needs to know about capabilities so it can interpret
->>> the stream.
->>>
->>> Skip the byte that's added when x-ignore-shared is used to fix the
->>> script.
->>>
->>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>
->> Reviewed-by: Juan Quintela <quintela@redhat.com>
->>
->>> @@ -582,6 +586,7 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
->>>                  config_desc = self.vmsd_desc.get('configuration')
->>>                  section = ConfigurationSection(file, config_desc)
->>>                  section.read()
->>> +                ramargs['ignore_shared'] = section.has_capability('x-ignore-shared')
->>
->> should we consider s/x-ignore-shared/ignore-shared/?
->>
->
-> We can consider s/ignore-shared/x-ignore-shared/ if that's what you
-> mean. The way you suggested doesn't work because the cap name comes from
-> QEMU with the "x-" part in it.
->
-> If you meant filtering the x out when parsing the capabilities in this
-> script, I think that would cause a sort of a UX issue because we need to
-> use x-ignore-shared to set the cap in QMP/HMP.
+On 11/10/23 15:42, BALATON Zoltan wrote:
+> On Wed, 11 Oct 2023, Philippe Mathieu-Daudé wrote:
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Should this be squashed with next patch? It looks strange to have config 
+> defined in hw/pci-host/Kconfig but used in hw/ppc/meson.build.
 
-No.
+OK.
 
-I mean if we should start supporting ignore-shared.
-
-Later, Juan.
+> Regards,
+> BALATON Zoltan
 
 
