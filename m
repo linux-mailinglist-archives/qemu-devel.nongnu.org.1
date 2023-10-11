@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490947C469D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 02:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E18AF7C46CC
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 02:38:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqN2u-0007TN-D2; Tue, 10 Oct 2023 20:25:52 -0400
+	id 1qqNDQ-0001Iy-LD; Tue, 10 Oct 2023 20:36:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qqN2m-0007QZ-9a; Tue, 10 Oct 2023 20:25:44 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qqNDO-0001Ii-KD; Tue, 10 Oct 2023 20:36:42 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qqN2g-0005hX-9t; Tue, 10 Oct 2023 20:25:43 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1c5cd27b1acso49920785ad.2; 
- Tue, 10 Oct 2023 17:25:37 -0700 (PDT)
+ id 1qqNDM-0000Ja-P4; Tue, 10 Oct 2023 20:36:42 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-27752a1e184so5030764a91.3; 
+ Tue, 10 Oct 2023 17:36:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696983936; x=1697588736; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696984599; x=1697589399; darn=nongnu.org;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iS+RLGcfX5Jr3mV0kBt8sPNpd/pbAvz7R3ZdZq4zpzE=;
- b=WgGU8Qp2KxmGbA7VV/SNyFyi2leoOwimAyrxSw2hAw6nyMGNVs1+kYWdvDjO6ogVrE
- UCCvdV8mCfcCD4a/BMQuCHKzNdLMvJn0AfNRWnPvIrEXqLbGgAmXBf8ElTst86d5wcBj
- ZbIfbOQ4DduLu3waPP2Oqi7CJioCNAl3zUisDdQOaTLM5zG5ok0rpa890vnqdRhH/qgm
- tX9a70uoFxKBk5K73oFD7tShzyMQ8k5QmwhryQwEAOXh+kfKZl6YDh+UUnRgwwvvCMDw
- XgIOqJ/fIUCnn4oDJff7IZ2LYnaoZjGFosJDihfQ1dkOYDy4SAaAqgT2YBPjfiFoYaZ4
- 85rg==
+ bh=o3VySredyLrOH2ifKTkXYdxvUgqE7ChSU0BXlXlx8lU=;
+ b=AZeP9xV2yZnb4yjVjetYH1GQJ8S5TnScaC/ExFDD4cRILrf2mh40cu7D2u5Xo+k/TN
+ LXu6S5XI+RGNxmyR9SPHo+rn6YOVEVEXXZX0DLcJAolhXBMXaLF5E2luPAKbVtytGFc0
+ U7qYNQVwGbIeshdXrvzIu+AfrJjY0DD3k0tD/jY9QV8CaQ3N9/z97zFNEVGBBbk9hsND
+ mh4q9QJrxmApPGSMhOo6QObIS6CQRevzCaFZ4EVsX1DZk6R3d+kJZi6WXVSzJpklg/ED
+ fk6ydCZPR2f80BfKaSgWnq80cqD06FCerAVgg19Py1YZX+2sibItPEfIU7HnJrHBviRx
+ bHqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696983936; x=1697588736;
+ d=1e100.net; s=20230601; t=1696984599; x=1697589399;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=iS+RLGcfX5Jr3mV0kBt8sPNpd/pbAvz7R3ZdZq4zpzE=;
- b=Iq5wSfEZvnjAA7zlTl6sbCPC7Vm3159e7fF+I0twNNU5CIznNv0acNh1Xz/VFjUl9c
- 8I/h23WRUXCwCfwUUr6TqqAS7XPuIO0z5KebQja5g3+O4ZPdI1W/EEjJ6zvdKb3UG19n
- ieGTzmlgmZowo0GW1bC/nGqanxXzt9j/kGy6oifSujqxhlDZODOwg4yWssXe2qTTzo5P
- RsJppcENyigrIEjTWK8aQvtz8r5FKVUIqzsoeEBlXP6+KaZr1daTM1h//QdXSVlQrRqe
- F3MqPva/6zuiqs3wYnRgaWKQJhPu2ZOAAm1PdfdFrUo94VJbKqc/H+YZ5pqRUT7V0Lag
- KOIQ==
-X-Gm-Message-State: AOJu0Ywl8BxqtTc7tH0QAA31LUxrmjbrSE3AC5XybybmZdyLWSWGN3vA
- FbviHkCwZt/8Fffs+j9bHY8=
-X-Google-Smtp-Source: AGHT+IEcGBA/O1h2tJtrCwT0ZAAzjoVxPGO941QG/a0VopTCDJn0q1O64ObXcNKBJBCxJzCS1tic2Q==
-X-Received: by 2002:a17:902:d4d1:b0:1c9:cc3a:7b3 with SMTP id
- o17-20020a170902d4d100b001c9cc3a07b3mr366229plg.54.1696983936457; 
- Tue, 10 Oct 2023 17:25:36 -0700 (PDT)
+ bh=o3VySredyLrOH2ifKTkXYdxvUgqE7ChSU0BXlXlx8lU=;
+ b=fnUTTzCcEeQBY2JVPN66GZ5Hnt1HJtjjUDepvR89qrbhA8IBjLA3ne9Ilv4sX8kL+i
+ //x7AdzMAK/Ma3ekoxU/lxnhKbNqgH79xfNrEFm11hlRIHjjsFtegvR5gHPyUg2/vGCg
+ aeU+SJkfE8OkKvViucmps19L0qqlad4ZM7q1Re7QZQ2S6PlQMf0hBMGuOLcuYeAdyJk/
+ IxUjvgCrmLhKtotxKTmSWny3RG3Ys8p58G6aF9bVt387kWVgIASpxJSeCQNqiOGi017Y
+ ybnoEVMzaKbpBPBlBDgbuB1WKXGuelAeqdTBJgk2WPbkUxy1nXnbtRbQqvJn4/qPO7/r
+ OT8A==
+X-Gm-Message-State: AOJu0YyjO2vwrPmAQNB3DUUH/ss8ngrk+sq8LnTJVIgjzX99uHflX8A5
+ u06vKGwkRFcggYuU7ao3lLs=
+X-Google-Smtp-Source: AGHT+IHsD2j8h/FQkUq1erx1vaVD1JK0ZChZwzDfwIwT460VD5Ju2wMUSX/3Sm2BH6QnofCLM+/OpQ==
+X-Received: by 2002:a17:90a:db8a:b0:274:945b:6979 with SMTP id
+ h10-20020a17090adb8a00b00274945b6979mr17769628pjv.16.1696984598802; 
+ Tue, 10 Oct 2023 17:36:38 -0700 (PDT)
 Received: from localhost (27-33-247-209.tpgi.com.au. [27.33.247.209])
  by smtp.gmail.com with ESMTPSA id
- be8-20020a170902aa0800b001bb99e188fcsm12384441plb.194.2023.10.10.17.25.33
+ d21-20020a17090ae29500b0027768125e24sm465667pjz.39.2023.10.10.17.36.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 17:25:36 -0700 (PDT)
+ Tue, 10 Oct 2023 17:36:38 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Oct 2023 10:25:31 +1000
-Message-Id: <CW56LJVY3BAA.30I7HDM9UETI9@wheely>
-Cc: "Cleber Rosa" <crosa@redhat.com>, "Wainer dos Santos Moschetta"
- <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
+Date: Wed, 11 Oct 2023 10:36:32 +1000
+Message-Id: <CW56TZQEDIBH.36TCETGSU8X47@wheely>
+Cc: <qemu-ppc@nongnu.org>, "Cleber Rosa" <crosa@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Wainer dos
+ Santos Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
  <qemu-devel@nongnu.org>
-Subject: Re: [RFC PATCH 08/11] tests/avocado: Add ppc MacOS tests
+Subject: Re: [RFC PATCH 06/11] tests/avocado: Add FreeBSD distro boot tests
+ for ppc
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- <qemu-ppc@nongnu.org>
+To: "Warner Losh" <imp@bsdimp.com>
 X-Mailer: aerc 0.15.2
 References: <20231010075238.95646-1-npiggin@gmail.com>
- <20231010075238.95646-9-npiggin@gmail.com>
- <2d455bcf-f586-52df-eb85-136bc4362d5d@linaro.org>
-In-Reply-To: <2d455bcf-f586-52df-eb85-136bc4362d5d@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+ <20231010075238.95646-7-npiggin@gmail.com>
+ <CANCZdfqNJ97EgAax=P7pzny8zcULfiLEVJighecm5=DgLtRv8g@mail.gmail.com>
+In-Reply-To: <CANCZdfqNJ97EgAax=P7pzny8zcULfiLEVJighecm5=DgLtRv8g@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,136 +96,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Oct 10, 2023 at 5:58 PM AEST, Philippe Mathieu-Daud=C3=A9 wrote:
-> Hi Nicholas,
+On Wed Oct 11, 2023 at 7:55 AM AEST, Warner Losh wrote:
+> On Tue, Oct 10, 2023 at 1:53=E2=80=AFAM Nicholas Piggin <npiggin@gmail.co=
+m> wrote:
 >
-> On 10/10/23 09:52, Nicholas Piggin wrote:
-> > Similarly to the AIX test, this adds some tests that can boot MacOS9
-> > and OSX images that are provided.
-> > ---
-> >   tests/avocado/ppc/macos9.ppm | Bin 0 -> 921615 bytes
-> >   tests/avocado/ppc_macos.py   |  90 ++++++++++++++++++++++++++++++++++=
-+
-> >   2 files changed, 90 insertions(+)
-> >   create mode 100644 tests/avocado/ppc/macos9.ppm
-> >   create mode 100644 tests/avocado/ppc_macos.py
+> > FreeBSD project provides qcow2 images that work well for testing QEMU.
+> > Add pseries tests for HPT and Radix, KVM and TCG.
+> >
+> > Other architectures could be added so this does not get a ppc_ prefix
+> > but is instead named similarly to boot_linux.
+> >
+> > Cc: Warner Losh <imp@bsdimp.com>
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> >
+> > CC'ing Warner to check if it's okay for us to use these images and
+> > any comments or suggestions. avocado tests have many Linux boots so we'=
+d
+> > do much better to expand test coverage by adding some other systems.
+> >
 >
->
-> > diff --git a/tests/avocado/ppc_macos.py b/tests/avocado/ppc_macos.py
-> > new file mode 100644
-> > index 0000000000..055fc3aca4
-> > --- /dev/null
-> > +++ b/tests/avocado/ppc_macos.py
-> > @@ -0,0 +1,90 @@
-> > +# Functional test that boots MacOS on ppc mac99
-> > +#
-> > +# Copyright (c) 2023 IBM Corporation
-> > +#
-> > +# This work is licensed under the terms of the GNU GPL, version 2 or
-> > +# later.  See the COPYING file in the top-level directory.
-> > +
-> > +import time
-> > +import tempfile
-> > +import filecmp
-> > +import os
-> > +
-> > +from typing import List
-> > +from avocado.utils import archive
-> > +from avocado_qemu import QemuSystemTest
-> > +from avocado_qemu import wait_for_console_pattern
-> > +
-> > +class PPCMacOSTest(QemuSystemTest):
-> > +
-> > +    timeout =3D 240
-> > +
-> > +    def test_macos9(self):
-> > +        """
-> > +        :avocado: tags=3Darch:ppc
-> > +        :avocado: tags=3Dmachine:mac99
-> > +        :avocado: tags=3Ddevice:framebuffer
-> > +        """
-> > +
-> > +        basedir =3D os.getenv('AVOCADO_TEST_BASEDIR')
-> > +        screenshot_path =3D os.path.join(basedir, 'ppc/macos9.ppm')
-> > +
-> > +        image =3D os.getenv('MACOS9_IMAGE')
-> > +        if not image:
-> > +            self.cancel('No MACOS9_IMAGE environment variable defined'=
-)
-> > +        drive_path =3D self.fetch_asset(image)
-> > +
-> > +        self.vm.set_console()
-> > +        self.vm.add_args('-M', 'via=3Dpmu')
-> > +        self.vm.add_args('-m', '1g')
-> > +        self.vm.add_args('-cpu', 'G4')
-> > +        self.vm.add_args('-drive', 'file=3D' + drive_path)
-> > +#        self.vm.add_args('-net', 'nic,model=3Drtl8139')
-> > +#        self.vm.add_args('-net', 'user,hostfwd=3D:127.0.0.1:2223-:22,=
-hostname=3Dqemu')
-> > +        self.vm.add_args('-vga', 'std')
-> > +        self.vm.add_args('-g', '640x480')
-> > +        self.vm.launch()
-> > +
-> > +        # This comes up after 60 seconds on a fast x86 CPU. Give it
-> > +        # 180s to be sure.
-> > +        time.sleep(180)
-> > +        with tempfile.NamedTemporaryFile(suffix=3D'.ppm',
-> > +                                         prefix=3D'screendump-', delet=
-e=3DFalse) as ppmfile:
-> > +            self.vm.command('screendump', filename=3Dppmfile.name)
-> > +            if not filecmp.cmp(ppmfile.name, screenshot_path):
-> > +                self.fail('Screenshot does not match')
-> > +
->
-> Nitpicking, I'd rather use:
->
->         @skipUntil(os.getenv('MACOS10_IMAGE'),
->                    'No MACOS10_IMAGE environment variable defined')
+> I like this.... I'm a little worried at the exact hash encoded in it, but
+> since there's a checksum
+> to match, it's OK I guess. It will give this code a shelf-life of months,
+> IIRC our retention policy.
 
-Aha I didn't know about that one. I don't think it's nitpicking, that's
-a good suggestion, thank you.
+Oh I didn't realise, I saw some 2021 dates in the directory listing but loo=
+ks
+like they're not for the artifacts themselves.
 
-> > +    def test_macos10(self):
-> > +        """
-> > +        :avocado: tags=3Darch:ppc
-> > +        :avocado: tags=3Dmachine:mac99
-> > +        :avocado: tags=3Ddevice:framebuffer
-> > +        """
-> > +
-> > +        basedir =3D os.getenv('AVOCADO_TEST_BASEDIR')
-> > +        screenshot_path =3D os.path.join(basedir, 'ppc/macos10.ppm')
-> > +
-> > +        image =3D os.getenv('MACOS10_IMAGE')
-> > +        if not image:
-> > +            self.cancel('No MACOS10_IMAGE environment variable defined=
-')
-> > +        drive_path =3D self.fetch_asset(image)
->
-> Please commit the hash if the image you used.
+I don't suppose you know if there are any long-term artifacts kept
+around, or someone who I could ask?
 
-Sure.
+The downside of using short term images is that it can be harder to
+reproduce reports from others, bisect, run manual testing, etc. I think
+these would still be useful, so long as they get updated regularly.
 
 >
-> > +        self.vm.set_console()
-> > +        self.vm.add_args('-M', 'via=3Dpmu')
-> > +        self.vm.add_args('-m', '1g')
-> > +        self.vm.add_args('-cpu', 'G4')
-> > +        self.vm.add_args('-drive', 'file=3D' + drive_path)
-> > +#        self.vm.add_args('-net', 'nic,model=3Drtl8139')
-> > +#        self.vm.add_args('-net', 'user,hostfwd=3D:127.0.0.1:2223-:22,=
-hostname=3Dqemu')
+> Other than that, I think this is good. Not familiar enough with Avocado t=
+o
+> understand
+> skipping for gitlab CI, but given the extreme crunch on minutes, I think
+> that's OK.
+
+Yeah I'm not sure what the situation there is, I didn't want to add new
+tests of any significant weight yet. We could always flip it on later if
+people want it.
+
 >
-> Why is that commented? If not needed, just drop, since your test
-> is already useful as it.
+> Other than one nit below which is fine if it is intentionally left behind
+> (or removed):
+>
+> Reviewed-by: Warner Losh <imp@bsdimp.com>
+>
+> Please don't hesitate to reach out to me if this is failing. I'll act as =
+a
+> backstop to get
+> it to the right people.
 
-Yeah I will. That was the option used by some scripts here but it
-doesn't seem to work for me here, whereas the default IIRC sungem
-does get networking up. Could be a QEMU regression so I was meaning
-to try a bisect.
+Thanks Warner.
 
-Thanks for the feedback on these. I'll leave the MacOS and AIX ones
-out of the next ppc PR so there is more time for thought and
-discussion about them.
+>
+> Warner
+>
+>
+[snip]
+
+> > +    def run_pseries_test(self, force_HPT=3DFalse):
+> > +        # We need zstd for all the tuxrun tests
+> > +        # See https://github.com/avocado-framework/avocado/issues/5609
+> > +        zstd =3D find_command('zstd', False)
+> > +        if zstd is False:
+> > +            self.cancel('Could not find "zstd", which is required to '
+> > +                        'decompress rootfs')
+> > +        self.zstd =3D zstd
+> > +
+> > +        drive_url =3D ('
+> > https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/a2440348eed75bb76=
+82579af0905b652747fd016/powerpc/powerpc64le/disk.qcow2.zst
+> > ')
+> > +        drive_hash =3D '8ab11a05ccab3d44215fd4667a70454ed10a203f'
+> > +        drive_path_zstd =3D self.fetch_asset(drive_url,
+> > asset_hash=3Ddrive_hash)
+> > +        drive_path =3D os.path.join(self.workdir, 'disk.qcow2')
+> > +        # archive.zstd_uncompress(drive_path_zstd, drive_path)
+> >
+>
+> Why is this commented out? It looks like a leftover maybe?
+>
+
+Ah yes, avocado recently got zstd_uncompress but it seems not
+available for QEMU yet so we have to do it by hand. I'll remove.
 
 Thanks,
 Nick
