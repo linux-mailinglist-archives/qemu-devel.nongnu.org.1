@@ -2,83 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F6B7C599F
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 18:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD927C59A7
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 18:55:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqcTJ-0001tq-Ct; Wed, 11 Oct 2023 12:54:09 -0400
+	id 1qqcUQ-0007kG-RP; Wed, 11 Oct 2023 12:55:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qqcTG-0001nC-5Z
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 12:54:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qqcUB-0007Fg-86; Wed, 11 Oct 2023 12:55:06 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qqcTD-0001F4-MD
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 12:54:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697043242;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9WvoSV7GAzcTKi5rpFm9f4HREFpQ5FiKaxp9GUP0EMs=;
- b=ZPw+SuR4bJDN9Q3VKu7nsSXDBVPRt5j6Q//Qqz3swQ0mWBTEpIdV1Wk1pB87Cy3MEx+uRq
- mzmcMYw+UAx0CEQwRZhqWTHjS/sJzvncazRWBJVtMOwfVVESAUVE3x/qqD7U1OTEPAtVO3
- zUBrvIcVHl3Qej+CDVZoOVYnvgSQYZU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-647-1dZfVtXqN8afHj6M8i-7-w-1; Wed, 11 Oct 2023 12:53:48 -0400
-X-MC-Unique: 1dZfVtXqN8afHj6M8i-7-w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 420743C23652;
- Wed, 11 Oct 2023 16:53:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.38])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3E32C1C060AE;
- Wed, 11 Oct 2023 16:53:45 +0000 (UTC)
-Date: Wed, 11 Oct 2023 17:53:43 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH v9 23/23] plugins: Support C++
-Message-ID: <ZSbTF5CXJreWywP/@redhat.com>
-References: <20231011070335.14398-1-akihiko.odaki@daynix.com>
- <20231011070335.14398-24-akihiko.odaki@daynix.com>
- <ZSZiAHtXGOZnZNas@redhat.com>
- <2c970c00-519c-4175-b0ca-9081c4aa0daf@daynix.com>
- <ffdd55c2-4ae9-4b1f-ac12-a9ad714c3f26@redhat.com>
- <69ba49f0-843f-4a74-ad00-5ce1138ee074@daynix.com>
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qqcU8-0001O6-II; Wed, 11 Oct 2023 12:55:02 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39BGlhUc010198; Wed, 11 Oct 2023 16:54:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=4Zl6vTRMQqU2eJF3c+UNxdx4QTlsfKgHCABC6R4wmKw=;
+ b=qtvigNjyAvqcBxzLqfDBUc/WW5tNujR3KM/6IVf4jPc8ix/ksnnhWweZrPWExGtlFmV6
+ s5Lfj/KfRcfcSdsPk3+eM24cf5/AjX94dCzI3icxEoSQzYaM6z89fv9hSPbCUPViPA0N
+ 2NkoE2RuJx6qOcFegTMxTAikJrTy/X5lPRGXlwGaEN427/+mQNiRcB1+sNOJQiZcdtu0
+ yh73a3VTlGnPMNOZ+nho/8oGxq/68qB/ONR8Ih3PaWfbgUIbMUb795Thduzh/YtcMBqc
+ PgrG6g9xohqOycvAMgNmh0VcYR1EZksEC9ivcF5ta9YRQPY2L4RwcGj9/2WarquSHM2L 2A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnyhmrd2e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Oct 2023 16:54:47 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39BGmPb1013549;
+ Wed, 11 Oct 2023 16:54:46 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tnyhmrd1v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Oct 2023 16:54:46 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39BFJDdf001147; Wed, 11 Oct 2023 16:54:45 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkkvk13qn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Oct 2023 16:54:45 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39BGsiaf21168668
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 11 Oct 2023 16:54:44 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B338C58055;
+ Wed, 11 Oct 2023 16:54:44 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 00A225804B;
+ Wed, 11 Oct 2023 16:54:44 +0000 (GMT)
+Received: from [9.24.12.86] (unknown [9.24.12.86])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 11 Oct 2023 16:54:43 +0000 (GMT)
+Message-ID: <46e787e3-6901-47da-b7e3-26c9f0d5aafa@linux.ibm.com>
+Date: Wed, 11 Oct 2023 11:54:43 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/10] hw/fsi: Added qtest
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, clg@kaod.org,
+ peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org
+References: <20231011151339.2782132-1-ninad@linux.ibm.com>
+ <20231011151339.2782132-9-ninad@linux.ibm.com>
+ <cacc4a01-88e9-4631-a6d6-fbee2b483fd6@redhat.com>
+Content-Language: en-US
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <cacc4a01-88e9-4631-a6d6-fbee2b483fd6@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <69ba49f0-843f-4a74-ad00-5ce1138ee074@daynix.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: D16UPvwG0hdNY8spdLZGSV-FpPTBph62
+X-Proofpoint-ORIG-GUID: 5Gy7xxj9uaxd7mSAXLpZAd-7OQgC_x99
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-11_12,2023-10-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ lowpriorityscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ spamscore=0 clxscore=1015 phishscore=0 mlxlogscore=884 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310110148
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,89 +114,104 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 12, 2023 at 01:42:04AM +0900, Akihiko Odaki wrote:
-> On 2023/10/12 1:21, Thomas Huth wrote:
-> > On 11/10/2023 17.48, Akihiko Odaki wrote:
-> > > On 2023/10/11 17:51, Daniel P. Berrangé wrote:
-> > > > On Wed, Oct 11, 2023 at 04:03:09PM +0900, Akihiko Odaki wrote:
-> > > > > Make qemu-plugin.h consumable for C++ platform.
-> > > > > 
-> > > > > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > > > > ---
-> > > > >   docs/devel/tcg-plugins.rst |  4 ++++
-> > > > >   meson.build                |  2 +-
-> > > > >   include/qemu/qemu-plugin.h |  4 ++++
-> > > > >   tests/plugin/cc.cc         | 16 ++++++++++++++++
-> > > > >   tests/plugin/meson.build   |  5 +++++
-> > > > >   tests/tcg/Makefile.target  |  3 +--
-> > > > >   6 files changed, 31 insertions(+), 3 deletions(-)
-> > > > >   create mode 100644 tests/plugin/cc.cc
-> > > > > 
-> > > > > diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-> > > > > index c9f8b27590..984d8012e9 100644
-> > > > > --- a/docs/devel/tcg-plugins.rst
-> > > > > +++ b/docs/devel/tcg-plugins.rst
-> > > > > @@ -283,6 +283,10 @@ run::
-> > > > >     160          1      0
-> > > > >     135          1      0
-> > > > > +- contrib/plugins/cc.cc
-> > > > > +
-> > > > > +A pure test plugin to ensure that the plugin API is
-> > > > > compatible with C++.
-> > > > > +
-> > > > 
-> > > > IMHO we don't need to be adding a test just to prove the
-> > > > existance of the G_BEGIN_DECLS/G_END_DECLS macros in the
-> > > > plugin header.
-> > > 
-> > > Strictly speaking, if you include this header file from C++, the
-> > > code will be interpreted as C++ instead of C but with C linkage.
-> > > That worries me that the header file may get something not allowed
-> > > in C++ in the future.
-> > 
-> > I think it should be enough if you add the G_BEGIN_DECLS/G_END_DECLS
-> > macros here. QEMU is a C project, and it was quite difficult to get rid
-[> > of the C++ code again, so please don't soften the check in meson.build
-> > and don't introduce new .cc files.
-> > If you have some code somewhere that uses C++ for plugins, I think it
-> > would be better to add a regression test there instead.
-> 
-> It doesn't sound right to test the upstream header file in a downstream
-> project. It will take time until the fix becomes readily usable for the
-> downstream even if the downstream finds a bug.
+Hello Thomas,
 
-Essentially QEMU is explicitly saying that C++ support is not a core
-deliverable of the project. QEMU will accept patches to fix problems
-but won't put any effort into C++ beyond that.
+Thanks for the review.
 
-In such a scenario it is appropriate for a downstream to do testing
-itself. The delay between finding a problem and sending a fix does
-not need to be big - it could easily be less than a day if there is
-a nightly CI job that tests against latest QEMU git master.
+On 10/11/23 10:35, Thomas Huth wrote:
+> On 11/10/2023 17.13, Ninad Palsule wrote:
+>> Added basic qtests for FSI model.
+>>
+>> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+>> ---
+>> v3:
+>>   - Added new qtest as per Cedric's comment.
+>> V4:
+>>   - Remove MAINTAINER and documentation changes from this commit
+>> ---
+>>   tests/qtest/fsi-test.c  | 210 ++++++++++++++++++++++++++++++++++++++++
+>>   tests/qtest/meson.build |   2 +
+>>   2 files changed, 212 insertions(+)
+>>   create mode 100644 tests/qtest/fsi-test.c
+>>
+>> diff --git a/tests/qtest/fsi-test.c b/tests/qtest/fsi-test.c
+>> new file mode 100644
+>> index 0000000000..30bb7475c7
+>> --- /dev/null
+>> +++ b/tests/qtest/fsi-test.c
+>> @@ -0,0 +1,210 @@
+> ...
+>> +int main(int argc, char **argv)
+>> +{
+>> +    int ret = -1;
+>> +    QTestState *s;
+>> +
+>> +    g_test_init(&argc, &argv, NULL);
+>> +
+>> +    s = qtest_init("-machine ast2600-evb ");
+>> +    if (s == NULL) {
+>> +        return -ENOMEM;
+>
+> returning -ENOMEM here does not make too much sense ... and actually 
+> qtest_init() cannot return NULL. So please drop this if-statement.
+Removed if condition.
+>
+>> +    }
+>> +
+>> +    /* Tests for OPB/FSI0 */
+>> +    qtest_add_data_func("/fsi-test/test_fsi0_master_regs", s,
+>> +                        test_fsi0_master_regs);
+>> +
+>> +    qtest_add_data_func("/fsi-test/test_fsi0_getcfam_addr0", s,
+>> +                        test_fsi0_getcfam_addr0);
+>> +
+>> +    /* Tests for OPB/FSI1 */
+>> +    qtest_add_data_func("/fsi-test/test_fsi1_master_regs", s,
+>> +                        test_fsi1_master_regs);
+>> +
+>> +    qtest_add_data_func("/fsi-test/test_fsi1_getcfam_addr0", s,
+>> +                        test_fsi1_getcfam_addr0);
+>> +
+>> +    ret = g_test_run();
+>> +    qtest_quit(s);
+>> +
+>> +    return ret;
+>> +}
+>> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+>> index b071d400b3..5976081b44 100644
+>> --- a/tests/qtest/meson.build
+>> +++ b/tests/qtest/meson.build
+>> @@ -207,6 +207,7 @@ qtests_arm = \
+>>     (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? 
+>> ['tpm-tis-i2c-test'] : []) + \
+>>     (config_all_devices.has_key('CONFIG_VEXPRESS') ? 
+>> ['test-arm-mptimer'] : []) + \
+>>     (config_all_devices.has_key('CONFIG_MICROBIT') ? 
+>> ['microbit-test'] : []) + \
+>> +  (config_all_devices.has_key('CONFIG_FSI_APB2OPB_ASPEED') ? 
+>> ['fsi-test'] : []) + \
+>>     ['arm-cpu-features',
+>>      'boot-serial-test']
+>>   @@ -318,6 +319,7 @@ qtests = {
+>>     'tpm-tis-device-test': [io, tpmemu_files, 'tpm-tis-util.c'],
+>>     'vmgenid-test': files('boot-sector.c', 'acpi-utils.c'),
+>>     'netdev-socket': files('netdev-socket.c', 
+>> '../unit/socket-helpers.c'),
+>> +  'fsi-test': files('fsi-test.c'),
+>
+> I think this hunk here is not required - you only need to specify 
+> additional dependencies here, not the main file.
 
-Distributing the testing burden is more scalable as QEMU also does
-not have the resources to test every scenario it wants to. This kind
-of situation already exists with the Xen project, which does CI against
-QEMU on an ongoing basis to identify and report bugs that affect Xen
-in scenarios which QEMU does not test. Libvirt also runs CI against
-QEMU to detect regressions in QEMU which impact libvirt's usage of
-QEMU, that QEMU's own CI won't catch.
+Removed list of files.
 
-All that not withstanding, while you are right that someone might
-accidentally introduce something in the header that is not compatible
-with C++, the actual chances of this are low. This plugin header file
-is small, self contained, and is not undergoing a high volume of
-change.
+Thanks!
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+~Ninad
 
+>
+>  Thomas
+>
 
