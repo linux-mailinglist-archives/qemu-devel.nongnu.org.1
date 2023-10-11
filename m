@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9414B7C51E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 13:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE6D7C51E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 13:23:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqXHl-0007oG-9s; Wed, 11 Oct 2023 07:21:53 -0400
+	id 1qqXIR-0008Ro-Gu; Wed, 11 Oct 2023 07:22:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqXHj-0007l3-FJ; Wed, 11 Oct 2023 07:21:51 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qqXI4-0008Ji-DH; Wed, 11 Oct 2023 07:22:13 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqXHh-00010I-SK; Wed, 11 Oct 2023 07:21:51 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0FAEC2967D;
- Wed, 11 Oct 2023 14:21:03 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7BA712E703;
- Wed, 11 Oct 2023 14:20:57 +0300 (MSK)
-Received: (nullmailer pid 1032055 invoked by uid 1000);
- Wed, 11 Oct 2023 11:20:55 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 13/13] cpus: Remove unused smp_cores/smp_threads declarations
-Date: Wed, 11 Oct 2023 14:20:54 +0300
-Message-Id: <20231011112054.1031975-14-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231011112054.1031975-1-mjt@tls.msk.ru>
-References: <20231011112054.1031975-1-mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qqXI1-000148-U8; Wed, 11 Oct 2023 07:22:12 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 3909345206;
+ Wed, 11 Oct 2023 13:22:07 +0200 (CEST)
+Message-ID: <cc727bee-b9aa-4493-b26e-1ea93d15f8eb@proxmox.com>
+Date: Wed, 11 Oct 2023 13:22:06 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/10] mirror: implement mirror_change method
+Content-Language: en-US
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
+ t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
+References: <20231009094619.469668-1-f.ebner@proxmox.com>
+ <20231009094619.469668-6-f.ebner@proxmox.com>
+ <f6987c95-b1c4-4bfa-ae05-931c4f946151@yandex-team.ru>
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <f6987c95-b1c4-4bfa-ae05-931c4f946151@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,36 +59,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Am 10.10.23 um 21:37 schrieb Vladimir Sementsov-Ogievskiy:
+> On 09.10.23 12:46, Fiona Ebner wrote:
+>>   +static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
+>> +                          Error **errp)
+>> +{
+>> +    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
+>> +    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
+>> +
+>> +    if (s->copy_mode == change_opts->copy_mode) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (s->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING) {
+>> +        error_setg(errp, "Cannot switch away from copy mode
+>> 'write-blocking'");
+>> +        return;
+>> +    }
+>> +
+>> +    assert(s->copy_mode == MIRROR_COPY_MODE_BACKGROUND &&
+>> +           change_opts->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING);
+>> +
+>> +    s->copy_mode = MIRROR_COPY_MODE_WRITE_BLOCKING;
+>> +}
+> 
+> So, s->copy_mode becomes shared between main thread and iothread.
+> 
+> We should either use mutex or atomic operations.
+> 
+> Note, that the only realization of .set_speed uses thread-safe API.
+> 
 
-Commit a5e0b33119 ("vl.c: Replace smp global variables
-with smp machine properties") removed the last uses of
-the smp_cores / smp_threads variables but forgot to
-remove their declarations. Do it now.
+Can it be an issue if it's only ever set from the main thread?
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- include/sysemu/cpus.h | 7 -------
- 1 file changed, 7 deletions(-)
+But sure, I'm implicitly relying on that, which is not ideal. The
+mirror_change() function does multiple checks based on the current
+value, and only then changes it, so I suppose it would actually need a
+mutex rather than just changing to atomic accesses? Otherwise, the
+current value can't be guaranteed to be the same in the different checks
+if we ever add something that can change the value from another thread.
 
-diff --git a/include/sysemu/cpus.h b/include/sysemu/cpus.h
-index 0535a4c68a..b4a566cfe7 100644
---- a/include/sysemu/cpus.h
-+++ b/include/sysemu/cpus.h
-@@ -50,11 +50,4 @@ void cpu_synchronize_all_post_reset(void);
- void cpu_synchronize_all_post_init(void);
- void cpu_synchronize_all_pre_loadvm(void);
- 
--#ifndef CONFIG_USER_ONLY
--/* vl.c */
--/* *-user doesn't have configurable SMP topology */
--extern int smp_cores;
--extern int smp_threads;
--#endif
--
- #endif
--- 
-2.39.2
+I suppose, I should re-use the job mutex then?
+
+Best Regards,
+Fiona
 
 
