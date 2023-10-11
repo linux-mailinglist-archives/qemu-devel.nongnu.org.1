@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615D67C56FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FDE7C56F7
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:36:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqaJm-0000Ne-Rg; Wed, 11 Oct 2023 10:36:10 -0400
+	id 1qqaJp-0000Z3-JL; Wed, 11 Oct 2023 10:36:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qqaJj-0000MA-Kt
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:36:08 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1qqaJk-0000Mi-KH
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:36:09 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qqaJh-0005a4-1D
+ id 1qqaJh-0005ax-1M
  for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:36:07 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-32d834ec222so923286f8f.0
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:36:00 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4075c58ac39so13207195e9.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:36:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697034959; x=1697639759; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697034962; x=1697639762; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rw730jgi6g3YenzrLg55f3D1p6dxBieuNtNcazwlqmU=;
- b=vlF+/erp5VGd98NqBgK1FXWHu8LT4U8Mxuv2B7CJ4+L1bLhKKJxwQ8yfHyj/S924ps
- aNIoBLRxcuM8K0ujXxVxb3U4rTR3BlQzssakQOWep1cJ4Xc0eHBV/hZC3Nand5LjCK+j
- 60PEKlCUeX6C+46JOpnnzeNGq0O68t331/YEhHcwR4dYH8kd34yjOHQ1juRmizUHnExF
- hjLjaFmK5p8riFSmRPN/rnZinGBjHv9JZkRNqRbYbcBsSVDfthmMvxIX+sA3j59w9FFq
- nt/RnlKgK98qIvZXjVQZ6jzqYwQLMF4q2mevMCcVPJUSb7F0GYxjbZHNskzCE7nzUZoR
- fsdw==
+ bh=FlzxZ7mnmxeFu1X7bYV06Uym0W+edwy+53fqD4+XWAg=;
+ b=muO63A2Hn9kdJcsKpR4gLBvPdLpvury6wZhkrYLahzK0A+uDI+XYhG1ynBxWKaFmDM
+ koy0CjJAcIqFL/CefN/X0RupLTIUq0Fxj3bIobp8z/tJw7Ld43uXeCOcka1/PHY0I7tD
+ KTuGX5Ca7Mc2s4CkISgHaWV884P24QQT6QwnmK8BIe3jOhZYvgdxSdvxogRriadMqLiG
+ SqaR61LqNVMHRTcEXLnRBieGWGmAwO8mbZ8JrRf+9fD6fKFC3qhTd5o6bUc0da7Cgx8q
+ po9/xH44bHlNBifDNivKQ2OdQtpiPQj4rEUOD6B/hds6CokEajNmz3f3j09yELP4SUOD
+ oquQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697034959; x=1697639759;
+ d=1e100.net; s=20230601; t=1697034962; x=1697639762;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rw730jgi6g3YenzrLg55f3D1p6dxBieuNtNcazwlqmU=;
- b=GTGu74gEzkY3uA3zJe91fexGIv1OWvvTnnV24N4LAEu3JJFm+oO054rzb3W7Ok9aFw
- oMnQCCUSPGPefuLO/Vr7v7/Z1OCNdIId0l1DKtbFqJKybhNqoZb1yOhB9tmovlDr5XJy
- nEralgxXADNO4ZzhIDqT7rH/hC86W5W5BJIKEDY6+nv7/nWALrB7mJ7bW3Qw4RxN3coM
- X6NqzWt0WxWd+ipDeLoVmI6Iq/9/Q64fTvmOtyNLed1qYlBknUiQf9sUbXRTP6ExkIN3
- nBw6j0nN+s+QfXI0R2lC0dre2UvmnHdb4JDNK7Eg6WBo7H5WXv+YEUUjlMaIpey8hBUB
- z50w==
-X-Gm-Message-State: AOJu0YxcN4btEKMQd4tYciV3NvgbW6pWzqtKSV4lIb5d+w6bQiZcGMz6
- Pb7IBw4LFx/GJ8DhxrA7rLTht7ey8JIDVzAP4m8=
-X-Google-Smtp-Source: AGHT+IF+3L6b0MBszsmaOjc6DIX2F50wiSnpdQzbLyQt5nE7kus9Pdr8+R5HItSfKFp+DJtd0nikTQ==
-X-Received: by 2002:adf:fdd0:0:b0:31f:f9aa:a456 with SMTP id
- i16-20020adffdd0000000b0031ff9aaa456mr18703176wrs.2.1697034958750; 
- Wed, 11 Oct 2023 07:35:58 -0700 (PDT)
+ bh=FlzxZ7mnmxeFu1X7bYV06Uym0W+edwy+53fqD4+XWAg=;
+ b=spXbqZoI0u3qe/ZeXxC1jtnCbtogbJd1XzmLl+jaj1bNJ9LMlfv9E9GtXbd2EFsH+K
+ LXX/EtfQJP7bXJkGBsr71nwgfoOLMF8wzrdaA6PR9MiS0BifjCXvAGuCLMSM0oS26bii
+ TTuO9y3ZhcnVX0eGDBqPmBBCHpPz9g5FADB9WcQNXv+wiGjkJ1NkfvXqpfIzAX5AaoYC
+ NQHzYfyoGb3oEuKBpMp8CQD5pC0L3OabN76VVF05fEiESLHq0aLwYDtMkLvHSJnMpXwh
+ lOUm8fIcIM0nR1g0Y5z8OvdSgI3NvbaQoODiEHFyepVIYl8fVtsYmNC5+nHal38vSXlx
+ WjKA==
+X-Gm-Message-State: AOJu0YxaB/r/jqkUYf7WPKvhEPHkducejDi6fKXzdQ9YtqEZCIY00Ukq
+ RlmS6hxbVnHbA9JmoWmzjgnJbBVA1yu4tofZCA4=
+X-Google-Smtp-Source: AGHT+IEy6ANFVjRMsVaA3+MuAHnAnbppknfU49sJ+rmVaBGev697aR7wsA2mUOEhe5/eExPyJ00l+w==
+X-Received: by 2002:a7b:cd85:0:b0:406:5463:3f51 with SMTP id
+ y5-20020a7bcd85000000b0040654633f51mr19162956wmj.25.1697034962538; 
+ Wed, 11 Oct 2023 07:36:02 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- n8-20020a5d4208000000b003253523d767sm15599869wrq.109.2023.10.11.07.35.56
+ n8-20020a5d4208000000b003253523d767sm15599869wrq.109.2023.10.11.07.36.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 07:35:58 -0700 (PDT)
+ Wed, 11 Oct 2023 07:36:02 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 X-Google-Original-From: Manos Pitsidianakis <manos@pitsidianak.is>
 To: qemu-devel@nongnu.org
@@ -74,17 +74,17 @@ Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Mark Cave-Ayland" <mark.cave-ayland@ilande.co.uk>,
  "Stefano Garzarella" <sgarzare@redhat.com>
-Subject: [PATCH v11 06/11] virtio-sound: handle VIRTIO_SND_R_PCM_SET_PARAMS
-Date: Wed, 11 Oct 2023 17:34:51 +0300
-Message-Id: <68ac43df35b1be1a43ce56b5a3de7822b1315901.1696935992.git.manos.pitsidianakis@linaro.org>
+Subject: [PATCH v11 07/11] virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
+Date: Wed, 11 Oct 2023 17:34:52 +0300
+Message-Id: <175e6fbe7501f27a1b6d8fcfaa3f47a4ba2ece74.1696935992.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1696935992.git.manos.pitsidianakis@linaro.org>
 References: <cover.1696935992.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,8 +109,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Handle the set parameters control request. It reconfigures a stream
-based on a guest's preference if the values are valid and supported.
+Handles the PCM prepare control request. It initializes a PCM stream
+when the guests asks for it.
 
 Based-on: https://github.com/OpenSynergy/qemu/commit/5a2f350eec5d157b90d9c7b40a8e603f4da92471
 Signed-off-by: Igor Skalkin <Igor.Skalkin@opensynergy.com>
@@ -118,103 +118,67 @@ Signed-off-by: Anton Yakovlev <Anton.Yakovlev@opensynergy.com>
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- hw/virtio/trace-events |  1 +
- hw/virtio/virtio-snd.c | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
+ hw/virtio/virtio-snd.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-index 7044b110b7..7907b610c1 100644
---- a/hw/virtio/trace-events
-+++ b/hw/virtio/trace-events
-@@ -163,6 +163,7 @@ virtio_snd_vm_state_running(void) "vm state running"
- virtio_snd_vm_state_stopped(void) "vm state stopped"
- virtio_snd_realize(void *snd) "snd %p: realize"
- virtio_snd_unrealize(void *snd) "snd %p: unrealize"
-+virtio_snd_handle_pcm_set_params(uint32_t stream) "VIRTIO_SND_PCM_SET_PARAMS called for stream %"PRIu32
- virtio_snd_handle_ctrl(void *vdev, void *vq) "snd %p: handle ctrl event for queue %p"
- virtio_snd_handle_pcm_info(uint32_t stream) "VIRTIO_SND_R_PCM_INFO called for stream %"PRIu32
- virtio_snd_handle_pcm_start_stop(const char *code, uint32_t stream) "%s called for stream %"PRIu32
 diff --git a/hw/virtio/virtio-snd.c b/hw/virtio/virtio-snd.c
-index 50b5a9d5df..6a7545536b 100644
+index 6a7545536b..49cd9f3ca4 100644
 --- a/hw/virtio/virtio-snd.c
 +++ b/hw/virtio/virtio-snd.c
-@@ -250,43 +250,75 @@ static
- uint32_t virtio_snd_set_pcm_params(VirtIOSound *s,
-                                    uint32_t stream_id,
-                                    virtio_snd_pcm_set_params *params)
+@@ -458,30 +458,52 @@ static uint32_t virtio_snd_pcm_prepare(VirtIOSound *s, uint32_t stream_id)
+ static const char *print_code(uint32_t code)
  {
-     virtio_snd_pcm_set_params *st_params;
+     #define CASE(CODE)            \
+     case VIRTIO_SND_R_##CODE:     \
+         return "VIRTIO_SND_R_"#CODE
  
-     if (stream_id >= s->snd_conf.streams || s->pcm->pcm_params == NULL) {
-         /*
-          * TODO: do we need to set DEVICE_NEEDS_RESET?
-          */
-         virtio_error(VIRTIO_DEVICE(s), "Streams have not been initialized.\n");
-         return cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
+     switch (code) {
+     CASE(JACK_INFO);
+     CASE(JACK_REMAP);
+     CASE(PCM_INFO);
+     CASE(PCM_SET_PARAMS);
+     CASE(PCM_PREPARE);
+     CASE(PCM_RELEASE);
+     CASE(PCM_START);
+     CASE(PCM_STOP);
+     CASE(CHMAP_INFO);
+     default:
+         return "invalid code";
      }
  
-     st_params = virtio_snd_pcm_get_params(s, stream_id);
- 
-     if (params->channels < 1 || params->channels > AUDIO_MAX_CHANNELS) {
-         error_report("Number of channels is not supported.");
-         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
-     }
-     if (!(supported_formats & BIT(params->format))) {
-         error_report("Stream format is not supported.");
-         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
-     }
-     if (!(supported_rates & BIT(params->rate))) {
-         error_report("Stream rate is not supported.");
-         return cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
-     }
- 
-     st_params->buffer_bytes = le32_to_cpu(params->buffer_bytes);
-     st_params->period_bytes = le32_to_cpu(params->period_bytes);
-     st_params->features = le32_to_cpu(params->features);
-     /* the following are uint8_t, so there's no need to bswap the values. */
-     st_params->channels = params->channels;
-     st_params->format = params->format;
-     st_params->rate = params->rate;
- 
-     return cpu_to_le32(VIRTIO_SND_S_OK);
- }
+     #undef CASE
+ };
  
 +/*
-+ * Handles the VIRTIO_SND_R_PCM_SET_PARAMS request.
++ * Handles VIRTIO_SND_R_PCM_PREPARE.
 + *
 + * @s: VirtIOSound device
 + * @cmd: The request command queue element from VirtIOSound cmdq field
 + */
-+static void virtio_snd_handle_pcm_set_params(VirtIOSound *s,
-+                                             virtio_snd_ctrl_command *cmd)
++static void virtio_snd_handle_pcm_prepare(VirtIOSound *s,
++                                          virtio_snd_ctrl_command *cmd)
 +{
-+    virtio_snd_pcm_set_params req = { 0 };
 +    uint32_t stream_id;
 +    size_t msg_sz = iov_to_buf(cmd->elem->out_sg,
 +                               cmd->elem->out_num,
-+                               0,
-+                               &req,
-+                               sizeof(virtio_snd_pcm_set_params));
++                               sizeof(virtio_snd_hdr),
++                               &stream_id,
++                               sizeof(stream_id));
 +
-+    if (msg_sz != sizeof(virtio_snd_pcm_set_params)) {
-+        /*
-+         * TODO: do we need to set DEVICE_NEEDS_RESET?
-+         */
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                "%s: virtio-snd command size incorrect %zu vs \
-+                %zu\n", __func__, msg_sz, sizeof(virtio_snd_pcm_set_params));
-+        cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
-+        return;
-+    }
-+    stream_id = le32_to_cpu(req.hdr.stream_id);
-+    trace_virtio_snd_handle_pcm_set_params(stream_id);
-+    cmd->resp.code = virtio_snd_set_pcm_params(s, stream_id, &req);
++    stream_id = le32_to_cpu(stream_id);
++    cmd->resp.code = msg_sz == sizeof(stream_id)
++                   ? virtio_snd_pcm_prepare(s, stream_id)
++                   : cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
 +}
 +
  /*
-  * Get a QEMU Audiosystem compatible format value from a VIRTIO_SND_PCM_FMT_*
+  * Handles VIRTIO_SND_R_PCM_START.
+  *
+  * @s: VirtIOSound device
+  * @cmd: The request command queue element from VirtIOSound cmdq field
+  * @start: whether to start or stop the device
   */
-@@ -497,70 +529,72 @@ static inline void
+@@ -529,72 +551,74 @@ static inline void
  process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cmd)
  {
      uint32_t code;
@@ -255,9 +219,11 @@ index 50b5a9d5df..6a7545536b 100644
          virtio_snd_handle_pcm_start_stop(s, cmd, false);
          break;
      case VIRTIO_SND_R_PCM_SET_PARAMS:
-+        virtio_snd_handle_pcm_set_params(s, cmd);
-+        break;
+         virtio_snd_handle_pcm_set_params(s, cmd);
+         break;
      case VIRTIO_SND_R_PCM_PREPARE:
++        virtio_snd_handle_pcm_prepare(s, cmd);
++        break;
      case VIRTIO_SND_R_PCM_RELEASE:
          cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_NOT_SUPP);
          break;
