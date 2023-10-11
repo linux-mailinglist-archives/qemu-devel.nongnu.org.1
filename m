@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3EE7C4E74
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3947C4ED4
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:28:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqVQM-0007Db-QU; Wed, 11 Oct 2023 05:22:38 -0400
+	id 1qqVQI-0007C0-Na; Wed, 11 Oct 2023 05:22:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVQK-0007Cw-A8
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:22:36 -0400
+ id 1qqVQE-0007BC-Tp
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:22:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVQI-0004tB-Ub
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:22:36 -0400
+ id 1qqVQD-0004s9-FI
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:22:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697016154;
+ s=mimecast20190719; t=1697016148;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l77Ik9Kb9a79qX16cOi8Szq9csjI8f44SMMY4Rl52Jo=;
- b=TbUomOrMqJ/w7Y4+rFaH9dBOsd4CuauiPZpH/0qFQBwZ12BslPpEIeF5uT6TXsBzqgaxGJ
- zYfh0HoRi2rd6wTktd1MWlieK4pkKgtyiUlpg4Qh7eEEmVcKis6yxiljHBJ15bULnRKrmI
- d9OGRslCPoCRZgj3jq7zXZw6W/u73uw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-638-VvOYKm9BN6im_QuCGa0kcg-1; Wed, 11 Oct 2023 05:22:23 -0400
-X-MC-Unique: VvOYKm9BN6im_QuCGa0kcg-1
+ bh=ra6KinFaLzaN/AEmLsgeGAOdyLtqSrTbAa+rucltP1w=;
+ b=AzNP0DJwfqHGsISaWZtBgt3aw9z1VKt/ZKdnpSKMorF4w3FEt7AM+6bK34vc1PTvOr3JLL
+ PSt2jCUyASHxjh21GuCO57Y1rVHpXijl08wke904gBPhEFdguIaplpvMQ/HAlFjAFfTspo
+ fpVsHbCf2QypAIzBQyuGVYd01+G+SOE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-660-CBbCoFiyPkmjWjoKXLnR-Q-1; Wed, 11 Oct 2023 05:22:25 -0400
+X-MC-Unique: CBbCoFiyPkmjWjoKXLnR-Q-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B86E42825EA3;
- Wed, 11 Oct 2023 09:22:22 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DFDBD811E7B;
+ Wed, 11 Oct 2023 09:22:24 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 00A6F1C060AE;
- Wed, 11 Oct 2023 09:22:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 316F21C060B0;
+ Wed, 11 Oct 2023 09:22:22 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -49,9 +49,10 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>,
  Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 08/65] migration/rdma: Clean up qemu_rdma_poll()'s return type
-Date: Wed, 11 Oct 2023 11:21:06 +0200
-Message-ID: <20231011092203.1266-9-quintela@redhat.com>
+Subject: [PULL 09/65] migration/rdma: Clean up qemu_rdma_data_init()'s return
+ type
+Date: Wed, 11 Oct 2023 11:21:07 +0200
+Message-ID: <20231011092203.1266-10-quintela@redhat.com>
 In-Reply-To: <20231011092203.1266-1-quintela@redhat.com>
 References: <20231011092203.1266-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -83,37 +84,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Markus Armbruster <armbru@redhat.com>
 
-qemu_rdma_poll()'s return type is uint64_t, even though it returns 0,
--1, or @ret, which is int.  Its callers assign the return value to int
-variables, then check whether it's negative.  Unclean.
+qemu_rdma_data_init() return type is void *.  It actually returns
+RDMAContext *, and all its callers assign the value to an
+RDMAContext *.  Unclean.
 
-Return int instead.
+Return RDMAContext * instead.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20230928132019.2544702-2-armbru@redhat.com>
+Message-ID: <20230928132019.2544702-3-armbru@redhat.com>
 ---
- migration/rdma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ migration/rdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index cd5e1afe60..e72864d1cf 100644
+index e72864d1cf..1432fb80ec 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -1469,8 +1469,8 @@ static uint64_t qemu_rdma_make_wrid(uint64_t wr_id, uint64_t index,
-  * (of any kind) has completed.
-  * Return the work request ID that completed.
-  */
--static uint64_t qemu_rdma_poll(RDMAContext *rdma, struct ibv_cq *cq,
--                               uint64_t *wr_id_out, uint32_t *byte_len)
-+static int qemu_rdma_poll(RDMAContext *rdma, struct ibv_cq *cq,
-+                          uint64_t *wr_id_out, uint32_t *byte_len)
+@@ -2759,7 +2759,7 @@ static void qemu_rdma_return_path_dest_init(RDMAContext *rdma_return_path,
+     rdma_return_path->is_return_path = true;
+ }
+ 
+-static void *qemu_rdma_data_init(const char *host_port, Error **errp)
++static RDMAContext *qemu_rdma_data_init(const char *host_port, Error **errp)
  {
-     int ret;
-     struct ibv_wc wc;
+     RDMAContext *rdma = NULL;
+     InetSocketAddress *addr;
 -- 
 2.41.0
 
