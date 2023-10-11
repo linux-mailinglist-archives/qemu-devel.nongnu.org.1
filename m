@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A9C7C5406
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 14:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE4B7C5436
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 14:42:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqYNV-0002Mg-CR; Wed, 11 Oct 2023 08:31:53 -0400
+	id 1qqYWv-0005Ae-VR; Wed, 11 Oct 2023 08:41:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqYNT-0002MW-W4
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:31:52 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqYNS-0000Cj-5C
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:31:51 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-53da72739c3so2420075a12.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 05:31:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697027508; x=1697632308; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=recTgP2Y7PcpsL0p5G+CcwbO2WQASP0/e+EofPLlj74=;
- b=eGohz9AMgEc1YNP8bK+QRAty3UBLUpu5bkuDXROtR1Jv9FsabdmKErlh2+dAGuUGSV
- DTjsc5AvX5Wn54hJsVcfwwyP2sn3njF3hxCyXbHfNmznZeUx6MS1AHc5qCkV2JmQtJpr
- rOQk2JSpvlMXvz402g/b8o47DZr/Dn47gwsFAewkJHmSX1iM2R73oGIE8lG2VdVgJfM1
- XrO6xHZ0ZFLMSUnloYhKCTasXgBDLRBSoNFtq1QP3hYj7+kM41Pv4n/XTzSxEykTSCaM
- cfL/bUxxEWMYFxapJ6AkhsdrJhgWDxUGMcnLPmQXaV4MuxnHdWybShBlaumJmC/I7UK0
- LTbQ==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqYWo-00059G-CV
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:41:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqYWm-0002ZQ-5z
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:41:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697028082;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=v6P+i8HVPtXr3gTd8EH2AuFS7EOX/c2pLHs8se0WI0U=;
+ b=MHsiJuWlhFDidyT8V3vy62r8r2uabhrI6bMfrQnIOUP4VKHtFhbWilhCYLCoYc9HFFKpBA
+ 5p+g+o4s4pLplCyeapyzEtJOCa7Vub8pxBb2T6RVngBcLqXvhAvorx14wsjo9XmZ4ZUb2x
+ NLzMRwJcmxvoeXbEsKZudNQ7t0JDugI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-68-5qcGkXpvPemE6Mz9N84Xag-1; Wed, 11 Oct 2023 08:41:21 -0400
+X-MC-Unique: 5qcGkXpvPemE6Mz9N84Xag-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-40647c6f71dso50789415e9.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 05:41:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697027508; x=1697632308;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=recTgP2Y7PcpsL0p5G+CcwbO2WQASP0/e+EofPLlj74=;
- b=OQtdYQ0xRcIKE+WLKQvZ8aQKtAKtbVP/W8k0gB6blLwt2Au7V0rJqXjaLCYSAOBtn1
- 5PFcBhsGNdzObq0Tt164o1MLdSUbPj2sNchN+kyWTPyxA6O9uvHbwBqnKkgE2EpZfHSS
- E1vyJhbW7qJhjO8PO0s1pMWOat6TBkcH52Ek5uIukBzkyhWUglbEIC6UzErXEdX0Qq3v
- Qz3zZTTJCuSzXW0rN764fFwH5NM9LCXSf+4nQ4NHyi5d6RyXf4+TeG2O9uLS4mTJaDdl
- f/VbpHSN/9HbC8L3PYG2Qm/LM2QfeIWEYZxpAU2PYxUSNwcZkgDI+sJA40LiDr4W7pfy
- zXPQ==
-X-Gm-Message-State: AOJu0Yxu2iJ9EVInCs3GYPipVeeY3/1h+iMjWs924CjN8HsFN9yywWdX
- EIH3zjUrVwEt3puems+kLz71m4pGS1VpceHiB8k=
-X-Google-Smtp-Source: AGHT+IHKXSzBKMi0yk1tnEqTXKNM0g3SQ4T2hGlPTrVloRNhlJ3IgtkjlrNmhIUwRTXzWQl0jiPkvQ==
-X-Received: by 2002:a17:906:10ce:b0:9a1:e233:e627 with SMTP id
- v14-20020a17090610ce00b009a1e233e627mr20512374ejv.42.1697027508264; 
- Wed, 11 Oct 2023 05:31:48 -0700 (PDT)
-Received: from [192.168.69.115] (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
- [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
- w13-20020a170906480d00b0098d2d219649sm9868746ejq.174.2023.10.11.05.31.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 05:31:46 -0700 (PDT)
-Message-ID: <e9f0c004-cb23-0985-30ca-394197d6bf94@linaro.org>
-Date: Wed, 11 Oct 2023 14:31:44 +0200
+ d=1e100.net; s=20230601; t=1697028080; x=1697632880;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=v6P+i8HVPtXr3gTd8EH2AuFS7EOX/c2pLHs8se0WI0U=;
+ b=m7r/W65v7g07mgK1XRgg1lutXUpb0UdsVXka0KEPpB4GjxnL6PB52aXuSUofhKoZPH
+ IQgo1akJy6SeUS9W9FtAj9fdouEJZxzDQ3eu/wSYWgirmm/sj0u0B/WngFWwqn6jC93K
+ TQlmVbZJnhVOzaaLkC8ZV442Q2ZGuddsHhtpOm3o4s4yXhvXSIfJohJC7LAIBHtyOOBM
+ v2Vzbtmc1d4IVs5L3gq6awZv6kNobpHzWXdQ5WEA3glMZ+OQN28JIMuubmyOHKYqG7cH
+ HLNEbKqOlGQaxab0wAwrGyA5Bgq332NzL1oQFvyF0EonKEywssXYGXW7HFqQfMn2vAhX
+ wNxg==
+X-Gm-Message-State: AOJu0YxjOy6jwhXsJkGNc37u731oCmcqoAzpYT3sFemaf4P4vOv3UTjD
+ vUgAmdULoaMR3QnKCGrgGCx1MMbTJJE7g0YjQZop3R19kj8xu39vF1KJWq5Vv0ZlQzfOg90VFhn
+ ZKHQpqVwdef7q4L8=
+X-Received: by 2002:a7b:ca4c:0:b0:3fe:1b4e:c484 with SMTP id
+ m12-20020a7bca4c000000b003fe1b4ec484mr18043906wml.5.1697028079914; 
+ Wed, 11 Oct 2023 05:41:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnfxchGGFhlH6u6zvPmLIjsbxXyo+TaNNJTEYE6hbpuoJke7PVyU01lwLHTIoj4+zTpnfS0Q==
+X-Received: by 2002:a7b:ca4c:0:b0:3fe:1b4e:c484 with SMTP id
+ m12-20020a7bca4c000000b003fe1b4ec484mr18043887wml.5.1697028079518; 
+ Wed, 11 Oct 2023 05:41:19 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ p20-20020a1c7414000000b0040651505684sm16755060wmc.29.2023.10.11.05.41.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Oct 2023 05:41:18 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Wei Wang <wei.w.wang@intel.com>
+Cc: peterx@redhat.com,  isaku.yamahata@gmail.com,  qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] migration: refactor migration_completion
+In-Reply-To: <20230804093053.5037-1-wei.w.wang@intel.com> (Wei Wang's message
+ of "Fri, 4 Aug 2023 17:30:53 +0800")
+References: <20230804093053.5037-1-wei.w.wang@intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 11 Oct 2023 14:41:17 +0200
+Message-ID: <87v8bdbac2.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH RFC v4 0/9] Add loongarch kvm accel support
-Content-Language: en-US
-To: xianglai li <lixianglai@loongson.cn>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Song Gao <gaosong@loongson.cn>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <cover.1696841645.git.lixianglai@loongson.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <cover.1696841645.git.lixianglai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,55 +95,291 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Wei Wang <wei.w.wang@intel.com> wrote:
+> Current migration_completion function is a bit long. Refactor the long
+> implementation into different subfunctions:
+> - migration_completion_precopy: completion code related to precopy
+> - migration_completion_postcopy: completion code related to postcopy
+> - close_return_path_on_source: rp thread related cleanup on migration
+> completion. It is named to match with open_return_path_on_source.
+>
+> This improves readability and is easier for future updates (e.g. add new
+> subfunctions when completion code related to new features are needed). No
+> functional changes intended.
+>
+> Signed-off-by: Wei Wang <wei.w.wang@intel.com>
 
-On 9/10/23 11:01, xianglai li wrote:
-> This series add loongarch kvm support, mainly implement
-> some interfaces used by kvm such as kvm_arch_get/set_regs,
-> kvm_arch_handle_exit, kvm_loongarch_set_interrupt, etc.
-> 
-> Currently, we are able to boot LoongArch KVM Linux Guests.
-> In loongarch VM, mmio devices and iocsr devices are emulated
-> in user space such as APIC, IPI, pci devices, etc, other
-> hardwares such as MMU, timer and csr are emulated in kernel.
-> 
-> It is based on temporarily unaccepted linux kvm:
-> https://github.com/loongson/linux-loongarch-kvm
-> And We will remove the RFC flag until the linux kvm patches
-> are merged.
-> 
-> The running environment of LoongArch virt machine:
-> 1. Get the linux source by the above mentioned link.
->     git checkout kvm-loongarch
->     make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- loongson3_defconfig
->     make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu-
-> 2. Get the qemu source: https://github.com/loongson/qemu
->     git checkout kvm-loongarch
->     ./configure --target-list="loongarch64-softmmu"  --enable-kvm
->     make
-> 3. Get uefi bios of LoongArch virt machine:
->     Link: https://github.com/tianocore/edk2-platforms/tree/master/Platform/Loongson/LoongArchQemuPkg#readme
-> 4. Also you can access the binary files we have already build:
->     https://github.com/yangxiaojuan-loongson/qemu-binary
-> 
-> The command to boot loongarch virt machine:
->     $ qemu-system-loongarch64 -machine virt -m 4G -cpu la464 \
->     -smp 1 -bios QEMU_EFI.fd -kernel vmlinuz.efi -initrd ramdisk \
->     -serial stdio   -monitor telnet:localhost:4495,server,nowait \
->     -append "root=/dev/ram rdinit=/sbin/init console=ttyS0,115200" \
->     --nographic
+There was some conflict with:
 
-2 years ago Song helped with an access to a LoongArch 3a5000 machine but
-it stopped working (IP was x.242.206.180).
+commit d50f5dc075cbb891bfe4a9378600a4871264468a
+Author: Fabiano Rosas <farosas@suse.de>
+Date:   Mon Sep 18 14:28:20 2023 -0300
 
-Would it be possible to add a Loongarch64 runner to our CI
-(ideally with KVM support, but that can come later)? See:
-https://www.qemu.org/docs/master/devel/ci.html#jobs-on-custom-runners
+    migration: Consolidate return path closing code
 
-Regards,
+(basically the traces and the rp_thread_created check were already on
+the tree).
 
-Phil.
+BTW, the diff is uglier than it needs to be.
+
+You can add to your global .gitconfig:
+
+[diff]
+        algorithm = patience
+        renames = true
+
+commit e2db83d6e73df7619de75093d1477a7f3c638847
+Author: Wei Wang <wei.w.wang@intel.com>
+Date:   Fri Aug 4 17:30:53 2023 +0800
+
+    migration: refactor migration_completion
+    
+    Current migration_completion function is a bit long. Refactor the long
+    implementation into different subfunctions:
+    - migration_completion_precopy: completion code related to precopy
+    - migration_completion_postcopy: completion code related to postcopy
+    - close_return_path_on_source: rp thread related cleanup on migration
+    completion. It is named to match with open_return_path_on_source.
+    
+    This improves readability and is easier for future updates (e.g. add new
+    subfunctions when completion code related to new features are needed). No
+    functional changes intended.
+    
+    Signed-off-by: Wei Wang <wei.w.wang@intel.com>
+
+diff --git a/migration/migration.c b/migration/migration.c
+index 1c6c81ad49..99a06832f5 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -99,7 +99,7 @@ static int migration_maybe_pause(MigrationState *s,
+                                  int *current_active_state,
+                                  int new_state);
+ static void migrate_fd_cancel(MigrationState *s);
+-static int await_return_path_close_on_source(MigrationState *s);
++static int close_return_path_on_source(MigrationState *s);
+ 
+ static bool migration_needs_multiple_sockets(void)
+ {
+@@ -1191,7 +1191,7 @@ static void migrate_fd_cleanup(MigrationState *s)
+      * We already cleaned up to_dst_file, so errors from the return
+      * path might be due to that, ignore them.
+      */
+-    await_return_path_close_on_source(s);
++    close_return_path_on_source(s);
+ 
+     assert(!migration_is_active(s));
+ 
+@@ -2049,8 +2049,7 @@ static int open_return_path_on_source(MigrationState *ms)
+     return 0;
+ }
+ 
+-/* Returns 0 if the RP was ok, otherwise there was an error on the RP */
+-static int await_return_path_close_on_source(MigrationState *ms)
++static int close_return_path_on_source(MigrationState *ms)
+ {
+     int ret;
+ 
+@@ -2317,6 +2316,87 @@ static int migration_maybe_pause(MigrationState *s,
+     return s->state == new_state ? 0 : -EINVAL;
+ }
+ 
++static int migration_completion_precopy(MigrationState *s,
++                                        int *current_active_state)
++{
++    int ret;
++
++    qemu_mutex_lock_iothread();
++    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
++
++    s->vm_old_state = runstate_get();
++    global_state_store();
++
++    ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
++    trace_migration_completion_vm_stop(ret);
++    if (ret < 0) {
++        goto out_unlock;
++    }
++
++    ret = migration_maybe_pause(s, current_active_state,
++                                MIGRATION_STATUS_DEVICE);
++    if (ret < 0) {
++        goto out_unlock;
++    }
++
++    /*
++     * Inactivate disks except in COLO, and track that we have done so in order
++     * to remember to reactivate them if migration fails or is cancelled.
++     */
++    s->block_inactive = !migrate_colo();
++    migration_rate_set(RATE_LIMIT_DISABLED);
++    ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
++                                             s->block_inactive);
++out_unlock:
++    qemu_mutex_unlock_iothread();
++    return ret;
++}
++
++static void migration_completion_postcopy(MigrationState *s)
++{
++    trace_migration_completion_postcopy_end();
++
++    qemu_mutex_lock_iothread();
++    qemu_savevm_state_complete_postcopy(s->to_dst_file);
++    qemu_mutex_unlock_iothread();
++
++    /*
++     * Shutdown the postcopy fast path thread.  This is only needed when dest
++     * QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need this.
++     */
++    if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
++        postcopy_preempt_shutdown_file(s);
++    }
++
++    trace_migration_completion_postcopy_end_after_complete();
++}
++
++static void migration_completion_failed(MigrationState *s,
++                                        int current_active_state)
++{
++    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
++                              s->state == MIGRATION_STATUS_DEVICE)) {
++        /*
++         * If not doing postcopy, vm_start() will be called: let's
++         * regain control on images.
++         */
++        Error *local_err = NULL;
++
++        qemu_mutex_lock_iothread();
++        bdrv_activate_all(&local_err);
++        if (local_err) {
++            error_report_err(local_err);
++        } else {
++            s->block_inactive = false;
++        }
++        qemu_mutex_unlock_iothread();
++    }
++
++    migrate_set_state(&s->state, current_active_state,
++                      MIGRATION_STATUS_FAILED);
++}
++
+ /**
+  * migration_completion: Used by migration_thread when there's not much left.
+  *   The caller 'breaks' the loop when this returns.
+@@ -2325,62 +2405,22 @@ static int migration_maybe_pause(MigrationState *s,
+  */
+ static void migration_completion(MigrationState *s)
+ {
+-    int ret;
++    int ret = 0;
+     int current_active_state = s->state;
+ 
+     if (s->state == MIGRATION_STATUS_ACTIVE) {
+-        qemu_mutex_lock_iothread();
+-        s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+-        qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+-
+-        s->vm_old_state = runstate_get();
+-        global_state_store();
+-
+-        ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
+-        trace_migration_completion_vm_stop(ret);
+-        if (ret >= 0) {
+-            ret = migration_maybe_pause(s, &current_active_state,
+-                                        MIGRATION_STATUS_DEVICE);
+-        }
+-        if (ret >= 0) {
+-            /*
+-             * Inactivate disks except in COLO, and track that we
+-             * have done so in order to remember to reactivate
+-             * them if migration fails or is cancelled.
+-             */
+-            s->block_inactive = !migrate_colo();
+-            migration_rate_set(RATE_LIMIT_DISABLED);
+-            ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
+-                                                     s->block_inactive);
+-        }
+-
+-        qemu_mutex_unlock_iothread();
+-
+-        if (ret < 0) {
+-            goto fail;
+-        }
++        ret = migration_completion_precopy(s, &current_active_state);
+     } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
+-        trace_migration_completion_postcopy_end();
+-
+-        qemu_mutex_lock_iothread();
+-        qemu_savevm_state_complete_postcopy(s->to_dst_file);
+-        qemu_mutex_unlock_iothread();
+-
+-        /*
+-         * Shutdown the postcopy fast path thread.  This is only needed
+-         * when dest QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need
+-         * this.
+-         */
+-        if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
+-            postcopy_preempt_shutdown_file(s);
+-        }
+-
+-        trace_migration_completion_postcopy_end_after_complete();
++        migration_completion_postcopy(s);
+     } else {
++        ret = -1;
++    }
++
++    if (ret < 0) {
+         goto fail;
+     }
+ 
+-    if (await_return_path_close_on_source(s)) {
++    if (close_return_path_on_source(s) < 0) {
+         goto fail;
+     }
+ 
+@@ -2401,26 +2441,7 @@ static void migration_completion(MigrationState *s)
+     return;
+ 
+ fail:
+-    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
+-                              s->state == MIGRATION_STATUS_DEVICE)) {
+-        /*
+-         * If not doing postcopy, vm_start() will be called: let's
+-         * regain control on images.
+-         */
+-        Error *local_err = NULL;
+-
+-        qemu_mutex_lock_iothread();
+-        bdrv_activate_all(&local_err);
+-        if (local_err) {
+-            error_report_err(local_err);
+-        } else {
+-            s->block_inactive = false;
+-        }
+-        qemu_mutex_unlock_iothread();
+-    }
+-
+-    migrate_set_state(&s->state, current_active_state,
+-                      MIGRATION_STATUS_FAILED);
++    migration_completion_failed(s, current_active_state);
+ }
+ 
+ /**
+@@ -2563,7 +2584,7 @@ static MigThrError postcopy_pause(MigrationState *s)
+          * path and just wait for the thread to finish. It will be
+          * re-created when we resume.
+          */
+-        await_return_path_close_on_source(s);
++        close_return_path_on_source(s);
+ 
+         migrate_set_state(&s->state, s->state,
+                           MIGRATION_STATUS_POSTCOPY_PAUSED);
+
+
+
 
