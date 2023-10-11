@@ -2,95 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC887C56C0
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B25487C56CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:28:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqa9V-0008AE-A6; Wed, 11 Oct 2023 10:25:33 -0400
+	id 1qqaBn-0001Ig-Ao; Wed, 11 Oct 2023 10:27:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqa9I-00088c-MK
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:25:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=T27U=FZ=kaod.org=clg@ozlabs.org>)
+ id 1qqaBd-0001Hz-7V; Wed, 11 Oct 2023 10:27:45 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqa9F-0002w5-KQ
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:25:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697034315;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ULZ5Pn6z6a9qLzDy3ML5TDgj5opbvR4H9Ta3cHWcXhE=;
- b=GuyLAa/EkQ/2VibCsDMJv2OObkyuhCtmcdAYDXnKuzfQ/8Fojs6JuSLwqad+Yyzf4OJEjg
- I2qxK/gCHt11MgB3zpmQ0tic1VgmLPdT2QHjKlUp/J+rnBsTxPyCwpPFHT37/1Ve2loM9a
- Af9a2/uZS3hhpa98qFLTSZwMLwoEbWU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-hSu2OS3VMr6sgGYK1lCeAQ-1; Wed, 11 Oct 2023 10:25:13 -0400
-X-MC-Unique: hSu2OS3VMr6sgGYK1lCeAQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40570ccc497so51596275e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:25:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697034313; x=1697639113;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ULZ5Pn6z6a9qLzDy3ML5TDgj5opbvR4H9Ta3cHWcXhE=;
- b=kAu9OO6DmLpBPtzwzZzaCxX1pfQk+nL2EhTycZPKkuiWR0R5Q61P7bfG8v/8bUr6D+
- lcMXQs7Ppe60uGIHvQ59aw5LiNQb3x702jg9mCp6Sb2k28B6btNcTvHWVo59f9e0xm3j
- CLRarcx6LcYmvwit309WT42AspOAhEbQr+CLTPn/AowN3qIkqWfIYBj/7rT6SJlWrC36
- pTL3nyIxk2oIAOfU5H8lsRb9yVl2crd9jDwv2JHh/NPemqMyQ4W3up1XkSKFpd3c9L83
- fXdRw3PbVYOkoIL3U4/gwj5plXxTJy/NqC0AotFHz0gOqrQhdRe7xOpgF2gyJNLaTFpN
- UXLw==
-X-Gm-Message-State: AOJu0Yy5kvs0tF/Z3uaKidvMLwqxXAkAw5XoUn6VhADX/knF0WcUFewA
- DOOoqPIlIT/zrn4AoA6Wx3QPsFyG0U3Kfs53V9DKzp2iGyyMcBNjXegoNO6ljA+URPA404ZQQmC
- jtgJv6JFc7paCsbY=
-X-Received: by 2002:a1c:7218:0:b0:406:81e9:ad0c with SMTP id
- n24-20020a1c7218000000b0040681e9ad0cmr19731947wmc.41.1697034312864; 
- Wed, 11 Oct 2023 07:25:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKXaHhXTf/gRablBi4B7u21Uq3G634/96lc3dk1t4VLYuCyz1wuVcTyW7knENuLemHHRUniA==
-X-Received: by 2002:a1c:7218:0:b0:406:81e9:ad0c with SMTP id
- n24-20020a1c7218000000b0040681e9ad0cmr19731926wmc.41.1697034312501; 
- Wed, 11 Oct 2023 07:25:12 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- z23-20020a1c4c17000000b00405935b417asm19233717wmf.2.2023.10.11.07.25.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 07:25:11 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Daniel
- P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
- =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 6/9] tests/qtest/migration: Introduce
- find_common_machine_version
-In-Reply-To: <20231006123910.17759-7-farosas@suse.de> (Fabiano Rosas's message
- of "Fri, 6 Oct 2023 09:39:07 -0300")
-References: <20231006123910.17759-1-farosas@suse.de>
- <20231006123910.17759-7-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 11 Oct 2023 16:25:11 +0200
-Message-ID: <87lec98ce0.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <SRS0=T27U=FZ=kaod.org=clg@ozlabs.org>)
+ id 1qqaBY-0003Mp-W4; Wed, 11 Oct 2023 10:27:43 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4S5FTv3n7mz4xZl;
+ Thu, 12 Oct 2023 01:27:31 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4S5FTs6HmMz4xWt;
+ Thu, 12 Oct 2023 01:27:29 +1100 (AEDT)
+Message-ID: <e5d37f40-fcf1-5843-ea66-d50fa2353424@kaod.org>
+Date: Wed, 11 Oct 2023 16:27:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] misc/pca9552: Fix inverted input status
+Content-Language: en-US
+To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, andrew@codeconstruct.com.au,
+ Joel Stanley <joel@jms.id.au>
+References: <20230927203221.3286895-1-milesg@linux.vnet.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230927203221.3286895-1-milesg@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=T27U=FZ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -72
+X-Spam_score: -7.3
+X-Spam_bar: -------
+X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,28 +63,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> When using two different QEMU binaries for migration testing, we'll
-> need to find what is the machine version that will work with both
-> binaries. Add a helper for that.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On 9/27/23 22:32, Glenn Miles wrote:
+> The pca9552 INPUT0 and INPUT1 registers are supposed to
+> hold the logical values of the LED pins.  A logical 0
+> should be seen in the INPUT0/1 registers for a pin when
+> its corresponding LSn bits are set to 0, which is also
+> the state needed for turning on an LED in a typical
+> usage scenario.  Existing code was doing the opposite
+> and setting INPUT0/1 bit to a 1 when the LSn bit was
+> set to 0, so this commit fixes that.
+> 
+> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Looks OK to me.
 
-As it should never fails.
+May be you could mention that the ON/OFF values are reversed on
+the pca953x family. This is good to know if one wants to model
+these devices one day.
 
-> +    if (qtest_has_machine_with_env(var1, type2)) {
-> +        return g_strdup(type2);
-> +    }
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-But if it ever fails, printing here an error message with the contents
-of mtype, var1 and var2 sounds like a good idea.
+Thanks,
 
-> +    g_assert_not_reached();
+C.
+
+
+> ---
+>   hw/misc/pca9552.c          | 13 +++++++++----
+>   tests/qtest/pca9552-test.c |  6 +++---
+>   2 files changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+> index fff19e369a..ad811fb249 100644
+> --- a/hw/misc/pca9552.c
+> +++ b/hw/misc/pca9552.c
+> @@ -112,13 +112,18 @@ static void pca955x_update_pin_input(PCA955xState *s)
+>   
+>           switch (config) {
+>           case PCA9552_LED_ON:
+> -            qemu_set_irq(s->gpio[i], 1);
+> -            s->regs[input_reg] |= 1 << input_shift;
+> -            break;
+> -        case PCA9552_LED_OFF:
+> +            /* Pin is set to 0V to turn on LED */
+>               qemu_set_irq(s->gpio[i], 0);
+>               s->regs[input_reg] &= ~(1 << input_shift);
+>               break;
+> +        case PCA9552_LED_OFF:
+> +            /*
+> +             * Pin is set to Hi-Z to turn off LED and
+> +             * pullup sets it to a logical 1.
+> +             */
+> +            qemu_set_irq(s->gpio[i], 1);
+> +            s->regs[input_reg] |= 1 << input_shift;
+> +            break;
+>           case PCA9552_LED_PWM0:
+>           case PCA9552_LED_PWM1:
+>               /* TODO */
+> diff --git a/tests/qtest/pca9552-test.c b/tests/qtest/pca9552-test.c
+> index d80ed93cd3..ccca2b3d91 100644
+> --- a/tests/qtest/pca9552-test.c
+> +++ b/tests/qtest/pca9552-test.c
+> @@ -60,7 +60,7 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+>       g_assert_cmphex(value, ==, 0x55);
+>   
+>       value = i2c_get8(i2cdev, PCA9552_INPUT0);
+> -    g_assert_cmphex(value, ==, 0x0);
+> +    g_assert_cmphex(value, ==, 0xFF);
+>   
+>       pca9552_init(i2cdev);
+>   
+> @@ -68,13 +68,13 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+>       g_assert_cmphex(value, ==, 0x54);
+>   
+>       value = i2c_get8(i2cdev, PCA9552_INPUT0);
+> -    g_assert_cmphex(value, ==, 0x01);
+> +    g_assert_cmphex(value, ==, 0xFE);
+>   
+>       value = i2c_get8(i2cdev, PCA9552_LS3);
+>       g_assert_cmphex(value, ==, 0x54);
+>   
+>       value = i2c_get8(i2cdev, PCA9552_INPUT1);
+> -    g_assert_cmphex(value, ==, 0x10);
+> +    g_assert_cmphex(value, ==, 0xEF);
+>   }
+>   
+>   static void pca9552_register_nodes(void)
 
 
