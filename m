@@ -2,81 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA82C7C503D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 12:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F52B7C5030
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 12:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqWXM-0001dG-0v; Wed, 11 Oct 2023 06:33:56 -0400
+	id 1qqWXL-0001ac-14; Wed, 11 Oct 2023 06:33:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqWXA-0001MY-0s
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 06:33:45 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1qqWX8-0001LU-Ag
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 06:33:42 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqWX5-0005GC-VA
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 06:33:43 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4054f790190so65569015e9.2
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 03:33:39 -0700 (PDT)
+ id 1qqWX5-0005Fp-DO
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 06:33:42 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40651a726acso61653875e9.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 03:33:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697020418; x=1697625218; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tXzt6XTvV2zpelaBYxfVQmisWGRyjvu/qrEXej/hrKQ=;
- b=zbVG5kHGdfSek5yoWVOYYwRrrWl9fMYexV9XCZrpRSXSZEpmjms14VqwlX8KRUCKMz
- BLZ7uHA9468GPEUpv2tAfwKk/nDgINEKY750O7uaz5y7KbBq211ZlpiyYKbXV5YENcuP
- mv5axBxAFg0rLqIbeE5Vrqe1CLdeEf9B5PhAzBaK8BrcSfAS8+RsxbLo4k5xJ/uORhwG
- TDOPIaxID0tfmhVnwWxkLWehCTeDAZnz49IURSB7vUi+84w4c64gRiunKfkiEaRCpw5U
- Fm+Zi7GO8dAw8pdhp7aswhmfPh4LFducAGzKR9toKlja6iwl5IuMhvDwHHHiMrAP1zUQ
- 1Wfw==
+ bh=Jt1UXVJ9g1e9zBvoXUT5QK8FO+jhEnDupj0uz8RWS3E=;
+ b=JZCFaGk8yhL81twwBfn0bod0eTaQcY6OFU2NcfFEDQLMYKcTp6Du8x+Q7qWFtjAJNk
+ QJMAwUVaXnw4mjln6FZZF5C5Q5FMYeC9siyJbid0KLM5Rou5AuvJFv3QI1R3bHArx8UF
+ k8AEHhTDiy1nr3iNFbki6CBeyAD4miw6+i+MfbAVJeiLFl4lfiOyzFW/HKkvgUpNv79G
+ EgEwJV6I7Y/aH5jNdMYW6dwJxhI4NZVTpLItbcivkKL70Lv7ePJePFtI/a9OtjarjgzR
+ dkfu/tz7/XzweabqAbSLTg/zLS6rhJcGsrjgLzxQyvnI6rDNV/aUd5vKvkfTL0OZp5ck
+ otsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697020418; x=1697625218;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tXzt6XTvV2zpelaBYxfVQmisWGRyjvu/qrEXej/hrKQ=;
- b=R4Kl9AxE/8Lr7J0Dms1HRaGvS2AFzH6ozemB/aM+v642/AMO96/3uIR9Ys9aSShVgA
- m2oCkRac/pO0m+69LVzO3tPFUh1W1niuv4XaKC/nnMYPFQ9o4IE+wewA8oG4HphlWzLY
- IWkNEzZEemA0OUyiwOK0cReysPY7zTA+H1DXrlTpJOxunUuVHaOx3wsM9aBL/fZ454QO
- n50h8hB3dcHj4uqSuzpvwwlQIzzNlVW8ns8OQ4HC+CzA19bsoauICfwfs4Gqux2EWxGG
- URQbQoxVkBcp9ZBXJZafPIL8aNfNNAOromfVhPUtmOEj4LJCnT/2mFY3q0Wcsfkwxtn5
- h+Qw==
-X-Gm-Message-State: AOJu0Yyx1GXpAkYGfYSpN/zgqvyh0BI6Uh8X2hZa1R9WpbTxI+wXNBBm
- Sd+AvexE6lfksuycILHUPNgWag==
-X-Google-Smtp-Source: AGHT+IGZXo5PcBJpEYNVekjkJsyYaRe/aQ2hywZk2b6aI2Zjxwo2FCn/eLTyrFVsXEBAogpjd9Ms/w==
-X-Received: by 2002:a05:600c:2211:b0:402:fec4:fddc with SMTP id
- z17-20020a05600c221100b00402fec4fddcmr18291721wml.17.1697020418034; 
- Wed, 11 Oct 2023 03:33:38 -0700 (PDT)
+ bh=Jt1UXVJ9g1e9zBvoXUT5QK8FO+jhEnDupj0uz8RWS3E=;
+ b=YZ/gxwQOsMZGUDEJk+7eFAOQbIIeuI3q4zlfBdUCkAuaa23nUMCQR7OAPMm3oykzcX
+ WpsRp9zmr3f8y5bDWBj6d2BmPujwxm1juYqFAEnvATQmXrrpZdHd7UNma5rEYhYotG9l
+ 7ZIebeEkueOTD+WLiP86Mjm9RjH4onxDutgsru7QN8NhuF1Qkrn0WGZb8TsOU6kSW8/j
+ PJ1gR/vDXjtIQQpoYFTWGhaUdjJWCVpzGYHLmqx26YqaJjjI0c8jYSBJ8FBotvL9AKPi
+ 4vDIujj2jdxnibcgfarEOneUwjMqB7a9BcOrktLtnrO8SdpAWKEOCoCPTaweUX5pYjFq
+ v66A==
+X-Gm-Message-State: AOJu0YzalFwNLaTEq6a+7xsu8hgpNuZRJ9jr5DekiLY3KpnObZI1b/ai
+ 4udWIbQ20wLioDSXYHk1A+1tmg==
+X-Google-Smtp-Source: AGHT+IHKt9A4VwJUABOF1oNg861R0GoB4HmdWSyRTrwkbEXUBOynprnQ4WdiI+Hnnl6wJ1GqY+c+Yg==
+X-Received: by 2002:adf:edc3:0:b0:321:56af:5ef9 with SMTP id
+ v3-20020adfedc3000000b0032156af5ef9mr15095927wro.70.1697020417859; 
+ Wed, 11 Oct 2023 03:33:37 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- i2-20020a05600c290200b004063d8b43e7sm18722043wmd.48.2023.10.11.03.33.33
+ t11-20020a5d534b000000b003232380ffd5sm15085477wrv.106.2023.10.11.03.33.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 11 Oct 2023 03:33:35 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 8B65A1FFC5;
+ by zen.linaroharston (Postfix) with ESMTP id BC4111FFC6;
  Wed, 11 Oct 2023 11:33:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [PULL 13/25] target/arm: Move the reference to arm-core.xml
-Date: Wed, 11 Oct 2023 11:33:17 +0100
-Message-Id: <20231011103329.670525-14-alex.bennee@linaro.org>
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ qemu-arm@nongnu.org (open list:ARM TCG CPUs),
+ qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
+ qemu-s390x@nongnu.org (open list:S390 general arch...)
+Subject: [PULL 14/25] hw/core/cpu: Return static value with gdb_arch_name()
+Date: Wed, 11 Oct 2023 11:33:18 +0100
+Message-Id: <20231011103329.670525-15-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231011103329.670525-1-alex.bennee@linaro.org>
 References: <20231011103329.670525-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,43 +118,226 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Some subclasses overwrite gdb_core_xml_file member but others don't.
-Always initialize the member in the subclasses for consistency.
-
-This especially helps for AArch64; in a following change, the file
-specified by gdb_core_xml_file is always looked up even if it's going to
-be overwritten later. Looking up arm-core.xml results in an error as
-it will not be embedded in the AArch64 build.
+All implementations of gdb_arch_name() returns dynamic duplicates of
+static strings. It's also unlikely that there will be an implementation
+of gdb_arch_name() that returns a truly dynamic value due to the nature
+of the function returning a well-known identifiers. Qualify the value
+gdb_arch_name() with const and make all of its implementations return
+static strings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230912224107.29669-7-akihiko.odaki@daynix.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-Id: <20230912224107.29669-8-akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231009164104.369749-14-alex.bennee@linaro.org>
+Message-Id: <20231009164104.369749-15-alex.bennee@linaro.org>
 
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index e02bc5980f..7b8347ed5a 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -165,7 +165,7 @@ struct CPUClass {
+     vaddr (*gdb_adjust_breakpoint)(CPUState *cpu, vaddr addr);
+ 
+     const char *gdb_core_xml_file;
+-    gchar * (*gdb_arch_name)(CPUState *cpu);
++    const gchar * (*gdb_arch_name)(CPUState *cpu);
+     const char * (*gdb_get_dynamic_xml)(CPUState *cpu, const char *xmlname);
+ 
+     void (*disas_set_info)(CPUState *cpu, disassemble_info *info);
+diff --git a/target/ppc/internal.h b/target/ppc/internal.h
+index 15803bc313..c881c67a8b 100644
+--- a/target/ppc/internal.h
++++ b/target/ppc/internal.h
+@@ -221,7 +221,7 @@ void destroy_ppc_opcodes(PowerPCCPU *cpu);
+ 
+ /* gdbstub.c */
+ void ppc_gdb_init(CPUState *cs, PowerPCCPUClass *ppc);
+-gchar *ppc_gdb_arch_name(CPUState *cs);
++const gchar *ppc_gdb_arch_name(CPUState *cs);
+ 
+ /**
+  * prot_for_access_type:
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index bba2640293..a20169c27b 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -380,10 +380,9 @@ static const char *get_feature_xml(const char *p, const char **newp,
+                             "<target>");
+ 
+             if (cc->gdb_arch_name) {
+-                g_autofree gchar *arch = cc->gdb_arch_name(cpu);
+                 g_string_append_printf(xml,
+                                        "<architecture>%s</architecture>",
+-                                       arch);
++                                       cc->gdb_arch_name(cpu));
+             }
+             g_string_append(xml, "<xi:include href=\"");
+             g_string_append(xml, cc->gdb_core_xml_file);
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 831295d7cd..b65e8cfea3 100644
+index b65e8cfea3..6c6c551573 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -2392,7 +2392,6 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
-     cc->sysemu_ops = &arm_sysemu_ops;
- #endif
-     cc->gdb_num_core_regs = 26;
--    cc->gdb_core_xml_file = "arm-core.xml";
-     cc->gdb_arch_name = arm_gdb_arch_name;
-     cc->gdb_get_dynamic_xml = arm_gdb_get_dynamic_xml;
-     cc->gdb_stop_before_watchpoint = true;
-@@ -2414,8 +2413,10 @@ static void arm_cpu_instance_init(Object *obj)
- static void cpu_register_class_init(ObjectClass *oc, void *data)
- {
-     ARMCPUClass *acc = ARM_CPU_CLASS(oc);
-+    CPUClass *cc = CPU_CLASS(acc);
+@@ -2319,15 +2319,15 @@ static Property arm_cpu_properties[] = {
+     DEFINE_PROP_END_OF_LIST()
+ };
  
-     acc->info = data;
-+    cc->gdb_core_xml_file = "arm-core.xml";
+-static gchar *arm_gdb_arch_name(CPUState *cs)
++static const gchar *arm_gdb_arch_name(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+ 
+     if (arm_feature(env, ARM_FEATURE_IWMMXT)) {
+-        return g_strdup("iwmmxt");
++        return "iwmmxt";
+     }
+-    return g_strdup("arm");
++    return "arm";
  }
  
- void arm_cpu_register(const ARMCPUInfo *info)
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 811f3b38c2..1cb9d5b81a 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -781,9 +781,9 @@ static void aarch64_cpu_finalizefn(Object *obj)
+ {
+ }
+ 
+-static gchar *aarch64_gdb_arch_name(CPUState *cs)
++static const gchar *aarch64_gdb_arch_name(CPUState *cs)
+ {
+-    return g_strdup("aarch64");
++    return "aarch64";
+ }
+ 
+ static void aarch64_cpu_class_init(ObjectClass *oc, void *data)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index cec5d2b7b6..3aab05ddad 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5916,12 +5916,12 @@ static void x86_cpu_load_model(X86CPU *cpu, X86CPUModel *model)
+     memset(&env->user_features, 0, sizeof(env->user_features));
+ }
+ 
+-static gchar *x86_gdb_arch_name(CPUState *cs)
++static const gchar *x86_gdb_arch_name(CPUState *cs)
+ {
+ #ifdef TARGET_X86_64
+-    return g_strdup("i386:x86-64");
++    return "i386:x86-64";
+ #else
+-    return g_strdup("i386");
++    return "i386";
+ #endif
+ }
+ 
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 2bea7ca5d5..ef1bf89dac 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -766,9 +766,9 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+ #endif
+ }
+ 
+-static gchar *loongarch32_gdb_arch_name(CPUState *cs)
++static const gchar *loongarch32_gdb_arch_name(CPUState *cs)
+ {
+-    return g_strdup("loongarch32");
++    return "loongarch32";
+ }
+ 
+ static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
+@@ -780,9 +780,9 @@ static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
+     cc->gdb_arch_name = loongarch32_gdb_arch_name;
+ }
+ 
+-static gchar *loongarch64_gdb_arch_name(CPUState *cs)
++static const gchar *loongarch64_gdb_arch_name(CPUState *cs)
+ {
+-    return g_strdup("loongarch64");
++    return "loongarch64";
+ }
+ 
+ static void loongarch64_cpu_class_init(ObjectClass *c, void *data)
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index 2ad11510bf..778ef73bd7 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -589,12 +589,12 @@ static int gdb_set_vsx_reg(CPUPPCState *env, uint8_t *mem_buf, int n)
+     return 0;
+ }
+ 
+-gchar *ppc_gdb_arch_name(CPUState *cs)
++const gchar *ppc_gdb_arch_name(CPUState *cs)
+ {
+ #if defined(TARGET_PPC64)
+-    return g_strdup("powerpc:common64");
++    return "powerpc:common64";
+ #else
+-    return g_strdup("powerpc:common");
++    return "powerpc:common";
+ #endif
+ }
+ 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index ac2b94b6a6..f5572704de 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2004,17 +2004,17 @@ static Property riscv_cpu_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+-static gchar *riscv_gdb_arch_name(CPUState *cs)
++static const gchar *riscv_gdb_arch_name(CPUState *cs)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     CPURISCVState *env = &cpu->env;
+ 
+     switch (riscv_cpu_mxl(env)) {
+     case MXL_RV32:
+-        return g_strdup("riscv:rv32");
++        return "riscv:rv32";
+     case MXL_RV64:
+     case MXL_RV128:
+-        return g_strdup("riscv:rv64");
++        return "riscv:rv64";
+     default:
+         g_assert_not_reached();
+     }
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index 4f7599d72c..6093ab0a12 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -282,9 +282,9 @@ static void s390_cpu_initfn(Object *obj)
+ #endif
+ }
+ 
+-static gchar *s390_gdb_arch_name(CPUState *cs)
++static const gchar *s390_gdb_arch_name(CPUState *cs)
+ {
+-    return g_strdup("s390:64-bit");
++    return "s390:64-bit";
+ }
+ 
+ static Property s390x_cpu_properties[] = {
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index d1477622e6..5ca666ee12 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -29,9 +29,9 @@ static inline void set_feature(CPUTriCoreState *env, int feature)
+     env->features |= 1ULL << feature;
+ }
+ 
+-static gchar *tricore_gdb_arch_name(CPUState *cs)
++static const gchar *tricore_gdb_arch_name(CPUState *cs)
+ {
+-    return g_strdup("tricore");
++    return "tricore";
+ }
+ 
+ static void tricore_cpu_set_pc(CPUState *cs, vaddr value)
 -- 
 2.39.2
 
