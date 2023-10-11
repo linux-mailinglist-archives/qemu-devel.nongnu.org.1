@@ -2,77 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D40B7C4819
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 05:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CB17C481F
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 05:06:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqPWd-0003sm-SQ; Tue, 10 Oct 2023 23:04:43 -0400
+	id 1qqPXq-0004ea-Dj; Tue, 10 Oct 2023 23:05:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqPWc-0003sK-9U; Tue, 10 Oct 2023 23:04:42 -0400
-Received: from mail-vk1-xa2f.google.com ([2607:f8b0:4864:20::a2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqPWZ-0001Tk-RP; Tue, 10 Oct 2023 23:04:42 -0400
-Received: by mail-vk1-xa2f.google.com with SMTP id
- 71dfb90a1353d-49abb53648aso2256255e0c.0; 
- Tue, 10 Oct 2023 20:04:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696993478; x=1697598278; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gSsgdr9Lmjs0p+7xsn8NBZs9y20syKczkbvXslRBmRE=;
- b=lcKobhiU4grBpOzweTjB4+JYIrP2CE1YTNqMtBl26CQpndhQpMfz4Kfo9KByONZSaF
- JZX/b1pClL8k87DbgJXJDxYbi3/g+Cus+I6ZgQZEUBAaz5D2IbL9Ogzd7zeoMdSZkyj3
- ITrTL4bW7Tale+kBYaaBy8nL8ssYSJNtGaH1c+CTC0D7qAM7owwIEYK7qN93iV72Ah0c
- dZqTR2n1jF2fuTxhNzZq8JVqH5QMH+fnM7NB7t4M4Jp0RVF5iJwyPVRWl9Opvk74SL94
- 9bsJu+Y4jqN7HBVRiMXGb4XOG1JGpFSW61bAQzl713ffMPUbtZ++8pKMScnZ168yKg2P
- +ZCg==
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qqPXn-0004eS-Fb
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 23:05:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qqPXl-0001sN-QP
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 23:05:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696993547;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=h2v4UnxDXQO66iJHW43eQFuDKL30rZI1OIRlWIl9vUU=;
+ b=Krs4CewajnM0i/Y6rgxUeLn72JBnpaX72CQy7EjC20lfAcxclJTSMmbiJ7mztPZfgCfg7n
+ zHqmSfMmcP69kCFtM2O+z07uH1u0utrBQrxeIqHUIESkFDmiDO2IDBZ1xMShGnQEpL3Mvx
+ thIW0YXI39OuAcihH0jZ/0H1JN3WBO8=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-144-KXDmR-DxNPyTt7iw9W6j0Q-1; Tue, 10 Oct 2023 23:05:46 -0400
+X-MC-Unique: KXDmR-DxNPyTt7iw9W6j0Q-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-4180b3a5119so75131591cf.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 20:05:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696993478; x=1697598278;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gSsgdr9Lmjs0p+7xsn8NBZs9y20syKczkbvXslRBmRE=;
- b=gqajLFVjzNgRdAxLA2AJLt5mkfEVoMASOd229XwqpqPrHGicYNkmt7hF2vaW8Rd/k7
- nGgSHreK6MNI1WqwRvx38Rzwozugy1Sgd567mzJ3Oq3uzfXww4QHJsFRa0ns98s9eZ31
- iJ5JnCFLAnm7uk6cq/mKZYU0uKfHJn4e1EP9UisrURTyY785bR9qtjGqPLVyr4hup2S5
- InNp7j3gj8SjEjcboiIxDsMxa8kAdmG/dZIw5BZbm8b2AW8dp8V8SuLLnoACOqhH7PYo
- nlAynuppfwCikuXkpYFBvntf6wYglDrsXOduLdeQzdZW/l6giFl9ZJuPm5kgBk4iFlB6
- x7iQ==
-X-Gm-Message-State: AOJu0Yx//wyRAf1QAamZtoL0B8G0/rw4Bmkj8QysGiBuKxnmUlGrggNY
- JGli38EnMjZFccRFbKLjQWNui3HuPHRf2X10aF4=
-X-Google-Smtp-Source: AGHT+IEQr1maleGYH48cVpft5csLf5hzmIq+3tDsauD+mR+1ZVJ5iWCXAIzRY8s61xC8qnub/TKvgt397tzEn1TjcmY=
-X-Received: by 2002:a1f:e143:0:b0:4a0:6fa5:b08a with SMTP id
- y64-20020a1fe143000000b004a06fa5b08amr5302796vkg.8.1696993478293; Tue, 10 Oct
- 2023 20:04:38 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696993546; x=1697598346;
+ h=content-transfer-encoding:in-reply-to:to:from:content-language
+ :references:cc:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=h2v4UnxDXQO66iJHW43eQFuDKL30rZI1OIRlWIl9vUU=;
+ b=SlenXGAGAUzn8eF4SbIi/yxEDGyvmqf6L4uYwERWcaBxb/nDGA0wP+MPjHgg3Qt0wE
+ JzMe3FFn9b0MHePH/vSNzl2fvA7U3ippMKzcW1NU3YazScZUdljXynqCGqjpDnc3je8m
+ +x+IOWZ3TOozuYCPl+ZMnJuN7gYoFc2ezaRaf2rV27h0tHAlucbxS5cgkiT10o9wOjJ3
+ 0uiGewVMhrg3+Tl9OcshSu0W2HWLSBWEKvmb8KRfcveALuYrYZA3azchEzhNliXO6fbG
+ 6SkCbJeqYj3zmhb81ssnC//bZ5G3ZQU2Hnf4TRg4FBPVNAHDyCWVKOSILIi/iKNk8tF4
+ brdw==
+X-Gm-Message-State: AOJu0Yz2e19yC0fLpeZyFPRT7Dx4e7VwvKbGipqG7sSebuVCOzjP6tTg
+ WotUTPbI7dSBQDQLzp87EnP1eBPUQHtEee4S3SxCpQiCu7IRGqm/daipw1jzonpeU47vJiquPMI
+ V3C1+H/doN7SHfjo=
+X-Received: by 2002:a05:622a:30c:b0:417:f9e1:664f with SMTP id
+ q12-20020a05622a030c00b00417f9e1664fmr24580892qtw.36.1696993546177; 
+ Tue, 10 Oct 2023 20:05:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEf7kr3NgG6VBThWN66g/Iq7EM4CH4TleeRaQarwyCRD+FHFR/Ps+Cct3HqSMdPcM56YR1XCQ==
+X-Received: by 2002:a05:622a:30c:b0:417:f9e1:664f with SMTP id
+ q12-20020a05622a030c00b00417f9e1664fmr24580874qtw.36.1696993545874; 
+ Tue, 10 Oct 2023 20:05:45 -0700 (PDT)
+Received: from ?IPV6:2600:4040:7c46:e800:32a2:d966:1af4:8863?
+ ([2600:4040:7c46:e800:32a2:d966:1af4:8863])
+ by smtp.gmail.com with ESMTPSA id
+ x25-20020ac84a19000000b004108ce94882sm5003235qtq.83.2023.10.10.20.05.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Oct 2023 20:05:44 -0700 (PDT)
+Message-ID: <8acd90e8-8f83-452d-bdd3-7dd173813ffe@redhat.com>
+Date: Tue, 10 Oct 2023 23:05:43 -0400
 MIME-Version: 1.0
-References: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
- <20231006132134.1135297-9-dbarboza@ventanamicro.com>
-In-Reply-To: <20231006132134.1135297-9-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 11 Oct 2023 13:04:11 +1000
-Message-ID: <CAKmqyKMEsEUcYvJUowE7ycjW+ZF4geD2JpndEVGnj6P9LAL7mA@mail.gmail.com>
-Subject: Re: [PATCH v2 08/10] target/riscv/tcg: add riscv_cpu_write_misa_bit()
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2f;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 1/9] Add Rust SEV library as subproject
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, stefanha@redhat.com,
+ berrange@redhat.com, marcandre.lureau@gmail.com
+References: <20231004203418.56508-1-tfanelli@redhat.com>
+ <20231004203418.56508-2-tfanelli@redhat.com>
+ <11900163-bca6-daf0-8b70-b0109a7f6957@linaro.org>
+Content-Language: en-US
+From: Tyler Fanelli <tfanelli@redhat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+In-Reply-To: <11900163-bca6-daf0-8b70-b0109a7f6957@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=tfanelli@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,110 +105,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 7, 2023 at 12:29=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On 10/5/23 2:03 AM, Philippe Mathieu-Daudé wrote:
+> Hi Tyler,
 >
-> We have two instances of the setting/clearing a MISA bit from
-> env->misa_ext and env->misa_ext_mask pattern. And the next patch will
-> end up adding one more.
+> On 4/10/23 22:34, Tyler Fanelli wrote:
+>> The Rust sev library provides a C API for the AMD SEV launch ioctls, as
+>> well as the ability to build with meson. Add the Rust sev library as a
+>> QEMU subproject with the goal of outsourcing all SEV launch ioctls to C
+>> APIs provided by it.
+>>
+>> Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
+>> ---
+>>   meson.build                   | 8 ++++++++
+>>   meson_options.txt             | 2 ++
+>>   scripts/meson-buildoptions.sh | 3 +++
+>>   subprojects/sev.wrap          | 6 ++++++
+>>   target/i386/meson.build       | 2 +-
+>>   5 files changed, 20 insertions(+), 1 deletion(-)
+>>   create mode 100644 subprojects/sev.wrap
 >
-> Create a helper to avoid code repetition.
 >
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> diff --git a/subprojects/sev.wrap b/subprojects/sev.wrap
+>> new file mode 100644
+>> index 0000000000..5be1faccf6
+>> --- /dev/null
+>> +++ b/subprojects/sev.wrap
+>> @@ -0,0 +1,6 @@
+>> +[wrap-git]
+>> +url = https://github.com/tylerfanelli/sev
+>> +revision = b81b1da5df50055600a5b0349b0c4afda677cccb
+>
+> Why use your tree instead of the mainstream one?
+>
+> Before this gets merged we need to mirror the subproject
+> on our GitLab namespace, then use the mirror URL here.
+>
+Hi Philippe,
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Why must the subproject be mirrored on qemu's GitLab namespace? With the 
+changes being accepted in the upstream sev repository, meson will be 
+able to fetch it from there. I see that libblkio (another Rust project) 
+is not mirrored in the GitLab namespace [0] (assuming I'm looking in the 
+right place) and that meson also fetches it from its upstream repo [1].
 
-Alistair
+[0] https://gitlab.com/qemu-project
 
-> ---
->  target/riscv/tcg/tcg-cpu.c | 44 ++++++++++++++++++++------------------
->  1 file changed, 23 insertions(+), 21 deletions(-)
->
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 58de4428a9..b1e778913c 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -42,6 +42,20 @@ static bool cpu_cfg_ext_is_user_set(uint32_t ext_offse=
-t)
->                                   GUINT_TO_POINTER(ext_offset));
->  }
->
-> +static void riscv_cpu_write_misa_bit(RISCVCPU *cpu, uint32_t bit,
-> +                                     bool enabled)
-> +{
-> +    CPURISCVState *env =3D &cpu->env;
-> +
-> +    if (enabled) {
-> +        env->misa_ext |=3D bit;
-> +        env->misa_ext_mask |=3D bit;
-> +    } else {
-> +        env->misa_ext &=3D ~bit;
-> +        env->misa_ext_mask &=3D ~bit;
-> +    }
-> +}
-> +
->  static void riscv_cpu_synchronize_from_tb(CPUState *cs,
->                                            const TranslationBlock *tb)
->  {
-> @@ -700,20 +714,14 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visit=
-or *v, const char *name,
->          return;
->      }
->
-> -    if (value) {
-> -        if (!generic_cpu) {
-> -            g_autofree char *cpuname =3D riscv_cpu_get_name(cpu);
-> -            error_setg(errp, "'%s' CPU does not allow enabling extension=
-s",
-> -                       cpuname);
-> -            return;
-> -        }
-> -
-> -        env->misa_ext |=3D misa_bit;
-> -        env->misa_ext_mask |=3D misa_bit;
-> -    } else {
-> -        env->misa_ext &=3D ~misa_bit;
-> -        env->misa_ext_mask &=3D ~misa_bit;
-> +    if (value && !generic_cpu) {
-> +        g_autofree char *cpuname =3D riscv_cpu_get_name(cpu);
-> +        error_setg(errp, "'%s' CPU does not allow enabling extensions",
-> +                   cpuname);
-> +        return;
->      }
-> +
-> +    riscv_cpu_write_misa_bit(cpu, misa_bit, value);
->  }
->
->  static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *na=
-me,
-> @@ -757,7 +765,6 @@ static const RISCVCPUMisaExtConfig misa_ext_cfgs[] =
-=3D {
->   */
->  static void riscv_cpu_add_misa_properties(Object *cpu_obj)
->  {
-> -    CPURISCVState *env =3D &RISCV_CPU(cpu_obj)->env;
->      bool use_def_vals =3D riscv_cpu_is_generic(cpu_obj);
->      int i;
->
-> @@ -778,13 +785,8 @@ static void riscv_cpu_add_misa_properties(Object *cp=
-u_obj)
->                              NULL, (void *)misa_cfg);
->          object_property_set_description(cpu_obj, name, desc);
->          if (use_def_vals) {
-> -            if (misa_cfg->enabled) {
-> -                env->misa_ext |=3D bit;
-> -                env->misa_ext_mask |=3D bit;
-> -            } else {
-> -                env->misa_ext &=3D ~bit;
-> -                env->misa_ext_mask &=3D ~bit;
-> -            }
-> +            riscv_cpu_write_misa_bit(RISCV_CPU(cpu_obj), bit,
-> +                                     misa_cfg->enabled);
->          }
->      }
->  }
-> --
-> 2.41.0
->
->
+[1] 
+https://gitlab.com/qemu-project/qemu/-/blob/master/subprojects/libblkio.wrap?ref_type=heads#L2
+
+
+Tyler
+
 
