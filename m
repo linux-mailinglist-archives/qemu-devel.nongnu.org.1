@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CA87C56A2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1540F7C56A9
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:21:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqa4s-00020Y-Fz; Wed, 11 Oct 2023 10:20:46 -0400
+	id 1qqa4v-00021M-JP; Wed, 11 Oct 2023 10:20:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qqa4q-00020P-T2
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:44 -0400
+ id 1qqa4s-00020Z-0c
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qqa4p-0001qV-Aq
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:44 -0400
+ id 1qqa4q-0001qf-GW
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697034042;
+ s=mimecast20190719; t=1697034043;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a5fWOLug7VeTAVZeefrtEofB5vl5fYqqQK0ztW88WoA=;
- b=E3ix+TiPzh2HNsNsORRo0JLZl6ceJch9JHsNTH+LFT6bWs40mRGNg8qzdlg3sqoDINRGpY
- FcGCjhZclMz+D47wbyQw8aYdsJc0yKRSlb+vDKVB8k2Gxy2QM8W5dhFgah4FiaurgIVbsS
- +KsnpKMIkf5Aw3O0fPcCgzDKHm4bSLA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-665-4iwILGv5PqSHgIRmSYwQpg-1; Wed, 11 Oct 2023 10:20:34 -0400
-X-MC-Unique: 4iwILGv5PqSHgIRmSYwQpg-1
+ bh=5LKaaY57fds3Y07ZNi/dKzUJV4s8++5LVgW/lbvyd/8=;
+ b=bMNRtJ8vHvDsWSpt2m85dMKsDNAUf3C8eIBakBtR8taWdje6MIUhSMn4Rq9WqRV9opMF0R
+ hnboZDCK+6q7Dg5SkWpRmdxTw523BYc7XUHFG09jR6kqUT0CW1trC1ge+DMdSXkzyd9fUg
+ o4pPM62344w+3cBMInJqrLTeUWTgZAE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-587-8xN5wbDZMhyFwl6dF7Mn-A-1; Wed, 11 Oct 2023 10:20:35 -0400
+X-MC-Unique: 8xN5wbDZMhyFwl6dF7Mn-A-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 179D58022EA;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED69C3C0CF1C;
  Wed, 11 Oct 2023 14:20:34 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.133])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7ACA71005B8E;
- Wed, 11 Oct 2023 14:20:33 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C2EE111CD23;
+ Wed, 11 Oct 2023 14:20:34 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 2/3] qga: Fix memory leak when output stream is unused
-Date: Wed, 11 Oct 2023 17:20:29 +0300
-Message-ID: <20231011142030.112018-3-kkostiuk@redhat.com>
+Subject: [PULL 3/3] qapi: qga: Clarify when out-data and err-data are populated
+Date: Wed, 11 Oct 2023 17:20:30 +0300
+Message-ID: <20231011142030.112018-4-kkostiuk@redhat.com>
 In-Reply-To: <20231011142030.112018-1-kkostiuk@redhat.com>
 References: <20231011142030.112018-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -79,50 +79,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Xu <dxu@dxuuu.xyz>
 
-If capture-output is requested but one of the channels goes unused (eg.
-we attempt to capture stderr but the command never writes to stderr), we
-can leak memory.
+If output is being captured for a guest-exec invocation, the out-data
+and err-data fields of guest-exec-status are only populated after the
+process is reaped. This is somewhat counter intuitive and too late to
+change. Thus, it would be good to document the behavior.
 
-guest_exec_output_watch() is (from what I understand) unconditionally
-called for both streams if output capture is requested. The first call
-will always pass the `p->size == p->length` check b/c both values are
-0. Then GUEST_EXEC_IO_SIZE bytes will be allocated for the stream.
-
-But when we reap the exited process there's a `gei->err.length > 0`
-check to actually free the buffer. Which does not get run if the command
-doesn't write to the stream.
-
-Fix by making free() unconditional.
-
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- qga/commands.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ qga/qapi-schema.json | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/qga/commands.c b/qga/commands.c
-index 09c683e263..ce172edd2d 100644
---- a/qga/commands.c
-+++ b/qga/commands.c
-@@ -206,15 +206,15 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
- #endif
-         if (gei->out.length > 0) {
-             ges->out_data = g_base64_encode(gei->out.data, gei->out.length);
--            g_free(gei->out.data);
-             ges->has_out_truncated = gei->out.truncated;
-         }
-+        g_free(gei->out.data);
- 
-         if (gei->err.length > 0) {
-             ges->err_data = g_base64_encode(gei->err.data, gei->err.length);
--            g_free(gei->err.data);
-             ges->has_err_truncated = gei->err.truncated;
-         }
-+        g_free(gei->err.data);
- 
-         QTAILQ_REMOVE(&guest_exec_state.processes, gei, next);
-         g_free(gei);
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index b720dd4379..876e2a8ea8 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -1220,11 +1220,13 @@
+ # @signal: signal number (linux) or unhandled exception code (windows)
+ #     if the process was abnormally terminated.
+ #
+-# @out-data: base64-encoded stdout of the process
++# @out-data: base64-encoded stdout of the process. This field will only
++#     be populated after the process exits.
+ #
+-# @err-data: base64-encoded stderr of the process Note: @out-data and
++# @err-data: base64-encoded stderr of the process. Note: @out-data and
+ #     @err-data are present only if 'capture-output' was specified for
+-#     'guest-exec'
++#     'guest-exec'. This field will only be populated after the process
++#     exits.
+ #
+ # @out-truncated: true if stdout was not fully captured due to size
+ #     limitation.
 -- 
 2.42.0
 
