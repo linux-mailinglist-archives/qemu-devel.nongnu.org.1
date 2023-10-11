@@ -2,86 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9457C590D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 18:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4327C5922
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 18:31:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqby7-0006uP-2d; Wed, 11 Oct 2023 12:21:55 -0400
+	id 1qqc5a-0000Ct-7y; Wed, 11 Oct 2023 12:29:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqby4-0006tu-MU
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 12:21:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqc5X-0000Ar-Qu
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 12:29:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqby2-0002lB-Sh
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 12:21:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqc5W-0004PE-7V
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 12:29:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697041309;
+ s=mimecast20190719; t=1697041773;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=BHCVOrokbVIUcJTzMk/gOURa0T9oMuRKCMmnDwJjAiY=;
- b=JtT6YBVd2Zylqafxanr4AU73BSAABMImGfJnWsw/qgdNwsMN09tzKkbfySB6BCIUwGB9Ut
- hSSDahOgzBRAzsxlchPUK1hH/l/leaqstqOHRvPkI1yAgFXvk22m2kAy/sLh/6dUbCGRLQ
- hbkxkBZAOqbWXWoLA73I+KYHC81BnCQ=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=w8UOxOzJqxeRs/wqX+fSL2R7V73hI2L433aBKsmaym4=;
+ b=Zyo3WJE3+Sf3F8z/m0tCsYBhn/vVrpjIEYDL7vrwSrA2FHKSA8agNHGH5ryYQ3T5aq5LKS
+ 7rCBOqQb2mjBUVX9uv79aSAE2Fqd0S0QmSb+crLajbI1Boa6tla+75O94UKcS1RUWT22AX
+ R0FAjjSVrantEVtZ9DoFtMF2JbickDY=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-fkc-5eJlMSSZ5joXv0vtoQ-1; Wed, 11 Oct 2023 12:21:36 -0400
-X-MC-Unique: fkc-5eJlMSSZ5joXv0vtoQ-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-59f53027158so398137b3.0
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 09:21:36 -0700 (PDT)
+ us-mta-513-_Ot4X965MYmX2thvIKngVw-1; Wed, 11 Oct 2023 12:29:27 -0400
+X-MC-Unique: _Ot4X965MYmX2thvIKngVw-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7757523b84aso3336285a.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 09:29:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697041296; x=1697646096;
+ d=1e100.net; s=20230601; t=1697041766; x=1697646566;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BHCVOrokbVIUcJTzMk/gOURa0T9oMuRKCMmnDwJjAiY=;
- b=rBRyD54Xqc6RwS3Hvk8eJkwCGmqIDSl57K0nm8KMx+XJ9uQOOLxlKd+p/w4IwtrgwL
- Szovo24kDeTqvuXxJtEo5RXnPNbDWcitn1ITTscwRnz/aat/aEUQkvDlIwqzJBm65IoX
- luAXzdEkk0xS9BXJQPzW3QHVjjYXUy7YuIp+GqVHxRdH69EwTW0lTKFMdRtKi2vFto6h
- fThOkiDWYK7X0H2Rz1S+VxJ7xtUKLw6zhE6PNwo0yiOFNBCXqtmrgwNgCxIc07lYSR7C
- V8NphKhlRCsYhaOuX0dwDxUUr5wDvGdQtmq3yjjNDryGLXD9ObtGPTfVsZSOrF3WiznA
- 58Lw==
-X-Gm-Message-State: AOJu0Yx/z+WbCggbEVYm0jE+cxNMAvg3JR/ARMucnqKpcQ/DO/6p3wgS
- Wy74pYqk8eMmeecO6sHEI553fvYiHQrTxK4aqSageSJbDZc5/T+FN2FXolkJPZgFkPXx1ASoMGt
- 6sYp+9XpxoLgfmCs=
-X-Received: by 2002:a81:7cc5:0:b0:599:b59f:5280 with SMTP id
- x188-20020a817cc5000000b00599b59f5280mr23106653ywc.28.1697041295809; 
- Wed, 11 Oct 2023 09:21:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYcOAFMpLaEyQQURU+y/8tdEyHAjWwILq/yLmZmHSM2HMjdsD2tbVb68QEfH9+zU+Crn4WrQ==
-X-Received: by 2002:a81:7cc5:0:b0:599:b59f:5280 with SMTP id
- x188-20020a817cc5000000b00599b59f5280mr23106626ywc.28.1697041295526; 
- Wed, 11 Oct 2023 09:21:35 -0700 (PDT)
+ bh=w8UOxOzJqxeRs/wqX+fSL2R7V73hI2L433aBKsmaym4=;
+ b=g7IcQVNDXW74YoJ1zVsNFAp7d/WS3rlga0oYZRUR3GEe0HcULpoMzZy6r4WSI/9q0K
+ 7hJvu9qyscP104KFQl3z4UIYPC/VdGOFMzDZbxnMTWjyOTGnnyHKq8EmFyIOug0puXi0
+ lHvvcx+AzLIrkWl4tFMO6bF2eFqvNYwVectfFPhAd4B7AS3deOrC5mXKhE9WHIgehFLJ
+ 4U10alln2N5Hi+t15fCgIw8yrZJ//69MBuoUyOtmsn0zlfw9H+XHWJGojOvmNDiL2S5r
+ /EUBq9gQScua1WEFWyU2EVz0VZHfZw23Rgz0zuj12NXQLv4Ne94UR//eVJ5JCl66sPe9
+ 1quQ==
+X-Gm-Message-State: AOJu0Yyctgzln2GnobMCwj4YaJKVcC0ScoBiCChnaZ1+LC9BwRxdPmJn
+ jTN3KqC9xn7TcAI+o4utRE3bPIqpAnNJKdjXfbuq/VawbFaSxIijkpKEruejfpBTpzTYKiFxT6/
+ kD8f+J3HScjKTIWE=
+X-Received: by 2002:a05:620a:444d:b0:76c:ad46:2683 with SMTP id
+ w13-20020a05620a444d00b0076cad462683mr26619366qkp.16.1697041766366; 
+ Wed, 11 Oct 2023 09:29:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1fT3RX1rFjxuZjyegZFJ5mPP2CofmvyDmGkO0qOJ03l9JScB3bv4UamIDBkPmGGnDr8k6/w==
+X-Received: by 2002:a05:620a:444d:b0:76c:ad46:2683 with SMTP id
+ w13-20020a05620a444d00b0076cad462683mr26619344qkp.16.1697041766097; 
+ Wed, 11 Oct 2023 09:29:26 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
  [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- bs40-20020a05620a472800b0077703f31496sm3729626qkb.92.2023.10.11.09.21.33
+ w19-20020a05620a149300b0076eee688a95sm5339732qkj.0.2023.10.11.09.29.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 09:21:35 -0700 (PDT)
-Message-ID: <ffdd55c2-4ae9-4b1f-ac12-a9ad714c3f26@redhat.com>
-Date: Wed, 11 Oct 2023 18:21:31 +0200
+ Wed, 11 Oct 2023 09:29:25 -0700 (PDT)
+Message-ID: <3f804d1f-cb72-452c-83b2-80f57331d170@redhat.com>
+Date: Wed, 11 Oct 2023 18:29:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 23/23] plugins: Support C++
+Subject: Re: [PULL 02/13] hw/rdma/vmw/pvrdma_cmd: Use correct struct in
+ query_port()
 Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20231011070335.14398-1-akihiko.odaki@daynix.com>
- <20231011070335.14398-24-akihiko.odaki@daynix.com>
- <ZSZiAHtXGOZnZNas@redhat.com>
- <2c970c00-519c-4175-b0ca-9081c4aa0daf@daynix.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-trivial@nongnu.org, qemu-stable@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20231011112054.1031975-1-mjt@tls.msk.ru>
+ <20231011112054.1031975-3-mjt@tls.msk.ru>
+ <CAJSP0QVkuu4EbW5gKmrN6Gotnhw1LG+ka=6vjuftPXBrKY+R3g@mail.gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -125,7 +118,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <2c970c00-519c-4175-b0ca-9081c4aa0daf@daynix.com>
+In-Reply-To: <CAJSP0QVkuu4EbW5gKmrN6Gotnhw1LG+ka=6vjuftPXBrKY+R3g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -136,7 +129,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -152,48 +145,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/2023 17.48, Akihiko Odaki wrote:
-> On 2023/10/11 17:51, Daniel P. Berrangé wrote:
->> On Wed, Oct 11, 2023 at 04:03:09PM +0900, Akihiko Odaki wrote:
->>> Make qemu-plugin.h consumable for C++ platform.
->>>
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> ---
->>>   docs/devel/tcg-plugins.rst |  4 ++++
->>>   meson.build                |  2 +-
->>>   include/qemu/qemu-plugin.h |  4 ++++
->>>   tests/plugin/cc.cc         | 16 ++++++++++++++++
->>>   tests/plugin/meson.build   |  5 +++++
->>>   tests/tcg/Makefile.target  |  3 +--
->>>   6 files changed, 31 insertions(+), 3 deletions(-)
->>>   create mode 100644 tests/plugin/cc.cc
->>>
->>> diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
->>> index c9f8b27590..984d8012e9 100644
->>> --- a/docs/devel/tcg-plugins.rst
->>> +++ b/docs/devel/tcg-plugins.rst
->>> @@ -283,6 +283,10 @@ run::
->>>     160          1      0
->>>     135          1      0
->>> +- contrib/plugins/cc.cc
->>> +
->>> +A pure test plugin to ensure that the plugin API is compatible with C++.
->>> +
+On 11/10/2023 17.38, Stefan Hajnoczi wrote:
+> On Wed, 11 Oct 2023 at 07:23, Michael Tokarev <mjt@tls.msk.ru> wrote:
 >>
->> IMHO we don't need to be adding a test just to prove the
->> existance of the G_BEGIN_DECLS/G_END_DECLS macros in the
->> plugin header.
+>> From: Peter Maydell <peter.maydell@linaro.org>
+>>
+>> In query_port() we pass the address of a local pvrdma_port_attr
+>> struct to the rdma_query_backend_port() function.  Unfortunately,
+>> rdma_backend_query_port() wants a pointer to a struct ibv_port_attr,
+>> and the two are not the same length.
+>>
+>> Coverity spotted this (CID 1507146): pvrdma_port_attr is 48 bytes
+>> long, and ibv_port_attr is 52 bytes, because it has a few extra
+>> fields at the end.
+>>
+>> Fortunately, all we do with the attrs struct after the call is to
+>> read a few specific fields out of it which are all at the same
+>> offsets in both structs, so we can simply make the local variable the
+>> correct type.  This also lets us drop the cast (which should have
+>> been a bit of a warning flag that we were doing something wrong
+>> here).
+>>
+>> Cc: qemu-stable@nongnu.org
+>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+>> ---
+>>   hw/rdma/vmw/pvrdma_cmd.c | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> Strictly speaking, if you include this header file from C++, the code will 
-> be interpreted as C++ instead of C but with C linkage. That worries me that 
-> the header file may get something not allowed in C++ in the future.
+> The following CI failure has occurred:
+> 
+> ../hw/rdma/vmw/pvrdma_cmd.c:144:59: error: implicit conversion from
+> enumeration type 'enum ibv_port_state' to different enumeration type
+> 'enum pvrdma_port_state' [-Werror,-Wenum-conversion]
+> resp->attrs.state = dev->func0->device_active ? attrs.state :
+> ~ ~~~~~~^~~~~
+> ../hw/rdma/vmw/pvrdma_cmd.c:146:33: error: implicit conversion from
+> enumeration type 'enum ibv_mtu' to different enumeration type 'enum
+> pvrdma_mtu' [-Werror,-Wenum-conversion]
+> resp->attrs.max_mtu = attrs.max_mtu;
+> ~ ~~~~~~^~~~~~~
+> ../hw/rdma/vmw/pvrdma_cmd.c:147:36: error: implicit conversion from
+> enumeration type 'enum ibv_mtu' to different enumeration type 'enum
+> pvrdma_mtu' [-Werror,-Wenum-conversion]
+> resp->attrs.active_mtu = attrs.active_mtu;
+> ~ ~~~~~~^~~~~~~~~~
+> 
+> https://gitlab.com/qemu-project/qemu/-/jobs/5270666420
+> 
+> Please take a look.
 
-I think it should be enough if you add the G_BEGIN_DECLS/G_END_DECLS macros 
-here. QEMU is a C project, and it was quite difficult to get rid of the C++ 
-code again, so please don't soften the check in meson.build and don't 
-introduce new .cc files.
-If you have some code somewhere that uses C++ for plugins, I think it would 
-be better to add a regression test there instead.
+That pvrdma patch unfortunately does not work with Clang, see also:
+
+ 
+https://lore.kernel.org/qemu-devel/781330fc-85b3-4ef1-8f07-1cc5fc5e4ad2@redhat.com/T/#t
 
   Thomas
 
