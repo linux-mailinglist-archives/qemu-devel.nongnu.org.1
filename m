@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F0F7C48D1
+	by mail.lfdr.de (Postfix) with ESMTPS id 450267C48D2
 	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 06:25:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqQln-0007Sd-F9; Wed, 11 Oct 2023 00:24:27 -0400
+	id 1qqQmd-0007oW-4E; Wed, 11 Oct 2023 00:25:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qqQll-0007SQ-PG
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 00:24:25 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qqQma-0007hL-R3
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 00:25:16 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qqQlj-0002gM-9b
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 00:24:25 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-53b32dca0bfso1097348a12.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 21:24:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qqQmY-0002mt-TJ
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 00:25:16 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-5041d6d8b10so8376225e87.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 21:25:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1696998261; x=1697603061;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1696998313; x=1697603113;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=U7wu6oRSaoVQbnHHGelTdN6bIyM+EPtZAoXS7nDMkso=;
- b=lz4ingyi1YKnbdksqs36Y9iY4AbsmCt+HMcNXS9hpo/inPKGIiS4WByl36uE3MbmEc
- D4HSX8Myl3Kbeg76pRgNBcY8e1jTRBfr00TRRBFSgu74sSpsqO5H9dwQe1b0F5KrEpZ6
- 9fJ39mb5txXUvwdz9tEaootiHFzjD7qoINQ4d/CGm/djRhqBmoBd/nwXQH9ZBrds9xgF
- PH+7v/zikSsxy4gm/DPTTvmA3knTQttGLCitBQbNNoZaSRFUIYJwJ/phTuv3r9QyiPj/
- JVmfzAqnRTh/NjuctNC2LX8mm6BceEYnRFIS05lENBHl+pz0KJCYpZuqI6GX3IZHyfxC
- Nwlw==
+ bh=7virY4gRlPd0UJZSNKdnWq4YQlqfHYdNT5Em/ouO508=;
+ b=LYqJtvrNAu1XtrckQJnF6P86mtfi95Jg8WOXlRgxqC88KgSbdVd5GYpZBQvzO3Q31G
+ /Q6EtMurFsYGMtKNwxq651AGMqyJ++NTS2fhuAsd3Ls6A3XqaasDVWEEfY1ZfNSUi8eN
+ 1tmp2nFh0Dr50RmV+iS5UoKotpG3VWOGTtvKMF3JNkWoB8sltBwicp7DDtPLlkK66KYE
+ G5vYQ/I3SKeKIYJHiSEBwdcbybbdjWl5j9J1r+suY/HCYFSFOie1A5pN9rktUq7pRoC0
+ H/42lRlYxUUnPjvzMuy000UDoJ0tmMe2NIBWLE5ZC/8q07h7OiU16he/n2dbWBRMQens
+ JguA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696998261; x=1697603061;
+ d=1e100.net; s=20230601; t=1696998313; x=1697603113;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=U7wu6oRSaoVQbnHHGelTdN6bIyM+EPtZAoXS7nDMkso=;
- b=cxERbFpMt29yB1xc7UQEX1Hq/nCt6/I3cYwEM4KFs+bX2irpteuHoZlRZK4jol1H/Y
- 8zumSBsZ/t3QviLfAI22kcs+fIvVV6onQZb2V5HCof7GSpgY1mRPv0idpZsqkUYgfVGo
- Ef9sdweyJ5r6/eeZwcDxujRSRba/l0ifAdh/3AOWLfhkvtymE6qh1W7A1omgSIuhm5j5
- Pa6UIcG9G3b2PaWUrk2nPwB3IHpY4Q0JI6xjfQmv6GS0W3U9glM02ToXyRbagWYln4J/
- O6ni8vYEmzVfXxoLMHOOHHYvIllLUtrenhabV9Y6MAxfrgL47DcXHXv3EGhEuoWQYP4l
- kWWA==
-X-Gm-Message-State: AOJu0Yw1l/Sl04QJRXWRX8+EercRWLT3pU4WImqz8BwSwcPoNs1AsppN
- gr887ug4gAsFeFSVyr+mG2HpzvmieY7eWB883FihQQ==
-X-Google-Smtp-Source: AGHT+IGhoCoIopK78Sr6OH7qT6JFFWRCteBVoiyNYlmXUi8tovrXSWFUWvGc2Xrw7Iy08mZjtcH6w3gwQhBjxfKBThc=
-X-Received: by 2002:a05:6402:5213:b0:533:4a89:5b2e with SMTP id
- s19-20020a056402521300b005334a895b2emr14081644edd.1.1696998261120; Tue, 10
- Oct 2023 21:24:21 -0700 (PDT)
+ bh=7virY4gRlPd0UJZSNKdnWq4YQlqfHYdNT5Em/ouO508=;
+ b=ClcOKsyQnv9Dt5Q1YUuymIdG61igSJgodpJiVZwy7WR0Eym0HhG4elbLUhbgXK6DKq
+ sSOv4T7HZqfBZTm3xP6Kj42jCf4vqTO2TM0VlBcK95s9xUKdT76Bpk0O1VTXxeO6sQct
+ Dpanq50HUrAsZpqD/mLvGKt+kI+ePhxS0B4VxaBM3VnrptXxSwABv2slWp7BXewFrjgr
+ M6RroGOiGAd47bU6KcvOgMsO/cVeLBO/wFrLR+E1SVyQ3WWficT2ahluNaSOXvwOZZqh
+ 3J6xMvWYKBKOFEpMOdrLs12oxa+0yM2q7wE6G3tPdv8rm+vmWXHlus7qlXiReX7Yu2Db
+ Bg3g==
+X-Gm-Message-State: AOJu0YxRgCA7B1CJYU3DpX8O+viNgnr+mDB2cdHdfxR54JSUgTSgmghq
+ Ni8GtOnTPSb0NumIt2jQlA+5ZMjZmfZ5oK81+Y48Vw==
+X-Google-Smtp-Source: AGHT+IE96MSKyhIO40ENRGc9Q74dcelDes4B0uRU8P9gCsmBS9z3fk/lqEJXRVsOtyce3E1EwFRoZaiURpAliAVCur8=
+X-Received: by 2002:a05:6512:308a:b0:502:e651:129b with SMTP id
+ z10-20020a056512308a00b00502e651129bmr19798566lfd.19.1696998312917; Tue, 10
+ Oct 2023 21:25:12 -0700 (PDT)
 MIME-Version: 1.0
 References: <20231010075238.95646-1-npiggin@gmail.com>
  <20231010075238.95646-7-npiggin@gmail.com>
  <CANCZdfqNJ97EgAax=P7pzny8zcULfiLEVJighecm5=DgLtRv8g@mail.gmail.com>
- <CW56TZQEDIBH.36TCETGSU8X47@wheely>
-In-Reply-To: <CW56TZQEDIBH.36TCETGSU8X47@wheely>
+ <CW593XZPASQW.3OODX8I6KCO2L@wheely>
+In-Reply-To: <CW593XZPASQW.3OODX8I6KCO2L@wheely>
 From: Warner Losh <imp@bsdimp.com>
-Date: Tue, 10 Oct 2023 22:24:24 -0600
-Message-ID: <CANCZdfoRpo3beY6VgEj3g=d8bnvqHc-6pqSM_GstJ=j5GAhS7Q@mail.gmail.com>
+Date: Tue, 10 Oct 2023 22:25:16 -0600
+Message-ID: <CANCZdfoNC9GUPwLvQXyZqMmC_EFy+fu8=5poqqNyCa-G4U2UPA@mail.gmail.com>
 Subject: Re: [RFC PATCH 06/11] tests/avocado: Add FreeBSD distro boot tests
  for ppc
 To: Nicholas Piggin <npiggin@gmail.com>
@@ -65,15 +65,15 @@ Cc: qemu-ppc@nongnu.org, Cleber Rosa <crosa@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000089f292060769325f"
-Received-SPF: none client-ip=2a00:1450:4864:20::535;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x535.google.com
+Content-Type: multipart/alternative; boundary="000000000000a0567606076935ed"
+Received-SPF: none client-ip=2a00:1450:4864:20::129;
+ envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,11 +89,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000089f292060769325f
+--000000000000a0567606076935ed
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 10, 2023 at 6:36=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com>=
+On Tue, Oct 10, 2023 at 8:23=E2=80=AFPM Nicholas Piggin <npiggin@gmail.com>=
  wrote:
 
 > On Wed Oct 11, 2023 at 7:55 AM AEST, Warner Losh wrote:
@@ -124,109 +124,36 @@ ut
 s,
 > > IIRC our retention policy.
 >
-> Oh I didn't realise, I saw some 2021 dates in the directory listing but
-> looks
-> like they're not for the artifacts themselves.
+> The oldest 15.0 CURRENT image on there is May 1st, so ~6 months? That's
+> not too bad. There are some release qcow2 images as well which sound
+> like they're maintained longer-term:
 >
-> I don't suppose you know if there are any long-term artifacts kept
-> around, or someone who I could ask?
+> https://download.freebsd.org/releases/VM-IMAGES/
 >
-> The downside of using short term images is that it can be harder to
-> reproduce reports from others, bisect, run manual testing, etc. I think
-> these would still be useful, so long as they get updated regularly.
+> No builds for powerpc, but those might be preferable for other targets.
 >
-
-Yes. We're in kind of a weird zone. powerpc64le is a new architecture, so
-hasn't had artifacts for long. 14.0 is in progress, but not done yet, so
-there's
-no 'long term stable' version to use yet.
-
-I don't know what our current retention policy is, hence my caution.
-
-
-> >
-> > Other than that, I think this is good. Not familiar enough with Avocado
-> to
-> > understand
-> > skipping for gitlab CI, but given the extreme crunch on minutes, I thin=
-k
-> > that's OK.
->
-> Yeah I'm not sure what the situation there is, I didn't want to add new
-> tests of any significant weight yet. We could always flip it on later if
-> people want it.
+> Another option for powerpc might be to use a release .iso. It's much
+> nicer to have a qcow image already installed though. I'll tinker with
+> it a bit more, but may stick with the snapshot for now.
 >
 
-That makes sense.
-
-
-> >
-> > Other than one nit below which is fine if it is intentionally left behi=
-nd
-> > (or removed):
-> >
-> > Reviewed-by: Warner Losh <imp@bsdimp.com>
-> >
-> > Please don't hesitate to reach out to me if this is failing. I'll act a=
-s
-> a
-> > backstop to get
-> > it to the right people.
->
-> Thanks Warner.
->
-
-You bet. I'll give a heads up once we have 14.0 out so we can switch to
-a more stable artifact.
+I'll try to track that down. It may just be an oversight since powerpc64le
+is
+new.
 
 Warner
 
 
-> >
-> > Warner
-> >
-> >
-> [snip]
->
-> > > +    def run_pseries_test(self, force_HPT=3DFalse):
-> > > +        # We need zstd for all the tuxrun tests
-> > > +        # See
-> https://github.com/avocado-framework/avocado/issues/5609
-> > > +        zstd =3D find_command('zstd', False)
-> > > +        if zstd is False:
-> > > +            self.cancel('Could not find "zstd", which is required to=
- '
-> > > +                        'decompress rootfs')
-> > > +        self.zstd =3D zstd
-> > > +
-> > > +        drive_url =3D ('
-> > >
-> https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/a2440348eed75bb7682=
-579af0905b652747fd016/powerpc/powerpc64le/disk.qcow2.zst
-> > > ')
-> > > +        drive_hash =3D '8ab11a05ccab3d44215fd4667a70454ed10a203f'
-> > > +        drive_path_zstd =3D self.fetch_asset(drive_url,
-> > > asset_hash=3Ddrive_hash)
-> > > +        drive_path =3D os.path.join(self.workdir, 'disk.qcow2')
-> > > +        # archive.zstd_uncompress(drive_path_zstd, drive_path)
-> > >
-> >
-> > Why is this commented out? It looks like a leftover maybe?
-> >
->
-> Ah yes, avocado recently got zstd_uncompress but it seems not
-> available for QEMU yet so we have to do it by hand. I'll remove.
->
 > Thanks,
 > Nick
 >
 
---00000000000089f292060769325f
+--000000000000a0567606076935ed
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 10, 2023 at 6:36=E2=80=AF=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 10, 2023 at 8:23=E2=80=AF=
 PM Nicholas Piggin &lt;<a href=3D"mailto:npiggin@gmail.com">npiggin@gmail.c=
 om</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
 n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
@@ -263,104 +190,29 @@ it, but<br>
 months,<br>
 &gt; IIRC our retention policy.<br>
 <br>
-Oh I didn&#39;t realise, I saw some 2021 dates in the directory listing but=
- looks<br>
-like they&#39;re not for the artifacts themselves.<br>
+The oldest 15.0 CURRENT image on there is May 1st, so ~6 months? That&#39;s=
 <br>
-I don&#39;t suppose you know if there are any long-term artifacts kept<br>
-around, or someone who I could ask?<br>
+not too bad. There are some release qcow2 images as well which sound<br>
+like they&#39;re maintained longer-term:<br>
 <br>
-The downside of using short term images is that it can be harder to<br>
-reproduce reports from others, bisect, run manual testing, etc. I think<br>
-these would still be useful, so long as they get updated regularly.<br></bl=
-ockquote><div><br></div><div>Yes. We&#39;re in kind of a weird zone. powerp=
-c64le is a new architecture, so</div><div>hasn&#39;t had artifacts for long=
-. 14.0 is in progress, but not done yet, so there&#39;s</div><div>no &#39;l=
-ong term stable&#39; version to use yet.</div><div><br></div><div>I don&#39=
-;t know what our current retention policy is, hence my caution.<br></div><d=
-iv>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
-x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt;<br>
-&gt; Other than that, I think this is good. Not familiar enough with Avocad=
-o to<br>
-&gt; understand<br>
-&gt; skipping for gitlab CI, but given the extreme crunch on minutes, I thi=
-nk<br>
-&gt; that&#39;s OK.<br>
+<a href=3D"https://download.freebsd.org/releases/VM-IMAGES/" rel=3D"norefer=
+rer" target=3D"_blank">https://download.freebsd.org/releases/VM-IMAGES/</a>=
 <br>
-Yeah I&#39;m not sure what the situation there is, I didn&#39;t want to add=
- new<br>
-tests of any significant weight yet. We could always flip it on later if<br=
+<br>
+No builds for powerpc, but those might be preferable for other targets.<br>
+<br>
+Another option for powerpc might be to use a release .iso. It&#39;s much<br=
 >
-people want it.<br></blockquote><div><br></div><div>That makes sense.<br></=
-div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
-0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt;<br>
-&gt; Other than one nit below which is fine if it is intentionally left beh=
-ind<br>
-&gt; (or removed):<br>
-&gt;<br>
-&gt; Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com" target=
-=3D"_blank">imp@bsdimp.com</a>&gt;<br>
-&gt;<br>
-&gt; Please don&#39;t hesitate to reach out to me if this is failing. I&#39=
-;ll act as a<br>
-&gt; backstop to get<br>
-&gt; it to the right people.<br>
-<br>
-Thanks Warner.<br></blockquote><div><br></div><div>You bet. I&#39;ll give a=
- heads up once we have 14.0 out so we can switch to</div><div>a more stable=
- artifact.</div><div><br></div><div>Warner<br></div><div>=C2=A0</div><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex">
-&gt;<br>
-&gt; Warner<br>
-&gt;<br>
-&gt;<br>
-[snip]<br>
-<br>
-&gt; &gt; +=C2=A0 =C2=A0 def run_pseries_test(self, force_HPT=3DFalse):<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 # We need zstd for all the tuxrun te=
-sts<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 # See <a href=3D"https://github.com/=
-avocado-framework/avocado/issues/5609" rel=3D"noreferrer" target=3D"_blank"=
->https://github.com/avocado-framework/avocado/issues/5609</a><br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 zstd =3D find_command(&#39;zstd&#39;=
-, False)<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if zstd is False:<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 self.cancel(&#39;Could=
- not find &quot;zstd&quot;, which is required to &#39;<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 &#39;decompress rootfs&#39;)<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 self.zstd =3D zstd<br>
-&gt; &gt; +<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 drive_url =3D (&#39;<br>
-&gt; &gt; <a href=3D"https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/=
-a2440348eed75bb7682579af0905b652747fd016/powerpc/powerpc64le/disk.qcow2.zst=
-" rel=3D"noreferrer" target=3D"_blank">https://artifact.ci.freebsd.org/snap=
-shot/15.0-CURRENT/a2440348eed75bb7682579af0905b652747fd016/powerpc/powerpc6=
-4le/disk.qcow2.zst</a><br>
-&gt; &gt; &#39;)<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 drive_hash =3D &#39;8ab11a05ccab3d44=
-215fd4667a70454ed10a203f&#39;<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 drive_path_zstd =3D self.fetch_asset=
-(drive_url,<br>
-&gt; &gt; asset_hash=3Ddrive_hash)<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 drive_path =3D os.path.join(self.wor=
-kdir, &#39;disk.qcow2&#39;)<br>
-&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 # archive.zstd_uncompress(drive_path=
-_zstd, drive_path)<br>
-&gt; &gt;<br>
-&gt;<br>
-&gt; Why is this commented out? It looks like a leftover maybe?<br>
-&gt;<br>
-<br>
-Ah yes, avocado recently got zstd_uncompress but it seems not<br>
-available for QEMU yet so we have to do it by hand. I&#39;ll remove.<br>
-<br>
+nicer to have a qcow image already installed though. I&#39;ll tinker with<b=
+r>
+it a bit more, but may stick with the snapshot for now.<br></blockquote><di=
+v><br></div><div>I&#39;ll try to track that down. It may just be an oversig=
+ht since powerpc64le is</div><div>new.</div><div><br></div><div>Warner<br><=
+/div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px=
+ 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
 Thanks,<br>
 Nick<br>
 </blockquote></div></div>
 
---00000000000089f292060769325f--
+--000000000000a0567606076935ed--
 
