@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579397C5507
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF557C551A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:18:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZ0w-0000KD-R0; Wed, 11 Oct 2023 09:12:38 -0400
+	id 1qqZ5T-0002iF-67; Wed, 11 Oct 2023 09:17:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqZ0u-0000K0-S6
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:12:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qqZ5O-0002hp-AR
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:17:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqZ0s-0001vm-Vk
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:12:36 -0400
+ id 1qqZ5L-0002yN-Bm
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:17:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697029954;
+ s=mimecast20190719; t=1697030230;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=omMFA2BFwxkht+iyiplRXUh2rwdf/BXFf9FYID90z6I=;
- b=bkONTKcn19f7dYm5DNwWi1q14u99p28PuZyhGUjrXFHrDXoaROMcgFqsredyVBpZ9dY5MT
- JlxNdp6swVTomJ1igVcmKyLA/LeQhcjlF8mpMfKTY5CjGUNXLWUcWUBbgPZd39yJ2WvQWx
- zKJS5UPvOHgeJ2O3IWzt6trqliy4dUI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FGdKbSPBI8Qdbl17BSzMnM74LeJPIAAFQGqRS9P0XA0=;
+ b=DojC8+BdqyAsVTSTedcm6J3EST075lWhMHhfT7FwpTiP4s6goiHFGW+oco2+IL3dr4uP09
+ QeCk5ufXdvip6H0fSEaIkgeZcxj8TyWm4kVkVnkr61kW5giesdH+2/6dDiP05HkcLiGqyC
+ fBP26Wgi4yaZtog186kAIYlTY6p1vPs=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-504-CX2eeVDiNJqlZlDWHBJIVA-1; Wed, 11 Oct 2023 09:12:32 -0400
-X-MC-Unique: CX2eeVDiNJqlZlDWHBJIVA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-32d83fd3765so488861f8f.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:12:32 -0700 (PDT)
+ us-mta-617-hl8b4_ILOHK2qjPl993aqg-1; Wed, 11 Oct 2023 09:16:54 -0400
+X-MC-Unique: hl8b4_ILOHK2qjPl993aqg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-326f05ed8f9so4892419f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:16:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697029951; x=1697634751;
+ d=1e100.net; s=20230601; t=1697030212; x=1697635012;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=omMFA2BFwxkht+iyiplRXUh2rwdf/BXFf9FYID90z6I=;
- b=MwhR91licX4ZkpMvsAbR8xhdbrQWEUIDZYDZYODTu7STxosIUmntsjxGyeLYX2DbbH
- T+rB1YYOCOimxARvaVjXvY6Cebgzr/PbZiuXfRwtlhZuET4Xfjxlwx9EwgRgu67WfSSC
- KSRZVUjNgwbbQqVIhfzYSSGGhK1C1grFwJNqxlQ5wgVF2RWvn7XBKSAAltbk/AOHj8IP
- kwZJdBZYvOEGF2JH9rSPXaR4l4otYp+l0dUdOwuZ5L4cZXHGIR0dSK14e5JEzCuQwWLV
- chFqxrhi/3YQzctNnN9wwJiKPc9odfwHw6s3aclUPR2ui3n9cW+eMiPiOrV2/Cg5rw3t
- tM6Q==
-X-Gm-Message-State: AOJu0YysdPlXhz2wYab5wJ+pSkzD9Dkw9xCNeW7Auq2qy/nVmNcyvlwk
- hZJz16evhj3NaiLr5vkDKSYzcx1bUR0ZKZdDdgSHpNMi7uLH2mjGgmjfHtPEFw4UGt75KKu+d1g
- PzLtSq9814/S+a6E=
-X-Received: by 2002:a05:6000:1c09:b0:329:6b35:d141 with SMTP id
- ba9-20020a0560001c0900b003296b35d141mr16255356wrb.44.1697029951295; 
- Wed, 11 Oct 2023 06:12:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGn41OuXOhoeKde60W2JwGpcC01611sbpNDXadZ4NwLG33/lEFoKYBT579aXAqtgyR6skUuTg==
-X-Received: by 2002:a05:6000:1c09:b0:329:6b35:d141 with SMTP id
- ba9-20020a0560001c0900b003296b35d141mr16255338wrb.44.1697029950981; 
- Wed, 11 Oct 2023 06:12:30 -0700 (PDT)
+ bh=FGdKbSPBI8Qdbl17BSzMnM74LeJPIAAFQGqRS9P0XA0=;
+ b=crIHUTG31be8RmpMMPKRiRQxg+G+nr+Qtj3OgRDX4G3dFnj8QMvT0rKgKybuI1MwLq
+ qiifVfrA2rkqvr8HYrzFXSG8Zk7RQCwi+8oY1wNpW8vHkCKo/T/3JzbzITabWUspHUYH
+ bnP8oz2pXi69XBL6rH1J4i2DKJbsRdXYqvUY6M3MAD3Mi3wp1TeCbHOQP361fNDnjJip
+ lTdl6pc6VPjDS8Sxg3lZAxogLjKesKSdaPBo88WFvLUt89DXW7LcUKC155dBujW09X8V
+ mTsWWi0LnVlsdgAj1KuM6ER6kpYHUAcmJrDSKqeecnPeWjqFu3Nfg3JHzZgOF7+zDxPA
+ wW2w==
+X-Gm-Message-State: AOJu0Yw65GfIHCGthjSgpM9cPCfjNxVdNzs015JKsx1bH7XXvB7wCJPK
+ 1ahSqDn0Xv+L0bOoItAQjEjO5rzghH21WctBcD8gDQz8HEo1799G8jWAJrRfQWqV7CYUgCROTrK
+ KH6/cCb/9QM4o0yxkXDndU56wZA==
+X-Received: by 2002:adf:b357:0:b0:32d:82d8:3442 with SMTP id
+ k23-20020adfb357000000b0032d82d83442mr2026758wrd.53.1697030212603; 
+ Wed, 11 Oct 2023 06:16:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkUlBEpZvEbPMwPAnlCG2J5SRlzZto2T4NkoT7QUb+18tbMjD6RN/IdrSwBb4ksiMnzLJdCw==
+X-Received: by 2002:adf:b357:0:b0:32d:82d8:3442 with SMTP id
+ k23-20020adfb357000000b0032d82d83442mr2026730wrd.53.1697030211982; 
+ Wed, 11 Oct 2023 06:16:51 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- b6-20020adfee86000000b0031f300a4c26sm15392683wro.93.2023.10.11.06.12.30
+ e2-20020adfe382000000b00327de0173f6sm15469991wrm.115.2023.10.11.06.16.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 06:12:30 -0700 (PDT)
+ Wed, 11 Oct 2023 06:16:51 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
  <leobras@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
  <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>,  Nikolay Borisov <nborisov@suse.com>
-Subject: Re: [PATCH v2 1/6] migration: Add the configuration vmstate to the
- json writer
-In-Reply-To: <20231009184326.15777-2-farosas@suse.de> (Fabiano Rosas's message
- of "Mon, 9 Oct 2023 15:43:21 -0300")
+ Thomas Huth <thuth@redhat.com>,  John Snow <jsnow@redhat.com>,  Cleber
+ Rosa <crosa@redhat.com>
+Subject: Re: [PATCH v2 2/6] migration: Fix analyze-migration.py
+ 'configuration' parsing
+In-Reply-To: <20231009184326.15777-3-farosas@suse.de> (Fabiano Rosas's message
+ of "Mon, 9 Oct 2023 15:43:22 -0300")
 References: <20231009184326.15777-1-farosas@suse.de>
- <20231009184326.15777-2-farosas@suse.de>
+ <20231009184326.15777-3-farosas@suse.de>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 11 Oct 2023 15:12:29 +0200
-Message-ID: <87edi1b8w2.fsf@secure.mitica>
+Date: Wed, 11 Oct 2023 15:16:50 +0200
+Message-ID: <87a5spb8ot.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,41 +106,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fabiano Rosas <farosas@suse.de> wrote:
-> From: Nikolay Borisov <nborisov@suse.com>
+> The 'configuration' state subsections are currently not being parsed
+> and the script fails when analyzing an aarch64 stream:
 >
-> Make the migration json writer part of MigrationState struct, allowing
-> the 'configuration' object be serialized to json.
+> Traceback (most recent call last):
+>   File "./scripts/analyze-migration.py", line 625, in <module>
+>     dump.read(dump_memory = args.memory)
+>   File "./scripts/analyze-migration.py", line 571, in read
+>     raise Exception("Unknown section type: %d" % section_type)
+> Exception: Unknown section type: 5
 >
-> This will facilitate the parsing of the 'configuration' object in the
-> next patch that fixes analyze-migration.py for arm.
->
-> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-
-queued.
-
->          qemu_put_byte(f, QEMU_VM_CONFIGURATION);
-> -        vmstate_save_state(f, &vmstate_configuration, &savevm_state, 0);
-> +
-> +        /*
-> +         * This starts the main json object and is paired with the
-> +         * json_writer_end_object in
-> +         * qemu_savevm_state_complete_precopy_non_iterable
-> +         */
-> +        json_writer_start_object(s->vmdesc, NULL);
-
-This don't depend of this patch, but it is ugly as hell.
-
-Can we create:
-
-json_write_start_main_object(s->vmdesc);
-
-(equivalent for end)
-
-And forbid json_writer_start_object() for taking a NULL parameter?
-
-Later, Juan.
 
 
