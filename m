@@ -2,67 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8B37C5793
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A67A7C579B
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:59:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqaeK-0006ri-6W; Wed, 11 Oct 2023 10:57:24 -0400
+	id 1qqagJ-00088P-Pc; Wed, 11 Oct 2023 10:59:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqaeI-0006rI-GH
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:57:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqaeH-0001h5-6R
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:57:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697036240;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qdTRELyGKNrOfhsKs24ayC9lLLWo2rgOUpPX1JPXX/E=;
- b=f6LmGe3ToH8nZqEEMjEJUBfc/FwV7rCcruC4OHFh7VELXLuW9OiKZKsWNB6RBNJqW2Rwk9
- X56D/3jxjR/0z/jxe3Ky/brwwT/Lep+u8nn19V8cpjw6V+eQO2Q33tqQvYvrFyC08VAsHJ
- eduA2VYAGRblxDlq9YxVPDvlJYWiJK0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-615-ZVw3P8fVMjqWs_PQQUNtOA-1; Wed, 11 Oct 2023 10:57:18 -0400
-X-MC-Unique: ZVw3P8fVMjqWs_PQQUNtOA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqagH-000881-9P
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:59:25 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqagF-00021o-85
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:59:25 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 53D2F1C0CCC2
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 14:57:18 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 33474492C3E
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 14:57:18 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3E0EE21E6904; Wed, 11 Oct 2023 16:57:17 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] target/i386: fix shadowed variable pasto
-References: <20231011135350.438492-1-pbonzini@redhat.com>
-Date: Wed, 11 Oct 2023 16:57:17 +0200
-In-Reply-To: <20231011135350.438492-1-pbonzini@redhat.com> (Paolo Bonzini's
- message of "Wed, 11 Oct 2023 15:53:50 +0200")
-Message-ID: <877cntfbqq.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 617351FE46;
+ Wed, 11 Oct 2023 14:59:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697036361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KFwhVCOyX56HFjAqM77F57+/J4GXaUtYwTf/if4R3Z4=;
+ b=dRh+0HGRXvUAM2WSi+4UOojTThG4BIRuemPdCTPLNhv+3MbvXKk9F2bBjNxUChkZbDwZRL
+ B/+t1JIk0p+1xIbqXpkUyoAownuJhoKt9FzpyF95GaU93iVrlZk8XlEDMmKZJIW+Jvo1tM
+ 0ahPETZQrGmzyorXAONH/Gq6RzVujvk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697036361;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KFwhVCOyX56HFjAqM77F57+/J4GXaUtYwTf/if4R3Z4=;
+ b=WFVrI9Y+YQidtusg9LfzpM0KJ4ykjkWLdCafb1OYsCWOvd5EukhxvQI8mTLIGoayNaMLb+
+ d+sSy2S/98bXpABA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E8AEF138EF;
+ Wed, 11 Oct 2023 14:59:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id dnKJLEi4JmVbfQAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 11 Oct 2023 14:59:20 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Juan Quintela
+ <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Alex
+ =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Thomas Huth
+ <thuth@redhat.com>, Laurent
+ Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 7/9] tests/qtest/migration: Define a machine for all
+ architectures
+In-Reply-To: <ZSa10rRmlqLCl+MX@redhat.com>
+References: <20231006123910.17759-1-farosas@suse.de>
+ <20231006123910.17759-8-farosas@suse.de> <87h6mx8c86.fsf@secure.mitica>
+ <ZSa10rRmlqLCl+MX@redhat.com>
+Date: Wed, 11 Oct 2023 11:59:18 -0300
+Message-ID: <87edi119yx.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,18 +93,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> Commit a908985971a ("target/i386/seg_helper: introduce tss_set_busy",
-> 2023-09-26) failed to use the tss_selector argument of the new function,
-> which was therefore unused.
+> On Wed, Oct 11, 2023 at 04:28:41PM +0200, Juan Quintela wrote:
+>> Fabiano Rosas <farosas@suse.de> wrote:
+>> > Stop relying on defaults and select a machine explicitly for every
+>> > architecture.
+>> >
+>> > This is a prerequisite for being able to select machine types for
+>> > migration using different QEMU binaries for source and destination.
+>> >
+>> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> > ---
+>> >  tests/qtest/migration-test.c | 11 ++++++++++-
+>> >  1 file changed, 10 insertions(+), 1 deletion(-)
+>> >
+>> > diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test=
+.c
+>> > index 46f1c275a2..7c10ac925b 100644
+>> > --- a/tests/qtest/migration-test.c
+>> > +++ b/tests/qtest/migration-test.c
+>> > @@ -746,6 +746,7 @@ static int test_migrate_start(QTestState **from, Q=
+TestState **to,
+>> >      const char *kvm_opts =3D NULL;
+>> >      const char *arch =3D qtest_get_arch();
+>> >      const char *memory_size;
+>> > +    const char *machine;
+>> >=20=20
+>> >      if (args->use_shmem) {
+>> >          if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
+>> > @@ -758,11 +759,13 @@ static int test_migrate_start(QTestState **from,=
+ QTestState **to,
+>> >      got_dst_resume =3D false;
+>> >      if (strcmp(arch, "i386") =3D=3D 0 || strcmp(arch, "x86_64") =3D=
+=3D 0) {
+>> >          memory_size =3D "150M";
+>> > +        machine =3D "pc";
+>>=20
+>> I would suggest:
+>>=20
+>>       if (strcmp(arch, "i386")) {
+>>           machine =3D "pc";
+>>       } else {
+>>           machine =3D "q35";
+>>       }
+>>=20
+>> New development is happening in q35, so I think this should be the more =
+tested.
+>>=20
+>> > @@ -774,10 +777,12 @@ static int test_migrate_start(QTestState **from,=
+ QTestState **to,
+>> >                                        "'nvramrc=3Dhex .\" _\" begin %=
+x %x "
+>> >                                        "do i c@ 1 + i c! 1000 +loop .\=
+" B\" 0 "
+>> >                                        "until'", end_address, start_ad=
+dress);
+>> > +        machine =3D "pseries";
+>> >          arch_opts =3D g_strdup("-nodefaults -machine vsmt=3D8");
+>> >      } else if (strcmp(arch, "aarch64") =3D=3D 0) {
+>> >          memory_size =3D "150M";
+>> > -        arch_opts =3D g_strdup_printf("-machine virt,gic-version=3Dma=
+x -cpu max "
+>> > +        machine =3D "virt";
+>> > +        arch_opts =3D g_strdup_printf("-machine gic-version=3Dmax -cp=
+u max "
+>>=20
+>> Does this double -machine command line works?
 >
-> This shows up as a #GP fault when booting old versions of 32-bit
-> Linux.
+> Why not just call the variable 'machine_opts' and here you can
+> do
 >
-> Fixes: a908985971a ("target/i386/seg_helper: introduce tss_set_busy", 2023-09-26)
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>  -        arch_opts =3D g_strdup_printf("-machine virt,gic-version=3Dmax =
+-cpu max "
+>  +        machine_opts =3D "virt,gic-version=3Dmax";
+>  +        arch_opts =3D g_strdup_printf("-cpu max "
 
-Queued.  Thanks!
+The machine name needs to be standalone so it can be overridden in the
+next patch when we compute the common machine type.
 
+Maybe I could add the machine_opts anyway just to make it more explicit.
 
