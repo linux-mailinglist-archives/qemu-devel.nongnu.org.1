@@ -2,105 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6668D7C46D8
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 02:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5F07C46FE
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 03:04:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqNNl-000464-AL; Tue, 10 Oct 2023 20:47:25 -0400
+	id 1qqNdM-0003de-7I; Tue, 10 Oct 2023 21:03:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqNNi-00045p-8s; Tue, 10 Oct 2023 20:47:22 -0400
-Received: from mail-ua1-x931.google.com ([2607:f8b0:4864:20::931])
+ (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
+ id 1qqNQd-0005YV-CG
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 20:50:23 -0400
+Received: from mail-ua1-x935.google.com ([2607:f8b0:4864:20::935])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqNNg-0002ZU-DM; Tue, 10 Oct 2023 20:47:21 -0400
-Received: by mail-ua1-x931.google.com with SMTP id
- a1e0cc1a2514c-7b5fe8ab5f9so546339241.3; 
- Tue, 10 Oct 2023 17:47:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
+ id 1qqNQa-0003e9-Ld
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 20:50:23 -0400
+Received: by mail-ua1-x935.google.com with SMTP id
+ a1e0cc1a2514c-7b5f0bbe137so697858241.2
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 17:50:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696985234; x=1697590034; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696985419; x=1697590219; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gAHR2WuVCJ5lpEHqHqIqxiFmRsRdzXEUhWgWbPR6lfQ=;
- b=dIwXCe+TZML0w2Kp4kJ/xY3xt945ESJEAxRiDN3zJHyUtHOL6M23vtCgxOhP9M6/8B
- obWxJkUtKyYOC3qq3GSgaQs7DjqITn4kUJSnSASV/rALzOuBaeKrFBSPsB6Zx3vyOUZk
- ry7GcBK0+fs9q4a/9++U4ikvgipJb1ykj6Y9MZsx20czUQ3yVuppXmNFNUbnZuQAKFlG
- rOFXdy0auSe5mmhmWs46g17EjSdK3A0TTu2Rl8z0dQ+bprw0pLOQBrXu4by9WRS/aDys
- jTC781XJIRYocA1InlHWCj8WAH3EU6RfhL03xJ+SXCbcFkjWfkVgfz5V5oLjb6IQE3V3
- VtCw==
+ bh=rPKgkr91uM5AObuWaBYVQhYKDTMWlaMX8cV3B9ISbDc=;
+ b=ihSrnFbMaZewwDHg1qoYDy8t7Q+awBDjDDYaR926CWDTf8RuXCscF23UZDJgcnQi9l
+ ynmpzlNkeTtpjFLmShjhmjKzOzgBM8PRhha5cePquv70ZtJSs15G1UYTJB70JP8b8vKg
+ yXu/R4ZyqrnwKeUtdENi+/K/2Kk4Y4fFKXogZHxblNirkm8u5a8IJnzuEH0sAUWV5vRU
+ VdCgR+gy4IcDfMs9/zA+rB/eTVmi1yGxWuZHRGLCiP5j2pChk4i7b0xG6XG2AI2NoiqF
+ nGb6tscXT94OrQHRNy7SU2GZX5ZlHDbCq3lvlscIy0NxzlqID0KqqVIgHjEDNnny+DkP
+ IwpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696985234; x=1697590034;
+ d=1e100.net; s=20230601; t=1696985419; x=1697590219;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gAHR2WuVCJ5lpEHqHqIqxiFmRsRdzXEUhWgWbPR6lfQ=;
- b=OBjS/6Ayybb4KsyBzKJzq58ASkXrpNn3s6XWNnve5J/eINZ5jP5gFhj9+M3O12zuoE
- pto0Xr9r9IsARDWl7b5PLrOj2MYrPFKX2j/qT8QdRBJa9Icxb0Cp0j8LvY/UC8/qbDdT
- +iNR9kO75FvF8QjFBoHIQhBTTmh88PlUrbDbXBHsw5PEfAGQwz5W8Oq1rpgM2AVoC6yT
- eRbA8UNPrioSUnDTCGoyC9JqvL1rvy8DcWVNl8o8bOs+IYfWxu3T27mhR+frlGsEdFgK
- OXYDxovDYmfThyVCpYoAW5LIneSU/b5czFx+3OaRsgLeNCqDAOzvN5gsb2+uSx4YUOZF
- K7UA==
-X-Gm-Message-State: AOJu0Yyu7imUw4aw832qZJ/xmwv2UAaooR5+i/3x9E6SmVJQHKQeEyVP
- WRKE3fHPVKOeW50aR5IOYVnCAY65XdpxEwSWRoo=
-X-Google-Smtp-Source: AGHT+IGr4ZXnfukOgW8NHORzadq4zmN6N6UqUPVVjH8hnzmuslGhncwlcMg/EKwY8loukDzuxo6QkdpLvrz1rnK83ww=
-X-Received: by 2002:a1f:ca83:0:b0:48d:2bcf:f959 with SMTP id
- a125-20020a1fca83000000b0048d2bcff959mr16438241vkg.3.1696985234201; Tue, 10
- Oct 2023 17:47:14 -0700 (PDT)
+ bh=rPKgkr91uM5AObuWaBYVQhYKDTMWlaMX8cV3B9ISbDc=;
+ b=advHdcDGwtTSvzN7nrJIgoEXjS3yoZG2ODJYxn9EfzbQiuiRdm4fXkr8QevETIjzFd
+ i23ldDsog2g5EKyPEn9ajZIWCy0QTCHWSTe0Uzt1KdgeAnKwj7Y2DZcDNZqpqAe8RLvP
+ BewbNicIqNWYWFqR++wrYYzH8Qg7rN1VK72VOzXov+yY+Mg2h+6pUppKipyoT42AISTa
+ W9EhbP/3x8B5SuDWOD7vtpy8WsD7/khgyjgczb8/nXtFPQMZRdsyy0/blPRxy9agjLG4
+ XFasrhvYnwAV1+fFkBlUT7ApJSzuH0ASMH64GO/oXntk07AonqD+drtnbYW2nqa1q5BN
+ EkVw==
+X-Gm-Message-State: AOJu0Yz2SObLBJcUBgqEVNVqutpk9wP4uE9ZbkKJENbhNmbEhT6KC+Q2
+ qLK4ciq3W0GGpUd+1yxb2dvUS+wu/aObjMQ4Zkw=
+X-Google-Smtp-Source: AGHT+IH0+uz17t03KroJwYQWYgJWtkEyt4arP89HpZ6Zo55Q8JtOleCM3pI4UUxZYvAf4kyHQuWXnOwZuylTagfXCYs=
+X-Received: by 2002:a67:cd95:0:b0:452:6c9d:89e8 with SMTP id
+ r21-20020a67cd95000000b004526c9d89e8mr19040600vsl.21.1696985419293; Tue, 10
+ Oct 2023 17:50:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-11-philmd@linaro.org>
-In-Reply-To: <20231010092901.99189-11-philmd@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 11 Oct 2023 10:46:47 +1000
-Message-ID: <CAKmqyKOcNPmpTU_egSxjHO5yvM9XjQd3d4+G8XWnxnCrparNaQ@mail.gmail.com>
-Subject: Re: [PATCH 10/18] target/riscv: Inline target specific
- TYPE_RISCV_CPU_BASE definition
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Laurent Vivier <lvivier@redhat.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-arm@nongnu.org, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas Piggin <npiggin@gmail.com>,
- qemu-riscv@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Bin Meng <bin.meng@windriver.com>, 
- Yanan Wang <wangyanan55@huawei.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, Marek Vasut <marex@denx.de>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org, 
- Michael Rolnik <mrolnik@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <laurent@vivier.eu>, 
- Stafford Horne <shorne@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Chris Wulff <crwulff@gmail.com>, 
- Sergio Lopez <slp@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
+References: <CAB=+i9S4NSJ7iNvqguWKvFvo=cMQC21KeNETsqmJoEpj+iDmig@mail.gmail.com>
+ <ZSKupRw+mRrASUaY@memverge.com>
+In-Reply-To: <ZSKupRw+mRrASUaY@memverge.com>
+From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Date: Wed, 11 Oct 2023 09:50:07 +0900
+Message-ID: <CAB=+i9S_uAUfPWSR2mJ=EzB-O2w-puK232CxbgWn8mx+YpMJCQ@mail.gmail.com>
+Subject: Re: Accessing emulated CXL memory is unstable
+To: Gregory Price <gregory.price@memverge.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, 
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Dan Williams <dan.j.williams@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ kvm@vger.kernel.org, linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::931;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x931.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::935;
+ envelope-from=42.hyeyoo@gmail.com; helo=mail-ua1-x935.google.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 10 Oct 2023 21:03:30 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,97 +94,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 10, 2023 at 7:32=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
+On Wed, Oct 11, 2023 at 12:54=E2=80=AFAM Gregory Price
+<gregory.price@memverge.com> wrote:
 >
-> TYPE_RISCV_CPU_BASE depends on the TARGET_RISCV32/TARGET_RISCV64
-> definitions which are target specific. Such target specific
-> definition taints "cpu-qom.h".
+> On Tue, Oct 10, 2023 at 10:35:03AM +0900, Hyeonggon Yoo wrote:
+> > Hello folks,
+> >
+> > I experienced strange application crashes/internal KVM errors
+> > while playing with emulated type 3 CXL memory. I would like to know
+> > if this is a real issue or I missed something during setup.
+> >
+> > TL;DR: applications crash when accessing emulated CXL memory,
+> > and stressing VM subsystem causes KVM internal error
+> > (stressing via stress-ng --bigheap)
+> >
+> ...
+> >
+> > Hmm... it crashed, and it's 'invalid opcode'.
+> > Is this because the fetched instruction is different from what's
+> > written to memory during exec()?
+> >
 >
-> Since "cpu-qom.h" must be target agnostic, remove its target
-> specific definition uses by inlining TYPE_RISCV_CPU_BASE in the
-> two machines using it.
->
-> "target/riscv/cpu-qom.h" is now fully target agnostic.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> This is a known issue, and the working theory is 2 issues:
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Okay, at least it's a known issue. Thank you for confirming that!
 
-Alistair
+>
+> 1) CXL devices are implemented on top of an MMIO-style dispatch system
+>    and as a result memory from CXL is non-cacheable.  We think there
+>    may be an issue with this in KVM but it hasn't been investigated
+>    fully.
+>
+> 2) When we originally got CXL memory support, we discovered an edge case
+>    where code pages hosted on CXL memory would cause a crash whenever an
+>    instruction spanned across a page barrier.  A similar issue could
+>    affect KVM.
+>
+> We haven't done much research into the problem beyond this.  For now, we
+> all just turn KVM off while we continue development.
 
-> ---
->  target/riscv/cpu-qom.h | 8 +-------
->  hw/riscv/spike.c       | 8 +++++++-
->  hw/riscv/virt.c        | 8 +++++++-
->  3 files changed, 15 insertions(+), 9 deletions(-)
->
-> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-> index 8cb67b84a4..f607687384 100644
-> --- a/target/riscv/cpu-qom.h
-> +++ b/target/riscv/cpu-qom.h
-> @@ -1,5 +1,5 @@
->  /*
-> - * QEMU RISC-V CPU QOM header
-> + * QEMU RISC-V CPU QOM header (target agnostic)
->   *
->   * Copyright (c) 2023 Ventana Micro Systems Inc.
->   *
-> @@ -43,12 +43,6 @@
->  #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
->  #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
->
-> -#if defined(TARGET_RISCV32)
-> -# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
-> -#elif defined(TARGET_RISCV64)
-> -# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
-> -#endif
-> -
->  typedef struct CPUArchState CPURISCVState;
->
->  OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
-> diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
-> index 81f7e53aed..eae49da6d6 100644
-> --- a/hw/riscv/spike.c
-> +++ b/hw/riscv/spike.c
-> @@ -349,7 +349,13 @@ static void spike_machine_class_init(ObjectClass *oc=
-, void *data)
->      mc->init =3D spike_board_init;
->      mc->max_cpus =3D SPIKE_CPUS_MAX;
->      mc->is_default =3D true;
-> -    mc->default_cpu_type =3D TYPE_RISCV_CPU_BASE;
-> +#if defined(TARGET_RISCV32)
-> +    mc->default_cpu_type =3D TYPE_RISCV_CPU_BASE32;
-> +#elif defined(TARGET_RISCV64)
-> +    mc->default_cpu_type =3D TYPE_RISCV_CPU_BASE64;
-> +#else
-> +#error unsupported target
-> +#endif
->      mc->possible_cpu_arch_ids =3D riscv_numa_possible_cpu_arch_ids;
->      mc->cpu_index_to_instance_props =3D riscv_numa_cpu_index_to_props;
->      mc->get_default_cpu_node_id =3D riscv_numa_get_default_cpu_node_id;
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 5edc1d98d2..620a4e5f07 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -1685,7 +1685,13 @@ static void virt_machine_class_init(ObjectClass *o=
-c, void *data)
->      mc->desc =3D "RISC-V VirtIO board";
->      mc->init =3D virt_machine_init;
->      mc->max_cpus =3D VIRT_CPUS_MAX;
-> -    mc->default_cpu_type =3D TYPE_RISCV_CPU_BASE;
-> +#if defined(TARGET_RISCV32)
-> +    mc->default_cpu_type =3D TYPE_RISCV_CPU_BASE32;
-> +#elif defined(TARGET_RISCV64)
-> +    mc->default_cpu_type =3D TYPE_RISCV_CPU_BASE64;
-> +#else
-> +#error unsupported target
-> +#endif
->      mc->pci_allow_0_address =3D true;
->      mc->possible_cpu_arch_ids =3D riscv_numa_possible_cpu_arch_ids;
->      mc->cpu_index_to_instance_props =3D riscv_numa_cpu_index_to_props;
-> --
-> 2.41.0
->
->
+Thank you for summarizing the current state of the issue.
+Hope it will be resolved! ;)
+
+But I'm not sure if turning off KVM solves the problem.
+`numactl --membind=3D1 --show` works fine, but other basic UNIX commands li=
+ke ls
+crashes QEMU when it's bind to the CXL NUMA node.
+
+[root@localhost ~]# numactl --membind=3D1 --show
+policy: bind
+preferred node: 1
+physcpubind: 0
+cpubind: 0
+nodebind: 0
+membind: 1
+[root@localhost ~]# numactl --membind=3D1 ls
+
+qemu: fatal: cpu_io_recompile: could not find TB for pc=3D(nil)
+RAX=3D0000777f80000000 RBX=3D0000000000000000 RCX=3D0000000000000028
+RDX=3D0000000000000000
+RSI=3D0000000000000354 RDI=3D0000000000000000 RBP=3Dffff88810628af40
+RSP=3Dffffc900008cfd20
+R8 =3Dffff88810628af40 R9 =3Dffffc900008cfcc4 R10=3D000000000000000d
+R11=3D0000000000000000
+R12=3D0000000390440000 R13=3Dffff888107a464c0 R14=3D0000000000000000
+R15=3Dffff88810a49cd18
+RIP=3Dffffffff810743e6 RFL=3D00000007 [-----PC] CPL=3D0 II=3D0 A20=3D1 SMM=
+=3D0 HLT=3D0
+ES =3D0000 0000000000000000 00000000 00000000
+CS =3D0010 0000000000000000 ffffffff 00af9b00 DPL=3D0 CS64 [-RA]
+SS =3D0000 0000000000000000 00000000 00000000
+DS =3D0000 0000000000000000 00000000 00000000
+FS =3D0000 0000000000000000 00000000 00000000
+GS =3D0000 ffff88817bc00000 00000000 00000000
+LDT=3D0000 0000000000000000 00000000 00008200 DPL=3D0 LDT
+TR =3D0040 fffffe0000003000 00004087 00008900 DPL=3D0 TSS64-avl
+GDT=3D     fffffe0000001000 0000007f
+IDT=3D     fffffe0000000000 00000fff
+CR0=3D80050033 CR2=3D00007fcb2504641c CR3=3D0000000390440000 CR4=3D007506f0
+DR0=3D0000000000000000 DR1=3D0000000000000000 DR2=3D0000000000000000
+DR3=3D0000000000000000
+DR6=3D00000000ffff0ff0 DR7=3D0000000000000400
+CCS=3D0000777f80000000 CCD=3D0000000390440000 CCO=3DADDQ
+EFER=3D0000000000000d01
+FCW=3D037f FSW=3D0000 [ST=3D0] FTW=3D00 MXCSR=3D00001f80
+FPR0=3D0000000000000000 0000 FPR1=3D0000000000000000 0000
+FPR2=3D0000000000000000 0000 FPR3=3D0000000000000000 0000
+FPR4=3D0000000000000000 0000 FPR5=3D0000000000000000 0000
+FPR6=3D0000000000000000 0000 FPR7=3D0000000000000000 0000
+YMM00=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM01=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM02=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM03=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM04=3D0000000000000000 0000000000000000 00006968705f6e6f 657800006c6c6577
+YMM05=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM06=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM07=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM08=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM09=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM10=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM11=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM12=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM13=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM14=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+YMM15=3D0000000000000000 0000000000000000 0000000000000000 0000000000000000
+cxl2.sh: line 24:  5386 Aborted                 (core dumped) $QEMU
+-cpu Cascadelake-Server -smp 1 -M q35,cxl=3Don -m 4G,maxmem=3D8G,slots=3D4
+-object memory-backend-ram,id=3Dvmem0,share=3Don,size=3D4G -device pxb-cc
+
+--
+Cheers,
+Hyeonggon
 
