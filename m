@@ -2,69 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF6C7C4EE2
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8C17C4E96
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:27:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqVSH-0005lA-W1; Wed, 11 Oct 2023 05:24:38 -0400
+	id 1qqVRC-0008NB-FF; Wed, 11 Oct 2023 05:23:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVSE-0005Wl-3L
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVSC-0005GQ-E9
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697016271;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=k93ppU9takGNXa65Qf4sjjQAREAzL8cPGsOKxV8iTAU=;
- b=Du1I9vnZKNcrMHrwJjb/dH+/IC6y9jCjhuicJXpXPwunVWL3d/6Bq21lDlpUKmyHZ6zS3F
- HJF2bqhXMMjaHe8wjQc+T68JpguYm11cx7ZM1FPliQYvZD57Z08XdBgknmG6QKGLi2UDmY
- bhCwpcg284DQpGNaUjWV4w5F6dvFzFA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-144-jYufwREGOBes5dZ7FBgVcw-1; Wed, 11 Oct 2023 05:24:19 -0400
-X-MC-Unique: jYufwREGOBes5dZ7FBgVcw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 41BC93814597;
- Wed, 11 Oct 2023 09:24:18 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 820FE1C060AE;
- Wed, 11 Oct 2023 09:24:16 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>,
- Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 65/65] migration: Add migration_rp_wait|kick()
-Date: Wed, 11 Oct 2023 11:22:03 +0200
-Message-ID: <20231011092203.1266-66-quintela@redhat.com>
-In-Reply-To: <20231011092203.1266-1-quintela@redhat.com>
-References: <20231011092203.1266-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qqVR2-0007Va-O6
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:20 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qqVQv-0004yk-UE
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:20 -0400
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8Dxfet5aSZlbfcwAA--.26218S3;
+ Wed, 11 Oct 2023 17:23:05 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxHC92aSZlhSIgAA--.3006S2; 
+ Wed, 11 Oct 2023 17:23:04 +0800 (CST)
+Subject: Re: [PATCH RFC v4 4/9] target/loongarch: Implement kvm get/set
+ registers
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Bibo Mao <maobibo@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <cover.1696841645.git.lixianglai@loongson.cn>
+ <f4399db694265f34dbe9aafd024c56470e8a0f54.1696841645.git.lixianglai@loongson.cn>
+ <1f552f71-3b47-a2be-67c5-fdca86bf59f7@linaro.org>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <e1a55222-a588-3921-627a-da8ffa3e7297@loongson.cn>
+Date: Wed, 11 Oct 2023 17:23:02 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <1f552f71-3b47-a2be-67c5-fdca86bf59f7@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8BxHC92aSZlhSIgAA--.3006S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxAr4xXrW5tF1kZFWftFy3Jrc_yoWrZr1kpr
+ 18Jr1UJryUJr18Jr1UJr1UJFyUJr1UJw1UXr1xJF1UAr1UJr1jqr1UXr1jgr1UJr48Jr1U
+ Jr1UJr1UZr1UJrgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8Zw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+ 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25Ef
+ UUUUU
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.339,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,134 +91,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+Hi Philippe Mathieu-Daudé:
 
-It's just a simple wrapper for rp_sem on either wait() or kick(), make it
-even clearer on how it is used.  Prepared to be used even for other things.
+> Hi Li and Zhao,
+>
+> On 9/10/23 11:01, xianglai li wrote:
+>> From: Tianrui Zhao <zhaotianrui@loongson.cn>
+>>
+>> Implement kvm_arch_get/set_registers interfaces, many regs
+>> can be get/set in the function, such as core regs, csr regs,
+>> fpu regs, mp state, etc.
+>>
+>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>> Cc: Cornelia Huck <cohuck@redhat.com>
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
+>> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+>> Cc: Thomas Huth <thuth@redhat.com>
+>> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+>> Cc: Richard Henderson <richard.henderson@linaro.org>
+>> Cc: Peter Maydell <peter.maydell@linaro.org>
+>> Cc: Bibo Mao <maobibo@loongson.cn>
+>> Cc: Song Gao <gaosong@loongson.cn>
+>> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+>>
+>> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+>> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+>> ---
+>>   meson.build                   |   1 +
+>>   target/loongarch/cpu.c        |   3 +
+>>   target/loongarch/cpu.h        |   2 +
+>>   target/loongarch/kvm.c        | 406 +++++++++++++++++++++++++++++++++-
+>>   target/loongarch/trace-events |  13 ++
+>>   target/loongarch/trace.h      |   1 +
+>>   6 files changed, 424 insertions(+), 2 deletions(-)
+>>   create mode 100644 target/loongarch/trace-events
+>>   create mode 100644 target/loongarch/trace.h
+>
+>
+>> +static int kvm_larch_getq(CPUState *cs, uint64_t reg_id,
+>> +                                 uint64_t *addr)
+>> +{
+>> +    struct kvm_one_reg csrreg = {
+>> +        .id = reg_id,
+>> +        .addr = (uintptr_t)addr
+>> +    };
+>> +
+>> +    return kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &csrreg);
+>> +}
+>
+> This is kvm_get_one_reg().
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20231004220240.167175-8-peterx@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- migration/migration.h | 15 +++++++++++++++
- migration/migration.c | 14 ++++++++++++--
- migration/ram.c       | 16 +++++++---------
- 3 files changed, 34 insertions(+), 11 deletions(-)
+I'll replace kvm_larch_getq() with kvm_get_one_reg().
 
-diff --git a/migration/migration.h b/migration/migration.h
-index 4106a1dc54..cd5534337c 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -316,6 +316,12 @@ struct MigrationState {
-          * be cleared in the rp_thread!
-          */
-         bool          rp_thread_created;
-+        /*
-+         * Used to synchronize between migration main thread and return
-+         * path thread.  The migration thread can wait() on this sem, while
-+         * other threads (e.g., return path thread) can kick it using a
-+         * post().
-+         */
-         QemuSemaphore rp_sem;
-         /*
-          * We post to this when we got one PONG from dest. So far it's an
-@@ -527,4 +533,13 @@ void migration_populate_vfio_info(MigrationInfo *info);
- void migration_reset_vfio_bytes_transferred(void);
- void postcopy_temp_page_reset(PostcopyTmpPage *tmp_page);
- 
-+/* Migration thread waiting for return path thread. */
-+void migration_rp_wait(MigrationState *s);
-+/*
-+ * Kick the migration thread waiting for return path messages.  NOTE: the
-+ * name can be slightly confusing (when read as "kick the rp thread"), just
-+ * to remember the target is always the migration thread.
-+ */
-+void migration_rp_kick(MigrationState *s);
-+
- #endif
-diff --git a/migration/migration.c b/migration/migration.c
-index 409eb3e916..1c6c81ad49 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1763,6 +1763,16 @@ static void mark_source_rp_bad(MigrationState *s)
-     s->rp_state.error = true;
- }
- 
-+void migration_rp_wait(MigrationState *s)
-+{
-+    qemu_sem_wait(&s->rp_state.rp_sem);
-+}
-+
-+void migration_rp_kick(MigrationState *s)
-+{
-+    qemu_sem_post(&s->rp_state.rp_sem);
-+}
-+
- static struct rp_cmd_args {
-     ssize_t     len; /* -1 = variable */
-     const char *name;
-@@ -1835,7 +1845,7 @@ static int migrate_handle_rp_resume_ack(MigrationState *s, uint32_t value)
-                       MIGRATION_STATUS_POSTCOPY_ACTIVE);
- 
-     /* Notify send thread that time to continue send pages */
--    qemu_sem_post(&s->rp_state.rp_sem);
-+    migration_rp_kick(s);
- 
-     return 0;
- }
-@@ -2464,7 +2474,7 @@ static int postcopy_resume_handshake(MigrationState *s)
-     qemu_savevm_send_postcopy_resume(s->to_dst_file);
- 
-     while (s->state == MIGRATION_STATUS_POSTCOPY_RECOVER) {
--        qemu_sem_wait(&s->rp_state.rp_sem);
-+        migration_rp_wait(s);
-     }
- 
-     if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
-diff --git a/migration/ram.c b/migration/ram.c
-index 6c40d9af0c..2f5ce4d60b 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -4141,7 +4141,7 @@ static int ram_dirty_bitmap_sync_all(MigrationState *s, RAMState *rs)
- 
-     /* Wait until all the ramblocks' dirty bitmap synced */
-     while (qatomic_read(&rs->postcopy_bmap_sync_requested)) {
--        qemu_sem_wait(&s->rp_state.rp_sem);
-+        migration_rp_wait(s);
-     }
- 
-     trace_ram_dirty_bitmap_sync_complete();
-@@ -4149,11 +4149,6 @@ static int ram_dirty_bitmap_sync_all(MigrationState *s, RAMState *rs)
-     return 0;
- }
- 
--static void ram_dirty_bitmap_reload_notify(MigrationState *s)
--{
--    qemu_sem_post(&s->rp_state.rp_sem);
--}
--
- /*
-  * Read the received bitmap, revert it as the initial dirty bitmap.
-  * This is only used when the postcopy migration is paused but wants
-@@ -4237,10 +4232,13 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block)
-     qatomic_dec(&rs->postcopy_bmap_sync_requested);
- 
-     /*
--     * We succeeded to sync bitmap for current ramblock. If this is
--     * the last one to sync, we need to notify the main send thread.
-+     * We succeeded to sync bitmap for current ramblock. Always kick the
-+     * migration thread to check whether all requested bitmaps are
-+     * reloaded.  NOTE: it's racy to only kick when requested==0, because
-+     * we don't know whether the migration thread may still be increasing
-+     * it.
-      */
--    ram_dirty_bitmap_reload_notify(s);
-+    migration_rp_kick(s);
- 
-     ret = 0;
- out:
--- 
-2.41.0
+
+>
+>
+>> +static int kvm_larch_putq(CPUState *cs, uint64_t reg_id,
+>> +                                 uint64_t *addr)
+>> +{
+>> +    struct kvm_one_reg csrreg = {
+>> +        .id = reg_id,
+>> +        .addr = (uintptr_t)addr
+>> +    };
+>> +
+>> +    return kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &csrreg);
+>> +}
+>
+> This is kvm_set_one_reg().
+>
+I'll replace kvm_larch_putq() with kvm_set_one_reg().
+
+Thanks,
+
+Xianglai.
+
+
+>> +
+>> +#define KVM_GET_ONE_UREG64(cs, ret, regidx, addr)                 \
+>> + ({                                                            \
+>> +        err = kvm_larch_getq(cs, KVM_IOC_CSRID(regidx), addr);    \
+>> +        if (err < 0) {                                            \
+>> +            ret = err;                                            \
+>> +            trace_kvm_failed_get_csr(regidx, strerror(errno));    \
+>> + }                                                         \
+>> +    })
+>> +
+>> +#define KVM_PUT_ONE_UREG64(cs, ret, regidx, addr)                 \
+>> + ({                                                            \
+>> +        err = kvm_larch_putq(cs, KVM_IOC_CSRID(regidx), addr);    \
+>> +        if (err < 0) {                                            \
+>> +            ret = err;                                            \
+>> +            trace_kvm_failed_put_csr(regidx, strerror(errno));    \
+>> + }                                                         \
+>> +    })
+>
 
 
