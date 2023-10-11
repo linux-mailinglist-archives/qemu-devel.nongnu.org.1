@@ -2,94 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DA97C569A
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9087B7C56A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:21:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqa1i-0008EN-Kx; Wed, 11 Oct 2023 10:17:30 -0400
+	id 1qqa4o-0001zy-LS; Wed, 11 Oct 2023 10:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqa1g-0008E2-SS
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:17:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qqa4l-0001zM-1g
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqa1e-00016A-Bj
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:17:28 -0400
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qqa4h-0001pP-Fj
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:20:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697033844;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=7rF2HIKIJNWULyLFbotYhTY+EVTRl9bAsGTJSL4Pf1I=;
- b=eI+mSpuA87S5ftQb+QaiWgrp0TpWqCnafHMWQ6djJILtB9GHZcW8gCcA+3ZLIZxYk1FOax
- OTe03f4NAPBYJ4+3UW6+xficGcGAqK+7RQ3+756aAXbWjwQU4H2aWFwtbvXMNeblccsuQJ
- wKcGpTsBnEpTf2KJXHKgCFPRBG6UGIo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-1wGtAdC9P2qwyTqrpYdzrg-1; Wed, 11 Oct 2023 10:17:22 -0400
-X-MC-Unique: 1wGtAdC9P2qwyTqrpYdzrg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32d58708cd5so1022373f8f.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:17:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697033841; x=1697638641;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7rF2HIKIJNWULyLFbotYhTY+EVTRl9bAsGTJSL4Pf1I=;
- b=g2/f6/GWCifZRbyTK15ub+rU+jsZ5j4upWIUg/RsyOoz7s3lxaKY5BUK+w0yQ05aDj
- 9/TsUHGZlOpHtyG36Cz4XS1ObSijZwMYP9rqmxC2ttUPhV8UfUfKJp8Nub8guveRAIkd
- QsZ4WB08g+xRWz3pr0AYBWt1kZedv6n3gGXAvlzgpn5efoTjOviD+MQvP4gWGYMYwYaG
- jrZ8AtLWkDT/Zvqy9eThElnEsNcvllf2E2KqilBrBd1RfrKx+jVpdNsv1U0lQHJTwb3G
- ws+8oIgEegpTGW4kH4LliihKdwT4JORuOuVd0ABbNf9a4dFgs/M9XQtUwVsuD6JWFFHP
- +GwQ==
-X-Gm-Message-State: AOJu0YyDYFNM0zxekCXfx2GSK85IQKTKn3Hdz5PfBzT8a261FYO3Dabo
- 5dHuu4p0FOWslnmbSwIB9VmFi65tY22HplDbaGzltRmyEZpn16hdyW1NFkHz0ovWcJo+W7QjrYK
- GRYwHvOS8dakcoLc=
-X-Received: by 2002:a5d:664a:0:b0:31f:fa38:425f with SMTP id
- f10-20020a5d664a000000b0031ffa38425fmr20636821wrw.9.1697033841733; 
- Wed, 11 Oct 2023 07:17:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE76/77x7jGLHGx29AgZ80OwvNv3g3TOd+f06SVy9BkzryP0astylN9r8qxJj0Fw0sJixSncw==
-X-Received: by 2002:a5d:664a:0:b0:31f:fa38:425f with SMTP id
- f10-20020a5d664a000000b0031ffa38425fmr20636802wrw.9.1697033841416; 
- Wed, 11 Oct 2023 07:17:21 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- s11-20020a5d424b000000b003248a490e3asm15658494wrr.39.2023.10.11.07.17.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 07:17:20 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Daniel
- P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
- =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 1/9] tests/qtest: Allow qtest_qemu_binary to use a
- custom environment variable
-In-Reply-To: <20231006123910.17759-2-farosas@suse.de> (Fabiano Rosas's message
- of "Fri, 6 Oct 2023 09:39:02 -0300")
-References: <20231006123910.17759-1-farosas@suse.de>
- <20231006123910.17759-2-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 11 Oct 2023 16:17:20 +0200
-Message-ID: <87a5sp9rbj.fsf@secure.mitica>
+ s=mimecast20190719; t=1697034034;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Nl4R+C0P3Km3kb9mmS/j4129WYNcHp9yYgT5tA1ti1g=;
+ b=ULMuRGS+rbCzJp74WhBNBeZTKXE+n33SnlLGqyCHQxi8SfuZw0TSVYduDCKcGwgahttoeW
+ ZZMLapnYOGDxpZDIB9tCoI+8YMRToQ1E7iSkaMqJ2ivJf2J8GKu55C5cj1NibJIueQlUuB
+ sce0PtQjGQNoq3ves5IopflIcd2678g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-227-cDVfztQGMWCZMao9Lb9rfQ-1; Wed, 11 Oct 2023 10:20:32 -0400
+X-MC-Unique: cDVfztQGMWCZMao9Lb9rfQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 542DD185A795;
+ Wed, 11 Oct 2023 14:20:32 +0000 (UTC)
+Received: from srv1.redhat.com (unknown [10.45.224.133])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B6BDB111CD23;
+ Wed, 11 Oct 2023 14:20:31 +0000 (UTC)
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+To: qemu-devel@nongnu.org,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 0/3]  Misc QGA patches 2023-10-11
+Date: Wed, 11 Oct 2023 17:20:27 +0300
+Message-ID: <20231011142030.112018-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,25 +71,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> We're adding support for testing migration using two different QEMU
-> binaries. We'll provide the second binary in a new environment
-> variable.
->
-> Allow qtest_qemu_binary() to receive the name of the new variable. If
-> the new environment variable is not set, that's not an error, we use
-> QTEST_QEMU_BINARY as a fallback.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+The following changes since commit cea3ea670fe265421131aad90c36fbb87bc4d206:
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+  Merge tag 'pull-vfio-20231009' of https://github.com/legoater/qemu into staging (2023-10-09 10:11:35 -0400)
 
-Thomas, do you want me to get this through the migration tree?
+are available in the Git repository at:
 
-I will wait for you ack anyways.
+  https://github.com/kostyanf14/qemu.git tags/qga-pull-2023-10-11
+
+for you to fetch changes up to f897ef0d47d332d4c4498aed1140c6856fe56d79:
+
+  qapi: qga: Clarify when out-data and err-data are populated (2023-10-11 14:30:54 +0300)
+
+----------------------------------------------------------------
+qga-pull-2023-10-11
+
+----------------------------------------------------------------
+Akihiko Odaki (1):
+      qga: Remove platform GUID definitions
+
+Daniel Xu (2):
+      qga: Fix memory leak when output stream is unused
+      qapi: qga: Clarify when out-data and err-data are populated
+
+ qga/commands-win32.c | 7 -------
+ qga/commands.c       | 4 ++--
+ qga/qapi-schema.json | 8 +++++---
+ 3 files changed, 7 insertions(+), 12 deletions(-)
+
+--
+2.42.0
 
 
