@@ -2,51 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2980A7C4CA0
+	by mail.lfdr.de (Postfix) with ESMTPS id 904537C4CA1
 	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 10:07:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqUEE-0004uf-N1; Wed, 11 Oct 2023 04:06:03 -0400
+	id 1qqUEE-0004uL-18; Wed, 11 Oct 2023 04:06:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqUE9-0004t9-FW
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 04:05:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqUE7-0004sr-Kv
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 04:05:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqUE0-0003V0-Rk
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 04:05:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqUE6-0003Vy-9J
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 04:05:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697011546;
+ s=mimecast20190719; t=1697011552;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=9MawazZ8TF47SpkFFQbL/9RMkLPttiDM1qRZRoeC0Bo=;
- b=LC+DdSTNhhV4G+Kx7A6g5KqFYqAi8Nlp5h9CJxG47yPV6QU7rj2XeL4oFGDEzvzlbFtwTi
- Y/svMoqL9+5uxhmb5vnBc01OZREImstypnxyyKjzkEMxEQ7X1/FmBZYD60TLpBQfZVh6L7
- xytx018rlmKaOl5L9Mnm893sf8llnfs=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uChzwkIgli/ObnCyhwVVhP6AMOFoHrxVVYX7FZ0ChaU=;
+ b=R0R+/tqd5W/QrUOLdgdJtI7SwStW/v6SbbXRxnM+JgAc5+P8Q2Tnk2VgzHqREpdyTGjQSu
+ hrd0kBl0Z9L2LhdPv5QlnYJfc76W2mXfB4pVECCZ/nkp6j3bVRRLV40Ys3m2ZH9XQqTwjZ
+ DKen9KO9pFraCoxVsN9xG6OcOMYhbdo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-31-V55pnMHcNkC3p5nDs6dXXg-1; Wed, 11 Oct 2023 04:05:40 -0400
-X-MC-Unique: V55pnMHcNkC3p5nDs6dXXg-1
+ us-mta-245-bXLDOzVMNKWooQPzqh849w-1; Wed, 11 Oct 2023 04:05:43 -0400
+X-MC-Unique: bXLDOzVMNKWooQPzqh849w-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7AEC4185A78E;
- Wed, 11 Oct 2023 08:05:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F26F58F5DA9;
+ Wed, 11 Oct 2023 08:05:41 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 49BB6215670B;
- Wed, 11 Oct 2023 08:05:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BE9C8215670B;
+ Wed, 11 Oct 2023 08:05:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
 Cc: qemu-s390x@nongnu.org, David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clegoate@redhat.com>
-Subject: [PATCH v3 0/2] target/s390x/kvm: Simplify the synchronization code
-Date: Wed, 11 Oct 2023 10:05:36 +0200
-Message-ID: <20231011080538.796999-1-thuth@redhat.com>
+Subject: [PATCH v3 1/2] target/s390x/kvm: Turn KVM_CAP_SYNC_REGS into a hard
+ requirement
+Date: Wed, 11 Oct 2023 10:05:37 +0200
+Message-ID: <20231011080538.796999-2-thuth@redhat.com>
+In-Reply-To: <20231011080538.796999-1-thuth@redhat.com>
+References: <20231011080538.796999-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
@@ -74,31 +78,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM_SYNC_GPRS, KVM_SYNC_ACRS, KVM_SYNC_CRS and KVM_SYNC_PREFIX are
-available since kernel 3.10. Since we already require at least kernel
-3.15 in the s390x KVM code, we can also assume that the KVM_CAP_SYNC_REGS
-sync code is always possible for these registers, and remove the
-related checks and fallbacks via KVM_SET_REGS and KVM_GET_REGS.
+Since we already require at least kernel 3.15 in the s390x KVM code,
+we can assume that the KVM_CAP_SYNC_REGS capability is always there.
+Thus turn this into a hard requirement now.
 
-v3:
-- Don't sync ACRs, CRs and prefix in kvm_arch_put_registers()
-  when using level == KVM_PUT_RUNTIME_STATE
-- Use g_assert(can_sync_regs(cs, KVM_SYNC_REQUIRED_REGS)) instead
-  of open-coding it.
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ target/s390x/kvm/kvm.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-v2:
-- Split the patch from v1 into two patches
-- Use a #define KVM_SYNC_REQUIRED_BITS for the required sync bits
-- Use memcpy() instead of for-loops for copying the registers
-
-Thomas Huth (2):
-  target/s390x/kvm: Turn KVM_CAP_SYNC_REGS into a hard requirement
-  target/s390x/kvm: Simplify the GPRs, ACRs, CRs and prefix
-    synchronization code
-
- target/s390x/kvm/kvm.c | 124 ++++++++++++-----------------------------
- 1 file changed, 37 insertions(+), 87 deletions(-)
-
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index bc5c56a305..b3e2eaa2eb 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -337,21 +337,29 @@ int kvm_arch_get_default_type(MachineState *ms)
+ 
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
++    int required_caps[] = {
++        KVM_CAP_DEVICE_CTRL,
++        KVM_CAP_SYNC_REGS,
++    };
++
++    for (int i = 0; i < ARRAY_SIZE(required_caps); i++) {
++        if (!kvm_check_extension(s, required_caps[i])) {
++            error_report("KVM is missing capability #%d - "
++                         "please use kernel 3.15 or newer", required_caps[i]);
++            return -1;
++        }
++    }
++
+     object_class_foreach(ccw_machine_class_foreach, TYPE_S390_CCW_MACHINE,
+                          false, NULL);
+ 
+-    if (!kvm_check_extension(kvm_state, KVM_CAP_DEVICE_CTRL)) {
+-        error_report("KVM is missing capability KVM_CAP_DEVICE_CTRL - "
+-                     "please use kernel 3.15 or newer");
+-        return -1;
+-    }
+     if (!kvm_check_extension(s, KVM_CAP_S390_COW)) {
+         error_report("KVM is missing capability KVM_CAP_S390_COW - "
+                      "unsupported environment");
+         return -1;
+     }
+ 
+-    cap_sync_regs = kvm_check_extension(s, KVM_CAP_SYNC_REGS);
++    cap_sync_regs = true;
+     cap_async_pf = kvm_check_extension(s, KVM_CAP_ASYNC_PF);
+     cap_mem_op = kvm_check_extension(s, KVM_CAP_S390_MEM_OP);
+     cap_mem_op_extension = kvm_check_extension(s, KVM_CAP_S390_MEM_OP_EXTENSION);
 -- 
 2.41.0
 
