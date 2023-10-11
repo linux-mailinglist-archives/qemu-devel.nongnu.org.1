@@ -2,93 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC70B7C4832
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 05:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9D4F7C4857
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 05:17:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqPcG-0007Tl-F2; Tue, 10 Oct 2023 23:10:32 -0400
+	id 1qqPha-0001CH-1V; Tue, 10 Oct 2023 23:16:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
- id 1qqPcD-0007SF-7y
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 23:10:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
- id 1qqPcB-00033A-AK
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 23:10:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696993825;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=arPOeIgvh/fj6AhPntuoa++rPQBVHTegohdvf4Qifvo=;
- b=D6WDQ0JEkYIFHrV/iUXDRJuG2qu42KAPqZtJu+fsZ/IL0OQew5/wYDO2B++ZUqg4wMslXX
- DnFrOssDJLUe621YxkskR6YwNNZ4RQhwywcGd5ybWAS3AIGThD4awLVAphknQES8EMi4lZ
- hhvxskdMclubAv48zBT44gCjPlO8xLE=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-RA2F0rOcNOOhcx1HlS7Lpg-1; Tue, 10 Oct 2023 23:10:24 -0400
-X-MC-Unique: RA2F0rOcNOOhcx1HlS7Lpg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d03b02d16so7288376d6.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 20:10:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qqPhX-00019C-Dv; Tue, 10 Oct 2023 23:15:59 -0400
+Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qqPhG-0004KY-AE; Tue, 10 Oct 2023 23:15:54 -0400
+Received: by mail-vk1-xa2c.google.com with SMTP id
+ 71dfb90a1353d-49a99c43624so2278785e0c.2; 
+ Tue, 10 Oct 2023 20:15:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696994140; x=1697598940; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CK2nr1gMYTvHNX2Eq3ipPyn2oJ3wjGRpjJ84BzG4+8Q=;
+ b=SwrFZ9hQSEUuUFKA3rzc+JQ5psqbnj7w5NJAJ0ZKVKLkDfjaloykJTbHKRalxy4NWD
+ eMGGicjuWuHz8Z3NkKF+T7FkvSpOF5mE00gIOsCvKDZa/tjDEismUmivYjXixh3yl0eE
+ K6soGuSFolegAts45/89ybs+JyT1NwMBIH9XOhMO0BGxR/BW904t7NE6xMY27RtzZXSO
+ FHW56e00BUEUeYgQf1N3uavJSPC0ISkWIQNsI9I6g4TJFDKeT4aaFma6SsS3LGzd5+2a
+ Xd7Ym1V2STM45eOB41bFZrO7j2p5+oiKuQXV38lhE+oYUC3qHRzCPsyRoAde3tF2+Ca8
+ WLAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696993824; x=1697598624;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=arPOeIgvh/fj6AhPntuoa++rPQBVHTegohdvf4Qifvo=;
- b=owiHsTKOTi+oO3MrCWCVFrNP8IZkuDDzzmytngmFPTrX2rS00GFTuJTVHLELe7QWdj
- gtgPorPZq6F5s0zcOrJ8nK1SX7+CRmwluXlm1L3LP5cCq5nyE6o+CmwPK4yIPOX15RBi
- 3QcGlKyBo5Cpoc1UdeagoLZg5F5S3RVtqCOh/MTie2FsidTBZvVH/Rok8nCCBu7Cps4W
- emymTPq1aL3YBm6FsiZqQYQxkxRYWw3l0f2oC1j7ePGCKQBXaIAUrJaeARi1kXnoEXSI
- 1GQmnzyNXe2M+oJnVZeqHMAJsZByjFWSRQxhaKiyjoelwf15/NUYiOsxl5c6gIuRnSCe
- V0Pw==
-X-Gm-Message-State: AOJu0Yw4gJms01IR00iKqyBOA72qtilz6BJBZOd/Ccm/Lifp07ZEJhMz
- dZCNKZcCjS3saknnutqLTMq+hGsp5XTaKukUS0dfmG9CFxkSwYnaWux/rXKBZAe+HXlEoO2mHrV
- qYUVVthHt/u5rbj8=
-X-Received: by 2002:a0c:fa10:0:b0:66c:fd38:2266 with SMTP id
- q16-20020a0cfa10000000b0066cfd382266mr3156919qvn.25.1696993823986; 
- Tue, 10 Oct 2023 20:10:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEwPGsI6ZN8nStepwIoJUp0Z9EnKlfl4KwsGy/tuGtX3U1rbP3WTrWRPHDyY4r62Lr8pFCCiQ==
-X-Received: by 2002:a0c:fa10:0:b0:66c:fd38:2266 with SMTP id
- q16-20020a0cfa10000000b0066cfd382266mr3156910qvn.25.1696993823683; 
- Tue, 10 Oct 2023 20:10:23 -0700 (PDT)
-Received: from ?IPV6:2600:4040:7c46:e800:32a2:d966:1af4:8863?
- ([2600:4040:7c46:e800:32a2:d966:1af4:8863])
- by smtp.gmail.com with ESMTPSA id
- d19-20020a0ce453000000b00655d6d31470sm5334457qvm.43.2023.10.10.20.10.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 20:10:22 -0700 (PDT)
-Message-ID: <bdca3b98-7c22-4732-adfc-dc51c93c5eca@redhat.com>
-Date: Tue, 10 Oct 2023 23:10:22 -0400
+ d=1e100.net; s=20230601; t=1696994140; x=1697598940;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CK2nr1gMYTvHNX2Eq3ipPyn2oJ3wjGRpjJ84BzG4+8Q=;
+ b=V/JB/1HaxnmaeRRsuUgOvvc8GKkUSIjq1SlzYvMgNXYCNuTeaw/0jLSwvYL2MGUXTu
+ TG0vHvfHFqJzDC3dcLqT5DS/Wo/pYa4nOgZJIuGV8vC0k8e122tkzgqGsB1ymPVUKtzx
+ NtxvcbFuYngzm1mzayWFq7rmnqybEz1ulP8eTsnppMnk8LyQmYr7RpCJ2O3ciivxbzNG
+ BLMFJe9linp5B2Dye7kjfLLiVUhB5y1EB+lUStKCAKtj0M6DdFj2OBoVw4SnnI5hdgCv
+ /40Qm8QIY2N1UnEwpGo77W20YdVeddejhcqIqny4ze+HeoLKweQpcTR8IghsKIOWZMPR
+ Pj9Q==
+X-Gm-Message-State: AOJu0YxfqJiJvBr6aVwydX+1hJgA9mmsDpHwcoTZA92uk/zye0NH0zsZ
+ Sc3yvJZRKTnFshnteER9eDpUoAxzifiPRUGXaAg=
+X-Google-Smtp-Source: AGHT+IFW5z8OzmsKppErqraSoHkZIgZ2suwYkw0Mb+d7eHuhFOH7DWd+wE1pTP3PVOfg3JfJv8+t//B857IrAr768lQ=
+X-Received: by 2002:a1f:c905:0:b0:49a:466c:199e with SMTP id
+ z5-20020a1fc905000000b0049a466c199emr14618684vkf.2.1696994140512; Tue, 10 Oct
+ 2023 20:15:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/9] Add Rust SEV library as subproject
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
- philmd@linaro.org, berrange@redhat.com, marcandre.lureau@gmail.com
-References: <20231004203418.56508-1-tfanelli@redhat.com>
- <20231004203418.56508-2-tfanelli@redhat.com>
- <20231005155448.GA1342722@fedora>
-From: Tyler Fanelli <tfanelli@redhat.com>
-In-Reply-To: <20231005155448.GA1342722@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=tfanelli@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230925110747.534238-1-mchitale@ventanamicro.com>
+In-Reply-To: <20230925110747.534238-1-mchitale@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 11 Oct 2023 13:15:13 +1000
+Message-ID: <CAKmqyKOPAG_ocV8ZPW6jpGhZTsPHZp-AbEBVskp78_Ty91JXKg@mail.gmail.com>
+Subject: Re: [PATCH] Add epmp to extensions list and rename it to smepmp
+To: Mayuresh Chitale <mchitale@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Himanshu Chauhan <hchauhan@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2c;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2c.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,138 +88,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/5/23 11:54 AM, Stefan Hajnoczi wrote:
-> On Wed, Oct 04, 2023 at 04:34:10PM -0400, Tyler Fanelli wrote:
->> The Rust sev library provides a C API for the AMD SEV launch ioctls, as
->> well as the ability to build with meson. Add the Rust sev library as a
->> QEMU subproject with the goal of outsourcing all SEV launch ioctls to C
->> APIs provided by it.
->>
->> Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
->> ---
->>   meson.build                   | 8 ++++++++
->>   meson_options.txt             | 2 ++
->>   scripts/meson-buildoptions.sh | 3 +++
->>   subprojects/sev.wrap          | 6 ++++++
->>   target/i386/meson.build       | 2 +-
->>   5 files changed, 20 insertions(+), 1 deletion(-)
->>   create mode 100644 subprojects/sev.wrap
->>
->> diff --git a/meson.build b/meson.build
->> index 20ceeb8158..8a17c29de8 100644
->> --- a/meson.build
->> +++ b/meson.build
->> @@ -960,6 +960,13 @@ if not get_option('slirp').auto() or have_system
->>     endif
->>   endif
->>   
->> +sev = not_found
->> +if not get_option('sev').auto()
-> When 'sev' is auto, then it won't be built. That seems strange. The
-> auto-detection part is missing! I did you test this on a system that
-> doesn't have libsev installed system-wide?
+On Mon, Sep 25, 2023 at 9:08=E2=80=AFPM Mayuresh Chitale
+<mchitale@ventanamicro.com> wrote:
+>
+> From: Himanshu Chauhan <hchauhan@ventanamicro.com>
+>
+> Smepmp is a ratified extension which qemu refers to as epmp.
+> Rename epmp to smepmp and add it to extension list so that
+> it is added to the isa string.
+>
+> Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+> Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c |  9 +++++----
+>  target/riscv/cpu.h |  2 +-
+>  target/riscv/csr.c |  6 +++---
+>  target/riscv/pmp.c | 12 ++++++------
+>  4 files changed, 15 insertions(+), 14 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index befa64528f..0fb01788e7 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -126,6 +126,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D =
+{
+>      ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+>      ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+>      ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
+> +    ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+>      ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+>      ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
+>      ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
+> @@ -488,7 +489,7 @@ static void rv32_ibex_cpu_init(Object *obj)
+>  #ifndef CONFIG_USER_ONLY
+>      set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
+>  #endif
+> -    cpu->cfg.epmp =3D true;
+> +    cpu->cfg.ext_smepmp =3D true;
+>  }
+>
+>  static void rv32_imafcu_nommu_cpu_init(Object *obj)
+> @@ -1198,12 +1199,12 @@ static void riscv_cpu_realize(DeviceState *dev, E=
+rror **errp)
+>          }
+>      }
+>
+> -    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
+> +    if (cpu->cfg.ext_smepmp && !cpu->cfg.pmp) {
+>          /*
+>           * Enhanced PMP should only be available
+>           * on harts with PMP support
+>           */
+> -        error_setg(errp, "Invalid configuration: EPMP requires PMP suppo=
+rt");
+> +        error_setg(errp, "Invalid configuration: Smepmp requires PMP sup=
+port");
+>          return;
+>      }
+>
+> @@ -1560,7 +1561,7 @@ static Property riscv_cpu_extensions[] =3D {
+>      DEFINE_PROP_BOOL("x-zcmt", RISCVCPU, cfg.ext_zcmt, false),
+>
+>      /* ePMP 0.9.3 */
 
-My testing environment had libsev installed system-wide. Thanks for 
-pointing this out.
+Can you remove this comment?
 
->
-> I guess the auto-detection would look something like:
->
->    cargo = find_program('cargo', required: true)
->
->    if not get_option('sev').auto() or cargo.found()
->        ...
->
-> That way 'sev' is only built automatically on systems that have cargo
-> installed.
->
->> +  sev = dependency('sev',
->> +                   method: 'pkg-config',
->> +                   required: get_option('sev'))
->> +endif
-> If you update the auto logic, see the documentation about fallbacks to
-> subprojects for optional dependencies:
-> https://mesonbuild.com/Wrap-dependency-system-manual.html#provide-section
->
-> It might be necessary to add dependency(..., fallback='sev').
+Alistair
 
-Noted. Thanks!
-
+> -    DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
+> +    DEFINE_PROP_BOOL("smepmp", RISCVCPU, cfg.ext_smepmp, false),
+>      DEFINE_PROP_BOOL("x-smaia", RISCVCPU, cfg.ext_smaia, false),
+>      DEFINE_PROP_BOOL("x-ssaia", RISCVCPU, cfg.ext_ssaia, false),
 >
->> +
->>   vde = not_found
->>   if not get_option('vde').auto() or have_system or have_tools
->>     vde = cc.find_library('vdeplug', has_headers: ['libvdeplug.h'],
->> @@ -4331,6 +4338,7 @@ summary_info += {'libudev':           libudev}
->>   # Dummy dependency, keep .found()
->>   summary_info += {'FUSE lseek':        fuse_lseek.found()}
->>   summary_info += {'selinux':           selinux}
->> +summary_info += {'sev':               sev}
->>   summary_info += {'libdw':             libdw}
->>   summary(summary_info, bool_yn: true, section: 'Dependencies')
->>   
->> diff --git a/meson_options.txt b/meson_options.txt
->> index 57e265c871..5b8d283717 100644
->> --- a/meson_options.txt
->> +++ b/meson_options.txt
->> @@ -204,6 +204,8 @@ option('sdl_image', type : 'feature', value : 'auto',
->>          description: 'SDL Image support for icons')
->>   option('seccomp', type : 'feature', value : 'auto',
->>          description: 'seccomp support')
->> +option('sev', type : 'feature', value : 'auto',
->> +        description: 'Rust AMD SEV library')
->>   option('smartcard', type : 'feature', value : 'auto',
->>          description: 'CA smartcard emulation support')
->>   option('snappy', type : 'feature', value : 'auto',
->> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
->> index e4b46d5715..e585a548fa 100644
->> --- a/scripts/meson-buildoptions.sh
->> +++ b/scripts/meson-buildoptions.sh
->> @@ -161,6 +161,7 @@ meson_options_help() {
->>     printf "%s\n" '  sdl-image       SDL Image support for icons'
->>     printf "%s\n" '  seccomp         seccomp support'
->>     printf "%s\n" '  selinux         SELinux support in qemu-nbd'
->> +  printf "%s\n" '  sev             SEV library support'
->>     printf "%s\n" '  slirp           libslirp user mode network backend support'
->>     printf "%s\n" '  slirp-smbd      use smbd (at path --smbd=*) in slirp networking'
->>     printf "%s\n" '  smartcard       CA smartcard emulation support'
->> @@ -440,6 +441,8 @@ _meson_option_parse() {
->>       --disable-seccomp) printf "%s" -Dseccomp=disabled ;;
->>       --enable-selinux) printf "%s" -Dselinux=enabled ;;
->>       --disable-selinux) printf "%s" -Dselinux=disabled ;;
->> +    --enable-sev) printf "%s" -Dsev=enabled ;;
->> +    --disable-sev) printf "%s" -Dsev=disabled ;;
->>       --enable-slirp) printf "%s" -Dslirp=enabled ;;
->>       --disable-slirp) printf "%s" -Dslirp=disabled ;;
->>       --enable-slirp-smbd) printf "%s" -Dslirp_smbd=enabled ;;
->> diff --git a/subprojects/sev.wrap b/subprojects/sev.wrap
->> new file mode 100644
->> index 0000000000..5be1faccf6
->> --- /dev/null
->> +++ b/subprojects/sev.wrap
->> @@ -0,0 +1,6 @@
->> +[wrap-git]
->> +url = https://github.com/tylerfanelli/sev
->> +revision = b81b1da5df50055600a5b0349b0c4afda677cccb
->> +
->> +[provide]
->> +sev = sev_dep
->> diff --git a/target/i386/meson.build b/target/i386/meson.build
->> index 6f1036d469..8972a4fb17 100644
->> --- a/target/i386/meson.build
->> +++ b/target/i386/meson.build
->> @@ -20,7 +20,7 @@ i386_system_ss.add(files(
->>     'monitor.c',
->>     'cpu-sysemu.c',
->>   ))
->> -i386_system_ss.add(when: 'CONFIG_SEV', if_true: files('sev.c'), if_false: files('sev-sysemu-stub.c'))
->> +i386_system_ss.add(when: 'CONFIG_SEV', if_true: [sev, files('sev.c')], if_false: files('sev-sysemu-stub.c'))
->>   
->>   i386_user_ss = ss.source_set()
->>   
->> -- 
->> 2.40.1
->>
-Tyler
-
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index de7e43126a..9b4b012896 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -434,6 +434,7 @@ struct RISCVCPUConfig {
+>      bool ext_zvfh;
+>      bool ext_zvfhmin;
+>      bool ext_smaia;
+> +    bool ext_smepmp;
+>      bool ext_ssaia;
+>      bool ext_sscofpmf;
+>      bool rvv_ta_all_1s;
+> @@ -468,7 +469,6 @@ struct RISCVCPUConfig {
+>      uint16_t cboz_blocksize;
+>      bool mmu;
+>      bool pmp;
+> -    bool epmp;
+>      bool debug;
+>      bool misa_w;
+>
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 4451bd1263..d9ecc222e7 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -519,9 +519,9 @@ static RISCVException pmp(CPURISCVState *env, int csr=
+no)
+>      return RISCV_EXCP_ILLEGAL_INST;
+>  }
+>
+> -static RISCVException epmp(CPURISCVState *env, int csrno)
+> +static RISCVException smepmp(CPURISCVState *env, int csrno)
+>  {
+> -    if (riscv_cpu_cfg(env)->epmp) {
+> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
+>          return RISCV_EXCP_NONE;
+>      }
+>
+> @@ -4337,7 +4337,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =3D {
+>      [CSR_VSIPH]       =3D { "vsiph",       aia_hmode32, NULL, NULL, rmw_=
+vsiph },
+>
+>      /* Physical Memory Protection */
+> -    [CSR_MSECCFG]    =3D { "mseccfg",  epmp, read_mseccfg, write_mseccfg=
+,
+> +    [CSR_MSECCFG]    =3D { "mseccfg", smepmp, read_mseccfg, write_mseccf=
+g,
+>                           .min_priv_ver =3D PRIV_VERSION_1_11_0          =
+ },
+>      [CSR_PMPCFG0]    =3D { "pmpcfg0",   pmp, read_pmpcfg,  write_pmpcfg =
+ },
+>      [CSR_PMPCFG1]    =3D { "pmpcfg1",   pmp, read_pmpcfg,  write_pmpcfg =
+ },
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index 1f5aca42e8..f498e414f0 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -88,7 +88,7 @@ static void pmp_write_cfg(CPURISCVState *env, uint32_t =
+pmp_index, uint8_t val)
+>      if (pmp_index < MAX_RISCV_PMPS) {
+>          bool locked =3D true;
+>
+> -        if (riscv_cpu_cfg(env)->epmp) {
+> +        if (riscv_cpu_cfg(env)->ext_smepmp) {
+>              /* mseccfg.RLB is set */
+>              if (MSECCFG_RLB_ISSET(env)) {
+>                  locked =3D false;
+> @@ -243,7 +243,7 @@ static bool pmp_hart_has_privs_default(CPURISCVState =
+*env, target_ulong addr,
+>  {
+>      bool ret;
+>
+> -    if (riscv_cpu_cfg(env)->epmp) {
+> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
+>          if (MSECCFG_MMWP_ISSET(env)) {
+>              /*
+>               * The Machine Mode Whitelist Policy (mseccfg.MMWP) is set
+> @@ -354,9 +354,9 @@ int pmp_hart_has_privs(CPURISCVState *env, target_ulo=
+ng addr,
+>
+>          /*
+>           * Convert the PMP permissions to match the truth table in the
+> -         * ePMP spec.
+> +         * Smepmp spec.
+>           */
+> -        const uint8_t epmp_operation =3D
+> +        const uint8_t smepmp_operation =3D
+>              ((env->pmp_state.pmp[i].cfg_reg & PMP_LOCK) >> 4) |
+>              ((env->pmp_state.pmp[i].cfg_reg & PMP_READ) << 2) |
+>              (env->pmp_state.pmp[i].cfg_reg & PMP_WRITE) |
+> @@ -381,7 +381,7 @@ int pmp_hart_has_privs(CPURISCVState *env, target_ulo=
+ng addr,
+>                   * If mseccfg.MML Bit set, do the enhanced pmp priv chec=
+k
+>                   */
+>                  if (mode =3D=3D PRV_M) {
+> -                    switch (epmp_operation) {
+> +                    switch (smepmp_operation) {
+>                      case 0:
+>                      case 1:
+>                      case 4:
+> @@ -412,7 +412,7 @@ int pmp_hart_has_privs(CPURISCVState *env, target_ulo=
+ng addr,
+>                          g_assert_not_reached();
+>                      }
+>                  } else {
+> -                    switch (epmp_operation) {
+> +                    switch (smepmp_operation) {
+>                      case 0:
+>                      case 8:
+>                      case 9:
+> --
+> 2.34.1
+>
+>
 
