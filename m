@@ -2,63 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5507C5DCD
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 21:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A956D7C5E0E
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 22:11:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqfB5-0000Ko-IU; Wed, 11 Oct 2023 15:47:31 -0400
+	id 1qqfWn-0006tm-1h; Wed, 11 Oct 2023 16:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qqfB3-00009J-2P; Wed, 11 Oct 2023 15:47:29 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qqfWk-0006tJ-QE
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:09:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qqfB1-0000rC-Fd; Wed, 11 Oct 2023 15:47:28 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5NZb0dHMz6K7JX;
- Thu, 12 Oct 2023 03:47:03 +0800 (CST)
-Received: from A190218597.china.huawei.com (10.126.169.226) by
- lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 11 Oct 2023 20:47:06 +0100
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
- <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
- <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
- <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
- <philmd@linaro.org>, <eric.auger@redhat.com>, <oliver.upton@linux.dev>,
- <pbonzini@redhat.com>, <mst@redhat.com>, <will@kernel.org>,
- <gshan@redhat.com>, <rafael@kernel.org>, <alex.bennee@linaro.org>,
- <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
- <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
- <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
- <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
- <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
- <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
- <linuxarm@huawei.com>
-Subject: [PATCH V5 9/9] gdbstub: Add helper function to unregister GDB
- register space
-Date: Wed, 11 Oct 2023 20:43:55 +0100
-Message-ID: <20231011194355.15628-10-salil.mehta@huawei.com>
-X-Mailer: git-send-email 2.8.3
-In-Reply-To: <20231011194355.15628-1-salil.mehta@huawei.com>
-References: <20231011194355.15628-1-salil.mehta@huawei.com>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qqfWe-0005az-Qh
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:09:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697054987;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3BS/fc804UiXsm3wpdaigwvteR9Jg7tc0CoVQptAzpM=;
+ b=O3awGVE8hqdM1ZvtvVGblc/bES0x0wT1oFZHvSWMtvJxv5vB2kskMJfey+Q9iJbMiQYxc5
+ hgP2EDiIDAs084/biivYq2prXhKLoavMp9R6peNUkroPHgJdbZR7nF3v61mH5qmAgbpBY0
+ L8/PV2INVLcpbyoR1s3DQIuBSFedMr0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-439--0Ofx3xsMQ65n1O4u9V2ng-1; Wed, 11 Oct 2023 16:09:43 -0400
+X-MC-Unique: -0Ofx3xsMQ65n1O4u9V2ng-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7BE6E2825EB6;
+ Wed, 11 Oct 2023 20:09:43 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.192.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D0C1A901;
+ Wed, 11 Oct 2023 20:09:41 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ alex.williamson@redhat.com, clg@redhat.com, zhenzhong.duan@intel.com,
+ yi.l.liu@intel.com, yanghliu@redhat.com
+Subject: [PATCH] vfio/pci: Remove vfio_detach_device from vfio_realize error
+ path
+Date: Wed, 11 Oct 2023 22:09:34 +0200
+Message-ID: <20231011200934.549735-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.126.169.226]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- lhrpeml500001.china.huawei.com (7.191.163.213)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,64 +73,111 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add common function to help unregister the GDB Register Space. This shall be
-done in context to the CPU unrealization.
+In vfio_realize, on the error path, we currently call
+vfio_detach_device() after a successful vfio_attach_device.
+While this looks natural, vfio_instance_finalize also induces
+a vfio_detach_device(), and it seems to be the right place
+instead as other resources are released there which happen
+to be a prerequisite to a successful UNSET_CONTAINER.
 
-Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+So let's rely on the finalize vfio_detach_device call to free
+all the relevant resources.
+
+Fixes: a28e06621170 ("vfio/pci: Introduce vfio_[attach/detach]_device")
+Reported-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+
 ---
- gdbstub/gdbstub.c      | 15 +++++++++++++++
- include/exec/gdbstub.h |  5 +++++
- 2 files changed, 20 insertions(+)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 349d348c7b..97b89e2d00 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -491,6 +491,21 @@ void gdb_register_coprocessor(CPUState *cpu,
+This applies on top of vfio-next
+
+Note I am not sure the SHA1 of
+vfio/pci: Introduce vfio_[attach/detach]_device
+is stable.
+---
+ hw/vfio/pci.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 40ae46266e..6e3f6aba28 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3115,7 +3115,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     vfio_populate_device(vdev, &err);
+     if (err) {
+         error_propagate(errp, err);
+-        goto out_detach;
++        goto error;
      }
+ 
+     /* Get a copy of config space */
+@@ -3125,7 +3125,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     if (ret < (int)MIN(pci_config_size(&vdev->pdev), vdev->config_size)) {
+         ret = ret < 0 ? -errno : -EFAULT;
+         error_setg_errno(errp, -ret, "failed to read device config space");
+-        goto out_detach;
++        goto error;
+     }
+ 
+     /* vfio emulates a lot for us, but some bits need extra love */
+@@ -3144,7 +3144,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     if (vdev->vendor_id != PCI_ANY_ID) {
+         if (vdev->vendor_id >= 0xffff) {
+             error_setg(errp, "invalid PCI vendor ID provided");
+-            goto out_detach;
++            goto error;
+         }
+         vfio_add_emulated_word(vdev, PCI_VENDOR_ID, vdev->vendor_id, ~0);
+         trace_vfio_pci_emulated_vendor_id(vbasedev->name, vdev->vendor_id);
+@@ -3155,7 +3155,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     if (vdev->device_id != PCI_ANY_ID) {
+         if (vdev->device_id > 0xffff) {
+             error_setg(errp, "invalid PCI device ID provided");
+-            goto out_detach;
++            goto error;
+         }
+         vfio_add_emulated_word(vdev, PCI_DEVICE_ID, vdev->device_id, ~0);
+         trace_vfio_pci_emulated_device_id(vbasedev->name, vdev->device_id);
+@@ -3166,7 +3166,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     if (vdev->sub_vendor_id != PCI_ANY_ID) {
+         if (vdev->sub_vendor_id > 0xffff) {
+             error_setg(errp, "invalid PCI subsystem vendor ID provided");
+-            goto out_detach;
++            goto error;
+         }
+         vfio_add_emulated_word(vdev, PCI_SUBSYSTEM_VENDOR_ID,
+                                vdev->sub_vendor_id, ~0);
+@@ -3177,7 +3177,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     if (vdev->sub_device_id != PCI_ANY_ID) {
+         if (vdev->sub_device_id > 0xffff) {
+             error_setg(errp, "invalid PCI subsystem device ID provided");
+-            goto out_detach;
++            goto error;
+         }
+         vfio_add_emulated_word(vdev, PCI_SUBSYSTEM_ID, vdev->sub_device_id, ~0);
+         trace_vfio_pci_emulated_sub_device_id(vbasedev->name,
+@@ -3210,7 +3210,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     vfio_msix_early_setup(vdev, &err);
+     if (err) {
+         error_propagate(errp, err);
+-        goto out_detach;
++        goto error;
+     }
+ 
+     vfio_bars_register(vdev);
+@@ -3326,8 +3326,6 @@ out_deregister:
+ out_teardown:
+     vfio_teardown_msi(vdev);
+     vfio_bars_exit(vdev);
+-out_detach:
+-    vfio_detach_device(vbasedev);
+ error:
+     error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
  }
- 
-+void gdb_unregister_coprocessor_all(CPUState *cpu)
-+{
-+    GDBRegisterState *s, *p;
-+
-+    p = cpu->gdb_regs;
-+    while (p) {
-+        s = p;
-+        p = p->next;
-+        /* s->xml is static const char so isn't freed */
-+        g_free(s);
-+    }
-+    cpu->gdb_regs = NULL;
-+    cpu->gdb_num_g_regs = 0;
-+}
-+
- static void gdb_process_breakpoint_remove_all(GDBProcess *p)
- {
-     CPUState *cpu = gdb_get_first_cpu_in_process(p);
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 16a139043f..7d1368d377 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -27,6 +27,11 @@ typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
- void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               int num_regs, const char *xml, int g_pos);
-+/**
-+ * gdb_unregister_coprocessor_all() - unregisters supplemental set of registers
-+ * @cpu - the CPU associated with registers
-+ */
-+void gdb_unregister_coprocessor_all(CPUState *cpu);
- 
- /**
-  * gdbserver_start: start the gdb server
 -- 
-2.34.1
+2.41.0
 
 
