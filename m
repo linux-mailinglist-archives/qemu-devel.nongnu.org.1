@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1717C4B38
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 09:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E7D7C4B34
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 09:07:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqTHQ-0001Lz-0e; Wed, 11 Oct 2023 03:05:16 -0400
+	id 1qqTHQ-0001PN-3Q; Wed, 11 Oct 2023 03:05:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqTHM-0001Ht-2v
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:05:12 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qqTHO-0001MU-1K
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:05:14 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqTHI-00060W-AW
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:05:11 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c88b46710bso35807325ad.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 00:05:07 -0700 (PDT)
+ id 1qqTHM-00061a-FA
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 03:05:13 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1c9b70b9656so10769655ad.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 00:05:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697007907; x=1697612707;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697007911; x=1697612711;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JpWOFvYMQFpcS1OA9qVK9BdW3N+KSH4Z6aCyq4NfX2g=;
- b=LsJH3HNhaR/JBI34VdvaVlwX35HFfYTXcE/SXeWOx6l06qV+O8OKg+kSOarmT0BCzD
- /690AAptP7C4P/0ImtGvwxhg2YgBSfOEc6L0UNdPzwFHxtfoQr0E+VvebnnokoN87jsf
- 4bDbq9Gyfx94Ww7btFi7oPu6Az6PU9YEny5lEWEbNYvQCMaQLlKj6vDATkKd10tefKXJ
- 43p9T3MicoBNSFySou2qozJdf4BybLyUeG2BrzMjKOPwDd3Wt27FFVgw0F5/6cyMw6nC
- CmG9NwiD8Yk5rlgtz3wW5p9NkHPiHlgMdjokiinqsR5hvveH24BMHxy+YiuWqOkCvcab
- HOVA==
+ bh=PVVhU7FVBGv/xT5QVrpV2Z6/BYaCzW+7Ey07YWq/aa8=;
+ b=q7f6/lgFUwtiMhyCKZpSkft70O6xL8rFeS0AIKguWAicUGK2zfNcwFugG84uWjsDI/
+ H6YNxp/dQV4/DXYmXmcWb/sNcLURsXN6cAP4IqYgfoZ3wYo4f1jvSLXTGK91KDgRat+j
+ wOAa7cYavofIhx37XQQoqKSRPpSWZ/PH9dOUMgFnPA1uxuV7ZR7TNbhEBziSz8jNrW1/
+ 2MsXpxJu9RCGh9MehudsQDD8PBFr5FXqhr1IH4oBEb89DrgdkoQjJjBlB2KXGak1W5C4
+ G4rbyxTyGP4ZkIZXgvBliIJmy7iZCmDSg3GxYqC4ey4tRL/GXu4xk5UnQLPIkLERbOrO
+ 4FPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697007907; x=1697612707;
+ d=1e100.net; s=20230601; t=1697007911; x=1697612711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JpWOFvYMQFpcS1OA9qVK9BdW3N+KSH4Z6aCyq4NfX2g=;
- b=IaRSnJGqFn0kAqvYRvw131ZsBQ3pAaPwQPFWRHR5iD/SlX0mM0jSD+EAsqctDoxhiL
- R7ExK+dusHkbVbFMBCSL5iN+KJdKxdREDGAsxx1VWg1vwNw0Y+FAAGgCWPIS3m+0BMbY
- M609E6HPtcCGf2BZVLJsQRMKwujVJ5IUYs1MFJBffjItd3CHKmgiOel7of5cRmNuzpH9
- hG2sI0pKDoGn1ymBPcr6RmDfOgIWVMeeikW5z4RiamqSi++TI34w9Zcw2FoZCIDJXjVy
- 4NS1E3+1Fk/MSGb6mnAx7+bOBDFd08LRzG1GbmJo9F12mSLvZ+oW2AjJjySWX39BUmlk
- V0Wg==
-X-Gm-Message-State: AOJu0YyuOJoFt6Q8zK1+mUE6XtL7MMON7GsdzWYtKJYBET13FK12Qup7
- i0vRST3znqEcYboiC2NH3Zkryg==
-X-Google-Smtp-Source: AGHT+IH9Qs3lRAI+K1otRrs0ctExI2GxJq5T+rmZM2s0E+PzZx65pmIiWhHQ2mA7Uo1YFd/gNQZ8LA==
-X-Received: by 2002:a17:902:f7cf:b0:1c6:1c80:5663 with SMTP id
- h15-20020a170902f7cf00b001c61c805663mr15920738plw.41.1697007907055; 
- Wed, 11 Oct 2023 00:05:07 -0700 (PDT)
+ bh=PVVhU7FVBGv/xT5QVrpV2Z6/BYaCzW+7Ey07YWq/aa8=;
+ b=smr56Pl52Yx0NcwC6vv8WVnaILWf09S++exZaWw0IZAqRDxiA/pzoh6oUv9CC1fwH/
+ 12Pq444+7AUxlwTQZIDoC3MWo62U6UwkW5vLFD0QrWCY1uM8tq9AdIGjZzRCkGgOq6+O
+ s3PCAkCbk8xLS2JcVWq58fJKCgP3VOxmrvLyC4AJSKg5nWBtTp7pjpjvz0I0KbIGKqfK
+ j6iCyoolue3N+ToVQdIo+cKK88qlCO3R6nCDbMTAHoHZ/mEnACgP6Hior9hCZ519YvrO
+ QtO8XFU4lzFfZbP0IYTVmZN++PxFvzI8M9wAvFdpjjcXioAEe8qw3wp0qdHSFg4CmQ/d
+ FLxg==
+X-Gm-Message-State: AOJu0YwQLr4XrsF7CIykIM20bSUcstQ94I1Dnm/oubSY7h/cEIh9kx07
+ X7ZNUU9cANXZhJ6ueWvOxtBqZQ==
+X-Google-Smtp-Source: AGHT+IFQ2h6HNZ4sP55TSx43ogj7wrgttm8jzHWEg/2psT1O4isywPAeS+CY+ePT9odKSkZFARYvkw==
+X-Received: by 2002:a17:903:18a:b0:1c8:91d8:d5ca with SMTP id
+ z10-20020a170903018a00b001c891d8d5camr11750239plg.42.1697007911204; 
+ Wed, 11 Oct 2023 00:05:11 -0700 (PDT)
 Received: from localhost ([157.82.206.10]) by smtp.gmail.com with UTF8SMTPSA id
- p10-20020a170902eaca00b001b8a85489a3sm13088198pld.262.2023.10.11.00.05.05
+ iw11-20020a170903044b00b001bc930d4517sm13098117plb.42.2023.10.11.00.05.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 00:05:06 -0700 (PDT)
+ Wed, 11 Oct 2023 00:05:11 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -65,16 +65,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v9 18/23] cpu: Call plugin hooks only when ready
-Date: Wed, 11 Oct 2023 16:03:04 +0900
-Message-ID: <20231011070335.14398-19-akihiko.odaki@daynix.com>
+Subject: [PATCH v9 19/23] plugins: Remove an extra parameter
+Date: Wed, 11 Oct 2023 16:03:05 +0900
+Message-ID: <20231011070335.14398-20-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231011070335.14398-1-akihiko.odaki@daynix.com>
 References: <20231011070335.14398-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::630;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,81 +96,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The initialization and exit hooks will not affect the state of vCPU
-outside TCG context, but they may depend on the state of vCPU.
-Therefore, it's better to call plugin hooks after the vCPU state is
-fully initialized and before it gets uninitialized.
+copy_call() has an unused parameter so remove it.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- cpu-target.c         | 11 -----------
- hw/core/cpu-common.c | 10 ++++++++++
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ accel/tcg/plugin-gen.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/cpu-target.c b/cpu-target.c
-index 658d179582..7acb65fd39 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -42,7 +42,6 @@
- #include "hw/core/accel-cpu.h"
- #include "trace/trace-root.h"
- #include "qemu/accel.h"
--#include "qemu/plugin.h"
- 
- uintptr_t qemu_host_page_size;
- intptr_t qemu_host_page_mask;
-@@ -143,11 +142,6 @@ void cpu_exec_realizefn(CPUState *cpu, Error **errp)
-     /* Wait until cpu initialization complete before exposing cpu. */
-     cpu_list_add(cpu);
- 
--    /* Plugin initialization must wait until cpu_index assigned. */
--    if (tcg_enabled()) {
--        qemu_plugin_vcpu_init_hook(cpu);
--    }
--
- #ifdef CONFIG_USER_ONLY
-     assert(qdev_get_vmsd(DEVICE(cpu)) == NULL ||
-            qdev_get_vmsd(DEVICE(cpu))->unmigratable);
-@@ -174,11 +168,6 @@ void cpu_exec_unrealizefn(CPUState *cpu)
-     }
- #endif
- 
--    /* Call the plugin hook before clearing cpu->cpu_index in cpu_list_remove */
--    if (tcg_enabled()) {
--        qemu_plugin_vcpu_exit_hook(cpu);
--    }
--
-     cpu_list_remove(cpu);
-     /*
-      * Now that the vCPU has been removed from the RCU list, we can call
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 0767714048..9805d2c301 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -210,6 +210,11 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
-         cpu_resume(cpu);
-     }
- 
-+    /* Plugin initialization must wait until the cpu is fully realized. */
-+    if (tcg_enabled()) {
-+        qemu_plugin_vcpu_init_hook(cpu);
-+    }
-+
-     /* NOTE: latest generic point where the cpu is fully realized */
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 39b3c9351f..78b331b251 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -327,8 +327,7 @@ static TCGOp *copy_st_ptr(TCGOp **begin_op, TCGOp *op)
+     return op;
  }
  
-@@ -217,6 +222,11 @@ static void cpu_common_unrealizefn(DeviceState *dev)
+-static TCGOp *copy_call(TCGOp **begin_op, TCGOp *op, void *empty_func,
+-                        void *func, int *cb_idx)
++static TCGOp *copy_call(TCGOp **begin_op, TCGOp *op, void *func, int *cb_idx)
  {
-     CPUState *cpu = CPU(dev);
+     TCGOp *old_op;
+     int func_idx;
+@@ -372,8 +371,7 @@ static TCGOp *append_udata_cb(const struct qemu_plugin_dyn_cb *cb,
+     }
  
-+    /* Call the plugin hook before clearing the cpu is fully unrealized */
-+    if (tcg_enabled()) {
-+        qemu_plugin_vcpu_exit_hook(cpu);
-+    }
-+
-     /* NOTE: latest generic point before the cpu is fully unrealized */
-     cpu_exec_unrealizefn(cpu);
+     /* call */
+-    op = copy_call(&begin_op, op, HELPER(plugin_vcpu_udata_cb),
+-                   cb->f.vcpu_udata, cb_idx);
++    op = copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
+ 
+     return op;
  }
+@@ -420,8 +418,7 @@ static TCGOp *append_mem_cb(const struct qemu_plugin_dyn_cb *cb,
+ 
+     if (type == PLUGIN_GEN_CB_MEM) {
+         /* call */
+-        op = copy_call(&begin_op, op, HELPER(plugin_vcpu_mem_cb),
+-                       cb->f.vcpu_udata, cb_idx);
++        op = copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
+     }
+ 
+     return op;
 -- 
 2.42.0
 
