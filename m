@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FA47C5E7D
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 22:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BBD7C5E79
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 22:37:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqfwM-0005ka-HK; Wed, 11 Oct 2023 16:36:22 -0400
+	id 1qqfwC-0005RC-T7; Wed, 11 Oct 2023 16:36:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqfwL-0005iA-By
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:36:21 -0400
+ id 1qqfw6-0005Oq-OG
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:36:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqfwJ-0003FO-IU
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:36:21 -0400
+ id 1qqfw1-0003CR-P1
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:36:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697056576;
+ s=mimecast20190719; t=1697056560;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hMZ/Im8CDGWdic4kq0mnTpu0EPhSBpilRlc7eATBD/E=;
- b=fnOfe3iCcNARy8X1jSSV2wVxxpG2iPS9i++NVlIiZoqaqGeDRw788/FijCYiB6HkyuQ+sT
- toSWPAvZa+L+q5L11z01VaIzNMqRjio7wrt4md7jOUFRGvxQzgG2yaOFnDI8JKmrs3iwJf
- 7Ts951puQCpKl1cUgj6edo3fThh+CDs=
+ bh=Qtmc3KGTusy7cfgz4qom4SunS56CKsgeizxUNwC5MCc=;
+ b=Mh33Wf4hrlB9B5akFk6uEuHUcNIRY5gHnzq2ZgYbZAH47YB/Pmga/kPv4dFg//TIkVHwmZ
+ di0LcWcbqfDNjY/4pixoc56rE84Zrb3AtAvBgAl3TkIyPEm700StikN3kl/7So9yafhNCv
+ xp8OjjndD6Xb+enPKfY43B/9tdYsJ5U=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-154-tDcIV7uYO8mRr1GBGUtQAw-1; Wed, 11 Oct 2023 16:35:51 -0400
-X-MC-Unique: tDcIV7uYO8mRr1GBGUtQAw-1
+ us-mta-312-6Ta4wqfhM6qVc3ncW0WE-A-1; Wed, 11 Oct 2023 16:35:49 -0400
+X-MC-Unique: 6Ta4wqfhM6qVc3ncW0WE-A-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E75C4858280;
- Wed, 11 Oct 2023 20:35:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CB34101A550;
+ Wed, 11 Oct 2023 20:35:48 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DFD36492B07;
- Wed, 11 Oct 2023 20:35:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3717B492B06;
+ Wed, 11 Oct 2023 20:35:47 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v3 12/13] migration/rdma: Declare for index variables local
-Date: Wed, 11 Oct 2023 22:35:26 +0200
-Message-ID: <20231011203527.9061-13-quintela@redhat.com>
+Subject: [PATCH v3 13/13] migration/rdma: Remove all "ret" variables that are
+ used only once
+Date: Wed, 11 Oct 2023 22:35:27 +0200
+Message-ID: <20231011203527.9061-14-quintela@redhat.com>
 In-Reply-To: <20231011203527.9061-1-quintela@redhat.com>
 References: <20231011203527.9061-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -79,207 +80,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Declare all variables that are only used inside a for loop inside the
-for statement.
+Change code that is:
 
-This makes clear that they are not used outside of the for loop.
+int ret;
+...
+
+ret = foo();
+if (ret[ < 0]?) {
+
+to:
+
+if (foo()[ < 0]) {
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/rdma.c | 44 ++++++++++++++++++--------------------------
- 1 file changed, 18 insertions(+), 26 deletions(-)
+ migration/rdma.c | 29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index e29e5551d1..a43527a83c 100644
+index a43527a83c..c382588b26 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -559,10 +559,8 @@ static void rdma_add_block(RDMAContext *rdma, const char *block_name,
-     local->block = g_new0(RDMALocalBlock, local->nb_blocks + 1);
- 
-     if (local->nb_blocks) {
--        int x;
--
-         if (rdma->blockmap) {
--            for (x = 0; x < local->nb_blocks; x++) {
-+            for (int x = 0; x < local->nb_blocks; x++) {
-                 g_hash_table_remove(rdma->blockmap,
-                                     (void *)(uintptr_t)old[x].offset);
-                 g_hash_table_insert(rdma->blockmap,
-@@ -649,15 +647,12 @@ static void rdma_delete_block(RDMAContext *rdma, RDMALocalBlock *block)
+@@ -1107,7 +1107,6 @@ err_alloc_pd_cq:
+ static int qemu_rdma_alloc_qp(RDMAContext *rdma)
  {
-     RDMALocalBlocks *local = &rdma->local_ram_blocks;
-     RDMALocalBlock *old = local->block;
--    int x;
+     struct ibv_qp_init_attr attr = { 0 };
+-    int ret;
  
-     if (rdma->blockmap) {
-         g_hash_table_remove(rdma->blockmap, (void *)(uintptr_t)block->offset);
+     attr.cap.max_send_wr = RDMA_SIGNALED_SEND_MAX;
+     attr.cap.max_recv_wr = 3;
+@@ -1117,8 +1116,7 @@ static int qemu_rdma_alloc_qp(RDMAContext *rdma)
+     attr.recv_cq = rdma->recv_cq;
+     attr.qp_type = IBV_QPT_RC;
+ 
+-    ret = rdma_create_qp(rdma->cm_id, rdma->pd, &attr);
+-    if (ret < 0) {
++    if (rdma_create_qp(rdma->cm_id, rdma->pd, &attr) < 0) {
+         return -1;
      }
-     if (block->pmr) {
--        int j;
--
--        for (j = 0; j < block->nb_chunks; j++) {
-+        for (int j = 0; j < block->nb_chunks; j++) {
-             if (!block->pmr[j]) {
-                 continue;
-             }
-@@ -687,7 +682,7 @@ static void rdma_delete_block(RDMAContext *rdma, RDMALocalBlock *block)
-     block->block_name = NULL;
  
-     if (rdma->blockmap) {
--        for (x = 0; x < local->nb_blocks; x++) {
-+        for (int x = 0; x < local->nb_blocks; x++) {
-             g_hash_table_remove(rdma->blockmap,
-                                 (void *)(uintptr_t)old[x].offset);
-         }
-@@ -705,7 +700,7 @@ static void rdma_delete_block(RDMAContext *rdma, RDMALocalBlock *block)
-             memcpy(local->block + block->index, old + (block->index + 1),
-                 sizeof(RDMALocalBlock) *
-                     (local->nb_blocks - (block->index + 1)));
--            for (x = block->index; x < local->nb_blocks - 1; x++) {
-+            for (int x = block->index; x < local->nb_blocks - 1; x++) {
-                 local->block[x].index--;
-             }
-         }
-@@ -725,7 +720,7 @@ static void rdma_delete_block(RDMAContext *rdma, RDMALocalBlock *block)
-     local->nb_blocks--;
+@@ -1130,8 +1128,8 @@ static int qemu_rdma_alloc_qp(RDMAContext *rdma)
+ static bool rdma_support_odp(struct ibv_context *dev)
+ {
+     struct ibv_device_attr_ex attr = {0};
+-    int ret = ibv_query_device_ex(dev, NULL, &attr);
+-    if (ret) {
++
++    if (ibv_query_device_ex(dev, NULL, &attr)) {
+         return false;
+     }
  
-     if (local->nb_blocks && rdma->blockmap) {
--        for (x = 0; x < local->nb_blocks; x++) {
-+        for (int x = 0; x < local->nb_blocks; x++) {
-             g_hash_table_insert(rdma->blockmap,
-                                 (void *)(uintptr_t)local->block[x].offset,
-                                 &local->block[x]);
-@@ -828,12 +823,12 @@ static int qemu_rdma_broken_ipv6_kernel(struct ibv_context *verbs, Error **errp)
-      * Otherwise, there are no guarantees until the bug is fixed in linux.
-      */
-     if (!verbs) {
--        int num_devices, x;
-+        int num_devices;
-         struct ibv_device **dev_list = ibv_get_device_list(&num_devices);
-         bool roce_found = false;
-         bool ib_found = false;
- 
--        for (x = 0; x < num_devices; x++) {
-+        for (int x = 0; x < num_devices; x++) {
-             verbs = ibv_open_device(dev_list[x]);
-             /*
-              * ibv_open_device() is not documented to set errno.  If
-@@ -925,7 +920,6 @@ static int qemu_rdma_resolve_host(RDMAContext *rdma, Error **errp)
-     char port_str[16];
+@@ -1508,7 +1506,6 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
+                                        struct ibv_comp_channel *comp_channel)
+ {
      struct rdma_cm_event *cm_event;
-     char ip[40] = "unknown";
--    struct rdma_addrinfo *e;
+-    int ret;
  
-     if (rdma->host == NULL || !strcmp(rdma->host, "")) {
-         error_setg(errp, "RDMA ERROR: RDMA hostname has not been set");
-@@ -957,7 +951,7 @@ static int qemu_rdma_resolve_host(RDMAContext *rdma, Error **errp)
+     /*
+      * Coroutine doesn't start until migration_fd_process_incoming()
+@@ -1544,8 +1541,7 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
+                 }
+ 
+                 if (pfds[1].revents) {
+-                    ret = rdma_get_cm_event(rdma->channel, &cm_event);
+-                    if (ret < 0) {
++                    if (rdma_get_cm_event(rdma->channel, &cm_event) < 0) {
+                         return -1;
+                     }
+ 
+@@ -2317,12 +2313,10 @@ static int qemu_rdma_write(RDMAContext *rdma,
+     uint64_t current_addr = block_offset + offset;
+     uint64_t index = rdma->current_index;
+     uint64_t chunk = rdma->current_chunk;
+-    int ret;
+ 
+     /* If we cannot merge it, we flush the current buffer first. */
+     if (!qemu_rdma_buffer_mergeable(rdma, current_addr, len)) {
+-        ret = qemu_rdma_write_flush(rdma, errp);
+-        if (ret < 0) {
++        if (qemu_rdma_write_flush(rdma, errp) < 0) {
+             return -1;
+         }
+         rdma->current_length = 0;
+@@ -2936,7 +2930,6 @@ static ssize_t qio_channel_rdma_readv(QIOChannel *ioc,
+ static int qemu_rdma_drain_cq(RDMAContext *rdma)
+ {
+     Error *err = NULL;
+-    int ret;
+ 
+     if (qemu_rdma_write_flush(rdma, &err) < 0) {
+         error_report_err(err);
+@@ -2944,8 +2937,7 @@ static int qemu_rdma_drain_cq(RDMAContext *rdma)
      }
  
-     /* Try all addresses, saving the first error in @err */
--    for (e = res; e != NULL; e = e->ai_next) {
-+    for (struct rdma_addrinfo *e = res; e != NULL; e = e->ai_next) {
-         Error **local_errp = err ? NULL : &err;
+     while (rdma->nb_sent) {
+-        ret = qemu_rdma_block_for_wrid(rdma, RDMA_WRID_RDMA_WRITE, NULL);
+-        if (ret < 0) {
++        if (qemu_rdma_block_for_wrid(rdma, RDMA_WRID_RDMA_WRITE, NULL) < 0) {
+             error_report("rdma migration: complete polling error!");
+             return -1;
+         }
+@@ -3324,12 +3316,10 @@ static void rdma_accept_incoming_migration(void *opaque);
+ static void rdma_cm_poll_handler(void *opaque)
+ {
+     RDMAContext *rdma = opaque;
+-    int ret;
+     struct rdma_cm_event *cm_event;
+     MigrationIncomingState *mis = migration_incoming_get_current();
  
-         inet_ntop(e->ai_family,
-@@ -2777,7 +2771,7 @@ static ssize_t qio_channel_rdma_writev(QIOChannel *ioc,
-     RDMAContext *rdma;
-     int ret;
-     ssize_t done = 0;
--    size_t i, len;
-+    size_t len;
- 
-     RCU_READ_LOCK_GUARD();
-     rdma = qatomic_rcu_read(&rioc->rdmaout);
-@@ -2803,7 +2797,7 @@ static ssize_t qio_channel_rdma_writev(QIOChannel *ioc,
-         return -1;
+-    ret = rdma_get_cm_event(rdma->channel, &cm_event);
+-    if (ret < 0) {
++    if (rdma_get_cm_event(rdma->channel, &cm_event) < 0) {
+         error_report("get_cm_event failed %d", errno);
+         return;
      }
+@@ -4054,14 +4044,11 @@ static QEMUFile *rdma_new_output(RDMAContext *rdma)
+ static void rdma_accept_incoming_migration(void *opaque)
+ {
+     RDMAContext *rdma = opaque;
+-    int ret;
+     QEMUFile *f;
+     Error *local_err = NULL;
  
--    for (i = 0; i < niov; i++) {
-+    for (int i = 0; i < niov; i++) {
-         size_t remaining = iov[i].iov_len;
-         uint8_t * data = (void *)iov[i].iov_base;
-         while (remaining) {
-@@ -2866,7 +2860,7 @@ static ssize_t qio_channel_rdma_readv(QIOChannel *ioc,
-     RDMAControlHeader head;
-     int ret;
-     ssize_t done = 0;
--    size_t i, len;
-+    size_t len;
- 
-     RCU_READ_LOCK_GUARD();
-     rdma = qatomic_rcu_read(&rioc->rdmain);
-@@ -2882,7 +2876,7 @@ static ssize_t qio_channel_rdma_readv(QIOChannel *ioc,
-         return -1;
+     trace_qemu_rdma_accept_incoming_migration();
+-    ret = qemu_rdma_accept(rdma);
+-
+-    if (ret < 0) {
++    if (qemu_rdma_accept(rdma) < 0) {
+         error_report("RDMA ERROR: Migration initialization failed");
+         return;
      }
- 
--    for (i = 0; i < niov; i++) {
-+    for (int i = 0; i < niov; i++) {
-         size_t want = iov[i].iov_len;
-         uint8_t *data = (void *)iov[i].iov_base;
- 
-@@ -3557,8 +3551,6 @@ int rdma_registration_handle(QEMUFile *f)
-     void *host_addr;
-     int ret;
-     int idx = 0;
--    int count = 0;
--    int i = 0;
- 
-     if (!migrate_rdma()) {
-         return 0;
-@@ -3629,7 +3621,7 @@ int rdma_registration_handle(QEMUFile *f)
-             qsort(rdma->local_ram_blocks.block,
-                   rdma->local_ram_blocks.nb_blocks,
-                   sizeof(RDMALocalBlock), dest_ram_sort_func);
--            for (i = 0; i < local->nb_blocks; i++) {
-+            for (int i = 0; i < local->nb_blocks; i++) {
-                 local->block[i].index = i;
-             }
- 
-@@ -3647,7 +3639,7 @@ int rdma_registration_handle(QEMUFile *f)
-              * Both sides use the "remote" structure to communicate and update
-              * their "local" descriptions with what was sent.
-              */
--            for (i = 0; i < local->nb_blocks; i++) {
-+            for (int i = 0; i < local->nb_blocks; i++) {
-                 rdma->dest_blocks[i].remote_host_addr =
-                     (uintptr_t)(local->block[i].local_host_addr);
- 
-@@ -3687,7 +3679,7 @@ int rdma_registration_handle(QEMUFile *f)
-             reg_resp.repeat = head.repeat;
-             registers = (RDMARegister *) rdma->wr_data[idx].control_curr;
- 
--            for (count = 0; count < head.repeat; count++) {
-+            for (int count = 0; count < head.repeat; count++) {
-                 uint64_t chunk;
-                 uint8_t *chunk_start, *chunk_end;
- 
-@@ -3762,7 +3754,7 @@ int rdma_registration_handle(QEMUFile *f)
-             unreg_resp.repeat = head.repeat;
-             registers = (RDMARegister *) rdma->wr_data[idx].control_curr;
- 
--            for (count = 0; count < head.repeat; count++) {
-+            for (int count = 0; count < head.repeat; count++) {
-                 reg = &registers[count];
-                 network_to_register(reg);
- 
-@@ -3910,7 +3902,7 @@ int rdma_registration_stop(QEMUFile *f, uint64_t flags)
-     if (flags == RAM_CONTROL_SETUP) {
-         RDMAControlHeader resp = {.type = RDMA_CONTROL_RAM_BLOCKS_RESULT };
-         RDMALocalBlocks *local = &rdma->local_ram_blocks;
--        int reg_result_idx, i, nb_dest_blocks;
-+        int reg_result_idx, nb_dest_blocks;
- 
-         head.type = RDMA_CONTROL_RAM_BLOCKS_REQUEST;
-         trace_rdma_registration_stop_ram();
-@@ -3958,7 +3950,7 @@ int rdma_registration_stop(QEMUFile *f, uint64_t flags)
-         qemu_rdma_move_header(rdma, reg_result_idx, &resp);
-         memcpy(rdma->dest_blocks,
-             rdma->wr_data[reg_result_idx].control_curr, resp.len);
--        for (i = 0; i < nb_dest_blocks; i++) {
-+        for (int i = 0; i < nb_dest_blocks; i++) {
-             network_to_dest_block(&rdma->dest_blocks[i]);
- 
-             /* We require that the blocks are in the same order */
 -- 
 2.41.0
 
