@@ -2,113 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1CB7C4869
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 05:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA077C4875
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 05:27:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqPnL-0002Sh-Ul; Tue, 10 Oct 2023 23:21:59 -0400
+	id 1qqPrm-0003yG-9n; Tue, 10 Oct 2023 23:26:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqPnJ-0002SF-E8
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 23:21:57 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqPn6-0005T3-5J
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 23:21:57 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-53de0d1dc46so62342a12.3
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 20:21:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696994502; x=1697599302; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Rf5gxsbp430mWT7/Bc31GPupiZtpSrleCvdmHeu8VwU=;
- b=O3LSbvJGRBxmaMS4VnN/y0/hGA/75g1CJXfvYOQDE1C5MyJ3RQY3Rxp0EmyAF1BvVD
- fssoX5uCjpzNoP7S+lAYAZh4FARj0IaV+hn9dD1CHmJteJQCf5qEMvjappsSKT6rHaoR
- 1vBpZZ+QXwBWer2/ixrAMYMbQtv7Dz4HWV5SG9JlpwqVo6VcY6v8gd5KpUVBNpj+S9pP
- iAnsjbGLKu/PPBAisWJPun/YMc/k5uoRuiB8TSVLZimKQoIY4GSHNVEvC71EiVD1cvx9
- T0zcrFh1marlG7NLlTanP7uPhXu5iamIaat80LxSV+KiCA7yWo4HSMMAXcSiLWvo7xOQ
- +zuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696994502; x=1697599302;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Rf5gxsbp430mWT7/Bc31GPupiZtpSrleCvdmHeu8VwU=;
- b=gihcuWWQfd0mKYPME0wsfDHWbeNWPTFonfgZ3QNdN+iXnz+yXnIEBLY2HMi3zS201D
- 7WhUqhq30t7PTyHIiVD9t/FOKfD1P2mkil3XD5XErQSLJ78VZQh6eqoXyKWMuUYnISSx
- ZoZcfMTIVm1GuMA6r4HydO5EAtOhlVIyIWsggMV1RrA3FjeCV5Y040y0mfkjTRU/WIuw
- acQT65wb09HC8HNujqFrPeZ2A83MAsPab8ay2FkE2j4Ilsf0jEWthZ/TH9RUyTZkr8Me
- jxNST9xfb8l1M4SVIyHXEenlY5ONeKOoL19kGsOYo1EovtyJlx1Ss8iEuIkab2W/wiQA
- chSg==
-X-Gm-Message-State: AOJu0YyTklcyJzI1vSyaqcg5h3lMK8zUPAr/ujzjuHFyRUBcBCscDY9d
- KxvwyTzB7mkvmwRxqkQnyvwAmQ==
-X-Google-Smtp-Source: AGHT+IFsoEg+3hmwPLtWkPthJP1a4BnRC8wMFOGJDp/mP781dneXsFI+nVjx6QPZh61yK1gcooY3tQ==
-X-Received: by 2002:a05:6402:6d4:b0:533:4c67:c911 with SMTP id
- n20-20020a05640206d400b005334c67c911mr17781768edy.19.1696994501830; 
- Tue, 10 Oct 2023 20:21:41 -0700 (PDT)
-Received: from [192.168.69.115] (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
- [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
- k12-20020a056402048c00b0052ffc2e82f1sm8393286edv.4.2023.10.10.20.21.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 20:21:41 -0700 (PDT)
-Message-ID: <f8b3cb2c-8e80-19e4-d59f-2ccacff0a413@linaro.org>
-Date: Wed, 11 Oct 2023 05:21:37 +0200
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqPri-0003y3-Tn
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 23:26:30 -0400
+Received: from out30-119.freemail.mail.aliyun.com ([115.124.30.119])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqPrf-0006Jy-UH
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 23:26:30 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R181e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046060;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=3; SR=0;
+ TI=SMTPD_---0VtuaBTs_1696994780; 
+Received: from 30.221.100.88(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VtuaBTs_1696994780) by smtp.aliyun-inc.com;
+ Wed, 11 Oct 2023 11:26:20 +0800
+Message-ID: <4a7e39f4-4302-4dfd-9112-4deea5c7403f@linux.alibaba.com>
+Date: Wed, 11 Oct 2023 11:25:20 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 04/18] target: Declare FOO_CPU_TYPE_NAME/SUFFIX in
- 'cpu-qom.h'
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
 Content-Language: en-US
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org,
- Gavin Shan <gshan@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Brian Cain <bcain@quicinc.com>,
- Markus Armbruster <armbru@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-arm@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org,
- Bin Meng <bin.meng@windriver.com>, Yanan Wang <wangyanan55@huawei.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Marek Vasut
- <marex@denx.de>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <laurent@vivier.eu>, Stafford Horne <shorne@gmail.com>,
- Chris Wulff <crwulff@gmail.com>, Sergio Lopez <slp@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-5-philmd@linaro.org>
- <348eaf9c-9fb6-4674-b324-c3f3017f1851@linux.alibaba.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <348eaf9c-9fb6-4674-b324-c3f3017f1851@linux.alibaba.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20231009110239.66778-1-philmd@linaro.org>
+ <20231009110239.66778-3-philmd@linaro.org>
+ <8e8b6cef-efbf-42ac-975c-b523dc24a531@linux.alibaba.com>
+ <58838379-60bf-4af4-980b-cff8ee49bfc2@linaro.org>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <58838379-60bf-4af4-980b-cff8ee49bfc2@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.119;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-119.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,122 +67,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhiwei,
 
-On 11/10/23 04:51, LIU Zhiwei wrote:
-> 
-> On 2023/10/10 17:28, Philippe Mathieu-Daudé wrote:
->> Hegerogeneous code needs access to the FOO_CPU_TYPE_NAME()
->> macro to resolve target CPU types.
-> 
-> Hi Philippe,
-> 
-> I don't understand why should we use FOO_CPU_TYPE_NAME macro to resolve 
-> target CPU types? In my opinion, we should pass the
-> CPU typename from command line for heterogeneous case.
-> 
-> Could you make it clearer how should we use FOO_CPU_TYPE_NAME macro to 
-> resolve target CPU types in heterogeneous case?
-
-To be honest I start to feel a bit lost with the "cpu
-resolving type" design.
-
-We are not quite there yet to "create from command line"
-or "create from QMP", so I'm prototyping in plain C.
-One of my test is:
-
-   #include "target/arm/cpu-qom.h"
-   #include "target/hexagon/cpu-qom.h"
-   ...
-
-   static void
-   my_machine3_init((MachineState *machine)
-   {
-     CPUState cpu[2];
-     ...
-
-     cpu[0] = CPU(object_new(ARM_CPU_TYPE_NAME("cortex-a72")));
-     cpu[1] = CPU(object_new(HEXAGON_CPU_TYPE_NAME("v68")));
-     ...
-   }
-
-The machine code need access to the per-target
-FOO_CPU_TYPE_NAME() macros. I'm not sure what each macro
-expands to is considered stable, so IIUC I can't inline and use:
-
-     cpu[0] = CPU(object_new("cortex-a72-arm-cpu"));
-     cpu[1] = CPU(object_new("v68"-hexagon-cpu));
-
-That said, maybe I'm mistaken.
-
-Kinda related discussion with Gavin/Igor:
-https://lore.kernel.org/qemu-devel/35653f53-a977-02ea-28f6-6fe85b1efd5a@redhat.com/
-(related to 
-https://lore.kernel.org/qemu-devel/20230907003553.1636896-1-gshan@redhat.com/).
-
-> 
-> Thanks,
-> Zhiwei
-> 
->> Move the declaration
->> (along with the required FOO_CPU_TYPE_SUFFIX) to "cpu-qom.h".
+On 2023/10/11 1:04, Richard Henderson wrote:
+> On 10/9/23 05:42, LIU Zhiwei wrote:
 >>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/alpha/cpu-qom.h   | 5 ++++-
->>   target/alpha/cpu.h       | 2 --
->>   target/avr/cpu-qom.h     | 5 ++++-
->>   target/avr/cpu.h         | 2 --
->>   target/cris/cpu-qom.h    | 5 ++++-
->>   target/cris/cpu.h        | 2 --
->>   target/i386/cpu-qom.h    | 3 +++
->>   target/i386/cpu.h        | 2 --
->>   target/m68k/cpu-qom.h    | 5 ++++-
->>   target/m68k/cpu.h        | 2 --
->>   target/mips/cpu-qom.h    | 3 +++
->>   target/mips/cpu.h        | 2 --
->>   target/rx/cpu-qom.h      | 5 ++++-
->>   target/rx/cpu.h          | 2 --
->>   target/s390x/cpu-qom.h   | 5 ++++-
->>   target/s390x/cpu.h       | 2 --
->>   target/sh4/cpu-qom.h     | 5 ++++-
->>   target/sh4/cpu.h         | 2 --
->>   target/sparc/cpu-qom.h   | 5 ++++-
->>   target/sparc/cpu.h       | 2 --
->>   target/tricore/cpu-qom.h | 5 +++++
->>   target/tricore/cpu.h     | 2 --
->>   target/xtensa/cpu-qom.h  | 5 ++++-
->>   target/xtensa/cpu.h      | 2 --
->>   24 files changed, 47 insertions(+), 33 deletions(-)
+>> On 2023/10/9 19:02, Philippe Mathieu-Daudé wrote:
+>>> When CPUArchState* is available (here CPURISCVState*), we
+>>> can use the fast env_archcpu() macro to get ArchCPU* (here
+>>> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
+>>> when building with --enable-qom-cast-debug.
+>>>
+>>> Inspired-by: Richard W.M. Jones <rjones@redhat.com>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 >>
->> diff --git a/target/alpha/cpu-qom.h b/target/alpha/cpu-qom.h
->> index 1f200724b6..d596d1b69f 100644
->> --- a/target/alpha/cpu-qom.h
->> +++ b/target/alpha/cpu-qom.h
->> @@ -1,5 +1,5 @@
->>   /*
->> - * QEMU Alpha CPU
->> + * QEMU Alpha CPU QOM header (target agnostic)
->>    *
->>    * Copyright (c) 2012 SUSE LINUX Products GmbH
->>    *
->> @@ -27,6 +27,9 @@
->>   OBJECT_DECLARE_CPU_TYPE(AlphaCPU, AlphaCPUClass, ALPHA_CPU)
->> +#define ALPHA_CPU_TYPE_SUFFIX "-" TYPE_ALPHA_CPU
->> +#define ALPHA_CPU_TYPE_NAME(model) model ALPHA_CPU_TYPE_SUFFIX
->> +
->>   /**
->>    * AlphaCPUClass:
->>    * @parent_realize: The parent class' realize handler.
->> diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
->> index e2a467ec17..ba0d9e3468 100644
->> --- a/target/alpha/cpu.h
->> +++ b/target/alpha/cpu.h
->> @@ -428,8 +428,6 @@ enum {
->>   void alpha_translate_init(void);
->> -#define ALPHA_CPU_TYPE_SUFFIX "-" TYPE_ALPHA_CPU
->> -#define ALPHA_CPU_TYPE_NAME(model) model ALPHA_CPU_TYPE_SUFFIX
->>   #define CPU_RESOLVING_TYPE TYPE_ALPHA_CPU
->>   void alpha_cpu_list(void);
-[...]
+>> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+>>
+>> By the way, does the community has the plan to support heterogeneous 
+>> architecture cpus in one soc?
+>
+> Yes.
+
+Hi Richard,
+
+It's a good news. Thanks.
+
+>
+>> If so, maybe we have to do this qom cast somewhere.
+>
+> No, I don't think so.  Or at least not in these places.
+
+Yes.  Perhaps, we should remove all RISCV_CPU macros using after the qom 
+objects realized.
+
+Do you think we should remove the RISCV_CPU using in 
+riscv_cpu_exec_interrupt? Although it  is not so hot. I think there is 
+no reason to use it there.
+Except this, there are many other places in hw/ and target/riscv using 
+the RISCV_CPU macro.
+
+If we know whether we should remove the RISCV_CPU macro use in these 
+places, we can do it in another patch.
+
+Thanks,
+Zhiwei
+
+>
+>
+> r~
 
