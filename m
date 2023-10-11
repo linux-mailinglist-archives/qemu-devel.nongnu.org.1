@@ -2,133 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4397C5827
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 612757C5838
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:39:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqbFZ-0004lO-8R; Wed, 11 Oct 2023 11:35:53 -0400
+	id 1qqbIb-0000cb-Pn; Wed, 11 Oct 2023 11:39:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqbF5-0004dy-DF
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:35:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqbF0-00013u-3s
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:35:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697038516;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8R6Sv9z8EkL6vXSzdDypuQTHXpmVHkNktIfQRgcdrWM=;
- b=aagY2GV4mPzXC5w2T2p4HGNC4MBx4yg0Tt7lkkbczSPA7/UuhqwyRgy6SiQghndIbV8dl7
- Ckd+uHjsC7FBh3CXF5+oNEOfvxoGqP469wnO4UlfWrPLLb6Kznsj+iYXdd2QGGwfacDon6
- yXQuN+1HsqXShbCcS3VpgOHrCcMCZJU=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-330-CTUFB6_0Nc-hlJooZUVlXQ-1; Wed, 11 Oct 2023 11:35:14 -0400
-X-MC-Unique: CTUFB6_0Nc-hlJooZUVlXQ-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66acad63d74so85601946d6.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 08:35:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qqbIU-0000P4-Tq; Wed, 11 Oct 2023 11:38:56 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qqbIT-0001je-69; Wed, 11 Oct 2023 11:38:54 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-57b6a7e0deeso4114901eaf.2; 
+ Wed, 11 Oct 2023 08:38:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697038731; x=1697643531; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jf7GpPCsEnly/lZZa9FVIoXSWQ7Np5F4jDc1RPG5f6I=;
+ b=ZU3/KO85TgAzXYol/xbwZ4XnYJSW312MMm+ctM7pJc56d/M9m7gByyn9td/CCSx47F
+ v0m0YK6cohENsqBz5vui57IliZi5SGUZ65H6hlfzW3wD5eEanLoWmSN7YdPf6Z5vA26H
+ mSesCHyudq5akHFA7M70u/j6M8z7AOCh4Zt0pC/UyF91N64wJc7bnIy/m2ENjk9aaGcb
+ vl/2T9C/6Drb42czjZStV+K6BGc6RJjupszL1iFyBL3C7wxuPzgse5F4+J4/RbHGOFnM
+ jRy5pvw8lxDRbAcu0WzNhsFukmTpJYJEM27Cv0TsB5JNhUlKT+AOa6qhiKhzoCdlzkiX
+ 1mkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697038513; x=1697643313;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8R6Sv9z8EkL6vXSzdDypuQTHXpmVHkNktIfQRgcdrWM=;
- b=ot5d+AFl3tLbdFNXWNN6fFMv0ebof1Q61fi+RRSUcLmmrdHYiGLnbbRZicaNSgI2CW
- J+Ej/PQjtgEEvTt+8sLNUOuGuCz12QLJpA+A0YpC1UeljspAM2wHK1ar0w9likz5EGON
- zyzLVvNe2zomXLvhaShk284J/0OS/3Ta1UplgXIuVEpxj03PCQhJFO+gzh2IB4//h0YA
- xuRb5k3QAvyVCsPNN0anSe+VzAp1DzmnJvgCFS0JRuSUjuczJiNrPAR1qPEr+0JK5v2b
- irlbOgZR1vEC+ScNpBMOCwA28YSEmmzK4M/+Cszj5w8gdmlJoYG7yY0GhXbqxdtXm/Xb
- /63g==
-X-Gm-Message-State: AOJu0YxJr7sUxIEAfohCCg9CnuQ7/cGyd6b3pHH1EaKMoIDqEVRlpOlq
- 0JQIwyajUbWvaCccqboLQI7+5eP0wX1m74KwnFNNU9qjYya+pP3m7CBKJ/VETL5epP1lnytwugx
- q84Ih1ffJ+qnD4jA=
-X-Received: by 2002:a0c:e34a:0:b0:66d:9d2:8312 with SMTP id
- a10-20020a0ce34a000000b0066d09d28312mr1573274qvm.49.1697038512927; 
- Wed, 11 Oct 2023 08:35:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLLerqWC9eo+Du8A7VtutKFj5injpmaZFW4xrLegKb2ey09ffeiowWrYzJ88Z8cyRqp9V8XQ==
-X-Received: by 2002:a0c:e34a:0:b0:66d:9d2:8312 with SMTP id
- a10-20020a0ce34a000000b0066d09d28312mr1573259qvm.49.1697038512686; 
- Wed, 11 Oct 2023 08:35:12 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
- [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- z6-20020a0ce986000000b0065b29403540sm1658938qvn.127.2023.10.11.08.35.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 08:35:12 -0700 (PDT)
-Message-ID: <cacc4a01-88e9-4631-a6d6-fbee2b483fd6@redhat.com>
-Date: Wed, 11 Oct 2023 17:35:09 +0200
+ d=1e100.net; s=20230601; t=1697038731; x=1697643531;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jf7GpPCsEnly/lZZa9FVIoXSWQ7Np5F4jDc1RPG5f6I=;
+ b=lIzrqj196y2SyAIUpEf35iKWLHBQEDjP3u64kwef1HlQhJ7jsH4/r70eXSW4LhcTWe
+ nRuN8I7PxGOSMfm0uvQ6MB7qAhJMsEbcfjsDc0BtBKFgWqg/9lpHP3h/UyMjC7+vJ2sl
+ t+ZvZDFhAQqmSq72lW7CaSQjYDUhmDWMQ29QgN4GwUQ9vqXIDu4RuWr9Q8eExo16GqsG
+ JAXlZkhSCafTi11LQnRask7rr96QMkCGqlEX5rq5hdruQutfnpZ4eFuxd4nsj3tp3Y7u
+ MyMfJAMx1GInEpXOChl0bBHfFwwZ0bs1cMM6hUeau9B3NrMFFL0cuYv778BoEP8v7p3x
+ jzKg==
+X-Gm-Message-State: AOJu0YzYbYFx169pD4yx68uSmFM4SEt897CyIFe7LayrwnD8y6wy/5Cm
+ RBW2/E/ddf0MW03GssLRYlI0wfm0pl1EOEfHKHA=
+X-Google-Smtp-Source: AGHT+IG2fSoa4RI2xTP7/k4x0aAOvYPBBUql1FVFhgcRsJ3pgqxHmzlT4No3/sPL/I2qreEjBISYPcxOrR6iSq3/a+s=
+X-Received: by 2002:a4a:9d12:0:b0:56c:d297:164c with SMTP id
+ w18-20020a4a9d12000000b0056cd297164cmr21964901ooj.4.1697038731096; Wed, 11
+ Oct 2023 08:38:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/10] hw/fsi: Added qtest
-Content-Language: en-US
-To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org, clg@kaod.org, 
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20231011151339.2782132-1-ninad@linux.ibm.com>
- <20231011151339.2782132-9-ninad@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231011151339.2782132-9-ninad@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231011112054.1031975-1-mjt@tls.msk.ru>
+ <20231011112054.1031975-3-mjt@tls.msk.ru>
+In-Reply-To: <20231011112054.1031975-3-mjt@tls.msk.ru>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 11 Oct 2023 11:38:38 -0400
+Message-ID: <CAJSP0QVkuu4EbW5gKmrN6Gotnhw1LG+ka=6vjuftPXBrKY+R3g@mail.gmail.com>
+Subject: Re: [PULL 02/13] hw/rdma/vmw/pvrdma_cmd: Use correct struct in
+ query_port()
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
+ qemu-trivial@nongnu.org, qemu-stable@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,84 +89,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/2023 17.13, Ninad Palsule wrote:
-> Added basic qtests for FSI model.
-> 
-> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+On Wed, 11 Oct 2023 at 07:23, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>
+> From: Peter Maydell <peter.maydell@linaro.org>
+>
+> In query_port() we pass the address of a local pvrdma_port_attr
+> struct to the rdma_query_backend_port() function.  Unfortunately,
+> rdma_backend_query_port() wants a pointer to a struct ibv_port_attr,
+> and the two are not the same length.
+>
+> Coverity spotted this (CID 1507146): pvrdma_port_attr is 48 bytes
+> long, and ibv_port_attr is 52 bytes, because it has a few extra
+> fields at the end.
+>
+> Fortunately, all we do with the attrs struct after the call is to
+> read a few specific fields out of it which are all at the same
+> offsets in both structs, so we can simply make the local variable the
+> correct type.  This also lets us drop the cast (which should have
+> been a bit of a warning flag that we were doing something wrong
+> here).
+>
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
-> v3:
->   - Added new qtest as per Cedric's comment.
-> V4:
->   - Remove MAINTAINER and documentation changes from this commit
-> ---
->   tests/qtest/fsi-test.c  | 210 ++++++++++++++++++++++++++++++++++++++++
->   tests/qtest/meson.build |   2 +
->   2 files changed, 212 insertions(+)
->   create mode 100644 tests/qtest/fsi-test.c
-> 
-> diff --git a/tests/qtest/fsi-test.c b/tests/qtest/fsi-test.c
-> new file mode 100644
-> index 0000000000..30bb7475c7
-> --- /dev/null
-> +++ b/tests/qtest/fsi-test.c
-> @@ -0,0 +1,210 @@
-...
-> +int main(int argc, char **argv)
-> +{
-> +    int ret = -1;
-> +    QTestState *s;
-> +
-> +    g_test_init(&argc, &argv, NULL);
-> +
-> +    s = qtest_init("-machine ast2600-evb ");
-> +    if (s == NULL) {
-> +        return -ENOMEM;
+>  hw/rdma/vmw/pvrdma_cmd.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 
-returning -ENOMEM here does not make too much sense ... and actually 
-qtest_init() cannot return NULL. So please drop this if-statement.
+The following CI failure has occurred:
 
-> +    }
-> +
-> +    /* Tests for OPB/FSI0 */
-> +    qtest_add_data_func("/fsi-test/test_fsi0_master_regs", s,
-> +                        test_fsi0_master_regs);
-> +
-> +    qtest_add_data_func("/fsi-test/test_fsi0_getcfam_addr0", s,
-> +                        test_fsi0_getcfam_addr0);
-> +
-> +    /* Tests for OPB/FSI1 */
-> +    qtest_add_data_func("/fsi-test/test_fsi1_master_regs", s,
-> +                        test_fsi1_master_regs);
-> +
-> +    qtest_add_data_func("/fsi-test/test_fsi1_getcfam_addr0", s,
-> +                        test_fsi1_getcfam_addr0);
-> +
-> +    ret = g_test_run();
-> +    qtest_quit(s);
-> +
-> +    return ret;
-> +}
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index b071d400b3..5976081b44 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -207,6 +207,7 @@ qtests_arm = \
->     (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
->     (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] : []) + \
->     (config_all_devices.has_key('CONFIG_MICROBIT') ? ['microbit-test'] : []) + \
-> +  (config_all_devices.has_key('CONFIG_FSI_APB2OPB_ASPEED') ? ['fsi-test'] : []) + \
->     ['arm-cpu-features',
->      'boot-serial-test']
->   
-> @@ -318,6 +319,7 @@ qtests = {
->     'tpm-tis-device-test': [io, tpmemu_files, 'tpm-tis-util.c'],
->     'vmgenid-test': files('boot-sector.c', 'acpi-utils.c'),
->     'netdev-socket': files('netdev-socket.c', '../unit/socket-helpers.c'),
-> +  'fsi-test': files('fsi-test.c'),
+../hw/rdma/vmw/pvrdma_cmd.c:144:59: error: implicit conversion from
+enumeration type 'enum ibv_port_state' to different enumeration type
+'enum pvrdma_port_state' [-Werror,-Wenum-conversion]
+resp->attrs.state =3D dev->func0->device_active ? attrs.state :
+~ ~~~~~~^~~~~
+../hw/rdma/vmw/pvrdma_cmd.c:146:33: error: implicit conversion from
+enumeration type 'enum ibv_mtu' to different enumeration type 'enum
+pvrdma_mtu' [-Werror,-Wenum-conversion]
+resp->attrs.max_mtu =3D attrs.max_mtu;
+~ ~~~~~~^~~~~~~
+../hw/rdma/vmw/pvrdma_cmd.c:147:36: error: implicit conversion from
+enumeration type 'enum ibv_mtu' to different enumeration type 'enum
+pvrdma_mtu' [-Werror,-Wenum-conversion]
+resp->attrs.active_mtu =3D attrs.active_mtu;
+~ ~~~~~~^~~~~~~~~~
 
-I think this hunk here is not required - you only need to specify additional 
-dependencies here, not the main file.
+https://gitlab.com/qemu-project/qemu/-/jobs/5270666420
 
-  Thomas
+Please take a look.
 
+Thanks,
+Stefan
+
+>
+> diff --git a/hw/rdma/vmw/pvrdma_cmd.c b/hw/rdma/vmw/pvrdma_cmd.c
+> index c6ed025982..d31c187593 100644
+> --- a/hw/rdma/vmw/pvrdma_cmd.c
+> +++ b/hw/rdma/vmw/pvrdma_cmd.c
+> @@ -129,14 +129,13 @@ static int query_port(PVRDMADev *dev, union pvrdma_=
+cmd_req *req,
+>  {
+>      struct pvrdma_cmd_query_port *cmd =3D &req->query_port;
+>      struct pvrdma_cmd_query_port_resp *resp =3D &rsp->query_port_resp;
+> -    struct pvrdma_port_attr attrs =3D {};
+> +    struct ibv_port_attr attrs =3D {};
+>
+>      if (cmd->port_num > MAX_PORTS) {
+>          return -EINVAL;
+>      }
+>
+> -    if (rdma_backend_query_port(&dev->backend_dev,
+> -                                (struct ibv_port_attr *)&attrs)) {
+> +    if (rdma_backend_query_port(&dev->backend_dev, &attrs)) {
+>          return -ENOMEM;
+>      }
+>
+> --
+> 2.39.2
+>
+>
 
