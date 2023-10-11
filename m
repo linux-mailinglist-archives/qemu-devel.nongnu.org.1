@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936087C5ED3
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 22:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39EBB7C5ED4
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 23:01:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqgHf-0005YW-Bh; Wed, 11 Oct 2023 16:58:23 -0400
+	id 1qqgJo-0006K5-Ps; Wed, 11 Oct 2023 17:00:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qqgHb-0005YH-FQ
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:58:19 -0400
+ id 1qqgJh-0006Ja-9V
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 17:00:31 -0400
 Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qqgHZ-0008Si-E4
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 16:58:18 -0400
+ id 1qqgJY-0000Xa-96
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 17:00:27 -0400
 Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-57e4459aa29so124329eaf.0
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 13:58:17 -0700 (PDT)
+ 006d021491bc7-57b5f0d658dso163949eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 14:00:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697057896; x=1697662696; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NzUni2jjo7opdgSToRDZV4wea2SDovXWQEQPQLzntNk=;
- b=S/HiWcHWsXAZ7jqgIIMSgdLNFSxvXBN6QMVsVXAO+vvxKFY8XuPNW/0qAMnyE58hZR
- CQuib/jjzwAfmuKNWmavtR4APuk39KGir3hgD1Ky0pVBJrdg7AduNkzBOnLPUBoZLvMw
- PEDS1A0AvVIIisfMzFQhfATaWTYlTT3UJvEReYaoy5stYw/d5ANKXLNMaQscYod0OLTi
- woSsoOCldOCEh7lpX6pANaEgSKR7qT1pCQ6DigkEnZb2mWp9YjENUQGsbBBXP9if5kGC
- 3s52av8cI1CScE6w0yyZO8MdnSV/dkLejOeajaF1HfDSNvVJKUNy2VvgZ7tRjh2Bir4E
- GUQQ==
+ d=gmail.com; s=20230601; t=1697058004; x=1697662804; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=za/ebOMiRKrc1Z3gteYUevrsi1HMalUD0oqgEJzlgVg=;
+ b=NkaVOMgOh6HoiSITCV4xSZnWuVZfvJC2hn+jUe85b2iIQvWfUZql123BO6j49Av3IO
+ nDOORTlXj+HAa7FK2MHnjtHt/d+LWZpj3nqe/7g31FacE9v7M7zRpfWXEn0HCUTRBiKU
+ UrUmnZYvjrMHtUyWf53Z/1pJiZZjyPA9me6DwvX4fQLfusK4M3cCcxPsITT2BjtpVfNQ
+ 0GGMWkEYdniTOZdL+QpvSqFiJGVl82KVk5wj7KBPFOSa8Huu2w4USPtN9NqQrG2lLupC
+ FbpglDc6bB6JOejIeWj1sgoAlhaYtNTzBOpeerwpvJCJhdd9WBCSrrjEn/U2tSGk732k
+ SUIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697057896; x=1697662696;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NzUni2jjo7opdgSToRDZV4wea2SDovXWQEQPQLzntNk=;
- b=ap0P51k0BlJHw8NMjKhVPreV9R3dbTP2zJaoidChOOjiPJd0fHhJM+Ng1C1mAkJ7ZU
- hG70sk0PORw1A6vfM/IX5q5F6BWAPN26BC5PXuHWyJyrlezGbzZ+oB7/3nsT8jlHJ61J
- e+JMquNR+JRogpOb8Po+W1JSr+NLoC5l6twoqGqVN+3Cpw4lEKkgpNMgu23VHMhUwS+R
- OrWVU6xlTigVUogXxGI5JpRchDuyr0NiTX3uYkBZLsF2rt/Ghkcp4Nihiu8fpUttVnDV
- zI1Svts47zpi3KJRG6ZOYemoFfmckxtXzSAEIbro6vBEV4gwDVwpaB+AxEIg9Gu4h4ar
- tovQ==
-X-Gm-Message-State: AOJu0YxMXSI3hl19Ye0eDhwMre08V6wsYu59d7B2xrnhb45lpGIZFJ7w
- gViaX4c8LtlAyZzaDtASiSf5RW6IT/qeDf64MbY=
-X-Google-Smtp-Source: AGHT+IEzcw0E9nr5aIJ4hsHFGAooB2Byqv4yebxMfkkF8FLBI0mB9pqMind6vLf4yH2X6B5+ubz9KU3dE1Aky0ynxSU=
-X-Received: by 2002:a4a:d858:0:b0:576:b301:a9b1 with SMTP id
- g24-20020a4ad858000000b00576b301a9b1mr11915596oov.0.1697057896075; Wed, 11
- Oct 2023 13:58:16 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697058004; x=1697662804;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=za/ebOMiRKrc1Z3gteYUevrsi1HMalUD0oqgEJzlgVg=;
+ b=O6RPqoA5ucXLtAZzbt4nCSqG0VKPOYruD0W+U6+PUg9f0bF3h+3lRLyu6EjQDIiomN
+ 8FMshebBbtEPzQS1u4beL7QarfvThI+OvdiT5nPGmTT87Ud3n83lDxDZ5oq64Ogi9rbG
+ +mWI5NJFuX0WziX84g6z9S/Qpf4rCacEssf5WQcktBL293dsYXInuz0Q2EyTcrrtq7WU
+ mRYaB5bnBXNr8yduovz1KrpldUlDRFa3PHlvKYJ0bgemI6qR4X3S7FXV43VFfSx4/KBZ
+ mfNsUqf2szU82J0SnhWDINw1nigPohD1kjjoD+bkvOAfqdDkWENasmOSvyng+rk6tG6I
+ qYuQ==
+X-Gm-Message-State: AOJu0Yyp0e7PSAvdksa+P1Dg+xNeRBrNWU7R+s4ibinYU6e0rwM3ebtU
+ Y6o9e+qFt7Vd5ugiAGyoNzGk1Ixf8svWmXeGZa8=
+X-Google-Smtp-Source: AGHT+IHrKNKZOZsIMWPc9FeJgoRDDFVGXhT5wrPY/1JTYWa35nFy7w9DXPcC5EMs/0DcjdJvS/3yImJfbJwQ+O79NBI=
+X-Received: by 2002:a4a:921b:0:b0:571:1fad:ebe0 with SMTP id
+ f27-20020a4a921b000000b005711fadebe0mr23299388ooh.3.1697058004322; Wed, 11
+ Oct 2023 14:00:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230907130004.500601-1-pbonzini@redhat.com>
- <20230907130004.500601-51-pbonzini@redhat.com>
- <14ff27a8-284b-66f8-097a-5d49c94dcff8@linaro.org>
- <ZSZhCcnn2C37uZWH@redhat.com>
-In-Reply-To: <ZSZhCcnn2C37uZWH@redhat.com>
+References: <20231009104322.3085887-1-i.maximets@ovn.org>
+In-Reply-To: <20231009104322.3085887-1-i.maximets@ovn.org>
 From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 11 Oct 2023 16:58:01 -0400
-Message-ID: <CAJSP0QWZM9DuYOOzEP1hj5pF1e0T1bf8B__c79r+V7XSBWYuxw@mail.gmail.com>
-Subject: Re: [PULL 50/51] subprojects: add wrap file for libblkio
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org, Tyler Fanelli <tfanelli@redhat.com>
+Date: Wed, 11 Oct 2023 16:59:51 -0400
+Message-ID: <CAJSP0QULQ3EGuypp0M_MSRR7fMeifaCxhqUBwzcPQuKeKYMacQ@mail.gmail.com>
+Subject: Re: [PATCH] memory: initialize 'fv' in MemoryRegionCache to make
+ Coverity happy
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
  envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2d.google.com
 X-Spam_score_int: -20
@@ -91,41 +88,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 11 Oct 2023 at 04:48, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
+On Mon, 9 Oct 2023 at 06:44, Ilya Maximets <i.maximets@ovn.org> wrote:
 >
-> On Wed, Oct 11, 2023 at 07:35:24AM +0200, Philippe Mathieu-Daud=C3=A9 wro=
-te:
-> > Hi Paolo,
-> >
-> > On 7/9/23 14:59, Paolo Bonzini wrote:
-> > > This allows building libblkio at the same time as QEMU, if QEMU is
-> > > configured with --enable-blkio --enable-download.
-> > >
-> > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > > ---
-> > >   subprojects/libblkio.wrap | 6 ++++++
-> > >   1 file changed, 6 insertions(+)
-> > >   create mode 100644 subprojects/libblkio.wrap
-> > >
-> > > diff --git a/subprojects/libblkio.wrap b/subprojects/libblkio.wrap
-> > > new file mode 100644
-> > > index 00000000000..f77af72210c
-> > > --- /dev/null
-> > > +++ b/subprojects/libblkio.wrap
-> > > @@ -0,0 +1,6 @@
-> > > +[wrap-git]
-> > > +url =3D https://gitlab.com/libblkio/libblkio
-> >
-> > Tyler noticed this project isn't mirrored on QEMU gitlab namespace.
+> Coverity scan reports multiple false-positive "defects" for the
+> following series of actions in virtio.c:
 >
-> Many other wraps aren't mirrored either, and I'm not convinced we
-> need to, unless the project is on an obscure self hosted git service
-> which is thought unreliable.
+>   MemoryRegionCache indirect_desc_cache;
+>   address_space_cache_init_empty(&indirect_desc_cache);
+>   address_space_cache_destroy(&indirect_desc_cache);
+>
+> For some reason it's unable to recognize the dependency between 'mrs.mr'
+> and 'fv' and insists that '!mrs.mr' check in address_space_cache_destroy
+> may take a 'false' branch, even though it is explicitly initialized to
+> NULL in the address_space_cache_init_empty():
+>
+>   *** CID 1522371:  Memory - illegal accesses  (UNINIT)
+>   /qemu/hw/virtio/virtio.c: 1627 in virtqueue_split_pop()
+>   1621         }
+>   1622
+>   1623         vq->inuse++;
+>   1624
+>   1625         trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
+>   1626     done:
+>   >>>     CID 1522371:  Memory - illegal accesses  (UNINIT)
+>   >>>     Using uninitialized value "indirect_desc_cache.fv" when
+>   >>>     calling "address_space_cache_destroy".
+>   1627         address_space_cache_destroy(&indirect_desc_cache);
+>   1628
+>   1629         return elem;
+>   1630
+>   1631     err_undo_map:
+>   1632         virtqueue_undo_map_desc(out_num, in_num, iov);
+>
+>   ** CID 1522370:  Memory - illegal accesses  (UNINIT)
+>
+> Instead of trying to silence these false positive reports in 4
+> different places, initializing 'fv' as well, as this doesn't result
+> in any noticeable performance impact.
+>
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
+>  include/exec/memory.h | 2 ++
+>  1 file changed, 2 insertions(+)
 
-What if upstream deletes the repository or sets visibility to
-"private"? Do GitHub and GitLab guarantee availability of previously
-public repositories?
-
-Stefan
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
