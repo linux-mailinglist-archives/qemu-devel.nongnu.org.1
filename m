@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5FF7C4F14
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5357C4EFF
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:31:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqVRP-0001j9-SC; Wed, 11 Oct 2023 05:23:43 -0400
+	id 1qqVRL-0001aE-RD; Wed, 11 Oct 2023 05:23:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVRN-0001hD-GI
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:41 -0400
+ id 1qqVRJ-0001OC-FZ
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVRL-00054u-TC
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:41 -0400
+ id 1qqVRH-00053y-3t
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697016219;
+ s=mimecast20190719; t=1697016214;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9nzf9h501CnrBsSraqlerv5Ta99Pfe8Cmh4XFxpF8UE=;
- b=TwUsC14jn5VyFpJCr98navvwtXK3tBymRd1c0ZAXGktdnE9OOUjIItB+tCpmFZG4xRGbVZ
- iEbK7rbktqd7XDbE8Ns588beJdYQlpqjnx02u9271t/l9kseqNp5T3MY9sXT7WoBp0ugxp
- 6sJJHewpnQWCTLk5z0a0BJhCPFzmqsA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-657-k3TC6G4XNn-jub_Hdn9Egw-1; Wed, 11 Oct 2023 05:23:27 -0400
-X-MC-Unique: k3TC6G4XNn-jub_Hdn9Egw-1
+ bh=F0fz7/j8ol2MFf8S6dq60VQF0FUQR4EtpJLQ/pFdC8Q=;
+ b=W3AumhZXLmkack4RnFVjFydVQyv53dNlQT516Qg+KAYTUwRDs9UniBSLV1o4Hihx7Tfgq8
+ l/wvC90Kd3IyxQ7tMb7IXNHoXatoEWRvgqn8gYa3Q9xiTG75knCDOkH1vpfm1J9buMy+mt
+ urRzRI7kTqR/U99UYeiCI59/bjAHmWQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-635-fMz5dyRrNaemftM9w_C7iA-1; Wed, 11 Oct 2023 05:23:30 -0400
+X-MC-Unique: fMz5dyRrNaemftM9w_C7iA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 75F401C0896C;
- Wed, 11 Oct 2023 09:23:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D6CAD185A78E;
+ Wed, 11 Oct 2023 09:23:29 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B29E41C060B0;
- Wed, 11 Oct 2023 09:23:25 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B60881C060AE;
+ Wed, 11 Oct 2023 09:23:27 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -49,10 +49,10 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>,
  Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 40/65] migration/rdma: Fix error handling around
- rdma_getaddrinfo()
-Date: Wed, 11 Oct 2023 11:21:38 +0200
-Message-ID: <20231011092203.1266-41-quintela@redhat.com>
+Subject: [PULL 41/65] migration/rdma: Drop "@errp is clear" guards around
+ error_setg()
+Date: Wed, 11 Oct 2023 11:21:39 +0200
+Message-ID: <20231011092203.1266-42-quintela@redhat.com>
 In-Reply-To: <20231011092203.1266-1-quintela@redhat.com>
 References: <20231011092203.1266-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -84,138 +84,371 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Markus Armbruster <armbru@redhat.com>
 
-qemu_rdma_resolve_host() and qemu_rdma_dest_init() iterate over
-addresses to find one that works, holding onto the first Error from
-qemu_rdma_broken_ipv6_kernel() for use when no address works.  Issues:
-
-1. If @errp was &error_abort or &error_fatal, we'd terminate instead
-   of trying the next address.  Can't actually happen, since no caller
-   passes these arguments.
-
-2. When @errp is a pointer to a variable containing NULL, and
-   qemu_rdma_broken_ipv6_kernel() fails, the variable no longer
-   contains NULL.  Subsequent iterations pass it again, violating
-   Error usage rules.  Dangerous, as setting an error would then trip
-   error_setv()'s assertion.  Works only because
-   qemu_rdma_broken_ipv6_kernel() and the code following the loops
-   carefully avoids setting a second error.
-
-3. If qemu_rdma_broken_ipv6_kernel() fails, and then a later iteration
-   finds a working address, @errp still holds the first error from
-   qemu_rdma_broken_ipv6_kernel().  If we then run into another error,
-   we report the qemu_rdma_broken_ipv6_kernel() failure instead.
-
-4. If we don't run into another error, we leak the Error object.
-
-Use a local error variable, and propagate to @errp.  This fixes 3. and
-also cleans up 1 and partly 2.
-
-Free this error when we have a working address.  This fixes 4.
-
-Pass the local error variable to qemu_rdma_broken_ipv6_kernel() only
-until it fails.  Pass null on any later iterations.  This cleans up
-the remainder of 2.
+These guards are all redundant now.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20230928132019.2544702-34-armbru@redhat.com>
+Message-ID: <20230928132019.2544702-35-armbru@redhat.com>
 ---
- migration/rdma.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ migration/rdma.c | 164 +++++++++++++++--------------------------------
+ 1 file changed, 51 insertions(+), 113 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index 4074509f06..3fb899f963 100644
+index 3fb899f963..fdb527af39 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -932,6 +932,7 @@ static int qemu_rdma_broken_ipv6_kernel(struct ibv_context *verbs, Error **errp)
-  */
- static int qemu_rdma_resolve_host(RDMAContext *rdma, Error **errp)
- {
-+    Error *err = NULL;
-     int ret;
-     struct rdma_addrinfo *res;
-     char port_str[16];
-@@ -976,7 +977,10 @@ static int qemu_rdma_resolve_host(RDMAContext *rdma, Error **errp)
+@@ -858,10 +858,8 @@ static int qemu_rdma_broken_ipv6_kernel(struct ibv_context *verbs, Error **errp)
+ 
+             if (ibv_query_port(verbs, 1, &port_attr)) {
+                 ibv_close_device(verbs);
+-                if (errp && !*errp) {
+-                    error_setg(errp,
+-                               "RDMA ERROR: Could not query initial IB port");
+-                }
++                error_setg(errp,
++                           "RDMA ERROR: Could not query initial IB port");
+                 return -1;
+             }
+ 
+@@ -884,12 +882,10 @@ static int qemu_rdma_broken_ipv6_kernel(struct ibv_context *verbs, Error **errp)
+                                 " migrate over the IB fabric until the kernel "
+                                 " fixes the bug.\n");
+             } else {
+-                if (errp && !*errp) {
+-                    error_setg(errp, "RDMA ERROR: "
+-                               "You only have RoCE / iWARP devices in your systems"
+-                               " and your management software has specified '[::]'"
+-                               ", but IPv6 over RoCE / iWARP is not supported in Linux.");
+-                }
++                error_setg(errp, "RDMA ERROR: "
++                           "You only have RoCE / iWARP devices in your systems"
++                           " and your management software has specified '[::]'"
++                           ", but IPv6 over RoCE / iWARP is not supported in Linux.");
+                 return -1;
+             }
+         }
+@@ -905,18 +901,14 @@ static int qemu_rdma_broken_ipv6_kernel(struct ibv_context *verbs, Error **errp)
+ 
+     /* IB ports start with 1, not 0 */
+     if (ibv_query_port(verbs, 1, &port_attr)) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: Could not query initial IB port");
+-        }
++        error_setg(errp, "RDMA ERROR: Could not query initial IB port");
+         return -1;
+     }
+ 
+     if (port_attr.link_layer == IBV_LINK_LAYER_ETHERNET) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: "
+-                       "Linux kernel's RoCE / iWARP does not support IPv6 "
+-                       "(but patches on linux-rdma in progress)");
+-        }
++        error_setg(errp, "RDMA ERROR: "
++                   "Linux kernel's RoCE / iWARP does not support IPv6 "
++                   "(but patches on linux-rdma in progress)");
+         return -1;
+     }
+ 
+@@ -941,27 +933,21 @@ static int qemu_rdma_resolve_host(RDMAContext *rdma, Error **errp)
+     struct rdma_addrinfo *e;
+ 
+     if (rdma->host == NULL || !strcmp(rdma->host, "")) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: RDMA hostname has not been set");
+-        }
++        error_setg(errp, "RDMA ERROR: RDMA hostname has not been set");
+         return -1;
+     }
+ 
+     /* create CM channel */
+     rdma->channel = rdma_create_event_channel();
+     if (!rdma->channel) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: could not create CM channel");
+-        }
++        error_setg(errp, "RDMA ERROR: could not create CM channel");
+         return -1;
+     }
+ 
+     /* create CM id */
+     ret = rdma_create_id(rdma->channel, &rdma->cm_id, NULL, RDMA_PS_TCP);
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: could not create channel id");
+-        }
++        error_setg(errp, "RDMA ERROR: could not create channel id");
+         goto err_resolve_create_id;
+     }
+ 
+@@ -970,10 +956,8 @@ static int qemu_rdma_resolve_host(RDMAContext *rdma, Error **errp)
+ 
+     ret = rdma_getaddrinfo(rdma->host, port_str, NULL, &res);
+     if (ret) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: could not rdma_getaddrinfo address %s",
+-                       rdma->host);
+-        }
++        error_setg(errp, "RDMA ERROR: could not rdma_getaddrinfo address %s",
++                   rdma->host);
          goto err_resolve_get_addr;
      }
  
-+    /* Try all addresses, saving the first error in @err */
-     for (e = res; e != NULL; e = e->ai_next) {
-+        Error **local_errp = err ? NULL : &err;
-+
-         inet_ntop(e->ai_family,
-             &((struct sockaddr_in *) e->ai_dst_addr)->sin_addr, ip, sizeof ip);
-         trace_qemu_rdma_resolve_host_trying(rdma->host, ip);
-@@ -985,17 +989,21 @@ static int qemu_rdma_resolve_host(RDMAContext *rdma, Error **errp)
-                 RDMA_RESOLVE_TIMEOUT_MS);
-         if (ret >= 0) {
-             if (e->ai_family == AF_INET6) {
--                ret = qemu_rdma_broken_ipv6_kernel(rdma->cm_id->verbs, errp);
-+                ret = qemu_rdma_broken_ipv6_kernel(rdma->cm_id->verbs,
-+                                                   local_errp);
-                 if (ret < 0) {
-                     continue;
-                 }
-             }
-+            error_free(err);
-             goto route;
-         }
-     }
+@@ -1015,18 +999,14 @@ route:
  
-     rdma_freeaddrinfo(res);
--    if (errp && !*errp) {
-+    if (err) {
-+        error_propagate(errp, err);
-+    } else {
-         error_setg(errp, "RDMA ERROR: could not resolve address %s",
-                    rdma->host);
-     }
-@@ -2707,6 +2715,7 @@ err_rdma_source_connect:
- 
- static int qemu_rdma_dest_init(RDMAContext *rdma, Error **errp)
- {
-+    Error *err = NULL;
-     int ret, idx;
-     struct rdma_cm_id *listen_id;
-     char ip[40] = "unknown";
-@@ -2765,7 +2774,11 @@ static int qemu_rdma_dest_init(RDMAContext *rdma, Error **errp)
-         }
-         goto err_dest_init_bind_addr;
-     }
-+
-+    /* Try all addresses, saving the first error in @err */
-     for (e = res; e != NULL; e = e->ai_next) {
-+        Error **local_errp = err ? NULL : &err;
-+
-         inet_ntop(e->ai_family,
-             &((struct sockaddr_in *) e->ai_dst_addr)->sin_addr, ip, sizeof ip);
-         trace_qemu_rdma_dest_init_trying(rdma->host, ip);
-@@ -2774,17 +2787,21 @@ static int qemu_rdma_dest_init(RDMAContext *rdma, Error **errp)
-             continue;
-         }
-         if (e->ai_family == AF_INET6) {
--            ret = qemu_rdma_broken_ipv6_kernel(listen_id->verbs, errp);
-+            ret = qemu_rdma_broken_ipv6_kernel(listen_id->verbs,
-+                                               local_errp);
-             if (ret < 0) {
-                 continue;
-             }
-         }
-+        error_free(err);
-         break;
-     }
- 
-     rdma_freeaddrinfo(res);
-     if (!e) {
+     ret = rdma_get_cm_event(rdma->channel, &cm_event);
+     if (ret < 0) {
 -        if (errp && !*errp) {
-+        if (err) {
-+            error_propagate(errp, err);
-+        } else {
-             error_setg(errp, "RDMA ERROR: Error: could not rdma_bind_addr!");
+-            error_setg(errp, "RDMA ERROR: could not perform event_addr_resolved");
+-        }
++        error_setg(errp, "RDMA ERROR: could not perform event_addr_resolved");
+         goto err_resolve_get_addr;
+     }
+ 
+     if (cm_event->event != RDMA_CM_EVENT_ADDR_RESOLVED) {
+-        if (errp && !*errp) {
+-            error_setg(errp,
+-                       "RDMA ERROR: result not equal to event_addr_resolved %s",
+-                       rdma_event_str(cm_event->event));
+-        }
++        error_setg(errp,
++                   "RDMA ERROR: result not equal to event_addr_resolved %s",
++                   rdma_event_str(cm_event->event));
+         error_report("rdma_resolve_addr");
+         rdma_ack_cm_event(cm_event);
+         goto err_resolve_get_addr;
+@@ -1036,25 +1016,19 @@ route:
+     /* resolve route */
+     ret = rdma_resolve_route(rdma->cm_id, RDMA_RESOLVE_TIMEOUT_MS);
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: could not resolve rdma route");
+-        }
++        error_setg(errp, "RDMA ERROR: could not resolve rdma route");
+         goto err_resolve_get_addr;
+     }
+ 
+     ret = rdma_get_cm_event(rdma->channel, &cm_event);
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: could not perform event_route_resolved");
+-        }
++        error_setg(errp, "RDMA ERROR: could not perform event_route_resolved");
+         goto err_resolve_get_addr;
+     }
+     if (cm_event->event != RDMA_CM_EVENT_ROUTE_RESOLVED) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: "
+-                       "result not equal to event_route_resolved: %s",
+-                       rdma_event_str(cm_event->event));
+-        }
++        error_setg(errp, "RDMA ERROR: "
++                   "result not equal to event_route_resolved: %s",
++                   rdma_event_str(cm_event->event));
+         rdma_ack_cm_event(cm_event);
+         goto err_resolve_get_addr;
+     }
+@@ -2525,20 +2499,16 @@ static int qemu_rdma_source_init(RDMAContext *rdma, bool pin_all, Error **errp)
+ 
+     ret = qemu_rdma_alloc_pd_cq(rdma);
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: "
+-                       "rdma migration: error allocating pd and cq! Your mlock()"
+-                       " limits may be too low. Please check $ ulimit -a # and "
+-                       "search for 'ulimit -l' in the output");
+-        }
++        error_setg(errp, "RDMA ERROR: "
++                   "rdma migration: error allocating pd and cq! Your mlock()"
++                   " limits may be too low. Please check $ ulimit -a # and "
++                   "search for 'ulimit -l' in the output");
+         goto err_rdma_source_init;
+     }
+ 
+     ret = qemu_rdma_alloc_qp(rdma);
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: rdma migration: error allocating qp!");
+-        }
++        error_setg(errp, "RDMA ERROR: rdma migration: error allocating qp!");
+         goto err_rdma_source_init;
+     }
+ 
+@@ -2555,11 +2525,9 @@ static int qemu_rdma_source_init(RDMAContext *rdma, bool pin_all, Error **errp)
+     for (idx = 0; idx < RDMA_WRID_MAX; idx++) {
+         ret = qemu_rdma_reg_control(rdma, idx);
+         if (ret < 0) {
+-            if (errp && !*errp) {
+-                error_setg(errp,
+-                           "RDMA ERROR: rdma migration: error registering %d control!",
+-                           idx);
+-            }
++            error_setg(errp,
++                       "RDMA ERROR: rdma migration: error registering %d control!",
++                       idx);
+             goto err_rdma_source_init;
          }
+     }
+@@ -2587,29 +2555,21 @@ static int qemu_get_cm_event_timeout(RDMAContext *rdma,
+     } while (ret < 0 && errno == EINTR);
+ 
+     if (ret == 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: poll cm event timeout");
+-        }
++        error_setg(errp, "RDMA ERROR: poll cm event timeout");
+         return -1;
+     } else if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: failed to poll cm event, errno=%i",
+-                       errno);
+-        }
++        error_setg(errp, "RDMA ERROR: failed to poll cm event, errno=%i",
++                   errno);
+         return -1;
+     } else if (poll_fd.revents & POLLIN) {
+         if (rdma_get_cm_event(rdma->channel, cm_event) < 0) {
+-            if (errp && !*errp) {
+-                error_setg(errp, "RDMA ERROR: failed to get cm event");
+-            }
++            error_setg(errp, "RDMA ERROR: failed to get cm event");
+             return -1;
+         }
+         return 0;
+     } else {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: no POLLIN event, revent=%x",
+-                       poll_fd.revents);
+-        }
++        error_setg(errp, "RDMA ERROR: no POLLIN event, revent=%x",
++                   poll_fd.revents);
+         return -1;
+     }
+ }
+@@ -2642,18 +2602,14 @@ static int qemu_rdma_connect(RDMAContext *rdma, bool return_path,
+ 
+     ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: posting second control recv");
+-        }
++        error_setg(errp, "RDMA ERROR: posting second control recv");
+         goto err_rdma_source_connect;
+     }
+ 
+     ret = rdma_connect(rdma->cm_id, &conn_param);
+     if (ret < 0) {
+         perror("rdma_connect");
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: connecting to destination!");
+-        }
++        error_setg(errp, "RDMA ERROR: connecting to destination!");
+         goto err_rdma_source_connect;
+     }
+ 
+@@ -2662,9 +2618,7 @@ static int qemu_rdma_connect(RDMAContext *rdma, bool return_path,
+     } else {
+         ret = rdma_get_cm_event(rdma->channel, &cm_event);
+         if (ret < 0) {
+-            if (errp && !*errp) {
+-                error_setg(errp, "RDMA ERROR: failed to get cm event");
+-            }
++            error_setg(errp, "RDMA ERROR: failed to get cm event");
+         }
+     }
+     if (ret < 0) {
+@@ -2679,9 +2633,7 @@ static int qemu_rdma_connect(RDMAContext *rdma, bool return_path,
+ 
+     if (cm_event->event != RDMA_CM_EVENT_ESTABLISHED) {
+         error_report("rdma_get_cm_event != EVENT_ESTABLISHED after rdma_connect");
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: connecting to destination!");
+-        }
++        error_setg(errp, "RDMA ERROR: connecting to destination!");
+         rdma_ack_cm_event(cm_event);
+         goto err_rdma_source_connect;
+     }
+@@ -2729,18 +2681,14 @@ static int qemu_rdma_dest_init(RDMAContext *rdma, Error **errp)
+     }
+ 
+     if (!rdma->host || !rdma->host[0]) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: RDMA host is not set!");
+-        }
++        error_setg(errp, "RDMA ERROR: RDMA host is not set!");
+         rdma->errored = true;
+         return -1;
+     }
+     /* create CM channel */
+     rdma->channel = rdma_create_event_channel();
+     if (!rdma->channel) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: could not create rdma event channel");
+-        }
++        error_setg(errp, "RDMA ERROR: could not create rdma event channel");
+         rdma->errored = true;
+         return -1;
+     }
+@@ -2748,9 +2696,7 @@ static int qemu_rdma_dest_init(RDMAContext *rdma, Error **errp)
+     /* create CM id */
+     ret = rdma_create_id(rdma->channel, &listen_id, NULL, RDMA_PS_TCP);
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: could not create cm_id!");
+-        }
++        error_setg(errp, "RDMA ERROR: could not create cm_id!");
+         goto err_dest_init_create_listen_id;
+     }
+ 
+@@ -2759,19 +2705,15 @@ static int qemu_rdma_dest_init(RDMAContext *rdma, Error **errp)
+ 
+     ret = rdma_getaddrinfo(rdma->host, port_str, NULL, &res);
+     if (ret) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: could not rdma_getaddrinfo address %s",
+-                       rdma->host);
+-        }
++        error_setg(errp, "RDMA ERROR: could not rdma_getaddrinfo address %s",
++                   rdma->host);
          goto err_dest_init_bind_addr;
+     }
+ 
+     ret = rdma_set_option(listen_id, RDMA_OPTION_ID, RDMA_OPTION_ID_REUSEADDR,
+                           &reuse, sizeof reuse);
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: Error: could not set REUSEADDR option");
+-        }
++        error_setg(errp, "RDMA ERROR: Error: could not set REUSEADDR option");
+         goto err_dest_init_bind_addr;
+     }
+ 
+@@ -2855,10 +2797,8 @@ static RDMAContext *qemu_rdma_data_init(const char *host_port, Error **errp)
+         rdma->host = g_strdup(addr->host);
+         rdma->host_port = g_strdup(host_port);
+     } else {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: bad RDMA migration address '%s'",
+-                       host_port);
+-        }
++        error_setg(errp, "RDMA ERROR: bad RDMA migration address '%s'",
++                   host_port);
+         g_free(rdma);
+         rdma = NULL;
+     }
+@@ -4232,9 +4172,7 @@ void rdma_start_incoming_migration(const char *host_port, Error **errp)
+     ret = rdma_listen(rdma->listen_id, 5);
+ 
+     if (ret < 0) {
+-        if (errp && !*errp) {
+-            error_setg(errp, "RDMA ERROR: listening on socket!");
+-        }
++        error_setg(errp, "RDMA ERROR: listening on socket!");
+         goto cleanup_rdma;
+     }
+ 
 -- 
 2.41.0
 
