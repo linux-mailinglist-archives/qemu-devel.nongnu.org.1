@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6207C5558
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 490687C5559
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:25:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZCy-0007C9-Ar; Wed, 11 Oct 2023 09:25:04 -0400
+	id 1qqZDJ-0007Ub-W8; Wed, 11 Oct 2023 09:25:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqZCp-00072q-Cf
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:24:57 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqZCy-0007IR-TI
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:25:04 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqZCn-0004Z6-IM
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:24:55 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-9b275afb6abso204079966b.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:24:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqZCw-0004a5-OY
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:25:04 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9b64b98656bso1161386466b.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:24:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697030692; x=1697635492; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697030697; x=1697635497; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1k4hLIH5x/CYejK+Tga2Zv6nJJJ/LS2i152HT3xRn+4=;
- b=GnwPEoTak+FXUt0cvRIyJGNIkSPwf3osYiMp9rUrKSYPo41hXuO5ADHRr2lRejL+P5
- uB6X9riYw7uTsvdRAUYQQIphB+UyGCzdtjAH2yfO1Pa6UsTznI/uXJoPBFMbGS4E7gW4
- rHerPSZnMSgJcPBpZ4Bj1KJ27t8qYu/OZEcEV8XZ38pIDOGqOvLysTjLdzEfUmorjS+r
- 3hLaR1Einra5Ac3WIvW7XrVts5GQ6gxLmT8XnxB4sBQz2ZJln6pOmbBXVOIlvFKUKNJt
- eC73HUstdAgm3N0qX3NBNX1mpW6GM68S5BJDhEt8YaGkdtNJwJ5mwGeyFXs9aGheO+n/
- Mf7w==
+ bh=yPOKwx+vha+69RBWTG45/wKN7dXRUEkgDKQ2NkwugtM=;
+ b=IzhlVNWytK9S85m028Bua9BGwzQ5zCNRbhZh+gi0Y50pS4Tj53iymNs4S6w6xCw+0j
+ a6aIUHqii1nZIRw5FcCK4ZU3jZxNpvVKWaJUAOglbc4rw2zbFpKME1u/cx8IzrSi+5az
+ eMVF2U6EfFgfJqYy/qIDwMkTkkFVAIR6kONWItZRjfovDe9AUhhZvtwK6ovq28BrRzgq
+ l/j+C8Jewals9nulqwNP5tt4NwyTWEeu70LCyNTSJlY0gHmHMAkK/CI+7rZWEBECkgXv
+ sK8iBT0Ut1maXZHD03wpZ8fgDxI1F0Ml5eBiUNrqbZMKV7byAPdmUNepNJerwUpfNK3M
+ 9/oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697030692; x=1697635492;
+ d=1e100.net; s=20230601; t=1697030697; x=1697635497;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1k4hLIH5x/CYejK+Tga2Zv6nJJJ/LS2i152HT3xRn+4=;
- b=pUdE1MLkAJgIHpcghSscv9adA2pD0HWHUXjLcltTgolG+28G+OAFwe662sO6VbOtPl
- TYts2nH19PFUB7ZqkylcmbwFyO/Fs48hWYz5H+bs/byaPvQQy49qnIZtZqT3QVNJ15E7
- T6EWMnKa0t6EuSVnMj6cNRQNM5TvbLtkTZUISIG7BuwBMP1rX3Fub4sTUD53zOoOBSpj
- V9s2ofl260CsB98OKT6pvQkg5ch6AvtOcm1edKWI06UOIsUsM1+yUaXCje9JW0pqczdK
- Nux9GO8q4PQGZ0MNMz2g2LCerHXq+2QXE0+74yg1sNRCmbmTqETbCBT1eBRKILRTi1aR
- Jx9g==
-X-Gm-Message-State: AOJu0Yy629E/SBnKLfxUtEuHxL8TIqM50QxjaDYKRnJ6j/sCxBm2ftHK
- G9O05h/C09hBU+rIBZpBogwRQt5wlmctN75E3pM=
-X-Google-Smtp-Source: AGHT+IH9gKS1GaTk8i10QsXGGPYi0ByLmg9yY5iHoZ9wOfk9cSVWD5rkX7m6RKK0Uiyouv+mdIdTPA==
-X-Received: by 2002:a17:907:8b8c:b0:9a9:f0e6:904e with SMTP id
- tb12-20020a1709078b8c00b009a9f0e6904emr15634129ejc.16.1697030691933; 
- Wed, 11 Oct 2023 06:24:51 -0700 (PDT)
+ bh=yPOKwx+vha+69RBWTG45/wKN7dXRUEkgDKQ2NkwugtM=;
+ b=hj+gAlUcHOwl/2+n5MVQSZ4TYGLEyHRgg2zH3XV+xuNQFU4fgIkMfVMVt1uSmkIYun
+ ymkXicK4g34uCQM1S43GfcQDD+M6yAs8PEymkMdP+ymBY5kIamRUML63jqq1tCPEA5Ms
+ NtScVPVYZL9RsX1QOGGLed9CMml1RRKNLuTXKT3FFQn0fauzin+y6LXyBF09uvpeMT5b
+ lB43UrQ/41SV2Zr36KlrIDqJLy33g17AM6lETMwPvJbO8e8G3+FDTdJmvrDyTVnB9g2I
+ viUGta5OT0n3za35pMXBpDtGFbDoCtGWnk+zPGTgC+RxtGLgCQP6cYTTsacf3UnbflYj
+ Rz0w==
+X-Gm-Message-State: AOJu0YwhBDvv0HN9rf+H0ubZVWjna+NZp15L/G41SMwqHYMHe/abgaQQ
+ NPGRUKdIoVm3eOMzEiMdgES/EgMc0rCHc4csHsM=
+X-Google-Smtp-Source: AGHT+IE155e9z3brfwDq65weTSXlDw7cl/kAChrAs9TbOrmoqEbJ61OLTe2nDypK5TVrYfMt0voCLA==
+X-Received: by 2002:a17:906:3ca1:b0:9a1:891b:6eed with SMTP id
+ b1-20020a1709063ca100b009a1891b6eedmr16899436ejh.76.1697030697334; 
+ Wed, 11 Oct 2023 06:24:57 -0700 (PDT)
 Received: from m1x-phil.lan (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
  [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
- rp19-20020a170906d97300b009b95b46bbd1sm9780620ejb.133.2023.10.11.06.24.50
+ h16-20020a17090619d000b00997e99a662bsm9718613ejd.20.2023.10.11.06.24.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Oct 2023 06:24:51 -0700 (PDT)
+ Wed, 11 Oct 2023 06:24:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/5] hw/ppc/ppc4xx_pci: Move ppc4xx_pci.c to hw/pci-host/
-Date: Wed, 11 Oct 2023 15:24:26 +0200
-Message-ID: <20231011132427.65001-5-philmd@linaro.org>
+Subject: [PATCH 5/5] hw/ppc/ppc440_pcix: Move ppc440_pcix.c to hw/pci-host/
+Date: Wed, 11 Oct 2023 15:24:27 +0200
+Message-ID: <20231011132427.65001-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231011132427.65001-1-philmd@linaro.org>
 References: <20231011132427.65001-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,105 +92,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ppc4xx_pci.c is moved from the target specific ppc_ss[] meson
+ppc440_pcix.c is moved from the target specific ppc_ss[] meson
 source set to pci_ss[] which is common to all targets: the
 object is built once.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                       | 1 +
- hw/{ppc => pci-host}/ppc4xx_pci.c | 0
- hw/pci-host/ppce500.c             | 2 +-
- hw/pci-host/meson.build           | 1 +
- hw/pci-host/trace-events          | 4 ++++
- hw/ppc/meson.build                | 1 -
- hw/ppc/trace-events               | 4 ----
- 7 files changed, 7 insertions(+), 6 deletions(-)
- rename hw/{ppc => pci-host}/ppc4xx_pci.c (100%)
+ MAINTAINERS                        | 2 +-
+ hw/{ppc => pci-host}/ppc440_pcix.c | 0
+ hw/pci-host/Kconfig                | 4 ++++
+ hw/pci-host/meson.build            | 1 +
+ hw/pci-host/trace-events           | 8 ++++++++
+ hw/ppc/Kconfig                     | 1 +
+ hw/ppc/meson.build                 | 2 +-
+ hw/ppc/trace-events                | 8 --------
+ 8 files changed, 16 insertions(+), 10 deletions(-)
+ rename hw/{ppc => pci-host}/ppc440_pcix.c (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 158896d03e..d7af23c1be 100644
+index d7af23c1be..d727eab16b 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1358,6 +1358,7 @@ Bamboo
- L: qemu-ppc@nongnu.org
- S: Orphan
- F: hw/ppc/ppc440_bamboo.c
-+F: hw/pci-host/ppc4xx_pci.c
- F: tests/avocado/ppc_bamboo.py
- 
- e500
-diff --git a/hw/ppc/ppc4xx_pci.c b/hw/pci-host/ppc4xx_pci.c
+@@ -1484,7 +1484,7 @@ L: qemu-ppc@nongnu.org
+ S: Maintained
+ F: hw/ppc/sam460ex.c
+ F: hw/ppc/ppc440_uc.c
+-F: hw/ppc/ppc440_pcix.c
++F: hw/pci-host/ppc440_pcix.c
+ F: hw/display/sm501*
+ F: hw/ide/sii3112.c
+ F: hw/rtc/m41t80.c
+diff --git a/hw/ppc/ppc440_pcix.c b/hw/pci-host/ppc440_pcix.c
 similarity index 100%
-rename from hw/ppc/ppc4xx_pci.c
-rename to hw/pci-host/ppc4xx_pci.c
-diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
-index 38814247f2..c16bc255ed 100644
---- a/hw/pci-host/ppce500.c
-+++ b/hw/pci-host/ppce500.c
-@@ -5,7 +5,7 @@
-  *
-  * Author: Yu Liu,     <yu.liu@freescale.com>
-  *
-- * This file is derived from hw/ppc4xx_pci.c,
-+ * This file is derived from ppc4xx_pci.c,
-  * the copyright for that material belongs to the original owners.
-  *
-  * This is free software; you can redistribute it and/or modify
+rename from hw/ppc/ppc440_pcix.c
+rename to hw/pci-host/ppc440_pcix.c
+diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
+index a9030a433b..19b25b2092 100644
+--- a/hw/pci-host/Kconfig
++++ b/hw/pci-host/Kconfig
+@@ -10,6 +10,10 @@ config PPC4XX_PCI
+     bool
+     select PCI
+ 
++config PPC440_PCI
++    bool
++    select PCI
++
+ config RAVEN_PCI
+     bool
+     select PCI
 diff --git a/hw/pci-host/meson.build b/hw/pci-host/meson.build
-index 64eada76fe..9cabac5d63 100644
+index 9cabac5d63..d724656f70 100644
 --- a/hw/pci-host/meson.build
 +++ b/hw/pci-host/meson.build
-@@ -14,6 +14,7 @@ pci_ss.add(when: 'CONFIG_REMOTE_PCIHOST', if_true: files('remote.c'))
- pci_ss.add(when: 'CONFIG_SH_PCI', if_true: files('sh_pci.c'))
+@@ -15,6 +15,7 @@ pci_ss.add(when: 'CONFIG_SH_PCI', if_true: files('sh_pci.c'))
  
  # PPC devices
-+pci_ss.add(when: 'CONFIG_PPC4XX_PCI', if_true: files('ppc4xx_pci.c'))
+ pci_ss.add(when: 'CONFIG_PPC4XX_PCI', if_true: files('ppc4xx_pci.c'))
++pci_ss.add(when: 'CONFIG_PPC440_PCI', if_true: files('ppc440_pcix.c'))
  pci_ss.add(when: 'CONFIG_RAVEN_PCI', if_true: files('raven.c'))
  pci_ss.add(when: 'CONFIG_GRACKLE_PCI', if_true: files('grackle.c'))
  # NewWorld PowerMac
 diff --git a/hw/pci-host/trace-events b/hw/pci-host/trace-events
-index 9d216bb89f..f8afb28a01 100644
+index f8afb28a01..c902f1cde6 100644
 --- a/hw/pci-host/trace-events
 +++ b/hw/pci-host/trace-events
-@@ -37,6 +37,10 @@ unin_data_read(uint64_t addr, unsigned len, uint64_t val) "read addr 0x%"PRIx64
- unin_write(uint64_t addr, uint64_t value) "addr=0x%" PRIx64 " val=0x%"PRIx64
- unin_read(uint64_t addr, uint64_t value) "addr=0x%" PRIx64 " val=0x%"PRIx64
+@@ -41,6 +41,14 @@ unin_read(uint64_t addr, uint64_t value) "addr=0x%" PRIx64 " val=0x%"PRIx64
+ ppc4xx_pci_map_irq(int32_t devfn, int irq_num, int slot) "devfn 0x%x irq %d -> %d"
+ ppc4xx_pci_set_irq(int irq_num) "PCI irq %d"
  
-+# ppc4xx_pci.c
-+ppc4xx_pci_map_irq(int32_t devfn, int irq_num, int slot) "devfn 0x%x irq %d -> %d"
-+ppc4xx_pci_set_irq(int irq_num) "PCI irq %d"
++# ppc440_pcix.c
++ppc440_pcix_map_irq(int32_t devfn, int irq_num, int slot) "devfn 0x%x irq %d -> %d"
++ppc440_pcix_set_irq(int irq_num) "PCI irq %d"
++ppc440_pcix_update_pim(int idx, uint64_t size, uint64_t la) "Added window %d of size=0x%" PRIx64 " to CPU=0x%" PRIx64
++ppc440_pcix_update_pom(int idx, uint32_t size, uint64_t la, uint64_t pcia) "Added window %d of size=0x%x from CPU=0x%" PRIx64 " to PCI=0x%" PRIx64
++ppc440_pcix_reg_read(uint64_t addr, uint32_t val) "addr 0x%" PRIx64 " = 0x%" PRIx32
++ppc440_pcix_reg_write(uint64_t addr, uint32_t val, uint32_t size) "addr 0x%" PRIx64 " = 0x%" PRIx32 " size 0x%" PRIx32
 +
  # pnv_phb4.c
  pnv_phb4_xive_notify(uint64_t notif_port, uint64_t data) "notif=@0x%"PRIx64" data=0x%"PRIx64
  pnv_phb4_xive_notify_ic(uint64_t addr, uint64_t data) "addr=@0x%"PRIx64" data=0x%"PRIx64
+diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+index e4e76e87a2..fc26c775ab 100644
+--- a/hw/ppc/Kconfig
++++ b/hw/ppc/Kconfig
+@@ -46,6 +46,7 @@ config PPC440
+     imply TEST_DEVICES
+     imply E1000_PCI
+     select PCI_EXPRESS
++    select PPC440_PCI
+     select PPC4XX
+     select SERIAL
+     select FDT_PPC
 diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index 6931ba88b4..a4821da094 100644
+index a4821da094..09dfdafe79 100644
 --- a/hw/ppc/meson.build
 +++ b/hw/ppc/meson.build
-@@ -61,7 +61,6 @@ ppc_ss.add(when: 'CONFIG_PPC440', if_true: files(
+@@ -57,7 +57,7 @@ ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
+   'ppc405_uc.c'))
+ ppc_ss.add(when: 'CONFIG_PPC440', if_true: files(
+   'ppc440_bamboo.c',
+-  'ppc440_pcix.c', 'ppc440_uc.c'))
++  'ppc440_uc.c'))
  ppc_ss.add(when: 'CONFIG_PPC4XX', if_true: files(
    'ppc4xx_devs.c',
    'ppc4xx_sdram.c'))
--ppc_ss.add(when: 'CONFIG_PPC4XX_PCI', if_true: files('ppc4xx_pci.c'))
- ppc_ss.add(when: 'CONFIG_SAM460EX', if_true: files('sam460ex.c'))
- # PReP
- ppc_ss.add(when: 'CONFIG_PREP', if_true: files('prep.c'))
 diff --git a/hw/ppc/trace-events b/hw/ppc/trace-events
-index f670e8906c..b59fbf340f 100644
+index b59fbf340f..157ea756e9 100644
 --- a/hw/ppc/trace-events
 +++ b/hw/ppc/trace-events
-@@ -146,10 +146,6 @@ rs6000mc_size_read(uint32_t addr, uint32_t val) "read addr=0x%x val=0x%x"
+@@ -146,14 +146,6 @@ rs6000mc_size_read(uint32_t addr, uint32_t val) "read addr=0x%x val=0x%x"
  rs6000mc_size_write(uint32_t addr, uint32_t val) "write addr=0x%x val=0x%x"
  rs6000mc_parity_read(uint32_t addr, uint32_t val) "read addr=0x%x val=0x%x"
  
--# ppc4xx_pci.c
--ppc4xx_pci_map_irq(int32_t devfn, int irq_num, int slot) "devfn 0x%x irq %d -> %d"
--ppc4xx_pci_set_irq(int irq_num) "PCI irq %d"
+-# ppc440_pcix.c
+-ppc440_pcix_map_irq(int32_t devfn, int irq_num, int slot) "devfn 0x%x irq %d -> %d"
+-ppc440_pcix_set_irq(int irq_num) "PCI irq %d"
+-ppc440_pcix_update_pim(int idx, uint64_t size, uint64_t la) "Added window %d of size=0x%" PRIx64 " to CPU=0x%" PRIx64
+-ppc440_pcix_update_pom(int idx, uint32_t size, uint64_t la, uint64_t pcia) "Added window %d of size=0x%x from CPU=0x%" PRIx64 " to PCI=0x%" PRIx64
+-ppc440_pcix_reg_read(uint64_t addr, uint32_t val) "addr 0x%" PRIx64 " = 0x%" PRIx32
+-ppc440_pcix_reg_write(uint64_t addr, uint32_t val, uint32_t size) "addr 0x%" PRIx64 " = 0x%" PRIx32 " size 0x%" PRIx32
 -
- # ppc440_pcix.c
- ppc440_pcix_map_irq(int32_t devfn, int irq_num, int slot) "devfn 0x%x irq %d -> %d"
- ppc440_pcix_set_irq(int irq_num) "PCI irq %d"
+ # ppc405_boards.c
+ opba_readb(uint64_t addr, uint32_t val) "addr 0x%" PRIx64 " = 0x%" PRIx32
+ opba_writeb(uint64_t addr, uint64_t val) "addr 0x%" PRIx64 " = 0x%" PRIx64
 -- 
 2.41.0
 
