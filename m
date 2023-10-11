@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CBE7C480A
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 04:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C147C4813
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 05:02:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqPOa-0000BS-QZ; Tue, 10 Oct 2023 22:56:24 -0400
+	id 1qqPUD-0002Lp-2U; Tue, 10 Oct 2023 23:02:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqPOY-0000BC-To
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 22:56:22 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qqPU6-0002L4-4w; Tue, 10 Oct 2023 23:02:07 -0400
+Received: from mail-vk1-xa35.google.com ([2607:f8b0:4864:20::a35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqPOX-00087y-0t
- for qemu-devel@nongnu.org; Tue, 10 Oct 2023 22:56:22 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-9a6190af24aso1101256666b.0
- for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 19:56:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qqPU4-00012N-9W; Tue, 10 Oct 2023 23:02:05 -0400
+Received: by mail-vk1-xa35.google.com with SMTP id
+ 71dfb90a1353d-49dc95be8c3so2153107e0c.0; 
+ Tue, 10 Oct 2023 20:02:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696992979; x=1697597779; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Lfejmu0fed9jzJQJl9bYK7nnwauq98g5xtw+qWD1PB4=;
- b=zN0pK2RJkVTkDossO+3x4VCIzekUx7GTD1lNPODcoVKthr5kdY6D6+c+YjWMcyKUoF
- 1vzD8ofVoIe8guVJLP0/3sAuDmWTVUPm+sh/4wKGT+bYpcI7cYUQCH9KGjoNVJZvrKPH
- gSGT4C4VBiAyYFGzIDNtO3ddg3jNTsIuUxsuV0AlXncquFgMYIysBxk5qhJXVel8bUpx
- tkFNXMoSLRbnZcgBnK7RN/oPZtKs4G4KAQ66P8YqiLAPC1BB3rOAV6UycoIgRA8GXPSU
- ubrkKUMWuxeuKqvnAmjToW8erISBtSoOrdaVGs94ugN5QHKjNQBXmPdeaDhUoEdAFL5v
- KaBg==
+ d=gmail.com; s=20230601; t=1696993323; x=1697598123; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dGoKaLQuqkayI4L3samTA52vpLxMCWUN5KMqAgtROvo=;
+ b=T873IDZq04pYMfDb6jco88piMc7ZHAi4KOY8S0gVy5rLMpwB0nXIKgyMkDXLaQiXZ4
+ sU4kTOwOSSRHgP76vivnI3XVKVjojHkijvAqAMAFKUl+pdAOfdIisWMYNzOav4D6Nf53
+ 1cfpAVMn8ydrJbF6TCkxmeJrQ5J14b521fYSIgxRJLEC0IfYsTw1o8ZQDupd8ExCZ4lF
+ SSn/uaM58S0hCmZLh5QweQAkwFMlvCscJ/gyDdag8ZXsMpFBkDrXY2kHifStoeBLi0YX
+ sg964j+RpAKXeqahYMvaoSIGYRhXxThYY7w8WuZx9FBpviZ2bgBey8IbaO6t9h/JzQsS
+ K5yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696992979; x=1697597779;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Lfejmu0fed9jzJQJl9bYK7nnwauq98g5xtw+qWD1PB4=;
- b=FKHGgqKL+MVaTnGHNZMY5F8e4PZJDwkWRJh4YufI2pD7KuIMT135qa+5DSl+gaSnd6
- VQWjAvW6DZGvz8MnhJBoBHUoWu52oOLI90X41ydFoaXoK+7l0UQx3/m4xxatOrJ2jGE/
- KnlJFiEhLpwiyAyKt8/OQqH6Q+lE7ovQt1Xfgz1TOlAkCyPcAY+oaNYWedYH7jwwelGP
- 37oB6kjXNvx6gaRQdsaGTG7GvGKPjBUZ2yKVJGW/1AThpzDZclvswtmP+zjpONzm37tU
- NWHVOoCyTKb91obbKPN0AtXdnNUU3SpEyEG33FUwafqZUKdbGRLNoKujxMBw+Za7yzCn
- t7BQ==
-X-Gm-Message-State: AOJu0Yy/o/Hl5aF9e0v3OkBF/87RGMbuWSFUBgxaWMcYAYjIYxjwr+yY
- z+qp15UcVi02NqqneU87hyCg7g==
-X-Google-Smtp-Source: AGHT+IEUiOgBTZwsDp2qaWW9mB0p6/rF7r1VbnY60qxYtxdDpcO86CsSe1aSdzoojgJBUbOlxkKJkw==
-X-Received: by 2002:a17:906:846c:b0:9b6:8155:cbf4 with SMTP id
- hx12-20020a170906846c00b009b68155cbf4mr17170768ejc.47.1696992979194; 
- Tue, 10 Oct 2023 19:56:19 -0700 (PDT)
-Received: from [192.168.69.115] (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
- [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
- si5-20020a170906cec500b009ae0042e48bsm9129261ejb.5.2023.10.10.19.56.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 19:56:18 -0700 (PDT)
-Message-ID: <1f552f71-3b47-a2be-67c5-fdca86bf59f7@linaro.org>
-Date: Wed, 11 Oct 2023 04:56:16 +0200
+ d=1e100.net; s=20230601; t=1696993323; x=1697598123;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dGoKaLQuqkayI4L3samTA52vpLxMCWUN5KMqAgtROvo=;
+ b=f4SdiBIWWQsCoOcFngqvlUOyWCSDVOvUxUGfxwW710xB65vYTI30nVgISf77ZRmdoi
+ w1ZMeGXiJ7iVJRv1YETeXGTQgVKkITxDdjUpvpcElV12fL0yb1mCZ60vlCSmcN0vXHLA
+ w4qdchyvVD+/TiX1zOvG75HNMPnWm9viSs3DXhi25NNS8Hx8JJWmTsdN22AQh14qFxlt
+ JLn1eFl4oArnFKbFN81/L8yTXr9/QGNKKiF4kQVhp2Qxq8cvHMQSddXfHS3N2F/0et+F
+ hz86G+HLtZfJki8q0Hkg9XRxOrAD7ruJeqpNI5ntnbQUoBo1myXQVaUubSvChmFCijK3
+ COTg==
+X-Gm-Message-State: AOJu0YywT9YWsN95aj89aNLDxLXrQshV788FMpR1paZfgpv2V/2goGRU
+ 2LiuVqpefiPT6YQ/5BL9E12Fsge7gFM0aDgX1ds=
+X-Google-Smtp-Source: AGHT+IGKoEu6r3WGIWpeZT/oaA4G1AYLcq01olJV0K8PI7RphCmbyNwlyy9s8khzQdvT5VTKS0fQBRvhyadgLTVYsGI=
+X-Received: by 2002:a05:6122:2641:b0:496:a6cc:7ffe with SMTP id
+ dr1-20020a056122264100b00496a6cc7ffemr12969522vkb.13.1696993322904; Tue, 10
+ Oct 2023 20:02:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH RFC v4 4/9] target/loongarch: Implement kvm get/set
- registers
-Content-Language: en-US
-To: xianglai li <lixianglai@loongson.cn>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Bibo Mao <maobibo@loongson.cn>,
- Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <cover.1696841645.git.lixianglai@loongson.cn>
- <f4399db694265f34dbe9aafd024c56470e8a0f54.1696841645.git.lixianglai@loongson.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <f4399db694265f34dbe9aafd024c56470e8a0f54.1696841645.git.lixianglai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+References: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
+In-Reply-To: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 11 Oct 2023 13:01:36 +1000
+Message-ID: <CAKmqyKP=4kGpO=8D13iJw7pJSkD9CFary_DHt236+e1GFMAngA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] riscv: RVA22U64 profile support
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a35;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa35.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,86 +87,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Li and Zhao,
+On Sat, Oct 7, 2023 at 12:23=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Hi,
+>
+> Several design changes were made in this version after the reviews and
+> feedback in the v1 [1]. The high-level summary is:
+>
+> - we'll no longer allow users to set profile flags for vendor CPUs. If
+>   we're to adhere to the current policy of not allowing users to enable
+>   extensions for vendor CPUs, the profile support would become a
+>   glorified way of checking if the vendor CPU happens to support a
+>   specific profile. If a future vendor CPU supports a profile the CPU
+>   can declare it manually in its cpu_init() function, the flag will
+>   still be set, but users can't change it;
+>
+> - disabling a profile will now disable all the mandatory extensions from
+>   the CPU;
 
-On 9/10/23 11:01, xianglai li wrote:
-> From: Tianrui Zhao <zhaotianrui@loongson.cn>
-> 
-> Implement kvm_arch_get/set_registers interfaces, many regs
-> can be get/set in the function, such as core regs, csr regs,
-> fpu regs, mp state, etc.
-> 
-> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Cornelia Huck <cohuck@redhat.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Cc: Bibo Mao <maobibo@loongson.cn>
-> Cc: Song Gao <gaosong@loongson.cn>
-> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
-> 
-> Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-> Signed-off-by: xianglai li <lixianglai@loongson.cn>
-> ---
->   meson.build                   |   1 +
->   target/loongarch/cpu.c        |   3 +
->   target/loongarch/cpu.h        |   2 +
->   target/loongarch/kvm.c        | 406 +++++++++++++++++++++++++++++++++-
->   target/loongarch/trace-events |  13 ++
->   target/loongarch/trace.h      |   1 +
->   6 files changed, 424 insertions(+), 2 deletions(-)
->   create mode 100644 target/loongarch/trace-events
->   create mode 100644 target/loongarch/trace.h
+What happens if you enable one profile and disable a different one?
 
+Alistair
 
-> +static int kvm_larch_getq(CPUState *cs, uint64_t reg_id,
-> +                                 uint64_t *addr)
-> +{
-> +    struct kvm_one_reg csrreg = {
-> +        .id = reg_id,
-> +        .addr = (uintptr_t)addr
-> +    };
-> +
-> +    return kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &csrreg);
-> +}
-
-This is kvm_get_one_reg().
-
-> +static int kvm_larch_putq(CPUState *cs, uint64_t reg_id,
-> +                                 uint64_t *addr)
-> +{
-> +    struct kvm_one_reg csrreg = {
-> +        .id = reg_id,
-> +        .addr = (uintptr_t)addr
-> +    };
-> +
-> +    return kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &csrreg);
-> +}
-
-This is kvm_set_one_reg().
-
-> +
-> +#define KVM_GET_ONE_UREG64(cs, ret, regidx, addr)                 \
-> +    ({                                                            \
-> +        err = kvm_larch_getq(cs, KVM_IOC_CSRID(regidx), addr);    \
-> +        if (err < 0) {                                            \
-> +            ret = err;                                            \
-> +            trace_kvm_failed_get_csr(regidx, strerror(errno));    \
-> +        }                                                         \
-> +    })
-> +
-> +#define KVM_PUT_ONE_UREG64(cs, ret, regidx, addr)                 \
-> +    ({                                                            \
-> +        err = kvm_larch_putq(cs, KVM_IOC_CSRID(regidx), addr);    \
-> +        if (err < 0) {                                            \
-> +            ret = err;                                            \
-> +            trace_kvm_failed_put_csr(regidx, strerror(errno));    \
-> +        }                                                         \
-> +    })
-
+>
+> - the profile logic was moved to realize() time in a step we're calling
+>   'commit profile'. This allows us to enable/disable profile extensions
+>   after considering user input in other individual extensions. The
+>   result is that we don't care about the order in which the profile flag
+>   was set in comparison with other extensions in the command line, i.e.
+>   the following lines are equal:
+>
+>   -cpu rv64,zicbom=3Dfalse,rva22u64=3Dtrue,Zifencei=3Dfalse
+>
+>   -cpu rv64,rva22u64=3Dtrue,zicbom=3Dfalse,Zifencei=3Dfalse
+>
+>   and they mean 'enable the rva22u64 profile while keeping zicbom and
+>   Zifencei disabled'.
+>
+>
+> Other minor changes were needed as result of these design changes. E.g.
+> we're now having to track MISA extensions set by users (patch 7),
+> something that we were doing only for multi-letter extensions.
+>
+> Changes from v1:
+> - patch 6 from v1 ("target/riscv/kvm: add 'rva22u64' flag as unavailable"=
+):
+>     - moved up to patch 4
+> - patch 5 from v1("target/riscv/tcg-cpu.c: enable profile support for ven=
+dor CPUs"):
+>     - dropped
+> - patch 6 (new):
+>   - add riscv_cpu_commit_profile()
+> - patch 7 (new):
+>   - add user choice hash for MISA extensions
+> - patch 9 (new):
+>   - handle MISA bits user choice when commiting profiles
+> - patch 8 and 10 (new):
+>   - helpers to avoid code repetition
+> - v1 link: https://lore.kernel.org/qemu-riscv/20230926194951.183767-1-dba=
+rboza@ventanamicro.com/
+>
+>
+> Daniel Henrique Barboza (10):
+>   target/riscv/cpu.c: add zicntr extension flag
+>   target/riscv/cpu.c: add zihpm extension flag
+>   target/riscv: add rva22u64 profile definition
+>   target/riscv/kvm: add 'rva22u64' flag as unavailable
+>   target/riscv/tcg: add user flag for profile support
+>   target/riscv/tcg: commit profiles during realize()
+>   target/riscv/tcg: add MISA user options hash
+>   target/riscv/tcg: add riscv_cpu_write_misa_bit()
+>   target/riscv/tcg: handle MISA bits on profile commit
+>   target/riscv/tcg: add hash table insert helpers
+>
+>  target/riscv/cpu.c         |  29 +++++++
+>  target/riscv/cpu.h         |  12 +++
+>  target/riscv/cpu_cfg.h     |   2 +
+>  target/riscv/kvm/kvm-cpu.c |   7 +-
+>  target/riscv/tcg/tcg-cpu.c | 165 +++++++++++++++++++++++++++++++++----
+>  5 files changed, 197 insertions(+), 18 deletions(-)
+>
+> --
+> 2.41.0
+>
+>
 
