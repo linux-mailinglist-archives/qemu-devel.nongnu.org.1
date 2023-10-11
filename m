@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CE67C5585
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF207C558A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:34:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZLj-0007ZA-Ox; Wed, 11 Oct 2023 09:34:07 -0400
+	id 1qqZLp-0008Nk-11; Wed, 11 Oct 2023 09:34:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqZKj-0006p6-QW
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:33:14 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqZL3-00072J-2f
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:33:26 -0400
 Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqZKe-00076I-I2
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:33:05 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqZKv-0007F8-Fk
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:33:23 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 5305B1FEB6;
- Wed, 11 Oct 2023 13:32:56 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A21E91FEB4;
+ Wed, 11 Oct 2023 13:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697031176; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1697031194; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=m8RJGvF+xMhfxD+XKl08vS/z6sQv+VY2hEu5l0zS7Hc=;
- b=fee849W8/rvpilDB11qez0yvMjRFp0i6PON55n9XvHcuLNe2dqPRcoPNcqTojubSmqnuZd
- d4L07rcdkAK6kvP014UYD20xVAC6RQ0yPrtHUhS+LhpkExRVH2BAu2LeXrc6xC8HN+Yl3R
- 4Syr3frheADIc1gusWUKMP2NuA/Uxhw=
+ bh=cgmdGELeyTod39mBNhRRQ9ekaSLHmXXUBSNFjey653I=;
+ b=wpOV6I1ASztTy5sQi4FOuuB5GxPOdR9I5b0plPvf9HL6CChIhAfzptV4wcWgruYK9GDYAI
+ KjojiTrP8R6JE15tpJozHOf5ZoxH4vcAG06bVsrf3+uhHPoq0uxKGdT67HlmLsjsPpsG9A
+ 3Z9Uo7jx1/3258xgugqjjnJfbW2KbNg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697031176;
+ s=susede2_ed25519; t=1697031194;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=m8RJGvF+xMhfxD+XKl08vS/z6sQv+VY2hEu5l0zS7Hc=;
- b=R7MCjGDsVTEn8ZwUUKuZEfs3uzULMNowbG7d7uY0NsuvyOclbiVJ/fu2UmiWrnVTEihgvz
- UdtE7ROmwz9M+lDw==
+ bh=cgmdGELeyTod39mBNhRRQ9ekaSLHmXXUBSNFjey653I=;
+ b=Wu9JJWzHhcx5NFocJYwyIcVvJKdol+RDZ5Z/vMSj9Ov/9PV67ctN2iECG66HAGgNYgxVcn
+ 1SS1Kg1G8iRzFAAg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D8134134F5;
- Wed, 11 Oct 2023 13:32:55 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 329C7134F5;
+ Wed, 11 Oct 2023 13:33:14 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id sb2hKAekJmXxTgAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 11 Oct 2023 13:32:55 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id wctSABqkJmUfTwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 11 Oct 2023 13:33:14 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: quintela@redhat.com
 Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
  <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>, Cleber
- Rosa <crosa@redhat.com>
-Subject: Re: [PATCH v2 4/6] migration: Fix analyze-migration.py when
- ignore-shared is used
-In-Reply-To: <87v8bd9tsr.fsf@secure.mitica>
+ Thomas Huth <thuth@redhat.com>, Nikolay Borisov <nborisov@suse.com>
+Subject: Re: [PATCH v2 1/6] migration: Add the configuration vmstate to the
+ json writer
+In-Reply-To: <87edi1b8w2.fsf@secure.mitica>
 References: <20231009184326.15777-1-farosas@suse.de>
- <20231009184326.15777-5-farosas@suse.de> <87v8bd9tsr.fsf@secure.mitica>
-Date: Wed, 11 Oct 2023 10:32:53 -0300
-Message-ID: <87sf6h1dyy.fsf@suse.de>
+ <20231009184326.15777-2-farosas@suse.de> <87edi1b8w2.fsf@secure.mitica>
+Date: Wed, 11 Oct 2023 10:33:11 -0300
+Message-ID: <87pm1l1dyg.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
@@ -90,46 +89,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Juan Quintela <quintela@redhat.com> writes:
 
 > Fabiano Rosas <farosas@suse.de> wrote:
->> The script is currently broken when the x-ignore-shared capability is
->> used:
+>> From: Nikolay Borisov <nborisov@suse.com>
 >>
->> Traceback (most recent call last):
->>   File "./scripts/analyze-migration.py", line 656, in <module>
->>     dump.read(dump_memory = args.memory)
->>   File "./scripts/analyze-migration.py", line 593, in read
->>     section.read()
->>   File "./scripts/analyze-migration.py", line 163, in read
->>     self.name = self.file.readstr(len = namelen)
->>   File "./scripts/analyze-migration.py", line 53, in readstr
->>     return self.readvar(len).decode('utf-8')
->> UnicodeDecodeError: 'utf-8' codec can't decode byte 0x82 in position 55: invalid start byte
+>> Make the migration json writer part of MigrationState struct, allowing
+>> the 'configuration' object be serialized to json.
 >>
->> We're currently adding data to the middle of the ram section depending
->> on the presence of the capability. As a consequence, any code loading
->> the ram section needs to know about capabilities so it can interpret
->> the stream.
+>> This will facilitate the parsing of the 'configuration' object in the
+>> next patch that fixes analyze-migration.py for arm.
 >>
->> Skip the byte that's added when x-ignore-shared is used to fix the
->> script.
->>
+>> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
 >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 >
 > Reviewed-by: Juan Quintela <quintela@redhat.com>
 >
->> @@ -582,6 +586,7 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
->>                  config_desc = self.vmsd_desc.get('configuration')
->>                  section = ConfigurationSection(file, config_desc)
->>                  section.read()
->> +                ramargs['ignore_shared'] = section.has_capability('x-ignore-shared')
+> queued.
 >
-> should we consider s/x-ignore-shared/ignore-shared/?
+>>          qemu_put_byte(f, QEMU_VM_CONFIGURATION);
+>> -        vmstate_save_state(f, &vmstate_configuration, &savevm_state, 0);
+>> +
+>> +        /*
+>> +         * This starts the main json object and is paired with the
+>> +         * json_writer_end_object in
+>> +         * qemu_savevm_state_complete_precopy_non_iterable
+>> +         */
+>> +        json_writer_start_object(s->vmdesc, NULL);
 >
+> This don't depend of this patch, but it is ugly as hell.
+>
+> Can we create:
+>
+> json_write_start_main_object(s->vmdesc);
+>
+> (equivalent for end)
+>
+> And forbid json_writer_start_object() for taking a NULL parameter?
+>
+> Later, Juan.
 
-We can consider s/ignore-shared/x-ignore-shared/ if that's what you
-mean. The way you suggested doesn't work because the cap name comes from
-QEMU with the "x-" part in it.
-
-If you meant filtering the x out when parsing the capabilities in this
-script, I think that would cause a sort of a UX issue because we need to
-use x-ignore-shared to set the cap in QMP/HMP.
+Yep, I'll look into it.
 
