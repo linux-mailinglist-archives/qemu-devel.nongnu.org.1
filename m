@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099847C47C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 04:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8877C47DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 04:37:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqOt4-0004Cd-31; Tue, 10 Oct 2023 22:23:50 -0400
+	id 1qqP5P-00084z-S6; Tue, 10 Oct 2023 22:36:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qqOsz-0004BQ-JR; Tue, 10 Oct 2023 22:23:45 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqP5N-00084V-Hn
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 22:36:33 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qqOsx-0000Yn-UF; Tue, 10 Oct 2023 22:23:45 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-694ed847889so4832657b3a.2; 
- Tue, 10 Oct 2023 19:23:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqP5M-0003Q0-1K
+ for qemu-devel@nongnu.org; Tue, 10 Oct 2023 22:36:33 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9b974955474so1058393166b.1
+ for <qemu-devel@nongnu.org>; Tue, 10 Oct 2023 19:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696991022; x=1697595822; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=smAf/KNHdb90Zg1Id/tQSkW36V02FG0YK1OibE3CaqU=;
- b=AhoPQw4+61kzOzQTAUth3A88kHyf02ZQuu3nx+LR29FY23ZWMOetrzFDj6alA2z8OA
- PmaJu/pA5FxjLtDUpWo+yALRY0wUGMob48GKXOoXKbvKYBkPtNxWrprNlxhmapJRsDfy
- Pu6Wn0tov38bwCipiAkD5BCVe9o6cQFjzGir62lK/HVA6DSBuLrSn/w3PG+H40g5H84D
- o/qvd3x5XysNSDHAWV3I4dX8XxHU7UnxWAlxSESlgJDaeXU+qyuoUQX9+yYRV03Mz56d
- cLvupShefkhFs3YzyuG1FI2IdbRSaJbNIhOfsz08NDGFQUiDwqBcj1Ta7HWq6cgTM76w
- Xa2Q==
+ d=linaro.org; s=google; t=1696991790; x=1697596590; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WxeHwpHbPHjqlbqI9btv605RsAT7uivuI4CIajlOLdw=;
+ b=Viy/noHDjzqVfBdLuDrQxBQC22Rc+TT4MaNzcIC1bJv7yOOl8CjvReHiGFAbaar2vs
+ L8DmeNo7vfebefcPy4Id0+CNBpDhRr4ujua7wU1vWAmfqKv5oIHbGcsmdjCd0NODEHcQ
+ M7Vby2dCzKsyIwnr3AQor0UtaoeV0plNEJEfzvYE9jSl2lkwJm/xSJysxEIX0862d+Ge
+ M3HEx1ESmXCZWjU7JToATZuier/aI9BVo2VDrQbGrGGmxm84fYbEzpRL40uHtD9bh5yV
+ FLDpVefaQURp4gqCM/ynsYGBw7XukiFoyHLbb5IwLH4mlTGWRfOpeu4xbhe8Fl/G3USg
+ /tuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696991022; x=1697595822;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=smAf/KNHdb90Zg1Id/tQSkW36V02FG0YK1OibE3CaqU=;
- b=HZG0PgEHhCI8XZb5zCgJSXIvHOpbumG3O1xRZFs/t+pCJov/jst0zkza72o2Jn21es
- OZMX59E/MiBLoPCCSNgEhwXan+ZEeh95f4InVqTS7V3xmAlHAhU4TRWBNyXSZpQ+EXg0
- I9IMV0WpdyT0+pqq3vF+WHxxT3rYSzy7ibOOeffjIQ4o1wW3a9ErOlBarANXNkNOTYzR
- Rf/JLkw5pyvcoWO7oEVkGm4OS6CjJvB06i+WcOgRRy8mON3EfsyIDVHULHLNY2+4w+4D
- wOfOAYmKoxSjcBw9xOTXAx9a5JKcMyJWrK40F4MabhTNj2h9QghCJvC+PxJVT+QQ/uMI
- FXbg==
-X-Gm-Message-State: AOJu0Yxkjn7pUrQygg+ZwZMknjPs67bQyw2iR81uigCRFZMO0zGU4+Sv
- HCVAp/W3fyrM97AB8WS7zyc=
-X-Google-Smtp-Source: AGHT+IHE4+B6Lxv45lQYhdEEjLJ2jqX2qKtkX5qiB8fLNy2DM4F0wKy1OqZPjtAGOgiVlwhGtJO53w==
-X-Received: by 2002:a05:6a20:430e:b0:121:ca90:df01 with SMTP id
- h14-20020a056a20430e00b00121ca90df01mr19675097pzk.40.1696991021969; 
- Tue, 10 Oct 2023 19:23:41 -0700 (PDT)
-Received: from localhost ([1.128.222.4]) by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001b895336435sm12533158plg.21.2023.10.10.19.23.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Oct 2023 19:23:41 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ d=1e100.net; s=20230601; t=1696991790; x=1697596590;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WxeHwpHbPHjqlbqI9btv605RsAT7uivuI4CIajlOLdw=;
+ b=mhsF6KnyimBoIeI/gtLrluDNhejP4wUZM2kV0Ih+WAnzKZ+EnG7w4/Fmv0/MaA2OpG
+ yB7MJXvhjQIUROAZtigkmB8NGgtraD5UgcHB/pUxlpKXi4UB4UzuGHyAMTy5gWkR3HO9
+ hkO/8O9egKf7QCaW3mzXZWHyICP9U5X8fay5e8QD+S+DSG/wtUsJfBJKumg155E6MEle
+ pFx75+SAL6s0WiXajpaKGE1UJjcP2BtAGyKn7QstTreirJNEpy+bw1bjv1TRTOc+5EEz
+ mscW2ps/0P9dew2iW59FUeUItT3un8ysa26vG0MzkZj+6sr+YMT/HdrLwTIPC0ffg4AH
+ 6tXg==
+X-Gm-Message-State: AOJu0YwkvEIr9AfYfauRLrfo1sDyaxX6l8Zs9PeNbK3e2ynQJ234ipe5
+ yoI9NwDqJzu5DQMxvMsUtmn4ryWqeMCAKhYCUzC9ig==
+X-Google-Smtp-Source: AGHT+IEU5s/PSVdpY1AZ/4MJey3WjEIziDn6sxM16blfhJEwzIOewql1cvCZRkbZFWS/qpHXhi6Cnw==
+X-Received: by 2002:a17:906:20da:b0:9ae:4eb9:e09b with SMTP id
+ c26-20020a17090620da00b009ae4eb9e09bmr17988232ejc.27.1696991789707; 
+ Tue, 10 Oct 2023 19:36:29 -0700 (PDT)
+Received: from m1x-phil.lan (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
+ [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
+ d21-20020a17090648d500b00997d76981e0sm9065963ejt.208.2023.10.10.19.36.28
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 10 Oct 2023 19:36:29 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2] migration: Use g_autofree to simplify
+ ram_dirty_bitmap_reload()
+Date: Wed, 11 Oct 2023 04:36:27 +0200
+Message-ID: <20231011023627.86691-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Oct 2023 12:23:35 +1000
-Message-Id: <CW593XZPASQW.3OODX8I6KCO2L@wheely>
-Cc: <qemu-ppc@nongnu.org>, "Cleber Rosa" <crosa@redhat.com>,
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Wainer dos
- Santos Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
- <qemu-devel@nongnu.org>
-Subject: Re: [RFC PATCH 06/11] tests/avocado: Add FreeBSD distro boot tests
- for ppc
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Warner Losh" <imp@bsdimp.com>
-X-Mailer: aerc 0.15.2
-References: <20231010075238.95646-1-npiggin@gmail.com>
- <20231010075238.95646-7-npiggin@gmail.com>
- <CANCZdfqNJ97EgAax=P7pzny8zcULfiLEVJighecm5=DgLtRv8g@mail.gmail.com>
-In-Reply-To: <CANCZdfqNJ97EgAax=P7pzny8zcULfiLEVJighecm5=DgLtRv8g@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,42 +91,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Oct 11, 2023 at 7:55 AM AEST, Warner Losh wrote:
-> On Tue, Oct 10, 2023 at 1:53=E2=80=AFAM Nicholas Piggin <npiggin@gmail.co=
-m> wrote:
->
-> > FreeBSD project provides qcow2 images that work well for testing QEMU.
-> > Add pseries tests for HPT and Radix, KVM and TCG.
-> >
-> > Other architectures could be added so this does not get a ppc_ prefix
-> > but is instead named similarly to boot_linux.
-> >
-> > Cc: Warner Losh <imp@bsdimp.com>
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> >
-> > CC'ing Warner to check if it's okay for us to use these images and
-> > any comments or suggestions. avocado tests have many Linux boots so we'=
-d
-> > do much better to expand test coverage by adding some other systems.
-> >
->
-> I like this.... I'm a little worried at the exact hash encoded in it, but
-> since there's a checksum
-> to match, it's OK I guess. It will give this code a shelf-life of months,
-> IIRC our retention policy.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+Based-on: <ZR7e3cmxCH9LAdnS@x1n>
+v2: Do use g_autofree...
+---
+ migration/ram.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-The oldest 15.0 CURRENT image on there is May 1st, so ~6 months? That's
-not too bad. There are some release qcow2 images as well which sound
-like they're maintained longer-term:
+diff --git a/migration/ram.c b/migration/ram.c
+index 982fbbeee1..a0e2ef4f1c 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -4164,11 +4164,11 @@ bool ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+ {
+     /* from_dst_file is always valid because we're within rp_thread */
+     QEMUFile *file = s->rp_state.from_dst_file;
+-    unsigned long *le_bitmap, nbits = block->used_length >> TARGET_PAGE_BITS;
++    g_autofree unsigned long *le_bitmap = NULL;
++    unsigned long nbits = block->used_length >> TARGET_PAGE_BITS;
+     uint64_t local_size = DIV_ROUND_UP(nbits, 8);
+     uint64_t size, end_mark;
+     RAMState *rs = ram_state;
+-    bool result = false;
+ 
+     trace_ram_dirty_bitmap_reload_begin(block->idstr);
+ 
+@@ -4193,7 +4193,7 @@ bool ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+     if (size != local_size) {
+         error_setg(errp, "ramblock '%s' bitmap size mismatch (0x%"PRIx64
+                    " != 0x%"PRIx64")", block->idstr, size, local_size);
+-        goto out;
++        return false;
+     }
+ 
+     size = qemu_get_buffer(file, (uint8_t *)le_bitmap, local_size);
+@@ -4203,13 +4203,13 @@ bool ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+         error_setg(errp, "read bitmap failed for ramblock '%s': "
+                    "(size 0x%"PRIx64", got: 0x%"PRIx64")",
+                    block->idstr, local_size, size);
+-        goto out;
++        return false;
+     }
+ 
+     if (end_mark != RAMBLOCK_RECV_BITMAP_ENDING) {
+         error_setg(errp, "ramblock '%s' end mark incorrect: 0x%"PRIx64,
+                    block->idstr, end_mark);
+-        goto out;
++        return false;
+     }
+ 
+     /*
+@@ -4241,10 +4241,7 @@ bool ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+      */
+     migration_rp_kick(s);
+ 
+-    result = true;
+-out:
+-    g_free(le_bitmap);
+-    return result;
++    return true;
+ }
+ 
+ static int ram_resume_prepare(MigrationState *s, void *opaque)
+-- 
+2.41.0
 
-https://download.freebsd.org/releases/VM-IMAGES/
-
-No builds for powerpc, but those might be preferable for other targets.
-
-Another option for powerpc might be to use a release .iso. It's much
-nicer to have a qcow image already installed though. I'll tinker with
-it a bit more, but may stick with the snapshot for now.
-
-Thanks,
-Nick
 
