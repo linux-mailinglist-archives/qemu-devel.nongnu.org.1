@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC587C4F03
+	by mail.lfdr.de (Postfix) with ESMTPS id 1227C7C4F02
 	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:31:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqVS6-0005EU-CB; Wed, 11 Oct 2023 05:24:26 -0400
+	id 1qqVSH-0005ge-8D; Wed, 11 Oct 2023 05:24:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVS1-000517-Bz
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qqVSB-0005RI-JN
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVRz-0005E5-SL
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:21 -0400
+ id 1qqVSA-0005Fc-2y
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:24:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697016258;
+ s=mimecast20190719; t=1697016267;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XBYCAbiI8Mo0auPbEzdaZww1TzKLgGWShjQuj+jWTDQ=;
- b=epPcQS9MGCytiR8tRgl1+/VcLrU6Lbfh7mBwDbf+2YCMB3E5IliuigsKEcQH8lrIZhDpWD
- BRffEPVc12wL6C4X6mcyfFBCmZhx7b/KX/y7aXYgYbeu/g75zj70TThHjlor9kpscY+QsD
- GbTYY4sOV0uzytmcXMvCpwaXfzwq24E=
+ bh=wZBjqZkvFN/Xf9OdLer1TyrAyrSPUxIv0gmKNb+fn6g=;
+ b=at8upPu95PNKo9QAikjtT+oFnNBfzsMzu/fEGZoeTYD19sGutsG93AWi8EgMNR0uPpuHdl
+ Ngi4ZCKmnpovKuhYM62kHia1lKsMgz/ER6E9TAv6WDXHQlE3TOnnsB1skOs6k0VXbicFLd
+ CCxnwD0z/GHs5FsiPAX17n+zShOqNqw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-377-CbZqyyoQOb2I-VMCUVcU8A-1; Wed, 11 Oct 2023 05:24:12 -0400
-X-MC-Unique: CbZqyyoQOb2I-VMCUVcU8A-1
+ us-mta-158-TNUcFpnpM-Kll8CwbWPS8A-1; Wed, 11 Oct 2023 05:24:14 -0400
+X-MC-Unique: TNUcFpnpM-Kll8CwbWPS8A-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 394F5887E40;
- Wed, 11 Oct 2023 09:24:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CDEB185A7B2;
+ Wed, 11 Oct 2023 09:24:14 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7B3641C060AE;
- Wed, 11 Oct 2023 09:24:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7EA441C060AE;
+ Wed, 11 Oct 2023 09:24:12 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -49,22 +49,22 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>,
  Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 62/65] migration: Introduce migrate_has_error()
-Date: Wed, 11 Oct 2023 11:22:00 +0200
-Message-ID: <20231011092203.1266-63-quintela@redhat.com>
+Subject: [PULL 63/65] qemufile: Always return a verbose error
+Date: Wed, 11 Oct 2023 11:22:01 +0200
+Message-ID: <20231011092203.1266-64-quintela@redhat.com>
 In-Reply-To: <20231011092203.1266-1-quintela@redhat.com>
 References: <20231011092203.1266-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,53 +83,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Introduce a helper to detect whether MigrationState.error is set for
-whatever reason.
+There're a lot of cases where we only have an errno set in last_error but
+without a detailed error description.  When this happens, try to generate
+an error contains the errno as a descriptive error.
 
-This is preparation work for any thread (e.g. source return path thread) to
-setup errors in an unified way to MigrationState, rather than relying on
-its own way to set errors (mark_source_rp_bad()).
+This will be helpful in cases where one relies on the Error*.  E.g.,
+migration state only caches Error* in MigrationState.error.  With this,
+we'll display correct error messages in e.g. query-migrate when the error
+was only set by qemu_file_set_error().
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231004220240.167175-3-peterx@redhat.com>
+Message-ID: <20231004220240.167175-6-peterx@redhat.com>
 ---
- migration/migration.h | 1 +
- migration/migration.c | 7 +++++++
- 2 files changed, 8 insertions(+)
+ migration/qemu-file.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/migration/migration.h b/migration/migration.h
-index 972597f4de..4106a1dc54 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -476,6 +476,7 @@ bool  migration_has_all_channels(void);
- uint64_t migrate_max_downtime(void);
- 
- void migrate_set_error(MigrationState *s, const Error *error);
-+bool migrate_has_error(MigrationState *s);
- 
- void migrate_fd_connect(MigrationState *s, Error *error_in);
- 
-diff --git a/migration/migration.c b/migration/migration.c
-index 57f9e9ed0c..409eb3e916 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1234,6 +1234,13 @@ void migrate_set_error(MigrationState *s, const Error *error)
+diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+index 5e8207dae4..7fb659296f 100644
+--- a/migration/qemu-file.c
++++ b/migration/qemu-file.c
+@@ -142,15 +142,24 @@ void qemu_file_set_hooks(QEMUFile *f, const QEMUFileHooks *hooks)
+  *
+  * Return negative error value if there has been an error on previous
+  * operations, return 0 if no error happened.
+- * Optional, it returns Error* in errp, but it may be NULL even if return value
+- * is not 0.
+  *
++ * If errp is specified, a verbose error message will be copied over.
+  */
+ static int qemu_file_get_error_obj(QEMUFile *f, Error **errp)
+ {
++    if (!f->last_error) {
++        return 0;
++    }
++
++    /* There is an error */
+     if (errp) {
+-        *errp = f->last_error_obj ? error_copy(f->last_error_obj) : NULL;
++        if (f->last_error_obj) {
++            *errp = error_copy(f->last_error_obj);
++        } else {
++            error_setg_errno(errp, -f->last_error, "Channel error");
++        }
      }
++
+     return f->last_error;
  }
  
-+bool migrate_has_error(MigrationState *s)
-+{
-+    /* The lock is not helpful here, but still follow the rule */
-+    QEMU_LOCK_GUARD(&s->error_mutex);
-+    return qatomic_read(&s->error);
-+}
-+
- static void migrate_error_free(MigrationState *s)
- {
-     QEMU_LOCK_GUARD(&s->error_mutex);
 -- 
 2.41.0
 
