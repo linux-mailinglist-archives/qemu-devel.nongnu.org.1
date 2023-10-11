@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5657C4F3F
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F0C7C4F4A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 11:41:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqVRd-0003Kl-IG; Wed, 11 Oct 2023 05:23:57 -0400
+	id 1qqVRd-0003LQ-On; Wed, 11 Oct 2023 05:23:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVRc-0003KF-8A
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:56 -0400
+ id 1qqVRb-0003Jt-UO
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqVRa-00057f-FL
+ id 1qqVRa-00057b-63
  for qemu-devel@nongnu.org; Wed, 11 Oct 2023 05:23:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1697016233;
@@ -24,24 +24,24 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KbG6U8XgUFicARESq3KrdL5/u2lNT7QjdbadrORs0ro=;
- b=LCV8Z083RUlD8L88HVgV/7MaRdz5dwulY7u4W0bv62EVLibd61kjvPWEfEyhfpWqEtBEkb
- U5k4nBRZ2fArjSP3AzoeKR4OOCwc3G9YOz2wholuHWiT+UejcxJoaug2om5dAa2NkNo5V1
- 4ZHs/OmpFozsRne3gUkXS6rSLd/gz84=
+ bh=4ANVX3PCrE4sisMmBLFSZg6INgNWrh4O+M3ETlU+6mA=;
+ b=gmRJsRwgu73a2v3Vy/bOMxDxDDd/xZ18cMd3WUXrBgWIskTxfo/xq9KXvK9BDdVdeqjrbh
+ rH9p2dPbmrUCYfkbhx1JP6zix36wOQdHyUoH0sO5hDknlCLVrIeb0RS5Ja6TyBU1LDif1I
+ 8I9bYVLvi7jSqVgi8S06hRimPPorsTQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-20-du8hKGsONUC04UVc8nFJGQ-1; Wed, 11 Oct 2023 05:23:48 -0400
-X-MC-Unique: du8hKGsONUC04UVc8nFJGQ-1
+ us-mta-636-jBaLPsY3NOqKoGy8Ah7Naw-1; Wed, 11 Oct 2023 05:23:50 -0400
+X-MC-Unique: jBaLPsY3NOqKoGy8Ah7Naw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 17E6D887E5A;
- Wed, 11 Oct 2023 09:23:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E6B7887E45;
+ Wed, 11 Oct 2023 09:23:50 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 59EAF1C060AE;
- Wed, 11 Oct 2023 09:23:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5C4D31C060AE;
+ Wed, 11 Oct 2023 09:23:48 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -49,10 +49,9 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, Leonardo Bras <leobras@redhat.com>,
  Eric Blake <eblake@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 50/65] migration/rdma: Convert qemu_rdma_post_recv_control() to
- Error
-Date: Wed, 11 Oct 2023 11:21:48 +0200
-Message-ID: <20231011092203.1266-51-quintela@redhat.com>
+Subject: [PULL 51/65] migration/rdma: Convert qemu_rdma_alloc_pd_cq() to Error
+Date: Wed, 11 Oct 2023 11:21:49 +0200
+Message-ID: <20231011092203.1266-52-quintela@redhat.com>
 In-Reply-To: <20231011092203.1266-1-quintela@redhat.com>
 References: <20231011092203.1266-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -84,101 +83,108 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Markus Armbruster <armbru@redhat.com>
 
-Just for symmetry with qemu_rdma_post_send_control().  Error messages
-lose detail I consider of no use to users.
+Functions that use an Error **errp parameter to return errors should
+not also report them to the user, because reporting is the caller's
+job.  When the caller does, the error is reported twice.  When it
+doesn't (because it recovered from the error), there is no error to
+report, i.e. the report is bogus.
+
+qemu_rdma_source_init() violates this principle: it calls
+error_report() via qemu_rdma_alloc_pd_cq().  I elected not to
+investigate how callers handle the error, i.e. precise impact is not
+known.
+
+Clean this up by converting qemu_rdma_alloc_pd_cq() to Error.
+
+The conversion loses a piece of advice on one of two failure paths:
+
+    Your mlock() limits may be too low. Please check $ ulimit -a # and search for 'ulimit -l' in the output
+
+Not worth retaining.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20230928132019.2544702-44-armbru@redhat.com>
+Message-ID: <20230928132019.2544702-45-armbru@redhat.com>
 ---
- migration/rdma.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ migration/rdma.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index aeb0a8921e..41ea2edcda 100644
+index 41ea2edcda..ee9221d5d2 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -1799,7 +1799,8 @@ static int qemu_rdma_post_send_control(RDMAContext *rdma, uint8_t *buf,
-  * Post a RECV work request in anticipation of some future receipt
-  * of data on the control channel.
+@@ -1052,19 +1052,19 @@ err_resolve_create_id:
+ /*
+  * Create protection domain and completion queues
   */
--static int qemu_rdma_post_recv_control(RDMAContext *rdma, int idx)
-+static int qemu_rdma_post_recv_control(RDMAContext *rdma, int idx,
-+                                       Error **errp)
+-static int qemu_rdma_alloc_pd_cq(RDMAContext *rdma)
++static int qemu_rdma_alloc_pd_cq(RDMAContext *rdma, Error **errp)
  {
-     struct ibv_recv_wr *bad_wr;
-     struct ibv_sge sge = {
-@@ -1816,6 +1817,7 @@ static int qemu_rdma_post_recv_control(RDMAContext *rdma, int idx)
- 
- 
-     if (ibv_post_recv(rdma->qp, &recv_wr, &bad_wr)) {
-+        error_setg(errp, "error posting control recv");
+     /* allocate pd */
+     rdma->pd = ibv_alloc_pd(rdma->verbs);
+     if (!rdma->pd) {
+-        error_report("failed to allocate protection domain");
++        error_setg(errp, "failed to allocate protection domain");
          return -1;
      }
  
-@@ -1926,10 +1928,8 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
-      * If the user is expecting a response, post a WR in anticipation of it.
-      */
-     if (resp) {
--        ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_DATA);
-+        ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_DATA, errp);
-         if (ret < 0) {
--            error_setg(errp, "rdma migration: error posting"
--                    " extra control recv for anticipated result!");
-             return -1;
-         }
-     }
-@@ -1937,9 +1937,8 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
-     /*
-      * Post a WR to replace the one we just consumed for the READY message.
-      */
--    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
-+    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY, errp);
-     if (ret < 0) {
--        error_setg(errp, "rdma migration: error posting first control recv!");
-         return -1;
+     /* create receive completion channel */
+     rdma->recv_comp_channel = ibv_create_comp_channel(rdma->verbs);
+     if (!rdma->recv_comp_channel) {
+-        error_report("failed to allocate receive completion channel");
++        error_setg(errp, "failed to allocate receive completion channel");
+         goto err_alloc_pd_cq;
      }
  
-@@ -2023,9 +2022,8 @@ static int qemu_rdma_exchange_recv(RDMAContext *rdma, RDMAControlHeader *head,
-     /*
-      * Post a new RECV work request to replace the one we just consumed.
-      */
--    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
-+    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY, errp);
-     if (ret < 0) {
--        error_setg(errp, "rdma migration: error posting second control recv!");
-         return -1;
+@@ -1074,21 +1074,21 @@ static int qemu_rdma_alloc_pd_cq(RDMAContext *rdma)
+     rdma->recv_cq = ibv_create_cq(rdma->verbs, (RDMA_SIGNALED_SEND_MAX * 3),
+                                   NULL, rdma->recv_comp_channel, 0);
+     if (!rdma->recv_cq) {
+-        error_report("failed to allocate receive completion queue");
++        error_setg(errp, "failed to allocate receive completion queue");
+         goto err_alloc_pd_cq;
      }
  
-@@ -2608,9 +2606,8 @@ static int qemu_rdma_connect(RDMAContext *rdma, bool return_path,
- 
-     caps_to_network(&cap);
- 
--    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
-+    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY, errp);
-     if (ret < 0) {
--        error_setg(errp, "RDMA ERROR: posting second control recv");
-         goto err_rdma_source_connect;
+     /* create send completion channel */
+     rdma->send_comp_channel = ibv_create_comp_channel(rdma->verbs);
+     if (!rdma->send_comp_channel) {
+-        error_report("failed to allocate send completion channel");
++        error_setg(errp, "failed to allocate send completion channel");
+         goto err_alloc_pd_cq;
      }
  
-@@ -3402,6 +3399,7 @@ static void rdma_cm_poll_handler(void *opaque)
+     rdma->send_cq = ibv_create_cq(rdma->verbs, (RDMA_SIGNALED_SEND_MAX * 3),
+                                   NULL, rdma->send_comp_channel, 0);
+     if (!rdma->send_cq) {
+-        error_report("failed to allocate send completion queue");
++        error_setg(errp, "failed to allocate send completion queue");
+         goto err_alloc_pd_cq;
+     }
  
- static int qemu_rdma_accept(RDMAContext *rdma)
- {
-+    Error *err = NULL;
-     RDMACapabilities cap;
-     struct rdma_conn_param conn_param = {
-                                             .responder_resources = 2,
-@@ -3538,9 +3536,9 @@ static int qemu_rdma_accept(RDMAContext *rdma)
-     rdma_ack_cm_event(cm_event);
-     rdma->connected = true;
+@@ -2503,12 +2503,8 @@ static int qemu_rdma_source_init(RDMAContext *rdma, bool pin_all, Error **errp)
+         goto err_rdma_source_init;
+     }
  
--    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
-+    ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY, &err);
+-    ret = qemu_rdma_alloc_pd_cq(rdma);
++    ret = qemu_rdma_alloc_pd_cq(rdma, errp);
      if (ret < 0) {
--        error_report("rdma migration: error posting second control recv");
+-        error_setg(errp, "RDMA ERROR: "
+-                   "rdma migration: error allocating pd and cq! Your mlock()"
+-                   " limits may be too low. Please check $ ulimit -a # and "
+-                   "search for 'ulimit -l' in the output");
+         goto err_rdma_source_init;
+     }
+ 
+@@ -3482,9 +3478,9 @@ static int qemu_rdma_accept(RDMAContext *rdma)
+ 
+     qemu_rdma_dump_id("dest_init", verbs);
+ 
+-    ret = qemu_rdma_alloc_pd_cq(rdma);
++    ret = qemu_rdma_alloc_pd_cq(rdma, &err);
+     if (ret < 0) {
+-        error_report("rdma migration: error allocating pd and cq!");
 +        error_report_err(err);
          goto err_rdma_dest_wait;
      }
