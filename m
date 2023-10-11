@@ -2,55 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B25487C56CF
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C08A7C56D0
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 16:28:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqaBn-0001Ig-Ao; Wed, 11 Oct 2023 10:27:55 -0400
+	id 1qqaBp-0001JN-2i; Wed, 11 Oct 2023 10:27:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=T27U=FZ=kaod.org=clg@ozlabs.org>)
- id 1qqaBd-0001Hz-7V; Wed, 11 Oct 2023 10:27:45 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqaBh-0001In-1U
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:27:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=T27U=FZ=kaod.org=clg@ozlabs.org>)
- id 1qqaBY-0003Mp-W4; Wed, 11 Oct 2023 10:27:43 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4S5FTv3n7mz4xZl;
- Thu, 12 Oct 2023 01:27:31 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4S5FTs6HmMz4xWt;
- Thu, 12 Oct 2023 01:27:29 +1100 (AEDT)
-Message-ID: <e5d37f40-fcf1-5843-ea66-d50fa2353424@kaod.org>
-Date: Wed, 11 Oct 2023 16:27:28 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqaBd-0003Nx-KQ
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 10:27:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697034464;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=VdoJG8USBbqE19zn8X/6GZrDS0fPqFDoGsiARTHcEmA=;
+ b=dN8bdB2KUQgByXFTexYCtXC4TMcSNJoatPjbm2v+D+zLbHwV7U7NOJbEsJp7TWrxFiCoTn
+ nnS4B+qe/DKqHJJ6gG0xWd7dR8wqjWFNAs4QJ17YNFpVEMZJ7nGMAdNU5ZELeIC+E7RP5Z
+ reN/2NEISf70ipmfSWxiAL57APR23/0=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-678-pGMY1ZfcMHmr9oOuI2h6zA-1; Wed, 11 Oct 2023 10:27:38 -0400
+X-MC-Unique: pGMY1ZfcMHmr9oOuI2h6zA-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-41b19dc9ee4so38312571cf.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 07:27:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697034458; x=1697639258;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VdoJG8USBbqE19zn8X/6GZrDS0fPqFDoGsiARTHcEmA=;
+ b=P3n7zjeUzCdkLiDgIG9cZ4JZ0tmBrWTbSe59n72mFqDjyd4MsgmspOjC4LhtBKAH+d
+ h8TgI3tEBCBqPzZY3roR7hHg8m27OqHS/yPabltSV1UGMi477VLKjnI/0xcV8y5HiE7q
+ YnRI/cXBoz4RV4h5iMY5oFWUEYwPj4KU51dhqodLBLxABV2a1yhvaJz9RTYcGcUtVMVP
+ ikjLPC/Y3oCMW4+hc9urF6PvzUIrV4WDMZetmdzWpakFA7CIt7vQULPyGrh3853sv7XX
+ 3O2cm8Z33HACXXZ+z2Gg3dJIzG8WPEGWfOn06jIEm/ZtQzT421bch74JbiEs5pg0MPit
+ Sl+g==
+X-Gm-Message-State: AOJu0YwJFdYbpFaHPeu4l7gcAnDrcJPHQ/U1u4adfbz+lNOyWr1QrwG6
+ OfI5E7s1sOC2N6e960SNYQKgDHdN9vNA3gFfjtraYMZNyVAzwDJb1Tq/fVXyRImvKAjw7vF/f7v
+ 9gi+NokVVvC5FT9A=
+X-Received: by 2002:a05:622a:1d1:b0:418:797:20b6 with SMTP id
+ t17-20020a05622a01d100b00418079720b6mr22204943qtw.5.1697034458166; 
+ Wed, 11 Oct 2023 07:27:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGOcBjPw1N6m8VACx99uJblYj5ubMSeeY1jGRPnf6lHrZP7A8gaaHRVdXB9B8EArefKA/9gOg==
+X-Received: by 2002:a05:622a:1d1:b0:418:797:20b6 with SMTP id
+ t17-20020a05622a01d100b00418079720b6mr22204929qtw.5.1697034457892; 
+ Wed, 11 Oct 2023 07:27:37 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
+ [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
+ kf13-20020a05622a2a8d00b004194c21ee85sm5400531qtb.79.2023.10.11.07.27.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Oct 2023 07:27:37 -0700 (PDT)
+Message-ID: <714a781c-2689-4d35-a254-e10703b70431@redhat.com>
+Date: Wed, 11 Oct 2023 16:27:34 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] misc/pca9552: Fix inverted input status
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] hw/ppc/ppc4xx_pci: Move ppc4xx_pci.c to hw/pci-host/
 Content-Language: en-US
-To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, andrew@codeconstruct.com.au,
- Joel Stanley <joel@jms.id.au>
-References: <20230927203221.3286895-1-milesg@linux.vnet.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230927203221.3286895-1-milesg@linux.vnet.ibm.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20231011132427.65001-1-philmd@linaro.org>
+ <20231011132427.65001-5-philmd@linaro.org>
+ <8ce1ba6a-f4e0-44ce-d895-81f9ff236ce5@eik.bme.hu>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <8ce1ba6a-f4e0-44ce-d895-81f9ff236ce5@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=T27U=FZ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -72
-X-Spam_score: -7.3
-X-Spam_bar: -------
-X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,91 +144,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/27/23 22:32, Glenn Miles wrote:
-> The pca9552 INPUT0 and INPUT1 registers are supposed to
-> hold the logical values of the LED pins.  A logical 0
-> should be seen in the INPUT0/1 registers for a pin when
-> its corresponding LSn bits are set to 0, which is also
-> the state needed for turning on an LED in a typical
-> usage scenario.  Existing code was doing the opposite
-> and setting INPUT0/1 bit to a 1 when the LSn bit was
-> set to 0, so this commit fixes that.
+On 11/10/2023 15.41, BALATON Zoltan wrote:
+> On Wed, 11 Oct 2023, Philippe Mathieu-Daudé wrote:
+>> ppc4xx_pci.c is moved from the target specific ppc_ss[] meson
+>> source set to pci_ss[] which is common to all targets: the
+>> object is built once.
 > 
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> At this point I'm not sure. This device is only used for PPC machines so 
+> it's kind of target specific. Why do you want to compile it for other targets?
 
-Looks OK to me.
+This way the object code can be shared between qemu-system-ppc64 and 
+qemu-system-ppc. I.e. we only have to compile it once instead of twice.
 
-May be you could mention that the ON/OFF values are reversed on
-the pca953x family. This is good to know if one wants to model
-these devices one day.
+  Thomas
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
-> ---
->   hw/misc/pca9552.c          | 13 +++++++++----
->   tests/qtest/pca9552-test.c |  6 +++---
->   2 files changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-> index fff19e369a..ad811fb249 100644
-> --- a/hw/misc/pca9552.c
-> +++ b/hw/misc/pca9552.c
-> @@ -112,13 +112,18 @@ static void pca955x_update_pin_input(PCA955xState *s)
->   
->           switch (config) {
->           case PCA9552_LED_ON:
-> -            qemu_set_irq(s->gpio[i], 1);
-> -            s->regs[input_reg] |= 1 << input_shift;
-> -            break;
-> -        case PCA9552_LED_OFF:
-> +            /* Pin is set to 0V to turn on LED */
->               qemu_set_irq(s->gpio[i], 0);
->               s->regs[input_reg] &= ~(1 << input_shift);
->               break;
-> +        case PCA9552_LED_OFF:
-> +            /*
-> +             * Pin is set to Hi-Z to turn off LED and
-> +             * pullup sets it to a logical 1.
-> +             */
-> +            qemu_set_irq(s->gpio[i], 1);
-> +            s->regs[input_reg] |= 1 << input_shift;
-> +            break;
->           case PCA9552_LED_PWM0:
->           case PCA9552_LED_PWM1:
->               /* TODO */
-> diff --git a/tests/qtest/pca9552-test.c b/tests/qtest/pca9552-test.c
-> index d80ed93cd3..ccca2b3d91 100644
-> --- a/tests/qtest/pca9552-test.c
-> +++ b/tests/qtest/pca9552-test.c
-> @@ -60,7 +60,7 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
->       g_assert_cmphex(value, ==, 0x55);
->   
->       value = i2c_get8(i2cdev, PCA9552_INPUT0);
-> -    g_assert_cmphex(value, ==, 0x0);
-> +    g_assert_cmphex(value, ==, 0xFF);
->   
->       pca9552_init(i2cdev);
->   
-> @@ -68,13 +68,13 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
->       g_assert_cmphex(value, ==, 0x54);
->   
->       value = i2c_get8(i2cdev, PCA9552_INPUT0);
-> -    g_assert_cmphex(value, ==, 0x01);
-> +    g_assert_cmphex(value, ==, 0xFE);
->   
->       value = i2c_get8(i2cdev, PCA9552_LS3);
->       g_assert_cmphex(value, ==, 0x54);
->   
->       value = i2c_get8(i2cdev, PCA9552_INPUT1);
-> -    g_assert_cmphex(value, ==, 0x10);
-> +    g_assert_cmphex(value, ==, 0xEF);
->   }
->   
->   static void pca9552_register_nodes(void)
 
 
