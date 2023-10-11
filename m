@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8831B7C54EE
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081087C550A
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:14:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqYYo-0006kk-NX; Wed, 11 Oct 2023 08:43:34 -0400
+	id 1qqYYr-0006rS-V4; Wed, 11 Oct 2023 08:43:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqYYe-0006XH-VV
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:43:26 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqYYk-0006kv-TU
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:43:31 -0400
 Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqYYc-0003EB-4b
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:43:24 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqYYi-0003GR-0Z
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:43:30 -0400
 Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40566f8a093so62662125e9.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 05:43:21 -0700 (PDT)
+ 5b1f17b1804b1-405417465aaso65225775e9.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 05:43:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697028200; x=1697633000; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697028206; x=1697633006; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9Z09Y/GItrb7H2jZdZdkzhC3ro+JpWcdXOXIpSdTNVM=;
- b=CmeSpSxdi2RmpGz8icU5jf+A4ga8rvgj9E/+6nVVZIiN6Mr8Ow+NDXGxgOLST0IBye
- LppMzujWEtx3HFkVvUoUk2tXuOoCaApBD8vzIigVwmzvO8p8mCuQT0yHNQ01eKjgypuQ
- o3H8QCMmPXml8QgmgFFTq2L4pAuYBNpXX8bIww505PQJos2HaWRvik7x/2uViM07cNO7
- jpaRasedWEFNAAKBZHgks9S5nUfFOwZsgt4bJTH0rCeah67NJvFsZUSwwq9ShD+Q6ERa
- /VRniHJ5ThYp8rAZYaLbsd2rQAq0NtJReSqmAib098zhQ/s0KM4NjgCDd6EnbbtLlmN4
- U4xg==
+ bh=vxaAINrq3Mze6vSSQ9tfijhvvCdKsip5zQTvkm9DzJo=;
+ b=Qsssc+BhXy7W/dzZ3R8wjkCkR/jTqGoWD3aR5+nOr4xUiglKPFQp+q7KGOc83+iBCA
+ m6LmLfdasyAwi9mWTuaJ7xSamGeFBvdr1JbVZr8qnZ57TRFEnbVz2UHZ1SS0ib724nx8
+ cjbqYsUu87VZ/mw/y0aFQ8B+pGQkspBeDZEwXJai9BFjkh0sdfprMxofvxpINk8pHUq+
+ sDEsxKM/SnaXW9+ca6uWYLhG21rdVwDzAJloo7ihSlJG1RgN317SUWkRxJTFmunJ6cDW
+ 6+yOCVy5WM330I9rZpLw7akKtDyTiR8wqWPlPelflFTITFBqY8ec/Sz+QX8X4Gige1iY
+ +rOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697028200; x=1697633000;
+ d=1e100.net; s=20230601; t=1697028206; x=1697633006;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9Z09Y/GItrb7H2jZdZdkzhC3ro+JpWcdXOXIpSdTNVM=;
- b=Bdsm+FnZwRe2Qcf8mLr2+HTgagsWQQDMCSZMYEgCukX2H7dU45bKi7L6fd6q/VH5Uj
- XBWu+eptLPBhLr/BkkW5WrxnTD+LML8Pcy6mMxXrz+DdJ9evjpFlrXnlTAA6Qzws8gBc
- 2zyrCsW7Pe9ZEWrN0PktB0FG2mtBgT9hv2DwowCA0i8ejotOER+7aN6rZxoPzm+dxIjn
- JXS6sg9rh2Ir8BQi4uPKbnKGX1OZSGZZbbZKILUguABww5XLq3IOyasjgdNurv07R/6i
- fiUTIG2NdHOolCJwgr25sz/xpTBzhyMFgi1sqfcGKQvyjzhzvAteo7R663yb1rYaDmx1
- da4g==
-X-Gm-Message-State: AOJu0YxQ+mRkF5iiYNDE10ZST2KNhnHckGBmO75eT1R8ZHfNk6gsdE/i
- tdeNhJFfnkuTtjBTQ5kbr6vysQyAYEitJ22lPJQ=
-X-Google-Smtp-Source: AGHT+IHyTnE+WOPvji+WV9nu5spSZEShZWaJoCy6oYaRnb4nUeRtPSPyFhO1vNAr/ifF3L9qICFtCA==
-X-Received: by 2002:a05:600c:1caa:b0:407:5b54:bb15 with SMTP id
- k42-20020a05600c1caa00b004075b54bb15mr2822159wms.36.1697028200565; 
- Wed, 11 Oct 2023 05:43:20 -0700 (PDT)
+ bh=vxaAINrq3Mze6vSSQ9tfijhvvCdKsip5zQTvkm9DzJo=;
+ b=axeuMQs2wXjxWSB0aE2EZpPC/BtH/sviIhe/xEVYW5/wSSQVRw6GfCcaBiDxPxI7cV
+ 1Zq6w3V+DlKuMCPUv56xPYfyUppzNo9VbKL9862wikJ4ixyeBwQERV7+FkwJeoBqgYI0
+ t7aNI0kbIXLm+7obwEfYkr5cBlfhqrKVCf258l89L0DcMqi/0682qRBT4yGJCQw2r2JH
+ MOz4zTg/5vK0MsDfq6oxLAqKwM6je3puCU/E3sIs0xWavJkQvWztrjVarAQwb++BVtSo
+ 5dGaEeFkODpeJxM7H9gy2IGDFf7QyzknoUQ/Y/beB6/EfHZMrt478U77KvUSKvLVnOlQ
+ y65w==
+X-Gm-Message-State: AOJu0YwgYKcFuLZOaVwiNbRLlyGNr/uPvw4yZgpPwNID/7nL9BeRuf98
+ nm9mQCCHXK/tl1LL4TWYEpNHRDsKcgcRthQnSpA=
+X-Google-Smtp-Source: AGHT+IG7vL/ED9zPNOGfqvm80bUaGZW1AzJg6dBfzzeIlNsD+vDr1NVK9IMDEvDAQcXzv2H1Kjczeg==
+X-Received: by 2002:a05:600c:3b14:b0:407:4944:76e5 with SMTP id
+ m20-20020a05600c3b1400b00407494476e5mr7745351wms.22.1697028206049; 
+ Wed, 11 Oct 2023 05:43:26 -0700 (PDT)
 Received: from m1x-phil.lan (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
  [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
- 10-20020a05600c228a00b004065d72ab19sm19181749wmf.0.2023.10.11.05.43.19
+ t25-20020a1c7719000000b004065daba6casm19158429wmi.46.2023.10.11.05.43.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 11 Oct 2023 05:43:20 -0700 (PDT)
+ Wed, 11 Oct 2023 05:43:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>, qemu-ppc@nongnu.org,
  qemu-trivial@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/2] MAINTAINERS: Cover hw/ppc/ppc440_uc.c with Sam460ex board
-Date: Wed, 11 Oct 2023 14:43:11 +0200
-Message-ID: <20231011124312.60476-2-philmd@linaro.org>
+Subject: [PATCH 2/2] hw/ppc/ppc440_uc: Remove dead l2sram_update_mappings()
+Date: Wed, 11 Oct 2023 14:43:12 +0200
+Message-ID: <20231011124312.60476-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231011124312.60476-1-philmd@linaro.org>
 References: <20231011124312.60476-1-philmd@linaro.org>
@@ -92,26 +92,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hw/ppc/ppc440_uc.c implements the TYPE_PPC460EX_PCIE_HOST
-device, which is used by the aCube Sam460ex board.
+Apparently l2sram_update_mappings() bit-rotted over time,
+when defining MAP_L2SRAM we get:
+
+  hw/ppc/ppc440_uc.c:83:17: error: no member named 'isarc' in 'struct ppc4xx_l2sram_t'
+      if (l2sram->isarc != isarc ||
+          ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:84:18: error: no member named 'isacntl' in 'struct ppc4xx_l2sram_t'
+          (l2sram->isacntl & 0x80000000) != (isacntl & 0x80000000)) {
+           ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:85:21: error: no member named 'isacntl' in 'struct ppc4xx_l2sram_t'
+          if (l2sram->isacntl & 0x80000000) {
+              ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:88:50: error: no member named 'isarc_ram' in 'struct ppc4xx_l2sram_t'
+                                          &l2sram->isarc_ram);
+                                           ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:93:50: error: no member named 'isarc_ram' in 'struct ppc4xx_l2sram_t'
+                                          &l2sram->isarc_ram);
+                                           ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:96:17: error: no member named 'dsarc' in 'struct ppc4xx_l2sram_t'
+      if (l2sram->dsarc != dsarc ||
+          ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:97:18: error: no member named 'dsacntl' in 'struct ppc4xx_l2sram_t'
+          (l2sram->dsacntl & 0x80000000) != (dsacntl & 0x80000000)) {
+           ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:98:21: error: no member named 'dsacntl' in 'struct ppc4xx_l2sram_t'
+          if (l2sram->dsacntl & 0x80000000) {
+              ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:100:52: error: no member named 'dsarc' in 'struct ppc4xx_l2sram_t'
+              if (!(isacntl & 0x80000000) || l2sram->dsarc != isarc) {
+                                             ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:103:54: error: no member named 'dsarc_ram' in 'struct ppc4xx_l2sram_t'
+                                              &l2sram->dsarc_ram);
+                                               ~~~~~~  ^
+  hw/ppc/ppc440_uc.c:111:54: error: no member named 'dsarc_ram' in 'struct ppc4xx_l2sram_t'
+                                              &l2sram->dsarc_ram);
+                                               ~~~~~~  ^
+
+Remove that dead code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ hw/ppc/ppc440_uc.c | 40 ----------------------------------------
+ 1 file changed, 40 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9e7dec4a58..8c07d07927 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1482,6 +1482,7 @@ M: BALATON Zoltan <balaton@eik.bme.hu>
- L: qemu-ppc@nongnu.org
- S: Maintained
- F: hw/ppc/sam460ex.c
-+F: hw/ppc/ppc440_uc.c
- F: hw/ppc/ppc440_pcix.c
- F: hw/display/sm501*
- F: hw/ide/sii3112.c
+diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
+index 4181c843a8..643a79e330 100644
+--- a/hw/ppc/ppc440_uc.c
++++ b/hw/ppc/ppc440_uc.c
+@@ -73,46 +73,6 @@ typedef struct ppc4xx_l2sram_t {
+     uint32_t isram0[11];
+ } ppc4xx_l2sram_t;
+ 
+-#ifdef MAP_L2SRAM
+-static void l2sram_update_mappings(ppc4xx_l2sram_t *l2sram,
+-                                   uint32_t isarc, uint32_t isacntl,
+-                                   uint32_t dsarc, uint32_t dsacntl)
+-{
+-    if (l2sram->isarc != isarc ||
+-        (l2sram->isacntl & 0x80000000) != (isacntl & 0x80000000)) {
+-        if (l2sram->isacntl & 0x80000000) {
+-            /* Unmap previously assigned memory region */
+-            memory_region_del_subregion(get_system_memory(),
+-                                        &l2sram->isarc_ram);
+-        }
+-        if (isacntl & 0x80000000) {
+-            /* Map new instruction memory region */
+-            memory_region_add_subregion(get_system_memory(), isarc,
+-                                        &l2sram->isarc_ram);
+-        }
+-    }
+-    if (l2sram->dsarc != dsarc ||
+-        (l2sram->dsacntl & 0x80000000) != (dsacntl & 0x80000000)) {
+-        if (l2sram->dsacntl & 0x80000000) {
+-            /* Beware not to unmap the region we just mapped */
+-            if (!(isacntl & 0x80000000) || l2sram->dsarc != isarc) {
+-                /* Unmap previously assigned memory region */
+-                memory_region_del_subregion(get_system_memory(),
+-                                            &l2sram->dsarc_ram);
+-            }
+-        }
+-        if (dsacntl & 0x80000000) {
+-            /* Beware not to remap the region we just mapped */
+-            if (!(isacntl & 0x80000000) || dsarc != isarc) {
+-                /* Map new data memory region */
+-                memory_region_add_subregion(get_system_memory(), dsarc,
+-                                            &l2sram->dsarc_ram);
+-            }
+-        }
+-    }
+-}
+-#endif
+-
+ static uint32_t dcr_read_l2sram(void *opaque, int dcrn)
+ {
+     ppc4xx_l2sram_t *l2sram = opaque;
 -- 
 2.41.0
 
