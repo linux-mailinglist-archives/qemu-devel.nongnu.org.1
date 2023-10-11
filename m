@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63BD7C5891
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1877C58AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 17:57:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqbTu-0002Aj-1Z; Wed, 11 Oct 2023 11:50:42 -0400
+	id 1qqbYv-0006Ih-Bq; Wed, 11 Oct 2023 11:55:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqbTq-000222-Bb
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:50:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqbYt-0006IJ-AI
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:55:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqbTo-0004U7-P0
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:50:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqbYr-0005O8-RW
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 11:55:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697039436;
+ s=mimecast20190719; t=1697039748;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=mRXNuw6jnlxcqKZHk0tEaLCuXgIAvdjFbYgsp8CgviY=;
- b=V7o+VjU8DmpttOhb3QTSM0RelbmjKfyNmCFvs3OL7K4f3HxvhXA6xF/JvZbopDiKmdXsRx
- iBDK96RsobPBp4ThtsAyy2cwFocpAwDh1rFYqiXZ3rMyEsmP2IyzxmpjjsKbs8vKsYxVnz
- fEHXyu3wZECv4yCkre3e7uwsBsPo1jo=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uRoVBt4SuPTLtkmM2/w/kW1EoJRPxNUbaqohcTKTUYE=;
+ b=gA/1Ou9v8Vj6m845egTTTnYzbnIAgqE9k+x4uE6UTgvFpOPqIwbXJWOiOxKglvTo3GYG6X
+ qkjcZQUfMkNU//6DBYDOm5WObzVrUKO29GD07Ahygazy5ynOKtK407qi6JWPx7txk4l3Cr
+ 3wcSlu/9hNykuIpMmZC3cGw4bvh3BYM=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-TfAubibwPQqf_pk0O1-Osw-1; Wed, 11 Oct 2023 11:50:34 -0400
-X-MC-Unique: TfAubibwPQqf_pk0O1-Osw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-65cfb5ff28aso72740296d6.0
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 08:50:34 -0700 (PDT)
+ us-mta-371--STdtlcGNn6W3fc_pp3mJQ-1; Wed, 11 Oct 2023 11:55:47 -0400
+X-MC-Unique: -STdtlcGNn6W3fc_pp3mJQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4180c303ef1so364601cf.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 08:55:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697039434; x=1697644234;
+ d=1e100.net; s=20230601; t=1697039747; x=1697644547;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mRXNuw6jnlxcqKZHk0tEaLCuXgIAvdjFbYgsp8CgviY=;
- b=Ap19cwLZdX0Dk7qY/GVFkKZDMsaoymBd95Wk2+2cO8F3gYNI3GnZc3NalsB3fABXZF
- QAPOqfBT3chSfp5nMZvbRYvzJgn1WhWr5/D7Dp2YqTY6f/rF5illny8vC4jlZ8vQAOpZ
- +IOhfqnDKl/DOzaOpi+LcX+UwyavkJHoPVPv3n/EIgN6Dp/vX/GKq37LuKbX1+kSND2k
- RbvUa7I7ScqD5lES48/lxWcav2B63WnJNF3HaQteqBEDqb1ENv1Fy2oOoDARV/kpGHtF
- UUR6uokdAh7a9gzPP24hS6irzFLYoCJOGjBEU2/d/KtuzPGg0I7AJAJzt0X7n4OVJ1Yr
- kr5g==
-X-Gm-Message-State: AOJu0YzEdjjBLieUGwM6T6aSNVA+iNYvwcU5/ptBlSnoiJZuszNkBvIf
- oFJL6zrO5Qn3ZMsi+KBKcBuak362ltgb2FW2QT1hhdZjywK78utRe8Dpw1mw73Ng5BHHBBhySaD
- Y0KIUI5wgEpA7JA4=
-X-Received: by 2002:a0c:c98a:0:b0:649:c4f:8d81 with SMTP id
- b10-20020a0cc98a000000b006490c4f8d81mr20206363qvk.5.1697039434421; 
- Wed, 11 Oct 2023 08:50:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSkMBG68wVdQ4SY2MxLKHE6cmWzHz0MGZpRKtuFrRWRxu+YMNf0OFCGsXQia+zkIKVgdvoNg==
-X-Received: by 2002:a0c:c98a:0:b0:649:c4f:8d81 with SMTP id
- b10-20020a0cc98a000000b006490c4f8d81mr20206346qvk.5.1697039434164; 
- Wed, 11 Oct 2023 08:50:34 -0700 (PDT)
+ bh=uRoVBt4SuPTLtkmM2/w/kW1EoJRPxNUbaqohcTKTUYE=;
+ b=SoqpFbiFGaPLUBTS3WoixooTFqOXalPUTTFTiY4IJ775QLCZIktN/QlRc6oOQm8QUG
+ NNAyQS7i7djxmfGlIsfOwGMuIe7T5tt4CSNYQE2KuCaT8ovkF+wcyUg5OMOc7oR31WyL
+ p5Srk02UiNpBDugWSmTkFQmshx693DJORE3qDqOBd8GpOVBnQNWVOFc4DdEiVRFIPqPH
+ jvzzxnudkHUbEj4JS+Skfo/lLUdWtc8H5hTtIV1qj00MLAWwG2fEP4NpnUg3geHjNEgv
+ K1ZasUZSWeIyXenfqUWSRmAxKhNLG00/d/j6RH4k4JjZ7CGuj1LrecTRH+/i9SWuzU3B
+ 8+9A==
+X-Gm-Message-State: AOJu0YzV94anFdhE60RVTXzmu29uTIxmedXJmgOv1won/xxVzNWbcOIh
+ UzkhUU1r7Tdr98P0K19f+8KVMezE3GIu/XwPCLUIPbKtnijJMaOyxuqktY7CRaVv+HK0J9DRJJA
+ eA3eh0Vn4yRCdIbE=
+X-Received: by 2002:a05:622a:54b:b0:412:27a1:88d9 with SMTP id
+ m11-20020a05622a054b00b0041227a188d9mr25118653qtx.26.1697039746899; 
+ Wed, 11 Oct 2023 08:55:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG4scknG7WP7wENTcTV53PPIYBTVwsdkB/bq8LAYHP4dxHkBztc4PVwi+Md6veOmzwmCUUEsg==
+X-Received: by 2002:a05:622a:54b:b0:412:27a1:88d9 with SMTP id
+ m11-20020a05622a054b00b0041227a188d9mr25118632qtx.26.1697039746645; 
+ Wed, 11 Oct 2023 08:55:46 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
  [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- d9-20020a0cf0c9000000b00646e0411e8csm5762527qvl.30.2023.10.11.08.50.32
+ 8-20020ac85648000000b00419792c1be7sm5482282qtt.30.2023.10.11.08.55.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 08:50:33 -0700 (PDT)
-Message-ID: <1e60c9b1-ed38-4653-9c1e-10e0b2c8973e@redhat.com>
-Date: Wed, 11 Oct 2023 17:50:30 +0200
+ Wed, 11 Oct 2023 08:55:46 -0700 (PDT)
+Message-ID: <6b6e5087-341d-4fa7-9793-f9cde5e82c6d@redhat.com>
+Date: Wed, 11 Oct 2023 17:55:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/9] tests/qtest/migration: Introduce
- find_common_machine_version
+Subject: Re: [PATCH v2 7/9] tests/qtest/migration: Define a machine for all
+ architectures
 Content-Language: en-US
 To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -76,7 +76,7 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
 References: <20231006123910.17759-1-farosas@suse.de>
- <20231006123910.17759-7-farosas@suse.de>
+ <20231006123910.17759-8-farosas@suse.de>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -120,17 +120,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231006123910.17759-7-farosas@suse.de>
+In-Reply-To: <20231006123910.17759-8-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -148,66 +148,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 06/10/2023 14.39, Fabiano Rosas wrote:
-> When using two different QEMU binaries for migration testing, we'll
-> need to find what is the machine version that will work with both
-> binaries. Add a helper for that.
+> Stop relying on defaults and select a machine explicitly for every
+> architecture.
+> 
+> This is a prerequisite for being able to select machine types for
+> migration using different QEMU binaries for source and destination.
 > 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->   tests/qtest/migration-helpers.c | 24 ++++++++++++++++++++++++
->   tests/qtest/migration-helpers.h |  2 ++
->   2 files changed, 26 insertions(+)
+>   tests/qtest/migration-test.c | 11 ++++++++++-
+>   1 file changed, 10 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-> index be00c52d00..8512134b92 100644
-> --- a/tests/qtest/migration-helpers.c
-> +++ b/tests/qtest/migration-helpers.c
-> @@ -180,3 +180,27 @@ void wait_for_migration_fail(QTestState *from, bool allow_active)
->       g_assert(qdict_get_bool(rsp_return, "running"));
->       qobject_unref(rsp_return);
->   }
-> +
-> +char *find_common_machine_version(const char *mtype, const char *var1,
-> +                                  const char *var2)
-> +{
-> +    g_autofree char *type1 = qtest_resolve_machine_alias(var1, mtype);
-> +    g_autofree char *type2 = qtest_resolve_machine_alias(var2, mtype);
-> +
-> +    g_assert(type1 && type2);
-> +
-> +    if (g_str_equal(type1, type2)) {
-> +        /* either can be used */
-> +        return g_strdup(type1);
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index 46f1c275a2..7c10ac925b 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -746,6 +746,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>       const char *kvm_opts = NULL;
+>       const char *arch = qtest_get_arch();
+>       const char *memory_size;
+> +    const char *machine;
 
-If you remove the g_strdup() in the previous patch, you can also get rid of 
-the g_strdup() and g_autofree in this function here (and change the return 
-type to "const char *".
+I'd maybe call this machine_alias to avoid confusion with the variable that 
+is added in the next patch.
 
   Thomas
-
-
-> +    }
-> +
-> +    if (qtest_has_machine_with_env(var2, type1)) {
-> +        return g_strdup(type1);
-> +    }
-> +
-> +    if (qtest_has_machine_with_env(var1, type2)) {
-> +        return g_strdup(type2);
-> +    }
-> +
-> +    g_assert_not_reached();
-> +}
-> diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
-> index 009e250e90..fc7f693fb6 100644
-> --- a/tests/qtest/migration-helpers.h
-> +++ b/tests/qtest/migration-helpers.h
-> @@ -33,4 +33,6 @@ void wait_for_migration_complete(QTestState *who);
->   
->   void wait_for_migration_fail(QTestState *from, bool allow_active);
->   
-> +char *find_common_machine_version(const char *mtype, const char *var1,
-> +                                  const char *var2);
->   #endif /* MIGRATION_HELPERS_H */
 
 
