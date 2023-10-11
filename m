@@ -2,50 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF74A7C559B
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B46D7C55B2
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:42:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqZR7-0008J7-Tt; Wed, 11 Oct 2023 09:39:41 -0400
+	id 1qqZSs-0001Fm-8x; Wed, 11 Oct 2023 09:41:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqZQi-0008Gx-Aa; Wed, 11 Oct 2023 09:39:17 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qqZQf-0000Lk-A8; Wed, 11 Oct 2023 09:39:15 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 7395574632B;
- Wed, 11 Oct 2023 15:38:14 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3E33F7456AA; Wed, 11 Oct 2023 15:38:14 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3C821745681;
- Wed, 11 Oct 2023 15:38:14 +0200 (CEST)
-Date: Wed, 11 Oct 2023 15:38:14 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 2/5] hw/ppc/ppc4xx_pci: Extract PCI host definitions to
- hw/pci-host/ppc4xx.h
-In-Reply-To: <20231011132427.65001-3-philmd@linaro.org>
-Message-ID: <df403047-ee4c-6092-3bca-d64167f3de13@eik.bme.hu>
-References: <20231011132427.65001-1-philmd@linaro.org>
- <20231011132427.65001-3-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqZSm-0001Et-9q
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:41:24 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqZSf-0000td-Sj
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:41:23 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-9a9f139cd94so1149258366b.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697031676; x=1697636476; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4PUjye3ERdJ76l6US0Zmn24YryjjfRVK7HgRZAA4IuM=;
+ b=R/geXxJELaBF6wS6tS7iBO7Ud1FyX6XHHJ0Sz7kdRHqdsURfq4cjYSbSFd7l6+ITKF
+ Ylzd4OEZWenhxfi0NVyFmMFdQfoIRlRQHmYzFGHiAUqgP+VHdB/rfxCo6ikhnsVKmxEK
+ A91JWqaXlo9Rb1n3yk0qDGFz1feMZiQYUQFJhUTen4TwI/p5ND9EpMbhj79j8bRauwNR
+ wHnR3F74Bn+/8Yd4ddX/lzh7S8Sd8Jx014h5kwqXvSEdciQpXbiyP5pL0lrHS1WR+GJN
+ CjUyanglzaqrIxDw0ouR35HUoUfjapiN2OnBBzckSKtzO8pdMQabSq59h+O7xjRbIFaj
+ yOMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697031676; x=1697636476;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4PUjye3ERdJ76l6US0Zmn24YryjjfRVK7HgRZAA4IuM=;
+ b=UpwGRBreq8LcrGGFPmK4rz/LtMxfoqudlGAR6qDFwoJsXnpm0Av/ZRh1Qu+7Uo1PEO
+ zAC5KYW+zvt0vgrP4O38bwK3Wta8LTC22oNKIv18mJY1OpqaU4UuymivPfIQR6SDBbpb
+ v7gEOH40xjhX5Hy5YuQiHpLM1UC8W0VEnw1OS1mSMA3YRT2yLam9LUp0Xb2X3zO1jVnG
+ ab3ijZzkgy4VjJo2hsUd+24g0ntKfI62pJ1vKnmOQTQbxYdFiGiexWeCccdWYpkb/Gbg
+ nlNIq6wzQ6kwS3J6LZoiXD+zjf58UwasNvWYxJF/CxP7uiQuEN6/HFKpCv84WZWPwn1p
+ 04MQ==
+X-Gm-Message-State: AOJu0Ywgu5rAIOCnDQ5kKH0pO4Nm9tVt9nLLbFZMvprSLZXXQrHGodXn
+ n9MrL8r4RSakSL1apTsysMHBjw==
+X-Google-Smtp-Source: AGHT+IHhNYj5wkfwX48RpSyMFNeQ3278noLbxMcbVX0iXkUJf4xPlhaMEi1KSsNK16LPcK/TS/r2NQ==
+X-Received: by 2002:a17:907:7f26:b0:99d:ddae:f5d4 with SMTP id
+ qf38-20020a1709077f2600b0099dddaef5d4mr23948497ejc.44.1697031675608; 
+ Wed, 11 Oct 2023 06:41:15 -0700 (PDT)
+Received: from [192.168.69.115] (mdq11-h01-176-173-161-48.dsl.sta.abo.bbox.fr.
+ [176.173.161.48]) by smtp.gmail.com with ESMTPSA id
+ g20-20020a17090613d400b009b96e88759bsm10094030ejc.13.2023.10.11.06.41.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Oct 2023 06:41:14 -0700 (PDT)
+Message-ID: <93e4c252-e0bc-6eb2-cb80-924617f44285@linaro.org>
+Date: Wed, 11 Oct 2023 15:41:12 +0200
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-802047450-1697031494=:10652"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 2/2] hw/ppc/ppc440_uc: Remove dead l2sram_update_mappings()
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-trivial@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>
+References: <20231011124312.60476-1-philmd@linaro.org>
+ <20231011124312.60476-3-philmd@linaro.org>
+ <46e1397e-dc3b-c90c-8b1b-f5b62807d3c0@eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <46e1397e-dc3b-c90c-8b1b-f5b62807d3c0@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,146 +95,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Zoltan,
 
---3866299591-802047450-1697031494=:10652
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+On 11/10/23 15:31, BALATON Zoltan wrote:
+> On Wed, 11 Oct 2023, Philippe Mathieu-Daudé wrote:
+>> Apparently l2sram_update_mappings() bit-rotted over time,
+>> when defining MAP_L2SRAM we get:
+>>
+>>  hw/ppc/ppc440_uc.c:83:17: error: no member named 'isarc' in 'struct 
+>> ppc4xx_l2sram_t'
+>>      if (l2sram->isarc != isarc ||
+>>          ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:84:18: error: no member named 'isacntl' in 'struct 
+>> ppc4xx_l2sram_t'
+>>          (l2sram->isacntl & 0x80000000) != (isacntl & 0x80000000)) {
+>>           ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:85:21: error: no member named 'isacntl' in 'struct 
+>> ppc4xx_l2sram_t'
+>>          if (l2sram->isacntl & 0x80000000) {
+>>              ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:88:50: error: no member named 'isarc_ram' in 
+>> 'struct ppc4xx_l2sram_t'
+>>                                          &l2sram->isarc_ram);
+>>                                           ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:93:50: error: no member named 'isarc_ram' in 
+>> 'struct ppc4xx_l2sram_t'
+>>                                          &l2sram->isarc_ram);
+>>                                           ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:96:17: error: no member named 'dsarc' in 'struct 
+>> ppc4xx_l2sram_t'
+>>      if (l2sram->dsarc != dsarc ||
+>>          ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:97:18: error: no member named 'dsacntl' in 'struct 
+>> ppc4xx_l2sram_t'
+>>          (l2sram->dsacntl & 0x80000000) != (dsacntl & 0x80000000)) {
+>>           ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:98:21: error: no member named 'dsacntl' in 'struct 
+>> ppc4xx_l2sram_t'
+>>          if (l2sram->dsacntl & 0x80000000) {
+>>              ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:100:52: error: no member named 'dsarc' in 'struct 
+>> ppc4xx_l2sram_t'
+>>              if (!(isacntl & 0x80000000) || l2sram->dsarc != isarc) {
+>>                                             ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:103:54: error: no member named 'dsarc_ram' in 
+>> 'struct ppc4xx_l2sram_t'
+>>                                              &l2sram->dsarc_ram);
+>>                                               ~~~~~~  ^
+>>  hw/ppc/ppc440_uc.c:111:54: error: no member named 'dsarc_ram' in 
+>> 'struct ppc4xx_l2sram_t'
+>>                                              &l2sram->dsarc_ram);
+>>                                               ~~~~~~  ^
+>>
+>> Remove that dead code.
 
-On Wed, 11 Oct 2023, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I missed to remove:
 
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+-- >8 --
+diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
+index 3a66b0c7f7..1312aa2080 100644
+--- a/hw/ppc/ppc440_uc.c
++++ b/hw/ppc/ppc440_uc.c
+@@ -154,7 +154,6 @@ static void dcr_write_l2sram(void *opaque, int dcrn, 
+uint32_t val)
+          /*l2sram->isram1[dcrn - DCR_L2CACHE_BASE] = val;*/
+          break;
+      }
+-    /*l2sram_update_mappings(l2sram, isarc, isacntl, dsarc, dsacntl);*/
+  }
 
-Regards,
-BALATON Zoltan
+  static void l2sram_reset(void *opaque)
+@@ -164,7 +163,6 @@ static void l2sram_reset(void *opaque)
+      memset(l2sram->l2cache, 0, sizeof(l2sram->l2cache));
+      l2sram->l2cache[DCR_L2CACHE_STAT - DCR_L2CACHE_BASE] = 0x80000000;
+      memset(l2sram->isram0, 0, sizeof(l2sram->isram0));
+-    /*l2sram_update_mappings(l2sram, isarc, isacntl, dsarc, dsacntl);*/
+  }
+---
 
-> ---
-> MAINTAINERS                  |  1 +
-> include/hw/pci-host/ppc4xx.h | 17 +++++++++++++++++
-> include/hw/ppc/ppc4xx.h      |  5 -----
-> hw/ppc/ppc440_bamboo.c       |  1 +
-> hw/ppc/ppc440_pcix.c         |  2 +-
-> hw/ppc/ppc440_uc.c           |  1 +
-> hw/ppc/ppc4xx_pci.c          |  2 +-
-> hw/ppc/sam460ex.c            |  1 +
-> 8 files changed, 23 insertions(+), 7 deletions(-)
-> create mode 100644 include/hw/pci-host/ppc4xx.h
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8c07d07927..158896d03e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1969,6 +1969,7 @@ L: qemu-ppc@nongnu.org
-> S: Orphan
-> F: hw/ppc/ppc4*.c
-> F: hw/i2c/ppc4xx_i2c.c
-> +F: include/hw/pci-host/ppc4xx.h
-> F: include/hw/ppc/ppc4xx.h
-> F: include/hw/i2c/ppc4xx_i2c.h
-> F: hw/intc/ppc-uic.c
-> diff --git a/include/hw/pci-host/ppc4xx.h b/include/hw/pci-host/ppc4xx.h
-> new file mode 100644
-> index 0000000000..dc36e1ea29
-> --- /dev/null
-> +++ b/include/hw/pci-host/ppc4xx.h
-> @@ -0,0 +1,17 @@
-> +/*
-> + * QEMU PowerPC 4xx PCI-host definitions
-> + *
-> + * Copyright (c) 2007 Jocelyn Mayer
-> + *
-> + * SPDX-License-Identifier: MIT
-> + */
-> +
-> +#ifndef HW_PCIHOST_PPC4XX_H
-> +#define HW_PCIHOST_PPC4XX_H
-> +
-> +#define TYPE_PPC4xx_HOST_BRIDGE "ppc4xx-host-bridge"
-> +#define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
-> +#define TYPE_PPC440_PCIX_HOST "ppc440-pcix-host"
-> +#define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
-> +
-> +#endif
-> diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
-> index ea7740239b..1bd9b8821b 100644
-> --- a/include/hw/ppc/ppc4xx.h
-> +++ b/include/hw/ppc/ppc4xx.h
-> @@ -29,11 +29,6 @@
-> #include "exec/memory.h"
-> #include "hw/sysbus.h"
->
-> -#define TYPE_PPC4xx_HOST_BRIDGE "ppc4xx-host-bridge"
-> -#define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
-> -#define TYPE_PPC440_PCIX_HOST "ppc440-pcix-host"
-> -#define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
-> -
-> /*
->  * Generic DCR device
->  */
-> diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
-> index 45f409c838..2049ff0eef 100644
-> --- a/hw/ppc/ppc440_bamboo.c
-> +++ b/hw/ppc/ppc440_bamboo.c
-> @@ -24,6 +24,7 @@
-> #include "elf.h"
-> #include "hw/char/serial.h"
-> #include "hw/ppc/ppc.h"
-> +#include "hw/pci-host/ppc4xx.h"
-> #include "ppc405.h"
-> #include "sysemu/sysemu.h"
-> #include "sysemu/reset.h"
-> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-> index e4dadbc84d..418dff6590 100644
-> --- a/hw/ppc/ppc440_pcix.c
-> +++ b/hw/ppc/ppc440_pcix.c
-> @@ -25,7 +25,7 @@
-> #include "qemu/module.h"
-> #include "qemu/units.h"
-> #include "hw/irq.h"
-> -#include "hw/ppc/ppc4xx.h"
-> +#include "hw/pci-host/ppc4xx.h"
-> #include "hw/pci/pci_device.h"
-> #include "hw/pci/pci_host.h"
-> #include "trace.h"
-> diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
-> index 643a79e330..3a66b0c7f7 100644
-> --- a/hw/ppc/ppc440_uc.c
-> +++ b/hw/ppc/ppc440_uc.c
-> @@ -14,6 +14,7 @@
-> #include "qemu/log.h"
-> #include "hw/irq.h"
-> #include "hw/ppc/ppc4xx.h"
-> +#include "hw/pci-host/ppc4xx.h"
-> #include "hw/qdev-properties.h"
-> #include "hw/pci/pci.h"
-> #include "sysemu/reset.h"
-> diff --git a/hw/ppc/ppc4xx_pci.c b/hw/ppc/ppc4xx_pci.c
-> index 51c265f0ba..d2434a93ac 100644
-> --- a/hw/ppc/ppc4xx_pci.c
-> +++ b/hw/ppc/ppc4xx_pci.c
-> @@ -24,7 +24,7 @@
-> #include "qemu/osdep.h"
-> #include "qemu/log.h"
-> #include "hw/irq.h"
-> -#include "hw/ppc/ppc4xx.h"
-> +#include "hw/pci-host/ppc4xx.h"
-> #include "migration/vmstate.h"
-> #include "qemu/module.h"
-> #include "sysemu/reset.h"
-> diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-> index 1e615b8d35..a28498f39c 100644
-> --- a/hw/ppc/sam460ex.c
-> +++ b/hw/ppc/sam460ex.c
-> @@ -25,6 +25,7 @@
-> #include "elf.h"
-> #include "exec/memory.h"
-> #include "ppc440.h"
-> +#include "hw/pci-host/ppc4xx.h"
-> #include "hw/block/flash.h"
-> #include "sysemu/sysemu.h"
-> #include "sysemu/reset.h"
->
---3866299591-802047450-1697031494=:10652--
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> hw/ppc/ppc440_uc.c | 40 ----------------------------------------
+>> 1 file changed, 40 deletions(-)
+>>
+>> diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
+>> index 4181c843a8..643a79e330 100644
+>> --- a/hw/ppc/ppc440_uc.c
+>> +++ b/hw/ppc/ppc440_uc.c
+>> @@ -73,46 +73,6 @@ typedef struct ppc4xx_l2sram_t {
+>>     uint32_t isram0[11];
+>> } ppc4xx_l2sram_t;
+>>
+>> -#ifdef MAP_L2SRAM
+>> -static void l2sram_update_mappings(ppc4xx_l2sram_t *l2sram,
+>> -                                   uint32_t isarc, uint32_t isacntl,
+>> -                                   uint32_t dsarc, uint32_t dsacntl)
+> 
+> If you remove this then nobody will remember this could be modelled or 
+> may be fixed so maybe leave it as a reminder for now.
+
+We can keep this code if someone fix it and enable it (convert the
+definition to a static boolean). Some APIs are being modified, we can
+not test modifications in such dead code. Even converting to a comment
+doesn't seem useful.
+
+Maybe you can add a comment "If you are interested in ..., see
+l2sram_update_mappings() draft implementation in
+https://lists.gnu.org/archive/html/qemu-devel/2018-02/msg04261.html"?
+
+> Regards,
+> BALATON Zoltan
+
 
