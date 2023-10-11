@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584C87C5506
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C557C5586
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 15:34:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqYnk-0003pV-7p; Wed, 11 Oct 2023 08:59:00 -0400
+	id 1qqZKT-0006gg-U4; Wed, 11 Oct 2023 09:32:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqYnd-0003p8-MP
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:58:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqYnb-0006p3-RL
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 08:58:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697029130;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=oUeXUhtx2ubv+/ix7w0bX1H5qOBfTVWLb2g4gpZOBHU=;
- b=CG66HH5A1e+YpJTpmKocDGkVYrTA7kaeb+eRUy5ip0YlspllWBFD1N8GqO7KkSBA2U4Id0
- YpwDUQ0I8L1hNde+7I2WhZ1mXRWR5Q20zVoSytlzMeLVNTrAyDNwTaaDN3D3NefDSbNZKr
- Od1MkmyTK8uNuhGXhC3jDyvfDkCAwKI=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-IwLzF-rgN02Y9DhZhWbDHw-1; Wed, 11 Oct 2023 08:58:46 -0400
-X-MC-Unique: IwLzF-rgN02Y9DhZhWbDHw-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-502fff967ccso6058184e87.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 05:58:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1qqYqh-00054A-Ao
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:02:08 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1qqYqf-00080T-12
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 09:02:03 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-406532c49dcso17408375e9.0
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 06:01:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697029317; x=1697634117;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rwgmh6+dGvGXg4dM1TwwbyonY61p5x8aIJa99FUZaaE=;
+ b=qWyIX/xb98GkRpkpAh84G+Eko37O2drm8SN+9rwEQAExc6mlk4/YUm/218LUsIF0sG
+ g4AhU3mD1beCeZ5rFHaPM8JD59bM8vdHsERymw2+ofZAw6e97gI3JbaqwRN/GcJSVxiy
+ 7u2EX4Ed2JjUWLw5szuaxAUr+iVoQkHWIiF216aRg1nawltHGF/wTg7ls9mVPffMTSSz
+ hvkdA3JemP+u0hLaFzLxVs4fWq21Py8pPn0VOn54k9xHOOZpr+/c2zy5f+oLK/w0gyC9
+ ZSPsf6WTZKCeOQgVwsbhHYQp1HlfCv4M3B6n0Vb2I9HOsQ//6dzs3c+dL6wvCzisQz36
+ PUqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697029125; x=1697633925;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oUeXUhtx2ubv+/ix7w0bX1H5qOBfTVWLb2g4gpZOBHU=;
- b=MHz1+cA7oGDFt4PY0KHa4PJABkT84iOEbnD1b4MqJqtpDUFDgG9NOU+Rymv5k+E1o5
- 0QxG0Aj/l+LXp+6cLfDTmhDl5XAACZxZpB/Hcj1X/m9dAWaOAshQb+uOEcApR4tMECqy
- +G0BhH8dsHduOxIxfPdsrcfGkgTPWXjsp3w9ThIM7dFkPpiXNUbVDt75nETjcuA/y+Vd
- pmjsTIV7R0u/ddYEyBhL8EgQcVt7rstdGUKZG52MsVhB/72YJkeNrbHTxsEvG+xP689q
- T/0MZz3IXqrYAMqJ6Qffo6YyzAzxjCtU96XkxtJUtUqZQJYw+HLXwpdjXV4y0tCsETDh
- B7vw==
-X-Gm-Message-State: AOJu0YxNCEnVat/MFFJZnS8lVxwsa4axAJc1r6QunfSVNo3bAjE6qgFD
- sf57CWe6A2zfcfpAr7zCPFHdjCEGu0qvQfAVf3c50Bh8tt1fk2WIFAB6tsr+kytYn9WN/GILK02
- iWUqU/O02fvtTzgs=
-X-Received: by 2002:a05:6512:1246:b0:500:9839:b13a with SMTP id
- fb6-20020a056512124600b005009839b13amr22736139lfb.66.1697029125171; 
- Wed, 11 Oct 2023 05:58:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFdeMWRR4RwC0gDe1/6RmxUHeLfzIsKAsaTX6DR6e9X47YjcQaIaq4CqFVz6OejAaHvmfXh/w==
-X-Received: by 2002:a05:6512:1246:b0:500:9839:b13a with SMTP id
- fb6-20020a056512124600b005009839b13amr22736112lfb.66.1697029124782; 
- Wed, 11 Oct 2023 05:58:44 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- u10-20020ac248aa000000b005041a71237asm2248184lfg.111.2023.10.11.05.58.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 05:58:44 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Chensheng Dong
- <chdong@redhat.com>,  Markus Armbruster <armbru@redhat.com>,  Zhiyi Guo
- <zhguo@redhat.com>,  Eric Blake <eblake@redhat.com>,  Joao Martins
- <joao.m.martins@oracle.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>
-Subject: Re: [PATCH v4] migration: Allow user to specify available
- switchover bandwidth
-In-Reply-To: <20231010221922.40638-1-peterx@redhat.com> (Peter Xu's message of
- "Tue, 10 Oct 2023 18:19:22 -0400")
-References: <20231010221922.40638-1-peterx@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 11 Oct 2023 14:58:42 +0200
-Message-ID: <87mswpb9j1.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1697029317; x=1697634117;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rwgmh6+dGvGXg4dM1TwwbyonY61p5x8aIJa99FUZaaE=;
+ b=MzRDSJWq3JKD0Po0umyRawkTDyUaLIA+DtnBjINbGTRTI0LgHTMNq8RNRnpSskMm59
+ aydXEH8J7AXtZVRiknD5RMq1OodDHgD3clGUkIEKsEylgZi5vSUzeC481FP0pklICDh4
+ bez65Ug15U7HLLPARZa5re0NFmvNEgg2f2osr/A6jqbXTU2ojiAAd06UEAKOpiAXfMpR
+ WR98OhAN1f+68liDESMaLIt0fm/kCp4Vj7B1yF+R725dsWcKIkoGOHIKraQeL5M1ALyI
+ 5xpYKBq7vtia9vlG7reaIbDP5pliHLLtxeIB7DqERD5hwLqW2UpWXoMxKwccYNqMrdBg
+ qaKA==
+X-Gm-Message-State: AOJu0YzOV+WXNtS1zvnqKI8/sKy0JMripnnyzl7mApWeqrPbYywyqJpy
+ oRhjt4Wl8HmLIrNaEjgpzlDqTw==
+X-Google-Smtp-Source: AGHT+IEhMkJ2UZs6Oq4f4tUpfy0l0nV4F52Qa2DFBj6+4HKIgbRMYasQqxe3N8vqkwv/ysHcS2lQQg==
+X-Received: by 2002:a05:600c:1d03:b0:404:7606:a871 with SMTP id
+ l3-20020a05600c1d0300b004047606a871mr18566318wms.2.1697029317191; 
+ Wed, 11 Oct 2023 06:01:57 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:999:a3a0:9134:b302:d8b:a200?
+ ([2a01:e0a:999:a3a0:9134:b302:d8b:a200])
+ by smtp.gmail.com with ESMTPSA id
+ x11-20020a05600c21cb00b00405bbfd5d16sm16970192wmj.7.2023.10.11.06.01.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Oct 2023 06:01:56 -0700 (PDT)
+Message-ID: <7d8958a5-01cf-428d-bc40-efc06d1be8fe@rivosinc.com>
+Date: Wed, 11 Oct 2023 15:01:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] riscv, qemu_fw_cfg: Add support for RISC-V architecture
+Content-Language: en-US
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Gabriel Somlo <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20231011114721.193732-1-bjorn@kernel.org>
+From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
+In-Reply-To: <20231011114721.193732-1-bjorn@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=cleger@rivosinc.com; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 11 Oct 2023 09:31:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,85 +95,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> wrote:
-> Migration bandwidth is a very important value to live migration.  It's
-> because it's one of the major factors that we'll make decision on when to
-> switchover to destination in a precopy process.
->
-> This value is currently estimated by QEMU during the whole live migration
-> process by monitoring how fast we were sending the data.  This can be the
-> most accurate bandwidth if in the ideal world, where we're always feeding
-> unlimited data to the migration channel, and then it'll be limited to the
-> bandwidth that is available.
->
-> However in reality it may be very different, e.g., over a 10Gbps network we
-> can see query-migrate showing migration bandwidth of only a few tens of
-> MB/s just because there are plenty of other things the migration thread
-> might be doing.  For example, the migration thread can be busy scanning
-> zero pages, or it can be fetching dirty bitmap from other external dirty
-> sources (like vhost or KVM).  It means we may not be pushing data as much
-> as possible to migration channel, so the bandwidth estimated from "how many
-> data we sent in the channel" can be dramatically inaccurate sometimes.
->
-> With that, the decision to switchover will be affected, by assuming that we
-> may not be able to switchover at all with such a low bandwidth, but in
-> reality we can.
->
-> The migration may not even converge at all with the downtime specified,
-> with that wrong estimation of bandwidth, keeping iterations forever with a
-> low estimation of bandwidth.
->
-> The issue is QEMU itself may not be able to avoid those uncertainties on
-> measuing the real "available migration bandwidth".  At least not something
-> I can think of so far.
->
-> One way to fix this is when the user is fully aware of the available
-> bandwidth, then we can allow the user to help providing an accurate value.
->
-> For example, if the user has a dedicated channel of 10Gbps for migration
-> for this specific VM, the user can specify this bandwidth so QEMU can
-> always do the calculation based on this fact, trusting the user as long as
-> specified.  It may not be the exact bandwidth when switching over (in which
-> case qemu will push migration data as fast as possible), but much better
-> than QEMU trying to wildly guess, especially when very wrong.
->
-> A new parameter "avail-switchover-bandwidth" is introduced just for this.
-> So when the user specified this parameter, instead of trusting the
-> estimated value from QEMU itself (based on the QEMUFile send speed), it
-> trusts the user more by using this value to decide when to switchover,
-> assuming that we'll have such bandwidth available then.
->
-> Note that specifying this value will not throttle the bandwidth for
-> switchover yet, so QEMU will always use the full bandwidth possible for
-> sending switchover data, assuming that should always be the most important
-> way to use the network at that time.
->
-> This can resolve issues like "unconvergence migration" which is caused by
-> hilarious low "migration bandwidth" detected for whatever reason.
->
-> Reported-by: Zhiyi Guo <zhguo@redhat.com>
-> Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Hi Björn,
 
-> diff --git a/migration/options.h b/migration/options.h
-> index 045e2a41a2..93ee938ab8 100644
-> --- a/migration/options.h
-> +++ b/migration/options.h
-> @@ -80,6 +80,7 @@ int migrate_decompress_threads(void);
->  uint64_t migrate_downtime_limit(void);
->  uint8_t migrate_max_cpu_throttle(void);
->  uint64_t migrate_max_bandwidth(void);
-> +uint64_t migrate_avail_switchover_bandwidth(void);
->  uint64_t migrate_max_postcopy_bandwidth(void);
->  int migrate_multifd_channels(void);
->  MultiFDCompression migrate_multifd_compression(void);
+On 11/10/2023 13:47, Björn Töpel wrote:
+> From: Björn Töpel <bjorn@rivosinc.com>
+> 
+> Qemu fw_cfg support was missing for RISC-V, which made it hard to do
+> proper vmcore dumps from qemu.
+> 
+> Add the missing RISC-V arch-defines.
+> 
+> You can now do vmcore dumps from qemu. Add "-device vmcoreinfo" to the
+> qemu command-line. From the qemu montior:
 
-This list of functions is alphabetically sorted, doing that during merge.
+small typo here: monitor
 
+>   (qemu) dump-guest-memory vmcore
+> 
+> The vmcore can now be used, e.g., with the "crash" utility.
+> 
+> Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+> ---
+>  drivers/firmware/Kconfig       | 2 +-
+>  drivers/firmware/qemu_fw_cfg.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index b59e3041fd62..f05ff56629b3 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -155,7 +155,7 @@ config RASPBERRYPI_FIRMWARE
+>  
+>  config FW_CFG_SYSFS
+>  	tristate "QEMU fw_cfg device support in sysfs"
+> -	depends on SYSFS && (ARM || ARM64 || PARISC || PPC_PMAC || SPARC || X86)
+> +	depends on SYSFS && (ARM || ARM64 || PARISC || PPC_PMAC || RISCV || SPARC || X86)
+>  	depends on HAS_IOPORT_MAP
+>  	default n
+>  	help
+> diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+> index a69399a6b7c0..1448f61173b3 100644
+> --- a/drivers/firmware/qemu_fw_cfg.c
+> +++ b/drivers/firmware/qemu_fw_cfg.c
+> @@ -211,7 +211,7 @@ static void fw_cfg_io_cleanup(void)
+>  
+>  /* arch-specific ctrl & data register offsets are not available in ACPI, DT */
+>  #if !(defined(FW_CFG_CTRL_OFF) && defined(FW_CFG_DATA_OFF))
+> -# if (defined(CONFIG_ARM) || defined(CONFIG_ARM64))
+> +# if (defined(CONFIG_ARM) || defined(CONFIG_ARM64) || defined(CONFIG_RISCV))
+>  #  define FW_CFG_CTRL_OFF 0x08
+>  #  define FW_CFG_DATA_OFF 0x00
+>  #  define FW_CFG_DMA_OFF 0x10
+> 
+> base-commit: 1c8b86a3799f7e5be903c3f49fcdaee29fd385b5
+
+I didn't know that qemu could generate vmcore files. BTW, whenever I
+don't have 'crash' at hand, I often use them with gdb and vmlinux-gdb.py
+debugging scripts. Anyway, works as expected:
+
+Tested-by: Clément Léger <cleger@rivosinc.com>
+
+Clément
 
