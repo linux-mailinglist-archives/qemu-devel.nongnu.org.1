@@ -2,85 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A717C49EE
-	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 08:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A98C7C4A9F
+	for <lists+qemu-devel@lfdr.de>; Wed, 11 Oct 2023 08:32:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqSUO-0004cS-MZ; Wed, 11 Oct 2023 02:14:37 -0400
+	id 1qqSkv-0001t1-2t; Wed, 11 Oct 2023 02:31:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qqSU2-0004ZX-Fh; Wed, 11 Oct 2023 02:14:14 -0400
-Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qqSkk-0001sZ-BS
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 02:31:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qqSTx-0002OT-4U; Wed, 11 Oct 2023 02:14:13 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R771e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046059;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=47; SR=0;
- TI=SMTPD_---0VtvF12m_1697004820; 
-Received: from 30.221.100.88(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VtvF12m_1697004820) by smtp.aliyun-inc.com;
- Wed, 11 Oct 2023 14:13:42 +0800
-Message-ID: <c8bcb233-62a8-4ce3-a08d-1da49d896c86@linux.alibaba.com>
-Date: Wed, 11 Oct 2023 14:12:41 +0800
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qqSki-0006si-T8
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 02:31:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697005888;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OwchNrvU9E56OM0pxlPcAMdWHwaaRiM6OuhbPdbqNgU=;
+ b=OJdhgNiAlOf2bSrmXdNqHy8Ds27csFV75E6sbw8a6UoAiou1XTVvCGQ01Nfxk8UVEgiZkS
+ m4SmdVea0NFjsOj4uaKj/t4V+d7E/cDqzVlovOccFLZTGCCluj1IFG6j757QYLjxC4PJQz
+ HaxKiqfirpVudenII41YLBFO49IR1W0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-599-tvs9VR46Phu0w4L1FlwXyA-1; Wed, 11 Oct 2023 02:31:06 -0400
+X-MC-Unique: tvs9VR46Phu0w4L1FlwXyA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCC48858F19;
+ Wed, 11 Oct 2023 06:31:05 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 82CDE63F6C;
+ Wed, 11 Oct 2023 06:31:04 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, stefanha@redhat.com, vr_qemu@t-online.de,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 0/8] Audio patches
+Date: Wed, 11 Oct 2023 10:30:53 +0400
+Message-ID: <20231011063101.258955-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/18] target: Declare FOO_CPU_TYPE_NAME/SUFFIX in
- 'cpu-qom.h'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Gavin Shan <gshan@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Brian Cain <bcain@quicinc.com>, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-arm@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org,
- Bin Meng <bin.meng@windriver.com>, Yanan Wang <wangyanan55@huawei.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Marek Vasut
- <marex@denx.de>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <laurent@vivier.eu>, Stafford Horne <shorne@gmail.com>,
- Chris Wulff <crwulff@gmail.com>, Sergio Lopez <slp@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-5-philmd@linaro.org>
- <348eaf9c-9fb6-4674-b324-c3f3017f1851@linux.alibaba.com>
- <f8b3cb2c-8e80-19e4-d59f-2ccacff0a413@linaro.org>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <f8b3cb2c-8e80-19e4-d59f-2ccacff0a413@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.111;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-111.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,134 +77,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-On 2023/10/11 11:21, Philippe Mathieu-Daudé wrote:
-> Hi Zhiwei,
->
-> On 11/10/23 04:51, LIU Zhiwei wrote:
->>
->> On 2023/10/10 17:28, Philippe Mathieu-Daudé wrote:
->>> Hegerogeneous code needs access to the FOO_CPU_TYPE_NAME()
->>> macro to resolve target CPU types.
->>
->> Hi Philippe,
->>
->> I don't understand why should we use FOO_CPU_TYPE_NAME macro to 
->> resolve target CPU types? In my opinion, we should pass the
->> CPU typename from command line for heterogeneous case.
->>
->> Could you make it clearer how should we use FOO_CPU_TYPE_NAME macro 
->> to resolve target CPU types in heterogeneous case?
->
-> To be honest I start to feel a bit lost with the "cpu
-> resolving type" design.
->
-> We are not quite there yet to "create from command line"
-> or "create from QMP", so I'm prototyping in plain C.
-> One of my test is:
->
->   #include "target/arm/cpu-qom.h"
->   #include "target/hexagon/cpu-qom.h"
->   ...
->
->   static void
->   my_machine3_init((MachineState *machine)
->   {
->     CPUState cpu[2];
->     ...
->
->     cpu[0] = CPU(object_new(ARM_CPU_TYPE_NAME("cortex-a72")));
->     cpu[1] = CPU(object_new(HEXAGON_CPU_TYPE_NAME("v68")));
->     ...
->   }
->
-> The machine code need access to the per-target
-> FOO_CPU_TYPE_NAME() macros. 
+The following changes since commit cea3ea670fe265421131aad90c36fbb87bc4d206:
 
-I see what you mean. It works if we will pass the cpu model instead of 
-cpu typename to the machine state(Not yet).
+  Merge tag 'pull-vfio-20231009' of https://github.com/legoater/qemu into staging (2023-10-09 10:11:35 -0400)
 
-Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+are available in the Git repository at:
 
-Zhiwei
+  https://gitlab.com/marcandre.lureau/qemu.git tags/audio-pull-request
 
-> I'm not sure what each macro
-> expands to is considered stable, so IIUC I can't inline and use:
->
->     cpu[0] = CPU(object_new("cortex-a72-arm-cpu"));
->     cpu[1] = CPU(object_new("v68"-hexagon-cpu));
->
-> That said, maybe I'm mistaken.
->
-> Kinda related discussion with Gavin/Igor:
-> https://lore.kernel.org/qemu-devel/35653f53-a977-02ea-28f6-6fe85b1efd5a@redhat.com/ 
->
-> (related to 
-> https://lore.kernel.org/qemu-devel/20230907003553.1636896-1-gshan@redhat.com/).
->
->>
->> Thanks,
->> Zhiwei
->>
->>> Move the declaration
->>> (along with the required FOO_CPU_TYPE_SUFFIX) to "cpu-qom.h".
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   target/alpha/cpu-qom.h   | 5 ++++-
->>>   target/alpha/cpu.h       | 2 --
->>>   target/avr/cpu-qom.h     | 5 ++++-
->>>   target/avr/cpu.h         | 2 --
->>>   target/cris/cpu-qom.h    | 5 ++++-
->>>   target/cris/cpu.h        | 2 --
->>>   target/i386/cpu-qom.h    | 3 +++
->>>   target/i386/cpu.h        | 2 --
->>>   target/m68k/cpu-qom.h    | 5 ++++-
->>>   target/m68k/cpu.h        | 2 --
->>>   target/mips/cpu-qom.h    | 3 +++
->>>   target/mips/cpu.h        | 2 --
->>>   target/rx/cpu-qom.h      | 5 ++++-
->>>   target/rx/cpu.h          | 2 --
->>>   target/s390x/cpu-qom.h   | 5 ++++-
->>>   target/s390x/cpu.h       | 2 --
->>>   target/sh4/cpu-qom.h     | 5 ++++-
->>>   target/sh4/cpu.h         | 2 --
->>>   target/sparc/cpu-qom.h   | 5 ++++-
->>>   target/sparc/cpu.h       | 2 --
->>>   target/tricore/cpu-qom.h | 5 +++++
->>>   target/tricore/cpu.h     | 2 --
->>>   target/xtensa/cpu-qom.h  | 5 ++++-
->>>   target/xtensa/cpu.h      | 2 --
->>>   24 files changed, 47 insertions(+), 33 deletions(-)
->>>
->>> diff --git a/target/alpha/cpu-qom.h b/target/alpha/cpu-qom.h
->>> index 1f200724b6..d596d1b69f 100644
->>> --- a/target/alpha/cpu-qom.h
->>> +++ b/target/alpha/cpu-qom.h
->>> @@ -1,5 +1,5 @@
->>>   /*
->>> - * QEMU Alpha CPU
->>> + * QEMU Alpha CPU QOM header (target agnostic)
->>>    *
->>>    * Copyright (c) 2012 SUSE LINUX Products GmbH
->>>    *
->>> @@ -27,6 +27,9 @@
->>>   OBJECT_DECLARE_CPU_TYPE(AlphaCPU, AlphaCPUClass, ALPHA_CPU)
->>> +#define ALPHA_CPU_TYPE_SUFFIX "-" TYPE_ALPHA_CPU
->>> +#define ALPHA_CPU_TYPE_NAME(model) model ALPHA_CPU_TYPE_SUFFIX
->>> +
->>>   /**
->>>    * AlphaCPUClass:
->>>    * @parent_realize: The parent class' realize handler.
->>> diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
->>> index e2a467ec17..ba0d9e3468 100644
->>> --- a/target/alpha/cpu.h
->>> +++ b/target/alpha/cpu.h
->>> @@ -428,8 +428,6 @@ enum {
->>>   void alpha_translate_init(void);
->>> -#define ALPHA_CPU_TYPE_SUFFIX "-" TYPE_ALPHA_CPU
->>> -#define ALPHA_CPU_TYPE_NAME(model) model ALPHA_CPU_TYPE_SUFFIX
->>>   #define CPU_RESOLVING_TYPE TYPE_ALPHA_CPU
->>>   void alpha_cpu_list(void);
-> [...]
+for you to fetch changes up to 5bf1a71c5b7b2d1999f65c08b4d82b5dec9f3013:
+
+  hw/audio/es1370: trace lost interrupts (2023-10-10 12:31:05 +0000)
+
+----------------------------------------------------------------
+Audio es1370 fix & cleanups
+
+----------------------------------------------------------------
+
+Volker Rümelin (8):
+  hw/audio/es1370: reset current sample counter
+  hw/audio/es1370: replace bit-rotted code with tracepoints
+  hw/audio/es1370: remove unused dolog macro
+  hw/audio/es1370: remove #ifdef ES1370_DEBUG to avoid bit rot
+  hw/audio/es1370: remove #ifdef ES1370_VERBOSE to avoid bit rot
+  hw/audio/es1370: block structure coding style fixes
+  hw/audio/es1370: change variable type and name
+  hw/audio/es1370: trace lost interrupts
+
+ hw/audio/es1370.c     | 289 +++++++++++++++++++-----------------------
+ hw/audio/trace-events |  11 ++
+ 2 files changed, 143 insertions(+), 157 deletions(-)
+
+-- 
+2.41.0
+
 
