@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F387C7006
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B6F7C700B
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:08:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqwLl-0000Mh-I1; Thu, 12 Oct 2023 10:07:42 -0400
+	id 1qqwM0-0000WU-2b; Thu, 12 Oct 2023 10:07:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwLE-0008NE-K6
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwLE-0008NL-Ux
  for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:07:09 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwLA-0008Ej-Jx
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwLB-0008F4-RR
  for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:07:08 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id BD5B121878;
- Thu, 12 Oct 2023 14:07:02 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A8D331F898;
+ Thu, 12 Oct 2023 14:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697119622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1697119624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Oz4n+qj236YL1a8qzoYEdHstGZkz+mRU8otmuN/uam0=;
- b=OQ0p2LnazH7o6j9d2wDB+av+p03ARYymqi8eMvJjhLaF10D8wwwVGGdEOV7NX2oWv4dyWz
- rmT6sbv/+SN6MXzBbLkI7VjQPVusdAFLqSONsnJ9Fo21FEJyEV4DQHjJj6AOMPPFlkTozh
- 5Hmgd4ffjnRoUDz8b+gCrCn1lHTi78k=
+ bh=DJwOf25AFLkGxrZXTydCy3mSdIODrn/xWE+T4mZJn4A=;
+ b=a7+T/PhM/Xf2uuLiW0hiZd1lTouZD8ut6rpWQzb/iuCIZHX/srid0i6VIUqM8FN9d8UTCd
+ 08sRyIeGC1wIQBX5BI4u+P1M4Li1EWQeIj8LAerrnfa15ngLUIu4myd/dibgB4TJikRHG5
+ W7jjF2B1OOaNFYWKe7KgyAJGIRiHL7k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697119622;
+ s=susede2_ed25519; t=1697119624;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Oz4n+qj236YL1a8qzoYEdHstGZkz+mRU8otmuN/uam0=;
- b=ZxHgu9oxtfTNq11MXbcrf8nhPuYaKUzeBW0whSxBON4x5uDBg8zG9Q2jQDMUf5waDK4vwI
- 5YTCPEjiEhE2EIAA==
+ bh=DJwOf25AFLkGxrZXTydCy3mSdIODrn/xWE+T4mZJn4A=;
+ b=oxm+FYsF+mC+rv2FoA5M8MBRvxMWDwKVH5nwMB0riGB5Qmu6P8GZ2BLHJ8Dh63oeTlSdHd
+ vZ/8lI2kxq2wWbAg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 453A4139ED;
- Thu, 12 Oct 2023 14:07:01 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 319CD139ED;
+ Thu, 12 Oct 2023 14:07:02 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id wFdmBIX9J2U5CgAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 12 Oct 2023 14:07:01 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id sEA9O4b9J2U5CgAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 12 Oct 2023 14:07:02 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: [RFC PATCH v2 4/6] migration/multifd: Extract sem_done waiting into a
- function
-Date: Thu, 12 Oct 2023 11:06:49 -0300
-Message-Id: <20231012140651.13122-5-farosas@suse.de>
+Subject: [RFC PATCH v2 5/6] migration/multifd: Stop setting 'quit' outside of
+ channels
+Date: Thu, 12 Oct 2023 11:06:50 -0300
+Message-Id: <20231012140651.13122-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231012140651.13122-1-farosas@suse.de>
 References: <20231012140651.13122-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
+Authentication-Results: smtp-out2.suse.de;
 	none
-X-Spam-Score: 0.22
-X-Spamd-Result: default: False [0.22 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: 0.90
+X-Spamd-Result: default: False [0.90 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  R_MISSING_CHARSET(2.50)[]; MIME_GOOD(-0.10)[text/plain];
@@ -76,9 +76,9 @@ X-Spamd-Result: default: False [0.22 / 50.00]; ARC_NA(0.00)[];
  NEURAL_HAM_SHORT(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
  RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-0.68)[83.12%]
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ BAYES_HAM(-0.00)[30.55%]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -101,79 +101,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This helps document the intent of the loop via the function name and
-we can reuse this in the future.
+We shouldn't really be touching channel state from outside the
+channels except for the transfer of pages.
+
+Move the setting of p->quit into the channel. Keep posting the 'sem'
+from multifd_send_terminate_threads() so any channel waiting on the
+semaphore will unblock and see the 'exiting' flag and quit by itself.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.c | 47 +++++++++++++++++++++++++++++----------------
- 1 file changed, 30 insertions(+), 17 deletions(-)
+ migration/multifd.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 94f4ae5ff8..4ffa67339c 100644
+index 4ffa67339c..b7ba3fe0e6 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -576,6 +576,35 @@ static int multifd_zero_copy_flush(QIOChannel *c)
-     return ret;
+@@ -497,13 +497,11 @@ static void multifd_send_terminate_threads(Error *err)
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
+ 
+-        qemu_mutex_lock(&p->mutex);
+-        p->quit = true;
++        /* kick the channel if it was waiting for work */
+         qemu_sem_post(&p->sem);
+         if (p->c) {
+             qio_channel_shutdown(p->c, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
+         }
+-        qemu_mutex_unlock(&p->mutex);
+     }
  }
  
-+static void multifd_send_wait(void)
-+{
-+    int i;
-+
-+    /* wait for all channels to be idle */
-+    for (i = 0; i < migrate_multifd_channels(); i++) {
-+        MultiFDSendParams *p = &multifd_send_state->params[i];
-+
-+        /*
-+         * Even idle channels will wait for p->sem at the top of the
-+         * loop.
-+         */
-+        qemu_sem_post(&p->sem);
-+
-+        trace_multifd_send_wait(migrate_multifd_channels() - i);
-+        qemu_sem_wait(&p->sem_done);
+@@ -690,6 +688,9 @@ static void *multifd_send_thread(void *opaque)
+         qemu_sem_wait(&p->sem);
+ 
+         if (qatomic_read(&multifd_send_state->exiting)) {
++            qemu_mutex_lock(&p->mutex);
++            p->quit = true;
++            qemu_mutex_unlock(&p->mutex);
+             break;
+         }
+         qemu_mutex_lock(&p->mutex);
+@@ -765,6 +766,11 @@ static void *multifd_send_thread(void *opaque)
+ out:
+     if (local_err) {
+         trace_multifd_send_error(p->id);
 +
 +        qemu_mutex_lock(&p->mutex);
-+        assert(!p->pending_job || p->quit);
++        p->quit = true;
 +        qemu_mutex_unlock(&p->mutex);
-+    }
 +
-+    /*
-+     * All channels went idle and have no more jobs. Unless we send
-+     * them more work, we're good to allow any cleanup code to run at
-+     * this point.
-+     */
-+}
-+
- int multifd_send_sync_main(QEMUFile *f)
- {
-     int i;
-@@ -611,23 +640,7 @@ int multifd_send_sync_main(QEMUFile *f)
-         qemu_sem_post(&p->sem);
+         multifd_send_terminate_threads(local_err);
+         error_free(local_err);
      }
- 
--    /* wait for all channels to be idle */
--    for (i = 0; i < migrate_multifd_channels(); i++) {
--        MultiFDSendParams *p = &multifd_send_state->params[i];
--
--        /*
--         * Even idle channels will wait for p->sem at the top of the
--         * loop.
--         */
--        qemu_sem_post(&p->sem);
--
--        trace_multifd_send_wait(migrate_multifd_channels() - i);
--        qemu_sem_wait(&p->sem_done);
--
--        qemu_mutex_lock(&p->mutex);
--        assert(!p->pending_job || p->quit);
--        qemu_mutex_unlock(&p->mutex);
--    }
-+    multifd_send_wait();
- 
-     /*
-      * When using zero-copy, it's necessary to flush the pages before any of
 -- 
 2.35.3
 
