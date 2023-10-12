@@ -2,92 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C257C70D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F00D37C70D3
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:58:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqx9i-0001Qq-52; Thu, 12 Oct 2023 10:59:18 -0400
+	id 1qqx8D-0007y1-82; Thu, 12 Oct 2023 10:57:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqx9B-0000wV-MI
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:58:47 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqx96-00011J-Pr
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:58:45 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40572aeb73cso11560885e9.3
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 07:58:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697122716; x=1697727516; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZW5OE/reskpBesRlO9JCGXFrKIePysu77mJRX5Ed/qw=;
- b=Kc5GV7qt8fUfg3OOPWW8uqGuqqEUxv+6UBCI2bG5GbWDGvddkUEoZN0/lufc4EU3Uw
- XYm0I6zYzoFp89qKPDqRrcXLtSphUTiTl7jYkN/4omobDWRGQ87qAJiwbM2iONGSmgDB
- p244ZvUsEsE3Zw3F390VFykHIWuY/SZFMiGzUxI0bttodyvrpkLPVzBjIK6YLnEc+z7+
- FRvXS8SRI1otCxRQKi2M0S3UhNqSud1RHnI/byNY49srOVH678qBpeJK/IJXEg8GHlZk
- cDwpNteGZ+X6wfbYdnbmP83woYbyoyCC+BbOi4gquzm3URIyvRUCXP5c87tF8+gvOmy5
- TO6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697122716; x=1697727516;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=ZW5OE/reskpBesRlO9JCGXFrKIePysu77mJRX5Ed/qw=;
- b=Cpo6WgQmLSXI96oDQM/+u8eslDT26yGQNMyN+BRuPnvKq1wX7KEf34Azl1rFmkAUPb
- aeVhJsloIcYcuQ+vqLJMftPYFz1FGdY6OUMULrA5WuN2nPbqNcYCg9NoATX1uI881vHr
- 6ksr4WPzvMo60iZLjd5cHG3zJDZFVsZ9+XbJMdp+yIr0je9CHSDfCb8rqIYm0/b2ltbN
- ksPj2aCnbOaD9wUckE/pLrAkqYNSDR2WOJLlNSzrBf5UunigXnsLJY6aHG5YM8cuhCRH
- RcELIqrSAYlEsTmm7lBXDIjZzkaC/f7AA0xoq3XQOLX97BRYEHixOxoAd70P3U42Z3TZ
- OWfA==
-X-Gm-Message-State: AOJu0YzOX3Jxa4f5lrcxg4jborXk5A9YAkxZTfa7L3j+JjTkDOdR0/3i
- 1xQmyjLASllJVlMOFYAl7FT7gQ==
-X-Google-Smtp-Source: AGHT+IHvdl6MROZbZb2hNitMDmDKUF2gSGrbb6pI3hL1FBBD5KD/j0py+TMQ6XkHLRxFle0Zb2+2Wg==
-X-Received: by 2002:a5d:6483:0:b0:32d:87c9:1181 with SMTP id
- o3-20020a5d6483000000b0032d87c91181mr4987588wri.48.1697122716352; 
- Thu, 12 Oct 2023 07:58:36 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- p4-20020a5d68c4000000b003232f167df5sm18617137wrw.108.2023.10.12.07.58.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Oct 2023 07:58:36 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 7FE501FFBB;
- Thu, 12 Oct 2023 15:58:35 +0100 (BST)
-References: <20231011165234.1323725-1-quic_svaddagi@quicinc.com>
- <20231011165234.1323725-13-quic_svaddagi@quicinc.com>
- <31ae6951-2f32-ab86-4ddc-aa70364a89ce@linaro.org>
- <20231012123338.GF1130358@quicinc.com>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
-Cc: Philippe Mathieu-Daud? <philmd@linaro.org>, peter.maydell@linaro.org,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, quic_tsoni@quicinc.com,
- quic_pheragu@quicinc.com, quic_eberman@quicinc.com,
- quic_yvasi@quicinc.com, quic_cvanscha@quicinc.com,
- quic_mnalajal@quicinc.com, Brian Cain <bcain@quicinc.com>, Mark Burton
- <mburton@qti.qualcomm.com>
-Subject: Re: [RFC/PATCH v0 12/12] gunyah: Documentation
-Date: Thu, 12 Oct 2023 15:55:59 +0100
-In-reply-to: <20231012123338.GF1130358@quicinc.com>
-Message-ID: <87ttqvnazo.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqx8A-0007xf-2w
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:57:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqx88-0000tR-Ba
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:57:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697122659;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=VY7yYWrl74DMjKqEjJNpQ5wu/FhGWamfVRAk8X4dKeY=;
+ b=YhV2U6m6IStFPJRu9mQOXqSYk61EYk7fYONMfZSr6gdkxDjcI58a4LRlN1k+VgBy9vaMU2
+ 8tymz+hiS2icrxB8noEvSE9qoHQuXw+1ecB7NfAUAGB9F6qQMRe/9P8xJOb8p6CC0YPLii
+ W78xH38UCUCd7wkwAGjQ+xHy1/V5fY0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-94-fW0GqAitMK2EMTIx9Lc5RQ-1; Thu, 12 Oct 2023 10:57:23 -0400
+X-MC-Unique: fW0GqAitMK2EMTIx9Lc5RQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1BCC6811731
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 14:57:23 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F0244202701E
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 14:57:22 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A935021E6A21; Thu, 12 Oct 2023 16:57:21 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com
+Subject: [PULL 0/5] -Wshadow=local patches for 2023-10-12
+Date: Thu, 12 Oct 2023 16:57:16 +0200
+Message-ID: <20231012145721.77039-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,49 +75,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit a51e5124a655b3dad80b36b18547cb1eca2c5eb2:
 
-Srivatsa Vaddagiri <quic_svaddagi@quicinc.com> writes:
+  Merge tag 'pull-omnibus-111023-1' of https://gitlab.com/stsquad/qemu into staging (2023-10-11 09:43:10 -0400)
 
-> * Philippe Mathieu-Daud? <philmd@linaro.org> [2023-10-12 06:52:04]:
->
->> > +Limitations
->> > +-----------
->> > +
->> > +Below features are not yet supported.
->> > +
->> > +* virtio-pci (support for which in Qemu seems to rely heavily on KVM,=
- which
->> > +  needs to be made multi-hypervisor friendly).
->>=20
->> Is QUIC interested in working on that? My work introducing
->> AccelCPUState to make CPUState accel-agnostic was done in that
->> direction, but I didn't notice much interest in the community
->> so I unprioritized it.
->
-> Hi Phil,
-> 	We do want to see Gunyah support merged in Qemu at the earliest (as soon
-> as the kernel driver is merged upstream that is), so any dependent change=
- in
-> Qemu for Gunyah would be of much interest to us! I am not sure though if =
-Quic
-> can sign up for the entire "make cpustate accel agnostic" work. Can you p=
-oint
-> to your ongoing work that I could take a look at? Would that address virt=
-io-pci
-> becoming accelerator agnostic?
+are available in the Git repository at:
 
-Why wouldn't virtio-pci be accelerator agnostic?
+  https://repo.or.cz/qemu/armbru.git tags/pull-shadow-2023-10-12
 
-It works with KVM and TCG for example. There are I suppose complications
-if you want to share emulated devices with a real PCI bus rather than
-emulating it all within QEMU.
+for you to fetch changes up to c35b2fb1fdc7f6926653cc6df289e5bd77ecbad3:
 
->
-> Thanks!
-> vatsa
+  target/i386: fix shadowed variable pasto (2023-10-12 16:37:31 +0200)
 
+----------------------------------------------------------------
+-Wshadow=local patches for 2023-10-12
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+----------------------------------------------------------------
+Paolo Bonzini (1):
+      target/i386: fix shadowed variable pasto
+
+Thomas Huth (4):
+      libvduse: Fix compiler warning with -Wshadow=local
+      libvhost-user: Fix compiler warning with -Wshadow=local
+      hw/virtio/virtio-gpu: Fix compiler warning when compiling with -Wshadow
+      contrib/vhost-user-gpu: Fix compiler warning when compiling with -Wshadow
+
+ contrib/vhost-user-gpu/vugpu.h            |  8 ++++----
+ include/hw/virtio/virtio-gpu.h            |  8 ++++----
+ contrib/vhost-user-gpu/vhost-user-gpu.c   |  6 +++---
+ subprojects/libvduse/libvduse.c           |  2 +-
+ subprojects/libvhost-user/libvhost-user.c | 12 ++++++------
+ target/i386/tcg/seg_helper.c              |  2 +-
+ 6 files changed, 19 insertions(+), 19 deletions(-)
+
+-- 
+2.41.0
+
 
