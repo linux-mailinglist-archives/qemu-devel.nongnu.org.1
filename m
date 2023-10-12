@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B033B7C641E
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 409927C6423
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:37:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqnQI-000729-0F; Thu, 12 Oct 2023 00:35:46 -0400
+	id 1qqnRH-0007kz-8p; Thu, 12 Oct 2023 00:36:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqnQF-00071c-Uf
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:35:43 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqnRE-0007kH-I0
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:36:44 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqnQD-00086n-SE
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:35:43 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-9b64b98656bso82961866b.0
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:35:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqnRA-0008Fn-2X
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:36:42 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-99c3d3c3db9so81988666b.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:36:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697085340; x=1697690140; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697085398; x=1697690198; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EN0IDyE+rC9sar4CoPaHY6iTywNrc39u7yDiBEnnNqE=;
- b=Moh8oaViGvVb6kI5YfTMGN9rBcPYNcwGv7TJ2+Bb2GFG4x4fm/mmr9+57DQNkFmMQZ
- B335NUbU73dipT3BbhHQ29QfxNsK5707QRiOoglCcJs8uE7VGH7ZTcwGe8D4FchcTmJj
- xV9mP1fd4eYRF7MVHFXUh34bH/DPDqertdXdUIDDgODUXp64CK2x7x83rzllMJFSmHZI
- FWmc3vs3BgbJ9AmKFlXf+KEjBjMLgKlRK8yhKjJcouEnsaF92UXvuQX5vLMqkWg62dD6
- cp2E+eBazH6YONzCXmNAUXGlLVlZ2qUJ7AlfQtZkUZnppktszZfR9UBgeBaOatcLM5O0
- h3zw==
+ bh=rsqWk+2/+fzNt1nwuH5nLLJ02vPdHgexuKsMnzAkv3w=;
+ b=HEXqGli7PkdLWRguv/Ybzgyntlytd4AjslYx/OGoVGTd9P/1pFZHG5xTJ0gJsYzNdH
+ oeKlAedSb0ex2idiBuwUyhu1YjgpDqtPDL/NgobFvdPzpzdk62soPQZJ8IfpiKQmpEfY
+ pT/uW9MDAEGMh3UoKdhr4ID7kwneFDyfd4qKfsyv32lmMuAbRCGz/1Xb5488Yo/Teo8D
+ r5jwMFhPFIH2JPgmm8nJ1AK+JY+8oD1aoGHuejh2moMvVizI+rgjoZPV5hHdstBPWQUz
+ nUEPbxNUb/kUYcRJbgzFO4zUT0FiFNO8iDQhjx3YAIhBSi7ejIHasqlaqPNkI1hiaYWc
+ 2e2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697085340; x=1697690140;
+ d=1e100.net; s=20230601; t=1697085398; x=1697690198;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EN0IDyE+rC9sar4CoPaHY6iTywNrc39u7yDiBEnnNqE=;
- b=ITZmsXL7nFgPBbd3UWcNwAihdWZattflthRwIqfDWcrJJy5W+1iNxsZADOz/letB4H
- K43CbN9f/WkAZHmEDMQ+Oo8thFAPjhYkGXtwRRFVxhfzzB2OyKs322SmGNRoU68V8r5k
- VGgnv9dCi5A3ZjZ8gzoM5TaaKhVwiVRUNIUrh1hAviDozf8uTiF6ahvMAGOw8ybPo5j+
- oPOckUywi3DIeNx9NkEezperjdiqCpSfQmmi6vpV1DpNQSGiSRM2xUzawaBu/kynM5Fk
- pntKk2vdQTgjW5ULD0+g3nr3q0igkAWYkY+i3+9n/BK1J3LUT3uhmkEg/1BXWYoISK8N
- I89Q==
-X-Gm-Message-State: AOJu0Ywc9CsO3OyJVCAUzKtaAiVvT7bRNZwK7RZr8f5s/yWQyfTxAV3X
- ZKgMNevxcXHD/c6OPA/T7OQUqQ==
-X-Google-Smtp-Source: AGHT+IHqfTTeREdL7UgFh5Cs1S+vNAEcHOZ6kY1eJWqQLNipmRtaXlA6Q2NOzrlmsQEqljXXw+3WBA==
-X-Received: by 2002:a17:906:73d3:b0:9b8:df8e:cbda with SMTP id
- n19-20020a17090673d300b009b8df8ecbdamr19464518ejl.59.1697085340024; 
- Wed, 11 Oct 2023 21:35:40 -0700 (PDT)
+ bh=rsqWk+2/+fzNt1nwuH5nLLJ02vPdHgexuKsMnzAkv3w=;
+ b=Lr/JD4aUDA+SIbshu42sOFwDv2tQB57D4DBIDZrqn+LlAoPGfhwAigSoZI+uvrC9AW
+ rGVTwKJq73wNl5zBMWNq7i/DQ+rdeTX7eYNvDtRuvXrilvvkWxh+/eLVBj3qu+POMHv5
+ XChHhA9arerVSxtAR2izBs8vtOcbG31n7dVLWZ8pnwNuBxdUNKIb+ElVlBqSif0Rydgb
+ auvdfewoGqS67YJ58qQFyc/cQy4x4NSz4OPzYBqzbRFInRYHbnCLUlMlKB/Ag5N6wUTt
+ v4m6MVjCqSdBoyG8Ug/EjrV9ZbRpT9mcH0358NRIkzhZRTqcWwZ/iJqjw7xfxqxjYowH
+ GDWw==
+X-Gm-Message-State: AOJu0YxFuOPxFwhaC2S4bXzABaDrrvT+gjjuwwhxSSjzGNpEQdZLxDiG
+ k9NFnFhDLCe8LsNlUWkvgqzu8g==
+X-Google-Smtp-Source: AGHT+IGn5Y1WzWdsdU7MfdCfa5PmA9zEevz9KS71cMQv84u2N+RvvzYye12V78QdPYi70J2QkbPG0g==
+X-Received: by 2002:a17:906:844c:b0:9a5:cab0:b050 with SMTP id
+ e12-20020a170906844c00b009a5cab0b050mr19136706ejy.13.1697085397985; 
+ Wed, 11 Oct 2023 21:36:37 -0700 (PDT)
 Received: from [192.168.69.115] (dcs23-h01-176-173-173-31.dsl.sta.abo.bbox.fr.
  [176.173.173.31]) by smtp.gmail.com with ESMTPSA id
- e5-20020a17090681c500b00993a37aebc5sm10508006ejx.50.2023.10.11.21.35.38
+ y17-20020a1709064b1100b0099cc3c7ace2sm10727685eju.140.2023.10.11.21.36.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 21:35:39 -0700 (PDT)
-Message-ID: <557f2d41-e605-af72-b9a6-85dd67b310ab@linaro.org>
-Date: Thu, 12 Oct 2023 06:35:37 +0200
+ Wed, 11 Oct 2023 21:36:37 -0700 (PDT)
+Message-ID: <f1998265-a32b-e900-6b0c-3b9508789be7@linaro.org>
+Date: Thu, 12 Oct 2023 06:36:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [RFC/PATCH v0 08/12] gunyah: Specific device-tree location
+Subject: Re: [RFC/PATCH v0 09/12] gunyah: Customize device-tree
 Content-Language: en-US
 To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>, peter.maydell@linaro.org, 
  alex.bennee@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
@@ -67,20 +67,20 @@ Cc: quic_tsoni@quicinc.com, quic_pheragu@quicinc.com,
  quic_eberman@quicinc.com, quic_yvasi@quicinc.com, quic_cvanscha@quicinc.com,
  quic_mnalajal@quicinc.com
 References: <20231011165234.1323725-1-quic_svaddagi@quicinc.com>
- <20231011165234.1323725-9-quic_svaddagi@quicinc.com>
+ <20231011165234.1323725-10-quic_svaddagi@quicinc.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231011165234.1323725-9-quic_svaddagi@quicinc.com>
+In-Reply-To: <20231011165234.1323725-10-quic_svaddagi@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
 X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,44 +97,42 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/10/23 18:52, Srivatsa Vaddagiri wrote:
-> Specify the location of device-tree and its size, as Gunyah requires the
-> device-tree to be parsed before VM can begin its execution.
+> Customize device-tree with Gunyah specific properties. Some of these
+> properties include specification of doorbells that need to be created
+> and associated with various interrupts.
 > 
 > Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
 > ---
->   MAINTAINERS             |  1 +
->   hw/arm/virt.c           |  6 ++++++
->   include/sysemu/gunyah.h |  7 +++++++
->   target/arm/gunyah.c     | 45 +++++++++++++++++++++++++++++++++++++++++
->   target/arm/meson.build  |  4 ++++
->   5 files changed, 63 insertions(+)
->   create mode 100644 target/arm/gunyah.c
+>   hw/arm/virt.c           | 11 ++++++
+>   include/sysemu/gunyah.h |  7 ++++
+>   target/arm/gunyah.c     | 79 +++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 97 insertions(+)
 
 
 > diff --git a/include/sysemu/gunyah.h b/include/sysemu/gunyah.h
-> index aded49cdf6..101e190619 100644
+> index 101e190619..f077837437 100644
 > --- a/include/sysemu/gunyah.h
 > +++ b/include/sysemu/gunyah.h
-> @@ -34,10 +34,17 @@ typedef struct GUNYAHState GUNYAHState;
->   DECLARE_INSTANCE_CHECKER(GUNYAHState, GUNYAH_STATE,
+> @@ -35,6 +35,8 @@ DECLARE_INSTANCE_CHECKER(GUNYAHState, GUNYAH_STATE,
 >                            TYPE_GUNYAH_ACCEL)
 >   
-> +int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size);
-
-By moving this declaration before the #ifdef ...
-
-> +
+>   int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size);
+> +void gunyah_arm_fdt_customize(void *fdt, uint64_t mem_base,
+> +                uint32_t gic_phandle);
+>   
 >   #else   /* CONFIG_GUNYAH_IS_POSSIBLE */
 >   
->   #define gunyah_enabled()    0
+> @@ -45,6 +47,11 @@ static inline int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size)
+>       return -1;
+>   }
 >   
-> +static inline int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size)
+> +static inline void gunyah_arm_fdt_customize(void *fdt, uint64_t mem_base,
+> +                uint32_t gic_phandle)
 > +{
-> +    return -1;
+
+Similar comment than previous patch: stub can be avoided.
+
 > +}
-
-... you don't need this stub.
-
 > +
 >   #endif  /* CONFIG_GUNYAH_IS_POSSIBLE */
 >   
