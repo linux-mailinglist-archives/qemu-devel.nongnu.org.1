@@ -2,105 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6B67C7094
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089C27C70B5
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:50:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqwwD-0002hA-EQ; Thu, 12 Oct 2023 10:45:21 -0400
+	id 1qqx0P-0004e2-2P; Thu, 12 Oct 2023 10:49:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqwwB-0002eQ-7v
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:45:19 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqww8-0007F6-2h
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:45:18 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-690ce3c55f1so833716b3a.0
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 07:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697121914; x=1697726714;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+gxakmX5egNupoUva4qv0ThRigbN+mUSk0Jo0iRI4+c=;
- b=meXKpO649cTfMDc008ur7aG1Nv16iAGgiRmdTqChr/Ska0ys3j3rN7sFctXB/OqMWc
- YMQIknigJlI8OEfRXqgWn3QV4DIwN+bKmkBGzwI3VWRvEXaXoSy+xLUrBHqgtclgduQb
- BNym/67XkeA6XFJcVY8SaIFtzgLDHOs6ozByOavZz63ELu9ViunXXP4csqBId4PAyp5N
- kGE/ISsPAG5KXTUTVphCHcfvpvNBByCEldarj/F9kT2cwdIaB88lTmE0JgDhVYCmFbVw
- Z+8rMTntNSHTMC+he1eRs5fPM9ymUQYz/gKjZ73EM5VtW7civwgkc4tv8gG9HiiVp3Fj
- foCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697121914; x=1697726714;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+gxakmX5egNupoUva4qv0ThRigbN+mUSk0Jo0iRI4+c=;
- b=YsmaJlsxUJyiavpUj5RdfCgE2c0Q0AErnM7vS4PfEmosmAqCc84gJqm1yPYVjT6ayj
- VjHuzXy/2EZ4cxt9AVcm0+JxCnUxgD0Kmc4xHPxQivIhnIpBBnfIYuoIswdK2wX+7NT9
- 5CuVlpS0RqfFRonL4m72nujOgL3Mmg9pnQKO4ObiwkbvE/LG1cVIGC3g/WrPLe4VvBKA
- 70nrQq+qu/lTNTEq1gwV0HrEod3R4HeHHsLUtSwU1jPzy+W9H75ihxP/4c4FUPXaSVQr
- EC3t1EEG2pJjfW9TE+YIV3k/n7LczzCn1cUFn/uw/F+PEWqWegNGcu/s4htPEiZBlerz
- wE0A==
-X-Gm-Message-State: AOJu0Yzo9QieyMQu+od0Im9mR3ehNWFEZG2UHSY7FS+pFRoBuV/FMoDQ
- /6pHrvgxwoRuQ9cZulmdHiLOcw==
-X-Google-Smtp-Source: AGHT+IG6msMDBy42iIKwAHANSgWLrCQlK34Sg8Ybyakh4SAKLr0ImFK8wAXKv4pv6OmMhYZ+V96BQw==
-X-Received: by 2002:a05:6a20:dda4:b0:16b:7602:1837 with SMTP id
- kw36-20020a056a20dda400b0016b76021837mr14670113pzb.29.1697121914552; 
- Thu, 12 Oct 2023 07:45:14 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- jw10-20020a170903278a00b001c5fa48b9a0sm2083248plb.33.2023.10.12.07.45.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 07:45:14 -0700 (PDT)
-Message-ID: <d38a342b-4c63-46b0-9ce3-952412708eea@daynix.com>
-Date: Thu, 12 Oct 2023 23:45:07 +0900
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qqx06-0004aw-RI; Thu, 12 Oct 2023 10:49:22 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qqwzz-0007xQ-EJ; Thu, 12 Oct 2023 10:49:21 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5svw17w8z687hF;
+ Thu, 12 Oct 2023 22:48:44 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 12 Oct
+ 2023 15:49:05 +0100
+Date: Thu, 12 Oct 2023 15:49:04 +0100
+To: Salil Mehta <salil.mehta@huawei.com>
+CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
+ <jean-philippe@linaro.org>, <lpieralisi@kernel.org>,
+ <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
+ <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
+ <philmd@linaro.org>, <eric.auger@redhat.com>, <oliver.upton@linux.dev>,
+ <pbonzini@redhat.com>, <mst@redhat.com>, <will@kernel.org>,
+ <gshan@redhat.com>, <rafael@kernel.org>, <alex.bennee@linaro.org>,
+ <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
+ <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
+ <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
+ <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
+ <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
+ <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
+ <linuxarm@huawei.com>
+Subject: Re: [PATCH V5 5/9] hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+Message-ID: <20231012154904.0000728e@Huawei.com>
+In-Reply-To: <20231011194355.15628-6-salil.mehta@huawei.com>
+References: <20231011194355.15628-1-salil.mehta@huawei.com>
+ <20231011194355.15628-6-salil.mehta@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 11/18] gdbstub: Infer number of core registers from XML
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Peter Maydell
- <peter.maydell@linaro.org>, Michael Rolnik <mrolnik@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Laurent Vivier
- <laurent@vivier.eu>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
- "open list:S390 general arch..." <qemu-s390x@nongnu.org>
-References: <20231012130616.7941-1-akihiko.odaki@daynix.com>
- <20231012130616.7941-12-akihiko.odaki@daynix.com>
- <62fd649b-1c07-c0f5-11cc-ca17ad0675e5@linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <62fd649b-1c07-c0f5-11cc-ca17ad0675e5@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::432;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,82 +73,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/12 22:43, Philippe Mathieu-Daudé wrote:
-> Hi Akihiko,
-> 
-> On 12/10/23 15:06, Akihiko Odaki wrote:
->> GDBFeature has the num_regs member so use it where applicable to
->> remove magic numbers.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   include/hw/core/cpu.h   | 3 ++-
->>   target/s390x/cpu.h      | 2 --
->>   gdbstub/gdbstub.c       | 5 ++++-
->>   target/arm/cpu.c        | 1 -
->>   target/arm/cpu64.c      | 1 -
->>   target/avr/cpu.c        | 1 -
->>   target/hexagon/cpu.c    | 1 -
->>   target/i386/cpu.c       | 2 --
->>   target/loongarch/cpu.c  | 2 --
->>   target/m68k/cpu.c       | 1 -
->>   target/microblaze/cpu.c | 1 -
->>   target/riscv/cpu.c      | 1 -
->>   target/rx/cpu.c         | 1 -
->>   target/s390x/cpu.c      | 1 -
->>   14 files changed, 6 insertions(+), 17 deletions(-)
->>
->> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
->> index 3968369554..11d4b5cd0c 100644
->> --- a/include/hw/core/cpu.h
->> +++ b/include/hw/core/cpu.h
->> @@ -127,7 +127,8 @@ struct SysemuCPUOps;
->>    * @gdb_adjust_breakpoint: Callback for adjusting the address of a
->>    *       breakpoint.  Used by AVR to handle a gdb mis-feature with
->>    *       its Harvard architecture split code and data.
->> - * @gdb_num_core_regs: Number of core registers accessible to GDB.
->> + * @gdb_num_core_regs: Number of core registers accessible to GDB or 
->> 0 to infer
->> + *                     from @gdb_core_xml_file.
->>    * @gdb_core_xml_file: File name for core registers GDB XML 
->> description.
->>    * @gdb_stop_before_watchpoint: Indicates whether GDB expects the 
->> CPU to stop
->>    *           before the insn which triggers a watchpoint rather than 
->> after it.
->> diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
->> index 7bea7075e1..83eafbe4b1 100644
->> --- a/target/s390x/cpu.h
->> +++ b/target/s390x/cpu.h
->> @@ -452,8 +452,6 @@ static inline void 
->> cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
->>   #define S390_R13_REGNUM 15
->>   #define S390_R14_REGNUM 16
->>   #define S390_R15_REGNUM 17
->> -/* Total Core Registers. */
->> -#define S390_NUM_CORE_REGS 18
->>   static inline void setcc(S390CPU *cpu, uint64_t cc)
->>   {
->> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
->> index 49fb23a68a..c19f1785e4 100644
->> --- a/gdbstub/gdbstub.c
->> +++ b/gdbstub/gdbstub.c
->> @@ -541,9 +541,12 @@ void gdb_init_cpu(CPUState *cpu)
->>           gdb_register_feature(cpu, 0,
->>                                cc->gdb_read_register, 
->> cc->gdb_write_register,
->>                                feature);
->> +        cpu->gdb_num_regs = cpu->gdb_num_g_regs = feature->num_regs;
->>       }
->> -    cpu->gdb_num_regs = cpu->gdb_num_g_regs = cc->gdb_num_core_regs;
->> +    if (cc->gdb_num_core_regs) {
->> +        cpu->gdb_num_regs = cpu->gdb_num_g_regs = cc->gdb_num_core_regs;
-> 
-> Why not remove SysemuCPUOps::gdb_num_core_regs entirely?
+On Wed, 11 Oct 2023 20:43:51 +0100
+Salil Mehta <salil.mehta@huawei.com> wrote:
 
-It is used by targets without XMLs and ppc, which overrides the number 
-from XML.
+> CPUs Control device(\\_SB.PCI0) register interface for the x86 arch is based on
+> PCI and is IO port based and hence existing CPUs AML code assumes _CRS objects
+> would evaluate to a system resource which describes IO Port address. But on ARM
+> arch CPUs control device(\\_SB.PRES) register interface is memory-mapped hence
+> _CRS object should evaluate to system resource which describes memory-mapped
+> base address. Update build CPUs AML function to accept both IO/MEMORY region
+> spaces and accordingly update the _CRS object.
+> 
+> Legacy CPU Hotplug uses Generic ACPI GPE Block Bit 2 (GPE.2) event handler to
+> notify OSPM about any CPU hot(un)plug events. GED framework uses new register
+> interface for cpu-(ctrl)dev. Make AML for GPE.2 event handler conditional.
+> 
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
