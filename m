@@ -2,91 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ADC27C766F
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 21:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EFE7C76C3
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 21:30:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr14p-0004Ez-43; Thu, 12 Oct 2023 15:10:31 -0400
+	id 1qr1MW-0008K8-0d; Thu, 12 Oct 2023 15:28:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qr14c-00047Z-Dv
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 15:10:18 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qr14X-0004XX-N0
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 15:10:17 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-27d18475ed4so1119150a91.0
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 12:10:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697137812; x=1697742612; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+swpM1Eo76ZKYMGYHaJWhMt58JAIeloIhYYL/RQJnEs=;
- b=BhrZU+qaAR36YQYMs1mm10MA/MvZZHv22y+1HLzsy+FSxdcoo5/RPb1K+xGXE31LMe
- 5RhqdTom/ompz46IOv0lDmTNcAT7C0yf0ybtQCo2L0eg7Vvx0s37k53umDqgGMvc6Wim
- Bxj5pT/3/vNEnPGeE0Kqa59oxn3pIcSjvz125jHjapv5xrnqLMmF7n9gKErJwiMOVqZq
- /hr/1FMv4WUkQiQYBwXCzb/7MPW9+QDzP/dHXQy/ZHQGTcviu0nZ8clvKgm15OXKGiVU
- qVRNrGvUzwTc/UlP8rYSHYcWN8pALo0HtyqfRk26gPYccUhGxG0NYdgnJc+2tvYvuodl
- 84mg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qr1MT-0008Jr-Ti
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 15:28:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qr1MS-0007wS-0H
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 15:28:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697138922;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8lhltgJBDnVJ953ZdWewd5u/x/jCvFQ3s9uExn5uyUY=;
+ b=UlMWDYX+DoGxFymm26BAqJ9eSdj46F8GJwd8Tp2hIDPF6bZsnDyl6DAOm8YYxsisno96Xi
+ zTNgSyzP6Oqkig1GT/YVxSvCSLORpg+SUl/c6UaSyQ6JmWn4smSJO3LNl9Ef+pLz/69dYb
+ RMDJiKgAJjR7RTAgm87zn836YFgJ7Ck=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-552-Ev8eN2KBNAqOVowPckre7Q-1; Thu, 12 Oct 2023 15:28:36 -0400
+X-MC-Unique: Ev8eN2KBNAqOVowPckre7Q-1
+Received: by mail-ot1-f70.google.com with SMTP id
+ 46e09a7af769-6c4e17f5b1bso286130a34.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 12:28:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697137812; x=1697742612;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+swpM1Eo76ZKYMGYHaJWhMt58JAIeloIhYYL/RQJnEs=;
- b=MfrS8R27XajhfzaWLFFKYKrADoCrF1SPq3Sq60M+ea5HZLsxYBSZf6lXKaYbCH5eZR
- eP7cnCR2d0w14ZCRsdew/4gkLMcg93uUSOfSYbZQQAvu2rXV+s5QU04CZAqDHIAhKznv
- PlAMFK9R91Kkle+A4T4ZJ0z4zQRpO48ttXa133mnF7h/Tz9hvX4F9jqVjVjBZd8hGY0l
- MY6ZzbfMZcSqKTmMMS9/kX5Ol5JUnca0EGUBZZG9Tcb6XfCT9P+Mf2Zpxxw52imzvCj0
- 3DGP58O3DROcq0Vt9MHpGTJJvOwbFfg+RBQAmL2pdFcSCAnBcAKtOyBlvVOVsEaD9g8d
- Y/QQ==
-X-Gm-Message-State: AOJu0YxfETSiz9uehx4frF+NGJ4NxMzgIGXxfcyf8n5E067wYti2Obw4
- MYI6jwl0acH3yi6IIOWqJZU4+g==
-X-Google-Smtp-Source: AGHT+IGip/i8MjuuR5O6s1C4U8Bi9T90edVS9JimnSsD+shNJ1zlxHIkotvoX6yQB02znqzflF0AuA==
-X-Received: by 2002:a17:90a:d407:b0:27d:310a:b20e with SMTP id
- r7-20020a17090ad40700b0027d310ab20emr463881pju.0.1697137811529; 
- Thu, 12 Oct 2023 12:10:11 -0700 (PDT)
-Received: from [192.168.68.107] ([177.94.42.196])
- by smtp.gmail.com with ESMTPSA id
- qc7-20020a17090b288700b0027ce34334f5sm2133923pjb.37.2023.10.12.12.10.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 12:10:11 -0700 (PDT)
-Message-ID: <e71bbcc3-25cf-4772-bd52-832a34e366e9@ventanamicro.com>
-Date: Thu, 12 Oct 2023 16:10:05 -0300
+ d=1e100.net; s=20230601; t=1697138915; x=1697743715;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8lhltgJBDnVJ953ZdWewd5u/x/jCvFQ3s9uExn5uyUY=;
+ b=nXngDILFzr9nV4nSa9xlVG5lS7+FTXhujfgRuGgIO3zT3pUdL8+ezs0R2jJq1Jv7nu
+ jtLKg8OYoUzrE0QIcSHmGKgmc8aHVKHLXLuJ2H7ltSNvILfJVUp/m/gqtBljMx6XKFND
+ 0id9YolyQUPGCrjsFtMvPTTOTD+wD1oOYDf+lgzqWsEN7fTSKVRWCQ6/KExQR3ng7qQM
+ 0gWY/y6DjQARyJWMeJvtU2WGVsj867iowhapv8eUXCPuej70S65TcU35t10h64K4CRE6
+ LC1n3dCnTtrmSUmKGWgE+r7TzodWhwKnv1+jDtOT7sErCxrGnLea3gCTvCKNr3IMMTHU
+ VErw==
+X-Gm-Message-State: AOJu0YxNyjL2pYkINdr9uQKQpVwIgxjiJpBQqi86Tox6zMbm+Txdaovh
+ jNplauTnMtEyaH0+4hr4CUEhDcXDXRZYoRPgrVA3h+l7lEpNgdFJpq5HdKEutis/oF/2WvSsJE1
+ 4laYMCpw7qCpksqw=
+X-Received: by 2002:a05:6870:bacf:b0:1e9:8ab9:11ca with SMTP id
+ js15-20020a056870bacf00b001e98ab911camr6579582oab.3.1697138915656; 
+ Thu, 12 Oct 2023 12:28:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG5VPQj4X5OItz9g60zXxmh9rFeXt+xUsCMgpEoC/RmVVLQ/1wvMrPCjM/z4kCDsw4P802zvQ==
+X-Received: by 2002:a05:6870:bacf:b0:1e9:8ab9:11ca with SMTP id
+ js15-20020a056870bacf00b001e98ab911camr6579568oab.3.1697138915286; 
+ Thu, 12 Oct 2023 12:28:35 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ kq19-20020ac86193000000b00405502aaf76sm29577qtb.57.2023.10.12.12.28.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 12 Oct 2023 12:28:34 -0700 (PDT)
+Date: Thu, 12 Oct 2023 15:28:32 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v3 3/4] migration/qapi: Replace @MigrateSetParameters
+ with @MigrationParameters
+Message-ID: <ZShI4AucDGvUvJiS@x1n>
+References: <20230905162335.235619-1-peterx@redhat.com>
+ <20230905162335.235619-4-peterx@redhat.com>
+ <87fs30is78.fsf@pond.sub.org> <ZRsff7Lmy7TnggK9@x1n>
+ <87sf6k2dax.fsf@pond.sub.org> <ZSVoK6YMgNzrDYGQ@x1n>
+ <878r8ajngg.fsf@pond.sub.org> <ZSWvYgKcGXlucXx6@x1n>
+ <875y3dixzp.fsf@pond.sub.org> <8734yhgrzl.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 01/23] target/riscv: Move MISA limits to class
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <20231011070335.14398-1-akihiko.odaki@daynix.com>
- <20231011070335.14398-2-akihiko.odaki@daynix.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231011070335.14398-2-akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <8734yhgrzl.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,720 +105,221 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/11/23 04:02, Akihiko Odaki wrote:
-> MISA limits are common for all instances of a RISC-V CPU class so they
-> are better put into class.
+On Wed, Oct 11, 2023 at 04:21:02PM +0200, Markus Armbruster wrote:
+> > I'll have another look at the schema change, and how the types are used.
 > 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
+> Schema changes:
+> 
+> 1. Change MigrationParameters members @tls-creds, @tls-hostname,
+>    @tls-authz from 'str' to 'StrOrNull'
+> 
+> 2. Replace MigrateSetParameters by MigrationParameters.
+> 
+>    No change, since they are identical after change 1.
+> 
+> To determine the patch's impact, we need to examine uses of
+> MigrationParameters members @tls-FOO before the patch.  These are:
+> 
+> * Return type of query-migrate-parameters
+> 
+>   Introspection shows the type change: the type's set of values now
+>   includes JSON null.
+> 
+>   Is JSON null possible?  See [*] below.
+> 
+> * migrate_params_init()
+> 
+>   Before the patch, we initialize to "".
+> 
+>   Afterwards, we initialize to "" wrapped in a StrOrNull.
+> 
+>   The initial value means "off" before and after.
+> 
+> * migrate_params_check()
+> 
+>   An error check gets updated.  Ignoring for now.
+> 
+> * migrate_params_test_apply()
+> 
+>   Function deleted in the patch, but you wrote that's wrong.  Ignoring
+>   for now.
+> 
+> * migrate_params_apply()
+> 
+>   Duplicates the three parameters from argument @parameters into the
+>   migration object's member parameters.
+> 
+>   Argument @parameters comes from QMP via command
+>   migrate-set-parameters.  Before the patch,
+>   qmp_migrate_set_parameters() maps JSON null values to "".  Afterwards,
+>   it passes the values verbatim.
+> 
+>   Parameters stored in the migration object before and after the patch:
+> 
+>   - When initialized and never changed: char * "", and StrOrNull
+>     QTYPE_QSTRING "".
+> 
+>   - When set to non-empty string with migrate-set-parameters or
+>     equivalent: that non-empty string, and QTYPE_QSTRING with that
+>     non-empty string.
+> 
+>   - When reset with migrate-set-parameters with value "": "", and
+>     QTYPE_QSTRING "".
+> 
+>   - When reset with migrate-set-parameters with value null: "", and
+>     QTYPE_QNULL.
+> 
+>   Note that there's now a difference between passing "" and null to
+>   migrate-set-parameters: the former results in value QTYPE_QSTRING "",
+>   the latter QTYPE_QNULL.  Both values mean "off".  I hate this.  I very
+>   much want a single C representation of "off".
 
-This patch and patches 2 and 3 from this version (v9) got dropped from the later
-versions of the series. Can I assume they're not relevant anymore?
+Yes.
 
+One option to avoid such ugliness is we keep using strings for tls fields,
+then the only OFF is empty string.  It is not perfect either, but we need
+to support empty string anyway as OFF.  That's the simplest to me.
+
+We also have the benefit of decoupling this series from the qapi string
+visitor issue, which means I'll just revive v1 which still doesn't use
+StrOrNull.
+
+> 
+> * MigrationState member @parameters.
+> 
+>   Uses:
+> 
+>   - Properties "tls-creds", "tls-hostname", "tls-authz"
+> 
+>     These are externally accessible with -global.  The additional null
+>     value is not accessible there: string input visitor limitation.  It
+>     could become accessible depending on how we fix the crash bugs
+>     related to that limitation, but we can worry about that when we do
+>     it.
+> 
+>     Digression: why do these properties even exist?  I believe we
+>     created the "migration" (pseudo-)device just so we can use "compat
+>     props" to apply machine- and accelerator-specific configuration
+>     tweaks.  We then added configuration for *all* configuration
+>     parameters, not just the ones that need tweaking.  The external
+>     exposure of properties via -global is not something we wanted, it
+>     just came with the part we wanted (compat props).  Accidental
+>     external interface.  Ugh.
+
+IIRC both of them used to be the goals: either allow compat properties for
+old machine types, or specify migration parameters in cmdline for easier
+debugging and tests.  I use "-global" in mostly every migration test script
+after it's introduced.
+
+> 
+>     None of the tls-FOO are tweaked via compat props, so no worries
+>     there.
+> 
+>     I believe property access with qom-get and qom-set is not possible,
+>     because the migration object is not part to the QOM tree, and
+>     therefore is not reachable via any QOM path.  Aside: feels like
+>     abuse of QOM.
+
+Yes slightly abused, as the comment shows..
+
+static const TypeInfo migration_type = {
+    .name = TYPE_MIGRATION,
+    /*
+     * NOTE: TYPE_MIGRATION is not really a device, as the object is
+     * not created using qdev_new(), it is not attached to the qdev
+     * device tree, and it is never realized.
+     *
+     * TODO: Make this TYPE_OBJECT once QOM provides something like
+     * TYPE_DEVICE's "-global" properties.
+     */
+    .parent = TYPE_DEVICE,
+
+It's just that current code works mostly as expected without much churns
+elsewhere.. so the TODO is not really getting much attention..
+
+> 
+>     It's also not part of the device tree rooted at the main system bus,
+>     which means it isn't visible in "info qtree".  It is visible in
+>     "info qdm", "device_add migration,help", and "-device
+>     migration,help".  Output of the latter two changes.  All harmless.
+> 
+>     I *think* that's all.
+> 
+>   - migrate_tls(), migrate_tls_authz(), migrate_tls_creds(),
+>     migrate_tls_hostname()
+> 
+>     Before the patch, these return the respective migration parameter
+>     directly.  I believe the value is never NULL.  Value "" is special
+>     and means "off".
+> 
+>     After the patch, these return the respective migration parameter
+>     when it's a non-empty QTYPE_QSTRING, else NULL.  Value NULL means
+>     off.
+> 
+>     Note this maps both C representations of "off" to NULL.
+> 
+>     This changes the return value for "off" from "" to NULL.
+>     Improvement, because it results in a more pleasant "is off" check.
+
+Maybe more than pleasant. :) Internally NULL is a must (even if empty
+string), to make things like "if (tls_authz)" work.
+
+> 
+>   - qmp_query_migrate_parameters()
+> 
+>     The three tls_FOO get duplicated into the return value.
+> 
+>     Looks like the two different C representations of "off" bleed into
+>     QMP (ugh!), and [*] JSON null is possible (incompatible change).
+> 
+> * hmp_info_migrate_parameters()
+> 
+>   The two different C representations of "off" are first mapped to NULL
+>   with str_from_StrOrNull(), and then mapped to "" with a ?: operator.
+>   Works.
+> 
+> Bottom line:
+> 
+> * Affected external interfaces:
+> 
+>   - query-migrate-parameters: can now return either "" or null when TLS
+>     is off.  null is an incompatible change.  Needs fixing.
+
+If we want to seriously keep using StrOrNull as the interface, I think we
+need to allow both NULL or "" to exist?  Because the "logical goal" is to
+use NULL but "" for compatibility?
+
+I worry we spend a lot of time working on the NULL/"" but then found nobody
+is using NULL anyway.
+
+> 
+>   - query-qmp-schema: shows null is now possible.  Correctly reflects
+>     the backward incompatible change.  If we fix compatibility break, we
+>     get a tolerable loss of typing precision instead.
+> 
+> 2. Two different C representations of "off".  Strong dislike.  I
+>    recommend to fix the compatibility break by switching to a single C
+>    representation.
+
+IIUC the goal is to switch to StrOrNull, but that face challenge.
+
+> 
+> Thoughts?
+
+If I'd vote (based on our current code), I'd double check tls* fields are
+working properly with libvirt on empty strings, then switch all StrOrNull
+in migration parameters to strings, for both QAPI and QEMU internally.
+Then making sure all migrate_tls_*() helpers do proper job on converting ""
+to NULL.
+
+If we design a new interface, just remember to use NULL (hopefully) to be
+clear and single way to say "OFF" starting from the 1st day.
+
+But that's only my 2 cents.
 
 Thanks,
 
+-- 
+Peter Xu
 
-Daniel
-
-
->   target/riscv/cpu-qom.h   |   2 +
->   target/riscv/cpu.h       |   2 -
->   hw/riscv/boot.c          |   2 +-
->   target/riscv/cpu.c       | 212 +++++++++++++++++++++++++++------------
->   target/riscv/csr.c       |   3 +-
->   target/riscv/gdbstub.c   |  12 ++-
->   target/riscv/machine.c   |  11 +-
->   target/riscv/translate.c |   3 +-
->   8 files changed, 167 insertions(+), 80 deletions(-)
-> 
-> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-> index 04af50983e..266a07f5be 100644
-> --- a/target/riscv/cpu-qom.h
-> +++ b/target/riscv/cpu-qom.h
-> @@ -67,5 +67,7 @@ struct RISCVCPUClass {
->       /*< public >*/
->       DeviceRealize parent_realize;
->       ResettablePhases parent_phases;
-> +    uint32_t misa_mxl_max;  /* max mxl for this cpu */
-> +    uint32_t misa_ext_mask; /* max ext for this cpu */
->   };
->   #endif /* RISCV_CPU_QOM_H */
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index ef9cf21c0c..9f9cb6cd2a 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -155,9 +155,7 @@ struct CPUArchState {
->   
->       /* RISCVMXL, but uint32_t for vmstate migration */
->       uint32_t misa_mxl;      /* current mxl */
-> -    uint32_t misa_mxl_max;  /* max mxl for this cpu */
->       uint32_t misa_ext;      /* current extensions */
-> -    uint32_t misa_ext_mask; /* max ext for this cpu */
->       uint32_t xl;            /* current xlen */
->   
->       /* 128-bit helpers upper part return value */
-> diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-> index 52bf8e67de..b7cf08f479 100644
-> --- a/hw/riscv/boot.c
-> +++ b/hw/riscv/boot.c
-> @@ -36,7 +36,7 @@
->   
->   bool riscv_is_32bit(RISCVHartArrayState *harts)
->   {
-> -    return harts->harts[0].env.misa_mxl_max == MXL_RV32;
-> +    return RISCV_CPU_GET_CLASS(&harts->harts[0])->misa_mxl_max == MXL_RV32;
->   }
->   
->   /*
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index f5572704de..3bb1ce90f9 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -41,6 +41,11 @@
->   /* RISC-V CPU definitions */
->   static const char riscv_single_letter_exts[] = "IEMAFDQCPVH";
->   
-> +typedef struct RISCVCPUClassData {
-> +    RISCVMXL misa_mxl_max;
-> +    uint32_t misa_ext_mask;
-> +} RISCVCPUClassData;
-> +
->   struct isa_ext_data {
->       const char *name;
->       int min_version;
-> @@ -271,12 +276,6 @@ const char *riscv_cpu_get_trap_name(target_ulong cause, bool async)
->       }
->   }
->   
-> -static void set_misa(CPURISCVState *env, RISCVMXL mxl, uint32_t ext)
-> -{
-> -    env->misa_mxl_max = env->misa_mxl = mxl;
-> -    env->misa_ext_mask = env->misa_ext = ext;
-> -}
-> -
->   #ifndef CONFIG_USER_ONLY
->   static uint8_t satp_mode_from_str(const char *satp_mode_str)
->   {
-> @@ -371,15 +370,20 @@ static void set_satp_mode_default_map(RISCVCPU *cpu)
->   }
->   #endif
->   
-> +static const RISCVCPUClassData riscv_any_cpu_class_data = {
-> +#if defined(TARGET_RISCV32)
-> +    .misa_mxl_max = MXL_RV32,
-> +    .misa_ext_mask = RVI | RVM | RVA | RVF | RVD | RVC | RVU
-> +#else
-> +    .misa_mxl_max = MXL_RV64,
-> +    .misa_ext_mask = RVI | RVM | RVA | RVF | RVD | RVC | RVU
-> +#endif
-> +};
-> +
->   static void riscv_any_cpu_init(Object *obj)
->   {
->       RISCVCPU *cpu = RISCV_CPU(obj);
->       CPURISCVState *env = &cpu->env;
-> -#if defined(TARGET_RISCV32)
-> -    set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVD | RVC | RVU);
-> -#elif defined(TARGET_RISCV64)
-> -    set_misa(env, MXL_RV64, RVI | RVM | RVA | RVF | RVD | RVC | RVU);
-> -#endif
->   
->   #ifndef CONFIG_USER_ONLY
->       set_satp_mode_max_supported(RISCV_CPU(obj),
-> @@ -397,11 +401,13 @@ static void riscv_any_cpu_init(Object *obj)
->   }
->   
->   #if defined(TARGET_RISCV64)
-> +static const RISCVCPUClassData rv64_base_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV64
-> +};
-> +
->   static void rv64_base_cpu_init(Object *obj)
->   {
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
-> -    /* We set this in the realise function */
-> -    set_misa(env, MXL_RV64, 0);
->       riscv_cpu_add_user_properties(obj);
->       /* Set latest version of privileged specification */
->       env->priv_ver = PRIV_VERSION_LATEST;
-> @@ -410,11 +416,15 @@ static void rv64_base_cpu_init(Object *obj)
->   #endif
->   }
->   
-> +static const RISCVCPUClassData rv64_sifive_u_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV64,
-> +    .misa_ext_mask = RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU
-> +};
-> +
->   static void rv64_sifive_u_cpu_init(Object *obj)
->   {
->       RISCVCPU *cpu = RISCV_CPU(obj);
->       CPURISCVState *env = &cpu->env;
-> -    set_misa(env, MXL_RV64, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
->       env->priv_ver = PRIV_VERSION_1_10_0;
->   #ifndef CONFIG_USER_ONLY
->       set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV39);
-> @@ -427,12 +437,16 @@ static void rv64_sifive_u_cpu_init(Object *obj)
->       cpu->cfg.pmp = true;
->   }
->   
-> +static const RISCVCPUClassData rv64_sifive_e_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV64,
-> +    .misa_ext_mask = RVI | RVM | RVA | RVC | RVU
-> +};
-> +
->   static void rv64_sifive_e_cpu_init(Object *obj)
->   {
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
->       RISCVCPU *cpu = RISCV_CPU(obj);
->   
-> -    set_misa(env, MXL_RV64, RVI | RVM | RVA | RVC | RVU);
->       env->priv_ver = PRIV_VERSION_1_10_0;
->   #ifndef CONFIG_USER_ONLY
->       set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-> @@ -444,12 +458,16 @@ static void rv64_sifive_e_cpu_init(Object *obj)
->       cpu->cfg.pmp = true;
->   }
->   
-> +static const RISCVCPUClassData rv64_thead_c906_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV64,
-> +    .misa_ext_mask = RVG | RVC | RVS | RVU
-> +};
-> +
->   static void rv64_thead_c906_cpu_init(Object *obj)
->   {
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
->       RISCVCPU *cpu = RISCV_CPU(obj);
->   
-> -    set_misa(env, MXL_RV64, RVG | RVC | RVS | RVU);
->       env->priv_ver = PRIV_VERSION_1_11_0;
->   
->       cpu->cfg.ext_zfa = true;
-> @@ -475,12 +493,16 @@ static void rv64_thead_c906_cpu_init(Object *obj)
->       cpu->cfg.pmp = true;
->   }
->   
-> +static const RISCVCPUClassData rv64_veyron_v1_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV64,
-> +    .misa_ext_mask = RVG | RVC | RVS | RVU | RVH
-> +};
-> +
->   static void rv64_veyron_v1_cpu_init(Object *obj)
->   {
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
->       RISCVCPU *cpu = RISCV_CPU(obj);
->   
-> -    set_misa(env, MXL_RV64, RVG | RVC | RVS | RVU | RVH);
->       env->priv_ver = PRIV_VERSION_1_12_0;
->   
->       /* Enable ISA extensions */
-> @@ -515,6 +537,10 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
->   #endif
->   }
->   
-> +static const RISCVCPUClassData rv128_base_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV128
-> +};
-> +
->   static void rv128_base_cpu_init(Object *obj)
->   {
->       if (qemu_tcg_mttcg_enabled()) {
-> @@ -524,8 +550,6 @@ static void rv128_base_cpu_init(Object *obj)
->           exit(EXIT_FAILURE);
->       }
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
-> -    /* We set this in the realise function */
-> -    set_misa(env, MXL_RV128, 0);
->       riscv_cpu_add_user_properties(obj);
->       /* Set latest version of privileged specification */
->       env->priv_ver = PRIV_VERSION_LATEST;
-> @@ -534,11 +558,13 @@ static void rv128_base_cpu_init(Object *obj)
->   #endif
->   }
->   #else
-> +static const RISCVCPUClassData rv32_base_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV32
-> +};
-> +
->   static void rv32_base_cpu_init(Object *obj)
->   {
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
-> -    /* We set this in the realise function */
-> -    set_misa(env, MXL_RV32, 0);
->       riscv_cpu_add_user_properties(obj);
->       /* Set latest version of privileged specification */
->       env->priv_ver = PRIV_VERSION_LATEST;
-> @@ -547,11 +573,15 @@ static void rv32_base_cpu_init(Object *obj)
->   #endif
->   }
->   
-> +static const RISCVCPUClassData rv32_sifive_u_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV32,
-> +    .misa_ext_mask = RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU
-> +};
-> +
->   static void rv32_sifive_u_cpu_init(Object *obj)
->   {
->       RISCVCPU *cpu = RISCV_CPU(obj);
->       CPURISCVState *env = &cpu->env;
-> -    set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
->       env->priv_ver = PRIV_VERSION_1_10_0;
->   #ifndef CONFIG_USER_ONLY
->       set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
-> @@ -564,12 +594,16 @@ static void rv32_sifive_u_cpu_init(Object *obj)
->       cpu->cfg.pmp = true;
->   }
->   
-> +static const RISCVCPUClassData rv32_sifive_e_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV32,
-> +    .misa_ext_mask = RVI | RVM | RVA | RVC | RVU
-> +};
-> +
->   static void rv32_sifive_e_cpu_init(Object *obj)
->   {
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
->       RISCVCPU *cpu = RISCV_CPU(obj);
->   
-> -    set_misa(env, MXL_RV32, RVI | RVM | RVA | RVC | RVU);
->       env->priv_ver = PRIV_VERSION_1_10_0;
->   #ifndef CONFIG_USER_ONLY
->       set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-> @@ -581,12 +615,16 @@ static void rv32_sifive_e_cpu_init(Object *obj)
->       cpu->cfg.pmp = true;
->   }
->   
-> +static const RISCVCPUClassData rv32_ibex_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV32,
-> +    .misa_ext_mask = RVI | RVM | RVC | RVU
-> +};
-> +
->   static void rv32_ibex_cpu_init(Object *obj)
->   {
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
->       RISCVCPU *cpu = RISCV_CPU(obj);
->   
-> -    set_misa(env, MXL_RV32, RVI | RVM | RVC | RVU);
->       env->priv_ver = PRIV_VERSION_1_11_0;
->   #ifndef CONFIG_USER_ONLY
->       set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-> @@ -599,12 +637,16 @@ static void rv32_ibex_cpu_init(Object *obj)
->       cpu->cfg.pmp = true;
->   }
->   
-> +static const RISCVCPUClassData rv32_imafcu_nommu_cpu_class_data = {
-> +    .misa_mxl_max = MXL_RV32,
-> +    .misa_ext_mask = RVI | RVM | RVA | RVF | RVC | RVU
-> +};
-> +
->   static void rv32_imafcu_nommu_cpu_init(Object *obj)
->   {
->       CPURISCVState *env = &RISCV_CPU(obj)->env;
->       RISCVCPU *cpu = RISCV_CPU(obj);
->   
-> -    set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVC | RVU);
->       env->priv_ver = PRIV_VERSION_1_10_0;
->   #ifndef CONFIG_USER_ONLY
->       set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-> @@ -618,14 +660,17 @@ static void rv32_imafcu_nommu_cpu_init(Object *obj)
->   #endif
->   
->   #if defined(CONFIG_KVM)
-> -static void riscv_host_cpu_init(Object *obj)
-> -{
-> -    CPURISCVState *env = &RISCV_CPU(obj)->env;
-> +static const RISCVCPUClassData riscv_host_cpu_class_data = {
->   #if defined(TARGET_RISCV32)
-> -    set_misa(env, MXL_RV32, 0);
-> +    .misa_mxl_max = MXL_RV32
->   #elif defined(TARGET_RISCV64)
-> -    set_misa(env, MXL_RV64, 0);
-> +    .misa_mxl_max = MXL_RV64
->   #endif
-> +};
-> +
-> +static void riscv_host_cpu_init(Object *obj)
-> +{
-> +    CPURISCVState *env = &RISCV_CPU(obj)->env;
->       riscv_cpu_add_user_properties(obj);
->   }
->   #endif /* CONFIG_KVM */
-> @@ -869,7 +914,7 @@ static void riscv_cpu_reset_hold(Object *obj)
->           mcc->parent_phases.hold(obj);
->       }
->   #ifndef CONFIG_USER_ONLY
-> -    env->misa_mxl = env->misa_mxl_max;
-> +    env->misa_mxl = mcc->misa_mxl_max;
->       env->priv = PRV_M;
->       env->mstatus &= ~(MSTATUS_MIE | MSTATUS_MPRV);
->       if (env->misa_mxl > MXL_RV32) {
-> @@ -1049,7 +1094,7 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
->       CPURISCVState *env = &cpu->env;
->   
->       /* Validate that MISA_MXL is set properly. */
-> -    switch (env->misa_mxl_max) {
-> +    switch (mcc->misa_mxl_max) {
->   #ifdef TARGET_RISCV64
->       case MXL_RV64:
->       case MXL_RV128:
-> @@ -1063,7 +1108,7 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
->           g_assert_not_reached();
->       }
->   
-> -    if (env->misa_mxl_max != env->misa_mxl) {
-> +    if (mcc->misa_mxl_max != env->misa_mxl) {
->           error_setg(errp, "misa_mxl_max must be equal to misa_mxl");
->           return;
->       }
-> @@ -1075,6 +1120,7 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
->    */
->   void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->   {
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
->       CPURISCVState *env = &cpu->env;
->       Error *local_err = NULL;
->   
-> @@ -1089,7 +1135,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->           cpu->cfg.ext_ifencei = true;
->   
->           env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
-> -        env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
-> +        mcc->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
->       }
->   
->       if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
-> @@ -1242,7 +1288,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->           cpu->cfg.ext_zcb = true;
->           cpu->cfg.ext_zcmp = true;
->           cpu->cfg.ext_zcmt = true;
-> -        if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
-> +        if (riscv_has_ext(env, RVF) && mcc->misa_mxl_max == MXL_RV32) {
->               cpu->cfg.ext_zcf = true;
->           }
->       }
-> @@ -1250,7 +1296,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->       /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
->       if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
->           cpu->cfg.ext_zca = true;
-> -        if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
-> +        if (riscv_has_ext(env, RVF) && mcc->misa_mxl_max == MXL_RV32) {
->               cpu->cfg.ext_zcf = true;
->           }
->           if (riscv_has_ext(env, RVD)) {
-> @@ -1258,7 +1304,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->           }
->       }
->   
-> -    if (env->misa_mxl_max != MXL_RV32 && cpu->cfg.ext_zcf) {
-> +    if (mcc->misa_mxl_max != MXL_RV32 && cpu->cfg.ext_zcf) {
->           error_setg(errp, "Zcf extension is only relevant to RV32");
->           return;
->       }
-> @@ -1649,10 +1695,17 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
->   
->   static void riscv_cpu_init(Object *obj)
->   {
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(obj);
-> +    RISCVCPU *cpu = RISCV_CPU(obj);
-> +    CPURISCVState *env = &cpu->env;
-> +
->   #ifndef CONFIG_USER_ONLY
->       qdev_init_gpio_in(DEVICE(obj), riscv_cpu_set_irq,
->                         IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
->   #endif /* CONFIG_USER_ONLY */
-> +
-> +    env->misa_mxl = mcc->misa_mxl_max;
-> +    env->misa_ext = mcc->misa_ext_mask;
->   }
->   
->   typedef struct RISCVCPUMisaExtConfig {
-> @@ -1667,6 +1720,7 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
->   {
->       const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
->       target_ulong misa_bit = misa_ext_cfg->misa_bit;
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(obj);
->       RISCVCPU *cpu = RISCV_CPU(obj);
->       CPURISCVState *env = &cpu->env;
->       bool value;
-> @@ -1677,10 +1731,10 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
->   
->       if (value) {
->           env->misa_ext |= misa_bit;
-> -        env->misa_ext_mask |= misa_bit;
-> +        mcc->misa_ext_mask |= misa_bit;
->       } else {
->           env->misa_ext &= ~misa_bit;
-> -        env->misa_ext_mask &= ~misa_bit;
-> +        mcc->misa_ext_mask &= ~misa_bit;
->       }
->   }
->   
-> @@ -2183,7 +2237,7 @@ static void cpu_get_marchid(Object *obj, Visitor *v, const char *name,
->       visit_type_bool(v, name, &value, errp);
->   }
->   
-> -static void riscv_cpu_class_init(ObjectClass *c, void *data)
-> +static void riscv_cpu_common_class_init(ObjectClass *c, void *data)
->   {
->       RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
->       CPUClass *cc = CPU_CLASS(c);
-> @@ -2226,6 +2280,15 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
->       device_class_set_props(dc, riscv_cpu_properties);
->   }
->   
-> +static void riscv_cpu_class_init(ObjectClass *c, void *opaque)
-> +{
-> +    RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
-> +    const RISCVCPUClassData *data = opaque;
-> +
-> +    mcc->misa_mxl_max = data->misa_mxl_max;
-> +    mcc->misa_ext_mask = data->misa_ext_mask;
-> +}
-> +
->   static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
->                                    int max_str_len)
->   {
-> @@ -2291,18 +2354,22 @@ void riscv_cpu_list(void)
->       g_slist_free(list);
->   }
->   
-> -#define DEFINE_CPU(type_name, initfn)      \
-> -    {                                      \
-> -        .name = type_name,                 \
-> -        .parent = TYPE_RISCV_CPU,          \
-> -        .instance_init = initfn            \
-> +#define DEFINE_CPU(type_name, class_data_value, initfn)         \
-> +    {                                                           \
-> +        .name = (type_name),                                    \
-> +        .parent = TYPE_RISCV_CPU,                               \
-> +        .instance_init = (initfn),                              \
-> +        .class_init = riscv_cpu_class_init,                     \
-> +        .class_data = (void *)&(class_data_value)               \
->       }
->   
-> -#define DEFINE_DYNAMIC_CPU(type_name, initfn) \
-> -    {                                         \
-> -        .name = type_name,                    \
-> -        .parent = TYPE_RISCV_DYNAMIC_CPU,     \
-> -        .instance_init = initfn               \
-> +#define DEFINE_DYNAMIC_CPU(type_name, class_data_value, initfn) \
-> +    {                                                           \
-> +        .name = (type_name),                                    \
-> +        .parent = TYPE_RISCV_DYNAMIC_CPU,                       \
-> +        .instance_init = (initfn),                              \
-> +        .class_init = riscv_cpu_class_init,                     \
-> +        .class_data = (void *)&(class_data_value)               \
->       }
->   
->   static const TypeInfo riscv_cpu_type_infos[] = {
-> @@ -2314,31 +2381,46 @@ static const TypeInfo riscv_cpu_type_infos[] = {
->           .instance_init = riscv_cpu_init,
->           .abstract = true,
->           .class_size = sizeof(RISCVCPUClass),
-> -        .class_init = riscv_cpu_class_init,
-> +        .class_init = riscv_cpu_common_class_init,
->       },
->       {
->           .name = TYPE_RISCV_DYNAMIC_CPU,
->           .parent = TYPE_RISCV_CPU,
->           .abstract = true,
->       },
-> -    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
-> +    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,
-> +                       riscv_any_cpu_class_data, riscv_any_cpu_init),
->   #if defined(CONFIG_KVM)
-> -    DEFINE_CPU(TYPE_RISCV_CPU_HOST,             riscv_host_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_HOST,
-> +               &riscv_host_cpu_class_data, riscv_host_cpu_init),
->   #endif
->   #if defined(TARGET_RISCV32)
-> -    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE32,   rv32_base_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_IBEX,             rv32_ibex_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E31,       rv32_sifive_e_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E34,       rv32_imafcu_nommu_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_U34,       rv32_sifive_u_cpu_init),
-> +    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE32,
-> +                       rv32_base_cpu_class_data,
-> +                       rv32_base_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_IBEX,
-> +               rv32_ibex_cpu_class_data, rv32_ibex_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E31,
-> +               rv32_sifive_e_cpu_class_data, rv32_sifive_e_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E34,
-> +               rv32_imafcu_nommu_cpu_class_data, rv32_imafcu_nommu_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_U34,
-> +               rv32_sifive_u_cpu_class_data, rv32_sifive_u_cpu_init),
->   #elif defined(TARGET_RISCV64)
-> -    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE64,   rv64_base_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E51,       rv64_sifive_e_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_U54,       rv64_sifive_u_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_SHAKTI_C,         rv64_sifive_u_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_THEAD_C906,       rv64_thead_c906_cpu_init),
-> -    DEFINE_CPU(TYPE_RISCV_CPU_VEYRON_V1,        rv64_veyron_v1_cpu_init),
-> -    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
-> +    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE64,
-> +                       rv64_base_cpu_class_data, rv64_base_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_E51,
-> +               rv64_sifive_e_cpu_class_data, rv64_sifive_e_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_SIFIVE_U54,
-> +               rv64_sifive_u_cpu_class_data, rv64_sifive_u_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_SHAKTI_C,
-> +               rv64_sifive_u_cpu_class_data, rv64_sifive_u_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_THEAD_C906,
-> +               rv64_thead_c906_cpu_class_data, rv64_thead_c906_cpu_init),
-> +    DEFINE_CPU(TYPE_RISCV_CPU_VEYRON_V1,
-> +               rv64_veyron_v1_cpu_class_data, rv64_veyron_v1_cpu_init),
-> +    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,
-> +                       rv128_base_cpu_class_data, rv128_base_cpu_init),
->   #endif
->   };
->   
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index 85a31dc420..56953fbafe 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -1393,6 +1393,7 @@ static RISCVException write_misa(CPURISCVState *env, int csrno,
->                                    target_ulong val)
->   {
->       RISCVCPU *cpu = env_archcpu(env);
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
->       uint32_t orig_misa_ext = env->misa_ext;
->       Error *local_err = NULL;
->   
-> @@ -1402,7 +1403,7 @@ static RISCVException write_misa(CPURISCVState *env, int csrno,
->       }
->   
->       /* Mask extensions that are not supported by this hart */
-> -    val &= env->misa_ext_mask;
-> +    val &= mcc->misa_ext_mask;
->   
->       /*
->        * Suppress 'C' if next instruction is not aligned
-> diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-> index 524bede865..b9528cef5b 100644
-> --- a/target/riscv/gdbstub.c
-> +++ b/target/riscv/gdbstub.c
-> @@ -49,6 +49,7 @@ static const struct TypeSize vec_lanes[] = {
->   
->   int riscv_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
->   {
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
->       RISCVCPU *cpu = RISCV_CPU(cs);
->       CPURISCVState *env = &cpu->env;
->       target_ulong tmp;
-> @@ -61,7 +62,7 @@ int riscv_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
->           return 0;
->       }
->   
-> -    switch (env->misa_mxl_max) {
-> +    switch (mcc->misa_mxl_max) {
->       case MXL_RV32:
->           return gdb_get_reg32(mem_buf, tmp);
->       case MXL_RV64:
-> @@ -75,12 +76,13 @@ int riscv_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
->   
->   int riscv_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
->   {
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
->       RISCVCPU *cpu = RISCV_CPU(cs);
->       CPURISCVState *env = &cpu->env;
->       int length = 0;
->       target_ulong tmp;
->   
-> -    switch (env->misa_mxl_max) {
-> +    switch (mcc->misa_mxl_max) {
->       case MXL_RV32:
->           tmp = (int32_t)ldl_p(mem_buf);
->           length = 4;
-> @@ -214,11 +216,12 @@ static int riscv_gdb_set_virtual(CPURISCVState *cs, uint8_t *mem_buf, int n)
->   
->   static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
->   {
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
->       RISCVCPU *cpu = RISCV_CPU(cs);
->       CPURISCVState *env = &cpu->env;
->       GString *s = g_string_new(NULL);
->       riscv_csr_predicate_fn predicate;
-> -    int bitsize = 16 << env->misa_mxl_max;
-> +    int bitsize = 16 << mcc->misa_mxl_max;
->       int i;
->   
->   #if !defined(CONFIG_USER_ONLY)
-> @@ -310,6 +313,7 @@ static int ricsv_gen_dynamic_vector_xml(CPUState *cs, int base_reg)
->   
->   void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
->   {
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
->       RISCVCPU *cpu = RISCV_CPU(cs);
->       CPURISCVState *env = &cpu->env;
->       if (env->misa_ext & RVD) {
-> @@ -326,7 +330,7 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
->                                    ricsv_gen_dynamic_vector_xml(cs, base_reg),
->                                    "riscv-vector.xml", 0);
->       }
-> -    switch (env->misa_mxl_max) {
-> +    switch (mcc->misa_mxl_max) {
->       case MXL_RV32:
->           gdb_register_coprocessor(cs, riscv_gdb_get_virtual,
->                                    riscv_gdb_set_virtual,
-> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-> index c7c862cdd3..744fca0999 100644
-> --- a/target/riscv/machine.c
-> +++ b/target/riscv/machine.c
-> @@ -175,10 +175,9 @@ static const VMStateDescription vmstate_pointermasking = {
->   
->   static bool rv128_needed(void *opaque)
->   {
-> -    RISCVCPU *cpu = opaque;
-> -    CPURISCVState *env = &cpu->env;
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(opaque);
->   
-> -    return env->misa_mxl_max == MXL_RV128;
-> +    return mcc->misa_mxl_max == MXL_RV128;
->   }
->   
->   static const VMStateDescription vmstate_rv128 = {
-> @@ -351,7 +350,7 @@ static const VMStateDescription vmstate_jvt = {
->   
->   const VMStateDescription vmstate_riscv_cpu = {
->       .name = "cpu",
-> -    .version_id = 8,
-> +    .version_id = 9,
->       .minimum_version_id = 8,
->       .post_load = riscv_cpu_post_load,
->       .fields = (VMStateField[]) {
-> @@ -369,8 +368,8 @@ const VMStateDescription vmstate_riscv_cpu = {
->           VMSTATE_UINTTL(env.vext_ver, RISCVCPU),
->           VMSTATE_UINT32(env.misa_mxl, RISCVCPU),
->           VMSTATE_UINT32(env.misa_ext, RISCVCPU),
-> -        VMSTATE_UINT32(env.misa_mxl_max, RISCVCPU),
-> -        VMSTATE_UINT32(env.misa_ext_mask, RISCVCPU),
-> +        VMSTATE_UNUSED(4),
-> +        VMSTATE_UNUSED(4),
->           VMSTATE_UINTTL(env.priv, RISCVCPU),
->           VMSTATE_BOOL(env.virt_enabled, RISCVCPU),
->           VMSTATE_UINT64(env.resetvec, RISCVCPU),
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index f0be79bb16..7e383c5eeb 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -1167,6 +1167,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
->   {
->       DisasContext *ctx = container_of(dcbase, DisasContext, base);
->       CPURISCVState *env = cpu_env(cs);
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cs);
->       RISCVCPU *cpu = RISCV_CPU(cs);
->       uint32_t tb_flags = ctx->base.tb->flags;
->   
-> @@ -1188,7 +1189,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
->       ctx->cfg_vta_all_1s = cpu->cfg.rvv_ta_all_1s;
->       ctx->vstart_eq_zero = FIELD_EX32(tb_flags, TB_FLAGS, VSTART_EQ_ZERO);
->       ctx->vl_eq_vlmax = FIELD_EX32(tb_flags, TB_FLAGS, VL_EQ_VLMAX);
-> -    ctx->misa_mxl_max = env->misa_mxl_max;
-> +    ctx->misa_mxl_max = mcc->misa_mxl_max;
->       ctx->xl = FIELD_EX32(tb_flags, TB_FLAGS, XL);
->       ctx->address_xl = FIELD_EX32(tb_flags, TB_FLAGS, AXL);
->       ctx->cs = cs;
 
