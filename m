@@ -2,85 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F377C736F
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D255F7C737A
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:52:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqyrl-0004CH-Vi; Thu, 12 Oct 2023 12:48:54 -0400
+	id 1qqyuC-0004sw-4x; Thu, 12 Oct 2023 12:51:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqyrj-0004C8-PQ
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:48:51 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqyrh-00054g-VJ
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:48:51 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-406618d080eso12917655e9.2
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 09:48:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697129328; x=1697734128; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=r01YRQkFv0UxKDuIi97AXhaHGIMR5xQ/ZDGeEdmsu5c=;
- b=CxnLSQqJLgPkMXATR1m32AXoNlsCo0JiBiOHrwPk4UzR+NhWuxsG2fIFpE3JkStj/V
- lutj+SAQjVSa024SBag3RrIfDW38q2R/yFClTo2RfLHrKPvPKTzZo7KzcOAWxQd5xpnE
- S6QKx1ln8RpkYVWenNVSzsAHGT0FmZcFKl25ETlicj5tVFf6y3ivHGny9LsqeFtH3eI+
- tgOOk5qDPd6xJ+BljfCJ4HuuyipepiASASCXfHG+uHFNAPAREihvPXk/xFpvVAk5wIaR
- 1wGy2m3IW4IW3CH76qdsoP5UBx/aRLk4SM2GnS41yRtc9KU9dsoI+h6NUiUGmsrN0MWV
- MLNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697129328; x=1697734128;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=r01YRQkFv0UxKDuIi97AXhaHGIMR5xQ/ZDGeEdmsu5c=;
- b=v9ffAOUG7TWKQ6VC0UzSD+YX0cne2P4sliuLB7EC6HeXO0QfOVkpDTK18AKgSw3SQi
- NIsNuduI3EqzJSvZtHK0p/AfTcVBHXExi5uLLltAJwvjpjUgamFsP8+jqUmDmHPmQIXc
- sI/rn+B6y4EztCyC3S7d1kjvgRuOgIFy5CPy6XU8x8GY/+K8DsFmMYiyZFVzhNJP3BnC
- 9C9ztasVBSeSauuBlyhpX/Xv99N/9rVdc+HWM48o2d7pRfTLCTkfXHUU67dbikIsTZDF
- 3TpmfbHpwNxOHlrgM37OwBrrT19PMGjwaY5/yU/LovOZLvDB58WkJt1PIuZC7jnQWQgQ
- oawg==
-X-Gm-Message-State: AOJu0Yx1d9/ylXcerNgDrVaEUre4B7D9h6Fin2KNIG3wsKkOtu+N+XFQ
- ecgwpiBpJtdn9mipl33/uAayog==
-X-Google-Smtp-Source: AGHT+IG8iv2z/8y8M0wUOx0X4NgYqaS6h8Q8wWEex5SDtWilHS/K+Uwpu4H4Whl1bp+fczH4dQ1UAA==
-X-Received: by 2002:a5d:4d0c:0:b0:319:7787:54a9 with SMTP id
- z12-20020a5d4d0c000000b00319778754a9mr21033872wrt.24.1697129328232; 
- Thu, 12 Oct 2023 09:48:48 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
- [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
- g12-20020adff40c000000b0031c6581d55esm951727wro.91.2023.10.12.09.48.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 09:48:47 -0700 (PDT)
-Message-ID: <6522c5f6-0d78-1344-c3ee-76b83f39942b@linaro.org>
-Date: Thu, 12 Oct 2023 18:48:46 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqyu4-0004sQ-Jo
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:51:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqyu1-0005bE-T7
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:51:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697129472;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=whD+7QYU6apdl9TyKYylDBbgFh2uL65zqYrSeULnTtA=;
+ b=PK+w3QgH5O92PWk+kc9gncCHtq7w1KiSzDYig0Kqpe+VEu+15+TwxVidJLwD4gU+AxocCA
+ j2U4m1hxwdXASsIspyfLAzRUhSfFFY0dT6q7nzyliDyHOP4jo2PVmqF0hg+lDa5KZF7R4e
+ 2lGbnxc5tul6EfwlzSsuA0Ybdf45DXc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-94-qiyyHlP2PJiNxollRysN4A-1; Thu, 12 Oct 2023 12:51:10 -0400
+X-MC-Unique: qiyyHlP2PJiNxollRysN4A-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 76562801E62
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 16:51:10 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.68])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C4CCF25C0;
+ Thu, 12 Oct 2023 16:51:09 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 0/7] Misc patches
+Date: Thu, 12 Oct 2023 18:51:01 +0200
+Message-ID: <20231012165108.913443-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: QOM crash via soundhw_init()
-Content-Language: en-US
-To: Peng Liang <tcx4c70@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Martin Kletzander <mkletzan@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-References: <bbd3c42b-5069-d5e8-0b97-70ff5135801c@linaro.org>
- <af961171-6582-4d1e-b3bc-35d979849ff6@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <af961171-6582-4d1e-b3bc-35d979849ff6@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,70 +73,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/10/23 18:26, Peng Liang wrote:
-> On 10/12/2023 18:53, Philippe Mathieu-Daudé wrote:
->> Hi Martin, Paolo, Markus, Marc-André,
->>
->> With the following changes:
->>
->> -- >8 --
->> diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
->> index 137276bcb9..291495f798 100644
->> --- a/hw/ppc/prep.c
->> +++ b/hw/ppc/prep.c
->> @@ -245,6 +245,7 @@ static void ibm_40p_init(MachineState *machine)
->>       uint32_t kernel_base = 0, initrd_base = 0;
->>       long kernel_size = 0, initrd_size = 0;
->>       char boot_device;
->> +    MemoryRegion rom;
->>
->>       if (kvm_enabled()) {
->>           error_report("machine %s does not support the KVM accelerator",
->> @@ -277,6 +278,9 @@ static void ibm_40p_init(MachineState *machine)
->>           exit(1);
->>       }
->>
->> +    memory_region_init_rom_nomigrate(&rom, OBJECT(machine), "test",
->> +                                     4 * KiB, &error_fatal);
->> +
->>       /* PCI -> ISA bridge */
->>       i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
->>       qdev_connect_gpio_out(i82378_dev, 0,
->>
->> ---
-> 
-> I think it can be fixed by changing the type of rom to MemoryRegion*, such as:
-> diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-> index 137276bcb9..b5c2345ec8 100644
-> --- a/hw/ppc/prep.c
-> +++ b/hw/ppc/prep.c
-> @@ -245,6 +245,7 @@ static void ibm_40p_init(MachineState *machine)
->       uint32_t kernel_base = 0, initrd_base = 0;
->       long kernel_size = 0, initrd_size = 0;
->       char boot_device;
-> +    MemoryRegion *rom = g_new0(MemoryRegion, 1);
-> 
->       if (kvm_enabled()) {
->           error_report("machine %s does not support the KVM accelerator",
-> @@ -277,6 +278,9 @@ static void ibm_40p_init(MachineState *machine)
->           exit(1);
->       }
-> 
-> +    memory_region_init_rom_nomigrate(rom, OBJECT(machine), "test", 4 * KiB,
-> +                                     &error_fatal);
-> +
->       /* PCI -> ISA bridge */
->       i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
->       qdev_connect_gpio_out(i82378_dev, 0,
-> ---
-> 
-> In the original patch, rom is an object on stack and machine will save a reference
-> to rom in its properties after memory_region_init_rom_nomigrate. When the function
-> returns, the stack frame is freed and the data in rom becomes to garbage. After that,
-> when we call object_resolve_path_type, the properties of machine will be used to
-> match the specific path and type, then we will use some garbage in rom (which is on
-> stack).
+The following changes since commit a51e5124a655b3dad80b36b18547cb1eca2c5eb2:
 
-YES! Stupid mistake... Thank you Peng, you saved my day :)
+  Merge tag 'pull-omnibus-111023-1' of https://gitlab.com/stsquad/qemu into staging (2023-10-11 09:43:10 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-10-12
+
+for you to fetch changes up to f51f90c65ed7706c3c4f7a889ce3d6b7ab75ef6a:
+
+  gitlab-ci: Disable the riscv64-debian-cross-container by default (2023-10-12 14:18:03 +0200)
+
+----------------------------------------------------------------
+* Fix CVE-2023-1544
+* Deprecate the rdma code
+* Fix flaky npcm7xx_timer test
+* i2c-echo license statement and Kconfig switch
+* Disable the failing riscv64-debian-cross CI job by default
+
+----------------------------------------------------------------
+Chris Rauer (1):
+      tests/qtest: Fix npcm7xx_timer-test.c flaky test
+
+Klaus Jensen (2):
+      hw/misc/i2c-echo: add copyright/license note
+      hw/misc/Kconfig: add switch for i2c-echo
+
+Thomas Huth (3):
+      hw/rdma: Deprecate the pvrdma device and the rdma subsystem
+      MAINTAINERS: Add include/sysemu/qtest.h to the qtest section
+      gitlab-ci: Disable the riscv64-debian-cross-container by default
+
+Yuval Shaia (1):
+      hw/pvrdma: Protect against buggy or malicious guest driver
+
+ MAINTAINERS                      |  3 ++-
+ docs/about/deprecated.rst        |  8 ++++++++
+ hw/misc/i2c-echo.c               | 10 ++++++++++
+ hw/rdma/vmw/pvrdma_main.c        | 18 +++++++++++++++++-
+ tests/qtest/npcm7xx_timer-test.c |  1 +
+ .gitlab-ci.d/container-cross.yml |  1 +
+ hw/misc/Kconfig                  |  5 +++++
+ hw/misc/meson.build              |  2 +-
+ 8 files changed, 45 insertions(+), 3 deletions(-)
 
 
