@@ -2,101 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644267C77AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 22:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6ABF7C7801
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 22:41:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr20M-00075i-5U; Thu, 12 Oct 2023 16:09:58 -0400
+	id 1qr2Tf-0006v6-5Y; Thu, 12 Oct 2023 16:40:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qr20C-000754-Fe; Thu, 12 Oct 2023 16:09:50 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qr20A-0006yD-9w; Thu, 12 Oct 2023 16:09:47 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39CK171b012133; Thu, 12 Oct 2023 20:09:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=YRS+llteloEmf89wE1CwTN9/AGJFig4JYtcZ1ogHBmw=;
- b=lgbVEtdNFfZbkIJoic6ybAac7rMyowpMBBE9UyTAyKjCMHbO+7y2qzM9uQHfKV0Xe2EU
- bpOTeosu1aYQjgd8yeHp2g4BRhlFuNfftsG8OWgwJqksaaFbPSk3sW4F/W9m4as/t2V6
- fwJk0gAZXGZWRRkpjoehgMG/Gw7Hfnz4xQwS+c6uJ2ST7EqGFJr+T2vtA/1/j7s0Smak
- mpcTX40GYOiTKkgfsboONwunOkprVLaOOgxeEYw8hYLPDprcrI8p1DdmF8ooVQ56542z
- 5Fou2SF6V9yZ4M2fXAPukeTamxGI1CaYteYyUTHoKBqOgjMfCANpHCgMVY7KHeYfauje NA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpqbd8ekd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Oct 2023 20:09:42 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39CK1qLm016575;
- Thu, 12 Oct 2023 20:09:40 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpqbd8ehd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Oct 2023 20:09:40 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39CJ3v7e024439; Thu, 12 Oct 2023 20:09:39 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkhnt2ffe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Oct 2023 20:09:39 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39CK9ckN22217414
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Oct 2023 20:09:38 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5FBFE58045;
- Thu, 12 Oct 2023 20:09:38 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E53FA58050;
- Thu, 12 Oct 2023 20:09:37 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 12 Oct 2023 20:09:37 +0000 (GMT)
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-ppc@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- clg@kaod.org, npiggin@gmail.com, fbarrat@linux.ibm.com
-Subject: [PATCH v2 2/2] ppc/pnv: Connect I2C controller model to powernv9 chip
-Date: Thu, 12 Oct 2023 15:08:51 -0500
-Message-Id: <20231012200851.3020858-3-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231012200851.3020858-1-milesg@linux.vnet.ibm.com>
-References: <20231012200851.3020858-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qr2Tb-0006ut-SV; Thu, 12 Oct 2023 16:40:11 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qr2TZ-0004d3-PV; Thu, 12 Oct 2023 16:40:11 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 1B748218A9;
+ Thu, 12 Oct 2023 20:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697143206; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=EMQjqzMflilP67EVnZALNfHdMdnRHtlt5+QHTvZZbuI=;
+ b=SZkJauHk0Q/q2fapC4Y6Dq+VoZcGiUMMeNmvFPgL6PnL/tA9XdFHyyJpvQLoRnFO49Uw6I
+ uKQvIgZxDpp7xR+RKrQpWiSgrq5RfGgQVUlP5r1N7Vbbh1t5urPehHuy1OkL6WEUeHDR1b
+ ZxygP9gaapd8N2fzRQxm0SsqgdbWbK0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697143206;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=EMQjqzMflilP67EVnZALNfHdMdnRHtlt5+QHTvZZbuI=;
+ b=ZXMidg1eZVHpeeI0Pf6pILKhLvt5BtmnN8bcm4jhaJ5X5lzfBJEuiE789zH0LUIjKHiy8E
+ hk5IlgpldXCPXZCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A2F91139ED;
+ Thu, 12 Oct 2023 20:40:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id LfFnG6VZKGXjRwAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 12 Oct 2023 20:40:05 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, fam@euphon.net, stefanha@redhat.com,
+ jsnow@redhat.com, vsementsov@yandex-team.ru, eblake@redhat.com,
+ leobras@redhat.com, peterx@redhat.com, quintela@redhat.com,
+ pbonzini@redhat.com, t.lamprecht@proxmox.com
+Subject: Re: [PATCH v4] migration: hold the BQL during setup
+In-Reply-To: <20231012103307.371092-1-f.ebner@proxmox.com>
+References: <20231012103307.371092-1-f.ebner@proxmox.com>
+Date: Thu, 12 Oct 2023 17:40:03 -0300
+Message-ID: <87mswnziak.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RUmpJ11JfQwMtLB1joaGd3tZaHXtk4Tp
-X-Proofpoint-ORIG-GUID: oEMBeCr8XJAmmLQrprZHeeSNqhAfgP_L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-12_12,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 spamscore=0 suspectscore=0
- impostorscore=0 mlxlogscore=858 clxscore=1015 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310120168
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -4.10
+X-Spamd-Result: default: False [-4.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-0.00)[11.19%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_TWELVE(0.00)[13];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,124 +97,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@kaod.org>
+Fiona Ebner <f.ebner@proxmox.com> writes:
 
-Wires up three I2C controller instances to the powernv9 chip
-XSCOM address space.
+> This is intended to be a semantic revert of commit 9b09503752
+> ("migration: run setup callbacks out of big lock"). There have been so
+> many changes since that commit (e.g. a new setup callback
+> dirty_bitmap_save_setup() that also needs to be adapted now), it's
+> easier to do the revert manually.
+>
+> For snapshots, the bdrv_writev_vmstate() function is used during setup
+> (in QIOChannelBlock backing the QEMUFile), but not holding the BQL
+> while calling it could lead to an assertion failure. To understand
+> how, first note the following:
 
-Each controller instance is wired up to a single I2C bus of
-its own.  No other I2C devices are connected to the buses
-at this time.
+Would it make sense to add a GLOBAL_STATE_CODE() annotation to
+qio_channel_block_writev?
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-[milesg: Split wiring from addition of model itself]
-[milesg: Added new commit message]
-[milesg: Moved hardcoded attributes into PnvChipClass]
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
+> 1. Generated coroutine wrappers for block layer functions spawn the
+> coroutine and use AIO_WAIT_WHILE()/aio_poll() to wait for it.
+> 2. If the host OS switches threads at an inconvenient time, it can
+> happen that a bottom half scheduled for the main thread's AioContext
+> is executed as part of a vCPU thread's aio_poll().
+>
+> An example leading to the assertion failure is as follows:
+>
+> main thread:
+> 1. A snapshot-save QMP command gets issued.
+> 2. snapshot_save_job_bh() is scheduled.
+>
+> vCPU thread:
+> 3. aio_poll() for the main thread's AioContext is called (e.g. when
+> the guest writes to a pflash device, as part of blk_pwrite which is a
+> generated coroutine wrapper).
+> 4. snapshot_save_job_bh() is executed as part of aio_poll().
+> 3. qemu_savevm_state() is called.
+> 4. qemu_mutex_unlock_iothread() is called. Now
+> qemu_get_current_aio_context() returns 0x0.
+> 5. bdrv_writev_vmstate() is executed during the usual savevm setup
+> via qemu_fflush(). But this function is a generated coroutine wrapper,
+> so it uses AIO_WAIT_WHILE. There, the assertion
+> assert(qemu_get_current_aio_context() == qemu_get_aio_context());
+> will fail.
+>
+> To fix it, ensure that the BQL is held during setup. While it would
+> only be needed for snapshots, adapting migration too avoids additional
+> logic for conditional locking/unlocking in the setup callbacks.
+> Writing the header could (in theory) also trigger qemu_fflush() and
+> thus bdrv_writev_vmstate(), so the locked section also covers the
+> qemu_savevm_state_header() call, even for migration for consistentcy.
+>
+> The section around multifd_send_sync_main() needs to be unlocked to
+> avoid a deadlock. In particular, the function calls
 
-Changes in v2:
-    - Moved some hardcoded attributes into PnvChipClass
+... the multifd_save_setup() function calls ...
 
- hw/ppc/pnv.c              | 29 +++++++++++++++++++++++++++++
- include/hw/ppc/pnv_chip.h |  8 ++++++++
- 2 files changed, 37 insertions(+)
+otherwise this paragraph makes no sense.
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index eb54f93986..7db6f3abe5 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1438,6 +1438,10 @@ static void pnv_chip_power9_instance_init(Object *obj)
-         object_initialize_child(obj, "pec[*]", &chip9->pecs[i],
-                                 TYPE_PNV_PHB4_PEC);
-     }
-+
-+    for (i = 0; i < pcc->i2c_num_engines; i++) {
-+        object_initialize_child(obj, "i2c[*]", &chip9->i2c[i], TYPE_PNV_I2C);
-+    }
- }
- 
- static void pnv_chip_quad_realize_one(PnvChip *chip, PnvQuad *eq,
-@@ -1510,6 +1514,7 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-     PnvChip *chip = PNV_CHIP(dev);
-     Pnv9Psi *psi9 = &chip9->psi;
-     Error *local_err = NULL;
-+    int i;
- 
-     /* XSCOM bridge is first */
-     pnv_xscom_realize(chip, PNV9_XSCOM_SIZE, &local_err);
-@@ -1613,6 +1618,28 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-         error_propagate(errp, local_err);
-         return;
-     }
-+
-+    /*
-+     * I2C
-+     * TODO: The number of busses is specific to each platform
-+     */
-+    for (i = 0; i < pcc->i2c_num_engines; i++) {
-+        Object *obj =  OBJECT(&chip9->i2c[i]);
-+
-+        object_property_set_int(obj, "engine", i + 1, &error_fatal);
-+        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-+                                &error_fatal);
-+        object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-+        if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-+            return;
-+        }
-+        pnv_xscom_add_subregion(chip, PNV9_XSCOM_I2CM_BASE +
-+                               chip9->i2c[i].engine * PNV9_XSCOM_I2CM_SIZE,
-+                                &chip9->i2c[i].xscom_regs);
-+        qdev_connect_gpio_out(DEVICE(&chip9->i2c[i]), 0,
-+                              qdev_get_gpio_in(DEVICE(&chip9->psi),
-+                                               PSIHB9_IRQ_SBE_I2C));
-+    }
- }
- 
- static uint32_t pnv_chip_power9_xscom_pcba(PnvChip *chip, uint64_t addr)
-@@ -1640,6 +1667,8 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
-     k->xscom_pcba = pnv_chip_power9_xscom_pcba;
-     dc->desc = "PowerNV Chip POWER9";
-     k->num_pecs = PNV9_CHIP_MAX_PEC;
-+    k->i2c_num_engines = PNV9_CHIP_MAX_I2C;
-+    k->i2c_num_ports = PNV9_CHIP_MAX_I2C_PORTS;
- 
-     device_class_set_parent_realize(dc, pnv_chip_power9_realize,
-                                     &k->parent_realize);
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 53e1d921d7..90cfbad1a5 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -9,6 +9,7 @@
- #include "hw/ppc/pnv_psi.h"
- #include "hw/ppc/pnv_sbe.h"
- #include "hw/ppc/pnv_xive.h"
-+#include "hw/ppc/pnv_i2c.h"
- #include "hw/sysbus.h"
- 
- OBJECT_DECLARE_TYPE(PnvChip, PnvChipClass,
-@@ -86,6 +87,10 @@ struct Pnv9Chip {
- 
- #define PNV9_CHIP_MAX_PEC 3
-     PnvPhb4PecState pecs[PNV9_CHIP_MAX_PEC];
-+
-+#define PNV9_CHIP_MAX_I2C 3
-+#define PNV9_CHIP_MAX_I2C_PORTS 1
-+    PnvI2C      i2c[PNV9_CHIP_MAX_I2C];
- };
- 
- /*
-@@ -130,6 +135,9 @@ struct PnvChipClass {
-     uint32_t     num_pecs;
-     uint32_t     num_phbs;
- 
-+    uint32_t     i2c_num_engines;
-+    uint32_t     i2c_num_ports;
-+
-     DeviceRealize parent_realize;
- 
-     uint32_t (*core_pir)(PnvChip *chip, uint32_t core_id);
--- 
-2.31.1
+> socket_send_channel_create() using multifd_new_send_channel_async() as
+> a callback and then waits for the callback to signal via the
+> channels_ready semaphore. The connection happens via
+> qio_task_run_in_thread(), but the callback is only executed via
+> qio_task_thread_result() which is scheduled for the main event loop.
+> Without unlocking the section, the main thread would never get to
+> process the task result and the callback meaning there would be no
+> signal via the channels_ready semaphore.
+>
+> The comment in ram_init_bitmaps() was introduced by 4987783400
+> ("migration: fix incorrect memory_global_dirty_log_start outside BQL")
+> and is removed, because it referred to the qemu_mutex_lock_iothread()
+> call.
+>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+
+Thanks for taking the time to explain stuff in the commit message.
+
+I dislike having unnecessary dependencies on the BQL throughout the
+migration code, but I see people preferred that over conditional locking
+in the previous versions, so in the name of consensus:
+
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
 
