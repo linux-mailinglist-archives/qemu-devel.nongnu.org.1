@@ -2,53 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4247C633D
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 05:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AB47C6358
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 05:40:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqmFB-0002wm-FQ; Wed, 11 Oct 2023 23:20:13 -0400
+	id 1qqmWo-0005lj-4I; Wed, 11 Oct 2023 23:38:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qqmF8-0002vx-3u; Wed, 11 Oct 2023 23:20:10 -0400
-Received: from out30-113.freemail.mail.aliyun.com ([115.124.30.113])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qqmF5-0002Fc-A7; Wed, 11 Oct 2023 23:20:09 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R201e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046051;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
- TI=SMTPD_---0VtypPR2_1697080795; 
-Received: from 30.221.101.97(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VtypPR2_1697080795) by smtp.aliyun-inc.com;
- Thu, 12 Oct 2023 11:19:56 +0800
-Message-ID: <9a4858e4-f9da-40be-ba0a-4f3f94ce910d@linux.alibaba.com>
-Date: Thu, 12 Oct 2023 11:18:55 +0800
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qqmWm-0005lS-31
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 23:38:24 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qqmWi-0000Uc-Uq
+ for qemu-devel@nongnu.org; Wed, 11 Oct 2023 23:38:23 -0400
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8AxTeshaidlhT8xAA--.23892S3;
+ Thu, 12 Oct 2023 11:38:10 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bxvt4daidlAlQhAA--.3303S2; 
+ Thu, 12 Oct 2023 11:38:08 +0800 (CST)
+Subject: Re: [PATCH RFC v4 0/9] Add loongarch kvm accel support
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <cover.1696841645.git.lixianglai@loongson.cn>
+ <e9f0c004-cb23-0985-30ca-394197d6bf94@linaro.org>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <3cbee563-23c2-ed96-8faa-c9b288e0add3@loongson.cn>
+Date: Thu, 12 Oct 2023 11:38:05 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] target/riscv: Propagate error from PMU setup
+In-Reply-To: <e9f0c004-cb23-0985-30ca-394197d6bf94@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com
-References: <20231011145032.81509-1-rbradford@rivosinc.com>
- <20231011145032.81509-2-rbradford@rivosinc.com>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20231011145032.81509-2-rbradford@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=115.124.30.113;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-113.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8Bxvt4daidlAlQhAA--.3303S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CF4UWw45ArW3Kw18uw18CrX_yoW5JF15pF
+ WY9Fy3Krs5Grn7Jw4vg3s8XayUXrs5CF9rJ3Z3KFy8CFWDZF1vqr48urZ0gFsrA395XF1j
+ qryxXw17u3WUXFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+ AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+ XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+ 8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vI
+ r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67
+ AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
+ rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+ v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+ JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7IJmUU
+ UUU
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.339,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,99 +92,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 2023/10/11 22:45, Rob Bradford wrote:
-> More closely follow the QEMU style by returning an Error and propagating
-> it there is an error relating to the PMU setup.
+Hi Philippe Mathieu-Daudé :
+> Hi,
 >
-> Further simplify the function by removing the num_counters parameter as
-> this is available from the passed in cpu pointer.
+> On 9/10/23 11:01, xianglai li wrote:
+>> This series add loongarch kvm support, mainly implement
+>> some interfaces used by kvm such as kvm_arch_get/set_regs,
+>> kvm_arch_handle_exit, kvm_loongarch_set_interrupt, etc.
+>>
+>> Currently, we are able to boot LoongArch KVM Linux Guests.
+>> In loongarch VM, mmio devices and iocsr devices are emulated
+>> in user space such as APIC, IPI, pci devices, etc, other
+>> hardwares such as MMU, timer and csr are emulated in kernel.
+>>
+>> It is based on temporarily unaccepted linux kvm:
+>> https://github.com/loongson/linux-loongarch-kvm
+>> And We will remove the RFC flag until the linux kvm patches
+>> are merged.
+>>
+>> The running environment of LoongArch virt machine:
+>> 1. Get the linux source by the above mentioned link.
+>>     git checkout kvm-loongarch
+>>     make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- 
+>> loongson3_defconfig
+>>     make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu-
+>> 2. Get the qemu source: https://github.com/loongson/qemu
+>>     git checkout kvm-loongarch
+>>     ./configure --target-list="loongarch64-softmmu" --enable-kvm
+>>     make
+>> 3. Get uefi bios of LoongArch virt machine:
+>>     Link: 
+>> https://github.com/tianocore/edk2-platforms/tree/master/Platform/Loongson/LoongArchQemuPkg#readme
+>> 4. Also you can access the binary files we have already build:
+>>     https://github.com/yangxiaojuan-loongson/qemu-binary
+>>
+>> The command to boot loongarch virt machine:
+>>     $ qemu-system-loongarch64 -machine virt -m 4G -cpu la464 \
+>>     -smp 1 -bios QEMU_EFI.fd -kernel vmlinuz.efi -initrd ramdisk \
+>>     -serial stdio   -monitor telnet:localhost:4495,server,nowait \
+>>     -append "root=/dev/ram rdinit=/sbin/init console=ttyS0,115200" \
+>>     --nographic
 >
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
->   target/riscv/cpu.c |  8 +++++++-
->   target/riscv/pmu.c | 19 +++++++++----------
->   target/riscv/pmu.h |  3 ++-
->   3 files changed, 18 insertions(+), 12 deletions(-)
+> 2 years ago Song helped with an access to a LoongArch 3a5000 machine but
+> it stopped working (IP was x.242.206.180).
 >
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index ac2b94b6a6..c9d8fc12fe 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1488,7 +1488,13 @@ static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
->       }
->   
->       if (cpu->cfg.pmu_num) {
-> -        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscofpmf) {
-> +        riscv_pmu_init(cpu, &local_err);
-> +        if (local_err != NULL) {
-> +            error_propagate(errp, local_err);
-> +            return;
-> +        }
-> +
-> +        if (cpu->cfg.ext_sscofpmf) {
->               cpu->pmu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
->                                             riscv_pmu_timer_cb, cpu);
->           }
-> diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-> index 36f6307d28..13801ccb78 100644
-> --- a/target/riscv/pmu.c
-> +++ b/target/riscv/pmu.c
-> @@ -434,22 +434,21 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
->   }
->   
->   
-> -int riscv_pmu_init(RISCVCPU *cpu, int num_counters)
-> +void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
->   {
-> -    if (num_counters > (RV_MAX_MHPMCOUNTERS - 3)) {
-> -        return -1;
-> +    uint8_t pmu_num = cpu->cfg.pmu_num;
-> +
-> +    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-> +        error_setg(errp, "Number of counters exceeds maximum available");
-> +        return;
->       }
->   
->       cpu->pmu_event_ctr_map = g_hash_table_new(g_direct_hash, g_direct_equal);
->       if (!cpu->pmu_event_ctr_map) {
-> -        /* PMU support can not be enabled */
-> -        qemu_log_mask(LOG_UNIMP, "PMU events can't be supported\n");
-> -        cpu->cfg.pmu_num = 0;
-> -        return -1;
-> +        error_setg(errp, "Unable to allocate PMU event hash table");
-> +        return;
->       }
->   
->       /* Create a bitmask of available programmable counters */
-> -    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, num_counters);
-> -
-> -    return 0;
-> +    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
->   }
-> diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-> index 2bfb71ba87..88e0713296 100644
-> --- a/target/riscv/pmu.h
-> +++ b/target/riscv/pmu.h
-> @@ -17,13 +17,14 @@
->    */
->   
->   #include "cpu.h"
-> +#include "qapi/error.h"
->   
->   bool riscv_pmu_ctr_monitor_instructions(CPURISCVState *env,
->                                           uint32_t target_ctr);
->   bool riscv_pmu_ctr_monitor_cycles(CPURISCVState *env,
->                                     uint32_t target_ctr);
->   void riscv_pmu_timer_cb(void *priv);
-> -int riscv_pmu_init(RISCVCPU *cpu, int num_counters);
-> +void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> Would it be possible to add a Loongarch64 runner to our CI
+> (ideally with KVM support, but that can come later)? See:
+> https://www.qemu.org/docs/master/devel/ci.html#jobs-on-custom-runners
+>
 
-Zhiwei
+Ok, Song Gao will rebuild the Loongarch64 runner environment in the next 
+few days,
 
->   int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
->                                  uint32_t ctr_idx);
->   int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx);
+and we will publish it to the community as soon as it is completed.
+
+Thanks,
+
+Xianglai.
+
+
+
+> Regards,
+>
+> Phil.
+
 
