@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAFAF7C63BE
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E52EF7C63C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:12:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqn3J-0001EA-DU; Thu, 12 Oct 2023 00:12:02 -0400
+	id 1qqn3J-0001ET-Dj; Thu, 12 Oct 2023 00:12:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn32-0000yA-IK
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:11:45 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qqn35-0000yr-91
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:11:49 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn30-0002F3-Ok
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:11:44 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1c9c5a1b87bso4624255ad.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:11:41 -0700 (PDT)
+ id 1qqn33-0002Gn-Q7
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:11:47 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1c9d3a21f7aso4608975ad.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:11:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697083900; x=1697688700; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1697083904; x=1697688704; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4ZLwGwhSx5JJeeeKle/n8bXOYlgpcJMpegLGPWsqWQw=;
- b=du3QRnj83IjfoueLVRLXnF0gjF81MUFkacce0ue9t7hWpJECNqF50lRhPFRh68ePCW
- C1HKITca/MdZYOjRLonphMYvfl8DhNHxW4TaF7J+CR+GKdQZ3Q4icJVrNeqYwoQ0jiwk
- XPF2snGqeiTOJJZEIVLPATmLspMK26C4bzrZteMwxvLwc57I9RldHqezngvTU3i9HvOb
- JMb7i1+7DFYW2PLOu0p8YqYXFw0JqM9eGqCge2T9vFrActRCUpMGfHwBCDbNhZRGjGAD
- vXFrLKBrXXTPf48DlQOrC5S7w4X5HaNUx4AMynn07j2L2FIC4S75IxpKAir+a48nPzb3
- 8WxQ==
+ bh=X7BuIb9EJ21EUgeX86Kwp2vBql8jige8PXQT/rB4wCs=;
+ b=AIJpRzzZ0o16Vnvo34No+Lzso736+25Wj9Nvsei9rqVC5JLA3bCrpZSgIHuxe9pf2N
+ tDNcBdnbRmbd/gZY54nOrKRzzH/ZWXM4kq1v0oFL/gwENJJO0Kjpu3hWkKUpjyN2j7nL
+ oy39H5hmDiG8lx+Q5Xjx46EuQyXKdA85fFf46hEloyt5gkHz42pVLwSn1l4LTfO/afKh
+ wyiIZ6AEopfPPSj/GREeWlC5SsxjMtAjMwyYdREIe6md5M7JaXLgI3fFELuyCj/QTlSf
+ 2EEQ386zE+QZSjsQ8Q8sypphrJ5H1yfzjSYkhs+lwBGQSBRuCcL3NHVL7jfsiWROQWkr
+ GtmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697083900; x=1697688700;
+ d=1e100.net; s=20230601; t=1697083904; x=1697688704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4ZLwGwhSx5JJeeeKle/n8bXOYlgpcJMpegLGPWsqWQw=;
- b=IJelMLis31JNZxR2wdS604qO6yjDWW0m+PT3J3rppCVnPXSZnW7Du00CYQ7lrWw6lk
- 6pT/ZLnX8FwZJjSEkYqjDN+2MUd1ocu6xFhapm2vbwbFwbvuMB2xRLqLaVHorWK38JWm
- 21NhVadgdcTD9Xlpi3u1odNoukeENu00OIWGxoGHJwfemfQcqtB/4MSNMJoLMMmfXyQk
- 99fvJnz0jz9e4M9pzc4eNOWFPAXWFfJv3cQMdVH3IgJhoNeijE5A9WKy/ho2v0Vb81bL
- Ted8YfGrln2wuYEVoyIv3CTY8I0mGO1ktV1D0didRIfIsw40dHArNurS2oJZoGvSA3CQ
- T6tQ==
-X-Gm-Message-State: AOJu0Yx2sCr3G/WYMbVpWHJF86Go/D0ajGnuGHfIEYEkQ5GThxh4uAo9
- iDHJ/8g2nThdlZoEuWAq1zU1cvkTU+F0Kg==
-X-Google-Smtp-Source: AGHT+IF4H4WTLSFrKarlJ1VPcBw5z+4RsMrADwPAzoqjFIFT4ADh5LTYbk4V9d97VL3HLShhU/Y3aQ==
-X-Received: by 2002:a17:902:e54a:b0:1c6:2d13:5b74 with SMTP id
- n10-20020a170902e54a00b001c62d135b74mr23876625plf.55.1697083900600; 
- Wed, 11 Oct 2023 21:11:40 -0700 (PDT)
+ bh=X7BuIb9EJ21EUgeX86Kwp2vBql8jige8PXQT/rB4wCs=;
+ b=F1RhnFP9Jwar0sdFu2dXuUocWx7negWR26VuihzKdQbH/Mcgb9qmFYZ2mzm7H1/SUL
+ 21aWOJ7j2AGjnsGiyVEESDhSQoml7EFpfeOMip28h+Ld1axJ7hn9O8tGPqb3Or02bqGn
+ g1xDyYMHsgaJzMcXBIUvzrhlRZUEuHPomLYeWA8YAPGeyME0pCJ2842mxrng4dPI38B8
+ w2o+KS64H9KTnWZI9ul5dEjCa+lUyt9cFooyWwFSGz0JkLmvqrs4cUPIphfWykXaZJhC
+ kdTmPF/jWFwtRQ5t0XJ8RSu8EbcczrX+O2hiDF9q2kkQLvM/1R3Hh3VWZ6FHShTLJkj4
+ 9ipg==
+X-Gm-Message-State: AOJu0YzHQKTBwEgc9BWGYzF3BHztoqyqWh6e8qMZZjcczb+ShUuzX+48
+ /2h96FE2EzyO70Co0k0TI818m+uPO8danQ==
+X-Google-Smtp-Source: AGHT+IFpgB9esFC0bbhkaaVbneEXO7WP9ZWTHlaGDyUhDrnk/vD7p0ZApheCm5KIEcXUCBV+0TxRlA==
+X-Received: by 2002:a17:902:f691:b0:1c6:1bf9:d88d with SMTP id
+ l17-20020a170902f69100b001c61bf9d88dmr29806523plg.44.1697083903802; 
+ Wed, 11 Oct 2023 21:11:43 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.11.37
+ ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.11.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 21:11:39 -0700 (PDT)
+ Wed, 11 Oct 2023 21:11:43 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
  Alistair Francis <alistair.francis@wdc.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Subject: [PULL 10/54] target/riscv: add 'max' CPU type
-Date: Thu, 12 Oct 2023 14:10:07 +1000
-Message-ID: <20231012041051.2572507-11-alistair.francis@wdc.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 11/54] avocado, risc-v: add tuxboot tests for 'max' CPU
+Date: Thu, 12 Oct 2023 14:10:08 +1000
+Message-ID: <20231012041051.2572507-12-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012041051.2572507-1-alistair.francis@wdc.com>
 References: <20231012041051.2572507-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,145 +100,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The 'max' CPU type is used by tooling to determine what's the most
-capable CPU a current QEMU version implements. Other archs such as ARM
-implements this type. Let's add it to RISC-V.
-
-What we consider "most capable CPU" in this context are related to
-ratified, non-vendor extensions. This means that we want the 'max' CPU
-to enable all (possible) ratified extensions by default. The reasoning
-behind this design is (1) vendor extensions can conflict with each other
-and we won't play favorities deciding which one is default or not and
-(2) non-ratified extensions are always prone to changes, not being
-stable enough to be enabled by default.
-
-All this said, we're still not able to enable all ratified extensions
-due to conflicts between them. Zfinx and all its dependencies aren't
-enabled because of a conflict with RVF. zce, zcmp and zcmt are also
-disabled due to RVD conflicts. When running with 64 bits we're also
-disabling zcf.
-
-MISA bits RVG, RVJ and RVV are also being set manually since they're
-default disabled.
-
-This is the resulting 'riscv,isa' DT for this new CPU:
-
-rv64imafdcvh_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_
-zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbkb_zbkc_zbkx_zbs_zk_zkn_zknd_
-zkne_zknh_zkr_zks_zksed_zksh_zkt_zve32f_zve64f_zve64d_
-smstateen_sscofpmf_sstc_svadu_svinval_svnapot_svpbmt
+Add smoke tests to ensure that we'll not break the 'max' CPU type when
+adding new frozen/ratified RISC-V extensions.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Message-ID: <20230912132423.268494-11-dbarboza@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230912132423.268494-12-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu-qom.h |  1 +
- target/riscv/cpu.c     | 56 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 57 insertions(+)
+ tests/avocado/tuxrun_baselines.py | 32 +++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 04af50983e..f3fbe37a2c 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -30,6 +30,7 @@
- #define CPU_RESOLVING_TYPE TYPE_RISCV_CPU
+diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
+index e12250eabb..c99bea6c0b 100644
+--- a/tests/avocado/tuxrun_baselines.py
++++ b/tests/avocado/tuxrun_baselines.py
+@@ -501,6 +501,38 @@ def test_riscv64(self):
  
- #define TYPE_RISCV_CPU_ANY              RISCV_CPU_TYPE_NAME("any")
-+#define TYPE_RISCV_CPU_MAX              RISCV_CPU_TYPE_NAME("max")
- #define TYPE_RISCV_CPU_BASE32           RISCV_CPU_TYPE_NAME("rv32")
- #define TYPE_RISCV_CPU_BASE64           RISCV_CPU_TYPE_NAME("rv64")
- #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 7b9d0c7e52..c9de7ddb4e 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -259,6 +259,7 @@ static const char * const riscv_intr_names[] = {
- };
+         self.common_tuxrun(csums=sums)
  
- static void riscv_cpu_add_user_properties(Object *obj);
-+static void riscv_init_max_cpu_extensions(Object *obj);
- 
- const char *riscv_cpu_get_trap_name(target_ulong cause, bool async)
- {
-@@ -396,6 +397,25 @@ static void riscv_any_cpu_init(Object *obj)
-     cpu->cfg.pmp = true;
- }
- 
-+static void riscv_max_cpu_init(Object *obj)
-+{
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    CPURISCVState *env = &cpu->env;
-+    RISCVMXL mlx = MXL_RV64;
++    def test_riscv32_maxcpu(self):
++        """
++        :avocado: tags=arch:riscv32
++        :avocado: tags=machine:virt
++        :avocado: tags=cpu:max
++        :avocado: tags=tuxboot:riscv32
++        """
++        sums = { "Image" :
++                 "89599407d7334de629a40e7ad6503c73670359eb5f5ae9d686353a3d6deccbd5",
++                 "fw_jump.elf" :
++                 "f2ef28a0b77826f79d085d3e4aa686f1159b315eff9099a37046b18936676985",
++                 "rootfs.ext4.zst" :
++                 "7168d296d0283238ea73cd5a775b3dd608e55e04c7b92b76ecce31bb13108cba" }
 +
-+#ifdef TARGET_RISCV32
-+    mlx = MXL_RV32;
-+#endif
-+    set_misa(env, mlx, 0);
-+    riscv_cpu_add_user_properties(obj);
-+    riscv_init_max_cpu_extensions(obj);
-+    env->priv_ver = PRIV_VERSION_LATEST;
-+#ifndef CONFIG_USER_ONLY
-+    set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
-+                                VM_1_10_SV32 : VM_1_10_SV57);
-+#endif
-+}
++        self.common_tuxrun(csums=sums)
 +
- #if defined(TARGET_RISCV64)
- static void rv64_base_cpu_init(Object *obj)
- {
-@@ -2030,6 +2050,41 @@ static void riscv_cpu_add_user_properties(Object *obj)
-     riscv_cpu_add_qdev_prop_array(dev, riscv_cpu_experimental_exts);
- }
- 
-+/*
-+ * The 'max' type CPU will have all possible ratified
-+ * non-vendor extensions enabled.
-+ */
-+static void riscv_init_max_cpu_extensions(Object *obj)
-+{
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    CPURISCVState *env = &cpu->env;
-+    Property *prop;
++    def test_riscv64_maxcpu(self):
++        """
++        :avocado: tags=arch:riscv64
++        :avocado: tags=machine:virt
++        :avocado: tags=cpu:max
++        :avocado: tags=tuxboot:riscv64
++        """
++        sums = { "Image" :
++                 "cd634badc65e52fb63465ec99e309c0de0369f0841b7d9486f9729e119bac25e",
++                 "fw_jump.elf" :
++                 "6e3373abcab4305fe151b564a4c71110d833c21f2c0a1753b7935459e36aedcf",
++                 "rootfs.ext4.zst" :
++                 "b18e3a3bdf27be03da0b285e84cb71bf09eca071c3a087b42884b6982ed679eb" }
 +
-+    /* Enable RVG, RVJ and RVV that are disabled by default */
-+    set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
++        self.common_tuxrun(csums=sums)
 +
-+    for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
-+        object_property_set_bool(obj, prop->name, true, NULL);
-+    }
-+
-+    /* set vector version */
-+    env->vext_ver = VEXT_VERSION_1_00_0;
-+
-+    /* Zfinx is not compatible with F. Disable it */
-+    object_property_set_bool(obj, "zfinx", false, NULL);
-+    object_property_set_bool(obj, "zdinx", false, NULL);
-+    object_property_set_bool(obj, "zhinx", false, NULL);
-+    object_property_set_bool(obj, "zhinxmin", false, NULL);
-+
-+    object_property_set_bool(obj, "zce", false, NULL);
-+    object_property_set_bool(obj, "zcmp", false, NULL);
-+    object_property_set_bool(obj, "zcmt", false, NULL);
-+
-+    if (env->misa_mxl != MXL_RV32) {
-+        object_property_set_bool(obj, "zcf", false, NULL);
-+    }
-+}
-+
- static Property riscv_cpu_properties[] = {
-     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
- 
-@@ -2368,6 +2423,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .abstract = true,
-     },
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
-+    DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,      riscv_max_cpu_init),
- #if defined(CONFIG_KVM)
-     DEFINE_CPU(TYPE_RISCV_CPU_HOST,             riscv_host_cpu_init),
- #endif
+     def test_s390(self):
+         """
+         :avocado: tags=arch:s390x
 -- 
 2.41.0
 
