@@ -2,85 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B107C7151
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 17:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB1F7C713D
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 17:17:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqxVH-0007r8-6c; Thu, 12 Oct 2023 11:21:35 -0400
+	id 1qqxRG-0006Tg-5Q; Thu, 12 Oct 2023 11:17:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqxVE-0007pj-MW
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 11:21:32 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqxVC-0005NG-Ey
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 11:21:32 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4066692ad35so11713405e9.1
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 08:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697124088; x=1697728888; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FjyR2skxoLerWvOjTc12Q9nZxZqacnFBKZXqQ66nw+M=;
- b=WVTaNSx6+hId7+4170xTQh5nEF+x5MnTQmBdCqZyMSS+7WbYdLaj/nYvX8n3vtsxeZ
- cHCMLe1ECipueVXyE8HCvUIuTJYdZHlfhRtPv0QjQeTiMzoZh4alYTt8WYKPcK9o3IbV
- xbSZqM5gGvT6aYHenj3JcT50KySpV2G8hOdo1ulcHqR80+OBIOzcgpK663Nd5oNwLQi5
- QdR9MSULA2Neo90edcHi+5pVoNb7xt6UKUmzlVi5+beI1OqA8hmvbrgbEr2xFiKHt3e/
- EXjaT5tVJTJfArQA7wz/HqKRIG3UHQMpHa8xONb3HlrSnJirjwv7tUhjY5hQhYS3aHUM
- 3duQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697124088; x=1697728888;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=FjyR2skxoLerWvOjTc12Q9nZxZqacnFBKZXqQ66nw+M=;
- b=UuxuJLFnBpXZIpmX8XBGSx84514hcVpVj3MkhoFhuRJ1blfIRCuqWSXTw2lmBd5Lg2
- ggzJ4L28jlI/EgkgX70f7s9tNBE8AThGvHE1C+KnZoI/KXF49LfDO9RsE2KI5xNdCYYy
- q6wH6necW7132U70T7daEIs4Du+sN5dM7Aco+gsE+5hk9RwHA4IrI7Lfuatt/iPjJVup
- MPw/h1zky0J8nzP2EHF59LbX90fl27sDFtySVbaOOpzOYPUYv7dq1xNJyWnEDbB+epcz
- xfu6MaQVJhvUsuAJHEfIXuRbq1HcZOK21x0uznNoNX2lquRYSH/ZQh8IiZaQRRx18l2k
- RRKg==
-X-Gm-Message-State: AOJu0YzK7COWUtC0VY1M/F2WT0AVlBg6pyB3EBwg6PoPcj1cfgw4PI7l
- Uw8X0VVTIGYYFOcVm1nIYyo0qg==
-X-Google-Smtp-Source: AGHT+IHTSWZIb/L9POGjVQ85Ln07vf2F4+yXqijddhNR/S9RzDCBY8AlIz5Vt6Iix1AHu13V4XvGfA==
-X-Received: by 2002:a05:600c:3652:b0:3fe:d1b9:7ea9 with SMTP id
- y18-20020a05600c365200b003fed1b97ea9mr20793677wmq.36.1697124088428; 
- Thu, 12 Oct 2023 08:21:28 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- s8-20020a7bc388000000b0040684abb623sm104631wmj.24.2023.10.12.08.21.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Oct 2023 08:21:28 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 82C561FFBB;
- Thu, 12 Oct 2023 16:21:27 +0100 (BST)
-References: <20231012085710.880440-1-mironov@fintech.ru>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Sergey Mironov <mironov@fintech.ru>
-Cc: peter.maydell@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/1] target/arm: Adding a check for the result of
- calling the CPU information check function
-Date: Thu, 12 Oct 2023 16:16:11 +0100
-In-reply-to: <20231012085710.880440-1-mironov@fintech.ru>
-Message-ID: <87pm1jn9xk.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqxRD-0006TQ-AH
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 11:17:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqxRB-0004bm-4Q
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 11:17:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697123839;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cLxUmTsrqtRz6u7lP59SY+Qj0H09N97ZczK4zdDfDNI=;
+ b=UEsv5wz1W50LXRJQqnWrHYnIBS/oqJVTNqdjBpVyBcWNDQtbOWP0gaQWTUFQkeP/dbiHt7
+ wdeTOTO/ZoZThECKX+Rmv0elSUTJdIe9vU138Wqeb9SKBZ3JetsfhCf+Jv4UYHmQHdeWbf
+ n9BQGtGaUDWal/lB3cbuFtRgpF+LUpM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-235-XptXSnDFMzSP7d-buYoUBA-1; Thu, 12 Oct 2023 11:17:18 -0400
+X-MC-Unique: XptXSnDFMzSP7d-buYoUBA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B31BC10334B0
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 15:17:17 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 92309903
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 15:17:17 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 84C4E21E6A21; Thu, 12 Oct 2023 17:17:16 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  qemu-devel@nongnu.org,  Gerd Hoffmann
+ <kraxel@redhat.com>
+Subject: Re: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
+ compiling with -Wshadow
+References: <20231009083726.30301-1-thuth@redhat.com>
+ <87h6mwyqxn.fsf@pond.sub.org>
+ <20231012090829-mutt-send-email-mst@kernel.org>
+Date: Thu, 12 Oct 2023 17:17:16 +0200
+In-Reply-To: <20231012090829-mutt-send-email-mst@kernel.org> (Michael
+ S. Tsirkin's message of "Thu, 12 Oct 2023 09:08:56 -0400")
+Message-ID: <87bkd3oooz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,50 +83,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+"Michael S. Tsirkin" <mst@redhat.com> writes:
 
-Sergey Mironov <mironov@fintech.ru> writes:
+> On Thu, Oct 12, 2023 at 02:18:44PM +0200, Markus Armbruster wrote:
+>> Thomas Huth <thuth@redhat.com> writes:
+>> 
+>> > Rename some variables to avoid compiler warnings when compiling
+>> > with -Wshadow=local.
+>> >
+>> > Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> > ---
+>> >  v2: Renamed the variable to something more unique
 
-> 6 out of 7 calls to get_arm_cp_reginfo() are checked
+[...]
 
-Yes but we should be careful with asserts (vs if (ri) legs) because I
-don't think get_arm_cp_reginfo() guarantees it will always be
-successful.
+>> v1 renamed to s_ instead, which I find much easier to read.  Michael
+>> asked you to change it so it's less likely to break if we pass it a
+>> macro that also uses s_.  Unlikely to happen, and would fail safe: build
+>> breaks.
 
+[...]
+
+>> I'm going to queue v1.  Michael, if you want me to queue v2 instead, or
+>> neither of the two, let me know.
 >
-> Signed-off-by: Sergey Mironov <mironov@fintech.ru>
-> ---
->  target/arm/helper.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/target/arm/helper.c b/target/arm/helper.c
-> index 74fbb6e1d7..cffbbaf571 100644
-> --- a/target/arm/helper.c
-> +++ b/target/arm/helper.c
-> @@ -198,6 +198,7 @@ static void add_cpreg_to_list(gpointer key, gpointer =
-opaque)
->      uint32_t regidx =3D (uintptr_t)key;
->      const ARMCPRegInfo *ri =3D get_arm_cp_reginfo(cpu->cp_regs, regidx);
->=20=20
-> +    assert(ri !=3D NULL);
+> Yea I think v2 is better, queue that please.
 
-  /* must always succeed as we are iterating the keys of cp_regs */
-  assert(ri);
+Done.  Thanks!
 
-is enough for a !NULL check.
-
->      if (!(ri->type & (ARM_CP_NO_RAW | ARM_CP_ALIAS))) {
->          cpu->cpreg_indexes[cpu->cpreg_array_len] =3D cpreg_to_kvm_id(reg=
-idx);
->          /* The value array need not be initialized at this point */
-
-That said we already have an assert that would fire in
-init_cpregs_list():
-
-  assert(cpu->cpreg_array_len =3D=3D arraylen);
-
-so I'm not sure what this is adding to ensuring the contract is kept.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
