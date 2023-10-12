@@ -2,36 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14E87C662B
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 09:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2F17C6628
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 09:17:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqpw4-000737-EY; Thu, 12 Oct 2023 03:16:44 -0400
+	id 1qqpw1-0006yy-JV; Thu, 12 Oct 2023 03:16:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqpvs-0006xv-Cr; Thu, 12 Oct 2023 03:16:33 -0400
+ id 1qqpvs-0006xu-BL; Thu, 12 Oct 2023 03:16:32 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qqpvq-0000sU-30; Thu, 12 Oct 2023 03:16:32 -0400
+ id 1qqpvq-0000sV-7l; Thu, 12 Oct 2023 03:16:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2BD5C29AC3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4CE3129AC4;
  Thu, 12 Oct 2023 10:16:34 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E7DBF2E9AF;
- Thu, 12 Oct 2023 10:16:26 +0300 (MSK)
-Received: (nullmailer pid 25936 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 163F12E9B0;
+ Thu, 12 Oct 2023 10:16:27 +0300 (MSK)
+Received: (nullmailer pid 25941 invoked by uid 1000);
  Thu, 12 Oct 2023 07:16:26 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 00/61] Patch Round-up for stable 8.1.2,
- freeze on 2023-12-14
-Date: Thu, 12 Oct 2023 10:16:13 +0300
-Message-Id: <qemu-stable-8.1.2-20231012101342@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 58/61] vfio/display: Fix missing update to set backing
+ fields
+Date: Thu, 12 Oct 2023 10:16:14 +0300
+Message-Id: <20231012071626.25905-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-8.1.2-20231012101342@cover.tls.msk.ru>
+References: <qemu-stable-8.1.2-20231012101342@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,159 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v8.1.2:
+From: Alex Williamson <alex.williamson@redhat.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.1
+The below referenced commit renames scanout_width/height to
+backing_width/height, but also promotes these fields in various portions
+of the egl interface.  Meanwhile vfio dmabuf support has never used the
+previous scanout fields and is therefore missed in the update.  This
+results in a black screen when transitioning from ramfb to dmabuf display
+when using Intel vGPU with these features.
 
-Patch freeze is 2023-12-14, and the release is planned for 2023-14-16:
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1891
+Link: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg02726.html
+Fixes: 9ac06df8b684 ("virtio-gpu-udmabuf: correct naming of QemuDmaBuf size properties")
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Tested-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit 931150e56b056b120c868f94751722710df0b6a7)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-  https://wiki.qemu.org/Planning/8.1
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index bec864f482..837d9e6a30 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -243,6 +243,8 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCIDevice *vdev,
+     dmabuf->dmabuf_id  = plane.dmabuf_id;
+     dmabuf->buf.width  = plane.width;
+     dmabuf->buf.height = plane.height;
++    dmabuf->buf.backing_width = plane.width;
++    dmabuf->buf.backing_height = plane.height;
+     dmabuf->buf.stride = plane.stride;
+     dmabuf->buf.fourcc = plane.drm_format;
+     dmabuf->buf.modifier = plane.drm_format_mod;
+-- 
+2.39.2
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
-
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-This release supposed to finally fix some long-standing issues in 8.1.x series,
-by including commit 0d58c660689f "softmmu: Use async_run_on_cpu in tcg_commit"
-and follow-up series fixing issues in other areas it uncovered, among other
-fixes.
-
-I was quite busy the last few days, - so I had to move the initially planned
-release by 2 days, - freeze from Oct-10 to Oct-12 (today), release from
-Oct-12 to Oct-14.  Please excuse me for this delay.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01* 7798f5c576d8 Nicholas Piggin:
-   hw/ppc: Introduce functions for conversion between timebase and 
-   nanoseconds
-02* 47de6c4c2870 Nicholas Piggin:
-   host-utils: Add muldiv64_round_up
-03* eab0888418ab Nicholas Piggin:
-   hw/ppc: Round up the decrementer interval when converting to ns
-04* 8e0a5ac87800 Nicholas Piggin:
-   hw/ppc: Avoid decrementer rounding errors
-05* c8fbc6b9f2f3 Nicholas Piggin:
-   target/ppc: Sign-extend large decrementer to 64-bits
-06* febb71d543a8 Nicholas Piggin:
-   hw/ppc: Always store the decrementer value
-07* 30d0647bcfa9 Nicholas Piggin:
-   hw/ppc: Reset timebase facilities on machine reset
-08* ea62f8a5172c Nicholas Piggin:
-   hw/ppc: Read time only once to perform decrementer write
-09* 2529497cb6b2 Mikulas Patocka:
-   linux-user/hppa: clear the PSW 'N' bit when delivering signals
-10* 5b1270ef1477 Mikulas Patocka:
-   linux-user/hppa: lock both words of function descriptor
-11* 7b165fa16402 Li Zhijian:
-   hw/cxl: Fix CFMW config memory leak
-12* de5bbfc602ef Dmitry Frolov:
-   hw/cxl: Fix out of bound array access
-13* 56d1a022a77e Hanna Czenczek:
-   file-posix: Clear bs->bl.zoned on error
-14* 4b5d80f3d020 Hanna Czenczek:
-   file-posix: Check bs->bl.zoned for zone info
-15* deab5c9a4ed7 Hanna Czenczek:
-   file-posix: Fix zone update in I/O error path
-16* d31b50a15dd2 Hanna Czenczek:
-   file-posix: Simplify raw_co_prw's 'out' zone code
-17* 380448464dd8 Hanna Czenczek:
-   tests/file-io-error: New test
-18* c78edb563942 Anton Johansson:
-   include/exec: Widen tlb_hit/tlb_hit_page()
-19* 32b214384e1e Fabian Vogt:
-   hw/arm/boot: Set SCR_EL3.FGTEn when booting kernel
-20* 903dbefc2b69 Peter Maydell:
-   target/arm: Don't skip MTE checks for LDRT/STRT at EL0
-21* c64023b0ba67 Thomas Huth:
-   meson.build: Make keyutils independent from keyring
-22* 0e5903436de7 Nicholas Piggin:
-   accel/tcg: mttcg remove false-negative halted assertion
-23* 7cfcc79b0ab8 Thomas Huth:
-   hw/scsi/scsi-disk: Disallow block sizes smaller than 512 [CVE-2023-42467]
-24* 0cb9c5880e6b Paolo Bonzini:
-   ui/vnc: fix debug output for invalid audio message
-25* 477b301000d6 Paolo Bonzini:
-   ui/vnc: fix handling of VNC_FEATURE_XVP
-26* cf02f29e1e38 Peter Xu:
-   migration: Fix race that dest preempt thread close too early
-27* 28a8347281e2 Fabiano Rosas:
-   migration: Fix possible race when setting rp_state.error
-28* 639decf52979 Fabiano Rosas:
-   migration: Fix possible races when shutting down the return path
-29* 7478fb0df914 Fabiano Rosas:
-   migration: Fix possible race when shutting down to_dst_file
-30* b3b101157d46 Fabiano Rosas:
-   migration: Remove redundant cleanup of postcopy_qemufile_src
-31* d50f5dc075cb Fabiano Rosas:
-   migration: Consolidate return path closing code
-32* ef796ee93b31 Fabiano Rosas:
-   migration: Replace the return path retry logic
-33* 36e9aab3c569 Fabiano Rosas:
-   migration: Move return path cleanup to main migration thread
-34* 0d58c660689f Richard Henderson:
-   softmmu: Use async_run_on_cpu in tcg_commit
-35* f47a90dacca8 Richard Henderson:
-   accel/tcg: Avoid load of icount_decr if unused
-36* 5d97e9463810 Richard Henderson:
-   accel/tcg: Hoist CF_MEMI_ONLY check outside translation loop
-37* 0ca41ccf1c55 Richard Henderson:
-   accel/tcg: Track current value of can_do_io in the TB
-38* a2f99d484c54 Richard Henderson:
-   accel/tcg: Improve setting of can_do_io at start of TB
-39* 200c1f904f46 Richard Henderson:
-   accel/tcg: Always set CF_LAST_IO with CF_NOIRQ
-40* 18a536f1f8d6 Richard Henderson:
-   accel/tcg: Always require can_do_io
-41* 23fa6f56b33f Bastian Koppelmann:
-   target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
-42* 35ed01ba5448 Fabiano Rosas:
-   optionrom: Remove build-id section
-43* b86dc5cb0b41 Mark Cave-Ayland:
-   esp: use correct type for esp_dma_enable() in sysbus_esp_gpio_demux()
-44* 77668e4b9bca Mark Cave-Ayland:
-   esp: restrict non-DMA transfer length to that of available data
-45* be2b619a1734 Mark Cave-Ayland:
-   scsi-disk: ensure that FORMAT UNIT commands are terminated
-46* c01196bdddc2 Thomas Huth:
-   subprojects/berkeley-testfloat-3: Update to fix a problem with compiler 
-   warnings
-47* a48b26978a09 Paolo Bonzini:
-   target/i386: generalize operand size "ph" for use in CVTPS2PD
-48* abd41884c530 Paolo Bonzini:
-   target/i386: fix memory operand size for CVTPS2PD
-49* 75b773d84c89 Marc-André Lureau:
-   win32: avoid discarding the exception handler
-50* e0288a778473 Laszlo Ersek:
-   hw/display/ramfb: plug slight guest-triggerable leak on mode setting
-51* 4f7689f0817a Thomas Huth:
-   chardev/char-pty: Avoid losing bytes when the other side just 
-   (re-)connected
-52* 33bc4fa78b06 Richard Henderson:
-   linux-user/hppa: Fix struct target_sigcontext layout
-53* 0a7a164bc37b Eugenio Pérez:
-   vdpa net: zero vhost_vdpa iova_tree pointer at cleanup
-54* cbc9ae87b5f6 Eugenio Pérez:
-   vdpa net: fix error message setting virtio status
-55* f1085882d028 Eugenio Pérez:
-   vdpa net: stop probing if cannot set features
-56* 845ec38ae157 Eugenio Pérez:
-   vdpa net: follow VirtIO initialization properly at cvq isolation probing
-57* 0114c4513095 Akihiko Odaki:
-   amd_iommu: Fix APIC address check
-58 931150e56b05 Alex Williamson:
-   vfio/display: Fix missing update to set backing fields
-59 f05142d511e8 Fiona Ebner:
-   util/log: re-allow switching away from stderr log file
-60 86dec715a733 Peter Xu:
-   migration/qmp: Fix crash on setting tls-authz with null
-61 00e3b29d065f Volker Rümelin:
-   hw/audio/es1370: reset current sample counter
-
-(commit(s) marked with * were in previous series and are not resent)
 
