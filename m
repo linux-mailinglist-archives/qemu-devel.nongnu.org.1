@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0592C7C7366
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EF87C7364
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:47:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqypK-0000Rf-T8; Thu, 12 Oct 2023 12:46:22 -0400
+	id 1qqypO-0000U1-5F; Thu, 12 Oct 2023 12:46:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qqypI-0000QK-S2
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:46:20 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ id 1qqypM-0000Tr-Og
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:46:24 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qqypG-0004Zo-UC
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:46:20 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-57e40f0189aso637029eaf.1
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 09:46:18 -0700 (PDT)
+ id 1qqypK-0004aM-52
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:46:24 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-690ba63891dso930877b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 09:46:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697129177; x=1697733977; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1697129180; x=1697733980; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lUXiNN+/Ze1ioMLpQ4WH4bCrM1VntWMfSoTQsDB1p6s=;
- b=l2FIYx25VL7aorz/ZhdnZ5XuYF7cd7RfXJbPM/N0T7yhLx1jbhbZc7isl4xSSwMJgw
- V3vwGH6+DQ9sERLS51NIziFa81Ti6eWArcLzS4R19njitkJQN8iyl+vbLJs7/dxXiyd0
- TVDCPxeSXzrwU0MtWb0cl9JfIAlfYkgWYdPaPO1c+YVMHq3PRkwWSiNhe3XJ+CwI7DoL
- lxz561LX91Zr5Dgo+wX3SPF+1ftdex9xHLOsBrzCoyGfWjY7n6USmaHG2aidRgo5d4PF
- dZ7wxQnTDr90TdYdcI8nACiOlAbS0QYdR7mPa2bhkMo9G2T3GSoIIOonp/49zSRN9BNS
- WZ6A==
+ bh=+kbiL7XRqM58601ZYE3/9TMgvUQo8Pg37nN1Viu1U70=;
+ b=BDiu2F1iKHRhV3NmL/N4tMsOcLOo02TPVkDc2pDOSxZXM44liesa69VfhGMZxTm2WJ
+ tadO2xUNWAGbw6eryQCufsq3lfb2JBYZQBz+vTsUlX+s3y6uEyf8bnNva+dGqpSddNRk
+ pO0SEjewGzkewZyDYz2UX0/laQCikZk1A1vhGYR1DoeyRXdC6eZte845jTILe+YJZiar
+ dd60m7RsoyQv9t9DFZPX7Z2UFFgO14JGQ60j3movak9nT9QQuwGfaXQdAP55Eq1cTL7G
+ fj6TvPhrPRvPcvpRzeht+PmIdirZRljG3iBF8ECKDj4XBVk7+iT4xqjAZuTUtmzBSLaO
+ SM4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697129177; x=1697733977;
+ d=1e100.net; s=20230601; t=1697129180; x=1697733980;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lUXiNN+/Ze1ioMLpQ4WH4bCrM1VntWMfSoTQsDB1p6s=;
- b=q4s/LYLwz3fDJvRcrenk+qqSuilIrumnnnM1BEO9BmD/2vBhlOD+9AVWCcXHSkHvzt
- ikQxtqQynSVtf34FZzMayiN1RThBVBOZGh1VMqDTlCOvl+DCgL9mu1W51gTPoidPZ+k/
- 0Z8Lp+QNJGMasPdY9GOnx42aTysJkFvU4T1U4XxW+stI9cphiLPn/MbxJCXAfVoTkxEh
- jvnHZh7Eqf9RXDgfWNVyt6KFExLbuUdWroB59Vfgaf8E5SrHCEhgosFCB5L/uP+5em3m
- pJDyUOcBB7YdaSm+yGRpw/4pZiw2avlCC2og6mQnXZYrHVlzkYLkVVdLWwIaroRNCHxD
- CIbQ==
-X-Gm-Message-State: AOJu0YwysXwODeL0lDHpOVMPqQHH1a75mtYb7QquFGPClgM45/bTyzG5
- +5qJ1HVQ83v+V5m+ZWNKybbRL2sRGfx9DtMYaHc=
-X-Google-Smtp-Source: AGHT+IEFX4KckEfqpYaCtTAcGmwsxfitJm/cZ4PzIYuDsEcEGtHaQOF4lGBCQexLxQjmAzxK2ji2UQ==
-X-Received: by 2002:a05:6358:98a0:b0:143:3a49:e30d with SMTP id
- q32-20020a05635898a000b001433a49e30dmr29436247rwa.12.1697129177320; 
- Thu, 12 Oct 2023 09:46:17 -0700 (PDT)
+ bh=+kbiL7XRqM58601ZYE3/9TMgvUQo8Pg37nN1Viu1U70=;
+ b=g6RedqipHGoZf5RUqaZovFW0Bm+T0zzHK9oTlKNjJSgMmrJwBRiZGkpvPpQQoLPLrV
+ aOfcfbURoF0nggP6Ef8sGMUCiG4H/odBJFTg2OKC1Oj5eIr9audJWSAVPPNW13Gd5Piy
+ 8WA3R39ACR9kJCPCFtivIUreaXyNUPXvcL8l7l2EG5a5QVVlCMLumtrWW4ntgH0kxp6Q
+ 3tW0JatZd+PVkD6qrO15oygO8JKJDWJSHtcHG3D89jFAQgOh668Yip8T9FLn/WhDWrAl
+ NK5lYRtAjPwXFxaczpGKTBelS/zSVExRjU427Luua0vH6dTuOALJEjLEJUN0eflLfoIE
+ bUxQ==
+X-Gm-Message-State: AOJu0YyoBsNzU4K8c0xKbgEo0JspRITa7NGjCHK+FBdsNcC6Vntl8+8W
+ VCNccHv5Ikf3+Is9yoq1nzzVsFBQ9zKEOVzQ8mA=
+X-Google-Smtp-Source: AGHT+IG2YbpdcTivgqoar+K+DGpdA1XTyakpe4VK8U9GVVNz+DGEpoMYURmuwdHWQng25U3YgOMPmg==
+X-Received: by 2002:a05:6a00:1a92:b0:690:bdda:7c35 with SMTP id
+ e18-20020a056a001a9200b00690bdda7c35mr26329423pfv.1.1697129180398; 
+ Thu, 12 Oct 2023 09:46:20 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com ([177.94.42.196])
  by smtp.gmail.com with ESMTPSA id
- g5-20020aa78185000000b0068feb378b89sm12416805pfi.171.2023.10.12.09.46.14
+ g5-20020aa78185000000b0068feb378b89sm12416805pfi.171.2023.10.12.09.46.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Oct 2023 09:46:16 -0700 (PDT)
+ Thu, 12 Oct 2023 09:46:20 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 2/4] target/riscv: rename ext_icsr to ext_zicsr
-Date: Thu, 12 Oct 2023 13:46:02 -0300
-Message-ID: <20231012164604.398496-3-dbarboza@ventanamicro.com>
+Subject: [PATCH 3/4] target/riscv: rename ext_icbom to ext_zicbom
+Date: Thu, 12 Oct 2023 13:46:03 -0300
+Message-ID: <20231012164604.398496-4-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012164604.398496-1-dbarboza@ventanamicro.com>
 References: <20231012164604.398496-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,228 +95,126 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Add a leading 'z' to improve grepping. When one wants to search for uses
-of zicsr they're more likely to do 'grep -i zicsr' than 'grep -i icsr'.
+of zicbom they're more likely to do 'grep -i zicbom' than 'grep -i
+icbom'.
 
 Suggested-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- hw/riscv/boot.c            |  2 +-
- target/riscv/cpu.c         | 22 +++++++++++-----------
- target/riscv/cpu_cfg.h     |  2 +-
- target/riscv/csr.c         |  2 +-
- target/riscv/gdbstub.c     |  2 +-
- target/riscv/tcg/tcg-cpu.c | 14 +++++++-------
- 6 files changed, 22 insertions(+), 22 deletions(-)
+ hw/riscv/virt.c                             | 2 +-
+ target/riscv/cpu.c                          | 6 +++---
+ target/riscv/cpu_cfg.h                      | 2 +-
+ target/riscv/insn_trans/trans_rvzicbo.c.inc | 8 ++++----
+ target/riscv/kvm/kvm-cpu.c                  | 6 +++---
+ 5 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-index 52bf8e67de..0ffca05189 100644
---- a/hw/riscv/boot.c
-+++ b/hw/riscv/boot.c
-@@ -414,7 +414,7 @@ void riscv_setup_rom_reset_vec(MachineState *machine, RISCVHartArrayState *harts
-         reset_vec[4] = 0x0182b283;   /*     ld     t0, 24(t0) */
-     }
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 9de578c756..54e0fe8ecc 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -263,7 +263,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
+         qemu_fdt_setprop_string(ms->fdt, cpu_name, "riscv,isa", name);
+         g_free(name);
  
--    if (!harts->harts[0].cfg.ext_icsr) {
-+    if (!harts->harts[0].cfg.ext_zicsr) {
-         /*
-          * The Zicsr extension has been disabled, so let's ensure we don't
-          * run the CSR instruction. Let's fill the address with a non
+-        if (cpu_ptr->cfg.ext_icbom) {
++        if (cpu_ptr->cfg.ext_zicbom) {
+             qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbom-block-size",
+                                   cpu_ptr->cfg.cbom_blocksize);
+         }
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index caf42ce68d..fdbbafe7b3 100644
+index fdbbafe7b3..c9020653cd 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -79,7 +79,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
+@@ -76,7 +76,7 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
+  * instead.
+  */
+ const RISCVIsaExtData isa_edata_arr[] = {
+-    ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
++    ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_zicbom),
      ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
      ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
--    ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
-+    ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_zicsr),
-     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_zifencei),
-     ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-@@ -383,7 +383,7 @@ static void riscv_any_cpu_init(Object *obj)
- 
-     /* inherited from parent obj via riscv_cpu_init() */
+     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_zicsr),
+@@ -497,7 +497,7 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
      cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.ext_zicsr = true;
-     cpu->cfg.mmu = true;
+     cpu->cfg.ext_zicsr = true;
      cpu->cfg.pmp = true;
- }
-@@ -431,7 +431,7 @@ static void rv64_sifive_u_cpu_init(Object *obj)
- 
-     /* inherited from parent obj via riscv_cpu_init() */
-     cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.ext_zicsr = true;
-     cpu->cfg.mmu = true;
-     cpu->cfg.pmp = true;
- }
-@@ -449,7 +449,7 @@ static void rv64_sifive_e_cpu_init(Object *obj)
- 
-     /* inherited from parent obj via riscv_cpu_init() */
-     cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.ext_zicsr = true;
-     cpu->cfg.pmp = true;
- }
- 
-@@ -495,7 +495,7 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
-     /* Enable ISA extensions */
-     cpu->cfg.mmu = true;
-     cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.ext_zicsr = true;
-     cpu->cfg.pmp = true;
-     cpu->cfg.ext_icbom = true;
+-    cpu->cfg.ext_icbom = true;
++    cpu->cfg.ext_zicbom = true;
      cpu->cfg.cbom_blocksize = 64;
-@@ -567,7 +567,7 @@ static void rv32_sifive_u_cpu_init(Object *obj)
+     cpu->cfg.cboz_blocksize = 64;
+     cpu->cfg.ext_icboz = true;
+@@ -1284,7 +1284,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     MULTI_EXT_CFG_BOOL("zhinx", ext_zhinx, false),
+     MULTI_EXT_CFG_BOOL("zhinxmin", ext_zhinxmin, false),
  
-     /* inherited from parent obj via riscv_cpu_init() */
-     cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.ext_zicsr = true;
-     cpu->cfg.mmu = true;
-     cpu->cfg.pmp = true;
- }
-@@ -585,7 +585,7 @@ static void rv32_sifive_e_cpu_init(Object *obj)
+-    MULTI_EXT_CFG_BOOL("zicbom", ext_icbom, true),
++    MULTI_EXT_CFG_BOOL("zicbom", ext_zicbom, true),
+     MULTI_EXT_CFG_BOOL("zicboz", ext_icboz, true),
  
-     /* inherited from parent obj via riscv_cpu_init() */
-     cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.ext_zicsr = true;
-     cpu->cfg.pmp = true;
- }
- 
-@@ -603,7 +603,7 @@ static void rv32_ibex_cpu_init(Object *obj)
- 
-     /* inherited from parent obj via riscv_cpu_init() */
-     cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.ext_zicsr = true;
-     cpu->cfg.pmp = true;
- }
- 
-@@ -620,7 +620,7 @@ static void rv32_imafcu_nommu_cpu_init(Object *obj)
- 
-     /* inherited from parent obj via riscv_cpu_init() */
-     cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.ext_zicsr = true;
-     cpu->cfg.pmp = true;
- }
- #endif
-@@ -1243,7 +1243,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     /* Defaults for standard extensions */
-     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
-     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
--    MULTI_EXT_CFG_BOOL("zicsr", ext_icsr, true),
-+    MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
-     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
-     MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
-     MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
-@@ -1348,7 +1348,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
- /* Deprecated entries marked for future removal */
- const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[] = {
-     MULTI_EXT_CFG_BOOL("Zifencei", ext_zifencei, true),
--    MULTI_EXT_CFG_BOOL("Zicsr", ext_icsr, true),
-+    MULTI_EXT_CFG_BOOL("Zicsr", ext_zicsr, true),
-     MULTI_EXT_CFG_BOOL("Zihintntl", ext_zihintntl, true),
-     MULTI_EXT_CFG_BOOL("Zihintpause", ext_zihintpause, true),
-     MULTI_EXT_CFG_BOOL("Zawrs", ext_zawrs, true),
+     MULTI_EXT_CFG_BOOL("zmmul", ext_zmmul, false),
 diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index a3f96eb878..9ea30da7e0 100644
+index 9ea30da7e0..e6bef0070f 100644
 --- a/target/riscv/cpu_cfg.h
 +++ b/target/riscv/cpu_cfg.h
-@@ -62,7 +62,7 @@ struct RISCVCPUConfig {
-     bool ext_zksh;
+@@ -63,7 +63,7 @@ struct RISCVCPUConfig {
      bool ext_zkt;
      bool ext_zifencei;
--    bool ext_icsr;
-+    bool ext_zicsr;
-     bool ext_icbom;
+     bool ext_zicsr;
+-    bool ext_icbom;
++    bool ext_zicbom;
      bool ext_icboz;
      bool ext_zicond;
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 4b4ab56c40..30cc21e979 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -3858,7 +3858,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-     int csr_min_priv = csr_ops[csrno].min_priv_ver;
+     bool ext_zihintntl;
+diff --git a/target/riscv/insn_trans/trans_rvzicbo.c.inc b/target/riscv/insn_trans/trans_rvzicbo.c.inc
+index e5a7704f54..e6ed548376 100644
+--- a/target/riscv/insn_trans/trans_rvzicbo.c.inc
++++ b/target/riscv/insn_trans/trans_rvzicbo.c.inc
+@@ -16,10 +16,10 @@
+  * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
  
-     /* ensure the CSR extension is enabled */
--    if (!riscv_cpu_cfg(env)->ext_icsr) {
-+    if (!riscv_cpu_cfg(env)->ext_zicsr) {
-         return RISCV_EXCP_ILLEGAL_INST;
+-#define REQUIRE_ZICBOM(ctx) do {    \
+-    if (!ctx->cfg_ptr->ext_icbom) { \
+-        return false;               \
+-    }                               \
++#define REQUIRE_ZICBOM(ctx) do {     \
++    if (!ctx->cfg_ptr->ext_zicbom) { \
++        return false;                \
++    }                                \
+ } while (0)
+ 
+ #define REQUIRE_ZICBOZ(ctx) do {    \
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 090d617627..ad48c9bf30 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -213,7 +213,7 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+      .kvm_reg_id = _reg_id}
+ 
+ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+-    KVM_EXT_CFG("zicbom", ext_icbom, KVM_RISCV_ISA_EXT_ZICBOM),
++    KVM_EXT_CFG("zicbom", ext_zicbom, KVM_RISCV_ISA_EXT_ZICBOM),
+     KVM_EXT_CFG("zicboz", ext_icboz, KVM_RISCV_ISA_EXT_ZICBOZ),
+     KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
+     KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
+@@ -804,7 +804,7 @@ static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
+         kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
      }
  
-diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-index 524bede865..58b3ace0fe 100644
---- a/target/riscv/gdbstub.c
-+++ b/target/riscv/gdbstub.c
-@@ -342,7 +342,7 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
-         g_assert_not_reached();
+-    if (cpu->cfg.ext_icbom) {
++    if (cpu->cfg.ext_zicbom) {
+         kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
      }
  
--    if (cpu->cfg.ext_icsr) {
-+    if (cpu->cfg.ext_zicsr) {
-         int base_reg = cs->gdb_num_regs;
-         gdb_register_coprocessor(cs, riscv_gdb_get_csr, riscv_gdb_set_csr,
-                                  riscv_gen_dynamic_csr_xml(cs, base_reg),
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 9b8f3f54a7..418b040d6d 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -278,10 +278,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         !(riscv_has_ext(env, RVI) && riscv_has_ext(env, RVM) &&
-           riscv_has_ext(env, RVA) && riscv_has_ext(env, RVF) &&
-           riscv_has_ext(env, RVD) &&
--          cpu->cfg.ext_icsr && cpu->cfg.ext_zifencei)) {
-+          cpu->cfg.ext_zicsr && cpu->cfg.ext_zifencei)) {
- 
--        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_icsr)) &&
--            !cpu->cfg.ext_icsr) {
-+        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zicsr)) &&
-+            !cpu->cfg.ext_zicsr) {
-             error_setg(errp, "RVG requires Zicsr but user set Zicsr to false");
-             return;
-         }
-@@ -293,7 +293,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-             return;
-         }
- 
--        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_icsr), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zicsr), true);
-         cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zifencei), true);
- 
-         env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
-@@ -329,7 +329,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
+@@ -897,7 +897,7 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+         kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
      }
  
--    if (riscv_has_ext(env, RVF) && !cpu->cfg.ext_icsr) {
-+    if (riscv_has_ext(env, RVF) && !cpu->cfg.ext_zicsr) {
-         error_setg(errp, "F extension requires Zicsr");
-         return;
-     }
-@@ -434,7 +434,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+-    if (cpu->cfg.ext_icbom) {
++    if (cpu->cfg.ext_zicbom) {
+         kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
      }
  
-     if (cpu->cfg.ext_zfinx) {
--        if (!cpu->cfg.ext_icsr) {
-+        if (!cpu->cfg.ext_zicsr) {
-             error_setg(errp, "Zfinx extension requires Zicsr");
-             return;
-         }
-@@ -494,7 +494,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
-     }
- 
--    if (cpu->cfg.ext_zcmt && !cpu->cfg.ext_icsr) {
-+    if (cpu->cfg.ext_zcmt && !cpu->cfg.ext_zicsr) {
-         error_setg(errp, "Zcmt extension requires Zicsr extension");
-         return;
-     }
 -- 
 2.41.0
 
