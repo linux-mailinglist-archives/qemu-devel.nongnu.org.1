@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9737C63FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0217C6402
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:20:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqn51-0006xM-FT; Thu, 12 Oct 2023 00:13:47 -0400
+	id 1qqn52-0007F8-8N; Thu, 12 Oct 2023 00:13:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn4m-0006iO-1d
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:13:32 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1qqn4p-000744-Qi
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:13:38 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn4k-0002jc-A3
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:13:31 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-68fb85afef4so465951b3a.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:13:29 -0700 (PDT)
+ id 1qqn4m-0002ld-Uz
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:13:34 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-690d8c05784so450833b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:13:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697084008; x=1697688808; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1697084011; x=1697688811; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=f/aMUncszvwutqdnkY13b7I4j9Re5WvgdVwubMs61wU=;
- b=GiNIKQ2iTEkYRW0FpZKlm3f+MhwVmwdqIxTm3EiRS+cdcd6uKA2TXNFy7wUqephzJ4
- PmjnzVmFJmpGUaABb2Zqo3UU19FvHUqiPW7W6KEeGaUaL6x7hzUSe42pTBJX+LLVqsDx
- NZRHTDKMdzT+sPvQI32LI/PuzusYF10vnL5MaBt8Mcn5MQHEgSQs1z0wGjkYmL2rEd0+
- vaRhmPx4LrgKq8t//AxFTCTvTOnjJppbJukqtrP9M0qmruRMe8heIGe0Mn6u8mfkpeuo
- 2RRHqO1rqHUZS7a9KFd30kQwVAbMvc3G1W7t5O7vcOvVoSWqvhgPCCBzh8EhlO1FpYoM
- ti0w==
+ bh=NdEgXxa7hcTDIZ/8QewbQ1HOD8q11RxXYAXZn1RCqYw=;
+ b=EIgWcFs64u9o6T9Nf/3IeHZ4l7OnI0sB66YR/HxA9Gpo7dPm70MWu3OL46mH4/Rzh9
+ YFawXgPPciE64TaFriCS01aQhen/w4teuVC95rmP8wZ4XWrGya62TDRKk2OzoxU5gf+K
+ sMisjbti5snnDBDnr2t3wT+QXESUDh6kzyOA3LzV7OWdeF12xoI2D4Unid0psJR1E6eN
+ E8MqSGC5Hx7F8WgGcn+TNmOf+ywmHCJDhzdqith6xf9ZdwcNe5ri9VIhlmQjU2i44Zeh
+ yOqaRTTBvtcNXFMz3UXURoB0l4vHjgqxqyD0TrPZQpLhMphdzVTegGQtJ1Dg8IPkr+Au
+ aZHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697084008; x=1697688808;
+ d=1e100.net; s=20230601; t=1697084011; x=1697688811;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f/aMUncszvwutqdnkY13b7I4j9Re5WvgdVwubMs61wU=;
- b=tdwSeVTGrGyJkogDhD7QXeveHYJMIL5BHkpaHEnC7KRxYyxAXcTTSbLq0LsdQUyQdL
- ys7Jk72d5nwc37optAJV35uLS0sw1z9dkhFI7zYdm+UPP5MiyUW7kOIjl5XvxxMGIEst
- WYfhwa3EO56ZuIeMpN/QpfpBb/kH2xZjpuSyyg/FU4sA3s6uluUNX7stDLokH1JuYhTA
- i4UQ3mS3tht4MyZVYgmT53V+HE8pxCf/KuKKRHLKhqMN2hrmavcEO1/U/yH//AeXZU0n
- 4Bdy95P2KfWEmP1vek0sXlbLa70bGnBIO2jvfXPzI1ezM6XmYGHen2nqtREWZp/ZM3BR
- Hr2Q==
-X-Gm-Message-State: AOJu0YwtjglIH8h273r6H7/Bha/IvvgtbHmt1TzUSoMl52J5tacOaF1V
- fs3Rv92HWzVVOSe8LwuVzNbeTqx4Tc6uBA==
-X-Google-Smtp-Source: AGHT+IFNSbtp9gOWaA35yiGFSM+gfpFU7XkKJy9mVXIfxNUmvsbnqmWo184VnycSxJfNdRqhNYaHBw==
-X-Received: by 2002:a05:6a20:3c89:b0:173:3ef3:236a with SMTP id
- b9-20020a056a203c8900b001733ef3236amr4749898pzj.21.1697084008144; 
- Wed, 11 Oct 2023 21:13:28 -0700 (PDT)
+ bh=NdEgXxa7hcTDIZ/8QewbQ1HOD8q11RxXYAXZn1RCqYw=;
+ b=miCe+ppvCF0QXmcFsIwpoh74kUe1FBdHX8V4S9kiH6dr1ejpZpAvP8WjElwYx+nQ6+
+ LzDZQC9RJG/Yx+VCiPFEl8ErEHVhvkYZSZsxpd1kqbSKwmDKMx9sdfLwtH7cGsqIgVBo
+ wE2anSZ4ba0oFvjjf3EBUAjeTD2nFUwKu36KEhyCZqE+omXbE9NCZ4meSAK3p4N2xKId
+ GOoUfXRa7F9XPod+D8RpkBC2xxqwSmuKwkxtD9DdAKNAkTh76vfs+eAvGl7kfomcSITK
+ JOYcIITtgRhIN6htMgckeyJ12rARPizf2dwV8R7YWfre5rQAuStPViTinRttumOK1gdT
+ hM9Q==
+X-Gm-Message-State: AOJu0Yyax4uqGTjBgrvLvjO3rML3JOmzEVuixgcsj1JLHP4kxVsqrz6/
+ BO1aQNoTsR+GF5e+d7mvjZcoVlwwKvprbA==
+X-Google-Smtp-Source: AGHT+IFJTF6lH/vAF5OnI74UPeUfrqnbHkP9ccwFiQj8Q6P5s81vJXgoDHJErHK7QB+5L9tE0wCosw==
+X-Received: by 2002:a05:6a20:549b:b0:161:2bed:6b3a with SMTP id
+ i27-20020a056a20549b00b001612bed6b3amr22645748pzk.17.1697084011136; 
+ Wed, 11 Oct 2023 21:13:31 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.13.25
+ ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.13.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 21:13:27 -0700 (PDT)
+ Wed, 11 Oct 2023 21:13:30 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 41/54] target/riscv/cpu: move priv spec functions to tcg-cpu.c
-Date: Thu, 12 Oct 2023 14:10:38 +1000
-Message-ID: <20231012041051.2572507-42-alistair.francis@wdc.com>
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 42/54] target/riscv: add riscv_cpu_get_name()
+Date: Thu, 12 Oct 2023 14:10:39 +1000
+Message-ID: <20231012041051.2572507-43-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012041051.2572507-1-alistair.francis@wdc.com>
 References: <20231012041051.2572507-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,146 +98,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Priv spec validation is TCG specific. Move it to the TCG accel class.
+We'll introduce generic errors that will output a CPU type name via its
+RISCVCPU pointer. Create a helper for that.
+
+Use the helper in tcg_cpu_realizefn() instead of hardcoding the 'host'
+CPU name.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230925175709.35696-20-dbarboza@ventanamicro.com>
+Message-ID: <20230926183109.165878-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h         |  2 --
- target/riscv/cpu.c         | 38 --------------------------------------
- target/riscv/tcg/tcg-cpu.c | 38 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+), 40 deletions(-)
+ target/riscv/cpu.h         |  1 +
+ target/riscv/cpu.c         | 11 +++++++++++
+ target/riscv/tcg/tcg-cpu.c |  4 +++-
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 6eef1f697e..7291b84756 100644
+index 7291b84756..8298f8bf63 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -711,9 +711,7 @@ enum riscv_pmu_event_idx {
- /* used by tcg/tcg-cpu.c*/
- void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en);
- bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset);
--int cpu_cfg_ext_get_min_version(uint32_t ext_offset);
- void riscv_cpu_set_misa(CPURISCVState *env, RISCVMXL mxl, uint32_t ext);
--void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu);
+@@ -730,6 +730,7 @@ typedef struct isa_ext_data {
+     int ext_enable_offset;
+ } RISCVIsaExtData;
+ extern const RISCVIsaExtData isa_edata_arr[];
++char *riscv_cpu_get_name(RISCVCPU *cpu);
  
- typedef struct RISCVCPUMultiExtConfig {
-     const char *name;
+ void riscv_add_satp_mode_properties(Object *obj);
+ 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 989610ff90..a7cc7aa6e2 100644
+index a7cc7aa6e2..cdeb24cb5e 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -172,21 +172,6 @@ void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en)
-     *ext_enabled = en;
+@@ -643,6 +643,17 @@ static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
+     return oc;
  }
  
--int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
--{
--    const RISCVIsaExtData *edata;
--
--    for (edata = isa_edata_arr; edata && edata->name; edata++) {
--        if (edata->ext_enable_offset != ext_offset) {
--            continue;
--        }
--
--        return edata->min_version;
--    }
--
--    g_assert_not_reached();
--}
--
- const char * const riscv_int_regnames[] = {
-     "x0/zero", "x1/ra",  "x2/sp",  "x3/gp",  "x4/tp",  "x5/t0",   "x6/t1",
-     "x7/t2",   "x8/s0",  "x9/s1",  "x10/a0", "x11/a1", "x12/a2",  "x13/a3",
-@@ -925,29 +910,6 @@ static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
-     }
- }
- 
--void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
--{
--    CPURISCVState *env = &cpu->env;
--    const RISCVIsaExtData *edata;
--
--    /* Force disable extensions if priv spec version does not match */
--    for (edata = isa_edata_arr; edata && edata->name; edata++) {
--        if (isa_ext_is_enabled(cpu, edata->ext_enable_offset) &&
--            (env->priv_ver < edata->min_version)) {
--            isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
--#ifndef CONFIG_USER_ONLY
--            warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
--                        " because privilege spec version does not match",
--                        edata->name, env->mhartid);
--#else
--            warn_report("disabling %s extension because "
--                        "privilege spec version does not match",
--                        edata->name);
--#endif
--        }
--    }
--}
--
- #ifndef CONFIG_USER_ONLY
- static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
++char *riscv_cpu_get_name(RISCVCPU *cpu)
++{
++    RISCVCPUClass *rcc = RISCV_CPU_GET_CLASS(cpu);
++    const char *typename = object_class_get_name(OBJECT_CLASS(rcc));
++
++    g_assert(g_str_has_suffix(typename, RISCV_CPU_TYPE_SUFFIX));
++
++    return g_strndup(typename,
++                     strlen(typename) - strlen(RISCV_CPU_TYPE_SUFFIX));
++}
++
+ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
  {
+     RISCVCPU *cpu = RISCV_CPU(cs);
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index ef981ad0ce..a021ec833d 100644
+index a021ec833d..104e91846a 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -99,6 +99,21 @@ static const struct TCGCPUOps riscv_tcg_ops = {
- #endif /* !CONFIG_USER_ONLY */
- };
+@@ -563,7 +563,9 @@ static bool tcg_cpu_realize(CPUState *cs, Error **errp)
+     Error *local_err = NULL;
  
-+static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
-+{
-+    const RISCVIsaExtData *edata;
-+
-+    for (edata = isa_edata_arr; edata && edata->name; edata++) {
-+        if (edata->ext_enable_offset != ext_offset) {
-+            continue;
-+        }
-+
-+        return edata->min_version;
-+    }
-+
-+    g_assert_not_reached();
-+}
-+
- static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
-                                     bool value)
- {
-@@ -226,6 +241,29 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
+     if (object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST)) {
+-        error_setg(errp, "'host' CPU is not compatible with TCG acceleration");
++        g_autofree char *name = riscv_cpu_get_name(cpu);
++        error_setg(errp, "'%s' CPU is not compatible with TCG acceleration",
++                   name);
+         return false;
      }
- }
  
-+static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
-+{
-+    CPURISCVState *env = &cpu->env;
-+    const RISCVIsaExtData *edata;
-+
-+    /* Force disable extensions if priv spec version does not match */
-+    for (edata = isa_edata_arr; edata && edata->name; edata++) {
-+        if (isa_ext_is_enabled(cpu, edata->ext_enable_offset) &&
-+            (env->priv_ver < edata->min_version)) {
-+            isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
-+#ifndef CONFIG_USER_ONLY
-+            warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
-+                        " because privilege spec version does not match",
-+                        edata->name, env->mhartid);
-+#else
-+            warn_report("disabling %s extension because "
-+                        "privilege spec version does not match",
-+                        edata->name);
-+#endif
-+        }
-+    }
-+}
-+
- /*
-  * Check consistency between chosen extensions while setting
-  * cpu->cfg accordingly.
 -- 
 2.41.0
 
