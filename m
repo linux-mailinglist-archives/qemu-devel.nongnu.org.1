@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F7B7C6954
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 11:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8AB7C696A
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 11:23:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqrrC-0005kS-Ft; Thu, 12 Oct 2023 05:19:50 -0400
+	id 1qqruJ-0006ry-HG; Thu, 12 Oct 2023 05:23:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qqrrA-0005jj-5X; Thu, 12 Oct 2023 05:19:48 -0400
+ id 1qqruH-0006rF-Qj; Thu, 12 Oct 2023 05:23:01 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qqrr7-0003wn-H1; Thu, 12 Oct 2023 05:19:47 -0400
-Received: from lhrpeml500003.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5kYt4tDrz6K5v5;
- Thu, 12 Oct 2023 17:17:38 +0800 (CST)
+ id 1qqruG-0004gv-6Z; Thu, 12 Oct 2023 05:23:01 -0400
+Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5kcP4Ss0z688d6;
+ Thu, 12 Oct 2023 17:19:49 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
+ lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 12 Oct 2023 10:19:41 +0100
+ 15.1.2507.31; Thu, 12 Oct 2023 10:22:54 +0100
 Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
  lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Thu, 12 Oct 2023 10:19:41 +0100
-To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+ Thu, 12 Oct 2023 10:22:54 +0100
+To: Gavin Shan <gshan@redhat.com>, Salil Mehta <salil.mehta@opnsrc.net>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>
 CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
  <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
  "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
@@ -44,23 +45,24 @@ CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
  "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
  "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
  "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ <miguel.luis@oracle.com>, zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng
+ (C)" <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
  "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
  <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
  Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V5 9/9] gdbstub: Add helper function to unregister GDB
- register space
-Thread-Topic: [PATCH V5 9/9] gdbstub: Add helper function to unregister GDB
- register space
-Thread-Index: AQHZ/HvBN0u3se0o1kicXc2uo3J6h7BFNl4AgACq53A=
-Date: Thu, 12 Oct 2023 09:19:41 +0000
-Message-ID: <bb13b0ee0a3544c7891ac29ecceb73d5@huawei.com>
+Subject: RE: [PATCH V5 8/9] physmem: Add helper function to destroy CPU
+ AddressSpace
+Thread-Topic: [PATCH V5 8/9] physmem: Add helper function to destroy CPU
+ AddressSpace
+Thread-Index: AQHZ/Hu2W97dHDuZJkS1Rvdlsfl3xbBFLG+AgAAJLgCAAAPWAIAAqJuQ
+Date: Thu, 12 Oct 2023 09:22:54 +0000
+Message-ID: <4ffab3f51cb4460bb36d4c923e3c3c9a@huawei.com>
 References: <20231011194355.15628-1-salil.mehta@huawei.com>
- <20231011194355.15628-10-salil.mehta@huawei.com>
- <ca79ed5f-b807-10eb-8f79-c2def1ab028f@redhat.com>
-In-Reply-To: <ca79ed5f-b807-10eb-8f79-c2def1ab028f@redhat.com>
+ <20231011194355.15628-9-salil.mehta@huawei.com>
+ <69098d56-8b68-2734-ef40-7338386d7fa9@redhat.com>
+ <e73217f7-e6c2-81e7-0174-54ef575ebbce@opnsrc.net>
+ <b8c13adb-ce1e-41fc-daa0-4aa31bf5f7a0@redhat.com>
+In-Reply-To: <b8c13adb-ce1e-41fc-daa0-4aa31bf5f7a0@redhat.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -95,47 +97,45 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgR2F2aW4sDQoNCj4gRnJvbTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCj4gU2Vu
-dDogVGh1cnNkYXksIE9jdG9iZXIgMTIsIDIwMjMgMTowNyBBTQ0KPiBUbzogU2FsaWwgTWVodGEg
-PHNhbGlsLm1laHRhQGh1YXdlaS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IHFlbXUtDQo+
-IGFybUBub25nbnUub3JnDQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5h
-cm8ub3JnOyBKb25hdGhhbiBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+
-OyBscGllcmFsaXNpQGtlcm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmlj
-aGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3
-LmpvbmVzQGxpbnV4LmRldjsgZGF2aWRAcmVkaGF0LmNvbTsNCj4gcGhpbG1kQGxpbmFyby5vcmc7
-IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xpdmVyLnVwdG9uQGxpbnV4LmRldjsNCj4gcGJvbnpp
-bmlAcmVkaGF0LmNvbTsgbXN0QHJlZGhhdC5jb207IHdpbGxAa2VybmVsLm9yZzsgcmFmYWVsQGtl
-cm5lbC5vcmc7DQo+IGFsZXguYmVubmVlQGxpbmFyby5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51
-azsNCj4gZGFycmVuQG9zLmFtcGVyZWNvbXB1dGluZy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1
-dGluZy5jb207DQo+IHZpc2hudUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1A
-b3JhY2xlLmNvbTsNCj4gbWlndWVsLmx1aXNAb3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3Jj
-Lm5ldDsgemh1a2VxaWFuDQo+IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5n
-IChDKSA8d2FuZ3hpb25nZmVuZzJAaHVhd2VpLmNvbT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5
-YW5hbjU1QGh1YXdlaS5jb20+OyBqaWFrZXJuZWwyQGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29u
-Z3Nvbi5jbjsgbGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdl
-aS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjUgOS85XSBnZGJzdHViOiBBZGQgaGVscGVy
-IGZ1bmN0aW9uIHRvIHVucmVnaXN0ZXIgR0RCDQo+IHJlZ2lzdGVyIHNwYWNlDQo+IA0KPiBIaSBT
-YWxpbCwNCj4gDQo+IE9uIDEwLzEyLzIzIDA1OjQzLCBTYWxpbCBNZWh0YSB3cm90ZToNCj4gPiBB
-ZGQgY29tbW9uIGZ1bmN0aW9uIHRvIGhlbHAgdW5yZWdpc3RlciB0aGUgR0RCIFJlZ2lzdGVyIFNw
-YWNlLiBUaGlzIHNoYWxsDQo+IGJlDQo+ID4gZG9uZSBpbiBjb250ZXh0IHRvIHRoZSBDUFUgdW5y
-ZWFsaXphdGlvbi4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFNhbGlsIE1laHRhIDxzYWxpbC5t
-ZWh0YUBodWF3ZWkuY29tPg0KPiA+IFRlc3RlZC1ieTogVmlzaG51IFBhamp1cmkgPHZpc2hudUBv
-cy5hbXBlcmVjb21wdXRpbmcuY29tPg0KPiA+IC0tLQ0KPiA+ICAgZ2Ric3R1Yi9nZGJzdHViLmMg
-ICAgICB8IDE1ICsrKysrKysrKysrKysrKw0KPiA+ICAgaW5jbHVkZS9leGVjL2dkYnN0dWIuaCB8
-ICA1ICsrKysrDQo+ID4gICAyIGZpbGVzIGNoYW5nZWQsIDIwIGluc2VydGlvbnMoKykNCj4gPg0K
-PiANCj4gV2l0aCB0aGUgZm9sbG93aW5nIG5pdHMgYWRkcmVzc2VkOg0KPiANCj4gUmV2aWV3ZWQt
-Ynk6IEdhdmluIFNoYW4gPGdzaGFuQHJlZGhhdC5jb20+DQo+IA0KPiA+IGRpZmYgLS1naXQgYS9n
-ZGJzdHViL2dkYnN0dWIuYyBiL2dkYnN0dWIvZ2Ric3R1Yi5jDQo+ID4gaW5kZXggMzQ5ZDM0OGM3
-Yi4uOTdiODllMmQwMCAxMDA2NDQNCj4gPiAtLS0gYS9nZGJzdHViL2dkYnN0dWIuYw0KPiA+ICsr
-KyBiL2dkYnN0dWIvZ2Ric3R1Yi5jDQo+ID4gQEAgLTQ5MSw2ICs0OTEsMjEgQEAgdm9pZCBnZGJf
-cmVnaXN0ZXJfY29wcm9jZXNzb3IoQ1BVU3RhdGUgKmNwdSwNCj4gPiAgICAgICB9DQo+ID4gICB9
-DQo+ID4NCj4gPiArdm9pZCBnZGJfdW5yZWdpc3Rlcl9jb3Byb2Nlc3Nvcl9hbGwoQ1BVU3RhdGUg
-KmNwdSkNCj4gPiArew0KPiA+ICsgICAgR0RCUmVnaXN0ZXJTdGF0ZSAqcywgKnA7DQo+ID4gKw0K
-PiA+ICsgICAgcCA9IGNwdS0+Z2RiX3JlZ3M7DQo+ID4gKyAgICB3aGlsZSAocCkgew0KPiA+ICsg
-ICAgICAgIHMgPSBwOw0KPiA+ICsgICAgICAgIHAgPSBwLT5uZXh0Ow0KPiA+ICsgICAgICAgIC8q
-IHMtPnhtbCBpcyBzdGF0aWMgY29uc3QgY2hhciBzbyBpc24ndCBmcmVlZCAqLw0KPiA+ICsgICAg
-ICAgIGdfZnJlZShzKTsNCj4gPiArICAgIH0NCj4gPiArICAgIGNwdS0+Z2RiX3JlZ3MgPSBOVUxM
-Ow0KPiANCj4gICAgICAgICBjcHUtPmJhc2VfcmVnID0gMDsNCj4gICAgICAgICBjcHUtPm51bV9y
-ZWdzID0gMDsNCg0KDQpTdXJlLiB0aGFua3MNCg0KU2FsaWwuDQoNCj4gDQo+ID4gKyAgICBjcHUt
-PmdkYl9udW1fZ19yZWdzID0gMDsNCj4gPiArfQ0K
+PiBGcm9tOiBHYXZpbiBTaGFuIDxnc2hhbkByZWRoYXQuY29tPg0KPiBTZW50OiBUaHVyc2RheSwg
+T2N0b2JlciAxMiwgMjAyMyAxOjE4IEFNDQo+IFRvOiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFA
+b3Buc3JjLm5ldD47IFNhbGlsIE1laHRhDQo+IDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPjsgcWVt
+dS1kZXZlbEBub25nbnUub3JnOyBxZW11LWFybUBub25nbnUub3JnDQo+IENjOiBtYXpAa2VybmVs
+Lm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBKb25hdGhhbiBDYW1lcm9uDQo+IDxqb25h
+dGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFsaXNpQGtlcm5lbC5vcmc7DQo+IHBldGVy
+Lm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZzsNCj4gaW1h
+bW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxpbnV4LmRldjsgZGF2aWRAcmVkaGF0LmNv
+bTsNCj4gcGhpbG1kQGxpbmFyby5vcmc7IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xpdmVyLnVw
+dG9uQGxpbnV4LmRldjsNCj4gcGJvbnppbmlAcmVkaGF0LmNvbTsgbXN0QHJlZGhhdC5jb207IHdp
+bGxAa2VybmVsLm9yZzsgcmFmYWVsQGtlcm5lbC5vcmc7DQo+IGFsZXguYmVubmVlQGxpbmFyby5v
+cmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFycmVuQG9zLmFtcGVyZWNvbXB1dGluZy5j
+b207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IHZpc2hudUBvcy5hbXBlcmVjb21w
+dXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNvbTsNCj4gbWlndWVsLmx1aXNAb3JhY2xl
+LmNvbTsgemh1a2VxaWFuIDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nDQo+
+IChDKSA8d2FuZ3hpb25nZmVuZzJAaHVhd2VpLmNvbT47IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5h
+bjU1QGh1YXdlaS5jb20+Ow0KPiBqaWFrZXJuZWwyQGdtYWlsLmNvbTsgbWFvYmlib0Bsb29uZ3Nv
+bi5jbjsgbGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0NCj4gPGxpbnV4YXJtQGh1YXdl
+aS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjUgOC85XSBwaHlzbWVtOiBBZGQgaGVscGVy
+IGZ1bmN0aW9uIHRvIGRlc3Ryb3kgQ1BVDQo+IEFkZHJlc3NTcGFjZQ0KPiANCj4gSGkgU2FsaWws
+DQo+IA0KPiBPbiAxMC8xMi8yMyAxMDowNCwgU2FsaWwgTWVodGEgd3JvdGU6DQo+ID4gT24gMTIv
+MTAvMjAyMyAwMDozMSwgR2F2aW4gU2hhbiB3cm90ZToNCj4gPj4gT24gMTAvMTIvMjMgMDU6NDMs
+IFNhbGlsIE1laHRhIHdyb3RlOg0KPiANCj4gWy4uLl0NCj4gDQo+ID4+PiArdm9pZCBjcHVfYWRk
+cmVzc19zcGFjZV9kZXN0cm95KENQVVN0YXRlICpjcHUsIGludCBhc2lkeCkNCj4gPj4+ICt7DQo+
+ID4+PiArwqDCoMKgIENQVUFkZHJlc3NTcGFjZSAqY3B1YXM7DQo+ID4+PiArDQo+ID4+PiArwqDC
+oMKgIGFzc2VydChhc2lkeCA8IGNwdS0+bnVtX2FzZXMpOw0KPiA+Pj4gK8KgwqDCoCBhc3NlcnQo
+YXNpZHggPT0gMCB8fCAha3ZtX2VuYWJsZWQoKSk7DQo+ID4+PiArwqDCoMKgIGFzc2VydChjcHUt
+PmNwdV9hc2VzKTsNCj4gPj4+ICsNCj4gPj4NCj4gPj4gVGhlIHR3byBhc3NlcnRzIG9uIEBhc2lk
+eCBhbmQgQGNwdS0+Y3B1X2FzZXMgY2FuIGJlIGNvbWJpbmVkDQo+ID4+IHRvIG9uZSBzbyB0aGF0
+IHRoZXNlIDMgYXNzZXJ0cyBjYW4gYmUgY29tYmluZWQgdG8gdHdvLg0KPiA+Pg0KPiA+PiDCoMKg
+wqDCoMKgwqDCoCAvKiBPbmx5IG9uZSBhZGRyZXNzIHNwYWNlIGlzIHN1cHBvcnRlZCBieSBLVk0g
+Ki8NCj4gPj4gwqDCoMKgwqDCoMKgwqAgYXNzZXJ0KGFzaWR4ID09IDAgfHwgIWt2bV9lbmFibGVk
+KCkpOw0KPiA+PiDCoMKgwqDCoMKgwqDCoCBhc3NlcnQoYXNpZHggPj0gMCAmJiBhc2lkeCA8IGNw
+dS0+Y3B1X2FzZXNfY291bnQpDQo+ID4NCj4gPiBXZSBjYW4gZG8gdGhhdC4NCj4gPg0KPiA+IEkg
+YW0gbm90IGluIGZhdm9yIHRvIHJlbW92ZcKgICdhc3NlcnQoY3B1LT5jcHVfYXNlcyk7JyBhcyB0
+aGlzIGNhbiBzYXZlDQo+IGxvdCBvZiBkZWJ1Z2dpbmcuDQo+ID4NCj4gDQo+IE9rLCBJdCdzIGZp
+bmUgdG8ga2VlcCAnYXNzZXJ0KGNwdS0+Y3B1X2FzZXMpJywgYnV0ICdhc3NlcnQoYXNpZHggPj0g
+MCknIGlzDQo+IHN0aWxsIG5lZWRlZD8gRm9yIGV4YW1wbGUsIHRoZSB3cm9uZyBjaHVuayBvZiBt
+ZW1vcnkgd2lsbCBiZSByZWxlYXNlIHdoZW4NCj4gQGFzaWR4IGlzIHNtYWxsZXIgdGhhbiB6ZXJv
+LCB3aGljaCBpcyBvdXQtb2YtYm91bmQgdG8gQGNwdS0+Y3B1X2FzZXNbXQ0KDQpZZXMsIG9mIGNv
+dXJzZSwgd2UgY2FuIGtlZXAgdGhhdC4NCg0KVGhhbmtzDQpTYWxpbC4NCg0K
 
