@@ -2,81 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D1C7C6B95
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 12:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99EF47C6BA8
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 12:57:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqtKJ-0003F6-Tj; Thu, 12 Oct 2023 06:53:59 -0400
+	id 1qqtMP-0004b9-4t; Thu, 12 Oct 2023 06:56:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqtKI-0003Ex-G6
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:53:58 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqtKG-0005eF-G9
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:53:58 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-50337b43ee6so1159639e87.3
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 03:53:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697108034; x=1697712834; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=79GppcGvzoqwiV/Ut8TzwZ31E6X9xmbhekT6eCAOzUI=;
- b=dBsbwQokDFM1jRahEuA1d23O9nLW8BiNhLCG7QR7bjYZySYstgpI+JjBz25MIyHBr6
- RSiDqHBgTcn5Kvivi9QYRbO9P8VpAoIxK55RAB6YC2oEOIhrICgXex7cyhBWk3OhGfP7
- xZ9LalCQ3xvnntQ0qen1R2yzA3w4XHkiSqnJXMZWKjpcW+yaM2WnNvsYiydGyVTWLbhb
- Qw/Er9ezBvZd0VdGe8bUs9Eo6rAoB2CFCQrvM05tOA2C+K7SDqTUxaYASx16zYDrFUws
- HfgZz64+jy6EzN1Scn2AxkuRLqjMI8xpN7FEuilNlNAN1fW/3I25VRDe7MmVwyV3OrU+
- zaxg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqtMN-0004aW-FT
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:56:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqtMM-0006MS-4n
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:56:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697108165;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=y4JVXY+rszzjibCG+bLuHKE9WCYUyjCUNiHVydRQHSw=;
+ b=gHQqDKS4CxYJOsM7fBURv2u1LNk/a0tKbwKZ78wcdFmvKQUzynr43T3+c3F+GWWzU7EmPU
+ 4KUUXog3h5T5hHKCHud/b7T4UVsfreHOw0HSYfuOwQgHIF4BnLp0+BlIytNtqJrsv4sUrC
+ bv4tosEsBv7q6GeXJn45BQW4hItELJU=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-302-6xiCgu5HMV6PkTRC45yakQ-1; Thu, 12 Oct 2023 06:55:48 -0400
+X-MC-Unique: 6xiCgu5HMV6PkTRC45yakQ-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-41957273209so8061721cf.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 03:55:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697108034; x=1697712834;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=79GppcGvzoqwiV/Ut8TzwZ31E6X9xmbhekT6eCAOzUI=;
- b=vcWhDu9YwZgeK2YTRATcqnLvSP7GZ6RqMl2ZfkIUW3HOuLzcYS/Ylxr4XjS6QMwhl/
- oRDVv672qpo3QnixFtbFu7l0oEpK6+RJXw0at4zh4S2tDhkott+SzrW8WvKvOvNkfrSD
- 2ardgiOw3JtgXHKKk9p/eGdp87o/804RAQya6ENHHXIWxF/+UA2KfghCnBJN1tBlEJWn
- nnMJ/N96JOXAMMOcIYPP5vTO4OCVxLWcZYCx5j/u5mtlAm9hZQ9dBXJxHRlhNeGPoPmu
- mRBpksl+1ZcN+NgWNahVmUQRAAW/MuONumwXp5ClD63azAvUoIQ+QHdb4ePsVap+HfTt
- elRQ==
-X-Gm-Message-State: AOJu0Yx4MyTQqX5vRfA3IqCT0BPnqnMhpjZP2SZ/ExwGnq9vxmDq03h1
- pmIG5JgMET0n/ZD0eFYQMpfISw==
-X-Google-Smtp-Source: AGHT+IHh5IZYLbIw+vUnUD5n3sG1+DCRHUlIuGi2dmusM7zCKoK9nMFlExoY4bikSiSx3bb1k3UMUA==
-X-Received: by 2002:a19:e010:0:b0:500:b74b:e53 with SMTP id
- x16-20020a19e010000000b00500b74b0e53mr18050178lfg.46.1697108034080; 
- Thu, 12 Oct 2023 03:53:54 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
- [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
- hn32-20020a05600ca3a000b004053e9276easm21533158wmb.32.2023.10.12.03.53.52
+ d=1e100.net; s=20230601; t=1697108148; x=1697712948;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y4JVXY+rszzjibCG+bLuHKE9WCYUyjCUNiHVydRQHSw=;
+ b=PgaHu2TUfdi3v9ogB6HyVuoMnzUKeIl4c8M2+ba5FSGAMHcEzAW2FFDOcUTStTaHXS
+ jxNF96i9aw1dQg6T5DgkPvWWCj+0JE/EaG7k2OAaPlz3eJyuVWO3XtE5G+RiJSdShKy8
+ 5Itv/o9QCyG7qpLcXQn9Dd/0GgYvEUiEvHN7ZYcgqQuVHhHj72V542WPrNRNtQQJpFUg
+ 6zDBnzvy28RNdy3E/kmDOoQFn0+3aIrKtqDXEs2CZCbxOnkdjYwmPshNgN/IzqDISxO7
+ /bVU3rTYEc7Vo5G9vMUTr7epXEI2V1sVSIpFXD9cEY38N7r4bQ8tCo94MDHSIB/9EmXW
+ r+2Q==
+X-Gm-Message-State: AOJu0YybyPrTFdWI06Bv//mi1EIMot+v2yeawaagM9P6ZbEz1QrGxH4u
+ s6XJztYWu0z+unLFfkNTW1Pi/LBZfJ0Jk+Hoq2LwHXAbUsT0ZU53AWef/ZdmkLctED/qsv31Ivm
+ Ysp2fwy6cTzyPX5M=
+X-Received: by 2002:ac8:5b4b:0:b0:419:529e:dcee with SMTP id
+ n11-20020ac85b4b000000b00419529edceemr29135518qtw.50.1697108148471; 
+ Thu, 12 Oct 2023 03:55:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGked1J0575+CllNmKI8tYiG0qvxrH+WV+ozqfOp9uFU2YJJNhxrtKFKAhkmNV6+M5lQTgAeQ==
+X-Received: by 2002:ac8:5b4b:0:b0:419:529e:dcee with SMTP id
+ n11-20020ac85b4b000000b00419529edceemr29135506qtw.50.1697108148222; 
+ Thu, 12 Oct 2023 03:55:48 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
+ [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
+ h4-20020ac85044000000b004180fb5c6adsm6069315qtm.25.2023.10.12.03.55.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 03:53:53 -0700 (PDT)
-Message-ID: <bbd3c42b-5069-d5e8-0b97-70ff5135801c@linaro.org>
-Date: Thu, 12 Oct 2023 12:53:51 +0200
+ Thu, 12 Oct 2023 03:55:47 -0700 (PDT)
+Message-ID: <1f6a6f32-80aa-4a7f-9e33-72d1ca9984dd@redhat.com>
+Date: Thu, 12 Oct 2023 12:55:45 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/arm: Move raspberrypi-fw-defs.h to the include/hw/arm/
+ folder
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Martin Kletzander <mkletzan@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Subject: QOM crash via soundhw_init()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-trivial@nongnu.org
+References: <20231012073458.860187-1-thuth@redhat.com>
+ <788f54e1-3f2f-f24d-63cf-172efc605823@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <788f54e1-3f2f-f24d-63cf-172efc605823@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,166 +143,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Martin, Paolo, Markus, Marc-André,
+On 12/10/2023 10.22, Philippe Mathieu-Daudé wrote:
+> On 12/10/23 09:34, Thomas Huth wrote:
+>> The file is obviously related to the raspberrypi machine, so
+>> it should reside in hw/arm/ instead of hw/misc/.
+> 
+> Not quite. These are the VideoCore DSP definitions. Firmware
+> running on SoC including a VC can use this syscall-like interface.
+> 
+> FWIW there are a pair of QEMU VC implementations on GitHub.
+> 
+> Anyhow, preferably rewording the description,
 
-With the following changes:
+So could you suggest a different wording instead? It's still "related to the 
+raspberypi machine", isn't it?
 
--- >8 --
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 137276bcb9..291495f798 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -245,6 +245,7 @@ static void ibm_40p_init(MachineState *machine)
-      uint32_t kernel_base = 0, initrd_base = 0;
-      long kernel_size = 0, initrd_size = 0;
-      char boot_device;
-+    MemoryRegion rom;
+> Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-      if (kvm_enabled()) {
-          error_report("machine %s does not support the KVM accelerator",
-@@ -277,6 +278,9 @@ static void ibm_40p_init(MachineState *machine)
-          exit(1);
-      }
+  Thanks,
+   Thomas
 
-+    memory_region_init_rom_nomigrate(&rom, OBJECT(machine), "test",
-+                                     4 * KiB, &error_fatal);
-+
-      /* PCI -> ISA bridge */
-      i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
-      qdev_connect_gpio_out(i82378_dev, 0,
 
----
-
-I'm getting:
-
-$ ./qemu-system-ppc -M 40p -S -nodefaults
-==3518191==WARNING: ASan doesn't fully support makecontext/swapcontext 
-functions and may produce false positives in some cases!
-qom/object.c:935:13: runtime error: member access within null pointer of 
-type 'struct TypeImpl'
-AddressSanitizer:DEADLYSIGNAL
-=================================================================
-==3518191==ERROR: AddressSanitizer: SEGV on unknown address 
-0x000000000000 (pc 0x55f728f5e179 bp 0x7ffd91999220 sp 0x7ffd919991d0 T0)
-==3518191==The signal is caused by a READ memory access.
-==3518191==Hint: address points to the zero page.
-     #0 0x55f728f5e179 in object_class_dynamic_cast qom/object.c:935
-     #1 0x55f728f5d9f4 in object_dynamic_cast qom/object.c:876
-     #2 0x55f728f6605a in object_resolve_abs_path qom/object.c:2096
-     #3 0x55f728f662f1 in object_resolve_partial_path qom/object.c:2120
-     #4 0x55f728f6648a in object_resolve_partial_path qom/object.c:2130
-     #5 0x55f728f6648a in object_resolve_partial_path qom/object.c:2130
-     #6 0x55f728f668b7 in object_resolve_path_type qom/object.c:2159
-     #7 0x55f727ab14c8 in soundhw_init hw/audio/soundhw.c:112
-     #8 0x55f72858f27e in qemu_create_cli_devices system/vl.c:2604
-     #9 0x55f72858f8c7 in qmp_x_exit_preconfig system/vl.c:2685
-     #10 0x55f7285955cd in qemu_init system/vl.c:3734
-     #11 0x55f72790620a in main system/main.c:47
-     #12 0x7fd5fec57d8f in __libc_start_call_main
-     #13 0x7fd5fec57e3f in __libc_start_main_impl libc-start.c:392
-     #14 0x55f727906104 in _start (build_asan/qemu-system-ppc+0x2ca4104)
-
-AddressSanitizer can not provide additional info.
-SUMMARY: AddressSanitizer: SEGV qom/object.c:935 in 
-object_class_dynamic_cast
-==3518191==ABORTING
-
-O_o
-
-Any idea what I'm missing?
-
-Unified diff running with '-trace obj\* ':
-
-@@ -1,4 +1,4 @@
--==3534948==WARNING: ASan doesn't fully support makecontext/swapcontext 
-functions and may produce false positives in some cases!
-+==3533425==WARNING: ASan doesn't fully support makecontext/swapcontext 
-functions and may produce false positives in some cases!
-  object_class_dynamic_cast_assert authz-pam->user-creatable 
-(include/qom/object_interfaces.h:11:USER_CREATABLE_CLASS)
-  object_class_dynamic_cast_assert authz-pam->authz 
-(include/authz/base.h:30:QAUTHZ_CLASS)
-  object_class_dynamic_cast_assert device->device 
-(include/hw/qdev-core.h:77:DEVICE_CLASS)
-@@ -2481,6 +2481,7 @@
-  object_class_dynamic_cast_assert PCI->bus 
-(include/hw/qdev-core.h:315:BUS_GET_CLASS)
-  object_dynamic_cast_assert PCI->PCI (include/hw/pci/pci.h:270:PCI_BUS)
-  object_dynamic_cast_assert PCI->PCI (include/hw/pci/pci.h:270:PCI_BUS)
-+object_dynamic_cast_assert memory-region->memory-region 
-(include/exec/memory.h:37:MEMORY_REGION)
-  object_dynamic_cast_assert i82378->device 
-(include/hw/qdev-core.h:77:DEVICE)
-  object_dynamic_cast_assert i82378->device 
-(include/hw/qdev-core.h:77:DEVICE)
-  object_dynamic_cast_assert i82378->device 
-(include/hw/qdev-core.h:77:DEVICE)
-@@ -3014,355 +3015,28 @@
-  object_dynamic_cast_assert memory-region->memory-region 
-(include/exec/memory.h:37:MEMORY_REGION)
-  object_dynamic_cast_assert memory-region->memory-region 
-(include/exec/memory.h:37:MEMORY_REGION)
-  object_dynamic_cast_assert memory-region->memory-region 
-(include/exec/memory.h:37:MEMORY_REGION)
--object_dynamic_cast_assert fw_cfg_mem->fw_cfg 
-(include/hw/nvram/fw_cfg.h:15:FW_CFG)
--object_dynamic_cast_assert 40p-machine->machine 
-(include/hw/boards.h:23:MACHINE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert or-irq->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_class_dynamic_cast_assert or-irq->device 
-(include/hw/qdev-core.h:77:DEVICE_GET_CLASS)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert mc146818rtc->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_class_dynamic_cast_assert mc146818rtc->device 
-(include/hw/qdev-core.h:77:DEVICE_GET_CLASS)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert isa-i8259->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_class_dynamic_cast_assert isa-i8259->device 
-(include/hw/qdev-core.h:77:DEVICE_GET_CLASS)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert (null)->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_dynamic_cast_assert rs6000-mc->device 
-(include/hw/qdev-core.h:77:DEVICE)
--object_class_dynamic_cast_assert rs6000-mc->device 
-(include/hw/qdev-core.h:77:DEVICE_GET_CLASS)
-[...]
-
-Thanks,
-
-Phil.
 
