@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30E37C75CE
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 20:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A137C761D
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 20:44:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr0M1-00077Z-T5; Thu, 12 Oct 2023 14:24:13 -0400
+	id 1qr0e7-0004zX-R5; Thu, 12 Oct 2023 14:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qr0Lt-00076T-S9
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 14:24:05 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qr0e5-0004zE-Uk
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 14:42:53 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qr0Ls-0005K8-2t
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 14:24:05 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6c67060fdfbso868936a34.2
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 11:24:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qr0e4-0008Iy-Eh
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 14:42:53 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-53d8320f0easo2227779a12.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 11:42:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697135042; x=1697739842; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1697136170; x=1697740970; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VeI/nJ1stkOlj6RZX2ZlognUBv+luFAAog8plQeH90Q=;
- b=JPC4OSjMjbblqajE0xSH5n1sT2+GnfOI686Qs95uk+XOWIkH/Alpy3ERj5oZjhk+ZH
- Lz3wuxjkcLY+/T3ESXQah4CiX2Wk/YV0Izd+PdbvLyuKAZMcaJbMs/WH0743Em6LkO7v
- UPWu88JsuGlvavvjDRibLkWLJO381n+rdqvWVnVsUeUGWnQq6OzJEi7Jfb0oUCbNQYrR
- qZAUh7raDvo6azB/LVGmSNgEz1ynWRDEjOt6mzZg8UNR2SkYAPkU/Q/tqG4KHndVGsFE
- hKQeimIgWzHCwWTpk1qb4qk9rUstHIH/hflnTEAs6hJM8XbuOZWArl90Brg1/2dS0mOA
- gYSg==
+ bh=1ASAniN18QZFRch4hHbbIvuqpTci7nid/Sw0rHmtrIM=;
+ b=YW/xoAplozVnnwoA1z6Xcw/Lbnu1d2muSEok5fvkeHny9CfQX7VvneqmF3faF0sJvW
+ aXzlEsAag5Q1xx1F8tAk/wlY9wu2+aFeqMSvjMebb2GYNBffYDHmqwVp0LJ6DRLZkmST
+ tQYwLqK2E653Uf2LqouRZcltHod8clY4wUV5yHhcrDXPZ10HEr75V2REaY04EhsgG1bh
+ C1DcRG7XW3htJ1y/HRoXjiLTsitWbHf0k+/F/f6tdm72sK5EMxKR+9H+ByhXLVNiSZj5
+ azY8zGemFLVD66qmWCg+C1HpOnRUvUiCTjOR91hQu5uljfj5AfelVs6njzV75BI1IiuE
+ 4ziw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697135042; x=1697739842;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1697136170; x=1697740970;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VeI/nJ1stkOlj6RZX2ZlognUBv+luFAAog8plQeH90Q=;
- b=RW6IX3nLRv179Y7lb7g+X/lbDqzlgPr0wRYDImYeNiiNG8zsLkb9LUyOrTAM07w0RA
- aD8LNFB4cge7aU7o5EKL0Xk/leuUWHlEeK1pshm3GbvXZ2ZXdSVsb3XTDmfilspGinA6
- EjueHqNJFkCM8ZaSBgzh1XY+f+pOb1v2imXbhsYU9FmliET8js64A3UvwDilrsVU7Y+5
- c/malKaArASgOtiUX0bq5/yTFwssoqm23l44YoBRzZYgFJWLA/CNpUz1KR7wbSoJCbqm
- Eesp4Al9kouKmFjhYb96y1amU9JsUcuN97MdUVZZAlAcdQeXA5nCM0blrAxDvpLG76nr
- aINA==
-X-Gm-Message-State: AOJu0Ywp54ybQkyofbZnln6GVYtU+WqVFXKGcDBXsuCX2KNTYfbA0wEh
- i/8Lb6oohLdL7T8mbMAsQpTOuA==
-X-Google-Smtp-Source: AGHT+IEiaUTIKwc63n9zavDhQquiuu4vTWW2JMvhjXmBPnPltDUZ3+oHKxozj6qdtYRbnNNDVPFYpw==
-X-Received: by 2002:a05:6870:9602:b0:1dd:443c:57a8 with SMTP id
- d2-20020a056870960200b001dd443c57a8mr32582348oaq.26.1697135042338; 
- Thu, 12 Oct 2023 11:24:02 -0700 (PDT)
-Received: from [192.168.68.107] ([177.94.42.196])
- by smtp.gmail.com with ESMTPSA id
- p6-20020aa78606000000b0068c006dd5c1sm12095305pfn.115.2023.10.12.11.23.59
+ bh=1ASAniN18QZFRch4hHbbIvuqpTci7nid/Sw0rHmtrIM=;
+ b=MHphTGRVn1ilYVIrl+VzP2y57qFHnburoFYh1L03swOYJVIf+LLBceaPVyJ0hDdn+3
+ SsCzO7R5nBTQrkI0YYulbXfP+vGLAsEAboGfIcspDnDTKjM4oqdqAFN/MGjz23O7+tiF
+ cXCVA6ZzqtN2FlytlGDnynMJpQhpA/Dl9V049S5v4tJzFVtID8wb5OR0VTWl3EQ112ZI
+ wDoBkCOdV4Sbzdawefi76lQKNOm/XK5TxlJq5Q5U+VWxLfo9ltVDY1vhqALRSEJvJBUm
+ Li/z/XdbF0xSNKLTOffCncC0RE0POfuNuy97kg7FntDhkMXCGkFHYgJJ3lRq97vAeUeN
+ Ylvg==
+X-Gm-Message-State: AOJu0YyKesO8ai+6v/8AZv7ib6SkZ8qmigoR8Zj1ZYyp/5vxbtrB2VyW
+ Va9INTrVWTEUO1uXhl0XIL7rLZTbcpar1fSy2NU8Rg==
+X-Google-Smtp-Source: AGHT+IFWtuhhigFSgsoSTkjgJ41qxJL6r4RxNHmtcIA3n3+G5XfBw7m3mAfLBOf7W8G8wl9JTbmGRg==
+X-Received: by 2002:a05:6402:1cab:b0:53d:f180:3cc5 with SMTP id
+ cz11-20020a0564021cab00b0053df1803cc5mr3854665edb.20.1697136170725; 
+ Thu, 12 Oct 2023 11:42:50 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
+ [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
+ b25-20020aa7df99000000b0053808d83f0fsm10459023edy.9.2023.10.12.11.42.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 11:24:01 -0700 (PDT)
-Message-ID: <08b9a82f-a0a7-4be2-998a-399f6e482901@ventanamicro.com>
-Date: Thu, 12 Oct 2023 15:23:57 -0300
+ Thu, 12 Oct 2023 11:42:50 -0700 (PDT)
+Message-ID: <b71e0108-b95e-1182-f0fb-d9aeddc3b3bf@linaro.org>
+Date: Thu, 12 Oct 2023 20:42:47 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/10] target/riscv/cpu.c: add zicntr extension flag
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
- <20231006132134.1135297-2-dbarboza@ventanamicro.com>
- <CAKmqyKNsg11Cg73MRLcHN-y-w_ytvdMz7WN_4fFo9aqWYwj5yw@mail.gmail.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 0/4] target/ppc: Prohibit target specific KVM
+ prototypes on user emulation
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAKmqyKNsg11Cg73MRLcHN-y-w_ytvdMz7WN_4fFo9aqWYwj5yw@mail.gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20231003070427.69621-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231003070427.69621-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,107 +101,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/10/23 23:51, Alistair Francis wrote:
-> On Fri, Oct 6, 2023 at 11:23 PM Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
->>
->> zicntr is the Base Counters and Timers extension described in chapter 12
->> of the unprivileged spec. It describes support for RDCYCLE, RDTIME and
->> RDINSTRET.
->>
->> QEMU already implements it way before it was a discrete extension.
->> zicntr is part of the RVA22 profile, so let's add it to QEMU to make the
->> future profile implementation flag complete.
->>
->> Given than it represents an already existing feature, default it to
->> 'true'. Change the realize() time validation to disable it in case its
->> dependency (icsr) isn't present.
+On 3/10/23 09:04, Philippe Mathieu-Daudé wrote:
+> Since v1:
+> - Addressed Michael review comments,
+> - Added Daniel R-b tag.
 > 
-> What happens if a user disables this though?
-
-
-Hmmmm ... nothing hehe
-
-I think I'll have to go back to the drawing board with this and the next patch.
-Both zicntr and zihpm are regular extensions and should be treated as such, meaning
-that we should be able to disable what they're doing.
-
-To avoid breaking what we currently have we'll make them always 'true' by default,
-for all current CPUs, and then users are free to disable them.
-
-
-
-Thanks,
-
-Daniel
-
+> Implement Kevin's suggestion to remove KVM declarations
+> for user emulation builds, so if KVM prototype are used
+> we directly get a compile failure.
 > 
-> Alistair
-> 
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu.c         | 7 +++++++
->>   target/riscv/cpu_cfg.h     | 1 +
->>   target/riscv/tcg/tcg-cpu.c | 4 ++++
->>   3 files changed, 12 insertions(+)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index 521bb88538..8783a415b1 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -79,6 +79,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
->>       ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
->>       ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
->>       ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
->> +    ISA_EXT_DATA_ENTRY(zicntr, PRIV_VERSION_1_12_0, ext_icntr),
->>       ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
->>       ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
->>       ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
->> @@ -1265,6 +1266,12 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
->>       MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
->>       MULTI_EXT_CFG_BOOL("svpbmt", ext_svpbmt, false),
->>
->> +    /*
->> +     * Always default true - we'll disable it during
->> +     * realize() if needed.
->> +     */
->> +    MULTI_EXT_CFG_BOOL("zicntr", ext_icntr, true),
->> +
->>       MULTI_EXT_CFG_BOOL("zba", ext_zba, true),
->>       MULTI_EXT_CFG_BOOL("zbb", ext_zbb, true),
->>       MULTI_EXT_CFG_BOOL("zbc", ext_zbc, true),
->> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
->> index 0e6a0f245c..671b8c7cb8 100644
->> --- a/target/riscv/cpu_cfg.h
->> +++ b/target/riscv/cpu_cfg.h
->> @@ -62,6 +62,7 @@ struct RISCVCPUConfig {
->>       bool ext_zksh;
->>       bool ext_zkt;
->>       bool ext_ifencei;
->> +    bool ext_icntr;
->>       bool ext_icsr;
->>       bool ext_icbom;
->>       bool ext_icboz;
->> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
->> index 08b806dc07..df187bc143 100644
->> --- a/target/riscv/tcg/tcg-cpu.c
->> +++ b/target/riscv/tcg/tcg-cpu.c
->> @@ -542,6 +542,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->>           cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksh), true);
->>       }
->>
->> +    if (cpu->cfg.ext_icntr && !cpu->cfg.ext_icsr) {
->> +        cpu->cfg.ext_icntr = false;
->> +    }
->> +
->>       /*
->>        * Disable isa extensions based on priv spec after we
->>        * validated and set everything we need.
->> --
->> 2.41.0
->>
->>
+> Philippe Mathieu-Daudé (4):
+>    sysemu/kvm: Restrict kvmppc_get_radix_page_info() to ppc targets
+>    hw/ppc/e500: Restrict ppce500_init_mpic_kvm() to KVM
+>    target/ppc: Restrict KVM objects to system emulation
+>    target/ppc: Prohibit target specific KVM prototypes on user emulation
+
+Ping?
+
 
