@@ -2,81 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719687C6FC9
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 15:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0AB67C6FCE
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 15:55:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqw8I-00074U-Tz; Thu, 12 Oct 2023 09:53:48 -0400
+	id 1qqw9c-0000JN-Ht; Thu, 12 Oct 2023 09:55:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqw89-0006wG-Tc
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:53:39 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqw88-0005V4-6n
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:53:37 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4065f29e933so11652395e9.1
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 06:53:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697118814; x=1697723614; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hYzC3ACi1HPe/aVL/qw7dh1sRErz5sf+6ilXAvxWujs=;
- b=Qq16PCxw+eU/l44S2cc6pacRBqSOOSnb5prSH/K86+id1yNBn+YIvQTC8Bq/04wF4A
- FV43h+GCFoaQxzdVVvLanwH6sMteSUVPot2FrwO/3rfAnl/kR1wn2ZDGCQ3++hHrmKrp
- U+Df52VaWKsnewcip2vW5HBgxV20EQ8H9b0kx++gBY7+i8Yzmy2gYmZJqVgSzjlymeOq
- 7+zT0M8bH0NoEj9oqZJ0+CRj+yBfswhTHprnoo9qoE/zpydGNfVtgQzzDjbZApCQGLxm
- CiOi+d3AxcKtd4yzvVUz7LZZ7YAPdkFfNb4ugPeyHCUIRXGytUCtrGLRIloDZCaz1eal
- uepQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697118814; x=1697723614;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hYzC3ACi1HPe/aVL/qw7dh1sRErz5sf+6ilXAvxWujs=;
- b=V7vkiGVdZ5ZiEv3ql1D1MwB/dfJfzVAmL4L6vEuZwc+9PGPO3rWGBcKTKh9SvdfNmM
- SJMIdmcQferzQPNVwJv1JLlqeOikTUknZartEvwMQtK3SSqxe4N/A0e9UXnjAAJCzsxT
- 4ExoeqIEF63Taz62o/BV+70b5u6IaY56GNiTC8wc/mqcgcDw3RUbpX4udvps7tinPb6C
- ouCUc+Bbxzj/facW9q3OYjJWtWKgYJxdNmr8gUAb/PkhCqq0BptuWCSoAaB0cpAXn/33
- 1fexC3q/BQfd7PCrSRLPePDdZ035yRXBOt5F3cTSloHIV38K/rClhLKolBGDzf5H+Cj3
- Nj/A==
-X-Gm-Message-State: AOJu0YzLdXRF7YstpwfL1vyjv0hGksERMcbpZGW7VdndUUGzunWU4uUk
- oCL7aSbrr2/ixjWpwBALt4fPOdEtsJD8n7JTrOdMhQ==
-X-Google-Smtp-Source: AGHT+IH2GWBa8w5KpKXtkHYeOly+UAZt/kyYrWGScB3w3AcynNgs8xDvylnu6q0sqWjqxYRRkj2RGA==
-X-Received: by 2002:adf:9795:0:b0:32d:8547:e440 with SMTP id
- s21-20020adf9795000000b0032d8547e440mr4581893wrb.38.1697118814510; 
- Thu, 12 Oct 2023 06:53:34 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
- [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
- x11-20020adff0cb000000b00323293bd023sm18642270wro.6.2023.10.12.06.53.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 06:53:34 -0700 (PDT)
-Message-ID: <cde8c0de-1233-007a-097b-c7638f773829@linaro.org>
-Date: Thu, 12 Oct 2023 15:53:32 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qqw9T-0000Fj-Vp; Thu, 12 Oct 2023 09:55:00 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qqw9Q-0005g9-Co; Thu, 12 Oct 2023 09:54:59 -0400
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c08:ba1:0:640:375a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 8EDA162FC1;
+ Thu, 12 Oct 2023 16:54:48 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:a401::1:4] (unknown
+ [2a02:6b8:b081:a401::1:4])
+ by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id lsfLlv6Oo8c0-PBbk7Yew; Thu, 12 Oct 2023 16:54:48 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1697118888;
+ bh=vaxMZnDcCMy1UdA9IORdlkoxGImo99atnIvQNusKcug=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=twWIyjXbm1NaEMRgbYe8bD4RH657W1UPrS2L0MwiCq+7jZWMEC8k4erhuwr6wkBK5
+ w4ATyACH3QBdOIfdyIa/EaFVoJ5+JXP+xaZ6ALNplVPqomx6KMTenXxZJ1WWLYRRwc
+ jxwoMJiiLEfFpl5+Jb5bFO+rJEtaAnYiJ1WjTczM=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <293c6b03-857d-42b8-b0cd-ab0a1f3ff85f@yandex-team.ru>
+Date: Thu, 12 Oct 2023 16:54:46 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 1/3] migration/multifd: Remove direct "socket" references
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/10] mirror: implement mirror_change method
 Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-References: <20231012134343.23757-1-farosas@suse.de>
- <20231012134343.23757-2-farosas@suse.de>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231012134343.23757-2-farosas@suse.de>
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
+ t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
+References: <20231009094619.469668-1-f.ebner@proxmox.com>
+ <20231009094619.469668-6-f.ebner@proxmox.com>
+ <f6987c95-b1c4-4bfa-ae05-931c4f946151@yandex-team.ru>
+ <cc727bee-b9aa-4493-b26e-1ea93d15f8eb@proxmox.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <cc727bee-b9aa-4493-b26e-1ea93d15f8eb@proxmox.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,15 +78,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/10/23 15:43, Fabiano Rosas wrote:
-> We're about to enable support for other transports in multifd, so
-> remove direct references to sockets.
+On 11.10.23 14:22, Fiona Ebner wrote:
+> Am 10.10.23 um 21:37 schrieb Vladimir Sementsov-Ogievskiy:
+>> On 09.10.23 12:46, Fiona Ebner wrote:
+>>>    +static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
+>>> +                          Error **errp)
+>>> +{
+>>> +    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
+>>> +    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
+>>> +
+>>> +    if (s->copy_mode == change_opts->copy_mode) {
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    if (s->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING) {
+>>> +        error_setg(errp, "Cannot switch away from copy mode
+>>> 'write-blocking'");
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    assert(s->copy_mode == MIRROR_COPY_MODE_BACKGROUND &&
+>>> +           change_opts->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING);
+>>> +
+>>> +    s->copy_mode = MIRROR_COPY_MODE_WRITE_BLOCKING;
+>>> +}
+>>
+>> So, s->copy_mode becomes shared between main thread and iothread.
+>>
+>> We should either use mutex or atomic operations.
+>>
+>> Note, that the only realization of .set_speed uses thread-safe API.
+>>
 > 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->   migration/multifd.c | 22 ++++++++++++++++------
->   1 file changed, 16 insertions(+), 6 deletions(-)
+> Can it be an issue if it's only ever set from the main thread?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Yes, I also think, that actually setting int variable is "atomic enough". But I'm not sure about all architectures/OSes/compilers)
+
+> 
+> But sure, I'm implicitly relying on that, which is not ideal. The
+> mirror_change() function does multiple checks based on the current
+> value, and only then changes it, so I suppose it would actually need a
+> mutex rather than just changing to atomic accesses? Otherwise, the
+> current value can't be guaranteed to be the same in the different checks
+> if we ever add something that can change the value from another thread.
+
+
+It could still be written like this
+
+if (change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING) {
+   report error
+}
+
+
+if (qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND, MIRROR_COPY_MODE_WRITE_BLOCKING) != MIRROR_COPY_MODE_BACKGROUND) {
+   report error
+}
+
+report success
+
+===
+
+and we'll have to access it as qatomic_read(&s->copy_mode) in other places
+
+> 
+> I suppose, I should re-use the job mutex then?
+> 
+> Best Regards,
+> Fiona
+> 
+
+-- 
+Best regards,
+Vladimir
 
 
