@@ -2,72 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB1F7C713D
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 17:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9057C71E4
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 17:55:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqxRG-0006Tg-5Q; Thu, 12 Oct 2023 11:17:26 -0400
+	id 1qqy0R-0003xq-Au; Thu, 12 Oct 2023 11:53:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqxRD-0006TQ-AH
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 11:17:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqxRB-0004bm-4Q
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 11:17:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697123839;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=cLxUmTsrqtRz6u7lP59SY+Qj0H09N97ZczK4zdDfDNI=;
- b=UEsv5wz1W50LXRJQqnWrHYnIBS/oqJVTNqdjBpVyBcWNDQtbOWP0gaQWTUFQkeP/dbiHt7
- wdeTOTO/ZoZThECKX+Rmv0elSUTJdIe9vU138Wqeb9SKBZ3JetsfhCf+Jv4UYHmQHdeWbf
- n9BQGtGaUDWal/lB3cbuFtRgpF+LUpM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-235-XptXSnDFMzSP7d-buYoUBA-1; Thu, 12 Oct 2023 11:17:18 -0400
-X-MC-Unique: XptXSnDFMzSP7d-buYoUBA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B31BC10334B0
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 15:17:17 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 92309903
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 15:17:17 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 84C4E21E6A21; Thu, 12 Oct 2023 17:17:16 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  qemu-devel@nongnu.org,  Gerd Hoffmann
- <kraxel@redhat.com>
-Subject: Re: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
- compiling with -Wshadow
-References: <20231009083726.30301-1-thuth@redhat.com>
- <87h6mwyqxn.fsf@pond.sub.org>
- <20231012090829-mutt-send-email-mst@kernel.org>
-Date: Thu, 12 Oct 2023 17:17:16 +0200
-In-Reply-To: <20231012090829-mutt-send-email-mst@kernel.org> (Michael
- S. Tsirkin's message of "Thu, 12 Oct 2023 09:08:56 -0400")
-Message-ID: <87bkd3oooz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqy0P-0003x4-GJ
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 11:53:45 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqy0M-0003Kf-L0
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 11:53:45 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51e28cac164so4764201a12.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 08:53:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697126021; x=1697730821; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Q+xORZM9Yq9cP7wH5c3U+ZvE+B2XoO1bTQHG5hQkecs=;
+ b=bYGocSPOmtzaySvZI8AAwY8JI7Lgz6xh8FYdURxjbY7MBtzepj2BBP3F0L0uP3MN0P
+ 0R8ISsIm0rntF1zRnBjEgz4Ywb7zGNY4Ke6DefnjDASdmLimlnreJuRrp8SjLFAEKRDI
+ VxtNaHpwsFi5XzDauNBNBy/rkpGOZFlI0Dh0hEoUhKhrzgS1by0Xag+XFqJslHOVL3Wa
+ 1JX3yjvPTfIsVnvH6ex94Xak5OMu7zO+gxE5Nd5iUR8hrWHiTBbismN1YtqTSiSnF10O
+ S4LIVHF5WmN7PY65hKBV4gLfDfRL0TWDklbY7WbtEq8sCwBZfHwP43f7zShBR2+tZCBi
+ Qp+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697126021; x=1697730821;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q+xORZM9Yq9cP7wH5c3U+ZvE+B2XoO1bTQHG5hQkecs=;
+ b=aOh+rQK0GCrGFAWiZ1fsf21bodkA0mN3OGbc6Mzeml9ehMJbTTKLO8YabAolHSrqya
+ wyv8BdJ5Tl/i5mjlvIb8bkv2kqmjIcX0ltTqQtLmM9MNiaLnwCIIbx8GIKa19KjUbLr3
+ 4HeKdeNxfqOrpToOHFyR7MfYwP01l28RKfbDr38I+CtBTLxBNzlNc54bhW2rB9SsGyva
+ UcOM9oiwgrSqR4gitPpjXpId8zN0yEmg1gu7wzQ3Sqz6QASZOmswwNyx36huQK4H+RDS
+ C6pWI8fxn2Kt2+OeyskVypbg4YvekFFuFbq71OP70yyXrDBF3xrMt2CBRiWQyx5FkFgD
+ zyFg==
+X-Gm-Message-State: AOJu0Yz8m2KhiW2pAX7xnS9kB3pbhC5xjK7clgpCcd7X3Odtq3/JNsZj
+ CLZB5xgf5ItB7vWD4VnHcyzMZw==
+X-Google-Smtp-Source: AGHT+IFuAq+uu+hWxZ+IQ/Zyfegvh2aLCli5ylErNQSfiiRZjFECcQPS7rMWXrUuPA9BQrJuTanLEw==
+X-Received: by 2002:a17:906:4a03:b0:9b2:be2f:e31a with SMTP id
+ w3-20020a1709064a0300b009b2be2fe31amr23197563eju.31.1697126020933; 
+ Thu, 12 Oct 2023 08:53:40 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
+ [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
+ h13-20020a17090619cd00b009ae587ce135sm11162276ejd.223.2023.10.12.08.53.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Oct 2023 08:53:40 -0700 (PDT)
+Message-ID: <358415d4-f8e6-5374-522a-7aa5cdb83485@linaro.org>
+Date: Thu, 12 Oct 2023 17:53:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v11 11/18] gdbstub: Infer number of core registers from XML
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Michael Rolnik <mrolnik@gmail.com>,
+ Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Laurent Vivier
+ <laurent@vivier.eu>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
+ "open list:S390 general arch..." <qemu-s390x@nongnu.org>
+References: <20231012130616.7941-1-akihiko.odaki@daynix.com>
+ <20231012130616.7941-12-akihiko.odaki@daynix.com>
+ <62fd649b-1c07-c0f5-11cc-ca17ad0675e5@linaro.org>
+ <d38a342b-4c63-46b0-9ce3-952412708eea@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <d38a342b-4c63-46b0-9ce3-952412708eea@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,32 +115,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Michael S. Tsirkin" <mst@redhat.com> writes:
+On 12/10/23 16:45, Akihiko Odaki wrote:
+> On 2023/10/12 22:43, Philippe Mathieu-Daudé wrote:
+>> Hi Akihiko,
+>>
+>> On 12/10/23 15:06, Akihiko Odaki wrote:
+>>> GDBFeature has the num_regs member so use it where applicable to
+>>> remove magic numbers.
+>>>
+>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> ---
+>>>   include/hw/core/cpu.h   | 3 ++-
+>>>   target/s390x/cpu.h      | 2 --
+>>>   gdbstub/gdbstub.c       | 5 ++++-
+>>>   target/arm/cpu.c        | 1 -
+>>>   target/arm/cpu64.c      | 1 -
+>>>   target/avr/cpu.c        | 1 -
+>>>   target/hexagon/cpu.c    | 1 -
+>>>   target/i386/cpu.c       | 2 --
+>>>   target/loongarch/cpu.c  | 2 --
+>>>   target/m68k/cpu.c       | 1 -
+>>>   target/microblaze/cpu.c | 1 -
+>>>   target/riscv/cpu.c      | 1 -
+>>>   target/rx/cpu.c         | 1 -
+>>>   target/s390x/cpu.c      | 1 -
+>>>   14 files changed, 6 insertions(+), 17 deletions(-)
+>>>
+>>> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+>>> index 3968369554..11d4b5cd0c 100644
+>>> --- a/include/hw/core/cpu.h
+>>> +++ b/include/hw/core/cpu.h
+>>> @@ -127,7 +127,8 @@ struct SysemuCPUOps;
+>>>    * @gdb_adjust_breakpoint: Callback for adjusting the address of a
+>>>    *       breakpoint.  Used by AVR to handle a gdb mis-feature with
+>>>    *       its Harvard architecture split code and data.
+>>> - * @gdb_num_core_regs: Number of core registers accessible to GDB.
+>>> + * @gdb_num_core_regs: Number of core registers accessible to GDB or 
+>>> 0 to infer
+>>> + *                     from @gdb_core_xml_file.
+>>>    * @gdb_core_xml_file: File name for core registers GDB XML 
+>>> description.
+>>>    * @gdb_stop_before_watchpoint: Indicates whether GDB expects the 
+>>> CPU to stop
+>>>    *           before the insn which triggers a watchpoint rather 
+>>> than after it.
 
-> On Thu, Oct 12, 2023 at 02:18:44PM +0200, Markus Armbruster wrote:
->> Thomas Huth <thuth@redhat.com> writes:
->> 
->> > Rename some variables to avoid compiler warnings when compiling
->> > with -Wshadow=local.
->> >
->> > Signed-off-by: Thomas Huth <thuth@redhat.com>
->> > ---
->> >  v2: Renamed the variable to something more unique
 
-[...]
+>> Why not remove SysemuCPUOps::gdb_num_core_regs entirely?
+> 
+> It is used by targets without XMLs and ppc, which overrides the number 
+> from XML.
 
->> v1 renamed to s_ instead, which I find much easier to read.  Michael
->> asked you to change it so it's less likely to break if we pass it a
->> macro that also uses s_.  Unlikely to happen, and would fail safe: build
->> breaks.
+Right.
 
-[...]
-
->> I'm going to queue v1.  Michael, if you want me to queue v2 instead, or
->> neither of the two, let me know.
->
-> Yea I think v2 is better, queue that please.
-
-Done.  Thanks!
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
