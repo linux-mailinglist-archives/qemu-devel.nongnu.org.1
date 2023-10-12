@@ -2,96 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86ABE7C6B7C
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 12:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D1C7C6B95
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 12:54:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqtGk-0000pE-KN; Thu, 12 Oct 2023 06:50:18 -0400
+	id 1qqtKJ-0003F6-Tj; Thu, 12 Oct 2023 06:53:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqtGj-0000ow-F5
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:50:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qqtGg-0004i9-Oj
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:50:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697107805;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=910cz+J/ckmxW2u/m3VL7v8jBlaNfiB4ydCKJF857Bs=;
- b=Cy/Uf6R/oT4MSnord9bUKGJso8lwLPXZbVM3j9MmQT6tmrNnBnnQYI6aR0fX7JjFuJufXd
- q7tItnYMnD0Dpyte86fdcXreB3Ec+01nIgM38D9gxJnaa5bSCP5x6ZqQf2QOxFSvyemS8A
- SSmK1GoLfXDgEWoruUt07CjsxgvIYzQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-52-j_s5ke1uOOGimt3R0Ilumw-1; Thu, 12 Oct 2023 06:50:03 -0400
-X-MC-Unique: j_s5ke1uOOGimt3R0Ilumw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fef5403093so3820575e9.0
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 03:50:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqtKI-0003Ex-G6
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:53:58 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqtKG-0005eF-G9
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:53:58 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-50337b43ee6so1159639e87.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 03:53:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697108034; x=1697712834; darn=nongnu.org;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=79GppcGvzoqwiV/Ut8TzwZ31E6X9xmbhekT6eCAOzUI=;
+ b=dBsbwQokDFM1jRahEuA1d23O9nLW8BiNhLCG7QR7bjYZySYstgpI+JjBz25MIyHBr6
+ RSiDqHBgTcn5Kvivi9QYRbO9P8VpAoIxK55RAB6YC2oEOIhrICgXex7cyhBWk3OhGfP7
+ xZ9LalCQ3xvnntQ0qen1R2yzA3w4XHkiSqnJXMZWKjpcW+yaM2WnNvsYiydGyVTWLbhb
+ Qw/Er9ezBvZd0VdGe8bUs9Eo6rAoB2CFCQrvM05tOA2C+K7SDqTUxaYASx16zYDrFUws
+ HfgZz64+jy6EzN1Scn2AxkuRLqjMI8xpN7FEuilNlNAN1fW/3I25VRDe7MmVwyV3OrU+
+ zaxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697107802; x=1697712602;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=910cz+J/ckmxW2u/m3VL7v8jBlaNfiB4ydCKJF857Bs=;
- b=qxinJpcIAZDsj/Fwl8763rXz785prDB7F4awEA2hBBHNz26Ymd9bRduc2CzGZCrr/1
- OU+LM+dfQX7jkGyj1mOIlqcD5WpM8o70LW0/H+DiumPq1K1/Jhe+IoNHRYdxz0fHckbD
- PgDVXL7dfJDGQxhumnXpPFgYs/VNSgl0F68ej26Ky1jDL760QlxrdZD63RJD9di0fe3x
- xjpICtF5JKL2pZ3K2EMhz9wMN+c86VW6CKx4aFNDJvWJF5nFlm9JXpMs8CpAU8T/suKI
- pjegsMg9NDA1hPYHAL+727dpcQGGvtGjDJMFAZ8vxkjny9GiJUkd0ZTreBa1s2AGx8TI
- +8WQ==
-X-Gm-Message-State: AOJu0YxRriJ4YhJwxhV8Kce6CJ/8quHYLyx9sBHzmkSRKzuCKWm8Lsy3
- joSmK5yvn7CJ/mcr5urywyoKxWB6iH35QZrWrv1syLXjXzVyXMUeC4MNo22DngVpMYh+u8egAV1
- Pb7SziqcxTgmu8us=
-X-Received: by 2002:a05:600c:358e:b0:407:3e94:bcca with SMTP id
- p14-20020a05600c358e00b004073e94bccamr13539075wmq.1.1697107802104; 
- Thu, 12 Oct 2023 03:50:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBz8KKBnAfxiABzby0TDwl3fUoMwWtRFQe73Otfpis0IsNU/nLytWj5h1V1wE3xP1aLfJeWw==
-X-Received: by 2002:a05:600c:358e:b0:407:3e94:bcca with SMTP id
- p14-20020a05600c358e00b004073e94bccamr13539056wmq.1.1697107801776; 
- Thu, 12 Oct 2023 03:50:01 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- p4-20020a05600c204400b00403b63e87f2sm19107003wmg.32.2023.10.12.03.50.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Oct 2023 03:50:01 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,  Fam Zheng <fam@euphon.net>,  Eric Blake
- <eblake@redhat.com>,  libvir-list@redhat.com,  Leonardo Bras
- <leobras@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Stefan
- Hajnoczi <stefanha@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,  Peter Xu <peterx@redhat.com>,
- qemu-block@nongnu.org,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v3 1/4] migration: migrate 'inc' command option is
- deprecated.
-In-Reply-To: <87zg0oyxpz.fsf@pond.sub.org> (Markus Armbruster's message of
- "Thu, 12 Oct 2023 11:52:08 +0200")
-References: <20231011204711.9744-1-quintela@redhat.com>
- <20231011204711.9744-2-quintela@redhat.com>
- <87zg0oyxpz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 12 Oct 2023 12:50:00 +0200
-Message-ID: <87il7c6ron.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1697108034; x=1697712834;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=79GppcGvzoqwiV/Ut8TzwZ31E6X9xmbhekT6eCAOzUI=;
+ b=vcWhDu9YwZgeK2YTRATcqnLvSP7GZ6RqMl2ZfkIUW3HOuLzcYS/Ylxr4XjS6QMwhl/
+ oRDVv672qpo3QnixFtbFu7l0oEpK6+RJXw0at4zh4S2tDhkott+SzrW8WvKvOvNkfrSD
+ 2ardgiOw3JtgXHKKk9p/eGdp87o/804RAQya6ENHHXIWxF/+UA2KfghCnBJN1tBlEJWn
+ nnMJ/N96JOXAMMOcIYPP5vTO4OCVxLWcZYCx5j/u5mtlAm9hZQ9dBXJxHRlhNeGPoPmu
+ mRBpksl+1ZcN+NgWNahVmUQRAAW/MuONumwXp5ClD63azAvUoIQ+QHdb4ePsVap+HfTt
+ elRQ==
+X-Gm-Message-State: AOJu0Yx4MyTQqX5vRfA3IqCT0BPnqnMhpjZP2SZ/ExwGnq9vxmDq03h1
+ pmIG5JgMET0n/ZD0eFYQMpfISw==
+X-Google-Smtp-Source: AGHT+IHh5IZYLbIw+vUnUD5n3sG1+DCRHUlIuGi2dmusM7zCKoK9nMFlExoY4bikSiSx3bb1k3UMUA==
+X-Received: by 2002:a19:e010:0:b0:500:b74b:e53 with SMTP id
+ x16-20020a19e010000000b00500b74b0e53mr18050178lfg.46.1697108034080; 
+ Thu, 12 Oct 2023 03:53:54 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
+ [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
+ hn32-20020a05600ca3a000b004053e9276easm21533158wmb.32.2023.10.12.03.53.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Oct 2023 03:53:53 -0700 (PDT)
+Message-ID: <bbd3c42b-5069-d5e8-0b97-70ff5135801c@linaro.org>
+Date: Thu, 12 Oct 2023 12:53:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, Martin Kletzander <mkletzan@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Subject: QOM crash via soundhw_init()
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,115 +89,169 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-> Juan Quintela <quintela@redhat.com> writes:
->
->> Set the 'block_incremental' migration parameter to 'true' instead.
->>
->>  # @blk: do block migration (full disk copy)
->>  #
->> -# @inc: incremental disk copy migration
->> +# @inc: incremental disk copy migration.  This option is deprecated.
->> +#     Set the 'block-incremetantal' migration parameter to 'true'
->> +#     instead.
->
-> 'block-incremental'
+Hi Martin, Paolo, Markus, Marc-André,
 
-Done, thanks.
+With the following changes:
 
->>  #
->>  # @detach: this argument exists only for compatibility reasons and is
->>  #     ignored by QEMU
->>  #
->>  # @resume: resume one paused migration, default "off". (since 3.0)
->>  #
->> +# Features:
->> +#
->> +# @deprecated: option @inc should be enabled by setting the
->> +#     'block-incremental' migration parameter to 'true'.
->> +#
->
-> You add deprecation notices, one to the member documentation, and one to
-> the "Features:" section.  You should add just one, to the "Features:"
-> section.  Suggest:
->
->    # @deprecated: Member @inc is deprecated.  Use migration parameter
->    # @block-incremental instead.
+-- >8 --
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index 137276bcb9..291495f798 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -245,6 +245,7 @@ static void ibm_40p_init(MachineState *machine)
+      uint32_t kernel_base = 0, initrd_base = 0;
+      long kernel_size = 0, initrd_size = 0;
+      char boot_device;
++    MemoryRegion rom;
 
-Done.
+      if (kvm_enabled()) {
+          error_report("machine %s does not support the KVM accelerator",
+@@ -277,6 +278,9 @@ static void ibm_40p_init(MachineState *machine)
+          exit(1);
+      }
 
->>  # Returns: nothing on success
->>  #
->>  # Since: 0.14
->> @@ -1514,7 +1521,8 @@
->>  # <- { "return": {} }
->>  ##
->>  { 'command': 'migrate',
->> -  'data': {'uri': 'str', '*blk': 'bool', '*inc': 'bool',
->> +  'data': {'uri': 'str', '*blk': 'bool',
->> +           '*inc': { 'type': 'bool', 'features': ['deprecated'] },
->
-> For better or worse, we format like [ 'deprecated' ].
++    memory_region_init_rom_nomigrate(&rom, OBJECT(machine), "test",
++                                     4 * KiB, &error_fatal);
++
+      /* PCI -> ISA bridge */
+      i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
+      qdev_connect_gpio_out(i82378_dev, 0,
 
-Done.
+---
 
->>             '*detach': 'bool', '*resume': 'bool' } }
->>  
->>  ##
->> diff --git a/migration/migration.c b/migration/migration.c
->> index 1c6c81ad49..c7e4c37b8a 100644
->> --- a/migration/migration.c
->> +++ b/migration/migration.c
->> @@ -1601,6 +1601,12 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
->>  {
->>      Error *local_err = NULL;
->>  
->> +    if (blk_inc) {
->> +        warn_report("-inc migrate option is deprecated, set the "
->> +                    "'block-incremental' migration parameter to 'true'"
->> +                    " instead.");
->
-> There is no "-inc migrate option".  You're refering to QMP command
-> migrate's parameter @inc / HMP command migrate's flag -i.
+I'm getting:
 
-Changed to:
+$ ./qemu-system-ppc -M 40p -S -nodefaults
+==3518191==WARNING: ASan doesn't fully support makecontext/swapcontext 
+functions and may produce false positives in some cases!
+qom/object.c:935:13: runtime error: member access within null pointer of 
+type 'struct TypeImpl'
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==3518191==ERROR: AddressSanitizer: SEGV on unknown address 
+0x000000000000 (pc 0x55f728f5e179 bp 0x7ffd91999220 sp 0x7ffd919991d0 T0)
+==3518191==The signal is caused by a READ memory access.
+==3518191==Hint: address points to the zero page.
+     #0 0x55f728f5e179 in object_class_dynamic_cast qom/object.c:935
+     #1 0x55f728f5d9f4 in object_dynamic_cast qom/object.c:876
+     #2 0x55f728f6605a in object_resolve_abs_path qom/object.c:2096
+     #3 0x55f728f662f1 in object_resolve_partial_path qom/object.c:2120
+     #4 0x55f728f6648a in object_resolve_partial_path qom/object.c:2130
+     #5 0x55f728f6648a in object_resolve_partial_path qom/object.c:2130
+     #6 0x55f728f668b7 in object_resolve_path_type qom/object.c:2159
+     #7 0x55f727ab14c8 in soundhw_init hw/audio/soundhw.c:112
+     #8 0x55f72858f27e in qemu_create_cli_devices system/vl.c:2604
+     #9 0x55f72858f8c7 in qmp_x_exit_preconfig system/vl.c:2685
+     #10 0x55f7285955cd in qemu_init system/vl.c:3734
+     #11 0x55f72790620a in main system/main.c:47
+     #12 0x7fd5fec57d8f in __libc_start_call_main
+     #13 0x7fd5fec57e3f in __libc_start_main_impl libc-start.c:392
+     #14 0x55f727906104 in _start (build_asan/qemu-system-ppc+0x2ca4104)
 
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV qom/object.c:935 in 
+object_class_dynamic_cast
+==3518191==ABORTING
 
-s|-inc|@inc/-i|
+O_o
 
->> +    }
->> +
->>      if (resume) {
->>          if (s->state != MIGRATION_STATUS_POSTCOPY_PAUSED) {
->>              error_setg(errp, "Cannot resume if there is no "
->
-> As far as I can see, HMP command migrate still uses the deprecated
-> interface:
->
->     qmp_migrate(uri, !!blk, blk, !!inc, inc,
->                 false, false, true, resume, &err);
->
-> Its use should be replaced before we deprecate it.
+Any idea what I'm missing?
 
-We need to drop it.
+Unified diff running with '-trace obj\* ':
 
-Blockjobs are much more flexible.  We want to get rid of the whole
-concept of block migration inside the migration protocol/machinery.
+@@ -1,4 +1,4 @@
+-==3534948==WARNING: ASan doesn't fully support makecontext/swapcontext 
+functions and may produce false positives in some cases!
++==3533425==WARNING: ASan doesn't fully support makecontext/swapcontext 
+functions and may produce false positives in some cases!
+  object_class_dynamic_cast_assert authz-pam->user-creatable 
+(include/qom/object_interfaces.h:11:USER_CREATABLE_CLASS)
+  object_class_dynamic_cast_assert authz-pam->authz 
+(include/authz/base.h:30:QAUTHZ_CLASS)
+  object_class_dynamic_cast_assert device->device 
+(include/hw/qdev-core.h:77:DEVICE_CLASS)
+@@ -2481,6 +2481,7 @@
+  object_class_dynamic_cast_assert PCI->bus 
+(include/hw/qdev-core.h:315:BUS_GET_CLASS)
+  object_dynamic_cast_assert PCI->PCI (include/hw/pci/pci.h:270:PCI_BUS)
+  object_dynamic_cast_assert PCI->PCI (include/hw/pci/pci.h:270:PCI_BUS)
++object_dynamic_cast_assert memory-region->memory-region 
+(include/exec/memory.h:37:MEMORY_REGION)
+  object_dynamic_cast_assert i82378->device 
+(include/hw/qdev-core.h:77:DEVICE)
+  object_dynamic_cast_assert i82378->device 
+(include/hw/qdev-core.h:77:DEVICE)
+  object_dynamic_cast_assert i82378->device 
+(include/hw/qdev-core.h:77:DEVICE)
+@@ -3014,355 +3015,28 @@
+  object_dynamic_cast_assert memory-region->memory-region 
+(include/exec/memory.h:37:MEMORY_REGION)
+  object_dynamic_cast_assert memory-region->memory-region 
+(include/exec/memory.h:37:MEMORY_REGION)
+  object_dynamic_cast_assert memory-region->memory-region 
+(include/exec/memory.h:37:MEMORY_REGION)
+-object_dynamic_cast_assert fw_cfg_mem->fw_cfg 
+(include/hw/nvram/fw_cfg.h:15:FW_CFG)
+-object_dynamic_cast_assert 40p-machine->machine 
+(include/hw/boards.h:23:MACHINE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert or-irq->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_class_dynamic_cast_assert or-irq->device 
+(include/hw/qdev-core.h:77:DEVICE_GET_CLASS)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert mc146818rtc->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_class_dynamic_cast_assert mc146818rtc->device 
+(include/hw/qdev-core.h:77:DEVICE_GET_CLASS)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert isa-i8259->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_class_dynamic_cast_assert isa-i8259->device 
+(include/hw/qdev-core.h:77:DEVICE_GET_CLASS)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert (null)->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_dynamic_cast_assert rs6000-mc->device 
+(include/hw/qdev-core.h:77:DEVICE)
+-object_class_dynamic_cast_assert rs6000-mc->device 
+(include/hw/qdev-core.h:77:DEVICE_GET_CLASS)
+[...]
 
-Block migration requires that one:
+Thanks,
 
-- migrate all devices, i.e. no way to select some shared some local.
-
-- I think that incremental bit requires that you use qcow2 images, but I
-  haven't even double checked them.
-
-I just want to drop it in the near future, if 9.0 is too soon, for
-10.0.
-
-Later, Juan.
-
+Phil.
 
