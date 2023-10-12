@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9937C7011
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F387C7006
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:08:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqwM5-0000qP-DF; Thu, 12 Oct 2023 10:08:01 -0400
+	id 1qqwLl-0000Mh-I1; Thu, 12 Oct 2023 10:07:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwLG-0008NQ-5E
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:07:11 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwLE-0008NE-K6
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:07:09 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwL9-0008EW-V2
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwLA-0008Ej-Jx
  for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:07:08 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id DE1691F74C;
- Thu, 12 Oct 2023 14:07:00 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id BD5B121878;
+ Thu, 12 Oct 2023 14:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697119620; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1697119622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VqP+ho12n+Y5hPTN0+FsvdUNCjTSc5IPV+iWy1nErzs=;
- b=nrXQXwUZI6YL6ngTRXd+H7dGLnDBIVfiHvl9PqbDpzCeZCLM4ifvrdUnDyt/MDVd0FwQ3m
- GY7sMF6BdOBITHNqUIPP9cAm8apjDshtx+tlptkfdOHkyrKPmavP9NudGKmwuljJv17xVG
- A0O3mjG0PlaXEoNp986OOih8FcUFbTc=
+ bh=Oz4n+qj236YL1a8qzoYEdHstGZkz+mRU8otmuN/uam0=;
+ b=OQ0p2LnazH7o6j9d2wDB+av+p03ARYymqi8eMvJjhLaF10D8wwwVGGdEOV7NX2oWv4dyWz
+ rmT6sbv/+SN6MXzBbLkI7VjQPVusdAFLqSONsnJ9Fo21FEJyEV4DQHjJj6AOMPPFlkTozh
+ 5Hmgd4ffjnRoUDz8b+gCrCn1lHTi78k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697119620;
+ s=susede2_ed25519; t=1697119622;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VqP+ho12n+Y5hPTN0+FsvdUNCjTSc5IPV+iWy1nErzs=;
- b=knmpAnX8kyfuV1hXJjHURLDUraf2xIMSomWjG8Kmj4Nf8jVZN4t/p6dSJiZyDgD69BsQcv
- RNT02rYXDAHe1LCQ==
+ bh=Oz4n+qj236YL1a8qzoYEdHstGZkz+mRU8otmuN/uam0=;
+ b=ZxHgu9oxtfTNq11MXbcrf8nhPuYaKUzeBW0whSxBON4x5uDBg8zG9Q2jQDMUf5waDK4vwI
+ 5YTCPEjiEhE2EIAA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5BF04139ED;
- Thu, 12 Oct 2023 14:06:59 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 453A4139ED;
+ Thu, 12 Oct 2023 14:07:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 8NzsCYP9J2U5CgAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 12 Oct 2023 14:06:59 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id wFdmBIX9J2U5CgAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 12 Oct 2023 14:07:01 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: [RFC PATCH v2 3/6] migration/multifd: Decouple control flow from the
- SYNC packet
-Date: Thu, 12 Oct 2023 11:06:48 -0300
-Message-Id: <20231012140651.13122-4-farosas@suse.de>
+Subject: [RFC PATCH v2 4/6] migration/multifd: Extract sem_done waiting into a
+ function
+Date: Thu, 12 Oct 2023 11:06:49 -0300
+Message-Id: <20231012140651.13122-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231012140651.13122-1-farosas@suse.de>
 References: <20231012140651.13122-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: -2.10
-X-Spamd-Result: default: False [-2.10 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: 0.22
+X-Spamd-Result: default: False [0.22 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  R_MISSING_CHARSET(2.50)[]; MIME_GOOD(-0.10)[text/plain];
@@ -76,9 +76,9 @@ X-Spamd-Result: default: False [-2.10 / 50.00]; ARC_NA(0.00)[];
  NEURAL_HAM_SHORT(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
  RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-3.00)[100.00%]
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ BAYES_HAM(-0.68)[83.12%]
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -101,74 +101,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We currently use the 'sem_sync' semaphore on the sending side:
-
-1) to know when the multifd_send_thread() has finished sending the
-   MULTIFD_FLAG_SYNC packet;
-
-  This is unnecessary. Multifd sends packets one by one and completion
-  is already bound by the 'sem' semaphore. The SYNC packet has nothing
-  special that would require it to have a separate semaphore on the
-  sending side.
-
-2) to wait for the multifd threads to finish before cleaning up;
-
-   This happens because multifd_send_sync_main() blocks
-   ram_save_complete() from finishing until the semaphore is
-   posted. This is surprising and not documented.
-
-Clarify the above situation by renaming 'sem_sync' to 'sem_done' and
-making the #2 usage the main one. Post to 'sem_sync' only when there's
-no more pending_jobs.
+This helps document the intent of the loop via the function name and
+we can reuse this in the future.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
-I remove the parts about the receiving side. I wasn't sure about them
-and we don't need to mix the two. Potentially we need the sem_sync on
-the recv to ensure all channels wait before becoming available to read
-once again after a FLUSH.
----
- migration/multifd.c    | 76 ++++++++++++++++++++++++------------------
- migration/multifd.h    |  4 +--
- migration/trace-events |  2 +-
- 3 files changed, 47 insertions(+), 35 deletions(-)
+ migration/multifd.c | 47 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 30 insertions(+), 17 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 92ae61a50f..94f4ae5ff8 100644
+index 94f4ae5ff8..4ffa67339c 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -533,7 +533,7 @@ void multifd_save_cleanup(void)
-         p->c = NULL;
-         qemu_mutex_destroy(&p->mutex);
-         qemu_sem_destroy(&p->sem);
--        qemu_sem_destroy(&p->sem_sync);
-+        qemu_sem_destroy(&p->sem_done);
-         g_free(p->name);
-         p->name = NULL;
-         multifd_pages_clear(p->pages);
-@@ -591,6 +591,44 @@ int multifd_send_sync_main(QEMUFile *f)
-         }
-     }
+@@ -576,6 +576,35 @@ static int multifd_zero_copy_flush(QIOChannel *c)
+     return ret;
+ }
  
-+    for (i = 0; i < migrate_multifd_channels(); i++) {
-+        MultiFDSendParams *p = &multifd_send_state->params[i];
-+
-+        trace_multifd_send_sync_main_signal(p->id);
-+
-+        qemu_mutex_lock(&p->mutex);
-+
-+        if (p->quit) {
-+            error_report("%s: channel %d has already quit", __func__, i);
-+            qemu_mutex_unlock(&p->mutex);
-+            return -1;
-+        }
-+
-+        p->packet_num = multifd_send_state->packet_num++;
-+        p->flags |= MULTIFD_FLAG_SYNC;
-+        p->pending_job++;
-+        qemu_mutex_unlock(&p->mutex);
-+        qemu_sem_post(&p->sem);
-+    }
++static void multifd_send_wait(void)
++{
++    int i;
 +
 +    /* wait for all channels to be idle */
 +    for (i = 0; i < migrate_multifd_channels(); i++) {
@@ -188,122 +139,41 @@ index 92ae61a50f..94f4ae5ff8 100644
 +        qemu_mutex_unlock(&p->mutex);
 +    }
 +
-     /*
-      * When using zero-copy, it's necessary to flush the pages before any of
-      * the pages can be sent again, so we'll make sure the new version of the
-@@ -601,34 +639,11 @@ int multifd_send_sync_main(QEMUFile *f)
-      * to be less frequent, e.g. only after we finished one whole scanning of
-      * all the dirty bitmaps.
-      */
--
-     flush_zero_copy = migrate_zero_copy_send();
++    /*
++     * All channels went idle and have no more jobs. Unless we send
++     * them more work, we're good to allow any cleanup code to run at
++     * this point.
++     */
++}
++
+ int multifd_send_sync_main(QEMUFile *f)
+ {
+     int i;
+@@ -611,23 +640,7 @@ int multifd_send_sync_main(QEMUFile *f)
+         qemu_sem_post(&p->sem);
+     }
  
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
- 
--        trace_multifd_send_sync_main_signal(p->id);
--
--        qemu_mutex_lock(&p->mutex);
--
--        if (p->quit) {
--            error_report("%s: channel %d has already quit", __func__, i);
--            qemu_mutex_unlock(&p->mutex);
--            return -1;
--        }
--
--        p->packet_num = multifd_send_state->packet_num++;
--        p->flags |= MULTIFD_FLAG_SYNC;
--        p->pending_job++;
--        qemu_mutex_unlock(&p->mutex);
--        qemu_sem_post(&p->sem);
--    }
+-    /* wait for all channels to be idle */
 -    for (i = 0; i < migrate_multifd_channels(); i++) {
 -        MultiFDSendParams *p = &multifd_send_state->params[i];
 -
--        trace_multifd_send_sync_main_wait(p->id);
--        qemu_sem_wait(&p->sem_sync);
+-        /*
+-         * Even idle channels will wait for p->sem at the top of the
+-         * loop.
+-         */
+-        qemu_sem_post(&p->sem);
 -
-         if (flush_zero_copy && p->c && (multifd_zero_copy_flush(p->c) < 0)) {
-             return -1;
-         }
-@@ -728,12 +743,9 @@ static void *multifd_send_thread(void *opaque)
-             p->pending_job--;
-             qemu_mutex_unlock(&p->mutex);
+-        trace_multifd_send_wait(migrate_multifd_channels() - i);
+-        qemu_sem_wait(&p->sem_done);
+-
+-        qemu_mutex_lock(&p->mutex);
+-        assert(!p->pending_job || p->quit);
+-        qemu_mutex_unlock(&p->mutex);
+-    }
++    multifd_send_wait();
  
--            if (flags & MULTIFD_FLAG_SYNC) {
--                qemu_sem_post(&p->sem_sync);
--            }
-         } else {
-             qemu_mutex_unlock(&p->mutex);
--            /* sometimes there are spurious wakeups */
-+            qemu_sem_post(&p->sem_done);
-         }
-     }
- 
-@@ -749,7 +761,7 @@ out:
-      * who pay attention to me.
-      */
-     if (ret != 0) {
--        qemu_sem_post(&p->sem_sync);
-+        qemu_sem_post(&p->sem_done);
-     }
- 
-     qemu_mutex_lock(&p->mutex);
-@@ -786,7 +798,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
-          * is not created, and then tell who pay attention to me.
-          */
-         p->quit = true;
--        qemu_sem_post(&p->sem_sync);
-+        qemu_sem_post(&p->sem_done);
-     }
- }
- 
-@@ -863,7 +875,7 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
- {
-      migrate_set_error(migrate_get_current(), err);
-      /* Error happen, we need to tell who pay attention to me */
--     qemu_sem_post(&p->sem_sync);
-+     qemu_sem_post(&p->sem_done);
-      /*
-       * Although multifd_send_thread is not created, but main migration
-       * thread need to judge whether it is running, so we need to mark
-@@ -915,7 +927,7 @@ int multifd_save_setup(Error **errp)
- 
-         qemu_mutex_init(&p->mutex);
-         qemu_sem_init(&p->sem, 0);
--        qemu_sem_init(&p->sem_sync, 0);
-+        qemu_sem_init(&p->sem_done, 0);
-         p->quit = false;
-         p->pending_job = 0;
-         p->id = i;
-diff --git a/migration/multifd.h b/migration/multifd.h
-index a835643b48..71bd66974d 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -90,8 +90,8 @@ typedef struct {
- 
-     /* sem where to wait for more work */
-     QemuSemaphore sem;
--    /* syncs main thread and channels */
--    QemuSemaphore sem_sync;
-+    /* channel is done transmitting until more pages are queued */
-+    QemuSemaphore sem_done;
- 
-     /* this mutex protects the following parameters */
-     QemuMutex mutex;
-diff --git a/migration/trace-events b/migration/trace-events
-index ee9c8f4d63..3aef79a951 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -137,7 +137,7 @@ multifd_send(uint8_t id, uint64_t packet_num, uint32_t normal, uint32_t flags, u
- multifd_send_error(uint8_t id) "channel %u"
- multifd_send_sync_main(long packet_num) "packet num %ld"
- multifd_send_sync_main_signal(uint8_t id) "channel %u"
--multifd_send_sync_main_wait(uint8_t id) "channel %u"
-+multifd_send_wait(uint8_t n) "waiting for %u channels to finish sending"
- multifd_send_terminate_threads(bool error) "error %d"
- multifd_send_thread_end(uint8_t id, uint64_t packets, uint64_t normal_pages) "channel %u packets %" PRIu64 " normal pages %"  PRIu64
- multifd_send_thread_start(uint8_t id) "%u"
+     /*
+      * When using zero-copy, it's necessary to flush the pages before any of
 -- 
 2.35.3
 
