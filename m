@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7561A7C707E
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3837C7075
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:38:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqwoP-0002mB-22; Thu, 12 Oct 2023 10:37:17 -0400
+	id 1qqwoZ-0002y4-1G; Thu, 12 Oct 2023 10:37:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoK-0002g3-7M
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoW-0002ud-Dv
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoI-0005fI-7q
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:11 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoU-0005id-RI
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697121429;
+ s=mimecast20190719; t=1697121442;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4Y+SMe2t+eV42+XXSwLeOBW+1q/PdDO9oFfqXQb/we4=;
- b=U7zocd0OFZhy6Ieq+okz/QJuy2s4qfdRLx5CEmK4Xi7+cE8XgHfX/rLHZ30RKO3r/r5Ke4
- xYKy7O6x4vV109234RU4fU2/2brDD2iI3OFFvLClBhJAg06I2FFhyBcPQjXWdGXSOVAkLj
- 1vHXr/aQx+OUDPm278lfQHAZgrBJq50=
+ bh=14MLOuGPwBBeRgMzJq+1pNiagOMuaYnFFZt6R8LP0V4=;
+ b=A7oXXi5tcCbOaNreSsN6SzkIN2RuslLLeqZDuZA6LECR3mKIcdvfCa5U3ehNaUJm24jOCG
+ v8Do61WReqjZn8tTLNsG9X2+7luZopdXblJoDfftkSFmfv5AkFwGwgFeng9BfrgIzx+OXz
+ s5lZ4hN9eHYVewTcIp04dDtdN7GYESg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-80-DLuLqVr9PRKfh0ygSfEcig-1; Thu, 12 Oct 2023 10:37:07 -0400
-X-MC-Unique: DLuLqVr9PRKfh0ygSfEcig-1
+ us-mta-629-XwjR6sWbNUeRQrUmvaR5gg-1; Thu, 12 Oct 2023 10:37:08 -0400
+X-MC-Unique: XwjR6sWbNUeRQrUmvaR5gg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 711B88DBAF0;
- Thu, 12 Oct 2023 14:37:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7688718811FF;
+ Thu, 12 Oct 2023 14:37:08 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.192.176])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A677D1C060DF;
- Thu, 12 Oct 2023 14:37:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AACFF1C06534;
+ Thu, 12 Oct 2023 14:37:07 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
  "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>,
  "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [GIT PULL 09/18] memory-device,
- vhost: Support memory devices that dynamically consume memslots
-Date: Thu, 12 Oct 2023 16:36:46 +0200
-Message-ID: <20231012143655.114631-10-david@redhat.com>
+Subject: [GIT PULL 10/18] kvm: Add stub for kvm_get_max_memslots()
+Date: Thu, 12 Oct 2023 16:36:47 +0200
+Message-ID: <20231012143655.114631-11-david@redhat.com>
 In-Reply-To: <20231012143655.114631-1-david@redhat.com>
 References: <20231012143655.114631-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,167 +77,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We want to support memory devices that have a dynamically managed memory
-region container as device memory region. This device memory region maps
-multiple RAM memory subregions (e.g., aliases to the same RAM memory
-region), whereby these subregions can be (un)mapped on demand.
+We'll need the stub soon from memory device context.
 
-Each RAM subregion will consume a memslot in KVM and vhost, resulting in
-such a new device consuming memslots dynamically, and initially usually
-0. We already track the number of used vs. required memslots for all
-memslots. From that, we can derive the number of reserved memslots that
-must not be used otherwise.
+While at it, use "unsigned int" as return value and place the
+declaration next to kvm_get_free_memslots().
 
-The target use case is virtio-mem and the hyper-v balloon, which will
-dynamically map aliases to RAM memory region into their device memory
-region container.
-
-Properly document what's supported and what's not and extend the vhost
-memslot check accordingly.
-
-Message-ID: <20230926185738.277351-10-david@redhat.com>
+Message-ID: <20230926185738.277351-11-david@redhat.com>
 Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/mem/memory-device.c         | 29 +++++++++++++++++++++++++++--
- hw/virtio/vhost.c              | 18 ++++++++++++++----
- include/hw/mem/memory-device.h |  7 +++++++
- stubs/memory_device.c          |  5 +++++
- 4 files changed, 53 insertions(+), 6 deletions(-)
+ accel/kvm/kvm-all.c    | 2 +-
+ accel/stubs/kvm-stub.c | 5 +++++
+ include/sysemu/kvm.h   | 2 +-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index d37cfbd65d..1b14ba5661 100644
---- a/hw/mem/memory-device.c
-+++ b/hw/mem/memory-device.c
-@@ -62,19 +62,44 @@ static unsigned int memory_device_get_memslots(MemoryDeviceState *md)
-     return 1;
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 5937e46e12..3f7eafe08c 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -174,7 +174,7 @@ void kvm_resample_fd_notify(int gsi)
+     }
  }
  
-+/*
-+ * Memslots that are reserved by memory devices (required but still reported
-+ * as free from KVM / vhost).
-+ */
-+static unsigned int get_reserved_memslots(MachineState *ms)
-+{
-+    if (ms->device_memory->used_memslots >
-+        ms->device_memory->required_memslots) {
-+        /* This is unexpected, and we warned already in the memory notifier. */
-+        return 0;
-+    }
-+    return ms->device_memory->required_memslots -
-+           ms->device_memory->used_memslots;
-+}
-+
-+unsigned int memory_devices_get_reserved_memslots(void)
-+{
-+    if (!current_machine->device_memory) {
-+        return 0;
-+    }
-+    return get_reserved_memslots(current_machine);
-+}
-+
- static void memory_device_check_addable(MachineState *ms, MemoryDeviceState *md,
-                                         MemoryRegion *mr, Error **errp)
+-int kvm_get_max_memslots(void)
++unsigned int kvm_get_max_memslots(void)
  {
-     const uint64_t used_region_size = ms->device_memory->used_region_size;
-     const uint64_t size = memory_region_size(mr);
-     const unsigned int required_memslots = memory_device_get_memslots(md);
-+    const unsigned int reserved_memslots = get_reserved_memslots(ms);
+     KVMState *s = KVM_STATE(current_accel());
  
-     /* we will need memory slots for kvm and vhost */
--    if (kvm_enabled() && kvm_get_free_memslots() < required_memslots) {
-+    if (kvm_enabled() &&
-+        kvm_get_free_memslots() < required_memslots + reserved_memslots) {
-         error_setg(errp, "hypervisor has not enough free memory slots left");
-         return;
-     }
--    if (vhost_get_free_memslots() < required_memslots) {
-+    if (vhost_get_free_memslots() < required_memslots + reserved_memslots) {
-         error_setg(errp, "a used vhost backend has not enough free memory slots left");
-         return;
-     }
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 82c3d20521..041a05d5f1 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -23,6 +23,7 @@
- #include "qemu/log.h"
- #include "standard-headers/linux/vhost_types.h"
- #include "hw/virtio/virtio-bus.h"
-+#include "hw/mem/memory-device.h"
- #include "migration/blocker.h"
- #include "migration/qemu-file-types.h"
- #include "sysemu/dma.h"
-@@ -1423,7 +1424,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-                    VhostBackendType backend_type, uint32_t busyloop_timeout,
-                    Error **errp)
- {
--    unsigned int used;
-+    unsigned int used, reserved, limit;
-     uint64_t features;
-     int i, r, n_initialized_vqs = 0;
- 
-@@ -1529,9 +1530,18 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     } else {
-         used = used_memslots;
-     }
--    if (used > hdev->vhost_ops->vhost_backend_memslots_limit(hdev)) {
--        error_setg(errp, "vhost backend memory slots limit is less"
--                   " than current number of present memory slots");
-+    /*
-+     * We assume that all reserved memslots actually require a real memslot
-+     * in our vhost backend. This might not be true, for example, if the
-+     * memslot would be ROM. If ever relevant, we can optimize for that --
-+     * but we'll need additional information about the reservations.
-+     */
-+    reserved = memory_devices_get_reserved_memslots();
-+    limit = hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
-+    if (used + reserved > limit) {
-+        error_setg(errp, "vhost backend memory slots limit (%d) is less"
-+                   " than current number of used (%d) and reserved (%d)"
-+                   " memory slots for memory devices.", limit, used, reserved);
-         r = -EINVAL;
-         goto fail_busyloop;
-     }
-diff --git a/include/hw/mem/memory-device.h b/include/hw/mem/memory-device.h
-index b51a579fb9..c7b624da6a 100644
---- a/include/hw/mem/memory-device.h
-+++ b/include/hw/mem/memory-device.h
-@@ -46,6 +46,12 @@ typedef struct MemoryDeviceState MemoryDeviceState;
-  * single RAM memory region or a memory region container with subregions
-  * that are RAM memory regions or aliases to RAM memory regions. Other
-  * memory regions or subregions are not supported.
-+ *
-+ * If the device memory region returned via @get_memory_region is a
-+ * memory region container, it's supported to dynamically (un)map subregions
-+ * as long as the number of memslots returned by @get_memslots() won't
-+ * be exceeded and as long as all memory regions are of the same kind (e.g.,
-+ * all RAM or all ROM).
-  */
- struct MemoryDeviceClass {
-     /* private */
-@@ -125,6 +131,7 @@ struct MemoryDeviceClass {
- 
- MemoryDeviceInfoList *qmp_memory_device_list(void);
- uint64_t get_plugged_memory_size(void);
-+unsigned int memory_devices_get_reserved_memslots(void);
- void memory_device_pre_plug(MemoryDeviceState *md, MachineState *ms,
-                             const uint64_t *legacy_align, Error **errp);
- void memory_device_plug(MemoryDeviceState *md, MachineState *ms);
-diff --git a/stubs/memory_device.c b/stubs/memory_device.c
-index e75cac62dc..318a5d4187 100644
---- a/stubs/memory_device.c
-+++ b/stubs/memory_device.c
-@@ -10,3 +10,8 @@ uint64_t get_plugged_memory_size(void)
- {
-     return (uint64_t)-1;
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index a5d4442d8f..51f522e52e 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -109,6 +109,11 @@ int kvm_irqchip_remove_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
+     return -ENOSYS;
  }
-+
-+unsigned int memory_devices_get_reserved_memslots(void)
+ 
++unsigned int kvm_get_max_memslots(void)
 +{
 +    return 0;
 +}
++
+ unsigned int kvm_get_free_memslots(void)
+ {
+     return 0;
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index c3d831baef..97a8a4f201 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -215,6 +215,7 @@ typedef struct KVMRouteChange {
+ 
+ /* external API */
+ 
++unsigned int kvm_get_max_memslots(void);
+ unsigned int kvm_get_free_memslots(void);
+ bool kvm_has_sync_mmu(void);
+ int kvm_has_vcpu_events(void);
+@@ -552,7 +553,6 @@ int kvm_set_one_reg(CPUState *cs, uint64_t id, void *source);
+  */
+ int kvm_get_one_reg(CPUState *cs, uint64_t id, void *target);
+ struct ppc_radix_page_info *kvm_get_radix_page_info(void);
+-int kvm_get_max_memslots(void);
+ 
+ /* Notify resamplefd for EOI of specific interrupts. */
+ void kvm_resample_fd_notify(int gsi);
 -- 
 2.41.0
 
