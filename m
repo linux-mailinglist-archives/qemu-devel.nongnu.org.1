@@ -2,68 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD65B7C7070
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4610A7C7078
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:40:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqwoU-0002r9-GD; Thu, 12 Oct 2023 10:37:22 -0400
+	id 1qqwqj-0000VJ-MG; Thu, 12 Oct 2023 10:39:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoT-0002qG-3I
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qqwq8-0000D3-W9; Thu, 12 Oct 2023 10:39:09 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoR-0005hh-CU
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697121438;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dej9A/sukn0sXbS4QEGOtQQFnv2OjXzw7qCQUI0NWBk=;
- b=KMyo3jKsUpbxI/mWNIbHuA7P35nJawDK1HQA7n00vJaY2jq2gMVic2aehcUXH15EzezhvS
- /4+827EYH0F0efeAFkzKL4aMOt6oXdKm+GcE45lv/1wDLWUhbNlT713N9SdKxtzb9RqeNz
- 5En9Jci/L6bDZsQEPCjNNA+hXUOaL/s=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-312-Akm09pOFNBeIH5TBhE0Myg-1; Thu, 12 Oct 2023 10:37:17 -0400
-X-MC-Unique: Akm09pOFNBeIH5TBhE0Myg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED0343C0CEF5;
- Thu, 12 Oct 2023 14:37:16 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.39.192.176])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2E7381C060DF;
- Thu, 12 Oct 2023 14:37:16 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [GIT PULL 18/18] virtio-mem: Mark memslot alias memory regions
- unmergeable
-Date: Thu, 12 Oct 2023 16:36:55 +0200
-Message-ID: <20231012143655.114631-19-david@redhat.com>
-In-Reply-To: <20231012143655.114631-1-david@redhat.com>
-References: <20231012143655.114631-1-david@redhat.com>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qqwq5-0005uE-G1; Thu, 12 Oct 2023 10:39:04 -0400
+Received: from lhrpeml100005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5sgx2QLVz6K98Z;
+ Thu, 12 Oct 2023 22:38:21 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml100005.china.huawei.com (7.191.160.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Thu, 12 Oct 2023 15:38:43 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Thu, 12 Oct 2023 15:38:43 +0100
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
+ <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V5 1/9] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+Thread-Topic: [PATCH V5 1/9] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+Thread-Index: AQHZ/Htqi0mtwUJ3tUeBtR3e1ZMtXLBGKTmAgAARMcA=
+Date: Thu, 12 Oct 2023 14:38:43 +0000
+Message-ID: <ff06c2f8c85948b3be5a9855086dd5cd@huawei.com>
+References: <20231011194355.15628-1-salil.mehta@huawei.com>
+ <20231011194355.15628-2-salil.mehta@huawei.com>
+ <20231012153625.00005025@Huawei.com>
+In-Reply-To: <20231012153625.00005025@Huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.195.35.158]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,45 +91,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's mark the memslot alias memory regions as unmergable, such that
-flatview and vhost won't merge adjacent memory region aliases and we can
-atomically map/unmap individual aliases without affecting adjacent
-alias memory regions.
+Hi Jonathan,
 
-This handles vhost and vfio in multiple-memslot mode correctly (which do
-not support atomic memslot updates) and avoids the temporary removal of
-large memslots, which can be an expensive operation. For example, vfio
-might have to unpin + repin a lot of memory, which is undesired.
+> From: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Sent: Thursday, October 12, 2023 3:36 PM
+> To: Salil Mehta <salil.mehta@huawei.com>
+> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
+> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
+> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
+;
+> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
+> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
+> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
+> alex.bennee@linaro.org; linux@armlinux.org.uk;
+> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
+> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
+m>
+> Subject: Re: [PATCH V5 1/9] accel/kvm: Extract common KVM vCPU
+> {creation,parking} code
+>=20
+> On Wed, 11 Oct 2023 20:43:47 +0100
+> Salil Mehta <salil.mehta@huawei.com> wrote:
+>=20
+> > KVM vCPU creation is done once during the initialization of the VM when
+> Qemu
+> > thread is spawned. This is common to all the architectures.
+> >
+> > Hot-unplug of vCPU results in destruction of the vCPU object in QOM but
+> the
+> > corresponding KVM vCPU object in the Host KVM is not destroyed and its
+> > representative KVM vCPU object/context in Qemu is parked.
+> >
+> > Refactor common logic so that some APIs could be reused by vCPU Hotplug=
+ code.
+>=20
+> If you are respinning I'd also call out that you added some trace points.
 
-Message-ID: <20230926185738.277351-19-david@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/virtio/virtio-mem.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Ok. Will do.
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index e1e4250e69..9dc3c61b5a 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -940,6 +940,12 @@ static void virtio_mem_prepare_memslots(VirtIOMEM *vmem)
-         memory_region_init_alias(&vmem->memslots[idx], OBJECT(vmem), name,
-                                  &vmem->memdev->mr, memslot_offset,
-                                  memslot_size);
-+        /*
-+         * We want to be able to atomically and efficiently activate/deactivate
-+         * individual memslots without affecting adjacent memslots in memory
-+         * notifiers.
-+         */
-+        memory_region_set_unmergeable(&vmem->memslots[idx], true);
-     }
- }
- 
--- 
-2.41.0
+Thanks
+
+> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> Otherwise LGTM as it's a straight forward refactor.
+>=20
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
 
 
