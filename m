@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493827C6401
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E72F7C63E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:19:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqn59-00080n-Ql; Thu, 12 Oct 2023 00:13:55 -0400
+	id 1qqn5C-0008OB-RI; Thu, 12 Oct 2023 00:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn56-0007qW-Sz
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:13:52 -0400
+ id 1qqn5A-00089O-6d
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:13:56 -0400
 Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn55-0002q4-5D
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:13:52 -0400
+ id 1qqn58-0002qk-IX
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:13:55 -0400
 Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c735473d1aso4483275ad.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:13:50 -0700 (PDT)
+ d9443c01a7336-1c7373cff01so13559195ad.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:13:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697084029; x=1697688829; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1697084033; x=1697688833; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O5qNubiA8onwCKWVttMekgYaY69rAP/cGoiwSwhJmMs=;
- b=Mj63SOYjinn7N8r+wFNYt3ZFKhMo4hFo3PyFPWAC/b3ialxVPrOgzSFiY+sL0OvamX
- XFkVxUVEh3ucHAf80QqFdFvzbB6RQaKQM9SYCsf33Jkr3VtkaOv4nHFhOVrWeSiA0zeR
- DRaoxU4Gkd6NOK++U+AvxyJXM5UYK0u1IrJ0Az+NgAG3AeFOmCl5bZoa81Tvo9u0/TGF
- 5eszv8fr4VfE8PBiJljkxJw9HjVx3bzbf7uM7IMkw/764g4P1tPbPci5hu7DOTEbUxf6
- Rw+x4tNEo0OCjQE0Y20F582o5EWhXTWc9jXi9RMNAXa8QYFbKZ+oH22kQxIGVjSXU2jZ
- jJXg==
+ bh=RGvUUwVKrID/gEcvjtCzVgtH+tZ51VhpFUnyUmkkEzg=;
+ b=LHBzOIY15lPDHSYSkhcSlvzllIJ/CxvrNuTYlV8deWOzVaJ0+T492z7WFnihhWWEiG
+ HO1zs3Bago5D0nYobM9cLmk3dZvy/0quLsovhpVznXtZR/Gvl4RHYogXWA02fCwscI7I
+ ag0VaNnereMaGSV6sJybUi3afHcbPxC03TcyHvUMEkiHi3gfkYj8TGDfohwvVdFz71G2
+ Qfasm6fADLwiLQWNDXn2paTdbDJMETG3vVjdodJWyj0ec+N/iDYTFSOMSyqTtLdkMm64
+ Vot7cejsfS0i2gFztUqwMiZ8gUhVrCKmiTzxCUvwaAtA23DX7lmcn7tHDnV2xrA9K/6t
+ 7ueg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697084029; x=1697688829;
+ d=1e100.net; s=20230601; t=1697084033; x=1697688833;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O5qNubiA8onwCKWVttMekgYaY69rAP/cGoiwSwhJmMs=;
- b=wy4eseOzgbm+pNN584xYAzcEa/23Vyqfx9/IY7Z9QYFf1OdXZ+GmdrocNqRnUfan2X
- yR8sSsYTmRhvlL3tMJvXlHJYprXEaDgFM48Jb++rR3S9zf7FS33ULiG3Lk4L7Iwkft/w
- pMJCUedxFsOnEE2bKihhokno2IqzMVTYqJk7OzVUAuM1OLUlciMRdp4N8Hw45280rhFs
- LWk0ESi9rjdQGtBx6R2tzlUBvrkwDPcxUqp5rBVFcF5qzlC1Ri3mXWfIvTvRdqgebkDD
- IeZOcxFXPPwNmMfjPQpjLAB+DSHBbLUv4wrOVFl66P6IOQ2tmJ/xA7Z3lKjYgAytc65h
- I5ug==
-X-Gm-Message-State: AOJu0Yz+YIf33O/n9IyzuGdGqqyMBHgOtkTGiIGWYRYYVjlcTlj7dCIo
- prz+J4/1BY/KKuBSwHg5DmzNcrrq38xfCw==
-X-Google-Smtp-Source: AGHT+IHM+PZCbHYwq1KcnzetWSnXqi0HHH3B+ggFhZ1SYBfZJGCXZ2xfPSbT+csD+J9wioD28rA9oQ==
-X-Received: by 2002:a17:902:f115:b0:1c9:dd73:dc9e with SMTP id
- e21-20020a170902f11500b001c9dd73dc9emr831616plb.44.1697084029268; 
- Wed, 11 Oct 2023 21:13:49 -0700 (PDT)
+ bh=RGvUUwVKrID/gEcvjtCzVgtH+tZ51VhpFUnyUmkkEzg=;
+ b=hi82OJAqIkeFYfhHUxmdWBvNeHqZ/YggC2vzlPL64acBBnUJHOIgwX/+E0dGifSduZ
+ ZsBJpxSa/PcpmzStAIB67nkKm39YxKarrMt+8x0GdwW80XUCsN1JLeY3R0RyL+xjV8a3
+ GvK2BqIyxnH8XsJMxVDXiMVZUkRuTUBU+EeNDmpx0tJu6itzwzMKbYAhaIrvvXGTCkWl
+ 5zD89kepakkNeMdsz8jhNcCenAA9TLNNXEPyDBcMFJu59DIuf8Hmmmdwh5Rukk0zHrdX
+ 0qwaNnfkG+3kEsQefX7Az/CBwnedd3NGDaa/URp9hgNRCcZ6T+A4XihjzkuLImNdESNt
+ y7Mw==
+X-Gm-Message-State: AOJu0YwAeDJyu+WxWprVsJPEcHeW0Foh0xVe16IrpwFBhNKafP+IBJR/
+ 7RltGBqolTipyyRjDqTToh2f3gQ1H7xweg==
+X-Google-Smtp-Source: AGHT+IEwyFf6TBlUpupbE5/sG8DH/8UqEClN6f0Ka0DX5H9u2yALSKN7hrjMz0WwwCyLDbbo/HqimQ==
+X-Received: by 2002:a17:902:fb8f:b0:1c9:dac0:fbc2 with SMTP id
+ lg15-20020a170902fb8f00b001c9dac0fbc2mr2136285plb.13.1697084032932; 
+ Wed, 11 Oct 2023 21:13:52 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.13.46
+ ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.13.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 21:13:48 -0700 (PDT)
+ Wed, 11 Oct 2023 21:13:52 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 48/54] gdbstub: replace exit calls with proper shutdown for
- softmmu
-Date: Thu, 12 Oct 2023 14:10:45 +1000
-Message-ID: <20231012041051.2572507-49-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 49/54] target/riscv/kvm: improve 'init_multiext_cfg' error msg
+Date: Thu, 12 Oct 2023 14:10:46 +1000
+Message-ID: <20231012041051.2572507-50-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012041051.2572507-1-alistair.francis@wdc.com>
 References: <20231012041051.2572507-1-alistair.francis@wdc.com>
@@ -99,98 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Chigot <chigot@adacore.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-This replaces the exit calls by shutdown requests, ensuring a proper
-cleanup of Qemu. Features like net/vhost-vdpa.c are expecting
-qemu_cleanup to be called to remove their last residuals.
+Our error message is returning the value of 'ret', which will be always
+-1 in case of error, and will not be that useful:
 
-Signed-off-by: Clément Chigot <chigot@adacore.com>
+qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error -1
+
+Improve the error message by outputting 'errno' instead of 'ret'. Use
+strerrorname_np() to output the error name instead of the error code.
+This will give us what we need to know right away:
+
+qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error code: ENOENT
+
+Given that we're going to exit(1) in this condition instead of
+attempting to recover, remove the 'kvm_riscv_destroy_scratch_vcpu()'
+call.
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20231003071427.188697-6-chigot@adacore.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20231003132148.797921-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/gdbstub/syscalls.h | 9 +++++++++
- gdbstub/gdbstub.c          | 5 +++--
- gdbstub/system.c           | 6 ++++++
- gdbstub/user.c             | 6 ++++++
- 4 files changed, 24 insertions(+), 2 deletions(-)
+ target/riscv/kvm/kvm-cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/gdbstub/syscalls.h b/include/gdbstub/syscalls.h
-index 243eaf8ce4..54ff7245a1 100644
---- a/include/gdbstub/syscalls.h
-+++ b/include/gdbstub/syscalls.h
-@@ -110,4 +110,13 @@ int use_gdb_syscalls(void);
-  */
- void gdb_exit(int code);
- 
-+/**
-+ * gdb_qemu_exit: ask qemu to exit
-+ * @code: exit code reported
-+ *
-+ * This requests qemu to exit. This function is allowed to return as
-+ * the exit request might be processed asynchronously by qemu backend.
-+ */
-+void gdb_qemu_exit(int code);
-+
- #endif /* _SYSCALLS_H_ */
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index b1532118d1..1e96a71c0c 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -1324,7 +1324,7 @@ static void handle_v_kill(GArray *params, void *user_ctx)
-     gdb_put_packet("OK");
-     error_report("QEMU: Terminated via GDBstub");
-     gdb_exit(0);
--    exit(0);
-+    gdb_qemu_exit(0);
- }
- 
- static const GdbCmdParseEntry gdb_v_commands_table[] = {
-@@ -1843,7 +1843,8 @@ static int gdb_handle_packet(const char *line_buf)
-         /* Kill the target */
-         error_report("QEMU: Terminated via GDBstub");
-         gdb_exit(0);
--        exit(0);
-+        gdb_qemu_exit(0);
-+        break;
-     case 'D':
-         {
-             static const GdbCmdParseEntry detach_cmd_desc = {
-diff --git a/gdbstub/system.c b/gdbstub/system.c
-index 48976873d2..783ac140b9 100644
---- a/gdbstub/system.c
-+++ b/gdbstub/system.c
-@@ -435,6 +435,12 @@ void gdb_exit(int code)
-     qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
- }
- 
-+void gdb_qemu_exit(int code)
-+{
-+    qemu_system_shutdown_request_with_code(SHUTDOWN_CAUSE_GUEST_SHUTDOWN,
-+                                           code);
-+}
-+
- /*
-  * Memory access
-  */
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index 7ab6e5d975..dbe1d9b887 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -113,6 +113,12 @@ void gdb_exit(int code)
-         gdb_put_packet(buf);
-         gdbserver_state.allow_stop_reply = false;
-     }
-+
-+}
-+
-+void gdb_qemu_exit(int code)
-+{
-+    exit(code);
- }
- 
- int gdb_handlesig(CPUState *cpu, int sig)
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index c6615cb807..c3daf74fe9 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -792,8 +792,8 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+                 val = false;
+             } else {
+                 error_report("Unable to read ISA_EXT KVM register %s, "
+-                             "error %d", multi_ext_cfg->name, ret);
+-                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
++                             "error code: %s", multi_ext_cfg->name,
++                             strerrorname_np(errno));
+                 exit(EXIT_FAILURE);
+             }
+         } else {
 -- 
 2.41.0
 
