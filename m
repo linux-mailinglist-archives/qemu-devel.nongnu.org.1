@@ -2,92 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B377C65E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 08:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A04CE7C6626
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 09:16:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqpUu-0000Ef-DJ; Thu, 12 Oct 2023 02:48:40 -0400
+	id 1qqpuF-0005sp-Pu; Thu, 12 Oct 2023 03:14:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qqpUr-0000Ds-Uu
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 02:48:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qqpuA-0005sc-UV
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:14:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qqpUq-0003Ad-AU
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 02:48:37 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qqpu7-0000J1-Rd
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:14:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697093315;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1697094882;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=z5EDA50ufq9/kOtFg+ub4Fe73qnUX4GM+Djb7OcHqWU=;
- b=B6WC+HCb0dsmcdxsfQHL15fK7rcrGt91B/PNS02WLPAvgFjKM6S1SKhig2VrikS8lA/nvw
- GIhB7k99c7HpcM+i1XBTPx+b087X7qlr/acx6iJTgeIt/EvTCaWn5MtNb6mBEjIYiGD8Tc
- niCZnwd7oNFiMIJ1Eq9ABYyczYIUGb0=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-346-KS28oOf4NRiY3lI8GiW9lA-1; Thu, 12 Oct 2023 02:48:23 -0400
-X-MC-Unique: KS28oOf4NRiY3lI8GiW9lA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-77435bbb71dso72098485a.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 23:48:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697093302; x=1697698102;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z5EDA50ufq9/kOtFg+ub4Fe73qnUX4GM+Djb7OcHqWU=;
- b=dTk/6Xob3XE8DO64bflxd7lA0lZJsr3IWdsjPGDYzh4dusfG1q2RuHFqx+Q1YE280t
- GV/0NKsOCOR/GUzUOseOeDDu7y/8DZ0ak1PKmVIQiAwPnfkBrUe+345GcWFRDHGfOAc4
- ann3JTCd0iY9L/MmreDko7xlt7W5aDuXxtYkDoqrxR5cn0PdvzsNUhFzTdHiZ2vRbw0F
- LwfNDfIlsPaLw5+cgBnuOw9CPpsy1H8ch3HXUuDh5vtWGzWzI5rIpFIwVYDja+ojhd7S
- uX1BxwlN72iqMqAUu/X32A3UuxdL9ZUgytvqG2Ts08KS6W9FaUT4AeJm2wN93fojs+W+
- /Pzw==
-X-Gm-Message-State: AOJu0YwWv/QBFXobPTSHftGOHikU7jMg2uMxkWHRg84TjXrAQKTSln9I
- CakP3ej71u8TEOYjqu2taCRrCtKu9X954cw6GkyydcjClLzztqfZ38txTmVxEEMetT+ZOzdYjcC
- WS9w57Ht4USiMNlU=
-X-Received: by 2002:a05:620a:d5c:b0:76f:1f05:e994 with SMTP id
- o28-20020a05620a0d5c00b0076f1f05e994mr19296504qkl.64.1697093302594; 
- Wed, 11 Oct 2023 23:48:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0iYQ5rH4AUngPCkUrg0W6mXlzClutlWfiGn8blhrEEPZgdTkxSVv7hIEoBFNtWAI5sj/03Q==
-X-Received: by 2002:a05:620a:d5c:b0:76f:1f05:e994 with SMTP id
- o28-20020a05620a0d5c00b0076f1f05e994mr19296490qkl.64.1697093302281; 
- Wed, 11 Oct 2023 23:48:22 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- c7-20020ae9e207000000b00774133fb9a3sm5808931qkc.114.2023.10.11.23.48.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 23:48:21 -0700 (PDT)
-Message-ID: <2172988b-c5b9-bb94-2ea1-905903bb958b@redhat.com>
-Date: Thu, 12 Oct 2023 08:48:19 +0200
+ bh=6Se6r8Aw0Ivbq9fRt2qpMfpa72D6Zk/nb4wUdnuPDFY=;
+ b=I4Mz//t33Ph6k83lEL6lcwO38QqkqsFS3vCpkJv72DAPnemKwLhpAjmmRd/5nIU21EA6bW
+ OqlEKy8PDxqVZUIb2HH3aXqcogAQ1wvc0izZOVS16yjArp+m1IbrSI4Q94KqOXkatc3K65
+ kX7CcAvbqpzuRNyIVAi3kVGT+4KRcHs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-57-2MPN1oUfNYu3XicEKnaoOQ-1; Thu, 12 Oct 2023 03:14:29 -0400
+X-MC-Unique: 2MPN1oUfNYu3XicEKnaoOQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A2361C08963;
+ Thu, 12 Oct 2023 07:14:28 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.32])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B6871111CD23;
+ Thu, 12 Oct 2023 07:14:27 +0000 (UTC)
+Date: Thu, 12 Oct 2023 08:14:25 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ Tyler Fanelli <tfanelli@redhat.com>
+Subject: Re: [PULL 50/51] subprojects: add wrap file for libblkio
+Message-ID: <ZSec0WPZQqv9DrxS@redhat.com>
+References: <20230907130004.500601-1-pbonzini@redhat.com>
+ <20230907130004.500601-51-pbonzini@redhat.com>
+ <14ff27a8-284b-66f8-097a-5d49c94dcff8@linaro.org>
+ <ZSZhCcnn2C37uZWH@redhat.com>
+ <CAJSP0QWZM9DuYOOzEP1hj5pF1e0T1bf8B__c79r+V7XSBWYuxw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] vfio/pci: Remove vfio_detach_device from vfio_realize
- error path
-Content-Language: en-US
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, alex.williamson@redhat.com, zhenzhong.duan@intel.com,
- yi.l.liu@intel.com, yanghliu@redhat.com
-References: <20231011200934.549735-1-eric.auger@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231011200934.549735-1-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJSP0QWZM9DuYOOzEP1hj5pF1e0T1bf8B__c79r+V7XSBWYuxw@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,122 +85,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/11/23 22:09, Eric Auger wrote:
-> In vfio_realize, on the error path, we currently call
-> vfio_detach_device() after a successful vfio_attach_device.
-> While this looks natural, vfio_instance_finalize also induces
-> a vfio_detach_device(), and it seems to be the right place
-> instead as other resources are released there which happen
-> to be a prerequisite to a successful UNSET_CONTAINER.
+On Wed, Oct 11, 2023 at 04:58:01PM -0400, Stefan Hajnoczi wrote:
+> On Wed, 11 Oct 2023 at 04:48, Daniel P. Berrangé <berrange@redhat.com> wrote:
+> >
+> > On Wed, Oct 11, 2023 at 07:35:24AM +0200, Philippe Mathieu-Daudé wrote:
+> > > Hi Paolo,
+> > >
+> > > On 7/9/23 14:59, Paolo Bonzini wrote:
+> > > > This allows building libblkio at the same time as QEMU, if QEMU is
+> > > > configured with --enable-blkio --enable-download.
+> > > >
+> > > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > > > ---
+> > > >   subprojects/libblkio.wrap | 6 ++++++
+> > > >   1 file changed, 6 insertions(+)
+> > > >   create mode 100644 subprojects/libblkio.wrap
+> > > >
+> > > > diff --git a/subprojects/libblkio.wrap b/subprojects/libblkio.wrap
+> > > > new file mode 100644
+> > > > index 00000000000..f77af72210c
+> > > > --- /dev/null
+> > > > +++ b/subprojects/libblkio.wrap
+> > > > @@ -0,0 +1,6 @@
+> > > > +[wrap-git]
+> > > > +url = https://gitlab.com/libblkio/libblkio
+> > >
+> > > Tyler noticed this project isn't mirrored on QEMU gitlab namespace.
+> >
+> > Many other wraps aren't mirrored either, and I'm not convinced we
+> > need to, unless the project is on an obscure self hosted git service
+> > which is thought unreliable.
 > 
-> So let's rely on the finalize vfio_detach_device call to free
-> all the relevant resources.
-> 
-> Fixes: a28e06621170 ("vfio/pci: Introduce vfio_[attach/detach]_device")
-> Reported-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> 
-> ---
-> 
-> This applies on top of vfio-next
+> What if upstream deletes the repository or sets visibility to
+> "private"? Do GitHub and GitLab guarantee availability of previously
+> public repositories?
 
-Applied to vfio-next.
+No, there's no such guarantee. If it was a repo under a personal user
+namespace mirroring is justified for this reason, but for a project
+level namespace I feel we're protecting ourselves from a scenario
+that's just never going to happen.
 
-> Note I am not sure the SHA1 of
-> vfio/pci: Introduce vfio_[attach/detach]_device
-> is stable.
-
-It should if I only rebase on master. If I need to re-apply, I will drop
-the Fixes tag.
-
-Thanks,
-
-C.
-
-
-
-> ---
->   hw/vfio/pci.c | 16 +++++++---------
->   1 file changed, 7 insertions(+), 9 deletions(-)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 40ae46266e..6e3f6aba28 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3115,7 +3115,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       vfio_populate_device(vdev, &err);
->       if (err) {
->           error_propagate(errp, err);
-> -        goto out_detach;
-> +        goto error;
->       }
->   
->       /* Get a copy of config space */
-> @@ -3125,7 +3125,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       if (ret < (int)MIN(pci_config_size(&vdev->pdev), vdev->config_size)) {
->           ret = ret < 0 ? -errno : -EFAULT;
->           error_setg_errno(errp, -ret, "failed to read device config space");
-> -        goto out_detach;
-> +        goto error;
->       }
->   
->       /* vfio emulates a lot for us, but some bits need extra love */
-> @@ -3144,7 +3144,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       if (vdev->vendor_id != PCI_ANY_ID) {
->           if (vdev->vendor_id >= 0xffff) {
->               error_setg(errp, "invalid PCI vendor ID provided");
-> -            goto out_detach;
-> +            goto error;
->           }
->           vfio_add_emulated_word(vdev, PCI_VENDOR_ID, vdev->vendor_id, ~0);
->           trace_vfio_pci_emulated_vendor_id(vbasedev->name, vdev->vendor_id);
-> @@ -3155,7 +3155,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       if (vdev->device_id != PCI_ANY_ID) {
->           if (vdev->device_id > 0xffff) {
->               error_setg(errp, "invalid PCI device ID provided");
-> -            goto out_detach;
-> +            goto error;
->           }
->           vfio_add_emulated_word(vdev, PCI_DEVICE_ID, vdev->device_id, ~0);
->           trace_vfio_pci_emulated_device_id(vbasedev->name, vdev->device_id);
-> @@ -3166,7 +3166,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       if (vdev->sub_vendor_id != PCI_ANY_ID) {
->           if (vdev->sub_vendor_id > 0xffff) {
->               error_setg(errp, "invalid PCI subsystem vendor ID provided");
-> -            goto out_detach;
-> +            goto error;
->           }
->           vfio_add_emulated_word(vdev, PCI_SUBSYSTEM_VENDOR_ID,
->                                  vdev->sub_vendor_id, ~0);
-> @@ -3177,7 +3177,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       if (vdev->sub_device_id != PCI_ANY_ID) {
->           if (vdev->sub_device_id > 0xffff) {
->               error_setg(errp, "invalid PCI subsystem device ID provided");
-> -            goto out_detach;
-> +            goto error;
->           }
->           vfio_add_emulated_word(vdev, PCI_SUBSYSTEM_ID, vdev->sub_device_id, ~0);
->           trace_vfio_pci_emulated_sub_device_id(vbasedev->name,
-> @@ -3210,7 +3210,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       vfio_msix_early_setup(vdev, &err);
->       if (err) {
->           error_propagate(errp, err);
-> -        goto out_detach;
-> +        goto error;
->       }
->   
->       vfio_bars_register(vdev);
-> @@ -3326,8 +3326,6 @@ out_deregister:
->   out_teardown:
->       vfio_teardown_msi(vdev);
->       vfio_bars_exit(vdev);
-> -out_detach:
-> -    vfio_detach_device(vbasedev);
->   error:
->       error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
->   }
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
