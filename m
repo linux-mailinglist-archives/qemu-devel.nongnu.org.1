@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8D07C6EDA
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 15:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A81D37C6ED5
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 15:11:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqvPi-0002ao-KU; Thu, 12 Oct 2023 09:07:43 -0400
+	id 1qqvS6-0008Al-Jj; Thu, 12 Oct 2023 09:10:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqvPP-0002He-QH
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:07:24 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqvPM-0005Gk-7R
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:07:23 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-523100882f2so1636206a12.2
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 06:07:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697116038; x=1697720838; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uElxi2HlcdsKIdLCnnj5Iek8ftyU5xtffELgvgr3cFw=;
- b=OasvGpx11ehuIOMPauZRbuNST498OKagL9BWNaVlQRlLy9C2shbF0xXXcWDeUs8iXA
- udeya9pgjIszOkuR1IsBqsZEPCiq52hl7Y0uxykNrTwaM0CzrNpe7FKeiyn4N0ApX7cl
- 6+FU9gKHB/ubUichWTy5JOSRnep4RVBAoMqlqIpMD9PyGLEFiKSeOV6+SoM2sp/k7u8Z
- Nx1aq6tHu2tk1W4e5n3uVYdXUw417HYtbdlAeBIDIrdXPRXYkPyW7367jqlHVVF6wY8f
- o8zSqMrh2V/RrqlRy99H9mskkRXVsgjtWR9/cFWYJWCl6mxmbitBhF5qvlAzfjzpWXN2
- Sx/A==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qqvR7-00075d-6P
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:09:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qqvR3-0005UJ-0W
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:09:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697116143;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=AKQrBvpQ5BhFXlkG9LviKUxg1DPybCa3FYN6q1JQiyY=;
+ b=Z8/137lYP0w5RARL0H/hVcZTxKhrXY2mX1ZNnVyN8NTz8pbLg6p+e5XfRJL/xwN1aSJzzB
+ puWsxI5ULS7au1Cl6CMsvQE31ULVwSppteHjtWbaNWBHINuE5wf0O3DyUaLCrDYcD0UwZG
+ C3pYYiloy6wgLoIoB8N4DapLhpY14+I=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-CJxMpa2wNLmtmgcyyYC6CQ-1; Thu, 12 Oct 2023 09:09:02 -0400
+X-MC-Unique: CJxMpa2wNLmtmgcyyYC6CQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30932d15a30so574544f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 06:09:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697116038; x=1697720838;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uElxi2HlcdsKIdLCnnj5Iek8ftyU5xtffELgvgr3cFw=;
- b=GHeKdL2fHywI6q5Mze+DitI1iaU2ez7NvIhc4RWTwkV6a7ExFSEj8J64yZUURTf4Et
- fiEoF6hTx7Oiye8dfhVzHowXA+qhRzt9wxDQ9s1alBhMSvDHkR+oegsLU/TK2DgpLxqd
- 7783VHLUFd5YO2Dqd2NgFRs3sgeyKYWkHaLXThX5Q18Oxp4HWbjIXvND472T9vYwzea0
- Zn8IUpN0D6XaSz/MmPL3VGMhhWXJscl1TLaGQBwDOW22+U9d3jlBxwvdJuSkhJjSKn2b
- qqzwvpn7lTpElK1bTtpz4W3u5klJycY7uc82nItF6h+znVV64sJKEdxQxqwptXB/D09m
- zVaA==
-X-Gm-Message-State: AOJu0YxUg8KpLyUu3olz7PaHBlCY8Y42qj/IaZnLZkjq9q+2aJio6Yaq
- mayhKH9qdC+i659ycPoYdnBvbQ==
-X-Google-Smtp-Source: AGHT+IEIkexhI37EGGJmyUtUoVkqSOBvDhgJYggwPOEXpYfeb9lEhiYNSWzoaPtXIswYw7Qweec21Q==
-X-Received: by 2002:a05:6402:b18:b0:531:1875:bbc8 with SMTP id
- bm24-20020a0564020b1800b005311875bbc8mr21096447edb.19.1697116037908; 
- Thu, 12 Oct 2023 06:07:17 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
- [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
- i34-20020a0564020f2200b0053dec545c8fsm1667629eda.3.2023.10.12.06.07.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 06:07:17 -0700 (PDT)
-Message-ID: <39fb2593-2184-560b-3d67-51f9203f078a@linaro.org>
-Date: Thu, 12 Oct 2023 15:07:15 +0200
+ d=1e100.net; s=20230601; t=1697116141; x=1697720941;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AKQrBvpQ5BhFXlkG9LviKUxg1DPybCa3FYN6q1JQiyY=;
+ b=hoCop9l7bGK8ap3UD9ad3w4Oo46Oby+dOdnuo+6ffenLSX53tiraPmN9Brjw2dF2cz
+ V39Fe9sIM0hCvhZffzewEYgPDJwHRR0X0vg8BvPh7cfxBk0CYEosTpIFUR4hMcDuSJSs
+ p/cwd4BgzeMtUc9tn3SQCurpFbEb3frQGwp7du/asrpeNsfNSKV0eKKsj5Zkl9CVSE+H
+ 35wWu8P3vXIC+fkAfkweOhHM1Pl48fdiEoZi+fJ49ot3VLJ11bQmx5gomCrkEtB4J7C5
+ /lVWaMPscbwkd4C6tgfmlaiWmpORsmcsjoTFKyge3qc5W/Dka1iv7+QAMKNSG1P7rgiT
+ 4gEg==
+X-Gm-Message-State: AOJu0Yx9Yglc0M4CcgjYQXWvd6cXqQNZZlIxhVG1HVG7X0VcVsIpUbMi
+ tj7gI+mgyO/kYg4uX4J4VEOgmOUAGbNA8UaE3qWIvoDPSa21M+8xxyywCaYReZj+Pi7i7WgnP34
+ h8YQDI+965a5iMV8=
+X-Received: by 2002:a05:6000:104a:b0:32d:8b1a:31ad with SMTP id
+ c10-20020a056000104a00b0032d8b1a31admr2639656wrx.24.1697116141213; 
+ Thu, 12 Oct 2023 06:09:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXUejxggEt9FsQgHZ4tUJTywWBv2HwEDQJAI9z1bNCsbV/B326cmkH7NItZEQQmdjQhYLsMQ==
+X-Received: by 2002:a05:6000:104a:b0:32d:8b1a:31ad with SMTP id
+ c10-20020a056000104a00b0032d8b1a31admr2639574wrx.24.1697116139820; 
+ Thu, 12 Oct 2023 06:08:59 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
+ by smtp.gmail.com with ESMTPSA id
+ bv28-20020a0560001f1c00b0032d402f816csm7174551wrb.98.2023.10.12.06.08.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 12 Oct 2023 06:08:59 -0700 (PDT)
+Date: Thu, 12 Oct 2023 09:08:56 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
+ compiling with -Wshadow
+Message-ID: <20231012090829-mutt-send-email-mst@kernel.org>
+References: <20231009083726.30301-1-thuth@redhat.com>
+ <87h6mwyqxn.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 06/11] hw/char/pl011: Extract pl011_write_txdata() from
- pl011_write()
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org
-References: <20230710175102.32429-1-philmd@linaro.org>
- <20230710175102.32429-7-philmd@linaro.org>
- <49918fad-56fc-150e-bb9c-bd00dc67df05@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <49918fad-56fc-150e-bb9c-bd00dc67df05@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h6mwyqxn.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,25 +99,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/7/23 08:58, Richard Henderson wrote:
-> On 7/10/23 18:50, Philippe Mathieu-Daudé wrote:
->> +static void pl011_write_txdata(PL011State *s, const uint8_t *buf, int 
->> length)
->> +{
->> +    /* ??? Check if transmitter is enabled.  */
->> +
->> +    /* XXX this blocks entire thread. Rewrite to use
->> +     * qemu_chr_fe_write and background I/O callbacks */
->> +    qemu_chr_fe_write_all(&s->chr, buf, 1);
+On Thu, Oct 12, 2023 at 02:18:44PM +0200, Markus Armbruster wrote:
+> Thomas Huth <thuth@redhat.com> writes:
 > 
-> Not using length?
-
-This is a simple "code extract" patch. Length is used when
-we switch to FIFO in the last patch.
-
->> +        pl011_write_txdata(s, (uint8_t *) &value, 1);
+> > Rename some variables to avoid compiler warnings when compiling
+> > with -Wshadow=local.
+> >
+> > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > ---
+> >  v2: Renamed the variable to something more unique
+> >
+> >  contrib/vhost-user-gpu/vugpu.h          | 8 ++++----
+> >  contrib/vhost-user-gpu/vhost-user-gpu.c | 6 +++---
+> >  2 files changed, 7 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/contrib/vhost-user-gpu/vugpu.h b/contrib/vhost-user-gpu/vugpu.h
+> > index 509b679f03..654c392fbb 100644
+> > --- a/contrib/vhost-user-gpu/vugpu.h
+> > +++ b/contrib/vhost-user-gpu/vugpu.h
+> > @@ -164,12 +164,12 @@ struct virtio_gpu_ctrl_command {
+> >  };
+> >  
+> >  #define VUGPU_FILL_CMD(out) do {                                \
+> > -        size_t s;                                               \
+> > -        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
+> > +        size_t vugpufillcmd_s_ =                                \
+> > +            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
+> >                         &out, sizeof(out));                      \
+> > -        if (s != sizeof(out)) {                                 \
+> > +        if (vugpufillcmd_s_ != sizeof(out)) {                   \
+> >              g_critical("%s: command size incorrect %zu vs %zu", \
+> > -                       __func__, s, sizeof(out));               \
+> > +                       __func__, vugpufillcmd_s_, sizeof(out)); \
+> >              return;                                             \
+> >          }                                                       \
+> >      } while (0)
 > 
-> Host endianness error.  Copy to local uint8_t first.
+> v1 renamed to s_ instead, which I find much easier to read.  Michael
+> asked you to change it so it's less likely to break if we pass it a
+> macro that also uses s_.  Unlikely to happen, and would fail safe: build
+> breaks.
+> 
+> > diff --git a/contrib/vhost-user-gpu/vhost-user-gpu.c b/contrib/vhost-user-gpu/vhost-user-gpu.c
+> > index aa304475a0..bb41758e34 100644
+> > --- a/contrib/vhost-user-gpu/vhost-user-gpu.c
+> > +++ b/contrib/vhost-user-gpu/vhost-user-gpu.c
+> > @@ -834,7 +834,7 @@ vg_resource_flush(VuGpu *g,
+> >                  .width = width,
+> >                  .height = height,
+> >              };
+> > -            pixman_image_t *i =
+> > +            pixman_image_t *img =
+> >                  pixman_image_create_bits(pixman_image_get_format(res->image),
+> >                                           msg->payload.update.width,
+> >                                           msg->payload.update.height,
+> > @@ -842,11 +842,11 @@ vg_resource_flush(VuGpu *g,
+> >                                                        payload.update.data),
+> >                                           width * bpp);
+> >              pixman_image_composite(PIXMAN_OP_SRC,
+> > -                                   res->image, NULL, i,
+> > +                                   res->image, NULL, img,
+> >                                     extents->x1, extents->y1,
+> >                                     0, 0, 0, 0,
+> >                                     width, height);
+> > -            pixman_image_unref(i);
+> > +            pixman_image_unref(img);
+> >              vg_send_msg(g, msg, -1);
+> >              g_free(msg);
+> >          }
+> 
+> I'm going to queue v1.  Michael, if you want me to queue v2 instead, or
+> neither of the two, let me know.
 
-Oops, good catch, thanks.
+Yea I think v2 is better, queue that please.
+
 
