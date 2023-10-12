@@ -2,76 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04CE7C6626
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 09:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D14E87C662B
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 09:18:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqpuF-0005sp-Pu; Thu, 12 Oct 2023 03:14:51 -0400
+	id 1qqpw4-000737-EY; Thu, 12 Oct 2023 03:16:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qqpuA-0005sc-UV
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:14:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qqpvs-0006xv-Cr; Thu, 12 Oct 2023 03:16:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qqpu7-0000J1-Rd
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:14:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697094882;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6Se6r8Aw0Ivbq9fRt2qpMfpa72D6Zk/nb4wUdnuPDFY=;
- b=I4Mz//t33Ph6k83lEL6lcwO38QqkqsFS3vCpkJv72DAPnemKwLhpAjmmRd/5nIU21EA6bW
- OqlEKy8PDxqVZUIb2HH3aXqcogAQ1wvc0izZOVS16yjArp+m1IbrSI4Q94KqOXkatc3K65
- kX7CcAvbqpzuRNyIVAi3kVGT+4KRcHs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-57-2MPN1oUfNYu3XicEKnaoOQ-1; Thu, 12 Oct 2023 03:14:29 -0400
-X-MC-Unique: 2MPN1oUfNYu3XicEKnaoOQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A2361C08963;
- Thu, 12 Oct 2023 07:14:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.32])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B6871111CD23;
- Thu, 12 Oct 2023 07:14:27 +0000 (UTC)
-Date: Thu, 12 Oct 2023 08:14:25 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Tyler Fanelli <tfanelli@redhat.com>
-Subject: Re: [PULL 50/51] subprojects: add wrap file for libblkio
-Message-ID: <ZSec0WPZQqv9DrxS@redhat.com>
-References: <20230907130004.500601-1-pbonzini@redhat.com>
- <20230907130004.500601-51-pbonzini@redhat.com>
- <14ff27a8-284b-66f8-097a-5d49c94dcff8@linaro.org>
- <ZSZhCcnn2C37uZWH@redhat.com>
- <CAJSP0QWZM9DuYOOzEP1hj5pF1e0T1bf8B__c79r+V7XSBWYuxw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qqpvq-0000sU-30; Thu, 12 Oct 2023 03:16:32 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 2BD5C29AC3;
+ Thu, 12 Oct 2023 10:16:34 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id E7DBF2E9AF;
+ Thu, 12 Oct 2023 10:16:26 +0300 (MSK)
+Received: (nullmailer pid 25936 invoked by uid 1000);
+ Thu, 12 Oct 2023 07:16:26 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 00/61] Patch Round-up for stable 8.1.2,
+ freeze on 2023-12-14
+Date: Thu, 12 Oct 2023 10:16:13 +0300
+Message-Id: <qemu-stable-8.1.2-20231012101342@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJSP0QWZM9DuYOOzEP1hj5pF1e0T1bf8B__c79r+V7XSBWYuxw@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,55 +54,162 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 11, 2023 at 04:58:01PM -0400, Stefan Hajnoczi wrote:
-> On Wed, 11 Oct 2023 at 04:48, Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > On Wed, Oct 11, 2023 at 07:35:24AM +0200, Philippe Mathieu-Daudé wrote:
-> > > Hi Paolo,
-> > >
-> > > On 7/9/23 14:59, Paolo Bonzini wrote:
-> > > > This allows building libblkio at the same time as QEMU, if QEMU is
-> > > > configured with --enable-blkio --enable-download.
-> > > >
-> > > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > > > ---
-> > > >   subprojects/libblkio.wrap | 6 ++++++
-> > > >   1 file changed, 6 insertions(+)
-> > > >   create mode 100644 subprojects/libblkio.wrap
-> > > >
-> > > > diff --git a/subprojects/libblkio.wrap b/subprojects/libblkio.wrap
-> > > > new file mode 100644
-> > > > index 00000000000..f77af72210c
-> > > > --- /dev/null
-> > > > +++ b/subprojects/libblkio.wrap
-> > > > @@ -0,0 +1,6 @@
-> > > > +[wrap-git]
-> > > > +url = https://gitlab.com/libblkio/libblkio
-> > >
-> > > Tyler noticed this project isn't mirrored on QEMU gitlab namespace.
-> >
-> > Many other wraps aren't mirrored either, and I'm not convinced we
-> > need to, unless the project is on an obscure self hosted git service
-> > which is thought unreliable.
-> 
-> What if upstream deletes the repository or sets visibility to
-> "private"? Do GitHub and GitLab guarantee availability of previously
-> public repositories?
+The following patches are queued for QEMU stable v8.1.2:
 
-No, there's no such guarantee. If it was a repo under a personal user
-namespace mirroring is justified for this reason, but for a project
-level namespace I feel we're protecting ourselves from a scenario
-that's just never going to happen.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.1
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Patch freeze is 2023-12-14, and the release is planned for 2023-14-16:
 
+  https://wiki.qemu.org/Planning/8.1
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+This release supposed to finally fix some long-standing issues in 8.1.x series,
+by including commit 0d58c660689f "softmmu: Use async_run_on_cpu in tcg_commit"
+and follow-up series fixing issues in other areas it uncovered, among other
+fixes.
+
+I was quite busy the last few days, - so I had to move the initially planned
+release by 2 days, - freeze from Oct-10 to Oct-12 (today), release from
+Oct-12 to Oct-14.  Please excuse me for this delay.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01* 7798f5c576d8 Nicholas Piggin:
+   hw/ppc: Introduce functions for conversion between timebase and 
+   nanoseconds
+02* 47de6c4c2870 Nicholas Piggin:
+   host-utils: Add muldiv64_round_up
+03* eab0888418ab Nicholas Piggin:
+   hw/ppc: Round up the decrementer interval when converting to ns
+04* 8e0a5ac87800 Nicholas Piggin:
+   hw/ppc: Avoid decrementer rounding errors
+05* c8fbc6b9f2f3 Nicholas Piggin:
+   target/ppc: Sign-extend large decrementer to 64-bits
+06* febb71d543a8 Nicholas Piggin:
+   hw/ppc: Always store the decrementer value
+07* 30d0647bcfa9 Nicholas Piggin:
+   hw/ppc: Reset timebase facilities on machine reset
+08* ea62f8a5172c Nicholas Piggin:
+   hw/ppc: Read time only once to perform decrementer write
+09* 2529497cb6b2 Mikulas Patocka:
+   linux-user/hppa: clear the PSW 'N' bit when delivering signals
+10* 5b1270ef1477 Mikulas Patocka:
+   linux-user/hppa: lock both words of function descriptor
+11* 7b165fa16402 Li Zhijian:
+   hw/cxl: Fix CFMW config memory leak
+12* de5bbfc602ef Dmitry Frolov:
+   hw/cxl: Fix out of bound array access
+13* 56d1a022a77e Hanna Czenczek:
+   file-posix: Clear bs->bl.zoned on error
+14* 4b5d80f3d020 Hanna Czenczek:
+   file-posix: Check bs->bl.zoned for zone info
+15* deab5c9a4ed7 Hanna Czenczek:
+   file-posix: Fix zone update in I/O error path
+16* d31b50a15dd2 Hanna Czenczek:
+   file-posix: Simplify raw_co_prw's 'out' zone code
+17* 380448464dd8 Hanna Czenczek:
+   tests/file-io-error: New test
+18* c78edb563942 Anton Johansson:
+   include/exec: Widen tlb_hit/tlb_hit_page()
+19* 32b214384e1e Fabian Vogt:
+   hw/arm/boot: Set SCR_EL3.FGTEn when booting kernel
+20* 903dbefc2b69 Peter Maydell:
+   target/arm: Don't skip MTE checks for LDRT/STRT at EL0
+21* c64023b0ba67 Thomas Huth:
+   meson.build: Make keyutils independent from keyring
+22* 0e5903436de7 Nicholas Piggin:
+   accel/tcg: mttcg remove false-negative halted assertion
+23* 7cfcc79b0ab8 Thomas Huth:
+   hw/scsi/scsi-disk: Disallow block sizes smaller than 512 [CVE-2023-42467]
+24* 0cb9c5880e6b Paolo Bonzini:
+   ui/vnc: fix debug output for invalid audio message
+25* 477b301000d6 Paolo Bonzini:
+   ui/vnc: fix handling of VNC_FEATURE_XVP
+26* cf02f29e1e38 Peter Xu:
+   migration: Fix race that dest preempt thread close too early
+27* 28a8347281e2 Fabiano Rosas:
+   migration: Fix possible race when setting rp_state.error
+28* 639decf52979 Fabiano Rosas:
+   migration: Fix possible races when shutting down the return path
+29* 7478fb0df914 Fabiano Rosas:
+   migration: Fix possible race when shutting down to_dst_file
+30* b3b101157d46 Fabiano Rosas:
+   migration: Remove redundant cleanup of postcopy_qemufile_src
+31* d50f5dc075cb Fabiano Rosas:
+   migration: Consolidate return path closing code
+32* ef796ee93b31 Fabiano Rosas:
+   migration: Replace the return path retry logic
+33* 36e9aab3c569 Fabiano Rosas:
+   migration: Move return path cleanup to main migration thread
+34* 0d58c660689f Richard Henderson:
+   softmmu: Use async_run_on_cpu in tcg_commit
+35* f47a90dacca8 Richard Henderson:
+   accel/tcg: Avoid load of icount_decr if unused
+36* 5d97e9463810 Richard Henderson:
+   accel/tcg: Hoist CF_MEMI_ONLY check outside translation loop
+37* 0ca41ccf1c55 Richard Henderson:
+   accel/tcg: Track current value of can_do_io in the TB
+38* a2f99d484c54 Richard Henderson:
+   accel/tcg: Improve setting of can_do_io at start of TB
+39* 200c1f904f46 Richard Henderson:
+   accel/tcg: Always set CF_LAST_IO with CF_NOIRQ
+40* 18a536f1f8d6 Richard Henderson:
+   accel/tcg: Always require can_do_io
+41* 23fa6f56b33f Bastian Koppelmann:
+   target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
+42* 35ed01ba5448 Fabiano Rosas:
+   optionrom: Remove build-id section
+43* b86dc5cb0b41 Mark Cave-Ayland:
+   esp: use correct type for esp_dma_enable() in sysbus_esp_gpio_demux()
+44* 77668e4b9bca Mark Cave-Ayland:
+   esp: restrict non-DMA transfer length to that of available data
+45* be2b619a1734 Mark Cave-Ayland:
+   scsi-disk: ensure that FORMAT UNIT commands are terminated
+46* c01196bdddc2 Thomas Huth:
+   subprojects/berkeley-testfloat-3: Update to fix a problem with compiler 
+   warnings
+47* a48b26978a09 Paolo Bonzini:
+   target/i386: generalize operand size "ph" for use in CVTPS2PD
+48* abd41884c530 Paolo Bonzini:
+   target/i386: fix memory operand size for CVTPS2PD
+49* 75b773d84c89 Marc-André Lureau:
+   win32: avoid discarding the exception handler
+50* e0288a778473 Laszlo Ersek:
+   hw/display/ramfb: plug slight guest-triggerable leak on mode setting
+51* 4f7689f0817a Thomas Huth:
+   chardev/char-pty: Avoid losing bytes when the other side just 
+   (re-)connected
+52* 33bc4fa78b06 Richard Henderson:
+   linux-user/hppa: Fix struct target_sigcontext layout
+53* 0a7a164bc37b Eugenio Pérez:
+   vdpa net: zero vhost_vdpa iova_tree pointer at cleanup
+54* cbc9ae87b5f6 Eugenio Pérez:
+   vdpa net: fix error message setting virtio status
+55* f1085882d028 Eugenio Pérez:
+   vdpa net: stop probing if cannot set features
+56* 845ec38ae157 Eugenio Pérez:
+   vdpa net: follow VirtIO initialization properly at cvq isolation probing
+57* 0114c4513095 Akihiko Odaki:
+   amd_iommu: Fix APIC address check
+58 931150e56b05 Alex Williamson:
+   vfio/display: Fix missing update to set backing fields
+59 f05142d511e8 Fiona Ebner:
+   util/log: re-allow switching away from stderr log file
+60 86dec715a733 Peter Xu:
+   migration/qmp: Fix crash on setting tls-authz with null
+61 00e3b29d065f Volker Rümelin:
+   hw/audio/es1370: reset current sample counter
+
+(commit(s) marked with * were in previous series and are not resent)
 
