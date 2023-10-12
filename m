@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE7B7C7367
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F377C736F
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:48:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqypR-0000Vm-0U; Thu, 12 Oct 2023 12:46:29 -0400
+	id 1qqyrl-0004CH-Vi; Thu, 12 Oct 2023 12:48:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qqypO-0000UQ-O8
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:46:26 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqyrj-0004C8-PQ
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:48:51 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qqypM-0004af-W4
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:46:26 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6910ea9cddbso951837b3a.0
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 09:46:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqyrh-00054g-VJ
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:48:51 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-406618d080eso12917655e9.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 09:48:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697129183; x=1697733983; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D450GvVsUxyAWTsRT23YkGSGJwCkzWDn8dzA+f817Dw=;
- b=ZfvaGre9S0xOZTlm8xyy6Dl/yPAf0gLQbQkZzTW7JFMyKQ+ww9fjurfBGSQboWlFpO
- yKt1ERcEq/n9+Sh5uq9/C7MSWNOBmb61+ENZDgSq2RKCK7WrEjp7PKlpeokJ2Alg/ZXY
- hLuw17pNtGzF61SuXiVkKer/FORlYqxSBZqt/9JOA51ja2mNn69sYdZ+kq5nupj+0y0f
- 7mDH2qOtN1w7XImoFkJhD1/iKOTgxAWr4wQJZKtt0lLippoCCUDWayOUMNmD5tpnDVwU
- dHDdSZw79zJMCHYcfLpcZw0dYkWpMvOxChHHnZoUuvn0UF1+Okitav9nGp7uNj20wBE5
- 9Ufw==
+ d=linaro.org; s=google; t=1697129328; x=1697734128; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=r01YRQkFv0UxKDuIi97AXhaHGIMR5xQ/ZDGeEdmsu5c=;
+ b=CxnLSQqJLgPkMXATR1m32AXoNlsCo0JiBiOHrwPk4UzR+NhWuxsG2fIFpE3JkStj/V
+ lutj+SAQjVSa024SBag3RrIfDW38q2R/yFClTo2RfLHrKPvPKTzZo7KzcOAWxQd5xpnE
+ S6QKx1ln8RpkYVWenNVSzsAHGT0FmZcFKl25ETlicj5tVFf6y3ivHGny9LsqeFtH3eI+
+ tgOOk5qDPd6xJ+BljfCJ4HuuyipepiASASCXfHG+uHFNAPAREihvPXk/xFpvVAk5wIaR
+ 1wGy2m3IW4IW3CH76qdsoP5UBx/aRLk4SM2GnS41yRtc9KU9dsoI+h6NUiUGmsrN0MWV
+ MLNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697129183; x=1697733983;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=D450GvVsUxyAWTsRT23YkGSGJwCkzWDn8dzA+f817Dw=;
- b=MzOZmKGMWEhUpGdkIY8dH99fXyzd1unaq4Ra3SREH5zfrxNF1TcUIVUqfBLWl6OW9u
- y3iHS4yP0xGpuYkcuI/jv8E+iajKuLvB6/V7woAACV6cqwaQ2XwdNUGU8RCwumFjqR0z
- 4qpxWKwGabfZbl51u50BVmPdc/tJw69V4/z3owiFvUtha6wF7uFxoy1K/v6SDoi60Qtg
- 3Ux4zW7n3fkJ7O+8qiYHgrDIRN+YxwFA6aF5zHw1AAGYsAJSAzMJDMIWp6ehruxVLdA2
- E6ZjeHeXdrqGlGHYD8Vq4dn/W23luroxvQWvmnq14BvG9Hr9nSjC0cSkUJPlEhpu8aq7
- /ZYA==
-X-Gm-Message-State: AOJu0YxnDKAfy9GobZrDKIPSyNw70PIQyw3KCCc42d1UL0AhjKgeaQNc
- vGsMnjcUUtAteEWmLIHX6UFGEFAUI6g2j6hd3sQ=
-X-Google-Smtp-Source: AGHT+IGvvy3+LipDm+XJOvnkGVgMAo2xAgPSgVjb8KLAlb/vW3u9Z2hvBhrQOTNqKf8egw1dC/rB8g==
-X-Received: by 2002:a05:6a00:1506:b0:690:cd6e:8d38 with SMTP id
- q6-20020a056a00150600b00690cd6e8d38mr30695097pfu.25.1697129183439; 
- Thu, 12 Oct 2023 09:46:23 -0700 (PDT)
-Received: from grind.dc1.ventanamicro.com ([177.94.42.196])
- by smtp.gmail.com with ESMTPSA id
- g5-20020aa78185000000b0068feb378b89sm12416805pfi.171.2023.10.12.09.46.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Oct 2023 09:46:23 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 4/4] target/riscv: rename ext_icboz to ext_zicboz
-Date: Thu, 12 Oct 2023 13:46:04 -0300
-Message-ID: <20231012164604.398496-5-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231012164604.398496-1-dbarboza@ventanamicro.com>
-References: <20231012164604.398496-1-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20230601; t=1697129328; x=1697734128;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=r01YRQkFv0UxKDuIi97AXhaHGIMR5xQ/ZDGeEdmsu5c=;
+ b=v9ffAOUG7TWKQ6VC0UzSD+YX0cne2P4sliuLB7EC6HeXO0QfOVkpDTK18AKgSw3SQi
+ NIsNuduI3EqzJSvZtHK0p/AfTcVBHXExi5uLLltAJwvjpjUgamFsP8+jqUmDmHPmQIXc
+ sI/rn+B6y4EztCyC3S7d1kjvgRuOgIFy5CPy6XU8x8GY/+K8DsFmMYiyZFVzhNJP3BnC
+ 9C9ztasVBSeSauuBlyhpX/Xv99N/9rVdc+HWM48o2d7pRfTLCTkfXHUU67dbikIsTZDF
+ 3TpmfbHpwNxOHlrgM37OwBrrT19PMGjwaY5/yU/LovOZLvDB58WkJt1PIuZC7jnQWQgQ
+ oawg==
+X-Gm-Message-State: AOJu0Yx1d9/ylXcerNgDrVaEUre4B7D9h6Fin2KNIG3wsKkOtu+N+XFQ
+ ecgwpiBpJtdn9mipl33/uAayog==
+X-Google-Smtp-Source: AGHT+IG8iv2z/8y8M0wUOx0X4NgYqaS6h8Q8wWEex5SDtWilHS/K+Uwpu4H4Whl1bp+fczH4dQ1UAA==
+X-Received: by 2002:a5d:4d0c:0:b0:319:7787:54a9 with SMTP id
+ z12-20020a5d4d0c000000b00319778754a9mr21033872wrt.24.1697129328232; 
+ Thu, 12 Oct 2023 09:48:48 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
+ [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
+ g12-20020adff40c000000b0031c6581d55esm951727wro.91.2023.10.12.09.48.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Oct 2023 09:48:47 -0700 (PDT)
+Message-ID: <6522c5f6-0d78-1344-c3ee-76b83f39942b@linaro.org>
+Date: Thu, 12 Oct 2023 18:48:46 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: QOM crash via soundhw_init()
+Content-Language: en-US
+To: Peng Liang <tcx4c70@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Martin Kletzander <mkletzan@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+References: <bbd3c42b-5069-d5e8-0b97-70ff5135801c@linaro.org>
+ <af961171-6582-4d1e-b3bc-35d979849ff6@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <af961171-6582-4d1e-b3bc-35d979849ff6@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,128 +96,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a leading 'z' to improve grepping. When one wants to search for uses
-of zicboz they're more likely to do 'grep -i zicboz' than 'grep -i
-icboz'.
+On 12/10/23 18:26, Peng Liang wrote:
+> On 10/12/2023 18:53, Philippe Mathieu-Daudé wrote:
+>> Hi Martin, Paolo, Markus, Marc-André,
+>>
+>> With the following changes:
+>>
+>> -- >8 --
+>> diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+>> index 137276bcb9..291495f798 100644
+>> --- a/hw/ppc/prep.c
+>> +++ b/hw/ppc/prep.c
+>> @@ -245,6 +245,7 @@ static void ibm_40p_init(MachineState *machine)
+>>       uint32_t kernel_base = 0, initrd_base = 0;
+>>       long kernel_size = 0, initrd_size = 0;
+>>       char boot_device;
+>> +    MemoryRegion rom;
+>>
+>>       if (kvm_enabled()) {
+>>           error_report("machine %s does not support the KVM accelerator",
+>> @@ -277,6 +278,9 @@ static void ibm_40p_init(MachineState *machine)
+>>           exit(1);
+>>       }
+>>
+>> +    memory_region_init_rom_nomigrate(&rom, OBJECT(machine), "test",
+>> +                                     4 * KiB, &error_fatal);
+>> +
+>>       /* PCI -> ISA bridge */
+>>       i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
+>>       qdev_connect_gpio_out(i82378_dev, 0,
+>>
+>> ---
+> 
+> I think it can be fixed by changing the type of rom to MemoryRegion*, such as:
+> diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+> index 137276bcb9..b5c2345ec8 100644
+> --- a/hw/ppc/prep.c
+> +++ b/hw/ppc/prep.c
+> @@ -245,6 +245,7 @@ static void ibm_40p_init(MachineState *machine)
+>       uint32_t kernel_base = 0, initrd_base = 0;
+>       long kernel_size = 0, initrd_size = 0;
+>       char boot_device;
+> +    MemoryRegion *rom = g_new0(MemoryRegion, 1);
+> 
+>       if (kvm_enabled()) {
+>           error_report("machine %s does not support the KVM accelerator",
+> @@ -277,6 +278,9 @@ static void ibm_40p_init(MachineState *machine)
+>           exit(1);
+>       }
+> 
+> +    memory_region_init_rom_nomigrate(rom, OBJECT(machine), "test", 4 * KiB,
+> +                                     &error_fatal);
+> +
+>       /* PCI -> ISA bridge */
+>       i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
+>       qdev_connect_gpio_out(i82378_dev, 0,
+> ---
+> 
+> In the original patch, rom is an object on stack and machine will save a reference
+> to rom in its properties after memory_region_init_rom_nomigrate. When the function
+> returns, the stack frame is freed and the data in rom becomes to garbage. After that,
+> when we call object_resolve_path_type, the properties of machine will be used to
+> match the specific path and type, then we will use some garbage in rom (which is on
+> stack).
 
-Suggested-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- hw/riscv/virt.c                             | 2 +-
- target/riscv/cpu.c                          | 6 +++---
- target/riscv/cpu_cfg.h                      | 2 +-
- target/riscv/insn_trans/trans_rvzicbo.c.inc | 8 ++++----
- target/riscv/kvm/kvm-cpu.c                  | 6 +++---
- 5 files changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 54e0fe8ecc..1732c42915 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -268,7 +268,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-                                   cpu_ptr->cfg.cbom_blocksize);
-         }
- 
--        if (cpu_ptr->cfg.ext_icboz) {
-+        if (cpu_ptr->cfg.ext_zicboz) {
-             qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cboz-block-size",
-                                   cpu_ptr->cfg.cboz_blocksize);
-         }
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index c9020653cd..46a256fccc 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -77,7 +77,7 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
-  */
- const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_zicbom),
--    ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
-+    ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_zicboz),
-     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
-     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_zicsr),
-     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_zifencei),
-@@ -500,7 +500,7 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
-     cpu->cfg.ext_zicbom = true;
-     cpu->cfg.cbom_blocksize = 64;
-     cpu->cfg.cboz_blocksize = 64;
--    cpu->cfg.ext_icboz = true;
-+    cpu->cfg.ext_zicboz = true;
-     cpu->cfg.ext_smaia = true;
-     cpu->cfg.ext_ssaia = true;
-     cpu->cfg.ext_sscofpmf = true;
-@@ -1285,7 +1285,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zhinxmin", ext_zhinxmin, false),
- 
-     MULTI_EXT_CFG_BOOL("zicbom", ext_zicbom, true),
--    MULTI_EXT_CFG_BOOL("zicboz", ext_icboz, true),
-+    MULTI_EXT_CFG_BOOL("zicboz", ext_zicboz, true),
- 
-     MULTI_EXT_CFG_BOOL("zmmul", ext_zmmul, false),
- 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index e6bef0070f..208cac1c7c 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -64,7 +64,7 @@ struct RISCVCPUConfig {
-     bool ext_zifencei;
-     bool ext_zicsr;
-     bool ext_zicbom;
--    bool ext_icboz;
-+    bool ext_zicboz;
-     bool ext_zicond;
-     bool ext_zihintntl;
-     bool ext_zihintpause;
-diff --git a/target/riscv/insn_trans/trans_rvzicbo.c.inc b/target/riscv/insn_trans/trans_rvzicbo.c.inc
-index e6ed548376..d5d7095903 100644
---- a/target/riscv/insn_trans/trans_rvzicbo.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzicbo.c.inc
-@@ -22,10 +22,10 @@
-     }                                \
- } while (0)
- 
--#define REQUIRE_ZICBOZ(ctx) do {    \
--    if (!ctx->cfg_ptr->ext_icboz) { \
--        return false;               \
--    }                               \
-+#define REQUIRE_ZICBOZ(ctx) do {     \
-+    if (!ctx->cfg_ptr->ext_zicboz) { \
-+        return false;                \
-+    }                                \
- } while (0)
- 
- static bool trans_cbo_clean(DisasContext *ctx, arg_cbo_clean *a)
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index ad48c9bf30..5695f2face 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -214,7 +214,7 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
- 
- static KVMCPUConfig kvm_multi_ext_cfgs[] = {
-     KVM_EXT_CFG("zicbom", ext_zicbom, KVM_RISCV_ISA_EXT_ZICBOM),
--    KVM_EXT_CFG("zicboz", ext_icboz, KVM_RISCV_ISA_EXT_ZICBOZ),
-+    KVM_EXT_CFG("zicboz", ext_zicboz, KVM_RISCV_ISA_EXT_ZICBOZ),
-     KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
-     KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
-     KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
-@@ -808,7 +808,7 @@ static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
-         kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
-     }
- 
--    if (cpu->cfg.ext_icboz) {
-+    if (cpu->cfg.ext_zicboz) {
-         kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
-     }
- }
-@@ -901,7 +901,7 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-         kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
-     }
- 
--    if (cpu->cfg.ext_icboz) {
-+    if (cpu->cfg.ext_zicboz) {
-         kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
-     }
- }
--- 
-2.41.0
+YES! Stupid mistake... Thank you Peng, you saved my day :)
 
 
