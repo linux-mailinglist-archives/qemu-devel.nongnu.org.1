@@ -2,65 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F71D7C701E
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 431267C7037
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:23:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqwPA-0006SQ-Rt; Thu, 12 Oct 2023 10:11:12 -0400
+	id 1qqwZo-0002zh-95; Thu, 12 Oct 2023 10:22:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqwP5-0006O7-Ds; Thu, 12 Oct 2023 10:11:07 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqwP1-0000sW-4R; Thu, 12 Oct 2023 10:11:07 -0400
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 206FC6109D;
- Thu, 12 Oct 2023 17:10:59 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:a401::1:4] (unknown
- [2a02:6b8:b081:a401::1:4])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id vAgVqY6OqOs0-4wTmpzMT; Thu, 12 Oct 2023 17:10:58 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1697119858;
- bh=GimmIGhfge0j3wDrDx60jiCF69tOxcFGKzZhqxAaoKA=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=0NOGzGUetc34IoY1TxkMktgK5D01fiJf0kpxxyfqhDdjKz4ZTrSIBDL+bTSHe+2ks
- MplolT/7IIdhpvIfI/gOgjG/L/L1xipkpltZWsbNTKI/GB4HleIg5TVABcpsO1Uj6F
- 69RDN1jom8UOP7YLbWLENDUozCOuM1r3XGKOASs8=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <99dd287b-816b-4f4f-b156-32f94bbb62c2@yandex-team.ru>
-Date: Thu, 12 Oct 2023 17:10:57 +0300
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwZe-0002yi-Th
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:22:04 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqwZd-0002ng-B7
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:22:02 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id AD70421884;
+ Thu, 12 Oct 2023 14:21:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697120518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=bbOoHAlvHndGzTdtlZvU8RCPNyvZnebuGQsDEQ99ew0=;
+ b=Lrfx6gWD966rgOLa0ExtMu5ZE3f0KM1VCTb+w6LrWfA3k/OH1vi2I/23Qcc6ceMs9+n4BO
+ a/W2dH02hQa2qgzzmdql0XZ0B+td2+3Hc6GxWoGMqGlmF3mLBPCbIELewFLzTF5SWc28V5
+ UEzLzkvdhOThhwLGoPMgGLlHS7QrtY4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697120518;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=bbOoHAlvHndGzTdtlZvU8RCPNyvZnebuGQsDEQ99ew0=;
+ b=uUdpgyrAKRepTZAQyjsinlHmomuqJvLZHK7DJFxYWzJ6aszCJZYDKXS6xkQXSCRZqFtvg9
+ OzEVaziAfZms/SAw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3FF96139ED;
+ Thu, 12 Oct 2023 14:21:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id vANsAwYBKGUzEgAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 12 Oct 2023 14:21:58 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>
+Subject: Re: [PATCH v3 02/13] migration/rdma: Unfold
+ ram_control_before_iterate()
+In-Reply-To: <20231011203527.9061-3-quintela@redhat.com>
+References: <20231011203527.9061-1-quintela@redhat.com>
+ <20231011203527.9061-3-quintela@redhat.com>
+Date: Thu, 12 Oct 2023 11:21:55 -0300
+Message-ID: <877cnr2a64.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/10] mirror: allow switching from background to
- active mode
-Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
- t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
-References: <20231009094619.469668-1-f.ebner@proxmox.com>
- <a5c48627-0bef-46cd-9426-587b358fe32d@yandex-team.ru>
- <993bfa5d-1a91-4b32-9bd8-165b7abba4f0@proxmox.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <993bfa5d-1a91-4b32-9bd8-165b7abba4f0@proxmox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -6.99
+X-Spamd-Result: default: False [-6.99 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.89)[99.52%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[6];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,47 +96,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.10.23 13:18, Fiona Ebner wrote:
-> Am 10.10.23 um 19:55 schrieb Vladimir Sementsov-Ogievskiy:
->> On 09.10.23 12:46, Fiona Ebner wrote:
->>>
->>> Initially, I tried to go for a more general 'job-change' command, but
->>> I couldn't figure out a way to avoid mutual inclusion between
->>> block-core.json and job.json.
->>>
->>
->> What is the problem with it? I still think that job-change would be better.
->>
-> 
-> If going for job-change in job.json, the dependencies would be
-> 
-> job-change -> JobChangeOptions -> JobChangeOptionsMirror -> MirrorCopyMode
-> 
-> query-jobs -> JobInfo -> JobInfoMirror
-> 
-> and we can't include block-core.json in job.json, because an inclusion
-> loop gives a build error.
-> 
-> Could be made to work by moving MirrorCopyMode (and
-> JobChangeOptionsMirror, JobInfoMirror) to job.json or some place that
-> can be included by both job.json and block-core.json. Moving the
-> type-specific definitions to the general job.json didn't feel right to
-> me. Including another file with type-specific definitions in job.json
-> feels slightly less wrong, but still not quite right and I didn't want
-> to create a new file just for MirrorCopyMode (and
-> JobChangeOptionsMirror, JobInfoMirror).
-> 
-> And going further and moving all mirror-related things to a separate
-> file would require moving along things like NewImageMode with it or
-> create yet another file for such general things used by multiple block-jobs.
-> 
-> If preferred, I can try and go with some version of the above.
-> 
+Juan Quintela <quintela@redhat.com> writes:
 
-OK, I see the problem. Seems, that all requires some good refactoring. But that's a preexisting big work, and should not hold up your series. I'm OK to proceed with block-job-change.
+> Once there:
+> - Remove unused data parameter
+> - unfold it in its callers.
+> - change all callers to call qemu_rdma_registration_start()
+> - We need to call QIO_CHANNEL_RDMA() after we check for migrate_rdma()
+>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>
+> --
+>
+> initilazize rioc after checknig that rdma is enabled.
+>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
 
--- 
-Best regards,
-Vladimir
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
