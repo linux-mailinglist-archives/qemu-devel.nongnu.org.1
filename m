@@ -2,86 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFAE7C6E5E
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 14:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C54C87C6E72
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 14:48:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qquxw-0004hm-Vw; Thu, 12 Oct 2023 08:39:01 -0400
+	id 1qqv6K-0001Dg-Uw; Thu, 12 Oct 2023 08:47:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qquxq-0004dt-Iu
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:38:54 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qquxn-0006hY-He
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:38:54 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4066692ad35so9596805e9.1
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 05:38:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697114329; x=1697719129;
- darn=nongnu.org; 
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=mihdO2DYtoRQbtAiJr6K1krAzTPFq9eOagqB5sbFy6s=;
- b=GX9ApkwiAr73QiwLNYhX8MneaFwj4Cs6LPX9uAJkl6qd3q7HNfZLwYHUuiYNVcf1Qa
- UNH/c+tPz6vtJtROSPNLoODFD6IqXQViaPhA7ngGDefN6IDcdckBfWNqFx+jjrzXTf/N
- HeKukUYvMeIJ75z+pwXZGHPpbInlxjdj9BAsMJQe8zk1flg9KMa+yudkjDdA8P9APG2M
- NQdyFMdcN13ZZ5R26s6mXfgBDSe0wTnsZ6V7ykHO8ep8x0JmOe3NZ7sitegnxU3B5WpS
- DosDdvWKiOup+6L8WtFpAlVac/sRzfCE6QycqRMxW/qbNWQ1DOAMjSY/3F0vzHTuknl2
- Dvew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697114329; x=1697719129;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mihdO2DYtoRQbtAiJr6K1krAzTPFq9eOagqB5sbFy6s=;
- b=sl0W8eOkkf+wJzNN6b/HqTCbgJhFnoh+zfEaUUyZ6QHNLbQCRbRekIUmYgYUTFVMtA
- r/Laq9pMR9JF11PN9PosKn6L+A5KbTXzvq7hI6WEVKkt6AiXeF0tlJD9o2rWnYVz5Zpf
- nmYNWtg66TZl+9k2TtqThD0MLsNNpi/7s4yDeJFybIJHqdpOAmBgXeMv0Cdcd9MOyEIn
- DeIZH5YzAxkiYuG0pQJKUgCN5eRiMhzsFeW8RNZIpjdwlHGE1f5buuMLUt2LFPV2Mbnq
- 5ICwSRFMhjqHF5nSYQ+IEl2sOzCk1853ou2MbdnJfh43YObNK356M49S7q5CNjNW3uMS
- hT6g==
-X-Gm-Message-State: AOJu0YzNJ9z7qIs7Jc10unA51H9pgCWvi9rcUC51MVfARVKBXyDB28NN
- oM7Wu18mRw6c7beyRUooYToBxw==
-X-Google-Smtp-Source: AGHT+IHHGpO4RQUA/+Me8OGQjqoAIDpF3didv57oFH5ortK1RgdpUgDbX+wPLmLmeq4BaCk4HGskcQ==
-X-Received: by 2002:a05:600c:230d:b0:407:5b54:bb13 with SMTP id
- 13-20020a05600c230d00b004075b54bb13mr5652342wmo.37.1697114329449; 
- Thu, 12 Oct 2023 05:38:49 -0700 (PDT)
-Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
- by smtp.gmail.com with ESMTPSA id
- y24-20020a7bcd98000000b004064741f855sm19462762wmj.47.2023.10.12.05.38.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Oct 2023 05:38:49 -0700 (PDT)
-Message-ID: <95425ae7f47334754aa7b706ba8362c2349d2f48.camel@rivosinc.com>
-Subject: Re: [PATCH v2 5/6] target/riscv: Add "pmu-mask" property to replace
- "pmu-num"
-From: Rob Bradford <rbradford@rivosinc.com>
-To: LIU Zhiwei <baxiantai@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
-Date: Thu, 12 Oct 2023 13:38:48 +0100
-In-Reply-To: <e68ea00e-3f7a-4590-beae-6946d9fde671@gmail.com>
-References: <20231011145032.81509-1-rbradford@rivosinc.com>
- <20231011145032.81509-6-rbradford@rivosinc.com>
- <e68ea00e-3f7a-4590-beae-6946d9fde671@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.module_f38+16987+774193ea) 
+ (Exim 4.90_1) (envelope-from <SRS0=hGWq=F2=kaod.org=clg@ozlabs.org>)
+ id 1qqv6I-0001D8-Hu; Thu, 12 Oct 2023 08:47:38 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=hGWq=F2=kaod.org=clg@ozlabs.org>)
+ id 1qqv6E-0000tb-Fj; Thu, 12 Oct 2023 08:47:38 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4S5qCv4YkHz4xYP;
+ Thu, 12 Oct 2023 23:47:23 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4S5qCt02dTz4xXc;
+ Thu, 12 Oct 2023 23:47:21 +1100 (AEDT)
+Message-ID: <ecb48a29-0810-48b0-a538-65f97a501bff@kaod.org>
+Date: Thu, 12 Oct 2023 14:47:17 +0200
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/pci-host: Update PHB5 XSCOM registers
+Content-Language: en-US
+To: Saif Abrar <saif.abrar@linux.vnet.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, fbarrat@linux.ibm.com
+References: <20231012104852.14537-1-saif.abrar@linux.vnet.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231012104852.14537-1-saif.abrar@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=hGWq=F2=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,168 +63,243 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-10-12 at 17:05 +0800, LIU Zhiwei wrote:
-> =C2=A0
->=20
-> =C2=A0
-> =C2=A0
-> On 2023/10/11 22:45, Rob Bradford wrote:
-> =C2=A0
-> =C2=A0
-> > =C2=A0
-> > Using a mask instead of the number of PMU devices supports the
-> > accurate
-> > emulation of platforms that have a discontinuous set of PMU
-> > counters.
-> >=20
-> > Generate a warning if the old property changed from the default but
-> > still go ahead and use it to generate the mask if the user has
-> > changed
-> > it from the default
-> >=20
-> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> > ---
-> > =C2=A0target/riscv/cpu.c     |  5 +++--
-> > =C2=A0target/riscv/cpu_cfg.h |  3 ++-
-> > =C2=A0target/riscv/machine.c |  2 +-
-> > =C2=A0target/riscv/pmu.c     | 14 ++++++++++----
-> > =C2=A04 files changed, 16 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > index c9d8fc12fe..4d2987e568 100644
-> > --- a/target/riscv/cpu.c
-> > +++ b/target/riscv/cpu.c
-> > @@ -1487,7 +1487,7 @@ static void riscv_cpu_realize_tcg(DeviceState
-> > *dev, Error **errp)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0riscv_timer_init(=
-cpu);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > =C2=A0
-> > -    if (cpu->cfg.pmu_num) {
-> > +    if (cpu->cfg.pmu_mask) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0riscv_pmu_init(cp=
-u, &local_err);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (local_err !=
-=3D NULL) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0error_propagate(errp, local_err);
-> > @@ -1812,7 +1812,8 @@ static void
-> > riscv_cpu_add_misa_properties(Object *cpu_obj)
-> > =C2=A0
-> > =C2=A0static Property riscv_cpu_extensions[] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Defaults for standard extensions */
-> > -    DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
-> > +    DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16), /*
-> > Deprecated */
-> > +    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask,
-> > MAKE_32BIT_MASK(3, 16)),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cf=
-g.ext_sscofpmf,
-> > false),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cf=
-g.ext_ifencei, true),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.e=
-xt_icsr, true),
-> > diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> > index 0e6a0f245c..d273487040 100644
-> > --- a/target/riscv/cpu_cfg.h
-> > +++ b/target/riscv/cpu_cfg.h
-> > @@ -123,7 +123,8 @@ struct RISCVCPUConfig {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0bool ext_xtheadsync;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0bool ext_XVentanaCondOps;
-> > =C2=A0
-> > -    uint8_t pmu_num;
-> > +    uint8_t pmu_num; /* Deprecated */
-> > +    uint32_t pmu_mask;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char *priv_spec;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char *user_spec;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char *bext_spec;
-> > diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-> > index c7c862cdd3..9f6e3f7a6d 100644
-> > --- a/target/riscv/machine.c
-> > +++ b/target/riscv/machine.c
-> > @@ -313,7 +313,7 @@ static bool pmu_needed(void *opaque)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0RISCVCPU *cpu =3D opaque;
-> > =C2=A0
-> > -    return cpu->cfg.pmu_num;
-> > +    return (cpu->cfg.pmu_mask > 0);
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static const VMStateDescription vmstate_pmu_ctr_state =3D {
-> > diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-> > index 360c76f63e..f2d35b4d3b 100644
-> > --- a/target/riscv/pmu.c
-> > +++ b/target/riscv/pmu.c
-> > @@ -18,6 +18,7 @@
-> > =C2=A0
-> > =C2=A0#include "qemu/osdep.h"
-> > =C2=A0#include "qemu/log.h"
-> > +#include "qemu/error-report.h"
-> > =C2=A0#include "cpu.h"
-> > =C2=A0#include "pmu.h"
-> > =C2=A0#include "sysemu/cpu-timers.h"
-> > @@ -182,7 +183,7 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum
-> > riscv_pmu_event_idx event_idx)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0CPURISCVState *env =3D &cpu->env;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0gpointer value;
-> > =C2=A0
-> > -    if (!cpu->cfg.pmu_num) {
-> > +    if (!cpu->cfg.pmu_mask) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0value =3D g_hash_table_lookup(cpu->pmu_ev=
-ent_ctr_map,
-> > @@ -432,7 +433,7 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
-> > **errp)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uint8_t pmu_num =3D cpu->cfg.pmu_num;
-> > =C2=A0
-> > -    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-> > +    if (ctpop32(cpu->cfg.pmu_mask) > (RV_MAX_MHPMCOUNTERS - 3)) {
-> > =C2=A0
-> =C2=A0
-> =C2=A0
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0error_setg(errp, =
-"Number of counters exceeds maximum
-> > available");
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > @@ -443,6 +444,11 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
-> > **errp)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > =C2=A0
-> > -    /* Create a bitmask of available programmable counters */
-> > -    cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num);
-> > +    /* Check if user set it by comparing against default */
-> > +    if (pmu_num !=3D 16) {
-> > +        warn_report("\"pmu-num\" property is deprecated; use
-> > \"pmu-mask\"");
-> > +        cpu->cfg.pmu_mask =3D MAKE_32BIT_MASK(3, pmu_num);
-> > +    }
-> > +
-> > +    cpu->pmu_avail_ctrs =3D cpu->cfg.pmu_mask;
-> > =C2=A0
-> =C2=A0
-> How to process the pmu_mask[0:2] no-zero bits? They should not
-> included into pmu_avail_ctrs.
-> =C2=A0
+On 10/12/23 12:48, Saif Abrar wrote:
+> Add new XSCOM registers introduced in PHB5.
+> Apply bit-masks within xscom-write methods.
+> 
+> Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
 
-Good point, thanks Zhiwei. I think rather than masking those bits it is
-better to add a check and error out if those bits are set.
+I didn't check the masks, the rest looks correct.
 
-Cheers,
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Rob
+Thanks,
 
-> Zhiwei
-> =C2=A0
-> =C2=A0
-> > =C2=A0
-> > =C2=A0}
-> > =C2=A0
-> =C2=A0
+C.
+
+
+> ---
+>   hw/pci-host/pnv_phb4.c              | 29 +++++++++++++++----------
+>   hw/pci-host/pnv_phb4_pec.c          | 33 ++++++++++++++++++++++++-----
+>   include/hw/pci-host/pnv_phb4.h      |  2 +-
+>   include/hw/pci-host/pnv_phb4_regs.h |  4 +++-
+>   4 files changed, 50 insertions(+), 18 deletions(-)
+> 
+> diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
+> index 29cb11a5d9..5661ed1472 100644
+> --- a/hw/pci-host/pnv_phb4.c
+> +++ b/hw/pci-host/pnv_phb4.c
+> @@ -855,7 +855,7 @@ static uint64_t pnv_pec_stk_nest_xscom_read(void *opaque, hwaddr addr,
+>       PnvPHB4 *phb = PNV_PHB4(opaque);
+>       uint32_t reg = addr >> 3;
+>   
+> -    /* TODO: add list of allowed registers and error out if not */
+> +    /* All registers are read-able */
+>       return phb->nest_regs[reg];
+>   }
+>   
+> @@ -1000,7 +1000,7 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+>   
+>       switch (reg) {
+>       case PEC_NEST_STK_PCI_NEST_FIR:
+> -        phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR] = val;
+> +        phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR] = val & 0xfffffff000000000ull;
+>           break;
+>       case PEC_NEST_STK_PCI_NEST_FIR_CLR:
+>           phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR] &= val;
+> @@ -1009,7 +1009,8 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+>           phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR] |= val;
+>           break;
+>       case PEC_NEST_STK_PCI_NEST_FIR_MSK:
+> -        phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR_MSK] = val;
+> +        phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR_MSK] = val
+> +                                                        & 0xfffffff000000000ull;
+>           break;
+>       case PEC_NEST_STK_PCI_NEST_FIR_MSKC:
+>           phb->nest_regs[PEC_NEST_STK_PCI_NEST_FIR_MSK] &= val;
+> @@ -1019,7 +1020,7 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+>           break;
+>       case PEC_NEST_STK_PCI_NEST_FIR_ACT0:
+>       case PEC_NEST_STK_PCI_NEST_FIR_ACT1:
+> -        phb->nest_regs[reg] = val;
+> +        phb->nest_regs[reg] = val & 0xfffffff000000000ull;
+>           break;
+>       case PEC_NEST_STK_PCI_NEST_FIR_WOF:
+>           phb->nest_regs[reg] = 0;
+> @@ -1060,10 +1061,15 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+>           pnv_pec_phb_update_map(phb);
+>           break;
+>       case PEC_NEST_STK_DATA_FRZ_TYPE:
+> -    case PEC_NEST_STK_PBCQ_TUN_BAR:
+>           /* Not used for now */
+>           phb->nest_regs[reg] = val;
+>           break;
+> +    case PEC_NEST_STK_PBCQ_SPARSE_PAGE:
+> +        phb->nest_regs[reg] = val & 0x1c00000000000000ull;
+> +        break;
+> +    case PEC_NEST_STK_PBCQ_CACHE_INJ:
+> +        phb->nest_regs[reg] = val & 0xff00000000000000ull;
+> +        break;
+>       default:
+>           qemu_log_mask(LOG_UNIMP, "phb4_pec: nest_xscom_write 0x%"HWADDR_PRIx
+>                         "=%"PRIx64"\n", addr, val);
+> @@ -1086,7 +1092,7 @@ static uint64_t pnv_pec_stk_pci_xscom_read(void *opaque, hwaddr addr,
+>       PnvPHB4 *phb = PNV_PHB4(opaque);
+>       uint32_t reg = addr >> 3;
+>   
+> -    /* TODO: add list of allowed registers and error out if not */
+> +    /* All registers are read-able */
+>       return phb->pci_regs[reg];
+>   }
+>   
+> @@ -1095,10 +1101,9 @@ static void pnv_pec_stk_pci_xscom_write(void *opaque, hwaddr addr,
+>   {
+>       PnvPHB4 *phb = PNV_PHB4(opaque);
+>       uint32_t reg = addr >> 3;
+> -
+>       switch (reg) {
+>       case PEC_PCI_STK_PCI_FIR:
+> -        phb->pci_regs[reg] = val;
+> +        phb->pci_regs[reg] = val & 0xfc00000000000000ull;
+>           break;
+>       case PEC_PCI_STK_PCI_FIR_CLR:
+>           phb->pci_regs[PEC_PCI_STK_PCI_FIR] &= val;
+> @@ -1107,7 +1112,7 @@ static void pnv_pec_stk_pci_xscom_write(void *opaque, hwaddr addr,
+>           phb->pci_regs[PEC_PCI_STK_PCI_FIR] |= val;
+>           break;
+>       case PEC_PCI_STK_PCI_FIR_MSK:
+> -        phb->pci_regs[reg] = val;
+> +        phb->pci_regs[reg] = val & 0xfc00000000000000ull;
+>           break;
+>       case PEC_PCI_STK_PCI_FIR_MSKC:
+>           phb->pci_regs[PEC_PCI_STK_PCI_FIR_MSK] &= val;
+> @@ -1117,7 +1122,7 @@ static void pnv_pec_stk_pci_xscom_write(void *opaque, hwaddr addr,
+>           break;
+>       case PEC_PCI_STK_PCI_FIR_ACT0:
+>       case PEC_PCI_STK_PCI_FIR_ACT1:
+> -        phb->pci_regs[reg] = val;
+> +        phb->pci_regs[reg] = val & 0xfc00000000000000ull;
+>           break;
+>       case PEC_PCI_STK_PCI_FIR_WOF:
+>           phb->pci_regs[reg] = 0;
+> @@ -1129,8 +1134,10 @@ static void pnv_pec_stk_pci_xscom_write(void *opaque, hwaddr addr,
+>       case PEC_PCI_STK_PBAIB_ERR_REPORT:
+>           break;
+>       case PEC_PCI_STK_PBAIB_TX_CMD_CRED:
+> +        phb->pci_regs[reg] = val & 0xe03fe03fe07fe03full;
+> +        break;
+>       case PEC_PCI_STK_PBAIB_TX_DAT_CRED:
+> -        phb->pci_regs[reg] = val;
+> +        phb->pci_regs[reg] = val & 0x600f0000;
+>           break;
+>       default:
+>           qemu_log_mask(LOG_UNIMP, "phb4_pec_stk: pci_xscom_write 0x%"HWADDR_PRIx
+> diff --git a/hw/pci-host/pnv_phb4_pec.c b/hw/pci-host/pnv_phb4_pec.c
+> index 3b2850f7a3..6c9b4650ad 100644
+> --- a/hw/pci-host/pnv_phb4_pec.c
+> +++ b/hw/pci-host/pnv_phb4_pec.c
+> @@ -34,7 +34,7 @@ static uint64_t pnv_pec_nest_xscom_read(void *opaque, hwaddr addr,
+>       PnvPhb4PecState *pec = PNV_PHB4_PEC(opaque);
+>       uint32_t reg = addr >> 3;
+>   
+> -    /* TODO: add list of allowed registers and error out if not */
+> +    /* All registers are readable */
+>       return pec->nest_regs[reg];
+>   }
+>   
+> @@ -45,18 +45,36 @@ static void pnv_pec_nest_xscom_write(void *opaque, hwaddr addr,
+>       uint32_t reg = addr >> 3;
+>   
+>       switch (reg) {
+> -    case PEC_NEST_PBCQ_HW_CONFIG:
+>       case PEC_NEST_DROP_PRIO_CTRL:
+> +        pec->nest_regs[reg] = val & 0xFFFFFFC000000000ull;
+> +        break;
+>       case PEC_NEST_PBCQ_ERR_INJECT:
+> +        pec->nest_regs[reg] = val & 0xFFE0000000000000ull;
+> +        break;
+>       case PEC_NEST_PCI_NEST_CLK_TRACE_CTL:
+> +        pec->nest_regs[reg] = val & 0xFFFF800000000000ull;
+> +        break;
+>       case PEC_NEST_PBCQ_PMON_CTRL:
+> +        pec->nest_regs[reg] = val & 0xFFFFFFFFFC000000ull;
+> +        break;
+>       case PEC_NEST_PBCQ_PBUS_ADDR_EXT:
+> +        pec->nest_regs[reg] = val & 0xFFE0000000000000ull;
+> +        break;
+>       case PEC_NEST_PBCQ_PRED_VEC_TIMEOUT:
+> -    case PEC_NEST_CAPP_CTRL:
+> +        pec->nest_regs[reg] = val & 0xFFFF000000000000ull;
+> +        break;
+>       case PEC_NEST_PBCQ_READ_STK_OVR:
+> +        pec->nest_regs[reg] = val & 0xFFFFFFFFFFFF8000ull;
+> +        break;
+>       case PEC_NEST_PBCQ_WRITE_STK_OVR:
+>       case PEC_NEST_PBCQ_STORE_STK_OVR:
+> +        pec->nest_regs[reg] = val & 0xFFFFFF8000000000ull;
+> +        break;
+>       case PEC_NEST_PBCQ_RETRY_BKOFF_CTRL:
+> +        pec->nest_regs[reg] = val & 0xFFFFFFFFFFC00000ull;
+> +        break;
+> +    case PEC_NEST_PBCQ_HW_CONFIG:
+> +    case PEC_NEST_CAPP_CTRL:
+>           pec->nest_regs[reg] = val;
+>           break;
+>       default:
+> @@ -81,7 +99,7 @@ static uint64_t pnv_pec_pci_xscom_read(void *opaque, hwaddr addr,
+>       PnvPhb4PecState *pec = PNV_PHB4_PEC(opaque);
+>       uint32_t reg = addr >> 3;
+>   
+> -    /* TODO: add list of allowed registers and error out if not */
+> +    /* All registers are readable */
+>       return pec->pci_regs[reg];
+>   }
+>   
+> @@ -93,8 +111,13 @@ static void pnv_pec_pci_xscom_write(void *opaque, hwaddr addr,
+>   
+>       switch (reg) {
+>       case PEC_PCI_PBAIB_HW_CONFIG:
+> +        pec->pci_regs[reg] = val & 0xffffffffffe00000ull;
+> +        break;
+> +    case PEC_PCI_PBAIB_HW_OVR:
+> +        pec->pci_regs[reg] = val & 0xffff000000000000ull;
+> +        break;
+>       case PEC_PCI_PBAIB_READ_STK_OVR:
+> -        pec->pci_regs[reg] = val;
+> +        pec->pci_regs[reg] = val & 0xffffffffffff8000ull;
+>           break;
+>       default:
+>           phb_pec_error(pec, "%s @0x%"HWADDR_PRIx"=%"PRIx64"\n", __func__,
+> diff --git a/include/hw/pci-host/pnv_phb4.h b/include/hw/pci-host/pnv_phb4.h
+> index 2d026db9a3..3212e68160 100644
+> --- a/include/hw/pci-host/pnv_phb4.h
+> +++ b/include/hw/pci-host/pnv_phb4.h
+> @@ -117,7 +117,7 @@ struct PnvPHB4 {
+>       MemoryRegion pci_regs_mr;
+>   
+>       /* Nest registers */
+> -#define PHB4_PEC_NEST_STK_REGS_COUNT  0x17
+> +#define PHB4_PEC_NEST_STK_REGS_COUNT  0x18
+>       uint64_t nest_regs[PHB4_PEC_NEST_STK_REGS_COUNT];
+>       MemoryRegion nest_regs_mr;
+>   
+> diff --git a/include/hw/pci-host/pnv_phb4_regs.h b/include/hw/pci-host/pnv_phb4_regs.h
+> index 4a0d3b28ef..bea96f4d91 100644
+> --- a/include/hw/pci-host/pnv_phb4_regs.h
+> +++ b/include/hw/pci-host/pnv_phb4_regs.h
+> @@ -77,10 +77,12 @@
+>   #define   PEC_NEST_STK_BAR_EN_PHB               PPC_BIT(2)
+>   #define   PEC_NEST_STK_BAR_EN_INT               PPC_BIT(3)
+>   #define PEC_NEST_STK_DATA_FRZ_TYPE      0x15
+> -#define PEC_NEST_STK_PBCQ_TUN_BAR       0x16
+> +#define PEC_NEST_STK_PBCQ_SPARSE_PAGE   0x16 /* P10 */
+> +#define PEC_NEST_STK_PBCQ_CACHE_INJ     0x17 /* P10 */
+>   
+>   /* XSCOM PCI global registers */
+>   #define PEC_PCI_PBAIB_HW_CONFIG         0x00
+> +#define PEC_PCI_PBAIB_HW_OVR            0x01
+>   #define PEC_PCI_PBAIB_READ_STK_OVR      0x02
+>   
+>   /* XSCOM PCI per-stack registers */
 
 
