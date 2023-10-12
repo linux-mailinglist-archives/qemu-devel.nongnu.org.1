@@ -2,61 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AB27C6C81
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 13:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F89C7C6C42
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 13:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqtdp-0005iG-2F; Thu, 12 Oct 2023 07:14:09 -0400
+	id 1qqtot-0007qi-3l; Thu, 12 Oct 2023 07:25:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqtdn-0005ha-5T
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:14:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqtdl-0002TP-QH
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:14:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697109244;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=utvRRVUk7SWRLIbeknqP9u5QGLomQ9BK+6bhnUPOdSg=;
- b=A3HC3MZwI31mO+CyEa0FBQHo69cDbJhWmxJWOALvc2enCnc3wN3V//aywK/Jtmrs+G7Fu2
- e7e2h7UVwK2pXA9i7rTiNsQb70ia96N3je64jxMK96gQt7wYzlHTXq3bJh84J17qsYMKIW
- kFx5SzEqjmOBzLBzaQPpnvTt2maWV0M=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-92-IX7uhJBkPsWW7XWwn6Y6Zg-1; Thu, 12 Oct 2023 07:14:03 -0400
-X-MC-Unique: IX7uhJBkPsWW7XWwn6Y6Zg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 309C129A9CA5
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 11:14:03 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.225])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 952454619CE;
- Thu, 12 Oct 2023 11:14:02 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH] MAINTAINERS: Add include/sysemu/qtest.h to the qtest section
-Date: Thu, 12 Oct 2023 13:14:01 +0200
-Message-ID: <20231012111401.871711-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqtoj-0007nM-JB
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:25:25 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqtoh-00056R-J8
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:25:24 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4054496bde3so8780415e9.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 04:25:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697109922; x=1697714722; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=myotuKchjawAAdVNYjFyZAXE7AUpZ7N7NpqY9ysppLg=;
+ b=aGr5QcZRP882yvxszTYkl/lpUUDwqnpNfKnVvkt5Qbz95SR2qdC2t3QVmdLVq3e2I4
+ 4yEz9hTj7j5DN7CtIc3+3dNkNTG+LIGmWcoF4oJkA2n0wordbrdBODC6fmL+YteYapWx
+ hyBhgD2k0VsTB12GlyJZNyNw/PezZDRIZbsgPpiL8PYX7iScuUQa1Xr0x+gJCmawjVVv
+ sbmboX7MttbfT7L9Yz7tjdjcHXZDF0kqTgC8vGNAzMMrPyr0UvEYcfjSKCpjKsTGALj4
+ g5MXzBvpOPPGpb/4gCAhIUcJ/27JV1d3Q12y6xALp9XRGPV1uog80ilB7CPufkfgsD6q
+ DzZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697109922; x=1697714722;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=myotuKchjawAAdVNYjFyZAXE7AUpZ7N7NpqY9ysppLg=;
+ b=WgfujZLB3Y/NdVCIJKc+kP8h63wOxOzbWxwMe9Vo988F9e8wU419a7VlkM8lumqSwf
+ f0nmzEivD0LbwwQqX4Gr7OhNha7edLuFlSLS4p08GQwKZk5wahmCufpkHdZbrdircS/s
+ tuCs2HrDwwU0UqXl07LOclfn/eDwYg72i5HZ+AVcb+/CNzzt+eNW9ZSWsbT2b0ORoJx2
+ unEqFPax1UqBIPKn//6twgcCUph1b4qgU38V19Qr8yKd2hItLnTpbySZSdR2TvRORIab
+ KgBaonnb0Zd5Ey1lV4OGeeCRYrhO+Bg6kUcNy3i03CidGyo+VG9xUUy9/RC8UNKvy4rw
+ VYqA==
+X-Gm-Message-State: AOJu0YwGACl0U/g/Lsp6gVIMCUjV4sv5xt1YmMNcNrv68nqRx5CmQdSl
+ J+bIbLNZQPSHzxurSYMgkthDww==
+X-Google-Smtp-Source: AGHT+IFjOeJh7wxNhbmAICeJMYVHWAl0Nl72er8nAzqeU4sHfYqrCFIeWo3QN11lCA85NuDjfIRhAQ==
+X-Received: by 2002:a7b:c3d2:0:b0:402:cc5c:c98 with SMTP id
+ t18-20020a7bc3d2000000b00402cc5c0c98mr20823412wmj.13.1697109921724; 
+ Thu, 12 Oct 2023 04:25:21 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
+ [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
+ v3-20020a05600c15c300b004075d5664basm4924636wmf.8.2023.10.12.04.25.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Oct 2023 04:25:20 -0700 (PDT)
+Message-ID: <3e72aa8e-9793-7c05-722e-5a2f9a6ca76d@linaro.org>
+Date: Thu, 12 Oct 2023 13:25:18 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] MAINTAINERS: Add include/sysemu/qtest.h to the qtest
+ section
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <lvivier@redhat.com>
+References: <20231012111401.871711-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231012111401.871711-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,27 +93,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We already list system/qtest.c in the qtest section, so the
-corresponding header file should be listed here, too.
+On 12/10/23 13:14, Thomas Huth wrote:
+> We already list system/qtest.c in the qtest section, so the
+> corresponding header file should be listed here, too.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f90c9d814c..bf8ce0e6c7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3160,6 +3160,7 @@ M: Laurent Vivier <lvivier@redhat.com>
- R: Paolo Bonzini <pbonzini@redhat.com>
- S: Maintained
- F: system/qtest.c
-+F: include/sysemu/qtest.h
- F: accel/qtest/
- F: tests/qtest/
- F: docs/devel/qgraph.rst
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
