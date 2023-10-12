@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205117C669A
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 09:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0997C66A8
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 09:51:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqqLA-0007rJ-TH; Thu, 12 Oct 2023 03:42:40 -0400
+	id 1qqqSQ-0003EL-3F; Thu, 12 Oct 2023 03:50:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqqL8-0007r3-Kb
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:42:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqqSN-0003EA-U4
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:50:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqqL7-0006eb-2T
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:42:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqqSL-0008JL-WE
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:50:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697096555;
+ s=mimecast20190719; t=1697097005;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=0EdI4y/FYQGAQq3Rpm2Y9OsL7tQuhKJZXXNi8G0A+zM=;
- b=dRcygTR9/NZPZ0bYIDFFLXxT5/DziTqEcWc9UwXncQ5m0kKxls8CbAmknmBmEUCdgOTLtg
- Z4sJpJPe3JsZbMZRQFhtzJdU1MkCadYR+4TuU/6+SIyb8b/MbvkLelaQAGRshMhxBnXSln
- NgGqhAQuiKXJmQxTpbcQSPW43pHPtLQ=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dKOvhsu9Fii0Pz4WpSYmAPGQjlDrWCtSQ1QW5/riD4Y=;
+ b=VN7eJ+vRl7tnQ2txz1yhQH3Xx2Ufu0dw9LIfRWV1K72+6VyRHu/P1V/DIT1G6M8Fjz3A1e
+ /QMbsdK6jg58Um6xgqm9C/6NSoJdKkYD8qaa03fiO3gKGSF2/+VYTalreeTxYikF4zBBKn
+ e7CoxD97+F/4fUlc38ITIBXLtd/qB/I=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-574-Z9lBeMBwMPGyhLVlLzFWkg-1; Thu, 12 Oct 2023 03:42:29 -0400
-X-MC-Unique: Z9lBeMBwMPGyhLVlLzFWkg-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-775869cf2f5so271718485a.1
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 00:42:29 -0700 (PDT)
+ us-mta-213-afsOAhguOda4TRUaD0NJDQ-1; Thu, 12 Oct 2023 03:49:58 -0400
+X-MC-Unique: afsOAhguOda4TRUaD0NJDQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41810af14a4so8147381cf.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 00:49:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697096548; x=1697701348;
+ d=1e100.net; s=20230601; t=1697096997; x=1697701797;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0EdI4y/FYQGAQq3Rpm2Y9OsL7tQuhKJZXXNi8G0A+zM=;
- b=PTz36Jlt909EJvR3i0KUR2jSpS4UYNOcgTaBDwhc8s1y5wHHPmrYiUz1K7iy2HpVfk
- n+qObbBuChZq0supLlq/h3bIR42BEsMUDbrwc4E/hLqJ2BAoR+pQS3X4nQR7im9KZ0uu
- FBbb79F+274v99cnEEL5jEB8npYUylZ+LQhrRX4Yf1vE3wGq0ANTiGhjZSLidwgRFWAG
- dIHGxEQnR6bHuiKuwm8nzQPekSpmfpaHURDmFgIMXzuydSDEteJOk+Ez4YYlwhggDGWi
- jJBKmNZo7x+oqlP9KKy3VToz5vAZnIXSMZ96WcESAW6QW5UbGq5Ia6pszhUt6OJD0UTH
- TOSA==
-X-Gm-Message-State: AOJu0YyY1W86ODu/RW5VacSEz3Cqdm9S5l5VgOydxDimu7Lw1R/1AXpZ
- uYAr23yT34wElBIIfZjBk/whEBtAchViTHcCtJTDr99N1f8jLXVNIPrtdPG3E9ZASUi8DsP2NBH
- qJcMnK5Cc/tZcgXc=
-X-Received: by 2002:a05:620a:284d:b0:775:9f94:16f1 with SMTP id
- h13-20020a05620a284d00b007759f9416f1mr28780627qkp.22.1697096548748; 
- Thu, 12 Oct 2023 00:42:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFyeiMHeRdZxaRxPDSYGN9DQBjtPoWRMqF5dXhpBh7oEzEqWbU9nd5pBV08jZWvlMitn81E3w==
-X-Received: by 2002:a05:620a:284d:b0:775:9f94:16f1 with SMTP id
- h13-20020a05620a284d00b007759f9416f1mr28780619qkp.22.1697096548484; 
- Thu, 12 Oct 2023 00:42:28 -0700 (PDT)
+ bh=dKOvhsu9Fii0Pz4WpSYmAPGQjlDrWCtSQ1QW5/riD4Y=;
+ b=EmmRUhKn7I7KMCzytXqrLsG2G/kPYnQyomRPVOn+r6IvTW/pLfAAWkonLAwOsZhQ2H
+ HWWUqcfSYOKneZ6u9n9d8XRJCtguhkljCDVkwb+VsUPZyxjkJ901QFYjD68XvhNtteQj
+ WxuBfI8/DR/2DKtgZ6vOesfqa529QOWZ2ScO5f94JKNEbj0Lo26ReMZ58NOiHRaj3Mvs
+ zyypw6c4p9VRcmdwzBPOFadOOvhKw9o52h9R7Eq/FjOzbxF8rCzMAy0B1PnraEThxglH
+ 6uTXAZUxeirJm3h3x1WOD95UFQyAVtMADmSCWWmrH1B1cnN2jnP4wx8+jN1eBCAYrtTv
+ 4/Pg==
+X-Gm-Message-State: AOJu0YzOb2tpnBAxUn1OUPPJl8ss67nG/DcDGlrgtiwgw/KJkfaKlQcX
+ ZFHpFaDouVWigaME+nDrD7bemo4oEQAfqz8CxOZOOeOl2jHEGgsFyISx0somOcvCLsQ//j0GcA2
+ lxBpTRcAw0bEQtGQ=
+X-Received: by 2002:a05:622a:289:b0:40f:dd92:5c91 with SMTP id
+ z9-20020a05622a028900b0040fdd925c91mr26570925qtw.37.1697096997548; 
+ Thu, 12 Oct 2023 00:49:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1tqYnbBRY44BCaWQCoyKTk5cIyybR8RuzdeuFE/ebID1tN9YAt0+7hChokjhyZ4ZEayf1mg==
+X-Received: by 2002:a05:622a:289:b0:40f:dd92:5c91 with SMTP id
+ z9-20020a05622a028900b0040fdd925c91mr26570911qtw.37.1697096997305; 
+ Thu, 12 Oct 2023 00:49:57 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
  [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- r4-20020a05620a03c400b0076ef004f659sm5856773qkm.1.2023.10.12.00.42.26
+ r8-20020ac87948000000b004196d75d79csm5973309qtt.46.2023.10.12.00.49.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 00:42:28 -0700 (PDT)
-Message-ID: <50026757-104e-426e-b754-a628ad5ed099@redhat.com>
-Date: Thu, 12 Oct 2023 09:42:25 +0200
+ Thu, 12 Oct 2023 00:49:56 -0700 (PDT)
+Message-ID: <84d1dbe6-560e-46d1-93c3-0d6243131c2e@redhat.com>
+Date: Thu, 12 Oct 2023 09:49:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 7/7] tests/qtest: Re-enable multifd cancel test
+Subject: Re: [PATCH v2 3/9] tests/qtest: Allow qtest_get_machines to use an
+ alternate QEMU binary
 Content-Language: en-US
 To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231011184604.32364-1-farosas@suse.de>
- <20231011184604.32364-8-farosas@suse.de>
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231006123910.17759-1-farosas@suse.de>
+ <20231006123910.17759-4-farosas@suse.de>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,19 +120,18 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231011184604.32364-8-farosas@suse.de>
+In-Reply-To: <20231006123910.17759-4-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,37 +147,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/2023 20.46, Fabiano Rosas wrote:
-> We've found the source of flakiness in this test, so re-enable it.
+On 06/10/2023 14.39, Fabiano Rosas wrote:
+> We're adding support for using more than one QEMU binary in
+> tests. Modify qtest_get_machines() to take an environment variable
+> that contains the QEMU binary path.
 > 
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Since the function keeps a cache of the machines list in the form of a
+> static variable, refresh it any time the environment variable changes.
+> 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->   tests/qtest/migration-test.c | 10 ++--------
->   1 file changed, 2 insertions(+), 8 deletions(-)
+>   tests/qtest/libqtest.c | 17 +++++++++++++----
+>   1 file changed, 13 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 2dc6ac2f87..049463ee5e 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -3068,14 +3068,8 @@ int main(int argc, char **argv)
+> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+> index 88b79cb477..47c8b6d46f 100644
+> --- a/tests/qtest/libqtest.c
+> +++ b/tests/qtest/libqtest.c
+> @@ -1441,9 +1441,10 @@ struct MachInfo {
+>    * Returns an array with pointers to the available machine names.
+>    * The terminating entry has the name set to NULL.
+>    */
+> -static struct MachInfo *qtest_get_machines(void)
+> +static struct MachInfo *qtest_get_machines(const char *var)
+>   {
+>       static struct MachInfo *machines;
+> +    static char *qemu_var;
+>       QDict *response, *minfo;
+>       QList *list;
+>       const QListEntry *p;
+> @@ -1452,11 +1453,19 @@ static struct MachInfo *qtest_get_machines(void)
+>       QTestState *qts;
+>       int idx;
+>   
+> +    if (g_strcmp0(qemu_var, var)) {
+> +        qemu_var = g_strdup(var);
+> +
+> +        /* new qemu, clear the cache */
+> +        g_free(machines);
+> +        machines = NULL;
+> +    }
+> +
+>       if (machines) {
+>           return machines;
 >       }
->       qtest_add_func("/migration/multifd/tcp/plain/none",
->                      test_multifd_tcp_none);
-> -    /*
-> -     * This test is flaky and sometimes fails in CI and otherwise:
-> -     * don't run unless user opts in via environment variable.
-> -     */
-> -    if (getenv("QEMU_TEST_FLAKY_TESTS")) {
-> -        qtest_add_func("/migration/multifd/tcp/plain/cancel",
-> -                       test_multifd_tcp_cancel);
-> -    }
-> +    qtest_add_func("/migration/multifd/tcp/plain/cancel",
-> +                   test_multifd_tcp_cancel);
->       qtest_add_func("/migration/multifd/tcp/plain/zlib",
->                      test_multifd_tcp_zlib);
->   #ifdef CONFIG_ZSTD
 
-Acked-by: Thomas Huth <thuth@redhat.com>
+After sleeping on the topic of the string handling in this patch series a 
+little bit  I think it was maybe a bad idea to suggest to remove the 
+g_strdups in the other patches. If you actually clear the cache here, the 
+strings that previously were guaranteed to stay around until the end of the 
+program might now vanish. So instead of returning the pointer to the cache 
+here, it might be better to create a copy of the whole structure here and 
+let the callers decide whether they want to keep it around or free it at the 
+end?
+
+  Thomas
 
 
