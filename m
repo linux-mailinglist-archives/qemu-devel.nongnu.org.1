@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96F47C66B0
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 09:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0067C6785
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 10:24:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqqWM-0004Q4-DR; Thu, 12 Oct 2023 03:54:14 -0400
+	id 1qqqyG-0004Tc-Pc; Thu, 12 Oct 2023 04:23:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqqWK-0004OC-Bb
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:54:12 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqqyD-0004T4-S0
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 04:23:01 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qqqWI-0000cH-IR
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 03:54:12 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-32d81864e3fso546421f8f.2
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 00:54:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqqyA-0007OQ-Jc
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 04:23:01 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-5033918c09eso958712e87.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 01:22:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697097248; x=1697702048; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YppCOcj+UZBhzyVZEnIIPpu6MA6N/eXmfJZeFBb+eyY=;
- b=iPnKTQPjB7d10bhuYQAhGbZIY8kbbhUZ1F9HIgkszybhLMizPtvYIRzf3ukS3jSeOy
- eMM1qtoeitCgWcuDVQUsBLlsN9gEUbi0+Mfz97Id8lBRT76rH5FcMDLdwZMvBKLYVhC4
- Ui20ODe+YsfdmjOgfud5Y6AExoDCuaNO1uZLX7ZUpNegrIbFevqSvRkUNDX/W4a5JOfy
- Ny9BZZIRt/huAF5boF+FekWmGBW5sHIkQygKHk2zNwyn9qE91636oIxvoHy1aky6fJss
- vgBR+XZ3t1gXPd3xwwBkrzh9AIFqq2H3LkeTuoukiSUZaReeKvJRVZYRMinLD7FqgcSX
- I0vg==
+ d=linaro.org; s=google; t=1697098975; x=1697703775; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vEbAvL6rJkK+tyI4avRZquI8VfniJZBrHrPnRLsaBJI=;
+ b=oxNpjaYIJj4WwVZTGgDvPU6NPKfPQbQE9+yi3MeZnBNk2mKieZdfZ5cBoE1bF8E5q8
+ Z01NmxkoAw2IFWo5/4OjaoSYkfeKN26TDupFUJtxGIub9lDMIJ/5bgMlBwhjO/RqsPLY
+ MO0l1zukY4AfSLCok0YiLBUpGVCbNDiwcW2c9RwYtx78NRpMDAdohCLHH1xgxuDJBfcF
+ uEBXUBP1E6F0SiSFw0WhZljI0iajIxUjasykzsI3z7QObnz+Dp+jqjGpuS0kVoF9KO1J
+ mQnyDoeuXwse5lEMxURqq/6fWFnXihoNpXtGH+l79M/m00US8A7s7tmYE52jcwVLVM6n
+ fuAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697097248; x=1697702048;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=YppCOcj+UZBhzyVZEnIIPpu6MA6N/eXmfJZeFBb+eyY=;
- b=E+LD3sWa6gHavzvS7ltechXSWurt3OenEt5TtF+r1LqfQ6apvIhxu/DvgjjoMty+SX
- vTqBZG1bKsjCoooiEkKmT61uVb0aljo+0rswEjlTqzC7LGO1AblzG3wpKejFEPfVeeMc
- O2tIRp9s3gKR9dVhAkvZsy5d/FRyrINgFdyByaDqcaUGt+cKsA5odozzdqJezONmJlMa
- mD7XnKrYYyGIlUMb3Aexkeae9l/E5dtuaWbR+p0frfiCfG/6/4eo6dgzfF+VYyKmCAE5
- IamgYFpwm94EbxR57fFOSGXCA/9INcd885Axv/E5J9TZqd8AYeXwf7fI2yZI323sO5d8
- sWBw==
-X-Gm-Message-State: AOJu0YzKd4tx5+GAsZk7TOd/ztjvWGH3grvPI4zFJ2sB/D6xZF3VvHot
- g9c97BWYOmKrMIwNRM5iNZHAmA==
-X-Google-Smtp-Source: AGHT+IGKvIHZ/BpRKDJUrJ+hEJ5BW6UuEujYZyxvV0Jy5HkPYo2J+11Kie4MptSk1MvVhtRB8byn6A==
-X-Received: by 2002:adf:fc0a:0:b0:32d:8b1a:31a9 with SMTP id
- i10-20020adffc0a000000b0032d8b1a31a9mr1866353wrr.41.1697097248026; 
- Thu, 12 Oct 2023 00:54:08 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- k23-20020a5d5257000000b003177074f830sm17551898wrc.59.2023.10.12.00.54.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Oct 2023 00:54:07 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 484011FFBB;
- Thu, 12 Oct 2023 08:54:07 +0100 (BST)
-References: <20231012073458.860187-1-thuth@redhat.com>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org, qemu-arm@nongnu.org
-Subject: Re: [PATCH] hw/arm: Move raspberrypi-fw-defs.h to the
- include/hw/arm/ folder
-Date: Thu, 12 Oct 2023 08:54:00 +0100
-In-reply-to: <20231012073458.860187-1-thuth@redhat.com>
-Message-ID: <875y3cnun4.fsf@linaro.org>
+ d=1e100.net; s=20230601; t=1697098975; x=1697703775;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vEbAvL6rJkK+tyI4avRZquI8VfniJZBrHrPnRLsaBJI=;
+ b=obn0HH/jyCtKZeTrU8alWHDA+rAJcNDthevVkkpzr/CBsYOCsKHqWE97e57Pmm86C5
+ aRBxCxEfV/v/D5uR/U4dqnW9lZHcY2eLWNFX7CdTf61oboWVG0+gF8OtdclXVElV26BJ
+ vWmXO42uFgnVhlEIKiRuLaD3kl27gbnPMyicqSHRgdKRoZ3E7qdnHLmN8y0bSupKtm1U
+ CaI37bgBMuT+UBViHh5+Vmm6A2CiFw/zo3qeuBblhq14t2ujDfSjHrmRVTBN+p435A/7
+ z1ozRp2vOedyzz07vBBRkbe2LtEIlRcU+6BlTP1GPJdMMCbQJ90c7fYlZfvZb5YLmYvw
+ QxCg==
+X-Gm-Message-State: AOJu0YxaiyHsCBZjW++5oouNwx5Ja3lVRMztyYgSf4xFD6baRTIAG4/x
+ RnQ5mO86/6HAhOLlnjIKV8nLU9s9DLk/Jnf4LZQgtA==
+X-Google-Smtp-Source: AGHT+IEb6XTaN2pStg6rBU3EJyXPT4vb/0dQEmpgpBw7FMF11tEkHloXYs+qAh/K+lYdnpJfxkvJvg==
+X-Received: by 2002:a05:6512:3450:b0:501:c3ee:62ec with SMTP id
+ j16-20020a056512345000b00501c3ee62ecmr15747273lfr.12.1697098975501; 
+ Thu, 12 Oct 2023 01:22:55 -0700 (PDT)
+Received: from [192.168.26.175] (192.red-88-28-24.dynamicip.rima-tde.net.
+ [88.28.24.192]) by smtp.gmail.com with ESMTPSA id
+ v5-20020a05600c214500b003fbe791a0e8sm18973251wml.0.2023.10.12.01.22.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Oct 2023 01:22:54 -0700 (PDT)
+Message-ID: <788f54e1-3f2f-f24d-63cf-172efc605823@linaro.org>
+Date: Thu, 12 Oct 2023 10:22:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] hw/arm: Move raspberrypi-fw-defs.h to the include/hw/arm/
+ folder
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-trivial@nongnu.org
+References: <20231012073458.860187-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231012073458.860187-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,19 +94,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Thomas Huth <thuth@redhat.com> writes:
-
+On 12/10/23 09:34, Thomas Huth wrote:
 > The file is obviously related to the raspberrypi machine, so
-> it should reside in hw/arm/ instead of hw/misc/. And while we're
+> it should reside in hw/arm/ instead of hw/misc/.
+
+Not quite. These are the VideoCore DSP definitions. Firmware
+running on SoC including a VC can use this syscall-like interface.
+
+FWIW there are a pair of QEMU VC implementations on GitHub.
+
+Anyhow, preferably rewording the description,
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> And while we're
 > at it, also adjust the wildcard in MAINTAINERS so that it covers
 > this file, too.
->
+> 
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS                                    | 2 +-
+>   include/hw/{misc => arm}/raspberrypi-fw-defs.h | 0
+>   hw/misc/bcm2835_property.c                     | 2 +-
+>   3 files changed, 2 insertions(+), 2 deletions(-)
+>   rename include/hw/{misc => arm}/raspberrypi-fw-defs.h (100%)
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
