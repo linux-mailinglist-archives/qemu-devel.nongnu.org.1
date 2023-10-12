@@ -2,67 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8897C68BE
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 11:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CDD7C6903
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 11:08:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqrYH-0007jy-Ed; Thu, 12 Oct 2023 05:00:17 -0400
+	id 1qqred-0001Sq-AK; Thu, 12 Oct 2023 05:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qqrY6-0007jE-6k; Thu, 12 Oct 2023 05:00:06 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qqrY0-0007YW-QP; Thu, 12 Oct 2023 05:00:04 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5k743qdfz6K6XZ;
- Thu, 12 Oct 2023 16:57:52 +0800 (CST)
-Received: from localhost (10.48.155.47) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 12 Oct
- 2023 09:59:55 +0100
-Date: Thu, 12 Oct 2023 09:59:54 +0100
-To: Vikram Sethi <vsethi@nvidia.com>
-CC: Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "clg@redhat.com"
- <clg@redhat.com>, "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
- <ani@anisinha.ca>, "berrange@redhat.com" <berrange@redhat.com>,
- "eduardo@habkost.net" <eduardo@habkost.net>, "imammedo@redhat.com"
- <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com"
- <eblake@redhat.com>, "armbru@redhat.com" <armbru@redhat.com>,
- "david@redhat.com" <david@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>, 
- Aniket Agashe <aniketa@nvidia.com>, Neo Jia <cjia@nvidia.com>, Kirti Wankhede
- <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Andy
- Currid <ACurrid@nvidia.com>, Dheeraj Nigam <dnigam@nvidia.com>, Uday Dhoke
- <udhoke@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Dave Jiang
- <dave.jiang@intel.com>, "Shanker Donthineni" <sdonthineni@nvidia.com>
-Subject: Re: [PATCH v2 1/3] qom: new object to associate device to numa node
-Message-ID: <20231012095954.00006ebb@Huawei.com>
-In-Reply-To: <BYAPR12MB3336E4ABBB0CBD3C87222DA7BDCCA@BYAPR12MB3336.namprd12.prod.outlook.com>
-References: <20231007201740.30335-1-ankita@nvidia.com>
- <20231007201740.30335-2-ankita@nvidia.com>
- <20231009132642.00002c8d@Huawei.com>
- <BYAPR12MB3336E4ABBB0CBD3C87222DA7BDCCA@BYAPR12MB3336.namprd12.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <baxiantai@gmail.com>)
+ id 1qqreU-0001Rh-VS; Thu, 12 Oct 2023 05:06:43 -0400
+Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <baxiantai@gmail.com>)
+ id 1qqreS-00014D-Dd; Thu, 12 Oct 2023 05:06:42 -0400
+Received: by mail-oo1-xc36.google.com with SMTP id
+ 006d021491bc7-57b67c84999so455445eaf.3; 
+ Thu, 12 Oct 2023 02:06:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697101598; x=1697706398; darn=nongnu.org;
+ h=in-reply-to:from:references:cc:to:content-language:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=huBv2aFj+Jn+sKrMUyrE5W5Z79p5JRrnw9+gbrW2u6E=;
+ b=kAaR8KIWovObUsCj4Lwtw9o5A276rfaKBaREwbRc94hoyMLDnvIflxEVQ0SIuockjX
+ G6YRKk3xNYavbl97+62wPnHM0pHP/qmeN4T7hoUAU56G0mhqq8/57ToEYzCgThU8NVTz
+ Y4tPWqub0cgO58FAA8NSof8LB+wAdAKmI/Le9n2QBcOELFzRdDQLmfxkap9JeZyfTpNY
+ g+cefImK4fXT69hdxSNYZoMq1CzwhaSN68CSRdwIc+u40VE2zPJAyfPl9hva4i63e71M
+ Useo60Wb4UGv2Oup2w5GgebHchf3keUErmdBAH0tOE35KfMivy5EB2cOuEGw9X+4tAPx
+ raPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697101598; x=1697706398;
+ h=in-reply-to:from:references:cc:to:content-language:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=huBv2aFj+Jn+sKrMUyrE5W5Z79p5JRrnw9+gbrW2u6E=;
+ b=P7B5fgU5NwhLo5nvAMrU3dTAewmGF4oTktVIsaPCufcwFUN4c0MNas4jJ3wS/Sm8F9
+ m/RdbDTNHyC9JnSPf4g7C4eDDkOF8ZKMiRCXtWDCnkkeyfrBTs6Ri8k3TB0IVOXohgvt
+ zoqCPKijKSjfAOwHfiZSk7Gj9yk+cZIF/yxYlQiXDuSArI0ANcDkwVXoDvuS1VcrfuYe
+ qNsDj6p4i+W3p/eTNM6/nlKmLa/aQGxZkAYsL2qgeaxC+rPZK0ENkTsszRjpMoMo2aud
+ Eovv4Fo4Y3XTmsNgJKKQ/cyH66apzMERZQhQJ9ZU8K4vUHUBhrAh57PwIldAssvDx7zK
+ 41Tg==
+X-Gm-Message-State: AOJu0Yy6rWfYu4Mve1Pn6QixN09rhNsJUPbPE7JWBH+sb0j+8BVbQ43a
+ QpWWZtQPxxc/TtWPmlCdttY=
+X-Google-Smtp-Source: AGHT+IFNE95AFZ90YerlM7RkZMs++cMn+8Es+hP4PyjG+6c3F2qq4QV1VWbep5/wSr6XEwSj7zk78A==
+X-Received: by 2002:a05:6358:788:b0:133:428:35dc with SMTP id
+ n8-20020a056358078800b00133042835dcmr26928160rwj.11.1697101598154; 
+ Thu, 12 Oct 2023 02:06:38 -0700 (PDT)
+Received: from [30.221.101.97] ([47.246.101.49])
+ by smtp.gmail.com with ESMTPSA id
+ a12-20020a62bd0c000000b0068e49cb1692sm11349270pff.1.2023.10.12.02.06.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Oct 2023 02:06:37 -0700 (PDT)
+Content-Type: multipart/alternative;
+ boundary="------------8ugVFO0d4f1BHeWkNtSQyw6X"
+Message-ID: <e68ea00e-3f7a-4590-beae-6946d9fde671@gmail.com>
+Date: Thu, 12 Oct 2023 17:05:34 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.155.47]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/6] target/riscv: Add "pmu-mask" property to replace
+ "pmu-num"
+Content-Language: en-US
+To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+References: <20231011145032.81509-1-rbradford@rivosinc.com>
+ <20231011145032.81509-6-rbradford@rivosinc.com>
+From: LIU Zhiwei <baxiantai@gmail.com>
+In-Reply-To: <20231011145032.81509-6-rbradford@rivosinc.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
+ envelope-from=baxiantai@gmail.com; helo=mail-oo1-xc36.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,111 +92,275 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 11 Oct 2023 17:37:11 +0000
-Vikram Sethi <vsethi@nvidia.com> wrote:
-
-> Hi Jonathan,
-> 
-> > -----Original Message-----
-> > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> > Sent: Monday, October 9, 2023 7:27 AM
-> > To: Ankit Agrawal <ankita@nvidia.com>
-> > Cc: Jason Gunthorpe <jgg@nvidia.com>; alex.williamson@redhat.com;
-> > clg@redhat.com; shannon.zhaosl@gmail.com; peter.maydell@linaro.org;
-> > ani@anisinha.ca; berrange@redhat.com; eduardo@habkost.net;
-> > imammedo@redhat.com; mst@redhat.com; eblake@redhat.com;
-> > armbru@redhat.com; david@redhat.com; gshan@redhat.com; Aniket
-> > Agashe <aniketa@nvidia.com>; Neo Jia <cjia@nvidia.com>; Kirti Wankhede
-> > <kwankhede@nvidia.com>; Tarun Gupta (SW-GPU) <targupta@nvidia.com>;
-> > Vikram Sethi <vsethi@nvidia.com>; Andy Currid <acurrid@nvidia.com>;
-> > Dheeraj Nigam <dnigam@nvidia.com>; Uday Dhoke <udhoke@nvidia.com>;
-> > qemu-arm@nongnu.org; qemu-devel@nongnu.org; Dave Jiang
-> > <dave.jiang@intel.com>
-> > Subject: Re: [PATCH v2 1/3] qom: new object to associate device to numa
-> > node
-> > 
-> > 
-> > On Sun, 8 Oct 2023 01:47:38 +0530
-> > <ankita@nvidia.com> wrote:
-> >   
-> > > From: Ankit Agrawal <ankita@nvidia.com>
-> > >
-> > > The CPU cache coherent device memory can be added as NUMA nodes
-> > > distinct from the system memory nodes. These nodes are associated with
-> > > the device and Qemu needs a way to maintain this link.  
-> > 
-> > Hi Ankit,
-> > 
-> > I'm not sure I'm convinced of the approach to creating nodes for memory
-> > usage (or whether that works in Linux on all NUMA ACPI archs), but I am
-> > keen to see Generic Initiator support in QEMU. I'd also like to see it done in a
-> > way that naturally extends to Generic Ports which are very similar (but don't
-> > hang memory off them! :) Dave Jiang posted a PoC a while back for generic
-> > ports.
-> > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.
-> > kernel.org%2Fqemu-
-> > devel%2F168185633821.899932.322047053764766056.stgit%40djiang5-
-> > mobl3%2F&data=05%7C01%7Cvsethi%40nvidia.com%7C846b19f87bc5424d
-> > c33608dbc8c3015d%7C43083d15727340c1b7db39efd9ccc17a%7C0%7C0%7
-> > C638324512146712954%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjA
-> > wMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%
-> > 7C%7C&sdata=v318MXognoITHyv7AFqZAfvUi2hLy2ZUVnLvyQ2IAfY%3D&res
-> > erved=0
-> > 
-> > My concern with this approach is that it is using a side effect of a Linux
-> > implementation detail that the infra structure to bring up coherent memory
-> > is all present even for a GI only node (if it is which I can't recall) I'm also fairly
-> > sure we never tidied up the detail of going from the GI to the device in Linux
-> > (because it's harder than a _PXM entry for the device).  It requires stashing a
-> > better description than the BDF before potentially doing reenumeration so
-> > that we can rebuild the association after that is done.
-> >   
-> 
-> I'm not sure I understood the concern. Are you suggesting that the ACPI specification
-> somehow prohibits memory associated with a GI node in the same PXM? i.e whether the GI is memory-less
-> or with memory isn't mandated by the spec IIRC. Certainly seems perfectly normal
-> for an accelerator with memory to have a GI with memory and that memory be able to be associated with the same PXM. 
-
-Indeed reasonable that a GI would have associated memory, but if it's
-"normal memory" (i.e. coherent and not device private memory accessed by PCI bar
-etc) then expectation would be that memory is in SRAT as a memory entry.
-Which brings us back to the original question of whether 0 sized memory nodes
-are fine.
-
-> So what about this patch is using a Linux implementation detail? Even if Linux wasn't currently supporting
-> that use case, it is something that would have been reasonable to add IMO. What am I missing?
-
-Linux is careful to only bring up the infrastructure for specific types of 
-roximity node. It works its way through SRAT and sets appropriate bitmap bits
-to say which combination of PXM node types a given node is. (CPU, Memory, GI etc)
-
-After that walk is done it then brings up various infrastructure.
-What I can't remember (you'll need to experiment) is if there is anything not
-brought up for a non Memory node that you would need.  Might be fine, but that
-doesn't mean it will remain fine.  Maybe we just need to make sure the documentation
-/ comments in Linux cover this use case.  You are on your own for what other
-OSes decided is valid here as the specifcation does not mention this AFAIK.
-If it does then add a reference.
-
-There is a non trivial (potential) cost to enabling facilities on NUMA nodes that
-will never make use of them - a bunch of longer searches etc when looking
-for memory.  For GIs we enable pretty much everything a CPU node uses.
-That was controversial though only well after support was already in - the
-controversy being that it added costs to paths that didn't care about GIs.
-
-Basically it boils down to using unexpected corners of specifications may
-prove fragile.
-
-For one thing I'm doubtful if the NUMA description the kernel exposes (coming
-from a subset of HMAT) won't deal with this case.  Not tried it though
-so you may be lucky.
-
-Jonathan
+This is a multi-part message in MIME format.
+--------------8ugVFO0d4f1BHeWkNtSQyw6X
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
+On 2023/10/11 22:45, Rob Bradford wrote:
+> Using a mask instead of the number of PMU devices supports the accurate
+> emulation of platforms that have a discontinuous set of PMU counters.
+>
+> Generate a warning if the old property changed from the default but
+> still go ahead and use it to generate the mask if the user has changed
+> it from the default
+>
+> Signed-off-by: Rob Bradford<rbradford@rivosinc.com>
+> ---
+>   target/riscv/cpu.c     |  5 +++--
+>   target/riscv/cpu_cfg.h |  3 ++-
+>   target/riscv/machine.c |  2 +-
+>   target/riscv/pmu.c     | 14 ++++++++++----
+>   4 files changed, 16 insertions(+), 8 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index c9d8fc12fe..4d2987e568 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1487,7 +1487,7 @@ static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
+>           riscv_timer_init(cpu);
+>       }
+>   
+> -    if (cpu->cfg.pmu_num) {
+> +    if (cpu->cfg.pmu_mask) {
+>           riscv_pmu_init(cpu, &local_err);
+>           if (local_err != NULL) {
+>               error_propagate(errp, local_err);
+> @@ -1812,7 +1812,8 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+>   
+>   static Property riscv_cpu_extensions[] = {
+>       /* Defaults for standard extensions */
+> -    DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
+> +    DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16), /* Deprecated */
+> +    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask, MAKE_32BIT_MASK(3, 16)),
+>       DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+>       DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+>       DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index 0e6a0f245c..d273487040 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -123,7 +123,8 @@ struct RISCVCPUConfig {
+>       bool ext_xtheadsync;
+>       bool ext_XVentanaCondOps;
+>   
+> -    uint8_t pmu_num;
+> +    uint8_t pmu_num; /* Deprecated */
+> +    uint32_t pmu_mask;
+>       char *priv_spec;
+>       char *user_spec;
+>       char *bext_spec;
+> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+> index c7c862cdd3..9f6e3f7a6d 100644
+> --- a/target/riscv/machine.c
+> +++ b/target/riscv/machine.c
+> @@ -313,7 +313,7 @@ static bool pmu_needed(void *opaque)
+>   {
+>       RISCVCPU *cpu = opaque;
+>   
+> -    return cpu->cfg.pmu_num;
+> +    return (cpu->cfg.pmu_mask > 0);
+>   }
+>   
+>   static const VMStateDescription vmstate_pmu_ctr_state = {
+> diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
+> index 360c76f63e..f2d35b4d3b 100644
+> --- a/target/riscv/pmu.c
+> +++ b/target/riscv/pmu.c
+> @@ -18,6 +18,7 @@
+>   
+>   #include "qemu/osdep.h"
+>   #include "qemu/log.h"
+> +#include "qemu/error-report.h"
+>   #include "cpu.h"
+>   #include "pmu.h"
+>   #include "sysemu/cpu-timers.h"
+> @@ -182,7 +183,7 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx)
+>       CPURISCVState *env = &cpu->env;
+>       gpointer value;
+>   
+> -    if (!cpu->cfg.pmu_num) {
+> +    if (!cpu->cfg.pmu_mask) {
+>           return 0;
+>       }
+>       value = g_hash_table_lookup(cpu->pmu_event_ctr_map,
+> @@ -432,7 +433,7 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+>   {
+>       uint8_t pmu_num = cpu->cfg.pmu_num;
+>   
+> -    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
+> +    if (ctpop32(cpu->cfg.pmu_mask) > (RV_MAX_MHPMCOUNTERS - 3)) {
+>           error_setg(errp, "Number of counters exceeds maximum available");
+>           return;
+>       }
+> @@ -443,6 +444,11 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+>           return;
+>       }
+>   
+> -    /* Create a bitmask of available programmable counters */
+> -    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
+> +    /* Check if user set it by comparing against default */
+> +    if (pmu_num != 16) {
+> +        warn_report("\"pmu-num\" property is deprecated; use \"pmu-mask\"");
+> +        cpu->cfg.pmu_mask = MAKE_32BIT_MASK(3, pmu_num);
+> +    }
+> +
+> +    cpu->pmu_avail_ctrs = cpu->cfg.pmu_mask;
+
+How to process the pmu_mask[0:2] no-zero bits? They should not included 
+into pmu_avail_ctrs.
+
+Zhiwei
+
+>   }
+--------------8ugVFO0d4f1BHeWkNtSQyw6X
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 2023/10/11 22:45, Rob Bradford
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20231011145032.81509-6-rbradford@rivosinc.com">
+      <pre class="moz-quote-pre" wrap="">Using a mask instead of the number of PMU devices supports the accurate
+emulation of platforms that have a discontinuous set of PMU counters.
+
+Generate a warning if the old property changed from the default but
+still go ahead and use it to generate the mask if the user has changed
+it from the default
+
+Signed-off-by: Rob Bradford <a class="moz-txt-link-rfc2396E" href="mailto:rbradford@rivosinc.com">&lt;rbradford@rivosinc.com&gt;</a>
+---
+ target/riscv/cpu.c     |  5 +++--
+ target/riscv/cpu_cfg.h |  3 ++-
+ target/riscv/machine.c |  2 +-
+ target/riscv/pmu.c     | 14 ++++++++++----
+ 4 files changed, 16 insertions(+), 8 deletions(-)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index c9d8fc12fe..4d2987e568 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1487,7 +1487,7 @@ static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
+         riscv_timer_init(cpu);
+     }
+ 
+-    if (cpu-&gt;cfg.pmu_num) {
++    if (cpu-&gt;cfg.pmu_mask) {
+         riscv_pmu_init(cpu, &amp;local_err);
+         if (local_err != NULL) {
+             error_propagate(errp, local_err);
+@@ -1812,7 +1812,8 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+ 
+ static Property riscv_cpu_extensions[] = {
+     /* Defaults for standard extensions */
+-    DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
++    DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16), /* Deprecated */
++    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask, MAKE_32BIT_MASK(3, 16)),
+     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 0e6a0f245c..d273487040 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -123,7 +123,8 @@ struct RISCVCPUConfig {
+     bool ext_xtheadsync;
+     bool ext_XVentanaCondOps;
+ 
+-    uint8_t pmu_num;
++    uint8_t pmu_num; /* Deprecated */
++    uint32_t pmu_mask;
+     char *priv_spec;
+     char *user_spec;
+     char *bext_spec;
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index c7c862cdd3..9f6e3f7a6d 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -313,7 +313,7 @@ static bool pmu_needed(void *opaque)
+ {
+     RISCVCPU *cpu = opaque;
+ 
+-    return cpu-&gt;cfg.pmu_num;
++    return (cpu-&gt;cfg.pmu_mask &gt; 0);
+ }
+ 
+ static const VMStateDescription vmstate_pmu_ctr_state = {
+diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
+index 360c76f63e..f2d35b4d3b 100644
+--- a/target/riscv/pmu.c
++++ b/target/riscv/pmu.c
+@@ -18,6 +18,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
++#include "qemu/error-report.h"
+ #include "cpu.h"
+ #include "pmu.h"
+ #include "sysemu/cpu-timers.h"
+@@ -182,7 +183,7 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx)
+     CPURISCVState *env = &amp;cpu-&gt;env;
+     gpointer value;
+ 
+-    if (!cpu-&gt;cfg.pmu_num) {
++    if (!cpu-&gt;cfg.pmu_mask) {
+         return 0;
+     }
+     value = g_hash_table_lookup(cpu-&gt;pmu_event_ctr_map,
+@@ -432,7 +433,7 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+ {
+     uint8_t pmu_num = cpu-&gt;cfg.pmu_num;
+ 
+-    if (pmu_num &gt; (RV_MAX_MHPMCOUNTERS - 3)) {
++    if (ctpop32(cpu-&gt;cfg.pmu_mask) &gt; (RV_MAX_MHPMCOUNTERS - 3)) {</pre>
+    </blockquote>
+    <span style="white-space: pre-wrap"></span><span
+    style="white-space: pre-wrap">
+</span>
+    <blockquote type="cite"
+      cite="mid:20231011145032.81509-6-rbradford@rivosinc.com">
+      <pre class="moz-quote-pre" wrap="">         error_setg(errp, "Number of counters exceeds maximum available");
+         return;
+     }
+@@ -443,6 +444,11 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+         return;
+     }
+ 
+-    /* Create a bitmask of available programmable counters */
+-    cpu-&gt;pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
++    /* Check if user set it by comparing against default */
++    if (pmu_num != 16) {
++        warn_report("\"pmu-num\" property is deprecated; use \"pmu-mask\"");
++        cpu-&gt;cfg.pmu_mask = MAKE_32BIT_MASK(3, pmu_num);
++    }
++
++    cpu-&gt;pmu_avail_ctrs = cpu-&gt;cfg.pmu_mask;</pre>
+    </blockquote>
+    <p>How to process the pmu_mask[0:2] no-zero bits? They should not
+      included into pmu_avail_ctrs.</p>
+    <p>Zhiwei<br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:20231011145032.81509-6-rbradford@rivosinc.com">
+      <pre class="moz-quote-pre" wrap="">
+ }
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------8ugVFO0d4f1BHeWkNtSQyw6X--
 
