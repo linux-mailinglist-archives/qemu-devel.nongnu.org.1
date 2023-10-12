@@ -2,95 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CBC7C642B
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAD47C642E
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:44:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqnVE-0000iS-Ry; Thu, 12 Oct 2023 00:40:52 -0400
+	id 1qqnY9-0001lh-A9; Thu, 12 Oct 2023 00:43:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qqnVC-0000fC-SW
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:40:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qqnVA-0000ck-Md
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:40:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697085646;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IlWm9zfcUnGSk313mGFPiaOAQx+5qDAGYydJu9tt1Fs=;
- b=BiWJwgxJ4Qqp+v1HmukVksZ6sJqwMfWENLXZlaSa8I32vZfaLjHovZZuGQH7Ehm980as5h
- byAkzh5Zq0IPtEACDW2Lv8BsuehFZs9jr2XJlpVj9Rko4ps2cc3AFHtbWwc8FvzmxWsqJK
- GDGYEk5tfpmcUE5sdLPARO6vMQ3kefg=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-vYYeoQ-nNye8mRdPwiUExQ-1; Thu, 12 Oct 2023 00:40:42 -0400
-X-MC-Unique: vYYeoQ-nNye8mRdPwiUExQ-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-58530660c1bso393489a12.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:40:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqnY5-0001lH-2q
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:43:49 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqnXz-000169-WC
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:43:48 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9ba1eb73c27so84549566b.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:43:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697085821; x=1697690621; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NsQdNAt772Lk3sYaY/eE2FLNruWxHL/eoU/amETLWU4=;
+ b=XcOGXKZI2TR9r9FdM1UJoZTSC4RWFwCn4CrItZfBkUKhgfzrTkTX6YKnqWKxu6O6LF
+ v+RrR9aouOxZiDwcC6HrYUMH1vgGYo3SUsVWqvSGbaVke3dLFqQoJVJgHO6NerEGExau
+ i+rPYeRpsDZR+5Pp1FMQIMsTJWckMwmStS7/lrXGDILE40QiafdabVV+hnjr657kga+B
+ tupcm9vrpw+dUZv8aAGX8pETfc3etZuUtGiL0gjXwmZDoh7SSa6Tbgpcocrx6Txc25rj
+ 1Y1NrRXvdAIYcr/YmvASyKpJQ9pinQqyaG5sDf2cf0jO62hS0HfBABkSRXs1UmN9SI3D
+ HLhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697085641; x=1697690441;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IlWm9zfcUnGSk313mGFPiaOAQx+5qDAGYydJu9tt1Fs=;
- b=GFFQphC0rPgZCzRXVtpeBUcuwx4XFGlW9o/e88kmao3SnSx9G6t1/sof05qMbBHIUT
- MSsc3wdkaDANONmXrD2E9s4McottbL0zGptKrqfyaXIYQ0CHowSzYBo7MNE3REHwV2Gx
- 06ToquJYk43e4fyyK6YhKG/TEFjF/DGSgmdibyRHNN57f966d29epUh+N/Mku2HTmmyL
- jke0Vdwq6WyouKtvDuZW6SXtHUPnX25Im/VcCG5IMl4CwTAYDFQZM9hQfHq5c9AEG5r4
- p5PXmT99HRcK/yboGhWlgSrabGibxtkD5P1oizuxmppcyWA5gBZepCoGhJSbcM6oJQjL
- lWPw==
-X-Gm-Message-State: AOJu0YyicmUsc81KEsjPDLLPXFL+dDwi1xYniurOrEr8LOYdeauDogWQ
- SSgaqUjLPwYbwdo9fvrmpbRMNwBxQO3gXesWwZMSHEX1Xah9UYXy3irOzhT2cYMK8YIuOQRR45s
- AsTLO9gtvBliSn1M=
-X-Received: by 2002:a05:6a20:7291:b0:157:b453:dbb9 with SMTP id
- o17-20020a056a20729100b00157b453dbb9mr24647229pzk.6.1697085641014; 
- Wed, 11 Oct 2023 21:40:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYzuyQRI8R8AoMcC0EkGTkipWmjC6mB2OYhJ09Wq9KJTQidcIHLPGSEOlonc5vrpDpmx9Chw==
-X-Received: by 2002:a05:6a20:7291:b0:157:b453:dbb9 with SMTP id
- o17-20020a056a20729100b00157b453dbb9mr24647215pzk.6.1697085640723; 
- Wed, 11 Oct 2023 21:40:40 -0700 (PDT)
-Received: from smtpclient.apple ([202.88.220.252])
- by smtp.gmail.com with ESMTPSA id
- im16-20020a170902bb1000b001c5fed0b35esm790332plb.300.2023.10.11.21.40.38
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 11 Oct 2023 21:40:40 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH] hw/i386/cxl: ensure maxram is greater than ram size for
- calculating cxl range
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20231011173104.000016f5@Huawei.com>
-Date: Thu, 12 Oct 2023 10:10:36 +0530
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8E01874E-9B9D-41C5-9D88-29D9B4071BC6@redhat.com>
-References: <20231011105335.42296-1-anisinha@redhat.com>
- <20231011173104.000016f5@Huawei.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20230601; t=1697085821; x=1697690621;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NsQdNAt772Lk3sYaY/eE2FLNruWxHL/eoU/amETLWU4=;
+ b=lFFE2xj2GROrFKADr6x4yDGmO+HSDg9mbVLvw4mBVKjDh7Y5v0MoFeE8GZ55BQ/JbP
+ QgUMCc5qtRsAbwAMlHzo1RwcWrJEFZTqal09vXeM6de19Juykbyl44uNSdZUnyU+DNYB
+ KKmbwVUYkOIvT1UCzOirKrRlYXV1wSPDT0Uplbd6nPGzmKPZ7nyjuV634+xA8lJiO2yb
+ rXrMNNr7Vqk0cZsR2M0qQGDAFX436Yfo4O5i+IcrcrkREdDqJdoB3/986xrdjXrFoyFK
+ p5w1tiavdTf28z1qg6lfA0Ay4vw7WM7ikOinToiimWHnkDYBlgPQjlDXYyu8u0Re5/Eb
+ Kp1A==
+X-Gm-Message-State: AOJu0YxqNNbTfRRPtREsYmtt2xh27K+M5OcNjJmz4Qj0S2zSI3lollUc
+ d0LXLWCw+mn0+FecrwAPId9jfg==
+X-Google-Smtp-Source: AGHT+IGIlo5zl7YzfkbZUbUX0S0sbo88NwmvU+qedr6hKf7evlCiDKmmKb8Mi9eP7OZWl4Pecf8n5Q==
+X-Received: by 2002:a17:907:1dd2:b0:9ae:406c:3425 with SMTP id
+ og18-20020a1709071dd200b009ae406c3425mr21222384ejc.0.1697085821305; 
+ Wed, 11 Oct 2023 21:43:41 -0700 (PDT)
+Received: from [192.168.69.115] (dcs23-h01-176-173-173-31.dsl.sta.abo.bbox.fr.
+ [176.173.173.31]) by smtp.gmail.com with ESMTPSA id
+ lf8-20020a170906ae4800b00992e14af9c3sm10706076ejb.143.2023.10.11.21.43.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 11 Oct 2023 21:43:40 -0700 (PDT)
+Message-ID: <d2287b37-cd40-10ec-e20f-135a9d27e3fe@linaro.org>
+Date: Thu, 12 Oct 2023 06:43:38 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [RFC/PATCH v0 10/12] gunyah: CPU execution loop
+Content-Language: en-US
+To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>, peter.maydell@linaro.org, 
+ alex.bennee@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: quic_tsoni@quicinc.com, quic_pheragu@quicinc.com,
+ quic_eberman@quicinc.com, quic_yvasi@quicinc.com, quic_cvanscha@quicinc.com,
+ quic_mnalajal@quicinc.com
+References: <20231011165234.1323725-1-quic_svaddagi@quicinc.com>
+ <20231011165234.1323725-11-quic_svaddagi@quicinc.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231011165234.1323725-11-quic_svaddagi@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,71 +96,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 11/10/23 18:52, Srivatsa Vaddagiri wrote:
+> Complete the cpu execution loop. At this time, we recognize exits
+> associated with only MMIO access. Future patches will add support for
+> recognizing other exit reasons, such as PSCI calls made by guest.
+> 
+> Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+> ---
+>   accel/gunyah/gunyah-accel-ops.c |   1 +
+>   accel/gunyah/gunyah-all.c       | 216 ++++++++++++++++++++++++++++++--
+>   include/hw/core/cpu.h           |   6 +
+>   include/sysemu/gunyah.h         |   1 +
+>   include/sysemu/gunyah_int.h     |   3 +
+>   target/arm/gunyah.c             |  13 ++
+>   6 files changed, 229 insertions(+), 11 deletions(-)
 
 
-> On 11-Oct-2023, at 10:01 PM, Jonathan Cameron =
-<Jonathan.Cameron@huawei.com> wrote:
->=20
-> On Wed, 11 Oct 2023 16:23:35 +0530
-> Ani Sinha <anisinha@redhat.com> wrote:
->=20
->> pc_get_device_memory_range() finds the device memory size by =
-calculating the
->> difference between maxram and ram sizes. This calculation makes sense =
-only when
->> maxram is greater than the ram size. Make sure we check for that =
-before calling
->> pc_get_device_memory_range().
->>=20
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->=20
-> Whilst this is similar to other cases, I can't remember or quickly =
-work
-> out if the 'else' path here is appropriate.  Can we add something to =
-the
-> patch description to talk about that?
->=20
-> For reference it's:
->=20
-> cxl_base =3D pc_above_4g_end(pcms);
+> @@ -110,17 +125,6 @@ int gunyah_create_vm(void)
+>       return 0;
+>   }
+>   
+> -void *gunyah_cpu_thread_fn(void *arg)
+> -{
+> -    CPUState *cpu = arg;
+> -
+> -    do {
+> -        /* Do nothing */
+> -    } while (!cpu->unplug || cpu_can_run(cpu));
+> -
+> -    return NULL;
+> -}
 
-Leaving the alignment adjustments aside, the hotplugged memory devices =
-are mapped starting from where the =E2=80=9Cabove_4g=E2=80=9D memory =
-ends.
-The cxl memory starts after the region reserved for hot plugged memory =
-devices. If there is no hot plugged memory device region (maxmem =3D=3D =
-mem), the cxl memory can start right after where =E2=80=9Cabove_4g=E2=80=9D=
- memory ends.
-See also pc_pci_hole64_start() and pc_max_used_gpa().
-I did not want to add any alignment adjustments because I was not sure =
-if it would add regression and incompatibility with older machine types.=20=
+This diff could be nicer if you define gunyah_cpu_thread_fn()
+in the final place in previous patches, so you don't need to
+move it here.
 
+>   #define gunyah_slots_lock(s)    qemu_mutex_lock(&s->slots_lock)
+>   #define gunyah_slots_unlock(s)  qemu_mutex_unlock(&s->slots_lock)
 
+[...]
 
->=20
->> ---
->> hw/i386/pc.c | 4 +++-
->> 1 file changed, 3 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
->> index f72e2c3b35..948c58171c 100644
->> --- a/hw/i386/pc.c
->> +++ b/hw/i386/pc.c
->> @@ -820,10 +820,12 @@ static void =
-pc_get_device_memory_range(PCMachineState *pcms,
->> static uint64_t pc_get_cxl_range_start(PCMachineState *pcms)
->> {
->>     PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
->> +    MachineState *ms =3D MACHINE(pcms);
->>     hwaddr cxl_base;
->>     ram_addr_t size;
->>=20
->> -    if (pcmc->has_reserved_memory) {
->> +    if (pcmc->has_reserved_memory &&
->> +        (ms->ram_size < ms->maxram_size)) {
->>         pc_get_device_memory_range(pcms, &cxl_base, &size);
->>         cxl_base +=3D size;
->>     } else {
->=20
+> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> index fdcbe87352..b3901e134d 100644
+> --- a/include/hw/core/cpu.h
+> +++ b/include/hw/core/cpu.h
+> @@ -240,6 +240,7 @@ typedef struct SavedIOTLB {
+>   
+>   struct KVMState;
+>   struct kvm_run;
+> +struct gh_vcpu_run;
+>   
+>   /* work queue */
+>   
+> @@ -443,6 +444,11 @@ struct CPUState {
+>   
+>       /* track IOMMUs whose translations we've cached in the TCG TLB */
+>       GArray *iommu_notifiers;
+> +
+> +    struct {
+> +        int fd;
+> +        struct gh_vcpu_run *run;
+> +    } gunyah;
+
+NACK. Please declare as struct AccelCPUState in gunyah_int.h.
+
+>   };
 
 
