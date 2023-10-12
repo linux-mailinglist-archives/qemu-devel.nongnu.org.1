@@ -2,85 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409927C6423
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CBC7C642B
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:41:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqnRH-0007kz-8p; Thu, 12 Oct 2023 00:36:47 -0400
+	id 1qqnVE-0000iS-Ry; Thu, 12 Oct 2023 00:40:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqnRE-0007kH-I0
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:36:44 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqnRA-0008Fn-2X
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:36:42 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-99c3d3c3db9so81988666b.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:36:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697085398; x=1697690198; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rsqWk+2/+fzNt1nwuH5nLLJ02vPdHgexuKsMnzAkv3w=;
- b=HEXqGli7PkdLWRguv/Ybzgyntlytd4AjslYx/OGoVGTd9P/1pFZHG5xTJ0gJsYzNdH
- oeKlAedSb0ex2idiBuwUyhu1YjgpDqtPDL/NgobFvdPzpzdk62soPQZJ8IfpiKQmpEfY
- pT/uW9MDAEGMh3UoKdhr4ID7kwneFDyfd4qKfsyv32lmMuAbRCGz/1Xb5488Yo/Teo8D
- r5jwMFhPFIH2JPgmm8nJ1AK+JY+8oD1aoGHuejh2moMvVizI+rgjoZPV5hHdstBPWQUz
- nUEPbxNUb/kUYcRJbgzFO4zUT0FiFNO8iDQhjx3YAIhBSi7ejIHasqlaqPNkI1hiaYWc
- 2e2Q==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qqnVC-0000fC-SW
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:40:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qqnVA-0000ck-Md
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:40:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697085646;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IlWm9zfcUnGSk313mGFPiaOAQx+5qDAGYydJu9tt1Fs=;
+ b=BiWJwgxJ4Qqp+v1HmukVksZ6sJqwMfWENLXZlaSa8I32vZfaLjHovZZuGQH7Ehm980as5h
+ byAkzh5Zq0IPtEACDW2Lv8BsuehFZs9jr2XJlpVj9Rko4ps2cc3AFHtbWwc8FvzmxWsqJK
+ GDGYEk5tfpmcUE5sdLPARO6vMQ3kefg=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-170-vYYeoQ-nNye8mRdPwiUExQ-1; Thu, 12 Oct 2023 00:40:42 -0400
+X-MC-Unique: vYYeoQ-nNye8mRdPwiUExQ-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-58530660c1bso393489a12.1
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:40:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697085398; x=1697690198;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rsqWk+2/+fzNt1nwuH5nLLJ02vPdHgexuKsMnzAkv3w=;
- b=Lr/JD4aUDA+SIbshu42sOFwDv2tQB57D4DBIDZrqn+LlAoPGfhwAigSoZI+uvrC9AW
- rGVTwKJq73wNl5zBMWNq7i/DQ+rdeTX7eYNvDtRuvXrilvvkWxh+/eLVBj3qu+POMHv5
- XChHhA9arerVSxtAR2izBs8vtOcbG31n7dVLWZ8pnwNuBxdUNKIb+ElVlBqSif0Rydgb
- auvdfewoGqS67YJ58qQFyc/cQy4x4NSz4OPzYBqzbRFInRYHbnCLUlMlKB/Ag5N6wUTt
- v4m6MVjCqSdBoyG8Ug/EjrV9ZbRpT9mcH0358NRIkzhZRTqcWwZ/iJqjw7xfxqxjYowH
- GDWw==
-X-Gm-Message-State: AOJu0YxFuOPxFwhaC2S4bXzABaDrrvT+gjjuwwhxSSjzGNpEQdZLxDiG
- k9NFnFhDLCe8LsNlUWkvgqzu8g==
-X-Google-Smtp-Source: AGHT+IGn5Y1WzWdsdU7MfdCfa5PmA9zEevz9KS71cMQv84u2N+RvvzYye12V78QdPYi70J2QkbPG0g==
-X-Received: by 2002:a17:906:844c:b0:9a5:cab0:b050 with SMTP id
- e12-20020a170906844c00b009a5cab0b050mr19136706ejy.13.1697085397985; 
- Wed, 11 Oct 2023 21:36:37 -0700 (PDT)
-Received: from [192.168.69.115] (dcs23-h01-176-173-173-31.dsl.sta.abo.bbox.fr.
- [176.173.173.31]) by smtp.gmail.com with ESMTPSA id
- y17-20020a1709064b1100b0099cc3c7ace2sm10727685eju.140.2023.10.11.21.36.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 21:36:37 -0700 (PDT)
-Message-ID: <f1998265-a32b-e900-6b0c-3b9508789be7@linaro.org>
-Date: Thu, 12 Oct 2023 06:36:35 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [RFC/PATCH v0 09/12] gunyah: Customize device-tree
-Content-Language: en-US
-To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>, peter.maydell@linaro.org, 
- alex.bennee@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: quic_tsoni@quicinc.com, quic_pheragu@quicinc.com,
- quic_eberman@quicinc.com, quic_yvasi@quicinc.com, quic_cvanscha@quicinc.com,
- quic_mnalajal@quicinc.com
-References: <20231011165234.1323725-1-quic_svaddagi@quicinc.com>
- <20231011165234.1323725-10-quic_svaddagi@quicinc.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231011165234.1323725-10-quic_svaddagi@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ d=1e100.net; s=20230601; t=1697085641; x=1697690441;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=IlWm9zfcUnGSk313mGFPiaOAQx+5qDAGYydJu9tt1Fs=;
+ b=GFFQphC0rPgZCzRXVtpeBUcuwx4XFGlW9o/e88kmao3SnSx9G6t1/sof05qMbBHIUT
+ MSsc3wdkaDANONmXrD2E9s4McottbL0zGptKrqfyaXIYQ0CHowSzYBo7MNE3REHwV2Gx
+ 06ToquJYk43e4fyyK6YhKG/TEFjF/DGSgmdibyRHNN57f966d29epUh+N/Mku2HTmmyL
+ jke0Vdwq6WyouKtvDuZW6SXtHUPnX25Im/VcCG5IMl4CwTAYDFQZM9hQfHq5c9AEG5r4
+ p5PXmT99HRcK/yboGhWlgSrabGibxtkD5P1oizuxmppcyWA5gBZepCoGhJSbcM6oJQjL
+ lWPw==
+X-Gm-Message-State: AOJu0YyicmUsc81KEsjPDLLPXFL+dDwi1xYniurOrEr8LOYdeauDogWQ
+ SSgaqUjLPwYbwdo9fvrmpbRMNwBxQO3gXesWwZMSHEX1Xah9UYXy3irOzhT2cYMK8YIuOQRR45s
+ AsTLO9gtvBliSn1M=
+X-Received: by 2002:a05:6a20:7291:b0:157:b453:dbb9 with SMTP id
+ o17-20020a056a20729100b00157b453dbb9mr24647229pzk.6.1697085641014; 
+ Wed, 11 Oct 2023 21:40:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYzuyQRI8R8AoMcC0EkGTkipWmjC6mB2OYhJ09Wq9KJTQidcIHLPGSEOlonc5vrpDpmx9Chw==
+X-Received: by 2002:a05:6a20:7291:b0:157:b453:dbb9 with SMTP id
+ o17-20020a056a20729100b00157b453dbb9mr24647215pzk.6.1697085640723; 
+ Wed, 11 Oct 2023 21:40:40 -0700 (PDT)
+Received: from smtpclient.apple ([202.88.220.252])
+ by smtp.gmail.com with ESMTPSA id
+ im16-20020a170902bb1000b001c5fed0b35esm790332plb.300.2023.10.11.21.40.38
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 11 Oct 2023 21:40:40 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: Re: [PATCH] hw/i386/cxl: ensure maxram is greater than ram size for
+ calculating cxl range
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20231011173104.000016f5@Huawei.com>
+Date: Thu, 12 Oct 2023 10:10:36 +0530
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8E01874E-9B9D-41C5-9D88-29D9B4071BC6@redhat.com>
+References: <20231011105335.42296-1-anisinha@redhat.com>
+ <20231011173104.000016f5@Huawei.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,46 +106,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/10/23 18:52, Srivatsa Vaddagiri wrote:
-> Customize device-tree with Gunyah specific properties. Some of these
-> properties include specification of doorbells that need to be created
-> and associated with various interrupts.
-> 
-> Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
-> ---
->   hw/arm/virt.c           | 11 ++++++
->   include/sysemu/gunyah.h |  7 ++++
->   target/arm/gunyah.c     | 79 +++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 97 insertions(+)
 
 
-> diff --git a/include/sysemu/gunyah.h b/include/sysemu/gunyah.h
-> index 101e190619..f077837437 100644
-> --- a/include/sysemu/gunyah.h
-> +++ b/include/sysemu/gunyah.h
-> @@ -35,6 +35,8 @@ DECLARE_INSTANCE_CHECKER(GUNYAHState, GUNYAH_STATE,
->                            TYPE_GUNYAH_ACCEL)
->   
->   int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size);
-> +void gunyah_arm_fdt_customize(void *fdt, uint64_t mem_base,
-> +                uint32_t gic_phandle);
->   
->   #else   /* CONFIG_GUNYAH_IS_POSSIBLE */
->   
-> @@ -45,6 +47,11 @@ static inline int gunyah_arm_set_dtb(__u64 dtb_start, __u64 dtb_size)
->       return -1;
->   }
->   
-> +static inline void gunyah_arm_fdt_customize(void *fdt, uint64_t mem_base,
-> +                uint32_t gic_phandle)
-> +{
+> On 11-Oct-2023, at 10:01 PM, Jonathan Cameron =
+<Jonathan.Cameron@huawei.com> wrote:
+>=20
+> On Wed, 11 Oct 2023 16:23:35 +0530
+> Ani Sinha <anisinha@redhat.com> wrote:
+>=20
+>> pc_get_device_memory_range() finds the device memory size by =
+calculating the
+>> difference between maxram and ram sizes. This calculation makes sense =
+only when
+>> maxram is greater than the ram size. Make sure we check for that =
+before calling
+>> pc_get_device_memory_range().
+>>=20
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>=20
+> Whilst this is similar to other cases, I can't remember or quickly =
+work
+> out if the 'else' path here is appropriate.  Can we add something to =
+the
+> patch description to talk about that?
+>=20
+> For reference it's:
+>=20
+> cxl_base =3D pc_above_4g_end(pcms);
 
-Similar comment than previous patch: stub can be avoided.
+Leaving the alignment adjustments aside, the hotplugged memory devices =
+are mapped starting from where the =E2=80=9Cabove_4g=E2=80=9D memory =
+ends.
+The cxl memory starts after the region reserved for hot plugged memory =
+devices. If there is no hot plugged memory device region (maxmem =3D=3D =
+mem), the cxl memory can start right after where =E2=80=9Cabove_4g=E2=80=9D=
+ memory ends.
+See also pc_pci_hole64_start() and pc_max_used_gpa().
+I did not want to add any alignment adjustments because I was not sure =
+if it would add regression and incompatibility with older machine types.=20=
 
-> +}
-> +
->   #endif  /* CONFIG_GUNYAH_IS_POSSIBLE */
->   
->   #endif  /* QEMU_GUNYAH_H */
+
+
+>=20
+>> ---
+>> hw/i386/pc.c | 4 +++-
+>> 1 file changed, 3 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>> index f72e2c3b35..948c58171c 100644
+>> --- a/hw/i386/pc.c
+>> +++ b/hw/i386/pc.c
+>> @@ -820,10 +820,12 @@ static void =
+pc_get_device_memory_range(PCMachineState *pcms,
+>> static uint64_t pc_get_cxl_range_start(PCMachineState *pcms)
+>> {
+>>     PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
+>> +    MachineState *ms =3D MACHINE(pcms);
+>>     hwaddr cxl_base;
+>>     ram_addr_t size;
+>>=20
+>> -    if (pcmc->has_reserved_memory) {
+>> +    if (pcmc->has_reserved_memory &&
+>> +        (ms->ram_size < ms->maxram_size)) {
+>>         pc_get_device_memory_range(pcms, &cxl_base, &size);
+>>         cxl_base +=3D size;
+>>     } else {
+>=20
 
 
