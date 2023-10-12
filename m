@@ -2,102 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B327C6B87
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 12:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86ABE7C6B7C
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 12:51:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqtHX-0001hY-6A; Thu, 12 Oct 2023 06:51:07 -0400
+	id 1qqtGk-0000pE-KN; Thu, 12 Oct 2023 06:50:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qqtHG-0001KW-IK; Thu, 12 Oct 2023 06:50:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqtGj-0000ow-F5
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:50:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qqtHE-00058t-2k; Thu, 12 Oct 2023 06:50:50 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39CAlNel007292; Thu, 12 Oct 2023 10:50:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=oqph8jc2qh030pEnhBFI042bMPGJbX1nDUaTqe/EYV0=;
- b=AOiJDYSO9BDwtkJA4PjH7EcmllwikDSBzBr+NGscRr8elN4KieJ6b7kYR5TnmpFHfm8E
- lDCM6aP20gaociRod++pDsxAw9BvI6FHCGhkQa1EQW6gb+6JuQtfNsguQBvFrQmkvm54
- ofVXmF7esPan3qPVfmCTvwCdKjdyDGO/+h1YjELfvOJFvAZzoaqPGN95KQ4IEaoVsPvq
- 0qZKVGoLC+FoBaqEYty/Owzy/rwGFVyts+5s4m0EfHTF0PMWXWw+hWZJbGilB/C2ZZN7
- FjJzpf5qqzUpSi/5plpBJkXbx/vydrXpswPhpCqVzpQnZ4cxJQAO45dbiBPfBEv2OgPu Lg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpfbr02tu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Oct 2023 10:50:43 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39CAmblh010719;
- Thu, 12 Oct 2023 10:50:43 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpfbr02tj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Oct 2023 10:50:43 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39C8NT0U001270; Thu, 12 Oct 2023 10:50:42 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkkvk6h4t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Oct 2023 10:50:42 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39CAod4n24314384
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Oct 2023 10:50:39 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E9F6220040;
- Thu, 12 Oct 2023 10:50:38 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E74320043;
- Thu, 12 Oct 2023 10:50:37 +0000 (GMT)
-Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
- [9.109.242.129])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 12 Oct 2023 10:50:36 +0000 (GMT)
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: npiggin@gmail.com, qemu-ppc@nongnu.org
-Cc: clegoate@redhat.com, qemu-devel@nongnu.org, mikey@neuling.org,
- vaibhav@linux.ibm.com, jniethe5@gmail.com, sbhat@linux.ibm.com,
- kconsul@linux.vnet.ibm.com, danielhb413@gmail.com
-Subject: [PATCH v2 14/14] spapr: nested: Introduce H_GUEST_RUN_VCPU hcall.
-Date: Thu, 12 Oct 2023 16:19:51 +0530
-Message-Id: <20231012104951.194876-15-harshpb@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20231012104951.194876-1-harshpb@linux.ibm.com>
-References: <20231012104951.194876-1-harshpb@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qqtGg-0004i9-Oj
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:50:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697107805;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=910cz+J/ckmxW2u/m3VL7v8jBlaNfiB4ydCKJF857Bs=;
+ b=Cy/Uf6R/oT4MSnord9bUKGJso8lwLPXZbVM3j9MmQT6tmrNnBnnQYI6aR0fX7JjFuJufXd
+ q7tItnYMnD0Dpyte86fdcXreB3Ec+01nIgM38D9gxJnaa5bSCP5x6ZqQf2QOxFSvyemS8A
+ SSmK1GoLfXDgEWoruUt07CjsxgvIYzQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-52-j_s5ke1uOOGimt3R0Ilumw-1; Thu, 12 Oct 2023 06:50:03 -0400
+X-MC-Unique: j_s5ke1uOOGimt3R0Ilumw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fef5403093so3820575e9.0
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 03:50:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697107802; x=1697712602;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=910cz+J/ckmxW2u/m3VL7v8jBlaNfiB4ydCKJF857Bs=;
+ b=qxinJpcIAZDsj/Fwl8763rXz785prDB7F4awEA2hBBHNz26Ymd9bRduc2CzGZCrr/1
+ OU+LM+dfQX7jkGyj1mOIlqcD5WpM8o70LW0/H+DiumPq1K1/Jhe+IoNHRYdxz0fHckbD
+ PgDVXL7dfJDGQxhumnXpPFgYs/VNSgl0F68ej26Ky1jDL760QlxrdZD63RJD9di0fe3x
+ xjpICtF5JKL2pZ3K2EMhz9wMN+c86VW6CKx4aFNDJvWJF5nFlm9JXpMs8CpAU8T/suKI
+ pjegsMg9NDA1hPYHAL+727dpcQGGvtGjDJMFAZ8vxkjny9GiJUkd0ZTreBa1s2AGx8TI
+ +8WQ==
+X-Gm-Message-State: AOJu0YxRriJ4YhJwxhV8Kce6CJ/8quHYLyx9sBHzmkSRKzuCKWm8Lsy3
+ joSmK5yvn7CJ/mcr5urywyoKxWB6iH35QZrWrv1syLXjXzVyXMUeC4MNo22DngVpMYh+u8egAV1
+ Pb7SziqcxTgmu8us=
+X-Received: by 2002:a05:600c:358e:b0:407:3e94:bcca with SMTP id
+ p14-20020a05600c358e00b004073e94bccamr13539075wmq.1.1697107802104; 
+ Thu, 12 Oct 2023 03:50:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBz8KKBnAfxiABzby0TDwl3fUoMwWtRFQe73Otfpis0IsNU/nLytWj5h1V1wE3xP1aLfJeWw==
+X-Received: by 2002:a05:600c:358e:b0:407:3e94:bcca with SMTP id
+ p14-20020a05600c358e00b004073e94bccamr13539056wmq.1.1697107801776; 
+ Thu, 12 Oct 2023 03:50:01 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ p4-20020a05600c204400b00403b63e87f2sm19107003wmg.32.2023.10.12.03.50.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 12 Oct 2023 03:50:01 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,  Fam Zheng <fam@euphon.net>,  Eric Blake
+ <eblake@redhat.com>,  libvir-list@redhat.com,  Leonardo Bras
+ <leobras@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Stefan
+ Hajnoczi <stefanha@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,  Peter Xu <peterx@redhat.com>,
+ qemu-block@nongnu.org,  Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v3 1/4] migration: migrate 'inc' command option is
+ deprecated.
+In-Reply-To: <87zg0oyxpz.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Thu, 12 Oct 2023 11:52:08 +0200")
+References: <20231011204711.9744-1-quintela@redhat.com>
+ <20231011204711.9744-2-quintela@redhat.com>
+ <87zg0oyxpz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 12 Oct 2023 12:50:00 +0200
+Message-ID: <87il7c6ron.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HmUanPXsKbdjjmxryXF4BbOD40aPrsJc
-X-Proofpoint-GUID: cyikJG5D0qcGnMkBcLlzJYSAXDx_aFPA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-12_05,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=912
- malwarescore=0 priorityscore=1501 clxscore=1015 adultscore=0 mlxscore=0
- spamscore=0 impostorscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310120088
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,412 +104,115 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The H_GUEST_RUN_VCPU hcall is used to start execution of a Guest VCPU.
-The Hypervisor will update the state of the Guest VCPU based on the
-input buffer, restore the saved Guest VCPU state, and start its execution.
+Markus Armbruster <armbru@redhat.com> wrote:
+> Juan Quintela <quintela@redhat.com> writes:
+>
+>> Set the 'block_incremental' migration parameter to 'true' instead.
+>>
+>>  # @blk: do block migration (full disk copy)
+>>  #
+>> -# @inc: incremental disk copy migration
+>> +# @inc: incremental disk copy migration.  This option is deprecated.
+>> +#     Set the 'block-incremetantal' migration parameter to 'true'
+>> +#     instead.
+>
+> 'block-incremental'
 
-The Guest VCPU can stop running for numerous reasons including HCALLs,
-hypervisor exceptions, or an outstanding Host Partition Interrupt.
-The reason that the Guest VCPU stopped running is communicated through
-R4 and the output buffer will be filled in with any relevant state.
+Done, thanks.
 
-Signed-off-by: Michael Neuling <mikey@neuling.org>
-Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
----
- hw/ppc/spapr_nested.c           | 308 ++++++++++++++++++++++++++++++--
- include/hw/ppc/spapr.h          |   1 +
- include/hw/ppc/spapr_cpu_core.h |   7 +-
- 3 files changed, 302 insertions(+), 14 deletions(-)
+>>  #
+>>  # @detach: this argument exists only for compatibility reasons and is
+>>  #     ignored by QEMU
+>>  #
+>>  # @resume: resume one paused migration, default "off". (since 3.0)
+>>  #
+>> +# Features:
+>> +#
+>> +# @deprecated: option @inc should be enabled by setting the
+>> +#     'block-incremental' migration parameter to 'true'.
+>> +#
+>
+> You add deprecation notices, one to the member documentation, and one to
+> the "Features:" section.  You should add just one, to the "Features:"
+> section.  Suggest:
+>
+>    # @deprecated: Member @inc is deprecated.  Use migration parameter
+>    # @block-incremental instead.
 
-diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index e2d0cb5559..d3e7629f63 100644
---- a/hw/ppc/spapr_nested.c
-+++ b/hw/ppc/spapr_nested.c
-@@ -141,6 +141,15 @@ static void nested_save_state(struct nested_ppc_state *save, PowerPCCPU *cpu)
-     save->tb_offset = env->tb_env->tb_offset;
- }
- 
-+static void nested_post_state_update(CPUPPCState *env, CPUState *cs)
-+{
-+    hreg_compute_hflags(env);
-+    ppc_maybe_interrupt(env);
-+    tlb_flush(cs);
-+    env->reserve_addr = -1; /* Reset the reservation */
-+
-+}
-+
- static void nested_load_state(PowerPCCPU *cpu, struct nested_ppc_state *load)
- {
-     CPUState *cs = CPU(cpu);
-@@ -172,19 +181,7 @@ static void nested_load_state(PowerPCCPU *cpu, struct nested_ppc_state *load)
-     env->spr[SPR_PPR] = load->ppr;
- 
-     env->tb_env->tb_offset = load->tb_offset;
--
--    /*
--     * MSR updated, compute hflags and possible interrupts.
--     */
--    hreg_compute_hflags(env);
--    ppc_maybe_interrupt(env);
--
--    /*
--     * Nested HV does not tag TLB entries between L1 and L2, so must
--     * flush on transition.
--     */
--    tlb_flush(cs);
--    env->reserve_addr = -1; /* Reset the reservation */
-+    nested_post_state_update(env, cs);
- }
- 
- /*
-@@ -426,6 +423,9 @@ static void spapr_exit_nested_hv(PowerPCCPU *cpu, int excp)
-     address_space_unmap(CPU(cpu)->as, regs, len, len, true);
- }
- 
-+static
-+void spapr_exit_nested_papr(SpaprMachineState *spapr, PowerPCCPU *cpu, int excp);
-+
- void spapr_exit_nested(PowerPCCPU *cpu, int excp)
- {
-     SpaprMachineState *spapr = SPAPR_MACHINE(qdev_get_machine());
-@@ -434,6 +434,10 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
-     assert(spapr_cpu->in_nested);
-     if (spapr->nested.api == NESTED_API_KVM_HV) {
-         spapr_exit_nested_hv(cpu, excp);
-+    } else if (spapr->nested.api == NESTED_API_PAPR) {
-+        spapr_exit_nested_papr(spapr, cpu, excp);
-+    } else {
-+        g_assert_not_reached();
-     }
- }
- 
-@@ -1455,6 +1459,283 @@ static target_ulong h_guest_get_state(PowerPCCPU *cpu,
-     return h_guest_getset_state(cpu, spapr, args, false);
- }
- 
-+static void restore_common_regs(CPUPPCState *dst, CPUPPCState *src)
-+{
-+    memcpy(dst->gpr, src->gpr, sizeof(dst->gpr));
-+    memcpy(dst->crf, src->crf, sizeof(dst->crf));
-+    memcpy(dst->vsr, src->vsr, sizeof(dst->vsr));
-+    dst->nip = src->nip;
-+    dst->msr = src->msr;
-+    dst->lr  = src->lr;
-+    dst->ctr = src->ctr;
-+    dst->cfar = src->cfar;
-+    cpu_write_xer(dst, src->xer);
-+    ppc_store_vscr(dst, ppc_get_vscr(src));
-+    ppc_store_fpscr(dst, src->fpscr);
-+    memcpy(dst->spr, src->spr, sizeof(dst->spr));
-+}
-+
-+static void exit_nested_restore_vcpu(PowerPCCPU *cpu, int excp,
-+                                     SpaprMachineStateNestedGuestVcpu *vcpu)
-+{
-+    CPUPPCState *env = &cpu->env;
-+    target_ulong now, hdar, hdsisr, asdr;
-+
-+    assert(sizeof(env->gpr) == sizeof(vcpu->env.gpr)); /* sanity check */
-+
-+    now = cpu_ppc_load_tbl(env); /* L2 timebase */
-+    now -= vcpu->tb_offset; /* L1 timebase */
-+    vcpu->dec_expiry_tb = now - cpu_ppc_load_decr(env);
-+    /* backup hdar, hdsisr, asdr if reqd later below */
-+    hdar   = vcpu->env.spr[SPR_HDAR];
-+    hdsisr = vcpu->env.spr[SPR_HDSISR];
-+    asdr   = vcpu->env.spr[SPR_ASDR];
-+
-+    restore_common_regs(&vcpu->env, env);
-+
-+    if (excp == POWERPC_EXCP_MCHECK ||
-+        excp == POWERPC_EXCP_RESET ||
-+        excp == POWERPC_EXCP_SYSCALL) {
-+        vcpu->env.nip = env->spr[SPR_SRR0];
-+        vcpu->env.msr = env->spr[SPR_SRR1] & env->msr_mask;
-+    } else {
-+        vcpu->env.nip = env->spr[SPR_HSRR0];
-+        vcpu->env.msr = env->spr[SPR_HSRR1] & env->msr_mask;
-+    }
-+
-+    /* hdar, hdsisr, asdr should be retained unless certain exceptions */
-+    if ((excp != POWERPC_EXCP_HDSI) && (excp != POWERPC_EXCP_HISI)) {
-+        vcpu->env.spr[SPR_ASDR] = asdr;
-+    } else if (excp != POWERPC_EXCP_HDSI) {
-+        vcpu->env.spr[SPR_HDAR]   = hdar;
-+        vcpu->env.spr[SPR_HDSISR] = hdsisr;
-+    }
-+}
-+
-+static int get_exit_ids(uint64_t srr0, uint16_t ids[16])
-+{
-+    int nr;
-+
-+    switch (srr0) {
-+    case 0xc00:
-+        nr = 10;
-+        ids[0] = GSB_VCPU_GPR3;
-+        ids[1] = GSB_VCPU_GPR4;
-+        ids[2] = GSB_VCPU_GPR5;
-+        ids[3] = GSB_VCPU_GPR6;
-+        ids[4] = GSB_VCPU_GPR7;
-+        ids[5] = GSB_VCPU_GPR8;
-+        ids[6] = GSB_VCPU_GPR9;
-+        ids[7] = GSB_VCPU_GPR10;
-+        ids[8] = GSB_VCPU_GPR11;
-+        ids[9] = GSB_VCPU_GPR12;
-+        break;
-+    case 0xe00:
-+        nr = 5;
-+        ids[0] = GSB_VCPU_SPR_HDAR;
-+        ids[1] = GSB_VCPU_SPR_HDSISR;
-+        ids[2] = GSB_VCPU_SPR_ASDR;
-+        ids[3] = GSB_VCPU_SPR_NIA;
-+        ids[4] = GSB_VCPU_SPR_MSR;
-+        break;
-+    case 0xe20:
-+        nr = 4;
-+        ids[0] = GSB_VCPU_SPR_HDAR;
-+        ids[1] = GSB_VCPU_SPR_ASDR;
-+        ids[2] = GSB_VCPU_SPR_NIA;
-+        ids[3] = GSB_VCPU_SPR_MSR;
-+        break;
-+    case 0xe40:
-+        nr = 3;
-+        ids[0] = GSB_VCPU_SPR_HEIR;
-+        ids[1] = GSB_VCPU_SPR_NIA;
-+        ids[2] = GSB_VCPU_SPR_MSR;
-+        break;
-+    case 0xf80:
-+        nr = 3;
-+        ids[0] = GSB_VCPU_SPR_HFSCR;
-+        ids[1] = GSB_VCPU_SPR_NIA;
-+        ids[2] = GSB_VCPU_SPR_MSR;
-+        break;
-+    default:
-+        nr = 0;
-+        break;
-+    }
-+
-+    return nr;
-+}
-+
-+static void exit_process_output_buffer(PowerPCCPU *cpu,
-+                                      SpaprMachineStateNestedGuest *guest,
-+                                      target_ulong vcpuid,
-+                                      target_ulong *r3)
-+{
-+    SpaprMachineStateNestedGuestVcpu *vcpu = &guest->vcpu[vcpuid];
-+    struct guest_state_request gsr;
-+    struct guest_state_buffer *gsb;
-+    struct guest_state_element *element;
-+    struct guest_state_element_type *type;
-+    int exit_id_count = 0;
-+    uint16_t exit_cause_ids[16];
-+    hwaddr len;
-+
-+    len = vcpu->runbufout.size;
-+    gsb = address_space_map(CPU(cpu)->as, vcpu->runbufout.addr, &len, true,
-+                            MEMTXATTRS_UNSPECIFIED);
-+    if (!gsb || len != vcpu->runbufout.size) {
-+        address_space_unmap(CPU(cpu)->as, gsb, len, true, len);
-+        *r3 = H_P2;
-+        return;
-+    }
-+
-+    exit_id_count = get_exit_ids(*r3, exit_cause_ids);
-+
-+    /* Create a buffer of elements to send back */
-+    gsb->num_elements = cpu_to_be32(exit_id_count);
-+    element = gsb->elements;
-+    for (int i = 0; i < exit_id_count; i++) {
-+        type = guest_state_element_type_find(exit_cause_ids[i]);
-+        assert(type);
-+        element->id = cpu_to_be16(exit_cause_ids[i]);
-+        element->size = cpu_to_be16(type->size);
-+        element = guest_state_element_next(element, NULL, NULL);
-+    }
-+    gsr.gsb = gsb;
-+    gsr.len = VCPU_OUT_BUF_MIN_SZ;
-+    gsr.flags = 0; /* get + never guest wide */
-+    getset_state(guest, vcpuid, &gsr);
-+
-+    address_space_unmap(CPU(cpu)->as, gsb, len, true, len);
-+    return;
-+}
-+
-+static
-+void spapr_exit_nested_papr(SpaprMachineState *spapr, PowerPCCPU *cpu, int excp)
-+{
-+    CPUState *cs = CPU(cpu);
-+    CPUPPCState *env = &cpu->env;
-+    SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
-+    target_ulong r3_return = env->excp_vectors[excp]; /* hcall return value */
-+    target_ulong lpid = 0, vcpuid = 0;
-+    struct SpaprMachineStateNestedGuestVcpu *vcpu = NULL;
-+    struct SpaprMachineStateNestedGuest *guest = NULL;
-+
-+    lpid = spapr_cpu->nested_papr_host->gpr[5];
-+    vcpuid = spapr_cpu->nested_papr_host->gpr[6];
-+    guest = spapr_get_nested_guest(spapr, lpid);
-+    assert(guest);
-+    spapr_nested_vcpu_check(guest, vcpuid, false);
-+    vcpu = &guest->vcpu[vcpuid];
-+
-+    exit_nested_restore_vcpu(cpu, excp, vcpu);
-+    /* do the output buffer for run_vcpu*/
-+    exit_process_output_buffer(cpu, guest, vcpuid, &r3_return);
-+
-+    assert(env->spr[SPR_LPIDR] != 0);
-+    restore_common_regs(env, spapr_cpu->nested_papr_host);
-+    env->tb_env->tb_offset -= vcpu->tb_offset;
-+    env->gpr[3] = H_SUCCESS;
-+    env->gpr[4] = r3_return;
-+    nested_post_state_update(env, cs);
-+    cpu_ppc_hdecr_exit(env);
-+
-+    spapr_cpu->in_nested = false;
-+    g_free(spapr_cpu->nested_papr_host);
-+    spapr_cpu->nested_papr_host = NULL;
-+}
-+
-+static void nested_papr_restore_l2_state(PowerPCCPU *cpu,
-+                                         CPUPPCState *env,
-+                                         SpaprMachineStateNestedGuestVcpu *vcpu,
-+                                         target_ulong now)
-+{
-+    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
-+    target_ulong lpcr, lpcr_mask, hdec;
-+    lpcr_mask = LPCR_DPFD | LPCR_ILE | LPCR_AIL | LPCR_LD | LPCR_MER;
-+
-+    assert(vcpu);
-+    assert(sizeof(env->gpr) == sizeof(vcpu->env.gpr));
-+    restore_common_regs(env, &vcpu->env);
-+    lpcr = (env->spr[SPR_LPCR] & ~lpcr_mask) |
-+           (vcpu->env.spr[SPR_LPCR] & lpcr_mask);
-+    lpcr |= LPCR_HR | LPCR_UPRT | LPCR_GTSE | LPCR_HVICE | LPCR_HDICE;
-+    lpcr &= ~LPCR_LPES0;
-+    env->spr[SPR_LPCR] = lpcr & pcc->lpcr_mask;
-+
-+    hdec = vcpu->hdecr_expiry_tb - now;
-+    cpu_ppc_store_decr(env, vcpu->dec_expiry_tb - now);
-+    cpu_ppc_hdecr_init(env);
-+    cpu_ppc_store_hdecr(env, hdec);
-+
-+    env->tb_env->tb_offset += vcpu->tb_offset;
-+}
-+
-+static void nested_papr_run_vcpu(PowerPCCPU *cpu,
-+                                 uint64_t lpid,
-+                                 SpaprMachineStateNestedGuestVcpu *vcpu)
-+{
-+    SpaprMachineState *spapr = SPAPR_MACHINE(qdev_get_machine());
-+    CPUState *cs = CPU(cpu);
-+    CPUPPCState *env = &cpu->env;
-+    SpaprCpuState *spapr_cpu = spapr_cpu_state(cpu);
-+    target_ulong now = cpu_ppc_load_tbl(env);
-+
-+    assert(env->spr[SPR_LPIDR] == 0);
-+    assert(spapr->nested.api); /* ensure API version is initialized */
-+    spapr_cpu->nested_papr_host = g_try_new(CPUPPCState, 1);
-+    assert(spapr_cpu->nested_papr_host);
-+    memcpy(spapr_cpu->nested_papr_host, env, sizeof(CPUPPCState));
-+
-+    nested_papr_restore_l2_state(cpu, env, vcpu, now);
-+    env->spr[SPR_LPIDR] = lpid; /* post restore l2 state */
-+
-+    spapr_cpu->in_nested = true;
-+
-+    nested_post_state_update(env, cs);
-+}
-+
-+static target_ulong h_guest_run_vcpu(PowerPCCPU *cpu,
-+                                     SpaprMachineState *spapr,
-+                                     target_ulong opcode,
-+                                     target_ulong *args)
-+{
-+    CPUPPCState *env = &cpu->env;
-+    target_ulong flags = args[0];
-+    target_ulong lpid = args[1];
-+    target_ulong vcpuid = args[2];
-+    struct SpaprMachineStateNestedGuestVcpu *vcpu;
-+    struct guest_state_request gsr;
-+    SpaprMachineStateNestedGuest *guest;
-+
-+    if (flags) /* don't handle any flags for now */
-+        return H_PARAMETER;
-+
-+    guest = spapr_get_nested_guest(spapr, lpid);
-+    if (!guest) {
-+        return H_P2;
-+    }
-+    if (!spapr_nested_vcpu_check(guest, vcpuid, true)) {
-+        return H_P3;
-+    }
-+
-+    if (guest->parttbl[0] == 0) {
-+        /* At least need a partition scoped radix tree */
-+        return H_NOT_AVAILABLE;
-+    }
-+
-+    vcpu = &guest->vcpu[vcpuid];
-+
-+    /* Read run_vcpu input buffer to update state */
-+    gsr.buf = vcpu->runbufin.addr;
-+    gsr.len = vcpu->runbufin.size;
-+    gsr.flags = GUEST_STATE_REQUEST_SET; /* Thread wide + writing */
-+    if (!map_and_getset_state(cpu, guest, vcpuid, &gsr)) {
-+        nested_papr_run_vcpu(cpu, lpid, vcpu);
-+    }
-+
-+    return env->gpr[3];
-+}
-+
- void spapr_register_nested(void)
- {
-     spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
-@@ -1473,6 +1754,7 @@ void spapr_register_nested_papr(void)
-     spapr_register_hypercall(H_GUEST_CREATE_VCPU     , h_guest_create_vcpu);
-     spapr_register_hypercall(H_GUEST_SET_STATE       , h_guest_set_state);
-     spapr_register_hypercall(H_GUEST_GET_STATE       , h_guest_get_state);
-+    spapr_register_hypercall(H_GUEST_RUN_VCPU        , h_guest_run_vcpu);
- }
- #else
- void spapr_exit_nested(PowerPCCPU *cpu, int excp)
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index b9a67895bb..e278ddc7cf 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -594,6 +594,7 @@ struct SpaprMachineState {
- #define H_GUEST_CREATE_VCPU      0x474
- #define H_GUEST_GET_STATE        0x478
- #define H_GUEST_SET_STATE        0x47C
-+#define H_GUEST_RUN_VCPU         0x480
- #define H_GUEST_DELETE           0x488
- 
- #define MAX_HCALL_OPCODE         H_GUEST_DELETE
-diff --git a/include/hw/ppc/spapr_cpu_core.h b/include/hw/ppc/spapr_cpu_core.h
-index 9c8c59f173..a9749a2df1 100644
---- a/include/hw/ppc/spapr_cpu_core.h
-+++ b/include/hw/ppc/spapr_cpu_core.h
-@@ -53,7 +53,12 @@ typedef struct SpaprCpuState {
- 
-     /* Fields for nested-HV support */
-     bool in_nested; /* true while the L2 is executing */
--    struct nested_ppc_state *nested_hv_host; /* holds the L1 state while L2 executes */
-+    union {
-+        /* holds the L1 state while L2 executes */
-+        struct nested_ppc_state *nested_hv_host;
-+        CPUPPCState             *nested_papr_host;
-+    };
-+
- } SpaprCpuState;
- 
- static inline SpaprCpuState *spapr_cpu_state(PowerPCCPU *cpu)
--- 
-2.39.3
+Done.
+
+>>  # Returns: nothing on success
+>>  #
+>>  # Since: 0.14
+>> @@ -1514,7 +1521,8 @@
+>>  # <- { "return": {} }
+>>  ##
+>>  { 'command': 'migrate',
+>> -  'data': {'uri': 'str', '*blk': 'bool', '*inc': 'bool',
+>> +  'data': {'uri': 'str', '*blk': 'bool',
+>> +           '*inc': { 'type': 'bool', 'features': ['deprecated'] },
+>
+> For better or worse, we format like [ 'deprecated' ].
+
+Done.
+
+>>             '*detach': 'bool', '*resume': 'bool' } }
+>>  
+>>  ##
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index 1c6c81ad49..c7e4c37b8a 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -1601,6 +1601,12 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+>>  {
+>>      Error *local_err = NULL;
+>>  
+>> +    if (blk_inc) {
+>> +        warn_report("-inc migrate option is deprecated, set the "
+>> +                    "'block-incremental' migration parameter to 'true'"
+>> +                    " instead.");
+>
+> There is no "-inc migrate option".  You're refering to QMP command
+> migrate's parameter @inc / HMP command migrate's flag -i.
+
+Changed to:
+
+
+s|-inc|@inc/-i|
+
+>> +    }
+>> +
+>>      if (resume) {
+>>          if (s->state != MIGRATION_STATUS_POSTCOPY_PAUSED) {
+>>              error_setg(errp, "Cannot resume if there is no "
+>
+> As far as I can see, HMP command migrate still uses the deprecated
+> interface:
+>
+>     qmp_migrate(uri, !!blk, blk, !!inc, inc,
+>                 false, false, true, resume, &err);
+>
+> Its use should be replaced before we deprecate it.
+
+We need to drop it.
+
+Blockjobs are much more flexible.  We want to get rid of the whole
+concept of block migration inside the migration protocol/machinery.
+
+Block migration requires that one:
+
+- migrate all devices, i.e. no way to select some shared some local.
+
+- I think that incremental bit requires that you use qcow2 images, but I
+  haven't even double checked them.
+
+I just want to drop it in the near future, if 9.0 is too soon, for
+10.0.
+
+Later, Juan.
 
 
