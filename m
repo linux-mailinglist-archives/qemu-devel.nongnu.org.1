@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6E87C63EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB307C63E9
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:19:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqn46-0002y9-5l; Thu, 12 Oct 2023 00:12:50 -0400
+	id 1qqn47-00031j-Fw; Thu, 12 Oct 2023 00:12:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn3z-0002aL-BB
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:12:44 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qqn43-0002pB-TN
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:12:48 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn3w-0002WX-Vv
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:12:43 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c8a1541233so4702015ad.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:12:40 -0700 (PDT)
+ id 1qqn41-0002XP-Kz
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:12:47 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c9d922c039so4599325ad.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:12:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697083959; x=1697688759; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1697083963; x=1697688763; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TTRcABrKshKpF2CiJWe97KgR3ggXqDl/A2oup6W9fiE=;
- b=D7xcb4wh0decPhyvY6JRzEDOoD7GS3JhVPqiZiCBp/31QbxpNWEdsQRf6twjv1HOlg
- Fqmi5J3NwT1dDSab70zY24a4gkkDi9+wi5v10Ym3BJ568OmKJtwKacKRWhH2WmVxO+rV
- SZNUNc16PxJaxDxZ0LrwJzw8nVZXmuCcfIUlkvVKyl7N4HFKVRssctpFWJ8jb094uvbM
- /B5XdI+fIR3V67AJlqrxbJHtgioKhndbL9NksSyvGsaiUSL6ckfSPawzSn8A12Ges2/2
- /v9BJT7k5+DjevvSpRk2Qgf+GnRNJ8LtoDraizBeFbTRinCKd3qP8nR6g3RG1xVpXqaG
- 5B/A==
+ bh=cxnSYb8s8zmKapLM+nBg4+txEuL4+O5Nn2EFotCrF6c=;
+ b=BBltfyKXusR5u9Ih5EqzkMEF3oTockMofBuzCap939zz921Yv6TODMASXG9Bp/nqKu
+ bn4g+Xo/Euq2T3Qwmst7RQnAGMWg6YHOgqQ0o1I3rr6mNZzpNcY5ZSCE8BzWJkd14mPj
+ PV2m9/TOKdpZGFGi1C9x2IZaTpDHDmNYaZSpioZpqwGodOi/vYDzRVbkqtyceOz0Zkpn
+ r6GM4FnrfHr6a4eNqN5zrzmWbY7DGKsOez7Whn5lqOj59iPU5I9jigBGRiGlbMPUvMTy
+ wMiGbU2lcRuZVFlBrVs2AY7QLsu8XLo3apOv8SxvsGKiVJK8KzNylh0XAM67mZJxHsvV
+ 0Yyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697083959; x=1697688759;
+ d=1e100.net; s=20230601; t=1697083963; x=1697688763;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TTRcABrKshKpF2CiJWe97KgR3ggXqDl/A2oup6W9fiE=;
- b=dZNJyGm+r+7pETGiaDt3qkmcV1Nf6ISZ5w751ig+NK/7klPLr+zbJJhqJ8gsgW6854
- sUPJiIqOwHsZ6RVO1G4MxL54mZvBkMGEpJpWPVhHpFsEQ7QNqRlvIOQOCx+U4ETdiYkV
- uZVArUZi8x/DcMULP4On9EvZ4CPtYvAubZu3vMa9mBXfse0hD7UXK/YmN+MujvJzKZw3
- z5W08eon06zUXSEauA2ALAWLi3/2ImdwJB+qJ/CQ51EauasEBg4/X3S4tzhAG64390eF
- hToKOWy6bnmNvtGUoZ2aCYzuNIdihbC2eb6Z0mPYpDVex/VDUzUs4P+wjmT8I5pfq9SL
- USdA==
-X-Gm-Message-State: AOJu0Yx4kNiWEDxHYETEGFYz99QrxwDuEv7C2ucWXc2B4A7gzwOQ+1cp
- Yjf40YKNquTfArDSG6Ft8yyQ0QIv58rK2w==
-X-Google-Smtp-Source: AGHT+IEGaeF72DJGbWKe7hUxLWLvr6EbD5524ZQTpbXwccBNiKvXIMhEU188pdjn7hU//9Oy0rH+Jw==
-X-Received: by 2002:a17:902:e881:b0:1c4:4c10:6ae3 with SMTP id
- w1-20020a170902e88100b001c44c106ae3mr27141238plg.23.1697083959237; 
- Wed, 11 Oct 2023 21:12:39 -0700 (PDT)
+ bh=cxnSYb8s8zmKapLM+nBg4+txEuL4+O5Nn2EFotCrF6c=;
+ b=YI11iAolaBki7MSwD12Chmy3eVxl6ZcFoTISOCkwaxljO+Ju98Dg7kNs2OtuJGTnmc
+ 3cN+r8LB9CZI7lW9+oStZfDg7eqjVH32JPDi4e60QJ4oy3SXDcngqe7R7oJ/t6iW2GZy
+ DTU2XQ6e3/q98aPZEM9VJdZ/rdilybWlTSDmMats5/e0l8Ws83BopArCjI1enVgIrM5s
+ BEPsWFCM/tKBgjBMujNw8v9+xIQD1DtGqAWG8uiWlckp0dcr3ZBSmEfQDSx/9IKkBh69
+ OoDcz5iHHE14hv5MW73xeZ3Ct9T5K4Z9QI57Nyir//5SuvWv0y/ZCMBo6370oZnZhaH/
+ 6CQw==
+X-Gm-Message-State: AOJu0YwudcmMMWkbipTpesZA/iBcqSTcvBbybCLwbhADPEBL32IJr72X
+ SVMAPra7BzSvdgsB5ozRE3BNfREe02AxwQ==
+X-Google-Smtp-Source: AGHT+IFIWM2V0nVQ6tmUMrFR3C10K+Tpmvoz6+Y9XlWF9Exe6Ce4fQv9aUOuEbHqYAH38s2+gdZL2g==
+X-Received: by 2002:a17:902:e743:b0:1c9:bf02:6638 with SMTP id
+ p3-20020a170902e74300b001c9bf026638mr6517153plf.51.1697083963132; 
+ Wed, 11 Oct 2023 21:12:43 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.12.36
+ ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.12.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 21:12:38 -0700 (PDT)
+ Wed, 11 Oct 2023 21:12:42 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Andrew Jones <ajones@ventanamicro.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 27/54] target/riscv/cpu.c: add .instance_post_init()
-Date: Thu, 12 Oct 2023 14:10:24 +1000
-Message-ID: <20231012041051.2572507-28-alistair.francis@wdc.com>
+Subject: [PULL 28/54] target/riscv: move 'host' CPU declaration to kvm.c
+Date: Thu, 12 Oct 2023 14:10:25 +1000
+Message-ID: <20231012041051.2572507-29-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012041051.2572507-1-alistair.francis@wdc.com>
 References: <20231012041051.2572507-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,129 +102,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-All generic CPUs call riscv_cpu_add_user_properties(). The 'max' CPU
-calls riscv_init_max_cpu_extensions(). Both can be moved to a common
-instance_post_init() callback, implemented in riscv_cpu_post_init(),
-called by all CPUs. The call order then becomes:
-
-riscv_cpu_init() -> cpu_init() of each CPU -> .instance_post_init()
-
-In the near future riscv_cpu_post_init() will call the init() function
-of the current accelerator, providing a hook for KVM and TCG accel
-classes to change the init() process of the CPU.
+This CPU only exists if we're compiling with KVM so move it to the kvm
+specific file.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20230925175709.35696-6-dbarboza@ventanamicro.com>
+Message-ID: <20230925175709.35696-7-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 43 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 11 deletions(-)
+ target/riscv/cpu.c | 15 ---------------
+ target/riscv/kvm.c | 21 +++++++++++++++++++++
+ 2 files changed, 21 insertions(+), 15 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 08cbd51ea1..a6a26c0268 100644
+index a6a26c0268..d78f73aa55 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -427,8 +427,6 @@ static void riscv_max_cpu_init(Object *obj)
-     mlx = MXL_RV32;
- #endif
-     set_misa(env, mlx, 0);
--    riscv_cpu_add_user_properties(obj);
--    riscv_init_max_cpu_extensions(obj);
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
-@@ -442,7 +440,6 @@ static void rv64_base_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     /* We set this in the realise function */
-     set_misa(env, MXL_RV64, 0);
--    riscv_cpu_add_user_properties(obj);
-     /* Set latest version of privileged specification */
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
-@@ -566,7 +563,6 @@ static void rv128_base_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     /* We set this in the realise function */
-     set_misa(env, MXL_RV128, 0);
--    riscv_cpu_add_user_properties(obj);
-     /* Set latest version of privileged specification */
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
-@@ -579,7 +575,6 @@ static void rv32_base_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     /* We set this in the realise function */
-     set_misa(env, MXL_RV32, 0);
--    riscv_cpu_add_user_properties(obj);
-     /* Set latest version of privileged specification */
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
-@@ -666,7 +661,6 @@ static void riscv_host_cpu_init(Object *obj)
- #elif defined(TARGET_RISCV64)
-     set_misa(env, MXL_RV64, 0);
- #endif
--    riscv_cpu_add_user_properties(obj);
+@@ -652,18 +652,6 @@ static void rv32_imafcu_nommu_cpu_init(Object *obj)
  }
- #endif /* CONFIG_KVM */
- 
-@@ -1215,6 +1209,37 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
- }
- #endif /* CONFIG_USER_ONLY */
- 
-+static bool riscv_cpu_is_dynamic(Object *cpu_obj)
-+{
-+    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
-+}
-+
-+static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
-+{
-+    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
-+}
-+
-+static bool riscv_cpu_has_user_properties(Object *cpu_obj)
-+{
-+    if (kvm_enabled() &&
-+        object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_HOST) != NULL) {
-+        return true;
-+    }
-+
-+    return riscv_cpu_is_dynamic(cpu_obj);
-+}
-+
-+static void riscv_cpu_post_init(Object *obj)
-+{
-+    if (riscv_cpu_has_user_properties(obj)) {
-+        riscv_cpu_add_user_properties(obj);
-+    }
-+
-+    if (riscv_cpu_has_max_extensions(obj)) {
-+        riscv_init_max_cpu_extensions(obj);
-+    }
-+}
-+
- static void riscv_cpu_init(Object *obj)
- {
- #ifndef CONFIG_USER_ONLY
-@@ -1764,11 +1789,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
- };
  #endif
  
--static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+-#if defined(CONFIG_KVM)
+-static void riscv_host_cpu_init(Object *obj)
 -{
--    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+-    CPURISCVState *env = &RISCV_CPU(obj)->env;
+-#if defined(TARGET_RISCV32)
+-    set_misa(env, MXL_RV32, 0);
+-#elif defined(TARGET_RISCV64)
+-    set_misa(env, MXL_RV64, 0);
+-#endif
 -}
+-#endif /* CONFIG_KVM */
 -
- static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
-                               void *opaque, Error **errp)
+ static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
  {
-@@ -2005,6 +2025,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .instance_size = sizeof(RISCVCPU),
-         .instance_align = __alignof(RISCVCPU),
-         .instance_init = riscv_cpu_init,
-+        .instance_post_init = riscv_cpu_post_init,
-         .abstract = true,
-         .class_size = sizeof(RISCVCPUClass),
-         .class_init = riscv_cpu_class_init,
+     ObjectClass *oc;
+@@ -2037,9 +2025,6 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     },
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,      riscv_max_cpu_init),
+-#if defined(CONFIG_KVM)
+-    DEFINE_CPU(TYPE_RISCV_CPU_HOST,             riscv_host_cpu_init),
+-#endif
+ #if defined(TARGET_RISCV32)
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE32,   rv32_base_cpu_init),
+     DEFINE_CPU(TYPE_RISCV_CPU_IBEX,             rv32_ibex_cpu_init),
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 1e4e4456b3..31d2ede4b6 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -1271,3 +1271,24 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+ 
+     kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
+ }
++
++static void riscv_host_cpu_init(Object *obj)
++{
++    CPURISCVState *env = &RISCV_CPU(obj)->env;
++
++#if defined(TARGET_RISCV32)
++    env->misa_mxl_max = env->misa_mxl = MXL_RV32;
++#elif defined(TARGET_RISCV64)
++    env->misa_mxl_max = env->misa_mxl = MXL_RV64;
++#endif
++}
++
++static const TypeInfo riscv_kvm_cpu_type_infos[] = {
++    {
++        .name = TYPE_RISCV_CPU_HOST,
++        .parent = TYPE_RISCV_CPU,
++        .instance_init = riscv_host_cpu_init,
++    }
++};
++
++DEFINE_TYPES(riscv_kvm_cpu_type_infos)
 -- 
 2.41.0
 
