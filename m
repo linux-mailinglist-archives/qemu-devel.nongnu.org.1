@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8AB7C696A
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 11:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 850107C69D0
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 11:40:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqruJ-0006ry-HG; Thu, 12 Oct 2023 05:23:03 -0400
+	id 1qqsA1-000261-15; Thu, 12 Oct 2023 05:39:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qqruH-0006rF-Qj; Thu, 12 Oct 2023 05:23:01 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <farrah.chen@intel.com>)
+ id 1qqs9y-00025q-Q9
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 05:39:14 -0400
+Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qqruG-0004gv-6Z; Thu, 12 Oct 2023 05:23:01 -0400
-Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5kcP4Ss0z688d6;
- Thu, 12 Oct 2023 17:19:49 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 12 Oct 2023 10:22:54 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Thu, 12 Oct 2023 10:22:54 +0100
-To: Gavin Shan <gshan@redhat.com>, Salil Mehta <salil.mehta@opnsrc.net>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "rafael@kernel.org" <rafael@kernel.org>, "alex.bennee@linaro.org"
- <alex.bennee@linaro.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng
- (C)" <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V5 8/9] physmem: Add helper function to destroy CPU
- AddressSpace
-Thread-Topic: [PATCH V5 8/9] physmem: Add helper function to destroy CPU
- AddressSpace
-Thread-Index: AQHZ/Hu2W97dHDuZJkS1Rvdlsfl3xbBFLG+AgAAJLgCAAAPWAIAAqJuQ
-Date: Thu, 12 Oct 2023 09:22:54 +0000
-Message-ID: <4ffab3f51cb4460bb36d4c923e3c3c9a@huawei.com>
-References: <20231011194355.15628-1-salil.mehta@huawei.com>
- <20231011194355.15628-9-salil.mehta@huawei.com>
- <69098d56-8b68-2734-ef40-7338386d7fa9@redhat.com>
- <e73217f7-e6c2-81e7-0174-54ef575ebbce@opnsrc.net>
- <b8c13adb-ce1e-41fc-daa0-4aa31bf5f7a0@redhat.com>
-In-Reply-To: <b8c13adb-ce1e-41fc-daa0-4aa31bf5f7a0@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.195.35.158]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <farrah.chen@intel.com>)
+ id 1qqs9v-0008Mu-KD
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 05:39:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1697103551; x=1728639551;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=1I2Yptz1x42hFQSbl3nrdY0ORgKDqT5ajb09pQty3jg=;
+ b=AuzZZRDMzxqgqBPrq+fdvNgjctPMG/5kJFMunJx2opDOhBiIb62NwMpn
+ RqUrfS3bV8tVl30wBapnZcJVFzg15GI6ToKmeeIteJN+G0pGnKZ7xgcPj
+ 5Ih3vaiauIG/oeze2N3vKoTm2WocaGNR5rA6rD3KTd133C03e8XKOh6rJ
+ EIiVNL9UH0JvWYVRax8LpQrOtBNHxKrrV+njFBvBUVdMTqCCOQ5h3ZZxJ
+ XWV3rqQXctR3gSweI65lJZShDrO2dChFC59n5ezydVqXlOQZP44jdxe03
+ IPSB/MDEd03cev/n6B3qK2H5zh5ASFTeLYlH9QmjTGUW2+SJqXDIgMEHU Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="388740053"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; d="scan'208";a="388740053"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Oct 2023 02:39:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="747820893"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; d="scan'208";a="747820893"
+Received: from emr-120485.sh.intel.com ([10.112.230.86])
+ by orsmga007.jf.intel.com with ESMTP; 12 Oct 2023 02:39:04 -0700
+From: Farrah Chen <farrah.chen@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: mtosatti@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org,
+ farrah.chen@intel.com
+Subject: Re: [PATCH] targer/i386/cpu: Fix CPUID_HT exposure
+Date: Thu, 12 Oct 2023 17:39:08 +0800
+Message-Id: <ZSe84OlMUgCKkevt@emr-120485.sh.intel.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20231010060539.210258-1-xiaoyao.li@intel.com>
+References: <20231010060539.210258-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=134.134.136.65;
+ envelope-from=farrah.chen@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,50 +75,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBHYXZpbiBTaGFuIDxnc2hhbkByZWRoYXQuY29tPg0KPiBTZW50OiBUaHVyc2RheSwg
-T2N0b2JlciAxMiwgMjAyMyAxOjE4IEFNDQo+IFRvOiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFA
-b3Buc3JjLm5ldD47IFNhbGlsIE1laHRhDQo+IDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPjsgcWVt
-dS1kZXZlbEBub25nbnUub3JnOyBxZW11LWFybUBub25nbnUub3JnDQo+IENjOiBtYXpAa2VybmVs
-Lm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBKb25hdGhhbiBDYW1lcm9uDQo+IDxqb25h
-dGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFsaXNpQGtlcm5lbC5vcmc7DQo+IHBldGVy
-Lm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZzsNCj4gaW1h
-bW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxpbnV4LmRldjsgZGF2aWRAcmVkaGF0LmNv
-bTsNCj4gcGhpbG1kQGxpbmFyby5vcmc7IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xpdmVyLnVw
-dG9uQGxpbnV4LmRldjsNCj4gcGJvbnppbmlAcmVkaGF0LmNvbTsgbXN0QHJlZGhhdC5jb207IHdp
-bGxAa2VybmVsLm9yZzsgcmFmYWVsQGtlcm5lbC5vcmc7DQo+IGFsZXguYmVubmVlQGxpbmFyby5v
-cmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFycmVuQG9zLmFtcGVyZWNvbXB1dGluZy5j
-b207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IHZpc2hudUBvcy5hbXBlcmVjb21w
-dXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNvbTsNCj4gbWlndWVsLmx1aXNAb3JhY2xl
-LmNvbTsgemh1a2VxaWFuIDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nDQo+
-IChDKSA8d2FuZ3hpb25nZmVuZzJAaHVhd2VpLmNvbT47IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5h
-bjU1QGh1YXdlaS5jb20+Ow0KPiBqaWFrZXJuZWwyQGdtYWlsLmNvbTsgbWFvYmlib0Bsb29uZ3Nv
-bi5jbjsgbGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0NCj4gPGxpbnV4YXJtQGh1YXdl
-aS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjUgOC85XSBwaHlzbWVtOiBBZGQgaGVscGVy
-IGZ1bmN0aW9uIHRvIGRlc3Ryb3kgQ1BVDQo+IEFkZHJlc3NTcGFjZQ0KPiANCj4gSGkgU2FsaWws
-DQo+IA0KPiBPbiAxMC8xMi8yMyAxMDowNCwgU2FsaWwgTWVodGEgd3JvdGU6DQo+ID4gT24gMTIv
-MTAvMjAyMyAwMDozMSwgR2F2aW4gU2hhbiB3cm90ZToNCj4gPj4gT24gMTAvMTIvMjMgMDU6NDMs
-IFNhbGlsIE1laHRhIHdyb3RlOg0KPiANCj4gWy4uLl0NCj4gDQo+ID4+PiArdm9pZCBjcHVfYWRk
-cmVzc19zcGFjZV9kZXN0cm95KENQVVN0YXRlICpjcHUsIGludCBhc2lkeCkNCj4gPj4+ICt7DQo+
-ID4+PiArwqDCoMKgIENQVUFkZHJlc3NTcGFjZSAqY3B1YXM7DQo+ID4+PiArDQo+ID4+PiArwqDC
-oMKgIGFzc2VydChhc2lkeCA8IGNwdS0+bnVtX2FzZXMpOw0KPiA+Pj4gK8KgwqDCoCBhc3NlcnQo
-YXNpZHggPT0gMCB8fCAha3ZtX2VuYWJsZWQoKSk7DQo+ID4+PiArwqDCoMKgIGFzc2VydChjcHUt
-PmNwdV9hc2VzKTsNCj4gPj4+ICsNCj4gPj4NCj4gPj4gVGhlIHR3byBhc3NlcnRzIG9uIEBhc2lk
-eCBhbmQgQGNwdS0+Y3B1X2FzZXMgY2FuIGJlIGNvbWJpbmVkDQo+ID4+IHRvIG9uZSBzbyB0aGF0
-IHRoZXNlIDMgYXNzZXJ0cyBjYW4gYmUgY29tYmluZWQgdG8gdHdvLg0KPiA+Pg0KPiA+PiDCoMKg
-wqDCoMKgwqDCoCAvKiBPbmx5IG9uZSBhZGRyZXNzIHNwYWNlIGlzIHN1cHBvcnRlZCBieSBLVk0g
-Ki8NCj4gPj4gwqDCoMKgwqDCoMKgwqAgYXNzZXJ0KGFzaWR4ID09IDAgfHwgIWt2bV9lbmFibGVk
-KCkpOw0KPiA+PiDCoMKgwqDCoMKgwqDCoCBhc3NlcnQoYXNpZHggPj0gMCAmJiBhc2lkeCA8IGNw
-dS0+Y3B1X2FzZXNfY291bnQpDQo+ID4NCj4gPiBXZSBjYW4gZG8gdGhhdC4NCj4gPg0KPiA+IEkg
-YW0gbm90IGluIGZhdm9yIHRvIHJlbW92ZcKgICdhc3NlcnQoY3B1LT5jcHVfYXNlcyk7JyBhcyB0
-aGlzIGNhbiBzYXZlDQo+IGxvdCBvZiBkZWJ1Z2dpbmcuDQo+ID4NCj4gDQo+IE9rLCBJdCdzIGZp
-bmUgdG8ga2VlcCAnYXNzZXJ0KGNwdS0+Y3B1X2FzZXMpJywgYnV0ICdhc3NlcnQoYXNpZHggPj0g
-MCknIGlzDQo+IHN0aWxsIG5lZWRlZD8gRm9yIGV4YW1wbGUsIHRoZSB3cm9uZyBjaHVuayBvZiBt
-ZW1vcnkgd2lsbCBiZSByZWxlYXNlIHdoZW4NCj4gQGFzaWR4IGlzIHNtYWxsZXIgdGhhbiB6ZXJv
-LCB3aGljaCBpcyBvdXQtb2YtYm91bmQgdG8gQGNwdS0+Y3B1X2FzZXNbXQ0KDQpZZXMsIG9mIGNv
-dXJzZSwgd2UgY2FuIGtlZXAgdGhhdC4NCg0KVGhhbmtzDQpTYWxpbC4NCg0K
+On 2023-10-10 at 02:05:39 -0400, Xiaoyao Li wrote:
+> When explicitly booting a multiple vcpus vm with "-cpu +ht", it gets
+> warning of
+>=20
+>   warning: host doesn't support requested feature: CPUID.01H:EDX.ht [bit =
+28]
+>=20
+> Make CPUID_HT as supported unconditionally can resolve the warning.
+> However it introduces another issue that it also expose CPUID_HT to
+> guest when "-cpu host/max" with only 1 vcpu. To fix this, need mark
+> CPUID_HT as the no_autoenable_flags.
+>=20
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  target/i386/cpu.c     | 1 +
+>  target/i386/kvm/kvm.c | 2 ++
+>  2 files changed, 3 insertions(+)
+>=20
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index cec5d2b7b65e..32c077455f04 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -778,6 +778,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] =3D {
+>          },
+>          .cpuid =3D {.eax =3D 1, .reg =3D R_EDX, },
+>          .tcg_features =3D TCG_FEATURES,
+> +        .no_autoenable_flags =3D CPUID_HT,
+>      },
+>      [FEAT_1_ECX] =3D {
+>          .type =3D CPUID_FEATURE_WORD,
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index f6c7f7e26869..ab72bcdfad13 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -373,6 +373,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, ui=
+nt32_t function,
+>      if (function =3D=3D 1 && reg =3D=3D R_EDX) {
+>          /* KVM before 2.6.30 misreports the following features */
+>          ret |=3D CPUID_MTRR | CPUID_PAT | CPUID_MCE | CPUID_MCA;
+> +        /* KVM never reports CPUID_HT but QEMU can support when vcpus > =
+1 */
+> +        ret |=3D CPUID_HT;
+>      } else if (function =3D=3D 1 && reg =3D=3D R_ECX) {
+>          /* We can set the hypervisor flag, even if KVM does not return i=
+t on
+>           * GET_SUPPORTED_CPUID
+
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+
+>=20
+> base-commit: cea3ea670fe265421131aad90c36fbb87bc4d206
+> --=20
+> 2.34.1
+>=20
+>=20
 
