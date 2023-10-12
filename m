@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C987C6DD5
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 14:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D88C7C6DEC
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 14:22:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqueh-0002h8-5V; Thu, 12 Oct 2023 08:19:07 -0400
+	id 1qquer-0002kI-Hp; Thu, 12 Oct 2023 08:19:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqueW-0002gH-0e
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:18:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqueQ-0001ho-5b
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:18:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697113127;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ZYYdW29totSLu9klOBUHiwhDSDG9nNC+ntacxW1tKHo=;
- b=ghDBlY5PzL12USDwihJpi6N4iK369uWWPQQs9wAgnzlMzQjnKL2yPmfsR1CoIZ/ptvVXmP
- fiAOGgxSL3CBTxJPJ3/5ZIjUF+wNVmWJiWdpnaZKpkTaBbfSONZbT9IjwCKqr4uZhvRsz1
- iKgNCYGgzCsHUMYBRBvIeYv+jhD1VhY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-102--rnuO4wBPf2UPSVaLLhWEQ-1; Thu, 12 Oct 2023 08:18:45 -0400
-X-MC-Unique: -rnuO4wBPf2UPSVaLLhWEQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B0BA1C11721
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 12:18:45 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 29D78111D3DC
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 12:18:45 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 340A821E6A1F; Thu, 12 Oct 2023 14:18:44 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin"
- <mst@redhat.com>,  qemu-devel@nongnu.org,  Gerd Hoffmann
- <kraxel@redhat.com>
-Subject: Re: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
- compiling with -Wshadow
-References: <20231009083726.30301-1-thuth@redhat.com>
-Date: Thu, 12 Oct 2023 14:18:44 +0200
-In-Reply-To: <20231009083726.30301-1-thuth@redhat.com> (Thomas Huth's message
- of "Mon, 9 Oct 2023 10:37:25 +0200")
-Message-ID: <87h6mwyqxn.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qquen-0002j7-32
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:14 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqueh-0001jM-4p
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:12 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-99c3d3c3db9so141647966b.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 05:19:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697113140; x=1697717940; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vd06sYB52yhekTeF3eyRbvf+2Ug3vpYQ4rXLu4x9Xkw=;
+ b=a/OkS7nCbB0mIRw5tH9xnptcBtYKf1Z1jvByfiFdsj7wZWBlWp/ZppW78BTA2TeYIg
+ AH3+VU5Cn7pOZ6w530FAVNtuYkxO/K/VoAm+SmY6g2gdlOeiky/jBrGODqheVY+pDHCJ
+ bC8gvJedbUmZZyHRKutaHXKykJ8uRYEOHPAa4mB4NRWZEeAmJXoDS+Gdu1zfolwd4oSM
+ W1+f7ZH46kCAVJt6De50shkGAqhNX+vuTJl6VnAe/61fUEUae6CisldHNS+ZOq9Buhxn
+ kiMVyt0HL+aEZbIyRax/PJwZuAFQk8yLchFe/URvNYwrVO9wB5gxLqzXRql4QwlP5cjT
+ ZurA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697113140; x=1697717940;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vd06sYB52yhekTeF3eyRbvf+2Ug3vpYQ4rXLu4x9Xkw=;
+ b=EmmaXqMsDunvDuDtHXrDl2aQFMgnq6KUrQQH7cpjMFOG0fVUALJpxgF7jFBZC/26EO
+ wl33FYZbkJ92lTchzzEHtK6iDRygyRDHQ1Qfr+16AfzBD69ZEuewKy283EVE0DL3p1sf
+ aIYfk6s3ud9JyMjMWrALRcynJCS9PQ9YOGVI7EtE/hcFHnB5crhqRH/iTocPsZsYoOQc
+ r8xBkvUy7mi3UXhDnw3+cyMIydfjECdHKnKA9FvefoC+8y4NyuNqoysCKP8gswcb/TYl
+ eWBRnhUClTHfr0PO+NOEEO+RW5ULPxF/EmWDrHh+DAwliiUQZcVga1wsCYL5YpEc+g4x
+ XX/Q==
+X-Gm-Message-State: AOJu0YzNp4tkNECk7NE7HVmlpJjCIYfruzPNq3nVIwwJN5y8i/yMerr+
+ JYcYkbN6G/Fa/xCzPZHZKRrNkMRszkc6PpF4xdqX3A==
+X-Google-Smtp-Source: AGHT+IEn6kqnnhLsAlQry+trAp5/G4K6hueC66LSEEYpPb8wvQlM5/hFStbjh/qWf/BhmKdcg4RX3A==
+X-Received: by 2002:a17:907:6c14:b0:9b6:f0e2:3c00 with SMTP id
+ rl20-20020a1709076c1400b009b6f0e23c00mr19423868ejc.71.1697113140094; 
+ Thu, 12 Oct 2023 05:19:00 -0700 (PDT)
+Received: from m1x-phil.lan (176-131-211-232.abo.bbox.fr. [176.131.211.232])
+ by smtp.gmail.com with ESMTPSA id
+ x6-20020a170906b08600b009a19701e7b5sm11036107ejy.96.2023.10.12.05.18.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 12 Oct 2023 05:18:59 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/8] hw/pci-host/designware: QOM shuffling (Host bridge <->
+ Root function)
+Date: Thu, 12 Oct 2023 14:18:48 +0200
+Message-ID: <20231012121857.31873-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,75 +90,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+Hi,
 
-> Rename some variables to avoid compiler warnings when compiling
-> with -Wshadow=local.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  v2: Renamed the variable to something more unique
->
->  contrib/vhost-user-gpu/vugpu.h          | 8 ++++----
->  contrib/vhost-user-gpu/vhost-user-gpu.c | 6 +++---
->  2 files changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/contrib/vhost-user-gpu/vugpu.h b/contrib/vhost-user-gpu/vugpu.h
-> index 509b679f03..654c392fbb 100644
-> --- a/contrib/vhost-user-gpu/vugpu.h
-> +++ b/contrib/vhost-user-gpu/vugpu.h
-> @@ -164,12 +164,12 @@ struct virtio_gpu_ctrl_command {
->  };
->  
->  #define VUGPU_FILL_CMD(out) do {                                \
-> -        size_t s;                                               \
-> -        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
-> +        size_t vugpufillcmd_s_ =                                \
-> +            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
->                         &out, sizeof(out));                      \
-> -        if (s != sizeof(out)) {                                 \
-> +        if (vugpufillcmd_s_ != sizeof(out)) {                   \
->              g_critical("%s: command size incorrect %zu vs %zu", \
-> -                       __func__, s, sizeof(out));               \
-> +                       __func__, vugpufillcmd_s_, sizeof(out)); \
->              return;                                             \
->          }                                                       \
->      } while (0)
+While trying this PCI host bridge in a hegerogeneous setup
+I noticed few discrepancies due to the fact that host bridge
+pieces were managed by the root function.
 
-v1 renamed to s_ instead, which I find much easier to read.  Michael
-asked you to change it so it's less likely to break if we pass it a
-macro that also uses s_.  Unlikely to happen, and would fail safe: build
-breaks.
+This series move these pieces (ViewPort and MSI regs) to the
+host bridge side where they belong. Unfortunately this is
+a migration breakage.
 
-> diff --git a/contrib/vhost-user-gpu/vhost-user-gpu.c b/contrib/vhost-user-gpu/vhost-user-gpu.c
-> index aa304475a0..bb41758e34 100644
-> --- a/contrib/vhost-user-gpu/vhost-user-gpu.c
-> +++ b/contrib/vhost-user-gpu/vhost-user-gpu.c
-> @@ -834,7 +834,7 @@ vg_resource_flush(VuGpu *g,
->                  .width = width,
->                  .height = height,
->              };
-> -            pixman_image_t *i =
-> +            pixman_image_t *img =
->                  pixman_image_create_bits(pixman_image_get_format(res->image),
->                                           msg->payload.update.width,
->                                           msg->payload.update.height,
-> @@ -842,11 +842,11 @@ vg_resource_flush(VuGpu *g,
->                                                        payload.update.data),
->                                           width * bpp);
->              pixman_image_composite(PIXMAN_OP_SRC,
-> -                                   res->image, NULL, i,
-> +                                   res->image, NULL, img,
->                                     extents->x1, extents->y1,
->                                     0, 0, 0, 0,
->                                     width, height);
-> -            pixman_image_unref(i);
-> +            pixman_image_unref(img);
->              vg_send_msg(g, msg, -1);
->              g_free(msg);
->          }
+I recommend reviewing using 'git-diff --color-moved=dimmed-zebra'.
 
-I'm going to queue v1.  Michael, if you want me to queue v2 instead, or
-neither of the two, let me know.
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (8):
+  hw/pci-host/designware: Declare CPU QOM types using DEFINE_TYPES()
+    macro
+  hw/pci-host/designware: Initialize root function in host bridge
+    realize
+  hw/pci-host/designware: Add 'host_mem' variable for clarity
+  hw/pci-host/designware: Hoist host controller in root function #0
+  hw/pci-host/designware: Keep host reference in DesignwarePCIEViewport
+  hw/pci-host/designware: Move viewports from root func to host bridge
+  hw/pci-host/designware: Move MSI registers from root func to host
+    bridge
+  hw/pci-host/designware: Create ViewPorts during host bridge
+    realization
+
+ include/hw/pci-host/designware.h |  20 +-
+ hw/pci-host/designware.c         | 376 +++++++++++++++----------------
+ 2 files changed, 187 insertions(+), 209 deletions(-)
+
+-- 
+2.41.0
 
 
