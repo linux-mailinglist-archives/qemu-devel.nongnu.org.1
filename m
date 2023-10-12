@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF187C6DE1
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 14:21:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A367C6DE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 14:21:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqufL-0003NA-IH; Thu, 12 Oct 2023 08:19:47 -0400
+	id 1qqufY-0003oc-Ft; Thu, 12 Oct 2023 08:20:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqufG-0003Mh-On
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:43 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqufQ-0003ZF-VU
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:54 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqufE-0001rS-Si
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:42 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9adb9fa7200so182405066b.0
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 05:19:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqufL-0001tp-Jk
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:52 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-99c1c66876aso145620066b.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 05:19:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697113179; x=1697717979; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697113185; x=1697717985; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4YRr81WGc0jZpkwI738+aZ2Qnn+FlQH2u0zMxI+6iKE=;
- b=NlTVkg3M3GloTpmwFOjkDsXaLybBvajTFNjwiZD4DONPGoXn2JkqeZgpYFmYe3UtZH
- t7YQOEBpcRIW4Iy3rtUl8PVIRLq3eJhlAHgqlNS2J8DG2X5OYcpwMs+/cEtMv+oR6c9u
- PvGcKgDgyEtCVezQTiXMsDDayK5yY8AFLDLGIraSb8E7aSVXFUy+uKQHQ+8sC+xcbeEq
- nZrSL1aUWka8zzawWkPFYdz949i5JlZ7VL3FAk/5d57ZKHNgh+M8PighQ1XN4jLVRT1F
- ueyuuJvdQFiClobFeqy1cQUcmdCNMGktC/X9kfHrLimwa1WRRrnL4uDahKRIk8pi3DaZ
- bAGQ==
+ bh=lkSYPpqF0kOrJ1x/hHvfUb0VtYPx+2ipYoi3NSqd0/Q=;
+ b=WnlVtpOEWs64M4VcMT1MHLkXWDsv9vh2rNlJiiV31gy5Dtax7CbnxpI6kzzlL7yTFO
+ gMTtUk3xLewJxWFUpfE8pX+ubIqf9Fd4fA+85zlOYprOhkmNrp3yhvas1TqqekE1QS+D
+ h8cTeH/FMPSjb8cgwIRNgAzzUytKxln7SZ0HuakzSO+EOE12wIpufh2tvPl+Gp8YMuwY
+ HNnOi3dfhPd/BWVd3G8pkWU4Y2njFwlPcF+KPgQB82E+Fv1WA8GKpL8oBtQ8ZMdssBix
+ I7AoV/R0AQ2/c+DbacToGIozTU96Z/gyQo0BwD8l1wXxcLXcbI/TpmRkcMhCRDph8m4i
+ zhCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697113179; x=1697717979;
+ d=1e100.net; s=20230601; t=1697113185; x=1697717985;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4YRr81WGc0jZpkwI738+aZ2Qnn+FlQH2u0zMxI+6iKE=;
- b=kav/yydstTuZH+01UQ/LKirJyBjPejxw7IlWnWnkcx4ogNyoLym10zfDVmPcZ/EEvA
- zVwLOs/LXOtuS2+BKbYj7RvsfFYzjOQmqJXbuRSAsrsBIX6dZz5N6ozp9A5uINk6/wt1
- V3KrBl6o4raOl4oife0xu7SyxnfrvhC8Wm2xJ0ru6bVo1fh310aMhcpC9W8Qm/HgrOjI
- lpMGEZzrOaF2aQffzGJfUy1JM+x7GJlYnZCqXTnpQ5ldodOEWEubVT9O6u2ZT+8F90DK
- xymTvp+wseBSdtLsvJlr1gYQtL3ZoxF+ONbcK2IW19QhEn+iDbJAheATCz6NGTmKnXAS
- hurg==
-X-Gm-Message-State: AOJu0YzMByEmqQSpHJxv2P1lJovzv7kOxQlbdMJBJ6WMy2P8T5csIq8P
- VM1FtGnqycfvIytqQNgsPLDIIWwC/AMs93YS1J4WRw==
-X-Google-Smtp-Source: AGHT+IGJGc+4EQWfaQL9qmpVIedGcbWZL4J3ku6So8X+uM+RzQqGGbtw2/SjfeoG7NRogKs/g5RQuw==
-X-Received: by 2002:a17:907:7b84:b0:9a5:dc2b:6a5 with SMTP id
- ne4-20020a1709077b8400b009a5dc2b06a5mr15849000ejc.35.1697113179303; 
- Thu, 12 Oct 2023 05:19:39 -0700 (PDT)
+ bh=lkSYPpqF0kOrJ1x/hHvfUb0VtYPx+2ipYoi3NSqd0/Q=;
+ b=P/Qmd7Dt1YZ4Av9XjhZrH7JhBG1ezldQyRL63R6lW+56XH/gWH5WAix/ACvbZcAxs1
+ zBQgtFRcwREAgkKt50LK/KrFUt6ftla5Z+HHrI50LH7tmpqzCVR32zr0i+5tRkE6sZkd
+ Shix2MtnB3se+6UXEgDpEdxAIoaJdutGDtS4dgkoGBdlc73U2s/sIII1bZXkIQniF5L1
+ j2I5/4V8751YwlY/LT+2TGlLBwsOGpCWUvx8qXgIe7P9BKn5IPE4hO3RNhsEMCksmRR2
+ SIn+HJumw7KUm0PFpuFnDorv/WHYT656ulMVCv3fJYRyXudyDBg9eDuhQ+4mdGxWrFcR
+ wB0g==
+X-Gm-Message-State: AOJu0YxOtCVkbKwh+zAfxzBSLR+7GnToLmz/Hgq5/890NT86DW49tndo
+ pyQAguOHbnSjmr+qoJ9qHGNd39zlyQBpx+BOrMoFcA==
+X-Google-Smtp-Source: AGHT+IHn/911pSgA6sVhIsDFRtf21A6ZqCtiJYRs4JGettldgWruVWSPfYMejs/88x0B9kqX4lj3Tg==
+X-Received: by 2002:a17:906:10ce:b0:9a1:e233:e627 with SMTP id
+ v14-20020a17090610ce00b009a1e233e627mr23525326ejv.42.1697113185506; 
+ Thu, 12 Oct 2023 05:19:45 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-211-232.abo.bbox.fr. [176.131.211.232])
  by smtp.gmail.com with ESMTPSA id
- gh18-20020a170906e09200b009786c8249d6sm11146880ejb.175.2023.10.12.05.19.37
+ a6-20020a170906190600b009ad89697c86sm11081434eje.144.2023.10.12.05.19.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 12 Oct 2023 05:19:38 -0700 (PDT)
+ Thu, 12 Oct 2023 05:19:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 6/8] hw/pci-host/designware: Move viewports from root func to
- host bridge
-Date: Thu, 12 Oct 2023 14:18:54 +0200
-Message-ID: <20231012121857.31873-7-philmd@linaro.org>
+Subject: [PATCH 7/8] hw/pci-host/designware: Move MSI registers from root func
+ to host bridge
+Date: Thu, 12 Oct 2023 14:18:55 +0200
+Message-ID: <20231012121857.31873-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012121857.31873-1-philmd@linaro.org>
 References: <20231012121857.31873-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,178 +93,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As mentioned in previous commit, the PCI root function is
-irrelevant for the ViewPorts. Move the fields to the host
-bridge state.
+The MSI registers belong the the host bridge. Move the
+DesignwarePCIEMSI field to the host bridge state.
 
 This is a migration compatibility break for the machines
 using the i.MX7 SoC (currently the mcimx7d-sabre machine).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/pci-host/designware.h | 13 ++++-----
- hw/pci-host/designware.c         | 47 ++++++++++++++++----------------
- 2 files changed, 30 insertions(+), 30 deletions(-)
+ include/hw/pci-host/designware.h |  2 +-
+ hw/pci-host/designware.c         | 79 ++++++++++++++++----------------
+ 2 files changed, 40 insertions(+), 41 deletions(-)
 
 diff --git a/include/hw/pci-host/designware.h b/include/hw/pci-host/designware.h
-index e1952ad324..702777ab17 100644
+index 702777ab17..fe8e8a9f24 100644
 --- a/include/hw/pci-host/designware.h
 +++ b/include/hw/pci-host/designware.h
-@@ -63,13 +63,6 @@ typedef struct DesignwarePCIEMSI {
+@@ -63,7 +63,6 @@ typedef struct DesignwarePCIEMSI {
  struct DesignwarePCIERoot {
      PCIBridge parent_obj;
  
--    uint32_t atu_viewport;
--
--#define DESIGNWARE_PCIE_VIEWPORT_OUTBOUND    0
--#define DESIGNWARE_PCIE_VIEWPORT_INBOUND     1
--#define DESIGNWARE_PCIE_NUM_VIEWPORTS        4
--
--    DesignwarePCIEViewport viewports[2][DESIGNWARE_PCIE_NUM_VIEWPORTS];
-     DesignwarePCIEMSI msi;
+-    DesignwarePCIEMSI msi;
      DesignwarePCIEHost *host;
  };
-@@ -79,6 +72,12 @@ struct DesignwarePCIEHost {
+ 
+@@ -71,6 +70,7 @@ struct DesignwarePCIEHost {
+     PCIHostState parent_obj;
  
      DesignwarePCIERoot root;
++    DesignwarePCIEMSI msi;
  
-+    uint32_t atu_viewport;
-+#define DESIGNWARE_PCIE_VIEWPORT_OUTBOUND    0
-+#define DESIGNWARE_PCIE_VIEWPORT_INBOUND     1
-+#define DESIGNWARE_PCIE_NUM_VIEWPORTS        4
-+    DesignwarePCIEViewport viewports[2][DESIGNWARE_PCIE_NUM_VIEWPORTS];
-+
-     struct {
-         AddressSpace address_space;
-         MemoryRegion address_space_root;
+     uint32_t atu_viewport;
+ #define DESIGNWARE_PCIE_VIEWPORT_OUTBOUND    0
 diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index d12a36b628..2ef17137e2 100644
+index 2ef17137e2..6cb8655a75 100644
 --- a/hw/pci-host/designware.c
 +++ b/hw/pci-host/designware.c
-@@ -109,20 +109,21 @@ static void designware_pcie_root_update_msi_mapping(DesignwarePCIERoot *root)
+@@ -57,7 +57,7 @@
+ 
+ #define DESIGNWARE_PCIE_IRQ_MSI                    3
+ 
+-static uint64_t designware_pcie_root_msi_read(void *opaque, hwaddr addr,
++static uint64_t designware_pcie_host_msi_read(void *opaque, hwaddr addr,
+                                               unsigned size)
+ {
+     /*
+@@ -74,22 +74,21 @@ static uint64_t designware_pcie_root_msi_read(void *opaque, hwaddr addr,
+     return 0;
  }
  
- static DesignwarePCIEViewport *
--designware_pcie_root_get_current_viewport(DesignwarePCIERoot *root)
-+designware_pcie_host_get_current_viewport(DesignwarePCIEHost *host)
+-static void designware_pcie_root_msi_write(void *opaque, hwaddr addr,
++static void designware_pcie_host_msi_write(void *opaque, hwaddr addr,
+                                            uint64_t val, unsigned len)
  {
--    const unsigned int idx = root->atu_viewport & 0xF;
-+    const unsigned int idx = host->atu_viewport & 0xF;
-     const unsigned int dir =
--        !!(root->atu_viewport & DESIGNWARE_PCIE_ATU_REGION_INBOUND);
--    return &root->viewports[dir][idx];
-+        !!(host->atu_viewport & DESIGNWARE_PCIE_ATU_REGION_INBOUND);
-+    return &host->viewports[dir][idx];
+-    DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(opaque);
+-    DesignwarePCIEHost *host = root->host;
++    DesignwarePCIEHost *host = opaque;
+ 
+-    root->msi.intr[0].status |= BIT(val) & root->msi.intr[0].enable;
++    host->msi.intr[0].status |= BIT(val) & host->msi.intr[0].enable;
+ 
+-    if (root->msi.intr[0].status & ~root->msi.intr[0].mask) {
++    if (host->msi.intr[0].status & ~host->msi.intr[0].mask) {
+         qemu_set_irq(host->pci.irqs[DESIGNWARE_PCIE_IRQ_MSI], 1);
+     }
  }
  
- static uint32_t
- designware_pcie_root_config_read(PCIDevice *d, uint32_t address, int len)
+ static const MemoryRegionOps designware_pci_host_msi_ops = {
+-    .read = designware_pcie_root_msi_read,
+-    .write = designware_pcie_root_msi_write,
++    .read = designware_pcie_host_msi_read,
++    .write = designware_pcie_host_msi_write,
+     .endianness = DEVICE_LITTLE_ENDIAN,
+     .valid = {
+         .min_access_size = 4,
+@@ -97,12 +96,12 @@ static const MemoryRegionOps designware_pci_host_msi_ops = {
+     },
+ };
+ 
+-static void designware_pcie_root_update_msi_mapping(DesignwarePCIERoot *root)
++static void designware_pcie_host_update_msi_mapping(DesignwarePCIEHost *host)
+ 
  {
-     DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(d);
-+    DesignwarePCIEHost *host = root->host;
-     DesignwarePCIEViewport *viewport =
--        designware_pcie_root_get_current_viewport(root);
-+        designware_pcie_host_get_current_viewport(host);
+-    MemoryRegion *mem   = &root->msi.iomem;
+-    const uint64_t base = root->msi.base;
+-    const bool enable   = root->msi.intr[0].enable;
++    MemoryRegion *mem   = &host->msi.iomem;
++    const uint64_t base = host->msi.base;
++    const bool enable   = host->msi.intr[0].enable;
  
-     uint32_t val;
- 
-@@ -170,7 +171,7 @@ designware_pcie_root_config_read(PCIDevice *d, uint32_t address, int len)
+     memory_region_set_address(mem, base);
+     memory_region_set_enabled(mem, enable);
+@@ -147,23 +146,23 @@ designware_pcie_root_config_read(PCIDevice *d, uint32_t address, int len)
          break;
  
-     case DESIGNWARE_PCIE_ATU_VIEWPORT:
--        val = root->atu_viewport;
-+        val = host->atu_viewport;
+     case DESIGNWARE_PCIE_MSI_ADDR_LO:
+-        val = root->msi.base;
++        val = host->msi.base;
          break;
  
-     case DESIGNWARE_PCIE_ATU_LOWER_BASE:
-@@ -294,7 +295,7 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
-     DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(d);
-     DesignwarePCIEHost *host = root->host;
-     DesignwarePCIEViewport *viewport =
--        designware_pcie_root_get_current_viewport(root);
-+        designware_pcie_host_get_current_viewport(host);
- 
-     switch (address) {
-     case DESIGNWARE_PCIE_PORT_LINK_CONTROL:
-@@ -332,7 +333,7 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
+     case DESIGNWARE_PCIE_MSI_ADDR_HI:
+-        val = root->msi.base >> 32;
++        val = host->msi.base >> 32;
          break;
  
-     case DESIGNWARE_PCIE_ATU_VIEWPORT:
--        root->atu_viewport = val;
-+        host->atu_viewport = val;
+     case DESIGNWARE_PCIE_MSI_INTR0_ENABLE:
+-        val = root->msi.intr[0].enable;
++        val = host->msi.intr[0].enable;
          break;
  
-     case DESIGNWARE_PCIE_ATU_LOWER_BASE:
-@@ -420,7 +421,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
-         const char *direction;
-         char *name;
+     case DESIGNWARE_PCIE_MSI_INTR0_MASK:
+-        val = root->msi.intr[0].mask;
++        val = host->msi.intr[0].mask;
+         break;
  
--        viewport = &root->viewports[DESIGNWARE_PCIE_VIEWPORT_INBOUND][i];
-+        viewport = &host->viewports[DESIGNWARE_PCIE_VIEWPORT_INBOUND][i];
-         viewport->inbound = true;
-         viewport->base    = 0x0000000000000000ULL;
-         viewport->target  = 0x0000000000000000ULL;
-@@ -443,7 +444,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
-         memory_region_set_enabled(mem, false);
-         g_free(name);
+     case DESIGNWARE_PCIE_MSI_INTR0_STATUS:
+-        val = root->msi.intr[0].status;
++        val = host->msi.intr[0].status;
+         break;
  
--        viewport = &root->viewports[DESIGNWARE_PCIE_VIEWPORT_OUTBOUND][i];
-+        viewport = &host->viewports[DESIGNWARE_PCIE_VIEWPORT_OUTBOUND][i];
-         viewport->host    = host;
-         viewport->inbound = false;
-         viewport->base    = 0x0000000000000000ULL;
-@@ -490,7 +491,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
-      * NOTE: This will not work correctly for the case when first
-      * configured inbound window is window 0
-      */
--    viewport = &root->viewports[DESIGNWARE_PCIE_VIEWPORT_INBOUND][0];
-+    viewport = &host->viewports[DESIGNWARE_PCIE_VIEWPORT_INBOUND][0];
+     case DESIGNWARE_PCIE_PHY_DEBUG_R1:
+@@ -305,29 +304,29 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
+         break;
+ 
+     case DESIGNWARE_PCIE_MSI_ADDR_LO:
+-        root->msi.base &= 0xFFFFFFFF00000000ULL;
+-        root->msi.base |= val;
+-        designware_pcie_root_update_msi_mapping(root);
++        host->msi.base &= 0xFFFFFFFF00000000ULL;
++        host->msi.base |= val;
++        designware_pcie_host_update_msi_mapping(host);
+         break;
+ 
+     case DESIGNWARE_PCIE_MSI_ADDR_HI:
+-        root->msi.base &= 0x00000000FFFFFFFFULL;
+-        root->msi.base |= (uint64_t)val << 32;
+-        designware_pcie_root_update_msi_mapping(root);
++        host->msi.base &= 0x00000000FFFFFFFFULL;
++        host->msi.base |= (uint64_t)val << 32;
++        designware_pcie_host_update_msi_mapping(host);
+         break;
+ 
+     case DESIGNWARE_PCIE_MSI_INTR0_ENABLE:
+-        root->msi.intr[0].enable = val;
+-        designware_pcie_root_update_msi_mapping(root);
++        host->msi.intr[0].enable = val;
++        designware_pcie_host_update_msi_mapping(host);
+         break;
+ 
+     case DESIGNWARE_PCIE_MSI_INTR0_MASK:
+-        root->msi.intr[0].mask = val;
++        host->msi.intr[0].mask = val;
+         break;
+ 
+     case DESIGNWARE_PCIE_MSI_INTR0_STATUS:
+-        root->msi.intr[0].status ^= val;
+-        if (!root->msi.intr[0].status) {
++        host->msi.intr[0].status ^= val;
++        if (!host->msi.intr[0].status) {
+             qemu_set_irq(host->pci.irqs[DESIGNWARE_PCIE_IRQ_MSI], 0);
+         }
+         break;
+@@ -495,7 +494,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
      viewport->cr[1] = DESIGNWARE_PCIE_ATU_ENABLE;
      designware_pcie_update_viewport(root, viewport);
  
-@@ -563,18 +564,10 @@ static const VMStateDescription vmstate_designware_pcie_viewport = {
+-    memory_region_init_io(&root->msi.iomem, OBJECT(root),
++    memory_region_init_io(&host->msi.iomem, OBJECT(root),
+                           &designware_pci_host_msi_ops,
+                           root, "pcie-msi", 0x4);
+     /*
+@@ -504,8 +503,8 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+      * in designware_pcie_root_update_msi_mapping() as a part of
+      * initialization done by guest OS
+      */
+-    memory_region_add_subregion(address_space, dummy_offset, &root->msi.iomem);
+-    memory_region_set_enabled(&root->msi.iomem, false);
++    memory_region_add_subregion(address_space, dummy_offset, &host->msi.iomem);
++    memory_region_set_enabled(&host->msi.iomem, false);
+ }
+ 
+ static void designware_pcie_set_irq(void *opaque, int irq_num, int level)
+@@ -564,15 +563,10 @@ static const VMStateDescription vmstate_designware_pcie_viewport = {
  
  static const VMStateDescription vmstate_designware_pcie_root = {
      .name = "designware-pcie-root",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
      .fields = (VMStateField[]) {
          VMSTATE_PCI_DEVICE(parent_obj, PCIBridge),
--        VMSTATE_UINT32(atu_viewport, DesignwarePCIERoot),
--        VMSTATE_STRUCT_2DARRAY(viewports,
--                               DesignwarePCIERoot,
--                               2,
--                               DESIGNWARE_PCIE_NUM_VIEWPORTS,
--                               1,
--                               vmstate_designware_pcie_viewport,
--                               DesignwarePCIEViewport),
-         VMSTATE_STRUCT(msi,
-                        DesignwarePCIERoot,
-                        1,
-@@ -711,14 +704,22 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
+-        VMSTATE_STRUCT(msi,
+-                       DesignwarePCIERoot,
+-                       1,
+-                       vmstate_designware_pcie_msi,
+-                       DesignwarePCIEMSI),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+@@ -704,8 +698,8 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
  
  static const VMStateDescription vmstate_designware_pcie_host = {
      .name = "designware-pcie-host",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
      .fields = (VMStateField[]) {
          VMSTATE_STRUCT(root,
                         DesignwarePCIEHost,
-                        1,
-                        vmstate_designware_pcie_root,
-                        DesignwarePCIERoot),
-+        VMSTATE_UINT32(atu_viewport, DesignwarePCIEHost),
-+        VMSTATE_STRUCT_2DARRAY(viewports,
-+                               DesignwarePCIEHost,
-+                               2,
-+                               DESIGNWARE_PCIE_NUM_VIEWPORTS,
-+                               1,
-+                               vmstate_designware_pcie_viewport,
-+                               DesignwarePCIEViewport),
+@@ -720,6 +714,11 @@ static const VMStateDescription vmstate_designware_pcie_host = {
+                                1,
+                                vmstate_designware_pcie_viewport,
+                                DesignwarePCIEViewport),
++        VMSTATE_STRUCT(msi,
++                       DesignwarePCIEHost,
++                       1,
++                       vmstate_designware_pcie_msi,
++                       DesignwarePCIEMSI),
          VMSTATE_END_OF_LIST()
      }
  };
