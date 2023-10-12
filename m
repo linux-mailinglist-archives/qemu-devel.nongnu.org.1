@@ -2,86 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700FA7C643D
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6C47C6452
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 07:04:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqngD-0004Xv-7k; Thu, 12 Oct 2023 00:52:13 -0400
+	id 1qqnqe-0007Mc-Jf; Thu, 12 Oct 2023 01:03:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqngA-0004X3-HS
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:52:10 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqng8-0002vY-UO
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:52:10 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5230a22cfd1so984148a12.1
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697086327; x=1697691127; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rDelcTJFe8mOTTTdareous3udwOQBNDSUsx28o0UKnQ=;
- b=dvp5ELKlljGogadWNgNxPTRiHnVFiu9pEOyUAa0jQFDG6tLQzRj2k+obd6iZ/twvgv
- hlBXfxy1twIYvTkyva9c2xFas2EDVCD6bpPXGqPcOOLCQV+JAOy0APWiNXPyVMagZEWx
- 5nm+OUiOJgWwvmrwygzfgvFATK2N3jRaioRPbzfC5RXa5qSpA3PnP37BOvnOxcpBPnTi
- Zlhc/7M3uLXi8Kxsy8HkXrRlJ0CzPkLWJxDR8/m7fsSbhDmqBQ+3Ph56p7035iG6cxVP
- R9Lm2sK/w/0Q01zXfD8j2EMLN2CYQzGnZ9bkbB8nc6dwUN/Ssqy+FY2n5Tyzv/thwCKg
- neTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697086327; x=1697691127;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rDelcTJFe8mOTTTdareous3udwOQBNDSUsx28o0UKnQ=;
- b=Q/uGRMfhSGoxOngenS+2fAzp0vXHVgFDnk0Hjt6V43br3gn5LI3mPWtm2Wrneps7Et
- ZVRjfiShdUKneriV1bxGdfbCYRC2m+FxedJJpwLLoi2MDV7W6rgzFzAEufDGoqTFHh3i
- YsLeOzhsK4L4uusW8EYHG7zYCxevlU9NDyTrrKMcx6wtX8XeLjl/HXeyqt3fX4xK360Y
- euoO+dXSM+Hwy/6cIzMsm2tqoXkg/e61YTkEduANrR0fFDi2jQNmVY8yuZItahGnKSLo
- SBVX4WqmHK1+YZEwbj+LnWazJ3gNcwcbaprwTwPCuy2x/ZzCQRvUQXYSKW+Vf+TgQxXs
- xUdA==
-X-Gm-Message-State: AOJu0YyHAP+kHGhakfFscFmrBLYlCTvTRINM6NGolgmLTM+QxSNeo/kV
- eKj+LrDTWaiU8P84znRDmqGG/A==
-X-Google-Smtp-Source: AGHT+IFlk9BX7KDI5xqssFr3XSB52uw5GPgrEtmbR+atJftTAlFMST+SYTZU6w9w/G9vnywxzqecvw==
-X-Received: by 2002:a17:906:4e:b0:9b2:9741:e1e9 with SMTP id
- 14-20020a170906004e00b009b29741e1e9mr20749857ejg.7.1697086327171; 
- Wed, 11 Oct 2023 21:52:07 -0700 (PDT)
-Received: from [192.168.69.115] (dcs23-h01-176-173-173-31.dsl.sta.abo.bbox.fr.
- [176.173.173.31]) by smtp.gmail.com with ESMTPSA id
- e27-20020a170906045b00b009b655c43710sm10582687eja.24.2023.10.11.21.52.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 21:52:06 -0700 (PDT)
-Message-ID: <31ae6951-2f32-ab86-4ddc-aa70364a89ce@linaro.org>
-Date: Thu, 12 Oct 2023 06:52:04 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [RFC/PATCH v0 12/12] gunyah: Documentation
-Content-Language: en-US
-To: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>, peter.maydell@linaro.org, 
- alex.bennee@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: quic_tsoni@quicinc.com, quic_pheragu@quicinc.com,
- quic_eberman@quicinc.com, quic_yvasi@quicinc.com, quic_cvanscha@quicinc.com,
- quic_mnalajal@quicinc.com, Brian Cain <bcain@quicinc.com>,
- Mark Burton <mburton@qti.qualcomm.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqnqY-0007JL-4y
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 01:02:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqnqS-0005Mh-TR
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 01:02:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697086966;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bEpuwG2bay5KSJPJMED03m4/4dDBW5i8wGLKdx1G47s=;
+ b=fBY70VRlg3KVHiL90CSQq+6GUelIZPgW1NCOQflSjN/O+DBkTL1R1YUBQE0Fss7CZpc762
+ Tn83Qxzoj+u0JVqJOZPGdr1N4flRGdK5ngKaqFr102HnLBZI8vvb+xIdkiSc7nuvAW+dYw
+ q9E1gdNUI3HdqqKnf8DMhCzLzRtuIBQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-61-raQN4y-POpSPmemt03LyXw-1; Thu, 12 Oct 2023 01:02:40 -0400
+X-MC-Unique: raQN4y-POpSPmemt03LyXw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40886811E7B;
+ Thu, 12 Oct 2023 05:02:40 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 193781C060AE;
+ Thu, 12 Oct 2023 05:02:40 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0BBB221E6904; Thu, 12 Oct 2023 07:02:39 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>,
+ peter.maydell@linaro.org,  alex.bennee@linaro.org,
+ qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  Peter Xu
+ <peterx@redhat.com>,  quic_tsoni@quicinc.com,  quic_pheragu@quicinc.com,
+ quic_eberman@quicinc.com,  quic_yvasi@quicinc.com,
+ quic_cvanscha@quicinc.com,  quic_mnalajal@quicinc.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC/PATCH v0 01/12] hw/arm/virt: Avoid NULL pointer de-reference
 References: <20231011165234.1323725-1-quic_svaddagi@quicinc.com>
- <20231011165234.1323725-13-quic_svaddagi@quicinc.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231011165234.1323725-13-quic_svaddagi@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ <20231011165234.1323725-2-quic_svaddagi@quicinc.com>
+ <b98e4566-56b4-d0e4-adb2-c163c7c26cfb@linaro.org>
+Date: Thu, 12 Oct 2023 07:02:39 +0200
+In-Reply-To: <b98e4566-56b4-d0e4-adb2-c163c7c26cfb@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 12 Oct 2023 06:30:24
+ +0200")
+Message-ID: <875y3cph5c.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,35 +89,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Srivatsa,
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-On 11/10/23 18:52, Srivatsa Vaddagiri wrote:
-> Add gunyah.rst that provide some informaiton on how to build and test
-> 'gunyah' accelerator with open-source Gunyah hypervisor.
-> 
-> Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
-> ---
->   MAINTAINERS                |   1 +
->   docs/system/arm/gunyah.rst | 214 +++++++++++++++++++++++++++++++++++++
->   2 files changed, 215 insertions(+)
->   create mode 100644 docs/system/arm/gunyah.rst
+> Hi Srivatsa,
+>
+> (+Markus/Peter for QOM fu)
 
+QOM fu needs Paolo; cc'ed.
 
-> +Limitations
-> +-----------
-> +
-> +Below features are not yet supported.
-> +
-> +* SMP (PSCI support needs to be added)
-> +* virtio-pci (support for which in Qemu seems to rely heavily on KVM, which
-> +  needs to be made multi-hypervisor friendly).
+I'm not sure how much this is about QOM, though.  Perhaps it's more
+about good taste.
 
-Is QUIC interested in working on that? My work introducing
-AccelCPUState to make CPUState accel-agnostic was done in that
-direction, but I didn't notice much interest in the community
-so I unprioritized it.
+> On 11/10/23 18:52, Srivatsa Vaddagiri wrote:
+>> Avoid dereferencing a NULL pointer that its_class_name() could return.
+>
+> While your patch is correct, there is some code smell
+> around its_class_name(). IMHO a foo_class_name() handler
+> should never return NULL.
+>
+> I'm trying to rework apic_get_class() similarly, see:
+> https://lore.kernel.org/qemu-devel/20231003082728.83496-1-philmd@linaro.o=
+rg/
 
-Regards,
+In both cases, we have a function to find the device model to use with
+current QEMU configuration and system state.  The fact that one of them
+returns a class name and the other a class is detail.
 
-Phil.
+Observe: this usable device model exists for any QEMU configuration.  It
+may not be usable in certain system states, though.
+
+Since the function deals with both, it can fail.
+
+We can separate the two concerns: first map configuration to device
+model (can't fail), then check the system state (can fail).
+
+Feels like a matter of taste to me.  Does it result in simpler function
+contracts and more readable code?  Can we do it the same way everywhere?
+
 
