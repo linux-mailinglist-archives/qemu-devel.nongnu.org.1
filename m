@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5257C726A
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356257C7289
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:29:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqySo-0003YX-Av; Thu, 12 Oct 2023 12:23:06 -0400
+	id 1qqySq-0003a4-5L; Thu, 12 Oct 2023 12:23:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qqySc-0003Vt-Ln
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qqySc-0003Vw-O2
  for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:22:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qqySZ-0000aG-IT
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qqySZ-0000aJ-J1
  for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:22:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1697127769;
@@ -22,31 +22,31 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UAiJFoLNFET6cvrYHc1hfY+L4tEMkRssmm+pFJs3G08=;
- b=J15mYulX9ybep6lFfBjGnH5KmKi4EhsB38epEgbggMbWn33RSH/f0mTyV14IN41UV01Obu
- 2SuAGf7i1GABKduaAYAIHg39ddfy6hgcg1Q+uSARt06E7wWkTNObBFyukXhz7rpzU8Pqpa
- PFTWqOvZXtPUWeZ0RByCPXwzYVUPur8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-213-69SGz-RVPryINwezn5sAEQ-1; Thu, 12 Oct 2023 12:22:37 -0400
-X-MC-Unique: 69SGz-RVPryINwezn5sAEQ-1
+ bh=/f01scmN4moabGuEAtyEl5ap1UsyJsJC9wnwe6DEnHA=;
+ b=argjsy0NjOeEr0zTcyn9u55gYQhUh7mo7o/d/niV7CxLT00Ey7muIX4vtbpYPytJbYbSud
+ ilJkzev3Ha4vvHRkxhq8Orc2gcvzHxHNfxsQhY9r0hKqTlwcs3j2bvuOQTW59i9K77s1tr
+ hrjP2VzCpwFizRD9XNbDKJ/3tUc6unI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-463-pl8nnnUJOeamLIqIg5-Orw-1; Thu, 12 Oct 2023 12:22:37 -0400
+X-MC-Unique: pl8nnnUJOeamLIqIg5-Orw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 726F485A5BF;
- Thu, 12 Oct 2023 16:22:36 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44EC63C170AA;
+ Thu, 12 Oct 2023 16:22:37 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.192.233])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D76EE2026831;
- Thu, 12 Oct 2023 16:22:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A919320296DB;
+ Thu, 12 Oct 2023 16:22:36 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 01/26] block: rename the bdrv_co_block_status static function
-Date: Thu, 12 Oct 2023 18:21:59 +0200
-Message-ID: <20231012162224.240535-2-kwolf@redhat.com>
+Subject: [PULL 02/26] block: complete public block status API
+Date: Thu, 12 Oct 2023 18:22:00 +0200
+Message-ID: <20231012162224.240535-3-kwolf@redhat.com>
 In-Reply-To: <20231012162224.240535-1-kwolf@redhat.com>
 References: <20231012162224.240535-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -78,79 +78,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-bdrv_block_status exists as a wrapper for bdrv_block_status_above, but
-the name of the (hypothetical) coroutine version, bdrv_co_block_status,
-is squatted by a random static function.  Rename it to
-bdrv_co_do_block_status.
+Include both coroutine and non-coroutine versions, the latter being
+co_wrapper_mixed_bdrv_rdlock of the former.
 
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20230904100306.156197-2-pbonzini@redhat.com>
+Message-ID: <20230904100306.156197-3-pbonzini@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/io.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ include/block/block-io.h | 17 +++++++++++------
+ block/io.c               | 18 +++++-------------
+ 2 files changed, 16 insertions(+), 19 deletions(-)
 
+diff --git a/include/block/block-io.h b/include/block/block-io.h
+index f1c796a1ce..41f78f2fc5 100644
+--- a/include/block/block-io.h
++++ b/include/block/block-io.h
+@@ -127,17 +127,22 @@ int coroutine_fn GRAPH_RDLOCK bdrv_co_zone_append(BlockDriverState *bs,
+                                                   BdrvRequestFlags flags);
+ 
+ bool bdrv_can_write_zeroes_with_unmap(BlockDriverState *bs);
+-int bdrv_block_status(BlockDriverState *bs, int64_t offset,
+-                      int64_t bytes, int64_t *pnum, int64_t *map,
+-                      BlockDriverState **file);
++
++int coroutine_fn GRAPH_RDLOCK
++bdrv_co_block_status(BlockDriverState *bs, int64_t offset, int64_t bytes,
++                     int64_t *pnum, int64_t *map, BlockDriverState **file);
++int co_wrapper_mixed_bdrv_rdlock
++bdrv_block_status(BlockDriverState *bs, int64_t offset, int64_t bytes,
++                  int64_t *pnum, int64_t *map, BlockDriverState **file);
+ 
+ int coroutine_fn GRAPH_RDLOCK
+ bdrv_co_block_status_above(BlockDriverState *bs, BlockDriverState *base,
+                            int64_t offset, int64_t bytes, int64_t *pnum,
+                            int64_t *map, BlockDriverState **file);
+-int bdrv_block_status_above(BlockDriverState *bs, BlockDriverState *base,
+-                            int64_t offset, int64_t bytes, int64_t *pnum,
+-                            int64_t *map, BlockDriverState **file);
++int co_wrapper_mixed_bdrv_rdlock
++bdrv_block_status_above(BlockDriverState *bs, BlockDriverState *base,
++                        int64_t offset, int64_t bytes, int64_t *pnum,
++                        int64_t *map, BlockDriverState **file);
+ 
+ int coroutine_fn GRAPH_RDLOCK
+ bdrv_co_is_allocated(BlockDriverState *bs, int64_t offset, int64_t bytes,
 diff --git a/block/io.c b/block/io.c
-index e7f9448d5a..2ff4ffda1c 100644
+index 2ff4ffda1c..4ecc21c562 100644
 --- a/block/io.c
 +++ b/block/io.c
-@@ -2383,9 +2383,9 @@ int bdrv_flush_all(void)
-  * set to the host mapping and BDS corresponding to the guest offset.
-  */
- static int coroutine_fn GRAPH_RDLOCK
--bdrv_co_block_status(BlockDriverState *bs, bool want_zero,
--                     int64_t offset, int64_t bytes,
--                     int64_t *pnum, int64_t *map, BlockDriverState **file)
-+bdrv_co_do_block_status(BlockDriverState *bs, bool want_zero,
-+                        int64_t offset, int64_t bytes,
-+                        int64_t *pnum, int64_t *map, BlockDriverState **file)
+@@ -2724,21 +2724,13 @@ int coroutine_fn bdrv_co_block_status_above(BlockDriverState *bs,
+                                              bytes, pnum, map, file, NULL);
+ }
+ 
+-int bdrv_block_status_above(BlockDriverState *bs, BlockDriverState *base,
+-                            int64_t offset, int64_t bytes, int64_t *pnum,
+-                            int64_t *map, BlockDriverState **file)
++int coroutine_fn bdrv_co_block_status(BlockDriverState *bs, int64_t offset,
++                                      int64_t bytes, int64_t *pnum,
++                                      int64_t *map, BlockDriverState **file)
  {
-     int64_t total_size;
-     int64_t n; /* bytes */
-@@ -2544,8 +2544,8 @@ bdrv_co_block_status(BlockDriverState *bs, bool want_zero,
+     IO_CODE();
+-    return bdrv_common_block_status_above(bs, base, false, true, offset, bytes,
+-                                          pnum, map, file, NULL);
+-}
+-
+-int bdrv_block_status(BlockDriverState *bs, int64_t offset, int64_t bytes,
+-                      int64_t *pnum, int64_t *map, BlockDriverState **file)
+-{
+-    IO_CODE();
+-    return bdrv_block_status_above(bs, bdrv_filter_or_cow_bs(bs),
+-                                   offset, bytes, pnum, map, file);
++    return bdrv_co_block_status_above(bs, bdrv_filter_or_cow_bs(bs),
++                                      offset, bytes, pnum, map, file);
+ }
  
-     if (ret & BDRV_BLOCK_RAW) {
-         assert(ret & BDRV_BLOCK_OFFSET_VALID && local_file);
--        ret = bdrv_co_block_status(local_file, want_zero, local_map,
--                                   *pnum, pnum, &local_map, &local_file);
-+        ret = bdrv_co_do_block_status(local_file, want_zero, local_map,
-+                                      *pnum, pnum, &local_map, &local_file);
-         goto out;
-     }
- 
-@@ -2572,8 +2572,8 @@ bdrv_co_block_status(BlockDriverState *bs, bool want_zero,
-         int64_t file_pnum;
-         int ret2;
- 
--        ret2 = bdrv_co_block_status(local_file, want_zero, local_map,
--                                    *pnum, &file_pnum, NULL, NULL);
-+        ret2 = bdrv_co_do_block_status(local_file, want_zero, local_map,
-+                                       *pnum, &file_pnum, NULL, NULL);
-         if (ret2 >= 0) {
-             /* Ignore errors.  This is just providing extra information, it
-              * is useful but not necessary.
-@@ -2640,7 +2640,8 @@ bdrv_co_common_block_status_above(BlockDriverState *bs,
-         return 0;
-     }
- 
--    ret = bdrv_co_block_status(bs, want_zero, offset, bytes, pnum, map, file);
-+    ret = bdrv_co_do_block_status(bs, want_zero, offset, bytes, pnum,
-+                                  map, file);
-     ++*depth;
-     if (ret < 0 || *pnum == 0 || ret & BDRV_BLOCK_ALLOCATED || bs == base) {
-         return ret;
-@@ -2656,8 +2657,8 @@ bdrv_co_common_block_status_above(BlockDriverState *bs,
-     for (p = bdrv_filter_or_cow_bs(bs); include_base || p != base;
-          p = bdrv_filter_or_cow_bs(p))
-     {
--        ret = bdrv_co_block_status(p, want_zero, offset, bytes, pnum, map,
--                                   file);
-+        ret = bdrv_co_do_block_status(p, want_zero, offset, bytes, pnum,
-+                                      map, file);
-         ++*depth;
-         if (ret < 0) {
-             return ret;
+ /*
 -- 
 2.41.0
 
