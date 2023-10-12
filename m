@@ -2,96 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FAB87C79E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 00:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 544007C7AD0
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 02:24:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr4Ly-0001yP-Cc; Thu, 12 Oct 2023 18:40:26 -0400
+	id 1qr5wh-0001BI-FE; Thu, 12 Oct 2023 20:22:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qr4Lw-0001xe-5V; Thu, 12 Oct 2023 18:40:24 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qr4Lt-00031J-N3; Thu, 12 Oct 2023 18:40:23 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39CMbBhX012946; Thu, 12 Oct 2023 22:40:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=LFPDFB5uPtSrttVTtWne73CHAzHshQWzP3SnEmOqltI=;
- b=VEj69mDf30FVk2xGxnCP5ZmGyT0+rzW2pBvRnVMl4ARKC0HWYMHavQbHQTIyOvECslgX
- vybC0yT8E+A4LOnCS+Xb/s71ur5JuFacJbtayCyTZOnuGZubjG37R+3tVGp5zE2B9/+4
- BhcKWQKVcs7bUqktzSyjXLf8DCfnkE0Kwp3R4ycotKtA38gsVxWFHfHS9aq6o0TZByp8
- hnsBJQFig+cBg8Flz5vyFfy/pGGuubhmJIbQSbMIpCSfnK0umbRg6tzyoA4aHDtx4Rde
- kX7LQrdLJMvRCzQBhnYseXf8V4kAZNm/ANhS/Iu7nFZEmjFkr0qaUqEuDERXtWKT/R5Y wA== 
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpsm0899u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Oct 2023 22:40:05 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39CLDsfm001239; Thu, 12 Oct 2023 22:40:04 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkkvkagef-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Oct 2023 22:40:04 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39CMe3MJ16843506
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Oct 2023 22:40:03 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BCE9A58062;
- Thu, 12 Oct 2023 22:40:03 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D96658052;
- Thu, 12 Oct 2023 22:40:03 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 12 Oct 2023 22:40:03 +0000 (GMT)
-Message-ID: <ff880c8ff240fc37e6af1f00e33fb7a60125ce45.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] misc/pca9552: Let external devices set pca9552 inputs
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: Joel Stanley <joel@jms.id.au>, =?ISO-8859-1?Q?C=E9dric?= Le Goater
- <clg@kaod.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, andrew@codeconstruct.com.au
-Date: Thu, 12 Oct 2023 17:40:03 -0500
-In-Reply-To: <CACPK8XfLSBGJvV340SN3V442YgRNS3rHXSDGFeGAyx5r1wE-9A@mail.gmail.com>
-References: <20231005204129.3522685-1-milesg@linux.vnet.ibm.com>
- <CACPK8XfLSBGJvV340SN3V442YgRNS3rHXSDGFeGAyx5r1wE-9A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5i19c-eRuKwABkGvnaNMFETBybMNA6j6
-X-Proofpoint-ORIG-GUID: 5i19c-eRuKwABkGvnaNMFETBybMNA6j6
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qr5wf-0001B9-ES
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 20:22:25 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qr5wX-00045o-NU
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 20:22:25 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-53db3811d8fso3124636a12.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 17:22:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697156535; x=1697761335; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oJ+Lq7d4/V20CFIk9TP2pjSOSkl2wPJHhlvC0QFCxXE=;
+ b=mHEHm+zKE2UePFl5fKBaetZXeFnwI/Wj3Fd+29h7v5LgpAsV4rEWspk/pYEYk6fTp5
+ O5mCMuqqQ5rG3baW5ZbmjhNUrpygAU4ebaTlz+/Y6E2vYsGUNw1KwhjTCg0cJaUwZpFp
+ hWwfc46zVHXXOLy4HaosVhoP5G4G6mwOR5l6CKcp2LNiXfxPZuIymFL/RheRXs8bnqBM
+ DSaXdyvT840j1uqCtWm4K8JPuCS7hZ5SDHE1UlAPfC8NwRIYrzO4oXkc/JF44VZTovVy
+ OtLJ4miYdFb7c0pAFz6toVWPhGgkSsQxNH5A2OgJ+rrk4kB49JHUp4qLkYudrX/VOBQg
+ Pabg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697156535; x=1697761335;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oJ+Lq7d4/V20CFIk9TP2pjSOSkl2wPJHhlvC0QFCxXE=;
+ b=kIap/ijidUIf1ZOa/338CCqLBU7/7Drf7feTlqBhpi7tFO6lLd0+7s4W3BLQ52sXdL
+ symXXxmvy0wq5I0g4UfXVPJuHi0jrmpSkzZ2lp/xZ5MpgdDUYaVQ3BWxCfeKewWV9whA
+ /Jrrs0B969zgFZDPE5hBPD0UOOUWbxbDJ8n8fLNxdovqxlvlGAA959CY5STsVugNDuYh
+ H1ERbVCSdLg+yyde0NfJhLRFc3qTh3ZyqVbQe2kpXPftTHVGZBPmBlzOBBhY9LGuSlqp
+ a7Wl5SOougJz0Vyi7r6jeF/ia/WPd7ycLT5vTwOF31J+mXoDfplgj8XlN+19Ndr73vmR
+ LDEA==
+X-Gm-Message-State: AOJu0Ywq8abwSOG+USJ4klXHr7NhwuWWx5Zol91mFiQDByc3VCykagbV
+ XjLV2XJ3bJxl4IPAYn2OmcU=
+X-Google-Smtp-Source: AGHT+IGAOdx5ZbqaF324eOvp67BxvqqBrVS6GijYh9+T6/rAKPutNqXBZ8Ggprj66kCAf3/wuas19w==
+X-Received: by 2002:a05:6402:1a33:b0:522:582c:f427 with SMTP id
+ be19-20020a0564021a3300b00522582cf427mr21567367edb.14.1697156535036; 
+ Thu, 12 Oct 2023 17:22:15 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-089-014-105-013.89.14.pool.telefonica.de.
+ [89.14.105.13]) by smtp.gmail.com with ESMTPSA id
+ u5-20020aa7d545000000b00534e791296bsm10763725edr.37.2023.10.12.17.22.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Oct 2023 17:22:14 -0700 (PDT)
+Date: Thu, 12 Oct 2023 18:13:05 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: Chuck Zmudzinski <brchuckz@aol.com>, qemu-devel@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Aurelien Jarno <aurelien@aurel32.net>, 
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
+ Jason Andryuk <jandryuk@gmail.com>
+Subject: Re: [PATCH v8 00/29] Consolidate PIIX south bridges
+In-Reply-To: <20231011161742-mutt-send-email-mst@kernel.org>
+References: <20231007123843.127151-1-shentey@gmail.com>
+ <cf6a2f47-0130-4ac5-be1d-23aef2f3e87c@aol.com>
+ <19E0EB2A-83F8-40A1-8A9E-FED0DACE2901@gmail.com>
+ <20231011161742-mutt-send-email-mst@kernel.org>
+Message-ID: <22C16AB6-4938-44BB-B4E0-FEC8C75028C0@gmail.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-12_14,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015
- priorityscore=1501 spamscore=0 impostorscore=0 lowpriorityscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310120190
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,191 +102,277 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-10-10 at 23:02 +1030, Joel Stanley wrote:
-> On Fri, 6 Oct 2023 at 07:23, Glenn Miles <milesg@linux.vnet.ibm.com>
-> wrote:
-> > Allow external devices to drive pca9552 input pins by adding
-> > input GPIO's to the model.  This allows a device to connect
-> > its output GPIO's to the pca9552 input GPIO's.
-> > 
-> > In order for an external device to set the state of a pca9552
-> > pin, the pin must first be configured for high impedance (LED
-> > is off).  If the pca9552 pin is configured to drive the pin low
-> > (LED is on), then external input will be ignored.
-> 
-> Does this let us use qom-set from the monitor, and have the guest see
-> the state change?
 
-Yes, as long as no other device is attached to the input gpio of the
-device, it will behave the same as it did before this change.  The
-behavior of the device only changes when an external device attaches
-its output gpio to one of the pca9552's input gpio's and drives a
-low voltage.  In that case, regardless of what is written to the LS0-
-LS3 registers, the INPUT* bit for that pin will read as '0'.  This is
-because (physically) pca9552 devices don't actually drive the voltage
-high.  Instead, they set the output to "high impedance" and allow the
-pin voltage to go wherever some external component (usually a pullup
-resistor) takes it.  
 
-> 
-> An example in the commit message, or even better would be a test.
-> 
+Am 11=2E Oktober 2023 20:18:00 UTC schrieb "Michael S=2E Tsirkin" <mst@red=
+hat=2Ecom>:
+>On Wed, Oct 11, 2023 at 06:57:07PM +0000, Bernhard Beschow wrote:
+>>=20
+>>=20
+>> Am 8=2E Oktober 2023 17:56:48 UTC schrieb Chuck Zmudzinski <brchuckz@ao=
+l=2Ecom>:
+>> >On 10/7/23 8:38 AM, Bernhard Beschow wrote:
+>> >> This series consolidates the implementations of the PIIX3 and PIIX4 =
+south
+>> >> bridges and makes PIIX4 usable in the PC machine via an experimental=
+ command
+>> >> line parameter=2E The motivation is to resolve duplicate code betwee=
+n the device
+>> >> models as well as resolving the "Frankenstein" PIIX4-PM problem in P=
+IIX3
+>> >> discussed on this list before=2E
+>> >>=20
+>> >> The series is structured as follows:
+>> >>=20
+>> >> Patches 1-8 are preparational patches necessary for moving all sub d=
+evices into
+>> >> PIIX3, like was done for PIIX4=2E In isolation these patches can als=
+o be seen as
+>> >> general x86 machine cleanup sub series which has merit in its own ri=
+ght -- and
+>> >> could be applied to master if the remainder of the series takes long=
+er to
+>> >> review=2E
+>> >>=20
+>> >> Patches 9-13 move PIIX3 sub devices into one device model like alrea=
+dy
+>> >> done for PIIX4=2E Together with the previous sub series these patche=
+s form a
+>> >> bigger sub series which also has merit in its own right, and could b=
+e applied
+>> >> independent of the remainder of this series as well=2E
+>> >>=20
+>> >> The remainder of this series consolidates the PIIX3 and PIIX4 device=
+ models=2E
+>> >> The culmination point is the last commit which makes PIIX4 usable in=
+ the PC
+>> >> machine=2E
+>> >>=20
+>> >> One challenge was dealing with optional devices where Peter already =
+gave advice
+>> >> in [1] which this series implements=2E Although PIIX4 is now usable =
+in the PC
+>> >> machine it still has a different binary layout in its VM state=2E
+>> >>=20
+>> >> Testing done:
+>> >> * `make check`
+>> >> * `qemu-system-x86_64 -M pc -m 2G -accel kvm -cdrom
+>> >>      manjaro-kde-21=2E3=2E2-220704-linux515=2Eiso`
+>> >> * `qemu-system-x86_64 -M pc,x-south-bridge=3Dpiix4-isa -m 2G -accel =
+kvm -cdrom
+>> >>      manjaro-kde-21=2E3=2E2-220704-linux515=2Eiso`
+>> >> * `qemu-system-x86_64 -M q35 -m 2G -accel kvm -cdrom
+>> >>      manjaro-kde-21=2E3=2E2-220704-linux515=2Eiso`
+>> >> * `qemu-system-mips64el -M malta -cpu 5KEc -m 1G -kernel kernel -ini=
+trd initrd
+>> >>      -append "root=3DLABEL=3Drootfs console=3DttyS0" -drive file=3Di=
+mage=2Eqcow2`
+>> >> * `qemu-system-mips64el -M malta -bios yamon-02=2E22=2Ebin`
+>> >> * Run HVM domU guest under Xen with manjaro-kde-21=2E3=2E2-220704-li=
+nux515=2Eiso image
+>> >
+>> >I did some preliminary tests of this patch series on some Xen HVM domU=
+ guests I have
+>> >that use the xenfv / pc machine and depend on the current PIIX3 implem=
+entation=2E
+>> >So far there are no regressions in my tests=2E I use libxl or libvirt =
+to manage the
+>> >Xen guests=2E
+>>=20
+>> Thanks, nice to read!
+>>=20
+>> >
+>> >I have not (yet) tested the experimental option that makes PIIX4 useab=
+le in the xenfv / pc
+>> >machines=2E IIUC, that would require a patch to hvmloader/pci=2Ec in X=
+en tools so Xen's
+>> >hvmloader recognizes the PIIX4 pci device id [1], and a patch to libxl=
+ so libxl can
+>> >optionally launch qemu with the new experimental option enabled=2E
+>> >
+>> >Since this patch series affects the xenfv machine, I added the Xen x86=
+ maintainers to
+>> >the Cc list and Jason Andryuk who is credited with discovering the nec=
+essary patch to
+>> >hvmloader/pci=2Ec=2E
+>>=20
+>> Good idea=2E In the next iteration, I'll cc the respective email addres=
+ses from the MAINTAINERS file which hopefully reaches all relevant people=
+=2E
+>
+>there will be a next version then?
 
-I'm definitely open to providing a test.  Maybe the existing tests can
-be added to?  I'm not sure if that environment allows for hooking up
-some of the output gpio's of the pca9552 to some of the input gpios,
-but I can look into it.
+No, unless review comments will require it=2E
 
-My testing so far has been more of an integrated test that has an I2C
-master connected to an I2C bus with a couple of pca9552 devices hanging
-off of that, but it's very specific to the powernv platform.
-
- 
-> Some other comments below.
-> 
-> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > ---
-> > Based-on: <20230927203221.3286895-1-milesg@linux.vnet.ibm.com>
-> > ([PATCH] misc/pca9552: Fix inverted input status)
-> >  hw/misc/pca9552.c         | 39 ++++++++++++++++++++++++++++++++++-
-> > ----
-> >  include/hw/misc/pca9552.h |  3 ++-
-> >  2 files changed, 36 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-> > index ad811fb249..f28b5ecd7e 100644
-> > --- a/hw/misc/pca9552.c
-> > +++ b/hw/misc/pca9552.c
-> > @@ -113,16 +113,22 @@ static void
-> > pca955x_update_pin_input(PCA955xState *s)
-> >          switch (config) {
-> >          case PCA9552_LED_ON:
-> >              /* Pin is set to 0V to turn on LED */
-> > -            qemu_set_irq(s->gpio[i], 0);
-> > +            qemu_set_irq(s->gpio_out[i], 0);
-> >              s->regs[input_reg] &= ~(1 << input_shift);
-> >              break;
-> >          case PCA9552_LED_OFF:
-> >              /*
-> >               * Pin is set to Hi-Z to turn off LED and
-> > -             * pullup sets it to a logical 1.
-> > +             * pullup sets it to a logical 1 unless
-> > +             * external device drives it low.
-> >               */
-> > -            qemu_set_irq(s->gpio[i], 1);
-> > -            s->regs[input_reg] |= 1 << input_shift;
-> > +            if (s->ext_state[i] == 0) {
-> > +                qemu_set_irq(s->gpio_out[i], 0);
-> > +                s->regs[input_reg] &= ~(1 << input_shift);
-> > +            } else {
-> > +                qemu_set_irq(s->gpio_out[i], 1);
-> > +                s->regs[input_reg] |= 1 << input_shift;
-> > +            }
-> >              break;
-> >          case PCA9552_LED_PWM0:
-> >          case PCA9552_LED_PWM1:
-> > @@ -337,6 +343,7 @@ static const VMStateDescription pca9552_vmstate
-> > = {
-> >          VMSTATE_UINT8(len, PCA955xState),
-> >          VMSTATE_UINT8(pointer, PCA955xState),
-> >          VMSTATE_UINT8_ARRAY(regs, PCA955xState, PCA955X_NR_REGS),
-> > +        VMSTATE_UINT8_ARRAY(ext_state, PCA955xState,
-> > PCA955X_PIN_COUNT_MAX),
-> >          VMSTATE_I2C_SLAVE(i2c, PCA955xState),
-> >          VMSTATE_END_OF_LIST()
-> >      }
-> > @@ -355,6 +362,7 @@ static void pca9552_reset(DeviceState *dev)
-> >      s->regs[PCA9552_LS2] = 0x55;
-> >      s->regs[PCA9552_LS3] = 0x55;
-> > 
-> > +    memset(s->ext_state, 1, PCA955X_PIN_COUNT_MAX);
-> >      pca955x_update_pin_input(s);
-> > 
-> >      s->pointer = 0xFF;
-> > @@ -377,6 +385,26 @@ static void pca955x_initfn(Object *obj)
-> >      }
-> >  }
-> > 
-> > +static void pca955x_set_ext_state(PCA955xState *s, int pin, int
-> > level)
-> > +{
-> > +    if (s->ext_state[pin] != level) {
-> > +        uint16_t pins_status = pca955x_pins_get_status(s);
-> > +        s->ext_state[pin] = level;
-> > +        pca955x_update_pin_input(s);
-> > +        pca955x_display_pins_status(s, pins_status);
-> > +    }
-> > +}
-> > +
-> > +static void pca955x_gpio_in_handler(void *opaque, int pin, int
-> > level)
-> > +{
-> > +
-> > +    PCA955xState *s = PCA955X(opaque);
-> > +    PCA955xClass *k = PCA955X_GET_CLASS(s);
-> > +
-> > +    assert((pin >= 0) && (pin < k->pin_count));
-> > +    pca955x_set_ext_state(s, pin, level);
-> > +}
-> > +
-> >  static void pca955x_realize(DeviceState *dev, Error **errp)
-> >  {
-> >      PCA955xClass *k = PCA955X_GET_CLASS(dev);
-> > @@ -386,7 +414,8 @@ static void pca955x_realize(DeviceState *dev,
-> > Error **errp)
-> >          s->description = g_strdup("pca-unspecified");
-> >      }
-> > 
-> > -    qdev_init_gpio_out(dev, s->gpio, k->pin_count);
-> > +    qdev_init_gpio_out(dev, s->gpio_out, k->pin_count);
-> > +    qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
-> >  }
-> > 
-> >  static Property pca955x_properties[] = {
-> > diff --git a/include/hw/misc/pca9552.h b/include/hw/misc/pca9552.h
-> > index b6f4e264fe..c36525f0c3 100644
-> > --- a/include/hw/misc/pca9552.h
-> > +++ b/include/hw/misc/pca9552.h
-> > @@ -30,7 +30,8 @@ struct PCA955xState {
-> >      uint8_t pointer;
-> > 
-> >      uint8_t regs[PCA955X_NR_REGS];
-> > -    qemu_irq gpio[PCA955X_PIN_COUNT_MAX];
-> > +    qemu_irq gpio_out[PCA955X_PIN_COUNT_MAX];
-> 
-> I wondered if the renaming of gpio to gpio_out could be a separate
-> patch, but once I'd read the entire patch it made sense, so don't
-> bother.
-> 
-> I think Cédric has some magic for sorting the header file changes at
-> the start of the diff output. Here it is:
-> 
-> https://gitlab.com/qemu-project/qemu/-/blob/master/scripts/git.orderfile?ref_type=heads
-> 
-> We should add that to the tips and tricks part of
-> docs/devel/submitting-a-patch.rst
-> 
-
-Ok, I'll try to remember this for future work.  Thanks!
-
-> > +    uint8_t ext_state[PCA955X_PIN_COUNT_MAX];
-> 
-> State is 0 or 1, representing driving the pin low, or high impedance?
-> I think some #defines or enums would make the states clearer.
-> 
-
-Ok, I can certainly do that.
-
-Thanks for the review!
-
-Glenn
-
-> >      char *description; /* For debugging purpose only */
-> >  };
-> > 
-> > --
-> > 2.31.1
-> > 
-> > 
-
+>
+>> Best regards,
+>> Bernhard
+>>=20
+>> >
+>> >[1] https://lore=2Ekernel=2Eorg/qemu-devel/B0FF78F4-1193-495B-919C-84A=
+1FF8ADF12@gmail=2Ecom/
+>> >
+>> >>=20
+>> >> v8:
+>> >> - Wire ISA interrupts before device realization
+>> >> - Optionally allow a PIC and PIT to be instantiated in PIIX3 for com=
+patiblity
+>> >>     with PIIX4
+>> >> - Touch ICH9 LPC as far as required for PIIX consolidation
+>> >> - Make PIIX4 usable in the PC machine via an experimental option
+>> >> - Review and rework history, touching every commit and drop R-b tags=
+ when
+>> >>     changes became too large
+>> >>=20
+>> >> v7:
+>> >> - Rebase onto master
+>> >> - Avoid the PIC proxy (Phil)
+>> >>   The motivation for the PIC proxy was to allow for wiring up ISA in=
+terrupts in
+>> >>   the south bridges=2E ISA interrupt wiring requires the GPIO lines =
+to be
+>> >>   populated already but pc_piix assigned the interrupts only after r=
+ealizing
+>> >>   PIIX3=2E By shifting interrupt assignment before realizing, the IS=
+A interrupts
+>> >>   are already populated during PIIX3's realize phase where the ISA i=
+nterrupts
+>> >>   are wired up=2E
+>> >> - New patches:
+>> >>   * hw/isa/piix4: Reuse struct PIIXState from PIIX3
+>> >>   * hw/isa/piix4: Create the "intr" property during init() already
+>> >> - Patches with substantial changes (Reviewed-by dropped):
+>> >>   * hw/isa/piix3: Move ISA bus IRQ assignments into host device
+>> >>=20
+>> >> v6:
+>> >> - Fix some comments about TYPE_ISA_PIC (Mark) =2E=2E=2E and use it c=
+onsistently
+>> >>   within the patch series=2E
+>> >> - Incorporate series "[PATCH v2 0/3] Decouple INTx-to-LNKx routing f=
+rom south
+>> >>   bridges" [2] for maintainer convenience=2E
+>> >> - Merge v5's 'hw/i386/pc_piix: Associate pci_map_irq_fn as soon as P=
+CI bus is
+>> >>   created' into
+>> >>   https://lists=2Enongnu=2Eorg/archive/html/qemu-devel/2022-11/msg03=
+312=2Ehtml =2E Do
+>> >>   similar for Malta=2E
+>> >> - Rebase onto latest master (d6271b657286 "Merge tag 'for_upstream' =
+of
+>> >>   https://git=2Ekernel=2Eorg/pub/scm/virt/kvm/mst/qemu into staging"=
+)
+>> >>=20
+>> >> v5:
+>> >> - Pick up Reviewed-by tags from https://lists=2Enongnu=2Eorg/archive=
+/html/qemu-devel/2023-01/msg00116=2Ehtml
+>> >> - Add patch to make usage of the isa_pic global more type-safe
+>> >> - Re-introduce isa-pic as PIC specific proxy (Mark)
+>> >>=20
+>> >> v4:
+>> >> - Rebase onto "[PATCH v2 0/3] Decouple INTx-to-LNKx routing from sou=
+th bridges"
+>> >>   since it is already queued via mips-next=2E This eliminates patche=
+s
+>> >>   'hw/isa/piix3: Prefix pci_slot_get_pirq() with "piix3_"' and 'hw/i=
+sa/piix4:
+>> >>   Prefix pci_slot_get_pirq() with "piix4_"'=2E
+>> >> - Squash 'hw/isa/piix: Drop the "3" from the PIIX base class' into
+>> >>   'hw/isa/piix3: Rename typedef PIIX3State to PIIXState'=2E I origin=
+ally only
+>> >>   split these patches since I wasn't sure whether renaming a type wa=
+s allowed=2E
+>> >> - Add new patch 'hw/i386/pc_piix: Associate pci_map_irq_fn as soon a=
+s PCI bus is
+>> >>   created' for forther cleanup of INTx-to-LNKx route decoupling=2E
+>> >>=20
+>> >> v3:
+>> >> - Introduce one TYPE_ICH9_USB_UHCI(fn) rather than several TYPE_ICH9=
+_USB_UHCIx
+>> >>   (Philippe)
+>> >> - Make proxy PIC generic (Philippe)
+>> >> - Track Malta's PIIX dependencies through KConfig
+>> >> - Rebase onto Philippe's 'hw/isa/piix4: Remove MIPS Malta specific b=
+its' series [3]
+>> >> - Also rebase onto latest master to resolve merge conflicts=2E This =
+required
+>> >>   copying Philippe's series as first three patches - please ignore=
+=2E
+>> >>=20
+>> >> v2:
+>> >> - Introduce TYPE_ defines for IDE and USB device models (Mark)
+>> >> - Omit unexporting of PIIXState (Mark)
+>> >> - Improve commit message of patch 5 to mention reset triggering thro=
+ugh PCI
+>> >>   configuration space (Mark)
+>> >> - Move reviewed patches w/o dependencies to the bottom of the series=
+ for early
+>> >>   upstreaming
+>> >>=20
+>> >> [1] https://lists=2Enongnu=2Eorg/archive/html/qemu-devel/2022-07/msg=
+02348=2Ehtml
+>> >> [2] https://lists=2Enongnu=2Eorg/archive/html/qemu-devel/2022-11/msg=
+03310=2Ehtml
+>> >> [3] https://lists=2Enongnu=2Eorg/archive/html/qemu-devel/2022-10/msg=
+05367=2Ehtml
+>> >>=20
+>> >> Bernhard Beschow (29):
+>> >>   hw/i386/pc: Merge two if statements into one
+>> >>   hw/i386/pc_piix: Allow for setting properties before realizing PII=
+X3
+>> >>     south bridge
+>> >>   hw/i386/pc_piix: Assign PIIX3's ISA interrupts before its realize(=
+)
+>> >>   hw/isa/piix3: Resolve redundant PIIX_NUM_PIC_IRQS
+>> >>   hw/i386/pc_piix: Wire PIIX3's ISA interrupts by new "isa-irqs"
+>> >>     property
+>> >>   hw/i386/pc_piix: Remove redundant "piix3" variable
+>> >>   hw/isa/piix3: Rename "pic" attribute to "isa_irqs_in"
+>> >>   hw/i386/pc_q35: Wire ICH9 LPC function's interrupts before its
+>> >>     realize()
+>> >>   hw/isa/piix3: Wire PIC IRQs to ISA bus in host device
+>> >>   hw/i386/pc: Wire RTC ISA IRQs in south bridges
+>> >>   hw/isa/piix3: Create IDE controller in host device
+>> >>   hw/isa/piix3: Create USB controller in host device
+>> >>   hw/isa/piix3: Create power management controller in host device
+>> >>   hw/isa/piix3: Drop the "3" from PIIX base class name
+>> >>   hw/isa/piix4: Remove unused inbound ISA interrupt lines
+>> >>   hw/isa/piix4: Rename "isa" attribute to "isa_irqs_in"
+>> >>   hw/isa/piix4: Rename reset control operations to match PIIX3
+>> >>   hw/isa/piix4: Reuse struct PIIXState from PIIX3
+>> >>   hw/isa/piix3: Merge hw/isa/piix4=2Ec
+>> >>   hw/isa/piix: Allow for optional PIC creation in PIIX3
+>> >>   hw/isa/piix: Allow for optional PIT creation in PIIX3
+>> >>   hw/isa/piix: Harmonize names of reset control memory regions
+>> >>   hw/isa/piix: Share PIIX3's base class with PIIX4
+>> >>   hw/isa/piix: Reuse PIIX3 base class' realize method in PIIX4
+>> >>   hw/isa/piix: Rename functions to be shared for PCI interrupt
+>> >>     triggering
+>> >>   hw/isa/piix: Reuse PIIX3's PCI interrupt triggering in PIIX4
+>> >>   hw/isa/piix: Resolve duplicate code regarding PCI interrupt wiring
+>> >>   hw/isa/piix: Implement multi-process QEMU support also for PIIX4
+>> >>   hw/i386/pc_piix: Make PIIX4 south bridge usable in PC machine
+>> >>=20
+>> >>  MAINTAINERS                          |   6 +-
+>> >>  docs/system/target-i386-desc=2Erst=2Einc |   8 +
+>> >>  include/hw/i386/pc=2Eh                 |   2 +
+>> >>  include/hw/southbridge/piix=2Eh        |  28 ++-
+>> >>  hw/i386/pc=2Ec                         |  13 +-
+>> >>  hw/i386/pc_piix=2Ec                    | 125 ++++++++---
+>> >>  hw/i386/pc_q35=2Ec                     |  14 +-
+>> >>  hw/isa/lpc_ich9=2Ec                    |   9 +-
+>> >>  hw/isa/{piix3=2Ec =3D> piix=2Ec}           | 281 ++++++++++++++++++=
+-------
+>> >>  hw/isa/piix4=2Ec                       | 302 ----------------------=
+-----
+>> >>  hw/mips/malta=2Ec                      |   5 +-
+>> >>  hw/i386/Kconfig                      |   3 +-
+>> >>  hw/isa/Kconfig                       |   8 +-
+>> >>  hw/isa/meson=2Ebuild                   |   3 +-
+>> >>  hw/mips/Kconfig                      |   2 +-
+>> >>  15 files changed, 358 insertions(+), 451 deletions(-)
+>> >>  rename hw/isa/{piix3=2Ec =3D> piix=2Ec} (52%)
+>> >>  delete mode 100644 hw/isa/piix4=2Ec
+>> >>=20
+>> >
+>
 
