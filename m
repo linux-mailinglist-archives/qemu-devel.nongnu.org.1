@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE1C7C6F8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 15:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF727C6F90
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 15:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqvzE-0000AL-E2; Thu, 12 Oct 2023 09:44:24 -0400
+	id 1qqvzF-0000Bm-CG; Thu, 12 Oct 2023 09:44:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqvyj-0008Pi-TA
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:43:54 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqvyl-0008R0-8g
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:43:57 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqvyi-0003Te-52
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:43:53 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qqvyj-0003Tq-33
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 09:43:54 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id D81BC21857;
- Thu, 12 Oct 2023 13:43:48 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 8D5911F88E;
+ Thu, 12 Oct 2023 13:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697118228; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1697118230; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=X4reKZqkDp4jOWuqiDlkwx0OZeywEl8eez9VlBmkeoo=;
- b=q9x4g/VF5HKY2E7gsCbimyOVwW8KMHVSvop+f6IpadFw8RiulxxLhX2tcytkN/muOzCR4L
- R6pZo42sfAIylndLBiB2CxuOkqPWXEATLHUvDnwD5aHSvUvSHZ+7YczTt9wXcAu9HczEvQ
- qUuiN4vCvcHQIt9o4R0wgOECLvl8yOY=
+ bh=JdKi/AKt4d0+MduaGijwk50/kvp6fptXM6PBPW+ZtHE=;
+ b=NSovvzAIqf1UaVyKoesDlJydj/ijcKAodt0kIE4VKQSL/kOeSNa/fnEr+6FCyPyxx5D6d/
+ In78O9GCcFg+lv/Hum+qYnlb3UKIEyKAps6OqAy6iEUIyqIo8na43mQ1BgU4dmCToDwU7e
+ DHkFJbNsGibAD2FBVEZt3tejgxbPuz0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697118228;
+ s=susede2_ed25519; t=1697118230;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=X4reKZqkDp4jOWuqiDlkwx0OZeywEl8eez9VlBmkeoo=;
- b=TaUnvxzdshWVG1XmIhMCPSFMGyJJAn0Vot0hA/CiHt22T8AP60fBwRTYsap8z2dxJZMFpq
- OQFnN5XRKDxN2NDA==
+ bh=JdKi/AKt4d0+MduaGijwk50/kvp6fptXM6PBPW+ZtHE=;
+ b=UY34hh485iAous2JebVhZ0+gSXojQy22OrkN7Q728RWCMN7cDyEhiJoHVxAU9Q58IQD3z5
+ IakRyhmXiRn53iDw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 96172139ED;
- Thu, 12 Oct 2023 13:43:47 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4BC4A13A87;
+ Thu, 12 Oct 2023 13:43:49 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id uJY+GBP4J2UQfAAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 12 Oct 2023 13:43:47 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id aK8yBhX4J2UQfAAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 12 Oct 2023 13:43:49 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH 1/3] migration/multifd: Remove direct "socket" references
-Date: Thu, 12 Oct 2023 10:43:41 -0300
-Message-Id: <20231012134343.23757-2-farosas@suse.de>
+Subject: [PATCH 2/3] migration/multifd: Unify multifd_send_thread error paths
+Date: Thu, 12 Oct 2023 10:43:42 -0300
+Message-Id: <20231012134343.23757-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231012134343.23757-1-farosas@suse.de>
 References: <20231012134343.23757-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
+Authentication-Results: smtp-out2.suse.de;
 	none
-X-Spam-Score: 0.90
-X-Spamd-Result: default: False [0.90 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: 0.89
+X-Spamd-Result: default: False [0.89 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  RCPT_COUNT_THREE(0.00)[4]; TO_DN_SOME(0.00)[];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
@@ -74,9 +74,9 @@ X-Spamd-Result: default: False [0.90 / 50.00]; ARC_NA(0.00)[];
  NEURAL_HAM_SHORT(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
  RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-0.00)[25.35%]
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ BAYES_HAM(-0.01)[50.63%]
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -99,78 +99,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're about to enable support for other transports in multifd, so
-remove direct references to sockets.
+The preferred usage of the Error type is to always set both the return
+code and the error when a failure happens. As all code called from the
+send thread follows this pattern, we'll always have the return code
+and the error set at the same time.
+
+Aside from the convention, in this piece of code this must be the
+case, otherwise the if (ret != 0) would be exiting the thread without
+calling multifd_send_terminate_threads() which is incorrect.
+
+Unify both paths to make it clear that both are taken when there's an
+error.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ migration/multifd.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 0f6b203877..a7c7a947e3 100644
+index a7c7a947e3..bc3994c567 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -510,6 +510,11 @@ static void multifd_send_terminate_threads(Error *err)
-     }
- }
- 
-+static int multifd_send_channel_destroy(QIOChannel *send)
-+{
-+    return socket_send_channel_destroy(send);
-+}
-+
- void multifd_save_cleanup(void)
- {
-     int i;
-@@ -532,7 +537,7 @@ void multifd_save_cleanup(void)
-         if (p->registered_yank) {
-             migration_ioc_unregister_yank(p->c);
-         }
--        socket_send_channel_destroy(p->c);
-+        multifd_send_channel_destroy(p->c);
-         p->c = NULL;
-         qemu_mutex_destroy(&p->mutex);
-         qemu_sem_destroy(&p->sem);
-@@ -889,20 +894,25 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
- static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
- {
-     MultiFDSendParams *p = opaque;
--    QIOChannel *sioc = QIO_CHANNEL(qio_task_get_source(task));
-+    QIOChannel *ioc = QIO_CHANNEL(qio_task_get_source(task));
-     Error *local_err = NULL;
- 
-     trace_multifd_new_send_channel_async(p->id);
-     if (!qio_task_propagate_error(task, &local_err)) {
--        p->c = sioc;
-+        p->c = ioc;
-         qio_channel_set_delay(p->c, false);
-         p->running = true;
--        if (multifd_channel_connect(p, sioc, local_err)) {
-+        if (multifd_channel_connect(p, ioc, local_err)) {
-             return;
-         }
+@@ -752,19 +752,13 @@ static void *multifd_send_thread(void *opaque)
      }
  
--    multifd_new_send_channel_cleanup(p, sioc, local_err);
-+    multifd_new_send_channel_cleanup(p, ioc, local_err);
-+}
-+
-+static void multifd_new_send_channel_create(gpointer opaque)
-+{
-+    socket_send_channel_create(multifd_new_send_channel_async, opaque);
- }
- 
- int multifd_save_setup(Error **errp)
-@@ -951,7 +961,7 @@ int multifd_save_setup(Error **errp)
-             p->write_flags = 0;
-         }
- 
--        socket_send_channel_create(multifd_new_send_channel_async, p);
-+        multifd_new_send_channel_create(p);
+ out:
+-    if (local_err) {
++    if (ret) {
++        assert(local_err);
+         trace_multifd_send_error(p->id);
+         multifd_send_terminate_threads(local_err);
+-        error_free(local_err);
+-    }
+-
+-    /*
+-     * Error happen, I will exit, but I can't just leave, tell
+-     * who pay attention to me.
+-     */
+-    if (ret != 0) {
+         qemu_sem_post(&p->sem_sync);
+         qemu_sem_post(&multifd_send_state->channels_ready);
++        error_free(local_err);
      }
  
-     for (i = 0; i < thread_count; i++) {
+     qemu_mutex_lock(&p->mutex);
 -- 
 2.35.3
 
