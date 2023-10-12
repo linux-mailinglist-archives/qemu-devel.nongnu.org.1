@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52EF7C63C2
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6157C63EE
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 06:19:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqn3J-0001ET-Dj; Thu, 12 Oct 2023 00:12:02 -0400
+	id 1qqn3O-0001IU-G0; Thu, 12 Oct 2023 00:12:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn35-0000yr-91
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:11:49 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1qqn38-0000zG-Uq
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:11:51 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qqn33-0002Gn-Q7
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:11:47 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c9d3a21f7aso4608975ad.2
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:11:45 -0700 (PDT)
+ id 1qqn37-0002Jd-5P
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 00:11:50 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-584a761b301so424952a12.3
+ for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 21:11:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697083904; x=1697688704; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1697083907; x=1697688707; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X7BuIb9EJ21EUgeX86Kwp2vBql8jige8PXQT/rB4wCs=;
- b=AIJpRzzZ0o16Vnvo34No+Lzso736+25Wj9Nvsei9rqVC5JLA3bCrpZSgIHuxe9pf2N
- tDNcBdnbRmbd/gZY54nOrKRzzH/ZWXM4kq1v0oFL/gwENJJO0Kjpu3hWkKUpjyN2j7nL
- oy39H5hmDiG8lx+Q5Xjx46EuQyXKdA85fFf46hEloyt5gkHz42pVLwSn1l4LTfO/afKh
- wyiIZ6AEopfPPSj/GREeWlC5SsxjMtAjMwyYdREIe6md5M7JaXLgI3fFELuyCj/QTlSf
- 2EEQ386zE+QZSjsQ8Q8sypphrJ5H1yfzjSYkhs+lwBGQSBRuCcL3NHVL7jfsiWROQWkr
- GtmA==
+ bh=ZwwMzIi6RAAHdGdWRIXn2P9ObL5Rkf0mKhB7bpAY6gM=;
+ b=EcoWInzrx4GDKHSHGebzsgdKIGsZ/xpiFuyzxZVc5gouqiimM8280Xr5hcuEyBMuEi
+ jOXLo8l7wmnoezLjKCA34kIQRD+hYnxHtYiK+uKTOgGAMWeXwoLyur/MyKpJvoU+dzWd
+ 8NnffbgBjUaSTQnIbZIZbMxz6C8aJc2WCRxLAQmSlW+KYzdd/IFHToN1BigjnDu8WXBM
+ BtTlla1ItSREr2zjn4UblaDNYg4KjMnqzRzgOOTEAQkyX0dedwVazzlK3i8ICQB0ZjtE
+ vZH08WrmZBSVR1I2w9a3yCIJ34PogZzuehsBN78ZbBK6xk0zGZVOK/qgW/WdHmRDQ4Tr
+ 1YJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697083904; x=1697688704;
+ d=1e100.net; s=20230601; t=1697083907; x=1697688707;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X7BuIb9EJ21EUgeX86Kwp2vBql8jige8PXQT/rB4wCs=;
- b=F1RhnFP9Jwar0sdFu2dXuUocWx7negWR26VuihzKdQbH/Mcgb9qmFYZ2mzm7H1/SUL
- 21aWOJ7j2AGjnsGiyVEESDhSQoml7EFpfeOMip28h+Ld1axJ7hn9O8tGPqb3Or02bqGn
- g1xDyYMHsgaJzMcXBIUvzrhlRZUEuHPomLYeWA8YAPGeyME0pCJ2842mxrng4dPI38B8
- w2o+KS64H9KTnWZI9ul5dEjCa+lUyt9cFooyWwFSGz0JkLmvqrs4cUPIphfWykXaZJhC
- kdTmPF/jWFwtRQ5t0XJ8RSu8EbcczrX+O2hiDF9q2kkQLvM/1R3Hh3VWZ6FHShTLJkj4
- 9ipg==
-X-Gm-Message-State: AOJu0YzHQKTBwEgc9BWGYzF3BHztoqyqWh6e8qMZZjcczb+ShUuzX+48
- /2h96FE2EzyO70Co0k0TI818m+uPO8danQ==
-X-Google-Smtp-Source: AGHT+IFpgB9esFC0bbhkaaVbneEXO7WP9ZWTHlaGDyUhDrnk/vD7p0ZApheCm5KIEcXUCBV+0TxRlA==
-X-Received: by 2002:a17:902:f691:b0:1c6:1bf9:d88d with SMTP id
- l17-20020a170902f69100b001c61bf9d88dmr29806523plg.44.1697083903802; 
- Wed, 11 Oct 2023 21:11:43 -0700 (PDT)
+ bh=ZwwMzIi6RAAHdGdWRIXn2P9ObL5Rkf0mKhB7bpAY6gM=;
+ b=NaTZVSvmr1F1o0pq4hw2aOKP9AchrX1nu04UsTVhH4pGQtkMvzHDGfn9T8ypTZIdGS
+ SQpbwZZv3XOeuTq5Vdt5wlJMmJFpOfb3exXG6CSSGyo0kVD6An2W89E1Ls4QBx88QOZj
+ GNI8lQUOb8t3d4/NEmMRvRt4TPJd7HWTQBc+JHUuGOC6dWa6/1otsbGccp2ZwMpYQulH
+ 0YLRuEQG26BQZzgIbkZoR/2oyIu81C6KRclw9L0vPa5JXe9z2Dr0CLr++NPFbuW3PPtc
+ 2js2vQf9TnJDm0LW0H87JXEY6TSIaQdlm+mkhB8wauWbfqAbbodY/NM2g4e4qysfHJ2p
+ RPoA==
+X-Gm-Message-State: AOJu0Yy0Dn73WpkIyZ8BG+qsx0swP0tF0/h8fimG4JrtboOH5ZCkOg1i
+ 3JUZobO5DDA59YnKRZflyPC4fRZv2hLAiQ==
+X-Google-Smtp-Source: AGHT+IELMiqHLKN2gOPVq4bkwfn8w08m8F8FOq9m5G9b+Pxy8TuwigBL19ehn5RTCIlBIDFwtUFEkA==
+X-Received: by 2002:a05:6a20:8f0c:b0:13f:9cee:ff42 with SMTP id
+ b12-20020a056a208f0c00b0013f9ceeff42mr29752151pzk.41.1697083907407; 
+ Wed, 11 Oct 2023 21:11:47 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.11.40
+ ja20-20020a170902efd400b001c1f4edfb9csm726348plb.173.2023.10.11.21.11.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Oct 2023 21:11:43 -0700 (PDT)
+ Wed, 11 Oct 2023 21:11:46 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/54] avocado, risc-v: add tuxboot tests for 'max' CPU
-Date: Thu, 12 Oct 2023 14:10:08 +1000
-Message-ID: <20231012041051.2572507-12-alistair.francis@wdc.com>
+Subject: [PULL 12/54] target/riscv: deprecate the 'any' CPU type
+Date: Thu, 12 Oct 2023 14:10:09 +1000
+Message-ID: <20231012041051.2572507-13-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012041051.2572507-1-alistair.francis@wdc.com>
 References: <20231012041051.2572507-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,62 +101,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Add smoke tests to ensure that we'll not break the 'max' CPU type when
-adding new frozen/ratified RISC-V extensions.
+The 'any' CPU type was introduced in commit dc5bd18fa5725 ("RISC-V CPU
+Core Definition"), being around since the beginning. It's not an easy
+CPU to use: it's undocumented and its name doesn't tell users much about
+what the CPU is supposed to bring. 'git log' doesn't help us either in
+knowing what was the original design of this CPU type.
+
+The closest we have is a comment from Alistair [1] where he recalls from
+memory that the 'any' CPU is supposed to behave like the newly added
+'max' CPU. He also suggested that the 'any' CPU should be removed.
+
+The default CPUs are rv32 and rv64, so removing the 'any' CPU will have
+impact only on users that might have a script that uses '-cpu any'.
+And those users are better off using the default CPUs or the new 'max'
+CPU.
+
+We would love to just remove the code and be done with it, but one does
+not simply remove a feature in QEMU. We'll put the CPU in quarantine
+first, letting users know that we have the intent of removing it in the
+future.
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02891.html
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230912132423.268494-12-dbarboza@ventanamicro.com>
+Message-ID: <20230912132423.268494-13-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- tests/avocado/tuxrun_baselines.py | 32 +++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ docs/about/deprecated.rst | 12 ++++++++++++
+ target/riscv/cpu.c        |  5 +++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
-index e12250eabb..c99bea6c0b 100644
---- a/tests/avocado/tuxrun_baselines.py
-+++ b/tests/avocado/tuxrun_baselines.py
-@@ -501,6 +501,38 @@ def test_riscv64(self):
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 8b136320e2..5e3965a674 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -327,6 +327,18 @@ QEMU's ``vhost`` feature, which would eliminate the high latency costs under
+ which the 9p ``proxy`` backend currently suffers. However as of to date nobody
+ has indicated plans for such kind of reimplementation unfortunately.
  
-         self.common_tuxrun(csums=sums)
++RISC-V 'any' CPU type ``-cpu any`` (since 8.2)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++The 'any' CPU type was introduced back in 2018 and has been around since the
++initial RISC-V QEMU port. Its usage has always been unclear: users don't know
++what to expect from a CPU called 'any', and in fact the CPU does not do anything
++special that isn't already done by the default CPUs rv32/rv64.
++
++After the introduction of the 'max' CPU type, RISC-V now has a good coverage
++of generic CPUs: rv32 and rv64 as default CPUs and 'max' as a feature complete
++CPU for both 32 and 64 bit builds. Users are then discouraged to use the 'any'
++CPU type starting in 8.2.
  
-+    def test_riscv32_maxcpu(self):
-+        """
-+        :avocado: tags=arch:riscv32
-+        :avocado: tags=machine:virt
-+        :avocado: tags=cpu:max
-+        :avocado: tags=tuxboot:riscv32
-+        """
-+        sums = { "Image" :
-+                 "89599407d7334de629a40e7ad6503c73670359eb5f5ae9d686353a3d6deccbd5",
-+                 "fw_jump.elf" :
-+                 "f2ef28a0b77826f79d085d3e4aa686f1159b315eff9099a37046b18936676985",
-+                 "rootfs.ext4.zst" :
-+                 "7168d296d0283238ea73cd5a775b3dd608e55e04c7b92b76ecce31bb13108cba" }
+ Block device options
+ ''''''''''''''''''''
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index c9de7ddb4e..115c2d2fa4 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1522,6 +1522,11 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+     RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(dev);
+     Error *local_err = NULL;
+ 
++    if (object_dynamic_cast(OBJECT(dev), TYPE_RISCV_CPU_ANY) != NULL) {
++        warn_report("The 'any' CPU is deprecated and will be "
++                    "removed in the future.");
++    }
 +
-+        self.common_tuxrun(csums=sums)
-+
-+    def test_riscv64_maxcpu(self):
-+        """
-+        :avocado: tags=arch:riscv64
-+        :avocado: tags=machine:virt
-+        :avocado: tags=cpu:max
-+        :avocado: tags=tuxboot:riscv64
-+        """
-+        sums = { "Image" :
-+                 "cd634badc65e52fb63465ec99e309c0de0369f0841b7d9486f9729e119bac25e",
-+                 "fw_jump.elf" :
-+                 "6e3373abcab4305fe151b564a4c71110d833c21f2c0a1753b7935459e36aedcf",
-+                 "rootfs.ext4.zst" :
-+                 "b18e3a3bdf27be03da0b285e84cb71bf09eca071c3a087b42884b6982ed679eb" }
-+
-+        self.common_tuxrun(csums=sums)
-+
-     def test_s390(self):
-         """
-         :avocado: tags=arch:s390x
+     cpu_exec_realizefn(cs, &local_err);
+     if (local_err != NULL) {
+         error_propagate(errp, local_err);
 -- 
 2.41.0
 
