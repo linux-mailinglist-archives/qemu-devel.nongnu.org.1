@@ -2,131 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99EF47C6BA8
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 12:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5D47C6BE3
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 13:04:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqtMP-0004b9-4t; Thu, 12 Oct 2023 06:56:09 -0400
+	id 1qqtSe-0007ZI-Vl; Thu, 12 Oct 2023 07:02:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqtMN-0004aW-FT
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:56:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqtST-0007YN-1Z
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:02:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qqtMM-0006MS-4n
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 06:56:07 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qqtSP-0007z3-AH
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:02:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697108165;
+ s=mimecast20190719; t=1697108540;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=y4JVXY+rszzjibCG+bLuHKE9WCYUyjCUNiHVydRQHSw=;
- b=gHQqDKS4CxYJOsM7fBURv2u1LNk/a0tKbwKZ78wcdFmvKQUzynr43T3+c3F+GWWzU7EmPU
- 4KUUXog3h5T5hHKCHud/b7T4UVsfreHOw0HSYfuOwQgHIF4BnLp0+BlIytNtqJrsv4sUrC
- bv4tosEsBv7q6GeXJn45BQW4hItELJU=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-302-6xiCgu5HMV6PkTRC45yakQ-1; Thu, 12 Oct 2023 06:55:48 -0400
-X-MC-Unique: 6xiCgu5HMV6PkTRC45yakQ-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-41957273209so8061721cf.3
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 03:55:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697108148; x=1697712948;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y4JVXY+rszzjibCG+bLuHKE9WCYUyjCUNiHVydRQHSw=;
- b=PgaHu2TUfdi3v9ogB6HyVuoMnzUKeIl4c8M2+ba5FSGAMHcEzAW2FFDOcUTStTaHXS
- jxNF96i9aw1dQg6T5DgkPvWWCj+0JE/EaG7k2OAaPlz3eJyuVWO3XtE5G+RiJSdShKy8
- 5Itv/o9QCyG7qpLcXQn9Dd/0GgYvEUiEvHN7ZYcgqQuVHhHj72V542WPrNRNtQQJpFUg
- 6zDBnzvy28RNdy3E/kmDOoQFn0+3aIrKtqDXEs2CZCbxOnkdjYwmPshNgN/IzqDISxO7
- /bVU3rTYEc7Vo5G9vMUTr7epXEI2V1sVSIpFXD9cEY38N7r4bQ8tCo94MDHSIB/9EmXW
- r+2Q==
-X-Gm-Message-State: AOJu0YybyPrTFdWI06Bv//mi1EIMot+v2yeawaagM9P6ZbEz1QrGxH4u
- s6XJztYWu0z+unLFfkNTW1Pi/LBZfJ0Jk+Hoq2LwHXAbUsT0ZU53AWef/ZdmkLctED/qsv31Ivm
- Ysp2fwy6cTzyPX5M=
-X-Received: by 2002:ac8:5b4b:0:b0:419:529e:dcee with SMTP id
- n11-20020ac85b4b000000b00419529edceemr29135518qtw.50.1697108148471; 
- Thu, 12 Oct 2023 03:55:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGked1J0575+CllNmKI8tYiG0qvxrH+WV+ozqfOp9uFU2YJJNhxrtKFKAhkmNV6+M5lQTgAeQ==
-X-Received: by 2002:ac8:5b4b:0:b0:419:529e:dcee with SMTP id
- n11-20020ac85b4b000000b00419529edceemr29135506qtw.50.1697108148222; 
- Thu, 12 Oct 2023 03:55:48 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
- [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- h4-20020ac85044000000b004180fb5c6adsm6069315qtm.25.2023.10.12.03.55.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 03:55:47 -0700 (PDT)
-Message-ID: <1f6a6f32-80aa-4a7f-9e33-72d1ca9984dd@redhat.com>
-Date: Thu, 12 Oct 2023 12:55:45 +0200
+ in-reply-to:in-reply-to:references:references;
+ bh=Nq85o8rSo5MqDhbtkaqacqIeZwzfU038Bu64rcNXORo=;
+ b=IjLmNs2psXlm3kE3UMm0Zefx1YGO49SP+p4lW2eUjVq46z5GEldp1n0pWyOSUvqDkCUG/d
+ EvB0Chl7K3rL8O+TLKTtgou7an1MPNXS/HwwcGf8gO+dAzSNyF640IireZ2jUg6v/WUpsj
+ 2qkwWO4nt5gpmOqkzgjAoxvX9rlm5es=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-437-gAJacwDWPSeMWqqnmfyq_g-1; Thu, 12 Oct 2023 07:02:06 -0400
+X-MC-Unique: gAJacwDWPSeMWqqnmfyq_g-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8A983C0C893;
+ Thu, 12 Oct 2023 11:02:05 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 52E0E492B0C;
+ Thu, 12 Oct 2023 11:02:05 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5BDD721E6A21; Thu, 12 Oct 2023 13:02:04 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: qemu-devel@nongnu.org,  qemu-s390x@nongnu.org,  Eduardo Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,  Thomas
+ Huth <thuth@redhat.com>,  Eric Blake <eblake@redhat.com>,  Michael Roth
+ <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Cleber Rosa
+ <crosa@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,  Pierre Morel <pmorel@linux.ibm.com>
+Subject: Re: [PATCH v25 02/21] CPU topology: extend with s390 specifics
+References: <20231005160155.1945588-1-nsg@linux.ibm.com>
+ <20231005160155.1945588-3-nsg@linux.ibm.com>
+Date: Thu, 12 Oct 2023 13:02:04 +0200
+In-Reply-To: <20231005160155.1945588-3-nsg@linux.ibm.com> (Nina
+ Schoetterl-Glausch's message of "Thu, 5 Oct 2023 18:01:36 +0200")
+Message-ID: <87cyxkxfwz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm: Move raspberrypi-fw-defs.h to the include/hw/arm/
- folder
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-trivial@nongnu.org
-References: <20231012073458.860187-1-thuth@redhat.com>
- <788f54e1-3f2f-f24d-63cf-172efc605823@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <788f54e1-3f2f-f24d-63cf-172efc605823@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -143,25 +91,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/10/2023 10.22, Philippe Mathieu-Daudé wrote:
-> On 12/10/23 09:34, Thomas Huth wrote:
->> The file is obviously related to the raspberrypi machine, so
->> it should reside in hw/arm/ instead of hw/misc/.
-> 
-> Not quite. These are the VideoCore DSP definitions. Firmware
-> running on SoC including a VC can use this syscall-like interface.
-> 
-> FWIW there are a pair of QEMU VC implementations on GitHub.
-> 
-> Anyhow, preferably rewording the description,
+Nina Schoetterl-Glausch <nsg@linux.ibm.com> writes:
 
-So could you suggest a different wording instead? It's still "related to the 
-raspberypi machine", isn't it?
+> From: Pierre Morel <pmorel@linux.ibm.com>
+>
+> S390 adds two new SMP levels, drawers and books to the CPU
+> topology.
+> S390 CPUs have specific topology features like dedication and
+> entitlement. These indicate to the guest information on host
+> vCPU scheduling and help the guest make better scheduling decisions.
+>
+> Let us provide the SMP properties with books and drawers levels
+> and S390 CPU with dedication and entitlement,
 
-> Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This is vague.  Peeking at the patch, I can see it adds properties
+"socket-id", "book-id", "drawer-id", "dedicated", and "entitlement" to
+"s390x-cpu" objects.  Suggest to spell that out here.
 
-  Thanks,
-   Thomas
+> Add machine-common.json so we can later include it in
+> machine-target.json also.
+>
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> ---
+>  MAINTAINERS                         |  1 +
+>  qapi/machine-common.json            | 21 +++++++++++++
+>  qapi/machine.json                   | 17 +++++++++-
+>  qapi/qapi-schema.json               |  1 +
+>  include/hw/boards.h                 | 10 +++++-
+>  include/hw/qdev-properties-system.h |  4 +++
+>  target/s390x/cpu.h                  |  6 ++++
+>  hw/core/machine-smp.c               | 48 ++++++++++++++++++++++++-----
+>  hw/core/machine.c                   |  4 +++
+>  hw/core/qdev-properties-system.c    | 13 ++++++++
+>  hw/s390x/s390-virtio-ccw.c          |  4 +++
+>  softmmu/vl.c                        |  6 ++++
+>  target/s390x/cpu.c                  |  7 +++++
+>  qapi/meson.build                    |  1 +
+>  qemu-options.hx                     |  7 +++--
+>  15 files changed, 139 insertions(+), 11 deletions(-)
+>  create mode 100644 qapi/machine-common.json
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 81625f036b..3f6888aa86 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1775,6 +1775,7 @@ F: hw/core/null-machine.c
+>  F: hw/core/numa.c
+>  F: hw/cpu/cluster.c
+>  F: qapi/machine.json
+> +F: qapi/machine-common.json
+>  F: qapi/machine-target.json
+>  F: include/hw/boards.h
+>  F: include/hw/core/cpu.h
+> diff --git a/qapi/machine-common.json b/qapi/machine-common.json
+> new file mode 100644
+> index 0000000000..fa6bd71d12
+> --- /dev/null
+> +++ b/qapi/machine-common.json
+> @@ -0,0 +1,21 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
+> +# See the COPYING file in the top-level directory.
+> +
+> +##
+> +# = Machines S390 data types
+> +##
+> +
+> +##
+> +# @CpuS390Entitlement:
+> +#
+> +# An enumeration of CPU entitlements that can be assumed by a virtual
+> +# S390 CPU
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'enum': 'CpuS390Entitlement',
+> +  'prefix': 'S390_CPU_ENTITLEMENT',
+> +  'data': [ 'auto', 'low', 'medium', 'high' ] }
+> diff --git a/qapi/machine.json b/qapi/machine.json
+> index 40b835e28e..7aacd26af0 100644
+> --- a/qapi/machine.json
+> +++ b/qapi/machine.json
+> @@ -9,6 +9,7 @@
+>  ##
+>  
+>  { 'include': 'common.json' }
+> +{ 'include': 'machine-common.json' }
+>  
+>  ##
+>  # @SysEmuTarget:
+> @@ -904,7 +905,13 @@
+>  #
+>  # @node-id: NUMA node ID the CPU belongs to
+>  #
+> -# @socket-id: socket number within node/board the CPU belongs to
+> +# @drawer-id: drawer number within node/board the CPU belongs to
+> +#     (since 8.2)
+> +#
+> +# @book-id: book number within drawer/node/board the CPU belongs to
+> +#     (since 8.2)
+> +#
+> +# @socket-id: socket number within book/node/board the CPU belongs to
+>  #
+>  # @die-id: die number within socket the CPU belongs to (since 4.1)
+>  #
+   # @cluster-id: cluster number within die the CPU belongs to (since
+   #     7.1)
+   #
+   # @core-id: core number within cluster the CPU belongs to
+   #
+   # @thread-id: thread number within core the CPU belongs to
 
+So...
+
+* A thread can only be within a core
+
+* A core can only be within a cluster
+
+* A cluster can only be within a die
+
+* A die can only be within a socket
+
+* A socket can be within a book, node, or board
+
+* A book can be within a drawer, node, or board
+
+* A drawer can be within a node, or board
+
+* A node is a NUMA node
+
+* A board is what exactly?  can we have more than one?  is node always
+  within a/the board?
+
+Asked differently: what are the possible hierarchies of things?
+
+> @@ -923,6 +930,8 @@
+>  { 'struct': 'CpuInstanceProperties',
+>    # Keep these in sync with the properties device_add accepts
+>    'data': { '*node-id': 'int',
+> +            '*drawer-id': 'int',
+> +            '*book-id': 'int',
+>              '*socket-id': 'int',
+>              '*die-id': 'int',
+>              '*cluster-id': 'int',
+> @@ -1481,6 +1490,10 @@
+>  #
+>  # @cpus: number of virtual CPUs in the virtual machine
+>  #
+> +# @drawers: number of drawers in the CPU topology (since 8.2)
+> +#
+> +# @books: number of books in the CPU topology (since 8.2)
+> +#
+>  # @sockets: number of sockets in the CPU topology
+
+Total numer of sockets?  Or number of sockets per whatever thing
+contains sockets?
+
+Same question for @books, @drawers, and @cpus.
+
+The documentation is less than clear before your patch; your patch
+merely makes me look at it.  We may decide that addressing the lack of
+clarity is not your patch's job, and leave it for later.
+
+>  #
+>  # @dies: number of dies per socket in the CPU topology
+> @@ -1499,6 +1512,8 @@
+>  ##
+>  { 'struct': 'SMPConfiguration', 'data': {
+>       '*cpus': 'int',
+> +     '*drawers': 'int',
+> +     '*books': 'int',
+>       '*sockets': 'int',
+>       '*dies': 'int',
+>       '*clusters': 'int',
+> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+> index 6594afba31..c01ec335e6 100644
+> --- a/qapi/qapi-schema.json
+> +++ b/qapi/qapi-schema.json
+> @@ -66,6 +66,7 @@
+>  { 'include': 'introspect.json' }
+>  { 'include': 'qom.json' }
+>  { 'include': 'qdev.json' }
+> +{ 'include': 'machine-common.json' }
+>  { 'include': 'machine.json' }
+>  { 'include': 'machine-target.json' }
+>  { 'include': 'replay.json' }
+
+[...]
+
+> diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+> index df167493c3..74405beb51 100644
+> --- a/target/s390x/cpu.c
+> +++ b/target/s390x/cpu.c
+> @@ -31,6 +31,7 @@
+>  #include "qapi/qapi-types-machine.h"
+>  #include "sysemu/hw_accel.h"
+>  #include "hw/qdev-properties.h"
+> +#include "hw/qdev-properties-system.h"
+>  #include "fpu/softfloat-helpers.h"
+>  #include "disas/capstone.h"
+>  #include "sysemu/tcg.h"
+> @@ -292,6 +293,12 @@ static gchar *s390_gdb_arch_name(CPUState *cs)
+>  static Property s390x_cpu_properties[] = {
+>  #if !defined(CONFIG_USER_ONLY)
+>      DEFINE_PROP_UINT32("core-id", S390CPU, env.core_id, 0),
+> +    DEFINE_PROP_INT32("socket-id", S390CPU, env.socket_id, -1),
+> +    DEFINE_PROP_INT32("book-id", S390CPU, env.book_id, -1),
+> +    DEFINE_PROP_INT32("drawer-id", S390CPU, env.drawer_id, -1),
+> +    DEFINE_PROP_BOOL("dedicated", S390CPU, env.dedicated, false),
+> +    DEFINE_PROP_CPUS390ENTITLEMENT("entitlement", S390CPU, env.entitlement,
+> +                                   S390_CPU_ENTITLEMENT_AUTO),
+>  #endif
+>      DEFINE_PROP_END_OF_LIST()
+>  };
+
+[...]
+
+I suspect the patch could be split into a part that updates
+CpuInstanceProperties and SMPConfiguration, and a part that adds the
+properties.  Since the series is at v25, I'm *not* asking you explore
+that.
 
 
