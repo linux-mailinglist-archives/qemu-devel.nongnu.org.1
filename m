@@ -2,89 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4737C720C
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F767C7210
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:07:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqyCY-0002f5-OT; Thu, 12 Oct 2023 12:06:18 -0400
+	id 1qqyDl-0004bC-6C; Thu, 12 Oct 2023 12:07:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qqyCW-0002eb-9p
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:06:16 -0400
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qqyCT-0005gZ-0n
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:06:15 -0400
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3af6cd01323so653594b6e.3
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 09:06:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697126770; x=1697731570; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sSWJYs438bV/TsZGh6kvdz0K2DButEn4zC20UHYpY04=;
- b=hZKO+Ru5m9D9Bg0A7ttw5UwrYmpV2fsUt6T5qlyP7GEpvb1XyzZsaERbyAf4MZy0y/
- wH53D9kFiYemmH9sUy6xGdAoVkb0LGQGEAZi+65/X8Xf0FFMot77iU6cGgPbphkVR3aO
- BfC6HX1jf6jd23O16AMJ32AmTPKDE4sLm0kw3xBCZa5oMnYI6292RZBbZlHmu5MydCgP
- moAdCg9YiKzzF9huUhM5Qd3Bq3acb5lfunnTsK92WRxSyFBrXhqmEfmLSt6NWL0xioLG
- Q2pJspjkFVdyQv7OwRJmxapXw3uur5tiwaI+xw2MUv4JbJ3bIeMG2c/tRqmj1XmZ4a8A
- hMXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697126770; x=1697731570;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sSWJYs438bV/TsZGh6kvdz0K2DButEn4zC20UHYpY04=;
- b=a8pvuzZzsiceklPfhr83sDklANuyYY8F1zdeDHKQAcXGZE7VDiLLn9kUc/wMM8p/yB
- aS8KDN6BuhjuRSZNGRGAXU36YVtS7F3zYZKQ6jbCpTkblhhZCIRA6FWTCYxkBwiPmvla
- Pv2JXigRAvn7PFBopfGqthoax5jutDfjFIdp8nwBtITNpYj75crcvwoGTLLMzbzetR28
- o794lA6OXkKOlR//QB0UqpwrhKQTUOOXM2yrAIW6nTmxLUrJhoJxOx5Al5V8Q0kAFlB7
- zYdVKYedIbADEe1DKBHtobhIL/rRHEKPYjluVdOzPgvUP6ZPVD97Y2VCz2W0wgQ0rEYp
- Y2pA==
-X-Gm-Message-State: AOJu0Yy5DokMxwms2spk5IZyLkENflXCjBA2o02cu/X5XI3BospUp8xk
- 2IvC5jHoodFZtSy1xMxI40Q5jg==
-X-Google-Smtp-Source: AGHT+IEE4MkHnPjUpdbYyiyEgwxSu/ykQrUM976QmWj1sCBpdYs7R0rn4H8umg7gfgqVxn6wzdZo6A==
-X-Received: by 2002:a05:6358:9d82:b0:164:a045:e459 with SMTP id
- d2-20020a0563589d8200b00164a045e459mr10859871rwo.16.1697126770607; 
- Thu, 12 Oct 2023 09:06:10 -0700 (PDT)
-Received: from ?IPV6:2607:fb91:1eea:522e:cd6b:212d:2658:903e?
- ([2607:fb91:1eea:522e:cd6b:212d:2658:903e])
- by smtp.gmail.com with ESMTPSA id
- c12-20020aa78e0c000000b006933866fd21sm12057450pfr.117.2023.10.12.09.06.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 09:06:10 -0700 (PDT)
-Message-ID: <ffd5b4ea-6535-45a5-bc74-fffdc04fce68@linaro.org>
-Date: Thu, 12 Oct 2023 09:06:07 -0700
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1qqyDh-0004RG-K0; Thu, 12 Oct 2023 12:07:29 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1qqyDe-0005hk-RV; Thu, 12 Oct 2023 12:07:28 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39CFtANW025711; Thu, 12 Oct 2023 16:06:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=cNF171TPL8mXZ7GC6IWOWDao344AmzOjG72MKt8Je8Q=;
+ b=Jz1h2H0BFLPdnP9bbuku30BmF5AUQULOjGScUPWjYks444GiACj8JMHycBMtWCTt+8Rw
+ d8mIgQNh7PHECtZ+gBCyFvGvF9Xt2TfJtC3IfqbOzuq68zRFST/wHByEURAQS84mXI+v
+ 2EI5p012WNrdRXAPBj2Xt8G0Q0zvd8k36oWLk1MnbfvGtXyKewT+aExpVfmLEylV1aTy
+ hnzSHd5v/167xAM1gnR91/eooJ7G5UEGroxNRZKplT87arVfkqQ6kYIAOY38ZiWGgoOf
+ jWyw5NDoXXrYkUe5Bae978GQPGrrUHDtZx083cqUqAuF5rztKRFL3VNvKMuhUAyfxUu6 Kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpkv30j54-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Oct 2023 16:06:21 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39CG4nqi020257;
+ Thu, 12 Oct 2023 16:06:19 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpkv30j4e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Oct 2023 16:06:19 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39CFACkW028182; Thu, 12 Oct 2023 16:06:18 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkj1ygs88-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 Oct 2023 16:06:18 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39CG6FcO46399852
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 12 Oct 2023 16:06:15 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1927420043;
+ Thu, 12 Oct 2023 16:06:15 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B81920040;
+ Thu, 12 Oct 2023 16:06:13 +0000 (GMT)
+Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 12 Oct 2023 16:06:13 +0000 (GMT)
+From: Chalapathi V <chalapathi.v@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ clg@kaod.org, calebs@us.ibm.com, chalapathi.v@linux.ibm.com,
+ saif.abrar@linux.vnet.ibm.com
+Subject: [PATCH v2 0/3] pnv nest1 chiplet model
+Date: Thu, 12 Oct 2023 11:06:07 -0500
+Message-Id: <20231012160610.2428-1-chalapathi.v@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
-Content-Language: en-US
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20231009110239.66778-1-philmd@linaro.org>
- <20231009110239.66778-3-philmd@linaro.org>
- <8e8b6cef-efbf-42ac-975c-b523dc24a531@linux.alibaba.com>
- <58838379-60bf-4af4-980b-cff8ee49bfc2@linaro.org>
- <4a7e39f4-4302-4dfd-9112-4deea5c7403f@linux.alibaba.com>
- <3b745e06-d037-f1b7-0fec-373959598a15@linaro.org>
- <d90102c9-e4c3-4c2f-896e-908584b97202@linux.alibaba.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <d90102c9-e4c3-4c2f-896e-908584b97202@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: VYFncmbkPe0fG7t4k4MBiy6SKttbOvhl
+X-Proofpoint-GUID: ccKUWZXZiSyxpnYerWokAMkmhMadlkC2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-12_05,2023-10-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 malwarescore=0 suspectscore=0 mlxlogscore=646
+ lowpriorityscore=0 clxscore=1015 mlxscore=0 bulkscore=0 phishscore=0
+ adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310120133
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,42 +109,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/11/23 22:59, LIU Zhiwei wrote:
-> 
-> On 2023/10/11 13:31, Philippe Mathieu-Daudé wrote:
->> On 11/10/23 05:25, LIU Zhiwei wrote:
->>>
->>> On 2023/10/11 1:04, Richard Henderson wrote:
->>>> On 10/9/23 05:42, LIU Zhiwei wrote:
->>>>>
->>>>> On 2023/10/9 19:02, Philippe Mathieu-Daudé wrote:
->>>>>> When CPUArchState* is available (here CPURISCVState*), we
->>>>>> can use the fast env_archcpu() macro to get ArchCPU* (here
->>>>>> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
->>>>>> when building with --enable-qom-cast-debug.
->>
->>
->>>>> If so, maybe we have to do this qom cast somewhere.
->>>>
->>>> No, I don't think so.  Or at least not in these places.
->>>
->>> Yes.  Perhaps, we should remove all RISCV_CPU macros using after the qom objects realized.
->>>
->>> Do you think we should remove the RISCV_CPU using in riscv_cpu_exec_interrupt? Although 
->>> it  is not so hot. I think there is no reason to use it there.
->>
->> I have some note in my TODO to check replacing CPUState by ArchCPU in
->> TCGCPUOps (like the cpu_exec_interrupt handler you mentioned). 
-> 
-> IMHO, this will make it harder for heterogeneous SOC support. ArchCPU is not a target 
-> agnostic struct.
+Hello,
 
-ArchCPU is a target-agnostic typedef of a structure with no visible definition.
-C is perfectly happy to manipulate pointers to such structures.
+For modularity reasons the P10 processor chip is split into multiple
+chiplets individually controlled and managed by the pervasive logic.
+The boundaries of these chiplets are defined based on physical design
+parameters like clock grids, the nature of the functional units as well
+as their pervasive requirements (e.g. clock domains). Examples of chiplet
+in the P10 chip are processor cores and caches, memory controllers or IO
+interfaces like PCIe. Partitioning the processor chip into these chiplets
+allows the pervasive logic to test, initialize, control and manage these
+chip partitions individually.
 
-Whether it is worthwhile to adjust interfaces from CPUState to ArchCPU, I don't know.
+In this series, we create a nest1 chiplet model and implements the chiplet
+control scom registers on nest1 chiplet. The chiplet control registers does
+the initialization and configuration of a chiplet.
 
+Thank You,
+Chalapathi
 
-r~
+Chalapathi V (3):
+  hw/ppc: Add pnv pervasive common chiplet units
+  hw/ppc: Add nest1 chiplet model
+  hw/ppc: Nest1 chiplet wiring
+
+ hw/ppc/meson.build                |   2 +
+ hw/ppc/pnv.c                      |  11 +++
+ hw/ppc/pnv_nest1_chiplet.c        | 153 ++++++++++++++++++++++++++++++
+ hw/ppc/pnv_pervasive.c            | 151 +++++++++++++++++++++++++++++
+ include/hw/ppc/pnv_chip.h         |   2 +
+ include/hw/ppc/pnv_nest_chiplet.h |  39 ++++++++
+ include/hw/ppc/pnv_pervasive.h    |  39 ++++++++
+ include/hw/ppc/pnv_xscom.h        |   3 +
+ 8 files changed, 400 insertions(+)
+ create mode 100644 hw/ppc/pnv_nest1_chiplet.c
+ create mode 100644 hw/ppc/pnv_pervasive.c
+ create mode 100644 include/hw/ppc/pnv_nest_chiplet.h
+ create mode 100644 include/hw/ppc/pnv_pervasive.h
+
+-- 
+2.31.1
 
 
