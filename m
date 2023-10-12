@@ -2,52 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0F57C726D
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B6B7C729C
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 18:30:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqyTK-0003tf-7E; Thu, 12 Oct 2023 12:23:38 -0400
+	id 1qqySu-0003eU-W1; Thu, 12 Oct 2023 12:23:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qqyTA-0003pO-AV
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:23:29 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qqySq-0003ah-5p
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:23:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qqySl-0000gP-En
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:23:26 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qqySZ-0000Zm-M9
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 12:23:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697127782;
+ s=mimecast20190719; t=1697127765;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HNwosY+GbpV2B2QbA/CnOm/xc+b/NkSMjvFgxn3SKl4=;
- b=UpjjA2maAQJ1IBuFD3TH5uoW4rwSuTsv1eP0o1QnWRhymphgmDPAvtG/GHczBTlN/Xowce
- Zy0uMzPM3QkVFNYcHECYb9r8nnv/fODCV4v4D3itluuQCzOH4pUotq34wuTc60i1ExyTaU
- MfykPCH+wyE9xwwYxcXKdUVlWWYne/o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-359-YDeuZMzxPimY_NGU3cadYw-1; Thu, 12 Oct 2023 12:22:42 -0400
-X-MC-Unique: YDeuZMzxPimY_NGU3cadYw-1
+ bh=KV3bkGuHxwopuYxU23flYy/qNdsNUsVMSP78jNlnv10=;
+ b=MJ/d0P3IUIRQ9qF8IY9vnt+wpdanIC+RM+rFvmbH2OHTmFEPMrAqv6u0YOdYv07c3BQLtY
+ 4AAHvNnoLfXA75VgSAaQw3Yk4IZmscz+j1WfDESx37e6N8GVFi2xKusnjXyVjRzzYfBT9X
+ di1ImFo89HDWtl62WiWC4CPqWpJPwe8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-547-MOijYXe6N3SzvrJNPODrsA-1; Thu, 12 Oct 2023 12:22:43 -0400
+X-MC-Unique: MOijYXe6N3SzvrJNPODrsA-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 268F23810791;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EBB1A81D9E1;
  Thu, 12 Oct 2023 16:22:42 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.192.233])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8945F20296DB;
- Thu, 12 Oct 2023 16:22:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5BEE5202701E;
+ Thu, 12 Oct 2023 16:22:42 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 08/26] block: Mark bdrv_first_blk() and bdrv_is_root_node()
- GRAPH_RDLOCK
-Date: Thu, 12 Oct 2023 18:22:06 +0200
-Message-ID: <20231012162224.240535-9-kwolf@redhat.com>
+Subject: [PULL 09/26] block: Mark drain related functions GRAPH_RDLOCK
+Date: Thu, 12 Oct 2023 18:22:07 +0200
+Message-ID: <20231012162224.240535-10-kwolf@redhat.com>
 In-Reply-To: <20231012162224.240535-1-kwolf@redhat.com>
 References: <20231012162224.240535-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -61,7 +60,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,384 +76,302 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds GRAPH_RDLOCK annotations to declare that callers of
-bdrv_first_blk() and bdrv_is_root_node() need to hold a reader lock
-for the graph. These functions are the only functions in block-backend.c
-that access the parent list of a node.
+From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 
+Draining recursively traverses the graph, therefore we need to make sure
+that also such accesses to the graph are protected by the graph rdlock.
+
+There are 3 different drain callers to consider:
+1. drain in the main loop: no issue at all, rdlock is nop.
+2. drain in an iothread: rdlock only works in main loop or coroutines,
+   so disallow it.
+3. drain in a coroutine (regardless of AioContext): the drain mechanism
+   takes care of scheduling a BH in the bs->aio_context that will
+   then take care of perform the actual draining. This is wrong,
+   because as pointed in (2) if bs->aio_context is an iothread then
+   rdlock won't work. Therefore change bdrv_co_yield_to_drain to
+   schedule the BH in the main loop.
+
+Caller (2) also implies that we need to modify test-bdrv-drain.c to
+disallow draining in the iothreads.
+
+For some places, we know that they will hold the lock, but we don't have
+the GRAPH_RDLOCK annotations yet. In this case, add assume_graph_lock()
+with a FIXME comment. These places will be removed once everything is
+properly annotated.
+
+Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20230929145157.45443-5-kwolf@redhat.com>
+Message-ID: <20230929145157.45443-6-kwolf@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/block-global-state.h          |  9 +++++----
- include/sysemu/block-backend-global-state.h |  4 ++--
- block.c                                     |  1 +
- block/block-backend.c                       |  6 +++++-
- block/export/export.c                       |  4 ++++
- block/io.c                                  |  1 +
- block/monitor/block-hmp-cmds.c              |  2 ++
- block/qapi-sysemu.c                         |  2 ++
- block/replication.c                         | 10 ++++++++--
- block/snapshot.c                            | 15 +++++++++++----
- blockdev.c                                  |  5 +++++
- migration/block.c                           |  2 ++
- migration/migration-hmp-cmds.c              |  2 ++
- tests/unit/test-block-iothread.c            |  3 +++
- 14 files changed, 53 insertions(+), 13 deletions(-)
+ include/block/block-io.h         | 23 ++++++++++++++++++-----
+ include/block/block_int-common.h |  6 +++---
+ block.c                          |  6 +++---
+ block/io.c                       | 32 ++++++++++++++++++++++++++++----
+ tests/unit/test-bdrv-drain.c     |  4 ++--
+ 5 files changed, 54 insertions(+), 17 deletions(-)
 
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 6061220a6c..505a0d0c11 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -170,9 +170,10 @@ BlockDriverState * GRAPH_RDLOCK
- check_to_replace_node(BlockDriverState *parent_bs, const char *node_name,
-                       Error **errp);
+diff --git a/include/block/block-io.h b/include/block/block-io.h
+index 6485b194a4..9707eb3eff 100644
+--- a/include/block/block-io.h
++++ b/include/block/block-io.h
+@@ -370,7 +370,7 @@ bdrv_writev_vmstate(BlockDriverState *bs, QEMUIOVector *qiov, int64_t pos);
+  *
+  * Begin a quiesced section for the parent of @c.
+  */
+-void bdrv_parent_drained_begin_single(BdrvChild *c);
++void GRAPH_RDLOCK bdrv_parent_drained_begin_single(BdrvChild *c);
  
--int no_coroutine_fn bdrv_activate(BlockDriverState *bs, Error **errp);
-+int no_coroutine_fn GRAPH_RDLOCK
-+bdrv_activate(BlockDriverState *bs, Error **errp);
+ /**
+  * bdrv_parent_drained_poll_single:
+@@ -378,14 +378,14 @@ void bdrv_parent_drained_begin_single(BdrvChild *c);
+  * Returns true if there is any pending activity to cease before @c can be
+  * called quiesced, false otherwise.
+  */
+-bool bdrv_parent_drained_poll_single(BdrvChild *c);
++bool GRAPH_RDLOCK bdrv_parent_drained_poll_single(BdrvChild *c);
  
--int coroutine_fn no_co_wrapper
-+int coroutine_fn no_co_wrapper_bdrv_rdlock
- bdrv_co_activate(BlockDriverState *bs, Error **errp);
+ /**
+  * bdrv_parent_drained_end_single:
+  *
+  * End a quiesced section for the parent of @c.
+  */
+-void bdrv_parent_drained_end_single(BdrvChild *c);
++void GRAPH_RDLOCK bdrv_parent_drained_end_single(BdrvChild *c);
  
- void bdrv_activate_all(Error **errp);
-@@ -208,8 +209,8 @@ typedef struct BdrvNextIterator {
-     BlockDriverState *bs;
- } BdrvNextIterator;
+ /**
+  * bdrv_drain_poll:
+@@ -398,8 +398,9 @@ void bdrv_parent_drained_end_single(BdrvChild *c);
+  *
+  * This is part of bdrv_drained_begin.
+  */
+-bool bdrv_drain_poll(BlockDriverState *bs, BdrvChild *ignore_parent,
+-                     bool ignore_bds_parents);
++bool GRAPH_RDLOCK
++bdrv_drain_poll(BlockDriverState *bs, BdrvChild *ignore_parent,
++                bool ignore_bds_parents);
  
--BlockDriverState *bdrv_first(BdrvNextIterator *it);
--BlockDriverState *bdrv_next(BdrvNextIterator *it);
-+BlockDriverState * GRAPH_RDLOCK bdrv_first(BdrvNextIterator *it);
-+BlockDriverState * GRAPH_RDLOCK bdrv_next(BdrvNextIterator *it);
- void bdrv_next_cleanup(BdrvNextIterator *it);
+ /**
+  * bdrv_drained_begin:
+@@ -407,6 +408,12 @@ bool bdrv_drain_poll(BlockDriverState *bs, BdrvChild *ignore_parent,
+  * Begin a quiesced section for exclusive access to the BDS, by disabling
+  * external request sources including NBD server, block jobs, and device model.
+  *
++ * This function can only be invoked by the main loop or a coroutine
++ * (regardless of the AioContext where it is running).
++ * If the coroutine is running in an Iothread AioContext, this function will
++ * just schedule a BH to run in the main loop.
++ * However, it cannot be directly called by an Iothread.
++ *
+  * This function can be recursive.
+  */
+ void bdrv_drained_begin(BlockDriverState *bs);
+@@ -423,6 +430,12 @@ void bdrv_do_drained_begin_quiesce(BlockDriverState *bs, BdrvChild *parent);
+  * bdrv_drained_end:
+  *
+  * End a quiescent section started by bdrv_drained_begin().
++ *
++ * This function can only be invoked by the main loop or a coroutine
++ * (regardless of the AioContext where it is running).
++ * If the coroutine is running in an Iothread AioContext, this function will
++ * just schedule a BH to run in the main loop.
++ * However, it cannot be directly called by an Iothread.
+  */
+ void bdrv_drained_end(BlockDriverState *bs);
  
- BlockDriverState *bdrv_next_monitor_owned(BlockDriverState *bs);
-diff --git a/include/sysemu/block-backend-global-state.h b/include/sysemu/block-backend-global-state.h
-index d5f675493a..49c12b0fa9 100644
---- a/include/sysemu/block-backend-global-state.h
-+++ b/include/sysemu/block-backend-global-state.h
-@@ -59,8 +59,8 @@ BlockBackend *blk_by_public(BlockBackendPublic *public);
- void blk_remove_bs(BlockBackend *blk);
- int blk_insert_bs(BlockBackend *blk, BlockDriverState *bs, Error **errp);
- int blk_replace_bs(BlockBackend *blk, BlockDriverState *new_bs, Error **errp);
--bool bdrv_has_blk(BlockDriverState *bs);
--bool bdrv_is_root_node(BlockDriverState *bs);
-+bool GRAPH_RDLOCK bdrv_has_blk(BlockDriverState *bs);
-+bool GRAPH_RDLOCK bdrv_is_root_node(BlockDriverState *bs);
- int GRAPH_UNLOCKED blk_set_perm(BlockBackend *blk, uint64_t perm,
-                                 uint64_t shared_perm, Error **errp);
- void blk_get_perm(BlockBackend *blk, uint64_t *perm, uint64_t *shared_perm);
-diff --git a/block.c b/block.c
-index b62f6f3841..701f77fe2f 100644
---- a/block.c
-+++ b/block.c
-@@ -6961,6 +6961,7 @@ void bdrv_activate_all(Error **errp)
-     BdrvNextIterator it;
- 
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     for (bs = bdrv_first(&it); bs; bs = bdrv_next(&it)) {
-         AioContext *aio_context = bdrv_get_aio_context(bs);
-diff --git a/block/block-backend.c b/block/block-backend.c
-index efe2e7cbf8..39b5f90a11 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -780,11 +780,12 @@ BlockDriverState *blk_bs(BlockBackend *blk)
-     return blk->root ? blk->root->bs : NULL;
- }
- 
--static BlockBackend *bdrv_first_blk(BlockDriverState *bs)
-+static BlockBackend * GRAPH_RDLOCK bdrv_first_blk(BlockDriverState *bs)
- {
-     BdrvChild *child;
- 
-     GLOBAL_STATE_CODE();
-+    assert_bdrv_graph_readable();
- 
-     QLIST_FOREACH(child, &bs->parents, next_parent) {
-         if (child->klass == &child_root) {
-@@ -812,6 +813,8 @@ bool bdrv_is_root_node(BlockDriverState *bs)
-     BdrvChild *c;
- 
-     GLOBAL_STATE_CODE();
-+    assert_bdrv_graph_readable();
-+
-     QLIST_FOREACH(c, &bs->parents, next_parent) {
-         if (c->klass != &child_root) {
-             return false;
-@@ -2259,6 +2262,7 @@ void blk_activate(BlockBackend *blk, Error **errp)
-     if (qemu_in_coroutine()) {
-         bdrv_co_activate(bs, errp);
-     } else {
-+        GRAPH_RDLOCK_GUARD_MAINLOOP();
-         bdrv_activate(bs, errp);
-     }
- }
-diff --git a/block/export/export.c b/block/export/export.c
-index 10316b43c5..a8f274e526 100644
---- a/block/export/export.c
-+++ b/block/export/export.c
-@@ -83,6 +83,8 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
-     uint64_t perm;
-     int ret;
- 
-+    GLOBAL_STATE_CODE();
-+
-     if (!id_wellformed(export->id)) {
-         error_setg(errp, "Invalid block export id");
-         return NULL;
-@@ -145,7 +147,9 @@ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp)
-      * access since the export could be available before migration handover.
-      * ctx was acquired in the caller.
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 2ca3758cb8..8ef68176a5 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -963,15 +963,15 @@ struct BdrvChildClass {
+      * Note that this can be nested. If drained_begin() was called twice, new
+      * I/O is allowed only after drained_end() was called twice, too.
       */
-+    bdrv_graph_rdlock_main_loop();
-     bdrv_activate(bs, NULL);
-+    bdrv_graph_rdunlock_main_loop();
- 
-     perm = BLK_PERM_CONSISTENT_READ;
-     if (export->writable) {
-diff --git a/block/io.c b/block/io.c
-index 9e170929a7..5821a4d1f5 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -2330,6 +2330,7 @@ int bdrv_flush_all(void)
-     int result = 0;
- 
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
+-    void (*drained_begin)(BdrvChild *child);
+-    void (*drained_end)(BdrvChild *child);
++    void GRAPH_RDLOCK_PTR (*drained_begin)(BdrvChild *child);
++    void GRAPH_RDLOCK_PTR (*drained_end)(BdrvChild *child);
  
      /*
-      * bdrv queue is managed by record/replay,
-diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-index ca2599de44..6b7d7dd072 100644
---- a/block/monitor/block-hmp-cmds.c
-+++ b/block/monitor/block-hmp-cmds.c
-@@ -896,6 +896,8 @@ void hmp_info_snapshots(Monitor *mon, const QDict *qdict)
-     SnapshotEntry *snapshot_entry;
-     Error *err = NULL;
+      * Returns whether the parent has pending requests for the child. This
+      * callback is polled after .drained_begin() has been called until all
+      * activity on the child has stopped.
+      */
+-    bool (*drained_poll)(BdrvChild *child);
++    bool GRAPH_RDLOCK_PTR (*drained_poll)(BdrvChild *child);
  
+     /*
+      * Notifies the parent that the filename of its child has changed (e.g.
+diff --git a/block.c b/block.c
+index 701f77fe2f..6cc4115510 100644
+--- a/block.c
++++ b/block.c
+@@ -1192,19 +1192,19 @@ static char *bdrv_child_get_parent_desc(BdrvChild *c)
+     return g_strdup_printf("node '%s'", bdrv_get_node_name(parent));
+ }
+ 
+-static void bdrv_child_cb_drained_begin(BdrvChild *child)
++static void GRAPH_RDLOCK bdrv_child_cb_drained_begin(BdrvChild *child)
+ {
+     BlockDriverState *bs = child->opaque;
+     bdrv_do_drained_begin_quiesce(bs, NULL);
+ }
+ 
+-static bool bdrv_child_cb_drained_poll(BdrvChild *child)
++static bool GRAPH_RDLOCK bdrv_child_cb_drained_poll(BdrvChild *child)
+ {
+     BlockDriverState *bs = child->opaque;
+     return bdrv_drain_poll(bs, NULL, false);
+ }
+ 
+-static void bdrv_child_cb_drained_end(BdrvChild *child)
++static void GRAPH_RDLOCK bdrv_child_cb_drained_end(BdrvChild *child)
+ {
+     BlockDriverState *bs = child->opaque;
+     bdrv_drained_end(bs);
+diff --git a/block/io.c b/block/io.c
+index 5821a4d1f5..e2e846d37d 100644
+--- a/block/io.c
++++ b/block/io.c
+@@ -46,9 +46,12 @@ static void bdrv_parent_cb_resize(BlockDriverState *bs);
+ static int coroutine_fn bdrv_co_do_pwrite_zeroes(BlockDriverState *bs,
+     int64_t offset, int64_t bytes, BdrvRequestFlags flags);
+ 
+-static void bdrv_parent_drained_begin(BlockDriverState *bs, BdrvChild *ignore)
++static void GRAPH_RDLOCK
++bdrv_parent_drained_begin(BlockDriverState *bs, BdrvChild *ignore)
+ {
+     BdrvChild *c, *next;
++    IO_OR_GS_CODE();
++    assert_bdrv_graph_readable();
+ 
+     QLIST_FOREACH_SAFE(c, &bs->parents, next_parent, next) {
+         if (c == ignore) {
+@@ -70,9 +73,12 @@ void bdrv_parent_drained_end_single(BdrvChild *c)
+     }
+ }
+ 
+-static void bdrv_parent_drained_end(BlockDriverState *bs, BdrvChild *ignore)
++static void GRAPH_RDLOCK
++bdrv_parent_drained_end(BlockDriverState *bs, BdrvChild *ignore)
+ {
+     BdrvChild *c;
++    IO_OR_GS_CODE();
++    assert_bdrv_graph_readable();
+ 
+     QLIST_FOREACH(c, &bs->parents, next_parent) {
+         if (c == ignore) {
+@@ -84,17 +90,22 @@ static void bdrv_parent_drained_end(BlockDriverState *bs, BdrvChild *ignore)
+ 
+ bool bdrv_parent_drained_poll_single(BdrvChild *c)
+ {
++    IO_OR_GS_CODE();
++
+     if (c->klass->drained_poll) {
+         return c->klass->drained_poll(c);
+     }
+     return false;
+ }
+ 
+-static bool bdrv_parent_drained_poll(BlockDriverState *bs, BdrvChild *ignore,
+-                                     bool ignore_bds_parents)
++static bool GRAPH_RDLOCK
++bdrv_parent_drained_poll(BlockDriverState *bs, BdrvChild *ignore,
++                         bool ignore_bds_parents)
+ {
+     BdrvChild *c, *next;
+     bool busy = false;
++    IO_OR_GS_CODE();
++    assert_bdrv_graph_readable();
+ 
+     QLIST_FOREACH_SAFE(c, &bs->parents, next_parent, next) {
+         if (c == ignore || (ignore_bds_parents && c->klass->parent_is_bds)) {
+@@ -114,6 +125,7 @@ void bdrv_parent_drained_begin_single(BdrvChild *c)
+     c->quiesced_parent = true;
+ 
+     if (c->klass->drained_begin) {
++        /* called with rdlock taken, but it doesn't really need it. */
+         c->klass->drained_begin(c);
+     }
+ }
+@@ -263,6 +275,9 @@ bool bdrv_drain_poll(BlockDriverState *bs, BdrvChild *ignore_parent,
+ static bool bdrv_drain_poll_top_level(BlockDriverState *bs,
+                                       BdrvChild *ignore_parent)
+ {
++    GLOBAL_STATE_CODE();
 +    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +
-     bs = bdrv_all_find_vmstate_bs(NULL, false, NULL, &err);
-     if (!bs) {
-         error_report_err(err);
-diff --git a/block/qapi-sysemu.c b/block/qapi-sysemu.c
-index ef07151892..e885a64c32 100644
---- a/block/qapi-sysemu.c
-+++ b/block/qapi-sysemu.c
-@@ -279,6 +279,8 @@ static void blockdev_insert_medium(const char *device, const char *id,
-     BlockBackend *blk;
-     BlockDriverState *bs;
+     return bdrv_drain_poll(bs, ignore_parent, false);
+ }
  
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     blk = qmp_get_blk(device, id, errp);
-     if (!blk) {
+@@ -362,6 +377,7 @@ static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
+ 
+     /* Stop things in parent-to-child order */
+     if (qatomic_fetch_inc(&bs->quiesce_counter) == 0) {
++        GRAPH_RDLOCK_GUARD_MAINLOOP();
+         bdrv_parent_drained_begin(bs, parent);
+         if (bs->drv && bs->drv->bdrv_drain_begin) {
+             bs->drv->bdrv_drain_begin(bs);
+@@ -408,12 +424,16 @@ static void bdrv_do_drained_end(BlockDriverState *bs, BdrvChild *parent)
+         bdrv_co_yield_to_drain(bs, false, parent, false);
          return;
-diff --git a/block/replication.c b/block/replication.c
-index 4ad3dd5115..107445d0ce 100644
---- a/block/replication.c
-+++ b/block/replication.c
-@@ -458,6 +458,8 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-     Error *local_err = NULL;
-     BackupPerf perf = { .use_copy_range = true, .max_workers = 1 };
- 
+     }
++
++    /* At this point, we should be always running in the main loop. */
 +    GLOBAL_STATE_CODE();
-+
-     aio_context = bdrv_get_aio_context(bs);
-     aio_context_acquire(aio_context);
-     s = bs->opaque;
-@@ -504,12 +506,15 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-             return;
+     assert(bs->quiesce_counter > 0);
+     GLOBAL_STATE_CODE();
+ 
+     /* Re-enable things in child-to-parent order */
+     old_quiesce_counter = qatomic_fetch_dec(&bs->quiesce_counter);
+     if (old_quiesce_counter == 1) {
++        GRAPH_RDLOCK_GUARD_MAINLOOP();
+         if (bs->drv && bs->drv->bdrv_drain_end) {
+             bs->drv->bdrv_drain_end(bs);
          }
- 
-+        bdrv_graph_rdlock_main_loop();
-         secondary_disk = hidden_disk->bs->backing;
-         if (!secondary_disk->bs || !bdrv_has_blk(secondary_disk->bs)) {
-             error_setg(errp, "The secondary disk doesn't have block backend");
-+            bdrv_graph_rdunlock_main_loop();
-             aio_context_release(aio_context);
-             return;
-         }
-+        bdrv_graph_rdunlock_main_loop();
- 
-         /* verify the length */
-         active_length = bdrv_getlength(active_disk->bs);
-@@ -566,8 +571,6 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-             return;
-         }
- 
--        bdrv_graph_wrunlock();
--
-         /* start backup job now */
-         error_setg(&s->blocker,
-                    "Block device is in use by internal backup job");
-@@ -576,6 +579,7 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-         if (!top_bs || !bdrv_is_root_node(top_bs) ||
-             !check_top_bs(top_bs, bs)) {
-             error_setg(errp, "No top_bs or it is invalid");
-+            bdrv_graph_wrunlock();
-             reopen_backing_file(bs, false, NULL);
-             aio_context_release(aio_context);
-             return;
-@@ -583,6 +587,8 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-         bdrv_op_block_all(top_bs, s->blocker);
-         bdrv_op_unblock(top_bs, BLOCK_OP_TYPE_DATAPLANE, s->blocker);
- 
-+        bdrv_graph_wrunlock();
-+
-         s->backup_job = backup_job_create(
-                                 NULL, s->secondary_disk->bs, s->hidden_disk->bs,
-                                 0, MIRROR_SYNC_MODE_NONE, NULL, 0, false, NULL,
-diff --git a/block/snapshot.c b/block/snapshot.c
-index b86b5b24ad..633391e8a9 100644
---- a/block/snapshot.c
-+++ b/block/snapshot.c
-@@ -462,9 +462,9 @@ int bdrv_snapshot_load_tmp_by_id_or_name(BlockDriverState *bs,
- }
- 
- 
--static int bdrv_all_get_snapshot_devices(bool has_devices, strList *devices,
--                                         GList **all_bdrvs,
--                                         Error **errp)
-+static int GRAPH_RDLOCK
-+bdrv_all_get_snapshot_devices(bool has_devices, strList *devices,
-+                              GList **all_bdrvs, Error **errp)
+@@ -437,6 +457,8 @@ void bdrv_drain(BlockDriverState *bs)
+ static void bdrv_drain_assert_idle(BlockDriverState *bs)
  {
-     g_autoptr(GList) bdrvs = NULL;
- 
-@@ -496,7 +496,7 @@ static int bdrv_all_get_snapshot_devices(bool has_devices, strList *devices,
- }
- 
- 
--static bool bdrv_all_snapshots_includes_bs(BlockDriverState *bs)
-+static bool GRAPH_RDLOCK bdrv_all_snapshots_includes_bs(BlockDriverState *bs)
- {
-     if (!bdrv_is_inserted(bs) || bdrv_is_read_only(bs)) {
-         return false;
-@@ -518,6 +518,7 @@ bool bdrv_all_can_snapshot(bool has_devices, strList *devices,
-     GList *iterbdrvs;
- 
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (bdrv_all_get_snapshot_devices(has_devices, devices, &bdrvs, errp) < 0) {
-         return false;
-@@ -554,6 +555,7 @@ int bdrv_all_delete_snapshot(const char *name,
-     GList *iterbdrvs;
- 
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (bdrv_all_get_snapshot_devices(has_devices, devices, &bdrvs, errp) < 0) {
-         return -1;
-@@ -595,6 +597,7 @@ int bdrv_all_goto_snapshot(const char *name,
-     GList *iterbdrvs;
- 
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (bdrv_all_get_snapshot_devices(has_devices, devices, &bdrvs, errp) < 0) {
-         return -1;
-@@ -631,6 +634,7 @@ int bdrv_all_has_snapshot(const char *name,
-     GList *iterbdrvs;
- 
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (bdrv_all_get_snapshot_devices(has_devices, devices, &bdrvs, errp) < 0) {
-         return -1;
-@@ -673,7 +677,9 @@ int bdrv_all_create_snapshot(QEMUSnapshotInfo *sn,
- {
-     g_autoptr(GList) bdrvs = NULL;
-     GList *iterbdrvs;
-+
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (bdrv_all_get_snapshot_devices(has_devices, devices, &bdrvs, errp) < 0) {
-         return -1;
-@@ -715,6 +721,7 @@ BlockDriverState *bdrv_all_find_vmstate_bs(const char *vmstate_bs,
-     GList *iterbdrvs;
- 
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (bdrv_all_get_snapshot_devices(has_devices, devices, &bdrvs, errp) < 0) {
-         return NULL;
-diff --git a/blockdev.c b/blockdev.c
-index 325b7a3bef..b6b7c44288 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -1041,6 +1041,8 @@ static BlockDriverState *qmp_get_root_bs(const char *name, Error **errp)
-     BlockDriverState *bs;
-     AioContext *aio_context;
- 
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     bs = bdrv_lookup_bs(name, name, errp);
-     if (bs == NULL) {
-         return NULL;
-@@ -3509,6 +3511,7 @@ void qmp_blockdev_del(const char *node_name, Error **errp)
-     BlockDriverState *bs;
- 
-     GLOBAL_STATE_CODE();
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     bs = bdrv_find_node(node_name);
-     if (!bs) {
-@@ -3636,6 +3639,8 @@ void qmp_x_blockdev_set_iothread(const char *node_name, StrOrNull *iothread,
-     AioContext *new_context;
-     BlockDriverState *bs;
- 
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     bs = bdrv_find_node(node_name);
-     if (!bs) {
-         error_setg(errp, "Failed to find node with node-name='%s'", node_name);
-diff --git a/migration/block.c b/migration/block.c
-index 5f930870a5..d115e1cfa5 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -388,6 +388,8 @@ static int init_blk_migration(QEMUFile *f)
-     Error *local_err = NULL;
-     int ret;
- 
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     block_mig_state.submitted = 0;
-     block_mig_state.read_done = 0;
-     block_mig_state.transferred = 0;
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index c115ef2d23..5b25ba24f7 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -794,6 +794,8 @@ static void vm_completion(ReadLineState *rs, const char *str)
-     BlockDriverState *bs;
-     BdrvNextIterator it;
- 
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     len = strlen(str);
-     readline_set_completion_index(rs, len);
- 
-diff --git a/tests/unit/test-block-iothread.c b/tests/unit/test-block-iothread.c
-index 9155547313..151049bda5 100644
---- a/tests/unit/test-block-iothread.c
-+++ b/tests/unit/test-block-iothread.c
-@@ -383,6 +383,9 @@ static void test_sync_op_check(BdrvChild *c)
- 
- static void test_sync_op_activate(BdrvChild *c)
- {
+     BdrvChild *child, *next;
 +    GLOBAL_STATE_CODE();
 +    GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
+     assert(qatomic_read(&bs->in_flight) == 0);
+     QLIST_FOREACH_SAFE(child, &bs->children, next, next) {
+@@ -450,7 +472,9 @@ static bool bdrv_drain_all_poll(void)
+ {
+     BlockDriverState *bs = NULL;
+     bool result = false;
 +
-     /* Early success: Image is not inactive */
-     bdrv_activate(c->bs, NULL);
+     GLOBAL_STATE_CODE();
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
+     /* bdrv_drain_poll() can't make changes to the graph and we are holding the
+      * main AioContext lock, so iterating bdrv_next_all_states() is safe. */
+diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
+index bdd3757615..d734829778 100644
+--- a/tests/unit/test-bdrv-drain.c
++++ b/tests/unit/test-bdrv-drain.c
+@@ -1196,7 +1196,7 @@ static void coroutine_mixed_fn detach_by_parent_aio_cb(void *opaque, int ret)
+     }
  }
+ 
+-static void detach_by_driver_cb_drained_begin(BdrvChild *child)
++static void GRAPH_RDLOCK detach_by_driver_cb_drained_begin(BdrvChild *child)
+ {
+     struct detach_by_parent_data *data = &detach_by_parent_data;
+ 
+@@ -1233,7 +1233,7 @@ static BdrvChildClass detach_by_driver_cb_class;
+  *     state is messed up, but if it is only polled in the single
+  *     BDRV_POLL_WHILE() at the end of the drain, this should work fine.
+  */
+-static void test_detach_indirect(bool by_parent_cb)
++static void TSA_NO_TSA test_detach_indirect(bool by_parent_cb)
+ {
+     BlockBackend *blk;
+     BlockDriverState *parent_a, *parent_b, *a, *b, *c;
 -- 
 2.41.0
 
