@@ -2,162 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1E97C62CF
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 04:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4247C633D
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 05:21:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqlWp-0004qU-JT; Wed, 11 Oct 2023 22:34:23 -0400
+	id 1qqmFB-0002wm-FQ; Wed, 11 Oct 2023 23:20:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qqlWm-0004pz-VR
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 22:34:21 -0400
-Received: from mgamail.intel.com ([192.55.52.151])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqmF8-0002vx-3u; Wed, 11 Oct 2023 23:20:10 -0400
+Received: from out30-113.freemail.mail.aliyun.com ([115.124.30.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qqlWk-0006va-Ip
- for qemu-devel@nongnu.org; Wed, 11 Oct 2023 22:34:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697078058; x=1728614058;
- h=from:to:subject:date:message-id:references:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=hENfTvFhUeYWLl6p6ahZ+MPW5AsS5Z4sebD7zxpGEIs=;
- b=biH9QGfHUSUW0ocm/09zE9ddLBvqGvHEh7N/3TdyYR9136M+RuzUg8F3
- v21xPthI2IbdQxNtfiPeOfIRUW8c8cA8DCKqxiD+iTDQvrdAO++vtdMmB
- ZrgT+83MJbdJOza+Yrz8eaQ/4OaUYv3OYpai0cGxveANIuNGc9q1DjvRf
- Lj6vVJBc2/D64h3Zto1w7IkuBEOos8FhiVXny89FFjdEM/2ZyFlL2wKEA
- rFOK8QrJ17RJTC2OkKgFdLR3eu8az6s/uapnQRS1NeZUDVLbi1HLl5ZG/
- URRiWQZSqq7BTxbI/4shXabtVpOl74/VrNSW3/rwDx5+OsgyHH9fTCCeO A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="365089667"
-X-IronPort-AV: E=Sophos;i="6.03,217,1694761200"; d="scan'208";a="365089667"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2023 19:34:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="927801580"
-X-IronPort-AV: E=Sophos;i="6.03,217,1694761200"; d="scan'208";a="927801580"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 11 Oct 2023 19:34:11 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Wed, 11 Oct 2023 19:34:11 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Wed, 11 Oct 2023 19:34:10 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Wed, 11 Oct 2023 19:34:10 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.41) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Wed, 11 Oct 2023 19:34:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UJi6hTqvzidf+u0bSFYtxFe9N4dS+QsMPa62ROqFGdEAccm/xquN7IG6K8AkcayaAacllsrm2+OLXO5OeHoWlxcCmzAgnMtnac9GRvGa656k1jAcp0LW4Z2wbhZcFzxGP/83aDUriULBo5gkerVU3sI+XX0hBPyYKb6xWnZ/3ic9at0wjmzlEsdoJG5Cf8V85ETjH1LC2oBmz37lnEAkYngW+HwtFEWGUYU2nl7ICQA+zJvFpOuBBpM2eqjFnZqTDGvaobHgDXYH+f4EOkh7Yve22/QZqAbNLTnc3Hztb0yQeClCuO24H2kw7QD/W9lLpn7feMmWenWbbKeCf6MMlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hENfTvFhUeYWLl6p6ahZ+MPW5AsS5Z4sebD7zxpGEIs=;
- b=hMbWrx8+S4t3g2WsrkIBSKtO4TYpYx/FVVyLwV8F0X08Qci/XYbMoPfzg+wOlXjI/DLrIOUhIFhpzvp3sil95AMejTcY/NFejZChqK4obkWOr3LDkB0FDajNEl6sqIycu1q0UWs2/o6S7KiqZXXhfVM5Pih+JVyUAOmMV/DGy6LnSM39bkM31qysjKTC23hkZiF0ThB2N5rqKgh0enb6/VZQSLhOBG6VYQ0t+AkMuR1Ra7m0ziozrmEFO1U2J1GCVXlXgyySRtrw5YruPHiGJfSYdEtHo05zBe2I6p2Hi3ei0oNfgPS8mtrTJFKeWMnxFba4adPJ9gvSVU27sng5SQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6722.namprd11.prod.outlook.com (2603:10b6:510:1ae::15)
- by MW3PR11MB4748.namprd11.prod.outlook.com (2603:10b6:303:2e::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.44; Thu, 12 Oct
- 2023 02:34:08 +0000
-Received: from PH7PR11MB6722.namprd11.prod.outlook.com
- ([fe80::2cfd:ca55:d42a:e46a]) by PH7PR11MB6722.namprd11.prod.outlook.com
- ([fe80::2cfd:ca55:d42a:e46a%3]) with mapi id 15.20.6863.043; Thu, 12 Oct 2023
- 02:34:08 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Eric Auger <eric.auger@redhat.com>, "eric.auger.pro@gmail.com"
- <eric.auger.pro@gmail.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "clg@redhat.com"
- <clg@redhat.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "yanghliu@redhat.com"
- <yanghliu@redhat.com>
-Subject: RE: [PATCH] vfio/pci: Remove vfio_detach_device from vfio_realize
- error path
-Thread-Topic: [PATCH] vfio/pci: Remove vfio_detach_device from vfio_realize
- error path
-Thread-Index: AQHZ/H7oEI2+uvPk0kipuVCJo+KZ7bBFb7Ig
-Date: Thu, 12 Oct 2023 02:34:08 +0000
-Message-ID: <PH7PR11MB6722D7A0E5D47F6E9A5B191C92D3A@PH7PR11MB6722.namprd11.prod.outlook.com>
-References: <20231011200934.549735-1-eric.auger@redhat.com>
-In-Reply-To: <20231011200934.549735-1-eric.auger@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6722:EE_|MW3PR11MB4748:EE_
-x-ms-office365-filtering-correlation-id: 175c5fe3-e9a0-4814-2201-08dbcacbb619
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: s4CZMrp7YtmYIfw8NACa4xEsDMeoLvTH8kKsOGrGrUSpCsCzLK99QhsmgicIeNQbd6Z3WDJjOZGgycSOmjb6gp+6rBnLFhSHFpAvLFwRI5XqkSR8c9hl9ZLPN0dnqE0SQZN5QrUF4w1EeQi/sgN1dNDe/xiQ0PJZzFDbfzgIAKO4EHsVs3OBIpNLkDqhVTge0i2YfZNEJHGt4UFmhVKBejOQ/xh/ZOtcjfNeE9yeN6lR4LPvkgnXuZc7uJ3ZFnI1gi29FV7MzxY32A+zSmQWLO1OOpLsKGqtTWQlgACmzCkLnAonVyTBDkCZYo+dlju17z+RIWrCa14q7vdPuW8Q2JWZ7zR1c4YWWvCVRgBohUXB86xsyRpVh+TtX07hT32DyPVHCfJLimVUxVO/YWzcPKsxW1Uf46gXijp9SHT2nAWzA80wMXkPXu5aIGTOOSp6IHROq45TpiKzbqO1UTEj/9LUD0OR12L9FlD/o5C/rcgAMeakTXxsty5bH/P3N8swqcqyOtFpa5Qbgy8W6tO09gP2UKDLqtIE07yGGSvbfbCSzFVTvl9QecGkFs7L1Dp5UGZKhZqWw8+yGfJ8H1v4RJhq3sXOdFSEIjDarge+ZhU2u0xVJDAvOiu8Y6h6tYIteVM+cPITj71mGiwlpwr3MQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6722.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(346002)(366004)(39860400002)(376002)(136003)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(55016003)(9686003)(478600001)(86362001)(6506007)(7696005)(33656002)(38070700005)(8936002)(8676002)(71200400001)(38100700002)(110136005)(5660300002)(82960400001)(66446008)(316002)(64756008)(66476007)(66556008)(4744005)(76116006)(66946007)(2906002)(41300700001)(122000001)(52536014)(26005)(83380400001)(13296009);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?KjwH2dFu5TjpCIq2SWgU71P+d996tf2qkn/gsn6/IMwpP85yfkPYTDRunhAM?=
- =?us-ascii?Q?yt1536jNXYiq7acS+lOgd3FUJOC1LremH8riSkxJU1Qy+o7iEI7QD4gOt8NI?=
- =?us-ascii?Q?1FHrtptyfVjJ73eOe3Z65KjQrAOW+m1UK70bhfKNgFVCA6ethSxOoajcZpv3?=
- =?us-ascii?Q?VCM6CKmJkurVxZIAfvsaGRuznn8GkLSly87hefifmRd+jUc8xTXKCYEfIAcN?=
- =?us-ascii?Q?UQCr2gsJxCFrsj5GM88tjnk7BA3JycoWXVNp7XN3ZhgaEF0S7V/RNjSn908i?=
- =?us-ascii?Q?PE5W+1VEDgSLzxaQZZhBBHZAL4NyQBp9daGPXs6tKgaS3VrD+lAaQGjuhNSJ?=
- =?us-ascii?Q?1secf+O/LwX9A6lBiKddoHGvqulYfBlFt6DqUTJEmiR+pLJeBedqnH2wBw+P?=
- =?us-ascii?Q?FjM2wuaT+69jWkKP1YQDNd+swNhhnvdOh8lq2SCYoNha7WBoI5K2n8zoQ0VJ?=
- =?us-ascii?Q?qmgM6Ww0Cd5Z3cE7inHJeeeOymPSoklf2P1WumL/3Gc65cb6gqfGtqxd7SFf?=
- =?us-ascii?Q?NDRyoh9vN2Hy2TER5weh+3HavqPXYvIV6nqtOyf/iKWsQC0TGBKZigOyYOGI?=
- =?us-ascii?Q?q39sBMca7jvd0U2sORu7246sxfR8QkE7BI5xsMfO8HdFX6zKlLEill60MefY?=
- =?us-ascii?Q?/dAVLEEDqF7B4so+X3XUTfTDe2GxaCwicokhcQxLGxNiHbux77YQb6jBOIY1?=
- =?us-ascii?Q?i02oZS0DsHWUnAhdfb8eQBg5M6z/3s6DEWIBuiNthxZmQo45v1yI6zB0NfkT?=
- =?us-ascii?Q?SDnwkCQu9ZJU+tixvKH6GOpm7rnSUWvnrZWrzcSkI9KEzDASvaej6WjQD7Oq?=
- =?us-ascii?Q?i0CzD//1uFRz+JG8ItQ7IDtX7eZ0NhKvCWmoblI7v9PKLSoisd4Tm7eoaSrz?=
- =?us-ascii?Q?6ModVBTuDaWNS4P5n+dCAigEbkOtSjsgJ+45Wji3RMrasybu8+TS6TAJJZTj?=
- =?us-ascii?Q?VUdTDnLMy15cQSXSWUpsR2l5wbduyE8uTK3ZdG4Xndi9FrgMjjofLeFWggih?=
- =?us-ascii?Q?+t8FROpndJWOXNMbNf9E1Ch7duYEdGxhaJHXtfjkpfG4EzAFVU0NTTPOYufT?=
- =?us-ascii?Q?dG8s1OfWftYCpbp/6G7H3DT0mkJSpV1V0FhVXUieWXCtkNkgPA3U4Ouk2UbA?=
- =?us-ascii?Q?jACvgQo3wHo0uvMhdbH7tiMfcxKnizilymKfD+t3VT0ye/APltMRrUzSGJbm?=
- =?us-ascii?Q?krnmvrBBbLQhqnTWy54E8lU9JCC6YzldO9sV+x5j81OX0h04l3ZCekqTvDJ5?=
- =?us-ascii?Q?9sEMJAHQmNFIwp1Xfx19uZxQ7MGpteYcHTd0hlM4wW+HETJ5U4nsUnVptao9?=
- =?us-ascii?Q?6sxEjVvOWaQT27l4q46tMAaTacP0ixPqFlAybc/yHhAjc4xqootSGcpo9XMO?=
- =?us-ascii?Q?B1r8CT7reRyQXyZPfzZ/Cu+EqkJHr2lFiGMGVhnN77f2HnX8hnz8L0OkBsAQ?=
- =?us-ascii?Q?q60KYUtlXbJ5q4OkMC6rA8oR+l0lYjyPkuRiORHawcKViLHjF6dO9mT8++Ea?=
- =?us-ascii?Q?U8q/mi3EJQZ2KfSHYW81wcz+0QRsOh+RB++AiLi5+HDQ0oOdpti2xslijjYC?=
- =?us-ascii?Q?6/KQlXFVXDpj4opGJNRPcHiJcyCc11zPUkR5bmf+?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqmF5-0002Fc-A7; Wed, 11 Oct 2023 23:20:09 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R201e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046051;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
+ TI=SMTPD_---0VtypPR2_1697080795; 
+Received: from 30.221.101.97(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VtypPR2_1697080795) by smtp.aliyun-inc.com;
+ Thu, 12 Oct 2023 11:19:56 +0800
+Message-ID: <9a4858e4-f9da-40be-ba0a-4f3f94ce910d@linux.alibaba.com>
+Date: Thu, 12 Oct 2023 11:18:55 +0800
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6722.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 175c5fe3-e9a0-4814-2201-08dbcacbb619
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Oct 2023 02:34:08.4903 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7MpyiC+MT1vn+KtPwql4/rq+zrjy08Jf4wvJZhEGs5SZWD2F3Cx/IkDuqZ4GcKHvOgso8y2NsPbxq/iij2UQzrvjFUTFcjD0b6/IVtUjtjI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4748
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.151;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] target/riscv: Propagate error from PMU setup
+Content-Language: en-US
+To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com
+References: <20231011145032.81509-1-rbradford@rivosinc.com>
+ <20231011145032.81509-2-rbradford@rivosinc.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20231011145032.81509-2-rbradford@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=115.124.30.113;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-113.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -174,35 +65,98 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-
->-----Original Message-----
->From: Eric Auger <eric.auger@redhat.com>
->Sent: Thursday, October 12, 2023 4:10 AM
->To: eric.auger.pro@gmail.com; eric.auger@redhat.com; qemu-
->devel@nongnu.org; alex.williamson@redhat.com; clg@redhat.com; Duan,
->Zhenzhong <zhenzhong.duan@intel.com>; Liu, Yi L <yi.l.liu@intel.com>;
->yanghliu@redhat.com
->Subject: [PATCH] vfio/pci: Remove vfio_detach_device from vfio_realize err=
-or
->path
+On 2023/10/11 22:45, Rob Bradford wrote:
+> More closely follow the QEMU style by returning an Error and propagating
+> it there is an error relating to the PMU setup.
 >
->In vfio_realize, on the error path, we currently call
->vfio_detach_device() after a successful vfio_attach_device.
->While this looks natural, vfio_instance_finalize also induces
->a vfio_detach_device(), and it seems to be the right place
->instead as other resources are released there which happen
->to be a prerequisite to a successful UNSET_CONTAINER.
+> Further simplify the function by removing the num_counters parameter as
+> this is available from the passed in cpu pointer.
 >
->So let's rely on the finalize vfio_detach_device call to free
->all the relevant resources.
+> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>   target/riscv/cpu.c |  8 +++++++-
+>   target/riscv/pmu.c | 19 +++++++++----------
+>   target/riscv/pmu.h |  3 ++-
+>   3 files changed, 18 insertions(+), 12 deletions(-)
 >
->Fixes: a28e06621170 ("vfio/pci: Introduce vfio_[attach/detach]_device")
->Reported-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index ac2b94b6a6..c9d8fc12fe 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1488,7 +1488,13 @@ static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
+>       }
+>   
+>       if (cpu->cfg.pmu_num) {
+> -        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscofpmf) {
+> +        riscv_pmu_init(cpu, &local_err);
+> +        if (local_err != NULL) {
+> +            error_propagate(errp, local_err);
+> +            return;
+> +        }
+> +
+> +        if (cpu->cfg.ext_sscofpmf) {
+>               cpu->pmu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+>                                             riscv_pmu_timer_cb, cpu);
+>           }
+> diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
+> index 36f6307d28..13801ccb78 100644
+> --- a/target/riscv/pmu.c
+> +++ b/target/riscv/pmu.c
+> @@ -434,22 +434,21 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
+>   }
+>   
+>   
+> -int riscv_pmu_init(RISCVCPU *cpu, int num_counters)
+> +void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+>   {
+> -    if (num_counters > (RV_MAX_MHPMCOUNTERS - 3)) {
+> -        return -1;
+> +    uint8_t pmu_num = cpu->cfg.pmu_num;
+> +
+> +    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
+> +        error_setg(errp, "Number of counters exceeds maximum available");
+> +        return;
+>       }
+>   
+>       cpu->pmu_event_ctr_map = g_hash_table_new(g_direct_hash, g_direct_equal);
+>       if (!cpu->pmu_event_ctr_map) {
+> -        /* PMU support can not be enabled */
+> -        qemu_log_mask(LOG_UNIMP, "PMU events can't be supported\n");
+> -        cpu->cfg.pmu_num = 0;
+> -        return -1;
+> +        error_setg(errp, "Unable to allocate PMU event hash table");
+> +        return;
+>       }
+>   
+>       /* Create a bitmask of available programmable counters */
+> -    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, num_counters);
+> -
+> -    return 0;
+> +    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
+>   }
+> diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
+> index 2bfb71ba87..88e0713296 100644
+> --- a/target/riscv/pmu.h
+> +++ b/target/riscv/pmu.h
+> @@ -17,13 +17,14 @@
+>    */
+>   
+>   #include "cpu.h"
+> +#include "qapi/error.h"
+>   
+>   bool riscv_pmu_ctr_monitor_instructions(CPURISCVState *env,
+>                                           uint32_t target_ctr);
+>   bool riscv_pmu_ctr_monitor_cycles(CPURISCVState *env,
+>                                     uint32_t target_ctr);
+>   void riscv_pmu_timer_cb(void *priv);
+> -int riscv_pmu_init(RISCVCPU *cpu, int num_counters);
+> +void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-Tested-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Zhiwei
 
-Thanks
-Zhenzhong
+>   int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
+>                                  uint32_t ctr_idx);
+>   int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx);
 
