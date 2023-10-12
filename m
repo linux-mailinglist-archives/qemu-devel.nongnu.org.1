@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF587C6DE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 14:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 513387C6DE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 14:21:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qquf6-0003Dz-TG; Thu, 12 Oct 2023 08:19:32 -0400
+	id 1qqufC-0003Lj-NW; Thu, 12 Oct 2023 08:19:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qquf4-0003Cz-Lj
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:30 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqufA-0003JR-DT
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:36 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qquf2-0001pi-CX
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:30 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-53db1fbee70so1579933a12.2
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 05:19:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qquf8-0001qf-PL
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 08:19:36 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9b98a699f45so140132066b.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 05:19:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697113166; x=1697717966; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697113173; x=1697717973; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xa2WXsDwKflmWK2k8quohK6TTrUH1twZfhC/r4NA1UE=;
- b=nLvXAOThsr3uR2a97tQKtPvjWU5llPjrq1nzOnGCKl7KH7fwtOhSdT94qupGpCjG0y
- 8c+v1cI7n38tjYOxCocAEHgf/k6EW0aT3oRM4Yn2STewLs9hXQ/lZFe3ioSlx9mW1I4R
- up6QG8M8zCaqmlyZkMllUtAbR6MG4HWD5m/WBA9ooygZ02Tuh9wAKMpXZGw/etkTByoV
- 71R5RMsRUWembW/3ou+a//5CntVsJuvcocvtbErCFJuNPrF85ul0C1K/3wG+QKxUDSob
- ObF7BNgLK5UrJXzIfGrBjplEbekqf/rOx7WsHoE1O5B91no482mHkob/YgGyAGPU9w0n
- UJqg==
+ bh=R+a0EyKEUxgm0lXUaYS7q8xxVvw9rO8rB+Ai3q4Lewo=;
+ b=HRYzUdjuIzzshSApbyr6p80clJeH0G2TR9aLDH244d7GvCcTIH+nk1AKjkmuo7BXXT
+ d/koBRIC3dMcx1KT6P0ECDXYd5S4aL1qcumb82bilXZj/QDhs454npNQKSeG2N/GYm8T
+ aRm3AswaN2pYN2LFzUM2+vYOdYC7Hb1+BQO6oz9FjS9Mjfa3j0tEEIYw69r3FJx/zQwm
+ j+XIUTzKGSEdrpx14brh9WYymhdCPcT6rg37hG4/LWPSvouzX2VfPMfkeyRSbiihJizg
+ Gj6vTP1F3fW8ku7QB4s1aiOuGeyaUOG1F8I1C5sMA1xDvLnb7yklt5eWr5+gDRnLtbrF
+ itGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697113166; x=1697717966;
+ d=1e100.net; s=20230601; t=1697113173; x=1697717973;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xa2WXsDwKflmWK2k8quohK6TTrUH1twZfhC/r4NA1UE=;
- b=uPyPLwu411Qtb2ySiuQG/eFNQyDLVMLut6oPsfWHGuGaROUX9wduGvTWrWbJ8eKoak
- tb1m17x28P9Sey8in6JxBRok5RhEqU5hFupovYDRNbp40OtSNkqQzpc/b3m0XqE/sQJ7
- SO+Oqsh6v7vACeyZQqJbqrwwGh6qCKpqY//wI+jbrAPts0+WCZaj0hClsrbifsinKoSJ
- FHXk0goVPPpzAQWe8u3opvXUKAgA8J1m6vVLeku1GTtnMK54na9rUVAUX6XVwxMxoz+d
- Q1fiL/bwro3ov4H0lMJvl0rhkgXAShsS7RDtXjGJG9xd6a+uYjb0V8+6gpH3WPxXdFOH
- TJBA==
-X-Gm-Message-State: AOJu0YxmDaLCUWhVTTDYK11HggoxT82XzA+OnEhGazYSOAgWyhqU6cfe
- irRlay0F280bd/pBs6mPyzknh/X5vupvkAYLQYOIeA==
-X-Google-Smtp-Source: AGHT+IHWri4VGwpam1SvWstYU1rGbm25Dgour2hCbCjOI/FDptteoXJULnsYH1UGWghsYmgDZzClYA==
-X-Received: by 2002:a05:6402:1250:b0:533:e314:20dd with SMTP id
- l16-20020a056402125000b00533e31420ddmr20275891edw.13.1697113166626; 
- Thu, 12 Oct 2023 05:19:26 -0700 (PDT)
+ bh=R+a0EyKEUxgm0lXUaYS7q8xxVvw9rO8rB+Ai3q4Lewo=;
+ b=iXaATBjjco0W7Qt9f3SJZgoOBn7eSCDaTUadfY0kFw2yrlC7XcdffZYKZskUbT25GW
+ PZK69UuaLoKsON5xUsxOR+OKZT+F0hbSMtKnef+PuRCfuIC2K2+z5cw/h4dbR8gUw/B+
+ uTQbRzrMyUZ4cAjmXD0anJYVCfRtMKK3LRGvBCZ1ccnVYWPQEqQ3lf+aIjSB6twR1IbQ
+ HS1wS3Umfe8mEKq5W3aqs72+/DHZ1zeE+oOFJ23vIO9niLp54JBxPkbLir27mTo0131h
+ Utz29T1vR/EkioPuBCbouIVE4fc63Q5vF8F66jZhfLRbWS0tvIXZzIEbfS7FL318oJey
+ ShDQ==
+X-Gm-Message-State: AOJu0YxvsEtx3j/0btN+/5R26hOt2x3iHTpytljjFbY+MNhxcb7WFq94
+ yM+oNhaaoMzmVRpGhF1ezR8iVZZAOyWqbs0YPX0qHA==
+X-Google-Smtp-Source: AGHT+IF8Ty1Ofc3y4oS4MyLfM3KP0DdcxO3I6XSWDaHoOKSIH9fmBD+D3NCO5YaX3Y19CVr9n65SyQ==
+X-Received: by 2002:a17:906:ef90:b0:9ae:673a:88b9 with SMTP id
+ ze16-20020a170906ef9000b009ae673a88b9mr20120482ejb.22.1697113172897; 
+ Thu, 12 Oct 2023 05:19:32 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-211-232.abo.bbox.fr. [176.131.211.232])
  by smtp.gmail.com with ESMTPSA id
- a23-20020a50ff17000000b005342fa19070sm10081874edu.89.2023.10.12.05.19.25
+ a6-20020a170906190600b009ad89697c86sm11081226eje.144.2023.10.12.05.19.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 12 Oct 2023 05:19:25 -0700 (PDT)
+ Thu, 12 Oct 2023 05:19:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/8] hw/pci-host/designware: Hoist host controller in root
- function #0
-Date: Thu, 12 Oct 2023 14:18:52 +0200
-Message-ID: <20231012121857.31873-5-philmd@linaro.org>
+Subject: [PATCH 5/8] hw/pci-host/designware: Keep host reference in
+ DesignwarePCIEViewport
+Date: Thu, 12 Oct 2023 14:18:53 +0200
+Message-ID: <20231012121857.31873-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012121857.31873-1-philmd@linaro.org>
 References: <20231012121857.31873-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,86 +93,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is always an unique root function for the host bridge
-controller. We create this function when the controller is
-realized, in designware_pcie_host_realize().
-
-No need to call qdev_get_parent_bus() each time the root function
-want to resolve its host part. Hoist a pointer in its state. Set
-the pointer once when the function is realized.
+The PCI root function is irrelevant for the ViewPort; only
+a reference to the host bridge is required. Since we can
+directly access the PCI bus, remove the pci_get_bus() call.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/pci-host/designware.h |  1 +
- hw/pci-host/designware.c         | 15 +++++----------
- 2 files changed, 6 insertions(+), 10 deletions(-)
+ include/hw/pci-host/designware.h | 2 +-
+ hw/pci-host/designware.c         | 7 +++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/include/hw/pci-host/designware.h b/include/hw/pci-host/designware.h
-index c484e377a8..9e2caa04e9 100644
+index 9e2caa04e9..e1952ad324 100644
 --- a/include/hw/pci-host/designware.h
 +++ b/include/hw/pci-host/designware.h
-@@ -71,6 +71,7 @@ struct DesignwarePCIERoot {
+@@ -32,7 +32,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIEHost, DESIGNWARE_PCIE_HOST)
+ OBJECT_DECLARE_SIMPLE_TYPE(DesignwarePCIERoot, DESIGNWARE_PCIE_ROOT)
  
-     DesignwarePCIEViewport viewports[2][DESIGNWARE_PCIE_NUM_VIEWPORTS];
-     DesignwarePCIEMSI msi;
+ typedef struct DesignwarePCIEViewport {
+-    DesignwarePCIERoot *root;
 +    DesignwarePCIEHost *host;
- };
  
- struct DesignwarePCIEHost {
+     MemoryRegion cfg;
+     MemoryRegion mem;
 diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index bacb2bdb2d..fb46493a05 100644
+index fb46493a05..d12a36b628 100644
 --- a/hw/pci-host/designware.c
 +++ b/hw/pci-host/designware.c
-@@ -57,13 +57,6 @@
- 
- #define DESIGNWARE_PCIE_IRQ_MSI                    3
- 
--static DesignwarePCIEHost *
--designware_pcie_root_to_host(DesignwarePCIERoot *root)
--{
--    BusState *bus = qdev_get_parent_bus(DEVICE(root));
--    return DESIGNWARE_PCIE_HOST(bus->parent);
--}
--
- static uint64_t designware_pcie_root_msi_read(void *opaque, hwaddr addr,
-                                               unsigned size)
+@@ -211,12 +211,11 @@ static uint64_t designware_pcie_root_data_access(void *opaque, hwaddr addr,
+                                                  uint64_t *val, unsigned len)
  {
-@@ -85,7 +78,7 @@ static void designware_pcie_root_msi_write(void *opaque, hwaddr addr,
-                                            uint64_t val, unsigned len)
- {
-     DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(opaque);
--    DesignwarePCIEHost *host = designware_pcie_root_to_host(root);
-+    DesignwarePCIEHost *host = root->host;
+     DesignwarePCIEViewport *viewport = opaque;
+-    DesignwarePCIERoot *root = viewport->root;
++    PCIHostState *pci = PCI_HOST_BRIDGE(viewport->host);
  
-     root->msi.intr[0].status |= BIT(val) & root->msi.intr[0].enable;
+     const uint8_t busnum = DESIGNWARE_PCIE_ATU_BUS(viewport->target);
+     const uint8_t devfn  = DESIGNWARE_PCIE_ATU_DEVFN(viewport->target);
+-    PCIBus    *pcibus    = pci_get_bus(PCI_DEVICE(root));
+-    PCIDevice *pcidev    = pci_find_device(pcibus, busnum, devfn);
++    PCIDevice *pcidev    = pci_find_device(pci->bus, busnum, devfn);
  
-@@ -300,7 +293,7 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
-                                               uint32_t val, int len)
- {
-     DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(d);
--    DesignwarePCIEHost *host = designware_pcie_root_to_host(root);
-+    DesignwarePCIEHost *host = root->host;
-     DesignwarePCIEViewport *viewport =
-         designware_pcie_root_get_current_viewport(root);
+     if (pcidev) {
+         addr &= pci_config_size(pcidev) - 1;
+@@ -445,7 +444,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+         g_free(name);
  
-@@ -392,7 +385,8 @@ static char *designware_pcie_viewport_name(const char *direction,
- static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
- {
-     DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(dev);
--    DesignwarePCIEHost *host = designware_pcie_root_to_host(root);
-+    DesignwarePCIEHost *host = DESIGNWARE_PCIE_HOST(
-+                                    qdev_get_parent_bus(DEVICE(dev))->parent);
-     MemoryRegion *host_mem = get_system_memory();
-     MemoryRegion *address_space = &host->pci.memory;
-     PCIBridge *br = PCI_BRIDGE(dev);
-@@ -406,6 +400,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
-     size_t i;
- 
-     br->bus_name  = "dw-pcie";
-+    root->host = host;
- 
-     pci_set_word(dev->config + PCI_COMMAND,
-                  PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
+         viewport = &root->viewports[DESIGNWARE_PCIE_VIEWPORT_OUTBOUND][i];
+-        viewport->root    = root;
++        viewport->host    = host;
+         viewport->inbound = false;
+         viewport->base    = 0x0000000000000000ULL;
+         viewport->target  = 0x0000000000000000ULL;
 -- 
 2.41.0
 
