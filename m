@@ -2,87 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BC97C64DE
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 07:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B1B7C6501
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 08:00:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqoaz-00046o-0v; Thu, 12 Oct 2023 01:50:53 -0400
+	id 1qqokI-0006hO-EQ; Thu, 12 Oct 2023 02:00:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqoaq-0003oo-JZ
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 01:50:48 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qqoao-0007X7-GU
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 01:50:44 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-53fbf2c42bfso464952a12.3
- for <qemu-devel@nongnu.org>; Wed, 11 Oct 2023 22:50:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697089841; x=1697694641;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
- b=FvsjOrZ/ezlQobe9S/p4gCLkZz4niiATsVJgNbTxsowuhayWVOWgpBBNUvA9yHcfCk
- SR70Hv1YnnkAHS1bLj1YlRuuPb2Y2Pwo34HEtkwcK6cjShtqZKQjlncuze5f2bzTB+Eb
- m27eAO+GFK5+M1db6bl7PsiYX4ugv1XH0dWv5mIaZfNSNpr4chHcYf5bA4W70pWNeaPK
- WRVpGACl6kjTtwsRj0zDR70GkYaqET1JMrrwEmkWV9UQuWnpXbC7af3mzwvaxjEUqO9N
- 7fALLUkqrX4TDM+gHhM6sWOU3g7p9nPjia2VAnV/Vdcn+k6RGBsHHly7I5l1Cs4HkEWF
- Nceg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697089841; x=1697694641;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
- b=O5sCay4mW3OjV4qJrPq8+AmTlsoNrZENNwfqbTirByYISkqwauVLBU2Y43XKxcUtz/
- +Nb0S69c76M8fHCcySu+yIQFFbcgyESMVtVtv2bjJrWiaq7/MDLlteWEGz4dVkaUS6/9
- S4l0fDu2nBPJrYRr62Bx+ZmjprsCE5s16CcLBMl0XcpLai6kEw6852HWoW+ZR17oUXSx
- LhelpBg5dbYbLuGm7u/l5MN2W38jygLE2ah1iwo/xPF7zD/Yg/RZzEm8zazLh7TiKdpz
- oVGCSBDRUgX6z2MsF/hzJ6W0fTg8CUaF7+tXs+q5ya4hPqVdCa79VtXmcZgCtBITF/Bh
- wZdA==
-X-Gm-Message-State: AOJu0Yxy1wx5wY/FEDjCNyrpUxY8QBhL8yQ7pkUD+eW7kuRj/yuJf/oD
- DSMn24+Zbm/GwxnyIMVkoXI6Dw==
-X-Google-Smtp-Source: AGHT+IFiyptn0Bch+U2Hep7Upf2+TFisnpY9VL4V69qyJiuW3QFfqIK/ciT0CpQywnvkFYtRAu0v4w==
-X-Received: by 2002:a17:90b:110a:b0:27c:eb84:39af with SMTP id
- gi10-20020a17090b110a00b0027ceb8439afmr6776150pjb.43.1697089841366; 
- Wed, 11 Oct 2023 22:50:41 -0700 (PDT)
-Received: from localhost ([157.82.206.10]) by smtp.gmail.com with UTF8SMTPSA id
- 21-20020a17090a035500b002636dfcc6f5sm1063944pjf.3.2023.10.11.22.50.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 11 Oct 2023 22:50:40 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v10 18/18] contrib/plugins: Allow to log registers
-Date: Thu, 12 Oct 2023 14:48:57 +0900
-Message-ID: <20231012054902.38447-19-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231012054902.38447-1-akihiko.odaki@daynix.com>
-References: <20231012054902.38447-1-akihiko.odaki@daynix.com>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqokF-0006gR-If
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 02:00:27 -0400
+Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qqok0-0001C8-9c
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 02:00:27 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R111e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=3; SR=0;
+ TI=SMTPD_---0VtzIjPL_1697090400; 
+Received: from 30.221.101.97(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VtzIjPL_1697090400) by smtp.aliyun-inc.com;
+ Thu, 12 Oct 2023 14:00:01 +0800
+Message-ID: <d90102c9-e4c3-4c2f-896e-908584b97202@linux.alibaba.com>
+Date: Thu, 12 Oct 2023 13:59:01 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231009110239.66778-1-philmd@linaro.org>
+ <20231009110239.66778-3-philmd@linaro.org>
+ <8e8b6cef-efbf-42ac-975c-b523dc24a531@linux.alibaba.com>
+ <58838379-60bf-4af4-980b-cff8ee49bfc2@linaro.org>
+ <4a7e39f4-4302-4dfd-9112-4deea5c7403f@linux.alibaba.com>
+ <3b745e06-d037-f1b7-0fec-373959598a15@linaro.org>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <3b745e06-d037-f1b7-0fec-373959598a15@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::531;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.131;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-131.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,249 +67,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This demonstrates how a register can be read from a plugin.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- docs/devel/tcg-plugins.rst |  10 +++-
- contrib/plugins/execlog.c  | 120 +++++++++++++++++++++++++++----------
- 2 files changed, 97 insertions(+), 33 deletions(-)
+On 2023/10/11 13:31, Philippe Mathieu-Daudé wrote:
+> On 11/10/23 05:25, LIU Zhiwei wrote:
+>>
+>> On 2023/10/11 1:04, Richard Henderson wrote:
+>>> On 10/9/23 05:42, LIU Zhiwei wrote:
+>>>>
+>>>> On 2023/10/9 19:02, Philippe Mathieu-Daudé wrote:
+>>>>> When CPUArchState* is available (here CPURISCVState*), we
+>>>>> can use the fast env_archcpu() macro to get ArchCPU* (here
+>>>>> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
+>>>>> when building with --enable-qom-cast-debug.
+>
+>
+>>>> If so, maybe we have to do this qom cast somewhere.
+>>>
+>>> No, I don't think so.  Or at least not in these places.
+>>
+>> Yes.  Perhaps, we should remove all RISCV_CPU macros using after the 
+>> qom objects realized.
+>>
+>> Do you think we should remove the RISCV_CPU using in 
+>> riscv_cpu_exec_interrupt? Although it  is not so hot. I think there 
+>> is no reason to use it there.
+>
+> I have some note in my TODO to check replacing CPUState by ArchCPU in
+> TCGCPUOps (like the cpu_exec_interrupt handler you mentioned). 
 
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index 81dcd43a61..c9f8b27590 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -497,6 +497,15 @@ arguments if required::
-   $ qemu-system-arm $(QEMU_ARGS) \
-     -plugin ./contrib/plugins/libexeclog.so,ifilter=st1w,afilter=0x40001808 -d plugin
- 
-+This plugin can also dump a specified register. The specification of register
-+follows `GDB standard target features <https://sourceware.org/gdb/onlinedocs/gdb/Standard-Target-Features.html>`__.
-+
-+Specify the name of the feature that contains the register and the name of the
-+register with ``rfile`` and ``reg`` options, respectively::
-+
-+  $ qemu-system-arm $(QEMU_ARGS) \
-+    -plugin ./contrib/plugins/libexeclog.so,rfile=org.gnu.gdb.arm.core,reg=sp -d plugin
-+
- - contrib/plugins/cache.c
- 
- Cache modelling plugin that measures the performance of a given L1 cache
-@@ -583,4 +592,3 @@ The following API is generated from the inline documentation in
- include the full kernel-doc annotations.
- 
- .. kernel-doc:: include/qemu/qemu-plugin.h
--
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 82dc2f584e..f3e714c888 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -15,27 +15,43 @@
- 
- #include <qemu-plugin.h>
- 
-+typedef struct CPU {
-+    /* Store last executed instruction on each vCPU as a GString */
-+    GString *last_exec;
-+    GByteArray *reg_history[2];
-+
-+    int reg;
-+} CPU;
-+
- QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
- 
--/* Store last executed instruction on each vCPU as a GString */
--static GPtrArray *last_exec;
-+static CPU *cpus;
-+static int num_cpus;
- static GRWLock expand_array_lock;
- 
- static GPtrArray *imatches;
- static GArray *amatches;
- 
-+static char *rfile_name;
-+static char *reg_name;
-+
- /*
-- * Expand last_exec array.
-+ * Expand cpu array.
-  *
-  * As we could have multiple threads trying to do this we need to
-  * serialise the expansion under a lock.
-  */
--static void expand_last_exec(int cpu_index)
-+static void expand_cpu(int cpu_index)
- {
-     g_rw_lock_writer_lock(&expand_array_lock);
--    while (cpu_index >= last_exec->len) {
--        GString *s = g_string_new(NULL);
--        g_ptr_array_add(last_exec, s);
-+    if (cpu_index >= num_cpus) {
-+        cpus = g_realloc_n(cpus, cpu_index + 1, sizeof(*cpus));
-+        while (cpu_index >= num_cpus) {
-+            cpus[num_cpus].last_exec = g_string_new(NULL);
-+            cpus[num_cpus].reg_history[0] = g_byte_array_new();
-+            cpus[num_cpus].reg_history[1] = g_byte_array_new();
-+            num_cpus++;
-+        }
-     }
-     g_rw_lock_writer_unlock(&expand_array_lock);
- }
-@@ -50,8 +66,8 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
- 
-     /* Find vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
--    g_assert(cpu_index < last_exec->len);
--    s = g_ptr_array_index(last_exec, cpu_index);
-+    g_assert(cpu_index < num_cpus);
-+    s = cpus[cpu_index].last_exec;
-     g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Indicate type of memory access */
-@@ -77,28 +93,42 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
-  */
- static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
- {
--    GString *s;
-+    int n;
-+    int i;
- 
--    /* Find or create vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
--    if (cpu_index >= last_exec->len) {
--        g_rw_lock_reader_unlock(&expand_array_lock);
--        expand_last_exec(cpu_index);
--        g_rw_lock_reader_lock(&expand_array_lock);
--    }
--    s = g_ptr_array_index(last_exec, cpu_index);
--    g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Print previous instruction in cache */
--    if (s->len) {
--        qemu_plugin_outs(s->str);
-+    if (cpus[cpu_index].last_exec->len) {
-+        if (cpus[cpu_index].reg >= 0) {
-+            GByteArray *current = cpus[cpu_index].reg_history[0];
-+            GByteArray *last = cpus[cpu_index].reg_history[1];
-+
-+            g_byte_array_set_size(current, 0);
-+            n = qemu_plugin_read_register(current, cpus[cpu_index].reg);
-+
-+            if (n != last->len || memcmp(current->data, last->data, n)) {
-+                g_string_append(cpus[cpu_index].last_exec, ", reg,");
-+                for (i = 0; i < n; i++) {
-+                    g_string_append_printf(cpus[cpu_index].last_exec, " %02x",
-+                                           current->data[i]);
-+                }
-+            }
-+
-+            cpus[cpu_index].reg_history[0] = last;
-+            cpus[cpu_index].reg_history[1] = current;
-+        }
-+
-+        qemu_plugin_outs(cpus[cpu_index].last_exec->str);
-         qemu_plugin_outs("\n");
-     }
- 
-     /* Store new instruction in cache */
-     /* vcpu_mem will add memory access information to last_exec */
--    g_string_printf(s, "%u, ", cpu_index);
--    g_string_append(s, (char *)udata);
-+    g_string_printf(cpus[cpu_index].last_exec, "%u, ", cpu_index);
-+    g_string_append(cpus[cpu_index].last_exec, (char *)udata);
-+
-+    g_rw_lock_reader_unlock(&expand_array_lock);
- }
- 
- /**
-@@ -167,8 +197,10 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-                                              QEMU_PLUGIN_MEM_RW, NULL);
- 
-             /* Register callback on instruction */
--            qemu_plugin_register_vcpu_insn_exec_cb(insn, vcpu_insn_exec,
--                                                   QEMU_PLUGIN_CB_NO_REGS, output);
-+            qemu_plugin_register_vcpu_insn_exec_cb(
-+                insn, vcpu_insn_exec,
-+                rfile_name ? QEMU_PLUGIN_CB_R_REGS : QEMU_PLUGIN_CB_NO_REGS,
-+                output);
- 
-             /* reset skip */
-             skip = (imatches || amatches);
-@@ -177,17 +209,33 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-     }
- }
- 
-+static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
-+{
-+    int reg = -1;
-+
-+    expand_cpu(vcpu_index);
-+
-+    if (rfile_name) {
-+        int rfile = qemu_plugin_find_register_file(vcpu_index, rfile_name);
-+        if (rfile >= 0) {
-+            reg = qemu_plugin_find_register(vcpu_index, rfile, reg_name);
-+        }
-+    }
-+
-+    g_rw_lock_writer_lock(&expand_array_lock);
-+    cpus[vcpu_index].reg = reg;
-+    g_rw_lock_writer_unlock(&expand_array_lock);
-+}
-+
- /**
-  * On plugin exit, print last instruction in cache
-  */
- static void plugin_exit(qemu_plugin_id_t id, void *p)
- {
-     guint i;
--    GString *s;
--    for (i = 0; i < last_exec->len; i++) {
--        s = g_ptr_array_index(last_exec, i);
--        if (s->str) {
--            qemu_plugin_outs(s->str);
-+    for (i = 0; i < num_cpus; i++) {
-+        if (cpus[i].last_exec->str) {
-+            qemu_plugin_outs(cpus[i].last_exec->str);
-             qemu_plugin_outs("\n");
-         }
-     }
-@@ -224,9 +272,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-      * we don't know the size before emulation.
-      */
-     if (info->system_emulation) {
--        last_exec = g_ptr_array_sized_new(info->system.max_vcpus);
--    } else {
--        last_exec = g_ptr_array_new();
-+        cpus = g_new(CPU, info->system.max_vcpus);
-     }
- 
-     for (int i = 0; i < argc; i++) {
-@@ -236,13 +282,23 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-             parse_insn_match(tokens[1]);
-         } else if (g_strcmp0(tokens[0], "afilter") == 0) {
-             parse_vaddr_match(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "rfile") == 0) {
-+            rfile_name = g_strdup(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "reg") == 0) {
-+            reg_name = g_strdup(tokens[1]);
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", opt);
-             return -1;
-         }
-     }
- 
-+    if ((!rfile_name) != (!reg_name)) {
-+        fputs("file and reg need to be set at the same time\n", stderr);
-+        return -1;
-+    }
-+
-     /* Register translation block and exit callbacks */
-+    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
-     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
- 
--- 
-2.42.0
+IMHO, this will make it harder for heterogeneous SOC support. ArchCPU is 
+not a target agnostic struct.
 
+I must miss something.
+
+> However
+> I'm running out of time, so feel free to try it.
+I'd like to have a try if it will not block the heterogeneous SOC support.
+>
+> Using ArchCPU avoids the cast in target code.
+Yes
+>
+>> Except this, there are many other places in hw/ and target/riscv 
+>> using the RISCV_CPU macro.
+>
+> If a method is exposed as API, we need to check the type. After that
+> for internal calls this is pointless.
+
+Make sense. Thanks.
+
+Zhiwei
+
+>
+>> If we know whether we should remove the RISCV_CPU macro use in these 
+>> places, we can do it in another patch.
+>>
+>> Thanks,
+>> Zhiwei
+>>
+>>>
+>>>
+>>> r~
 
