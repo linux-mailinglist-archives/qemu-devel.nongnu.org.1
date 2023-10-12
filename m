@@ -2,82 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F89C7C6C42
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 13:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FBA7C6C86
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 13:39:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqtot-0007qi-3l; Thu, 12 Oct 2023 07:25:36 -0400
+	id 1qqu17-0004DU-1w; Thu, 12 Oct 2023 07:38:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqtoj-0007nM-JB
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:25:25 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qqu15-0004DD-G4
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:38:11 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qqtoh-00056R-J8
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:25:24 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4054496bde3so8780415e9.1
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 04:25:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qqu13-0008DI-Fm
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 07:38:11 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-405417465aaso9381145e9.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 04:38:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697109922; x=1697714722; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=myotuKchjawAAdVNYjFyZAXE7AUpZ7N7NpqY9ysppLg=;
- b=aGr5QcZRP882yvxszTYkl/lpUUDwqnpNfKnVvkt5Qbz95SR2qdC2t3QVmdLVq3e2I4
- 4yEz9hTj7j5DN7CtIc3+3dNkNTG+LIGmWcoF4oJkA2n0wordbrdBODC6fmL+YteYapWx
- hyBhgD2k0VsTB12GlyJZNyNw/PezZDRIZbsgPpiL8PYX7iScuUQa1Xr0x+gJCmawjVVv
- sbmboX7MttbfT7L9Yz7tjdjcHXZDF0kqTgC8vGNAzMMrPyr0UvEYcfjSKCpjKsTGALj4
- g5MXzBvpOPPGpb/4gCAhIUcJ/27JV1d3Q12y6xALp9XRGPV1uog80ilB7CPufkfgsD6q
- DzZA==
+ d=linaro.org; s=google; t=1697110687; x=1697715487; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KYoal1t73cZzk+XXznIIWRUd96h0pUkSOFoByGrG2TA=;
+ b=ly4l4FXZSzkoCX4yZ47CGwYByqKpigoURt/nzUzyR7ZsZWfdqItHL31FiAPUWuMFy9
+ otmPgfDrxlSk7yZq0rSU9M3dUjqEv+m4qgNdIxM9KkPeXsohl/C66u+T9Ryim5RKlEfP
+ 7amQITIQ0ttZ4t5wE5xHclcJ20GUZHHQ5kFk/x0z/tenHTDdKhfDpr5p4OAafd2HOJzN
+ 86FUPdroEiqT0N0bCVDw/kDUxx02x6TKiSfhQ7KhmDrPNTe3UC+CEhvYowhoeuXstjm8
+ 46mg+wvXlikAe/2AfQhB4ZYahvuJFXjTqdu3tYi2Pi1cpr4vLz4Sz4k/VP+Y4sRMrUAE
+ HqbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697109922; x=1697714722;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=myotuKchjawAAdVNYjFyZAXE7AUpZ7N7NpqY9ysppLg=;
- b=WgfujZLB3Y/NdVCIJKc+kP8h63wOxOzbWxwMe9Vo988F9e8wU419a7VlkM8lumqSwf
- f0nmzEivD0LbwwQqX4Gr7OhNha7edLuFlSLS4p08GQwKZk5wahmCufpkHdZbrdircS/s
- tuCs2HrDwwU0UqXl07LOclfn/eDwYg72i5HZ+AVcb+/CNzzt+eNW9ZSWsbT2b0ORoJx2
- unEqFPax1UqBIPKn//6twgcCUph1b4qgU38V19Qr8yKd2hItLnTpbySZSdR2TvRORIab
- KgBaonnb0Zd5Ey1lV4OGeeCRYrhO+Bg6kUcNy3i03CidGyo+VG9xUUy9/RC8UNKvy4rw
- VYqA==
-X-Gm-Message-State: AOJu0YwGACl0U/g/Lsp6gVIMCUjV4sv5xt1YmMNcNrv68nqRx5CmQdSl
- J+bIbLNZQPSHzxurSYMgkthDww==
-X-Google-Smtp-Source: AGHT+IFjOeJh7wxNhbmAICeJMYVHWAl0Nl72er8nAzqeU4sHfYqrCFIeWo3QN11lCA85NuDjfIRhAQ==
-X-Received: by 2002:a7b:c3d2:0:b0:402:cc5c:c98 with SMTP id
- t18-20020a7bc3d2000000b00402cc5c0c98mr20823412wmj.13.1697109921724; 
- Thu, 12 Oct 2023 04:25:21 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-232.abo.bbox.fr.
- [176.131.211.232]) by smtp.gmail.com with ESMTPSA id
- v3-20020a05600c15c300b004075d5664basm4924636wmf.8.2023.10.12.04.25.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 04:25:20 -0700 (PDT)
-Message-ID: <3e72aa8e-9793-7c05-722e-5a2f9a6ca76d@linaro.org>
-Date: Thu, 12 Oct 2023 13:25:18 +0200
+ d=1e100.net; s=20230601; t=1697110687; x=1697715487;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=KYoal1t73cZzk+XXznIIWRUd96h0pUkSOFoByGrG2TA=;
+ b=kBqGDp3VZLWSLVwQXMDgsaTBZSApJBiv0yHqNDd83qaUDpEwIiXzJMpp9iYJzLffvp
+ ENRIsI8kR+gddkfEGcY8/bORb1nKuqrllH1ETDOC+mQIlf51TUJtkYeZBx5j2mPxZH+V
+ KKtdu5ayLVlRxFWnpz9dNGgpN5w+r78XVGWJbjmj3xsbMajaxLmdKm9D6TXlDJevlkfZ
+ lCIeCYVGgG9+xkrcyRC0izh8vE3nuL8BQ85pAlNzObot6RvaQZx5bOETJWRqLByRT7da
+ 5TCA1veiuIlgzSGGpvRW0i7fCRCmjwg3wkTu3dDBc/qGjleo7aiJVAO0dZS09qCb5z5b
+ 8NVA==
+X-Gm-Message-State: AOJu0YzQFmMhPXdTLGIL2pMwXDjFsd0QXNd9YVAEZDnxx7MYBl6NNhcM
+ Tnu5xd0+LZf13+9bziCosqS8HSHCeXyYXtuJX/4=
+X-Google-Smtp-Source: AGHT+IFv0GcLYLDo4H6cKU7RMTDn+Pjlm4nXHE34LLMKJw9bT3qv6YqRg6SeUH1XYYX3dacGkpCWGw==
+X-Received: by 2002:a05:600c:21d0:b0:405:3a3b:2aa2 with SMTP id
+ x16-20020a05600c21d000b004053a3b2aa2mr20520923wmj.37.1697110687531; 
+ Thu, 12 Oct 2023 04:38:07 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ 11-20020a05600c230b00b004053a6b8c41sm19230014wmo.12.2023.10.12.04.38.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 12 Oct 2023 04:38:07 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id A8B3A1FFBB;
+ Thu, 12 Oct 2023 12:38:06 +0100 (BST)
+References: <20231011165234.1323725-1-quic_svaddagi@quicinc.com>
+ <20231011165234.1323725-4-quic_svaddagi@quicinc.com>
+ <d4814468-3b1c-ea34-563e-9418bf1d6220@linaro.org>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>,
+ peter.maydell@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ quic_tsoni@quicinc.com, quic_pheragu@quicinc.com,
+ quic_eberman@quicinc.com, quic_yvasi@quicinc.com,
+ quic_cvanscha@quicinc.com, quic_mnalajal@quicinc.com
+Subject: Re: [RFC/PATCH v0 03/12] gunyah: Basic support
+Date: Thu, 12 Oct 2023 12:32:34 +0100
+In-reply-to: <d4814468-3b1c-ea34-563e-9418bf1d6220@linaro.org>
+Message-ID: <87y1g8m5pd.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] MAINTAINERS: Add include/sysemu/qtest.h to the qtest
- section
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>
-References: <20231012111401.871711-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231012111401.871711-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,15 +101,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/10/23 13:14, Thomas Huth wrote:
-> We already list system/qtest.c in the qtest section, so the
-> corresponding header file should be listed here, too.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
+> Hi Srivatsa,
+>
+> On 11/10/23 18:52, Srivatsa Vaddagiri wrote:
+>> Add a new accelerator, gunyah, with basic functionality of creating a
+>> VM. Subsequent patches will add support for other functions required to
+>> run a VM.
+>> Signed-off-by: Srivatsa Vaddagiri <quic_svaddagi@quicinc.com>
+>> ---
+>>   MAINTAINERS                     |   7 +++
+>>   accel/Kconfig                   |   3 +
+>>   accel/gunyah/gunyah-accel-ops.c | 102 ++++++++++++++++++++++++++++++++
+>>   accel/gunyah/gunyah-all.c       |  70 ++++++++++++++++++++++
+>>   accel/gunyah/meson.build        |   7 +++
+>>   accel/meson.build               |   1 +
+>>   accel/stubs/gunyah-stub.c       |  13 ++++
+>>   accel/stubs/meson.build         |   1 +
+>>   docs/about/build-platforms.rst  |   2 +-
+>>   hw/arm/virt.c                   |   3 +
+>>   include/sysemu/gunyah.h         |  43 ++++++++++++++
+>>   include/sysemu/gunyah_int.h     |  27 +++++++++
+>>   meson.build                     |   9 +++
+>>   meson_options.txt               |   2 +
+>>   scripts/meson-buildoptions.sh   |   3 +
+>>   target/arm/cpu64.c              |   5 +-
+>>   16 files changed, 295 insertions(+), 3 deletions(-)
+>>   create mode 100644 accel/gunyah/gunyah-accel-ops.c
+>>   create mode 100644 accel/gunyah/gunyah-all.c
+>>   create mode 100644 accel/gunyah/meson.build
+>>   create mode 100644 accel/stubs/gunyah-stub.c
+>>   create mode 100644 include/sysemu/gunyah.h
+>>   create mode 100644 include/sysemu/gunyah_int.h
+>
+> Can we move gunyah_int.h to accel/gunyah/?
+
+If it's all internal to gunyah itself you could rename it to internal.h
+(although we do have various forms of foo-internal.h across the code
+base).
+
+However I see the reason is the other accelerators have done so:
+
+       accel/hvf/hvf-accel-ops.c
+  58:#include "sysemu/hvf_int.h"
+       accel/hvf/hvf-all.c
+  14:#include "sysemu/hvf_int.h"
+       accel/kvm/kvm-accel-ops.c
+  20:#include "sysemu/kvm_int.h"
+       accel/kvm/kvm-all.c
+  31:#include "sysemu/kvm_int.h"
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
