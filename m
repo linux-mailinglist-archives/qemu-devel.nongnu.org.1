@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54007C7068
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C71767C7074
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:38:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqwoN-0002jp-P2; Thu, 12 Oct 2023 10:37:15 -0400
+	id 1qqwoT-0002qM-MV; Thu, 12 Oct 2023 10:37:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoJ-0002f3-GV
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoR-0002ob-Mx
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoH-0005f3-NG
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:11 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qqwoP-0005h4-8E
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:37:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697121428;
+ s=mimecast20190719; t=1697121436;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=G8HbmMxhZr21iewamiKzg2OymUfpUu0hHxajFY6rFQY=;
- b=cirB2iTaVg6/UjptjQV+sjKhDmCT1eN4i5SUSteL7iEYriAhdMLLLD3IabUzXo746b3Ld2
- Sl+FOADm3PvN2bOMqT4WHP3oobOgW/9uLZ83Oj1IFneu+qGZJyjj4IBR3HrX+2vym/FK28
- rMlttirucVJ1stHqSJrfS2z07j3AFII=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-240-Ih4rhxLROSen7w7q8KO5jQ-1; Thu, 12 Oct 2023 10:37:01 -0400
-X-MC-Unique: Ih4rhxLROSen7w7q8KO5jQ-1
+ bh=ZapqEeuJK8N92UN9NB9e2BZXJx2uX5S3xPjC5oltZy0=;
+ b=GY6i3qHw7q3LD3VtLZ7IM0thN/ODOo2Ku/6tb4Y1DqaCmrJIkn2jnWFVzOzVCCvFAMWDJZ
+ hQ57gK9O+8FJtbgT+VE9Jmgul1CCSqc3WBJk4LkG6FRjZvqVldyS+Axa+lAfQJgvyZlgv8
+ NxACC+7TRF7rbUnOX1ENwM7LmsKd6+c=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-237-jqRGU745PVmlpsMWZ7juEA-1; Thu, 12 Oct 2023 10:37:02 -0400
+X-MC-Unique: jqRGU745PVmlpsMWZ7juEA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E9B1862F8A;
- Thu, 12 Oct 2023 14:37:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 586812800E8A;
+ Thu, 12 Oct 2023 14:37:02 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.192.176])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 221B41C06534;
- Thu, 12 Oct 2023 14:37:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 67ACC1C06534;
+ Thu, 12 Oct 2023 14:37:01 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Peter Xu <peterx@redhat.com>,
+Cc: David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>,
  "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [GIT PULL 03/18] softmmu/physmem: Fixup qemu_ram_block_from_host()
- documentation
-Date: Thu, 12 Oct 2023 16:36:40 +0200
-Message-ID: <20231012143655.114631-4-david@redhat.com>
+Subject: [GIT PULL 04/18] kvm: Return number of free memslots
+Date: Thu, 12 Oct 2023 16:36:41 +0200
+Message-ID: <20231012143655.114631-5-david@redhat.com>
 In-Reply-To: <20231012143655.114631-1-david@redhat.com>
 References: <20231012143655.114631-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,76 +79,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's fixup the documentation (e.g., removing traces of the ram_addr
-parameter that no longer exists) and move it to the header file while at
-it.
+Let's return the number of free slots instead of only checking if there
+is a free slot. While at it, check all address spaces, which will also
+consider SMM under x86 correctly.
 
-Message-ID: <20230926185738.277351-4-david@redhat.com>
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+This is a preparation for memory devices that consume multiple memslots.
+
+Message-ID: <20230926185738.277351-5-david@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/exec/cpu-common.h | 15 +++++++++++++++
- system/physmem.c          | 17 -----------------
- 2 files changed, 15 insertions(+), 17 deletions(-)
+ accel/kvm/kvm-all.c      | 33 ++++++++++++++++++++-------------
+ accel/stubs/kvm-stub.c   |  4 ++--
+ hw/mem/memory-device.c   |  2 +-
+ include/sysemu/kvm.h     |  2 +-
+ include/sysemu/kvm_int.h |  1 +
+ 5 files changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 605b160a7e..30c376a4de 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -83,6 +83,21 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t length);
- ram_addr_t qemu_ram_addr_from_host(void *ptr);
- ram_addr_t qemu_ram_addr_from_host_nofail(void *ptr);
- RAMBlock *qemu_ram_block_by_name(const char *name);
-+
-+/*
-+ * Translates a host ptr back to a RAMBlock and an offset in that RAMBlock.
-+ *
-+ * @ptr: The host pointer to translate.
-+ * @round_offset: Whether to round the result offset down to a target page
-+ * @offset: Will be set to the offset within the returned RAMBlock.
-+ *
-+ * Returns: RAMBlock (or NULL if not found)
-+ *
-+ * By the time this function returns, the returned pointer is not protected
-+ * by RCU anymore.  If the caller is not within an RCU critical section and
-+ * does not hold the iothread lock, it must have other means of protecting the
-+ * pointer, such as a reference to the memory region that owns the RAMBlock.
-+ */
- RAMBlock *qemu_ram_block_from_host(void *ptr, bool round_offset,
-                                    ram_addr_t *offset);
- ram_addr_t qemu_ram_block_host_offset(RAMBlock *rb, void *host);
-diff --git a/system/physmem.c b/system/physmem.c
-index edc3ed8ab9..fc2b0fee01 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -2221,23 +2221,6 @@ ram_addr_t qemu_ram_block_host_offset(RAMBlock *rb, void *host)
-     return res;
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 72e1d1141c..5937e46e12 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -181,6 +181,24 @@ int kvm_get_max_memslots(void)
+     return s->nr_slots;
  }
  
--/*
-- * Translates a host ptr back to a RAMBlock, a ram_addr and an offset
-- * in that RAMBlock.
-- *
-- * ptr: Host pointer to look up
-- * round_offset: If true round the result offset down to a page boundary
-- * *ram_addr: set to result ram_addr
-- * *offset: set to result offset within the RAMBlock
-- *
-- * Returns: RAMBlock (or NULL if not found)
-- *
-- * By the time this function returns, the returned pointer is not protected
-- * by RCU anymore.  If the caller is not within an RCU critical section and
-- * does not hold the iothread lock, it must have other means of protecting the
-- * pointer, such as a reference to the region that includes the incoming
-- * ram_addr_t.
-- */
- RAMBlock *qemu_ram_block_from_host(void *ptr, bool round_offset,
-                                    ram_addr_t *offset)
++unsigned int kvm_get_free_memslots(void)
++{
++    unsigned int used_slots = 0;
++    KVMState *s = kvm_state;
++    int i;
++
++    kvm_slots_lock();
++    for (i = 0; i < s->nr_as; i++) {
++        if (!s->as[i].ml) {
++            continue;
++        }
++        used_slots = MAX(used_slots, s->as[i].ml->nr_used_slots);
++    }
++    kvm_slots_unlock();
++
++    return s->nr_slots - used_slots;
++}
++
+ /* Called with KVMMemoryListener.slots_lock held */
+ static KVMSlot *kvm_get_free_slot(KVMMemoryListener *kml)
  {
+@@ -196,19 +214,6 @@ static KVMSlot *kvm_get_free_slot(KVMMemoryListener *kml)
+     return NULL;
+ }
+ 
+-bool kvm_has_free_slot(MachineState *ms)
+-{
+-    KVMState *s = KVM_STATE(ms->accelerator);
+-    bool result;
+-    KVMMemoryListener *kml = &s->memory_listener;
+-
+-    kvm_slots_lock();
+-    result = !!kvm_get_free_slot(kml);
+-    kvm_slots_unlock();
+-
+-    return result;
+-}
+-
+ /* Called with KVMMemoryListener.slots_lock held */
+ static KVMSlot *kvm_alloc_slot(KVMMemoryListener *kml)
+ {
+@@ -1387,6 +1392,7 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
+             }
+             start_addr += slot_size;
+             size -= slot_size;
++            kml->nr_used_slots--;
+         } while (size);
+         return;
+     }
+@@ -1412,6 +1418,7 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
+         ram_start_offset += slot_size;
+         ram += slot_size;
+         size -= slot_size;
++        kml->nr_used_slots++;
+     } while (size);
+ }
+ 
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index 235dc661bc..a5d4442d8f 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -109,9 +109,9 @@ int kvm_irqchip_remove_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
+     return -ENOSYS;
+ }
+ 
+-bool kvm_has_free_slot(MachineState *ms)
++unsigned int kvm_get_free_memslots(void)
+ {
+-    return false;
++    return 0;
+ }
+ 
+ void kvm_init_cpu_signals(CPUState *cpu)
+diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
+index 667d56bd29..98e355c960 100644
+--- a/hw/mem/memory-device.c
++++ b/hw/mem/memory-device.c
+@@ -59,7 +59,7 @@ static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
+     const uint64_t size = memory_region_size(mr);
+ 
+     /* we will need a new memory slot for kvm and vhost */
+-    if (kvm_enabled() && !kvm_has_free_slot(ms)) {
++    if (kvm_enabled() && !kvm_get_free_memslots()) {
+         error_setg(errp, "hypervisor has no free memory slots left");
+         return;
+     }
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index ee9025f8e9..c3d831baef 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -215,7 +215,7 @@ typedef struct KVMRouteChange {
+ 
+ /* external API */
+ 
+-bool kvm_has_free_slot(MachineState *ms);
++unsigned int kvm_get_free_memslots(void);
+ bool kvm_has_sync_mmu(void);
+ int kvm_has_vcpu_events(void);
+ int kvm_has_robust_singlestep(void);
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index a5b9122cb8..075939a3c4 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -40,6 +40,7 @@ typedef struct KVMMemoryUpdate {
+ typedef struct KVMMemoryListener {
+     MemoryListener listener;
+     KVMSlot *slots;
++    unsigned int nr_used_slots;
+     int as_id;
+     QSIMPLEQ_HEAD(, KVMMemoryUpdate) transaction_add;
+     QSIMPLEQ_HEAD(, KVMMemoryUpdate) transaction_del;
 -- 
 2.41.0
 
