@@ -2,66 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AB67C6FCE
-	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 15:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE8D7C7003
+	for <lists+qemu-devel@lfdr.de>; Thu, 12 Oct 2023 16:06:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qqw9c-0000JN-Ht; Thu, 12 Oct 2023 09:55:08 -0400
+	id 1qqwJY-0006Md-BR; Thu, 12 Oct 2023 10:05:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqw9T-0000Fj-Vp; Thu, 12 Oct 2023 09:55:00 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qqwJT-0006Lk-ME
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:05:19 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qqw9Q-0005g9-Co; Thu, 12 Oct 2023 09:54:59 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c08:ba1:0:640:375a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 8EDA162FC1;
- Thu, 12 Oct 2023 16:54:48 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:a401::1:4] (unknown
- [2a02:6b8:b081:a401::1:4])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id lsfLlv6Oo8c0-PBbk7Yew; Thu, 12 Oct 2023 16:54:48 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1697118888;
- bh=vaxMZnDcCMy1UdA9IORdlkoxGImo99atnIvQNusKcug=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=twWIyjXbm1NaEMRgbYe8bD4RH657W1UPrS2L0MwiCq+7jZWMEC8k4erhuwr6wkBK5
- w4ATyACH3QBdOIfdyIa/EaFVoJ5+JXP+xaZ6ALNplVPqomx6KMTenXxZJ1WWLYRRwc
- jxwoMJiiLEfFpl5+Jb5bFO+rJEtaAnYiJ1WjTczM=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <293c6b03-857d-42b8-b0cd-ab0a1f3ff85f@yandex-team.ru>
-Date: Thu, 12 Oct 2023 16:54:46 +0300
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qqwJQ-0007of-J0
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 10:05:19 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5rt26K6Vz6JB23;
+ Thu, 12 Oct 2023 22:02:02 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Thu, 12 Oct 2023 15:05:08 +0100
+To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Michael Tsirkin
+ <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+CC: <linuxarm@huawei.com>, Fan Ni <fan.ni@samsung.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 0/4] hw/cxl: Line length reduction and related
+Date: Thu, 12 Oct 2023 15:05:10 +0100
+Message-ID: <20231012140514.3697-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/10] mirror: implement mirror_change method
-Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com, den@virtuozzo.com,
- t.lamprecht@proxmox.com, alexander.ivanov@virtuozzo.com
-References: <20231009094619.469668-1-f.ebner@proxmox.com>
- <20231009094619.469668-6-f.ebner@proxmox.com>
- <f6987c95-b1c4-4bfa-ae05-931c4f946151@yandex-team.ru>
- <cc727bee-b9aa-4493-b26e-1ea93d15f8eb@proxmox.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <cc727bee-b9aa-4493-b26e-1ea93d15f8eb@proxmox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,80 +60,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.10.23 14:22, Fiona Ebner wrote:
-> Am 10.10.23 um 21:37 schrieb Vladimir Sementsov-Ogievskiy:
->> On 09.10.23 12:46, Fiona Ebner wrote:
->>>    +static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
->>> +                          Error **errp)
->>> +{
->>> +    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
->>> +    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
->>> +
->>> +    if (s->copy_mode == change_opts->copy_mode) {
->>> +        return;
->>> +    }
->>> +
->>> +    if (s->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING) {
->>> +        error_setg(errp, "Cannot switch away from copy mode
->>> 'write-blocking'");
->>> +        return;
->>> +    }
->>> +
->>> +    assert(s->copy_mode == MIRROR_COPY_MODE_BACKGROUND &&
->>> +           change_opts->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING);
->>> +
->>> +    s->copy_mode = MIRROR_COPY_MODE_WRITE_BLOCKING;
->>> +}
->>
->> So, s->copy_mode becomes shared between main thread and iothread.
->>
->> We should either use mutex or atomic operations.
->>
->> Note, that the only realization of .set_speed uses thread-safe API.
->>
-> 
-> Can it be an issue if it's only ever set from the main thread?
+No dependencies. Does not overlap with the other CXL series
+[PATCH v5 0/3] hw/cxl: Add dummy ACPI QTG DSM
+so either order is fine, or they can go via different paths.
 
-Yes, I also think, that actually setting int variable is "atomic enough". But I'm not sure about all architectures/OSes/compilers)
+v4: Use QEMU_BUILD_BUG_ON() rather than static_assert() with
+    missing message. Thanks to Michael Tsirkin who caught this in
+    a clang build failure.
 
-> 
-> But sure, I'm implicitly relying on that, which is not ideal. The
-> mirror_change() function does multiple checks based on the current
-> value, and only then changes it, so I suppose it would actually need a
-> mutex rather than just changing to atomic accesses? Otherwise, the
-> current value can't be guaranteed to be the same in the different checks
-> if we ever add something that can change the value from another thread.
+Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 
+Michael observed that the CXL code regularly went above the 80 character
+recommendation and in many cases this was not necessary for readability.
 
-It could still be written like this
+This series is focused on tidying this up for the existing code so that
+we can maintain the preferred formatting going forwards.
 
-if (change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING) {
-   report error
-}
+Jonathan Cameron (4):
+  hw/cxl: Use a switch to explicitly check size in caps_reg_read()
+  hw/cxl: Use switch statements for read and write of cachemem registers
+  hw/cxl: CXLDVSECPortExtensions renamed to CXLDVSECPortExt
+  hw/cxl: Line length reductions
 
-
-if (qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND, MIRROR_COPY_MODE_WRITE_BLOCKING) != MIRROR_COPY_MODE_BACKGROUND) {
-   report error
-}
-
-report success
-
-===
-
-and we'll have to access it as qatomic_read(&s->copy_mode) in other places
-
-> 
-> I suppose, I should re-use the job mutex then?
-> 
-> Best Regards,
-> Fiona
-> 
+ include/hw/cxl/cxl_component.h |   3 +-
+ include/hw/cxl/cxl_device.h    |   5 +-
+ include/hw/cxl/cxl_events.h    |   3 +-
+ include/hw/cxl/cxl_pci.h       |   6 +-
+ hw/cxl/cxl-cdat.c              |   3 +-
+ hw/cxl/cxl-component-utils.c   | 128 ++++++++++++++++++++-------------
+ hw/cxl/cxl-device-utils.c      |  11 +--
+ hw/cxl/cxl-events.c            |   9 ++-
+ hw/cxl/cxl-mailbox-utils.c     |  21 ++++--
+ hw/mem/cxl_type3.c             |  31 ++++----
+ hw/mem/cxl_type3_stubs.c       |   5 +-
+ hw/pci-bridge/cxl_downstream.c |   2 +-
+ hw/pci-bridge/cxl_root_port.c  |   2 +-
+ hw/pci-bridge/cxl_upstream.c   |   2 +-
+ 14 files changed, 143 insertions(+), 88 deletions(-)
 
 -- 
-Best regards,
-Vladimir
+2.39.2
 
 
