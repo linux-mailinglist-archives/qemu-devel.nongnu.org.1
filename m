@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243D07C8F2D
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C047C8F27
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:33:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrPij-0006M1-NV; Fri, 13 Oct 2023 17:29:21 -0400
+	id 1qrPij-0006LT-5O; Fri, 13 Oct 2023 17:29:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPie-0006Kc-D8
+ id 1qrPif-0006Kt-8K
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:29:17 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPib-0000Ug-53
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:29:15 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-690fe10b6a4so2076568b3a.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:29:12 -0700 (PDT)
+ id 1qrPic-0000Ur-PJ
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:29:16 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-27d1aee5aa1so1920274a91.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:29:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697232551; x=1697837351; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697232552; x=1697837352; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=20NBIfDeq7i/k9K9KB1Vp0gzcYLgBgC5UETDi49ec1M=;
- b=gz79zuBCJUrcMVEwDX48DSlfwlL7mj9NAbdNs9vM33n+gNDVm2F7zYaz8yAK/iOTqL
- 6/l96t6P5I1ezOsQK+s1/H2+5perD//mZ6k5P1iViAZ9/swQBzQAuRBhgk9rNSkBC3Qw
- E8kW13iwAxZZdU/GKHsk4zwdUOxH6EwbcBTxbizlAYP68qatmtLkHEqjR1UWpLuZnWsh
- CdhFWKaze5WltOan5aREXehS3ZU1AvjxrVBkGA+IWWQQz+os1RPIDqbEqvqFmUzXPuC8
- T2O+QZD9DkR0tmMFDYw3TfaULIaQUHwWIYLj49YFxF49KUldyHCjFQEctpuem5GxPKPI
- 7ysw==
+ bh=aR/6YK4ZSvvWC0fnzOM6CLDYWM4TIoHTM+fei4eVb6E=;
+ b=imxDT4lRbq37FnT0p7V5ZDCtyMRF7G+c92yMK6BB9gxxd+wBvVxcDcSiw+AB6ZocyE
+ YZXi6PDluEHBN9ZopnwDWhnNn/SvlmxEcw72yRfr8EId0VmvOTOB0Ay4/g1UpZtol/7A
+ B16PoeOOYmf/6UukVc75EItVXzZuGhb2Ys0MQU1VqhfLK1im/8OOFiQzhF+0MI5yCeEk
+ cZypT7W64ADx/RlMTiBXjHp9Uam/SYMaMCcF59ad/HpzMSoTJ1hIoWxsyucX0Q2oT5ux
+ uGS7oPR9LODhF/HPDQhuQCyQkdCEGqEt7YgxqCAoeNgI3OQIrn+IUo3jscorX2fGtEt1
+ 9WFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697232551; x=1697837351;
+ d=1e100.net; s=20230601; t=1697232552; x=1697837352;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=20NBIfDeq7i/k9K9KB1Vp0gzcYLgBgC5UETDi49ec1M=;
- b=VX6B8GJ+ZyMbRE4/jQB/QpG/r0mkxLttJZTEQAmwRUQDHd4EndiHG7Vpnebh05Wqoo
- VMvxAU32iJVx1dlqmbo+uym+rwChrUX7YOn1c0KpugnLo940oFei3GM1RF7qOKyJ8tuI
- RJGth+knVws4SqIH5iPDVVvxNOpPnhLztR3dZAutX7sNsB20t4hFdXoWkMRAzUBp/R0S
- XV2a/xq5s/5dT4lN4BLRQErhK3RCNnLBAiJsiJNP4YKlYr3m3Zzn4dtkhetxObcbySph
- zN3Poix/yIqUNwlH79/RBob8JslFQ6f3UtuX3Pmxtzsq/4Sli+dUJp3zwMe4X2S0w1rW
- /f6w==
-X-Gm-Message-State: AOJu0YyfpzeNP+6S+UD51kjkIpzQ9fuKk9Kv+L5t4Yz20Z8GJrH8W64N
- /WlTWRk0P5oElrXc6cEOv4DhIHY66WNTwaPxrnQ=
-X-Google-Smtp-Source: AGHT+IHWB9oOzPpw//1cyDjdYiVcel6EBd0xI82sKvO/mNLGv9luX3/dJBPiSsdhh+DE71WZLwu9EQ==
-X-Received: by 2002:a05:6a20:4422:b0:16b:d137:dfb3 with SMTP id
- ce34-20020a056a20442200b0016bd137dfb3mr28654545pzb.59.1697232551542; 
- Fri, 13 Oct 2023 14:29:11 -0700 (PDT)
+ bh=aR/6YK4ZSvvWC0fnzOM6CLDYWM4TIoHTM+fei4eVb6E=;
+ b=VByIm6usgw3STPnjOOVO867XLnBiHd22tjjqIjCLBOGi/OPX15PtyjFcvhSQ48VLmv
+ GfDT6HIHmziRce842C2/jKGsP6DEC2CuZ7cH3ro9k9GrWxboaozlhyVBGr49gzmedSSX
+ bW3KdXqBX5jzZa+jlfNz8jNsMawWpzvl3JWXpdp6NcWTVbzZaMBRJPfQ8AAKcOIKtKWS
+ DrkL+8nvR4QOayw8j23CuSmhkBsbxgQqeDP6Txg7rrV14F+fpsyAeasnIN/nuhADkfGM
+ ZGUrDZsX53Li/eg75NZeZOEG/9luwkd1G6QhzRuluuzKELPL0oomEaYeziwsX+FGvFOq
+ O3NA==
+X-Gm-Message-State: AOJu0YzYOnQ/8hFZEQa1jNvayRr+QQQjvQKQH+u7qDJcDuzojQHoZMES
+ 5CY/ow7fA3vV3eUQ+4Lm+Oz0c6jQsvraTfYUl/g=
+X-Google-Smtp-Source: AGHT+IEQ86SD67eHSzeOqG03KjlmRIOkZQjCyuxgAedcR0sXxynme6keop6nzfIk1PR78uied1QH/w==
+X-Received: by 2002:a17:90a:fb87:b0:27c:ecec:8854 with SMTP id
+ cp7-20020a17090afb8700b0027cecec8854mr1994183pjb.7.1697232552446; 
+ Fri, 13 Oct 2023 14:29:12 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- b185-20020a6334c2000000b0058988954686sm70753pga.90.2023.10.13.14.29.10
+ b185-20020a6334c2000000b0058988954686sm70753pga.90.2023.10.13.14.29.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 14:29:11 -0700 (PDT)
+ Fri, 13 Oct 2023 14:29:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	atar4qemu@gmail.com
-Subject: [PATCH 25/85] target/sparc: Move ADDC to decodetree
-Date: Fri, 13 Oct 2023 14:27:46 -0700
-Message-Id: <20231013212846.165724-26-richard.henderson@linaro.org>
+Subject: [PATCH 26/85] target/sparc: Move MULX to decodetree
+Date: Fri, 13 Oct 2023 14:27:47 -0700
+Message-Id: <20231013212846.165724-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231013212846.165724-1-richard.henderson@linaro.org>
 References: <20231013212846.165724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,79 +93,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  2 ++
- target/sparc/translate.c  | 41 +++++++++++++++++++++++++++++++++++----
- 2 files changed, 39 insertions(+), 4 deletions(-)
+ target/sparc/insns.decode | 1 +
+ target/sparc/translate.c  | 6 +-----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index a95f682fa7..87108da5da 100644
+index 87108da5da..d907a4a69f 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -172,3 +172,5 @@ ORN         10 ..... 000110 ..... . .............          @r_r_ri
- ORNcc       10 ..... 010110 ..... . .............          @r_r_ri
- XORN        10 ..... 000111 ..... . .............          @r_r_ri
+@@ -174,3 +174,4 @@ XORN        10 ..... 000111 ..... . .............          @r_r_ri
  XORNcc      10 ..... 010111 ..... . .............          @r_r_ri
-+ADDC        10 ..... 001000 ..... . .............          @r_r_ri
-+ADDCcc      10 ..... 011000 ..... . .............          @r_r_ri
+ ADDC        10 ..... 001000 ..... . .............          @r_r_ri
+ ADDCcc      10 ..... 011000 ..... . .............          @r_r_ri
++MULX        10 ..... 001001 ..... . .............          @r_r_ri
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index a21c5ec329..37917ad397 100644
+index 37917ad397..7a7d517fac 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -4159,6 +4159,43 @@ TRANS(ANDNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_andc_tl, NULL)
- TRANS(ORNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_orc_tl, NULL)
- TRANS(XORNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_eqv_tl, NULL)
+@@ -4149,6 +4149,7 @@ TRANS(SUB, ALL, do_arith, a, tcg_gen_sub_tl, tcg_gen_subi_tl)
+ TRANS(ANDN, ALL, do_arith, a, tcg_gen_andc_tl, NULL)
+ TRANS(ORN, ALL, do_arith, a, tcg_gen_orc_tl, NULL)
+ TRANS(XORN, ALL, do_arith, a, tcg_gen_eqv_tl, NULL)
++TRANS(MULX, 64, do_arith, a, tcg_gen_mul_tl, tcg_gen_muli_tl)
  
-+static TCGv gen_rs2_or_imm(DisasContext *dc, bool imm, int rs2_or_imm)
-+{
-+    /* For simplicity, we under-decoded the rs2 form. */
-+    if (!imm && rs2_or_imm & ~0x1f) {
-+        return NULL;
-+    }
-+    if (imm || rs2_or_imm == 0) {
-+        return tcg_constant_tl(rs2_or_imm);
-+    } else {
-+        return cpu_regs[rs2_or_imm];
-+    }
-+}
-+
-+static bool trans_ADDC(DisasContext *dc, arg_r_r_ri *a)
-+{
-+    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
-+
-+    if (src2 == NULL) {
-+        return false;
-+    }
-+    gen_op_addx_int(dc, gen_dest_gpr(dc, a->rd),
-+                    gen_load_gpr(dc, a->rs1), src2, false);
-+    return advance_pc(dc);
-+}
-+
-+static bool trans_ADDCcc(DisasContext *dc, arg_r_r_ri *a)
-+{
-+    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
-+
-+    if (src2 == NULL) {
-+        return false;
-+    }
-+    gen_op_addx_int(dc, gen_dest_gpr(dc, a->rd),
-+                    gen_load_gpr(dc, a->rs1), src2, true);
-+    return advance_pc(dc);
-+}
-+
- #define CHECK_IU_FEATURE(dc, FEATURE)                      \
-     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
-         goto illegal_insn;
-@@ -4583,10 +4620,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+ TRANS(ADDcc, ALL, do_cc_arith, a, CC_OP_ADD, gen_op_add_cc, NULL)
+ TRANS(ANDcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_and_tl, tcg_gen_andi_tl)
+@@ -4620,11 +4621,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
                      cpu_src1 = get_src1(dc, insn);
                      cpu_src2 = get_src2(dc, insn);
                      switch (xop & ~0x10) {
--                    case 0x8: /* addx, V9 addc */
--                        gen_op_addx_int(dc, cpu_dst, cpu_src1, cpu_src2,
--                                        (xop & 0x10));
+-#ifdef TARGET_SPARC64
+-                    case 0x9: /* V9 mulx */
+-                        tcg_gen_mul_i64(cpu_dst, cpu_src1, cpu_src2);
 -                        break;
- #ifdef TARGET_SPARC64
-                     case 0x9: /* V9 mulx */
-                         tcg_gen_mul_i64(cpu_dst, cpu_src1, cpu_src2);
+-#endif
+                     case 0xa: /* umul */
+                         gen_op_umul(cpu_dst, cpu_src1, cpu_src2);
+                         if (xop & 0x10) {
 -- 
 2.34.1
 
