@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB097C7DAB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 08:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BF47C7DAC
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 08:29:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrBdY-0007bA-MU; Fri, 13 Oct 2023 02:27:04 -0400
+	id 1qrBem-0000BA-55; Fri, 13 Oct 2023 02:28:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBdX-0007aL-BA
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 02:27:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBeb-00009C-By
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 02:28:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBdQ-0005Nd-CE
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 02:27:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBeX-0005jV-Hj
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 02:28:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697178415;
+ s=mimecast20190719; t=1697178483;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=f7HEKLNq8M2lvJCHLYhDjbmjEdtYnnAPMI10vX2ZiXo=;
- b=AG3yl3A9tIyNr/KabOEAnhv3EyBg8EAgkNQaGAhsgOjq08dyMhQmLso/tMooOyFnoM9hW+
- 03PrPDplNvefBsX7VzxLC+N9kWIx2grYoGeSNyTnNbb3ozKQe54lukdxStGD0ynxpYa5mu
- IH5CveunNdLG6Oa4o2zSGsmfrDxJaQQ=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nS3c0yX6775ErUYiGM257OspaLSskQXdHZo+imQiXwM=;
+ b=h7O9XpK0kXXOUgVVDX/2wFoT4IUpjkYOkyakUNRFdBE4GRpHbnjOfzhmrztkw4B4ZZSVQv
+ B9FwtDG4fii4D314RbzZoq5ng2Du5mIQInih9B5qGduAw5jrUJ6O1DWHYpK8Kky46ulCH1
+ Om7C7QlLJ2YcvW12G3XuzPpfChqo3do=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-290-VoWgCvN6MRCEjoKfSVRvHw-1; Fri, 13 Oct 2023 02:26:52 -0400
-X-MC-Unique: VoWgCvN6MRCEjoKfSVRvHw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-533d8a785a5so1447143a12.3
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 23:26:52 -0700 (PDT)
+ us-mta-161-DBx2G1fLPmaELo3lTPcauQ-1; Fri, 13 Oct 2023 02:27:52 -0400
+X-MC-Unique: DBx2G1fLPmaELo3lTPcauQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5346626c1c5so1506354a12.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 23:27:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697178411; x=1697783211;
+ d=1e100.net; s=20230601; t=1697178471; x=1697783271;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f7HEKLNq8M2lvJCHLYhDjbmjEdtYnnAPMI10vX2ZiXo=;
- b=nz/CUKOlI5L7EoICYvcJqnAnr8RVQB92VeRFCk5/Qsr20wLpKAQ4U3So1nGm+xsXnk
- ICd9P9o/QJANhEseHO7CuD5sOWLHsN1pDri3G0PjIcNFWFluQzGqyP53Rcr7ITGBDbja
- 4xgtc7Ok/6b23L45SBFSPO9ht5NbkWk66GnJ84XbhHH5HkWPg4Nz8eAy5ho0FLJkxqh6
- pwrJgQ91x1J2XYAZynVB0bdjYMTQcNlWZ1zIg7IFzSm6rB1AfDs7h7EG06CUOuH+Cw5g
- UcQy/X6fXKJXMzHHp0uGH8GzaiGK/EQmC/B5OZYYwPsVP2K7R1MHQRHanSieLV0ErVbs
- 5lVA==
-X-Gm-Message-State: AOJu0YycarX6dAPSjEusyQOIWhaSJjTjPmPf5TGSaPhoB2Yw+9VBjLds
- fDmAHGsWSu8MWJzQBce2FRoNH377XLKk78owIkaoCTDNDydEUfd2w3IgGCAWfFzmXZH3pglbKIE
- PVbfFLsAUnAYNTco=
-X-Received: by 2002:a50:c302:0:b0:53d:e139:64a5 with SMTP id
- a2-20020a50c302000000b0053de13964a5mr6447300edb.27.1697178411648; 
- Thu, 12 Oct 2023 23:26:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGzKVouHAWO9cP+E7v0Q9+JlUrzMN+RANjZg3UWX+iJGGLkv4f6+LrqTD9Rd290QyQoJlXMtA==
-X-Received: by 2002:a50:c302:0:b0:53d:e139:64a5 with SMTP id
- a2-20020a50c302000000b0053de13964a5mr6447281edb.27.1697178411381; 
- Thu, 12 Oct 2023 23:26:51 -0700 (PDT)
+ bh=nS3c0yX6775ErUYiGM257OspaLSskQXdHZo+imQiXwM=;
+ b=RamhusrURmTWZSO0ck061ng9Y9QFpv8/GDs+cfu30h6kjB+xuxO3BXKzh2GXdorV5z
+ VLu/rvu50hS47cq34oRc+2YvbAsj3gN50FX81TBBEBeJNirCwZjt9x+reXLhGJjDWi9i
+ z0pvEX6SAjy4GrAEg/IC849k4/XVzCbz6yjHfSRyhocsuwaBHuE9CEdBbZb0JuXQl3TO
+ 0fcXst+wqyfkjTy9qm4arEAAG3Bwy7yFuRVpE1u+8iiAKskN6lhRTutXHk3Izn3tdTDt
+ ejNxw5rela7EgvQxc9Zj3f1edRAxm1nWwAz4s5ujD7YEv5dhi/ATfPTmTzWk82PRd1nC
+ oa4w==
+X-Gm-Message-State: AOJu0YxtLcPU9VCMbv/EKq0WYq+FsySAxYjiObL9kfYjku12ETSzKI/4
+ TqH3q5ZqgBCb7/rEQFzBQgib35kHEzsOk3N8qrSNJT7DMz1biqy7VLdcr4NEEATnDdI7v4nN7QQ
+ UKDQ2AuYIKUrxx+w=
+X-Received: by 2002:a05:6402:1608:b0:52b:c8d9:1d66 with SMTP id
+ f8-20020a056402160800b0052bc8d91d66mr18860811edv.42.1697178471067; 
+ Thu, 12 Oct 2023 23:27:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSfSafl7l0uaREOTbhzeWN6A3S7DtwOzJlTouVc+/+MoJ/KqhIe1eeEEDXOOT0U+lZd+eZYg==
+X-Received: by 2002:a05:6402:1608:b0:52b:c8d9:1d66 with SMTP id
+ f8-20020a056402160800b0052bc8d91d66mr18860796edv.42.1697178470807; 
+ Thu, 12 Oct 2023 23:27:50 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
  [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- i22-20020a50d756000000b0053dda7926fcsm2953926edj.60.2023.10.12.23.26.50
+ i22-20020a50d756000000b0053dda7926fcsm2953926edj.60.2023.10.12.23.27.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 23:26:51 -0700 (PDT)
-Message-ID: <51c9380c-e1aa-46e9-8d53-c88672edd270@redhat.com>
-Date: Fri, 13 Oct 2023 08:26:49 +0200
+ Thu, 12 Oct 2023 23:27:50 -0700 (PDT)
+Message-ID: <24ac3531-239a-4cc8-adea-3466a9f66cbd@redhat.com>
+Date: Fri, 13 Oct 2023 08:27:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/10] tests/aio-multithread: Clean up global variable
- shadowing
+Subject: Re: [PATCH 10/10] tests/coroutine: Clean up global variable shadowing
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -77,7 +76,7 @@ Cc: qemu-arm@nongnu.org, Alberto Garcia <berto@igalia.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  Tyrone Ting <kfting@nuvoton.com>, Markus Armbruster <armbru@redhat.com>
 References: <20231009100251.56019-1-philmd@linaro.org>
- <20231009100251.56019-10-philmd@linaro.org>
+ <20231009100251.56019-11-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,17 +120,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231009100251.56019-10-philmd@linaro.org>
+In-Reply-To: <20231009100251.56019-11-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -149,79 +148,24 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 09/10/2023 12.02, Philippe Mathieu-Daudé wrote:
-> Rename the argument to avoid:
+> Rename the global variable to avoid:
 > 
->    tests/unit/test-aio-multithread.c:226:37: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
->    static void test_multi_co_mutex(int threads, int seconds)
->                                        ^
->    tests/unit/test-aio-multithread.c:401:34: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
->    static void test_multi_mutex(int threads, int seconds)
->                                     ^
->    tests/unit/test-aio-multithread.c:24:18: note: previous declaration is here
->    static IOThread *threads[NUM_CONTEXTS];
->                     ^
+>    tests/unit/test-coroutine.c:430:11: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>        bool *done = opaque;
+>              ^
+>    tests/unit/test-coroutine.c:438:10: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>        bool done = false;
+>             ^
+>    tests/unit/test-coroutine.c:198:12: note: previous declaration is here
+>    static int done;
+>               ^
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tests/unit/test-aio-multithread.c | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tests/unit/test-aio-multithread.c b/tests/unit/test-aio-multithread.c
-> index 08d4570ccb..d587f20667 100644
-> --- a/tests/unit/test-aio-multithread.c
-> +++ b/tests/unit/test-aio-multithread.c
-> @@ -223,7 +223,7 @@ static void coroutine_fn test_multi_co_mutex_entry(void *opaque)
->       qatomic_dec(&running);
->   }
->   
-> -static void test_multi_co_mutex(int threads, int seconds)
-> +static void test_multi_co_mutex(unsigned ctx_num, int seconds)
+>   tests/unit/test-coroutine.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 
-Why did you change the type of the variable? ... you should at least mention 
-this in the commit description.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
->   {
->       int i;
->   
-> @@ -233,9 +233,9 @@ static void test_multi_co_mutex(int threads, int seconds)
->       now_stopping = false;
->   
->       create_aio_contexts();
-> -    assert(threads <= NUM_CONTEXTS);
-> -    running = threads;
-> -    for (i = 0; i < threads; i++) {
-> +    assert(ctx_num <= NUM_CONTEXTS);
-> +    running = ctx_num;
-> +    for (i = 0; i < ctx_num; i++) {
->           Coroutine *co1 = qemu_coroutine_create(test_multi_co_mutex_entry, NULL);
->           aio_co_schedule(ctx[i], co1);
->       }
-> @@ -398,7 +398,7 @@ static void test_multi_mutex_entry(void *opaque)
->       qatomic_dec(&running);
->   }
->   
-> -static void test_multi_mutex(int threads, int seconds)
-> +static void test_multi_mutex(unsigned ctx_num, int seconds)
-
-dito.
-
-  Thomas
-
->   {
->       int i;
->   
-> @@ -408,9 +408,9 @@ static void test_multi_mutex(int threads, int seconds)
->       now_stopping = false;
->   
->       create_aio_contexts();
-> -    assert(threads <= NUM_CONTEXTS);
-> -    running = threads;
-> -    for (i = 0; i < threads; i++) {
-> +    assert(ctx_num <= NUM_CONTEXTS);
-> +    running = ctx_num;
-> +    for (i = 0; i < ctx_num; i++) {
->           Coroutine *co1 = qemu_coroutine_create(test_multi_mutex_entry, NULL);
->           aio_co_schedule(ctx[i], co1);
->       }
 
 
