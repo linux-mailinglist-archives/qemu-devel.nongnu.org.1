@@ -2,133 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4CE7C819F
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:12:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3E17C81AF
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:14:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrEDh-0007ch-Ne; Fri, 13 Oct 2023 05:12:33 -0400
+	id 1qrEF9-0000jI-OW; Fri, 13 Oct 2023 05:14:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrEDf-0007av-Ld
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:12:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrEDd-0005Tv-NI
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:12:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697188348;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=m1UGCn3zpRnfd6oxcGQ2ed7c05DqV6RAMMeE7IoeL4A=;
- b=bmznbiU4tO30KIA0jJC6THpBOqzqXngB12vDtFziPBkBKaYaLSISldizRX4g3gXRIZo/0L
- 6TNuR1BBJKBh7/GnxKVMx0iFWkKq6A/cRWZDFjZ/3WINU9zkrFrI9cIvyZyKSrVtpU3yvt
- juTECUfd4zbZZCZTyaFGe3r4Bhitsoo=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-39-uF4gJVKOOmOh_GbLgAWz0Q-1; Fri, 13 Oct 2023 05:12:27 -0400
-X-MC-Unique: uF4gJVKOOmOh_GbLgAWz0Q-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d155fc53eso17809006d6.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 02:12:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697188346; x=1697793146;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m1UGCn3zpRnfd6oxcGQ2ed7c05DqV6RAMMeE7IoeL4A=;
- b=h+/81nD9TrkLQC/iXOz6RmorUe/FR0ts7cRSXM1T7BG1kxQBArJIJdeddypM4jTfKX
- GKU7YYa682Q59DHGwP6OLz/+mxqAL4ShoBVR+C/E/1cZvbfhwAlY8CEhIKLQaGipIT2/
- VqanfbthkYIlqh15s+REDy2/OjI781g9YwZtiXLthHNQAXGjkmwyz/FB+npBenCms2Oo
- S+JHbJT5Agz/2k1nlA8b6pZoR870zLjTEg9zD7L5YQ2FD0Ddzx18QLx6xYmFdnilpbLn
- aAmx29i/FW/Xz8SU4mqztfinoclfZrpean8y+Aa5sZ7bM5GEI/f7QVDay3CA4l97lIzA
- jqEQ==
-X-Gm-Message-State: AOJu0YwZXmEe91Rwc4LRH1OcZgfCcdqr+lPCB2HJioiZSrSgRm2pEi91
- ehngb41yK17v7DIUCXWxRzCZCL2szKi6RaeAIoLscAooqN6DTex8XcQDcnXbzBrNL7iHyRG0v3x
- F86RHAbpxWmER3bs=
-X-Received: by 2002:a05:6214:5585:b0:64d:254a:63dc with SMTP id
- mi5-20020a056214558500b0064d254a63dcmr26689241qvb.19.1697188346790; 
- Fri, 13 Oct 2023 02:12:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGAcZ/JBXmMIQPElJjuiFc60fqHEWllNWKfB/Q8ShIxGIDcR/JWryamtx2PsIy75TaNuqh46g==
-X-Received: by 2002:a05:6214:5585:b0:64d:254a:63dc with SMTP id
- mi5-20020a056214558500b0064d254a63dcmr26689226qvb.19.1697188346464; 
- Fri, 13 Oct 2023 02:12:26 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
- [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- b14-20020a0cfb4e000000b0066d1d2242desm502636qvq.120.2023.10.13.02.12.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 02:12:26 -0700 (PDT)
-Message-ID: <01c48b28-cf80-4d10-9ecf-fb6c1d8363e2@redhat.com>
-Date: Fri, 13 Oct 2023 11:12:23 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add the nios2 interrupt controller to the
- nios2 section
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qrEF1-0000eP-Qc; Fri, 13 Oct 2023 05:13:56 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>)
+ id 1qrEEw-0005iD-RC; Fri, 13 Oct 2023 05:13:54 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8CxRuhICillHasxAA--.42165S3;
+ Fri, 13 Oct 2023 17:13:44 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bx3y9FCillB7EiAA--.7826S3; 
+ Fri, 13 Oct 2023 17:13:43 +0800 (CST)
+Subject: Re: [RFC PATCH v3 01/78] include/qemu/compiler.h: replace
+ QEMU_FALLTHROUGH with fallthrough
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
  qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Chris Wulff <crwulff@gmail.com>,
- Marek Vasut <marex@denx.de>
-References: <20231013065408.949486-1-thuth@redhat.com>
- <3e159260-f1ac-d3cf-4ba4-3ce6c1b88343@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <3e159260-f1ac-d3cf-4ba4-3ce6c1b88343@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ "open list:ARM SMMU" <qemu-arm@nongnu.org>
+References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
+ <2e08cff874b2f9fc4143bdcde87ebba9b70b356c.1697186560.git.manos.pitsidianakis@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <d2893541-a8cd-5e45-7261-3c228fee2eda@loongson.cn>
+Date: Fri, 13 Oct 2023 17:13:41 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <2e08cff874b2f9fc4143bdcde87ebba9b70b356c.1697186560.git.manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Bx3y9FCillB7EiAA--.7826S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Gr4DGFyrtr4kGr1rAF4rXrc_yoWxJw1xpF
+ s7CayDKF4fJrW5GF97Cw4agFn5Ww4rGryjgrWqg3W0yr43Kw4kXrWktrnFkFW8WrWSvrW7
+ uFyxZry5WayqqrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
+ VUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-3.339, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,35 +87,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/10/2023 10.51, Philippe Mathieu-DaudÃ© wrote:
-> On 13/10/23 08:54, Thomas Huth wrote:
->> These files obviously belong to the nios2 target, so they should
->> be listed in the nios2 section in the MAINTAINERS file.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->> Â  MAINTAINERS | 2 ++
->> Â  1 file changed, 2 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 6eecd617e0..45eb230465 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -296,7 +296,9 @@ R: Marek Vasut <marex@denx.de>
->> Â  S: Orphan
->> Â  F: target/nios2/
->> Â  F: hw/nios2/
->> +F: hw/intc/nios2_vic.c
->> Â  F: disas/nios2.c
->> +F: include/hw/intc/nios2_vic.h
->> Â  F: configs/devices/nios2-softmmu/default.mak
->> Â  F: tests/docker/dockerfiles/debian-nios2-cross.d/build-toolchain.sh
->> Â  F: tests/tcg/nios2/
-> 
-> Could we have a NiosII hardware section instead?
+ÔÚ 2023/10/13 ÏÂÎç4:45, Emmanouil Pitsidianakis Ð´µÀ:
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>   audio/pwaudio.c              |  8 ++++----
+>   hw/arm/smmuv3.c              |  2 +-
+>   include/qemu/compiler.h      | 30 +++++++++++++++++++++++-------
+>   include/qemu/osdep.h         |  4 ++--
+>   target/loongarch/cpu.c       |  4 ++--
+>   target/loongarch/translate.c |  2 +-
+>   tcg/optimize.c               |  8 ++++----
+>   7 files changed, 37 insertions(+), 21 deletions(-)
+For LoongArch:
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-Is it worth the effort? ... the code is in "Orphan" state anyway...
+Thanks.
+Song Gao.
 
-  Thomas
+> diff --git a/audio/pwaudio.c b/audio/pwaudio.c
+> index 3ce5f6507b..bf26fadb06 100644
+> --- a/audio/pwaudio.c
+> +++ b/audio/pwaudio.c
+> @@ -8,16 +8,16 @@
+>    * SPDX-License-Identifier: GPL-2.0-or-later
+>    */
+>   
+> +#include <spa/param/audio/format-utils.h>
+> +#include <spa/utils/ringbuffer.h>
+> +#include <spa/utils/result.h>
+> +#include <spa/param/props.h>
+>   #include "qemu/osdep.h"
+>   #include "qemu/module.h"
+>   #include "audio.h"
+>   #include <errno.h>
+>   #include "qemu/error-report.h"
+>   #include "qapi/error.h"
+> -#include <spa/param/audio/format-utils.h>
+> -#include <spa/utils/ringbuffer.h>
+> -#include <spa/utils/result.h>
+> -#include <spa/param/props.h>
+>   
+>   #include <pipewire/pipewire.h>
+>   #include "trace.h"
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 6f2b2bd45f..545d82ff04 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -1291,7 +1291,7 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
+>                   cmd_error = SMMU_CERROR_ILL;
+>                   break;
+>               }
+> -            QEMU_FALLTHROUGH;
+> +            fallthrough;
+>           case SMMU_CMD_TLBI_NSNH_ALL:
+>               trace_smmuv3_cmdq_tlbi_nh();
+>               smmu_inv_notifiers_all(&s->smmu_state);
+> diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+> index 1109482a00..959982805d 100644
+> --- a/include/qemu/compiler.h
+> +++ b/include/qemu/compiler.h
+> @@ -165,15 +165,31 @@
+>   #define QEMU_ALWAYS_INLINE
+>   #endif
+>   
+> -/**
+> - * In most cases, normal "fallthrough" comments are good enough for
+> - * switch-case statements, but sometimes the compiler has problems
+> - * with those. In that case you can use QEMU_FALLTHROUGH instead.
+> +/*
+> + * Add the pseudo keyword 'fallthrough' so case statement blocks
+> + * must end with any of these keywords:
+> + *   break;
+> + *   fallthrough;
+> + *   continue;
+> + *   goto <label>;
+> + *   return [expression];
+> + *
+> + *  gcc: https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html#Statement-Attributes
+>    */
+> -#if __has_attribute(fallthrough)
+> -# define QEMU_FALLTHROUGH __attribute__((fallthrough))
+> +
+> +/*
+> + * glib_macros.h contains its own definition of fallthrough, so if we define
+> + * the pseudokeyword here it will expand when the glib header checks for the
+> + * attribute. glib headers must be #included after this header.
+> + */
+> +#ifdef fallthrough
+> +#undef fallthrough
+> +#endif
+> +
+> +#if __has_attribute(__fallthrough__)
+> +# define fallthrough                    __attribute__((__fallthrough__))
+>   #else
+> -# define QEMU_FALLTHROUGH do {} while (0) /* fallthrough */
+> +# define fallthrough                    do {} while (0)  /* fallthrough */
+>   #endif
+>   
+>   #ifdef CONFIG_CFI
+> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+> index 475a1c62ff..8f790f0deb 100644
+> --- a/include/qemu/osdep.h
+> +++ b/include/qemu/osdep.h
+> @@ -50,8 +50,6 @@
+>    */
+>   #pragma GCC poison TARGET_WORDS_BIGENDIAN
+>   
+> -#include "qemu/compiler.h"
+> -
+>   /* Older versions of C++ don't get definitions of various macros from
+>    * stdlib.h unless we define these macros before first inclusion of
+>    * that system header.
+> @@ -160,6 +158,8 @@ QEMU_EXTERN_C int daemon(int, int);
+>    */
+>   #include "glib-compat.h"
+>   
+> +#include "qemu/compiler.h"
+> +
+>   #ifdef _WIN32
+>   #include "sysemu/os-win32.h"
+>   #endif
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index 2bea7ca5d5..e01d626b15 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -178,7 +178,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+>               env->CSR_DBG = FIELD_DP64(env->CSR_DBG, CSR_DBG, DEI, 1);
+>               goto set_DERA;
+>           }
+> -        QEMU_FALLTHROUGH;
+> +        fallthrough;
+>       case EXCCODE_PIF:
+>       case EXCCODE_ADEF:
+>           cause = cs->exception_index;
+> @@ -193,7 +193,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+>       case EXCCODE_SXD:
+>       case EXCCODE_ASXD:
+>           env->CSR_BADV = env->pc;
+> -        QEMU_FALLTHROUGH;
+> +        fallthrough;
+>       case EXCCODE_BCE:
+>       case EXCCODE_ADEM:
+>       case EXCCODE_PIL:
+> diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
+> index 21f4db6fbd..36fceb1beb 100644
+> --- a/target/loongarch/translate.c
+> +++ b/target/loongarch/translate.c
+> @@ -317,7 +317,7 @@ static void loongarch_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+>           break;
+>       case DISAS_EXIT_UPDATE:
+>           tcg_gen_movi_tl(cpu_pc, ctx->base.pc_next);
+> -        QEMU_FALLTHROUGH;
+> +        fallthrough;
+>       case DISAS_EXIT:
+>           tcg_gen_exit_tb(NULL, 0);
+>           break;
+> diff --git a/tcg/optimize.c b/tcg/optimize.c
+> index 3013eb04e6..3da135a353 100644
+> --- a/tcg/optimize.c
+> +++ b/tcg/optimize.c
+> @@ -1089,7 +1089,7 @@ static bool fold_brcond2(OptContext *ctx, TCGOp *op)
+>   
+>       case TCG_COND_NE:
+>           inv = 1;
+> -        QEMU_FALLTHROUGH;
+> +        fallthrough;
+>       case TCG_COND_EQ:
+>           /*
+>            * Simplify EQ/NE comparisons where one of the pairs
+> @@ -1445,7 +1445,7 @@ static bool fold_exts(OptContext *ctx, TCGOp *op)
+>           break;
+>       case INDEX_op_ext_i32_i64:
+>           type_change = true;
+> -        QEMU_FALLTHROUGH;
+> +        fallthrough;
+>       case INDEX_op_ext32s_i64:
+>           sign = INT32_MIN;
+>           z_mask = (uint32_t)z_mask;
+> @@ -1489,7 +1489,7 @@ static bool fold_extu(OptContext *ctx, TCGOp *op)
+>       case INDEX_op_extrl_i64_i32:
+>       case INDEX_op_extu_i32_i64:
+>           type_change = true;
+> -        QEMU_FALLTHROUGH;
+> +        fallthrough;
+>       case INDEX_op_ext32u_i64:
+>           z_mask = (uint32_t)z_mask;
+>           break;
+> @@ -1861,7 +1861,7 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
+>   
+>       case TCG_COND_NE:
+>           inv = 1;
+> -        QEMU_FALLTHROUGH;
+> +        fallthrough;
+>       case TCG_COND_EQ:
+>           /*
+>            * Simplify EQ/NE comparisons where one of the pairs
 
 
