@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A757C8127
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 071ED7C80D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqr-0001v6-75; Fri, 13 Oct 2023 04:48:57 -0400
+	id 1qrDqZ-0000kP-Tj; Fri, 13 Oct 2023 04:48:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDqH-0008KT-AS
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:21 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1qrDqI-0008NO-A3
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:22 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDqF-00012O-L9
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:21 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-31c5cac3ae2so1686800f8f.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:19 -0700 (PDT)
+ id 1qrDqG-00012d-GH
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:22 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-406618d080eso19647945e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186897; x=1697791697; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186899; x=1697791699; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5erDX5CeJrmaM9ok4NwBCizXAUuy1vmVb0p0qWaCyl0=;
- b=QKW2xPg48CuVaY+jKbOCK6MM6z9QAFSuKC/xQHjqqSF5U1nutOwMoqaowlNYSby2Fp
- XwNnkIpxyzNRTT+XjilFjBC+45hFt2xlic+lDtQXyi+qpsd3MxhS/bT0Rppj4pHp4eJW
- dWw+yLdGQ6kJcoVUfHsiw/o+JphwE7sjGlYHRXVYguygOdDAJ11SYkTv3KNfsjLNS39l
- 18CyNdHaGCgISLWPE1WhfnT+wAgn4gMv6fbcZI4OIXHxTg1XoGEpXKO+zwI9xMB6KPKH
- 04SsM8xHlRdi5uaMoJe87n6EfiFYsNrsLdC6vZLjzqTNeCT/m3mybDxF9pOlAptHIxds
- zkMw==
+ bh=bii0rHRSdZ2Rl+GPf0Y8R9WktLp/w9/VC7JeiOohbU8=;
+ b=peIfjyntfCrqbrQGG0fT5hz062kSObeEg6A6aewQbPU4yUClnRqAV4QIMlS3Sp1glX
+ cwXangKjWqWquebbbC7nfSJXd7+HIKidFBtkbYTqQDZcKKNEbCYeD1+FH4eI4Ze1mjr7
+ krJAgkKXvkEyOmhm038089HsPdzVLY/KQ+VlsKxaYClURxTerYwo2hewcDf8LGVoGH/V
+ MXoHN+oALUvwSwLWQ1UppCMeDIhIqzKx39R5/zletMQathwnIDnxJEp8qoc16PRxbo3t
+ hL5EJ9wMZcimL0cF6dso7TNVbMYWHBKkMwaRHvfpfpp64OHHa4nJ97nS5IeCqyUCvhw6
+ Mz2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186897; x=1697791697;
+ d=1e100.net; s=20230601; t=1697186899; x=1697791699;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5erDX5CeJrmaM9ok4NwBCizXAUuy1vmVb0p0qWaCyl0=;
- b=iI2tVA3iCXjl/UE27yZfAFHEmH4wqPDKKAabDMA7BrShPeieNWnbIveNxEZ81dcgF1
- xHGLRdR/ZI3HqgKm4aJi5DK01s2nDxJFHNQozuQo3DlA76h4Ydd/eGdR7hiOpjWzLDVO
- iunTdzrOF3OHvuUslxcJQrBO4XhgR0IlRugnGkzhEyb+UMUP3p10+l3qWZL9ElGnhTCo
- ybD0vHbfD0UcG5fYy/5OKb6cZ4SYWWmHnYreJMEoHJWebbC1SrsEveTYEENBptxaQwTQ
- 5keqbd+ZKYg3pWYcsrmJUPpeJAujOMRXEC/ZIL14nCl5aVBdundVl8DQ34N48Ih4QkF3
- pifA==
-X-Gm-Message-State: AOJu0YxMLyLZ09+Yxjq6z2yLVCcq176+KVhFKC6EuWiOzEdscYuL9Lty
- lWsyjGEyXs7y6XOualqeTeHdRzMJxqFqU1nur8I=
-X-Google-Smtp-Source: AGHT+IF6s4oLTg7/S2G8s0owYUpcStvNNkyiUkbz/P1tAUQsGhCcO1bHrFrkErvI6jcVjeaZeNr7UA==
-X-Received: by 2002:a05:6000:114d:b0:323:37a8:d085 with SMTP id
- d13-20020a056000114d00b0032337a8d085mr21956953wrx.58.1697186897015; 
- Fri, 13 Oct 2023 01:48:17 -0700 (PDT)
+ bh=bii0rHRSdZ2Rl+GPf0Y8R9WktLp/w9/VC7JeiOohbU8=;
+ b=eaT1c44bPt4wbwo7/ymNDc/XYg8TyfyPBKjbGW5J0V1yTu8NC0arUmhS1ZxgFz47l+
+ OHVg+mkzxrcfYujb+MtCTGuJSA9pplhofdEReAlXLhzozE27HVME+L1Hxbb5hgol5nzW
+ N2zF9O4mQC2cjQJyRFgozRyUsGTLo9r4FYj/XQoL2/YDIA6T3KCYd0ET0GaGZ0m1SGgP
+ TSvsKvUPJ37GcmTnS2VJbPfLYncqD8XYS95KeHcgq36FxsMDCzxwsvtK2lP6L2RE1Jb0
+ cDKFxvekHN1I20q177FYYtQvC/uNk8orLogZPC8iTasIPh5z66DKcQubeQ+5Y7HtfnKY
+ fv/w==
+X-Gm-Message-State: AOJu0YxcaM9Ye2x9K3VhZ4onTXJ2ptR9a0SlALBCoKKhBUmfy4wdIFNg
+ OMNc5ChQf71D9Sqm+lPWvH9UyFTp3XtEsWKzEgw=
+X-Google-Smtp-Source: AGHT+IEa0Z5aw0hpNYCZ8StGbExJ3u/hKPJKmKqa0k1Nu+SLymCl0naYiZ0IYRk3kLNFyJqk5nGu9w==
+X-Received: by 2002:a1c:6a0c:0:b0:404:757e:c5ba with SMTP id
+ f12-20020a1c6a0c000000b00404757ec5bamr21746781wmc.26.1697186898806; 
+ Fri, 13 Oct 2023 01:48:18 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.15
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:48:16 -0700 (PDT)
+ Fri, 13 Oct 2023 01:48:18 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [RFC PATCH v3 38/78] system/rtc.c: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:06 +0300
-Message-Id: <08834e5c3405e40263a7e9f288804e9e03ee1e0c.1697186560.git.manos.pitsidianakis@linaro.org>
+Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Hannes Reinecke <hare@suse.com>, qemu-block@nongnu.org (open list:megasas)
+Subject: [RFC PATCH v3 39/78] hw/scsi: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:46:07 +0300
+Message-Id: <f42b4f75d7006a0f34a713c380cf7e7680a84dab.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,22 +98,73 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- system/rtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/scsi/esp.c       | 2 +-
+ hw/scsi/megasas.c   | 2 +-
+ hw/scsi/scsi-bus.c  | 4 ++--
+ hw/scsi/scsi-disk.c | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/system/rtc.c b/system/rtc.c
-index 4904581abe..bb406542c8 100644
---- a/system/rtc.c
-+++ b/system/rtc.c
-@@ -53,7 +53,7 @@ static time_t qemu_ref_timedate(QEMUClockType clock)
-     switch (clock) {
-     case QEMU_CLOCK_REALTIME:
-         value -= rtc_realtime_clock_offset;
+diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+index 9b11d8c573..d6c8298f51 100644
+--- a/hw/scsi/esp.c
++++ b/hw/scsi/esp.c
+@@ -1025,7 +1025,7 @@ void esp_reg_write(ESPState *s, uint32_t saddr, uint64_t val)
+     switch (saddr) {
+     case ESP_TCHI:
+         s->tchi_written = true;
 -        /* fall through */
 +        fallthrough;
-     case QEMU_CLOCK_VIRTUAL:
-         value += rtc_ref_start_datetime;
-         break;
+     case ESP_TCLO:
+     case ESP_TCMID:
+         s->rregs[ESP_RSTAT] &= ~STAT_TC;
+diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
+index 32c70c9e99..54e4d7c8b6 100644
+--- a/hw/scsi/megasas.c
++++ b/hw/scsi/megasas.c
+@@ -2151,7 +2151,7 @@ static void megasas_mmio_write(void *opaque, hwaddr addr,
+     case MFI_IQPL:
+         trace_megasas_mmio_writel("MFI_IQPL", val);
+         /* Received low 32 bits of a 64 bit MFI frame address */
+-        /* Fallthrough */
++        fallthrough;
+     case MFI_IQP:
+         if (addr == MFI_IQP) {
+             trace_megasas_mmio_writel("MFI_IQP", val);
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index fc4b77fdb0..a1c298a92c 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -1078,7 +1078,7 @@ static int scsi_req_xfer(SCSICommand *cmd, SCSIDevice *dev, uint8_t *buf)
+         if (cmd->xfer == 0) {
+             cmd->xfer = 256;
+         }
+-        /* fall through */
++        fallthrough;
+     case WRITE_10:
+     case WRITE_VERIFY_10:
+     case WRITE_12:
+@@ -1093,7 +1093,7 @@ static int scsi_req_xfer(SCSICommand *cmd, SCSIDevice *dev, uint8_t *buf)
+         if (cmd->xfer == 0) {
+             cmd->xfer = 256;
+         }
+-        /* fall through */
++        fallthrough;
+     case READ_10:
+     case READ_12:
+     case READ_16:
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index 6691f5edb8..6564ca638c 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -2302,7 +2302,7 @@ static int32_t scsi_disk_dma_command(SCSIRequest *req, uint8_t *buf)
+         trace_scsi_disk_dma_command_WRITE(
+                 (command & 0xe) == 0xe ? "And Verify " : "",
+                 r->req.cmd.lba, len);
+-        /* fall through */
++        fallthrough;
+     case VERIFY_10:
+     case VERIFY_12:
+     case VERIFY_16:
 -- 
 2.39.2
 
