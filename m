@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB617C8757
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BB67C8759
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:04:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrIlS-0000Ku-Br; Fri, 13 Oct 2023 10:03:43 -0400
+	id 1qrIlk-0000Rx-Sk; Fri, 13 Oct 2023 10:04:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIjv-0006ji-Oz
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:02:08 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIjw-0006l2-7h
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:02:10 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIjj-0002Db-DR
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:02:06 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-53e0d21a4easo3184874a12.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:01:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIjt-0002FF-0l
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:02:07 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53db3811d8fso4352068a12.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697205711; x=1697810511; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697205721; x=1697810521; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ct6nqOkWPITqikpho6LzBF9JTwL/xSnZhZ7aKNqCpWg=;
- b=uu4RGZRGD8JKoiIilgiVEOqLk6vLunYr366a1gSYzH5lZ3t3yOaKrgQXzmTY1MsBEG
- a9wX2y3pBGNbky+FcLJ3bsicE6sgrPlfUP3EXvhaf0Kg3VGeYqJEBvEcA7Z7kWe76iEj
- waGcDNMekdzg6KUvmL2CHX2/9xQ9/CCu4fj+nz+sPjJbh50Qcj5v0JYGiQORxYJYSYaI
- NjThwtS6S0NaPF8nk028CFw3CDue2CcrF2+0dBGJrJUdDGirO4xdENoLURcpwonJ2DQ2
- o6MJIb1YtXDDv5j1rLEycnwMTOXd2bcJ5SIKI9Orw99G9kVdZFbWT0f8W0/crVu0G4xo
- EAfw==
+ bh=zoUpF/tcrnIyHCTbzMglqeDjmRuZtQK69UeLuQY2xSo=;
+ b=iaq4QFiiM79y1DPjBcq/zrbamQ56JbE8OMVsuSMfvxbA1cGszCHXZ3bF1NXaw0j2f+
+ ERZR7c3uTHAn3nHUMcMta+EWrfCFoesW9+vhNxc5FumKgYbBUwaAENrnshxQJ6dZJhUM
+ CRq1Cmp5SaDZaq7Y3pw7k31XHxSv6lPCtmVU90upivFAeL27fpLA9bP/xk7lOx78k8qw
+ PXyQahDvvj9d8lX5dWtbbSzqxdFNTTAVqZW7G+hy/A2JCKEfeXJDIDpYdS2v8nMWTxQv
+ Yn0KWnZfTHkHZsYpWS0oMRGtguQ3ftSwtl5gToUVdmIC+rLRz2RFLUXOP8b5HH9yKUwX
+ BG0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697205711; x=1697810511;
+ d=1e100.net; s=20230601; t=1697205721; x=1697810521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ct6nqOkWPITqikpho6LzBF9JTwL/xSnZhZ7aKNqCpWg=;
- b=VM5DwlwRiX1zaX+OIuMZsnEXWoJU0+AGmma692irJ48RGGGIH7+cL/6vnMHqHMN07n
- uymDtRQG4ZxcAN3RMqbADHhUEL0vneURPs9F+uB3OHg1vn9OQFdw1dVX3ash/Z0evcDJ
- SH9fpcdYuG1Msb9l6nYirkHokuT9KGiq7hwZB3wdVaQnPV7S6+DPddX2xarlSA0oxrrv
- tsns7yMHccArjTvT8SmzZw/4ixB88G9nEiGpHQPi4hwxBw+p/n2fFPOlZNhMQGUNHR4z
- iGBu4Fs1FPxhxfSuLsz0tD4xXL9ehleOUh/skIudva2tEoexgBuBjjS87HeHKa0UZaqR
- JLNg==
-X-Gm-Message-State: AOJu0YzK93BBRltwttS8FPVrrdddf2avga/7tfE6ZZDFHg1udOYwK6b+
- 2dOUC1Q9+sO4djFDFfei3M5paG0lbgzC061T2yE=
-X-Google-Smtp-Source: AGHT+IGOPusUHzEY1R72zUpJpEMvm/4R/rTEAMfKCQO/I2/uN+urSywi/N/wufEiFUOgDDrzyCvTYQ==
-X-Received: by 2002:a05:6402:b18:b0:531:1875:bbc8 with SMTP id
- bm24-20020a0564020b1800b005311875bbc8mr23576375edb.19.1697205711335; 
- Fri, 13 Oct 2023 07:01:51 -0700 (PDT)
+ bh=zoUpF/tcrnIyHCTbzMglqeDjmRuZtQK69UeLuQY2xSo=;
+ b=vBNPXO195tSPdAeuqKmrpfLBAcO9ccWQOGlu0fwqsYvvNKaKNZ2pcav5DOtsHxCJYq
+ lKNU71obIXY8Ddii+QLyX4ysxJ2rO4q0PDjUWkSW5Oohl50HaWE2O6Ozg9sGQPINC+i7
+ nJhz2PkjLV3eXfRGbFBVE1zVfsD9whozRo0JjMc9MInSMsnjX5LKWtXfMXuXbanmTzZE
+ WHqgTvHJTVslcKU6oHv8MI1Bf7diq1fw2zKvXiGvBj0IG9S5OyZ1QOS3m2Airz5vqW9Y
+ 5obkDeCEylLFMiST9K/upd7Gaq2+Slpq1ZuSNxefQP+HfZ3B4VuzaugsS5PMNmadyTn0
+ wVvg==
+X-Gm-Message-State: AOJu0YxabQY/0nsjoJ57Rgwjngu58Lc5ude8sJRNRY5/4VeDbVgS/2Wg
+ mcoZQaN9VxaEkXg4B9zyKUyibp4bXGbA3VxxMDs=
+X-Google-Smtp-Source: AGHT+IF0XA2HQYdU0a5D9guwgtyAxteWCI1vO7DXw0FamPA6Jp5pReM2s2N+/AfRVrSKhPjdcBnvLg==
+X-Received: by 2002:a05:6402:5c4:b0:531:14c4:ae30 with SMTP id
+ n4-20020a05640205c400b0053114c4ae30mr193149edx.0.1697205721359; 
+ Fri, 13 Oct 2023 07:02:01 -0700 (PDT)
 Received: from m1x-phil.lan ([176.172.118.168])
  by smtp.gmail.com with ESMTPSA id
- bm15-20020a0564020b0f00b005346925a474sm11552152edb.43.2023.10.13.07.01.46
+ l16-20020a056402125000b00536159c6c45sm11321292edw.15.2023.10.13.07.01.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Oct 2023 07:01:50 -0700 (PDT)
+ Fri, 13 Oct 2023 07:02:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -87,18 +87,18 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Sergio Lopez <slp@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH v2 03/16] target/arm: Move internal declarations from
- 'cpu-qom.h' to 'cpu.h'
-Date: Fri, 13 Oct 2023 16:01:02 +0200
-Message-ID: <20231013140116.255-4-philmd@linaro.org>
+Subject: [PATCH v2 04/16] target/ppc: Remove CPU_RESOLVING_TYPE from
+ 'cpu-qom.h'
+Date: Fri, 13 Oct 2023 16:01:03 +0200
+Message-ID: <20231013140116.255-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231013140116.255-1-philmd@linaro.org>
 References: <20231013140116.255-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,103 +121,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These definitions and declarations are only used by
-target/arm/, no need to expose them to generic hw/.
+CPU_RESOLVING_TYPE is a per-target definition, and is
+irrelevant for other targets. Move it to "cpu.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu-qom.h | 28 ----------------------------
- target/arm/cpu.h     | 28 ++++++++++++++++++++++++++++
- 2 files changed, 28 insertions(+), 28 deletions(-)
+ target/ppc/cpu-qom.h | 3 +--
+ target/ppc/cpu.h     | 2 ++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
-index dfb9d5b827..35c3b0924e 100644
---- a/target/arm/cpu-qom.h
-+++ b/target/arm/cpu-qom.h
-@@ -35,9 +35,6 @@ typedef struct ARMCPUInfo {
-     void (*class_init)(ObjectClass *oc, void *data);
- } ARMCPUInfo;
+diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
+index 6d39ad451c..a8e0dcf2de 100644
+--- a/target/ppc/cpu-qom.h
++++ b/target/ppc/cpu-qom.h
+@@ -1,5 +1,5 @@
+ /*
+- * QEMU PowerPC CPU
++ * QEMU PowerPC CPU QOM header (target agnostic)
+  *
+  * Copyright (c) 2012 SUSE LINUX Products GmbH
+  *
+@@ -32,7 +32,6 @@ OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
  
--void arm_cpu_register(const ARMCPUInfo *info);
--void aarch64_cpu_register(const ARMCPUInfo *info);
--
- /**
-  * ARMCPUClass:
-  * @parent_realize: The parent class' realize handler.
-@@ -63,29 +60,4 @@ struct AArch64CPUClass {
-     ARMCPUClass parent_class;
- };
+ #define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
+ #define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
+-#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
  
--void register_cp_regs_for_features(ARMCPU *cpu);
--void init_cpreg_list(ARMCPU *cpu);
--
--/* Callback functions for the generic timer's timers. */
--void arm_gt_ptimer_cb(void *opaque);
--void arm_gt_vtimer_cb(void *opaque);
--void arm_gt_htimer_cb(void *opaque);
--void arm_gt_stimer_cb(void *opaque);
--void arm_gt_hvtimer_cb(void *opaque);
--
--#define ARM_AFF0_SHIFT 0
--#define ARM_AFF0_MASK  (0xFFULL << ARM_AFF0_SHIFT)
--#define ARM_AFF1_SHIFT 8
--#define ARM_AFF1_MASK  (0xFFULL << ARM_AFF1_SHIFT)
--#define ARM_AFF2_SHIFT 16
--#define ARM_AFF2_MASK  (0xFFULL << ARM_AFF2_SHIFT)
--#define ARM_AFF3_SHIFT 32
--#define ARM_AFF3_MASK  (0xFFULL << ARM_AFF3_SHIFT)
--#define ARM_DEFAULT_CPUS_PER_CLUSTER 8
--
--#define ARM32_AFFINITY_MASK (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK)
--#define ARM64_AFFINITY_MASK \
--    (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK|ARM_AFF3_MASK)
--#define ARM64_AFFINITY_INVALID (~ARM64_AFFINITY_MASK)
--
- #endif
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index fb1b08371c..06f92dacb9 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1116,11 +1116,39 @@ struct ArchCPU {
-     uint64_t gt_cntfrq_hz;
- };
+ #define TYPE_HOST_POWERPC_CPU POWERPC_CPU_TYPE_NAME("host")
  
-+/* Callback functions for the generic timer's timers. */
-+void arm_gt_ptimer_cb(void *opaque);
-+void arm_gt_vtimer_cb(void *opaque);
-+void arm_gt_htimer_cb(void *opaque);
-+void arm_gt_stimer_cb(void *opaque);
-+void arm_gt_hvtimer_cb(void *opaque);
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index cf4629036d..f8101ffa29 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -27,6 +27,8 @@
+ #include "qom/object.h"
+ #include "hw/registerfields.h"
+ 
++#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
 +
- unsigned int gt_cntfrq_period_ns(ARMCPU *cpu);
- void gt_rme_post_el_change(ARMCPU *cpu, void *opaque);
+ #define TCG_GUEST_DEFAULT_MO 0
  
- void arm_cpu_post_init(Object *obj);
- 
-+void arm_cpu_register(const ARMCPUInfo *info);
-+void aarch64_cpu_register(const ARMCPUInfo *info);
-+
-+void register_cp_regs_for_features(ARMCPU *cpu);
-+void init_cpreg_list(ARMCPU *cpu);
-+
-+#define ARM_AFF0_SHIFT 0
-+#define ARM_AFF0_MASK  (0xFFULL << ARM_AFF0_SHIFT)
-+#define ARM_AFF1_SHIFT 8
-+#define ARM_AFF1_MASK  (0xFFULL << ARM_AFF1_SHIFT)
-+#define ARM_AFF2_SHIFT 16
-+#define ARM_AFF2_MASK  (0xFFULL << ARM_AFF2_SHIFT)
-+#define ARM_AFF3_SHIFT 32
-+#define ARM_AFF3_MASK  (0xFFULL << ARM_AFF3_SHIFT)
-+#define ARM_DEFAULT_CPUS_PER_CLUSTER 8
-+
-+#define ARM32_AFFINITY_MASK (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK)
-+#define ARM64_AFFINITY_MASK \
-+    (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK|ARM_AFF3_MASK)
-+#define ARM64_AFFINITY_INVALID (~ARM64_AFFINITY_MASK)
-+
- uint64_t arm_cpu_mp_affinity(int idx, uint8_t clustersz);
- 
- #ifndef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS_64K 16
 -- 
 2.41.0
 
