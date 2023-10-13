@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD007C813F
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A986F7C80BC
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:50:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqK-0008OM-GA; Fri, 13 Oct 2023 04:48:24 -0400
+	id 1qrDqT-0008RE-Hm; Fri, 13 Oct 2023 04:48:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDq4-0007kx-GP
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:08 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1qrDq5-0007mE-QQ
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:11 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDq1-0000uP-7s
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:07 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3248ac76acbso1572224f8f.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:04 -0700 (PDT)
+ id 1qrDq3-0000vK-PB
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:09 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3231df054c4so1541419f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186883; x=1697791683; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186885; x=1697791685; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YyFwdRKpgoyRXm/k/YDCqSRLsmVWCzokGEWgj3zx0Ns=;
- b=iHXPCxe2A3766gL8XCX7jcxrZuzshGGe0ws+ZLd4b5d2pIcF71Pie659Z1OcwTi9hl
- hYTJUYYskdzOt53XQ17EJESp4Ddel2kIYAYhpEZibm8J8+temfBDLJQpDuuAeWMSj/C9
- RDmBYeFTrdWp2rpLc0EMpFJvRCb3X7ULEjmuRWUYqtHVWpLLle3ET2ymoR4FC0CGLIMy
- lcLsGQhjmVSAEDiR33b9HjiNzi79L6GRCN5P/3fbmGuM2/X9EWyuuWEZyt54JScM36KR
- eDKIr1UIHKdSoh3hPHD7uLqmJKKz91GvtS6u8kNWZlWxDUpJRayq1KJ7JJ8R3v0uibps
- Nb3A==
+ bh=+U4VlGmHX6c8t63nXRvGK6khwZhK7FvvA0drXVMUAPw=;
+ b=V3zsIqKANXqqsBX+Fftrz5lGYFq8bt2g1RlKL4JJbFNUks3/075gosBigjsguWVHpy
+ snnr/70s8Dy7hGZ/ouBQxJdFymmOsYxJdT4hZtobJ8JcO3WLlWpSVOWOIMRPM8YOMjLI
+ Sjf5QzG+RplLIIv+5KCvAS+/mWA/MbYl84m00/6nsPh3bNJyKjK4zQxNavD5z6hK7+X0
+ DXZ7iadB+r1MXv+lbq+GrfxlHwKhwt7K/KuD/NpDkqfe5kWgbJQLf57QaeD9XRDBqk21
+ DHiW4AVLD4TG40JHzMoUApjeJcP720fHMfoFCLID1L86Vd6n/QvwGRJX3pe2jwhjBtrD
+ 4TjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186883; x=1697791683;
+ d=1e100.net; s=20230601; t=1697186885; x=1697791685;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YyFwdRKpgoyRXm/k/YDCqSRLsmVWCzokGEWgj3zx0Ns=;
- b=Gs6Tn5Z2rVFlo8sT+WwQ+gs8/osBGz9tH/mbd/1Eg8/6Ze3cb3No29dmzNfw4vVo1D
- B5wa0bhF+5WWwCo6VX+EYqv5g2gxtLUDUzblog2oNDXayHIPIC8N90S7uFdAOs4Iau06
- GoDgzvAlSvEXXRXJH2jTsDsQXFQh2J8WmMuvGNuLnz9ku6WiDrumU/ceMPMLyVQSwDMT
- s5qyR1RAJv0TEG092rfSWSPLIl6OAvHBFtx2scGiavO/9jFBss0Vx5WbnCvcLWu1gLkV
- aVVzv/R8u3SOZUu1JXFo3oQSUz+qfGXp3yyY/c0K6XrscUmJrltTiB3m10wLStV7RrLz
- ouBg==
-X-Gm-Message-State: AOJu0YzdeVvn7FKomQpSCmtbcghPcjiOH/5bLTaGmR9pMDO2T12SzVTJ
- GT/BB22ovBL21QEYmXL2eGnrFRwxbIAxEJsNkmo=
-X-Google-Smtp-Source: AGHT+IGJreP9TZKAyfWO3kMyqT7snGOMjHwbBLgM78ZN+4I3Y+xEqT/IBD45GWe9a3QVm6Re6FW5xg==
-X-Received: by 2002:a5d:6c69:0:b0:32c:eeee:d438 with SMTP id
- r9-20020a5d6c69000000b0032ceeeed438mr11336634wrz.54.1697186883673; 
- Fri, 13 Oct 2023 01:48:03 -0700 (PDT)
+ bh=+U4VlGmHX6c8t63nXRvGK6khwZhK7FvvA0drXVMUAPw=;
+ b=BWP8hXt/DwLsRT03mKNlzEXQwFn2o1Upb3RjInWPik25p01H2h6Zupl8saCCmAVnCs
+ 0R5KJ2wR8wRpIpSPjQ2PFAqS7d/rCcwK/Li7cEdLYOPloZC8NCwj9dpOh1ugl4nI2Fey
+ N+MRMPOmp74LETmWuoS02OGneE1OltgTUA2PXYc3Sw6Ir7QF+gYxFV1rulVPYt6tMIWN
+ Ra9i49P4lqFR6N9SHGCcNTv2ZYEmFEAaYJDGgPHuNl7CkKOmUXVuWpvztkIqHOtY23Ht
+ t/4mGAgT75Pwv4029jhjSXyurhy36wNVFb/HxjDKl90WdiPtkR4n/7M4S1fvfAutHHJh
+ SBkQ==
+X-Gm-Message-State: AOJu0Yz4QVsqGsuPxegP8xe6+GMd7FAyC/E8UJ+gzy2ts4TEPBu1IrQn
+ c0jZ6f6SZvlPa7uItRRs9EI80P20vl4npyQlnVI=
+X-Google-Smtp-Source: AGHT+IHdodlBSZXFwqWQgN74v4VlNmt7SKuxlA91FfdV04yW4q+ubrPGOgvs2Jmw372BU9iNktSUzw==
+X-Received: by 2002:a05:6000:22b:b0:32d:9a8f:6245 with SMTP id
+ l11-20020a056000022b00b0032d9a8f6245mr1139634wrz.68.1697186885199; 
+ Fri, 13 Oct 2023 01:48:05 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.02
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:48:03 -0700 (PDT)
+ Fri, 13 Oct 2023 01:48:04 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [RFC PATCH v3 29/78] target/cris: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:45:57 +0300
-Message-Id: <0d379a3b1f092b18be293448a09dcadebbea98fc.1697186560.git.manos.pitsidianakis@linaro.org>
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>
+Subject: [RFC PATCH v3 30/78] target/nios2: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:45:58 +0300
+Message-Id: <351c2c52f47be506c3708806ee0080761a970bea.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,31 +97,54 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/cris/translate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/nios2/helper.c    | 6 +++---
+ target/nios2/translate.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-index b3974ba0bb..bdd128db23 100644
---- a/target/cris/translate.c
-+++ b/target/cris/translate.c
-@@ -3113,7 +3113,7 @@ static void cris_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-                 break;
-             }
-             tcg_gen_movi_tl(env_btarget, dc->jmp_pc);
--            /* fall through */
-+            fallthrough;
+diff --git a/target/nios2/helper.c b/target/nios2/helper.c
+index bb3b09e5a7..b44e73768e 100644
+--- a/target/nios2/helper.c
++++ b/target/nios2/helper.c
+@@ -198,7 +198,7 @@ void nios2_cpu_do_interrupt(CPUState *cs)
  
-         case JMP_INDIRECT:
-             tcg_gen_movcond_tl(TCG_COND_NE, env_pc,
-@@ -3140,7 +3140,7 @@ static void cris_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-         break;
-     case DISAS_UPDATE_NEXT:
-         tcg_gen_movi_tl(env_pc, npc);
+     case EXCP_TLB_D:
+         tlbmisc_set = CR_TLBMISC_D;
 -        /* fall through */
 +        fallthrough;
-     case DISAS_JUMP:
-         tcg_gen_lookup_and_goto_ptr();
-         break;
+     case EXCP_TLB_X:
+         if (env->ctrl[CR_STATUS] & CR_STATUS_EH) {
+             tlbmisc_set |= CR_TLBMISC_DBL;
+@@ -220,7 +220,7 @@ void nios2_cpu_do_interrupt(CPUState *cs)
+     case EXCP_PERM_R:
+     case EXCP_PERM_W:
+         tlbmisc_set = CR_TLBMISC_D;
+-        /* fall through */
++        fallthrough;
+     case EXCP_PERM_X:
+         tlbmisc_set |= CR_TLBMISC_PERM;
+         if (!(env->ctrl[CR_STATUS] & CR_STATUS_EH)) {
+@@ -232,7 +232,7 @@ void nios2_cpu_do_interrupt(CPUState *cs)
+     case EXCP_SUPERA_D:
+     case EXCP_UNALIGN:
+         tlbmisc_set = CR_TLBMISC_D;
+-        /* fall through */
++        fallthrough;
+     case EXCP_SUPERA_X:
+     case EXCP_UNALIGND:
+         tlbmisc_set |= CR_TLBMISC_BAD;
+diff --git a/target/nios2/translate.c b/target/nios2/translate.c
+index e806623594..2cfe77c90a 100644
+--- a/target/nios2/translate.c
++++ b/target/nios2/translate.c
+@@ -649,7 +649,7 @@ static void wrctl(DisasContext *dc, uint32_t code, uint32_t flags)
+     case CR_IENABLE:
+         /* If interrupts were enabled using WRCTL, trigger them. */
+         dc->base.is_jmp = DISAS_UPDATE;
+-        /* fall through */
++        fallthrough;
+     default:
+         if (wr == -1) {
+             /* The register is entirely writable. */
 -- 
 2.39.2
 
