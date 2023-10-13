@@ -2,85 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272937C7FD5
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B3C7C8008
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:23:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDFq-0000Nh-Hz; Fri, 13 Oct 2023 04:10:42 -0400
+	id 1qrDGp-0002cT-RA; Fri, 13 Oct 2023 04:11:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qrDFn-0000LM-8R
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:10:39 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qrDFd-0001uD-Id
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:10:38 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1c9b95943beso15818935ad.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:10:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697184628; x=1697789428; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OaRHVh+YUDmOgYXrkkTq1bhMOwcUQ/jKkeQOpSeohxY=;
- b=JGrrtMAibKeA+FVIryUj9iPQjmDmtk/kiRgo6LJjiMTO/yHGgcMY6RKOymbsOM48WW
- k4kfWpczIamNOQ7ird5cKlnzqYsCO3P6itQ7XZ6U1wE5/0gUy4ypriOi/m5lSCciZXXZ
- Urwp9koRuw6XGsQ2O61K29RJGFZJgm8eGTHFqv2djEDVWrcd6nQY9f13YH49tnbdEBSP
- okehHqjM3v8bFdPOfEy1bWfK0S699aT80JawE8DnzylECDOISPf7SogiidHRrSk3cYOQ
- 6HyupR3pRUC1HPpLSkA1iPzvgdi7c9W7UOVg0zCxT0tvgYgk2frpiY57WVNKCtxi+wBe
- U2Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697184628; x=1697789428;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OaRHVh+YUDmOgYXrkkTq1bhMOwcUQ/jKkeQOpSeohxY=;
- b=S8AN7NMn1hv3cg9kVcTryAkvUef36CqG7jvbanCQ2J4nmjTJeQwxqdX+RmxUfXsIzb
- RsXgBpbGpgI9IUcxwGqqMM1rH/1T1C7R4GgeAgRsbMvQE0lnIXFrZWJnidIbv/gT6IPt
- BSOCk9tQQ0HFleQ5HcbIrYpkfLbJR9HyQhA9DHpNVnJoSbYnqRZwpyUpsb1auL+1YSF6
- Uy05ITPtCUDh2E0M7VYDx5UFZgiYw3N4KZT7VQ6m4AztpczlI0LakfeQBgcC3NUOPju6
- jFhKr8BMhe8DNKjoQCw52Q6sJSLNejF7qf8bxXcUWhdDvt5gwkmfrgx7oT4pRiwwvcwq
- Qjow==
-X-Gm-Message-State: AOJu0YwDmP9Y7O+31BIHjUVqDafOufYgr3BSg7cNgssFhHW/CZJHnse4
- mEeTzatqW70hVjQuobceHUmk97UhpcUWUi4s
-X-Google-Smtp-Source: AGHT+IEP3nQtWc4GiDAvPXFwFQu5Kk+DUI0tp7utbHO8zYckbebo+shVHzz9rLw82r7zqRCNaQYorw==
-X-Received: by 2002:a17:903:1c8:b0:1c8:a63a:2087 with SMTP id
- e8-20020a17090301c800b001c8a63a2087mr16816701plh.65.1697184628062; 
- Fri, 13 Oct 2023 01:10:28 -0700 (PDT)
-Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
- u9-20020a17090341c900b001c631236505sm3255497ple.228.2023.10.13.01.10.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:10:27 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yin31149@gmail.com,
-	18801353760@163.com
-Subject: [PATCH v5 7/7] vdpa: Send cvq state load commands in parallel
-Date: Fri, 13 Oct 2023 16:09:42 +0800
-Message-Id: <9350f32278e39f7bce297b8f2d82dac27c6f8c9a.1697165821.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1697165821.git.yin31149@gmail.com>
-References: <cover.1697165821.git.yin31149@gmail.com>
+ (Exim 4.90_1) (envelope-from <SRS0=fS+4=F3=kaod.org=clg@ozlabs.org>)
+ id 1qrDGk-0002Cc-Pf; Fri, 13 Oct 2023 04:11:39 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=fS+4=F3=kaod.org=clg@ozlabs.org>)
+ id 1qrDGh-00021R-1K; Fri, 13 Oct 2023 04:11:38 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4S6K351vvgz4xZX;
+ Fri, 13 Oct 2023 19:11:29 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4S6K3163nKz4xKl;
+ Fri, 13 Oct 2023 19:11:25 +1100 (AEDT)
+Message-ID: <84c576d2-ad2d-4dda-b68e-06d8ad2bcbde@kaod.org>
+Date: Fri, 13 Oct 2023 10:11:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 42/75] hw/misc: add fallthrough pseudo-keyword
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery
+ <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ "open list:New World (mac99)" <qemu-ppc@nongnu.org>
+References: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
+ <425f0e72cbc10f9acc0c92b6404f7d006e69f05f.1697034504.git.manos.pitsidianakis@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <425f0e72cbc10f9acc0c92b6404f7d006e69f05f.1697034504.git.manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=yin31149@gmail.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=fS+4=F3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,304 +68,684 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch enables sending CVQ state load commands
-in parallel at device startup by following steps:
+On 10/13/23 09:47, Emmanouil Pitsidianakis wrote:
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>   hw/misc/a9scu.c            |  2 ++
+>   hw/misc/aspeed_scu.c       |  2 +-
+>   hw/misc/bcm2835_property.c | 12 ++++++------
+>   hw/misc/mos6522.c          |  4 ++--
+>   4 files changed, 11 insertions(+), 9 deletions(-)
 
-  * Refactor vhost_vdpa_net_load_cmd() to iterate through
-the control commands shadow buffers. This allows different
-CVQ state load commands to use their own unique buffers.
+For aspeed,
 
-  * Delay the polling and checking of buffers until either
-the SVQ is full or control commands shadow buffers are full.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
----
-v5:
-  - remove the assertion suggested by Eugenio
-  - inline the vhost_svq_available_slots() in vhost_vdpa_net_load_cmd()
-suggested by Eugenio
-  - fix conflicts with master branch
+Thanks,
 
-v4: https://lore.kernel.org/all/f25fea0b0aed78bad2dd5744a4cc5538243672e6.1693287885.git.yin31149@gmail.com/
-  - refactor argument `cmds_in_flight` to `len` for
-vhost_vdpa_net_svq_full()
-  - check the return value of vhost_vdpa_net_svq_poll()
-in vhost_vdpa_net_svq_flush() suggested by Eugenio
-  - use iov_size(), vhost_vdpa_net_load_cursor_reset()
-and iov_discard_front() to update the cursors instead of
-accessing it directly according to Eugenio
+C.
 
- net/vhost-vdpa.c | 165 +++++++++++++++++++++++++++++------------------
- 1 file changed, 102 insertions(+), 63 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index ef4d242811..4b7c3b81b8 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -661,6 +661,31 @@ static void vhost_vdpa_net_load_cursor_reset(VhostVDPAState *s,
-     in_cursor->iov_len = vhost_vdpa_net_cvq_cmd_page_len();
- }
- 
-+/*
-+ * Poll SVQ for multiple pending control commands and check the device's ack.
-+ *
-+ * Caller should hold the BQL when invoking this function.
-+ *
-+ * @s: The VhostVDPAState
-+ * @len: The length of the pending status shadow buffer
-+ */
-+static ssize_t vhost_vdpa_net_svq_flush(VhostVDPAState *s, size_t len)
-+{
-+    /* device uses a one-byte length ack for each control command */
-+    ssize_t dev_written = vhost_vdpa_net_svq_poll(s, len);
-+    if (unlikely(dev_written != len)) {
-+        return -EIO;
-+    }
-+
-+    /* check the device's ack */
-+    for (int i = 0; i < len; ++i) {
-+        if (s->status[i] != VIRTIO_NET_OK) {
-+            return -EIO;
-+        }
-+    }
-+    return 0;
-+}
-+
- static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-                                        struct iovec *out_cursor,
-                                        struct iovec *in_cursor, uint8_t class,
-@@ -671,11 +696,31 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-         .class = class,
-         .cmd = cmd,
-     };
--    size_t data_size = iov_size(data_sg, data_num);
-+    size_t data_size = iov_size(data_sg, data_num), cmd_size;
-     struct iovec out, in;
-     ssize_t r;
-+    unsigned dummy_cursor_iov_cnt;
-+    VhostShadowVirtqueue *svq = g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
- 
-     assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
-+    cmd_size = sizeof(ctrl) + data_size;
-+    if (vhost_svq_available_slots(svq) < 2 ||
-+        iov_size(out_cursor, 1) < cmd_size) {
-+        /*
-+         * It is time to flush all pending control commands if SVQ is full
-+         * or control commands shadow buffers are full.
-+         *
-+         * We can poll here since we've had BQL from the time
-+         * we sent the descriptor.
-+         */
-+        r = vhost_vdpa_net_svq_flush(s, in_cursor->iov_base -
-+                                     (void *)s->status);
-+        if (unlikely(r < 0)) {
-+            return r;
-+        }
-+
-+        vhost_vdpa_net_load_cursor_reset(s, out_cursor, in_cursor);
-+    }
- 
-     /* pack the CVQ command header */
-     iov_from_buf(out_cursor, 1, 0, &ctrl, sizeof(ctrl));
-@@ -684,7 +729,7 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-                out_cursor->iov_base + sizeof(ctrl), data_size);
- 
-     /* extract the required buffer from the cursor for output */
--    iov_copy(&out, 1, out_cursor, 1, 0, sizeof(ctrl) + data_size);
-+    iov_copy(&out, 1, out_cursor, 1, 0, cmd_size);
-     /* extract the required buffer from the cursor for input */
-     iov_copy(&in, 1, in_cursor, 1, 0, sizeof(*s->status));
- 
-@@ -693,11 +738,13 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-         return r;
-     }
- 
--    /*
--     * We can poll here since we've had BQL from the time
--     * we sent the descriptor.
--     */
--    return vhost_vdpa_net_svq_poll(s, 1);
-+    /* iterate the cursors */
-+    dummy_cursor_iov_cnt = 1;
-+    iov_discard_front(&out_cursor, &dummy_cursor_iov_cnt, cmd_size);
-+    dummy_cursor_iov_cnt = 1;
-+    iov_discard_front(&in_cursor, &dummy_cursor_iov_cnt, sizeof(*s->status));
-+
-+    return 0;
- }
- 
- static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-@@ -709,15 +756,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_base = (void *)n->mac,
-             .iov_len = sizeof(n->mac),
-         };
--        ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_MAC,
--                                                  VIRTIO_NET_CTRL_MAC_ADDR_SET,
--                                                  &data, 1);
--        if (unlikely(dev_written < 0)) {
--            return dev_written;
--        }
--        if (*s->status != VIRTIO_NET_OK) {
--            return -EIO;
-+        ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                            VIRTIO_NET_CTRL_MAC,
-+                                            VIRTIO_NET_CTRL_MAC_ADDR_SET,
-+                                            &data, 1);
-+        if (unlikely(r < 0)) {
-+            return r;
-         }
-     }
- 
-@@ -762,15 +806,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_len = mul_macs_size,
-         },
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                VIRTIO_NET_CTRL_MAC,
--                                VIRTIO_NET_CTRL_MAC_TABLE_SET,
--                                data, ARRAY_SIZE(data));
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                        VIRTIO_NET_CTRL_MAC,
-+                                        VIRTIO_NET_CTRL_MAC_TABLE_SET,
-+                                        data, ARRAY_SIZE(data));
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -782,7 +823,7 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-                                   struct iovec *in_cursor)
- {
-     struct virtio_net_ctrl_mq mq;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_MQ)) {
-         return 0;
-@@ -793,15 +834,12 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-         .iov_base = &mq,
-         .iov_len = sizeof(mq),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_MQ,
--                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_MQ,
-+                                VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
-+                                &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -813,7 +851,7 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-                                         struct iovec *in_cursor)
- {
-     uint64_t offloads;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj,
-                                  VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
-@@ -841,15 +879,12 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-         .iov_base = &offloads,
-         .iov_len = sizeof(offloads),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_GUEST_OFFLOADS,
-+                                VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
-+                                &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -865,16 +900,12 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPAState *s,
-         .iov_base = &on,
-         .iov_len = sizeof(on),
-     };
--    ssize_t dev_written;
-+    ssize_t r;
- 
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_RX,
--                                          cmd, &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_RX, cmd, &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1031,15 +1062,12 @@ static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
-         .iov_base = &vid,
-         .iov_len = sizeof(vid),
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_VLAN,
--                                                  VIRTIO_NET_CTRL_VLAN_ADD,
--                                                  &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (unlikely(*s->status != VIRTIO_NET_OK)) {
--        return -EIO;
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                        VIRTIO_NET_CTRL_VLAN,
-+                                        VIRTIO_NET_CTRL_VLAN_ADD,
-+                                        &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1106,6 +1134,17 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
-         if (unlikely(r)) {
-             return r;
-         }
-+
-+        /*
-+         * We need to poll and check all pending device's used buffers.
-+         *
-+         * We can poll here since we've had BQL from the time
-+         * we sent the descriptor.
-+         */
-+        r = vhost_vdpa_net_svq_flush(s, in_cursor.iov_base - (void *)s->status);
-+        if (unlikely(r)) {
-+            return r;
-+        }
-     }
- 
-     for (int i = 0; i < v->dev->vq_index; ++i) {
--- 
-2.25.1
+> 
+> diff --git a/hw/misc/a9scu.c b/hw/misc/a9scu.c
+> index a375ebc987..b422bec3c4 100644
+> --- a/hw/misc/a9scu.c
+> +++ b/hw/misc/a9scu.c
+> @@ -21,26 +21,27 @@
+>   static uint64_t a9_scu_read(void *opaque, hwaddr offset,
+>                               unsigned size)
+>   {
+>       A9SCUState *s = (A9SCUState *)opaque;
+>       switch (offset) {
+>       case 0x00: /* Control */
+>           return s->control;
+>       case 0x04: /* Configuration */
+>           return (((1 << s->num_cpu) - 1) << 4) | (s->num_cpu - 1);
+>       case 0x08: /* CPU Power Status */
+>           return s->status;
+>       case 0x0c: /* Invalidate All Registers In Secure State */
+>           return 0;
+>       case 0x40: /* Filtering Start Address Register */
+>       case 0x44: /* Filtering End Address Register */
+>           /* RAZ/WI, like an implementation with only one AXI master */
+>           return 0;
+>       case 0x50: /* SCU Access Control Register */
+>       case 0x54: /* SCU Non-secure Access Control Register */
+>           /* unimplemented, fall through */
+> +        fallthrough;
+>       default:
+>           qemu_log_mask(LOG_UNIMP, "%s: Unsupported offset 0x%"HWADDR_PRIx"\n",
+>                         __func__, offset);
+>           return 0;
+>       }
+>   }
+> @@ -48,31 +49,32 @@ static uint64_t a9_scu_read(void *opaque, hwaddr offset,
+>   static void a9_scu_write(void *opaque, hwaddr offset,
+>                            uint64_t value, unsigned size)
+>   {
+>       A9SCUState *s = (A9SCUState *)opaque;
+>   
+>       switch (offset) {
+>       case 0x00: /* Control */
+>           s->control = value & 1;
+>           break;
+>       case 0x4: /* Configuration: RO */
+>           break;
+>       case 0x08: case 0x09: case 0x0A: case 0x0B: /* Power Control */
+>           s->status = value;
+>           break;
+>       case 0x0c: /* Invalidate All Registers In Secure State */
+>           /* no-op as we do not implement caches */
+>           break;
+>       case 0x40: /* Filtering Start Address Register */
+>       case 0x44: /* Filtering End Address Register */
+>           /* RAZ/WI, like an implementation with only one AXI master */
+>           break;
+>       case 0x50: /* SCU Access Control Register */
+>       case 0x54: /* SCU Non-secure Access Control Register */
+>           /* unimplemented, fall through */
+> +        fallthrough;
+>       default:
+>           qemu_log_mask(LOG_UNIMP, "%s: Unsupported offset 0x%"HWADDR_PRIx
+>                                    " value 0x%"PRIx64"\n",
+>                         __func__, offset, value);
+>           break;
+>       }
+>   }
+> diff --git a/hw/misc/aspeed_scu.c b/hw/misc/aspeed_scu.c
+> index 8335364906..4a1ea2fa21 100644
+> --- a/hw/misc/aspeed_scu.c
+> +++ b/hw/misc/aspeed_scu.c
+> @@ -645,65 +645,65 @@ static uint64_t aspeed_ast2600_scu_read(void *opaque, hwaddr offset,
+>   static void aspeed_ast2600_scu_write(void *opaque, hwaddr offset,
+>                                        uint64_t data64, unsigned size)
+>   {
+>       AspeedSCUState *s = ASPEED_SCU(opaque);
+>       int reg = TO_REG(offset);
+>       /* Truncate here so bitwise operations below behave as expected */
+>       uint32_t data = data64;
+>   
+>       if (reg >= ASPEED_AST2600_SCU_NR_REGS) {
+>           qemu_log_mask(LOG_GUEST_ERROR,
+>                         "%s: Out-of-bounds write at offset 0x%" HWADDR_PRIx "\n",
+>                         __func__, offset);
+>           return;
+>       }
+>   
+>       if (reg > PROT_KEY && !s->regs[PROT_KEY]) {
+>           qemu_log_mask(LOG_GUEST_ERROR, "%s: SCU is locked!\n", __func__);
+>       }
+>   
+>       trace_aspeed_scu_write(offset, size, data);
+>   
+>       switch (reg) {
+>       case AST2600_PROT_KEY:
+>           s->regs[reg] = (data == ASPEED_SCU_PROT_KEY) ? 1 : 0;
+>           return;
+>       case AST2600_HW_STRAP1:
+>       case AST2600_HW_STRAP2:
+>           if (s->regs[reg + 2]) {
+>               return;
+>           }
+> -        /* fall through */
+> +        fallthrough;
+>       case AST2600_SYS_RST_CTRL:
+>       case AST2600_SYS_RST_CTRL2:
+>       case AST2600_CLK_STOP_CTRL:
+>       case AST2600_CLK_STOP_CTRL2:
+>           /* W1S (Write 1 to set) registers */
+>           s->regs[reg] |= data;
+>           return;
+>       case AST2600_SYS_RST_CTRL_CLR:
+>       case AST2600_SYS_RST_CTRL2_CLR:
+>       case AST2600_CLK_STOP_CTRL_CLR:
+>       case AST2600_CLK_STOP_CTRL2_CLR:
+>       case AST2600_HW_STRAP1_CLR:
+>       case AST2600_HW_STRAP2_CLR:
+>           /*
+>            * W1C (Write 1 to clear) registers are offset by one address from
+>            * the data register
+>            */
+>           s->regs[reg - 1] &= ~data;
+>           return;
+>   
+>       case AST2600_RNG_DATA:
+>       case AST2600_SILICON_REV:
+>       case AST2600_SILICON_REV2:
+>       case AST2600_CHIP_ID0:
+>       case AST2600_CHIP_ID1:
+>           /* Add read only registers here */
+>           qemu_log_mask(LOG_GUEST_ERROR,
+>                         "%s: Write to read-only offset 0x%" HWADDR_PRIx "\n",
+>                         __func__, offset);
+>           return;
+>       }
+>   
+>       s->regs[reg] = data;
+>   }
+> diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
+> index 4ed9faa54a..98170f34a6 100644
+> --- a/hw/misc/bcm2835_property.c
+> +++ b/hw/misc/bcm2835_property.c
+> @@ -24,303 +24,303 @@
+>   static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
+>   {
+>       uint32_t tag;
+>       uint32_t bufsize;
+>       uint32_t tot_len;
+>       size_t resplen;
+>       uint32_t tmp;
+>       int n;
+>       uint32_t offset, length, color;
+>   
+>       /*
+>        * Copy the current state of the framebuffer config; we will update
+>        * this copy as we process tags and then ask the framebuffer to use
+>        * it at the end.
+>        */
+>       BCM2835FBConfig fbconfig = s->fbdev->config;
+>       bool fbconfig_updated = false;
+>   
+>       value &= ~0xf;
+>   
+>       s->addr = value;
+>   
+>       tot_len = ldl_le_phys(&s->dma_as, value);
+>   
+>       /* @(addr + 4) : Buffer response code */
+>       value = s->addr + 8;
+>       while (value + 8 <= s->addr + tot_len) {
+>           tag = ldl_le_phys(&s->dma_as, value);
+>           bufsize = ldl_le_phys(&s->dma_as, value + 4);
+>           /* @(value + 8) : Request/response indicator */
+>           resplen = 0;
+>           switch (tag) {
+>           case RPI_FWREQ_PROPERTY_END:
+>               break;
+>           case RPI_FWREQ_GET_FIRMWARE_REVISION:
+>               stl_le_phys(&s->dma_as, value + 12, 346337);
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_GET_BOARD_MODEL:
+>               qemu_log_mask(LOG_UNIMP,
+>                             "bcm2835_property: 0x%08x get board model NYI\n",
+>                             tag);
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_GET_BOARD_REVISION:
+>               stl_le_phys(&s->dma_as, value + 12, s->board_rev);
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_GET_BOARD_MAC_ADDRESS:
+>               resplen = sizeof(s->macaddr.a);
+>               dma_memory_write(&s->dma_as, value + 12, s->macaddr.a, resplen,
+>                                MEMTXATTRS_UNSPECIFIED);
+>               break;
+>           case RPI_FWREQ_GET_BOARD_SERIAL:
+>               qemu_log_mask(LOG_UNIMP,
+>                             "bcm2835_property: 0x%08x get board serial NYI\n",
+>                             tag);
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_GET_ARM_MEMORY:
+>               /* base */
+>               stl_le_phys(&s->dma_as, value + 12, 0);
+>               /* size */
+>               stl_le_phys(&s->dma_as, value + 16, s->fbdev->vcram_base);
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_GET_VC_MEMORY:
+>               /* base */
+>               stl_le_phys(&s->dma_as, value + 12, s->fbdev->vcram_base);
+>               /* size */
+>               stl_le_phys(&s->dma_as, value + 16, s->fbdev->vcram_size);
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_SET_POWER_STATE:
+>               /* Assume that whatever device they asked for exists,
+>                * and we'll just claim we set it to the desired state
+>                */
+>               tmp = ldl_le_phys(&s->dma_as, value + 16);
+>               stl_le_phys(&s->dma_as, value + 16, (tmp & 1));
+>               resplen = 8;
+>               break;
+>   
+>           /* Clocks */
+>   
+>           case RPI_FWREQ_GET_CLOCK_STATE:
+>               stl_le_phys(&s->dma_as, value + 16, 0x1);
+>               resplen = 8;
+>               break;
+>   
+>           case RPI_FWREQ_SET_CLOCK_STATE:
+>               qemu_log_mask(LOG_UNIMP,
+>                             "bcm2835_property: 0x%08x set clock state NYI\n",
+>                             tag);
+>               resplen = 8;
+>               break;
+>   
+>           case RPI_FWREQ_GET_CLOCK_RATE:
+>           case RPI_FWREQ_GET_MAX_CLOCK_RATE:
+>           case RPI_FWREQ_GET_MIN_CLOCK_RATE:
+>               switch (ldl_le_phys(&s->dma_as, value + 12)) {
+>               case RPI_FIRMWARE_EMMC_CLK_ID:
+>                   stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_EMMC_CLK_RATE);
+>                   break;
+>               case RPI_FIRMWARE_UART_CLK_ID:
+>                   stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_UART_CLK_RATE);
+>                   break;
+>               case RPI_FIRMWARE_CORE_CLK_ID:
+>                   stl_le_phys(&s->dma_as, value + 16, RPI_FIRMWARE_CORE_CLK_RATE);
+>                   break;
+>               default:
+>                   stl_le_phys(&s->dma_as, value + 16,
+>                               RPI_FIRMWARE_DEFAULT_CLK_RATE);
+>                   break;
+>               }
+>               resplen = 8;
+>               break;
+>   
+>           case RPI_FWREQ_SET_CLOCK_RATE:
+>           case RPI_FWREQ_SET_MAX_CLOCK_RATE:
+>           case RPI_FWREQ_SET_MIN_CLOCK_RATE:
+>               qemu_log_mask(LOG_UNIMP,
+>                             "bcm2835_property: 0x%08x set clock rate NYI\n",
+>                             tag);
+>               resplen = 8;
+>               break;
+>   
+>           /* Temperature */
+>   
+>           case RPI_FWREQ_GET_TEMPERATURE:
+>               stl_le_phys(&s->dma_as, value + 16, 25000);
+>               resplen = 8;
+>               break;
+>   
+>           case RPI_FWREQ_GET_MAX_TEMPERATURE:
+>               stl_le_phys(&s->dma_as, value + 16, 99000);
+>               resplen = 8;
+>               break;
+>   
+>           /* Frame buffer */
+>   
+>           case RPI_FWREQ_FRAMEBUFFER_ALLOCATE:
+>               stl_le_phys(&s->dma_as, value + 12, fbconfig.base);
+>               stl_le_phys(&s->dma_as, value + 16,
+>                           bcm2835_fb_get_size(&fbconfig));
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_RELEASE:
+>               resplen = 0;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_BLANK:
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_TEST_PHYSICAL_WIDTH_HEIGHT:
+>           case RPI_FWREQ_FRAMEBUFFER_TEST_VIRTUAL_WIDTH_HEIGHT:
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_SET_PHYSICAL_WIDTH_HEIGHT:
+>               fbconfig.xres = ldl_le_phys(&s->dma_as, value + 12);
+>               fbconfig.yres = ldl_le_phys(&s->dma_as, value + 16);
+>               bcm2835_fb_validate_config(&fbconfig);
+>               fbconfig_updated = true;
+> -            /* fall through */
+> +            fallthrough;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_PHYSICAL_WIDTH_HEIGHT:
+>               stl_le_phys(&s->dma_as, value + 12, fbconfig.xres);
+>               stl_le_phys(&s->dma_as, value + 16, fbconfig.yres);
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_SET_VIRTUAL_WIDTH_HEIGHT:
+>               fbconfig.xres_virtual = ldl_le_phys(&s->dma_as, value + 12);
+>               fbconfig.yres_virtual = ldl_le_phys(&s->dma_as, value + 16);
+>               bcm2835_fb_validate_config(&fbconfig);
+>               fbconfig_updated = true;
+> -            /* fall through */
+> +            fallthrough;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_VIRTUAL_WIDTH_HEIGHT:
+>               stl_le_phys(&s->dma_as, value + 12, fbconfig.xres_virtual);
+>               stl_le_phys(&s->dma_as, value + 16, fbconfig.yres_virtual);
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_TEST_DEPTH:
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_SET_DEPTH:
+>               fbconfig.bpp = ldl_le_phys(&s->dma_as, value + 12);
+>               bcm2835_fb_validate_config(&fbconfig);
+>               fbconfig_updated = true;
+> -            /* fall through */
+> +            fallthrough;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_DEPTH:
+>               stl_le_phys(&s->dma_as, value + 12, fbconfig.bpp);
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_TEST_PIXEL_ORDER:
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_SET_PIXEL_ORDER:
+>               fbconfig.pixo = ldl_le_phys(&s->dma_as, value + 12);
+>               bcm2835_fb_validate_config(&fbconfig);
+>               fbconfig_updated = true;
+> -            /* fall through */
+> +            fallthrough;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_PIXEL_ORDER:
+>               stl_le_phys(&s->dma_as, value + 12, fbconfig.pixo);
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_TEST_ALPHA_MODE:
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_SET_ALPHA_MODE:
+>               fbconfig.alpha = ldl_le_phys(&s->dma_as, value + 12);
+>               bcm2835_fb_validate_config(&fbconfig);
+>               fbconfig_updated = true;
+> -            /* fall through */
+> +            fallthrough;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_ALPHA_MODE:
+>               stl_le_phys(&s->dma_as, value + 12, fbconfig.alpha);
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_PITCH:
+>               stl_le_phys(&s->dma_as, value + 12,
+>                           bcm2835_fb_get_pitch(&fbconfig));
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_TEST_VIRTUAL_OFFSET:
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_SET_VIRTUAL_OFFSET:
+>               fbconfig.xoffset = ldl_le_phys(&s->dma_as, value + 12);
+>               fbconfig.yoffset = ldl_le_phys(&s->dma_as, value + 16);
+>               bcm2835_fb_validate_config(&fbconfig);
+>               fbconfig_updated = true;
+> -            /* fall through */
+> +            fallthrough;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_VIRTUAL_OFFSET:
+>               stl_le_phys(&s->dma_as, value + 12, fbconfig.xoffset);
+>               stl_le_phys(&s->dma_as, value + 16, fbconfig.yoffset);
+>               resplen = 8;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_OVERSCAN:
+>           case RPI_FWREQ_FRAMEBUFFER_TEST_OVERSCAN:
+>           case RPI_FWREQ_FRAMEBUFFER_SET_OVERSCAN:
+>               stl_le_phys(&s->dma_as, value + 12, 0);
+>               stl_le_phys(&s->dma_as, value + 16, 0);
+>               stl_le_phys(&s->dma_as, value + 20, 0);
+>               stl_le_phys(&s->dma_as, value + 24, 0);
+>               resplen = 16;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_SET_PALETTE:
+>               offset = ldl_le_phys(&s->dma_as, value + 12);
+>               length = ldl_le_phys(&s->dma_as, value + 16);
+>               n = 0;
+>               while (n < length - offset) {
+>                   color = ldl_le_phys(&s->dma_as, value + 20 + (n << 2));
+>                   stl_le_phys(&s->dma_as,
+>                               s->fbdev->vcram_base + ((offset + n) << 2), color);
+>                   n++;
+>               }
+>               stl_le_phys(&s->dma_as, value + 12, 0);
+>               resplen = 4;
+>               break;
+>           case RPI_FWREQ_FRAMEBUFFER_GET_NUM_DISPLAYS:
+>               stl_le_phys(&s->dma_as, value + 12, 1);
+>               resplen = 4;
+>               break;
+>   
+>           case RPI_FWREQ_GET_DMA_CHANNELS:
+>               /* channels 2-5 */
+>               stl_le_phys(&s->dma_as, value + 12, 0x003C);
+>               resplen = 4;
+>               break;
+>   
+>           case RPI_FWREQ_GET_COMMAND_LINE:
+>               /*
+>                * We follow the firmware behaviour: no NUL terminator is
+>                * written to the buffer, and if the buffer is too short
+>                * we report the required length in the response header
+>                * and copy nothing to the buffer.
+>                */
+>               resplen = strlen(s->command_line);
+>               if (bufsize >= resplen)
+>                   address_space_write(&s->dma_as, value + 12,
+>                                       MEMTXATTRS_UNSPECIFIED, s->command_line,
+>                                       resplen);
+>               break;
+>   
+>           default:
+>               qemu_log_mask(LOG_UNIMP,
+>                             "bcm2835_property: unhandled tag 0x%08x\n", tag);
+>               break;
+>           }
+>   
+>           trace_bcm2835_mbox_property(tag, bufsize, resplen);
+>           if (tag == 0) {
+>               break;
+>           }
+>   
+>           stl_le_phys(&s->dma_as, value + 8, (1 << 31) | resplen);
+>           value += bufsize + 12;
+>       }
+>   
+>       /* Reconfigure framebuffer if required */
+>       if (fbconfig_updated) {
+>           bcm2835_fb_reconfigure(s->fbdev, &fbconfig);
+>       }
+>   
+>       /* Buffer response code */
+>       stl_le_phys(&s->dma_as, s->addr + 4, (1 << 31));
+>   }
+> diff --git a/hw/misc/mos6522.c b/hw/misc/mos6522.c
+> index d6ba47bde9..a62349e6a0 100644
+> --- a/hw/misc/mos6522.c
+> +++ b/hw/misc/mos6522.c
+> @@ -296,97 +296,97 @@ static void mos6522_portB_write(MOS6522State *s)
+>   uint64_t mos6522_read(void *opaque, hwaddr addr, unsigned size)
+>   {
+>       MOS6522State *s = opaque;
+>       uint32_t val;
+>       int ctrl;
+>       int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+>   
+>       if (now >= s->timers[0].next_irq_time) {
+>           mos6522_timer1_update(s, &s->timers[0], now);
+>           s->ifr |= T1_INT;
+>       }
+>       if (now >= s->timers[1].next_irq_time) {
+>           mos6522_timer2_update(s, &s->timers[1], now);
+>           s->ifr |= T2_INT;
+>       }
+>       switch (addr) {
+>       case VIA_REG_B:
+>           val = s->b;
+>           ctrl = (s->pcr & CB2_CTRL_MASK) >> CB2_CTRL_SHIFT;
+>           if (!(ctrl & C2_IND)) {
+>               s->ifr &= ~CB2_INT;
+>           }
+>           s->ifr &= ~CB1_INT;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_A:
+>          qemu_log_mask(LOG_UNIMP, "Read access to register A with handshake");
+> -       /* fall through */
+> +       fallthrough;
+>       case VIA_REG_ANH:
+>           val = s->a;
+>           ctrl = (s->pcr & CA2_CTRL_MASK) >> CA2_CTRL_SHIFT;
+>           if (!(ctrl & C2_IND)) {
+>               s->ifr &= ~CA2_INT;
+>           }
+>           s->ifr &= ~CA1_INT;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_DIRB:
+>           val = s->dirb;
+>           break;
+>       case VIA_REG_DIRA:
+>           val = s->dira;
+>           break;
+>       case VIA_REG_T1CL:
+>           val = get_counter(s, &s->timers[0]) & 0xff;
+>           s->ifr &= ~T1_INT;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_T1CH:
+>           val = get_counter(s, &s->timers[0]) >> 8;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_T1LL:
+>           val = s->timers[0].latch & 0xff;
+>           break;
+>       case VIA_REG_T1LH:
+>           /* XXX: check this */
+>           val = (s->timers[0].latch >> 8) & 0xff;
+>           break;
+>       case VIA_REG_T2CL:
+>           val = get_counter(s, &s->timers[1]) & 0xff;
+>           s->ifr &= ~T2_INT;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_T2CH:
+>           val = get_counter(s, &s->timers[1]) >> 8;
+>           break;
+>       case VIA_REG_SR:
+>           val = s->sr;
+>           s->ifr &= ~SR_INT;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_ACR:
+>           val = s->acr;
+>           break;
+>       case VIA_REG_PCR:
+>           val = s->pcr;
+>           break;
+>       case VIA_REG_IFR:
+>           val = s->ifr;
+>           if (s->ifr & s->ier) {
+>               val |= 0x80;
+>           }
+>           break;
+>       case VIA_REG_IER:
+>           val = s->ier | 0x80;
+>           break;
+>       default:
+>           g_assert_not_reached();
+>       }
+>   
+>       if (addr != VIA_REG_IFR || val != 0) {
+>           trace_mos6522_read(addr, mos6522_reg_names[addr], val);
+>       }
+>   
+>       return val;
+>   }
+> @@ -394,105 +394,105 @@ uint64_t mos6522_read(void *opaque, hwaddr addr, unsigned size)
+>   void mos6522_write(void *opaque, hwaddr addr, uint64_t val, unsigned size)
+>   {
+>       MOS6522State *s = opaque;
+>       MOS6522DeviceClass *mdc = MOS6522_GET_CLASS(s);
+>       int ctrl;
+>   
+>       trace_mos6522_write(addr, mos6522_reg_names[addr], val);
+>   
+>       switch (addr) {
+>       case VIA_REG_B:
+>           s->b = (s->b & ~s->dirb) | (val & s->dirb);
+>           mdc->portB_write(s);
+>           ctrl = (s->pcr & CB2_CTRL_MASK) >> CB2_CTRL_SHIFT;
+>           if (!(ctrl & C2_IND)) {
+>               s->ifr &= ~CB2_INT;
+>           }
+>           s->ifr &= ~CB1_INT;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_A:
+>          qemu_log_mask(LOG_UNIMP, "Write access to register A with handshake");
+> -       /* fall through */
+> +       fallthrough;
+>       case VIA_REG_ANH:
+>           s->a = (s->a & ~s->dira) | (val & s->dira);
+>           mdc->portA_write(s);
+>           ctrl = (s->pcr & CA2_CTRL_MASK) >> CA2_CTRL_SHIFT;
+>           if (!(ctrl & C2_IND)) {
+>               s->ifr &= ~CA2_INT;
+>           }
+>           s->ifr &= ~CA1_INT;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_DIRB:
+>           s->dirb = val;
+>           break;
+>       case VIA_REG_DIRA:
+>           s->dira = val;
+>           break;
+>       case VIA_REG_T1CL:
+>           s->timers[0].latch = (s->timers[0].latch & 0xff00) | val;
+>           mos6522_timer1_update(s, &s->timers[0],
+>                                 qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
+>           break;
+>       case VIA_REG_T1CH:
+>           s->timers[0].latch = (s->timers[0].latch & 0xff) | (val << 8);
+>           s->ifr &= ~T1_INT;
+>           set_counter(s, &s->timers[0], s->timers[0].latch);
+>           break;
+>       case VIA_REG_T1LL:
+>           s->timers[0].latch = (s->timers[0].latch & 0xff00) | val;
+>           mos6522_timer1_update(s, &s->timers[0],
+>                                 qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
+>           break;
+>       case VIA_REG_T1LH:
+>           s->timers[0].latch = (s->timers[0].latch & 0xff) | (val << 8);
+>           s->ifr &= ~T1_INT;
+>           mos6522_timer1_update(s, &s->timers[0],
+>                                 qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
+>           break;
+>       case VIA_REG_T2CL:
+>           s->timers[1].latch = (s->timers[1].latch & 0xff00) | val;
+>           break;
+>       case VIA_REG_T2CH:
+>           /* To ensure T2 generates an interrupt on zero crossing with the
+>              common timer code, write the value directly from the latch to
+>              the counter */
+>           s->timers[1].latch = (s->timers[1].latch & 0xff) | (val << 8);
+>           s->ifr &= ~T2_INT;
+>           set_counter(s, &s->timers[1], s->timers[1].latch);
+>           break;
+>       case VIA_REG_SR:
+>           s->sr = val;
+>           break;
+>       case VIA_REG_ACR:
+>           s->acr = val;
+>           mos6522_timer1_update(s, &s->timers[0],
+>                                 qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
+>           break;
+>       case VIA_REG_PCR:
+>           s->pcr = val;
+>           break;
+>       case VIA_REG_IFR:
+>           /* reset bits */
+>           s->ifr &= ~val;
+>           mos6522_update_irq(s);
+>           break;
+>       case VIA_REG_IER:
+>           if (val & IER_SET) {
+>               /* set bits */
+>               s->ier |= val & 0x7f;
+>           } else {
+>               /* reset bits */
+>               s->ier &= ~val;
+>           }
+>           mos6522_update_irq(s);
+>           /* if IER is modified starts needed timers */
+>           mos6522_timer1_update(s, &s->timers[0],
+>                                 qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
+>           mos6522_timer2_update(s, &s->timers[1],
+>                                 qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
+>           break;
+>       default:
+>           g_assert_not_reached();
+>       }
+>   }
 
 
