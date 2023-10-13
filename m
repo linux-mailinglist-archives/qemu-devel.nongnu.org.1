@@ -2,86 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A627C80FE
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BF07C8118
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:58:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDtI-0008Ss-1r; Fri, 13 Oct 2023 04:51:30 -0400
+	id 1qrDrm-0004Rf-3d; Fri, 13 Oct 2023 04:49:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDst-0007PN-4r
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:51:03 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsq-0001dV-LA
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:51:02 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-50337b43ee6so2508191e87.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:51:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697187059; x=1697791859; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uJpxflpF0VSGP1lY+JunfkK8++cYRxJyDiFsuvVgAAM=;
- b=w8vYQQBjvulDyD9Wdu/YHa7fOllo/b7ichbXAt2D0QySO+PEad5d1Fp3bHXmfwgIh3
- a6VUl78NPecSilVTl3MHX/eWI74iBAeRqmZIk10K13HARzlHB/WEgblTfW/GVcHRdTy5
- hHQSeCdULHQpJR5RahsrVHhAcT1G9yGu5uCpAjPU5AVWFKe84IuiNJVSNiNiEMgyv7C9
- WeHSJJ762l9r0fmZtUd4h9QLB49i2i3OgJzEeIjthGxlEHb/apedmjJTHKf/xtKrGTV3
- 8OhCSBHRGnsb7ytMfymadsaID95k43VuM3JRi7oPpWmAWEygUHWJE8Mxe5u7ripj3wNW
- mRkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697187059; x=1697791859;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uJpxflpF0VSGP1lY+JunfkK8++cYRxJyDiFsuvVgAAM=;
- b=eBRwydM4AKMCyyMd7BUKItEaLSrd0hqly29xtlBsqi3O8mIM7gld7VJiOvYtLJLdYq
- uLEuJ8QEnBzepl9gzj/hXdTqbJ3VIkqvuXrEqhm/1MLLB3aTW0m7h8QSQqdmq5Zk2S/n
- Kvx+bFqroMV2qRjVzOpm8bOpNa0vCaDNXNTbmyCfrnZRbtcQGAgN8YPvhTkCbWRxKRyZ
- lPVmngLtOgfChmz1Wkv+/NqDuFTY48Agcw1NVwYkdiomVo7j2Y8dYptT6M2nsKcTcBdJ
- yaSdFRV9plzikrjcsIsKeRn6y/FOuVh+tLLtdLAJV+sg/9/mCjG0u43MyAl7HbWA7RJy
- Wu4Q==
-X-Gm-Message-State: AOJu0Yz8eExA/2I+1/jEPtIQVZFraLkcupswrouG+1tvqLza9w5OQh9M
- IZHZZxQ1uPVwhQv+3a1YDfYV43xqye1VnzUttl8=
-X-Google-Smtp-Source: AGHT+IGYxtapLYBLjPlYkh4BbnYViUKIPYbAbm3GGy9a4KuXIUIx3/vQ3ZzNLIe4OnJim6s4w5lnOQ==
-X-Received: by 2002:a19:4f43:0:b0:500:a240:7240 with SMTP id
- a3-20020a194f43000000b00500a2407240mr21866359lfk.52.1697187058681; 
- Fri, 13 Oct 2023 01:50:58 -0700 (PDT)
-Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
- [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:50:58 -0700 (PDT)
-From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [RFC PATCH v3 78/78] meson.build: increase -Wimplicit-fallthrough to 5
-Date: Fri, 13 Oct 2023 11:46:46 +0300
-Message-Id: <80a212fc419991612ca732cb3ed1c923a079ec3b.1697186560.git.manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
-References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qrDrP-0004Is-OP
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:49:35 -0400
+Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qrDrL-0001Cw-VS
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:49:31 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R861e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046051;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=3; SR=0;
+ TI=SMTPD_---0Vu1iBKd_1697186954; 
+Received: from 30.221.101.97(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0Vu1iBKd_1697186954) by smtp.aliyun-inc.com;
+ Fri, 13 Oct 2023 16:49:15 +0800
+Message-ID: <cafb596d-ca87-4343-a398-93524a22b3c9@linux.alibaba.com>
+Date: Fri, 13 Oct 2023 16:48:15 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20231009110239.66778-1-philmd@linaro.org>
+ <20231009110239.66778-3-philmd@linaro.org>
+ <8e8b6cef-efbf-42ac-975c-b523dc24a531@linux.alibaba.com>
+ <58838379-60bf-4af4-980b-cff8ee49bfc2@linaro.org>
+ <4a7e39f4-4302-4dfd-9112-4deea5c7403f@linux.alibaba.com>
+ <3b745e06-d037-f1b7-0fec-373959598a15@linaro.org>
+ <d90102c9-e4c3-4c2f-896e-908584b97202@linux.alibaba.com>
+ <ffd5b4ea-6535-45a5-bc74-fffdc04fce68@linaro.org>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <ffd5b4ea-6535-45a5-bc74-fffdc04fce68@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x131.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.111;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-111.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,65 +71,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make GCC's implicit fall-through static analysis stricter by requiring
-the use of the fallthrough attribute statement instead of comments.
 
-This makes the QEMU code style more consistent.
+On 2023/10/13 0:06, Richard Henderson wrote:
+> On 10/11/23 22:59, LIU Zhiwei wrote:
+>>
+>> On 2023/10/11 13:31, Philippe Mathieu-Daudé wrote:
+>>> On 11/10/23 05:25, LIU Zhiwei wrote:
+>>>>
+>>>> On 2023/10/11 1:04, Richard Henderson wrote:
+>>>>> On 10/9/23 05:42, LIU Zhiwei wrote:
+>>>>>>
+>>>>>> On 2023/10/9 19:02, Philippe Mathieu-Daudé wrote:
+>>>>>>> When CPUArchState* is available (here CPURISCVState*), we
+>>>>>>> can use the fast env_archcpu() macro to get ArchCPU* (here
+>>>>>>> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
+>>>>>>> when building with --enable-qom-cast-debug.
+>>>
+>>>
+>>>>>> If so, maybe we have to do this qom cast somewhere.
+>>>>>
+>>>>> No, I don't think so.  Or at least not in these places.
+>>>>
+>>>> Yes.  Perhaps, we should remove all RISCV_CPU macros using after 
+>>>> the qom objects realized.
+>>>>
+>>>> Do you think we should remove the RISCV_CPU using in 
+>>>> riscv_cpu_exec_interrupt? Although it  is not so hot. I think there 
+>>>> is no reason to use it there.
+>>>
+>>> I have some note in my TODO to check replacing CPUState by ArchCPU in
+>>> TCGCPUOps (like the cpu_exec_interrupt handler you mentioned). 
+>>
+>> IMHO, this will make it harder for heterogeneous SOC support. ArchCPU 
+>> is not a target agnostic struct.
+>
+> ArchCPU is a target-agnostic typedef of a structure with no visible 
+> definition.
+> C is perfectly happy to manipulate pointers to such structures.
+>
+Get it. Thanks
+> Whether it is worthwhile to adjust interfaces from CPUState to 
+> ArchCPU, I don't know.
 
-Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- docs/devel/style.rst | 23 +++++++++++++++++++++++
- meson.build          |  2 +-
- 2 files changed, 24 insertions(+), 1 deletion(-)
+OK. Let's just wait for a good reason to do that.
 
-diff --git a/docs/devel/style.rst b/docs/devel/style.rst
-index 2f68b50079..f473dd24e9 100644
---- a/docs/devel/style.rst
-+++ b/docs/devel/style.rst
-@@ -634,6 +634,29 @@ are still some caveats to beware of
-         return g_steal_pointer(&foo);
-     }
- 
-+Implicit switch case fall-through
-+=================================
-+
-+The C language allows switch cases to "fall-through" when a "break" statement
-+is missing at the end of a case. This, however, introduces ambiguity in the
-+code, as it's not always clear if the missing break is intentional or a bug.
-+
-+As this behaviour allows for bugs we do not allow "implicit fall-through".
-+
-+In order to identify intentional fall-through cases, we have adopted a
-+pseudo-keyword macro 'fallthrough' which expands to gcc's extension
-+__attribute__((__fallthrough__)).  `Statement Attributes
-+<https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html>`_
-+
-+All switch/case blocks must end in one of:
-+
-+.. code-block:: c
-+
-+	  break;
-+	  fallthrough;
-+	  continue;
-+	  goto <label>;
-+	  return [expression];
- 
- QEMU Specific Idioms
- ********************
-diff --git a/meson.build b/meson.build
-index 79aef19bdc..e8805f0e0c 100644
---- a/meson.build
-+++ b/meson.build
-@@ -452,7 +452,7 @@ warn_flags = [
-   '-Wnested-externs',
-   '-Wendif-labels',
-   '-Wexpansion-to-defined',
--  '-Wimplicit-fallthrough=2',
-+  '-Wimplicit-fallthrough=5',
-   '-Wmissing-format-attribute',
-   '-Wno-initializer-overrides',
-   '-Wno-missing-include-dirs',
--- 
-2.39.2
+Zhiwei
 
+>
+>
+> r~
 
