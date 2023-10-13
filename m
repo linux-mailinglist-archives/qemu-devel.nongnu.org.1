@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98C47C81C7
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1D07C81DA
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:20:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrEJG-00035D-Tv; Fri, 13 Oct 2023 05:18:18 -0400
+	id 1qrELP-0004RP-7E; Fri, 13 Oct 2023 05:20:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrEJC-00032m-0m
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:18:14 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qrELN-0004R5-D4
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:20:29 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrEJ6-0006Bf-UE
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:18:13 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-9adb9fa7200so382188766b.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 02:18:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qrELL-0006fd-Pp
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:20:29 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-53dd752685fso3314354a12.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 02:20:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697188686; x=1697793486; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Pqby8K43OHvqpl430Fc1LwtNk25i4STB+Jq7cuumHbw=;
- b=prWnLC6O/CAOn0/Hosd6E6jHXXOmAWBAd9vsRslaknpvusTAfqDy0Q3Ldh2fCdl4b+
- ZdLJ6DGWgn4uMOr3zWaimAWwTYY4BJoBazt13yU/EMzqCwupln/a4sZ/f+BpTKjJ/iI2
- VFZYaB5WzDJStodYIJrIqUCyq5sGMyjAX9lGAxFanqPnbQZXtOVj19Oixr+3VgxrzOgi
- xbpUUKBhqiq0GotZaAcbGFpl/WNd2iQLInp7Gb47pAgZ3D0iSDmmJf2r8jyS7fMvS5VW
- ZBprZ+0MCtloxmwSl5YCqlKqlS9042n7njZ3R3INj2Nl6C0YuIH3kBHMbBtprFUdcygH
- HAUw==
+ d=linaro.org; s=google; t=1697188826; x=1697793626; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=PzA/o1mqLZWhWgE5bPSaUnGXXWtkY7CixflE7pLoS/A=;
+ b=RuHsGfC9brwO8xheEBmG8/UvNpM2WHYX8dGo6o2pfaubZdH1fVduhNaiA2HxM9fLT0
+ 5S8SYoQKAJe4Xbju5RDuF4ocI/pO93V3tzb0h17bqUeSN9yL0tST2f110QkLWzml28Ca
+ RBfs2+wj+/Oa+g/HcYfyuSrpDS+AHJ9Y1/F1Zi5Agltquz5enhSXKs+7ZcG28BGXCMe7
+ DiPHB3BYdlB1/tNTQXb5CQqk5W7qZ4ksWPff5rk/pR9R0aiDr1zXXFhlCyd0y3SuOd1O
+ MvKZM3wM0LXwtgk4FMAzDtYfwQv+TiAbnoVY1YsrKESeBrPoMiTmMwju4oHHpiQ7+xga
+ nl4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697188686; x=1697793486;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Pqby8K43OHvqpl430Fc1LwtNk25i4STB+Jq7cuumHbw=;
- b=Fg2kqGnx6kWv91NysKoQzDbAUYyFUlB11/56D0CFP5pFXdG7QMNrGtRdQotrboFZZz
- h1m+3XvmlIi23dH55AFxhBhoNgNBn7V5ItU3WAMs20NWYq636LwAVwwPW9PAP35c1Mty
- Kc/CNuVds6uc/Lf0s/VZkZoeEXti0+yCubquoyXbCruOLJatqRlm2uq8mG9qAx1qRIWI
- yPraiyNzTP7DPWgKfBvUtc6SmiOaa5DkTrYa5++yc8iKpYZl8FjHckz+BPCuQhmFfd6X
- n3TEQmW2NPRxHBYu/X3gs+0meJtZyzy8sBJfIOrtdZxDt7sMFweDPgPuPbEnAcOGt0S1
- K+Cw==
-X-Gm-Message-State: AOJu0YyVM/2sVtDhRkRouGTU4lHbUKJ2gEGnVICdduPtUqRcavRXfJje
- 4V6HNZk5wBlwWqkzr+nGYmoqhncsIeSce7Kguyw=
-X-Google-Smtp-Source: AGHT+IGjAljAZ8Jsl9uDh+lT0pBfLMz2RJ91JcMt7zDTu1ivLbUBTTkAtl8ALAZRtuQOtzLJErejmQ==
-X-Received: by 2002:a17:906:3097:b0:9b2:b30f:deb with SMTP id
- 23-20020a170906309700b009b2b30f0debmr21222534ejv.4.1697188685970; 
- Fri, 13 Oct 2023 02:18:05 -0700 (PDT)
-Received: from [192.168.69.115] ([176.172.118.168])
- by smtp.gmail.com with ESMTPSA id
- si5-20020a170906cec500b009875a6d28b0sm12137437ejb.51.2023.10.13.02.18.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 02:18:05 -0700 (PDT)
-Message-ID: <8ba0812c-2691-4bf0-27cc-e4431ab22b29@linaro.org>
-Date: Fri, 13 Oct 2023 11:18:03 +0200
+ d=1e100.net; s=20230601; t=1697188826; x=1697793626;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PzA/o1mqLZWhWgE5bPSaUnGXXWtkY7CixflE7pLoS/A=;
+ b=I9Iutn/8bMn2PmLeUwjWB9E4uW0Lg3UmrhqBn9MlgertLGKuC/7dUo6JazboTfzzmD
+ vugk6Wu44at6IqqWDroJaHjZX0WpCXjNzfjAhy0tGpmC9iB0A/AglKceHxb+JTFsPTih
+ j7UW5JODaCLAffD+td9haVNccY28hlFVCTkHU5+eQ9U8IMb+m226cxK6AIRF20nkgkZm
+ 7x/iThQtSmrfo1K0reAXSmc+pbyXryVuVatSFB0mVY+MHZeKjDzMSALJr2x6ikIYTJZW
+ K8dvLZqo5pfppD1L+MjumckQk7ROnzLDREeKjgE6LkbtcbC4kx4k+J8jvQbI6aPCeUrd
+ U/5w==
+X-Gm-Message-State: AOJu0YzUDX5SXuHV6U4wOsEACeEyMZp24H/yb6R7Qf7Y2bCw27OaNYgB
+ 8RWU7uLuY08JjPWnNmorfw8yjzuyhQOVM7Mhpfgxn8aKcRSXTq8u
+X-Google-Smtp-Source: AGHT+IFVvsiENqc4thJX5K1r0SnW/EQm5ROzI7KPoLaJdXSPdy/RBS1AhXMlRSzFjxBtEvezsH03kyOJjomzTp7jI34=
+X-Received: by 2002:a17:906:cc2:b0:9ae:5db5:149 with SMTP id
+ l2-20020a1709060cc200b009ae5db50149mr23290286ejh.35.1697188826248; Fri, 13
+ Oct 2023 02:20:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 05/18] target/hexagon: Declare QOM definitions in
- 'cpu-qom.h'
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-6-philmd@linaro.org>
- <b3ecf0b1-95e6-47d6-b26f-017dbfd120f3@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <b3ecf0b1-95e6-47d6-b26f-017dbfd120f3@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
+ <84a6d743b5ff71c323cee718412e2a67084b9237.1697186560.git.manos.pitsidianakis@linaro.org>
+ <01971536-5a3d-45b0-99c2-b3583dbb9584@daynix.com>
+In-Reply-To: <01971536-5a3d-45b0-99c2-b3583dbb9584@daynix.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Fri, 13 Oct 2023 12:20:10 +0300
+Message-ID: <CAAjaMXYjgKapC4h4cQTQAuq=GVkUCKp0iYkrpiLFVGFkbrFcwg@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 57/78] hw/net: add fallthrough pseudo-keyword
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Jason Wang <jasowang@redhat.com>, Pavel Pisa <pisa@cmp.felk.cvut.cz>, 
+ Vikram Garhwal <fnu.vikram@xilinx.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ "open list:Xilinx Zynq" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,44 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/10/23 06:06, Richard Henderson wrote:
-> On 10/10/23 02:28, Philippe Mathieu-Daudé wrote:
->> "target/foo/cpu.h" contains the target specific declarations.
->>
->> A heterogeneous setup need to access target agnostic declarations
->> (at least the QOM ones, to instantiate the objects).
->>
->> Our convention is to add such target agnostic QOM declarations in
->> the "target/foo/cpu-qom.h" header.
->>
->> Extract QOM definitions from "cpu.h" to "cpu-qom.h".
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/hexagon/cpu-qom.h | 35 +++++++++++++++++++++++++++++++++++
->>   target/hexagon/cpu.h     | 23 +----------------------
->>   2 files changed, 36 insertions(+), 22 deletions(-)
->>   create mode 100644 target/hexagon/cpu-qom.h
+On Fri, 13 Oct 2023 at 12:11, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> > diff --git a/hw/net/rtl8139.c b/hw/net/rtl8139.c
+> > index 4525fda383..42f19618b1 100644
+> > --- a/hw/net/rtl8139.c
+> > +++ b/hw/net/rtl8139.c
+> > @@ -2447,8 +2447,10 @@ static uint32_t rtl8139_TxStatus_TxAddr_read(RTL8139State *s, uint32_t regs[],
+> >       }
+> >
+> >       switch (size) {
+> > -    case 1: /* fall through */
+> > -    case 2: /* fall through */
+> > +    case 1:
+> > +        fallthrough;
+> > +    case 2:
+> > +        fallthrough;
+> >       case 4:
+>
+> I don't think you need comments or pseudo-keywords here.
 
+That's correct, it was a stylistic change. I can remove them in the
+next version. Thank you!
 
->> +OBJECT_DECLARE_CPU_TYPE(HexagonCPU, HexagonCPUClass, HEXAGON_CPU)
->> +
->> +typedef struct HexagonCPUClass {
->> +    CPUClass parent_class;
->> +
->> +    DeviceRealize parent_realize;
->> +    ResettablePhases parent_phases;
->> +} HexagonCPUClass;
-> 
-> I can't imagine the class structure being any more useful generically 
-> than the object structure.  All we need at this point is the typedef, 
-> provided by OBJECT_DECLARE_TYPE.
-
-Right.
-
-> I know this makes hexagon match others, but I think its the wrong 
-> direction of cleanup.
-
-I agree.
-
+Manos
 
