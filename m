@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76947C7F7E
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0707C803F
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:27:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD5l-000080-8g; Fri, 13 Oct 2023 04:00:17 -0400
+	id 1qrD5n-0000EU-Le; Fri, 13 Oct 2023 04:00:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5O-0007tn-Fz
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:55 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ id 1qrD5O-0007u8-Ps
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:56 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5K-0007Mx-0C
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:52 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-5042bfb4fe9so2332617e87.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:49 -0700 (PDT)
+ id 1qrD5L-0007Nm-5k
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:54 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40684f53bfcso18497045e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183988; x=1697788788; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183989; x=1697788789; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X5VpKHEqnL+Wsz989a6c98ciJXzLW3/QD62qq4ISbic=;
- b=wDENUJEJT6ttV/jHa30+0Xzex6xda43m7dHxxmLRl0q9fFk5y1tIsIOJvXLeFxVkcO
- I01Z0whQCtPHlT7YkSnrVETUpplwhO2O5VuE20WN6J75AJ/r22juYPdI7Bk8JLcMgvn7
- 4S+Tali5NbnEMHLYT5iBmLEV+Hx6c9eB//OmqsdpfyzNrqigIgQlyXFeXAU3fttstUeY
- qHDxc593l9vFVZfDns9mTp3pDHevph4bfJJZLrKGpz4iKJHfDgmO5qj4+i1AjB1bLiZD
- pRa0d/FZwtahUTaGAo5axGXTHH8WMux8XA/AZJAa4aZwOOE8Zx0IwFje2Q/7mo5JJYRj
- PBow==
+ bh=k+1yJwn3zmXEC3qXSgScF2rHQYYxqdr3vGb0Ox5zm5c=;
+ b=qrPbnDrwEjQb4XrBZP2lA4pto/QuuBj/PYuWFT+dM6AOgIFqa8W249gka3wv7BVbaB
+ ouVo1o80B1bKOnoo2sa+NgoVAAJXzLgGFU9BC+05vQSCigQsZZ79rmU1u0F+MaN9WOJ6
+ s28BgstOntcdEGqPUdcdTCyiGmsX4moGXXP9nFT2CC9LMgX1qq5UCmwStxf3MeDonfCl
+ zN7j1CLJ9H3F5N429MQLqWgn8Ik95FooPAUeg9DI0fNCNpNcT5UOIkIVXYQ77uO1jKgu
+ Uuw4XGuHAyInzgnZjzjIlh5InMjGSnNU+OYsQeEE+EwK9Zbd/q8GOentq6sfzuakqIUl
+ 3QOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183988; x=1697788788;
+ d=1e100.net; s=20230601; t=1697183989; x=1697788789;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X5VpKHEqnL+Wsz989a6c98ciJXzLW3/QD62qq4ISbic=;
- b=J40YUHPc4hZUuTvkhkZUqfqE7UHpi0ygIifJ3O37i5deOYXH1sHJxnQ3wFu6NdrdPU
- 4dJc5v8hjcLhUa8mF9Jf3KGPe3xqp2IgfP5EaM1xFUVGBKlQ7zLnyaUgsf02cSCHER02
- Ss83b44AH315tuDYTN8zN/6Ef3miBGTRxJtc2Efge4cYr3uuostRiQUwLB7Qz747pw3l
- ZW2FayXOs+HaOBwT7u7KcmLCNFxd2mqsgfJnSTmyTH5Sx3DqQCw+P0nTH9/lmHc1VsUG
- A/Fp+mWsiHr03cvisw0X3dkvQxkR+f5hq3XKndzmSJsfj/9yV0AMOcHqrpPX+OvuEWmW
- Y17A==
-X-Gm-Message-State: AOJu0Yyq9rWsKkyL85/7k+Pjw25WVAnrF+KmoJqfV9anqEzhYI8oJovc
- RfOQDbXzjOFOgTmt1BbA32T1PZKXAdwHwPKD6KU=
-X-Google-Smtp-Source: AGHT+IHGagpBaHPMbrGTxfOLH7i+5vY6BHOb6DsCpX9wwl5iTkyJm5kRpNVg2uKWjjKkIZUirV75LA==
-X-Received: by 2002:ac2:5f66:0:b0:506:87a3:c27c with SMTP id
- c6-20020ac25f66000000b0050687a3c27cmr14362256lfc.53.1697183987760; 
- Fri, 13 Oct 2023 00:59:47 -0700 (PDT)
+ bh=k+1yJwn3zmXEC3qXSgScF2rHQYYxqdr3vGb0Ox5zm5c=;
+ b=IoJvrDRgvbOF9EtqXyPcIbh5KxRIKHtxFU96KqxUXK+bnVfmkvDzJrmRtMNIFmjk7B
+ j/aAG3W9QGjV/cixMIdt6EJMkRhr7pCqKT2hCIZzr+VTxyw+0o9Eqr8uce2oPXq21uDX
+ 0SK77Bx/PhpKKTc6oJUoT+4FGySF6bAkk4uDrKcjmNmyVsfqrVvsM2MP1y2OXOMU+P+/
+ fOe+1cWHnLCAgfCQfCYfxmEXnzC1IlG5HEQfd5mIbN7vDQGO1B02EgnrNaQHzFRp1rw/
+ n6WnM3I+RPvHISe5Wo5d7yLz8T0BkKiC+fg62PMvX5XdtFJiBeM07ZhNzMmRcxrqqkuI
+ pmEQ==
+X-Gm-Message-State: AOJu0Yyar6pYu8vvnQg/ASs3NKpyKSqGLVLCZexbXOqlkP4ZPNEaMSlp
+ g9Ka5MTlFfyqp/dYBK22I2xPOw69ZBz2AFpWpxo=
+X-Google-Smtp-Source: AGHT+IEOdLt389slTyb4h/+TWYabVke1OXf0/+Nh070iSDEd5vSq3Gaea6/IpmwgQ1nlGvaqB7fgiA==
+X-Received: by 2002:a05:6000:1088:b0:32d:9e4f:718f with SMTP id
+ y8-20020a056000108800b0032d9e4f718fmr511515wrw.44.1697183989394; 
+ Fri, 13 Oct 2023 00:59:49 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.46
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:59:47 -0700 (PDT)
+ Fri, 13 Oct 2023 00:59:48 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Corey Minyard <minyard@acm.org>
-Subject: [RFC PATCH v2 63/78] hw/ipmi: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:30 +0300
-Message-Id: <bb840f22f424db1d386475d5c0e2d50ee5b50a26.1697183699.git.manos.pitsidianakis@linaro.org>
+ Paul Burton <paulburton@kernel.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [RFC PATCH v2 64/78] hw/mips: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:31 +0300
+Message-Id: <417f87aa892d8c2b4d97186f4c9918de5608fa20.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,127 +100,74 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/ipmi/ipmi_bmc_extern.c | 2 +-
- hw/ipmi/smbus_ipmi.c      | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ hw/mips/boston.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-index e232d35ba2..b2ca02b21f 100644
---- a/hw/ipmi/ipmi_bmc_extern.c
-+++ b/hw/ipmi/ipmi_bmc_extern.c
-@@ -168,15 +168,15 @@ static void extern_timeout(void *opaque)
- static void addchar(IPMIBmcExtern *ibe, unsigned char ch)
+diff --git a/hw/mips/boston.c b/hw/mips/boston.c
+index 4e11ff6cd6..4ca53b790a 100644
+--- a/hw/mips/boston.c
++++ b/hw/mips/boston.c
+@@ -164,27 +164,27 @@ static void boston_lcd_event(void *opaque, QEMUChrEvent event)
+ static uint64_t boston_lcd_read(void *opaque, hwaddr addr,
+                                 unsigned size)
  {
-     switch (ch) {
-     case VM_MSG_CHAR:
-     case VM_CMD_CHAR:
-     case VM_ESCAPE_CHAR:
-         ibe->outbuf[ibe->outlen] = VM_ESCAPE_CHAR;
-         ibe->outlen++;
-         ch |= 0x10;
+     BostonState *s = opaque;
+     uint64_t val = 0;
+ 
+     switch (size) {
+     case 8:
+         val |= (uint64_t)s->lcd_content[(addr + 7) & 0x7] << 56;
+         val |= (uint64_t)s->lcd_content[(addr + 6) & 0x7] << 48;
+         val |= (uint64_t)s->lcd_content[(addr + 5) & 0x7] << 40;
+         val |= (uint64_t)s->lcd_content[(addr + 4) & 0x7] << 32;
 -        /* fall through */
 +        fallthrough;
-     default:
-         ibe->outbuf[ibe->outlen] = ch;
-         ibe->outlen++;
+     case 4:
+         val |= (uint64_t)s->lcd_content[(addr + 3) & 0x7] << 24;
+         val |= (uint64_t)s->lcd_content[(addr + 2) & 0x7] << 16;
+-        /* fall through */
++        fallthrough;
+     case 2:
+         val |= (uint64_t)s->lcd_content[(addr + 1) & 0x7] << 8;
+-        /* fall through */
++        fallthrough;
+     case 1:
+         val |= (uint64_t)s->lcd_content[(addr + 0) & 0x7];
+         break;
      }
+ 
+     return val;
  }
-diff --git a/hw/ipmi/smbus_ipmi.c b/hw/ipmi/smbus_ipmi.c
-index d0991ab7f9..58f5328a19 100644
---- a/hw/ipmi/smbus_ipmi.c
-+++ b/hw/ipmi/smbus_ipmi.c
-@@ -207,90 +207,90 @@ static int ipmi_load_readbuf(SMBusIPMIDevice *sid)
- static int ipmi_write_data(SMBusDevice *dev, uint8_t *buf, uint8_t len)
+@@ -192,27 +192,27 @@ static uint64_t boston_lcd_read(void *opaque, hwaddr addr,
+ static void boston_lcd_write(void *opaque, hwaddr addr,
+                              uint64_t val, unsigned size)
  {
-     SMBusIPMIDevice *sid = SMBUS_IPMI(dev);
-     bool send = false;
-     uint8_t cmd;
-     int ret = 0;
+     BostonState *s = opaque;
  
-     /* length is guaranteed to be >= 1. */
-     cmd = *buf++;
-     len--;
- 
-     /* Handle read request, which don't have any data in the write part. */
-     switch (cmd) {
-     case SSIF_IPMI_RESPONSE:
-         sid->currblk = 0;
-         ret = ipmi_load_readbuf(sid);
-         break;
- 
-     case SSIF_IPMI_MULTI_PART_RESPONSE_MIDDLE:
-         sid->currblk++;
-         ret = ipmi_load_readbuf(sid);
-         break;
- 
-     case SSIF_IPMI_MULTI_PART_RETRY:
-         if (len >= 1) {
-             sid->currblk = buf[0];
-             ret = ipmi_load_readbuf(sid);
-         } else {
-             ret = -1;
-         }
-         break;
- 
-     default:
-         break;
-     }
- 
-     /* This should be a message write, make the length is there and correct. */
-     if (len >= 1) {
-         if (*buf != len - 1 || *buf > MAX_SSIF_IPMI_MSG_CHUNK) {
-             return -1; /* Bogus message */
-         }
-         buf++;
-         len--;
-     }
- 
-     switch (cmd) {
-     case SSIF_IPMI_REQUEST:
-         send = true;
--        /* FALLTHRU */
+     switch (size) {
+     case 8:
+         s->lcd_content[(addr + 7) & 0x7] = val >> 56;
+         s->lcd_content[(addr + 6) & 0x7] = val >> 48;
+         s->lcd_content[(addr + 5) & 0x7] = val >> 40;
+         s->lcd_content[(addr + 4) & 0x7] = val >> 32;
+-        /* fall through */
 +        fallthrough;
-     case SSIF_IPMI_MULTI_PART_REQUEST_START:
-         if (len < 2) {
-             return -1; /* Bogus. */
-         }
-         memcpy(sid->inmsg, buf, len);
-         sid->inlen = len;
-         break;
- 
-     case SSIF_IPMI_MULTI_PART_REQUEST_END:
-         send = true;
--        /* FALLTHRU */
+     case 4:
+         s->lcd_content[(addr + 3) & 0x7] = val >> 24;
+         s->lcd_content[(addr + 2) & 0x7] = val >> 16;
+-        /* fall through */
 +        fallthrough;
-     case SSIF_IPMI_MULTI_PART_REQUEST_MIDDLE:
-         if (!sid->inlen) {
-             return -1; /* Bogus. */
-         }
-         if (sid->inlen + len > MAX_SSIF_IPMI_MSG_SIZE) {
-             sid->inlen = 0; /* Discard the message. */
-             return -1; /* Bogus. */
-         }
-         if (len < 32) {
-             /*
-              * Special hack, a multi-part middle that is less than 32 bytes
-              * marks the end of a message.  The specification is fairly
-              * confusing, so some systems to this, even sending a zero
-              * length end message to mark the end.
-              */
-             send = true;
-         }
-         if (len > 0) {
-             memcpy(sid->inmsg + sid->inlen, buf, len);
-         }
-         sid->inlen += len;
+     case 2:
+         s->lcd_content[(addr + 1) & 0x7] = val >> 8;
+-        /* fall through */
++        fallthrough;
+     case 1:
+         s->lcd_content[(addr + 0) & 0x7] = val;
          break;
      }
  
-     if (send && sid->inlen) {
-         smbus_ipmi_send_msg(sid);
-     }
- 
-     return ret;
+     qemu_chr_fe_printf(&s->lcd_display,
+                        "\r%-8.8s", s->lcd_content);
  }
 -- 
 2.39.2
