@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EEC7C811B
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7D87C80CF
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqA-0007zU-L2; Fri, 13 Oct 2023 04:48:15 -0400
+	id 1qrDqG-0008BG-1u; Fri, 13 Oct 2023 04:48:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpq-0007fe-7S
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:54 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1qrDpq-0007gc-U1
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:59 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpm-0000pn-JU
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:53 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-32d3755214dso1784006f8f.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:44 -0700 (PDT)
+ id 1qrDpo-0000q3-2Z
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:54 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-32157c8e4c7so1748497f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186863; x=1697791663; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186864; x=1697791664; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kz98sjv7RxsZhX9qqrPoSooYlpCSBVCQ+zMepcbIWF4=;
- b=jNn3LUJJ7VWSJm5lkBdTPQ2JSU8Uoi6RU8H2AhApm54oE4AMlNb47tJP7YsgpWQJk4
- h4R+r5BquEGQ3RT6/DsHS4Dyusy/T7yeNwttLn8UWa4Mfs4rterfLFOofK2jlttbB0JH
- ueO9ztWOsOgyoYJe6XPA5scLwOZ+vq0JpV1zFnJJesoOaEHawKeqsjU06q+/QePehQ+F
- eUGqJSVI2YTTTXzHvuX99AfWR65B9rjuDBr48avu/6Q0d2Ika4p+U+QQPITZP7f1RIGz
- J/EFjN/eLIC8KT5xVnUDnB2fl8J9rX7EmPEtR3wc9DNUuw8zOKrIn1zXmIDw4ge1BIkU
- eltQ==
+ bh=5YbJ+XnM6I8FiRcFI2e93CK9heTfJrD2tl3I1Sx8RmQ=;
+ b=KbABenpCNfRFWoeWG7lMOZdaeaHabLBGE1wBYsLQcDzM61a93WB0sMca8gU9hGOc4l
+ hHEBxaAqO3BI+ZF2eoe5k8SWKbDhoei2xLUJ+3I43aCRzq4gX9i4yUa9nsq4ALpaPgEt
+ bBKBISYBTPIFYuXEqTAVNTtsHCfwsaD8INoDSkK3rqHzkbJ9n0b/KCUSE56G1uDGFALt
+ HrXzZr0SON9Baz20ZjntXgzrYuh2RVQTDBgoWW07p19938mZgfIxksyjwrKYHTDTHhNa
+ EDgzcowfW/YkBhjFyGSFHqp0ghn7qboC76CPNanh70MHxaGo02jdXkSmhJavxQL9h5a8
+ 4ntQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186863; x=1697791663;
+ d=1e100.net; s=20230601; t=1697186864; x=1697791664;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kz98sjv7RxsZhX9qqrPoSooYlpCSBVCQ+zMepcbIWF4=;
- b=VJUunggm/u+r2Nmsd6xOdCn42wXEMvaWdRLCE4WUR6jhX4KacDGJk0iTMkWoiK8uSf
- hLgwYZCN12f3qswlbPSv9jhbciaK8iYzmPWwSwmyXFfIU2eNbDcDEmd2tYJ4qtOyO1W+
- P5ow4CcyQDq2Pq/MXc1jZo4xBU6PiYtkrUuGztCZnvzgvdpcDpumexGIB8Ut32yTgntJ
- zv4txLSe8uyX+2yQ0xN2bdorqRxpvDy8v2AM8X0oHxadzeWUkqalohmOqJzrEY2Do+ko
- TzFUpmmQOUgrIKDjJp+vyMxsY5tpcGzGjfX8ZU2v3+NzTDIUCl2/3n/6TNS6KvCwYRbB
- k1Ug==
-X-Gm-Message-State: AOJu0Yx8auTZlU7ZlmP1i4pJspMgEciOsqaprShg1YKIw/cFQvcbuHh5
- n4BREFwrGTZN9kj28B3rHByM0pt12LDztwEWsPg=
-X-Google-Smtp-Source: AGHT+IEDFxhRo83y+eww+D7PLDLcKXoLSFyfFB1+9lrEkrFUhYhJddbUMLs7OLxVlbxCLf4iXiPvSA==
-X-Received: by 2002:a5d:5d0e:0:b0:32d:8830:cda1 with SMTP id
- ch14-20020a5d5d0e000000b0032d8830cda1mr6610148wrb.63.1697186863091; 
- Fri, 13 Oct 2023 01:47:43 -0700 (PDT)
+ bh=5YbJ+XnM6I8FiRcFI2e93CK9heTfJrD2tl3I1Sx8RmQ=;
+ b=MHSE8x5RW1yE8PeK3NxluJHbrxXSQrxCY1aufmxH2rhMzSD/NdHBcgr6PnVP0foBIz
+ srzxhjD+CR87J9FNVWJisJuHzXpiW6dxLIn/7N2EyXikzisml2aQ6I1JbWdOn2tTttQB
+ j10E74MpYwRv39O2AbTYJdrdAr5esfwGHSUpcLAD/QQAfqKcv4whtaREhKx0lHMyygh/
+ a9CTHsKylT0v7Sk9RTrloqK9eSPO5SONFXhaUKW419RxhPMLrkdChl7C1eRhxsASUsli
+ TTJWhVykNLryXZDD6EmO9mm0aBVo5O3mAm61REiz8D4fCxjYq5RjPFwq+xWWxopHwJCN
+ W92g==
+X-Gm-Message-State: AOJu0Yydrq3fjs379fDqcHfEGANqG9032GhDreHzdK9mdFijMfS2If0m
+ EsyHzuTN+wxNCX+ys0nRqUDiogxJNfaQkhh184w=
+X-Google-Smtp-Source: AGHT+IGAoeuUz+F2HBvtzKVdOgpyH8VQH7BKKoUGEgWMgF3azmKDFypt/umvAaKPFYffGrqQJrXyEQ==
+X-Received: by 2002:a05:6000:1245:b0:32d:8eec:96a5 with SMTP id
+ j5-20020a056000124500b0032d8eec96a5mr4002028wrx.42.1697186864744; 
+ Fri, 13 Oct 2023 01:47:44 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.41
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:47:42 -0700 (PDT)
+ Fri, 13 Oct 2023 01:47:44 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [RFC PATCH v3 17/78] ui/sdl2.c: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:45:45 +0300
-Message-Id: <73e889e7bdf2a8dc55a6b4f73080f7f2261fa28e.1697186560.git.manos.pitsidianakis@linaro.org>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>
+Subject: [RFC PATCH v3 18/78] ui/win32-kbd-hook.c: add fallthrough
+ pseudo-keyword
+Date: Fri, 13 Oct 2023 11:45:46 +0300
+Message-Id: <701a79b3378e108e01043a41ce1ed55bdf61d1d8.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,22 +100,33 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- ui/sdl2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ui/win32-kbd-hook.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index fbfdb64e90..3d157a14aa 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -601,7 +601,7 @@ static void handle_windowevent(SDL_Event *ev)
-         if (qemu_console_is_graphic(scon->dcl.con)) {
-             win32_kbd_set_window(sdl2_win32_get_hwnd(scon));
-         }
--        /* fall through */
-+        fallthrough;
-     case SDL_WINDOWEVENT_ENTER:
-         if (!gui_grab && (qemu_input_is_absolute(scon->dcl.con) || absolute_enabled)) {
-             absolute_mouse_grab(scon);
+diff --git a/ui/win32-kbd-hook.c b/ui/win32-kbd-hook.c
+index 1ac237db9e..3c5c3fc597 100644
+--- a/ui/win32-kbd-hook.c
++++ b/ui/win32-kbd-hook.c
+@@ -26,19 +26,12 @@ static LRESULT CALLBACK keyboard_hook_cb(int code, WPARAM wparam, LPARAM lparam)
+ 
+             switch (hooked->vkCode) {
+             case VK_CAPITAL:
+-                /* fall through */
+             case VK_SCROLL:
+-                /* fall through */
+             case VK_NUMLOCK:
+-                /* fall through */
+             case VK_LSHIFT:
+-                /* fall through */
+             case VK_RSHIFT:
+-                /* fall through */
+             case VK_RCONTROL:
+-                /* fall through */
+             case VK_LMENU:
+-                /* fall through */
+             case VK_RMENU:
+                 break;
+ 
 -- 
 2.39.2
 
