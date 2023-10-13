@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7917C7F8D
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 189787C7F7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:07:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD4X-0000dm-Gs; Fri, 13 Oct 2023 03:59:01 -0400
+	id 1qrD4d-0001NM-1B; Fri, 13 Oct 2023 03:59:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD42-0000Az-ST
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:30 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1qrD46-0000VW-K5
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:34 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD41-0006qz-4o
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:30 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c501bd6ff1so11698041fa.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:28 -0700 (PDT)
+ id 1qrD43-0006rH-TA
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:34 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40684f53ef3so20881215e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183907; x=1697788707; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183909; x=1697788709; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nCbsT6AFnzVYF+57mPlA+zVrTDt7vf1WmOtihfcnrVs=;
- b=ZLEtmxGAW4tWlq86KX2iNJParpZZJDHdY1RCCy493K0fq7K5J28IiHkFE8/D3yamG7
- RVexOPjNtSBRjWiSDYNrUowKahQdzKRIWnEqxZs0y3tI0EXfoIQXAGq3RJjGKZI2d9G4
- eCjrGJuSDI3MINeuE8r+ZGut9eDgjOy0gVhGxx08qkEKP+30qCEqHsmlwcx36WjX5q1n
- 3oKGsmprLl541jpjmIGbLAo1M854w2PB4FaE+zlnAV1HysEzQx6SXLIvaxSoEaCAbtKZ
- barJXSEQX17JjjLQFANLd7uaCg4RSona2ipUZWXLyqnyc39XwUsdvC7W9xWci4C+UR3h
- xtug==
+ bh=8OEDZHUZlfR06KTYN9H5TjuAUUNx1t85t6hUql+0VCY=;
+ b=z8TLUdlIi+Vj/+Nh4qgONS7QIf5RscmrBAvvr9qhErbhs3YYdeSoWuxy6VJtktFfQT
+ dtlOsmdhoknexU4sxWdZzEKJjiEaHzD7dh48PEHgA26puqQPB5DkmlEnXsPi92LJmnNr
+ ZDg6ES1o8idHjfprFFYKSJJEdGMfznICMEygUvVLz8s4iVZhfHfaFWXmnWJaSFMTYGfX
+ EavJzCxtjJL/lnQL/NTGn/vcjY65PIZyGPFkMz59yzSt8GykUwD14kzixAc3ymd+0buJ
+ KLS7610uOGg2UHSZmQ4r2kbzNRHBHnBnlahHAYh9X9PralFHiURfLzE0pR3cD5FhtzZ/
+ iNPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183907; x=1697788707;
+ d=1e100.net; s=20230601; t=1697183909; x=1697788709;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nCbsT6AFnzVYF+57mPlA+zVrTDt7vf1WmOtihfcnrVs=;
- b=YejU/szKvedxRU+KE8THUEeiKwruAzKpazBsSPH2TO9XHhwTM7yF6brq6NIpQGZe32
- V3T6T+YAAuJKuW+44ZgaXOwRYx3W72HmJIAOKTSDRjkuJG8hW9ucC8tWKZubZ+TzeB6t
- grl7hhFieBNtB2s1n0bYyxuOeZPbm2B0pFfVBJJkwbEi8Pf1HficHdowcON2pOYmpSJz
- WKO6Xhjiq5ifFihoED4NbQV1ABAZy6DNNKqFLrX+c6IXlaWesh4w5z2eJcqn0vCCUdzL
- vMcbKRoMt9tT07DmdUD6OoXuoVwTd9Vm3ilG7pW+sd0P99gEpgtK0o1Nh7SmniO+5FGv
- NrUA==
-X-Gm-Message-State: AOJu0YwRHDH+mWWD/McJuw5Hly/hcrM6kaDXTaZ3FcUq28tNEqYvNCRr
- YklRw6ed89CHDQLiZ5GMsSwmW2zAUUt39dvcXC4=
-X-Google-Smtp-Source: AGHT+IEaoD1HO+Rgd0qAvo6nimIOjJgaWNrY3XVaVj/nBGwgMRIlLlI2nR+4oDSJz1osWhb/ZlK2Lg==
-X-Received: by 2002:a2e:801a:0:b0:2c0:c6a:d477 with SMTP id
- j26-20020a2e801a000000b002c00c6ad477mr24383014ljg.18.1697183907399; 
- Fri, 13 Oct 2023 00:58:27 -0700 (PDT)
+ bh=8OEDZHUZlfR06KTYN9H5TjuAUUNx1t85t6hUql+0VCY=;
+ b=RfVf87h1fvNQGjh2MXF0Gn1/VWK9PzhQpTnSFirSTJIZK0VqAA3UMiVZA2+LwPPPt0
+ 1BbkllsMqNMx2R0X+wahrX2E1vj7vO0meiLljRo65uOHNmrnSMTltKGaskR1hV4Z1ADv
+ j6ZBZa/tDJ0h8rTvkhhubuOQuVGIVA6EqDJYTWEVK7KRRSizqF4r5uBX6dup4TpROUIK
+ +2KQSA9IG/q++c/y7CharCu0PRbz+ekTc4DwCJJlfMJJD8jJ9vPKzPnhmbvFrh7NqAyC
+ 8yhLQ4PSgzeabyf83d9V/eToJKQblM0RGttZ72xhR5bGZ3gqiFIc3cO2OzumlrK79+HT
+ QpWA==
+X-Gm-Message-State: AOJu0YylUPGSVU9pGrIIlNDnrvAqfWrOuwFEr1Suoqygxk1c210+qp0/
+ OTHztngyoOCj6YUcvNSH6zEUqS6E8T0waaKmDMg=
+X-Google-Smtp-Source: AGHT+IHN1tw7TCDCyBgzhJ5f8xk3zqGf4huvUxPbPgVH3Zo3ja24VOL9lKNio80XywdjCTiX2YmxgQ==
+X-Received: by 2002:a7b:c8d7:0:b0:405:336b:8307 with SMTP id
+ f23-20020a7bc8d7000000b00405336b8307mr22724341wml.7.1697183908999; 
+ Fri, 13 Oct 2023 00:58:28 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.26
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:58:26 -0700 (PDT)
+ Fri, 13 Oct 2023 00:58:28 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [RFC PATCH v2 17/78] ui/sdl2.c: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:56:44 +0300
-Message-Id: <b774031635094826bfc5e84f250763e4962683e8.1697183699.git.manos.pitsidianakis@linaro.org>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>
+Subject: [RFC PATCH v2 18/78] ui/win32-kbd-hook.c: add fallthrough
+ pseudo-keyword
+Date: Fri, 13 Oct 2023 10:56:45 +0300
+Message-Id: <1fe2aaff40c7debde520690f84032d7767037659.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,92 +100,72 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- ui/sdl2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ui/win32-kbd-hook.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index fbfdb64e90..3d157a14aa 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -576,78 +576,78 @@ static void handle_mousewheel(SDL_Event *ev)
- static void handle_windowevent(SDL_Event *ev)
+diff --git a/ui/win32-kbd-hook.c b/ui/win32-kbd-hook.c
+index 1ac237db9e..3c5c3fc597 100644
+--- a/ui/win32-kbd-hook.c
++++ b/ui/win32-kbd-hook.c
+@@ -18,59 +18,52 @@ static DWORD win32_grab;
+ static LRESULT CALLBACK keyboard_hook_cb(int code, WPARAM wparam, LPARAM lparam)
  {
-     struct sdl2_console *scon = get_scon_from_window(ev->window.windowID);
-     bool allow_close = true;
+     if  (win32_window && code == HC_ACTION && win32_window == GetFocus()) {
+         KBDLLHOOKSTRUCT *hooked = (KBDLLHOOKSTRUCT *)lparam;
  
-     if (!scon) {
-         return;
-     }
+         if (wparam != WM_KEYUP) {
+             DWORD dwmsg = (hooked->flags << 24) |
+                           ((hooked->scanCode & 0xff) << 16) | 1;
  
-     switch (ev->window.event) {
-     case SDL_WINDOWEVENT_RESIZED:
-         {
-             QemuUIInfo info;
-             memset(&info, 0, sizeof(info));
-             info.width = ev->window.data1;
-             info.height = ev->window.data2;
-             dpy_set_ui_info(scon->dcl.con, &info, true);
-         }
-         sdl2_redraw(scon);
-         break;
-     case SDL_WINDOWEVENT_EXPOSED:
-         sdl2_redraw(scon);
-         break;
-     case SDL_WINDOWEVENT_FOCUS_GAINED:
-         win32_kbd_set_grab(gui_grab);
-         if (qemu_console_is_graphic(scon->dcl.con)) {
-             win32_kbd_set_window(sdl2_win32_get_hwnd(scon));
-         }
--        /* fall through */
-+        fallthrough;
-     case SDL_WINDOWEVENT_ENTER:
-         if (!gui_grab && (qemu_input_is_absolute(scon->dcl.con) || absolute_enabled)) {
-             absolute_mouse_grab(scon);
-         }
-         /* If a new console window opened using a hotkey receives the
-          * focus, SDL sends another KEYDOWN event to the new window,
-          * closing the console window immediately after.
-          *
-          * Work around this by ignoring further hotkey events until a
-          * key is released.
-          */
-         scon->ignore_hotkeys = get_mod_state();
-         break;
-     case SDL_WINDOWEVENT_FOCUS_LOST:
-         if (qemu_console_is_graphic(scon->dcl.con)) {
-             win32_kbd_set_window(NULL);
-         }
-         if (gui_grab && !gui_fullscreen) {
-             sdl_grab_end(scon);
-         }
-         break;
-     case SDL_WINDOWEVENT_RESTORED:
-         update_displaychangelistener(&scon->dcl, GUI_REFRESH_INTERVAL_DEFAULT);
-         break;
-     case SDL_WINDOWEVENT_MINIMIZED:
-         update_displaychangelistener(&scon->dcl, 500);
-         break;
-     case SDL_WINDOWEVENT_CLOSE:
-         if (qemu_console_is_graphic(scon->dcl.con)) {
-             if (scon->opts->has_window_close && !scon->opts->window_close) {
-                 allow_close = false;
+             switch (hooked->vkCode) {
+             case VK_CAPITAL:
+-                /* fall through */
+             case VK_SCROLL:
+-                /* fall through */
+             case VK_NUMLOCK:
+-                /* fall through */
+             case VK_LSHIFT:
+-                /* fall through */
+             case VK_RSHIFT:
+-                /* fall through */
+             case VK_RCONTROL:
+-                /* fall through */
+             case VK_LMENU:
+-                /* fall through */
+             case VK_RMENU:
+                 break;
+ 
+             case VK_LCONTROL:
+                 /*
+                  * When pressing AltGr, an extra VK_LCONTROL with a special
+                  * scancode with bit 9 set is sent. Let's ignore the extra
+                  * VK_LCONTROL, as that will make AltGr misbehave.
+                  */
+                 if (hooked->scanCode & 0x200) {
+                     return 1;
+                 }
+                 break;
+ 
+             default:
+                 if (win32_grab) {
+                     SendMessage(win32_window, wparam, hooked->vkCode, dwmsg);
+                     return 1;
+                 }
+                 break;
              }
-             if (allow_close) {
-                 shutdown_action = SHUTDOWN_ACTION_POWEROFF;
-                 qemu_system_shutdown_request(SHUTDOWN_CAUSE_HOST_UI);
-             }
+ 
          } else {
-             SDL_HideWindow(scon->real_window);
-             scon->hidden = true;
+             switch (hooked->vkCode) {
+             case VK_LCONTROL:
+                 if (hooked->scanCode & 0x200) {
+                     return 1;
+                 }
+                 break;
+             }
          }
-         break;
-     case SDL_WINDOWEVENT_SHOWN:
-         scon->hidden = false;
-         break;
-     case SDL_WINDOWEVENT_HIDDEN:
-         scon->hidden = true;
-         break;
      }
+ 
+     return CallNextHookEx(NULL, code, wparam, lparam);
  }
 -- 
 2.39.2
