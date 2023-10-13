@@ -2,88 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552497C8CFB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 20:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD0B7C8D03
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 20:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrMjJ-0005QD-ME; Fri, 13 Oct 2023 14:17:45 -0400
+	id 1qrMmC-0006sn-P2; Fri, 13 Oct 2023 14:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qrMjH-0005Ps-TA
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 14:17:43 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qrMjG-0000pH-5d
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 14:17:43 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1c9fa869a63so6937845ad.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 11:17:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697221060; x=1697825860; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VXuBaEeRwtFVjfdb5KvHlv7WTb+Byp+r+THMjJRzfXc=;
- b=WHUcWSD1Ukt9GHul8fT6cc7Ft0IuSK/wOXN53abWA1Z4O17MN3rlDBmIIPhOnhY9qq
- ZhyyPtG5JBwL/y1KpxrLu1PVKTNnwJOVxeQJsBSB0aP1CoKEiZJaVa+MzEW9ceBrBnFB
- Zv0ncVuwPWU4pF0k190fBy7nM74MIUr6CD00kNq5U+XdHjOkF8kXUqUZZ7Tt1pvkzbRJ
- QQskk2YrcHIHj72vOebVntGwwfGtSeYXvETjkONVhi/ndtBB5gatHgGCo9ue//HNKaf7
- 1L37hEkqf9kGF1ce6OgDSNOWBjtYoGbf6Uad+oPPhTfUPpuR0JzFXtFQLDf2cTztRkyY
- wHAg==
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qrMls-0006sT-U2
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 14:20:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qrMlq-0001AJ-T1
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 14:20:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697221220;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RRgcC/jr4OUXmVQkqLZQPbH6J1fTDItFEdSk9cowwag=;
+ b=f7sMFBsyPWNtYu3RSZ1i6vkpTpbxxvDVuML6T6KB9ytfaXdTuHztdZVSoFVp7vlfGGXtjR
+ gfIhNv3g4idvYUv7CcCmmlxBrKp0piQ/mOyBFmRo/Bnid9+sY7kovibMyAUsVlh5nDLKbb
+ QigUiR/z6x9i9Kly6LHL8GodJ1GZ2cE=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-544-a7W0Vs6RO8qyverM1pTnGg-1; Fri, 13 Oct 2023 14:20:18 -0400
+X-MC-Unique: a7W0Vs6RO8qyverM1pTnGg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7740c0e88ffso274006385a.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 11:20:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697221060; x=1697825860;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1697221218; x=1697826018;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VXuBaEeRwtFVjfdb5KvHlv7WTb+Byp+r+THMjJRzfXc=;
- b=V8IzRLP1P6ntax4h+NWOeeZ8q/sjTYU24TpOw0qv0EF8v0Xn+9SrIUaUNRSryx8eLn
- OCx2T82zmJFi2kVy/dWxETLH8oIfKakQbJCE9CBf3gOvM/s02coStu1gwelwtF+6ijPW
- kAfuT5fYQR7eQYD+Sbrs19XaGDiw7+mkKNhDuRyvBW5mt7xubi17XioVkvSi5PMMpFJD
- th0qNlsCvmqb5YjK7AQeaM33X3STE/57iDFpd1z7+BB7RqiAYxBm/AYWmYZBpljEGdOJ
- bY4gh/STw3GojDljy/JfqqP2YJxTUTO9ZZNmYdpsk/fVL1lF8Szz4mIhsrJbK+MZkz7g
- X7WQ==
-X-Gm-Message-State: AOJu0YxHcI4Y3ADxHnz4XkLpey+1Y/Gsnc50ihG1orOT3htn2Z0y9A+d
- AcPPJX0CwRC9jY9EMkPfcUritg==
-X-Google-Smtp-Source: AGHT+IELo4c5ntAB8DwxfmnePY7Hu9RRPzL3QQ/JcT7UNRWrAuR8tYcW9zFYWxdxWtMXjMGR0UffTw==
-X-Received: by 2002:a17:902:d4c9:b0:1c7:8345:f377 with SMTP id
- o9-20020a170902d4c900b001c78345f377mr28909117plg.29.1697221060487; 
- Fri, 13 Oct 2023 11:17:40 -0700 (PDT)
-Received: from [192.168.68.107] ([177.94.42.196])
+ bh=RRgcC/jr4OUXmVQkqLZQPbH6J1fTDItFEdSk9cowwag=;
+ b=O0pd3JfDmO0bI5+Z+MebBaYK8ehsc/S7943ETj+wycwSm5+j/WeLiGg9PiwLpdrKpi
+ 1izVeyKUINyW6wOXL1rCKpen29uRt62OjdxLnfAwqczvz7v1CsPyC0fZwRh6MT1OjIAA
+ RC7/GcOkaAKoL74dNJZ7fnv3WtSaUUhoCbZRmgdEtgPKZ6gUC81zDmWSXxIpg+va7g0j
+ oYy+opYItsA9+2UYlNX1aRyrunrCjjkUu7V852xcxF7BuLOWMksbGM+zu7ACx4r0Hrpl
+ sKBAwvm+8W1j72xxUMQqS3x2esUBsEHHkV1FuODbcI+NxYbM9bfFXy1+eXEUQ6is+ObL
+ Sx8w==
+X-Gm-Message-State: AOJu0YyQEdJXLKkOJOxgH25/9uM4S5z6i59mUDKJJLob93H9yNrbdu03
+ AFXM7bIl3FV7F8EVDq8KjIlzvyJSy8XQUhP2YubC9O2jZxU0f2IOxcsoJ/ZeSNbNnz5m8ANqYGw
+ Nv2e6uWaDkT/BL6c=
+X-Received: by 2002:a05:620a:414f:b0:775:7fdc:42c1 with SMTP id
+ k15-20020a05620a414f00b007757fdc42c1mr35567103qko.13.1697221218303; 
+ Fri, 13 Oct 2023 11:20:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnPHaTVhgGs6vRD5GaBrDg17KbsndpzypbjUB9Svh7ERGS+EfQTCWk4DdvsMoCK90hhaBhlQ==
+X-Received: by 2002:a05:620a:414f:b0:775:7fdc:42c1 with SMTP id
+ k15-20020a05620a414f00b007757fdc42c1mr35567084qko.13.1697221218016; 
+ Fri, 13 Oct 2023 11:20:18 -0700 (PDT)
+Received: from ?IPV6:2600:4040:7c46:e800:32a2:d966:1af4:8863?
+ ([2600:4040:7c46:e800:32a2:d966:1af4:8863])
  by smtp.gmail.com with ESMTPSA id
- jf9-20020a170903268900b001c898328289sm4181803plb.158.2023.10.13.11.17.37
+ g20-20020a05620a13d400b0076d6a08ac98sm824924qkl.76.2023.10.13.11.20.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 11:17:40 -0700 (PDT)
-Message-ID: <42f5734d-02b2-4786-a193-cacdc7a8c7c9@ventanamicro.com>
-Date: Fri, 13 Oct 2023 15:17:36 -0300
+ Fri, 13 Oct 2023 11:20:17 -0700 (PDT)
+Message-ID: <60c1bcc0-9b96-4c37-afee-484ffbe40431@redhat.com>
+Date: Fri, 13 Oct 2023 14:20:16 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 27/78] target/riscv: add fallthrough pseudo-keyword
+Subject: Re: [RFC PATCH v2 1/9] Add Rust SEV library as subproject
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ pbonzini@redhat.com, mtosatti@redhat.com, philmd@linaro.org,
+ berrange@redhat.com, marcandre.lureau@gmail.com
+References: <20231004203418.56508-1-tfanelli@redhat.com>
+ <20231004203418.56508-2-tfanelli@redhat.com>
+ <20231005155448.GA1342722@fedora>
+ <bdca3b98-7c22-4732-adfc-dc51c93c5eca@redhat.com>
+ <CAAjaMXZb1Les+5Q2uhtpm1dgCm11qfs=Rfcq-6dUvQJj2+HQ3w@mail.gmail.com>
 Content-Language: en-US
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
- <b387a1f2114c71be3c88c5bc9d8acb7f53c3b441.1697186560.git.manos.pitsidianakis@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <b387a1f2114c71be3c88c5bc9d8acb7f53c3b441.1697186560.git.manos.pitsidianakis@linaro.org>
+From: Tyler Fanelli <tfanelli@redhat.com>
+In-Reply-To: <CAAjaMXZb1Les+5Q2uhtpm1dgCm11qfs=Rfcq-6dUvQJj2+HQ3w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=tfanelli@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 7
+X-Spam_score: 0.7
+X-Spam_bar: /
+X-Spam_report: (0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RAZOR2_CF_RANGE_51_100=1.886, RAZOR2_CHECK=0.922, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,109 +108,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Manos,
 
+Thanks for the heads up, I was using rust 1.71.1. Will update the series 
+with 1.72.1
 
-On 10/13/23 05:45, Emmanouil Pitsidianakis wrote:
-> In preparation of raising -Wimplicit-fallthrough to 5, replace all
-> fall-through comments with the fallthrough attribute pseudo-keyword.
-> 
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
+Stefan, Philippe, or Daniel: is there a specific policy for the Rust 
+version we should be developing on for crates in qemu?
 
+Tyler
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+On 10/13/23 2:09 PM, Manos Pitsidianakis wrote:
+> Hello Tyler!
+>
+> With Rust stable 1.72.1, I get:
+>
+> error: unneeded `return` statement
+>     --> tests/launch.rs:103:26
+>      |
+> 103 |         VcpuExit::Hlt => return,
+>      |                          ^^^^^^
+>      |
+>      = help: for further information visit
+> https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+>      = note: `-D clippy::needless-return` implied by `-D warnings`
+> help: replace `return` with a unit value
+>      |
+> 103 |         VcpuExit::Hlt => (),
+>      |                          ~~
+>
+> error: could not compile `sev` (test "launch") due to previous error
+> warning: build failed, waiting for other jobs to finish...
+>
+>
+> When doing make.
+>
+> --
+> Manos
+>
+> On Wed, 11 Oct 2023 at 06:11, Tyler Fanelli <tfanelli@redhat.com> wrote:
+>> On 10/5/23 11:54 AM, Stefan Hajnoczi wrote:
+>>> On Wed, Oct 04, 2023 at 04:34:10PM -0400, Tyler Fanelli wrote:
+>>>> The Rust sev library provides a C API for the AMD SEV launch ioctls, as
+>>>> well as the ability to build with meson. Add the Rust sev library as a
+>>>> QEMU subproject with the goal of outsourcing all SEV launch ioctls to C
+>>>> APIs provided by it.
+>>>>
+>>>> Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
+>>>> ---
+>>>>    meson.build                   | 8 ++++++++
+>>>>    meson_options.txt             | 2 ++
+>>>>    scripts/meson-buildoptions.sh | 3 +++
+>>>>    subprojects/sev.wrap          | 6 ++++++
+>>>>    target/i386/meson.build       | 2 +-
+>>>>    5 files changed, 20 insertions(+), 1 deletion(-)
+>>>>    create mode 100644 subprojects/sev.wrap
+>>>>
+>>>> diff --git a/meson.build b/meson.build
+>>>> index 20ceeb8158..8a17c29de8 100644
+>>>> --- a/meson.build
+>>>> +++ b/meson.build
+>>>> @@ -960,6 +960,13 @@ if not get_option('slirp').auto() or have_system
+>>>>      endif
+>>>>    endif
+>>>>
+>>>> +sev = not_found
+>>>> +if not get_option('sev').auto()
+>>> When 'sev' is auto, then it won't be built. That seems strange. The
+>>> auto-detection part is missing! I did you test this on a system that
+>>> doesn't have libsev installed system-wide?
+>> My testing environment had libsev installed system-wide. Thanks for
+>> pointing this out.
+>>
+>>> I guess the auto-detection would look something like:
+>>>
+>>>     cargo = find_program('cargo', required: true)
+>>>
+>>>     if not get_option('sev').auto() or cargo.found()
+>>>         ...
+>>>
+>>> That way 'sev' is only built automatically on systems that have cargo
+>>> installed.
+>>>
+>>>> +  sev = dependency('sev',
+>>>> +                   method: 'pkg-config',
+>>>> +                   required: get_option('sev'))
+>>>> +endif
+>>> If you update the auto logic, see the documentation about fallbacks to
+>>> subprojects for optional dependencies:
+>>> https://mesonbuild.com/Wrap-dependency-system-manual.html#provide-section
+>>>
+>>> It might be necessary to add dependency(..., fallback='sev').
+>> Noted. Thanks!
+>>
+>>>> +
+>>>>    vde = not_found
+>>>>    if not get_option('vde').auto() or have_system or have_tools
+>>>>      vde = cc.find_library('vdeplug', has_headers: ['libvdeplug.h'],
+>>>> @@ -4331,6 +4338,7 @@ summary_info += {'libudev':           libudev}
+>>>>    # Dummy dependency, keep .found()
+>>>>    summary_info += {'FUSE lseek':        fuse_lseek.found()}
+>>>>    summary_info += {'selinux':           selinux}
+>>>> +summary_info += {'sev':               sev}
+>>>>    summary_info += {'libdw':             libdw}
+>>>>    summary(summary_info, bool_yn: true, section: 'Dependencies')
+>>>>
+>>>> diff --git a/meson_options.txt b/meson_options.txt
+>>>> index 57e265c871..5b8d283717 100644
+>>>> --- a/meson_options.txt
+>>>> +++ b/meson_options.txt
+>>>> @@ -204,6 +204,8 @@ option('sdl_image', type : 'feature', value : 'auto',
+>>>>           description: 'SDL Image support for icons')
+>>>>    option('seccomp', type : 'feature', value : 'auto',
+>>>>           description: 'seccomp support')
+>>>> +option('sev', type : 'feature', value : 'auto',
+>>>> +        description: 'Rust AMD SEV library')
+>>>>    option('smartcard', type : 'feature', value : 'auto',
+>>>>           description: 'CA smartcard emulation support')
+>>>>    option('snappy', type : 'feature', value : 'auto',
+>>>> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+>>>> index e4b46d5715..e585a548fa 100644
+>>>> --- a/scripts/meson-buildoptions.sh
+>>>> +++ b/scripts/meson-buildoptions.sh
+>>>> @@ -161,6 +161,7 @@ meson_options_help() {
+>>>>      printf "%s\n" '  sdl-image       SDL Image support for icons'
+>>>>      printf "%s\n" '  seccomp         seccomp support'
+>>>>      printf "%s\n" '  selinux         SELinux support in qemu-nbd'
+>>>> +  printf "%s\n" '  sev             SEV library support'
+>>>>      printf "%s\n" '  slirp           libslirp user mode network backend support'
+>>>>      printf "%s\n" '  slirp-smbd      use smbd (at path --smbd=*) in slirp networking'
+>>>>      printf "%s\n" '  smartcard       CA smartcard emulation support'
+>>>> @@ -440,6 +441,8 @@ _meson_option_parse() {
+>>>>        --disable-seccomp) printf "%s" -Dseccomp=disabled ;;
+>>>>        --enable-selinux) printf "%s" -Dselinux=enabled ;;
+>>>>        --disable-selinux) printf "%s" -Dselinux=disabled ;;
+>>>> +    --enable-sev) printf "%s" -Dsev=enabled ;;
+>>>> +    --disable-sev) printf "%s" -Dsev=disabled ;;
+>>>>        --enable-slirp) printf "%s" -Dslirp=enabled ;;
+>>>>        --disable-slirp) printf "%s" -Dslirp=disabled ;;
+>>>>        --enable-slirp-smbd) printf "%s" -Dslirp_smbd=enabled ;;
+>>>> diff --git a/subprojects/sev.wrap b/subprojects/sev.wrap
+>>>> new file mode 100644
+>>>> index 0000000000..5be1faccf6
+>>>> --- /dev/null
+>>>> +++ b/subprojects/sev.wrap
+>>>> @@ -0,0 +1,6 @@
+>>>> +[wrap-git]
+>>>> +url = https://github.com/tylerfanelli/sev
+>>>> +revision = b81b1da5df50055600a5b0349b0c4afda677cccb
+>>>> +
+>>>> +[provide]
+>>>> +sev = sev_dep
+>>>> diff --git a/target/i386/meson.build b/target/i386/meson.build
+>>>> index 6f1036d469..8972a4fb17 100644
+>>>> --- a/target/i386/meson.build
+>>>> +++ b/target/i386/meson.build
+>>>> @@ -20,7 +20,7 @@ i386_system_ss.add(files(
+>>>>      'monitor.c',
+>>>>      'cpu-sysemu.c',
+>>>>    ))
+>>>> -i386_system_ss.add(when: 'CONFIG_SEV', if_true: files('sev.c'), if_false: files('sev-sysemu-stub.c'))
+>>>> +i386_system_ss.add(when: 'CONFIG_SEV', if_true: [sev, files('sev.c')], if_false: files('sev-sysemu-stub.c'))
+>>>>
+>>>>    i386_user_ss = ss.source_set()
+>>>>
+>>>> --
+>>>> 2.40.1
+>>>>
+>> Tyler
+>>
+>>
 
->   target/riscv/insn_trans/trans_rvi.c.inc   |  2 +-
->   target/riscv/insn_trans/trans_rvzce.c.inc | 22 +++++++++++-----------
->   target/riscv/translate.c                  |  4 ++--
->   3 files changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
-> index 25cb60558a..98dd2e3cf6 100644
-> --- a/target/riscv/insn_trans/trans_rvi.c.inc
-> +++ b/target/riscv/insn_trans/trans_rvi.c.inc
-> @@ -122,7 +122,7 @@ static TCGCond gen_compare_i128(bool bz, TCGv rl,
->   
->       case TCG_COND_LTU:
->           invert = true;
-> -        /* fallthrough */
-> +        fallthrough;
->       case TCG_COND_GEU:
->           {
->               TCGv tmp = tcg_temp_new();
-> diff --git a/target/riscv/insn_trans/trans_rvzce.c.inc b/target/riscv/insn_trans/trans_rvzce.c.inc
-> index 2d992e14c4..f0bcbb4f72 100644
-> --- a/target/riscv/insn_trans/trans_rvzce.c.inc
-> +++ b/target/riscv/insn_trans/trans_rvzce.c.inc
-> @@ -125,37 +125,37 @@ static uint32_t decode_push_pop_list(DisasContext *ctx, target_ulong rlist)
->       case 15:
->           reg_bitmap |=  1 << (X_Sn + 11) ;
->           reg_bitmap |=  1 << (X_Sn + 10) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 14:
->           reg_bitmap |=  1 << (X_Sn + 9) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 13:
->           reg_bitmap |=  1 << (X_Sn + 8) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 12:
->           reg_bitmap |=  1 << (X_Sn + 7) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 11:
->           reg_bitmap |=  1 << (X_Sn + 6) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 10:
->           reg_bitmap |=  1 << (X_Sn + 5) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 9:
->           reg_bitmap |=  1 << (X_Sn + 4) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 8:
->           reg_bitmap |=  1 << (X_Sn + 3) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 7:
->           reg_bitmap |=  1 << (X_Sn + 2) ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 6:
->           reg_bitmap |=  1 << X_S1 ;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 5:
->           reg_bitmap |= 1 << X_S0;
-> -        /* FALL THROUGH */
-> +        fallthrough;
->       case 4:
->           reg_bitmap |= 1 << xRA;
->           break;
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index f0be79bb16..c99e513221 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -446,7 +446,7 @@ static TCGv_i64 get_fpr_hs(DisasContext *ctx, int reg_num)
->           return t;
->       }
->   #else
-> -    /* fall through */
-> +    fallthrough;
->       case MXL_RV64:
->           return cpu_gpr[reg_num];
->   #endif
-> @@ -516,7 +516,7 @@ static void gen_set_fpr_hs(DisasContext *ctx, int reg_num, TCGv_i64 t)
->               tcg_gen_extrl_i64_i32(cpu_gpr[reg_num], t);
->               break;
->   #else
-> -        /* fall through */
-> +        fallthrough;
->           case MXL_RV64:
->               tcg_gen_mov_i64(cpu_gpr[reg_num], t);
->               break;
 
