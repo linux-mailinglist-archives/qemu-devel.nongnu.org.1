@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DFE7C7FEA
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 075897C8036
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:27:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD62-0001uI-GA; Fri, 13 Oct 2023 04:00:34 -0400
+	id 1qrD6P-0002zg-Fz; Fri, 13 Oct 2023 04:00:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5d-0008EQ-1O
+ id 1qrD5e-0008F7-PL
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:11 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5Z-0007VZ-4N
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:07 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40566f89f6eso21740235e9.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:00:04 -0700 (PDT)
+ id 1qrD5b-0007Xe-SQ
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:10 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-406609df1a6so19266045e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:00:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697184003; x=1697788803; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697184005; x=1697788805; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KB0gvugYc9C6TU4Cb/iuN+aDu5QpjXM6/bIk/+OkcXM=;
- b=fqvjLbZhNGXRCCNSs3vrFzUApQDf3DmRzB/zxfpiveZp6U8q9s1NPUpL8ap9YaH/3M
- RLD2hNb+p1mVQWK2mz6jRABTdxDvzQgCCkKsHaMn5nNyyn2iLC5eAs1vv4MGfui9CbcH
- nzaTf8c4kzgbaH4BLegreurw6e6ODseyE9c1h2ruY1lQVi9ZiwLQuummE8RDmhIWjK3S
- 6o8PgOpuTzbwYSAvFHRougDezuaE4jvNPgNzqhEAtFVC4vClCM4zYByWOt6ZGN8BVKhs
- nQe0MgpdHa+GwbRShzSZfTIoE0tA/IBliGhDkrevwCzvOnFG8rivQC8Z7jYScBtpFQvp
- 3Mtw==
+ bh=9Zrcq9ApjaSiX+ErhH5YDa/34snZZueP1MDiY19ihlA=;
+ b=ihNhlMuORqAVK04mbaqMULOhKkwrHqQKGDmp+NynLjot2dnVcvcrRAL5TaffrIr9tQ
+ 1NFKL89lUADvic3XKYMQK5GToeWdJVOMMIlJxPs5SGFEcoOqECSIJtZLxpqycpt/dKUU
+ DJgsucxiDmcdEdjbHHnmpVGELZCZac5XFIcDMtXXc6hPJKkgSfff14YUYPa2Q1lxtgEf
+ gW/jGToV1YWZbHRLCo/oX01LPpAIS4esMdQhnD9OoKDq37HxR0RF8XhhruVNIebGr1/C
+ XVNaRQY7z7D4cIh8Bnty6TY/anSkaRKjPF3HhYjAN6u392RSptCNruibJNVadMbKQ0Tf
+ 3i5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697184003; x=1697788803;
+ d=1e100.net; s=20230601; t=1697184005; x=1697788805;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KB0gvugYc9C6TU4Cb/iuN+aDu5QpjXM6/bIk/+OkcXM=;
- b=jxvZP3YnTaZaZxwBArsZtOqaZq/H0K770HTIcZ6CVXTJl4gUQtaRlEeKAksBExDqhq
- nra2A6cjuRYkgj4f4UXIHcsq5X3LGi+p/odeY7Ti7cOxopgKB/EGK7C74UJSh/8T85JR
- /+2b+1b/cgDq09fXxsicw0HEQXPyBqwpOt414txNyIZOfS8glllZgVhh2dooh71JkhTo
- mnDdfYoID1TG9JLUUInjmhZT7DKVm5hL+3EtjDMZ/jBS4Iw2LcaZqsPzzJmk/E61TY+9
- 947DkBKGUg86ZaM5Cvl8ihvjx5AS4JoEbZWvlIXxSXkCvTduyLMinTQHL9TaGuPB9Kkf
- fOkg==
-X-Gm-Message-State: AOJu0Yyw56O4QwJBpnWiCRGSluGw0Ye3cNUJYdTCRxLjduTLccjyWdQS
- /oCdvo0GJYjZwMe1A4Lxa90f22sPOQdDsOihdm0=
-X-Google-Smtp-Source: AGHT+IHpdmQduaz9oTXIexvry4ciDDONgjZWs3D9NR2xIgLdVJBy4WWW6dCQpmp68UikEmT7QuipRg==
-X-Received: by 2002:a05:600c:2107:b0:405:48ba:9c with SMTP id
- u7-20020a05600c210700b0040548ba009cmr24266073wml.16.1697184003223; 
- Fri, 13 Oct 2023 01:00:03 -0700 (PDT)
+ bh=9Zrcq9ApjaSiX+ErhH5YDa/34snZZueP1MDiY19ihlA=;
+ b=hlAl9ysLJ10pOEDvqS3OzttvQbtMpMrxsQ2qQSuz367ZI0Xze0HVmsujSxV9TEdx2l
+ yTB8nnluWqiRWQ759W+KeCQHDRriz41+VeNuce0vejZKv+xuDKrewaCgaWYauNlYRq/J
+ LNLyH2nbQbjXAMVj3cDF4k/vcch0a3iR3ws+HU6EedAWMHyrOppn4T4Fht8MggMHbBTn
+ WcilPy75YeJPX0coQO3K7rQessqDE6gTCyBiI2YMuD4NmyHrs7MzUWypbMTOe7WKujp8
+ dT4IHVNqm4BXBZNBc3iKzih+hVG75L1lDeCEDX7la5Fo7EAfJNnDK5XEzOhIPagY/wg3
+ yF7w==
+X-Gm-Message-State: AOJu0YzzIOlJhUs5m+3/5RlFL1kdl5OriX12xw0FjTCRlAK2tJzkfqW+
+ OroRbOH1hZVK+uuHYj2gFSG7t9ViWGGjZ57UVaM=
+X-Google-Smtp-Source: AGHT+IFwrbt9HknJ9aS/y+QQ+CgYHkrYmMOmDeg4iu8d+oXqkm4jaqCeL36SKEg0779i3pRUQudApQ==
+X-Received: by 2002:a05:600c:11cf:b0:405:7400:1e42 with SMTP id
+ b15-20020a05600c11cf00b0040574001e42mr23382367wmi.41.1697184005378; 
+ Fri, 13 Oct 2023 01:00:05 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.01.00.01
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.01.00.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:00:02 -0700 (PDT)
+ Fri, 13 Oct 2023 01:00:04 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
- Joel Stanley <joel@jms.id.au>, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org (open list:ASPEED BMCs)
-Subject: [RFC PATCH v2 70/78] hw/rtc: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:37 +0300
-Message-Id: <aba72599f8eb496fe5c4f1683b1e9d96d5e1a843.1697183699.git.manos.pitsidianakis@linaro.org>
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ qemu-s390x@nongnu.org (open list:S390-ccw boot)
+Subject: [RFC PATCH v2 71/78] hw/s390x: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:38 +0300
+Message-Id: <027ebef63f822f425c496a49112b38a62305b3e5.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,261 +103,227 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/rtc/aspeed_rtc.c  | 4 ++--
- hw/rtc/mc146818rtc.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ hw/s390x/ipl.c           | 1 +
+ hw/s390x/s390-pci-inst.c | 4 ++--
+ hw/s390x/sclp.c          | 4 ++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/rtc/aspeed_rtc.c b/hw/rtc/aspeed_rtc.c
-index fa861e2d49..59c64b01b9 100644
---- a/hw/rtc/aspeed_rtc.c
-+++ b/hw/rtc/aspeed_rtc.c
-@@ -68,28 +68,28 @@ static uint32_t aspeed_rtc_get_counter(AspeedRtcState *rtc, int r)
- static uint64_t aspeed_rtc_read(void *opaque, hwaddr addr,
-                                 unsigned size)
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index 515dcf51b5..da2333846f 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -394,57 +394,58 @@ static CcwDevice *s390_get_ccw_device(DeviceState *dev_st, int *devtype)
+ static bool s390_gen_initial_iplb(S390IPLState *ipl)
  {
-     AspeedRtcState *rtc = opaque;
-     uint64_t val;
-     uint32_t r = addr >> 2;
+     DeviceState *dev_st;
+     CcwDevice *ccw_dev = NULL;
+     SCSIDevice *sd;
+     int devtype;
  
-     switch (r) {
-     case COUNTER1:
-     case COUNTER2:
-         if (rtc->reg[CONTROL] & RTC_ENABLED) {
-             rtc->reg[r] = aspeed_rtc_get_counter(rtc, r);
+     dev_st = get_boot_device(0);
+     if (dev_st) {
+         ccw_dev = s390_get_ccw_device(dev_st, &devtype);
+     }
+ 
+     /*
+      * Currently allow IPL only from CCW devices.
+      */
+     if (ccw_dev) {
+         switch (devtype) {
+         case CCW_DEVTYPE_SCSI:
+             sd = SCSI_DEVICE(dev_st);
+             ipl->iplb.len = cpu_to_be32(S390_IPLB_MIN_QEMU_SCSI_LEN);
+             ipl->iplb.blk0_len =
+                 cpu_to_be32(S390_IPLB_MIN_QEMU_SCSI_LEN - S390_IPLB_HEADER_LEN);
+             ipl->iplb.pbt = S390_IPL_TYPE_QEMU_SCSI;
+             ipl->iplb.scsi.lun = cpu_to_be32(sd->lun);
+             ipl->iplb.scsi.target = cpu_to_be16(sd->id);
+             ipl->iplb.scsi.channel = cpu_to_be16(sd->channel);
+             ipl->iplb.scsi.devno = cpu_to_be16(ccw_dev->sch->devno);
+             ipl->iplb.scsi.ssid = ccw_dev->sch->ssid & 3;
+             break;
+         case CCW_DEVTYPE_VFIO:
+             ipl->iplb.len = cpu_to_be32(S390_IPLB_MIN_CCW_LEN);
+             ipl->iplb.pbt = S390_IPL_TYPE_CCW;
+             ipl->iplb.ccw.devno = cpu_to_be16(ccw_dev->sch->devno);
+             ipl->iplb.ccw.ssid = ccw_dev->sch->ssid & 3;
+             break;
+         case CCW_DEVTYPE_VIRTIO_NET:
+             ipl->netboot = true;
+             /* Fall through to CCW_DEVTYPE_VIRTIO case */
++            fallthrough;
+         case CCW_DEVTYPE_VIRTIO:
+             ipl->iplb.len = cpu_to_be32(S390_IPLB_MIN_CCW_LEN);
+             ipl->iplb.blk0_len =
+                 cpu_to_be32(S390_IPLB_MIN_CCW_LEN - S390_IPLB_HEADER_LEN);
+             ipl->iplb.pbt = S390_IPL_TYPE_CCW;
+             ipl->iplb.ccw.devno = cpu_to_be16(ccw_dev->sch->devno);
+             ipl->iplb.ccw.ssid = ccw_dev->sch->ssid & 3;
+             break;
          }
--        /* fall through */
-+        fallthrough;
-     case CONTROL:
-         val = rtc->reg[r];
-         break;
-     case ALARM:
-     case ALARM_STATUS:
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: 0x%" HWADDR_PRIx "\n", __func__, addr);
+ 
+         if (!s390_ipl_set_loadparm(ipl->iplb.loadparm)) {
+             ipl->iplb.flags |= DIAG308_FLAGS_LP_VALID;
+         }
+ 
+         return true;
+     }
+ 
+     return false;
+ }
+diff --git a/hw/s390x/s390-pci-inst.c b/hw/s390x/s390-pci-inst.c
+index 30149546c0..171320384c 100644
+--- a/hw/s390x/s390-pci-inst.c
++++ b/hw/s390x/s390-pci-inst.c
+@@ -1330,83 +1330,83 @@ int mpcifc_service_call(S390CPU *cpu, uint8_t r1, uint64_t fiba, uint8_t ar,
+ int stpcifc_service_call(S390CPU *cpu, uint8_t r1, uint64_t fiba, uint8_t ar,
+                          uintptr_t ra)
+ {
+     CPUS390XState *env = &cpu->env;
+     uint8_t dmaas;
+     uint32_t fh;
+     ZpciFib fib;
+     S390PCIBusDevice *pbdev;
+     uint32_t data;
+     uint64_t cc = ZPCI_PCI_LS_OK;
+ 
+     if (env->psw.mask & PSW_MASK_PSTATE) {
+         s390_program_interrupt(env, PGM_PRIVILEGED, ra);
          return 0;
      }
  
-     trace_aspeed_rtc_read(addr, val);
+     fh = env->regs[r1] >> 32;
+     dmaas = (env->regs[r1] >> 16) & 0xff;
  
-     return val;
- }
-@@ -97,25 +97,25 @@ static uint64_t aspeed_rtc_read(void *opaque, hwaddr addr,
- static void aspeed_rtc_write(void *opaque, hwaddr addr,
-                              uint64_t val, unsigned size)
- {
-     AspeedRtcState *rtc = opaque;
-     uint32_t r = addr >> 2;
+     if (dmaas) {
+         setcc(cpu, ZPCI_PCI_LS_ERR);
+         s390_set_status_code(env, r1, ZPCI_STPCIFC_ST_INVAL_DMAAS);
+         return 0;
+     }
  
-     switch (r) {
-     case COUNTER1:
-     case COUNTER2:
-         if (!(rtc->reg[CONTROL] & RTC_UNLOCKED)) {
-             break;
+     if (fiba & 0x7) {
+         s390_program_interrupt(env, PGM_SPECIFICATION, ra);
+         return 0;
+     }
+ 
+     pbdev = s390_pci_find_dev_by_idx(s390_get_phb(), fh & FH_MASK_INDEX);
+     if (!pbdev) {
+         setcc(cpu, ZPCI_PCI_LS_INVAL_HANDLE);
+         return 0;
+     }
+ 
+     memset(&fib, 0, sizeof(fib));
+ 
+     switch (pbdev->state) {
+     case ZPCI_FS_RESERVED:
+     case ZPCI_FS_STANDBY:
+         setcc(cpu, ZPCI_PCI_LS_INVAL_HANDLE);
+         return 0;
+     case ZPCI_FS_DISABLED:
+         if (fh & FH_MASK_ENABLE) {
+             setcc(cpu, ZPCI_PCI_LS_INVAL_HANDLE);
+             return 0;
          }
--        /* fall through */
+         goto out;
+     /* BLOCKED bit is set to one coincident with the setting of ERROR bit.
+      * FH Enabled bit is set to one in states of ENABLED, BLOCKED or ERROR. */
+     case ZPCI_FS_ERROR:
+         fib.fc |= 0x20;
+-        /* fallthrough */
 +        fallthrough;
-     case CONTROL:
-         rtc->reg[r] = val;
-         aspeed_rtc_calc_offset(rtc);
+     case ZPCI_FS_BLOCKED:
+         fib.fc |= 0x40;
+-        /* fallthrough */
++        fallthrough;
+     case ZPCI_FS_ENABLED:
+         fib.fc |= 0x80;
+         if (pbdev->iommu->enabled) {
+             fib.fc |= 0x10;
+         }
+         if (!(fh & FH_MASK_ENABLE)) {
+             env->regs[r1] |= 1ULL << 63;
+         }
          break;
-     case ALARM:
-     case ALARM_STATUS:
+     case ZPCI_FS_PERMANENT_ERROR:
+         setcc(cpu, ZPCI_PCI_LS_ERR);
+         s390_set_status_code(env, r1, ZPCI_STPCIFC_ST_PERM_ERROR);
+         return 0;
+     }
+ 
+     stq_p(&fib.pba, pbdev->iommu->pba);
+     stq_p(&fib.pal, pbdev->iommu->pal);
+     stq_p(&fib.iota, pbdev->iommu->g_iota);
+     stq_p(&fib.aibv, pbdev->routes.adapter.ind_addr);
+     stq_p(&fib.aisb, pbdev->routes.adapter.summary_addr);
+     stq_p(&fib.fmb_addr, pbdev->fmb_addr);
+ 
+     data = ((uint32_t)pbdev->isc << 28) | ((uint32_t)pbdev->noi << 16) |
+            ((uint32_t)pbdev->routes.adapter.ind_offset << 8) |
+            ((uint32_t)pbdev->sum << 7) | pbdev->routes.adapter.summary_offset;
+     stl_p(&fib.data, data);
+diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
+index eff74479f4..9b8c7ff043 100644
+--- a/hw/s390x/sclp.c
++++ b/hw/s390x/sclp.c
+@@ -50,28 +50,28 @@ static inline bool sclp_command_code_valid(uint32_t code)
+ static bool sccb_verify_boundary(uint64_t sccb_addr, uint16_t sccb_len,
+                                  uint32_t code)
+ {
+     uint64_t sccb_max_addr = sccb_addr + sccb_len - 1;
+     uint64_t sccb_boundary = (sccb_addr & TARGET_PAGE_MASK) + TARGET_PAGE_SIZE;
+ 
+     switch (code & SCLP_CMD_CODE_MASK) {
+     case SCLP_CMDW_READ_SCP_INFO:
+     case SCLP_CMDW_READ_SCP_INFO_FORCED:
+     case SCLP_CMDW_READ_CPU_INFO:
+         /*
+          * An extended-length SCCB is only allowed for Read SCP/CPU Info and
+          * is allowed to exceed the 4k boundary. The respective commands will
+          * set the length field to the required length if an insufficient
+          * SCCB length is provided.
+          */
+         if (s390_has_feat(S390_FEAT_EXTENDED_LENGTH_SCCB)) {
+             return true;
+         }
+-        /* fallthrough */
++        fallthrough;
      default:
-         qemu_log_mask(LOG_UNIMP, "%s: 0x%" HWADDR_PRIx "\n", __func__, addr);
-         break;
-     }
-     trace_aspeed_rtc_write(addr, val);
- }
-diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
-index c27c362db9..6b6eef94fd 100644
---- a/hw/rtc/mc146818rtc.c
-+++ b/hw/rtc/mc146818rtc.c
-@@ -439,120 +439,120 @@ static void rtc_update_timer(void *opaque)
- static void cmos_ioport_write(void *opaque, hwaddr addr,
-                               uint64_t data, unsigned size)
- {
-     MC146818RtcState *s = opaque;
-     uint32_t old_period;
-     bool update_periodic_timer;
- 
-     if ((addr & 1) == 0) {
-         s->cmos_index = data & 0x7f;
-     } else {
-         CMOS_DPRINTF("cmos: write index=0x%02x val=0x%02" PRIx64 "\n",
-                      s->cmos_index, data);
-         switch(s->cmos_index) {
-         case RTC_SECONDS_ALARM:
-         case RTC_MINUTES_ALARM:
-         case RTC_HOURS_ALARM:
-             s->cmos_data[s->cmos_index] = data;
-             check_update_timer(s);
-             break;
-         case RTC_IBM_PS2_CENTURY_BYTE:
-             s->cmos_index = RTC_CENTURY;
--            /* fall through */
-+            fallthrough;
-         case RTC_CENTURY:
-         case RTC_SECONDS:
-         case RTC_MINUTES:
-         case RTC_HOURS:
-         case RTC_DAY_OF_WEEK:
-         case RTC_DAY_OF_MONTH:
-         case RTC_MONTH:
-         case RTC_YEAR:
-             s->cmos_data[s->cmos_index] = data;
-             /* if in set mode, do not update the time */
-             if (rtc_running(s)) {
-                 rtc_set_time(s);
-                 check_update_timer(s);
-             }
-             break;
-         case RTC_REG_A:
-             update_periodic_timer = (s->cmos_data[RTC_REG_A] ^ data) & 0x0f;
-             old_period = rtc_periodic_clock_ticks(s);
- 
-             if ((data & 0x60) == 0x60) {
-                 if (rtc_running(s)) {
-                     rtc_update_time(s);
-                 }
-                 /* What happens to UIP when divider reset is enabled is
-                  * unclear from the datasheet.  Shouldn't matter much
-                  * though.
-                  */
-                 s->cmos_data[RTC_REG_A] &= ~REG_A_UIP;
-             } else if (((s->cmos_data[RTC_REG_A] & 0x60) == 0x60) &&
-                     (data & 0x70)  <= 0x20) {
-                 /* when the divider reset is removed, the first update cycle
-                  * begins one-half second later*/
-                 if (!(s->cmos_data[RTC_REG_B] & REG_B_SET)) {
-                     s->offset = 500000000;
-                     rtc_set_time(s);
-                 }
-                 s->cmos_data[RTC_REG_A] &= ~REG_A_UIP;
-             }
-             /* UIP bit is read only */
-             s->cmos_data[RTC_REG_A] = (data & ~REG_A_UIP) |
-                 (s->cmos_data[RTC_REG_A] & REG_A_UIP);
- 
-             if (update_periodic_timer) {
-                 periodic_timer_update(s, qemu_clock_get_ns(rtc_clock),
-                                       old_period, true);
-             }
- 
-             check_update_timer(s);
-             break;
-         case RTC_REG_B:
-             update_periodic_timer = (s->cmos_data[RTC_REG_B] ^ data)
-                                        & REG_B_PIE;
-             old_period = rtc_periodic_clock_ticks(s);
- 
-             if (data & REG_B_SET) {
-                 /* update cmos to when the rtc was stopping */
-                 if (rtc_running(s)) {
-                     rtc_update_time(s);
-                 }
-                 /* set mode: reset UIP mode */
-                 s->cmos_data[RTC_REG_A] &= ~REG_A_UIP;
-                 data &= ~REG_B_UIE;
-             } else {
-                 /* if disabling set mode, update the time */
-                 if ((s->cmos_data[RTC_REG_B] & REG_B_SET) &&
-                     (s->cmos_data[RTC_REG_A] & 0x70) <= 0x20) {
-                     s->offset = get_guest_rtc_ns(s) % NANOSECONDS_PER_SECOND;
-                     rtc_set_time(s);
-                 }
-             }
-             /* if an interrupt flag is already set when the interrupt
-              * becomes enabled, raise an interrupt immediately.  */
-             if (data & s->cmos_data[RTC_REG_C] & REG_C_MASK) {
-                 s->cmos_data[RTC_REG_C] |= REG_C_IRQF;
-                 qemu_irq_raise(s->irq);
-             } else {
-                 s->cmos_data[RTC_REG_C] &= ~REG_C_IRQF;
-                 qemu_irq_lower(s->irq);
-             }
-             s->cmos_data[RTC_REG_B] = data;
- 
-             if (update_periodic_timer) {
-                 periodic_timer_update(s, qemu_clock_get_ns(rtc_clock),
-                                       old_period, true);
-             }
- 
-             check_update_timer(s);
-             break;
-         case RTC_REG_C:
-         case RTC_REG_D:
-             /* cannot write to them */
-             break;
-         default:
-             s->cmos_data[s->cmos_index] = data;
-             break;
+         if (sccb_max_addr < sccb_boundary) {
+             return true;
          }
      }
- }
-@@ -678,63 +678,63 @@ static int update_in_progress(MC146818RtcState *s)
- static uint64_t cmos_ioport_read(void *opaque, hwaddr addr,
-                                  unsigned size)
- {
-     MC146818RtcState *s = opaque;
-     int ret;
-     if ((addr & 1) == 0) {
-         return 0xff;
-     } else {
-         switch(s->cmos_index) {
-         case RTC_IBM_PS2_CENTURY_BYTE:
-             s->cmos_index = RTC_CENTURY;
--            /* fall through */
-+            fallthrough;
-         case RTC_CENTURY:
-         case RTC_SECONDS:
-         case RTC_MINUTES:
-         case RTC_HOURS:
-         case RTC_DAY_OF_WEEK:
-         case RTC_DAY_OF_MONTH:
-         case RTC_MONTH:
-         case RTC_YEAR:
-             /* if not in set mode, calibrate cmos before
-              * reading*/
-             if (rtc_running(s)) {
-                 rtc_update_time(s);
-             }
-             ret = s->cmos_data[s->cmos_index];
-             break;
-         case RTC_REG_A:
-             ret = s->cmos_data[s->cmos_index];
-             if (update_in_progress(s)) {
-                 ret |= REG_A_UIP;
-             }
-             break;
-         case RTC_REG_C:
-             ret = s->cmos_data[s->cmos_index];
-             qemu_irq_lower(s->irq);
-             s->cmos_data[RTC_REG_C] = 0x00;
-             if (ret & (REG_C_UF | REG_C_AF)) {
-                 check_update_timer(s);
-             }
  
-             if(s->irq_coalesced &&
-                     (s->cmos_data[RTC_REG_B] & REG_B_PIE) &&
-                     s->irq_reinject_on_ack_count < RTC_REINJECT_ON_ACK_COUNT) {
-                 s->irq_reinject_on_ack_count++;
-                 s->cmos_data[RTC_REG_C] |= REG_C_IRQF | REG_C_PF;
-                 DPRINTF_C("cmos: injecting on ack\n");
-                 if (rtc_policy_slew_deliver_irq(s)) {
-                     s->irq_coalesced--;
-                     DPRINTF_C("cmos: coalesced irqs decreased to %d\n",
-                               s->irq_coalesced);
-                 }
-             }
-             break;
-         default:
-             ret = s->cmos_data[s->cmos_index];
-             break;
-         }
-         CMOS_DPRINTF("cmos: read index=0x%02x val=0x%02x\n",
-                      s->cmos_index, ret);
-         return ret;
+     return false;
+ }
+@@ -207,28 +207,28 @@ static void sclp_read_cpu_info(SCLPDevice *sclp, SCCB *sccb)
+ static void sclp_configure_io_adapter(SCLPDevice *sclp, SCCB *sccb,
+                                       bool configure)
+ {
+     int rc;
+ 
+     if (be16_to_cpu(sccb->h.length) < 16) {
+         rc = SCLP_RC_INSUFFICIENT_SCCB_LENGTH;
+         goto out_err;
      }
+ 
+     switch (((IoaCfgSccb *)sccb)->atype) {
+     case SCLP_RECONFIG_PCI_ATYPE:
+         if (s390_has_feat(S390_FEAT_ZPCI)) {
+             if (configure) {
+                 s390_pci_sclp_configure(sccb);
+             } else {
+                 s390_pci_sclp_deconfigure(sccb);
+             }
+             return;
+         }
+-        /* fallthrough */
++        fallthrough;
+     default:
+         rc = SCLP_RC_ADAPTER_TYPE_NOT_RECOGNIZED;
+     }
+ 
+  out_err:
+     sccb->h.response_code = cpu_to_be16(rc);
  }
 -- 
 2.39.2
