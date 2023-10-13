@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B317C8045
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF2C7C8007
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:23:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD4u-0003gz-UO; Fri, 13 Oct 2023 03:59:25 -0400
+	id 1qrD54-00053D-5i; Fri, 13 Oct 2023 03:59:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD4s-0003Rf-Dl
+ id 1qrD4s-0003Vd-NT
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:22 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD4q-00076s-CS
+ id 1qrD4q-00077d-SX
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:22 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40566f89f6eso21734035e9.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:19 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-405497850dbso18952585e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183957; x=1697788757; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183959; x=1697788759; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qbwPqKejPqCfjx3i0hAQng1S5moLMZkGirk9RhHcbns=;
- b=SvCTmXdWKhFiPoxjB8vVc3y5p7mEbGQKUM4L9DPibJPdMHm4UqI3CMIEHfdg0r+W5v
- YDY/+1YZavqYzrxIR/DHYxnL2g43p3p2bQLa4M7ZgdohvXTnIqtlKKeaSJAz6qvYFWyq
- ZaGHWXT38rbWGybDiVFGLjarejwodej43GxGz4D95yUXVDKiEAzjhkMFd0OehoKije6C
- bNV0Xupb59jkJxSyg+0lxJTsbvB7YOKNhzJJH34+Z7hHwHBKh57dMG4Fn02GQ9H3i/sp
- nRx/S6rH2BsJJUQFl8r/OW7aS7SLPW4Yukjd2klHMKRmXgpmvUrjkFJyliMvSBLgJ9bD
- uaSw==
+ bh=ZujHeHq70xM9MPj8kQG27kLbICCwKFbj8+Ro2luQ6VY=;
+ b=AZG6DPzpIFDnnYn2G56y/WLk6g6wtZ0fVA0xLuKiB1zqlLzCO/H+yDImS2mLlKzrli
+ KcDvEkQp8TJw2jirq1p1pCD2MMd/j3NU+Zr5KQKhO0Nrd3sMPjnaCzioMcpUZumxp34E
+ D96SlCAfWOmrD4OU9kIo3mPgpDtFv/Di1+iaY8Rg/w4AltnOH9xKN9ZA3c6y2hwGXkh+
+ cCl0Ax2ocyZTl0kY1AO4bU0Ea5ajMJNtUEHdcgihrhaUA9MZP9xW3LTNZD0vN0yyo9/P
+ wdxl7T+HYl4fR3KPYlpqjbCPN8XLXK+M+7X+LlF3St1SuOcEoV9ND2Kephz3+vjqaAhs
+ vxbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183957; x=1697788757;
+ d=1e100.net; s=20230601; t=1697183959; x=1697788759;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qbwPqKejPqCfjx3i0hAQng1S5moLMZkGirk9RhHcbns=;
- b=Vr+bZHh1+LT08cVHYg9w5e4nfYox6Y0rddD4Ye5U7/hPHQIbUPWEovV/LZx86vFz4L
- JzXLC0EU5DNf4LzuDt2czzjkTxc6a8FQ0UMPBtuHfGDBWV7/6bGkVrwtDUItsY2GF5cS
- yIA26dGHukzwKoK19QQ9uZYWlBqOIfX8Os3espU3Fai5HxUU5k2L2ggcVbOKNpp+Zix0
- YpwN/pPc1Oo8tlBpM3SxWURAdhL7jnpt5WL7sjQsqGvDVJhVcaz5Ibg8yqYKbv4Zyg6m
- 2iZRpuIeJ5Ucnzd/Euwk49axz0+2BIBkkHNx3KOt085Jpt66P+lITyzwpMsgXJnTMbwO
- +AgA==
-X-Gm-Message-State: AOJu0YzZ6QdTXgj3CNMLLvKQ812Gv8KhTl0xBpGHqfJsgw3GK6nUXaaI
- 1Sitz63KS5dPNJx7/oW3GxM45kAkckfBBcKRwug=
-X-Google-Smtp-Source: AGHT+IHIiN0iJHKKdR/uopHJPCOZ2ecKj0pjKfaXft1ruct/LPspkVJeIWHRjSo5bEvcIC4fN4go9A==
-X-Received: by 2002:a1c:7218:0:b0:401:d803:6243 with SMTP id
- n24-20020a1c7218000000b00401d8036243mr22698395wmc.32.1697183957638; 
- Fri, 13 Oct 2023 00:59:17 -0700 (PDT)
+ bh=ZujHeHq70xM9MPj8kQG27kLbICCwKFbj8+Ro2luQ6VY=;
+ b=U8IdbNlz+icchQecNxcfAR6vftgdCIqsfWQQ373N1MHW5qCWyn+za8Jt3FqbtgPg2j
+ jJQem9MrZvl9buXY3k7aOn1ylGyOk3+vHPI65HwZLv7rt0iGBjMnSGCdvEr7oKBfv42k
+ yG2pkUkFoiR9CTuf8+HvOhOdm9TOO4DtOPhQN0SDq6nVqCrqD1pmFyTn873jjF/KP+1v
+ Loi4hswHDOhV5yAtNdgjR50HBHFBNjTq9+JCWAwnzYAQbxue5iVmoAOVPBRh+UAioqqM
+ kyD7XR5Cg8z/yrXMh5cHJC94uw+6XLXr3TkYHf1rTn9bFptqGGQtZeH4W3rbGEI8pcYT
+ 5xzg==
+X-Gm-Message-State: AOJu0YxXA3vofmymi9gIFpAkmolDPt61OxEIEUncfENrsvisAZ7jTixM
+ KYKeuTvjPOjcS1h3n9LkHfaYFnCg9Ko3ee94U7Y=
+X-Google-Smtp-Source: AGHT+IFCQjt4pPr3IG0FGLToBw/HjV1PWhiOVU6X3+7lE7B4dnV8YWs76BY1uAOD6Ve9myzgzpOBLw==
+X-Received: by 2002:a05:600c:22c6:b0:404:7659:ba39 with SMTP id
+ 6-20020a05600c22c600b004047659ba39mr24085927wmg.16.1697183959109; 
+ Fri, 13 Oct 2023 00:59:19 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.16
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:59:17 -0700 (PDT)
+ Fri, 13 Oct 2023 00:59:18 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Yuval Shaia <yuval.shaia.ml@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [RFC PATCH v2 47/78] contrib/rdmacm-mux: add fallthrough
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>
+Subject: [RFC PATCH v2 48/78] contrib/vhost-user-scsi: add fallthrough
  pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:14 +0300
-Message-Id: <79d156347f37b8f4984e52ebb3063604093ae8f4.1697183699.git.manos.pitsidianakis@linaro.org>
+Date: Fri, 13 Oct 2023 10:57:15 +0300
+Message-Id: <f5ba45aeb80d3f41af2a5e2c87e8b212a7435670.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,91 +99,30 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- contrib/rdmacm-mux/main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ contrib/vhost-user-scsi/vhost-user-scsi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/contrib/rdmacm-mux/main.c b/contrib/rdmacm-mux/main.c
-index 771ca01e03..dda6917d58 100644
---- a/contrib/rdmacm-mux/main.c
-+++ b/contrib/rdmacm-mux/main.c
-@@ -303,72 +303,72 @@ static void hash_tbl_remove_fd_ifid_pair(int fd)
- static int get_fd(const char *mad, int umad_len, int *fd, __be64 *gid_ifid)
+diff --git a/contrib/vhost-user-scsi/vhost-user-scsi.c b/contrib/vhost-user-scsi/vhost-user-scsi.c
+index 9ef61cf5a7..71076f579b 100644
+--- a/contrib/vhost-user-scsi/vhost-user-scsi.c
++++ b/contrib/vhost-user-scsi/vhost-user-scsi.c
+@@ -109,14 +109,15 @@ static struct scsi_task *scsi_task_new(int cdb_len, uint8_t *cdb, int dir,
+ static int get_cdb_len(uint8_t *cdb)
  {
-     struct umad_hdr *hdr = (struct umad_hdr *)mad;
-     char *data = (char *)hdr + sizeof(*hdr);
-     int32_t comm_id = 0;
-     uint16_t attr_id = be16toh(hdr->attr_id);
-     int rc = 0;
+     assert(cdb);
  
-     if (umad_len <= sizeof(*hdr)) {
-         rc = -EINVAL;
-         syslog(LOG_DEBUG, "Ignoring MAD packets with header only\n");
-         goto out;
+     switch (cdb[0] >> 5) {
+     case 0: return 6;
+-    case 1: /* fall through */
++    case 1:
++            fallthrough;
+     case 2: return 10;
+     case 4: return 16;
+     case 5: return 12;
      }
- 
-     switch (attr_id) {
-     case UMAD_CM_ATTR_REQ:
-         if (unlikely(umad_len < sizeof(*hdr) + CM_REQ_DGID_POS +
-             sizeof(*gid_ifid))) {
-             rc = -EINVAL;
-             syslog(LOG_WARNING,
-                    "Invalid MAD packet size (%d) for attr_id 0x%x\n", umad_len,
-                     attr_id);
-             goto out;
-         }
-         memcpy(gid_ifid, data + CM_REQ_DGID_POS, sizeof(*gid_ifid));
-         rc = hash_tbl_search_fd_by_ifid(fd, gid_ifid);
-         break;
- 
-     case UMAD_CM_ATTR_SIDR_REQ:
-         if (unlikely(umad_len < sizeof(*hdr) + CM_SIDR_REQ_DGID_POS +
-             sizeof(*gid_ifid))) {
-             rc = -EINVAL;
-             syslog(LOG_WARNING,
-                    "Invalid MAD packet size (%d) for attr_id 0x%x\n", umad_len,
-                     attr_id);
-             goto out;
-         }
-         memcpy(gid_ifid, data + CM_SIDR_REQ_DGID_POS, sizeof(*gid_ifid));
-         rc = hash_tbl_search_fd_by_ifid(fd, gid_ifid);
-         break;
- 
-     case UMAD_CM_ATTR_REP:
--        /* Fall through */
-+        fallthrough;
-     case UMAD_CM_ATTR_REJ:
--        /* Fall through */
-+        fallthrough;
-     case UMAD_CM_ATTR_DREQ:
--        /* Fall through */
-+        fallthrough;
-     case UMAD_CM_ATTR_DREP:
--        /* Fall through */
-+        fallthrough;
-     case UMAD_CM_ATTR_RTU:
-         data += sizeof(comm_id);
--        /* Fall through */
-+        fallthrough;
-     case UMAD_CM_ATTR_SIDR_REP:
-         if (unlikely(umad_len < sizeof(*hdr) + sizeof(comm_id))) {
-             rc = -EINVAL;
-             syslog(LOG_WARNING,
-                    "Invalid MAD packet size (%d) for attr_id 0x%x\n", umad_len,
-                    attr_id);
-             goto out;
-         }
-         memcpy(&comm_id, data, sizeof(comm_id));
-         if (comm_id) {
-             rc = hash_tbl_search_fd_by_comm_id(comm_id, fd, gid_ifid);
-         }
-         break;
- 
-     default:
-         rc = -EINVAL;
-         syslog(LOG_WARNING, "Unsupported attr_id 0x%x\n", attr_id);
-     }
- 
-     syslog(LOG_DEBUG, "mad_to_vm: %d 0x%x 0x%x\n", *fd, attr_id, comm_id);
+     g_warning("Unable to determine cdb len (0x%02hhX)", (uint8_t)(cdb[0] >> 5));
+     return -1;
+ }
 -- 
 2.39.2
 
