@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A5F7C80A0
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 922027C80C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:51:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDpd-0007Sv-Qd; Fri, 13 Oct 2023 04:47:41 -0400
+	id 1qrDq9-0007et-1w; Fri, 13 Oct 2023 04:48:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpa-0007Q2-5X
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:38 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ id 1qrDpb-0007RA-BX
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:39 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpY-0000nn-1T
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:37 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-503f39d3236so2381806e87.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:35 -0700 (PDT)
+ id 1qrDpZ-0000oG-43
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:39 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3247cefa13aso1680524f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186853; x=1697791653; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186855; x=1697791655; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2TilCLybsKQVSIwhb19nthh+M1jJV+7LFdQfVqtwfBA=;
- b=CkkzPqd3fMKOBmvkAEsNVv9eV4qkzJL7BYWycUavBrGDRqD+twKP99wfrb4Ijdbil9
- aULdcoYgc0xBEfQ8bhQuiXiaz2DDh0cvv2O9dCr63+wN1q3NmOyCDIcma4cKLO5g2+AP
- ZIssRB9kcQmAuJ8PV+LXSFBfAKl9Yr03IiKwoRdg39YgKPDnkGBa3Z+oRv58g+heXDt+
- vmHNyakJNJlNMlmsYpCc6Zmpvr1kg/tNXkx80e+XaQ6wg1YLH++xPnAVPmpsCIuRs5N1
- DjKPt/kergzq16ennb2Kr5ES4MFlWIqJw1Rl7YRICyBSAkHK04UtJN3nDQM4Z0aY8G4l
- qSyg==
+ bh=4rEO8xhabBa8+qN/AA3htMa/EbaT4NYRpi2EeykzU0A=;
+ b=EfdjYYMvuzLlpMXWZFWJI/6WwEiWto8G6EIE+ofVI8NX2G+HVl7nP3I6HdVAr6GlFc
+ 5MdMfD2cblJdCSnJvl1/3dNxkfDt5kZcXagWAJTiZVGcpkXUnukcPEfcD8SEYK/BTzBA
+ Cvsx4Kx6aJOpkQ82ho+3DKGB/HGDwsnI/18I1SpcoV5dZ5DpX+aXc9UxHLqaEnLYxRd9
+ krNBlfS8KCZwl8wCFpdYQPrRp8O6VgYkIBKu6Y9F22jI22b6AlLtfwuzVQXaLH++MDNa
+ o/kjDaxnsTC+QN33IrBDC2IZPB27jo2vghO9GPYdWeDHiAwRNnTtudeEZowXiYXAbWVS
+ ji0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186853; x=1697791653;
+ d=1e100.net; s=20230601; t=1697186855; x=1697791655;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2TilCLybsKQVSIwhb19nthh+M1jJV+7LFdQfVqtwfBA=;
- b=Stm/6+Q+VboG/Vcm4ftphefJ+O+iGgIX46IrHe95gAubJpiDBuCm0IpXIxVm//X6PF
- rLmwljeIouML1H+g4LtgcLH0/CWh2hjG9FljaOy5IkqjSE7cCxtyJVJDwXeCO9y5t4Ja
- P1qpXoofdQOaKZluyONefphd3Opa4nUZbCcR3cPIzVhsizxegzPByqLcJnZ4I+OH056j
- xy1TUroamxGDL20Zbol0VvWo2fBpInXZT1fJ1kujDDp+MvnUFx8OQn4qnlRaAOzF/vXQ
- tsuiE6E82wLexKKU6c2bwEYo0ZGb/8GahXYIrxxQoOZMuvNU1j8ni9EP8jMHjc+fzFDZ
- az3w==
-X-Gm-Message-State: AOJu0YwpoJ+P6wDkUI9Dywf7cWiulDWLocdZyuUImUyvV3t6NBvtRd6q
- gjQwLeWUFK0APl94FojXFgWY6hsbLQmL6UOD1f8=
-X-Google-Smtp-Source: AGHT+IFVlnd6s45/C4fj/u7Sfy6G7IjYLdJW6OHuKXHEvTR+b3UmeS+qEVWygOdEP4xenBbYqkPhyg==
-X-Received: by 2002:a05:6512:130b:b0:502:ffdf:b098 with SMTP id
- x11-20020a056512130b00b00502ffdfb098mr27985287lfu.6.1697186853671; 
- Fri, 13 Oct 2023 01:47:33 -0700 (PDT)
+ bh=4rEO8xhabBa8+qN/AA3htMa/EbaT4NYRpi2EeykzU0A=;
+ b=hV0uFWKuHH3SG+zam+rqQvF1sfvxVFvbGdpqS7JXoZh60LNFty7mc4gdXfOtv9zUi4
+ ZESjkQaSB3DR6Ykm5e3WC2qhwi84AeGVwIU1dVOYcavfcb+ab+6E1TJV8O0m/KH846Co
+ OELPDB0Kro1VhXw+4Jvbcb3Qwwo00k/RL8/H911L1YhVBLBhqKeWDVDaFcDnSLNfWV5Q
+ Zd0TGqlQpawrC1DyKVJVpgUYjro7XQ3ezvK4AnAMssLOj9yaPAnMXmWNrRbnS2tSyRBQ
+ WX/+cY+xY8GfhUB/lWPGrVBO0XHDwFybK75FRwSQAbwPAxU1NQtjSxmw7o0+Xx/ldFKx
+ yE8A==
+X-Gm-Message-State: AOJu0YwfQBj1UHEhbCJh/Uct/CaA6zHOoyvFGZjWwVTijx3Nr48T8IKW
+ 32I7ftFM236vxxsk3d8i28HZEWA1yrC0xMliC0M=
+X-Google-Smtp-Source: AGHT+IEDQSwhe6yfPltI9w8sc2zzs4ry6ouEcRIkZONEZjZspWMLaLXrbanB4lUSoPjJ0nN0YUoxYQ==
+X-Received: by 2002:a5d:6483:0:b0:32d:8830:edb with SMTP id
+ o3-20020a5d6483000000b0032d88300edbmr6935441wri.38.1697186855101; 
+ Fri, 13 Oct 2023 01:47:35 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.31
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:47:33 -0700 (PDT)
+ Fri, 13 Oct 2023 01:47:34 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>,
- qemu-arm@nongnu.org (open list:ARM cores)
-Subject: [RFC PATCH v3 11/78] hw/timer: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:45:39 +0300
-Message-Id: <089c04aaa8a001c7af0e44c309122c738ff2bf50.1697186560.git.manos.pitsidianakis@linaro.org>
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [RFC PATCH v3 12/78] hw/usb: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:45:40 +0300
+Message-Id: <8a8bc7d7ac048e5caaa31b5020f63056c9490325.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,311 +97,126 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/timer/a9gtimer.c     |  8 ++--
- hw/timer/aspeed_timer.c |  1 +
- hw/timer/pxa2xx_timer.c | 94 ++++++++++++++++++++---------------------
- hw/timer/renesas_tmr.c  |  2 +-
- hw/timer/sh_timer.c     |  8 ++--
- 5 files changed, 57 insertions(+), 56 deletions(-)
+ hw/usb/dev-mtp.c   | 2 +-
+ hw/usb/dev-wacom.c | 2 +-
+ hw/usb/hcd-ehci.c  | 4 +++-
+ hw/usb/hcd-xhci.c  | 4 ++--
+ hw/usb/redirect.c  | 4 ++--
+ hw/usb/tusb6010.c  | 2 +-
+ 6 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/hw/timer/a9gtimer.c b/hw/timer/a9gtimer.c
-index 5e959b6d09..b83d51da96 100644
---- a/hw/timer/a9gtimer.c
-+++ b/hw/timer/a9gtimer.c
-@@ -143,7 +143,7 @@ static uint64_t a9_gtimer_read(void *opaque, hwaddr addr, unsigned size)
-     switch (addr) {
-     case R_COUNTER_HI:
-         shift = 32;
--        /* fallthrough */
+diff --git a/hw/usb/dev-mtp.c b/hw/usb/dev-mtp.c
+index 1cac1cd435..5cbaabd2b2 100644
+--- a/hw/usb/dev-mtp.c
++++ b/hw/usb/dev-mtp.c
+@@ -1648,7 +1648,7 @@ static void usb_mtp_write_data(MTPState *s, uint32_t handle)
+                 d->write_status = WRITE_END;
+             }
+         }
+-        /* fall through */
 +        fallthrough;
-     case R_COUNTER_LO:
-         update = a9_gtimer_get_update(s);
-         ret = extract64(update.new, shift, 32);
-@@ -156,7 +156,7 @@ static uint64_t a9_gtimer_read(void *opaque, hwaddr addr, unsigned size)
-         break;
-     case R_COMPARATOR_HI:
-         shift = 32;
--        /* fallthrough */
-+        fallthrough;
-     case R_COMPARATOR_LO:
-         ret = extract64(gtb->compare, shift, 32);
-         break;
-@@ -185,7 +185,7 @@ static void a9_gtimer_write(void *opaque, hwaddr addr, uint64_t value,
-     switch (addr) {
-     case R_COUNTER_HI:
-         shift = 32;
--        /* fallthrough */
-+        fallthrough;
-     case R_COUNTER_LO:
-         /*
-          * Keep it simple - ARM docco explicitly says to disable timer before
-@@ -209,7 +209,7 @@ static void a9_gtimer_write(void *opaque, hwaddr addr, uint64_t value,
-         break;
-     case R_COMPARATOR_HI:
-         shift = 32;
--        /* fallthrough */
-+        fallthrough;
-     case R_COMPARATOR_LO:
-         a9_gtimer_update(s, false);
-         gtb->compare = deposit64(gtb->compare, shift, 32, value);
-diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
-index 72161f07bb..b343b7ab2c 100644
---- a/hw/timer/aspeed_timer.c
-+++ b/hw/timer/aspeed_timer.c
-@@ -284,6 +284,7 @@ static void aspeed_timer_set_value(AspeedTimerCtrlState *s, int timer, int reg,
+     case WRITE_CONTINUE:
+     case WRITE_END:
+         rc = write_retry(d->fd, d->data, d->data_offset,
+diff --git a/hw/usb/dev-wacom.c b/hw/usb/dev-wacom.c
+index 7177c17f03..bd2a1bae50 100644
+--- a/hw/usb/dev-wacom.c
++++ b/hw/usb/dev-wacom.c
+@@ -389,7 +389,7 @@ static void usb_wacom_handle_data(USBDevice *dev, USBPacket *p)
+             usb_packet_copy(p, buf, len);
              break;
          }
-         /* fall through to re-enable */
+-        /* Fall through.  */
 +        fallthrough;
-     case TIMER_REG_STATUS:
-         if (timer_enabled(t)) {
-             uint64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-diff --git a/hw/timer/pxa2xx_timer.c b/hw/timer/pxa2xx_timer.c
-index 2ae5ae3212..11863e1a42 100644
---- a/hw/timer/pxa2xx_timer.c
-+++ b/hw/timer/pxa2xx_timer.c
-@@ -167,27 +167,27 @@ static uint64_t pxa2xx_timer_read(void *opaque, hwaddr offset,
- 
-     switch (offset) {
-     case OSMR3:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR2:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR1:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR0:
-         return s->timer[tm].value;
-     case OSMR11: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR10: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR9:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR8:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR7:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR6:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR5:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR4:
-         if (!pxa2xx_timer_has_tm4(s))
-             goto badreg;
-@@ -196,19 +196,19 @@ static uint64_t pxa2xx_timer_read(void *opaque, hwaddr offset,
-         return s->clock + muldiv64(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) -
-                         s->lastload, s->freq, NANOSECONDS_PER_SECOND);
-     case OSCR11: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR10: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR9:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR8:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR7:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR6:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR5:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR4:
-         if (!pxa2xx_timer_has_tm4(s))
-             goto badreg;
-@@ -236,19 +236,19 @@ static uint64_t pxa2xx_timer_read(void *opaque, hwaddr offset,
-     case OWER:
-         return s->reset3;
-     case OMCR11: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR10: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR9:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR8:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR7:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR6:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR5:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR4:
-         if (!pxa2xx_timer_has_tm4(s))
-             goto badreg;
-@@ -277,29 +277,29 @@ static void pxa2xx_timer_write(void *opaque, hwaddr offset,
- 
-     switch (offset) {
-     case OSMR3:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR2:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR1:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR0:
-         s->timer[tm].value = value;
-         pxa2xx_timer_update(s, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
-         break;
-     case OSMR11: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR10: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR9:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR8:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR7:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR6:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR5:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSMR4:
-         if (!pxa2xx_timer_has_tm4(s))
-             goto badreg;
-@@ -313,19 +313,19 @@ static void pxa2xx_timer_write(void *opaque, hwaddr offset,
-         pxa2xx_timer_update(s, s->lastload);
-         break;
-     case OSCR11: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR10: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR9:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR8:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR7:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR6:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR5:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OSCR4:
-         if (!pxa2xx_timer_has_tm4(s))
-             goto badreg;
-@@ -350,11 +350,11 @@ static void pxa2xx_timer_write(void *opaque, hwaddr offset,
-         s->reset3 = value;
-         break;
-     case OMCR7:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR6:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR5:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR4:
-         if (!pxa2xx_timer_has_tm4(s))
-             goto badreg;
-@@ -368,11 +368,11 @@ static void pxa2xx_timer_write(void *opaque, hwaddr offset,
+     case USB_TOKEN_OUT:
+     default:
+         p->status = USB_RET_STALL;
+diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
+index 19b4534c20..e29cc21957 100644
+--- a/hw/usb/hcd-ehci.c
++++ b/hw/usb/hcd-ehci.c
+@@ -1477,7 +1477,7 @@ static int ehci_process_itd(EHCIState *ehci,
+             default:
+                 fprintf(stderr, "Unexpected iso usb result: %d\n",
+                         ehci->ipacket.status);
+-                /* Fall through */
++                fallthrough;
+             case USB_RET_IOERROR:
+             case USB_RET_NODEV:
+                 /* 3.3.2: XACTERR is only allowed on IN transactions */
+@@ -2140,6 +2140,7 @@ static void ehci_advance_async_state(EHCIState *ehci)
          }
-         break;
-     case OMCR11: tm ++;
--        /* fall through */
+         ehci_set_state(ehci, async, EST_ACTIVE);
+         // No break, fall through to ACTIVE
 +        fallthrough;
-     case OMCR10: tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR9:  tm ++;
--        /* fall through */
-+        fallthrough;
-     case OMCR8:  tm += 4;
-         if (!pxa2xx_timer_has_tm4(s))
-             goto badreg;
-diff --git a/hw/timer/renesas_tmr.c b/hw/timer/renesas_tmr.c
-index 43b31213bc..a32521e3c3 100644
---- a/hw/timer/renesas_tmr.c
-+++ b/hw/timer/renesas_tmr.c
-@@ -236,7 +236,7 @@ static uint64_t tmr_read(void *opaque, hwaddr addr, unsigned size)
-         } else if (ch == 0) {
-             return concat_reg(tmr->tcora);
-         }
--        /* fall through */
-+        fallthrough;
-     case A_TCORB:
-         if (size == 1) {
-             return tmr->tcorb[ch];
-diff --git a/hw/timer/sh_timer.c b/hw/timer/sh_timer.c
-index 7788939766..6dbfc2595b 100644
---- a/hw/timer/sh_timer.c
-+++ b/hw/timer/sh_timer.c
-@@ -131,7 +131,7 @@ static void sh_timer_write(void *opaque, hwaddr offset, uint32_t value)
-             if (s->feat & TIMER_FEAT_EXTCLK) {
-                 break;
-             }
--            /* fallthrough */
+ 
+     case EST_ACTIVE:
+         if (!ehci_async_enabled(ehci)) {
+@@ -2197,6 +2198,7 @@ static void ehci_advance_periodic_state(EHCIState *ehci)
+         if (!(ehci->frindex & 7) && ehci_periodic_enabled(ehci)) {
+             ehci_set_state(ehci, async, EST_ACTIVE);
+             // No break, fall through to ACTIVE
 +            fallthrough;
-         default:
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "%s: Reserved TPSC value\n", __func__);
-@@ -145,7 +145,7 @@ static void sh_timer_write(void *opaque, hwaddr offset, uint32_t value)
-             if (s->feat & TIMER_FEAT_EXTCLK) {
-                 break;
-             }
--            /* fallthrough */
-+            fallthrough;
-         default:
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "%s: Reserved CKEG value\n", __func__);
-@@ -158,7 +158,7 @@ static void sh_timer_write(void *opaque, hwaddr offset, uint32_t value)
-             if (s->feat & TIMER_FEAT_CAPT) {
-                 break;
-             }
--            /* fallthrough */
-+            fallthrough;
-         default:
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "%s: Reserved ICPE value\n", __func__);
-@@ -194,7 +194,7 @@ static void sh_timer_write(void *opaque, hwaddr offset, uint32_t value)
-             s->tcpr = value;
+         } else
              break;
+ 
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index 4b60114207..3e9b9c62bd 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -1457,7 +1457,7 @@ static int xhci_xfer_create_sgl(XHCITransfer *xfer, int in_xfer)
+                 DPRINTF("xhci: data direction mismatch for TR_DATA\n");
+                 goto err;
+             }
+-            /* fallthrough */
++            fallthrough;
+         case TR_NORMAL:
+         case TR_ISOCH:
+             addr = xhci_mask64(trb->parameter);
+@@ -2678,7 +2678,7 @@ static void xhci_port_reset(XHCIPort *port, bool warm_reset)
+         if (warm_reset) {
+             port->portsc |= PORTSC_WRC;
          }
--        /* fallthrough */
+-        /* fall through */
++        fallthrough;
+     case USB_SPEED_LOW:
+     case USB_SPEED_FULL:
+     case USB_SPEED_HIGH:
+diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
+index c9893df867..2531d583ad 100644
+--- a/hw/usb/redirect.c
++++ b/hw/usb/redirect.c
+@@ -1814,7 +1814,7 @@ static void usbredir_ep_info(void *priv,
+         case usb_redir_type_iso:
+             usbredir_mark_speed_incompatible(dev, USB_SPEED_FULL);
+             usbredir_mark_speed_incompatible(dev, USB_SPEED_HIGH);
+-            /* Fall through */
++            fallthrough;
+         case usb_redir_type_interrupt:
+             if (!usbredirparser_peer_has_cap(dev->parser,
+                                      usb_redir_cap_ep_info_max_packet_size) ||
+@@ -1831,7 +1831,7 @@ static void usbredir_ep_info(void *priv,
+                 usbredir_reject_device(dev);
+                 return;
+             }
+-            /* Fall through */
++            fallthrough;
+         case usb_redir_type_control:
+         case usb_redir_type_bulk:
+             DPRINTF("ep: %02X type: %d interface: %d\n", I2EP(i),
+diff --git a/hw/usb/tusb6010.c b/hw/usb/tusb6010.c
+index 1dd4071e68..88c736fad2 100644
+--- a/hw/usb/tusb6010.c
++++ b/hw/usb/tusb6010.c
+@@ -741,7 +741,7 @@ static void tusb_musb_core_intr(void *opaque, int source, int level)
+     case musb_irq_tx:
+     case musb_irq_rx:
+         s->usbip_intr = musb_core_intr_get(s->musb);
+-        /* Fall through.  */
 +        fallthrough;
      default:
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "%s: Bad offset 0x%" HWADDR_PRIx "\n", __func__, offset);
+         if (level)
+             s->intr |= 1 << source;
 -- 
 2.39.2
 
