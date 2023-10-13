@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8012E7C87E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95F27C87E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:32:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrJCO-00076O-Qt; Fri, 13 Oct 2023 10:31:32 -0400
+	id 1qrJDH-0008Em-Ct; Fri, 13 Oct 2023 10:32:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrJCE-0006wy-Ud
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:31:24 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrJCB-0008Ns-Ez
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:31:22 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1c9d7a98abbso17536835ad.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697207474; x=1697812274; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KfY6lMJTV5y2sR7PQFWEBdwMIg00nzagWBLk5pSHkhM=;
- b=kOx80hsVfOiW87flFuK+5Cbnc+mfqXOsvxQZEVFOelJfYqRbEdv0xQnzyKGgHhIV7Y
- FBgYVhgl2GxmOmAZ6Up6BenG9DlPnFPBwzdaSl9wkZfZdhYs/mvo0uLPedzgKihNpiy3
- k0LVKBy6NRX27292wvngMPkZjRVo0a+pAu9TlVgRZY9Z8NLv0WIRqKEQzHRRQOughVcx
- VJMtFg+HIwJhzdyCcAvxk7qCjxGiOHUEWYei9tTp2TObVL9LcNkhngZ30tcshOKJlY29
- 1C4Ot5i4514rffJhRMdjDknz2u/U3HomUjhmpokQVbX+h0KPBSPUEg5OPHG++fgBmxrk
- a3bQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrJDF-0008E4-OG
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:32:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrJDD-00009Y-Tc
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:32:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697207541;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rh1LO2HXEhg9cECeidUgW9JnmNdFzjtwrPWyzGs+seY=;
+ b=ioiuiWz6KPLBlEUujgEvDMoQUstSJtg1v+6mkR3/NxZkolzPijWuZZ1QBpBGusUbX7z/al
+ b8U72ua6X4YOhzKceC5BWuDfNXSh31l1GS7mp3elz1iok/ueoeWSuDrhN4lKZwV47euQ1j
+ CPcvH1UNrbCtpYfvj+RkN4W1WyKZWbI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-159-6xDaAyvjNp6msskcbCT5NA-1; Fri, 13 Oct 2023 10:32:14 -0400
+X-MC-Unique: 6xDaAyvjNp6msskcbCT5NA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-40540179bcdso17424925e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:32:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697207474; x=1697812274;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1697207533; x=1697812333;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KfY6lMJTV5y2sR7PQFWEBdwMIg00nzagWBLk5pSHkhM=;
- b=wBkhmk0J5uIXoo8OtwTScqg3iMBh3uTQsWCOuIgmglau7eawqVgNPiTa0nNQvu2eck
- jDpDbb7xv3PEALTEfSnDk3LdfwBZhxpDgvJChdlPz3q4X0nPl6vAAEBBl15K9OxsaHT8
- l0pbG+by2IVXDYmAz2fqQqLpqNbD2MULgS1c9ZccOIYmYbDw/5PBWAoO6MZlCxEVlwK8
- Sz4gFfPCzDGBfUlPh17wbrFeaGWHm6ombSp5swoFqJzvs3QpOAJM1LKaQGXHMiYuzI2T
- J7rDekp7I+TA8OZD047G9sDe28o82B0cxnhVzlesISpa8EIcIsq8cZhGjR7iSRjbBJHj
- 35DA==
-X-Gm-Message-State: AOJu0YyHBhPsj40T9/lYU2uJsXAD2DSSX3l1AcTfNDzGyCcZHBzHH/fZ
- Nf317XVP8jQHOjNtpZj8/+QOPmhwrI1oC/gnEBE=
-X-Google-Smtp-Source: AGHT+IG8A8cRb6/o/M+3fAiaaACVYFCtJS6Ykd7LV7vT09vKtIuKvV1K8jeZlCDWAHy9b/V2IzqS4Q==
-X-Received: by 2002:a17:902:f683:b0:1c9:e830:160c with SMTP id
- l3-20020a170902f68300b001c9e830160cmr3714585plg.16.1697207474254; 
- Fri, 13 Oct 2023 07:31:14 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
+ bh=rh1LO2HXEhg9cECeidUgW9JnmNdFzjtwrPWyzGs+seY=;
+ b=sYxKWVmv929uLN6jt6sWkpsMWO7OCdM6Z72HRv9CJLIM6J5CklMwsT8tNrYjwJnUjr
+ JWyoCm6Xp5lLCmFLLm1re6TeCluZrsokhg0uqZn7dqUQoVogkSEfoHGF8khNvOTr/16o
+ f4dN44sToU6S0bQkFfyMmdMNv7ZvP9PwuXNJfLyJ1bSJavn8IKu1VV1PXa4cblWfm92v
+ nl6nyD6hWieJtRjnfFuwtlqy/w7ja6v8Bc/0OdOL6UFj4WJI0CbzBDZSQSR9ss9IQrxI
+ H9Bsywc02Nm0RBC7COwS2M6p89lb3rjTtYzka6GuFsCFJduYbH4RgT+3sjbwEoPhAF+F
+ nqhQ==
+X-Gm-Message-State: AOJu0Yx9or9Uj8DN1jykVkOoWUiPjKLo2NtLvZHb60KBmOM/7MPhb4Jt
+ PmMB/4RIkT9aGyqbeEHMBkF9T6eldQYutyeTIwOPG8OAssplXWrLLDcrVuZasaMOCLgCkEGG5nZ
+ /mBx/+M+CwHYrdQOJOcVugqT2Mg==
+X-Received: by 2002:a7b:cb8c:0:b0:405:3f19:fc49 with SMTP id
+ m12-20020a7bcb8c000000b004053f19fc49mr24234098wmi.34.1697207532983; 
+ Fri, 13 Oct 2023 07:32:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAtH+EJGmIFrOb53DC4AXEK8MuDLM29etp0+qvbsTNISmuTJxA6tTAmx8OCRppciKWRkiluw==
+X-Received: by 2002:a7b:cb8c:0:b0:405:3f19:fc49 with SMTP id
+ m12-20020a7bcb8c000000b004053f19fc49mr24234080wmi.34.1697207532665; 
+ Fri, 13 Oct 2023 07:32:12 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:175:cf7d:d542:c2ef:a65c:aaad])
  by smtp.gmail.com with ESMTPSA id
- e7-20020a17090301c700b001b3bf8001a9sm3958048plh.48.2023.10.13.07.31.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 07:31:13 -0700 (PDT)
-Message-ID: <194edc32-25cf-4a8a-ae31-f3af583d3355@linaro.org>
-Date: Fri, 13 Oct 2023 07:31:12 -0700
+ g22-20020a05600c4c9600b0040536dcec17sm277036wmp.27.2023.10.13.07.32.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Oct 2023 07:32:12 -0700 (PDT)
+Date: Fri, 13 Oct 2023 10:32:08 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>
+Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
+Message-ID: <20231013103151-mutt-send-email-mst@kernel.org>
+References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
+ <20231011153944.39572-2-akihiko.odaki@daynix.com>
+ <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
+ <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
+ <CACGkMEuEs2MLJYKMB9qAgT2ixkKLC8LPPE6DsBvfwx0CEaCA_A@mail.gmail.com>
+ <12412f11-4395-460f-9523-930ad9270188@daynix.com>
+ <20231013101508-mutt-send-email-mst@kernel.org>
+ <29fef0dd-86b6-4cd6-bbbc-812b832d8fcf@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/16] target/openrisc: Declare QOM definitions in
- 'cpu-qom.h'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20231013140116.255-1-philmd@linaro.org>
- <20231013140116.255-11-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231013140116.255-11-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+In-Reply-To: <29fef0dd-86b6-4cd6-bbbc-812b832d8fcf@daynix.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,26 +106,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/13/23 07:01, Philippe Mathieu-Daudé wrote:
-> "target/foo/cpu.h" contains the target specific declarations.
+On Fri, Oct 13, 2023 at 11:22:10PM +0900, Akihiko Odaki wrote:
+> On 2023/10/13 23:17, Michael S. Tsirkin wrote:
+> > On Fri, Oct 13, 2023 at 02:26:03PM +0900, Akihiko Odaki wrote:
+> > > On 2023/10/13 14:00, Jason Wang wrote:
+> > > > On Fri, Oct 13, 2023 at 12:14 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> > > > > 
+> > > > > On 2023/10/13 10:38, Jason Wang wrote:
+> > > > > > On Wed, Oct 11, 2023 at 11:40 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> > > > > > > 
+> > > > > > > It was necessary since an Linux older than 2.6.35 may implement the
+> > > > > > > virtio-net header but may not allow to change its length. Remove it
+> > > > > > > since such an old Linux is no longer supported.
+> > > > > > 
+> > > > > > Where can I see this agreement?
+> > > > > 
+> > > > > docs/about/build-platforms.rst says:
+> > > > >    > The project aims to support the most recent major version at all times
+> > > > >    > for up to five years after its initial release. Support for the
+> > > > >    > previous major version will be dropped 2 years after the new major
+> > > > >    > version is released or when the vendor itself drops support, whichever
+> > > > >    > comes first. In this context, third-party efforts to extend the
+> > > > >    > lifetime of a distro are not considered, even when they are endorsed
+> > > > >    > by the vendor (eg. Debian LTS); the same is true of repositories that
+> > > > >    > contain packages backported from later releases (e.g. Debian
+> > > > >    > backports). Within each major release, only the most recent minor
+> > > > >    > release is considered.
+> > > > >    >
+> > > > >    > For the purposes of identifying supported software versions available
+> > > > >    > on Linux, the project will look at CentOS, Debian, Fedora, openSUSE,
+> > > > >    > RHEL, SLES and Ubuntu LTS. Other distros will be assumed to ship
+> > > > >    > similar software versions.
+> > > > 
+> > > > Well it also says:
+> > > > 
+> > > > """
+> > > > If a platform is not listed here, it does not imply that QEMU won't
+> > > > work. If an unlisted platform has comparable software versions to a
+> > > > listed platform, there is every expectation that it will work.
+> > > > """
+> > > > 
+> > > > A lot of downstream have customized build scripts.
+> > > 
+> > > Still Linux versions older than 2.6.35 do not look like "comparable software
+> > > versions to a listed platform" in my opinion.
+> > 
+> > 
+> > This is fine - I would be ok to replace support with an error message
+> > and failure. Not checking that a capability is supported however
+> > isn't a good idea. And once we do - do we still gain anything by
+> > not working around that?
 > 
-> A heterogeneous setup need to access target agnostic declarations
-> (at least the QOM ones, to instantiate the objects).
-> 
-> Our convention is to add such target agnostic QOM declarations in
-> the "target/foo/cpu-qom.h" header.
-> 
-> Extract QOM definitions from "cpu.h" to "cpu-qom.h".
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/openrisc/cpu-qom.h | 22 ++++++++++++++++++++++
->   target/openrisc/cpu.h     | 10 +---------
->   2 files changed, 23 insertions(+), 9 deletions(-)
->   create mode 100644 target/openrisc/cpu-qom.h
+> tap does still check if setting the header length succeeds so it should be
+> fine.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+It asserts though doesn't it? Hardly user friendly ...
 
-
-r~
 
