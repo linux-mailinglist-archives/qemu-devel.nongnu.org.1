@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F0A7C8F4E
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A5B7C8F68
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:38:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrPm3-0000ae-2q; Fri, 13 Oct 2023 17:32:47 -0400
+	id 1qrPm2-0000V2-Du; Fri, 13 Oct 2023 17:32:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPlx-0008Vg-9n
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:32:41 -0400
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1qrPlz-0000HF-4a
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:32:43 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPlv-0001OI-4t
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:32:40 -0400
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3af609c5736so1508858b6e.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:32:38 -0700 (PDT)
+ id 1qrPlw-0001PH-6y
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:32:42 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6b89ab5ddb7so250405b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:32:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697232757; x=1697837557; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697232758; x=1697837558; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NJxggpztU3KPwg7VLkcWECSwJVSbFoVhSChqLE3M3kU=;
- b=rp7Z46GDCVqHUwU3HXs8/vQNbKA9tH//Gw0sa03PzgtnSWzb4wZvRprYZ2QoE8ucWH
- 2ohVHPErJeQCK9Iiw1LHVKNeTdzvMmDY+P0MqpAL3TdTIxpa80lmhf+x3OQ2L1w73tq7
- aD07K0Z2QGd5gWFTEou36As255NaRy2n+McqOJyAkutgHoMLKjmoccPEelyaqKrcJ5p+
- pZ/VMv20p8x2Nw1UFCVgmj6WT2FhX2Vk7naF27hA7Qji8wyEMfOhqlGc9doi+oSQ5IGT
- tszaAi4EoMvwBq3X9ots1Z03Ut6do7IGDaeiNg5xAb9mYP2+B9TTNtqja59Py7EMZamH
- C5zw==
+ bh=za8xgsP66RnIsX8XSuhueYFTe+nOiG3yFbpulQj0Di4=;
+ b=abvPZfgu+btOo0d4lVBofD7GLFQrFocrur3h71w97FRDzV6I9hO06hLWpBJmdkAMfY
+ di1fCqY03jIKOGeW06K03b0hSKn8DaRuYkQGRtk/6HPAg5fx12CUKoXNeWkGa+V0uTsm
+ HuGMRhvdFUlkGnI3ULWJAQu2LtIGlrCpqrdc6ml351g4Hi309UhKmCnHZQubO5wIj5vd
+ Z+Tl10GNqYu7y39qdUnWZa3isddmmKaz+1BUYXv97NviUZ+iSq4Wdgbw1QXw9tzvelWr
+ CVHx994eMY2azOWNWkrwQJrgqWKFQmkfzDiXL/7lHUpH3Tqe5HhGlUcfTec5syUw7dRm
+ FMfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697232757; x=1697837557;
+ d=1e100.net; s=20230601; t=1697232758; x=1697837558;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NJxggpztU3KPwg7VLkcWECSwJVSbFoVhSChqLE3M3kU=;
- b=AANajPJJLNoDSW+rJJah4zLmCjlzs2/WJ/OYZF0sz87aWGfE3nFd4w1NgZJGh2dlZ4
- KB8L63HMrLMenSDGNU8ykq0ZZbA9sKkUqS23tuP2aIoxZWyGBeJgSF+mFd5L0AdZ6K2F
- U0Q8r7N6Qt3a0LhA9CW4ct0OT2tEWMVN+MyUxrvVoXEGcq6ix8QvJ6Fn/bkCdaglh9Ng
- KkYKnwlPKPD0HK/t/MRHsMYBWSIgEkA2NZSdW7fqb2iwCTD+JCc3oueJpMiPytCnjjkH
- a5L1+QCx8iOnOmauT/NT+5etsyivofA1Fxsnx5jNtWxEp0KEFuzvBWLi7ze/TzelEH0O
- iAEw==
-X-Gm-Message-State: AOJu0YxKm530F7D0MUVUa+r9MXY5gJeUU3tAzFME/0Yex0ay9lapyFjP
- AfQnz0VfThEqnXi7K8GNMqqpdByFiWphZ24s4L0=
-X-Google-Smtp-Source: AGHT+IFiBT5x7SHn3xNyfvjg42zidr36gB0VYOYKo/Hpuq/S88w+o1uIXea1x0zHsnvXT/7zfUerCw==
-X-Received: by 2002:a05:6358:5924:b0:135:24ed:5106 with SMTP id
- g36-20020a056358592400b0013524ed5106mr20480326rwf.9.1697232757430; 
- Fri, 13 Oct 2023 14:32:37 -0700 (PDT)
+ bh=za8xgsP66RnIsX8XSuhueYFTe+nOiG3yFbpulQj0Di4=;
+ b=T1w0bBeUcCr6pTeDiJCe5AFLtGt0NBUi1b2FaxWOQvc2VsSG+2SLd5Esdwn5PUqPZK
+ Z4uh+TsakqiJd4sXSB4w0iGhc1DHQ/tvkmuU7VyzZPhRZ0HMgAsTUoqN2QSxNXKVBkNC
+ PFs4/HRNpMFTj76c8s4z/EHR80qcj4H332gdzdrQ7+D8Vaa2xd6e3ip1KuH6QskINWBT
+ zIFOgd/oXos/qmIXV4CXqzVZWSGSN1kA6qOysNtrDbUc5MpoMmjqXcU1Ai+gcd3ZUlnq
+ h7SUImf7DqAPbtMWfLtdWZ7NCbak85ywiqbjGzDCttB/FEEWnQE8n8WZWiTd/jwbiPf2
+ nJlQ==
+X-Gm-Message-State: AOJu0YxbN6eSBw9nCpQnKxpKq8uOQ38k7Koyq1l8U5CM+eEfUdjhDxQf
+ uxXOfjTTeNR2iLBp04NKsSA7ItC27FO5XXG8E8M=
+X-Google-Smtp-Source: AGHT+IF2rT3NRdlX74z5bYTU13XzzKdtCmx14Vg0hgtxGTtRy2Sa2aN8fBWdlfcOUVMmdpmJkC8/cQ==
+X-Received: by 2002:a05:6a00:198f:b0:68f:a661:d037 with SMTP id
+ d15-20020a056a00198f00b0068fa661d037mr30815527pfl.3.1697232758407; 
+ Fri, 13 Oct 2023 14:32:38 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- j5-20020aa78d05000000b0068842ebfd10sm13977191pfe.160.2023.10.13.14.32.36
+ j5-20020aa78d05000000b0068842ebfd10sm13977191pfe.160.2023.10.13.14.32.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 13 Oct 2023 14:32:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	atar4qemu@gmail.com
-Subject: [PATCH 53/85] target/sparc: Merge LDFSR, LDXFSR implementations
-Date: Fri, 13 Oct 2023 14:28:14 -0700
-Message-Id: <20231013212846.165724-54-richard.henderson@linaro.org>
+Subject: [PATCH 54/85] target/sparc: Move EDGE* to decodetree
+Date: Fri, 13 Oct 2023 14:28:15 -0700
+Message-Id: <20231013212846.165724-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231013212846.165724-1-richard.henderson@linaro.org>
 References: <20231013212846.165724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,134 +91,367 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Combine the helper to a single set_fsr().
-Perform the mask and merge inline.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/helper.h     |  3 +--
- target/sparc/fop_helper.c | 17 ++--------------
- target/sparc/translate.c  | 42 ++++++++++++---------------------------
- 3 files changed, 16 insertions(+), 46 deletions(-)
+ target/sparc/insns.decode |  22 ++-
+ target/sparc/translate.c  | 272 ++++++++++++++++----------------------
+ 2 files changed, 134 insertions(+), 160 deletions(-)
 
-diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index b8f1e78c75..a9ee8e6b9f 100644
---- a/target/sparc/helper.h
-+++ b/target/sparc/helper.h
-@@ -43,7 +43,7 @@ DEF_HELPER_FLAGS_4(ld_asi, TCG_CALL_NO_WG, i64, env, tl, int, i32)
- DEF_HELPER_FLAGS_5(st_asi, TCG_CALL_NO_WG, void, env, tl, i64, int, i32)
- #endif
- DEF_HELPER_FLAGS_1(check_ieee_exceptions, TCG_CALL_NO_WG, tl, env)
--DEF_HELPER_FLAGS_3(ldfsr, TCG_CALL_NO_RWG, tl, env, tl, i32)
-+DEF_HELPER_FLAGS_2(set_fsr, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_1(fabss, TCG_CALL_NO_RWG_SE, f32, f32)
- DEF_HELPER_FLAGS_2(fsqrts, TCG_CALL_NO_RWG, f32, env, f32)
- DEF_HELPER_FLAGS_2(fsqrtd, TCG_CALL_NO_RWG, f64, env, f64)
-@@ -55,7 +55,6 @@ DEF_HELPER_FLAGS_1(fsqrtq, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_1(fcmpq, TCG_CALL_NO_WG, tl, env)
- DEF_HELPER_FLAGS_1(fcmpeq, TCG_CALL_NO_WG, tl, env)
- #ifdef TARGET_SPARC64
--DEF_HELPER_FLAGS_3(ldxfsr, TCG_CALL_NO_RWG, tl, env, tl, i64)
- DEF_HELPER_FLAGS_1(fabsd, TCG_CALL_NO_RWG_SE, f64, f64)
- DEF_HELPER_FLAGS_3(fcmps_fcc1, TCG_CALL_NO_WG, tl, env, f32, f32)
- DEF_HELPER_FLAGS_3(fcmps_fcc2, TCG_CALL_NO_WG, tl, env, f32, f32)
-diff --git a/target/sparc/fop_helper.c b/target/sparc/fop_helper.c
-index f54fa9b959..0f8aa3abcd 100644
---- a/target/sparc/fop_helper.c
-+++ b/target/sparc/fop_helper.c
-@@ -382,20 +382,7 @@ static void set_fsr(CPUSPARCState *env, target_ulong fsr)
-     set_float_rounding_mode(rnd_mode, &env->fp_status);
- }
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index 185bcadab7..b4bbdd43ec 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -30,6 +30,9 @@ CALL    01 i:s30
+ @n_r_ri     .. ..... ...... rs1:5 imm:1 rs2_or_imm:s13     &r_r_ri rd=0
+ @r_r_ri     .. rd:5  ...... rs1:5 imm:1 rs2_or_imm:s13     &r_r_ri
  
--target_ulong helper_ldfsr(CPUSPARCState *env, target_ulong old_fsr,
--                          uint32_t new_fsr)
-+void helper_set_fsr(CPUSPARCState *env, target_ulong fsr)
- {
--    old_fsr = (new_fsr & FSR_LDFSR_MASK) | (old_fsr & FSR_LDFSR_OLDMASK);
--    set_fsr(env, old_fsr);
--    return old_fsr;
-+    set_fsr(env, fsr);
- }
--
--#ifdef TARGET_SPARC64
--target_ulong helper_ldxfsr(CPUSPARCState *env, target_ulong old_fsr,
--                           uint64_t new_fsr)
--{
--    old_fsr = (new_fsr & FSR_LDXFSR_MASK) | (old_fsr & FSR_LDXFSR_OLDMASK);
--    set_fsr(env, old_fsr);
--    return old_fsr;
--}
--#endif
++&r_r_r      rd rs1 rs2
++@r_r_r      .. rd:5  ...... rs1:5 . ........ rs2:5         &r_r_r
++
+ Tcc_r   10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
+ Tcc_i   10 0 cond:4 111010 rs1:5 1 cc:1 0000 i:8
+ 
+@@ -225,7 +228,24 @@ RESTORE     10 ..... 111101 ..... . .............          @r_r_ri
+ DONE        10 00000 111110 00000 0 0000000000000
+ RETRY       10 00001 111110 00000 0 0000000000000
+ 
+-NCP         10 ----- 110110 ----- --------- -----          # v8 CPop1
++{
++  [
++    EDGE8cc     10 ..... 110110 ..... 0 0000 0000 .....    @r_r_r
++    EDGE8N      10 ..... 110110 ..... 0 0000 0001 .....    @r_r_r
++    EDGE8Lcc    10 ..... 110110 ..... 0 0000 0010 .....    @r_r_r
++    EDGE8LN     10 ..... 110110 ..... 0 0000 0011 .....    @r_r_r
++    EDGE16cc    10 ..... 110110 ..... 0 0000 0100 .....    @r_r_r
++    EDGE16N     10 ..... 110110 ..... 0 0000 0101 .....    @r_r_r
++    EDGE16Lcc   10 ..... 110110 ..... 0 0000 0110 .....    @r_r_r
++    EDGE16LN    10 ..... 110110 ..... 0 0000 0111 .....    @r_r_r
++    EDGE32cc    10 ..... 110110 ..... 0 0000 1000 .....    @r_r_r
++    EDGE32N     10 ..... 110110 ..... 0 0000 1001 .....    @r_r_r
++    EDGE32Lcc   10 ..... 110110 ..... 0 0000 1010 .....    @r_r_r
++    EDGE32LN    10 ..... 110110 ..... 0 0000 1011 .....    @r_r_r
++  ]
++  NCP           10 ----- 110110 ----- --------- -----      # v8 CPop1
++}
++
+ NCP         10 ----- 110111 ----- --------- -----          # v8 CPop2
+ 
+ ##
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 9384815f0b..6598557bb5 100644
+index 6598557bb5..56f32551af 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -58,7 +58,8 @@
- #define gen_helper_retry(E)             qemu_build_not_reached()
- #define gen_helper_udivx(D, E, A, B)    qemu_build_not_reached()
- #define gen_helper_sdivx(D, E, A, B)    qemu_build_not_reached()
--#define gen_helper_ldxfsr(R, E, X, Y)   qemu_build_not_reached()
-+#define FSR_LDXFSR_MASK      ({ qemu_build_not_reached(); 0; })
-+#define FSR_LDXFSR_OLDMASK   ({ qemu_build_not_reached(); 0; })
- # ifdef CONFIG_USER_ONLY
- static void gen_helper_ld_asi(TCGv_i64 r, TCGv_env e, TCGv a,
-                               TCGv_i32 asi, TCGv_i32 mop)
-@@ -4697,44 +4698,27 @@ static bool trans_STDFQ(DisasContext *dc, arg_STDFQ *a)
-     return true;
+@@ -2620,93 +2620,6 @@ static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr)
+     }
  }
  
--static bool trans_LDFSR(DisasContext *dc, arg_r_r_ri *a)
-+static bool do_ldfsr(DisasContext *dc, arg_r_r_ri *a, MemOp mop,
-+                     target_ulong new_mask, target_ulong old_mask)
- {
--    TCGv addr;
--    TCGv_i32 tmp;
--
--    addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
-+    TCGv tmp, addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
-     if (addr == NULL) {
-         return false;
-     }
-     if (gen_trap_ifnofpu(dc)) {
-         return true;
-     }
--    tmp = tcg_temp_new_i32();
--    tcg_gen_qemu_ld_i32(tmp, addr, dc->mem_idx, MO_TEUL | MO_ALIGN);
--    gen_helper_ldfsr(cpu_fsr, tcg_env, cpu_fsr, tmp);
-+    tmp = tcg_temp_new();
-+    tcg_gen_qemu_ld_tl(tmp, addr, dc->mem_idx, mop | MO_ALIGN);
-+    tcg_gen_andi_tl(tmp, tmp, new_mask);
-+    tcg_gen_andi_tl(cpu_fsr, cpu_fsr, old_mask);
-+    tcg_gen_or_tl(cpu_fsr, cpu_fsr, tmp);
-+    gen_helper_set_fsr(tcg_env, cpu_fsr);
-     return advance_pc(dc);
- }
- 
--static bool trans_LDXFSR(DisasContext *dc, arg_r_r_ri *a)
+-static void gen_edge(DisasContext *dc, TCGv dst, TCGv s1, TCGv s2,
+-                     int width, bool cc, bool left)
 -{
--    TCGv addr;
--    TCGv_i64 tmp;
+-    TCGv lo1, lo2;
+-    uint64_t amask, tabl, tabr;
+-    int shift, imask, omask;
 -
--    if (!avail_64(dc)) {
--        return false;
+-    if (cc) {
+-        tcg_gen_mov_tl(cpu_cc_src, s1);
+-        tcg_gen_mov_tl(cpu_cc_src2, s2);
+-        tcg_gen_sub_tl(cpu_cc_dst, s1, s2);
+-        tcg_gen_movi_i32(cpu_cc_op, CC_OP_SUB);
+-        dc->cc_op = CC_OP_SUB;
 -    }
--    addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
--    if (addr == NULL) {
--        return false;
+-
+-    /* Theory of operation: there are two tables, left and right (not to
+-       be confused with the left and right versions of the opcode).  These
+-       are indexed by the low 3 bits of the inputs.  To make things "easy",
+-       these tables are loaded into two constants, TABL and TABR below.
+-       The operation index = (input & imask) << shift calculates the index
+-       into the constant, while val = (table >> index) & omask calculates
+-       the value we're looking for.  */
+-    switch (width) {
+-    case 8:
+-        imask = 0x7;
+-        shift = 3;
+-        omask = 0xff;
+-        if (left) {
+-            tabl = 0x80c0e0f0f8fcfeffULL;
+-            tabr = 0xff7f3f1f0f070301ULL;
+-        } else {
+-            tabl = 0x0103070f1f3f7fffULL;
+-            tabr = 0xfffefcf8f0e0c080ULL;
+-        }
+-        break;
+-    case 16:
+-        imask = 0x6;
+-        shift = 1;
+-        omask = 0xf;
+-        if (left) {
+-            tabl = 0x8cef;
+-            tabr = 0xf731;
+-        } else {
+-            tabl = 0x137f;
+-            tabr = 0xfec8;
+-        }
+-        break;
+-    case 32:
+-        imask = 0x4;
+-        shift = 0;
+-        omask = 0x3;
+-        if (left) {
+-            tabl = (2 << 2) | 3;
+-            tabr = (3 << 2) | 1;
+-        } else {
+-            tabl = (1 << 2) | 3;
+-            tabr = (3 << 2) | 2;
+-        }
+-        break;
+-    default:
+-        abort();
 -    }
--    if (gen_trap_ifnofpu(dc)) {
--        return true;
+-
+-    lo1 = tcg_temp_new();
+-    lo2 = tcg_temp_new();
+-    tcg_gen_andi_tl(lo1, s1, imask);
+-    tcg_gen_andi_tl(lo2, s2, imask);
+-    tcg_gen_shli_tl(lo1, lo1, shift);
+-    tcg_gen_shli_tl(lo2, lo2, shift);
+-
+-    tcg_gen_shr_tl(lo1, tcg_constant_tl(tabl), lo1);
+-    tcg_gen_shr_tl(lo2, tcg_constant_tl(tabr), lo2);
+-    tcg_gen_andi_tl(lo1, lo1, omask);
+-    tcg_gen_andi_tl(lo2, lo2, omask);
+-
+-    amask = -8;
+-    if (AM_CHECK(dc)) {
+-        amask &= 0xffffffffULL;
 -    }
--    tmp = tcg_temp_new_i64();
--    tcg_gen_qemu_ld_i64(tmp, addr, dc->mem_idx, MO_TEUQ | MO_ALIGN);
--    gen_helper_ldxfsr(cpu_fsr, tcg_env, cpu_fsr, tmp);
--    return advance_pc(dc);
+-    tcg_gen_andi_tl(s1, s1, amask);
+-    tcg_gen_andi_tl(s2, s2, amask);
+-
+-    /* Compute dst = (s1 == s2 ? lo1 : lo1 & lo2). */
+-    tcg_gen_and_tl(lo2, lo2, lo1);
+-    tcg_gen_movcond_tl(TCG_COND_EQ, dst, s1, s2, lo1, lo2);
 -}
-+TRANS(LDFSR, ALL, do_ldfsr, a, MO_TEUL, FSR_LDFSR_MASK, FSR_LDFSR_OLDMASK)
-+TRANS(LDXFSR, 64, do_ldfsr, a, MO_TEUQ, FSR_LDXFSR_MASK, FSR_LDXFSR_OLDMASK)
- 
- static bool do_stfsr(DisasContext *dc, arg_r_r_ri *a, MemOp mop)
+-
+ static void gen_alignaddr(TCGv dst, TCGv s1, TCGv s2, bool left)
  {
+     TCGv tmp = tcg_temp_new();
+@@ -2771,6 +2684,8 @@ static int extract_qfpreg(DisasContext *dc, int x)
+ #define avail_GL(C)       ((C)->def->features & CPU_FEATURE_GL)
+ #define avail_HYPV(C)     ((C)->def->features & CPU_FEATURE_HYPV)
+ #define avail_POWERDOWN(C) ((C)->def->features & CPU_FEATURE_POWERDOWN)
++#define avail_VIS1(C)     ((C)->def->features & CPU_FEATURE_VIS1)
++#define avail_VIS2(C)     ((C)->def->features & CPU_FEATURE_VIS2)
+ 
+ /* Default case for non jump instructions. */
+ static bool advance_pc(DisasContext *dc)
+@@ -4219,6 +4134,116 @@ static bool trans_MULScc(DisasContext *dc, arg_r_r_ri *a)
+     return do_cc_arith(dc, a, CC_OP_ADD, gen_op_mulscc, NULL);
+ }
+ 
++static bool gen_edge(DisasContext *dc, arg_r_r_r *a,
++                     int width, bool cc, bool left)
++{
++    TCGv dst, s1, s2, lo1, lo2;
++    uint64_t amask, tabl, tabr;
++    int shift, imask, omask;
++
++    dst = gen_dest_gpr(dc, a->rd);
++    s1 = gen_load_gpr(dc, a->rs1);
++    s2 = gen_load_gpr(dc, a->rs2);
++
++    if (cc) {
++        tcg_gen_mov_tl(cpu_cc_src, s1);
++        tcg_gen_mov_tl(cpu_cc_src2, s2);
++        tcg_gen_sub_tl(cpu_cc_dst, s1, s2);
++        tcg_gen_movi_i32(cpu_cc_op, CC_OP_SUB);
++        dc->cc_op = CC_OP_SUB;
++    }
++
++    /*
++     * Theory of operation: there are two tables, left and right (not to
++     * be confused with the left and right versions of the opcode).  These
++     * are indexed by the low 3 bits of the inputs.  To make things "easy",
++     * these tables are loaded into two constants, TABL and TABR below.
++     * The operation index = (input & imask) << shift calculates the index
++     * into the constant, while val = (table >> index) & omask calculates
++     * the value we're looking for.
++     */
++    switch (width) {
++    case 8:
++        imask = 0x7;
++        shift = 3;
++        omask = 0xff;
++        if (left) {
++            tabl = 0x80c0e0f0f8fcfeffULL;
++            tabr = 0xff7f3f1f0f070301ULL;
++        } else {
++            tabl = 0x0103070f1f3f7fffULL;
++            tabr = 0xfffefcf8f0e0c080ULL;
++        }
++        break;
++    case 16:
++        imask = 0x6;
++        shift = 1;
++        omask = 0xf;
++        if (left) {
++            tabl = 0x8cef;
++            tabr = 0xf731;
++        } else {
++            tabl = 0x137f;
++            tabr = 0xfec8;
++        }
++        break;
++    case 32:
++        imask = 0x4;
++        shift = 0;
++        omask = 0x3;
++        if (left) {
++            tabl = (2 << 2) | 3;
++            tabr = (3 << 2) | 1;
++        } else {
++            tabl = (1 << 2) | 3;
++            tabr = (3 << 2) | 2;
++        }
++        break;
++    default:
++        abort();
++    }
++
++    lo1 = tcg_temp_new();
++    lo2 = tcg_temp_new();
++    tcg_gen_andi_tl(lo1, s1, imask);
++    tcg_gen_andi_tl(lo2, s2, imask);
++    tcg_gen_shli_tl(lo1, lo1, shift);
++    tcg_gen_shli_tl(lo2, lo2, shift);
++
++    tcg_gen_shr_tl(lo1, tcg_constant_tl(tabl), lo1);
++    tcg_gen_shr_tl(lo2, tcg_constant_tl(tabr), lo2);
++    tcg_gen_andi_tl(lo1, lo1, omask);
++    tcg_gen_andi_tl(lo2, lo2, omask);
++
++    amask = -8;
++    if (AM_CHECK(dc)) {
++        amask &= 0xffffffffULL;
++    }
++    tcg_gen_andi_tl(s1, s1, amask);
++    tcg_gen_andi_tl(s2, s2, amask);
++
++    /* Compute dst = (s1 == s2 ? lo1 : lo1 & lo2). */
++    tcg_gen_and_tl(lo2, lo2, lo1);
++    tcg_gen_movcond_tl(TCG_COND_EQ, dst, s1, s2, lo1, lo2);
++
++    gen_store_gpr(dc, a->rd, dst);
++    return advance_pc(dc);
++}
++
++TRANS(EDGE8cc, VIS1, gen_edge, a, 8, 1, 0)
++TRANS(EDGE8Lcc, VIS1, gen_edge, a, 8, 1, 1)
++TRANS(EDGE16cc, VIS1, gen_edge, a, 16, 1, 0)
++TRANS(EDGE16Lcc, VIS1, gen_edge, a, 16, 1, 1)
++TRANS(EDGE32cc, VIS1, gen_edge, a, 32, 1, 0)
++TRANS(EDGE32Lcc, VIS1, gen_edge, a, 32, 1, 1)
++
++TRANS(EDGE8N, VIS2, gen_edge, a, 8, 0, 0)
++TRANS(EDGE8LN, VIS2, gen_edge, a, 8, 0, 1)
++TRANS(EDGE16N, VIS2, gen_edge, a, 16, 0, 0)
++TRANS(EDGE16LN, VIS2, gen_edge, a, 16, 0, 1)
++TRANS(EDGE32N, VIS2, gen_edge, a, 32, 0, 0)
++TRANS(EDGE32LN, VIS2, gen_edge, a, 32, 0, 1)
++
+ static bool do_shift_r(DisasContext *dc, arg_shiftr *a, bool l, bool u)
+ {
+     TCGv dst, src1, src2;
+@@ -5097,89 +5122,18 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+ 
+                 switch (opf) {
+                 case 0x000: /* VIS I edge8cc */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 8, 1, 0);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x001: /* VIS II edge8n */
+-                    CHECK_FPU_FEATURE(dc, VIS2);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 8, 0, 0);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x002: /* VIS I edge8lcc */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 8, 1, 1);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x003: /* VIS II edge8ln */
+-                    CHECK_FPU_FEATURE(dc, VIS2);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 8, 0, 1);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x004: /* VIS I edge16cc */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 16, 1, 0);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x005: /* VIS II edge16n */
+-                    CHECK_FPU_FEATURE(dc, VIS2);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 16, 0, 0);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x006: /* VIS I edge16lcc */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 16, 1, 1);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x007: /* VIS II edge16ln */
+-                    CHECK_FPU_FEATURE(dc, VIS2);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 16, 0, 1);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x008: /* VIS I edge32cc */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 32, 1, 0);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x009: /* VIS II edge32n */
+-                    CHECK_FPU_FEATURE(dc, VIS2);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 32, 0, 0);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x00a: /* VIS I edge32lcc */
+-                    CHECK_FPU_FEATURE(dc, VIS1);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 32, 1, 1);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
+                 case 0x00b: /* VIS II edge32ln */
+-                    CHECK_FPU_FEATURE(dc, VIS2);
+-                    cpu_src1 = gen_load_gpr(dc, rs1);
+-                    cpu_src2 = gen_load_gpr(dc, rs2);
+-                    gen_edge(dc, cpu_dst, cpu_src1, cpu_src2, 32, 0, 1);
+-                    gen_store_gpr(dc, rd, cpu_dst);
+-                    break;
++                    g_assert_not_reached();  /* in decodetree */
+                 case 0x010: /* VIS I array8 */
+                     CHECK_FPU_FEATURE(dc, VIS1);
+                     cpu_src1 = gen_load_gpr(dc, rs1);
 -- 
 2.34.1
 
