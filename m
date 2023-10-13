@@ -2,94 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00B47C8873
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 17:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F38627C88B3
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 17:32:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrJvW-0006jW-H5; Fri, 13 Oct 2023 11:18:10 -0400
+	id 1qrK7a-0002RS-Gz; Fri, 13 Oct 2023 11:30:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <acaggian@qualcomm.com>)
- id 1qrJvU-0006cI-7e
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:18:08 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qrK7Y-0002QK-2n
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:30:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <acaggian@qualcomm.com>)
- id 1qrJvS-0000R9-Ev
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:18:07 -0400
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39DDMNtE009812; Fri, 13 Oct 2023 15:18:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding;
- s=qcppdkim1; bh=46yJuBQqqu6iqRoSe3GlSxMXDFd24K/OmGOw2LIUxu0=;
- b=QL/I8WUE8XbFy07UJksYA+Z5VluSmQIwUa9I6ZWMfo9H/JJB9ZFjTnbj4Ou4o7Oj08fZ
- htapM8E5pqNeHeFUdJ7UhoVFFHf8SxClntJdUYeKwm7tNkBGbK7AbOFeB59Son3/O8qq
- NAvskzCuTat06fLrXO76wxVn7WZIZ/+sqcrytIIw//Sg5XKhIA31EUnmFdWLb/fKDWJM
- ufkfxpBw/sRDD6iO8OhAAz/Wgao1BuznNaMok6vYMNe7giieCMWq/qu7wsXNdeSPYpxS
- bmJiNZbWe5G26vkUPtMJobSYSoeotNnYeJt5UGlSCudY/kiKF5O8x27N/fjtAcO2hbPZ 6g== 
-Received: from euamsppmta02.qualcomm.com ([212.136.9.4])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tpt0x217n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Oct 2023 15:18:03 +0000
-Received: from pps.filterd (EUAMSPPMTA02.qualcomm.com [127.0.0.1])
- by EUAMSPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 39DFI0IR031874; 
- Fri, 13 Oct 2023 15:18:00 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by EUAMSPPMTA02.qualcomm.com (PPS) with ESMTPS id 3tk0dmta05-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Oct 2023 15:18:00 +0000
-Received: from EUAMSPPMTA02.qualcomm.com (EUAMSPPMTA02.qualcomm.com
- [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39DFI02q031851;
- Fri, 13 Oct 2023 15:18:00 GMT
-Received: from hu-devc-ams-u20-c.qualcomm.com (hu-acaggian-ams.qualcomm.com
- [10.251.153.136])
- by EUAMSPPMTA02.qualcomm.com (PPS) with ESMTPS id 39DFI0AC031850
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Oct 2023 15:18:00 +0000
-Received: by hu-devc-ams-u20-c.qualcomm.com (Postfix, from userid 4298557)
- id 6193720CB2; Fri, 13 Oct 2023 17:18:00 +0200 (CEST)
-From: Antonio Caggiano <quic_acaggian@quicinc.com>
-To: 
-Cc: Antonio Caggiano <quic_acaggian@quicinc.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org (open list:All patches CC here)
-Subject: [PATCH] ui/gtk-egl: Check EGLSurface before doing scanout
-Date: Fri, 13 Oct 2023 17:17:58 +0200
-Message-Id: <20231013151758.1472603-1-quic_acaggian@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qrK7W-0002aO-GX
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:30:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697211033;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=D6hjwGZmNcx+A7BWDawXZwO4gTxAMCMOfXHlsCPuFro=;
+ b=Eaho9oflmwywKLVNb+qI8/QH+pWIcgeZzk3osbLF2N7dpSy334k7sXCLxoFLX/oGpVUCSM
+ hw+mO+b22eINYFpyVo1YK4fX+9iiHgvBslmV7YT87G2XLvh7SxuA+BXi46J1XyoNxzcR4D
+ Q88wgn0+D+VhlORKIrJGB3IOoY/RKBk=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-21-QE6gKBONP16E3_IbNDqCig-1; Fri, 13 Oct 2023 11:30:31 -0400
+X-MC-Unique: QE6gKBONP16E3_IbNDqCig-1
+Received: by mail-oi1-f199.google.com with SMTP id
+ 5614622812f47-3af85efc4a3so3406309b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 08:30:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697211030; x=1697815830;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=D6hjwGZmNcx+A7BWDawXZwO4gTxAMCMOfXHlsCPuFro=;
+ b=FlIkMiP8wlQ6H3iol3GQjPrd0ouVt1TSixLaoRy6ovjpUXv/E1ybJfDmX2y7QlXEi6
+ 8f3z6es5ioozx6o9C7jPv5+lr/XGF6vWHQ9ZBLlUX9Koj3eFqxbYHNWx/2DMjVjF28KI
+ 87N1la9QR81G1t7+8qnw2SU/3joyQgjBDiX8SvipnLzbjkR77NFQR5aIcod2MLqiWw+k
+ SHHjxtMh6m+DfQhzSrC+HZKmVFVhvUkfQnvE38L2x0WznTO3wqwIXY5OPSjKIxt9MdTp
+ h0wLiGgpWKucg6NBnk5CA6Nbq0Y8bympRFkTKLZ9bloucdGzNQg3o1ZhAhEZj665HSIF
+ 6a/w==
+X-Gm-Message-State: AOJu0YxDGPszD2iUb+1ktafw/d9BwZmiEE3AkmqP11V3pCsk2KBl39ih
+ H/wuJ8UbOoSChcRwCIRk3B3tL6PhnZj2rMeIIoNGRN5bfPzT+L0/ZkrX/4Q+X4J3BEjF/vDIXpf
+ 7L0GBBiOVQYVPusfeydZjcCJKHG+ohbaKN/EiBUKCLM1ye1vxDmpYUuwnsRbnUbtuHn/A6vyvyN
+ c=
+X-Received: by 2002:a05:6808:f8c:b0:3af:66e5:5d3c with SMTP id
+ o12-20020a0568080f8c00b003af66e55d3cmr36797602oiw.26.1697211030638; 
+ Fri, 13 Oct 2023 08:30:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKsoBAyt6wm3gKSBN9tQxS3OFD7TYEOBhKFkXGFcGhV4c2Vnkae8oM032+VAGifNjRHt9Kxw==
+X-Received: by 2002:a05:6808:f8c:b0:3af:66e5:5d3c with SMTP id
+ o12-20020a0568080f8c00b003af66e55d3cmr36797586oiw.26.1697211030259; 
+ Fri, 13 Oct 2023 08:30:30 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
+ by smtp.gmail.com with ESMTPSA id
+ z10-20020ad4414a000000b0066d1348bdddsm746133qvp.44.2023.10.13.08.30.28
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Oct 2023 08:30:29 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] tests/vm: netbsd: install dtc
+Date: Fri, 13 Oct 2023 17:30:27 +0200
+Message-ID: <20231013153027.800327-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: uF98wfnITUqpSmocEFfsPCQnF8PUs8MG
-X-Proofpoint-ORIG-GUID: uF98wfnITUqpSmocEFfsPCQnF8PUs8MG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-13_06,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 mlxscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 suspectscore=0
- priorityscore=1501 malwarescore=0 mlxlogscore=555 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310130129
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=acaggian@qualcomm.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,55 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The first time gd_egl_scanout_texture() is called, there's a possibility
-that the GTK drawing area might not be realized yet, in which case its
-associated GdkWindow is NULL. This means gd_egl_init() was also skipped
-and the EGLContext and EGLSurface stored in the VirtualGfxConsole are
-not valid yet.
+Install dtc as it is now a mandatory external dependency in order to build QEMU.
 
-Continuing with the scanout in this conditions would result in hitting
-an assert in libepoxy: "Couldn't find current GLX or EGL context".
-
-A possible workaround is to just ignore the scanout request, giving the
-the GTK drawing area some time to finish its realization. At that point,
-the gd_egl_init() will succeed and the EGLContext and EGLSurface stored
-in the VirtualGfxConsole will be valid.
-
-Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- ui/gtk-egl.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ tests/vm/netbsd | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index a1060fd80f..2eefcd2cf4 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -243,12 +243,19 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
-     vc->gfx.h = h;
-     vc->gfx.y0_top = backing_y_0_top;
+diff --git a/tests/vm/netbsd b/tests/vm/netbsd
+index 939dc1b22a1..3ef1ec2d9cc 100755
+--- a/tests/vm/netbsd
++++ b/tests/vm/netbsd
+@@ -40,6 +40,9 @@ class NetBSDVM(basevm.BaseVM):
+         "gsed",
+         "gettext-tools",
  
--    eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
--                   vc->gfx.esurface, vc->gfx.ectx);
-+    if (!vc->gfx.esurface) {
-+        gd_egl_init(vc);
-+        if (!vc->gfx.esurface) {
-+            return;
-+        }
++        # libs: basic
++        "dtc",
++
+         # libs: crypto
+         "gnutls",
  
--    gtk_egl_set_scanout_mode(vc, true);
--    egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
--                         backing_id, false);
-+        eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
-+                       vc->gfx.esurface, vc->gfx.ectx);
-+    
-+        gtk_egl_set_scanout_mode(vc, true);
-+        egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
-+                             backing_id, false);
-+    }
- }
- 
- void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
 -- 
-2.25.1
+2.41.0
 
 
