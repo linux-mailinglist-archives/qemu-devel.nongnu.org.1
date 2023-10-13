@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CDDF7C7C42
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 05:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 138247C7C5B
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 05:54:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr93H-0003P1-WB; Thu, 12 Oct 2023 23:41:28 -0400
+	id 1qr9EB-0004mb-5k; Thu, 12 Oct 2023 23:52:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qr93F-0003Oo-Q3
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 23:41:25 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qr9E5-0004mR-1Y
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 23:52:37 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qr93D-00028w-J7
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 23:41:24 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c9fa869a63so1650935ad.0
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 20:41:22 -0700 (PDT)
+ id 1qr9E3-0003T4-9L
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 23:52:36 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-690fe10b6a4so1332451b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 20:52:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697168481; x=1697773281; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1697169153; x=1697773953; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=XEC9r9hOqVtz/3KynDAAwckhRS/NH6hsrFoJ0l0IwjM=;
- b=uNEDjTC+Kvxgm2Ak0wVODMq4+jzrjPjf5yzpQAfagWX8q4oerFO3cUlC128NA+irxj
- wb5xUYlQi5imtFbMcBHMpJOB6FMFbxFCqqqGIUGzKKC3xJ7J+JvSiX+fF35JdOezu8ME
- mHO8QnDaJgKiDLQAXe1AmP50cmh94Uyv0KsRIQlLLHl0uW4Drh0Mgz2xZqVkRah1SVIE
- mAsCz4EL7Vlxbt4fqvWYaDuxGnm2Gfvdk1z49bpD0667kie58Sr7Kn6J12k/18Dhvuwf
- ogVkgQksCeoopvTJQLuniqsI4BjJPPps4vyno/Hs+2Yvj8ZvZcaaKqtEh66M01hQyv1x
- ftxA==
+ bh=SDF8tOqxkclznR9UMicE9MTyhYC7WbN5fie7XWKOTp0=;
+ b=QZ4HBisB7WGnXsuAGf+4PWuKRpos29dmNuUXsl6ChMu3QESW/AnGvp++2T/Cb1CxYz
+ jQ/vJjuvqF3do3ylsyAFhqNJkEKsA0Na2cCibZgqlKpytB+H3fpGnMxyc54z3UlTkNKe
+ gGiHPDUkP3dFT2Bu4ebP0YtBMrGy/y+Z0euVGm25jg1U8/HFdXwUhmfudAp9xroEsvdC
+ GA5FBJchwVFeu8yQc38wSws396+T/TMrb+5MMQlzq4LkvIpkyZyrNo13hyqZLU6nyHmQ
+ DtuiVwkOmqgZ6fIXxzZjrsiQc0lZLhfIS7vxuNCI6Za7oQ0WKX1M7Nt+QZUAWjOdHDXa
+ AEcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697168481; x=1697773281;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1697169153; x=1697773953;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XEC9r9hOqVtz/3KynDAAwckhRS/NH6hsrFoJ0l0IwjM=;
- b=gpkbZ0YYYtptKsXFir3Gacq+Vn7p3QE2QyRzP2IwB160XpMEyPupwFfy+eJwCL5IT4
- 4zP9DeMmrcYKiuUFOXiiUT3MlH+fwvo5bt99O8ZKx2CnNPCUPPUr2r8vR3ikUBDKMz/N
- zmTDAUrkA/R4JAkStT2GQkqNjBJd0TLujf3KvOG2aZSQSzdIAzxZj1czFYWaYjmcnPdU
- lbIgMFjOk8ScUf+Qnvoi7JHXg0kfK4gWgVpGxDw8GnVHhg+6ceFikl8a7Db88pwp5EEr
- o3kP5Y9E2R7EV8+j6n31zLIAAzNziCrXlafWKUyOlea3hDqmBPpChzXDy3PSwIKBnALI
- q7og==
-X-Gm-Message-State: AOJu0YwwyVmy14Veqqxl8sa4c7mMxW6jPBH+YGa26hL3HULztBxagkFO
- v5+ZED0PUYm9+9EJySoCU8JMmw==
-X-Google-Smtp-Source: AGHT+IHH7wDQchpx39SIexP7rliH8pfHmA/S4wy/T5+FADr8WlhC8vaEntcKIioiUy0A4dWrNv5MyA==
-X-Received: by 2002:a17:902:d2cb:b0:1c9:ff46:162d with SMTP id
- n11-20020a170902d2cb00b001c9ff46162dmr440682plc.22.1697168481369; 
- Thu, 12 Oct 2023 20:41:21 -0700 (PDT)
+ bh=SDF8tOqxkclznR9UMicE9MTyhYC7WbN5fie7XWKOTp0=;
+ b=Pghi49eqSqx0J26q0GXwSd67+FScINGFQ4CwX+bYltoiDjECCrkxAW3/CT/5Z1+ZJE
+ O/64JILLB/JgFX2toVbQlBG/nHxdCifG6ZvYpySrcCtvZHy69A1lHWVEVrpFNmWp5B1u
+ snfQ5nKuW4LR6Me08vf1IZtO/x8CXZbdCg5VckgreNTNNUZH4XRL6cHytDKRzu4D9Iiz
+ oWTUCtdF0OEX/DodCEM3w5oaJun+Zf4uuo6opycYllfU6/mC4phnuqLMH4MCm41Lj9El
+ PLuxogH2nDsJvwec1d371HZafiOFW96RuzMScPrO+yRRB9zKFoFfNHPTMCZTEiHXGtpc
+ 0P5A==
+X-Gm-Message-State: AOJu0YyuEkXwxfMbK3jfcVa836JU7M0X4+QdpSxPen/N5Q5r+b151Fps
+ FXeR8b3BbrKExQOEdtWK4PC1833uDvPmCnCZQw0=
+X-Google-Smtp-Source: AGHT+IFWcrVA+DPzDJ/sygQwKtw5Y9NTLrO4JesOugsPTD3riM2JJR/NKExuybEYGxnfOA8S6w8kHA==
+X-Received: by 2002:a05:6a21:a585:b0:148:f952:552b with SMTP id
+ gd5-20020a056a21a58500b00148f952552bmr35644116pzc.51.1697169153154; 
+ Thu, 12 Oct 2023 20:52:33 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001c7453fae33sm2733526plg.280.2023.10.12.20.41.20
+ nr11-20020a17090b240b00b002791d5a3e29sm2624540pjb.6.2023.10.12.20.52.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 20:41:20 -0700 (PDT)
-Message-ID: <4b966855-277a-40d1-894d-85bf874d0181@linaro.org>
-Date: Thu, 12 Oct 2023 20:41:19 -0700
+ Thu, 12 Oct 2023 20:52:32 -0700 (PDT)
+Message-ID: <aa9f3112-7e34-4eff-8d93-59d036e82ff9@linaro.org>
+Date: Thu, 12 Oct 2023 20:52:31 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] tcg/arm: Use tcg_use_softmmu
+Subject: Re: [PATCH v5 0/9] linux-user: Detect and report host crashes
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20231003174356.1602279-1-richard.henderson@linaro.org>
- <20231003174356.1602279-4-richard.henderson@linaro.org>
- <ef866c49-63aa-c062-481f-e77a26e4caa7@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ef866c49-63aa-c062-481f-e77a26e4caa7@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, deller@gmx.de
+References: <20231003192012.1674888-1-richard.henderson@linaro.org>
+In-Reply-To: <20231003192012.1674888-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,38 +93,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/5/23 09:53, Philippe Mathieu-Daudé wrote:
-> On 3/10/23 19:43, Richard Henderson wrote:
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   tcg/arm/tcg-target.c.inc | 203 +++++++++++++++++++--------------------
->>   1 file changed, 97 insertions(+), 106 deletions(-)
+Ping.
+
+On 10/3/23 12:20, Richard Henderson wrote:
+> More signal cleanups.  Mostly tested by temporarily adding an
+> abort, divide by zero, undefined instruction, null dereference,
+> within the implementation of a guest syscall to induce an error.
+> 
+> Changes for v5:
+>    * Remap guest abort, which means we need to try less hard on
+>      the host side to handle assertion failures.
+>    * Drop the backtrace.  Since backtrace_symbols only looks at the
+>      dynamic symbol set, we don't much that's useful -- we still
+>      need to use the debugger.
 > 
 > 
->> @@ -356,14 +354,8 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
->>    * r0-r3 will be overwritten when reading the tlb entry (softmmu only);
->>    * r14 will be overwritten by the BLNE branching to the slow path.
->>    */
->> -#ifdef CONFIG_SOFTMMU
->>   #define ALL_QLDST_REGS \
->> -    (ALL_GENERAL_REGS & ~((1 << TCG_REG_R0) | (1 << TCG_REG_R1) | \
->> -                          (1 << TCG_REG_R2) | (1 << TCG_REG_R3) | \
->> -                          (1 << TCG_REG_R14)))
->> -#else
->> -#define ALL_QLDST_REGS   (ALL_GENERAL_REGS & ~(1 << TCG_REG_R14))
->> -#endif
->> +    (ALL_GENERAL_REGS & ~((tcg_use_softmmu ? 0xf : 0) | (1 << TCG_REG_R14)))
+> r~
 > 
-> Maybe add a comment?
 > 
-> (ALL_GENERAL_REGS & ~((tcg_use_softmmu ? 0xf /* R0 to R3 */ : 0) | (1 << TCG_REG_R14)))
+> Helge Deller (1):
+>    linux-user: Detect and report host crashes
 > 
-> Otherwise,
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Richard Henderson (8):
+>    linux-user: Split out die_with_signal
+>    linux-user: Exit not abort in die_with_backtrace
+>    linux-user: Only register handlers for core_dump_signal by default
+>    linux-user: Map unsupported signals to an out-of-bounds value
+>    linux-user: Simplify signal_init
+>    linux-user: Split out host_sig{segv,bus}_handler
+>    linux-user: Detect and report host SIGILL, SIGFPE, SIGTRAP
+>    linux-user: Remap guest SIGABRT
+> 
+>   linux-user/signal.c | 452 +++++++++++++++++++++++++++++---------------
+>   1 file changed, 296 insertions(+), 156 deletions(-)
 > 
 
-I'd have thought the existing comment sufficient.
-
-
-r~
 
