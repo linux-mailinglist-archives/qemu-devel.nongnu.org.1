@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2728F7C8F16
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 243D07C8F2D
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:33:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrPik-0006Mi-AV; Fri, 13 Oct 2023 17:29:22 -0400
+	id 1qrPij-0006M1-NV; Fri, 13 Oct 2023 17:29:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPif-0006Ks-8E
+ id 1qrPie-0006Kc-D8
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:29:17 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPib-0000US-4q
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:29:16 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-5859a7d6556so1884793a12.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:29:11 -0700 (PDT)
+ id 1qrPib-0000Ug-53
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:29:15 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-690fe10b6a4so2076568b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:29:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697232551; x=1697837351; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vHpyM/i6DfbRJ1zqPOIHNLjOC5TfX2noQLAfAlf4cOM=;
- b=d0uvXa4WS7B7Wgd1PCzqCFCj9v5pX1ZbdSlbN7YXEUCx09ch7bj/yTDutbyCaVsnh9
- tNLd1uv4cOx3plCI45/wrsHGqdcA+L/63g4+jnRHVPCEKrBFxOB7oq0ZMsSQO1HkHaz8
- 5opJ9DBGsyv8ecWyjQaZfqj33kI1Ds639RdyDL4SwpPg1NKeYdvAfbfgiEHY+Nush7St
- wEVFd76xnSGb4vuiI87uR4HcRWxicVJpfuOGZvPcmfVbdIOf+wpXOEKVkIC4Ug0HcJI2
- nZDUlM6BbNNe0lPgNQQ4s1t3anxVj07S9SToj2wITFTQAsEECUQc6zw8nk/n48qAjUQr
- pRng==
+ bh=20NBIfDeq7i/k9K9KB1Vp0gzcYLgBgC5UETDi49ec1M=;
+ b=gz79zuBCJUrcMVEwDX48DSlfwlL7mj9NAbdNs9vM33n+gNDVm2F7zYaz8yAK/iOTqL
+ 6/l96t6P5I1ezOsQK+s1/H2+5perD//mZ6k5P1iViAZ9/swQBzQAuRBhgk9rNSkBC3Qw
+ E8kW13iwAxZZdU/GKHsk4zwdUOxH6EwbcBTxbizlAYP68qatmtLkHEqjR1UWpLuZnWsh
+ CdhFWKaze5WltOan5aREXehS3ZU1AvjxrVBkGA+IWWQQz+os1RPIDqbEqvqFmUzXPuC8
+ T2O+QZD9DkR0tmMFDYw3TfaULIaQUHwWIYLj49YFxF49KUldyHCjFQEctpuem5GxPKPI
+ 7ysw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697232551; x=1697837351;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vHpyM/i6DfbRJ1zqPOIHNLjOC5TfX2noQLAfAlf4cOM=;
- b=KghKN+bzuP7cZZrJQKivQen3Rfg6AEC0gh1xLlJ41N56y7ZCXWYk1LUSSHpFsoQY4v
- dmXfXjUHBUk0Drfvx0ILrDX3zYHeHdntnvrsKB+7X39jn0LghEafRvskuJQ0h9OJVU1V
- DhcfmVDw4axgvQNcTbqFBxeOxOn2b7T/w1CUN8lQ5vPcTNeNiYPtvt2gYhUMay4kmDXC
- SKKwpExQ+6mib8N1Hbq3K8R3K+NCnym92QFfmOSuz9nYtfAuT40JGz1JxXX2zvgPQnR7
- lVdk0Qwz2ypE0aQB9w5jsPj/DhA6iL2AC26ipUEba1DDeyU2VitOeddhuvKRQAHuJ5Cu
- n7GQ==
-X-Gm-Message-State: AOJu0YyRY2dnVXByvO/X3WUzzTLqP9M8ldTiFQjaZWT18cxwPNElYzg3
- fsO/flIvfCfR2X5CXSe67pZXkws855OkezwqFXA=
-X-Google-Smtp-Source: AGHT+IGiG2yyLLpMH8dBco6rrKOlbMhkNL4+z8XzzB/VWEBY4hYVPwnHQmqIxMNhx35JQWVS27r2lw==
-X-Received: by 2002:a05:6a20:2583:b0:161:76a4:4f74 with SMTP id
- k3-20020a056a20258300b0016176a44f74mr32202666pzd.1.1697232550711; 
- Fri, 13 Oct 2023 14:29:10 -0700 (PDT)
+ bh=20NBIfDeq7i/k9K9KB1Vp0gzcYLgBgC5UETDi49ec1M=;
+ b=VX6B8GJ+ZyMbRE4/jQB/QpG/r0mkxLttJZTEQAmwRUQDHd4EndiHG7Vpnebh05Wqoo
+ VMvxAU32iJVx1dlqmbo+uym+rwChrUX7YOn1c0KpugnLo940oFei3GM1RF7qOKyJ8tuI
+ RJGth+knVws4SqIH5iPDVVvxNOpPnhLztR3dZAutX7sNsB20t4hFdXoWkMRAzUBp/R0S
+ XV2a/xq5s/5dT4lN4BLRQErhK3RCNnLBAiJsiJNP4YKlYr3m3Zzn4dtkhetxObcbySph
+ zN3Poix/yIqUNwlH79/RBob8JslFQ6f3UtuX3Pmxtzsq/4Sli+dUJp3zwMe4X2S0w1rW
+ /f6w==
+X-Gm-Message-State: AOJu0YyfpzeNP+6S+UD51kjkIpzQ9fuKk9Kv+L5t4Yz20Z8GJrH8W64N
+ /WlTWRk0P5oElrXc6cEOv4DhIHY66WNTwaPxrnQ=
+X-Google-Smtp-Source: AGHT+IHWB9oOzPpw//1cyDjdYiVcel6EBd0xI82sKvO/mNLGv9luX3/dJBPiSsdhh+DE71WZLwu9EQ==
+X-Received: by 2002:a05:6a20:4422:b0:16b:d137:dfb3 with SMTP id
+ ce34-20020a056a20442200b0016bd137dfb3mr28654545pzb.59.1697232551542; 
+ Fri, 13 Oct 2023 14:29:11 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- b185-20020a6334c2000000b0058988954686sm70753pga.90.2023.10.13.14.29.09
+ b185-20020a6334c2000000b0058988954686sm70753pga.90.2023.10.13.14.29.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 14:29:10 -0700 (PDT)
+ Fri, 13 Oct 2023 14:29:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	atar4qemu@gmail.com
-Subject: [PATCH 24/85] target/sparc: Move basic arithmetic to decodetree
-Date: Fri, 13 Oct 2023 14:27:45 -0700
-Message-Id: <20231013212846.165724-25-richard.henderson@linaro.org>
+Subject: [PATCH 25/85] target/sparc: Move ADDC to decodetree
+Date: Fri, 13 Oct 2023 14:27:46 -0700
+Message-Id: <20231013212846.165724-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231013212846.165724-1-richard.henderson@linaro.org>
 References: <20231013212846.165724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,255 +91,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move ADD, AND, OR, XOR, SUB, ANDN, ORN, XORN.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  18 ++++
- target/sparc/translate.c  | 183 +++++++++++++++++---------------------
- 2 files changed, 98 insertions(+), 103 deletions(-)
+ target/sparc/insns.decode |  2 ++
+ target/sparc/translate.c  | 41 +++++++++++++++++++++++++++++++++++----
+ 2 files changed, 39 insertions(+), 4 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 0425764973..a95f682fa7 100644
+index a95f682fa7..87108da5da 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -28,6 +28,7 @@ CALL    01 i:s30
- 
- &r_r_ri     rd rs1 rs2_or_imm imm:bool
- @n_r_ri     .. ..... ...... rs1:5 imm:1 rs2_or_imm:s13     &r_r_ri rd=0
-+@r_r_ri     .. rd:5  ...... rs1:5 imm:1 rs2_or_imm:s13     &r_r_ri
- 
- Tcc_r   10 0 cond:4 111010 rs1:5 0 cc:1 0000000 rs2:5
- Tcc_i   10 0 cond:4 111010 rs1:5 1 cc:1 0000 i:8
-@@ -154,3 +155,20 @@ WRPR_strand_status  10 11010 110010 ..... . .............  @n_r_ri
- WRHPR_hintp         10 00011 110011 ..... . .............  @n_r_ri
- WRHPR_htba          10 00101 110011 ..... . .............  @n_r_ri
- WRHPR_hstick_cmpr   10 11111 110011 ..... . .............  @n_r_ri
-+
-+ADD         10 ..... 000000 ..... . .............          @r_r_ri
-+ADDcc       10 ..... 010000 ..... . .............          @r_r_ri
-+AND         10 ..... 000001 ..... . .............          @r_r_ri
-+ANDcc       10 ..... 010001 ..... . .............          @r_r_ri
-+OR          10 ..... 000010 ..... . .............          @r_r_ri
-+ORcc        10 ..... 010010 ..... . .............          @r_r_ri
-+XOR         10 ..... 000011 ..... . .............          @r_r_ri
-+XORcc       10 ..... 010011 ..... . .............          @r_r_ri
-+SUB         10 ..... 000100 ..... . .............          @r_r_ri
-+SUBcc       10 ..... 010100 ..... . .............          @r_r_ri
-+ANDN        10 ..... 000101 ..... . .............          @r_r_ri
-+ANDNcc      10 ..... 010101 ..... . .............          @r_r_ri
-+ORN         10 ..... 000110 ..... . .............          @r_r_ri
-+ORNcc       10 ..... 010110 ..... . .............          @r_r_ri
-+XORN        10 ..... 000111 ..... . .............          @r_r_ri
-+XORNcc      10 ..... 010111 ..... . .............          @r_r_ri
+@@ -172,3 +172,5 @@ ORN         10 ..... 000110 ..... . .............          @r_r_ri
+ ORNcc       10 ..... 010110 ..... . .............          @r_r_ri
+ XORN        10 ..... 000111 ..... . .............          @r_r_ri
+ XORNcc      10 ..... 010111 ..... . .............          @r_r_ri
++ADDC        10 ..... 001000 ..... . .............          @r_r_ri
++ADDCcc      10 ..... 011000 ..... . .............          @r_r_ri
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index efb3c7c570..a21c5ec329 100644
+index a21c5ec329..37917ad397 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -4079,6 +4079,86 @@ static bool trans_NOP_v7(DisasContext *dc, arg_NOP_v7 *a)
-     return false;
- }
+@@ -4159,6 +4159,43 @@ TRANS(ANDNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_andc_tl, NULL)
+ TRANS(ORNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_orc_tl, NULL)
+ TRANS(XORNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_eqv_tl, NULL)
  
-+static bool do_cc_arith(DisasContext *dc, arg_r_r_ri *a, int cc_op,
-+                        void (*func)(TCGv, TCGv, TCGv),
-+                        void (*funci)(TCGv, TCGv, target_long))
++static TCGv gen_rs2_or_imm(DisasContext *dc, bool imm, int rs2_or_imm)
 +{
-+    TCGv dst, src1;
-+
 +    /* For simplicity, we under-decoded the rs2 form. */
-+    if (!a->imm && a->rs2_or_imm & ~0x1f) {
++    if (!imm && rs2_or_imm & ~0x1f) {
++        return NULL;
++    }
++    if (imm || rs2_or_imm == 0) {
++        return tcg_constant_tl(rs2_or_imm);
++    } else {
++        return cpu_regs[rs2_or_imm];
++    }
++}
++
++static bool trans_ADDC(DisasContext *dc, arg_r_r_ri *a)
++{
++    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
++
++    if (src2 == NULL) {
 +        return false;
 +    }
-+
-+    if (cc_op < 0) {
-+        dst = gen_dest_gpr(dc, a->rd);
-+    } else {
-+        dst = cpu_cc_dst;
-+        tcg_gen_movi_i32(cpu_cc_op, cc_op);
-+        dc->cc_op = cc_op;
-+    }
-+    src1 = gen_load_gpr(dc, a->rs1);
-+
-+    if (a->imm || a->rs2_or_imm == 0) {
-+        if (funci) {
-+            funci(dst, src1, a->rs2_or_imm);
-+        } else {
-+            func(dst, src1, tcg_constant_tl(a->rs2_or_imm));
-+        }
-+    } else {
-+        func(dst, src1, cpu_regs[a->rs2_or_imm]);
-+    }
-+    gen_store_gpr(dc, a->rd, dst);
++    gen_op_addx_int(dc, gen_dest_gpr(dc, a->rd),
++                    gen_load_gpr(dc, a->rs1), src2, false);
 +    return advance_pc(dc);
 +}
 +
-+static bool do_arith(DisasContext *dc, arg_r_r_ri *a,
-+                     void (*func)(TCGv, TCGv, TCGv),
-+                     void (*funci)(TCGv, TCGv, target_long))
++static bool trans_ADDCcc(DisasContext *dc, arg_r_r_ri *a)
 +{
-+    return do_cc_arith(dc, a, -1, func, funci);
-+}
++    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
 +
-+static bool trans_OR(DisasContext *dc, arg_r_r_ri *a)
-+{
-+    /* For simplicity, we under-decoded the rs2 form. */
-+    if (!a->imm && a->rs2_or_imm & ~0x1f) {
++    if (src2 == NULL) {
 +        return false;
 +    }
-+
-+    /* OR with %g0 is the canonical alias for MOV. */
-+    if (a->rs1 == 0) {
-+        TCGv src2;
-+
-+        if (a->imm || a->rs2_or_imm == 0) {
-+            src2 = tcg_constant_tl(a->rs2_or_imm);
-+        } else {
-+            src2 = cpu_regs[a->rs2_or_imm];
-+        }
-+        gen_store_gpr(dc, a->rd, src2);
-+        return advance_pc(dc);
-+    }
-+
-+    return do_arith(dc, a, tcg_gen_or_tl, tcg_gen_ori_tl);
++    gen_op_addx_int(dc, gen_dest_gpr(dc, a->rd),
++                    gen_load_gpr(dc, a->rs1), src2, true);
++    return advance_pc(dc);
 +}
-+
-+TRANS(ADD, ALL, do_arith, a, tcg_gen_add_tl, tcg_gen_addi_tl)
-+TRANS(AND, ALL, do_arith, a, tcg_gen_and_tl, tcg_gen_andi_tl)
-+TRANS(XOR, ALL, do_arith, a, tcg_gen_xor_tl, tcg_gen_xori_tl)
-+TRANS(SUB, ALL, do_arith, a, tcg_gen_sub_tl, tcg_gen_subi_tl)
-+TRANS(ANDN, ALL, do_arith, a, tcg_gen_andc_tl, NULL)
-+TRANS(ORN, ALL, do_arith, a, tcg_gen_orc_tl, NULL)
-+TRANS(XORN, ALL, do_arith, a, tcg_gen_eqv_tl, NULL)
-+
-+TRANS(ADDcc, ALL, do_cc_arith, a, CC_OP_ADD, gen_op_add_cc, NULL)
-+TRANS(ANDcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_and_tl, tcg_gen_andi_tl)
-+TRANS(ORcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_or_tl, tcg_gen_ori_tl)
-+TRANS(XORcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_xor_tl, tcg_gen_xori_tl)
-+TRANS(SUBcc, ALL, do_cc_arith, a, CC_OP_SUB, gen_op_sub_cc, NULL)
-+TRANS(ANDNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_andc_tl, NULL)
-+TRANS(ORNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_orc_tl, NULL)
-+TRANS(XORNcc, ALL, do_cc_arith, a, CC_OP_LOGIC, tcg_gen_eqv_tl, NULL)
 +
  #define CHECK_IU_FEATURE(dc, FEATURE)                      \
      if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
          goto illegal_insn;
-@@ -4427,43 +4507,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-                     default:
-                         goto illegal_insn;
-                 }
--            } else if (xop == 0x2) {
--                TCGv dst = gen_dest_gpr(dc, rd);
--                rs1 = GET_FIELD(insn, 13, 17);
--                if (rs1 == 0) {
--                    /* clr/mov shortcut : or %g0, x, y -> mov x, y */
--                    if (IS_IMM) {       /* immediate */
--                        simm = GET_FIELDs(insn, 19, 31);
--                        tcg_gen_movi_tl(dst, simm);
--                        gen_store_gpr(dc, rd, dst);
--                    } else {            /* register */
--                        rs2 = GET_FIELD(insn, 27, 31);
--                        if (rs2 == 0) {
--                            tcg_gen_movi_tl(dst, 0);
--                            gen_store_gpr(dc, rd, dst);
--                        } else {
--                            cpu_src2 = gen_load_gpr(dc, rs2);
--                            gen_store_gpr(dc, rd, cpu_src2);
--                        }
--                    }
--                } else {
--                    cpu_src1 = get_src1(dc, insn);
--                    if (IS_IMM) {       /* immediate */
--                        simm = GET_FIELDs(insn, 19, 31);
--                        tcg_gen_ori_tl(dst, cpu_src1, simm);
--                        gen_store_gpr(dc, rd, dst);
--                    } else {            /* register */
--                        rs2 = GET_FIELD(insn, 27, 31);
--                        if (rs2 == 0) {
--                            /* mov shortcut:  or x, %g0, y -> mov x, y */
--                            gen_store_gpr(dc, rd, cpu_src1);
--                        } else {
--                            cpu_src2 = gen_load_gpr(dc, rs2);
--                            tcg_gen_or_tl(dst, cpu_src1, cpu_src2);
--                            gen_store_gpr(dc, rd, dst);
--                        }
--                    }
--                }
- #ifdef TARGET_SPARC64
-             } else if (xop == 0x25) { /* sll, V9 sllx */
-                 cpu_src1 = get_src1(dc, insn);
-@@ -4540,72 +4583,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+@@ -4583,10 +4620,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
                      cpu_src1 = get_src1(dc, insn);
                      cpu_src2 = get_src2(dc, insn);
                      switch (xop & ~0x10) {
--                    case 0x0: /* add */
--                        if (xop & 0x10) {
--                            gen_op_add_cc(cpu_dst, cpu_src1, cpu_src2);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_ADD);
--                            dc->cc_op = CC_OP_ADD;
--                        } else {
--                            tcg_gen_add_tl(cpu_dst, cpu_src1, cpu_src2);
--                        }
+-                    case 0x8: /* addx, V9 addc */
+-                        gen_op_addx_int(dc, cpu_dst, cpu_src1, cpu_src2,
+-                                        (xop & 0x10));
 -                        break;
--                    case 0x1: /* and */
--                        tcg_gen_and_tl(cpu_dst, cpu_src1, cpu_src2);
--                        if (xop & 0x10) {
--                            tcg_gen_mov_tl(cpu_cc_dst, cpu_dst);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_LOGIC);
--                            dc->cc_op = CC_OP_LOGIC;
--                        }
--                        break;
--                    case 0x2: /* or */
--                        tcg_gen_or_tl(cpu_dst, cpu_src1, cpu_src2);
--                        if (xop & 0x10) {
--                            tcg_gen_mov_tl(cpu_cc_dst, cpu_dst);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_LOGIC);
--                            dc->cc_op = CC_OP_LOGIC;
--                        }
--                        break;
--                    case 0x3: /* xor */
--                        tcg_gen_xor_tl(cpu_dst, cpu_src1, cpu_src2);
--                        if (xop & 0x10) {
--                            tcg_gen_mov_tl(cpu_cc_dst, cpu_dst);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_LOGIC);
--                            dc->cc_op = CC_OP_LOGIC;
--                        }
--                        break;
--                    case 0x4: /* sub */
--                        if (xop & 0x10) {
--                            gen_op_sub_cc(cpu_dst, cpu_src1, cpu_src2);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_SUB);
--                            dc->cc_op = CC_OP_SUB;
--                        } else {
--                            tcg_gen_sub_tl(cpu_dst, cpu_src1, cpu_src2);
--                        }
--                        break;
--                    case 0x5: /* andn */
--                        tcg_gen_andc_tl(cpu_dst, cpu_src1, cpu_src2);
--                        if (xop & 0x10) {
--                            tcg_gen_mov_tl(cpu_cc_dst, cpu_dst);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_LOGIC);
--                            dc->cc_op = CC_OP_LOGIC;
--                        }
--                        break;
--                    case 0x6: /* orn */
--                        tcg_gen_orc_tl(cpu_dst, cpu_src1, cpu_src2);
--                        if (xop & 0x10) {
--                            tcg_gen_mov_tl(cpu_cc_dst, cpu_dst);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_LOGIC);
--                            dc->cc_op = CC_OP_LOGIC;
--                        }
--                        break;
--                    case 0x7: /* xorn */
--                        tcg_gen_eqv_tl(cpu_dst, cpu_src1, cpu_src2);
--                        if (xop & 0x10) {
--                            tcg_gen_mov_tl(cpu_cc_dst, cpu_dst);
--                            tcg_gen_movi_i32(cpu_cc_op, CC_OP_LOGIC);
--                            dc->cc_op = CC_OP_LOGIC;
--                        }
--                        break;
-                     case 0x8: /* addx, V9 addc */
-                         gen_op_addx_int(dc, cpu_dst, cpu_src1, cpu_src2,
-                                         (xop & 0x10));
+ #ifdef TARGET_SPARC64
+                     case 0x9: /* V9 mulx */
+                         tcg_gen_mul_i64(cpu_dst, cpu_src1, cpu_src2);
 -- 
 2.34.1
 
