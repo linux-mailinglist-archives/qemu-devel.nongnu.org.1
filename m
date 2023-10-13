@@ -2,61 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4789F7C87D4
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 052CD7C87D8
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:28:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrJ8D-000302-2x; Fri, 13 Oct 2023 10:27:13 -0400
+	id 1qrJ8r-0003vV-9O; Fri, 13 Oct 2023 10:27:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qrJ81-0002wR-N4
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:27:04 -0400
-Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qrJ7z-0007Zc-Hq
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:27:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Y9wKSkRXeMEye/LmyF5hiojlFJJKn32vIjXsCctosSw=; b=nCGLStouFha4MuUphGaY7Zaqs0
- gY3Hf7MQoEVHjgqQ5JjeD8Qwdb6+Q+kYtDRXvltj1pSjcj4xOzxfXFPAPlDPZbBwEkX1dpZ476Irv
- AEDtgKccoanDJBm4B1np2LZAQGvEcKTdYur2CEH/HXtulgZ6ZWa1OfcbL1IWE+LqQ6CI=;
-Date: Fri, 13 Oct 2023 16:26:50 +0200
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [RFC PATCH v3 34/78] target/tricore: add fallthrough
- pseudo-keyword
-Message-ID: <p7xgzof7rzsd57quovylu5ogud6p6jrmv3fmrdh2umyzjrjdur@ngydtjlmwvso>
-References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
- <58c8ba7fde09d949a71b7d35b9e51e52ebde028f.1697186560.git.manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qrJ8p-0003uC-8X
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:27:51 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qrJ8k-0007eu-KO
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:27:51 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c87a85332bso18741885ad.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:27:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697207265; x=1697812065; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NRBjBCXdj5645/oaM7yusVIiSfhhU8aAoSEGZ6gLR7A=;
+ b=VpTq/HCMku2fLbLtd2YCgeePICzvPNcS5B+Y/s5dGT/OhsUpoNhQaAHUknJVryiykp
+ mgfl3wtfUDV+IpgetwDCZBhDWF4MyiogP1sRbQgeRf7ciGMGfM23mGOV4vMhaPoV5MLO
+ LKFtOPRkX2sQqsRtk+hKv20opi+2nEkwvggZt3UxLd241nhMlgVRIhQPcHJmmvQ+WqHK
+ MXwb8VvppELJJ6XsPjN3qd4fokTjmLhviVG9OQDvivNDF+Z4Vz4Fiv6x4dTeuV68yjv9
+ JM3/+QXzelug6CoIaUqjoCBgOSEmuG8KoDD8RMtu4Q+rz0WrErJkxzh/0VDY2gstaR5Z
+ gwsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697207265; x=1697812065;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NRBjBCXdj5645/oaM7yusVIiSfhhU8aAoSEGZ6gLR7A=;
+ b=aYNqYoqFTaiAlv/EcbhYOsxJO1gFBl4cWwXU1Op25vLiFGdViqUGzesOjBMmJjI5z0
+ OTbJyZSOAb7g1b2iLHiXpzoYsyX1BhgHGzi7y+k7SpkZdPpiPaiCB5NEHyvucRjlPdjh
+ AYB7qScBmBlOO4mHb3QXY9EgIgCqY2mrO5tunISLHKzsOYR5SmbkXT0Ei7lDlZly+z35
+ EIrz+quPs9sBnMKFqebLwITanjdAbj/1XnCaGYef21ZzgyIK6nAnoJzcdvNfB09euwFO
+ Wde5gegOXeiFd+LGxlKQAKjzIjDnx89D8UTX/sojpZcIOrTwCIT075LJzHLxTdargpYh
+ k3xA==
+X-Gm-Message-State: AOJu0YwU8mwdiXNESdv4EyLjE5+y871QIiSPCFXefBqsAcxQWU3pUuYX
+ RCBVYf8453oRkMfnOa5vn07D6iCsy6zJ2Ck0+3U=
+X-Google-Smtp-Source: AGHT+IEv7T9CtlbY7pmBIbljMbn6Soedih3sMbh+lmLWNDt5x1JOvdv0/Mwpaqi1TRv1v47C1rLyuQ==
+X-Received: by 2002:a17:902:f688:b0:1c9:e830:160d with SMTP id
+ l8-20020a170902f68800b001c9e830160dmr3928922plg.22.1697207265110; 
+ Fri, 13 Oct 2023 07:27:45 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ e7-20020a17090301c700b001b3bf8001a9sm3958048plh.48.2023.10.13.07.27.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Oct 2023 07:27:44 -0700 (PDT)
+Message-ID: <64733bf8-58bb-4176-927f-f17c33fa3846@linaro.org>
+Date: Fri, 13 Oct 2023 07:27:43 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <58c8ba7fde09d949a71b7d35b9e51e52ebde028f.1697186560.git.manos.pitsidianakis@linaro.org>
-X-IMT-Source: Extern
-X-IMT-rspamd-score: 3
-X-IMT-Spam-Score: 0.0 ()
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.10.13.141817, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.10.13.602001
-X-Sophos-SenderHistory: ip=79.202.213.239, fs=1399847, da=184816276, mc=70,
- sc=0, hc=70, sp=0, fso=1399847, re=0, sd=0, hd=0
-X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
-Received-SPF: pass client-ip=2001:638:502:c003::17;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/16] target/arm: Move internal declarations from
+ 'cpu-qom.h' to 'cpu.h'
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20231013140116.255-1-philmd@linaro.org>
+ <20231013140116.255-4-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231013140116.255-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,15 +95,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 13, 2023 at 11:46:02AM +0300, Emmanouil Pitsidianakis wrote:
-> In preparation of raising -Wimplicit-fallthrough to 5, replace all
-> fall-through comments with the fallthrough attribute pseudo-keyword.
+On 10/13/23 07:01, Philippe Mathieu-Daudé wrote:
+> These definitions and declarations are only used by
+> target/arm/, no need to expose them to generic hw/.
 > 
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
+>   target/arm/cpu-qom.h | 28 ----------------------------
+>   target/arm/cpu.h     | 28 ++++++++++++++++++++++++++++
+>   2 files changed, 28 insertions(+), 28 deletions(-)
+> 
+> diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
+> index dfb9d5b827..35c3b0924e 100644
+> --- a/target/arm/cpu-qom.h
+> +++ b/target/arm/cpu-qom.h
+> @@ -35,9 +35,6 @@ typedef struct ARMCPUInfo {
+>       void (*class_init)(ObjectClass *oc, void *data);
+>   } ARMCPUInfo;
+>   
+> -void arm_cpu_register(const ARMCPUInfo *info);
+> -void aarch64_cpu_register(const ARMCPUInfo *info);
+> -
+>   /**
+>    * ARMCPUClass:
+>    * @parent_realize: The parent class' realize handler.
+> @@ -63,29 +60,4 @@ struct AArch64CPUClass {
+>       ARMCPUClass parent_class;
+>   };
+>   
+> -void register_cp_regs_for_features(ARMCPU *cpu);
+> -void init_cpreg_list(ARMCPU *cpu);
+> -
+> -/* Callback functions for the generic timer's timers. */
+> -void arm_gt_ptimer_cb(void *opaque);
+> -void arm_gt_vtimer_cb(void *opaque);
+> -void arm_gt_htimer_cb(void *opaque);
+> -void arm_gt_stimer_cb(void *opaque);
+> -void arm_gt_hvtimer_cb(void *opaque);
+> -
+> -#define ARM_AFF0_SHIFT 0
+> -#define ARM_AFF0_MASK  (0xFFULL << ARM_AFF0_SHIFT)
+> -#define ARM_AFF1_SHIFT 8
+> -#define ARM_AFF1_MASK  (0xFFULL << ARM_AFF1_SHIFT)
+> -#define ARM_AFF2_SHIFT 16
+> -#define ARM_AFF2_MASK  (0xFFULL << ARM_AFF2_SHIFT)
+> -#define ARM_AFF3_SHIFT 32
+> -#define ARM_AFF3_MASK  (0xFFULL << ARM_AFF3_SHIFT)
+> -#define ARM_DEFAULT_CPUS_PER_CLUSTER 8
+> -
+> -#define ARM32_AFFINITY_MASK (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK)
+> -#define ARM64_AFFINITY_MASK \
+> -    (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK|ARM_AFF3_MASK)
+> -#define ARM64_AFFINITY_INVALID (~ARM64_AFFINITY_MASK)
+> -
+>   #endif
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index fb1b08371c..06f92dacb9 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -1116,11 +1116,39 @@ struct ArchCPU {
+>       uint64_t gt_cntfrq_hz;
+>   };
+>   
+> +/* Callback functions for the generic timer's timers. */
+> +void arm_gt_ptimer_cb(void *opaque);
+> +void arm_gt_vtimer_cb(void *opaque);
+> +void arm_gt_htimer_cb(void *opaque);
+> +void arm_gt_stimer_cb(void *opaque);
+> +void arm_gt_hvtimer_cb(void *opaque);
+> +
+>   unsigned int gt_cntfrq_period_ns(ARMCPU *cpu);
+>   void gt_rme_post_el_change(ARMCPU *cpu, void *opaque);
+>   
+>   void arm_cpu_post_init(Object *obj);
+>   
+> +void arm_cpu_register(const ARMCPUInfo *info);
+> +void aarch64_cpu_register(const ARMCPUInfo *info);
+> +
+> +void register_cp_regs_for_features(ARMCPU *cpu);
+> +void init_cpreg_list(ARMCPU *cpu);
 
-Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+These can go to internals.h.
 
-Cheers,
-Bastian
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
+
+> +
+> +#define ARM_AFF0_SHIFT 0
+> +#define ARM_AFF0_MASK  (0xFFULL << ARM_AFF0_SHIFT)
+> +#define ARM_AFF1_SHIFT 8
+> +#define ARM_AFF1_MASK  (0xFFULL << ARM_AFF1_SHIFT)
+> +#define ARM_AFF2_SHIFT 16
+> +#define ARM_AFF2_MASK  (0xFFULL << ARM_AFF2_SHIFT)
+> +#define ARM_AFF3_SHIFT 32
+> +#define ARM_AFF3_MASK  (0xFFULL << ARM_AFF3_SHIFT)
+> +#define ARM_DEFAULT_CPUS_PER_CLUSTER 8
+> +
+> +#define ARM32_AFFINITY_MASK (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK)
+> +#define ARM64_AFFINITY_MASK \
+> +    (ARM_AFF0_MASK|ARM_AFF1_MASK|ARM_AFF2_MASK|ARM_AFF3_MASK)
+> +#define ARM64_AFFINITY_INVALID (~ARM64_AFFINITY_MASK)
+> +
+>   uint64_t arm_cpu_mp_affinity(int idx, uint8_t clustersz);
+>   
+>   #ifndef CONFIG_USER_ONLY
+
 
