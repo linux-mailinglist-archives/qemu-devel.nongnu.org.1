@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56067C8CF4
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 20:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 552497C8CFB
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 20:18:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrMg9-0004TW-Mi; Fri, 13 Oct 2023 14:14:29 -0400
+	id 1qrMjJ-0005QD-ME; Fri, 13 Oct 2023 14:17:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrMg7-0004T3-SA
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 14:14:27 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qrMjH-0005Ps-TA
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 14:17:43 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrMg6-00007j-B1
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 14:14:27 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6b598eaf407so525382b3a.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 11:14:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qrMjG-0000pH-5d
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 14:17:43 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1c9fa869a63so6937845ad.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 11:17:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697220865; x=1697825665; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1697221060; x=1697825860; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fw91ChDt+rOcqpsYAbBMyeyFK8OsZN5cm1R+uomjBGw=;
- b=xIGglxRUyfzMEw+hp8WyVh+Kicjg3zA9Sj1VnRXrx4lLFOvnwiplQaqFxAIZFLmiom
- GEqAosGI/rj2PLe4fuTeQFXb022XspCEHArQXoptVlgmpI3bhAF+bp7CKcQy6YFHM97P
- 3tPOdYMZCO0Mqh1gxl6vX7Q3tXl9rMPtBiPzJHcIfd6xFDBjWmtUKcfk8+MVx7rob/lL
- YJLqfjg7O5MKZaQEfinp+KbZBZiChMf7ff0j1D0LrnZvJh6efDItGmgC/6lrS8sIs5Te
- qkD1agT/6HIy/TMmrdhFwwqdo9UGB7hYR7pjijA4dJg1HfwwQS4RaHk0P76JseOYGv0r
- poaQ==
+ bh=VXuBaEeRwtFVjfdb5KvHlv7WTb+Byp+r+THMjJRzfXc=;
+ b=WHUcWSD1Ukt9GHul8fT6cc7Ft0IuSK/wOXN53abWA1Z4O17MN3rlDBmIIPhOnhY9qq
+ ZhyyPtG5JBwL/y1KpxrLu1PVKTNnwJOVxeQJsBSB0aP1CoKEiZJaVa+MzEW9ceBrBnFB
+ Zv0ncVuwPWU4pF0k190fBy7nM74MIUr6CD00kNq5U+XdHjOkF8kXUqUZZ7Tt1pvkzbRJ
+ QQskk2YrcHIHj72vOebVntGwwfGtSeYXvETjkONVhi/ndtBB5gatHgGCo9ue//HNKaf7
+ 1L37hEkqf9kGF1ce6OgDSNOWBjtYoGbf6Uad+oPPhTfUPpuR0JzFXtFQLDf2cTztRkyY
+ wHAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697220865; x=1697825665;
+ d=1e100.net; s=20230601; t=1697221060; x=1697825860;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fw91ChDt+rOcqpsYAbBMyeyFK8OsZN5cm1R+uomjBGw=;
- b=FUfrDsTy7prQVRjLXeZkk34ki1r5j05kK+MjsjfDeA3v/qmPtJmMKiwQ2vcH+DADok
- LhSffI7I574PtTU3voyV1jsM38VkEzbzzXncso6q7uchFlLvCHe6RzZ9biaZEbXECMql
- 7OXVU2jcJkMDZcTEImZKIFfagexU6R4U5unGNhGODU7CusGjOvupGULTNtbN5bq4s1//
- q2s7By/tsZSwSC7v4gh9d1NJSGtwyP1t2em791F6uZtF+dbkHC1N0PkbbuOJ4FsWlCRu
- QTCYoq8XdFHZnDkIEXRFqPCsdMr3Ert0VT8X9/DKll4As0DBWBTqTMTCJYeBmQv2M3mW
- F94A==
-X-Gm-Message-State: AOJu0YxuQVFRM9l74HwKVaxHW/ramjC22LbGV37YcpywyazOiqEPHmhb
- Ra1Ub+dBYmQ0Lz2y6LE557SlxQ==
-X-Google-Smtp-Source: AGHT+IHMbOsGt3IaMEehF2X0v9zMKUF9GjM1BYuxgVM1cOlWnpCX4IxChicef9+CEJ2B9JW2X5DL3A==
-X-Received: by 2002:a05:6a21:191:b0:155:5c28:ea67 with SMTP id
- le17-20020a056a21019100b001555c28ea67mr34781275pzb.38.1697220864813; 
- Fri, 13 Oct 2023 11:14:24 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
+ bh=VXuBaEeRwtFVjfdb5KvHlv7WTb+Byp+r+THMjJRzfXc=;
+ b=V8IzRLP1P6ntax4h+NWOeeZ8q/sjTYU24TpOw0qv0EF8v0Xn+9SrIUaUNRSryx8eLn
+ OCx2T82zmJFi2kVy/dWxETLH8oIfKakQbJCE9CBf3gOvM/s02coStu1gwelwtF+6ijPW
+ kAfuT5fYQR7eQYD+Sbrs19XaGDiw7+mkKNhDuRyvBW5mt7xubi17XioVkvSi5PMMpFJD
+ th0qNlsCvmqb5YjK7AQeaM33X3STE/57iDFpd1z7+BB7RqiAYxBm/AYWmYZBpljEGdOJ
+ bY4gh/STw3GojDljy/JfqqP2YJxTUTO9ZZNmYdpsk/fVL1lF8Szz4mIhsrJbK+MZkz7g
+ X7WQ==
+X-Gm-Message-State: AOJu0YxHcI4Y3ADxHnz4XkLpey+1Y/Gsnc50ihG1orOT3htn2Z0y9A+d
+ AcPPJX0CwRC9jY9EMkPfcUritg==
+X-Google-Smtp-Source: AGHT+IELo4c5ntAB8DwxfmnePY7Hu9RRPzL3QQ/JcT7UNRWrAuR8tYcW9zFYWxdxWtMXjMGR0UffTw==
+X-Received: by 2002:a17:902:d4c9:b0:1c7:8345:f377 with SMTP id
+ o9-20020a170902d4c900b001c78345f377mr28909117plg.29.1697221060487; 
+ Fri, 13 Oct 2023 11:17:40 -0700 (PDT)
+Received: from [192.168.68.107] ([177.94.42.196])
  by smtp.gmail.com with ESMTPSA id
- v5-20020a63bf05000000b005894450b404sm3182968pgf.63.2023.10.13.11.14.23
+ jf9-20020a170903268900b001c898328289sm4181803plb.158.2023.10.13.11.17.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 11:14:24 -0700 (PDT)
-Message-ID: <fb26bbac-e573-431e-a4b4-13ca65a24455@linaro.org>
-Date: Fri, 13 Oct 2023 11:14:17 -0700
+ Fri, 13 Oct 2023 11:17:40 -0700 (PDT)
+Message-ID: <42f5734d-02b2-4786-a193-cacdc7a8c7c9@ventanamicro.com>
+Date: Fri, 13 Oct 2023 15:17:36 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 9/10] hw/char/pl011: Add transmit FIFO to PL011State
+Subject: Re: [RFC PATCH v3 27/78] target/riscv: add fallthrough pseudo-keyword
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20231013141131.1531-1-philmd@linaro.org>
- <20231013141131.1531-10-philmd@linaro.org> <87edhylac2.fsf@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <87edhylac2.fsf@linaro.org>
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
+ <b387a1f2114c71be3c88c5bc9d8acb7f53c3b441.1697186560.git.manos.pitsidianakis@linaro.org>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <b387a1f2114c71be3c88c5bc9d8acb7f53c3b441.1697186560.git.manos.pitsidianakis@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,28 +99,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/13/23 10:05, Alex Bennée wrote:
->> @@ -487,7 +505,11 @@ static const VMStateDescription vmstate_pl011 = {
->>       .subsections = (const VMStateDescription * []) {
->>           &vmstate_pl011_clock,
->>           NULL
->> -    }
->> +    },
->> +    .subsections = (const VMStateDescription * []) {
->> +        &vmstate_pl011_xmit_fifo,
->> +        NULL
->> +    },
->>   };
+
+
+On 10/13/23 05:45, Emmanouil Pitsidianakis wrote:
+> In preparation of raising -Wimplicit-fallthrough to 5, replace all
+> fall-through comments with the fallthrough attribute pseudo-keyword.
 > 
-> Doesn't this necessitate the bumping of the migration version data or
-> do we not worry about new -> old migrations?
-
-We usually don't care about new->old, however:
-
-If the fifo is empty, migration will still work because of the subsection.
-If the fifo is not empty... I think the subsection will be ignored, with the only 
-consequence being that some characters will be dropped.
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
 
 
-r~
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+>   target/riscv/insn_trans/trans_rvi.c.inc   |  2 +-
+>   target/riscv/insn_trans/trans_rvzce.c.inc | 22 +++++++++++-----------
+>   target/riscv/translate.c                  |  4 ++--
+>   3 files changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_trans/trans_rvi.c.inc
+> index 25cb60558a..98dd2e3cf6 100644
+> --- a/target/riscv/insn_trans/trans_rvi.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvi.c.inc
+> @@ -122,7 +122,7 @@ static TCGCond gen_compare_i128(bool bz, TCGv rl,
+>   
+>       case TCG_COND_LTU:
+>           invert = true;
+> -        /* fallthrough */
+> +        fallthrough;
+>       case TCG_COND_GEU:
+>           {
+>               TCGv tmp = tcg_temp_new();
+> diff --git a/target/riscv/insn_trans/trans_rvzce.c.inc b/target/riscv/insn_trans/trans_rvzce.c.inc
+> index 2d992e14c4..f0bcbb4f72 100644
+> --- a/target/riscv/insn_trans/trans_rvzce.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvzce.c.inc
+> @@ -125,37 +125,37 @@ static uint32_t decode_push_pop_list(DisasContext *ctx, target_ulong rlist)
+>       case 15:
+>           reg_bitmap |=  1 << (X_Sn + 11) ;
+>           reg_bitmap |=  1 << (X_Sn + 10) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 14:
+>           reg_bitmap |=  1 << (X_Sn + 9) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 13:
+>           reg_bitmap |=  1 << (X_Sn + 8) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 12:
+>           reg_bitmap |=  1 << (X_Sn + 7) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 11:
+>           reg_bitmap |=  1 << (X_Sn + 6) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 10:
+>           reg_bitmap |=  1 << (X_Sn + 5) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 9:
+>           reg_bitmap |=  1 << (X_Sn + 4) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 8:
+>           reg_bitmap |=  1 << (X_Sn + 3) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 7:
+>           reg_bitmap |=  1 << (X_Sn + 2) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 6:
+>           reg_bitmap |=  1 << X_S1 ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 5:
+>           reg_bitmap |= 1 << X_S0;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>       case 4:
+>           reg_bitmap |= 1 << xRA;
+>           break;
+> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> index f0be79bb16..c99e513221 100644
+> --- a/target/riscv/translate.c
+> +++ b/target/riscv/translate.c
+> @@ -446,7 +446,7 @@ static TCGv_i64 get_fpr_hs(DisasContext *ctx, int reg_num)
+>           return t;
+>       }
+>   #else
+> -    /* fall through */
+> +    fallthrough;
+>       case MXL_RV64:
+>           return cpu_gpr[reg_num];
+>   #endif
+> @@ -516,7 +516,7 @@ static void gen_set_fpr_hs(DisasContext *ctx, int reg_num, TCGv_i64 t)
+>               tcg_gen_extrl_i64_i32(cpu_gpr[reg_num], t);
+>               break;
+>   #else
+> -        /* fall through */
+> +        fallthrough;
+>           case MXL_RV64:
+>               tcg_gen_mov_i64(cpu_gpr[reg_num], t);
+>               break;
 
