@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A177B7C8DA5
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1EA7C8D9A
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:15:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrNYO-00075J-3Q; Fri, 13 Oct 2023 15:10:32 -0400
+	id 1qrNYF-0006np-PF; Fri, 13 Oct 2023 15:10:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNYC-0006mJ-Bk
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:20 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNXt-0006YN-0q
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNY1-0001ra-Fk
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:20 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNXq-0001bs-MP
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697224206;
+ s=mimecast20190719; t=1697224197;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w3StD4bo+PpSuLq5pwNj05F876gF6NHUKZzqNiociig=;
- b=YTBgDfKTbACqCQc6/Q4MWjmonVjaRf+QoBIW8REaFAEBd7WZI+Mgq8fFJQ5mLE1cUt1COE
- 8366uQA+2sPP/Crsfzv3MYp7lSiI3mY7xHunX0NNiwXux2sHjbnzkMj7DD8vyEq5QX7Iqj
- HxXqAV0FfXQOhTu3XorKpB16WHd6DS8=
+ bh=6Wk63tEYkkJ6DYHqO2WS70EapGOvR59GzuZeJ88eG2Y=;
+ b=EKuyQFbom+J1CPXW9SluJvwYOfW5CU0Z5BBm1Bt4huZOW1XCt0LcBLUxOVlzZTBhSzFxfb
+ Rn8Ln6/ojI9KQZY8Ex2keobZUMOHWshUbHDniz4uwK5wVI8FMUrWJPtMTmxwLtUSN2o3Jp
+ aMPB7+MY7yXzN2PefE1GDFTSsKrEoh0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-101-TMkMF7QkN8aTAtOUq7MQ-Q-1; Fri, 13 Oct 2023 15:09:53 -0400
-X-MC-Unique: TMkMF7QkN8aTAtOUq7MQ-Q-1
+ us-mta-461-Ldv_5wPROWaY9-AE9jcnBg-1; Fri, 13 Oct 2023 15:09:54 -0400
+X-MC-Unique: Ldv_5wPROWaY9-AE9jcnBg-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 756C51029F40;
- Fri, 13 Oct 2023 19:09:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB4EF1029F41;
+ Fri, 13 Oct 2023 19:09:53 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.32.124])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4233040C6CA0;
- Fri, 13 Oct 2023 19:09:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8369740C6F79;
+ Fri, 13 Oct 2023 19:09:52 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>,
@@ -63,9 +63,10 @@ Cc: Kevin Wolf <kwolf@redhat.com>,
  Eric Farman <farman@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Halil Pasic <pasic@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PULL 07/25] Python/iotests: Add type hint for nbd module
-Date: Fri, 13 Oct 2023 15:09:22 -0400
-Message-ID: <20231013190941.3699288-8-jsnow@redhat.com>
+Subject: [PULL 08/25] python/qmp: remove Server.wait_closed() call for Python
+ 3.12
+Date: Fri, 13 Oct 2023 15:09:23 -0400
+Message-ID: <20231013190941.3699288-9-jsnow@redhat.com>
 In-Reply-To: <20231013190941.3699288-1-jsnow@redhat.com>
 References: <20231013190941.3699288-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -95,44 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test bails gracefully if this module isn't installed, but linters
-need a little help understanding that. It's enough to just declare the
-type in this case.
+This patch is a backport from
+https://gitlab.com/qemu-project/python-qemu-qmp/-/commit/e03a3334b6a477beb09b293708632f2c06fe9f61
 
-(Fixes pylint complaining about use of an uninitialized variable because
-it isn't wise enough to understand the notrun call is noreturn.)
+According to Guido in https://github.com/python/cpython/issues/104344 ,
+this call was never meant to wait for the server to shut down - that is
+handled synchronously - but instead, this waits for all connections to
+close. Or, it would have, if it wasn't broken since it was introduced.
+
+3.12 fixes the bug, which now causes a hang in our code. The fix is just
+to remove the wait.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-id: 20231006195243.3131140-2-jsnow@redhat.com
+Message-id: 20231006195243.3131140-3-jsnow@redhat.com
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- tests/qemu-iotests/tests/nbd-multiconn | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ python/qemu/qmp/protocol.py | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/qemu-iotests/tests/nbd-multiconn b/tests/qemu-iotests/tests/nbd-multiconn
-index 478a1eaba2..7e686a786e 100755
---- a/tests/qemu-iotests/tests/nbd-multiconn
-+++ b/tests/qemu-iotests/tests/nbd-multiconn
-@@ -20,6 +20,8 @@
- 
- import os
- from contextlib import contextmanager
-+from types import ModuleType
-+
- import iotests
- from iotests import qemu_img_create, qemu_io
- 
-@@ -28,7 +30,7 @@ disk = os.path.join(iotests.test_dir, 'disk')
- size = '4M'
- nbd_sock = os.path.join(iotests.sock_dir, 'nbd_sock')
- nbd_uri = 'nbd+unix:///{}?socket=' + nbd_sock
--
-+nbd: ModuleType
- 
- @contextmanager
- def open_nbd(export_name):
+diff --git a/python/qemu/qmp/protocol.py b/python/qemu/qmp/protocol.py
+index 753182131f..a4ffdfad51 100644
+--- a/python/qemu/qmp/protocol.py
++++ b/python/qemu/qmp/protocol.py
+@@ -495,7 +495,6 @@ async def _stop_server(self) -> None:
+         try:
+             self.logger.debug("Stopping server.")
+             self._server.close()
+-            await self._server.wait_closed()
+             self.logger.debug("Server stopped.")
+         finally:
+             self._server = None
 -- 
 2.41.0
 
