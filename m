@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6749A7C7CC9
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 06:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0217C7CDE
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 07:02:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr9sY-0002Kc-Dg; Fri, 13 Oct 2023 00:34:26 -0400
+	id 1qrAIm-0006Tp-Pr; Fri, 13 Oct 2023 01:01:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qr9sS-0002Jg-Au
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 00:34:20 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qr9sP-0001Ns-SS
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 00:34:20 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c87a85332bso14885795ad.2
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 21:34:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697171656; x=1697776456; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TIN57pIxKpGhq722tCT4tcYHUOkd4fwyvgeFWOYtRq0=;
- b=uo4J8MSrx9ufmOpgPexQ2edAyKbTLJ40tHAaggwJ6oezcIewq7/hJwCkArFQMXfYjO
- Zw5iDLbkTSWQk8zWFtfOHpA6r9SIyOHkJAfib9UUQzswr3lXNM1E7UyD/fWD2XQsZsLa
- cjyiKVom3N+JeEx6SCbqr7VVucoI/ORbi3Px5wpYBGmNn2OdJgOlkOFoGY/npRnzqIJR
- hgKbO3XyaKdFegjzreQ3Vc9CTOPH3W5hezf03/tzaj1pvD9u/k8dxFaH0dka2ozR7bEY
- rEAD8FQNdIfmy7nYC23wNZmONkPt6/6Y5qB+spCuu7+tUwYLp5riiy/JN4vblBdwMgu0
- 3COw==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qrAIZ-0006S1-EN
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 01:01:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qrAIP-0005XG-Co
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 01:01:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697173267;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=e6ShuRlkxO8hDaXq3lvG3qR4Ma7HGNTGQKH5KWtQawo=;
+ b=MeLAp/ZdwTYLxZa0ZSV+SMa42S3d89LhEOK0oRQS5kU8yHgzCiOHxjayhav7/0+JwV7zXe
+ Qq/0Q7vdrTbsE1v1J33huI3VIRBmAKsTrZBtTf1cajsb6ZHAAe067o7XvsqWpUbgRa5T+A
+ DHlQYhNfM+CaF+IIhonELAuefERbY98=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-170-5fT5n94xNFufc9JkzUAZzQ-1; Fri, 13 Oct 2023 01:01:05 -0400
+X-MC-Unique: 5fT5n94xNFufc9JkzUAZzQ-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c296e65035so16068851fa.3
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 22:01:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697171656; x=1697776456;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TIN57pIxKpGhq722tCT4tcYHUOkd4fwyvgeFWOYtRq0=;
- b=DQvtjeUYJTN2tTD02bs8h4PH+NR76uB8wevMqAQMLw8EXj5hiwt7E8QgdN/fGu7Fpn
- Caby6DaF86N98x+ankL9x7sDnHC1M8EzfivHAUrp349gBKxbZsBVls8gINBU4ZSC1bI5
- uWtzObEk+JAgw0qMBGYXMrbrYWxCuyQ39JV1gJrJBl3skY3PWyysmkRF/G/SCYynaw/4
- qFgm7HuAHCji1gdzom7v73rt8WW3lXSnY/zN1eoFml6F4nPLej8S0aJWTQ+30WWvg+K/
- etIeGvokT5Zb4o8H/2CchR6QSzhFtB+l37aMauHuWtAnHLl8lwt3C5afnvzgBAtzXtD4
- /i4w==
-X-Gm-Message-State: AOJu0YwqHwZCUZt/VVcJWa0a/HdbK1LQyIIDJXbBj1IgriVgsBTEdbDz
- a1hYLrlwONWIQw6A46akFoTZiyev5tvUN/sahgY=
-X-Google-Smtp-Source: AGHT+IGNayshnCFkMRukseOOepI4Zw9PZuFA1NQoWT3u+ui0znEofGyjGB5esSGdKIP0qL3hclqDiQ==
-X-Received: by 2002:a17:902:f54f:b0:1b8:66f6:87a3 with SMTP id
- h15-20020a170902f54f00b001b866f687a3mr32128428plf.52.1697171656249; 
- Thu, 12 Oct 2023 21:34:16 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- o11-20020a170902778b00b001c5f7e06256sm2812583pll.152.2023.10.12.21.34.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 21:34:15 -0700 (PDT)
-Message-ID: <8d30ccda-5b81-42fd-b36c-79bbaceffa2a@linaro.org>
-Date: Thu, 12 Oct 2023 21:34:14 -0700
+ d=1e100.net; s=20230601; t=1697173264; x=1697778064;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=e6ShuRlkxO8hDaXq3lvG3qR4Ma7HGNTGQKH5KWtQawo=;
+ b=ckaGYUrgh3Bp040w1LUsFspHR4Crwp/rC1cDMmugThDAErA5XF0RhTlCIkuU/+YeSi
+ pl70I4fHGyzxrJ4Ri8QFfINadzhpmEkU6GAN5vN8J9fthGw+QWuC5v1109Z/SvQ/Nt4/
+ VzTVfjRwm8wUrV3+2KVHVK7OXz6BRSOA7AUXWIAjxMcuu7MCtWIp1pmxB8Ugc9ow8zkJ
+ aLnDhyhD/6LbAGCGic/7VVcqoS/vfTnXBLh5nFbh+wDFN3X6eF6cLBN/4Ocm3wLb9pc1
+ K1YQBe7/lEWz20Uk2kp9ix78QEpMQtnv/HmVkAIUNrFLDt+fgizKofLGgShygXcVSmWz
+ dyIw==
+X-Gm-Message-State: AOJu0YxHFC+wT+aPuuZXuU8pFmYOzrEYBtKIzviKnnCbJVdjG4F7qj7F
+ KrtB6QsTQr8P/xmf1Nrz+5V4D80WqA4CSUTfo0WseOFZAiDp4Opy5gtf23+tFE9Mfhwtlk0QCve
+ AtqmR0CvXkCtbVlFABHjNhP10wTseoZA=
+X-Received: by 2002:a2e:820b:0:b0:2c2:c1f6:3097 with SMTP id
+ w11-20020a2e820b000000b002c2c1f63097mr22602459ljg.22.1697173264336; 
+ Thu, 12 Oct 2023 22:01:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzCxCR6tgf7W5zyW0QEzzZ0EqvsRleBMpiwQOi/K7sbS9Z6vCO6A3j9fcD9AsI1EsJz+eZ+k5yvnwdc0iLkbg=
+X-Received: by 2002:a2e:820b:0:b0:2c2:c1f6:3097 with SMTP id
+ w11-20020a2e820b000000b002c2c1f63097mr22602441ljg.22.1697173263955; Thu, 12
+ Oct 2023 22:01:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/18] target/mips: Make MIPS_CPU common to new MIPS32_CPU
- / MIPS64_CPU types
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-18-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231010092901.99189-18-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
+ <20231011153944.39572-2-akihiko.odaki@daynix.com>
+ <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
+ <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
+In-Reply-To: <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 13 Oct 2023 13:00:52 +0800
+Message-ID: <CACGkMEuEs2MLJYKMB9qAgT2ixkKLC8LPPE6DsBvfwx0CEaCA_A@mail.gmail.com>
+Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,72 +97,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/23 02:28, Philippe Mathieu-Daudé wrote:
-> "target/foo/cpu-qom.h" can not use any target specific definitions.
-> 
-> Currently "target/mips/cpu-qom.h" defines TYPE_MIPS_CPU depending
-> on the mips(32)/mips64 build type. This doesn't scale in a
-> heterogeneous context where we need to access both types concurrently.
-> 
-> In order to do that, introduce the new MIPS32_CPU / MIPS64_CPU types,
-> both inheriting a common TYPE_MIPS_CPU base type.
-> 
-> Keep the current CPU types registered in mips_register_cpudef_type()
-> as 32 or 64-bit, but instead of depending on the binary built being
-> targeting 32/64-bit, check whether the CPU is 64-bit by looking at
-> the CPU_MIPS64 bit.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/mips/cpu-qom.h | 13 ++++++-------
->   target/mips/cpu.h     |  3 +++
->   target/mips/cpu.c     | 11 ++++++++++-
->   3 files changed, 19 insertions(+), 8 deletions(-)
-> 
-> diff --git a/target/mips/cpu-qom.h b/target/mips/cpu-qom.h
-> index 9c98ca1956..1a71509b5e 100644
-> --- a/target/mips/cpu-qom.h
-> +++ b/target/mips/cpu-qom.h
-> @@ -1,5 +1,5 @@
->   /*
-> - * QEMU MIPS CPU
-> + * QEMU MIPS CPU QOM header (target agnostic)
->    *
->    * Copyright (c) 2012 SUSE LINUX Products GmbH
->    *
-> @@ -23,13 +23,12 @@
->   #include "hw/core/cpu.h"
->   #include "qom/object.h"
->   
-> -#ifdef TARGET_MIPS64
-> -#define TYPE_MIPS_CPU "mips64-cpu"
-> -#else
-> -#define TYPE_MIPS_CPU "mips-cpu"
-> -#endif
-> +#define TYPE_MIPS_CPU   "mips-cpu"
-> +#define TYPE_MIPS32_CPU "mips32-cpu"
-> +#define TYPE_MIPS64_CPU "mips64-cpu"
->   
-> -OBJECT_DECLARE_CPU_TYPE(MIPSCPU, MIPSCPUClass, MIPS_CPU)
-> +OBJECT_DECLARE_CPU_TYPE(MIPS32CPU, MIPSCPUClass, MIPS32_CPU)
-> +OBJECT_DECLARE_CPU_TYPE(MIPS64CPU, MIPSCPUClass, MIPS64_CPU)
->   
->   #define MIPS_CPU_TYPE_SUFFIX "-" TYPE_MIPS_CPU
->   #define MIPS_CPU_TYPE_NAME(model) model MIPS_CPU_TYPE_SUFFIX
-> diff --git a/target/mips/cpu.h b/target/mips/cpu.h
-> index 6b026e6bcf..3b6d0a7a8a 100644
-> --- a/target/mips/cpu.h
-> +++ b/target/mips/cpu.h
-> @@ -10,6 +10,9 @@
->   #include "hw/clock.h"
->   #include "mips-defs.h"
->   
-> +/* Abstract QOM MIPS CPU, not exposed to other targets */
-> +OBJECT_DECLARE_CPU_TYPE(MIPSCPU, MIPSCPUClass, MIPS_CPU)
+On Fri, Oct 13, 2023 at 12:14=E2=80=AFPM Akihiko Odaki <akihiko.odaki@dayni=
+x.com> wrote:
+>
+> On 2023/10/13 10:38, Jason Wang wrote:
+> > On Wed, Oct 11, 2023 at 11:40=E2=80=AFPM Akihiko Odaki <akihiko.odaki@d=
+aynix.com> wrote:
+> >>
+> >> It was necessary since an Linux older than 2.6.35 may implement the
+> >> virtio-net header but may not allow to change its length. Remove it
+> >> since such an old Linux is no longer supported.
+> >
+> > Where can I see this agreement?
+>
+> docs/about/build-platforms.rst says:
+>  > The project aims to support the most recent major version at all times
+>  > for up to five years after its initial release. Support for the
+>  > previous major version will be dropped 2 years after the new major
+>  > version is released or when the vendor itself drops support, whichever
+>  > comes first. In this context, third-party efforts to extend the
+>  > lifetime of a distro are not considered, even when they are endorsed
+>  > by the vendor (eg. Debian LTS); the same is true of repositories that
+>  > contain packages backported from later releases (e.g. Debian
+>  > backports). Within each major release, only the most recent minor
+>  > release is considered.
+>  >
+>  > For the purposes of identifying supported software versions available
+>  > on Linux, the project will look at CentOS, Debian, Fedora, openSUSE,
+>  > RHEL, SLES and Ubuntu LTS. Other distros will be assumed to ship
+>  > similar software versions.
 
-Why is this one moved back to cpu.h?
-You exposed TYPE_X86_CPU in i386/cpu-qom.h...
+Well it also says:
 
+"""
+If a platform is not listed here, it does not imply that QEMU won't
+work. If an unlisted platform has comparable software versions to a
+listed platform, there is every expectation that it will work.
+"""
 
-r~
+A lot of downstream have customized build scripts.
+
+And is something similar to such removal that has been done for other
+subsystems?
+
+Thanks
+
+>
+> All of the previous major versions of these distributions ship far newer
+> kernels.
+>
+> CentOS Stream 8 and RHEL 8 ship 4.18.0.
+> Debian bullseye ships 5.10.0.
+> Fedora 37 ships 6.5.6.
+> openSUSE Leap 15.4 ships 5.14.21.
+> SLES 12 ships 4.12.14.
+> Ubuntu 20.04 ships 5.4.
+>
+
 
