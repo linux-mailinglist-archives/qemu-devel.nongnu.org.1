@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6997C7F62
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9F27C7F8C
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:09:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD4p-0002pQ-2O; Fri, 13 Oct 2023 03:59:19 -0400
+	id 1qrD4r-00035J-5t; Fri, 13 Oct 2023 03:59:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD4Y-00015l-Ok
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:02 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qrD4k-0002Rb-Kn
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:14 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD4V-0006wd-7r
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:02 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-406619b53caso19397375e9.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:57 -0700 (PDT)
+ id 1qrD4W-0006wy-GR
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:14 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-406650da82bso18275365e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183936; x=1697788736; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183937; x=1697788737; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZZoxu2fQjlSrHAg6BVR82z3xBTX4HSZAJalvN6ykP5U=;
- b=HPzyUqvWHjD9cNMpAckaUs6l+f1Ik04dKEHeB6i+BB5J/0LZNjxraBSe+JGKco2LMM
- iWTWOl85tCSkMFvqyCZ7JoY9cPsKfRRnPLgnqV5pY7WP1OinLP/N5Ts4vNCbrMUFor6l
- cEeSnDy6ZHwYuX/8BxENsPXrkOXK8JjckLXzktzGIYJojM1rP8BPipDP2sgCifsfBNoy
- vsQhLCHU2o0g09s3nmsZgnuxJZ+lcLxt//PbrW4C62F8A3bM1rPhdg3jAztue52rL07c
- /KC3FUpGU+EXfKg1yPJlu/rjyA3SyLq76DachZGVy24R9117uGGNFijF1tU+nfa6PDIk
- dbLw==
+ bh=liKgkIDmjxIZ8iQlMr82pqfYKW1BlEIkMZjnyTOJpWk=;
+ b=rUHuqxV9ypb9HTLlU4oP2Nht2SUGpHizf0iVvu5aucip4jxywF7Gtx9YEkTjvUoQMJ
+ tNGP9FsQDKJ6m/DoolJ7UkPKJn+pAAVLYuENE2UUNADoVFkKmZllr5/lm9nixCZZb2/E
+ LFSQPQ9w2/oGXtAof10E1ka+VltUIyIahi7T/ICWCi5Q5m8UziT3G8Ar3u9R/aQhECEi
+ Z/8NweRIpjM/aBWHmfHYDQ1LrPXz3+tm6C5Semnlhe5QDA2szR+HjbMZuah8T01w23eK
+ vYtC9cRCOLxLMI2ywJa2cjYqwPJslHHO1c7CANFFlBWQlX51ImQI/trIWspcciq8FoDI
+ V+Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183936; x=1697788736;
+ d=1e100.net; s=20230601; t=1697183938; x=1697788738;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZZoxu2fQjlSrHAg6BVR82z3xBTX4HSZAJalvN6ykP5U=;
- b=QyfP/FyzZ8mswrUaazRaSV6nFuuH1qySNEGgktrvV22YuoFMZmK0wQZkH45vHpAgu3
- T09CjlvISs60eXcFw67g/wdFL1tdvJEh1Lm942mcD0EvbgxYki6omXJuorRZVg9ZLAUe
- 7g7nxo8S2LPjKFMca4V3TxoKcsruz4QFnKTO1SKk4/f0zJSp22zpYJZiinfCE/ac/sN3
- bUvgicfHd5g/hZ36/BKC541CtWWqXbBWFY/brOeyQBsx5zqoHNOX4Ps1IhU5hJyl65lf
- xGwFZ796vahFSKaACPExRlzhX+IcVFRDQvll6YVWnBAA0vSXMmFS5DFsT+IH837tgM6w
- tuDA==
-X-Gm-Message-State: AOJu0YxLdhntLGL1UJUt5kM0SnV61ViRM8/sPa0U+8MmIhYg9pQ8mk3Y
- Q19qNEVLHD2DkEeERp8WMWWA1w1T4F3SAjYh1/o=
-X-Google-Smtp-Source: AGHT+IGFExJX8uMCtgQrDmzIXTHDdXmLgTfSw1W2OIxQx7BwHsNv6YQORIF3Vz26x8ayJaMuyHgtQQ==
-X-Received: by 2002:a05:600c:332a:b0:407:59d2:7925 with SMTP id
- q42-20020a05600c332a00b0040759d27925mr7694290wmp.21.1697183936467; 
- Fri, 13 Oct 2023 00:58:56 -0700 (PDT)
+ bh=liKgkIDmjxIZ8iQlMr82pqfYKW1BlEIkMZjnyTOJpWk=;
+ b=QtXTlqGL2friBb0uz8nXTCRSyXFmCV/kHNxlZ9NSmokaj8dEy+hSzOH9Pfo0kXdZzi
+ 7AHEQa3jvIq94a3JWkb6o293q9l1OrHI8DF49MkKWp5CEFxAM/aOrg7yvLHeLQkf0/Xl
+ ecLG/2arxWQ1wPP4MyAChwZrhX3l9hNcEc/jNuCUhUQkCMnthtvJDzc74MyvHjQOonsS
+ v2ENvb137/o2SeL0edBYsFyrkIoK7tBDVfo6hSP00HsW1fqfUIwoa/1glRo5D4sZb99f
+ tZH+W29hbN/0z4ZG6Qiey3hNuJmXpa8cglFd5uqRcAIkyW5HdQaJpm4fHoRR9At1dE7+
+ jggQ==
+X-Gm-Message-State: AOJu0Yx+eGZdGw0uBCmIFYtVzZ5Q9gRjoSYYXsIyIFSJZT7c+Qc09FFs
+ zZDtxY/gPI288825mQ6IoQAit6E45QsLdMOaNWg=
+X-Google-Smtp-Source: AGHT+IFS4gDkzFXune0KaZbgdzZ2N6T+rDvww2QUP6Ti6ushuZ7BQeWMmR4Ggl4RMXhcRQpfCXpSNg==
+X-Received: by 2002:a05:600c:2218:b0:406:535a:f558 with SMTP id
+ z24-20020a05600c221800b00406535af558mr24135288wml.10.1697183937768; 
+ Fri, 13 Oct 2023 00:58:57 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.55
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:58:55 -0700 (PDT)
+ Fri, 13 Oct 2023 00:58:57 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Subject: [RFC PATCH v2 34/78] target/tricore: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:01 +0300
-Message-Id: <367c842370fcabd0d61ec69646d49ad120bf34f7.1697183699.git.manos.pitsidianakis@linaro.org>
+ Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [RFC PATCH v2 35/78] target/sh4: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:02 +0300
+Message-Id: <1616b3baa81059284d7b58f2c5480f0b4dde439e.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,297 +97,144 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/tricore/translate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/sh4/helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index dd812ec0f0..4e42f06ec8 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -2899,259 +2899,259 @@ static void gen_fret(DisasContext *ctx)
- static void gen_compute_branch(DisasContext *ctx, uint32_t opc, int r1,
-                                int r2 , int32_t constant , int32_t offset)
+diff --git a/target/sh4/helper.c b/target/sh4/helper.c
+index e02e7af607..c1cc5e82f4 100644
+--- a/target/sh4/helper.c
++++ b/target/sh4/helper.c
+@@ -56,131 +56,131 @@ int cpu_sh4_is_cached(CPUSH4State *env, target_ulong addr)
+ void superh_cpu_do_interrupt(CPUState *cs)
  {
-     TCGv temp, temp2;
-     int n;
+     SuperHCPU *cpu = SUPERH_CPU(cs);
+     CPUSH4State *env = &cpu->env;
+     int do_irq = cs->interrupt_request & CPU_INTERRUPT_HARD;
+     int do_exp, irq_vector = cs->exception_index;
  
-     switch (opc) {
- /* SB-format jumps */
-     case OPC1_16_SB_J:
-     case OPC1_32_B_J:
-         gen_goto_tb(ctx, 0, ctx->base.pc_next + offset * 2);
-         break;
-     case OPC1_32_B_CALL:
-     case OPC1_16_SB_CALL:
-         gen_helper_1arg(call, ctx->pc_succ_insn);
-         gen_goto_tb(ctx, 0, ctx->base.pc_next + offset * 2);
-         break;
-     case OPC1_16_SB_JZ:
-         gen_branch_condi(ctx, TCG_COND_EQ, cpu_gpr_d[15], 0, offset);
-         break;
-     case OPC1_16_SB_JNZ:
-         gen_branch_condi(ctx, TCG_COND_NE, cpu_gpr_d[15], 0, offset);
-         break;
- /* SBC-format jumps */
-     case OPC1_16_SBC_JEQ:
-         gen_branch_condi(ctx, TCG_COND_EQ, cpu_gpr_d[15], constant, offset);
-         break;
-     case OPC1_16_SBC_JEQ2:
-         gen_branch_condi(ctx, TCG_COND_EQ, cpu_gpr_d[15], constant,
-                          offset + 16);
-         break;
-     case OPC1_16_SBC_JNE:
-         gen_branch_condi(ctx, TCG_COND_NE, cpu_gpr_d[15], constant, offset);
-         break;
-     case OPC1_16_SBC_JNE2:
-         gen_branch_condi(ctx, TCG_COND_NE, cpu_gpr_d[15],
-                          constant, offset + 16);
-         break;
- /* SBRN-format jumps */
-     case OPC1_16_SBRN_JZ_T:
-         temp = tcg_temp_new();
-         tcg_gen_andi_tl(temp, cpu_gpr_d[15], 0x1u << constant);
-         gen_branch_condi(ctx, TCG_COND_EQ, temp, 0, offset);
-         break;
-     case OPC1_16_SBRN_JNZ_T:
-         temp = tcg_temp_new();
-         tcg_gen_andi_tl(temp, cpu_gpr_d[15], 0x1u << constant);
-         gen_branch_condi(ctx, TCG_COND_NE, temp, 0, offset);
-         break;
- /* SBR-format jumps */
-     case OPC1_16_SBR_JEQ:
-         gen_branch_cond(ctx, TCG_COND_EQ, cpu_gpr_d[r1], cpu_gpr_d[15],
-                         offset);
-         break;
-     case OPC1_16_SBR_JEQ2:
-         gen_branch_cond(ctx, TCG_COND_EQ, cpu_gpr_d[r1], cpu_gpr_d[15],
-                         offset + 16);
-         break;
-     case OPC1_16_SBR_JNE:
-         gen_branch_cond(ctx, TCG_COND_NE, cpu_gpr_d[r1], cpu_gpr_d[15],
-                         offset);
-         break;
-     case OPC1_16_SBR_JNE2:
-         gen_branch_cond(ctx, TCG_COND_NE, cpu_gpr_d[r1], cpu_gpr_d[15],
-                         offset + 16);
-         break;
-     case OPC1_16_SBR_JNZ:
-         gen_branch_condi(ctx, TCG_COND_NE, cpu_gpr_d[r1], 0, offset);
-         break;
-     case OPC1_16_SBR_JNZ_A:
-         gen_branch_condi(ctx, TCG_COND_NE, cpu_gpr_a[r1], 0, offset);
-         break;
-     case OPC1_16_SBR_JGEZ:
-         gen_branch_condi(ctx, TCG_COND_GE, cpu_gpr_d[r1], 0, offset);
-         break;
-     case OPC1_16_SBR_JGTZ:
-         gen_branch_condi(ctx, TCG_COND_GT, cpu_gpr_d[r1], 0, offset);
-         break;
-     case OPC1_16_SBR_JLEZ:
-         gen_branch_condi(ctx, TCG_COND_LE, cpu_gpr_d[r1], 0, offset);
-         break;
-     case OPC1_16_SBR_JLTZ:
-         gen_branch_condi(ctx, TCG_COND_LT, cpu_gpr_d[r1], 0, offset);
-         break;
-     case OPC1_16_SBR_JZ:
-         gen_branch_condi(ctx, TCG_COND_EQ, cpu_gpr_d[r1], 0, offset);
-         break;
-     case OPC1_16_SBR_JZ_A:
-         gen_branch_condi(ctx, TCG_COND_EQ, cpu_gpr_a[r1], 0, offset);
-         break;
-     case OPC1_16_SBR_LOOP:
-         gen_loop(ctx, r1, offset * 2 - 32);
-         break;
- /* SR-format jumps */
-     case OPC1_16_SR_JI:
-         tcg_gen_andi_tl(cpu_PC, cpu_gpr_a[r1], 0xfffffffe);
-         ctx->base.is_jmp = DISAS_EXIT;
-         break;
-     case OPC2_32_SYS_RET:
-     case OPC2_16_SR_RET:
-         gen_helper_ret(tcg_env);
-         ctx->base.is_jmp = DISAS_EXIT;
-         break;
- /* B-format */
-     case OPC1_32_B_CALLA:
-         gen_helper_1arg(call, ctx->pc_succ_insn);
-         gen_goto_tb(ctx, 0, EA_B_ABSOLUT(offset));
-         break;
-     case OPC1_32_B_FCALL:
-         gen_fcall_save_ctx(ctx);
-         gen_goto_tb(ctx, 0, ctx->base.pc_next + offset * 2);
-         break;
-     case OPC1_32_B_FCALLA:
-         gen_fcall_save_ctx(ctx);
-         gen_goto_tb(ctx, 0, EA_B_ABSOLUT(offset));
-         break;
-     case OPC1_32_B_JLA:
-         tcg_gen_movi_tl(cpu_gpr_a[11], ctx->pc_succ_insn);
--        /* fall through */
-+        fallthrough;
-     case OPC1_32_B_JA:
-         gen_goto_tb(ctx, 0, EA_B_ABSOLUT(offset));
-         break;
-     case OPC1_32_B_JL:
-         tcg_gen_movi_tl(cpu_gpr_a[11], ctx->pc_succ_insn);
-         gen_goto_tb(ctx, 0, ctx->base.pc_next + offset * 2);
-         break;
- /* BOL format */
-     case OPCM_32_BRC_EQ_NEQ:
-          if (MASK_OP_BRC_OP2(ctx->opcode) == OPC2_32_BRC_JEQ) {
-             gen_branch_condi(ctx, TCG_COND_EQ, cpu_gpr_d[r1], constant, offset);
-          } else {
-             gen_branch_condi(ctx, TCG_COND_NE, cpu_gpr_d[r1], constant, offset);
-          }
-          break;
-     case OPCM_32_BRC_GE:
-          if (MASK_OP_BRC_OP2(ctx->opcode) == OP2_32_BRC_JGE) {
-             gen_branch_condi(ctx, TCG_COND_GE, cpu_gpr_d[r1], constant, offset);
-          } else {
-             constant = MASK_OP_BRC_CONST4(ctx->opcode);
-             gen_branch_condi(ctx, TCG_COND_GEU, cpu_gpr_d[r1], constant,
-                              offset);
-          }
-          break;
-     case OPCM_32_BRC_JLT:
-          if (MASK_OP_BRC_OP2(ctx->opcode) == OPC2_32_BRC_JLT) {
-             gen_branch_condi(ctx, TCG_COND_LT, cpu_gpr_d[r1], constant, offset);
-          } else {
-             constant = MASK_OP_BRC_CONST4(ctx->opcode);
-             gen_branch_condi(ctx, TCG_COND_LTU, cpu_gpr_d[r1], constant,
-                              offset);
-          }
-          break;
-     case OPCM_32_BRC_JNE:
-         temp = tcg_temp_new();
-         if (MASK_OP_BRC_OP2(ctx->opcode) == OPC2_32_BRC_JNED) {
-             tcg_gen_mov_tl(temp, cpu_gpr_d[r1]);
-             /* subi is unconditional */
-             tcg_gen_subi_tl(cpu_gpr_d[r1], cpu_gpr_d[r1], 1);
-             gen_branch_condi(ctx, TCG_COND_NE, temp, constant, offset);
-         } else {
-             tcg_gen_mov_tl(temp, cpu_gpr_d[r1]);
-             /* addi is unconditional */
-             tcg_gen_addi_tl(cpu_gpr_d[r1], cpu_gpr_d[r1], 1);
-             gen_branch_condi(ctx, TCG_COND_NE, temp, constant, offset);
-         }
-         break;
- /* BRN format */
-     case OPCM_32_BRN_JTT:
-         n = MASK_OP_BRN_N(ctx->opcode);
+     /* prioritize exceptions over interrupts */
  
-         temp = tcg_temp_new();
-         tcg_gen_andi_tl(temp, cpu_gpr_d[r1], (1 << n));
+     do_exp = cs->exception_index != -1;
+     do_irq = do_irq && (cs->exception_index == -1);
  
-         if (MASK_OP_BRN_OP2(ctx->opcode) == OPC2_32_BRN_JNZ_T) {
-             gen_branch_condi(ctx, TCG_COND_NE, temp, 0, offset);
-         } else {
-             gen_branch_condi(ctx, TCG_COND_EQ, temp, 0, offset);
+     if (env->sr & (1u << SR_BL)) {
+         if (do_exp && cs->exception_index != 0x1e0) {
+             /* In theory a masked exception generates a reset exception,
+                which in turn jumps to the reset vector. However this only
+                works when using a bootloader. When using a kernel and an
+                initrd, they need to be reloaded and the program counter
+                should be loaded with the kernel entry point.
+                qemu_system_reset_request takes care of that.  */
+             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+             return;
          }
-         break;
- /* BRR Format */
-     case OPCM_32_BRR_EQ_NEQ:
-         if (MASK_OP_BRR_OP2(ctx->opcode) == OPC2_32_BRR_JEQ) {
-             gen_branch_cond(ctx, TCG_COND_EQ, cpu_gpr_d[r1], cpu_gpr_d[r2],
-                             offset);
-         } else {
-             gen_branch_cond(ctx, TCG_COND_NE, cpu_gpr_d[r1], cpu_gpr_d[r2],
-                             offset);
+         if (do_irq && !env->in_sleep) {
+             return; /* masked */
          }
-         break;
-     case OPCM_32_BRR_ADDR_EQ_NEQ:
-         if (MASK_OP_BRR_OP2(ctx->opcode) == OPC2_32_BRR_JEQ_A) {
-             gen_branch_cond(ctx, TCG_COND_EQ, cpu_gpr_a[r1], cpu_gpr_a[r2],
-                             offset);
-         } else {
-             gen_branch_cond(ctx, TCG_COND_NE, cpu_gpr_a[r1], cpu_gpr_a[r2],
-                             offset);
-         }
-         break;
-     case OPCM_32_BRR_GE:
-         if (MASK_OP_BRR_OP2(ctx->opcode) == OPC2_32_BRR_JGE) {
-             gen_branch_cond(ctx, TCG_COND_GE, cpu_gpr_d[r1], cpu_gpr_d[r2],
-                             offset);
-         } else {
-             gen_branch_cond(ctx, TCG_COND_GEU, cpu_gpr_d[r1], cpu_gpr_d[r2],
-                             offset);
-         }
-         break;
-     case OPCM_32_BRR_JLT:
-         if (MASK_OP_BRR_OP2(ctx->opcode) == OPC2_32_BRR_JLT) {
-             gen_branch_cond(ctx, TCG_COND_LT, cpu_gpr_d[r1], cpu_gpr_d[r2],
-                             offset);
-         } else {
-             gen_branch_cond(ctx, TCG_COND_LTU, cpu_gpr_d[r1], cpu_gpr_d[r2],
-                             offset);
-         }
-         break;
-     case OPCM_32_BRR_LOOP:
-         if (MASK_OP_BRR_OP2(ctx->opcode) == OPC2_32_BRR_LOOP) {
-             gen_loop(ctx, r2, offset * 2);
-         } else {
-             /* OPC2_32_BRR_LOOPU */
-             gen_goto_tb(ctx, 0, ctx->base.pc_next + offset * 2);
-         }
-         break;
-     case OPCM_32_BRR_JNE:
-         temp = tcg_temp_new();
-         temp2 = tcg_temp_new();
-         if (MASK_OP_BRC_OP2(ctx->opcode) == OPC2_32_BRR_JNED) {
-             tcg_gen_mov_tl(temp, cpu_gpr_d[r1]);
-             /* also save r2, in case of r1 == r2, so r2 is not decremented */
-             tcg_gen_mov_tl(temp2, cpu_gpr_d[r2]);
-             /* subi is unconditional */
-             tcg_gen_subi_tl(cpu_gpr_d[r1], cpu_gpr_d[r1], 1);
-             gen_branch_cond(ctx, TCG_COND_NE, temp, temp2, offset);
-         } else {
-             tcg_gen_mov_tl(temp, cpu_gpr_d[r1]);
-             /* also save r2, in case of r1 == r2, so r2 is not decremented */
-             tcg_gen_mov_tl(temp2, cpu_gpr_d[r2]);
-             /* addi is unconditional */
-             tcg_gen_addi_tl(cpu_gpr_d[r1], cpu_gpr_d[r1], 1);
-             gen_branch_cond(ctx, TCG_COND_NE, temp, temp2, offset);
-         }
-         break;
-     case OPCM_32_BRR_JNZ:
-         if (MASK_OP_BRR_OP2(ctx->opcode) == OPC2_32_BRR_JNZ_A) {
-             gen_branch_condi(ctx, TCG_COND_NE, cpu_gpr_a[r1], 0, offset);
-         } else {
-             gen_branch_condi(ctx, TCG_COND_EQ, cpu_gpr_a[r1], 0, offset);
-         }
-         break;
-     default:
-         generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
      }
- }
+     env->in_sleep = 0;
  
+     if (do_irq) {
+         irq_vector = sh_intc_get_pending_vector(env->intc_handle,
+ 						(env->sr >> 4) & 0xf);
+         if (irq_vector == -1) {
+             return; /* masked */
+ 	}
+     }
  
- /*
-  * Functions for decoding instructions
-  */
-@@ -8445,23 +8445,23 @@ static void tricore_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- static void tricore_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+     if (qemu_loglevel_mask(CPU_LOG_INT)) {
+ 	const char *expname;
+         switch (cs->exception_index) {
+ 	case 0x0e0:
+ 	    expname = "addr_error";
+ 	    break;
+ 	case 0x040:
+ 	    expname = "tlb_miss";
+ 	    break;
+ 	case 0x0a0:
+ 	    expname = "tlb_violation";
+ 	    break;
+ 	case 0x180:
+ 	    expname = "illegal_instruction";
+ 	    break;
+ 	case 0x1a0:
+ 	    expname = "slot_illegal_instruction";
+ 	    break;
+ 	case 0x800:
+ 	    expname = "fpu_disable";
+ 	    break;
+ 	case 0x820:
+ 	    expname = "slot_fpu";
+ 	    break;
+ 	case 0x100:
+ 	    expname = "data_write";
+ 	    break;
+ 	case 0x060:
+ 	    expname = "dtlb_miss_write";
+ 	    break;
+ 	case 0x0c0:
+ 	    expname = "dtlb_violation_write";
+ 	    break;
+ 	case 0x120:
+ 	    expname = "fpu_exception";
+ 	    break;
+ 	case 0x080:
+ 	    expname = "initial_page_write";
+ 	    break;
+ 	case 0x160:
+ 	    expname = "trapa";
+ 	    break;
+ 	default:
+             expname = do_irq ? "interrupt" : "???";
+             break;
+ 	}
+ 	qemu_log("exception 0x%03x [%s] raised\n",
+ 		  irq_vector, expname);
+         log_cpu_state(cs, 0);
+     }
  
-     switch (ctx->base.is_jmp) {
-     case DISAS_TOO_MANY:
-         gen_goto_tb(ctx, 0, ctx->base.pc_next);
-         break;
-     case DISAS_EXIT_UPDATE:
-         gen_save_pc(ctx->base.pc_next);
--        /* fall through */
-+        fallthrough;
-     case DISAS_EXIT:
-         tcg_gen_exit_tb(NULL, 0);
-         break;
-     case DISAS_JUMP:
-         tcg_gen_lookup_and_goto_ptr();
-         break;
-     case DISAS_NORETURN:
-         break;
-     default:
-         g_assert_not_reached();
+     env->ssr = cpu_read_sr(env);
+     env->spc = env->pc;
+     env->sgr = env->gregs[15];
+     env->sr |= (1u << SR_BL) | (1u << SR_MD) | (1u << SR_RB);
+     env->lock_addr = -1;
+ 
+     if (env->flags & TB_FLAG_DELAY_SLOT_MASK) {
+         /* Branch instruction should be executed again before delay slot. */
+ 	env->spc -= 2;
+ 	/* Clear flags for exception/interrupt routine. */
+         env->flags &= ~TB_FLAG_DELAY_SLOT_MASK;
+     }
+ 
+     if (do_exp) {
+         env->expevt = cs->exception_index;
+         switch (cs->exception_index) {
+         case 0x000:
+         case 0x020:
+         case 0x140:
+             env->sr &= ~(1u << SR_FD);
+             env->sr |= 0xf << 4; /* IMASK */
+             env->pc = 0xa0000000;
+             break;
+         case 0x040:
+         case 0x060:
+             env->pc = env->vbr + 0x400;
+             break;
+         case 0x160:
+             env->spc += 2; /* special case for TRAPA */
+-            /* fall through */
++            fallthrough;
+         default:
+             env->pc = env->vbr + 0x100;
+             break;
+         }
+         return;
+     }
+ 
+     if (do_irq) {
+         env->intevt = irq_vector;
+         env->pc = env->vbr + 0x600;
+         return;
      }
  }
 -- 
