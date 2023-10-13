@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E8D7C7B23
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 03:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9B97C7B3F
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 03:39:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr6rB-0000Rp-Du; Thu, 12 Oct 2023 21:20:49 -0400
+	id 1qr78L-0003Rv-I4; Thu, 12 Oct 2023 21:38:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qr6r8-0000Rc-M0
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 21:20:46 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qr6r5-00050Y-SC
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 21:20:46 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxLOtkmyhl5YkxAA--.24475S3;
- Fri, 13 Oct 2023 09:20:37 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxfNximyhlQmUiAA--.7158S3; 
- Fri, 13 Oct 2023 09:20:36 +0800 (CST)
-Subject: Re: [PATCH 1/1] LoongArch: step down as general arch maintainer
-To: Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- philmd@linaro.org, alex.bennee@linaro.org, maobibo@loongson.cn
-References: <20231012095135.1423071-1-yangxiaojuan@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <ff083b35-6d42-b969-e6ed-27b111d94278@loongson.cn>
-Date: Fri, 13 Oct 2023 09:20:34 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qr78J-0003RV-DQ
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 21:38:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qr78H-0007iu-UO
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 21:38:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697161108;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yi0ntr1CcXzqa1t4zXBUpQxzf1HFj8vLoK5ZHDOq3Cw=;
+ b=Z5typ0dSL6uTiLlAmG0MSIgdv3hmDYXDnz4dp0uYIewd5BH/wfnFhyrl40kNSJYKYEDpb9
+ KwwPBlhzMn7nq47H1vdJQTzAe4MxAXyl2WxY1MmkLSzEGjFDIJezuQ/Fv85urbyoYWn2kX
+ iKEnwazss+y5LhGvd4L/GP65N2KR5yA=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-78-pNlLlbYOOSSlzu5pNGOGRA-1; Thu, 12 Oct 2023 21:38:26 -0400
+X-MC-Unique: pNlLlbYOOSSlzu5pNGOGRA-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-5042eca54a4so1666622e87.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 18:38:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697161105; x=1697765905;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yi0ntr1CcXzqa1t4zXBUpQxzf1HFj8vLoK5ZHDOq3Cw=;
+ b=av3IWJQb5AMp8CLpQaZ8zi6WQXUeG6KDwoGiTXqTma5u+ESSeiku7kWoh0f3rTUPo8
+ OB7gKhHbGxMFSPS0eiqdZC2ld+1/F3C6/lByvWU8/GIxRWwjBYLVSKHsf7PqPK1wf6l1
+ JyeA1Md2VEjEG2u+Qj7tnAOtc79NXEv7VEvKrkxNXO0atyzTaWa2/kdTOTZ9dxVtjwTw
+ KQHML5D9p9yrkemh9arXqGroVfj6YlGeXrXiGRurglZTtgDVx7liRl00zUOzFn56J/5X
+ EjDgd4hyXNbWvmHTqP43l1jHihmgFWNxy0MQQDgT3XZjNvF31WOILboAmQmqJ2Im3MDj
+ F4+Q==
+X-Gm-Message-State: AOJu0YycO1j7Wi+IUAWM0xeU4yu1Dto33NqEer/sweEWY5c5ID1Y3Qej
+ M81KF5BRM5H3OCFmBtHXw5kt6FSJcvK4VX1Xl4tbCovX9gO0/ygf0LXgchzb30psKtwmuo+Dp22
+ G26jVRwdPkp1PaunVFa7zCjgU/gJiYpw=
+X-Received: by 2002:a05:6512:2821:b0:502:f2a8:d391 with SMTP id
+ cf33-20020a056512282100b00502f2a8d391mr29877803lfb.45.1697161105060; 
+ Thu, 12 Oct 2023 18:38:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEAk1GXjAcwrx3447pfABBpWx9t+QYnmBrR/+YFFrFBgYNI03tM8eTqmuIOm7uDK5J4PEF5bYJa0pF2P/oB7rA=
+X-Received: by 2002:a05:6512:2821:b0:502:f2a8:d391 with SMTP id
+ cf33-20020a056512282100b00502f2a8d391mr29877795lfb.45.1697161104870; Thu, 12
+ Oct 2023 18:38:24 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20231012095135.1423071-1-yangxiaojuan@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxfNximyhlQmUiAA--.7158S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrKw4xCryftw1DWF18Gw1fZrc_yoWftrX_JF
- Wayaykur4DGw1kAr4vgr95Aa45Jw4xAa1fCanrAws7X3sFqay8JryYyanrXF1avFWxursx
- tay2qr9Ikw1UXosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbxkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
+ <20231011153944.39572-2-akihiko.odaki@daynix.com>
+In-Reply-To: <20231011153944.39572-2-akihiko.odaki@daynix.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 13 Oct 2023 09:38:14 +0800
+Message-ID: <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-3.339, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,41 +95,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/10/12 ÏÂÎç5:51, Xiaojuan Yang Ð´µÀ:
-> I haven't really been working on LoongArch for some time now,
-> so let's remove myself from this entry.
-> 
-> Signed-off-by: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-> ---
->   MAINTAINERS | 2 --
->   1 file changed, 2 deletions(-)
-> 
+On Wed, Oct 11, 2023 at 11:40=E2=80=AFPM Akihiko Odaki <akihiko.odaki@dayni=
+x.com> wrote:
+>
+> It was necessary since an Linux older than 2.6.35 may implement the
+> virtio-net header but may not allow to change its length. Remove it
+> since such an old Linux is no longer supported.
 
-Acked-by: Song Gao <gaosong@loongson.cn>
+Where can I see this agreement?
 
-Thanks.
-Song Gao
-
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c3cc12dc29..5c386f1f37 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -248,7 +248,6 @@ F: disas/hppa.c
->   
->   LoongArch TCG CPUs
->   M: Song Gao <gaosong@loongson.cn>
-> -M: Xiaojuan Yang <yangxiaojuan@loongson.cn>
->   S: Maintained
->   F: target/loongarch/
->   F: tests/tcg/loongarch64/
-> @@ -1182,7 +1181,6 @@ F: pc-bios/hppa-firmware.img
->   LoongArch Machines
->   ------------------
->   Virt
-> -M: Xiaojuan Yang <yangxiaojuan@loongson.cn>
->   M: Song Gao <gaosong@loongson.cn>
->   S: Maintained
->   F: docs/system/loongarch/virt.rst
-> 
+Thanks
 
 
