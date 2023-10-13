@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35EFA7C80EE
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CED0C7C80E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDtI-0008TJ-6W; Fri, 13 Oct 2023 04:51:30 -0400
+	id 1qrDtF-00086i-7C; Fri, 13 Oct 2023 04:51:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsh-00077c-RY
+ id 1qrDsi-00077y-LX
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:53 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsd-0001aI-Vu
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:51 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso1582951f8f.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:50:42 -0700 (PDT)
+ id 1qrDsg-0001aT-2y
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:52 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-405361bba99so18650055e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:50:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697187041; x=1697791841; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697187042; x=1697791842; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PglcXua5s6wid5NHnFRiEeXXXNnncK/fZOz3SIW1XQo=;
- b=eUzFd7No860cGSlh7f6GPsuU6d0jzDYOKIVhl6QvKReat+n3Is3Q8s+UzBM9ilTc+Y
- kZMS8EIPUNx9tvvg2gILQR+5Tka4kv2tSl3GYBrDcWMTdsiXPlw1RDaN+Zn6nIwa+lWV
- 9F7cV4eiX56VwOj73KmN6rXFDEwtBY2UVVxN4/BU4JHmWhbEnqpl29k2x/nk074fYDlE
- Q4eB3zCJdjd5eflbyJW8314R+dkMTcQiM6TAqpkuCd1bgreFk+LjzypXmutEgQ18ui6u
- fWfbqkDpvAe9uuzNqqW523iNbpbuUYO2RS9+3VFA7dDUDCGNQXGBgAqvdx0V1XQMi7/h
- dlSg==
+ bh=2B57k0xDmewhDC2FEGeA+DORh7eV2cxV3ygwD/z5myM=;
+ b=mhn+cavm59NTtF6x9u7c8fXf6epz5pA2M+SuEVfVrqQbPL6ys4XYg15fWR7ma9YfQl
+ qPtDXo/7MJPbBh5fUYNwfQBPMRNfugFLVhO9Cw+Eq60ob4z59h0QUBbhxbjDLzPcD0a9
+ JYxjc5IWNU6l1vkBSQNC2IFdUScaabjLMZ1B6AB1ipXhqIPXUdUzbmUEUadXOrp0TZWA
+ D4QHR0ugX/iV6hErJVOu8NA9zFG6mFcp+cZSKIZapLMLidiSOB1HszAz5BHH3/yFKRID
+ Kz3gxaes/UU9RTIjndkKkt8uocwCGCCInwhmF9XsBoFWEg9bTpUqp7dnuoAUAPqd7V2F
+ cu9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697187041; x=1697791841;
+ d=1e100.net; s=20230601; t=1697187042; x=1697791842;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PglcXua5s6wid5NHnFRiEeXXXNnncK/fZOz3SIW1XQo=;
- b=XDAuEpW2EZlKPtaFBVpTaMYHPAyEvqJpS9blGhPeRCb2ZvB/0s4/c3oEjNdprATIQT
- hl0/bHoSObbpDt9xC6nTMxTeGW7vJHzQ6AwRtZTHWqgQ+umIxcrU7qfLFrP3EVt4NuQ7
- 1EiRzWhHmgBB8yKhG0KXU07lKc6MXK3SzuYqymuEuXEES/LTKDZRV77uoUQ9dYdRG1Dn
- 0188YBROOsfUTkf0MH52Ze/T2We7t20ccAwuO5NOFvuajQaB1SObenx+VT2KjZEb1upC
- vsC5aGXAknHqOXzikk5LiIxnEgPNye/vZosKz2YOT+/4tjmqt0NdI5RnEZziaCdP9743
- IsRg==
-X-Gm-Message-State: AOJu0YywbGM9L61Dy32m9noKOpVJh7Xlxepi9d0YF8eXiphLaCbGkdji
- xeRHuX5ZXekk5suXdToNHRzmlTR9B2C6umTxvDk=
-X-Google-Smtp-Source: AGHT+IHiS//Sxh4C46QlZpfOTR5BYGmA/qlP1jDZ5+73DmewOZNBcmqFP2ztrhaDXaimWMRj+eCUdg==
-X-Received: by 2002:adf:e850:0:b0:32d:8cd8:a2ac with SMTP id
- d16-20020adfe850000000b0032d8cd8a2acmr4430909wrn.24.1697187041253; 
- Fri, 13 Oct 2023 01:50:41 -0700 (PDT)
+ bh=2B57k0xDmewhDC2FEGeA+DORh7eV2cxV3ygwD/z5myM=;
+ b=uadBC5TTDD1agUhIyUeLY3oe+3rwyVuBhuYhOZznJLi1iaAPE4afytTeIrrL2hrCAE
+ psDxoNCU8dVmUawYSZpxtuGWqEFmQjqUS+gRBPy1OfVhkaxwNZ8FMm8V+LcPZgQp5OwL
+ iUecOxkMeHOErbTNycoJD5phwxx1yyv6i0G/I9jV/PVpiWL9tNvJO11rV5jZMbCnE8EL
+ 4lSmiEHSqvjmJvs0DH8VUTlmq4TguDYilGwf0Jo4h7GFDPYbm796huKhA9HcKbR/jQjN
+ lYx+QpuOcvpHtOTUYfGPeM8E8UBuv7kaM3Blzk0eEDVGIQmUIFGKfy/0fHX3PYb2y26U
+ Dkig==
+X-Gm-Message-State: AOJu0Yx8aalE7VYf9M7OlZH+gP99Q6FHP6Ujala31uNlh55xvJgrcsoI
+ o904FhB6NUps9hT7O51KST1cZ8inhowRhHdvH80=
+X-Google-Smtp-Source: AGHT+IHb7Jwc4KtSJQbT2IqNqbNWwzSUTWDvmPXv+Qk8QoYudULTBD2RFxnAxPzuaQxtxUiW3T1+rw==
+X-Received: by 2002:adf:fe0d:0:b0:31f:e5cf:6724 with SMTP id
+ n13-20020adffe0d000000b0031fe5cf6724mr24489106wrr.46.1697187042785; 
+ Fri, 13 Oct 2023 01:50:42 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.39
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:50:40 -0700 (PDT)
+ Fri, 13 Oct 2023 01:50:42 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Huai-Cheng Kuo <hchkuo@avery-design.com.tw>,
- Chris Browy <cbrowy@avery-design.com>
-Subject: [RFC PATCH v3 68/78] hw/pci: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:36 +0300
-Message-Id: <932525c602493a94e42afef3400c27c7e3be4694.1697186560.git.manos.pitsidianakis@linaro.org>
+ Yuval Shaia <yuval.shaia.ml@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [RFC PATCH v3 69/78] hw/rdma/rdma_backend.c: add fallthrough
+ pseudo-keyword
+Date: Fri, 13 Oct 2023 11:46:37 +0300
+Message-Id: <3c64f3d047edeaa8d79cf4d55efdf04407eb33e1.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,38 +99,22 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/pci/pcie_aer.c | 3 ++-
- hw/pci/pcie_doe.c | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ hw/rdma/rdma_backend.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci/pcie_aer.c b/hw/pci/pcie_aer.c
-index b68c7ecb49..c99ecce2a1 100644
---- a/hw/pci/pcie_aer.c
-+++ b/hw/pci/pcie_aer.c
-@@ -151,8 +151,9 @@ int pcie_aer_init(PCIDevice *dev, uint8_t cap_ver, uint16_t offset,
-     switch (pcie_cap_get_type(dev)) {
-     case PCI_EXP_TYPE_ROOT_PORT:
-         /* this case will be set by pcie_aer_root_init() */
--        /* fallthrough */
+diff --git a/hw/rdma/rdma_backend.c b/hw/rdma/rdma_backend.c
+index 6dcdfbbbe2..09e5ad961e 100644
+--- a/hw/rdma/rdma_backend.c
++++ b/hw/rdma/rdma_backend.c
+@@ -812,7 +812,7 @@ int rdma_backend_create_qp(RdmaBackendQP *qp, uint8_t qp_type,
+         return 0;
+ 
+     case IBV_QPT_RC:
+-        /* fall through */
 +        fallthrough;
-     case PCI_EXP_TYPE_DOWNSTREAM:
-+        fallthrough;
-     case PCI_EXP_TYPE_UPSTREAM:
-         pci_word_test_and_set_mask(dev->wmask + PCI_BRIDGE_CONTROL,
-                                    PCI_BRIDGE_CTL_SERR);
-diff --git a/hw/pci/pcie_doe.c b/hw/pci/pcie_doe.c
-index 2210f86968..f04a36e664 100644
---- a/hw/pci/pcie_doe.c
-+++ b/hw/pci/pcie_doe.c
-@@ -360,7 +360,7 @@ void pcie_doe_write_config(DOECap *doe_cap,
-         doe_cap->write_mbox_len++;
+     case IBV_QPT_UD:
+         /* do nothing */
          break;
-     case PCI_EXP_DOE_CAP:
--        /* fallthrough */
-+        fallthrough;
-     default:
-         break;
-     }
 -- 
 2.39.2
 
