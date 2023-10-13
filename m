@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6EB7C7C68
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 05:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 281487C7C6C
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 06:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr9K3-0007ge-DE; Thu, 12 Oct 2023 23:58:47 -0400
+	id 1qr9Na-0000B3-CT; Fri, 13 Oct 2023 00:02:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qr9Jy-0007fp-Kn; Thu, 12 Oct 2023 23:58:43 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>)
- id 1qr9Jv-0004T4-G8; Thu, 12 Oct 2023 23:58:42 -0400
-Received: from loongson.cn (unknown [10.20.42.32])
- by gateway (Coremail) with SMTP id _____8BxuOhlwChlfJQxAA--.59748S3;
- Fri, 13 Oct 2023 11:58:29 +0800 (CST)
-Received: from [10.20.42.32] (unknown [10.20.42.32])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dx3t5hwChlzn0iAA--.3543S2; 
- Fri, 13 Oct 2023 11:58:27 +0800 (CST)
-Subject: Re: [PATCH V5 0/9] Add architecture agnostic code to support vCPU
- Hotplug
-To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org
-Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com,
- oliver.upton@linux.dev, pbonzini@redhat.com, mst@redhat.com,
- will@kernel.org, gshan@redhat.com, rafael@kernel.org,
- alex.bennee@linaro.org, linux@armlinux.org.uk,
- darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
- vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
- wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
- maobibo@loongson.cn, linuxarm@huawei.com
-References: <20231011194355.15628-1-salil.mehta@huawei.com>
-From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <34927805-a968-271f-16c2-17c8d90693d9@loongson.cn>
-Date: Fri, 13 Oct 2023 11:58:25 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qr9NY-0000Ad-IG
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 00:02:24 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qr9NW-0005Ks-T1
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 00:02:24 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-27d0251d305so1114048a91.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 21:02:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697169741; x=1697774541; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lRzpVNUrD6iYnsyU56pg5uexnDjAhkYj9si0UWW1Oos=;
+ b=OjtfPNnokvgsFm5xA/Tw6Hn61oLjkPXGlcUxdJNUbP0J2iS+HNRImNW/EEg8uAmcjN
+ fMkxZEdzYoTateguyaqgBu2tfczsPZiFxPwmIQzAYxBwTOdzNjFuToOTkbV11t1NbFT0
+ 8M1RBLkW/fdFV0fCLU6dDFg+f+bDvhdxwH+LSOCYgbiqGaYn8jaby0Bkam0mE72M/pzD
+ zBPgWVprGlvvuyS27kWW1sMUyQDk9ck0mPYo5SLsZ8/n2Y0qgk08G/FEWhfAvB6H24u0
+ gBV0cFJLgvRBce/R0Qqb+TxwQv+2mGvXsgl02cuWhNpqoXvm1t1ZGDval/J7yoWmt8C0
+ Xnqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697169741; x=1697774541;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lRzpVNUrD6iYnsyU56pg5uexnDjAhkYj9si0UWW1Oos=;
+ b=KOzLS+qJGA1RgFscvMKRrxP+0ZZy+hZLLFmBhaRdVLzVv6StzoObFnRQ/wJv4TyghC
+ zRqq6UntkUkmoPATun6QWU66Sf34fBWB7SeQfVESHHqq5PGwoziJTCLRaUF4kg+fbc1/
+ 647gRUxVS1wwHjrynltL7cs070ZSEp+esD5hA2nBgtuPuMv4sM1OeDp732jhlrJacuQd
+ SYvGHv9MzWx5pxNU8eRu6gzCf0bGU5RBHsSrn816y32f8cUdKlX7LSSbIR0TlXPnh65X
+ kxUzUMAMJyWp2IrFLRK+FWqTgND/rb4kde0eDjupzXpT9O2dq9hcmminjUUXeQKcXyLY
+ zO9w==
+X-Gm-Message-State: AOJu0Yxo1LF1eS0P9r9bET0+BT3B/cwrq94c3MnDlXu0613snSjkqtjx
+ IEUuAAycbZ1yga5b29v21H++TJdE69EiQdiVVVM=
+X-Google-Smtp-Source: AGHT+IE5qbMymYWRYTw3z84tSm0iWT9+wQxKpQJXDAHL+DUZTiAS3vmzT9a2uDxXIMJJX8lnqvS+ow==
+X-Received: by 2002:a17:90a:5205:b0:268:5575:93d9 with SMTP id
+ v5-20020a17090a520500b00268557593d9mr22388504pjh.10.1697169740935; 
+ Thu, 12 Oct 2023 21:02:20 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ h1-20020a17090aea8100b002794fe14cabsm2604073pjz.12.2023.10.12.21.02.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Oct 2023 21:02:20 -0700 (PDT)
+Message-ID: <b1594816-2735-4688-83ea-0838c8b040cd@linaro.org>
+Date: Thu, 12 Oct 2023 21:02:18 -0700
 MIME-Version: 1.0
-In-Reply-To: <20231011194355.15628-1-salil.mehta@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/18] target: Declare FOO_CPU_TYPE_NAME/SUFFIX in
+ 'cpu-qom.h'
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8Dx3t5hwChlzn0iAA--.3543S2
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWr48Wr4kuFy3tFy3JF48Zrc_yoWrZF4kpa
- nY93WYgw45Kr47ur4fXryrZ345Wa1kGw4IqrsF934rZas0gw1kZrW0g3yjqFyUJrZ7KFyx
- XFnIqF1kGw1jywcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUPSb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
- AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
- AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
- 8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vI
- r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67
- AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26rWY6r4UJwCI
- c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
- AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
- Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUnoSoJ
- UUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.339,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20231010092901.99189-1-philmd@linaro.org>
+ <20231010092901.99189-5-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231010092901.99189-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,107 +95,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Salil Mehta via:
+On 10/10/23 02:28, Philippe Mathieu-Daudé wrote:
+> Hegerogeneous code needs access to the FOO_CPU_TYPE_NAME()
+> macro to resolve target CPU types. Move the declaration
+> (along with the required FOO_CPU_TYPE_SUFFIX) to "cpu-qom.h".
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/alpha/cpu-qom.h   | 5 ++++-
+>   target/alpha/cpu.h       | 2 --
+>   target/avr/cpu-qom.h     | 5 ++++-
+>   target/avr/cpu.h         | 2 --
+>   target/cris/cpu-qom.h    | 5 ++++-
+>   target/cris/cpu.h        | 2 --
+>   target/i386/cpu-qom.h    | 3 +++
+>   target/i386/cpu.h        | 2 --
+>   target/m68k/cpu-qom.h    | 5 ++++-
+>   target/m68k/cpu.h        | 2 --
+>   target/mips/cpu-qom.h    | 3 +++
+>   target/mips/cpu.h        | 2 --
+>   target/rx/cpu-qom.h      | 5 ++++-
+>   target/rx/cpu.h          | 2 --
+>   target/s390x/cpu-qom.h   | 5 ++++-
+>   target/s390x/cpu.h       | 2 --
+>   target/sh4/cpu-qom.h     | 5 ++++-
+>   target/sh4/cpu.h         | 2 --
+>   target/sparc/cpu-qom.h   | 5 ++++-
+>   target/sparc/cpu.h       | 2 --
+>   target/tricore/cpu-qom.h | 5 +++++
+>   target/tricore/cpu.h     | 2 --
+>   target/xtensa/cpu-qom.h  | 5 ++++-
+>   target/xtensa/cpu.h      | 2 --
+>   24 files changed, 47 insertions(+), 33 deletions(-)
 
-> Virtual CPU hotplug support is being added across various architectures[1][3].
-> This series adds various code bits common across all architectures:
->
-> 1. vCPU creation and Parking code refactor [Patch 1]
-> 2. Update ACPI GED framework to support vCPU Hotplug [Patch 4,6,7]
-> 3. ACPI CPUs AML code change [Patch 5]
-> 4. Helper functions to support unrealization of CPU objects [Patch 8,9]
-> 5. Misc [Patch 2,3]
->
->
-> Repository:
->
-> [*] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v2.common.v5
->
->
-> Revision History:
->
-> RFC V4 -> RFC V5
-> 1. Addressed Gavin Shan's comments
->     - Fixed the trace events print string for kvm_{create,get,park,destroy}_vcpu
->     - Added Reviewed-by tag for patch {1}
-> 2. Added Shaoqin Huang's Reviewed-by tags for Patches {2,3}
-> 3. Added Tested-by Tag from Vishnu Pajjuri to the patch-set
-> 4. Dropped the ARM specific Patch-10 from V4
-> Link: https://lore.kernel.org/qemu-devel/20231009203601.17584-1-salil.mehta@huawei.com/
->
-> RFC V3 -> RFC V4
-> 1. Addressed David Hilderbrand's comments
->     - Fixed the wrong doc comment of kvm_park_vcpu API prototype
->     - Added Reviewed-by tags for patches {2,4}
-> Link: https://lore.kernel.org/qemu-devel/20231009112812.10612-1-salil.mehta@huawei.com/
->
-> RFC V2 -> RFC V3
-> 1. Addressed Jonathan Cameron's comments
->     - Fixed 'vcpu-id' type wrongly changed from 'unsigned long' to 'integer'
->     - Removed unnecessary use of variable 'vcpu_id' in kvm_park_vcpu
->     - Updated [Patch V2 03/10] commit-log with details of ACPI_CPU_SCAN_METHOD macro
->     - Updated [Patch V2 05/10] commit-log with details of conditional event handler method
->     - Added Reviewed-by tags for patches {2,3,4,6,7}
-> 2. Addressed Gavin Shan's comments
->     - Remove unnecessary use of variable 'vcpu_id' in kvm_par_vcpu
->     - Fixed return value in kvm_get_vcpu from -1 to -ENOENT
->     - Reset the value of 'gdb_num_g_regs' in gdb_unregister_coprocessor_all
->     - Fixed the kvm_{create,park}_vcpu prototypes docs
->     - Added Reviewed-by tags for patches {2,3,4,5,6,7,9,10}
-> 3. Addressed one earlier missed comment by Alex Bennée in RFC V1
->     - Added traces instead of DPRINTF in the newly added and some existing functions
-> Link: https://lore.kernel.org/qemu-devel/20230930001933.2660-1-salil.mehta@huawei.com/
->
-> RFC V1 -> RFC V2
-> 1. Addressed Alex Bennée's comments
->     - Refactored the kvm_create_vcpu logic to get rid of goto
->     - Added the docs for kvm_{create,park}_vcpu prototypes
->     - Splitted the gdbstub and AddressSpace destruction change into separate patches
->     - Added Reviewed-by tags for patches {2,10}
-> Link: https://lore.kernel.org/qemu-devel/20230929124304.13672-1-salil.mehta@huawei.com/
->
-> References:
->
-> [1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/
-> [2] https://lore.kernel.org/all/20230913163823.7880-1-james.morse@arm.com/
-> [3] https://lore.kernel.org/qemu-devel/cover.1695697701.git.lixianglai@loongson.cn/
->
->
-> Salil Mehta (9):
->    accel/kvm: Extract common KVM vCPU {creation,parking} code
->    hw/acpi: Move CPU ctrl-dev MMIO region len macro to common header file
->    hw/acpi: Add ACPI CPU hotplug init stub
->    hw/acpi: Init GED framework with CPU hotplug events
->    hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
->    hw/acpi: Update GED _EVT method AML with CPU scan
->    hw/acpi: Update ACPI GED framework to support vCPU Hotplug
->    physmem: Add helper function to destroy CPU AddressSpace
->    gdbstub: Add helper function to unregister GDB register space
->
->   accel/kvm/kvm-all.c                    | 64 ++++++++++++++++++++------
->   accel/kvm/trace-events                 |  4 ++
->   gdbstub/gdbstub.c                      | 15 ++++++
->   hw/acpi/acpi-cpu-hotplug-stub.c        |  6 +++
->   hw/acpi/cpu.c                          | 27 +++++++----
->   hw/acpi/generic_event_device.c         | 22 +++++++++
->   hw/i386/acpi-build.c                   |  2 +-
->   include/exec/cpu-common.h              |  8 ++++
->   include/exec/gdbstub.h                 |  5 ++
->   include/hw/acpi/cpu.h                  |  5 +-
->   include/hw/acpi/cpu_hotplug.h          |  4 ++
->   include/hw/acpi/generic_event_device.h |  5 ++
->   include/hw/core/cpu.h                  |  1 +
->   include/sysemu/kvm.h                   | 16 +++++++
->   softmmu/physmem.c                      | 25 ++++++++++
->   15 files changed, 182 insertions(+), 27 deletions(-)
+Seems ok.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
-I rebase your patch v5 on loongarch tcg, there is no problem with cpu
-hotplug/unplug.
-
-Thank you so much for your contribution to the community.
-
-Thanks,
-Xianglai.
-
+r~
 
