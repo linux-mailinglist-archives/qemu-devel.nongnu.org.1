@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157D67C86E0
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C49397C86FE
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:38:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrIGj-0003gT-3B; Fri, 13 Oct 2023 09:31:57 -0400
+	id 1qrILr-00066m-JL; Fri, 13 Oct 2023 09:37:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrIGV-0003bL-Qh
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:31:48 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qrILn-00066V-P2
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:37:11 -0400
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrIGT-0002XC-Gz
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:31:43 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c9daca2b85so15775255ad.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:31:41 -0700 (PDT)
+ id 1qrILl-00043b-AS
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:37:11 -0400
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-6c665b2469dso1301605a34.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:37:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697203900; x=1697808700; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1697204228; x=1697809028; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KdrK00LaRo6TB+cIWtK1lfYu1H+xMSxvrwkARDU7aS8=;
- b=OmXME4j0jUEidDGrzO4oeeWRSa6zW5UxIGfnlmZOn0i3VmRPyGSPC8rRXhsZUFxNCv
- sFW9aVN70Up71/oOgWwXB+j8zMxHjTXsV3TAP8eBYUo4h4VS+y1PVqQjl8LA3i9s7oJe
- iUG8AB66FiTYX1WVMBqUN18paSQ8bqJoFwNeGjeDVb/kupVZBfsrUHMjhTEdnyrUhzjH
- 0CDnjvE1RKSKdvmWnV/f18FumxsIWC4pYuum52xykxsT9AvCWQ227lk4KlhPeyqnugg4
- 3AVeX49LxgYr4Fx1tq8FniIZrSxNEg516R3odVqfqEoNfLPHWB3EYsg+iWGt7GZkVb+t
- FClQ==
+ bh=QJ7wL+OPCRjOLVH1St5e3C5N4Ed5IJlK8adXtiFc9yg=;
+ b=lsvMwGXmzGnz5w1XFfPboNGyT/ZJiXrfTgEC7Bhe8+X36uV8UDX6Zb0Nf0Jjo9DYaq
+ 5FLmPHWZMNPra1gx9NnSkhWVcZ7RijK5I0yitZsNMRXJ44jfkkNUWHAZDZp+r6TNzf9D
+ oI6ZG+b0GOQZNFFzbKuFhIE9N+cDqjOEw07sw5ihQ4VFyr/BNs2h7w/DBF6EdpkPsttK
+ J14QCoY+uHdDan9A9poqzZCqhvPDdVFCHvw3SoikWw6xEv+35FelrRZMLKZ2NTLJU65d
+ CjXsM0PvrpSYfDL3Q7isLOO4jLNwrtdKtc07JygTxCfhvv/mcUXsb/F+woeeHAtaJ2YZ
+ XtDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697203900; x=1697808700;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1697204228; x=1697809028;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KdrK00LaRo6TB+cIWtK1lfYu1H+xMSxvrwkARDU7aS8=;
- b=Rk/Fs5ulQ4fsNgc2gZW+hF06nYdTODhnU/ZlDRIRTT5TVZ1b17jHGC8DmnN+rg2zDW
- jROIg7IsmmQaC/rfPyTCgGZ2ChRbk0K5ff/K0tAq0NxIy88+cGD/xyu5DVoUwb1bKuUC
- /vLf/UjMK/zALZDwU8byMdfkTiyKAoo/RPBtJXwZqVsNiYo3pPPxU8vFskI8/TcgxHkK
- /BueDU2JBwoQiZ+gIOFnDkBi8295j1GAaa64RQ6bHisn40HwJC2p2JLdMMJmJLLHsrSU
- 73WYNssyObbBnzl63XQWr//zexaB4cHe3/TKp+OdUSQt7z75NJ3Aj11PQARrf5khsKBS
- HyTw==
-X-Gm-Message-State: AOJu0Yxp7PNNfBQzaFvwdJhGihsk43qpKvK9GHLhyt1YEbvrj2HMHksi
- RG70/3MMy+xAcbiyts66/mawE11xpeuEf0JjOCE=
-X-Google-Smtp-Source: AGHT+IF6R0fR4lt3ZcwTUsSGex/fm+XRBGAvdNY+dlcHx1a93Q3GgiO06kmj+YPefyQCpxG+zVUBxw==
-X-Received: by 2002:a17:902:db02:b0:1c4:1cd3:8068 with SMTP id
- m2-20020a170902db0200b001c41cd38068mr234928plx.5.1697203899927; 
- Fri, 13 Oct 2023 06:31:39 -0700 (PDT)
+ bh=QJ7wL+OPCRjOLVH1St5e3C5N4Ed5IJlK8adXtiFc9yg=;
+ b=XTldlETWW0CBVDIPUazXWomSlpySQudS1pYiuvS0Rvd3JUo66jAbtKrZGT4vyMXrvn
+ ITIfDd6tmtFXYS3O6/MHASBd6xZ/GD3jLtmgA/qnnh5QLpseQz6Qkn72GwtJIwh7i+tc
+ JErAfOIW1Qt9pBxl//rYcfb+ObGV0hJYjY3r+zqzdA2smcaFEQsVa3fuFIEGNuihe/oD
+ lQJ3HPOk/shLAQAdhYUQyieY7JLsE++C5M3ZLiBshp8vzmkkRT5J085qntToz1vf4weC
+ SvK1Aie42pzTqu+zccufYBsAW3VNjsI7iWhwtUhrFg9qFa108NbC1h985PEPKDI5eTdA
+ 6XaQ==
+X-Gm-Message-State: AOJu0Yy77ByN254HqAO/ndDVhlEihFfaT3Ys6VG4wTctUEsao+1g/nE/
+ FNdqaKa0D2cSdIQqtasw/hzYzA==
+X-Google-Smtp-Source: AGHT+IHCNoiSgAwtBarMUAhHOcYqr0biymTkE/h7KKEFPw7MlclrV7OK2agfupgYpSncqdHAfmcAVA==
+X-Received: by 2002:a9d:7c99:0:b0:6bf:1925:13a0 with SMTP id
+ q25-20020a9d7c99000000b006bf192513a0mr32138807otn.33.1697204227922; 
+ Fri, 13 Oct 2023 06:37:07 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- je6-20020a170903264600b001bbb8d5166bsm3875120plb.123.2023.10.13.06.31.39
+ s5-20020a625e05000000b006b3b342f37fsm1237513pfb.178.2023.10.13.06.37.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 06:31:39 -0700 (PDT)
-Message-ID: <3ceb42c2-eadc-4bda-b457-e83dd30170c1@linaro.org>
-Date: Fri, 13 Oct 2023 06:31:38 -0700
+ Fri, 13 Oct 2023 06:37:07 -0700 (PDT)
+Message-ID: <7af692cf-2208-49ff-bf90-78889e009b7e@linaro.org>
+Date: Fri, 13 Oct 2023 06:37:05 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] target/ppc: Move ppc_cpu_class_by_name() declaration
- to 'cpu.h'
+Subject: Re: [PATCH 4/7] target/ppc: Move PowerPCCPUClass definition to 'cpu.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: David Gibson <david@gibson.dropbear.id.au>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>
 References: <20231013125630.95116-1-philmd@linaro.org>
- <20231013125630.95116-4-philmd@linaro.org>
+ <20231013125630.95116-5-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231013125630.95116-4-philmd@linaro.org>
+In-Reply-To: <20231013125630.95116-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,16 +95,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/13/23 05:56, Philippe Mathieu-Daudé wrote:
-> ppc_cpu_class_by_name() is only called in target/ppc/,
-> no need to expose outside (in particular to hw/).
+> The OBJECT_DECLARE_CPU_TYPE() macro forward-declares the
+> PowerPCCPUClass type. This forward declaration is sufficient
+> for code in hw/ to use the QOM definitions. No need to expose
+> the structure definition. Keep it local to target/ppc/ by
+> moving it to target/ppc/cpu.h.
 > 
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/ppc/cpu-qom.h | 2 --
->   target/ppc/cpu.h     | 1 +
->   2 files changed, 1 insertion(+), 2 deletions(-)
+>   include/hw/ppc/ppc.h |  2 +-
+>   target/ppc/cpu-qom.h | 56 --------------------------------------------
+>   target/ppc/cpu.h     | 51 ++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 52 insertions(+), 57 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
