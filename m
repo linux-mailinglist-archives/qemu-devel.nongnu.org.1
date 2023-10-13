@@ -2,33 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC4B7C81EB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 695CD7C81E6
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:23:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrEMp-0005ne-RZ; Fri, 13 Oct 2023 05:21:59 -0400
+	id 1qrEMt-0005v0-Ae; Fri, 13 Oct 2023 05:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qrEMn-0005kJ-7D; Fri, 13 Oct 2023 05:21:57 -0400
+ id 1qrEMp-0005oF-HG; Fri, 13 Oct 2023 05:21:59 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qrEMl-00072v-Ld; Fri, 13 Oct 2023 05:21:56 -0400
+ id 1qrEMm-00073o-Qa; Fri, 13 Oct 2023 05:21:59 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A3E4C48F33;
- Fri, 13 Oct 2023 11:21:51 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 21BB044468;
+ Fri, 13 Oct 2023 11:21:54 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
  jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
  alexander.ivanov@virtuozzo.com
-Subject: [PATCH v3 8/9] blockjob: query driver-specific info via a new 'query'
- driver method
-Date: Fri, 13 Oct 2023 11:21:42 +0200
-Message-Id: <20231013092143.365296-9-f.ebner@proxmox.com>
+Subject: [PATCH v3 9/9] mirror: return mirror-specific information upon query
+Date: Fri, 13 Oct 2023 11:21:43 +0200
+Message-Id: <20231013092143.365296-10-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231013092143.365296-1-f.ebner@proxmox.com>
 References: <20231013092143.365296-1-f.ebner@proxmox.com>
@@ -56,56 +55,255 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+To start out, only actively-synced is returned.
+
+For example, this is useful for jobs that started out in background
+mode and switched to active mode. Once actively-synced is true, it's
+clear that the mode switch has been completed. Note that completion of
+the switch might happen much earlier, e.g. if the switch happens
+before the job is ready, once all background operations have finished.
+It's assumed that whether the disks are actively-synced or not is more
+interesting than whether the mode switch completed. That information
+can still be added if required in the future.
+
+In presence of an iothread, the actively_synced member is now shared
+between the iothread and the main thread, so turn accesses to it
+atomic.
+
+Requires to adapt the output for iotest 109.
+
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
 
 Changes in v3:
-    * Unlock job mutex while calling the driver's handler for query.
+    * squash with patch adapting iotest output
+    * turn accesses to actively_synced atomic
 
- blockjob.c                   | 6 ++++++
- include/block/blockjob_int.h | 5 +++++
- 2 files changed, 11 insertions(+)
+ block/mirror.c             | 21 ++++++++++++++++-----
+ qapi/block-core.json       | 16 +++++++++++++++-
+ tests/qemu-iotests/109.out | 24 ++++++++++++------------
+ 3 files changed, 43 insertions(+), 18 deletions(-)
 
-diff --git a/blockjob.c b/blockjob.c
-index f8cf6e58e2..9c1cf2ba78 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -376,6 +376,7 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
+diff --git a/block/mirror.c b/block/mirror.c
+index 889cce5414..b305c03918 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -122,7 +122,7 @@ typedef enum MirrorMethod {
+ static BlockErrorAction mirror_error_action(MirrorBlockJob *s, bool read,
+                                             int error)
  {
-     BlockJobInfo *info;
-     uint64_t progress_current, progress_total;
-+    const BlockJobDriver *drv = block_job_driver(job);
+-    s->actively_synced = false;
++    qatomic_set(&s->actively_synced, false);
+     if (read) {
+         return block_job_error_action(&s->common, s->on_source_error,
+                                       true, error);
+@@ -962,7 +962,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
+     if (s->bdev_length == 0) {
+         /* Transition to the READY state and wait for complete. */
+         job_transition_to_ready(&s->common.job);
+-        s->actively_synced = true;
++        qatomic_set(&s->actively_synced, true);
+         while (!job_cancel_requested(&s->common.job) && !s->should_complete) {
+             job_yield(&s->common.job);
+         }
+@@ -1076,7 +1076,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
+                 job_transition_to_ready(&s->common.job);
+             }
+             if (qatomic_read(&s->copy_mode) != MIRROR_COPY_MODE_BACKGROUND) {
+-                s->actively_synced = true;
++                qatomic_set(&s->actively_synced, true);
+             }
  
-     GLOBAL_STATE_CODE();
- 
-@@ -405,6 +406,11 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
-                         g_strdup(error_get_pretty(job->job.err)) :
-                         g_strdup(strerror(-job->job.ret));
+             should_complete = s->should_complete ||
+@@ -1272,6 +1272,15 @@ static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
      }
-+    if (drv->query) {
-+        job_unlock();
-+        drv->query(job, info);
-+        job_lock();
-+    }
-     return info;
  }
  
-diff --git a/include/block/blockjob_int.h b/include/block/blockjob_int.h
-index f604985315..4ab88b3c97 100644
---- a/include/block/blockjob_int.h
-+++ b/include/block/blockjob_int.h
-@@ -72,6 +72,11 @@ struct BlockJobDriver {
-      * Change the @job's options according to @opts.
-      */
-     void (*change)(BlockJob *job, BlockJobChangeOptions *opts, Error **errp);
++static void mirror_query(BlockJob *job, BlockJobInfo *info)
++{
++    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
 +
-+    /*
-+     * Query information specific to this kind of block job.
-+     */
-+    void (*query)(BlockJob *job, BlockJobInfo *info);
++    info->u.mirror = (BlockJobInfoMirror) {
++        .actively_synced = qatomic_read(&s->actively_synced),
++    };
++}
++
+ static const BlockJobDriver mirror_job_driver = {
+     .job_driver = {
+         .instance_size          = sizeof(MirrorBlockJob),
+@@ -1287,6 +1296,7 @@ static const BlockJobDriver mirror_job_driver = {
+     },
+     .drained_poll           = mirror_drained_poll,
+     .change                 = mirror_change,
++    .query                  = mirror_query,
  };
  
- /*
+ static const BlockJobDriver commit_active_job_driver = {
+@@ -1405,7 +1415,7 @@ do_sync_target_write(MirrorBlockJob *job, MirrorMethod method,
+         bitmap_end = QEMU_ALIGN_UP(offset + bytes, job->granularity);
+         bdrv_set_dirty_bitmap(job->dirty_bitmap, bitmap_offset,
+                               bitmap_end - bitmap_offset);
+-        job->actively_synced = false;
++        qatomic_set(&job->actively_synced, false);
+ 
+         action = mirror_error_action(job, false, -ret);
+         if (action == BLOCK_ERROR_ACTION_REPORT) {
+@@ -1464,7 +1474,8 @@ static void coroutine_fn GRAPH_RDLOCK active_write_settle(MirrorOp *op)
+     uint64_t end_chunk = DIV_ROUND_UP(op->offset + op->bytes,
+                                       op->s->granularity);
+ 
+-    if (!--op->s->in_active_write_counter && op->s->actively_synced) {
++    if (!--op->s->in_active_write_counter &&
++        qatomic_read(&op->s->actively_synced)) {
+         BdrvChild *source = op->s->mirror_top_bs->backing;
+ 
+         if (QLIST_FIRST(&source->bs->parents) == source &&
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 950542b735..35d67410cc 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -1352,6 +1352,20 @@
+ { 'enum': 'MirrorCopyMode',
+   'data': ['background', 'write-blocking'] }
+ 
++##
++# @BlockJobInfoMirror:
++#
++# Information specific to mirror block jobs.
++#
++# @actively-synced: Whether the source is actively synced to the
++#     target, i.e. same data and new writes are done synchronously to
++#     both.
++#
++# Since 8.2
++##
++{ 'struct': 'BlockJobInfoMirror',
++  'data': { 'actively-synced': 'bool' } }
++
+ ##
+ # @BlockJobInfo:
+ #
+@@ -1403,7 +1417,7 @@
+            'auto-finalize': 'bool', 'auto-dismiss': 'bool',
+            '*error': 'str' },
+   'discriminator': 'type',
+-  'data': {} }
++  'data': { 'mirror': 'BlockJobInfoMirror' } }
+ 
+ ##
+ # @query-block-jobs:
+diff --git a/tests/qemu-iotests/109.out b/tests/qemu-iotests/109.out
+index 2611d6a40f..965c9a6a0a 100644
+--- a/tests/qemu-iotests/109.out
++++ b/tests/qemu-iotests/109.out
+@@ -38,7 +38,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 1024, "offset": 1024, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 1024, "offset": 1024, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 1024, "offset": 1024, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -90,7 +90,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 197120, "offset": 197120, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 197120, "offset": 197120, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 197120, "offset": 197120, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -142,7 +142,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 327680, "offset": 327680, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 327680, "offset": 327680, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 327680, "offset": 327680, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -194,7 +194,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 1024, "offset": 1024, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 1024, "offset": 1024, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 1024, "offset": 1024, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -246,7 +246,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 65536, "offset": 65536, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 65536, "offset": 65536, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 65536, "offset": 65536, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -298,7 +298,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 2560, "offset": 2560, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 2560, "offset": 2560, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 2560, "offset": 2560, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -349,7 +349,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 2560, "offset": 2560, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 2560, "offset": 2560, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 2560, "offset": 2560, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -400,7 +400,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 31457280, "offset": 31457280, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 31457280, "offset": 31457280, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 31457280, "offset": 31457280, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -451,7 +451,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 327680, "offset": 327680, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 327680, "offset": 327680, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 327680, "offset": 327680, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -502,7 +502,7 @@ read 512/512 bytes at offset 0
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 2048, "offset": 2048, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 2048, "offset": 2048, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 2048, "offset": 2048, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -533,7 +533,7 @@ WARNING: Image format was not specified for 'TEST_DIR/t.raw' and probing guessed
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 512, "offset": 512, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 512, "offset": 512, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 512, "offset": 512, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+@@ -557,7 +557,7 @@ Images are identical.
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "src"}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "src", "len": 512, "offset": 512, "speed": 0, "type": "mirror"}}
+ {"execute":"query-block-jobs"}
+-{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 512, "offset": 512, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror"}]}
++{"return": [{"auto-finalize": true, "io-status": "ok", "device": "src", "auto-dismiss": true, "busy": false, "len": 512, "offset": 512, "status": "ready", "paused": false, "speed": 0, "ready": true, "type": "mirror", "actively-synced": false}]}
+ {"execute":"quit"}
+ {"return": {}}
+ {"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
 -- 
 2.39.2
 
