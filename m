@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BD87C81C2
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B98C47C81C7
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:18:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrEI7-0002GU-E0; Fri, 13 Oct 2023 05:17:07 -0400
+	id 1qrEJG-00035D-Tv; Fri, 13 Oct 2023 05:18:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrEI3-0002Fi-Bg
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:17:04 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrEJC-00032m-0m
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:18:14 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrEI1-000637-8s
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:17:02 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-32003aae100so1992397f8f.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 02:17:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrEJ6-0006Bf-UE
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 05:18:13 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9adb9fa7200so382188766b.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 02:18:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697188619; x=1697793419; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=/qR6c6xdtLZGOn1xkvozkK1KVvB2uENXpYzTOdqsmPM=;
- b=qHSucJQBaXNkmGoiLjEi8DZhqNUraMigVABAFxsu2FzVRsLize/9nkdQh9Eqacuzea
- Sb1BtfMY0+jAIwe5nr3asxTGIUz/1Clc5C8SQSerrsap6B8zG/yyqb9rEPsfMszAv9Mj
- nNn5X6O5dMMBFMCPaXpA45JEl0rWTwc8T7FwRy2iGV8aWPhSVBqTz0FRKg649oezl7u1
- ECYyQpI0mvyoVNYZIDDTxAxCOY596bqNYW1MJE/aW1DK44GfveuT0J7rQhDjq7o0Uv0U
- A3zw3Mw7TNMH8DPBK14f+ifqONxq2LfKiVO3OICjf8fs8zGjUDiNWTfdJn/883KKI+BY
- XNBw==
+ d=linaro.org; s=google; t=1697188686; x=1697793486; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Pqby8K43OHvqpl430Fc1LwtNk25i4STB+Jq7cuumHbw=;
+ b=prWnLC6O/CAOn0/Hosd6E6jHXXOmAWBAd9vsRslaknpvusTAfqDy0Q3Ldh2fCdl4b+
+ ZdLJ6DGWgn4uMOr3zWaimAWwTYY4BJoBazt13yU/EMzqCwupln/a4sZ/f+BpTKjJ/iI2
+ VFZYaB5WzDJStodYIJrIqUCyq5sGMyjAX9lGAxFanqPnbQZXtOVj19Oixr+3VgxrzOgi
+ xbpUUKBhqiq0GotZaAcbGFpl/WNd2iQLInp7Gb47pAgZ3D0iSDmmJf2r8jyS7fMvS5VW
+ ZBprZ+0MCtloxmwSl5YCqlKqlS9042n7njZ3R3INj2Nl6C0YuIH3kBHMbBtprFUdcygH
+ HAUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697188619; x=1697793419;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/qR6c6xdtLZGOn1xkvozkK1KVvB2uENXpYzTOdqsmPM=;
- b=o8Id5KhEk8jn/OFZr2HAEI5ofFsy666hX0qPjngP690om8GoYel5wfY9Ef75SePxP1
- GMn0ipfbSmIrT+Vf0qvK3xg8Io8eHzNHjgnMgEpRdsopkTXpflIvWOwD/pymJf7GaAQ+
- cN16hpUpRatzJrF0eXa6vpJxc+C6Acr1p98S2Cc+y6oS3oXCvIG/+GKwBb5X3vz1wbaf
- My6alIC5BydN02lEviw7CaFOMN7nEgqtTBI38Lxap4C/h9headYbAlZMEWjmFXbU7FW7
- Jh5p5mli0g9IraBs2zhEgwJdLn/7uFvdna6J2+QXlbverrUj/SA3qggDzk2ANlPhLaZ8
- aWdg==
-X-Gm-Message-State: AOJu0YyuPu+ir1jWg0KyXyAGLQMZSHiTEliP7zYCUgVCMrkia21rMsbH
- fYcsDMVzVOfnckVJ9rK7MDqfe+tXUb403ee/r7s=
-X-Google-Smtp-Source: AGHT+IE87e9nEPmXlgwChDr0WVgALuMWNbzzWbFS7S8LPy/c0PFL956OTLd7s+77/56EeH18tvZ3QQ==
-X-Received: by 2002:adf:f9c8:0:b0:32d:8c67:be05 with SMTP id
- w8-20020adff9c8000000b0032d8c67be05mr3951074wrr.22.1697188618895; 
- Fri, 13 Oct 2023 02:16:58 -0700 (PDT)
-Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
+ d=1e100.net; s=20230601; t=1697188686; x=1697793486;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Pqby8K43OHvqpl430Fc1LwtNk25i4STB+Jq7cuumHbw=;
+ b=Fg2kqGnx6kWv91NysKoQzDbAUYyFUlB11/56D0CFP5pFXdG7QMNrGtRdQotrboFZZz
+ h1m+3XvmlIi23dH55AFxhBhoNgNBn7V5ItU3WAMs20NWYq636LwAVwwPW9PAP35c1Mty
+ Kc/CNuVds6uc/Lf0s/VZkZoeEXti0+yCubquoyXbCruOLJatqRlm2uq8mG9qAx1qRIWI
+ yPraiyNzTP7DPWgKfBvUtc6SmiOaa5DkTrYa5++yc8iKpYZl8FjHckz+BPCuQhmFfd6X
+ n3TEQmW2NPRxHBYu/X3gs+0meJtZyzy8sBJfIOrtdZxDt7sMFweDPgPuPbEnAcOGt0S1
+ K+Cw==
+X-Gm-Message-State: AOJu0YyVM/2sVtDhRkRouGTU4lHbUKJ2gEGnVICdduPtUqRcavRXfJje
+ 4V6HNZk5wBlwWqkzr+nGYmoqhncsIeSce7Kguyw=
+X-Google-Smtp-Source: AGHT+IGjAljAZ8Jsl9uDh+lT0pBfLMz2RJ91JcMt7zDTu1ivLbUBTTkAtl8ALAZRtuQOtzLJErejmQ==
+X-Received: by 2002:a17:906:3097:b0:9b2:b30f:deb with SMTP id
+ 23-20020a170906309700b009b2b30f0debmr21222534ejv.4.1697188685970; 
+ Fri, 13 Oct 2023 02:18:05 -0700 (PDT)
+Received: from [192.168.69.115] ([176.172.118.168])
  by smtp.gmail.com with ESMTPSA id
- g16-20020a056000119000b00323287186aasm761457wrx.32.2023.10.13.02.16.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 02:16:58 -0700 (PDT)
-From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH] scripts/get_maintainer.pl: don't print parentheses
-Date: Fri, 13 Oct 2023 12:16:28 +0300
-Message-Id: <20231013091628.669415-1-manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.39.2
+ si5-20020a170906cec500b009875a6d28b0sm12137437ejb.51.2023.10.13.02.18.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Oct 2023 02:18:05 -0700 (PDT)
+Message-ID: <8ba0812c-2691-4bf0-27cc-e4431ab22b29@linaro.org>
+Date: Fri, 13 Oct 2023 11:18:03 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 05/18] target/hexagon: Declare QOM definitions in
+ 'cpu-qom.h'
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231010092901.99189-1-philmd@linaro.org>
+ <20231010092901.99189-6-philmd@linaro.org>
+ <b3ecf0b1-95e6-47d6-b26f-017dbfd120f3@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <b3ecf0b1-95e6-47d6-b26f-017dbfd120f3@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,37 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When called from git-send-email, some results contain unclosed
-parentheses from the subsystem title, for example:
+On 13/10/23 06:06, Richard Henderson wrote:
+> On 10/10/23 02:28, Philippe Mathieu-Daudé wrote:
+>> "target/foo/cpu.h" contains the target specific declarations.
+>>
+>> A heterogeneous setup need to access target agnostic declarations
+>> (at least the QOM ones, to instantiate the objects).
+>>
+>> Our convention is to add such target agnostic QOM declarations in
+>> the "target/foo/cpu-qom.h" header.
+>>
+>> Extract QOM definitions from "cpu.h" to "cpu-qom.h".
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/hexagon/cpu-qom.h | 35 +++++++++++++++++++++++++++++++++++
+>>   target/hexagon/cpu.h     | 23 +----------------------
+>>   2 files changed, 36 insertions(+), 22 deletions(-)
+>>   create mode 100644 target/hexagon/cpu-qom.h
 
-    (cc-cmd) Adding cc: qemu-ppc@nongnu.org (open list:PowerNV (Non-Virt...) from: 'scripts/get_maintainer.pl --nogit-fallback'
-    (cc-cmd) Adding cc: qemu-devel@nongnu.org (open list:All patches CC here) from: 'scripts/get_maintainer.pl --nogit-fallback'
-    Unmatched () '(open list:PowerNV (Non-Virt...)' '' at /usr/lib/git-core/git-send-email line 642.
-    error: unable to extract a valid address from: qemu-ppc@nongnu.org (open list:PowerNV (Non-Virt...)
-    What to do with this address? ([q]uit|[d]rop|[e]dit): d
 
-This commit removes all parentheses from results.
+>> +OBJECT_DECLARE_CPU_TYPE(HexagonCPU, HexagonCPUClass, HEXAGON_CPU)
+>> +
+>> +typedef struct HexagonCPUClass {
+>> +    CPUClass parent_class;
+>> +
+>> +    DeviceRealize parent_realize;
+>> +    ResettablePhases parent_phases;
+>> +} HexagonCPUClass;
+> 
+> I can't imagine the class structure being any more useful generically 
+> than the object structure.  All we need at this point is the typedef, 
+> provided by OBJECT_DECLARE_TYPE.
 
-Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- scripts/get_maintainer.pl | 1 +
- 1 file changed, 1 insertion(+)
+Right.
 
-diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
-index 02fa828100..00a0870b26 100755
---- a/scripts/get_maintainer.pl
-+++ b/scripts/get_maintainer.pl
-@@ -907,6 +907,7 @@ sub get_subsystem_name {
-     if (length($subsystem) > 20) {
- 	$subsystem = substr($subsystem, 0, 17);
- 	$subsystem =~ s/\s*$//;
-+	$subsystem =~ s/[()]//g;
- 	$subsystem = $subsystem . "...";
-     }
-     return $subsystem;
+> I know this makes hexagon match others, but I think its the wrong 
+> direction of cleanup.
 
-base-commit: 63011373ad22c794a013da69663c03f1297a5c56
--- 
-2.39.2
+I agree.
 
 
