@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5407C8D9C
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 583D37C8DAC
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:18:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrNYJ-0006vK-Mf; Fri, 13 Oct 2023 15:10:27 -0400
+	id 1qrNYL-0006yE-C7; Fri, 13 Oct 2023 15:10:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNXz-0006am-Tq
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:09 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNY6-0006hR-Ka
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNXs-0001cp-S2
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:06 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNXy-0001o9-Ve
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697224199;
+ s=mimecast20190719; t=1697224203;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S55iOiMBHLn7mCEBQzBqeCldmVsvG97z++Q+ZUFBvvA=;
- b=YVrBwxrSjY/d59+iyerBhQuTij3oKDWAMI8cYT7GDSzuEvs0u25XCi621mLUMtQ6t+otlB
- qy+AEnqyoXLSwdCgI0hoQnyiCpJpSwhW9/TV4y2GMQR7/OYcJuxtYTd0NdyK997k0VJeQd
- oI1x7YiqKLY9rOkn+8YMAnntn6KTAwk=
+ bh=MmkD59q/P21wa9VckhVCoRBedLwAP1Ul151IgE+jaUE=;
+ b=Kl3yYsThgH7ZzBbchI1XoA3fkwooeec7ihTc5Uu8D9O2o17gw5Pew0oScnqMoHpsISLWR6
+ YX/PKERWoiqm2EOZMKO0O2obe/Z/Tq8WEqVMqVNl/nHroqlS/k1/h5eJYlKTF8d0W5EBnZ
+ M/+d0MrgRX87bO1f4tD61cTud4Owd6g=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-369-PEWdQaN_ODmPQDXEChByeg-1; Fri, 13 Oct 2023 15:09:58 -0400
-X-MC-Unique: PEWdQaN_ODmPQDXEChByeg-1
+ us-mta-219-3t_aLIL7OL6oQFFMP4eJEg-1; Fri, 13 Oct 2023 15:09:58 -0400
+X-MC-Unique: 3t_aLIL7OL6oQFFMP4eJEg-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C3CE3C17128;
- Fri, 13 Oct 2023 19:09:56 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9DF6E1C00D1B;
+ Fri, 13 Oct 2023 19:09:57 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.32.124])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 240B940C6CA0;
- Fri, 13 Oct 2023 19:09:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6A11B40C6CA2;
+ Fri, 13 Oct 2023 19:09:56 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>,
@@ -63,9 +63,10 @@ Cc: Kevin Wolf <kwolf@redhat.com>,
  Eric Farman <farman@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Halil Pasic <pasic@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PULL 10/25] Python: Enable python3.12 support
-Date: Fri, 13 Oct 2023 15:09:25 -0400
-Message-ID: <20231013190941.3699288-11-jsnow@redhat.com>
+Subject: [PULL 11/25] python/qemu/qmp/legacy: cmd(): drop cmd_id unused
+ argument
+Date: Fri, 13 Oct 2023 15:09:26 -0400
+Message-ID: <20231013190941.3699288-12-jsnow@redhat.com>
 In-Reply-To: <20231013190941.3699288-1-jsnow@redhat.com>
 References: <20231013190941.3699288-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -79,7 +80,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,72 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Python 3.12 has released, so update the test infrastructure to test
-against this version. Update the configure script to look for it when an
-explicit Python interpreter isn't chosen.
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Signed-off-by: John Snow <jsnow@redhat.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-id: 20231006195243.3131140-5-jsnow@redhat.com
+The argument is unused, let's drop it for now, as we are going to
+refactor the interface and don't want to refactor unused things.
+
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Message-id: 20231006154125.1068348-2-vsementsov@yandex-team.ru
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- configure                              | 3 ++-
- python/setup.cfg                       | 3 ++-
- tests/docker/dockerfiles/python.docker | 6 +++++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ python/qemu/qmp/legacy.py | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/configure b/configure
-index a49fc7b7e7..96d0dd5ffc 100755
---- a/configure
-+++ b/configure
-@@ -562,7 +562,8 @@ first_python=
- if test -z "${PYTHON}"; then
-     # A bare 'python' is traditionally python 2.x, but some distros
-     # have it as python 3.x, so check in both places.
--    for binary in python3 python python3.11 python3.10 python3.9 python3.8; do
-+    for binary in python3 python python3.12 python3.11 \
-+                          python3.10 python3.9 python3.8; do
-         if has "$binary"; then
-             python=$(command -v "$binary")
-             if check_py_version "$python"; then
-diff --git a/python/setup.cfg b/python/setup.cfg
-index 8c67dce457..48668609d3 100644
---- a/python/setup.cfg
-+++ b/python/setup.cfg
-@@ -18,6 +18,7 @@ classifiers =
-     Programming Language :: Python :: 3.9
-     Programming Language :: Python :: 3.10
-     Programming Language :: Python :: 3.11
-+    Programming Language :: Python :: 3.12
-     Typing :: Typed
+diff --git a/python/qemu/qmp/legacy.py b/python/qemu/qmp/legacy.py
+index e1e9383978..fe115e301c 100644
+--- a/python/qemu/qmp/legacy.py
++++ b/python/qemu/qmp/legacy.py
+@@ -195,20 +195,16 @@ def cmd_obj(self, qmp_cmd: QMPMessage) -> QMPMessage:
+         )
  
- [options]
-@@ -182,7 +183,7 @@ multi_line_output=3
- # of python available on your system to run this test.
+     def cmd(self, name: str,
+-            args: Optional[Dict[str, object]] = None,
+-            cmd_id: Optional[object] = None) -> QMPMessage:
++            args: Optional[Dict[str, object]] = None) -> QMPMessage:
+         """
+         Build a QMP command and send it to the QMP Monitor.
  
- [tox:tox]
--envlist = py38, py39, py310, py311
-+envlist = py38, py39, py310, py311, py312
- skip_missing_interpreters = true
+         :param name: command name (string)
+         :param args: command arguments (dict)
+-        :param cmd_id: command id (dict, list, string or int)
+         """
+         qmp_cmd: QMPMessage = {'execute': name}
+         if args:
+             qmp_cmd['arguments'] = args
+-        if cmd_id:
+-            qmp_cmd['id'] = cmd_id
+         return self.cmd_obj(qmp_cmd)
  
- [testenv]
-diff --git a/tests/docker/dockerfiles/python.docker b/tests/docker/dockerfiles/python.docker
-index 383ccbdc3a..a3c1321190 100644
---- a/tests/docker/dockerfiles/python.docker
-+++ b/tests/docker/dockerfiles/python.docker
-@@ -11,7 +11,11 @@ ENV PACKAGES \
-     python3-pip \
-     python3-tox \
-     python3-virtualenv \
--    python3.10
-+    python3.10 \
-+    python3.11 \
-+    python3.12 \
-+    python3.8 \
-+    python3.9
- 
- RUN dnf install -y $PACKAGES
- RUN rpm -q $PACKAGES | sort > /packages.txt
+     def command(self, cmd: str, **kwds: object) -> QMPReturnValue:
 -- 
 2.41.0
 
