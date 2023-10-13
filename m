@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A167C7FD1
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 137977C7F84
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrCzG-0004t1-EC; Fri, 13 Oct 2023 03:53:34 -0400
+	id 1qrCzH-0004wy-BX; Fri, 13 Oct 2023 03:53:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCxy-0001hl-Ch
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:14 -0400
+ id 1qrCy1-0001tV-7G
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:19 -0400
 Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCxf-0005Hl-CB
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:14 -0400
+ id 1qrCxh-0005Ik-DS
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:16 -0400
 Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40684f53ef3so20829315e9.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:51:54 -0700 (PDT)
+ 5b1f17b1804b1-4065dea9a33so18680895e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:51:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183513; x=1697788313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183516; x=1697788316; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=otVaVJDhbuHMXV9luSXKOD49q6dBPVmJnIkfSS0ltHs=;
- b=J+TkEpCg+21YWv4WwSIKy4zCCrxC74NJcx27K2pb7WReUyiaU6YZk7AzcWjpI8vCZS
- VqvFHsQdQte5B5f8yc7Ve0MerKXJQ+2d7V9Kul1Nx6dT91xmu1LvQWn4bNgrfwc9NgeQ
- NGYJDCO2JT+FNPFFNLuhKXNgcdlYHmEX9Pud6/arYBROCggEvJwRpnfEQIH81XJU0iXv
- 2eVJS8F36OZNzSFsSnP5yH09Zs80kECfhzHhsRP5zvuB7gTHMJq9+Fova0A0/Vb0dmWf
- n9oZMJBPrbaix2SxauDZ1oAzvd9kNC1MsqvWPBY5rHG/hGeuSWze+1zM7i8ye6NFmuwz
- 2o4Q==
+ bh=OCVoy+VL/p8kZbuHDWnPQdx8BuG5QqDsACSTUtWcWKE=;
+ b=vUMKg6f0DSBZjw27bHALPOi4f0/e3hmSF/FBkgggwoptqRFCVn8XiiQJAbcPccLN1m
+ CfZ09lBXs+Urb3m/uNLEsBXuxy38x27CL5Xm81EIMSCwArFMmB2WQMBJhTlBKy9GgcT0
+ QbjanWVtH4av6XGOOPOF+F86wqOmm87LF+8oRuWW53lV5opfokZNH0+xMBLdtLtOD8qg
+ kwkQ6uhCFF5K/MryKFXUv20HRQyoyZBQv7F8EhDwWXalteA5xQv5Kz62t84fMocTtvtj
+ KGO/kK12/sfAHYk4MvJ7KdHyaFBgwG6jtz90K+kYMni3uEme15/h/HfImVLUx5R5WqCY
+ IZIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183513; x=1697788313;
+ d=1e100.net; s=20230601; t=1697183516; x=1697788316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=otVaVJDhbuHMXV9luSXKOD49q6dBPVmJnIkfSS0ltHs=;
- b=NLvmRcMZmAKDyvi8w7qJoRTzMtw4KXQ0/m+15RoOSVngmfHfzZzLWOHx2tk/jX1MEa
- hfF4l9vOh2kRiMcw0zUyt17XG0H8xDVaHulO6cam7YhV/QpzEA1nqPAVT11dZfcox3kn
- miZ430vf2sBXgc3wf98qkAKUpWqJVYtpiuPV9E3zmUM3PKbK5s/i1VkSrYLeFYYhbNd+
- XQfm0JsrNLATrMO1V0zJyF7BZXQnQ8/WupENgTtZmvcnmw1L0W2v10lh7mrfmAOiBsH+
- SzJgVn48MbuorDj1Fz387/dr5TWPbSZlmkADispFA7LIrhaJe6i8vJ6gDZAnC4fviMHF
- cCZQ==
-X-Gm-Message-State: AOJu0YyVHTG2ZmoxBbj/5KfAv5y7nk14nTY0iogaF5VQLDNqcwKpzRzF
- g1JMLWytIC/R661t3TOv779aparSFpDqYo46o1k=
-X-Google-Smtp-Source: AGHT+IFvfo7amcs//gQJ+HEf/NOMzbbsbPMZegukKWV8IYDE0FtDk6MTx/VMetIbC7oTryKQbF2WAA==
-X-Received: by 2002:adf:a351:0:b0:32d:88dc:b219 with SMTP id
- d17-20020adfa351000000b0032d88dcb219mr5335136wrb.45.1697183513689; 
- Fri, 13 Oct 2023 00:51:53 -0700 (PDT)
+ bh=OCVoy+VL/p8kZbuHDWnPQdx8BuG5QqDsACSTUtWcWKE=;
+ b=xRZgnnLnA4lVeKPrjp6OaSytwf78yW9bBH4g88A9tw8si45Su3aPjMIwGSmOW0Vsc/
+ Imfd7XVA0DLNjDKTMgs20QR6qcknhfodbH8UQLxmvW3k7GXpBNzCdIDkAFHLAdmY6tRQ
+ WtYYaR9oD5mId5jSJFo+EwaObRKtdYe1vZ47rGlI9N4ZZ/3+oc4Z55PhmSCtm8aI6iRr
+ TE261t9VGecLF0ZYGXqe+HwTO8V5gdDYowyeKgvq/sXnhdS01cZjZFxl33bo+0Cy2LQN
+ 7TG8mIEhZ6Vaquo6cFvV36DQBlMyzYWJMS1chb0BigogJCV/Svt0EbZy5djeEYHFQmu/
+ 5tjg==
+X-Gm-Message-State: AOJu0Ywymz6XGZ1kKcLur+5RC/IK1mDMid8kwVw5d3FpbUOudGnV/5nM
+ l1O9kUc0/FZBQbExNAVUQn4oaAttz1LA1qWXNcw=
+X-Google-Smtp-Source: AGHT+IFpgcBvMuvXpbv2dIMVRGi5HmHd0pGvPlVVkJFwgDaYuxBIb5EerY+o/Qo6hS6Vq4s55bDIGw==
+X-Received: by 2002:adf:e606:0:b0:317:6314:96e2 with SMTP id
+ p6-20020adfe606000000b00317631496e2mr21283258wrm.14.1697183515495; 
+ Fri, 13 Oct 2023 00:51:55 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.51.52
+ m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.51.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:51:53 -0700 (PDT)
+ Fri, 13 Oct 2023 00:51:54 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [RFC PATCH 52/78] hw/char: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:48:11 +0300
-Message-Id: <892c67609977bb00b317089ca9b6f9485be226fe.1697183082.git.manos.pitsidianakis@linaro.org>
+ Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [RFC PATCH 52/75] nbd: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:48:12 +0300
+Message-Id: <2878af507d5c3d5c79e0b8a8de8f07bdca351038.1697034504.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
-References: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
+References: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
@@ -80,7 +79,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,99 +95,875 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of raising -Wimplicit-fallthrough to 5, replace all
-fall-through comments with the fallthrough attribute pseudo-keyword.
-
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/char/nrf51_uart.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ nbd/client.c | 4 ++--
+ nbd/common.c | 2 +-
+ qemu-nbd.c   | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/char/nrf51_uart.c b/hw/char/nrf51_uart.c
-index dfe2276d71..3e2b35c7ad 100644
---- a/hw/char/nrf51_uart.c
-+++ b/hw/char/nrf51_uart.c
-@@ -113,79 +113,79 @@ static void uart_cancel_transmit(NRF51UARTState *s)
- static void uart_write(void *opaque, hwaddr addr,
-                        uint64_t value, unsigned int size)
+diff --git a/nbd/client.c b/nbd/client.c
+index 29ffc609a4..04507249b2 100644
+--- a/nbd/client.c
++++ b/nbd/client.c
+@@ -1014,102 +1014,102 @@ static int nbd_negotiate_finish_oldstyle(QIOChannel *ioc, NBDExportInfo *info,
+ /*
+  * nbd_receive_negotiate:
+  * Connect to server, complete negotiation, and move into transmission phase.
+  * Returns: negative errno: failure talking to server
+  *          0: server is connected
+  */
+ int nbd_receive_negotiate(QIOChannel *ioc, QCryptoTLSCreds *tlscreds,
+                           const char *hostname, QIOChannel **outioc,
+                           NBDExportInfo *info, Error **errp)
  {
-     NRF51UARTState *s = NRF51_UART(opaque);
+     ERRP_GUARD();
+     int result;
+     bool zeroes;
+     bool base_allocation = info->base_allocation;
  
-     trace_nrf51_uart_write(addr, value, size);
+     assert(info->name && strlen(info->name) <= NBD_MAX_STRING_SIZE);
+     trace_nbd_receive_negotiate_name(info->name);
  
-     if (!s->enabled && (addr != A_UART_ENABLE)) {
-         return;
+     result = nbd_start_negotiate(ioc, tlscreds, hostname, outioc,
+                                  info->mode, &zeroes, errp);
+     if (result < 0) {
+         return result;
      }
  
-     switch (addr) {
-     case A_UART_TXD:
-         if (!s->pending_tx_byte && s->tx_started) {
-             s->reg[R_UART_TXD] = value;
-             s->pending_tx_byte = true;
-             uart_transmit(NULL, G_IO_OUT, s);
-         }
-         break;
-     case A_UART_INTEN:
-         s->reg[R_UART_INTEN] = value;
-         break;
-     case A_UART_INTENSET:
-         s->reg[R_UART_INTEN] |= value;
-         break;
-     case A_UART_INTENCLR:
-         s->reg[R_UART_INTEN] &= ~value;
-         break;
-     case A_UART_TXDRDY ... A_UART_RXTO:
-         s->reg[addr / 4] = value;
-         break;
-     case A_UART_ERRORSRC:
-         s->reg[addr / 4] &= ~value;
-         break;
-     case A_UART_RXD:
-         break;
-     case A_UART_RXDRDY:
-         if (value == 0) {
-             s->reg[R_UART_RXDRDY] = 0;
-         }
-         break;
-     case A_UART_STARTTX:
-         if (value == 1) {
-             s->tx_started = true;
-         }
-         break;
-     case A_UART_STARTRX:
-         if (value == 1) {
-             s->rx_started = true;
-         }
-         break;
-     case A_UART_ENABLE:
-         if (value) {
-             if (value == 4) {
-                 s->enabled = true;
+     info->mode = result;
+     info->base_allocation = false;
+     if (tlscreds && *outioc) {
+         ioc = *outioc;
+     }
+ 
+     switch (info->mode) {
+     case NBD_MODE_EXTENDED:
+     case NBD_MODE_STRUCTURED:
+         if (base_allocation) {
+             result = nbd_negotiate_simple_meta_context(ioc, info, errp);
+             if (result < 0) {
+                 return -EINVAL;
              }
-             break;
-         }
-         s->enabled = false;
-         value = 1;
--        /* fall through */
-+        fallthrough;
-     case A_UART_SUSPEND:
-     case A_UART_STOPTX:
-         if (value == 1) {
-             s->tx_started = false;
+             info->base_allocation = result == 1;
          }
 -        /* fall through */
 +        fallthrough;
-     case A_UART_STOPRX:
-         if (addr != A_UART_STOPTX && value == 1) {
-             s->rx_started = false;
-             s->reg[R_UART_RXTO] = 1;
+     case NBD_MODE_SIMPLE:
+         /* Try NBD_OPT_GO first - if it works, we are done (it
+          * also gives us a good message if the server requires
+          * TLS).  If it is not available, fall back to
+          * NBD_OPT_LIST for nicer error messages about a missing
+          * export, then use NBD_OPT_EXPORT_NAME.  */
+         result = nbd_opt_info_or_go(ioc, NBD_OPT_GO, info, errp);
+         if (result < 0) {
+             return -EINVAL;
+         }
+         if (result > 0) {
+             return 0;
+         }
+         /* Check our desired export is present in the
+          * server export list. Since NBD_OPT_EXPORT_NAME
+          * cannot return an error message, running this
+          * query gives us better error reporting if the
+          * export name is not available.
+          */
+         if (nbd_receive_query_exports(ioc, info->name, errp) < 0) {
+             return -EINVAL;
+         }
+-        /* fall through */
++        fallthrough;
+     case NBD_MODE_EXPORT_NAME:
+         /* write the export name request */
+         if (nbd_send_option_request(ioc, NBD_OPT_EXPORT_NAME, -1, info->name,
+                                     errp) < 0) {
+             return -EINVAL;
+         }
+ 
+         /* Read the response */
+         if (nbd_read64(ioc, &info->size, "export length", errp) < 0) {
+             return -EINVAL;
+         }
+ 
+         if (nbd_read16(ioc, &info->flags, "export flags", errp) < 0) {
+             return -EINVAL;
+         }
+         break;
+     case NBD_MODE_OLDSTYLE:
+         if (*info->name) {
+             error_setg(errp, "Server does not support non-empty export names");
+             return -EINVAL;
+         }
+         if (nbd_negotiate_finish_oldstyle(ioc, info, errp) < 0) {
+             return -EINVAL;
          }
          break;
      default:
-         s->reg[addr / 4] = value;
+         g_assert_not_reached();
+     }
+ 
+     trace_nbd_receive_negotiate_size_flags(info->size, info->flags);
+     if (zeroes && nbd_drop(ioc, 124, errp) < 0) {
+         error_prepend(errp, "Failed to read reserved block: ");
+         return -EINVAL;
+     }
+     return 0;
+ }
+ 
+ /* Clean up result of nbd_receive_export_list */
+diff --git a/nbd/common.c b/nbd/common.c
+index 3247c1d618..1140ea0888 100644
+--- a/nbd/common.c
++++ b/nbd/common.c
+@@ -222,37 +222,37 @@ const char *nbd_err_lookup(int err)
+ int nbd_errno_to_system_errno(int err)
+ {
+     int ret;
+     switch (err) {
+     case NBD_SUCCESS:
+         ret = 0;
+         break;
+     case NBD_EPERM:
+         ret = EPERM;
+         break;
+     case NBD_EIO:
+         ret = EIO;
+         break;
+     case NBD_ENOMEM:
+         ret = ENOMEM;
+         break;
+     case NBD_ENOSPC:
+         ret = ENOSPC;
+         break;
+     case NBD_EOVERFLOW:
+         ret = EOVERFLOW;
+         break;
+     case NBD_ENOTSUP:
+         ret = ENOTSUP;
+         break;
+     case NBD_ESHUTDOWN:
+         ret = ESHUTDOWN;
+         break;
+     default:
+         trace_nbd_unknown_error(err);
+-        /* fallthrough */
++        fallthrough;
+     case NBD_EINVAL:
+         ret = EINVAL;
          break;
      }
-     nrf51_uart_update_irq(s);
+     return ret;
+ }
+diff --git a/qemu-nbd.c b/qemu-nbd.c
+index 186e6468b1..41e50208a5 100644
+--- a/qemu-nbd.c
++++ b/qemu-nbd.c
+@@ -528,704 +528,704 @@ static void qemu_nbd_shutdown(void)
+ int main(int argc, char **argv)
+ {
+     BlockBackend *blk;
+     BlockDriverState *bs;
+     uint64_t dev_offset = 0;
+     bool readonly = false;
+     bool disconnect = false;
+     const char *bindto = NULL;
+     const char *port = NULL;
+     char *sockpath = NULL;
+     QemuOpts *sn_opts = NULL;
+     const char *sn_id_or_name = NULL;
+     const char *sopt = "hVb:o:p:rsnc:dvk:e:f:tl:x:T:D:AB:L";
+     struct option lopt[] = {
+         { "help", no_argument, NULL, 'h' },
+         { "version", no_argument, NULL, 'V' },
+         { "bind", required_argument, NULL, 'b' },
+         { "port", required_argument, NULL, 'p' },
+         { "socket", required_argument, NULL, 'k' },
+         { "offset", required_argument, NULL, 'o' },
+         { "read-only", no_argument, NULL, 'r' },
+         { "allocation-depth", no_argument, NULL, 'A' },
+         { "bitmap", required_argument, NULL, 'B' },
+         { "connect", required_argument, NULL, 'c' },
+         { "disconnect", no_argument, NULL, 'd' },
+         { "list", no_argument, NULL, 'L' },
+         { "snapshot", no_argument, NULL, 's' },
+         { "load-snapshot", required_argument, NULL, 'l' },
+         { "nocache", no_argument, NULL, 'n' },
+         { "cache", required_argument, NULL, QEMU_NBD_OPT_CACHE },
+         { "aio", required_argument, NULL, QEMU_NBD_OPT_AIO },
+         { "discard", required_argument, NULL, QEMU_NBD_OPT_DISCARD },
+         { "detect-zeroes", required_argument, NULL,
+           QEMU_NBD_OPT_DETECT_ZEROES },
+         { "shared", required_argument, NULL, 'e' },
+         { "format", required_argument, NULL, 'f' },
+         { "persistent", no_argument, NULL, 't' },
+         { "verbose", no_argument, NULL, 'v' },
+         { "object", required_argument, NULL, QEMU_NBD_OPT_OBJECT },
+         { "export-name", required_argument, NULL, 'x' },
+         { "description", required_argument, NULL, 'D' },
+         { "tls-creds", required_argument, NULL, QEMU_NBD_OPT_TLSCREDS },
+         { "tls-hostname", required_argument, NULL, QEMU_NBD_OPT_TLSHOSTNAME },
+         { "tls-authz", required_argument, NULL, QEMU_NBD_OPT_TLSAUTHZ },
+         { "image-opts", no_argument, NULL, QEMU_NBD_OPT_IMAGE_OPTS },
+         { "trace", required_argument, NULL, 'T' },
+         { "fork", no_argument, NULL, QEMU_NBD_OPT_FORK },
+         { "pid-file", required_argument, NULL, QEMU_NBD_OPT_PID_FILE },
+         { "selinux-label", required_argument, NULL,
+           QEMU_NBD_OPT_SELINUX_LABEL },
+         { NULL, 0, NULL, 0 }
+     };
+     int ch;
+     int opt_ind = 0;
+     int flags = BDRV_O_RDWR;
+     int ret = 0;
+     bool seen_cache = false;
+     bool seen_discard = false;
+     bool seen_aio = false;
+     pthread_t client_thread;
+     const char *fmt = NULL;
+     Error *local_err = NULL;
+     BlockdevDetectZeroesOptions detect_zeroes = BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
+     QDict *options = NULL;
+     const char *export_name = NULL; /* defaults to "" later for server mode */
+     const char *export_description = NULL;
+     BlockDirtyBitmapOrStrList *bitmaps = NULL;
+     bool alloc_depth = false;
+     const char *tlscredsid = NULL;
+     const char *tlshostname = NULL;
+     bool imageOpts = false;
+     bool writethrough = false; /* Client will flush as needed. */
+     bool list = false;
+     unsigned socket_activation;
+     const char *pid_file_name = NULL;
+     const char *selinux_label = NULL;
+     BlockExportOptions *export_opts;
+     struct NbdClientOpts opts = {
+         .fork_process = false,
+         .verbose = false,
+         .device = NULL,
+         .srcpath = NULL,
+         .saddr = NULL,
+         .old_stderr = STDOUT_FILENO,
+     };
+ 
+ #ifdef CONFIG_POSIX
+     os_setup_early_signal_handling();
+     os_setup_signal_handling();
+ #endif
+ 
+     socket_init();
+     error_init(argv[0]);
+     module_call_init(MODULE_INIT_TRACE);
+     qcrypto_init(&error_fatal);
+ 
+     module_call_init(MODULE_INIT_QOM);
+     qemu_add_opts(&qemu_trace_opts);
+     qemu_init_exec_dir(argv[0]);
+ 
+     while ((ch = getopt_long(argc, argv, sopt, lopt, &opt_ind)) != -1) {
+         switch (ch) {
+         case 's':
+             flags |= BDRV_O_SNAPSHOT;
+             break;
+         case 'n':
+             optarg = (char *) "none";
+-            /* fallthrough */
++            fallthrough;
+         case QEMU_NBD_OPT_CACHE:
+             if (seen_cache) {
+                 error_report("-n and --cache can only be specified once");
+                 exit(EXIT_FAILURE);
+             }
+             seen_cache = true;
+             if (bdrv_parse_cache_mode(optarg, &flags, &writethrough) == -1) {
+                 error_report("Invalid cache mode `%s'", optarg);
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case QEMU_NBD_OPT_AIO:
+             if (seen_aio) {
+                 error_report("--aio can only be specified once");
+                 exit(EXIT_FAILURE);
+             }
+             seen_aio = true;
+             if (bdrv_parse_aio(optarg, &flags) < 0) {
+                 error_report("Invalid aio mode '%s'", optarg);
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case QEMU_NBD_OPT_DISCARD:
+             if (seen_discard) {
+                 error_report("--discard can only be specified once");
+                 exit(EXIT_FAILURE);
+             }
+             seen_discard = true;
+             if (bdrv_parse_discard_flags(optarg, &flags) == -1) {
+                 error_report("Invalid discard mode `%s'", optarg);
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case QEMU_NBD_OPT_DETECT_ZEROES:
+             detect_zeroes =
+                 qapi_enum_parse(&BlockdevDetectZeroesOptions_lookup,
+                                 optarg,
+                                 BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF,
+                                 &local_err);
+             if (local_err) {
+                 error_reportf_err(local_err,
+                                   "Failed to parse detect_zeroes mode: ");
+                 exit(EXIT_FAILURE);
+             }
+             if (detect_zeroes == BLOCKDEV_DETECT_ZEROES_OPTIONS_UNMAP &&
+                 !(flags & BDRV_O_UNMAP)) {
+                 error_report("setting detect-zeroes to unmap is not allowed "
+                              "without setting discard operation to unmap");
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case 'b':
+             bindto = optarg;
+             break;
+         case 'p':
+             port = optarg;
+             break;
+         case 'o':
+             if (qemu_strtou64(optarg, NULL, 0, &dev_offset) < 0) {
+                 error_report("Invalid offset '%s'", optarg);
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case 'l':
+             if (strstart(optarg, SNAPSHOT_OPT_BASE, NULL)) {
+                 sn_opts = qemu_opts_parse_noisily(&internal_snapshot_opts,
+                                                   optarg, false);
+                 if (!sn_opts) {
+                     error_report("Failed in parsing snapshot param `%s'",
+                                  optarg);
+                     exit(EXIT_FAILURE);
+                 }
+             } else {
+                 sn_id_or_name = optarg;
+             }
+-            /* fall through */
++            fallthrough;
+         case 'r':
+             readonly = true;
+             flags &= ~BDRV_O_RDWR;
+             break;
+         case 'A':
+             alloc_depth = true;
+             break;
+         case 'B':
+             {
+                 BlockDirtyBitmapOrStr *el = g_new(BlockDirtyBitmapOrStr, 1);
+                 *el = (BlockDirtyBitmapOrStr) {
+                     .type = QTYPE_QSTRING,
+                     .u.local = g_strdup(optarg),
+                 };
+                 QAPI_LIST_PREPEND(bitmaps, el);
+             }
+             break;
+         case 'k':
+             sockpath = optarg;
+             if (sockpath[0] != '/') {
+                 error_report("socket path must be absolute");
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case 'd':
+             disconnect = true;
+             break;
+         case 'c':
+             opts.device = optarg;
+             break;
+         case 'e':
+             if (qemu_strtoi(optarg, NULL, 0, &shared) < 0 ||
+                 shared < 0) {
+                 error_report("Invalid shared device number '%s'", optarg);
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case 'f':
+             fmt = optarg;
+             break;
+         case 't':
+             persistent = 1;
+             break;
+         case 'x':
+             export_name = optarg;
+             if (strlen(export_name) > NBD_MAX_STRING_SIZE) {
+                 error_report("export name '%s' too long", export_name);
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case 'D':
+             export_description = optarg;
+             if (strlen(export_description) > NBD_MAX_STRING_SIZE) {
+                 error_report("export description '%s' too long",
+                              export_description);
+                 exit(EXIT_FAILURE);
+             }
+             break;
+         case 'v':
+             opts.verbose = true;
+             break;
+         case 'V':
+             version(argv[0]);
+             exit(0);
+             break;
+         case 'h':
+             usage(argv[0]);
+             exit(0);
+             break;
+         case '?':
+             error_report("Try `%s --help' for more information.", argv[0]);
+             exit(EXIT_FAILURE);
+         case QEMU_NBD_OPT_OBJECT:
+             user_creatable_process_cmdline(optarg);
+             break;
+         case QEMU_NBD_OPT_TLSCREDS:
+             tlscredsid = optarg;
+             break;
+         case QEMU_NBD_OPT_TLSHOSTNAME:
+             tlshostname = optarg;
+             break;
+         case QEMU_NBD_OPT_IMAGE_OPTS:
+             imageOpts = true;
+             break;
+         case 'T':
+             trace_opt_parse(optarg);
+             break;
+         case QEMU_NBD_OPT_TLSAUTHZ:
+             tlsauthz = optarg;
+             break;
+         case QEMU_NBD_OPT_FORK:
+             opts.fork_process = true;
+             break;
+         case 'L':
+             list = true;
+             break;
+         case QEMU_NBD_OPT_PID_FILE:
+             pid_file_name = optarg;
+             break;
+         case QEMU_NBD_OPT_SELINUX_LABEL:
+             selinux_label = optarg;
+             break;
+         }
+     }
+ 
+     if (list) {
+         if (argc != optind) {
+             error_report("List mode is incompatible with a file name");
+             exit(EXIT_FAILURE);
+         }
+         if (export_name || export_description || dev_offset ||
+             opts.device || disconnect || fmt || sn_id_or_name || bitmaps ||
+             alloc_depth || seen_aio || seen_discard || seen_cache) {
+             error_report("List mode is incompatible with per-device settings");
+             exit(EXIT_FAILURE);
+         }
+         if (opts.fork_process) {
+             error_report("List mode is incompatible with forking");
+             exit(EXIT_FAILURE);
+         }
+     } else if ((argc - optind) != 1) {
+         error_report("Invalid number of arguments");
+         error_printf("Try `%s --help' for more information.\n", argv[0]);
+         exit(EXIT_FAILURE);
+     } else if (!export_name) {
+         export_name = "";
+     }
+ 
+     if (!trace_init_backends()) {
+         exit(1);
+     }
+     trace_init_file();
+     qemu_set_log(LOG_TRACE, &error_fatal);
+ 
+     socket_activation = check_socket_activation();
+     if (socket_activation == 0) {
+         if (!sockpath) {
+             setup_address_and_port(&bindto, &port);
+         }
+     } else {
+         /* Using socket activation - check user didn't use -p etc. */
+         const char *err_msg = socket_activation_validate_opts(opts.device,
+                                                               sockpath,
+                                                               bindto, port,
+                                                               selinux_label,
+                                                               list);
+         if (err_msg != NULL) {
+             error_report("%s", err_msg);
+             exit(EXIT_FAILURE);
+         }
+ 
+         /* qemu-nbd can only listen on a single socket.  */
+         if (socket_activation > 1) {
+             error_report("qemu-nbd does not support socket activation with %s > 1",
+                          "LISTEN_FDS");
+             exit(EXIT_FAILURE);
+         }
+     }
+ 
+     if (tlscredsid) {
+         if (opts.device) {
+             error_report("TLS is not supported with a host device");
+             exit(EXIT_FAILURE);
+         }
+         if (tlsauthz && list) {
+             error_report("TLS authorization is incompatible with export list");
+             exit(EXIT_FAILURE);
+         }
+         if (tlshostname && !list) {
+             error_report("TLS hostname is only supported with export list");
+             exit(EXIT_FAILURE);
+         }
+         tlscreds = nbd_get_tls_creds(tlscredsid, list, &local_err);
+         if (local_err) {
+             error_reportf_err(local_err, "Failed to get TLS creds: ");
+             exit(EXIT_FAILURE);
+         }
+     } else {
+         if (tlsauthz) {
+             error_report("--tls-authz is not permitted without --tls-creds");
+             exit(EXIT_FAILURE);
+         }
+         if (tlshostname) {
+             error_report("--tls-hostname is not permitted without --tls-creds");
+             exit(EXIT_FAILURE);
+         }
+     }
+ 
+     if (selinux_label) {
+ #ifdef CONFIG_SELINUX
+         if (sockpath == NULL && opts.device == NULL) {
+             error_report("--selinux-label is not permitted without --socket");
+             exit(EXIT_FAILURE);
+         }
+ #else
+         error_report("SELinux support not enabled in this binary");
+         exit(EXIT_FAILURE);
+ #endif
+     }
+ 
+     if (list) {
+         opts.saddr = nbd_build_socket_address(sockpath, bindto, port);
+         return qemu_nbd_client_list(opts.saddr, tlscreds,
+                                     tlshostname ? tlshostname : bindto);
+     }
+ 
+ #if !HAVE_NBD_DEVICE
+     if (disconnect || opts.device) {
+         error_report("Kernel /dev/nbdN support not available");
+         exit(EXIT_FAILURE);
+     }
+ #else /* HAVE_NBD_DEVICE */
+     if (disconnect) {
+         int nbdfd = open(argv[optind], O_RDWR);
+         if (nbdfd < 0) {
+             error_report("Cannot open %s: %s", argv[optind],
+                          strerror(errno));
+             exit(EXIT_FAILURE);
+         }
+         nbd_disconnect(nbdfd);
+ 
+         close(nbdfd);
+ 
+         printf("%s disconnected\n", argv[optind]);
+ 
+         return 0;
+     }
+ #endif
+ 
+     if ((opts.device && !opts.verbose) || opts.fork_process) {
+ #ifndef WIN32
+         g_autoptr(GError) err = NULL;
+         int stderr_fd[2];
+         pid_t pid;
+ 
+         if (!g_unix_open_pipe(stderr_fd, FD_CLOEXEC, &err)) {
+             error_report("Error setting up communication pipe: %s",
+                          err->message);
+             exit(EXIT_FAILURE);
+         }
+ 
+         /* Now daemonize, but keep a communication channel open to
+          * print errors and exit with the proper status code.
+          */
+         pid = fork();
+         if (pid < 0) {
+             error_report("Failed to fork: %s", strerror(errno));
+             exit(EXIT_FAILURE);
+         } else if (pid == 0) {
+             int saved_errno;
+ 
+             close(stderr_fd[0]);
+ 
+             /* Remember parent's stderr if we will be restoring it. */
+             if (opts.verbose /* fork_process is set */) {
+                 opts.old_stderr = dup(STDERR_FILENO);
+                 if (opts.old_stderr < 0) {
+                     error_report("Could not dup original stderr: %s",
+                                  strerror(errno));
+                     exit(EXIT_FAILURE);
+                 }
+             }
+ 
+             ret = qemu_daemon(1, 0);
+             saved_errno = errno;    /* dup2 will overwrite error below */
+ 
+             /* Temporarily redirect stderr to the parent's pipe...  */
+             if (dup2(stderr_fd[1], STDERR_FILENO) < 0) {
+                 char str[256];
+                 snprintf(str, sizeof(str),
+                          "%s: Failed to link stderr to the pipe: %s\n",
+                          g_get_prgname(), strerror(errno));
+                 /*
+                  * We are unable to use error_report() here as we need to get
+                  * stderr pointed to the parent's pipe. Write to that pipe
+                  * manually.
+                  */
+                 ret = write(stderr_fd[1], str, strlen(str));
+                 exit(EXIT_FAILURE);
+             }
+ 
+             if (ret < 0) {
+                 error_report("Failed to daemonize: %s", strerror(saved_errno));
+                 exit(EXIT_FAILURE);
+             }
+ 
+             /* ... close the descriptor we inherited and go on.  */
+             close(stderr_fd[1]);
+         } else {
+             bool errors = false;
+             char *buf;
+ 
+             /* In the parent.  Print error messages from the child until
+              * it closes the pipe.
+              */
+             close(stderr_fd[1]);
+             buf = g_malloc(1024);
+             while ((ret = read(stderr_fd[0], buf, 1024)) > 0) {
+                 errors = true;
+                 ret = qemu_write_full(STDERR_FILENO, buf, ret);
+                 if (ret < 0) {
+                     exit(EXIT_FAILURE);
+                 }
+             }
+             if (ret < 0) {
+                 error_report("Cannot read from daemon: %s",
+                              strerror(errno));
+                 exit(EXIT_FAILURE);
+             }
+ 
+             /* Usually the daemon should not print any message.
+              * Exit with zero status in that case.
+              */
+             exit(errors);
+         }
+ #else /* WIN32 */
+         error_report("Unable to fork into background on Windows hosts");
+         exit(EXIT_FAILURE);
+ #endif /* WIN32 */
+     }
+ 
+     if (opts.device != NULL && sockpath == NULL) {
+         sockpath = g_malloc(128);
+         snprintf(sockpath, 128, SOCKET_PATH, basename(opts.device));
+     }
+ 
+     server = qio_net_listener_new();
+     if (socket_activation == 0) {
+         int backlog;
+ 
+         if (persistent || shared == 0) {
+             backlog = SOMAXCONN;
+         } else {
+             backlog = MIN(shared, SOMAXCONN);
+         }
+ #ifdef CONFIG_SELINUX
+         if (selinux_label && setsockcreatecon_raw(selinux_label) == -1) {
+             error_report("Cannot set SELinux socket create context to %s: %s",
+                          selinux_label, strerror(errno));
+             exit(EXIT_FAILURE);
+         }
+ #endif
+         opts.saddr = nbd_build_socket_address(sockpath, bindto, port);
+         if (qio_net_listener_open_sync(server, opts.saddr, backlog,
+                                        &local_err) < 0) {
+             object_unref(OBJECT(server));
+             error_report_err(local_err);
+             exit(EXIT_FAILURE);
+         }
+ #ifdef CONFIG_SELINUX
+         if (selinux_label && setsockcreatecon_raw(NULL) == -1) {
+             error_report("Cannot clear SELinux socket create context: %s",
+                          strerror(errno));
+             exit(EXIT_FAILURE);
+         }
+ #endif
+     } else {
+         size_t i;
+         /* See comment in check_socket_activation above. */
+         for (i = 0; i < socket_activation; i++) {
+             QIOChannelSocket *sioc;
+             sioc = qio_channel_socket_new_fd(FIRST_SOCKET_ACTIVATION_FD + i,
+                                              &local_err);
+             if (sioc == NULL) {
+                 object_unref(OBJECT(server));
+                 error_reportf_err(local_err,
+                                   "Failed to use socket activation: ");
+                 exit(EXIT_FAILURE);
+             }
+             qio_net_listener_add(server, sioc);
+             object_unref(OBJECT(sioc));
+         }
+     }
+ 
+     qemu_init_main_loop(&error_fatal);
+     bdrv_init();
+     atexit(qemu_nbd_shutdown);
+ 
+     opts.srcpath = argv[optind];
+     if (imageOpts) {
+         QemuOpts *o;
+         if (fmt) {
+             error_report("--image-opts and -f are mutually exclusive");
+             exit(EXIT_FAILURE);
+         }
+         o = qemu_opts_parse_noisily(&file_opts, opts.srcpath, true);
+         if (!o) {
+             qemu_opts_reset(&file_opts);
+             exit(EXIT_FAILURE);
+         }
+         options = qemu_opts_to_qdict(o, NULL);
+         qemu_opts_reset(&file_opts);
+         blk = blk_new_open(NULL, NULL, options, flags, &local_err);
+     } else {
+         if (fmt) {
+             options = qdict_new();
+             qdict_put_str(options, "driver", fmt);
+         }
+         blk = blk_new_open(opts.srcpath, NULL, options, flags, &local_err);
+     }
+ 
+     if (!blk) {
+         error_reportf_err(local_err, "Failed to blk_new_open '%s': ",
+                           argv[optind]);
+         exit(EXIT_FAILURE);
+     }
+     bs = blk_bs(blk);
+ 
+     if (dev_offset) {
+         QDict *raw_opts = qdict_new();
+         qdict_put_str(raw_opts, "driver", "raw");
+         qdict_put_str(raw_opts, "file", bs->node_name);
+         qdict_put_int(raw_opts, "offset", dev_offset);
+ 
+         aio_context_acquire(qemu_get_aio_context());
+         bs = bdrv_open(NULL, NULL, raw_opts, flags, &error_fatal);
+         aio_context_release(qemu_get_aio_context());
+ 
+         blk_remove_bs(blk);
+         blk_insert_bs(blk, bs, &error_fatal);
+         bdrv_unref(bs);
+     }
+ 
+     blk_set_enable_write_cache(blk, !writethrough);
+ 
+     if (sn_opts) {
+         ret = bdrv_snapshot_load_tmp(bs,
+                                      qemu_opt_get(sn_opts, SNAPSHOT_OPT_ID),
+                                      qemu_opt_get(sn_opts, SNAPSHOT_OPT_NAME),
+                                      &local_err);
+     } else if (sn_id_or_name) {
+         ret = bdrv_snapshot_load_tmp_by_id_or_name(bs, sn_id_or_name,
+                                                    &local_err);
+     }
+     if (ret < 0) {
+         error_reportf_err(local_err, "Failed to load snapshot: ");
+         exit(EXIT_FAILURE);
+     }
+ 
+     bs->detect_zeroes = detect_zeroes;
+ 
+     nbd_server_is_qemu_nbd(shared);
+ 
+     export_opts = g_new(BlockExportOptions, 1);
+     *export_opts = (BlockExportOptions) {
+         .type               = BLOCK_EXPORT_TYPE_NBD,
+         .id                 = g_strdup("qemu-nbd-export"),
+         .node_name          = g_strdup(bdrv_get_node_name(bs)),
+         .has_writethrough   = true,
+         .writethrough       = writethrough,
+         .has_writable       = true,
+         .writable           = !readonly,
+         .u.nbd = {
+             .name                 = g_strdup(export_name),
+             .description          = g_strdup(export_description),
+             .has_bitmaps          = !!bitmaps,
+             .bitmaps              = bitmaps,
+             .has_allocation_depth = alloc_depth,
+             .allocation_depth     = alloc_depth,
+         },
+     };
+     blk_exp_add(export_opts, &error_fatal);
+     qapi_free_BlockExportOptions(export_opts);
+ 
+     if (opts.device) {
+ #if HAVE_NBD_DEVICE
+         ret = pthread_create(&client_thread, NULL, nbd_client_thread, &opts);
+         if (ret != 0) {
+             error_report("Failed to create client thread: %s", strerror(ret));
+             exit(EXIT_FAILURE);
+         }
+ #endif
+     } else {
+         /* Shut up GCC warnings.  */
+         memset(&client_thread, 0, sizeof(client_thread));
+     }
+ 
+     nbd_update_server_watch();
+ 
+     if (pid_file_name) {
+         qemu_write_pidfile(pid_file_name, &error_fatal);
+     }
+ 
+     /* now when the initialization is (almost) complete, chdir("/")
+      * to free any busy filesystems */
+     if (chdir("/") < 0) {
+         error_report("Could not chdir to root directory: %s",
+                      strerror(errno));
+         exit(EXIT_FAILURE);
+     }
+ 
+     if (opts.fork_process) {
+         nbd_client_release_pipe(opts.old_stderr);
+     }
+ 
+     state = RUNNING;
+     do {
+         main_loop_wait(false);
+         if (state == TERMINATE) {
+             blk_exp_close_all();
+             state = TERMINATED;
+         }
+     } while (state != TERMINATED);
+ 
+     blk_unref(blk);
+     if (sockpath) {
+         unlink(sockpath);
+     }
+ 
+     qemu_opts_del(sn_opts);
+ 
+     if (opts.device) {
+         void *result;
+         pthread_join(client_thread, &result);
+         ret = (intptr_t)result;
+         exit(ret);
+     } else {
+         exit(EXIT_SUCCESS);
+     }
  }
 -- 
 2.39.2
