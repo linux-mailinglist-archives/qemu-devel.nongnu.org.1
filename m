@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533927C8689
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0077C8692
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:18:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrI0Q-0008Kj-1u; Fri, 13 Oct 2023 09:15:06 -0400
+	id 1qrI31-00016r-Lp; Fri, 13 Oct 2023 09:17:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrI0K-0008Jt-VM
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:15:01 -0400
-Received: from mail-il1-x132.google.com ([2607:f8b0:4864:20::132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrI0J-0006z7-8U
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:15:00 -0400
-Received: by mail-il1-x132.google.com with SMTP id
- e9e14a558f8ab-3574297c79eso7774195ab.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:14:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697202896; x=1697807696; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fJZhZn/fuAqrLtOfejeNJ7txTkdpvsiRI178zZhnyEU=;
- b=GhA6VQ4DKicLYoND2tNZseQcbtT9UOcKIcEJl+ZgiX52cSnOul/AJJKqkJSswQCSVx
- M1wrykO0ys6Vtc2l4KCYyXcShABeXOpAmEP851m8OhppS3PjF/yapHkt4OK7CluLeOgE
- CiyYx/u9xTbiCB5xSf90J8IuorpXz7xYmJD6BwBYCHukEDtIGxmRAf05i+mjoTJmv3eV
- fW9BcbheULfBwIG4+uG1r7h++WSuB8tKk4Cy4XdDo4d4UFwLe3lRj39sfy8XO6RQAQjO
- Nlst+9hlrIt2KUppgnCFhanYUHc1bSzlqlQxPvf8dNzlaKJO9TCTM2Rej88gskHMJ4Ry
- j07w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697202896; x=1697807696;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fJZhZn/fuAqrLtOfejeNJ7txTkdpvsiRI178zZhnyEU=;
- b=TDitB1HR7VJ1fu24UKnXl4Mz1N95RkYGaOtqmI3psXF2p0tob9TSFUTB80ENMB3W9y
- pNZ6E0uvAjgOZdp93JpsMJCPmLPyzNp0FltYvqHb3pB3n4LMGn+E061cp59VmCrutqBC
- bNIee7tD25HJLaYOMJnaY+MFPPE3Gq0u8k6VtyM4sHI/EC8o63PxqQamF/eojCSHzERK
- KWZRMjvA3aGwjWWhLj4z5rxpaBvcCMdl8LJgKuWaFqUmzBa8ZAXEfYdjfntTO+cu2Sd2
- zrmJLml5bHEELsiT468beVhIWe8GImkakKCKFypgh2TNqlzT3034UBr5ZhFNvO0BIN3y
- Ntsw==
-X-Gm-Message-State: AOJu0Yyy//uy4YevEh0j+AslfOSIdvRtb/4CkXHGtNgA+L26lQMCvVoc
- ywFRov8VE87xCPTM7xC+afFQ/A==
-X-Google-Smtp-Source: AGHT+IEw/bEUDpkPJPpBfhHJM54B6y/wvZQ5xotMSoEcVPnjk8gOWWIUf68qdgZE7DX5QyS815P+7g==
-X-Received: by 2002:a92:d992:0:b0:357:5d8b:719b with SMTP id
- r18-20020a92d992000000b003575d8b719bmr3381571iln.9.1697202896641; 
- Fri, 13 Oct 2023 06:14:56 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- b23-20020a656697000000b005acd5d7e11bsm834522pgw.35.2023.10.13.06.14.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 06:14:56 -0700 (PDT)
-Message-ID: <74d9f5d1-0bc7-4927-8c7a-1f37c2303596@linaro.org>
-Date: Fri, 13 Oct 2023 06:14:53 -0700
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qrI2H-0000ze-1e
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:17:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qrI2F-0007X6-DD
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:17:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697203018;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=p6MiK6w31lleNdz0E7ANCa/awvHMcP9h8TXacV236/Q=;
+ b=e94YzDAXDMLvliMt9s7hQZVI66sXhqbQ8v98kUw/zMxBtYjwmFYjsKsAbjEnSZdx0h2qti
+ yVGL4wObGLqNsUoCkN8PwWLaI2ugD3GAgTu2LDSe3MTr33MzODzXzbRO9Kp+j+P0oTTzES
+ 6iqT6C8LJoMMp6B1MqgaK5JUSYutyHE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-35-hgNPPakoMumXJwH4ylgRoQ-1; Fri, 13 Oct 2023 09:16:54 -0400
+X-MC-Unique: hgNPPakoMumXJwH4ylgRoQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B659B800B23;
+ Fri, 13 Oct 2023 13:16:53 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6C446C1596D;
+ Fri, 13 Oct 2023 13:16:53 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 778AA21E6A21; Fri, 13 Oct 2023 15:16:52 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: <ankita@nvidia.com>
+Cc: <jgg@nvidia.com>,  <alex.williamson@redhat.com>,  <clg@redhat.com>,
+ <shannon.zhaosl@gmail.com>,  <peter.maydell@linaro.org>,
+ <ani@anisinha.ca>,  <berrange@redhat.com>,  <eduardo@habkost.net>,
+ <imammedo@redhat.com>,  <mst@redhat.com>,  <eblake@redhat.com>,
+ <armbru@redhat.com>,  <david@redhat.com>,  <gshan@redhat.com>,
+ <Jonathan.Cameron@huawei.com>,  <aniketa@nvidia.com>,  <cjia@nvidia.com>,
+ <kwankhede@nvidia.com>,  <targupta@nvidia.com>,  <vsethi@nvidia.com>,
+ <acurrid@nvidia.com>,  <dnigam@nvidia.com>,  <udhoke@nvidia.com>,
+ <qemu-arm@nongnu.org>,  <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2 1/3] qom: new object to associate device to numa node
+References: <20231007201740.30335-1-ankita@nvidia.com>
+ <20231007201740.30335-2-ankita@nvidia.com>
+Date: Fri, 13 Oct 2023 15:16:52 +0200
+In-Reply-To: <20231007201740.30335-2-ankita@nvidia.com> (ankita@nvidia.com's
+ message of "Sun, 8 Oct 2023 01:47:38 +0530")
+Message-ID: <87sf6efyrf.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm/exynos4210: Get arm_boot_info declaration from
- 'hw/arm/boot.h'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Igor Mitsyanko <i.mitsyanko@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-References: <20231013130214.95742-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231013130214.95742-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::132;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x132.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,18 +87,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/13/23 06:02, Philippe Mathieu-Daudé wrote:
-> struct arm_boot_info is declared in "hw/arm/boot.h".
-> By including the correct header we don't need to declare
-> it again in "target/arm/cpu-qom.h".
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/hw/arm/exynos4210.h | 2 +-
->   target/arm/cpu-qom.h        | 2 --
->   2 files changed, 1 insertion(+), 3 deletions(-)
+<ankita@nvidia.com> writes:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> From: Ankit Agrawal <ankita@nvidia.com>
+>
+> The CPU cache coherent device memory can be added as NUMA nodes
+> distinct from the system memory nodes. These nodes are associated
+> with the device and Qemu needs a way to maintain this link.
+>
+> Introduce a new acpi-generic-initiator object to allow host admin
+> provide the device and the corresponding NUMA node. Qemu maintain
+> this association and use this object to build the requisite GI
+> Affinity Structure.
+>
+> The admin provides the id of the device and the NUMA node id such
+> as in the following example.
+> -device vfio-pci-nohotplug,host=<bdf>,bus=pcie.0,addr=04.0,rombar=0,id=dev0 \
+> -object acpi-generic-initiator,id=gi0,device=dev0,node=2 \
+>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
 
-r~
+[...]
+
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index fa3e88c8e6..86c87a161c 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -779,6 +779,20 @@
+>  { 'struct': 'VfioUserServerProperties',
+>    'data': { 'socket': 'SocketAddress', 'device': 'str' } }
+>  
+> +##
+> +# @AcpiGenericInitiatorProperties:
+> +#
+> +# Properties for acpi-generic-initiator objects.
+> +#
+> +# @device: the ID of the device to be associated with the node
+> +#
+> +# @node: the ID of the numa node
+> +#
+> +# Since: 8.0
+
+Since 8.2
+
+> +##
+> +{ 'struct': 'AcpiGenericInitiatorProperties',
+> +  'data': { 'device': 'str', 'node': 'uint32' } }
+> +
+>  ##
+>  # @RngProperties:
+>  #
+> @@ -947,7 +961,8 @@
+>      'tls-creds-x509',
+>      'tls-cipher-suites',
+>      { 'name': 'x-remote-object', 'features': [ 'unstable' ] },
+> -    { 'name': 'x-vfio-user-server', 'features': [ 'unstable' ] }
+> +    { 'name': 'x-vfio-user-server', 'features': [ 'unstable' ] },
+> +    'acpi-generic-initiator'
+
+Please keep the object types sorted alphabetically.
+
+>    ] }
+>  
+>  ##
+> @@ -1014,7 +1029,8 @@
+>        'tls-creds-x509':             'TlsCredsX509Properties',
+>        'tls-cipher-suites':          'TlsCredsProperties',
+>        'x-remote-object':            'RemoteObjectProperties',
+> -      'x-vfio-user-server':         'VfioUserServerProperties'
+> +      'x-vfio-user-server':         'VfioUserServerProperties',
+> +      'acpi-generic-initiator':     'AcpiGenericInitiatorProperties'
+
+Likewise.
+
+>    } }
+>  
+>  ##
+
 
