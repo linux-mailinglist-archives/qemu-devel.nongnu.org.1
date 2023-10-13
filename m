@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111D77C877C
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2288F7C875F
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:05:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrImS-0004R4-Ro; Fri, 13 Oct 2023 10:04:45 -0400
+	id 1qrImN-0003hP-Se; Fri, 13 Oct 2023 10:04:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIku-00089k-9T
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIky-0008Bq-9o
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:03:13 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIkm-0002QX-Md
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:03:06 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5333fb34be3so3628332a12.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:02:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIkv-0002Ry-3T
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:03:12 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9bda758748eso76301966b.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697205776; x=1697810576; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697205785; x=1697810585; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/qQPmY7CjfjcpTejSUl9tIgNfX8ASpiti+kcpc3Y4dk=;
- b=fPkzqsegTNyOgC2xdfbVFCkf3zrkJ9P2Lg9OWwL5eKOu4OzG4H4mgohVvUGRhXTRDt
- v8C7dEJgoUZ6LPEZ/d2dbiuDvJtrvUP4L/W0ot6WHjUbmv56fYfwoURR00tdzuGwKtoD
- HedGI91dnc5oTME1M8RTrSP9KiUCNuCZ2WCN/cJmiNt/E/jcY3CTx1fRcbMe1jiyldDd
- IMU0N4a9ZE/RNubMfUbnHKHv7TeK64BKDZ8MG5X5wa4feMoqX34iX9OSKBJesBDADHzj
- ZEDvryhd9wA4cwjpFdhD+vvIvjyPuCBG7AcVAZpB4P0oqrcTSpqAnC19Am9zBXAYxq6M
- SeUA==
+ bh=0NHkF48NQwYUtwEuXHiOGrGxMidZGr1dxHAYpW0iraY=;
+ b=zrAkMmQ9YRQuQ+8mzJf63kEUdBSWPU6K8gr5om45UY0XoPwFeViWSsLu8tD8v6hsEw
+ OS6xUf3DbW++WZWEA3qHqeqLSZbALsgQwL+Ne8ucrCoM0t4k0E3K6Xo9Y4VZ70RJFThc
+ NLnXjVQZkeS2XBsc73oGHVgpcfrYZyohXtWcVt6q2ey2OTnaUVAEahTnDFgDm1vCGwb7
+ dyngPSPVOjTEf8BgVN24tlr1RMFKxGtWQ/Dfci/r4TIKTn44oBZsAlZuuWaPBCpi7iBb
+ 0uYti9KLlQ8tIwTN7ydYs9r+sv40c+OSKzklUABSDPotbSFBSQjZnICMwI1ynYwo/RXn
+ vzNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697205776; x=1697810576;
+ d=1e100.net; s=20230601; t=1697205785; x=1697810585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/qQPmY7CjfjcpTejSUl9tIgNfX8ASpiti+kcpc3Y4dk=;
- b=RivFTuViBXVpYGb2HKgZ9Zr9zH7EIorrIpPjwtXWE8prqyxFklkXL9OTlyorvgvDhg
- rMUTnLSen74i1CQfqm7S7jMrksP8pLOWHIf3bd2iBShATOD5z3mKF3S4+Vwa0g9neiJF
- m38bqSSS4jax14KmPwEc2Wf/Sxn0kS+Ig36oNpW8TvAYdrtedfbnFI+PHxLPkPOafd8u
- eURh9wdV+ThxYzxGAdWyqWFvW5FP4exdbPV6n8z3MCcB21c05/2p5rFsBzJhqMmeFw2p
- wagTOxNY6xtHZXh47lZ3nI4oNqyM9n8kw5AfYbfdtCOaS8j/SwV2TJcztqHyv+i/e2rw
- Y0wg==
-X-Gm-Message-State: AOJu0YwbURdUhgSwITcyqh0m1tPnsTqK7QzyvpED70Bwe32ko2sqlrEN
- BFch2m06eBIjahwOA2AnjabaiRmP/x1szj7WM6w=
-X-Google-Smtp-Source: AGHT+IH62Mir+fxaKntidtHVm8yYxVSZjrUeHRJD+CnIw5qRwaZz/g3DrDu7lCJdipPNuySxl19DIw==
-X-Received: by 2002:a05:6402:3213:b0:53d:eb53:4d0c with SMTP id
- g19-20020a056402321300b0053deb534d0cmr7396964eda.37.1697205776496; 
- Fri, 13 Oct 2023 07:02:56 -0700 (PDT)
+ bh=0NHkF48NQwYUtwEuXHiOGrGxMidZGr1dxHAYpW0iraY=;
+ b=V8hzwCSBuem+IDnPSNVKlsTS1nL5GIvxlXDubNOAbgplogUC9HoaFidC8J0YN41MJ6
+ Fn6/dgNqo6yMetNixdJ9I+bA2o4WolCo2ik+rYhW74f+njjGI6C65SjrTx9Sb+3NEUS6
+ ggmqArpWbAqBopYoonApfYFTztq2fiRUQAtXnlbYVqgxZgNEZ7gRSKtqk+QzFWDa1WGb
+ PiiH6Gks3dfbQUnlsDTWy4/G5t8HA0XRWOjG1HrLXI/0c/XV4eOGcUviiQKIQwamCSxk
+ YfP1UehioyV3njrjzGV/kZqUd3VuNgAtHxEiZQ3VgMB7xOKf0nlN6VzMAp+UtqG/f6L7
+ DwtA==
+X-Gm-Message-State: AOJu0YxVeCt+uxHZV/NMyQ2+2bqzn7ydP7Ceog2b+1qQfmEGz4RNsdXt
+ aQf+yBCcF/UN7iZ7MimEs1p7tRGxactZki64AZU=
+X-Google-Smtp-Source: AGHT+IFHV1FcEguQQzGyWxk/AajR6Lx80H5M/9I1C/BZ7d0uL1bWAfizdH9D8WNdGbvMAFr0CK/K2w==
+X-Received: by 2002:a17:907:2cd9:b0:9ba:1f02:77f2 with SMTP id
+ hg25-20020a1709072cd900b009ba1f0277f2mr11695399ejc.56.1697205785417; 
+ Fri, 13 Oct 2023 07:03:05 -0700 (PDT)
 Received: from m1x-phil.lan ([176.172.118.168])
  by smtp.gmail.com with ESMTPSA id
- v18-20020aa7d652000000b00533dad8a9c5sm11514331edr.38.2023.10.13.07.02.52
+ x20-20020a170906299400b009b2f2451381sm12507640eje.182.2023.10.13.07.03.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Oct 2023 07:02:56 -0700 (PDT)
+ Fri, 13 Oct 2023 07:03:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -87,18 +87,18 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Sergio Lopez <slp@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH v2 10/16] target/openrisc: Declare QOM definitions in
- 'cpu-qom.h'
-Date: Fri, 13 Oct 2023 16:01:09 +0200
-Message-ID: <20231013140116.255-11-philmd@linaro.org>
+Subject: [PATCH v2 11/16] target/riscv: Move TYPE_RISCV_CPU_BASE definition to
+ 'cpu.h'
+Date: Fri, 13 Oct 2023 16:01:10 +0200
+Message-ID: <20231013140116.255-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231013140116.255-1-philmd@linaro.org>
 References: <20231013140116.255-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,91 +121,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"target/foo/cpu.h" contains the target specific declarations.
+TYPE_RISCV_CPU_BASE depends on the TARGET_RISCV32/TARGET_RISCV64
+definitions which are target specific. Such target specific
+definition taints "cpu-qom.h".
 
-A heterogeneous setup need to access target agnostic declarations
-(at least the QOM ones, to instantiate the objects).
+Since "cpu-qom.h" must be target agnostic, remove its target
+specific definition uses by moving TYPE_RISCV_CPU_BASE to
+"target/riscv/cpu.h".
 
-Our convention is to add such target agnostic QOM declarations in
-the "target/foo/cpu-qom.h" header.
+"target/riscv/cpu-qom.h" is now fully target agnostic.
 
-Extract QOM definitions from "cpu.h" to "cpu-qom.h".
-
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/openrisc/cpu-qom.h | 22 ++++++++++++++++++++++
- target/openrisc/cpu.h     | 10 +---------
- 2 files changed, 23 insertions(+), 9 deletions(-)
- create mode 100644 target/openrisc/cpu-qom.h
+ target/riscv/cpu-qom.h | 8 +-------
+ target/riscv/cpu.h     | 6 ++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/target/openrisc/cpu-qom.h b/target/openrisc/cpu-qom.h
-new file mode 100644
-index 0000000000..1ba9fb0a4c
---- /dev/null
-+++ b/target/openrisc/cpu-qom.h
-@@ -0,0 +1,22 @@
-+/*
-+ * QEMU OpenRISC CPU QOM header (target agnostic)
-+ *
-+ * Copyright (c) 2011-2012 Jia Liu <proljc@gmail.com>
-+ *
-+ * SPDX-License-Identifier: LGPL-2.1-or-later
-+ */
-+
-+#ifndef QEMU_OPENRISC_CPU_QOM_H
-+#define QEMU_OPENRISC_CPU_QOM_H
-+
-+#include "hw/core/cpu.h"
-+#include "qom/object.h"
-+
-+#define TYPE_OPENRISC_CPU "or1k-cpu"
-+
-+OBJECT_DECLARE_CPU_TYPE(OpenRISCCPU, OpenRISCCPUClass, OPENRISC_CPU)
-+
-+#define OPENRISC_CPU_TYPE_SUFFIX "-" TYPE_OPENRISC_CPU
-+#define OPENRISC_CPU_TYPE_NAME(model) model OPENRISC_CPU_TYPE_SUFFIX
-+
+diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+index b78169093f..76efb614a6 100644
+--- a/target/riscv/cpu-qom.h
++++ b/target/riscv/cpu-qom.h
+@@ -1,5 +1,5 @@
+ /*
+- * QEMU RISC-V CPU QOM header
++ * QEMU RISC-V CPU QOM header (target agnostic)
+  *
+  * Copyright (c) 2023 Ventana Micro Systems Inc.
+  *
+@@ -44,12 +44,6 @@
+ #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
+ #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+ 
+-#if defined(TARGET_RISCV32)
+-# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
+-#elif defined(TARGET_RISCV64)
+-# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
+-#endif
+-
+ typedef struct CPUArchState CPURISCVState;
+ 
+ OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 144cc94cce..d832696418 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -34,6 +34,12 @@
+ 
+ #define CPU_RESOLVING_TYPE TYPE_RISCV_CPU
+ 
++#if defined(TARGET_RISCV32)
++# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
++#elif defined(TARGET_RISCV64)
++# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
 +#endif
-diff --git a/target/openrisc/cpu.h b/target/openrisc/cpu.h
-index 29cda7279c..dedeb89f8e 100644
---- a/target/openrisc/cpu.h
-+++ b/target/openrisc/cpu.h
-@@ -20,17 +20,12 @@
- #ifndef OPENRISC_CPU_H
- #define OPENRISC_CPU_H
++
+ #define TCG_GUEST_DEFAULT_MO 0
  
-+#include "cpu-qom.h"
- #include "exec/cpu-defs.h"
- #include "fpu/softfloat-types.h"
--#include "hw/core/cpu.h"
--#include "qom/object.h"
- 
- #define TCG_GUEST_DEFAULT_MO (0)
- 
--#define TYPE_OPENRISC_CPU "or1k-cpu"
--
--OBJECT_DECLARE_CPU_TYPE(OpenRISCCPU, OpenRISCCPUClass, OPENRISC_CPU)
--
- /**
-  * OpenRISCCPUClass:
-  * @parent_realize: The parent class' realize handler.
-@@ -304,7 +299,6 @@ struct ArchCPU {
-     CPUOpenRISCState env;
- };
- 
--
- void cpu_openrisc_list(void);
- void openrisc_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
- int openrisc_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
-@@ -339,8 +333,6 @@ void cpu_openrisc_count_start(OpenRISCCPU *cpu);
- void cpu_openrisc_count_stop(OpenRISCCPU *cpu);
- #endif
- 
--#define OPENRISC_CPU_TYPE_SUFFIX "-" TYPE_OPENRISC_CPU
--#define OPENRISC_CPU_TYPE_NAME(model) model OPENRISC_CPU_TYPE_SUFFIX
- #define CPU_RESOLVING_TYPE TYPE_OPENRISC_CPU
- 
- #include "exec/cpu-all.h"
+ /*
 -- 
 2.41.0
 
