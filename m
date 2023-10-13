@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296E87C811E
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 902E37C811A
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:58:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDtR-00019k-9Z; Fri, 13 Oct 2023 04:51:37 -0400
+	id 1qrDtr-0002cJ-PK; Fri, 13 Oct 2023 04:52:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsl-00078L-IQ
+ id 1qrDsl-00078N-7b
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:59 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsj-0001be-3P
+ id 1qrDsj-0001cB-MC
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:54 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-405361bb9f7so19686605e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:50:51 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3226cc3e324so1762731f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:50:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697187050; x=1697791850; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697187052; x=1697791852; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LNddm/56qMiLEmccznxtcpKgNr+eWKfyBYoNrGitmVI=;
- b=RMb2xPuJRYxpwEI2I8ARZkrPFjMn16remR2X5qIPAAP3o40f7nyO4FrwEnx35NAoDP
- sALMaqXmGHarTfPNrwQHyDclikhdROgPIfsZUKDwAnHV2lYpQF9JJYBErBfA+MuVGbtF
- 9Gg+RPzoKtSFeq8WTYcUsLFWkSSM+UVoZEy/24xJC/LqtZ5WmvAJofzeGaDg16ju04Y/
- HWPP46bp8AUEBBn7NmI4i3dfim7+1tKe4hSNf59JsCRwkfDAL97GwRKmBZGqtsjVScDX
- wNAsTIu7FL6eg5L+L+u7bgyAKECpOdzsyD/AonqlbfDpouwMJmjeelEoa/AeOru9SQyO
- cVzw==
+ bh=Foy/uNdQWL4WYCF7IJFmQy3PWuFp8tCnIFLxTwC8lyY=;
+ b=BsRVNHvh8XstMRuR/TSmVzjeZMERatYUUv8m+5kI7oC0x5/2ybeSSFezrg8yr1PwE6
+ JH7Uh3YbebuEGgUsSL1OxzwOh5stP5Vl14FN2J+JgkFR/XDGmTFN5GgFMBOTpJlmx6Ox
+ RrWlywd2l2KsryHuyZLNwe99TgvOzStJv9L5vMx5N48GLKcBox9mdioGsFoBPXXp46VP
+ WweQ+uhJ+0jNfyz+0vsw81x0rd2BVZ3hExpQ+RQMZEpD9iEfh7jci3k4hzQ6VayldqLc
+ TsO5SR+mM8/Z2Ct013t3i9je1PnIFDVW0fdPeuCtDXToalO/ICD9teVMM41UXF7gbVge
+ 9Q9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697187050; x=1697791850;
+ d=1e100.net; s=20230601; t=1697187052; x=1697791852;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LNddm/56qMiLEmccznxtcpKgNr+eWKfyBYoNrGitmVI=;
- b=f+eBug6UdajzescbrlrMhE1x7N3M0cejyR2u/uUuTnx+s+ulufV5wrXEYDeugQI0S5
- Z0XrY4TUTUG3rDoS00aC46VK34xmYjMd4vlS8hZVoQuH+BuLkCKj99ehBYd715rOX5dQ
- qu4G23PbZgNinkVRLgR8A8gvJfhFItgqxXAOxnVHMSC0wDqpYoWuInt1lXAynDpSnUTz
- 3GpvQVpkGxhc4H+0vsqXqAlwBGQ7QteDAU3FEmcxIY03s440n4NE1va9YBd+jOHRUr/x
- H59r9YYyMPpdNtfjH9TtU3KcgjrWJY2hDWo5I/oB2CItFRsYdTUW8ugHIIi7vAw8FXNM
- XP2A==
-X-Gm-Message-State: AOJu0Yw06Fxowt3rdQTAS6a393wEwPJGZ+KFmkW9XmISMgxzeI7RLau6
- uXXZylPY6QtwDihicJltoeSCjceRnEMNFpMIKXo=
-X-Google-Smtp-Source: AGHT+IFu0gJZoUyuikgk1hEMxJxAaFxwkGWVhVCEJKsTDMagsXaKjbsccwZEX+arEI5TDhwQ2ORj2g==
-X-Received: by 2002:a05:6000:98f:b0:32d:89b5:6d05 with SMTP id
- by15-20020a056000098f00b0032d89b56d05mr6334558wrb.35.1697187050570; 
- Fri, 13 Oct 2023 01:50:50 -0700 (PDT)
+ bh=Foy/uNdQWL4WYCF7IJFmQy3PWuFp8tCnIFLxTwC8lyY=;
+ b=sj5yM/aYFm1SixRE9sbm79coLZoSbW82+BVScwfo6htotjLVCgZ42DKo3Q1xcimzsL
+ 3abs8zvFx61Wfi4g2tE/DIgWPKAlfnBXNDerOF84TPPj+ZMawJxjPxhx+mKptrxJnzvD
+ Zy2akuY0Yrrdr1BJULLtOgd7kEv1qEwcZkJy93+E4E41/ucAwOflHrHsZDzgi5CRKvo1
+ +ib1lBRtBrmMziYt9a6e24+T0IZmDQHxViGB/QKXnPACYszEdkDD/Xx/1PQOso0l6DWH
+ /DL0aCQpPKCJMPSgmKG7quxZWO/UNLOCGZMeEV+Ui6ylrVutMtj9R+YaffQRKKpO7ZUv
+ oA0Q==
+X-Gm-Message-State: AOJu0YxtNOodUEkg7KcFtyKMep+MW0R8E3i8LwkVvbtsQvwBSmu23J2s
+ 2U1IOnt0t2nX2uutUVll3IUIBAWMWziQJZy2+ZQ=
+X-Google-Smtp-Source: AGHT+IGvtfMop59sgBRAh9vUDr7c5vM/qdgcDN3QL5ftI7LBNmH2pr6ulbGXtCIim6mpWahpSi5cUg==
+X-Received: by 2002:a05:6000:104a:b0:32d:8b1a:31ad with SMTP id
+ c10-20020a056000104a00b0032d8b1a31admr4506380wrx.24.1697187052016; 
+ Fri, 13 Oct 2023 01:50:52 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.49
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:50:50 -0700 (PDT)
+ Fri, 13 Oct 2023 01:50:51 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org (open list:S390 diag 288 wat...)
-Subject: [RFC PATCH v3 73/78] hw/watchdog/wdt_diag288.c: add fallthrough
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [RFC PATCH v3 74/78] hw/cxl/cxl-device-utils.c: add fallthrough
  pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:41 +0300
-Message-Id: <15fa0bc2e19e740d646b41d93ee39634978cb43c.1697186560.git.manos.pitsidianakis@linaro.org>
+Date: Fri, 13 Oct 2023 11:46:42 +0300
+Message-Id: <b8632566adf1970a35dc750f5a00d388b3deb383.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,22 +98,31 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/watchdog/wdt_diag288.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/cxl/cxl-device-utils.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/watchdog/wdt_diag288.c b/hw/watchdog/wdt_diag288.c
-index 76d89fbf78..24fb7fcb62 100644
---- a/hw/watchdog/wdt_diag288.c
-+++ b/hw/watchdog/wdt_diag288.c
-@@ -69,7 +69,7 @@ static int wdt_diag288_handle_timer(DIAG288State *diag288,
-     switch (func) {
-     case WDT_DIAG288_INIT:
-         diag288->enabled = true;
--        /* fall through */
+diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+index bd68328032..63f009847e 100644
+--- a/hw/cxl/cxl-device-utils.c
++++ b/hw/cxl/cxl-device-utils.c
+@@ -80,7 +80,7 @@ static void mailbox_mem_writel(uint32_t *reg_state, hwaddr offset,
+ {
+     switch (offset) {
+     case A_CXL_DEV_MAILBOX_CTRL:
+-        /* fallthrough */
 +        fallthrough;
-     case WDT_DIAG288_CHANGE:
-         if (!diag288->enabled) {
-             return -1;
+     case A_CXL_DEV_MAILBOX_CAP:
+         /* RO register */
+         break;
+@@ -102,7 +102,7 @@ static void mailbox_mem_writeq(uint64_t *reg_state, hwaddr offset,
+         break;
+     case A_CXL_DEV_BG_CMD_STS:
+         /* BG not supported */
+-        /* fallthrough */
++        fallthrough;
+     case A_CXL_DEV_MAILBOX_STS:
+         /* Read only register, will get updated by the state machine */
+         return;
 -- 
 2.39.2
 
