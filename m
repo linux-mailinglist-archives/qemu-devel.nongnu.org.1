@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6897C890E
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 17:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F757C8900
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 17:45:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrKL1-0001n2-Af; Fri, 13 Oct 2023 11:44:31 -0400
+	id 1qrKL2-0001ni-Em; Fri, 13 Oct 2023 11:44:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qrKKy-0001lW-Nm
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:44:28 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qrKL0-0001mH-D1
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:44:30 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qrKKw-00054q-Ul
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:44:28 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4056ce55e7eso22961655e9.2
+ id 1qrKKw-00054r-Uh
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:44:30 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-32d849cc152so2127052f8f.1
  for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 08:44:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697211865; x=1697816665; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9MMbyBuswR9G+sFmNjydmicR9+5AI7UWtO0HoNWNNDs=;
- b=p23m6k5B1wiEt653UOVn0VRVzUst88wKMyGHrWpdIFKG/aVOYc+v7VE3aZhFowUZ0O
- TJHDoYlKVz3hyu0NgjHCK4ek8o+vEY8s4sbB3acL8MPlMpyWvj+RTcy06qTOvlk0FU4X
- 9Vm0kAR+O7O1GyE/fFcv+TbNRY2FnQMHA1axZKfAa+Pm5ZqubLWpptrK1ReT2fgsBpyp
- CGzd/eIu7PCb1NJ1fX6ZxnTOwKdpGsc7QXIKenKx0+Ayt1EIl3kNwN7e26J+NfhffWm5
- RGdAckiKx4S5EahJRbsyflhjhS5ZJY34/KSiRWBvd1fj4iE44lrMLueO8pLmBQhp654Y
- xB4A==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hWNFCYkSUHyvxvoI8oXqjN3ZQ93uyYjNddqMnmk3BMM=;
+ b=d77FCgITAWshbEGjfwfQA330g3juHufBaaAhv3DZTnEESKhU6ryEitG0LxFWNQ5IJn
+ TexFviGPXfkucUCZ/auhETDPCxOTXPaEO0+BhKaC5OxxsMJ4o6XpL0zZQXTOBlUX4nro
+ 6mGjZWgnuu2yWpZc2GbrnFOCAjdSGm5cou7mEg8tFA7nueyCQrD0vRLldLJwoFNQmFmM
+ tHIz0sy5c/XeFJWO/wvwxumdRZb1bUGXY1JnXuDzW4lGbDRay3adYhxJyNNK/wDAmX72
+ 0AoYCDx5ryCSaSHBfRTiKbKKoRRcUWVyYYDd2ASdjuEFKmyJyAZvOZ/gQOWogmVS7kAQ
+ rbqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697211865; x=1697816665;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9MMbyBuswR9G+sFmNjydmicR9+5AI7UWtO0HoNWNNDs=;
- b=mUah6zhDuZu3567Q8oJtQqo0L2T/XihCB7U5u2w4K/tP2uWhSea+FGXhNNmNRNdSXs
- AZ/yh0cYmPM8J1o6CWV7fYqDHjf/5rCUw+7056/qg7assyC/xkovdtgKkRpOWOdI8mQB
- 9zsiZdRonfCtVx1tTYoaMer+/S2zDftlHFEWN8d2Wpel1taabOyts7OUxy2yaN/JpKKl
- 5hBcWLnFMeKlJvKvPZAmvtS72xvBIffE8gzHTTxyz3/Lt8o7P5Rfh5LMrHhu/yxplr8l
- CkHIE+F6kCcDuk/rHsrWQ2Ub1AdGZRzmlRqo2WEv+QYkZvGZPhg0+MNZ24gM2Yyu7yzJ
- gziA==
-X-Gm-Message-State: AOJu0YxyEUul//H8a+UoZamH/12nQs9PVYkSDutzXPEIDpuf+i31VxNG
- suviRIBhKfNtzgUNZ6sRc86ST/+povOiNEYAJHo=
-X-Google-Smtp-Source: AGHT+IEsy04559IWzo1VvkVoogv7azqszka/tgkHz2/Vq30r+RWd/4wpcY9e7E9PGnla8AW8Qwnysw==
-X-Received: by 2002:a7b:c456:0:b0:405:3e5e:6698 with SMTP id
- l22-20020a7bc456000000b004053e5e6698mr25672515wmi.27.1697211865126; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hWNFCYkSUHyvxvoI8oXqjN3ZQ93uyYjNddqMnmk3BMM=;
+ b=LfCmYYWdnTS1o3kg0y4kztWAVkWOUzEdfkzWKvMLnNoRZkFxSFaWu3qrw7r0BPqWNo
+ xN7Obw987LWThsPadgeTM8nHHoWZEBE2xrUboUFIVZI4JTnKsVubh7k6R4rQ0Ei0zRlx
+ CsfC8VgvKTDvN8atMRqyX2XazT/85JyJrtiIFvZvI7pug8n0/rDr6Yb0bkXJvV5IUoFF
+ Po2SsFJEr1iJKSrmgCpTKA0fzipvl4fvmVTZHlhtexoFqD6HwUl8ALeiN/CqlSFndMgt
+ WF0oUPcJjy0CWOPfjoiW9NIE6WmJGsVbCW/9Nl6rUCo26L5ig2H0SxjAJgWQRKvrnxmL
+ MRqg==
+X-Gm-Message-State: AOJu0YzISjxAs0Tow/xEqNon1G19eeJdZIGQVIBtDd8eQ9ku/SBAHoRa
+ n2bqoBM8TbmLMqfy8BXWf8FFz0vmoKfb6qgL7xk=
+X-Google-Smtp-Source: AGHT+IFhLwsy6ekxGv3xZwrnLJ4G6fshMU7MTc75gF0fD/P2+Jc0UYOJaq5wUfHEbR8SEmL1AJvP6g==
+X-Received: by 2002:adf:ed8b:0:b0:32d:9579:94e3 with SMTP id
+ c11-20020adfed8b000000b0032d957994e3mr3298147wro.6.1697211865258; 
  Fri, 13 Oct 2023 08:44:25 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- q11-20020a05600c46cb00b003fd2d3462fcsm367149wmo.1.2023.10.13.08.44.24
+ e6-20020a5d65c6000000b0032326908972sm4984636wrw.17.2023.10.13.08.44.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 13 Oct 2023 08:44:24 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 520991FFBB;
+ by zen.linaroharston (Postfix) with ESMTP id 68BE81FFBC;
  Fri, 13 Oct 2023 16:44:24 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 0/8] gitdm metadata updates for Oct '23
-Date: Fri, 13 Oct 2023 16:44:16 +0100
-Message-Id: <20231013154424.1536392-1-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Palmer Dabbelt <palmer@rivosinc.com>, Atish Patra <atishp@rivosinc.com>,
+ Dao Lu <daolu@rivosinc.com>, Andrew Bresticker <abrestic@rivosinc.com>,
+ Vineet Gupta <vineetg@rivosinc.com>
+Subject: [PATCH 1/8] contrib/gitdm: Add Rivos Inc to the domain map
+Date: Fri, 13 Oct 2023 16:44:17 +0100
+Message-Id: <20231013154424.1536392-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231013154424.1536392-1-alex.bennee@linaro.org>
+References: <20231013154424.1536392-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,44 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Whatever they are up to a number of people for the company are
+contributing to QEMU so lets group them together.
 
-I was looking at the stats today so I've done my usual run of gitdm
-and then attempted to fix up the missing bits. I've had to patch gitdm
-to deal with gitlab URLS in place of email addresses and will have to
-work out if that is worth upstreaming at some point.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Atish Patra <atishp@rivosinc.com>
+Cc: Dao Lu <daolu@rivosinc.com>
+Cc: Andrew Bresticker <abrestic@rivosinc.com>
+Cc: Vineet Gupta <vineetg@rivosinc.com>
+---
+ contrib/gitdm/domain-map | 1 +
+ 1 file changed, 1 insertion(+)
 
-The Rivos Inc updates actually got acked a while back but have been
-sitting on the tree waiting for me to bundle it in a PR. I've added
-the HiSilicon, Daynix and mailmap patches. The others never got acked
-so the come around one more time.
-
-Thanks,
-
-Alex.
-
-Alex Bennée (7):
-  contrib/gitdm: Add Rivos Inc to the domain map
-  contrib/gitdm: add a group map for SiFive
-  contrib/gitdm: add a group map for Google
-  contrib/gitdm: add more individual contributors
-  contrib/gitdm: map HiSilicon to Huawei
-  contrib/gitdm: add Daynix to domain-map
-  mailmap: fixup some more corrupted author fields
-
-luzhipeng (1):
-  contrib/gitdm: add domain-map for Cestc
-
- .mailmap                            | 2 ++
- contrib/gitdm/domain-map            | 4 ++++
- contrib/gitdm/group-map-google      | 5 +++++
- contrib/gitdm/group-map-individuals | 1 +
- contrib/gitdm/group-map-sifive      | 5 +++++
- gitdm.config                        | 2 ++
- 6 files changed, 19 insertions(+)
- create mode 100644 contrib/gitdm/group-map-google
- create mode 100644 contrib/gitdm/group-map-sifive
-
+diff --git a/contrib/gitdm/domain-map b/contrib/gitdm/domain-map
+index 3e31a06245..e676da8d47 100644
+--- a/contrib/gitdm/domain-map
++++ b/contrib/gitdm/domain-map
+@@ -38,6 +38,7 @@ proxmox.com     Proxmox
+ quicinc.com     Qualcomm Innovation Center
+ redhat.com      Red Hat
+ rev.ng          rev.ng Labs
++rivosinc.com    Rivos Inc
+ rt-rk.com       RT-RK
+ samsung.com     Samsung
+ siemens.com     Siemens
 -- 
 2.39.2
 
