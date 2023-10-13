@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BD17C7F91
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5687A7C7F59
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:04:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrCzK-00057O-Gt; Fri, 13 Oct 2023 03:53:38 -0400
+	id 1qrCzM-0005IY-EJ; Fri, 13 Oct 2023 03:53:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCyE-0002JD-FM
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:31 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1qrCyH-0002ae-7U
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:33 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCxv-0005Np-1p
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:30 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-31c5cac3ae2so1647675f8f.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:52:10 -0700 (PDT)
+ id 1qrCxy-0005P4-1v
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:32 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-50797cf5b69so876196e87.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:52:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183529; x=1697788329; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183532; x=1697788332; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=86UY9ftbOt4NkSKPB6iXNZTbBfnKqlodz3uI+lSRfwU=;
- b=D7zpdr/99n0l0mRYCd45BrVqw5EHwGkFOJ5EaJZfzs3qyf0SbaMhIMzNofX4olOLIR
- 3KI2ePlUjYkenU00LUEWQCbYI602WjkPObBFEauCh/nLXy7wXaW7K4lsrhGGf8dgdpl3
- Gjc7QuRfq6x0XRHF0EhnTaHvvh8GZ+j3Uvadk7bEm+SS85k9Dir63/dZirFbNi61BCsh
- t/25vDUTYQ7/Z00kwG1Nh3IYjDrWSH5OCWMQKlvDlO3OrNvxO3J9QTGUG/gEmFQXHfl2
- 2RtDt37FVeQmfRUot8fVkFd/8dQnrxMvKoALCPZ0s7I7jaJ/BodIONxj1jFtRN5E0RzB
- sHmw==
+ bh=U7eIdKYi0C0PTj9AIh0k7ZAKSjll1l4WSVMVqT9Um+g=;
+ b=b0M4yVlxOfJ20qAlzYSxJ5yiQtErj4VhH4D9kh/Lp4Vpj8oBY32UYys6N2lyB08WO6
+ FAejZKJA+6x4yhzeUegYeSuWue6K2NIUE/SXP/JWUiBJCdwrNh5oD6T4jQPfgxZTBjZ8
+ qxAYNTQGTgOtEy8cRn7wHQ9xy5JQ7SmFIwpDuKc0K9LfJx3y7c6YOfRJHj8n7DfLBNAT
+ L4jFQxyAfqc2qR8yv4eWINOHM0p200DmhjDS0+D2fD5z24Tpr5MTS+qYQlFp0r5NEpnD
+ nowbw6P4fojklVLPe7Apn4Mg69LuvqQtrIE+xC1cFzoFOIOp2wGilgUwm5nGZsHDIbCi
+ 9GBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183529; x=1697788329;
+ d=1e100.net; s=20230601; t=1697183532; x=1697788332;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=86UY9ftbOt4NkSKPB6iXNZTbBfnKqlodz3uI+lSRfwU=;
- b=mKw4fgrdi5Q9+C8torqZ5IOrdy8xHUiNVuutF+CcxTi5hSEPDSdjQCEg5OgHRDvqRC
- nBUvBGQSViO87VYGZ/PsGqkN5H0t161sbaLgFHLOSlE5VGx7QX7jprpemLXx4nyA4+/1
- AoemOLICVUkZd+GFreMLYMmIJ7GIkaqMKTjDVeATab9Q0N5qLlGt3yEndXO1TN4Ih+DM
- D0LwVoXwK3DUUf9S0/2r/wKVmJl8pfNGTFRK4NWi2rI1IcTIIEJGYPvC2MazrECFz1rO
- 7M9D624jZNHNhT6/qmXnUr9dqf5lK2+jPhq/fC1yu9CyfhN+Z7Yx0vXZ/KovuS/3rxGz
- LDmQ==
-X-Gm-Message-State: AOJu0Yx+EBE0ygodo2JPnUiL8D9Mro5aSiQbOXrI04uZ64KqIXjoq6/H
- s5kNdK7xfJV1nz/1pm3n6Z8Q6OzV/HiKydzolXo=
-X-Google-Smtp-Source: AGHT+IHdTehTFE2Y2qQ3UwQJP1N1RKQUvdyMoTJTbSVQNng4tnDoKzybNs0+r+uXL5qBloYeIjNxAQ==
-X-Received: by 2002:adf:c805:0:b0:329:6bfa:dc8c with SMTP id
- d5-20020adfc805000000b003296bfadc8cmr15577842wrh.46.1697183529031; 
- Fri, 13 Oct 2023 00:52:09 -0700 (PDT)
+ bh=U7eIdKYi0C0PTj9AIh0k7ZAKSjll1l4WSVMVqT9Um+g=;
+ b=nWuIQ6viN0WrN1Ep4LrxI7gjHpjrmK+WljV9xMsE7fQvt1d/WPJ6uHeyoUzEtPl4Ew
+ gTwnrOZLSKfXgSafJ86fvGsVKhgbWEp4Ry+uQPKQMw9gQ0qqoS5CPMYgGJm6pQ2r61iS
+ VsvdEOHFBqruWv+zChkiiYe8SR9KEXiwFLZcfRsRa5WB2da2tA9Gxs5yfGGZZTs1rdzE
+ taRf/uk0P2r2j1l+aoEqIveRsq3OWZztp1gLDRlB/gWJVNSv6oHaylkBcGLP0UseGodN
+ VnFewNSABmeD7+e4MzQHyQrhDKanpkGP7b+pCssJKwIWBd5aeo4nmHnaWivqhFW523ZW
+ meLA==
+X-Gm-Message-State: AOJu0YxCziA5ykKr70sLzFJy1w2SQt+KhJaRLYRSXwntiQ3ddpamr4kI
+ 7OtPs3fuvE+H44TNxeWBxKvZRHWl3mVVJ6PRpsg=
+X-Google-Smtp-Source: AGHT+IH/0TYEPdOeReey0h/C6UdQVa+lRprkEc3iJI8XIOJXtUkaTwVzN9786N3ycBJ0XHrDHgW1hg==
+X-Received: by 2002:a05:6512:3b13:b0:503:79e:fb7b with SMTP id
+ f19-20020a0565123b1300b00503079efb7bmr26044653lfv.68.1697183531618; 
+ Fri, 13 Oct 2023 00:52:11 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.52.06
+ m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.52.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:52:08 -0700 (PDT)
+ Fri, 13 Oct 2023 00:52:11 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -68,23 +68,23 @@ Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Dmitry Fleytman <dmitry.fleytman@gmail.com>
-Subject: [RFC PATCH 56/75] hw/net: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:48:20 +0300
-Message-Id: <a6c5b60753c5e702289c75c1abec314d43564474.1697034504.git.manos.pitsidianakis@linaro.org>
+Subject: [RFC PATCH 57/78] hw/net: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:48:21 +0300
+Message-Id: <40a1851702b201aab0c5e11af72c937c2f9aaabc.1697183082.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
-References: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
+References: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,6 +99,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
+
+In preparation of raising -Wimplicit-fallthrough to 5, replace all
+fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
