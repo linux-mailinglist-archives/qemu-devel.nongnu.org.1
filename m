@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBFA7C7D92
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 08:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C907A7C7D93
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 08:16:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrBRu-0001la-Cx; Fri, 13 Oct 2023 02:15:02 -0400
+	id 1qrBSp-0002al-D9; Fri, 13 Oct 2023 02:15:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBRs-0001iZ-0F
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 02:15:00 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBSj-0002Pl-4r
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 02:15:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBRq-0002r9-Ld
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 02:14:59 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBSg-0003Ca-GD
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 02:15:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697177697;
+ s=mimecast20190719; t=1697177749;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=QxajFJNOM0bP8OYW7GvMoCd477r/5G1o9IutWh2rAnI=;
- b=GaaUzyXoVrbUd2w+YNilTkYPar+JRz/c4Ox/RIaw3HiHqVZ5iafrlBDaenNHPr3aM1oXVI
- zZPDGdfzJTyWlG2D65fP/eYp+y/GrS0HpedCAZw9upfZSom/RQMB6mVWjLJqjoIkzuPi8n
- yOxJULgVOiY05O2hhR3MVGE7F5YH2zc=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3UrCRGZqL9sg8OBQc4SfklVgJqCd9RjvXeHDnEPNIyg=;
+ b=HfNLSZeo1DrUhiNgG5oD2Ft0fHAkVXZtDT/wlc8o0Dir4jraWITp3gYWrlUGofUdw6Ce2d
+ x5aB2w9XTjgeBtfB9YNOFuqT0hJsoLJ8/o74UajIxb4ezz4HCLZRWlc4v1So1CYkW/XTxX
+ DMYn2SoyFBBkD39t3FTr3crPx6LIAZ4=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-Bdk8EOl5PO2VDqfZm2IV3Q-1; Fri, 13 Oct 2023 02:14:45 -0400
-X-MC-Unique: Bdk8EOl5PO2VDqfZm2IV3Q-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9b98bbf130cso116984166b.2
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 23:14:45 -0700 (PDT)
+ us-mta-55-CXgjAMHFNEygsSDmL56I8w-1; Fri, 13 Oct 2023 02:15:32 -0400
+X-MC-Unique: CXgjAMHFNEygsSDmL56I8w-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-538128e18e9so1354988a12.2
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 23:15:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697177684; x=1697782484;
+ d=1e100.net; s=20230601; t=1697177731; x=1697782531;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QxajFJNOM0bP8OYW7GvMoCd477r/5G1o9IutWh2rAnI=;
- b=VyfBWpyNF65L8930yBIgfZIELCQSEGCVopUonKbJ5XI5EkNfAA0dB91sXbvH8MLEJ2
- ts8Qaq9iL1BFWPeSh/lJMB39eFC3kAcQddTMROg3bwR8/wJeCWRBMYevzV0kSwk8SL/T
- YOeAM4pC/2PIZUNlBFQDkRsD1eVOhIBjVOsWco3/6Ej//LObMqnmcGM+hPvo4BR1198Z
- AeCmdA2SxVyiJLifyIXMesxW6J2eBq0Rm3Svod1dR19ncTqC9W0sQIc2xVKwdD9w4Zkl
- UgpiNOFiJFw3xiCoQOty1jxpEjZFG7i9ANV1679Ks6ai4ZmKURSAIq0rzUUXhgTlK4mq
- VxGw==
-X-Gm-Message-State: AOJu0Yz0Q9ZF4jlv76thSWClMeAq7taJFu6lX2POSvsUZUkNEfaElKpM
- ksC16gLoWg3GZMs789tY7tE2gwhTjPr+NAOpxwtkZnfd2Mkd/D1qZvl+BXEM3h5zbHY/lZYLNy2
- Wks8K7gxXD0E34IM=
-X-Received: by 2002:a17:906:10ce:b0:9a1:e233:e627 with SMTP id
- v14-20020a17090610ce00b009a1e233e627mr25538817ejv.42.1697177684777; 
- Thu, 12 Oct 2023 23:14:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFC2ZqqC7ZHISGBIJO9biLruc1EXCs6YftPOeOCsU6W17nRUIDbSbIf6OdGr9ZRwfLBIQ1G3w==
-X-Received: by 2002:a17:906:10ce:b0:9a1:e233:e627 with SMTP id
- v14-20020a17090610ce00b009a1e233e627mr25538806ejv.42.1697177684459; 
- Thu, 12 Oct 2023 23:14:44 -0700 (PDT)
+ bh=3UrCRGZqL9sg8OBQc4SfklVgJqCd9RjvXeHDnEPNIyg=;
+ b=aS1euBSXoz7HTfOZJMj1WTA/1WcShziVXamsJTnsbmKDb8SwcQvtQPC6kUOCiynRJ7
+ mQT/uyQ7u9qXwUwc9Kfbm2REBAWmq4GhIE8+9jmV5mIOkrl6mCEavGgWqNQZHUtqGORU
+ 4M1ylmBkq3PvJ2SH5TSThWOMFexniITpJanTwWNr3UkSDDKfolGr9caiIueirX+9nH9d
+ /gX1hG849KMxD/MGkB3UZiTJ3Hm5LyVEcKnAjpBAEu1SxBjCcoWavThrmW81OOyoD9+R
+ kNHyEVimk6zye9aPblFiO3x9/WOeeeoNYXkrbP5rtbNDZlICgUdMEOGW6gJf0rr1YGk7
+ De0w==
+X-Gm-Message-State: AOJu0YygJnhg6iCv33hm7ha9Ema8ZyIqXoq00wybbcq7m9I3AXK5Zcru
+ GktvNFyNqrsXfjTxGCZlPayrdC049KTYJEb+gKoXmm4+ZLVjKdp1J4rAHFzj2mh60L5Jda2dPMT
+ FT+hGqAoMsUV3BA4=
+X-Received: by 2002:a17:906:2210:b0:9b2:8323:d916 with SMTP id
+ s16-20020a170906221000b009b28323d916mr25451902ejs.17.1697177731307; 
+ Thu, 12 Oct 2023 23:15:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/L9YuAEhU0JTs+FJutYkU2MVqAnFJxjbTLDnxVjaZL8lAu57P/NZgDpF+T31lMyMjQwEt2g==
+X-Received: by 2002:a17:906:2210:b0:9b2:8323:d916 with SMTP id
+ s16-20020a170906221000b009b28323d916mr25451884ejs.17.1697177730925; 
+ Thu, 12 Oct 2023 23:15:30 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
  [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- gt26-20020a170906f21a00b0099bcf9c2ec6sm11926505ejb.75.2023.10.12.23.14.43
+ gt26-20020a170906f21a00b0099bcf9c2ec6sm11926505ejb.75.2023.10.12.23.15.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 23:14:43 -0700 (PDT)
-Message-ID: <f9539f8a-6d57-4bc0-91d8-b0842246de6f@redhat.com>
-Date: Fri, 13 Oct 2023 08:14:42 +0200
+ Thu, 12 Oct 2023 23:15:30 -0700 (PDT)
+Message-ID: <9f9f8a1b-f656-4cda-a1d5-b15cfb91a3fc@redhat.com>
+Date: Fri, 13 Oct 2023 08:15:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/10] tests/rtl8139: Clean up global variable shadowing
+Subject: Re: [PATCH 07/10] tests/npcm7xx_adc: Clean up global variable
+ shadowing
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -76,7 +77,7 @@ Cc: qemu-arm@nongnu.org, Alberto Garcia <berto@igalia.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  Tyrone Ting <kfting@nuvoton.com>, Markus Armbruster <armbru@redhat.com>
 References: <20231009100251.56019-1-philmd@linaro.org>
- <20231009100251.56019-7-philmd@linaro.org>
+ <20231009100251.56019-8-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -120,7 +121,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231009100251.56019-7-philmd@linaro.org>
+In-Reply-To: <20231009100251.56019-8-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -148,22 +149,58 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 09/10/2023 12.02, Philippe Mathieu-Daudé wrote:
-> Rename the variable to fix:
+> Rename the global 'adc' variable in order to avoid:
 > 
->    tests/qtest/rtl8139-test.c:28:33: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
->    static void save_fn(QPCIDevice *dev, int devfn, void *data)
->                                    ^
->    tests/qtest/rtl8139-test.c:37:17: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
->        QPCIDevice *dev;
->                    ^
->    tests/qtest/rtl8139-test.c:25:20: note: previous declaration is here
->    static QPCIDevice *dev;
->                       ^
+>    tests/qtest/npcm7xx_adc-test.c:98:58: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static uint32_t adc_read_con(QTestState *qts, const ADC *adc)
+>                                                             ^
+>    tests/qtest/npcm7xx_adc-test.c:103:55: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static void adc_write_con(QTestState *qts, const ADC *adc, uint32_t value)
+>                                                          ^
+>    tests/qtest/npcm7xx_adc-test.c:108:59: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static uint32_t adc_read_data(QTestState *qts, const ADC *adc)
+>                                                              ^
+>    tests/qtest/npcm7xx_adc-test.c:119:53: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static void adc_qom_set(QTestState *qts, const ADC *adc,
+>                                                        ^
+>    tests/qtest/npcm7xx_adc-test.c:135:57: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static void adc_write_input(QTestState *qts, const ADC *adc,
+>                                                            ^
+>    tests/qtest/npcm7xx_adc-test.c:144:56: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static void adc_write_vref(QTestState *qts, const ADC *adc, uint32_t value)
+>                                                           ^
+>    tests/qtest/npcm7xx_adc-test.c:162:59: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static uint32_t adc_prescaler(QTestState *qts, const ADC *adc)
+>                                                              ^
+>    tests/qtest/npcm7xx_adc-test.c:175:64: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static void adc_wait_conv_finished(QTestState *qts, const ADC *adc,
+>                                                                   ^
+>    tests/qtest/npcm7xx_adc-test.c:196:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>      const ADC *adc = adc_p;
+>                 ^
+>    tests/qtest/npcm7xx_adc-test.c:207:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>      const ADC *adc = adc_p;
+>                 ^
+>    tests/qtest/npcm7xx_adc-test.c:235:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>      const ADC *adc = adc_p;
+>                 ^
+>    tests/qtest/npcm7xx_adc-test.c:267:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>      const ADC *adc = adc_p;
+>                 ^
+>    tests/qtest/npcm7xx_adc-test.c:293:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>      const ADC *adc = adc_p;
+>                 ^
+>    tests/qtest/npcm7xx_adc-test.c:311:16: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>      const ADC *adc = adc_p;
+>                 ^
+>    tests/qtest/npcm7xx_adc-test.c:93:5: note: previous declaration is here
+>    ADC adc = {
+>        ^
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   tests/qtest/rtl8139-test.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
+>   tests/qtest/npcm7xx_adc-test.c | 14 +++++++-------
+>   1 file changed, 7 insertions(+), 7 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
