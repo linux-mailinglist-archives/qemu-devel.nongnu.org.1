@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2978A7C878E
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE7F7C878C
 	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrItO-0007RJ-37; Fri, 13 Oct 2023 10:11:54 -0400
+	id 1qrItT-0007a4-Pt; Fri, 13 Oct 2023 10:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrItM-0007Ql-4g
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:11:52 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrItR-0007ZE-Kn
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:11:57 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrItJ-0004O9-HM
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:11:51 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9a58dbd5daeso356578466b.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:11:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrItQ-0004QM-1d
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:11:57 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-53d82bea507so3767421a12.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:11:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697206308; x=1697811108; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697206314; x=1697811114; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V9tZVJmu9kzGvsLFPu4hpPnpsYV8GknZmAK3SQkWufw=;
- b=DlScgFwHf4Ru11bhBCZ1tD5Z7Z4vPeb9GTCggYNBTQVDj1s6c7n2xkJfpltupClxrN
- eXy/KFTaKtFeHhvcSdeBPt3sGjoHMQrd38t96XFkMW1teHX8AiuK48CuD1+6JBK+Xi1a
- GJbt27VuqaTw17XKdypGzBKhiHMNMeo7H3PAvmyHyCwWxN+/uz0gUopIXx/UXbAo25S/
- gftM88Hfddecjo+gh/6+ZQLd4vw/Hn8MLjokOE1WQxzCvIzGxAIed1Usx6569R0gNAJs
- gTNjvvQLnjy7AAY4SLNcdlOKbXb17o333L0DnzJVqezzYhjEP4nynuC7gPLBUPSdbRUH
- yh7g==
+ bh=mP8e7F+MNf59pa1iU6FTfmv7Sb18zKeyajADdz6BZOc=;
+ b=b3IAmPpAJi5ExYA87/gFCN2PyWuhZLwOoYAKoEkgbr5RtOhpVBptt9ox2Id3DdF+BU
+ nAg+QQZCGqpmkgvXe2zRr/TzbILGRWOsjCbsSDle9LKO0lw3Fgz7KQVnyiUGzEK643+O
+ IqwnR6pU/6eE+TgBK6Ox1oPG1tPAaseC+cTGKhfA4KMFg9GEaeMXRU5ARB90PyabyDtu
+ PwqUmNc0znl4RCqz9PsbYm/kP060uw9QMoE34NNPmi+YmLPg4BmUW6D0IV8f5xm5XTLd
+ rtX6iRUCxUA49ElGXD3PsEBx7BvbjyTQA9E4jbi+sUBxPzwpT054dIII3jn5oxALQCNS
+ tACQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697206308; x=1697811108;
+ d=1e100.net; s=20230601; t=1697206314; x=1697811114;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V9tZVJmu9kzGvsLFPu4hpPnpsYV8GknZmAK3SQkWufw=;
- b=tPlD4X0eOxlKUcXl/Kx+HfkSotQgvgjzg61xPV1HNtDXZi9Q3W6q3WV5ptjMwfJZpW
- wLLMpCOec6fxJympB80nS8cpAEP4kshyi/ol/3iOUdp/0df9MJ/ASLOMwMQ5nIBWbwEU
- iQvBajnMpBU6txDSxvpwJvN4JbChkwsxsFlZ7nxJyPVbAVgDYgQq9gaV9ZhMdTZks6eE
- qofiHTEL3V6ds/rSCU/TKeMOf1RFv2RyE6+QnrCcMgjGjpRoUmPVIFVY0zE4quuxjVBW
- F//5tpzO51gRZLUDiCoeX23VnrFfuL4a74E1oINOkd6WKu3AeyepLbl4q9ipOiOuwaEt
- b0Eg==
-X-Gm-Message-State: AOJu0Yxsnn1+wvDBMZ6AMLGFFISX7g1zx9pWrGo6CRCnkcJ9EO2LhD25
- y8xu/KtshNBy4YE+NuHlOuqzn8HJiS8citG55+A=
-X-Google-Smtp-Source: AGHT+IEWxZGoNekV1CrxCAV+maMmGBnOjA50M6xT9ODRIsrhs0cUOEe9/9l9tGca1COb/51yFRqMvw==
-X-Received: by 2002:a17:907:2e19:b0:9b2:c2a9:357a with SMTP id
- ig25-20020a1709072e1900b009b2c2a9357amr23260747ejc.68.1697206308015; 
- Fri, 13 Oct 2023 07:11:48 -0700 (PDT)
+ bh=mP8e7F+MNf59pa1iU6FTfmv7Sb18zKeyajADdz6BZOc=;
+ b=g+J4JdgCR4y3hVErcPkK1hvibgOIVqHnCHwgxthjSe20WDmfbzqbttiDx3LaesIFl8
+ Nh8aoTiCF7/j/bsaScVXNbFe20dNGtLICBLHUTzdpBaYuafrxQGvpn8DXfSVuFB7lWW+
+ 280N6zh9LcNBRv5sTOE4hOnzbc52gyAQeCTKJ819YKyFO44OCjR8Kwtu4duomvs199OE
+ 8yOVdiHVN31T0tcFvHYx0i33LnI758i4aWh4RsqSQW0l0vthWHDjQgFvEMxsj/ChtYfs
+ FpZ85Am1L7kDgsZtEdOQ44gS+jDfmpHQ47+JfbmpA3xFZ1iwu6jTajTf22oKk6DY0+RA
+ t6lg==
+X-Gm-Message-State: AOJu0YzOf503Gb5l7nLUa/h5ecekBasr4VIJV9uxfyGO+PHIgI24VzHi
+ 9QpG4i43CtgPOmDEH+5jTVwtBaAsfV7V4hL5K3Q=
+X-Google-Smtp-Source: AGHT+IExARe8cmT7qMsM4N8ibsiGIRXeLVCI/BwunDKJ2ZRg0DcHHcF4d3iglFSwM5QKEdoLjFkasw==
+X-Received: by 2002:a50:c047:0:b0:53e:3b8f:8ce1 with SMTP id
+ u7-20020a50c047000000b0053e3b8f8ce1mr2139072edd.23.1697206314358; 
+ Fri, 13 Oct 2023 07:11:54 -0700 (PDT)
 Received: from m1x-phil.lan ([176.172.118.168])
  by smtp.gmail.com with ESMTPSA id
- m14-20020a1709066d0e00b00991d54db2acsm12404171ejr.44.2023.10.13.07.11.46
+ c5-20020a50f605000000b0053dd798e38asm3529569edn.69.2023.10.13.07.11.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Oct 2023 07:11:47 -0700 (PDT)
+ Fri, 13 Oct 2023 07:11:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -63,18 +63,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Francisco Iglesias <frasse.iglesias@gmail.com>
-Subject: [PATCH v3 2/10] util/fifo8: Introduce fifo8_peek_buf()
-Date: Fri, 13 Oct 2023 16:11:23 +0200
-Message-ID: <20231013141131.1531-3-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v3 3/10] hw/char/pl011: Split RX/TX path of pl011_reset_fifo()
+Date: Fri, 13 Oct 2023 16:11:24 +0200
+Message-ID: <20231013141131.1531-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231013141131.1531-1-philmd@linaro.org>
 References: <20231013141131.1531-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,101 +97,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To be able to peek at FIFO content without popping it,
-introduce the fifo8_peek_buf() method by factoring
-common content from fifo8_pop_buf().
+To be able to reset the RX or TX FIFO separately,
+split pl011_reset_fifo() in two.
 
-Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/fifo8.h | 27 +++++++++++++++++++++++++++
- util/fifo8.c         | 22 ++++++++++++++++++----
- 2 files changed, 45 insertions(+), 4 deletions(-)
+ hw/char/pl011.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/include/qemu/fifo8.h b/include/qemu/fifo8.h
-index d0d02bc73d..c6295c6ff0 100644
---- a/include/qemu/fifo8.h
-+++ b/include/qemu/fifo8.h
-@@ -93,6 +93,33 @@ uint8_t fifo8_pop(Fifo8 *fifo);
-  */
- const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
- 
-+/**
-+ * fifo8_peek_buf: read upto max bytes from the fifo
-+ * @fifo: FIFO to read from
-+ * @max: maximum number of bytes to peek
-+ * @numptr: pointer filled with number of bytes returned (can be NULL)
-+ *
-+ * Peek into a number of elements from the FIFO up to a maximum of max.
-+ * The buffer containing the data peeked into is returned. This buffer points
-+ * directly into the FIFO backing store. Since data is invalidated once any
-+ * of the fifo8_* APIs are called on the FIFO, it is the caller responsibility
-+ * to access it before doing further API calls.
-+ *
-+ * The function may return fewer bytes than requested when the data wraps
-+ * around in the ring buffer; in this case only a contiguous part of the data
-+ * is returned.
-+ *
-+ * The number of valid bytes returned is populated in *numptr; will always
-+ * return at least 1 byte. max must not be 0 or greater than the number of
-+ * bytes in the FIFO.
-+ *
-+ * Clients are responsible for checking the availability of requested data
-+ * using fifo8_num_used().
-+ *
-+ * Returns: A pointer to peekable data.
-+ */
-+const uint8_t *fifo8_peek_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
-+
- /**
-  * fifo8_reset:
-  * @fifo: FIFO to reset
-diff --git a/util/fifo8.c b/util/fifo8.c
-index 032e985440..e12477843e 100644
---- a/util/fifo8.c
-+++ b/util/fifo8.c
-@@ -66,7 +66,8 @@ uint8_t fifo8_pop(Fifo8 *fifo)
-     return ret;
+diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+index 58edeb9ddb..1f07c7b021 100644
+--- a/hw/char/pl011.c
++++ b/hw/char/pl011.c
+@@ -132,14 +132,21 @@ static inline unsigned pl011_get_fifo_depth(PL011State *s)
+     return pl011_is_fifo_enabled(s) ? PL011_FIFO_DEPTH : 1;
  }
  
--const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-+static const uint8_t *fifo8_peekpop_buf(Fifo8 *fifo, uint32_t max,
-+                                        uint32_t *numptr, bool do_pop)
+-static inline void pl011_reset_fifo(PL011State *s)
++static inline void pl011_reset_rx_fifo(PL011State *s)
  {
-     uint8_t *ret;
-     uint32_t num;
-@@ -74,15 +75,28 @@ const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-     assert(max > 0 && max <= fifo->num);
-     num = MIN(fifo->capacity - fifo->head, max);
-     ret = &fifo->data[fifo->head];
--    fifo->head += num;
--    fifo->head %= fifo->capacity;
--    fifo->num -= num;
+     s->read_count = 0;
+     s->read_pos = 0;
+ 
+     /* Reset FIFO flags */
+-    s->flags &= ~(PL011_FLAG_RXFF | PL011_FLAG_TXFF);
+-    s->flags |= PL011_FLAG_RXFE | PL011_FLAG_TXFE;
++    s->flags &= ~PL011_FLAG_RXFF;
++    s->flags |= PL011_FLAG_RXFE;
++}
 +
-+    if (do_pop) {
-+        fifo->head += num;
-+        fifo->head %= fifo->capacity;
-+        fifo->num -= num;
-+    }
-     if (numptr) {
-         *numptr = num;
-     }
-     return ret;
++static inline void pl011_reset_tx_fifo(PL011State *s)
++{
++    /* Reset FIFO flags */
++    s->flags &= ~PL011_FLAG_TXFF;
++    s->flags |= PL011_FLAG_TXFE;
  }
  
-+const uint8_t *fifo8_peek_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-+{
-+    return fifo8_peekpop_buf(fifo, max, numptr, false);
-+}
-+
-+const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-+{
-+    return fifo8_peekpop_buf(fifo, max, numptr, true);
-+}
-+
- void fifo8_reset(Fifo8 *fifo)
- {
-     fifo->num = 0;
+ static uint64_t pl011_read(void *opaque, hwaddr offset,
+@@ -289,7 +296,8 @@ static void pl011_write(void *opaque, hwaddr offset,
+     case 11: /* UARTLCR_H */
+         /* Reset the FIFO state on FIFO enable or disable */
+         if ((s->lcr ^ value) & LCR_FEN) {
+-            pl011_reset_fifo(s);
++            pl011_reset_rx_fifo(s);
++            pl011_reset_tx_fifo(s);
+         }
+         if ((s->lcr ^ value) & LCR_BRK) {
+             int break_enable = value & LCR_BRK;
+@@ -506,7 +514,8 @@ static void pl011_reset(DeviceState *dev)
+     s->ifl = 0x12;
+     s->cr = 0x300;
+     s->flags = 0;
+-    pl011_reset_fifo(s);
++    pl011_reset_rx_fifo(s);
++    pl011_reset_tx_fifo(s);
+ }
+ 
+ static void pl011_class_init(ObjectClass *oc, void *data)
 -- 
 2.41.0
 
