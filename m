@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3961A7C7F6D
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4394E7C8014
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:24:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD59-0005v4-He; Fri, 13 Oct 2023 03:59:39 -0400
+	id 1qrD5A-00062t-9X; Fri, 13 Oct 2023 03:59:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD54-0005BH-E7
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:34 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ id 1qrD55-0005Gp-ET
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:35 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD51-0007Dw-Tp
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:34 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-5079c846dcfso277808e87.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:31 -0700 (PDT)
+ id 1qrD53-0007EL-CM
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:35 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40651a72807so18845975e9.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183970; x=1697788770; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183971; x=1697788771; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dE8XNy6rmEb7aulR3k0RbYvqKHn1hSxS8SLgpa+KKwg=;
- b=p3SpnVjI3bvyXuQF92nNeZYmgCro7qT0COLTXraUsHefZb4mq51ckSPyUu+8wt08Ho
- hZgKNKblY6svwZILGUTdGEgVjfvqi4rEE/2RZDQIzr/y3eYCLPOtYttQDB47tIwzwfBe
- s8oA7s1PIy5VhEeLlVhQfdyWo9ozCU5CPsrWTuUapVRh71yPb4Rk0NgF28u/DgzTrTeb
- 4khCpvweB0ldL7oi4JPY781ss/rV67zr4jpX7O1cq3PkgUu2y3XOEbuXNmZEtVJDaMG5
- f2Pz0PY5CnTMHCWz4QFZoMG7+9TauKWSZAEhqIxifKmjGw+EHP6ai1hI7gEBbKUgo94u
- azpA==
+ bh=TgVJaEUfo38wurBGn+D3UK3JXthAmJ84+zCqcU6HvLo=;
+ b=iY7uy/36mhcTothe3w+judS62EWMyoSuOiPhTWrecb6WwV2r9XtPDKbjaAQRyBVioo
+ GdX5AdxIW676VvYPbngMGHm1vO9O0Twzb5t67sy+vEa5qoRSZ1AzkGhQuLW2XspshFSK
+ ArEW20HrWtA9N0agQp48HzFgNs13vZLCCvoBVSnu76ciInRYcBgoyiaYTAkVe4/oWstX
+ HI5xf15gAjChqkusSbIwOBNbO9yaoT6Ciu/qmWuX5aM+ixBer2TFBfKXr8sAjGCEDnJV
+ n/L3NItRz0dvbl7OWzzw3gn/G/0p/daKkWw1RxWksqFt/+DGVJzAjaC0zX60GNldyQ62
+ 7GEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183970; x=1697788770;
+ d=1e100.net; s=20230601; t=1697183971; x=1697788771;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dE8XNy6rmEb7aulR3k0RbYvqKHn1hSxS8SLgpa+KKwg=;
- b=aWWA/bnL/0ZCUyp5dzJpuLlta7FrSvHElisZJCnri4U+sAaSmLfi5EyUxxBv2UJ07C
- 18kYeko/f9tcrPRjDeDBd4dWktzwIDE5OusCsG3Izug1UhiA3kbyT0rABYvXDjJbn+vo
- vbd05LumrXCITKUp4o5lOkMwogcE//e/5ZyRMjWAFBLY1wCi9MHZjmdW8dlmvAinHQJN
- Mc0OP7okYNoLkHk2Vpa1BXNDTlb0foVCYcFSzGfHAnLZk96bZjQiqjP8O7deiQfeujnq
- Y6fAV/SxxpdLeD/3K1YZgwDUijIWlTUEPLaUe9+7B1Wr4Wgn+gaBWdU/RUABF14aeoUe
- USTA==
-X-Gm-Message-State: AOJu0Yx2sJs4mAYMhjI4Z/ne4chOdXtOVbOS1FeLxR8Rw9TLjVsugq94
- u+XPggvoczZEf/qcsvLhNAo3RcF1Qxgd8uX7MFo=
-X-Google-Smtp-Source: AGHT+IGG0/HqFKXvSObhDzxwu/jxg58jBO1GS2cazpYt1wTNeP/Z1KXJdOGoEvrs+e/SBWq3vVdvYg==
-X-Received: by 2002:ac2:5a5a:0:b0:503:2623:7cf7 with SMTP id
- r26-20020ac25a5a000000b0050326237cf7mr21145399lfn.67.1697183970030; 
- Fri, 13 Oct 2023 00:59:30 -0700 (PDT)
+ bh=TgVJaEUfo38wurBGn+D3UK3JXthAmJ84+zCqcU6HvLo=;
+ b=jsr9UNc3GOi4Ywd5WYp+zODL+8v82fRS6NybGfuD0u2FuW2yi8PQFXMuu7umeWBgI1
+ Y1dYoxcArZ8d7XCiWqQvzfj981KpkmIliTqwVVLiv3IrtJReanCF+jPsJfBWa1lC3u9J
+ TICdEffxCgbwm426dISq6Nh6h3Y0VhvexTGR6fQcmRNJKNhiMwt2avYgASWnvU/e/tQd
+ v4novtiaCEzPfMSjO1iNksJd6HGfjNbECcXqvbj0ta2IajVYovALDCNb9ucEW8bYfQ2p
+ xSjuU6FqowwRveH2hT7dtxEfxRYu2k3+Gr8u0Hx2pUHAeKJsLkEkvrD735dVXeESUjZE
+ bYTg==
+X-Gm-Message-State: AOJu0Yz7BW3gStt0yrU6AYZ9Myl/04M6jtUX/woF6GLwrSnB3QLZQFgM
+ A7Bo/cBccXqEZElLH5EusI6H4t7YAOexCxnvZ+U=
+X-Google-Smtp-Source: AGHT+IFrSjd/IF5PUsL6BbARcFWKBru3hbVCAHtOrQClFjbCkDvMDO/31/Xjj00xB8iaZK0panpzJg==
+X-Received: by 2002:a05:600c:2113:b0:401:73b2:f043 with SMTP id
+ u19-20020a05600c211300b0040173b2f043mr24211583wml.1.1697183971468; 
+ Fri, 13 Oct 2023 00:59:31 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.28
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:59:29 -0700 (PDT)
+ Fri, 13 Oct 2023 00:59:30 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [RFC PATCH v2 55/78] hw/display: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:22 +0300
-Message-Id: <7c8de3cb19cf335ec462500041fd9f12dc9f0c0a.1697183699.git.manos.pitsidianakis@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org (open list:nSeries)
+Subject: [RFC PATCH v2 56/78] hw/input: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:23 +0300
+Message-Id: <7f9ab65c5376669408c00fa27d187aef66f2d26e.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,261 +98,258 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/display/cg3.c        | 2 +-
- hw/display/cirrus_vga.c | 2 +-
- hw/display/tcx.c        | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ hw/input/hid.c     | 3 ++-
+ hw/input/tsc2005.c | 4 ++--
+ hw/input/tsc210x.c | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/display/cg3.c b/hw/display/cg3.c
-index 2e9656ae1c..53eb9831b2 100644
---- a/hw/display/cg3.c
-+++ b/hw/display/cg3.c
-@@ -199,65 +199,65 @@ static uint64_t cg3_reg_read(void *opaque, hwaddr addr, unsigned size)
- static void cg3_reg_write(void *opaque, hwaddr addr, uint64_t val,
-                           unsigned size)
+diff --git a/hw/input/hid.c b/hw/input/hid.c
+index a9c7dd1ce1..15fffc5dfb 100644
+--- a/hw/input/hid.c
++++ b/hw/input/hid.c
+@@ -250,88 +250,89 @@ static void hid_keyboard_event(DeviceState *dev, QemuConsole *src,
+ static void hid_keyboard_process_keycode(HIDState *hs)
  {
-     CG3State *s = opaque;
-     uint8_t regval;
-     int i;
+     uint8_t hid_code, index, key;
+     int i, keycode, slot;
  
-     trace_cg3_write(addr, val, size);
-     switch (addr) {
-     case CG3_REG_BT458_ADDR:
-         s->dac_index = val;
-         s->dac_state = 0;
-         break;
-     case CG3_REG_BT458_COLMAP:
-         /* This register can be written to as either a long word or a byte */
-         if (size == 1) {
-             val <<= 24;
+     if (hs->n == 0) {
+         return;
+     }
+     slot = hs->head & QUEUE_MASK; QUEUE_INCR(hs->head); hs->n--;
+     keycode = hs->kbd.keycodes[slot];
+ 
+     if (!hs->n) {
+         trace_hid_kbd_queue_empty();
+     }
+ 
+     key = keycode & 0x7f;
+     index = key | ((hs->kbd.modifiers & (1 << 8)) >> 1);
+     hid_code = hid_usage_keys[index];
+     hs->kbd.modifiers &= ~(1 << 8);
+ 
+     switch (hid_code) {
+     case 0x00:
+         return;
+ 
+     case 0xe0:
+         assert(key == 0x1d);
+         if (hs->kbd.modifiers & (1 << 9)) {
+             /* The hid_codes for the 0xe1/0x1d scancode sequence are 0xe9/0xe0.
+              * Here we're processing the second hid_code.  By dropping bit 9
+              * and setting bit 8, the scancode after 0x1d will access the
+              * second half of the table.
+              */
+             hs->kbd.modifiers ^= (1 << 8) | (1 << 9);
+             return;
          }
+         /* fall through to process Ctrl_L */
++        fallthrough;
+     case 0xe1 ... 0xe7:
+         /* Ctrl_L/Ctrl_R, Shift_L/Shift_R, Alt_L/Alt_R, Win_L/Win_R.
+          * Handle releases here, or fall through to process presses.
+          */
+         if (keycode & (1 << 7)) {
+             hs->kbd.modifiers &= ~(1 << (hid_code & 0x0f));
+             return;
+         }
+-        /* fall through */
++        fallthrough;
+     case 0xe8 ... 0xe9:
+         /* USB modifiers are just 1 byte long.  Bits 8 and 9 of
+          * hs->kbd.modifiers implement a state machine that detects the
+          * 0xe0 and 0xe1/0x1d sequences.  These bits do not follow the
+          * usual rules where bit 7 marks released keys; they are cleared
+          * elsewhere in the function as the state machine dictates.
+          */
+         hs->kbd.modifiers |= 1 << (hid_code & 0x0f);
+         return;
  
-         for (i = 0; i < size; i++) {
-             regval = val >> 24;
+     case 0xea ... 0xef:
+         abort();
  
-             switch (s->dac_state) {
-             case 0:
-                 s->r[s->dac_index] = regval;
-                 s->dac_state++;
-                 break;
-             case 1:
-                 s->g[s->dac_index] = regval;
-                 s->dac_state++;
-                 break;
-             case 2:
-                 s->b[s->dac_index] = regval;
-                 /* Index autoincrement */
-                 s->dac_index = (s->dac_index + 1) & 0xff;
--                /* fall through */
-+                fallthrough;
-             default:
-                 s->dac_state = 0;
+     default:
+         break;
+     }
+ 
+     if (keycode & (1 << 7)) {
+         for (i = hs->kbd.keys - 1; i >= 0; i--) {
+             if (hs->kbd.key[i] == hid_code) {
+                 hs->kbd.key[i] = hs->kbd.key[-- hs->kbd.keys];
+                 hs->kbd.key[hs->kbd.keys] = 0x00;
                  break;
              }
-             val <<= 8;
          }
-         s->full_update = 1;
-         break;
-     case CG3_REG_FBC_CTRL:
-         s->regs[0] = val;
-         break;
-     case CG3_REG_FBC_STATUS:
-         if (s->regs[1] & CG3_SR_PENDING_INT) {
-             /* clear interrupt */
-             s->regs[1] &= ~CG3_SR_PENDING_INT;
-             qemu_irq_lower(s->irq);
+         if (i < 0) {
+             return;
          }
-         break;
-     case CG3_REG_FBC_CURSTART ... CG3_REG_SIZE - 1:
-         s->regs[addr - 0x10] = val;
-         break;
-     default:
-         qemu_log_mask(LOG_UNIMP,
-                   "cg3: Unimplemented register write "
-                   "reg 0x%" HWADDR_PRIx " size 0x%x value 0x%" PRIx64 "\n",
-                   addr, size, val);
-         break;
-     }
- }
-diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-index b80f98b6c4..f1513a084c 100644
---- a/hw/display/cirrus_vga.c
-+++ b/hw/display/cirrus_vga.c
-@@ -1319,97 +1319,97 @@ static int cirrus_vga_read_sr(CirrusVGAState * s)
- static void cirrus_vga_write_sr(CirrusVGAState * s, uint32_t val)
- {
-     switch (s->vga.sr_index) {
-     case 0x00:                  // Standard VGA
-     case 0x01:                  // Standard VGA
-     case 0x02:                  // Standard VGA
-     case 0x03:                  // Standard VGA
-     case 0x04:                  // Standard VGA
-         s->vga.sr[s->vga.sr_index] = val & sr_mask[s->vga.sr_index];
-         if (s->vga.sr_index == 1)
-             s->vga.update_retrace_info(&s->vga);
-         break;
-     case 0x06:                  // Unlock Cirrus extensions
-         val &= 0x17;
-         if (val == 0x12) {
-             s->vga.sr[s->vga.sr_index] = 0x12;
+     } else {
+         for (i = hs->kbd.keys - 1; i >= 0; i--) {
+             if (hs->kbd.key[i] == hid_code) {
+                 break;
+             }
+         }
+         if (i < 0) {
+             if (hs->kbd.keys < sizeof(hs->kbd.key)) {
+                 hs->kbd.key[hs->kbd.keys++] = hid_code;
+             }
          } else {
-             s->vga.sr[s->vga.sr_index] = 0x0f;
+             return;
          }
-         break;
-     case 0x10:
-     case 0x30:
-     case 0x50:
-     case 0x70:                  // Graphics Cursor X
-     case 0x90:
-     case 0xb0:
-     case 0xd0:
-     case 0xf0:                  // Graphics Cursor X
-         s->vga.sr[0x10] = val;
-         s->vga.hw_cursor_x = (val << 3) | (s->vga.sr_index >> 5);
-         break;
-     case 0x11:
-     case 0x31:
-     case 0x51:
-     case 0x71:                  // Graphics Cursor Y
-     case 0x91:
-     case 0xb1:
-     case 0xd1:
-     case 0xf1:                  // Graphics Cursor Y
-         s->vga.sr[0x11] = val;
-         s->vga.hw_cursor_y = (val << 3) | (s->vga.sr_index >> 5);
-         break;
-     case 0x07:                  // Extended Sequencer Mode
-         cirrus_update_memory_access(s);
--        /* fall through */
-+        fallthrough;
-     case 0x08:                  // EEPROM Control
-     case 0x09:                  // Scratch Register 0
-     case 0x0a:                  // Scratch Register 1
-     case 0x0b:                  // VCLK 0
-     case 0x0c:                  // VCLK 1
-     case 0x0d:                  // VCLK 2
-     case 0x0e:                  // VCLK 3
-     case 0x0f:                  // DRAM Control
-     case 0x13:                  // Graphics Cursor Pattern Address
-     case 0x14:                  // Scratch Register 2
-     case 0x15:                  // Scratch Register 3
-     case 0x16:                  // Performance Tuning Register
-     case 0x18:                  // Signature Generator Control
-     case 0x19:                  // Signature Generator Result
-     case 0x1a:                  // Signature Generator Result
-     case 0x1b:                  // VCLK 0 Denominator & Post
-     case 0x1c:                  // VCLK 1 Denominator & Post
-     case 0x1d:                  // VCLK 2 Denominator & Post
-     case 0x1e:                  // VCLK 3 Denominator & Post
-     case 0x1f:                  // BIOS Write Enable and MCLK select
-         s->vga.sr[s->vga.sr_index] = val;
- #ifdef DEBUG_CIRRUS
-         printf("cirrus: handled outport sr_index %02x, sr_value %02x\n",
-                s->vga.sr_index, val);
- #endif
-         break;
-     case 0x12:                  // Graphics Cursor Attribute
-         s->vga.sr[0x12] = val;
-         s->vga.force_shadow = !!(val & CIRRUS_CURSOR_SHOW);
- #ifdef DEBUG_CIRRUS
-         printf("cirrus: cursor ctl SR12=%02x (force shadow: %d)\n",
-                val, s->vga.force_shadow);
- #endif
-         break;
-     case 0x17:                  // Configuration Readback and Extended Control
-         s->vga.sr[s->vga.sr_index] = (s->vga.sr[s->vga.sr_index] & 0x38)
-                                    | (val & 0xc7);
-         cirrus_update_memory_access(s);
-         break;
-     default:
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "cirrus: outport sr_index 0x%02x, sr_value 0x%02x\n",
-                       s->vga.sr_index, val);
-         break;
      }
  }
- 
- /***************************************
-  *
-  *  I/O access at 0x3c6
-  *
-  ***************************************/
-diff --git a/hw/display/tcx.c b/hw/display/tcx.c
-index 1b27b64f6d..e21450d726 100644
---- a/hw/display/tcx.c
-+++ b/hw/display/tcx.c
-@@ -381,26 +381,26 @@ static void tcx_reset(DeviceState *d)
- static uint64_t tcx_dac_readl(void *opaque, hwaddr addr,
-                               unsigned size)
+diff --git a/hw/input/tsc2005.c b/hw/input/tsc2005.c
+index db2b80e35f..4f3f1d9d12 100644
+--- a/hw/input/tsc2005.c
++++ b/hw/input/tsc2005.c
+@@ -234,70 +234,70 @@ static void tsc2005_write(TSC2005State *s, int reg, uint16_t data)
+ /* This handles most of the chip's logic.  */
+ static void tsc2005_pin_update(TSC2005State *s)
  {
-     TCXState *s = opaque;
-     uint32_t val = 0;
+     int64_t expires;
+     bool pin_state;
  
-     switch (s->dac_state) {
+     switch (s->pin_func) {
      case 0:
-         val = s->r[s->dac_index] << 24;
-         s->dac_state++;
+         pin_state = !s->pressure && !!s->dav;
          break;
      case 1:
-         val = s->g[s->dac_index] << 24;
-         s->dac_state++;
+     case 3:
+     default:
+         pin_state = !s->dav;
          break;
      case 2:
-         val = s->b[s->dac_index] << 24;
-         s->dac_index = (s->dac_index + 1) & 0xff; /* Index autoincrement */
--        /* fall through */
+         pin_state = !s->pressure;
+     }
+ 
+     if (pin_state != s->irq) {
+         s->irq = pin_state;
+         qemu_set_irq(s->pint, s->irq);
+     }
+ 
+     switch (s->nextfunction) {
+     case TSC_MODE_XYZ_SCAN:
+     case TSC_MODE_XY_SCAN:
+         if (!s->host_mode && s->dav)
+             s->enabled = false;
+         if (!s->pressure)
+             return;
+-        /* Fall through */
 +        fallthrough;
+     case TSC_MODE_AUX_SCAN:
+         break;
+ 
+     case TSC_MODE_X:
+     case TSC_MODE_Y:
+     case TSC_MODE_Z:
+         if (!s->pressure)
+             return;
+-        /* Fall through */
++        fallthrough;
+     case TSC_MODE_AUX:
+     case TSC_MODE_TEMP1:
+     case TSC_MODE_TEMP2:
+     case TSC_MODE_X_TEST:
+     case TSC_MODE_Y_TEST:
+     case TSC_MODE_TS_TEST:
+         if (s->dav)
+             s->enabled = false;
+         break;
+ 
+     case TSC_MODE_RESERVED:
+     case TSC_MODE_XX_DRV:
+     case TSC_MODE_YY_DRV:
+     case TSC_MODE_YX_DRV:
      default:
-         s->dac_state = 0;
-         break;
+         return;
      }
  
-     return val;
+     if (!s->enabled || s->busy)
+         return;
+ 
+     s->busy = true;
+     s->precision = s->nextprecision;
+     s->function = s->nextfunction;
+     s->pdst = !s->pnd0;	/* Synchronised on internal clock */
+     expires = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
+         (NANOSECONDS_PER_SECOND >> 7);
+     timer_mod(s->timer, expires);
  }
-@@ -408,43 +408,43 @@ static uint64_t tcx_dac_readl(void *opaque, hwaddr addr,
- static void tcx_dac_writel(void *opaque, hwaddr addr, uint64_t val,
-                            unsigned size)
+diff --git a/hw/input/tsc210x.c b/hw/input/tsc210x.c
+index 950506fb38..9ae426e1a6 100644
+--- a/hw/input/tsc210x.c
++++ b/hw/input/tsc210x.c
+@@ -774,70 +774,70 @@ static void tsc2102_audio_register_write(
+ /* This handles most of the chip logic.  */
+ static void tsc210x_pin_update(TSC210xState *s)
  {
-     TCXState *s = opaque;
-     unsigned index;
+     int64_t expires;
+     bool pin_state;
  
-     switch (addr) {
-     case 0: /* Address */
-         s->dac_index = val >> 24;
-         s->dac_state = 0;
+     switch (s->pin_func) {
+     case 0:
+         pin_state = s->pressure;
          break;
-     case 4:  /* Pixel colours */
-     case 12: /* Overlay (cursor) colours */
-         if (addr & 8) {
-             index = (s->dac_index & 3) + 256;
-         } else {
-             index = s->dac_index;
-         }
-         switch (s->dac_state) {
-         case 0:
-             s->r[index] = val >> 24;
-             update_palette_entries(s, index, index + 1);
-             s->dac_state++;
-             break;
-         case 1:
-             s->g[index] = val >> 24;
-             update_palette_entries(s, index, index + 1);
-             s->dac_state++;
-             break;
-         case 2:
-             s->b[index] = val >> 24;
-             update_palette_entries(s, index, index + 1);
-             s->dac_index = (s->dac_index + 1) & 0xff; /* Index autoincrement */
--            /* fall through */
-+            fallthrough;
-         default:
-             s->dac_state = 0;
-             break;
-         }
+     case 1:
+         pin_state = !!s->dav;
          break;
-     default: /* Control registers */
-         break;
+     case 2:
+     default:
+         pin_state = s->pressure && !s->dav;
      }
+ 
+     if (!s->enabled)
+         pin_state = false;
+ 
+     if (pin_state != s->irq) {
+         s->irq = pin_state;
+         qemu_set_irq(s->pint, !s->irq);
+     }
+ 
+     switch (s->nextfunction) {
+     case TSC_MODE_XY_SCAN:
+     case TSC_MODE_XYZ_SCAN:
+         if (!s->pressure)
+             return;
+         break;
+ 
+     case TSC_MODE_X:
+     case TSC_MODE_Y:
+     case TSC_MODE_Z:
+         if (!s->pressure)
+             return;
+-        /* Fall through */
++        fallthrough;
+     case TSC_MODE_BAT1:
+     case TSC_MODE_BAT2:
+     case TSC_MODE_AUX:
+     case TSC_MODE_TEMP1:
+     case TSC_MODE_TEMP2:
+         if (s->dav)
+             s->enabled = false;
+         break;
+ 
+     case TSC_MODE_AUX_SCAN:
+     case TSC_MODE_PORT_SCAN:
+         break;
+ 
+     case TSC_MODE_NO_SCAN:
+     case TSC_MODE_XX_DRV:
+     case TSC_MODE_YY_DRV:
+     case TSC_MODE_YX_DRV:
+     default:
+         return;
+     }
+ 
+     if (!s->enabled || s->busy || s->dav)
+         return;
+ 
+     s->busy = true;
+     s->precision = s->nextprecision;
+     s->function = s->nextfunction;
+     expires = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
+         (NANOSECONDS_PER_SECOND >> 10);
+     timer_mod(s->timer, expires);
  }
 -- 
 2.39.2
