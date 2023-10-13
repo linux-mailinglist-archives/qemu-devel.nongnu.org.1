@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 922027C80C0
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 149D77C80DC
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDq9-0007et-1w; Fri, 13 Oct 2023 04:48:13 -0400
+	id 1qrDpe-0007U3-IH; Fri, 13 Oct 2023 04:47:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpb-0007RA-BX
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:39 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1qrDpc-0007S7-Eu
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:40 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpZ-0000oG-43
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:39 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3247cefa13aso1680524f8f.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:36 -0700 (PDT)
+ id 1qrDpa-0000or-QT
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:40 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40566f8a093so19110755e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186855; x=1697791655; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186857; x=1697791657; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4rEO8xhabBa8+qN/AA3htMa/EbaT4NYRpi2EeykzU0A=;
- b=EfdjYYMvuzLlpMXWZFWJI/6WwEiWto8G6EIE+ofVI8NX2G+HVl7nP3I6HdVAr6GlFc
- 5MdMfD2cblJdCSnJvl1/3dNxkfDt5kZcXagWAJTiZVGcpkXUnukcPEfcD8SEYK/BTzBA
- Cvsx4Kx6aJOpkQ82ho+3DKGB/HGDwsnI/18I1SpcoV5dZ5DpX+aXc9UxHLqaEnLYxRd9
- krNBlfS8KCZwl8wCFpdYQPrRp8O6VgYkIBKu6Y9F22jI22b6AlLtfwuzVQXaLH++MDNa
- o/kjDaxnsTC+QN33IrBDC2IZPB27jo2vghO9GPYdWeDHiAwRNnTtudeEZowXiYXAbWVS
- ji0g==
+ bh=ULFeTIXj6bX1JE5sE4td36JwncG3JzFJuXREJ6wp7rc=;
+ b=mIOYQLyAyjaagTsWweBwVnjlONwTEOlAoYV/ejQGrcdTR22vYx7XGm96wrHnqdzAfA
+ sDB2PUBjBdaO9Lp08481dwGbWpvEYcpJcCQYiXf1WtlakUYupyJy0D+5uTRSlOmXwmJr
+ UZRj2hPbiLQv0oCiyN79YNfqc/ED5fqR65wz+2HDsG5rwQcVC7DRx36CZ5cR1Bty8qw1
+ vtUn8UW5INPPwyfY7Tng76Wzfe7t6F0uRi04/oTcfujxgMYrq7amxsCG6/C6FLgULQCp
+ Nr6NbLfGbu1NaDGDTk79N7JZEooKkkWC43WLNMoaUnTA006hdo/RTx+iCMavSwryw/8F
+ Z7iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186855; x=1697791655;
+ d=1e100.net; s=20230601; t=1697186857; x=1697791657;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4rEO8xhabBa8+qN/AA3htMa/EbaT4NYRpi2EeykzU0A=;
- b=hV0uFWKuHH3SG+zam+rqQvF1sfvxVFvbGdpqS7JXoZh60LNFty7mc4gdXfOtv9zUi4
- ZESjkQaSB3DR6Ykm5e3WC2qhwi84AeGVwIU1dVOYcavfcb+ab+6E1TJV8O0m/KH846Co
- OELPDB0Kro1VhXw+4Jvbcb3Qwwo00k/RL8/H911L1YhVBLBhqKeWDVDaFcDnSLNfWV5Q
- Zd0TGqlQpawrC1DyKVJVpgUYjro7XQ3ezvK4AnAMssLOj9yaPAnMXmWNrRbnS2tSyRBQ
- WX/+cY+xY8GfhUB/lWPGrVBO0XHDwFybK75FRwSQAbwPAxU1NQtjSxmw7o0+Xx/ldFKx
- yE8A==
-X-Gm-Message-State: AOJu0YwfQBj1UHEhbCJh/Uct/CaA6zHOoyvFGZjWwVTijx3Nr48T8IKW
- 32I7ftFM236vxxsk3d8i28HZEWA1yrC0xMliC0M=
-X-Google-Smtp-Source: AGHT+IEDQSwhe6yfPltI9w8sc2zzs4ry6ouEcRIkZONEZjZspWMLaLXrbanB4lUSoPjJ0nN0YUoxYQ==
-X-Received: by 2002:a5d:6483:0:b0:32d:8830:edb with SMTP id
- o3-20020a5d6483000000b0032d88300edbmr6935441wri.38.1697186855101; 
- Fri, 13 Oct 2023 01:47:35 -0700 (PDT)
+ bh=ULFeTIXj6bX1JE5sE4td36JwncG3JzFJuXREJ6wp7rc=;
+ b=XqSEV2lVXdhWMupONYHSmHZmcijJPS0p1XtrqMOC2eaWg+/yJSGH6LQL7FQEp8JNlx
+ Ll/yK+XNmyOGHvHw7t9Ej29GFn4tLyGK8ETXQp20KF0P1fv3W38w5j3UGRipjFayuSek
+ Ng7bycmPGe9iJIJDE8sZzOEPncPemCfTroF54aEm/GANXpCTu7SOuFZUh8N+ieAGksaY
+ zGglEazc1ifa/5zPWJJF7E2lZPhzfsEQwcx+wqAaKtAhG2oXD32giBOZmfaiHJb/nMOx
+ dLRZyQzyJrAauK2blXRU0UDL1G+TBHa1/4ydfz2Mb0gTpDO7gGhdXpGSlqfELR0nA4vX
+ s7xQ==
+X-Gm-Message-State: AOJu0YzTXbIcapBkuzOL0bsZzROgX3AqZUsx14i6su7FThdAAsvyhL1I
+ 0px3wTLg8MxV+qcts7qNkRZo4ID3Rf4wuAN6+Kk=
+X-Google-Smtp-Source: AGHT+IFjKN7MdsezpwMW/lGsuR0FoPqe9jy/hBVkKOJnOu+uP1KLuB1AKvGQvG9tlaPOkwMQk0rqaw==
+X-Received: by 2002:a05:600c:ad0:b0:405:375d:b860 with SMTP id
+ c16-20020a05600c0ad000b00405375db860mr24379109wmr.21.1697186857149; 
+ Fri, 13 Oct 2023 01:47:37 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.33
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:47:34 -0700 (PDT)
+ Fri, 13 Oct 2023 01:47:36 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [RFC PATCH v3 12/78] hw/usb: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:45:40 +0300
-Message-Id: <8a8bc7d7ac048e5caaa31b5020f63056c9490325.1697186560.git.manos.pitsidianakis@linaro.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
+ Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ qemu-arm@nongnu.org (open list:ASPEED BMCs)
+Subject: [RFC PATCH v3 13/78] hw/adc: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:45:41 +0300
+Message-Id: <9d4eebb3c55f9a6cf7b3df5e09b6b692a028e024.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,128 +100,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 In preparation of raising -Wimplicit-fallthrough to 5, replace all
 fall-through comments with the fallthrough attribute pseudo-keyword.
 
+(Cédric Le Goater review is for aspeed_adc.c)
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/usb/dev-mtp.c   | 2 +-
- hw/usb/dev-wacom.c | 2 +-
- hw/usb/hcd-ehci.c  | 4 +++-
- hw/usb/hcd-xhci.c  | 4 ++--
- hw/usb/redirect.c  | 4 ++--
- hw/usb/tusb6010.c  | 2 +-
- 6 files changed, 10 insertions(+), 8 deletions(-)
+ hw/adc/aspeed_adc.c | 12 ++++++------
+ hw/adc/zynq-xadc.c  |  2 +-
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/hw/usb/dev-mtp.c b/hw/usb/dev-mtp.c
-index 1cac1cd435..5cbaabd2b2 100644
---- a/hw/usb/dev-mtp.c
-+++ b/hw/usb/dev-mtp.c
-@@ -1648,7 +1648,7 @@ static void usb_mtp_write_data(MTPState *s, uint32_t handle)
-                 d->write_status = WRITE_END;
-             }
-         }
--        /* fall through */
-+        fallthrough;
-     case WRITE_CONTINUE:
-     case WRITE_END:
-         rc = write_retry(d->fd, d->data, d->data_offset,
-diff --git a/hw/usb/dev-wacom.c b/hw/usb/dev-wacom.c
-index 7177c17f03..bd2a1bae50 100644
---- a/hw/usb/dev-wacom.c
-+++ b/hw/usb/dev-wacom.c
-@@ -389,7 +389,7 @@ static void usb_wacom_handle_data(USBDevice *dev, USBPacket *p)
-             usb_packet_copy(p, buf, len);
+diff --git a/hw/adc/aspeed_adc.c b/hw/adc/aspeed_adc.c
+index 0d29663129..f9f5f7bb17 100644
+--- a/hw/adc/aspeed_adc.c
++++ b/hw/adc/aspeed_adc.c
+@@ -119,7 +119,7 @@ static uint64_t aspeed_adc_engine_read(void *opaque, hwaddr addr,
+                           __func__, s->engine_id, reg - BOUNDS_CHANNEL_0);
              break;
          }
--        /* Fall through.  */
+-        /* fallthrough */
 +        fallthrough;
-     case USB_TOKEN_OUT:
-     default:
-         p->status = USB_RET_STALL;
-diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
-index 19b4534c20..e29cc21957 100644
---- a/hw/usb/hcd-ehci.c
-+++ b/hw/usb/hcd-ehci.c
-@@ -1477,7 +1477,7 @@ static int ehci_process_itd(EHCIState *ehci,
-             default:
-                 fprintf(stderr, "Unexpected iso usb result: %d\n",
-                         ehci->ipacket.status);
--                /* Fall through */
-+                fallthrough;
-             case USB_RET_IOERROR:
-             case USB_RET_NODEV:
-                 /* 3.3.2: XACTERR is only allowed on IN transactions */
-@@ -2140,6 +2140,7 @@ static void ehci_advance_async_state(EHCIState *ehci)
-         }
-         ehci_set_state(ehci, async, EST_ACTIVE);
-         // No break, fall through to ACTIVE
-+        fallthrough;
- 
-     case EST_ACTIVE:
-         if (!ehci_async_enabled(ehci)) {
-@@ -2197,6 +2198,7 @@ static void ehci_advance_periodic_state(EHCIState *ehci)
-         if (!(ehci->frindex & 7) && ehci_periodic_enabled(ehci)) {
-             ehci_set_state(ehci, async, EST_ACTIVE);
-             // No break, fall through to ACTIVE
-+            fallthrough;
-         } else
+     case HYSTERESIS_CHANNEL_8 ... HYSTERESIS_CHANNEL_15:
+         if (s->nr_channels <= 8) {
+             qemu_log_mask(LOG_GUEST_ERROR, "%s: engine[%u]: "
+@@ -127,7 +127,7 @@ static uint64_t aspeed_adc_engine_read(void *opaque, hwaddr addr,
+                           __func__, s->engine_id, reg - HYSTERESIS_CHANNEL_0);
              break;
- 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 4b60114207..3e9b9c62bd 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -1457,7 +1457,7 @@ static int xhci_xfer_create_sgl(XHCITransfer *xfer, int in_xfer)
-                 DPRINTF("xhci: data direction mismatch for TR_DATA\n");
-                 goto err;
-             }
+         }
+-        /* fallthrough */
++        fallthrough;
+     case BOUNDS_CHANNEL_0 ... BOUNDS_CHANNEL_7:
+     case HYSTERESIS_CHANNEL_0 ... HYSTERESIS_CHANNEL_7:
+     case ENGINE_CONTROL:
+@@ -145,7 +145,7 @@ static uint64_t aspeed_adc_engine_read(void *opaque, hwaddr addr,
+                           __func__, s->engine_id, reg - DATA_CHANNEL_1_AND_0);
+             break;
+         }
+-        /* fallthrough */
++        fallthrough;
+     case DATA_CHANNEL_1_AND_0 ... DATA_CHANNEL_7_AND_6:
+         value = read_channel_sample(s, reg);
+         /* Allow 16-bit reads of the data registers */
+@@ -194,7 +194,7 @@ static void aspeed_adc_engine_write(void *opaque, hwaddr addr, uint64_t value,
+                           __func__, s->engine_id, reg - DATA_CHANNEL_1_AND_0);
+             return;
+         }
+-        /* fallthrough */
++        fallthrough;
+     case BOUNDS_CHANNEL_8 ... BOUNDS_CHANNEL_15:
+         if (s->nr_channels <= 8) {
+             qemu_log_mask(LOG_GUEST_ERROR, "%s: engine[%u]: "
+@@ -202,7 +202,7 @@ static void aspeed_adc_engine_write(void *opaque, hwaddr addr, uint64_t value,
+                           __func__, s->engine_id, reg - BOUNDS_CHANNEL_0);
+             return;
+         }
+-        /* fallthrough */
++        fallthrough;
+     case DATA_CHANNEL_1_AND_0 ... DATA_CHANNEL_7_AND_6:
+     case BOUNDS_CHANNEL_0 ... BOUNDS_CHANNEL_7:
+         value &= ASPEED_ADC_LH_MASK;
+@@ -214,7 +214,7 @@ static void aspeed_adc_engine_write(void *opaque, hwaddr addr, uint64_t value,
+                           __func__, s->engine_id, reg - HYSTERESIS_CHANNEL_0);
+             return;
+         }
+-        /* fallthrough */
++        fallthrough;
+     case HYSTERESIS_CHANNEL_0 ... HYSTERESIS_CHANNEL_7:
+         value &= (ASPEED_ADC_HYST_EN | ASPEED_ADC_LH_MASK);
+         break;
+diff --git a/hw/adc/zynq-xadc.c b/hw/adc/zynq-xadc.c
+index 032e19cbd0..a74de3a4fd 100644
+--- a/hw/adc/zynq-xadc.c
++++ b/hw/adc/zynq-xadc.c
+@@ -235,7 +235,7 @@ static void zynq_xadc_write(void *opaque, hwaddr offset, uint64_t val,
+             break;
+         case CMD_WRITE:
+             s->xadc_regs[xadc_reg] = xadc_data;
 -            /* fallthrough */
 +            fallthrough;
-         case TR_NORMAL:
-         case TR_ISOCH:
-             addr = xhci_mask64(trb->parameter);
-@@ -2678,7 +2678,7 @@ static void xhci_port_reset(XHCIPort *port, bool warm_reset)
-         if (warm_reset) {
-             port->portsc |= PORTSC_WRC;
-         }
--        /* fall through */
-+        fallthrough;
-     case USB_SPEED_LOW:
-     case USB_SPEED_FULL:
-     case USB_SPEED_HIGH:
-diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
-index c9893df867..2531d583ad 100644
---- a/hw/usb/redirect.c
-+++ b/hw/usb/redirect.c
-@@ -1814,7 +1814,7 @@ static void usbredir_ep_info(void *priv,
-         case usb_redir_type_iso:
-             usbredir_mark_speed_incompatible(dev, USB_SPEED_FULL);
-             usbredir_mark_speed_incompatible(dev, USB_SPEED_HIGH);
--            /* Fall through */
-+            fallthrough;
-         case usb_redir_type_interrupt:
-             if (!usbredirparser_peer_has_cap(dev->parser,
-                                      usb_redir_cap_ep_info_max_packet_size) ||
-@@ -1831,7 +1831,7 @@ static void usbredir_ep_info(void *priv,
-                 usbredir_reject_device(dev);
-                 return;
-             }
--            /* Fall through */
-+            fallthrough;
-         case usb_redir_type_control:
-         case usb_redir_type_bulk:
-             DPRINTF("ep: %02X type: %d interface: %d\n", I2EP(i),
-diff --git a/hw/usb/tusb6010.c b/hw/usb/tusb6010.c
-index 1dd4071e68..88c736fad2 100644
---- a/hw/usb/tusb6010.c
-+++ b/hw/usb/tusb6010.c
-@@ -741,7 +741,7 @@ static void tusb_musb_core_intr(void *opaque, int source, int level)
-     case musb_irq_tx:
-     case musb_irq_rx:
-         s->usbip_intr = musb_core_intr_get(s->musb);
--        /* Fall through.  */
-+        fallthrough;
-     default:
-         if (level)
-             s->intr |= 1 << source;
+         case CMD_NOP:
+             xadc_push_dfifo(s, 0);
+             break;
 -- 
 2.39.2
 
