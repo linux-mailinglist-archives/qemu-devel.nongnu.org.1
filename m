@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160907C80CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D437C80D4
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqd-0000rp-LY; Fri, 13 Oct 2023 04:48:43 -0400
+	id 1qrDqv-00023r-00; Fri, 13 Oct 2023 04:49:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDqL-0008Ra-As
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:26 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1qrDqS-00009o-Kh
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:33 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDqJ-00014s-No
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:25 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-505a62d24b9so2348584e87.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:23 -0700 (PDT)
+ id 1qrDqP-00015G-Mp
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:32 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2bb9a063f26so23023961fa.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186901; x=1697791701; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186904; x=1697791704; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cXUPd7o0c3iST05l+ZvpK0QVidzt33YIAW6ca/eFPH0=;
- b=Cr+CmK4+VmGev9zFzZ7XZCwX4vkLgjY2exGlwTGPC9MePjwfM750YEKBiBfzJpcvcq
- hDL5XOw2P10VPcfJE5k+YOQchiu9fEoarD0FXlUnVNrkOb98dMkcnrssc3RJ8xnCOp1R
- ZUW6yu2OvcU4z3U+q4SVjqov6CFOwL3OrrGJq5R2MGgs7SGCcskVNq94axgBy5EzOxh6
- ylbnRzqCl1SswbhsgIJC+g0IrxMaXqsnPTaLeKaqx624tAijYTRyz6RcJFkeJkyPHi+c
- 9kg/v18cMGy29/t1XLe5vUM3jbiZ7PajEH24y8hffVO+Ut4NiKL7ZQRc5pZJXz5Zpcgj
- qDpA==
+ bh=2vN7zbaDV9qsbxUyF/7PGOqcvOaxw8SCgdHuFArC3d8=;
+ b=X+k4vt/p08uQIhGWAJFLp0KVnB7BWPTO2sjTaHZnX3KDUB6y/4RFrTLKjLRRST1Cm5
+ 3eqiAiBmMJY9BKCoICznNn5Gxc9G/0hn1nLu+GAlC8imzjxkaoGOxTJbbvu+28G9sv4Z
+ lLhOOHux7UHFLYJ/u0epAwn2e8SRdui+7t+BOpXPytWR8Jpbzy+fmxpU4trRQR1bZ6Vo
+ uJRIEuiwdcEC6PruEKiNtV+E3bugOwwn/97xkoIKL8FgodtpCrSK0ZOPoRwYFBI8kawW
+ vvJJztuKufE2RzMReKjnNHdN653ddbnSvVUDL40vEzoSNDpFKc7IPqYJuFzzQi8c3wfY
+ sxWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186901; x=1697791701;
+ d=1e100.net; s=20230601; t=1697186904; x=1697791704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cXUPd7o0c3iST05l+ZvpK0QVidzt33YIAW6ca/eFPH0=;
- b=cMJx+4vh/3kkCqecrjnT3QS5JbX00pn2DSJHqBiaxR4zz2fO7HNkJwN5tHZ6Ow3B5W
- TAZCJlekQB9ZZswaC4qExzJPqwXBDUMBECIDpFpOY8p8OeSj3NmTfiaNy+DPpboEtv5R
- Wp4TyJbUBXDgxourXJsXJ7qmLb99ulAbnALY2sRid2B8gCEtqp/q4Uo/E+QaN4C8sjBi
- zVbn71aXGO1TRs5mKTaa7m8PJHmcSixl9r9tL89iXQLDUc8TIj1IpjVJBVOg086rrKVp
- 7/QY5m2U4aL6Pgg+DudeQ5MlJMTKmhxRvStOUyqmX1u+xz1EexInRQnZ/5UwlgoZhxbc
- /INA==
-X-Gm-Message-State: AOJu0Yy1OSUEm4Ee2I/vHv2C2xFg0jMoanbFXy2N3B3Ev/FaOi0WZOnW
- zhb0olJ7BaZYOrQ55fSmwqq6n057s7DVBCbhUSo=
-X-Google-Smtp-Source: AGHT+IGM+JAdP+Ii/wb8zB1EH01Sh2VDwNyvFSfBKtMybnzotfz7TjxzSa/Z7kUBZdw9TfY5eDNOBw==
-X-Received: by 2002:a05:6512:1594:b0:505:6c7e:9950 with SMTP id
- bp20-20020a056512159400b005056c7e9950mr23881890lfb.19.1697186901583; 
- Fri, 13 Oct 2023 01:48:21 -0700 (PDT)
+ bh=2vN7zbaDV9qsbxUyF/7PGOqcvOaxw8SCgdHuFArC3d8=;
+ b=wb/KgqyeEGBJI2wdxKNUdc6Poi6fRoWSG6pUvGyPGOhzF/imK4Cm881JnoelTIrcbB
+ KBVq4+y2wAGXNWFKljoY8QfrWAqo6jDuzx0va0pmh+itW3yX4aeCcI9FVlAeVOabKFnC
+ fbuoGTxQJ7cVyR0cyDGZXwLn7lL5L5V5KV/49yXT9ysJTVNVJftAxqaJQh/jJ2F1kjxW
+ kIoPam450ak0gWFAkcEj4hONfyZC23wHSn30zpOfApRcA84xI0z53SK8DjOHaPf8OAXh
+ YuquLgJewrdmDxZzzPh6NjJGKkSCxpyxLWAvQtoZsX+F7RWIcAjqcM/4u6nsPkSOCxKF
+ lwjw==
+X-Gm-Message-State: AOJu0YxAfvVFsPPMP7pD8HAHLT6IAH5V+R0gOdpD7gfl4k6dwGJim4SD
+ lR+hsS8h/Lba9sFY8TMF7ySNfgE/c7izhT08O24=
+X-Google-Smtp-Source: AGHT+IHdw+Mzmgy9g1gohFJ+vRXQwY7373fbf60dMQbEM03YyH7EuHpsrg9Jluwk3SwA12fcwMwVIg==
+X-Received: by 2002:a05:6512:5cc:b0:503:2d9d:8226 with SMTP id
+ o12-20020a05651205cc00b005032d9d8226mr19668293lfo.17.1697186903841; 
+ Fri, 13 Oct 2023 01:48:23 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.20
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:48:21 -0700 (PDT)
+ Fri, 13 Oct 2023 01:48:23 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [RFC PATCH v3 41/78] linux-user: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:09 +0300
-Message-Id: <2f060afb69cd83ecd2c60a89f1947e8d871b6f89.1697186560.git.manos.pitsidianakis@linaro.org>
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
+Subject: [RFC PATCH v3 42/78] hw/i386: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:46:10 +0300
+Message-Id: <067271cdae96ce1e3e6232d9c7c7b30c8c3941ec.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,67 +102,58 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- linux-user/mips/cpu_loop.c | 8 ++++----
- linux-user/mmap.c          | 2 +-
- linux-user/syscall.c       | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ hw/i386/intel_iommu.c    | 4 ++--
+ hw/i386/kvm/xen_evtchn.c | 2 +-
+ hw/i386/x86.c            | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
-index 8735e58bad..38ddcadfc6 100644
---- a/linux-user/mips/cpu_loop.c
-+++ b/linux-user/mips/cpu_loop.c
-@@ -102,22 +102,22 @@ void cpu_loop(CPUMIPSState *env)
-                     if ((ret = get_user_ual(arg8, sp_reg + 28)) != 0) {
-                         goto done_syscall;
-                     }
--                    /* fall through */
-+                    fallthrough;
-                 case 7:
-                     if ((ret = get_user_ual(arg7, sp_reg + 24)) != 0) {
-                         goto done_syscall;
-                     }
--                    /* fall through */
-+                    fallthrough;
-                 case 6:
-                     if ((ret = get_user_ual(arg6, sp_reg + 20)) != 0) {
-                         goto done_syscall;
-                     }
--                    /* fall through */
-+                    fallthrough;
-                 case 5:
-                     if ((ret = get_user_ual(arg5, sp_reg + 16)) != 0) {
-                         goto done_syscall;
-                     }
--                    /* fall through */
-+                    fallthrough;
-                 default:
-                     break;
-                 }
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 8ccaab7859..ff33b4ccf6 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -1012,7 +1012,7 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
-     case MADV_WIPEONFORK:
-     case MADV_KEEPONFORK:
-         ret = -EINVAL;
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 2c832ab68b..bdb2ea3ac5 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -2108,7 +2108,7 @@ static uint64_t vtd_context_cache_invalidate(IntelIOMMUState *s, uint64_t val)
+ 
+     switch (type) {
+     case VTD_CCMD_DOMAIN_INVL:
+-        /* Fall through */
++        fallthrough;
+     case VTD_CCMD_GLOBAL_INVL:
+         caig = VTD_CCMD_GLOBAL_INVL_A;
+         vtd_context_global_invalidate(s);
+@@ -2525,7 +2525,7 @@ static bool vtd_process_context_cache_desc(IntelIOMMUState *s,
+     case VTD_INV_DESC_CC_DOMAIN:
+         trace_vtd_inv_desc_cc_domain(
+             (uint16_t)VTD_INV_DESC_CC_DID(inv_desc->lo));
+-        /* Fall through */
++        fallthrough;
+     case VTD_INV_DESC_CC_GLOBAL:
+         vtd_context_global_invalidate(s);
+         break;
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index a731738411..d15e324f6e 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -2068,7 +2068,7 @@ int xen_be_evtchn_bind_interdomain(struct xenevtchn_handle *xc, uint32_t domid,
+             }
+             break;
+         }
 -        /* fall through */
 +        fallthrough;
-     case MADV_DONTNEED:
-         if (page_check_range(start, len, PAGE_PASSTHROUGH)) {
-             ret = get_errno(madvise(g2h_untagged(start), len, advice));
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index d49cd314a2..d15817846c 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7782,7 +7782,7 @@ static int do_futex(CPUState *cpu, bool time64, target_ulong uaddr,
-     case FUTEX_CMP_REQUEUE:
-     case FUTEX_CMP_REQUEUE_PI:
-         val3 = tswap32(val3);
+ 
+     case EVTCHNSTAT_unbound:
+         be_port = find_be_port(s, xc);
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index b3d054889b..c1fd0a966a 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -605,7 +605,7 @@ void gsi_handler(void *opaque, int n, int level)
+             /* Under KVM, Kernel will forward to both PIC and IOAPIC */
+             qemu_set_irq(s->i8259_irq[n], level);
+         }
 -        /* fall through */
 +        fallthrough;
-     case FUTEX_REQUEUE:
-     case FUTEX_WAKE_OP:
+     case ISA_NUM_IRQS ... IOAPIC_NUM_PINS - 1:
+ #ifdef CONFIG_XEN_EMU
          /*
 -- 
 2.39.2
