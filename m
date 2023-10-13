@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11D87C82EC
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 12:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4737C837D
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 12:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrFIz-0002g2-0s; Fri, 13 Oct 2023 06:22:05 -0400
+	id 1qrFdT-0008Gd-C2; Fri, 13 Oct 2023 06:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qrFIt-0002NV-RJ; Fri, 13 Oct 2023 06:22:00 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qrFIr-0001Lb-0U; Fri, 13 Oct 2023 06:21:59 -0400
-Received: from lhrpeml500002.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S6Mx24PHcz688p7;
- Fri, 13 Oct 2023 18:21:26 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500002.china.huawei.com (7.191.160.78) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 13 Oct 2023 11:21:49 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Fri, 13 Oct 2023 11:21:49 +0100
-To: lixianglai <lixianglai@loongson.cn>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V5 0/9] Add architecture agnostic code to support vCPU
- Hotplug
-Thread-Topic: [PATCH V5 0/9] Add architecture agnostic code to support vCPU
- Hotplug
-Thread-Index: AQHZ/HtfLWuY6i1N0k+WjJbW2iez6rBHCU2AgAB6juA=
-Date: Fri, 13 Oct 2023 10:21:49 +0000
-Message-ID: <42792608ae1f4eecb13c43c06197a837@huawei.com>
-References: <20231011194355.15628-1-salil.mehta@huawei.com>
- <34927805-a968-271f-16c2-17c8d90693d9@loongson.cn>
-In-Reply-To: <34927805-a968-271f-16c2-17c8d90693d9@loongson.cn>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.195.247.32]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrFdR-0008Fx-Id
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 06:43:13 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrFdQ-000656-16
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 06:43:13 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-51e28cac164so6402503a12.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 03:43:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697193789; x=1697798589; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CQSrXGI8WWfNCB8RqRvHeoItNk2q4kjZsZss3O25krw=;
+ b=Wtl/qc5DNIe3JDLOKwFAK/92bHU5vk7etvByryo4z0vIvjFp54ABt2ozQ4ogKwscLD
+ fUAuoeIY04lFsQyqx4Nw6NMkHmgpEhtHqqyAaIidS7JZ76tgxL7LUwtHdXb0+M++B02y
+ DuwGKXXrAhNjNVH6PYDjMFfDgbzrHa34ZNKr8bfuV3cCTnlATAS3Q+ZriU+LWPYu7/o3
+ aV1imSBMwchJ1hU2hdGSpErkoEuAGiQfL4J4AD7Du2Zd7+rWTC6Gfy3raxWsyPJWszaC
+ ldq+2Ytn25VUwLWIow/5XoJAgJhVEJ3yFHXyAu+68Hc3HVvGdIui+sDYV6boVR6offAb
+ MPKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697193789; x=1697798589;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CQSrXGI8WWfNCB8RqRvHeoItNk2q4kjZsZss3O25krw=;
+ b=PEy6nZ5WcGSHrKYyGGuHC0A/J/n4eygSB/A4FZu+Htdlretf4E/28WRmHgWZJ6bVez
+ JSBDtsuU82L9BWRwzbkSZfpAFmzhpVBYv7b9nf8PjmC/4L9CL579cf3LR7XpWj9R0shR
+ QEURnguKmsb3+6IEZ2Bt8X90MIcZ5W1JiDOlsb1suY/0Fb7J9JYyjDAPciZPoqtCYUTJ
+ 5/qeyeO+GiPHVD4zoOUyXk46MKCTzmso+4zHVn/ysupf2BnlCDO0RVrtxHtE2bcfp4P9
+ A8eGhKg+wP+Cv6KEDgjIQudaJzySMXY9Fj1k1aZZcS7N1kEmtUbRaQ9Rb3oAKrtFFhqQ
+ JlJQ==
+X-Gm-Message-State: AOJu0Ywz5z26JYdg1gLW07XhuFTibbjDo1hic1VXc8GpLmvckT4tzKMn
+ leZDWWr3/MghuTOZboa6MOlLlw==
+X-Google-Smtp-Source: AGHT+IEL/NqzTx5G4VndUWfS7AiALIoWVP+hdeID3LZVyakvWRQUTj0UvHax/gJqCBk6gX8rgjytOQ==
+X-Received: by 2002:a17:907:2d8c:b0:9ad:93c8:c483 with SMTP id
+ gt12-20020a1709072d8c00b009ad93c8c483mr20436906ejc.2.1697193789535; 
+ Fri, 13 Oct 2023 03:43:09 -0700 (PDT)
+Received: from [192.168.69.115] ([176.172.118.168])
+ by smtp.gmail.com with ESMTPSA id
+ p16-20020a17090628d000b0099bd5d28dc4sm12290422ejd.195.2023.10.13.03.43.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Oct 2023 03:43:09 -0700 (PDT)
+Message-ID: <67f14cfd-b2c4-d8eb-e096-4ab74ed415d7@linaro.org>
+Date: Fri, 13 Oct 2023 12:43:07 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] scripts/get_maintainer.pl: don't print parentheses
+Content-Language: en-US
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20231013091628.669415-1-manos.pitsidianakis@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231013091628.669415-1-manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,39 +90,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgWGlhbmdsYWksDQoNCj4gRnJvbTogbGl4aWFuZ2xhaSA8bGl4aWFuZ2xhaUBsb29uZ3Nvbi5j
-bj4NCj4gU2VudDogRnJpZGF5LCBPY3RvYmVyIDEzLCAyMDIzIDQ6NTggQU0NCj4gVG86IFNhbGls
-IE1laHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOyBx
-ZW11LQ0KPiBhcm1Abm9uZ251Lm9yZw0KPiBDYzogbWF6QGtlcm5lbC5vcmc7IGplYW4tcGhpbGlw
-cGVAbGluYXJvLm9yZzsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJvbkBodWF3
-ZWkuY29tPjsgbHBpZXJhbGlzaUBrZXJuZWwub3JnOw0KPiBwZXRlci5tYXlkZWxsQGxpbmFyby5v
-cmc7IHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmc7DQo+IGltYW1tZWRvQHJlZGhhdC5jb207
-IGFuZHJldy5qb25lc0BsaW51eC5kZXY7IGRhdmlkQHJlZGhhdC5jb207DQo+IHBoaWxtZEBsaW5h
-cm8ub3JnOyBlcmljLmF1Z2VyQHJlZGhhdC5jb207IG9saXZlci51cHRvbkBsaW51eC5kZXY7DQo+
-IHBib256aW5pQHJlZGhhdC5jb207IG1zdEByZWRoYXQuY29tOyB3aWxsQGtlcm5lbC5vcmc7IGdz
-aGFuQHJlZGhhdC5jb207DQo+IHJhZmFlbEBrZXJuZWwub3JnOyBhbGV4LmJlbm5lZUBsaW5hcm8u
-b3JnOyBsaW51eEBhcm1saW51eC5vcmcudWs7DQo+IGRhcnJlbkBvcy5hbXBlcmVjb21wdXRpbmcu
-Y29tOyBpbGtrYUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOw0KPiB2aXNobnVAb3MuYW1wZXJlY29t
-cHV0aW5nLmNvbTsga2FybC5oZXViYXVtQG9yYWNsZS5jb207DQo+IG1pZ3VlbC5sdWlzQG9yYWNs
-ZS5jb207IHNhbGlsLm1laHRhQG9wbnNyYy5uZXQ7IHpodWtlcWlhbg0KPiA8emh1a2VxaWFuMUBo
-dWF3ZWkuY29tPjsgd2FuZ3hpb25nZmVuZyAoQykgPHdhbmd4aW9uZ2ZlbmcyQGh1YXdlaS5jb20+
-Ow0KPiB3YW5neWFuYW4gKFkpIDx3YW5neWFuYW41NUBodWF3ZWkuY29tPjsgamlha2VybmVsMkBn
-bWFpbC5jb207DQo+IG1hb2JpYm9AbG9vbmdzb24uY247IExpbnV4YXJtIDxsaW51eGFybUBodWF3
-ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIFY1IDAvOV0gQWRkIGFyY2hpdGVjdHVyZSBh
-Z25vc3RpYyBjb2RlIHRvIHN1cHBvcnQgdkNQVQ0KPiBIb3RwbHVnDQo+IA0KPiBIaSBTYWxpbCBN
-ZWh0YSB2aWE6DQo+IA0KPiA+IFZpcnR1YWwgQ1BVIGhvdHBsdWcgc3VwcG9ydCBpcyBiZWluZyBh
-ZGRlZCBhY3Jvc3MgdmFyaW91cw0KPiBhcmNoaXRlY3R1cmVzWzFdWzNdLg0KDQpbLi4uXQ0KDQoN
-Cj4gSSByZWJhc2UgeW91ciBwYXRjaCB2NSBvbiBsb29uZ2FyY2ggdGNnLCB0aGVyZSBpcyBubyBw
-cm9ibGVtIHdpdGggY3B1DQo+IGhvdHBsdWcvdW5wbHVnLg0KPiANCj4gVGhhbmsgeW91IHNvIG11
-Y2ggZm9yIHlvdXIgY29udHJpYnV0aW9uIHRvIHRoZSBjb21tdW5pdHkuDQoNCk1hbnkgdGhhbmtz
-IGZvciB0ZXN0aW5nIGFuZCB0aGlzIGNvbmZpcm1hdGlvbiENCg0KU2luY2UgeW91IGhhdmUgc2hh
-cmVkIFRlc3RlZC1ieSB0YWcgb24gVjUgaW4gcHJpdmF0ZSBJIHdpbGwNCmFkZCBpdCBpbiBWNi4N
-Cg0KQnV0IGNhbiBJIHJlcXVlc3QgeW91ciBUZXN0ZWQtYnkgdGFnIGhlcmUgYXMgd2VsbCBzbyB0
-aGF0DQppdCBpcyB2aXNpYmxlIHRvIHRoZSBtYWludGFpbmVycyBhcyB3ZWxsPw0KDQoNClRoYW5r
-cw0KU2FsaWwuDQoNCg0KDQo+IA0KPiBUaGFua3MsDQo+IFhpYW5nbGFpLg0KPiANCg0K
+On 13/10/23 11:16, Emmanouil Pitsidianakis wrote:
+> When called from git-send-email, some results contain unclosed
+> parentheses from the subsystem title, for example:
+> 
+>      (cc-cmd) Adding cc: qemu-ppc@nongnu.org (open list:PowerNV (Non-Virt...) from: 'scripts/get_maintainer.pl --nogit-fallback'
+>      (cc-cmd) Adding cc: qemu-devel@nongnu.org (open list:All patches CC here) from: 'scripts/get_maintainer.pl --nogit-fallback'
+>      Unmatched () '(open list:PowerNV (Non-Virt...)' '' at /usr/lib/git-core/git-send-email line 642.
+>      error: unable to extract a valid address from: qemu-ppc@nongnu.org (open list:PowerNV (Non-Virt...)
+>      What to do with this address? ([q]uit|[d]rop|[e]dit): d
+
+Eh thanks, this bugged me various times =)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> This commit removes all parentheses from results.
+> 
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>   scripts/get_maintainer.pl | 1 +
+>   1 file changed, 1 insertion(+)
+
+
 
