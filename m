@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB5E7C80EB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD007C813F
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:59:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqU-0008RU-5t; Fri, 13 Oct 2023 04:48:34 -0400
+	id 1qrDqK-0008OM-GA; Fri, 13 Oct 2023 04:48:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDq4-0007kw-GG
+ id 1qrDq4-0007kx-GP
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:08 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpz-0000tV-Qr
+ id 1qrDq1-0000uP-7s
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:07 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3226cc3e324so1760571f8f.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:03 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3248ac76acbso1572224f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186882; x=1697791682; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186883; x=1697791683; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W4gw7XfCng/pPIYOdpD4tTHsV5X4/sDiig4GoXsUofE=;
- b=W+ZewEU88YKdIgVudjmTEowhvSMnNkXGAWVj6RTexsEWIotp/hX2fkrD2uFKANnPfs
- Hbg3ds+X6yWlHFPNUuisntUhZVvhHaf7QExMXPBbWelSd7JcqZEoyCR77597V8sDlIqK
- XlZt7t7HxSZkmAsyolrQBtdrz1RKUKWQLtk7GJmAZg0Wg+gs+YCH9kSv2PmGHM9WWZ+D
- uJLMK3C0l/nIZCkF9QlUy+PjQDlLecjlGWJMS+xx0Liv25ZWgsfPZ7FTIdZZu6wZt2ab
- OQODo6HbUQVDxoQ4MNiEWZFUqJCqQDFFkeEgFeT2czlelWSwZurXlquZPY21dDHYVOet
- bJ5g==
+ bh=YyFwdRKpgoyRXm/k/YDCqSRLsmVWCzokGEWgj3zx0Ns=;
+ b=iHXPCxe2A3766gL8XCX7jcxrZuzshGGe0ws+ZLd4b5d2pIcF71Pie659Z1OcwTi9hl
+ hYTJUYYskdzOt53XQ17EJESp4Ddel2kIYAYhpEZibm8J8+temfBDLJQpDuuAeWMSj/C9
+ RDmBYeFTrdWp2rpLc0EMpFJvRCb3X7ULEjmuRWUYqtHVWpLLle3ET2ymoR4FC0CGLIMy
+ lcLsGQhjmVSAEDiR33b9HjiNzi79L6GRCN5P/3fbmGuM2/X9EWyuuWEZyt54JScM36KR
+ eDKIr1UIHKdSoh3hPHD7uLqmJKKz91GvtS6u8kNWZlWxDUpJRayq1KJ7JJ8R3v0uibps
+ Nb3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186882; x=1697791682;
+ d=1e100.net; s=20230601; t=1697186883; x=1697791683;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W4gw7XfCng/pPIYOdpD4tTHsV5X4/sDiig4GoXsUofE=;
- b=Rh+ZHA8LpBjjoad45f58f5qOUkTR4kFCbKW8BxZCgVc4gEvnLAqhOxKWNnmqLJItQW
- EyPcBmr38XAhfNOCyDw78EQSCf9d0ly4J796dvrCZ7xWY2GGCZoe/hIUXGoYFO2MuGQE
- B1PUHDteVKVehMesnrAGki/MfJd1ycvWDYInJBQ1vZu7OPaZq+ZmA/Ns8cW56q2pjUmX
- 59KjAjcUjHQuJu7iq8Met3ZoOaGnPSFzw2voQp7K8JY8fh0yLe6SAqwh6tjNCxJ5chfW
- EPYPIFulWiTFgV1P6BJISGah+/an6nnP4A0zFvTRod+KUIuyHsqAkgup8dIGrQIYVgpT
- Arxw==
-X-Gm-Message-State: AOJu0Ywqy5sI61wfthH6apd5grbMk4qpZsjBMERprEyyunGsQMJTS0JP
- XxoV35fIuvW0izkWLI0OsMpN5Nn6Y7v7I2TyRcM=
-X-Google-Smtp-Source: AGHT+IEXFJf0Ni/SpF/OrJbHkACjA4ir1UAWMfdXxkCy/5LGFRxHW8tHmjFthusrEkUldxpnCv7h0Q==
-X-Received: by 2002:adf:e9d0:0:b0:313:e8b6:1699 with SMTP id
- l16-20020adfe9d0000000b00313e8b61699mr22615701wrn.55.1697186882278; 
- Fri, 13 Oct 2023 01:48:02 -0700 (PDT)
+ bh=YyFwdRKpgoyRXm/k/YDCqSRLsmVWCzokGEWgj3zx0Ns=;
+ b=Gs6Tn5Z2rVFlo8sT+WwQ+gs8/osBGz9tH/mbd/1Eg8/6Ze3cb3No29dmzNfw4vVo1D
+ B5wa0bhF+5WWwCo6VX+EYqv5g2gxtLUDUzblog2oNDXayHIPIC8N90S7uFdAOs4Iau06
+ GoDgzvAlSvEXXRXJH2jTsDsQXFQh2J8WmMuvGNuLnz9ku6WiDrumU/ceMPMLyVQSwDMT
+ s5qyR1RAJv0TEG092rfSWSPLIl6OAvHBFtx2scGiavO/9jFBss0Vx5WbnCvcLWu1gLkV
+ aVVzv/R8u3SOZUu1JXFo3oQSUz+qfGXp3yyY/c0K6XrscUmJrltTiB3m10wLStV7RrLz
+ ouBg==
+X-Gm-Message-State: AOJu0YzdeVvn7FKomQpSCmtbcghPcjiOH/5bLTaGmR9pMDO2T12SzVTJ
+ GT/BB22ovBL21QEYmXL2eGnrFRwxbIAxEJsNkmo=
+X-Google-Smtp-Source: AGHT+IGJreP9TZKAyfWO3kMyqT7snGOMjHwbBLgM78ZN+4I3Y+xEqT/IBD45GWe9a3QVm6Re6FW5xg==
+X-Received: by 2002:a5d:6c69:0:b0:32c:eeee:d438 with SMTP id
+ r9-20020a5d6c69000000b0032ceeeed438mr11336634wrz.54.1697186883673; 
+ Fri, 13 Oct 2023 01:48:03 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.00
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:48:01 -0700 (PDT)
+ Fri, 13 Oct 2023 01:48:03 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>
-Subject: [RFC PATCH v3 28/78] target/avr: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:45:56 +0300
-Message-Id: <31bde56c5db68438ddbfc2a69eadc47ca323d1f3.1697186560.git.manos.pitsidianakis@linaro.org>
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: [RFC PATCH v3 29/78] target/cris: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:45:57 +0300
+Message-Id: <0d379a3b1f092b18be293448a09dcadebbea98fc.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,28 +97,30 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/avr/translate.c | 4 ++--
+ target/cris/translate.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index cdffa04519..2043677745 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -2773,13 +2773,13 @@ static void avr_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
-             break;
-         }
-         tcg_gen_movi_tl(cpu_pc, ctx->npc);
+diff --git a/target/cris/translate.c b/target/cris/translate.c
+index b3974ba0bb..bdd128db23 100644
+--- a/target/cris/translate.c
++++ b/target/cris/translate.c
+@@ -3113,7 +3113,7 @@ static void cris_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+                 break;
+             }
+             tcg_gen_movi_tl(env_btarget, dc->jmp_pc);
+-            /* fall through */
++            fallthrough;
+ 
+         case JMP_INDIRECT:
+             tcg_gen_movcond_tl(TCG_COND_NE, env_pc,
+@@ -3140,7 +3140,7 @@ static void cris_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+         break;
+     case DISAS_UPDATE_NEXT:
+         tcg_gen_movi_tl(env_pc, npc);
 -        /* fall through */
 +        fallthrough;
-     case DISAS_LOOKUP:
-         if (!force_exit) {
-             tcg_gen_lookup_and_goto_ptr();
-             break;
-         }
--        /* fall through */
-+        fallthrough;
-     case DISAS_EXIT:
-         tcg_gen_exit_tb(NULL, 0);
+     case DISAS_JUMP:
+         tcg_gen_lookup_and_goto_ptr();
          break;
 -- 
 2.39.2
