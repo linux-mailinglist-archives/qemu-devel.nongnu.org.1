@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45ABE7C7FE4
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F597C7F56
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:04:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD62-0001tF-Fj; Fri, 13 Oct 2023 04:00:34 -0400
+	id 1qrD6T-0003cW-Rw; Fri, 13 Oct 2023 04:01:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5m-0000Xe-OE
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:18 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qrD5n-0000gG-Su
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:19 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5j-0007ln-HO
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:18 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40684f53d11so21829735e9.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:00:15 -0700 (PDT)
+ id 1qrD5l-0007mj-8j
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:19 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-5041bb9ce51so2315689e87.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:00:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697184014; x=1697788814; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697184015; x=1697788815; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JP0m4kbkqjcck8FcaQcw6QAO0qLBFbXhjnEKYPmqWSE=;
- b=geF4zFHg2GuIEq7JJ9RAUZPTrJxSX74Kyi1gjJ4qEkCS5Cx0MlgpUkuWJC8GgjNz3D
- dU0gVtUnoGVDIS+DypuZmc+GDFAh7yfNY5QN9wm9uC9hRGs4m8OyM6E7RdB2p4kgYONE
- LuDxMygg1xq1juLD0G2vsBHfRAbzWE4GNNPkfWFS7UHn5IZo47g4iompwEMGWaXHapA6
- 4+nw7NOyw9PsndAFl5tnWK9WoBRZMIbThJF4m4DKjvZuWSOzjhycg8Uw/QKG7Zm/SJ4F
- kig+dfbPasWDK36YSO10WCEi2gb42tbxlpYxbEkRLxm2jGab7qKQiMY2OrR+3F16kuVH
- fORQ==
+ bh=VUr7ma9/URcW12PwoU86CMS0D0tvRcZTYVEP0u5I3rQ=;
+ b=txSF8WUN2c6eW6y3Eh4741PAnkEMuy4X6SDZdZ4Ot1dHyFxxKmbCLT1zOF/NrGiNrC
+ 43ncDUIv6OyYogCSdPNA9hPEHkifXxaE0S4tbHM7pukXdGHhml7M0EaFnPKAXV0oFB12
+ 3CwTUHiB0ZCogOoX7PB+tblVt/Cp83AOib7To4cx7pmBr8zTnsPS31WQ4E2FcK+cm8Pp
+ IBfpfqtibf958476ps82r/wnlI+no6O8sWXipB2KBfU/AQHWUP/T2azCnvj66WCjDVV6
+ muElj3PpIrB8p6G0jHY85NXfTn9j6WMLftMhR/qYHyGRSeeg0feyai3k65+Jy94/5i+w
+ dplg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697184014; x=1697788814;
+ d=1e100.net; s=20230601; t=1697184015; x=1697788815;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JP0m4kbkqjcck8FcaQcw6QAO0qLBFbXhjnEKYPmqWSE=;
- b=VBVPwnRQjJ80HTI2usvCRnjYqZU5tfTyLZA7zdK5K3NWN7zbKvIJFqBZWCWPZVP+pB
- OteJIJFUyuEkfF2Mgpmbwn+eoG9aSFRiQY0CVIKmGnhm1Z4z99ZQ622rP+GUlTjxym8K
- UB7nzROrMCB2BJHD92kgbPQj6pdHOwBYZ135vFwMK6Q3J60jY2+BeNmagVulKpnjzzyP
- ghF1RaDrkac8k4TEt/Za/d01vT4aW0n/HNx2owcxG+aV6kDlYDXBmBXmd9kL6VtjB0zD
- hUGIVYBurxCutK2MPcyBZ4OEqIEiyDWngtaCy+o5GqFgXA845DSbpSh8iApAtdQRXdBf
- 2jrA==
-X-Gm-Message-State: AOJu0YyYJjD3c7zdrFgRHjosda5kLsnR7g9Gvfh36d9hmChTSQxzvJgB
- uQi1cYqx7ZvOG5jVjD0tSYoIeqTuvbZx1+xNqco=
-X-Google-Smtp-Source: AGHT+IFpQov2Z+PnQw1qV7j5X7q3FBfhxM8v2kSpy78dbDuRCBCDVsXYBAsFq21D+JqvZ/16Bd0ftw==
-X-Received: by 2002:a05:600c:1e11:b0:407:5a7d:45a8 with SMTP id
- ay17-20020a05600c1e1100b004075a7d45a8mr7505773wmb.31.1697184013753; 
- Fri, 13 Oct 2023 01:00:13 -0700 (PDT)
+ bh=VUr7ma9/URcW12PwoU86CMS0D0tvRcZTYVEP0u5I3rQ=;
+ b=IgTrmSzpzLqA6iBm8y6zJWEv8iFzVFGx7GW/GcS3utGt6dXvJxa3T9/txWLuvEGeUA
+ 6DkEiY2n2g9dh7q/IiPUPpTAo2d7AnpBZ578Zug2WVzUgKDHMc9ocLkbpl2jVvB9CkIJ
+ gW6eZ0cOVcPbXesLZKAAlcmS3BgV4mh49A2gm3k9Ic/PiRU/8w8isi3A5V6B1tHRye8K
+ IAhEHGH3z9dWrcxBrmJ4mxWxJGNn/U/8/9+OCYnzXBaU5OBK+eTnAVLNPloJDP0yCex0
+ WPmEHT/ydx1NekLEHeWDwzu28QcR3RztjdmvQbEpMCnVmBjl+XMyju1wcsuTKMYupdQ/
+ BfkQ==
+X-Gm-Message-State: AOJu0YxDoXZpGKvv/tlR43mCpdR1PYE0K2XHfbFxsLVOBjUxqyojR4O2
+ HMTqA/z3lAsdMUL5u1T4mhUSiIZ9/zWkKUb6s2k=
+X-Google-Smtp-Source: AGHT+IGAwAPjt5MDy7jTxRx86MHoZdUrsSWRRN/PsQ2xaq5LUlP4jZ2W0iZUSLu/PWp+cTg7q3l3KA==
+X-Received: by 2002:a05:6512:3051:b0:500:7696:200 with SMTP id
+ b17-20020a056512305100b0050076960200mr27330958lfb.59.1697184015131; 
+ Fri, 13 Oct 2023 01:00:15 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.01.00.12
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.01.00.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:00:13 -0700 (PDT)
+ Fri, 13 Oct 2023 01:00:14 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org (open list:Block layer core)
-Subject: [RFC PATCH v2 76/78] qemu-img.c: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:43 +0300
-Message-Id: <1fa27adce69e97741ff59dd909f957cf9a5d3525.1697183699.git.manos.pitsidianakis@linaro.org>
+Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [RFC PATCH v2 77/78] tests/unit/test-char.c: add fallthrough
+ pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:44 +0300
+Message-Id: <92c0d221dab341363cf85f8e7526e32cfc048ff0.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,78 +97,40 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- qemu-img.c | 2 +-
+ tests/unit/test-char.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qemu-img.c b/qemu-img.c
-index 6068ab0d27..df2457a6fe 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -1870,63 +1870,63 @@ static int coroutine_fn convert_co_read(ImgConvertState *s, int64_t sector_num,
- static int coroutine_fn convert_co_write(ImgConvertState *s, int64_t sector_num,
-                                          int nb_sectors, uint8_t *buf,
-                                          enum ImgConvertBlockStatus status)
+diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
+index 649fdf64e1..6f5a2c4108 100644
+--- a/tests/unit/test-char.c
++++ b/tests/unit/test-char.c
+@@ -56,25 +56,25 @@ static void fe_read(void *opaque, const uint8_t *buf, int size)
+ static void fe_event(void *opaque, QEMUChrEvent event)
  {
-     int ret;
+     FeHandler *h = opaque;
+     bool new_open_state;
  
-     while (nb_sectors > 0) {
-         int n = nb_sectors;
-         BdrvRequestFlags flags = s->compressed ? BDRV_REQ_WRITE_COMPRESSED : 0;
- 
-         switch (status) {
-         case BLK_BACKING_FILE:
-             /* If we have a backing file, leave clusters unallocated that are
-              * unallocated in the source image, so that the backing file is
-              * visible at the respective offset. */
-             assert(s->target_has_backing);
-             break;
- 
-         case BLK_DATA:
-             /* If we're told to keep the target fully allocated (-S 0) or there
-              * is real non-zero data, we must write it. Otherwise we can treat
-              * it as zero sectors.
-              * Compressed clusters need to be written as a whole, so in that
-              * case we can only save the write if the buffer is completely
-              * zeroed. */
-             if (!s->min_sparse ||
-                 (!s->compressed &&
-                  is_allocated_sectors_min(buf, n, &n, s->min_sparse,
-                                           sector_num, s->alignment)) ||
-                 (s->compressed &&
-                  !buffer_is_zero(buf, n * BDRV_SECTOR_SIZE)))
-             {
-                 ret = blk_co_pwrite(s->target, sector_num << BDRV_SECTOR_BITS,
-                                     n << BDRV_SECTOR_BITS, buf, flags);
-                 if (ret < 0) {
-                     return ret;
-                 }
-                 break;
-             }
--            /* fall-through */
-+            fallthrough;
- 
-         case BLK_ZERO:
-             if (s->has_zero_init) {
-                 assert(!s->target_has_backing);
-                 break;
-             }
-             ret = blk_co_pwrite_zeroes(s->target,
-                                        sector_num << BDRV_SECTOR_BITS,
-                                        n << BDRV_SECTOR_BITS,
-                                        BDRV_REQ_MAY_UNMAP);
-             if (ret < 0) {
-                 return ret;
-             }
-             break;
+     h->last_event = event;
+     switch (event) {
+     case CHR_EVENT_BREAK:
+         break;
+     case CHR_EVENT_OPENED:
+     case CHR_EVENT_CLOSED:
+         h->openclose_count++;
+         new_open_state = (event == CHR_EVENT_OPENED);
+         if (h->is_open == new_open_state) {
+             h->openclose_mismatch = true;
          }
- 
-         sector_num += n;
-         nb_sectors -= n;
-         buf += n * BDRV_SECTOR_SIZE;
+         h->is_open = new_open_state;
+-        /* fallthrough */
++        fallthrough;
+     default:
+         quit = true;
+         break;
      }
- 
-     return 0;
  }
+ 
+ #ifdef _WIN32
 -- 
 2.39.2
 
