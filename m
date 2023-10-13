@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880D47C8772
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139207C8771
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:06:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrInW-0000Ju-PR; Fri, 13 Oct 2023 10:05:50 -0400
+	id 1qrInY-0000eX-67; Fri, 13 Oct 2023 10:05:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=fS+4=F3=kaod.org=clg@ozlabs.org>)
- id 1qrInF-0008K0-Og; Fri, 13 Oct 2023 10:05:35 -0400
+ id 1qrInS-0000Jk-T2; Fri, 13 Oct 2023 10:05:48 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=fS+4=F3=kaod.org=clg@ozlabs.org>)
- id 1qrInA-00034X-0Q; Fri, 13 Oct 2023 10:05:31 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4S6SvT0yXgz4xbN;
- Sat, 14 Oct 2023 01:05:25 +1100 (AEDT)
+ id 1qrInP-0003Dc-8l; Fri, 13 Oct 2023 10:05:46 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4S6Svm29Pzz4xYb;
+ Sat, 14 Oct 2023 01:05:40 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4S6SvQ5KQjz4xZm;
- Sat, 14 Oct 2023 01:05:22 +1100 (AEDT)
-Message-ID: <33d3763b-38be-4b3b-9214-c5ceb50532a1@kaod.org>
-Date: Fri, 13 Oct 2023 16:05:22 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4S6Svk1HDLz4xWn;
+ Sat, 14 Oct 2023 01:05:37 +1100 (AEDT)
+Message-ID: <5a127932-b7d8-413e-b417-7877831bd311@kaod.org>
+Date: Fri, 13 Oct 2023 16:05:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] target/ppc: Move powerpc_excp_t definition to 'cpu.h'
+Subject: Re: [PATCH 6/7] target/ppc: Move powerpc_mmu_t definition to 'cpu.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -40,9 +39,9 @@ Cc: David Gibson <david@gibson.dropbear.id.au>, qemu-ppc@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
 References: <20231013125630.95116-1-philmd@linaro.org>
- <20231013125630.95116-6-philmd@linaro.org>
+ <20231013125630.95116-7-philmd@linaro.org>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231013125630.95116-6-philmd@linaro.org>
+In-Reply-To: <20231013125630.95116-7-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -69,7 +68,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/13/23 14:56, Philippe Mathieu-Daudé wrote:
-> The powerpc_excp_t definition is only used by target/ppc/, no need
+> The powerpc_mmu_t definition is only used by target/ppc/, no need
 > to expose it. Restrict it by moving it to "target/ppc/cpu.h".
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
@@ -83,84 +82,113 @@ C.
 
 
 > ---
->   target/ppc/cpu-qom.h | 29 -----------------------------
->   target/ppc/cpu.h     | 27 +++++++++++++++++++++++++++
->   2 files changed, 27 insertions(+), 29 deletions(-)
+>   target/ppc/cpu-qom.h | 43 -------------------------------------------
+>   target/ppc/cpu.h     | 42 ++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 42 insertions(+), 43 deletions(-)
 > 
 > diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
-> index 41e97a0ea1..b2e42c2996 100644
+> index b2e42c2996..5bdca472be 100644
 > --- a/target/ppc/cpu-qom.h
 > +++ b/target/ppc/cpu-qom.h
-> @@ -79,35 +79,6 @@ static inline bool mmu_is_64bit(powerpc_mmu_t mmu_model)
->       return mmu_model & POWERPC_MMU_64;
->   }
+> @@ -36,49 +36,6 @@ OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
+>   
+>   #define TYPE_HOST_POWERPC_CPU POWERPC_CPU_TYPE_NAME("host")
 >   
 > -/*****************************************************************************/
-> -/* Exception model                                                           */
-> -typedef enum powerpc_excp_t powerpc_excp_t;
-> -enum powerpc_excp_t {
-> -    POWERPC_EXCP_UNKNOWN   = 0,
-> -    /* Standard PowerPC exception model */
-> -    POWERPC_EXCP_STD,
-> -    /* PowerPC 40x exception model      */
-> -    POWERPC_EXCP_40x,
-> -    /* PowerPC 603/604/G2 exception model */
-> -    POWERPC_EXCP_6xx,
-> -    /* PowerPC 7xx exception model      */
-> -    POWERPC_EXCP_7xx,
-> -    /* PowerPC 74xx exception model     */
-> -    POWERPC_EXCP_74xx,
-> -    /* BookE exception model            */
-> -    POWERPC_EXCP_BOOKE,
-> -    /* PowerPC 970 exception model      */
-> -    POWERPC_EXCP_970,
-> -    /* POWER7 exception model           */
-> -    POWERPC_EXCP_POWER7,
-> -    /* POWER8 exception model           */
-> -    POWERPC_EXCP_POWER8,
-> -    /* POWER9 exception model           */
-> -    POWERPC_EXCP_POWER9,
-> -    /* POWER10 exception model           */
-> -    POWERPC_EXCP_POWER10,
+> -/* MMU model                                                                 */
+> -typedef enum powerpc_mmu_t powerpc_mmu_t;
+> -enum powerpc_mmu_t {
+> -    POWERPC_MMU_UNKNOWN    = 0x00000000,
+> -    /* Standard 32 bits PowerPC MMU                            */
+> -    POWERPC_MMU_32B        = 0x00000001,
+> -    /* PowerPC 6xx MMU with software TLB                       */
+> -    POWERPC_MMU_SOFT_6xx   = 0x00000002,
+> -    /*
+> -     * PowerPC 74xx MMU with software TLB (this has been
+> -     * disabled, see git history for more information.
+> -     * keywords: tlbld tlbli TLBMISS PTEHI PTELO)
+> -     */
+> -    POWERPC_MMU_SOFT_74xx  = 0x00000003,
+> -    /* PowerPC 4xx MMU with software TLB                       */
+> -    POWERPC_MMU_SOFT_4xx   = 0x00000004,
+> -    /* PowerPC MMU in real mode only                           */
+> -    POWERPC_MMU_REAL       = 0x00000006,
+> -    /* Freescale MPC8xx MMU model                              */
+> -    POWERPC_MMU_MPC8xx     = 0x00000007,
+> -    /* BookE MMU model                                         */
+> -    POWERPC_MMU_BOOKE      = 0x00000008,
+> -    /* BookE 2.06 MMU model                                    */
+> -    POWERPC_MMU_BOOKE206   = 0x00000009,
+> -#define POWERPC_MMU_64       0x00010000
+> -    /* 64 bits PowerPC MMU                                     */
+> -    POWERPC_MMU_64B        = POWERPC_MMU_64 | 0x00000001,
+> -    /* Architecture 2.03 and later (has LPCR) */
+> -    POWERPC_MMU_2_03       = POWERPC_MMU_64 | 0x00000002,
+> -    /* Architecture 2.06 variant                               */
+> -    POWERPC_MMU_2_06       = POWERPC_MMU_64 | 0x00000003,
+> -    /* Architecture 2.07 variant                               */
+> -    POWERPC_MMU_2_07       = POWERPC_MMU_64 | 0x00000004,
+> -    /* Architecture 3.00 variant                               */
+> -    POWERPC_MMU_3_00       = POWERPC_MMU_64 | 0x00000005,
 > -};
+> -
+> -static inline bool mmu_is_64bit(powerpc_mmu_t mmu_model)
+> -{
+> -    return mmu_model & POWERPC_MMU_64;
+> -}
 > -
 >   /*****************************************************************************/
 >   /* Input pins model                                                          */
 >   typedef enum powerpc_input_t powerpc_input_t;
 > diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index d521ee97bb..d8cf4c03bf 100644
+> index d8cf4c03bf..c2cd069095 100644
 > --- a/target/ppc/cpu.h
 > +++ b/target/ppc/cpu.h
-> @@ -190,6 +190,33 @@ enum {
->       POWERPC_EXCP_TRAP          = 0x40,
->   };
+> @@ -217,6 +217,48 @@ typedef enum powerpc_excp_t {
+>       POWERPC_EXCP_POWER10,
+>   } powerpc_excp_t;
 >   
-> +/* Exception model                                                           */
-> +typedef enum powerpc_excp_t {
-> +    POWERPC_EXCP_UNKNOWN   = 0,
-> +    /* Standard PowerPC exception model */
-> +    POWERPC_EXCP_STD,
-> +    /* PowerPC 40x exception model      */
-> +    POWERPC_EXCP_40x,
-> +    /* PowerPC 603/604/G2 exception model */
-> +    POWERPC_EXCP_6xx,
-> +    /* PowerPC 7xx exception model      */
-> +    POWERPC_EXCP_7xx,
-> +    /* PowerPC 74xx exception model     */
-> +    POWERPC_EXCP_74xx,
-> +    /* BookE exception model            */
-> +    POWERPC_EXCP_BOOKE,
-> +    /* PowerPC 970 exception model      */
-> +    POWERPC_EXCP_970,
-> +    /* POWER7 exception model           */
-> +    POWERPC_EXCP_POWER7,
-> +    /* POWER8 exception model           */
-> +    POWERPC_EXCP_POWER8,
-> +    /* POWER9 exception model           */
-> +    POWERPC_EXCP_POWER9,
-> +    /* POWER10 exception model           */
-> +    POWERPC_EXCP_POWER10,
-> +} powerpc_excp_t;
+> +/*****************************************************************************/
+> +/* MMU model                                                                 */
+> +typedef enum powerpc_mmu_t {
+> +    POWERPC_MMU_UNKNOWN    = 0x00000000,
+> +    /* Standard 32 bits PowerPC MMU                            */
+> +    POWERPC_MMU_32B        = 0x00000001,
+> +    /* PowerPC 6xx MMU with software TLB                       */
+> +    POWERPC_MMU_SOFT_6xx   = 0x00000002,
+> +    /*
+> +     * PowerPC 74xx MMU with software TLB (this has been
+> +     * disabled, see git history for more information.
+> +     * keywords: tlbld tlbli TLBMISS PTEHI PTELO)
+> +     */
+> +    POWERPC_MMU_SOFT_74xx  = 0x00000003,
+> +    /* PowerPC 4xx MMU with software TLB                       */
+> +    POWERPC_MMU_SOFT_4xx   = 0x00000004,
+> +    /* PowerPC MMU in real mode only                           */
+> +    POWERPC_MMU_REAL       = 0x00000006,
+> +    /* Freescale MPC8xx MMU model                              */
+> +    POWERPC_MMU_MPC8xx     = 0x00000007,
+> +    /* BookE MMU model                                         */
+> +    POWERPC_MMU_BOOKE      = 0x00000008,
+> +    /* BookE 2.06 MMU model                                    */
+> +    POWERPC_MMU_BOOKE206   = 0x00000009,
+> +#define POWERPC_MMU_64       0x00010000
+> +    /* 64 bits PowerPC MMU                                     */
+> +    POWERPC_MMU_64B        = POWERPC_MMU_64 | 0x00000001,
+> +    /* Architecture 2.03 and later (has LPCR) */
+> +    POWERPC_MMU_2_03       = POWERPC_MMU_64 | 0x00000002,
+> +    /* Architecture 2.06 variant                               */
+> +    POWERPC_MMU_2_06       = POWERPC_MMU_64 | 0x00000003,
+> +    /* Architecture 2.07 variant                               */
+> +    POWERPC_MMU_2_07       = POWERPC_MMU_64 | 0x00000004,
+> +    /* Architecture 3.00 variant                               */
+> +    POWERPC_MMU_3_00       = POWERPC_MMU_64 | 0x00000005,
+> +} powerpc_mmu_t;
+> +
+> +static inline bool mmu_is_64bit(powerpc_mmu_t mmu_model)
+> +{
+> +    return mmu_model & POWERPC_MMU_64;
+> +}
 > +
 >   #define PPC_INPUT(env) ((env)->bus_model)
 >   
