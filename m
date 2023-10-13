@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334F17C80FB
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 040B77C80CD
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqw-0002D7-DI; Fri, 13 Oct 2023 04:49:02 -0400
+	id 1qrDqo-0001bH-Hj; Fri, 13 Oct 2023 04:48:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDqY-0000jL-RD
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:38 -0400
+ id 1qrDqc-0000zQ-2R
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:42 -0400
 Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDqS-000167-Mw
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:38 -0400
+ id 1qrDqU-00016U-1P
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:41 -0400
 Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3231dff4343so1170831f8f.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:32 -0700 (PDT)
+ ffacd0b85a97d-32d9cb5e0fcso342170f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186911; x=1697791711; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186912; x=1697791712; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Wma/LfPEhTSCVT/vWtJT3ahd546XNc3ZJHgiAxgAERk=;
- b=l+Fn/Nbx/HYD5jTyB04jKR/GWh8ucnnAhKkrtzXqIHq7O6NC6XjmueMdYbdr9EQa0/
- xJPJplAKgaqGZ1NN+ePGQjSgSPNNTgETRu6Za57OvdfADtXUstaVg3DEfOHW7j/i9F62
- hRXK/37mgTO7MMnGXeO+fpBsXoSWKb5VD2VRl+P0PtgQwpcgeef70tHkXfYH55MdYPQV
- jPw8gforIEY468jgNCCRM84O7BTHeJWLSNg8JriD1FJxK3umhj4ffaWqeebe9cmOzmnt
- mZE12bnVLtP5zn95XPVCyZKd1rdAPEOLm8WmR2E/9oOn1CibJlxSwuG3yoByAFXXNKUq
- Ya7Q==
+ bh=V3qFECiL29XF5h8iKL/j7sOru8slcdx32x/ROXDZUac=;
+ b=bYqtIK/Ta2vWMFfBa4Q1yipfEkEXfQTc8UOWQB6Uamp+A+yKNWReB7CJ7g/mwM/xzd
+ j1Nak4+hfsFxb15My1kpFZrZ66GQgA08k/PxVSmuj8y4V7kIcblzJT++55rnrl+j3kGP
+ z97Mk9JQ/Z2Z7gWCAQ3VI1Cnzdh51qgYsJFabCTUnfUCrAddEwhGnC+a1kS/spz2WqsN
+ Nxq4LIo/EISKosSRBwf79Q3pnRI0yTGZ44e1tM3kb+k3JpJxvxcJOX02vxdrYgP7XVpn
+ JzCLnBYW6OOZyL/HyJVsIBsw/XeCcB/qNjoPkH9mUNr+xb5qPhF+EyyhIIbHm+VH/Ura
+ 1j+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186911; x=1697791711;
+ d=1e100.net; s=20230601; t=1697186912; x=1697791712;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wma/LfPEhTSCVT/vWtJT3ahd546XNc3ZJHgiAxgAERk=;
- b=B2JdGSqvBWJQh17LjzlRVQWzENJnBMguoJwbTL9Jfx30id4zRWbD9rkibm6c0w7G/C
- cfpYuJKEyEkIzP8iwkvHH+z91soY8ySE8g+bZZp2XigppShy+PtJcXS+FvcBAASznqUo
- PZkWiU4dpyXxSKIW0udk2rSgQrgBrqU2Le3wbhG83tq5IVAGkJAD43F5roJelvBXfEVq
- 71UYBDObupCZlSvTbdCgevvsrUfMo6gruafMDVXKA8gPoaKs+vi5yik0vgoyN5cALdJ0
- UhawvrTdhj7v5A+2Pt6Gk5oBrU51Ff0ghrvFktVIX46bQRbnhRI954hlTPFeDf07Oihw
- r5kQ==
-X-Gm-Message-State: AOJu0YwuEM+/GlKMM2UC9PkoKv58p+u00BMEfcH+LfCTPEtD4eXSR3tx
- Tqo9mM1j9PgVtMWnVLPk/ZZOx1DWZrJxqIwIvi8=
-X-Google-Smtp-Source: AGHT+IE4bDzRs+jXW9zDePW7Y1E4EomUVLFNGpAkoFKwxBHIdQiNdiPMlaCm2IiGsApg21jisYt2fg==
-X-Received: by 2002:a5d:668c:0:b0:317:6579:2b9f with SMTP id
- l12-20020a5d668c000000b0031765792b9fmr18366446wru.30.1697186911001; 
- Fri, 13 Oct 2023 01:48:31 -0700 (PDT)
+ bh=V3qFECiL29XF5h8iKL/j7sOru8slcdx32x/ROXDZUac=;
+ b=pbvpGbTmEAVa2iIWOvC9oDISo9DBIqUP2mfg8lgRYw5Vqgdkfjv4/kIBDQe0iJuxhy
+ kOQzGs3lRqKwjhDMEK0TfeUiRtHrwNa78ILEgdg4nee+k03zRWcMz+Ecr1ER8LHX2W1U
+ mOyopzYuxRpT/ET+QGfXbo+OAd01BudbPsg0S+n7HQ7IBd3SXaUzjp6ll+X428PfFBGl
+ uQwXTmS0YR9gqKw6SPmLivIzmsRw/G/jQZU1/3UML5rvhE78XZYlW0coFp90+ICQttM1
+ 3Q+wLTjiI1QpS9jqvmQ76sY2Osx0VD1AoogLl+m0fj+mihRFZMVjis2KBCynkqhJOGYb
+ IEVA==
+X-Gm-Message-State: AOJu0YxbVf6xDc0fwtjPPYCUZHHwxslZkvtpZpMFCTd/xcwjR0QQBsar
+ YjL8pZBEYHk/M7ZMORURH/D0S+nJQ/wALWexM9I=
+X-Google-Smtp-Source: AGHT+IHm8H+xCHlf1yPi/Zuj3MXspqCb16kwTv/o0+IYj0/qMTsq1G/3aiAz2blW1E6bdC73xpkkOg==
+X-Received: by 2002:a5d:4b48:0:b0:317:d048:8d87 with SMTP id
+ w8-20020a5d4b48000000b00317d0488d87mr20892735wrs.61.1697186912468; 
+ Fri, 13 Oct 2023 01:48:32 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.29
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:48:30 -0700 (PDT)
+ Fri, 13 Oct 2023 01:48:31 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [RFC PATCH v3 46/78] disas: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:14 +0300
-Message-Id: <6470aad157306403e22f24d9b60bd041eb602366.1697186560.git.manos.pitsidianakis@linaro.org>
+ Yuval Shaia <yuval.shaia.ml@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [RFC PATCH v3 47/78] contrib/rdmacm-mux: add fallthrough
+ pseudo-keyword
+Date: Fri, 13 Oct 2023 11:46:15 +0300
+Message-Id: <56f673960f1e05963f5dbfae95743c54ee5383f1.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
@@ -79,8 +77,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,91 +99,35 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- disas/hppa.c  | 4 ++--
- disas/m68k.c  | 2 +-
- disas/sh4.c   | 6 +++---
- disas/sparc.c | 2 +-
- 4 files changed, 7 insertions(+), 7 deletions(-)
+ contrib/rdmacm-mux/main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/disas/hppa.c b/disas/hppa.c
-index dcf9a47f34..1a2bdb8d39 100644
---- a/disas/hppa.c
-+++ b/disas/hppa.c
-@@ -2027,7 +2027,7 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
- 			 completer.  */
- 		    case 'X':
- 		      fputs_filtered (" ", info);
--		      /* FALLTHRU */
-+		      fallthrough;
+diff --git a/contrib/rdmacm-mux/main.c b/contrib/rdmacm-mux/main.c
+index 771ca01e03..dda6917d58 100644
+--- a/contrib/rdmacm-mux/main.c
++++ b/contrib/rdmacm-mux/main.c
+@@ -342,16 +342,16 @@ static int get_fd(const char *mad, int umad_len, int *fd, __be64 *gid_ifid)
+         break;
  
- 		    case 'A':
- 		      if (GET_FIELD (insn, 24, 24))
-@@ -2104,7 +2104,7 @@ print_insn_hppa (bfd_vma memaddr, disassemble_info *info)
- 			 format completer.  */
- 		    case 'E':
- 		      fputs_filtered (" ", info);
--		      /* FALLTHRU */
-+		      fallthrough;
- 
- 		    case 'e':
- 		      if (GET_FIELD (insn, 30, 30))
-diff --git a/disas/m68k.c b/disas/m68k.c
-index 1f16e295ab..a755951bb7 100644
---- a/disas/m68k.c
-+++ b/disas/m68k.c
-@@ -1623,7 +1623,7 @@ print_insn_arg (const char *d,
- 
-     case 'X':
-       place = '8';
--      /* fall through */
-+      fallthrough;
-     case 'Y':
-     case 'Z':
-     case 'W':
-diff --git a/disas/sh4.c b/disas/sh4.c
-index dcdbdf26d8..f7c95407ca 100644
---- a/disas/sh4.c
-+++ b/disas/sh4.c
-@@ -1757,7 +1757,7 @@ print_insn_sh (bfd_vma memaddr, struct disassemble_info *info)
- 	    case REG_N_D:
- 	      if ((nibs[n] & 1) != 0)
- 		goto fail;
--	      /* fall through */
+     case UMAD_CM_ATTR_REP:
+-        /* Fall through */
 +        fallthrough;
- 	    case REG_N:
- 	      rn = nibs[n];
- 	      break;
-@@ -1963,7 +1963,7 @@ print_insn_sh (bfd_vma memaddr, struct disassemble_info *info)
- 		  fprintf_fn (stream, "xd%d", rn & ~1);
- 		  break;
- 		}
--	      /* fallthrough */
+     case UMAD_CM_ATTR_REJ:
+-        /* Fall through */
 +        fallthrough;
- 	    case D_REG_N:
- 	      fprintf_fn (stream, "dr%d", rn);
- 	      break;
-@@ -1973,7 +1973,7 @@ print_insn_sh (bfd_vma memaddr, struct disassemble_info *info)
- 		  fprintf_fn (stream, "xd%d", rm & ~1);
- 		  break;
- 		}
--	      /* fallthrough */
+     case UMAD_CM_ATTR_DREQ:
+-        /* Fall through */
 +        fallthrough;
- 	    case D_REG_M:
- 	      fprintf_fn (stream, "dr%d", rm);
- 	      break;
-diff --git a/disas/sparc.c b/disas/sparc.c
-index 5689533ce1..61139256b0 100644
---- a/disas/sparc.c
-+++ b/disas/sparc.c
-@@ -2803,7 +2803,7 @@ print_insn_sparc (bfd_vma memaddr, disassemble_info *info)
-                   {
-                   case '+':
-                     found_plus = 1;
--                    /* Fall through.  */
-+                    fallthrough;
- 
-                   default:
-                     (*info->fprintf_func) (stream, "%c", *s);
+     case UMAD_CM_ATTR_DREP:
+-        /* Fall through */
++        fallthrough;
+     case UMAD_CM_ATTR_RTU:
+         data += sizeof(comm_id);
+-        /* Fall through */
++        fallthrough;
+     case UMAD_CM_ATTR_SIDR_REP:
+         if (unlikely(umad_len < sizeof(*hdr) + sizeof(comm_id))) {
+             rc = -EINVAL;
 -- 
 2.39.2
 
