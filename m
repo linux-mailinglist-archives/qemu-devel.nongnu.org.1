@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBC87C8DA4
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B0C7C8D84
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:11:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrNYK-0006ws-Mk; Fri, 13 Oct 2023 15:10:28 -0400
+	id 1qrNYN-00071X-1d; Fri, 13 Oct 2023 15:10:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNYI-0006uZ-Er
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:26 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNYK-0006xJ-9H
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNY5-0001tW-2X
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:25 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNY5-0001tI-4K
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1697224210;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TtNimDUsefImovHXVp8syBkyrwupdL7YbGpeWdTSkQQ=;
- b=OVXAYIcoGhuIt60RUv0JKLS/G+gLTZxMCQH9weeUw1CAtF6zU6AGvuYOV0f2tv1VDl1fOR
- bGYxja+SiUKS+oz8b9d8s8K/V77Y3M2FhV6a5L8Zw22mtdBTx3NQWbYIbR1S5egEpGXZ8E
- EU8W8qIdpATX205wXdHRce3A3+CR8y0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-18-agokJHyGOXWSNSIbC45TNw-1; Fri, 13 Oct 2023 15:10:07 -0400
-X-MC-Unique: agokJHyGOXWSNSIbC45TNw-1
+ bh=fRbQdUoUUQhlqnazahcRbiRmsy6tNXpHFEKPBYJkfGM=;
+ b=C35rhV/9tYX+fGmS7ejOM1osjwUPHF5kXEb9tWRYBNfblKCmoGM81zxMZK492rUrVboU28
+ Tr7b1c3Nav50ZjLBnUmowIANwLOMUdUYHPRPkoExcS1IpXxnkOMBEEKpaluguulccWmCz4
+ XAc4QdQ2S4uS2w6JjeHPaC0VIKtlKc8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-138-rH71-VLmP0inEv2-a89V9w-1; Fri, 13 Oct 2023 15:10:09 -0400
+X-MC-Unique: rH71-VLmP0inEv2-a89V9w-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C69063813BE3;
- Fri, 13 Oct 2023 19:10:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F1AB85A5BA;
+ Fri, 13 Oct 2023 19:10:08 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.32.124])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 955AF40C6CA0;
- Fri, 13 Oct 2023 19:10:05 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D495040C6CA0;
+ Fri, 13 Oct 2023 19:10:06 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>,
@@ -63,9 +63,10 @@ Cc: Kevin Wolf <kwolf@redhat.com>,
  Eric Farman <farman@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Halil Pasic <pasic@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PULL 18/25] iotests: add some missed checks of qmp result
-Date: Fri, 13 Oct 2023 15:09:33 -0400
-Message-ID: <20231013190941.3699288-19-jsnow@redhat.com>
+Subject: [PULL 19/25] iotests: refactor some common qmp result checks into
+ generic pattern
+Date: Fri, 13 Oct 2023 15:09:34 -0400
+Message-ID: <20231013190941.3699288-20-jsnow@redhat.com>
 In-Reply-To: <20231013190941.3699288-1-jsnow@redhat.com>
 References: <20231013190941.3699288-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -79,7 +80,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,81 +98,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
+To simplify further conversion.
+
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Eric Blake <eblake@redhat.com>
-Message-id: 20231006154125.1068348-9-vsementsov@yandex-team.ru
+Message-id: 20231006154125.1068348-10-vsementsov@yandex-team.ru
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- tests/qemu-iotests/041                        | 1 +
- tests/qemu-iotests/151                        | 1 +
- tests/qemu-iotests/152                        | 2 ++
- tests/qemu-iotests/tests/migrate-bitmaps-test | 2 ++
- 4 files changed, 6 insertions(+)
+ tests/qemu-iotests/040 | 3 ++-
+ tests/qemu-iotests/147 | 3 ++-
+ tests/qemu-iotests/155 | 4 ++--
+ tests/qemu-iotests/218 | 4 ++--
+ tests/qemu-iotests/296 | 3 ++-
+ 5 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/tests/qemu-iotests/041 b/tests/qemu-iotests/041
-index 8429958bf0..4d7a829b65 100755
---- a/tests/qemu-iotests/041
-+++ b/tests/qemu-iotests/041
-@@ -1087,6 +1087,7 @@ class TestRepairQuorum(iotests.QMPTestCase):
-         result = self.vm.qmp('blockdev-snapshot-sync', node_name='img1',
-                              snapshot_file=quorum_snapshot_file,
-                              snapshot_node_name="snap1");
-+        self.assert_qmp(result, 'return', {})
+diff --git a/tests/qemu-iotests/040 b/tests/qemu-iotests/040
+index 5601a4873c..e61e7f2433 100755
+--- a/tests/qemu-iotests/040
++++ b/tests/qemu-iotests/040
+@@ -62,9 +62,10 @@ class ImageCommitTestCase(iotests.QMPTestCase):
+         self.assert_no_active_block_jobs()
+         if node_names:
+             result = self.vm.qmp('block-commit', device='drive0', top_node=top, base_node=base)
++            self.assert_qmp(result, 'return', {})
+         else:
+             result = self.vm.qmp('block-commit', device='drive0', top=top, base=base)
+-        self.assert_qmp(result, 'return', {})
++            self.assert_qmp(result, 'return', {})
+         self.wait_for_complete(need_ready)
  
-         result = self.vm.qmp('drive-mirror', job_id='job0', device='quorum0',
-                              sync='full', node_name='repair0', replaces="img1",
-diff --git a/tests/qemu-iotests/151 b/tests/qemu-iotests/151
-index b4d1bc2553..668d0c1e9c 100755
---- a/tests/qemu-iotests/151
-+++ b/tests/qemu-iotests/151
-@@ -159,6 +159,7 @@ class TestActiveMirror(iotests.QMPTestCase):
-                              sync='full',
-                              copy_mode='write-blocking',
-                              speed=1)
-+        self.assert_qmp(result, 'return', {})
+     def run_default_commit_test(self):
+diff --git a/tests/qemu-iotests/147 b/tests/qemu-iotests/147
+index 47dfa62e6b..770b73e2f4 100755
+--- a/tests/qemu-iotests/147
++++ b/tests/qemu-iotests/147
+@@ -159,10 +159,11 @@ class BuiltinNBD(NBDBlockdevAddBase):
  
-         self.vm.hmp_qemu_io('source', 'break write_aio A')
-         self.vm.hmp_qemu_io('source', 'aio_write 0 1M')  # 1
-diff --git a/tests/qemu-iotests/152 b/tests/qemu-iotests/152
-index 4e179c340f..b73a0d08a2 100755
---- a/tests/qemu-iotests/152
-+++ b/tests/qemu-iotests/152
-@@ -43,6 +43,7 @@ class TestUnaligned(iotests.QMPTestCase):
-     def test_unaligned(self):
-         result = self.vm.qmp('drive-mirror', device='drive0', sync='full',
-                              granularity=65536, target=target_img)
-+        self.assert_qmp(result, 'return', {})
-         self.complete_and_wait()
-         self.vm.shutdown()
-         self.assertEqual(iotests.image_size(test_img), iotests.image_size(target_img),
-@@ -51,6 +52,7 @@ class TestUnaligned(iotests.QMPTestCase):
-     def test_unaligned_with_update(self):
-         result = self.vm.qmp('drive-mirror', device='drive0', sync='full',
-                              granularity=65536, target=target_img)
-+        self.assert_qmp(result, 'return', {})
-         self.wait_ready()
-         self.vm.hmp_qemu_io('drive0', 'write 0 512')
-         self.complete_and_wait(wait_ready=False)
-diff --git a/tests/qemu-iotests/tests/migrate-bitmaps-test b/tests/qemu-iotests/tests/migrate-bitmaps-test
-index 59f3357580..8668caae1e 100755
---- a/tests/qemu-iotests/tests/migrate-bitmaps-test
-+++ b/tests/qemu-iotests/tests/migrate-bitmaps-test
-@@ -101,6 +101,7 @@ class TestDirtyBitmapMigration(iotests.QMPTestCase):
-         sha256 = get_bitmap_hash(self.vm_a)
+         if export_name is None:
+             result = self.server.qmp('nbd-server-add', device='nbd-export')
++            self.assert_qmp(result, 'return', {})
+         else:
+             result = self.server.qmp('nbd-server-add', device='nbd-export',
+                                      name=export_name)
+-        self.assert_qmp(result, 'return', {})
++            self.assert_qmp(result, 'return', {})
  
-         result = self.vm_a.qmp('migrate', uri=mig_cmd)
-+        self.assert_qmp(result, 'return', {})
-         while True:
-             event = self.vm_a.event_wait('MIGRATION')
-             if event['data']['status'] == 'completed':
-@@ -176,6 +177,7 @@ class TestDirtyBitmapMigration(iotests.QMPTestCase):
-         self.assert_qmp(result, 'return', {})
+         if export_name2 is not None:
+             result = self.server.qmp('nbd-server-add', device='nbd-export',
+diff --git a/tests/qemu-iotests/155 b/tests/qemu-iotests/155
+index eadda52615..d3e1b7401e 100755
+--- a/tests/qemu-iotests/155
++++ b/tests/qemu-iotests/155
+@@ -181,6 +181,7 @@ class MirrorBaseClass(BaseClass):
+             result = self.vm.qmp(self.cmd, job_id='mirror-job', device='source',
+                                  sync=sync, target='target',
+                                  auto_finalize=False)
++            self.assert_qmp(result, 'return', {})
+         else:
+             if self.existing:
+                 mode = 'existing'
+@@ -190,8 +191,7 @@ class MirrorBaseClass(BaseClass):
+                                  sync=sync, target=target_img,
+                                  format=iotests.imgfmt, mode=mode,
+                                  node_name='target', auto_finalize=False)
+-
+-        self.assert_qmp(result, 'return', {})
++            self.assert_qmp(result, 'return', {})
  
-         result = self.vm_a.qmp('migrate', uri=mig_cmd)
-+        self.assert_qmp(result, 'return', {})
-         while True:
-             event = self.vm_a.event_wait('MIGRATION')
-             if event['data']['status'] == 'completed':
+         self.vm.run_job('mirror-job', auto_finalize=False,
+                         pre_finalize=self.openBacking, auto_dismiss=True)
+diff --git a/tests/qemu-iotests/218 b/tests/qemu-iotests/218
+index 6320c4cb56..5e74c55b6a 100755
+--- a/tests/qemu-iotests/218
++++ b/tests/qemu-iotests/218
+@@ -61,14 +61,14 @@ def start_mirror(vm, speed=None, buf_size=None):
+                          sync='full',
+                          speed=speed,
+                          buf_size=buf_size)
++        assert ret['return'] == {}
+     else:
+         ret = vm.qmp('blockdev-mirror',
+                          job_id='mirror',
+                          device='source',
+                          target='target',
+                          sync='full')
+-
+-    assert ret['return'] == {}
++        assert ret['return'] == {}
+ 
+ 
+ log('')
+diff --git a/tests/qemu-iotests/296 b/tests/qemu-iotests/296
+index 0d21b740a7..19a674c5ae 100755
+--- a/tests/qemu-iotests/296
++++ b/tests/qemu-iotests/296
+@@ -133,9 +133,10 @@ class EncryptionSetupTestCase(iotests.QMPTestCase):
+ 
+         if reOpen:
+             result = vm.qmp(command, options=[opts])
++            self.assert_qmp(result, 'return', {})
+         else:
+             result = vm.qmp(command, **opts)
+-        self.assert_qmp(result, 'return', {})
++            self.assert_qmp(result, 'return', {})
+ 
+ 
+     ###########################################################################
 -- 
 2.41.0
 
