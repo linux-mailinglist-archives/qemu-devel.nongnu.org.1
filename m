@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207E57C7F36
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:01:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4ED7C7F4C
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:03:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD4d-0001Re-6J; Fri, 13 Oct 2023 03:59:07 -0400
+	id 1qrD4x-00042Z-FZ; Fri, 13 Oct 2023 03:59:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD4W-0000ym-OT
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:01 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ id 1qrD4j-0002Io-6G
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:13 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD4S-0006vS-EQ
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:58 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-503056c8195so2456351e87.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:49 -0700 (PDT)
+ id 1qrD4Y-0006xF-DG
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:12 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4056ce55e7eso18658525e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183928; x=1697788728; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183939; x=1697788739; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b9mvFmC/3JVqTJ99T7u6WfFCi7B0jEk8tUt/iiTq4lI=;
- b=iwU97vr7D+8eEVmXVQ/2LnOikRpOroRzKT0pdv8W46KTnzBk6Qo+1xNyVlMIDYPoEu
- APSpXTZ2oETELb7xHBL9L7agTIHSpUm00VUypEHZeskIIC5BLWEFeAnml8Q3ckeJ1TNk
- X2avcu+qF8fGlSo5KLKLxVkHFQy6tpWNsm6HPIQo07OhYh1i3yXYrGwnMGy2Vr08eRJW
- GbGbtwXRSI7vyRPZaI/md77H3YRGyoOwdFgJ0WeIEYGyqeR4jN+1plTmCASIq1E+puyY
- kcV6WbWTQVOVoSs1W+3ihjhA4OjU6rYXjoUneUpYETO9OcF2A7PPO7bl+W+9RKlbmRWc
- BAqQ==
+ bh=V6QeJL4Wo8y/3eJ5tOXyyC3SVwifvmBvfOxaBUO5XBE=;
+ b=wcmlTeqaKEoPP6Ujo4/pZvgD4PuP11Ljxcpuy1M5EG5ptILanfeKlOm66V9RPzKz2b
+ rTxe0a+9OZvayB9Fd7IGL23VAOnpcnJnVBl7Cpn1I3mfDk9MnBrKNq5lPgJlyVsropGx
+ 5rftLZ5SwI4BnK2qXS9A5BBohgjNYueAUvXo7IyO4kGRjxli4AxdnVHj09jUz0NOQTP9
+ 2Gym/ogNoz8ZjAZQaCHKOaKG1orcFDFO3glTE1zDq/7K6ohwr6ZWDmjeACQdxt4ASlNd
+ +2ONyCE/3S2ZAkuJWpGO5BTtNJZsHj7aT70/iGr3wEZFOKjfM0Py6/hUSd3ux2k1O/zJ
+ cCnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183928; x=1697788728;
+ d=1e100.net; s=20230601; t=1697183939; x=1697788739;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b9mvFmC/3JVqTJ99T7u6WfFCi7B0jEk8tUt/iiTq4lI=;
- b=PWWIqrEdARToo9LfGWSU85m0B4N0+/ndpaIMjuN0/DlYFLHuWjj0R0PKjLFBDub/Y/
- eLhXKEvfc3tUoJ/YpHAv9hnUD4iqCUm9K1XhxdlvmeN5RbugfNfwnygZnI7giC4IG7jk
- TqPylS+F2OYsMEIpuZuMDq8ExMr88lI8kfA6n6NjejcfZXkCFvnvAiAN+Bipgyf5fG43
- P5UhWPQEF56FEdAv4JFxWU0HjmGRUpRRrVUcgnKS6JP6Wlh3ISlKR6Y2tPDpJKi+tOO9
- ISZJMyS0DHTYZqIUHoGARCWiFEQZNkmpH5ekVXz7DvFvCVZmpKXuVQYLNioS9/GSvGa8
- 4urw==
-X-Gm-Message-State: AOJu0Yx5VLJHJdtPXxqMDhLX6Hn9qCcs+F5zHJdIgFt/pAMv+lpLdjpL
- IuY1z4lkQWju76cjkpXRRP3tc1abj4htx+OoAIo=
-X-Google-Smtp-Source: AGHT+IGNPx1Qpic8bmsqwCa47Pem8ZyCikI5Htxzfbchj6ALLA/4xNy6jTnr2j5RzqJ/IVTRANjYPg==
-X-Received: by 2002:a05:6512:3146:b0:500:bbd4:970f with SMTP id
- s6-20020a056512314600b00500bbd4970fmr19499496lfi.5.1697183928372; 
- Fri, 13 Oct 2023 00:58:48 -0700 (PDT)
+ bh=V6QeJL4Wo8y/3eJ5tOXyyC3SVwifvmBvfOxaBUO5XBE=;
+ b=MQQWzyY3tXIA14AoqGubjpBdlKKnWWZvf5Y+9ZLkcjvt5HziOn4XNr1yN08HcCJ3eS
+ ywUA0du5HAg6+j8gS8YahFp+o6ZjWwdbk0VkAlSLiHd2U3JhhoPTK0yOfYrU+JV0Qkso
+ HbPPvBnh121+0RNapxPhd8cRVg3nH4b4s1T+7FLCxrX6qk/eWcWL6ZEQUKYt7WuID3DY
+ ZsjfhD8IlouahV1aJY6VfEQyGngetqJB/DbkBe2C/XW4ACez8oBidODJFLUSQgQxOoDU
+ +3RHMWI1O1apEBsa5r4TYud+XAWz34kij+Q8MQ+DjzKDIZO8uMGFc8kL8rMLZ2u1mAuv
+ +18w==
+X-Gm-Message-State: AOJu0Yy5v/rhy5YDvttxM++nrTvCgr8OEbtP6ETktXSwOYOAuOdN+17j
+ tvgaDv+BaD3qSWysh3kC807qw828E+RIhJE3Two=
+X-Google-Smtp-Source: AGHT+IFcMAAwpRr5p2ElYd0aR9XMpCsJJvY56jab6NmlXyh1LLBn9hPY0vccMxGyvZYar45qz3wf6g==
+X-Received: by 2002:a7b:cd85:0:b0:406:599f:f92c with SMTP id
+ y5-20020a7bcd85000000b00406599ff92cmr23162824wmj.20.1697183938980; 
+ Fri, 13 Oct 2023 00:58:58 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.47
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:58:47 -0700 (PDT)
+ Fri, 13 Oct 2023 00:58:58 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>
-Subject: [RFC PATCH v2 28/78] target/avr: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:56:55 +0300
-Message-Id: <b0cb0572850df62369f0841172b651218bfb15e2.1697183699.git.manos.pitsidianakis@linaro.org>
+ Stafford Horne <shorne@gmail.com>
+Subject: [RFC PATCH v2 36/78] target/openrisc: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:03 +0300
+Message-Id: <2961833b638056d4af03da7531f085ea618e45a6.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,46 +97,106 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/avr/translate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/openrisc/mmu.c       | 2 +-
+ target/openrisc/translate.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index cdffa04519..2043677745 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -2753,37 +2753,37 @@ static void avr_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- static void avr_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+diff --git a/target/openrisc/mmu.c b/target/openrisc/mmu.c
+index 603c26715e..7ed744e81b 100644
+--- a/target/openrisc/mmu.c
++++ b/target/openrisc/mmu.c
+@@ -141,38 +141,38 @@ bool openrisc_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+ hwaddr openrisc_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
  {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
-     bool nonconst_skip = canonicalize_skip(ctx);
-     /*
-      * Because we disable interrupts while env->skip is set,
-      * we must return to the main loop to re-evaluate afterward.
-      */
-     bool force_exit = ctx->base.tb->flags & TB_FLAGS_SKIP;
+     OpenRISCCPU *cpu = OPENRISC_CPU(cs);
+     int prot, excp, sr = cpu->env.sr;
+     hwaddr phys_addr;
  
-     switch (ctx->base.is_jmp) {
-     case DISAS_NORETURN:
-         assert(!nonconst_skip);
-         break;
-     case DISAS_NEXT:
-     case DISAS_TOO_MANY:
-     case DISAS_CHAIN:
-         if (!nonconst_skip && !force_exit) {
-             /* Note gen_goto_tb checks singlestep.  */
-             gen_goto_tb(ctx, 1, ctx->npc);
-             break;
+     switch (sr & (SR_DME | SR_IME)) {
+     case SR_DME | SR_IME:
+         /* The mmu is definitely enabled.  */
+         excp = get_phys_mmu(cpu, &phys_addr, &prot, addr,
+                             PAGE_READ,
+                             (sr & SR_SM) != 0);
+         if (!excp) {
+             return phys_addr;
          }
-         tcg_gen_movi_tl(cpu_pc, ctx->npc);
--        /* fall through */
+         excp = get_phys_mmu(cpu, &phys_addr, &prot, addr,
+                             PAGE_EXEC,
+                             (sr & SR_SM) != 0);
+         return excp ? -1 : phys_addr;
+ 
+     default:
+         /* The mmu is partially enabled, and we don't really have
+            a "real" access type.  Begin by trying the mmu, but if
+            that fails try again without.  */
+         excp = get_phys_mmu(cpu, &phys_addr, &prot, addr,
+                             PAGE_EXEC | PAGE_READ | PAGE_WRITE,
+                             (sr & SR_SM) != 0);
+         if (!excp) {
+             return phys_addr;
+         }
+-        /* fallthru */
 +        fallthrough;
-     case DISAS_LOOKUP:
-         if (!force_exit) {
+ 
+     case 0:
+         /* The mmu is definitely disabled; lookups never fail.  */
+         get_phys_nommu(&phys_addr, &prot, addr);
+         return phys_addr;
+     }
+ }
+diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
+index ecff4412b7..de77014d60 100644
+--- a/target/openrisc/translate.c
++++ b/target/openrisc/translate.c
+@@ -1588,53 +1588,53 @@ static void openrisc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+ static void openrisc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
+     target_ulong jmp_dest;
+ 
+     /* If we have already exited the TB, nothing following has effect.  */
+     if (dc->base.is_jmp == DISAS_NORETURN) {
+         return;
+     }
+ 
+     /* Adjust the delayed branch state for the next TB.  */
+     if ((dc->tb_flags & TB_FLAGS_DFLAG ? 1 : 0) != (dc->delayed_branch != 0)) {
+         tcg_gen_movi_i32(cpu_dflag, dc->delayed_branch != 0);
+     }
+ 
+     /* For DISAS_TOO_MANY, jump to the next insn.  */
+     jmp_dest = dc->base.pc_next;
+     tcg_gen_movi_tl(cpu_ppc, jmp_dest - 4);
+ 
+     switch (dc->base.is_jmp) {
+     case DISAS_JUMP:
+         jmp_dest = dc->jmp_pc_imm;
+         if (jmp_dest == -1) {
+             /* The jump destination is indirect/computed; use jmp_pc.  */
+             tcg_gen_mov_tl(cpu_pc, jmp_pc);
+             tcg_gen_discard_tl(jmp_pc);
              tcg_gen_lookup_and_goto_ptr();
              break;
          }
--        /* fall through */
+         /* The jump destination is direct; use jmp_pc_imm.
+            However, we will have stored into jmp_pc as well;
+            we know now that it wasn't needed.  */
+         tcg_gen_discard_tl(jmp_pc);
+-        /* fallthru */
 +        fallthrough;
+ 
+     case DISAS_TOO_MANY:
+         if (translator_use_goto_tb(&dc->base, jmp_dest)) {
+             tcg_gen_goto_tb(0);
+             tcg_gen_movi_tl(cpu_pc, jmp_dest);
+             tcg_gen_exit_tb(dc->base.tb, 0);
+             break;
+         }
+         tcg_gen_movi_tl(cpu_pc, jmp_dest);
+         tcg_gen_lookup_and_goto_ptr();
+         break;
+ 
      case DISAS_EXIT:
          tcg_gen_exit_tb(NULL, 0);
          break;
