@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DFC7C8740
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF2B7C8744
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:59:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrIdr-00033i-MH; Fri, 13 Oct 2023 09:55:51 -0400
+	id 1qrIh2-00059w-Ss; Fri, 13 Oct 2023 09:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrIdp-000337-ET
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:55:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrIdn-0000SN-U7
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:55:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697205346;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cDMvw+UKdeoXI2h/Js5thn1FtpWB+ogRCxKyq4iV/ig=;
- b=ShLmDcxvcOre4jJT2Dc8grM/I+PeWzFWPhy2ouz2ZXWqbGtoA1HSIVDjksBybCwl/7bBYQ
- C/TsAAqkie11iXc4RUyoXCgEWNy3p4Wb1lJHLLntaJBhsSL5QQAk2W2ISkWltHWHAOgX6E
- 3S4nEUigrYe18Arul5ps0hv40XbzfAM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-133-qfS1MNd8MLmxR1H8PWgFGA-1; Fri, 13 Oct 2023 09:55:29 -0400
-X-MC-Unique: qfS1MNd8MLmxR1H8PWgFGA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4065478afd3so18706845e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:55:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIgz-00057V-Ig
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:59:06 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIgs-0001WO-Pm
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:59:05 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-53e07db272cso3143945a12.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:58:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697205535; x=1697810335; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mFZ8Hez1D/92l69JU6rcHrVRA5cuRUZMYxrubsP2WRo=;
+ b=C6E4bL7ufIhA70NQXh48PqBPpvbD7Cp9pV+QpWi096Dr05yCVhxoUdH09W/ahemfN1
+ r+HBcXuFX2C3wfH4zirejbjnubBMHngm44VTU80d9pRh+nWKh+8wTIHq8LYjK8RdqxEf
+ S5l+H5otzL4YhZVPAURgG8UAN2rZphWQyKvyZDZoy/gJj2/doKspUrY4kn2C84APi9kl
+ QcknnOuPdxH+6afwRXHPdIA4GbWz+1rqLJxqtHIozT70vHzHi3iArmN4TN1FILncJy05
+ YxSHx7HFZ8Sbjox5k8kObgTBeLtqhu0yCEz3y26sat4tgs0rykjnPewtVSICLg3VPuqL
+ iMOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697205328; x=1697810128;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1697205535; x=1697810335;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cDMvw+UKdeoXI2h/Js5thn1FtpWB+ogRCxKyq4iV/ig=;
- b=hLuGrOVQ0hEna6yKyh9cgJubsPT0TnSo9GcZLXdZ+v+0TYc1Ouu3klqBNJ/xrKP+Jj
- 0uX9pIQ8xC8dIX+uSsmsT38OYPRirtCdlt3wXnDYSdt6dIs3L8vHMhjIPy50tnEDCX5g
- ekwWYxUpGuZUqBpbldd/U/uqgQ6opcuwlWfgSodYSEoNKtEjlJXVgxLUyayq94CiNoCM
- 1+EFu3PJjKgwfwFZ/Jdd47yorTnnX/oI7d1KhWdt+LguDPiN2YtT18CNwg+kdgoADkB0
- G8xSdbNo/odNABhNEONjLfZJmbJOTEGUG1Dja4iMCMZmCpzvCLoWcML5pdmGxhop1eg4
- MphQ==
-X-Gm-Message-State: AOJu0YzbIcfb14qcxaAXCAbhXjzOhobayI/eXpdel8ctPnFlWMj7Udky
- BVwWDPybOJC7LgdQ+MGfaxMjvxHPHDTGQgi8bx/Mb6xa07nO5k4Lh2qcmzfZxa4R5ZoYkC3Ei4X
- PfuRh/cU+nvSWqjw=
-X-Received: by 2002:adf:e852:0:b0:315:9e1b:4ea6 with SMTP id
- d18-20020adfe852000000b003159e1b4ea6mr22686358wrn.58.1697205328048; 
- Fri, 13 Oct 2023 06:55:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGdtkpv71xOUPXEc5m69gfIhAX4Zjt83avzG+2MZj5z5Nprf4604rrTmnbiS1Snw1nc0zyAyQ==
-X-Received: by 2002:adf:e852:0:b0:315:9e1b:4ea6 with SMTP id
- d18-20020adfe852000000b003159e1b4ea6mr22686342wrn.58.1697205327740; 
- Fri, 13 Oct 2023 06:55:27 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:175:cf7d:d542:c2ef:a65c:aaad])
+ bh=mFZ8Hez1D/92l69JU6rcHrVRA5cuRUZMYxrubsP2WRo=;
+ b=rzmlQbdOuh2pJ4ypO+1kwGZR1LgG9wNctbX8u2yb0visBu+kIk0DEg5Vg0p8oGlKxx
+ FMf+qpnW8jalF4lW9QKay7ElXEZHkjtZfuM6uXe1AqKN9KMbhcovy1U3HM89/iXltaY5
+ JK5SfVWZ0OOptP/hFvlWn7j5AtRw+94Osc+MEq+2aT+YMt3El1OSDY5mZmtlc5pryU+8
+ retCbgO6WXNNE6zZhaIXD5Yew8fNVQ1OtNTCcOS1FtHba/9HLPzQKnCZQI5J2BOX1PI4
+ F2BCk0MK9fWVtQm0goGlSpXR39mZ7LhFBT1XdWwGrTEx9eM6L7t5i14CBerfHwlrmLXa
+ LZRA==
+X-Gm-Message-State: AOJu0YwwQ+nmgfn19A77CtG5yl2Npi5bR0swG7LujDawUHcZ35Hx/+5u
+ eScWQGU8lYbtgsei23i/zgfeMHgDZLrMq/OuJoE=
+X-Google-Smtp-Source: AGHT+IEcuzKPvPOB7Pp7e5wLYdRjtM+jB+eFujYn8zlMUXQOyBpARjvdHsHtRFE9Wwl108qeUHrbtw==
+X-Received: by 2002:a05:6402:5207:b0:53e:332e:3e03 with SMTP id
+ s7-20020a056402520700b0053e332e3e03mr2539277edd.4.1697205534859; 
+ Fri, 13 Oct 2023 06:58:54 -0700 (PDT)
+Received: from [192.168.69.115] ([176.172.118.168])
  by smtp.gmail.com with ESMTPSA id
- h12-20020adff18c000000b003232380ffd7sm20940730wro.102.2023.10.13.06.55.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 06:55:27 -0700 (PDT)
-Date: Fri, 13 Oct 2023 09:55:22 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>
-Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
-Message-ID: <20231013095407-mutt-send-email-mst@kernel.org>
-References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
- <20231011153944.39572-2-akihiko.odaki@daynix.com>
- <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
- <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
+ t11-20020a056402240b00b0053dae8a5e1csm4005820eda.8.2023.10.13.06.58.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Oct 2023 06:58:54 -0700 (PDT)
+Message-ID: <d1814aa5-8570-da48-11db-497a863974af@linaro.org>
+Date: Fri, 13 Oct 2023 15:58:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 10/18] target/riscv: Inline target specific
+ TYPE_RISCV_CPU_BASE definition
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231010092901.99189-1-philmd@linaro.org>
+ <20231010092901.99189-11-philmd@linaro.org>
+ <e6a5386e-e33d-464d-b84d-b58ca16429f0@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <e6a5386e-e33d-464d-b84d-b58ca16429f0@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,47 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 13, 2023 at 01:14:32PM +0900, Akihiko Odaki wrote:
-> On 2023/10/13 10:38, Jason Wang wrote:
-> > On Wed, Oct 11, 2023 at 11:40 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
-> > > 
-> > > It was necessary since an Linux older than 2.6.35 may implement the
-> > > virtio-net header but may not allow to change its length. Remove it
-> > > since such an old Linux is no longer supported.
-> > 
-> > Where can I see this agreement?
-> 
-> docs/about/build-platforms.rst says:
-> > The project aims to support the most recent major version at all times
-> > for up to five years after its initial release. Support for the
-> > previous major version will be dropped 2 years after the new major
-> > version is released or when the vendor itself drops support, whichever
-> > comes first. In this context, third-party efforts to extend the
-> > lifetime of a distro are not considered, even when they are endorsed
-> > by the vendor (eg. Debian LTS); the same is true of repositories that
-> > contain packages backported from later releases (e.g. Debian
-> > backports). Within each major release, only the most recent minor
-> > release is considered.
-> >
-> > For the purposes of identifying supported software versions available
-> > on Linux, the project will look at CentOS, Debian, Fedora, openSUSE,
-> > RHEL, SLES and Ubuntu LTS. Other distros will be assumed to ship
-> > similar software versions.
-> 
-> All of the previous major versions of these distributions ship far newer
-> kernels.
-> 
-> CentOS Stream 8 and RHEL 8 ship 4.18.0.
+On 13/10/23 06:13, Richard Henderson wrote:
+> On 10/10/23 02:28, Philippe Mathieu-Daudé wrote:
+>> TYPE_RISCV_CPU_BASE depends on the TARGET_RISCV32/TARGET_RISCV64
+>> definitions which are target specific. Such target specific
+>> definition taints "cpu-qom.h".
+>>
+>> Since "cpu-qom.h" must be target agnostic, remove its target
+>> specific definition uses by inlining TYPE_RISCV_CPU_BASE in the
+>> two machines using it.
+>>
+>> "target/riscv/cpu-qom.h" is now fully target agnostic.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/riscv/cpu-qom.h | 8 +-------
+>>   hw/riscv/spike.c       | 8 +++++++-
+>>   hw/riscv/virt.c        | 8 +++++++-
+>>   3 files changed, 15 insertions(+), 9 deletions(-)
 
-Yes but RHEL7 is still in full support.
 
-> Debian bullseye ships 5.10.0.
-> Fedora 37 ships 6.5.6.
-> openSUSE Leap 15.4 ships 5.14.21.
-> SLES 12 ships 4.12.14.
-> Ubuntu 20.04 ships 5.4.
+>> @@ -43,12 +43,6 @@
+>>   #define TYPE_RISCV_CPU_VEYRON_V1        
+>> RISCV_CPU_TYPE_NAME("veyron-v1")
+>>   #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
+>> -#if defined(TARGET_RISCV32)
+>> -# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
+>> -#elif defined(TARGET_RISCV64)
+>> -# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
+>> -#endif
+> 
+> Move to cpu.h (or elsewhere) instead of replicating in two hw/ files?
 
-It does not matter that a newer version is shipped. What matters is
-whether older one is still supported.
+Yes, better.
 
 
