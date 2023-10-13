@@ -2,70 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF5D7C7B59
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 03:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C7F7C7B91
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 04:23:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr7Or-00067h-2I; Thu, 12 Oct 2023 21:55:37 -0400
+	id 1qr7oA-0001Vq-8D; Thu, 12 Oct 2023 22:21:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1qr7Ok-00066U-6Q
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 21:55:30 -0400
-Received: from esa8.hc1455-7.c3s2.iphmx.com ([139.138.61.253])
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1qr7o6-0001VO-Pw
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 22:21:42 -0400
+Received: from mx2.zhaoxin.com ([203.110.167.99])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1qr7Oi-0001uf-BG
- for qemu-devel@nongnu.org; Thu, 12 Oct 2023 21:55:29 -0400
-X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="123971444"
-X-IronPort-AV: E=Sophos;i="6.03,219,1694703600"; d="scan'208";a="123971444"
-Received: from unknown (HELO yto-r2.gw.nic.fujitsu.com) ([218.44.52.218])
- by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2023 10:55:23 +0900
-Received: from yto-m3.gw.nic.fujitsu.com (yto-nat-yto-m3.gw.nic.fujitsu.com
- [192.168.83.66])
- by yto-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id A9FC9C68E8
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 10:55:18 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
- [192.51.206.21])
- by yto-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id D52B4D9692
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 10:55:17 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 6037220050193
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 10:55:17 +0900 (JST)
-Received: from FNSTPC.g08.fujitsu.local (unknown [10.167.226.45])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id D9E691A0072;
- Fri, 13 Oct 2023 09:55:16 +0800 (CST)
-From: Li Zhijian <lizhijian@fujitsu.com>
-To: jonathan.cameron@huawei.com,
-	fan.ni@samsung.com
-Cc: qemu-devel@nongnu.org,
-	Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH] hw/cxl: Fix opaque type interpret wrongly
-Date: Fri, 13 Oct 2023 09:55:15 +0800
-Message-ID: <20231013015515.23647-1-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1qr7o3-0006EM-TE
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 22:21:42 -0400
+X-ASG-Debug-ID: 1697163673-1eb14e7511561a0001-jgbH7p
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
+ mx2.zhaoxin.com with ESMTP id JNyiZCaVetOnJnL2 (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Fri, 13 Oct 2023 10:21:13 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 13 Oct
+ 2023 10:21:12 +0800
+Received: from ewan-server.zhaoxin.com (10.28.66.55) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 13 Oct
+ 2023 10:21:11 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+From: EwanHai <ewanhai-oc@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
+To: <ewanhai-oc@zhaoxin.com>
+CC: <kvm@vger.kernel.org>, <mtosatti@redhat.com>, <pbonzini@redhat.com>,
+ <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>, <qemu-devel@nongnu.org>
+Subject: [PATCH] target/i386/kvm: Refine VMX controls setting for backward 
+Date: Thu, 12 Oct 2023 22:21:11 -0400
+X-ASG-Orig-Subj: [PATCH] target/i386/kvm: Refine VMX controls setting for
+ backward 
+Message-ID: <20231013022111.224467-1-ewanhai-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230925071453.14908-1-ewanhai-oc@zhaoxin.com>
+References: <20230925071453.14908-1-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-27932.003
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-27932.003
-X-TMASE-Result: 10-0.382300-10.000000
-X-TMASE-MatchedRID: aulLGGssQIMQQGM6WcQD/Auw+MVcHJpKjlRp8uau9oar1gUu9f1F/78F
- Hrw7frluQTnfsHRv3fu5ijSzmdr97EpCFcNebto2hjlBjwpom1OlLADMASK8x+QdHK70O9a9o8W
- MkQWv6iXBcIE78YqRWo6HM5rqDwqtXa6Q+cpEixFT8ZSuXf2MpwpUcLjvAYi9cHatKK4wXuB5NG
- 1kI1mciP8ZtxI75jgcajBUwUX02ojf4idpFWUFkhBoZd+vstEyFcG3+ZRETICP9kUX1Z+buE3Lu
- mkbQiNwVCqTSPu8tVR7AxIEOt4h2Q==
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=139.138.61.253;
- envelope-from=lizhijian@fujitsu.com; helo=esa8.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.28.66.55]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1697163673
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 775
+X-Barracuda-BRTS-Status: 0
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -1.52
+X-Barracuda-Spam-Status: No,
+ SCORE=-1.52 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=BSF_SC0_SA_TO_FROM_ADDR_MATCH
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.115324
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+ 0.50 BSF_SC0_SA_TO_FROM_ADDR_MATCH Sender Address Matches Recipient
+ Address
+Received-SPF: pass client-ip=203.110.167.99;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,50 +93,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-void cxl_component_register_block_init(Object *obj,
-                                       CXLComponentState *cxl_cstate,
-                                       const char *type)
-{
-    ComponentRegisters *cregs = &cxl_cstate->crb;
-...
-    memory_region_init_io(&cregs->cache_mem, obj, &cache_mem_ops, cregs,
-                          ".cache_mem", CXL2_COMPONENT_CM_REGION_SIZE);
+Hello Pbonzini and QEMU community,
 
-Obviously, opaque should be pointer to ComponentRegisters.
-Fortunately, cregs is the first member of cxl_state, so their values are
-the same.
+I submitted a patch titled "target/i386/kvm: Refine VMX controls setting for 
+backward compatibility" on the 25th of September 2023. I noticed that it 
+hasn't received any replies yet. Here's a link to the patch on lore.kernel.org: 
+https://lore.kernel.org/all/20230925071453.14908-1-ewanhai-oc@zhaoxin.com/.
 
-Fixes: 9e58f52d3f8 ("hw/cxl/component: Introduce CXL components (8.1.x, 8.2.5)")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
----
- hw/cxl/cxl-component-utils.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+I've double-checked to ensure I CC'd the relevant maintainers and addressed 
+previous review comments, if any. I understand that everyone is busy and some 
+patches might get overlooked, especially in less-maintained areas.
 
-diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index f3bbf0fd131..f27a9d3cf60 100644
---- a/hw/cxl/cxl-component-utils.c
-+++ b/hw/cxl/cxl-component-utils.c
-@@ -64,8 +64,7 @@ hwaddr cxl_decode_ig(int ig)
- static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
-                                        unsigned size)
- {
--    CXLComponentState *cxl_cstate = opaque;
--    ComponentRegisters *cregs = &cxl_cstate->crb;
-+    ComponentRegisters *cregs = opaque;
- 
-     if (size == 8) {
-         qemu_log_mask(LOG_UNIMP,
-@@ -113,8 +112,7 @@ static void dumb_hdm_handler(CXLComponentState *cxl_cstate, hwaddr offset,
- static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
-                                     unsigned size)
- {
--    CXLComponentState *cxl_cstate = opaque;
--    ComponentRegisters *cregs = &cxl_cstate->crb;
-+    ComponentRegisters *cregs = opaque;
-     uint32_t mask;
- 
-     if (size == 8) {
--- 
-2.41.0
+I kindly request feedback or a review for my submission. If there are any 
+issues or changes needed, please let me know.
+
+Thank you for your time and consideration.
+
+Best regards,
+Ewan
 
 
