@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A54F7C8103
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:56:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F067D7C80C2
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:51:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqI-0008JK-0w; Fri, 13 Oct 2023 04:48:22 -0400
+	id 1qrDqV-0000Jw-Fe; Fri, 13 Oct 2023 04:48:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDq9-0007u0-4e
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:13 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1qrDqA-00083H-F9
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:14 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDq5-0000xr-Q9
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:12 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-405505b07dfso19070565e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:09 -0700 (PDT)
+ id 1qrDq8-0000z7-QK
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:14 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-53da80ada57so3303816a12.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186888; x=1697791688; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186889; x=1697791689; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2BaJISi7vmLPZA7CcIbdyj8kQAkPTCNcK1r7O/POa5E=;
- b=TFylOXl/9eY5bNMXHAAvFWhWrUgH78wXlpngcgCKuJmRx94tRRwQSWbFvJyP/OLcxG
- vsl4wzKLcKiBoqnIlSRO7uugcXZapXUm0Jovq0Yg9UkikOmGuMTaUuz6DZzWfxUrjHw7
- LfqZj7rbds0e1JF5r07kuwaIMe+PXbt1xtFV1WMMZ6JfQdkUVdeNKDdmJ2F47M0UNKDf
- 2IRjiWWByODg9Ki5NKYLqIHqi4sTz50S6YZjAqJquSmKIOuDdSgIHeojaIdktXkkmK+O
- noSGGVtJBpcENOh+tR4WKvLyxm2mf8OsRPs9hD63Qm+EPMUY3zXKFYjoYN7taYeHUG19
- CLSw==
+ bh=ObLZvBfIWsqpBMz1AMe/d33MJDsii0r1Rk9v0m2F3xk=;
+ b=qaC2AyUSfs1ORZzUBkVkGmZbslSkkVUdxE/ClAerK7HwFh85twCjvVPgDIRA3u/SpQ
+ lBNv71phptphehrhJtKHEtGa3ujlx5b5E9tL/UwW4uUFxTfzK5Fctm96r7gIFURkgVD0
+ HTSTQbhzkJ9sB34gC9oesJXBRXdxaO7UtAXgkr2fQ9s9nE7PIHUr0Psf5D4RxD5Wdnyf
+ hzYLHa1j/twbE3MwC+VZrhmS+RO1Gam+iXAKTSzZgkHHbBgOfPA6rYIv9XtvOuMpC2O3
+ 4w+X6LPqg0AiWVvIdnxtaJfvH3hL/fVjgzzTVFXil52I90uE8hBJqthYmEfv4l0PMuCM
+ Ag3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186888; x=1697791688;
+ d=1e100.net; s=20230601; t=1697186889; x=1697791689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2BaJISi7vmLPZA7CcIbdyj8kQAkPTCNcK1r7O/POa5E=;
- b=Mq+3zkWSYjhK7GPtRBzSEuRW7Qnra9xAZZgVwZEwXNzfyTdjw4GJ+ZkjYtUWeGVM8J
- Xm7Yz7EYbhEommA6igibH5FimL7S2Q7WmC/w8CCrFIzoXAuZWBnZ4tQ0FGlDYx4UTVPs
- mHos5SjyTmUOooxyCuCR0Ra17XOIXOSgTGyEYAEl9UdIJH/+n30pqfPMGp/OtCVx+Fkg
- p/8c681SgIJtMmV40qYCCDVADqIU+zY4mQ3GoORi5OuA4MMOTnLXTUr4lKkh3wPaqG0W
- 9qpnMcZ0MRPvQ2tDxqiEle+Z/d2StSzP0WMJxNChPfZY3Ml0lDc+Wisr2IZOx8UK6ebB
- Kvww==
-X-Gm-Message-State: AOJu0Yy01rNFFAFLgRp20RemXqIT5U1+1j/FeHjmDEuHRT+WGnULv+I2
- XqPjJjfXzWGHav3aMbvujUqX5yQsZUe5qPJbedE=
-X-Google-Smtp-Source: AGHT+IGdDdV8uc3DGzWgUGRJ5YWzfjS3HvE18mkF9qEA+Fd/WFLx5wQFZHnLcCSFSda50GA2P9VDJw==
-X-Received: by 2002:a1c:7907:0:b0:405:409e:1fcb with SMTP id
- l7-20020a1c7907000000b00405409e1fcbmr20417150wme.5.1697186888169; 
- Fri, 13 Oct 2023 01:48:08 -0700 (PDT)
+ bh=ObLZvBfIWsqpBMz1AMe/d33MJDsii0r1Rk9v0m2F3xk=;
+ b=F58R51N9pYebG4ndaAOk7IW44ijdvFgeQ2pyMjrcaiyKy3dkhKqTroGc4uOxxPPOrR
+ ERDkyYusiSYVLGPyGkWGwK3zC/gN1GC5urMeeZ6VXjYEMalGqC5UrRBcev/GwVs+nr49
+ hbGCDub7ETD8KAuTKcDb9WRvTpSQwp/2wFcKETFsRMTQ8tnc8imPkwGUpQHo6cD5JejH
+ CXfK/QYUG7GVO/qMVY5D20EdZoNFq4NMz3/hprk2BqCxTPhavF9CZREPYftg/i9sPb6r
+ EyL807Q9hyMLv2WPYW0MHpfqdSy6K2c0fsCo4Q+D2Nls1oiOOaFvtUysgXGH6iJVCii3
+ 1UHg==
+X-Gm-Message-State: AOJu0Yye69d2aAu6mun/ywwG6VY4VsBkW+uIYPkjAOMSYTEpkXRN/nL2
+ ztnLIwpm1BuDYJpaa2VICugP+EVoYM2lJ3JLY38=
+X-Google-Smtp-Source: AGHT+IH7HwdS72AasIkwA171QR7J44aRgmM4nSCznZ/+rq1ENXDvkt5Gl8Igx41cHqggP+LxTb3MAw==
+X-Received: by 2002:a17:906:3284:b0:9b8:e670:657b with SMTP id
+ 4-20020a170906328400b009b8e670657bmr23160046ejw.64.1697186889642; 
+ Fri, 13 Oct 2023 01:48:09 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.07
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:48:07 -0700 (PDT)
+ Fri, 13 Oct 2023 01:48:09 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [RFC PATCH v3 32/78] target/m68k: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:00 +0300
-Message-Id: <a788ff5afe4a3b2282234d9446b9ec1a196e0667.1697186560.git.manos.pitsidianakis@linaro.org>
+ Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [RFC PATCH v3 33/78] target/rx: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:46:01 +0300
+Message-Id: <845988d0db898a66623ab13dded5a50138ce7731.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,80 +97,22 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/m68k/op_helper.c |  3 ++-
- target/m68k/translate.c | 10 +++++-----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ target/rx/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
-index 1ce850bbc5..65058b9e2f 100644
---- a/target/m68k/op_helper.c
-+++ b/target/m68k/op_helper.c
-@@ -418,7 +418,7 @@ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
-             do_stack_frame(env, &sp, 1, oldsr, 0, env->pc);
-             break;
-         }
+diff --git a/target/rx/translate.c b/target/rx/translate.c
+index f8860830ae..b00c0a21fb 100644
+--- a/target/rx/translate.c
++++ b/target/rx/translate.c
+@@ -2243,7 +2243,7 @@ static void rx_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+         break;
+     case DISAS_UPDATE:
+         tcg_gen_movi_i32(cpu_pc, ctx->base.pc_next);
 -        /* fall through */
 +        fallthrough;
- 
-     default:
-         do_stack_frame(env, &sp, 0, oldsr, 0, env->pc);
-@@ -917,6 +917,7 @@ static struct bf_data bf_prep(uint32_t addr, int32_t ofs, uint32_t len)
-             addr -= 1;
-         }
-         /* fallthru */
-+        fallthrough;
-     case 3:
-         bofs += 32;
+     case DISAS_EXIT:
+         tcg_gen_exit_tb(NULL, 0);
          break;
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 4d0110de95..ce102dc585 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -732,7 +732,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-         if (opsize == OS_UNSIZED) {
-             return NULL_QREG;
-         }
--        /* fallthru */
-+        fallthrough;
-     case 2: /* Indirect register */
-         return get_areg(s, reg0);
-     case 4: /* Indirect predecrememnt.  */
-@@ -1221,7 +1221,7 @@ static void gen_cc_cond(DisasCompare *c, DisasContext *s, int cond)
-             c->v1 = tmp = tcg_temp_new();
-             tcg_gen_sub_i32(tmp, QREG_CC_N, QREG_CC_V);
-             gen_ext(tmp, tmp, op - CC_OP_CMPB, 1);
--            /* fallthru */
-+            fallthrough;
-         case 12: /* GE */
-         case 13: /* LT */
-             tcond = TCG_COND_LT;
-@@ -1260,7 +1260,7 @@ static void gen_cc_cond(DisasCompare *c, DisasContext *s, int cond)
-         if (op != CC_OP_LOGIC) {
-             break;
-         }
--        /* fallthru */
-+        fallthrough;
-     case 10: /* PL (!N) */
-     case 11: /* MI (N) */
-         /* Several cases represent N normally.  */
-@@ -1292,7 +1292,7 @@ static void gen_cc_cond(DisasCompare *c, DisasContext *s, int cond)
-             c->v1 = QREG_CC_X;
-             goto done;
-         }
--        /* fallthru */
-+        fallthrough;
-     case 8: /* VC (!V) */
-     case 9: /* VS (V) */
-         /* Logic operations clear V and C.  */
-@@ -4234,7 +4234,7 @@ DISAS_INSN(chk)
-             opsize = OS_LONG;
-             break;
-         }
--        /* fallthru */
-+        fallthrough;
-     default:
-         gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
-         return;
 -- 
 2.39.2
 
