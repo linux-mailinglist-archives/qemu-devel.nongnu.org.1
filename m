@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69767C8009
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C177C7FED
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:20:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDNI-0004fu-JD; Fri, 13 Oct 2023 04:18:24 -0400
+	id 1qrDNO-00051q-6X; Fri, 13 Oct 2023 04:18:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qrDN4-0003kw-MI
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:18:12 -0400
+ id 1qrDN3-0003hV-It
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:18:11 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qrDN0-0003S3-5Z
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:18:10 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qrDMx-0003SO-Q0
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:18:08 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Axjusx_Shl6aQxAA--.27271S3;
- Fri, 13 Oct 2023 16:17:53 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Dx_7s0_Shl7aQxAA--.36508S3;
+ Fri, 13 Oct 2023 16:17:56 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxbNwt_ShlyKIiAA--.7352S4; 
- Fri, 13 Oct 2023 16:17:52 +0800 (CST)
+ AQAAf8BxbNwt_ShlyKIiAA--.7352S5; 
+ Fri, 13 Oct 2023 16:17:53 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, stefanha@gmail.com,
+ =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/7] target/loongarch: Add preldx instruction
-Date: Fri, 13 Oct 2023 16:17:45 +0800
-Message-Id: <20231013081750.2944412-3-gaosong@loongson.cn>
+Subject: [PULL 3/7] hw/loongarch: remove global loaderparams variable
+Date: Fri, 13 Oct 2023 16:17:46 +0800
+Message-Id: <20231013081750.2944412-4-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20231013081750.2944412-1-gaosong@loongson.cn>
 References: <20231013081750.2944412-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxbNwt_ShlyKIiAA--.7352S4
+X-CM-TRANSID: AQAAf8BxbNwt_ShlyKIiAA--.7352S5
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,95 +65,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resolve the issue of starting the Loongnix 20.5[1] system failure.
+From: Thomas Weißschuh <thomas@t-8ch.de>
 
-Logs:
-    Loading Linux 4.19.0-19-loongson-3 ...
-    Loading initial ramdisk ...
-    PROGRESS CODE: V02010004 I0
-    PROGRESS CODE: V03101019 I0
-    Error: unknown opcode. 90000000003a3e6c: 0x382c6d82
-
-[1] http://pkg.loongnix.cn/loongnix/isos/Loongnix-20.5/Loongnix-20.5.cartoon.gui.loongarch64.en.qcow2
+Passing the struct around explicitly makes the control-flow more
+obvious.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+Message-Id: <20231010-loongarch-loader-params-v2-1-512cc7959683@t-8ch.de>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20230905123910.3052023-1-gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                       | 7 +++++++
- target/loongarch/insn_trans/trans_memory.c.inc | 5 +++++
- target/loongarch/insns.decode                  | 3 +++
- 3 files changed, 15 insertions(+)
+ hw/loongarch/virt.c | 50 ++++++++++++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 23 deletions(-)
 
-diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index c8a29eac2b..2040f3e44d 100644
---- a/target/loongarch/disas.c
-+++ b/target/loongarch/disas.c
-@@ -190,6 +190,12 @@ static void output_hint_r_i(DisasContext *ctx, arg_hint_r_i *a,
-     output(ctx, mnemonic, "%d, r%d, %d", a->hint, a->rj, a->imm);
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index b0a004f860..c6f64e941b 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -47,6 +47,13 @@
+ #include "qemu/error-report.h"
+ 
+ 
++struct loaderparams {
++    uint64_t ram_size;
++    const char *kernel_filename;
++    const char *kernel_cmdline;
++    const char *initrd_filename;
++};
++
+ static void virt_flash_create(LoongArchMachineState *lams)
+ {
+     DeviceState *dev = qdev_new(TYPE_PFLASH_CFI01);
+@@ -411,24 +418,17 @@ static const MemoryRegionOps loongarch_virt_pm_ops = {
+     }
+ };
+ 
+-static struct _loaderparams {
+-    uint64_t ram_size;
+-    const char *kernel_filename;
+-    const char *kernel_cmdline;
+-    const char *initrd_filename;
+-} loaderparams;
+-
+ static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
+ {
+     return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
  }
  
-+static void output_hint_rr(DisasContext *ctx, arg_hint_rr *a,
-+                           const char *mnemonic)
-+{
-+    output(ctx, mnemonic, "%d, r%d, r%d", a->hint, a->rj, a->rk);
-+}
-+
- static void output_i(DisasContext *ctx, arg_i *a, const char *mnemonic)
+-static int64_t load_kernel_info(void)
++static int64_t load_kernel_info(const struct loaderparams *loaderparams)
  {
-     output(ctx, mnemonic, "%d", a->imm);
-@@ -549,6 +555,7 @@ INSN(ld_bu,        rr_i)
- INSN(ld_hu,        rr_i)
- INSN(ld_wu,        rr_i)
- INSN(preld,        hint_r_i)
-+INSN(preldx,       hint_rr)
- INSN(fld_s,        fr_i)
- INSN(fst_s,        fr_i)
- INSN(fld_d,        fr_i)
-diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/insn_trans/trans_memory.c.inc
-index c3de1404ea..42f4e74012 100644
---- a/target/loongarch/insn_trans/trans_memory.c.inc
-+++ b/target/loongarch/insn_trans/trans_memory.c.inc
-@@ -110,6 +110,11 @@ static bool trans_preld(DisasContext *ctx, arg_preld *a)
-     return true;
+     uint64_t kernel_entry, kernel_low, kernel_high;
+     ssize_t kernel_size;
+ 
+-    kernel_size = load_elf(loaderparams.kernel_filename, NULL,
++    kernel_size = load_elf(loaderparams->kernel_filename, NULL,
+                            cpu_loongarch_virt_to_phys, NULL,
+                            &kernel_entry, &kernel_low,
+                            &kernel_high, NULL, 0,
+@@ -436,7 +436,7 @@ static int64_t load_kernel_info(void)
+ 
+     if (kernel_size < 0) {
+         error_report("could not load kernel '%s': %s",
+-                     loaderparams.kernel_filename,
++                     loaderparams->kernel_filename,
+                      load_elf_strerror(kernel_size));
+         exit(1);
+     }
+@@ -728,7 +728,8 @@ static void reset_load_elf(void *opaque)
+     }
  }
  
-+static bool trans_preldx(DisasContext *ctx, arg_preldx * a)
-+{
-+    return true;
-+}
-+
- static bool trans_dbar(DisasContext *ctx, arg_dbar * a)
+-static void fw_cfg_add_kernel_info(FWCfgState *fw_cfg)
++static void fw_cfg_add_kernel_info(const struct loaderparams *loaderparams,
++                                   FWCfgState *fw_cfg)
  {
-     tcg_gen_mb(TCG_BAR_SC | TCG_MO_ALL);
-diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 64b308f9fb..62f58cc541 100644
---- a/target/loongarch/insns.decode
-+++ b/target/loongarch/insns.decode
-@@ -24,6 +24,7 @@
- &rrr          rd rj rk
- &rr_i         rd rj imm
- &hint_r_i     hint rj imm
-+&hint_rr      hint rj rk
- &rrr_sa       rd rj rk sa
- &rr_ms_ls     rd rj ms ls
- &ff           fd fj
-@@ -69,6 +70,7 @@
- @rr_i16                     .... .. imm:s16 rj:5 rd:5    &rr_i
- @rr_i16s2         .... ..  ................ rj:5 rd:5    &rr_i imm=%offs16
- @hint_r_i12           .... ...... imm:s12 rj:5 hint:5    &hint_r_i
-+@hint_rr         .... ........ ..... rk:5 rj:5 hint:5    &hint_rr
- @rrr_sa2p1        .... ........ ... .. rk:5 rj:5 rd:5    &rrr_sa  sa=%sa2p1
- @rrr_sa2        .... ........ ... sa:2 rk:5 rj:5 rd:5    &rrr_sa
- @rrr_sa3         .... ........ .. sa:3 rk:5 rj:5 rd:5    &rrr_sa
-@@ -228,6 +230,7 @@ ldx_bu          0011 10000010 00000 ..... ..... .....    @rrr
- ldx_hu          0011 10000010 01000 ..... ..... .....    @rrr
- ldx_wu          0011 10000010 10000 ..... ..... .....    @rrr
- preld           0010 101011 ............ ..... .....     @hint_r_i12
-+preldx          0011 10000010 11000 ..... ..... .....    @hint_rr
- dbar            0011 10000111 00100 ...............      @i15
- ibar            0011 10000111 00101 ...............      @i15
- ldptr_w         0010 0100 .............. ..... .....     @rr_i14s2
+     /*
+      * Expose the kernel, the command line, and the initrd in fw_cfg.
+@@ -737,36 +738,38 @@ static void fw_cfg_add_kernel_info(FWCfgState *fw_cfg)
+      */
+     load_image_to_fw_cfg(fw_cfg,
+                          FW_CFG_KERNEL_SIZE, FW_CFG_KERNEL_DATA,
+-                         loaderparams.kernel_filename,
++                         loaderparams->kernel_filename,
+                          false);
+ 
+-    if (loaderparams.initrd_filename) {
++    if (loaderparams->initrd_filename) {
+         load_image_to_fw_cfg(fw_cfg,
+                              FW_CFG_INITRD_SIZE, FW_CFG_INITRD_DATA,
+-                             loaderparams.initrd_filename, false);
++                             loaderparams->initrd_filename, false);
+     }
+ 
+-    if (loaderparams.kernel_cmdline) {
++    if (loaderparams->kernel_cmdline) {
+         fw_cfg_add_i32(fw_cfg, FW_CFG_CMDLINE_SIZE,
+-                       strlen(loaderparams.kernel_cmdline) + 1);
++                       strlen(loaderparams->kernel_cmdline) + 1);
+         fw_cfg_add_string(fw_cfg, FW_CFG_CMDLINE_DATA,
+-                          loaderparams.kernel_cmdline);
++                          loaderparams->kernel_cmdline);
+     }
+ }
+ 
+-static void loongarch_firmware_boot(LoongArchMachineState *lams)
++static void loongarch_firmware_boot(LoongArchMachineState *lams,
++                                    const struct loaderparams *loaderparams)
+ {
+-    fw_cfg_add_kernel_info(lams->fw_cfg);
++    fw_cfg_add_kernel_info(loaderparams, lams->fw_cfg);
+ }
+ 
+-static void loongarch_direct_kernel_boot(LoongArchMachineState *lams)
++static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
++                                         const struct loaderparams *loaderparams)
+ {
+     MachineState *machine = MACHINE(lams);
+     int64_t kernel_addr = 0;
+     LoongArchCPU *lacpu;
+     int i;
+ 
+-    kernel_addr = load_kernel_info();
++    kernel_addr = load_kernel_info(loaderparams);
+     if (!machine->firmware) {
+         for (i = 0; i < machine->smp.cpus; i++) {
+             lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
+@@ -793,6 +796,7 @@ static void loongarch_init(MachineState *machine)
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+     CPUState *cpu;
+     char *ramName = NULL;
++    struct loaderparams loaderparams = { };
+ 
+     if (!cpu_model) {
+         cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
+@@ -898,9 +902,9 @@ static void loongarch_init(MachineState *machine)
+     /* load the kernel. */
+     if (loaderparams.kernel_filename) {
+         if (lams->bios_loaded) {
+-            loongarch_firmware_boot(lams);
++            loongarch_firmware_boot(lams, &loaderparams);
+         } else {
+-            loongarch_direct_kernel_boot(lams);
++            loongarch_direct_kernel_boot(lams, &loaderparams);
+         }
+     }
+     fdt_add_flash_node(lams);
 -- 
 2.25.1
 
