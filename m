@@ -2,94 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6736B7C8D15
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 20:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 383FE7C8D85
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:11:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrMyU-0003Yx-Ta; Fri, 13 Oct 2023 14:33:26 -0400
+	id 1qrNXn-0006Ug-Do; Fri, 13 Oct 2023 15:09:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrMy3-0003Ty-HH; Fri, 13 Oct 2023 14:32:59 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNXl-0006U8-3Q
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:09:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.145.221.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrMxx-0003AB-Nq; Fri, 13 Oct 2023 14:32:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=byuzCLLc3O3xLpRGuOu5GkIYJyADF9C8nBaG30TQQWs=; b=jDIkx7oBgzHmxmwYdSDHMb7NzH
- /xC0Tq5dWWaPivS9YK0TAdVwbnUH8B4u9OleOFfDZMEMWzczh3wKfd5uEjBMWuO5nFaqkGE0plKjy
- ycNYgSksOC4rU/vFlxCYGcTkY7L7yRj0BTCbInuivNyqC8CPIqS+pUsDcDNuQUz4fkfsq/V7zHqSU
- qVhI8iQkn/CjDD+W60u/7O4M3xNhb9hqH0Fg6GRG1bwuJOqvvM/+ZL6schvnSN6bVlktM1jCYyX0D
- CbEPvKm/weIKyt3hFjFr31L1bXQOnaimTuLCee/a7qJRgAxSUR9i841cVs1TSmEFrjcEUHBjjFBPX
- kPAZdif89hWoFYpPg2IreZtcJUQvejYhWUvVUTfSjehHUc378CwkEPQbnTyxWf8IuILu1foMOgGij
- 8wRsDv5i9SmQ1Uaf7rdYGW2OEojF+mEOyy6BqCQmaPJDAKvVQ2LTJ34Alqd4pEJeT1XPTVZV1Um6l
- pMxGB8GU84yd2lixq9inuUBetxEWRIi+e0Lz0DPM75Vv9192+l6QuQye5+hyGi/TtKkUCZHjSmqGH
- a1ZXhCF6Q2C/A2E3f1e7k/FLLGO5TgBCnLzK/bEqo2H4MN9SBuozmmK1KKsa8qOIShtKtpHXhpL1H
- hhaqno7Yx9y4AgvGSXCgwPmyvUpjmvnIHTL34c0LI=;
-Received: from [2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrMxn-0002rq-2E; Fri, 13 Oct 2023 19:32:47 +0100
-Message-ID: <de55b967-a00a-41e4-b95c-c7dc4d3823e4@ilande.co.uk>
-Date: Fri, 13 Oct 2023 19:32:43 +0100
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNXi-0001ZU-2Z
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:09:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697224187;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eC6AjDlIvMTiZth3TEPCkJHOJ7BUyz4tXU1pEWCvznQ=;
+ b=Gb1zK+QXl3CaQ3uv1LP+vnIsVHUI8kHkLz7ecyFxjRuUN/TKaZz8E7zYwRxGH7VLZyZ5cd
+ fDjuwQcrT/0tSxg1SjwCQUDNn7pFyv8y7m0YOZWE/b35SjMqgFOG4rGku4x4YQDAjGo94V
+ 3rTrFogw+1G1vdufSQ4kIWaowWdYFAQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-2-Cojth_ZoPoaKgp8_3KFJmw-1; Fri, 13 Oct 2023 15:09:44 -0400
+X-MC-Unique: Cojth_ZoPoaKgp8_3KFJmw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F341801E80;
+ Fri, 13 Oct 2023 19:09:43 +0000 (UTC)
+Received: from scv.redhat.com (unknown [10.22.32.124])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5B8F940C6F79;
+ Fri, 13 Oct 2023 19:09:41 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
+ Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
+ Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, qemu-s390x@nongnu.org,
+ Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ John Snow <jsnow@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ qemu-block@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Jeffery <andrew@aj.id.au>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Eric Farman <farman@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Halil Pasic <pasic@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>
+Subject: [PULL 00/25] Python patches
+Date: Fri, 13 Oct 2023 15:09:15 -0400
+Message-ID: <20231013190941.3699288-1-jsnow@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: David Gibson <david@gibson.dropbear.id.au>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20231013125630.95116-1-philmd@linaro.org>
- <20231013125630.95116-2-philmd@linaro.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20231013125630.95116-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 1/7] hw/ppc/spapr: Restrict PPCTimebase structure
- declaration to sPAPR
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=216.145.221.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,345 +93,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/10/2023 13:56, Philippe Mathieu-Daudé wrote:
-
-> The PPCTimebase structure is only used by the sPAPR machine.
-> Move its declaration to "hw/ppc/spapr.h".
-> Move vmstate_ppc_timebase and the VMSTATE_PPC_TIMEBASE_V()
-> macro to hw/ppc/spapr.c, along with the timebase_foo()
-> migration helpers.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/hw/ppc/spapr.h |   6 +++
->   target/ppc/cpu-qom.h   |  22 --------
->   hw/ppc/ppc.c           | 107 -------------------------------------
->   hw/ppc/spapr.c         | 116 +++++++++++++++++++++++++++++++++++++++++
->   4 files changed, 122 insertions(+), 129 deletions(-)
-> 
-> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-> index e91791a1a9..3cf9978cba 100644
-> --- a/include/hw/ppc/spapr.h
-> +++ b/include/hw/ppc/spapr.h
-> @@ -163,6 +163,12 @@ struct SpaprMachineClass {
->       SpaprIrq *irq;
->   };
->   
-> +typedef struct PPCTimebase {
-> +    uint64_t guest_timebase;
-> +    int64_t time_of_the_day_ns;
-> +    bool runstate_paused;
-> +} PPCTimebase;
-> +
->   #define WDT_MAX_WATCHDOGS       4      /* Maximum number of watchdog devices */
->   
->   #define TYPE_SPAPR_WDT "spapr-wdt"
-> diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
-> index be33786bd8..b5deef5ca5 100644
-> --- a/target/ppc/cpu-qom.h
-> +++ b/target/ppc/cpu-qom.h
-> @@ -197,26 +197,4 @@ struct PowerPCCPUClass {
->       int  (*check_pow)(CPUPPCState *env);
->   };
->   
-> -#ifndef CONFIG_USER_ONLY
-> -typedef struct PPCTimebase {
-> -    uint64_t guest_timebase;
-> -    int64_t time_of_the_day_ns;
-> -    bool runstate_paused;
-> -} PPCTimebase;
-> -
-> -extern const VMStateDescription vmstate_ppc_timebase;
-> -
-> -#define VMSTATE_PPC_TIMEBASE_V(_field, _state, _version) {            \
-> -    .name       = (stringify(_field)),                                \
-> -    .version_id = (_version),                                         \
-> -    .size       = sizeof(PPCTimebase),                                \
-> -    .vmsd       = &vmstate_ppc_timebase,                              \
-> -    .flags      = VMS_STRUCT,                                         \
-> -    .offset     = vmstate_offset_value(_state, _field, PPCTimebase),  \
-> -}
-> -
-> -void cpu_ppc_clock_vm_state_change(void *opaque, bool running,
-> -                                   RunState state);
-> -#endif
-> -
->   #endif
-> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> index be167710a3..340cd6192f 100644
-> --- a/hw/ppc/ppc.c
-> +++ b/hw/ppc/ppc.c
-> @@ -32,7 +32,6 @@
->   #include "qemu/main-loop.h"
->   #include "qemu/error-report.h"
->   #include "sysemu/kvm.h"
-> -#include "sysemu/replay.h"
->   #include "sysemu/runstate.h"
->   #include "kvm_ppc.h"
->   #include "migration/vmstate.h"
-> @@ -967,112 +966,6 @@ void cpu_ppc_store_purr(CPUPPCState *env, uint64_t value)
->       _cpu_ppc_store_purr(env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), value);
->   }
->   
-> -static void timebase_save(PPCTimebase *tb)
-> -{
-> -    uint64_t ticks = cpu_get_host_ticks();
-> -    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(first_cpu);
-> -
-> -    if (!first_ppc_cpu->env.tb_env) {
-> -        error_report("No timebase object");
-> -        return;
-> -    }
-> -
-> -    if (replay_mode == REPLAY_MODE_NONE) {
-> -        /* not used anymore, we keep it for compatibility */
-> -        tb->time_of_the_day_ns = qemu_clock_get_ns(QEMU_CLOCK_HOST);
-> -    } else {
-> -        /* simpler for record-replay to avoid this event, compat not needed */
-> -        tb->time_of_the_day_ns = 0;
-> -    }
-> -
-> -    /*
-> -     * tb_offset is only expected to be changed by QEMU so
-> -     * there is no need to update it from KVM here
-> -     */
-> -    tb->guest_timebase = ticks + first_ppc_cpu->env.tb_env->tb_offset;
-> -
-> -    tb->runstate_paused =
-> -        runstate_check(RUN_STATE_PAUSED) || runstate_check(RUN_STATE_SAVE_VM);
-> -}
-> -
-> -static void timebase_load(PPCTimebase *tb)
-> -{
-> -    CPUState *cpu;
-> -    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(first_cpu);
-> -    int64_t tb_off_adj, tb_off;
-> -    unsigned long freq;
-> -
-> -    if (!first_ppc_cpu->env.tb_env) {
-> -        error_report("No timebase object");
-> -        return;
-> -    }
-> -
-> -    freq = first_ppc_cpu->env.tb_env->tb_freq;
-> -
-> -    tb_off_adj = tb->guest_timebase - cpu_get_host_ticks();
-> -
-> -    tb_off = first_ppc_cpu->env.tb_env->tb_offset;
-> -    trace_ppc_tb_adjust(tb_off, tb_off_adj, tb_off_adj - tb_off,
-> -                        (tb_off_adj - tb_off) / freq);
-> -
-> -    /* Set new offset to all CPUs */
-> -    CPU_FOREACH(cpu) {
-> -        PowerPCCPU *pcpu = POWERPC_CPU(cpu);
-> -        pcpu->env.tb_env->tb_offset = tb_off_adj;
-> -        kvmppc_set_reg_tb_offset(pcpu, pcpu->env.tb_env->tb_offset);
-> -    }
-> -}
-> -
-> -void cpu_ppc_clock_vm_state_change(void *opaque, bool running,
-> -                                   RunState state)
-> -{
-> -    PPCTimebase *tb = opaque;
-> -
-> -    if (running) {
-> -        timebase_load(tb);
-> -    } else {
-> -        timebase_save(tb);
-> -    }
-> -}
-> -
-> -/*
-> - * When migrating a running guest, read the clock just
-> - * before migration, so that the guest clock counts
-> - * during the events between:
-> - *
-> - *  * vm_stop()
-> - *  *
-> - *  * pre_save()
-> - *
-> - *  This reduces clock difference on migration from 5s
-> - *  to 0.1s (when max_downtime == 5s), because sending the
-> - *  final pages of memory (which happens between vm_stop()
-> - *  and pre_save()) takes max_downtime.
-> - */
-> -static int timebase_pre_save(void *opaque)
-> -{
-> -    PPCTimebase *tb = opaque;
-> -
-> -    /* guest_timebase won't be overridden in case of paused guest or savevm */
-> -    if (!tb->runstate_paused) {
-> -        timebase_save(tb);
-> -    }
-> -
-> -    return 0;
-> -}
-> -
-> -const VMStateDescription vmstate_ppc_timebase = {
-> -    .name = "timebase",
-> -    .version_id = 1,
-> -    .minimum_version_id = 1,
-> -    .pre_save = timebase_pre_save,
-> -    .fields      = (VMStateField []) {
-> -        VMSTATE_UINT64(guest_timebase, PPCTimebase),
-> -        VMSTATE_INT64(time_of_the_day_ns, PPCTimebase),
-> -        VMSTATE_END_OF_LIST()
-> -    },
-> -};
-> -
->   /* Set up (once) timebase frequency (in Hz) */
->   void cpu_ppc_tb_init(CPUPPCState *env, uint32_t freq)
->   {
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index cb840676d3..fe8b425ffd 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -37,6 +37,7 @@
->   #include "sysemu/numa.h"
->   #include "sysemu/qtest.h"
->   #include "sysemu/reset.h"
-> +#include "sysemu/replay.h"
->   #include "sysemu/runstate.h"
->   #include "qemu/log.h"
->   #include "hw/fw-path-provider.h"
-> @@ -1809,6 +1810,100 @@ static bool spapr_vga_init(PCIBus *pci_bus, Error **errp)
->       }
->   }
->   
-> +static void timebase_save(PPCTimebase *tb)
-> +{
-> +    uint64_t ticks = cpu_get_host_ticks();
-> +    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(first_cpu);
-> +
-> +    if (!first_ppc_cpu->env.tb_env) {
-> +        error_report("No timebase object");
-> +        return;
-> +    }
-> +
-> +    if (replay_mode == REPLAY_MODE_NONE) {
-> +        /* not used anymore, we keep it for compatibility */
-> +        tb->time_of_the_day_ns = qemu_clock_get_ns(QEMU_CLOCK_HOST);
-> +    } else {
-> +        /* simpler for record-replay to avoid this event, compat not needed */
-> +        tb->time_of_the_day_ns = 0;
-> +    }
-> +
-> +    /*
-> +     * tb_offset is only expected to be changed by QEMU so
-> +     * there is no need to update it from KVM here
-> +     */
-> +    tb->guest_timebase = ticks + first_ppc_cpu->env.tb_env->tb_offset;
-> +
-> +    tb->runstate_paused =
-> +        runstate_check(RUN_STATE_PAUSED) || runstate_check(RUN_STATE_SAVE_VM);
-> +}
-> +
-> +static void timebase_load(PPCTimebase *tb)
-> +{
-> +    CPUState *cpu;
-> +    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(first_cpu);
-> +    int64_t tb_off_adj, tb_off;
-> +    unsigned long freq;
-> +
-> +    if (!first_ppc_cpu->env.tb_env) {
-> +        error_report("No timebase object");
-> +        return;
-> +    }
-> +
-> +    freq = first_ppc_cpu->env.tb_env->tb_freq;
-> +
-> +    tb_off_adj = tb->guest_timebase - cpu_get_host_ticks();
-> +
-> +    tb_off = first_ppc_cpu->env.tb_env->tb_offset;
-> +    trace_ppc_tb_adjust(tb_off, tb_off_adj, tb_off_adj - tb_off,
-> +                        (tb_off_adj - tb_off) / freq);
-> +
-> +    /* Set new offset to all CPUs */
-> +    CPU_FOREACH(cpu) {
-> +        PowerPCCPU *pcpu = POWERPC_CPU(cpu);
-> +        pcpu->env.tb_env->tb_offset = tb_off_adj;
-> +        kvmppc_set_reg_tb_offset(pcpu, pcpu->env.tb_env->tb_offset);
-> +    }
-> +}
-> +
-> +static void cpu_ppc_clock_vm_state_change(void *opaque, bool running,
-> +                                          RunState state)
-> +{
-> +    PPCTimebase *tb = opaque;
-> +
-> +    if (running) {
-> +        timebase_load(tb);
-> +    } else {
-> +        timebase_save(tb);
-> +    }
-> +}
-> +
-> +/*
-> + * When migrating a running guest, read the clock just
-> + * before migration, so that the guest clock counts
-> + * during the events between:
-> + *
-> + *  * vm_stop()
-> + *  *
-> + *  * pre_save()
-> + *
-> + *  This reduces clock difference on migration from 5s
-> + *  to 0.1s (when max_downtime == 5s), because sending the
-> + *  final pages of memory (which happens between vm_stop()
-> + *  and pre_save()) takes max_downtime.
-> + */
-> +static int timebase_pre_save(void *opaque)
-> +{
-> +    PPCTimebase *tb = opaque;
-> +
-> +    /* guest_timebase won't be overridden in case of paused guest or savevm */
-> +    if (!tb->runstate_paused) {
-> +        timebase_save(tb);
-> +    }
-> +
-> +    return 0;
-> +}
-> +
->   static int spapr_pre_load(void *opaque)
->   {
->       int rc;
-> @@ -2081,6 +2176,27 @@ static const VMStateDescription vmstate_spapr_fwnmi = {
->       },
->   };
->   
-> +static const VMStateDescription vmstate_spapr_timebase = {
-> +    .name = "timebase",
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .pre_save = timebase_pre_save,
-> +    .fields      = (VMStateField []) {
-> +        VMSTATE_UINT64(guest_timebase, PPCTimebase),
-> +        VMSTATE_INT64(time_of_the_day_ns, PPCTimebase),
-> +        VMSTATE_END_OF_LIST()
-> +    },
-> +};
-> +
-> +#define VMSTATE_PPC_TIMEBASE_V(_field, _state, _version) {            \
-> +    .name       = (stringify(_field)),                                \
-> +    .version_id = (_version),                                         \
-> +    .size       = sizeof(PPCTimebase),                                \
-> +    .vmsd       = &vmstate_spapr_timebase,                            \
-> +    .flags      = VMS_STRUCT,                                         \
-> +    .offset     = vmstate_offset_value(_state, _field, PPCTimebase),  \
-> +}
-> +
->   static const VMStateDescription vmstate_spapr = {
->       .name = "spapr",
->       .version_id = 3,
-
-I saw this series when it was original posted, but I failed to spot that it didn't 
-apply to the PPC Mac machines. I have a feeling this should solve a long-running 
-issue I've been having with decrementer migration, in which case can it be moved (or 
-left) somewhere where this is still possible?
-
-
-ATB,
-
-Mark.
+The following changes since commit a51e5124a655b3dad80b36b18547cb1eca2c5eb2=
+:=0D
+=0D
+  Merge tag 'pull-omnibus-111023-1' of https://gitlab.com/stsquad/qemu into=
+ staging (2023-10-11 09:43:10 -0400)=0D
+=0D
+are available in the Git repository at:=0D
+=0D
+  https://gitlab.com/jsnow/qemu.git tags/python-pull-request=0D
+=0D
+for you to fetch changes up to b6aed193e5ecca32bb07e062f58f0daca06e7009:=0D
+=0D
+  python: use vm.cmd() instead of vm.qmp() where appropriate (2023-10-12 14=
+:21:44 -0400)=0D
+=0D
+----------------------------------------------------------------=0D
+Python Pullreq=0D
+=0D
+Python PR:=0D
+=0D
+- Use socketpair for all machine.py connections=0D
+- Support Python 3.12=0D
+- Switch iotests over to using raise-on-error QMP command interface=0D
+  (Thank you very much, Vladimir!)=0D
+=0D
+----------------------------------------------------------------=0D
+=0D
+John Snow (10):=0D
+  python/machine: move socket setup out of _base_args property=0D
+  python/machine: close sock_pair in cleanup path=0D
+  python/console_socket: accept existing FD in initializer=0D
+  python/machine: use socketpair() for console connections=0D
+  python/machine: use socketpair() for qtest connection=0D
+  python/machine: remove unused sock_dir argument=0D
+  Python/iotests: Add type hint for nbd module=0D
+  python/qmp: remove Server.wait_closed() call for Python 3.12=0D
+  configure: fix error message to say Python 3.8=0D
+  Python: Enable python3.12 support=0D
+=0D
+Vladimir Sementsov-Ogievskiy (15):=0D
+  python/qemu/qmp/legacy: cmd(): drop cmd_id unused argument=0D
+  qmp_shell.py: _fill_completion() use .command() instead of .cmd()=0D
+  scripts/cpu-x86-uarch-abi.py: use .command() instead of .cmd()=0D
+  python: rename QEMUMonitorProtocol.cmd() to cmd_raw()=0D
+  python/qemu: rename command() to cmd()=0D
+  python/machine.py: upgrade vm.cmd() method=0D
+  iotests: QemuStorageDaemon: add cmd() method like in QEMUMachine.=0D
+  iotests: add some missed checks of qmp result=0D
+  iotests: refactor some common qmp result checks into generic pattern=0D
+  iotests: drop some extra semicolons=0D
+  iotests: drop some extra ** in qmp() call=0D
+  iotests.py: pause_job(): drop return value=0D
+  tests/vm/basevm.py: use cmd() instead of qmp()=0D
+  scripts: add python_qmp_updater.py=0D
+  python: use vm.cmd() instead of vm.qmp() where appropriate=0D
+=0D
+ docs/devel/testing.rst                        |  10 +-=0D
+ configure                                     |   5 +-=0D
+ python/qemu/machine/console_socket.py         |  29 +-=0D
+ python/qemu/machine/machine.py                |  78 +--=0D
+ python/qemu/machine/qtest.py                  |  54 +-=0D
+ python/qemu/qmp/legacy.py                     |  10 +-=0D
+ python/qemu/qmp/protocol.py                   |   1 -=0D
+ python/qemu/qmp/qmp_shell.py                  |  20 +-=0D
+ python/qemu/utils/qemu_ga_client.py           |   2 +-=0D
+ python/qemu/utils/qom.py                      |   8 +-=0D
+ python/qemu/utils/qom_common.py               |   2 +-=0D
+ python/qemu/utils/qom_fuse.py                 |   6 +-=0D
+ python/setup.cfg                              |   3 +-=0D
+ scripts/cpu-x86-uarch-abi.py                  |   8 +-=0D
+ scripts/device-crash-test                     |   8 +-=0D
+ scripts/python_qmp_updater.py                 | 136 +++++=0D
+ scripts/render_block_graph.py                 |   8 +-=0D
+ tests/avocado/acpi-bits.py                    |   5 +-=0D
+ tests/avocado/avocado_qemu/__init__.py        |   6 +-=0D
+ tests/avocado/cpu_queries.py                  |   5 +-=0D
+ tests/avocado/hotplug_cpu.py                  |  10 +-=0D
+ tests/avocado/info_usernet.py                 |   4 +-=0D
+ tests/avocado/machine_arm_integratorcp.py     |   6 +-=0D
+ tests/avocado/machine_aspeed.py               |  17 +-=0D
+ tests/avocado/machine_m68k_nextcube.py        |   4 +-=0D
+ tests/avocado/machine_mips_malta.py           |   6 +-=0D
+ tests/avocado/machine_s390_ccw_virtio.py      |  28 +-=0D
+ tests/avocado/migration.py                    |  10 +-=0D
+ tests/avocado/pc_cpu_hotplug_props.py         |   2 +-=0D
+ tests/avocado/version.py                      |   4 +-=0D
+ tests/avocado/virtio_check_params.py          |   6 +-=0D
+ tests/avocado/virtio_version.py               |   5 +-=0D
+ tests/avocado/vnc.py                          |  16 +-=0D
+ tests/avocado/x86_cpu_model_versions.py       |  13 +-=0D
+ tests/docker/dockerfiles/python.docker        |   6 +-=0D
+ tests/migration/guestperf/engine.py           | 144 +++---=0D
+ tests/qemu-iotests/030                        | 168 +++----=0D
+ tests/qemu-iotests/040                        | 171 +++----=0D
+ tests/qemu-iotests/041                        | 470 ++++++++----------=0D
+ tests/qemu-iotests/045                        |  15 +-=0D
+ tests/qemu-iotests/055                        |  62 +--=0D
+ tests/qemu-iotests/056                        |  77 ++-=0D
+ tests/qemu-iotests/093                        |  42 +-=0D
+ tests/qemu-iotests/118                        | 223 ++++-----=0D
+ tests/qemu-iotests/124                        | 102 ++--=0D
+ tests/qemu-iotests/129                        |  14 +-=0D
+ tests/qemu-iotests/132                        |   5 +-=0D
+ tests/qemu-iotests/139                        |  45 +-=0D
+ tests/qemu-iotests/147                        |  30 +-=0D
+ tests/qemu-iotests/151                        | 103 ++--=0D
+ tests/qemu-iotests/152                        |   8 +-=0D
+ tests/qemu-iotests/155                        |  55 +-=0D
+ tests/qemu-iotests/165                        |   8 +-=0D
+ tests/qemu-iotests/196                        |   3 +-=0D
+ tests/qemu-iotests/205                        |   6 +-=0D
+ tests/qemu-iotests/218                        |  95 ++--=0D
+ tests/qemu-iotests/245                        | 245 ++++-----=0D
+ tests/qemu-iotests/256                        |  34 +-=0D
+ tests/qemu-iotests/257                        |  34 +-=0D
+ tests/qemu-iotests/264                        |  31 +-=0D
+ tests/qemu-iotests/281                        |  21 +-=0D
+ tests/qemu-iotests/295                        |  16 +-=0D
+ tests/qemu-iotests/296                        |  21 +-=0D
+ tests/qemu-iotests/298                        |  13 +-=0D
+ tests/qemu-iotests/300                        |  54 +-=0D
+ tests/qemu-iotests/iotests.py                 |  23 +-=0D
+ .../tests/backing-file-invalidation           |  11 +-=0D
+ tests/qemu-iotests/tests/copy-before-write    |  18 +-=0D
+ .../tests/export-incoming-iothread            |   6 +-=0D
+ .../qemu-iotests/tests/graph-changes-while-io |  18 +-=0D
+ tests/qemu-iotests/tests/image-fleecing       |   3 +-=0D
+ .../tests/migrate-bitmaps-postcopy-test       |  31 +-=0D
+ tests/qemu-iotests/tests/migrate-bitmaps-test |  45 +-=0D
+ .../qemu-iotests/tests/migrate-during-backup  |  37 +-=0D
+ .../qemu-iotests/tests/migration-permissions  |   9 +-=0D
+ .../tests/mirror-ready-cancel-error           |  74 ++-=0D
+ tests/qemu-iotests/tests/mirror-top-perms     |  16 +-=0D
+ tests/qemu-iotests/tests/nbd-multiconn        |  16 +-=0D
+ tests/qemu-iotests/tests/reopen-file          |   3 +-=0D
+ .../qemu-iotests/tests/stream-error-on-reset  |   6 +-=0D
+ .../qemu-iotests/tests/stream-under-throttle  |   7 +-=0D
+ tests/vm/basevm.py                            |   4 +-=0D
+ 82 files changed, 1466 insertions(+), 1717 deletions(-)=0D
+ create mode 100755 scripts/python_qmp_updater.py=0D
+=0D
+-- =0D
+2.41.0=0D
+=0D
 
 
