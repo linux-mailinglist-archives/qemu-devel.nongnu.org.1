@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7BF7C8F76
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFD87C8F4B
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:36:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrPm8-0001MM-E7; Fri, 13 Oct 2023 17:32:52 -0400
+	id 1qrPlz-0000Ez-Tn; Fri, 13 Oct 2023 17:32:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPlv-0008Gr-5d
+ id 1qrPlv-0008Iq-Gi
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:32:39 -0400
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPlq-0001N5-Uj
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:32:37 -0400
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6c7bbfb7a73so1610518a34.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:32:34 -0700 (PDT)
+ id 1qrPlt-0001NQ-3P
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:32:39 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6b1d1099a84so1117698b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:32:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697232754; x=1697837554; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nLIzA0ROckEp/3I9L86o0DcxwJS6sUSHJQZAJebUexc=;
- b=LmJXZTHkejAh50VjYIZYsCAZkDl8MFXgCx32VUJ2gRufh01fhn7onFxfbNFqktMWNq
- yAjkwBAIbaRjhsHQ4QCcoxX+3F5n637odRFEzHda7Z5PrlZnTA0qwzoM+jhjaCr8C3+k
- 8OPLse7jOmWLdDyn701tz2+eafnGY0npBhuMDIG9QN7sgrj1lV1Q6oLg0uul4QbOiyp8
- Jv2BlAjBzBDxqNQy/l2G40nIwV4mrChm1Q0VZsEGHdX7j8U5XDvxdb0hqRZtHhXiGjRs
- rxxTig2FlzNcvCAVAy1M3pR5RuIlVfDYL56s19EhrE5rTFU5A5BnVTgn+yxzUHkkKlix
- MFpw==
+ bh=0RzAz50THQD1iZE/JylX1mkUWArqn49qgYZr3wJzfSM=;
+ b=Mv/d2K5hqyxzQHRRD9o5Q7SCimA0xNXnU3rT4ZkDeZkm5ncatz1/ykhrJQr9xkfv9P
+ 1tVte6vNFUxDZXS0X0+9JbCmnAH7d5TGr4I/Bf2ktJ2aZykVaMc2VTb56dZ+CdTifh3D
+ Wxdn71/7O9aOgyscXhxUrZRy6Z9fNSiCQd3RaICotqsqvUkeuy23//89aDdEBCxF5gFX
+ G3MtSE7eh4QfHcSUXbtp0jcmVi0puOSEtN3fhXUh0YIS8G7UOh0r6bpFSRqhgPsew7g9
+ W/rX9pT4XJJerO2830Q9zFUMEOjUiThqk/62D5eJuRrQxT5QGEmYmeMtHvEsPJrYsVrw
+ cz0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697232754; x=1697837554;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nLIzA0ROckEp/3I9L86o0DcxwJS6sUSHJQZAJebUexc=;
- b=OG1zvSLqknw5FXnrFApvaSseTfDtJmOCDlda3Z6sY1M7IGr2eGdqHpF6yAS20c5GkQ
- JuabBo/dvdQ0BWsII+6by0l4pLgSc7Op43u/GNoici/djQ56IWpic5YBTcmGeGVSWiF3
- bsoZDR2qipcxe7Q17I0yeWK2z/EzyFri1Ww+4J5OSTP+6hLqhJ5Z6e1wVgK3RMSQSsRg
- oGLEMBcoiZoHYm6tOqqALuuQ7TmuJcqis/Rtq4juG3GSVha3EMDPb7oLmV0FZlzvD3fE
- X7gmHCwYNCJq3ksdeCmzl3EAbCubHw0uu/ZCmkoOn4t3BTogmVthIVT4pz3Ol1nkDWu3
- NZUw==
-X-Gm-Message-State: AOJu0Yy/SK3NMzF/ZDq5QtW4YYDW80tDs8hysjGoMgweNeLRBIRjfODy
- 9ntD3+9kFqfNIrMdj5zQLf7ej6aON7Sz++2DZAw=
-X-Google-Smtp-Source: AGHT+IHQTey0wrKivS5O9JucrRD4qeiB6zS5LcctRbiurxkJ0Mf35Z6V7onOw/VPAHXGTJjusuGj7w==
-X-Received: by 2002:a05:6830:18f8:b0:6c4:e81f:59b8 with SMTP id
- d24-20020a05683018f800b006c4e81f59b8mr28306903otf.22.1697232753714; 
- Fri, 13 Oct 2023 14:32:33 -0700 (PDT)
+ bh=0RzAz50THQD1iZE/JylX1mkUWArqn49qgYZr3wJzfSM=;
+ b=VXaOY8rQk3Cr8YxikRSwFKu5Yd0LlV3V9ouz6+aylqSjnx/GZ4GA/OAkT+W8T+AAb0
+ WciCZbsl/n5j84suE4aQkuQqqp0kxCjzKTedV83Mmxg0a3jZ4xkogxK45hw4eC0DAHer
+ dDp9nHJW63izCuWyCNMhTmd9aEbFwEJQDQ7vungoDPADahNLuf/N1yUsMbzGDlQd9kQj
+ ZnwM20xtB5Di9Gy8yQc+bePnK36Gu0bDO9xoj5IKnpt6tqtY/f90Wa8QD9d0QkLzJQip
+ PP2D//pjVOLls+LrGFgNPdie/NqjpbJSEk0ZUPxbQ0pCOUpb4HjfXiwWkG3Fzytxknvy
+ EYWg==
+X-Gm-Message-State: AOJu0Yz9F47g+hu+Eu62F4W4+se1lHE43NVrW5UMALaPKgGuTwXigX5n
+ rG24McIvGMiIr4Z2Axqat421xf1WVQsxDg+2sAg=
+X-Google-Smtp-Source: AGHT+IE9z99ocQtGx7lgAtkVEJZoM3t2I82Q8X1YBkOGOLbyeyhG3LffVSpooqZ5JkPhSVGQZwRBuQ==
+X-Received: by 2002:a05:6a00:189c:b0:6b2:6835:2a7f with SMTP id
+ x28-20020a056a00189c00b006b268352a7fmr3735124pfh.22.1697232754513; 
+ Fri, 13 Oct 2023 14:32:34 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  j5-20020aa78d05000000b0068842ebfd10sm13977191pfe.160.2023.10.13.14.32.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 14:32:33 -0700 (PDT)
+ Fri, 13 Oct 2023 14:32:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	atar4qemu@gmail.com
-Subject: [PATCH 49/85] target/sparc: Split out fp ldst functions with asi
- precomputed
-Date: Fri, 13 Oct 2023 14:28:10 -0700
-Message-Id: <20231013212846.165724-50-richard.henderson@linaro.org>
+Subject: [PATCH 50/85] target/sparc: Move simple fp load/store to decodetree
+Date: Fri, 13 Oct 2023 14:28:11 -0700
+Message-Id: <20231013212846.165724-51-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231013212846.165724-1-richard.henderson@linaro.org>
 References: <20231013212846.165724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,279 +91,323 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Take the operation size from the MemOp instead of a
-separate parameter.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 136 ++++++++++++++++++++++-----------------
- 1 file changed, 78 insertions(+), 58 deletions(-)
+ target/sparc/insns.decode |  19 ++++
+ target/sparc/translate.c  | 194 ++++++++++++++++++--------------------
+ 2 files changed, 113 insertions(+), 100 deletions(-)
 
+diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
+index c032b81c16..00ddc7a93b 100644
+--- a/target/sparc/insns.decode
++++ b/target/sparc/insns.decode
+@@ -232,8 +232,16 @@ NCP         10 ----- 110111 ----- --------- -----          # v8 CPop2
+ ## Major Opcode 11 -- load and store instructions
+ ##
+ 
++%dfp_rd     25:5 !function=extract_dfpreg
++%qfp_rd     25:5 !function=extract_qfpreg
++
+ &r_r_ri_asi rd rs1 rs2_or_imm asi imm:bool
+ @r_r_ri_na  .. rd:5  ...... rs1:5 imm:1 rs2_or_imm:s13     &r_r_ri_asi asi=-1
++@d_r_ri_na  .. ..... ...... rs1:5 imm:1 rs2_or_imm:s13     \
++            &r_r_ri_asi rd=%dfp_rd asi=-1
++@q_r_ri_na  .. ..... ...... rs1:5 imm:1 rs2_or_imm:s13     \
++            &r_r_ri_asi rd=%qfp_rd asi=-1
++
+ @r_r_r_asi  .. rd:5  ...... rs1:5 0     asi:8 rs2_or_imm:5 &r_r_ri_asi imm=0
+ @r_r_i_asi  .. rd:5  ...... rs1:5 1     rs2_or_imm:s13     \
+             &r_r_ri_asi imm=1 asi=-2
+@@ -283,6 +291,17 @@ STD         11 ..... 010111 ..... . .............          @r_r_i_asi # STDA
+ STX         11 ..... 011110 ..... . .............          @r_r_r_asi # STXA
+ STX         11 ..... 011110 ..... . .............          @r_r_i_asi # STXA
+ 
++LDF         11 ..... 100000 ..... . .............          @r_r_ri_na
++LDQF        11 ..... 100010 ..... . .............          @q_r_ri_na
++LDDF        11 ..... 100011 ..... . .............          @d_r_ri_na
++
++STF         11 ..... 100100 ..... . .............          @r_r_ri_na
++{
++  STQF      11 ..... 100110 ..... . .............          @q_r_ri_na
++  STDFQ     11 ----- 100110 ----- - -------------
++}
++STDF        11 ..... 100111 ..... . .............          @d_r_ri_na
++
+ LDSTUB      11 ..... 001101 ..... . .............          @r_r_ri_na
+ LDSTUB      11 ..... 011101 ..... . .............          @r_r_r_asi # LDSTUBA
+ LDSTUB      11 ..... 011101 ..... . .............          @r_r_i_asi # LDSTUBA
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 02030bd99b..973b864ca0 100644
+index 973b864ca0..abf6c7fc32 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2214,35 +2214,40 @@ static void gen_ldstub_asi(DisasContext *dc, DisasASI *da, TCGv dst, TCGv addr)
-     }
+@@ -243,29 +243,7 @@ static void gen_op_store_QT0_fpr(unsigned int dst)
+                    offsetof(CPU_QuadU, ll.lower));
  }
  
--static void __attribute__((unused))
--gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
-+static void gen_ldf_asi0(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
- {
--    DisasASI da = get_asi(dc, insn, (size == 4 ? MO_TEUL : MO_TEUQ));
-+    MemOp memop = da->memop;
-+    MemOp size = memop & MO_SIZE;
-     TCGv_i32 d32;
-     TCGv_i64 d64;
- 
--    switch (da.type) {
-+    /* TODO: Use 128-bit load/store below. */
-+    if (size == MO_128) {
-+        memop = (memop & ~MO_SIZE) | MO_64;
-+    }
-+
-+    switch (da->type) {
-     case GET_ASI_EXCP:
-         break;
- 
-     case GET_ASI_DIRECT:
--        gen_address_mask(dc, addr);
-+        memop |= MO_ALIGN_4;
-         switch (size) {
--        case 4:
-+        case MO_32:
-             d32 = gen_dest_fpr_F(dc);
--            tcg_gen_qemu_ld_i32(d32, addr, da.mem_idx, da.memop | MO_ALIGN);
-+            tcg_gen_qemu_ld_i32(d32, addr, da->mem_idx, memop);
-             gen_store_fpr_F(dc, rd, d32);
-             break;
--        case 8:
--            tcg_gen_qemu_ld_i64(cpu_fpr[rd / 2], addr, da.mem_idx,
--                                da.memop | MO_ALIGN_4);
-+
-+        case MO_64:
-+            tcg_gen_qemu_ld_i64(cpu_fpr[rd / 2], addr, da->mem_idx, memop);
-             break;
--        case 16:
-+
-+        case MO_128:
-             d64 = tcg_temp_new_i64();
--            tcg_gen_qemu_ld_i64(d64, addr, da.mem_idx, da.memop | MO_ALIGN_4);
-+            tcg_gen_qemu_ld_i64(d64, addr, da->mem_idx, memop);
-             tcg_gen_addi_tl(addr, addr, 8);
--            tcg_gen_qemu_ld_i64(cpu_fpr[rd/2+1], addr, da.mem_idx,
--                                da.memop | MO_ALIGN_4);
-+            tcg_gen_qemu_ld_i64(cpu_fpr[rd / 2 + 1], addr, da->mem_idx, memop);
-             tcg_gen_mov_i64(cpu_fpr[rd / 2], d64);
-             break;
-         default:
-@@ -2252,24 +2257,19 @@ gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
- 
-     case GET_ASI_BLOCK:
-         /* Valid for lddfa on aligned registers only.  */
--        if (size == 8 && (rd & 7) == 0) {
--            MemOp memop;
-+        if (size == MO_64 && (rd & 7) == 0) {
-             TCGv eight;
-             int i;
- 
--            gen_address_mask(dc, addr);
+-static void gen_store_fpr_Q(DisasContext *dc, unsigned int dst,
+-                            TCGv_i64 v1, TCGv_i64 v2)
+-{
+-    dst = QFPREG(dst);
 -
-             /* The first operation checks required alignment.  */
--            memop = da.memop | MO_ALIGN_64;
-             eight = tcg_constant_tl(8);
-             for (i = 0; ; ++i) {
--                tcg_gen_qemu_ld_i64(cpu_fpr[rd / 2 + i], addr,
--                                    da.mem_idx, memop);
-+                tcg_gen_qemu_ld_i64(cpu_fpr[rd / 2 + i], addr, da->mem_idx,
-+                                    memop | (i == 0 ? MO_ALIGN_64 : 0));
-                 if (i == 7) {
-                     break;
-                 }
-                 tcg_gen_add_tl(addr, addr, eight);
--                memop = da.memop;
-             }
-         } else {
-             gen_exception(dc, TT_ILL_INSN);
-@@ -2278,10 +2278,9 @@ gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
- 
-     case GET_ASI_SHORT:
-         /* Valid for lddfa only.  */
--        if (size == 8) {
--            gen_address_mask(dc, addr);
--            tcg_gen_qemu_ld_i64(cpu_fpr[rd / 2], addr, da.mem_idx,
--                                da.memop | MO_ALIGN);
-+        if (size == MO_64) {
-+            tcg_gen_qemu_ld_i64(cpu_fpr[rd / 2], addr, da->mem_idx,
-+                                memop | MO_ALIGN);
-         } else {
-             gen_exception(dc, TT_ILL_INSN);
-         }
-@@ -2289,8 +2288,8 @@ gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
- 
-     default:
-         {
--            TCGv_i32 r_asi = tcg_constant_i32(da.asi);
--            TCGv_i32 r_mop = tcg_constant_i32(da.memop | MO_ALIGN);
-+            TCGv_i32 r_asi = tcg_constant_i32(da->asi);
-+            TCGv_i32 r_mop = tcg_constant_i32(memop | MO_ALIGN);
- 
-             save_state(dc);
-             /* According to the table in the UA2011 manual, the only
-@@ -2298,21 +2297,23 @@ gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
-                the NO_FAULT asis.  We still need a helper for these,
-                but we can just use the integer asi helper for them.  */
-             switch (size) {
--            case 4:
-+            case MO_32:
-                 d64 = tcg_temp_new_i64();
-                 gen_helper_ld_asi(d64, tcg_env, addr, r_asi, r_mop);
-                 d32 = gen_dest_fpr_F(dc);
-                 tcg_gen_extrl_i64_i32(d32, d64);
-                 gen_store_fpr_F(dc, rd, d32);
-                 break;
--            case 8:
--                gen_helper_ld_asi(cpu_fpr[rd / 2], tcg_env, addr, r_asi, r_mop);
-+            case MO_64:
-+                gen_helper_ld_asi(cpu_fpr[rd / 2], tcg_env, addr,
-+                                  r_asi, r_mop);
-                 break;
--            case 16:
-+            case MO_128:
-                 d64 = tcg_temp_new_i64();
-                 gen_helper_ld_asi(d64, tcg_env, addr, r_asi, r_mop);
-                 tcg_gen_addi_tl(addr, addr, 8);
--                gen_helper_ld_asi(cpu_fpr[rd/2+1], tcg_env, addr, r_asi, r_mop);
-+                gen_helper_ld_asi(cpu_fpr[rd / 2 + 1], tcg_env, addr,
-+                                  r_asi, r_mop);
-                 tcg_gen_mov_i64(cpu_fpr[rd / 2], d64);
-                 break;
-             default:
-@@ -2324,36 +2325,51 @@ gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
- }
- 
- static void __attribute__((unused))
--gen_stf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
-+gen_ldf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
+-    tcg_gen_mov_i64(cpu_fpr[dst / 2], v1);
+-    tcg_gen_mov_i64(cpu_fpr[dst / 2 + 1], v2);
+-    gen_update_fprs_dirty(dc, dst);
+-}
+-
+ #ifdef TARGET_SPARC64
+-static TCGv_i64 gen_load_fpr_Q0(DisasContext *dc, unsigned int src)
+-{
+-    src = QFPREG(src);
+-    return cpu_fpr[src / 2];
+-}
+-
+-static TCGv_i64 gen_load_fpr_Q1(DisasContext *dc, unsigned int src)
+-{
+-    src = QFPREG(src);
+-    return cpu_fpr[src / 2 + 1];
+-}
+-
+ static void gen_move_Q(DisasContext *dc, unsigned int rd, unsigned int rs)
  {
--    DisasASI da = get_asi(dc, insn, (size == 4 ? MO_TEUL : MO_TEUQ));
-+    DisasASI da = get_asi(dc, insn, (size == 4 ? MO_TEUL :
-+                                     size == 8 ? MO_TEUQ : MO_TE | MO_128));
-+
-+    gen_address_mask(dc, addr);
-+    gen_ldf_asi0(dc, &da, addr, rd);
+     rd = QFPREG(rd);
+@@ -2792,6 +2770,16 @@ static void gen_faligndata(TCGv dst, TCGv gsr, TCGv s1, TCGv s2)
+ }
+ #endif
+ 
++static int extract_dfpreg(DisasContext *dc, int x)
++{
++    return DFPREG(x);
 +}
 +
-+static void gen_stf_asi0(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
++static int extract_qfpreg(DisasContext *dc, int x)
 +{
-+    MemOp memop = da->memop;
-+    MemOp size = memop & MO_SIZE;
-     TCGv_i32 d32;
- 
--    switch (da.type) {
-+    /* TODO: Use 128-bit load/store below. */
-+    if (size == MO_128) {
-+        memop = (memop & ~MO_SIZE) | MO_64;
-+    }
-+
-+    switch (da->type) {
-     case GET_ASI_EXCP:
-         break;
- 
-     case GET_ASI_DIRECT:
--        gen_address_mask(dc, addr);
-+        memop |= MO_ALIGN_4;
-         switch (size) {
--        case 4:
-+        case MO_32:
-             d32 = gen_load_fpr_F(dc, rd);
--            tcg_gen_qemu_st_i32(d32, addr, da.mem_idx, da.memop | MO_ALIGN);
-+            tcg_gen_qemu_st_i32(d32, addr, da->mem_idx, memop | MO_ALIGN);
-             break;
--        case 8:
--            tcg_gen_qemu_st_i64(cpu_fpr[rd / 2], addr, da.mem_idx,
--                                da.memop | MO_ALIGN_4);
-+        case MO_64:
-+            tcg_gen_qemu_st_i64(cpu_fpr[rd / 2], addr, da->mem_idx,
-+                                memop | MO_ALIGN_4);
-             break;
--        case 16:
-+        case MO_128:
-             /* Only 4-byte alignment required.  However, it is legal for the
-                cpu to signal the alignment fault, and the OS trap handler is
-                required to fix it up.  Requiring 16-byte alignment here avoids
-                having to probe the second page before performing the first
-                write.  */
--            tcg_gen_qemu_st_i64(cpu_fpr[rd / 2], addr, da.mem_idx,
--                                da.memop | MO_ALIGN_16);
-+            tcg_gen_qemu_st_i64(cpu_fpr[rd / 2], addr, da->mem_idx,
-+                                memop | MO_ALIGN_16);
-             tcg_gen_addi_tl(addr, addr, 8);
--            tcg_gen_qemu_st_i64(cpu_fpr[rd/2+1], addr, da.mem_idx, da.memop);
-+            tcg_gen_qemu_st_i64(cpu_fpr[rd / 2 + 1], addr, da->mem_idx, memop);
-             break;
-         default:
-             g_assert_not_reached();
-@@ -2362,24 +2378,19 @@ gen_stf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
- 
-     case GET_ASI_BLOCK:
-         /* Valid for stdfa on aligned registers only.  */
--        if (size == 8 && (rd & 7) == 0) {
--            MemOp memop;
-+        if (size == MO_64 && (rd & 7) == 0) {
-             TCGv eight;
-             int i;
- 
--            gen_address_mask(dc, addr);
--
-             /* The first operation checks required alignment.  */
--            memop = da.memop | MO_ALIGN_64;
-             eight = tcg_constant_tl(8);
-             for (i = 0; ; ++i) {
--                tcg_gen_qemu_st_i64(cpu_fpr[rd / 2 + i], addr,
--                                    da.mem_idx, memop);
-+                tcg_gen_qemu_st_i64(cpu_fpr[rd / 2 + i], addr, da->mem_idx,
-+                                    memop | (i == 0 ? MO_ALIGN_64 : 0));
-                 if (i == 7) {
-                     break;
-                 }
-                 tcg_gen_add_tl(addr, addr, eight);
--                memop = da.memop;
-             }
-         } else {
-             gen_exception(dc, TT_ILL_INSN);
-@@ -2388,10 +2399,9 @@ gen_stf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
- 
-     case GET_ASI_SHORT:
-         /* Valid for stdfa only.  */
--        if (size == 8) {
--            gen_address_mask(dc, addr);
--            tcg_gen_qemu_st_i64(cpu_fpr[rd / 2], addr, da.mem_idx,
--                                da.memop | MO_ALIGN);
-+        if (size == MO_64) {
-+            tcg_gen_qemu_st_i64(cpu_fpr[rd / 2], addr, da->mem_idx,
-+                                memop | MO_ALIGN);
-         } else {
-             gen_exception(dc, TT_ILL_INSN);
-         }
-@@ -2406,6 +2416,16 @@ gen_stf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
-     }
- }
- 
-+static void __attribute__((unused))
-+gen_stf_asi(DisasContext *dc, TCGv addr, int insn, int size, int rd)
-+{
-+    DisasASI da = get_asi(dc, insn, (size == 4 ? MO_TEUL :
-+                                     size == 8 ? MO_TEUQ : MO_TE | MO_128));
-+
-+    gen_address_mask(dc, addr);
-+    gen_stf_asi0(dc, &da, addr, rd);
++    return QFPREG(x);
 +}
 +
- static void gen_ldda_asi(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
+ /* Include the auto-generated decoder.  */
+ #include "decode-insns.c.inc"
+ 
+@@ -2918,6 +2906,20 @@ static bool raise_priv(DisasContext *dc)
+     return true;
+ }
+ 
++static bool raise_unimpfpop(DisasContext *dc)
++{
++    gen_op_fpexception_im(dc, FSR_FTT_UNIMPFPOP);
++    return true;
++}
++
++static bool gen_trap_float128(DisasContext *dc)
++{
++    if (dc->def->features & CPU_FEATURE_FLOAT128) {
++        return false;
++    }
++    return raise_unimpfpop(dc);
++}
++
+ static bool do_bpcc(DisasContext *dc, arg_bcc *a)
  {
-     TCGv hi = gen_dest_gpr(dc, rd);
+     target_long target = dc->pc + a->i * 4;
+@@ -4655,6 +4657,68 @@ static bool do_casa(DisasContext *dc, arg_r_r_ri_asi *a, MemOp mop)
+ TRANS(CASA, CASA, do_casa, a, MO_TEUL)
+ TRANS(CASXA, 64, do_casa, a, MO_TEUQ)
+ 
++static bool do_ld_fpr(DisasContext *dc, arg_r_r_ri_asi *a, MemOp mop)
++{
++    TCGv addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
++    DisasASI da;
++
++    if (addr == NULL) {
++        return false;
++    }
++    if (gen_trap_ifnofpu(dc)) {
++        return true;
++    }
++    if ((mop & MO_SIZE) == MO_128 && gen_trap_float128(dc)) {
++        return true;
++    }
++    da = resolve_asi(dc, a->asi, mop);
++    gen_ldf_asi0(dc, &da, addr, a->rd);
++    gen_update_fprs_dirty(dc, a->rd);
++    return advance_pc(dc);
++}
++
++TRANS(LDF, ALL, do_ld_fpr, a, MO_TEUL)
++TRANS(LDDF, ALL, do_ld_fpr, a, MO_TEUQ)
++TRANS(LDQF, ALL, do_ld_fpr, a, MO_TE | MO_128)
++
++static bool do_st_fpr(DisasContext *dc, arg_r_r_ri_asi *a, MemOp mop)
++{
++    TCGv addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
++    DisasASI da;
++
++    if (addr == NULL) {
++        return false;
++    }
++    if (gen_trap_ifnofpu(dc)) {
++        return true;
++    }
++    if ((mop & MO_SIZE) == MO_128 && gen_trap_float128(dc)) {
++        return true;
++    }
++    da = resolve_asi(dc, a->asi, mop);
++    gen_stf_asi0(dc, &da, addr, a->rd);
++    return advance_pc(dc);
++}
++
++TRANS(STF, ALL, do_st_fpr, a, MO_TEUL)
++TRANS(STDF, ALL, do_st_fpr, a, MO_TEUQ)
++TRANS(STQF, ALL, do_st_fpr, a, MO_TE | MO_128)
++
++static bool trans_STDFQ(DisasContext *dc, arg_STDFQ *a)
++{
++    if (!avail_32(dc)) {
++        return false;
++    }
++    if (!supervisor(dc)) {
++        return raise_priv(dc);
++    }
++    if (gen_trap_ifnofpu(dc)) {
++        return true;
++    }
++    gen_op_fpexception_im(dc, FSR_FTT_SEQ_ERROR);
++    return true;
++}
++
+ #define CHECK_IU_FEATURE(dc, FEATURE)                      \
+     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
+         goto illegal_insn;
+@@ -4669,7 +4733,8 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+     TCGv cpu_src1 __attribute__((unused));
+     TCGv cpu_src2 __attribute__((unused));
+     TCGv_i32 cpu_src1_32, cpu_src2_32, cpu_dst_32;
+-    TCGv_i64 cpu_src1_64, cpu_src2_64, cpu_dst_64;
++    TCGv_i64 cpu_src1_64, cpu_src2_64;
++    TCGv_i64 cpu_dst_64 __attribute__((unused));
+     target_long simm;
+ 
+     opc = GET_FIELD(insn, 0, 1);
+@@ -5536,12 +5601,9 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                 }
+                 switch (xop) {
+                 case 0x20:      /* ldf, load fpreg */
+-                    gen_address_mask(dc, cpu_addr);
+-                    cpu_dst_32 = gen_dest_fpr_F(dc);
+-                    tcg_gen_qemu_ld_i32(cpu_dst_32, cpu_addr,
+-                                        dc->mem_idx, MO_TEUL | MO_ALIGN);
+-                    gen_store_fpr_F(dc, rd, cpu_dst_32);
+-                    break;
++                case 0x22:      /* ldqf, load quad fpreg */
++                case 0x23:      /* lddf, load double fpreg */
++                    g_assert_not_reached();  /* in decodetree */
+                 case 0x21:      /* ldfsr, V9 ldxfsr */
+ #ifdef TARGET_SPARC64
+                     gen_address_mask(dc, cpu_addr);
+@@ -5558,25 +5620,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                                         dc->mem_idx, MO_TEUL | MO_ALIGN);
+                     gen_helper_ldfsr(cpu_fsr, tcg_env, cpu_fsr, cpu_dst_32);
+                     break;
+-                case 0x22:      /* ldqf, load quad fpreg */
+-                    CHECK_FPU_FEATURE(dc, FLOAT128);
+-                    gen_address_mask(dc, cpu_addr);
+-                    cpu_src1_64 = tcg_temp_new_i64();
+-                    tcg_gen_qemu_ld_i64(cpu_src1_64, cpu_addr, dc->mem_idx,
+-                                        MO_TEUQ | MO_ALIGN_4);
+-                    tcg_gen_addi_tl(cpu_addr, cpu_addr, 8);
+-                    cpu_src2_64 = tcg_temp_new_i64();
+-                    tcg_gen_qemu_ld_i64(cpu_src2_64, cpu_addr, dc->mem_idx,
+-                                        MO_TEUQ | MO_ALIGN_4);
+-                    gen_store_fpr_Q(dc, rd, cpu_src1_64, cpu_src2_64);
+-                    break;
+-                case 0x23:      /* lddf, load double fpreg */
+-                    gen_address_mask(dc, cpu_addr);
+-                    cpu_dst_64 = gen_dest_fpr_D(dc, rd);
+-                    tcg_gen_qemu_ld_i64(cpu_dst_64, cpu_addr, dc->mem_idx,
+-                                        MO_TEUQ | MO_ALIGN_4);
+-                    gen_store_fpr_D(dc, rd, cpu_dst_64);
+-                    break;
+                 default:
+                     goto illegal_insn;
+                 }
+@@ -5586,11 +5629,9 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                 }
+                 switch (xop) {
+                 case 0x24: /* stf, store fpreg */
+-                    gen_address_mask(dc, cpu_addr);
+-                    cpu_src1_32 = gen_load_fpr_F(dc, rd);
+-                    tcg_gen_qemu_st_i32(cpu_src1_32, cpu_addr,
+-                                        dc->mem_idx, MO_TEUL | MO_ALIGN);
+-                    break;
++                case 0x26: /* v9 stqf, v8 stdfq */
++                case 0x27: /* stdf, store double fpreg */
++                    g_assert_not_reached();
+                 case 0x25: /* stfsr, V9 stxfsr */
+                     {
+ #ifdef TARGET_SPARC64
+@@ -5605,43 +5646,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                                            dc->mem_idx, MO_TEUL | MO_ALIGN);
+                     }
+                     break;
+-                case 0x26:
+-#ifdef TARGET_SPARC64
+-                    /* V9 stqf, store quad fpreg */
+-                    CHECK_FPU_FEATURE(dc, FLOAT128);
+-                    gen_address_mask(dc, cpu_addr);
+-                    /* ??? While stqf only requires 4-byte alignment, it is
+-                       legal for the cpu to signal the unaligned exception.
+-                       The OS trap handler is then required to fix it up.
+-                       For qemu, this avoids having to probe the second page
+-                       before performing the first write.  */
+-                    cpu_src1_64 = gen_load_fpr_Q0(dc, rd);
+-                    tcg_gen_qemu_st_i64(cpu_src1_64, cpu_addr,
+-                                        dc->mem_idx, MO_TEUQ | MO_ALIGN_16);
+-                    tcg_gen_addi_tl(cpu_addr, cpu_addr, 8);
+-                    cpu_src2_64 = gen_load_fpr_Q1(dc, rd);
+-                    tcg_gen_qemu_st_i64(cpu_src1_64, cpu_addr,
+-                                        dc->mem_idx, MO_TEUQ);
+-                    break;
+-#else /* !TARGET_SPARC64 */
+-                    /* stdfq, store floating point queue */
+-#if defined(CONFIG_USER_ONLY)
+-                    goto illegal_insn;
+-#else
+-                    if (!supervisor(dc))
+-                        goto priv_insn;
+-                    if (gen_trap_ifnofpu(dc)) {
+-                        goto jmp_insn;
+-                    }
+-                    goto nfq_insn;
+-#endif
+-#endif
+-                case 0x27: /* stdf, store double fpreg */
+-                    gen_address_mask(dc, cpu_addr);
+-                    cpu_src1_64 = gen_load_fpr_D(dc, rd);
+-                    tcg_gen_qemu_st_i64(cpu_src1_64, cpu_addr, dc->mem_idx,
+-                                        MO_TEUQ | MO_ALIGN_4);
+-                    break;
+                 default:
+                     goto illegal_insn;
+                 }
+@@ -5688,19 +5692,9 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+  illegal_insn:
+     gen_exception(dc, TT_ILL_INSN);
+     return;
+-#if !defined(CONFIG_USER_ONLY) && !defined(TARGET_SPARC64)
+- priv_insn:
+-    gen_exception(dc, TT_PRIV_INSN);
+-    return;
+-#endif
+  nfpu_insn:
+     gen_op_fpexception_im(dc, FSR_FTT_UNIMPFPOP);
+     return;
+-#if !defined(CONFIG_USER_ONLY) && !defined(TARGET_SPARC64)
+- nfq_insn:
+-    gen_op_fpexception_im(dc, FSR_FTT_SEQ_ERROR);
+-    return;
+-#endif
+ }
+ 
+ static void sparc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
 -- 
 2.34.1
 
