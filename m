@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F597C7F56
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF387C7FC9
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:17:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD6T-0003cW-Rw; Fri, 13 Oct 2023 04:01:01 -0400
+	id 1qrD6V-0003qJ-1S; Fri, 13 Oct 2023 04:01:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5n-0000gG-Su
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:19 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ id 1qrD5s-000167-BL
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:24 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5l-0007mj-8j
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:19 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-5041bb9ce51so2315689e87.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:00:16 -0700 (PDT)
+ id 1qrD5o-0007nK-3r
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:23 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-405505b07dfso18769925e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:00:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697184015; x=1697788815; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697184017; x=1697788817; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VUr7ma9/URcW12PwoU86CMS0D0tvRcZTYVEP0u5I3rQ=;
- b=txSF8WUN2c6eW6y3Eh4741PAnkEMuy4X6SDZdZ4Ot1dHyFxxKmbCLT1zOF/NrGiNrC
- 43ncDUIv6OyYogCSdPNA9hPEHkifXxaE0S4tbHM7pukXdGHhml7M0EaFnPKAXV0oFB12
- 3CwTUHiB0ZCogOoX7PB+tblVt/Cp83AOib7To4cx7pmBr8zTnsPS31WQ4E2FcK+cm8Pp
- IBfpfqtibf958476ps82r/wnlI+no6O8sWXipB2KBfU/AQHWUP/T2azCnvj66WCjDVV6
- muElj3PpIrB8p6G0jHY85NXfTn9j6WMLftMhR/qYHyGRSeeg0feyai3k65+Jy94/5i+w
- dplg==
+ bh=7wDa0+LeLRl26RBk3owDHhjoJ0wMiMLPngdzMA5WHgM=;
+ b=ARgemBjyG+VQXwQnkG/1IGb6cseAoOpi7siKFD6NCD0svz9mC5Uear8JZtTeNVxOSL
+ ZZtuczHB7xaV8o9jiAZCQklygVLVIKvc+Xdvbu25vIoNC0uzLeoHKBKnhJmdfbbAdpHS
+ xiB0duclLWbc97eWgni8q2OzJEJillQVoTJliT/kpWugEr/M+CDLNcyygsQ3lVIOvp5y
+ tZvne2Mj615ghSb5bbfwSs1pGg3+Wkps0H2N28UJ95Gf73c08u0zv+Itd2ZLXDpCm6jf
+ Z95rQElBt89/7hcwEDT5zezxuEjZ35HdDnX+wGrgFpkm5MSghkMGWcuBYC0B4hMEgZaV
+ Yutw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697184015; x=1697788815;
+ d=1e100.net; s=20230601; t=1697184017; x=1697788817;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VUr7ma9/URcW12PwoU86CMS0D0tvRcZTYVEP0u5I3rQ=;
- b=IgTrmSzpzLqA6iBm8y6zJWEv8iFzVFGx7GW/GcS3utGt6dXvJxa3T9/txWLuvEGeUA
- 6DkEiY2n2g9dh7q/IiPUPpTAo2d7AnpBZ578Zug2WVzUgKDHMc9ocLkbpl2jVvB9CkIJ
- gW6eZ0cOVcPbXesLZKAAlcmS3BgV4mh49A2gm3k9Ic/PiRU/8w8isi3A5V6B1tHRye8K
- IAhEHGH3z9dWrcxBrmJ4mxWxJGNn/U/8/9+OCYnzXBaU5OBK+eTnAVLNPloJDP0yCex0
- WPmEHT/ydx1NekLEHeWDwzu28QcR3RztjdmvQbEpMCnVmBjl+XMyju1wcsuTKMYupdQ/
- BfkQ==
-X-Gm-Message-State: AOJu0YxDoXZpGKvv/tlR43mCpdR1PYE0K2XHfbFxsLVOBjUxqyojR4O2
- HMTqA/z3lAsdMUL5u1T4mhUSiIZ9/zWkKUb6s2k=
-X-Google-Smtp-Source: AGHT+IGAwAPjt5MDy7jTxRx86MHoZdUrsSWRRN/PsQ2xaq5LUlP4jZ2W0iZUSLu/PWp+cTg7q3l3KA==
-X-Received: by 2002:a05:6512:3051:b0:500:7696:200 with SMTP id
- b17-20020a056512305100b0050076960200mr27330958lfb.59.1697184015131; 
- Fri, 13 Oct 2023 01:00:15 -0700 (PDT)
+ bh=7wDa0+LeLRl26RBk3owDHhjoJ0wMiMLPngdzMA5WHgM=;
+ b=e8vmf3iE3iml4reUFduGVDZcIQGfU/2RDDaVR6tCyyxFnrU9Ox5zNTDjGP1+8knEMc
+ +bvAfd7oMDghK+OMURFqQ14gGqAdoFzDMS1HBgRAnzpAHHKDNyY7l+hOUaNR4nYIIOVA
+ iXIYH2qfXq/jWqh1QZ3IAXWrxn04jCI7eQU+O6lJlO1CNr1bbH8xfpxqHc4HlTV7wK2D
+ oGcReFjf6/EFrehJQY+7gVfF/X3bN0TzIInkyeOvul2qvY5B2vXw9rboVv0s4hp5lpKn
+ i4F3DW0giQyyD6AIg7YxRdz2lDhj5oU2Iq8h4LIfji6NlsLxWS4KDgbIYdlaJRS9VF6A
+ PT1Q==
+X-Gm-Message-State: AOJu0YwuQz9WJEhDnQPzYumwhEKyRBvRz+9VbjeNgSKmJFAVjscKficz
+ HzUcuJoaPykuLoqJ54+QhgNH37AW/mjZPkmxDog=
+X-Google-Smtp-Source: AGHT+IHb3dj63JqR90aM/Ft1VKlRbgEbi0KsRr5tHN3R9RwxbG5TrvcWOjIvB0hyba0sgZUR1qUfhg==
+X-Received: by 2002:adf:b353:0:b0:32d:93a0:978f with SMTP id
+ k19-20020adfb353000000b0032d93a0978fmr3294536wrd.2.1697184017348; 
+ Fri, 13 Oct 2023 01:00:17 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.01.00.13
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.01.00.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:00:14 -0700 (PDT)
+ Fri, 13 Oct 2023 01:00:16 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [RFC PATCH v2 77/78] tests/unit/test-char.c: add fallthrough
- pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:44 +0300
-Message-Id: <92c0d221dab341363cf85f8e7526e32cfc048ff0.1697183699.git.manos.pitsidianakis@linaro.org>
+Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [RFC PATCH v2 78/78] meson.build: increase -Wimplicit-fallthrough to 5
+Date: Fri, 13 Oct 2023 10:57:45 +0300
+Message-Id: <7a263d4200cfef8185fce46633d29d01fee3167a.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,45 +97,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of raising -Wimplicit-fallthrough to 5, replace all
-fall-through comments with the fallthrough attribute pseudo-keyword.
+Make GCC's implicit fall-through static analysis stricter by requiring
+the use of the fallthrough attribute statement instead of comments.
+
+This makes the QEMU code style more consistent.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- tests/unit/test-char.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/devel/style.rst | 23 +++++++++++++++++++++++
+ meson.build          |  2 +-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/tests/unit/test-char.c b/tests/unit/test-char.c
-index 649fdf64e1..6f5a2c4108 100644
---- a/tests/unit/test-char.c
-+++ b/tests/unit/test-char.c
-@@ -56,25 +56,25 @@ static void fe_read(void *opaque, const uint8_t *buf, int size)
- static void fe_event(void *opaque, QEMUChrEvent event)
- {
-     FeHandler *h = opaque;
-     bool new_open_state;
+diff --git a/docs/devel/style.rst b/docs/devel/style.rst
+index 2f68b50079..f473dd24e9 100644
+--- a/docs/devel/style.rst
++++ b/docs/devel/style.rst
+@@ -612,28 +612,51 @@ While this generally results in simpler, less leak-prone code, there
+ are still some caveats to beware of
  
-     h->last_event = event;
-     switch (event) {
-     case CHR_EVENT_BREAK:
-         break;
-     case CHR_EVENT_OPENED:
-     case CHR_EVENT_CLOSED:
-         h->openclose_count++;
-         new_open_state = (event == CHR_EVENT_OPENED);
-         if (h->is_open == new_open_state) {
-             h->openclose_mismatch = true;
+ * Variables declared with g_auto* MUST always be initialized,
+   otherwise the cleanup function will use uninitialized stack memory
+ 
+ * If a variable declared with g_auto* holds a value which must
+   live beyond the life of the function, that value must be saved
+   and the original variable NULL'd out. This can be simpler using
+   g_steal_pointer
+ 
+ 
+ .. code-block:: c
+ 
+     char *somefunc(void)
+     {
+         g_autofree char *foo = g_strdup_printf("foo%", "wibble");
+         g_autoptr (GList) bar = .....
+ 
+         if (eek) {
+            return NULL;
          }
-         h->is_open = new_open_state;
--        /* fallthrough */
-+        fallthrough;
-     default:
-         quit = true;
-         break;
-     }
- }
  
- #ifdef _WIN32
+         return g_steal_pointer(&foo);
+     }
+ 
++Implicit switch case fall-through
++=================================
++
++The C language allows switch cases to "fall-through" when a "break" statement
++is missing at the end of a case. This, however, introduces ambiguity in the
++code, as it's not always clear if the missing break is intentional or a bug.
++
++As this behaviour allows for bugs we do not allow "implicit fall-through".
++
++In order to identify intentional fall-through cases, we have adopted a
++pseudo-keyword macro 'fallthrough' which expands to gcc's extension
++__attribute__((__fallthrough__)).  `Statement Attributes
++<https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html>`_
++
++All switch/case blocks must end in one of:
++
++.. code-block:: c
++
++	  break;
++	  fallthrough;
++	  continue;
++	  goto <label>;
++	  return [expression];
+ 
+ QEMU Specific Idioms
+ ********************
+diff --git a/meson.build b/meson.build
+index 79aef19bdc..e8805f0e0c 100644
+--- a/meson.build
++++ b/meson.build
+@@ -438,28 +438,28 @@ add_global_link_arguments(qemu_ldflags, native: false, language: all_languages)
+ warn_flags = [
+   '-Wundef',
+   '-Wwrite-strings',
+   '-Wmissing-prototypes',
+   '-Wstrict-prototypes',
+   '-Wredundant-decls',
+   '-Wold-style-declaration',
+   '-Wold-style-definition',
+   '-Wtype-limits',
+   '-Wformat-security',
+   '-Wformat-y2k',
+   '-Winit-self',
+   '-Wignored-qualifiers',
+   '-Wempty-body',
+   '-Wnested-externs',
+   '-Wendif-labels',
+   '-Wexpansion-to-defined',
+-  '-Wimplicit-fallthrough=2',
++  '-Wimplicit-fallthrough=5',
+   '-Wmissing-format-attribute',
+   '-Wno-initializer-overrides',
+   '-Wno-missing-include-dirs',
+   '-Wno-shift-negative-value',
+   '-Wno-string-plus-int',
+   '-Wno-typedef-redefinition',
+   '-Wno-tautological-type-limit-compare',
+   '-Wno-psabi',
+   '-Wno-gnu-variable-sized-type-not-at-end',
+ ]
 -- 
 2.39.2
 
