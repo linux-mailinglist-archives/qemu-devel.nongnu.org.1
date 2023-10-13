@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D377C8DA8
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 574807C8D9E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:16:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrNYk-0007Xp-Fv; Fri, 13 Oct 2023 15:10:54 -0400
+	id 1qrNYo-000811-75; Fri, 13 Oct 2023 15:10:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNYQ-0007D8-Ic
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:34 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNYU-0007Hn-Vg
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNYB-0001we-HJ
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:34 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qrNYC-0001xI-U3
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 15:10:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697224217;
+ s=mimecast20190719; t=1697224218;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TQTYOTWid1Fw+cf9QBy9KAEHE/HDVmmzcztVlOI0G7g=;
- b=QW/2kXwJTIj3rccfe0ZyEHj3PKOE6NckSK3Mb7QHK7u783VNv/Fwdk6r2y5+jYlW+/afkf
- PeJYpQFVN/UfqSjyUoZfsWHcvjhGVrdK9OqR6TEcFasGCy9W+ekqACbqeuyZk979GI2oXf
- owN4fQw6J8h6IxAB7laBy2ylz705grs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-689-AOwaVW6NOKiQVa8kAEaogQ-1; Fri, 13 Oct 2023 15:10:12 -0400
-X-MC-Unique: AOwaVW6NOKiQVa8kAEaogQ-1
+ bh=1+ZZC3bykVxdgOH9/pQEMomsenatIinVGwwEBZIBiPg=;
+ b=gqkMR5HhbnOmDX0yV+bgxhMDN79NM3Cj1mI8vWus7wc5pCQWAgqMEc+veC28ATWQ9ORqei
+ MiO06gkeW81IHVpTE2nSQFsnvAUd/ps19kqpJl3yuVqY0+ZJ4h8k3wvGaKXKJYYLBP2lBK
+ 7wv0iXT9gWFf/hY0x25VY1mFGjM3jrY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-495-DJNftSlSMzu147xcnQjrFA-1; Fri, 13 Oct 2023 15:10:14 -0400
+X-MC-Unique: DJNftSlSMzu147xcnQjrFA-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE2D21C00D1F;
- Fri, 13 Oct 2023 19:10:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 39424805BC3;
+ Fri, 13 Oct 2023 19:10:13 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.32.124])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A80F040C6CA0;
- Fri, 13 Oct 2023 19:10:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EC16040C6CA0;
+ Fri, 13 Oct 2023 19:10:11 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>,
@@ -63,9 +63,9 @@ Cc: Kevin Wolf <kwolf@redhat.com>,
  Eric Farman <farman@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Halil Pasic <pasic@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PULL 22/25] iotests.py: pause_job(): drop return value
-Date: Fri, 13 Oct 2023 15:09:37 -0400
-Message-ID: <20231013190941.3699288-23-jsnow@redhat.com>
+Subject: [PULL 23/25] tests/vm/basevm.py: use cmd() instead of qmp()
+Date: Fri, 13 Oct 2023 15:09:38 -0400
+Message-ID: <20231013190941.3699288-24-jsnow@redhat.com>
 In-Reply-To: <20231013190941.3699288-1-jsnow@redhat.com>
 References: <20231013190941.3699288-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -97,32 +97,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-The returned value is unused. It's simple to check by command
-
- git grep -B 3 '\.pause_job('
+We don't expect failure here and need 'result' object. cmd() is better
+in this case.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Eric Blake <eblake@redhat.com>
-Message-id: 20231006154125.1068348-13-vsementsov@yandex-team.ru
+Message-id: 20231006154125.1068348-14-vsementsov@yandex-team.ru
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- tests/qemu-iotests/iotests.py | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/vm/basevm.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
-index ee7b6ddeff..f43814e802 100644
---- a/tests/qemu-iotests/iotests.py
-+++ b/tests/qemu-iotests/iotests.py
-@@ -1338,8 +1338,7 @@ def pause_job(self, job_id='job0', wait=True):
-         result = self.vm.qmp('block-job-pause', device=job_id)
-         self.assert_qmp(result, 'return', {})
-         if wait:
--            return self.pause_wait(job_id)
--        return result
-+            self.pause_wait(job_id)
- 
-     def case_skip(self, reason):
-         '''Skip this test case'''
+diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
+index a97e23b0ce..8aef4cff96 100644
+--- a/tests/vm/basevm.py
++++ b/tests/vm/basevm.py
+@@ -312,8 +312,8 @@ def boot(self, img, extra_args=[]):
+         self._guest = guest
+         # Init console so we can start consuming the chars.
+         self.console_init()
+-        usernet_info = guest.qmp("human-monitor-command",
+-                                 command_line="info usernet").get("return")
++        usernet_info = guest.cmd("human-monitor-command",
++                                 command_line="info usernet")
+         self.ssh_port = get_info_usernet_hostfwd_port(usernet_info)
+         if not self.ssh_port:
+             raise Exception("Cannot find ssh port from 'info usernet':\n%s" % \
 -- 
 2.41.0
 
