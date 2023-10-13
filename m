@@ -2,77 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F947C8D10
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 20:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C144D7C8D11
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 20:30:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrMuc-0001Ba-85; Fri, 13 Oct 2023 14:29:26 -0400
+	id 1qrMui-0001EM-VB; Fri, 13 Oct 2023 14:29:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrMuW-0001BB-7K; Fri, 13 Oct 2023 14:29:20 -0400
+ id 1qrMuh-0001Dd-Bp; Fri, 13 Oct 2023 14:29:31 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrMuU-0002XZ-DA; Fri, 13 Oct 2023 14:29:19 -0400
+ id 1qrMuf-0002YM-VG; Fri, 13 Oct 2023 14:29:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=DOULnyGvZXY57WzISjGL9RiSmB6uXeM+PcNpnuA6Ai0=; b=MKTqEGP6haBPw+w0h7M4eBrpBw
- G/3qf7T5HD88ChSsjtcVE4mspxVaDAZoYjUJ5t25pDUSUKoy8lvHxCym4Ui/hH69e0G+Y3yX1hLq4
- 9GEnF9eseJgNDtY1c7zr47SrupNaC0gGlg0nefzk3It8rEthMCXbjl8iqWjPaEsqwwqmHKzDsmiz1
- QGU+4zMsbsFixyWe9FIkYOQu4yZDQPbQcrb5ZABJlqhqOHCr1V0d/IUPztQ2v6uLdbdq3yyGE3ior
- caXUUi4MH9RaI/QcZdhR9VJTN+LUbp3fmICqWSzQP4fy5r1SS/oq0juGSlpI3GYMG9yr4+FJ44qqI
- T67GAPITQjqIihWRuvcmij+lQ4GW3XSzBzfFdEVmiStAyVH+vkV1Z58r7cqP+GtQs4CtZoIYsnrlI
- fOVsmZF1DzI6QLPGOEO0FJRA8XMrxjU7U/sYakK3chL6AEtEu6jXZZdUm87LRVGUSW+H/5hhMKz92
- whxyNn5j1ru+kZgOFfxiAV3POz2u8a+Mc+S5CKS0hAjBNFqWU3wZjalp5BsqSjPPrJ73QAsBwkG2R
- UhXDFwiWNxOHBQSd32U1ZzWLVTDP7YCx10PHihOz6rghemV2xx00arJAsENvAkFgIYJJUKgVwOtPH
- 2RATYEK1eBC6F1PzlznRXyI644ly7FjjDi62x96iQ=;
+ bh=RMfkjHUrWkOSxfzls8wtqjc0evEKJW6kFwrU0iFCbT0=; b=KVgls+g8xiT6RIIxnevfUthIa/
+ m9NN/aNp6fLb4GgPyO9P+NrKra1J4ew6/bMi9Q56MmnFySZsGdn/3J+ccnbRnZAvRyUyjtWLwYu3D
+ zOt7nTtJqXtytwcM/ezc/UPNjVoWFRGpbmZ2Hh0sZHvRTRCSfSyAkBl4Qh06TXuXeBHsYwwsrEiOB
+ mcBDvhEEgS+whYjQHvnCbLWeNHJWtnBYZ+RkJUTHbwUy9H8EpfKwNRZOZat4tps7InbhTf0kNr+HP
+ cAtXzWotxsMILps/XNP1ouh52GzPNJXk3cGQscxGJkTP5wgoh+e4y5ibA3KMBgfgmoL8W6iV8CWdI
+ tGgehtFcUwbijeafmBMoHu4Zx2nMdfKvnnVRepzY8XgNck85tafQKrYZsR7Ua7L6MPYp9a4c1XGzv
+ nBLW0tBb4UlMVXu6lf1CkYrk3MAg4Dk7QikSziUYh2/goVh/+9JSQsR6UhynJw7rw29MoCzQw50zx
+ vE04lAaDzH0bjh6ZQoof3uA6AJfWwHXNxJ7gdrt6HY8hXfV/n3RBX/dyXQrAlpJlJkCR+f+ndR2cv
+ YLa7dJLzUG2UrPee0tBgaAcGFMHN2r90udquH1sc8LAvapuprw9lo5zIJIvzWT2VFbxKJj+hhOKC4
+ wdybJFgyUXVYC5/CU+WIoEA7dcRRklr/jl7o95Zvg=;
 Received: from [2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrMtQ-0002of-7R; Fri, 13 Oct 2023 19:28:22 +0100
-Message-ID: <3d47fc1b-ceb5-4f66-9b62-3f4a83052456@ilande.co.uk>
-Date: Fri, 13 Oct 2023 19:28:12 +0100
+ id 1qrMuT-0002of-Jy; Fri, 13 Oct 2023 19:29:21 +0100
+Message-ID: <2cb29fce-f1af-4d7d-aebc-f16774b278d8@ilande.co.uk>
+Date: Fri, 13 Oct 2023 19:29:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-arm@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Bin Meng <bin.meng@windriver.com>, Yanan Wang <wangyanan55@huawei.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Marek Vasut
- <marex@denx.de>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-ppc@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- Stafford Horne <shorne@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Chris Wulff <crwulff@gmail.com>, Sergio Lopez <slp@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org
-References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-19-philmd@linaro.org>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Huacai Chen <chenhuacai@kernel.org>, qemu-ppc@nongnu.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20231011185954.10337-1-philmd@linaro.org>
+ <20231011185954.10337-5-philmd@linaro.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -98,13 +75,13 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <20231010092901.99189-19-philmd@linaro.org>
+In-Reply-To: <20231011185954.10337-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 18/18] target/sparc: Make SPARC_CPU common to new
- SPARC32_CPU/SPARC64_CPU types
+Subject: Re: [PATCH 4/4] hw/sparc64/ebus: Access memory regions via
+ pci_address_space_io()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -130,97 +107,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/2023 10:29, Philippe Mathieu-Daudé wrote:
+On 11/10/2023 19:59, Philippe Mathieu-Daudé wrote:
 
-> "target/foo/cpu-qom.h" can not use any target specific definitions.
-> 
-> Currently "target/sparc/cpu-qom.h" defines TYPE_SPARC_CPU
-> depending on the sparc(32)/sparc64 build type. This doesn't
-> scale in a heterogeneous context where we need to access both
-> types concurrently.
-> 
-> In order to do that, introduce the new SPARC32_CPU / SPARC64_CPU
-> types, both inheriting a common TYPE_SPARC_CPU base type.
-> 
-> Keep the current CPU types registered in sparc_register_cpudef_type()
-> as 32 or 64-bit, depending on the binary built.
+> PCI functions are plugged on a PCI bus. They can only access
+> external memory regions via the bus.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/sparc/cpu-qom.h |  9 ++++-----
->   target/sparc/cpu.h     |  3 +++
->   target/sparc/cpu.c     | 12 +++++++++++-
->   3 files changed, 18 insertions(+), 6 deletions(-)
+>   hw/sparc64/sun4u.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/target/sparc/cpu-qom.h b/target/sparc/cpu-qom.h
-> index 86b24a254a..d08fbd4ddc 100644
-> --- a/target/sparc/cpu-qom.h
-> +++ b/target/sparc/cpu-qom.h
-> @@ -23,13 +23,12 @@
->   #include "hw/core/cpu.h"
->   #include "qom/object.h"
+> diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+> index d908a38f73..c871170378 100644
+> --- a/hw/sparc64/sun4u.c
+> +++ b/hw/sparc64/sun4u.c
+> @@ -360,11 +360,11 @@ static void ebus_realize(PCIDevice *pci_dev, Error **errp)
+>       pci_dev->config[0x09] = 0x00; // programming i/f
+>       pci_dev->config[0x0D] = 0x0a; // latency_timer
 >   
-> -#ifdef TARGET_SPARC64
-> -#define TYPE_SPARC_CPU "sparc64-cpu"
-> -#else
->   #define TYPE_SPARC_CPU "sparc-cpu"
-> -#endif
-> +#define TYPE_SPARC32_CPU "sparc32-cpu"
-> +#define TYPE_SPARC64_CPU "sparc64-cpu"
->   
-> -OBJECT_DECLARE_CPU_TYPE(SPARCCPU, SPARCCPUClass, SPARC_CPU)
-> +OBJECT_DECLARE_CPU_TYPE(SPARC32CPU, SPARCCPUClass, SPARC32_CPU)
-> +OBJECT_DECLARE_CPU_TYPE(SPARC64CPU, SPARCCPUClass, SPARC64_CPU)
->   
->   #define SPARC_CPU_TYPE_SUFFIX "-" TYPE_SPARC_CPU
->   #define SPARC_CPU_TYPE_NAME(model) model SPARC_CPU_TYPE_SUFFIX
-> diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-> index 924e83b9ce..0f94e5a442 100644
-> --- a/target/sparc/cpu.h
-> +++ b/target/sparc/cpu.h
-> @@ -12,6 +12,9 @@
->   #define TARGET_DPREGS 32
->   #endif
->   
-> +/* Abstract QOM SPARC CPU, not exposed to other targets */
-> +OBJECT_DECLARE_CPU_TYPE(SPARCCPU, SPARCCPUClass, SPARC_CPU)
-> +
->   /*#define EXCP_INTERRUPT 0x100*/
->   
->   /* Windowed register indexes.  */
-> diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-> index 1e66413e94..7d060ba488 100644
-> --- a/target/sparc/cpu.c
-> +++ b/target/sparc/cpu.c
-> @@ -934,6 +934,12 @@ static const TypeInfo sparc_cpu_types[] = {
->           .abstract       = true,
->           .class_size     = sizeof(SPARCCPUClass),
->           .class_init     = sparc_cpu_class_init,
-> +    }, {
-> +        .name           = TYPE_SPARC32_CPU,
-> +        .parent         = TYPE_SPARC_CPU,
-> +    }, {
-> +        .name           = TYPE_SPARC64_CPU,
-> +        .parent         = TYPE_SPARC_CPU,
->       }
->   };
->   
-> @@ -950,7 +956,11 @@ static void sparc_register_cpudef_type(const struct sparc_def_t *def)
->       char *typename = sparc_cpu_type_name(def->name);
->       TypeInfo ti = {
->           .name = typename,
-> -        .parent = TYPE_SPARC_CPU,
-> +#ifdef TARGET_SPARC64
-> +        .parent = TYPE_SPARC64_CPU,
-> +#else
-> +        .parent = TYPE_SPARC32_CPU,
-> +#endif
->           .class_init = sparc_cpu_cpudef_class_init,
->           .class_data = (void *)def,
->       };
+> -    memory_region_init_alias(&s->bar0, OBJECT(s), "bar0", get_system_io(),
+> -                             0, 0x1000000);
+> +    memory_region_init_alias(&s->bar0, OBJECT(s), "bar0",
+> +                             pci_address_space_io(pci_dev), 0, 0x1000000);
+>       pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &s->bar0);
+> -    memory_region_init_alias(&s->bar1, OBJECT(s), "bar1", get_system_io(),
+> -                             0, 0x8000);
+> +    memory_region_init_alias(&s->bar1, OBJECT(s), "bar1",
+> +                             pci_address_space_io(pci_dev), 0, 0x8000);
+>       pci_register_bar(pci_dev, 1, PCI_BASE_ADDRESS_SPACE_IO, &s->bar1);
+>   }
 
-I do have a long-standing TODO which is to look at better separation between 32-bit 
-and 64-bit SPARC, however for now:
+Nice!
 
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
