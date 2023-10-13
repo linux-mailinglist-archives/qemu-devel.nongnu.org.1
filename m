@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAD27C7F25
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 09:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D162E7C7F35
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:01:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrCzE-0004aS-3k; Fri, 13 Oct 2023 03:53:32 -0400
+	id 1qrCzK-00055X-8K; Fri, 13 Oct 2023 03:53:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCy2-0001xg-Qr
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:20 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qrCyE-0002JA-2H
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:31 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCxo-0005KB-WE
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:18 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-32d9cb5e0fcso304885f8f.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:52:01 -0700 (PDT)
+ id 1qrCxq-0005LY-P8
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:29 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-405361bb94eso21943205e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:52:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183520; x=1697788320; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183525; x=1697788325; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LwY+jPg9vgqKQupdoqD0AmL9+Yk7tkyiChWnCwkiopM=;
- b=Nfpqfoy1JoO6rsK+1LMzuTD+Xkz3UaG+bGycwBWpmQotV9MKk8WwQrMP4fCMQ3BByS
- 3HMeJgLicqySdK0fXZbf2HGKwp2/8HczoxjBFVhSB7MQqggafvwtRfVar8CXRKW12mIj
- xQKXvtlgx/3IghPkomfgjqUALz+KYwEa2RgagSsIMadl5rjPBGVH+aiaPExuZor52hkz
- 1BBDMkzu5uR1L/9aAdz4PfJfL8ZOTZcGcSbkcwgka6a8OaHmQArciGaN+BuIQiHKybcK
- 8pvzavZIMsr0Bi7JzLTryWxcZUpH7cOsCHvxcv2db54eBhZLoqUc5mE+ihyUvjAF0bg6
- 4L+g==
+ bh=EXMFvHmrFfRKphR3OqwZTybrMB4noBqhKHecXvyL6KU=;
+ b=WA0sAO+frH5LXy6O7+KpEgHxGp71ZX4mAFTnDoRZSjAjff1t4XFlOuXF2MROlWFS3H
+ VRVWlQT8bvnzRoY/t41zGXK7d0OxihJ1wwA3N30LsozPz7NEoGC0YhhPbJB9sQcV+q3t
+ sFmlSeH/kH6G5k1c7gFidEmhAm5SvY5z/xYAEd0KorrcVY4go7PUE2L+xIqRxoenpS93
+ GECPVJmHLWmOMfp4n3GloBhyllI7IBicCd/o3bzi9rxwWCUwycK1yeXSGHn67vc/iaFl
+ TgAwLgQaFp0qPpSNupRU1IVR09NWIEehkw2rdWsB0HR3iLavdoGXvpVYrJjzNv64qGpp
+ 3lTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183520; x=1697788320;
+ d=1e100.net; s=20230601; t=1697183525; x=1697788325;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LwY+jPg9vgqKQupdoqD0AmL9+Yk7tkyiChWnCwkiopM=;
- b=KmMkX493TVTt6VaTupF3VhvJIK41AvZzEFN0suhCu7apUXRcdl2pgaylOSnbP/TTKK
- CG2uTU+JGj/nr9nd8K4bGvjpAFDgLz6d4UJfPjLlrpasdrHPczQq/O7CsjHfpgn/CxGr
- iM6gq8CLtoyL5CixoafPMf8B5UClDGYDjAg0bPGWguaJF5cPttp/xYhYOUxqYRKzaiK5
- E/QOaYCTMNLOBgmFc/zApLuDnU1GUzKcyjKe68PxSITVWCmHeHD2y9PZEdfZOgsKmK3v
- 9Q6kBX43/AKGI/Fc64nJ12XGq/QX8pKqKdyDD1bT02Oo+Z1flKVpX6yES+DTJkHC/AZN
- hIjA==
-X-Gm-Message-State: AOJu0YwdqwgD0iHLWDBinNRKxotm7vHYKHQjrEO/uCQh/ENFLt3/rYZ/
- ogPihsYbcRK0U58mX89TV1L68Yvn4InNLUt2Wq0=
-X-Google-Smtp-Source: AGHT+IEwyFFSNWYQZ2XtYoA1M0Kp6Xn2M4bTeHWxgEB41pfbRP6r2HPsSIRAFsYdhrCWSwDYzxZ0+Q==
-X-Received: by 2002:a5d:5b1d:0:b0:32c:f401:997b with SMTP id
- bx29-20020a5d5b1d000000b0032cf401997bmr10083584wrb.50.1697183520094; 
- Fri, 13 Oct 2023 00:52:00 -0700 (PDT)
+ bh=EXMFvHmrFfRKphR3OqwZTybrMB4noBqhKHecXvyL6KU=;
+ b=TMp88LEbntS13pfEQ5tc2T2Ujt6LvTXFmQ/wt0mNB7MtqcS6tJs2T3HncNI8UpD96a
+ +/NhV0iDE1SFHVBcpAwWMNaSPhr95ZiGDVH0k/Be2mQ5vSv7cmuS2oYHlTorHEgBDxKF
+ n6DfYR7jZXaexnd2azsJAbjAGr9DqPbm0nc7Uu9ljy/9wLDIltHtA+w4I5GxLMeubKLW
+ PVTRsTis4FuVq6zLniuVc1qcFFMQPQl5kIC/+36eDW4XXzWdsCTVK34HwS7KaFAvfEF0
+ YuxnLYRccmE4ywhUWR057JGCPcVpTj0I5ugPH0bslN0GtuVZm1xxz8mPgupvL5p98hEB
+ g1BA==
+X-Gm-Message-State: AOJu0Yxq6XxUkxqosLlK/M53ZdKqREMvpGx1nGCasEdOXo6NF9up9ume
+ ITe22dB2nLvcu755g9dHPf6gVh0UUyDxRKPfNyQ=
+X-Google-Smtp-Source: AGHT+IHKDcepCZTIRdgO4eTlgWsJlMaO4s9TcGUvnVnsxnm7jOjZI5V+96uYll4GfAsgbDuSmpTbqw==
+X-Received: by 2002:a05:600c:2981:b0:403:8fb9:8d69 with SMTP id
+ r1-20020a05600c298100b004038fb98d69mr24001352wmd.25.1697183525026; 
+ Fri, 13 Oct 2023 00:52:05 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.51.58
+ m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.52.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:51:59 -0700 (PDT)
+ Fri, 13 Oct 2023 00:52:04 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	qemu-block@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [RFC PATCH 54/78] hw/core: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:48:15 +0300
-Message-Id: <f385cf09b449507eb3f7ad6ab2d9b57f0f9fe7a8.1697183082.git.manos.pitsidianakis@linaro.org>
+Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [RFC PATCH 55/75] hw/input: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:48:18 +0300
+Message-Id: <00d9ffd5b3c5a85c4f719fdd3573a0f5d7e53904.1697034504.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
-References: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
+References: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_FILL_THIS_FORM_SHORT=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,158 +94,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of raising -Wimplicit-fallthrough to 5, replace all
-fall-through comments with the fallthrough attribute pseudo-keyword.
-
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/core/loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/input/hid.c     | 3 ++-
+ hw/input/tsc2005.c | 4 ++--
+ hw/input/tsc210x.c | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 4dd5a71fb7..559d63a1e2 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -625,138 +625,138 @@ toosmall:
- /* Load a U-Boot image.  */
- static ssize_t load_uboot_image(const char *filename, hwaddr *ep,
-                                 hwaddr *loadaddr, int *is_linux,
-                                 uint8_t image_type,
-                                 uint64_t (*translate_fn)(void *, uint64_t),
-                                 void *translate_opaque, AddressSpace *as)
+diff --git a/hw/input/hid.c b/hw/input/hid.c
+index a9c7dd1ce1..15fffc5dfb 100644
+--- a/hw/input/hid.c
++++ b/hw/input/hid.c
+@@ -250,88 +250,89 @@ static void hid_keyboard_event(DeviceState *dev, QemuConsole *src,
+ static void hid_keyboard_process_keycode(HIDState *hs)
  {
-     int fd;
-     ssize_t size;
-     hwaddr address;
-     uboot_image_header_t h;
-     uboot_image_header_t *hdr = &h;
-     uint8_t *data = NULL;
-     int ret = -1;
-     int do_uncompress = 0;
+     uint8_t hid_code, index, key;
+     int i, keycode, slot;
  
-     fd = open(filename, O_RDONLY | O_BINARY);
-     if (fd < 0)
-         return -1;
+     if (hs->n == 0) {
+         return;
+     }
+     slot = hs->head & QUEUE_MASK; QUEUE_INCR(hs->head); hs->n--;
+     keycode = hs->kbd.keycodes[slot];
  
-     size = read(fd, hdr, sizeof(uboot_image_header_t));
-     if (size < sizeof(uboot_image_header_t)) {
-         goto out;
+     if (!hs->n) {
+         trace_hid_kbd_queue_empty();
      }
  
-     bswap_uboot_header(hdr);
+     key = keycode & 0x7f;
+     index = key | ((hs->kbd.modifiers & (1 << 8)) >> 1);
+     hid_code = hid_usage_keys[index];
+     hs->kbd.modifiers &= ~(1 << 8);
  
-     if (hdr->ih_magic != IH_MAGIC)
-         goto out;
+     switch (hid_code) {
+     case 0x00:
+         return;
  
-     if (hdr->ih_type != image_type) {
-         if (!(image_type == IH_TYPE_KERNEL &&
-             hdr->ih_type == IH_TYPE_KERNEL_NOLOAD)) {
-             fprintf(stderr, "Wrong image type %d, expected %d\n", hdr->ih_type,
-                     image_type);
-             goto out;
+     case 0xe0:
+         assert(key == 0x1d);
+         if (hs->kbd.modifiers & (1 << 9)) {
+             /* The hid_codes for the 0xe1/0x1d scancode sequence are 0xe9/0xe0.
+              * Here we're processing the second hid_code.  By dropping bit 9
+              * and setting bit 8, the scancode after 0x1d will access the
+              * second half of the table.
+              */
+             hs->kbd.modifiers ^= (1 << 8) | (1 << 9);
+             return;
          }
-     }
- 
-     /* TODO: Implement other image types.  */
-     switch (hdr->ih_type) {
-     case IH_TYPE_KERNEL_NOLOAD:
-         if (!loadaddr || *loadaddr == LOAD_UIMAGE_LOADADDR_INVALID) {
-             fprintf(stderr, "this image format (kernel_noload) cannot be "
-                     "loaded on this machine type");
-             goto out;
+         /* fall through to process Ctrl_L */
++        fallthrough;
+     case 0xe1 ... 0xe7:
+         /* Ctrl_L/Ctrl_R, Shift_L/Shift_R, Alt_L/Alt_R, Win_L/Win_R.
+          * Handle releases here, or fall through to process presses.
+          */
+         if (keycode & (1 << 7)) {
+             hs->kbd.modifiers &= ~(1 << (hid_code & 0x0f));
+             return;
          }
- 
-         hdr->ih_load = *loadaddr + sizeof(*hdr);
-         hdr->ih_ep += hdr->ih_load;
 -        /* fall through */
 +        fallthrough;
-     case IH_TYPE_KERNEL:
-         address = hdr->ih_load;
-         if (translate_fn) {
-             address = translate_fn(translate_opaque, address);
-         }
-         if (loadaddr) {
-             *loadaddr = hdr->ih_load;
-         }
+     case 0xe8 ... 0xe9:
+         /* USB modifiers are just 1 byte long.  Bits 8 and 9 of
+          * hs->kbd.modifiers implement a state machine that detects the
+          * 0xe0 and 0xe1/0x1d sequences.  These bits do not follow the
+          * usual rules where bit 7 marks released keys; they are cleared
+          * elsewhere in the function as the state machine dictates.
+          */
+         hs->kbd.modifiers |= 1 << (hid_code & 0x0f);
+         return;
  
-         switch (hdr->ih_comp) {
-         case IH_COMP_NONE:
-             break;
-         case IH_COMP_GZIP:
-             do_uncompress = 1;
-             break;
-         default:
-             fprintf(stderr,
-                     "Unable to load u-boot images with compression type %d\n",
-                     hdr->ih_comp);
-             goto out;
-         }
+     case 0xea ... 0xef:
+         abort();
  
-         if (ep) {
-             *ep = hdr->ih_ep;
-         }
+     default:
+         break;
+     }
  
-         /* TODO: Check CPU type.  */
-         if (is_linux) {
-             if (hdr->ih_os == IH_OS_LINUX) {
-                 *is_linux = 1;
-             } else if (hdr->ih_os == IH_OS_VXWORKS) {
-                 /*
-                  * VxWorks 7 uses the same boot interface as the Linux kernel
-                  * on Arm (64-bit only), PowerPC and RISC-V architectures.
-                  */
-                 switch (hdr->ih_arch) {
-                 case IH_ARCH_ARM64:
-                 case IH_ARCH_PPC:
-                 case IH_ARCH_RISCV:
-                     *is_linux = 1;
-                     break;
-                 default:
-                     *is_linux = 0;
-                     break;
-                 }
-             } else {
-                 *is_linux = 0;
+     if (keycode & (1 << 7)) {
+         for (i = hs->kbd.keys - 1; i >= 0; i--) {
+             if (hs->kbd.key[i] == hid_code) {
+                 hs->kbd.key[i] = hs->kbd.key[-- hs->kbd.keys];
+                 hs->kbd.key[hs->kbd.keys] = 0x00;
+                 break;
              }
          }
- 
-         break;
-     case IH_TYPE_RAMDISK:
-         address = *loadaddr;
-         break;
-     default:
-         fprintf(stderr, "Unsupported u-boot image type %d\n", hdr->ih_type);
-         goto out;
-     }
- 
-     data = g_malloc(hdr->ih_size);
- 
-     if (read(fd, data, hdr->ih_size) != hdr->ih_size) {
-         fprintf(stderr, "Error reading file\n");
-         goto out;
-     }
- 
-     if (do_uncompress) {
-         uint8_t *compressed_data;
-         size_t max_bytes;
-         ssize_t bytes;
- 
-         compressed_data = data;
-         max_bytes = UBOOT_MAX_GUNZIP_BYTES;
-         data = g_malloc(max_bytes);
- 
-         bytes = gunzip(data, max_bytes, compressed_data, hdr->ih_size);
-         g_free(compressed_data);
-         if (bytes < 0) {
-             fprintf(stderr, "Unable to decompress gzipped image!\n");
-             goto out;
+         if (i < 0) {
+             return;
          }
-         hdr->ih_size = bytes;
+     } else {
+         for (i = hs->kbd.keys - 1; i >= 0; i--) {
+             if (hs->kbd.key[i] == hid_code) {
+                 break;
+             }
+         }
+         if (i < 0) {
+             if (hs->kbd.keys < sizeof(hs->kbd.key)) {
+                 hs->kbd.key[hs->kbd.keys++] = hid_code;
+             }
+         } else {
+             return;
+         }
+     }
+ }
+diff --git a/hw/input/tsc2005.c b/hw/input/tsc2005.c
+index db2b80e35f..4f3f1d9d12 100644
+--- a/hw/input/tsc2005.c
++++ b/hw/input/tsc2005.c
+@@ -234,70 +234,70 @@ static void tsc2005_write(TSC2005State *s, int reg, uint16_t data)
+ /* This handles most of the chip's logic.  */
+ static void tsc2005_pin_update(TSC2005State *s)
+ {
+     int64_t expires;
+     bool pin_state;
+ 
+     switch (s->pin_func) {
+     case 0:
+         pin_state = !s->pressure && !!s->dav;
+         break;
+     case 1:
+     case 3:
+     default:
+         pin_state = !s->dav;
+         break;
+     case 2:
+         pin_state = !s->pressure;
      }
  
-     rom_add_blob_fixed_as(filename, data, hdr->ih_size, address, as);
+     if (pin_state != s->irq) {
+         s->irq = pin_state;
+         qemu_set_irq(s->pint, s->irq);
+     }
  
-     ret = hdr->ih_size;
+     switch (s->nextfunction) {
+     case TSC_MODE_XYZ_SCAN:
+     case TSC_MODE_XY_SCAN:
+         if (!s->host_mode && s->dav)
+             s->enabled = false;
+         if (!s->pressure)
+             return;
+-        /* Fall through */
++        fallthrough;
+     case TSC_MODE_AUX_SCAN:
+         break;
+ 
+     case TSC_MODE_X:
+     case TSC_MODE_Y:
+     case TSC_MODE_Z:
+         if (!s->pressure)
+             return;
+-        /* Fall through */
++        fallthrough;
+     case TSC_MODE_AUX:
+     case TSC_MODE_TEMP1:
+     case TSC_MODE_TEMP2:
+     case TSC_MODE_X_TEST:
+     case TSC_MODE_Y_TEST:
+     case TSC_MODE_TS_TEST:
+         if (s->dav)
+             s->enabled = false;
+         break;
+ 
+     case TSC_MODE_RESERVED:
+     case TSC_MODE_XX_DRV:
+     case TSC_MODE_YY_DRV:
+     case TSC_MODE_YX_DRV:
+     default:
+         return;
+     }
+ 
+     if (!s->enabled || s->busy)
+         return;
+ 
+     s->busy = true;
+     s->precision = s->nextprecision;
+     s->function = s->nextfunction;
+     s->pdst = !s->pnd0;	/* Synchronised on internal clock */
+     expires = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
+         (NANOSECONDS_PER_SECOND >> 7);
+     timer_mod(s->timer, expires);
+ }
+diff --git a/hw/input/tsc210x.c b/hw/input/tsc210x.c
+index 950506fb38..9ae426e1a6 100644
+--- a/hw/input/tsc210x.c
++++ b/hw/input/tsc210x.c
+@@ -774,70 +774,70 @@ static void tsc2102_audio_register_write(
+ /* This handles most of the chip logic.  */
+ static void tsc210x_pin_update(TSC210xState *s)
+ {
+     int64_t expires;
+     bool pin_state;
+ 
+     switch (s->pin_func) {
+     case 0:
+         pin_state = s->pressure;
+         break;
+     case 1:
+         pin_state = !!s->dav;
+         break;
+     case 2:
+     default:
+         pin_state = s->pressure && !s->dav;
+     }
+ 
+     if (!s->enabled)
+         pin_state = false;
+ 
+     if (pin_state != s->irq) {
+         s->irq = pin_state;
+         qemu_set_irq(s->pint, !s->irq);
+     }
+ 
+     switch (s->nextfunction) {
+     case TSC_MODE_XY_SCAN:
+     case TSC_MODE_XYZ_SCAN:
+         if (!s->pressure)
+             return;
+         break;
+ 
+     case TSC_MODE_X:
+     case TSC_MODE_Y:
+     case TSC_MODE_Z:
+         if (!s->pressure)
+             return;
+-        /* Fall through */
++        fallthrough;
+     case TSC_MODE_BAT1:
+     case TSC_MODE_BAT2:
+     case TSC_MODE_AUX:
+     case TSC_MODE_TEMP1:
+     case TSC_MODE_TEMP2:
+         if (s->dav)
+             s->enabled = false;
+         break;
+ 
+     case TSC_MODE_AUX_SCAN:
+     case TSC_MODE_PORT_SCAN:
+         break;
+ 
+     case TSC_MODE_NO_SCAN:
+     case TSC_MODE_XX_DRV:
+     case TSC_MODE_YY_DRV:
+     case TSC_MODE_YX_DRV:
+     default:
+         return;
+     }
+ 
+     if (!s->enabled || s->busy || s->dav)
+         return;
+ 
+     s->busy = true;
+     s->precision = s->nextprecision;
+     s->function = s->nextfunction;
+     expires = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
+         (NANOSECONDS_PER_SECOND >> 10);
+     timer_mod(s->timer, expires);
+ }
 -- 
 2.39.2
 
