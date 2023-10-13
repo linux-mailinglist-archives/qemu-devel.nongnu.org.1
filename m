@@ -2,57 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5357C7B4A
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 03:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF5D7C7B59
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 03:57:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr7Ci-0004MO-5S; Thu, 12 Oct 2023 21:43:04 -0400
+	id 1qr7Or-00067h-2I; Thu, 12 Oct 2023 21:55:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qr7Cd-0004Lw-MI; Thu, 12 Oct 2023 21:42:59 -0400
-Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131])
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qr7Ok-00066U-6Q
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 21:55:30 -0400
+Received: from esa8.hc1455-7.c3s2.iphmx.com ([139.138.61.253])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qr7Ca-0008Kj-Ns; Thu, 12 Oct 2023 21:42:59 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046060;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
- TI=SMTPD_---0Vu0Cxbi_1697161366; 
-Received: from 30.221.101.97(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0Vu0Cxbi_1697161366) by smtp.aliyun-inc.com;
- Fri, 13 Oct 2023 09:42:47 +0800
-Message-ID: <5e9662e6-2bbf-4e8d-999a-fc91bbc0c21d@linux.alibaba.com>
-Date: Fri, 13 Oct 2023 09:41:47 +0800
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qr7Oi-0001uf-BG
+ for qemu-devel@nongnu.org; Thu, 12 Oct 2023 21:55:29 -0400
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="123971444"
+X-IronPort-AV: E=Sophos;i="6.03,219,1694703600"; d="scan'208";a="123971444"
+Received: from unknown (HELO yto-r2.gw.nic.fujitsu.com) ([218.44.52.218])
+ by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2023 10:55:23 +0900
+Received: from yto-m3.gw.nic.fujitsu.com (yto-nat-yto-m3.gw.nic.fujitsu.com
+ [192.168.83.66])
+ by yto-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id A9FC9C68E8
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 10:55:18 +0900 (JST)
+Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
+ [192.51.206.21])
+ by yto-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id D52B4D9692
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 10:55:17 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+ by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 6037220050193
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 10:55:17 +0900 (JST)
+Received: from FNSTPC.g08.fujitsu.local (unknown [10.167.226.45])
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id D9E691A0072;
+ Fri, 13 Oct 2023 09:55:16 +0800 (CST)
+From: Li Zhijian <lizhijian@fujitsu.com>
+To: jonathan.cameron@huawei.com,
+	fan.ni@samsung.com
+Cc: qemu-devel@nongnu.org,
+	Li Zhijian <lizhijian@fujitsu.com>
+Subject: [PATCH] hw/cxl: Fix opaque type interpret wrongly
+Date: Fri, 13 Oct 2023 09:55:15 +0800
+Message-ID: <20231013015515.23647-1-lizhijian@fujitsu.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] target/riscv: Add "pmu-mask" property to replace
- "pmu-num"
-To: Rob Bradford <rbradford@rivosinc.com>, LIU Zhiwei <baxiantai@gmail.com>,
- qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com
-References: <20231011145032.81509-1-rbradford@rivosinc.com>
- <20231011145032.81509-6-rbradford@rivosinc.com>
- <e68ea00e-3f7a-4590-beae-6946d9fde671@gmail.com>
- <95425ae7f47334754aa7b706ba8362c2349d2f48.camel@rivosinc.com>
-Content-Language: en-US
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <95425ae7f47334754aa7b706ba8362c2349d2f48.camel@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.131;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-131.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-27932.003
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-27932.003
+X-TMASE-Result: 10-0.382300-10.000000
+X-TMASE-MatchedRID: aulLGGssQIMQQGM6WcQD/Auw+MVcHJpKjlRp8uau9oar1gUu9f1F/78F
+ Hrw7frluQTnfsHRv3fu5ijSzmdr97EpCFcNebto2hjlBjwpom1OlLADMASK8x+QdHK70O9a9o8W
+ MkQWv6iXBcIE78YqRWo6HM5rqDwqtXa6Q+cpEixFT8ZSuXf2MpwpUcLjvAYi9cHatKK4wXuB5NG
+ 1kI1mciP8ZtxI75jgcajBUwUX02ojf4idpFWUFkhBoZd+vstEyFcG3+ZRETICP9kUX1Z+buE3Lu
+ mkbQiNwVCqTSPu8tVR7AxIEOt4h2Q==
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+Received-SPF: pass client-ip=139.138.61.253;
+ envelope-from=lizhijian@fujitsu.com; helo=esa8.hc1455-7.c3s2.iphmx.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,165 +81,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+void cxl_component_register_block_init(Object *obj,
+                                       CXLComponentState *cxl_cstate,
+                                       const char *type)
+{
+    ComponentRegisters *cregs = &cxl_cstate->crb;
+...
+    memory_region_init_io(&cregs->cache_mem, obj, &cache_mem_ops, cregs,
+                          ".cache_mem", CXL2_COMPONENT_CM_REGION_SIZE);
 
-On 2023/10/12 20:38, Rob Bradford wrote:
-> On Thu, 2023-10-12 at 17:05 +0800, LIU Zhiwei wrote:
->>   
->>
->>   
->>   
->> On 2023/10/11 22:45, Rob Bradford wrote:
->>   
->>   
->>>   
->>> Using a mask instead of the number of PMU devices supports the
->>> accurate
->>> emulation of platforms that have a discontinuous set of PMU
->>> counters.
->>>
->>> Generate a warning if the old property changed from the default but
->>> still go ahead and use it to generate the mask if the user has
->>> changed
->>> it from the default
->>>
->>> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
->>> ---
->>>   target/riscv/cpu.c     |  5 +++--
->>>   target/riscv/cpu_cfg.h |  3 ++-
->>>   target/riscv/machine.c |  2 +-
->>>   target/riscv/pmu.c     | 14 ++++++++++----
->>>   4 files changed, 16 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->>> index c9d8fc12fe..4d2987e568 100644
->>> --- a/target/riscv/cpu.c
->>> +++ b/target/riscv/cpu.c
->>> @@ -1487,7 +1487,7 @@ static void riscv_cpu_realize_tcg(DeviceState
->>> *dev, Error **errp)
->>>           riscv_timer_init(cpu);
->>>       }
->>>   
->>> -    if (cpu->cfg.pmu_num) {
->>> +    if (cpu->cfg.pmu_mask) {
->>>           riscv_pmu_init(cpu, &local_err);
->>>           if (local_err != NULL) {
->>>               error_propagate(errp, local_err);
->>> @@ -1812,7 +1812,8 @@ static void
->>> riscv_cpu_add_misa_properties(Object *cpu_obj)
->>>   
->>>   static Property riscv_cpu_extensions[] = {
->>>       /* Defaults for standard extensions */
->>> -    DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
->>> +    DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16), /*
->>> Deprecated */
->>> +    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask,
->>> MAKE_32BIT_MASK(3, 16)),
->>>       DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf,
->>> false),
->>>       DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
->>>       DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
->>> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
->>> index 0e6a0f245c..d273487040 100644
->>> --- a/target/riscv/cpu_cfg.h
->>> +++ b/target/riscv/cpu_cfg.h
->>> @@ -123,7 +123,8 @@ struct RISCVCPUConfig {
->>>       bool ext_xtheadsync;
->>>       bool ext_XVentanaCondOps;
->>>   
->>> -    uint8_t pmu_num;
->>> +    uint8_t pmu_num; /* Deprecated */
->>> +    uint32_t pmu_mask;
->>>       char *priv_spec;
->>>       char *user_spec;
->>>       char *bext_spec;
->>> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
->>> index c7c862cdd3..9f6e3f7a6d 100644
->>> --- a/target/riscv/machine.c
->>> +++ b/target/riscv/machine.c
->>> @@ -313,7 +313,7 @@ static bool pmu_needed(void *opaque)
->>>   {
->>>       RISCVCPU *cpu = opaque;
->>>   
->>> -    return cpu->cfg.pmu_num;
->>> +    return (cpu->cfg.pmu_mask > 0);
->>>   }
->>>   
->>>   static const VMStateDescription vmstate_pmu_ctr_state = {
->>> diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
->>> index 360c76f63e..f2d35b4d3b 100644
->>> --- a/target/riscv/pmu.c
->>> +++ b/target/riscv/pmu.c
->>> @@ -18,6 +18,7 @@
->>>   
->>>   #include "qemu/osdep.h"
->>>   #include "qemu/log.h"
->>> +#include "qemu/error-report.h"
->>>   #include "cpu.h"
->>>   #include "pmu.h"
->>>   #include "sysemu/cpu-timers.h"
->>> @@ -182,7 +183,7 @@ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum
->>> riscv_pmu_event_idx event_idx)
->>>       CPURISCVState *env = &cpu->env;
->>>       gpointer value;
->>>   
->>> -    if (!cpu->cfg.pmu_num) {
->>> +    if (!cpu->cfg.pmu_mask) {
->>>           return 0;
->>>       }
->>>       value = g_hash_table_lookup(cpu->pmu_event_ctr_map,
->>> @@ -432,7 +433,7 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
->>> **errp)
->>>   {
->>>       uint8_t pmu_num = cpu->cfg.pmu_num;
->>>   
->>> -    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
->>> +    if (ctpop32(cpu->cfg.pmu_mask) > (RV_MAX_MHPMCOUNTERS - 3)) {
->>>   
->>   
->>   
->>>   
->>>           error_setg(errp, "Number of counters exceeds maximum
->>> available");
->>>           return;
->>>       }
->>> @@ -443,6 +444,11 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
->>> **errp)
->>>           return;
->>>       }
->>>   
->>> -    /* Create a bitmask of available programmable counters */
->>> -    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
->>> +    /* Check if user set it by comparing against default */
->>> +    if (pmu_num != 16) {
->>> +        warn_report("\"pmu-num\" property is deprecated; use
->>> \"pmu-mask\"");
->>> +        cpu->cfg.pmu_mask = MAKE_32BIT_MASK(3, pmu_num);
->>> +    }
->>> +
->>> +    cpu->pmu_avail_ctrs = cpu->cfg.pmu_mask;
->>>   
->>   
->> How to process the pmu_mask[0:2] no-zero bits? They should not
->> included into pmu_avail_ctrs.
->>   
-> Good point, thanks Zhiwei. I think rather than masking those bits it is
-> better to add a check and error out if those bits are set.
+Obviously, opaque should be pointer to ComponentRegisters.
+Fortunately, cregs is the first member of cxl_state, so their values are
+the same.
 
-Agree.
+Fixes: 9e58f52d3f8 ("hw/cxl/component: Introduce CXL components (8.1.x, 8.2.5)")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+---
+ hw/cxl/cxl-component-utils.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Thanks,
-Zhiwei
+diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+index f3bbf0fd131..f27a9d3cf60 100644
+--- a/hw/cxl/cxl-component-utils.c
++++ b/hw/cxl/cxl-component-utils.c
+@@ -64,8 +64,7 @@ hwaddr cxl_decode_ig(int ig)
+ static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
+                                        unsigned size)
+ {
+-    CXLComponentState *cxl_cstate = opaque;
+-    ComponentRegisters *cregs = &cxl_cstate->crb;
++    ComponentRegisters *cregs = opaque;
+ 
+     if (size == 8) {
+         qemu_log_mask(LOG_UNIMP,
+@@ -113,8 +112,7 @@ static void dumb_hdm_handler(CXLComponentState *cxl_cstate, hwaddr offset,
+ static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
+                                     unsigned size)
+ {
+-    CXLComponentState *cxl_cstate = opaque;
+-    ComponentRegisters *cregs = &cxl_cstate->crb;
++    ComponentRegisters *cregs = opaque;
+     uint32_t mask;
+ 
+     if (size == 8) {
+-- 
+2.41.0
 
->
-> Cheers,
->
-> Rob
->
->> Zhiwei
->>   
->>   
->>>   
->>>   }
->>>   
->>   
 
