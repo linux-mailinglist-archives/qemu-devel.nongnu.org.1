@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DCA7C7EFC
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 09:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6507C7F06
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 09:54:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrCxi-0000AZ-Vh; Fri, 13 Oct 2023 03:51:59 -0400
+	id 1qrCyJ-0002mz-IB; Fri, 13 Oct 2023 03:52:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCwz-0006Fo-85
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:51:14 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qrCx2-0006Rp-V9
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:51:17 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCwl-0004uj-Jy
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:51:12 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-31f71b25a99so1699234f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:50:59 -0700 (PDT)
+ id 1qrCwq-0004wP-AQ
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:51:16 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4065f29e933so20979915e9.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:51:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183458; x=1697788258; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183461; x=1697788261; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=25sCzaInjB8sFE1VeuGo95l9HKW+ig6yAUD4q7buGOU=;
- b=BSjwDyOtbb9EY7/hwBEdZ4ENCUq9yg/JJIqFwxu7NerjndBgy8d3gPN/Ekn2Jpulam
- OiH47qR86FUSx5/YdATqVU4wVg/VzE205DUCnFEjpNRJLaPZK/rGDLWu84DWlLgs9u/h
- mk+aSandgzW/wyC99TO3csAKE3FOSGYmMoY48yAINr9ZGn3Ne1JLF7qb1rCHsgU9WEXK
- 9/lnMVH5UUu326kN9qJUEAOFm1vfHwNUEgwS58vwkuHWaerSFPqGpF0OXzVxd6dgGJoK
- Yhkify91Q+hB4z9KW3v23iLwJi5hQmTepRaPMeZXdgRYdTMYcujS+PMFpDzazUZEKXqF
- A6/Q==
+ bh=TODIiD5TNpOQtRRwNdxLaLwQOrsrgH9u10VKfjzK9Io=;
+ b=vlflwp/GPqLIO0WBPxEScspuqnbCoMQ+chqnqeFj+rLp44JD9vYi2ZgFtKoAz3QnxL
+ rsjNahjhoeixuYFGqWZosM+BNVQwagzjoYOMAU8udxGfIm7oK2WxuGVYU906kAw9aGg0
+ V6falJ5EfUV+/7201QbRj4uNMs2YkF6+r7YPO53Q5E9YERUo8ViFEU5k3M4X5NWpXRcy
+ 4r9JO9YsQMHdBY6oaJ6fh7oY/oEZv1U0pTE+BwcsbzqtFk4NmGEcODsHBTzADbXfyy5o
+ cY61ntWDvnXnE5d4y2Wcj+42Ewq1wYQLY9TQ76snULV3r+p1A3SqUmjNO7DPcz2QWlbW
+ LHdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183458; x=1697788258;
+ d=1e100.net; s=20230601; t=1697183461; x=1697788261;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=25sCzaInjB8sFE1VeuGo95l9HKW+ig6yAUD4q7buGOU=;
- b=GvR3bz0HZ+UyYaa9Yb2k0FuU2e92hhh+098yW+zVBvKExZPHPTAccYDTBfpvxU/w5Y
- TbzDF4qpIQVumqaz3j+AIcvCeCTO0SjdFSjLFDYiA0TM55xYYVszI9qjKuIM+KjqnVvt
- JWj4I/h3vSsseWLAvcg55JBawoFJ8gVOKlQ2ZdHxJLlENSy6YJW7cxCen07qDuz+rWgK
- bao78v1Lmpkc9Xsn3hucn4rrQkMAnJWzaBJxH3pq+JIkbF3rH8Invr8b08eH8VkL6Bot
- lwGldUjcj93Vh24cyABOqq2oYz8+0LPFFXHdGd1d7sBzNzT5wma6qqm69ba0kDjSGBfZ
- /+9A==
-X-Gm-Message-State: AOJu0Yx/lJYJOI4ZD53pmJo2taBamYQ54TVwyKNGOkPu9Cks9RdGmvJH
- 09UgqarhdTYl5CM0qLqPaGFwayDDwe72OW0KunY=
-X-Google-Smtp-Source: AGHT+IHT7zHMnzfjYXQiH8+vPnlmdTojVGwtjLhgLWYhZpjwTVFHVMjSJ5Q64DFTjuAQWRh/BMXeXg==
-X-Received: by 2002:a5d:4402:0:b0:32d:8907:2b18 with SMTP id
- z2-20020a5d4402000000b0032d89072b18mr5574866wrq.66.1697183457886; 
- Fri, 13 Oct 2023 00:50:57 -0700 (PDT)
+ bh=TODIiD5TNpOQtRRwNdxLaLwQOrsrgH9u10VKfjzK9Io=;
+ b=fwJrWt5e5LHKbDn5RSB0omvJ1oqf8iy9HlXI+Dxgk6oCaAoGYjydCQmvNvPOmdxEbk
+ QHDGmgeSvG9yFhSBz4IZSdbYiY+Or0mlugUFxofdkjqe968z75S+97k+gLQv8NQ/N6FO
+ d4gkq36IQcAy1CbVnoFfcgWVSN5JopjFO1NhboirLlxwtAlIYGWKgJVT6aCFHQDx2Je9
+ 6JOgWbVQsXcHBJsetXg98oPoaj1h91C+atXHsBTYJNJIm13wMzDRTS1H9jy/z2skavL9
+ 9qvE7daSmXXpsaD9sdna9GDykBb6jmbYnC7khHFsZO/wnrx/GeHt44TVjFUogJRmN/YE
+ oqKA==
+X-Gm-Message-State: AOJu0YwIggFXpzp1cblL1GWNnmCNCYWZe1DvBN174OG5W7QgNC+CxU1+
+ vdyBKqJhKj16DGNKxvFw5skVV1z8wLqgEEW8qhw=
+X-Google-Smtp-Source: AGHT+IFtHytotutVs0EQmuk8DsAE41CmqBRiakTOBwg9P5kP/3/5rc/leK9y4tcTVJDzRAz97WyTJg==
+X-Received: by 2002:adf:9d8d:0:b0:32d:825d:f153 with SMTP id
+ p13-20020adf9d8d000000b0032d825df153mr5425143wre.61.1697183461574; 
+ Fri, 13 Oct 2023 00:51:01 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.50.56
+ m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.50.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:50:57 -0700 (PDT)
+ Fri, 13 Oct 2023 00:51:01 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	qemu-block@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [RFC PATCH 37/75] system/rtc.c: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:47:41 +0300
-Message-Id: <bd0de407a945f53fa449b7459d28701af69bdf78.1697034504.git.manos.pitsidianakis@linaro.org>
+Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Hannes Reinecke <hare@suse.com>
+Subject: [RFC PATCH 38/75] hw/scsi: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:47:43 +0300
+Message-Id: <a273f64b0e0abf2b215dcec768231d8f56696f1c.1697034504.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,36 +97,506 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- system/rtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/scsi/esp.c       | 2 +-
+ hw/scsi/megasas.c   | 2 +-
+ hw/scsi/scsi-bus.c  | 4 ++--
+ hw/scsi/scsi-disk.c | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/system/rtc.c b/system/rtc.c
-index 4904581abe..bb406542c8 100644
---- a/system/rtc.c
-+++ b/system/rtc.c
-@@ -48,22 +48,22 @@ QEMUClockType rtc_clock;
- /***********************************************************/
- /* RTC reference time/date access */
- static time_t qemu_ref_timedate(QEMUClockType clock)
+diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+index 9b11d8c573..d6c8298f51 100644
+--- a/hw/scsi/esp.c
++++ b/hw/scsi/esp.c
+@@ -1022,130 +1022,130 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
+ void esp_reg_write(ESPState *s, uint32_t saddr, uint64_t val)
  {
-     time_t value = qemu_clock_get_ms(clock) / 1000;
-     switch (clock) {
-     case QEMU_CLOCK_REALTIME:
-         value -= rtc_realtime_clock_offset;
+     trace_esp_mem_writeb(saddr, s->wregs[saddr], val);
+     switch (saddr) {
+     case ESP_TCHI:
+         s->tchi_written = true;
 -        /* fall through */
 +        fallthrough;
-     case QEMU_CLOCK_VIRTUAL:
-         value += rtc_ref_start_datetime;
+     case ESP_TCLO:
+     case ESP_TCMID:
+         s->rregs[ESP_RSTAT] &= ~STAT_TC;
          break;
-     case QEMU_CLOCK_HOST:
-         if (rtc_base_type == RTC_BASE_DATETIME) {
-             value -= rtc_host_datetime_offset;
+     case ESP_FIFO:
+         if (s->do_cmd) {
+             esp_fifo_push(&s->cmdfifo, val);
+ 
+             /*
+              * If any unexpected message out/command phase data is
+              * transferred using non-DMA, raise the interrupt
+              */
+             if (s->rregs[ESP_CMD] == CMD_TI) {
+                 s->rregs[ESP_RINTR] |= INTR_BS;
+                 esp_raise_irq(s);
+             }
+         } else {
+             esp_fifo_push(&s->fifo, val);
+         }
+         break;
+     case ESP_CMD:
+         s->rregs[saddr] = val;
+         if (val & CMD_DMA) {
+             s->dma = 1;
+             /* Reload DMA counter.  */
+             if (esp_get_stc(s) == 0) {
+                 esp_set_tc(s, 0x10000);
+             } else {
+                 esp_set_tc(s, esp_get_stc(s));
+             }
+         } else {
+             s->dma = 0;
+         }
+         switch (val & CMD_CMD) {
+         case CMD_NOP:
+             trace_esp_mem_writeb_cmd_nop(val);
+             break;
+         case CMD_FLUSH:
+             trace_esp_mem_writeb_cmd_flush(val);
+             fifo8_reset(&s->fifo);
+             break;
+         case CMD_RESET:
+             trace_esp_mem_writeb_cmd_reset(val);
+             esp_soft_reset(s);
+             break;
+         case CMD_BUSRESET:
+             trace_esp_mem_writeb_cmd_bus_reset(val);
+             esp_bus_reset(s);
+             if (!(s->wregs[ESP_CFG1] & CFG1_RESREPT)) {
+                 s->rregs[ESP_RINTR] |= INTR_RST;
+                 esp_raise_irq(s);
+             }
+             break;
+         case CMD_TI:
+             trace_esp_mem_writeb_cmd_ti(val);
+             handle_ti(s);
+             break;
+         case CMD_ICCS:
+             trace_esp_mem_writeb_cmd_iccs(val);
+             write_response(s);
+             s->rregs[ESP_RINTR] |= INTR_FC;
+             s->rregs[ESP_RSTAT] |= STAT_MI;
+             break;
+         case CMD_MSGACC:
+             trace_esp_mem_writeb_cmd_msgacc(val);
+             s->rregs[ESP_RINTR] |= INTR_DC;
+             s->rregs[ESP_RSEQ] = 0;
+             s->rregs[ESP_RFLAGS] = 0;
+             esp_raise_irq(s);
+             break;
+         case CMD_PAD:
+             trace_esp_mem_writeb_cmd_pad(val);
+             s->rregs[ESP_RSTAT] = STAT_TC;
+             s->rregs[ESP_RINTR] |= INTR_FC;
+             s->rregs[ESP_RSEQ] = 0;
+             break;
+         case CMD_SATN:
+             trace_esp_mem_writeb_cmd_satn(val);
+             break;
+         case CMD_RSTATN:
+             trace_esp_mem_writeb_cmd_rstatn(val);
+             break;
+         case CMD_SEL:
+             trace_esp_mem_writeb_cmd_sel(val);
+             handle_s_without_atn(s);
+             break;
+         case CMD_SELATN:
+             trace_esp_mem_writeb_cmd_selatn(val);
+             handle_satn(s);
+             break;
+         case CMD_SELATNS:
+             trace_esp_mem_writeb_cmd_selatns(val);
+             handle_satn_stop(s);
+             break;
+         case CMD_ENSEL:
+             trace_esp_mem_writeb_cmd_ensel(val);
+             s->rregs[ESP_RINTR] = 0;
+             break;
+         case CMD_DISSEL:
+             trace_esp_mem_writeb_cmd_dissel(val);
+             s->rregs[ESP_RINTR] = 0;
+             esp_raise_irq(s);
+             break;
+         default:
+             trace_esp_error_unhandled_command(val);
+             break;
+         }
+         break;
+     case ESP_WBUSID ... ESP_WSYNO:
+         break;
+     case ESP_CFG1:
+     case ESP_CFG2: case ESP_CFG3:
+     case ESP_RES3: case ESP_RES4:
+         s->rregs[saddr] = val;
+         break;
+     case ESP_WCCF ... ESP_WTEST:
+         break;
+     default:
+         trace_esp_error_invalid_write(val, saddr);
+         return;
+     }
+     s->wregs[saddr] = val;
+ }
+diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
+index 32c70c9e99..54e4d7c8b6 100644
+--- a/hw/scsi/megasas.c
++++ b/hw/scsi/megasas.c
+@@ -2084,113 +2084,113 @@ static int adp_reset_seq[] = {0x00, 0x04, 0x0b, 0x02, 0x07, 0x0d};
+ static void megasas_mmio_write(void *opaque, hwaddr addr,
+                                uint64_t val, unsigned size)
+ {
+     MegasasState *s = opaque;
+     PCIDevice *pci_dev = PCI_DEVICE(s);
+     uint64_t frame_addr;
+     uint32_t frame_count;
+     int i;
+ 
+     switch (addr) {
+     case MFI_IDB:
+         trace_megasas_mmio_writel("MFI_IDB", val);
+         if (val & MFI_FWINIT_ABORT) {
+             /* Abort all pending cmds */
+             for (i = 0; i < s->fw_cmds; i++) {
+                 megasas_abort_command(&s->frames[i]);
+             }
+         }
+         if (val & MFI_FWINIT_READY) {
+             /* move to FW READY */
+             megasas_soft_reset(s);
+         }
+         if (val & MFI_FWINIT_MFIMODE) {
+             /* discard MFIs */
+         }
+         if (val & MFI_FWINIT_STOP_ADP) {
+             /* Terminal error, stop processing */
+             s->fw_state = MFI_FWSTATE_FAULT;
+         }
+         break;
+     case MFI_OMSK:
+         trace_megasas_mmio_writel("MFI_OMSK", val);
+         s->intr_mask = val;
+         if (!megasas_intr_enabled(s) &&
+             !msi_enabled(pci_dev) &&
+             !msix_enabled(pci_dev)) {
+             trace_megasas_irq_lower();
+             pci_irq_deassert(pci_dev);
+         }
+         if (megasas_intr_enabled(s)) {
+             if (msix_enabled(pci_dev)) {
+                 trace_megasas_msix_enabled(0);
+             } else if (msi_enabled(pci_dev)) {
+                 trace_megasas_msi_enabled(0);
+             } else {
+                 trace_megasas_intr_enabled();
+             }
+         } else {
+             trace_megasas_intr_disabled();
+             megasas_soft_reset(s);
+         }
+         break;
+     case MFI_ODCR0:
+         trace_megasas_mmio_writel("MFI_ODCR0", val);
+         s->doorbell = 0;
+         if (megasas_intr_enabled(s)) {
+             if (!msix_enabled(pci_dev) && !msi_enabled(pci_dev)) {
+                 trace_megasas_irq_lower();
+                 pci_irq_deassert(pci_dev);
+             }
+         }
+         break;
+     case MFI_IQPH:
+         trace_megasas_mmio_writel("MFI_IQPH", val);
+         /* Received high 32 bits of a 64 bit MFI frame address */
+         s->frame_hi = val;
+         break;
+     case MFI_IQPL:
+         trace_megasas_mmio_writel("MFI_IQPL", val);
+         /* Received low 32 bits of a 64 bit MFI frame address */
+-        /* Fallthrough */
++        fallthrough;
+     case MFI_IQP:
+         if (addr == MFI_IQP) {
+             trace_megasas_mmio_writel("MFI_IQP", val);
+             /* Received 64 bit MFI frame address */
+             s->frame_hi = 0;
+         }
+         frame_addr = (val & ~0x1F);
+         /* Add possible 64 bit offset */
+         frame_addr |= ((uint64_t)s->frame_hi << 32);
+         s->frame_hi = 0;
+         frame_count = (val >> 1) & 0xF;
+         megasas_handle_frame(s, frame_addr, frame_count);
+         break;
+     case MFI_SEQ:
+         trace_megasas_mmio_writel("MFI_SEQ", val);
+         /* Magic sequence to start ADP reset */
+         if (adp_reset_seq[s->adp_reset++] == val) {
+             if (s->adp_reset == 6) {
+                 s->adp_reset = 0;
+                 s->diag = MFI_DIAG_WRITE_ENABLE;
+             }
+         } else {
+             s->adp_reset = 0;
+             s->diag = 0;
+         }
+         break;
+     case MFI_DIAG:
+         trace_megasas_mmio_writel("MFI_DIAG", val);
+         /* ADP reset */
+         if ((s->diag & MFI_DIAG_WRITE_ENABLE) &&
+             (val & MFI_DIAG_RESET_ADP)) {
+             s->diag |= MFI_DIAG_RESET_ADP;
+             megasas_soft_reset(s);
+             s->adp_reset = 0;
+             s->diag = 0;
          }
          break;
      default:
-         assert(0);
+         trace_megasas_mmio_invalid_writel(addr, val);
+         break;
      }
-     return value;
+ }
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index fc4b77fdb0..a1c298a92c 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -1015,141 +1015,141 @@ static int ata_passthrough_16_xfer(SCSIDevice *dev, uint8_t *buf)
+ static int scsi_req_xfer(SCSICommand *cmd, SCSIDevice *dev, uint8_t *buf)
+ {
+     cmd->xfer = scsi_cdb_xfer(buf);
+     switch (buf[0]) {
+     case TEST_UNIT_READY:
+     case REWIND:
+     case START_STOP:
+     case SET_CAPACITY:
+     case WRITE_FILEMARKS:
+     case WRITE_FILEMARKS_16:
+     case SPACE:
+     case RESERVE:
+     case RELEASE:
+     case ERASE:
+     case ALLOW_MEDIUM_REMOVAL:
+     case SEEK_10:
+     case SYNCHRONIZE_CACHE:
+     case SYNCHRONIZE_CACHE_16:
+     case LOCATE_16:
+     case LOCK_UNLOCK_CACHE:
+     case SET_CD_SPEED:
+     case SET_LIMITS:
+     case WRITE_LONG_10:
+     case UPDATE_BLOCK:
+     case RESERVE_TRACK:
+     case SET_READ_AHEAD:
+     case PRE_FETCH:
+     case PRE_FETCH_16:
+     case ALLOW_OVERWRITE:
+         cmd->xfer = 0;
+         break;
+     case VERIFY_10:
+     case VERIFY_12:
+     case VERIFY_16:
+         if ((buf[1] & 2) == 0) {
+             cmd->xfer = 0;
+         } else if ((buf[1] & 4) != 0) {
+             cmd->xfer = 1;
+         }
+         cmd->xfer *= dev->blocksize;
+         break;
+     case MODE_SENSE:
+         break;
+     case WRITE_SAME_10:
+     case WRITE_SAME_16:
+         cmd->xfer = buf[1] & 1 ? 0 : dev->blocksize;
+         break;
+     case READ_CAPACITY_10:
+         cmd->xfer = 8;
+         break;
+     case READ_BLOCK_LIMITS:
+         cmd->xfer = 6;
+         break;
+     case SEND_VOLUME_TAG:
+         /* GPCMD_SET_STREAMING from multimedia commands.  */
+         if (dev->type == TYPE_ROM) {
+             cmd->xfer = buf[10] | (buf[9] << 8);
+         } else {
+             cmd->xfer = buf[9] | (buf[8] << 8);
+         }
+         break;
+     case WRITE_6:
+         /* length 0 means 256 blocks */
+         if (cmd->xfer == 0) {
+             cmd->xfer = 256;
+         }
+-        /* fall through */
++        fallthrough;
+     case WRITE_10:
+     case WRITE_VERIFY_10:
+     case WRITE_12:
+     case WRITE_VERIFY_12:
+     case WRITE_16:
+     case WRITE_VERIFY_16:
+         cmd->xfer *= dev->blocksize;
+         break;
+     case READ_6:
+     case READ_REVERSE:
+         /* length 0 means 256 blocks */
+         if (cmd->xfer == 0) {
+             cmd->xfer = 256;
+         }
+-        /* fall through */
++        fallthrough;
+     case READ_10:
+     case READ_12:
+     case READ_16:
+         cmd->xfer *= dev->blocksize;
+         break;
+     case FORMAT_UNIT:
+         /* MMC mandates the parameter list to be 12-bytes long.  Parameters
+          * for block devices are restricted to the header right now.  */
+         if (dev->type == TYPE_ROM && (buf[1] & 16)) {
+             cmd->xfer = 12;
+         } else {
+             cmd->xfer = (buf[1] & 16) == 0 ? 0 : (buf[1] & 32 ? 8 : 4);
+         }
+         break;
+     case INQUIRY:
+     case RECEIVE_DIAGNOSTIC:
+     case SEND_DIAGNOSTIC:
+         cmd->xfer = buf[4] | (buf[3] << 8);
+         break;
+     case READ_CD:
+     case READ_BUFFER:
+     case WRITE_BUFFER:
+     case SEND_CUE_SHEET:
+         cmd->xfer = buf[8] | (buf[7] << 8) | (buf[6] << 16);
+         break;
+     case PERSISTENT_RESERVE_OUT:
+         cmd->xfer = ldl_be_p(&buf[5]) & 0xffffffffULL;
+         break;
+     case ERASE_12:
+         if (dev->type == TYPE_ROM) {
+             /* MMC command GET PERFORMANCE.  */
+             cmd->xfer = scsi_get_performance_length(buf[9] | (buf[8] << 8),
+                                                     buf[10], buf[1] & 0x1f);
+         }
+         break;
+     case MECHANISM_STATUS:
+     case READ_DVD_STRUCTURE:
+     case SEND_DVD_STRUCTURE:
+     case MAINTENANCE_OUT:
+     case MAINTENANCE_IN:
+         if (dev->type == TYPE_ROM) {
+             /* GPCMD_REPORT_KEY and GPCMD_SEND_KEY from multi media commands */
+             cmd->xfer = buf[9] | (buf[8] << 8);
+         }
+         break;
+     case ATA_PASSTHROUGH_12:
+         if (dev->type == TYPE_ROM) {
+             /* BLANK command of MMC */
+             cmd->xfer = 0;
+         } else {
+             cmd->xfer = ata_passthrough_12_xfer(dev, buf);
+         }
+         break;
+     case ATA_PASSTHROUGH_16:
+         cmd->xfer = ata_passthrough_16_xfer(dev, buf);
+         break;
+     }
+     return 0;
+ }
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index 6691f5edb8..6564ca638c 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -2256,86 +2256,86 @@ illegal_lba:
+ static int32_t scsi_disk_dma_command(SCSIRequest *req, uint8_t *buf)
+ {
+     SCSIDiskReq *r = DO_UPCAST(SCSIDiskReq, req, req);
+     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, req->dev);
+     SCSIDiskClass *sdc = (SCSIDiskClass *) object_get_class(OBJECT(s));
+     uint32_t len;
+     uint8_t command;
+ 
+     command = buf[0];
+ 
+     if (!blk_is_available(s->qdev.conf.blk)) {
+         scsi_check_condition(r, SENSE_CODE(NO_MEDIUM));
+         return 0;
+     }
+ 
+     len = scsi_data_cdb_xfer(r->req.cmd.buf);
+     switch (command) {
+     case READ_6:
+     case READ_10:
+     case READ_12:
+     case READ_16:
+         trace_scsi_disk_dma_command_READ(r->req.cmd.lba, len);
+         /* Protection information is not supported.  For SCSI versions 2 and
+          * older (as determined by snooping the guest's INQUIRY commands),
+          * there is no RD/WR/VRPROTECT, so skip this check in these versions.
+          */
+         if (s->qdev.scsi_version > 2 && (r->req.cmd.buf[1] & 0xe0)) {
+             goto illegal_request;
+         }
+         if (!check_lba_range(s, r->req.cmd.lba, len)) {
+             goto illegal_lba;
+         }
+         r->sector = r->req.cmd.lba * (s->qdev.blocksize / BDRV_SECTOR_SIZE);
+         r->sector_count = len * (s->qdev.blocksize / BDRV_SECTOR_SIZE);
+         break;
+     case WRITE_6:
+     case WRITE_10:
+     case WRITE_12:
+     case WRITE_16:
+     case WRITE_VERIFY_10:
+     case WRITE_VERIFY_12:
+     case WRITE_VERIFY_16:
+         if (!blk_is_writable(s->qdev.conf.blk)) {
+             scsi_check_condition(r, SENSE_CODE(WRITE_PROTECTED));
+             return 0;
+         }
+         trace_scsi_disk_dma_command_WRITE(
+                 (command & 0xe) == 0xe ? "And Verify " : "",
+                 r->req.cmd.lba, len);
+-        /* fall through */
++        fallthrough;
+     case VERIFY_10:
+     case VERIFY_12:
+     case VERIFY_16:
+         /* We get here only for BYTCHK == 0x01 and only for scsi-block.
+          * As far as DMA is concerned, we can treat it the same as a write;
+          * scsi_block_do_sgio will send VERIFY commands.
+          */
+         if (s->qdev.scsi_version > 2 && (r->req.cmd.buf[1] & 0xe0)) {
+             goto illegal_request;
+         }
+         if (!check_lba_range(s, r->req.cmd.lba, len)) {
+             goto illegal_lba;
+         }
+         r->sector = r->req.cmd.lba * (s->qdev.blocksize / BDRV_SECTOR_SIZE);
+         r->sector_count = len * (s->qdev.blocksize / BDRV_SECTOR_SIZE);
+         break;
+     default:
+         abort();
+     illegal_request:
+         scsi_check_condition(r, SENSE_CODE(INVALID_FIELD));
+         return 0;
+     illegal_lba:
+         scsi_check_condition(r, SENSE_CODE(LBA_OUT_OF_RANGE));
+         return 0;
+     }
+     r->need_fua_emulation = sdc->need_fua_emulation(&r->req.cmd);
+     if (r->sector_count == 0) {
+         scsi_req_complete(&r->req, GOOD);
+     }
+     assert(r->iov.iov_len == 0);
+     if (r->req.cmd.mode == SCSI_XFER_TO_DEV) {
+         return -r->sector_count * BDRV_SECTOR_SIZE;
+     } else {
+         return r->sector_count * BDRV_SECTOR_SIZE;
+     }
  }
 -- 
 2.39.2
