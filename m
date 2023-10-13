@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CD47C83FD
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 13:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F237C83EF
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 13:02:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrFvf-0000Lj-Ii; Fri, 13 Oct 2023 07:02:03 -0400
+	id 1qrFvL-0000GU-LX; Fri, 13 Oct 2023 07:01:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qrFvP-0000Ij-Dk
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 07:01:53 -0400
+ id 1qrFvF-0000GD-EN
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 07:01:37 -0400
 Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qrFvA-00028Q-5p
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 07:01:47 -0400
+ id 1qrFvA-00029G-BO
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 07:01:37 -0400
 Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-317c3ac7339so1823957f8f.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 04:01:29 -0700 (PDT)
+ ffacd0b85a97d-307d20548adso1789966f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 04:01:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697194888; x=1697799688;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697194890; x=1697799690;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wiq5mYEHEn3DJSzjIjqQH0t31AsiITQ4TuY7AydRTuI=;
- b=woW+taUr7jw52HjELew9KAFAEnC3fK3Afdxdia4ruxwYFF78RUORX1h4bMEmIR1khV
- yfFc8FlwAvB6wUCUodzhsm2/ATPH6NAaTfJum4gR/OlCqpwNnImninJHpcagsxD2Dsy8
- JAUwcuUpGqcNnlyHEl+P1a/eSkFEcH4bz66osjYDwmJjG8gcG7JuMOCYFOXzasIsMGiz
- El7MnvAfQo7SagiacmN1lJuHDg8kkHAqc2ViDsrBOgCZzuzT3u3tBL6pwYCKWd1wRbfZ
- ZrnUa/Vvc2fWQVKoMdl8x3qXz389+JTTKQErOByC9y3SerOubWj/cXuwRGWAacMNEjMa
- 0QTA==
+ bh=+T1o7c6jOO1qih6JAKenu+zKIks7hzIqe4wyjYwbkaU=;
+ b=J+S0x5REs25IiK8jvvQkMn2Kf8FPLK//BnpHSqA1Spqkm/Lo1XmPwFko4dJDRIzH2z
+ r/vdXosmBJFi8XuDojgurQsZzDVSinsftOmqM+sg6mpZNAT+IYhiQ+SjiJj7uuntjEE1
+ wWWu224bQ/iixaRIWWQReSaUTI8258P+GcqxELZm+Ky+BIdTgtod1tDvpHKZhuZvetOB
+ uoe+Mxs7n07Vm0cvuuHFQTQpUYpoMiTCB3vBjopgA9nnzG9oM105SGDkR1fpdh4R2odC
+ fVKdEag2J40rqvfv7yAarbs6Rmjv3tM7oo8ZrP3b5u5jHJTMsYg2itYcID2nGUFfsh8J
+ 58xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697194888; x=1697799688;
+ d=1e100.net; s=20230601; t=1697194890; x=1697799690;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wiq5mYEHEn3DJSzjIjqQH0t31AsiITQ4TuY7AydRTuI=;
- b=Ie1OovjaPvQE1r3R/eNe/lwckkzcwVf25xI3WG1zJsFb0QHlcGUBhQFXxO2f60fLbE
- x8AW8vtfVbhJSpjAqIblLmp8Itw6GqgEXd7L4iLXAYFaHZtCTVueDhnARJUUHK12u8Cc
- TPPID1HRM+Hae6N5U7CqOFKsPOkzZuvobqLb71Igj4HXHUAv/d7W6uvGmqxC7/s3DULa
- /RIxEp2k36j4If9o97GDfWFIBqw9jv7+wx5V92ShI8kehf9LKVzva9KoFF+GQD3PE4o/
- Fx3eNA2Far02Xwqbhtl6r6AXfuCD6sFG9Scsn03rkvVFoNkBvb26J5kD2IPg6rowtIGN
- F1AA==
-X-Gm-Message-State: AOJu0YysgNaKTrQ3riJmJ+KLjJTIMSa+v8/sV8TfkzrlNhZi0+kgP5dx
- 9M6M6BY+x297jYBBwvrOX6A11XqGUkCkA44SwMY=
-X-Google-Smtp-Source: AGHT+IFQVguXGtsTC1c6pAmwumLdkeP1nKzBm6PlV6v7YBNOO085m4T7iDXvDE6v2QvddiE4hX1CQQ==
-X-Received: by 2002:a05:6000:110b:b0:31f:a259:73c with SMTP id
- z11-20020a056000110b00b0031fa259073cmr22491533wrw.27.1697194887820; 
- Fri, 13 Oct 2023 04:01:27 -0700 (PDT)
+ bh=+T1o7c6jOO1qih6JAKenu+zKIks7hzIqe4wyjYwbkaU=;
+ b=mlj7a6Dj40zIH/XoblWxr+DH3y2c8BHyzjx41vZagSECBQRkUuybXjbkOjRCyK0w/S
+ kw2k/CwwZt/6rJd61GbCCCrzozYKA3bRDTLlBxI2rcGXX9NXkKvj78N46QduemE82MJX
+ t5om2NSShvC9j6D8Sv68cygF2DM8PTp+gomeH+2nOyK/dwQjTPT0kV0tJnD3u2aXmFqX
+ G/HVB8mRg5+T3bLznOQ/vAITZ4B3CUILZyqhu8CbKnWr/tTfs71Sesy1Pq222fAxcUYa
+ ZbQlrjLxg5Gc7l15vnBhBQAFmepnsCgJGJYOpcPToLQGGXJZMeHjLdlUWdBl4Ykwc7Ua
+ JV6A==
+X-Gm-Message-State: AOJu0YyN6mvZCAAQXijgJ0p2b3VKFSHO0D+GliA0LtQjDbcD2wH4ERjJ
+ NnFZ3wnKgXlRbaddSVjNo9iwhAp6Zvnu3iF6hdI=
+X-Google-Smtp-Source: AGHT+IEXFZuM/MmF+AOp9KRP86//Dw437EDivy1ExFV195og1C+ZU8YvW9o2VcfhNISkkxn7kGQH8A==
+X-Received: by 2002:a5d:4fd2:0:b0:31f:f829:49aa with SMTP id
+ h18-20020a5d4fd2000000b0031ff82949aamr20768512wrw.23.1697194890067; 
+ Fri, 13 Oct 2023 04:01:30 -0700 (PDT)
 Received: from rockhopper.. (214.11.169.217.in-addr.arpa. [217.169.11.214])
  by smtp.gmail.com with ESMTPSA id
- p8-20020adfce08000000b003271be8440csm20455185wrn.101.2023.10.13.04.01.27
+ p8-20020adfce08000000b003271be8440csm20455185wrn.101.2023.10.13.04.01.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 04:01:27 -0700 (PDT)
+ Fri, 13 Oct 2023 04:01:29 -0700 (PDT)
 From: Rob Bradford <rbradford@rivosinc.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
  alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  Rob Bradford <rbradford@rivosinc.com>
-Subject: [PATCH v3 2/6] target/riscv: Don't assume PMU counters are continuous
-Date: Fri, 13 Oct 2023 11:54:44 +0100
-Message-ID: <20231013110111.34619-3-rbradford@rivosinc.com>
+Subject: [PATCH v3 3/6] target/riscv: Use existing PMU counter mask in FDT
+ generation
+Date: Fri, 13 Oct 2023 11:54:45 +0100
+Message-ID: <20231013110111.34619-4-rbradford@rivosinc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231013110111.34619-1-rbradford@rivosinc.com>
 References: <20231013110111.34619-1-rbradford@rivosinc.com>
@@ -77,8 +78,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,38 +95,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check the PMU available bitmask when checking if a counter is valid
-rather than comparing the index against the number of PMUs.
+During the FDT generation use the existing mask containing the enabled
+counters rather then generating a new one. Using the existing mask will
+support the use of discontinuous counters.
 
 Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 ---
- target/riscv/csr.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/riscv/virt.c    | 2 +-
+ target/riscv/pmu.c | 6 +-----
+ target/riscv/pmu.h | 2 +-
+ 3 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 85a31dc420..4383805fa3 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -182,7 +182,8 @@ static RISCVException zcmt(CPURISCVState *env, int csrno)
- #if !defined(CONFIG_USER_ONLY)
- static RISCVException mctr(CPURISCVState *env, int csrno)
- {
--    int pmu_num = riscv_cpu_cfg(env)->pmu_num;
-+    RISCVCPU *cpu = env_archcpu(env);
-+    uint32_t pmu_avail_ctrs = cpu->pmu_avail_ctrs;
-     int ctr_index;
-     int base_csrno = CSR_MHPMCOUNTER3;
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 5edc1d98d2..acdbaf9da5 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -722,7 +722,7 @@ static void create_fdt_pmu(RISCVVirtState *s)
+     pmu_name = g_strdup_printf("/pmu");
+     qemu_fdt_add_subnode(ms->fdt, pmu_name);
+     qemu_fdt_setprop_string(ms->fdt, pmu_name, "compatible", "riscv,pmu");
+-    riscv_pmu_generate_fdt_node(ms->fdt, hart.cfg.pmu_num, pmu_name);
++    riscv_pmu_generate_fdt_node(ms->fdt, hart.pmu_avail_ctrs, pmu_name);
  
-@@ -191,7 +192,7 @@ static RISCVException mctr(CPURISCVState *env, int csrno)
-         base_csrno += 0x80;
-     }
-     ctr_index = csrno - base_csrno;
--    if (!pmu_num || ctr_index >= pmu_num) {
-+    if ((BIT(ctr_index) & pmu_avail_ctrs >> 3) == 0) {
-         /* The PMU is not enabled or counter is out of range */
-         return RISCV_EXCP_ILLEGAL_INST;
-     }
+     g_free(pmu_name);
+ }
+diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
+index 13801ccb78..7ddf4977b1 100644
+--- a/target/riscv/pmu.c
++++ b/target/riscv/pmu.c
+@@ -34,13 +34,9 @@
+  * to provide the correct value as well. Heterogeneous PMU per hart is not
+  * supported yet. Thus, number of counters are same across all harts.
+  */
+-void riscv_pmu_generate_fdt_node(void *fdt, int num_ctrs, char *pmu_name)
++void riscv_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name)
+ {
+     uint32_t fdt_event_ctr_map[15] = {};
+-    uint32_t cmask;
+-
+-    /* All the programmable counters can map to any event */
+-    cmask = MAKE_32BIT_MASK(3, num_ctrs);
+ 
+    /*
+     * The event encoding is specified in the SBI specification
+diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
+index 88e0713296..505fc850d3 100644
+--- a/target/riscv/pmu.h
++++ b/target/riscv/pmu.h
+@@ -28,6 +28,6 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
+ int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
+                                uint32_t ctr_idx);
+ int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx);
+-void riscv_pmu_generate_fdt_node(void *fdt, int num_counters, char *pmu_name);
++void riscv_pmu_generate_fdt_node(void *fdt, uint32_t cmask, char *pmu_name);
+ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value,
+                           uint32_t ctr_idx);
 -- 
 2.41.0
 
