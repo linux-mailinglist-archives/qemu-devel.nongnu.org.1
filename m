@@ -2,35 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9407C83DB
+	by mail.lfdr.de (Postfix) with ESMTPS id 116087C83DA
 	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 13:00:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrFsm-0006Nm-Bq; Fri, 13 Oct 2023 06:59:04 -0400
+	id 1qrFtF-0006fS-0K; Fri, 13 Oct 2023 06:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qrFsh-0006N7-TR; Fri, 13 Oct 2023 06:58:59 -0400
+ id 1qrFt5-0006RL-Nw; Fri, 13 Oct 2023 06:59:25 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qrFse-00013q-Gt; Fri, 13 Oct 2023 06:58:59 -0400
+ id 1qrFt3-0001EW-9w; Fri, 13 Oct 2023 06:59:23 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 752EA48B35;
- Fri, 13 Oct 2023 12:58:45 +0200 (CEST)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id AC4B347D12;
+ Fri, 13 Oct 2023 12:59:16 +0200 (CEST)
+Message-ID: <2c90c89b-15c5-487a-b093-0372705fd247@proxmox.com>
+Date: Fri, 13 Oct 2023 12:59:11 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] migration: hold the BQL during setup
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, fam@euphon.net, stefanha@redhat.com,
  jsnow@redhat.com, vsementsov@yandex-team.ru, eblake@redhat.com,
- leobras@redhat.com, farosas@suse.de, peterx@redhat.com,
- quintela@redhat.com, pbonzini@redhat.com, t.lamprecht@proxmox.com
-Subject: [PATCH v5] migration: hold the BQL during setup
-Date: Fri, 13 Oct 2023 12:58:39 +0200
-Message-Id: <20231013105839.415989-1-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ leobras@redhat.com, peterx@redhat.com, quintela@redhat.com,
+ pbonzini@redhat.com, t.lamprecht@proxmox.com
+References: <20231012103307.371092-1-f.ebner@proxmox.com>
+ <87mswnziak.fsf@suse.de>
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <87mswnziak.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
  helo=proxmox-new.maurer-it.com
 X-Spam_score_int: -18
@@ -53,243 +58,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is intended to be a semantic revert of commit 9b09503752
-("migration: run setup callbacks out of big lock"). There have been so
-many changes since that commit (e.g. a new setup callback
-dirty_bitmap_save_setup() that also needs to be adapted now), it's
-easier to do the revert manually.
+Am 12.10.23 um 22:40 schrieb Fabiano Rosas:
+> Fiona Ebner <f.ebner@proxmox.com> writes:
+> 
+>> This is intended to be a semantic revert of commit 9b09503752
+>> ("migration: run setup callbacks out of big lock"). There have been so
+>> many changes since that commit (e.g. a new setup callback
+>> dirty_bitmap_save_setup() that also needs to be adapted now), it's
+>> easier to do the revert manually.
+>>
+>> For snapshots, the bdrv_writev_vmstate() function is used during setup
+>> (in QIOChannelBlock backing the QEMUFile), but not holding the BQL
+>> while calling it could lead to an assertion failure. To understand
+>> how, first note the following:
+> 
+> Would it make sense to add a GLOBAL_STATE_CODE() annotation to
+> qio_channel_block_writev?
+> 
 
-For snapshots, the bdrv_writev_vmstate() function is used during setup
-(in QIOChannelBlock backing the QEMUFile), but not holding the BQL
-while calling it could lead to an assertion failure. To understand
-how, first note the following:
+Since bdrv_writev_vmstate() is IO_OR_GS_CODE(), would using that be
+better? And I guess if we add an annotation for
+qio_channel_block_writev(), we should go ahead and also do it for other
+functions in the file? E.g. qio_channel_block_new() would have to be
+GLOBAL_STATE_CODE(), because it uses bdrv_ref().
 
-1. Generated coroutine wrappers for block layer functions spawn the
-coroutine and use AIO_WAIT_WHILE()/aio_poll() to wait for it.
-2. If the host OS switches threads at an inconvenient time, it can
-happen that a bottom half scheduled for the main thread's AioContext
-is executed as part of a vCPU thread's aio_poll().
-
-An example leading to the assertion failure is as follows:
-
-main thread:
-1. A snapshot-save QMP command gets issued.
-2. snapshot_save_job_bh() is scheduled.
-
-vCPU thread:
-3. aio_poll() for the main thread's AioContext is called (e.g. when
-the guest writes to a pflash device, as part of blk_pwrite which is a
-generated coroutine wrapper).
-4. snapshot_save_job_bh() is executed as part of aio_poll().
-3. qemu_savevm_state() is called.
-4. qemu_mutex_unlock_iothread() is called. Now
-qemu_get_current_aio_context() returns 0x0.
-5. bdrv_writev_vmstate() is executed during the usual savevm setup
-via qemu_fflush(). But this function is a generated coroutine wrapper,
-so it uses AIO_WAIT_WHILE. There, the assertion
-assert(qemu_get_current_aio_context() == qemu_get_aio_context());
-will fail.
-
-To fix it, ensure that the BQL is held during setup. While it would
-only be needed for snapshots, adapting migration too avoids additional
-logic for conditional locking/unlocking in the setup callbacks.
-Writing the header could (in theory) also trigger qemu_fflush() and
-thus bdrv_writev_vmstate(), so the locked section also covers the
-qemu_savevm_state_header() call, even for migration for consistency.
-
-The section around multifd_send_sync_main() needs to be unlocked to
-avoid a deadlock. In particular, the multifd_save_setup() function calls
-socket_send_channel_create() using multifd_new_send_channel_async() as a
-callback and then waits for the callback to signal via the
-channels_ready semaphore. The connection happens via
-qio_task_run_in_thread(), but the callback is only executed via
-qio_task_thread_result() which is scheduled for the main event loop.
-Without unlocking the section, the main thread would never get to
-process the task result and the callback meaning there would be no
-signal via the channels_ready semaphore.
-
-The comment in ram_init_bitmaps() was introduced by 4987783400
-("migration: fix incorrect memory_global_dirty_log_start outside BQL")
-and is removed, because it referred to the qemu_mutex_lock_iothread()
-call.
-
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
----
-
-Changes in v5:
-    * Mention which function calls socket_send_channel_create() in
-      commit message to fix the meaning of the paragraph.
-    * Fix typo in commit message (consistentcy -> consistency).
-
-Changes in v4:
-    * Rebase on current master (save_prepare handler got added).
-
-Changes in v3:
-    * Add unlocked section around multifd_send_sync_main().
-
-Changes in v2:
-    * Also hold the BQL for migration, rather than conditionally
-      acquiring/releasing the lock inside the setup callbacks.
-
- include/migration/register.h   | 2 +-
- migration/block-dirty-bitmap.c | 3 ---
- migration/block.c              | 5 -----
- migration/migration.c          | 6 ++++++
- migration/ram.c                | 6 +++---
- migration/savevm.c             | 2 --
- 6 files changed, 10 insertions(+), 14 deletions(-)
-
-diff --git a/include/migration/register.h b/include/migration/register.h
-index 2b12c6adec..fed1d04a3c 100644
---- a/include/migration/register.h
-+++ b/include/migration/register.h
-@@ -25,6 +25,7 @@ typedef struct SaveVMHandlers {
-      * used to perform early checks.
-      */
-     int (*save_prepare)(void *opaque, Error **errp);
-+    int (*save_setup)(QEMUFile *f, void *opaque);
-     void (*save_cleanup)(void *opaque);
-     int (*save_live_complete_postcopy)(QEMUFile *f, void *opaque);
-     int (*save_live_complete_precopy)(QEMUFile *f, void *opaque);
-@@ -50,7 +51,6 @@ typedef struct SaveVMHandlers {
-     int (*save_live_iterate)(QEMUFile *f, void *opaque);
- 
-     /* This runs outside the iothread lock!  */
--    int (*save_setup)(QEMUFile *f, void *opaque);
-     /* Note for save_live_pending:
-      * must_precopy:
-      * - must be migrated in precopy or in stopped state
-diff --git a/migration/block-dirty-bitmap.c b/migration/block-dirty-bitmap.c
-index 032fc5f405..03cb2e72ee 100644
---- a/migration/block-dirty-bitmap.c
-+++ b/migration/block-dirty-bitmap.c
-@@ -1214,9 +1214,7 @@ static int dirty_bitmap_save_setup(QEMUFile *f, void *opaque)
-     DBMSaveState *s = &((DBMState *)opaque)->save;
-     SaveBitmapState *dbms = NULL;
- 
--    qemu_mutex_lock_iothread();
-     if (init_dirty_bitmap_migration(s) < 0) {
--        qemu_mutex_unlock_iothread();
-         return -1;
-     }
- 
-@@ -1224,7 +1222,6 @@ static int dirty_bitmap_save_setup(QEMUFile *f, void *opaque)
-         send_bitmap_start(f, s, dbms);
-     }
-     qemu_put_bitmap_flags(f, DIRTY_BITMAP_MIG_FLAG_EOS);
--    qemu_mutex_unlock_iothread();
-     return 0;
- }
- 
-diff --git a/migration/block.c b/migration/block.c
-index 5f930870a5..7cf70c1066 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -729,18 +729,13 @@ static int block_save_setup(QEMUFile *f, void *opaque)
-     trace_migration_block_save("setup", block_mig_state.submitted,
-                                block_mig_state.transferred);
- 
--    qemu_mutex_lock_iothread();
-     ret = init_blk_migration(f);
-     if (ret < 0) {
--        qemu_mutex_unlock_iothread();
-         return ret;
-     }
- 
-     /* start track dirty blocks */
-     ret = set_dirty_tracking();
--
--    qemu_mutex_unlock_iothread();
--
-     if (ret) {
-         return ret;
-     }
-diff --git a/migration/migration.c b/migration/migration.c
-index 1c6c81ad49..9c6faa6367 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2980,7 +2980,9 @@ static void *migration_thread(void *opaque)
-     object_ref(OBJECT(s));
-     update_iteration_initial_status(s);
- 
-+    qemu_mutex_lock_iothread();
-     qemu_savevm_state_header(s->to_dst_file);
-+    qemu_mutex_unlock_iothread();
- 
-     /*
-      * If we opened the return path, we need to make sure dst has it
-@@ -3008,7 +3010,9 @@ static void *migration_thread(void *opaque)
-         qemu_savevm_send_colo_enable(s->to_dst_file);
-     }
- 
-+    qemu_mutex_lock_iothread();
-     qemu_savevm_state_setup(s->to_dst_file);
-+    qemu_mutex_unlock_iothread();
- 
-     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
-                                MIGRATION_STATUS_ACTIVE);
-@@ -3119,8 +3123,10 @@ static void *bg_migration_thread(void *opaque)
-     ram_write_tracking_prepare();
- #endif
- 
-+    qemu_mutex_lock_iothread();
-     qemu_savevm_state_header(s->to_dst_file);
-     qemu_savevm_state_setup(s->to_dst_file);
-+    qemu_mutex_unlock_iothread();
- 
-     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
-                                MIGRATION_STATUS_ACTIVE);
-diff --git a/migration/ram.c b/migration/ram.c
-index 2f5ce4d60b..5f7680ba4f 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -2891,8 +2891,6 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
- 
- static void ram_init_bitmaps(RAMState *rs)
- {
--    /* For memory_global_dirty_log_start below.  */
--    qemu_mutex_lock_iothread();
-     qemu_mutex_lock_ramlist();
- 
-     WITH_RCU_READ_LOCK_GUARD() {
-@@ -2904,7 +2902,6 @@ static void ram_init_bitmaps(RAMState *rs)
-         }
-     }
-     qemu_mutex_unlock_ramlist();
--    qemu_mutex_unlock_iothread();
- 
-     /*
-      * After an eventual first bitmap sync, fixup the initial bitmap
-@@ -3067,7 +3064,10 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
- 
-     migration_ops = g_malloc0(sizeof(MigrationOps));
-     migration_ops->ram_save_target_page = ram_save_target_page_legacy;
-+
-+    qemu_mutex_unlock_iothread();
-     ret = multifd_send_sync_main(f);
-+    qemu_mutex_lock_iothread();
-     if (ret < 0) {
-         return ret;
-     }
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 497ce02bd7..e192f84a65 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1660,10 +1660,8 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
-     }
-     ms->to_dst_file = f;
- 
--    qemu_mutex_unlock_iothread();
-     qemu_savevm_state_header(f);
-     qemu_savevm_state_setup(f);
--    qemu_mutex_lock_iothread();
- 
-     while (qemu_file_get_error(f) == 0) {
-         if (qemu_savevm_state_iterate(f, false) > 0) {
--- 
-2.39.2
-
+Best Regards,
+Fiona
 
 
