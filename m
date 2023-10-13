@@ -2,46 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D26D7C8D6C
+	by mail.lfdr.de (Postfix) with ESMTPS id 898C97C8D6B
 	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 21:02:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrNPk-0003nt-55; Fri, 13 Oct 2023 15:01:36 -0400
+	id 1qrNPn-0003oJ-Ij; Fri, 13 Oct 2023 15:01:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mmromanov@ispras.ru>)
- id 1qrKZs-0003ze-1w
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:59:52 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mmromanov@ispras.ru>)
- id 1qrKZp-0007wL-1F
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 11:59:51 -0400
-Received: from localhost.intra.ispras.ru (unknown [10.10.3.121])
- by mail.ispras.ru (Postfix) with ESMTP id 3299F40F1DEB;
- Fri, 13 Oct 2023 15:59:43 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 3299F40F1DEB
-From: Mikhail Romanov <mmromanov@ispras.ru>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <rth@twiddle.net>,
- Alexander Monakov <amonakov@ispras.ru>,
- Mikhail Romanov <mmromanov@ispras.ru>
-Subject: [PATCH] buffer_is_zero improvement
-Date: Fri, 13 Oct 2023 18:58:56 +0300
-Message-Id: <20231013155856.21475-1-mmromanov@ispras.ru>
-X-Mailer: git-send-email 2.32.0
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1qrLT1-0005Fy-Ay
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 12:56:51 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1qrLSy-0002My-1s
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 12:56:51 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-578d0dcd4e1so1648511a12.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 09:56:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697216206; x=1697821006; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IgV73/bZCE+j0pcmpLO58sQXuQXF3ja23XLyZlWF1ew=;
+ b=dtniG0T18rLNH49V+/HogkHaW7vD/41L9RUz7kYJo4NEUNiYpi3Q1GNgoZCtqfMHrL
+ R7U9yXQ6rsngJ/bbjhidM6n8vCQ9h/Rud/HuP6nHfXPCiX1nANlcv9gIzJ2XD/qjXY7B
+ ftKGiTiSCGH2HcPvMBw6FSRjA9NFwGNogTxkkGmuhpTsLNXoao7yxDGU1h9BzlB2WPit
+ i+SYZ7F9S2gWGs8vMCXISHgNuDGJUcaqfk+0uzZPOzn+vxgASC+bPH399bNlUTrNCqpD
+ LWI32AkHFN8yzeBXm6sNQUG2NUVQj4T1S+3FnyemG2CdgoQnisiatALk+utNjg/UoaJz
+ 9vQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697216206; x=1697821006;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IgV73/bZCE+j0pcmpLO58sQXuQXF3ja23XLyZlWF1ew=;
+ b=MHPs6EZLrzPkEEfibfy8CrETj/QV2ev04X6GusekGdVJpwaLuaVMvwa5oW4XhQY+iR
+ OY4EvaJbAkvAcVVEMlVMgdaIsS2xtcgioDePp17OO1CmsCsNcm0FFr8+uFp0PrE+XVmN
+ YWuacm4BpnQ4cYN6OLD5jlB10LE9QNgyjELr7ZOu5b7lp1alb8RmEsHy28Hz6tzMu86u
+ +TBV8R2FghAi1PqzngopOgbX3zDtjOPVroQa59T3oa5HE6Ltq9bmq/aY7w2wtwtoRLhH
+ N7QRGS0W0LHPKtyjXHw9FIZGHDHsFoUMvbrzND1BDLgjQztM3X0ZAkO4T3ZPuToTwqiu
+ +oKQ==
+X-Gm-Message-State: AOJu0Yxn7Of6lf4yHZjp3muIrl5MWHM7oCStUf0amYVFSOZbVKw3/cHN
+ 9+n3phKlWnOjujFNGPp2VZ4=
+X-Google-Smtp-Source: AGHT+IFncI/OCutdaHnUhGVL+zFM1t5prtTsGtePoM6du2LSGUuNHMw9Ml2EEe+dn1yZUdX1ZJc6zw==
+X-Received: by 2002:a05:6a20:734b:b0:14c:de3:95d6 with SMTP id
+ v11-20020a056a20734b00b0014c0de395d6mr28410653pzc.45.1697216206080; 
+ Fri, 13 Oct 2023 09:56:46 -0700 (PDT)
+Received: from debian (99-13-228-231.lightspeed.snjsca.sbcglobal.net.
+ [99.13.228.231]) by smtp.gmail.com with ESMTPSA id
+ l18-20020a170902d35200b001c74df14e6esm4124080plk.51.2023.10.13.09.56.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Oct 2023 09:56:45 -0700 (PDT)
+From: fan <nifan.cxl@gmail.com>
+X-Google-Original-From: fan <fan@debian>
+Date: Fri, 13 Oct 2023 09:56:09 -0700
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
+ Michael Tsirkin <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ linuxarm@huawei.com, Fan Ni <fan.ni@samsung.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v4 4/4] hw/cxl: Line length reductions
+Message-ID: <ZSl2k_-hyzcC60CX@debian>
+References: <20231012140514.3697-1-Jonathan.Cameron@huawei.com>
+ <20231012140514.3697-5-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=83.149.199.84; envelope-from=mmromanov@ispras.ru;
- helo=mail.ispras.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231012140514.3697-5-Jonathan.Cameron@huawei.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pg1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 13 Oct 2023 15:01:32 -0400
+X-Mailman-Approved-At: Fri, 13 Oct 2023 15:01:36 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,444 +96,340 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Improve buffer_is_zero function which is often used in qemu-img utility.
+On Thu, Oct 12, 2023 at 03:05:14PM +0100, Jonathan Cameron wrote:
+> Michael Tsirkin observed that there were some unnecessarily
+> long lines in the CXL code in a recent review.
+> This patch is intended to rectify that where it does not
+> hurt readability.
+> 
+> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
 
-Executing buffer_is_zero function takes around 40% of qemu-img runtime
-(measured on a 4.4 GiB Windows 10 raw image converting to qcow2 format
-via perf record utility, ~100000 samples over 4 seconds).
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-1) Define an inline wrapper for this function in include/qemu/cutils.h.
-It checks the first, the middle and the last byte of the buffer and
-returns false if a non-zero byte encountered, else the main (internal)
-function is called.
-
-2) Delete AVX-512 accelerator because it is called rarely thanks to
-inline wrapper, so its speed benefit is neutralized by processor
-throttling before first in a while 512-bit vector function use. See:
-https://travisdowns.github.io/blog/2020/01/17/avxfreq1.html
-
-3) Delete SSE4 accelerator because its only difference with the SSE2 one
-is using testz instead of cmpeq+movemask to compare a buffer with 0, but
-it gives no perfomance benefit (according to uops.info data).
-
-4) Improve checking buffers with len < 8 in internal integer function
-because inline wrapper ensures len >= 4.
-
-5) Add uint64_a type for pointers in integer version so they can alias
-with any other type used in the buffer.
-
-6) Replace unaligned tail checking in AVX2 accelerator with aligned tail
-checking similar to SSE2's one because reading unaligned tail gives no
-benefit.
-
-7) Move tail checking in both SSE2 and AVX2 accelerators before the main
-loop so cmpeq+movemask checks become more evenly on time.
-
-8) The main loop pointer in both SSE2 and AVX2 accelerators point to the
-beginning of processed portion of bytes instead of the end so it never
-points beyond the end of the buffer.
-
-9) Double amount of bytes checked in an iteration of the main loop in
-both SSE2 and AVX2 accelerators to meet processors' data loading per
-cycle limit.
-
-10) Move the decision between accelerators to the inline wrapper so it
-can be omitted by the compiler if buffer size is known at compile time.
-
-11) Remove all prefetches because they are done just a few processor
-cycles before memory is read.
-
-After these improvements buffer_is_zero works ~40% faster and takes 28%
-of qemu-img runtime (measured the same way as initial version, inline
-wrapper execution included).
-
-The test-bufferiszero.c unit test still passes.
-
-Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
----
-
-Now buffer_is_zero wrapper has a sophisticated contract so it may be
-useful to move the inline wrapper to a distinct header file.
-
- include/qemu/cutils.h |  25 ++++-
- util/bufferiszero.c   | 244 +++++++++++++++++-------------------------
- 2 files changed, 120 insertions(+), 149 deletions(-)
-
-diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
-index 92c927a6a3..6e35802b5e 100644
---- a/include/qemu/cutils.h
-+++ b/include/qemu/cutils.h
-@@ -187,7 +187,30 @@ char *freq_to_str(uint64_t freq_hz);
- /* used to print char* safely */
- #define STR_OR_NULL(str) ((str) ? (str) : "null")
- 
--bool buffer_is_zero(const void *buf, size_t len);
-+bool buffer_is_zero_len_4_plus(const void *buf, size_t len);
-+extern bool (*buffer_is_zero_len_256_plus)(const void *, size_t);
-+static inline bool buffer_is_zero(const void *vbuf, size_t len)
-+{
-+    const char *buf = vbuf;
-+
-+    if (len == 0) {
-+        return true;
-+    }
-+    if (buf[0] || buf[len - 1] || buf[len / 2]) {
-+        return false;
-+    }
-+    /* For len <= 3, all bytes are already tested.  */
-+    if (len <= 3) {
-+        return true;
-+    }
-+
-+    if (len >= 256) {
-+        return buffer_is_zero_len_256_plus(vbuf, len);
-+    } else {
-+        return buffer_is_zero_len_4_plus(vbuf, len);
-+    }
-+}
-+
- bool test_buffer_is_zero_next_accel(void);
- 
- /*
-diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 3e6a5dfd63..61cab171b0 100644
---- a/util/bufferiszero.c
-+++ b/util/bufferiszero.c
-@@ -26,30 +26,23 @@
- #include "qemu/bswap.h"
- #include "host/cpuinfo.h"
- 
--static bool
--buffer_zero_int(const void *buf, size_t len)
-+typedef uint64_t uint64_a __attribute__((may_alias));
-+
-+bool
-+buffer_is_zero_len_4_plus(const void *buf, size_t len)
- {
-     if (unlikely(len < 8)) {
--        /* For a very small buffer, simply accumulate all the bytes.  */
--        const unsigned char *p = buf;
--        const unsigned char *e = buf + len;
--        unsigned char t = 0;
--
--        do {
--            t |= *p++;
--        } while (p < e);
--
--        return t == 0;
-+        /* Inline wrapper already checked that len >= 4.  */
-+        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
-     } else {
--        /* Otherwise, use the unaligned memory access functions to
--           handle the beginning and end of the buffer, with a couple
-+        /* Use the unaligned memory access functions to handle
-+           the beginning and end of the buffer, with a couple
-            of loops handling the middle aligned section.  */
-         uint64_t t = ldq_he_p(buf);
--        const uint64_t *p = (uint64_t *)(((uintptr_t)buf + 8) & -8);
--        const uint64_t *e = (uint64_t *)(((uintptr_t)buf + len) & -8);
-+        const uint64_a *p = (uint64_a *)(((uintptr_t)buf + 8) & -8);
-+        const uint64_a *e = (uint64_a *)(((uintptr_t)buf + len) & -8);
- 
-         for (; p + 8 <= e; p += 8) {
--            __builtin_prefetch(p + 8);
-             if (t) {
-                 return false;
-             }
-@@ -67,124 +60,112 @@ buffer_zero_int(const void *buf, size_t len)
- #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
- #include <immintrin.h>
- 
--/* Note that each of these vectorized functions require len >= 64.  */
-+/* Prevent the compiler from reassociating
-+   a chain of similar operations.  */
-+#define SSE_REASSOC_BARRIER(a, b) asm("" : "+x"(a), "+x"(b))
-+
-+/* Note that each of these vectorized functions require len >= 256.  */
- 
- static bool __attribute__((target("sse2")))
- buffer_zero_sse2(const void *buf, size_t len)
- {
--    __m128i t = _mm_loadu_si128(buf);
--    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
--    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
--    __m128i zero = _mm_setzero_si128();
-+    /* Begin with an unaligned head and tail of 16 bytes.  */
-+    __m128i t = *(__m128i_u *)buf;
-+    __m128i t2 = *(__m128i_u *)(buf + len - 16);
-+    const __m128i *p = (__m128i *)(((uintptr_t)buf + 16) & -16);
-+    const __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
-+    __m128i zero = { 0 };
- 
--    /* Loop over 16-byte aligned blocks of 64.  */
--    while (likely(p <= e)) {
--        __builtin_prefetch(p);
-+    /* Proceed with an aligned tail.  */
-+    t2 |= e[-7];
-+    t |= e[-6];
-+    /* Use the barrier to ensure two independent chains.  */
-+    SSE_REASSOC_BARRIER(t, t2);
-+    t2 |= e[-5];
-+    t |= e[-4];
-+    SSE_REASSOC_BARRIER(t, t2);
-+    t2 |= e[-3];
-+    t |= e[-2];
-+    SSE_REASSOC_BARRIER(t, t2);
-+    t2 |= e[-1];
-+    t |= t2;
-+
-+    /* Loop over 16-byte aligned blocks of 128.  */
-+    while (likely(p < e - 7)) {
-         t = _mm_cmpeq_epi8(t, zero);
-         if (unlikely(_mm_movemask_epi8(t) != 0xFFFF)) {
-             return false;
-         }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
-+        t = p[0];
-+        t2 = p[1];
-+        SSE_REASSOC_BARRIER(t, t2);
-+        t |= p[2];
-+        t2 |= p[3];
-+        SSE_REASSOC_BARRIER(t, t2);
-+        t |= p[4];
-+        t2 |= p[5];
-+        SSE_REASSOC_BARRIER(t, t2);
-+        t |= p[6];
-+        t2 |= p[7];
-+        SSE_REASSOC_BARRIER(t, t2);
-+        t |= t2;
-+        p += 8;
-     }
- 
--    /* Finish the aligned tail.  */
--    t |= e[-3];
--    t |= e[-2];
--    t |= e[-1];
--
--    /* Finish the unaligned tail.  */
--    t |= _mm_loadu_si128(buf + len - 16);
--
-     return _mm_movemask_epi8(_mm_cmpeq_epi8(t, zero)) == 0xFFFF;
- }
- 
- #ifdef CONFIG_AVX2_OPT
--static bool __attribute__((target("sse4")))
--buffer_zero_sse4(const void *buf, size_t len)
--{
--    __m128i t = _mm_loadu_si128(buf);
--    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
--    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
--
--    /* Loop over 16-byte aligned blocks of 64.  */
--    while (likely(p <= e)) {
--        __builtin_prefetch(p);
--        if (unlikely(!_mm_testz_si128(t, t))) {
--            return false;
--        }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
--    }
--
--    /* Finish the aligned tail.  */
--    t |= e[-3];
--    t |= e[-2];
--    t |= e[-1];
--
--    /* Finish the unaligned tail.  */
--    t |= _mm_loadu_si128(buf + len - 16);
--
--    return _mm_testz_si128(t, t);
--}
- 
- static bool __attribute__((target("avx2")))
- buffer_zero_avx2(const void *buf, size_t len)
- {
-     /* Begin with an unaligned head of 32 bytes.  */
--    __m256i t = _mm256_loadu_si256(buf);
--    __m256i *p = (__m256i *)(((uintptr_t)buf + 5 * 32) & -32);
--    __m256i *e = (__m256i *)(((uintptr_t)buf + len) & -32);
-+    __m256i t = *(__m256i_u *)buf;
-+    __m256i t2 = *(__m256i_u *)(buf + len - 32);
-+    const __m256i *p = (__m256i *)(((uintptr_t)buf + 32) & -32);
-+    const __m256i *e = (__m256i *)(((uintptr_t)buf + len) & -32);
-+    __m256i zero = { 0 };
- 
--    /* Loop over 32-byte aligned blocks of 128.  */
--    while (p <= e) {
--        __builtin_prefetch(p);
--        if (unlikely(!_mm256_testz_si256(t, t))) {
-+    /* Proceed with an aligned tail.  */
-+    t2 |= e[-7];
-+    t |= e[-6];
-+    SSE_REASSOC_BARRIER(t, t2);
-+    t2 |= e[-5];
-+    t |= e[-4];
-+    SSE_REASSOC_BARRIER(t, t2);
-+    t2 |= e[-3];
-+    t |= e[-2];
-+    SSE_REASSOC_BARRIER(t, t2);
-+    t2 |= e[-1];
-+    t |= t2;
-+
-+    /* Loop over 32-byte aligned blocks of 256.  */
-+    while (likely(p < e - 7)) {
-+        t = _mm256_cmpeq_epi8(t, zero);
-+        if (unlikely(_mm256_movemask_epi8(t) != 0xFFFFFFFF)) {
-             return false;
-         }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
--    } ;
-+        t = p[0];
-+        t2 = p[1];
-+        SSE_REASSOC_BARRIER(t, t2);
-+        t |= p[2];
-+        t2 |= p[3];
-+        SSE_REASSOC_BARRIER(t, t2);
-+        t |= p[4];
-+        t2 |= p[5];
-+        SSE_REASSOC_BARRIER(t, t2);
-+        t |= p[6];
-+        t2 |= p[7];
-+        SSE_REASSOC_BARRIER(t, t2);
-+        t |= t2;
-+        p += 8;
-+    }
- 
--    /* Finish the last block of 128 unaligned.  */
--    t |= _mm256_loadu_si256(buf + len - 4 * 32);
--    t |= _mm256_loadu_si256(buf + len - 3 * 32);
--    t |= _mm256_loadu_si256(buf + len - 2 * 32);
--    t |= _mm256_loadu_si256(buf + len - 1 * 32);
--
--    return _mm256_testz_si256(t, t);
-+    return _mm256_movemask_epi8(_mm256_cmpeq_epi8(t, zero)) == 0xFFFFFFFF;
- }
- #endif /* CONFIG_AVX2_OPT */
- 
--#ifdef CONFIG_AVX512F_OPT
--static bool __attribute__((target("avx512f")))
--buffer_zero_avx512(const void *buf, size_t len)
--{
--    /* Begin with an unaligned head of 64 bytes.  */
--    __m512i t = _mm512_loadu_si512(buf);
--    __m512i *p = (__m512i *)(((uintptr_t)buf + 5 * 64) & -64);
--    __m512i *e = (__m512i *)(((uintptr_t)buf + len) & -64);
--
--    /* Loop over 64-byte aligned blocks of 256.  */
--    while (p <= e) {
--        __builtin_prefetch(p);
--        if (unlikely(_mm512_test_epi64_mask(t, t))) {
--            return false;
--        }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
--    }
--
--    t |= _mm512_loadu_si512(buf + len - 4 * 64);
--    t |= _mm512_loadu_si512(buf + len - 3 * 64);
--    t |= _mm512_loadu_si512(buf + len - 2 * 64);
--    t |= _mm512_loadu_si512(buf + len - 1 * 64);
--
--    return !_mm512_test_epi64_mask(t, t);
--
--}
--#endif /* CONFIG_AVX512F_OPT */
--
- /*
-  * Make sure that these variables are appropriately initialized when
-  * SSE2 is enabled on the compiler command-line, but the compiler is
-@@ -192,20 +173,17 @@ buffer_zero_avx512(const void *buf, size_t len)
-  */
- #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
- # define INIT_USED     0
--# define INIT_LENGTH   0
--# define INIT_ACCEL    buffer_zero_int
-+# define INIT_ACCEL    buffer_is_zero_len_4_plus
- #else
- # ifndef __SSE2__
- #  error "ISA selection confusion"
- # endif
- # define INIT_USED     CPUINFO_SSE2
--# define INIT_LENGTH   64
- # define INIT_ACCEL    buffer_zero_sse2
- #endif
- 
- static unsigned used_accel = INIT_USED;
--static unsigned length_to_accel = INIT_LENGTH;
--static bool (*buffer_accel)(const void *, size_t) = INIT_ACCEL;
-+bool (*buffer_is_zero_len_256_plus)(const void *, size_t) = INIT_ACCEL;
- 
- static unsigned __attribute__((noinline))
- select_accel_cpuinfo(unsigned info)
-@@ -213,24 +191,18 @@ select_accel_cpuinfo(unsigned info)
-     /* Array is sorted in order of algorithm preference. */
-     static const struct {
-         unsigned bit;
--        unsigned len;
-         bool (*fn)(const void *, size_t);
-     } all[] = {
--#ifdef CONFIG_AVX512F_OPT
--        { CPUINFO_AVX512F, 256, buffer_zero_avx512 },
--#endif
- #ifdef CONFIG_AVX2_OPT
--        { CPUINFO_AVX2,    128, buffer_zero_avx2 },
--        { CPUINFO_SSE4,     64, buffer_zero_sse4 },
-+        { CPUINFO_AVX2,   buffer_zero_avx2 },
- #endif
--        { CPUINFO_SSE2,     64, buffer_zero_sse2 },
--        { CPUINFO_ALWAYS,    0, buffer_zero_int },
-+        { CPUINFO_SSE2,   buffer_zero_sse2 },
-+        { CPUINFO_ALWAYS, buffer_is_zero_len_4_plus },
-     };
- 
-     for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
-         if (info & all[i].bit) {
--            length_to_accel = all[i].len;
--            buffer_accel = all[i].fn;
-+            buffer_is_zero_len_256_plus = all[i].fn;
-             return all[i].bit;
-         }
-     }
-@@ -256,35 +228,11 @@ bool test_buffer_is_zero_next_accel(void)
-     return used;
- }
- 
--static bool select_accel_fn(const void *buf, size_t len)
--{
--    if (likely(len >= length_to_accel)) {
--        return buffer_accel(buf, len);
--    }
--    return buffer_zero_int(buf, len);
--}
--
- #else
--#define select_accel_fn  buffer_zero_int
-+#define select_accel_fn  buffer_is_zero_len_4_plus
- bool test_buffer_is_zero_next_accel(void)
- {
-     return false;
- }
- #endif
- 
--/*
-- * Checks if a buffer is all zeroes
-- */
--bool buffer_is_zero(const void *buf, size_t len)
--{
--    if (unlikely(len == 0)) {
--        return true;
--    }
--
--    /* Fetch the beginning of the buffer while we select the accelerator.  */
--    __builtin_prefetch(buf);
--
--    /* Use an optimized zero check if possible.  Note that this also
--       includes a check for an unrolled loop over 64-bit integers.  */
--    return select_accel_fn(buf, len);
--}
--- 
-2.34.1
-
+> ---
+>  include/hw/cxl/cxl_component.h |  3 ++-
+>  include/hw/cxl/cxl_device.h    |  5 +++--
+>  include/hw/cxl/cxl_events.h    |  3 ++-
+>  hw/cxl/cxl-cdat.c              |  3 ++-
+>  hw/cxl/cxl-component-utils.c   | 14 ++++++++------
+>  hw/cxl/cxl-events.c            |  9 ++++++---
+>  hw/cxl/cxl-mailbox-utils.c     | 21 ++++++++++++++-------
+>  hw/mem/cxl_type3.c             | 31 +++++++++++++++++++------------
+>  hw/mem/cxl_type3_stubs.c       |  5 +++--
+>  9 files changed, 59 insertions(+), 35 deletions(-)
+> 
+> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
+> index 3c795a6278..e52dd8d2b9 100644
+> --- a/include/hw/cxl/cxl_component.h
+> +++ b/include/hw/cxl/cxl_component.h
+> @@ -175,7 +175,8 @@ HDM_DECODER_INIT(3);
+>      (CXL_IDE_REGISTERS_OFFSET + CXL_IDE_REGISTERS_SIZE)
+>  #define CXL_SNOOP_REGISTERS_SIZE   0x8
+>  
+> -QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET + CXL_SNOOP_REGISTERS_SIZE) >= 0x1000,
+> +QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET +
+> +                    CXL_SNOOP_REGISTERS_SIZE) >= 0x1000,
+>                     "No space for registers");
+>  
+>  typedef struct component_registers {
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 51cd0d9ce3..007ddaf078 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -192,7 +192,7 @@ void cxl_device_register_init_common(CXLDeviceState *dev);
+>   * Documented as a 128 bit register, but 64 bit accesses and the second
+>   * 64 bits are currently reserved.
+>   */
+> -REG64(CXL_DEV_CAP_ARRAY, 0) /* Documented as 128 bit register but 64 byte accesses */
+> +REG64(CXL_DEV_CAP_ARRAY, 0)
+>      FIELD(CXL_DEV_CAP_ARRAY, CAP_ID, 0, 16)
+>      FIELD(CXL_DEV_CAP_ARRAY, CAP_VERSION, 16, 8)
+>      FIELD(CXL_DEV_CAP_ARRAY, CAP_COUNT, 32, 16)
+> @@ -361,7 +361,8 @@ struct CXLType3Class {
+>                          uint64_t offset);
+>      void (*set_lsa)(CXLType3Dev *ct3d, const void *buf, uint64_t size,
+>                      uint64_t offset);
+> -    bool (*set_cacheline)(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data);
+> +    bool (*set_cacheline)(CXLType3Dev *ct3d, uint64_t dpa_offset,
+> +                          uint8_t *data);
+>  };
+>  
+>  MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+> diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
+> index 089ba2091f..d778487b7e 100644
+> --- a/include/hw/cxl/cxl_events.h
+> +++ b/include/hw/cxl/cxl_events.h
+> @@ -92,7 +92,8 @@ typedef enum CXLEventIntMode {
+>      CXL_INT_RES      = 0x03,
+>  } CXLEventIntMode;
+>  #define CXL_EVENT_INT_MODE_MASK 0x3
+> -#define CXL_EVENT_INT_SETTING(vector) ((((uint8_t)vector & 0xf) << 4) | CXL_INT_MSI_MSIX)
+> +#define CXL_EVENT_INT_SETTING(vector) \
+> +    ((((uint8_t)vector & 0xf) << 4) | CXL_INT_MSI_MSIX)
+>  typedef struct CXLEventInterruptPolicy {
+>      uint8_t info_settings;
+>      uint8_t warn_settings;
+> diff --git a/hw/cxl/cxl-cdat.c b/hw/cxl/cxl-cdat.c
+> index d246d6885b..639a2db3e1 100644
+> --- a/hw/cxl/cxl-cdat.c
+> +++ b/hw/cxl/cxl-cdat.c
+> @@ -60,7 +60,8 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
+>          return;
+>      }
+>  
+> -    cdat->built_buf_len = cdat->build_cdat_table(&cdat->built_buf, cdat->private);
+> +    cdat->built_buf_len = cdat->build_cdat_table(&cdat->built_buf,
+> +                                                 cdat->private);
+>  
+>      if (!cdat->built_buf_len) {
+>          /* Build later as not all data available yet */
+> diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+> index 8ab04dbb01..80efbf6365 100644
+> --- a/hw/cxl/cxl-component-utils.c
+> +++ b/hw/cxl/cxl-component-utils.c
+> @@ -240,7 +240,8 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
+>      ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, TARGET_COUNT, 1);
+>      ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, INTERLEAVE_256B, 1);
+>      ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, INTERLEAVE_4K, 1);
+> -    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, POISON_ON_ERR_CAP, 0);
+> +    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY,
+> +                     POISON_ON_ERR_CAP, 0);
+>      ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_GLOBAL_CONTROL,
+>                       HDM_DECODER_ENABLE, 0);
+>      write_msk[R_CXL_HDM_DECODER_GLOBAL_CONTROL] = 0x3;
+> @@ -263,15 +264,16 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
+>      }
+>  }
+>  
+> -void cxl_component_register_init_common(uint32_t *reg_state, uint32_t *write_msk,
+> +void cxl_component_register_init_common(uint32_t *reg_state,
+> +                                        uint32_t *write_msk,
+>                                          enum reg_type type)
+>  {
+>      int caps = 0;
+>  
+>      /*
+> -     * In CXL 2.0 the capabilities required for each CXL component are such that,
+> -     * with the ordering chosen here, a single number can be used to define
+> -     * which capabilities should be provided.
+> +     * In CXL 2.0 the capabilities required for each CXL component are such
+> +     * that, with the ordering chosen here, a single number can be used to
+> +     * define which capabilities should be provided.
+>       */
+>      switch (type) {
+>      case CXL2_DOWNSTREAM_PORT:
+> @@ -448,7 +450,7 @@ void cxl_component_create_dvsec(CXLComponentState *cxl,
+>          default: /* Registers are RO for other component types */
+>              break;
+>          }
+> -        /* There are rw1cs bits in the status register but never set currently */
+> +        /* There are rw1cs bits in the status register but never set */
+>          break;
+>      }
+>  
+> diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
+> index 3ddd6369ad..e2172b94b9 100644
+> --- a/hw/cxl/cxl-events.c
+> +++ b/hw/cxl/cxl-events.c
+> @@ -170,8 +170,10 @@ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
+>      if (log->overflow_err_count) {
+>          pl->flags |= CXL_GET_EVENT_FLAG_OVERFLOW;
+>          pl->overflow_err_count = cpu_to_le16(log->overflow_err_count);
+> -        pl->first_overflow_timestamp = cpu_to_le64(log->first_overflow_timestamp);
+> -        pl->last_overflow_timestamp = cpu_to_le64(log->last_overflow_timestamp);
+> +        pl->first_overflow_timestamp =
+> +            cpu_to_le64(log->first_overflow_timestamp);
+> +        pl->last_overflow_timestamp =
+> +            cpu_to_le64(log->last_overflow_timestamp);
+>      }
+>  
+>      pl->record_count = cpu_to_le16(nr);
+> @@ -180,7 +182,8 @@ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> -CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds, CXLClearEventPayload *pl)
+> +CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds,
+> +                                   CXLClearEventPayload *pl)
+>  {
+>      CXLEventLog *log;
+>      uint8_t log_type;
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 434ccc5f6e..ab082ec9de 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -366,9 +366,12 @@ static CXLRetCode cmd_identify_memory_device(struct cxl_cmd *cmd,
+>  
+>      snprintf(id->fw_revision, 0x10, "BWFW VERSION %02d", 0);
+>  
+> -    stq_le_p(&id->total_capacity, cxl_dstate->mem_size / CXL_CAPACITY_MULTIPLIER);
+> -    stq_le_p(&id->persistent_capacity, cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
+> -    stq_le_p(&id->volatile_capacity, cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
+> +    stq_le_p(&id->total_capacity,
+> +             cxl_dstate->mem_size / CXL_CAPACITY_MULTIPLIER);
+> +    stq_le_p(&id->persistent_capacity,
+> +             cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
+> +    stq_le_p(&id->volatile_capacity,
+> +             cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
+>      stl_le_p(&id->lsa_size, cvc->get_lsa_size(ct3d));
+>      /* 256 poison records */
+>      st24_le_p(id->poison_list_max_mer, 256);
+> @@ -396,13 +399,15 @@ static CXLRetCode cmd_ccls_get_partition_info(struct cxl_cmd *cmd,
+>          return CXL_MBOX_INTERNAL_ERROR;
+>      }
+>  
+> -    stq_le_p(&part_info->active_vmem, cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
+> +    stq_le_p(&part_info->active_vmem,
+> +             cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
+>      /*
+>       * When both next_vmem and next_pmem are 0, there is no pending change to
+>       * partitioning.
+>       */
+>      stq_le_p(&part_info->next_vmem, 0);
+> -    stq_le_p(&part_info->active_pmem, cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
+> +    stq_le_p(&part_info->active_pmem,
+> +             cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
+>      stq_le_p(&part_info->next_pmem, 0);
+>  
+>      *len = sizeof(*part_info);
+> @@ -681,8 +686,10 @@ static struct cxl_cmd cxl_cmd_set[256][256] = {
+>      [FIRMWARE_UPDATE][GET_INFO] = { "FIRMWARE_UPDATE_GET_INFO",
+>          cmd_firmware_update_get_info, 0, 0 },
+>      [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
+> -    [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set, 8, IMMEDIATE_POLICY_CHANGE },
+> -    [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported, 0, 0 },
+> +    [TIMESTAMP][SET] = { "TIMESTAMP_SET", cmd_timestamp_set,
+> +                         8, IMMEDIATE_POLICY_CHANGE },
+> +    [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
+> +                              0, 0 },
+>      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+>      [IDENTIFY][MEMORY_DEVICE] = { "IDENTIFY_MEMORY_DEVICE",
+>          cmd_identify_memory_device, 0, 0 },
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index c02be4ce45..18ad853f5b 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -208,10 +208,9 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+>      }
+>  
+>      if (nonvolatile_mr) {
+> +        uint64_t base = volatile_mr ? memory_region_size(volatile_mr) : 0;
+>          rc = ct3_build_cdat_entries_for_mr(&(table[cur_ent]), dsmad_handle++,
+> -                                           nonvolatile_mr, true,
+> -                                           (volatile_mr ?
+> -                                            memory_region_size(volatile_mr) : 0));
+> +                                           nonvolatile_mr, true, base);
+>          if (rc < 0) {
+>              goto error_cleanup;
+>          }
+> @@ -514,7 +513,8 @@ static void ct3d_reg_write(void *opaque, hwaddr offset, uint64_t value,
+>      case A_CXL_RAS_UNC_ERR_STATUS:
+>      {
+>          uint32_t capctrl = ldl_le_p(cache_mem + R_CXL_RAS_ERR_CAP_CTRL);
+> -        uint32_t fe = FIELD_EX32(capctrl, CXL_RAS_ERR_CAP_CTRL, FIRST_ERROR_POINTER);
+> +        uint32_t fe = FIELD_EX32(capctrl, CXL_RAS_ERR_CAP_CTRL,
+> +                                 FIRST_ERROR_POINTER);
+>          CXLError *cxl_err;
+>          uint32_t unc_err;
+>  
+> @@ -533,7 +533,8 @@ static void ct3d_reg_write(void *opaque, hwaddr offset, uint64_t value,
+>                   * closest to behavior of hardware not capable of multiple
+>                   * header recording.
+>                   */
+> -                QTAILQ_FOREACH_SAFE(cxl_err, &ct3d->error_list, node, cxl_next) {
+> +                QTAILQ_FOREACH_SAFE(cxl_err, &ct3d->error_list, node,
+> +                                    cxl_next) {
+>                      if ((1 << cxl_err->type) & value) {
+>                          QTAILQ_REMOVE(&ct3d->error_list, cxl_err, node);
+>                          g_free(cxl_err);
+> @@ -1072,7 +1073,8 @@ void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
+>          if (((start >= p->start) && (start < p->start + p->length)) ||
+>              ((start + length > p->start) &&
+>               (start + length <= p->start + p->length))) {
+> -            error_setg(errp, "Overlap with existing poisoned region not supported");
+> +            error_setg(errp,
+> +                       "Overlap with existing poisoned region not supported");
+>              return;
+>          }
+>      }
+> @@ -1085,7 +1087,8 @@ void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
+>      p = g_new0(CXLPoison, 1);
+>      p->length = length;
+>      p->start = start;
+> -    p->type = CXL_POISON_TYPE_INTERNAL; /* Different from injected via the mbox */
+> +    /* Different from injected via the mbox */
+> +    p->type = CXL_POISON_TYPE_INTERNAL;
+>  
+>      QLIST_INSERT_HEAD(&ct3d->poison_list, p, node);
+>      ct3d->poison_list_cnt++;
+> @@ -1222,7 +1225,8 @@ void qmp_cxl_inject_correctable_error(const char *path, CxlCorErrorType type,
+>          return;
+>      }
+>      /* If the error is masked, nothting to do here */
+> -    if (!((1 << cxl_err_type) & ~ldl_le_p(reg_state + R_CXL_RAS_COR_ERR_MASK))) {
+> +    if (!((1 << cxl_err_type) &
+> +          ~ldl_le_p(reg_state + R_CXL_RAS_COR_ERR_MASK))) {
+>          return;
+>      }
+>  
+> @@ -1372,7 +1376,8 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
+>                                 bool has_bank, uint8_t bank,
+>                                 bool has_row, uint32_t row,
+>                                 bool has_column, uint16_t column,
+> -                               bool has_correction_mask, uint64List *correction_mask,
+> +                               bool has_correction_mask,
+> +                               uint64List *correction_mask,
+>                                 Error **errp)
+>  {
+>      Object *obj = object_resolve_path(path, NULL);
+> @@ -1473,7 +1478,7 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
+>                                          int16_t temperature,
+>                                          uint32_t dirty_shutdown_count,
+>                                          uint32_t corrected_volatile_error_count,
+> -                                        uint32_t corrected_persistent_error_count,
+> +                                        uint32_t corrected_persist_error_count,
+>                                          Error **errp)
+>  {
+>      Object *obj = object_resolve_path(path, NULL);
+> @@ -1513,8 +1518,10 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
+>      module.life_used = life_used;
+>      stw_le_p(&module.temperature, temperature);
+>      stl_le_p(&module.dirty_shutdown_count, dirty_shutdown_count);
+> -    stl_le_p(&module.corrected_volatile_error_count, corrected_volatile_error_count);
+> -    stl_le_p(&module.corrected_persistent_error_count, corrected_persistent_error_count);
+> +    stl_le_p(&module.corrected_volatile_error_count,
+> +             corrected_volatile_error_count);
+> +    stl_le_p(&module.corrected_persistent_error_count,
+> +             corrected_persist_error_count);
+>  
+>      if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&module)) {
+>          cxl_event_irq_assert(ct3d);
+> diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
+> index 8ba5d3d1f7..3e1851e32b 100644
+> --- a/hw/mem/cxl_type3_stubs.c
+> +++ b/hw/mem/cxl_type3_stubs.c
+> @@ -33,7 +33,8 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
+>                                 bool has_bank, uint8_t bank,
+>                                 bool has_row, uint32_t row,
+>                                 bool has_column, uint16_t column,
+> -                               bool has_correction_mask, uint64List *correction_mask,
+> +                               bool has_correction_mask,
+> +                               uint64List *correction_mask,
+>                                 Error **errp) {}
+>  
+>  void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
+> @@ -45,7 +46,7 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
+>                                          int16_t temperature,
+>                                          uint32_t dirty_shutdown_count,
+>                                          uint32_t corrected_volatile_error_count,
+> -                                        uint32_t corrected_persistent_error_count,
+> +                                        uint32_t corrected_persist_error_count,
+>                                          Error **errp) {}
+>  
+>  void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
+> -- 
+> 2.39.2
+> 
 
