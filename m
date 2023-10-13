@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCABA7C7FFF
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3961A7C7F6D
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:05:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD56-0005ML-V1; Fri, 13 Oct 2023 03:59:37 -0400
+	id 1qrD59-0005v4-He; Fri, 13 Oct 2023 03:59:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD53-000565-Om
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:33 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qrD54-0005BH-E7
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:34 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD4z-0007DK-To
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:33 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40566f8a093so18747905e9.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:29 -0700 (PDT)
+ id 1qrD51-0007Dw-Tp
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:34 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-5079c846dcfso277808e87.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183968; x=1697788768; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183970; x=1697788770; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LwY+jPg9vgqKQupdoqD0AmL9+Yk7tkyiChWnCwkiopM=;
- b=p9UNFUW5OsibYfWfGVI8Ed3AEZ3qrcv640gHYZ3Gs90HI4VKv7ytwM8tEj9AFrMBF3
- QceUC6O4boTlAqQuHi4J+Go38ln4NNqiaP7y2SzYR93JAqpnn+f/49UzIXhdfs2YX0FX
- OcNa6OKpbg+0pwXzdbZlZSPaS2H7iQdRtZ5+oCKCMActOKAWC+pe9fzp4TTo2Sho34Tp
- /xkUCtYBe6N9IIgYfOS3a+zBOl/uXmSlb9N+5RGZsiV0irTS+rEcokIXUtKge5A1Q4e8
- if7oBSbXWeBPgoYsoBY9GAxe8vsoRV9CYpufBgq2m6V6sIf4wuOu1Dz91mk+n9KRyeCq
- K44Q==
+ bh=dE8XNy6rmEb7aulR3k0RbYvqKHn1hSxS8SLgpa+KKwg=;
+ b=p3SpnVjI3bvyXuQF92nNeZYmgCro7qT0COLTXraUsHefZb4mq51ckSPyUu+8wt08Ho
+ hZgKNKblY6svwZILGUTdGEgVjfvqi4rEE/2RZDQIzr/y3eYCLPOtYttQDB47tIwzwfBe
+ s8oA7s1PIy5VhEeLlVhQfdyWo9ozCU5CPsrWTuUapVRh71yPb4Rk0NgF28u/DgzTrTeb
+ 4khCpvweB0ldL7oi4JPY781ss/rV67zr4jpX7O1cq3PkgUu2y3XOEbuXNmZEtVJDaMG5
+ f2Pz0PY5CnTMHCWz4QFZoMG7+9TauKWSZAEhqIxifKmjGw+EHP6ai1hI7gEBbKUgo94u
+ azpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183968; x=1697788768;
+ d=1e100.net; s=20230601; t=1697183970; x=1697788770;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LwY+jPg9vgqKQupdoqD0AmL9+Yk7tkyiChWnCwkiopM=;
- b=E6lFdG0wc0h3HFlaPHU+ip7gjh1fmA1oAJ8ZcjQEKGVvVKO9JEk3R33Ii6EXqIxFIM
- GFNX4W/otiFCsTH2v811tppS0o3H8tB+3Dar6SStgcPMgI2kBy4ycXhbv9Eb81KDeoua
- 7HeNx4OhsEAnY5IsyzTj5dMf+usKP/fn9ewV/Tddfd6/zAARCz645cL0sJ07D4AMUyjI
- W7nz/hjVtV6zAiaI6FEi+tUlXAFWpwtXFfUMm+JTm421zYD6dC8KZEEupi1zIhcXkqG/
- C3kNo0nRe1epYxNmZNvbL1vsGUeeUsxLWMl5fSgp5XDo0gp0nFvLgoB79hwsn037P4WY
- kT+g==
-X-Gm-Message-State: AOJu0YzbJoXM1vIoPQsO+oYs7kPQQoshr3wXoAfLsnM7NFBrh7jJq6bD
- tdy2eruDoqd4M6wUmFDbRy3ljkWGkGKHCKONgLE=
-X-Google-Smtp-Source: AGHT+IHb1sq05fjWGbRLS4tBWuCQjFz3MrPELHMa1EmJYBHs/jK5aqzCf8gPflB2Rs3bNbLoztClNA==
-X-Received: by 2002:a05:600c:2197:b0:405:514d:eb0e with SMTP id
- e23-20020a05600c219700b00405514deb0emr22913649wme.19.1697183968288; 
- Fri, 13 Oct 2023 00:59:28 -0700 (PDT)
+ bh=dE8XNy6rmEb7aulR3k0RbYvqKHn1hSxS8SLgpa+KKwg=;
+ b=aWWA/bnL/0ZCUyp5dzJpuLlta7FrSvHElisZJCnri4U+sAaSmLfi5EyUxxBv2UJ07C
+ 18kYeko/f9tcrPRjDeDBd4dWktzwIDE5OusCsG3Izug1UhiA3kbyT0rABYvXDjJbn+vo
+ vbd05LumrXCITKUp4o5lOkMwogcE//e/5ZyRMjWAFBLY1wCi9MHZjmdW8dlmvAinHQJN
+ Mc0OP7okYNoLkHk2Vpa1BXNDTlb0foVCYcFSzGfHAnLZk96bZjQiqjP8O7deiQfeujnq
+ Y6fAV/SxxpdLeD/3K1YZgwDUijIWlTUEPLaUe9+7B1Wr4Wgn+gaBWdU/RUABF14aeoUe
+ USTA==
+X-Gm-Message-State: AOJu0Yx2sJs4mAYMhjI4Z/ne4chOdXtOVbOS1FeLxR8Rw9TLjVsugq94
+ u+XPggvoczZEf/qcsvLhNAo3RcF1Qxgd8uX7MFo=
+X-Google-Smtp-Source: AGHT+IGG0/HqFKXvSObhDzxwu/jxg58jBO1GS2cazpYt1wTNeP/Z1KXJdOGoEvrs+e/SBWq3vVdvYg==
+X-Received: by 2002:ac2:5a5a:0:b0:503:2623:7cf7 with SMTP id
+ r26-20020ac25a5a000000b0050326237cf7mr21145399lfn.67.1697183970030; 
+ Fri, 13 Oct 2023 00:59:30 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.27
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:59:27 -0700 (PDT)
+ Fri, 13 Oct 2023 00:59:29 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [RFC PATCH v2 54/78] hw/core: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:21 +0300
-Message-Id: <f385cf09b449507eb3f7ad6ab2d9b57f0f9fe7a8.1697183699.git.manos.pitsidianakis@linaro.org>
+Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [RFC PATCH v2 55/78] hw/display: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:22 +0300
+Message-Id: <7c8de3cb19cf335ec462500041fd9f12dc9f0c0a.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_FILL_THIS_FORM_SHORT=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,153 +98,262 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/core/loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/display/cg3.c        | 2 +-
+ hw/display/cirrus_vga.c | 2 +-
+ hw/display/tcx.c        | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 4dd5a71fb7..559d63a1e2 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -625,138 +625,138 @@ toosmall:
- /* Load a U-Boot image.  */
- static ssize_t load_uboot_image(const char *filename, hwaddr *ep,
-                                 hwaddr *loadaddr, int *is_linux,
-                                 uint8_t image_type,
-                                 uint64_t (*translate_fn)(void *, uint64_t),
-                                 void *translate_opaque, AddressSpace *as)
+diff --git a/hw/display/cg3.c b/hw/display/cg3.c
+index 2e9656ae1c..53eb9831b2 100644
+--- a/hw/display/cg3.c
++++ b/hw/display/cg3.c
+@@ -199,65 +199,65 @@ static uint64_t cg3_reg_read(void *opaque, hwaddr addr, unsigned size)
+ static void cg3_reg_write(void *opaque, hwaddr addr, uint64_t val,
+                           unsigned size)
  {
-     int fd;
-     ssize_t size;
-     hwaddr address;
-     uboot_image_header_t h;
-     uboot_image_header_t *hdr = &h;
-     uint8_t *data = NULL;
-     int ret = -1;
-     int do_uncompress = 0;
+     CG3State *s = opaque;
+     uint8_t regval;
+     int i;
  
-     fd = open(filename, O_RDONLY | O_BINARY);
-     if (fd < 0)
-         return -1;
- 
-     size = read(fd, hdr, sizeof(uboot_image_header_t));
-     if (size < sizeof(uboot_image_header_t)) {
-         goto out;
-     }
- 
-     bswap_uboot_header(hdr);
- 
-     if (hdr->ih_magic != IH_MAGIC)
-         goto out;
- 
-     if (hdr->ih_type != image_type) {
-         if (!(image_type == IH_TYPE_KERNEL &&
-             hdr->ih_type == IH_TYPE_KERNEL_NOLOAD)) {
-             fprintf(stderr, "Wrong image type %d, expected %d\n", hdr->ih_type,
-                     image_type);
-             goto out;
-         }
-     }
- 
-     /* TODO: Implement other image types.  */
-     switch (hdr->ih_type) {
-     case IH_TYPE_KERNEL_NOLOAD:
-         if (!loadaddr || *loadaddr == LOAD_UIMAGE_LOADADDR_INVALID) {
-             fprintf(stderr, "this image format (kernel_noload) cannot be "
-                     "loaded on this machine type");
-             goto out;
-         }
- 
-         hdr->ih_load = *loadaddr + sizeof(*hdr);
-         hdr->ih_ep += hdr->ih_load;
--        /* fall through */
-+        fallthrough;
-     case IH_TYPE_KERNEL:
-         address = hdr->ih_load;
-         if (translate_fn) {
-             address = translate_fn(translate_opaque, address);
-         }
-         if (loadaddr) {
-             *loadaddr = hdr->ih_load;
-         }
- 
-         switch (hdr->ih_comp) {
-         case IH_COMP_NONE:
-             break;
-         case IH_COMP_GZIP:
-             do_uncompress = 1;
-             break;
-         default:
-             fprintf(stderr,
-                     "Unable to load u-boot images with compression type %d\n",
-                     hdr->ih_comp);
-             goto out;
-         }
- 
-         if (ep) {
-             *ep = hdr->ih_ep;
-         }
- 
-         /* TODO: Check CPU type.  */
-         if (is_linux) {
-             if (hdr->ih_os == IH_OS_LINUX) {
-                 *is_linux = 1;
-             } else if (hdr->ih_os == IH_OS_VXWORKS) {
-                 /*
-                  * VxWorks 7 uses the same boot interface as the Linux kernel
-                  * on Arm (64-bit only), PowerPC and RISC-V architectures.
-                  */
-                 switch (hdr->ih_arch) {
-                 case IH_ARCH_ARM64:
-                 case IH_ARCH_PPC:
-                 case IH_ARCH_RISCV:
-                     *is_linux = 1;
-                     break;
-                 default:
-                     *is_linux = 0;
-                     break;
-                 }
-             } else {
-                 *is_linux = 0;
-             }
-         }
- 
+     trace_cg3_write(addr, val, size);
+     switch (addr) {
+     case CG3_REG_BT458_ADDR:
+         s->dac_index = val;
+         s->dac_state = 0;
          break;
-     case IH_TYPE_RAMDISK:
-         address = *loadaddr;
+     case CG3_REG_BT458_COLMAP:
+         /* This register can be written to as either a long word or a byte */
+         if (size == 1) {
+             val <<= 24;
+         }
+ 
+         for (i = 0; i < size; i++) {
+             regval = val >> 24;
+ 
+             switch (s->dac_state) {
+             case 0:
+                 s->r[s->dac_index] = regval;
+                 s->dac_state++;
+                 break;
+             case 1:
+                 s->g[s->dac_index] = regval;
+                 s->dac_state++;
+                 break;
+             case 2:
+                 s->b[s->dac_index] = regval;
+                 /* Index autoincrement */
+                 s->dac_index = (s->dac_index + 1) & 0xff;
+-                /* fall through */
++                fallthrough;
+             default:
+                 s->dac_state = 0;
+                 break;
+             }
+             val <<= 8;
+         }
+         s->full_update = 1;
+         break;
+     case CG3_REG_FBC_CTRL:
+         s->regs[0] = val;
+         break;
+     case CG3_REG_FBC_STATUS:
+         if (s->regs[1] & CG3_SR_PENDING_INT) {
+             /* clear interrupt */
+             s->regs[1] &= ~CG3_SR_PENDING_INT;
+             qemu_irq_lower(s->irq);
+         }
+         break;
+     case CG3_REG_FBC_CURSTART ... CG3_REG_SIZE - 1:
+         s->regs[addr - 0x10] = val;
          break;
      default:
-         fprintf(stderr, "Unsupported u-boot image type %d\n", hdr->ih_type);
-         goto out;
+         qemu_log_mask(LOG_UNIMP,
+                   "cg3: Unimplemented register write "
+                   "reg 0x%" HWADDR_PRIx " size 0x%x value 0x%" PRIx64 "\n",
+                   addr, size, val);
+         break;
      }
- 
-     data = g_malloc(hdr->ih_size);
- 
-     if (read(fd, data, hdr->ih_size) != hdr->ih_size) {
-         fprintf(stderr, "Error reading file\n");
-         goto out;
-     }
- 
-     if (do_uncompress) {
-         uint8_t *compressed_data;
-         size_t max_bytes;
-         ssize_t bytes;
- 
-         compressed_data = data;
-         max_bytes = UBOOT_MAX_GUNZIP_BYTES;
-         data = g_malloc(max_bytes);
- 
-         bytes = gunzip(data, max_bytes, compressed_data, hdr->ih_size);
-         g_free(compressed_data);
-         if (bytes < 0) {
-             fprintf(stderr, "Unable to decompress gzipped image!\n");
-             goto out;
+ }
+diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
+index b80f98b6c4..f1513a084c 100644
+--- a/hw/display/cirrus_vga.c
++++ b/hw/display/cirrus_vga.c
+@@ -1319,97 +1319,97 @@ static int cirrus_vga_read_sr(CirrusVGAState * s)
+ static void cirrus_vga_write_sr(CirrusVGAState * s, uint32_t val)
+ {
+     switch (s->vga.sr_index) {
+     case 0x00:                  // Standard VGA
+     case 0x01:                  // Standard VGA
+     case 0x02:                  // Standard VGA
+     case 0x03:                  // Standard VGA
+     case 0x04:                  // Standard VGA
+         s->vga.sr[s->vga.sr_index] = val & sr_mask[s->vga.sr_index];
+         if (s->vga.sr_index == 1)
+             s->vga.update_retrace_info(&s->vga);
+         break;
+     case 0x06:                  // Unlock Cirrus extensions
+         val &= 0x17;
+         if (val == 0x12) {
+             s->vga.sr[s->vga.sr_index] = 0x12;
+         } else {
+             s->vga.sr[s->vga.sr_index] = 0x0f;
          }
-         hdr->ih_size = bytes;
+         break;
+     case 0x10:
+     case 0x30:
+     case 0x50:
+     case 0x70:                  // Graphics Cursor X
+     case 0x90:
+     case 0xb0:
+     case 0xd0:
+     case 0xf0:                  // Graphics Cursor X
+         s->vga.sr[0x10] = val;
+         s->vga.hw_cursor_x = (val << 3) | (s->vga.sr_index >> 5);
+         break;
+     case 0x11:
+     case 0x31:
+     case 0x51:
+     case 0x71:                  // Graphics Cursor Y
+     case 0x91:
+     case 0xb1:
+     case 0xd1:
+     case 0xf1:                  // Graphics Cursor Y
+         s->vga.sr[0x11] = val;
+         s->vga.hw_cursor_y = (val << 3) | (s->vga.sr_index >> 5);
+         break;
+     case 0x07:                  // Extended Sequencer Mode
+         cirrus_update_memory_access(s);
+-        /* fall through */
++        fallthrough;
+     case 0x08:                  // EEPROM Control
+     case 0x09:                  // Scratch Register 0
+     case 0x0a:                  // Scratch Register 1
+     case 0x0b:                  // VCLK 0
+     case 0x0c:                  // VCLK 1
+     case 0x0d:                  // VCLK 2
+     case 0x0e:                  // VCLK 3
+     case 0x0f:                  // DRAM Control
+     case 0x13:                  // Graphics Cursor Pattern Address
+     case 0x14:                  // Scratch Register 2
+     case 0x15:                  // Scratch Register 3
+     case 0x16:                  // Performance Tuning Register
+     case 0x18:                  // Signature Generator Control
+     case 0x19:                  // Signature Generator Result
+     case 0x1a:                  // Signature Generator Result
+     case 0x1b:                  // VCLK 0 Denominator & Post
+     case 0x1c:                  // VCLK 1 Denominator & Post
+     case 0x1d:                  // VCLK 2 Denominator & Post
+     case 0x1e:                  // VCLK 3 Denominator & Post
+     case 0x1f:                  // BIOS Write Enable and MCLK select
+         s->vga.sr[s->vga.sr_index] = val;
+ #ifdef DEBUG_CIRRUS
+         printf("cirrus: handled outport sr_index %02x, sr_value %02x\n",
+                s->vga.sr_index, val);
+ #endif
+         break;
+     case 0x12:                  // Graphics Cursor Attribute
+         s->vga.sr[0x12] = val;
+         s->vga.force_shadow = !!(val & CIRRUS_CURSOR_SHOW);
+ #ifdef DEBUG_CIRRUS
+         printf("cirrus: cursor ctl SR12=%02x (force shadow: %d)\n",
+                val, s->vga.force_shadow);
+ #endif
+         break;
+     case 0x17:                  // Configuration Readback and Extended Control
+         s->vga.sr[s->vga.sr_index] = (s->vga.sr[s->vga.sr_index] & 0x38)
+                                    | (val & 0xc7);
+         cirrus_update_memory_access(s);
+         break;
+     default:
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "cirrus: outport sr_index 0x%02x, sr_value 0x%02x\n",
+                       s->vga.sr_index, val);
+         break;
+     }
+ }
+ 
+ /***************************************
+  *
+  *  I/O access at 0x3c6
+  *
+  ***************************************/
+diff --git a/hw/display/tcx.c b/hw/display/tcx.c
+index 1b27b64f6d..e21450d726 100644
+--- a/hw/display/tcx.c
++++ b/hw/display/tcx.c
+@@ -381,26 +381,26 @@ static void tcx_reset(DeviceState *d)
+ static uint64_t tcx_dac_readl(void *opaque, hwaddr addr,
+                               unsigned size)
+ {
+     TCXState *s = opaque;
+     uint32_t val = 0;
+ 
+     switch (s->dac_state) {
+     case 0:
+         val = s->r[s->dac_index] << 24;
+         s->dac_state++;
+         break;
+     case 1:
+         val = s->g[s->dac_index] << 24;
+         s->dac_state++;
+         break;
+     case 2:
+         val = s->b[s->dac_index] << 24;
+         s->dac_index = (s->dac_index + 1) & 0xff; /* Index autoincrement */
+-        /* fall through */
++        fallthrough;
+     default:
+         s->dac_state = 0;
+         break;
      }
  
-     rom_add_blob_fixed_as(filename, data, hdr->ih_size, address, as);
+     return val;
+ }
+@@ -408,43 +408,43 @@ static uint64_t tcx_dac_readl(void *opaque, hwaddr addr,
+ static void tcx_dac_writel(void *opaque, hwaddr addr, uint64_t val,
+                            unsigned size)
+ {
+     TCXState *s = opaque;
+     unsigned index;
  
-     ret = hdr->ih_size;
+     switch (addr) {
+     case 0: /* Address */
+         s->dac_index = val >> 24;
+         s->dac_state = 0;
+         break;
+     case 4:  /* Pixel colours */
+     case 12: /* Overlay (cursor) colours */
+         if (addr & 8) {
+             index = (s->dac_index & 3) + 256;
+         } else {
+             index = s->dac_index;
+         }
+         switch (s->dac_state) {
+         case 0:
+             s->r[index] = val >> 24;
+             update_palette_entries(s, index, index + 1);
+             s->dac_state++;
+             break;
+         case 1:
+             s->g[index] = val >> 24;
+             update_palette_entries(s, index, index + 1);
+             s->dac_state++;
+             break;
+         case 2:
+             s->b[index] = val >> 24;
+             update_palette_entries(s, index, index + 1);
+             s->dac_index = (s->dac_index + 1) & 0xff; /* Index autoincrement */
+-            /* fall through */
++            fallthrough;
+         default:
+             s->dac_state = 0;
+             break;
+         }
+         break;
+     default: /* Control registers */
+         break;
+     }
+ }
 -- 
 2.39.2
 
