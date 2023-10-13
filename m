@@ -2,82 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FD17C873C
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DFC7C8740
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:56:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrIbK-0000I8-8d; Fri, 13 Oct 2023 09:53:14 -0400
+	id 1qrIdr-00033i-MH; Fri, 13 Oct 2023 09:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrIb2-0000BL-NC
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:53:03 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrIas-0007h0-5f
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:52:47 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1c737d61a00so18026255ad.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:52:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697205164; x=1697809964; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RVAPBrtqnHNfBh8ZDVxlLhAVG7ZyA4mRHaMgvi6tUwI=;
- b=jBv/WpdRo34v/SbHhc8bPkow80hAxbHY8K72XzO3D2mtob1/7ceNRtFyUQ71A7xiTr
- jwTkW0yeyoQhXO0WUj7osKObCbEbQ99et5ggr/t/mWa+Od2LqW8AkPIllnJadRbi74Qr
- NnaENqRrmHFpV6fk5Xr/+QJypffaw7lBbK5uUK5vHM4C0t0vB8/7GKuxnKxafJA3RMNE
- L2OebHVDn3yaaBkI4+qQtO7TWoWmw6CEqY/EV467lLA/Cfb8Sebd6a4+tGBJGCWfxtbF
- pLbFMUcdrbYp5s2GyE98/OyufMlVrq70FyLYJ6lT9kHTzOP5aiK+AizSpiXRfx8V0H4w
- Gjzw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrIdp-000337-ET
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:55:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrIdn-0000SN-U7
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:55:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697205346;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cDMvw+UKdeoXI2h/Js5thn1FtpWB+ogRCxKyq4iV/ig=;
+ b=ShLmDcxvcOre4jJT2Dc8grM/I+PeWzFWPhy2ouz2ZXWqbGtoA1HSIVDjksBybCwl/7bBYQ
+ C/TsAAqkie11iXc4RUyoXCgEWNy3p4Wb1lJHLLntaJBhsSL5QQAk2W2ISkWltHWHAOgX6E
+ 3S4nEUigrYe18Arul5ps0hv40XbzfAM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-133-qfS1MNd8MLmxR1H8PWgFGA-1; Fri, 13 Oct 2023 09:55:29 -0400
+X-MC-Unique: qfS1MNd8MLmxR1H8PWgFGA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4065478afd3so18706845e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:55:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697205164; x=1697809964;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1697205328; x=1697810128;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RVAPBrtqnHNfBh8ZDVxlLhAVG7ZyA4mRHaMgvi6tUwI=;
- b=BjpkmYFwTX/ANA8SRAF+Z4BapTtlFSJDFA90NN30+ACnrMRP4uOJJi9fL01QI1ZVBt
- VDF1pZoF2avuFroWsR7qDtXUVsc70xDtF+J9Jf3Km+XB3whbcxI60k8etdyYyIyu6zwd
- VBn+A4LlW3ohIOnkg6COITLgzkzmJ1SBOEDix7S7uFMn/nBoACjH9GiN9Rc7eLtQh5BG
- RXMkJcnDn5QGHR0caksCA7hIJb3/LZr5jN+AixvkfkQ/JsJQeSq57W7GxyNDGKvOe+vG
- ykNenE7PtLqNUqTfzjEJzJK6XgKjpOZjGXt3ZvCUdlT6e3wgYkZmTyTratqnW96XlStH
- 3g4A==
-X-Gm-Message-State: AOJu0YyzKPjw2+NP7ZWEHOvm3tFU3LA3/nyYWCwfwRbPzg3rbOMU0NQQ
- 5gbLXKp8SwhGw6orJh4fXozgO2oV2rOqaKqf3Lc=
-X-Google-Smtp-Source: AGHT+IHKNIxmeSAb4+unO8Wr7K8CEAazGOu+Up8/wkZstmSdCE2ilRl65M7qgtg2z0BBnT1VFMCVJw==
-X-Received: by 2002:a17:903:28c5:b0:1ca:abe:a08b with SMTP id
- kv5-20020a17090328c500b001ca0abea08bmr876567plb.68.1697205164153; 
- Fri, 13 Oct 2023 06:52:44 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
+ bh=cDMvw+UKdeoXI2h/Js5thn1FtpWB+ogRCxKyq4iV/ig=;
+ b=hLuGrOVQ0hEna6yKyh9cgJubsPT0TnSo9GcZLXdZ+v+0TYc1Ouu3klqBNJ/xrKP+Jj
+ 0uX9pIQ8xC8dIX+uSsmsT38OYPRirtCdlt3wXnDYSdt6dIs3L8vHMhjIPy50tnEDCX5g
+ ekwWYxUpGuZUqBpbldd/U/uqgQ6opcuwlWfgSodYSEoNKtEjlJXVgxLUyayq94CiNoCM
+ 1+EFu3PJjKgwfwFZ/Jdd47yorTnnX/oI7d1KhWdt+LguDPiN2YtT18CNwg+kdgoADkB0
+ G8xSdbNo/odNABhNEONjLfZJmbJOTEGUG1Dja4iMCMZmCpzvCLoWcML5pdmGxhop1eg4
+ MphQ==
+X-Gm-Message-State: AOJu0YzbIcfb14qcxaAXCAbhXjzOhobayI/eXpdel8ctPnFlWMj7Udky
+ BVwWDPybOJC7LgdQ+MGfaxMjvxHPHDTGQgi8bx/Mb6xa07nO5k4Lh2qcmzfZxa4R5ZoYkC3Ei4X
+ PfuRh/cU+nvSWqjw=
+X-Received: by 2002:adf:e852:0:b0:315:9e1b:4ea6 with SMTP id
+ d18-20020adfe852000000b003159e1b4ea6mr22686358wrn.58.1697205328048; 
+ Fri, 13 Oct 2023 06:55:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdtkpv71xOUPXEc5m69gfIhAX4Zjt83avzG+2MZj5z5Nprf4604rrTmnbiS1Snw1nc0zyAyQ==
+X-Received: by 2002:adf:e852:0:b0:315:9e1b:4ea6 with SMTP id
+ d18-20020adfe852000000b003159e1b4ea6mr22686342wrn.58.1697205327740; 
+ Fri, 13 Oct 2023 06:55:27 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:175:cf7d:d542:c2ef:a65c:aaad])
  by smtp.gmail.com with ESMTPSA id
- jh10-20020a170903328a00b001bdb85291casm3918320plb.208.2023.10.13.06.52.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 06:52:43 -0700 (PDT)
-Message-ID: <a4f64040-9812-40b2-9287-0c971b4bec4d@linaro.org>
-Date: Fri, 13 Oct 2023 06:52:41 -0700
+ h12-20020adff18c000000b003232380ffd7sm20940730wro.102.2023.10.13.06.55.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Oct 2023 06:55:27 -0700 (PDT)
+Date: Fri, 13 Oct 2023 09:55:22 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>
+Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
+Message-ID: <20231013095407-mutt-send-email-mst@kernel.org>
+References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
+ <20231011153944.39572-2-akihiko.odaki@daynix.com>
+ <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
+ <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 00/78] Strict disable implicit fallthrough
-Content-Language: en-US
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org
-References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,35 +102,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/13/23 01:45, Emmanouil Pitsidianakis wrote:
-> --
-> Resending because --function-context was accidentally used in the
-> previous version. Sincere apologies for the noise.
-> --
+On Fri, Oct 13, 2023 at 01:14:32PM +0900, Akihiko Odaki wrote:
+> On 2023/10/13 10:38, Jason Wang wrote:
+> > On Wed, Oct 11, 2023 at 11:40 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> > > 
+> > > It was necessary since an Linux older than 2.6.35 may implement the
+> > > virtio-net header but may not allow to change its length. Remove it
+> > > since such an old Linux is no longer supported.
+> > 
+> > Where can I see this agreement?
 > 
-> Hello,
+> docs/about/build-platforms.rst says:
+> > The project aims to support the most recent major version at all times
+> > for up to five years after its initial release. Support for the
+> > previous major version will be dropped 2 years after the new major
+> > version is released or when the vendor itself drops support, whichever
+> > comes first. In this context, third-party efforts to extend the
+> > lifetime of a distro are not considered, even when they are endorsed
+> > by the vendor (eg. Debian LTS); the same is true of repositories that
+> > contain packages backported from later releases (e.g. Debian
+> > backports). Within each major release, only the most recent minor
+> > release is considered.
+> >
+> > For the purposes of identifying supported software versions available
+> > on Linux, the project will look at CentOS, Debian, Fedora, openSUSE,
+> > RHEL, SLES and Ubuntu LTS. Other distros will be assumed to ship
+> > similar software versions.
 > 
-> This RFC is inspired by the kernel's move to -Wimplicit-fallthrough=3
-> back in 2019.[0]
-> We take one step (or two) further by increasing it to 5 which rejects
-> fall through comments and requires an attribute statement.
+> All of the previous major versions of these distributions ship far newer
+> kernels.
 > 
-> [0]:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a035d552a93b
-> 
-> The line differences are not many, but they spread all over different
-> subsystems, architectures and devices. An attempt has been made to split
-> them in cohesive patches to aid post-RFC review. Part of the RFC is to
-> determine whether these patch divisions needs improvement.
-> 
-> Main questions this RFC poses
-> =============================
-> 
-> - Is this change desirable and net-positive.
+> CentOS Stream 8 and RHEL 8 ship 4.18.0.
 
-Did this catch any new problems?  If not, I really don't see the benefit.
-The compiler comment matching appears to be sufficient.
+Yes but RHEL7 is still in full support.
 
+> Debian bullseye ships 5.10.0.
+> Fedora 37 ships 6.5.6.
+> openSUSE Leap 15.4 ships 5.14.21.
+> SLES 12 ships 4.12.14.
+> Ubuntu 20.04 ships 5.4.
 
-r~
+It does not matter that a newer version is shipped. What matters is
+whether older one is still supported.
+
 
