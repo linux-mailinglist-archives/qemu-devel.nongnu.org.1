@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBC77C7F79
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0DC7C7F66
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:05:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD5j-0008CE-Io; Fri, 13 Oct 2023 04:00:17 -0400
+	id 1qrD5j-0008Ji-47; Fri, 13 Oct 2023 04:00:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5L-0007o6-Sc
+ id 1qrD5L-0007o1-Oy
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:52 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5H-0007MB-TS
+ id 1qrD5I-0007MR-DZ
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:51 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-5068dab8c00so2352051e87.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:46 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2bffc55af02so21425321fa.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183985; x=1697788785; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183986; x=1697788786; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jZR8NeoEsoCx6t5MLu/JlvHClUZCj9rdecCGKjqBBgM=;
- b=tSZOc2xSKhzEQv/wXBhQsIr2NCOHhsn6VkTAauq0KXnledByrOk8Owd0G74kyrRO/j
- TMXa7bj5NsTFZlKEcGjQW8lFF70zgGmHfvVuLgjsGEpU9TmgIX8Pwsm4W+ej5qnwqZ2z
- IVl+fWl5/KRNqXkfNF79b2VqHE7hPthd4u1AccYanwze/A7zWCA5nVzcIcCKMS4naqWb
- I5jFBGVa+2WJXa+Fgj+JIZXQvMQtGVTjt6uOUZUSCSREbKRHDy/5vdz6GI/AHesL9jJb
- /opeu7irZCcDEcld7SYuf0lv07VS0Dl00dDyoA9LFBmRsgMiB3ZtmPZp1LIeNqg6L2Fs
- L14Q==
+ bh=GK5QvAf46jj79m4OJkBEl5Y8X0BoRnQqYVbzHGs7YVg=;
+ b=Ps/qXofN7DYwRBkSrFMrx5+vIm8sQBptScGBHA7eqUoZ7kA+sPA6wcjsqX+Y8q70RA
+ RxHqUsZ5Yog5xS/WkMUxtHBBjqfmjYdtbGd8Tc5NuVMAvCA85DQeiVkLO9WV10wdtR28
+ ypAWALc7/5HhnVvQnB+3VO7jpVYgMOHC8dFy43lo0QLlOeRNKHabdgvFON14N+f0P5ng
+ Sz8JdtGNxjIn2+tkPfsUvS5iCDmAb3Yez0Ge4Kw/IcZCOUcHD10Xdza8CxwiV/n68IX3
+ 4NIs16+mP0jvIwPthU6SJCfUk57z74ncjPmAKeeTYo1ucyBamsPcqphX3+t3YV2fxZEm
+ DARQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183985; x=1697788785;
+ d=1e100.net; s=20230601; t=1697183986; x=1697788786;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jZR8NeoEsoCx6t5MLu/JlvHClUZCj9rdecCGKjqBBgM=;
- b=HLuEmL+PoeG2Xpcjz7/nF+u6gWRnYe+BjMOeNvQEjvsl10EicAuGWltLPlKvhA1Ffc
- oTQqVT+WBpfVSX0cNH+rjFTUzyg2ezy1HYjgQOMHOh3wqdG5SQjiAELKqJgGYbNHfR16
- /K3ourKJ/pjJexXNiayGlWHsB3UQdK3h8hxXsok/S+cvRRSNlVAa/GP2ZD3Wp8AkfNlr
- We5k2fGLZ7oyuhSqdLin8JwdUd1adRskKeeoSVEjrbikVvQT100F3W3oU+ysoQx1RjT8
- yfxCnhYTqflGon0SG717JLN5ZvAdw/wUkGiEDmIxcM1hzArgFIoc/JwQ8rUgaK9BXHTw
- UC4A==
-X-Gm-Message-State: AOJu0YzpIH5TsnDMMVdl745n9vPONbWO+oEMaPZSyycB+/f/ibYUM6AK
- bcnGdt21xdZYReB4fbWhwBdTpA+POr+VO/GKwxU=
-X-Google-Smtp-Source: AGHT+IHR4up+qGnqJrEZCgrYak7X/c0UPs/imQxwSKdj1CBX3bT3IwZvMl4lwBdP++WmI3+7nbFX6w==
-X-Received: by 2002:ac2:5e21:0:b0:500:aa41:9d67 with SMTP id
- o1-20020ac25e21000000b00500aa419d67mr17545836lfg.8.1697183984944; 
- Fri, 13 Oct 2023 00:59:44 -0700 (PDT)
+ bh=GK5QvAf46jj79m4OJkBEl5Y8X0BoRnQqYVbzHGs7YVg=;
+ b=E74pufj54pEvzrTl9gWK1fBnsr/rq66gxlgWoHo+vQhB50QWzbBgYIGnYyzgscvWif
+ U88P1Q3oCrP58+s9OipfclnKCgyLcuojw0lIFDebbEbvqkych/0o69zOg57Fk5COHyrl
+ UmBiiKJGSp1VOLfk4//yJNE74RAhTWfSS1BVNCIhw2EtIMawIDL20R8rMrYSK+ziB3bc
+ gCOrvCBsTUdbokH3bJd4LTnyJggOPAVtsXjGoxSnvZvlQ/sDIhC5ReoYLCp/vES3fFN9
+ fFtsAnGaMUAF21T5Bky4m/2LGcw93FYodjuJkR3rQ/tio9IyBicNBK+ezrPtNaycsdpk
+ nRww==
+X-Gm-Message-State: AOJu0Yz2FH8jOjg9OZxpDxjg+SS2w9TbbaIZaRJFjAkJVItdbXejW81X
+ bxiyH/uMoQXenXwr8d2esXmxZOPko1u0DV0oWwY=
+X-Google-Smtp-Source: AGHT+IHFoC4ze9VUX0dtlp3axU94nTbc3wi4cvOVIWFiX/NLI3/xN+mFfFtSZ7qO/pSCd7AuMirySg==
+X-Received: by 2002:a05:6512:b25:b0:503:38bc:e68c with SMTP id
+ w37-20020a0565120b2500b0050338bce68cmr21605036lfu.47.1697183986344; 
+ Fri, 13 Oct 2023 00:59:46 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.43
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:59:44 -0700 (PDT)
+ Fri, 13 Oct 2023 00:59:45 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH v2 61/78] semihosting: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:28 +0300
-Message-Id: <20d71c473f821078d83e13d977c975035aa45f94.1697183699.git.manos.pitsidianakis@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org (open list:OMAP)
+Subject: [RFC PATCH v2 62/78] hw/gpio: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:29 +0300
+Message-Id: <26ee3b7495f5d6f9715b0d00ad97bacf37ac3ed6.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,460 +98,174 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- semihosting/arm-compat-semi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/gpio/omap_gpio.c  | 2 +-
+ hw/i2c/bitbang_i2c.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
-index 329ea11260..c7d32cfca0 100644
---- a/semihosting/arm-compat-semi.c
-+++ b/semihosting/arm-compat-semi.c
-@@ -354,446 +354,446 @@ static const uint8_t featurefile_data[] = {
- /*
-  * Do a semihosting call.
-  *
-  * The specification always says that the "return register" either
-  * returns a specific value or is corrupted, so we don't need to
-  * report to our caller whether we are returning a value or trying to
-  * leave the register unchanged.
-  */
- void do_common_semihosting(CPUState *cs)
+diff --git a/hw/gpio/omap_gpio.c b/hw/gpio/omap_gpio.c
+index a3341d70f1..82a9ea4810 100644
+--- a/hw/gpio/omap_gpio.c
++++ b/hw/gpio/omap_gpio.c
+@@ -532,54 +532,54 @@ static uint64_t omap2_gpio_module_readp(void *opaque, hwaddr addr,
+ static void omap2_gpio_module_writep(void *opaque, hwaddr addr,
+                                      uint64_t value, unsigned size)
  {
-     CPUArchState *env = cpu_env(cs);
-     target_ulong args;
-     target_ulong arg0, arg1, arg2, arg3;
-     target_ulong ul_ret;
-     char * s;
-     int nr;
-     int64_t elapsed;
+     uint32_t cur = 0;
+     uint32_t mask = 0xffff;
  
-     nr = common_semi_arg(cs, 0) & 0xffffffffU;
-     args = common_semi_arg(cs, 1);
- 
-     switch (nr) {
-     case TARGET_SYS_OPEN:
-     {
-         int ret, err = 0;
-         int hostfd;
- 
-         GET_ARG(0);
-         GET_ARG(1);
-         GET_ARG(2);
-         s = lock_user_string(arg0);
-         if (!s) {
-             goto do_fault;
-         }
-         if (arg1 >= 12) {
-             unlock_user(s, arg0, 0);
-             common_semi_cb(cs, -1, EINVAL);
-             break;
-         }
- 
-         if (strcmp(s, ":tt") == 0) {
-             /*
-              * We implement SH_EXT_STDOUT_STDERR, so:
-              *  open for read == stdin
-              *  open for write == stdout
-              *  open for append == stderr
-              */
-             if (arg1 < 4) {
-                 hostfd = STDIN_FILENO;
-             } else if (arg1 < 8) {
-                 hostfd = STDOUT_FILENO;
-             } else {
-                 hostfd = STDERR_FILENO;
-             }
-             ret = alloc_guestfd();
-             associate_guestfd(ret, hostfd);
-         } else if (strcmp(s, ":semihosting-features") == 0) {
-             /* We must fail opens for modes other than 0 ('r') or 1 ('rb') */
-             if (arg1 != 0 && arg1 != 1) {
-                 ret = -1;
-                 err = EACCES;
-             } else {
-                 ret = alloc_guestfd();
-                 staticfile_guestfd(ret, featurefile_data,
-                                    sizeof(featurefile_data));
-             }
-         } else {
-             unlock_user(s, arg0, 0);
-             semihost_sys_open(cs, common_semi_cb, arg0, arg2 + 1,
-                               gdb_open_modeflags[arg1], 0644);
-             break;
-         }
-         unlock_user(s, arg0, 0);
-         common_semi_cb(cs, ret, err);
-         break;
+     if (size == 4) {
+         omap2_gpio_module_write(opaque, addr, value);
+         return;
      }
  
-     case TARGET_SYS_CLOSE:
-         GET_ARG(0);
-         semihost_sys_close(cs, common_semi_cb, arg0);
+     switch (addr & ~3) {
+     case 0x00:	/* GPIO_REVISION */
+     case 0x14:	/* GPIO_SYSSTATUS */
+     case 0x38:	/* GPIO_DATAIN */
+         OMAP_RO_REG(addr);
          break;
  
-     case TARGET_SYS_WRITEC:
-         /*
-          * FIXME: the byte to be written is in a target_ulong slot,
-          * which means this is wrong for a big-endian guest.
-          */
-         semihost_sys_write_gf(cs, common_semi_dead_cb,
-                               &console_out_gf, args, 1);
-         break;
+     case 0x10:	/* GPIO_SYSCONFIG */
+     case 0x1c:	/* GPIO_IRQENABLE1 */
+     case 0x20:	/* GPIO_WAKEUPENABLE */
+     case 0x2c:	/* GPIO_IRQENABLE2 */
+     case 0x30:	/* GPIO_CTRL */
+     case 0x34:	/* GPIO_OE */
+     case 0x3c:	/* GPIO_DATAOUT */
+     case 0x40:	/* GPIO_LEVELDETECT0 */
+     case 0x44:	/* GPIO_LEVELDETECT1 */
+     case 0x48:	/* GPIO_RISINGDETECT */
+     case 0x4c:	/* GPIO_FALLINGDETECT */
+     case 0x50:	/* GPIO_DEBOUNCENABLE */
+     case 0x54:	/* GPIO_DEBOUNCINGTIME */
+         cur = omap2_gpio_module_read(opaque, addr & ~3) &
+                 ~(mask << ((addr & 3) << 3));
  
-     case TARGET_SYS_WRITE0:
-         {
-             ssize_t len = target_strlen(args);
-             if (len < 0) {
-                 common_semi_dead_cb(cs, -1, EFAULT);
-             } else {
-                 semihost_sys_write_gf(cs, common_semi_dead_cb,
-                                       &console_out_gf, args, len);
-             }
-         }
-         break;
- 
-     case TARGET_SYS_WRITE:
-         GET_ARG(0);
-         GET_ARG(1);
-         GET_ARG(2);
-         semihost_sys_write(cs, common_semi_rw_cb, arg0, arg1, arg2);
-         break;
- 
-     case TARGET_SYS_READ:
-         GET_ARG(0);
-         GET_ARG(1);
-         GET_ARG(2);
-         semihost_sys_read(cs, common_semi_rw_cb, arg0, arg1, arg2);
-         break;
- 
-     case TARGET_SYS_READC:
-         semihost_sys_read_gf(cs, common_semi_readc_cb, &console_in_gf,
-                              common_semi_stack_bottom(cs) - 1, 1);
-         break;
- 
-     case TARGET_SYS_ISERROR:
-         GET_ARG(0);
-         common_semi_set_ret(cs, (target_long)arg0 < 0);
-         break;
- 
-     case TARGET_SYS_ISTTY:
-         GET_ARG(0);
-         semihost_sys_isatty(cs, common_semi_istty_cb, arg0);
-         break;
- 
-     case TARGET_SYS_SEEK:
-         GET_ARG(0);
-         GET_ARG(1);
-         semihost_sys_lseek(cs, common_semi_seek_cb, arg0, arg1, GDB_SEEK_SET);
-         break;
- 
-     case TARGET_SYS_FLEN:
-         GET_ARG(0);
-         semihost_sys_flen(cs, common_semi_flen_fstat_cb, common_semi_cb,
-                           arg0, common_semi_flen_buf(cs));
-         break;
- 
-     case TARGET_SYS_TMPNAM:
-     {
-         int len;
-         char *p;
- 
-         GET_ARG(0);
-         GET_ARG(1);
-         GET_ARG(2);
-         len = asprintf(&s, "%s/qemu-%x%02x", g_get_tmp_dir(),
-                        getpid(), (int)arg1 & 0xff);
-         if (len < 0) {
-             common_semi_set_ret(cs, -1);
-             break;
-         }
- 
-         /* Allow for trailing NUL */
-         len++;
-         /* Make sure there's enough space in the buffer */
-         if (len > arg2) {
-             free(s);
-             common_semi_set_ret(cs, -1);
-             break;
-         }
-         p = lock_user(VERIFY_WRITE, arg0, len, 0);
-         if (!p) {
-             free(s);
-             goto do_fault;
-         }
-         memcpy(p, s, len);
-         unlock_user(p, arg0, len);
-         free(s);
-         common_semi_set_ret(cs, 0);
-         break;
-     }
- 
-     case TARGET_SYS_REMOVE:
-         GET_ARG(0);
-         GET_ARG(1);
-         semihost_sys_remove(cs, common_semi_cb, arg0, arg1 + 1);
-         break;
- 
-     case TARGET_SYS_RENAME:
-         GET_ARG(0);
-         GET_ARG(1);
-         GET_ARG(2);
-         GET_ARG(3);
-         semihost_sys_rename(cs, common_semi_cb, arg0, arg1 + 1, arg2, arg3 + 1);
-         break;
- 
-     case TARGET_SYS_CLOCK:
-         common_semi_set_ret(cs, clock() / (CLOCKS_PER_SEC / 100));
-         break;
- 
-     case TARGET_SYS_TIME:
-         ul_ret = time(NULL);
-         common_semi_cb(cs, ul_ret, ul_ret == -1 ? errno : 0);
-         break;
- 
-     case TARGET_SYS_SYSTEM:
-         GET_ARG(0);
-         GET_ARG(1);
-         semihost_sys_system(cs, common_semi_cb, arg0, arg1 + 1);
-         break;
- 
-     case TARGET_SYS_ERRNO:
-         common_semi_set_ret(cs, get_swi_errno(cs));
-         break;
- 
-     case TARGET_SYS_GET_CMDLINE:
-         {
-             /* Build a command-line from the original argv.
-              *
-              * The inputs are:
-              *     * arg0, pointer to a buffer of at least the size
-              *               specified in arg1.
-              *     * arg1, size of the buffer pointed to by arg0 in
-              *               bytes.
-              *
-              * The outputs are:
-              *     * arg0, pointer to null-terminated string of the
-              *               command line.
-              *     * arg1, length of the string pointed to by arg0.
-              */
- 
-             char *output_buffer;
-             size_t input_size;
-             size_t output_size;
-             int status = 0;
- #if !defined(CONFIG_USER_ONLY)
-             const char *cmdline;
- #else
-             TaskState *ts = cs->opaque;
- #endif
-             GET_ARG(0);
-             GET_ARG(1);
-             input_size = arg1;
-             /* Compute the size of the output string.  */
- #if !defined(CONFIG_USER_ONLY)
-             cmdline = semihosting_get_cmdline();
-             if (cmdline == NULL) {
-                 cmdline = ""; /* Default to an empty line. */
-             }
-             output_size = strlen(cmdline) + 1; /* Count terminating 0. */
- #else
-             unsigned int i;
- 
-             output_size = ts->info->env_strings - ts->info->arg_strings;
-             if (!output_size) {
-                 /*
-                  * We special-case the "empty command line" case (argc==0).
-                  * Just provide the terminating 0.
-                  */
-                 output_size = 1;
-             }
- #endif
- 
-             if (output_size > input_size) {
-                 /* Not enough space to store command-line arguments.  */
-                 common_semi_cb(cs, -1, E2BIG);
-                 break;
-             }
- 
-             /* Adjust the command-line length.  */
-             if (SET_ARG(1, output_size - 1)) {
-                 /* Couldn't write back to argument block */
-                 goto do_fault;
-             }
- 
-             /* Lock the buffer on the ARM side.  */
-             output_buffer = lock_user(VERIFY_WRITE, arg0, output_size, 0);
-             if (!output_buffer) {
-                 goto do_fault;
-             }
- 
-             /* Copy the command-line arguments.  */
- #if !defined(CONFIG_USER_ONLY)
-             pstrcpy(output_buffer, output_size, cmdline);
- #else
-             if (output_size == 1) {
-                 /* Empty command-line.  */
-                 output_buffer[0] = '\0';
-                 goto out;
-             }
- 
-             if (copy_from_user(output_buffer, ts->info->arg_strings,
-                                output_size)) {
-                 unlock_user(output_buffer, arg0, 0);
-                 goto do_fault;
-             }
- 
-             /* Separate arguments by white spaces.  */
-             for (i = 0; i < output_size - 1; i++) {
-                 if (output_buffer[i] == 0) {
-                     output_buffer[i] = ' ';
-                 }
-             }
-         out:
- #endif
-             /* Unlock the buffer on the ARM side.  */
-             unlock_user(output_buffer, arg0, output_size);
-             common_semi_cb(cs, status, 0);
-         }
-         break;
- 
-     case TARGET_SYS_HEAPINFO:
-         {
-             target_ulong retvals[4];
-             int i;
- #ifdef CONFIG_USER_ONLY
-             TaskState *ts = cs->opaque;
-             target_ulong limit;
- #else
-             LayoutInfo info = common_semi_find_bases(cs);
- #endif
- 
-             GET_ARG(0);
- 
- #ifdef CONFIG_USER_ONLY
-             /*
-              * Some C libraries assume the heap immediately follows .bss, so
-              * allocate it using sbrk.
-              */
-             if (!ts->heap_limit) {
-                 abi_ulong ret;
- 
-                 ts->heap_base = do_brk(0);
-                 limit = ts->heap_base + COMMON_SEMI_HEAP_SIZE;
-                 /* Try a big heap, and reduce the size if that fails.  */
-                 for (;;) {
-                     ret = do_brk(limit);
-                     if (ret >= limit) {
-                         break;
-                     }
-                     limit = (ts->heap_base >> 1) + (limit >> 1);
-                 }
-                 ts->heap_limit = limit;
-             }
- 
-             retvals[0] = ts->heap_base;
-             retvals[1] = ts->heap_limit;
-             retvals[2] = ts->stack_base;
-             retvals[3] = 0; /* Stack limit.  */
- #else
-             retvals[0] = info.heapbase;  /* Heap Base */
-             retvals[1] = info.heaplimit; /* Heap Limit */
-             retvals[2] = info.heaplimit; /* Stack base */
-             retvals[3] = info.heapbase;  /* Stack limit.  */
- #endif
- 
-             for (i = 0; i < ARRAY_SIZE(retvals); i++) {
-                 bool fail;
- 
-                 if (is_64bit_semihosting(env)) {
-                     fail = put_user_u64(retvals[i], arg0 + i * 8);
-                 } else {
-                     fail = put_user_u32(retvals[i], arg0 + i * 4);
-                 }
- 
-                 if (fail) {
-                     /* Couldn't write back to argument block */
-                     goto do_fault;
-                 }
-             }
-             common_semi_set_ret(cs, 0);
-         }
-         break;
- 
-     case TARGET_SYS_EXIT:
-     case TARGET_SYS_EXIT_EXTENDED:
-     {
-         uint32_t ret;
- 
-         if (common_semi_sys_exit_extended(cs, nr)) {
-             /*
-              * The A64 version of SYS_EXIT takes a parameter block,
-              * so the application-exit type can return a subcode which
-              * is the exit status code from the application.
-              * SYS_EXIT_EXTENDED is an a new-in-v2.0 optional function
-              * which allows A32/T32 guests to also provide a status code.
-              */
-             GET_ARG(0);
-             GET_ARG(1);
- 
-             if (arg0 == ADP_Stopped_ApplicationExit) {
-                 ret = arg1;
-             } else {
-                 ret = 1;
-             }
-         } else {
-             /*
-              * The A32/T32 version of SYS_EXIT specifies only
-              * Stopped_ApplicationExit as normal exit, but does not
-              * allow the guest to specify the exit status code.
-              * Everything else is considered an error.
-              */
-             ret = (args == ADP_Stopped_ApplicationExit) ? 0 : 1;
-         }
-         gdb_exit(ret);
-         exit(ret);
-     }
- 
-     case TARGET_SYS_ELAPSED:
-         elapsed = get_clock() - clock_start;
-         if (sizeof(target_ulong) == 8) {
-             if (SET_ARG(0, elapsed)) {
-                 goto do_fault;
-             }
-         } else {
-             if (SET_ARG(0, (uint32_t) elapsed) ||
-                 SET_ARG(1, (uint32_t) (elapsed >> 32))) {
-                 goto do_fault;
-             }
-         }
-         common_semi_set_ret(cs, 0);
-         break;
- 
-     case TARGET_SYS_TICKFREQ:
-         /* qemu always uses nsec */
-         common_semi_set_ret(cs, 1000000000);
-         break;
- 
-     case TARGET_SYS_SYNCCACHE:
-         /*
-          * Clean the D-cache and invalidate the I-cache for the specified
-          * virtual address range. This is a nop for us since we don't
-          * implement caches. This is only present on A64.
-          */
-         if (common_semi_has_synccache(env)) {
-             common_semi_set_ret(cs, 0);
-             break;
-         }
--        /* fall through */
+-        /* Fall through.  */
 +        fallthrough;
-     default:
-         fprintf(stderr, "qemu: Unsupported SemiHosting SWI 0x%02x\n", nr);
-         cpu_dump_state(cs, stderr, 0);
-         abort();
- 
-     do_fault:
-         common_semi_cb(cs, -1, EFAULT);
+     case 0x18:	/* GPIO_IRQSTATUS1 */
+     case 0x28:	/* GPIO_IRQSTATUS2 */
+     case 0x60:	/* GPIO_CLEARIRQENABLE1 */
+     case 0x64:	/* GPIO_SETIRQENABLE1 */
+     case 0x70:	/* GPIO_CLEARIRQENABLE2 */
+     case 0x74:	/* GPIO_SETIREQNEABLE2 */
+     case 0x80:	/* GPIO_CLEARWKUENA */
+     case 0x84:	/* GPIO_SETWKUENA */
+     case 0x90:	/* GPIO_CLEARDATAOUT */
+     case 0x94:	/* GPIO_SETDATAOUT */
+         value <<= (addr & 3) << 3;
+         omap2_gpio_module_write(opaque, addr, cur | value);
          break;
+ 
+     default:
+         OMAP_BAD_REG(addr);
+         return;
      }
+ }
+diff --git a/hw/i2c/bitbang_i2c.c b/hw/i2c/bitbang_i2c.c
+index de5f5aacf5..3d768ae564 100644
+--- a/hw/i2c/bitbang_i2c.c
++++ b/hw/i2c/bitbang_i2c.c
+@@ -79,99 +79,99 @@ static int bitbang_i2c_nop(bitbang_i2c_interface *i2c)
+ /* Returns data line level.  */
+ int bitbang_i2c_set(bitbang_i2c_interface *i2c, int line, int level)
+ {
+     int data;
+ 
+     if (level != 0 && level != 1) {
+         abort();
+     }
+ 
+     if (line == BITBANG_I2C_SDA) {
+         if (level == i2c->last_data) {
+             return bitbang_i2c_nop(i2c);
+         }
+         i2c->last_data = level;
+         if (i2c->last_clock == 0) {
+             return bitbang_i2c_nop(i2c);
+         }
+         if (level == 0) {
+             /* START condition.  */
+             bitbang_i2c_set_state(i2c, SENDING_BIT7);
+             i2c->current_addr = -1;
+         } else {
+             /* STOP condition.  */
+             bitbang_i2c_enter_stop(i2c);
+         }
+         return bitbang_i2c_ret(i2c, 1);
+     }
+ 
+     data = i2c->last_data;
+     if (i2c->last_clock == level) {
+         return bitbang_i2c_nop(i2c);
+     }
+     i2c->last_clock = level;
+     if (level == 0) {
+         /* State is set/read at the start of the clock pulse.
+            release the data line at the end.  */
+         return bitbang_i2c_ret(i2c, 1);
+     }
+     switch (i2c->state) {
+     case STOPPED:
+     case SENT_NACK:
+         return bitbang_i2c_ret(i2c, 1);
+ 
+     case SENDING_BIT7 ... SENDING_BIT0:
+         i2c->buffer = (i2c->buffer << 1) | data;
+         /* will end up in WAITING_FOR_ACK */
+         bitbang_i2c_set_state(i2c, i2c->state + 1);
+         return bitbang_i2c_ret(i2c, 1);
+ 
+     case WAITING_FOR_ACK:
+     {
+         int ret;
+ 
+         if (i2c->current_addr < 0) {
+             i2c->current_addr = i2c->buffer;
+             trace_bitbang_i2c_addr(i2c->current_addr);
+             ret = i2c_start_transfer(i2c->bus, i2c->current_addr >> 1,
+                                      i2c->current_addr & 1);
+         } else {
+             trace_bitbang_i2c_send(i2c->buffer);
+             ret = i2c_send(i2c->bus, i2c->buffer);
+         }
+         if (ret) {
+             /* NACK (either addressing a nonexistent device, or the
+              * device we were sending to decided to NACK us).
+              */
+             bitbang_i2c_set_state(i2c, SENT_NACK);
+             bitbang_i2c_enter_stop(i2c);
+             return bitbang_i2c_ret(i2c, 1);
+         }
+         if (i2c->current_addr & 1) {
+             bitbang_i2c_set_state(i2c, RECEIVING_BIT7);
+         } else {
+             bitbang_i2c_set_state(i2c, SENDING_BIT7);
+         }
+         return bitbang_i2c_ret(i2c, 0);
+     }
+     case RECEIVING_BIT7:
+         i2c->buffer = i2c_recv(i2c->bus);
+         trace_bitbang_i2c_recv(i2c->buffer);
+-        /* Fall through... */
++        fallthrough;
+     case RECEIVING_BIT6 ... RECEIVING_BIT0:
+         data = i2c->buffer >> 7;
+         /* will end up in SENDING_ACK */
+         bitbang_i2c_set_state(i2c, i2c->state + 1);
+         i2c->buffer <<= 1;
+         return bitbang_i2c_ret(i2c, data);
+ 
+     case SENDING_ACK:
+         if (data != 0) {
+             bitbang_i2c_set_state(i2c, SENT_NACK);
+             i2c_nack(i2c->bus);
+         } else {
+             bitbang_i2c_set_state(i2c, RECEIVING_BIT7);
+         }
+         return bitbang_i2c_ret(i2c, 1);
+     }
+     abort();
  }
 -- 
 2.39.2
