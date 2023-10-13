@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDB27C80DF
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EA87C80D3
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqE-000877-T7; Fri, 13 Oct 2023 04:48:18 -0400
+	id 1qrDqC-00084p-9S; Fri, 13 Oct 2023 04:48:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpo-0007dr-9v
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:52 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1qrDpq-0007fh-8K
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:54 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpd-0000pS-Oi
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:50 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50435ad51bbso2376125e87.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:41 -0700 (PDT)
+ id 1qrDpl-0000pf-Vi
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:54 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-32799639a2aso1705878f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186860; x=1697791660; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186861; x=1697791661; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8Sb0AkXc3iSRCYbmQ6GfBzID/AYMY87FUGFWi3MqqMQ=;
- b=Gd5tVcG3+6YY+EXRHgN21ofKvRVl9Icu99AupvwpfugVxFIt22MyqG+y5DuLOecSPz
- KdlL4pWTfF1la66qnbslOWKfd7vv/VYrzDr3nZfSko5bam8EfBFVTTNN/4XCJYePywg2
- QTu1qfGw6qdght64PcYYVnukcej5xPMkGG4YX5AyxMBOmJVOoXjhmgTWMh6TFkNSVhww
- pVRsGG+ZMxzcJGokc6gzX931fsc9bbvEs6a0Tedbbn5/OMGYxZa3xwB6xQrjjCJFH7Kn
- fsjdxJ63p9zztoznmDEOBDs2V0bubxnJBvpyUR9+aw/y1IAJczWOeiAN7j2JF6NHsXE1
- NVNQ==
+ bh=rYpwtOT4w+/NrTAyVuKrG5FHgvewvVOKRsjD0G9Vf1E=;
+ b=Qqzoc8HzBe9B3ROigNqdMm292290TbepxXyB5zgkSisgZs0ndhueHf3G9sIsZflh4k
+ XyWkpB9wtlveSRrEunpZZuC26+oF178aYlVxNuBrAOjP3xWuR/VP6cwwxpyzJQzgs+1C
+ EQDt+QcYljA+0OYLx2QEUc5mXIIqzpTGYXtz4jOrq1SmVXiL/WlTw9PFmhkM8iaewA03
+ bfCHTP1waiPgN3p1AGtDS43ZusZTvE+sA9ulsN0HFu9XtcenwMaEu0LnfEXGQjoGw61g
+ lBDXq7zalDqhYjMbHJvnduEYefSSptarN0hvujtmiy5k9ahBH1eGICyIoHhu49yn7Dcp
+ nVqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186860; x=1697791660;
+ d=1e100.net; s=20230601; t=1697186861; x=1697791661;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8Sb0AkXc3iSRCYbmQ6GfBzID/AYMY87FUGFWi3MqqMQ=;
- b=Y1KoZlyWx/12uRcCwG6mNeAOB7kBWvwqLqeyArlI5s5PWa49BdA2lCaPSNlBF1g9LY
- NRyANF90Ufz8J/2kT5gyDuDbAfdXwsWR82IWMOOur0ht17Ehkzhta/33HXQqsW7UWz+E
- AzN2Q9MRUz0ttf9XRMJEtZGTMFknb9arHrqG6J+QFWY6LOTP1rbDMAJOgoPsKR885aa1
- 1+0O+Rp1Eb5/p+BSmrhsmgEyJV6UAeBrIlMyLINSe9ZgEqrjfq+BKlsfn6cRUHImGu0r
- 98pnCxFZ4TtPkloiKfpYbXaN44ivxlRANJ2zSfHzdMZR2RCt5h3zYvzXQXVWrPQ9jF+a
- wRww==
-X-Gm-Message-State: AOJu0YxrspEl0h4Z0YuxOCU2yqSWHg4Hq01258bSx13AjCXxvAribRPU
- d0DOPUQp6Y1kmRYboAX/2Y82/5DsCsgmr2pUJzU=
-X-Google-Smtp-Source: AGHT+IGHM5zPuHmLG9VcbCu7Wq1Aza2blTzXbcC2q6zQRsuXQ0k3mE4t2q8D81D4kdIIek7w6tfyWw==
-X-Received: by 2002:a05:6512:1154:b0:505:6cc7:e0f7 with SMTP id
- m20-20020a056512115400b005056cc7e0f7mr26801205lfg.44.1697186859923; 
- Fri, 13 Oct 2023 01:47:39 -0700 (PDT)
+ bh=rYpwtOT4w+/NrTAyVuKrG5FHgvewvVOKRsjD0G9Vf1E=;
+ b=Lu7PGZtvIXcnpWktbTBIwkDL93vEpLEOYTfPs8FE7qxTad5Z+OZoMefeqyRBOngwbU
+ vzz4M6R3FhHWCdGBKXh4ruRLK1oV/zFYf/LZqofnGJdQrWP6AV014rYqnkbuFbqBGN9Y
+ RiXOT0wjMwaxqE03wZ/YnvnnW1pCOCm1SuqXF1riH3NIPmJ5RsN8q2Nt3xv1+lU+H8SN
+ VFtCn+l1++wQqm2wjtrxw+gAtf4XEFeyWq1gm77gmV6TVWZDt+B5B6A0kUeEM10to19K
+ Aut7x44AFwz4+aFnpMOPIM90G93EJ+tidYmp4njxizZEFQ1J+9JnV9dj0f5rb0CeG+ue
+ kmWA==
+X-Gm-Message-State: AOJu0Ywb8t2fMH/6MuQoE/FvuGrLGrpUloEbu25Wu+g1TBQa90uhiTsV
+ Utl3XBYFYNRUcHX4Z3tzYnfBYlkfEOSt+sjg3+4=
+X-Google-Smtp-Source: AGHT+IE3Tv8b4E1NVZKnVENx2ix834qD7w3JQv+BiA2ZOlm93gda4lEcpU8HhPeZIv2CPFSNyDh79g==
+X-Received: by 2002:adf:e187:0:b0:32d:89ca:1761 with SMTP id
+ az7-20020adfe187000000b0032d89ca1761mr5631589wrb.43.1697186861583; 
+ Fri, 13 Oct 2023 01:47:41 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.38
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:47:39 -0700 (PDT)
+ Fri, 13 Oct 2023 01:47:41 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [RFC PATCH v3 15/78] accel/tcg: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:45:43 +0300
-Message-Id: <40e1a5781ec924302f09c279707c97615d7cb23b.1697186560.git.manos.pitsidianakis@linaro.org>
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>
+Subject: [RFC PATCH v3 16/78] audio: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:45:44 +0300
+Message-Id: <ddf0cdc499d6de6cbffad0575065c799eeb693fe.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,59 +99,115 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- accel/tcg/cputlb.c             | 4 ++--
- accel/tcg/ldst_atomicity.c.inc | 2 +-
- accel/tcg/plugin-gen.c         | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ audio/audio.c     | 16 ++++++++--------
+ audio/jackaudio.c |  4 ++--
+ audio/pwaudio.c   |  4 ++--
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index b8c5e345b8..92b7ab529a 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2244,7 +2244,7 @@ static uint64_t do_ld_beN(CPUState *cpu, MMULookupPageData *p,
-                 return do_ld_whole_be8(cpu, ra, p, ret_be);
-             }
-         }
+diff --git a/audio/audio.c b/audio/audio.c
+index e9815d6812..ed7c795af7 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -250,23 +250,23 @@ static int audio_pcm_info_eq (struct audio_pcm_info *info, struct audsettings *a
+     switch (as->fmt) {
+     case AUDIO_FORMAT_S8:
+         is_signed = true;
 -        /* fall through */
 +        fallthrough;
+     case AUDIO_FORMAT_U8:
+         break;
  
-     case MO_ATOM_IFALIGN:
-     case MO_ATOM_WITHIN16:
-@@ -2664,7 +2664,7 @@ static uint64_t do_st_leN(CPUState *cpu, MMULookupPageData *p,
-                 cpu_loop_exit_atomic(cpu, ra);
-             }
-         }
+     case AUDIO_FORMAT_S16:
+         is_signed = true;
 -        /* fall through */
 +        fallthrough;
+     case AUDIO_FORMAT_U16:
+         bits = 16;
+         break;
  
-     case MO_ATOM_IFALIGN:
-     case MO_ATOM_WITHIN16:
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index 1cf5b92166..3752f74214 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -41,7 +41,7 @@ static int required_atomicity(CPUState *cpu, uintptr_t p, MemOp memop)
- 
-     case MO_ATOM_IFALIGN_PAIR:
-         size = half;
+     case AUDIO_FORMAT_F32:
+         is_float = true;
 -        /* fall through */
 +        fallthrough;
- 
-     case MO_ATOM_IFALIGN:
-         tmp = (1 << size) - 1;
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index d31c9993ea..ba9a8c8789 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -190,7 +190,7 @@ static void plugin_gen_empty_callback(enum plugin_gen_from from)
-          */
-         gen_wrapped(from, PLUGIN_GEN_ENABLE_MEM_HELPER,
-                     gen_empty_mem_helper);
+     case AUDIO_FORMAT_S32:
+         is_signed = true;
 -        /* fall through */
 +        fallthrough;
-     case PLUGIN_GEN_FROM_TB:
-         gen_wrapped(from, PLUGIN_GEN_CB_UDATA, gen_empty_udata_cb);
-         gen_wrapped(from, PLUGIN_GEN_CB_INLINE, gen_empty_inline_cb);
+     case AUDIO_FORMAT_U32:
+         bits = 32;
+         break;
+@@ -290,14 +290,14 @@ void audio_pcm_init_info (struct audio_pcm_info *info, struct audsettings *as)
+     switch (as->fmt) {
+     case AUDIO_FORMAT_S8:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U8:
+         mul = 1;
+         break;
+ 
+     case AUDIO_FORMAT_S16:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U16:
+         bits = 16;
+         mul = 2;
+@@ -305,10 +305,10 @@ void audio_pcm_init_info (struct audio_pcm_info *info, struct audsettings *as)
+ 
+     case AUDIO_FORMAT_F32:
+         is_float = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_S32:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U32:
+         bits = 32;
+         mul = 4;
+diff --git a/audio/jackaudio.c b/audio/jackaudio.c
+index 974a3caad3..fc602411cd 100644
+--- a/audio/jackaudio.c
++++ b/audio/jackaudio.c
+@@ -576,7 +576,7 @@ static void qjack_client_fini_locked(QJackClient *c)
+     switch (c->state) {
+     case QJACK_STATE_RUNNING:
+         jack_deactivate(c->client);
+-        /* fallthrough */
++        fallthrough;
+ 
+     case QJACK_STATE_SHUTDOWN:
+         jack_client_close(c->client);
+@@ -587,7 +587,7 @@ static void qjack_client_fini_locked(QJackClient *c)
+         g_free(c->process_buffers);
+ 
+         c->state = QJACK_STATE_DISCONNECTED;
+-        /* fallthrough */
++        fallthrough;
+ 
+     case QJACK_STATE_DISCONNECTED:
+         break;
+diff --git a/audio/pwaudio.c b/audio/pwaudio.c
+index bf26fadb06..89b31617a6 100644
+--- a/audio/pwaudio.c
++++ b/audio/pwaudio.c
+@@ -497,13 +497,13 @@ qpw_set_position(uint32_t channels, uint32_t position[SPA_AUDIO_MAX_CHANNELS])
+     case 8:
+         position[6] = SPA_AUDIO_CHANNEL_SL;
+         position[7] = SPA_AUDIO_CHANNEL_SR;
+-        /* fallthrough */
++        fallthrough;
+     case 6:
+         position[2] = SPA_AUDIO_CHANNEL_FC;
+         position[3] = SPA_AUDIO_CHANNEL_LFE;
+         position[4] = SPA_AUDIO_CHANNEL_RL;
+         position[5] = SPA_AUDIO_CHANNEL_RR;
+-        /* fallthrough */
++        fallthrough;
+     case 2:
+         position[0] = SPA_AUDIO_CHANNEL_FL;
+         position[1] = SPA_AUDIO_CHANNEL_FR;
 -- 
 2.39.2
 
