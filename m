@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DAC7C8721
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52FD17C873C
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:54:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrITf-0004FK-Tx; Fri, 13 Oct 2023 09:45:19 -0400
+	id 1qrIbK-0000I8-8d; Fri, 13 Oct 2023 09:53:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrITY-00045c-W2
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:45:15 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qrIb2-0000BL-NC
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:53:03 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrITX-0006DP-ET
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:45:12 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c8a6aa0cd1so17260105ad.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:45:11 -0700 (PDT)
+ id 1qrIas-0007h0-5f
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:52:47 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1c737d61a00so18026255ad.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:52:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697204710; x=1697809510; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697205164; x=1697809964; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=+1xel1i75QhNewR32I7YorOIZNVqIQBedrKE82mS/EQ=;
- b=HnXGoVq1eo4NXaXS+n9LtNUV69vPieCIALn61o97US3DxlojmvS2m+LLZZ0iRefF8a
- sFXhxk1Fcli2fSUClqa5872/P/AEfwQj/D1So4MAjxX+50THJKE6Z2v/j6O79MaIyUGh
- 4SHQkCaas878mYU+lIzc/7thj1Xz1tUC2zBAKP7jcetbYBIyohIyFls10LbJEJuC+7dU
- Vjf3v+KADGyopYVSU4w+H+iNOGjvMqEb8vv4/tKqQYWDujDbkOaziwUNGPlqCHMA0o1f
- K274+CmyYEgAPrRtHARsyvck/rA+bXwFHDKzUtrS5kRwMWd18+EPw/1RebNGZ/i27jdk
- rsig==
+ bh=RVAPBrtqnHNfBh8ZDVxlLhAVG7ZyA4mRHaMgvi6tUwI=;
+ b=jBv/WpdRo34v/SbHhc8bPkow80hAxbHY8K72XzO3D2mtob1/7ceNRtFyUQ71A7xiTr
+ jwTkW0yeyoQhXO0WUj7osKObCbEbQ99et5ggr/t/mWa+Od2LqW8AkPIllnJadRbi74Qr
+ NnaENqRrmHFpV6fk5Xr/+QJypffaw7lBbK5uUK5vHM4C0t0vB8/7GKuxnKxafJA3RMNE
+ L2OebHVDn3yaaBkI4+qQtO7TWoWmw6CEqY/EV467lLA/Cfb8Sebd6a4+tGBJGCWfxtbF
+ pLbFMUcdrbYp5s2GyE98/OyufMlVrq70FyLYJ6lT9kHTzOP5aiK+AizSpiXRfx8V0H4w
+ Gjzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697204710; x=1697809510;
+ d=1e100.net; s=20230601; t=1697205164; x=1697809964;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+1xel1i75QhNewR32I7YorOIZNVqIQBedrKE82mS/EQ=;
- b=t4n2PxrwHXnet9bdFIdr3KUKlAc2QJE71bIzm4YoiEuVEIcKKifRctukxqEk6tVbpi
- DRgHxS1hkn7DCyKsuOp+hxsqY7+Xt4BMjdB74GJNuN2swuRUR2EI7ZNoYL99do1+np6z
- p9PL0466BfU3Dfmc3P05r1nRMe99Fqxg06+7eGfocZfHN5wMoxM1NdS9HyQXBuGXoeas
- dzZ4T1lVJysSRTziN10+4bwAU2gPt6Z59UvhIhAnLWcS/Taec3qUZCFuspPuHyF6s52G
- RF0hoqggYcA8B0IOi9NzAzODkPaIy9bjB0389NIeSxCpWaUxGrR6uf9vrV4/FF/z+TbP
- 3koQ==
-X-Gm-Message-State: AOJu0Yz2U5/e53PUKp+wbkjhlDl3e+QgbX7NwLqAsDgBeRZCMkgVx9bR
- P9OGQDxSMWYa/wR/of4HZWyznuENTjnWAENz5h8=
-X-Google-Smtp-Source: AGHT+IGuKPBMNjzvHlh10ZWuUkqc73agxE+cZcaT2XviGCtRw+Jv6e4KgQj330Itxr5narLeHzkrpg==
-X-Received: by 2002:a17:902:bf49:b0:1c6:112f:5d02 with SMTP id
- u9-20020a170902bf4900b001c6112f5d02mr21969821pls.55.1697204710017; 
- Fri, 13 Oct 2023 06:45:10 -0700 (PDT)
+ bh=RVAPBrtqnHNfBh8ZDVxlLhAVG7ZyA4mRHaMgvi6tUwI=;
+ b=BjpkmYFwTX/ANA8SRAF+Z4BapTtlFSJDFA90NN30+ACnrMRP4uOJJi9fL01QI1ZVBt
+ VDF1pZoF2avuFroWsR7qDtXUVsc70xDtF+J9Jf3Km+XB3whbcxI60k8etdyYyIyu6zwd
+ VBn+A4LlW3ohIOnkg6COITLgzkzmJ1SBOEDix7S7uFMn/nBoACjH9GiN9Rc7eLtQh5BG
+ RXMkJcnDn5QGHR0caksCA7hIJb3/LZr5jN+AixvkfkQ/JsJQeSq57W7GxyNDGKvOe+vG
+ ykNenE7PtLqNUqTfzjEJzJK6XgKjpOZjGXt3ZvCUdlT6e3wgYkZmTyTratqnW96XlStH
+ 3g4A==
+X-Gm-Message-State: AOJu0YyzKPjw2+NP7ZWEHOvm3tFU3LA3/nyYWCwfwRbPzg3rbOMU0NQQ
+ 5gbLXKp8SwhGw6orJh4fXozgO2oV2rOqaKqf3Lc=
+X-Google-Smtp-Source: AGHT+IHKNIxmeSAb4+unO8Wr7K8CEAazGOu+Up8/wkZstmSdCE2ilRl65M7qgtg2z0BBnT1VFMCVJw==
+X-Received: by 2002:a17:903:28c5:b0:1ca:abe:a08b with SMTP id
+ kv5-20020a17090328c500b001ca0abea08bmr876567plb.68.1697205164153; 
+ Fri, 13 Oct 2023 06:52:44 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- jh10-20020a170903328a00b001bdb85291casm3905528plb.208.2023.10.13.06.45.09
+ jh10-20020a170903328a00b001bdb85291casm3918320plb.208.2023.10.13.06.52.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 06:45:09 -0700 (PDT)
-Message-ID: <597ac58b-d601-47b8-abd2-733f254a6eb9@linaro.org>
-Date: Fri, 13 Oct 2023 06:45:08 -0700
+ Fri, 13 Oct 2023 06:52:43 -0700 (PDT)
+Message-ID: <a4f64040-9812-40b2-9287-0c971b4bec4d@linaro.org>
+Date: Fri, 13 Oct 2023 06:52:41 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] target/ppc: Move powerpc_input_t definition to 'cpu.h'
+Subject: Re: [RFC PATCH v3 00/78] Strict disable implicit fallthrough
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
  qemu-devel@nongnu.org
-References: <20231013125630.95116-1-philmd@linaro.org>
- <20231013125630.95116-8-philmd@linaro.org>
+References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231013125630.95116-8-philmd@linaro.org>
+In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,17 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/13/23 05:56, Philippe Mathieu-Daudé wrote:
-> The powerpc_input_t definition is only used by target/ppc/, no need
-> to expose it. Restrict it by moving it to "target/ppc/cpu.h".
+On 10/13/23 01:45, Emmanouil Pitsidianakis wrote:
+> --
+> Resending because --function-context was accidentally used in the
+> previous version. Sincere apologies for the noise.
+> --
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/ppc/cpu-qom.h | 21 ---------------------
->   target/ppc/cpu.h     | 20 ++++++++++++++++++++
->   2 files changed, 20 insertions(+), 21 deletions(-)
+> Hello,
+> 
+> This RFC is inspired by the kernel's move to -Wimplicit-fallthrough=3
+> back in 2019.[0]
+> We take one step (or two) further by increasing it to 5 which rejects
+> fall through comments and requires an attribute statement.
+> 
+> [0]:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a035d552a93b
+> 
+> The line differences are not many, but they spread all over different
+> subsystems, architectures and devices. An attempt has been made to split
+> them in cohesive patches to aid post-RFC review. Part of the RFC is to
+> determine whether these patch divisions needs improvement.
+> 
+> Main questions this RFC poses
+> =============================
+> 
+> - Is this change desirable and net-positive.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Did this catch any new problems?  If not, I really don't see the benefit.
+The compiler comment matching appears to be sufficient.
 
 
 r~
