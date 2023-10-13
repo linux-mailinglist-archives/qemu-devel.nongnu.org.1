@@ -2,132 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3049E7C8299
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:55:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E11D87C82EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 12:23:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrEsA-0001Hv-Nv; Fri, 13 Oct 2023 05:54:22 -0400
+	id 1qrFIz-0002g2-0s; Fri, 13 Oct 2023 06:22:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1qrEs8-0001HZ-9v; Fri, 13 Oct 2023 05:54:20 -0400
-Received: from mail-he1eur04on072a.outbound.protection.outlook.com
- ([2a01:111:f400:fe0d::72a]
- helo=EUR04-HE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qrFIt-0002NV-RJ; Fri, 13 Oct 2023 06:22:00 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1qrEs4-0003sP-3Y; Fri, 13 Oct 2023 05:54:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V+joKkVTUOAiYHjTzOSv99W8XLp8b8WQgWNwJvc7MG1Wmd4Fa9aR625UxWueivir9aRI9r/saRC71ql/DL6WskWyTyqwBl7m65ZI2NjVt4Q0GXtippiEl7h8914vUxbMqB2dxOv34yH4nEuwo/20ik1a8jAihYlltcMsnsmctr7ikB3+kGvOfFiBQno44PEmT4M4o4VynLkBJKjTDF/TgX0YJp1T27koEpzYHUPaHxKFFafbl5orqmpqbyEFzkv2A/FOOGjSdSbZFXJwV64bPmHwX+9Uo2vCdTSyOgMtV34LQ7oZRIbDA5y83/jKy4T/+SP9TddvLTz2hdRjH0h8AA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J/6hTGJ3sFnSL3x6aY2v89auXKS08HJRJPsZ0qXvLZI=;
- b=Un4EfH6P8FHGlxyHSklMAFXlHXJydy5H8zk41qM7FfDfEXKiW+rHEbaz35OBSibDDggcL1i/sG5c2F7EUkmglBd4BF97kbW389bj7uHji6/ri9yJR7W+LI8jSaoXMTaTw3w2iF0rg5xpIWMr2n1J6uH3KLGzOboFELcAFkRd8B5xsU6Ll25g3E29PV85BNnQKtX3AlXoReSTRHpEQu7KBiU+ucNicxL539jgJXhzTiavKPJs5WVXS5hxdN5y2FRf1LSM1PMD5t1a2nsiiKMQLkBdfVX9uMQ7RgWD41U7pn4orZ5jguM4UBgOr0CLwE8Fd5ZECtvlSbvgk96nLvatNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J/6hTGJ3sFnSL3x6aY2v89auXKS08HJRJPsZ0qXvLZI=;
- b=rizT10KKJgIQ9PByhm3/wr0SCxStWMX4fdzi1eR9ud+VqAje5mutuvXiJ8SHjTQYJtMZ/n8bZhGfhgyvb8+bZ6OZlCEsgDD5O97kksyARoSPT6ZwmHEwtpvFp59Dic3ouo+f/c/27Vfgdt5YzvJb7zcSmmDmOUweVjz0e1HaEDC5eDgcA9WclPcRYyJFUKjrr8kX+8SWu1rZqe6GpceqxE9KmIbXHu0fGyJ3WMVC0fhFsLDJx69eIRN9yMk93drSUwoRBVzRW49+rrp9nJN0BRJXlz9Y05sgDyKJg7u2tgUZ8aYyjoqmV94KR/toud4Xa1tzfddKHDevLAzpJ0Ayag==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by PAXPR08MB7575.eurprd08.prod.outlook.com (2603:10a6:102:23d::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.41; Fri, 13 Oct
- 2023 09:54:09 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::d1ec:5324:a321:be0e]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::d1ec:5324:a321:be0e%4]) with mapi id 15.20.6863.046; Fri, 13 Oct 2023
- 09:54:09 +0000
-Message-ID: <a5845b75-941a-4a61-a295-900609635096@virtuozzo.com>
-Date: Fri, 13 Oct 2023 11:54:05 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] block: improve alignment detection and fix 271 test
-To: "Denis V. Lunev" <den@openvz.org>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org
-Cc: Nir Soffer <nirsof@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Alberto Garcia <berto@igalia.com>
-References: <20230907215326.367847-1-den@openvz.org>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qrFIr-0001Lb-0U; Fri, 13 Oct 2023 06:21:59 -0400
+Received: from lhrpeml500002.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S6Mx24PHcz688p7;
+ Fri, 13 Oct 2023 18:21:26 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500002.china.huawei.com (7.191.160.78) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Fri, 13 Oct 2023 11:21:49 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Fri, 13 Oct 2023 11:21:49 +0100
+To: lixianglai <lixianglai@loongson.cn>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
+ <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V5 0/9] Add architecture agnostic code to support vCPU
+ Hotplug
+Thread-Topic: [PATCH V5 0/9] Add architecture agnostic code to support vCPU
+ Hotplug
+Thread-Index: AQHZ/HtfLWuY6i1N0k+WjJbW2iez6rBHCU2AgAB6juA=
+Date: Fri, 13 Oct 2023 10:21:49 +0000
+Message-ID: <42792608ae1f4eecb13c43c06197a837@huawei.com>
+References: <20231011194355.15628-1-salil.mehta@huawei.com>
+ <34927805-a968-271f-16c2-17c8d90693d9@loongson.cn>
+In-Reply-To: <34927805-a968-271f-16c2-17c8d90693d9@loongson.cn>
+Accept-Language: en-US
 Content-Language: en-US
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <20230907215326.367847-1-den@openvz.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR0902CA0039.eurprd09.prod.outlook.com
- (2603:10a6:802:1::28) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.195.247.32]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|PAXPR08MB7575:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5357c737-8d19-49fc-9317-08dbcbd25896
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 20bNhxWXo2PP3XcovoHsjzUuANuhCujjK0UpvlnKIhPPl88k8CjvgQULIsouZ1T2/odPomugSMg6M9bjIzv3McEsEfqi/ErlY4g38ZXnKnkto0nX33UIw8tfRdbI4JW7IMv0EAhshbYCb/9A6jcDZrACFzh4Bt1bCCVgF9FcGaxIjALz2RaDlW50QVOnvI6c1ZkPt+EjgpGLO5uyMlQqrGWrwmmLz3UeZcEAXxdUFEK3SdDWWxkyYm49VGvriVJ0BN7i0E+NUxDJumcwIDMlqLnz4fAPVvAdc2iWgXe4exVgCLUwmv+G51MlVsdn9lu2Td5Uy6Wnk8ck26cquQmHhqdbBSJSQrveTIpb7SyUOkBYIFI3QO+9pySR+bmAkfPhqsVnGrCCNUgy9tG97jy6zQKZGJVpOsdJZ+65lBbeZhwo/D5wRjD45KLXYPbprIxOK21u98C/VVEta+gdAJr0Y3fBReUI3PyxXFgzUpX0Hy3hA8zClo65neY4CnqCBy54ejau6X5523MByw5WzPo65uJw+NeQ52a6tjiqZWeb2gMzOI0uOuxEeWRzNvuFEzIJmseS46XorspFRHVfc7ILcZOq7CA6PvziFzpbPy6r2g6ciNtNILhdL1W5bSK4MShBdfP+pdPBDHO0cwNUFQxkrA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(376002)(366004)(39850400004)(136003)(346002)(230922051799003)(186009)(451199024)(1800799009)(64100799003)(4326008)(26005)(8676002)(66899024)(83380400001)(2906002)(8936002)(38100700002)(86362001)(41300700001)(36756003)(31696002)(5660300002)(478600001)(53546011)(6506007)(6512007)(6666004)(6486002)(2616005)(31686004)(54906003)(66556008)(66476007)(66946007)(316002)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RVQ1TDllVFYzNTlZZjNYblpjTUpENkRRaDIrbjhZcXo2Sng2T3EwN3kra2lH?=
- =?utf-8?B?Mk9YVzhOT2ROcFNNMmJrb2hpRTd0S2NoaEtyM1phUGpIekllSy9RNUx2ZkQ3?=
- =?utf-8?B?QnFJUVliLzJRTkQyZ29FV0V4Z3JBQkxNbzd0RktQV1cyK29vbzBQaEt6cEI3?=
- =?utf-8?B?dXJwTFRTSzJiUHVtMEFYMGhkakxaL2l4UUVJV0o5UERDb0JzdzFqT0VOQUxp?=
- =?utf-8?B?cFMzQW5zUkRaMlV5L0RvUk9laUtocGp4MVEzWURGT0szWGtKWGlQVGNWdjRL?=
- =?utf-8?B?QUtweElXZDVqRHlqSjRESGI2VFYza1NPYkJUU3JVSE0wazJmVFp0MXh6Ti8z?=
- =?utf-8?B?Smphbk1IdWt4NjI1ZHRneFloL2orQjlhMngrS0UvTGY0VVF5OGxOckt0Mk5S?=
- =?utf-8?B?R0FhSmlyWGRxdTgvVytYZ3RtWHFjWlZaQ0hBU0U0R1M4TC9iZzJWelRnUUQr?=
- =?utf-8?B?SVN5cnVCYTlOOFY3eEdCMTFGZVFkUFFxazJQaVhCYXQ0ellRNHJWMGJ0SlNV?=
- =?utf-8?B?bHd1SnZwQzF4S3BKV0lzRTNPSWk1UmtoY0x4ZURTbmEvbFdvQ2doV2QzYUpn?=
- =?utf-8?B?aWQ1UkRYbm0yTXVDVkgxZmRrd0ZqVkFQTUdnVlFXLzJSWTl6NnpkVmdlcUJa?=
- =?utf-8?B?TnhRUWtLT3kxcUpiTXN1aTJKdUxqd3RjQzJkdVp4VEhrVDFTL2VIZmowVitw?=
- =?utf-8?B?QlA2eUlNYjV6U2F4NXdDRHhucVpaZlEydHdXeFprR3hMejREUjRna3dsY0xX?=
- =?utf-8?B?TXR1S2wzMDRRdVd2NE90YVRhUFNtd2Z4YktCNHN4YTFrM3dJaEZlVE96ek04?=
- =?utf-8?B?Mmo5M2VOSHovczBHT0pid1o3U1JTdUlXOWdDeGhjZ2wrbzFuTWVqbzJBUnFh?=
- =?utf-8?B?WDZ4QnYwVU1GYTk1cHpmL2tha3AySFNQRlVrdW9yS1RmVTM3L1hVZWlha1hU?=
- =?utf-8?B?MVFlb0ZQMGpaT1RZTW5FdFdBZjlTSStvVldGakJ2bEVqQkxoeWJ0Qm1LbnZS?=
- =?utf-8?B?eXJSWTBheTR1amY1ZmVobUZBU2l3MktGbzNyTllBcXBudGpScTVFTGg0eVh4?=
- =?utf-8?B?M3NDOHNpOXpMek03alZGMkFSTmt2SmxxNlovbEIrS3B3UUd1SW1RT3BqUEdi?=
- =?utf-8?B?emE5SE9BcUM3dHV3cWgrelZiUncrMnVTOVJEblFuQzNQTlEvRkJFcDVQbEJw?=
- =?utf-8?B?NzZPM3oyOEtFWGxlVEw1Vk9hckJqMzRjQ3F5NUg0NDBENVpNVEdMdXFGSHk3?=
- =?utf-8?B?NEJ0aVh6VytYUk82M1Nib3VtU0wraGplSHRvUytRYkxGbW9heGxZY242TzR2?=
- =?utf-8?B?bVhPK1g0dWZLMlk2YmJjeGRFeUN6YTFyZzlucmRDMVcxV0hscHVpQXFDa2pS?=
- =?utf-8?B?b3A3dU9GOVE1amlKdDFqb2t3R2EzLzZ6dnNyQjdQdEpEczRWREV0MDBrc0ty?=
- =?utf-8?B?NG9BMy8yQ3VybXdTbUJCMTFIOUdzZytzWkJiWW84SS9iYnpPVXBMOFQzRUl6?=
- =?utf-8?B?anhzRm5SV3JiZFV4TFJSS3I3U3VheTZ3bnV4RndDdGpRQUtOOGJZRnI3S3g5?=
- =?utf-8?B?cU9XTmIzVFNvKzMwQlA2MCt2MGp4UmIvSkFmQlFLT2NaK2dOQ2Fmbm92UzdO?=
- =?utf-8?B?ajIvVmwvSS85TjVpQ3hWbFF6QmlZT0tNazF1RklrOFlHd3Z6c3ZtUktUOFpq?=
- =?utf-8?B?cGVZUGpCaDVXWEt1alFWUEhGdElkc1FtR1dkOHpSM050OCtlTzhKbXdKYnNa?=
- =?utf-8?B?L1VLTWFndTkzcUFFV3ZZakJvVVFnaU1HVVVnTFY0TFQzaXlLM0p4aDlUeW55?=
- =?utf-8?B?WnFWMGdkMmtjZzZEUXkvcmd4YktmWEFPb0JNMG1NeDJtaW9qcWo3cTJVd2F6?=
- =?utf-8?B?b2sxK29yMW5rdDlrVy95b051UEUrTHlzMFIzdjViU1BPYXFiZ1RSeDJHcjZH?=
- =?utf-8?B?N21KeDBLdGRtbFZHZzRRdVQwcVJNUjdYSTZZeFZ5RUxWWWxCNENPak9wcXZE?=
- =?utf-8?B?V3BjM3ZJTWxqSFpiUXFuS0VCM3M4R1pIM0I4NU84VGdTaXZHdmZwWkdDS2hv?=
- =?utf-8?B?YjFta092S1pjTXMrVVJndFh2M1hHdkZUNVRVcFlKczZWUGtCWlU5VStzRldB?=
- =?utf-8?Q?zVkick/gRJ8fDzo6QABcHbAsK?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5357c737-8d19-49fc-9317-08dbcbd25896
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 09:54:09.4206 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YvajCUd0ggnp6EJGkQXx0ioPpdFcTtBuIvo5YivW4v/pwFSXip22wZJb7hnqOE9ikF5Q4s2G/amA5pGCBed6ww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB7575
-Received-SPF: pass client-ip=2a01:111:f400:fe0d::72a;
- envelope-from=den@virtuozzo.com;
- helo=EUR04-HE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -141,69 +89,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/7/23 23:53, Denis V. Lunev wrote:
-> Unfortunately 271 IO test is broken if started in non-cached mode.
->
-> Commits
->      commit a6b257a08e3d72219f03e461a52152672fec0612
->      Author: Nir Soffer <nirsof@gmail.com>
->      Date:   Tue Aug 13 21:21:03 2019 +0300
->      file-posix: Handle undetectable alignment
-> and
->      commit 9c60a5d1978e6dcf85c0e01b50e6f7f54ca09104
->      Author: Kevin Wolf <kwolf@redhat.com>
->      Date:   Thu Jul 16 16:26:00 2020 +0200
->      block: Require aligned image size to avoid assertion failure
-> have interesting side effect if used togather.
->
-> If the image size is not multiple of 4k and that image falls under
-> original constraints of Nil's patch, the image can not be opened
-> due to the check in the bdrv_check_perm().
->
-> The patch tries to satisfy the requirements of bdrv_check_perm()
-> inside raw_probe_alignment(). This is at my opinion better that just
-> disallowing to run that test in non-cached mode. The operation is legal
-> by itself.
->
-> Signed-off-by: Denis V. Lunev <den@openvz.org>
-> CC: Nir Soffer <nirsof@gmail.com>
-> CC: Kevin Wolf <kwolf@redhat.com>
-> CC: Hanna Reitz <hreitz@redhat.com>
-> CC: Alberto Garcia <berto@igalia.com>
-> ---
->   block/file-posix.c | 17 +++++++++++++++--
->   1 file changed, 15 insertions(+), 2 deletions(-)
->
-> diff --git a/block/file-posix.c b/block/file-posix.c
-> index b16e9c21a1..988cfdc76c 100644
-> --- a/block/file-posix.c
-> +++ b/block/file-posix.c
-> @@ -447,8 +447,21 @@ static void raw_probe_alignment(BlockDriverState *bs, int fd, Error **errp)
->           for (i = 0; i < ARRAY_SIZE(alignments); i++) {
->               align = alignments[i];
->               if (raw_is_io_aligned(fd, buf, align)) {
-> -                /* Fallback to safe value. */
-> -                bs->bl.request_alignment = (align != 1) ? align : max_align;
-> +                if (align != 1) {
-> +                    bs->bl.request_alignment = align;
-> +                    break;
-> +                }
-> +                /*
-> +                 * Fallback to safe value. max_align is perfect, but the size of the device must be multiple of
-> +                 * the virtual length of the device. In the other case we will get a error in
-> +                 * bdrv_node_refresh_perm().
-> +                 */
-> +                for (align = max_align; align > 1; align /= 2) {
-> +                    if ((bs->total_sectors * BDRV_SECTOR_SIZE) % align == 0) {
-> +                        break;
-> +                    }
-> +                }
-> +                bs->bl.request_alignment = align;
->                   break;
->               }
->           }
-ping
+SGkgWGlhbmdsYWksDQoNCj4gRnJvbTogbGl4aWFuZ2xhaSA8bGl4aWFuZ2xhaUBsb29uZ3Nvbi5j
+bj4NCj4gU2VudDogRnJpZGF5LCBPY3RvYmVyIDEzLCAyMDIzIDQ6NTggQU0NCj4gVG86IFNhbGls
+IE1laHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOyBx
+ZW11LQ0KPiBhcm1Abm9uZ251Lm9yZw0KPiBDYzogbWF6QGtlcm5lbC5vcmc7IGplYW4tcGhpbGlw
+cGVAbGluYXJvLm9yZzsgSm9uYXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJvbkBodWF3
+ZWkuY29tPjsgbHBpZXJhbGlzaUBrZXJuZWwub3JnOw0KPiBwZXRlci5tYXlkZWxsQGxpbmFyby5v
+cmc7IHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmc7DQo+IGltYW1tZWRvQHJlZGhhdC5jb207
+IGFuZHJldy5qb25lc0BsaW51eC5kZXY7IGRhdmlkQHJlZGhhdC5jb207DQo+IHBoaWxtZEBsaW5h
+cm8ub3JnOyBlcmljLmF1Z2VyQHJlZGhhdC5jb207IG9saXZlci51cHRvbkBsaW51eC5kZXY7DQo+
+IHBib256aW5pQHJlZGhhdC5jb207IG1zdEByZWRoYXQuY29tOyB3aWxsQGtlcm5lbC5vcmc7IGdz
+aGFuQHJlZGhhdC5jb207DQo+IHJhZmFlbEBrZXJuZWwub3JnOyBhbGV4LmJlbm5lZUBsaW5hcm8u
+b3JnOyBsaW51eEBhcm1saW51eC5vcmcudWs7DQo+IGRhcnJlbkBvcy5hbXBlcmVjb21wdXRpbmcu
+Y29tOyBpbGtrYUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOw0KPiB2aXNobnVAb3MuYW1wZXJlY29t
+cHV0aW5nLmNvbTsga2FybC5oZXViYXVtQG9yYWNsZS5jb207DQo+IG1pZ3VlbC5sdWlzQG9yYWNs
+ZS5jb207IHNhbGlsLm1laHRhQG9wbnNyYy5uZXQ7IHpodWtlcWlhbg0KPiA8emh1a2VxaWFuMUBo
+dWF3ZWkuY29tPjsgd2FuZ3hpb25nZmVuZyAoQykgPHdhbmd4aW9uZ2ZlbmcyQGh1YXdlaS5jb20+
+Ow0KPiB3YW5neWFuYW4gKFkpIDx3YW5neWFuYW41NUBodWF3ZWkuY29tPjsgamlha2VybmVsMkBn
+bWFpbC5jb207DQo+IG1hb2JpYm9AbG9vbmdzb24uY247IExpbnV4YXJtIDxsaW51eGFybUBodWF3
+ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIFY1IDAvOV0gQWRkIGFyY2hpdGVjdHVyZSBh
+Z25vc3RpYyBjb2RlIHRvIHN1cHBvcnQgdkNQVQ0KPiBIb3RwbHVnDQo+IA0KPiBIaSBTYWxpbCBN
+ZWh0YSB2aWE6DQo+IA0KPiA+IFZpcnR1YWwgQ1BVIGhvdHBsdWcgc3VwcG9ydCBpcyBiZWluZyBh
+ZGRlZCBhY3Jvc3MgdmFyaW91cw0KPiBhcmNoaXRlY3R1cmVzWzFdWzNdLg0KDQpbLi4uXQ0KDQoN
+Cj4gSSByZWJhc2UgeW91ciBwYXRjaCB2NSBvbiBsb29uZ2FyY2ggdGNnLCB0aGVyZSBpcyBubyBw
+cm9ibGVtIHdpdGggY3B1DQo+IGhvdHBsdWcvdW5wbHVnLg0KPiANCj4gVGhhbmsgeW91IHNvIG11
+Y2ggZm9yIHlvdXIgY29udHJpYnV0aW9uIHRvIHRoZSBjb21tdW5pdHkuDQoNCk1hbnkgdGhhbmtz
+IGZvciB0ZXN0aW5nIGFuZCB0aGlzIGNvbmZpcm1hdGlvbiENCg0KU2luY2UgeW91IGhhdmUgc2hh
+cmVkIFRlc3RlZC1ieSB0YWcgb24gVjUgaW4gcHJpdmF0ZSBJIHdpbGwNCmFkZCBpdCBpbiBWNi4N
+Cg0KQnV0IGNhbiBJIHJlcXVlc3QgeW91ciBUZXN0ZWQtYnkgdGFnIGhlcmUgYXMgd2VsbCBzbyB0
+aGF0DQppdCBpcyB2aXNpYmxlIHRvIHRoZSBtYWludGFpbmVycyBhcyB3ZWxsPw0KDQoNClRoYW5r
+cw0KU2FsaWwuDQoNCg0KDQo+IA0KPiBUaGFua3MsDQo+IFhpYW5nbGFpLg0KPiANCg0K
 
