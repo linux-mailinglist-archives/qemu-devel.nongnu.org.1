@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FE77C7D55
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9957C7D54
 	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 07:58:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrBAN-0003C5-KY; Fri, 13 Oct 2023 01:56:56 -0400
+	id 1qrBB9-0003aE-Nb; Fri, 13 Oct 2023 01:57:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBAL-0003Ba-Le
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 01:56:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBB2-0003VZ-Ly
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 01:57:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBAJ-0007S5-Mg
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 01:56:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qrBB0-0007gi-4h
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 01:57:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697176611;
+ s=mimecast20190719; t=1697176653;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=VGTGO0kZLu44/JCec7M1A/HLbsedHb1MG+2UMAuKgJU=;
- b=Smv5XS6dH5Zf1gNB8sOMtFuoJKanKqRZ+YsnamooKDX1pprxzIGhaKxNTsbIpqtSZgFkru
- k83t30quJWvz3npDQp+ygDpCAPTFBUeZbJONGJS4zugBUkBzo1jkUKiUDF+hx+EGaFJL3B
- LeJDTDCYLU5CnbZlZWvpZtkcE7pJAGI=
+ bh=McRs59FkoxvhQ0XnH8Z7ctij3r6VyU/JHsaKB2KD0co=;
+ b=A4cxAjkEscafVbz/A+kVYBwOM+QApFBeqJpngDXQpVCCUWxkcgleRZr5gDOkKcDQWvnk6q
+ j5AZB1Zwp4fYJi6soaFsGsc2SvS3Tobb1nidJOeRo/m2OrdNT/dE07dMSIdVaE3++cxgEc
+ ToL8phiyn8O5fVLcEAARFnoIMGAKUhk=
 Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
  [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-5EoAFVPrPf66K299o0ejug-1; Fri, 13 Oct 2023 01:56:39 -0400
-X-MC-Unique: 5EoAFVPrPf66K299o0ejug-1
+ us-mta-633-6ovWwoKCPgucc-MoaGtxMA-1; Fri, 13 Oct 2023 01:57:31 -0400
+X-MC-Unique: 6ovWwoKCPgucc-MoaGtxMA-1
 Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5368aae40d2so1312369a12.2
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 22:56:39 -0700 (PDT)
+ 4fb4d7f45d1cf-53dfe3af1b9so1336119a12.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 22:57:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697176598; x=1697781398;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VGTGO0kZLu44/JCec7M1A/HLbsedHb1MG+2UMAuKgJU=;
- b=h1hnyq/1qZBewlW0LUCSyw2nroq/vFuWw1QzKj+jDRRE8TLv/yAV/mpa7pohDG33Tg
- sOcS7LlFWlMvkYnBSXDPfiw0hoE2hqzLwDqmGseLCsi6TS2Mz/cA4HWLNcpYf5WB12n9
- IYhyd4zzeGJqcV1t0NCjn0l0GYF0b2i+3zbVtz2rWJBIfBTe8yEk3pLhklFENHiEiYo1
- Z/KKdAfJxAc5rw3fEQFNZhMbu0wc04qBQOHtm3a1l3+hqa8wCcIAWG4YD+ZPcgml+ZBK
- hEkMaWhwD8mU3U3fbdQ3sRZr8z/XhWc6cjBzW2ZuVE9PJrum/mziTGZG7DMMViVrNxOy
- 2GqQ==
-X-Gm-Message-State: AOJu0YzJljM4LIWPeW/7ThHH8Jek9B7N+PwQ1B0QsaFlAZcGDb/OjSy4
- 2XAxFi7tBF2KXw1beo+sg6Bw0YvxahnJI0RUc40goIN65sfl/Tjax+zetjiAh09bMV8+mCjMJpi
- I3M3aOByGy6MltKA=
-X-Received: by 2002:a05:6402:26cc:b0:53e:34c5:fc14 with SMTP id
- x12-20020a05640226cc00b0053e34c5fc14mr1112869edd.23.1697176598115; 
- Thu, 12 Oct 2023 22:56:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGzMHwXI6HqHFftvcTt4Hj9DNDmYJAhG27h4GvHhNtKZUmCW7hTjOex/z0K0ETakkenZuRToQ==
-X-Received: by 2002:a05:6402:26cc:b0:53e:34c5:fc14 with SMTP id
- x12-20020a05640226cc00b0053e34c5fc14mr1112853edd.23.1697176597701; 
- Thu, 12 Oct 2023 22:56:37 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697176650; x=1697781450;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=McRs59FkoxvhQ0XnH8Z7ctij3r6VyU/JHsaKB2KD0co=;
+ b=NPbmtXHsgvnej7EzDyKgC0w9GHUJhAsj2qhMqZBC35KwgkyhcWCgaglv6iBePlHS1L
+ CUvzgd6Ke5Z0vA+A4qiekM73dQQZtu4lwPSlfg+bFiajbvMIUtUyyqoHyzEUJ+blB48q
+ Iav2bzUGauRJ93E0tuxce7Es7bbcEnMDr65fJ2jUwI7P91iN/WknKEmv9UyfbjdDDO7+
+ CLnLWRZywYd10h2HAOGugYrE7iivj8px4dxK6nTviy5mHRx2OxmMll69f3E8DuHIGg0D
+ +Dc3XblevGGa68MUjstg7gj5bwt8GXHwtC5GAgoTWp6VmYG87/lJ8D7VrmFWGANljsoD
+ h0dg==
+X-Gm-Message-State: AOJu0Yx9h+lTDAcsD63+FFi/zg4B7L2AACb1thr+je7DhktXCEB2RISw
+ pzWCgqgSY4lq0TU4HvyUopU5sOnYfAPEDdArixMJr+MZcWs+MvlCkser/ALas7Uo1q1W2rx6aoB
+ rdUrdGJbjJj8bXa4=
+X-Received: by 2002:a05:6402:f2a:b0:53d:a3ff:4605 with SMTP id
+ i42-20020a0564020f2a00b0053da3ff4605mr8340589eda.25.1697176650470; 
+ Thu, 12 Oct 2023 22:57:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG/vbblJe6uW83pk6Jr3MTmH9moMO8BEBXFP96YWNxX1i61/6BXijulpKmHcYPs//AtYaWyYA==
+X-Received: by 2002:a05:6402:f2a:b0:53d:a3ff:4605 with SMTP id
+ i42-20020a0564020f2a00b0053da3ff4605mr8340581eda.25.1697176650154; 
+ Thu, 12 Oct 2023 22:57:30 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
  [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- bm15-20020a0564020b0f00b005346925a474sm11029123edb.43.2023.10.12.22.56.36
+ bm15-20020a0564020b0f00b005346925a474sm11029123edb.43.2023.10.12.22.57.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 22:56:37 -0700 (PDT)
-Message-ID: <feda1abb-b74a-4c47-8b6d-b83e87cd805e@redhat.com>
-Date: Fri, 13 Oct 2023 07:56:35 +0200
+ Thu, 12 Oct 2023 22:57:29 -0700 (PDT)
+Message-ID: <391dd185-aa0a-4bd5-b9bb-8324a7ab9296@redhat.com>
+Date: Fri, 13 Oct 2023 07:57:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] system/qtest: Clean up global variable shadowing in
- qtest_server_init()
+Subject: Re: [PATCH 03/10] tests/virtio-scsi: Clean up global variable
+ shadowing
+Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Alberto Garcia <berto@igalia.com>,
@@ -77,8 +77,7 @@ Cc: qemu-arm@nongnu.org, Alberto Garcia <berto@igalia.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  Tyrone Ting <kfting@nuvoton.com>, Markus Armbruster <armbru@redhat.com>
 References: <20231009100251.56019-1-philmd@linaro.org>
- <20231009100251.56019-2-philmd@linaro.org>
-Content-Language: en-US
+ <20231009100251.56019-4-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -122,7 +121,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231009100251.56019-2-philmd@linaro.org>
+In-Reply-To: <20231009100251.56019-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -150,59 +149,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 09/10/2023 12.02, Philippe Mathieu-Daudé wrote:
-> Rename the variable to fix:
+> Rename the (unused) 'allow' argument, following the pattern
+> used by the other tests in this file. This fixes:
 > 
->    softmmu/qtest.c:869:13: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
->        Object *qtest;
->                ^
->    softmmu/qtest.c:53:15: note: previous declaration is here
->    static QTest *qtest;
->                  ^
+>    tests/qtest/virtio-scsi-test.c:159:61: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static void hotplug(void *obj, void *data, QGuestAllocator *alloc)
+>                                                                ^
+>    tests/qtest/virtio-scsi-test.c:37:25: note: previous declaration is here
+>    static QGuestAllocator *alloc;
+>                            ^
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   softmmu/qtest.c | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
+>   tests/qtest/virtio-scsi-test.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/softmmu/qtest.c b/softmmu/qtest.c
-> index 35b643a274..7964f0b248 100644
-> --- a/softmmu/qtest.c
-> +++ b/softmmu/qtest.c
-> @@ -866,7 +866,7 @@ void qtest_server_init(const char *qtest_chrdev, const char *qtest_log, Error **
->   {
->       ERRP_GUARD();
->       Chardev *chr;
-> -    Object *qtest;
-> +    Object *qobj;
->   
->       chr = qemu_chr_new("qtest", qtest_chrdev, NULL);
->       if (chr == NULL) {
-> @@ -875,18 +875,18 @@ void qtest_server_init(const char *qtest_chrdev, const char *qtest_log, Error **
->           return;
->       }
->   
-> -    qtest = object_new(TYPE_QTEST);
-> -    object_property_set_str(qtest, "chardev", chr->label, &error_abort);
-> +    qobj = object_new(TYPE_QTEST);
-> +    object_property_set_str(qobj, "chardev", chr->label, &error_abort);
->       if (qtest_log) {
-> -        object_property_set_str(qtest, "log", qtest_log, &error_abort);
-> +        object_property_set_str(qobj, "log", qtest_log, &error_abort);
->       }
-> -    object_property_add_child(qdev_get_machine(), "qtest", qtest);
-> -    user_creatable_complete(USER_CREATABLE(qtest), errp);
-> +    object_property_add_child(qdev_get_machine(), "qtest", qobj);
-> +    user_creatable_complete(USER_CREATABLE(qobj), errp);
->       if (*errp) {
-> -        object_unparent(qtest);
-> +        object_unparent(qobj);
->       }
->       object_unref(OBJECT(chr));
-> -    object_unref(qtest);
-> +    object_unref(qobj);
+> diff --git a/tests/qtest/virtio-scsi-test.c b/tests/qtest/virtio-scsi-test.c
+> index ceaa7f2415..db10d572d0 100644
+> --- a/tests/qtest/virtio-scsi-test.c
+> +++ b/tests/qtest/virtio-scsi-test.c
+> @@ -156,7 +156,7 @@ static QVirtioSCSIQueues *qvirtio_scsi_init(QVirtioDevice *dev)
+>       return vs;
 >   }
+>   
+> -static void hotplug(void *obj, void *data, QGuestAllocator *alloc)
+> +static void hotplug(void *obj, void *data, QGuestAllocator *t_alloc)
+>   {
+>       QTestState *qts = global_qtest;
+>   
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-
 
 
