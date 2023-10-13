@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009D97C80BE
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB2A7C80D8
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDpd-0007Rr-6H; Fri, 13 Oct 2023 04:47:41 -0400
+	id 1qrDpe-0007U7-Mj; Fri, 13 Oct 2023 04:47:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpS-0007H5-Kl
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:31 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1qrDpV-0007Iu-Qn
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:33 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpP-0000jo-T3
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:30 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-406618d080eso19641065e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:21 -0700 (PDT)
+ id 1qrDpR-0000lE-2d
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:31 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-325e9cd483eso1786002f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186840; x=1697791640; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186841; x=1697791641; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mAVHThvK+F2Vg3kNZE+qrXSgyNRN8RtaukB64UY3RKk=;
- b=hXmkj+gxqRo9PTyzU+7YqbQnojir2FNB3v1hwgYCFbdcFI2/5zCnxhYqeSLPvWpLLP
- zyi24nxiStrnD/gVubidx8DTTEYyO7n17CfAcUmsxXyQJ2j6Gt3NsMwxx3O+SRPduBHf
- 8wz+nXDnSMj23zG34ulTSOqpo8NBs4Vdv9NlifffXbNpcOvH8fsAquA183nHq2APP5L9
- d7ySJAzjwAfE+JpAwBze4s2n0AltfYY7OZMMDso50zv+w0EA8WzU2MCTlGdrXlIHQIFF
- 6oDVWLLXI6jzALmMD/TNiYP5yaGWWtd6z5h4C1+UEgNJzTYI9lpTGJV5/36kTvcp1Kr7
- gMLg==
+ bh=im2O2dvrIf4MNaQHeEt9gfy6fXkfAQn7GmVj1wsEI/0=;
+ b=UwhrGjc5+dR70TxzdemvZ+EV9r9E9izqVwY0dj7HcpFyvnUTziuEOup7mXni/946jR
+ uHtNPiX9uthVRlEoVVGnIUJnrEh27uWmKguALWRIPWVXAA+zEsv4Eyxo92rf/tNiOixs
+ 1qowAcevDFCxZlUQ4UP4XROFCQYXWBeLGNOPnxaYSs58g7CMPVUOHkZVDQaxIZCl+6UE
+ QSWSF1ooQ1c/fbVdv0VujZGUoYRY/KcvBmNJhf6G+/NW4Pr9wJduGRnf3A2wymo2NpaO
+ 5PueRofqaugdTMyjIIa4QOR7QhjQYlYLynRqo03mXNwfaBJDYUABqChFM/WKAam/KXx0
+ L9DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186840; x=1697791640;
+ d=1e100.net; s=20230601; t=1697186841; x=1697791641;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mAVHThvK+F2Vg3kNZE+qrXSgyNRN8RtaukB64UY3RKk=;
- b=WKyxAaMkLZwh0bwURS/Ub2fVBt4vkes1JdnhdNKh44UZ8t67o3NP8EmRAFFAIFWblG
- FelY9rG0ZjEmKpoSMfF0ZTyxY5b6H7DSWQ6gY85X6aBrVxHTSe3uAgtrolMUQx6demHM
- g/OjP2JLAMzOo4qI4F+SMGAc5lpmgvttfhRoBG1xyLNrJKNhyhCyLopHD2WLR/GP3lbz
- VUeBOTBB/GdoUMTBsowZEhQSh8Zb3zDq+FH6npHTWUMUSyZtKNAKD+ErahjAJ1F8R93G
- bNrHB1BfgJeYzYgGUlg/P2sqF4PZCghYTgxRkCrhA+wp/WaIsOrPMvGwITQ2i8pvcxpg
- 072A==
-X-Gm-Message-State: AOJu0YzpXl3HLkSv+u5CGOw5gWU4CyIwtdqvSAxcMrVzZ1xDmwunVeOJ
- zJo+gk/NgJ70HjoGQLLjgCk4ie/EWe80YQigYfQ=
-X-Google-Smtp-Source: AGHT+IHXdietNKwR8CMnFpf2HSz6TLxKH89hp0MFe03wA5/xCtbsqrkBFWT1F5jG9Xms+4NaJzavLg==
-X-Received: by 2002:a05:6000:228:b0:32d:8466:498a with SMTP id
- l8-20020a056000022800b0032d8466498amr6052156wrz.48.1697186840016; 
- Fri, 13 Oct 2023 01:47:20 -0700 (PDT)
+ bh=im2O2dvrIf4MNaQHeEt9gfy6fXkfAQn7GmVj1wsEI/0=;
+ b=f+/R3BJy+BmUm3RkIn0QAKuGxAkrptJ0B+LFL2T0I+4/LtXqrqn8JtHj+2NF4Twk/F
+ LAZ4KIbeEZ8hSFjh02dYT9xOg4Sl6EwBBAeuY//Yp90VMC3yDggFVZL60Z2f/SYQviKj
+ VD5fSc0FG/N1s4AiUQJWkQDJkapT3GMNvW56l4pqAKXizPBTBOaE03YDVJ0jmGs7vN6W
+ YRIWK4BUkiheD4+qE9zncxbavLlDmYxbg16bsG1QNz1lyuZ9KlNj0ZVo1k5DNkqzbzhl
+ dPv/Cs3VGsucw6gDaVqzermvCCmtGuMAC+ftsundgTHtIcfUAqOC3D4J3iuOq9Z0C3so
+ UQaA==
+X-Gm-Message-State: AOJu0YzZN24iJtsuomJh5k6kclSQ4e3a3JTaEeb+18UdMMDXTsIiNjyf
+ 9+xmbWHKn+bm1oHP5nNFU2r9CUAY+YwXEiV1zfg=
+X-Google-Smtp-Source: AGHT+IHiP+h+boDQf6XbcBwNRi2ZUb+PteVk50eBBGiSTqOnH9ixIKhHEm+kaJs+ajYEhm1aAC5fOg==
+X-Received: by 2002:adf:ef42:0:b0:32d:9d3d:8b98 with SMTP id
+ c2-20020adfef42000000b0032d9d3d8b98mr734422wrp.71.1697186841379; 
+ Fri, 13 Oct 2023 01:47:21 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.18
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:47:19 -0700 (PDT)
+ Fri, 13 Oct 2023 01:47:20 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
-Subject: [RFC PATCH v3 04/78] qapi/opts-visitor: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:45:32 +0300
-Message-Id: <da9d0ba48a5be92f212e6bc04710803ca0ffa7b3.1697186560.git.manos.pitsidianakis@linaro.org>
+ Markus Armbruster <armbru@redhat.com>
+Subject: [RFC PATCH v3 05/78] qobject/json: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:45:33 +0300
+Message-Id: <9425bbfc5ff333a6c476c5e01f08077d7821897a.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,44 +97,56 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- qapi/opts-visitor.c         | 1 +
- qapi/string-input-visitor.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ qobject/json-lexer.c  | 4 ++--
+ qobject/json-parser.c | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
-index 8f1efab8b9..d7376bf239 100644
---- a/qapi/opts-visitor.c
-+++ b/qapi/opts-visitor.c
-@@ -266,6 +266,7 @@ opts_next_list(Visitor *v, GenericList *tail, size_t size)
+diff --git a/qobject/json-lexer.c b/qobject/json-lexer.c
+index 51341d96e4..ab74470ac6 100644
+--- a/qobject/json-lexer.c
++++ b/qobject/json-lexer.c
+@@ -312,7 +312,7 @@ static void json_lexer_feed_char(JSONLexer *lexer, char ch, bool flush)
+         case JSON_STRING:
+             json_message_process_token(lexer, lexer->token, new_state,
+                                        lexer->x, lexer->y);
+-            /* fall through */
++            fallthrough;
+         case IN_START:
+             g_string_truncate(lexer->token, 0);
+             new_state = lexer->start_state;
+@@ -321,7 +321,7 @@ static void json_lexer_feed_char(JSONLexer *lexer, char ch, bool flush)
+             json_message_process_token(lexer, lexer->token, JSON_ERROR,
+                                        lexer->x, lexer->y);
+             new_state = IN_RECOVERY;
+-            /* fall through */
++            fallthrough;
+         case IN_RECOVERY:
+             g_string_truncate(lexer->token, 0);
+             break;
+diff --git a/qobject/json-parser.c b/qobject/json-parser.c
+index d498db6e70..4dc622dcc9 100644
+--- a/qobject/json-parser.c
++++ b/qobject/json-parser.c
+@@ -214,7 +214,7 @@ static QString *parse_string(JSONParserContext *ctxt, JSONToken *token)
+                 }
+                 ptr++;
+             }
+-            /* fall through */
++            fallthrough;
+         default:
+             cp = mod_utf8_codepoint(ptr, 6, &end);
+             if (cp < 0) {
+@@ -518,8 +518,9 @@ static QObject *parse_literal(JSONParserContext *ctxt)
+             }
+             assert(ret == -ERANGE);
          }
-         ov->list_mode = LM_IN_PROGRESS;
-         /* range has been completed, fall through in order to pop option */
++        /* fall through to JSON_FLOAT */
 +        fallthrough;
- 
-     case LM_IN_PROGRESS: {
-         const QemuOpt *opt;
-diff --git a/qapi/string-input-visitor.c b/qapi/string-input-visitor.c
-index 197139c1c0..1ce43da20b 100644
---- a/qapi/string-input-visitor.c
-+++ b/qapi/string-input-visitor.c
-@@ -202,7 +202,7 @@ static bool parse_type_int64(Visitor *v, const char *name, int64_t *obj,
-             return false;
-         }
-         assert(siv->lm == LM_INT64_RANGE);
--        /* fall through */
-+        fallthrough;
-     case LM_INT64_RANGE:
-         /* return the next element in the range */
-         assert(siv->rangeNext.i64 <= siv->rangeEnd.i64);
-@@ -292,7 +292,7 @@ static bool parse_type_uint64(Visitor *v, const char *name, uint64_t *obj,
-             return false;
-         }
-         assert(siv->lm == LM_UINT64_RANGE);
--        /* fall through */
-+        fallthrough;
-     case LM_UINT64_RANGE:
-         /* return the next element in the range */
-         assert(siv->rangeNext.u64 <= siv->rangeEnd.u64);
+     }
+-    /* fall through to JSON_FLOAT */
+     case JSON_FLOAT:
+         /* FIXME dependent on locale; a pervasive issue in QEMU */
+         /* FIXME our lexer matches RFC 8259 in forbidding Inf or NaN,
 -- 
 2.39.2
 
