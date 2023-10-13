@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66E07C876D
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D827C875E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:05:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrImH-00039N-C5; Fri, 13 Oct 2023 10:04:33 -0400
+	id 1qrIlv-0001LA-VB; Fri, 13 Oct 2023 10:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIkR-0007aL-Cc
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:02:40 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIkY-0007q1-17
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:02:55 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIkJ-0002Lz-M8
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:02:38 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9be1ee3dc86so10274266b.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:02:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIkT-0002Nc-N4
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:02:44 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-9ad8a822508so349245666b.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:02:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697205750; x=1697810550; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697205758; x=1697810558; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gkqit7if0np+hOPuR/lmFr1Vsbe3YApoPUZEdcDy8j8=;
- b=wp7IVVd0MoQDS/YwweUZ19//bP0+yjaq7MxBRZeyxSBAZhSHH1eSl8XCnISKSLwHP8
- ziYpQICPoCm4+jZupLd16UsLPCM64+yNa2VfSrhx+jpYVsn/iHON158ogGMrrR6SaOQT
- aKOEL3hP81p3e8O1bRmVQ2CgfaZ5SIWsoRQCeRt7kTSoyP0UsNlOQLFLDfdsN7Sd8Ya1
- KVi1tJkX/+x6C3COxb8Loy0wQmh2D8ApkfnqgmrYpu4E3SQMJC5vt5qFE2Al/VKxtXfO
- zpG8ChYQgndeuzmIANiW0fveHBo/PgGXs9iMjQYK5DtSQQsyxKuqhQW0ei/pRCjGxJs6
- AAnw==
+ bh=ve1lLlxnRHTflzhTJxO7OlNBTIrjeeFG/SBbqRg4BJs=;
+ b=RcLyMrjUizWvmglUmZAfF1Fa5qPDVBiIW83KMphzoOrGtYanM/UNkklxIg06zRTIQz
+ Sxb12JzB7PuulC3GDmhJS2Pc1FgDVJkN0yAo0W5H9nTs5Vs7584P63bwGew7LDRbQBhX
+ t3fuUxNUbygLuy7Ca8ibODXfICM6ulQlyjgB+4GusOOAz8bkpahQ92l8KXjMv+4c41EW
+ 4cGleA0ahTOCCZPrdBQ2pSR6ARpu6OJu1Ie48HTs20KpJcZBFRIA986yE5UyG74NIIzW
+ oMrAXl6K488X7mmuKGA/pVA7SUAJMw0Ri9RTz5M0uklnqy++M2nWWdjTmjd5WxfaY+nV
+ jncg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697205750; x=1697810550;
+ d=1e100.net; s=20230601; t=1697205758; x=1697810558;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gkqit7if0np+hOPuR/lmFr1Vsbe3YApoPUZEdcDy8j8=;
- b=VQrrBJqgekOoZG4vd0Xb5A6Ya6ZrguRd9USbIqafb2WYw+X8YFZEWpcUdnzRzXkl9w
- 8kp0ppXrAl7Nb1WFpFvFqamFaeSvVpzso5fB3+1LZ0Sk+NkqSPdl0SV8/lC3bdNyQtFH
- zo6yNtKtpeaIu3y5+/Vk4kYGbaH7z9K9zsA9GKPb546oJrobS5gpJ3rYXBorXsv6K3sN
- o04dkiDoiPnf4jFsbEscYFpIqIdDRbj0j/JjOMuDf0rQu0Mv88pcvR9FeNmk3teuschl
- C2UZqrhx/DgqhN/dgtzcnG+wgbBNl7yIfZu2g1cawLy5M51cH9TF94XCXHCaSNKiBXvh
- zAQw==
-X-Gm-Message-State: AOJu0YyOU33uJKI2xWdylLo6hzAPeY+tx6pzcF0ate3YSL0mw0n28Oih
- kmiC5xcdU5WEKb3xTu+fXt16A9mDHcPr6hsb4S0=
-X-Google-Smtp-Source: AGHT+IE9vhGWnqZ8fU0EqTsNYKVTuFnnsA0Qd42Sfgp+6Czba9iohQLiizJLJ3jW5r+RThXOPh1usw==
-X-Received: by 2002:a17:907:9282:b0:9bd:bbc1:1c65 with SMTP id
- bw2-20020a170907928200b009bdbbc11c65mr1241200ejc.13.1697205749739; 
- Fri, 13 Oct 2023 07:02:29 -0700 (PDT)
+ bh=ve1lLlxnRHTflzhTJxO7OlNBTIrjeeFG/SBbqRg4BJs=;
+ b=Kfee1shxiEHlhHb7OWxi3VKaUHQMkAZDsrEuoSt8fB1xb1Wq6qbtFDIAPGUmKv9RK+
+ yzCd/JHbLVAyhomcRqCKHjvR2/PgcPT7CxzQZPVGByypkDa/gdxgRP3sapwRfl4uKyuR
+ WW7A1PnL0USOve4zFzEhP9ThTGWeLnFddT7AbqqlUXuLSwIM3zPxhyIOK0A/cfqfzPGt
+ lIWELxc8opisuTuRcfIHSvfY9hudUAIp1fgoR2ntJveAgrFZeuM0SZ53PQEgEssmdrIR
+ IRPE9yZcDledjPbmetHgFrhuSOwpZAVaqzvXaSRo91inXfilabVclP9jZzy4PNpxZlHH
+ Zv/w==
+X-Gm-Message-State: AOJu0Yy3VHEshaFGEp6Rb/eR6jTJw3H18bxNCd56AMfnDJov5FZW/XrE
+ aEoMInMTw88dqqBILNQPo4fp+C4cBVePonKbzPw=
+X-Google-Smtp-Source: AGHT+IHWONbfnoPyiRyGIQvfR8K+ccfv9PXbi5HxUaJAghxanGW3/XwOZ1qOOwb8JiQbWCMBf92Dwg==
+X-Received: by 2002:a17:906:1097:b0:9ad:7890:b4c0 with SMTP id
+ u23-20020a170906109700b009ad7890b4c0mr21446662eju.56.1697205758763; 
+ Fri, 13 Oct 2023 07:02:38 -0700 (PDT)
 Received: from m1x-phil.lan ([176.172.118.168])
  by smtp.gmail.com with ESMTPSA id
- st12-20020a170907c08c00b009b9f87b34b6sm11026896ejc.189.2023.10.13.07.02.25
+ o23-20020a17090611d700b00991e2b5a27dsm12479889eja.37.2023.10.13.07.02.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 13 Oct 2023 07:02:29 -0700 (PDT)
+ Fri, 13 Oct 2023 07:02:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -87,18 +87,18 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Sergio Lopez <slp@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH v2 07/16] target/hexagon: Declare QOM definitions in
+Subject: [PATCH v2 08/16] target/loongarch: Declare QOM definitions in
  'cpu-qom.h'
-Date: Fri, 13 Oct 2023 16:01:06 +0200
-Message-ID: <20231013140116.255-8-philmd@linaro.org>
+Date: Fri, 13 Oct 2023 16:01:07 +0200
+Message-ID: <20231013140116.255-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231013140116.255-1-philmd@linaro.org>
 References: <20231013140116.255-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -131,92 +131,79 @@ the "target/foo/cpu-qom.h" header.
 
 Extract QOM definitions from "cpu.h" to "cpu-qom.h".
 
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/hexagon/cpu-qom.h | 28 ++++++++++++++++++++++++++++
- target/hexagon/cpu.h     | 15 +--------------
- 2 files changed, 29 insertions(+), 14 deletions(-)
- create mode 100644 target/hexagon/cpu-qom.h
+ target/loongarch/cpu-qom.h | 24 ++++++++++++++++++++++++
+ target/loongarch/cpu.h     | 10 +---------
+ 2 files changed, 25 insertions(+), 9 deletions(-)
+ create mode 100644 target/loongarch/cpu-qom.h
 
-diff --git a/target/hexagon/cpu-qom.h b/target/hexagon/cpu-qom.h
+diff --git a/target/loongarch/cpu-qom.h b/target/loongarch/cpu-qom.h
 new file mode 100644
-index 0000000000..f02df7ee6f
+index 0000000000..82c86d146d
 --- /dev/null
-+++ b/target/hexagon/cpu-qom.h
-@@ -0,0 +1,28 @@
++++ b/target/loongarch/cpu-qom.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/*
-+ * QEMU Hexagon CPU QOM header (target agnostic)
++ * QEMU LoongArch CPU QOM header (target agnostic)
 + *
-+ * Copyright(c) 2019-2023 Qualcomm Innovation Center, Inc. All Rights Reserved.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (c) 2021 Loongson Technology Corporation Limited
 + */
 +
-+#ifndef QEMU_HEXAGON_CPU_QOM_H
-+#define QEMU_HEXAGON_CPU_QOM_H
++#ifndef LOONGARCH_CPU_QOM_H
++#define LOONGARCH_CPU_QOM_H
 +
 +#include "hw/core/cpu.h"
 +#include "qom/object.h"
 +
-+#define TYPE_HEXAGON_CPU "hexagon-cpu"
++#define TYPE_LOONGARCH_CPU "loongarch-cpu"
++#define TYPE_LOONGARCH32_CPU "loongarch32-cpu"
++#define TYPE_LOONGARCH64_CPU "loongarch64-cpu"
 +
-+#define HEXAGON_CPU_TYPE_SUFFIX "-" TYPE_HEXAGON_CPU
-+#define HEXAGON_CPU_TYPE_NAME(name) (name HEXAGON_CPU_TYPE_SUFFIX)
++OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
++                        LOONGARCH_CPU)
 +
-+#define TYPE_HEXAGON_CPU_V67 HEXAGON_CPU_TYPE_NAME("v67")
-+#define TYPE_HEXAGON_CPU_V68 HEXAGON_CPU_TYPE_NAME("v68")
-+#define TYPE_HEXAGON_CPU_V69 HEXAGON_CPU_TYPE_NAME("v69")
-+#define TYPE_HEXAGON_CPU_V71 HEXAGON_CPU_TYPE_NAME("v71")
-+#define TYPE_HEXAGON_CPU_V73 HEXAGON_CPU_TYPE_NAME("v73")
-+
-+OBJECT_DECLARE_CPU_TYPE(HexagonCPU, HexagonCPUClass, HEXAGON_CPU)
++#define LOONGARCH_CPU_TYPE_SUFFIX "-" TYPE_LOONGARCH_CPU
++#define LOONGARCH_CPU_TYPE_NAME(model) model LOONGARCH_CPU_TYPE_SUFFIX
 +
 +#endif
-diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h
-index 035ac4fb6d..7d16083c6a 100644
---- a/target/hexagon/cpu.h
-+++ b/target/hexagon/cpu.h
-@@ -20,11 +20,10 @@
- 
- #include "fpu/softfloat-types.h"
- 
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 2b8b828114..2b759aba5e 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -17,6 +17,7 @@
+ #include "exec/memory.h"
+ #endif
+ #include "cpu-csr.h"
 +#include "cpu-qom.h"
- #include "exec/cpu-defs.h"
- #include "hex_regs.h"
- #include "mmvec/mmvec.h"
--#include "qom/object.h"
--#include "hw/core/cpu.h"
- #include "hw/registerfields.h"
  
- #define NUM_PREGS 4
-@@ -36,18 +35,8 @@
- #define PRED_WRITES_MAX 5                   /* 4 insns + endloop */
- #define VSTORES_MAX 2
+ #define IOCSRF_TEMP             0
+ #define IOCSRF_NODECNT          1
+@@ -381,13 +382,6 @@ struct ArchCPU {
+     const char *dtb_compatible;
+ };
  
--#define TYPE_HEXAGON_CPU "hexagon-cpu"
+-#define TYPE_LOONGARCH_CPU "loongarch-cpu"
+-#define TYPE_LOONGARCH32_CPU "loongarch32-cpu"
+-#define TYPE_LOONGARCH64_CPU "loongarch64-cpu"
 -
--#define HEXAGON_CPU_TYPE_SUFFIX "-" TYPE_HEXAGON_CPU
--#define HEXAGON_CPU_TYPE_NAME(name) (name HEXAGON_CPU_TYPE_SUFFIX)
- #define CPU_RESOLVING_TYPE TYPE_HEXAGON_CPU
- 
--#define TYPE_HEXAGON_CPU_V67 HEXAGON_CPU_TYPE_NAME("v67")
--#define TYPE_HEXAGON_CPU_V68 HEXAGON_CPU_TYPE_NAME("v68")
--#define TYPE_HEXAGON_CPU_V69 HEXAGON_CPU_TYPE_NAME("v69")
--#define TYPE_HEXAGON_CPU_V71 HEXAGON_CPU_TYPE_NAME("v71")
--#define TYPE_HEXAGON_CPU_V73 HEXAGON_CPU_TYPE_NAME("v73")
+-OBJECT_DECLARE_CPU_TYPE(LoongArchCPU, LoongArchCPUClass,
+-                        LOONGARCH_CPU)
 -
- void hexagon_cpu_list(void);
- #define cpu_list hexagon_cpu_list
+ /**
+  * LoongArchCPUClass:
+  * @parent_realize: The parent class' realize handler.
+@@ -478,8 +472,6 @@ void loongarch_cpu_list(void);
  
-@@ -127,8 +116,6 @@ typedef struct CPUArchState {
-     VTCMStoreLog vtcm_log;
- } CPUHexagonState;
+ #include "exec/cpu-all.h"
  
--OBJECT_DECLARE_CPU_TYPE(HexagonCPU, HexagonCPUClass, HEXAGON_CPU)
--
- typedef struct HexagonCPUClass {
-     CPUClass parent_class;
+-#define LOONGARCH_CPU_TYPE_SUFFIX "-" TYPE_LOONGARCH_CPU
+-#define LOONGARCH_CPU_TYPE_NAME(model) model LOONGARCH_CPU_TYPE_SUFFIX
+ #define CPU_RESOLVING_TYPE TYPE_LOONGARCH_CPU
  
+ #endif /* LOONGARCH_CPU_H */
 -- 
 2.41.0
 
