@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E1B7C7C79
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 06:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EABDE7C7C7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 06:13:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qr9UI-000347-Ua; Fri, 13 Oct 2023 00:09:22 -0400
+	id 1qr9Y9-0003uS-Gi; Fri, 13 Oct 2023 00:13:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qr9UF-00033c-9u
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 00:09:19 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1qr9Y7-0003u4-Gl
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 00:13:19 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qr9UB-000651-MD
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 00:09:18 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-69af8a42066so1348428b3a.1
- for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 21:09:15 -0700 (PDT)
+ id 1qr9Y6-0006fQ-0O
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 00:13:19 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-68fb85afef4so1451601b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 12 Oct 2023 21:13:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697170154; x=1697774954; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697170396; x=1697775196; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=R+3CHnnNXz5apczQezbSmipXowkAp82423sOaMdNjdQ=;
- b=jOp14oAFoKIxk/HDuV6rOtw+IPWOVRH0pALQaawn4hKDmZ3fSiWoy5v+GesXXjeWS0
- pHHfFlfQw3PYqck1R3JAqSfpB5PyquH4u7qhvL3QP5dtnsh653GO0AWjpiM1zVLtjh4r
- Q3bnh1FVYf3aNkiKT03gx8ovrdIGxFPlTJlH2qmJ7e3pJ8qW3hBfknYJu/jzgdQ2987T
- s+fbWRjWfXC6Sz6pfaqQHYIcV/WTIgGdSG2wE8SgquwKbdVdwcEw42MBxYyoKgisFS3a
- IaBIxl51VPjnwlJeFXwlQtT6+ATO3wWj5KjMSWzgBC1VRDOIfyWDdh4JMvMLIkVmcKB1
- v2jQ==
+ bh=iBgcdkJDa6FQKQ0P3N3ZuasCg2pJDw+6j8+3dPUSs5g=;
+ b=lGIG9bFpqMhBSoUamv8GxiqyTF10Awxb+1Ms6TwDWTJaeF5VwW9ptbWTLTTos73HTN
+ oKq2kHGmX6fA7e9kecZlj9MNDvarQKRUDRLu0td6F33XBuDwTY5KCPW2wlBsBtbUW+QB
+ +IEovWfnaHN8ydkZYGvbpodhCfrU5M++TUUFqQg7yIIkY7cM1hCd4k6SDazhBam0T5S7
+ 0iVkL+bQAczMu5P9eXhRx6N5mOH73aYZy8JVXYtOHbTXohUCyJru/rWTt0/BE2OpSiee
+ 1RlEcVso5O4ROaUev2H4PSWNZtSpwOcfDS2MsDZqAwNSEV0YGNAVJO6PXqZD9VkubUo6
+ rSXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697170154; x=1697774954;
+ d=1e100.net; s=20230601; t=1697170396; x=1697775196;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R+3CHnnNXz5apczQezbSmipXowkAp82423sOaMdNjdQ=;
- b=IkoVQFGNxyP/jgWLXW2nWCCQgZqx82teoX3WE7Lu+XFvT5MWL3oxXUsfioP1bo1sCS
- oa5b6ux8UhWWphyYToW81wMiAdmwnfF+W9smi5idtsAXOl1wJtmkPIB5gDl8zz0pZuh+
- HhIIobdiopOVDzr65Gh7gb0AUkCzvY1k1idVEBM1YVR8JoG5560btIZ0oRa13G21CsJz
- n69mFxbl3aihu2K8X33+eeIRH2/JPjZK4Spg5y1B+zdS96uVkbP1nrU0x08Agun38ux+
- skr67YLgtdaZXA7Dj7uVGFurJN7RkccnM42nacp/cy2mqWTZiXllc6EtpThAaiyXs5g9
- P7hA==
-X-Gm-Message-State: AOJu0YyB4Qxe1xRzvgy94bErZ2GxAuygfKPGdKWTF9+Psa3VTC9c+cOu
- +ZBqY5c8TacPVIX1Lrp1qLqWoQ==
-X-Google-Smtp-Source: AGHT+IGYhRG4XNDabUDoe6vxDwgEpAHeJ4VZGNmFqqgr1Pt0usmYr9AJBs7zq6CH5rutIQop+hnFiQ==
-X-Received: by 2002:a05:6a20:970c:b0:163:2dc7:d077 with SMTP id
- hr12-20020a056a20970c00b001632dc7d077mr20100863pzc.55.1697170153859; 
- Thu, 12 Oct 2023 21:09:13 -0700 (PDT)
+ bh=iBgcdkJDa6FQKQ0P3N3ZuasCg2pJDw+6j8+3dPUSs5g=;
+ b=qj4hAeVmJfZ99HEpdMroZMKqYNT2ktmkpLd/rrBpFD3NBXwQhNKMmyZkVxgw3ORMo3
+ SqrPlycFBik5STAqk0chz3kMJKVxyj3Vp5v6rReGlshG0ugkEBUHy1I2HLqEien1HBRE
+ +06XyB9SOQsCj5qorOvRIeOvc3yn4SgZHjmQBgIhnkL8v/Wa6+Z/+XvS0ocvlWmJqwYD
+ D8o2IaJwR/LFohoUT/7sJQfiDupkJgh3MEA/JtBooKMndrBUcfPC0poCwsxT1Hg2yPbw
+ f/MeiH1IXGNUYugUUXDHYWs/6mHTe5co6nYUaG+gjepEUUgnNa8P5P9YzGRMUL1A1nTi
+ NyEQ==
+X-Gm-Message-State: AOJu0YwowxSs9Ww5JChZ+TVlo8zIOiqjopi6x1WUQ9ZBYC7gEUpk2bA8
+ YJq9yguEjqP5b1dcSgNFUyL+iQ==
+X-Google-Smtp-Source: AGHT+IEEOtJx3Tfkdu2ASdLHFq0+LJEEinS9BrIhLkZgqHfmcksBmThGfF1A24h1RksHoCm2RMWmRg==
+X-Received: by 2002:a05:6a00:2489:b0:690:1720:aa92 with SMTP id
+ c9-20020a056a00248900b006901720aa92mr26743906pfv.10.1697170396320; 
+ Thu, 12 Oct 2023 21:13:16 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- ft9-20020a17090b0f8900b0027b13db9729sm2622014pjb.21.2023.10.12.21.09.13
+ q18-20020aa78432000000b00690ca4356f1sm269497pfn.198.2023.10.12.21.13.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Oct 2023 21:09:13 -0700 (PDT)
-Message-ID: <d8dc3061-4504-4e74-be68-44415d0d3a36@linaro.org>
-Date: Thu, 12 Oct 2023 21:09:11 -0700
+ Thu, 12 Oct 2023 21:13:15 -0700 (PDT)
+Message-ID: <e6a5386e-e33d-464d-b84d-b58ca16429f0@linaro.org>
+Date: Thu, 12 Oct 2023 21:13:14 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/18] target/i386: Inline target specific
- TARGET_DEFAULT_CPU_TYPE definition
+Subject: Re: [PATCH 10/18] target/riscv: Inline target specific
+ TYPE_RISCV_CPU_BASE definition
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-10-philmd@linaro.org>
+ <20231010092901.99189-11-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231010092901.99189-10-philmd@linaro.org>
+In-Reply-To: <20231010092901.99189-11-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,40 +96,45 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/10/23 02:28, Philippe Mathieu-Daudé wrote:
-> TARGET_DEFAULT_CPU_TYPE depends on the TARGET_X86_64 definition
-> which is target specific. Such target specific definition taint
-> "cpu-qom.h".
+> TYPE_RISCV_CPU_BASE depends on the TARGET_RISCV32/TARGET_RISCV64
+> definitions which are target specific. Such target specific
+> definition taints "cpu-qom.h".
 > 
-> Since "cpu-qom.h" must be target agnostic, remove this target
-> specific definition uses by inlining TARGET_DEFAULT_CPU_TYPE in
-> the two machines using it.
+> Since "cpu-qom.h" must be target agnostic, remove its target
+> specific definition uses by inlining TYPE_RISCV_CPU_BASE in the
+> two machines using it.
 > 
-> "target/i386/cpu-qom.h" is now fully target agnostic.
+> "target/riscv/cpu-qom.h" is now fully target agnostic.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/i386/cpu.h | 6 ------
->   hw/i386/microvm.c | 6 +++++-
->   hw/i386/pc.c      | 6 +++++-
->   3 files changed, 10 insertions(+), 8 deletions(-)
+>   target/riscv/cpu-qom.h | 8 +-------
+>   hw/riscv/spike.c       | 8 +++++++-
+>   hw/riscv/virt.c        | 8 +++++++-
+>   3 files changed, 15 insertions(+), 9 deletions(-)
 > 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 862e4f1ff5..7c976971c7 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -2243,12 +2243,6 @@ uint64_t cpu_get_tsc(CPUX86State *env);
+> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+> index 8cb67b84a4..f607687384 100644
+> --- a/target/riscv/cpu-qom.h
+> +++ b/target/riscv/cpu-qom.h
+> @@ -1,5 +1,5 @@
+>   /*
+> - * QEMU RISC-V CPU QOM header
+> + * QEMU RISC-V CPU QOM header (target agnostic)
+>    *
+>    * Copyright (c) 2023 Ventana Micro Systems Inc.
+>    *
+> @@ -43,12 +43,6 @@
+>   #define TYPE_RISCV_CPU_VEYRON_V1        RISCV_CPU_TYPE_NAME("veyron-v1")
+>   #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
 >   
->   #define CPU_RESOLVING_TYPE TYPE_X86_CPU
->   
-> -#ifdef TARGET_X86_64
-> -#define TARGET_DEFAULT_CPU_TYPE X86_CPU_TYPE_NAME("qemu64")
-> -#else
-> -#define TARGET_DEFAULT_CPU_TYPE X86_CPU_TYPE_NAME("qemu32")
+> -#if defined(TARGET_RISCV32)
+> -# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
+> -#elif defined(TARGET_RISCV64)
+> -# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
 > -#endif
-> -
->   #define cpu_list x86_cpu_list
 
-This isn't cpu-qom.h, so the entire patch description is off...
+Move to cpu.h (or elsewhere) instead of replicating in two hw/ files?
 
 
 r~
