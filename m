@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3846B7C8693
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C8F7C86C2
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:25:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrI3D-0001VT-2Z; Fri, 13 Oct 2023 09:17:59 -0400
+	id 1qrI9T-0007l4-Rz; Fri, 13 Oct 2023 09:24:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qrI3A-0001Ss-8T
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:17:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qrI38-0007gp-TL
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:17:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697203074;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RuP6RgPZp2oDrq2htYXca4j+9IsftKzhIHCnhzFVR7Q=;
- b=Enw+HW+BXzQZSl6TKpd+o5mtbXl6cNKfehkPThYd3oN0uPhzr8YuGbADg4gYeppGehTUKD
- 8eJLM1pHITT80ZFEAEV8pe6yUg9h0Yn3vhgooMi83TfapwcftuWyilWhRgRhkgCSr5YoWh
- aqIQUo6Lnd1wG2G8oNws3LcGaR6StDg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-173-3RFgzaKvPbKhWKJd8lbn9Q-1; Fri, 13 Oct 2023 09:17:39 -0400
-X-MC-Unique: 3RFgzaKvPbKhWKJd8lbn9Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74DB61C01514;
- Fri, 13 Oct 2023 13:17:38 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4CDF040C6F7F;
- Fri, 13 Oct 2023 13:17:38 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5113F21E6A21; Fri, 13 Oct 2023 15:17:37 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: <ankita@nvidia.com>
-Cc: <jgg@nvidia.com>,  <alex.williamson@redhat.com>,  <clg@redhat.com>,
- <shannon.zhaosl@gmail.com>,  <peter.maydell@linaro.org>,
- <ani@anisinha.ca>,  <berrange@redhat.com>,  <eduardo@habkost.net>,
- <imammedo@redhat.com>,  <mst@redhat.com>,  <eblake@redhat.com>,
- <david@redhat.com>,  <gshan@redhat.com>,  <Jonathan.Cameron@huawei.com>,
- <aniketa@nvidia.com>,  <cjia@nvidia.com>,  <kwankhede@nvidia.com>,
- <targupta@nvidia.com>,  <vsethi@nvidia.com>,  <acurrid@nvidia.com>,
- <dnigam@nvidia.com>,  <udhoke@nvidia.com>,  <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2 3/3] qom: Link multiple numa nodes to device using a
- new object
-References: <20231007201740.30335-1-ankita@nvidia.com>
- <20231007201740.30335-4-ankita@nvidia.com>
-Date: Fri, 13 Oct 2023 15:17:37 +0200
-In-Reply-To: <20231007201740.30335-4-ankita@nvidia.com> (ankita@nvidia.com's
- message of "Sun, 8 Oct 2023 01:47:40 +0530")
-Message-ID: <87o7h2fyq6.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qrI9R-0007kC-Cg
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:24:25 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qrI9P-0000fe-RS
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:24:25 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6b709048f32so91052b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697203462; x=1697808262; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GHJybb6DACavOvETjWa+Di361Pgfer/3yhWD73zyrq4=;
+ b=CN8rbSurdg8EIQyhpFxa9qmA5FuJW8FbvCnVrBcLWYz34TCjLvXysjPBRmtIPBXT6w
+ daXt3mTyDBKJtEJTaOL8wDotn61OXDmahz26Ua+d6t6Tz5cljaHPriO2w1NqSXscvTor
+ p2jMy+TgsKqoxLWwoc3UE88EMkLrthVf0GtQDP6G8Y7+444KajZKCHFm2XRiLCLdCvDz
+ dBczkvT9O2NdyXV870KvIAk2ufASmP+Ts5M62mQ4N3Akoyo7IYCC7vD2bMFdLJgZ+7ya
+ 7Al1IwqcxxEqjLvmXKFmN2RuYrG+Eg6zWc1PLJbAcVjD0kT7xCv+0jfqiWfC2g1LkGb6
+ TYfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697203462; x=1697808262;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GHJybb6DACavOvETjWa+Di361Pgfer/3yhWD73zyrq4=;
+ b=OlJj0yakw/hN9acGpixNOcs4qAwLvVwtTIHKFtwFnRRJ3OAhWZUqe9Hz6MsWZ5+Uyy
+ d4MqC4SUbayOki1yugVYgB1y1OGXrKmXzCrU1Mu1ZGbgk3TPhnL7IU8AX9e+PqsuoJgJ
+ JMPL8K/WDvBSR207rHB4QRzKWOR7nK1R3GABGJt8Z+g6WdBFV9rNfz60M0rQFQ/PLCGu
+ JOqX0Q1pk4UlAIMLirhh/QPhHKopFHU8EvCzsvbw+sFXeQ0InJWhZWqQD3zhChpz8pcx
+ NZDdpHZ7L5yrGPFkCMfswM+gaBI/Af0TGF0ayjbtJU/e0n6WWQmc/G52To57HGAHV7iO
+ eNIQ==
+X-Gm-Message-State: AOJu0Yw57lRLuQwS+3Usv8uROEzLFZiWkkXfI8d/hj7RdJFYxORjYt1d
+ NXGhNSnQbYE1tY4fYbDOtRxo+c9Wyc3ZqgxEp6Q=
+X-Google-Smtp-Source: AGHT+IG+kfJbQGGRZKF2NA379WVXqMe6S9LEfZejwSrlJN5d7rww7u087Lr5rdTPGlXIKpRRiWciBw==
+X-Received: by 2002:a05:6a00:190e:b0:68b:fdfe:76c2 with SMTP id
+ y14-20020a056a00190e00b0068bfdfe76c2mr26927471pfi.20.1697203462161; 
+ Fri, 13 Oct 2023 06:24:22 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ h26-20020aa796da000000b00688965c5227sm280527pfq.120.2023.10.13.06.24.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Oct 2023 06:24:21 -0700 (PDT)
+Message-ID: <5271d2b8-2f52-4cc6-93c1-30d56dc7c1f3@linaro.org>
+Date: Fri, 13 Oct 2023 06:24:20 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] hw/ppc/spapr: Restrict PPCTimebase structure
+ declaration to sPAPR
+Content-Language: en-US
+To: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20231013125630.95116-1-philmd@linaro.org>
+ <20231013125630.95116-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231013125630.95116-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,6 +95,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Same comments as for PATCH 1.
+On 10/13/23 05:56, Philippe Mathieu-Daudé wrote:
+> The PPCTimebase structure is only used by the sPAPR machine.
+> Move its declaration to "hw/ppc/spapr.h".
+> Move vmstate_ppc_timebase and the VMSTATE_PPC_TIMEBASE_V()
+> macro to hw/ppc/spapr.c, along with the timebase_foo()
+> migration helpers.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/hw/ppc/spapr.h |   6 +++
+>   target/ppc/cpu-qom.h   |  22 --------
+>   hw/ppc/ppc.c           | 107 -------------------------------------
+>   hw/ppc/spapr.c         | 116 +++++++++++++++++++++++++++++++++++++++++
+>   4 files changed, 122 insertions(+), 129 deletions(-)
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
