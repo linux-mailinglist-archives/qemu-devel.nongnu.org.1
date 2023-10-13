@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6947C80C8
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4170C7C809E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:48:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDpd-0007SB-Ak; Fri, 13 Oct 2023 04:47:41 -0400
+	id 1qrDpe-0007U8-Mg; Fri, 13 Oct 2023 04:47:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpR-0007Gs-3z
+ id 1qrDpR-0007Gt-4S
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:29 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDpE-0000j1-VU
+ id 1qrDpG-0000jF-MN
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:20 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-32157c8e4c7so1748235f8f.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:16 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-32d9d8284abso283196f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186834; x=1697791634; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186837; x=1697791637; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dnm+Gxaw80OdVaD45+E6pYqzIKj55jwHUyCpTF8F9yw=;
- b=nYgoMA8CqgFRUo4pxOmzh+jVIQZmQBTNQw2Wt/sBUFTMsnLnbAan2VfAYVxs4GtRk7
- AYxBDDTPgf57UBgmKEs5mjlJ/pIEBRgX9/z4U1SfodX+8AgBnzC+ARk1N0QAvnomcPuo
- ZvA8nP50JYO5GU4bIrnCWUL54WysIB90KA+heXHypIuajf51My7jOZnY+10ZpFotMSPh
- jU9dHW+pl1fFhCuJxbOKvFpbyzug9dAbCssbimNTYdKGBvnXiovr3gS/KH4JOxxzcMUh
- Pb+IfFjioyn1AzQshFzWNEVfNjAtCjFP2VQqSh1/zx2USX24ck6mV11R43uOGTgSqbas
- JfUw==
+ bh=NoxCBRiQ5GyxpZ9H+p9W0GvU/fTOtPh4UBax5yqghnc=;
+ b=GfbHF5XXITtcGtynkWufAj9UlkXZNExiAOkVxYZ1z4xMbF+AOZ035J9KgKz1CgMm8r
+ 27EWHnVY4N/1qDx35l4k6m4/15QvuKSSElHEa8a2y8lNrrKBMGlXFrVp9+NC8PNcomqF
+ LhSkm72xu3X8B7muF+ByNRruYAKTxvGN1vP7BDKmDS+lA7H9sVq1T/+r8XYA4Ce/LrvX
+ +udGEXqOzO9Fj8o0DlFgo/S+VOdxYhQpKwu6a/K4bjv6ym6KY/9vG7qbulZj48w3xcLq
+ bvXL6XL1vJm1TB6qL/FVShdrA08HjeAx3R+Y6fmhlKQAVaeu0+gsNa8rwizceNtlPBlS
+ W0GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186834; x=1697791634;
+ d=1e100.net; s=20230601; t=1697186837; x=1697791637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dnm+Gxaw80OdVaD45+E6pYqzIKj55jwHUyCpTF8F9yw=;
- b=GtuDuCDdmSbi5GFUVBazS0skxu9uGzq4AX0fPZXM4Y1ExYMRPNU0ILPbfAk9f96FmL
- kTATWe5qfqBUSf+mm/QzsqNcGm1WCZ6UCHCI4JMCJLmaM/PB1TykW4itFa/ymqfn1nOk
- Hz6vOqcqnUBbdpH0OyXkLj60niYsx/hDc/HSIkqqWX0qcOC4wIZZrlFBFwiUWOVGQFpm
- ResmkLfQNOQTFt+Q7t/WrN95Wu61O+2ejvaZvOFkUk3/2ZcFqoE8gGeT492oSd97vuQ5
- 5T3NqF4c0m+USfLBwXDUcRwGGEK+82V0891ayiwiwcvdr5YMGVfaS7szdFsNSwnaczGZ
- CBWQ==
-X-Gm-Message-State: AOJu0YyiiHbsc1y9zvMxHxVh17vroM9fZg3vDtKdvceXETWTIowFUtJw
- 2TTeD/aPuGaRqBNegOPW39lYpavRRAOr5JgLBz8=
-X-Google-Smtp-Source: AGHT+IHGWsL5036JvvLTZ/yJbSRE9uYpvpjDq2VB33I2zm28UF/7L/r+sSZxhQlQTfxWbRNtRw+v7A==
-X-Received: by 2002:a05:6000:613:b0:329:6d09:61ff with SMTP id
- bn19-20020a056000061300b003296d0961ffmr21524572wrb.62.1697186834315; 
- Fri, 13 Oct 2023 01:47:14 -0700 (PDT)
+ bh=NoxCBRiQ5GyxpZ9H+p9W0GvU/fTOtPh4UBax5yqghnc=;
+ b=APQRzlngVFsiF5q7P9xmizSbt35UbDwXCNAjgzXF9dKtU9QmabrGXHFJKnPueJlh+P
+ vccfwrwdh4UjP3p2OdT56gdemfow8sqlWNuYz9A9PLNHi2P+VRMZ0uwbo/4lk3sRrSFr
+ hNgb2McCdUdMjwyYhxbCO/yFj3CstCXA+mFJzKT33s2kXxo+YPZMJebAaW+TLVo11tal
+ HsH7ypBdmUwGLXu14nktxtfERuODfRDogLHBXx302lt7xthHBM+9CPfhebRe8za0j3jh
+ tBR0TUIOzo2OPFAL/m8cFfo8A05xrMp9QSBFsdSvxw+l/u2RnWlx1mfgPJWqZJByLxiJ
+ IBLg==
+X-Gm-Message-State: AOJu0YxWTf9NApX3g0Qrm3BUFkctvgs31X+llYaFJjHQ/U2XMpgir+3x
+ gqL1umgVm00EV/LhIk44ITwMuqaG7yhEA3G3FGc=
+X-Google-Smtp-Source: AGHT+IFiVkn4QLJKtW02PeIK86UmcF3cG2pJ/tr+lSy0y70NiorTGwe4Otb5Mo3bm+G6JW1cT8enhA==
+X-Received: by 2002:a5d:56ca:0:b0:319:6e74:1637 with SMTP id
+ m10-20020a5d56ca000000b003196e741637mr22031944wrw.27.1697186836779; 
+ Fri, 13 Oct 2023 01:47:16 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.12
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:47:13 -0700 (PDT)
+ Fri, 13 Oct 2023 01:47:16 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Eric Auger <eric.auger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM SMMU)
-Subject: [RFC PATCH v3 01/78] include/qemu/compiler.h: replace
- QEMU_FALLTHROUGH with fallthrough
-Date: Fri, 13 Oct 2023 11:45:29 +0300
-Message-Id: <2e08cff874b2f9fc4143bdcde87ebba9b70b356c.1697186560.git.manos.pitsidianakis@linaro.org>
+ John Snow <jsnow@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Lieven <pl@kamp.de>,
+ Jeff Cody <codyprime@gmail.com>,
+ qemu-block@nongnu.org (open list:Block Jobs)
+Subject: [RFC PATCH v3 02/78] block: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:45:30 +0300
+Message-Id: <e54aa70630d6d524886d7950b84d5bda39c3d605.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,195 +99,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In preparation of raising -Wimplicit-fallthrough to 5, replace all
+fall-through comments with the fallthrough attribute pseudo-keyword.
+
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- audio/pwaudio.c              |  8 ++++----
- hw/arm/smmuv3.c              |  2 +-
- include/qemu/compiler.h      | 30 +++++++++++++++++++++++-------
- include/qemu/osdep.h         |  4 ++--
- target/loongarch/cpu.c       |  4 ++--
- target/loongarch/translate.c |  2 +-
- tcg/optimize.c               |  8 ++++----
- 7 files changed, 37 insertions(+), 21 deletions(-)
+ block/block-copy.c    |  1 +
+ block/file-posix.c    |  1 +
+ block/io.c            |  1 +
+ block/iscsi.c         |  1 +
+ block/qcow2-cluster.c |  5 ++++-
+ block/vhdx.c          | 17 +++++++++++++----
+ 6 files changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/audio/pwaudio.c b/audio/pwaudio.c
-index 3ce5f6507b..bf26fadb06 100644
---- a/audio/pwaudio.c
-+++ b/audio/pwaudio.c
-@@ -8,16 +8,16 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
+diff --git a/block/block-copy.c b/block/block-copy.c
+index 1c60368d72..b4ceb6a079 100644
+--- a/block/block-copy.c
++++ b/block/block-copy.c
+@@ -508,6 +508,7 @@ block_copy_do_copy(BlockCopyState *s, int64_t offset, int64_t bytes,
+         trace_block_copy_copy_range_fail(s, offset, ret);
+         *method = COPY_READ_WRITE;
+         /* Fall through to read+write with allocated buffer */
++        fallthrough;
  
-+#include <spa/param/audio/format-utils.h>
-+#include <spa/utils/ringbuffer.h>
-+#include <spa/utils/result.h>
-+#include <spa/param/props.h>
- #include "qemu/osdep.h"
- #include "qemu/module.h"
- #include "audio.h"
- #include <errno.h>
- #include "qemu/error-report.h"
- #include "qapi/error.h"
--#include <spa/param/audio/format-utils.h>
--#include <spa/utils/ringbuffer.h>
--#include <spa/utils/result.h>
--#include <spa/param/props.h>
- 
- #include <pipewire/pipewire.h>
- #include "trace.h"
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 6f2b2bd45f..545d82ff04 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -1291,7 +1291,7 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
-                 cmd_error = SMMU_CERROR_ILL;
+     case COPY_READ_WRITE_CLUSTER:
+     case COPY_READ_WRITE:
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 50e2b20d5c..31c7719da5 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -1013,6 +1013,7 @@ static int raw_handle_perm_lock(BlockDriverState *bs,
+                               bs->filename);
+         }
+         /* fall through to unlock bytes. */
++        fallthrough;
+     case RAW_PL_ABORT:
+         raw_apply_lock_bytes(s, s->fd, s->perm, ~s->shared_perm,
+                              true, &local_err);
+diff --git a/block/io.c b/block/io.c
+index e7f9448d5a..cc05457d02 100644
+--- a/block/io.c
++++ b/block/io.c
+@@ -2034,6 +2034,7 @@ bdrv_co_write_req_finish(BdrvChild *child, int64_t offset, int64_t bytes,
+         case BDRV_TRACKED_WRITE:
+             stat64_max(&bs->wr_highest_offset, offset + bytes);
+             /* fall through, to set dirty bits */
++            fallthrough;
+         case BDRV_TRACKED_DISCARD:
+             bdrv_set_dirty(bs, offset, bytes);
+             break;
+diff --git a/block/iscsi.c b/block/iscsi.c
+index 5640c8b565..2fb7037748 100644
+--- a/block/iscsi.c
++++ b/block/iscsi.c
+@@ -1461,6 +1461,7 @@ static void iscsi_readcapacity_sync(IscsiLun *iscsilun, Error **errp)
                  break;
              }
--            QEMU_FALLTHROUGH;
+             /* Fall through and try READ CAPACITY(10) instead.  */
 +            fallthrough;
-         case SMMU_CMD_TLBI_NSNH_ALL:
-             trace_smmuv3_cmdq_tlbi_nh();
-             smmu_inv_notifiers_all(&s->smmu_state);
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index 1109482a00..959982805d 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -165,15 +165,31 @@
- #define QEMU_ALWAYS_INLINE
- #endif
- 
--/**
-- * In most cases, normal "fallthrough" comments are good enough for
-- * switch-case statements, but sometimes the compiler has problems
-- * with those. In that case you can use QEMU_FALLTHROUGH instead.
-+/*
-+ * Add the pseudo keyword 'fallthrough' so case statement blocks
-+ * must end with any of these keywords:
-+ *   break;
-+ *   fallthrough;
-+ *   continue;
-+ *   goto <label>;
-+ *   return [expression];
-+ *
-+ *  gcc: https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html#Statement-Attributes
-  */
--#if __has_attribute(fallthrough)
--# define QEMU_FALLTHROUGH __attribute__((fallthrough))
-+
-+/*
-+ * glib_macros.h contains its own definition of fallthrough, so if we define
-+ * the pseudokeyword here it will expand when the glib header checks for the
-+ * attribute. glib headers must be #included after this header.
-+ */
-+#ifdef fallthrough
-+#undef fallthrough
-+#endif
-+
-+#if __has_attribute(__fallthrough__)
-+# define fallthrough                    __attribute__((__fallthrough__))
- #else
--# define QEMU_FALLTHROUGH do {} while (0) /* fallthrough */
-+# define fallthrough                    do {} while (0)  /* fallthrough */
- #endif
- 
- #ifdef CONFIG_CFI
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 475a1c62ff..8f790f0deb 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -50,8 +50,6 @@
-  */
- #pragma GCC poison TARGET_WORDS_BIGENDIAN
- 
--#include "qemu/compiler.h"
--
- /* Older versions of C++ don't get definitions of various macros from
-  * stdlib.h unless we define these macros before first inclusion of
-  * that system header.
-@@ -160,6 +158,8 @@ QEMU_EXTERN_C int daemon(int, int);
-  */
- #include "glib-compat.h"
- 
-+#include "qemu/compiler.h"
-+
- #ifdef _WIN32
- #include "sysemu/os-win32.h"
- #endif
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 2bea7ca5d5..e01d626b15 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -178,7 +178,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-             env->CSR_DBG = FIELD_DP64(env->CSR_DBG, CSR_DBG, DEI, 1);
-             goto set_DERA;
+         case TYPE_ROM:
+             task = iscsi_readcapacity10_sync(iscsilun->iscsi, iscsilun->lun, 0, 0);
+             if (task != NULL && task->status == SCSI_STATUS_GOOD) {
+diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
+index f4f6cd6ad0..c50143d493 100644
+--- a/block/qcow2-cluster.c
++++ b/block/qcow2-cluster.c
+@@ -1333,13 +1333,16 @@ static bool cluster_needs_new_alloc(BlockDriverState *bs, uint64_t l2_entry)
+ {
+     switch (qcow2_get_cluster_type(bs, l2_entry)) {
+     case QCOW2_CLUSTER_NORMAL:
++        fallthrough;
+     case QCOW2_CLUSTER_ZERO_ALLOC:
+         if (l2_entry & QCOW_OFLAG_COPIED) {
+             return false;
          }
--        QEMU_FALLTHROUGH;
+-        /* fallthrough */
 +        fallthrough;
-     case EXCCODE_PIF:
-     case EXCCODE_ADEF:
-         cause = cs->exception_index;
-@@ -193,7 +193,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-     case EXCCODE_SXD:
-     case EXCCODE_ASXD:
-         env->CSR_BADV = env->pc;
--        QEMU_FALLTHROUGH;
+     case QCOW2_CLUSTER_UNALLOCATED:
 +        fallthrough;
-     case EXCCODE_BCE:
-     case EXCCODE_ADEM:
-     case EXCCODE_PIL:
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index 21f4db6fbd..36fceb1beb 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -317,7 +317,7 @@ static void loongarch_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
-         break;
-     case DISAS_EXIT_UPDATE:
-         tcg_gen_movi_tl(cpu_pc, ctx->base.pc_next);
--        QEMU_FALLTHROUGH;
+     case QCOW2_CLUSTER_COMPRESSED:
 +        fallthrough;
-     case DISAS_EXIT:
-         tcg_gen_exit_tb(NULL, 0);
-         break;
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 3013eb04e6..3da135a353 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -1089,7 +1089,7 @@ static bool fold_brcond2(OptContext *ctx, TCGOp *op)
+     case QCOW2_CLUSTER_ZERO_PLAIN:
+         return true;
+     default:
+diff --git a/block/vhdx.c b/block/vhdx.c
+index a67edcc03e..9000b3fcea 100644
+--- a/block/vhdx.c
++++ b/block/vhdx.c
+@@ -1201,10 +1201,14 @@ vhdx_co_readv(BlockDriverState *bs, int64_t sector_num, int nb_sectors,
  
-     case TCG_COND_NE:
-         inv = 1;
--        QEMU_FALLTHROUGH;
-+        fallthrough;
-     case TCG_COND_EQ:
-         /*
-          * Simplify EQ/NE comparisons where one of the pairs
-@@ -1445,7 +1445,7 @@ static bool fold_exts(OptContext *ctx, TCGOp *op)
-         break;
-     case INDEX_op_ext_i32_i64:
-         type_change = true;
--        QEMU_FALLTHROUGH;
-+        fallthrough;
-     case INDEX_op_ext32s_i64:
-         sign = INT32_MIN;
-         z_mask = (uint32_t)z_mask;
-@@ -1489,7 +1489,7 @@ static bool fold_extu(OptContext *ctx, TCGOp *op)
-     case INDEX_op_extrl_i64_i32:
-     case INDEX_op_extu_i32_i64:
-         type_change = true;
--        QEMU_FALLTHROUGH;
-+        fallthrough;
-     case INDEX_op_ext32u_i64:
-         z_mask = (uint32_t)z_mask;
-         break;
-@@ -1861,7 +1861,7 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
+             /* check the payload block state */
+             switch (s->bat[sinfo.bat_idx] & VHDX_BAT_STATE_BIT_MASK) {
+-            case PAYLOAD_BLOCK_NOT_PRESENT: /* fall through */
++            case PAYLOAD_BLOCK_NOT_PRESENT:
++                fallthrough;
+             case PAYLOAD_BLOCK_UNDEFINED:
++                fallthrough;
+             case PAYLOAD_BLOCK_UNMAPPED:
++                fallthrough;
+             case PAYLOAD_BLOCK_UNMAPPED_v095:
++                fallthrough;
+             case PAYLOAD_BLOCK_ZERO:
+                 /* return zero */
+                 qemu_iovec_memset(&hd_qiov, 0, 0, sinfo.bytes_avail);
+@@ -1222,6 +1226,7 @@ vhdx_co_readv(BlockDriverState *bs, int64_t sector_num, int nb_sectors,
+             case PAYLOAD_BLOCK_PARTIALLY_PRESENT:
+                 /* we don't yet support difference files, fall through
+                  * to error */
++                fallthrough;
+             default:
+                 ret = -EIO;
+                 goto exit;
+@@ -1373,10 +1378,13 @@ vhdx_co_writev(BlockDriverState *bs, int64_t sector_num, int nb_sectors,
+                  * data that is not part of this write, so we must pad
+                  * the rest of the buffer to zeroes */
+                 use_zero_buffers = true;
+-                /* fall through */
+-            case PAYLOAD_BLOCK_NOT_PRESENT: /* fall through */
++                fallthrough;
++            case PAYLOAD_BLOCK_NOT_PRESENT:
++                fallthrough;
+             case PAYLOAD_BLOCK_UNMAPPED:
++                fallthrough;
+             case PAYLOAD_BLOCK_UNMAPPED_v095:
++                fallthrough;
+             case PAYLOAD_BLOCK_UNDEFINED:
+                 bat_prior_offset = sinfo.file_offset;
+                 ret = vhdx_allocate_block(bs, s, &sinfo.file_offset,
+@@ -1431,7 +1439,7 @@ vhdx_co_writev(BlockDriverState *bs, int64_t sector_num, int nb_sectors,
+                     }
+                 }
  
-     case TCG_COND_NE:
-         inv = 1;
--        QEMU_FALLTHROUGH;
-+        fallthrough;
-     case TCG_COND_EQ:
-         /*
-          * Simplify EQ/NE comparisons where one of the pairs
+-                /* fall through */
++                fallthrough;
+             case PAYLOAD_BLOCK_FULLY_PRESENT:
+                 /* if the file offset address is in the header zone,
+                  * there is a problem */
+@@ -1457,6 +1465,7 @@ vhdx_co_writev(BlockDriverState *bs, int64_t sector_num, int nb_sectors,
+             case PAYLOAD_BLOCK_PARTIALLY_PRESENT:
+                 /* we don't yet support difference files, fall through
+                  * to error */
++                fallthrough;
+             default:
+                 ret = -EIO;
+                 goto exit;
 -- 
 2.39.2
 
