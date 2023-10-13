@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46F17C7FDC
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDE77C7F7F
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:08:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrCxs-0000uT-7b; Fri, 13 Oct 2023 03:52:08 -0400
+	id 1qrCyG-00026U-5F; Fri, 13 Oct 2023 03:52:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCxB-0006jz-NZ
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:51:27 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1qrCxL-00070N-8B
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:51:37 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCww-0004za-KH
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:51:25 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-32d9effe314so147061f8f.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:51:09 -0700 (PDT)
+ id 1qrCwy-00050D-JI
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:51:34 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3226cc3e324so1720635f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:51:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183468; x=1697788268; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183470; x=1697788270; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MHkwerARMVrwTTd/RS2SbAUQb/LRufm8Kjc23C7Om/k=;
- b=ojI6qlkeSQNE2G8SIxrQWHUwv5qujm6nhdmAqnpsosUcOyOy8Cp2onYunc2Pl/8WCu
- BVNrf7Ku+MQtAGeeE8UrZUsT0ptD+fHOLr7hCByqDwRPPsCCe1qnZTP9D1yMYKtoYRYh
- nqzrm+9D2br+1WJx+yfNOmoXZ4WK6y0pgnpoZ1HUa1c3jPz/G+ylkbi0E+ogCkcSmSx+
- Lx89iO26gBPQMErvtEkkOeE788iKiN3F6jFzfBY1Bm5ta35sZcOITuF/2cWrfJwxyaB4
- ZYqu6l4JfERavq/1PE89dHX2Q+Nb0WF3NIZwem76Enx5rHTgcBwoDwN064VNQvyoLG4p
- ywQg==
+ bh=fHcUXIeVYL2J2IaeiQjIW4srz6zzb+o5NuSL2EwrB8I=;
+ b=gbokYzF59VkVY+gvtFuqzRYFWudyqcG3wFlh871s6i/BrYS1IXhEYblHcGuCnp/F6F
+ py7NCdCgXO80SQUAFBjfFy/xoNGnvsr+SQ9J5nadOKy1rvDpb3zRw2oUlJ5b/y4vG81A
+ mrIu02oQyd25C8+H4BZBkblARRRVewodahFCFN9GKAoU1OxDQKw2Pb0LLykTkhiZjyYg
+ CNk4PlYPC5tl1qZL3EBduz1AAb0TOWDbccjt9NAR5SmAW3JQbqnYPETsH01S/qTHv1cv
+ yCh5O7KZf8Pi/YFhSg6iIGHn0rjKF+7ldfLsIWXacb+6qu4cZFs52DtaomkoiM/P6ZEG
+ 4fFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183468; x=1697788268;
+ d=1e100.net; s=20230601; t=1697183470; x=1697788270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MHkwerARMVrwTTd/RS2SbAUQb/LRufm8Kjc23C7Om/k=;
- b=BvyiP5AL1D0yMd6AoGqgpodjZJdy6yaMoNPa3id/yVdWcvH4QRn9O6i0xjWEL2VH/s
- /zpkIiP2IeBdzj9kw27bAL9waKsVlaTpSjhF6MH6HpVph1cesEsgQ7TTX9Xd7DKgbH7/
- SjhjKm5X8GPHtxO2mZfdsumhddnVRUd70391XB0sLKc9U/9HH1TRUd7PxvO30pLbJjjY
- GYCy/kmpLF13TOluP4j3VKzCxZk+OsPpEVCj3gObSzKkdChXBVgAC0dYRX8CyUfifKtY
- /CBvlR1C11ajsEefoimw6+d7xRbiDoXtTMbdR84gGoU1B2zufEU2+7MzrBMEHO8HMAGO
- hHwQ==
-X-Gm-Message-State: AOJu0YwMia/TS4FUmCYw52Rrj6lTRuf1tBTY0Int9/OBGqPrADop9Vrr
- HTkljhIA3xKu1omO7hS86fZb4j3ZEZozqUmhsu0=
-X-Google-Smtp-Source: AGHT+IHR+eoDk5nX8ugVDqBOA0t0tlbUf12cZF04gXlocAkFhF7e+HsXYsdfV2gnp6IEKwW6P9oQIA==
-X-Received: by 2002:a05:6000:98f:b0:32d:89b5:6d05 with SMTP id
- by15-20020a056000098f00b0032d89b56d05mr6199061wrb.35.1697183468572; 
- Fri, 13 Oct 2023 00:51:08 -0700 (PDT)
+ bh=fHcUXIeVYL2J2IaeiQjIW4srz6zzb+o5NuSL2EwrB8I=;
+ b=ZZHNOws3HB9cMr6w1z5mX6WkY14EE3y3Obn8yzwakuxSNhyUIk4rkpCIEEt95xYie2
+ PTIPMxxwpUMP46LWgpu2VX5DwCGu5CoJ1gBzJgPLzxIPkpHQI6EM36XhxLHascOXE291
+ M3Syu7jqph9WXgtv53x2OMQs2l4Pg7J/N9iwZq6BEtaU1HgqGzT/IrlRo3EzFW1huVbE
+ 7nXuA3bfGsyPPW3/WldzqTax6SWkNUBFwPYDf3a0cSD5qTTPj+aesYk1D1+UpA6t7VQE
+ 0eOPfGmfqWVLrU2ctZ/F9L53y3kvKkGrhuHf2+/pI8tUWYV13sbKORyKTZqjIuXNJdW5
+ /eSg==
+X-Gm-Message-State: AOJu0Yzca4igwpcAwVxdPjO9M+trJSMdsj9XwzMgZBpV61CmPkCkKDqT
+ vi+0gVBZxWiJ9+j+N8SQysdJ8BCCP8NKOvySLsc=
+X-Google-Smtp-Source: AGHT+IEGeI8Ba0GUqC20BulsgSjxRITpV4ajjKzrPDQcfX8yxG7ZWFzkoR5wttusF5Xb9TkF/nFVZw==
+X-Received: by 2002:a5d:6a01:0:b0:317:727f:3bc7 with SMTP id
+ m1-20020a5d6a01000000b00317727f3bc7mr22625918wru.17.1697183470156; 
+ Fri, 13 Oct 2023 00:51:10 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.51.07
+ m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.51.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:51:08 -0700 (PDT)
+ Fri, 13 Oct 2023 00:51:09 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bin Meng <bin.meng@windriver.com>
-Subject: [RFC PATCH 40/78] hw/sd/sdhci.c: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:47:47 +0300
-Message-Id: <9c2cdf34edb01e45141db197877910d22767dd89.1697183082.git.manos.pitsidianakis@linaro.org>
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [RFC PATCH 40/75] linux-user: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:47:48 +0300
+Message-Id: <f2223335977f9b09f8ec069484e0faaad918d85b.1697034504.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
-References: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
+References: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,322 +94,260 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation of raising -Wimplicit-fallthrough to 5, replace all
-fall-through comments with the fallthrough attribute pseudo-keyword.
-
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/sd/sdhci.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ linux-user/mips/cpu_loop.c | 8 ++++----
+ linux-user/mmap.c          | 2 +-
+ linux-user/syscall.c       | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 5564765a9b..5c641d24de 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -75,138 +75,138 @@ static bool sdhci_check_capab_freq_range(SDHCIState *s, const char *desc,
- static void sdhci_check_capareg(SDHCIState *s, Error **errp)
+diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
+index 8735e58bad..38ddcadfc6 100644
+--- a/linux-user/mips/cpu_loop.c
++++ b/linux-user/mips/cpu_loop.c
+@@ -63,68 +63,68 @@ static void do_tr_or_bp(CPUMIPSState *env, unsigned int code, bool trap)
+ void cpu_loop(CPUMIPSState *env)
  {
-     uint64_t msk = s->capareg;
-     uint32_t val;
-     bool y;
+     CPUState *cs = env_cpu(env);
+     int trapnr, si_code;
+     unsigned int code;
+     abi_long ret;
+ # ifdef TARGET_ABI_MIPSO32
+     unsigned int syscall_num;
+ # endif
  
-     switch (s->sd_spec_version) {
-     case 4:
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, BUS64BIT_V4);
-         trace_sdhci_capareg("64-bit system bus (v4)", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, BUS64BIT_V4, 0);
+     for(;;) {
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+         process_queued_cpu_work(cs);
  
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, UHS_II);
-         trace_sdhci_capareg("UHS-II", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, UHS_II, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, ADMA3);
-         trace_sdhci_capareg("ADMA3", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, ADMA3, 0);
- 
--    /* fallthrough */
-+        fallthrough;
-     case 3:
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, ASYNC_INT);
-         trace_sdhci_capareg("async interrupt", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, ASYNC_INT, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, SLOT_TYPE);
-         if (val) {
-             error_setg(errp, "slot-type not supported");
-             return;
-         }
-         trace_sdhci_capareg("slot type", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, SLOT_TYPE, 0);
- 
-         if (val != 2) {
-             val = FIELD_EX64(s->capareg, SDHC_CAPAB, EMBEDDED_8BIT);
-             trace_sdhci_capareg("8-bit bus", val);
-         }
-         msk = FIELD_DP64(msk, SDHC_CAPAB, EMBEDDED_8BIT, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, BUS_SPEED);
-         trace_sdhci_capareg("bus speed mask", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, BUS_SPEED, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, DRIVER_STRENGTH);
-         trace_sdhci_capareg("driver strength mask", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, DRIVER_STRENGTH, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, TIMER_RETUNING);
-         trace_sdhci_capareg("timer re-tuning", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, TIMER_RETUNING, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, SDR50_TUNING);
-         trace_sdhci_capareg("use SDR50 tuning", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, SDR50_TUNING, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, RETUNING_MODE);
-         trace_sdhci_capareg("re-tuning mode", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, RETUNING_MODE, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, CLOCK_MULT);
-         trace_sdhci_capareg("clock multiplier", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, CLOCK_MULT, 0);
- 
--    /* fallthrough */
-+        fallthrough;
-     case 2: /* default version */
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, ADMA2);
-         trace_sdhci_capareg("ADMA2", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, ADMA2, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, ADMA1);
-         trace_sdhci_capareg("ADMA1", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, ADMA1, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, BUS64BIT);
-         trace_sdhci_capareg("64-bit system bus (v3)", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, BUS64BIT, 0);
- 
--    /* fallthrough */
-+        fallthrough;
-     case 1:
-         y = FIELD_EX64(s->capareg, SDHC_CAPAB, TOUNIT);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, TOUNIT, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, TOCLKFREQ);
-         trace_sdhci_capareg(y ? "timeout (MHz)" : "Timeout (KHz)", val);
-         if (sdhci_check_capab_freq_range(s, "timeout", val, errp)) {
-             return;
-         }
-         msk = FIELD_DP64(msk, SDHC_CAPAB, TOCLKFREQ, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, BASECLKFREQ);
-         trace_sdhci_capareg(y ? "base (MHz)" : "Base (KHz)", val);
-         if (sdhci_check_capab_freq_range(s, "base", val, errp)) {
-             return;
-         }
-         msk = FIELD_DP64(msk, SDHC_CAPAB, BASECLKFREQ, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, MAXBLOCKLENGTH);
-         if (val >= 3) {
-             error_setg(errp, "block size can be 512, 1024 or 2048 only");
-             return;
-         }
-         trace_sdhci_capareg("max block length", sdhci_get_fifolen(s));
-         msk = FIELD_DP64(msk, SDHC_CAPAB, MAXBLOCKLENGTH, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, HIGHSPEED);
-         trace_sdhci_capareg("high speed", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, HIGHSPEED, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, SDMA);
-         trace_sdhci_capareg("SDMA", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, SDMA, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, SUSPRESUME);
-         trace_sdhci_capareg("suspend/resume", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, SUSPRESUME, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, V33);
-         trace_sdhci_capareg("3.3v", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, V33, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, V30);
-         trace_sdhci_capareg("3.0v", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, V30, 0);
- 
-         val = FIELD_EX64(s->capareg, SDHC_CAPAB, V18);
-         trace_sdhci_capareg("1.8v", val);
-         msk = FIELD_DP64(msk, SDHC_CAPAB, V18, 0);
-         break;
- 
-     default:
-         error_setg(errp, "Unsupported spec version: %u", s->sd_spec_version);
-     }
-     if (msk) {
-         qemu_log_mask(LOG_UNIMP,
-                       "SDHCI: unknown CAPAB mask: 0x%016" PRIx64 "\n", msk);
-     }
- }
-@@ -1688,160 +1688,160 @@ static void
- usdhc_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
- {
-     SDHCIState *s = SYSBUS_SDHCI(opaque);
-     uint8_t hostctl1;
-     uint32_t value = (uint32_t)val;
- 
-     switch (offset) {
-     case USDHC_DLL_CTRL:
-     case USDHC_TUNE_CTRL_STATUS:
-     case USDHC_UNDOCUMENTED_REG27:
-     case USDHC_TUNING_CTRL:
-     case USDHC_WTMK_LVL:
-         break;
- 
-     case USDHC_VENDOR_SPEC:
-         s->vendor_spec = value;
-         switch (s->vendor) {
-         case SDHCI_VENDOR_IMX:
-             if (value & USDHC_IMX_FRC_SDCLK_ON) {
-                 s->prnsts &= ~SDHC_IMX_CLOCK_GATE_OFF;
+         switch(trapnr) {
+         case EXCP_SYSCALL:
+             env->active_tc.PC += 4;
+ # ifdef TARGET_ABI_MIPSO32
+             syscall_num = env->active_tc.gpr[2] - 4000;
+             if (syscall_num >= sizeof(mips_syscall_args)) {
+                 /* syscall_num is larger that any defined for MIPS O32 */
+                 ret = -TARGET_ENOSYS;
+             } else if (mips_syscall_args[syscall_num] ==
+                        MIPS_SYSCALL_NUMBER_UNUSED) {
+                 /* syscall_num belongs to the range not defined for MIPS O32 */
+                 ret = -TARGET_ENOSYS;
              } else {
-                 s->prnsts |= SDHC_IMX_CLOCK_GATE_OFF;
+                 /* syscall_num is valid */
+                 int nb_args;
+                 abi_ulong sp_reg;
+                 abi_ulong arg5 = 0, arg6 = 0, arg7 = 0, arg8 = 0;
+ 
+                 nb_args = mips_syscall_args[syscall_num];
+                 sp_reg = env->active_tc.gpr[29];
+                 switch (nb_args) {
+                 /* these arguments are taken from the stack */
+                 case 8:
+                     if ((ret = get_user_ual(arg8, sp_reg + 28)) != 0) {
+                         goto done_syscall;
+                     }
+-                    /* fall through */
++                    fallthrough;
+                 case 7:
+                     if ((ret = get_user_ual(arg7, sp_reg + 24)) != 0) {
+                         goto done_syscall;
+                     }
+-                    /* fall through */
++                    fallthrough;
+                 case 6:
+                     if ((ret = get_user_ual(arg6, sp_reg + 20)) != 0) {
+                         goto done_syscall;
+                     }
+-                    /* fall through */
++                    fallthrough;
+                 case 5:
+                     if ((ret = get_user_ual(arg5, sp_reg + 16)) != 0) {
+                         goto done_syscall;
+                     }
+-                    /* fall through */
++                    fallthrough;
+                 default:
+                     break;
+                 }
+                 ret = do_syscall(env, env->active_tc.gpr[2],
+                                  env->active_tc.gpr[4],
+                                  env->active_tc.gpr[5],
+                                  env->active_tc.gpr[6],
+                                  env->active_tc.gpr[7],
+                                  arg5, arg6, arg7, arg8);
              }
-             break;
-         default:
-             break;
-         }
-         break;
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 8ccaab7859..ff33b4ccf6 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -960,84 +960,84 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
+ {
+     abi_ulong len;
+     int ret = 0;
  
-     case SDHC_HOSTCTL:
-         /*
-          * Here's What ESDHCI has at offset 0x28 (SDHC_HOSTCTL)
-          *
-          *       7         6     5      4      3      2        1      0
-          * |-----------+--------+--------+-----------+----------+---------|
-          * | Card      | Card   | Endian | DATA3     | Data     | Led     |
-          * | Detect    | Detect | Mode   | as Card   | Transfer | Control |
-          * | Signal    | Test   |        | Detection | Width    |         |
-          * | Selection | Level  |        | Pin       |          |         |
-          * |-----------+--------+--------+-----------+----------+---------|
-          *
-          * and 0x29
-          *
-          *  15      10 9    8
-          * |----------+------|
-          * | Reserved | DMA  |
-          * |          | Sel. |
-          * |          |      |
-          * |----------+------|
-          *
-          * and here's what SDCHI spec expects those offsets to be:
-          *
-          * 0x28 (Host Control Register)
-          *
-          *     7        6         5       4  3      2         1        0
-          * |--------+--------+----------+------+--------+----------+---------|
-          * | Card   | Card   | Extended | DMA  | High   | Data     | LED     |
-          * | Detect | Detect | Data     | Sel. | Speed  | Transfer | Control |
-          * | Signal | Test   | Transfer |      | Enable | Width    |         |
-          * | Sel.   | Level  | Width    |      |        |          |         |
-          * |--------+--------+----------+------+--------+----------+---------|
-          *
-          * and 0x29 (Power Control Register)
-          *
-          * |----------------------------------|
-          * | Power Control Register           |
-          * |                                  |
-          * | Description omitted,             |
-          * | since it has no analog in ESDHCI |
-          * |                                  |
-          * |----------------------------------|
-          *
-          * Since offsets 0x2A and 0x2B should be compatible between
-          * both IP specs we only need to reconcile least 16-bit of the
-          * word we've been given.
-          */
- 
-         /*
-          * First, save bits 7 6 and 0 since they are identical
-          */
-         hostctl1 = value & (SDHC_CTRL_LED |
-                             SDHC_CTRL_CDTEST_INS |
-                             SDHC_CTRL_CDTEST_EN);
-         /*
-          * Second, split "Data Transfer Width" from bits 2 and 1 in to
-          * bits 5 and 1
-          */
-         if (value & USDHC_CTRL_8BITBUS) {
-             hostctl1 |= SDHC_CTRL_8BITBUS;
-         }
- 
-         if (value & USDHC_CTRL_4BITBUS) {
-             hostctl1 |= USDHC_CTRL_4BITBUS;
-         }
- 
-         /*
-          * Third, move DMA select from bits 9 and 8 to bits 4 and 3
-          */
-         hostctl1 |= SDHC_DMA_TYPE(value >> (8 - 3));
- 
-         /*
-          * Now place the corrected value into low 16-bit of the value
-          * we are going to give standard SDHCI write function
-          *
-          * NOTE: This transformation should be the inverse of what can
-          * be found in drivers/mmc/host/sdhci-esdhc-imx.c in Linux
-          * kernel
-          */
-         value &= ~UINT16_MAX;
-         value |= hostctl1;
-         value |= (uint16_t)s->pwrcon << 8;
- 
-         sdhci_write(opaque, offset, value, size);
-         break;
- 
-     case USDHC_MIX_CTRL:
-         /*
-          * So, when SD/MMC stack in Linux tries to write to "Transfer
-          * Mode Register", ESDHC i.MX quirk code will translate it
-          * into a write to ESDHC_MIX_CTRL, so we do the opposite in
-          * order to get where we started
-          *
-          * Note that Auto CMD23 Enable bit is located in a wrong place
-          * on i.MX, but since it is not used by QEMU we do not care.
-          *
-          * We don't want to call sdhci_write(.., SDHC_TRNMOD, ...)
-          * here because it will result in a call to
-          * sdhci_send_command(s) which we don't want.
-          *
-          */
-         s->trnmod = value & UINT16_MAX;
-         break;
-     case SDHC_TRNMOD:
-         /*
-          * Similar to above, but this time a write to "Command
-          * Register" will be translated into a 4-byte write to
-          * "Transfer Mode register" where lower 16-bit of value would
-          * be set to zero. So what we do is fill those bits with
-          * cached value from s->trnmod and let the SDHCI
-          * infrastructure handle the rest
-          */
-         sdhci_write(opaque, offset, val | s->trnmod, size);
-         break;
-     case SDHC_BLKSIZE:
-         /*
-          * ESDHCI does not implement "Host SDMA Buffer Boundary", and
-          * Linux driver will try to zero this field out which will
-          * break the rest of SDHCI emulation.
-          *
-          * Linux defaults to maximum possible setting (512K boundary)
-          * and it seems to be the only option that i.MX IP implements,
-          * so we artificially set it to that value.
-          */
-         val |= 0x7 << 12;
--        /* FALLTHROUGH */
-+        fallthrough;
-     default:
-         sdhci_write(opaque, offset, val, size);
-         break;
+     if (start & ~TARGET_PAGE_MASK) {
+         return -TARGET_EINVAL;
      }
+     if (len_in == 0) {
+         return 0;
+     }
+     len = TARGET_PAGE_ALIGN(len_in);
+     if (len == 0 || !guest_range_valid_untagged(start, len)) {
+         return -TARGET_EINVAL;
+     }
+ 
+     /* Translate for some architectures which have different MADV_xxx values */
+     switch (advice) {
+     case TARGET_MADV_DONTNEED:      /* alpha */
+         advice = MADV_DONTNEED;
+         break;
+     case TARGET_MADV_WIPEONFORK:    /* parisc */
+         advice = MADV_WIPEONFORK;
+         break;
+     case TARGET_MADV_KEEPONFORK:    /* parisc */
+         advice = MADV_KEEPONFORK;
+         break;
+     /* we do not care about the other MADV_xxx values yet */
+     }
+ 
+     /*
+      * Most advice values are hints, so ignoring and returning success is ok.
+      *
+      * However, some advice values such as MADV_DONTNEED, MADV_WIPEONFORK and
+      * MADV_KEEPONFORK are not hints and need to be emulated.
+      *
+      * A straight passthrough for those may not be safe because qemu sometimes
+      * turns private file-backed mappings into anonymous mappings.
+      * If all guest pages have PAGE_PASSTHROUGH set, mappings have the
+      * same semantics for the host as for the guest.
+      *
+      * We pass through MADV_WIPEONFORK and MADV_KEEPONFORK if possible and
+      * return failure if not.
+      *
+      * MADV_DONTNEED is passed through as well, if possible.
+      * If passthrough isn't possible, we nevertheless (wrongly!) return
+      * success, which is broken but some userspace programs fail to work
+      * otherwise. Completely implementing such emulation is quite complicated
+      * though.
+      */
+     mmap_lock();
+     switch (advice) {
+     case MADV_WIPEONFORK:
+     case MADV_KEEPONFORK:
+         ret = -EINVAL;
+-        /* fall through */
++        fallthrough;
+     case MADV_DONTNEED:
+         if (page_check_range(start, len, PAGE_PASSTHROUGH)) {
+             ret = get_errno(madvise(g2h_untagged(start), len, advice));
+             if ((advice == MADV_DONTNEED) && (ret == 0)) {
+                 page_reset_target_data(start, start + len - 1);
+             }
+         }
+     }
+     mmap_unlock();
+ 
+     return ret;
  }
+ 
+ #ifndef TARGET_FORCE_SHMLBA
+ /*
+  * For most architectures, SHMLBA is the same as the page size;
+  * some architectures have larger values, in which case they should
+  * define TARGET_FORCE_SHMLBA and provide a target_shmlba() function.
+  * This corresponds to the kernel arch code defining __ARCH_FORCE_SHMLBA
+  * and defining its own value for SHMLBA.
+  *
+  * The kernel also permits SHMLBA to be set by the architecture to a
+  * value larger than the page size without setting __ARCH_FORCE_SHMLBA;
+  * this means that addresses are rounded to the large size if
+  * SHM_RND is set but addresses not aligned to that size are not rejected
+  * as long as they are at least page-aligned. Since the only architecture
+  * which uses this is ia64 this code doesn't provide for that oddity.
+  */
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index d49cd314a2..d15817846c 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -7740,74 +7740,74 @@ static int do_safe_futex(int *uaddr, int op, int val,
+ /* ??? Using host futex calls even when target atomic operations
+    are not really atomic probably breaks things.  However implementing
+    futexes locally would make futexes shared between multiple processes
+    tricky.  However they're probably useless because guest atomic
+    operations won't work either.  */
+ #if defined(TARGET_NR_futex) || defined(TARGET_NR_futex_time64)
+ static int do_futex(CPUState *cpu, bool time64, target_ulong uaddr,
+                     int op, int val, target_ulong timeout,
+                     target_ulong uaddr2, int val3)
+ {
+     struct timespec ts, *pts = NULL;
+     void *haddr2 = NULL;
+     int base_op;
+ 
+     /* We assume FUTEX_* constants are the same on both host and target. */
+ #ifdef FUTEX_CMD_MASK
+     base_op = op & FUTEX_CMD_MASK;
+ #else
+     base_op = op;
+ #endif
+     switch (base_op) {
+     case FUTEX_WAIT:
+     case FUTEX_WAIT_BITSET:
+         val = tswap32(val);
+         break;
+     case FUTEX_WAIT_REQUEUE_PI:
+         val = tswap32(val);
+         haddr2 = g2h(cpu, uaddr2);
+         break;
+     case FUTEX_LOCK_PI:
+     case FUTEX_LOCK_PI2:
+         break;
+     case FUTEX_WAKE:
+     case FUTEX_WAKE_BITSET:
+     case FUTEX_TRYLOCK_PI:
+     case FUTEX_UNLOCK_PI:
+         timeout = 0;
+         break;
+     case FUTEX_FD:
+         val = target_to_host_signal(val);
+         timeout = 0;
+         break;
+     case FUTEX_CMP_REQUEUE:
+     case FUTEX_CMP_REQUEUE_PI:
+         val3 = tswap32(val3);
+-        /* fall through */
++        fallthrough;
+     case FUTEX_REQUEUE:
+     case FUTEX_WAKE_OP:
+         /*
+          * For these, the 4th argument is not TIMEOUT, but VAL2.
+          * But the prototype of do_safe_futex takes a pointer, so
+          * insert casts to satisfy the compiler.  We do not need
+          * to tswap VAL2 since it's not compared to guest memory.
+           */
+         pts = (struct timespec *)(uintptr_t)timeout;
+         timeout = 0;
+         haddr2 = g2h(cpu, uaddr2);
+         break;
+     default:
+         return -TARGET_ENOSYS;
+     }
+     if (timeout) {
+         pts = &ts;
+         if (time64
+             ? target_to_host_timespec64(pts, timeout)
+             : target_to_host_timespec(pts, timeout)) {
+             return -TARGET_EFAULT;
+         }
+     }
+     return do_safe_futex(g2h(cpu, uaddr), op, val, pts, haddr2, val3);
+ }
+ #endif
+ 
+ #if defined(TARGET_NR_name_to_handle_at) && defined(CONFIG_OPEN_BY_HANDLE)
 -- 
 2.39.2
 
