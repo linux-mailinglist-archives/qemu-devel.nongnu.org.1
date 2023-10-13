@@ -2,81 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03047C8C0A
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 19:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E92F7C8C1F
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 19:12:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrLfA-00066A-Sa; Fri, 13 Oct 2023 13:09:24 -0400
+	id 1qrLg3-0000zt-PX; Fri, 13 Oct 2023 13:10:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qrLey-00063S-9G
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 13:09:12 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qrLg1-0000zc-Jq
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 13:10:17 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qrLev-0004uy-Nv
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 13:09:12 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-32157c8e4c7so2184006f8f.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 10:09:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qrLfz-0005U7-Ta
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 13:10:17 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6b72807051bso285230b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 10:10:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697216948; x=1697821748; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0qOi0xwKuGSLTHrRHx2vwO8Oqun+v27D8JdNp1n4fc8=;
- b=Xlh4LEN6GWqjCe5/QqzCMLIZtvXlG6KPnX4FLJhVDPbZFvbZOEPb6apHCHychdyoLH
- 0WJS7FUdHehiPCH8Eic8+KX2Kt3N4gjmBR5HHGF2l72UEpcOobu2QYeVhxpint46zk92
- xtrDqnL+5vkw3Hj3ZwcH02ldEiclfFG6MxdsSw1/f32DHNyJwKEFcvi4b4zGoBZPK+6r
- mFlK3j68FFXBZ/vQ0bKdODhuIszkrpOzyXtl7IYTDpQAUs865cXcqpMz2mGE4YXrvuny
- Ys0IKhtO7mcYJGY0ApfiB5/ZOHbDFrZ9MEXvUxQ/a1fOHD7nEI/72u0LxPyFlCziNRNt
- YhRw==
+ d=linaro.org; s=google; t=1697217014; x=1697821814; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=amw5rWwKOEnOt99g+OsLsyKAiCnRelMX/V2tMxq7+tU=;
+ b=pWl1C7H5WQg+HcupR2EWrxNLuZ/oW+vx8BSvrvE8q+ZzeS3Snlo5kRvOS4Tix9gbSI
+ rfmfg3k6mIq6rNVjPg9fJoPeFbmyLrE/akXevAtkwWL+Bx42KEEjwNhwPQGO5fI4X7HM
+ SaIVrjR7J/rwf86pLCrFMfECvIhNrfjDZjGNlR6u+jo16xP7JfQTdtJ9P1IPOMP5AXFj
+ MB0eaJicMO7lO9alpEEOUj050rv+0vi917NYBr8wkHG7mcGbTZWja9FwtGXjCYnNjr/l
+ XS2a8DhTaDk1KPOpRnyocrZP+ibjjK8ZdrCbcKYHnj/PXE4jOjUQ4Zzf+9W4hbDtlNx1
+ 0FNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697216948; x=1697821748;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=0qOi0xwKuGSLTHrRHx2vwO8Oqun+v27D8JdNp1n4fc8=;
- b=SWBw4I0UVQAca4XMIgFyCklwUferPrPIAYOP8MtVfd351mOow8dNzwEeNQM4MhBxlU
- n8O32MAhwR9G2dtHPC9iHG8nTdqa3RT02a8RCx2ZQME0qFlrg4mF8L3uZuDkG/Iqd4Ow
- DZqL3noulwLX9Ds3Yy1AwgzAnHNXPTioSj7h4xlnfKvLFAOImVF3S3/MwXXNd92x1Qes
- +HXXv0zEcPxzJCW/YORhF2GgPm1kPw2fc2TWyZ4serlDL5D5+Ep8vTg/7Nmsyo7BiPcH
- SMcs6OoGPlKQReNKZ0Wj8X5t92VFICTDMjlwl3XDPKBOntnWoZvcCM+H6QcAnTyxdjJW
- WkAQ==
-X-Gm-Message-State: AOJu0Yx0Ci7biCWrKyCaN/DmlDs/TGnNBOtNL9YVoUVfrb104XvBg9ef
- S/t2/yv3hPePm3qwrjI53UNB4g==
-X-Google-Smtp-Source: AGHT+IHyTHLgIyQEIxYFan3eGzeY+ZPWYqu++q4yXwn/u33HNxBgNapMW814PNWvR77TqWV2h2iWXg==
-X-Received: by 2002:a05:6000:1245:b0:32d:8eec:96a5 with SMTP id
- j5-20020a056000124500b0032d8eec96a5mr5254972wrx.42.1697216948188; 
- Fri, 13 Oct 2023 10:09:08 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- a11-20020adff7cb000000b00326f0ca3566sm21067816wrq.50.2023.10.13.10.09.07
+ d=1e100.net; s=20230601; t=1697217014; x=1697821814;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=amw5rWwKOEnOt99g+OsLsyKAiCnRelMX/V2tMxq7+tU=;
+ b=MrAA1Ntc70W06VKXc3U/mStVWvrMQQs0JNMlIPQntzKl8mZMxfsjfn4Q489pqVOCsz
+ vLCUc+77nIkKCXjyWdYBWRNxkPRSrxaQz0/1g59GnD3UyQ15cDHkdab9tZdteScuAzF2
+ ifG+nqeAGkmIpLnJ3T9e85lvjn/Aty5VSRjU5MXV+ZmYBOFttzSpgMfhXIL35LgsCtDw
+ fT8lXDyv+qE1gmlNYxJHUt04+TejhluTE1sdY7kld00e1Zf4F5AcAY/SBfqXngMgvwxm
+ /fWoBj7P9tJj37i5XO/nuHwbi4rdEH4rzrmDC16vQiFM8inBEXdoFJn1qx6gtMHatilo
+ O/0Q==
+X-Gm-Message-State: AOJu0YwnesZDhr0hWWBP7ajI6g6rnKclPXUhiGmm+wXJ3+9U8YQVfHgH
+ JUKQbQugEYFY8Lb2pT4CdqujuRdFJpA0A+OqE1I=
+X-Google-Smtp-Source: AGHT+IGf8oPz+2D43EzEKaLL5rmWca7PCGMG0ABk3F8YS68yVQTIGyVo2LnbjfPki8GZa4jqczY3+g==
+X-Received: by 2002:a05:6a00:1810:b0:6b6:e754:9e02 with SMTP id
+ y16-20020a056a00181000b006b6e7549e02mr1105172pfa.12.1697217013811; 
+ Fri, 13 Oct 2023 10:10:13 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ n7-20020a62e507000000b00693411c6c3csm13687926pff.39.2023.10.13.10.10.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 10:09:07 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 840FB1FFBB;
- Fri, 13 Oct 2023 18:09:07 +0100 (BST)
-References: <20231013141131.1531-1-philmd@linaro.org>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Evgeny
- Iakovlev <eiakovlev@linux.microsoft.com>, =?utf-8?Q?Marc-Andr=C3=A9?=
- Lureau <marcandre.lureau@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v3 0/10] hw/char/pl011: Implement TX (async) FIFO to
- avoid blocking the main loop
-Date: Fri, 13 Oct 2023 18:08:34 +0100
-In-reply-to: <20231013141131.1531-1-philmd@linaro.org>
-Message-ID: <87a5smlaa4.fsf@linaro.org>
+ Fri, 13 Oct 2023 10:10:13 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: jniethe5@gmail.com
+Subject: [PATCH v4 00/13] tcg/ppc: direct branching, power9, power10
+Date: Fri, 13 Oct 2023 10:09:59 -0700
+Message-Id: <20231013171012.122980-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,21 +87,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Build on Jordan's patch to allow direct branching and USE_REG_TB
+to co-exist.  Use the power9 addpcis wherever pc-relative addrs
+might be handy.  Merge in my power10 patches for prefixed insns.
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Finish up with an RFC to disable TCG_REG_TB for power9+, when
+pc-relative code sequences exist.  I've only lightly tested this,
+and it seems to increase code size by a few insns per TB.  It
+really depends on how much we end up using the constant pool.
 
-> Hi,
->
-> This series add support for (async) FIFO on the transmit path
-> of the PL011 UART.
+Changes for v4:
+  * Fix tcg_out_addpcis.
+  * Drop RFC from the final patch.  Jordan's testing suggests that
+    pc-relative addressing is slightly better than tb-relative.
+    I can imagine that addpcis+ld might be fused in the pipeline
+    to an absolute 64-bit address, and so has no real cost.
 
-Hmm neither I or patchew received 10/10:
 
-  https://patchew.org/QEMU/20231013141131.1531-1-philmd@linaro.org/
+r~
 
-?
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Jordan Niethe (1):
+  tcg/ppc: Enable direct branching tcg_out_goto_tb with TCG_REG_TB
+
+Richard Henderson (12):
+  tcg/ppc: Untabify tcg-target.c.inc
+  tcg/ppc: Reinterpret tb-relative to TB+4
+  tcg/ppc: Use ADDPCIS in tcg_out_tb_start
+  tcg/ppc: Use ADDPCIS in tcg_out_movi_int
+  tcg/ppc: Use ADDPCIS for the constant pool
+  tcg/ppc: Use ADDPCIS in tcg_out_goto_tb
+  tcg/ppc: Use PADDI in tcg_out_movi
+  tcg/ppc: Use prefixed instructions in tcg_out_mem_long
+  tcg/ppc: Use PLD in tcg_out_movi for constant pool
+  tcg/ppc: Use prefixed instructions in tcg_out_dupi_vec
+  tcg/ppc: Use PLD in tcg_out_goto_tb
+  tcg/ppc: Disable TCG_REG_TB for Power9/Power10
+
+ tcg/ppc/tcg-target.c.inc | 277 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 236 insertions(+), 41 deletions(-)
+
+-- 
+2.34.1
+
 
