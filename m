@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5B37C8B89
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 18:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF44C7C8B8C
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 18:46:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrLGy-0000Yf-Jv; Fri, 13 Oct 2023 12:44:24 -0400
+	id 1qrLIL-0001k9-Ms; Fri, 13 Oct 2023 12:45:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qrLGw-0000YW-EP
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 12:44:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qrLGu-0007wR-Vo
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 12:44:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697215458;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BrCsFKU6/6b27ugadRaxGL+aaYn/AJ7TD3MhsziMBx4=;
- b=C1wbwr0xqKI1m615QMRJiSqw2bH6Lbvdwd2qonHYkBuZ2zGOcTJ7FXSrgdyXHbOn8NIgRD
- VrTs//NaTGDBAeTvwjNPEPuTzWpPtcBJp4+6JLkxZhZ4AkOaqA3XnTQ6IWHOL/NjIGhpo5
- V7+7WbPLZfAU0I73B3CgRKnRyzTmU6k=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-CUD_RJKYODu3gBFRdS4ANQ-1; Fri, 13 Oct 2023 12:43:58 -0400
-X-MC-Unique: CUD_RJKYODu3gBFRdS4ANQ-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-5056b17f0b9so2956517e87.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 09:43:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qrLIJ-0001jv-Bj
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 12:45:47 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qrLIH-0008VM-EZ
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 12:45:47 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-32d9effe314so586878f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 09:45:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697215544; x=1697820344; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xrJui08UBAGYjB83TZHsbrcElQC0hqilt7ro+FTXQfA=;
+ b=H+2eZGzLA+dmRwcN9lBlNppHSUNlDeWiVS6d7PCEPlNrRtFvyIBv5aX32kzyqjGXsn
+ hkf7ulW8SP5nFUrM0dMyFdi4QTg643ZlekE6+4P7oKgpl+YCwX46QqPfDlS8dswtaBdg
+ 7UGODjPoCOBuppaS7T6FQnPnygfLvZlQo9vQsmS6vVxM/WdM7SvjXN0S09XrW7WpWfzZ
+ 5ZnKtTQB3Mh9dtxLPfndM/2G9hY3pKfOV+fem9JxJHq9OP9WNVbEg5n3sUmO9Koprl+b
+ 69AR1SiZu6BG1SVEmSJMT5KJIOkXQeTi4Sl9o/KhV1XiBSwqmoGArRZwlcsJrnL7fSyq
+ ZI2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697215437; x=1697820237;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BrCsFKU6/6b27ugadRaxGL+aaYn/AJ7TD3MhsziMBx4=;
- b=auCGcZcJMufhEUGDN3qo0KRWqKEPeuhi6zJSfkJIuwZrHuyV2UuQektUvbjxIo9CU8
- 9q0aOrrlm8AMAl6p0WiUul3tqZR4oId9ltcWPRAFsFASUpr882VoCPi3DDECn19q283s
- cE7Q/Jazh5N0I/4rN7D/j1f0DYZl26hRmgvoaYxlQIWa6/rRZYHyH+kcRodJDB6ZVgwR
- Z+Wsjh1PJQEPYRuOoqON0Z4jXLbLbj8lGflVeYsyA77JXrJHQX1eDUafpmpdNWO/m/wf
- SGf8euThuZaDFHPbGrjroKn4/pDekzd/gy37sAqAWEB+ZHhgOgi4hY0wDaErcezQVTo5
- 3fgQ==
-X-Gm-Message-State: AOJu0Yxj7+LaTGABVBibLqpQQSzzhPH6nHLFykHYWkG8KYrYJuUpXP17
- kKMU4JZUWwO5EoZP7JUCNRUxTWlv5tVv+HPYGW8lG7Wh4atkmHQoqRJYaVX/D63hCqcECDRHLiq
- /t/5fI4n9y4ZJ+nSCIbb+IL0LUhljv3c=
-X-Received: by 2002:a05:6512:31d2:b0:507:9797:304d with SMTP id
- j18-20020a05651231d200b005079797304dmr458025lfe.9.1697215437377; 
- Fri, 13 Oct 2023 09:43:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMAUq4eysoupUzC0Qd0gCUoJgrPy1Ra4scFXSjChqP9U74P346j0S36AAOF6Sdr6dzciz5zoKRnIWmmKAFniE=
-X-Received: by 2002:a05:6512:31d2:b0:507:9797:304d with SMTP id
- j18-20020a05651231d200b005079797304dmr458016lfe.9.1697215436995; Fri, 13 Oct
- 2023 09:43:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697215544; x=1697820344;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=xrJui08UBAGYjB83TZHsbrcElQC0hqilt7ro+FTXQfA=;
+ b=dNW2hpaDHwOk2za/PY68SqCu5SZgl1sb5ZmA2IsmV4TLaKiXjgPf4gfNV5Jbwqu7pW
+ qtbpzF1qJNxruUdLZZ9snBaeZ6ZnBAqS9X0Y0ryvM53XMKoviv+P/cTpzhKF4aYYq6f6
+ W30oKrC1VXQju4NJXWJX0TNuSIiWPKfDv/xeU3AF/IqrHDslXaOB+XqBKrVq4P8JcQs+
+ EB+LdLMQZX+9OtCyjhnsKANXj1AELClgqFIZ3ODAvgXYn3sST1G38yxvFPz0Hf2T6H3A
+ s52Ypl9n5rfpMaSLoi2WyEOnYvLC+ku9GkvAxlcKcGJjjFWjNY5iPsgb+O/xVkAuT2sB
+ ItqQ==
+X-Gm-Message-State: AOJu0YzbJu16k7+yWzhC10lMS1GNfFVh0I29TRudj4OLD2Qc+tEvMXOU
+ 0tlxPMOJfikZeRCsngHsylF5mg==
+X-Google-Smtp-Source: AGHT+IFVWYnRM/avgnFjO2pjvCg4NWBRzluI0HAWxV3C5NqAjXAUZt7AXxbuGRjK53JVRxH/VJD14Q==
+X-Received: by 2002:adf:f404:0:b0:31c:3136:60af with SMTP id
+ g4-20020adff404000000b0031c313660afmr21719174wro.61.1697215543870; 
+ Fri, 13 Oct 2023 09:45:43 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ z17-20020adff1d1000000b0032d9caeab0fsm1870972wro.77.2023.10.13.09.45.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Oct 2023 09:45:43 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 05CBB1FFBB;
+ Fri, 13 Oct 2023 17:45:43 +0100 (BST)
+References: <20231006090610.26171-1-nicolas.eder@lauterbach.com>
+ <20231006090610.26171-27-nicolas.eder@lauterbach.com>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Nicolas Eder <nicolas.eder@lauterbach.com>
+Cc: qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Christian.Boenig@lauterbach.com
+Subject: Re: [PATCH v2 26/29] moved all mcd related header files into
+ include/mcdstub
+Date: Fri, 13 Oct 2023 17:45:17 +0100
+In-reply-to: <20231006090610.26171-27-nicolas.eder@lauterbach.com>
+Message-ID: <87v8balbd5.fsf@linaro.org>
 MIME-Version: 1.0
-References: <cover.1696185261.git.dxu@dxuuu.xyz>
-In-Reply-To: <cover.1696185261.git.dxu@dxuuu.xyz>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Fri, 13 Oct 2023 19:43:45 +0300
-Message-ID: <CAPMcbCqccA_LYhz08hr4XT3d08jqdFJPmt=WMTn+Nmzhk0cExw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Small fixes for qga
-To: Daniel Xu <dxu@dxuuu.xyz>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, berrange@redhat.com
-Content-Type: multipart/alternative; boundary="0000000000003ad84c06079bc38b"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,68 +98,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003ad84c06079bc38b
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-merged
+Nicolas Eder <nicolas.eder@lauterbach.com> writes:
 
-On Sun, Oct 1, 2023 at 9:39=E2=80=AFPM Daniel Xu <dxu@dxuuu.xyz> wrote:
+> From: neder <nicolas.eder@lauterbach.com>
+>
+> ---
+>  target/arm/mcdstub.h =3D> include/mcdstub/arm_mcdstub.h | 2 +-
+>  {mcdstub =3D> include/mcdstub}/mcd_shared_defines.h     | 0
+>  {mcdstub =3D> include/mcdstub}/mcdstub.h                | 0
+>  {mcdstub =3D> include/mcdstub}/mcdstub_common.h         | 0
 
-> These are two small fixes that fell out of [0]. Since we are not moving
-> forward with that patchset, I thought it would be good to at least send
-> the fixes that came out of it.
->
-> See commits for more details.
->
-> [0]:
-> https://lore.kernel.org/qemu-devel/cover.1695034158.git.dxu@dxuuu.xyz/
->
-> Daniel Xu (2):
->   qga: Fix memory leak when output stream is unused
->   qapi: qga: Clarify when out-data and err-data are populated
->
->  qga/commands.c       | 4 ++--
->  qga/qapi-schema.json | 8 +++++---
->  2 files changed, 7 insertions(+), 5 deletions(-)
->
-> --
-> 2.42.0
->
->
+Just bring them in in the correct place from the start to avoid the
+noise of all the code motion.
 
---0000000000003ad84c06079bc38b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">merged<br></div><br><div class=3D"gmail_quote"><div dir=3D=
-"ltr" class=3D"gmail_attr">On Sun, Oct 1, 2023 at 9:39=E2=80=AFPM Daniel Xu=
- &lt;<a href=3D"mailto:dxu@dxuuu.xyz">dxu@dxuuu.xyz</a>&gt; wrote:<br></div=
-><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
--left:1px solid rgb(204,204,204);padding-left:1ex">These are two small fixe=
-s that fell out of [0]. Since we are not moving<br>
-forward with that patchset, I thought it would be good to at least send<br>
-the fixes that came out of it.<br>
-<br>
-See commits for more details.<br>
-<br>
-[0]: <a href=3D"https://lore.kernel.org/qemu-devel/cover.1695034158.git.dxu=
-@dxuuu.xyz/" rel=3D"noreferrer" target=3D"_blank">https://lore.kernel.org/q=
-emu-devel/cover.1695034158.git.dxu@dxuuu.xyz/</a><br>
-<br>
-Daniel Xu (2):<br>
-=C2=A0 qga: Fix memory leak when output stream is unused<br>
-=C2=A0 qapi: qga: Clarify when out-data and err-data are populated<br>
-<br>
-=C2=A0qga/commands.c=C2=A0 =C2=A0 =C2=A0 =C2=A0| 4 ++--<br>
-=C2=A0qga/qapi-schema.json | 8 +++++---<br>
-=C2=A02 files changed, 7 insertions(+), 5 deletions(-)<br>
-<br>
--- <br>
-2.42.0<br>
-<br>
-</blockquote></div>
-
---0000000000003ad84c06079bc38b--
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
