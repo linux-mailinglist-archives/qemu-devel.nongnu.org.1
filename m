@@ -2,108 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061DC7C8058
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A22707C80A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:48:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDbj-00033j-DS; Fri, 13 Oct 2023 04:33:19 -0400
+	id 1qrDpP-0007EN-Ql; Fri, 13 Oct 2023 04:47:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qrDbf-00032j-W3
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:33:16 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qrDbc-0006kG-L6
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:33:15 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39D8HE9N001329; Fri, 13 Oct 2023 08:32:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=7l6MO0yUrJI8RxgKzl1Ef6o2BXvVmdp+n5vj4o9VhMY=;
- b=bao85rALidh1fYVqbKa1+is1/W3IwKSvcoYYmeEHQ7CMBZzALu42m5PtiA3alDVAaLwd
- pFxfPkGADv82sWNzW+YCgicSyNnxeaFFs7/6Gtj+gnfp5dZkHiZs2WM0KXXE86PaerTd
- UnBIUY5LL2ycolZx35w+RuDZlHbhPFFQ/O8NQEiTMRCK90WV/SxteEyZyeRzU1hSviKl
- ee5OgRNaFShHmh/Zrp3Sg91UNIWUCGYhxb9D7VpTdgkfvVQWbCEbF7eo7Bf2PMQf30j9
- CvOYm8iugeeWhWvQkrfL7UJaCslbRia8jDS+/fEQ735vRKMP+Og6BHKTuWjbB6e6A4rt RQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tq28e8gqu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Oct 2023 08:32:55 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39D8HD2g001201;
- Fri, 13 Oct 2023 08:32:54 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tq28e8gqh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Oct 2023 08:32:54 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39D8VhjQ026141; Fri, 13 Oct 2023 08:32:53 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tpt54tnfp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Oct 2023 08:32:53 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39D8WqXZ27656916
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Oct 2023 08:32:53 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B3CF658052;
- Fri, 13 Oct 2023 08:32:52 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E69175805D;
- Fri, 13 Oct 2023 08:32:49 +0000 (GMT)
-Received: from [9.43.35.251] (unknown [9.43.35.251])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 13 Oct 2023 08:32:49 +0000 (GMT)
-Message-ID: <a9cb8b38-55fb-797c-a6b5-46a0811c6982@linux.ibm.com>
-Date: Fri, 13 Oct 2023 14:02:47 +0530
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qrDpH-0007Ba-Sb
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:19 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qrDpC-0000ic-Cj
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:47:19 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-406609df1a6so19612375e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:47:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697186832; x=1697791632; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=EXTiKlfvO+fuulfbFmz2mZPBH+WQvNLbmxQB72UEXVw=;
+ b=j8iQ4z26e9LHG8fKCqqnIhZa5dAlIjIZcDN5K4QB/BN7OTK28S7pQu69qqI30x44zi
+ ZXMIpjc+UM7xIblrA5/hBMvuWeL8a5iLAI9EQ1lkVkPWVjIDA4c9L+b6xoB4n9hfwy08
+ PUD89Mlj4l/pODIeNXrru649+KQ4nlqnF4s9dMmztXr+7iLwuavc5QMmxNpyyB4Iy/PK
+ 4aYRC8+Uy57M5te1pfRi7PKzoekekQTG3SM4xGG3sR79ct4bhx5mZauGYUfHBsqSvr4I
+ uB7GFsHG/ZWUrHePLVjmpt6jbxilY3xU640UYwVvpqA5hVpElr9nedYOTMoOxMT5sE8X
+ 0lVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697186832; x=1697791632;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EXTiKlfvO+fuulfbFmz2mZPBH+WQvNLbmxQB72UEXVw=;
+ b=WFgp5wd+PyE4vgQybJKRLMxF6KA8u6QGoupmthBAX+Wdfz6O7L9ec2sqth7o3uRThn
+ S83O3Nlfv1T7c1OnPsnKe5Oa0gOsQaEVcWhY4PNtCosL28zs/wzjJngW0YUp5mpY77Vv
+ Hdb5rEx+hhZQ34JhYg8ICtxUhcgjpiI7FATfTDzyE7UdbgzrkA9JhCxZ6+U1Auz4udJC
+ medk/w+Nq+a6drxl36E8z4Xsb9Llot/vTUJnH5nTNkwPmVk8vTAKdAPNPW2n5UyHF4Cn
+ Ylpff4Kcx9hsTbvq4P9uzglp9W8ixNtb69D8qk4bguPECcOOMaVqqmDSuvftX2OV/RiM
+ j8Dw==
+X-Gm-Message-State: AOJu0Yww9nVzaKO64ilt0v79y8s8fqyGW5JmeTt/K1pUtp1IjlG6FIca
+ Sfj0o9JHE1EYGahn4ZGHw+u+3rXZ9ZMxI3AiRQ8=
+X-Google-Smtp-Source: AGHT+IFmROStdTDzvesvS9nbrDcS0C5fYKmbGdy4ZcM5cRYyP1xv3WjNBkO16s435OkWuYeyix/lfg==
+X-Received: by 2002:a1c:f710:0:b0:404:746e:c601 with SMTP id
+ v16-20020a1cf710000000b00404746ec601mr21467492wmh.9.1697186832102; 
+ Fri, 13 Oct 2023 01:47:12 -0700 (PDT)
+Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
+ [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.47.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Oct 2023 01:47:11 -0700 (PDT)
+From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [RFC PATCH v3 00/78] Strict disable implicit fallthrough
+Date: Fri, 13 Oct 2023 11:45:28 +0300
+Message-Id: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [RFC PATCH v2 58/78] hw/ppc: add fallthrough pseudo-keyword
-Content-Language: en-US
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
-References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
- <a8b851d14520d857fccaadb9097e9aa71bb7e1bc.1697183699.git.manos.pitsidianakis@linaro.org>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <a8b851d14520d857fccaadb9097e9aa71bb7e1bc.1697183699.git.manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: XpuqqcEmTkQfEKjukjeWa7bhEm8Kylo1
-X-Proofpoint-GUID: xtS89O0S-LMr8O0zUU8Ia9TEtRcQcysl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-13_03,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- mlxscore=0 mlxlogscore=999 clxscore=1011 impostorscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310130070
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,131 +89,383 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--
+Resending because --function-context was accidentally used in the 
+previous version. Sincere apologies for the noise.
+--
+
+Hello,
+
+This RFC is inspired by the kernel's move to -Wimplicit-fallthrough=3
+back in 2019.[0]
+We take one step (or two) further by increasing it to 5 which rejects
+fall through comments and requires an attribute statement.
+
+[0]:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a035d552a93b
+
+The line differences are not many, but they spread all over different
+subsystems, architectures and devices. An attempt has been made to split
+them in cohesive patches to aid post-RFC review. Part of the RFC is to
+determine whether these patch divisions needs improvement.
+
+Main questions this RFC poses
+=============================
+
+- Is this change desirable and net-positive.
+- Should the `fallthrough;` pseudo-keyword be defined like in the Linux
+  kernel, or use glib's G_GNUC_FALLTHROUGH, or keep the already existing
+  QEMU_FALLTHROUGH macro.
+- Should fallthrough comments be removed if they do not include extra
+  information.
+
+Some external resources
+=======================
+
+See the RFC discussion in the kernel:
+
+https://lore.kernel.org/lkml/1d2830aadbe9d8151728a7df5b88528fc72a0095.1564549413.git.joe@perches.com/
+
+The `fallthrough;` pseudo-keyword in the kernel source code:
+
+https://elixir.bootlin.com/linux/latest/C/ident/fallthrough
+
+In summary, I quote the doc comment and definition:
+
+    /*
+     * Add the pseudo keyword 'fallthrough' so case statement blocks
+     * must end with any of these keywords:
+     *   break;
+     *   fallthrough;
+     *   continue;
+     *   goto <label>;
+     *   return [expression];
+     *
+     *  gcc: https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html#Statement-Attributes
+     */
+    #if __has_attribute(__fallthrough__)
+    # define fallthrough                    __attribute__((__fallthrough__))
+    #else
+    # define fallthrough                    do {} while (0)  /* fallthrough */
+    #endif
+
+Background - Motivation
+=======================
+
+The C switch statement allows you to conditionally goto different labels
+depending on a value. A break; statement conveniently goto's the end of
+the switch. If a "case" does not end in a break, we say that the control
+flow falls through the next case label, if any, implicitly. This can
+lead to bugs and QEMU uses the GCC warning -Wimplicit-fallthrough to
+prevent this.
+
+Currently, QEMU is built with -Wimplicit-fallthrough=2. This makes GCC's
+static analyzer check for a case-insensitive matches of the .*falls?[
+\t-]*thr(ough|u).* regular expression. This means the following list of
+comments taken from QEMU all disable the implicit fallthrough warning:
+
+- /* FALLTHRU */
+- /* fall through */
+- /* Fall through.  */
+- /* Fall through... */
+- /* fall through if hEventTimeout is signaled */
+- /* FALL THROUGH */
+
+To keep a constistent code style, this commit adds a macro `fallthrough`
+that looks like a C keyword but expands to an attribute statement in
+supported compilers (GCC at the moment).
+
+Note: there was already such a macro, QEMU_FALLTHROUGH, and it was used
+only around 7 times in the code base. The first commit replaces it.
+
+Emmanouil Pitsidianakis (78):
+  include/qemu/compiler.h: replace QEMU_FALLTHROUGH with fallthrough
+  block: add fallthrough pseudo-keyword
+  fpu/softfloat: add fallthrough pseudo-keyword
+  qapi/opts-visitor: add fallthrough pseudo-keyword
+  qobject/json: add fallthrough pseudo-keyword
+  tcg: add fallthrough pseudo-keyword
+  hw/virtio/virtio-balloon.c: add fallthrough pseudo-keyword
+  hw/block: add fallthrough pseudo-keyword
+  hw/acpi/aml-build.c: add fallthrough pseudo-keyword
+  hw/ide/atapi.c: add fallthrough pseudo-keyword
+  hw/timer: add fallthrough pseudo-keyword
+  hw/usb: add fallthrough pseudo-keyword
+  hw/adc: add fallthrough pseudo-keyword
+  util/error-report.c: add fallthrough pseudo-keyword
+  accel/tcg: add fallthrough pseudo-keyword
+  audio: add fallthrough pseudo-keyword
+  ui/sdl2.c: add fallthrough pseudo-keyword
+  ui/win32-kbd-hook.c: add fallthrough pseudo-keyword
+  target/hppa: add fallthrough pseudo-keyword
+  target/mips: add fallthrough pseudo-keyword
+  target/sparc: add fallthrough pseudo-keyword
+  target/ppc: add fallthrough pseudo-keyword
+  target/arm: add fallthrough pseudo-keyword
+  target/alpha: add fallthrough pseudo-keyword
+  target/i386: add fallthrough pseudo-keyword
+  target/s390x: add fallthrough pseudo-keyword
+  target/riscv: add fallthrough pseudo-keyword
+  target/avr: add fallthrough pseudo-keyword
+  target/cris: add fallthrough pseudo-keyword
+  target/nios2: add fallthrough pseudo-keyword
+  target/xtensa: add fallthrough pseudo-keyword
+  target/m68k: add fallthrough pseudo-keyword
+  target/rx: add fallthrough pseudo-keyword
+  target/tricore: add fallthrough pseudo-keyword
+  target/sh4: add fallthrough pseudo-keyword
+  target/openrisc: add fallthrough pseudo-keyword
+  target/hexagon: add fallthrough pseudo-keyword
+  system/rtc.c: add fallthrough pseudo-keyword
+  hw/scsi: add fallthrough pseudo-keyword
+  hw/sd/sdhci.c: add fallthrough pseudo-keyword
+  linux-user: add fallthrough pseudo-keyword
+  hw/i386: add fallthrough pseudo-keyword
+  hw/misc: add fallthrough pseudo-keyword
+  hw/m68k/mcf_intc.c: add fallthrough pseudo-keyword
+  hw/dma: add fallthrough pseudo-keyword
+  disas: add fallthrough pseudo-keyword
+  contrib/rdmacm-mux: add fallthrough pseudo-keyword
+  contrib/vhost-user-scsi: add fallthrough pseudo-keyword
+  hw/arm: add fallthrough pseudo-keyword
+  hw/audio: add fallthrough pseudo-keyword
+  chardev: add fallthrough pseudo-keyword
+  hw/char: add fallthrough pseudo-keyword
+  nbd: add fallthrough pseudo-keyword
+  hw/core: add fallthrough pseudo-keyword
+  hw/display: add fallthrough pseudo-keyword
+  hw/input: add fallthrough pseudo-keyword
+  hw/net: add fallthrough pseudo-keyword
+  hw/ppc: add fallthrough pseudo-keyword
+  hw/intc: add fallthrough pseudo-keyword
+  qga: add fallthrough pseudo-keyword
+  semihosting: add fallthrough pseudo-keyword
+  hw/gpio: add fallthrough pseudo-keyword
+  hw/ipmi: add fallthrough pseudo-keyword
+  hw/mips: add fallthrough pseudo-keyword
+  hw/nvme: add fallthrough pseudo-keyword
+  hw/nvram/eeprom_at24c.c: add fallthrough pseudo-keyword
+  hw/pci-host/pnv_phb3.c: add fallthrough pseudo-keyword
+  hw/pci: add fallthrough pseudo-keyword
+  hw/rdma/rdma_backend.c: add fallthrough pseudo-keyword
+  hw/rtc: add fallthrough pseudo-keyword
+  hw/s390x: add fallthrough pseudo-keyword
+  hw/ssi: add fallthrough pseudo-keyword
+  hw/watchdog/wdt_diag288.c: add fallthrough pseudo-keyword
+  hw/cxl/cxl-device-utils.c: add fallthrough pseudo-keyword
+  migration: add fallthrough pseudo-keyword
+  qemu-img.c: add fallthrough pseudo-keyword
+  tests/unit/test-char.c: add fallthrough pseudo-keyword
+  meson.build: increase -Wimplicit-fallthrough to 5
+
+ accel/tcg/cputlb.c                          |  4 +-
+ accel/tcg/ldst_atomicity.c.inc              |  2 +-
+ accel/tcg/plugin-gen.c                      |  2 +-
+ audio/audio.c                               | 16 ++--
+ audio/jackaudio.c                           |  4 +-
+ audio/pwaudio.c                             | 12 +--
+ block/block-copy.c                          |  1 +
+ block/file-posix.c                          |  1 +
+ block/io.c                                  |  1 +
+ block/iscsi.c                               |  1 +
+ block/qcow2-cluster.c                       |  5 +-
+ block/vhdx.c                                | 17 +++-
+ chardev/char-socket.c                       |  2 +-
+ contrib/rdmacm-mux/main.c                   | 10 +--
+ contrib/vhost-user-scsi/vhost-user-scsi.c   |  3 +-
+ disas/hppa.c                                |  4 +-
+ disas/m68k.c                                |  2 +-
+ disas/sh4.c                                 |  6 +-
+ disas/sparc.c                               |  2 +-
+ docs/devel/style.rst                        | 23 +++++
+ fpu/softfloat-parts.c.inc                   |  8 +-
+ fpu/softfloat.c                             |  7 +-
+ hw/acpi/aml-build.c                         |  6 +-
+ hw/adc/aspeed_adc.c                         | 12 +--
+ hw/adc/zynq-xadc.c                          |  2 +-
+ hw/arm/omap1.c                              |  8 +-
+ hw/arm/pxa2xx.c                             |  6 +-
+ hw/arm/smmuv3.c                             |  2 +-
+ hw/arm/stellaris.c                          |  1 +
+ hw/audio/asc.c                              |  2 +-
+ hw/audio/cs4231a.c                          |  2 +-
+ hw/audio/gusemu_hal.c                       |  2 +-
+ hw/block/dataplane/xen-block.c              |  4 +-
+ hw/block/m25p80.c                           |  2 +-
+ hw/block/onenand.c                          |  2 +-
+ hw/block/pflash_cfi01.c                     |  1 +
+ hw/block/pflash_cfi02.c                     |  6 +-
+ hw/char/nrf51_uart.c                        |  4 +-
+ hw/core/loader.c                            |  2 +-
+ hw/cxl/cxl-device-utils.c                   |  4 +-
+ hw/display/cg3.c                            |  2 +-
+ hw/display/cirrus_vga.c                     |  2 +-
+ hw/display/tcx.c                            |  4 +-
+ hw/dma/omap_dma.c                           | 32 +++----
+ hw/dma/pxa2xx_dma.c                         |  4 +-
+ hw/dma/sparc32_dma.c                        |  2 +-
+ hw/gpio/omap_gpio.c                         |  2 +-
+ hw/i2c/bitbang_i2c.c                        |  2 +-
+ hw/i386/intel_iommu.c                       |  4 +-
+ hw/i386/kvm/xen_evtchn.c                    |  2 +-
+ hw/i386/x86.c                               |  2 +-
+ hw/ide/atapi.c                              |  1 +
+ hw/input/hid.c                              |  3 +-
+ hw/input/tsc2005.c                          |  4 +-
+ hw/input/tsc210x.c                          |  2 +-
+ hw/intc/apic.c                              |  2 +-
+ hw/intc/arm_gicv3_kvm.c                     | 16 ++--
+ hw/intc/armv7m_nvic.c                       | 12 +--
+ hw/intc/xilinx_intc.c                       |  2 +-
+ hw/ipmi/ipmi_bmc_extern.c                   |  2 +-
+ hw/ipmi/smbus_ipmi.c                        |  4 +-
+ hw/m68k/mcf_intc.c                          |  2 +-
+ hw/mips/boston.c                            | 12 +--
+ hw/misc/a9scu.c                             |  2 +
+ hw/misc/aspeed_scu.c                        |  2 +-
+ hw/misc/bcm2835_property.c                  | 12 +--
+ hw/misc/mos6522.c                           |  4 +-
+ hw/net/cadence_gem.c                        |  4 +-
+ hw/net/can/can_sja1000.c                    |  4 +-
+ hw/net/igb_core.c                           |  2 +-
+ hw/net/igbvf.c                              |  2 +-
+ hw/net/imx_fec.c                            |  2 +-
+ hw/net/net_rx_pkt.c                         |  2 +-
+ hw/net/pcnet.c                              |  2 +-
+ hw/net/rtl8139.c                            |  6 +-
+ hw/net/xilinx_ethlite.c                     |  2 +-
+ hw/nvme/ctrl.c                              | 24 +++---
+ hw/nvme/dif.c                               |  4 +-
+ hw/nvram/eeprom_at24c.c                     |  2 +-
+ hw/pci-host/pnv_phb3.c                      |  2 +-
+ hw/pci/pcie_aer.c                           |  3 +-
+ hw/pci/pcie_doe.c                           |  2 +-
+ hw/ppc/pnv_bmc.c                            |  2 +-
+ hw/ppc/spapr_events.c                       |  1 +
+ hw/rdma/rdma_backend.c                      |  2 +-
+ hw/rtc/aspeed_rtc.c                         |  4 +-
+ hw/rtc/mc146818rtc.c                        |  4 +-
+ hw/s390x/ipl.c                              |  1 +
+ hw/s390x/s390-pci-inst.c                    |  4 +-
+ hw/s390x/sclp.c                             |  4 +-
+ hw/scsi/esp.c                               |  2 +-
+ hw/scsi/megasas.c                           |  2 +-
+ hw/scsi/scsi-bus.c                          |  4 +-
+ hw/scsi/scsi-disk.c                         |  2 +-
+ hw/sd/sdhci.c                               |  8 +-
+ hw/ssi/npcm7xx_fiu.c                        | 14 +--
+ hw/ssi/omap_spi.c                           | 48 +++++------
+ hw/timer/a9gtimer.c                         |  8 +-
+ hw/timer/aspeed_timer.c                     |  1 +
+ hw/timer/pxa2xx_timer.c                     | 94 ++++++++++-----------
+ hw/timer/renesas_tmr.c                      |  2 +-
+ hw/timer/sh_timer.c                         |  8 +-
+ hw/usb/dev-mtp.c                            |  2 +-
+ hw/usb/dev-wacom.c                          |  2 +-
+ hw/usb/hcd-ehci.c                           |  4 +-
+ hw/usb/hcd-xhci.c                           |  4 +-
+ hw/usb/redirect.c                           |  4 +-
+ hw/usb/tusb6010.c                           |  2 +-
+ hw/virtio/virtio-balloon.c                  |  1 +
+ hw/watchdog/wdt_diag288.c                   |  2 +-
+ include/qemu/compiler.h                     | 30 +++++--
+ include/qemu/osdep.h                        |  4 +-
+ linux-user/mips/cpu_loop.c                  |  8 +-
+ linux-user/mmap.c                           |  2 +-
+ linux-user/syscall.c                        |  2 +-
+ meson.build                                 |  2 +-
+ migration/migration.c                       |  2 +-
+ nbd/client.c                                |  4 +-
+ nbd/common.c                                |  2 +-
+ qapi/opts-visitor.c                         |  1 +
+ qapi/string-input-visitor.c                 |  4 +-
+ qemu-img.c                                  |  2 +-
+ qemu-nbd.c                                  |  4 +-
+ qga/main.c                                  |  2 +-
+ qga/vss-win32/requester.cpp                 |  1 +
+ qobject/json-lexer.c                        |  4 +-
+ qobject/json-parser.c                       |  5 +-
+ semihosting/arm-compat-semi.c               |  2 +-
+ system/rtc.c                                |  2 +-
+ target/alpha/helper.c                       |  6 +-
+ target/alpha/translate.c                    |  4 +-
+ target/arm/helper.c                         | 34 ++++----
+ target/arm/ptw.c                            | 10 +--
+ target/arm/tcg/psci.c                       |  2 +-
+ target/arm/tcg/translate-a64.c              | 76 ++++++++---------
+ target/arm/tcg/translate-m-nocp.c           |  2 +-
+ target/arm/tcg/translate-vfp.c              |  2 +-
+ target/arm/tcg/translate.c                  |  8 +-
+ target/avr/translate.c                      |  4 +-
+ target/cris/translate.c                     |  4 +-
+ target/hexagon/idef-parser/parser-helpers.c |  5 +-
+ target/hppa/translate.c                     | 10 +--
+ target/i386/cpu.c                           |  2 +-
+ target/i386/hvf/x86_decode.c                |  1 +
+ target/i386/kvm/kvm.c                       |  4 +-
+ target/i386/tcg/decode-new.c.inc            |  6 +-
+ target/i386/tcg/emit.c.inc                  |  2 +-
+ target/i386/tcg/translate.c                 | 11 +--
+ target/loongarch/cpu.c                      |  4 +-
+ target/loongarch/translate.c                |  2 +-
+ target/m68k/op_helper.c                     |  3 +-
+ target/m68k/translate.c                     | 10 +--
+ target/mips/sysemu/physaddr.c               |  2 +-
+ target/mips/tcg/micromips_translate.c.inc   |  4 +-
+ target/mips/tcg/mips16e_translate.c.inc     | 30 +++----
+ target/mips/tcg/mxu_translate.c             |  8 +-
+ target/mips/tcg/nanomips_translate.c.inc    |  4 +-
+ target/mips/tcg/op_helper.c                 |  2 +-
+ target/mips/tcg/translate.c                 | 79 ++++++++---------
+ target/nios2/helper.c                       |  6 +-
+ target/nios2/translate.c                    |  2 +-
+ target/openrisc/mmu.c                       |  2 +-
+ target/openrisc/translate.c                 |  2 +-
+ target/ppc/cpu_init.c                       |  8 +-
+ target/ppc/excp_helper.c                    |  6 +-
+ target/ppc/mmu-radix64.c                    |  6 +-
+ target/ppc/mmu_common.c                     | 12 +--
+ target/ppc/translate.c                      |  6 +-
+ target/riscv/insn_trans/trans_rvi.c.inc     |  2 +-
+ target/riscv/insn_trans/trans_rvzce.c.inc   | 22 ++---
+ target/riscv/translate.c                    |  4 +-
+ target/rx/translate.c                       |  2 +-
+ target/s390x/cpu.c                          |  4 +-
+ target/s390x/kvm/kvm.c                      |  2 +-
+ target/s390x/mmu_helper.c                   |  6 +-
+ target/s390x/tcg/translate.c                | 18 ++--
+ target/s390x/tcg/translate_vx.c.inc         |  2 +-
+ target/sh4/helper.c                         |  2 +-
+ target/sparc/ldst_helper.c                  |  4 +-
+ target/sparc/mmu_helper.c                   |  6 +-
+ target/sparc/translate.c                    |  3 +-
+ target/sparc/win_helper.c                   |  1 +
+ target/tricore/translate.c                  |  4 +-
+ target/xtensa/op_helper.c                   |  8 +-
+ target/xtensa/translate.c                   |  2 +-
+ tcg/aarch64/tcg-target.c.inc                | 15 +++-
+ tcg/arm/tcg-target.c.inc                    |  5 +-
+ tcg/i386/tcg-target.c.inc                   | 20 +++--
+ tcg/loongarch64/tcg-target.c.inc            |  4 +-
+ tcg/mips/tcg-target.c.inc                   |  8 +-
+ tcg/optimize.c                              |  8 +-
+ tcg/ppc/tcg-target.c.inc                    | 19 +++--
+ tcg/riscv/tcg-target.c.inc                  |  5 +-
+ tcg/s390x/tcg-target.c.inc                  |  8 +-
+ tcg/tcg-op-gvec.c                           | 24 +++---
+ tcg/tcg-op-ldst.c                           |  2 +-
+ tcg/tcg.c                                   | 24 +++---
+ tcg/tci.c                                   |  2 +-
+ tcg/tci/tcg-target.c.inc                    |  2 +-
+ tests/unit/test-char.c                      |  2 +-
+ ui/sdl2.c                                   |  2 +-
+ ui/win32-kbd-hook.c                         |  7 --
+ util/error-report.c                         |  2 +-
+ 203 files changed, 747 insertions(+), 618 deletions(-)
 
 
-On 10/13/23 13:27, Emmanouil Pitsidianakis wrote:
-> In preparation of raising -Wimplicit-fallthrough to 5, replace all
-> fall-through comments with the fallthrough attribute pseudo-keyword.
-> 
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+base-commit: cea3ea670fe265421131aad90c36fbb87bc4d206
+-- 
+2.39.2
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
-One question below, may be Cedric knows better who introduced initial code.
-
-> ---
->   hw/ppc/pnv_bmc.c      | 2 +-
->   hw/ppc/spapr_events.c | 1 +
->   2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/ppc/pnv_bmc.c b/hw/ppc/pnv_bmc.c
-> index 99f1e8d7f9..9bff7d03cb 100644
-> --- a/hw/ppc/pnv_bmc.c
-> +++ b/hw/ppc/pnv_bmc.c
-> @@ -172,69 +172,69 @@ static int hiomap_erase(PnvPnor *pnor, uint32_t offset, uint32_t size)
->   static void hiomap_cmd(IPMIBmcSim *ibs, uint8_t *cmd, unsigned int cmd_len,
->                          RspBuffer *rsp)
->   {
->       PnvPnor *pnor = PNV_PNOR(object_property_get_link(OBJECT(ibs), "pnor",
->                                                         &error_abort));
->       uint32_t pnor_size = pnor->size;
->       uint32_t pnor_addr = PNOR_SPI_OFFSET;
->       bool readonly = false;
->   
->       rsp_buffer_push(rsp, cmd[2]);
->       rsp_buffer_push(rsp, cmd[3]);
->   
->       switch (cmd[2]) {
->       case HIOMAP_C_MARK_DIRTY:
->       case HIOMAP_C_FLUSH:
->       case HIOMAP_C_ACK:
->           break;
->   
->       case HIOMAP_C_ERASE:
->           if (hiomap_erase(pnor, blocks_to_bytes(cmd[5] << 8 | cmd[4]),
->                           blocks_to_bytes(cmd[7] << 8 | cmd[6]))) {
->               rsp_buffer_set_error(rsp, IPMI_CC_UNSPECIFIED);
->           }
->           break;
->   
->       case HIOMAP_C_GET_INFO:
->           rsp_buffer_push(rsp, 2);  /* Version 2 */
->           rsp_buffer_push(rsp, BLOCK_SHIFT); /* block size */
->           rsp_buffer_push(rsp, 0);  /* Timeout */
->           rsp_buffer_push(rsp, 0);  /* Timeout */
->           break;
->   
->       case HIOMAP_C_GET_FLASH_INFO:
->           rsp_buffer_push(rsp, bytes_to_blocks(pnor_size) & 0xFF);
->           rsp_buffer_push(rsp, bytes_to_blocks(pnor_size) >> 8);
->           rsp_buffer_push(rsp, 0x01);  /* erase size */
->           rsp_buffer_push(rsp, 0x00);  /* erase size */
->           break;
->   
->       case HIOMAP_C_CREATE_READ_WINDOW:
->           readonly = true;
-> -        /* Fall through */
-> +        fallthrough;
->   
->       case HIOMAP_C_CREATE_WRITE_WINDOW:
->           memory_region_set_readonly(&pnor->mmio, readonly);
->           memory_region_set_enabled(&pnor->mmio, true);
->   
->           rsp_buffer_push(rsp, bytes_to_blocks(pnor_addr) & 0xFF);
->           rsp_buffer_push(rsp, bytes_to_blocks(pnor_addr) >> 8);
->           rsp_buffer_push(rsp, bytes_to_blocks(pnor_size) & 0xFF);
->           rsp_buffer_push(rsp, bytes_to_blocks(pnor_size) >> 8);
->           rsp_buffer_push(rsp, 0x00); /* offset */
->           rsp_buffer_push(rsp, 0x00); /* offset */
->           break;
->   
->       case HIOMAP_C_CLOSE_WINDOW:
->           memory_region_set_enabled(&pnor->mmio, false);
->           break;
->   
->       case HIOMAP_C_DEVICE_NAME:
->       case HIOMAP_C_RESET:
->       case HIOMAP_C_LOCK:
-
-Do we need a break here ?
-Otherwise above 3 case statements doesnt add any value.
-
->       default:
->           qemu_log_mask(LOG_GUEST_ERROR, "HIOMAP: unknown command %02X\n", cmd[2]);
->           break;
->       }
->   }
->   
->   #define HIOMAP   0x5a
-> diff --git a/hw/ppc/spapr_events.c b/hw/ppc/spapr_events.c
-> index 4508e40814..9d51746daf 100644
-> --- a/hw/ppc/spapr_events.c
-> +++ b/hw/ppc/spapr_events.c
-> @@ -411,25 +411,26 @@ static const SpaprEventSource *
->   rtas_event_log_to_source(SpaprMachineState *spapr, int log_type)
->   {
->       const SpaprEventSource *source;
->   
->       g_assert(spapr->event_sources);
->   
->       switch (log_type) {
->       case RTAS_LOG_TYPE_HOTPLUG:
->           source = spapr_event_sources_get_source(spapr->event_sources,
->                                                   EVENT_CLASS_HOT_PLUG);
->           if (spapr_ovec_test(spapr->ov5_cas, OV5_HP_EVT)) {
->               g_assert(source->enabled);
->               break;
->           }
->           /* fall through back to epow for legacy hotplug interrupt source */
-> +        fallthrough;
->       case RTAS_LOG_TYPE_EPOW:
->           source = spapr_event_sources_get_source(spapr->event_sources,
->                                                   EVENT_CLASS_EPOW);
->           break;
->       default:
->           source = NULL;
->       }
->   
->       return source;
->   }
 
