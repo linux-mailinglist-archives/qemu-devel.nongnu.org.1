@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316B57C8F12
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 013537C8F5B
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrPiI-00069t-FA; Fri, 13 Oct 2023 17:28:54 -0400
+	id 1qrPiH-00069a-FB; Fri, 13 Oct 2023 17:28:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPiG-00069M-Cq
+ id 1qrPiG-00069I-5l
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:28:52 -0400
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPiE-0000Oy-KA
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:28:52 -0400
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-57de9237410so1473773eaf.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:28:49 -0700 (PDT)
+ id 1qrPiE-0000P2-Jk
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:28:51 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-1e9db321ed1so700751fac.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:28:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697232528; x=1697837328; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yd2wXvDut8MVmmcxopqcz13LPn+MVM1PctiQlc4/cOQ=;
- b=GWp9HuhFiSaWkqzP6g3ZtBcaOQ3vG6WCKwozVFvYW3KCXNBmT7Ikor+4MfaXhe6Y/g
- ktfiOVXGFBtWbJpZW1VNINI4kvDaQ7wvbaE4TYbW0wOJIzmX2KgDEthFZZKQfo2Jk1lj
- b40+tZPEo74vFHmHG30tZD1VxL2ejH6IOmc/PRJ7XcycIZiBxDmw9if030pv0mVZRu7F
- aym8Wp40jIG7Bbk8nNM7oNWpTO56vI4sn+GWKqoMbXV1Tm9NmcA7Ifng1Wv2YjPAT04F
- pF8Wfcdk9tQ2ozVQoE8K/klRYF+Q0LQfTqJHqJitCKuETKNGwsCCwxBtchN6qpHselTD
- W6cQ==
+ d=linaro.org; s=google; t=1697232529; x=1697837329; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Rsg3oMew0Lf3QeNbn4pBTwxs+cU3sH8kSpn+SCSCyic=;
+ b=yBc/aFvDab8zU9QdWBIsr5txUMz1ktmVJuYol1z7SPm3bVdiIfrGROy0jHlY825GcB
+ KFpeQwqmzKP6Dz9NCKLIVA/D5CHcIOItaNC5fQCDHPQefQtV/5kDOQDJiDN/DAhdxl+I
+ 86VEpKFwjpDfNaqeUHAlVU3FYUkvhbCvNQddHQmb+vDU5Dcl5TvB3NJuatrIze6gQLDw
+ 2yGfKwmRlKvGr/xiJtnnf/QQ3KZQIAwOa7Qs+KYkXWFNpj4ee0Rrt220leUS0aIxO7Un
+ eyQchpzAvNghZJV2cLX6twjemY2OdcMvLogsMcCWE5ev2K2IocHjRoX1fA4afZir80qt
+ c9Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697232528; x=1697837328;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yd2wXvDut8MVmmcxopqcz13LPn+MVM1PctiQlc4/cOQ=;
- b=Lira/uF3znzssgt7Ieha7Ua/DpcwrhUot7bK4fgrkJf9Enbu4cyTlpmB2AQ+39NCUk
- cGyr4ZubD4EGczncLI7BcsMyMMnJ1GnTgMB5PFmtgx+UOxMPGaxULkCmfGNymezqDXuK
- T96VYfSs1YAh8XW6POWTABlyg97ZdfqyvoylVJQdfWrHMOdBlg9NiWlIy5xJIDyGvK6y
- 2IkcfHWQDF/BXrezg3mTeDJPw/zBHpeFH+zlstMsDr1BIMM1m1tk/WwcerAeZx2KJx7n
- RiVlFoETdXRyPcp1bWJjMTzPxkqO2WdpthTi9wvSvZR+UdcpsuMp8lxGFKcvkZ6S1oYk
- x9sg==
-X-Gm-Message-State: AOJu0YzsSoOEFkCSefqDoTi6M/y4L5MK1pd3MxwtJLDYoTdlOsO5MydQ
- CIF1A3ZKBCrSCkjVCPUBnE3wyay74L1YuRX/wDs=
-X-Google-Smtp-Source: AGHT+IHBYxBOeChJYir7EFyhIgZyUjh5SCYoN7BLvL+XEjLvFpm8jRauyByUNONNJiYUndsatK2b8w==
-X-Received: by 2002:a05:6358:788:b0:142:d097:3725 with SMTP id
- n8-20020a056358078800b00142d0973725mr31021869rwj.9.1697232528149; 
- Fri, 13 Oct 2023 14:28:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697232529; x=1697837329;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Rsg3oMew0Lf3QeNbn4pBTwxs+cU3sH8kSpn+SCSCyic=;
+ b=CsU6XXJ+WJs7H0V4zSYoEmbrcsSNXY0MD+ThFvRtZRx1dcxOhOw4ROvXgKLnhdoJDg
+ q9kytGgaMjW0sUkpq0/30BE+Rimh8pow0bao352E1qpf23FBgnzrO67CrR4XmHxcg8/5
+ SdjD/EigkA57l8aRzQ4+j0loAOjVN8DtiUjb2ezt0NJiA1TCeclhnzPjLXcH+1rxybO0
+ +6RoH3N2aKzaHFpduuFnWh0XX+j0oL7ceuc/kzzGTT+QNCU86lRm1Cu8Gzy378xjVWz6
+ Nsvv83T7hoBRTH1gbj9GTVPqOffLxigD4uTd06AIpwR5LtxUPyTtuo16j2+1VBordE/0
+ NpGA==
+X-Gm-Message-State: AOJu0YyAskQ+pVP8bxvP2yq20BlCO9oy44vRe2T2MombSEW2jTr7lU1u
+ BuTRQqlk6V6gjtssskGMvMB5kSVD4/SJ/1wVOwU=
+X-Google-Smtp-Source: AGHT+IHBGvASUqK9+nbZ4Fa0oTP2I5wjN/u9wJJVa0zURd4pZw5mglXKWkhuvTLd43igz4kiKzUCWQ==
+X-Received: by 2002:a05:6870:f155:b0:1d5:bb9e:a30e with SMTP id
+ l21-20020a056870f15500b001d5bb9ea30emr33205597oac.34.1697232529036; 
+ Fri, 13 Oct 2023 14:28:49 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- b185-20020a6334c2000000b0058988954686sm70753pga.90.2023.10.13.14.28.47
+ b185-20020a6334c2000000b0058988954686sm70753pga.90.2023.10.13.14.28.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 14:28:47 -0700 (PDT)
+ Fri, 13 Oct 2023 14:28:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	atar4qemu@gmail.com
-Subject: [PATCH 00/85] target/sparc: Convert to decodetree
-Date: Fri, 13 Oct 2023 14:27:21 -0700
-Message-Id: <20231013212846.165724-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/85] target/sparc: Set TCG_GUEST_DEFAULT_MO
+Date: Fri, 13 Oct 2023 14:27:22 -0700
+Message-Id: <20231013212846.165724-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231013212846.165724-1-richard.henderson@linaro.org>
+References: <20231013212846.165724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2b.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,120 +91,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While doing some other testing the other day, I noticed my sparc64
-chroot running particularly slowly.  I think I know what the problem
-is there, but fixing that was going to be particularly ugly with the
-existing sparc translator.
+Always use TSO, per the Oracle 2015 manual.
+This is slightly less restrictive than the TCG_MO_ALL default,
+and happens to match the i386 model, which will eliminate a few
+extra barriers on that host.
 
-So I've converted the translator to something more managable.  :-)
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/sparc/cpu.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-I've only done avocado testing so far, fingers crossed.
-
-
-r~
-
-
-Richard Henderson (85):
-  target/sparc: Set TCG_GUEST_DEFAULT_MO
-  configs: Enable MTTCG for sparc, sparc64
-  target/sparc: Remove always-set cpu features
-  target/sparc: Add decodetree infrastructure
-  target/sparc: Define AM_CHECK for sparc32
-  target/sparc: Move CALL to decodetree
-  target/sparc: Move BPcc and Bicc to decodetree
-  target/sparc: Move BPr to decodetree
-  target/sparc: Move FBPfcc and FBfcc to decodetree
-  target/sparc: Merge gen_cond with only caller
-  target/sparc: Merge gen_fcond with only caller
-  target/sparc: Merge gen_branch_[an] with only caller
-  target/sparc: Pass DisasCompare to advance_jump_cond
-  target/sparc: Move SETHI to decodetree
-  target/sparc: Move Tcc to decodetree
-  target/sparc: Move RDASR, STBAR, MEMBAR to decodetree
-  target/sparc: Move RDPSR, RDHPR to decodetree
-  target/sparc: Move RDWIM, RDPR to decodetree
-  target/sparc: Move RDTBR, FLUSHW to decodetree
-  target/sparc: Move WRASR to decodetree
-  target/sparc: Move WRPSR, SAVED, RESTORED to decodetree
-  target/sparc: Move WRWIM, WRPR to decodetree
-  target/sparc: Move WRTBR, WRHPR to decodetree
-  target/sparc: Move basic arithmetic to decodetree
-  target/sparc: Move ADDC to decodetree
-  target/sparc: Move MULX to decodetree
-  target/sparc: Move UMUL, SMUL to decodetree
-  target/sparc: Move SUBC to decodetree
-  target/sparc: Move UDIVX, SDIVX to decodetree
-  target/sparc: Move UDIV, SDIV to decodetree
-  target/sparc: Move TADD, TSUB, MULS to decodetree
-  target/sparc: Move SLL, SRL, SRA to decodetree
-  target/sparc: Move MOVcc, MOVR to decodetree
-  target/sparc: Move POPC to decodetree
-  target/sparc: Convert remaining v8 coproc insns to decodetree
-  target/sparc: Move JMPL, RETT, RETURN to decodetree
-  target/sparc: Move FLUSH, SAVE, RESTORE to decodetree
-  target/sparc: Move DONE, RETRY to decodetree
-  target/sparc: Split out resolve_asi
-  target/sparc: Drop ifdef around get_asi and friends
-  target/sparc: Split out ldst functions with asi pre-computed
-  target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for GET_ASI_DTWINX
-  target/sparc: Move simple integer load/store to decodetree
-  target/sparc: Move asi integer load/store to decodetree
-  target/sparc: Move LDSTUB, LDSTUBA to decodetree
-  target/sparc: Move SWAP, SWAPA to decodetree
-  target/sparc: Move CASA, CASXA to decodetree
-  target/sparc: Move PREFETCH, PREFETCHA to decodetree
-  target/sparc: Split out fp ldst functions with asi precomputed
-  target/sparc: Move simple fp load/store to decodetree
-  target/sparc: Move asi fp load/store to decodetree
-  target/sparc: Move LDFSR, STFSR to decodetree
-  target/sparc: Merge LDFSR, LDXFSR implementations
-  target/sparc: Move EDGE* to decodetree
-  target/sparc: Move ARRAY* to decodetree
-  target/sparc: Move ADDRALIGN* to decodetree
-  target/sparc: Move BMASK to decodetree
-  target/sparc: Move FMOVS, FNEGS, FABSS, FSRC*S, FNOT*S to decodetree
-  target/sparc: Move FMOVD, FNEGD, FABSD, FSRC*D, FNOT*D to decodetree
-  target/sparc: Use tcg_gen_vec_{add,sub}*
-  target/sparc: Move gen_ne_fop_FFF insns to decodetree
-  target/sparc: Move gen_ne_fop_DDD insns to decodetree
-  target/sparc: Move PDIST to decodetree
-  target/sparc: Move gen_gsr_fop_DDD insns to decodetree
-  target/sparc: Move gen_fop_FF insns to decodetree
-  target/sparc: Move gen_fop_DD insns to decodetree
-  target/sparc: Move FSQRTq to decodetree
-  target/sparc: Move gen_fop_FFF insns to decodetree
-  target/sparc: Move gen_fop_DDD insns to decodetree
-  target/sparc: Move gen_fop_QQQ insns to decodetree
-  target/sparc: Move FSMULD to decodetree
-  target/sparc: Move FDMULQ to decodetree
-  target/sparc: Move gen_fop_FD insns to decodetree
-  target/sparc: Move FiTOd, FsTOd, FsTOx to decodetree
-  target/sparc: Move FqTOs, FqTOi to decodetree
-  target/sparc: Move FqTOd, FqTOx to decodetree
-  target/sparc: Move FiTOq, FsTOq to decodetree
-  target/sparc: Move FdTOq, FxTOq to decodetree
-  target/sparc: Move FMOVq, FNEGq, FABSq to decodetree
-  target/sparc: Move FMOVR, FMOVcc, FMOVfcc to decodetree
-  target/sparc: Convert FCMP, FCMPE to decodetree
-  target/sparc: Move FPCMP* to decodetree
-  target/sparc: Move FPACK16, FPACKFIX to decodetree
-  target/sparc: Convert FZERO, FONE to decodetree
-  target/sparc: Remove disas_sparc_legacy
-
- configs/targets/sparc-softmmu.mak   |    1 +
- configs/targets/sparc64-softmmu.mak |    1 +
- linux-user/sparc/target_syscall.h   |    6 +-
- target/sparc/cpu.h                  |   73 +-
- target/sparc/helper.h               |   15 +-
- target/sparc/insns.decode           |  541 +++
- target/sparc/cpu.c                  |    8 +-
- target/sparc/fop_helper.c           |   17 +-
- target/sparc/translate.c            | 6692 +++++++++++++--------------
- target/sparc/vis_helper.c           |   59 -
- target/sparc/meson.build            |    3 +
- 11 files changed, 3804 insertions(+), 3612 deletions(-)
- create mode 100644 target/sparc/insns.decode
-
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index b3a98f1d74..9fc5c401d2 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -6,6 +6,29 @@
+ #include "exec/cpu-defs.h"
+ #include "qemu/cpu-float.h"
+ 
++/*
++ * From Oracle SPARC Architecture 2015:
++ *
++ *   Compatibility notes: The PSO memory model described in SPARC V8 and
++ *   SPARC V9 compatibility architecture specifications was never implemented
++ *   in a SPARC V9 implementation and is not included in the Oracle SPARC
++ *   Architecture specification.
++ *
++ *   The RMO memory model described in the SPARC V9 specification was
++ *   implemented in some non-Sun SPARC V9 implementations, but is not
++ *   directly supported in Oracle SPARC Architecture 2015 implementations.
++ *
++ * Therefore always use TSO in QEMU.
++ *
++ * D.5 Specification of Partial Store Order (PSO)
++ *   ... [loads] are followed by an implied MEMBAR #LoadLoad | #LoadStore.
++ *
++ * D.6 Specification of Total Store Order (TSO)
++ *   ... PSO with the additional requirement that all [stores] are followed
++ *   by an implied MEMBAR #StoreStore.
++ */
++#define TCG_GUEST_DEFAULT_MO  (TCG_MO_LD_LD | TCG_MO_LD_ST | TCG_MO_ST_ST)
++
+ #if !defined(TARGET_SPARC64)
+ #define TARGET_DPREGS 16
+ #else
 -- 
 2.34.1
 
