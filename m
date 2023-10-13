@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B107C8138
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB8E7C80E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDqK-0008NI-Ad; Fri, 13 Oct 2023 04:48:25 -0400
+	id 1qrDqY-0000ck-Cb; Fri, 13 Oct 2023 04:48:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDqD-0008B1-H0
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:17 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1qrDqG-0008IM-Qd
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:20 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDqB-00011h-Qv
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:17 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40684f53d11so22241725e9.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:15 -0700 (PDT)
+ id 1qrDqD-000123-Lk
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:48:20 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-5046bf37ec1so2489572e87.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697186894; x=1697791694; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697186895; x=1697791695; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M9LkGlEKRSz223Ey1OkuAlQ7hiRFoI4Wxoo+HIWaXT4=;
- b=hOHn2vXcVZ84Lpn9OaeHE3gbGsST61y3CNXmEmjCIEh9yrpekoMU1eLrhO0pzO4zEc
- oTWOGlKxRGLwQ0JNIuDykgTbXHv2w+pq3GLh1OpyFApkTL+9egSLDSkD09tyuZkwx15X
- dY5vaej7D1T7FX9vttx1AB2k17jNTU/bzcnDTe0HgfeOSJBo7GZ6b4L8F8RAbT+dLb0A
- G5DxE8AJFiEhpuZFSweE9vUvcFa6ZD/Gexn2IF3sIsyKf05fYYtxTstgvgk+FRoEPZGp
- rHW9/wk0XclI+l7xuRGv4dhociqu6G7FhhKeRGJxWtYrGRvw4CAI77pE4ofTtc0JRtJ6
- B+qQ==
+ bh=ZyjpW11mVZhhIRVauwrjxQ+w/ECm7tx1xUmkZkTSkDE=;
+ b=Ix9MF7swJUjahwR0lTacP2+R3DRQxgXq+Uapt5YU2koRY0K9mXRlzV1xOWgJtodO75
+ +Isz4KKFSPvaWaRmGL4C95qn9PbrV6mr4XWq1Ym/09rk5Y6Dta4Cr+wFxq4iGGYJw8K3
+ XqChfWIHuE84XMzWBsYl8T+kj4pJYlJAEhG1latq5KDKBY9s139DBJjFJqVg4afHpV5U
+ lDTsv29tttrbZSzEV24Re44yEEDrjvF5j1F71F9qNEX4AFVE7uEfCwYJYfEcDt17/68k
+ carogbUYWvrfvp1YwsKnSEEzVNbWpFLZlcVLjEYUJe89EIwyFtoMfwCHdBy8EKB+7saS
+ WlZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697186894; x=1697791694;
+ d=1e100.net; s=20230601; t=1697186895; x=1697791695;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M9LkGlEKRSz223Ey1OkuAlQ7hiRFoI4Wxoo+HIWaXT4=;
- b=l+BePXlWe783sU2qlIcYG6pg0YB21IOOazrqEWF2Vc9VtlX6XUfuDJ50IzU8ZDG1e/
- Of5UVyvg02So5Zch5lsShrHL+Sgo6BDgFkm0Kn6Z2fmsQZulmoajMRnhwerDpbuUjUKy
- /Y/GZgx/Oxpu7A6gnXlvPbYlj9U3nV/bAe93wZXvVZyUlzTaLCtIJpn90Pwq5AaTda7o
- lg/SQliu+FjymbFpfgj7GsWouksgA6kOoS9v59lFnyjfSfPk0YvNBCfAJqb6jtv5iW4A
- XglucfLYr3nnw13iDOsSgU17U7SvN/5VqkEduCwVvLRdttsiNdg4cfW6cDukN60u1rmC
- breA==
-X-Gm-Message-State: AOJu0YzxA8W0RLvxcTXi90kZodiHi6l6ObsnBI5gcbDwUda1rw/O3p3r
- baOz/GRNC9A94pd5u2d5KYUu0I2OQDgNnyJ1ai0=
-X-Google-Smtp-Source: AGHT+IH8KOp7N4i6goXLJ+GUVpP9iyEmiLV6FXvfPKbewTYZw8MxfB1oazBV/h28He86j8csa+7Yow==
-X-Received: by 2002:a7b:ce07:0:b0:406:4501:9095 with SMTP id
- m7-20020a7bce07000000b0040645019095mr23383078wmc.40.1697186894028; 
- Fri, 13 Oct 2023 01:48:14 -0700 (PDT)
+ bh=ZyjpW11mVZhhIRVauwrjxQ+w/ECm7tx1xUmkZkTSkDE=;
+ b=D5yH0z7doYrVU0OIZJavVLEkDE9q5jqPM95pCRnHvSvkEqcWxmK0aSNZLkKPmGdmjW
+ qXZctO7Srs0r80WeMoyPFe+8C6Pxy/iXVz7IsmgMER3hUqRVxJqAJ05HDAALf1ZiicPP
+ 3NRqF4smXRsLBWjfDt+e1kOk7cL9TWcq3jV6z65WGrtoQlc7eEVvFDu2aeR8I9v0xF6r
+ 9si7z5gavGJ9z53AaSwvrFBtH9cSb396laFGPm2MIPtTrLHsfTAvHvwVbFeEEY0w7N5k
+ 7ABUdfMehsFCYnZrjICaPGVIxnQt1ApXlXcPBuFv2zWb+A+pN7Pcnm+g4vUlLNpUDGJX
+ VqIw==
+X-Gm-Message-State: AOJu0YzlJgDtwNqyJs6FOSH05Y8SLA3WZdY23RFrNmwN7c76UASXmVdK
+ W9YJ/wfP9vxRHkfqQQTyDzloxkx7Pr86xN6dSII=
+X-Google-Smtp-Source: AGHT+IG66Xx1uhvZJWDnR+97j9klk1cPgBi4/+QYRC+Gdh0luX+G4gX8+wwAc4DaQEET/7lsgg9PZg==
+X-Received: by 2002:a05:6512:b01:b0:503:7dd:7ebd with SMTP id
+ w1-20020a0565120b0100b0050307dd7ebdmr25589016lfu.24.1697186895673; 
+ Fri, 13 Oct 2023 01:48:15 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.12
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.48.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:48:13 -0700 (PDT)
+ Fri, 13 Oct 2023 01:48:15 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Stafford Horne <shorne@gmail.com>
-Subject: [RFC PATCH v3 36/78] target/openrisc: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:04 +0300
-Message-Id: <92f0a633d3d24d6747cd45fae5a8889ebede21c1.1697186560.git.manos.pitsidianakis@linaro.org>
+ Alessandro Di Federico <ale@rev.ng>, Anton Johansson <anjo@rev.ng>
+Subject: [RFC PATCH v3 37/78] target/hexagon: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:46:05 +0300
+Message-Id: <9025e87041505c2450f06e56f1fbb9b932f8b7ba.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,36 +97,39 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/openrisc/mmu.c       | 2 +-
- target/openrisc/translate.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ target/hexagon/idef-parser/parser-helpers.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/openrisc/mmu.c b/target/openrisc/mmu.c
-index 603c26715e..7ed744e81b 100644
---- a/target/openrisc/mmu.c
-+++ b/target/openrisc/mmu.c
-@@ -168,7 +168,7 @@ hwaddr openrisc_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
-         if (!excp) {
-             return phys_addr;
-         }
--        /* fallthru */
-+        fallthrough;
+diff --git a/target/hexagon/idef-parser/parser-helpers.c b/target/hexagon/idef-parser/parser-helpers.c
+index 4af020933a..0f1713ae4c 100644
+--- a/target/hexagon/idef-parser/parser-helpers.c
++++ b/target/hexagon/idef-parser/parser-helpers.c
+@@ -29,6 +29,7 @@
+ #include "parser-helpers.h"
+ #include "idef-parser.tab.h"
+ #include "idef-parser.yy.h"
++#include "qemu/compiler.h"
  
-     case 0:
-         /* The mmu is definitely disabled; lookups never fail.  */
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index ecff4412b7..de77014d60 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -1618,7 +1618,7 @@ static void openrisc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
-            However, we will have stored into jmp_pc as well;
-            we know now that it wasn't needed.  */
-         tcg_gen_discard_tl(jmp_pc);
--        /* fallthru */
+ void yyerror(YYLTYPE *locp,
+              yyscan_t scanner __attribute__((unused)),
+@@ -645,7 +646,7 @@ static void gen_asl_op(Context *c, YYLTYPE *locp, unsigned bit_width,
+     case IMM_REG:
+         op1_m.bit_width = bit_width;
+         op1_m = rvalue_materialize(c, locp, &op1_m);
+-        /* fallthrough */
 +        fallthrough;
- 
-     case DISAS_TOO_MANY:
-         if (translator_use_goto_tb(&dc->base, jmp_dest)) {
+     case REG_REG: {
+         OUT(c, locp, "tcg_gen_shl_", bit_suffix,
+             "(", res, ", ", &op1_m, ", ", op2, ");\n");
+@@ -829,7 +830,7 @@ static void gen_minmax_op(Context *c, YYLTYPE *locp, unsigned bit_width,
+     case REG_IMM:
+         op2_m.bit_width = bit_width;
+         op2_m = rvalue_materialize(c, locp, &op2_m);
+-        /* Fallthrough */
++        fallthrough;
+     case REG_REG:
+         OUT(c, locp, mm, "_i", &bit_width, "(");
+         OUT(c, locp, res, ", ", op1, ", ", &op2_m, ");\n");
 -- 
 2.39.2
 
