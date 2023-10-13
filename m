@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1917C81F1
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC4B7C81EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:24:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrEMo-0005l7-CW; Fri, 13 Oct 2023 05:21:58 -0400
+	id 1qrEMp-0005ne-RZ; Fri, 13 Oct 2023 05:21:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qrEMl-0005iP-FZ; Fri, 13 Oct 2023 05:21:55 -0400
+ id 1qrEMn-0005kJ-7D; Fri, 13 Oct 2023 05:21:57 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qrEMj-00071U-5B; Fri, 13 Oct 2023 05:21:55 -0400
+ id 1qrEMl-00072v-Ld; Fri, 13 Oct 2023 05:21:56 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 4381A48F3C;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id A3E4C48F33;
  Fri, 13 Oct 2023 11:21:51 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-devel@nongnu.org
@@ -25,9 +25,10 @@ Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
  jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
  alexander.ivanov@virtuozzo.com
-Subject: [PATCH v3 7/9] qapi/block-core: turn BlockJobInfo into a union
-Date: Fri, 13 Oct 2023 11:21:41 +0200
-Message-Id: <20231013092143.365296-8-f.ebner@proxmox.com>
+Subject: [PATCH v3 8/9] blockjob: query driver-specific info via a new 'query'
+ driver method
+Date: Fri, 13 Oct 2023 11:21:42 +0200
+Message-Id: <20231013092143.365296-9-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231013092143.365296-1-f.ebner@proxmox.com>
 References: <20231013092143.365296-1-f.ebner@proxmox.com>
@@ -55,40 +56,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation to additionally return job-type-specific information.
-
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
 
-No changes in v3.
+Changes in v3:
+    * Unlock job mutex while calling the driver's handler for query.
 
- qapi/block-core.json | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ blockjob.c                   | 6 ++++++
+ include/block/blockjob_int.h | 5 +++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index a19718a69f..950542b735 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -1395,13 +1395,15 @@
- #
- # Since: 1.1
- ##
--{ 'struct': 'BlockJobInfo',
--  'data': {'type': 'JobType', 'device': 'str', 'len': 'int',
-+{ 'union': 'BlockJobInfo',
-+  'base': {'type': 'JobType', 'device': 'str', 'len': 'int',
-            'offset': 'int', 'busy': 'bool', 'paused': 'bool', 'speed': 'int',
-            'io-status': 'BlockDeviceIoStatus', 'ready': 'bool',
-            'status': 'JobStatus',
-            'auto-finalize': 'bool', 'auto-dismiss': 'bool',
--           '*error': 'str' } }
-+           '*error': 'str' },
-+  'discriminator': 'type',
-+  'data': {} }
+diff --git a/blockjob.c b/blockjob.c
+index f8cf6e58e2..9c1cf2ba78 100644
+--- a/blockjob.c
++++ b/blockjob.c
+@@ -376,6 +376,7 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
+ {
+     BlockJobInfo *info;
+     uint64_t progress_current, progress_total;
++    const BlockJobDriver *drv = block_job_driver(job);
  
- ##
- # @query-block-jobs:
+     GLOBAL_STATE_CODE();
+ 
+@@ -405,6 +406,11 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
+                         g_strdup(error_get_pretty(job->job.err)) :
+                         g_strdup(strerror(-job->job.ret));
+     }
++    if (drv->query) {
++        job_unlock();
++        drv->query(job, info);
++        job_lock();
++    }
+     return info;
+ }
+ 
+diff --git a/include/block/blockjob_int.h b/include/block/blockjob_int.h
+index f604985315..4ab88b3c97 100644
+--- a/include/block/blockjob_int.h
++++ b/include/block/blockjob_int.h
+@@ -72,6 +72,11 @@ struct BlockJobDriver {
+      * Change the @job's options according to @opts.
+      */
+     void (*change)(BlockJob *job, BlockJobChangeOptions *opts, Error **errp);
++
++    /*
++     * Query information specific to this kind of block job.
++     */
++    void (*query)(BlockJob *job, BlockJobInfo *info);
+ };
+ 
+ /*
 -- 
 2.39.2
 
