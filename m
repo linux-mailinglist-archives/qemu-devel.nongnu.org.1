@@ -2,60 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BF07C8118
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F79B7C8100
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:56:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDrm-0004Rf-3d; Fri, 13 Oct 2023 04:49:54 -0400
+	id 1qrDtu-0002jZ-Cy; Fri, 13 Oct 2023 04:52:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qrDrP-0004Is-OP
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:49:35 -0400
-Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qrDrL-0001Cw-VS
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:49:31 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R861e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046051;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=3; SR=0;
- TI=SMTPD_---0Vu1iBKd_1697186954; 
-Received: from 30.221.101.97(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0Vu1iBKd_1697186954) by smtp.aliyun-inc.com;
- Fri, 13 Oct 2023 16:49:15 +0800
-Message-ID: <cafb596d-ca87-4343-a398-93524a22b3c9@linux.alibaba.com>
-Date: Fri, 13 Oct 2023 16:48:15 +0800
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrDtj-0002cE-0v
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:51:56 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrDtR-0001hW-6w
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:51:54 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9adb9fa7200so377551566b.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:51:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697187095; x=1697791895; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YeEfXgsKpYdF3RMLquGoYhyEJWn3mVtkScrf5aIh5jc=;
+ b=J4SxAXxbf/nSqp1/PQti+5aKX3yi7RWsiK08TKvGKJyIyJRi8OIv3KJKkbtA81Di6r
+ dC8S+VMnPU02HXc2vIELqcvPJn+Sy7P/sHTTqdf6+gvNXVR30/4FJKprjqVbwN6h2ZF7
+ xlYV3oHhmiE/hM33G/ZHBs7GZDgQHT/bE2s1LN1VK6+kKSpHPoAEdv5yiHsarO52wNCE
+ qG0v9YkhorlL52Gzh3FhA+fHW07Vx+TIqQcGcdXp16mQJMF3lix0vKQwP1u1LI5Py/U8
+ AFSCocVGFhgOGQgWsK3/0W7hY1FiZwwX9I9AMsngNlZmWGBnwWR8+FDVqN4bN9YA/LRj
+ 2BCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697187095; x=1697791895;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YeEfXgsKpYdF3RMLquGoYhyEJWn3mVtkScrf5aIh5jc=;
+ b=DiI66FfZP+IkqSelyfBhL1UPC4wGmPMnZemjucIdscjI9w73HPW99G+R6pEjvlcQvs
+ DF/AcwdeNTxnFxVmYwxRK9FaN7n4ivWNUFOUwk+w1irw0geWm5j0YdxXjTRxba74INjS
+ ZLIz9iyfpO+JeXH8I0GiUAnXKi9K1vm10MAP7QVtJNGvqop2keCi0Igd2lwSqDx2x3Ku
+ 0SnV+4wxX49dKXxc5c/mkA2QyhtQPBvQxeRv8gWkTthQ/mWu36v4HkODm/bRbu4xI46Y
+ qs4X+WyL8l3y6mXOgJ/rcHXIBb+WTV6wxQkYHbmIZM1GsZgwddcc6gbfG3ebw4Fy/r1Z
+ xd5A==
+X-Gm-Message-State: AOJu0YwE86eKPuPRPqzrQjrhOlqqcg+Z8YkbSOmPJOkjhfEWkjAy6e2x
+ s4UIXssCjTQ2mhBrKpgLsisISNUXcyU0PLOevUSC5g==
+X-Google-Smtp-Source: AGHT+IFU9CiBPtDfnpXENWsgYoDu1B8G4xiCQso0L3gQhYjyxkdn8iYVq2EgTKZN/4Lebaxgh5FE1w==
+X-Received: by 2002:a17:907:6d2a:b0:9bd:bdfd:e17a with SMTP id
+ sa42-20020a1709076d2a00b009bdbdfde17amr332487ejc.6.1697187095344; 
+ Fri, 13 Oct 2023 01:51:35 -0700 (PDT)
+Received: from [192.168.69.115] ([176.172.118.168])
+ by smtp.gmail.com with ESMTPSA id
+ op13-20020a170906bced00b009a13fdc139fsm12152002ejb.183.2023.10.13.01.51.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 13 Oct 2023 01:51:34 -0700 (PDT)
+Message-ID: <3e159260-f1ac-d3cf-4ba4-3ce6c1b88343@linaro.org>
+Date: Fri, 13 Oct 2023 10:51:32 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] MAINTAINERS: Add the nios2 interrupt controller to the
+ nios2 section
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20231009110239.66778-1-philmd@linaro.org>
- <20231009110239.66778-3-philmd@linaro.org>
- <8e8b6cef-efbf-42ac-975c-b523dc24a531@linux.alibaba.com>
- <58838379-60bf-4af4-980b-cff8ee49bfc2@linaro.org>
- <4a7e39f4-4302-4dfd-9112-4deea5c7403f@linux.alibaba.com>
- <3b745e06-d037-f1b7-0fec-373959598a15@linaro.org>
- <d90102c9-e4c3-4c2f-896e-908584b97202@linux.alibaba.com>
- <ffd5b4ea-6535-45a5-bc74-fffdc04fce68@linaro.org>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <ffd5b4ea-6535-45a5-bc74-fffdc04fce68@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Chris Wulff <crwulff@gmail.com>,
+ Marek Vasut <marex@denx.de>
+References: <20231013065408.949486-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231013065408.949486-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.111;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-111.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,53 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 13/10/23 08:54, Thomas Huth wrote:
+> These files obviously belong to the nios2 target, so they should
+> be listed in the nios2 section in the MAINTAINERS file.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6eecd617e0..45eb230465 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -296,7 +296,9 @@ R: Marek Vasut <marex@denx.de>
+>   S: Orphan
+>   F: target/nios2/
+>   F: hw/nios2/
+> +F: hw/intc/nios2_vic.c
+>   F: disas/nios2.c
+> +F: include/hw/intc/nios2_vic.h
+>   F: configs/devices/nios2-softmmu/default.mak
+>   F: tests/docker/dockerfiles/debian-nios2-cross.d/build-toolchain.sh
+>   F: tests/tcg/nios2/
 
-On 2023/10/13 0:06, Richard Henderson wrote:
-> On 10/11/23 22:59, LIU Zhiwei wrote:
->>
->> On 2023/10/11 13:31, Philippe Mathieu-Daudé wrote:
->>> On 11/10/23 05:25, LIU Zhiwei wrote:
->>>>
->>>> On 2023/10/11 1:04, Richard Henderson wrote:
->>>>> On 10/9/23 05:42, LIU Zhiwei wrote:
->>>>>>
->>>>>> On 2023/10/9 19:02, Philippe Mathieu-Daudé wrote:
->>>>>>> When CPUArchState* is available (here CPURISCVState*), we
->>>>>>> can use the fast env_archcpu() macro to get ArchCPU* (here
->>>>>>> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
->>>>>>> when building with --enable-qom-cast-debug.
->>>
->>>
->>>>>> If so, maybe we have to do this qom cast somewhere.
->>>>>
->>>>> No, I don't think so.  Or at least not in these places.
->>>>
->>>> Yes.  Perhaps, we should remove all RISCV_CPU macros using after 
->>>> the qom objects realized.
->>>>
->>>> Do you think we should remove the RISCV_CPU using in 
->>>> riscv_cpu_exec_interrupt? Although it  is not so hot. I think there 
->>>> is no reason to use it there.
->>>
->>> I have some note in my TODO to check replacing CPUState by ArchCPU in
->>> TCGCPUOps (like the cpu_exec_interrupt handler you mentioned). 
->>
->> IMHO, this will make it harder for heterogeneous SOC support. ArchCPU 
->> is not a target agnostic struct.
->
-> ArchCPU is a target-agnostic typedef of a structure with no visible 
-> definition.
-> C is perfectly happy to manipulate pointers to such structures.
->
-Get it. Thanks
-> Whether it is worthwhile to adjust interfaces from CPUState to 
-> ArchCPU, I don't know.
-
-OK. Let's just wait for a good reason to do that.
-
-Zhiwei
-
->
->
-> r~
+Could we have a NiosII hardware section instead?
 
