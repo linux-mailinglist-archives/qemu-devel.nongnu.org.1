@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD17C7F92
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A05DF7C8017
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:25:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrCw8-0004O9-KS; Fri, 13 Oct 2023 03:50:20 -0400
+	id 1qrCwP-0004ta-7J; Fri, 13 Oct 2023 03:50:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCvx-0004Fx-P9
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:50:16 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1qrCwL-0004pW-PG
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:50:33 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCvi-00045p-Hh
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:50:02 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-325e9cd483eso1746180f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:49:52 -0700 (PDT)
+ id 1qrCw6-0004RG-S5
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:50:33 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-32caaa1c493so1474141f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:50:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183391; x=1697788191; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183417; x=1697788217; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3SnoIpcz8PzllcxndXq3GJ2EOT2IcTPDKK2bNLd5KNY=;
- b=hqRr4PQfCV6iCNzV3mSYAjHw7NHjl4/GSoDO7VlgE4pYTllwunmX0L1GmgKSeCY8om
- Z+WmymhpcJFPurTAfoumTbZb/m0EGVTKrAR6oLXiS1k6aG1nNWm60kW0fdWVIUnE3/I5
- MkwCB0rTLwMTxfnn+VjyWZ53Lt8HjjdLlArKAUN5aKVkn95IApXaXZFXakmDLgDcGN/W
- 3FZvQXbFvEqPIoW4ZaE0CcH18GUGdT+ISyAGfHZ9II5vW+ZWBfS8esgYxvWi1xLpasN7
- ILgirODejx5j8mkOSLX+vBaErCru4AOM9gBGUt5ALzSTMuM4GCPQzhqKS7aD/6pUgAud
- Fj2w==
+ bh=VKQKRFN28e3kmjOkBArdYuYESMT4wctP/PohXvBXbu8=;
+ b=xKphdBkjnN/ae963vYXpUrkF2STIkbj1evl8XrpJDm9/ba46wySJVlSblOyctFOURO
+ oK26dP893qyav0jieXFrC2XY0MLxJr0zDuLppT/XNmibLU8GdXQgZ5vELdcLczKdESzJ
+ 9UuVd+peelyxPKEJG+M0psukEpQp+wFefDFbcLtjp9QfqvyUZYtUPT4CCtW+mWBb8oWu
+ D0DSZli6ABq/bsai7bUQRLUKLKSNvtj3FsI5zNBPejFAHzxcuAQvUKnZk64D4pV/VrHO
+ BmHm5HD43MAqT44YqEYEtkvzGKm+GCPbgCNj82CsUzDpxJrQkNiOATKneuJHaIpIrrNi
+ IV/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183391; x=1697788191;
+ d=1e100.net; s=20230601; t=1697183417; x=1697788217;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3SnoIpcz8PzllcxndXq3GJ2EOT2IcTPDKK2bNLd5KNY=;
- b=dUAwKiAsP3zT1e6Qnk2u2RRv74oomOVabC3h2pYp/udfn0dvzERj3yQJd93TMQUG2W
- jJdGtF9iwodQIsoYfhdT3RsDkNdH6Gjimw7GLG1LbNV4NlbNUoY83y/9lVeGL/hWappO
- SqRygSyG3LAhxkY6Urv2L1jER0L9p95sQeZI3FkZTSrteOd4Qlu5fMDqJstQmJ+FY6tM
- woYAzaXwJXLmJKWJQHK1ghvOWzE1B6EQNGUAFE7J3TpnJP3Ne9EMshePjySWCMhpAZCM
- odbSBnl8El0pVa9UzM12ZrCrUG+IYyZ3Q/RZz+BfphrkJ5LgtRdy3M8yrTGICh544CzM
- RUlA==
-X-Gm-Message-State: AOJu0Yx2WSE2nx0scpWEtBcGEmkoR4m08gq+fDx+gLtwg5w0Y/hWhKyu
- VnZ49pRLfHqdBwMONoUXjiZWerPfPllnkH9d+oI=
-X-Google-Smtp-Source: AGHT+IGuhXIHVMoXJHy3CIDKzcNuKfzEjA7lpg9he8mP4fp1iIG49JQdmA2joGBt5y/X0SKN3NA8Uw==
-X-Received: by 2002:adf:edc3:0:b0:321:56af:5ef9 with SMTP id
- v3-20020adfedc3000000b0032156af5ef9mr19036438wro.70.1697183391732; 
- Fri, 13 Oct 2023 00:49:51 -0700 (PDT)
+ bh=VKQKRFN28e3kmjOkBArdYuYESMT4wctP/PohXvBXbu8=;
+ b=X2HmVO5IGaMR1uygQixiIoNmlloIx0Q/wgXwu4YqnB52NTrbNQX3QwHQ0as27nXKVu
+ 4PJ/UF684/JS/gBLJzPcGSSJh4juAJXOahi5hi+6x0wzWyWV9iBNzv/Q51cZxkuhmmm1
+ 1V7xjEOQ6nL1NpoBIUW0SXKZWuWsVCou8CPtQi8oxf1yg28EerFpqL5BW+2QHPk8OJwZ
+ +gG4SDvke9y3jiSg6rw2JEga9iGpgfXejWS5UGAnX3ADwA9GfPvLB0ENpuCkIY1PCcPs
+ b1KD/g5yPYUvNrNwHG9KCtgQgrbZrINQbZxt8DqR6K4YNzoTLoUHDuCzJV29CoDtWsPH
+ 3SvA==
+X-Gm-Message-State: AOJu0YyvIVGOyOtsgRvhCIgMQOc4lun7HspVKRWXScFqQBlGx8juUD05
+ scCcGljfRvHoC8AxGQIlHuvk5Ho6FFMHjn5qJm0=
+X-Google-Smtp-Source: AGHT+IH88UN9ANhVaz4Vpwl4T895r5eT+izGLn+Fs24GD+Z88YwWnqzoqnKSzjktiIVZVn9M/g3RMA==
+X-Received: by 2002:adf:c846:0:b0:32d:84fe:359a with SMTP id
+ e6-20020adfc846000000b0032d84fe359amr5110019wrh.34.1697183417138; 
+ Fri, 13 Oct 2023 00:50:17 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.49.50
+ m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.50.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:49:51 -0700 (PDT)
+ Fri, 13 Oct 2023 00:50:16 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
-Subject: [RFC PATCH 04/78] qapi/opts-visitor: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:47:08 +0300
-Message-Id: <da9d0ba48a5be92f212e6bc04710803ca0ffa7b3.1697183082.git.manos.pitsidianakis@linaro.org>
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>
+Subject: [RFC PATCH 16/78] audio: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:47:20 +0300
+Message-Id: <9f8879f961e38a2adfd205129beb94788de64c2e.1697183082.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,145 +101,174 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- qapi/opts-visitor.c         | 1 +
- qapi/string-input-visitor.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ audio/audio.c     | 16 ++++++++--------
+ audio/jackaudio.c |  4 ++--
+ audio/pwaudio.c   |  4 ++--
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
-index 8f1efab8b9..d7376bf239 100644
---- a/qapi/opts-visitor.c
-+++ b/qapi/opts-visitor.c
-@@ -249,41 +249,42 @@ static GenericList *
- opts_next_list(Visitor *v, GenericList *tail, size_t size)
+diff --git a/audio/audio.c b/audio/audio.c
+index e9815d6812..ed7c795af7 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -245,39 +245,39 @@ static int audio_validate_settings (struct audsettings *as)
+ static int audio_pcm_info_eq (struct audio_pcm_info *info, struct audsettings *as)
  {
-     OptsVisitor *ov = to_ov(v);
+     int bits = 8;
+     bool is_signed = false, is_float = false;
  
-     switch (ov->list_mode) {
-     case LM_TRAVERSED:
-         return NULL;
-     case LM_SIGNED_INTERVAL:
-     case LM_UNSIGNED_INTERVAL:
-         if (ov->list_mode == LM_SIGNED_INTERVAL) {
-             if (ov->range_next.s < ov->range_limit.s) {
-                 ++ov->range_next.s;
-                 break;
-             }
-         } else if (ov->range_next.u < ov->range_limit.u) {
-             ++ov->range_next.u;
-             break;
-         }
-         ov->list_mode = LM_IN_PROGRESS;
-         /* range has been completed, fall through in order to pop option */
+     switch (as->fmt) {
+     case AUDIO_FORMAT_S8:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U8:
+         break;
+ 
+     case AUDIO_FORMAT_S16:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U16:
+         bits = 16;
+         break;
+ 
+     case AUDIO_FORMAT_F32:
+         is_float = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_S32:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U32:
+         bits = 32;
+         break;
+ 
+     default:
+         abort();
+     }
+     return info->freq == as->freq
+         && info->nchannels == as->nchannels
+         && info->is_signed == is_signed
+         && info->is_float == is_float
+         && info->bits == bits
+         && info->swap_endianness == (as->endianness != AUDIO_HOST_ENDIANNESS);
+ }
+@@ -285,45 +285,45 @@ static int audio_pcm_info_eq (struct audio_pcm_info *info, struct audsettings *a
+ void audio_pcm_init_info (struct audio_pcm_info *info, struct audsettings *as)
+ {
+     int bits = 8, mul;
+     bool is_signed = false, is_float = false;
+ 
+     switch (as->fmt) {
+     case AUDIO_FORMAT_S8:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U8:
+         mul = 1;
+         break;
+ 
+     case AUDIO_FORMAT_S16:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U16:
+         bits = 16;
+         mul = 2;
+         break;
+ 
+     case AUDIO_FORMAT_F32:
+         is_float = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_S32:
+         is_signed = true;
+-        /* fall through */
++        fallthrough;
+     case AUDIO_FORMAT_U32:
+         bits = 32;
+         mul = 4;
+         break;
+ 
+     default:
+         abort();
+     }
+ 
+     info->freq = as->freq;
+     info->bits = bits;
+     info->is_signed = is_signed;
+     info->is_float = is_float;
+     info->nchannels = as->nchannels;
+     info->bytes_per_frame = as->nchannels * mul;
+     info->bytes_per_second = info->freq * info->bytes_per_frame;
+     info->swap_endianness = (as->endianness != AUDIO_HOST_ENDIANNESS);
+ }
+diff --git a/audio/jackaudio.c b/audio/jackaudio.c
+index 974a3caad3..fc602411cd 100644
+--- a/audio/jackaudio.c
++++ b/audio/jackaudio.c
+@@ -574,22 +574,22 @@ static int qjack_init_in(HWVoiceIn *hw, struct audsettings *as,
+ static void qjack_client_fini_locked(QJackClient *c)
+ {
+     switch (c->state) {
+     case QJACK_STATE_RUNNING:
+         jack_deactivate(c->client);
+-        /* fallthrough */
 +        fallthrough;
  
-     case LM_IN_PROGRESS: {
-         const QemuOpt *opt;
+     case QJACK_STATE_SHUTDOWN:
+         jack_client_close(c->client);
+         c->client = NULL;
  
-         opt = g_queue_pop_head(ov->repeated_opts);
-         if (g_queue_is_empty(ov->repeated_opts)) {
-             g_hash_table_remove(ov->unprocessed_opts, opt->name);
-             ov->repeated_opts = NULL;
-             ov->list_mode = LM_TRAVERSED;
-             return NULL;
-         }
+         qjack_buffer_free(&c->fifo);
+         g_free(c->port);
+         g_free(c->process_buffers);
+ 
+         c->state = QJACK_STATE_DISCONNECTED;
+-        /* fallthrough */
++        fallthrough;
+ 
+     case QJACK_STATE_DISCONNECTED:
          break;
      }
- 
-     default:
-         abort();
-     }
- 
-     tail->next = g_malloc0(size);
-     return tail->next;
  }
-diff --git a/qapi/string-input-visitor.c b/qapi/string-input-visitor.c
-index 197139c1c0..1ce43da20b 100644
---- a/qapi/string-input-visitor.c
-+++ b/qapi/string-input-visitor.c
-@@ -182,41 +182,41 @@ static int try_parse_int64_list_entry(StringInputVisitor *siv, int64_t *obj)
- static bool parse_type_int64(Visitor *v, const char *name, int64_t *obj,
-                              Error **errp)
+diff --git a/audio/pwaudio.c b/audio/pwaudio.c
+index bf26fadb06..89b31617a6 100644
+--- a/audio/pwaudio.c
++++ b/audio/pwaudio.c
+@@ -487,31 +487,31 @@ static void
+ qpw_set_position(uint32_t channels, uint32_t position[SPA_AUDIO_MAX_CHANNELS])
  {
-     StringInputVisitor *siv = to_siv(v);
-     int64_t val;
- 
-     switch (siv->lm) {
-     case LM_NONE:
-         /* just parse a simple int64, bail out if not completely consumed */
-         if (qemu_strtoi64(siv->string, NULL, 0, &val)) {
-             error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-                        name ? name : "null", "int64");
-             return false;
-         }
-         *obj = val;
-         return true;
-     case LM_UNPARSED:
-         if (try_parse_int64_list_entry(siv, obj)) {
-             error_setg(errp, QERR_INVALID_PARAMETER_VALUE, name ? name : "null",
-                        "list of int64 values or ranges");
-             return false;
-         }
-         assert(siv->lm == LM_INT64_RANGE);
--        /* fall through */
+     memcpy(position, (uint32_t[SPA_AUDIO_MAX_CHANNELS]) { SPA_AUDIO_CHANNEL_UNKNOWN, },
+            sizeof(uint32_t) * SPA_AUDIO_MAX_CHANNELS);
+     /*
+      * TODO: This currently expects the only frontend supporting more than 2
+      * channels is the usb-audio.  We will need some means to set channel
+      * order when a new frontend gains multi-channel support.
+      */
+     switch (channels) {
+     case 8:
+         position[6] = SPA_AUDIO_CHANNEL_SL;
+         position[7] = SPA_AUDIO_CHANNEL_SR;
+-        /* fallthrough */
 +        fallthrough;
-     case LM_INT64_RANGE:
-         /* return the next element in the range */
-         assert(siv->rangeNext.i64 <= siv->rangeEnd.i64);
-         *obj = siv->rangeNext.i64++;
- 
-         if (siv->rangeNext.i64 > siv->rangeEnd.i64 || *obj == INT64_MAX) {
-             /* end of range, check if there is more to parse */
-             siv->lm = siv->unparsed_string[0] ? LM_UNPARSED : LM_END;
-         }
-         return true;
-     case LM_END:
-         error_setg(errp, "Fewer list elements expected");
-         return false;
-     default:
-         abort();
-     }
- }
-@@ -272,41 +272,41 @@ static int try_parse_uint64_list_entry(StringInputVisitor *siv, uint64_t *obj)
- static bool parse_type_uint64(Visitor *v, const char *name, uint64_t *obj,
-                               Error **errp)
- {
-     StringInputVisitor *siv = to_siv(v);
-     uint64_t val;
- 
-     switch (siv->lm) {
-     case LM_NONE:
-         /* just parse a simple uint64, bail out if not completely consumed */
-         if (qemu_strtou64(siv->string, NULL, 0, &val)) {
-             error_setg(errp, QERR_INVALID_PARAMETER_VALUE, name ? name : "null",
-                        "uint64");
-             return false;
-         }
-         *obj = val;
-         return true;
-     case LM_UNPARSED:
-         if (try_parse_uint64_list_entry(siv, obj)) {
-             error_setg(errp, QERR_INVALID_PARAMETER_VALUE, name ? name : "null",
-                        "list of uint64 values or ranges");
-             return false;
-         }
-         assert(siv->lm == LM_UINT64_RANGE);
--        /* fall through */
+     case 6:
+         position[2] = SPA_AUDIO_CHANNEL_FC;
+         position[3] = SPA_AUDIO_CHANNEL_LFE;
+         position[4] = SPA_AUDIO_CHANNEL_RL;
+         position[5] = SPA_AUDIO_CHANNEL_RR;
+-        /* fallthrough */
 +        fallthrough;
-     case LM_UINT64_RANGE:
-         /* return the next element in the range */
-         assert(siv->rangeNext.u64 <= siv->rangeEnd.u64);
-         *obj = siv->rangeNext.u64++;
- 
-         if (siv->rangeNext.u64 > siv->rangeEnd.u64 || *obj == UINT64_MAX) {
-             /* end of range, check if there is more to parse */
-             siv->lm = siv->unparsed_string[0] ? LM_UNPARSED : LM_END;
-         }
-         return true;
-     case LM_END:
-         error_setg(errp, "Fewer list elements expected");
-         return false;
+     case 2:
+         position[0] = SPA_AUDIO_CHANNEL_FL;
+         position[1] = SPA_AUDIO_CHANNEL_FR;
+         break;
+     case 1:
+         position[0] = SPA_AUDIO_CHANNEL_MONO;
+         break;
      default:
-         abort();
+         dolog("Internal error: unsupported channel count %d\n", channels);
      }
  }
 -- 
