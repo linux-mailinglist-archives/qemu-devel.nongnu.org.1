@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9B67C80E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D396B7C8113
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:57:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDss-0006qU-KF; Fri, 13 Oct 2023 04:51:02 -0400
+	id 1qrDst-0007F9-W3; Fri, 13 Oct 2023 04:51:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsP-0006EV-JD
+ id 1qrDsP-0006Ek-LV
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:34 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsK-0001YC-Sj
+ id 1qrDsM-0001YJ-Dp
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:33 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-406618d0992so19363005e9.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:50:28 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40684f53ef3so21325105e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:50:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697187027; x=1697791827; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697187028; x=1697791828; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hGp6KfiXvVmX3sQOMO0j8ragfkcxvzPbKi4/s+Bgkm8=;
- b=CCFftagZou7M4NIW7WbUtrgyZ+V7KMvyL/KvSjBP4BhYdexJTSKj+JHywgwigiB4hg
- YiJ8IJGwJtjMxZJZUQBvNao9UPc/xBoJvAvjf5MVgYs9EwQ6aFA9klljifCkcRdIEJFw
- A5S6L+SaUZiYRvSArZ72kgcN9h7HwYXpakayQt1X7ShdkXi2AKaylCz9LaKIjqBWEi6k
- +VGEHXaGzi6mXPnXeiEYDNa6m3jPUzz/GmwalXda9Kp5pv90CEjv6RQWSHLgGFJQYs51
- 5fcWEmwrvPTKsmuf24fYONuV6QgAumsRBeP90X89vMLvShhtQfMm+JOUDUflFyG7v4zD
- 9AjQ==
+ bh=0q2+pTH8sPqGJ1vK2x6iOCgbhMG+GiWcxF7S/h5W+4Y=;
+ b=y1uPPptRB6fleE0H7/vtJDxQg/yoVgAhT+j2pt+3LkebrF+q1qi5Btvvryhs7E5QPY
+ zvRMsJai1wo9mc/mWZakNwOAAN7IWpqEfy+PmuLxHl+Sq+SpvqYXzBHTMHtBNBlbOPMX
+ qYY3JbxKc6br8MqCz8nv/2qzRLiFnKSFxwC7YI9O8d/It4JZQqMIDBgbaJtDHh+5l9jY
+ dI7rRH26CWguHBzzvztptRgaLBiQBKPrFBWty3VZmz5WmzYOXiBuR5uVR0ZbrxMia1u5
+ 3RIdMUxPPZbHsDvh2acy3+353Q01SBG+loc8rYWLq3htKJhpq3p7BX1ddwIE0AaO0ed0
+ 1QdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697187027; x=1697791827;
+ d=1e100.net; s=20230601; t=1697187028; x=1697791828;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hGp6KfiXvVmX3sQOMO0j8ragfkcxvzPbKi4/s+Bgkm8=;
- b=hQAHPQPHZBaoqxqR+8YHrn1mroQiiGy79d8zTQNw5+tzpFbstfro9SjWGNSsfxOm/s
- ANF1cP37g197NEt733stl4LR6TrrIGIwm6vuMQFdGF4UB1vZy/+Y12EMKDoL7S4efp5Q
- 0cqAzMeFiv6jRtro/BmOo/QyOxzwldxhaiWhiU7qFGkHt5f9Ezest4506QJ5bQ50hatO
- JfQGtdglNKjQZfrcMkRiVpdkeMwqWv3JVTHK8FCR5lBiSMd4ZO9o0x6tJVJdZsblgJ3A
- S6ir5dwFUv3t1aorsVAFf3TbmcGYkgHaofHnVTdJwdkrpOnORidwa7X9vj9nEjsB7lfI
- UcLw==
-X-Gm-Message-State: AOJu0YxUJN7nibOgOLFDBu7yPl2wcrVW6m0kV9rp+J9ljF1vBjv6sQIE
- 0NrUnMRQp5ZZpL+g4T9hI/LgHwdSxLIWoPDgjtw=
-X-Google-Smtp-Source: AGHT+IEN/GQyIQE6G4rQkyNu04/Wh00MoF2hvPXLQDHJHqnmiQtfJAB9BPsclU5I32C+d4ANpDa/mA==
-X-Received: by 2002:a05:600c:3544:b0:407:39ea:d926 with SMTP id
- i4-20020a05600c354400b0040739ead926mr16370973wmq.9.1697187027139; 
- Fri, 13 Oct 2023 01:50:27 -0700 (PDT)
+ bh=0q2+pTH8sPqGJ1vK2x6iOCgbhMG+GiWcxF7S/h5W+4Y=;
+ b=u1M/AAX12E3Majmbkj64YV+FRT6sAqA3X9kGJ5fmDT9tEE6Gx39s+RramV3RG6ppeS
+ xnLgHh5tVYrCUgYsL8ekv5LVgxyKA4MtOIStpKmNq+759GDPEXLdA7n0ZoZFCr2H50cp
+ Yy5vutC7tf2USBcR4xZohcJ4QZ0lqFLAaYMcL+VgltY9B4JJJ5r29aTqIwEge2zHdEZi
+ 7PCxvcVyTkF3ghQyjzKO9/5qCU0cUJhWk0mk5R+83GxOOmsp9ZcElB8w+F4hm5yvmYS8
+ E5OpPS9lRsQSyAN60WKHTMkRpx9aqFmRvUOrnHkaBCQf4puxLeb5exAXpTxufheZcjR0
+ kMfQ==
+X-Gm-Message-State: AOJu0Yx2mqGd8Mz3HkIPC7+5E7/wm3zsHTSV0XnJ8BqN82f5/NZBwGbu
+ /zkxi8tq3BGxwsdmVkkIqgG8Ttq08WkCXxBpmQQ=
+X-Google-Smtp-Source: AGHT+IFB2Da4NFkBTUFrC0QJfxWpWdZ+pn5sOz3JoIBz9abuzuR94qCRp3lV+prnZGZX4YsF27xY9A==
+X-Received: by 2002:a5d:44cc:0:b0:31f:f99c:6009 with SMTP id
+ z12-20020a5d44cc000000b0031ff99c6009mr22133607wrr.22.1697187028633; 
+ Fri, 13 Oct 2023 01:50:28 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.25
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:50:26 -0700 (PDT)
+ Fri, 13 Oct 2023 01:50:28 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Michael Roth <michael.roth@amd.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>
-Subject: [RFC PATCH v3 60/78] qga: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:28 +0300
-Message-Id: <e42c16ba150141c248368ab3666aae54b93bd59b.1697186560.git.manos.pitsidianakis@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [RFC PATCH v3 61/78] semihosting: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:46:29 +0300
+Message-Id: <400fe9b92164a552f135951b0a01c3c26c37d0b1.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,35 +97,22 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- qga/main.c                  | 2 +-
- qga/vss-win32/requester.cpp | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ semihosting/arm-compat-semi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qga/main.c b/qga/main.c
-index 8668b9f3d3..40471e8a0b 100644
---- a/qga/main.c
-+++ b/qga/main.c
-@@ -663,7 +663,7 @@ static gboolean channel_event_cb(GIOCondition condition, gpointer data)
-         if (!s->virtio) {
-             return false;
+diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
+index 329ea11260..c7d32cfca0 100644
+--- a/semihosting/arm-compat-semi.c
++++ b/semihosting/arm-compat-semi.c
+@@ -786,7 +786,7 @@ void do_common_semihosting(CPUState *cs)
+             common_semi_set_ret(cs, 0);
+             break;
          }
 -        /* fall through */
 +        fallthrough;
-     case G_IO_STATUS_AGAIN:
-         /* virtio causes us to spin here when no process is attached to
-          * host-side chardev. sleep a bit to mitigate this
-diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
-index 9884c65e70..36fa4fdf28 100644
---- a/qga/vss-win32/requester.cpp
-+++ b/qga/vss-win32/requester.cpp
-@@ -611,6 +611,7 @@ void requester_thaw(int *num_vols, void *mountpints, ErrorSet *errset)
-             break;
-         }
-         /* fall through if hEventTimeout is signaled */
-+        fallthrough;
- 
-     case (HRESULT)VSS_E_HOLD_WRITES_TIMEOUT:
-         err_set(errset, hr, "couldn't hold writes: "
+     default:
+         fprintf(stderr, "qemu: Unsupported SemiHosting SWI 0x%02x\n", nr);
+         cpu_dump_state(cs, stderr, 0);
 -- 
 2.39.2
 
