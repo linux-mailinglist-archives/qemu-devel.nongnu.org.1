@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C0D7C80DD
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 897377C80FD
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:55:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrDsx-0007OK-Dp; Fri, 13 Oct 2023 04:51:08 -0400
+	id 1qrDtN-0000jW-7P; Fri, 13 Oct 2023 04:51:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsR-0006Ro-5w
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:37 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1qrDsT-0006fJ-LR
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:39 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrDsP-0001Yf-AN
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:34 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-53da80ada57so3307528a12.0
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:50:32 -0700 (PDT)
+ id 1qrDsR-0001Z5-AJ
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:50:37 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-406609df1a6so19633855e9.3
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:50:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697187031; x=1697791831; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697187033; x=1697791833; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NRj3Up6YLJQpd6BcwTiikLCMachhKowHZltLko8L2r8=;
- b=AOzz8S7EIeX/16ZphTNE/hL4kQz8s87M8BnGiRASnetWRF3tD4jqHdxsO0yFFPgO//
- xssyvmxOC9RECzk1hZKs4wegQdaj07NSLhZyOPFJVQ7nRBG80Bcpa+UrYjOh5KYxKl9/
- PWU/aOzyyGAuj4q1uvzXlQERzkr2r1DNVE2hwoMuCuzB1wZGadJaD57dLa33kvBhueSY
- 6BH8Y6zLa7ZlIEfkPuassRszkFhnNReOeZG9ZtyDyKL22wtnIhkPURV0qHSpJ8G91yRd
- DT7TxSGcNsNzetuX8DR2zngiwDUr9a7qfe6Ce9HDvY0c0dXoYAosp8tuxVrQu6SK9a0R
- j3oQ==
+ bh=X54cniTGFOWq1Xmce/3hJhLMp7Sc5Y/WCKJ0ySfD0QI=;
+ b=cUVe8H01bsPF6ANErFz8XpkaRdKsthI5QwXWC5atTwWDJtaDNoEECVzZLHwvjlFOQf
+ wE+gt03TG3reuCRrPpCcABouRXrf656EJYHVUAFsHAocPJ/DIqu8/V2JyAdgqQPf2CYE
+ /pPTwVn4qPPwOMSfIqVrZqNY5meS7qBy+W1CyUaLmeRz323VMqQSS2nQTwNP8ryQK/Eh
+ VLMEJoyXkn9t2mDNlRLiUzO1X0e5J94Ki4EYQ3yUpv3rfYuudQFvkWpAqp7iQD5e05pS
+ EWw7/Nlr4N09+aINw7HQC1TMS8lvd9Y2D6gPmIJxJYWwliCeDuBiMLFlBhWC4ljH+Cv3
+ t9YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697187031; x=1697791831;
+ d=1e100.net; s=20230601; t=1697187033; x=1697791833;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NRj3Up6YLJQpd6BcwTiikLCMachhKowHZltLko8L2r8=;
- b=JorJgIsIxfasjmlZccSDc1iOdZLb0KqAQ0LBv0pHRJtP3QJtXYXrm8DA/J5R+d0HEd
- pmt2vGOo1o0cTLZFyrVG+zQSazmq/QesMiDNnMVsUKxIjwWbnh5Dnh5Bk7pb5wLqiD5R
- qUAJ1JrOI8l44bvgZZIEKbTuxyoYylrFiACr+/MD/u4q8GUdupLUZOf0iA5hMlA1CXy5
- nGXaeEBwm0cCL0MmVW041rA0Z9YWpE+hOlI8RVC1Ue0Bg7bUxolmanKI8YlZUyEQBMWj
- BagyaJH4a/4AYezLeA4bRKjbYYAGJl1WRbGnH+VQk3rqp+qgDsMjDMNuqiQ5Q4XfK/x3
- ZFVA==
-X-Gm-Message-State: AOJu0YyeDDgq7BxW+2SS2aKnvU4LNXbgYP+KSvCthjh/MAk1uczwrPJz
- 2YaGg4zC/Lgl5h+KO96iEWEswIp6scUVUzGgBac=
-X-Google-Smtp-Source: AGHT+IE/vTN4/h3jeUxp+NaC1QOKICpj4c7/RpBhcN4+nABwUnNGHVgAshaf7fbKL9Gqi/yMcdF+Sg==
-X-Received: by 2002:a17:907:75ee:b0:9ba:2da5:d9d7 with SMTP id
- jz14-20020a17090775ee00b009ba2da5d9d7mr10131385ejc.40.1697187031683; 
- Fri, 13 Oct 2023 01:50:31 -0700 (PDT)
+ bh=X54cniTGFOWq1Xmce/3hJhLMp7Sc5Y/WCKJ0ySfD0QI=;
+ b=B/xr6mgvyCNSkT0xTZSypJJzBtZ8yOuNXC00C+Pn8SM0CKIT1YXzIUesFUQr/jxLMU
+ VeSYdAJy5agwGqGFVM6BJCiQvSrZ9SRAhjfrekzxsLbvX3/8piAp0/+VvjeVmHuOQ9wG
+ XhUK6LbuoUu7ThZmZ7qB4yLXQEhmv5JjjQDWgMS4ylStQ10/1PNK9sAQLojzbk5pmfE6
+ wOQmIfqW9JTgj9LMbvMTpQgPsOdHNL+Mj0JVWvqP2e9o9JOgqgX22AIhnAlw+sVHwnZk
+ lbBncz3NhPnZScQktAvLp18nN+mlCcpP9lY5D2+U4gGlkLBY1dFxz+LVOw/fZJjAsDEo
+ 8MGg==
+X-Gm-Message-State: AOJu0Yy7ZjN+UUIkUUbu9YfoaVrPYsMxh0qOTWYQ0JD0xu5B9ZdKsj9A
+ RSffywOqoZSdMQ20B+RlZUs+r777QF16g1Qemyw=
+X-Google-Smtp-Source: AGHT+IGxzoxaUg5kDev6dfa3JyRSJrXA21LTYZXUfGJlhH0ni80LYskAELwFMaPXRJhXKz4/Pz2hXQ==
+X-Received: by 2002:a05:600c:220b:b0:406:4242:e7df with SMTP id
+ z11-20020a05600c220b00b004064242e7dfmr23950310wml.35.1697187033303; 
+ Fri, 13 Oct 2023 01:50:33 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.30
+ v10-20020a5d678a000000b0032d9f32b96csm569185wru.62.2023.10.13.01.50.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 01:50:31 -0700 (PDT)
+ Fri, 13 Oct 2023 01:50:32 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Corey Minyard <minyard@acm.org>
-Subject: [RFC PATCH v3 63/78] hw/ipmi: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 11:46:31 +0300
-Message-Id: <5d8d568383206c699eceee2323c913be052cde05.1697186560.git.manos.pitsidianakis@linaro.org>
+ Paul Burton <paulburton@kernel.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [RFC PATCH v3 64/78] hw/mips: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 11:46:32 +0300
+Message-Id: <4e6afd01831a38c59d09f8f0483b304b7329f4aa.1697186560.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,45 +100,49 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/ipmi/ipmi_bmc_extern.c | 2 +-
- hw/ipmi/smbus_ipmi.c      | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ hw/mips/boston.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-index e232d35ba2..b2ca02b21f 100644
---- a/hw/ipmi/ipmi_bmc_extern.c
-+++ b/hw/ipmi/ipmi_bmc_extern.c
-@@ -174,7 +174,7 @@ static void addchar(IPMIBmcExtern *ibe, unsigned char ch)
-         ibe->outbuf[ibe->outlen] = VM_ESCAPE_CHAR;
-         ibe->outlen++;
-         ch |= 0x10;
+diff --git a/hw/mips/boston.c b/hw/mips/boston.c
+index 4e11ff6cd6..4ca53b790a 100644
+--- a/hw/mips/boston.c
++++ b/hw/mips/boston.c
+@@ -173,14 +173,14 @@ static uint64_t boston_lcd_read(void *opaque, hwaddr addr,
+         val |= (uint64_t)s->lcd_content[(addr + 6) & 0x7] << 48;
+         val |= (uint64_t)s->lcd_content[(addr + 5) & 0x7] << 40;
+         val |= (uint64_t)s->lcd_content[(addr + 4) & 0x7] << 32;
 -        /* fall through */
 +        fallthrough;
-     default:
-         ibe->outbuf[ibe->outlen] = ch;
-         ibe->outlen++;
-diff --git a/hw/ipmi/smbus_ipmi.c b/hw/ipmi/smbus_ipmi.c
-index d0991ab7f9..58f5328a19 100644
---- a/hw/ipmi/smbus_ipmi.c
-+++ b/hw/ipmi/smbus_ipmi.c
-@@ -252,7 +252,7 @@ static int ipmi_write_data(SMBusDevice *dev, uint8_t *buf, uint8_t len)
-     switch (cmd) {
-     case SSIF_IPMI_REQUEST:
-         send = true;
--        /* FALLTHRU */
+     case 4:
+         val |= (uint64_t)s->lcd_content[(addr + 3) & 0x7] << 24;
+         val |= (uint64_t)s->lcd_content[(addr + 2) & 0x7] << 16;
+-        /* fall through */
 +        fallthrough;
-     case SSIF_IPMI_MULTI_PART_REQUEST_START:
-         if (len < 2) {
-             return -1; /* Bogus. */
-@@ -263,7 +263,7 @@ static int ipmi_write_data(SMBusDevice *dev, uint8_t *buf, uint8_t len)
- 
-     case SSIF_IPMI_MULTI_PART_REQUEST_END:
-         send = true;
--        /* FALLTHRU */
+     case 2:
+         val |= (uint64_t)s->lcd_content[(addr + 1) & 0x7] << 8;
+-        /* fall through */
 +        fallthrough;
-     case SSIF_IPMI_MULTI_PART_REQUEST_MIDDLE:
-         if (!sid->inlen) {
-             return -1; /* Bogus. */
+     case 1:
+         val |= (uint64_t)s->lcd_content[(addr + 0) & 0x7];
+         break;
+@@ -200,14 +200,14 @@ static void boston_lcd_write(void *opaque, hwaddr addr,
+         s->lcd_content[(addr + 6) & 0x7] = val >> 48;
+         s->lcd_content[(addr + 5) & 0x7] = val >> 40;
+         s->lcd_content[(addr + 4) & 0x7] = val >> 32;
+-        /* fall through */
++        fallthrough;
+     case 4:
+         s->lcd_content[(addr + 3) & 0x7] = val >> 24;
+         s->lcd_content[(addr + 2) & 0x7] = val >> 16;
+-        /* fall through */
++        fallthrough;
+     case 2:
+         s->lcd_content[(addr + 1) & 0x7] = val >> 8;
+-        /* fall through */
++        fallthrough;
+     case 1:
+         s->lcd_content[(addr + 0) & 0x7] = val;
+         break;
 -- 
 2.39.2
 
