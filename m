@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C047C8F2B
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F387C8F0A
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 23:30:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrPiO-0006Cu-V0; Fri, 13 Oct 2023 17:29:00 -0400
+	id 1qrPiP-0006D9-GS; Fri, 13 Oct 2023 17:29:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPiN-0006CA-IF
+ id 1qrPiN-0006Cg-UF
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:28:59 -0400
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrPiL-0000Ru-Rr
+ id 1qrPiM-0000Rx-C0
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 17:28:59 -0400
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3af604c3f8fso1515035b6e.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:28:57 -0700 (PDT)
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-57b74782be6so1356305eaf.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 14:28:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697232537; x=1697837337; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WpwZzbCzugb1xyJsoESL1m5tuzzH5vNUu2M4VK3Jn88=;
- b=MXLLi7I9gJlKgiS/2/f9ERlJ9fi5FzdncYXjRgZfX+FU8Hlwb2gQNoU4eznoa1VEbG
- 53kSgjjz52DlCAfsSyfglQxzKgWn2ukYih9fXw+xQ1dh1nNa4eTcBIdBSW+GA25Rgb9V
- EdMFWXsxZio+7rnlZLl82sY0DY2Y4Afk1aAXzsBPfHER7Mi2DsIfYZCpAdNBaQcGbTUR
- 1syc21+c205okfwL3fAbS0i1CEIwGbuBx2ngopAfo++h80BXNe0QY5dSdUfcmqi26ZuF
- If6MXkW9dGIEk2NwoSpSy2hihUbUqIHNKfcjeXYrkFObBLzaiySLqFFzP9ovMDV+kXX2
- YQTA==
+ bh=dxgRnIm4dUpDEBZ3CmjdW0lb2sqX4MaY0GW5BhVXm9s=;
+ b=zzJ2+VAf3bkFsPPtVHLHVmg64JfNguF6PmKw2RcVeh/wkghfb0I0qlSXc+Xu1PzykT
+ +c2OchzeWqdqBAXfKp14U8UjmH26OEIQTNcIdlGd1FRErPRkbMPy0wYWXtQtfJJPQ33C
+ jQ8F9m23euVgFlU6ph+X4++fF/0QKHEMjLtpZW/4006DpKm7ENnt9YHDj/11bj1NxjlK
+ Twh3XlOFnc3d+qHGqXBmjyOHG0mjVnxT0G92PNQGywqLKQoI+tVECKHq9B4UX8sLXJHA
+ Be4/AAXWNx3gFsV9asd0kp71Z8HC/NnlwmbucRxBVk3PLbo5A8y60Fj0S2lzlajOuhyI
+ unNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697232537; x=1697837337;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WpwZzbCzugb1xyJsoESL1m5tuzzH5vNUu2M4VK3Jn88=;
- b=uyWafYEqSpcAkCE2YGpdsyV1iSL3MPuyjmdQpykmz/VAtAKOOwrT3dVKmA0ZsHrh0n
- 7JgbIcEkA2QSzUHXfujHdcz4hHxT00iCmsHPUnWsyA6HwrILjKN04RbXR8B3hFlgxW6G
- uC8EsGjlxCCmm2YXNOIUGGmLfTJBYx16pGPDTyymqs9JhoNoIZlV+DP+DAnCxLM5Shjq
- uBdvkX1aSfUf3NRmA3JQSXWfVR0Z7PHa7Mg9ngnwIXpnmP0qoGqEysraMUJFtc1PQJyQ
- moqdBMa4BPmRiG/TK04nlo7FLRg5/5FzE1merM1NXK/CLD+g9FMUTrzIZ995h92hHiK3
- q0Gw==
-X-Gm-Message-State: AOJu0YxncXOj37cgQUKYSVbsqY3IfaVBacDuN7VHRqpxoUvAe3jco9og
- WYmfZhEsO6j1GWrvzkE3l18bqEcAKfM1vNmobuE=
-X-Google-Smtp-Source: AGHT+IGp3aE9sXtfGmkZhUrMetkNCysAwkA+KvA0e1hbuHsWwLmkXW6+akiuQKm+XXzJ55mldGbsLw==
-X-Received: by 2002:a05:6808:1302:b0:3a9:9bb4:485c with SMTP id
- y2-20020a056808130200b003a99bb4485cmr38757988oiv.8.1697232536455; 
- Fri, 13 Oct 2023 14:28:56 -0700 (PDT)
+ bh=dxgRnIm4dUpDEBZ3CmjdW0lb2sqX4MaY0GW5BhVXm9s=;
+ b=qVsdLLpE20YTen7nfEZeBFaBVbN/8v65gBtDHh5h/UpaYR5Isr7uXC4AlttN3qpE9g
+ OSN/hYy3drUTnC2sdR9zFX+8W0DVvT/Q8CNsbVeF87Xg4wawjdhxSnmETNECdUIJJ4Hz
+ ZXULLx9aBI/j8vtBgnV/1N2dpHME72fEva7h6koUrxCv71tvlo13yCUwkqux1a8Ggitx
+ xtkmpdrG8Ci355lVJTEZGfhX0j4u3SuvC+X8k/eQUsvZA7pbKM4TbgmfG9s/02tC52pY
+ 0ZHuxXDn7s7Ad9NVRHgTYMJyGXGTrmb56hVXL2g7eP7X85icNfuateietPWoKLqIlFxI
+ 8Mdw==
+X-Gm-Message-State: AOJu0Yz4wSpj60RTwcTNWtyAolSrPfuCWuRFvSqbPq82CixAZ0Swp35u
+ qpfhEfCf06f4M1/QfWfoH/9MmZ1j9lGTrU+7lZA=
+X-Google-Smtp-Source: AGHT+IFdtiKoVn7r2N0TQHwNDU7yRDDzd/+VO1uTd8NIw8YyBg9Xfd/MFcWaOJTyjkVK3Y4aETB3QQ==
+X-Received: by 2002:a05:6358:430c:b0:134:ea45:53d7 with SMTP id
+ r12-20020a056358430c00b00134ea4553d7mr32913739rwc.26.1697232537298; 
+ Fri, 13 Oct 2023 14:28:57 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- b185-20020a6334c2000000b0058988954686sm70753pga.90.2023.10.13.14.28.55
+ b185-20020a6334c2000000b0058988954686sm70753pga.90.2023.10.13.14.28.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 13 Oct 2023 14:28:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
 	atar4qemu@gmail.com
-Subject: [PATCH 09/85] target/sparc: Move FBPfcc and FBfcc to decodetree
-Date: Fri, 13 Oct 2023 14:27:30 -0700
-Message-Id: <20231013212846.165724-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/85] target/sparc: Merge gen_cond with only caller
+Date: Fri, 13 Oct 2023 14:27:31 -0700
+Message-Id: <20231013212846.165724-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231013212846.165724-1-richard.henderson@linaro.org>
 References: <20231013212846.165724-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,177 +93,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |   4 ++
- target/sparc/translate.c  | 105 +++++++++++++++-----------------------
- 2 files changed, 46 insertions(+), 63 deletions(-)
+ target/sparc/translate.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 838f4cdb1d..9ab3f2eb82 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -6,8 +6,12 @@
- &bcc    i a cond cc
- BPcc    00 a:1 cond:4   001 cc:1 0 - i:s19                 &bcc
- Bicc    00 a:1 cond:4   010          i:s22                 &bcc cc=0
-+FBPfcc  00 a:1 cond:4   101 cc:2   - i:s19                 &bcc
-+FBfcc   00 a:1 cond:4   110          i:s22                 &bcc cc=0
- 
- %d16    20:s2 0:14
- BPr     00 a:1 0 cond:3 011 ..     - rs1:5 ..............  i=%d16
- 
-+NCP     00 -   ----     111 ----------------------         # CBcc
-+
- CALL    01 i:s30
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index f72e6eb756..8c15ca08c4 100644
+index 8c15ca08c4..1ac3bdd03f 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -1312,44 +1312,6 @@ static void gen_compare_reg(DisasCompare *cmp, int cond, TCGv r_src)
-     cmp->c2 = tcg_constant_tl(0);
+@@ -1265,20 +1265,6 @@ static void gen_fcompare(DisasCompare *cmp, unsigned int cc, unsigned int cond)
+     }
  }
  
--static void do_fbranch(DisasContext *dc, int32_t offset, uint32_t insn, int cc)
+-static void gen_cond(TCGv r_dst, unsigned int cc, unsigned int cond,
+-                     DisasContext *dc)
 -{
--    unsigned int cond = GET_FIELD(insn, 3, 6), a = (insn & (1 << 29));
--    target_ulong target = dc->pc + offset;
+-    DisasCompare cmp;
+-    gen_compare(&cmp, cc, cond, dc);
 -
--    if (unlikely(AM_CHECK(dc))) {
--        target &= 0xffffffffULL;
--    }
--    if (cond == 0x0) {
--        /* unconditional not taken */
--        if (a) {
--            dc->pc = dc->npc + 4;
--            dc->npc = dc->pc + 4;
--        } else {
--            dc->pc = dc->npc;
--            dc->npc = dc->pc + 4;
--        }
--    } else if (cond == 0x8) {
--        /* unconditional taken */
--        if (a) {
--            dc->pc = target;
--            dc->npc = dc->pc + 4;
--        } else {
--            dc->pc = dc->npc;
--            dc->npc = target;
--            tcg_gen_mov_tl(cpu_pc, cpu_npc);
--        }
+-    /* The interface is to return a boolean in r_dst.  */
+-    if (cmp.is_bool) {
+-        tcg_gen_mov_tl(r_dst, cmp.c1);
 -    } else {
--        flush_cond(dc);
--        gen_fcond(cpu_cond, cc, cond);
--        if (a) {
--            gen_branch_a(dc, target);
--        } else {
--            gen_branch_n(dc, target);
--        }
+-        tcg_gen_setcond_tl(cmp.cond, r_dst, cmp.c1, cmp.c2);
 -    }
 -}
 -
- #ifdef TARGET_SPARC64
- static void gen_op_fcmps(int fccno, TCGv_i32 r_rs1, TCGv_i32 r_rs2)
+ static void gen_fcond(TCGv r_dst, unsigned int cc, unsigned int cond)
  {
-@@ -2993,6 +2955,31 @@ static bool do_bpcc(DisasContext *dc, arg_bcc *a)
- TRANS(BPcc,  64, do_bpcc, a)
- TRANS(Bicc, ALL, do_bpcc, a)
+     DisasCompare cmp;
+@@ -2936,6 +2922,7 @@ static bool advance_jump_cond(DisasContext *dc, bool annul, target_ulong dest)
+ static bool do_bpcc(DisasContext *dc, arg_bcc *a)
+ {
+     target_long target = dc->pc + a->i * 4;
++    DisasCompare cmp;
  
-+static bool do_fbpfcc(DisasContext *dc, arg_bcc *a)
-+{
-+    target_long target = dc->pc + a->i * 4;
+     if (unlikely(AM_CHECK(dc))) {
+         target &= 0xffffffffULL;
+@@ -2947,7 +2934,13 @@ static bool do_bpcc(DisasContext *dc, arg_bcc *a)
+         return advance_jump_uncond_always(dc, a->a, target);
+     default:
+         flush_cond(dc);
+-        gen_cond(cpu_cond, a->cc, a->cond, dc);
 +
-+    if (gen_trap_ifnofpu(dc)) {
-+        return true;
-+    }
-+    if (unlikely(AM_CHECK(dc))) {
-+        target &= 0xffffffffULL;
-+    }
-+    switch (a->cond) {
-+    case 0x0:
-+        return advance_jump_uncond_never(dc, a->a);
-+    case 0x8:
-+        return advance_jump_uncond_always(dc, a->a, target);
-+    default:
-+        flush_cond(dc);
-+        gen_fcond(cpu_cond, a->cc, a->cond);
-+        return advance_jump_cond(dc, a->a, target);
-+    }
-+}
-+
-+TRANS(FBPfcc,  64, do_fbpfcc, a)
-+TRANS(FBfcc,  ALL, do_fbpfcc, a)
-+
- static bool trans_BPr(DisasContext *dc, arg_BPr *a)
- {
-     target_long target;
-@@ -3032,6 +3019,20 @@ static bool trans_CALL(DisasContext *dc, arg_CALL *a)
-     return true;
++        gen_compare(&cmp, a->cc, a->cond, dc);
++        if (cmp.is_bool) {
++            tcg_gen_mov_tl(cpu_cond, cmp.c1);
++        } else {
++            tcg_gen_setcond_tl(cmp.cond, cpu_cond, cmp.c1, cmp.c2);
++        }
+         return advance_jump_cond(dc, a->a, target);
+     }
  }
- 
-+static bool trans_NCP(DisasContext *dc, arg_NCP *a)
-+{
-+    /*
-+     * For sparc32, always generate the no-coprocessor exception.
-+     * For sparc64, always generate illegal instruction.
-+     */
-+#ifdef TARGET_SPARC64
-+    return false;
-+#else
-+    gen_exception(dc, TT_NCP_INSN);
-+    return true;
-+#endif
-+}
-+
- #define CHECK_IU_FEATURE(dc, FEATURE)                      \
-     if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
-         goto illegal_insn;
-@@ -3055,7 +3056,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-     case 0:                     /* branches/sethi */
-         {
-             unsigned int xop = GET_FIELD(insn, 7, 9);
--            int32_t target;
-             switch (xop) {
- #ifdef TARGET_SPARC64
-             case 0x1:           /* V9 BPcc */
-@@ -3063,36 +3063,15 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-             case 0x3:           /* V9 BPr */
-                 g_assert_not_reached(); /* in decodetree */
-             case 0x5:           /* V9 FBPcc */
--                {
--                    int cc = GET_FIELD_SP(insn, 20, 21);
--                    if (gen_trap_ifnofpu(dc)) {
--                        goto jmp_insn;
--                    }
--                    target = GET_FIELD_SP(insn, 0, 18);
--                    target = sign_extend(target, 19);
--                    target <<= 2;
--                    do_fbranch(dc, target, insn, cc);
--                    goto jmp_insn;
--                }
-+                g_assert_not_reached(); /* in decodetree */
- #else
-             case 0x7:           /* CBN+x */
--                {
--                    goto ncp_insn;
--                }
-+                g_assert_not_reached(); /* in decodetree */
- #endif
-             case 0x2:           /* BN+x */
-                 g_assert_not_reached(); /* in decodetree */
-             case 0x6:           /* FBN+x */
--                {
--                    if (gen_trap_ifnofpu(dc)) {
--                        goto jmp_insn;
--                    }
--                    target = GET_FIELD(insn, 10, 31);
--                    target = sign_extend(target, 22);
--                    target <<= 2;
--                    do_fbranch(dc, target, insn, 0);
--                    goto jmp_insn;
--                }
-+                g_assert_not_reached(); /* in decodetree */
-             case 0x4:           /* SETHI */
-                 /* Special-case %g0 because that's the canonical nop.  */
-                 if (rd) {
 -- 
 2.34.1
 
