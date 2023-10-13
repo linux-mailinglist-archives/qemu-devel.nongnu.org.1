@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF2B7C8744
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 15:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F19F7C874C
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:02:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrIh2-00059w-Ss; Fri, 13 Oct 2023 09:59:08 -0400
+	id 1qrIjN-000697-QV; Fri, 13 Oct 2023 10:01:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIgz-00057V-Ig
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:59:06 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qrIin-0005zm-Sj
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:00:59 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qrIgs-0001WO-Pm
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 09:59:05 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-53e07db272cso3143945a12.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 06:58:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qrIil-000244-CZ
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:00:56 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40776b200e5so1234425e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:00:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697205535; x=1697810335; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mFZ8Hez1D/92l69JU6rcHrVRA5cuRUZMYxrubsP2WRo=;
- b=C6E4bL7ufIhA70NQXh48PqBPpvbD7Cp9pV+QpWi096Dr05yCVhxoUdH09W/ahemfN1
- r+HBcXuFX2C3wfH4zirejbjnubBMHngm44VTU80d9pRh+nWKh+8wTIHq8LYjK8RdqxEf
- S5l+H5otzL4YhZVPAURgG8UAN2rZphWQyKvyZDZoy/gJj2/doKspUrY4kn2C84APi9kl
- QcknnOuPdxH+6afwRXHPdIA4GbWz+1rqLJxqtHIozT70vHzHi3iArmN4TN1FILncJy05
- YxSHx7HFZ8Sbjox5k8kObgTBeLtqhu0yCEz3y26sat4tgs0rykjnPewtVSICLg3VPuqL
- iMOQ==
+ d=linaro.org; s=google; t=1697205653; x=1697810453; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=7YNZjJ5WtEYZoYNyQOQy4cWrF9ujWRZOM5yC+Rf8lDk=;
+ b=qCQCJqp9zhvMJTwWtTo8k9K3Qd3Bvmum9NMBeGjcCtU74rME1cV5yUU94zFOMGSdtu
+ /WjD/OHE728cm4AlVjwC5oJ0d5vPAflWkYw5gbtm8uW+l7uQI3DpN41hcIluXAp1DtHh
+ wOC+vZUfRYmHplo0k75rk/N7GOcyzdrcP0t6dh3IPo3hVWGomJ7rZZHqo/0xP3tAc5Q4
+ 15ySC5pJ2d+s66pSh48cKac3/x1Rj1jhorQo3HCeaGtaQr0YEuPHJzMiUH2VifYpKHlr
+ d5wWVFkUqjdgodRq9AIXMLxATORqwm6nF9neZo7Nh8bpAP7y36LxuRRqKogP55CahhT0
+ Os4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697205535; x=1697810335;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mFZ8Hez1D/92l69JU6rcHrVRA5cuRUZMYxrubsP2WRo=;
- b=rzmlQbdOuh2pJ4ypO+1kwGZR1LgG9wNctbX8u2yb0visBu+kIk0DEg5Vg0p8oGlKxx
- FMf+qpnW8jalF4lW9QKay7ElXEZHkjtZfuM6uXe1AqKN9KMbhcovy1U3HM89/iXltaY5
- JK5SfVWZ0OOptP/hFvlWn7j5AtRw+94Osc+MEq+2aT+YMt3El1OSDY5mZmtlc5pryU+8
- retCbgO6WXNNE6zZhaIXD5Yew8fNVQ1OtNTCcOS1FtHba/9HLPzQKnCZQI5J2BOX1PI4
- F2BCk0MK9fWVtQm0goGlSpXR39mZ7LhFBT1XdWwGrTEx9eM6L7t5i14CBerfHwlrmLXa
- LZRA==
-X-Gm-Message-State: AOJu0YwwQ+nmgfn19A77CtG5yl2Npi5bR0swG7LujDawUHcZ35Hx/+5u
- eScWQGU8lYbtgsei23i/zgfeMHgDZLrMq/OuJoE=
-X-Google-Smtp-Source: AGHT+IEcuzKPvPOB7Pp7e5wLYdRjtM+jB+eFujYn8zlMUXQOyBpARjvdHsHtRFE9Wwl108qeUHrbtw==
-X-Received: by 2002:a05:6402:5207:b0:53e:332e:3e03 with SMTP id
- s7-20020a056402520700b0053e332e3e03mr2539277edd.4.1697205534859; 
- Fri, 13 Oct 2023 06:58:54 -0700 (PDT)
-Received: from [192.168.69.115] ([176.172.118.168])
+ d=1e100.net; s=20230601; t=1697205653; x=1697810453;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7YNZjJ5WtEYZoYNyQOQy4cWrF9ujWRZOM5yC+Rf8lDk=;
+ b=l5p/iFUDAL9cPGUj0D83Z8Kmd2XSPKi+1IG3Fi1HjBrKV2f/jlf38VrcXo4kOz2fJG
+ lpO6a4AjL1xURCg7as4apdM5tpqyz1VoWIHHbPE0EZwg22BwaLV6soc0In2G3+j9c1ND
+ gAVvQNNjCKCRrj0zi2ezozfiysShO2nyFrG/0iMyyJ10WA9NWBMk3noLsc284uzdUsao
+ +Rnb3k7PEkTCX5ChGXqKSjYBekIpV4AKlto0SjoqtjH+a99iStrhaqKv/Yf2NQ1EzhoZ
+ HqEFpARTeK1jXq5o7YnniGiMlrR3XVdQLffbfKYGmKDzPzTQ24zXD949dZ4tnkVGQhKO
+ OzRg==
+X-Gm-Message-State: AOJu0YxMOg83N/2o+ypHeELckAdQSP+TaiTlpxu0diyg+IwpZC5HkKLa
+ H6kUA1XKmazas7gtXgcPUGL43w==
+X-Google-Smtp-Source: AGHT+IHgJzSjXkbLYYOThkoHv7TfpOQZ6RSl+I7zDhZOPG+5Bm8lvcKrzA8om89IOcRK3bi97VdK2w==
+X-Received: by 2002:a05:600c:15cc:b0:407:6120:cdec with SMTP id
+ v12-20020a05600c15cc00b004076120cdecmr6653107wmf.38.1697205653601; 
+ Fri, 13 Oct 2023 07:00:53 -0700 (PDT)
+Received: from meli.delivery (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- t11-20020a056402240b00b0053dae8a5e1csm4005820eda.8.2023.10.13.06.58.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 06:58:54 -0700 (PDT)
-Message-ID: <d1814aa5-8570-da48-11db-497a863974af@linaro.org>
-Date: Fri, 13 Oct 2023 15:58:53 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 10/18] target/riscv: Inline target specific
- TYPE_RISCV_CPU_BASE definition
-Content-Language: en-US
+ x3-20020a5d4903000000b0031fa870d4b3sm20813776wrq.60.2023.10.13.07.00.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 13 Oct 2023 07:00:53 -0700 (PDT)
+Date: Fri, 13 Oct 2023 16:59:11 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20231010092901.99189-1-philmd@linaro.org>
- <20231010092901.99189-11-philmd@linaro.org>
- <e6a5386e-e33d-464d-b84d-b58ca16429f0@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <e6a5386e-e33d-464d-b84d-b58ca16429f0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: 
+Subject: Re: [RFC PATCH v3 00/78] Strict disable implicit fallthrough
+User-Agent: meli 0.8.2
+References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
+ <a4f64040-9812-40b2-9287-0c971b4bec4d@linaro.org>
+In-Reply-To: <a4f64040-9812-40b2-9287-0c971b4bec4d@linaro.org>
+Message-ID: <2h09f.7ino2iyatld@linaro.org>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,38 +93,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/10/23 06:13, Richard Henderson wrote:
-> On 10/10/23 02:28, Philippe Mathieu-Daudé wrote:
->> TYPE_RISCV_CPU_BASE depends on the TARGET_RISCV32/TARGET_RISCV64
->> definitions which are target specific. Such target specific
->> definition taints "cpu-qom.h".
->>
->> Since "cpu-qom.h" must be target agnostic, remove its target
->> specific definition uses by inlining TYPE_RISCV_CPU_BASE in the
->> two machines using it.
->>
->> "target/riscv/cpu-qom.h" is now fully target agnostic.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/riscv/cpu-qom.h | 8 +-------
->>   hw/riscv/spike.c       | 8 +++++++-
->>   hw/riscv/virt.c        | 8 +++++++-
->>   3 files changed, 15 insertions(+), 9 deletions(-)
+Hello Richard,
 
+On Fri, 13 Oct 2023 16:52, Richard Henderson <richard.henderson@linaro.org> wrote:
+>Did this catch any new problems?  If not, I really don't see the 
+>benefit.
+>The compiler comment matching appears to be sufficient.
 
->> @@ -43,12 +43,6 @@
->>   #define TYPE_RISCV_CPU_VEYRON_V1        
->> RISCV_CPU_TYPE_NAME("veyron-v1")
->>   #define TYPE_RISCV_CPU_HOST             RISCV_CPU_TYPE_NAME("host")
->> -#if defined(TARGET_RISCV32)
->> -# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE32
->> -#elif defined(TARGET_RISCV64)
->> -# define TYPE_RISCV_CPU_BASE            TYPE_RISCV_CPU_BASE64
->> -#endif
-> 
-> Move to cpu.h (or elsewhere) instead of replicating in two hw/ files?
+As the cover letter states, this is a code style change. See "Background 
+- Motivation" section.
 
-Yes, better.
-
+--
+Manos
 
