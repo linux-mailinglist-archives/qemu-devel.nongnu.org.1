@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9427C7F85
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F20F7C7FD4
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:18:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD5w-00019P-NV; Fri, 13 Oct 2023 04:00:28 -0400
+	id 1qrD5s-0000lr-4A; Fri, 13 Oct 2023 04:00:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5U-0007zM-4n
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:03 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qrD5Z-00089U-Dc
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:10 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD5S-0007SZ-Ku
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:59:59 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-405417465aaso19409555e9.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:59:58 -0700 (PDT)
+ id 1qrD5W-0007Tx-KS
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 04:00:05 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4056ce55e7eso18667715e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 01:00:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183997; x=1697788797; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183999; x=1697788799; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=C1368VMaP/F8gmPJiGLvz1ILNWifclUEQlInYr5UJbM=;
- b=cqoeN/ox3ktP4lpSDGZDE2rIFbJmJ9UDfb0u5EKzALTAmipHiQ8zaqtoUYSDf1cwEc
- TkrUNMyd/cBUBs6cSn+NWau+F0xzsLCju+X5teBLHx26EBCayU06XsRe+GWPfpMgnofc
- icvAgi85Q7+u2VIHe2ggxrSyzlfaev1v2teZcb41Y7umTKP8ByqJvRlS2VNt0Mk3KeqX
- nvB1R2aUNNvQQPcuZVfR/6miO54sZmbudBhVEsd71mJwuEhHH43VDgriPaCBV0ZnjOFl
- T+VHrfCCBygs9Dh8YxqbtVBVViU1yrprDq9GA77ycEzt9trZhuJx8Oj7PQXZSFsRfBCd
- M/8g==
+ bh=aRXl+SrRaYUhKFmfsa05hrLLvIV6bdQQSvWfsUnuYZQ=;
+ b=fCK/EvG+M/SKJXrD0iu6l0LVtSyH7NvCZgz35Zidfa0unug2xoQjxQiL6br5PfsBkH
+ 1cbabOuWW6Pp6mpNqLIy3fBqDeRiZODpiQjKmxWgwLY80AJ2s9XuIoRleLmCa872Yhte
+ QHk4NFbdLeKWiBL+lqcquMcL5tSmZD7nBvLIYUB0rf8tAPssSMkazbd4jMshDwQOTcF6
+ 2M0ZKb1PIfKcLo3cLsfWZ3iN5H8LrGj91IFP1ZARE6/yHboneQGjmAokGua3X3SwAZ5S
+ yY58EHEZloX3y+mJjhTJeaY0CRoJh93OeRDp/RopHrwSN2ixoi3BtgSPqZ/4sMYMEaoa
+ rn6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183997; x=1697788797;
+ d=1e100.net; s=20230601; t=1697183999; x=1697788799;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C1368VMaP/F8gmPJiGLvz1ILNWifclUEQlInYr5UJbM=;
- b=F+m7ikcGXTOKWzTKkH7SJafsdlgjEhHW3CoOyiSz7OWsMZ/lwTX4B5p6RFjSNRH0//
- iJP7RyaeP29dHFZeXvrjpplPCujxARM2K5mgtnaU4g+p22FyX+7ntOx+C1rzqD8dacCv
- Eh1WaqmPuiObuBfY80fnL4wk6K4OezIXQqsKUCb90ZiLE1FwdPB+oVxo+OfdxDUSB0jw
- n/6Ae8RexLomWgPMXUAZ+q8HxGwfq4egjLMO/m57/oibGTkz982FZmlf6AVc4kHMGOfw
- tHMG0ekxFHRZrOEi+15HRutEW7bV3meGaH+PSkudO6W04en5dXN5B/gjdctrJkivftS+
- N7/w==
-X-Gm-Message-State: AOJu0Ywus4fHIDpK1s5SlCeW4Hm/1E6HI7B1rw4tsoAvwG8qSs2C8prt
- 4xoV0yjZufKLhusN+3E3JHIcgBfgQTijrEmJxcM=
-X-Google-Smtp-Source: AGHT+IHX8+W8L6Qr3lojg7+lZLGRIbYM8pNJF74SaHy8ejQQEO3KIhR4/GqOr0Dm4kkCmcdj8Dmnnw==
-X-Received: by 2002:a1c:721a:0:b0:405:1baf:cedf with SMTP id
- n26-20020a1c721a000000b004051bafcedfmr23274087wmc.24.1697183997157; 
- Fri, 13 Oct 2023 00:59:57 -0700 (PDT)
+ bh=aRXl+SrRaYUhKFmfsa05hrLLvIV6bdQQSvWfsUnuYZQ=;
+ b=f4eVtSeuxX27AZUra7Zb9nJbEWLP86hhRKG1CvU/4AMOsashkCCwDaG/mLCLFc3TQW
+ dLui9UJB0tOHSlfJB/2PpgywGQkBNDIrl/8/33Xa16B5zRuy3wIZFM7zg5KZLk/FYR0/
+ vRU7hU7sCpTI+tJmVqh2kJtLaCaL6N6ExKyaVuAmQ31afsTtXOZakBL7lOMEN37+50C0
+ MSCyBr/EcBVrp2UdcFvoyTJFU6aBG2sNf2Z+V2xSspb8cN677HKVPRbm/3+xqec9ghFK
+ smCQah8E97txT3dp1UgyVRCfXtDpkKzzpTsE4BkzpDziLspCdpwa55HS96kYSppJRaF0
+ 6m9Q==
+X-Gm-Message-State: AOJu0YwAVVpmVouJO1d2f4Q0ccGooE3xSymypE6XhtY4JqK1tFgKM/VV
+ x1djr2r4crX+viSY8v2EFaz9FK75jWEavPN5EsA=
+X-Google-Smtp-Source: AGHT+IFcXpkwu1tyrkKUwkEEUkMwpgvV/52qhe1onXzM4/Mc7d9KkD4ks3SA46jcA2ve8Y1Ib1pjbQ==
+X-Received: by 2002:a05:600c:282:b0:406:44e7:ef93 with SMTP id
+ 2-20020a05600c028200b0040644e7ef93mr24141025wmk.1.1697183999659; 
+ Fri, 13 Oct 2023 00:59:59 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.55
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.59.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:59:56 -0700 (PDT)
+ Fri, 13 Oct 2023 00:59:58 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [RFC PATCH v2 67/78] hw/pci-host/pnv_phb3.c: add fallthrough
- pseudo-keyword
-Date: Fri, 13 Oct 2023 10:57:34 +0300
-Message-Id: <ad7d8e3f34287ab7c4719ce504a9c49f8c179e78.1697183699.git.manos.pitsidianakis@linaro.org>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Huai-Cheng Kuo <hchkuo@avery-design.com.tw>,
+ Chris Browy <cbrowy@avery-design.com>
+Subject: [RFC PATCH v2 68/78] hw/pci: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:57:35 +0300
+Message-Id: <921f621c591ff8db4b881821005dabf81add5f64.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,134 +100,165 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/pci-host/pnv_phb3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/pci/pcie_aer.c | 3 ++-
+ hw/pci/pcie_doe.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/pci-host/pnv_phb3.c b/hw/pci-host/pnv_phb3.c
-index c5e58f4086..6a805d3900 100644
---- a/hw/pci-host/pnv_phb3.c
-+++ b/hw/pci-host/pnv_phb3.c
-@@ -470,121 +470,121 @@ static void pnv_phb3_update_all_msi_regions(PnvPHB3 *phb)
- void pnv_phb3_reg_write(void *opaque, hwaddr off, uint64_t val, unsigned size)
+diff --git a/hw/pci/pcie_aer.c b/hw/pci/pcie_aer.c
+index b68c7ecb49..c99ecce2a1 100644
+--- a/hw/pci/pcie_aer.c
++++ b/hw/pci/pcie_aer.c
+@@ -97,71 +97,72 @@ static void aer_log_clear_all_err(PCIEAERLog *aer_log)
+ int pcie_aer_init(PCIDevice *dev, uint8_t cap_ver, uint16_t offset,
+                   uint16_t size, Error **errp)
  {
-     PnvPHB3 *phb = opaque;
-     bool changed;
+     pcie_add_capability(dev, PCI_EXT_CAP_ID_ERR, cap_ver,
+                         offset, size);
+     dev->exp.aer_cap = offset;
  
-     /* Special case configuration data */
-     if ((off & 0xfffc) == PHB_CONFIG_DATA) {
-         pnv_phb3_config_write(phb, off & 0x3, size, val);
-         return;
+     /* clip down the value to avoid unreasonable memory usage */
+     if (dev->exp.aer_log.log_max > PCIE_AER_LOG_MAX_LIMIT) {
+         error_setg(errp, "Invalid aer_log_max %d. The max number of aer log "
+                 "is %d", dev->exp.aer_log.log_max, PCIE_AER_LOG_MAX_LIMIT);
+         return -EINVAL;
+     }
+     dev->exp.aer_log.log = g_malloc0(sizeof dev->exp.aer_log.log[0] *
+                                         dev->exp.aer_log.log_max);
+ 
+     pci_set_long(dev->w1cmask + offset + PCI_ERR_UNCOR_STATUS,
+                  PCI_ERR_UNC_SUPPORTED);
+ 
+     if (dev->cap_present & QEMU_PCIE_ERR_UNC_MASK) {
+         pci_set_long(dev->config + offset + PCI_ERR_UNCOR_MASK,
+                      PCI_ERR_UNC_MASK_DEFAULT);
+         pci_set_long(dev->wmask + offset + PCI_ERR_UNCOR_MASK,
+                      PCI_ERR_UNC_SUPPORTED);
      }
  
-     /* Other registers are 64-bit only */
-     if (size != 8 || off & 0x7) {
-         phb3_error(phb, "Invalid register access, offset: 0x%"PRIx64" size: %d",
-                    off, size);
-         return;
+     pci_set_long(dev->config + offset + PCI_ERR_UNCOR_SEVER,
+                  PCI_ERR_UNC_SEVERITY_DEFAULT);
+     pci_set_long(dev->wmask + offset + PCI_ERR_UNCOR_SEVER,
+                  PCI_ERR_UNC_SUPPORTED);
+ 
+     pci_long_test_and_set_mask(dev->w1cmask + offset + PCI_ERR_COR_STATUS,
+                                PCI_ERR_COR_SUPPORTED);
+ 
+     pci_set_long(dev->config + offset + PCI_ERR_COR_MASK,
+                  PCI_ERR_COR_MASK_DEFAULT);
+     pci_set_long(dev->wmask + offset + PCI_ERR_COR_MASK,
+                  PCI_ERR_COR_SUPPORTED);
+ 
+     /* capabilities and control. multiple header logging is supported */
+     if (dev->exp.aer_log.log_max > 0) {
+         pci_set_long(dev->config + offset + PCI_ERR_CAP,
+                      PCI_ERR_CAP_ECRC_GENC | PCI_ERR_CAP_ECRC_CHKC |
+                      PCI_ERR_CAP_MHRC);
+         pci_set_long(dev->wmask + offset + PCI_ERR_CAP,
+                      PCI_ERR_CAP_ECRC_GENE | PCI_ERR_CAP_ECRC_CHKE |
+                      PCI_ERR_CAP_MHRE);
+     } else {
+         pci_set_long(dev->config + offset + PCI_ERR_CAP,
+                      PCI_ERR_CAP_ECRC_GENC | PCI_ERR_CAP_ECRC_CHKC);
+         pci_set_long(dev->wmask + offset + PCI_ERR_CAP,
+                      PCI_ERR_CAP_ECRC_GENE | PCI_ERR_CAP_ECRC_CHKE);
      }
  
-     /* Handle masking & filtering */
-     switch (off) {
-     case PHB_M64_UPPER_BITS:
-         val &= 0xfffc000000000000ull;
-         break;
-     case PHB_Q_DMA_R:
-         /*
-          * This is enough logic to make SW happy but we aren't actually
-          * quiescing the DMAs
-          */
-         if (val & PHB_Q_DMA_R_AUTORESET) {
-             val = 0;
-         } else {
-             val &= PHB_Q_DMA_R_QUIESCE_DMA;
-         }
-         break;
-     /* LEM stuff */
-     case PHB_LEM_FIR_AND_MASK:
-         phb->regs[PHB_LEM_FIR_ACCUM >> 3] &= val;
-         return;
-     case PHB_LEM_FIR_OR_MASK:
-         phb->regs[PHB_LEM_FIR_ACCUM >> 3] |= val;
-         return;
-     case PHB_LEM_ERROR_AND_MASK:
-         phb->regs[PHB_LEM_ERROR_MASK >> 3] &= val;
-         return;
-     case PHB_LEM_ERROR_OR_MASK:
-         phb->regs[PHB_LEM_ERROR_MASK >> 3] |= val;
-         return;
-     case PHB_LEM_WOF:
-         val = 0;
-         break;
-     }
- 
-     /* Record whether it changed */
-     changed = phb->regs[off >> 3] != val;
- 
-     /* Store in register cache first */
-     phb->regs[off >> 3] = val;
- 
-     /* Handle side effects */
-     switch (off) {
-     case PHB_PHB3_CONFIG:
-         if (changed) {
-             pnv_phb3_update_all_msi_regions(phb);
-         }
--        /* fall through */
+     switch (pcie_cap_get_type(dev)) {
+     case PCI_EXP_TYPE_ROOT_PORT:
+         /* this case will be set by pcie_aer_root_init() */
+-        /* fallthrough */
 +        fallthrough;
-     case PHB_M32_BASE_ADDR:
-     case PHB_M32_BASE_MASK:
-     case PHB_M32_START_ADDR:
-         if (changed) {
-             pnv_phb3_check_m32(phb);
-         }
+     case PCI_EXP_TYPE_DOWNSTREAM:
++        fallthrough;
+     case PCI_EXP_TYPE_UPSTREAM:
+         pci_word_test_and_set_mask(dev->wmask + PCI_BRIDGE_CONTROL,
+                                    PCI_BRIDGE_CTL_SERR);
+         pci_long_test_and_set_mask(dev->w1cmask + PCI_STATUS,
+                                    PCI_SEC_STATUS_RCV_SYSTEM_ERROR);
          break;
-     case PHB_M64_UPPER_BITS:
-         if (changed) {
-             pnv_phb3_check_all_m64s(phb);
-         }
-         break;
-     case PHB_LSI_SOURCE_ID:
-         if (changed) {
-             pnv_phb3_lsi_src_id_write(phb, val);
-         }
-         break;
- 
-     /* IODA table accesses */
-     case PHB_IODA_DATA0:
-         pnv_phb3_ioda_write(phb, val);
-         break;
- 
-     /* RTC invalidation */
-     case PHB_RTC_INVALIDATE:
-         pnv_phb3_rtc_invalidate(phb, val);
-         break;
- 
-     /* FFI request */
-     case PHB_FFI_REQUEST:
-         pnv_phb3_msi_ffi(&phb->msis, val);
-         break;
- 
-     /* Silent simple writes */
-     case PHB_CONFIG_ADDRESS:
-     case PHB_IODA_ADDR:
-     case PHB_TCE_KILL:
-     case PHB_TCE_SPEC_CTL:
-     case PHB_PEST_BAR:
-     case PHB_PELTV_BAR:
-     case PHB_RTT_BAR:
-     case PHB_RBA_BAR:
-     case PHB_IVT_BAR:
-     case PHB_FFI_LOCK:
-     case PHB_LEM_FIR_ACCUM:
-     case PHB_LEM_ERROR_MASK:
-     case PHB_LEM_ACTION0:
-     case PHB_LEM_ACTION1:
-         break;
- 
-     /* Noise on anything else */
      default:
-         qemu_log_mask(LOG_UNIMP, "phb3: reg_write 0x%"PRIx64"=%"PRIx64"\n",
-                       off, val);
+         /* nothing */
+         break;
+     }
+     return 0;
+ }
+diff --git a/hw/pci/pcie_doe.c b/hw/pci/pcie_doe.c
+index 2210f86968..f04a36e664 100644
+--- a/hw/pci/pcie_doe.c
++++ b/hw/pci/pcie_doe.c
+@@ -295,73 +295,73 @@ bool pcie_doe_read_config(DOECap *doe_cap, uint32_t addr, int size,
+ /*
+  * Write to DOE config space.
+  * Return if the address not within DOE_CAP range or receives an abort
+  */
+ void pcie_doe_write_config(DOECap *doe_cap,
+                            uint32_t addr, uint32_t val, int size)
+ {
+     uint16_t doe_offset = doe_cap->offset;
+     uint32_t shift;
+ 
+     if (!range_covers_byte(doe_offset + PCI_EXP_DOE_CAP,
+                            PCI_DOE_SIZEOF - 4, addr)) {
+         return;
+     }
+ 
+     /* Process Alignment */
+     shift = addr % DWORD_BYTE;
+     addr -= (doe_offset + shift);
+     val = deposit32(val, shift * 8, size * 8, val);
+ 
+     switch (addr) {
+     case PCI_EXP_DOE_CTRL:
+         if (FIELD_EX32(val, PCI_DOE_CAP_CONTROL, DOE_ABORT)) {
+             pcie_doe_set_ready(doe_cap, 0);
+             pcie_doe_set_error(doe_cap, 0);
+             pcie_doe_reset_mbox(doe_cap);
+             return;
+         }
+ 
+         if (FIELD_EX32(val, PCI_DOE_CAP_CONTROL, DOE_GO)) {
+             pcie_doe_prepare_rsp(doe_cap);
+         }
+ 
+         if (FIELD_EX32(val, PCI_DOE_CAP_CONTROL, DOE_INTR_EN)) {
+             doe_cap->ctrl.intr = 1;
+         /* Clear interrupt bit located within the first byte */
+         } else if (shift == 0) {
+             doe_cap->ctrl.intr = 0;
+         }
+         break;
+     case PCI_EXP_DOE_STATUS:
+         if (FIELD_EX32(val, PCI_DOE_CAP_STATUS, DOE_INTR_STATUS)) {
+             doe_cap->status.intr = 0;
+         }
+         break;
+     case PCI_EXP_DOE_RD_DATA_MBOX:
+         /* Mailbox should be DW accessed */
+         if (size != DWORD_BYTE) {
+             return;
+         }
+         doe_cap->read_mbox_idx++;
+         if (doe_cap->read_mbox_idx == doe_cap->read_mbox_len) {
+             pcie_doe_reset_mbox(doe_cap);
+             pcie_doe_set_ready(doe_cap, 0);
+         } else if (doe_cap->read_mbox_idx > doe_cap->read_mbox_len) {
+             /* Underflow */
+             pcie_doe_set_error(doe_cap, 1);
+         }
+         break;
+     case PCI_EXP_DOE_WR_DATA_MBOX:
+         /* Mailbox should be DW accessed */
+         if (size != DWORD_BYTE) {
+             return;
+         }
+         doe_cap->write_mbox[doe_cap->write_mbox_len] = val;
+         doe_cap->write_mbox_len++;
+         break;
+     case PCI_EXP_DOE_CAP:
+-        /* fallthrough */
++        fallthrough;
+     default:
+         break;
      }
  }
 -- 
