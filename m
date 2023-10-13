@@ -2,33 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8BF7C81F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D22C7C81E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 11:22:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrEMm-0005jW-K7; Fri, 13 Oct 2023 05:21:56 -0400
+	id 1qrEMo-0005l9-Jj; Fri, 13 Oct 2023 05:21:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qrEMk-0005hl-9d; Fri, 13 Oct 2023 05:21:54 -0400
+ id 1qrEMl-0005ib-NF; Fri, 13 Oct 2023 05:21:55 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qrEMi-00071L-DG; Fri, 13 Oct 2023 05:21:54 -0400
+ id 1qrEMj-00071P-Jz; Fri, 13 Oct 2023 05:21:55 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id DC92F48F34;
- Fri, 13 Oct 2023 11:21:49 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 3C6EA48F39;
+ Fri, 13 Oct 2023 11:21:50 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
  jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
  alexander.ivanov@virtuozzo.com
-Subject: [PATCH v3 2/9] block/mirror: set actively_synced even after the job
- is ready
-Date: Fri, 13 Oct 2023 11:21:36 +0200
-Message-Id: <20231013092143.365296-3-f.ebner@proxmox.com>
+Subject: [PATCH v3 3/9] block/mirror: move dirty bitmap to filter
+Date: Fri, 13 Oct 2023 11:21:37 +0200
+Message-Id: <20231013092143.365296-4-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231013092143.365296-1-f.ebner@proxmox.com>
 References: <20231013092143.365296-1-f.ebner@proxmox.com>
@@ -56,36 +55,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation to allow switching from background to active mode. This
-ensures that setting actively_synced will not be missed when the
-switch happens after the job is ready.
+In preparation to allow switching to active mode without draining.
+Initialization of the bitmap in mirror_dirty_init() still happens with
+the original/backing BlockDriverState, which should be fine, because
+the mirror top has the same length.
 
+Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
 
 No changes in v3.
 
- block/mirror.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ block/mirror.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/block/mirror.c b/block/mirror.c
-index 3cc0757a03..b764ad5108 100644
+index b764ad5108..0ed54754e2 100644
 --- a/block/mirror.c
 +++ b/block/mirror.c
-@@ -1074,9 +1074,9 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
-                  * the target in a consistent state.
-                  */
-                 job_transition_to_ready(&s->common.job);
--                if (s->copy_mode != MIRROR_COPY_MODE_BACKGROUND) {
--                    s->actively_synced = true;
--                }
-+            }
-+            if (s->copy_mode != MIRROR_COPY_MODE_BACKGROUND) {
-+                s->actively_synced = true;
-             }
+@@ -1500,6 +1500,10 @@ bdrv_mirror_top_do_write(BlockDriverState *bs, MirrorMethod method,
+         abort();
+     }
  
-             should_complete = s->should_complete ||
++    if (!copy_to_target && s->job && s->job->dirty_bitmap) {
++        bdrv_set_dirty_bitmap(s->job->dirty_bitmap, offset, bytes);
++    }
++
+     if (ret < 0) {
+         goto out;
+     }
+@@ -1823,13 +1827,17 @@ static BlockJob *mirror_start_job(
+         s->should_complete = true;
+     }
+ 
+-    s->dirty_bitmap = bdrv_create_dirty_bitmap(bs, granularity, NULL, errp);
++    s->dirty_bitmap = bdrv_create_dirty_bitmap(s->mirror_top_bs, granularity,
++                                               NULL, errp);
+     if (!s->dirty_bitmap) {
+         goto fail;
+     }
+-    if (s->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING) {
+-        bdrv_disable_dirty_bitmap(s->dirty_bitmap);
+-    }
++
++    /*
++     * The dirty bitmap is set by bdrv_mirror_top_do_write() when not in active
++     * mode.
++     */
++    bdrv_disable_dirty_bitmap(s->dirty_bitmap);
+ 
+     ret = block_job_add_bdrv(&s->common, "source", bs, 0,
+                              BLK_PERM_WRITE_UNCHANGED | BLK_PERM_WRITE |
 -- 
 2.39.2
 
