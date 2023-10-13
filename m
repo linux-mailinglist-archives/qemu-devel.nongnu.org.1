@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15E07C7F17
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 09:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B35327C7F3E
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:01:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrCyR-0003R7-BS; Fri, 13 Oct 2023 03:52:43 -0400
+	id 1qrCzD-0004YQ-NW; Fri, 13 Oct 2023 03:53:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCxr-0000sL-3A
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:07 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qrCxu-0001It-UI
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:11 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrCxW-0005ER-Nn
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:06 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-31fa15f4cc6so1678706f8f.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:51:46 -0700 (PDT)
+ id 1qrCxa-0005G6-9I
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:52:10 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40537481094so19559795e9.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:51:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183505; x=1697788305; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183508; x=1697788308; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IFSG6N2uxNt6GHbM9eqwyrjOHkw0xm2XSOZPV6L6EYE=;
- b=K5VrBusRO3gNrsvp7rJXCCKRZ+G+NnAQUpyVLHp3zQR/Bu6mG1J4Tl8krJ5TuVNFvA
- C8QkP3LEIhP03MxCgCQEXdd+Y7KBw58eZMMjX4HsPfq0WIPOxGInaCQahE+2TLx1FS6T
- YIuuNus8Z55LlOsTDbzpeYA0uWwqnBlas+lO9CVeh779K9+pAVV3oGt6ZwCpfUdcBzXX
- iECDc92DgMQ9pZ9vFG/LL4KWwiXH7fG+3womIm+px8Ed/257JkCu8LY6gJu1VCKKb74g
- 4iomMZAf3gIR9hdRF1ITuV01660XfdQrnF0rA+WMtuNL4DI2UUt2aGhmf1vAr98njz6W
- lnRw==
+ bh=a7CRH59E7WDah93GOZUBpOMCM1LCjMQKDPJEI6Vj50o=;
+ b=VVxEGwF5mDA5k2U0aJH9SnO/qFe3X3eCO8Q3Oj+mpSbm9BXi3thhOd8qRQGODIduZ0
+ dp1MT7RPjnNO8lPD6IwQkoxS7gEYc4lntEUs7/NEq/sxShCCmKnXwBqoMEIWeuVSfHv8
+ t0g6EgFtsEXeFGviyhpVmARLxxtxIwAPNLmf4XbU/CG9hu/KWgEW8ajHCLxvtw7olJsI
+ Bal+PxQzcMxhAjwjIYGTZZGCt3RIdp7suTeykplTZIhFwpB71AbBdIVfFkP0AlkZsxkF
+ AmhZcgt2Q9w8vV/QrPxvdJ71b+4KRLIiU8KiOhgcQMA0Uy/RCSiWC6INQUQcrnIjY075
+ uang==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183505; x=1697788305;
+ d=1e100.net; s=20230601; t=1697183508; x=1697788308;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IFSG6N2uxNt6GHbM9eqwyrjOHkw0xm2XSOZPV6L6EYE=;
- b=prIyuGm5iU9czs3QCzHSbumwteEZv5oCR13QD+IXG4ky+dK4Yvd7TupDIs31e7Z8O8
- g3/jZ0dRnNj1ubYw+o6MbWiiryVe2XNmWXl1x+kmstP/pVi2h+wEh4iahHnjZNFtdkom
- 5EjKEJrBvHVCLEe0Mvv7UZ4WDd4fWZHnAIPUDZBVuzGgIvEV9fOpFL217ErKYVnJMyxx
- 4IaLO7G2PUR9IQJ8FNQ1A0xh9SQnBEnqtEcEPDv1LI+inUBHa6037lSmu1LA5tMAXBR+
- 3rVoYJc+hVd0zrgkyob5JX9fuoTn1rGi1HPNQIAWQmMCEUgJoFBPUY1yuPTCogDQI0LS
- VTXQ==
-X-Gm-Message-State: AOJu0YzKGeCySyKe2vOcDRjUj4HZ9hRGRNju7/qfqNM317j/2sQfhsQD
- dObBXhb+4//mQfjIU2kjK4diyPhMLWSvczNJxow=
-X-Google-Smtp-Source: AGHT+IFwf0v//Ws3HSblVtugCG9QB+ARir0IrcfFckC3BQ9msXVpLMhPWHX3Ncvb9T+QEcvPqi/eoQ==
-X-Received: by 2002:a5d:6909:0:b0:314:dc0:2fca with SMTP id
- t9-20020a5d6909000000b003140dc02fcamr22729594wru.29.1697183504758; 
- Fri, 13 Oct 2023 00:51:44 -0700 (PDT)
+ bh=a7CRH59E7WDah93GOZUBpOMCM1LCjMQKDPJEI6Vj50o=;
+ b=MNyj//KK+NclPpPmL+JpJ8rK1xc+MLF3jxuO+ivS4sOPHwkKRsFrP/yRdOOJzGTOCY
+ IhHEcPZQXS5Et+38Ob02mBy7XW+O0rHefHG3/qiSRh49W4Q73a6dDuQWUtXIYlOOJ9+x
+ c5kkl1WJqOfQxmCRpfZ3yyXN25Lg+zmyD0sL0TF86oH67TtY+IipjYiKt5hH/J4Ao9HG
+ 283/4iED2PhSpuTSigzsbuUksCqOH3OePnsCz5RtrwxLMzLom5H0P5RatjWyajtFLLv1
+ sn7r2gamdL0SQTdpBWKFuAbvEg/Nvq6OMAqXzVZe3FGML2zM39W9WWYvpDO1bUnTFZmG
+ g01g==
+X-Gm-Message-State: AOJu0YzhK5Ugo+qNhd7C23gEu/7jWVDLMt8phGcyHeRHvFBWSRCqVt5w
+ FG54TRw3VVC1Ezbf36usAHUYO+5fRbmaxk7ZD2Q=
+X-Google-Smtp-Source: AGHT+IGWLDtFLRUfLHUUS+sLXT+wbczzg60UBYN297xc8aFmE3k9Qsked2RRE0ELbGgbJ9VCBT7nFg==
+X-Received: by 2002:adf:e19d:0:b0:32c:ea14:89e5 with SMTP id
+ az29-20020adfe19d000000b0032cea1489e5mr10753805wrb.39.1697183508324; 
+ Fri, 13 Oct 2023 00:51:48 -0700 (PDT)
 Received: from localhost.localdomain (adsl-170.109.242.226.tellas.gr.
  [109.242.226.170]) by smtp.gmail.com with ESMTPSA id
- m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.51.43
+ m8-20020adfa3c8000000b0032d7fde2d3csm7990663wrb.79.2023.10.13.00.51.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:51:44 -0700 (PDT)
+ Fri, 13 Oct 2023 00:51:47 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [RFC PATCH 49/75] hw/audio: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:48:06 +0300
-Message-Id: <adcf74cd58c36dc0bf7373c8a80cc8fea75286d8.1697034504.git.manos.pitsidianakis@linaro.org>
+ Laurent Vivier <laurent@vivier.eu>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [RFC PATCH 50/78] hw/audio: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:48:08 +0300
+Message-Id: <5fd3f2429559990851dba1e57dea59a2d83c0b18.1697183082.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
-References: <cover.1697034504.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
+References: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,12 +94,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In preparation of raising -Wimplicit-fallthrough to 5, replace all
+fall-through comments with the fallthrough attribute pseudo-keyword.
+
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
+ hw/audio/asc.c        | 2 +-
  hw/audio/cs4231a.c    | 2 +-
  hw/audio/gusemu_hal.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+index 0f36b4ce9b..336da09509 100644
+--- a/hw/audio/asc.c
++++ b/hw/audio/asc.c
+@@ -154,126 +154,126 @@ static uint8_t asc_fifo_get(ASCFIFOState *fs)
+ static int generate_fifo(ASCState *s, int maxsamples)
+ {
+     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     uint8_t *buf = s->mixbuf;
+     int i, wcount = 0;
+ 
+     while (wcount < maxsamples) {
+         uint8_t val;
+         int16_t d, f0, f1;
+         int32_t t;
+         int shift, filter;
+         bool hasdata = false;
+ 
+         for (i = 0; i < 2; i++) {
+             ASCFIFOState *fs = &s->fifos[i];
+ 
+             switch (fs->extregs[ASC_EXTREGS_FIFOCTRL] & 0x83) {
+             case 0x82:
+                 /*
+                  * CD-XA BRR mode: decompress 15 bytes into 28 16-bit
+                  * samples
+                  */
+                 if (!fs->cnt) {
+                     val = 0x80;
+                     break;
+                 }
+ 
+                 if (fs->xa_cnt == -1) {
+                     /* Start of packet, get flags */
+                     fs->xa_flags = asc_fifo_get(fs);
+                     fs->xa_cnt = 0;
+                 }
+ 
+                 shift = fs->xa_flags & 0xf;
+                 filter = fs->xa_flags >> 4;
+                 f0 = (int8_t)fs->extregs[ASC_EXTREGS_CDXA_DECOMP_FILT +
+                                  (filter << 1) + 1];
+                 f1 = (int8_t)fs->extregs[ASC_EXTREGS_CDXA_DECOMP_FILT +
+                                  (filter << 1)];
+ 
+                 if ((fs->xa_cnt & 1) == 0) {
+                     if (!fs->cnt) {
+                         val = 0x80;
+                         break;
+                     }
+ 
+                     fs->xa_val = asc_fifo_get(fs);
+                     d = (fs->xa_val & 0xf) << 12;
+                 } else {
+                     d = (fs->xa_val & 0xf0) << 8;
+                 }
+                 t = (d >> shift) + (((fs->xa_last[0] * f0) +
+                                      (fs->xa_last[1] * f1) + 32) >> 6);
+                 if (t < -32768) {
+                     t = -32768;
+                 } else if (t > 32767) {
+                     t = 32767;
+                 }
+ 
+                 /*
+                  * CD-XA BRR generates 16-bit signed output, so convert to
+                  * 8-bit before writing to buffer. Does real hardware do the
+                  * same?
+                  */
+                 val = (uint8_t)(t / 256) ^ 0x80;
+                 hasdata = true;
+                 fs->xa_cnt++;
+ 
+                 fs->xa_last[1] = fs->xa_last[0];
+                 fs->xa_last[0] = (int16_t)t;
+ 
+                 if (fs->xa_cnt == 28) {
+                     /* End of packet */
+                     fs->xa_cnt = -1;
+                 }
+                 break;
+ 
+             default:
+-                /* fallthrough */
++                fallthrough;
+             case 0x80:
+                 /* Raw mode */
+                 if (fs->cnt) {
+                     val = asc_fifo_get(fs);
+                     hasdata = true;
+                 } else {
+                     val = 0x80;
+                 }
+                 break;
+             }
+ 
+             buf[wcount * 2 + i] = val;
+         }
+ 
+         if (!hasdata) {
+             break;
+         }
+ 
+         wcount++;
+     }
+ 
+     /*
+      * MacOS (un)helpfully leaves the FIFO engine running even when it has
+      * finished writing out samples, but still expects the FIFO empty
+      * interrupts to be generated for each FIFO cycle (without these interrupts
+      * MacOS will freeze)
+      */
+     if (s->fifos[0].cnt == 0 && s->fifos[1].cnt == 0) {
+         if (!s->fifo_empty_ns) {
+             /* FIFO has completed first empty cycle */
+             s->fifo_empty_ns = now;
+         } else if (now > (s->fifo_empty_ns + ASC_FIFO_CYCLE_TIME)) {
+             /* FIFO has completed entire cycle with no data */
+             s->fifos[0].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+                                       ASC_FIFO_STATUS_FULL_EMPTY;
+             s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+                                       ASC_FIFO_STATUS_FULL_EMPTY;
+             s->fifo_empty_ns = now;
+             asc_raise_irq(s);
+         }
+     } else {
+         /* FIFO contains data, reset empty time */
+         s->fifo_empty_ns = 0;
+     }
+ 
+     return wcount;
+ }
 diff --git a/hw/audio/cs4231a.c b/hw/audio/cs4231a.c
 index 3aa105748d..3bf0116c68 100644
 --- a/hw/audio/cs4231a.c
