@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF777C7F53
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37AEE7C7FBD
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:16:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD3j-000704-Il; Fri, 13 Oct 2023 03:58:11 -0400
+	id 1qrD3l-00076W-1N; Fri, 13 Oct 2023 03:58:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD3f-0006kM-VI
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:08 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1qrD3i-0006w0-17
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:10 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD3c-0006ia-4B
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:07 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c5056059e0so7227171fa.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:03 -0700 (PDT)
+ id 1qrD3e-0006jH-J0
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:09 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-5043a01ee20so2338524e87.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183882; x=1697788682; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183884; x=1697788684; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7aeKq35mmTIUN+fGFa1jZeWofe0W3T+gZsntbEXTBh4=;
- b=a3kqDC5vVU7ArTGOYVgvXPup2kWp2KrnPLe3l8IznY0gNv+KDL7x2mOX1FwwM3pycU
- jKw07JoDfr97vOFE3PdcJIMEWtYqbVJDmjHf46yTmUO9ms53T7cpaYqmWmLdv5cnqWE4
- tz+2VhP0/yJ63FOJq25C/jfZFnU4PZag0gXp82HxiaGVJ31FYM5SJXZDZ/vga1dV5oyp
- We5CbI5p99Q8PzqEuTBy5Qo7qB52pVxVIFugwXPUgARs0DApXFxWW6OIe24QukO8HUva
- wGckpg/mXukqjYiZogvzhqyy4l6jzE7uwVeTEeksXCfrh1fruQY8LyhWpAHnmQhCjQrk
- 11DQ==
+ bh=tRSE8Uc0Qfl3ZRKEWagbHPFVdOsv1ON14ZcL2G49NJI=;
+ b=u904/AMb0ZH1/NvT1nOCbiVUoFNivQ8uj6wXyQt0pPhvIXIMW6ks9BFpQzhmSe3l0z
+ PVN5uzKk1b1Kva31aK/LbyjHxZd5D3mg8K+5ymXtl5eieJsnASQlwN2CKKr1Pk6adL3z
+ o5+XWGF6mLalIMXRn7BJ7OfmyRpR6QaZYX+OixXMUiJaI56MXRy9ElBG6AoAy89gneBC
+ H18RmDT1ziCwVWgsnm4mZ568oHITMiuqwML+ehVG7It547fsU2TZP5AK0+95ZzbOdVcK
+ PK1MmI+MqJ5vNULJCpxe6fuv95TdKZVv0u+zObxdeVg/EoDmahDFkIG49d4Szs+sNz7Y
+ yH2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183882; x=1697788682;
+ d=1e100.net; s=20230601; t=1697183884; x=1697788684;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7aeKq35mmTIUN+fGFa1jZeWofe0W3T+gZsntbEXTBh4=;
- b=wLAFDkflsESkfldyVlsf4JufzY0+wohoZLvkYaif6TwodnNFTDdJLCAXdA9rGKDdUl
- CKbfiRRjLAi4gDhX5zxDjxhy8LioZStawd1mk/0UFSI6eLfYZOXxvqMTN4W5OwTUs/LM
- zOdBCLHAlh8IjMom4kNnzSDyVr4BVeMIsaV9XRjsnAo9XL7kbp1f9Ef653mLeBZQqDIa
- bjQpaGgApi3DXfXAjw1AnvrHtuddvz0gcZVD1ULG4jMWwQgJAtQ98Y1TTGTjK354ohfL
- PfH2DKSloui1dBo5qd3I7fkoHRvMl+FABScw64552VGEMl5i7smb5zVdTVBSxBqndJUk
- FKPA==
-X-Gm-Message-State: AOJu0Yx+u3mN5QWzApieAkXNXjHd0gNgAYv3QsTlIRCpwLrejJBf7u+P
- klJbB5GFEDof5Gpkull3yP5eefW6HKHBA6Fnmtc=
-X-Google-Smtp-Source: AGHT+IHZXL2v0J4mA3KSIMc9Y896n4MM1HVVuF36TvhnLKo7T+jq/+FgXHkmj2q6Y8WkCSOSQb0SoQ==
-X-Received: by 2002:a2e:3e07:0:b0:2bc:dcd6:97b1 with SMTP id
- l7-20020a2e3e07000000b002bcdcd697b1mr21916986lja.47.1697183881735; 
- Fri, 13 Oct 2023 00:58:01 -0700 (PDT)
+ bh=tRSE8Uc0Qfl3ZRKEWagbHPFVdOsv1ON14ZcL2G49NJI=;
+ b=hpNTNxUegkojXMHZlD1xxeglGYln94rbjMrY+BpG2aim6GHe9LYSgvHjoikvoQvJM3
+ pIAHM4JbdT2HrHPIqWoR32lTJ+NFqO47PMxvIYZazLKTYUdi5iwC/wHlSzEVj8pSlao1
+ fsSUTnNXX2hAhqJTpifSnXNTNKXnNEzCeTKdWGEiCvky/oni0AqBFviOa57eq5wxQtxl
+ KE4wwvwzMIPuPE450JcEi8PVT5xJ/T2DxNk1R4Reu8a9k60wlFZSKqyNKqiBzePZzXd1
+ l6z+VyXbqJHxJDihMKHbJR7/ktJOAiSqnD3QtXNGZgOu73eIq4yhBDLjE+uILtnavbks
+ lSow==
+X-Gm-Message-State: AOJu0Yx96BeqhQJbOaE5cTwhNbYGN6wPkLgQUTrFAI8ibaN2GKa1y5xC
+ 89LvAuclfudrLODDNnCRrRnijNYJBPy5e6GMgMg=
+X-Google-Smtp-Source: AGHT+IHXnllyvG6VWJ7X4/StDcNfsg3UzZt8insBoWkDzMeUNYjALvheCr6uzb5OVHagHN2uFZmQVw==
+X-Received: by 2002:a05:6512:3494:b0:500:c348:7efd with SMTP id
+ v20-20020a056512349400b00500c3487efdmr21172366lfr.59.1697183884550; 
+ Fri, 13 Oct 2023 00:58:04 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.00
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:58:01 -0700 (PDT)
+ Fri, 13 Oct 2023 00:58:04 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH v2 03/78] fpu/softfloat: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:56:30 +0300
-Message-Id: <f329886becdeaa9a0b7cc2d19a02b3973266151b.1697183699.git.manos.pitsidianakis@linaro.org>
+ Markus Armbruster <armbru@redhat.com>
+Subject: [RFC PATCH v2 05/78] qobject/json: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:56:32 +0300
+Message-Id: <9425bbfc5ff333a6c476c5e01f08077d7821897a.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,614 +97,274 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- fpu/softfloat-parts.c.inc | 8 ++++----
- fpu/softfloat.c           | 7 ++++---
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ qobject/json-lexer.c  | 4 ++--
+ qobject/json-parser.c | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fpu/softfloat-parts.c.inc b/fpu/softfloat-parts.c.inc
-index a44649f4f4..df64cc7a29 100644
---- a/fpu/softfloat-parts.c.inc
-+++ b/fpu/softfloat-parts.c.inc
-@@ -138,166 +138,166 @@ static void partsN(canonicalize)(FloatPartsN *p, float_status *status,
- /*
-  * Round and uncanonicalize a floating-point number by parts. There
-  * are FRAC_SHIFT bits that may require rounding at the bottom of the
-  * fraction; these bits will be removed. The exponent will be biased
-  * by EXP_BIAS and must be bounded by [EXP_MAX-1, 0].
-  */
- static void partsN(uncanon_normal)(FloatPartsN *p, float_status *s,
-                                    const FloatFmt *fmt)
+diff --git a/qobject/json-lexer.c b/qobject/json-lexer.c
+index 51341d96e4..ab74470ac6 100644
+--- a/qobject/json-lexer.c
++++ b/qobject/json-lexer.c
+@@ -283,61 +283,61 @@ void json_lexer_init(JSONLexer *lexer, bool enable_interpolation)
+ static void json_lexer_feed_char(JSONLexer *lexer, char ch, bool flush)
  {
-     const int exp_max = fmt->exp_max;
-     const int frac_shift = fmt->frac_shift;
-     const uint64_t round_mask = fmt->round_mask;
-     const uint64_t frac_lsb = round_mask + 1;
-     const uint64_t frac_lsbm1 = round_mask ^ (round_mask >> 1);
-     const uint64_t roundeven_mask = round_mask | frac_lsb;
-     uint64_t inc;
-     bool overflow_norm = false;
-     int exp, flags = 0;
+     int new_state;
+     bool char_consumed = false;
  
-     switch (s->float_rounding_mode) {
-     case float_round_nearest_even:
-         if (N > 64 && frac_lsb == 0) {
-             inc = ((p->frac_hi & 1) || (p->frac_lo & round_mask) != frac_lsbm1
-                    ? frac_lsbm1 : 0);
-         } else {
-             inc = ((p->frac_lo & roundeven_mask) != frac_lsbm1
-                    ? frac_lsbm1 : 0);
-         }
-         break;
-     case float_round_ties_away:
-         inc = frac_lsbm1;
-         break;
-     case float_round_to_zero:
-         overflow_norm = true;
-         inc = 0;
-         break;
-     case float_round_up:
-         inc = p->sign ? 0 : round_mask;
-         overflow_norm = p->sign;
-         break;
-     case float_round_down:
-         inc = p->sign ? round_mask : 0;
-         overflow_norm = !p->sign;
-         break;
-     case float_round_to_odd:
-         overflow_norm = true;
--        /* fall through */
-+        fallthrough;
-     case float_round_to_odd_inf:
-         if (N > 64 && frac_lsb == 0) {
-             inc = p->frac_hi & 1 ? 0 : round_mask;
-         } else {
-             inc = p->frac_lo & frac_lsb ? 0 : round_mask;
-         }
-         break;
-     default:
-         g_assert_not_reached();
+     lexer->x++;
+     if (ch == '\n') {
+         lexer->x = 0;
+         lexer->y++;
      }
  
-     exp = p->exp + fmt->exp_bias;
-     if (likely(exp > 0)) {
-         if (p->frac_lo & round_mask) {
-             flags |= float_flag_inexact;
-             if (frac_addi(p, p, inc)) {
-                 frac_shr(p, 1);
-                 p->frac_hi |= DECOMPOSED_IMPLICIT_BIT;
-                 exp++;
-             }
-             p->frac_lo &= ~round_mask;
+     while (flush ? lexer->state != lexer->start_state : !char_consumed) {
+         new_state = next_state(lexer, ch, flush, &char_consumed);
+         if (char_consumed) {
+             assert(!flush);
+             g_string_append_c(lexer->token, ch);
          }
  
-         if (fmt->arm_althp) {
-             /* ARM Alt HP eschews Inf and NaN for a wider exponent.  */
-             if (unlikely(exp > exp_max)) {
-                 /* Overflow.  Return the maximum normal.  */
-                 flags = float_flag_invalid;
-                 exp = exp_max;
-                 frac_allones(p);
-                 p->frac_lo &= ~round_mask;
-             }
-         } else if (unlikely(exp >= exp_max)) {
-             flags |= float_flag_overflow;
-             if (s->rebias_overflow) {
-                 exp -= fmt->exp_re_bias;
-             } else if (overflow_norm) {
-                 flags |= float_flag_inexact;
-                 exp = exp_max - 1;
-                 frac_allones(p);
-                 p->frac_lo &= ~round_mask;
-             } else {
-                 flags |= float_flag_inexact;
-                 p->cls = float_class_inf;
-                 exp = exp_max;
-                 frac_clear(p);
-             }
-         }
-         frac_shr(p, frac_shift);
-     } else if (unlikely(s->rebias_underflow)) {
-         flags |= float_flag_underflow;
-         exp += fmt->exp_re_bias;
-         if (p->frac_lo & round_mask) {
-             flags |= float_flag_inexact;
-             if (frac_addi(p, p, inc)) {
-                 frac_shr(p, 1);
-                 p->frac_hi |= DECOMPOSED_IMPLICIT_BIT;
-                 exp++;
-             }
-             p->frac_lo &= ~round_mask;
-         }
-         frac_shr(p, frac_shift);
-     } else if (s->flush_to_zero) {
-         flags |= float_flag_output_denormal;
-         p->cls = float_class_zero;
-         exp = 0;
-         frac_clear(p);
-     } else {
-         bool is_tiny = s->tininess_before_rounding || exp < 0;
- 
-         if (!is_tiny) {
-             FloatPartsN discard;
-             is_tiny = !frac_addi(&discard, p, inc);
-         }
- 
-         frac_shrjam(p, !fmt->m68k_denormal - exp);
- 
-         if (p->frac_lo & round_mask) {
-             /* Need to recompute round-to-even/round-to-odd. */
-             switch (s->float_rounding_mode) {
-             case float_round_nearest_even:
-                 if (N > 64 && frac_lsb == 0) {
-                     inc = ((p->frac_hi & 1) ||
-                            (p->frac_lo & round_mask) != frac_lsbm1
-                            ? frac_lsbm1 : 0);
-                 } else {
-                     inc = ((p->frac_lo & roundeven_mask) != frac_lsbm1
-                            ? frac_lsbm1 : 0);
-                 }
-                 break;
-             case float_round_to_odd:
-             case float_round_to_odd_inf:
-                 if (N > 64 && frac_lsb == 0) {
-                     inc = p->frac_hi & 1 ? 0 : round_mask;
-                 } else {
-                     inc = p->frac_lo & frac_lsb ? 0 : round_mask;
-                 }
-                 break;
-             default:
-                 break;
-             }
-             flags |= float_flag_inexact;
-             frac_addi(p, p, inc);
-             p->frac_lo &= ~round_mask;
-         }
- 
-         exp = (p->frac_hi & DECOMPOSED_IMPLICIT_BIT) && !fmt->m68k_denormal;
-         frac_shr(p, frac_shift);
- 
-         if (is_tiny && (flags & float_flag_inexact)) {
-             flags |= float_flag_underflow;
-         }
-         if (exp == 0 && frac_eqz(p)) {
-             p->cls = float_class_zero;
-         }
-     }
-     p->exp = exp;
-     float_raise(flags, s);
- }
-@@ -1051,219 +1051,219 @@ static void partsN(round_to_int)(FloatPartsN *a, FloatRoundMode rmode,
- /*
-  * Returns the result of converting the floating-point value `a' to
-  * the two's complement integer format. The conversion is performed
-  * according to the IEC/IEEE Standard for Binary Floating-Point
-  * Arithmetic---which means in particular that the conversion is
-  * rounded according to the current rounding mode. If `a' is a NaN,
-  * the largest positive integer is returned. Otherwise, if the
-  * conversion overflows, the largest integer with the same sign as `a'
-  * is returned.
-  */
- static int64_t partsN(float_to_sint)(FloatPartsN *p, FloatRoundMode rmode,
-                                      int scale, int64_t min, int64_t max,
-                                      float_status *s)
- {
-     int flags = 0;
-     uint64_t r;
- 
-     switch (p->cls) {
-     case float_class_snan:
-         flags |= float_flag_invalid_snan;
--        /* fall through */
-+        fallthrough;
-     case float_class_qnan:
-         flags |= float_flag_invalid;
-         r = max;
-         break;
- 
-     case float_class_inf:
-         flags = float_flag_invalid | float_flag_invalid_cvti;
-         r = p->sign ? min : max;
-         break;
- 
-     case float_class_zero:
-         return 0;
- 
-     case float_class_normal:
-         /* TODO: N - 2 is frac_size for rounding; could use input fmt. */
-         if (parts_round_to_int_normal(p, rmode, scale, N - 2)) {
-             flags = float_flag_inexact;
-         }
- 
-         if (p->exp <= DECOMPOSED_BINARY_POINT) {
-             r = p->frac_hi >> (DECOMPOSED_BINARY_POINT - p->exp);
-         } else {
-             r = UINT64_MAX;
-         }
-         if (p->sign) {
-             if (r <= -(uint64_t)min) {
-                 r = -r;
-             } else {
-                 flags = float_flag_invalid | float_flag_invalid_cvti;
-                 r = min;
-             }
-         } else if (r > max) {
-             flags = float_flag_invalid | float_flag_invalid_cvti;
-             r = max;
-         }
-         break;
- 
-     default:
-         g_assert_not_reached();
-     }
- 
-     float_raise(flags, s);
-     return r;
- }
- 
- /*
-  *  Returns the result of converting the floating-point value `a' to
-  *  the unsigned integer format. The conversion is performed according
-  *  to the IEC/IEEE Standard for Binary Floating-Point
-  *  Arithmetic---which means in particular that the conversion is
-  *  rounded according to the current rounding mode. If `a' is a NaN,
-  *  the largest unsigned integer is returned. Otherwise, if the
-  *  conversion overflows, the largest unsigned integer is returned. If
-  *  the 'a' is negative, the result is rounded and zero is returned;
-  *  values that do not round to zero will raise the inexact exception
-  *  flag.
-  */
- static uint64_t partsN(float_to_uint)(FloatPartsN *p, FloatRoundMode rmode,
-                                       int scale, uint64_t max, float_status *s)
- {
-     int flags = 0;
-     uint64_t r;
- 
-     switch (p->cls) {
-     case float_class_snan:
-         flags |= float_flag_invalid_snan;
--        /* fall through */
-+        fallthrough;
-     case float_class_qnan:
-         flags |= float_flag_invalid;
-         r = max;
-         break;
- 
-     case float_class_inf:
-         flags = float_flag_invalid | float_flag_invalid_cvti;
-         r = p->sign ? 0 : max;
-         break;
- 
-     case float_class_zero:
-         return 0;
- 
-     case float_class_normal:
-         /* TODO: N - 2 is frac_size for rounding; could use input fmt. */
-         if (parts_round_to_int_normal(p, rmode, scale, N - 2)) {
-             flags = float_flag_inexact;
-             if (p->cls == float_class_zero) {
-                 r = 0;
-                 break;
-             }
-         }
- 
-         if (p->sign) {
-             flags = float_flag_invalid | float_flag_invalid_cvti;
-             r = 0;
-         } else if (p->exp > DECOMPOSED_BINARY_POINT) {
-             flags = float_flag_invalid | float_flag_invalid_cvti;
-             r = max;
-         } else {
-             r = p->frac_hi >> (DECOMPOSED_BINARY_POINT - p->exp);
-             if (r > max) {
-                 flags = float_flag_invalid | float_flag_invalid_cvti;
-                 r = max;
-             }
-         }
-         break;
- 
-     default:
-         g_assert_not_reached();
-     }
- 
-     float_raise(flags, s);
-     return r;
- }
- 
- /*
-  * Like partsN(float_to_sint), except do not saturate the result.
-  * Instead, return the rounded unbounded precision two's compliment result,
-  * modulo 2**(bitsm1 + 1).
-  */
- static int64_t partsN(float_to_sint_modulo)(FloatPartsN *p,
-                                             FloatRoundMode rmode,
-                                             int bitsm1, float_status *s)
- {
-     int flags = 0;
-     uint64_t r;
-     bool overflow = false;
- 
-     switch (p->cls) {
-     case float_class_snan:
-         flags |= float_flag_invalid_snan;
--        /* fall through */
-+        fallthrough;
-     case float_class_qnan:
-         flags |= float_flag_invalid;
-         r = 0;
-         break;
- 
-     case float_class_inf:
-         overflow = true;
-         r = 0;
-         break;
- 
-     case float_class_zero:
-         return 0;
- 
-     case float_class_normal:
-         /* TODO: N - 2 is frac_size for rounding; could use input fmt. */
-         if (parts_round_to_int_normal(p, rmode, 0, N - 2)) {
-             flags = float_flag_inexact;
-         }
- 
-         if (p->exp <= DECOMPOSED_BINARY_POINT) {
-             /*
-              * Because we rounded to integral, and exp < 64,
-              * we know frac_low is zero.
-              */
-             r = p->frac_hi >> (DECOMPOSED_BINARY_POINT - p->exp);
-             if (p->exp < bitsm1) {
-                 /* Result in range. */
-             } else if (p->exp == bitsm1) {
-                 /* The only in-range value is INT_MIN. */
-                 overflow = !p->sign || p->frac_hi != DECOMPOSED_IMPLICIT_BIT;
-             } else {
-                 overflow = true;
-             }
-         } else {
-             /* Overflow, but there might still be bits to return. */
-             int shl = p->exp - DECOMPOSED_BINARY_POINT;
-             if (shl < N) {
-                 frac_shl(p, shl);
-                 r = p->frac_hi;
-             } else {
-                 r = 0;
-             }
-             overflow = true;
-         }
- 
-         if (p->sign) {
-             r = -r;
-         }
-         break;
- 
-     default:
-         g_assert_not_reached();
-     }
- 
-     if (overflow) {
-         flags = float_flag_invalid | float_flag_invalid_cvti;
-     }
-     float_raise(flags, s);
-     return r;
- }
- 
- /*
-  * Integer to float conversions
-  *
-  * Returns the result of converting the two's complement integer `a'
-  * to the floating-point format. The conversion is performed according
-  * to the IEC/IEEE Standard for Binary Floating-Point Arithmetic.
-  */
-diff --git a/fpu/softfloat.c b/fpu/softfloat.c
-index 027a8e576d..e16e1896ee 100644
---- a/fpu/softfloat.c
-+++ b/fpu/softfloat.c
-@@ -1811,56 +1811,57 @@ static bool floatx80_unpack_canonical(FloatParts128 *p, floatx80 f,
- static floatx80 floatx80_round_pack_canonical(FloatParts128 *p,
-                                               float_status *s)
- {
-     const FloatFmt *fmt = &floatx80_params[s->floatx80_rounding_precision];
-     uint64_t frac;
-     int exp;
- 
-     switch (p->cls) {
-     case float_class_normal:
-         if (s->floatx80_rounding_precision == floatx80_precision_x) {
-             parts_uncanon_normal(p, s, fmt);
-             frac = p->frac_hi;
-             exp = p->exp;
-         } else {
-             FloatParts64 p64;
- 
-             p64.sign = p->sign;
-             p64.exp = p->exp;
-             frac_truncjam(&p64, p);
-             parts_uncanon_normal(&p64, s, fmt);
-             frac = p64.frac;
-             exp = p64.exp;
-         }
-         if (exp != fmt->exp_max) {
+         switch (new_state) {
+         case JSON_LCURLY:
+         case JSON_RCURLY:
+         case JSON_LSQUARE:
+         case JSON_RSQUARE:
+         case JSON_COLON:
+         case JSON_COMMA:
+         case JSON_INTERP:
+         case JSON_INTEGER:
+         case JSON_FLOAT:
+         case JSON_KEYWORD:
+         case JSON_STRING:
+             json_message_process_token(lexer, lexer->token, new_state,
+                                        lexer->x, lexer->y);
+-            /* fall through */
++            fallthrough;
+         case IN_START:
+             g_string_truncate(lexer->token, 0);
+             new_state = lexer->start_state;
+             break;
+         case JSON_ERROR:
+             json_message_process_token(lexer, lexer->token, JSON_ERROR,
+                                        lexer->x, lexer->y);
+             new_state = IN_RECOVERY;
+-            /* fall through */
++            fallthrough;
+         case IN_RECOVERY:
+             g_string_truncate(lexer->token, 0);
+             break;
+         default:
              break;
          }
-         /* rounded to inf -- fall through to set frac correctly */
-+        fallthrough;
- 
-     case float_class_inf:
-         /* x86 and m68k differ in the setting of the integer bit. */
-         frac = floatx80_infinity_low;
-         exp = fmt->exp_max;
-         break;
- 
-     case float_class_zero:
-         frac = 0;
-         exp = 0;
-         break;
- 
-     case float_class_snan:
-     case float_class_qnan:
-         /* NaNs have the integer bit set. */
-         frac = p->frac_hi | (1ull << 63);
-         exp = fmt->exp_max;
-         break;
- 
-     default:
-         g_assert_not_reached();
+         lexer->state = new_state;
      }
  
-     return packFloatx80(p->sign, exp, frac);
+     /* Do not let a single token grow to an arbitrarily large size,
+      * this is a security consideration.
+      */
+     if (lexer->token->len > MAX_TOKEN_SIZE) {
+         json_message_process_token(lexer, lexer->token, lexer->state,
+                                    lexer->x, lexer->y);
+         g_string_truncate(lexer->token, 0);
+         lexer->state = lexer->start_state;
+     }
  }
- 
- /*
-  * Addition and subtraction
+diff --git a/qobject/json-parser.c b/qobject/json-parser.c
+index d498db6e70..4dc622dcc9 100644
+--- a/qobject/json-parser.c
++++ b/qobject/json-parser.c
+@@ -95,137 +95,137 @@ static int cvt4hex(const char *s)
+ /**
+  * parse_string(): Parse a JSON string
+  *
+  * From RFC 8259 "The JavaScript Object Notation (JSON) Data
+  * Interchange Format":
+  *
+  *    char = unescaped /
+  *        escape (
+  *            %x22 /          ; "    quotation mark  U+0022
+  *            %x5C /          ; \    reverse solidus U+005C
+  *            %x2F /          ; /    solidus         U+002F
+  *            %x62 /          ; b    backspace       U+0008
+  *            %x66 /          ; f    form feed       U+000C
+  *            %x6E /          ; n    line feed       U+000A
+  *            %x72 /          ; r    carriage return U+000D
+  *            %x74 /          ; t    tab             U+0009
+  *            %x75 4HEXDIG )  ; uXXXX                U+XXXX
+  *    escape = %x5C              ; \
+  *    quotation-mark = %x22      ; "
+  *    unescaped = %x20-21 / %x23-5B / %x5D-10FFFF
+  *
+  * Extensions over RFC 8259:
+  * - Extra escape sequence in strings:
+  *   0x27 (apostrophe) is recognized after escape, too
+  * - Single-quoted strings:
+  *   Like double-quoted strings, except they're delimited by %x27
+  *   (apostrophe) instead of %x22 (quotation mark), and can't contain
+  *   unescaped apostrophe, but can contain unescaped quotation mark.
+  *
+  * Note:
+  * - Encoding is modified UTF-8.
+  * - Invalid Unicode characters are rejected.
+  * - Control characters \x00..\x1F are rejected by the lexer.
   */
-@@ -2668,35 +2669,35 @@ floatx80 floatx80_mod(floatx80 a, floatx80 b, float_status *status)
- static void parts_float_to_ahp(FloatParts64 *a, float_status *s)
+ static QString *parse_string(JSONParserContext *ctxt, JSONToken *token)
  {
-     switch (a->cls) {
-     case float_class_snan:
-         float_raise(float_flag_invalid_snan, s);
--        /* fall through */
-+        fallthrough;
-     case float_class_qnan:
-         /*
-          * There is no NaN in the destination format.  Raise Invalid
-          * and return a zero with the sign of the input NaN.
-          */
-         float_raise(float_flag_invalid, s);
-         a->cls = float_class_zero;
-         break;
+     const char *ptr = token->str;
+     GString *str;
+     char quote;
+     const char *beg;
+     int cp, trailing;
+     char *end;
+     ssize_t len;
+     char utf8_buf[5];
  
-     case float_class_inf:
-         /*
-          * There is no Inf in the destination format.  Raise Invalid
-          * and return the maximum normal with the correct sign.
-          */
-         float_raise(float_flag_invalid, s);
-         a->cls = float_class_normal;
-         a->exp = float16_params_ahp.exp_max;
-         a->frac = MAKE_64BIT_MASK(float16_params_ahp.frac_shift,
-                                   float16_params_ahp.frac_size + 1);
-         break;
+     assert(*ptr == '"' || *ptr == '\'');
+     quote = *ptr++;
+     str = g_string_new(NULL);
  
-     case float_class_normal:
-     case float_class_zero:
-         break;
- 
-     default:
-         g_assert_not_reached();
-     }
- }
-@@ -3190,53 +3191,53 @@ static int64_t float128_to_int64_scalbn(float128 a, FloatRoundMode rmode,
- static Int128 float128_to_int128_scalbn(float128 a, FloatRoundMode rmode,
-                                         int scale, float_status *s)
- {
-     int flags = 0;
-     Int128 r;
-     FloatParts128 p;
- 
-     float128_unpack_canonical(&p, a, s);
- 
-     switch (p.cls) {
-     case float_class_snan:
-         flags |= float_flag_invalid_snan;
--        /* fall through */
-+        fallthrough;
-     case float_class_qnan:
-         flags |= float_flag_invalid;
-         r = UINT128_MAX;
-         break;
- 
-     case float_class_inf:
-         flags = float_flag_invalid | float_flag_invalid_cvti;
-         r = p.sign ? INT128_MIN : INT128_MAX;
-         break;
- 
-     case float_class_zero:
-         return int128_zero();
- 
-     case float_class_normal:
-         if (parts_round_to_int_normal(&p, rmode, scale, 128 - 2)) {
-             flags = float_flag_inexact;
-         }
- 
-         if (p.exp < 127) {
-             int shift = 127 - p.exp;
-             r = int128_urshift(int128_make128(p.frac_lo, p.frac_hi), shift);
-             if (p.sign) {
-                 r = int128_neg(r);
-             }
-         } else if (p.exp == 127 && p.sign && p.frac_lo == 0 &&
-                    p.frac_hi == DECOMPOSED_IMPLICIT_BIT) {
-             r = INT128_MIN;
-         } else {
-             flags = float_flag_invalid | float_flag_invalid_cvti;
-             r = p.sign ? INT128_MIN : INT128_MAX;
-         }
-         break;
- 
-     default:
-         g_assert_not_reached();
-     }
- 
-     float_raise(flags, s);
-     return r;
- }
-@@ -3617,54 +3618,54 @@ static uint64_t float128_to_uint64_scalbn(float128 a, FloatRoundMode rmode,
- static Int128 float128_to_uint128_scalbn(float128 a, FloatRoundMode rmode,
-                                          int scale, float_status *s)
- {
-     int flags = 0;
-     Int128 r;
-     FloatParts128 p;
- 
-     float128_unpack_canonical(&p, a, s);
- 
-     switch (p.cls) {
-     case float_class_snan:
-         flags |= float_flag_invalid_snan;
--        /* fall through */
-+        fallthrough;
-     case float_class_qnan:
-         flags |= float_flag_invalid;
-         r = UINT128_MAX;
-         break;
- 
-     case float_class_inf:
-         flags = float_flag_invalid | float_flag_invalid_cvti;
-         r = p.sign ? int128_zero() : UINT128_MAX;
-         break;
- 
-     case float_class_zero:
-         return int128_zero();
- 
-     case float_class_normal:
-         if (parts_round_to_int_normal(&p, rmode, scale, 128 - 2)) {
-             flags = float_flag_inexact;
-             if (p.cls == float_class_zero) {
-                 r = int128_zero();
+     while (*ptr != quote) {
+         assert(*ptr);
+         switch (*ptr) {
+         case '\\':
+             beg = ptr++;
+             switch (*ptr++) {
+             case '"':
+                 g_string_append_c(str, '"');
                  break;
+             case '\'':
+                 g_string_append_c(str, '\'');
+                 break;
+             case '\\':
+                 g_string_append_c(str, '\\');
+                 break;
+             case '/':
+                 g_string_append_c(str, '/');
+                 break;
+             case 'b':
+                 g_string_append_c(str, '\b');
+                 break;
+             case 'f':
+                 g_string_append_c(str, '\f');
+                 break;
+             case 'n':
+                 g_string_append_c(str, '\n');
+                 break;
+             case 'r':
+                 g_string_append_c(str, '\r');
+                 break;
+             case 't':
+                 g_string_append_c(str, '\t');
+                 break;
+             case 'u':
+                 cp = cvt4hex(ptr);
+                 ptr += 4;
+ 
+                 /* handle surrogate pairs */
+                 if (cp >= 0xD800 && cp <= 0xDBFF
+                     && ptr[0] == '\\' && ptr[1] == 'u') {
+                     /* leading surrogate followed by \u */
+                     cp = 0x10000 + ((cp & 0x3FF) << 10);
+                     trailing = cvt4hex(ptr + 2);
+                     if (trailing >= 0xDC00 && trailing <= 0xDFFF) {
+                         /* followed by trailing surrogate */
+                         cp |= trailing & 0x3FF;
+                         ptr += 6;
+                     } else {
+                         cp = -1; /* invalid */
+                     }
+                 }
+ 
+                 if (mod_utf8_encode(utf8_buf, sizeof(utf8_buf), cp) < 0) {
+                     parse_error(ctxt, token,
+                                 "%.*s is not a valid Unicode character",
+                                 (int)(ptr - beg), beg);
+                     goto out;
+                 }
+                 g_string_append(str, utf8_buf);
+                 break;
+             default:
+                 parse_error(ctxt, token, "invalid escape sequence in string");
+                 goto out;
              }
+             break;
+         case '%':
+             if (ctxt->ap) {
+                 if (ptr[1] != '%') {
+                     parse_error(ctxt, token, "can't interpolate into string");
+                     goto out;
+                 }
+                 ptr++;
+             }
+-            /* fall through */
++            fallthrough;
+         default:
+             cp = mod_utf8_codepoint(ptr, 6, &end);
+             if (cp < 0) {
+                 parse_error(ctxt, token, "invalid UTF-8 sequence in string");
+                 goto out;
+             }
+             ptr = end;
+             len = mod_utf8_encode(utf8_buf, sizeof(utf8_buf), cp);
+             assert(len >= 0);
+             g_string_append(str, utf8_buf);
          }
- 
-         if (p.sign) {
-             flags = float_flag_invalid | float_flag_invalid_cvti;
-             r = int128_zero();
-         } else if (p.exp <= 127) {
-             int shift = 127 - p.exp;
-             r = int128_urshift(int128_make128(p.frac_lo, p.frac_hi), shift);
-         } else {
-             flags = float_flag_invalid | float_flag_invalid_cvti;
-             r = UINT128_MAX;
-         }
-         break;
- 
-     default:
-         g_assert_not_reached();
      }
  
-     float_raise(flags, s);
-     return r;
+     return qstring_from_gstring(str);
+@@ -481,51 +481,52 @@ static QObject *parse_interpolation(JSONParserContext *ctxt)
+ static QObject *parse_literal(JSONParserContext *ctxt)
+ {
+     JSONToken *token;
+ 
+     token = parser_context_pop_token(ctxt);
+     assert(token);
+ 
+     switch (token->type) {
+     case JSON_STRING:
+         return QOBJECT(parse_string(ctxt, token));
+     case JSON_INTEGER: {
+         /*
+          * Represent JSON_INTEGER as QNUM_I64 if possible, else as
+          * QNUM_U64, else as QNUM_DOUBLE.  Note that qemu_strtoi64()
+          * and qemu_strtou64() fail with ERANGE when it's not
+          * possible.
+          *
+          * qnum_get_int() will then work for any signed 64-bit
+          * JSON_INTEGER, qnum_get_uint() for any unsigned 64-bit
+          * integer, and qnum_get_double() both for any JSON_INTEGER
+          * and any JSON_FLOAT (with precision loss for integers beyond
+          * 53 bits)
+          */
+         int ret;
+         int64_t value;
+         uint64_t uvalue;
+ 
+         ret = qemu_strtoi64(token->str, NULL, 10, &value);
+         if (!ret) {
+             return QOBJECT(qnum_from_int(value));
+         }
+         assert(ret == -ERANGE);
+ 
+         if (token->str[0] != '-') {
+             ret = qemu_strtou64(token->str, NULL, 10, &uvalue);
+             if (!ret) {
+                 return QOBJECT(qnum_from_uint(uvalue));
+             }
+             assert(ret == -ERANGE);
+         }
++        /* fall through to JSON_FLOAT */
++        fallthrough;
+     }
+-    /* fall through to JSON_FLOAT */
+     case JSON_FLOAT:
+         /* FIXME dependent on locale; a pervasive issue in QEMU */
+         /* FIXME our lexer matches RFC 8259 in forbidding Inf or NaN,
+          * but those might be useful extensions beyond JSON */
+         return QOBJECT(qnum_from_double(strtod(token->str, NULL)));
+     default:
+         abort();
+     }
  }
 -- 
 2.39.2
