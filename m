@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F62F7C87EF
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2E07C87F2
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 16:37:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrJGA-0002al-AK; Fri, 13 Oct 2023 10:35:26 -0400
+	id 1qrJHL-0003Wj-Q9; Fri, 13 Oct 2023 10:36:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrJFl-0002Ww-Fw
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:35:02 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qrJHG-0003SG-Pr
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:36:36 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrJFj-0000iB-4d
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:35:00 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-5ae99bb5ccdso156072a12.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:34:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qrJHE-00017T-NX
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 10:36:34 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-5a9bc2ec556so712221a12.0
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 07:36:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697207697; x=1697812497;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1697207790; x=1697812590; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=RSDBchcgLI5vIkrmDk9hld5fa+kJbqhINuxX4r14Wxo=;
- b=KC9gw5D7bN591/e/GFX0oLJEYuQ1+GpamVOHJwOUPvr0NWa95OyojY+b4AoYNAy9bn
- TNogkaMf4g8CEGb7L4bO/dTwaQH0uNKMGF39g00mcny8SCd7xWVi2zzE0czdBWOzzPcQ
- HrR7lZVyTLmXK5DGyiC535++G3EFTb2h8ET6/ZiivUb+YtgwOrDRn4lSoB+2TeK2pe3z
- Es7KJ/J21vRkP1xyJk0fvuSl9Ze/vVnH2XWL3qG9FjiXGe/npIudKvIr2XLcfKqu3QTX
- 4Gg1p5IIA3xRf6PTYE940UoOp177N7/NeXxHbuGk4KdeyVjEjSyQKrs0fc5b6YeZecYi
- Folg==
+ bh=SG4oJzUuOBzIvH5f3sY7LCjR/CLl66M8ktYhirPDb58=;
+ b=PQ9ROgwnPOlH06bIDKOqFqyg9yMnTEU6f25v9tZIy9xQCiBd5Hpc7AnuHI7y4JSFVu
+ zAYB0cEmEhiGloFeVBrPk8Wm04QvKYPlMGt1ZcIVbvdYRR2YScT0O3yjTJ35q7GBBIDG
+ zsiKRf73aySN1jCwaZnXHacryUzeFRM8mr6OSrtGTlLcXdCiF07g1+WDW2QssCdIqCk5
+ 3/Mtn53Y00Pa0IT7OpSt/NZtr0XvjkeK4g/reNXuUKmvbs1IF80wqqLzgY4PrlYXt/oV
+ aEedrfeqi7HcXCHUE3AFKVkrercMJodGSO3QWHa9Pom2+7wyGVYNTYGhQ0BrAIW2kozh
+ h+lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697207697; x=1697812497;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1697207790; x=1697812590;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RSDBchcgLI5vIkrmDk9hld5fa+kJbqhINuxX4r14Wxo=;
- b=hThbArnEBO69le8BTvH7T4tLNfBQiXvtLeH8DhIofNqsVyQzgMk8cALsV0IqkczAdK
- mjz0/Vi4yDcOUxn7UN6PTKg3TzmKuxvEato1EGrQMfj+zC1Ape4tkfhvWP0xIp9rmNoi
- J1YbBAKJ8h3GWyW7JevUhpIsZwAoc2VPjaAt+3ssElqmszLZZruMUtYrHayQ6dlCJlpF
- h5pl4fw5EdJltvVWJWq6g6FxxYCLeb6xrEHz7FimqX1oAilFNEHXEKKA+NjceLAM0/Kn
- 5xu9faVKDONrHmqjSUakFJISepocL9EyvH1MBlj5FftM/oszhHqEAi0vK1vOCG+wPXkN
- /t0Q==
-X-Gm-Message-State: AOJu0YxUsBk3nXK9bbxSFhSeAWrM467Kn+iM6iNlO5+NpF5bEP9EAtUg
- YqE8gbKK8bsAtYslvxdECh0LwyQZBUt8grIGsiUtRQ==
-X-Google-Smtp-Source: AGHT+IHqVIBwVyXp3j0CLn3rU4CNBCQ6SvZ+Jji8+tNOS870sAt5ULG/TE6C3ySBsu0VDlz5pN7JTA==
-X-Received: by 2002:a05:6a20:918d:b0:16b:9b5d:155d with SMTP id
- v13-20020a056a20918d00b0016b9b5d155dmr19544468pzd.30.1697207697383; 
- Fri, 13 Oct 2023 07:34:57 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ bh=SG4oJzUuOBzIvH5f3sY7LCjR/CLl66M8ktYhirPDb58=;
+ b=jl2o0zvyhOg/BoiH7mJ2Ps1So4evkdfUZ2LGGdFy7EX5rNUle72tiMwYNS/wSOjKuy
+ ZdC2ukK68gNbWB0nrlqqz6pYYXt6O9/GnKt2pmA8OGCBoOUxotcRZ+34bEx3nRLXNKHK
+ KlzxZhfZr9Acl5a6iorXr0e8BP7Ec0BgHmrkergvfFD8fomSffLc+d43oUjFIO8K2Q2W
+ oxM3+yaa3fjWOFkfIRevLPrWuV5cDtegjsarNhPYXM0uJAguwh6PS3xWB48/3JD0+Dnh
+ TdtlKGzaw2T11mQbT6BC/vPvZmfC3Kx4xi8D3D1uYhNE82ugmMQ832czTaurTdN5869B
+ ljqA==
+X-Gm-Message-State: AOJu0YyzpfMxapXrQzhnDxZ5WSUrjWNSJ/KY2tIH+YZo4e31cu3nCffb
+ lpFKw1dhndwbs/DD/CD8r+BMXQ==
+X-Google-Smtp-Source: AGHT+IHTRR1CxWgQ4vci2dI2qOpYFgvWyoxX6ZRf7E7CZKBr0MAiI1XDqHWmAB6+x4xVY/EFAwTztw==
+X-Received: by 2002:a17:90a:1904:b0:27d:1ec3:4367 with SMTP id
+ 4-20020a17090a190400b0027d1ec34367mr4784269pjg.0.1697207789741; 
+ Fri, 13 Oct 2023 07:36:29 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- k1-20020a636f01000000b0058901200bbbsm3557200pgc.40.2023.10.13.07.34.55
+ ch6-20020a17090af40600b00278eb908f78sm185168pjb.19.2023.10.13.07.36.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 07:34:57 -0700 (PDT)
-Message-ID: <fd3ddb90-83e2-4f48-bf31-227f632af027@daynix.com>
-Date: Fri, 13 Oct 2023 23:34:54 +0900
+ Fri, 13 Oct 2023 07:36:29 -0700 (PDT)
+Message-ID: <e0b86d94-29fc-4266-ac1d-4678fe36a71d@linaro.org>
+Date: Fri, 13 Oct 2023 07:36:27 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
+Subject: Re: [PATCH v2 12/16] target: Move ArchCPUClass definition to 'cpu.h'
 Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>
-References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
- <20231011153944.39572-2-akihiko.odaki@daynix.com>
- <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
- <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
- <CACGkMEuEs2MLJYKMB9qAgT2ixkKLC8LPPE6DsBvfwx0CEaCA_A@mail.gmail.com>
- <12412f11-4395-460f-9523-930ad9270188@daynix.com>
- <20231013101508-mutt-send-email-mst@kernel.org>
- <29fef0dd-86b6-4cd6-bbbc-812b832d8fcf@daynix.com>
- <20231013103151-mutt-send-email-mst@kernel.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231013103151-mutt-send-email-mst@kernel.org>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20231013140116.255-1-philmd@linaro.org>
+ <20231013140116.255-13-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231013140116.255-13-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::530;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,65 +94,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/13 23:32, Michael S. Tsirkin wrote:
-> On Fri, Oct 13, 2023 at 11:22:10PM +0900, Akihiko Odaki wrote:
->> On 2023/10/13 23:17, Michael S. Tsirkin wrote:
->>> On Fri, Oct 13, 2023 at 02:26:03PM +0900, Akihiko Odaki wrote:
->>>> On 2023/10/13 14:00, Jason Wang wrote:
->>>>> On Fri, Oct 13, 2023 at 12:14 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>>>
->>>>>> On 2023/10/13 10:38, Jason Wang wrote:
->>>>>>> On Wed, Oct 11, 2023 at 11:40 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>>>>>
->>>>>>>> It was necessary since an Linux older than 2.6.35 may implement the
->>>>>>>> virtio-net header but may not allow to change its length. Remove it
->>>>>>>> since such an old Linux is no longer supported.
->>>>>>>
->>>>>>> Where can I see this agreement?
->>>>>>
->>>>>> docs/about/build-platforms.rst says:
->>>>>>     > The project aims to support the most recent major version at all times
->>>>>>     > for up to five years after its initial release. Support for the
->>>>>>     > previous major version will be dropped 2 years after the new major
->>>>>>     > version is released or when the vendor itself drops support, whichever
->>>>>>     > comes first. In this context, third-party efforts to extend the
->>>>>>     > lifetime of a distro are not considered, even when they are endorsed
->>>>>>     > by the vendor (eg. Debian LTS); the same is true of repositories that
->>>>>>     > contain packages backported from later releases (e.g. Debian
->>>>>>     > backports). Within each major release, only the most recent minor
->>>>>>     > release is considered.
->>>>>>     >
->>>>>>     > For the purposes of identifying supported software versions available
->>>>>>     > on Linux, the project will look at CentOS, Debian, Fedora, openSUSE,
->>>>>>     > RHEL, SLES and Ubuntu LTS. Other distros will be assumed to ship
->>>>>>     > similar software versions.
->>>>>
->>>>> Well it also says:
->>>>>
->>>>> """
->>>>> If a platform is not listed here, it does not imply that QEMU won't
->>>>> work. If an unlisted platform has comparable software versions to a
->>>>> listed platform, there is every expectation that it will work.
->>>>> """
->>>>>
->>>>> A lot of downstream have customized build scripts.
->>>>
->>>> Still Linux versions older than 2.6.35 do not look like "comparable software
->>>> versions to a listed platform" in my opinion.
->>>
->>>
->>> This is fine - I would be ok to replace support with an error message
->>> and failure. Not checking that a capability is supported however
->>> isn't a good idea. And once we do - do we still gain anything by
->>> not working around that?
->>
->> tap does still check if setting the header length succeeds so it should be
->> fine.
+On 10/13/23 07:01, Philippe Mathieu-Daudé wrote:
+> The OBJECT_DECLARE_CPU_TYPE() macro forward-declares each
+> ArchCPUClass type. These forward declarations are sufficient
+> for code in hw/ to use the QOM definitions. No need to expose
+> these structure definitions. Keep each local to their target/
+> by moving them to the corresponding "cpu.h" header.
 > 
-> It asserts though doesn't it? Hardly user friendly ...
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/alpha/cpu-qom.h      | 16 ---------------
+>   target/alpha/cpu.h          | 13 +++++++++++++
+>   target/arm/cpu-qom.h        | 27 -------------------------
+>   target/arm/cpu.h            | 25 ++++++++++++++++++++++++
+>   target/avr/cpu-qom.h        | 16 ---------------
+>   target/avr/cpu.h            | 14 +++++++++++++
+>   target/cris/cpu-qom.h       | 19 ------------------
+>   target/cris/cpu.h           | 16 +++++++++++++++
+>   target/hexagon/cpu-qom.h    |  1 -
+>   target/hppa/cpu-qom.h       | 16 ---------------
+>   target/hppa/cpu.h           | 14 +++++++++++++
+>   target/i386/cpu-qom.h       | 39 -------------------------------------
+>   target/i386/cpu.h           | 35 +++++++++++++++++++++++++++++++++
+>   target/loongarch/cpu-qom.h  |  1 -
+>   target/m68k/cpu-qom.h       | 16 ---------------
+>   target/m68k/cpu.h           | 13 +++++++++++++
+>   target/microblaze/cpu-qom.h | 16 ---------------
+>   target/microblaze/cpu.h     | 13 +++++++++++++
+>   target/mips/cpu-qom.h       | 20 -------------------
+>   target/mips/cpu.h           | 17 ++++++++++++++++
+>   target/nios2/cpu-qom.h      |  1 -
+>   target/openrisc/cpu-qom.h   |  1 -
+>   target/riscv/cpu-qom.h      | 16 +--------------
+>   target/riscv/cpu.h          | 14 +++++++++++++
+>   target/rx/cpu-qom.h         | 15 --------------
+>   target/rx/cpu.h             | 14 +++++++++++++
+>   target/s390x/cpu-qom.h      | 37 +----------------------------------
+>   target/s390x/cpu.h          | 30 ++++++++++++++++++++++++++++
+>   target/s390x/cpu_models.h   |  8 ++++----
+>   target/sh4/cpu-qom.h        | 23 ----------------------
+>   target/sh4/cpu.h            | 20 +++++++++++++++++++
+>   target/sparc/cpu-qom.h      | 18 -----------------
+>   target/sparc/cpu.h          | 18 +++++++++++++++--
+>   target/tricore/cpu-qom.h    | 10 ----------
+>   target/tricore/cpu.h        |  6 ++++++
+>   target/xtensa/cpu-qom.h     | 21 --------------------
+>   target/xtensa/cpu.h         | 20 +++++++++++++++++--
+>   37 files changed, 284 insertions(+), 335 deletions(-)
 
-It prints an error message so the user should be able to figure out 
-what's missing:
-         fprintf(stderr, "TUNSETVNETHDRSZ ioctl() failed: %s. Exiting.\n",
-                 strerror(errno));
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+r~
 
