@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC397C8000
-	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 786C27C7FB3
+	for <lists+qemu-devel@lfdr.de>; Fri, 13 Oct 2023 10:12:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrD4e-0001W0-OS; Fri, 13 Oct 2023 03:59:08 -0400
+	id 1qrD4c-0001KC-7L; Fri, 13 Oct 2023 03:59:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD4G-0000oT-JQ
+ id 1qrD4G-0000on-RZ
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:56 -0400
 Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qrD48-0006st-C6
+ id 1qrD4C-0006tL-ES
  for qemu-devel@nongnu.org; Fri, 13 Oct 2023 03:58:44 -0400
 Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-406618d080eso19283275e9.2
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:35 -0700 (PDT)
+ 5b1f17b1804b1-405361bba99so18256575e9.2
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 00:58:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697183915; x=1697788715; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697183916; x=1697788716; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DWjJCyJvjNsFpQShtsIY71lI6GpCk63I5QIoGb8T8cM=;
- b=pmmYXQ+sbhlP3BypTLO9VEIr3RK6Ej5na7SnX2HcJ8UQ/b1s26LV8qg9SymTsb5UKh
- zQ/2XMbGej03EY02xMbCFbS8Sl3Ul5xTyi2T237dx8/Ns/b0lIK3tvbm8VM9XvBRm2bC
- iWUs/TeoA6Q+qsf8Rtwnt68zczJ8iwBj7r0Nc8uiwZYvog8t+DLzWputEju6AG7y9zNE
- mkPcqdSqzROblOrAv3lJ5Z/3np7JfudGmUbhBPvcrrBRMXPZd0aXBY0d2E0ayBcH3XpU
- SyFGWBIpw07hC/J4n60aFfy8IqTQXiNmCsIdX6w2iDt3uiJ3ZRn9VBUn+JkSYbOtndAE
- 1/bg==
+ bh=B9djH7zQVrJvkiBIZCqCucr8y77ZrMOZdmZV3OhtrmE=;
+ b=ENiWW4sMfvFyFtXzYOfv6zcI0aTPgQZ4I+AN/Sdx5zCt0053TXz8tvuQdsyb0YnIHF
+ zVj9teTgiO8U4WlrniOx/l0+akXlGS31c6y1YPY6AXQilG54xCUFZDHrImsJhYc3J7Kw
+ MdBp9T5okXF5T8GookW89+X+hbrxXOJrRSJsGa0HpHMMY2R8POL8GjA6SY/dMqAXegZV
+ cCL0ZL6x2nB2esayrsmX1tlOEwMegFcu9w8YxX+LZzICshtlqWXR2dBpcKgM2XvlHUeI
+ 9KN14vgt+99wbFrZU5vhuq1LjmZoRHO8lkufzR2cF21aOCn8hzkqFmLdXVbKyYMLhVkb
+ yntg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697183915; x=1697788715;
+ d=1e100.net; s=20230601; t=1697183916; x=1697788716;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DWjJCyJvjNsFpQShtsIY71lI6GpCk63I5QIoGb8T8cM=;
- b=Wm46+G8x09kx8zDphTyZwLi68i1O8deA5MHcSkuaPSw22CGwq7x0uQgsNjxFPvGX+4
- aHqOOB0G2MSHWiV7fF7la15pL8oSmFe8PW/IFbwv+kjjFk1ktsu3rPnDN9UbmJ5xVv0j
- ZPtJGK0uX/lUxuFXZ2/p+onmV8Ivekt0EcCoq1DCSPB2R+M9crdad2KjtingGYxVW1ly
- f+JwSrT4Zhp60Axi0Y4F9GfHXlojIc8FQhpS42YOalSMisU/iNTohkvU+SzUuJ1lFXW8
- 5zeoDgx3VvcqB8NlA2aRpmcHwmHP85jOU7VZ6EtJmPgS/jnMdmfo5+0730p79jCHgZtm
- gV4g==
-X-Gm-Message-State: AOJu0YxfSDYKUNUCvlX4EbOfGw8oDQXD0nGhfLm7bXUZ+0NCtCuakIj8
- HI88zOtoz/w3TFt6hK/K5wr1uJDW0B0lEp5IYEI=
-X-Google-Smtp-Source: AGHT+IFSpmoj7nRBci/utdfPEiUl/a22l17mZNrPgQBzIXLlZO5MFnv74TS8Zq/xCpn57edxW4NgJA==
-X-Received: by 2002:a05:600c:220b:b0:406:4242:e7df with SMTP id
- z11-20020a05600c220b00b004064242e7dfmr23836731wml.35.1697183914394; 
- Fri, 13 Oct 2023 00:58:34 -0700 (PDT)
+ bh=B9djH7zQVrJvkiBIZCqCucr8y77ZrMOZdmZV3OhtrmE=;
+ b=PKo8K85iZ4uC8YKo0jWeQ3hAjqwtFBU9fevfM70PEFzqBOMR/ZTaNIG9n4q7hKQvv9
+ rRmtOt4Q2VZCblyIj7w8OmzXYMjJ1eGvO2obcAp50LEQ3V7M9z76KOiJqUMAyIQzP+dC
+ Rt+24fKBtDj2TR+HlV0/1GJ0e22HbDN4F74Pc9QaucCRCCB9NFBzI4OfMf5mb1TkWpHo
+ eYqe6X9btXwfGCSKCwsytdA/hL0fCrfA1zJt3AgkOWxfo5nlLquGwquswU4TUg2rMzn8
+ RoPGPEICvOlA2pD0iPXfuGWZSP33WGXNO0ClLQMeXH+f2Y64M6Md9Twsq+/1BRCQCPJS
+ ZOSw==
+X-Gm-Message-State: AOJu0Yxm2dC2rTkLio6aYDP5R+Dix45CH6IKXmFFRlyTZkB5xEcTJNfE
+ 01JBXTVHWOwx5vmoqVIzdANYlmFWMIe8rTNo03U=
+X-Google-Smtp-Source: AGHT+IFE+gf4oVwQXXiEZF7B43NSeDSC/+CPUMjZkJEXd4asQ4Vi42o6VVd8UPDpTuErZeTH3WNHHQ==
+X-Received: by 2002:a1c:4b12:0:b0:405:4a8c:d4f8 with SMTP id
+ y18-20020a1c4b12000000b004054a8cd4f8mr23391387wma.30.1697183916052; 
+ Fri, 13 Oct 2023 00:58:36 -0700 (PDT)
 Received: from localhost.localdomain (adsl-26.37.6.0.tellas.gr. [37.6.0.26])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.33
+ a10-20020a05600c224a00b003fe23b10fdfsm1798183wmm.36.2023.10.13.00.58.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Oct 2023 00:58:33 -0700 (PDT)
+ Fri, 13 Oct 2023 00:58:35 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [RFC PATCH v2 21/78] target/sparc: add fallthrough pseudo-keyword
-Date: Fri, 13 Oct 2023 10:56:48 +0300
-Message-Id: <3eae7d9bab03b7f50f60bba2fb44614cf32e0f22.1697183699.git.manos.pitsidianakis@linaro.org>
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
+Subject: [RFC PATCH v2 22/78] target/ppc: add fallthrough pseudo-keyword
+Date: Fri, 13 Oct 2023 10:56:49 +0300
+Message-Id: <7572c79bc63f4abc34ca319306dab2c40eadac98.1697183699.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
@@ -98,1112 +100,1041 @@ fall-through comments with the fallthrough attribute pseudo-keyword.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- target/sparc/ldst_helper.c | 4 ++--
- target/sparc/mmu_helper.c  | 6 +++---
- target/sparc/translate.c   | 3 ++-
- target/sparc/win_helper.c  | 1 +
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ target/ppc/cpu_init.c    |  8 ++++----
+ target/ppc/excp_helper.c |  6 +++---
+ target/ppc/mmu-radix64.c |  6 +++---
+ target/ppc/mmu_common.c  | 12 ++++++------
+ target/ppc/translate.c   |  6 +++---
+ 5 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 78b03308ae..b233e40da5 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -1296,294 +1296,294 @@ void helper_st_asi(CPUSPARCState *env, target_ulong addr, target_ulong val,
- uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
-                        int asi, uint32_t memop)
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 40fe14a6c2..7a7bd4d824 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -840,84 +840,84 @@ static inline uint32_t register_tlbncfg(uint32_t assoc, uint32_t minsize,
+ /* BookE 2.06 storage control registers */
+ static void register_BookE206_sprs(CPUPPCState *env, uint32_t mas_mask,
+                              uint32_t *tlbncfg, uint32_t mmucfg)
  {
-     int size = 1 << (memop & MO_SIZE);
-     int sign = memop & MO_SIGN;
-     CPUState *cs = env_cpu(env);
-     uint64_t ret = 0;
- #if defined(DEBUG_ASI)
-     target_ulong last_addr = addr;
- #endif
- 
-     asi &= 0xff;
- 
-     do_check_asi(env, asi, GETPC());
-     do_check_align(env, addr, size - 1, GETPC());
-     addr = asi_address_mask(env, asi, addr);
- 
-     switch (asi) {
-     case ASI_PNF:
-     case ASI_PNFL:
-     case ASI_SNF:
-     case ASI_SNFL:
-         {
-             MemOpIdx oi;
-             int idx = (env->pstate & PS_PRIV
-                        ? (asi & 1 ? MMU_KERNEL_SECONDARY_IDX : MMU_KERNEL_IDX)
-                        : (asi & 1 ? MMU_USER_SECONDARY_IDX : MMU_USER_IDX));
- 
-             if (cpu_get_phys_page_nofault(env, addr, idx) == -1ULL) {
- #ifdef DEBUG_ASI
-                 dump_asi("read ", last_addr, asi, size, ret);
- #endif
-                 /* exception_index is set in get_physical_address_data. */
-                 cpu_raise_exception_ra(env, cs->exception_index, GETPC());
-             }
-             oi = make_memop_idx(memop, idx);
-             switch (size) {
-             case 1:
-                 ret = cpu_ldb_mmu(env, addr, oi, GETPC());
-                 break;
-             case 2:
-                 ret = cpu_ldw_mmu(env, addr, oi, GETPC());
-                 break;
-             case 4:
-                 ret = cpu_ldl_mmu(env, addr, oi, GETPC());
-                 break;
-             case 8:
-                 ret = cpu_ldq_mmu(env, addr, oi, GETPC());
-                 break;
-             default:
-                 g_assert_not_reached();
-             }
-         }
-         break;
- 
-     case ASI_AIUP:  /* As if user primary */
-     case ASI_AIUS:  /* As if user secondary */
-     case ASI_AIUPL: /* As if user primary LE */
-     case ASI_AIUSL: /* As if user secondary LE */
-     case ASI_P:  /* Primary */
-     case ASI_S:  /* Secondary */
-     case ASI_PL: /* Primary LE */
-     case ASI_SL: /* Secondary LE */
-     case ASI_REAL:      /* Bypass */
-     case ASI_REAL_IO:   /* Bypass, non-cacheable */
-     case ASI_REAL_L:    /* Bypass LE */
-     case ASI_REAL_IO_L: /* Bypass, non-cacheable LE */
-     case ASI_N:  /* Nucleus */
-     case ASI_NL: /* Nucleus Little Endian (LE) */
-     case ASI_NUCLEUS_QUAD_LDD:   /* Nucleus quad LDD 128 bit atomic */
-     case ASI_NUCLEUS_QUAD_LDD_L: /* Nucleus quad LDD 128 bit atomic LE */
-     case ASI_TWINX_AIUP:   /* As if user primary, twinx */
-     case ASI_TWINX_AIUS:   /* As if user secondary, twinx */
-     case ASI_TWINX_REAL:   /* Real address, twinx */
-     case ASI_TWINX_AIUP_L: /* As if user primary, twinx, LE */
-     case ASI_TWINX_AIUS_L: /* As if user secondary, twinx, LE */
-     case ASI_TWINX_REAL_L: /* Real address, twinx, LE */
-     case ASI_TWINX_N:  /* Nucleus, twinx */
-     case ASI_TWINX_NL: /* Nucleus, twinx, LE */
-     /* ??? From the UA2011 document; overlaps BLK_INIT_QUAD_LDD_* */
-     case ASI_TWINX_P:  /* Primary, twinx */
-     case ASI_TWINX_PL: /* Primary, twinx, LE */
-     case ASI_TWINX_S:  /* Secondary, twinx */
-     case ASI_TWINX_SL: /* Secondary, twinx, LE */
-         /* These are always handled inline.  */
-         g_assert_not_reached();
- 
-     case ASI_UPA_CONFIG: /* UPA config */
-         /* XXX */
-         break;
-     case ASI_LSU_CONTROL: /* LSU */
-         ret = env->lsu;
-         break;
-     case ASI_IMMU: /* I-MMU regs */
-         {
-             int reg = (addr >> 3) & 0xf;
-             switch (reg) {
-             case 0:
-                 /* 0x00 I-TSB Tag Target register */
-                 ret = ultrasparc_tag_target(env->immu.tag_access);
-                 break;
-             case 3: /* SFSR */
-                 ret = env->immu.sfsr;
-                 break;
-             case 5: /* TSB access */
-                 ret = env->immu.tsb;
-                 break;
-             case 6:
-                 /* 0x30 I-TSB Tag Access register */
-                 ret = env->immu.tag_access;
-                 break;
-             default:
-                 sparc_raise_mmu_fault(cs, addr, false, false, 1, size, GETPC());
-                 ret = 0;
-             }
-             break;
-         }
-     case ASI_IMMU_TSB_8KB_PTR: /* I-MMU 8k TSB pointer */
-         {
-             /* env->immuregs[5] holds I-MMU TSB register value
-                env->immuregs[6] holds I-MMU Tag Access register value */
-             ret = ultrasparc_tsb_pointer(env, &env->immu, 0);
-             break;
-         }
-     case ASI_IMMU_TSB_64KB_PTR: /* I-MMU 64k TSB pointer */
-         {
-             /* env->immuregs[5] holds I-MMU TSB register value
-                env->immuregs[6] holds I-MMU Tag Access register value */
-             ret = ultrasparc_tsb_pointer(env, &env->immu, 1);
-             break;
-         }
-     case ASI_ITLB_DATA_ACCESS: /* I-MMU data access */
-         {
-             int reg = (addr >> 3) & 0x3f;
- 
-             ret = env->itlb[reg].tte;
-             break;
-         }
-     case ASI_ITLB_TAG_READ: /* I-MMU tag read */
-         {
-             int reg = (addr >> 3) & 0x3f;
- 
-             ret = env->itlb[reg].tag;
-             break;
-         }
-     case ASI_DMMU: /* D-MMU regs */
-         {
-             int reg = (addr >> 3) & 0xf;
-             switch (reg) {
-             case 0:
-                 /* 0x00 D-TSB Tag Target register */
-                 ret = ultrasparc_tag_target(env->dmmu.tag_access);
-                 break;
-             case 1: /* 0x08 Primary Context */
-                 ret = env->dmmu.mmu_primary_context;
-                 break;
-             case 2: /* 0x10 Secondary Context */
-                 ret = env->dmmu.mmu_secondary_context;
-                 break;
-             case 3: /* SFSR */
-                 ret = env->dmmu.sfsr;
-                 break;
-             case 4: /* 0x20 SFAR */
-                 ret = env->dmmu.sfar;
-                 break;
-             case 5: /* 0x28 TSB access */
-                 ret = env->dmmu.tsb;
-                 break;
-             case 6: /* 0x30 D-TSB Tag Access register */
-                 ret = env->dmmu.tag_access;
-                 break;
-             case 7:
-                 ret = env->dmmu.virtual_watchpoint;
-                 break;
-             case 8:
-                 ret = env->dmmu.physical_watchpoint;
-                 break;
-             default:
-                 sparc_raise_mmu_fault(cs, addr, false, false, 1, size, GETPC());
-                 ret = 0;
-             }
-             break;
-         }
-     case ASI_DMMU_TSB_8KB_PTR: /* D-MMU 8k TSB pointer */
-         {
-             /* env->dmmuregs[5] holds D-MMU TSB register value
-                env->dmmuregs[6] holds D-MMU Tag Access register value */
-             ret = ultrasparc_tsb_pointer(env, &env->dmmu, 0);
-             break;
-         }
-     case ASI_DMMU_TSB_64KB_PTR: /* D-MMU 64k TSB pointer */
-         {
-             /* env->dmmuregs[5] holds D-MMU TSB register value
-                env->dmmuregs[6] holds D-MMU Tag Access register value */
-             ret = ultrasparc_tsb_pointer(env, &env->dmmu, 1);
-             break;
-         }
-     case ASI_DTLB_DATA_ACCESS: /* D-MMU data access */
-         {
-             int reg = (addr >> 3) & 0x3f;
- 
-             ret = env->dtlb[reg].tte;
-             break;
-         }
-     case ASI_DTLB_TAG_READ: /* D-MMU tag read */
-         {
-             int reg = (addr >> 3) & 0x3f;
- 
-             ret = env->dtlb[reg].tag;
-             break;
-         }
-     case ASI_INTR_DISPATCH_STAT: /* Interrupt dispatch, RO */
-         break;
-     case ASI_INTR_RECEIVE: /* Interrupt data receive */
-         ret = env->ivec_status;
-         break;
-     case ASI_INTR_R: /* Incoming interrupt vector, RO */
-         {
-             int reg = (addr >> 4) & 0x3;
-             if (reg < 3) {
-                 ret = env->ivec_data[reg];
-             }
-             break;
-         }
-     case ASI_SCRATCHPAD: /* UA2005 privileged scratchpad */
-         if (unlikely((addr >= 0x20) && (addr < 0x30))) {
-             /* Hyperprivileged access only */
-             sparc_raise_mmu_fault(cs, addr, false, false, 1, size, GETPC());
-         }
--        /* fall through */
-+        fallthrough;
-     case ASI_HYP_SCRATCHPAD: /* UA2005 hyperprivileged scratchpad */
-         {
-             unsigned int i = (addr >> 3) & 0x7;
-             ret = env->scratch[i];
-             break;
-         }
-     case ASI_MMU: /* UA2005 Context ID registers */
-         switch ((addr >> 3) & 0x3) {
-         case 1:
-             ret = env->dmmu.mmu_primary_context;
-             break;
-         case 2:
-             ret = env->dmmu.mmu_secondary_context;
-             break;
-         default:
-           sparc_raise_mmu_fault(cs, addr, true, false, 1, size, GETPC());
-         }
-         break;
-     case ASI_DCACHE_DATA:     /* D-cache data */
-     case ASI_DCACHE_TAG:      /* D-cache tag access */
-     case ASI_ESTATE_ERROR_EN: /* E-cache error enable */
-     case ASI_AFSR:            /* E-cache asynchronous fault status */
-     case ASI_AFAR:            /* E-cache asynchronous fault address */
-     case ASI_EC_TAG_DATA:     /* E-cache tag data */
-     case ASI_IC_INSTR:        /* I-cache instruction access */
-     case ASI_IC_TAG:          /* I-cache tag access */
-     case ASI_IC_PRE_DECODE:   /* I-cache predecode */
-     case ASI_IC_NEXT_FIELD:   /* I-cache LRU etc. */
-     case ASI_EC_W:            /* E-cache tag */
-     case ASI_EC_R:            /* E-cache tag */
-         break;
-     case ASI_DMMU_TSB_DIRECT_PTR: /* D-MMU data pointer */
-     case ASI_ITLB_DATA_IN:        /* I-MMU data in, WO */
-     case ASI_IMMU_DEMAP:          /* I-MMU demap, WO */
-     case ASI_DTLB_DATA_IN:        /* D-MMU data in, WO */
-     case ASI_DMMU_DEMAP:          /* D-MMU demap, WO */
-     case ASI_INTR_W:              /* Interrupt vector, WO */
-     default:
-         sparc_raise_mmu_fault(cs, addr, false, false, 1, size, GETPC());
-         ret = 0;
-         break;
-     }
- 
-     /* Convert to signed number */
-     if (sign) {
-         switch (size) {
-         case 1:
-             ret = (int8_t) ret;
-             break;
-         case 2:
-             ret = (int16_t) ret;
-             break;
-         case 4:
-             ret = (int32_t) ret;
-             break;
-         default:
-             break;
-         }
-     }
- #ifdef DEBUG_ASI
-     dump_asi("read ", last_addr, asi, size, ret);
- #endif
-     return ret;
- }
-@@ -1591,341 +1591,341 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
- void helper_st_asi(CPUSPARCState *env, target_ulong addr, target_ulong val,
-                    int asi, uint32_t memop)
- {
-     int size = 1 << (memop & MO_SIZE);
-     CPUState *cs = env_cpu(env);
- 
- #ifdef DEBUG_ASI
-     dump_asi("write", addr, asi, size, val);
- #endif
- 
-     asi &= 0xff;
- 
-     do_check_asi(env, asi, GETPC());
-     do_check_align(env, addr, size - 1, GETPC());
-     addr = asi_address_mask(env, asi, addr);
- 
-     switch (asi) {
-     case ASI_AIUP:  /* As if user primary */
-     case ASI_AIUS:  /* As if user secondary */
-     case ASI_AIUPL: /* As if user primary LE */
-     case ASI_AIUSL: /* As if user secondary LE */
-     case ASI_P:  /* Primary */
-     case ASI_S:  /* Secondary */
-     case ASI_PL: /* Primary LE */
-     case ASI_SL: /* Secondary LE */
-     case ASI_REAL:      /* Bypass */
-     case ASI_REAL_IO:   /* Bypass, non-cacheable */
-     case ASI_REAL_L:    /* Bypass LE */
-     case ASI_REAL_IO_L: /* Bypass, non-cacheable LE */
-     case ASI_N:  /* Nucleus */
-     case ASI_NL: /* Nucleus Little Endian (LE) */
-     case ASI_NUCLEUS_QUAD_LDD:   /* Nucleus quad LDD 128 bit atomic */
-     case ASI_NUCLEUS_QUAD_LDD_L: /* Nucleus quad LDD 128 bit atomic LE */
-     case ASI_TWINX_AIUP:   /* As if user primary, twinx */
-     case ASI_TWINX_AIUS:   /* As if user secondary, twinx */
-     case ASI_TWINX_REAL:   /* Real address, twinx */
-     case ASI_TWINX_AIUP_L: /* As if user primary, twinx, LE */
-     case ASI_TWINX_AIUS_L: /* As if user secondary, twinx, LE */
-     case ASI_TWINX_REAL_L: /* Real address, twinx, LE */
-     case ASI_TWINX_N:  /* Nucleus, twinx */
-     case ASI_TWINX_NL: /* Nucleus, twinx, LE */
-     /* ??? From the UA2011 document; overlaps BLK_INIT_QUAD_LDD_* */
-     case ASI_TWINX_P:  /* Primary, twinx */
-     case ASI_TWINX_PL: /* Primary, twinx, LE */
-     case ASI_TWINX_S:  /* Secondary, twinx */
-     case ASI_TWINX_SL: /* Secondary, twinx, LE */
-         /* These are always handled inline.  */
-         g_assert_not_reached();
-     /* these ASIs have different functions on UltraSPARC-IIIi
-      * and UA2005 CPUs. Use the explicit numbers to avoid confusion
-      */
-     case 0x31:
-     case 0x32:
-     case 0x39:
-     case 0x3a:
-         if (cpu_has_hypervisor(env)) {
-             /* UA2005
-              * ASI_DMMU_CTX_ZERO_TSB_BASE_PS0
-              * ASI_DMMU_CTX_ZERO_TSB_BASE_PS1
-              * ASI_DMMU_CTX_NONZERO_TSB_BASE_PS0
-              * ASI_DMMU_CTX_NONZERO_TSB_BASE_PS1
-              */
-             int idx = ((asi & 2) >> 1) | ((asi & 8) >> 2);
-             env->dmmu.sun4v_tsb_pointers[idx] = val;
-         } else {
-             helper_raise_exception(env, TT_ILL_INSN);
-         }
-         break;
-     case 0x33:
-     case 0x3b:
-         if (cpu_has_hypervisor(env)) {
-             /* UA2005
-              * ASI_DMMU_CTX_ZERO_CONFIG
-              * ASI_DMMU_CTX_NONZERO_CONFIG
-              */
-             env->dmmu.sun4v_ctx_config[(asi & 8) >> 3] = val;
-         } else {
-             helper_raise_exception(env, TT_ILL_INSN);
-         }
-         break;
-     case 0x35:
-     case 0x36:
-     case 0x3d:
-     case 0x3e:
-         if (cpu_has_hypervisor(env)) {
-             /* UA2005
-              * ASI_IMMU_CTX_ZERO_TSB_BASE_PS0
-              * ASI_IMMU_CTX_ZERO_TSB_BASE_PS1
-              * ASI_IMMU_CTX_NONZERO_TSB_BASE_PS0
-              * ASI_IMMU_CTX_NONZERO_TSB_BASE_PS1
-              */
-             int idx = ((asi & 2) >> 1) | ((asi & 8) >> 2);
-             env->immu.sun4v_tsb_pointers[idx] = val;
-         } else {
-             helper_raise_exception(env, TT_ILL_INSN);
-         }
-       break;
-     case 0x37:
-     case 0x3f:
-         if (cpu_has_hypervisor(env)) {
-             /* UA2005
-              * ASI_IMMU_CTX_ZERO_CONFIG
-              * ASI_IMMU_CTX_NONZERO_CONFIG
-              */
-             env->immu.sun4v_ctx_config[(asi & 8) >> 3] = val;
-         } else {
-           helper_raise_exception(env, TT_ILL_INSN);
-         }
-         break;
-     case ASI_UPA_CONFIG: /* UPA config */
-         /* XXX */
-         return;
-     case ASI_LSU_CONTROL: /* LSU */
-         env->lsu = val & (DMMU_E | IMMU_E);
-         return;
-     case ASI_IMMU: /* I-MMU regs */
-         {
-             int reg = (addr >> 3) & 0xf;
-             uint64_t oldreg;
- 
-             oldreg = env->immu.mmuregs[reg];
-             switch (reg) {
-             case 0: /* RO */
-                 return;
-             case 1: /* Not in I-MMU */
-             case 2:
-                 return;
-             case 3: /* SFSR */
-                 if ((val & 1) == 0) {
-                     val = 0; /* Clear SFSR */
-                 }
-                 env->immu.sfsr = val;
-                 break;
-             case 4: /* RO */
-                 return;
-             case 5: /* TSB access */
-                 DPRINTF_MMU("immu TSB write: 0x%016" PRIx64 " -> 0x%016"
-                             PRIx64 "\n", env->immu.tsb, val);
-                 env->immu.tsb = val;
-                 break;
-             case 6: /* Tag access */
-                 env->immu.tag_access = val;
-                 break;
-             case 7:
-             case 8:
-                 return;
-             default:
-                 sparc_raise_mmu_fault(cs, addr, true, false, 1, size, GETPC());
-                 break;
-             }
- 
-             if (oldreg != env->immu.mmuregs[reg]) {
-                 DPRINTF_MMU("immu change reg[%d]: 0x%016" PRIx64 " -> 0x%016"
-                             PRIx64 "\n", reg, oldreg, env->immuregs[reg]);
-             }
- #ifdef DEBUG_MMU
-             dump_mmu(env);
- #endif
-             return;
-         }
-     case ASI_ITLB_DATA_IN: /* I-MMU data in */
-         /* ignore real translation entries */
-         if (!(addr & TLB_UST1_IS_REAL_BIT)) {
-             replace_tlb_1bit_lru(env->itlb, env->immu.tag_access,
-                                  val, "immu", env, addr);
-         }
-         return;
-     case ASI_ITLB_DATA_ACCESS: /* I-MMU data access */
-         {
-             /* TODO: auto demap */
- 
-             unsigned int i = (addr >> 3) & 0x3f;
- 
-             /* ignore real translation entries */
-             if (!(addr & TLB_UST1_IS_REAL_BIT)) {
-                 replace_tlb_entry(&env->itlb[i], env->immu.tag_access,
-                                   sun4v_tte_to_sun4u(env, addr, val), env);
-             }
- #ifdef DEBUG_MMU
-             DPRINTF_MMU("immu data access replaced entry [%i]\n", i);
-             dump_mmu(env);
- #endif
-             return;
-         }
-     case ASI_IMMU_DEMAP: /* I-MMU demap */
-         demap_tlb(env->itlb, addr, "immu", env);
-         return;
-     case ASI_DMMU: /* D-MMU regs */
-         {
-             int reg = (addr >> 3) & 0xf;
-             uint64_t oldreg;
- 
-             oldreg = env->dmmu.mmuregs[reg];
-             switch (reg) {
-             case 0: /* RO */
-             case 4:
-                 return;
-             case 3: /* SFSR */
-                 if ((val & 1) == 0) {
-                     val = 0; /* Clear SFSR, Fault address */
-                     env->dmmu.sfar = 0;
-                 }
-                 env->dmmu.sfsr = val;
-                 break;
-             case 1: /* Primary context */
-                 env->dmmu.mmu_primary_context = val;
-                 /* can be optimized to only flush MMU_USER_IDX
-                    and MMU_KERNEL_IDX entries */
-                 tlb_flush(cs);
-                 break;
-             case 2: /* Secondary context */
-                 env->dmmu.mmu_secondary_context = val;
-                 /* can be optimized to only flush MMU_USER_SECONDARY_IDX
-                    and MMU_KERNEL_SECONDARY_IDX entries */
-                 tlb_flush(cs);
-                 break;
-             case 5: /* TSB access */
-                 DPRINTF_MMU("dmmu TSB write: 0x%016" PRIx64 " -> 0x%016"
-                             PRIx64 "\n", env->dmmu.tsb, val);
-                 env->dmmu.tsb = val;
-                 break;
-             case 6: /* Tag access */
-                 env->dmmu.tag_access = val;
-                 break;
-             case 7: /* Virtual Watchpoint */
-                 env->dmmu.virtual_watchpoint = val;
-                 break;
-             case 8: /* Physical Watchpoint */
-                 env->dmmu.physical_watchpoint = val;
-                 break;
-             default:
-                 sparc_raise_mmu_fault(cs, addr, true, false, 1, size, GETPC());
-                 break;
-             }
- 
-             if (oldreg != env->dmmu.mmuregs[reg]) {
-                 DPRINTF_MMU("dmmu change reg[%d]: 0x%016" PRIx64 " -> 0x%016"
-                             PRIx64 "\n", reg, oldreg, env->dmmuregs[reg]);
-             }
- #ifdef DEBUG_MMU
-             dump_mmu(env);
- #endif
-             return;
-         }
-     case ASI_DTLB_DATA_IN: /* D-MMU data in */
-       /* ignore real translation entries */
-       if (!(addr & TLB_UST1_IS_REAL_BIT)) {
-           replace_tlb_1bit_lru(env->dtlb, env->dmmu.tag_access,
-                                val, "dmmu", env, addr);
-       }
-       return;
-     case ASI_DTLB_DATA_ACCESS: /* D-MMU data access */
-         {
-             unsigned int i = (addr >> 3) & 0x3f;
- 
-             /* ignore real translation entries */
-             if (!(addr & TLB_UST1_IS_REAL_BIT)) {
-                 replace_tlb_entry(&env->dtlb[i], env->dmmu.tag_access,
-                                   sun4v_tte_to_sun4u(env, addr, val), env);
-             }
- #ifdef DEBUG_MMU
-             DPRINTF_MMU("dmmu data access replaced entry [%i]\n", i);
-             dump_mmu(env);
- #endif
-             return;
-         }
-     case ASI_DMMU_DEMAP: /* D-MMU demap */
-         demap_tlb(env->dtlb, addr, "dmmu", env);
-         return;
-     case ASI_INTR_RECEIVE: /* Interrupt data receive */
-         env->ivec_status = val & 0x20;
-         return;
-     case ASI_SCRATCHPAD: /* UA2005 privileged scratchpad */
-         if (unlikely((addr >= 0x20) && (addr < 0x30))) {
-             /* Hyperprivileged access only */
-             sparc_raise_mmu_fault(cs, addr, true, false, 1, size, GETPC());
-         }
--        /* fall through */
-+        fallthrough;
-     case ASI_HYP_SCRATCHPAD: /* UA2005 hyperprivileged scratchpad */
-         {
-             unsigned int i = (addr >> 3) & 0x7;
-             env->scratch[i] = val;
-             return;
-         }
-     case ASI_MMU: /* UA2005 Context ID registers */
-         {
-           switch ((addr >> 3) & 0x3) {
-           case 1:
-               env->dmmu.mmu_primary_context = val;
-               env->immu.mmu_primary_context = val;
-               tlb_flush_by_mmuidx(cs,
-                                   (1 << MMU_USER_IDX) | (1 << MMU_KERNEL_IDX));
-               break;
-           case 2:
-               env->dmmu.mmu_secondary_context = val;
-               env->immu.mmu_secondary_context = val;
-               tlb_flush_by_mmuidx(cs,
-                                   (1 << MMU_USER_SECONDARY_IDX) |
-                                   (1 << MMU_KERNEL_SECONDARY_IDX));
-               break;
-           default:
-               sparc_raise_mmu_fault(cs, addr, true, false, 1, size, GETPC());
-           }
-         }
-         return;
-     case ASI_QUEUE: /* UA2005 CPU mondo queue */
-     case ASI_DCACHE_DATA: /* D-cache data */
-     case ASI_DCACHE_TAG: /* D-cache tag access */
-     case ASI_ESTATE_ERROR_EN: /* E-cache error enable */
-     case ASI_AFSR: /* E-cache asynchronous fault status */
-     case ASI_AFAR: /* E-cache asynchronous fault address */
-     case ASI_EC_TAG_DATA: /* E-cache tag data */
-     case ASI_IC_INSTR: /* I-cache instruction access */
-     case ASI_IC_TAG: /* I-cache tag access */
-     case ASI_IC_PRE_DECODE: /* I-cache predecode */
-     case ASI_IC_NEXT_FIELD: /* I-cache LRU etc. */
-     case ASI_EC_W: /* E-cache tag */
-     case ASI_EC_R: /* E-cache tag */
-         return;
-     case ASI_IMMU_TSB_8KB_PTR: /* I-MMU 8k TSB pointer, RO */
-     case ASI_IMMU_TSB_64KB_PTR: /* I-MMU 64k TSB pointer, RO */
-     case ASI_ITLB_TAG_READ: /* I-MMU tag read, RO */
-     case ASI_DMMU_TSB_8KB_PTR: /* D-MMU 8k TSB pointer, RO */
-     case ASI_DMMU_TSB_64KB_PTR: /* D-MMU 64k TSB pointer, RO */
-     case ASI_DMMU_TSB_DIRECT_PTR: /* D-MMU data pointer, RO */
-     case ASI_DTLB_TAG_READ: /* D-MMU tag read, RO */
-     case ASI_INTR_DISPATCH_STAT: /* Interrupt dispatch, RO */
-     case ASI_INTR_R: /* Incoming interrupt vector, RO */
-     case ASI_PNF: /* Primary no-fault, RO */
-     case ASI_SNF: /* Secondary no-fault, RO */
-     case ASI_PNFL: /* Primary no-fault LE, RO */
-     case ASI_SNFL: /* Secondary no-fault LE, RO */
-     default:
-         sparc_raise_mmu_fault(cs, addr, true, false, 1, size, GETPC());
-         return;
-     }
- }
- #endif /* CONFIG_USER_ONLY */
- #endif /* TARGET_SPARC64 */
- 
  #if !defined(CONFIG_USER_ONLY)
-diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
-index 453498c670..13f0430c5d 100644
---- a/target/sparc/mmu_helper.c
-+++ b/target/sparc/mmu_helper.c
-@@ -545,99 +545,99 @@ static uint64_t build_sfsr(CPUSPARCState *env, int mmu_idx, int rw)
- static int get_physical_address_data(CPUSPARCState *env, CPUTLBEntryFull *full,
-                                      target_ulong address, int rw, int mmu_idx)
- {
-     CPUState *cs = env_cpu(env);
-     unsigned int i;
-     uint64_t sfsr;
-     uint64_t context;
-     bool is_user = false;
+     const char *mas_names[8] = {
+         "MAS0", "MAS1", "MAS2", "MAS3", "MAS4", "MAS5", "MAS6", "MAS7",
+     };
+     int mas_sprn[8] = {
+         SPR_BOOKE_MAS0, SPR_BOOKE_MAS1, SPR_BOOKE_MAS2, SPR_BOOKE_MAS3,
+         SPR_BOOKE_MAS4, SPR_BOOKE_MAS5, SPR_BOOKE_MAS6, SPR_BOOKE_MAS7,
+     };
+     int i;
  
-     sfsr = build_sfsr(env, mmu_idx, rw);
- 
-     switch (mmu_idx) {
-     case MMU_PHYS_IDX:
-         g_assert_not_reached();
-     case MMU_USER_IDX:
-         is_user = true;
--        /* fallthru */
-+        fallthrough;
-     case MMU_KERNEL_IDX:
-         context = env->dmmu.mmu_primary_context & 0x1fff;
-         break;
-     case MMU_USER_SECONDARY_IDX:
-         is_user = true;
--        /* fallthru */
-+        fallthrough;
-     case MMU_KERNEL_SECONDARY_IDX:
-         context = env->dmmu.mmu_secondary_context & 0x1fff;
-         break;
-     default:
-         context = 0;
-         break;
-     }
- 
-     for (i = 0; i < 64; i++) {
-         /* ctx match, vaddr match, valid? */
-         if (ultrasparc_tag_match(&env->dtlb[i], address, context,
-                                  &full->phys_addr)) {
-             int do_fault = 0;
- 
-             if (TTE_IS_IE(env->dtlb[i].tte)) {
-                 full->attrs.byte_swap = true;
-             }
- 
-             /* access ok? */
-             /* multiple bits in SFSR.FT may be set on TT_DFAULT */
-             if (TTE_IS_PRIV(env->dtlb[i].tte) && is_user) {
-                 do_fault = 1;
-                 sfsr |= SFSR_FT_PRIV_BIT; /* privilege violation */
-                 trace_mmu_helper_dfault(address, context, mmu_idx, env->tl);
-             }
-             if (rw == 4) {
-                 if (TTE_IS_SIDEEFFECT(env->dtlb[i].tte)) {
-                     do_fault = 1;
-                     sfsr |= SFSR_FT_NF_E_BIT;
-                 }
-             } else {
-                 if (TTE_IS_NFO(env->dtlb[i].tte)) {
-                     do_fault = 1;
-                     sfsr |= SFSR_FT_NFO_BIT;
-                 }
-             }
- 
-             if (do_fault) {
-                 /* faults above are reported with TT_DFAULT. */
-                 cs->exception_index = TT_DFAULT;
-             } else if (!TTE_IS_W_OK(env->dtlb[i].tte) && (rw == 1)) {
-                 do_fault = 1;
-                 cs->exception_index = TT_DPROT;
- 
-                 trace_mmu_helper_dprot(address, context, mmu_idx, env->tl);
-             }
- 
-             if (!do_fault) {
-                 full->prot = PAGE_READ;
-                 if (TTE_IS_W_OK(env->dtlb[i].tte)) {
-                     full->prot |= PAGE_WRITE;
-                 }
- 
-                 TTE_SET_USED(env->dtlb[i].tte);
- 
-                 return 0;
-             }
- 
-             env->dmmu.sfsr = sfsr;
-             env->dmmu.sfar = address; /* Fault address register */
-             env->dmmu.tag_access = (address & ~0x1fffULL) | context;
-             return 1;
+     /* TLB assist registers */
+     for (i = 0; i < 8; i++) {
+         if (mas_mask & (1 << i)) {
+             spr_register(env, mas_sprn[i], mas_names[i],
+                          SPR_NOACCESS, SPR_NOACCESS,
+                          &spr_read_generic,
+                          (i == 2 && (env->insns_flags & PPC_64B))
+                          ? &spr_write_generic : &spr_write_generic32,
+                          0x00000000);
          }
      }
+     if (env->nb_pids > 1) {
+         spr_register(env, SPR_BOOKE_PID1, "PID1",
+                      SPR_NOACCESS, SPR_NOACCESS,
+                      &spr_read_generic, &spr_write_booke_pid,
+                      0x00000000);
+     }
+     if (env->nb_pids > 2) {
+         spr_register(env, SPR_BOOKE_PID2, "PID2",
+                      SPR_NOACCESS, SPR_NOACCESS,
+                      &spr_read_generic, &spr_write_booke_pid,
+                      0x00000000);
+     }
  
-     trace_mmu_helper_dmiss(address, context);
+     spr_register(env, SPR_BOOKE_EPLC, "EPLC",
+                  SPR_NOACCESS, SPR_NOACCESS,
+                  &spr_read_generic, &spr_write_eplc,
+                  0x00000000);
+     spr_register(env, SPR_BOOKE_EPSC, "EPSC",
+                  SPR_NOACCESS, SPR_NOACCESS,
+                  &spr_read_generic, &spr_write_epsc,
+                  0x00000000);
+ 
+     spr_register(env, SPR_MMUCFG, "MMUCFG",
+                  SPR_NOACCESS, SPR_NOACCESS,
+                  &spr_read_generic, SPR_NOACCESS,
+                  mmucfg);
+     switch (env->nb_ways) {
+     case 4:
+         spr_register(env, SPR_BOOKE_TLB3CFG, "TLB3CFG",
+                      SPR_NOACCESS, SPR_NOACCESS,
+                      &spr_read_generic, SPR_NOACCESS,
+                      tlbncfg[3]);
+-        /* Fallthru */
++        fallthrough;
+     case 3:
+         spr_register(env, SPR_BOOKE_TLB2CFG, "TLB2CFG",
+                      SPR_NOACCESS, SPR_NOACCESS,
+                      &spr_read_generic, SPR_NOACCESS,
+                      tlbncfg[2]);
+-        /* Fallthru */
++        fallthrough;
+     case 2:
+         spr_register(env, SPR_BOOKE_TLB1CFG, "TLB1CFG",
+                      SPR_NOACCESS, SPR_NOACCESS,
+                      &spr_read_generic, SPR_NOACCESS,
+                      tlbncfg[1]);
+-        /* Fallthru */
++        fallthrough;
+     case 1:
+         spr_register(env, SPR_BOOKE_TLB0CFG, "TLB0CFG",
+                      SPR_NOACCESS, SPR_NOACCESS,
+                      &spr_read_generic, SPR_NOACCESS,
+                      tlbncfg[0]);
+-        /* Fallthru */
++        fallthrough;
+     case 0:
+     default:
+         break;
+     }
+ #endif
+ }
+ 
+ /* SPR specific to PowerPC 440 implementation */
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 7926114d5c..b8be34051c 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -1311,51 +1311,51 @@ static bool is_prefix_insn(CPUPPCState *env, uint32_t insn)
+ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+ {
+     CPUPPCState *env = &cpu->env;
+ 
+     if (!tcg_enabled()) {
+         /*
+          * This does not load instructions and set the prefix bit correctly
+          * for injected interrupts with KVM. That may have to be discovered
+          * and set by the KVM layer before injecting.
+          */
+         return false;
+     }
+ 
+     switch (excp) {
+     case POWERPC_EXCP_HDSI:
+         /* HDSI PRTABLE_FAULT has the originating access type in error_code */
+         if ((env->spr[SPR_HDSISR] & DSISR_PRTABLE_FAULT) &&
+             (env->error_code == MMU_INST_FETCH)) {
+             /*
+              * Fetch failed due to partition scope translation, so prefix
+              * indication is not relevant (and attempting to load the
+              * instruction at NIP would cause recursive faults with the same
+              * translation).
+              */
+             break;
+         }
+-        /* fall through */
++        fallthrough;
+     case POWERPC_EXCP_MCHECK:
+     case POWERPC_EXCP_DSI:
+     case POWERPC_EXCP_DSEG:
+     case POWERPC_EXCP_ALIGN:
+     case POWERPC_EXCP_PROGRAM:
+     case POWERPC_EXCP_FPU:
+     case POWERPC_EXCP_TRACE:
+     case POWERPC_EXCP_HV_EMU:
+     case POWERPC_EXCP_VPU:
+     case POWERPC_EXCP_VSXU:
+     case POWERPC_EXCP_FU:
+     case POWERPC_EXCP_HV_FU: {
+         uint32_t insn = ppc_ldl_code(env, env->nip);
+         if (is_prefix_insn(env, insn)) {
+             return true;
+         }
+         break;
+     }
+     default:
+         break;
+     }
+     return false;
+ }
+ #else
+@@ -1368,324 +1368,324 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+ {
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+     target_ulong msr, new_msr, vector;
+     int srr0, srr1, lev = -1;
+ 
+     /* new srr1 value excluding must-be-zero bits */
+     msr = env->msr & ~0x783f0000ULL;
  
      /*
-      * On MMU misses:
-      * - UltraSPARC IIi: SFSR and SFAR unmodified
-      * - JPS1: SFAR updated and some fields of SFSR updated
+      * new interrupt handler msr preserves existing HV and ME unless
+      * explicitly overridden
       */
-     env->dmmu.tag_access = (address & ~0x1fffULL) | context;
-     cs->exception_index = TT_DMISS;
-     return 1;
- }
-@@ -645,75 +645,75 @@ static int get_physical_address_data(CPUSPARCState *env, CPUTLBEntryFull *full,
- static int get_physical_address_code(CPUSPARCState *env, CPUTLBEntryFull *full,
-                                      target_ulong address, int mmu_idx)
- {
-     CPUState *cs = env_cpu(env);
-     unsigned int i;
-     uint64_t context;
-     bool is_user = false;
+     new_msr = env->msr & (((target_ulong)1 << MSR_ME) | MSR_HVB);
  
-     switch (mmu_idx) {
-     case MMU_PHYS_IDX:
-     case MMU_USER_SECONDARY_IDX:
-     case MMU_KERNEL_SECONDARY_IDX:
-         g_assert_not_reached();
-     case MMU_USER_IDX:
-         is_user = true;
--        /* fallthru */
+     /* target registers */
+     srr0 = SPR_SRR0;
+     srr1 = SPR_SRR1;
+ 
+     /*
+      * check for special resume at 0x100 from doze/nap/sleep/winkle on
+      * P7/P8/P9
+      */
+     if (env->resume_as_sreset) {
+         excp = powerpc_reset_wakeup(env, excp, &msr);
+     }
+ 
+     /*
+      * We don't want to generate a Hypervisor Emulation Assistance
+      * Interrupt if we don't have HVB in msr_mask (PAPR mode),
+      * unless running a nested-hv guest, in which case the L1
+      * kernel wants the interrupt.
+      */
+     if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB) &&
+             !books_vhyp_handles_hv_excp(cpu)) {
+         excp = POWERPC_EXCP_PROGRAM;
+     }
+ 
+     vector = env->excp_vectors[excp];
+     if (vector == (target_ulong)-1ULL) {
+         cpu_abort(cs, "Raised an exception without defined vector %d\n",
+                   excp);
+     }
+ 
+     vector |= env->excp_prefix;
+ 
+     if (is_prefix_insn_excp(cpu, excp)) {
+         msr |= PPC_BIT(34);
+     }
+ 
+     switch (excp) {
+     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
+         powerpc_mcheck_checkstop(env);
+         if (env->msr_mask & MSR_HVB) {
+             /*
+              * ISA specifies HV, but can be delivered to guest with HV
+              * clear (e.g., see FWNMI in PAPR).
+              */
+             new_msr |= (target_ulong)MSR_HVB;
+         }
+ 
+         /* machine check exceptions don't have ME set */
+         new_msr &= ~((target_ulong)1 << MSR_ME);
+ 
+         msr |= env->error_code;
+         break;
+ 
+     case POWERPC_EXCP_DSI:       /* Data storage exception                   */
+         trace_ppc_excp_dsi(env->spr[SPR_DSISR], env->spr[SPR_DAR]);
+         break;
+     case POWERPC_EXCP_ISI:       /* Instruction storage exception            */
+         trace_ppc_excp_isi(msr, env->nip);
+         msr |= env->error_code;
+         break;
+     case POWERPC_EXCP_EXTERNAL:  /* External input                           */
+     {
+         bool lpes0;
+ 
+         /*
+          * LPES0 is only taken into consideration if we support HV
+          * mode for this CPU.
+          */
+         if (!env->has_hv_mode) {
+             break;
+         }
+ 
+         lpes0 = !!(env->spr[SPR_LPCR] & LPCR_LPES0);
+ 
+         if (!lpes0) {
+             new_msr |= (target_ulong)MSR_HVB;
+             new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
+             srr0 = SPR_HSRR0;
+             srr1 = SPR_HSRR1;
+         }
+ 
+         break;
+     }
+     case POWERPC_EXCP_ALIGN:     /* Alignment exception                      */
+         /* Optional DSISR update was removed from ISA v3.0 */
+         if (!(env->insns_flags2 & PPC2_ISA300)) {
+             /* Get rS/rD and rA from faulting opcode */
+             /*
+              * Note: the opcode fields will not be set properly for a
+              * direct store load/store, but nobody cares as nobody
+              * actually uses direct store segments.
+              */
+             env->spr[SPR_DSISR] |= (env->error_code & 0x03FF0000) >> 16;
+         }
+         break;
+     case POWERPC_EXCP_PROGRAM:   /* Program exception                        */
+         switch (env->error_code & ~0xF) {
+         case POWERPC_EXCP_FP:
+             if (!FIELD_EX64_FE(env->msr) || !FIELD_EX64(env->msr, MSR, FP)) {
+                 trace_ppc_excp_fp_ignore();
+                 powerpc_reset_excp_state(cpu);
+                 return;
+             }
+ 
+             /*
+              * FP exceptions always have NIP pointing to the faulting
+              * instruction, so always use store_next and claim we are
+              * precise in the MSR.
+              */
+             msr |= 0x00100000;
+             break;
+         case POWERPC_EXCP_INVAL:
+             trace_ppc_excp_inval(env->nip);
+             msr |= 0x00080000;
+             break;
+         case POWERPC_EXCP_PRIV:
+             msr |= 0x00040000;
+             break;
+         case POWERPC_EXCP_TRAP:
+             msr |= 0x00020000;
+             break;
+         default:
+             /* Should never occur */
+             cpu_abort(cs, "Invalid program exception %d. Aborting\n",
+                       env->error_code);
+             break;
+         }
+         break;
+     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
+         lev = env->error_code;
+ 
+         if (lev == 1 && cpu->vhyp) {
+             dump_hcall(env);
+         } else {
+             dump_syscall(env);
+         }
+ 
+         /*
+          * We need to correct the NIP which in this case is supposed
+          * to point to the next instruction
+          */
+         env->nip += 4;
+ 
+         /* "PAPR mode" built-in hypercall emulation */
+         if (lev == 1 && books_vhyp_handles_hcall(cpu)) {
+             PPCVirtualHypervisorClass *vhc =
+                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
+             vhc->hypercall(cpu->vhyp, cpu);
+             powerpc_reset_excp_state(cpu);
+             return;
+         }
+         if (env->insns_flags2 & PPC2_ISA310) {
+             /* ISAv3.1 puts LEV into SRR1 */
+             msr |= lev << 20;
+         }
+         if (lev == 1) {
+             new_msr |= (target_ulong)MSR_HVB;
+         }
+         break;
+     case POWERPC_EXCP_SYSCALL_VECTORED: /* scv exception                     */
+         lev = env->error_code;
+         dump_syscall(env);
+         env->nip += 4;
+         new_msr |= env->msr & ((target_ulong)1 << MSR_EE);
+         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
+ 
+         vector += lev * 0x20;
+ 
+         env->lr = env->nip;
+         env->ctr = msr;
+         break;
+     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+     case POWERPC_EXCP_DECR:      /* Decrementer exception                    */
+         break;
+     case POWERPC_EXCP_RESET:     /* System reset exception                   */
+         /* A power-saving exception sets ME, otherwise it is unchanged */
+         if (FIELD_EX64(env->msr, MSR, POW)) {
+             /* indicate that we resumed from power save mode */
+             msr |= 0x10000;
+             new_msr |= ((target_ulong)1 << MSR_ME);
+         }
+         if (env->msr_mask & MSR_HVB) {
+             /*
+              * ISA specifies HV, but can be delivered to guest with HV
+              * clear (e.g., see FWNMI in PAPR, NMI injection in QEMU).
+              */
+             new_msr |= (target_ulong)MSR_HVB;
+         } else {
+             if (FIELD_EX64(env->msr, MSR, POW)) {
+                 cpu_abort(cs, "Trying to deliver power-saving system reset "
+                           "exception %d with no HV support\n", excp);
+             }
+         }
+         break;
+     case POWERPC_EXCP_TRACE:     /* Trace exception                          */
+         msr |= env->error_code;
+-        /* fall through */
 +        fallthrough;
-     case MMU_KERNEL_IDX:
-         context = env->dmmu.mmu_primary_context & 0x1fff;
+     case POWERPC_EXCP_DSEG:      /* Data segment exception                   */
+     case POWERPC_EXCP_ISEG:      /* Instruction segment exception            */
+     case POWERPC_EXCP_SDOOR:     /* Doorbell interrupt                       */
+     case POWERPC_EXCP_PERFM:     /* Performance monitor interrupt            */
+         break;
+     case POWERPC_EXCP_HISI:      /* Hypervisor instruction storage exception */
+         msr |= env->error_code;
+-        /* fall through */
++        fallthrough;
+     case POWERPC_EXCP_HDECR:     /* Hypervisor decrementer exception         */
+     case POWERPC_EXCP_HDSI:      /* Hypervisor data storage exception        */
+     case POWERPC_EXCP_SDOOR_HV:  /* Hypervisor Doorbell interrupt            */
+     case POWERPC_EXCP_HVIRT:     /* Hypervisor virtualization                */
+         srr0 = SPR_HSRR0;
+         srr1 = SPR_HSRR1;
+         new_msr |= (target_ulong)MSR_HVB;
+         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
+         break;
+ #ifdef CONFIG_TCG
+     case POWERPC_EXCP_HV_EMU: {
+         uint32_t insn = ppc_ldl_code(env, env->nip);
+         env->spr[SPR_HEIR] = insn;
+         if (is_prefix_insn(env, insn)) {
+             uint32_t insn2 = ppc_ldl_code(env, env->nip + 4);
+             env->spr[SPR_HEIR] <<= 32;
+             env->spr[SPR_HEIR] |= insn2;
+         }
+         srr0 = SPR_HSRR0;
+         srr1 = SPR_HSRR1;
+         new_msr |= (target_ulong)MSR_HVB;
+         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
+         break;
+     }
+ #endif
+     case POWERPC_EXCP_VPU:       /* Vector unavailable exception             */
+     case POWERPC_EXCP_VSXU:       /* VSX unavailable exception               */
+     case POWERPC_EXCP_FU:         /* Facility unavailable exception          */
+         env->spr[SPR_FSCR] |= ((target_ulong)env->error_code << 56);
+         break;
+     case POWERPC_EXCP_HV_FU:     /* Hypervisor Facility Unavailable Exception */
+         env->spr[SPR_HFSCR] |= ((target_ulong)env->error_code << FSCR_IC_POS);
+         srr0 = SPR_HSRR0;
+         srr1 = SPR_HSRR1;
+         new_msr |= (target_ulong)MSR_HVB;
+         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
+         break;
+     case POWERPC_EXCP_PERFM_EBB:        /* Performance Monitor EBB Exception  */
+     case POWERPC_EXCP_EXTERNAL_EBB:     /* External EBB Exception             */
+         env->spr[SPR_BESCR] &= ~BESCR_GE;
+ 
+         /*
+          * Save NIP for rfebb insn in SPR_EBBRR. Next nip is
+          * stored in the EBB Handler SPR_EBBHR.
+          */
+         env->spr[SPR_EBBRR] = env->nip;
+         powerpc_set_excp_state(cpu, env->spr[SPR_EBBHR], env->msr);
+ 
+         /*
+          * This exception is handled in userspace. No need to proceed.
+          */
+         return;
+     case POWERPC_EXCP_THERM:     /* Thermal interrupt                        */
+     case POWERPC_EXCP_VPUA:      /* Vector assist exception                  */
+     case POWERPC_EXCP_MAINT:     /* Maintenance exception                    */
+     case POWERPC_EXCP_HV_MAINT:  /* Hypervisor Maintenance exception         */
+         cpu_abort(cs, "%s exception not implemented\n",
+                   powerpc_excp_name(excp));
          break;
      default:
-         context = 0;
+         cpu_abort(cs, "Invalid PowerPC exception %d. Aborting\n", excp);
          break;
      }
  
-     if (env->tl == 0) {
-         /* PRIMARY context */
-         context = env->dmmu.mmu_primary_context & 0x1fff;
-     } else {
-         /* NUCLEUS context */
-         context = 0;
+     /*
+      * Sort out endianness of interrupt, this differs depending on the
+      * CPU, the HV mode, etc...
+      */
+     if (ppc_interrupts_little_endian(cpu, !!(new_msr & MSR_HVB))) {
+         new_msr |= (target_ulong)1 << MSR_LE;
      }
  
-     for (i = 0; i < 64; i++) {
-         /* ctx match, vaddr match, valid? */
-         if (ultrasparc_tag_match(&env->itlb[i],
-                                  address, context, &full->phys_addr)) {
-             /* access ok? */
-             if (TTE_IS_PRIV(env->itlb[i].tte) && is_user) {
-                 /* Fault status register */
-                 if (env->immu.sfsr & SFSR_VALID_BIT) {
-                     env->immu.sfsr = SFSR_OW_BIT; /* overflow (not read before
-                                                      another fault) */
-                 } else {
-                     env->immu.sfsr = 0;
-                 }
-                 if (env->pstate & PS_PRIV) {
-                     env->immu.sfsr |= SFSR_PR_BIT;
-                 }
-                 if (env->tl > 0) {
-                     env->immu.sfsr |= SFSR_CT_NUCLEUS;
-                 }
+     new_msr |= (target_ulong)1 << MSR_SF;
  
-                 /* FIXME: ASI field in SFSR must be set */
-                 env->immu.sfsr |= SFSR_FT_PRIV_BIT | SFSR_VALID_BIT;
-                 cs->exception_index = TT_TFAULT;
+     if (excp != POWERPC_EXCP_SYSCALL_VECTORED) {
+         /* Save PC */
+         env->spr[srr0] = env->nip;
  
-                 env->immu.tag_access = (address & ~0x1fffULL) | context;
+         /* Save MSR */
+         env->spr[srr1] = msr;
+     }
  
-                 trace_mmu_helper_tfault(address, context);
+     if ((new_msr & MSR_HVB) && books_vhyp_handles_hv_excp(cpu)) {
+         PPCVirtualHypervisorClass *vhc =
+             PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
+         /* Deliver interrupt to L1 by returning from the H_ENTER_NESTED call */
+         vhc->deliver_hv_excp(cpu, excp);
  
-                 return 1;
+         powerpc_reset_excp_state(cpu);
+ 
+     } else {
+         /* Sanity check */
+         if (!(env->msr_mask & MSR_HVB) && srr0 == SPR_HSRR0) {
+             cpu_abort(cs, "Trying to deliver HV exception (HSRR) %d with "
+                       "no HV support\n", excp);
+         }
+ 
+         /* This can update new_msr and vector if AIL applies */
+         ppc_excp_apply_ail(cpu, excp, msr, &new_msr, &vector);
+ 
+         powerpc_set_excp_state(cpu, vector, new_msr);
+     }
+ }
+ #else
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index 5823e039e6..a85bd614bf 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -111,30 +111,30 @@ static inline const char *access_str(MMUAccessType access_type)
+ static void ppc_radix64_raise_si(PowerPCCPU *cpu, MMUAccessType access_type,
+                                  vaddr eaddr, uint32_t cause)
+ {
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+ 
+     qemu_log_mask(CPU_LOG_MMU, "%s for %s @0x%"VADDR_PRIx" cause %08x\n",
+                   __func__, access_str(access_type),
+                   eaddr, cause);
+ 
+     switch (access_type) {
+     case MMU_INST_FETCH:
+         /* Instruction Storage Interrupt */
+         cs->exception_index = POWERPC_EXCP_ISI;
+         env->error_code = cause;
+         break;
+     case MMU_DATA_STORE:
+         cause |= DSISR_ISSTORE;
+-        /* fall through */
++        fallthrough;
+     case MMU_DATA_LOAD:
+         /* Data Storage Interrupt */
+         cs->exception_index = POWERPC_EXCP_DSI;
+         env->spr[SPR_DSISR] = cause;
+         env->spr[SPR_DAR] = eaddr;
+         env->error_code = 0;
+         break;
+     default:
+         g_assert_not_reached();
+     }
+ }
+@@ -142,39 +142,39 @@ static void ppc_radix64_raise_si(PowerPCCPU *cpu, MMUAccessType access_type,
+ static void ppc_radix64_raise_hsi(PowerPCCPU *cpu, MMUAccessType access_type,
+                                   vaddr eaddr, hwaddr g_raddr, uint32_t cause)
+ {
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+ 
+     env->error_code = 0;
+     if (cause & DSISR_PRTABLE_FAULT) {
+         /* HDSI PRTABLE_FAULT gets the originating access type in error_code */
+         env->error_code = access_type;
+         access_type = MMU_DATA_LOAD;
+     }
+ 
+     qemu_log_mask(CPU_LOG_MMU, "%s for %s @0x%"VADDR_PRIx" 0x%"
+                   HWADDR_PRIx" cause %08x\n",
+                   __func__, access_str(access_type),
+                   eaddr, g_raddr, cause);
+ 
+     switch (access_type) {
+     case MMU_INST_FETCH:
+         /* H Instruction Storage Interrupt */
+         cs->exception_index = POWERPC_EXCP_HISI;
+         env->spr[SPR_ASDR] = g_raddr;
+         env->error_code = cause;
+         break;
+     case MMU_DATA_STORE:
+         cause |= DSISR_ISSTORE;
+-        /* fall through */
++        fallthrough;
+     case MMU_DATA_LOAD:
+         /* H Data Storage Interrupt */
+         cs->exception_index = POWERPC_EXCP_HDSI;
+         env->spr[SPR_HDSISR] = cause;
+         env->spr[SPR_HDAR] = eaddr;
+         env->spr[SPR_ASDR] = g_raddr;
+         break;
+     default:
+         g_assert_not_reached();
+     }
+ }
+@@ -222,20 +222,20 @@ static bool ppc_radix64_check_prot(PowerPCCPU *cpu, MMUAccessType access_type,
+ static int ppc_radix64_check_rc(MMUAccessType access_type, uint64_t pte)
+ {
+     switch (access_type) {
+     case MMU_DATA_STORE:
+         if (!(pte & R_PTE_C)) {
+             break;
+         }
+-        /* fall through */
++        fallthrough;
+     case MMU_INST_FETCH:
+     case MMU_DATA_LOAD:
+         if (!(pte & R_PTE_R)) {
+             break;
+         }
+ 
+         /* R/C bits are already set appropriately for this access */
+         return 0;
+     }
+ 
+     return 1;
+ }
+diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
+index 6ca5d12207..dd44befe6f 100644
+--- a/target/ppc/mmu_common.c
++++ b/target/ppc/mmu_common.c
+@@ -67,37 +67,37 @@ void ppc_store_sdr1(CPUPPCState *env, target_ulong value)
+ static int pp_check(int key, int pp, int nx)
+ {
+     int access;
+ 
+     /* Compute access rights */
+     access = 0;
+     if (key == 0) {
+         switch (pp) {
+         case 0x0:
+         case 0x1:
+         case 0x2:
+             access |= PAGE_WRITE;
+-            /* fall through */
++            fallthrough;
+         case 0x3:
+             access |= PAGE_READ;
+             break;
+         }
+     } else {
+         switch (pp) {
+         case 0x0:
+             access = 0;
+             break;
+         case 0x1:
+         case 0x3:
+             access = PAGE_READ;
+             break;
+         case 0x2:
+             access = PAGE_READ | PAGE_WRITE;
+             break;
+         }
+     }
+     if (nx == 0) {
+         access |= PAGE_EXEC;
+     }
+ 
+     return access;
+ }
+@@ -534,68 +534,68 @@ int ppcemb_tlb_search(CPUPPCState *env, target_ulong address, uint32_t pid)
+ static int mmu40x_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+                                        target_ulong address,
+                                        MMUAccessType access_type)
+ {
+     ppcemb_tlb_t *tlb;
+     hwaddr raddr;
+     int i, ret, zsel, zpr, pr;
+ 
+     ret = -1;
+     raddr = (hwaddr)-1ULL;
+     pr = FIELD_EX64(env->msr, MSR, PR);
+     for (i = 0; i < env->nb_tlb; i++) {
+         tlb = &env->tlb.tlbe[i];
+         if (!ppcemb_tlb_check(env, tlb, &raddr, address,
+                               env->spr[SPR_40x_PID], i)) {
+             continue;
+         }
+         zsel = (tlb->attr >> 4) & 0xF;
+         zpr = (env->spr[SPR_40x_ZPR] >> (30 - (2 * zsel))) & 0x3;
+         qemu_log_mask(CPU_LOG_MMU,
+                       "%s: TLB %d zsel %d zpr %d ty %d attr %08x\n",
+                       __func__, i, zsel, zpr, access_type, tlb->attr);
+         /* Check execute enable bit */
+         switch (zpr) {
+         case 0x2:
+             if (pr != 0) {
+                 goto check_perms;
              }
-             full->prot = PAGE_EXEC;
-             TTE_SET_USED(env->itlb[i].tte);
+-            /* fall through */
++            fallthrough;
+         case 0x3:
+             /* All accesses granted */
+             ctx->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+             ret = 0;
+             break;
+         case 0x0:
+             if (pr != 0) {
+                 /* Raise Zone protection fault.  */
+                 env->spr[SPR_40x_ESR] = 1 << 22;
+                 ctx->prot = 0;
+                 ret = -2;
+                 break;
+             }
+-            /* fall through */
++            fallthrough;
+         case 0x1:
+         check_perms:
+             /* Check from TLB entry */
+             ctx->prot = tlb->prot;
+             ret = check_prot(ctx->prot, access_type);
+             if (ret == -2) {
+                 env->spr[SPR_40x_ESR] = 0;
+             }
+             break;
+         }
+         if (ret >= 0) {
+             ctx->raddr = raddr;
+             qemu_log_mask(CPU_LOG_MMU, "%s: access granted " TARGET_FMT_lx
+                           " => " HWADDR_FMT_plx
+                           " %d %d\n", __func__, address, ctx->raddr, ctx->prot,
+                           ret);
              return 0;
          }
      }
+      qemu_log_mask(CPU_LOG_MMU, "%s: access refused " TARGET_FMT_lx
+                    " => " HWADDR_FMT_plx
+                    " %d %d\n", __func__, address, raddr, ctx->prot, ret);
  
-     trace_mmu_helper_tmiss(address, context);
- 
-     /* Context is stored in DMMU (dmmuregs[1]) also for IMMU */
-     env->immu.tag_access = (address & ~0x1fffULL) | context;
-     cs->exception_index = TT_TMISS;
-     return 1;
+     return ret;
  }
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index f92ff80ac8..4f179473d7 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -1020,167 +1020,168 @@ static void gen_op_next_insn(void)
- static void gen_compare(DisasCompare *cmp, bool xcc, unsigned int cond,
-                         DisasContext *dc)
+@@ -1299,222 +1299,222 @@ static void booke206_update_mas_tlb_miss(CPUPPCState *env, target_ulong address,
+ /* Perform address translation */
+ /* TODO: Split this by mmu_model. */
+ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+                             MMUAccessType access_type,
+                             hwaddr *raddrp, int *psizep, int *protp,
+                             int mmu_idx, bool guest_visible)
  {
-     static int subcc_cond[16] = {
-         TCG_COND_NEVER,
-         TCG_COND_EQ,
-         TCG_COND_LE,
-         TCG_COND_LT,
-         TCG_COND_LEU,
-         TCG_COND_LTU,
-         -1, /* neg */
-         -1, /* overflow */
-         TCG_COND_ALWAYS,
-         TCG_COND_NE,
-         TCG_COND_GT,
-         TCG_COND_GE,
-         TCG_COND_GTU,
-         TCG_COND_GEU,
-         -1, /* pos */
-         -1, /* no overflow */
-     };
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+     mmu_ctx_t ctx;
+     int type;
+     int ret;
  
-     static int logic_cond[16] = {
-         TCG_COND_NEVER,
-         TCG_COND_EQ,     /* eq:  Z */
-         TCG_COND_LE,     /* le:  Z | (N ^ V) -> Z | N */
-         TCG_COND_LT,     /* lt:  N ^ V -> N */
-         TCG_COND_EQ,     /* leu: C | Z -> Z */
-         TCG_COND_NEVER,  /* ltu: C -> 0 */
-         TCG_COND_LT,     /* neg: N */
-         TCG_COND_NEVER,  /* vs:  V -> 0 */
-         TCG_COND_ALWAYS,
-         TCG_COND_NE,     /* ne:  !Z */
-         TCG_COND_GT,     /* gt:  !(Z | (N ^ V)) -> !(Z | N) */
-         TCG_COND_GE,     /* ge:  !(N ^ V) -> !N */
-         TCG_COND_NE,     /* gtu: !(C | Z) -> !Z */
-         TCG_COND_ALWAYS, /* geu: !C -> 1 */
-         TCG_COND_GE,     /* pos: !N */
-         TCG_COND_ALWAYS, /* vc:  !V -> 1 */
-     };
- 
-     TCGv_i32 r_src;
-     TCGv r_dst;
- 
- #ifdef TARGET_SPARC64
-     if (xcc) {
-         r_src = cpu_xcc;
+     if (access_type == MMU_INST_FETCH) {
+         /* code access */
+         type = ACCESS_CODE;
+     } else if (guest_visible) {
+         /* data access */
+         type = env->access_type;
      } else {
-         r_src = cpu_psr;
+         type = ACCESS_INT;
      }
- #else
-     r_src = cpu_psr;
- #endif
  
-     switch (dc->cc_op) {
-     case CC_OP_LOGIC:
-         cmp->cond = logic_cond[cond];
-     do_compare_dst_0:
-         cmp->is_bool = false;
-         cmp->c2 = tcg_constant_tl(0);
- #ifdef TARGET_SPARC64
-         if (!xcc) {
-             cmp->c1 = tcg_temp_new();
-             tcg_gen_ext32s_tl(cmp->c1, cpu_cc_dst);
-             break;
-         }
- #endif
-         cmp->c1 = cpu_cc_dst;
-         break;
+     ret = get_physical_address_wtlb(env, &ctx, eaddr, access_type,
+                                     type, mmu_idx);
+     if (ret == 0) {
+         *raddrp = ctx.raddr;
+         *protp = ctx.prot;
+         *psizep = TARGET_PAGE_BITS;
+         return true;
+     }
  
-     case CC_OP_SUB:
-         switch (cond) {
-         case 6:  /* neg */
-         case 14: /* pos */
-             cmp->cond = (cond == 6 ? TCG_COND_LT : TCG_COND_GE);
-             goto do_compare_dst_0;
- 
-         case 7: /* overflow */
-         case 15: /* !overflow */
-             goto do_dynamic;
- 
-         default:
-             cmp->cond = subcc_cond[cond];
-             cmp->is_bool = false;
- #ifdef TARGET_SPARC64
-             if (!xcc) {
-                 /* Note that sign-extension works for unsigned compares as
-                    long as both operands are sign-extended.  */
-                 cmp->c1 = tcg_temp_new();
-                 cmp->c2 = tcg_temp_new();
-                 tcg_gen_ext32s_tl(cmp->c1, cpu_cc_src);
-                 tcg_gen_ext32s_tl(cmp->c2, cpu_cc_src2);
+     if (guest_visible) {
+         log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
+         if (type == ACCESS_CODE) {
+             switch (ret) {
+             case -1:
+                 /* No matches in page tables or TLB */
+                 switch (env->mmu_model) {
+                 case POWERPC_MMU_SOFT_6xx:
+                     cs->exception_index = POWERPC_EXCP_IFTLB;
+                     env->error_code = 1 << 18;
+                     env->spr[SPR_IMISS] = eaddr;
+                     env->spr[SPR_ICMP] = 0x80000000 | ctx.ptem;
+                     goto tlb_miss;
+                 case POWERPC_MMU_SOFT_4xx:
+                     cs->exception_index = POWERPC_EXCP_ITLB;
+                     env->error_code = 0;
+                     env->spr[SPR_40x_DEAR] = eaddr;
+                     env->spr[SPR_40x_ESR] = 0x00000000;
+                     break;
+                 case POWERPC_MMU_BOOKE206:
+                     booke206_update_mas_tlb_miss(env, eaddr, 2, mmu_idx);
+-                    /* fall through */
++                    fallthrough;
+                 case POWERPC_MMU_BOOKE:
+                     cs->exception_index = POWERPC_EXCP_ITLB;
+                     env->error_code = 0;
+                     env->spr[SPR_BOOKE_DEAR] = eaddr;
+                     env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, MMU_DATA_LOAD);
+                     break;
+                 case POWERPC_MMU_MPC8xx:
+                     cpu_abort(cs, "MPC8xx MMU model is not implemented\n");
+                 case POWERPC_MMU_REAL:
+                     cpu_abort(cs, "PowerPC in real mode should never raise "
+                               "any MMU exceptions\n");
+                 default:
+                     cpu_abort(cs, "Unknown or invalid MMU model\n");
+                 }
+                 break;
+             case -2:
+                 /* Access rights violation */
+                 cs->exception_index = POWERPC_EXCP_ISI;
+                 if ((env->mmu_model == POWERPC_MMU_BOOKE) ||
+                     (env->mmu_model == POWERPC_MMU_BOOKE206)) {
+                     env->error_code = 0;
+                 } else {
+                     env->error_code = 0x08000000;
+                 }
+                 break;
+             case -3:
+                 /* No execute protection violation */
+                 if ((env->mmu_model == POWERPC_MMU_BOOKE) ||
+                     (env->mmu_model == POWERPC_MMU_BOOKE206)) {
+                     env->spr[SPR_BOOKE_ESR] = 0x00000000;
+                     env->error_code = 0;
+                 } else {
+                     env->error_code = 0x10000000;
+                 }
+                 cs->exception_index = POWERPC_EXCP_ISI;
+                 break;
+             case -4:
+                 /* Direct store exception */
+                 /* No code fetch is allowed in direct-store areas */
+                 cs->exception_index = POWERPC_EXCP_ISI;
+                 if ((env->mmu_model == POWERPC_MMU_BOOKE) ||
+                     (env->mmu_model == POWERPC_MMU_BOOKE206)) {
+                     env->error_code = 0;
+                 } else {
+                     env->error_code = 0x10000000;
+                 }
                  break;
              }
- #endif
-             cmp->c1 = cpu_cc_src;
-             cmp->c2 = cpu_cc_src2;
-             break;
+         } else {
+             switch (ret) {
+             case -1:
+                 /* No matches in page tables or TLB */
+                 switch (env->mmu_model) {
+                 case POWERPC_MMU_SOFT_6xx:
+                     if (access_type == MMU_DATA_STORE) {
+                         cs->exception_index = POWERPC_EXCP_DSTLB;
+                         env->error_code = 1 << 16;
+                     } else {
+                         cs->exception_index = POWERPC_EXCP_DLTLB;
+                         env->error_code = 0;
+                     }
+                     env->spr[SPR_DMISS] = eaddr;
+                     env->spr[SPR_DCMP] = 0x80000000 | ctx.ptem;
+                 tlb_miss:
+                     env->error_code |= ctx.key << 19;
+                     env->spr[SPR_HASH1] = ppc_hash32_hpt_base(cpu) +
+                         get_pteg_offset32(cpu, ctx.hash[0]);
+                     env->spr[SPR_HASH2] = ppc_hash32_hpt_base(cpu) +
+                         get_pteg_offset32(cpu, ctx.hash[1]);
+                     break;
+                 case POWERPC_MMU_SOFT_4xx:
+                     cs->exception_index = POWERPC_EXCP_DTLB;
+                     env->error_code = 0;
+                     env->spr[SPR_40x_DEAR] = eaddr;
+                     if (access_type == MMU_DATA_STORE) {
+                         env->spr[SPR_40x_ESR] = 0x00800000;
+                     } else {
+                         env->spr[SPR_40x_ESR] = 0x00000000;
+                     }
+                     break;
+                 case POWERPC_MMU_MPC8xx:
+                     /* XXX: TODO */
+                     cpu_abort(cs, "MPC8xx MMU model is not implemented\n");
+                 case POWERPC_MMU_BOOKE206:
+                     booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
+-                    /* fall through */
++                    fallthrough;
+                 case POWERPC_MMU_BOOKE:
+                     cs->exception_index = POWERPC_EXCP_DTLB;
+                     env->error_code = 0;
+                     env->spr[SPR_BOOKE_DEAR] = eaddr;
+                     env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+                     break;
+                 case POWERPC_MMU_REAL:
+                     cpu_abort(cs, "PowerPC in real mode should never raise "
+                               "any MMU exceptions\n");
+                 default:
+                     cpu_abort(cs, "Unknown or invalid MMU model\n");
+                 }
+                 break;
+             case -2:
+                 /* Access rights violation */
+                 cs->exception_index = POWERPC_EXCP_DSI;
+                 env->error_code = 0;
+                 if (env->mmu_model == POWERPC_MMU_SOFT_4xx) {
+                     env->spr[SPR_40x_DEAR] = eaddr;
+                     if (access_type == MMU_DATA_STORE) {
+                         env->spr[SPR_40x_ESR] |= 0x00800000;
+                     }
+                 } else if ((env->mmu_model == POWERPC_MMU_BOOKE) ||
+                            (env->mmu_model == POWERPC_MMU_BOOKE206)) {
+                     env->spr[SPR_BOOKE_DEAR] = eaddr;
+                     env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+                 } else {
+                     env->spr[SPR_DAR] = eaddr;
+                     if (access_type == MMU_DATA_STORE) {
+                         env->spr[SPR_DSISR] = 0x0A000000;
+                     } else {
+                         env->spr[SPR_DSISR] = 0x08000000;
+                     }
+                 }
+                 break;
+             case -4:
+                 /* Direct store exception */
+                 switch (type) {
+                 case ACCESS_FLOAT:
+                     /* Floating point load/store */
+                     cs->exception_index = POWERPC_EXCP_ALIGN;
+                     env->error_code = POWERPC_EXCP_ALIGN_FP;
+                     env->spr[SPR_DAR] = eaddr;
+                     break;
+                 case ACCESS_RES:
+                     /* lwarx, ldarx or stwcx. */
+                     cs->exception_index = POWERPC_EXCP_DSI;
+                     env->error_code = 0;
+                     env->spr[SPR_DAR] = eaddr;
+                     if (access_type == MMU_DATA_STORE) {
+                         env->spr[SPR_DSISR] = 0x06000000;
+                     } else {
+                         env->spr[SPR_DSISR] = 0x04000000;
+                     }
+                     break;
+                 case ACCESS_EXT:
+                     /* eciwx or ecowx */
+                     cs->exception_index = POWERPC_EXCP_DSI;
+                     env->error_code = 0;
+                     env->spr[SPR_DAR] = eaddr;
+                     if (access_type == MMU_DATA_STORE) {
+                         env->spr[SPR_DSISR] = 0x06100000;
+                     } else {
+                         env->spr[SPR_DSISR] = 0x04100000;
+                     }
+                     break;
+                 default:
+                     printf("DSI: invalid exception (%d)\n", ret);
+                     cs->exception_index = POWERPC_EXCP_PROGRAM;
+                     env->error_code =
+                         POWERPC_EXCP_INVAL | POWERPC_EXCP_INVAL_INVAL;
+                     env->spr[SPR_DAR] = eaddr;
+                     break;
+                 }
+                 break;
+             }
          }
-         break;
- 
-     default:
-     do_dynamic:
-         gen_helper_compute_psr(tcg_env);
-         dc->cc_op = CC_OP_FLAGS;
-         /* FALLTHRU */
-+        fallthrough;
- 
-     case CC_OP_FLAGS:
-         /* We're going to generate a boolean result.  */
-         cmp->cond = TCG_COND_NE;
-         cmp->is_bool = true;
-         cmp->c1 = r_dst = tcg_temp_new();
-         cmp->c2 = tcg_constant_tl(0);
- 
-         switch (cond) {
-         case 0x0:
-             gen_op_eval_bn(r_dst);
-             break;
-         case 0x1:
-             gen_op_eval_be(r_dst, r_src);
-             break;
-         case 0x2:
-             gen_op_eval_ble(r_dst, r_src);
-             break;
-         case 0x3:
-             gen_op_eval_bl(r_dst, r_src);
-             break;
-         case 0x4:
-             gen_op_eval_bleu(r_dst, r_src);
-             break;
-         case 0x5:
-             gen_op_eval_bcs(r_dst, r_src);
-             break;
-         case 0x6:
-             gen_op_eval_bneg(r_dst, r_src);
-             break;
-         case 0x7:
-             gen_op_eval_bvs(r_dst, r_src);
-             break;
-         case 0x8:
-             gen_op_eval_ba(r_dst);
-             break;
-         case 0x9:
-             gen_op_eval_bne(r_dst, r_src);
-             break;
-         case 0xa:
-             gen_op_eval_bg(r_dst, r_src);
-             break;
-         case 0xb:
-             gen_op_eval_bge(r_dst, r_src);
-             break;
-         case 0xc:
-             gen_op_eval_bgu(r_dst, r_src);
-             break;
-         case 0xd:
-             gen_op_eval_bcc(r_dst, r_src);
-             break;
-         case 0xe:
-             gen_op_eval_bpos(r_dst, r_src);
-             break;
-         case 0xf:
-             gen_op_eval_bvc(r_dst, r_src);
-             break;
-         }
-         break;
      }
+     return false;
  }
-@@ -2186,75 +2187,75 @@ static void gen_ld_asi(DisasContext *dc, TCGv dst, TCGv addr,
- static void gen_st_asi(DisasContext *dc, TCGv src, TCGv addr,
-                        int insn, MemOp memop)
- {
-     DisasASI da = get_asi(dc, insn, memop);
  
-     switch (da.type) {
-     case GET_ASI_EXCP:
-         break;
-     case GET_ASI_DTWINX: /* Reserved for stda.  */
- #ifndef TARGET_SPARC64
-         gen_exception(dc, TT_ILL_INSN);
-         break;
- #else
-         if (!(dc->def->features & CPU_FEATURE_HYPV)) {
-             /* Pre OpenSPARC CPUs don't have these */
-             gen_exception(dc, TT_ILL_INSN);
-             return;
+ /*****************************************************************************/
+@@ -1522,29 +1522,29 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+                       hwaddr *raddrp, int *psizep, int *protp,
+                       int mmu_idx, bool guest_visible)
+ {
+     switch (cpu->env.mmu_model) {
+ #if defined(TARGET_PPC64)
+     case POWERPC_MMU_3_00:
+         if (ppc64_v3_radix(cpu)) {
+             return ppc_radix64_xlate(cpu, eaddr, access_type, raddrp,
+                                      psizep, protp, mmu_idx, guest_visible);
          }
-         /* in OpenSPARC T1+ CPUs TWINX ASIs in store instructions
-          * are ST_BLKINIT_ ASIs */
- #endif
 -        /* fall through */
 +        fallthrough;
-     case GET_ASI_DIRECT:
-         gen_address_mask(dc, addr);
-         tcg_gen_qemu_st_tl(src, addr, da.mem_idx, da.memop | MO_ALIGN);
-         break;
- #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
-     case GET_ASI_BCOPY:
-         /* Copy 32 bytes from the address in SRC to ADDR.  */
-         /* ??? The original qemu code suggests 4-byte alignment, dropping
-            the low bits, but the only place I can see this used is in the
-            Linux kernel with 32 byte alignment, which would make more sense
-            as a cacheline-style operation.  */
-         {
-             TCGv saddr = tcg_temp_new();
-             TCGv daddr = tcg_temp_new();
-             TCGv four = tcg_constant_tl(4);
-             TCGv_i32 tmp = tcg_temp_new_i32();
-             int i;
- 
-             tcg_gen_andi_tl(saddr, src, -4);
-             tcg_gen_andi_tl(daddr, addr, -4);
-             for (i = 0; i < 32; i += 4) {
-                 /* Since the loads and stores are paired, allow the
-                    copy to happen in the host endianness.  */
-                 tcg_gen_qemu_ld_i32(tmp, saddr, da.mem_idx, MO_UL);
-                 tcg_gen_qemu_st_i32(tmp, daddr, da.mem_idx, MO_UL);
-                 tcg_gen_add_tl(saddr, saddr, four);
-                 tcg_gen_add_tl(daddr, daddr, four);
-             }
-         }
-         break;
+     case POWERPC_MMU_64B:
+     case POWERPC_MMU_2_03:
+     case POWERPC_MMU_2_06:
+     case POWERPC_MMU_2_07:
+         return ppc_hash64_xlate(cpu, eaddr, access_type,
+                                 raddrp, psizep, protp, mmu_idx, guest_visible);
  #endif
+ 
+     case POWERPC_MMU_32B:
+         return ppc_hash32_xlate(cpu, eaddr, access_type, raddrp,
+                                psizep, protp, mmu_idx, guest_visible);
+ 
      default:
-         {
-             TCGv_i32 r_asi = tcg_constant_i32(da.asi);
-             TCGv_i32 r_mop = tcg_constant_i32(memop | MO_ALIGN);
- 
-             save_state(dc);
- #ifdef TARGET_SPARC64
-             gen_helper_st_asi(tcg_env, addr, src, r_asi, r_mop);
- #else
-             {
-                 TCGv_i64 t64 = tcg_temp_new_i64();
-                 tcg_gen_extu_tl_i64(t64, src);
-                 gen_helper_st_asi(tcg_env, addr, t64, r_asi, r_mop);
-             }
- #endif
- 
-             /* A write to a TLB register may alter page maps.  End the TB. */
-             dc->npc = DYNAMIC_PC;
-         }
-         break;
+         return ppc_jumbo_xlate(cpu, eaddr, access_type, raddrp,
+                                psizep, protp, mmu_idx, guest_visible);
      }
  }
-diff --git a/target/sparc/win_helper.c b/target/sparc/win_helper.c
-index 3a7c0ff943..0c54b63938 100644
---- a/target/sparc/win_helper.c
-+++ b/target/sparc/win_helper.c
-@@ -296,20 +296,21 @@ void helper_wrcwp(CPUSPARCState *env, target_ulong new_cwp)
- static inline uint64_t *get_gregset(CPUSPARCState *env, uint32_t pstate)
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 329da4d518..a67b77258d 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -7427,76 +7427,76 @@ static void ppc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+ static void ppc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
  {
-     if (env->def.features & CPU_FEATURE_GL) {
-         return env->glregs + (env->gl & 7) * 8;
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+     DisasJumpType is_jmp = ctx->base.is_jmp;
+     target_ulong nip = ctx->base.pc_next;
+ 
+     if (is_jmp == DISAS_NORETURN) {
+         /* We have already exited the TB. */
+         return;
      }
  
-     switch (pstate) {
-     default:
-         trace_win_helper_gregset_error(pstate);
-         /* fall through to normal set of global registers */
+     /* Honor single stepping. */
+     if (unlikely(ctx->singlestep_enabled & CPU_SINGLE_STEP)) {
+         bool rfi_type = false;
+ 
+         switch (is_jmp) {
+         case DISAS_TOO_MANY:
+         case DISAS_EXIT_UPDATE:
+         case DISAS_CHAIN_UPDATE:
+             gen_update_nip(ctx, nip);
+             break;
+         case DISAS_EXIT:
+         case DISAS_CHAIN:
+             /*
+              * This is a heuristic, to put it kindly. The rfi class of
+              * instructions are among the few outside branches that change
+              * NIP without taking an interrupt. Single step trace interrupts
+              * do not fire on completion of these instructions.
+              */
+             rfi_type = true;
+             break;
+         default:
+             g_assert_not_reached();
+         }
+ 
+         gen_debug_exception(ctx, rfi_type);
+         return;
+     }
+ 
+     switch (is_jmp) {
+     case DISAS_TOO_MANY:
+         if (use_goto_tb(ctx, nip)) {
+             pmu_count_insns(ctx);
+             tcg_gen_goto_tb(0);
+             gen_update_nip(ctx, nip);
+             tcg_gen_exit_tb(ctx->base.tb, 0);
+             break;
+         }
+-        /* fall through */
 +        fallthrough;
-     case 0:
-         return env->bgregs;
-     case PS_AG:
-         return env->agregs;
-     case PS_MG:
-         return env->mgregs;
-     case PS_IG:
-         return env->igregs;
+     case DISAS_CHAIN_UPDATE:
+         gen_update_nip(ctx, nip);
+-        /* fall through */
++        fallthrough;
+     case DISAS_CHAIN:
+         /*
+          * tcg_gen_lookup_and_goto_ptr will exit the TB if
+          * CF_NO_GOTO_PTR is set. Count insns now.
+          */
+         if (ctx->base.tb->flags & CF_NO_GOTO_PTR) {
+             pmu_count_insns(ctx);
+         }
+ 
+         tcg_gen_lookup_and_goto_ptr();
+         break;
+ 
+     case DISAS_EXIT_UPDATE:
+         gen_update_nip(ctx, nip);
+-        /* fall through */
++        fallthrough;
+     case DISAS_EXIT:
+         pmu_count_insns(ctx);
+         tcg_gen_exit_tb(NULL, 0);
+         break;
+ 
+     default:
+         g_assert_not_reached();
      }
  }
 -- 
