@@ -2,48 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D057C955B
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 18:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4667C9560
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 18:29:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrhNE-0003Uy-2D; Sat, 14 Oct 2023 12:20:20 -0400
+	id 1qrhUz-0004wW-99; Sat, 14 Oct 2023 12:28:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1qrhNB-0003Uk-69
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:20:17 -0400
-Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ (Exim 4.90_1) (envelope-from <vincent.jardin@ekinops.com>)
+ id 1qrhUx-0004w5-BD
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:28:19 -0400
+Received: from mail-pr2fra01on2129.outbound.protection.outlook.com
+ ([40.107.12.129] helo=FRA01-PR2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1qrhN8-0004BD-D3
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:20:16 -0400
-Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
- id 48FB5A00CD; Sat, 14 Oct 2023 18:13:19 +0200 (CEST)
-Date: Sat, 14 Oct 2023 18:13:19 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
-In-Reply-To: <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
-Message-ID: <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
-References: <cover.1696880742.git.balaton@eik.bme.hu>
- <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
- <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
-User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
+ (Exim 4.90_1) (envelope-from <vincent.jardin@ekinops.com>)
+ id 1qrhUv-0005VR-IN
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:28:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZdtlNKXT7K9QCHh+hk2PWAXYcTi4TusCdm2i8WRBY3BNbGlqtJ4JI9pRSLQVt9H51M65n71gC/xW7zug1eJrvI7/as++S03zDR+/XsBYhopmfI7d/uEmkSHnul/Ye/O4yzFV7XHrhRDVBFPUSESup4Hp9gl+gn34GACGMF+06ojrzxPYI/Jxqmox4sDb4mPKuB4LOV/QlA6HASjGPGwAR2D9sdSy3Txi+VsYowYVcZ9fErB4WunD7OwV2vi+8dkIjQYPArI1MApBi64Jbzn0+QGmc8c8qGLbmTjdhCOilFOwqphbcvMmi3FXl9TZ7DSbJflaS8fGNbj3NEoMwEas7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=++LHSbMsd8Vjgpa0Cxx4OdCDojsHlKtMDDcnEzD7DCk=;
+ b=RENN1ulh29c9HCBrr1Ld2EV7LZ6QDrgLGWDqyCmUYEIHGuirs3UTmuLKIyM49jVsYEpQPq0taCMo7YDqvXsA34P71rLABDvpNBhX7029R/bsjQTypJRC2KPKBIW+DFYowC/7H+SEIc1WiUSxqMkAK0Ir6wKYGCYsd28i3zU++R5UR0nmGkamU7nIK+XMSahcYzVG+UzPCOlldJXoSDGb+ektqjcxc8UiYm8rYqW59zJ/3KRSz1Q0VNbacorl0wznd5XdpYcwTSi+cwnjA7sSsh5n2Y+t8b4ADClHSaiiqEHu4Jl3ketCqIcE3tPgTkDsNHbi++454PhAn3WytSXhzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ekinops.com; dmarc=pass action=none header.from=ekinops.com;
+ dkim=pass header.d=ekinops.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ekinops.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=++LHSbMsd8Vjgpa0Cxx4OdCDojsHlKtMDDcnEzD7DCk=;
+ b=IHE068RolUgofJ0WBtVysifrRAHsLRjokFl3jgoAloSF1LONGt/volguSpQDG0+wc30DwzoP4umTfuL2yA87aPSoQ0uEgGBdMtkffR465gQwLSfIZaxBshTfMfExy9FOPpODCH2TGdgFqtgLc5uZ0oqWctaHcBDogxkRAAcML0M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ekinops.com;
+Received: from PR1P264MB2295.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1b6::14)
+ by PR0P264MB2438.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e1::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.45; Sat, 14 Oct
+ 2023 16:23:12 +0000
+Received: from PR1P264MB2295.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::849f:914a:1a04:d28f]) by PR1P264MB2295.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::849f:914a:1a04:d28f%3]) with mapi id 15.20.6863.046; Sat, 14 Oct 2023
+ 16:23:12 +0000
+From: Vincent Jardin <vincent.jardin@ekinops.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, jasowang@redhat.com,
+ Vincent Jardin <vincent.jardin@ekinops.com>
+Subject: [RFC] virtio: enforce link up
+Date: Sat, 14 Oct 2023 18:22:34 +0200
+Message-Id: <20231014162234.153808-1-vincent.jardin@ekinops.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PA7P264CA0345.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:39a::13) To PR1P264MB2295.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:1b6::14)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
-Received-SPF: none client-ip=152.66.102.83;
- envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PR1P264MB2295:EE_|PR0P264MB2438:EE_
+X-MS-Office365-Filtering-Correlation-Id: ecc679ce-5a6f-4cf8-ddf8-08dbccd1dc4d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: E5wtH50BgN+vKfCq4xpa675+wf2tLyVQcY/lDMqUAeBBAk/ArWywbwncXOINQTpXQDG+6L/3m8+cZ5ftUA4rHUNcgvgKRaRWPsBrFrArGYGlLskVBNC31Rw0OUj38s88i2QseXnbNNaX+JoqqBAN2qsLHJIiP2njx+XlJsqbDwISsbDQsKedDNGB1lqOq0FWunp0LU6KqvPj84dnVVTKNOrgSBxxAw2aeJIXASDYONByaU9CGNdReZgrpe6uUvrQ6+9hO6oTZ5rT7OGiTIIpgIwlSTq9ScR4E6o8g47mRJeOLJHy1/W60Z2EPSfWlZ+gj8HDYXlU3yxFN7qnRn+07hfBQyan7MzrVmf1sWPp5nYZmyIOWMHAln0Jzn99iTd3xCiBII5+34S/ZnA54a3aKiweHvTApsx1A+1pqvIczeCi/1X1NrLed/oOjOZTQmdt1fcA+8ugWSeEGUq+/lNnvs81HuZxNo5GPIqjL2SCcfwCBJLiAg1iQeXqQLUoDRicqprA8cZZ1pAdm1vfCZKaORxJ4PYrTJ+pSO2o/NvdHvl3N13W8wXpj5wplFcINE10tM2HhfqD7BrcBiBkf9myWyg9zO2SJ0g/cIumzNqkY8anFsqHDq+keZbDM4SaaIx+
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PR1P264MB2295.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230031)(39830400003)(396003)(346002)(366004)(376002)(136003)(230922051799003)(64100799003)(451199024)(186009)(1800799009)(2906002)(86362001)(36756003)(316002)(38100700002)(66556008)(66476007)(1076003)(41300700001)(2616005)(107886003)(52116002)(66946007)(6916009)(26005)(38350700005)(6666004)(6486002)(6512007)(6506007)(478600001)(5660300002)(44832011)(4326008)(8936002)(8676002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iZbzwxib4jOa0EC2QPvBQxqzUNK8EGZ33dLaaj4g+B4492LjNnXWEoDALhER?=
+ =?us-ascii?Q?CjC0EPEbWZIbrqfA2hteOE0HHV1bQgbQqilkCBq77nJ2i4tA44ILmynE3PPM?=
+ =?us-ascii?Q?b1QMvMDt8up027Nf1P/+Sp8zgMVEY6DWMeODj834JRz4xnFDDYedN07jvcbF?=
+ =?us-ascii?Q?OXSe52W1kgFmdjI676haLVhkXIX0DpmY+sShNl3Z0b5DkPNFYEqkiGmmSW1W?=
+ =?us-ascii?Q?eXymvlgFu/gbnM7zG7gSNFmxW+84UvOIYTGoojaYn/sPDXC12zRJWgzY/sXY?=
+ =?us-ascii?Q?Cie4/CYg+cGjKio+Cg4Ta6HiOwPCnraCbuFVFaWD25bqmXESw0a1WxwcaXhq?=
+ =?us-ascii?Q?mYRCBMjgbXPwRhSLI6BwDVNhC1EG+qAK/dhG5tMoZEquWaBERx98aqvunxfO?=
+ =?us-ascii?Q?rKZ4u7edYDw7FK1I0eWyMPJZ0DP1r626H97dGQIgOp6Q8uFcmDx6xZtSLX9W?=
+ =?us-ascii?Q?Ug0pMkzDFuXBXnOVaa0VGT1ZBifbTn3UNMNPsam4j1wpj7AYJiKurLvAA8Xj?=
+ =?us-ascii?Q?opV5xB/zg60Q5QMHmwNJK93fYV+SWH0rrjPF0s/3MiM8v65eRWajDJewv2ul?=
+ =?us-ascii?Q?J7uILOF0k0Mu1fZEHWuPRj5iufhWO9LKe+u92nppP2dicZLil7wrjjAB51gD?=
+ =?us-ascii?Q?vY+Xb8j2FZdhNEDwf6QYh4BAGIbfArJ1HVQnKKzPEWy5Fh/BlWZARlk6yhZK?=
+ =?us-ascii?Q?9Rrf96r6ob7gGpIPxX3wiAAAJGXgW4tV9S6r80K9YyHP/Q5LdpuHKYOF78vJ?=
+ =?us-ascii?Q?ndGnBixF50XbkK0vCsaPxpEIHI63dFvrs+uami1l+bLge5k4ZDA21e+jDoVJ?=
+ =?us-ascii?Q?n1AeO0LhesSvkktlbm/niVR0nxKkKXYBSDBgbx2SF0JrnFWbtOXW4l1YTb+H?=
+ =?us-ascii?Q?4gfwK2CClnSIBIMhgsDDc7UQxW8x4n2awG8ES/enekf8gucvMjj6xG3qf86a?=
+ =?us-ascii?Q?keqjBHYFolsXdoRmsBfkBDPCwO9y9eZ72uzQB8E7ySfCPgdp+7oZAb/mO97z?=
+ =?us-ascii?Q?XKD9t7lyO1gQlbj5+cckSsRuUIk7RIhJVnugXjQp+7xwkg15/pUBZuzEEyYU?=
+ =?us-ascii?Q?ePggNjWrBDyFlfQyw1wfi3MrFZhwr3WOhhtITWmNTD8k0AGxLigP73Ujm6V0?=
+ =?us-ascii?Q?4b8skPBz3xvgu2vchl8y/3gWGBRxV5stsfvaCi5Sc1Vq7xblL1HTYDxP7GF1?=
+ =?us-ascii?Q?DlRzifYpAL+M1LngvDViUQLIV2Hw+d5/GZswkVoxoajqv7Ty5FiSrqD68dLi?=
+ =?us-ascii?Q?IxbF6OaJN89DBSXxPTsGV/GuGSEpQXjTqXYkmHr/ntDl7Swtv5Rz88MJ3c9N?=
+ =?us-ascii?Q?rB40JUMIQIBOmWcTwKpxEDu483a4FDE3NCiFzrBVVxeWWdIPOMN04BpjLNVk?=
+ =?us-ascii?Q?DEoeK+7WsXMcGTICAvfhMAA1pbcy/48ItDXeD/GYG6/LytHNN0B50al24kJy?=
+ =?us-ascii?Q?L3OyAVNCeFhKtf6Om2YH0foy3NlYW6YjT03UPPxjxzDP1vVUlp6KbACCihxM?=
+ =?us-ascii?Q?QEeDp8+GAG6iRsLr3he4K4gRAI77Dw5w8YGjU/Ge6B3/BVL9tKujXQBVVjta?=
+ =?us-ascii?Q?APZsEgIbK0i6PLUxpto3JvH1DtbyLkZYdMdjwdz21o43gR1eIZcps8opF6D1?=
+ =?us-ascii?Q?Jw=3D=3D?=
+X-OriginatorOrg: ekinops.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecc679ce-5a6f-4cf8-ddf8-08dbccd1dc4d
+X-MS-Exchange-CrossTenant-AuthSource: PR1P264MB2295.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2023 16:23:12.0362 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f57b78a6-c654-4771-a72f-837275f46179
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cPWi+e9ZPOcIYjBOMv+YujDoCcMpqA69BsHvNTRnwct7gfxz02w49B9PbM1ZoedWN/0BESG+IJe0TtfiiYI56DV8ryTpDTapCh7IxY6aTnk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2438
+Received-SPF: pass client-ip=40.107.12.129;
+ envelope-from=vincent.jardin@ekinops.com;
+ helo=FRA01-PR2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,136 +134,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 14 Oct 2023, Mark Cave-Ayland wrote:
-> On 09/10/2023 20:54, BALATON Zoltan wrote:
->
->> The initial value for BARs were set in reset method for emulating
->> legacy mode at start but this does not work because PCI code resets
->> BARs after calling device reset method. Remove this ineffective
->> default to avoid confusion.
->> 
->> Instead move setting the BARs to a callback on writing the PCI config
->> regsiter that sets legacy mode (which firmwares needing this mode seem
->> to do) and fix their values to program it to use legacy port numbers
->> in this case. This does not fully emulate what the data sheet says
->> (which is not very clear on this) but it implements enogh to allow
->> both modes as used by firmwares of machines we emulate.
->> 
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>   hw/ide/via.c | 41 ++++++++++++++++++++++++++++++++++++-----
->>   1 file changed, 36 insertions(+), 5 deletions(-)
->> 
->> diff --git a/hw/ide/via.c b/hw/ide/via.c
->> index fff23803a6..43e8af8d69 100644
->> --- a/hw/ide/via.c
->> +++ b/hw/ide/via.c
->> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
->>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
->>                    PCI_STATUS_DEVSEL_MEDIUM);
->>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 
->> 20-23h */
->>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
->>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
->> @@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
->>       pci_set_long(pci_conf + 0xc0, 0x00020001);
->>   }
->>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
->> +                              uint32_t val, int len)
->> +{
->> +    pci_default_write_config(pd, addr, val, len);
->> +    /*
->> +     * Bits 0 and 2 of the PCI programming interface register select 
->> between
->> +     * legacy and native mode for the two IDE channels. We don't emulate 
->> this
->> +     * because we cannot easily switch between ISA and PCI in QEMU so 
->> instead
->
-> As per my previous email, this statement is demonstrably false: this is now 
-> achievable using the portio_list*() APIs.
->
->> +     * when guest selects legacy mode we set the PCI BARs to legacy ports 
->> which
->> +     * works the same. We also don't care about setting each channel 
->> separately
->> +     * as no guest is known to do or need that. We only do this when BARs 
->> are
->> +     * unset when writing this register as logs from real hardware show 
->> that
->> +     * setting legacy mode after BARs were set it will still use ports set 
->> by
->> +     * BARs not ISA ports (e.g. pegasos2 Linux does this after firmware 
->> set
->> +     * native mode and programmed BARs and calls it non-100% native mode).
->> +     * But if 0x8a is written righr after reset without setting BARs then 
->> we
->> +     * want legacy ports (this is done by the AmigaOne firmware).
->> +     */
->> +    if (addr == PCI_CLASS_PROG && val == 0x8a &&
->> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
->> +        PCI_BASE_ADDRESS_SPACE_IO) {
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        /* BMIBA: 20-23h */
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +    }
->> +}
->
-> Another hint that this is not the right way to be doing this: the values you 
-> are placing in BARS 1 and 3 are illegal. PCI IO BARs have bit 1 forced to 0 
-> and bit 0 set to 1 which forces a minimum alignment of 4, so either the 
-> addresses 0x3f6/0x376 are being rounded internally to 0x3f4/0x374 and/or 
-> you're lucky that this just happens to work on QEMU.
+Using interface's settings, let's enforce an always on link up.
 
-The data sheet lists these values for legacy mode bur it seems that bit 1 
-is ignored for BAR here and it ends up set to 0x3x4 with the actual reg 
-mapped to 0x3x7 for both values ending in 4 or 6 here and both works the 
-same with AmigaOS even if I change the values here to 0x3[7f]4 so I can do 
-that and that should then match the default values for these regs but not 
-match the values listed for legacy mode so the data sheet is wrong either 
-way. It still does not make sense to set these in reset method which will 
-be overwritten so only works if I set them here.
+Signed-off-by: Vincent Jardin <vincent.jardin@ekinops.com>
+---
+ hw/net/virtio-net.c            | 8 ++++++++
+ include/hw/virtio/virtio-net.h | 2 ++
+ 2 files changed, 10 insertions(+)
 
-> Using the portio_list*() APIs really is the right way to implement this to 
-> avoid being affected by such issues.
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 29e33ea5ed..e731b4fdea 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -78,6 +78,9 @@
+    tso/gso/gro 'off'. */
+ #define VIRTIO_NET_RSC_DEFAULT_INTERVAL 300000
+ 
++/* force always link up */
++#define VIRTIO_NET_LINK_UP false
++
+ #define VIRTIO_NET_RSS_SUPPORTED_HASHES (VIRTIO_NET_RSS_HASH_TYPE_IPv4 | \
+                                          VIRTIO_NET_RSS_HASH_TYPE_TCPv4 | \
+                                          VIRTIO_NET_RSS_HASH_TYPE_UDPv4 | \
+@@ -447,6 +450,9 @@ static void virtio_net_set_link_status(NetClientState *nc)
+     else
+         n->status |= VIRTIO_NET_S_LINK_UP;
+ 
++    if (n->net_conf.link_up)
++        n->status |= VIRTIO_NET_S_LINK_UP;
++
+     if (n->status != old_status)
+         virtio_notify_config(vdev);
+ 
+@@ -3947,6 +3953,8 @@ static Property virtio_net_properties[] = {
+                       VIRTIO_NET_F_GUEST_USO6, true),
+     DEFINE_PROP_BIT64("host_uso", VirtIONet, host_features,
+                       VIRTIO_NET_F_HOST_USO, true),
++    DEFINE_PROP_BOOL("link_up", VirtIONet, net_conf.link_up,
++                       VIRTIO_NET_LINK_UP),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index 55977f01f0..385bebab34 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -56,6 +56,7 @@ typedef struct virtio_net_conf
+     char *duplex_str;
+     uint8_t duplex;
+     char *primary_id_str;
++    bool link_up; /* if set enforce link up, never down */
+ } virtio_net_conf;
+ 
+ /* Coalesced packets type & status */
+@@ -180,6 +181,7 @@ struct VirtIONet {
+     size_t guest_hdr_len;
+     uint64_t host_features;
+     uint32_t rsc_timeout;
++    uint32_t link_up; /* if set enforce link up, never down */
+     uint8_t rsc4_enabled;
+     uint8_t rsc6_enabled;
+     uint8_t has_ufo;
+-- 
+2.34.1
 
-Can you provide an alternative patch using portio_list? I don't know how 
-to do that and have no example to follow either so it would be hard for me 
-to figure out. Or give some pointers on how to do this if I missed 
-something.
-
-Regards,
-BALATON Zoltan
-
->>   static void via_ide_realize(PCIDevice *dev, Error **errp)
->>   {
->>       PCIIDEState *d = PCI_IDE(dev);
->> @@ -221,6 +251,7 @@ static void via_ide_class_init(ObjectClass *klass, void 
->> *data)
->>       /* Reason: only works as function of VIA southbridge */
->>       dc->user_creatable = false;
->>   +    k->config_write = via_ide_cfg_write;
->>       k->realize = via_ide_realize;
->>       k->exit = via_ide_exitfn;
->>       k->vendor_id = PCI_VENDOR_ID_VIA;
->
->
-> ATB,
->
-> Mark.
->
->
->
 
