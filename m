@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD61E7C95FE
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C797C9602
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:17:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrjtW-0006lU-Mb; Sat, 14 Oct 2023 15:01:51 -0400
+	id 1qrk7l-0004aE-A8; Sat, 14 Oct 2023 15:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qrjtC-0006lI-Bq
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:01:30 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qrk7b-0004ZB-Vg; Sat, 14 Oct 2023 15:16:29 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qrjtA-0002uA-EO
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:01:30 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qrk7a-0005xu-4Z; Sat, 14 Oct 2023 15:16:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C18C72A5D8
- for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 22:01:27 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 9FE772A5DB;
+ Sat, 14 Oct 2023 22:16:28 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B6AED2F23A
- for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 22:01:15 +0300 (MSK)
-Message-ID: <4e1201e9-2bd4-4af7-aac2-91833284ac1e@tls.msk.ru>
-Date: Sat, 14 Oct 2023 22:01:15 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8DE3A2F240;
+ Sat, 14 Oct 2023 22:16:16 +0300 (MSK)
+Message-ID: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+Date: Sat, 14 Oct 2023 22:16:16 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: QEMU Developers <qemu-devel@nongnu.org>
+To: QEMU Developers <qemu-devel@nongnu.org>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
-Subject: sector size = 4096?
+Subject: -drive if=none: can't we make this the default?
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -54,52 +55,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi!
+Can't we make -drive if=none the default?
 
-I wanted to experiment with sector size = 4096, to see how an OS
-reacts.  And naturally, the first instinct is to try it in qemu.
-But it turned to be.. difficult.
-
-First, there's no documentation.  But I remember seeing properties
-of ide-hd device, like physical_sector_size etc.  Ok.
-
-  $ qemu-img create -f raw img 32G
-
-  $ kvm -machine q35 -drive file=img,format=raw,if=none,id=d \
-    -device ide-hd,drive=d,physical_sector_size=4096
-
-This way, the guest see size of the drive as 0.  This is obviously
-not right (tm).
-
-Okay, lets try full 4096 sectors:
-
-    -device ide-hd,drive=d,physical_sector_size=4096,logical_sector_size=4096
-
-This fails:
-
-    discard_granularity must be a multiple of logical_block_size
-
-Let's adjust discard_granularity (I think it'd be good if qemu does
-this based on physical_sector_size already):
-
-    -device ide-hd,drive=d,physical_sector_size=4096,logical_sector_size=4096,discard_granularity=0
-
-This fails:
-
-   logical_block_size must be 512 for IDE
-
-Huh? Should the tell all the sata Advanced-Format (AF) drives manufacturers
-their drives does not exist, or what? :)
-
-
-Ok.  Tried the same with nvme.  There, sector sizes seems to be entirely
-ignored, - no matter which values I choose, guest always see them as
-512.
-
-
-What's the proper way to run guest with 4096-byte sector size in qemu?
-
-Thanks,
+Yes, I know current default is ide, and whole world have to use if=none explicitly
+to undo this.  I think at this point we can deprecate if=ide default and switch to
+if=none in the next release.  I think it will be a welcome change.
 
 /mjt
 
