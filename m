@@ -2,51 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDD07C961E
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AC17C9629
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:58:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrkZN-0000sC-GA; Sat, 14 Oct 2023 15:45:05 -0400
+	id 1qrklb-0003sY-Q2; Sat, 14 Oct 2023 15:57:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qrkZK-0000rN-E0; Sat, 14 Oct 2023 15:45:02 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklW-0003s3-4A
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:38 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qrkZH-0002Jp-LB; Sat, 14 Oct 2023 15:45:02 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 520E9757202;
- Sat, 14 Oct 2023 21:43:54 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 064047456A7; Sat, 14 Oct 2023 21:43:54 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 029E2745681;
- Sat, 14 Oct 2023 21:43:54 +0200 (CEST)
-Date: Sat, 14 Oct 2023 21:43:53 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
-In-Reply-To: <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
-Message-ID: <339df528-073f-cbd2-ceef-71868c89929c@eik.bme.hu>
-References: <cover.1696880742.git.balaton@eik.bme.hu>
- <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
- <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklT-0004Ya-G4
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:37 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id A8B7ECE022B;
+ Sat, 14 Oct 2023 19:57:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDF7C433C8;
+ Sat, 14 Oct 2023 19:57:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1697313442;
+ bh=y24mDVImIH9F1NyeT6+ma2MuYqmKAcu36abyViwhkas=;
+ h=From:To:Cc:Subject:Date:From;
+ b=p5D6l8avzwFA8hzrJPg8wbhdX95+R6GG97uXP2VQurMK1tBtNB1FOBI5CBeqqx84b
+ EO5+5xw+vdsncUdL6NSXRR4CzSLXQcCj8dVqotN4/RXSpe9YXIO2M9tUgRtkPs4irv
+ ZRPWPb1+rgn84KrmIfEn4XRc0P2s+ai2U/Nk3TzEnPHihyGrERWp8vwAECR/QuPX6h
+ LgjLRRUJ4vt0JD4ujnOgWOsMBy1vtJgdedEIy5Lc1qsS2agbjBw+XjCrKsRUnsAXVK
+ ltblS91ZZfVHI3/sh4j/ST8C6t5qyyvoYKsQaM0b+W8UfTcAnS67U1Ko2hA6JXh3pR
+ gPTVC+OvuNGyg==
+From: deller@kernel.org
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH 00/12] target/hppa: Add emulation of a C3700 HP-PARISC
+ workstation
+Date: Sat, 14 Oct 2023 21:57:07 +0200
+Message-ID: <20231014195719.151397-1-deller@kernel.org>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,131 +67,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 14 Oct 2023, Mark Cave-Ayland wrote:
-> On 09/10/2023 20:54, BALATON Zoltan wrote:
->> The initial value for BARs were set in reset method for emulating
->> legacy mode at start but this does not work because PCI code resets
->> BARs after calling device reset method. Remove this ineffective
->> default to avoid confusion.
->> 
->> Instead move setting the BARs to a callback on writing the PCI config
->> regsiter that sets legacy mode (which firmwares needing this mode seem
->> to do) and fix their values to program it to use legacy port numbers
->> in this case. This does not fully emulate what the data sheet says
->> (which is not very clear on this) but it implements enogh to allow
->> both modes as used by firmwares of machines we emulate.
->> 
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>   hw/ide/via.c | 41 ++++++++++++++++++++++++++++++++++++-----
->>   1 file changed, 36 insertions(+), 5 deletions(-)
->> 
->> diff --git a/hw/ide/via.c b/hw/ide/via.c
->> index fff23803a6..43e8af8d69 100644
->> --- a/hw/ide/via.c
->> +++ b/hw/ide/via.c
->> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
->>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
->>                    PCI_STATUS_DEVSEL_MEDIUM);
->>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 
->> 20-23h */
->>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
->>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
->> @@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
->>       pci_set_long(pci_conf + 0xc0, 0x00020001);
->>   }
->>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
->> +                              uint32_t val, int len)
->> +{
->> +    pci_default_write_config(pd, addr, val, len);
->> +    /*
->> +     * Bits 0 and 2 of the PCI programming interface register select 
->> between
->> +     * legacy and native mode for the two IDE channels. We don't emulate 
->> this
->> +     * because we cannot easily switch between ISA and PCI in QEMU so 
->> instead
->
-> As per my previous email, this statement is demonstrably false: this is now 
-> achievable using the portio_list*() APIs.
->
->> +     * when guest selects legacy mode we set the PCI BARs to legacy ports 
->> which
->> +     * works the same. We also don't care about setting each channel 
->> separately
->> +     * as no guest is known to do or need that. We only do this when BARs 
->> are
->> +     * unset when writing this register as logs from real hardware show 
->> that
->> +     * setting legacy mode after BARs were set it will still use ports set 
->> by
->> +     * BARs not ISA ports (e.g. pegasos2 Linux does this after firmware 
->> set
->> +     * native mode and programmed BARs and calls it non-100% native mode).
->> +     * But if 0x8a is written righr after reset without setting BARs then 
->> we
->> +     * want legacy ports (this is done by the AmigaOne firmware).
->> +     */
->> +    if (addr == PCI_CLASS_PROG && val == 0x8a &&
->> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
->> +        PCI_BASE_ADDRESS_SPACE_IO) {
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        /* BMIBA: 20-23h */
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +    }
->> +}
->
-> Another hint that this is not the right way to be doing this: the values you 
-> are placing in BARS 1 and 3 are illegal. PCI IO BARs have bit 1 forced to 0 
-> and bit 0 set to 1 which forces a minimum alignment of 4, so either the 
-> addresses 0x3f6/0x376 are being rounded internally to 0x3f4/0x374 and/or 
-> you're lucky that this just happens to work on QEMU.
->
-> Using the portio_list*() APIs really is the right way to implement this to 
-> avoid being affected by such issues.
+From: Helge Deller <deller@gmx.de>
 
-On second thought I don't think that would work as pegaos2 Linux writes 
-0x8a to prog_if but then keeps using the ports as set by BARs so if you 
-use ISA ports in this case this will break. I think that proves that real 
-chip also uses BARs to emulate legacy mode similar to this approach so 
-what we have in this patch is close enough and works well. Your proposed 
-alternative is more complex, would not work any better and probably even 
-does not work for all cases this works for so I think this is the better 
-way now. I've sent a v3 with values changed to match BAR default values 
-with 0x3x4 and updating comment and commit message.
+This series adds a new PA-RISC machine emulation for the HP-PARISC
+C3700 workstation.
 
-Regards,
-BALATON Zoltan
+The physical HP C3700 machine has a PA2.0 (64-bit) CPU, in contrast to
+the existing emulation of a B160L workstation which is a 32-bit only
+machine and where it's Dino PCI controller isn't 64-bit capable.
 
->>   static void via_ide_realize(PCIDevice *dev, Error **errp)
->>   {
->>       PCIIDEState *d = PCI_IDE(dev);
->> @@ -221,6 +251,7 @@ static void via_ide_class_init(ObjectClass *klass, void 
->> *data)
->>       /* Reason: only works as function of VIA southbridge */
->>       dc->user_creatable = false;
->>   +    k->config_write = via_ide_cfg_write;
->>       k->realize = via_ide_realize;
->>       k->exit = via_ide_exitfn;
->>       k->vendor_id = PCI_VENDOR_ID_VIA;
->
->
-> ATB,
->
-> Mark.
->
->
->
+With the HP C3700 machine emulation (together with the emulated Astro
+Memory controller and the Elroy PCI bridge) it's now possible to
+enhance the hppa CPU emulation to support the 64-bit instruction set
+in upcoming patches.
+
+Please review.
+
+Helge
+
+Helge Deller (12):
+  target/hppa: Update to SeaBIOS-hppa version 10
+  pci_ids: Add PCI vendor ID for HP
+  hw/pci-host: Add Astro system bus adapter found on PA-RISC machines
+  MAINTAINERS: Add Astro PCI host for hppa machines
+  lasips2: LASI PS/2 devices are not user-createable
+  tulip: Use the HP PCI vendor ID instead of number
+  pci-host: Wire up new Astro/Elroy PCI bridge
+  hw/hppa: Require at least SeaBIOS-hppa version 10
+  hw/hppa: Export machine name, BTLBs, power-button address via fw_cfg
+  hw/hppa: Provide RTC and DebugOutputPort on CPU #0
+  hw/hppa: Split out machine creation
+  hw/hppa: Add new HP C3700 machine
+
+ MAINTAINERS                 |   5 +-
+ hw/hppa/Kconfig             |   1 +
+ hw/hppa/hppa_hardware.h     |   1 -
+ hw/hppa/machine.c           | 364 +++++++++++----
+ hw/input/lasips2.c          |   4 +
+ hw/net/tulip.c              |   2 +-
+ hw/pci-host/Kconfig         |   4 +
+ hw/pci-host/astro.c         | 876 ++++++++++++++++++++++++++++++++++++
+ hw/pci-host/meson.build     |   1 +
+ hw/pci-host/trace-events    |  11 +
+ include/hw/pci-host/astro.h |  92 ++++
+ include/hw/pci/pci_ids.h    |   2 +
+ pc-bios/hppa-firmware.img   | Bin 732376 -> 755480 bytes
+ roms/seabios-hppa           |   2 +-
+ 14 files changed, 1284 insertions(+), 81 deletions(-)
+ create mode 100644 hw/pci-host/astro.c
+ create mode 100644 include/hw/pci-host/astro.h
+
+-- 
+2.41.0
+
 
