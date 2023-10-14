@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065857C956B
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 18:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915497C95D1
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 20:05:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrhdn-00076k-WB; Sat, 14 Oct 2023 12:37:28 -0400
+	id 1qrizl-0001Dw-3r; Sat, 14 Oct 2023 14:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrhdm-00076c-H6
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:37:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrhdk-0007GQ-SX
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:37:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697301442;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xkby15Q3uM60GRoU7GjpLXsvty99PVv6YC7sLCN43XE=;
- b=YGCNJL79J7+qP+nCfepbyYw0aSEPH6RwYQP+E6p6vptb5v85hwJCQLwyttM8RvJUkhX2sh
- EkBqFjAadIyjsUdK7SHVBjspfDAFLK2U2amI84Kbr8XmRi0hxx1hK3SO7AL6JcQmtOtTtm
- gFfsTg/E4aOOirRkfU3IDedv1h7FXKo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-1-K9A-CZQkMFSHB4O-mm9pSQ-1; Sat, 14 Oct 2023 12:37:10 -0400
-X-MC-Unique: K9A-CZQkMFSHB4O-mm9pSQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30e4943ca7fso1919205f8f.3
- for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 09:37:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qrizj-0001D2-Is
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 14:04:11 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qrizh-0007PW-KU
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 14:04:11 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5859a7d6556so2341337a12.0
+ for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 11:04:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1697306647; x=1697911447; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OTyFJpzixiHGEOr7idBGNlBPwe+6+2TFrHoRXmgkduo=;
+ b=W1CgPIzZA8Ye9vHMs7/kmiCsLgVn3mak62tcXmHrGvOVFCCCJmYZlhkN8K5IuQfd/C
+ lMitZ9rzVEtKv29YfKQUMF/87H9589ORu0fcj6vOiS1pJUP+5yCjvQWEsDMRpqjbbYl6
+ p4w4Xm+VyHse8DdQA+Eng05VHyj3HKCeSlQM8HS02adcR11qS2awwrG5HyPn9Cq03Gh3
+ OclJbWIer+bwkXJzbLJzWjSE1QHZi96YrVptOycJ5qmE958fOz/tjyVxFRxChwe9yte5
+ Xpt+N4prytn1OChugYsqhauACIArJok3N3LtiPohF+cfnN3DwlYD2jciAJxeMT/+flEk
+ MHdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697301430; x=1697906230;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xkby15Q3uM60GRoU7GjpLXsvty99PVv6YC7sLCN43XE=;
- b=NAneWZcsNLdGGfhXaoqD4DSVSKTT6nv8ZmAAZcdKe++M3VwcxSlKqePLxgXUo4KA24
- saPLrXFgFy91fVPIgjq6RFcjphvvvSe/nBaGaoJ35hhVxvMo+HT3ejsoswuELZw2zVbE
- hPDDznATUoVh6UGvo6uTzhOk+Mbo8na6OeXg4ujBlynK2/avwwa2LyoKwuJBFOqYjKgA
- Szcm1rLT/8+AlbH/Uuz96LuCLev62i08yKiquODxCbukd8KEcxZsa9zbs35aymN8zdr1
- d1Cau9FC57eistmurirkpjRiGzhafIej3FBjqJ8s5iZmYhhyHnDyNFdT35/M4GOJQc+0
- ZJBg==
-X-Gm-Message-State: AOJu0YyVirQbz75EzcdC7LQx+xeYyr/S8m/fCpZvzLSBVBO4ui8SLQyp
- XMZR61TgXhuL4wnn+mK/+vLWwc3HwQcaMDsVNqCxh9k4ZT12f7i6PPLfvoAlXegMd3BOb32vF//
- aj0J5RDfnCHXlVvQ=
-X-Received: by 2002:a5d:4c86:0:b0:31a:ed75:75d9 with SMTP id
- z6-20020a5d4c86000000b0031aed7575d9mr26500014wrs.16.1697301429808; 
- Sat, 14 Oct 2023 09:37:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGoOnMMtkD7A6xG4jTkaA2ewSHL2RkZKY5oTLUnu36RejWrY671Nc/GJKNx4i9nwFkk4CBfcg==
-X-Received: by 2002:a5d:4c86:0:b0:31a:ed75:75d9 with SMTP id
- z6-20020a5d4c86000000b0031aed7575d9mr26500006wrs.16.1697301429427; 
- Sat, 14 Oct 2023 09:37:09 -0700 (PDT)
-Received: from redhat.com ([109.253.193.138]) by smtp.gmail.com with ESMTPSA id
- k17-20020adff291000000b003143867d2ebsm23339658wro.63.2023.10.14.09.37.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 14 Oct 2023 09:37:08 -0700 (PDT)
-Date: Sat, 14 Oct 2023 12:37:05 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Vincent Jardin <vincent.jardin@ekinops.com>
-Cc: qemu-devel@nongnu.org, jasowang@redhat.com
-Subject: Re: [RFC] virtio: enforce link up
-Message-ID: <20231014123635-mutt-send-email-mst@kernel.org>
-References: <20231014162234.153808-1-vincent.jardin@ekinops.com>
+ d=1e100.net; s=20230601; t=1697306647; x=1697911447;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OTyFJpzixiHGEOr7idBGNlBPwe+6+2TFrHoRXmgkduo=;
+ b=KWho1V/casK5XtHneoKecCrIcOROILvg6JWGnj+TFOhVW3yNAKrojN9rBl/pvp7S+n
+ XK/0UdbayMEZeDpZTmXcKeTQVQsMm+WUsYLeWr2y1s0ZPWm9o2xkOCjgOQ2fN2t4Bm3V
+ XL9PAxLoa9TuHmxlAzgszd0H5GlLnAwWxlUzCPKc3hNAbUAXUS/K7airZ9y7iaTWcHc6
+ QpEFNEjCBckjVa5KKjtXU5MOxXmMZKnjwfNC62DI0p4mZcRQ+ua77KdKDCv0nabtGt15
+ NFCD8oSYo2uRbzCHOca6aYJc+yYzuAY1IgGVL0denxs0nNxl5am8u587dVIhAiHDKLfe
+ Y/9w==
+X-Gm-Message-State: AOJu0YxQz40dYPmbpugd6f7iLLVE9H1Np8o61e3T3vsNemw12K0T+bml
+ Utw225VRr1EMleY+0ZO063yI1g==
+X-Google-Smtp-Source: AGHT+IF03cPUVi7JizBaR9wPKxSwKmImJb3AilcDQHIXWHpnwQNb9jIfXxuJVWJpX0tK10SgBs0k3w==
+X-Received: by 2002:a17:90a:4a8b:b0:27d:3ed2:86a5 with SMTP id
+ f11-20020a17090a4a8b00b0027d3ed286a5mr4330569pjh.33.1697306647479; 
+ Sat, 14 Oct 2023 11:04:07 -0700 (PDT)
+Received: from [192.168.68.107] ([177.45.186.249])
+ by smtp.gmail.com with ESMTPSA id
+ 23-20020a17090a005700b0027cf7818fb6sm2114870pjb.37.2023.10.14.11.04.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 14 Oct 2023 11:04:06 -0700 (PDT)
+Message-ID: <597bf4be-207b-400a-be49-bc18900809a0@ventanamicro.com>
+Date: Sat, 14 Oct 2023 15:04:01 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231014162234.153808-1-vincent.jardin@ekinops.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] target/riscv: Do not allow MXL_RV32 for
+ TARGET_RISCV64
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+References: <20231014033545.15220-1-akihiko.odaki@daynix.com>
+ <20231014033545.15220-2-akihiko.odaki@daynix.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231014033545.15220-2-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,72 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 14, 2023 at 06:22:34PM +0200, Vincent Jardin wrote:
-> Using interface's settings, let's enforce an always on link up.
+
+
+On 10/14/23 00:35, Akihiko Odaki wrote:
+> TARGET_RISCV64 does not have riscv-32bit-cpu.xml so it shouldn't accept
+> MXL_RV32.
 > 
-> Signed-off-by: Vincent Jardin <vincent.jardin@ekinops.com>
-
-What is going on here? Just don't set it down.
-
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->  hw/net/virtio-net.c            | 8 ++++++++
->  include/hw/virtio/virtio-net.h | 2 ++
->  2 files changed, 10 insertions(+)
-> 
-> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index 29e33ea5ed..e731b4fdea 100644
-> --- a/hw/net/virtio-net.c
-> +++ b/hw/net/virtio-net.c
-> @@ -78,6 +78,9 @@
->     tso/gso/gro 'off'. */
->  #define VIRTIO_NET_RSC_DEFAULT_INTERVAL 300000
->  
-> +/* force always link up */
-> +#define VIRTIO_NET_LINK_UP false
-> +
->  #define VIRTIO_NET_RSS_SUPPORTED_HASHES (VIRTIO_NET_RSS_HASH_TYPE_IPv4 | \
->                                           VIRTIO_NET_RSS_HASH_TYPE_TCPv4 | \
->                                           VIRTIO_NET_RSS_HASH_TYPE_UDPv4 | \
-> @@ -447,6 +450,9 @@ static void virtio_net_set_link_status(NetClientState *nc)
->      else
->          n->status |= VIRTIO_NET_S_LINK_UP;
->  
-> +    if (n->net_conf.link_up)
-> +        n->status |= VIRTIO_NET_S_LINK_UP;
-> +
->      if (n->status != old_status)
->          virtio_notify_config(vdev);
->  
-> @@ -3947,6 +3953,8 @@ static Property virtio_net_properties[] = {
->                        VIRTIO_NET_F_GUEST_USO6, true),
->      DEFINE_PROP_BIT64("host_uso", VirtIONet, host_features,
->                        VIRTIO_NET_F_HOST_USO, true),
-> +    DEFINE_PROP_BOOL("link_up", VirtIONet, net_conf.link_up,
-> +                       VIRTIO_NET_LINK_UP),
->      DEFINE_PROP_END_OF_LIST(),
->  };
->  
-> diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-> index 55977f01f0..385bebab34 100644
-> --- a/include/hw/virtio/virtio-net.h
-> +++ b/include/hw/virtio/virtio-net.h
-> @@ -56,6 +56,7 @@ typedef struct virtio_net_conf
->      char *duplex_str;
->      uint8_t duplex;
->      char *primary_id_str;
-> +    bool link_up; /* if set enforce link up, never down */
->  } virtio_net_conf;
->  
->  /* Coalesced packets type & status */
-> @@ -180,6 +181,7 @@ struct VirtIONet {
->      size_t guest_hdr_len;
->      uint64_t host_features;
->      uint32_t rsc_timeout;
-> +    uint32_t link_up; /* if set enforce link up, never down */
->      uint8_t rsc4_enabled;
->      uint8_t rsc6_enabled;
->      uint8_t has_ufo;
-> -- 
-> 2.34.1
 
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+
+>   target/riscv/tcg/tcg-cpu.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index a28918ab30..e0cbc56320 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -161,10 +161,11 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+>       case MXL_RV128:
+>           cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
+>           break;
+> -#endif
+> +#elif defined(TARGET_RISCV32)
+>       case MXL_RV32:
+>           cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
+>           break;
+> +#endif
+>       default:
+>           g_assert_not_reached();
+>       }
 
