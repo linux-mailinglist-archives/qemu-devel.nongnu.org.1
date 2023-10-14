@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CDC7C9633
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 22:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6637C9645
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 22:36:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrkoM-00036N-9p; Sat, 14 Oct 2023 16:00:34 -0400
+	id 1qrlLl-0005JX-FZ; Sat, 14 Oct 2023 16:35:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qrko9-0002h2-CN; Sat, 14 Oct 2023 16:00:30 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1qrlLj-0005JK-Jr; Sat, 14 Oct 2023 16:35:03 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qrko7-0005BQ-4k; Sat, 14 Oct 2023 16:00:21 -0400
+ id 1qrlLh-0003GB-88; Sat, 14 Oct 2023 16:35:03 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id CECE475721D;
- Sat, 14 Oct 2023 21:59:13 +0200 (CEST)
+ by localhost (Postfix) with SMTP id E7C02757202;
+ Sat, 14 Oct 2023 22:33:53 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id D646F7456A7; Sat, 14 Oct 2023 21:59:12 +0200 (CEST)
+ id AC0687456A7; Sat, 14 Oct 2023 22:33:53 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D3D95745681;
- Sat, 14 Oct 2023 21:59:12 +0200 (CEST)
-Date: Sat, 14 Oct 2023 21:59:12 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id A709A745681;
+ Sat, 14 Oct 2023 22:33:53 +0200 (CEST)
+Date: Sat, 14 Oct 2023 22:33:53 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Michael Tokarev <mjt@tls.msk.ru>
-cc: QEMU Developers <qemu-devel@nongnu.org>, 
- "open list:Network Block Dev..." <qemu-block@nongnu.org>
-Subject: Re: -drive if=none: can't we make this the default?
-In-Reply-To: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
-Message-ID: <bfc0ea0d-afda-50c6-d1d2-a89a227ad4f9@eik.bme.hu>
-References: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+To: deller@kernel.org
+cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Helge Deller <deller@gmx.de>, qemu-stable@nongnu.org
+Subject: Re: [PATCH 05/12] lasips2: LASI PS/2 devices are not user-createable
+In-Reply-To: <20231014195719.151397-6-deller@kernel.org>
+Message-ID: <b5bce14d-082e-bab4-9345-668f90d876e7@eik.bme.hu>
+References: <20231014195719.151397-1-deller@kernel.org>
+ <20231014195719.151397-6-deller@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -58,30 +59,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 14 Oct 2023, Michael Tokarev wrote:
-> Can't we make -drive if=none the default?
+On Sat, 14 Oct 2023, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
 >
-> Yes, I know current default is ide, and whole world have to use if=none 
-> explicitly
-> to undo this.  I think at this point we can deprecate if=ide default and 
-> switch to
-> if=none in the next release.  I think it will be a welcome change.
+> Those PS/2 ports are created with the LASI controller when
+> a 32-bit PA-RISC machine is created.
+>
+> Mark them not user-createable to avoid showing them in
+> the qemu device list.
+>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Cc: qemu-stable@nongnu.org
+> ---
+> hw/input/lasips2.c | 4 ++++
+> 1 file changed, 4 insertions(+)
+>
+> diff --git a/hw/input/lasips2.c b/hw/input/lasips2.c
+> index ea7c07a2ba..93c9c887d3 100644
+> --- a/hw/input/lasips2.c
+> +++ b/hw/input/lasips2.c
+> @@ -351,6 +351,8 @@ static void lasips2_port_class_init(ObjectClass *klass, void *data)
+> {
+>     DeviceClass *dc = DEVICE_CLASS(klass);
+>
+> +    /* Lasi devices can not be created by users */
 
-I don't think that would be welcome by all people now using -drive 
-media=disk,format-raw,file= shortcut (which they were forced to use 
-instead of the previous -hda shortcut just to specify format=raw) and now 
-they would need to change that to -drive lot,of,options,here -device 
-ide-hd,drive=[what was it called and which drive is that?] instead. That's 
-a lot more typing and much less convenient so please keep the convenience 
-option at least somewhat convenient for command line users.
-
-Also machine class has a member (possibly) set by board code: 
-mc->block_default_type = IF_IDE; Isn't that the default used if no "if" 
-property given?
-
-Maybe I don't understand how this works but if it makes less convenient 
-for users and breaks their scripts then I don't think it's a good idea.
+That's what the next line says so this comment does not add any info. It 
+should instead explain why, such as "part of LASI" or something like that.
 
 Regards,
 BALATON Zoltan
+
+> +    dc->user_creatable = false;
+>     dc->realize = lasips2_port_realize;
+> }
+>
+> @@ -397,6 +399,8 @@ static void lasips2_kbd_port_class_init(ObjectClass *klass, void *data)
+>     DeviceClass *dc = DEVICE_CLASS(klass);
+>     LASIPS2PortDeviceClass *lpdc = LASIPS2_PORT_CLASS(klass);
+>
+> +    /* Lasi devices can not be created by users */
+> +    dc->user_creatable = false;
+>     device_class_set_parent_realize(dc, lasips2_kbd_port_realize,
+>                                     &lpdc->parent_realize);
+> }
+>
 
