@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66447C940E
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 12:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8630D7C9408
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 12:04:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrbSt-0002VY-7f; Sat, 14 Oct 2023 06:01:47 -0400
+	id 1qrbSn-0002UW-KF; Sat, 14 Oct 2023 06:01:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qrbSr-0002V6-Lb
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 06:01:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qrbSl-0002Tx-Pf
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 06:01:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qrbSp-0003zK-F4
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 06:01:45 -0400
+ id 1qrbSh-0003yT-6Y
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 06:01:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697277702;
+ s=mimecast20190719; t=1697277694;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hvtMyjnrARMHvZ8vqo0iEu7LAHiEpFJcf33D/tMysJw=;
- b=hfioMeSCNApHgWlmkJtQoZj7WmDuPIfQixe9BXCg76rujj0CdyAMh5O9F5Ap3jHN36+Td9
- QSII7w7V4FQH8W001sXuopxpFHpqPSLesNLQRMuG6v0wt/ujKUly26fwKUvUm7huzdjmil
- ZojX7ihuDSu+drhoAsAuOz5hvea7YeQ=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=O0fO7ODbzYSAx28Rwy633NyqFTt8J0HLgXe91UBK6GM=;
+ b=IjGnHmZ0/spdH67fKNoT9CTs/Tj5RR6Zi8BwJQo4/WEOZ87sH1c7seXKbk3b2jWSoEj0jK
+ 6Hf+raw6nDuDWpbVg658OUnBDi8rjFurSOfv58gUvIGi8gjqAKDLHx/VNnWxufYWAiBVMQ
+ DL65rm9sn1wkj186uXFzj9q7LVh++mM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-vqyXLkCvN5yBGZcogTQ7cA-1; Sat, 14 Oct 2023 06:01:31 -0400
-X-MC-Unique: vqyXLkCvN5yBGZcogTQ7cA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9b65d7079faso186230466b.1
- for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 03:01:30 -0700 (PDT)
+ us-mta-450-2qy9Z_-POh2guX2i-t79fw-1; Sat, 14 Oct 2023 06:01:32 -0400
+X-MC-Unique: 2qy9Z_-POh2guX2i-t79fw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9ae0bf9c0a9so184852166b.3
+ for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 03:01:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697277689; x=1697882489;
+ d=1e100.net; s=20230601; t=1697277691; x=1697882491;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hvtMyjnrARMHvZ8vqo0iEu7LAHiEpFJcf33D/tMysJw=;
- b=SlEN85ma8pv4tkdWzFjocHm8xaDym726GQrsPuJ7PyC1btYIL85AnDXauCRqfkUsPm
- ++gzlEV7ASBuPbnFDoWDtQWDnk79eZNoW2vk2R/yIWmAxeVl+CpaD5qGCga62ubbrBEE
- qQwVlZB35/+TCJhWsZyXFUI/K/yvOIExXwiT2eEjEtLY5B6KNoC6wcg3bjkZuDFjlq4v
- 8w6DY/quJ0SBFiQwUVHiBapBE9cwwNZxJE32Damwb7xMPKCEKT6S1ao7r5xkClOYD6cM
- mTkryrsEYGpOrsRfSKwyO6SS8+A2UYkanqLwlhr6JqGQ4DIUdyF1iDoQ4MNqAOUDbI3x
- OSIA==
-X-Gm-Message-State: AOJu0YwEpK6cGHMOvn9h/S9YMNkw0tNW8TIr/8r/IWrjTeJRrkw041Xu
- hCH9cqM9qOi3pdj/33luO9n+FPmHT+Prmi14Ug1ikjfMoRUC5PWOebyDCEc84u3FBZER70xPecE
- g0Aix94zf8cKno6Aq6dIHt3he2zoSYZGeGEd4nv6OxqHJ+WL9wCHaJ0LDKtUdwxxMyqzJAYGg0L
- o=
-X-Received: by 2002:a17:906:fe0a:b0:9bd:a34b:eed with SMTP id
- wy10-20020a170906fe0a00b009bda34b0eedmr4004942ejb.59.1697277689390; 
- Sat, 14 Oct 2023 03:01:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOuyODXCAK8+mxaGF+f5lgiN7WrjJv1ha4coKrdMhcDZ2i3y8tBeF6MKFw0VeOzgV6HHWo5Q==
-X-Received: by 2002:a17:906:fe0a:b0:9bd:a34b:eed with SMTP id
- wy10-20020a170906fe0a00b009bda34b0eedmr4004923ejb.59.1697277688935; 
- Sat, 14 Oct 2023 03:01:28 -0700 (PDT)
+ bh=O0fO7ODbzYSAx28Rwy633NyqFTt8J0HLgXe91UBK6GM=;
+ b=ZaqOPSHSlb+db0IQQmPJZ6J8P5+k/g+tHhIR8ciT51LnL2WYkdzyrDdB1LawISVrQT
+ oPMjrjhMMDReo5vE+DbHCjvyGVc1uCL8WVfmCA81mZMOIBnv6+OZW6MSSapjM1M64uGg
+ 1xsOJ7P3wsdO+MrE9uJpAoTZp61/Fx2Lo5NagiYanWOL199ClCECuSzBp86VhpAD3AyA
+ MkjBPXWORpq7wBOC3gy8wb57oiBZNZYS3Hz9POwVCEFvOVu0BeWdFHYmuz+QsrjZWyq9
+ NwEuuzPqjyv8z6rpjorEr2NhD72ekRSIXN9w5wIDyaetsmBD/Ql1KsY4BgId/AhVUSsi
+ thtw==
+X-Gm-Message-State: AOJu0Yz5lL07AwzwilGsZUORnLAq6usQ+W74pQVGbwZInbB058P5yJWH
+ dZmUl+ArdGLzpDpk262k/Q3WZUgGFfsBRns1ryjaSLZYs4eO+taFx4p+/6s3jWXL8DBS+h6aq1x
+ IJI53dvrd3RT3VaMOoAmapEfnObjN0ge2+md4aWCipSa7gx4wKqhyE/n1zydjqg639Vf42rI+Nh
+ 8=
+X-Received: by 2002:a17:906:7308:b0:9be:ab38:a361 with SMTP id
+ di8-20020a170906730800b009beab38a361mr1013513ejc.8.1697277691196; 
+ Sat, 14 Oct 2023 03:01:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHD2+Xmjxz/gNYwtPrU1XrGhNHsFRaCse6sS+CgF2+sgnq6uV4Ucl2Gd9wKFjhEwYaisJ8cBQ==
+X-Received: by 2002:a17:906:7308:b0:9be:ab38:a361 with SMTP id
+ di8-20020a170906730800b009beab38a361mr1013496ejc.8.1697277690784; 
+ Sat, 14 Oct 2023 03:01:30 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- c16-20020a17090620d000b009ae587ce128sm708026ejc.216.2023.10.14.03.01.27
+ u12-20020a1709060b0c00b009ad778a68c5sm726884ejg.60.2023.10.14.03.01.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 14 Oct 2023 03:01:27 -0700 (PDT)
+ Sat, 14 Oct 2023 03:01:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 03/18] target/i386: implement SHA instructions
-Date: Sat, 14 Oct 2023 12:01:05 +0200
-Message-ID: <20231014100121.109817-4-pbonzini@redhat.com>
+Subject: [PATCH 04/18] tests/tcg/i386: initialize more registers in test-avx
+Date: Sat, 14 Oct 2023 12:01:06 +0200
+Message-ID: <20231014100121.109817-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231014100121.109817-1-pbonzini@redhat.com>
 References: <20231014100121.109817-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,314 +100,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The implementation was validated with OpenSSL and with the test vectors in
-https://github.com/rust-lang/stdarch/blob/master/crates/core_arch/src/x86/sha.rs.
-
-The instructions provide a ~25% improvement on hashing a 64 MiB file:
-runtime goes down from 1.8 seconds to 1.4 seconds; instruction count on
-the host goes down from 5.8 billion to 4.8 billion with slightly better
-IPC too.  Good job Intel. ;)
+Some instructions use YMM0 implicitly, or use YMM9 as a read-modify-write
+register destination.  Initialize those registers as well.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c                    |   2 +-
- target/i386/ops_sse.h                | 128 +++++++++++++++++++++++++++
- target/i386/tcg/decode-new.c.inc     |  11 +++
- target/i386/tcg/decode-new.h         |   1 +
- target/i386/tcg/emit.c.inc           |  54 +++++++++++
- target/i386/tcg/ops_sse_header.h.inc |  14 +++
- 6 files changed, 209 insertions(+), 1 deletion(-)
+ tests/tcg/i386/test-avx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3aab05ddadc..8beb989701c 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -714,7 +714,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
-           CPUID_7_0_EBX_PCOMMIT | CPUID_7_0_EBX_CLFLUSHOPT |            \
-           CPUID_7_0_EBX_CLWB | CPUID_7_0_EBX_MPX | CPUID_7_0_EBX_FSGSBASE | \
-           CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_RDSEED | \
--          CPUID_7_0_EBX_KERNEL_FEATURES)
-+          CPUID_7_0_EBX_SHA_NI | CPUID_7_0_EBX_KERNEL_FEATURES)
-           /* missing:
-           CPUID_7_0_EBX_HLE
-           CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM */
-diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index 33908c0691f..6a465a35fdb 100644
---- a/target/i386/ops_sse.h
-+++ b/target/i386/ops_sse.h
-@@ -2527,6 +2527,134 @@ SSE_HELPER_FMAP(helper_fma4ps,  ZMM_S, 2 << SHIFT, float32_muladd)
- SSE_HELPER_FMAP(helper_fma4pd,  ZMM_D, 1 << SHIFT, float64_muladd)
- #endif
+diff --git a/tests/tcg/i386/test-avx.c b/tests/tcg/i386/test-avx.c
+index c39c0e5bce8..2a04c1ecf15 100644
+--- a/tests/tcg/i386/test-avx.c
++++ b/tests/tcg/i386/test-avx.c
+@@ -316,6 +316,8 @@ int main(int argc, char *argv[])
+     int i;
  
-+#if SHIFT == 1
-+#define SSE_HELPER_SHA1RNDS4(name, F, K) \
-+    void name(Reg *d, Reg *a, Reg *b)                                       \
-+    {                                                                       \
-+        uint32_t A, B, C, D, E, t, i;                                       \
-+                                                                            \
-+        A = a->L(3);                                                        \
-+        B = a->L(2);                                                        \
-+        C = a->L(1);                                                        \
-+        D = a->L(0);                                                        \
-+        E = 0;                                                              \
-+                                                                            \
-+        for (i = 0; i <= 3; i++) {                                          \
-+            t = F(B, C, D) + rol32(A, 5) + b->L(3 - i) + E + K;             \
-+            E = D;                                                          \
-+            D = C;                                                          \
-+            C = rol32(B, 30);                                               \
-+            B = A;                                                          \
-+            A = t;                                                          \
-+        }                                                                   \
-+                                                                            \
-+        d->L(3) = A;                                                        \
-+        d->L(2) = B;                                                        \
-+        d->L(1) = C;                                                        \
-+        d->L(0) = D;                                                        \
-+    }
-+
-+#define SHA1_F0(b, c, d) (((b) & (c)) ^ (~(b) & (d)))
-+#define SHA1_F1(b, c, d) ((b) ^ (c) ^ (d))
-+#define SHA1_F2(b, c, d) (((b) & (c)) ^ ((b) & (d)) ^ ((c) & (d)))
-+
-+SSE_HELPER_SHA1RNDS4(helper_sha1rnds4_f0, SHA1_F0, 0x5A827999)
-+SSE_HELPER_SHA1RNDS4(helper_sha1rnds4_f1, SHA1_F1, 0x6ED9EBA1)
-+SSE_HELPER_SHA1RNDS4(helper_sha1rnds4_f2, SHA1_F2, 0x8F1BBCDC)
-+SSE_HELPER_SHA1RNDS4(helper_sha1rnds4_f3, SHA1_F1, 0xCA62C1D6)
-+
-+void helper_sha1nexte(Reg *d, Reg *a, Reg *b)
-+{
-+    d->L(3) = b->L(3) + rol32(a->L(3), 30);
-+    d->L(2) = b->L(2);
-+    d->L(1) = b->L(1);
-+    d->L(0) = b->L(0);
-+}
-+
-+void helper_sha1msg1(Reg *d, Reg *a, Reg *b)
-+{
-+    /* These could be overwritten by the first two assignments, save them.  */
-+    uint32_t b3 = b->L(3);
-+    uint32_t b2 = b->L(2);
-+
-+    d->L(3) = a->L(3) ^ a->L(1);
-+    d->L(2) = a->L(2) ^ a->L(0);
-+    d->L(1) = a->L(1) ^ b3;
-+    d->L(0) = a->L(0) ^ b2;
-+}
-+
-+void helper_sha1msg2(Reg *d, Reg *a, Reg *b)
-+{
-+    d->L(3) = rol32(a->L(3) ^ b->L(2), 1);
-+    d->L(2) = rol32(a->L(2) ^ b->L(1), 1);
-+    d->L(1) = rol32(a->L(1) ^ b->L(0), 1);
-+    d->L(0) = rol32(a->L(0) ^ d->L(3), 1);
-+}
-+
-+#define SHA256_CH(e, f, g)  (((e) & (f)) ^ (~(e) & (g)))
-+#define SHA256_MAJ(a, b, c) (((a) & (b)) ^ ((a) & (c)) ^ ((b) & (c)))
-+
-+#define SHA256_RNDS0(w) (ror32((w), 2) ^ ror32((w), 13) ^ ror32((w), 22))
-+#define SHA256_RNDS1(w) (ror32((w), 6) ^ ror32((w), 11) ^ ror32((w), 25))
-+#define SHA256_MSGS0(w) (ror32((w), 7) ^ ror32((w), 18) ^ ((w) >> 3))
-+#define SHA256_MSGS1(w) (ror32((w), 17) ^ ror32((w), 19) ^ ((w) >> 10))
-+
-+void helper_sha256rnds2(Reg *d, Reg *a, Reg *b, uint32_t wk0, uint32_t wk1)
-+{
-+    uint32_t t, AA, EE;
-+
-+    uint32_t A = b->L(3);
-+    uint32_t B = b->L(2);
-+    uint32_t C = a->L(3);
-+    uint32_t D = a->L(2);
-+    uint32_t E = b->L(1);
-+    uint32_t F = b->L(0);
-+    uint32_t G = a->L(1);
-+    uint32_t H = a->L(0);
-+
-+    /* Even round */
-+    t = SHA256_CH(E, F, G) + SHA256_RNDS1(E) + wk0 + H;
-+    AA = t + SHA256_MAJ(A, B, C) + SHA256_RNDS0(A);
-+    EE = t + D;
-+
-+    /* These will be B and F at the end of the odd round */
-+    d->L(2) = AA;
-+    d->L(0) = EE;
-+
-+    D = C, C = B, B = A, A = AA;
-+    H = G, G = F, F = E, E = EE;
-+
-+    /* Odd round */
-+    t = SHA256_CH(E, F, G) + SHA256_RNDS1(E) + wk1 + H;
-+    AA = t + SHA256_MAJ(A, B, C) + SHA256_RNDS0(A);
-+    EE = t + D;
-+
-+    d->L(3) = AA;
-+    d->L(1) = EE;
-+}
-+
-+void helper_sha256msg1(Reg *d, Reg *a, Reg *b)
-+{
-+    /* b->L(0) could be overwritten by the first assignment, save it.  */
-+    uint32_t b0 = b->L(0);
-+
-+    d->L(0) = a->L(0) + SHA256_MSGS0(a->L(1));
-+    d->L(1) = a->L(1) + SHA256_MSGS0(a->L(2));
-+    d->L(2) = a->L(2) + SHA256_MSGS0(a->L(3));
-+    d->L(3) = a->L(3) + SHA256_MSGS0(b0);
-+}
-+
-+void helper_sha256msg2(Reg *d, Reg *a, Reg *b)
-+{
-+    /* Earlier assignments cannot overwrite any of the two operands.  */
-+    d->L(0) = a->L(0) + SHA256_MSGS1(b->L(2));
-+    d->L(1) = a->L(1) + SHA256_MSGS1(b->L(3));
-+    /* Yes, this reuses the previously computed values.  */
-+    d->L(2) = a->L(2) + SHA256_MSGS1(d->L(0));
-+    d->L(3) = a->L(3) + SHA256_MSGS1(d->L(1));
-+}
-+#endif
-+
- #undef SSE_HELPER_S
+     init_all(&initI);
++    init_intreg(&initI.ymm[0]);
++    init_intreg(&initI.ymm[9]);
+     init_intreg(&initI.ymm[10]);
+     init_intreg(&initI.ymm[11]);
+     init_intreg(&initI.ymm[12]);
+@@ -324,6 +326,8 @@ int main(int argc, char *argv[])
+     dump_regs(&initI);
  
- #undef LANE_WIDTH
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 850271e0898..eb2400095f8 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -504,6 +504,13 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0xbe] = X86_OP_ENTRY3(VFNMSUB231Px, V,x,  H,x, W,x,  vex6 cpuid(FMA) p_66),
-     [0xbf] = X86_OP_ENTRY3(VFNMSUB231Sx, V,x,  H,x, W,x,  vex6 cpuid(FMA) p_66),
+     init_all(&initF16);
++    init_f16reg(&initF16.ymm[0]);
++    init_f16reg(&initF16.ymm[9]);
+     init_f16reg(&initF16.ymm[10]);
+     init_f16reg(&initF16.ymm[11]);
+     init_f16reg(&initF16.ymm[12]);
+@@ -333,6 +337,8 @@ int main(int argc, char *argv[])
+     dump_regs(&initF16);
  
-+    [0xc8] = X86_OP_ENTRY2(SHA1NEXTE,   V,dq, W,dq, cpuid(SHA_NI)),
-+    [0xc9] = X86_OP_ENTRY2(SHA1MSG1,    V,dq, W,dq, cpuid(SHA_NI)),
-+    [0xca] = X86_OP_ENTRY2(SHA1MSG2,    V,dq, W,dq, cpuid(SHA_NI)),
-+    [0xcb] = X86_OP_ENTRY2(SHA256RNDS2, V,dq, W,dq, cpuid(SHA_NI)),
-+    [0xcc] = X86_OP_ENTRY2(SHA256MSG1,  V,dq, W,dq, cpuid(SHA_NI)),
-+    [0xcd] = X86_OP_ENTRY2(SHA256MSG2,  V,dq, W,dq, cpuid(SHA_NI)),
-+
-     [0xdb] = X86_OP_ENTRY3(VAESIMC,     V,dq, None,None, W,dq, vex4 cpuid(AES) p_66),
-     [0xdc] = X86_OP_ENTRY3(VAESENC,     V,x,  H,x,       W,x,  vex4 cpuid(AES) p_66),
-     [0xdd] = X86_OP_ENTRY3(VAESENCLAST, V,x,  H,x,       W,x,  vex4 cpuid(AES) p_66),
-@@ -653,6 +660,8 @@ static const X86OpEntry opcodes_0F3A[256] = {
-     [0x4b] = X86_OP_ENTRY4(VBLENDVPD, V,x,  H,x,  W,x,   vex6 chk(W0) cpuid(AVX) p_66),
-     [0x4c] = X86_OP_ENTRY4(VPBLENDVB, V,x,  H,x,  W,x,   vex6 chk(W0) cpuid(AVX) p_66 avx2_256),
+     init_all(&initF32);
++    init_f32reg(&initF32.ymm[0]);
++    init_f32reg(&initF32.ymm[9]);
+     init_f32reg(&initF32.ymm[10]);
+     init_f32reg(&initF32.ymm[11]);
+     init_f32reg(&initF32.ymm[12]);
+@@ -342,6 +348,8 @@ int main(int argc, char *argv[])
+     dump_regs(&initF32);
  
-+    [0xcc] = X86_OP_ENTRY3(SHA1RNDS4,  V,dq, W,dq, I,b,  cpuid(SHA_NI)),
-+
-     [0xdf] = X86_OP_ENTRY3(VAESKEYGEN, V,dq, W,dq, I,b,  vex4 cpuid(AES) p_66),
- 
-     [0xF0] = X86_OP_ENTRY3(RORX, G,y, E,y, I,b, vex13 cpuid(BMI2) p_f2),
-@@ -1500,6 +1509,8 @@ static bool has_cpuid_feature(DisasContext *s, X86CPUIDFeature cpuid)
-         return (s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_BMI2);
-     case X86_FEAT_AVX2:
-         return (s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_AVX2);
-+    case X86_FEAT_SHA_NI:
-+        return (s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_SHA_NI);
-     }
-     g_assert_not_reached();
- }
-diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index ae987dfe0ba..ab21fa6db97 100644
---- a/target/i386/tcg/decode-new.h
-+++ b/target/i386/tcg/decode-new.h
-@@ -108,6 +108,7 @@ typedef enum X86CPUIDFeature {
-     X86_FEAT_FMA,
-     X86_FEAT_MOVBE,
-     X86_FEAT_PCLMULQDQ,
-+    X86_FEAT_SHA_NI,
-     X86_FEAT_SSE,
-     X86_FEAT_SSE2,
-     X86_FEAT_SSE3,
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 7c36cf8a6df..82da5488d47 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1796,6 +1796,60 @@ static void gen_SARX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     tcg_gen_sar_tl(s->T0, s->T0, s->T1);
- }
- 
-+static void gen_SHA1NEXTE(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    gen_helper_sha1nexte(OP_PTR0, OP_PTR1, OP_PTR2);
-+}
-+
-+static void gen_SHA1MSG1(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    gen_helper_sha1msg1(OP_PTR0, OP_PTR1, OP_PTR2);
-+}
-+
-+static void gen_SHA1MSG2(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    gen_helper_sha1msg2(OP_PTR0, OP_PTR1, OP_PTR2);
-+}
-+
-+static void gen_SHA1RNDS4(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    switch(decode->immediate & 3) {
-+    case 0:
-+        gen_helper_sha1rnds4_f0(OP_PTR0, OP_PTR0, OP_PTR1);
-+        break;
-+    case 1:
-+        gen_helper_sha1rnds4_f1(OP_PTR0, OP_PTR0, OP_PTR1);
-+        break;
-+    case 2:
-+        gen_helper_sha1rnds4_f2(OP_PTR0, OP_PTR0, OP_PTR1);
-+        break;
-+    case 3:
-+        gen_helper_sha1rnds4_f3(OP_PTR0, OP_PTR0, OP_PTR1);
-+        break;
-+    }
-+}
-+
-+static void gen_SHA256MSG1(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    gen_helper_sha256msg1(OP_PTR0, OP_PTR1, OP_PTR2);
-+}
-+
-+static void gen_SHA256MSG2(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    gen_helper_sha256msg2(OP_PTR0, OP_PTR1, OP_PTR2);
-+}
-+
-+static void gen_SHA256RNDS2(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    TCGv_i32 wk0 = tcg_temp_new_i32();
-+    TCGv_i32 wk1 = tcg_temp_new_i32();
-+
-+    tcg_gen_ld_i32(wk0, tcg_env, ZMM_OFFSET(0) + offsetof(ZMMReg, ZMM_L(0)));
-+    tcg_gen_ld_i32(wk1, tcg_env, ZMM_OFFSET(0) + offsetof(ZMMReg, ZMM_L(1)));
-+
-+    gen_helper_sha256rnds2(OP_PTR0, OP_PTR1, OP_PTR2, wk0, wk1);
-+}
-+
- static void gen_SHLX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- {
-     MemOp ot = decode->op[0].ot;
-diff --git a/target/i386/tcg/ops_sse_header.h.inc b/target/i386/tcg/ops_sse_header.h.inc
-index 8a7b2f4e2f6..d92c6faf6d6 100644
---- a/target/i386/tcg/ops_sse_header.h.inc
-+++ b/target/i386/tcg/ops_sse_header.h.inc
-@@ -399,6 +399,20 @@ DEF_HELPER_3(vpermq_ymm, void, Reg, Reg, i32)
- #endif
- #endif
- 
-+/* SHA helpers */
-+#if SHIFT == 1
-+DEF_HELPER_3(sha1rnds4_f0, void, Reg, Reg, Reg)
-+DEF_HELPER_3(sha1rnds4_f1, void, Reg, Reg, Reg)
-+DEF_HELPER_3(sha1rnds4_f2, void, Reg, Reg, Reg)
-+DEF_HELPER_3(sha1rnds4_f3, void, Reg, Reg, Reg)
-+DEF_HELPER_3(sha1nexte, void, Reg, Reg, Reg)
-+DEF_HELPER_3(sha1msg1, void, Reg, Reg, Reg)
-+DEF_HELPER_3(sha1msg2, void, Reg, Reg, Reg)
-+DEF_HELPER_5(sha256rnds2, void, Reg, Reg, Reg, i32, i32)
-+DEF_HELPER_3(sha256msg1, void, Reg, Reg, Reg)
-+DEF_HELPER_3(sha256msg2, void, Reg, Reg, Reg)
-+#endif
-+
- #undef SHIFT
- #undef Reg
- #undef SUFFIX
+     init_all(&initF64);
++    init_f64reg(&initF64.ymm[0]);
++    init_f64reg(&initF64.ymm[9]);
+     init_f64reg(&initF64.ymm[10]);
+     init_f64reg(&initF64.ymm[11]);
+     init_f64reg(&initF64.ymm[12]);
 -- 
 2.41.0
 
