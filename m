@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373327C9630
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 271087C9628
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:58:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrkli-0003zc-4k; Sat, 14 Oct 2023 15:57:50 -0400
+	id 1qrkll-00041B-El; Sat, 14 Oct 2023 15:57:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklZ-0003tK-Am
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:41 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>)
+ id 1qrklc-0003wm-Cx; Sat, 14 Oct 2023 15:57:44 -0400
 Received: from ams.source.kernel.org ([145.40.68.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklW-0004Yz-Op
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:41 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>)
+ id 1qrklZ-0004aR-9f; Sat, 14 Oct 2023 15:57:44 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id 46840B80B72;
- Sat, 14 Oct 2023 19:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0A9C433C7;
- Sat, 14 Oct 2023 19:57:28 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTP id C3EAEB80881;
+ Sat, 14 Oct 2023 19:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F34C433C9;
+ Sat, 14 Oct 2023 19:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1697313449;
- bh=Jl2KdCBw2z5J958OgozApqgwsvMeiX/PPsEA0t441bw=;
+ s=k20201202; t=1697313451;
+ bh=NK+ofguQ6Y4djnizCi1xGa4bVdM+IS5OhjkD+VwgnIM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=E7mOIZTtjXfLyxtifpK5kJc5tjYVnAQetAYOs/LzywzlZg6cfAu90jQDbPFFPk6uA
- V6t8S2sQvPcqBndxtM1OxXgRl5Zq/FryzfirdGnLkoFwWynwi6oCfQS0XXzIfDoPsJ
- nkSfFWi3QeuESzJiApSyhfGSvikbMkIM1CP4tv+dBRNb8JqzUSsO8t3XweFQnFcvGJ
- /446CGSw1kHoB/Vav905/lDod2AJva0EMVG8UvmkWxXooLkHxTNC1YtNFpGAInEsCI
- 4IjkDqAq0DCFVncwAlQFfvFk7Eswx/fMayN5m/33U4lNApy7lJBzDshl40A7LSs665
- Kng01013apxOQ==
+ b=gmJZgfPjAapgXPWMdqnN5vQ3tAZfsxlv0CN2RZWkAVqbldOrbbsCXXiQc7GpNpa/Z
+ rptskOogjFQzFC6KGoQ6zmbNSamsTgEFSPLLuAcFek9oPkDXwjZLv2O69qc7i8H/Yh
+ KNnO5cheh7auN4COFz/pyguEefSUUPdrimOPLaKQSe0HW7feHH2SjeDB/n92AuRUr8
+ UENtvvzQSQ1yrsK3/mwDbf8qkP0iUIDFzphRKdbu7h2Xfxn/98wjZMyHIGdoj4pl5z
+ v70O1OYmodFLQDo5Y+Fm+QW7IG/57l1FAw+nTJOhSiMUiiAjNwhypYPTAc3t/RYwwo
+ El+rpPd7I7a2A==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PATCH 04/12] MAINTAINERS: Add Astro PCI host for hppa machines
-Date: Sat, 14 Oct 2023 21:57:11 +0200
-Message-ID: <20231014195719.151397-5-deller@kernel.org>
+ Helge Deller <deller@gmx.de>, qemu-stable@nongnu.org
+Subject: [PATCH 05/12] lasips2: LASI PS/2 devices are not user-createable
+Date: Sat, 14 Oct 2023 21:57:12 +0200
+Message-ID: <20231014195719.151397-6-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231014195719.151397-1-deller@kernel.org>
 References: <20231014195719.151397-1-deller@kernel.org>
@@ -69,39 +69,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- MAINTAINERS | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Those PS/2 ports are created with the LASI controller when
+a 32-bit PA-RISC machine is created.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ceea4c2bf2..68d086a0f3 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1174,7 +1174,7 @@ F: hw/*/etraxfs_*.c
+Mark them not user-createable to avoid showing them in
+the qemu device list.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: qemu-stable@nongnu.org
+---
+ hw/input/lasips2.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/hw/input/lasips2.c b/hw/input/lasips2.c
+index ea7c07a2ba..93c9c887d3 100644
+--- a/hw/input/lasips2.c
++++ b/hw/input/lasips2.c
+@@ -351,6 +351,8 @@ static void lasips2_port_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
  
- HP-PARISC Machines
- ------------------
--HP B160L
-+HP B160L, HP C3700
- M: Richard Henderson <richard.henderson@linaro.org>
- R: Helge Deller <deller@gmx.de>
- S: Odd Fixes
-@@ -1182,11 +1182,14 @@ F: configs/devices/hppa-softmmu/default.mak
- F: hw/hppa/
- F: hw/net/*i82596*
- F: hw/misc/lasi.c
-+F: hw/pci-host/astro.c
- F: hw/pci-host/dino.c
- F: include/hw/misc/lasi.h
- F: include/hw/net/lasi_82596.h
-+F: include/hw/pci-host/astro.h
- F: include/hw/pci-host/dino.h
- F: pc-bios/hppa-firmware.img
-+F: roms/seabios-hppa/
++    /* Lasi devices can not be created by users */
++    dc->user_creatable = false;
+     dc->realize = lasips2_port_realize;
+ }
  
- LoongArch Machines
- ------------------
+@@ -397,6 +399,8 @@ static void lasips2_kbd_port_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     LASIPS2PortDeviceClass *lpdc = LASIPS2_PORT_CLASS(klass);
+ 
++    /* Lasi devices can not be created by users */
++    dc->user_creatable = false;
+     device_class_set_parent_realize(dc, lasips2_kbd_port_realize,
+                                     &lpdc->parent_realize);
+ }
 -- 
 2.41.0
 
