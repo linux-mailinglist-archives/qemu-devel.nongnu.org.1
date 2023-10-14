@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1754E7C9298
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 05:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E07D17C92F7
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 08:33:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrVWp-0005UA-0Z; Fri, 13 Oct 2023 23:41:27 -0400
+	id 1qrYCL-0000Yy-1s; Sat, 14 Oct 2023 02:32:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrVWf-0005IR-2f
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:41:17 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrVWd-000543-6S
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:41:16 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-517ab9a4a13so2030298a12.1
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 20:41:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697254874; x=1697859674;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
- b=ZQ2PVKKyA8SmsTCZLdkOkEAk9FFFIE+us5W2h1H7MKvR68H6mfH97CU0LYzGlRAefs
- fxlzQHCoV2j2c3INvKfyubBuhLfxH9KDi4QZM/yjp8TjfHv1S8Y1iuJhAViRXefTcRcw
- IfenvZQX86VvFLYotIK1EePPeM2LRb3jBXSD7vUvkPDTXG8q5ahNtPktkokJJdygyKGe
- w/dEtFWYA1E6tVl0A/jBnYLDxfwoCpjQY9yIOCimZEsiY8nv19i3mFqvlIfH7rOVjVeK
- F6tAl83gZFhJ6EXq2AYa2U9d/50mHlDQahcht8bnMNpKH6mXo2+kB4QSUjSzvsqmRB5T
- Fzcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697254874; x=1697859674;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
- b=eWBm5pIjPUEOEn4J0brbVOS35k7cgEf7M2ktEftzDKCI+JPPaHcofmrzyyaeYF3Aj9
- l0IQbBWiFRoXGbtrQJpCChTPywk+CFWFZF2gRW0eLf8weLPdqMJ2Jxdd8K9ncv9OIkDR
- qRBi3FSjSelS+3lDm8+neZ/K1pBMOBLZgR4TJrw5X9cqJx1ysDUMVBRhvpbdvp4/MwvZ
- +gzJKaHTNgPuKrTPbcWihhyZVfrCg6DwfOVGJSN9gb8Y9NDtj9+hF17Y1rQF/iO1ztoO
- F6tLOFEw7QDDJ9nW5BH4E51kC2lP7mPAItr8Zz4kyHhKy19OZTc4ingRGCZTvg44x4c4
- LtCA==
-X-Gm-Message-State: AOJu0YxxWAMp3YxyUd4yJnQxU3V1n119ZX4acy3q36fR3tCgwuVbdw4u
- bTIw3Lk3WxZ/Njrl8GjVOvy9qA==
-X-Google-Smtp-Source: AGHT+IGFSBvtXuYi3xIhzeABpeT+DkPp/A76e91PGjWFHFd0NYwFP/6qnzX3/y1f7ldeTl8WyrQx4Q==
-X-Received: by 2002:a05:6a20:551e:b0:133:d17d:193a with SMTP id
- ko30-20020a056a20551e00b00133d17d193amr24764246pzb.59.1697254873840; 
- Fri, 13 Oct 2023 20:41:13 -0700 (PDT)
-Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with UTF8SMTPSA id
- 30-20020a17090a199e00b0027d15bd9fa2sm901849pji.35.2023.10.13.20.41.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 20:41:13 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v12 18/18] contrib/plugins: Allow to log registers
-Date: Sat, 14 Oct 2023 12:39:37 +0900
-Message-ID: <20231014033940.15679-19-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231014033940.15679-1-akihiko.odaki@daynix.com>
-References: <20231014033940.15679-1-akihiko.odaki@daynix.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qrYCJ-0000Yo-0A
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 02:32:27 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qrYCG-0000Ez-GQ
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 02:32:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=5GohXnLCIPTSBSVklK88ehhkR68MUBltDpfZzvFlSIE=; b=geE/hUFkLWg+vCswJXxgG33QKJ
+ NOvJqi7go1Af5WMS0N8CspfXuSG8eHFv3Kytfrl1KdYP7WZsI59srkWPORMtL4woDGOVYH77kCGF4
+ ycKIDdk2ozbqQLt2hR/SswxpsTG/Dj0DD8sgJHtvI6gyd6ZBgcEepbttcvqjLODiQj/awH8MAzp05
+ +WPExQIpi+kBCaZki4yDNsHB0/lWVZ4C0YEd8EPm52slqRHl+u5wMNbmwlv2PXRIAogX12T8IDWoA
+ 9lyh2Z3S3Gy3zprSgEZrs+gbnFWZ/fyfycYIancKy3cRkK7YDpugqugcwR58KRnV5qBmY3aIL7Uqn
+ cCAVhnRanfDybMcv7vEC/4AebERcIii5LETEPafhSqR7BHAJR+eZWUQQ6AK0LYwmPk5MwprCIkV18
+ XFxuRQDipqWx/dNvm2qO1DxQpWTPVRWCB1rj/zTOQnxo4QEbb43c4bRIxw2xv0zNFrsdTdBXeY8XG
+ tLizHuE6fl0yenx3/kvPzcEZfzjVPRWiJ9Vp8Zjs8lkvnhBLMkiw0bgOesJLju8/Uf6aR27kRKhP9
+ STp2KClVuGlkMWsu3pRrh7/Tv60iM4Tz91gx11l6+3svXcZf2sybTxD/MgDGKyhZ9ST1xn9Mlcs8V
+ 8AhBrT7bNY8HC+a5ZMSmALjOVGqknauOv1pnXVlw0=;
+Received: from [2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qrYC8-0006zm-Cf; Sat, 14 Oct 2023 07:32:20 +0100
+Message-ID: <0b326e97-aded-4a95-a134-16e2e2c6d996@ilande.co.uk>
+Date: Sat, 14 Oct 2023 07:32:16 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::534;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x534.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: atar4qemu@gmail.com
+References: <20231013212846.165724-1-richard.henderson@linaro.org>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20231013212846.165724-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 00/85] target/sparc: Convert to decodetree
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,249 +102,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This demonstrates how a register can be read from a plugin.
+On 13/10/2023 22:27, Richard Henderson wrote:
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- docs/devel/tcg-plugins.rst |  10 +++-
- contrib/plugins/execlog.c  | 120 +++++++++++++++++++++++++++----------
- 2 files changed, 97 insertions(+), 33 deletions(-)
+> While doing some other testing the other day, I noticed my sparc64
+> chroot running particularly slowly.  I think I know what the problem
+> is there, but fixing that was going to be particularly ugly with the
+> existing sparc translator.
+> 
+> So I've converted the translator to something more managable.  :-)
+> 
+> I've only done avocado testing so far, fingers crossed.
+>  
+> r~
 
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index 81dcd43a61..c9f8b27590 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -497,6 +497,15 @@ arguments if required::
-   $ qemu-system-arm $(QEMU_ARGS) \
-     -plugin ./contrib/plugins/libexeclog.so,ifilter=st1w,afilter=0x40001808 -d plugin
- 
-+This plugin can also dump a specified register. The specification of register
-+follows `GDB standard target features <https://sourceware.org/gdb/onlinedocs/gdb/Standard-Target-Features.html>`__.
-+
-+Specify the name of the feature that contains the register and the name of the
-+register with ``rfile`` and ``reg`` options, respectively::
-+
-+  $ qemu-system-arm $(QEMU_ARGS) \
-+    -plugin ./contrib/plugins/libexeclog.so,rfile=org.gnu.gdb.arm.core,reg=sp -d plugin
-+
- - contrib/plugins/cache.c
- 
- Cache modelling plugin that measures the performance of a given L1 cache
-@@ -583,4 +592,3 @@ The following API is generated from the inline documentation in
- include the full kernel-doc annotations.
- 
- .. kernel-doc:: include/qemu/qemu-plugin.h
--
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 82dc2f584e..f3e714c888 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -15,27 +15,43 @@
- 
- #include <qemu-plugin.h>
- 
-+typedef struct CPU {
-+    /* Store last executed instruction on each vCPU as a GString */
-+    GString *last_exec;
-+    GByteArray *reg_history[2];
-+
-+    int reg;
-+} CPU;
-+
- QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
- 
--/* Store last executed instruction on each vCPU as a GString */
--static GPtrArray *last_exec;
-+static CPU *cpus;
-+static int num_cpus;
- static GRWLock expand_array_lock;
- 
- static GPtrArray *imatches;
- static GArray *amatches;
- 
-+static char *rfile_name;
-+static char *reg_name;
-+
- /*
-- * Expand last_exec array.
-+ * Expand cpu array.
-  *
-  * As we could have multiple threads trying to do this we need to
-  * serialise the expansion under a lock.
-  */
--static void expand_last_exec(int cpu_index)
-+static void expand_cpu(int cpu_index)
- {
-     g_rw_lock_writer_lock(&expand_array_lock);
--    while (cpu_index >= last_exec->len) {
--        GString *s = g_string_new(NULL);
--        g_ptr_array_add(last_exec, s);
-+    if (cpu_index >= num_cpus) {
-+        cpus = g_realloc_n(cpus, cpu_index + 1, sizeof(*cpus));
-+        while (cpu_index >= num_cpus) {
-+            cpus[num_cpus].last_exec = g_string_new(NULL);
-+            cpus[num_cpus].reg_history[0] = g_byte_array_new();
-+            cpus[num_cpus].reg_history[1] = g_byte_array_new();
-+            num_cpus++;
-+        }
-     }
-     g_rw_lock_writer_unlock(&expand_array_lock);
- }
-@@ -50,8 +66,8 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
- 
-     /* Find vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
--    g_assert(cpu_index < last_exec->len);
--    s = g_ptr_array_index(last_exec, cpu_index);
-+    g_assert(cpu_index < num_cpus);
-+    s = cpus[cpu_index].last_exec;
-     g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Indicate type of memory access */
-@@ -77,28 +93,42 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
-  */
- static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
- {
--    GString *s;
-+    int n;
-+    int i;
- 
--    /* Find or create vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
--    if (cpu_index >= last_exec->len) {
--        g_rw_lock_reader_unlock(&expand_array_lock);
--        expand_last_exec(cpu_index);
--        g_rw_lock_reader_lock(&expand_array_lock);
--    }
--    s = g_ptr_array_index(last_exec, cpu_index);
--    g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Print previous instruction in cache */
--    if (s->len) {
--        qemu_plugin_outs(s->str);
-+    if (cpus[cpu_index].last_exec->len) {
-+        if (cpus[cpu_index].reg >= 0) {
-+            GByteArray *current = cpus[cpu_index].reg_history[0];
-+            GByteArray *last = cpus[cpu_index].reg_history[1];
-+
-+            g_byte_array_set_size(current, 0);
-+            n = qemu_plugin_read_register(current, cpus[cpu_index].reg);
-+
-+            if (n != last->len || memcmp(current->data, last->data, n)) {
-+                g_string_append(cpus[cpu_index].last_exec, ", reg,");
-+                for (i = 0; i < n; i++) {
-+                    g_string_append_printf(cpus[cpu_index].last_exec, " %02x",
-+                                           current->data[i]);
-+                }
-+            }
-+
-+            cpus[cpu_index].reg_history[0] = last;
-+            cpus[cpu_index].reg_history[1] = current;
-+        }
-+
-+        qemu_plugin_outs(cpus[cpu_index].last_exec->str);
-         qemu_plugin_outs("\n");
-     }
- 
-     /* Store new instruction in cache */
-     /* vcpu_mem will add memory access information to last_exec */
--    g_string_printf(s, "%u, ", cpu_index);
--    g_string_append(s, (char *)udata);
-+    g_string_printf(cpus[cpu_index].last_exec, "%u, ", cpu_index);
-+    g_string_append(cpus[cpu_index].last_exec, (char *)udata);
-+
-+    g_rw_lock_reader_unlock(&expand_array_lock);
- }
- 
- /**
-@@ -167,8 +197,10 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-                                              QEMU_PLUGIN_MEM_RW, NULL);
- 
-             /* Register callback on instruction */
--            qemu_plugin_register_vcpu_insn_exec_cb(insn, vcpu_insn_exec,
--                                                   QEMU_PLUGIN_CB_NO_REGS, output);
-+            qemu_plugin_register_vcpu_insn_exec_cb(
-+                insn, vcpu_insn_exec,
-+                rfile_name ? QEMU_PLUGIN_CB_R_REGS : QEMU_PLUGIN_CB_NO_REGS,
-+                output);
- 
-             /* reset skip */
-             skip = (imatches || amatches);
-@@ -177,17 +209,33 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-     }
- }
- 
-+static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
-+{
-+    int reg = -1;
-+
-+    expand_cpu(vcpu_index);
-+
-+    if (rfile_name) {
-+        int rfile = qemu_plugin_find_register_file(vcpu_index, rfile_name);
-+        if (rfile >= 0) {
-+            reg = qemu_plugin_find_register(vcpu_index, rfile, reg_name);
-+        }
-+    }
-+
-+    g_rw_lock_writer_lock(&expand_array_lock);
-+    cpus[vcpu_index].reg = reg;
-+    g_rw_lock_writer_unlock(&expand_array_lock);
-+}
-+
- /**
-  * On plugin exit, print last instruction in cache
-  */
- static void plugin_exit(qemu_plugin_id_t id, void *p)
- {
-     guint i;
--    GString *s;
--    for (i = 0; i < last_exec->len; i++) {
--        s = g_ptr_array_index(last_exec, i);
--        if (s->str) {
--            qemu_plugin_outs(s->str);
-+    for (i = 0; i < num_cpus; i++) {
-+        if (cpus[i].last_exec->str) {
-+            qemu_plugin_outs(cpus[i].last_exec->str);
-             qemu_plugin_outs("\n");
-         }
-     }
-@@ -224,9 +272,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-      * we don't know the size before emulation.
-      */
-     if (info->system_emulation) {
--        last_exec = g_ptr_array_sized_new(info->system.max_vcpus);
--    } else {
--        last_exec = g_ptr_array_new();
-+        cpus = g_new(CPU, info->system.max_vcpus);
-     }
- 
-     for (int i = 0; i < argc; i++) {
-@@ -236,13 +282,23 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-             parse_insn_match(tokens[1]);
-         } else if (g_strcmp0(tokens[0], "afilter") == 0) {
-             parse_vaddr_match(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "rfile") == 0) {
-+            rfile_name = g_strdup(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "reg") == 0) {
-+            reg_name = g_strdup(tokens[1]);
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", opt);
-             return -1;
-         }
-     }
- 
-+    if ((!rfile_name) != (!reg_name)) {
-+        fputs("file and reg need to be set at the same time\n", stderr);
-+        return -1;
-+    }
-+
-     /* Register translation block and exit callbacks */
-+    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
-     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
- 
--- 
-2.42.0
+Oh wow, that's amazing - looking into this has been on my TODO list for quite some 
+time now :O
+
+FWIW I'm still struggling with hangs on sun4m which I've noticed a lot more whilst 
+working on my ESP changes. I *think* it is the same issue I saw before when testing 
+your original gen_helper_lookup_tb_ptr() conversion series for target/sparc, which 
+did disappear in the final version of the series but I can now reproduce fairly 
+consistently with git master.
+
+The reproducer here is easy with Solaris 8:
+     ./build/qemu-system-sparc -cdrom sol8-cd1.iso -boot d
+
+Then when the splash screen appears keep wiggling the mouse until everything locks 
+up. In my ESP traces I sometimes see random hangs where the trace-events would end 
+with "esp_raise_irq()" and sit there for 10s of seconds before resuming, so both of 
+this seems to suggest that interrupts aren't getting through when they should.
+
+Anyhow I can certainly give this series a spin on my OpenBIOS test images over the 
+next few days as time allows.
+
+
+ATB,
+
+Mark.
+
+> Richard Henderson (85):
+>    target/sparc: Set TCG_GUEST_DEFAULT_MO
+>    configs: Enable MTTCG for sparc, sparc64
+>    target/sparc: Remove always-set cpu features
+>    target/sparc: Add decodetree infrastructure
+>    target/sparc: Define AM_CHECK for sparc32
+>    target/sparc: Move CALL to decodetree
+>    target/sparc: Move BPcc and Bicc to decodetree
+>    target/sparc: Move BPr to decodetree
+>    target/sparc: Move FBPfcc and FBfcc to decodetree
+>    target/sparc: Merge gen_cond with only caller
+>    target/sparc: Merge gen_fcond with only caller
+>    target/sparc: Merge gen_branch_[an] with only caller
+>    target/sparc: Pass DisasCompare to advance_jump_cond
+>    target/sparc: Move SETHI to decodetree
+>    target/sparc: Move Tcc to decodetree
+>    target/sparc: Move RDASR, STBAR, MEMBAR to decodetree
+>    target/sparc: Move RDPSR, RDHPR to decodetree
+>    target/sparc: Move RDWIM, RDPR to decodetree
+>    target/sparc: Move RDTBR, FLUSHW to decodetree
+>    target/sparc: Move WRASR to decodetree
+>    target/sparc: Move WRPSR, SAVED, RESTORED to decodetree
+>    target/sparc: Move WRWIM, WRPR to decodetree
+>    target/sparc: Move WRTBR, WRHPR to decodetree
+>    target/sparc: Move basic arithmetic to decodetree
+>    target/sparc: Move ADDC to decodetree
+>    target/sparc: Move MULX to decodetree
+>    target/sparc: Move UMUL, SMUL to decodetree
+>    target/sparc: Move SUBC to decodetree
+>    target/sparc: Move UDIVX, SDIVX to decodetree
+>    target/sparc: Move UDIV, SDIV to decodetree
+>    target/sparc: Move TADD, TSUB, MULS to decodetree
+>    target/sparc: Move SLL, SRL, SRA to decodetree
+>    target/sparc: Move MOVcc, MOVR to decodetree
+>    target/sparc: Move POPC to decodetree
+>    target/sparc: Convert remaining v8 coproc insns to decodetree
+>    target/sparc: Move JMPL, RETT, RETURN to decodetree
+>    target/sparc: Move FLUSH, SAVE, RESTORE to decodetree
+>    target/sparc: Move DONE, RETRY to decodetree
+>    target/sparc: Split out resolve_asi
+>    target/sparc: Drop ifdef around get_asi and friends
+>    target/sparc: Split out ldst functions with asi pre-computed
+>    target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for GET_ASI_DTWINX
+>    target/sparc: Move simple integer load/store to decodetree
+>    target/sparc: Move asi integer load/store to decodetree
+>    target/sparc: Move LDSTUB, LDSTUBA to decodetree
+>    target/sparc: Move SWAP, SWAPA to decodetree
+>    target/sparc: Move CASA, CASXA to decodetree
+>    target/sparc: Move PREFETCH, PREFETCHA to decodetree
+>    target/sparc: Split out fp ldst functions with asi precomputed
+>    target/sparc: Move simple fp load/store to decodetree
+>    target/sparc: Move asi fp load/store to decodetree
+>    target/sparc: Move LDFSR, STFSR to decodetree
+>    target/sparc: Merge LDFSR, LDXFSR implementations
+>    target/sparc: Move EDGE* to decodetree
+>    target/sparc: Move ARRAY* to decodetree
+>    target/sparc: Move ADDRALIGN* to decodetree
+>    target/sparc: Move BMASK to decodetree
+>    target/sparc: Move FMOVS, FNEGS, FABSS, FSRC*S, FNOT*S to decodetree
+>    target/sparc: Move FMOVD, FNEGD, FABSD, FSRC*D, FNOT*D to decodetree
+>    target/sparc: Use tcg_gen_vec_{add,sub}*
+>    target/sparc: Move gen_ne_fop_FFF insns to decodetree
+>    target/sparc: Move gen_ne_fop_DDD insns to decodetree
+>    target/sparc: Move PDIST to decodetree
+>    target/sparc: Move gen_gsr_fop_DDD insns to decodetree
+>    target/sparc: Move gen_fop_FF insns to decodetree
+>    target/sparc: Move gen_fop_DD insns to decodetree
+>    target/sparc: Move FSQRTq to decodetree
+>    target/sparc: Move gen_fop_FFF insns to decodetree
+>    target/sparc: Move gen_fop_DDD insns to decodetree
+>    target/sparc: Move gen_fop_QQQ insns to decodetree
+>    target/sparc: Move FSMULD to decodetree
+>    target/sparc: Move FDMULQ to decodetree
+>    target/sparc: Move gen_fop_FD insns to decodetree
+>    target/sparc: Move FiTOd, FsTOd, FsTOx to decodetree
+>    target/sparc: Move FqTOs, FqTOi to decodetree
+>    target/sparc: Move FqTOd, FqTOx to decodetree
+>    target/sparc: Move FiTOq, FsTOq to decodetree
+>    target/sparc: Move FdTOq, FxTOq to decodetree
+>    target/sparc: Move FMOVq, FNEGq, FABSq to decodetree
+>    target/sparc: Move FMOVR, FMOVcc, FMOVfcc to decodetree
+>    target/sparc: Convert FCMP, FCMPE to decodetree
+>    target/sparc: Move FPCMP* to decodetree
+>    target/sparc: Move FPACK16, FPACKFIX to decodetree
+>    target/sparc: Convert FZERO, FONE to decodetree
+>    target/sparc: Remove disas_sparc_legacy
+> 
+>   configs/targets/sparc-softmmu.mak   |    1 +
+>   configs/targets/sparc64-softmmu.mak |    1 +
+>   linux-user/sparc/target_syscall.h   |    6 +-
+>   target/sparc/cpu.h                  |   73 +-
+>   target/sparc/helper.h               |   15 +-
+>   target/sparc/insns.decode           |  541 +++
+>   target/sparc/cpu.c                  |    8 +-
+>   target/sparc/fop_helper.c           |   17 +-
+>   target/sparc/translate.c            | 6692 +++++++++++++--------------
+>   target/sparc/vis_helper.c           |   59 -
+>   target/sparc/meson.build            |    3 +
+>   11 files changed, 3804 insertions(+), 3612 deletions(-)
+>   create mode 100644 target/sparc/insns.decode
+> 
 
 
