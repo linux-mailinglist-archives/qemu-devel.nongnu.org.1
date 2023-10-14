@@ -2,96 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CEF7C9305
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 08:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4511C7C9345
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 09:36:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrYKM-0005M1-PZ; Sat, 14 Oct 2023 02:40:47 -0400
+	id 1qrZBE-0001bB-Op; Sat, 14 Oct 2023 03:35:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrYKF-0005Jp-Sd; Sat, 14 Oct 2023 02:40:39 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qrZBD-0001au-34
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 03:35:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrYKD-000222-6q; Sat, 14 Oct 2023 02:40:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=KjpvjkumV3l1qDGzg5tyVYtOVwdF1r3RIOwBPvPoK88=; b=Cz8rZ3gGY+gJ/dtAANLC4WuMe7
- d9jOqNMrUraG4O/iPm2gff6R2sfZG+sJQoqJI8Y+Pdb1DtA81xCbGYg6ls50iXAEuBkzWruH/0uRL
- Yy+qIQvCqmzqKeM7z3s0DA/2nBTFd6A3UiiaxB0y3FjJoElDpMdSNjDTeMRoRNtfev9bcsD1bRRMp
- PgMvufnEXkt5ddpnZ6HJZYHurV1EhjmP4pNTi6lDP6jbiF78jE+IZnuec13vlrukURCCK28j1IHpe
- PfdI5VtL+FqtfBCOyRPvM9xrH5lgubgyu8PEdyohmfIRf5MPCQFDRkAyzxCh4mmGy/l11HVd1xawu
- 36bWKJ/3GlAiBtIJAGGDOpbNYTlEbXN4Rc/Suppc/KnO/IRY1JVcZsb7Umb85+bSYS3lAwywPmfyK
- AO+2ymOiTmAm0kXB/DTDXS3l4FEFoffEQrnDgc1VwFkZaPjyFIVwhDOgiAUQ/phieNhDRIVlBSwVm
- qtkJAnM7Brc21AQPaFcNfkkfeJ5pdN6ZkMMJuB8OM4r91a51p96JwVIfiqJTvBu/EkIC3jU8Orihe
- 71nCbG2dzo5nwHQe3a8rDM92SpQ4Ayz+CFrhc8H9C8IccK1M+Qso2j0rFmZ/83br27DViWDbEGa9X
- jnMvfuWjixWdWvlN0Uodpn/XUk4nmPESL9dBVRoI8=;
-Received: from [2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrYK0-00073L-D7; Sat, 14 Oct 2023 07:40:28 +0100
-Message-ID: <b5da70d0-6e91-413d-93da-b1748c68d001@ilande.co.uk>
-Date: Sat, 14 Oct 2023 07:40:24 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qrZBB-00053y-3D
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 03:35:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697268920;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=tYKf725jf6aOjhk1IUZZZjpQrIjehflbZsF1rppN8V4=;
+ b=WfkMYqhU2i2OnGv9kiPs87KoE2bjVy+JlpzUio9Vi9VLfNPt4a6uh8+/ArKClVj6XMkaMA
+ GDpeV0D/+hUVRtsgBCo7phq78X2J1A7fpZg2cDCzRWq+pdtTO7EVdc18pwNB+rMHLSfIN8
+ Y0cVEBsNLBWAItU8lJicigO4yF9R9UM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-231-zSvd_x8_NaCqtPkq1yXPlw-1; Sat, 14 Oct 2023 03:35:16 -0400
+X-MC-Unique: zSvd_x8_NaCqtPkq1yXPlw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 216041C0513A;
+ Sat, 14 Oct 2023 07:35:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A410C1C060B0;
+ Sat, 14 Oct 2023 07:35:15 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 9211521E6A21; Sat, 14 Oct 2023 09:35:14 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michal Privoznik <mprivozn@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,
+ <qemu-block@nongnu.org>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  "Michael S.
+ Tsirkin" <mst@redhat.com>,  Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH v2 1/2] qdev: add IOThreadVirtQueueMappingList property
+ type
+References: <20230918161604.1400051-1-stefanha@redhat.com>
+ <20230918161604.1400051-2-stefanha@redhat.com>
+Date: Sat, 14 Oct 2023 09:35:14 +0200
+In-Reply-To: <20230918161604.1400051-2-stefanha@redhat.com> (Stefan Hajnoczi's
+ message of "Mon, 18 Sep 2023 12:16:03 -0400")
+Message-ID: <877cnpsll9.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Gavin Shan <gshan@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20231013141131.1531-1-philmd@linaro.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20231013141131.1531-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v3 0/10] hw/char/pl011: Implement TX (async) FIFO to avoid
- blocking the main loop
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,50 +85,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/10/2023 15:11, Philippe Mathieu-Daudé wrote:
+Stefan Hajnoczi <stefanha@redhat.com> writes:
 
-> Hi,
-> 
-> This series add support for (async) FIFO on the transmit path
-> of the PL011 UART.
-> 
-> Since v2:
-> - Added R-b tags
-> - Addressed Richard comments on migration
-> 
-> Since v1:
-> - Restrict pl011_ops[] impl access_size,
-> - Do not check transmitter is enabled (Peter),
-> - Addressed Alex's review comments,
-> - Simplified migration trying to care about backward compat,
->    but still unsure...
-> 
-> Philippe Mathieu-Daudé (9):
->    util/fifo8: Allow fifo8_pop_buf() to not populate popped length
->    util/fifo8: Introduce fifo8_peek_buf()
->    hw/char/pl011: Split RX/TX path of pl011_reset_fifo()
->    hw/char/pl011: Extract pl011_write_txdata() from pl011_write()
->    hw/char/pl011: Extract pl011_read_rxdata() from pl011_read()
->    hw/char/pl011: Warn when using disabled transmitter
->    hw/char/pl011: Check if receiver is enabled
->    hw/char/pl011: Rename RX FIFO methods
->    hw/char/pl011: Add transmit FIFO to PL011State
->    hw/char/pl011: Implement TX FIFO
-> 
->   include/hw/char/pl011.h |   2 +
->   include/qemu/fifo8.h    |  37 +++++++++--
->   hw/char/pl011.c         | 140 +++++++++++++++++++++++++++++-----------
->   util/fifo8.c            |  28 ++++++--
->   hw/char/trace-events    |   4 +-
->   5 files changed, 161 insertions(+), 50 deletions(-)
+> virtio-blk and virtio-scsi devices will need a way to specify the
+> mapping between IOThreads and virtqueues. At the moment all virtqueues
+> are assigned to a single IOThread or the main loop. This single thread
+> can be a CPU bottleneck, so it is necessary to allow finer-grained
+> assignment to spread the load.
+>
+> Introduce DEFINE_PROP_IOTHREAD_VQ_MAPPING_LIST() so devices can take a
+> parameter that maps virtqueues to IOThreads. The command-line syntax for
+> this new property is as follows:
+>
+>   --device '{"driver":"foo","iothread-vq-mapping":[{"iothread":"iothread0","vqs":[0,1,2]},...]}'
+>
+> IOThreads are specified by name and virtqueues are specified by 0-based
+> index.
+>
+> It will be common to simply assign virtqueues round-robin across a set
+> of IOThreads. A convenient syntax that does not require specifying
+> individual virtqueue indices is available:
+>
+>   --device '{"driver":"foo","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"},...]}'
+>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  qapi/virtio.json                    | 30 ++++++++++++++++++
+>  include/hw/qdev-properties-system.h |  4 +++
+>  hw/core/qdev-properties-system.c    | 47 +++++++++++++++++++++++++++++
+>  3 files changed, 81 insertions(+)
+>
+> diff --git a/qapi/virtio.json b/qapi/virtio.json
+> index e6dcee7b83..cb341ae596 100644
+> --- a/qapi/virtio.json
+> +++ b/qapi/virtio.json
+> @@ -928,3 +928,33 @@
+>    'data': { 'path': 'str', 'queue': 'uint16', '*index': 'uint16' },
+>    'returns': 'VirtioQueueElement',
+>    'features': [ 'unstable' ] }
+> +
+> +##
+> +# @IOThreadVirtQueueMapping:
+> +#
+> +# Describes the subset of virtqueues assigned to an IOThread.
+> +#
+> +# @iothread: the id of IOThread object
+> +# @vqs: an optional array of virtqueue indices that will be handled by this
+> +#       IOThread. When absent, virtqueues are assigned round-robin across all
+> +#       IOThreadVirtQueueMappings provided. Either all
+> +#       IOThreadVirtQueueMappings must have @vqs or none of them must have it.
+> +#
+> +# Since: 8.2
+> +#
+> +##
 
-Looks like patch 10 where all the interesting stuff is didn't make it to the list? 
-Patchew also agrees here: 
-https://patchew.org/QEMU/20231013141131.1531-1-philmd@linaro.org/.
+Please format like
 
+   ##
+   # @IOThreadVirtQueueMapping:
+   #
+   # Describes the subset of virtqueues assigned to an IOThread.
+   #
+   # @iothread: the id of IOThread object
+   #
+   # @vqs: an optional array of virtqueue indices that will be handled by
+   #     this IOThread.  When absent, virtqueues are assigned round-robin
+   #     across all IOThreadVirtQueueMappings provided.  Either all
+   #     IOThreadVirtQueueMappings must have @vqs or none of them must
+   #     have it.
+   #
+   # Since: 8.2
+   ##
 
-ATB,
+to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
+to conform to current conventions).
 
-Mark.
+> +
+> +{ 'struct': 'IOThreadVirtQueueMapping',
+> +  'data': { 'iothread': 'str', '*vqs': ['uint16'] } }
+> +
+> +##
+> +# @IOThreadVirtQueueMappings:
+> +#
+> +# IOThreadVirtQueueMapping list. This struct is not actually used but the
+> +# IOThreadVirtQueueMappingList type it generates is!
+
+Two spaces between sentences for consistency, please.
+
+Doc comments are QMP reference documentation for users.  Does this
+paragraph belong there?
+
+> +#
+> +# Since: 8.2
+> +##
+> +
+> +{ 'struct': 'IOThreadVirtQueueMappings',
+> +  'data': { 'mappings': ['IOThreadVirtQueueMapping'] } }
+> diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+> index 0ac327ae60..c526e502c8 100644
+> --- a/include/hw/qdev-properties-system.h
+> +++ b/include/hw/qdev-properties-system.h
+> @@ -22,6 +22,7 @@ extern const PropertyInfo qdev_prop_audiodev;
+>  extern const PropertyInfo qdev_prop_off_auto_pcibar;
+>  extern const PropertyInfo qdev_prop_pcie_link_speed;
+>  extern const PropertyInfo qdev_prop_pcie_link_width;
+> +extern const PropertyInfo qdev_prop_iothread_vq_mapping_list;
+>  
+>  #define DEFINE_PROP_PCI_DEVFN(_n, _s, _f, _d)                   \
+>      DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_pci_devfn, int32_t)
+> @@ -73,5 +74,8 @@ extern const PropertyInfo qdev_prop_pcie_link_width;
+>  #define DEFINE_PROP_UUID_NODEFAULT(_name, _state, _field) \
+>      DEFINE_PROP(_name, _state, _field, qdev_prop_uuid, QemuUUID)
+>  
+> +#define DEFINE_PROP_IOTHREAD_VQ_MAPPING_LIST(_name, _state, _field) \
+> +    DEFINE_PROP(_name, _state, _field, qdev_prop_iothread_vq_mapping_list, \
+> +                IOThreadVirtQueueMappingList *)
+>  
+>  #endif
+> diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+> index 6d5d43eda2..831796e106 100644
+> --- a/hw/core/qdev-properties-system.c
+> +++ b/hw/core/qdev-properties-system.c
+> @@ -18,6 +18,7 @@
+>  #include "qapi/qapi-types-block.h"
+>  #include "qapi/qapi-types-machine.h"
+>  #include "qapi/qapi-types-migration.h"
+> +#include "qapi/qapi-visit-virtio.h"
+>  #include "qapi/qmp/qerror.h"
+>  #include "qemu/ctype.h"
+>  #include "qemu/cutils.h"
+> @@ -1147,3 +1148,49 @@ const PropertyInfo qdev_prop_uuid = {
+>      .set   = set_uuid,
+>      .set_default_value = set_default_uuid_auto,
+>  };
+> +
+> +/* --- IOThreadVirtQueueMappingList --- */
+> +
+> +static void get_iothread_vq_mapping_list(Object *obj, Visitor *v,
+> +        const char *name, void *opaque, Error **errp)
+> +{
+> +    IOThreadVirtQueueMappingList **prop_ptr =
+> +        object_field_prop_ptr(obj, opaque);
+> +    IOThreadVirtQueueMappingList *list = *prop_ptr;
+> +
+> +    visit_type_IOThreadVirtQueueMappingList(v, name, &list, errp);
+
+@list is a copy of the property value.  Why do you need to pass a copy
+to visit_type_IOThreadVirtQueueMappingList()?
+
+> +}
+> +
+> +static void set_iothread_vq_mapping_list(Object *obj, Visitor *v,
+> +        const char *name, void *opaque, Error **errp)
+> +{
+> +    IOThreadVirtQueueMappingList **prop_ptr =
+> +        object_field_prop_ptr(obj, opaque);
+> +    IOThreadVirtQueueMappingList *list;
+> +
+> +    if (!visit_type_IOThreadVirtQueueMappingList(v, name, &list, errp)) {
+> +        return;
+> +    }
+> +
+> +    qapi_free_IOThreadVirtQueueMappingList(*prop_ptr);
+> +    *prop_ptr = list;
+> +}
+> +
+> +static void release_iothread_vq_mapping_list(Object *obj,
+> +        const char *name, void *opaque)
+> +{
+> +    IOThreadVirtQueueMappingList **prop_ptr =
+> +        object_field_prop_ptr(obj, opaque);
+> +
+> +    qapi_free_IOThreadVirtQueueMappingList(*prop_ptr);
+> +    *prop_ptr = NULL;
+> +}
+> +
+> +const PropertyInfo qdev_prop_iothread_vq_mapping_list = {
+> +    .name = "IOThreadVirtQueueMappingList",
+> +    .description = "IOThread virtqueue mapping list [{\"iothread\":\"<id>\", "
+> +                   "\"vqs\":[1,2,3,...]},...]",
+> +    .get = get_iothread_vq_mapping_list,
+> +    .set = set_iothread_vq_mapping_list,
+> +    .release = release_iothread_vq_mapping_list,
+> +};
 
 
