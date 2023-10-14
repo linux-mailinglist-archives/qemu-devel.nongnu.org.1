@@ -2,39 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE9A7C9614
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDD07C961E
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:46:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrkTc-0002th-Pv; Sat, 14 Oct 2023 15:39:08 -0400
+	id 1qrkZN-0000sC-GA; Sat, 14 Oct 2023 15:45:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qrkTa-0002sV-Sm; Sat, 14 Oct 2023 15:39:06 -0400
+ id 1qrkZK-0000rN-E0; Sat, 14 Oct 2023 15:45:02 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qrkTW-0001C0-Gj; Sat, 14 Oct 2023 15:39:06 -0400
+ id 1qrkZH-0002Jp-LB; Sat, 14 Oct 2023 15:45:02 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 7EF6375721D;
- Sat, 14 Oct 2023 21:37:57 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 520E9757202;
+ Sat, 14 Oct 2023 21:43:54 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id F05C0757202; Sat, 14 Oct 2023 21:37:56 +0200 (CEST)
-Message-Id: <2c695482c346a96206e339c18deced31cb5d4574.1697311794.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1697311794.git.balaton@eik.bme.hu>
-References: <cover.1697311794.git.balaton@eik.bme.hu>
+ id 064047456A7; Sat, 14 Oct 2023 21:43:54 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 029E2745681;
+ Sat, 14 Oct 2023 21:43:54 +0200 (CEST)
+Date: Sat, 14 Oct 2023 21:43:53 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 3/3] hw/ppc: Add emulation of AmigaOne XE board
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
  Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Date: Sat, 14 Oct 2023 21:37:56 +0200 (CEST)
-X-Spam-Probability: 10%
+Subject: Re: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
+In-Reply-To: <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
+Message-ID: <339df528-073f-cbd2-ceef-71868c89929c@eik.bme.hu>
+References: <cover.1696880742.git.balaton@eik.bme.hu>
+ <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
+ <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -57,263 +63,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AmigaOne is a rebranded MAI Teron board that uses U-Boot firmware
-with patches to support AmigaOS and is very similar to pegasos2 so can
-be easily emulated sharing most code with pegasos2. The reason to
-emulate it is that AmigaOS comes in different versions for AmigaOne
-and PegasosII which only have drivers for one machine and firmware so
-these only run on the specific machine. Adding this board allows
-another AmigaOS version to be used reusing already existing peagasos2
-emulation. (The AmigaOne was the first of these boards so likely most
-widespread which then inspired Pegasos that was later replaced with
-PegasosII due to problems with Articia S, so these have a lot of
-similarity. Pegasos mainly ran MorphOS while the PegasosII version of
-AmigaOS was added later and therefore less common than the AmigaOne
-version.)
+On Sat, 14 Oct 2023, Mark Cave-Ayland wrote:
+> On 09/10/2023 20:54, BALATON Zoltan wrote:
+>> The initial value for BARs were set in reset method for emulating
+>> legacy mode at start but this does not work because PCI code resets
+>> BARs after calling device reset method. Remove this ineffective
+>> default to avoid confusion.
+>> 
+>> Instead move setting the BARs to a callback on writing the PCI config
+>> regsiter that sets legacy mode (which firmwares needing this mode seem
+>> to do) and fix their values to program it to use legacy port numbers
+>> in this case. This does not fully emulate what the data sheet says
+>> (which is not very clear on this) but it implements enogh to allow
+>> both modes as used by firmwares of machines we emulate.
+>> 
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>>   hw/ide/via.c | 41 ++++++++++++++++++++++++++++++++++++-----
+>>   1 file changed, 36 insertions(+), 5 deletions(-)
+>> 
+>> diff --git a/hw/ide/via.c b/hw/ide/via.c
+>> index fff23803a6..43e8af8d69 100644
+>> --- a/hw/ide/via.c
+>> +++ b/hw/ide/via.c
+>> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
+>>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+>>                    PCI_STATUS_DEVSEL_MEDIUM);
+>>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
+>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
+>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 
+>> 20-23h */
+>>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+>>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
+>> @@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
+>>       pci_set_long(pci_conf + 0xc0, 0x00020001);
+>>   }
+>>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
+>> +                              uint32_t val, int len)
+>> +{
+>> +    pci_default_write_config(pd, addr, val, len);
+>> +    /*
+>> +     * Bits 0 and 2 of the PCI programming interface register select 
+>> between
+>> +     * legacy and native mode for the two IDE channels. We don't emulate 
+>> this
+>> +     * because we cannot easily switch between ISA and PCI in QEMU so 
+>> instead
+>
+> As per my previous email, this statement is demonstrably false: this is now 
+> achievable using the portio_list*() APIs.
+>
+>> +     * when guest selects legacy mode we set the PCI BARs to legacy ports 
+>> which
+>> +     * works the same. We also don't care about setting each channel 
+>> separately
+>> +     * as no guest is known to do or need that. We only do this when BARs 
+>> are
+>> +     * unset when writing this register as logs from real hardware show 
+>> that
+>> +     * setting legacy mode after BARs were set it will still use ports set 
+>> by
+>> +     * BARs not ISA ports (e.g. pegasos2 Linux does this after firmware 
+>> set
+>> +     * native mode and programmed BARs and calls it non-100% native mode).
+>> +     * But if 0x8a is written righr after reset without setting BARs then 
+>> we
+>> +     * want legacy ports (this is done by the AmigaOne firmware).
+>> +     */
+>> +    if (addr == PCI_CLASS_PROG && val == 0x8a &&
+>> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
+>> +        PCI_BASE_ADDRESS_SPACE_IO) {
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +        /* BMIBA: 20-23h */
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +    }
+>> +}
+>
+> Another hint that this is not the right way to be doing this: the values you 
+> are placing in BARS 1 and 3 are illegal. PCI IO BARs have bit 1 forced to 0 
+> and bit 0 set to 1 which forces a minimum alignment of 4, so either the 
+> addresses 0x3f6/0x376 are being rounded internally to 0x3f4/0x374 and/or 
+> you're lucky that this just happens to work on QEMU.
+>
+> Using the portio_list*() APIs really is the right way to implement this to 
+> avoid being affected by such issues.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- MAINTAINERS                             |   8 ++
- configs/devices/ppc-softmmu/default.mak |   1 +
- hw/ppc/Kconfig                          |   7 +
- hw/ppc/amigaone.c                       | 164 ++++++++++++++++++++++++
- hw/ppc/meson.build                      |   2 +
- 5 files changed, 182 insertions(+)
- create mode 100644 hw/ppc/amigaone.c
+On second thought I don't think that would work as pegaos2 Linux writes 
+0x8a to prog_if but then keeps using the ports as set by BARs so if you 
+use ISA ports in this case this will break. I think that proves that real 
+chip also uses BARs to emulate legacy mode similar to this approach so 
+what we have in this patch is close enough and works well. Your proposed 
+alternative is more complex, would not work any better and probably even 
+does not work for all cases this works for so I think this is the better 
+way now. I've sent a v3 with values changed to match BAR default values 
+with 0x3x4 and updating comment and commit message.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ceea4c2bf2..ca405bc1bc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1510,6 +1510,14 @@ F: hw/pci-host/mv64361.c
- F: hw/pci-host/mv643xx.h
- F: include/hw/pci-host/mv64361.h
- 
-+amigaone
-+M: BALATON Zoltan <balaton@eik.bme.hu>
-+L: qemu-ppc@nongnu.org
-+S: Maintained
-+F: hw/ppc/amigaone.c
-+F: hw/pci-host/articia.c
-+F: include/hw/pci-host/articia.h
-+
- Virtual Open Firmware (VOF)
- M: Alexey Kardashevskiy <aik@ozlabs.ru>
- R: David Gibson <david@gibson.dropbear.id.au>
-diff --git a/configs/devices/ppc-softmmu/default.mak b/configs/devices/ppc-softmmu/default.mak
-index a887f5438b..b85fd2bcd7 100644
---- a/configs/devices/ppc-softmmu/default.mak
-+++ b/configs/devices/ppc-softmmu/default.mak
-@@ -14,6 +14,7 @@ CONFIG_SAM460EX=y
- CONFIG_MAC_OLDWORLD=y
- CONFIG_MAC_NEWWORLD=y
- 
-+CONFIG_AMIGAONE=y
- CONFIG_PEGASOS2=y
- 
- # For PReP
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index 5dfbf47ef5..56f0475a8e 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -69,6 +69,13 @@ config SAM460EX
-     select USB_OHCI
-     select FDT_PPC
- 
-+config AMIGAONE
-+    bool
-+    imply ATI_VGA
-+    select ARTICIA
-+    select VT82C686
-+    select SMBUS_EEPROM
-+
- config PEGASOS2
-     bool
-     imply ATI_VGA
-diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
-new file mode 100644
-index 0000000000..3589924c8a
---- /dev/null
-+++ b/hw/ppc/amigaone.c
-@@ -0,0 +1,164 @@
-+/*
-+ * QEMU Eyetech AmigaOne/Mai Logic Teron emulation
-+ *
-+ * Copyright (c) 2023 BALATON Zoltan
-+ *
-+ * This work is licensed under the GNU GPL license version 2 or later.
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/units.h"
-+#include "qemu/datadir.h"
-+#include "qemu/log.h"
-+#include "qemu/error-report.h"
-+#include "qapi/error.h"
-+#include "hw/ppc/ppc.h"
-+#include "hw/boards.h"
-+#include "hw/loader.h"
-+#include "hw/pci-host/articia.h"
-+#include "hw/isa/vt82c686.h"
-+#include "hw/ide/pci.h"
-+#include "hw/i2c/smbus_eeprom.h"
-+#include "hw/ppc/ppc.h"
-+#include "sysemu/reset.h"
-+#include "kvm_ppc.h"
-+
-+#define BUS_FREQ_HZ 100000000
-+
-+/*
-+ * Firmware binary available at
-+ * https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28
-+ * then "tail -c 524288 updater.image >u-boot-amigaone.bin"
-+ *
-+ * BIOS emulator in firmware cannot run QEMU vgabios and hangs on it, use
-+ * -device VGA,romfile=VGABIOS-lgpl-latest.bin
-+ * from http://www.nongnu.org/vgabios/ instead.
-+ */
-+#define PROM_FILENAME "u-boot-amigaone.bin"
-+#define PROM_ADDR 0xfff00000
-+#define PROM_SIZE (512 * KiB)
-+
-+static void amigaone_cpu_reset(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
-+
-+    cpu_reset(CPU(cpu));
-+    cpu_ppc_tb_reset(&cpu->env);
-+}
-+
-+static void fix_spd_data(uint8_t *spd)
-+{
-+    uint32_t bank_size = 4 * MiB * spd[31];
-+    uint32_t rows = bank_size / spd[13] / spd[17];
-+    spd[3] = ctz32(rows) - spd[4];
-+}
-+
-+static void amigaone_init(MachineState *machine)
-+{
-+    PowerPCCPU *cpu;
-+    CPUPPCState *env;
-+    MemoryRegion *rom, *pci_mem, *mr;
-+    const char *fwname = machine->firmware ?: PROM_FILENAME;
-+    char *filename;
-+    ssize_t sz;
-+    PCIBus *pci_bus;
-+    Object *via;
-+    DeviceState *dev;
-+    I2CBus *i2c_bus;
-+    uint8_t *spd_data;
-+    int i;
-+
-+    /* init CPU */
-+    cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
-+    env = &cpu->env;
-+    if (PPC_INPUT(env) != PPC_FLAGS_INPUT_6xx) {
-+        error_report("Incompatible CPU, only 6xx bus supported");
-+        exit(1);
-+    }
-+    cpu_ppc_tb_init(env, BUS_FREQ_HZ / 4);
-+    qemu_register_reset(amigaone_cpu_reset, cpu);
-+
-+    /* RAM */
-+    if (machine->ram_size > 2 * GiB) {
-+        error_report("RAM size more than 2 GiB is not supported");
-+        exit(1);
-+    }
-+    memory_region_add_subregion(get_system_memory(), 0, machine->ram);
-+    if (machine->ram_size < 1 * GiB + 32 * KiB) {
-+        /* Firmware uses this area for startup */
-+        mr = g_new(MemoryRegion, 1);
-+        memory_region_init_ram(mr, NULL, "init-cache", 32 * KiB, &error_fatal);
-+        memory_region_add_subregion(get_system_memory(), 0x40000000, mr);
-+    }
-+
-+    /* allocate and load firmware */
-+    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
-+    if (!filename) {
-+        error_report("Could not find firmware '%s'", fwname);
-+        exit(1);
-+    }
-+    rom = g_new(MemoryRegion, 1);
-+    memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
-+    memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
-+    sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE);
-+    if (sz <= 0 || sz > PROM_SIZE) {
-+        error_report("Could not load firmware '%s'", filename);
-+        exit(1);
-+    }
-+    g_free(filename);
-+
-+    /* Articia S */
-+    dev = sysbus_create_simple(TYPE_ARTICIA, 0xfe000000, NULL);
-+
-+    i2c_bus = I2C_BUS(qdev_get_child_bus(dev, "smbus"));
-+    if (machine->ram_size > 512 * MiB) {
-+        spd_data = spd_data_generate(SDR, machine->ram_size / 2);
-+    } else {
-+        spd_data = spd_data_generate(SDR, machine->ram_size);
-+    }
-+    fix_spd_data(spd_data);
-+    smbus_eeprom_init_one(i2c_bus, 0x51, spd_data);
-+    if (machine->ram_size > 512 * MiB) {
-+        smbus_eeprom_init_one(i2c_bus, 0x52, spd_data);
-+    }
-+
-+    pci_mem = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
-+    mr = g_new(MemoryRegion, 1);
-+    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", pci_mem,
-+                             0, 0x1000000);
-+    memory_region_add_subregion(get_system_memory(), 0xfd000000, mr);
-+    mr = g_new(MemoryRegion, 1);
-+    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", pci_mem,
-+                             0x80000000, 0x7d000000);
-+    memory_region_add_subregion(get_system_memory(), 0x80000000, mr);
-+    pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
-+
-+    /* VIA VT82c686B South Bridge (multifunction PCI device) */
-+    via = OBJECT(pci_create_simple_multifunction(pci_bus, PCI_DEVFN(7, 0),
-+                                                 TYPE_VT82C686B_ISA));
-+    object_property_add_alias(OBJECT(machine), "rtc-time",
-+                              object_resolve_path_component(via, "rtc"),
-+                              "date");
-+    qdev_connect_gpio_out(DEVICE(via), 0,
-+                          qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-+        qdev_connect_gpio_out(dev, i, qdev_get_gpio_in_named(DEVICE(via),
-+                                                             "pirq", i));
-+    }
-+    pci_ide_create_devs(PCI_DEVICE(object_resolve_path_component(via, "ide")));
-+    pci_vga_init(pci_bus);
-+}
-+
-+static void amigaone_machine_init(MachineClass *mc)
-+{
-+    mc->desc = "Eyetech AmigaOne/Mai Logic Teron";
-+    mc->init = amigaone_init;
-+    mc->block_default_type = IF_IDE;
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("7457_v1.2");
-+    mc->default_display = "std";
-+    mc->default_ram_id = "ram";
-+    mc->default_ram_size = 128 * MiB;
-+}
-+
-+DEFINE_MACHINE("amigaone", amigaone_machine_init)
-diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index 7c2c52434a..0f76f4cce4 100644
---- a/hw/ppc/meson.build
-+++ b/hw/ppc/meson.build
-@@ -81,6 +81,8 @@ ppc_ss.add(when: 'CONFIG_E500', if_true: files(
- ))
- # PowerPC 440 Xilinx ML507 reference board.
- ppc_ss.add(when: 'CONFIG_VIRTEX', if_true: files('virtex_ml507.c'))
-+# a1xe
-+ppc_ss.add(when: 'CONFIG_AMIGAONE', if_true: files('amigaone.c'))
- # Pegasos2
- ppc_ss.add(when: 'CONFIG_PEGASOS2', if_true: files('pegasos2.c'))
- 
--- 
-2.30.9
+Regards,
+BALATON Zoltan
 
+>>   static void via_ide_realize(PCIDevice *dev, Error **errp)
+>>   {
+>>       PCIIDEState *d = PCI_IDE(dev);
+>> @@ -221,6 +251,7 @@ static void via_ide_class_init(ObjectClass *klass, void 
+>> *data)
+>>       /* Reason: only works as function of VIA southbridge */
+>>       dc->user_creatable = false;
+>>   +    k->config_write = via_ide_cfg_write;
+>>       k->realize = via_ide_realize;
+>>       k->exit = via_ide_exitfn;
+>>       k->vendor_id = PCI_VENDOR_ID_VIA;
+>
+>
+> ATB,
+>
+> Mark.
+>
+>
+>
 
