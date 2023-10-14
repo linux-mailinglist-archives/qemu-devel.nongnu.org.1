@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6637C9645
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 22:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0580A7C9646
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 22:39:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrlLl-0005JX-FZ; Sat, 14 Oct 2023 16:35:05 -0400
+	id 1qrlPD-0006TW-G5; Sat, 14 Oct 2023 16:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qrlLj-0005JK-Jr; Sat, 14 Oct 2023 16:35:03 -0400
+ id 1qrlPB-0006TC-RM
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 16:38:37 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qrlLh-0003GB-88; Sat, 14 Oct 2023 16:35:03 -0400
+ id 1qrlP1-0003np-Fv
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 16:38:28 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id E7C02757202;
- Sat, 14 Oct 2023 22:33:53 +0200 (CEST)
+ by localhost (Postfix) with SMTP id B43B675721D;
+ Sat, 14 Oct 2023 22:37:23 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id AC0687456A7; Sat, 14 Oct 2023 22:33:53 +0200 (CEST)
+ id 83D78757202; Sat, 14 Oct 2023 22:37:23 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A709A745681;
- Sat, 14 Oct 2023 22:33:53 +0200 (CEST)
-Date: Sat, 14 Oct 2023 22:33:53 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 81E5C745681;
+ Sat, 14 Oct 2023 22:37:23 +0200 (CEST)
+Date: Sat, 14 Oct 2023 22:37:23 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: deller@kernel.org
 cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Helge Deller <deller@gmx.de>, qemu-stable@nongnu.org
-Subject: Re: [PATCH 05/12] lasips2: LASI PS/2 devices are not user-createable
-In-Reply-To: <20231014195719.151397-6-deller@kernel.org>
-Message-ID: <b5bce14d-082e-bab4-9345-668f90d876e7@eik.bme.hu>
+ Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH 06/12] tulip: Use the HP PCI vendor ID instead of
+ number
+In-Reply-To: <20231014195719.151397-7-deller@kernel.org>
+Message-ID: <40d9d539-1064-19d8-6c89-cb1102be4b5e@eik.bme.hu>
 References: <20231014195719.151397-1-deller@kernel.org>
- <20231014195719.151397-6-deller@kernel.org>
+ <20231014195719.151397-7-deller@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
@@ -62,46 +65,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Sat, 14 Oct 2023, deller@kernel.org wrote:
 > From: Helge Deller <deller@gmx.de>
 >
-> Those PS/2 ports are created with the LASI controller when
-> a 32-bit PA-RISC machine is created.
->
-> Mark them not user-createable to avoid showing them in
-> the qemu device list.
->
 > Signed-off-by: Helge Deller <deller@gmx.de>
-> Cc: qemu-stable@nongnu.org
 > ---
-> hw/input/lasips2.c | 4 ++++
-> 1 file changed, 4 insertions(+)
+> hw/net/tulip.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/hw/input/lasips2.c b/hw/input/lasips2.c
-> index ea7c07a2ba..93c9c887d3 100644
-> --- a/hw/input/lasips2.c
-> +++ b/hw/input/lasips2.c
-> @@ -351,6 +351,8 @@ static void lasips2_port_class_init(ObjectClass *klass, void *data)
-> {
->     DeviceClass *dc = DEVICE_CLASS(klass);
->
-> +    /* Lasi devices can not be created by users */
+> diff --git a/hw/net/tulip.c b/hw/net/tulip.c
+> index 915e5fb595..11d866e431 100644
+> --- a/hw/net/tulip.c
+> +++ b/hw/net/tulip.c
+> @@ -1020,7 +1020,7 @@ static void tulip_class_init(ObjectClass *klass, void *data)
+>     k->exit = pci_tulip_exit;
+>     k->vendor_id = PCI_VENDOR_ID_DEC;
+>     k->device_id = PCI_DEVICE_ID_DEC_21143;
+> -    k->subsystem_vendor_id = 0x103c;
+> +    k->subsystem_vendor_id = PCI_VENDOR_ID_HP;
 
-That's what the next line says so this comment does not add any info. It 
-should instead explain why, such as "part of LASI" or something like that.
+Seems to be first use of value introduced in patch 2. I don't know if this 
+is worrh two separate patches. I'd just squash patch 2 in this patch but 
+not sure what others or maintainer prefers.
 
 Regards,
 BALATON Zoltan
 
-> +    dc->user_creatable = false;
->     dc->realize = lasips2_port_realize;
-> }
->
-> @@ -397,6 +399,8 @@ static void lasips2_kbd_port_class_init(ObjectClass *klass, void *data)
->     DeviceClass *dc = DEVICE_CLASS(klass);
->     LASIPS2PortDeviceClass *lpdc = LASIPS2_PORT_CLASS(klass);
->
-> +    /* Lasi devices can not be created by users */
-> +    dc->user_creatable = false;
->     device_class_set_parent_realize(dc, lasips2_kbd_port_realize,
->                                     &lpdc->parent_realize);
-> }
+>     k->subsystem_id = 0x104f;
+>     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
+>     dc->vmsd = &vmstate_pci_tulip;
 >
 
