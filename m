@@ -2,91 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07D17C92F7
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 08:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C697A7C9304
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 08:37:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrYCL-0000Yy-1s; Sat, 14 Oct 2023 02:32:29 -0400
+	id 1qrYGl-0004Uu-T4; Sat, 14 Oct 2023 02:37:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrYCJ-0000Yo-0A
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 02:32:27 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qrYGh-0004UR-N1
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 02:36:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrYCG-0000Ez-GQ
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 02:32:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=5GohXnLCIPTSBSVklK88ehhkR68MUBltDpfZzvFlSIE=; b=geE/hUFkLWg+vCswJXxgG33QKJ
- NOvJqi7go1Af5WMS0N8CspfXuSG8eHFv3Kytfrl1KdYP7WZsI59srkWPORMtL4woDGOVYH77kCGF4
- ycKIDdk2ozbqQLt2hR/SswxpsTG/Dj0DD8sgJHtvI6gyd6ZBgcEepbttcvqjLODiQj/awH8MAzp05
- +WPExQIpi+kBCaZki4yDNsHB0/lWVZ4C0YEd8EPm52slqRHl+u5wMNbmwlv2PXRIAogX12T8IDWoA
- 9lyh2Z3S3Gy3zprSgEZrs+gbnFWZ/fyfycYIancKy3cRkK7YDpugqugcwR58KRnV5qBmY3aIL7Uqn
- cCAVhnRanfDybMcv7vEC/4AebERcIii5LETEPafhSqR7BHAJR+eZWUQQ6AK0LYwmPk5MwprCIkV18
- XFxuRQDipqWx/dNvm2qO1DxQpWTPVRWCB1rj/zTOQnxo4QEbb43c4bRIxw2xv0zNFrsdTdBXeY8XG
- tLizHuE6fl0yenx3/kvPzcEZfzjVPRWiJ9Vp8Zjs8lkvnhBLMkiw0bgOesJLju8/Uf6aR27kRKhP9
- STp2KClVuGlkMWsu3pRrh7/Tv60iM4Tz91gx11l6+3svXcZf2sybTxD/MgDGKyhZ9ST1xn9Mlcs8V
- 8AhBrT7bNY8HC+a5ZMSmALjOVGqknauOv1pnXVlw0=;
-Received: from [2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qrYC8-0006zm-Cf; Sat, 14 Oct 2023 07:32:20 +0100
-Message-ID: <0b326e97-aded-4a95-a134-16e2e2c6d996@ilande.co.uk>
-Date: Sat, 14 Oct 2023 07:32:16 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qrYGe-0001L6-T5
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 02:36:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697265415;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HC415IEKQ+GOWNZ4Ky3IuWxyk2qDZxuu0JasSnGLeFo=;
+ b=f407OZJmhDi7Q3srPBHWgkP47Pv552TrRLHD3UcAokogh6bv1KPL8bym0mEgHgkr27pq1Y
+ GHd7D7nRTc9vuIoMPWgklscNkABLoTdnHz5sWwUjcGWBPlSQHW2mtG9g90MduJm7r2GA2b
+ CXmvbHITiO2mssKWOGU6ZGYgeg2GGgI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-586-4pLbwjNMPiSIXGoNqRqNWA-1; Sat, 14 Oct 2023 02:36:51 -0400
+X-MC-Unique: 4pLbwjNMPiSIXGoNqRqNWA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC1A7858F1B;
+ Sat, 14 Oct 2023 06:36:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 82386202701E;
+ Sat, 14 Oct 2023 06:36:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 86B1221E6A21; Sat, 14 Oct 2023 08:36:49 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  peter.maydell@linaro.org,
+ pbonzini@redhat.com
+Subject: Re: [PATCH 11/11] qdev: Rework array properties based on list visitor
+References: <20230908143703.172758-1-kwolf@redhat.com>
+ <20230908143703.172758-12-kwolf@redhat.com>
+ <874jjms0x6.fsf@pond.sub.org> <ZSl4c1GwDAB+EH+i@redhat.com>
+Date: Sat, 14 Oct 2023 08:36:49 +0200
+In-Reply-To: <ZSl4c1GwDAB+EH+i@redhat.com> (Kevin Wolf's message of "Fri, 13
+ Oct 2023 19:03:47 +0200")
+Message-ID: <87lec590ce.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: atar4qemu@gmail.com
-References: <20231013212846.165724-1-richard.henderson@linaro.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20231013212846.165724-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8baf:fd00:1033:b5d6:92a3:359f
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 00/85] target/sparc: Convert to decodetree
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,144 +81,415 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/10/2023 22:27, Richard Henderson wrote:
+Kevin Wolf <kwolf@redhat.com> writes:
 
-> While doing some other testing the other day, I noticed my sparc64
-> chroot running particularly slowly.  I think I know what the problem
-> is there, but fixing that was going to be particularly ugly with the
-> existing sparc translator.
-> 
-> So I've converted the translator to something more managable.  :-)
-> 
-> I've only done avocado testing so far, fingers crossed.
->  
-> r~
+> Am 22.09.2023 um 17:05 hat Markus Armbruster geschrieben:
+>> Kevin Wolf <kwolf@redhat.com> writes:
+>> 
+>> > Until now, array properties are actually implemented with a hack that
+>> > uses multiple properties on the QOM level: a static "foo-len" property
+>> > and after it is set, dynamically created "foo[i]" properties.
+>> >
+>> > In external interfaces (-device on the command line and device_add in
+>> > QMP), this interface was broken by commit f3558b1b ('qdev: Base object
+>> > creation on QDict rather than QemuOpts') because QDicts are unordered
+>> > and therefore it could happen that QEMU tried to set the indexed
+>> > properties before setting the length, which fails and effectively makes
+>> > array properties inaccessible. In particular, this affects the 'ports'
+>> > property of the 'rocker' device.
+>> >
+>> > This patch reworks the external interface so that instead of using a
+>> > separate top-level property for the length and for each element, we use
+>> > a single true array property that accepts a list value. In the external
+>> > interfaces, this is naturally expressed as a JSON list and makes array
+>> > properties accessible again.
+>> >
+>> > Creating an array property on the command line without using JSON format
+>> > is currently not possible. This could be fixed by switching from
+>> > QemuOpts to a keyval parser, which however requires consideration of the
+>> > compatibility implications.
+>> >
+>> > All internal users of devices with array properties go through
+>> > qdev_prop_set_array() at this point, so updating it takes care of all of
+>> > them.
+>> >
+>> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1090
+>> > Fixes: f3558b1b763683bb877f7dd5b282469cdadc65c3
+>> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 
-Oh wow, that's amazing - looking into this has been on my TODO list for quite some 
-time now :O
+[...]
 
-FWIW I'm still struggling with hangs on sun4m which I've noticed a lot more whilst 
-working on my ESP changes. I *think* it is the same issue I saw before when testing 
-your original gen_helper_lookup_tb_ptr() conversion series for target/sparc, which 
-did disappear in the final version of the series but I can now reproduce fairly 
-consistently with git master.
+>> > diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+>> > index 950ef48e01..b2303a6fbc 100644
+>> > --- a/hw/core/qdev-properties.c
+>> > +++ b/hw/core/qdev-properties.c
+>> > @@ -546,98 +546,152 @@ const PropertyInfo qdev_prop_size32 = {
+>> >  
+>> >  /* --- support for array properties --- */
+>> >  
+>> > -/* Used as an opaque for the object properties we add for each
+>> > - * array element. Note that the struct Property must be first
+>> > - * in the struct so that a pointer to this works as the opaque
+>> > - * for the underlying element's property hooks as well as for
+>> > - * our own release callback.
+>> > - */
+>> > -typedef struct {
+>> > -    struct Property prop;
+>> > -    char *propname;
+>> > -    ObjectPropertyRelease *release;
+>> > -} ArrayElementProperty;
+>> > -
+>> > -/* object property release callback for array element properties:
+>> > - * we call the underlying element's property release hook, and
+>> > - * then free the memory we allocated when we added the property.
+>> > +static Property array_elem_prop(Object *obj, Property *parent_prop,
+>> > +                                const char *name, char *elem)
+>> 
+>> @parent_prop is an array property.  It's backed by an uint32_t length
+>> and an element array.  @elem points into the element array.  Correct?
+>
+> Correct.
 
-The reproducer here is easy with Solaris 8:
-     ./build/qemu-system-sparc -cdrom sol8-cd1.iso -boot d
+Worth explaining in a comment?
 
-Then when the splash screen appears keep wiggling the mouse until everything locks 
-up. In my ESP traces I sometimes see random hangs where the trace-events would end 
-with "esp_raise_irq()" and sit there for 10s of seconds before resuming, so both of 
-this seems to suggest that interrupts aren't getting through when they should.
+>> > +{
+>> > +    return (Property) {
+>> > +        .info = parent_prop->arrayinfo,
+>> > +        .name = name,
+>> > +        /*
+>> > +         * This ugly piece of pointer arithmetic sets up the offset so
+>> > +         * that when the underlying release hook calls qdev_get_prop_ptr
+>> > +         * they get the right answer despite the array element not actually
+>> > +         * being inside the device struct.
+>> > +         */
+>> > +        .offset = elem - (char *) obj,
+>> 
+>> Isn't this is undefined behavior?
+>
+> It should be at least less illegal than the old version of it, which did
+> the calculation on void * and still worked in practice...
+>
+> But yes, strictly speaking, it's probably undefined behaviour. I can
+> calculate on uintptr_t instead, and then it should be defined here.
+>
+> The QOM counterpart object_field_prop_ptr() is probably still undefined
+> because it calculates on a pointer and I think the spec allows casting
+> back to a pointer only after we've applied the offset so that we stay in
+> the same object with pointer arithmetics.
 
-Anyhow I can certainly give this series a spin on my OpenBIOS test images over the 
-next few days as time allows.
+We should not have to waste time on worrying about compilers using UB
+fine print against us, but sadly we do.
 
+I'm not objecting to your code, I'm merely pointing out a potential time
+bomb.  In a programming environment that has embraced time bombing with
+gusto.
 
-ATB,
+>> Delete the space between (char *) and obj.
+>> 
+>> > +    };
+>> > +}
+>> > +
+>> > +/*
+>> > + * Object property release callback for array properties: We call the underlying
+>> > + * element's property release hook for each element.
+>> > + *
+>> > + * Note that it is the responsibility of the individual device's deinit to free
+>> > + * the array proper.
+>> 
+>> What is a device's "deinit"?  Is it the unrealize() method?  The
+>> instance_finalize() method?
+>
+> Who knows? I only moved this comment.
 
-Mark.
+Opportunity to improve it.  Not a demand.
 
-> Richard Henderson (85):
->    target/sparc: Set TCG_GUEST_DEFAULT_MO
->    configs: Enable MTTCG for sparc, sparc64
->    target/sparc: Remove always-set cpu features
->    target/sparc: Add decodetree infrastructure
->    target/sparc: Define AM_CHECK for sparc32
->    target/sparc: Move CALL to decodetree
->    target/sparc: Move BPcc and Bicc to decodetree
->    target/sparc: Move BPr to decodetree
->    target/sparc: Move FBPfcc and FBfcc to decodetree
->    target/sparc: Merge gen_cond with only caller
->    target/sparc: Merge gen_fcond with only caller
->    target/sparc: Merge gen_branch_[an] with only caller
->    target/sparc: Pass DisasCompare to advance_jump_cond
->    target/sparc: Move SETHI to decodetree
->    target/sparc: Move Tcc to decodetree
->    target/sparc: Move RDASR, STBAR, MEMBAR to decodetree
->    target/sparc: Move RDPSR, RDHPR to decodetree
->    target/sparc: Move RDWIM, RDPR to decodetree
->    target/sparc: Move RDTBR, FLUSHW to decodetree
->    target/sparc: Move WRASR to decodetree
->    target/sparc: Move WRPSR, SAVED, RESTORED to decodetree
->    target/sparc: Move WRWIM, WRPR to decodetree
->    target/sparc: Move WRTBR, WRHPR to decodetree
->    target/sparc: Move basic arithmetic to decodetree
->    target/sparc: Move ADDC to decodetree
->    target/sparc: Move MULX to decodetree
->    target/sparc: Move UMUL, SMUL to decodetree
->    target/sparc: Move SUBC to decodetree
->    target/sparc: Move UDIVX, SDIVX to decodetree
->    target/sparc: Move UDIV, SDIV to decodetree
->    target/sparc: Move TADD, TSUB, MULS to decodetree
->    target/sparc: Move SLL, SRL, SRA to decodetree
->    target/sparc: Move MOVcc, MOVR to decodetree
->    target/sparc: Move POPC to decodetree
->    target/sparc: Convert remaining v8 coproc insns to decodetree
->    target/sparc: Move JMPL, RETT, RETURN to decodetree
->    target/sparc: Move FLUSH, SAVE, RESTORE to decodetree
->    target/sparc: Move DONE, RETRY to decodetree
->    target/sparc: Split out resolve_asi
->    target/sparc: Drop ifdef around get_asi and friends
->    target/sparc: Split out ldst functions with asi pre-computed
->    target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for GET_ASI_DTWINX
->    target/sparc: Move simple integer load/store to decodetree
->    target/sparc: Move asi integer load/store to decodetree
->    target/sparc: Move LDSTUB, LDSTUBA to decodetree
->    target/sparc: Move SWAP, SWAPA to decodetree
->    target/sparc: Move CASA, CASXA to decodetree
->    target/sparc: Move PREFETCH, PREFETCHA to decodetree
->    target/sparc: Split out fp ldst functions with asi precomputed
->    target/sparc: Move simple fp load/store to decodetree
->    target/sparc: Move asi fp load/store to decodetree
->    target/sparc: Move LDFSR, STFSR to decodetree
->    target/sparc: Merge LDFSR, LDXFSR implementations
->    target/sparc: Move EDGE* to decodetree
->    target/sparc: Move ARRAY* to decodetree
->    target/sparc: Move ADDRALIGN* to decodetree
->    target/sparc: Move BMASK to decodetree
->    target/sparc: Move FMOVS, FNEGS, FABSS, FSRC*S, FNOT*S to decodetree
->    target/sparc: Move FMOVD, FNEGD, FABSD, FSRC*D, FNOT*D to decodetree
->    target/sparc: Use tcg_gen_vec_{add,sub}*
->    target/sparc: Move gen_ne_fop_FFF insns to decodetree
->    target/sparc: Move gen_ne_fop_DDD insns to decodetree
->    target/sparc: Move PDIST to decodetree
->    target/sparc: Move gen_gsr_fop_DDD insns to decodetree
->    target/sparc: Move gen_fop_FF insns to decodetree
->    target/sparc: Move gen_fop_DD insns to decodetree
->    target/sparc: Move FSQRTq to decodetree
->    target/sparc: Move gen_fop_FFF insns to decodetree
->    target/sparc: Move gen_fop_DDD insns to decodetree
->    target/sparc: Move gen_fop_QQQ insns to decodetree
->    target/sparc: Move FSMULD to decodetree
->    target/sparc: Move FDMULQ to decodetree
->    target/sparc: Move gen_fop_FD insns to decodetree
->    target/sparc: Move FiTOd, FsTOd, FsTOx to decodetree
->    target/sparc: Move FqTOs, FqTOi to decodetree
->    target/sparc: Move FqTOd, FqTOx to decodetree
->    target/sparc: Move FiTOq, FsTOq to decodetree
->    target/sparc: Move FdTOq, FxTOq to decodetree
->    target/sparc: Move FMOVq, FNEGq, FABSq to decodetree
->    target/sparc: Move FMOVR, FMOVcc, FMOVfcc to decodetree
->    target/sparc: Convert FCMP, FCMPE to decodetree
->    target/sparc: Move FPCMP* to decodetree
->    target/sparc: Move FPACK16, FPACKFIX to decodetree
->    target/sparc: Convert FZERO, FONE to decodetree
->    target/sparc: Remove disas_sparc_legacy
-> 
->   configs/targets/sparc-softmmu.mak   |    1 +
->   configs/targets/sparc64-softmmu.mak |    1 +
->   linux-user/sparc/target_syscall.h   |    6 +-
->   target/sparc/cpu.h                  |   73 +-
->   target/sparc/helper.h               |   15 +-
->   target/sparc/insns.decode           |  541 +++
->   target/sparc/cpu.c                  |    8 +-
->   target/sparc/fop_helper.c           |   17 +-
->   target/sparc/translate.c            | 6692 +++++++++++++--------------
->   target/sparc/vis_helper.c           |   59 -
->   target/sparc/meson.build            |    3 +
->   11 files changed, 3804 insertions(+), 3612 deletions(-)
->   create mode 100644 target/sparc/insns.decode
-> 
+> My guess is that it doesn't really matter as long as _something_ frees
+> the array when unplugging the device.
+>
+>> >   */
+>> > -static void array_element_release(Object *obj, const char *name, void *opaque)
+>> > +static void release_prop_array(Object *obj, const char *name, void *opaque)
+>> >  {
+>> > -    ArrayElementProperty *p = opaque;
+>> > -    if (p->release) {
+>> > -        p->release(obj, name, opaque);
+>> > +    Property *prop = opaque;
+>> > +    uint32_t *alenptr = object_field_prop_ptr(obj, prop);
+>> > +    void **arrayptr = (void *)obj + prop->arrayoffset;
+>> 
+>> I'd call these @plen and @pelts, but that's clearly a matter of taste.
+>
+> I just kept the old names in set_prop_array() and used the same names in
+> new functions to stay consistent. But to be honest, @plen and @pelts
+> would be equally confusing to me.
+>
+> My own choice would probably have been something like array_len and
+> array_data (if you want to know that it's a pointer, look at its type).
+>
+>> > +    char *elem = *arrayptr;
+>> > +    int i;
+>> > +
+>> > +    for (i = 0; i < *alenptr; i++) {
+>> > +        Property elem_prop = array_elem_prop(obj, prop, name, elem);
+>> > +        prop->arrayinfo->release(obj, NULL, &elem_prop);
+>> > +        elem += prop->arrayfieldsize;
+>> >      }
+>> > -    g_free(p->propname);
+>> > -    g_free(p);
+>> >  }
+>> >  
+>> > -static void set_prop_arraylen(Object *obj, Visitor *v, const char *name,
+>> > -                              void *opaque, Error **errp)
+>> > +/*
+>> > + * Setter for an array property. This sets both the array length (which is
+>> > + * technically the property field in the object) and the array itself (a pointer
+>> > + * to which is stored in the additional field described by prop->arrayoffset).
+>> > + */
+>> > +static void set_prop_array(Object *obj, Visitor *v, const char *name,
+>> > +                           void *opaque, Error **errp)
+>> >  {
+>> > -    /* Setter for the property which defines the length of a
+>> > -     * variable-sized property array. As well as actually setting the
+>> > -     * array-length field in the device struct, we have to create the
+>> > -     * array itself and dynamically add the corresponding properties.
+>> > -     */
+>> > +    ERRP_GUARD();
+>> > +
+>> 
+>> Drop the blank line.
+>> 
+>> >      Property *prop = opaque;
+>> >      uint32_t *alenptr = object_field_prop_ptr(obj, prop);
+>> >      void **arrayptr = (void *)obj + prop->arrayoffset;
+>> > -    void *eltptr;
+>> > -    const char *arrayname;
+>> > -    int i;
+>> > +    GenericList *list, *elem, *next;
+>> > +    const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
+>> 
+>> This can be smaller than the size of the QAPI-generated list type, since
+>> the compiler may add padding.  Does it matter?
+>
+> If it happens in practice, it does matter. Do we have any cleaner way to
+> get the element size without knowing the content of the list?
+>
+> I expect that because GenericList only contains a single pointer, the
+> rest should have natural alignment
+
+Yes, GenericList's size and alignment should match a pointer's:
+
+    typedef struct GenericList {
+        struct GenericList *next;
+        char padding[];
+    } GenericList;
+
+>                                    and therefore the compiler shouldn't
+> have any reason to insert padding.
+
+The actual list will look like
+
+    struct FOOList {
+        FOOList *next;
+        FOOTYPE value;
+    }
+
+where FOOTYPE is some QAPI-generated type.  No padding as long as
+FOOTYPE's alignment divides the pointer size.  I figure that's true for
+our current targets and generated QAPI types (currently pointers,
+double, bool, or integers up to 64 bits).
+
+> If you think this is not enough and there is no other way to get the
+> size of the list elements, we might have to generate packed structs for
+> the QAPI list types (which are really only two pointers, so not much to
+> lose when we do that).
+
+Could we assert the element type's alignment divides GenericList's size?
+Not here, obviously, but in DEFINE_PROP_ARRAY(), where we can use
+__alignof__(_arraytype).
+
+We could also play with attribute aligned to ensure GenericList's size is
+safe, but I doubt that's worthwhile.
+
+>> > +    char *elemptr;
+>> > +    bool ok = true;
+>> >  
+>> >      if (*alenptr) {
+>> >          error_setg(errp, "array size property %s may not be set more than once",
+>> >                     name);
+>> >          return;
+>> >      }
+>> > -    if (!visit_type_uint32(v, name, alenptr, errp)) {
+>> > +
+>> > +    if (!visit_start_list(v, name, &list, list_elem_size, errp)) {
+>> >          return;
+>> >      }
+>> > -    if (!*alenptr) {
+>> > +
+>> > +    /* Read the whole input into a temporary list */
+>> > +    elem = list;
+>> > +    while (elem) {
+>> > +        Property elem_prop = array_elem_prop(obj, prop, name, elem->padding);
+>> > +        prop->arrayinfo->set(obj, v, NULL, &elem_prop, errp);
+>> > +        if (*errp) {
+>> > +            ok = false;
+>> > +            goto out_obj;
+>> > +        }
+>> > +        (*alenptr)++;
+>> > +        elem = visit_next_list(v, elem, list_elem_size);
+>> > +    }
+>> > +
+>> > +    ok = visit_check_list(v, errp);
+>> > +out_obj:
+>> > +    visit_end_list(v, (void**) &list);
+>> > +
+>> > +    if (!ok) {
+>> > +        for (elem = list; elem; elem = next) {
+>> > +            next = elem->next;
+>> > +            g_free(elem);
+>> > +        }
+>> 
+>> We consume the list even on error.  It's too late in my day for me to
+>> see why that's proper.
+>
+> Who else would free it otherwise?
+>
+> This is pretty much the same as the generated list visitors do.
+
+Help me out: point me to the precedence you have in mind.
+
+>> >          return;
+>> >      }
+>> >  
+>> > -    /* DEFINE_PROP_ARRAY guarantees that name should start with this prefix;
+>> > -     * strip it off so we can get the name of the array itself.
+>> > +    /*
+>> > +     * Now that we know how big the array has to be, move the data over to a
+>> > +     * linear array and free the temporary list.
+>> >       */
+>> > -    assert(strncmp(name, PROP_ARRAY_LEN_PREFIX,
+>> > -                   strlen(PROP_ARRAY_LEN_PREFIX)) == 0);
+>> > -    arrayname = name + strlen(PROP_ARRAY_LEN_PREFIX);
+>> > +    *arrayptr = g_malloc_n(*alenptr, prop->arrayfieldsize);
+>> > +    elemptr = *arrayptr;
+>> > +    for (elem = list; elem; elem = next) {
+>> > +        memcpy(elemptr, elem->padding, prop->arrayfieldsize);
+>> > +        elemptr += prop->arrayfieldsize;
+>> > +        next = elem->next;
+>> > +        g_free(elem);
+>> > +    }
+>> > +}
+>> >  
+>> > -    /* Note that it is the responsibility of the individual device's deinit
+>> > -     * to free the array proper.
+>> > -     */
+>> > -    *arrayptr = eltptr = g_malloc0(*alenptr * prop->arrayfieldsize);
+>> > -    for (i = 0; i < *alenptr; i++, eltptr += prop->arrayfieldsize) {
+>> > -        char *propname = g_strdup_printf("%s[%d]", arrayname, i);
+>> > -        ArrayElementProperty *arrayprop = g_new0(ArrayElementProperty, 1);
+>> > -        arrayprop->release = prop->arrayinfo->release;
+>> > -        arrayprop->propname = propname;
+>> > -        arrayprop->prop.info = prop->arrayinfo;
+>> > -        arrayprop->prop.name = propname;
+>> > -        /* This ugly piece of pointer arithmetic sets up the offset so
+>> > -         * that when the underlying get/set hooks call qdev_get_prop_ptr
+>> > -         * they get the right answer despite the array element not actually
+>> > -         * being inside the device struct.
+>> > -         */
+>> > -        arrayprop->prop.offset = eltptr - (void *)obj;
+>> > -        assert(object_field_prop_ptr(obj, &arrayprop->prop) == eltptr);
+>> > -        object_property_add(obj, propname,
+>> > -                            arrayprop->prop.info->name,
+>> > -                            field_prop_getter(arrayprop->prop.info),
+>> > -                            field_prop_setter(arrayprop->prop.info),
+>> > -                            array_element_release,
+>> > -                            arrayprop);
+>> > +static void get_prop_array(Object *obj, Visitor *v, const char *name,
+>> > +                           void *opaque, Error **errp)
+>> > +{
+>> > +    ERRP_GUARD();
+>> > +
+>> 
+>> Drop the blank line.
+>> 
+>> > +    Property *prop = opaque;
+>> > +    uint32_t *alenptr = object_field_prop_ptr(obj, prop);
+>> > +    void **arrayptr = (void *)obj + prop->arrayoffset;
+>> > +    char *elem = *arrayptr;
+>> > +    GenericList *list;
+>> > +    const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
+>> > +    int i;
+>> > +
+>> > +    if (!visit_start_list(v, name, &list, list_elem_size, errp)) {
+>> > +        return;
+>> >      }
+>> > +
+>> > +    for (i = 0; i < *alenptr; i++) {
+>> > +        Property elem_prop = array_elem_prop(obj, prop, name, elem);
+>> > +        prop->arrayinfo->get(obj, v, NULL, &elem_prop, errp);
+>> > +        if (*errp) {
+>> > +            goto out_obj;
+>> > +        }
+>> > +        elem += prop->arrayfieldsize;
+>> > +    }
+>> > +
+>> 
+>> You neglect to call visit_check_list().
+>
+> It is documented to be intended for input visitors only. Do we need it
+> with an output visitor?
+
+Help me out: where is that documented?
+
+>> > +out_obj:
+>> > +    visit_end_list(v, (void**) &list);
+>> >  }
+>> >  
+>> > -const PropertyInfo qdev_prop_arraylen = {
+>> > -    .name = "uint32",
+>> > -    .get = get_uint32,
+>> > -    .set = set_prop_arraylen,
+>> > -    .set_default_value = qdev_propinfo_set_default_value_uint,
+>> > +static void default_prop_array(ObjectProperty *op, const Property *prop)
+>> > +{
+>> > +    object_property_set_default_list(op);
+>> > +}
+>> > +
+>> > +const PropertyInfo qdev_prop_array = {
+>> > +    .name = "list",
+>> > +    .get = get_prop_array,
+>> > +    .set = set_prop_array,
+>> > +    .release = release_prop_array,
+>> > +    .set_default_value = default_prop_array,
+>> >  };
+>> >  
+>> >  /* --- public helpers --- */
+>> > @@ -743,20 +797,8 @@ void qdev_prop_set_enum(DeviceState *dev, const char *name, int value)
+>> >  
+>> >  void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values)
+>> >  {
+>> > -    const QListEntry *entry;
+>> > -    g_autofree char *prop_len = g_strdup_printf("len-%s", name);
+>> > -    uint32_t i = 0;
+>> > -
+>> > -    object_property_set_int(OBJECT(dev), prop_len, qlist_size(values),
+>> > -                            &error_abort);
+>> > -
+>> > -    QLIST_FOREACH_ENTRY(values, entry) {
+>> > -        g_autofree char *prop_idx = g_strdup_printf("%s[%u]", name, i);
+>> > -        object_property_set_qobject(OBJECT(dev), prop_idx, entry->value,
+>> > -                                    &error_abort);
+>> > -        i++;
+>> > -    }
+>> > -
+>> > +    object_property_set_qobject(OBJECT(dev), name, QOBJECT(values),
+>> > +                                &error_abort);
+>> >      qobject_unref(values);
+>> >  }
+>> 
+>> I like this very much.
+>
+> Thanks for the review.
+
+You're welcome.
 
 
