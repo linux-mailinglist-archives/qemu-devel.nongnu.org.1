@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900B77C962E
+	by mail.lfdr.de (Postfix) with ESMTPS id 734437C962C
 	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:59:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrklc-0003w0-Kt; Sat, 14 Oct 2023 15:57:46 -0400
+	id 1qrklc-0003vz-KL; Sat, 14 Oct 2023 15:57:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklY-0003sa-Ib
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:40 -0400
-Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklZ-0003tO-F7
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:42 -0400
+Received: from ams.source.kernel.org ([145.40.68.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklW-0004eN-So
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:40 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklW-0004eO-Td
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:41 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id CB1F6B80B76;
+ by ams.source.kernel.org (Postfix) with ESMTP id 27502B80B78;
+ Sat, 14 Oct 2023 19:57:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF8AC433C9;
  Sat, 14 Oct 2023 19:57:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4E2C433C8;
- Sat, 14 Oct 2023 19:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1697313455;
- bh=DUVfArvpe4u3CpWek9kOmH2OuzKB2BWaqa8Z++LAX6s=;
+ s=k20201202; t=1697313456;
+ bh=3FWfwVeYIqQFlYLkmYSJTxBaexgfoOzCMwvQaJxDeFg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=o6HCSDjp5TK41fA8Q8QYDlJLC2GODeD6uEwRMb8w0vtqlR0a8S7En/JMmp9PqGktK
- Oe+bX6XbkEh4E7kxS8A6V8NPssLJ7zTPClGvstWx6bI62nRckXOFwKmeHZ5jFCFJ39
- R9UDpkXim+DEMMoEvfszuDHQwiKdtAYsHWtSeauejqD4c5O6NCfFJnQV6FYohyvTEf
- 2spsevO7apNfGTR38TRRS/nrAh+lI5KfySzp5gdIEbZqWSJNeluS2FyNYa+0jLPHfX
- b6Nd3RQEVxqilubybVSz+6qKBUOAnvTFleeRouiYIBbuwzxCnIykFmd5EVOpwTD98T
- RB4FA7/oQXsTg==
+ b=POommJBLIEC/JlcusqVHhpXzJ4ujbja/YNAW1IPPByLYr5+y0C/ijyjubqxWa1FNa
+ odb7Fk2zNd+fRAwuC3IGLAHMkWsSo/DJtKep4PzmD2kxLYl98K+UmKI/l1grKHijE/
+ yqR3Qt6/olJCjdRrfaOcWJzqivUcfLE+PCDJvzHGxruDwn6RhIXgtYnhmyzPx8jLvn
+ 1gb1H5/hlXYDDObQTlJph/it9dHC/M5wVJR4OjsNYaGdi5UyyOFUYfZn1A82qW2ef7
+ 53zZiXFg6dn8kDHWyMar59bldfCTFKFSLlQSNw1WTBJ+y1VcK6X4ihXXuue3KkzGDu
+ f16Xcuyf1wRJw==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH 08/12] hw/hppa: Require at least SeaBIOS-hppa version 10
-Date: Sat, 14 Oct 2023 21:57:15 +0200
-Message-ID: <20231014195719.151397-9-deller@kernel.org>
+Subject: [PATCH 09/12] hw/hppa: Export machine name, BTLBs,
+ power-button address via fw_cfg
+Date: Sat, 14 Oct 2023 21:57:16 +0200
+Message-ID: <20231014195719.151397-10-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231014195719.151397-1-deller@kernel.org>
 References: <20231014195719.151397-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4601:e00::1;
- envelope-from=deller@kernel.org; helo=ams.source.kernel.org
+Received-SPF: pass client-ip=145.40.68.75; envelope-from=deller@kernel.org;
+ helo=ams.source.kernel.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -69,48 +70,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The new SeaBIOS-hppa version 10 includes initial support
-for PA2.0 CPUs.
+Provide necessary info to SeaBIOS-hppa.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/machine.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/hppa/machine.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index cf28cb9586..c6d8deffcf 100644
+index c6d8deffcf..be0caf4675 100644
 --- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -1,6 +1,8 @@
- /*
-  * QEMU HPPA hardware system emulator.
-- * Copyright 2018 Helge Deller <deller@gmx.de>
-+ * (C) Copyright 2018-2023 Helge Deller <deller@gmx.de>
-+ *
-+ * This work is licensed under the GNU GPL license version 2 or later.
-  */
+@@ -37,6 +37,7 @@
  
- #include "qemu/osdep.h"
-@@ -29,7 +31,7 @@
- #include "net/net.h"
- #include "qemu/log.h"
+ #define enable_lasi_lan()       0
  
--#define MIN_SEABIOS_HPPA_VERSION 6 /* require at least this fw version */
-+#define MIN_SEABIOS_HPPA_VERSION 10 /* require at least this fw version */
++static PCIBus *pci_bus;
  
- #define HPA_POWER_BUTTON (FIRMWARE_END - 0x10)
+ static void hppa_powerdown_req(Notifier *n, void *opaque)
+ {
+@@ -123,6 +124,8 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
+     FWCfgState *fw_cfg;
+     uint64_t val;
+     const char qemu_version[] = QEMU_VERSION;
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
++    int len;
  
-@@ -95,9 +97,7 @@ static ISABus *hppa_isa_bus(void)
+     fw_cfg = fw_cfg_init_mem(FW_CFG_IO_BASE, FW_CFG_IO_BASE + 4);
+     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, ms->smp.cpus);
+@@ -137,8 +140,20 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
+     fw_cfg_add_file(fw_cfg, "/etc/cpu/tlb_entries",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
  
-     isa_bus = isa_bus_new(NULL, get_system_memory(), isa_region,
-                           &error_abort);
--    isa_irqs = i8259_init(isa_bus,
--                          /* qemu_allocate_irq(dino_set_isa_irq, s, 0)); */
--                          NULL);
-+    isa_irqs = i8259_init(isa_bus, NULL);
-     isa_bus_register_input_irqs(isa_bus, isa_irqs);
++    val = cpu_to_le64(HPPA_BTLB_ENTRIES);
++    fw_cfg_add_file(fw_cfg, "/etc/cpu/btlb_entries",
++                    g_memdup(&val, sizeof(val)), sizeof(val));
++
++    len = strlen(mc->name) + 1;
++    fw_cfg_add_file(fw_cfg, "/etc/hppa/machine",
++                    g_memdup(mc->name, len), len);
++
+     val = cpu_to_le64(HPA_POWER_BUTTON);
+-    fw_cfg_add_file(fw_cfg, "/etc/power-button-addr",
++    fw_cfg_add_file(fw_cfg, "/etc/hppa/power-button-addr",
++                    g_memdup(&val, sizeof(val)), sizeof(val));
++
++    val = cpu_to_le64(CPU_HPA + 24);
++    fw_cfg_add_file(fw_cfg, "/etc/hppa/DebugOutputPort",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
  
-     return isa_bus;
+     fw_cfg_add_i16(fw_cfg, FW_CFG_BOOT_DEVICE, ms->boot_config.order[0]);
+@@ -148,6 +163,8 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
+                     g_memdup(qemu_version, sizeof(qemu_version)),
+                     sizeof(qemu_version));
+ 
++    fw_cfg_add_extra_pci_roots(pci_bus, fw_cfg);
++
+     return fw_cfg;
+ }
+ 
 -- 
 2.41.0
 
