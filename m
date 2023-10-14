@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB1B7C9288
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B2A7C9287
 	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 05:37:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrVS0-0007aH-4q; Fri, 13 Oct 2023 23:36:28 -0400
+	id 1qrVS6-0007av-BH; Fri, 13 Oct 2023 23:36:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrVRt-0007Za-RH
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:36:22 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1qrVRy-0007aK-8T
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:36:26 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrVRr-00044U-Oj
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:36:21 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1c5c91bec75so20962465ad.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 20:36:19 -0700 (PDT)
+ id 1qrVRw-00044q-OH
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:36:26 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6b20a48522fso1154723b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 20:36:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697254578; x=1697859378;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697254583; x=1697859383;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2WfcBcURCpBzkq/OT9x9ciFFH2S7/N+xn+Vd6QWcFlg=;
- b=s94NspDM6fSidEmi1V7Nhx4DPCiN9F10w5a2FSWfwr9aP4IJ+ssgjpqYmfxELpauMV
- F4hI33UuR665/lLAIh/mxbTEECOjOOEBqayxChN3HYthOMkBf2LueyKvmza9UWbJH7yK
- bvEjzwy0f4iLYbLvjbdRpdxbPFM+gne6F+cNE0cf0eFIwWCk/rWMv/UnOPnMQi7TVgkg
- fiYfTCtjT9bLu4xRZvZ4h6xQ4anq3tAgQfAJ43gi4+hyzEhvnNhSqUf2F5bsHXGEVeaR
- b/gzGT4Mb7Avt/S2R2820k3fOhVO79PZKs81Wmz5wjmpoUH3tLNG1jpGz/crNUyDBgc2
- HBbA==
+ bh=IKk6IyCieLsIGaxm0GofI4QujL1p3Wha0xoTTyMZRjs=;
+ b=S3JU9aqi8B+CWnlj9Xp4LSAIConG41LXB8rBhZvwWNFccQvFtRfjn+IXZZhCDsOftc
+ +4w2C8NC6F5dbZZLs/KxITFlXb9xdERaXN0YPhsCsassWEP68DEQV4HnDDGfmaHJ0WFu
+ Ht9OXCMEZ4bxATx3tU7NvgUynslNrG5EVFlMGKo+4NvPfhDDS0/UgyaaWy9E5nExMTFl
+ cNYo6W0ylwjYFCL45RL4VrCsJa4CamqLsc7UsuhtFrGNfZeBQm+e8IK0jzAmoXRZrsCi
+ ZwnnyZDFOE33EFpZeoJuLA9jsOb7A9elzseIQJnZDWqVUsNQu0awCbII6cbJSq5m6aLJ
+ rlOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697254578; x=1697859378;
+ d=1e100.net; s=20230601; t=1697254583; x=1697859383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2WfcBcURCpBzkq/OT9x9ciFFH2S7/N+xn+Vd6QWcFlg=;
- b=ZDEBFjE9st82uP+/DsKP27/y1u7Ra8RNCStLgI1InU+GaqN0137LtTxa0vfxRr+Ioy
- OcCTBX7074C6nozKkWcL2AzPJtv7UQpQt873IXzhjezylS6vYSbswk+ha6ldsyiQpBHH
- PPDoQ73vWyRoqncYV568biW//EhB7VEEdpnTVVPh8jZqQpfc6Q5hU5OVe0Isu8ZuEsOy
- QJS2SxgBwNMcBm0XrJqk1RWbTrkRqZ1ID+lZe1S7rwTrtFDJkw2uPl4wzQuXHIiXMXBP
- BjDlkIM65CDqayLABne2krSXL9xWG4dRTKHH9dJ9zKt13ED/Ty5bABWYK8b1KwC/o/Ix
- RUgQ==
-X-Gm-Message-State: AOJu0Yw1e9jiZKHM3z/z+t+xpt3DWA8a541VngR7rjFhofzBJY1tDoAf
- gMGNqfDyRjqK1eFA7++Nmz2yPA==
-X-Google-Smtp-Source: AGHT+IGZja6UbuTxM4GCw+iPGvxne5NJyUEYG7T/oYRFLDXvBAnDVXFow4akLsJGqhYRZ92bmmoerQ==
-X-Received: by 2002:a17:903:230b:b0:1c7:3558:721a with SMTP id
- d11-20020a170903230b00b001c73558721amr35214656plh.58.1697254578174; 
- Fri, 13 Oct 2023 20:36:18 -0700 (PDT)
+ bh=IKk6IyCieLsIGaxm0GofI4QujL1p3Wha0xoTTyMZRjs=;
+ b=ShZypBd0cFpKPIO4Ncv4CYe8mVtSNfXeYgI+jo7wvf27/XwDioiWecIyhvDMxI2v5W
+ jEeGx1PUGvFx4KOSTsOcbWj6xc1LfoE3QlKs+hxN3uqE+zVG5rz8Ve/CrLFMaaJNDubf
+ IgmVH6pCb4ShfqpDs1dQNsJCrhwCyj3wR4TXVL+7eqHILOOzgOKNRpcrOcn5MF8X5Gbj
+ 67gV0jVI626Ve+ouJ8Gt4pTSJpxf0IRjXMZrGQh/rCE40RNKWOOvF0fw4bRhb3lrtMvj
+ gEYulm6yoe9/1cL2jE18wnTmqYPKWwsRxN3ZDSkgNmd2OCIeASom6mDpGsK4ZFaoaOIC
+ DaCA==
+X-Gm-Message-State: AOJu0YwpUVoSnJf8IwpsvCawEL9s759aBtF794IUAnowk+F6s344ozYf
+ 7xfJP70mKr80Hh4ZezTGww/KkQ==
+X-Google-Smtp-Source: AGHT+IGE61g7j9rf1ckqZDbfdbd8sEpDTdz9DpEPY/D7IQBYuj2OzqPAzvMJ5uJ1CDdeLTxMjdLIuA==
+X-Received: by 2002:a05:6a20:3d17:b0:157:54fd:5c26 with SMTP id
+ y23-20020a056a203d1700b0015754fd5c26mr32198915pzi.38.1697254583135; 
+ Fri, 13 Oct 2023 20:36:23 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with UTF8SMTPSA id
- b6-20020a170902ed0600b001c0cb2aa2easm4563161pld.121.2023.10.13.20.36.15
+ l21-20020a170902d35500b001c737950e4dsm4601654plk.2.2023.10.13.20.36.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 20:36:17 -0700 (PDT)
+ Fri, 13 Oct 2023 20:36:22 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -70,16 +70,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH v2 1/3] target/riscv: Do not allow MXL_RV32 for TARGET_RISCV64
-Date: Sat, 14 Oct 2023 12:35:39 +0900
-Message-ID: <20231014033545.15220-2-akihiko.odaki@daynix.com>
+Subject: [PATCH v2 2/3] target/riscv: Initialize gdb_core_xml_file only once
+Date: Sat, 14 Oct 2023 12:35:40 +0900
+Message-ID: <20231014033545.15220-3-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231014033545.15220-1-akihiko.odaki@daynix.com>
 References: <20231014033545.15220-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,31 +101,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TARGET_RISCV64 does not have riscv-32bit-cpu.xml so it shouldn't accept
-MXL_RV32.
+gdb_core_xml_file was assigned each time a CPU is instantiated before
+this change.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/riscv/cpu.c         | 5 +++++
+ target/riscv/tcg/tcg-cpu.c | 4 ----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index ac4a6c7eec..a811215150 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1575,6 +1575,11 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+     cc->get_pc = riscv_cpu_get_pc;
+     cc->gdb_read_register = riscv_cpu_gdb_read_register;
+     cc->gdb_write_register = riscv_cpu_gdb_write_register;
++#ifdef TARGET_RISCV64
++    cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
++#elif defined(TARGET_RISCV32)
++    cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
++#endif
+     cc->gdb_num_core_regs = 33;
+     cc->gdb_stop_before_watchpoint = true;
+     cc->disas_set_info = riscv_cpu_disas_set_info;
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index a28918ab30..e0cbc56320 100644
+index e0cbc56320..626fb2acea 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -161,10 +161,11 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+@@ -150,8 +150,6 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
+ 
+ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+ {
+-    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
+-    CPUClass *cc = CPU_CLASS(mcc);
+     CPURISCVState *env = &cpu->env;
+ 
+     /* Validate that MISA_MXL is set properly. */
+@@ -159,11 +157,9 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+ #ifdef TARGET_RISCV64
+     case MXL_RV64:
      case MXL_RV128:
-         cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
+-        cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
          break;
--#endif
-+#elif defined(TARGET_RISCV32)
+ #elif defined(TARGET_RISCV32)
      case MXL_RV32:
-         cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
+-        cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
          break;
-+#endif
+ #endif
      default:
-         g_assert_not_reached();
-     }
 -- 
 2.42.0
 
