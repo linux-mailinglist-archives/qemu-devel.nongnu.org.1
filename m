@@ -2,81 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67DF7C9540
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 18:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D057C955B
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 18:21:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrh9r-0006PE-3i; Sat, 14 Oct 2023 12:06:31 -0400
+	id 1qrhNE-0003Uy-2D; Sat, 14 Oct 2023 12:20:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrh9g-0006Mh-Iy
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:06:22 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qrh9R-00027i-2D
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:06:20 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1c5bf7871dcso24229935ad.1
- for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 09:06:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697299563; x=1697904363; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=FsdaAirJpSLA+la6OBB4at1QS3pn1Q0ibml9wEG7WyA=;
- b=BQ9inxxRfMB/yzDyFENX3i3re4EptnT8GzAfBWKCruivikbu43jLY02lLMeYdoR5tX
- lm6gSKyIrr5V1Bvb5YiW+ZJhaqZkMkCgmt6b5Va3NkhRmR7W7xcNjUsu39BOKKs0dYQR
- TAQxxOGbFy5XidOlsRFM6VvHhPgNV99379jsKiqLs5brk/YFLbAoR6dKnTFV+sguaeS+
- LspD/H/77XTXwfHG+iUqMRXukoIwkekP2Wahfs04zGkZgCciNQXSaHLC1UyRbGW5HdPG
- S/4LrfBycqVlf7NxatNmJ2geIg1bOuAblnuqXggQZQECG4gM2iNHMmsWIh9Z7G/7gBQq
- W4bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697299563; x=1697904363;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FsdaAirJpSLA+la6OBB4at1QS3pn1Q0ibml9wEG7WyA=;
- b=Met4syqdqOqlpC2Kfj4h8GCm0GVjWyO2RSL4ygzzaEAyLR/J5zm2psv8hASVQHohoK
- 2iPZzKFtp0/LQztIOo/RwmnrPrA+fTQMxJ3vDYlAks3bexmuinErFg381hIXxrXIQn22
- pGhPBv3frsQsT02KFhpooTJs2K7K8MyG/l947FIe3zpGKQU/epjH7x5EDFUboQ9y/7C/
- xvjxVXbB5PAAWVPTowAlPxYol4NzxIJYNo90XO2dD5jF7xbT89snATQUIr4lSqvP5Q6w
- tBNv74WiaAU0wLUXNRVznkRRaFTYowbkcCtlW+JGAsK3Z/RwNRx7GrJAsDqGELXGQIMh
- pNBw==
-X-Gm-Message-State: AOJu0Yxj1yoawBGvX/P5E05l2xoxNLHtTv6DC7WA9ImQOFyaH27hzrDf
- Vwfo8voQLoth9OcEfQVRdaB46A==
-X-Google-Smtp-Source: AGHT+IETV0ZCmoUtmUcqyFl1/lyPuKtdGdtgfw48q+iifuZRAXd5P+mnwth6/UdpW9BXnNK3q1WnYA==
-X-Received: by 2002:a17:902:82cc:b0:1c9:c735:2d60 with SMTP id
- u12-20020a17090282cc00b001c9c7352d60mr10495989plz.17.1697299563411; 
- Sat, 14 Oct 2023 09:06:03 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- ji20-20020a170903325400b001bbc8d65de0sm5722639plb.67.2023.10.14.09.06.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 14 Oct 2023 09:06:02 -0700 (PDT)
-Message-ID: <47144c91-3c1d-430a-b917-fbe9bb7b193c@linaro.org>
-Date: Sat, 14 Oct 2023 09:06:00 -0700
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1qrhNB-0003Uk-69
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:20:17 -0400
+Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1qrhN8-0004BD-D3
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 12:20:16 -0400
+Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
+ id 48FB5A00CD; Sat, 14 Oct 2023 18:13:19 +0200 (CEST)
+Date: Sat, 14 Oct 2023 18:13:19 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
+In-Reply-To: <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
+Message-ID: <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
+References: <cover.1696880742.git.balaton@eik.bme.hu>
+ <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
+ <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
+User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/18] target/i386: introduce flags writeback mechanism
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20231014100121.109817-1-pbonzini@redhat.com>
- <20231014100121.109817-8-pbonzini@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231014100121.109817-8-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Received-SPF: none client-ip=152.66.102.83;
+ envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,16 +59,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/14/23 03:01, Paolo Bonzini wrote:
-> +static void prepare_update1_cc(X86DecodedInsn *decode, DisasContext *s, CCOp op)
-> +{
-> +    decode->cc_dst = s->T0;
-> +    set_cc_op(s, op);
-> +}
+On Sat, 14 Oct 2023, Mark Cave-Ayland wrote:
+> On 09/10/2023 20:54, BALATON Zoltan wrote:
+>
+>> The initial value for BARs were set in reset method for emulating
+>> legacy mode at start but this does not work because PCI code resets
+>> BARs after calling device reset method. Remove this ineffective
+>> default to avoid confusion.
+>> 
+>> Instead move setting the BARs to a callback on writing the PCI config
+>> regsiter that sets legacy mode (which firmwares needing this mode seem
+>> to do) and fix their values to program it to use legacy port numbers
+>> in this case. This does not fully emulate what the data sheet says
+>> (which is not very clear on this) but it implements enogh to allow
+>> both modes as used by firmwares of machines we emulate.
+>> 
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>>   hw/ide/via.c | 41 ++++++++++++++++++++++++++++++++++++-----
+>>   1 file changed, 36 insertions(+), 5 deletions(-)
+>> 
+>> diff --git a/hw/ide/via.c b/hw/ide/via.c
+>> index fff23803a6..43e8af8d69 100644
+>> --- a/hw/ide/via.c
+>> +++ b/hw/ide/via.c
+>> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
+>>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+>>                    PCI_STATUS_DEVSEL_MEDIUM);
+>>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
+>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
+>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 
+>> 20-23h */
+>>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+>>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
+>> @@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
+>>       pci_set_long(pci_conf + 0xc0, 0x00020001);
+>>   }
+>>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
+>> +                              uint32_t val, int len)
+>> +{
+>> +    pci_default_write_config(pd, addr, val, len);
+>> +    /*
+>> +     * Bits 0 and 2 of the PCI programming interface register select 
+>> between
+>> +     * legacy and native mode for the two IDE channels. We don't emulate 
+>> this
+>> +     * because we cannot easily switch between ISA and PCI in QEMU so 
+>> instead
+>
+> As per my previous email, this statement is demonstrably false: this is now 
+> achievable using the portio_list*() APIs.
+>
+>> +     * when guest selects legacy mode we set the PCI BARs to legacy ports 
+>> which
+>> +     * works the same. We also don't care about setting each channel 
+>> separately
+>> +     * as no guest is known to do or need that. We only do this when BARs 
+>> are
+>> +     * unset when writing this register as logs from real hardware show 
+>> that
+>> +     * setting legacy mode after BARs were set it will still use ports set 
+>> by
+>> +     * BARs not ISA ports (e.g. pegasos2 Linux does this after firmware 
+>> set
+>> +     * native mode and programmed BARs and calls it non-100% native mode).
+>> +     * But if 0x8a is written righr after reset without setting BARs then 
+>> we
+>> +     * want legacy ports (this is done by the AmigaOne firmware).
+>> +     */
+>> +    if (addr == PCI_CLASS_PROG && val == 0x8a &&
+>> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
+>> +        PCI_BASE_ADDRESS_SPACE_IO) {
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +        /* BMIBA: 20-23h */
+>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
+>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>> +    }
+>> +}
+>
+> Another hint that this is not the right way to be doing this: the values you 
+> are placing in BARS 1 and 3 are illegal. PCI IO BARs have bit 1 forced to 0 
+> and bit 0 set to 1 which forces a minimum alignment of 4, so either the 
+> addresses 0x3f6/0x376 are being rounded internally to 0x3f4/0x374 and/or 
+> you're lucky that this just happens to work on QEMU.
 
-You must delay the set_cc_op() until the end too, for the same reason.  The function call 
-will emit discard opcodes, which will kill cc_foo while still live via the memory exception.
+The data sheet lists these values for legacy mode bur it seems that bit 1 
+is ignored for BAR here and it ends up set to 0x3x4 with the actual reg 
+mapped to 0x3x7 for both values ending in 4 or 6 here and both works the 
+same with AmigaOS even if I change the values here to 0x3[7f]4 so I can do 
+that and that should then match the default values for these regs but not 
+match the values listed for legacy mode so the data sheet is wrong either 
+way. It still does not make sense to set these in reset method which will 
+be overwritten so only works if I set them here.
 
+> Using the portio_list*() APIs really is the right way to implement this to 
+> avoid being affected by such issues.
 
-r~
+Can you provide an alternative patch using portio_list? I don't know how 
+to do that and have no example to follow either so it would be hard for me 
+to figure out. Or give some pointers on how to do this if I missed 
+something.
+
+Regards,
+BALATON Zoltan
+
+>>   static void via_ide_realize(PCIDevice *dev, Error **errp)
+>>   {
+>>       PCIIDEState *d = PCI_IDE(dev);
+>> @@ -221,6 +251,7 @@ static void via_ide_class_init(ObjectClass *klass, void 
+>> *data)
+>>       /* Reason: only works as function of VIA southbridge */
+>>       dc->user_creatable = false;
+>>   +    k->config_write = via_ide_cfg_write;
+>>       k->realize = via_ide_realize;
+>>       k->exit = via_ide_exitfn;
+>>       k->vendor_id = PCI_VENDOR_ID_VIA;
+>
+>
+> ATB,
+>
+> Mark.
+>
+>
+>
 
