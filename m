@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9F37C9299
+	by mail.lfdr.de (Postfix) with ESMTPS id 1754E7C9298
 	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 05:42:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrVWe-0005GY-FD; Fri, 13 Oct 2023 23:41:16 -0400
+	id 1qrVWp-0005UA-0Z; Fri, 13 Oct 2023 23:41:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrVWb-0005FS-CD
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:41:13 -0400
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+ id 1qrVWf-0005IR-2f
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:41:17 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrVWY-00052Q-Gj
- for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:41:12 -0400
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-57ad95c555eso1580298eaf.3
- for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 20:41:10 -0700 (PDT)
+ id 1qrVWd-000543-6S
+ for qemu-devel@nongnu.org; Fri, 13 Oct 2023 23:41:16 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-517ab9a4a13so2030298a12.1
+ for <qemu-devel@nongnu.org>; Fri, 13 Oct 2023 20:41:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697254869; x=1697859669;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697254874; x=1697859674;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=70r89jCdRbuTd1/1nQVTwclSWqpptHX49rQTcdIEjyE=;
- b=G0gnmInhpWEQTEG7zHsAYzIRijcWKXk5xbL/mWzFDcnvsXuX/Yw7bxpaQXFqh9oWwQ
- VqMFpnJKgcsJ75pvYSh/i0ExfR7UfxdOOje79YfyZ57L2BEUmVH3wZrtKa3nNzX7X/G6
- bieLalrt4bnmj3gDk9wX6X0L1CN98LAG3JXl+5myg4MaD2Ws3I8GX5v5U4gSm6tDCr+Y
- AiC07rsQDVmH/skJuaRug6ZIPDxHVnt9TUI5KBlPyuRyQbIKHqsek8Vlh08yBnVav6PW
- zOsgCMljof95vUWhv1TJPtYKd6a0At3LsKxT92eWuTSN1JgU0ax04I1Q2L8LkHrfs6Ts
- 5RfQ==
+ bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
+ b=ZQ2PVKKyA8SmsTCZLdkOkEAk9FFFIE+us5W2h1H7MKvR68H6mfH97CU0LYzGlRAefs
+ fxlzQHCoV2j2c3INvKfyubBuhLfxH9KDi4QZM/yjp8TjfHv1S8Y1iuJhAViRXefTcRcw
+ IfenvZQX86VvFLYotIK1EePPeM2LRb3jBXSD7vUvkPDTXG8q5ahNtPktkokJJdygyKGe
+ w/dEtFWYA1E6tVl0A/jBnYLDxfwoCpjQY9yIOCimZEsiY8nv19i3mFqvlIfH7rOVjVeK
+ F6tAl83gZFhJ6EXq2AYa2U9d/50mHlDQahcht8bnMNpKH6mXo2+kB4QSUjSzvsqmRB5T
+ Fzcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697254869; x=1697859669;
+ d=1e100.net; s=20230601; t=1697254874; x=1697859674;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=70r89jCdRbuTd1/1nQVTwclSWqpptHX49rQTcdIEjyE=;
- b=ag/kEbMkBInEz9TZfVxkWg3SZHoGSxaaf3czWKBaN0YJ3xqdQg/CtAFIaun2A+ZmE/
- xCMXwqTZQPc36JsM18jlPUMSZULXeSxF9Wuu1jip6uzCw/APXa4w7xm1WRE/0MVXB/aY
- hOVdKxhbrtuzcLvz9kCikaj7ltB1gyLrYmgW+Hrc5JDADUl8ds0680446+6oMASM63Aw
- OrPJzxdyQBl0gJiPt/MOXz/mVcg/nhX3rQ0P6ri+HV+AYau5wflgny1OHPuoY4y/eNZf
- 3OwPizGAOllnTbhkWaH1xQ1yVB6n+hOa4f/dyIRHKhzSCQK3yg5wwtlqqgKGjC14z3Pc
- cdxQ==
-X-Gm-Message-State: AOJu0YyL3NlskGV7xv75VYyGjaLrwdrI7te49YF09EVviwK4pJlBsScy
- SkLcfbqyUe8HawSiEchwEf6teA==
-X-Google-Smtp-Source: AGHT+IF67SXZ19w1rNcK0a2joysZF1O74VwAm5pigWDT7CKGTb2Tq6DdywHLEWWt0d41CuFmWPpu2w==
-X-Received: by 2002:a05:6358:7e92:b0:143:5383:af8b with SMTP id
- o18-20020a0563587e9200b001435383af8bmr29034965rwn.11.1697254869405; 
- Fri, 13 Oct 2023 20:41:09 -0700 (PDT)
+ bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
+ b=eWBm5pIjPUEOEn4J0brbVOS35k7cgEf7M2ktEftzDKCI+JPPaHcofmrzyyaeYF3Aj9
+ l0IQbBWiFRoXGbtrQJpCChTPywk+CFWFZF2gRW0eLf8weLPdqMJ2Jxdd8K9ncv9OIkDR
+ qRBi3FSjSelS+3lDm8+neZ/K1pBMOBLZgR4TJrw5X9cqJx1ysDUMVBRhvpbdvp4/MwvZ
+ +gzJKaHTNgPuKrTPbcWihhyZVfrCg6DwfOVGJSN9gb8Y9NDtj9+hF17Y1rQF/iO1ztoO
+ F6tLOFEw7QDDJ9nW5BH4E51kC2lP7mPAItr8Zz4kyHhKy19OZTc4ingRGCZTvg44x4c4
+ LtCA==
+X-Gm-Message-State: AOJu0YxxWAMp3YxyUd4yJnQxU3V1n119ZX4acy3q36fR3tCgwuVbdw4u
+ bTIw3Lk3WxZ/Njrl8GjVOvy9qA==
+X-Google-Smtp-Source: AGHT+IGFSBvtXuYi3xIhzeABpeT+DkPp/A76e91PGjWFHFd0NYwFP/6qnzX3/y1f7ldeTl8WyrQx4Q==
+X-Received: by 2002:a05:6a20:551e:b0:133:d17d:193a with SMTP id
+ ko30-20020a056a20551e00b00133d17d193amr24764246pzb.59.1697254873840; 
+ Fri, 13 Oct 2023 20:41:13 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with UTF8SMTPSA id
- m26-20020a056a00165a00b0068fb4f5f38fsm14315784pfc.30.2023.10.13.20.41.07
+ 30-20020a17090a199e00b0027d15bd9fa2sm901849pji.35.2023.10.13.20.41.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Oct 2023 20:41:09 -0700 (PDT)
+ Fri, 13 Oct 2023 20:41:13 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -65,17 +65,19 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH v12 17/18] plugins: Allow to read registers
-Date: Sat, 14 Oct 2023 12:39:36 +0900
-Message-ID: <20231014033940.15679-18-akihiko.odaki@daynix.com>
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v12 18/18] contrib/plugins: Allow to log registers
+Date: Sat, 14 Oct 2023 12:39:37 +0900
+Message-ID: <20231014033940.15679-19-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231014033940.15679-1-akihiko.odaki@daynix.com>
 References: <20231014033940.15679-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::534;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,143 +99,248 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is based on GDB protocol to ensure interface stability.
+This demonstrates how a register can be read from a plugin.
 
-The timing of the vcpu init hook is also changed so that the hook will
-get called after GDB features are initialized.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/qemu/qemu-plugin.h   | 50 ++++++++++++++++++++++++++++++++++--
- plugins/api.c                | 20 +++++++++++++++
- plugins/qemu-plugins.symbols |  3 +++
- 3 files changed, 71 insertions(+), 2 deletions(-)
+ docs/devel/tcg-plugins.rst |  10 +++-
+ contrib/plugins/execlog.c  | 120 +++++++++++++++++++++++++++----------
+ 2 files changed, 97 insertions(+), 33 deletions(-)
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 50a9957279..c0ce700258 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -11,6 +11,7 @@
- #ifndef QEMU_QEMU_PLUGIN_H
- #define QEMU_QEMU_PLUGIN_H
+diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
+index 81dcd43a61..c9f8b27590 100644
+--- a/docs/devel/tcg-plugins.rst
++++ b/docs/devel/tcg-plugins.rst
+@@ -497,6 +497,15 @@ arguments if required::
+   $ qemu-system-arm $(QEMU_ARGS) \
+     -plugin ./contrib/plugins/libexeclog.so,ifilter=st1w,afilter=0x40001808 -d plugin
  
-+#include <glib.h>
- #include <inttypes.h>
- #include <stdbool.h>
- #include <stddef.h>
-@@ -218,8 +219,8 @@ struct qemu_plugin_insn;
-  * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
-  * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
++This plugin can also dump a specified register. The specification of register
++follows `GDB standard target features <https://sourceware.org/gdb/onlinedocs/gdb/Standard-Target-Features.html>`__.
++
++Specify the name of the feature that contains the register and the name of the
++register with ``rfile`` and ``reg`` options, respectively::
++
++  $ qemu-system-arm $(QEMU_ARGS) \
++    -plugin ./contrib/plugins/libexeclog.so,rfile=org.gnu.gdb.arm.core,reg=sp -d plugin
++
+ - contrib/plugins/cache.c
+ 
+ Cache modelling plugin that measures the performance of a given L1 cache
+@@ -583,4 +592,3 @@ The following API is generated from the inline documentation in
+ include the full kernel-doc annotations.
+ 
+ .. kernel-doc:: include/qemu/qemu-plugin.h
+-
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index 82dc2f584e..f3e714c888 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -15,27 +15,43 @@
+ 
+ #include <qemu-plugin.h>
+ 
++typedef struct CPU {
++    /* Store last executed instruction on each vCPU as a GString */
++    GString *last_exec;
++    GByteArray *reg_history[2];
++
++    int reg;
++} CPU;
++
+ QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
+ 
+-/* Store last executed instruction on each vCPU as a GString */
+-static GPtrArray *last_exec;
++static CPU *cpus;
++static int num_cpus;
+ static GRWLock expand_array_lock;
+ 
+ static GPtrArray *imatches;
+ static GArray *amatches;
+ 
++static char *rfile_name;
++static char *reg_name;
++
+ /*
+- * Expand last_exec array.
++ * Expand cpu array.
   *
-- * Note: currently unused, plugins cannot read or change system
-- * register state.
-+ * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot change
-+ * system register state.
+  * As we could have multiple threads trying to do this we need to
+  * serialise the expansion under a lock.
   */
- enum qemu_plugin_cb_flags {
-     QEMU_PLUGIN_CB_NO_REGS,
-@@ -664,4 +665,49 @@ uint64_t qemu_plugin_end_code(void);
-  */
- uint64_t qemu_plugin_entry_code(void);
- 
-+/**
-+ * qemu_plugin_find_register_file() - find register file
-+ *
-+ * @vcpu_index: the index of the vcpu context
-+ * @name: the name of the register file.
-+ *
-+ * Returns the identifier of the register file if it was found, and a negative
-+ * value otherwise.
-+ *
-+ * The names of register files are identical with names of GDB's standard
-+ * target features with some extensions. For details, see:
-+ * https://sourceware.org/gdb/onlinedocs/gdb/Standard-Target-Features.html
-+ */
-+int qemu_plugin_find_register_file(unsigned int vcpu_index, const char *name);
-+
-+/**
-+ * qemu_plugin_find_register() - find register
-+ *
-+ * @vcpu_index: the index of the vcpu context
-+ * @file: the register file identifier determined with
-+ *        qemu_plugin_find_register_file().
-+ * @name: the name of the register.
-+ *
-+ * The names of register are identical with names used in GDB's standard
-+ * target features with some extensions. For details, see:
-+ * https://sourceware.org/gdb/onlinedocs/gdb/Standard-Target-Features.html
-+ */
-+int qemu_plugin_find_register(unsigned int vcpu_index, int file,
-+                              const char *name);
-+
-+/**
-+ * qemu_plugin_read_register() - read register
-+ *
-+ * @buf: the byte array to append the read register content to.
-+ * @reg: the register identifier determined with
-+ *       qemu_plugin_find_register().
-+ *
-+ * This function is only available in a context that register read access is
-+ * explicitly requested.
-+ *
-+ * Returns the size of the read register. The content of @buf is in target byte
-+ * order.
-+ */
-+int qemu_plugin_read_register(GByteArray *buf, int reg);
-+
- #endif /* QEMU_QEMU_PLUGIN_H */
-diff --git a/plugins/api.c b/plugins/api.c
-index 326e37cb73..89144a2dec 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -35,10 +35,12 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/main-loop.h"
- #include "qemu/plugin.h"
- #include "qemu/log.h"
- #include "tcg/tcg.h"
- #include "exec/exec-all.h"
-+#include "exec/gdbstub.h"
- #include "exec/ram_addr.h"
- #include "disas/disas.h"
- #include "plugin.h"
-@@ -437,3 +439,21 @@ uint64_t qemu_plugin_entry_code(void)
- #endif
-     return entry;
+-static void expand_last_exec(int cpu_index)
++static void expand_cpu(int cpu_index)
+ {
+     g_rw_lock_writer_lock(&expand_array_lock);
+-    while (cpu_index >= last_exec->len) {
+-        GString *s = g_string_new(NULL);
+-        g_ptr_array_add(last_exec, s);
++    if (cpu_index >= num_cpus) {
++        cpus = g_realloc_n(cpus, cpu_index + 1, sizeof(*cpus));
++        while (cpu_index >= num_cpus) {
++            cpus[num_cpus].last_exec = g_string_new(NULL);
++            cpus[num_cpus].reg_history[0] = g_byte_array_new();
++            cpus[num_cpus].reg_history[1] = g_byte_array_new();
++            num_cpus++;
++        }
+     }
+     g_rw_lock_writer_unlock(&expand_array_lock);
  }
+@@ -50,8 +66,8 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
+ 
+     /* Find vCPU in array */
+     g_rw_lock_reader_lock(&expand_array_lock);
+-    g_assert(cpu_index < last_exec->len);
+-    s = g_ptr_array_index(last_exec, cpu_index);
++    g_assert(cpu_index < num_cpus);
++    s = cpus[cpu_index].last_exec;
+     g_rw_lock_reader_unlock(&expand_array_lock);
+ 
+     /* Indicate type of memory access */
+@@ -77,28 +93,42 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
+  */
+ static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
+ {
+-    GString *s;
++    int n;
++    int i;
+ 
+-    /* Find or create vCPU in array */
+     g_rw_lock_reader_lock(&expand_array_lock);
+-    if (cpu_index >= last_exec->len) {
+-        g_rw_lock_reader_unlock(&expand_array_lock);
+-        expand_last_exec(cpu_index);
+-        g_rw_lock_reader_lock(&expand_array_lock);
+-    }
+-    s = g_ptr_array_index(last_exec, cpu_index);
+-    g_rw_lock_reader_unlock(&expand_array_lock);
+ 
+     /* Print previous instruction in cache */
+-    if (s->len) {
+-        qemu_plugin_outs(s->str);
++    if (cpus[cpu_index].last_exec->len) {
++        if (cpus[cpu_index].reg >= 0) {
++            GByteArray *current = cpus[cpu_index].reg_history[0];
++            GByteArray *last = cpus[cpu_index].reg_history[1];
 +
-+int qemu_plugin_find_register_file(unsigned int vcpu_index, const char *name)
++            g_byte_array_set_size(current, 0);
++            n = qemu_plugin_read_register(current, cpus[cpu_index].reg);
++
++            if (n != last->len || memcmp(current->data, last->data, n)) {
++                g_string_append(cpus[cpu_index].last_exec, ", reg,");
++                for (i = 0; i < n; i++) {
++                    g_string_append_printf(cpus[cpu_index].last_exec, " %02x",
++                                           current->data[i]);
++                }
++            }
++
++            cpus[cpu_index].reg_history[0] = last;
++            cpus[cpu_index].reg_history[1] = current;
++        }
++
++        qemu_plugin_outs(cpus[cpu_index].last_exec->str);
+         qemu_plugin_outs("\n");
+     }
+ 
+     /* Store new instruction in cache */
+     /* vcpu_mem will add memory access information to last_exec */
+-    g_string_printf(s, "%u, ", cpu_index);
+-    g_string_append(s, (char *)udata);
++    g_string_printf(cpus[cpu_index].last_exec, "%u, ", cpu_index);
++    g_string_append(cpus[cpu_index].last_exec, (char *)udata);
++
++    g_rw_lock_reader_unlock(&expand_array_lock);
+ }
+ 
+ /**
+@@ -167,8 +197,10 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+                                              QEMU_PLUGIN_MEM_RW, NULL);
+ 
+             /* Register callback on instruction */
+-            qemu_plugin_register_vcpu_insn_exec_cb(insn, vcpu_insn_exec,
+-                                                   QEMU_PLUGIN_CB_NO_REGS, output);
++            qemu_plugin_register_vcpu_insn_exec_cb(
++                insn, vcpu_insn_exec,
++                rfile_name ? QEMU_PLUGIN_CB_R_REGS : QEMU_PLUGIN_CB_NO_REGS,
++                output);
+ 
+             /* reset skip */
+             skip = (imatches || amatches);
+@@ -177,17 +209,33 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+     }
+ }
+ 
++static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
 +{
-+    QEMU_IOTHREAD_LOCK_GUARD();
-+    return gdb_find_feature(qemu_get_cpu(vcpu_index), name);
++    int reg = -1;
++
++    expand_cpu(vcpu_index);
++
++    if (rfile_name) {
++        int rfile = qemu_plugin_find_register_file(vcpu_index, rfile_name);
++        if (rfile >= 0) {
++            reg = qemu_plugin_find_register(vcpu_index, rfile, reg_name);
++        }
++    }
++
++    g_rw_lock_writer_lock(&expand_array_lock);
++    cpus[vcpu_index].reg = reg;
++    g_rw_lock_writer_unlock(&expand_array_lock);
 +}
 +
-+int qemu_plugin_find_register(unsigned int vcpu_index, int file,
-+                              const char *name)
-+{
-+    QEMU_IOTHREAD_LOCK_GUARD();
-+    return gdb_find_feature_register(qemu_get_cpu(vcpu_index), file, name);
-+}
+ /**
+  * On plugin exit, print last instruction in cache
+  */
+ static void plugin_exit(qemu_plugin_id_t id, void *p)
+ {
+     guint i;
+-    GString *s;
+-    for (i = 0; i < last_exec->len; i++) {
+-        s = g_ptr_array_index(last_exec, i);
+-        if (s->str) {
+-            qemu_plugin_outs(s->str);
++    for (i = 0; i < num_cpus; i++) {
++        if (cpus[i].last_exec->str) {
++            qemu_plugin_outs(cpus[i].last_exec->str);
+             qemu_plugin_outs("\n");
+         }
+     }
+@@ -224,9 +272,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+      * we don't know the size before emulation.
+      */
+     if (info->system_emulation) {
+-        last_exec = g_ptr_array_sized_new(info->system.max_vcpus);
+-    } else {
+-        last_exec = g_ptr_array_new();
++        cpus = g_new(CPU, info->system.max_vcpus);
+     }
+ 
+     for (int i = 0; i < argc; i++) {
+@@ -236,13 +282,23 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+             parse_insn_match(tokens[1]);
+         } else if (g_strcmp0(tokens[0], "afilter") == 0) {
+             parse_vaddr_match(tokens[1]);
++        } else if (g_strcmp0(tokens[0], "rfile") == 0) {
++            rfile_name = g_strdup(tokens[1]);
++        } else if (g_strcmp0(tokens[0], "reg") == 0) {
++            reg_name = g_strdup(tokens[1]);
+         } else {
+             fprintf(stderr, "option parsing failed: %s\n", opt);
+             return -1;
+         }
+     }
+ 
++    if ((!rfile_name) != (!reg_name)) {
++        fputs("file and reg need to be set at the same time\n", stderr);
++        return -1;
++    }
 +
-+int qemu_plugin_read_register(GByteArray *buf, int reg)
-+{
-+    return gdb_read_register(current_cpu, buf, reg);
-+}
-diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-index 71f6c90549..977f1fcfcb 100644
---- a/plugins/qemu-plugins.symbols
-+++ b/plugins/qemu-plugins.symbols
-@@ -42,4 +42,7 @@
-   qemu_plugin_tb_vaddr;
-   qemu_plugin_uninstall;
-   qemu_plugin_vcpu_for_each;
-+  qemu_plugin_find_register_file;
-+  qemu_plugin_find_register;
-+  qemu_plugin_read_register;
- };
+     /* Register translation block and exit callbacks */
++    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
+     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
+     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
+ 
 -- 
 2.42.0
 
