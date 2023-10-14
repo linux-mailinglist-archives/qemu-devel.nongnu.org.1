@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915497C95D1
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 20:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4727C95ED
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 20:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrizl-0001Dw-3r; Sat, 14 Oct 2023 14:04:13 -0400
+	id 1qrjEh-0005e8-Vv; Sat, 14 Oct 2023 14:19:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qrizj-0001D2-Is
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 14:04:11 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1qrjEf-0005UX-Ca
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 14:19:37 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qrizh-0007PW-KU
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 14:04:11 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-5859a7d6556so2341337a12.0
- for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 11:04:08 -0700 (PDT)
+ id 1qrjEc-0002Ec-Mz
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 14:19:37 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-577fff1cae6so2217418a12.1
+ for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 11:19:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697306647; x=1697911447; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1697307573; x=1697912373; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=OTyFJpzixiHGEOr7idBGNlBPwe+6+2TFrHoRXmgkduo=;
- b=W1CgPIzZA8Ye9vHMs7/kmiCsLgVn3mak62tcXmHrGvOVFCCCJmYZlhkN8K5IuQfd/C
- lMitZ9rzVEtKv29YfKQUMF/87H9589ORu0fcj6vOiS1pJUP+5yCjvQWEsDMRpqjbbYl6
- p4w4Xm+VyHse8DdQA+Eng05VHyj3HKCeSlQM8HS02adcR11qS2awwrG5HyPn9Cq03Gh3
- OclJbWIer+bwkXJzbLJzWjSE1QHZi96YrVptOycJ5qmE958fOz/tjyVxFRxChwe9yte5
- Xpt+N4prytn1OChugYsqhauACIArJok3N3LtiPohF+cfnN3DwlYD2jciAJxeMT/+flEk
- MHdQ==
+ bh=lz5nXpNHVnrReUt/9Y7H0nwyZV2SplzvEfkBbUUI23I=;
+ b=mPc8cRa2Mp/hUfT9mJNoX+/O20E8PFAKg65AIYaLokD9moR8GtIxHLiaBfKGYRPbJn
+ abzeFV8lq+tnWt5cLsHQalTPL32d1NoTw5TTZFgAum0vGCJdsb3UkOgbLEmBk96+v/45
+ YuAUyfThfw6AYoAq7K03EkTRECDBI3Hj2D265yG03+bsV9ZlSzYHfRDTVF/nHH6puwFX
+ qtPK5eu1914ithpX64C22gJPn+8ZeEQR2A5Zgn5vlVLVNKdEO98Cq+hZHVNJsNfjKXFE
+ gJeb0IiDY3NBGqEl25Ber1AizOrepRLyRqP7RrBMzu2WDzeAvLdw/00nh0YoKG+4mj0N
+ QQfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697306647; x=1697911447;
+ d=1e100.net; s=20230601; t=1697307573; x=1697912373;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OTyFJpzixiHGEOr7idBGNlBPwe+6+2TFrHoRXmgkduo=;
- b=KWho1V/casK5XtHneoKecCrIcOROILvg6JWGnj+TFOhVW3yNAKrojN9rBl/pvp7S+n
- XK/0UdbayMEZeDpZTmXcKeTQVQsMm+WUsYLeWr2y1s0ZPWm9o2xkOCjgOQ2fN2t4Bm3V
- XL9PAxLoa9TuHmxlAzgszd0H5GlLnAwWxlUzCPKc3hNAbUAXUS/K7airZ9y7iaTWcHc6
- QpEFNEjCBckjVa5KKjtXU5MOxXmMZKnjwfNC62DI0p4mZcRQ+ua77KdKDCv0nabtGt15
- NFCD8oSYo2uRbzCHOca6aYJc+yYzuAY1IgGVL0denxs0nNxl5am8u587dVIhAiHDKLfe
- Y/9w==
-X-Gm-Message-State: AOJu0YxQz40dYPmbpugd6f7iLLVE9H1Np8o61e3T3vsNemw12K0T+bml
- Utw225VRr1EMleY+0ZO063yI1g==
-X-Google-Smtp-Source: AGHT+IF03cPUVi7JizBaR9wPKxSwKmImJb3AilcDQHIXWHpnwQNb9jIfXxuJVWJpX0tK10SgBs0k3w==
-X-Received: by 2002:a17:90a:4a8b:b0:27d:3ed2:86a5 with SMTP id
- f11-20020a17090a4a8b00b0027d3ed286a5mr4330569pjh.33.1697306647479; 
- Sat, 14 Oct 2023 11:04:07 -0700 (PDT)
+ bh=lz5nXpNHVnrReUt/9Y7H0nwyZV2SplzvEfkBbUUI23I=;
+ b=RVugueS5/oq0DjNIpYOsrU8AvsOVLoQBAaSafjiur9fbrA7WA8sv/bh4J5ivDB2O2K
+ pr+kocEnqhQcg1GFvuQuuUS/j32Wz3iEY89/VCAwZe9vXe1M70xF9J51oAoZpM2wH5n4
+ oS+yqmVeMG1VAHaPJlJKJi0t/lfuMw8G8OVeKhE9b3S4a5rBnLWKGmoMxJ1kWTCmRIwz
+ B1TUwyYYjtqwk36Y7aBXXBD5mWr3RUxuQt2ZRS8C5D6UYc1lP7kRKyKRvkDtxknKh/ut
+ XvF0mqVu4o8d2RdUcMlsGv8mnGyzErhzmkph3BeNKdK7Gx4AAw7Vh5MmLCKbVMnCkU8r
+ lfcg==
+X-Gm-Message-State: AOJu0Yyv2vdbIw1iGKVch8fHEt240sYOLuVZe/RoPZD81CvS5Gs9EupY
+ yCMASkWbU0GjhXAAWCrZRx0JIQ==
+X-Google-Smtp-Source: AGHT+IFFXYF1aEV92pro/V3voMiwzkmAfnvLgh4Lw0RFLq8Fh/Y9japeyW7GgUMLMLW5z+0CwM4Ttg==
+X-Received: by 2002:a05:6a20:7287:b0:15d:4cf1:212e with SMTP id
+ o7-20020a056a20728700b0015d4cf1212emr4715260pzk.4.1697307573160; 
+ Sat, 14 Oct 2023 11:19:33 -0700 (PDT)
 Received: from [192.168.68.107] ([177.45.186.249])
  by smtp.gmail.com with ESMTPSA id
- 23-20020a17090a005700b0027cf7818fb6sm2114870pjb.37.2023.10.14.11.04.03
+ j6-20020aa78d06000000b0069342d58ea0sm15697209pfe.90.2023.10.14.11.19.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 14 Oct 2023 11:04:06 -0700 (PDT)
-Message-ID: <597bf4be-207b-400a-be49-bc18900809a0@ventanamicro.com>
-Date: Sat, 14 Oct 2023 15:04:01 -0300
+ Sat, 14 Oct 2023 11:19:32 -0700 (PDT)
+Message-ID: <6a06acfc-3ca0-402e-8a98-bdd1a22bdf0d@ventanamicro.com>
+Date: Sat, 14 Oct 2023 15:19:28 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] target/riscv: Do not allow MXL_RV32 for
- TARGET_RISCV64
+Subject: Re: [PATCH v2 2/3] target/riscv: Initialize gdb_core_xml_file only
+ once
 Content-Language: en-US
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -74,13 +74,13 @@ Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
 References: <20231014033545.15220-1-akihiko.odaki@daynix.com>
- <20231014033545.15220-2-akihiko.odaki@daynix.com>
+ <20231014033545.15220-3-akihiko.odaki@daynix.com>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231014033545.15220-2-akihiko.odaki@daynix.com>
+In-Reply-To: <20231014033545.15220-3-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,33 +106,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/14/23 00:35, Akihiko Odaki wrote:
-> TARGET_RISCV64 does not have riscv-32bit-cpu.xml so it shouldn't accept
-> MXL_RV32.
+> gdb_core_xml_file was assigned each time a CPU is instantiated before
+> this change.
 > 
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
-
->   target/riscv/tcg/tcg-cpu.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   target/riscv/cpu.c         | 5 +++++
+>   target/riscv/tcg/tcg-cpu.c | 4 ----
+>   2 files changed, 5 insertions(+), 4 deletions(-)
 > 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index ac4a6c7eec..a811215150 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1575,6 +1575,11 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+>       cc->get_pc = riscv_cpu_get_pc;
+>       cc->gdb_read_register = riscv_cpu_gdb_read_register;
+>       cc->gdb_write_register = riscv_cpu_gdb_write_register;
+> +#ifdef TARGET_RISCV64
+> +    cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
+> +#elif defined(TARGET_RISCV32)
+> +    cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
+> +#endif
+>       cc->gdb_num_core_regs = 33;
+>       cc->gdb_stop_before_watchpoint = true;
+>       cc->disas_set_info = riscv_cpu_disas_set_info;
 > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index a28918ab30..e0cbc56320 100644
+> index e0cbc56320..626fb2acea 100644
 > --- a/target/riscv/tcg/tcg-cpu.c
 > +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -161,10 +161,11 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+> @@ -150,8 +150,6 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
+>   
+>   static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+>   {
+> -    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
+> -    CPUClass *cc = CPU_CLASS(mcc);
+>       CPURISCVState *env = &cpu->env;
+>   
+>       /* Validate that MISA_MXL is set properly. */
+> @@ -159,11 +157,9 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+>   #ifdef TARGET_RISCV64
+>       case MXL_RV64:
 >       case MXL_RV128:
->           cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
+> -        cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
 >           break;
-> -#endif
-> +#elif defined(TARGET_RISCV32)
+>   #elif defined(TARGET_RISCV32)
 >       case MXL_RV32:
->           cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
+> -        cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
 >           break;
-> +#endif
+
+
+Hmmm the issue here is that, in patch 1, you added an "elif defined(TARGET_RISCV32)"
+based on an assumption that you changed here since there's no more gdb_core files being
+set.
+
+My suggestion is to use patch 1 from v1, where you removed the misa_mxl_max == misa_mxl
+check at the end of this function. And then in this patch you can remove this function
+altogether since you're assigning gdb_core in riscv_cpu_class_init() and the function will
+be left doing nothing of note.
+
+
+Thanks,
+
+Daniel
+
+>   #endif
 >       default:
->           g_assert_not_reached();
->       }
 
