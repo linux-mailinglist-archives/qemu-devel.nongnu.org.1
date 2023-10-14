@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C797C9602
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:17:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0767C9615
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:40:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrk7l-0004aE-A8; Sat, 14 Oct 2023 15:16:33 -0400
+	id 1qrkTb-0002sU-Ec; Sat, 14 Oct 2023 15:39:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qrk7b-0004ZB-Vg; Sat, 14 Oct 2023 15:16:29 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qrkTY-0002nj-UB; Sat, 14 Oct 2023 15:39:04 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qrk7a-0005xu-4Z; Sat, 14 Oct 2023 15:16:23 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9FE772A5DB;
- Sat, 14 Oct 2023 22:16:28 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8DE3A2F240;
- Sat, 14 Oct 2023 22:16:16 +0300 (MSK)
-Message-ID: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
-Date: Sat, 14 Oct 2023 22:16:16 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: QEMU Developers <qemu-devel@nongnu.org>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Subject: -drive if=none: can't we make this the default?
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qrkTW-0001Bj-4n; Sat, 14 Oct 2023 15:39:04 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 3E410757248;
+ Sat, 14 Oct 2023 21:37:54 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id CBB6575723E; Sat, 14 Oct 2023 21:37:53 +0200 (CEST)
+Message-Id: <cover.1697311794.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v3 0/3] Add emulation of AmigaOne XE board
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Date: Sat, 14 Oct 2023 21:37:53 +0200 (CEST)
+X-Spam-Probability: 8%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -55,11 +55,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Can't we make -drive if=none the default?
+Changes in v3:
+- Update values, comment and commit message in patch 1 again
 
-Yes, I know current default is ide, and whole world have to use if=none explicitly
-to undo this.  I think at this point we can deprecate if=ide default and switch to
-if=none in the next release.  I think it will be a welcome change.
+Changes in v2:
+- Update comment and commit message in patch 1 (Mark)
+- Fix irq mapping in patch 2 (Volker)
 
-/mjt
+Regards,
+BALATON Zoltan
+
+BALATON Zoltan (3):
+  via-ide: Fix legacy mode emulation
+  hw/pci-host: Add emulation of Mai Logic Articia S
+  hw/ppc: Add emulation of AmigaOne XE board
+
+ MAINTAINERS                             |   8 +
+ configs/devices/ppc-softmmu/default.mak |   1 +
+ hw/ide/via.c                            |  41 +++-
+ hw/pci-host/Kconfig                     |   5 +
+ hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+ hw/pci-host/meson.build                 |   2 +
+ hw/ppc/Kconfig                          |   7 +
+ hw/ppc/amigaone.c                       | 164 +++++++++++++
+ hw/ppc/meson.build                      |   2 +
+ include/hw/pci-host/articia.h           |  17 ++
+ 10 files changed, 535 insertions(+), 5 deletions(-)
+ create mode 100644 hw/pci-host/articia.c
+ create mode 100644 hw/ppc/amigaone.c
+ create mode 100644 include/hw/pci-host/articia.h
+
+-- 
+2.30.9
+
 
