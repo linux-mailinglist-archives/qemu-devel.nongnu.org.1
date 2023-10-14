@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5377C962F
-	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 900B77C962E
+	for <lists+qemu-devel@lfdr.de>; Sat, 14 Oct 2023 21:59:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrklX-0003sL-TQ; Sat, 14 Oct 2023 15:57:39 -0400
+	id 1qrklc-0003w0-Kt; Sat, 14 Oct 2023 15:57:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklW-0003s2-4O
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:38 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklY-0003sa-Ib
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:40 -0400
 Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklT-0004bz-NZ
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:37 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qrklW-0004eN-So
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 15:57:40 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id 79F26B80B73;
+ by ams.source.kernel.org (Postfix) with ESMTP id CB1F6B80B76;
+ Sat, 14 Oct 2023 19:57:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4E2C433C8;
  Sat, 14 Oct 2023 19:57:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF42EC433C7;
- Sat, 14 Oct 2023 19:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1697313453;
- bh=gq81V2jyigN9JS/a9mIXeTME4yQ0gG4TgYnxMo6EYcA=;
+ s=k20201202; t=1697313455;
+ bh=DUVfArvpe4u3CpWek9kOmH2OuzKB2BWaqa8Z++LAX6s=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=V7cL36A8hI7He5r/GK3EixJ4KDRuyU8V0ezy51+6VZW/ml2Oo0VIerP3vsqY6xeb6
- lGYn5eeXW5iqaLQMCf8tWFsWZ8lOw954XtCiWVzLWFR6WTfdl3XiRR0PVxR6FQdUwR
- 9rECyFiDLlcAEf+8ZRpfpZDSQ3yM0og044IQqhSMEecE6XFQABJm5h50Qd3Pu/flke
- UISOllncFaCdHYXYuqOcGTRCl4+h2KllMsoeXGNky9O3JWZTyFGlRttiQ8BV2Nucxm
- v7ZwggI7zzGroVk2Z319o0U1y8BPG4Bp/IIzStTJRykVYf+HBMVgyPxn5lTvLFPJA4
- z7U92t/laCy0g==
+ b=o6HCSDjp5TK41fA8Q8QYDlJLC2GODeD6uEwRMb8w0vtqlR0a8S7En/JMmp9PqGktK
+ Oe+bX6XbkEh4E7kxS8A6V8NPssLJ7zTPClGvstWx6bI62nRckXOFwKmeHZ5jFCFJ39
+ R9UDpkXim+DEMMoEvfszuDHQwiKdtAYsHWtSeauejqD4c5O6NCfFJnQV6FYohyvTEf
+ 2spsevO7apNfGTR38TRRS/nrAh+lI5KfySzp5gdIEbZqWSJNeluS2FyNYa+0jLPHfX
+ b6Nd3RQEVxqilubybVSz+6qKBUOAnvTFleeRouiYIBbuwzxCnIykFmd5EVOpwTD98T
+ RB4FA7/oQXsTg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH 07/12] pci-host: Wire up new Astro/Elroy PCI bridge
-Date: Sat, 14 Oct 2023 21:57:14 +0200
-Message-ID: <20231014195719.151397-8-deller@kernel.org>
+Subject: [PATCH 08/12] hw/hppa: Require at least SeaBIOS-hppa version 10
+Date: Sat, 14 Oct 2023 21:57:15 +0200
+Message-ID: <20231014195719.151397-9-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231014195719.151397-1-deller@kernel.org>
 References: <20231014195719.151397-1-deller@kernel.org>
@@ -69,54 +69,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Allow the Astro source to be built.
+The new SeaBIOS-hppa version 10 includes initial support
+for PA2.0 CPUs.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/Kconfig         | 1 +
- hw/pci-host/Kconfig     | 4 ++++
- hw/pci-host/meson.build | 1 +
- 3 files changed, 6 insertions(+)
+ hw/hppa/machine.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/hppa/Kconfig b/hw/hppa/Kconfig
-index 5dd8b5b21e..ff8528aaa8 100644
---- a/hw/hppa/Kconfig
-+++ b/hw/hppa/Kconfig
-@@ -3,6 +3,7 @@ config HPPA_B160L
-     imply PCI_DEVICES
-     imply E1000_PCI
-     imply VIRTIO_VGA
-+    select ASTRO
-     select DINO
-     select LASI
-     select SERIAL
-diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
-index a07070eddf..54a609d2ca 100644
---- a/hw/pci-host/Kconfig
-+++ b/hw/pci-host/Kconfig
-@@ -82,6 +82,10 @@ config DINO
-     bool
-     select PCI
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index cf28cb9586..c6d8deffcf 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -1,6 +1,8 @@
+ /*
+  * QEMU HPPA hardware system emulator.
+- * Copyright 2018 Helge Deller <deller@gmx.de>
++ * (C) Copyright 2018-2023 Helge Deller <deller@gmx.de>
++ *
++ * This work is licensed under the GNU GPL license version 2 or later.
+  */
  
-+config ASTRO
-+    bool
-+    select PCI
-+
- config GT64120
-     bool
-     select PCI
-diff --git a/hw/pci-host/meson.build b/hw/pci-host/meson.build
-index 64eada76fe..f891f026cb 100644
---- a/hw/pci-host/meson.build
-+++ b/hw/pci-host/meson.build
-@@ -27,6 +27,7 @@ pci_ss.add(when: 'CONFIG_MV64361', if_true: files('mv64361.c'))
- pci_ss.add(when: 'CONFIG_VERSATILE_PCI', if_true: files('versatile.c'))
+ #include "qemu/osdep.h"
+@@ -29,7 +31,7 @@
+ #include "net/net.h"
+ #include "qemu/log.h"
  
- # HPPA devices
-+pci_ss.add(when: 'CONFIG_ASTRO', if_true: files('astro.c'))
- pci_ss.add(when: 'CONFIG_DINO', if_true: files('dino.c'))
+-#define MIN_SEABIOS_HPPA_VERSION 6 /* require at least this fw version */
++#define MIN_SEABIOS_HPPA_VERSION 10 /* require at least this fw version */
  
- system_ss.add_all(when: 'CONFIG_PCI', if_true: pci_ss)
+ #define HPA_POWER_BUTTON (FIRMWARE_END - 0x10)
+ 
+@@ -95,9 +97,7 @@ static ISABus *hppa_isa_bus(void)
+ 
+     isa_bus = isa_bus_new(NULL, get_system_memory(), isa_region,
+                           &error_abort);
+-    isa_irqs = i8259_init(isa_bus,
+-                          /* qemu_allocate_irq(dino_set_isa_irq, s, 0)); */
+-                          NULL);
++    isa_irqs = i8259_init(isa_bus, NULL);
+     isa_bus_register_input_irqs(isa_bus, isa_irqs);
+ 
+     return isa_bus;
 -- 
 2.41.0
 
