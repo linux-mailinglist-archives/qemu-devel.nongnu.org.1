@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B097C9BAC
+	by mail.lfdr.de (Postfix) with ESMTPS id 434177C9BAA
 	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 23:00:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qs8D5-00051Y-A7; Sun, 15 Oct 2023 16:59:39 -0400
+	id 1qs8Cz-0004zZ-Dt; Sun, 15 Oct 2023 16:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qs8D1-00050O-80
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 16:59:35 -0400
-Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
+ id 1qs8Cx-0004z6-MY
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 16:59:31 -0400
+Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qs8Ct-0007Rl-FM
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 16:59:35 -0400
+ id 1qs8Cw-0007Rr-7e
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 16:59:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=k6Qm3JS8A+8o0rebQ+dXH0YkCJLKsuGlnkc3zq3ZSDw=; b=AtFyqhh5n0JtdfILoiaSsBJo6p
- 7FtuPU7CZU4isOQzO6g4C7bUmilG5z4ZHozcFny3L1Kc9vdtp7qWSahab8bua6tqQF3VgZtDcclYj
- VZdb/xrlDmsmr1MKPv9WsJmHNx0DxWGpYPqDiTUchyxVrfLIor0YGxD0feLIzmL1UOXw=;
+ bh=9pJdU9ofBRpqTqkrA36wul6BYpOWT68QnMbVHVxcQvA=; b=a79DXyk9/u2QmGqRAFXNyztPYE
+ osK3yoczKFZW8+xqyOX9n7o1Kte/ZAMZBkOVtlCoa2iplDGvQ9t0yzo08/OR209uovto5No4Yjs4k
+ CwnhCaIjquqcX1smwK3rZqBvxvOAs5iV/5n94hGCJa4R87SeDYNGF7hoGpqjoLuhLPbc=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de
-Subject: [PATCH 3/6] target/tricore: Add lseek semihosting call
-Date: Sun, 15 Oct 2023 22:59:10 +0200
-Message-ID: <20231015205913.264782-4-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 4/6] target/tricore: Add close semihosting call
+Date: Sun, 15 Oct 2023 22:59:11 +0200
+Message-ID: <20231015205913.264782-5-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231015205913.264782-1-kbastian@mail.uni-paderborn.de>
 References: <20231015205913.264782-1-kbastian@mail.uni-paderborn.de>
@@ -43,19 +43,19 @@ X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.10.15.205116, AntiVirus-Engine: 6.0.2,
  AntiVirus-Data: 2023.10.8.602001
-X-Sophos-SenderHistory: ip=79.202.213.239, fs=1596201, da=185012630, mc=75,
- sc=0, hc=75, sp=0, fso=1596201, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.213.239, fs=1596202, da=185012631, mc=77,
+ sc=0, hc=77, sp=0, fso=1596202, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::16;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2001:638:502:c003::19;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,40 +73,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/tricore-semi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ target/tricore/tricore-semi.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/target/tricore/tricore-semi.c b/target/tricore/tricore-semi.c
-index ccbeae4bc0..6f321391ef 100644
+index 6f321391ef..2188ceeed0 100644
 --- a/target/tricore/tricore-semi.c
 +++ b/target/tricore/tricore-semi.c
-@@ -164,6 +164,17 @@ static void tricore_vio_set_result(CPUTriCoreState *env, int retval,
+@@ -164,6 +164,19 @@ static void tricore_vio_set_result(CPUTriCoreState *env, int retval,
      env->gpr_d[12] = tricore_vio_errno_h2g(host_errno);
  }
  
-+
-+static void tricore_vio_lseek(CPUTriCoreState *env)
++static void tricore_vio_close(CPUTriCoreState *env)
 +{
 +    int fd = env->gpr_d[4];
-+    off_t offset = env->gpr_d[5];
-+    int whence = env->gpr_d[6];
++    int res = 0;
++    int err = 0;
 +
-+    off_t res = lseek(fd, offset, whence);
-+    tricore_vio_set_result(env, res, errno);
++    if (fd > 2) {
++        res = close(fd);
++        err = errno;
++    }
++
++    tricore_vio_set_result(env, res, err);
 +}
-+
- static void tricore_vio_readwrite(CPUTriCoreState *env, bool is_write)
+ 
+ static void tricore_vio_lseek(CPUTriCoreState *env)
  {
-     CPUState *cs = env_cpu(env);
-@@ -234,6 +245,9 @@ void helper_tricore_semihost(CPUTriCoreState *env, uint32_t pc)
+@@ -245,6 +258,9 @@ void helper_tricore_semihost(CPUTriCoreState *env, uint32_t pc)
  
      syscall = (int)env->gpr_d[12];
      switch (syscall) {
-+    case SYS__LSEEK:
-+        tricore_vio_lseek(env);
++    case SYS__CLOSE:
++        tricore_vio_close(env);
 +        break;
-     case SYS__READ:
-         tricore_vio_read(env);
+     case SYS__LSEEK:
+         tricore_vio_lseek(env);
          break;
 -- 
 2.42.0
