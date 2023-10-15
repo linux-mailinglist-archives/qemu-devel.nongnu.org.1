@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E387C990C
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 14:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1E47C990E
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 15:00:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qs0hX-0001bp-06; Sun, 15 Oct 2023 08:58:35 -0400
+	id 1qs0ii-000377-B1; Sun, 15 Oct 2023 08:59:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qs0hU-0001Yn-Po
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 08:58:32 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qs0ig-00036y-Ae
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 08:59:46 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qs0hT-0005Bi-2l
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 08:58:32 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40572aeb673so35702655e9.0
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 05:58:30 -0700 (PDT)
+ id 1qs0ie-0005Sv-OG
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 08:59:46 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-31427ddd3fbso3198398f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 05:59:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697374709; x=1697979509; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697374783; x=1697979583; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8SvY6ZrYKBVeoKWp4PBdS4rqqcbZFDZg7e67tWjoM5I=;
- b=xhZ4mKtHurUrQW09XWQQ5i7uuY7bpY5cmRva/T1Tlz9B+LmgTp4tKHinamn/VFpdWN
- ui5t2IY9vMBLnmJ2l64OFYs6UX5j18rg3DHYzXE65+8GB4NZQiUq4O9Pk6BjoU30UcSG
- Zq9kpUzU6B/azGXyr4d1MST1TVkb6LpBaPdqqa9HTHQqrb5ZhEGcFtr2HDdnbAjy6T9F
- RPgGa3hKq1O7z29J/YNGsGgxqh31NKgRYRSno3lbXrmZKdK+HUM99/2YJsuxqSvFGXKv
- Zs8hTOTEzlpFITLIq1h/KXdSmcds8D3UgJWPrL0dqndkY4sbNIQ0g9DRtQmjiELJR6ak
- eKrQ==
+ bh=W5Erv2dWfrAX1SXs/wCvye+EziC94gHkWLc/ojXOOns=;
+ b=H0qgBmQFn+ChulqivcJLC0eRkqFtwAJ4WnRypHezdOhXAiaraTXhj70/51XwycQRci
+ DOkQaDZH4tzt6N53l5VGWBtxRW08iWLvD4OlnjXtMNDcsBaUpxoS7huvDLgBLQJ7ErRk
+ 7pc05UhGA7b8hxIpjRJoQDqdQ9JUqOYrsnXR1ZD/S5HP+zSMbXcl/Tl777xMCcHxuMfg
+ yNf/mvvrL57YhDPl9uKe8uEnOKOgjWpXSRoIlVIPS2OOORnuAxvnKxq3p9OR7P65lCpJ
+ R0byhp5ksV6uV3LDJq2q1wg3jmgm4CtYPLEZxN9d+1/2V+ntdNe3ERtFMG8WHXE6eToB
+ vVPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697374709; x=1697979509;
+ d=1e100.net; s=20230601; t=1697374783; x=1697979583;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=8SvY6ZrYKBVeoKWp4PBdS4rqqcbZFDZg7e67tWjoM5I=;
- b=FwD6qXfVfRgv+pK5CjSfi7SAZ4L61gtB1yodMRp8ITOFuIuUzHqM04zKJ/LVNq+Hzr
- XxpMylDr7YJdJsKnHBcG93TmvlHVh7MvjbaG/38ueTVaUrWJH7BylRxhSZ2IxRPv46aB
- xCXC31DKj1+z9klR/DuWxWmrXZKSkovBFfcOCT66i5eGZ7o8yr0+pwUni987IGjgQqCj
- fJd3kpsRpe4Wp6F9lJSgUjFEActjJ9FphSDgVzNHKWpqw+g+whScaRU77kbztcp5sT2a
- NYRuNwbSOTXgO5Kbxf2/IluUA1Ci8p6FsShyrtQZb32Pk2H/krsE1bb6rvuxK70D0Hts
- KPoA==
-X-Gm-Message-State: AOJu0YzqfSpbBTZOpHLU/Sz+jEC86uI9WX5PXLCG9Bv4dYzHjAogVpEG
- LVQUkp/zbvFdZwRa0lVTXeT91phWx82XBUvkgv8=
-X-Google-Smtp-Source: AGHT+IFr94bK2pEyf1IWMZvJzD1kpUUifUZFZmU6d+3nSooBM6pIXGhhbhYcQRmoBGlfqkBYYIBMaA==
-X-Received: by 2002:adf:e0c8:0:b0:320:920:42b1 with SMTP id
- m8-20020adfe0c8000000b00320092042b1mr25989491wri.53.1697374709060; 
- Sun, 15 Oct 2023 05:58:29 -0700 (PDT)
+ bh=W5Erv2dWfrAX1SXs/wCvye+EziC94gHkWLc/ojXOOns=;
+ b=PuPps790wluwM/ikGfHjNvjyI9DltZOA1tzmckPQs5uBh2OCRNCzljbf/cWasxZ9dF
+ zamqco2cE7VrgrVe3WdPysC80bzOsedQgUT2WRlnOR8W2ZlyY5c8hks2oVpV1+oeFkaR
+ /wQsw1i2QDgLhHayBzcG97+Si6Z0Q5CY3hzHGBAAOuKUgQeadeY+5vvgBxxPfcrjBnxX
+ u7Smuf7ZxJv00USIxrqvBLz3qh+TnKEcLAyXPPxmm7sJHjuiAiQiKO4ZbWIznD1J8eoO
+ XG9tHCwU6voWah7hNY1eEX+/l0Ap45iAHQUFr5/H6L0wUBnzMFqP0F3nIR2tUqJFozHH
+ URkg==
+X-Gm-Message-State: AOJu0YzhqDrgGotPtXBo/ycWjlmOIEYYvCGMvlOd2hg/akqLAfHfADZG
+ 8MfUxqUPg9dws2ExMPlRek8RNw==
+X-Google-Smtp-Source: AGHT+IHrv5wGwxVKNt5EiLYTgbIbRUojOmAR0vPn/ko7Yi+ChToX5Jnhd8OcZBq1XHuiVNKWW4m9NQ==
+X-Received: by 2002:a05:6000:4b:b0:32d:9ce0:35ae with SMTP id
+ k11-20020a056000004b00b0032d9ce035aemr4567278wrx.52.1697374782956; 
+ Sun, 15 Oct 2023 05:59:42 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- p9-20020a5d4e09000000b0032196c508e3sm4259278wrt.53.2023.10.15.05.58.28
+ h12-20020adff18c000000b003232380ffd7sm25161196wro.102.2023.10.15.05.59.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 05:58:28 -0700 (PDT)
+ Sun, 15 Oct 2023 05:59:42 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 491D31FFBB;
- Sun, 15 Oct 2023 13:58:28 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id ED4EB1FFBB;
+ Sun, 15 Oct 2023 13:59:41 +0100 (BST)
 References: <20231003183058.1639121-1-richard.henderson@linaro.org>
- <20231003183058.1639121-4-richard.henderson@linaro.org>
+ <20231003183058.1639121-5-richard.henderson@linaro.org>
 User-agent: mu4e 1.11.22; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: fei2.wu@intel.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH v17 03/16] tcg: Record nb_deleted_ops in TCGContext
-Date: Sun, 15 Oct 2023 13:58:23 +0100
-In-reply-to: <20231003183058.1639121-4-richard.henderson@linaro.org>
-Message-ID: <87fs2cxcsr.fsf@linaro.org>
+Subject: Re: [PATCH v17 04/16] tcg: Record nb_spills in TCGContext
+Date: Sun, 15 Oct 2023 13:59:36 +0100
+In-reply-to: <20231003183058.1639121-5-richard.henderson@linaro.org>
+Message-ID: <87bkd0xcqq.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,7 +99,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Richard Henderson <richard.henderson@linaro.org> writes:
 
-> Record the number of ops that are removed during optimization.
+> Record the number of times a temporary is forced into memory
+> and the store would not have been required if there an infinite
+> number of call-saved cpu registers available.  This excludes
+> stores that are required by semantics to return computed values
+> to their home slot in ENV, i.e. NEED_SYNC_ARG.
+>
 > To be copied into TBStatistics when desired.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
