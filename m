@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5313F7C99DE
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 18:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 194407C9A1F
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 18:54:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qs3WS-0006U7-DG; Sun, 15 Oct 2023 11:59:20 -0400
+	id 1qs4Mm-00067V-C0; Sun, 15 Oct 2023 12:53:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qs3WP-0006Tw-Sv
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 11:59:17 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qs4Mk-000670-9v
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 12:53:22 -0400
+Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qs3WO-0000j1-9Z
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 11:59:17 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-406619b53caso37649525e9.1
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 08:59:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qs4Mi-00019T-Re
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 12:53:22 -0400
+Received: by mail-oo1-xc2b.google.com with SMTP id
+ 006d021491bc7-57b8cebf57dso2020701eaf.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 09:53:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697385553; x=1697990353; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1697388799; x=1697993599; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=j82v/FP2QkeS+tKHeH6P8h7s09UTPxNaWIHje65lX88=;
- b=ffBmfjZQpveMn8+ceFoqKjK3PU3LEvOB2Fc1k9BeQmkRSVCldisidkQNUfN/IgyvRJ
- kx872hdQEqBRLqZ4RgSUP6PbyYbUIez3dPmvEeRtOT7VzdmCQd3Xk2mhds7L1g4xDedb
- 7Q1gUm1EQB323wrNBioH5CCRX9u9l4Lz+ukVQ+IePGlZuz566x/PuMuvfPExACxZiyGt
- VOFjKT4BmF2pjlDGP6GaA2Nt/IPkc3WgQOE5ZzuimJkCErn/Ds9mHT1Gk8qlEnX7CQWr
- 32LK94C2LUFBf26gYlgfqgy9WKDjC7W5gwsPV4WAqo3mGKArdjQSqBllGOQAD543RDX+
- +5hQ==
+ bh=DRkK6e4PKz44n7opJbllKh/+R0L3QRakDN2/ffomjek=;
+ b=XQnZ4t0pU/a96naVQUR5pjD8ipfV2ZhoR/aeU9DjPTc5FAQDQ25NDSYloQRBr9Ufy2
+ XeLP1p2EAZ3GSOd5scldNIFkSBkV03QmmFgNqGxeOJe1arMtiIVJSDhbzxxvHc92/Hyy
+ G7G8cQtJREJDZsM7HmsM8dM4LfuF1fWG9o9a40DgYcKzxyoTAUDn/iNNOwbpz78mMuZR
+ A5izPDtueqXTOHAwQjIR1G7okSv7WFZZkceiMZGqHaMDEgGUGvDc6UtWJ0nKFx8e1Xgg
+ 6R5G9Xvr18KV7ypEel85NPCcjvhXUnx3FXxzvW4hUAN9yclM0humATJnqCCUB25sHyg1
+ v84g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697385553; x=1697990353;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1697388799; x=1697993599;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j82v/FP2QkeS+tKHeH6P8h7s09UTPxNaWIHje65lX88=;
- b=etQROW17ibH8XNzsMNaJyCo8fQqxwxkYWdCw4DbwvcG2cQi1w4H3pPnmfyfQRS9Pfd
- xEBT+UGEQYinaHstwVdJEPtq+62T3r8j2+k3x+eM1pZ0rjt9CqO9lbC7IMT2lMohFncJ
- ouFMfZmZwzOW5hqhTWLWh3OnBR8dWd6ecpltM2ArdcGDs0J+UFyc0L4mIWoHdIr6rYZk
- b6Y5yJpjaWxaAPSPv937+WUkd1guC8i6QK7Vzht0VVckW49il1bDozVlTy5ad5kB5Sjh
- gTlG8gXpBhhrK0Lp6vK1fWsbOFxO6i0JGgM+wi70B4nEtb1Kqajt3ZWBkAsEMGMpetpl
- iZMg==
-X-Gm-Message-State: AOJu0YwNVcnjTOt+cFWUJbte61a+rkvNV6PhXODm5SS28W6l8YLA0MQ4
- m+0kuKke06Pw5uDUw00RJfmiuQ==
-X-Google-Smtp-Source: AGHT+IHAj7NB8uaxIbdKf7IIpADNWHm+MXh1DPotcd8bPOtERGB8bOBcgpbZ2s3mn/Vfu23CBAyG4Q==
-X-Received: by 2002:a05:600c:2195:b0:406:53aa:7a5f with SMTP id
- e21-20020a05600c219500b0040653aa7a5fmr27971760wme.10.1697385553467; 
- Sun, 15 Oct 2023 08:59:13 -0700 (PDT)
-Received: from [192.168.69.115]
- (mdq11-h01-176-173-171-135.dsl.sta.abo.bbox.fr. [176.173.171.135])
+ bh=DRkK6e4PKz44n7opJbllKh/+R0L3QRakDN2/ffomjek=;
+ b=bNmimdhGMN+wI17ejCkzD4Tdb/2AMwPgh1nZs5DCQvU2iKjy3GLnSVVIXBKXOsY1w2
+ wXvQv1HpS/JUmO2myniBusTPPUhPK2jdmwRNTaLMlrLn2IRBQgeoaQLzGWLVGCmE8Fnf
+ npyabdID19qaoEMwzRn+YSvvb3GRuZWNV36gc1W9/oy3Pqiv5QHXPHboj+ba7Ulr3chr
+ y54ZiYrm2yKr2cdrR/ytQcKeT2kObJ45AtdfHguxhAPPZXKRZyaepXaKz0kOeXyeenEB
+ 4VunDnpByw+JU0BSuCFgXr+owIpXocxISvNqkLCq/g8Hbk/y7CpbAysjhmkyufAqxhXx
+ +BVg==
+X-Gm-Message-State: AOJu0YwZau47eMdrhcgMHYPciVEHT60hoMYLnMsdI3xf4M1LTCq4j3UK
+ N8CgAPsNjLMq43FVRKkVx9qBMYf5d5Vbl+gUHSE=
+X-Google-Smtp-Source: AGHT+IFaR0qkb1QhzIwrOX1OfbJPIt9Z+OTFFGUsytgULqyJnhy4IBk/djSpzjTRzfcp/ORj0mIfaA==
+X-Received: by 2002:a05:6358:63a7:b0:14b:d9de:3008 with SMTP id
+ k39-20020a05635863a700b0014bd9de3008mr40320535rwh.5.1697388798770; 
+ Sun, 15 Oct 2023 09:53:18 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- k27-20020a05600c1c9b00b0040531f5c51asm4884233wms.5.2023.10.15.08.59.12
+ fa13-20020a056a002d0d00b006b1c14a493fsm4449876pfb.71.2023.10.15.09.53.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 15 Oct 2023 08:59:13 -0700 (PDT)
-Message-ID: <81fbd234-0280-61ad-32a4-d785a4640f21@linaro.org>
-Date: Sun, 15 Oct 2023 17:59:11 +0200
+ Sun, 15 Oct 2023 09:53:18 -0700 (PDT)
+Message-ID: <f50eb588-99c7-4b58-942f-05cfb35f799f@linaro.org>
+Date: Sun, 15 Oct 2023 09:53:16 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] tcg: drop unused tcg_temp_free define
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/85] target/sparc: Remove always-set cpu features
 Content-Language: en-US
-To: Mike Frysinger <vapier@gentoo.org>, richard.henderson@linaro.org
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org
-References: <20231015010046.16020-1-vapier@gentoo.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231015010046.16020-1-vapier@gentoo.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com
+References: <20231013212846.165724-1-richard.henderson@linaro.org>
+ <20231013212846.165724-4-richard.henderson@linaro.org>
+In-Reply-To: <20231013212846.165724-4-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,39 +94,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/10/23 03:00, Mike Frysinger wrote:
-> Use of the API was removed a while back, but the define wasn't.
-
-The cleanup started in commit 47f7313d81 ("tcg: Create
-tcg/tcg-temp-internal.h") and the last use got removed
-in d5920b7280 ("tcg: Remove TCGv from tcg_gen_qemu_{ld,st}_*").
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> Signed-off-by: Mike Frysinger <vapier@gentoo.org>
-> ---
->   include/tcg/tcg-op.h | 2 --
->   1 file changed, 2 deletions(-)
+On 10/13/23 14:27, Richard Henderson wrote:
+> The oldest supported cpu is the microsparc 1;
+> all other cpus use CPU_DEFAULT_FEATURES.
 > 
-> diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-> index 80cfcf8104b6..3ead59e4594d 100644
-> --- a/include/tcg/tcg-op.h
-> +++ b/include/tcg/tcg-op.h
-> @@ -52,7 +52,6 @@ static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1,
->   typedef TCGv_i32 TCGv;
->   #define tcg_temp_new() tcg_temp_new_i32()
->   #define tcg_global_mem_new tcg_global_mem_new_i32
-> -#define tcg_temp_free tcg_temp_free_i32
->   #define tcgv_tl_temp tcgv_i32_temp
->   #define tcg_gen_qemu_ld_tl tcg_gen_qemu_ld_i32
->   #define tcg_gen_qemu_st_tl tcg_gen_qemu_st_i32
-> @@ -60,7 +59,6 @@ typedef TCGv_i32 TCGv;
->   typedef TCGv_i64 TCGv;
->   #define tcg_temp_new() tcg_temp_new_i64()
->   #define tcg_global_mem_new tcg_global_mem_new_i64
-> -#define tcg_temp_free tcg_temp_free_i64
->   #define tcgv_tl_temp tcgv_i64_temp
->   #define tcg_gen_qemu_ld_tl tcg_gen_qemu_ld_i64
->   #define tcg_gen_qemu_st_tl tcg_gen_qemu_st_i64
+> Remove all bits that are always set: FLOAT, SWAP, MUL, DIV,
+> FLUSH, FSQRT, FMUL.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
+I've just found the command-line properties that could affect these, which unfortunately 
+don't use the CPU_FEATURE_* symbols and hard-code bit numbers.
+
+I'd be tempted to remove the properties as well, with the possible exception of 
+CPU_FEATURE_FLOAT, but maybe not even that.
+
+Thoughts?
+
+
+r~
 
