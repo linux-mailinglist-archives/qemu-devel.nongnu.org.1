@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDCD7C9866
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 10:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5BE7C98A8
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 12:24:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrwhv-0006nI-D7; Sun, 15 Oct 2023 04:42:43 -0400
+	id 1qryHF-00041N-6L; Sun, 15 Oct 2023 06:23:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrwhr-0006k1-UA
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 04:42:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qrwhq-0001Hk-1J
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 04:42:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697359356;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hDzQTce44LDieCvwm72V4ZF+6bqSUwNujHwda0Mh2oY=;
- b=CiIU/RC5tmJU9dsd7s84cDFCS5U1Q/oo4zCaev2NEAWmLfcGdMbbFMlmA7wFlwyvF+nmoW
- VyLPUAmnWqNSn2Huh19emPbpsid+jUHR69w94WVeUKvIcGHqJQfbUOSsaEjViXhNBr5MgH
- 5hhX3bH/w2yycsHtY+6+FRBiQbi2DBo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-asKTnkkJNfSq510MBkNJLg-1; Sun, 15 Oct 2023 04:42:24 -0400
-X-MC-Unique: asKTnkkJNfSq510MBkNJLg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-32d9602824dso1715000f8f.2
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 01:42:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697359343; x=1697964143;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qryHD-00040v-8V; Sun, 15 Oct 2023 06:23:15 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qryH8-0000Xl-2F; Sun, 15 Oct 2023 06:23:15 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-53df747cfe5so6277046a12.2; 
+ Sun, 15 Oct 2023 03:23:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697365388; x=1697970188; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hDzQTce44LDieCvwm72V4ZF+6bqSUwNujHwda0Mh2oY=;
- b=Fr3dkedwyhJORRYs2kFAr/YKuANKRuIgAdUCSk9pJHkBMIh0Z9HYHxrGOWOuT7bqej
- z6BjAoDRhTBZ16eDbdFhM1Mca983xr2e0o4eCxwF0JZi8M1+DpIOE9OqFyYz18HxYfrZ
- s25qviZgETg2wfFUPyc3fgZ2IuT3eP38cz+MlzMYG+uO8OVyy3KwqvZvCITiI/eqGmjM
- +Tg4PTScKIHzFzO0izqFZbkqxf8mkwxojX1y5HJ9ovYJToU/p3ddW8Nz7sPNIJpkJOZC
- Zexs2E5dYTmFi1xudVG1gXHEFMdIXssy4fZLkDSLbXrqIzDsaK1Ar3ecma3Z8e9ysV8o
- ZLlw==
-X-Gm-Message-State: AOJu0YwaIyPI/CG9EFcjnn8gA2hK2WHW8EU7STtdQVtYXdnk2Hv+m0m9
- dCCcK+Sup/RO7VOqptL0scBEXLQMVwaXR6WX2lqDu6WEB995kXxsQAFDxacHjSAv7Xo+TVW57FO
- JCe/7vbqBfYOno0i0T9y6vIg=
-X-Received: by 2002:adf:9dcb:0:b0:32d:87df:6ded with SMTP id
- q11-20020adf9dcb000000b0032d87df6dedmr9971565wre.27.1697359343311; 
- Sun, 15 Oct 2023 01:42:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHkJJh1UGhg/FQWw2uUu2Pp7EH6Nf4LY1G7eqzFNP3bnp2Mb9PvtRvAjIf6Pf0l4lPkXBXMdw==
-X-Received: by 2002:adf:9dcb:0:b0:32d:87df:6ded with SMTP id
- q11-20020adf9dcb000000b0032d87df6dedmr9971552wre.27.1697359342906; 
- Sun, 15 Oct 2023 01:42:22 -0700 (PDT)
-Received: from redhat.com ([109.253.179.214]) by smtp.gmail.com with ESMTPSA id
- p9-20020a5d4e09000000b0032196c508e3sm3839919wrt.53.2023.10.15.01.42.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 01:42:21 -0700 (PDT)
-Date: Sun, 15 Oct 2023 04:42:18 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Vincent Jardin <vincent.jardin@ekinops.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "jasowang@redhat.com" <jasowang@redhat.com>
-Subject: Re: [RFC] virtio: enforce link up
-Message-ID: <20231015034428-mutt-send-email-mst@kernel.org>
-References: <20231014162234.153808-1-vincent.jardin@ekinops.com>
- <20231014123635-mutt-send-email-mst@kernel.org>
- <8f110502-7ab7-4db2-9702-3717cf6afc58@ekinops.com>
+ bh=Rw7lS+ohjqUkSHKT12XYG+b1i4hqAXQ9Djh+8O3O2O0=;
+ b=h6wiIcqI+ItE0Gc6OHldYt14yZvMJjHadyr8O7UAUZ3H3bQSubb1t7yM75Ctgv1iM/
+ oPXF7Whh/uuTdtenW91VwAwME1wYpTsN6i0WRzcNMTqDL7xGMYVDbTnAVadQ1/50zMy4
+ ohfEGgBnZU9nsW6u4mGxsUSGFtW93pa7gB584ICe6D6nGAchxpt+y8XBFhUhIrdnhF+L
+ T373OKyL67ftSVyF/gF3TOw/aF2Nq0ppreL69dlpq/FaoOLB+fYSWdwUxpWKBfawOf5R
+ WXEmf5O+pA7ZLxe/dZsuW9ZmFtAW+cl3/NKy+EDHuayAON4mqgJCcSboEpg7N62u/eKq
+ ynJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697365388; x=1697970188;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Rw7lS+ohjqUkSHKT12XYG+b1i4hqAXQ9Djh+8O3O2O0=;
+ b=QXnQvGbObrPqON1/xLexRmljOsLvy/6ihOPw13pBwhFG2Z1e2W6i/ZcUJZDChKBjmD
+ oZW2KOhounjmW7ruDghm9sN9UgDAjhYq8hAi16GcRkLQyqD7U1SuQqwCVeAZsKSPqtDU
+ o8EFLgRSHNBb6P9ABQ6ciIkL1Lru7ZCVkVuhv9sTeOIrgV0ThtNA1kx7DZEYxIwrovQ4
+ lusS1nzlBVEksf5ZobmKYaVkPMlMDyyNkxW82BXazvP6fiBrqjjyrldKafSqHJqCkI0Z
+ GbsZqAHjsKNrmoci7yNWJAHaCilNg3zCdYoW2P4K7+9g5e1z99IS5qKU0+0GmVZhkUGq
+ J+3g==
+X-Gm-Message-State: AOJu0Yz4CGWAHEvPH5LEkTfD4QMaW/A5ai4czoEFT3zQkQIavHGzhYW7
+ FQa2/vCFQIyuOkjYGqYPh5Cbe3IfHj8=
+X-Google-Smtp-Source: AGHT+IFs5Wtl0Xm2nZJVBmBAY7o+Ea5nstqiIaGdEt5AAmTwbAQs63rETNmbd2LqgZo4N0oP2ots9A==
+X-Received: by 2002:a05:6402:354c:b0:53e:5a90:e57 with SMTP id
+ f12-20020a056402354c00b0053e5a900e57mr5161373edd.37.1697365387686; 
+ Sun, 15 Oct 2023 03:23:07 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-191-089-197.77.191.pool.telefonica.de.
+ [77.191.89.197]) by smtp.gmail.com with ESMTPSA id
+ co25-20020a0564020c1900b0053e36dd75dfsm3372304edb.35.2023.10.15.03.23.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 15 Oct 2023 03:23:07 -0700 (PDT)
+Date: Sun, 15 Oct 2023 10:23:03 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+CC: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org, Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
+In-Reply-To: <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
+References: <cover.1696880742.git.balaton@eik.bme.hu>
+ <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
+ <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
+ <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
+Message-ID: <73D2ACAB-83C4-4EB6-BBD9-F025D9E8A533@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8f110502-7ab7-4db2-9702-3717cf6afc58@ekinops.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,101 +97,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 14, 2023 at 09:06:09PM +0000, Vincent Jardin wrote:
-> On 10/14/23 18:37, Michael S. Tsirkin wrote:
-> > On Sat, Oct 14, 2023 at 06:22:34PM +0200, Vincent Jardin wrote:
-> >> Using interface's settings, let's enforce an always on link up.
-> >>
-> >> Signed-off-by: Vincent Jardin <vincent.jardin@ekinops.com>
-> > 
-> > What is going on here? Just don't set it down.
-> 
-> The purpose is to have a stable vLink for the VMs that don't support 
-> such sysctl arp_evict_nocarrier:
-> https://patchwork.kernel.org/project/netdevbpf/patch/20211101173630.300969-2-prestwoj@gmail.com/
-> 
-> We are facing some users of vSwitches that use vhost-user and that 
-> disconnect and reconnect during some operations. For most of the VMs on 
-> their deployments with such vSwitches, those VMs' vLink should not flap.
-> 
-> For those VMs, the flaps are critical and they can lead to some 
-> convergence issues.
-> 
-> If this capability is not at the virtio-net level, should it be at 
-> qemu's net_vhost_user_event() ?
-> For instance, from 
-> https://github.com/qemu/qemu/blob/63011373ad22c794a013da69663c03f1297a5c56/net/vhost-user.c#L266 
-> ?
-> 
-> best regards,
->    Vincent
 
 
-makes sense
+Am 14=2E Oktober 2023 16:13:19 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
+me=2Ehu>:
+>On Sat, 14 Oct 2023, Mark Cave-Ayland wrote:
+>> On 09/10/2023 20:54, BALATON Zoltan wrote:
+>>=20
+>>> The initial value for BARs were set in reset method for emulating
+>>> legacy mode at start but this does not work because PCI code resets
+>>> BARs after calling device reset method=2E Remove this ineffective
+>>> default to avoid confusion=2E
+>>>=20
+>>> Instead move setting the BARs to a callback on writing the PCI config
+>>> regsiter that sets legacy mode (which firmwares needing this mode seem
+>>> to do) and fix their values to program it to use legacy port numbers
+>>> in this case=2E This does not fully emulate what the data sheet says
+>>> (which is not very clear on this) but it implements enogh to allow
+>>> both modes as used by firmwares of machines we emulate=2E
+>>>=20
+>>> Signed-off-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
+>>> ---
+>>>   hw/ide/via=2Ec | 41 ++++++++++++++++++++++++++++++++++++-----
+>>>   1 file changed, 36 insertions(+), 5 deletions(-)
+>>>=20
+>>> diff --git a/hw/ide/via=2Ec b/hw/ide/via=2Ec
+>>> index fff23803a6=2E=2E43e8af8d69 100644
+>>> --- a/hw/ide/via=2Ec
+>>> +++ b/hw/ide/via=2Ec
+>>> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
+>>>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+>>>                    PCI_STATUS_DEVSEL_MEDIUM);
+>>>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
+>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
+>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA=
+: 20-23h */
+>>>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+>>>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configurat=
+ion*/
+>>> @@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
+>>>       pci_set_long(pci_conf + 0xc0, 0x00020001);
+>>>   }
+>>>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
+>>> +                              uint32_t val, int len)
+>>> +{
+>>> +    pci_default_write_config(pd, addr, val, len);
+>>> +    /*
+>>> +     * Bits 0 and 2 of the PCI programming interface register select =
+between
+>>> +     * legacy and native mode for the two IDE channels=2E We don't em=
+ulate this
+>>> +     * because we cannot easily switch between ISA and PCI in QEMU so=
+ instead
+>>=20
+>> As per my previous email, this statement is demonstrably false: this is=
+ now achievable using the portio_list*() APIs=2E
+>>=20
+>>> +     * when guest selects legacy mode we set the PCI BARs to legacy p=
+orts which
+>>> +     * works the same=2E We also don't care about setting each channe=
+l separately
+>>> +     * as no guest is known to do or need that=2E We only do this whe=
+n BARs are
+>>> +     * unset when writing this register as logs from real hardware sh=
+ow that
+>>> +     * setting legacy mode after BARs were set it will still use port=
+s set by
+>>> +     * BARs not ISA ports (e=2Eg=2E pegasos2 Linux does this after fi=
+rmware set
+>>> +     * native mode and programmed BARs and calls it non-100% native m=
+ode)=2E
+>>> +     * But if 0x8a is written righr after reset without setting BARs =
+then we
+>>> +     * want legacy ports (this is done by the AmigaOne firmware)=2E
+>>> +     */
+>>> +    if (addr =3D=3D PCI_CLASS_PROG && val =3D=3D 0x8a &&
+>>> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) =3D=3D
+>>> +        PCI_BASE_ADDRESS_SPACE_IO) {
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +        /* BMIBA: 20-23h */
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +    }
+>>> +}
+>>=20
+>> Another hint that this is not the right way to be doing this: the value=
+s you are placing in BARS 1 and 3 are illegal=2E PCI IO BARs have bit 1 for=
+ced to 0 and bit 0 set to 1 which forces a minimum alignment of 4, so eithe=
+r the addresses 0x3f6/0x376 are being rounded internally to 0x3f4/0x374 and=
+/or you're lucky that this just happens to work on QEMU=2E
+>
+>The data sheet lists these values for legacy mode bur it seems that bit 1=
+ is ignored for BAR here and it ends up set to 0x3x4 with the actual reg ma=
+pped to 0x3x7 for both values ending in 4 or 6 here and both works the same=
+ with AmigaOS even if I change the values here to 0x3[7f]4 so I can do that=
+ and that should then match the default values for these regs but not match=
+ the values listed for legacy mode so the data sheet is wrong either way=2E
 
-> 
-> > 
-> >> ---
-> >>   hw/net/virtio-net.c            | 8 ++++++++
-> >>   include/hw/virtio/virtio-net.h | 2 ++
-> >>   2 files changed, 10 insertions(+)
-> >>
-> >> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> >> index 29e33ea5ed..e731b4fdea 100644
-> >> --- a/hw/net/virtio-net.c
-> >> +++ b/hw/net/virtio-net.c
-> >> @@ -78,6 +78,9 @@
-> >>      tso/gso/gro 'off'. */
-> >>   #define VIRTIO_NET_RSC_DEFAULT_INTERVAL 300000
-> >>   
-> >> +/* force always link up */
-> >> +#define VIRTIO_NET_LINK_UP false
-> >> +
-> >>   #define VIRTIO_NET_RSS_SUPPORTED_HASHES (VIRTIO_NET_RSS_HASH_TYPE_IPv4 | \
-> >>                                            VIRTIO_NET_RSS_HASH_TYPE_TCPv4 | \
-> >>                                            VIRTIO_NET_RSS_HASH_TYPE_UDPv4 | \
-> >> @@ -447,6 +450,9 @@ static void virtio_net_set_link_status(NetClientState *nc)
-> >>       else
-> >>           n->status |= VIRTIO_NET_S_LINK_UP;
-> >>   
-> >> +    if (n->net_conf.link_up)
-> >> +        n->status |= VIRTIO_NET_S_LINK_UP;
-> >> +
-> >>       if (n->status != old_status)
-> >>           virtio_notify_config(vdev);
-> >>   
-> >> @@ -3947,6 +3953,8 @@ static Property virtio_net_properties[] = {
-> >>                         VIRTIO_NET_F_GUEST_USO6, true),
-> >>       DEFINE_PROP_BIT64("host_uso", VirtIONet, host_features,
-> >>                         VIRTIO_NET_F_HOST_USO, true),
-> >> +    DEFINE_PROP_BOOL("link_up", VirtIONet, net_conf.link_up,
-> >> +                       VIRTIO_NET_LINK_UP),
-> >>       DEFINE_PROP_END_OF_LIST(),
-> >>   };
-> >>   
-> >> diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-> >> index 55977f01f0..385bebab34 100644
-> >> --- a/include/hw/virtio/virtio-net.h
-> >> +++ b/include/hw/virtio/virtio-net.h
-> >> @@ -56,6 +56,7 @@ typedef struct virtio_net_conf
-> >>       char *duplex_str;
-> >>       uint8_t duplex;
-> >>       char *primary_id_str;
-> >> +    bool link_up; /* if set enforce link up, never down */
-> >>   } virtio_net_conf;
-> >>   
-> >>   /* Coalesced packets type & status */
-> >> @@ -180,6 +181,7 @@ struct VirtIONet {
-> >>       size_t guest_hdr_len;
-> >>       uint64_t host_features;
-> >>       uint32_t rsc_timeout;
-> >> +    uint32_t link_up; /* if set enforce link up, never down */
-> >>       uint8_t rsc4_enabled;
-> >>       uint8_t rsc6_enabled;
-> >>       uint8_t has_ufo;
-> >> -- 
-> >> 2.34.1
-> > 
-> 
+The datasheet lists the command BARs to be mapped to 0x3x4=2E The command =
+registers (legacy 0x3x6) are mapped at offset 2 in those BARs=2E So mapping=
+ the BARs to 0x3x4 would map the registers to their respective legacy addre=
+sses, no?
 
+> It still does not make sense to set these in reset method which will be =
+overwritten so only works if I set them here=2E
+>
+>> Using the portio_list*() APIs really is the right way to implement this=
+ to avoid being affected by such issues=2E
+>
+>Can you provide an alternative patch using portio_list? I don't know how =
+to do that and have no example to follow either so it would be hard for me =
+to figure out=2E Or give some pointers on how to do this if I missed someth=
+ing=2E
+>
+>Regards,
+>BALATON Zoltan
+>
+>>>   static void via_ide_realize(PCIDevice *dev, Error **errp)
+>>>   {
+>>>       PCIIDEState *d =3D PCI_IDE(dev);
+>>> @@ -221,6 +251,7 @@ static void via_ide_class_init(ObjectClass *klass,=
+ void *data)
+>>>       /* Reason: only works as function of VIA southbridge */
+>>>       dc->user_creatable =3D false;
+>>>   +    k->config_write =3D via_ide_cfg_write;
+>>>       k->realize =3D via_ide_realize;
+>>>       k->exit =3D via_ide_exitfn;
+>>>       k->vendor_id =3D PCI_VENDOR_ID_VIA;
+>>=20
+>>=20
+>> ATB,
+>>=20
+>> Mark=2E
+>>=20
+>>=20
+>>=20
 
