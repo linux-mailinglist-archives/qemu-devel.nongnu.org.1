@@ -2,55 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510717C9990
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 16:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C177C9992
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 16:28:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qs22n-00030R-Ox; Sun, 15 Oct 2023 10:24:37 -0400
+	id 1qs26B-0004EF-AA; Sun, 15 Oct 2023 10:28:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qs22c-000305-W6; Sun, 15 Oct 2023 10:24:27 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qs22Z-0002YW-Og; Sun, 15 Oct 2023 10:24:26 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id D23C5757253;
- Sun, 15 Oct 2023 16:23:16 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6AE297456A7; Sun, 15 Oct 2023 16:23:16 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 674BC745681;
- Sun, 15 Oct 2023 16:23:16 +0200 (CEST)
-Date: Sun, 15 Oct 2023 16:23:16 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
-In-Reply-To: <3db1683e-45ef-4125-ac98-2fb63df3951f@ilande.co.uk>
-Message-ID: <8935e676-2a30-028b-0ea2-5e2696d2d60c@eik.bme.hu>
-References: <cover.1696880742.git.balaton@eik.bme.hu>
- <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
- <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
- <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
- <3db1683e-45ef-4125-ac98-2fb63df3951f@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qs268-0004Dr-E8
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 10:28:04 -0400
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qs266-0003It-Lt
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 10:28:04 -0400
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-57bab4e9e1aso2319250eaf.3
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 07:28:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697380081; x=1697984881;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=trprVr2mK/QmqvtCAUEQn75020aXPz91aNTNpM2f3fQ=;
+ b=HQTOLs1KBTXtb9NgVZwzcESNG+6+u3BJZ1EXRGrWRdlvsRJxaRXIa6uK28CkNYaBON
+ dBiVqnPVl8nOjMtz8SRScX1DAQJhfkvRPCWsHq0pW4U7vj34O6+CGGqGppeBXpCgpOh2
+ YguccNNTo0rN9VB70hWVtyWrh89QdEfo6dEnwU0EgzAldpWJjAhFnuCmC9qGKVuzNJxC
+ orEitcyBAbXlH2KOzlcUTQP9YfhQmlBvLGjNt82/SepMnCe7YttV2P1m8iAuvHmeV8O9
+ 4/U5bAiLQ9eRZgSlAM4DB6k5orGGlbauS8+JeNWyKFZHhC2btayjR4FsdleO0cMAPgG5
+ 5ixQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697380081; x=1697984881;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=trprVr2mK/QmqvtCAUEQn75020aXPz91aNTNpM2f3fQ=;
+ b=nud8YWtLTzCMOSkl8K7asSSxwplxAZypmjZ/wstOgh3/vcM9Y7u7oEbrHF0lsWF00B
+ qIwqSBFgVA1QHsZU6PYPngHORHbTezU4/XvT9SDyGGR7feTt8ieVx5giiTapXeRBgRdA
+ 5AtsEFdYUYS0IyncU19wVPpeZSlYYvGiE2DNsQnJJ7l2wVkqqAWPrUWbBe6lKh59hj0R
+ 7tSTYFzpVyM1jtb85jnJNB1KnSSMijnrBXRXNvivpPUrdtqUDU8hLCAGljTbY0zFGEOH
+ yCKO5jFBq2W2ma86nkmRA3rNeQcRHgwJ12ZapecNa7qQO4GXnul9VGT4TWPnMe4DckPm
+ cFFA==
+X-Gm-Message-State: AOJu0Yy7m88zTQhsdLVsnpdSvGQDgzb4z60RPirnJe29CJTki+umg7LK
+ M2GG2xdmh4l2vLPMfOGHaqfdm3qghajoEIFtWf9VbA==
+X-Google-Smtp-Source: AGHT+IE2xJ+zYM1nGUg7vMDTgEwPJRfuM68JID+u9HwkYbkcDRx+fBbtr6/ThN7L59D/ON1jSEv8uw==
+X-Received: by 2002:a05:6358:9992:b0:143:3179:1a67 with SMTP id
+ j18-20020a056358999200b0014331791a67mr28388223rwb.29.1697380081073; 
+ Sun, 15 Oct 2023 07:28:01 -0700 (PDT)
+Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with UTF8SMTPSA id
+ k12-20020a62840c000000b006b4ca26f3c9sm4003105pfd.74.2023.10.15.07.27.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 15 Oct 2023 07:28:00 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [RFC PATCH v2 0/3] virtio-net: Introduce eBPF hash reporting
+Date: Sun, 15 Oct 2023 23:27:42 +0900
+Message-ID: <20231015142755.261808-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1694231210-1697379796=:33657"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc31.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,314 +91,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Based-on: <20231015140259.259434-1-akihiko.odaki@daynix.com>
+("[PATCH v4 00/20] virtio-net RSS/hash report fixes and improvements")
 
---3866299591-1694231210-1697379796=:33657
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+I'm proposing to introduce a new BPF program type to report virtio-net
+hashes to Linux. This series contain patches to utilize the proposed Linux
+feature. The patches for Linux are available at:
+https://lore.kernel.org/all/20231015141644.260646-1-akihiko.odaki@daynix.com/
 
-On Sun, 15 Oct 2023, Mark Cave-Ayland wrote:
-> On 14/10/2023 17:13, BALATON Zoltan wrote:
->> On Sat, 14 Oct 2023, Mark Cave-Ayland wrote:
->>> On 09/10/2023 20:54, BALATON Zoltan wrote:
->>> 
->>>> The initial value for BARs were set in reset method for emulating
->>>> legacy mode at start but this does not work because PCI code resets
->>>> BARs after calling device reset method. Remove this ineffective
->>>> default to avoid confusion.
->>>> 
->>>> Instead move setting the BARs to a callback on writing the PCI config
->>>> regsiter that sets legacy mode (which firmwares needing this mode seem
->>>> to do) and fix their values to program it to use legacy port numbers
->>>> in this case. This does not fully emulate what the data sheet says
->>>> (which is not very clear on this) but it implements enogh to allow
->>>> both modes as used by firmwares of machines we emulate.
->>>> 
->>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>> ---
->>>>   hw/ide/via.c | 41 ++++++++++++++++++++++++++++++++++++-----
->>>>   1 file changed, 36 insertions(+), 5 deletions(-)
->>>> 
->>>> diff --git a/hw/ide/via.c b/hw/ide/via.c
->>>> index fff23803a6..43e8af8d69 100644
->>>> --- a/hw/ide/via.c
->>>> +++ b/hw/ide/via.c
->>>> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
->>>>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
->>>>                    PCI_STATUS_DEVSEL_MEDIUM);
->>>>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
->>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
->>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
->>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
->>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 
->>>> 20-23h */
->>>>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
->>>>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO 
->>>> Configuration*/
->>>> @@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
->>>>       pci_set_long(pci_conf + 0xc0, 0x00020001);
->>>>   }
->>>>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
->>>> +                              uint32_t val, int len)
->>>> +{
->>>> +    pci_default_write_config(pd, addr, val, len);
->>>> +    /*
->>>> +     * Bits 0 and 2 of the PCI programming interface register select 
->>>> between
->>>> +     * legacy and native mode for the two IDE channels. We don't emulate 
->>>> this
->>>> +     * because we cannot easily switch between ISA and PCI in QEMU so 
->>>> instead
->>> 
->>> As per my previous email, this statement is demonstrably false: this is 
->>> now achievable using the portio_list*() APIs.
->>> 
->>>> +     * when guest selects legacy mode we set the PCI BARs to legacy 
->>>> ports which
->>>> +     * works the same. We also don't care about setting each channel 
->>>> separately
->>>> +     * as no guest is known to do or need that. We only do this when 
->>>> BARs are
->>>> +     * unset when writing this register as logs from real hardware show 
->>>> that
->>>> +     * setting legacy mode after BARs were set it will still use ports 
->>>> set by
->>>> +     * BARs not ISA ports (e.g. pegasos2 Linux does this after firmware 
->>>> set
->>>> +     * native mode and programmed BARs and calls it non-100% native 
->>>> mode).
->>>> +     * But if 0x8a is written righr after reset without setting BARs 
->>>> then we
->>>> +     * want legacy ports (this is done by the AmigaOne firmware).
->>>> +     */
->>>> +    if (addr == PCI_CLASS_PROG && val == 0x8a &&
->>>> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
->>>> +        PCI_BASE_ADDRESS_SPACE_IO) {
->>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
->>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
->>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
->>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
->>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>>> +        /* BMIBA: 20-23h */
->>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
->>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>>> +    }
->>>> +}
->>> 
->>> Another hint that this is not the right way to be doing this: the values 
->>> you are placing in BARS 1 and 3 are illegal. PCI IO BARs have bit 1 forced 
->>> to 0 and bit 0 set to 1 which forces a minimum alignment of 4, so either 
->>> the addresses 0x3f6/0x376 are being rounded internally to 0x3f4/0x374 
->>> and/or you're lucky that this just happens to work on QEMU.
->> 
->> The data sheet lists these values for legacy mode bur it seems that bit 1 
->> is ignored for BAR here and it ends up set to 0x3x4 with the actual reg 
->> mapped to 0x3x7 for both values ending in 4 or 6 here and both works the 
->> same with AmigaOS even if I change the values here to 0x3[7f]4 so I can do 
->> that and that should then match the default values for these regs but not 
->> match the values listed for legacy mode so the data sheet is wrong either 
->> way. It still does not make sense to set these in reset method which will 
->> be overwritten so only works if I set them here.
->> 
->>> Using the portio_list*() APIs really is the right way to implement this to 
->>> avoid being affected by such issues.
->> 
->> Can you provide an alternative patch using portio_list? I don't know how to 
->> do that and have no example to follow either so it would be hard for me to 
->> figure out. Or give some pointers on how to do this if I missed something.
->
-> Here's a hacked up version based upon various bits and pieces from my WIP IDE 
-> mode switching branch. It's briefly compile tested, and checked with "info 
-> mtree" and a couple of test boots:
+V1 -> V2:
+  Changed to use the new BPF program type
 
-Thanks. Could you please make it a proper patch so we can test this and if 
-works with all guests could use as a replacement for patch 1 in the 
-series? It probably just needs a commit message and your S-o-b without 
-which I can't incorporate it in the series.
+Akihiko Odaki (3):
+  ebpf: Add tools/ebpf/vnet_hash.bpf.c
+  virtio-net: Use vnet_hash BPF program
+  docs: Describe eBPF hash reporting
 
-Regards,
-BALATON Zoltan
+ docs/devel/ebpf_rss.rst             |    5 +-
+ ebpf/ebpf_rss.h                     |    2 +
+ ebpf/rss.bpf.skeleton.h             |  995 -------------------------
+ ebpf/socket.bpf.skeleton.h          | 1019 +++++++++++++++++++++++++
+ ebpf/vnet_hash.bpf.skeleton.h       | 1075 +++++++++++++++++++++++++++
+ tools/ebpf/{rss.bpf.c => rss.bpf.h} |   49 +-
+ ebpf/ebpf_rss-stub.c                |    5 +
+ ebpf/ebpf_rss.c                     |   64 +-
+ hw/net/virtio-net.c                 |   62 +-
+ tools/ebpf/socket.bpf.c             |   32 +
+ tools/ebpf/vnet_hash.bpf.c          |   29 +
+ tools/ebpf/Makefile.ebpf            |    6 +-
+ 12 files changed, 2289 insertions(+), 1054 deletions(-)
+ delete mode 100644 ebpf/rss.bpf.skeleton.h
+ create mode 100644 ebpf/socket.bpf.skeleton.h
+ create mode 100644 ebpf/vnet_hash.bpf.skeleton.h
+ rename tools/ebpf/{rss.bpf.c => rss.bpf.h} (91%)
+ create mode 100644 tools/ebpf/socket.bpf.c
+ create mode 100644 tools/ebpf/vnet_hash.bpf.c
 
-> diff --git a/hw/ide/via.c b/hw/ide/via.c
-> index fff23803a6..82f2af1c78 100644
-> --- a/hw/ide/via.c
-> +++ b/hw/ide/via.c
-> @@ -28,12 +28,27 @@
-> #include "hw/pci/pci.h"
-> #include "migration/vmstate.h"
-> #include "qemu/module.h"
-> +#include "qemu/range.h"
-> #include "sysemu/dma.h"
-> #include "hw/isa/vt82c686.h"
-> #include "hw/ide/pci.h"
-> #include "hw/irq.h"
-> #include "trace.h"
->
-> +
-> +/* FIXME: export these from hw/ide/ioport.c */
-> +static const MemoryRegionPortio ide_portio_list[] = {
-> +    { 0, 8, 1, .read = ide_ioport_read, .write = ide_ioport_write },
-> +    { 0, 1, 2, .read = ide_data_readw, .write = ide_data_writew },
-> +    { 0, 1, 4, .read = ide_data_readl, .write = ide_data_writel },
-> +    PORTIO_END_OF_LIST(),
-> +};
-> +
-> +static const MemoryRegionPortio ide_portio2_list[] = {
-> +    { 0, 1, 1, .read = ide_status_read, .write = ide_ctrl_write },
-> +    PORTIO_END_OF_LIST(),
-> +};
-> +
-> static uint64_t bmdma_read(void *opaque, hwaddr addr,
->                            unsigned size)
-> {
-> @@ -137,7 +152,10 @@ static void via_ide_reset(DeviceState *dev)
->     pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
->     pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
->     pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 
-> 20-23h */
-> -    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
-> +    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000000e);
-> +
-> +    /* Clear subsystem to match real hardware */
-> +    pci_set_long(pci_conf + 0x2c, 0x0);
->
->     /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
->     pci_set_long(pci_conf + 0x40, 0x0a090600);
-> @@ -159,6 +177,89 @@ static void via_ide_reset(DeviceState *dev)
->     pci_set_long(pci_conf + 0xc0, 0x00020001);
-> }
->
-> +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
-> +                              uint32_t val, int len)
-> +{
-> +    uint8_t *pci_conf = pd->config;
-> +    PCIIDEState *d = PCI_IDE(pd);
-> +
-> +    pci_default_write_config(pd, addr, val, len);
-> +
-> +    if (range_covers_byte(addr, len, PCI_CLASS_PROG)) {
-> +        if (pci_conf[PCI_CLASS_PROG] == 0x8a) {
-> +            /* FIXME: don't disable BARs
-> +            pci_default_write_config(pd, PCI_BASE_ADDRESS_0, 0x1, 4);
-> +            pci_default_write_config(pd, PCI_BASE_ADDRESS_1, 0x1, 4);
-> +            pci_default_write_config(pd, PCI_BASE_ADDRESS_2, 0x1, 4);
-> +            pci_default_write_config(pd, PCI_BASE_ADDRESS_3, 0x1, 4);
-> +            */
-> +
-> +            pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x0);
-> +            pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x0);
-> +            pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x0);
-> +            pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x0);
-> +
-> +            /* Clear interrupt pin */
-> +            pci_config_set_interrupt_pin(pci_conf, 0);
-> +
-> +            /* Add legacy IDE ports */
-> +            if (!d->bus[0].portio_list.owner) {
-> +                portio_list_init(&d->bus[0].portio_list, OBJECT(pd),
-> +                                 ide_portio_list, &d->bus[0], "ide");
-> +                portio_list_add(&d->bus[0].portio_list,
-> +                                pci_address_space_io(pd), 0x1f0);
-> +            }
-> +
-> +            if (!d->bus[0].portio2_list.owner) {
-> +                portio_list_init(&d->bus[0].portio2_list, OBJECT(pd),
-> +                                 ide_portio2_list, &d->bus[0], "ide");
-> +                portio_list_add(&d->bus[0].portio2_list,
-> +                                pci_address_space_io(pd), 0x3f6);
-> +            }
-> +
-> +            if (!d->bus[1].portio_list.owner) {
-> +                portio_list_init(&d->bus[1].portio_list, OBJECT(pd),
-> +                                 ide_portio_list, &d->bus[1], "ide");
-> +                portio_list_add(&d->bus[1].portio_list,
-> +                                pci_address_space_io(pd), 0x170);
-> +            }
-> +
-> +            if (!d->bus[1].portio2_list.owner) {
-> +                portio_list_init(&d->bus[1].portio2_list, OBJECT(pd),
-> +                                 ide_portio2_list, &d->bus[1], "ide");
-> +                portio_list_add(&d->bus[1].portio2_list,
-> +                                pci_address_space_io(pd), 0x376);
-> +            }
-> +        }
-> +
-> +        if (pci_conf[PCI_CLASS_PROG] == 0x8f) {
-> +            /* Set interrupt pin */
-> +            pci_config_set_interrupt_pin(pci_conf, 1);
-> +
-> +            /* Remove legacy IDE ports */
-> +            if (d->bus[0].portio_list.owner) {
-> +                portio_list_del(&d->bus[0].portio_list);
-> +                portio_list_destroy(&d->bus[0].portio_list);
-> +            }
-> +
-> +            if (d->bus[0].portio2_list.owner) {
-> +                portio_list_del(&d->bus[0].portio2_list);
-> +                portio_list_destroy(&d->bus[0].portio2_list);
-> +            }
-> +
-> +            if (d->bus[1].portio_list.owner) {
-> +                portio_list_del(&d->bus[1].portio_list);
-> +                portio_list_destroy(&d->bus[1].portio_list);
-> +            }
-> +
-> +            if (d->bus[1].portio2_list.owner) {
-> +                portio_list_del(&d->bus[1].portio2_list);
-> +                portio_list_destroy(&d->bus[1].portio2_list);
-> +            }
-> +        }
-> +    }
-> +}
-> +
-> static void via_ide_realize(PCIDevice *dev, Error **errp)
-> {
->     PCIIDEState *d = PCI_IDE(dev);
-> @@ -221,6 +322,7 @@ static void via_ide_class_init(ObjectClass *klass, void 
-> *data)
->     /* Reason: only works as function of VIA southbridge */
->     dc->user_creatable = false;
->
-> +    k->config_write = via_ide_cfg_write;
->     k->realize = via_ide_realize;
->     k->exit = via_ide_exitfn;
->     k->vendor_id = PCI_VENDOR_ID_VIA;
->
->
-> Note that this also fixes the output of "lspci -vv" on Linux:
->
-> 0000:00:0c.1 IDE interface: VIA Technologies, Inc. 
-> VT82C586A/B/VT82C686/A/B/VT823x/A/C PIPC Bus Master IDE (rev 06) (prog-if 8a 
-> [Master SecP PriP])
->        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- 
-> Stepping+ SERR- FastB2B- DisINTx-
->        Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- 
-> <TAbort- <MAbort- >SERR- <PERR- INTx-
->        Latency: 0
->        Interrupt: pin ? routed to IRQ 14
->        Region 0: [virtual] I/O ports at 1000 [size=8]
->        Region 1: [virtual] I/O ports at 100c [size=4]
->        Region 2: [virtual] I/O ports at 1010 [size=8]
->        Region 3: [virtual] I/O ports at 101c [size=4]
->        Region 4: I/O ports at 1020 [size=16]
->        Kernel driver in use: pata_via
->
->
-> Currently the "[virtual]" prefix is missing in QEMU when compared with your 
-> lspci output from real hardware: this patch fixes it, because it allows the 
-> legacy IDE ioports to exist whilst having the BARs set to zero which isn't 
-> possible with your current patch.
->
->
-> ATB,
->
-> Mark.
->
->
->
---3866299591-1694231210-1697379796=:33657--
+-- 
+2.42.0
+
 
