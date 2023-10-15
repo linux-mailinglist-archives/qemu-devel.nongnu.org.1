@@ -2,94 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290867C9708
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 00:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B6A7C977C
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 03:02:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qrn4M-00046J-UQ; Sat, 14 Oct 2023 18:25:14 -0400
+	id 1qrpVA-0002Tp-AP; Sat, 14 Oct 2023 21:01:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrn4L-000463-KS
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 18:25:13 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qrn4J-0005fm-JZ
- for qemu-devel@nongnu.org; Sat, 14 Oct 2023 18:25:13 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6b1d1099a84so1808687b3a.1
- for <qemu-devel@nongnu.org>; Sat, 14 Oct 2023 15:25:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697322310; x=1697927110;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fzisKM8OXe68jsGiandojg8nbd8KGlaJcsJepIMQH1c=;
- b=xk+FdjqWmAsxdYnxWSDHQ4Kua7cABdU1dFTZeuVtPgF0akPXOjepWXAoxXeCITuoTv
- U1kr20Cygq92tNTuHTw98UTxiRaOf+t1HiRmDELKOcx4rGBGcWPdlYO6GQ48nGS7FcXW
- Lzw1c2SQxJvkPS49ZxHpnpdu/PVpjORa2LX1qr71WoAJUd0YRxdgyNL4rHOMAyiHHFCM
- mFgOfYxbCvLlmT+NgO/nrtD88qryMgkZAd4HKcnWLfHHO4xf+lFEF49k+gArGmSSJfCF
- lrkr144m7/T1vEYEfIObgzkjpCcB3aqch/45XXcG93K2Hle7pzbhMurmFpvw/5CWWVKi
- qx9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697322310; x=1697927110;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fzisKM8OXe68jsGiandojg8nbd8KGlaJcsJepIMQH1c=;
- b=OgvcaSP1CM430W5DRaUn2EMJZ3dEoojui4Yy1jhu4CA64e6YJVl0Mso5M5XxId/5O5
- VnObwgd1uxnwsIIpDsl6ODFKGih8fq02GEnkEi+Pu1fR7trIwAiOQeeSjiDURl4HARhY
- oTvC7WCz8R1FniK0UMkgsDggnK++4onJoLFQH9VspDq78UqroAOefIj1DBpQ0c06GBan
- k7anJUoF8yeInEh4UxptH6LywFiZKUb8zbakJKWBnHQxKn6lO6gBf6X+Z/IvlaS5GtTl
- iAb2UrDxZS4y3oTLxgciM8/7zNSDQNxxHeQuSQ5Sv11tpUKL9BNJqEyRmKjYb+pWql0k
- TAAg==
-X-Gm-Message-State: AOJu0Yz7Slfxls4W/7bC/HYOmVp0zPnoBkGut6T4fRulZbZowueq30Lr
- AYHt1WnRY91RpoFCzH5/uBp0zQ==
-X-Google-Smtp-Source: AGHT+IEAAAzaPFhEnqZR5faBhc9FMnwN4Zc7NsAPkz0qjSZJg2NTpVoC7wLv0jcNsNuKoTNUfrOuIw==
-X-Received: by 2002:a05:6a20:9152:b0:154:c836:9ed5 with SMTP id
- x18-20020a056a20915200b00154c8369ed5mr33646465pzc.17.1697322309755; 
- Sat, 14 Oct 2023 15:25:09 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- y123-20020a636481000000b005b628aa2a8dsm65401pgb.69.2023.10.14.15.25.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 14 Oct 2023 15:25:09 -0700 (PDT)
-Message-ID: <917cb69b-d97c-4f41-bf90-49ad3a42a3ba@daynix.com>
-Date: Sun, 15 Oct 2023 07:25:05 +0900
+ (Exim 4.90_1) (envelope-from <vapier@gentoo.org>) id 1qrpV8-0002TE-N1
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 21:01:02 -0400
+Received: from mail.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
+ helo=smtp.gentoo.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
+ (Exim 4.90_1) (envelope-from <vapier@gentoo.org>) id 1qrpV6-0004GP-V9
+ for qemu-devel@nongnu.org; Sat, 14 Oct 2023 21:01:02 -0400
+Received: by smtp.gentoo.org (Postfix, from userid 559)
+ id 4FC52335CB7; Sun, 15 Oct 2023 01:00:50 +0000 (UTC)
+From: Mike Frysinger <vapier@gentoo.org>
+To: richard.henderson@linaro.org
+Cc: pbonzini@redhat.com,
+	qemu-devel@nongnu.org
+Subject: [PATCH] tcg: drop unused tcg_temp_free define
+Date: Sun, 15 Oct 2023 06:45:46 +0545
+Message-Id: <20231015010046.16020-1-vapier@gentoo.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] target/riscv: Initialize gdb_core_xml_file only
- once
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <20231014033545.15220-1-akihiko.odaki@daynix.com>
- <20231014033545.15220-3-akihiko.odaki@daynix.com>
- <6a06acfc-3ca0-402e-8a98-bdd1a22bdf0d@ventanamicro.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <6a06acfc-3ca0-402e-8a98-bdd1a22bdf0d@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4;
+ envelope-from=vapier@gentoo.org; helo=smtp.gentoo.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,90 +51,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/15 3:19, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 10/14/23 00:35, Akihiko Odaki wrote:
->> gdb_core_xml_file was assigned each time a CPU is instantiated before
->> this change.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   target/riscv/cpu.c         | 5 +++++
->>   target/riscv/tcg/tcg-cpu.c | 4 ----
->>   2 files changed, 5 insertions(+), 4 deletions(-)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index ac4a6c7eec..a811215150 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -1575,6 +1575,11 @@ static void riscv_cpu_class_init(ObjectClass 
->> *c, void *data)
->>       cc->get_pc = riscv_cpu_get_pc;
->>       cc->gdb_read_register = riscv_cpu_gdb_read_register;
->>       cc->gdb_write_register = riscv_cpu_gdb_write_register;
->> +#ifdef TARGET_RISCV64
->> +    cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
->> +#elif defined(TARGET_RISCV32)
->> +    cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
->> +#endif
->>       cc->gdb_num_core_regs = 33;
->>       cc->gdb_stop_before_watchpoint = true;
->>       cc->disas_set_info = riscv_cpu_disas_set_info;
->> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
->> index e0cbc56320..626fb2acea 100644
->> --- a/target/riscv/tcg/tcg-cpu.c
->> +++ b/target/riscv/tcg/tcg-cpu.c
->> @@ -150,8 +150,6 @@ static void 
->> riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
->>   static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
->>   {
->> -    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
->> -    CPUClass *cc = CPU_CLASS(mcc);
->>       CPURISCVState *env = &cpu->env;
->>       /* Validate that MISA_MXL is set properly. */
->> @@ -159,11 +157,9 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU 
->> *cpu, Error **errp)
->>   #ifdef TARGET_RISCV64
->>       case MXL_RV64:
->>       case MXL_RV128:
->> -        cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
->>           break;
->>   #elif defined(TARGET_RISCV32)
->>       case MXL_RV32:
->> -        cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
->>           break;
-> 
-> 
-> Hmmm the issue here is that, in patch 1, you added an "elif 
-> defined(TARGET_RISCV32)"
-> based on an assumption that you changed here since there's no more 
-> gdb_core files being
-> set.
+Use of the API was removed a while back, but the define wasn't.
 
-It's opposite. Patch 1 added "elif defined(TARGET_RISCV32)" because 
-configs/targets/riscv64-linux-user.mak and 
-configs/targets/riscv64-softmmu.mak do not list riscv-32bit-cpu.xml and 
-referencing it from TARGET_RISCV64 results in an error.
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+---
+ include/tcg/tcg-op.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-Since patch 1 now ensures TARGET_RISCV64 will never have MXL_RV32 as 
-misa_mxl_max, patch 2 can safely assume TARGET_RISCV64 always has 
-riscv-64bit-cpu.xml as gdb_core_xml_file.
+diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
+index 80cfcf8104b6..3ead59e4594d 100644
+--- a/include/tcg/tcg-op.h
++++ b/include/tcg/tcg-op.h
+@@ -52,7 +52,6 @@ static inline void tcg_gen_insn_start(target_ulong pc, target_ulong a1,
+ typedef TCGv_i32 TCGv;
+ #define tcg_temp_new() tcg_temp_new_i32()
+ #define tcg_global_mem_new tcg_global_mem_new_i32
+-#define tcg_temp_free tcg_temp_free_i32
+ #define tcgv_tl_temp tcgv_i32_temp
+ #define tcg_gen_qemu_ld_tl tcg_gen_qemu_ld_i32
+ #define tcg_gen_qemu_st_tl tcg_gen_qemu_st_i32
+@@ -60,7 +59,6 @@ typedef TCGv_i32 TCGv;
+ typedef TCGv_i64 TCGv;
+ #define tcg_temp_new() tcg_temp_new_i64()
+ #define tcg_global_mem_new tcg_global_mem_new_i64
+-#define tcg_temp_free tcg_temp_free_i64
+ #define tcgv_tl_temp tcgv_i64_temp
+ #define tcg_gen_qemu_ld_tl tcg_gen_qemu_ld_i64
+ #define tcg_gen_qemu_st_tl tcg_gen_qemu_st_i64
+-- 
+2.39.0
 
-> 
-> My suggestion is to use patch 1 from v1, where you removed the 
-> misa_mxl_max == misa_mxl
-> check at the end of this function. And then in this patch you can remove 
-> this function
-> altogether since you're assigning gdb_core in riscv_cpu_class_init() and 
-> the function will
-> be left doing nothing of note.
-
-Assigning gdb_core_xml_file is more like a side-effect of 
-riscv_cpu_validate_misa_mxl(), and the main purpose of this function is 
-to validate misa_mxl[_max]. I think it's still a good idea to validate 
-misa_mxl_max in particular. Specifying MXL_RV32 as misa_mxl_max for 
-TARGET_RISCV64 or specifying MXL_RV64/MXL_RV128 for TARGET_RISCV32 will 
-not work because of the incompatible gdb_core_xml_file (and probably 
-other reasons).
 
