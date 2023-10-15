@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792987C9949
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 16:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A387C9957
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 16:07:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qs1ik-0001xH-Md; Sun, 15 Oct 2023 10:03:54 -0400
+	id 1qs1iq-000219-Bn; Sun, 15 Oct 2023 10:04:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qs1ij-0001rW-BE
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 10:03:53 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qs1io-000205-49
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 10:03:58 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qs1ih-0007mM-PX
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 10:03:53 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6b709048f32so1143450b3a.0
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 07:03:51 -0700 (PDT)
+ id 1qs1il-0007n0-N2
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 10:03:56 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1ca74e77aecso1343715ad.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 07:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697378630; x=1697983430;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697378634; x=1697983434;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=66Wq6nwp6JKCW7FgLUM3GGIozoOuRE9kC20BLESWHY4=;
- b=ecg3aNzUeuylKZ3CGvCe6tuftROakMgeqKaIp27TV5LgKCAsz9fL3W25NDmNGZ/Hp6
- IC3miX4PY7Dmjmc3UlWpfSNytJnBJqrS+FbQ/WYIrtMHDjT29O8xg+K6RNNYeob/gn1T
- FrimVnRhDWp1/sj/dS4Q6r4tnAMTv62i8Mwqze48QvZvZBkW+djEQ35/nGJJLPUKBw4W
- dBXZuPl93xDxdaQAhEjujBAuW4SVTlDXgnw6vrCAOaoyOy+wiEzF8cvkaUwmok0jK8ga
- 4zTi7edl0f4HkS5gHHVPyoOGsUg5IFcM3xHLonCcccvhN9Wtm/MJysHQaH70oJ77dV9S
- i0LQ==
+ bh=Ty1IxybyhWNHXp/JE5BsEZCNvT/kUKSyTE1Sr2v4muQ=;
+ b=rRSb99Ypr8cMHdJVlbTa+HDuHkRT9fbwz6bWY+41xyxRLne6IRynK110yDjWwIFk2W
+ 8hSCAx2yBZoYe9SGccmzJ8V0g8itlDxFk5QW2kWUUl0PI/znZb01H/XZmwof5J7Lf4w4
+ cOnDkQs0uJEQvghz7SAVni3TMQgePBQHAlMDlYDjQNg+v1XUgPB7im8CgomA3U7YXZhg
+ 77V0Eor7GUjDP11WygsFqUPolxisHyrFgE1G9zAwUJ3JgF4ZpwpDxxQsBjGmIHDDIR5j
+ +i0a7X9KEEFmD+zoxCHoBYp1nsfide1ITAzNsaV/K5JTkB8W7DOLZtBsZi2Bk00Gglpp
+ OOYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697378630; x=1697983430;
+ d=1e100.net; s=20230601; t=1697378634; x=1697983434;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=66Wq6nwp6JKCW7FgLUM3GGIozoOuRE9kC20BLESWHY4=;
- b=RW1wsOO2ker8Q6jImb9VzTsnCw543azprsXGzTCZ6dTjgyS/ehnrabJh0AWOn6Q7Pi
- MivItG9XcjbWH15rP9Mw3LVhtInAEdTI8BH49mf7S4B0Y5U9nH7nO8i9FxHDHqZmd5ue
- AcuDw2nXKYnLK7GMf7ahm9zx0GENxbX/Fxb5EwMlb86HnIHNhcAF9Vj2+gSkNbsGXFsm
- P4tbes0j0yrAIYU4VTN+4DKMJ3MZ21LaA8pCzJIxNHCtdjWvWr/xcqM07+oNMETwjRjp
- a015AVCgDGL6dbdCsxJvrDsTSqCcdoR6gCnMRdfvbJ4vc491+Qx0qFb05dY3zlz3dTNd
- xIvA==
-X-Gm-Message-State: AOJu0YxKHN/O9T9BUbzxqp3gaI14hFtdg/O6jRvhxPcpGz2TABPvLzqe
- QgfBPvDlqkZ7EKZio5ElcBtwL3gaiAgAAdkDBdx1WA==
-X-Google-Smtp-Source: AGHT+IFLts7Nly9ZYjZurWTVgz28eXGlrkZVum73PfUA9dvZubbhczNu4ksRQ3160o2H44U4bgbJuw==
-X-Received: by 2002:a05:6a21:62a:b0:164:e94b:d3ae with SMTP id
- ll42-20020a056a21062a00b00164e94bd3aemr26866684pzb.54.1697378630416; 
- Sun, 15 Oct 2023 07:03:50 -0700 (PDT)
+ bh=Ty1IxybyhWNHXp/JE5BsEZCNvT/kUKSyTE1Sr2v4muQ=;
+ b=EzvXO8tXcLEMgpAj8IDBOoi3BTDk4XEmiQFDH2ZbIXsGFKprBGUh5TYoj0mIQzxgEi
+ 0P38BeVdATW7HAMQis7xU/n7ClF/QbAI3ob+1ZHhO+cqteQmjF92niJrgyU0BzgVkBuN
+ 26cubL8MXftgSmuWEqHlrlKm0GGo3kpX2e092trdNa8LEtcWeV2JZJlq3+071qtFcyf2
+ 28xO5cAcdysZqd+HX26T0JhJkMHcnCTAnqqbJhcA32HFta+ZNNgrC8tu/0TQvJQuWMvC
+ HE+aV0rHSsIum0s93ujnF9NKmSviu7njUpl/3IIHZNxz8OUSvy+86ZFZQzNDs4CCUEj0
+ Fg8g==
+X-Gm-Message-State: AOJu0Yzhz/ZBhaJatYF/gg8LKRbIq9W9WhQXOipG42kiyLDWv6qwl4Ec
+ BNutTU12T6Mev/TAB84TsnPpjj7yx4LtDK5Vaz1yyg==
+X-Google-Smtp-Source: AGHT+IH7UcA89vkI0eYcWAWIzaEf6JUFJYWk5jTDRY5IE1e/5DqSrOB9vxa9wBb7Fusncb4Yto+exg==
+X-Received: by 2002:a17:903:22c6:b0:1c5:9d00:be84 with SMTP id
+ y6-20020a17090322c600b001c59d00be84mr7481296plg.33.1697378634241; 
+ Sun, 15 Oct 2023 07:03:54 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with UTF8SMTPSA id
- jx17-20020a17090b46d100b0027ce7ee8859sm3058657pjb.13.2023.10.15.07.03.48
+ s7-20020a170902ea0700b001b9c5e07bc3sm6832602plg.238.2023.10.15.07.03.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 15 Oct 2023 07:03:50 -0700 (PDT)
+ Sun, 15 Oct 2023 07:03:53 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 12/20] virtio-net: Always set populate_hash
-Date: Sun, 15 Oct 2023 23:02:44 +0900
-Message-ID: <20231015140259.259434-13-akihiko.odaki@daynix.com>
+Subject: [PATCH v4 13/20] virtio-net: Do not clear VIRTIO_NET_F_RSS
+Date: Sun, 15 Oct 2023 23:02:45 +0900
+Message-ID: <20231015140259.259434-14-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231015140259.259434-1-akihiko.odaki@daynix.com>
 References: <20231015140259.259434-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,25 +94,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The member is not cleared during reset so may have a stale value.
+Even if eBPF is not available, virtio-net can perform RSS on the
+user-space if vhost is disabled although such a configuration results in
+a warning. If vhost is enabled, the configuration will be rejected when
+realizing the device. Therefore, VIRTIO_NET_F_RSS should not be cleared
+even if eBPF is not loaded.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/virtio-net.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/net/virtio-net.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 20feb20bb1..6eb206f297 100644
+index 6eb206f297..20df40442d 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -643,6 +643,7 @@ static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
-         n->guest_hdr_len = n->mergeable_rx_bufs ?
-             sizeof(struct virtio_net_hdr_mrg_rxbuf) :
-             sizeof(struct virtio_net_hdr);
-+        n->rss_data.populate_hash = false;
+@@ -776,9 +776,6 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
+         return features;
      }
  
-     for (i = 0; i < n->max_queue_pairs; i++) {
+-    if (!ebpf_rss_is_loaded(&n->ebpf_rss)) {
+-        virtio_clear_feature(&features, VIRTIO_NET_F_RSS);
+-    }
+     features = vhost_net_get_features(get_vhost_net(nc->peer), features);
+     vdev->backend_features = features;
+ 
 -- 
 2.42.0
 
