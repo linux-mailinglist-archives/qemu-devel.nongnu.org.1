@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5BE7C98A8
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 12:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6DB7C98B1
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 12:36:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qryHF-00041N-6L; Sun, 15 Oct 2023 06:23:17 -0400
+	id 1qrySw-0006tb-Id; Sun, 15 Oct 2023 06:35:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qryHD-00040v-8V; Sun, 15 Oct 2023 06:23:15 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qrySu-0006tE-FF
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 06:35:20 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qryH8-0000Xl-2F; Sun, 15 Oct 2023 06:23:15 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-53df747cfe5so6277046a12.2; 
- Sun, 15 Oct 2023 03:23:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qrySp-00033L-D1
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 06:35:20 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9b9a494cc59so527655166b.3
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 03:35:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697365388; x=1697970188; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1697366113; x=1697970913; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rw7lS+ohjqUkSHKT12XYG+b1i4hqAXQ9Djh+8O3O2O0=;
- b=h6wiIcqI+ItE0Gc6OHldYt14yZvMJjHadyr8O7UAUZ3H3bQSubb1t7yM75Ctgv1iM/
- oPXF7Whh/uuTdtenW91VwAwME1wYpTsN6i0WRzcNMTqDL7xGMYVDbTnAVadQ1/50zMy4
- ohfEGgBnZU9nsW6u4mGxsUSGFtW93pa7gB584ICe6D6nGAchxpt+y8XBFhUhIrdnhF+L
- T373OKyL67ftSVyF/gF3TOw/aF2Nq0ppreL69dlpq/FaoOLB+fYSWdwUxpWKBfawOf5R
- WXEmf5O+pA7ZLxe/dZsuW9ZmFtAW+cl3/NKy+EDHuayAON4mqgJCcSboEpg7N62u/eKq
- ynJg==
+ bh=pQE0HoZ577wz+WUreR7XMr5R1gx3DLcRoEdoRRRvLsU=;
+ b=OYBvpiZAtJUQ1/ceLL6xJHrBjATrf4/IzYzFDaWB0T2GMt187f/ZZFRCnGVbqF78C9
+ zT3xW2CauotFpZz6LB26IA5HmdzlnOx2Eq0iOd3nzDd+oRq9hcsBbAwOgIuMC7Ch+vXu
+ peUYB902ZcTI3ghehtQ0gMPk+2UQm8JZsTGZGv6pib7QbYkMTvYozVeRQUYdBt9xGuvz
+ 1bS8VhHyz7ZVmJPDYXNG18K03or/v/21Hm0DzI9r/9BEAcPOZTknwGJbP3BRXf7W6440
+ 5QgP0Bb+dzC74ZmHpUdhlfMprlsrjnB1GTEI+sLRcXpOko/pj4MKEKmDchgNXfGQTZmK
+ oupQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697365388; x=1697970188;
+ d=1e100.net; s=20230601; t=1697366113; x=1697970913;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rw7lS+ohjqUkSHKT12XYG+b1i4hqAXQ9Djh+8O3O2O0=;
- b=QXnQvGbObrPqON1/xLexRmljOsLvy/6ihOPw13pBwhFG2Z1e2W6i/ZcUJZDChKBjmD
- oZW2KOhounjmW7ruDghm9sN9UgDAjhYq8hAi16GcRkLQyqD7U1SuQqwCVeAZsKSPqtDU
- o8EFLgRSHNBb6P9ABQ6ciIkL1Lru7ZCVkVuhv9sTeOIrgV0ThtNA1kx7DZEYxIwrovQ4
- lusS1nzlBVEksf5ZobmKYaVkPMlMDyyNkxW82BXazvP6fiBrqjjyrldKafSqHJqCkI0Z
- GbsZqAHjsKNrmoci7yNWJAHaCilNg3zCdYoW2P4K7+9g5e1z99IS5qKU0+0GmVZhkUGq
- J+3g==
-X-Gm-Message-State: AOJu0Yz4CGWAHEvPH5LEkTfD4QMaW/A5ai4czoEFT3zQkQIavHGzhYW7
- FQa2/vCFQIyuOkjYGqYPh5Cbe3IfHj8=
-X-Google-Smtp-Source: AGHT+IFs5Wtl0Xm2nZJVBmBAY7o+Ea5nstqiIaGdEt5AAmTwbAQs63rETNmbd2LqgZo4N0oP2ots9A==
-X-Received: by 2002:a05:6402:354c:b0:53e:5a90:e57 with SMTP id
- f12-20020a056402354c00b0053e5a900e57mr5161373edd.37.1697365387686; 
- Sun, 15 Oct 2023 03:23:07 -0700 (PDT)
+ bh=pQE0HoZ577wz+WUreR7XMr5R1gx3DLcRoEdoRRRvLsU=;
+ b=qWjT9lR3jsdy07eLCmII10l6dE5EqRnwBX2NfNc290CGJruH0UW1cq8KeIJRQMVMGo
+ 0vo6XKUQBHVNXvKgiZ4gJ20b6nrqoUh6W9uJ7V+cXKMmvbikDGauYwY4S4Ocu3/VTXJx
+ CtkaLhalL8UTR4MjgzyPxTcsE9qFoHN28Uy0Umal5P3FSvlLX3Ymk2KVjqKAxeG4b1FO
+ BbqMTTy4abhaFf3iBw0wO6Su9KklzrBKy/BCM3hriISOSmPjIg8NMaCRQh35CA0KDnnL
+ 5K1i1EUEUuO9rHBY4n2TYrvC/z3pm/66S+zi8LjVh+YP/HsBH4w//bkClPFAMH3RYbc5
+ rLvg==
+X-Gm-Message-State: AOJu0YwSSlEOVcC0fe8gBilucawpbFN5JjAnm88eNDT+Io6uWA/iKbTk
+ vF1VIKGT2rQkJy9KCDE7O04=
+X-Google-Smtp-Source: AGHT+IE/wUDyTGrhFGFUGhTet2wfFZUhUtuAM5J1L8NvJvkXcx0AouZznUyLChJ4waXfCauAJEOlVQ==
+X-Received: by 2002:a17:907:3f20:b0:9c1:9bc5:c260 with SMTP id
+ hq32-20020a1709073f2000b009c19bc5c260mr900587ejc.14.1697366112769; 
+ Sun, 15 Oct 2023 03:35:12 -0700 (PDT)
 Received: from [127.0.0.1] (dynamic-077-191-089-197.77.191.pool.telefonica.de.
  [77.191.89.197]) by smtp.gmail.com with ESMTPSA id
- co25-20020a0564020c1900b0053e36dd75dfsm3372304edb.35.2023.10.15.03.23.06
+ j22-20020a170906411600b00993664a9987sm2098380ejk.103.2023.10.15.03.35.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 15 Oct 2023 03:23:07 -0700 (PDT)
-Date: Sun, 15 Oct 2023 10:23:03 +0000
+ Sun, 15 Oct 2023 03:35:12 -0700 (PDT)
+Date: Sun, 15 Oct 2023 10:35:09 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-CC: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
- philmd@linaro.org, Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
-In-Reply-To: <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
-References: <cover.1696880742.git.balaton@eik.bme.hu>
- <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
- <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
- <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
-Message-ID: <73D2ACAB-83C4-4EB6-BBD9-F025D9E8A533@gmail.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+CC: qemu-devel@nongnu.org,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH v3] hw/isa/vt82c686: Respect SCI interrupt assignment
+In-Reply-To: <7f0a480e-3b30-36d8-daaf-cb817dcad3ca@eik.bme.hu>
+References: <20231005115159.81202-1-shentey@gmail.com>
+ <7f0a480e-3b30-36d8-daaf-cb817dcad3ca@eik.bme.hu>
+Message-ID: <BB6997B6-FC5D-4CD3-B135-FE146919B0E1@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,146 +95,175 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 14=2E Oktober 2023 16:13:19 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
-me=2Ehu>:
->On Sat, 14 Oct 2023, Mark Cave-Ayland wrote:
->> On 09/10/2023 20:54, BALATON Zoltan wrote:
+Am 5=2E Oktober 2023 12:45:02 UTC schrieb BALATON Zoltan <balaton@eik=2Ebm=
+e=2Ehu>:
+>On Thu, 5 Oct 2023, Bernhard Beschow wrote:
+>> According to the datasheet, SCI interrupts of the power management func=
+tion
+>> aren't routed through the PCI pins but rather directly to the integrate=
+d PIC=2E
+>> The routing is configurable through the ACPI interrupt select register =
+at offset
+>> 0x42 in the PCI configuration space of the power management function=2E
 >>=20
->>> The initial value for BARs were set in reset method for emulating
->>> legacy mode at start but this does not work because PCI code resets
->>> BARs after calling device reset method=2E Remove this ineffective
->>> default to avoid confusion=2E
->>>=20
->>> Instead move setting the BARs to a callback on writing the PCI config
->>> regsiter that sets legacy mode (which firmwares needing this mode seem
->>> to do) and fix their values to program it to use legacy port numbers
->>> in this case=2E This does not fully emulate what the data sheet says
->>> (which is not very clear on this) but it implements enogh to allow
->>> both modes as used by firmwares of machines we emulate=2E
->>>=20
->>> Signed-off-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
->>> ---
->>>   hw/ide/via=2Ec | 41 ++++++++++++++++++++++++++++++++++++-----
->>>   1 file changed, 36 insertions(+), 5 deletions(-)
->>>=20
->>> diff --git a/hw/ide/via=2Ec b/hw/ide/via=2Ec
->>> index fff23803a6=2E=2E43e8af8d69 100644
->>> --- a/hw/ide/via=2Ec
->>> +++ b/hw/ide/via=2Ec
->>> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
->>>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
->>>                    PCI_STATUS_DEVSEL_MEDIUM);
->>>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
->>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
->>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
->>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
->>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA=
-: 20-23h */
->>>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
->>>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configurat=
-ion*/
->>> @@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
->>>       pci_set_long(pci_conf + 0xc0, 0x00020001);
->>>   }
->>>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
->>> +                              uint32_t val, int len)
->>> +{
->>> +    pci_default_write_config(pd, addr, val, len);
->>> +    /*
->>> +     * Bits 0 and 2 of the PCI programming interface register select =
-between
->>> +     * legacy and native mode for the two IDE channels=2E We don't em=
-ulate this
->>> +     * because we cannot easily switch between ISA and PCI in QEMU so=
- instead
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
 >>=20
->> As per my previous email, this statement is demonstrably false: this is=
- now achievable using the portio_list*() APIs=2E
+>> ---
 >>=20
->>> +     * when guest selects legacy mode we set the PCI BARs to legacy p=
-orts which
->>> +     * works the same=2E We also don't care about setting each channe=
-l separately
->>> +     * as no guest is known to do or need that=2E We only do this whe=
-n BARs are
->>> +     * unset when writing this register as logs from real hardware sh=
-ow that
->>> +     * setting legacy mode after BARs were set it will still use port=
-s set by
->>> +     * BARs not ISA ports (e=2Eg=2E pegasos2 Linux does this after fi=
-rmware set
->>> +     * native mode and programmed BARs and calls it non-100% native m=
-ode)=2E
->>> +     * But if 0x8a is written righr after reset without setting BARs =
-then we
->>> +     * want legacy ports (this is done by the AmigaOne firmware)=2E
->>> +     */
->>> +    if (addr =3D=3D PCI_CLASS_PROG && val =3D=3D 0x8a &&
->>> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) =3D=3D
->>> +        PCI_BASE_ADDRESS_SPACE_IO) {
->>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
->>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
->>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
->>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
->>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>> +        /* BMIBA: 20-23h */
->>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
->>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->>> +    }
->>> +}
+>> v3:
+>> * Rename SCI irq attribute to sci_irq (Zoltan)
+>> * Fix confusion about location of ACPI interrupt select register (Zolta=
+n)
+>> * Model SCI as named GPIO (Bernhard)
+>> * Perform upcast via macro rather than sub structure selection (Bernhar=
+d)
 >>=20
->> Another hint that this is not the right way to be doing this: the value=
-s you are placing in BARS 1 and 3 are illegal=2E PCI IO BARs have bit 1 for=
-ced to 0 and bit 0 set to 1 which forces a minimum alignment of 4, so eithe=
-r the addresses 0x3f6/0x376 are being rounded internally to 0x3f4/0x374 and=
-/or you're lucky that this just happens to work on QEMU=2E
+>> v2:
+>> * Introduce named constants for the ACPI interrupt select register at o=
+ffset
+>>  0x42 (Phil)
+>> ---
+>> hw/isa/vt82c686=2Ec | 48 +++++++++++++++++++++++++++++++++++-----------=
+-
+>> 1 file changed, 36 insertions(+), 12 deletions(-)
+>>=20
+>> diff --git a/hw/isa/vt82c686=2Ec b/hw/isa/vt82c686=2Ec
+>> index 57bdfb4e78=2E=2Eaeb9434a46 100644
+>> --- a/hw/isa/vt82c686=2Ec
+>> +++ b/hw/isa/vt82c686=2Ec
+>> @@ -40,12 +40,17 @@
+>> #define TYPE_VIA_PM "via-pm"
+>> OBJECT_DECLARE_SIMPLE_TYPE(ViaPMState, VIA_PM)
+>>=20
+>> +#define VIA_PM_SCI_SELECT_OFS 0x42
+>> +#define VIA_PM_SCI_SELECT_MASK 0xf
+>> +
+>> struct ViaPMState {
+>>     PCIDevice dev;
+>>     MemoryRegion io;
+>>     ACPIREGS ar;
+>>     APMState apm;
+>>     PMSMBus smb;
+>> +
+>> +    qemu_irq sci_irq;
+>> };
+>>=20
+>> static void pm_io_space_update(ViaPMState *s)
+>> @@ -148,18 +153,7 @@ static void pm_update_sci(ViaPMState *s)
+>>                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
+>>                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
+>>                    ACPI_BITMASK_TIMER_ENABLE)) !=3D 0);
+>> -    if (pci_get_byte(s->dev=2Econfig + PCI_INTERRUPT_PIN)) {
+>> -        /*
+>> -         * FIXME:
+>> -         * Fix device model that realizes this PM device and remove
+>> -         * this work around=2E
+>> -         * The device model should wire SCI and setup
+>> -         * PCI_INTERRUPT_PIN properly=2E
+>> -         * If PIN# =3D 0(interrupt pin isn't used), don't raise SCI as
+>> -         * work around=2E
+>> -         */
+>> -        pci_set_irq(&s->dev, sci_level);
+>> -    }
+>> +    qemu_set_irq(s->sci_irq, sci_level);
 >
->The data sheet lists these values for legacy mode bur it seems that bit 1=
- is ignored for BAR here and it ends up set to 0x3x4 with the actual reg ma=
-pped to 0x3x7 for both values ending in 4 or 6 here and both works the same=
- with AmigaOS even if I change the values here to 0x3[7f]4 so I can do that=
- and that should then match the default values for these regs but not match=
- the values listed for legacy mode so the data sheet is wrong either way=2E
+>I still think this it more complex that it should be and what's in via_is=
+a_set_pm_irq() below should be here instead and drop all the named gpio wiz=
+ardry that's just unneeded complication here=2E
 
-The datasheet lists the command BARs to be mapped to 0x3x4=2E The command =
-registers (legacy 0x3x6) are mapped at offset 2 in those BARs=2E So mapping=
- the BARs to 0x3x4 would map the registers to their respective legacy addre=
-sses, no?
+The bigger picture of this patch is to render pm_update_sci() redundant to=
+ acpi_update_sci() and use that=2E It wants a qemu_irq as one of its parame=
+ters which this patch provides=2E
 
-> It still does not make sense to set these in reset method which will be =
-overwritten so only works if I set them here=2E
+There is one obstacle before acpi_update_sci() can be reused but that shou=
+ld be fixable=2E I'll send a v5 later=2E
+
+Best regards,
+Bernhard
+
 >
->> Using the portio_list*() APIs really is the right way to implement this=
- to avoid being affected by such issues=2E
->
->Can you provide an alternative patch using portio_list? I don't know how =
-to do that and have no example to follow either so it would be hard for me =
-to figure out=2E Or give some pointers on how to do this if I missed someth=
-ing=2E
->
->Regards,
+>Regards=2E
 >BALATON Zoltan
 >
->>>   static void via_ide_realize(PCIDevice *dev, Error **errp)
->>>   {
->>>       PCIIDEState *d =3D PCI_IDE(dev);
->>> @@ -221,6 +251,7 @@ static void via_ide_class_init(ObjectClass *klass,=
- void *data)
->>>       /* Reason: only works as function of VIA southbridge */
->>>       dc->user_creatable =3D false;
->>>   +    k->config_write =3D via_ide_cfg_write;
->>>       k->realize =3D via_ide_realize;
->>>       k->exit =3D via_ide_exitfn;
->>>       k->vendor_id =3D PCI_VENDOR_ID_VIA;
+>>     /* schedule a timer interruption if needed */
+>>     acpi_pm_tmr_update(&s->ar, (s->ar=2Epm1=2Eevt=2Een & ACPI_BITMASK_T=
+IMER_ENABLE) &&
+>>                        !(pmsts & ACPI_BITMASK_TIMER_STATUS));
+>> @@ -213,6 +207,13 @@ static void via_pm_realize(PCIDevice *dev, Error *=
+*errp)
+>>     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
+>> }
 >>=20
+>> +static void via_pm_init(Object *obj)
+>> +{
+>> +    ViaPMState *s =3D VIA_PM(obj);
+>> +
+>> +    qdev_init_gpio_out_named(DEVICE(obj), &s->sci_irq, "sci", 1);
+>> +}
+>> +
+>> typedef struct via_pm_init_info {
+>>     uint16_t device_id;
+>> } ViaPMInitInfo;
+>> @@ -238,6 +239,7 @@ static void via_pm_class_init(ObjectClass *klass, v=
+oid *data)
+>> static const TypeInfo via_pm_info =3D {
+>>     =2Ename          =3D TYPE_VIA_PM,
+>>     =2Eparent        =3D TYPE_PCI_DEVICE,
+>> +    =2Einstance_init =3D via_pm_init,
+>>     =2Einstance_size =3D sizeof(ViaPMState),
+>>     =2Eabstract      =3D true,
+>>     =2Einterfaces =3D (InterfaceInfo[]) {
+>> @@ -568,9 +570,27 @@ static const VMStateDescription vmstate_via =3D {
+>>     }
+>> };
 >>=20
->> ATB,
+>> +static void via_isa_set_pm_irq(void *opaque, int n, int level)
+>> +{
+>> +    ViaISAState *s =3D opaque;
+>> +    PCIDevice *pci_dev =3D PCI_DEVICE(&s->pm);
+>> +    uint8_t irq =3D pci_get_byte(pci_dev->config + VIA_PM_SCI_SELECT_O=
+FS)
+>> +                  & VIA_PM_SCI_SELECT_MASK;
+>> +
+>> +    if (irq =3D=3D 2) {
+>> +        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is res=
+erved");
+>> +        return;
+>> +    }
+>> +
+>> +    if (irq !=3D 0) {
+>> +        qemu_set_irq(s->isa_irqs_in[irq], level);
+>> +    }
+>> +}
+>> +
+>> static void via_isa_init(Object *obj)
+>> {
+>>     ViaISAState *s =3D VIA_ISA(obj);
+>> +    DeviceState *dev =3D DEVICE(s);
 >>=20
->> Mark=2E
+>>     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
+>>     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
+>> @@ -578,6 +598,8 @@ static void via_isa_init(Object *obj)
+>>     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_U=
+SB_UHCI);
+>>     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
+>>     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
+>> +
+>> +    qdev_init_gpio_in_named(dev, via_isa_set_pm_irq, "sci", 1);
+>> }
 >>=20
+>> static const TypeInfo via_isa_info =3D {
+>> @@ -704,6 +726,8 @@ static void via_isa_realize(PCIDevice *d, Error **e=
+rrp)
+>>     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
+>>         return;
+>>     }
+>> +    qdev_connect_gpio_out_named(DEVICE(&s->pm), "sci", 0,
+>> +                                qdev_get_gpio_in_named(DEVICE(d), "sci=
+", 0));
 >>=20
->>=20
+>>     /* Function 5: AC97 Audio */
+>>     qdev_prop_set_int32(DEVICE(&s->ac97), "addr", d->devfn + 5);
+>> 
 
