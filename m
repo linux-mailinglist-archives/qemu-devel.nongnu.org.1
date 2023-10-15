@@ -2,80 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E587C9911
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 15:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DC57C992A
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 15:38:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qs0lx-0004U1-Vq; Sun, 15 Oct 2023 09:03:10 -0400
+	id 1qs1IW-00033J-8S; Sun, 15 Oct 2023 09:36:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qs0lw-0004Tk-Le
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 09:03:08 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qs0lv-0006Ew-2F
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 09:03:08 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9becde9ea7bso202324066b.0
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 06:03:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697374985; x=1697979785; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Of5HaRfp2luUquH/EP7DfLTJ/sopRKIm+wMoSTYbr8Q=;
- b=m7OcdN47HIffll21iVMdFWfQqQkO2PbwB7Ox+u7Fzt9aPrujdodpLVGNMp515JFlEs
- PDwfqfN5SszAsj0J3f7eHbTuOU89D4KyVzf2rb587B8WsNSu/4z9AH6QLD0eTVZp+2S/
- 0slwfKfTJKdhMwGG+4is/pkhXZygQ4BGxE4PEXS/03ibOAr3NC0Lo3ll0rwR/GYzhkYa
- 7FDxaYBt7Uy9Idg8+eG6OV3Wtx8D13cVhggcP3o8B31hJrmqfxSCQYPOpzNEbz7IIAUQ
- uum5DtVPSR9uzMo78Us1D2Ugy7Py9Q04Z6M8cCax5n29oZQ57FcPMH9LS8VpWuDbOmbU
- 0cLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697374985; x=1697979785;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Of5HaRfp2luUquH/EP7DfLTJ/sopRKIm+wMoSTYbr8Q=;
- b=L2WSRKpo7yaUlQ33SVBp0M2Z8OQrZUytc7mafAKvrAjz92dp9MXcJdBIkBm8mS2NGP
- b7xF2IIq4BXPHLWeJaUWujhc3nRF+zrKwLs/MzxhsIPsoBOQ8RRkUVXHko7zCh8MrU7b
- OPzgel0AuoRC9Go0occQy7iVsfMj4xWHlIoVZnQMTE5tWOwpwxUa1FWyCK6TxhqFkSVQ
- H/5FxE4xk4DGPhhDKInapgTw9bfzq5v67x5+4LUS30A0o4CJnHpen9/Vwl2MQ3uWsGtJ
- qcoDi7R0m4QJzCrX9gHdw0hbOwNPNS8lthX/xmofxNF+l30JZhJuKaDLnhDjG1KMiVRd
- CPIg==
-X-Gm-Message-State: AOJu0YzH9WbCMlh3Nhw1RLQxoVTqBIFj4MLlx2d7+nbbzJdCUijjX83Z
- 2t5LY0xXuw9WrJhpY7wbAgc=
-X-Google-Smtp-Source: AGHT+IGxCOhBbwH7kAxXGgIWzil/jno3BlFZZorzpMNDCMwap3T+GPh//6zIctcqFzQuyNc3/0FXAw==
-X-Received: by 2002:a17:907:9482:b0:9a5:962c:cb6c with SMTP id
- dm2-20020a170907948200b009a5962ccb6cmr5077580ejc.31.1697374985099; 
- Sun, 15 Oct 2023 06:03:05 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-191-089-197.77.191.pool.telefonica.de.
- [77.191.89.197]) by smtp.gmail.com with ESMTPSA id
- l1-20020a170906078100b009928b4e3b9fsm2264379ejc.114.2023.10.15.06.03.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 15 Oct 2023 06:03:04 -0700 (PDT)
-Date: Sun, 15 Oct 2023 13:02:25 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: Re: [PATCH 0/2] Move Fuloong2e PCI IRQ mapping to board code
-In-Reply-To: <0360a8f2-cf80-3fb0-51de-c2f249e2b336@linaro.org>
-References: <20230105154440.259361-1-shentey@gmail.com>
- <0360a8f2-cf80-3fb0-51de-c2f249e2b336@linaro.org>
-Message-ID: <AE878E3E-7240-4E87-8517-2FE0B64EDA57@gmail.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qs1I8-00032J-V9; Sun, 15 Oct 2023 09:36:26 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qs1I6-0003Ci-J1; Sun, 15 Oct 2023 09:36:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=WQAGm0XwvFurHuTvrpHNlVpiDw/xR3t6tRr01SEWhrQ=; b=TJMo6MZSh+6Jg/SujJ7dBIvMrt
+ iiYxo4IUOSdvRGfSgW3YznQ3usPZbYWQT3Ml9VwEXadVKH4ZTIjF1aQMABw/Fxa+nTzPnXBLI1Dyx
+ Prhim5d4AJUZ3LHAFLglua4C35IPZqBK5/I4gg3gV+1Dz3EJavxPYcz+GEJhS9FQbjNPMeoF5snp7
+ Fu7wu7Pjo2XOsj93RvLmTqv+CX1S8hr9PGJyzje3wronQR+ukgWBJjk1pOL0fLgjYbzjpoDKIMRxc
+ Cm3uSqbLJUj5VwpvYqnksS7ZBAwIDqwAPOtw7bo4G5M9We8JsV6ly56SQwqdErLp889XTzCBPM0at
+ dHZcGdw2KX9XKVM6KwiCb+rnUjmWQ+UA5PdXNSe12jL8XnBKVpOStCGPOQDc6pjhtsbhHzwNx3yMp
+ A7lPq0YaiagaEMlmFlT4sia8/W8kWwLEqbvvwv1sZHKiszI7I85WiEoP37VAFw7zn9Ai/EL+VIuvg
+ MQnJdrDhTfc4LABFVAxgEbiDyv5JFQIQ7aOOHKfsqO47L2eMckpcv8W5UoHrkpogtGG9+DWSDOq7s
+ sRrMAkkxiV8GSSYtoExKvK/9FoDkHRFTe4W1XeF+t9OMqyjSirLM2niLsTm6LAmFAwK/hdGLkg/x6
+ qFTxtyDX8yfdWVVSTRdchA4MwXW7X6M8reF6ecx+w=;
+Received: from [2a00:23c4:8baf:fd00:5a49:1ad5:2df1:f854]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qs1Hu-0005o4-Sy; Sun, 15 Oct 2023 14:36:15 +0100
+Message-ID: <3db1683e-45ef-4125-ac98-2fb63df3951f@ilande.co.uk>
+Date: Sun, 15 Oct 2023 14:36:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x630.google.com
+User-Agent: Mozilla Thunderbird
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+References: <cover.1696880742.git.balaton@eik.bme.hu>
+ <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
+ <af270749-a36f-4803-9d40-ad24521c4ea4@ilande.co.uk>
+ <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <alpine.LMD.2.03.2310141748380.3555@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8baf:fd00:5a49:1ad5:2df1:f854
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,25 +107,281 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 14/10/2023 17:13, BALATON Zoltan wrote:
+
+> On Sat, 14 Oct 2023, Mark Cave-Ayland wrote:
+>> On 09/10/2023 20:54, BALATON Zoltan wrote:
+>>
+>>> The initial value for BARs were set in reset method for emulating
+>>> legacy mode at start but this does not work because PCI code resets
+>>> BARs after calling device reset method. Remove this ineffective
+>>> default to avoid confusion.
+>>>
+>>> Instead move setting the BARs to a callback on writing the PCI config
+>>> regsiter that sets legacy mode (which firmwares needing this mode seem
+>>> to do) and fix their values to program it to use legacy port numbers
+>>> in this case. This does not fully emulate what the data sheet says
+>>> (which is not very clear on this) but it implements enogh to allow
+>>> both modes as used by firmwares of machines we emulate.
+>>>
+>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>> ---
+>>>   hw/ide/via.c | 41 ++++++++++++++++++++++++++++++++++++-----
+>>>   1 file changed, 36 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/hw/ide/via.c b/hw/ide/via.c
+>>> index fff23803a6..43e8af8d69 100644
+>>> --- a/hw/ide/via.c
+>>> +++ b/hw/ide/via.c
+>>> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
+>>>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+>>>                    PCI_STATUS_DEVSEL_MEDIUM);
+>>>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
+>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
+>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 20-23h */
+>>>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+>>>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
+>>> @@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
+>>>       pci_set_long(pci_conf + 0xc0, 0x00020001);
+>>>   }
+>>>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
+>>> +                              uint32_t val, int len)
+>>> +{
+>>> +    pci_default_write_config(pd, addr, val, len);
+>>> +    /*
+>>> +     * Bits 0 and 2 of the PCI programming interface register select between
+>>> +     * legacy and native mode for the two IDE channels. We don't emulate this
+>>> +     * because we cannot easily switch between ISA and PCI in QEMU so instead
+>>
+>> As per my previous email, this statement is demonstrably false: this is now 
+>> achievable using the portio_list*() APIs.
+>>
+>>> +     * when guest selects legacy mode we set the PCI BARs to legacy ports which
+>>> +     * works the same. We also don't care about setting each channel separately
+>>> +     * as no guest is known to do or need that. We only do this when BARs are
+>>> +     * unset when writing this register as logs from real hardware show that
+>>> +     * setting legacy mode after BARs were set it will still use ports set by
+>>> +     * BARs not ISA ports (e.g. pegasos2 Linux does this after firmware set
+>>> +     * native mode and programmed BARs and calls it non-100% native mode).
+>>> +     * But if 0x8a is written righr after reset without setting BARs then we
+>>> +     * want legacy ports (this is done by the AmigaOne firmware).
+>>> +     */
+>>> +    if (addr == PCI_CLASS_PROG && val == 0x8a &&
+>>> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
+>>> +        PCI_BASE_ADDRESS_SPACE_IO) {
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +        /* BMIBA: 20-23h */
+>>> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
+>>> +                     | PCI_BASE_ADDRESS_SPACE_IO);
+>>> +    }
+>>> +}
+>>
+>> Another hint that this is not the right way to be doing this: the values you are 
+>> placing in BARS 1 and 3 are illegal. PCI IO BARs have bit 1 forced to 0 and bit 0 
+>> set to 1 which forces a minimum alignment of 4, so either the addresses 0x3f6/0x376 
+>> are being rounded internally to 0x3f4/0x374 and/or you're lucky that this just 
+>> happens to work on QEMU.
+> 
+> The data sheet lists these values for legacy mode bur it seems that bit 1 is ignored 
+> for BAR here and it ends up set to 0x3x4 with the actual reg mapped to 0x3x7 for both 
+> values ending in 4 or 6 here and both works the same with AmigaOS even if I change 
+> the values here to 0x3[7f]4 so I can do that and that should then match the default 
+> values for these regs but not match the values listed for legacy mode so the data 
+> sheet is wrong either way. It still does not make sense to set these in reset method 
+> which will be overwritten so only works if I set them here.
+> 
+>> Using the portio_list*() APIs really is the right way to implement this to avoid 
+>> being affected by such issues.
+> 
+> Can you provide an alternative patch using portio_list? I don't know how to do that 
+> and have no example to follow either so it would be hard for me to figure out. Or 
+> give some pointers on how to do this if I missed something.
+
+Here's a hacked up version based upon various bits and pieces from my WIP IDE mode 
+switching branch. It's briefly compile tested, and checked with "info mtree" and a 
+couple of test boots:
 
 
-Am 5=2E Januar 2023 16:32:16 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <ph=
-ilmd@linaro=2Eorg>:
->On 5/1/23 16:44, Bernhard Beschow wrote:
->
->> Bernhard Beschow (2):
->>    hw/pci-host/bonito: Inline pci_register_root_bus()
->>    hw/pci-host/bonito: Map PCI IRQs in board code
->>=20
->>   include/hw/pci-host/bonito=2Eh |  2 ++
->>   hw/mips/fuloong2e=2Ec          | 22 ++++++++++++++++++++++
->>   hw/pci-host/bonito=2Ec         | 31 ++++---------------------------
->>   3 files changed, 28 insertions(+), 27 deletions(-)
->>=20
->
->Series:
->Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+diff --git a/hw/ide/via.c b/hw/ide/via.c
+index fff23803a6..82f2af1c78 100644
+--- a/hw/ide/via.c
++++ b/hw/ide/via.c
+@@ -28,12 +28,27 @@
+  #include "hw/pci/pci.h"
+  #include "migration/vmstate.h"
+  #include "qemu/module.h"
++#include "qemu/range.h"
+  #include "sysemu/dma.h"
+  #include "hw/isa/vt82c686.h"
+  #include "hw/ide/pci.h"
+  #include "hw/irq.h"
+  #include "trace.h"
 
-Ping
++
++/* FIXME: export these from hw/ide/ioport.c */
++static const MemoryRegionPortio ide_portio_list[] = {
++    { 0, 8, 1, .read = ide_ioport_read, .write = ide_ioport_write },
++    { 0, 1, 2, .read = ide_data_readw, .write = ide_data_writew },
++    { 0, 1, 4, .read = ide_data_readl, .write = ide_data_writel },
++    PORTIO_END_OF_LIST(),
++};
++
++static const MemoryRegionPortio ide_portio2_list[] = {
++    { 0, 1, 1, .read = ide_status_read, .write = ide_ctrl_write },
++    PORTIO_END_OF_LIST(),
++};
++
+  static uint64_t bmdma_read(void *opaque, hwaddr addr,
+                             unsigned size)
+  {
+@@ -137,7 +152,10 @@ static void via_ide_reset(DeviceState *dev)
+      pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+      pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+      pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 20-23h */
+-    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
++    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000000e);
++
++    /* Clear subsystem to match real hardware */
++    pci_set_long(pci_conf + 0x2c, 0x0);
+
+      /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
+      pci_set_long(pci_conf + 0x40, 0x0a090600);
+@@ -159,6 +177,89 @@ static void via_ide_reset(DeviceState *dev)
+      pci_set_long(pci_conf + 0xc0, 0x00020001);
+  }
+
++static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
++                              uint32_t val, int len)
++{
++    uint8_t *pci_conf = pd->config;
++    PCIIDEState *d = PCI_IDE(pd);
++
++    pci_default_write_config(pd, addr, val, len);
++
++    if (range_covers_byte(addr, len, PCI_CLASS_PROG)) {
++        if (pci_conf[PCI_CLASS_PROG] == 0x8a) {
++            /* FIXME: don't disable BARs
++            pci_default_write_config(pd, PCI_BASE_ADDRESS_0, 0x1, 4);
++            pci_default_write_config(pd, PCI_BASE_ADDRESS_1, 0x1, 4);
++            pci_default_write_config(pd, PCI_BASE_ADDRESS_2, 0x1, 4);
++            pci_default_write_config(pd, PCI_BASE_ADDRESS_3, 0x1, 4);
++            */
++
++            pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x0);
++            pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x0);
++            pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x0);
++            pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x0);
++
++            /* Clear interrupt pin */
++            pci_config_set_interrupt_pin(pci_conf, 0);
++
++            /* Add legacy IDE ports */
++            if (!d->bus[0].portio_list.owner) {
++                portio_list_init(&d->bus[0].portio_list, OBJECT(pd),
++                                 ide_portio_list, &d->bus[0], "ide");
++                portio_list_add(&d->bus[0].portio_list,
++                                pci_address_space_io(pd), 0x1f0);
++            }
++
++            if (!d->bus[0].portio2_list.owner) {
++                portio_list_init(&d->bus[0].portio2_list, OBJECT(pd),
++                                 ide_portio2_list, &d->bus[0], "ide");
++                portio_list_add(&d->bus[0].portio2_list,
++                                pci_address_space_io(pd), 0x3f6);
++            }
++
++            if (!d->bus[1].portio_list.owner) {
++                portio_list_init(&d->bus[1].portio_list, OBJECT(pd),
++                                 ide_portio_list, &d->bus[1], "ide");
++                portio_list_add(&d->bus[1].portio_list,
++                                pci_address_space_io(pd), 0x170);
++            }
++
++            if (!d->bus[1].portio2_list.owner) {
++                portio_list_init(&d->bus[1].portio2_list, OBJECT(pd),
++                                 ide_portio2_list, &d->bus[1], "ide");
++                portio_list_add(&d->bus[1].portio2_list,
++                                pci_address_space_io(pd), 0x376);
++            }
++        }
++
++        if (pci_conf[PCI_CLASS_PROG] == 0x8f) {
++            /* Set interrupt pin */
++            pci_config_set_interrupt_pin(pci_conf, 1);
++
++            /* Remove legacy IDE ports */
++            if (d->bus[0].portio_list.owner) {
++                portio_list_del(&d->bus[0].portio_list);
++                portio_list_destroy(&d->bus[0].portio_list);
++            }
++
++            if (d->bus[0].portio2_list.owner) {
++                portio_list_del(&d->bus[0].portio2_list);
++                portio_list_destroy(&d->bus[0].portio2_list);
++            }
++
++            if (d->bus[1].portio_list.owner) {
++                portio_list_del(&d->bus[1].portio_list);
++                portio_list_destroy(&d->bus[1].portio_list);
++            }
++
++            if (d->bus[1].portio2_list.owner) {
++                portio_list_del(&d->bus[1].portio2_list);
++                portio_list_destroy(&d->bus[1].portio2_list);
++            }
++        }
++    }
++}
++
+  static void via_ide_realize(PCIDevice *dev, Error **errp)
+  {
+      PCIIDEState *d = PCI_IDE(dev);
+@@ -221,6 +322,7 @@ static void via_ide_class_init(ObjectClass *klass, void *data)
+      /* Reason: only works as function of VIA southbridge */
+      dc->user_creatable = false;
+
++    k->config_write = via_ide_cfg_write;
+      k->realize = via_ide_realize;
+      k->exit = via_ide_exitfn;
+      k->vendor_id = PCI_VENDOR_ID_VIA;
+
+
+Note that this also fixes the output of "lspci -vv" on Linux:
+
+0000:00:0c.1 IDE interface: VIA Technologies, Inc. 
+VT82C586A/B/VT82C686/A/B/VT823x/A/C PIPC Bus Master IDE (rev 06) (prog-if 8a [Master 
+SecP PriP])
+         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- 
+Stepping+ SERR- FastB2B- DisINTx-
+         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- 
+<MAbort- >SERR- <PERR- INTx-
+         Latency: 0
+         Interrupt: pin ? routed to IRQ 14
+         Region 0: [virtual] I/O ports at 1000 [size=8]
+         Region 1: [virtual] I/O ports at 100c [size=4]
+         Region 2: [virtual] I/O ports at 1010 [size=8]
+         Region 3: [virtual] I/O ports at 101c [size=4]
+         Region 4: I/O ports at 1020 [size=16]
+         Kernel driver in use: pata_via
+
+
+Currently the "[virtual]" prefix is missing in QEMU when compared with your lspci 
+output from real hardware: this patch fixes it, because it allows the legacy IDE 
+ioports to exist whilst having the BARs set to zero which isn't possible with your 
+current patch.
+
+
+ATB,
+
+Mark.
 
 
