@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1E47C990E
-	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 15:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E587C9911
+	for <lists+qemu-devel@lfdr.de>; Sun, 15 Oct 2023 15:04:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qs0ii-000377-B1; Sun, 15 Oct 2023 08:59:48 -0400
+	id 1qs0lx-0004U1-Vq; Sun, 15 Oct 2023 09:03:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qs0ig-00036y-Ae
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 08:59:46 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qs0lw-0004Tk-Le
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 09:03:08 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qs0ie-0005Sv-OG
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 08:59:46 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-31427ddd3fbso3198398f8f.0
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 05:59:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qs0lv-0006Ew-2F
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 09:03:08 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9becde9ea7bso202324066b.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 06:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697374783; x=1697979583; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1697374985; x=1697979785; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W5Erv2dWfrAX1SXs/wCvye+EziC94gHkWLc/ojXOOns=;
- b=H0qgBmQFn+ChulqivcJLC0eRkqFtwAJ4WnRypHezdOhXAiaraTXhj70/51XwycQRci
- DOkQaDZH4tzt6N53l5VGWBtxRW08iWLvD4OlnjXtMNDcsBaUpxoS7huvDLgBLQJ7ErRk
- 7pc05UhGA7b8hxIpjRJoQDqdQ9JUqOYrsnXR1ZD/S5HP+zSMbXcl/Tl777xMCcHxuMfg
- yNf/mvvrL57YhDPl9uKe8uEnOKOgjWpXSRoIlVIPS2OOORnuAxvnKxq3p9OR7P65lCpJ
- R0byhp5ksV6uV3LDJq2q1wg3jmgm4CtYPLEZxN9d+1/2V+ntdNe3ERtFMG8WHXE6eToB
- vVPA==
+ bh=Of5HaRfp2luUquH/EP7DfLTJ/sopRKIm+wMoSTYbr8Q=;
+ b=m7OcdN47HIffll21iVMdFWfQqQkO2PbwB7Ox+u7Fzt9aPrujdodpLVGNMp515JFlEs
+ PDwfqfN5SszAsj0J3f7eHbTuOU89D4KyVzf2rb587B8WsNSu/4z9AH6QLD0eTVZp+2S/
+ 0slwfKfTJKdhMwGG+4is/pkhXZygQ4BGxE4PEXS/03ibOAr3NC0Lo3ll0rwR/GYzhkYa
+ 7FDxaYBt7Uy9Idg8+eG6OV3Wtx8D13cVhggcP3o8B31hJrmqfxSCQYPOpzNEbz7IIAUQ
+ uum5DtVPSR9uzMo78Us1D2Ugy7Py9Q04Z6M8cCax5n29oZQ57FcPMH9LS8VpWuDbOmbU
+ 0cLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697374783; x=1697979583;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=W5Erv2dWfrAX1SXs/wCvye+EziC94gHkWLc/ojXOOns=;
- b=PuPps790wluwM/ikGfHjNvjyI9DltZOA1tzmckPQs5uBh2OCRNCzljbf/cWasxZ9dF
- zamqco2cE7VrgrVe3WdPysC80bzOsedQgUT2WRlnOR8W2ZlyY5c8hks2oVpV1+oeFkaR
- /wQsw1i2QDgLhHayBzcG97+Si6Z0Q5CY3hzHGBAAOuKUgQeadeY+5vvgBxxPfcrjBnxX
- u7Smuf7ZxJv00USIxrqvBLz3qh+TnKEcLAyXPPxmm7sJHjuiAiQiKO4ZbWIznD1J8eoO
- XG9tHCwU6voWah7hNY1eEX+/l0Ap45iAHQUFr5/H6L0wUBnzMFqP0F3nIR2tUqJFozHH
- URkg==
-X-Gm-Message-State: AOJu0YzhqDrgGotPtXBo/ycWjlmOIEYYvCGMvlOd2hg/akqLAfHfADZG
- 8MfUxqUPg9dws2ExMPlRek8RNw==
-X-Google-Smtp-Source: AGHT+IHrv5wGwxVKNt5EiLYTgbIbRUojOmAR0vPn/ko7Yi+ChToX5Jnhd8OcZBq1XHuiVNKWW4m9NQ==
-X-Received: by 2002:a05:6000:4b:b0:32d:9ce0:35ae with SMTP id
- k11-20020a056000004b00b0032d9ce035aemr4567278wrx.52.1697374782956; 
- Sun, 15 Oct 2023 05:59:42 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- h12-20020adff18c000000b003232380ffd7sm25161196wro.102.2023.10.15.05.59.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 05:59:42 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id ED4EB1FFBB;
- Sun, 15 Oct 2023 13:59:41 +0100 (BST)
-References: <20231003183058.1639121-1-richard.henderson@linaro.org>
- <20231003183058.1639121-5-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: fei2.wu@intel.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH v17 04/16] tcg: Record nb_spills in TCGContext
-Date: Sun, 15 Oct 2023 13:59:36 +0100
-In-reply-to: <20231003183058.1639121-5-richard.henderson@linaro.org>
-Message-ID: <87bkd0xcqq.fsf@linaro.org>
+ d=1e100.net; s=20230601; t=1697374985; x=1697979785;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Of5HaRfp2luUquH/EP7DfLTJ/sopRKIm+wMoSTYbr8Q=;
+ b=L2WSRKpo7yaUlQ33SVBp0M2Z8OQrZUytc7mafAKvrAjz92dp9MXcJdBIkBm8mS2NGP
+ b7xF2IIq4BXPHLWeJaUWujhc3nRF+zrKwLs/MzxhsIPsoBOQ8RRkUVXHko7zCh8MrU7b
+ OPzgel0AuoRC9Go0occQy7iVsfMj4xWHlIoVZnQMTE5tWOwpwxUa1FWyCK6TxhqFkSVQ
+ H/5FxE4xk4DGPhhDKInapgTw9bfzq5v67x5+4LUS30A0o4CJnHpen9/Vwl2MQ3uWsGtJ
+ qcoDi7R0m4QJzCrX9gHdw0hbOwNPNS8lthX/xmofxNF+l30JZhJuKaDLnhDjG1KMiVRd
+ CPIg==
+X-Gm-Message-State: AOJu0YzH9WbCMlh3Nhw1RLQxoVTqBIFj4MLlx2d7+nbbzJdCUijjX83Z
+ 2t5LY0xXuw9WrJhpY7wbAgc=
+X-Google-Smtp-Source: AGHT+IGxCOhBbwH7kAxXGgIWzil/jno3BlFZZorzpMNDCMwap3T+GPh//6zIctcqFzQuyNc3/0FXAw==
+X-Received: by 2002:a17:907:9482:b0:9a5:962c:cb6c with SMTP id
+ dm2-20020a170907948200b009a5962ccb6cmr5077580ejc.31.1697374985099; 
+ Sun, 15 Oct 2023 06:03:05 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-191-089-197.77.191.pool.telefonica.de.
+ [77.191.89.197]) by smtp.gmail.com with ESMTPSA id
+ l1-20020a170906078100b009928b4e3b9fsm2264379ejc.114.2023.10.15.06.03.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 15 Oct 2023 06:03:04 -0700 (PDT)
+Date: Sun, 15 Oct 2023 13:02:25 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH 0/2] Move Fuloong2e PCI IRQ mapping to board code
+In-Reply-To: <0360a8f2-cf80-3fb0-51de-c2f249e2b336@linaro.org>
+References: <20230105154440.259361-1-shentey@gmail.com>
+ <0360a8f2-cf80-3fb0-51de-c2f249e2b336@linaro.org>
+Message-ID: <AE878E3E-7240-4E87-8517-2FE0B64EDA57@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,21 +93,24 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Richard Henderson <richard.henderson@linaro.org> writes:
 
-> Record the number of times a temporary is forced into memory
-> and the store would not have been required if there an infinite
-> number of call-saved cpu registers available.  This excludes
-> stores that are required by semantics to return computed values
-> to their home slot in ENV, i.e. NEED_SYNC_ARG.
+Am 5=2E Januar 2023 16:32:16 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <ph=
+ilmd@linaro=2Eorg>:
+>On 5/1/23 16:44, Bernhard Beschow wrote:
 >
-> To be copied into TBStatistics when desired.
+>> Bernhard Beschow (2):
+>>    hw/pci-host/bonito: Inline pci_register_root_bus()
+>>    hw/pci-host/bonito: Map PCI IRQs in board code
+>>=20
+>>   include/hw/pci-host/bonito=2Eh |  2 ++
+>>   hw/mips/fuloong2e=2Ec          | 22 ++++++++++++++++++++++
+>>   hw/pci-host/bonito=2Ec         | 31 ++++---------------------------
+>>   3 files changed, 28 insertions(+), 27 deletions(-)
+>>=20
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>Series:
+>Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Ping
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
