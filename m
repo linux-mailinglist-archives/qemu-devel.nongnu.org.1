@@ -2,91 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680367CB027
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4409F7CB037
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:49:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsQlY-0006gP-RV; Mon, 16 Oct 2023 12:48:28 -0400
+	id 1qsQmW-0007Md-J6; Mon, 16 Oct 2023 12:49:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsQlX-0006c0-0Q
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:48:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsQlV-00061r-Af
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:48:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697474904;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KZKCcHTisSOd8tU05g/K5DaFqAFFyopsJNZDP8Kxz88=;
- b=RBY6CffnZFlIrw9k1gntJ+hFPsfMOzrhCy7OgatRYZA1yJyld+IzHYh89NolMArR2GETB6
- 4YFLe7t1s9DuIWQ2kj/2Jd/ylj5OrKZT9NUVBZuQpxbkSP57bI2Falh9FQdswyMNT+32zZ
- WOmJPjE5BwaUmj5sh9eto+xq9YkNsTs=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-197-aa7sNMDLN0y6HncTtUd6Ew-1; Mon, 16 Oct 2023 12:48:12 -0400
-X-MC-Unique: aa7sNMDLN0y6HncTtUd6Ew-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-65623d0075aso11198406d6.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:48:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qsQmB-0007Ku-Uf
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:49:07 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qsQm9-0006DK-8Y
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:49:07 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-53da72739c3so7987203a12.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:49:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697474943; x=1698079743; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=gxoOtV8LW3y4o404KQc9Wo/aX2aY114NNMVZTDq1t/Q=;
+ b=P3zyvkkNnbFWRoTu4og1emQ2FnKPJpdt58ozDfnaa8/RFn9l2nosrNqN8NYF3Yzfd7
+ FOsgVQ2g4vYk/NbQp79Sk6DjE4x8YfkXmff63K3omAJwwUQ4pqHMOM+CeeKUWg213OAi
+ Kse9nJSzwo9V1C7RHni/DqH2yt6CQCrt1OTdgYL+/Y2AZUP17ezv2HFIyVq3T0wmYgwD
+ hkRlFzFPVpj88/d/HNZfFmTe9Q24WlfMkeYyBSC/T7DbtLhpMNrbOdu0atbM2ltE1+8L
+ scGMSMOnP1QR6JHA3g/L6OqSN5V1uaXMp5xjTJJRzL1Y3lP92o24CwwGIl/9dcCbBeMm
+ wGIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697474892; x=1698079692;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KZKCcHTisSOd8tU05g/K5DaFqAFFyopsJNZDP8Kxz88=;
- b=rI9FDheqjKWMQ/hln31x1jjCwGk3RiDLeVvennX9k2I7KjqvbWzlGMV29PadF1CgzZ
- 1o/kQBdTtBX+JX7Kji8AWCpo+W2DDcebsWP5Kdvkm2WaMhXvRlUx49sKMVVAog5dPdEM
- p11k9Cc3sPKFNkIxmzVw3JLn6k3TxpMuvdyrpjpwata5WMSFEfAoVLTz5LsF1AdYiIuP
- UQJhxKec3pbtwJx4iKb18yzTFf2ase7ZNShSsKWl3FD6hOGWRlF+Uu7bSPzF6DyJI5qu
- 1IXGzUAyARslp1vVMgD1cjDwbkJUMYYjrUuuxM85bA7BqOwL58WexTpSGDgAgYBkjqvk
- NMgA==
-X-Gm-Message-State: AOJu0Yzt3r3EFuUw/+1CyeWzfwb6P+Ocp7EnebH6+XLLQJ7Y77HmNDoJ
- a5BCZC2VcFiqY6Joh+oikzZ3mMyqeXX7LhPHgOnhTLzL5ploI+cgZBTJyWPYS9UWuPkHD2IcGvM
- cJDw5xEQCCSroObg=
-X-Received: by 2002:a05:6214:c3:b0:66d:264c:450f with SMTP id
- f3-20020a05621400c300b0066d264c450fmr43433qvs.0.1697474891935; 
- Mon, 16 Oct 2023 09:48:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8p0I3Nv1lvT5F5Qsho7KfC2lSr4vhvSxiIW8YJHkekX9eXA+MeC9M+Jzndhq8mcbz/Pd9Jw==
-X-Received: by 2002:a05:6214:c3:b0:66d:264c:450f with SMTP id
- f3-20020a05621400c300b0066d264c450fmr43417qvs.0.1697474891602; 
- Mon, 16 Oct 2023 09:48:11 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- t5-20020a05620a004500b007678973eaa1sm3135999qkt.127.2023.10.16.09.48.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 09:48:11 -0700 (PDT)
-Date: Mon, 16 Oct 2023 12:48:09 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?=E2=80=9CWilliam?= Roche <william.roche@oracle.com>
-Cc: qemu-devel@nongnu.org, lizhijian@fujitsu.com, pbonzini@redhat.com,
- quintela@redhat.com, leobras@redhat.com, joao.m.martins@oracle.com,
- lidongchen@tencent.com
-Subject: Re: [PATCH v4 2/2] migration: prevent migration when a poisoned page
- is unknown from the VM
-Message-ID: <ZS1pSeL3hj4/73lk@x1n>
-References: <20230920235301.1622672-1-william.roche@oracle.com>
- <20231013150839.867164-1-william.roche@oracle.com>
- <20231013150839.867164-3-william.roche@oracle.com>
+ d=1e100.net; s=20230601; t=1697474943; x=1698079743;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gxoOtV8LW3y4o404KQc9Wo/aX2aY114NNMVZTDq1t/Q=;
+ b=SJ17286d9Iv8egoTFcyFgmVxGHiksCWx6Ks1xQ4jbbWRKAodD8A7ilxj4RTTgvlpMb
+ 7p+UpTfLQc9FVG8EYRNpzkmhB/SOjARS2t0AUFMgA/lRnldyESXMZVaQRk7fcvaqHHwD
+ UytDknqJJ6vSw7NTAjYxu0HvuZWm7XQac6J4xiUv3csdUfEAA1xtWSCStWHMmNzxJdzS
+ w2kYZBe4geZiBgwMF6A2RRFskSzAIuQ0U1nMv3k3UFgf+TdCzLorUQBMlRFUBrwVtHsL
+ 0ahIr30MbmChE/4C1lQJnFBp/hRyx02F5nLkMQ/6wvSwbqxEKM5/5FsjC+R4F/IHsF+Q
+ KeQQ==
+X-Gm-Message-State: AOJu0Yy0oIMpVuvGqD/5HQOrU6Extdm4La84dw5bn9BUIFjYGVxzuvrm
+ fVccN7I0UqunfPADKPxuWkrAGsYtvZVHwt43ynioDQ==
+X-Google-Smtp-Source: AGHT+IEDECBFvYkOAheAAhjBMvEi6r5DLv7fMVzC5Foe174Eb67NCqp2TtVH4LBq9mp6svwDus2wBmUu1qx/PU6B1Ro=
+X-Received: by 2002:a05:6402:4306:b0:53d:e5d7:4148 with SMTP id
+ m6-20020a056402430600b0053de5d74148mr15482766edc.1.1697474943345; Mon, 16 Oct
+ 2023 09:49:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231013150839.867164-3-william.roche@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <169635378817.28428.8916197505999208589-0@git.sr.ht>
+ <169635378817.28428.8916197505999208589-1@git.sr.ht>
+In-Reply-To: <169635378817.28428.8916197505999208589-1@git.sr.ht>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 16 Oct 2023 17:48:52 +0100
+Message-ID: <CAFEAcA9ziEdL3JFYS6b1zY8cNaS=1imYWS6byOhHraA2kfVJ7A@mail.gmail.com>
+Subject: Re: [PATCH qemu 1/1] Switch memory management calls to new coding
+ conventions
+To: "~h0lyalg0rithm" <surajshirvankar@gmail.com>
+Cc: qemu-devel@nongnu.org, trivial@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,51 +86,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 13, 2023 at 03:08:39PM +0000, “William Roche wrote:
-> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-> index 5e95c496bb..e8db6380c1 100644
-> --- a/target/arm/kvm64.c
-> +++ b/target/arm/kvm64.c
-> @@ -1158,7 +1158,6 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
->          ram_addr = qemu_ram_addr_from_host(addr);
->          if (ram_addr != RAM_ADDR_INVALID &&
->              kvm_physical_memory_addr_from_host(c->kvm_state, addr, &paddr)) {
-> -            kvm_hwpoison_page_add(ram_addr);
->              /*
->               * If this is a BUS_MCEERR_AR, we know we have been called
->               * synchronously from the vCPU thread, so we can easily
-> @@ -1169,7 +1168,12 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
->               * called synchronously from the vCPU thread, or a bit
->               * later from the main thread, so doing the injection of
->               * the error would be more complicated.
-> +             * In this case, BUS_MCEERR_AO errors are unknown from the
-> +             * guest, and we will prevent migration as long as this
-> +             * poisoned page hasn't generated a BUS_MCEERR_AR error
-> +             * that the guest takes into account.
->               */
-> +            kvm_hwpoison_page_add(ram_addr, (code == BUS_MCEERR_AR));
+On Tue, 3 Oct 2023 at 18:23, ~h0lyalg0rithm <h0lyalg0rithm@git.sr.ht> wrote:
+>
+> From: Suraj Shirvankar <surajshirvankar@gmail.com>
+>
+> Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
 
-I'm curious why ARM doesn't forward this event to guest even if it's AO.
-X86 does it, and makes more sense to me.  Not familiar with arm, do you
-know the reason?
+Hi; thanks for this patch. Mostly it looks good, but I
+have a couple of review comments; details below.
 
-I think this patch needs review from ARM and/or KVM side.  Do you want to
-have the 1st patch merged, or rather wait for the whole set?
+> ---
+>  contrib/elf2dmp/addrspace.c | 4 ++--
+>  contrib/elf2dmp/main.c      | 4 ++--
+>  contrib/elf2dmp/pdb.c       | 4 ++--
+>  contrib/elf2dmp/qemu_elf.c  | 4 ++--
+>  4 files changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
+> index 64b5d680ad..3bfbb5093c 100644
+> --- a/contrib/elf2dmp/addrspace.c
+> +++ b/contrib/elf2dmp/addrspace.c
+> @@ -72,7 +72,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+>          }
+>      }
+>
+> -    ps->block = malloc(sizeof(*ps->block) * ps->block_nr);
+> +    ps->block = g_new(struct pa_block, ps->block_nr);
+>      if (!ps->block) {
+>          return 1;
+>      }
 
-Another thing to mention: feel free to look at a recent addition of ioctl
-from userfault, where it can inject poisoned ptes:
+Unlike malloc(), g_new() can never fail. So the error check
+for NULL becomes redundant, and we can remove it. Similarly
+in the other cases below (including the g_malloc() call).
 
-https://lore.kernel.org/r/20230707215540.2324998-1-axelrasmussen@google.com
+> @@ -97,7 +97,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+>  void pa_space_destroy(struct pa_space *ps)
+>  {
+>      ps->block_nr = 0;
+> -    free(ps->block);
+> +    g_free(ps->block);
+>  }
+>
+>  void va_space_set_dtb(struct va_space *vs, uint64_t dtb)
+> diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+> index 5db163bdbe..97baf0c0c1 100644
+> --- a/contrib/elf2dmp/main.c
+> +++ b/contrib/elf2dmp/main.c
+> @@ -120,14 +120,14 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, struct pdb_reader *pdb,
+>          }
+>      }
+>
+> -    kdbg = malloc(kdbg_hdr.Size);
+> +    kdbg = g_malloc(kdbg_hdr.Size);
+>      if (!kdbg) {
+>          return NULL;
+>      }
+>
+>      if (va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
+>          eprintf("Failed to extract entire KDBG\n");
+> -        free(kdbg);
+> +        g_free(kdbg);
+>          return NULL;
+>      }
 
-I'm wondering if that'll be helpful to qemu too, where we can migrate
-hwpoison_page_list and enforce the poisoning on dest.  Then even for AO
-when accessed by guest it'll generated another MCE on dest.
+This isn't the only place where we free the memory we
+allocate here. The other place is the "free(kdbg)" at the
+bottom of the main() function. So for consistency we should
+change that also to g_free().
 
->              if (code == BUS_MCEERR_AR) {
->                  kvm_cpu_synchronize_state(c);
->                  if (!acpi_ghes_record_errors(ACPI_HEST_SRC_ID_SEA, paddr)) {
+> diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
+> index 6ca5086f02..625001d1cf 100644
+> --- a/contrib/elf2dmp/pdb.c
+> +++ b/contrib/elf2dmp/pdb.c
+> @@ -116,7 +116,7 @@ static void *pdb_ds_read(const PDB_DS_HEADER *header,
+>
+>      nBlocks = (size + header->block_size - 1) / header->block_size;
+>
+> -    buffer = malloc(nBlocks * header->block_size);
+> +    buffer = g_malloc(nBlocks * header->block_size);
+>      if (!buffer) {
+>          return NULL;
+>      }
 
--- 
-Peter Xu
+Similarly here the buffer we allocated is usually returned
+from this function, assigned to some struct field, and then
+free()d much later on. So we should also switch all the other
+free() calls in this file to g_free().
 
+We should end up with no calls to free() left at all in
+the contrib/elf2dmp/ source files, I think.
+
+> @@ -201,7 +201,7 @@ static int pdb_init_symbols(struct pdb_reader *r)
+>      return 0;
+>
+>  out_symbols:
+> -    free(symbols);
+> +    g_free(symbols);
+>
+>      return err;
+>  }
+> diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
+> index de6ad744c6..9aa8715108 100644
+> --- a/contrib/elf2dmp/qemu_elf.c
+> +++ b/contrib/elf2dmp/qemu_elf.c
+> @@ -94,7 +94,7 @@ static int init_states(QEMU_Elf *qe)
+>
+>      printf("%zu CPU states has been found\n", cpu_nr);
+>
+> -    qe->state = malloc(sizeof(*qe->state) * cpu_nr);
+> +    qe->state = g_new(QEMUCPUState*, cpu_nr);
+>      if (!qe->state) {
+>          return 1;
+>      }
+> @@ -115,7 +115,7 @@ static int init_states(QEMU_Elf *qe)
+>
+>  static void exit_states(QEMU_Elf *qe)
+>  {
+> -    free(qe->state);
+> +    g_free(qe->state);
+>  }
+>
+>  static bool check_ehdr(QEMU_Elf *qe)
+> --
+> 2.38.5
+
+thanks
+-- PMM
 
