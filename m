@@ -2,78 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F9F7C9EC0
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 07:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 511587C9EC2
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 07:31:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsGBD-0004xm-Vp; Mon, 16 Oct 2023 01:30:16 -0400
+	id 1qsGC5-0005k9-1o; Mon, 16 Oct 2023 01:31:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsGBA-0004xT-PE; Mon, 16 Oct 2023 01:30:12 -0400
-Received: from mail-vs1-xe2a.google.com ([2607:f8b0:4864:20::e2a])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qsGC1-0005jj-1z
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 01:31:05 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsGB8-0004Fv-Rm; Mon, 16 Oct 2023 01:30:12 -0400
-Received: by mail-vs1-xe2a.google.com with SMTP id
- ada2fe7eead31-4577c1ae94fso1643250137.1; 
- Sun, 15 Oct 2023 22:30:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qsGBx-0004ZR-Oy
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 01:31:04 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1c88b467ef8so27494435ad.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 22:31:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697434209; x=1698039009; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aTsu6QlrSeFspM8uKeyb6L2Kc7MYBkCIop78wJLVDt4=;
- b=UT6rqBQLCr8dk6JmPorFG1AEWfK6lKCxPePfw+L2m8//Fg/BdGRS3vDBGv2gAmJTYF
- 7lEUnOtPlE4eQgQ5tsLH3VBJi6P4D0QNA8TCCk2WCNzKysq/DpRrFfux9Pk9nNw3iVfr
- LgZMIksGVFP4nM5BR8KoQGGBeO//blfmEgCLDjQMB4YdHr1xyWZWxlQsoZAafadVgAHJ
- AaOmfSr8QN46Vpm9KsVl0Jx836ug5bErr2gOz/GVlVwFsTLMmhNg09DA9MrQ179uJ22O
- gnKfk0u1WHkilAzI4VGJz8nTXNniiX7bedtu6FK/DtDX1CgzgFjSKxI9CjzTTi4Gn2d/
- WIHQ==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697434260; x=1698039060;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uEhDGBOEHZtCIJzR2bpthJpEIkwVwuX6ztAmFYYzwjY=;
+ b=BIfOoP3x5rYVnFrBxwLuCRRLGAFJutqtktgsrb/+tJ+QyDApXHW0jCdGTgw1aMHNPR
+ UXdwYMe5C1ciEINVF04gHrps2F97d4EduwO6miS3+xZL0pIwZOaBlJcNwSbSf3mGI284
+ 1lH7ssiypiDnLmCs7mk40X5iDYgGj03gwe9uarG/TjftFdfOsj8f2gE2pAMkuZ14v+fQ
+ t2j6/TkHQOwLCpPxHtzN8seheO+r4sevSWsnuIcH4+DP7FYSs5y/bRCcjdLjUVCv/rK8
+ lDQWKAOsENGfUNgAp0UFDssxVMQ5YqKXeaPZK7N9+rYMMPGDsgwPTxr3SJgFvPVfTugs
+ P3WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697434209; x=1698039009;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aTsu6QlrSeFspM8uKeyb6L2Kc7MYBkCIop78wJLVDt4=;
- b=rEaD5oSbma+xcIz8g00Dr/2CUyeXQJr77VQwVus+hEkBI4EjAPGky1MQbvFL50RVGH
- 9xJJmmQTW5w+IUVVIbgJNpX3o8kJL6F33iKnbaikX70PD0ktTuFuSAGDW+IeH5VS1IYF
- NJ2qpMlycf+EGtag+eD7PJgvk2YnFyGnFtaWijbwEU6pYQEWK2rowK8UwKt8LYGCdEjr
- 22ywSR3CX6Wp1vGG9a3CD78DVjtlYiOH2j1nnSoz1OBS2V5q3zmhzcfwoex3w2Zuv9IR
- oT0gGYT9fbHVpYDMKzt9n5RR134j3y+Na0XJRmlOK2DpN1jEp7Xr59kzO2X1snZHR9Um
- PdZw==
-X-Gm-Message-State: AOJu0Yx7MLGQvxE0pjgCPV6mLkGfjW7fTC/HMYSrKx4RAfbHe71hS7zr
- 29WXTQkP4EgQ+doODokTcF3OSvseGpKAN5W4GLg=
-X-Google-Smtp-Source: AGHT+IFGX0XYsLD7tSQG34ed8QYWoG/9O4PJ/7gPUTmQJ/utDWO7gq+1SnIHADPABjjyUF6zgP/QeHI60/2KxRCPpeM=
-X-Received: by 2002:a05:6102:4bca:b0:457:4645:a339 with SMTP id
- id10-20020a0561024bca00b004574645a339mr32934480vsb.1.1697434209244; Sun, 15
- Oct 2023 22:30:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697434260; x=1698039060;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uEhDGBOEHZtCIJzR2bpthJpEIkwVwuX6ztAmFYYzwjY=;
+ b=kn0FnnZumrqNHfVtwfMLVRk6WTf6/UXWm3JTcKhkACiofy/ng5y2uCYmxI6babHQwu
+ 2SMORH70GUxYQTCnR/fk7ZAoqMtG4WTwGdbpMdbvemVcT9HFeWFNYYAByQ/4l/+8PS1O
+ +ZVZbo0S1Md/8L+88ewEawB/1y7RuI2cRC0xfutH/ixnqRrUG9aX85HE7cG5w2p2ZMKG
+ wOVfWcikzRLDg5uwyn67nAoHjX5qunC1m5t1b+Sy36G9NaL1S0SCRtskNmpJodAxuu7r
+ WC9JPgqUJuYe5duLCwF1kb31QsT1+iEc+MCXau/ooNirpZo7osC9TxAAzQP10Kb6yJK8
+ z3jA==
+X-Gm-Message-State: AOJu0YxlP4DqPsLMx2MpxUmYtlHh6x+eylOoghTzGtBB+W23FY4jTmEu
+ qYiTKw41wA3M0ZYccd8YAtplLw==
+X-Google-Smtp-Source: AGHT+IHtF6RdPBZ0S1eh6kBKDqX1KHxwA/BdUriaKU08tjfRk7+6ZceEh+e0S5I4HwNlTC4yTq6EeA==
+X-Received: by 2002:a17:903:4043:b0:1c9:e072:3398 with SMTP id
+ n3-20020a170903404300b001c9e0723398mr6912976pla.41.1697434260362; 
+ Sun, 15 Oct 2023 22:31:00 -0700 (PDT)
+Received: from [157.82.206.197] ([157.82.206.197])
+ by smtp.gmail.com with ESMTPSA id
+ p11-20020a170902c70b00b001b0358848b0sm7678096plp.161.2023.10.15.22.30.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 15 Oct 2023 22:30:59 -0700 (PDT)
+Message-ID: <75aa685f-4ced-4e24-864b-e0cbb4bec73a@daynix.com>
+Date: Mon, 16 Oct 2023 14:30:57 +0900
 MIME-Version: 1.0
-References: <20230926184019.166352-1-dbarboza@ventanamicro.com>
- <20230926184019.166352-7-dbarboza@ventanamicro.com>
-In-Reply-To: <20230926184019.166352-7-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 16 Oct 2023 15:29:42 +1000
-Message-ID: <CAKmqyKMf4gOAkRZ508W5+S+AoKSd5TtqFtuELdWMEihGJQPJHg@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] target/riscv/riscv-qmp-cmds.c: check CPU accel in
- query-cpu-model-expansion
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2a;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>
+References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
+ <20231011153944.39572-2-akihiko.odaki@daynix.com>
+ <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
+ <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
+ <CACGkMEuEs2MLJYKMB9qAgT2ixkKLC8LPPE6DsBvfwx0CEaCA_A@mail.gmail.com>
+ <12412f11-4395-460f-9523-930ad9270188@daynix.com>
+ <CACGkMEvg37na-2rUAjUoJOhLrKg+mz+O_D_=UnMJr-qoxPSkLQ@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CACGkMEvg37na-2rUAjUoJOhLrKg+mz+O_D_=UnMJr-qoxPSkLQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,83 +101,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 27, 2023 at 4:42=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Use the recently added riscv_cpu_accelerator_compatible() to filter
-> unavailable CPUs for a given accelerator. At this moment this is the
-> case for a QEMU built with KVM and TCG support querying a binary running
-> with TCG:
->
-> qemu-system-riscv64 -S -M virt,accel=3Dtcg -display none
->     -qmp tcp:localhost:1234,server,wait=3Doff
->
-> ./qemu/scripts/qmp/qmp-shell localhost:1234
->
-> (QEMU) query-cpu-model-expansion type=3Dfull model=3D{"name":"host"}
-> {"error": {"class": "GenericError", "desc": "'host' CPU not available wit=
-h tcg"}}
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+On 2023/10/16 14:25, Jason Wang wrote:
+> On Fri, Oct 13, 2023 at 1:26 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> On 2023/10/13 14:00, Jason Wang wrote:
+>>> On Fri, Oct 13, 2023 at 12:14 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>>
+>>>> On 2023/10/13 10:38, Jason Wang wrote:
+>>>>> On Wed, Oct 11, 2023 at 11:40 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>>>>
+>>>>>> It was necessary since an Linux older than 2.6.35 may implement the
+>>>>>> virtio-net header but may not allow to change its length. Remove it
+>>>>>> since such an old Linux is no longer supported.
+>>>>>
+>>>>> Where can I see this agreement?
+>>>>
+>>>> docs/about/build-platforms.rst says:
+>>>>    > The project aims to support the most recent major version at all times
+>>>>    > for up to five years after its initial release. Support for the
+>>>>    > previous major version will be dropped 2 years after the new major
+>>>>    > version is released or when the vendor itself drops support, whichever
+>>>>    > comes first. In this context, third-party efforts to extend the
+>>>>    > lifetime of a distro are not considered, even when they are endorsed
+>>>>    > by the vendor (eg. Debian LTS); the same is true of repositories that
+>>>>    > contain packages backported from later releases (e.g. Debian
+>>>>    > backports). Within each major release, only the most recent minor
+>>>>    > release is considered.
+>>>>    >
+>>>>    > For the purposes of identifying supported software versions available
+>>>>    > on Linux, the project will look at CentOS, Debian, Fedora, openSUSE,
+>>>>    > RHEL, SLES and Ubuntu LTS. Other distros will be assumed to ship
+>>>>    > similar software versions.
+>>>
+>>> Well it also says:
+>>>
+>>> """
+>>> If a platform is not listed here, it does not imply that QEMU won't
+>>> work. If an unlisted platform has comparable software versions to a
+>>> listed platform, there is every expectation that it will work.
+>>> """
+>>>
+>>> A lot of downstream have customized build scripts.
+>>
+>> Still Linux versions older than 2.6.35 do not look like "comparable
+>> software versions to a listed platform" in my opinion.
+> 
+> Linux provides ABI compatibility so I don't know why, unless there is
+> a strong dependency on a specific new syscall introduced after 2.6.35.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+This patch drops a pre-check for ioctl introduced with 2.6.35.
 
-Alistair
+> 
+>>
+>>> And is something similar to such removal that has been done for other
+>>> subsystems?
+>>
+>> With commit c42e77a90d ("qemu/osdep: Remove fallback for
+>> MAP_FIXED_NOREPLACE"), I remove the support for glibc older than 2.28.
+>> Linux 2.6.35 is even older.
+>>
+> 
+> Ok, this explains things a little bit. Btw, we also have soliars
+> support for TAP, time to drop that as well?
 
-> ---
->  target/riscv/riscv-qmp-cmds.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.=
-c
-> index 5b2d186c83..2f2dbae7c8 100644
-> --- a/target/riscv/riscv-qmp-cmds.c
-> +++ b/target/riscv/riscv-qmp-cmds.c
-> @@ -31,6 +31,8 @@
->  #include "qapi/qobject-input-visitor.h"
->  #include "qapi/visitor.h"
->  #include "qom/qom-qobject.h"
-> +#include "sysemu/kvm.h"
-> +#include "sysemu/tcg.h"
->  #include "cpu-qom.h"
->  #include "cpu.h"
->
-> @@ -63,6 +65,17 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error=
- **errp)
->      return cpu_list;
->  }
->
-> +static void riscv_check_if_cpu_available(RISCVCPU *cpu, Error **errp)
-> +{
-> +    if (!riscv_cpu_accelerator_compatible(cpu)) {
-> +        g_autofree char *name =3D riscv_cpu_get_name(cpu);
-> +        const char *accel =3D kvm_enabled() ? "kvm" : "tcg";
-> +
-> +        error_setg(errp, "'%s' CPU not available with %s", name, accel);
-> +        return;
-> +    }
-> +}
-> +
->  static void riscv_obj_add_qdict_prop(Object *obj, QDict *qdict_out,
->                                       const char *name)
->  {
-> @@ -161,6 +174,13 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion=
-(CpuModelExpansionType type,
->
->      obj =3D object_new(object_class_get_name(oc));
->
-> +    riscv_check_if_cpu_available(RISCV_CPU(obj), &local_err);
-> +    if (local_err !=3D NULL) {
-> +        error_propagate(errp, local_err);
-> +        object_unref(obj);
-> +        return NULL;
-> +    }
-> +
->      if (qdict_in) {
->          riscv_cpuobj_validate_qdict_in(obj, model->props, qdict_in,
->                                         &local_err);
-> --
-> 2.41.0
->
->
+Do you mean Solaris? Honestly I don't know. I don't think anyone dares 
+to use QEMU on Solaris (or to use Solaris at all), but apparently Oracle 
+has not abandoned it yet.
 
