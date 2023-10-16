@@ -2,54 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850DB7CA566
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4DF7CA577
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:33:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsKsi-0007ry-4q; Mon, 16 Oct 2023 06:31:28 -0400
+	id 1qsKuJ-0000CW-5x; Mon, 16 Oct 2023 06:33:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qsKsb-0007qo-2D
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:31:23 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qsKsW-00049Y-EJ
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:31:20 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S8Cx92FfCz6J9yn;
- Mon, 16 Oct 2023 18:27:57 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 16 Oct
- 2023 11:31:13 +0100
-Date: Mon, 16 Oct 2023 11:31:12 +0100
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-CC: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>
-Subject: Re: [RFC PATCH v3 74/78] hw/cxl/cxl-device-utils.c: add fallthrough
- pseudo-keyword
-Message-ID: <20231016113112.00006db6@Huawei.com>
-In-Reply-To: <b8632566adf1970a35dc750f5a00d388b3deb383.1697186560.git.manos.pitsidianakis@linaro.org>
-References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
- <b8632566adf1970a35dc750f5a00d388b3deb383.1697186560.git.manos.pitsidianakis@linaro.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <viresh.kumar@linaro.org>)
+ id 1qsKuD-0000BC-Bf
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:33:01 -0400
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <viresh.kumar@linaro.org>)
+ id 1qsKuB-0004PO-7f
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:33:00 -0400
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-57f0f81b2aeso2446802eaf.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 03:32:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697452377; x=1698057177; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=8e29M+XKfiu7HBFNtUvwzWtto7tlhhlytZV8sgt7OVw=;
+ b=SDXGXKDD8Z4o0soP9AW/VwRLogRYez4KP/2WhZxDnbpExK3JlmSnXIzuVk9nb1O/Km
+ lVTWWYiau/xIsQ2qSCPJSIk5aj8F/TnGjrLYbMYymezpHIJIWZNAzqhzlcC+rkaphtEB
+ DS5Q+GE1/jPbLHiFlNNCyfoIQlbt5NaCrQ1J5BvmdBP04+V2shgy7NdjRiBnFsb9oLPL
+ vEYus6bSvU6A1NH6Ja3eC9fhtN/+qDwNy0aIvQzipKZtqgcWh2+a9SOWZzJyT3Qq353Q
+ PnaMKeHGJF777TLhWIxxqGVmFj0q7eyz9NSCnrrGHhfD/9mCgHhnoF95v7h798Q4ra9h
+ 1VHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697452377; x=1698057177;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8e29M+XKfiu7HBFNtUvwzWtto7tlhhlytZV8sgt7OVw=;
+ b=NfXmKcI6LQmtF5i5OtP9jZNXYqJdQnTCIvmzJCXcLSfzutqZu/1grbdQGUto5aWtlr
+ vuVjPCOLKtFwNSQEsrZYZKLchWrrdqzAODjwfuCmls6ObOZGp/mkosqdeexHSowLtwRi
+ 6TUfanlv8OrP0CgVN+eOvwrA5b57YYYoit6sIE8JNQoKVpL3BdH7p/pqna4yHBnqNN0P
+ ozYslqin5KRfGPnNHZil7OLmyUi3erwwdgcReNZfNLXA7mUvFWz3PTEFT+69v+gDxxD4
+ Lxy9tUIAQv1AEGPr9yq2fSjPX+QvWOvTlJZv1pU2cM76BjRhUqWzYSr2NvYdIJijc5Yx
+ Bhow==
+X-Gm-Message-State: AOJu0YxbJ0Q39EK2Px0U4sdRXNEBnZPd3yhSLc/uxiDwaHCsUhZuqvVA
+ k/PK2OzfyZeLIPjye/n5HK7O0Q==
+X-Google-Smtp-Source: AGHT+IHO9PfBnxVLjiM2f0/qv3BeA1JQJOFL3l/VzKpLkiN73/Ra0OWh1Y1GFNXDKdVPTvQJwFENyA==
+X-Received: by 2002:a05:6359:2c4e:b0:164:8252:260c with SMTP id
+ qv14-20020a0563592c4e00b001648252260cmr19304196rwb.8.1697452377229; 
+ Mon, 16 Oct 2023 03:32:57 -0700 (PDT)
+Received: from localhost ([122.172.80.14]) by smtp.gmail.com with ESMTPSA id
+ i20-20020aa796f4000000b006979f70fdd5sm5147895pfq.219.2023.10.16.03.32.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Oct 2023 03:32:56 -0700 (PDT)
+Date: Mon, 16 Oct 2023 16:02:54 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Albert Esteve <aesteve@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Alex =?utf-8?B?QmVubsOp?= e <alex.bennee@linaro.org>
+Subject: Re: [PATCH] vhost-user: Fix protocol feature bit conflict
+Message-ID: <20231016103254.7xrnptmwrjnsr3uc@vireshk-i7>
+References: <20231016083201.23736-1-hreitz@redhat.com>
+ <2m60m.9e9wlnnm01vd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2m60m.9e9wlnnm01vd@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=viresh.kumar@linaro.org; helo=mail-oo1-xc2e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,48 +90,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 13 Oct 2023 11:46:42 +0300
-Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> wrote:
-
-> In preparation of raising -Wimplicit-fallthrough to 5, replace all
-> fall-through comments with the fallthrough attribute pseudo-keyword.
+On 16-10-23, 11:45, Manos Pitsidianakis wrote:
+> On Mon, 16 Oct 2023 11:32, Hanna Czenczek <hreitz@redhat.com> wrote:
+> > diff --git a/include/hw/virtio/vhost-user.h
+> > b/include/hw/virtio/vhost-user.h
+> > index 9f9ddf878d..1d4121431b 100644
+> > --- a/include/hw/virtio/vhost-user.h
+> > +++ b/include/hw/virtio/vhost-user.h
+> > @@ -29,7 +29,8 @@ enum VhostUserProtocolFeature {
+> >     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
+> >     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+> >     VHOST_USER_PROTOCOL_F_STATUS = 16,
+> > -    VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 17,
+> > +    /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
+> > +    VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 18,
+> >     VHOST_USER_PROTOCOL_F_MAX
+> > };
 > 
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> May I ask, why not define VHOST_USER_PROTOCOL_F_XEN_MMAP as well instead of
+> a comment mention?
 
-Looking at this, I think the code in question needs a closer look, cleanup
-but that has nothing to do with what you are doing here!
+Perhaps because we will never use it from Qemu code ?
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  hw/cxl/cxl-device-utils.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-> index bd68328032..63f009847e 100644
-> --- a/hw/cxl/cxl-device-utils.c
-> +++ b/hw/cxl/cxl-device-utils.c
-> @@ -80,7 +80,7 @@ static void mailbox_mem_writel(uint32_t *reg_state, hwaddr offset,
->  {
->      switch (offset) {
->      case A_CXL_DEV_MAILBOX_CTRL:
-> -        /* fallthrough */
-> +        fallthrough;
->      case A_CXL_DEV_MAILBOX_CAP:
->          /* RO register */
->          break;
-> @@ -102,7 +102,7 @@ static void mailbox_mem_writeq(uint64_t *reg_state, hwaddr offset,
->          break;
->      case A_CXL_DEV_BG_CMD_STS:
->          /* BG not supported */
-> -        /* fallthrough */
-> +        fallthrough;
->      case A_CXL_DEV_MAILBOX_STS:
->          /* Read only register, will get updated by the state machine */
->          return;
+Anyway:
 
+Reviewed-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+-- 
+viresh
 
