@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EBB7C9F6E
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C26CE7C9F9D
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsH0b-0002Kc-K3; Mon, 16 Oct 2023 02:23:21 -0400
+	id 1qsH8c-0003rg-3D; Mon, 16 Oct 2023 02:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH0S-0002KB-Qw
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:23:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qsH8a-0003rU-AK
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH0O-00042l-Hd
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:23:12 -0400
+ id 1qsH8Y-0005Qy-MK
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697437385;
+ s=mimecast20190719; t=1697437893;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=12k6B/Wg5mmR2vWY9vc/bgGujWdlLmC+rj9GPnpZx0w=;
- b=fGK6ak5o/aEdaYKmfUY+ek3Flu6Vv2LQcGFoYpxGSxMV3Zrugjk6jeTtCXM6Xg9Ab9Bj66
- BVIaab0L7bFDTsym9LuFUH7TO974xi+8x3+Wtr5fZp3a7tLaZ2yBF2XnOgMDpnlwRfrmkq
- qlJDklTJfk53Zb6MWCEqDaWFLQKVg6M=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cgI3E7SNjjA4N3eE0I3y5b6egd29VWH8e2xfnpZN+q8=;
+ b=favsJfU1CNxPWaBIvF2ckWDirOZVQcpoHqj9HBzv7t/lG7zs+5VUvEm9ZJWi+kdL60xTp9
+ j0Nui4TOfpFYRL5IQ1wEHfCBlDSUZXPnw1bElvXquxWo3mLEaEdOrdjVMxbE2BfrzWkSCv
+ +oJNwu3+MnOZYWbjVwIDMCWCNCkOu2M=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-377-blbXxxoIMH2WA_hCzcK7AA-1; Mon, 16 Oct 2023 02:23:04 -0400
-X-MC-Unique: blbXxxoIMH2WA_hCzcK7AA-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-52f274df255so5722497a12.1
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:23:03 -0700 (PDT)
+ us-mta-312-L1oPeeCdOxGE1XmEinrenw-1; Mon, 16 Oct 2023 02:31:31 -0400
+X-MC-Unique: L1oPeeCdOxGE1XmEinrenw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9b99b6b8315so301385066b.2
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:31:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697437382; x=1698042182;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=12k6B/Wg5mmR2vWY9vc/bgGujWdlLmC+rj9GPnpZx0w=;
- b=KL1pCpRXtwti0vieq7XOUgRfANaal+8AyB1Og3OaOU68ctTPuyyybe+CGwqCHJEPdN
- pPOw63lhHCvDerT8WW3jjYVRA1PgmnFakj+sWooAo0wH+Zd4pul7dSsP92bleePN5RFh
- WhIr8VAA1tgVMsAor9atZbE2z2wtiuquy8zZdMOTJjbiHeHb2vQTc4NPhTqtttUwyv1s
- 64hQ7hyWNs0lQoyIZgAtSCWWkiVOvgaaXjii05pFUg0pkE0TSZzs+7d8a3jYsJB1sdzk
- mHHwu0LgEhIYCZxtD3OeaB6Q4OoIJ8qjlkcUJqD/7Lxp9Qe6+ehtDxYRlFoslbVwRJbH
- zK+g==
-X-Gm-Message-State: AOJu0Yy6R5AQIKLnfaHclLkzP9+lDomkRugkU6qv0qNdZ7ccvssvLX3A
- q1SYTgHx53q9NlTieNMdQIjVr9ToET1eMrMP/tsHA2rlubj/pkP8l0V5YH/fIzTXUfHYo1nOhjP
- Gazu4Oe+iwdP7cLsFu35dLrcLPVIkp5KPM/1w/7wfOEfqAgdSYA1GmD0qemWY4GUgOxvcSYeaHo
- o=
-X-Received: by 2002:a05:6402:35d4:b0:523:2e23:a0bf with SMTP id
- z20-20020a05640235d400b005232e23a0bfmr5652064edc.11.1697437382638; 
- Sun, 15 Oct 2023 23:23:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGcOfvZCzJrgEPlImQ+nlcKAimWRbbew6/k5sGxtYmheXpnQIl98qNZtsUiJeRoJ1A0lKmGYQ==
-X-Received: by 2002:a05:6402:35d4:b0:523:2e23:a0bf with SMTP id
- z20-20020a05640235d400b005232e23a0bfmr5652055edc.11.1697437382288; 
- Sun, 15 Oct 2023 23:23:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697437889; x=1698042689;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cgI3E7SNjjA4N3eE0I3y5b6egd29VWH8e2xfnpZN+q8=;
+ b=mcQ3iE1pQUwCpeAQZm7SbiyifLh/6zMyi0ng48z7zZl/2T/jKVe/ayFAFEPm43vLr4
+ M3R5zUdJzFuFYWIC+HG8SFw8DorrR7zDyg9wQ0rpCV3YRNo6Fe4Ijl/xAaQHw4v26Rkf
+ VV0dhOg6/4r4nTLTFwKXB++QG23yDt8Es3H3b+bD+lxJBiRgDXakbGSnC2CzIYnydNM/
+ q1uEjw+a7qiM+5ITBlOnQcNKITBx41IwIMrJOPtmKoYBe4hmCCxnCZN4R1fHbt25Bxmf
+ e02CkWbJzKj5my0PnY9ePAfrlaZZG1p/PuUpV7NHJPlcWaaachEWs+YjIioH4BqUVgqd
+ 1nNQ==
+X-Gm-Message-State: AOJu0YxWBp3Mmu4wosurgIuhtS+yjtQIqIt2NrENeOyKj7HEAjGNR8QE
+ zuWSS+Y8URM5dPZNxqqCCXUtf88BvzRaZEAaQifGWZSWUSXR0wkg1ALXLgB/VcrFUSXSYU1Z+x0
+ EKdbf4jMaSGps3UCWGtihdFa06qaCsIQygWmerlwmjdn/QT62XjoMKy5vIpdn5rePpr7701ZfdY
+ 0=
+X-Received: by 2002:a17:906:99c2:b0:9be:7b67:1674 with SMTP id
+ s2-20020a17090699c200b009be7b671674mr5616600ejn.3.1697437889543; 
+ Sun, 15 Oct 2023 23:31:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEePmq6MUz47iZTa1TeYpbiEWWqCCiLri3+ek94QgQ5zxuTBFKcyc9KZuFWl1UvXUUQ2YkeZA==
+X-Received: by 2002:a17:906:99c2:b0:9be:7b67:1674 with SMTP id
+ s2-20020a17090699c200b009be7b671674mr5616586ejn.3.1697437889161; 
+ Sun, 15 Oct 2023 23:31:29 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- s9-20020a05640217c900b0053d9a862e2csm8147709edy.56.2023.10.15.23.23.01
+ gx8-20020a1709068a4800b0098f99048053sm3422195ejc.148.2023.10.15.23.31.28
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 23:23:01 -0700 (PDT)
+ Sun, 15 Oct 2023 23:31:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PATCH] tests/docker: avoid invalid escape in Python string
-Date: Mon, 16 Oct 2023 08:23:00 +0200
-Message-ID: <20231016062300.160160-1-pbonzini@redhat.com>
+Subject: [PATCH 00/17] More build system cleanups,
+ optional non-relocatable installs
+Date: Mon, 16 Oct 2023 08:31:10 +0200
+Message-ID: <20231016063127.161204-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,27 +97,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is an error in Python 3.12; fix it by using a raw string literal.
+This mostly removes or simplifies some option parsing code, with some extra
+items of interest:
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- tests/docker/docker.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- support for non-relocatable installs, which Michael Tokarev requested
+  a while ago.
 
-diff --git a/tests/docker/docker.py b/tests/docker/docker.py
-index 688ef62989c..3b8a26704df 100755
---- a/tests/docker/docker.py
-+++ b/tests/docker/docker.py
-@@ -186,7 +186,7 @@ def _check_binfmt_misc(executable):
-               (binary))
-         return None, True
- 
--    m = re.search("interpreter (\S+)\n", entry)
-+    m = re.search(r"interpreter (\S+)\n", entry)
-     interp = m.group(1)
-     if interp and interp != executable:
-         print("binfmt_misc for %s does not point to %s, using %s" %
+- the main change outside configure and meson.build is a simplification
+  of GDB conditionals, by unifying HAVE_GDB_BIN and HOST_GDB_SUPPORTS_ARCH
+  in tests/tcg.
+
+- on the "future work" side, patch 2 adds a macro IS_ENABLED() that can
+  be used in the future to replace #ifdef statements with "if()" so that
+  both sides are compiled.
+
+- qemu-ga parameters (manufacturer, distro, version) can be configured
+  with command-line options in addition to environment variables
+
+- finally, some changes to add comments or put related code together
+
+Paolo
+
+Paolo Bonzini (17):
+  meson: do not build shaders by default
+  meson: do not use set10
+  meson, cutils: allow non-relocatable installs
+  configure: clean up handling of CFI option
+  hw/xen: cleanup sourcesets
+  hw/remote: move stub vfu_object_set_bus_irq out of stubs/
+  tests/tcg/arm: move non-SVE tests out of conditional
+  configure, tests/tcg: simplify GDB conditionals
+  configure: clean up plugin option handling
+  configure: clean up PIE option handling
+  configure: remove some dead cruft
+  configure: move target-specific defaults to an external machine file
+  configure: move environment-specific defaults to config-meson.cross
+  configure: unify handling of several Debian cross containers
+  configure, meson: use command line options to configure qemu-ga
+  meson-buildoptions: document the data at the top
+  meson: add a note on why we use config_host for program paths
+
+ configs/meson/windows.txt                     |   9 +
+ configure                                     | 250 +++++++-----------
+ hw/arm/meson.build                            |   1 -
+ hw/i386/meson.build                           |   1 -
+ hw/remote/meson.build                         |   4 +-
+ .../remote/vfio-user-obj-stub.c               |   0
+ hw/xen/meson.build                            |  11 +-
+ include/qemu/compiler.h                       |  15 ++
+ meson.build                                   |  32 ++-
+ meson_options.txt                             |   9 +
+ qga/meson.build                               |   9 +-
+ scripts/meson-buildoptions.py                 |  32 ++-
+ scripts/meson-buildoptions.sh                 |  26 +-
+ stubs/meson.build                             |   1 -
+ tests/tcg/aarch64/Makefile.target             |  16 +-
+ tests/tcg/multiarch/Makefile.target           |  18 +-
+ .../multiarch/system/Makefile.softmmu-target  |  15 +-
+ tests/tcg/s390x/Makefile.target               |   6 +-
+ tests/unit/test-coroutine.c                   |   2 +-
+ ui/shader/meson.build                         |   1 +
+ util/cutils.c                                 |  11 +-
+ util/qemu-coroutine.c                         |   4 +-
+ 22 files changed, 251 insertions(+), 222 deletions(-)
+ create mode 100644 configs/meson/windows.txt
+ rename stubs/vfio-user-obj.c => hw/remote/vfio-user-obj-stub.c (100%)
+
 -- 
 2.41.0
 
