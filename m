@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72547CA282
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E067CA283
 	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:50:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJH8-0000GZ-HF; Mon, 16 Oct 2023 04:48:34 -0400
+	id 1qsJH8-0000OA-U7; Mon, 16 Oct 2023 04:48:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJGz-0008Lf-BU
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:48:28 -0400
+ id 1qsJH3-000085-AO
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:48:31 -0400
 Received: from mgamail.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJGu-0001FN-W5
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:48:23 -0400
+ id 1qsJGz-0001Al-C8
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:48:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697446101; x=1728982101;
+ t=1697446105; x=1728982105;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Y+HkCVoou1khEr9z+ilkcNKYFw+WgtgDANUYD38SDLY=;
- b=aUJwlPXssAgDFeAoPes55AgJsg6FhFqd/F5Yqf2W1GNy4d2BZ7MC08ot
- J56JtEKgCxRBNkaAeL9P9DWLsMjPkksanMvJoZfO7f1G5koSKU7lqkXan
- fobEFewhEE13teAOdvywYJceXBVoWaTPO8B9FTOHID6i+jWPZwo177qPR
- zkIqa8fFJq0GZLLQmW5GFxKtzQIaofuF+wNTFytrzxWLwV6tuVTx54m16
- WO9Px23AFfLTU3Peu4g7O0E3z1gMDNgk9kMhVlrRiX7o1pc8tL4iHCCMq
- FoTg5mDUtSq1vgnTxnpT/YHlZaUx5yZ3VDU8CTIZPaXk0Yqs4sIVT7V+T Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737646"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737646"
+ bh=euPLFA5NrtvVaevtxFmWmjqgLWemtU5tMgfeDd/swdA=;
+ b=jh7J3Q0tahSFI09qRpLjSR+VJCdXSVeFCoWOMeAIgWkWKTQ82Ek1svOy
+ lkUVZ1Zu/CeGcxnQ/37MJRoxr+uSi8gZ3J/D3YzCW/41nikarojl7AkAs
+ OCqVSM0y78RoIMmIK0bi74oOBnjQmlHpH+ZC2Z2zPC/QZFZEeJXCx/cv2
+ J+BegqYnP1AaIIMylrLpJujC2x0+QBzYW+7NgF68m0fxBrydEA9W0Yj9s
+ C4kDU31T4MfqPvd/MVLnwNoqwbQveaQqx5tH3Sev84Wu/mludJjdZEJoX
+ Soh3j5Vi6EVcUw+09cRLWUN2YsI2VF8JMCHoPKqVcFwcUnK1UqhU1uFQd Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737651"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737651"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:48:19 -0700
+ 16 Oct 2023 01:48:23 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749222939"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749222939"
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749222953"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749222953"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:48:14 -0700
+ 16 Oct 2023 01:48:19 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -49,10 +49,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Yi Sun <yi.y.sun@linux.intel.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 14/27] vfio/container: Move dirty_pgsizes and
- max_dirty_bitmap_size to base container
-Date: Mon, 16 Oct 2023 16:32:10 +0800
-Message-Id: <20231016083223.1519410-15-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 15/27] vfio/container: Implement attach/detach_device
+Date: Mon, 16 Oct 2023 16:32:11 +0800
+Message-Id: <20231016083223.1519410-16-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
 References: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
@@ -84,94 +83,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-No functional change intended.
+No fucntional change intended.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-common.h         |  2 --
- include/hw/vfio/vfio-container-base.h |  2 ++
- hw/vfio/container.c                   | 11 ++++++-----
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ hw/vfio/common.c    | 22 ++++++++++++++++++++++
+ hw/vfio/container.c | 12 +++++-------
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 8771160849..9f2b86581b 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -80,8 +80,6 @@ typedef struct VFIOLegacyContainer {
-     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
-     MemoryListener prereg_listener;
-     unsigned iommu_type;
--    uint64_t dirty_pgsizes;
--    uint64_t max_dirty_bitmap_size;
-     QLIST_HEAD(, VFIOGroup) group_list;
- } VFIOLegacyContainer;
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index da1d64efca..ee2ebf4be9 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1552,3 +1552,25 @@ retry:
  
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 96d33495c1..9a5971a00a 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -79,6 +79,8 @@ struct VFIOContainer {
-     MemoryListener listener;
-     Error *error;
-     bool initialized;
-+    uint64_t dirty_pgsizes;
-+    uint64_t max_dirty_bitmap_size;
-     unsigned long pgsizes;
-     unsigned int dma_max_mappings;
-     bool dirty_pages_supported;
+     return info;
+ }
++
++int vfio_attach_device(char *name, VFIODevice *vbasedev,
++                       AddressSpace *as, Error **errp)
++{
++    const VFIOIOMMUBackendOpsClass *ops;
++
++    ops = VFIO_IOMMU_BACKEND_OPS_CLASS(
++                  object_class_by_name(TYPE_VFIO_IOMMU_BACKEND_LEGACY_OPS));
++    if (!ops) {
++        error_setg(errp, "VFIO IOMMU Backend not found!");
++        return -ENODEV;
++    }
++    return ops->attach_device(name, vbasedev, as, errp);
++}
++
++void vfio_detach_device(VFIODevice *vbasedev)
++{
++    if (!vbasedev->bcontainer) {
++        return;
++    }
++    vbasedev->bcontainer->ops->detach_device(vbasedev);
++}
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 5b14a9b307..9d5be749c7 100644
+index 9d5be749c7..c86accdb38 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -70,6 +70,7 @@ static int vfio_dma_unmap_bitmap(VFIOLegacyContainer *container,
-                                  hwaddr iova, ram_addr_t size,
-                                  IOMMUTLBEntry *iotlb)
+@@ -1117,8 +1117,8 @@ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+  * @name and @vbasedev->name are likely to be different depending
+  * on the type of the device, hence the need for passing @name
+  */
+-int vfio_attach_device(char *name, VFIODevice *vbasedev,
+-                       AddressSpace *as, Error **errp)
++static int vfio_legacy_attach_device(char *name, VFIODevice *vbasedev,
++                                     AddressSpace *as, Error **errp)
  {
-+    VFIOContainer *bcontainer = &container->bcontainer;
-     struct vfio_iommu_type1_dma_unmap *unmap;
-     struct vfio_bitmap *bitmap;
-     VFIOBitmap vbmap;
-@@ -97,7 +98,7 @@ static int vfio_dma_unmap_bitmap(VFIOLegacyContainer *container,
-     bitmap->size = vbmap.size;
-     bitmap->data = (__u64 *)vbmap.bitmap;
- 
--    if (vbmap.size > container->max_dirty_bitmap_size) {
-+    if (vbmap.size > bcontainer->max_dirty_bitmap_size) {
-         error_report("UNMAP: Size of bitmap too big 0x%"PRIx64, vbmap.size);
-         ret = -E2BIG;
-         goto unmap_exit;
-@@ -139,7 +140,7 @@ static int vfio_legacy_dma_unmap(VFIOContainer *bcontainer, hwaddr iova,
- 
-     if (iotlb && vfio_devices_all_running_and_mig_active(bcontainer)) {
-         if (!vfio_devices_all_device_dirty_tracking(bcontainer) &&
--            container->bcontainer.dirty_pages_supported) {
-+            bcontainer->dirty_pages_supported) {
-             return vfio_dma_unmap_bitmap(container, iova, size, iotlb);
-         }
- 
-@@ -162,7 +163,7 @@ static int vfio_legacy_dma_unmap(VFIOContainer *bcontainer, hwaddr iova,
-         if (errno == EINVAL && unmap.size && !(unmap.iova + unmap.size) &&
-             container->iommu_type == VFIO_TYPE1v2_IOMMU) {
-             trace_vfio_legacy_dma_unmap_overflow_workaround();
--            unmap.size -= 1ULL << ctz64(container->bcontainer.pgsizes);
-+            unmap.size -= 1ULL << ctz64(bcontainer->pgsizes);
-             continue;
-         }
-         error_report("VFIO_UNMAP_DMA failed: %s", strerror(errno));
-@@ -558,8 +559,8 @@ static void vfio_get_iommu_info_migration(VFIOLegacyContainer *container,
-      */
-     if (cap_mig->pgsize_bitmap & qemu_real_host_page_size()) {
-         bcontainer->dirty_pages_supported = true;
--        container->max_dirty_bitmap_size = cap_mig->max_dirty_bitmap_size;
--        container->dirty_pgsizes = cap_mig->pgsize_bitmap;
-+        bcontainer->max_dirty_bitmap_size = cap_mig->max_dirty_bitmap_size;
-+        bcontainer->dirty_pgsizes = cap_mig->pgsize_bitmap;
-     }
+     int groupid = vfio_device_groupid(vbasedev, errp);
+     VFIODevice *vbasedev_iter;
+@@ -1158,14 +1158,10 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+     return ret;
  }
  
+-void vfio_detach_device(VFIODevice *vbasedev)
++static void vfio_legacy_detach_device(VFIODevice *vbasedev)
+ {
+     VFIOGroup *group = vbasedev->group;
+ 
+-    if (!vbasedev->bcontainer) {
+-        return;
+-    }
+-
+     QLIST_REMOVE(vbasedev, global_next);
+     QLIST_REMOVE(vbasedev, container_next);
+     vbasedev->bcontainer = NULL;
+@@ -1180,6 +1176,8 @@ static void vfio_iommu_backend_legacy_ops_class_init(ObjectClass *oc,
+ 
+     ops->dma_map = vfio_legacy_dma_map;
+     ops->dma_unmap = vfio_legacy_dma_unmap;
++    ops->attach_device = vfio_legacy_attach_device;
++    ops->detach_device = vfio_legacy_detach_device;
+     ops->set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking;
+     ops->query_dirty_bitmap = vfio_legacy_query_dirty_bitmap;
+     ops->add_window = vfio_legacy_add_section_window;
 -- 
 2.34.1
 
