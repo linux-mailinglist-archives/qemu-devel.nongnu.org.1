@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0E57CA9F8
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA377CA9F9
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:42:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsNqP-00079y-2c; Mon, 16 Oct 2023 09:41:17 -0400
+	id 1qsNqp-0007aQ-CX; Mon, 16 Oct 2023 09:41:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNqL-00079Q-O2
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:41:14 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNqj-0007Xa-SW
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:41:41 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNqK-00035P-8A
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:41:13 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40776b1ff73so22975695e9.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 06:41:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNqi-0003AC-Az
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:41:37 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40535597f01so44521255e9.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 06:41:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697463670; x=1698068470; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697463694; x=1698068494; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NKh0F+D8dit94+5d9dAK5KWUAxNU4UEikV/9Y2P3yGk=;
- b=ktfoiQTOqe5/kfo5XfvItxH3jIxhbGRzvYhO5NCUU9rs08djr7QjliK5xjZBMBdkwr
- z5DajP6J5H0VEgkSkMP442vaf3/MhJ7sbxEngVvMTLRTw3/tHb9ctt7R5SB7jI4QiqgE
- MXbiGoyn0H/itOCB2LxBSNBjJOANRcLH5aTdOVjl8fDmmJLSEs1c9e2t6WqWS2qSoAzc
- 923yR5HpO+4QqOEyWhwnVMb5+FHYAzxf6VVwFo1i+oE+dxblWkTUczdKURKhGhi/AFlh
- odmPHRIdM/3hRqtc3cD/omNldabvJN8uy7Jk+kLFKCg2Q5m1XlPTiL4x1J1OkmthqOWq
- 7GiA==
+ bh=3td5XKvj9cu+xRqG166qPeZDcmQvmSyl2FqVOMpkBsw=;
+ b=uYH3ljFwfZYnflSAYj8Zf851ETjJ7v347SCbmYof4ogeDdm6PljtO++rhc3YsHbCux
+ hQX8EPRZESMWbApn79GprFZMOFN+n4XAgE4rIF/TbIbbarCmCD+JyZEZsFoXMvTCJCgy
+ bEL2Sr9W3JKjI4mHlNYm3FCDcfQ4z7ZH+R3l//T70L2cS8L0T17h8wQ4ADAmltVyWMn+
+ bpspFvn+h1zOCMYrIn0PKpOocP+5uawFcnVZDsiPSiM5zRtkTEEHAVhidjCXcSNVYPNZ
+ 2vbI1sdQ/M0FFEF1uTEJ8n5gqWrxybPuybNkNd2qd7CGv7U4peMuP4Tu+zhsgNmul8Ez
+ ir3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697463670; x=1698068470;
+ d=1e100.net; s=20230601; t=1697463694; x=1698068494;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NKh0F+D8dit94+5d9dAK5KWUAxNU4UEikV/9Y2P3yGk=;
- b=eg0H1d8CT6m9KRTvyCuDby2lahhKQfN6E/fnpsD4+Iv79Pst5KKDRENI02fJL/zyPo
- 4o6wHEZ4j7siwi1JFYpos1opqFyK6F/TNwCOAqo0OBHrZv3t/9k9oYcI9pyq7H19CrKz
- 6kMk1rCr0Q6YBo0k3VVlFvX97r3kTr1k4LSaD/JzEK4bRIHUugkQkqjpZiMjMtZnmuHI
- g/DKdneBIXR0uqx6EX281EXUk3vbu8pS2WPcp5q9DkrB+r5TqKSa+OI90fgRga6URIxq
- 3UvPuEjf29oJWlD16HMMJ8wPbp+JCMk7XEyIFZVWp+tlqiOffx3M/Vn7D6bs4amZx+tS
- bECg==
-X-Gm-Message-State: AOJu0YyMCCGTLqJjlnd5gu1EMQDeCbfDSzA05khL9Xz5kbqyWo7/8ip0
- pO3ALIBcU7+dezllPCMJapmByg==
-X-Google-Smtp-Source: AGHT+IGyXtKTFpfi1UPodYlCpl7EyNiBrt+DTOAiJT1Ptjfu2KLbdHNZsXW67Uk4kZoVdgRa+/qrVQ==
-X-Received: by 2002:a05:600c:3657:b0:406:3f62:e583 with SMTP id
- y23-20020a05600c365700b004063f62e583mr28723057wmq.40.1697463669882; 
- Mon, 16 Oct 2023 06:41:09 -0700 (PDT)
+ bh=3td5XKvj9cu+xRqG166qPeZDcmQvmSyl2FqVOMpkBsw=;
+ b=DX1ag+kTvRcTrT5WMVMn1GoEh9AcrDQT/lJMpr7oz0txjSZG4QnaGqzMoJIw+iGXVG
+ ITEXeOB/kTHqfHqKEUxDYRTfaGZBW6ewbv3J9nG8B1JRhlTcdrf8R85aiIJHq3qOXMM8
+ nUA0sQmsM8sWjnImRNcXsPYXCyFNDmUfNiFzPugVdQgB37FTejTH4x1GZhtEUkNqCZSF
+ 1Iku053Ja19zIbeJ9nU1LipzLm5+gFk672E26wtQdBl2EwOcxbBv23EPbR5bzmS+9PC/
+ 5gVZWa7STWJsdXnkj9NQ7quQ+SvCNTFw671ct8aNZxS/vFUs8Z5QiSH/oehDkZvNVdQd
+ w31A==
+X-Gm-Message-State: AOJu0Yyn6er2VNyWBcLFwmZMZLT9Z1IuP4zlZBJfIdeg4l0WR371xNF0
+ 3N3ysoAPaDYS1a1Q9loO5FP53JEtCAwJ4/x6ED8=
+X-Google-Smtp-Source: AGHT+IH03Y/0gfhUj5GwgfTjRPzOdNKxfCU4ylDzJWNVQzvdx3xVlFBZIbVT5qiEovlgYA5vQ6Vzuw==
+X-Received: by 2002:a05:600c:b59:b0:401:b1c6:97dc with SMTP id
+ k25-20020a05600c0b5900b00401b1c697dcmr29554058wmr.23.1697463694388; 
+ Mon, 16 Oct 2023 06:41:34 -0700 (PDT)
 Received: from [192.168.69.115]
  (tbo33-h01-176-171-211-186.dsl.sta.abo.bbox.fr. [176.171.211.186])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a05600c488600b00405ee9dc69esm7095399wmp.18.2023.10.16.06.41.08
+ u10-20020a05600c19ca00b004068def185asm7260326wmq.28.2023.10.16.06.41.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 06:41:09 -0700 (PDT)
-Message-ID: <55c69393-6662-f32a-a6e8-93bd6d7c8cd9@linaro.org>
-Date: Mon, 16 Oct 2023 15:41:07 +0200
+ Mon, 16 Oct 2023 06:41:34 -0700 (PDT)
+Message-ID: <9a6e2a9c-2a2d-0ab6-6492-d291e24a78cb@linaro.org>
+Date: Mon, 16 Oct 2023 15:41:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] docs/sphinx: avoid invalid escape in Python string
+Subject: Re: [PATCH] tests/avocado: avoid invalid escape in Python string
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-References: <20231016094016.173598-1-pbonzini@redhat.com>
+References: <20231016094016.173598-3-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231016094016.173598-1-pbonzini@redhat.com>
+In-Reply-To: <20231016094016.173598-3-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -99,7 +99,7 @@ On 16/10/23 11:40, Paolo Bonzini wrote:
 > Cc: qemu-stable@nongnu.org
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   docs/sphinx/hxtool.py | 2 +-
+>   tests/avocado/virtio_check_params.py | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
