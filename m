@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9064B7CA0E0
+	by mail.lfdr.de (Postfix) with ESMTPS id A949B7CA0E1
 	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 09:40:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsIC8-0000ot-2C; Mon, 16 Oct 2023 03:39:20 -0400
+	id 1qsICh-0000tF-KQ; Mon, 16 Oct 2023 03:39:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsIBu-0000o1-DN
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:39:08 -0400
+ id 1qsICe-0000t0-6O
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:39:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsIBr-0007RQ-9g
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:39:04 -0400
+ id 1qsICb-0007Vb-3r
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:39:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697441942;
+ s=mimecast20190719; t=1697441987;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tGJ97Fejat4piQlLvIpzFv0XYjy3Tca6wBZAkCzzM+w=;
- b=fqJOTsh0IFNDd8abw/12EkfA9xZN1oS0P0+JD+ikdzE+yGXAB9GG21XeZidydRW9OR/e2u
- q4euDxCn9ZQTNJDHPdxLJCzbHAxP6DwQR08+0sI804asp6PmbqR9ox+2w6zLBWMUW4XQgY
- JoS/dRJTPGxyCn0zChBDsOSlgwFlGkA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=rg+kjp7DB2+M1cqUad7PMgEiBLLifuIIeejf8B4s2O8=;
+ b=TBN7nxpGFO+W1gLchysiOdUi2NGS+NU9HA2HJn5HwcuDrs5JX6LstCYuM3gRkk60YxNW7h
+ GUiuauUUBZmtmGlnQUHeCkUDT4xsBRg+Mz/E+mOR553i6RGW38Gjni76M7soTpIH5b6ZwQ
+ eFqn5LZWx2AlcZLWP6gm0rxezlo8DYQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-MeUPj-7fPiiDFrj1IlxF1w-1; Mon, 16 Oct 2023 03:39:00 -0400
-X-MC-Unique: MeUPj-7fPiiDFrj1IlxF1w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4065478afd3so33366005e9.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 00:39:00 -0700 (PDT)
+ us-mta-682-U6R2_71jOTKQndC96mMJJg-1; Mon, 16 Oct 2023 03:39:30 -0400
+X-MC-Unique: U6R2_71jOTKQndC96mMJJg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30e3ee8a42eso2654962f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 00:39:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697441939; x=1698046739;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tGJ97Fejat4piQlLvIpzFv0XYjy3Tca6wBZAkCzzM+w=;
- b=YBQbiu22tU17Fnldhc01hKwyzbyQpXQ/eZ7gAbTOYItatNhvxOIL9BL3o7TI9Zy/0G
- oW01POum0+1xkj/bYBnt9qzrhIAQX3Q1paquiKkuF3cCbOgEf3cxJk0H5IxsGv7CZQCl
- ShjFNXTXakdyzVAoztnV4Lh1tYcavGbFKzVw5WdOxNEuXXKRPfy3W0ZFeU8sT6QT70v4
- 4EZB0kpY9p6JlDuc4gWs4Xmmf+Ysc+arPKfTCrw5mBwOmiZ4DA3fD8dN1C6kgcHP55gT
- PAEsLTTnbQSThqn2nK9Z1hCG4P4wTi9CuWBrBUsWNJR+z8q4bC20KfHVM/Hx4firNukP
- eD1Q==
-X-Gm-Message-State: AOJu0YwXgzRo8Xj632rCQAHLtNaxRwAEV5qJPUJQC1bwEN/KfnK4/HGW
- FtCVIPgF+Lwz4zDyIG6WfeeUA4qRaZ+qsxAlXnxRD1bx/rn2Hl18Qg3e85WBgZ1CV3MIpKVzuhh
- V3u2aUAYvA5nTb7o=
-X-Received: by 2002:a7b:c858:0:b0:404:737a:17d with SMTP id
- c24-20020a7bc858000000b00404737a017dmr27045774wml.9.1697441939467; 
- Mon, 16 Oct 2023 00:38:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEB/vY++iEkBwLB3Yj5W43Xa+fK0+soJRLutDdBLEqd3PGsKMjHB/rdb0VwUhiG6Ae3wCCH/g==
-X-Received: by 2002:a7b:c858:0:b0:404:737a:17d with SMTP id
- c24-20020a7bc858000000b00404737a017dmr27045758wml.9.1697441939091; 
- Mon, 16 Oct 2023 00:38:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697441969; x=1698046769;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rg+kjp7DB2+M1cqUad7PMgEiBLLifuIIeejf8B4s2O8=;
+ b=pd7SyLj4KrJ8wugLCNmVAh1jecHOabfHOjjPplvM+pXIrkpl28V4Nln6VYGAAEEvDd
+ 87Z8fM0DulHbzMDVHj45Aw/Y3Wr+mhgomJ3fYrnC1BX80lt0uPkfZcxOv+yKkcfnbDny
+ DvD5IuJagdterqt2lqgNR/mtXTGhMUHUS523JVWYBgD/dLREQm9w+0PhQ5MUfwjLshFz
+ hpQdFXkKaRt/b23bAO/w1f0CUraLjZDJnW/SsZXD4fq5ud7kwgvkKxljqRaTUfbZs5Fe
+ K75+ZFeBJ5AzimyQztZ8joLHOA24Bb8wB1kZxQXDDtlTbSdMbTjKTCDyJePVvC0gJooc
+ /Deg==
+X-Gm-Message-State: AOJu0Yy/k4++3ShRdrQdBgf68a/EfcK1Dzcvyr65dksoWEedVsvX25p8
+ ASXducGgjnfEo01y69zV97tOLF89rLoKmAjay3z9jxWpUhNfmp9alOEDenp+3TE2mcmbdWDYwjD
+ kY/lgih/9Ef3P17c=
+X-Received: by 2002:a05:6000:993:b0:329:6e92:8d77 with SMTP id
+ by19-20020a056000099300b003296e928d77mr26438221wrb.51.1697441969707; 
+ Mon, 16 Oct 2023 00:39:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFLV/FUlk+un+JClY5CuzB34BEUs3AO6U6M/QwPzWGs1w33WhWSw1qXptB6qDyYWStUx/keCg==
+X-Received: by 2002:a05:6000:993:b0:329:6e92:8d77 with SMTP id
+ by19-20020a056000099300b003296e928d77mr26438202wrb.51.1697441969282; 
+ Mon, 16 Oct 2023 00:39:29 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- u18-20020adff892000000b00326b8a0e817sm7070566wrp.84.2023.10.16.00.38.58
+ w16-20020adf8bd0000000b0032d81837433sm13907490wra.30.2023.10.16.00.39.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 00:38:58 -0700 (PDT)
+ Mon, 16 Oct 2023 00:39:28 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Nikolay Borisov
- <nborisov@suse.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH RESEND 2/7] migration/ram: Refactor precopy ram loading
- code
-In-Reply-To: <20231011184604.32364-3-farosas@suse.de> (Fabiano Rosas's message
- of "Wed, 11 Oct 2023 15:45:59 -0300")
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>
+Subject: Re: [PATCH RESEND 3/7] migration/ram: Remove RAMState from
+ xbzrle_cache_zero_page
+In-Reply-To: <20231011184604.32364-4-farosas@suse.de> (Fabiano Rosas's message
+ of "Wed, 11 Oct 2023 15:46:00 -0300")
 References: <20231011184604.32364-1-farosas@suse.de>
- <20231011184604.32364-3-farosas@suse.de>
+ <20231011184604.32364-4-farosas@suse.de>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Mon, 16 Oct 2023 09:38:57 +0200
-Message-ID: <87sf6b3tke.fsf@secure.mitica>
+Date: Mon, 16 Oct 2023 09:39:27 +0200
+Message-ID: <87o7gz3tjk.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -107,19 +103,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fabiano Rosas <farosas@suse.de> wrote:
-> From: Nikolay Borisov <nborisov@suse.com>
+> 'rs' is not used in that function. It's a leftover from commit
+> 9360447d34 ("ram: Use MigrationStats for statistics").
 >
-> Extract the ramblock parsing code into a routine that operates on the
-> sequence of headers from the stream and another the parses the
-> individual ramblock. This makes ram_load_precopy() easier to
-> comprehend.
->
-> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > Reviewed-by: Peter Xu <peterx@redhat.com>
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
+
 queued.
 
 
