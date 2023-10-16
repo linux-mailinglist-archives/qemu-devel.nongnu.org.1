@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A437C9F63
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EBB7C9F6E
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:23:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsGuq-0000Nt-34; Mon, 16 Oct 2023 02:17:24 -0400
+	id 1qsH0b-0002Kc-K3; Mon, 16 Oct 2023 02:23:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsGud-0000Jz-1J
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:17:11 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qsH0S-0002KB-Qw
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:23:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsGuZ-000334-7s
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:17:09 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qsH0O-00042l-Hd
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:23:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697437025;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=G/x+QlMrNmwuu009JLUT5ogUV4i1hzzRdhfK+9fHQ0I=;
- b=ZfJlEPMfEalK9PDLsrPLK/NbjvGlymxHouEZ44azDKyfCQq7m7TuVSCgppZW64S8LMFMtA
- B3oXRonaCwhF71Us9svkV7WPNjUWDYMB9NZHtfAUQeBmY9vFiaC4pA7aXZzSHhH2jWzYW0
- yGPH8YZAppce1t5WbUHR/f1Vd3l8sZc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697437385;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=12k6B/Wg5mmR2vWY9vc/bgGujWdlLmC+rj9GPnpZx0w=;
+ b=fGK6ak5o/aEdaYKmfUY+ek3Flu6Vv2LQcGFoYpxGSxMV3Zrugjk6jeTtCXM6Xg9Ab9Bj66
+ BVIaab0L7bFDTsym9LuFUH7TO974xi+8x3+Wtr5fZp3a7tLaZ2yBF2XnOgMDpnlwRfrmkq
+ qlJDklTJfk53Zb6MWCEqDaWFLQKVg6M=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-FNRaRmygMCy6HH-RYRK3lg-1; Mon, 16 Oct 2023 02:17:03 -0400
-X-MC-Unique: FNRaRmygMCy6HH-RYRK3lg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32db6a28e24so346665f8f.0
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:17:03 -0700 (PDT)
+ us-mta-377-blbXxxoIMH2WA_hCzcK7AA-1; Mon, 16 Oct 2023 02:23:04 -0400
+X-MC-Unique: blbXxxoIMH2WA_hCzcK7AA-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-52f274df255so5722497a12.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:23:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697437022; x=1698041822;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=G/x+QlMrNmwuu009JLUT5ogUV4i1hzzRdhfK+9fHQ0I=;
- b=wGH15sSp68zGSHtEabhuNS+0j0S0yKCnuEMQ5x76eBVIpntNc0sy4yB+bHBVYzBlX8
- GY+fTJ+McKkWNLiog+oXsdxU2gM193oOu7oCtSDeDM4g1dsjTOIsHon/UVNlAzoerLZU
- /fpTBKMoPKL+NL6mf/crx3G8jm8s3smh4PS2ba3prdlPSNEv9CMdDhgCu5VrF8HB4ktd
- inU9aDbTG2b8KVkBZB226pX+mQWFvSQ79tRmWnk9KvwgjS518MBeokhtlx1m6DKgJVxy
- J3Jd2FozfLSifJrUb8T/yDCNKUfUgnzDkb6CzPAkuWZsEx9sGAupZ5wPn/sR8hhYNN+u
- eSbw==
-X-Gm-Message-State: AOJu0Yyis7I03fKO3qUUXrWHlJ9zzuuZwwsTOYd578Ge3dRjCB1KgWLL
- ATPjmDXIFlX/S4VwD9XPt0G2geyvgmL51Yd4bYaylIkIYAvKBkhmIg/19oSlXPjGxMO0NFftBVB
- oKG7QcjJEQ6urL6g=
-X-Received: by 2002:adf:fd0e:0:b0:31c:804b:5ec3 with SMTP id
- e14-20020adffd0e000000b0031c804b5ec3mr30265213wrr.67.1697437022379; 
- Sun, 15 Oct 2023 23:17:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHilLscyICQSc9qS5HBBDpXXV7wtD9c9TZ67bv858ptPrp4vN0/fu9HB2OrRQ++a4IVsbj2QA==
-X-Received: by 2002:adf:fd0e:0:b0:31c:804b:5ec3 with SMTP id
- e14-20020adffd0e000000b0031c804b5ec3mr30265194wrr.67.1697437022051; 
- Sun, 15 Oct 2023 23:17:02 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- bg12-20020a05600c3c8c00b00405959469afsm6288453wmb.3.2023.10.15.23.17.00
+ d=1e100.net; s=20230601; t=1697437382; x=1698042182;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=12k6B/Wg5mmR2vWY9vc/bgGujWdlLmC+rj9GPnpZx0w=;
+ b=KL1pCpRXtwti0vieq7XOUgRfANaal+8AyB1Og3OaOU68ctTPuyyybe+CGwqCHJEPdN
+ pPOw63lhHCvDerT8WW3jjYVRA1PgmnFakj+sWooAo0wH+Zd4pul7dSsP92bleePN5RFh
+ WhIr8VAA1tgVMsAor9atZbE2z2wtiuquy8zZdMOTJjbiHeHb2vQTc4NPhTqtttUwyv1s
+ 64hQ7hyWNs0lQoyIZgAtSCWWkiVOvgaaXjii05pFUg0pkE0TSZzs+7d8a3jYsJB1sdzk
+ mHHwu0LgEhIYCZxtD3OeaB6Q4OoIJ8qjlkcUJqD/7Lxp9Qe6+ehtDxYRlFoslbVwRJbH
+ zK+g==
+X-Gm-Message-State: AOJu0Yy6R5AQIKLnfaHclLkzP9+lDomkRugkU6qv0qNdZ7ccvssvLX3A
+ q1SYTgHx53q9NlTieNMdQIjVr9ToET1eMrMP/tsHA2rlubj/pkP8l0V5YH/fIzTXUfHYo1nOhjP
+ Gazu4Oe+iwdP7cLsFu35dLrcLPVIkp5KPM/1w/7wfOEfqAgdSYA1GmD0qemWY4GUgOxvcSYeaHo
+ o=
+X-Received: by 2002:a05:6402:35d4:b0:523:2e23:a0bf with SMTP id
+ z20-20020a05640235d400b005232e23a0bfmr5652064edc.11.1697437382638; 
+ Sun, 15 Oct 2023 23:23:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcOfvZCzJrgEPlImQ+nlcKAimWRbbew6/k5sGxtYmheXpnQIl98qNZtsUiJeRoJ1A0lKmGYQ==
+X-Received: by 2002:a05:6402:35d4:b0:523:2e23:a0bf with SMTP id
+ z20-20020a05640235d400b005232e23a0bfmr5652055edc.11.1697437382288; 
+ Sun, 15 Oct 2023 23:23:02 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ by smtp.gmail.com with ESMTPSA id
+ s9-20020a05640217c900b0053d9a862e2csm8147709edy.56.2023.10.15.23.23.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 23:17:00 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  fam@euphon.net,
- stefanha@redhat.com,  jsnow@redhat.com,  vsementsov@yandex-team.ru,
- eblake@redhat.com,  leobras@redhat.com,  farosas@suse.de,
- peterx@redhat.com,  pbonzini@redhat.com,  t.lamprecht@proxmox.com
-Subject: Re: [PATCH v5] migration: hold the BQL during setup
-In-Reply-To: <20231013105839.415989-1-f.ebner@proxmox.com> (Fiona Ebner's
- message of "Fri, 13 Oct 2023 12:58:39 +0200")
-References: <20231013105839.415989-1-f.ebner@proxmox.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Mon, 16 Oct 2023 08:16:59 +0200
-Message-ID: <87il775bxg.fsf@secure.mitica>
+ Sun, 15 Oct 2023 23:23:01 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Subject: [PATCH] tests/docker: avoid invalid escape in Python string
+Date: Mon, 16 Oct 2023 08:23:00 +0200
+Message-ID: <20231016062300.160160-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,62 +94,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fiona Ebner <f.ebner@proxmox.com> wrote:
+This is an error in Python 3.12; fix it by using a raw string literal.
 
-queued.
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ tests/docker/docker.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> This is intended to be a semantic revert of commit 9b09503752
-> ("migration: run setup callbacks out of big lock"). There have been so
-> many changes since that commit (e.g. a new setup callback
-> dirty_bitmap_save_setup() that also needs to be adapted now), it's
-> easier to do the revert manually.
->
-> For snapshots, the bdrv_writev_vmstate() function is used during setup
-> (in QIOChannelBlock backing the QEMUFile), but not holding the BQL
-> while calling it could lead to an assertion failure. To understand
-> how, first note the following:
->
-> 1. Generated coroutine wrappers for block layer functions spawn the
-> coroutine and use AIO_WAIT_WHILE()/aio_poll() to wait for it.
-> 2. If the host OS switches threads at an inconvenient time, it can
-> happen that a bottom half scheduled for the main thread's AioContext
-> is executed as part of a vCPU thread's aio_poll().
->
-> An example leading to the assertion failure is as follows:
->
-> main thread:
-> 1. A snapshot-save QMP command gets issued.
-> 2. snapshot_save_job_bh() is scheduled.
->
-> vCPU thread:
-> 3. aio_poll() for the main thread's AioContext is called (e.g. when
-> the guest writes to a pflash device, as part of blk_pwrite which is a
-> generated coroutine wrapper).
-> 4. snapshot_save_job_bh() is executed as part of aio_poll().
-> 3. qemu_savevm_state() is called.
-> 4. qemu_mutex_unlock_iothread() is called. Now
-> qemu_get_current_aio_context() returns 0x0.
-> 5. bdrv_writev_vmstate() is executed during the usual savevm setup
-> via qemu_fflush(). But this function is a generated coroutine wrapper,
-> so it uses AIO_WAIT_WHILE. There, the assertion
-> assert(qemu_get_current_aio_context() == qemu_get_aio_context());
-> will fail.
->
-> To fix it, ensure that the BQL is held during setup. While it would
-> only be needed for snapshots, adapting migration too avoids additional
-> logic for conditional locking/unlocking in the setup callbacks.
-> Writing the header could (in theory) also trigger qemu_fflush() and
-> thus bdrv_writev_vmstate(), so the locked section also covers the
-> qemu_savevm_state_header() call, even for migration for consistency.
->
-> The section around multifd_send_sync_main() needs to be unlocked to
-> avoid a deadlock. In particular, the multifd_save_setup() function calls
-> socket_send_channel_create() using multifd_new_send_channel_async() as a
-> callback and then waits for the callback to signal via the
-> channels_ready semaphore. The connection happens via
+diff --git a/tests/docker/docker.py b/tests/docker/docker.py
+index 688ef62989c..3b8a26704df 100755
+--- a/tests/docker/docker.py
++++ b/tests/docker/docker.py
+@@ -186,7 +186,7 @@ def _check_binfmt_misc(executable):
+               (binary))
+         return None, True
+ 
+-    m = re.search("interpreter (\S+)\n", entry)
++    m = re.search(r"interpreter (\S+)\n", entry)
+     interp = m.group(1)
+     if interp and interp != executable:
+         print("binfmt_misc for %s does not point to %s, using %s" %
+-- 
+2.41.0
 
 
