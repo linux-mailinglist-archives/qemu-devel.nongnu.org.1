@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2E47CACB8
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 17:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B8E7CACB7
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 17:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsP3C-0005YS-Ve; Mon, 16 Oct 2023 10:58:34 -0400
+	id 1qsP3O-0005aY-Io; Mon, 16 Oct 2023 10:58:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qsP3A-0005YC-CB
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:58:32 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsP3M-0005Za-BJ
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:58:44 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qsP34-0005JP-H9
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:58:32 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-406609df1a6so45009605e9.3
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 07:58:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsP3K-0005Ll-H4
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:58:44 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-9becde9ea7bso415190166b.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 07:58:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697468305; x=1698073105; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gchKXca8BdcNkCJLVcpk1Sa//72aI4D9Ho9Ts3dG8+k=;
- b=LTYOD+O3R/WUSSIjF1lwAHspEdptwvpmPadZdSxfL6L5kedsFAtpiduUzJuQT+wpCY
- 7hH4pQbxogkjNBGJOjFGZ2akboRiDyNGSRnRlTUwLdJKBZEi7OZeMI0oBiI/b8hjQZie
- VJcdOvCcF7RJuPBp/eDyJhmMjRCBqDrflIOSglocu0Je9vk59FpUpUru6Px8ZuqkPuL/
- Qxb2Iz5nUrEwj5DU+6Jn0VaEdmDCTSvtiOW94xWTdJ5T5QPmhY0dQgU/nkX5JmmiyGjF
- ZIjNjvT2quFoOaEtayu/VT2N3ngef8L/dTBmSjJYEUORJOZaS5edZu1bEmJ3xf2Y1Q/e
- pdCA==
+ d=linaro.org; s=google; t=1697468321; x=1698073121; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=diUamlBHjZf6xyEHj/pxt4Vry4evnH5aDuUnyiLvoHM=;
+ b=d7VKU/eZBXOmUWoClWGA8ynJyT09EqQpSK3H1LoFxJT5Ws7nJpxtv4qe9VQjVD+/Gi
+ N4pP2uHncLdkriKccTfuWZk3U2T1yMI5mKX00/syn4c9TmhxAWmLrFZYC+n37E3StHaw
+ 9Ct7HiPTc+kqIm3S5sMNAxoRkoL5B4EXxwnZUAS99SlVHrevDUTZ/ndyt84sGA8v177S
+ v6KJukZ/bXlPBK0m//vln5tQ8446in6T3goreXyrU1HRhnYbcFQSH51lTiWnnbX4L4u9
+ 9TI8fzS9mUx0nPmR2/rsQlEGGAoGuDGbZ5NRSXHQYm385UNZqaVNaM7H6ainL9gYnuYI
+ q36Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697468305; x=1698073105;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=gchKXca8BdcNkCJLVcpk1Sa//72aI4D9Ho9Ts3dG8+k=;
- b=WLovzJJAIV/3eRRIAGP5sfMZPcaet8qcyDaHNOvJyRu9BRgrlqrksVlwnQa8v1tgdp
- B8UUtuQotJfKGDGANqUgdWLcHJPnjlKa8sdKDIErCoBR2uziEs1xd1AC7FLcKGHAcMzu
- UnHJBBTDGhLPZztKy24vmxv5dVrSjkh8aF5l5qBh1835mf52bU69Nf32v6Ip5eK1aBJi
- IE0r0ZEbPUwYNbOGKMxqT/R4q+yYtcG7cMhe8g2HjBy8XX/2yoUaWXjq2luiIp9SvEjB
- NTFYWaSLeYnYYYCaN9oe4tx6hDvVooe7Cpsxsh6I7JDZgXfF1Agi9Avg4xpYgM3adykz
- zpIw==
-X-Gm-Message-State: AOJu0YwQ51eyfmaZas3/LXpclqRN4yR085WpipJmFJjEBvLm4s059ok5
- twNZS8NoMtYtSEPmNhYthRHEdw==
-X-Google-Smtp-Source: AGHT+IGRXhzNhWXIrTEwYY2+eNlcVVNAwNXRiKDkQyyQ2y9+BRoTo3BfCBWIlL5TeZrIrjsBl2DGZQ==
-X-Received: by 2002:a05:600c:290:b0:406:177e:5df7 with SMTP id
- 16-20020a05600c029000b00406177e5df7mr29368221wmk.29.1697468304782; 
- Mon, 16 Oct 2023 07:58:24 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- n23-20020a7bcbd7000000b0040536dcec17sm7288270wmi.27.2023.10.16.07.58.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 07:58:24 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id E0F161FFBB;
- Mon, 16 Oct 2023 15:58:23 +0100 (BST)
-References: <20231003183058.1639121-1-richard.henderson@linaro.org>
- <20231003183058.1639121-12-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, fei2.wu@intel.com, "Vanderson M. do Rosario"
- <vandersonmr2@gmail.com>
-Subject: Re: [PATCH v17 11/16] accel/tcg: Add tb_stats_collect and
- tb_stats_dump
-Date: Mon, 16 Oct 2023 15:48:10 +0100
-In-reply-to: <20231003183058.1639121-12-richard.henderson@linaro.org>
-Message-ID: <87cyxed374.fsf@linaro.org>
+ d=1e100.net; s=20230601; t=1697468321; x=1698073121;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=diUamlBHjZf6xyEHj/pxt4Vry4evnH5aDuUnyiLvoHM=;
+ b=vxxfyEF43z/rJrx2mDjry0qxmUMjPhD0DhFOFCMA+OkLj1VFaQNjISy40sDE27ob6b
+ d2SOOWJZbMNG2JDmSnMZPD8URns+t+iksoiM74q7W97K/NGrKJVVtccMJZUnWfv8ZuR1
+ Bt6LwX+XEbmbDCQgxgLKLcsfFbd8GkdXrYIkHkDXNfKJCpqwWKOL4RMY9SjeuhISo/j9
+ gQirSv07XR8uzOvOIyQONJ5uPtfz+0D4uiJ5CVTLFKU1V+EK3TKydAccU/PezRcT+T0n
+ 9tBsTr4ReyXO3DwAWB/khPYi9NOZuXaM7CMgRG9TlWT06BkyjzD84xWEMDYkedJ+Vv4T
+ fBCA==
+X-Gm-Message-State: AOJu0YzUAwahYt3P+FnxD/lY1UcwYJ6UsmizrQjPIy4vvGk6yJY4z2lb
+ BKjzQhQwcooDj8mch1fiIvQRfEyAIVnx5EhLGYnfo4W5JjjgJ0RC
+X-Google-Smtp-Source: AGHT+IGKspy9MZEuY83DIJOZy8XLc4dkXkHkShz5qYNEJnM5Nod1n4w2QLB4qK1YGIiQFpDffCX+5QFasbSTxiDg8cc=
+X-Received: by 2002:a17:907:c26:b0:9ad:8a96:ad55 with SMTP id
+ ga38-20020a1709070c2600b009ad8a96ad55mr7717305ejc.14.1697468320868; Mon, 16
+ Oct 2023 07:58:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+References: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
+ <87o7h2hey5.fsf@pond.sub.org>
+ <CAFEAcA-LQP_dQ0mjeNe8nOtMVy22iwJt2yfG5m_f4oQjQ9ts7w@mail.gmail.com>
+In-Reply-To: <CAFEAcA-LQP_dQ0mjeNe8nOtMVy22iwJt2yfG5m_f4oQjQ9ts7w@mail.gmail.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Mon, 16 Oct 2023 17:58:28 +0300
+Message-ID: <CAAjaMXYfu2rVVUkwAczqQRHxgFrYr=hQHP_UGn7LVUks+DFz4A@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/78] Strict disable implicit fallthrough
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
+ "open list:ARM SMMU" <qemu-arm@nongnu.org>,
+ "open list:Block Jobs" <qemu-block@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000487ca90607d6a4f7"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,198 +88,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000487ca90607d6a4f7
+Content-Type: text/plain; charset="UTF-8"
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+Hello Peter,
 
-> From: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>
+On Mon, 16 Oct 2023, 17:13 Peter Maydell, <peter.maydell@linaro.org> wrote:
+
+> On Fri, 13 Oct 2023 at 13:42, Markus Armbruster <armbru@redhat.com> wrote:
+> >
+> > Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+> >
+> > > Hello,
+> > >
+> > > This RFC is inspired by the kernel's move to -Wimplicit-fallthrough=3
+> > > back in 2019.[0]
+> > > We take one step (or two) further by increasing it to 5 which rejects
+> > > fall through comments and requires an attribute statement.
+> > >
+> > > [0]:
+> > >
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a035d552a93b
+> > >
+> > > The line differences are not many, but they spread all over different
+> > > subsystems, architectures and devices. An attempt has been made to
+> split
+> > > them in cohesive patches to aid post-RFC review. Part of the RFC is to
+> > > determine whether these patch divisions needs improvement.
+> > >
+> > > Main questions this RFC poses
+> > > =============================
+> > >
+> > > - Is this change desirable and net-positive.
+> >
+> > Unwanted fallthrough is an easy mistake to make, and
+> > -Wimplicit-fallthrough=N helps avoid it.  The question is how far up we
+> > need to push N.  Right now we're at N=2.  Has unwanted fallthrough been
+> > a problem?
 >
-> These functions will be used together to output statistics.
+> Mmm, this is my opinion I think. We have a mechanism for
+> catching "forgot the 'break'" already (our =2 setting) and
+> a way to say "intentional" in a fairly natural way (add the
+> comment). Does pushing N up any further gain us anything
+> except a load of churn?
 >
-> Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Signed-off-by: Fei Wu <fei2.wu@intel.com>
-> [rth: Split out of a larger patch]
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  include/tcg/tb-stats.h |  25 +++++++++
->  accel/tcg/tb-stats.c   | 119 +++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 144 insertions(+)
+> Also, the compiler is not the only thing that processes our
+> code: Coverity also looks for "unexpected fallthrough" issues,
+> so if we wanted to switch away from our current practice we
+> should check whether what we're switching to is an idiom
+> that Coverity recognises.
 >
-> diff --git a/include/tcg/tb-stats.h b/include/tcg/tb-stats.h
-> index 1ec0d13eff..edee73b63b 100644
-> --- a/include/tcg/tb-stats.h
-> +++ b/include/tcg/tb-stats.h
-> @@ -129,4 +129,29 @@ void tb_stats_reset_tbs(void);
->  TBStatistics *tb_stats_lookup(tb_page_addr_t phys_pc, vaddr pc,
->                                uint32_t flags, uint64_t flags2);
->=20=20
-> +/**
-> + * tb_stats_collect:
-> + * @max: maximum number of results
-> + * @sort: sort function
-> + *
-> + * Collect all TBStatistics and return the first @max items,
-> + * as dictated by the sort criteria.
-> + */
-> +GPtrArray *tb_stats_collect(unsigned max, GCompareFunc sort);
-> +
-> +/* Sort functions for tb_stats_collect. */
-> +gint tb_stats_sort_by_spills(gconstpointer, gconstpointer);
-> +gint tb_stats_sort_by_coverage(gconstpointer, gconstpointer);
-> +gint tb_stats_sort_by_hg(gconstpointer, gconstpointer);
-> +
-> +/**
-> + * tb_stats_dump:
-> + * @s: structure to dump
-> + * @index: label to emit
-> + *
-> + * Return a string with the rendering of the data in @s;
-> + * @index is included in the output.
-> + */
-> +GString *tb_stats_dump(TBStatistics *s, unsigned index);
-> +
->  #endif /* TCG_TB_STATS_H */
-> diff --git a/accel/tcg/tb-stats.c b/accel/tcg/tb-stats.c
-> index 424c9a90ec..b2c9445b67 100644
-> --- a/accel/tcg/tb-stats.c
-> +++ b/accel/tcg/tb-stats.c
-> @@ -83,3 +83,122 @@ TBStatistics *tb_stats_lookup(tb_page_addr_t phys_pc,=
- vaddr pc,
->      }
->      return s;
->  }
-> +
-> +static void tb_stats_collect_iter(void *p, uint32_t hash, void *u)
-> +{
-> +    g_ptr_array_add(u, p);
-> +}
-> +
-> +static void calculate_coverages(GPtrArray *array)
-> +{
-> +    double total_exec_count =3D 0;
-> +    guint i, n =3D array->len;
-> +
-> +    for (i =3D 0; i < n; ++i) {
-> +        TBStatistics *s =3D g_ptr_array_index(array, i);
-> +        double avg_insns =3D 1;
-> +        double exec_count;
-> +
-> +        if (s->translations.total) {
-> +            avg_insns =3D s->code.num_guest_inst / (double)s->translatio=
-ns.total;
-> +        }
-> +        exec_count =3D ((double)s->executions.atomic + s->executions.nor=
-mal)
-> +                     / avg_insns;
-> +        s->executions.coverage =3D exec_count;
-> +        total_exec_count +=3D exec_count;
-> +    }
-> +
-> +    for (i =3D 0; i < n; ++i) {
-> +        TBStatistics *s =3D g_ptr_array_index(array, i);
-> +        s->executions.coverage /=3D total_exec_count;
-> +    }
-> +}
-> +
-> +GPtrArray *tb_stats_collect(unsigned max, GCompareFunc sort)
-> +{
-> +    GPtrArray *array =3D g_ptr_array_new();
-> +
-> +    /*
-> +     * Collect all TBStatistics and sort.
-> +     * Note that coverage data requires both execution and jit collectio=
-n.
-> +     */
-> +    qht_iter(&tb_ctx.stats, tb_stats_collect_iter, array);
-> +    calculate_coverages(array);
-> +    g_ptr_array_sort(array, sort);
-> +
-> +    /* Truncate to the first MAX entries. */
-> +    if (max < array->len) {
-> +        g_ptr_array_set_size(array, max);
-> +    }
-> +    return array;
-> +}
-> +
-> +gint tb_stats_sort_by_spills(gconstpointer p1, gconstpointer p2)
-> +{
-> +    const TBStatistics *s1 =3D *(TBStatistics **)p1;
-> +    const TBStatistics *s2 =3D *(TBStatistics **)p2;
-> +    double c1 =3D (double)s1->code.spills / s1->translations.total;
-> +    double c2 =3D (double)s2->code.spills / s2->translations.total;
-> +
-> +    return c1 < c2 ? 1 : c1 =3D=3D c2 ? 0 : -1;
-> +}
-> +
-> +gint tb_stats_sort_by_coverage(gconstpointer p1, gconstpointer p2)
-> +{
-> +    const TBStatistics *s1 =3D *(TBStatistics **)p1;
-> +    const TBStatistics *s2 =3D *(TBStatistics **)p2;
-> +    double c1 =3D s1->executions.coverage;
-> +    double c2 =3D s2->executions.coverage;
-> +
-> +    return c1 < c2 ? 1 : c1 =3D=3D c2 ? 0 : -1;
-> +}
-> +
-> +gint tb_stats_sort_by_hg(gconstpointer p1, gconstpointer p2)
-> +{
-> +    const TBStatistics *s1 =3D *(TBStatistics **)p1;
-> +    const TBStatistics *s2 =3D *(TBStatistics **)p2;
-> +    double c1 =3D (double)s1->code.out_len / s1->code.num_guest_inst;
-> +    double c2 =3D (double)s2->code.out_len / s2->code.num_guest_inst;
-> +
-> +    return c1 < c2 ? 1 : c1 =3D=3D c2 ? 0 : -1;
-> +}
-> +
-> +GString *tb_stats_dump(TBStatistics *s, unsigned index)
-> +{
-> +    unsigned n =3D s->tbs->len;
-> +    unsigned invalid =3D 0;
-> +    GString *buf;
-> +
-> +    for (unsigned i =3D 0; i < n; ++i) {
-> +        TranslationBlock *tb =3D g_ptr_array_index(s->tbs, i);
-> +        if (tb->cflags & CF_INVALID) {
-> +            invalid +=3D 1;
-> +        }
-> +    }
-> +
-> +    buf =3D g_string_new("");
-> +    g_string_append_printf(buf,
-> +        "TB id:%u | phys:0x" TB_PAGE_ADDR_FMT " virt=3D%" VADDR_PRIx
-> +        " flags:0x%08x invalid:%u/%u\n",
-> +        index, s->phys_pc, s->pc, s->flags, invalid, n - invalid);
 
-This is a little unclear in the output maybe:
+It is a code style change as the cover letter mentions, it's not related to
+the static analysis itself.
 
-  flags:0x%08x translations:%u (of which %u invalidated)
+--
+Manos
 
-and adjust the names appropriately?
+>
 
-> +
-> +    if (tb_stats_enabled & TB_STATS_EXEC) {
-> +        g_string_append_printf(buf,
-> +            "\t| exec:%lu/%lu coverage:%.2f%%\n",
-> +            s->executions.normal, s->executions.atomic,
-> +            s->executions.coverage * 100);
-> +    }
-> +
-> +    if (tb_stats_enabled & TB_STATS_JIT) {
-> +        g_string_append_printf(buf,
-> +            "\t| trans:%lu inst: g:%lu op:%lu op_opt:%lu spills:%ld\n"
-> +            "\t| h/g (host bytes / guest insts): %f\n",
-> +            s->translations.total,
-> +            s->code.num_guest_inst / s->translations.total,
-> +            s->code.num_tcg_ops / s->translations.total,
-> +            s->code.num_tcg_ops_opt / s->translations.total,
-> +            s->code.spills / s->translations.total,
-> +            (double)s->code.out_len / s->code.num_guest_inst);
-> +    }
-> +    return buf;
-> +}
+--000000000000487ca90607d6a4f7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"auto"><div>Hello Peter,<br><br><div class=3D"gmail_quote"><div =
+dir=3D"ltr" class=3D"gmail_attr">On Mon, 16 Oct 2023, 17:13 Peter Maydell, =
+&lt;<a href=3D"mailto:peter.maydell@linaro.org">peter.maydell@linaro.org</a=
+>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0=
+ 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On Fri, 13 Oct 2023 at=
+ 13:42, Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" target=
+=3D"_blank" rel=3D"noreferrer">armbru@redhat.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Emmanouil Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidianakis@lina=
+ro.org" target=3D"_blank" rel=3D"noreferrer">manos.pitsidianakis@linaro.org=
+</a>&gt; writes:<br>
+&gt;<br>
+&gt; &gt; Hello,<br>
+&gt; &gt;<br>
+&gt; &gt; This RFC is inspired by the kernel&#39;s move to -Wimplicit-fallt=
+hrough=3D3<br>
+&gt; &gt; back in 2019.[0]<br>
+&gt; &gt; We take one step (or two) further by increasing it to 5 which rej=
+ects<br>
+&gt; &gt; fall through comments and requires an attribute statement.<br>
+&gt; &gt;<br>
+&gt; &gt; [0]:<br>
+&gt; &gt; <a href=3D"https://git.kernel.org/pub/scm/linux/kernel/git/torval=
+ds/linux.git/commit/?id=3Da035d552a93b" rel=3D"noreferrer noreferrer" targe=
+t=3D"_blank">https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux=
+.git/commit/?id=3Da035d552a93b</a><br>
+&gt; &gt;<br>
+&gt; &gt; The line differences are not many, but they spread all over diffe=
+rent<br>
+&gt; &gt; subsystems, architectures and devices. An attempt has been made t=
+o split<br>
+&gt; &gt; them in cohesive patches to aid post-RFC review. Part of the RFC =
+is to<br>
+&gt; &gt; determine whether these patch divisions needs improvement.<br>
+&gt; &gt;<br>
+&gt; &gt; Main questions this RFC poses<br>
+&gt; &gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D<br>
+&gt; &gt;<br>
+&gt; &gt; - Is this change desirable and net-positive.<br>
+&gt;<br>
+&gt; Unwanted fallthrough is an easy mistake to make, and<br>
+&gt; -Wimplicit-fallthrough=3DN helps avoid it.=C2=A0 The question is how f=
+ar up we<br>
+&gt; need to push N.=C2=A0 Right now we&#39;re at N=3D2.=C2=A0 Has unwanted=
+ fallthrough been<br>
+&gt; a problem?<br>
+<br>
+Mmm, this is my opinion I think. We have a mechanism for<br>
+catching &quot;forgot the &#39;break&#39;&quot; already (our =3D2 setting) =
+and<br>
+a way to say &quot;intentional&quot; in a fairly natural way (add the<br>
+comment). Does pushing N up any further gain us anything<br>
+except a load of churn?<br>
+<br>
+Also, the compiler is not the only thing that processes our<br>
+code: Coverity also looks for &quot;unexpected fallthrough&quot; issues,<br=
+>
+so if we wanted to switch away from our current practice we<br>
+should check whether what we&#39;re switching to is an idiom<br>
+that Coverity recognises.<br></blockquote></div></div><div dir=3D"auto"><br=
+></div><div dir=3D"auto">It is a code style change as the cover letter ment=
+ions, it&#39;s not related to the static analysis itself.</div><div dir=3D"=
+auto"><br></div><div dir=3D"auto">--</div><div dir=3D"auto">Manos</div><div=
+ dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" =
+style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+</blockquote></div></div></div>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+--000000000000487ca90607d6a4f7--
 
