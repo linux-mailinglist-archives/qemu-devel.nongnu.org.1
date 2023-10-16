@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44477CA469
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF3F7CA468
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:41:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsK5N-0007OC-9T; Mon, 16 Oct 2023 05:40:29 -0400
+	id 1qsK5O-0007Rn-7u; Mon, 16 Oct 2023 05:40:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsK5K-0007Id-Ie
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:26 -0400
+ id 1qsK5L-0007MG-Ox
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsK5H-0002bo-Qj
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:26 -0400
+ id 1qsK5J-0002dY-Rf
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697449222;
+ s=mimecast20190719; t=1697449225;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=osYb4P7yKsOqBYf2AssoFGvXP8FQaTw6Vd8tofb+mDQ=;
- b=f+5pr/eSVc23/zMqxi0eykREJ+TiZeWR0jizKdggzeRVhXqTovm+KS2qJNzRVXJAISYlP+
- 2L4dvyvm4SoiAKoxeW/3fB+ycfSxXR8a+xZk4Fas2t3qaBXeTcqPqyPHrwF55Xa+vfEWsM
- Y+Ym1p1zQ6JNmg8eN/zA8AxjmUOIByo=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kigZ1gdB5H+XjWPX4HIf/8kVEM1VbLJvt/chkAEw+1Y=;
+ b=WgIYvUvgK+bGnhMlxXJ4scQIH/uBShj+oBUORBc06lA2fj+TH9RuJIoURe/sVMrwP2AlU8
+ mGa6NOD+0TnnvdYe2YQHBi7WDLOTMpEY1VezEHJ9e6ZjDqkm9AE9s7DDgWSfC9efR2mL6Q
+ ipEWCZq/hViBcT1GMVJV2yI2d0pdd1M=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-345-zeI8fWo4MGKhi9uVQtbiOw-1; Mon, 16 Oct 2023 05:40:20 -0400
-X-MC-Unique: zeI8fWo4MGKhi9uVQtbiOw-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9bd86510329so307445366b.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:40:20 -0700 (PDT)
+ us-mta-79-CeEe8gdsMKOA92VDYzhI_g-1; Mon, 16 Oct 2023 05:40:22 -0400
+X-MC-Unique: CeEe8gdsMKOA92VDYzhI_g-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-50796a3ac70so3146714e87.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:40:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697449219; x=1698054019;
+ d=1e100.net; s=20230601; t=1697449220; x=1698054020;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=osYb4P7yKsOqBYf2AssoFGvXP8FQaTw6Vd8tofb+mDQ=;
- b=AHJGHJf6epUSKqXH41Oh2ItatT3G7dRKFd1apk1udd4/sRAL6ocHAb/wFSQObbfQWU
- dv0x50DUjkSVsJphfZ68VHTrnmlAOje3cXZDgKkwZzqA+CFQiDXkzaRvUkcL/qBi/Lbj
- BRSA4iFFyFb8UwA2P1H8Am9eDO23tFCs1zq5g1wc2nOQK9wMuXdoQvaG5mSP+R311cW1
- 4apgvlDGuyIODF7vrq0NkvKY6AwP4hAT1IOz/qxBC1F8SrKc8y0EJLgLpUqu+Ufy1kgo
- CO4DWNMPSmYKKAOtm03OM3xbyaKUm/0/hGoMMLss7i7qsl92Yeq5Mr0BFRxaTfKiqkl3
- hn6w==
-X-Gm-Message-State: AOJu0YzOHzcidQ2ALC92jfwwcwa4Rk7v0L0PJH17JETQ66muiesvra1Y
- qf2gYldQa2UQ3fkduqMuAylI0QWIXY55c/OK7kccFanmBW37EttsvRNpq4wkDJJ/rtAP1JZlhVQ
- gWWzUtNm5GPvW818bUCu8yAFc+extdGpSNQzCKuF4FnRQLErELGvtfxK7kBOsrWMOYIXIXEWO3g
- Q=
-X-Received: by 2002:a17:907:7f0c:b0:9be:fc31:8cd4 with SMTP id
- qf12-20020a1709077f0c00b009befc318cd4mr5762838ejc.18.1697449218955; 
- Mon, 16 Oct 2023 02:40:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHozOv2DBZUfTE2646RHFEa1J495wqcgnalCB+LT5F/NVfJHMEDPrY6Kkipvd8Oo2XhpQ60Eg==
-X-Received: by 2002:a17:907:7f0c:b0:9be:fc31:8cd4 with SMTP id
- qf12-20020a1709077f0c00b009befc318cd4mr5762823ejc.18.1697449218492; 
- Mon, 16 Oct 2023 02:40:18 -0700 (PDT)
+ bh=kigZ1gdB5H+XjWPX4HIf/8kVEM1VbLJvt/chkAEw+1Y=;
+ b=TLKs4CQ58Esq5knLCViSvmDJJirmB+exxVC6VYIA0Ved5EMtaUHVWxX3Ao5LGVag4H
+ 41Brwdxc5fdjOKDPRgYZueEkAuIOSRKOarfkPa+NMmrfO9+fJYjrI4DHu4PkRjlglGwr
+ QYUSIBOuLABtn2x6Mh/RWR3ldinfy2uvCc/klyM5x8mr8U2qYxwLfZsIDWLJ8UGrZOZ4
+ m4QK0YliN/XXaVmSGlxYExAuBw6QYRx5KwfCIQISKvgfExDXTfl7kPd3D3JOvXk8t/0M
+ XCzYrQTcaw7iWstr5CyKDKlg8RE3JNPgc5/5TiwgcsZf8rR4B3BpEGPuMYFI+QnpZdWr
+ U/Cw==
+X-Gm-Message-State: AOJu0YzGg9wsxSt4PE+IMjXd5b20buftrQqwTjswTasGQAaKwFvZj79c
+ ORiD/geItJKnREwccck0Wv4E6pWmg40Snj7oziTWAdnwfG2Ep9cwPG+Sg1Ozv06oYm6ci8fWsM5
+ Cpe7w9tz13arVgIvJgw/iNQtuh7+7cZ9tWhG3a8pgI8m57narRNYkXxZ9H+kroLZKS3iVPU2FGH
+ A=
+X-Received: by 2002:a05:6512:794:b0:502:cc8d:f1fc with SMTP id
+ x20-20020a056512079400b00502cc8df1fcmr24450511lfr.37.1697449220648; 
+ Mon, 16 Oct 2023 02:40:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHq6IQTY12+K3Foy9aJtYmNjNFklSwiLQUq6l9Z4eNO7JaJ03SFEksijgqJNE9zyVR+IsyBxw==
+X-Received: by 2002:a05:6512:794:b0:502:cc8d:f1fc with SMTP id
+ x20-20020a056512079400b00502cc8df1fcmr24450498lfr.37.1697449220232; 
+ Mon, 16 Oct 2023 02:40:20 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- x15-20020a170906710f00b009ae5e46210asm3702447ejj.99.2023.10.16.02.40.17
+ bt8-20020a0564020a4800b0053e4783afbasm4529077edb.63.2023.10.16.02.40.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 02:40:17 -0700 (PDT)
+ Mon, 16 Oct 2023 02:40:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-Subject: [PATCH] docs/sphinx: avoid invalid escape in Python string
-Date: Mon, 16 Oct 2023 11:40:12 +0200
-Message-ID: <20231016094016.173598-1-pbonzini@redhat.com>
+Subject: [PATCH] target/hexagon: avoid invalid escape in Python string
+Date: Mon, 16 Oct 2023 11:40:13 +0200
+Message-ID: <20231016094016.173598-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -102,22 +102,31 @@ This is an error in Python 3.12; fix it by using a raw string literal.
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/sphinx/hxtool.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/hexagon/hex_common.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/sphinx/hxtool.py b/docs/sphinx/hxtool.py
-index fb0649a3d5b..9f6b9d87dcc 100644
---- a/docs/sphinx/hxtool.py
-+++ b/docs/sphinx/hxtool.py
-@@ -49,7 +49,7 @@ def serror(file, lnum, errtext):
+diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
+index dce1b852a7b..0da65d6dd6a 100755
+--- a/target/hexagon/hex_common.py
++++ b/target/hexagon/hex_common.py
+@@ -45,7 +45,7 @@ def uniquify(seq):
+ immre = re.compile(r"[#]([rRsSuUm])(\d+)(?:[:](\d+))?")
+ reg_or_immre = re.compile(
+     r"(((?<!DUP)[MNRCOPQXSGVZA])([stuvwxyzdefg]+)"
+-    + "([.]?[LlHh]?)(\d+S?))|([#]([rRsSuUm])(\d+)[:]?(\d+)?)"
++    r"([.]?[LlHh]?)(\d+S?))|([#]([rRsSuUm])(\d+)[:]?(\d+)?)"
+ )
+ relimmre = re.compile(r"[#]([rR])(\d+)(?:[:](\d+))?")
+ absimmre = re.compile(r"[#]([sSuUm])(\d+)(?:[:](\d+))?")
+@@ -337,7 +337,7 @@ def read_attribs_file(name):
  
- def parse_directive(line):
-     """Return first word of line, if any"""
--    return re.split('\W', line)[0]
-+    return re.split(r'\W', line)[0]
  
- def parse_defheading(file, lnum, line):
-     """Handle a DEFHEADING directive"""
+ def read_overrides_file(name):
+-    overridere = re.compile("#define fGEN_TCG_([A-Za-z0-9_]+)\(.*")
++    overridere = re.compile(r"#define fGEN_TCG_([A-Za-z0-9_]+)\(.*")
+     for line in open(name, "rt").readlines():
+         if not overridere.match(line):
+             continue
 -- 
 2.41.0
 
