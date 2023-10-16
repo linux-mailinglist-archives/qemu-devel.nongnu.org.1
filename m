@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7147CB542
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 23:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FBB7CB54C
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 23:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsV7T-0002J4-RC; Mon, 16 Oct 2023 17:27:23 -0400
+	id 1qsVAN-0003Ee-O4; Mon, 16 Oct 2023 17:30:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qsV7Q-0002Id-Qu; Mon, 16 Oct 2023 17:27:20 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qsVAL-0003E3-0E
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 17:30:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qsV7P-0002OJ-3k; Mon, 16 Oct 2023 17:27:20 -0400
-Received: from lhrpeml500002.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S8VYL4Hsxz6K91l;
- Tue, 17 Oct 2023 05:26:46 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500002.china.huawei.com (7.191.160.78) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 16 Oct 2023 22:27:15 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Mon, 16 Oct 2023 22:27:15 +0100
-To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "will@kernel.org"
- <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
- <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
- <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
- <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
- <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
- <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
- "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
- <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
- "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
- <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "lixianglai@loongson.cn" <lixianglai@loongson.cn>
-Subject: RE: [PATCH RFC V2 11/37] hw/acpi: Add ACPI CPU hotplug init stub
-Thread-Topic: [PATCH RFC V2 11/37] hw/acpi: Add ACPI CPU hotplug init stub
-Thread-Index: AQHZ8GF0jUEtMAUMjkC2sMOxOut0R7AvU9eAgB25x1A=
-Date: Mon, 16 Oct 2023 21:27:15 +0000
-Message-ID: <13766047efd84bf0b23dbc070578c320@huawei.com>
-References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-12-salil.mehta@huawei.com>
- <dd1028a6-e229-07e3-95e8-ba636dc0651e@redhat.com>
-In-Reply-To: <dd1028a6-e229-07e3-95e8-ba636dc0651e@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.158.41]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qsVAI-0002m8-WB
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 17:30:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697491816;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8spe+gfMUm0LxTT7xkyr02/+h3t27Ghv8MUKw4Sk2jA=;
+ b=Njke7WVyHJ2cI+9KZbMrc94ztwPC1XLa7fJGct6Vi+ABl9K3Y/lR4XN+9coiNxBB8zade1
+ lDqf4fuhb/F5gu4b5W73EFra+hN9aMBjdO4DDVcFgTN1/f07E5mHaeKdqkR5Bc7KhW9sBu
+ 7BOYsZlxlNARKks49mEUm+16ooeCUhE=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-241-g2WUd5YOPhalfwKNowj_3w-1; Mon, 16 Oct 2023 17:30:10 -0400
+X-MC-Unique: g2WUd5YOPhalfwKNowj_3w-1
+Received: by mail-vs1-f72.google.com with SMTP id
+ ada2fe7eead31-457ba010ae1so3766228137.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 14:30:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697491809; x=1698096609;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8spe+gfMUm0LxTT7xkyr02/+h3t27Ghv8MUKw4Sk2jA=;
+ b=QDAZgMcYmBfhla4o2E9GiNy9GBDVbIQqhK4S6rw/65e8DyHykC4q7L299gvHYd8ULK
+ uqTdMGFGRbi7T81wkHooFJc9uUv/BCBkjhxyBMj771fohHY5BVSutDRHJRwjqvePdHtB
+ ypa2MYH5cl+nb62uGafPrz34Jjm41T0YFmxk0K31merFAyK3G5CP1xZk8lcZGKkcPOGa
+ 7eJIcolu7WD0pk4gKbenPEpBQniGmI8nkQMDMi2beVheHFpBpmPV2kMp7aREbGZyYX7k
+ WD9hZYU1Z2dv20ENr0+2DoGH9FmbqMRqbh4MYXrJwFf0/t/6Ptm3j5Isp4eoo+wYjjmu
+ 8CJg==
+X-Gm-Message-State: AOJu0YxENJ5RmXXki37NT+DQUgdiYDBE6cR0ha9TWljApquX1K1ZSQ8O
+ BJmd3IByu3tUYzZMlUsZERp97KdqI1z9UeDY8s+Yh9OQVaR1V0nJuAoK2VNbWgV9wVqp0sh1I7P
+ kAEj196+dQZSMOfG6rAIkN0jJTVuQWbn4dWmlys9aew==
+X-Received: by 2002:a05:6102:3d1c:b0:457:c953:bc39 with SMTP id
+ i28-20020a0561023d1c00b00457c953bc39mr12358vsv.1.1697491808870; 
+ Mon, 16 Oct 2023 14:30:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUqahnYE36nb/tj/65dnsmYj+uNtpqQT0S7Mv1taZh8XDnKTq71tTOfcfAqh295yAEz9o7CvOHorsB55z63ng=
+X-Received: by 2002:a05:6102:3d1c:b0:457:c953:bc39 with SMTP id
+ i28-20020a0561023d1c00b00457c953bc39mr12348vsv.1.1697491808611; Mon, 16 Oct
+ 2023 14:30:08 -0700 (PDT)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20231016063127.161204-1-pbonzini@redhat.com>
+ <20231016063127.161204-4-pbonzini@redhat.com>
+ <87edhuixx5.fsf@pond.sub.org>
+In-Reply-To: <87edhuixx5.fsf@pond.sub.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 16 Oct 2023 23:29:56 +0200
+Message-ID: <CABgObfZqosmqTG=OY4u6RY3u8jShid3ML_7qhWEW+wnwuPVLMQ@mail.gmail.com>
+Subject: Re: [PATCH 03/17] meson, cutils: allow non-relocatable installs
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,41 +92,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBHYXZpbiBTaGFuIDxnc2hhbkByZWRoYXQuY29tPg0KPiBTZW50OiBUaHVyc2RheSwg
-U2VwdGVtYmVyIDI4LCAyMDIzIDE6MjggQU0NCj4gVG86IFNhbGlsIE1laHRhIDxzYWxpbC5tZWh0
-YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOyBxZW11LQ0KPiBhcm1Abm9uZ251
-Lm9yZw0KPiBDYzogbWF6QGtlcm5lbC5vcmc7IGplYW4tcGhpbGlwcGVAbGluYXJvLm9yZzsgSm9u
-YXRoYW4gQ2FtZXJvbg0KPiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgbHBpZXJhbGlz
-aUBrZXJuZWwub3JnOw0KPiBwZXRlci5tYXlkZWxsQGxpbmFyby5vcmc7IHJpY2hhcmQuaGVuZGVy
-c29uQGxpbmFyby5vcmc7DQo+IGltYW1tZWRvQHJlZGhhdC5jb207IGFuZHJldy5qb25lc0BsaW51
-eC5kZXY7IGRhdmlkQHJlZGhhdC5jb207DQo+IHBoaWxtZEBsaW5hcm8ub3JnOyBlcmljLmF1Z2Vy
-QHJlZGhhdC5jb207IHdpbGxAa2VybmVsLm9yZzsgYXJkYkBrZXJuZWwub3JnOw0KPiBvbGl2ZXIu
-dXB0b25AbGludXguZGV2OyBwYm9uemluaUByZWRoYXQuY29tOyBtc3RAcmVkaGF0LmNvbTsNCj4g
-cmFmYWVsQGtlcm5lbC5vcmc7IGJvcm50cmFlZ2VyQGxpbnV4LmlibS5jb207IGFsZXguYmVubmVl
-QGxpbmFyby5vcmc7DQo+IGxpbnV4QGFybWxpbnV4Lm9yZy51azsgZGFycmVuQG9zLmFtcGVyZWNv
-bXB1dGluZy5jb207DQo+IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207IHZpc2hudUBvcy5h
-bXBlcmVjb21wdXRpbmcuY29tOw0KPiBrYXJsLmhldWJhdW1Ab3JhY2xlLmNvbTsgbWlndWVsLmx1
-aXNAb3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsNCj4gemh1a2VxaWFuIDx6aHVr
-ZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKQ0KPiA8d2FuZ3hpb25nZmVuZzJA
-aHVhd2VpLmNvbT47IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1YXdlaS5jb20+Ow0KPiBq
-aWFrZXJuZWwyQGdtYWlsLmNvbTsgbWFvYmlib0Bsb29uZ3Nvbi5jbjsgbGl4aWFuZ2xhaUBsb29u
-Z3Nvbi5jbg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIFJGQyBWMiAxMS8zN10gaHcvYWNwaTogQWRk
-IEFDUEkgQ1BVIGhvdHBsdWcgaW5pdCBzdHViDQo+IA0KPiBPbiA5LzI2LzIzIDIwOjA0LCBTYWxp
-bCBNZWh0YSB3cm90ZToNCj4gPiBBQ1BJIENQVSBob3RwbHVnIHJlbGF0ZWQgaW5pdGlhbGl6YXRp
-b24gc2hvdWxkIG9ubHkgaGFwcGVuZCBpZg0KPiBBQ1BJX0NQVV9IT1RQTFVHDQo+ID4gc3VwcG9y
-dCBoYXMgYmVlbiBlbmFibGVkIGZvciBwYXJ0aWN1bGFyIGFyY2hpdGVjdHVyZS4gQWRkDQo+IGNw
-dV9ob3RwbHVnX2h3X2luaXQoKQ0KPiA+IHN0dWIgdG8gYXZvaWQgY29tcGlsYXRpb24gYnJlYWsu
-DQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2Vp
-LmNvbT4NCj4gPiAtLS0NCj4gPiAgIGh3L2FjcGkvYWNwaS1jcHUtaG90cGx1Zy1zdHViLmMgfCA2
-ICsrKysrKw0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+IA0K
-PiBSZXZpZXdlZC1ieTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCg0KQWxyZWFkeSBk
-ZWFsdC4gTm93LCBwYXJ0IG9mIGFyY2hpdGVjdHVyZSBhZ25vc3RpYyBwYXRjaC1zZXQsDQoNCmh0
-dHBzOi8vbG9yZS5rZXJuZWwub3JnL3FlbXUtZGV2ZWwvNDc2NENGNDctNDdDQS00Njg1LTgwNUMt
-QkJFNjMxMEJFMTY0QG9yYWNsZS5jb20vVC8jbThkMTRkZWRhYjhkYmQ5ZmRjNjYzMjRmZjAxM2I5
-Yjk5NjY1Njk4MTMNCg0KDQpUaGFua3MNClNhbGlsLg0KDQo=
+On Mon, Oct 16, 2023 at 1:55=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+> Out of curiosity: what's a non-relocatable install, and why should I
+> care?
+
+In a relocatable install if you move qemu-system-x86_64 from /usr/bin
+to /home/armbru/bin, it will start looking for firmware in
+/home/armbru/share/qemu.
+
+In a non-relocatable install, it will keep looking for firmware in
+/usr/share/qemu.
+
+Whether that's something desirable or not... it depends.
+
+On POSIX systems you almost never notice. Non-relocatability can help
+if you want to do experiments with old firmware and new QEMU or vice
+versa (because you can just upgrade/downgrade the firmware package,
+and use rpm2cpio to extract the QEMU binaries outside /usr).
+
+On the other hand Windows almost always wants relocatable installs,
+which is why the whole idea was introduced in QEMU in fact. Newfangled
+distribution mechanisms such as AppImage
+(https://docs.appimage.org/reference/best-practices.html) and I think
+NixOS (which installs each package in its own prefix, so you can
+install multiple versions and switch at will the one that is symlinked
+to /usr) also dislike using at runtime the absolute paths that were
+established at build time.
+
+Finally, the same code that handles relocation also lets you run QEMU
+from the build tree and pick e.g. firmware files from the source tree
+transparently. Even with this patch, that part of the code remains
+active even if you configure with --disable-relocatable.
+
+IOW: you probably have relied on the code, but if you have never
+noticed in the past 3 years, it means that you probably need not care.
+
+Paolo
+
 
