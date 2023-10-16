@@ -2,65 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C527CADCB
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 17:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB6D7CADEA
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 17:43:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsPiS-0004J8-4s; Mon, 16 Oct 2023 11:41:13 -0400
+	id 1qsPkd-0005RK-Kx; Mon, 16 Oct 2023 11:43:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qsPiO-0004Ik-J9
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:41:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qsPiM-0006k6-5l
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:41:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697470865;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=xu1+0dJdzI0UhQOasImZpEr2lYAYBlA1JnvL0UCRjWI=;
- b=MFhJ5+0HZNSZwMYsec/DbyQpV+H+uuAQ53o8ZCmcfIW8yOA1GSE9IyOBS3ZO5Q89FC0P1Z
- WNXNQdMaNPVShf0j/tGJ6Wv/nbcWoND0IOEYIUB2U2PomJhno83heNU4m/fIHcBnAadSVp
- JAwkr/oBspwIbFnz+hDPbx/evMiEDEI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-338-67Lf1kgWPDyPMflcuiQxGQ-1; Mon, 16 Oct 2023 11:40:52 -0400
-X-MC-Unique: 67Lf1kgWPDyPMflcuiQxGQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8223A3C2864B;
- Mon, 16 Oct 2023 15:40:51 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.134])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0618825C9;
- Mon, 16 Oct 2023 15:40:49 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Brad Smith <brad@comstyle.com>
-Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH] tests/vm/openbsd: Use the system dtc package
-Date: Mon, 16 Oct 2023 17:40:49 +0200
-Message-ID: <20231016154049.37147-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qsPkc-0005Qy-1l
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:43:26 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qsPka-00076H-JA
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:43:25 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4066241289bso48183145e9.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 08:43:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697471002; x=1698075802; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jGJEeIBNZqXkW0JTk9WOaffzn7/N73yrhYb7myE5emw=;
+ b=M4mkZLXSS2Rn6DNChgam52HUFYxQOViAv7tbIdyfKXN4Q0j2V3pu6at76mFOtvCdkt
+ pQJ+QHRhw+jHko0ywOlLNl/bVq9g/e2/SfvwhI2v1fI9qpUpaoBtmM+djBaRf3Y0LzG2
+ 8hIP1GGS/H7sRH0x/Y4lzPo3NYDzQyjYP7QH+NKROP86xCdCgvI8oGyqgXhDxJX4Q5PA
+ sogSafDs4toOrcdfQG27QBjWgh9KJTD/a71Nu98kqjTVAmvAWL7n086qm77G6BT2nH4L
+ bQqB9HEfSgwmnxrPSk8EASM61uy60pKV+RybY0HQOg0Zq+AbLDDomJsojFS31WIa9ZDj
+ wxZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697471002; x=1698075802;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=jGJEeIBNZqXkW0JTk9WOaffzn7/N73yrhYb7myE5emw=;
+ b=Cq/f9g/jEjKv5GdJjHpk8cbxmiYcipeuYatc1VFqfIVGPcxU8v54iKJoO44HwH2NVw
+ gxuGsd3ABJq6cNPRPyBnGnixMGeYqtcOnTPqsYar1e2HC/Tv2e5EWhqF3RurYoGNZpdW
+ 2J8XSk56jxJZdAf98GC/EIeXQSEUvjhzkKrtEgKMFVusjWNI93HYNe4iCiD8IRbSKKNX
+ drh+NhB97KHxIg1e60vuAWhFjYySaxZVtp25zhc6P5INq0pW68IsVMYSofTkJkdeveSO
+ RxP+2R8djE+x4zEDQtj35cg0ztdyWOzV73MUoLRsF8P5A4ISQLriRyO2V12TJEdBM76A
+ 4rXw==
+X-Gm-Message-State: AOJu0Yza5+R+1hMr18XOoCDLvTsHgcH8yFh+TTlNuEWKPcdUzbkemIOD
+ aQL54VNtnyoAFzcCY4IpPLpKKA==
+X-Google-Smtp-Source: AGHT+IFqsvEPS4ysRe6T6zdHkLo8uLeQI71re5z+QT/8atJfden9TisNeAB79W3kpTFvLCYS9kk+Mw==
+X-Received: by 2002:a7b:c397:0:b0:401:b53e:6c40 with SMTP id
+ s23-20020a7bc397000000b00401b53e6c40mr30688890wmj.10.1697471002686; 
+ Mon, 16 Oct 2023 08:43:22 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ u19-20020a05600c139300b0040651505684sm7499110wmf.29.2023.10.16.08.43.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Oct 2023 08:43:22 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id C57651FFBB;
+ Mon, 16 Oct 2023 16:43:21 +0100 (BST)
+References: <20231003183058.1639121-1-richard.henderson@linaro.org>
+ <20231003183058.1639121-15-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: fei2.wu@intel.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v17 14/16] monitor: Change MonitorDec.get_value return
+ type to int64_t
+Date: Mon, 16 Oct 2023 16:43:18 +0100
+In-reply-to: <20231003183058.1639121-15-richard.henderson@linaro.org>
+Message-ID: <87zg0ibmjq.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,42 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can use the pre-packaged libfdt from the dtc package to avoid
-that we have to compile this code each time again and again.
 
-While we're at it, the "--python=python3" does not seemt to be
-necessary anymore, so we can drop it.
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/vm/openbsd | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> This matches the type of the pval parameter to get_monitor_def.
+> This means that "monitor/hmp-target.h" itself is now target
+> independent, even if monitor/hmp-target.c isn't.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/tests/vm/openbsd b/tests/vm/openbsd
-index 6b4fc29793..85c5bb3536 100755
---- a/tests/vm/openbsd
-+++ b/tests/vm/openbsd
-@@ -27,6 +27,7 @@ class OpenBSDVM(basevm.BaseVM):
-     size = "20G"
-     pkgs = [
-         # tools
-+        "dtc",
-         "git",
-         "pkgconf",
-         "bzip2", "xz",
-@@ -67,8 +68,9 @@ class OpenBSDVM(basevm.BaseVM):
-         cd $(mktemp -d /home/qemu/qemu-test.XXXXXX);
-         mkdir src build; cd src;
-         tar -xf /dev/rsd1c;
--        cd ../build
--        ../src/configure --cc=cc --python=python3 {configure_opts};
-+        cd ../build;
-+        ../src/configure --cc=cc  --extra-cflags=-I/usr/local/include \
-+                         --extra-ldflags=-L/usr/local/lib {configure_opts};
-         gmake --output-sync -j{jobs} {target} {verbose};
-     """
-     poweroff = "halt -p"
--- 
-2.41.0
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
