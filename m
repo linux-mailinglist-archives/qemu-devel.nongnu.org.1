@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9697CA4FB
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6826C7CA4D7
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:10:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsKXf-0005Rm-Ac; Mon, 16 Oct 2023 06:09:43 -0400
+	id 1qsKXk-0006X7-QR; Mon, 16 Oct 2023 06:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsKX0-000499-U3
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:09:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qsKXD-0004uX-7L
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:09:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsKWu-0007kO-MC
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:09:02 -0400
+ id 1qsKX8-0007tI-8n
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:09:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697450935;
+ s=mimecast20190719; t=1697450948;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pz6NvAlGZ381RFyPcRI1ZC88cLxxXxRlnofiW9awMeo=;
- b=RMVycOAtjHfWXeu43AZnQfaRAoQbgMyx6uqq/RksD8eT62oGht3j1K/VcjugRBAutCMJgf
- kzQT3j2UOTsHEGn2cOpuVwSfUZnsWg6hUylR6LFKx3R06KEH8NDAw1+Z6uGPfJ8sMRAl9p
- 6abX1zvdL44wafHV++NxMiMq3zJTA4I=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-59-8vZaJYuNMDG_iQCqjrlRgw-1; Mon, 16 Oct 2023 06:08:52 -0400
-X-MC-Unique: 8vZaJYuNMDG_iQCqjrlRgw-1
+ bh=b4rI2YBbNoLDRETHA/IHNLDNm237o+PQkfZNTOumI8Q=;
+ b=CeZ4mElDarmVSYmtAy8fMXxszSjv1QzR1ZeCQ8EDFgm5UgRhE5/KN+u/e4RjDn8qfQMi8C
+ wUL2aa6Q8W93D15CThPmbb0/c8qrf/cYE+cPGHdibFwoxEIYRRPX5aJ4SBBWh/n7GS0oqC
+ GLB6lQ1CcNCI0Z/Z3HB7LIfnxE0XJOs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-642-MPxirYzUPnuNW_YqXHt5rg-1; Mon, 16 Oct 2023 06:08:55 -0400
+X-MC-Unique: MPxirYzUPnuNW_YqXHt5rg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 45971800162;
- Mon, 16 Oct 2023 10:08:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1AE0C29AA2E6;
+ Mon, 16 Oct 2023 10:08:55 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B571363F21;
- Mon, 16 Oct 2023 10:08:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 86DEB63F45;
+ Mon, 16 Oct 2023 10:08:52 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,24 +53,24 @@ Cc: qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 34/38] migration/ram: Move xbzrle zero page handling into
- save_zero_page
-Date: Mon, 16 Oct 2023 12:07:02 +0200
-Message-ID: <20231016100706.2551-35-quintela@redhat.com>
+Subject: [PULL 35/38] migration/ram: Merge save_zero_page functions
+Date: Mon, 16 Oct 2023 12:07:03 +0200
+Message-ID: <20231016100706.2551-36-quintela@redhat.com>
 In-Reply-To: <20231016100706.2551-1-quintela@redhat.com>
 References: <20231016100706.2551-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,84 +88,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-It makes a bit more sense to have the zero page handling of xbzrle
-right where we save the zero page.
-
-Also invert the exit condition to remove one level of indentation
-which makes the next patch easier to grasp.
+We don't need to do this in two pieces. One single function makes it
+easier to grasp, specially since it removes the indirection on the
+return value handling.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231011184604.32364-6-farosas@suse.de>
+Message-ID: <20231011184604.32364-7-farosas@suse.de>
 ---
- migration/ram.c | 35 ++++++++++++++++++++---------------
- 1 file changed, 20 insertions(+), 15 deletions(-)
+ migration/ram.c | 46 +++++++++++++---------------------------------
+ 1 file changed, 13 insertions(+), 33 deletions(-)
 
 diff --git a/migration/ram.c b/migration/ram.c
-index 2ec28c4507..229cad5c74 100644
+index 229cad5c74..c844151ee9 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -1168,21 +1168,34 @@ static int save_zero_page_to_file(PageSearchStatus *pss, RAMBlock *block,
+@@ -1137,32 +1137,6 @@ void ram_release_page(const char *rbname, uint64_t offset)
+     ram_discard_range(rbname, offset, TARGET_PAGE_SIZE);
+ }
+ 
+-/**
+- * save_zero_page_to_file: send the zero page to the file
+- *
+- * Returns the size of data written to the file, 0 means the page is not
+- * a zero page
+- *
+- * @pss: current PSS channel
+- * @block: block that contains the page we want to send
+- * @offset: offset inside the block for the page
+- */
+-static int save_zero_page_to_file(PageSearchStatus *pss, RAMBlock *block,
+-                                  ram_addr_t offset)
+-{
+-    uint8_t *p = block->host + offset;
+-    QEMUFile *file = pss->pss_channel;
+-    int len = 0;
+-
+-    if (buffer_is_zero(p, TARGET_PAGE_SIZE)) {
+-        len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_ZERO);
+-        qemu_put_byte(file, 0);
+-        len += 1;
+-        ram_release_page(block->idstr, offset);
+-    }
+-    return len;
+-}
+-
+ /**
+  * save_zero_page: send the zero page to the stream
   *
-  * Returns the number of pages written.
-  *
-+ * @rs: current RAM state
-  * @pss: current PSS channel
-  * @block: block that contains the page we want to send
-  * @offset: offset inside the block for the page
-  */
--static int save_zero_page(PageSearchStatus *pss, RAMBlock *block,
-+static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
+@@ -1176,12 +1150,19 @@ static int save_zero_page_to_file(PageSearchStatus *pss, RAMBlock *block,
+ static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
                            ram_addr_t offset)
  {
-     int len = save_zero_page_to_file(pss, block, offset);
+-    int len = save_zero_page_to_file(pss, block, offset);
++    uint8_t *p = block->host + offset;
++    QEMUFile *file = pss->pss_channel;
++    int len = 0;
  
--    if (len) {
--        stat64_add(&mig_stats.zero_pages, 1);
--        ram_transferred_add(len);
--        return 1;
-+    if (!len) {
-+        return -1;
+-    if (!len) {
+-        return -1;
++    if (!buffer_is_zero(p, TARGET_PAGE_SIZE)) {
++        return 0;
      }
--    return -1;
+ 
++    len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_ZERO);
++    qemu_put_byte(file, 0);
++    len += 1;
++    ram_release_page(block->idstr, offset);
 +
-+    stat64_add(&mig_stats.zero_pages, 1);
-+    ram_transferred_add(len);
-+
-+    /*
-+     * Must let xbzrle know, otherwise a previous (now 0'd) cached
-+     * page would be stale.
-+     */
-+    if (rs->xbzrle_started) {
-+        XBZRLE_cache_lock();
-+        xbzrle_cache_zero_page(block->offset + offset);
-+        XBZRLE_cache_unlock();
-+    }
-+
-+    return 1;
+     stat64_add(&mig_stats.zero_pages, 1);
+     ram_transferred_add(len);
+ 
+@@ -1195,7 +1176,7 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
+         XBZRLE_cache_unlock();
+     }
+ 
+-    return 1;
++    return len;
  }
  
  /*
-@@ -2139,16 +2152,8 @@ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
+@@ -2152,9 +2133,8 @@ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
          return 1;
      }
  
--    res = save_zero_page(pss, block, offset);
-+    res = save_zero_page(rs, pss, block, offset);
-     if (res > 0) {
--        /* Must let xbzrle know, otherwise a previous (now 0'd) cached
--         * page would be stale
--         */
--        if (rs->xbzrle_started) {
--            XBZRLE_cache_lock();
--            xbzrle_cache_zero_page(block->offset + offset);
--            XBZRLE_cache_unlock();
--        }
-         return res;
+-    res = save_zero_page(rs, pss, block, offset);
+-    if (res > 0) {
+-        return res;
++    if (save_zero_page(rs, pss, block, offset)) {
++        return 1;
      }
  
+     /*
 -- 
 2.41.0
 
