@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9337CA6BA
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 13:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 656FB7CA735
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 13:55:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsLmk-0003pa-WC; Mon, 16 Oct 2023 07:29:23 -0400
+	id 1qsMBp-0002rr-BI; Mon, 16 Oct 2023 07:55:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armbru@pond.sub.org>)
- id 1qsLmi-0003pS-PN
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:29:21 -0400
-Received: from oxygen.pond.sub.org ([2a01:4f8:13b:3ad0:1::3])
+ id 1qsMBn-0002qq-QZ
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:55:15 -0400
+Received: from oxygen.pond.sub.org ([94.130.129.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armbru@pond.sub.org>)
- id 1qsLmh-0008H2-4Y
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:29:20 -0400
+ id 1qsMBl-0005Iv-He
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:55:15 -0400
 Received: from blackfin.pond.sub.org (p4fd04c8c.dip0.t-ipconnect.de
  [79.208.76.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
- by oxygen.pond.sub.org (Postfix) with ESMTPSA id 7817E269FC;
- Mon, 16 Oct 2023 13:47:45 +0200 (CEST)
+ by oxygen.pond.sub.org (Postfix) with ESMTPSA id 99C6726A3A;
+ Mon, 16 Oct 2023 14:13:38 +0200 (CEST)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4E29B21E6A1F; Mon, 16 Oct 2023 13:29:16 +0200 (CEST)
+ id 17EDE21E6A1F; Mon, 16 Oct 2023 13:55:09 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: Peter Xu <peterx@redhat.com>
 Cc: qemu-devel@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Fabiano
@@ -34,20 +34,19 @@ Cc: qemu-devel@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Fabiano
  <berrange@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
  <thuth@redhat.com>
-Subject: Re: [PATCH v3 4/4] migration/qapi: Drop @MigrationParameter enum
-In-Reply-To: <ZRsrG5QdnEh0jiXd@x1n> (Peter Xu's message of "Mon, 2 Oct 2023
- 16:42:03 -0400")
-Date: Mon, 16 Oct 2023 08:29:58 +0200
-Lines: 112
+Subject: Re: [PATCH v3 0/4] qapi/migration: Dedup migration parameter
+ objects and fix tls-authz crash
+In-Reply-To: <20230905162335.235619-1-peterx@redhat.com> (Peter Xu's message
+ of "Tue, 5 Sep 2023 12:23:31 -0400")
+Date: Mon, 16 Oct 2023 09:08:40 +0200
+Lines: 63
 References: <20230905162335.235619-1-peterx@redhat.com>
- <20230905162335.235619-5-peterx@redhat.com>
- <87a5t8is2d.fsf@pond.sub.org> <ZRsrG5QdnEh0jiXd@x1n>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Message-ID: <87ttqqiz5f.fsf@pond.sub.org>
+Message-ID: <87h6mqixya.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=2a01:4f8:13b:3ad0:1::3;
- envelope-from=armbru@pond.sub.org; helo=oxygen.pond.sub.org
+Received-SPF: pass client-ip=94.130.129.15; envelope-from=armbru@pond.sub.org;
+ helo=oxygen.pond.sub.org
 X-Spam_score_int: 0
 X-Spam_score: -0.1
 X-Spam_bar: /
@@ -69,116 +68,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+Let me try to summarize our findings so far.
 
-> On Tue, Sep 26, 2023 at 10:43:22PM +0200, Markus Armbruster wrote:
->> Loophole...  Here's the stupidest solution that could possibly work:
->> 
->>     ##
->>     # @MigrationParameter:
->>     #
->>     # TODO: elide from generated documentation (type is used only
->>     #     internally, and not visible in QMP)
->>     #
->>     # Features:
->>     #
->>     # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
->>     #     are experimental.
->>     #
->>     # Since: 2.4
->>     ##
->> 
->> Works because the QAPI generator currently doesn't flag missing member
->> documentation, and quietly substitutes "Not documented" instead.
->
-> Didn't work for me..
->
-> In file included from ../qapi/qapi-schema.json:61:
-> ../qapi/migration.json:681:1: unexpected de-indent (expected at least 4 spaces)
->
-> L681 points to the "Features:".
->
-> But maybe I did it wrong somewhere?
+PATCH 1 has been merged.  PATCH 2 has been queued, but not merged (not
+sure why, accident?).
 
-Parser bug?  Moving the TODO down some works around the issue:
+The remaining two are the actual de-triplication:
 
-    ##
-    # @MigrationParameter:
-    #
-    # Features:
-    #
-    # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
-    #     are experimental.
-    #
-    # TODO: elide from generated documentation (type is used only
-    #     internally, and not visible in QMP)
-    #
-    # Since: 2.4
-    ##
+PATCH 3: Fuse MigrationParameters and MigrateSetParameters
 
-Weird.
+PATCH 4: De-document MigrationParameter
 
-Better, because even stupider: drop the feature flags.  They have no
-effect on internal use, and there is no external use.
-
-    ##
-    # @MigrationParameter:
-    #
-    # TODO: elide from generated documentation (type is used only
-    #     internally, and not visible in QMP)
-    #
-    # Since: 2.4
-    ##
-    { 'enum': 'MigrationParameter',
-      'data': ['announce-initial', 'announce-max',
-               'announce-rounds', 'announce-step',
-               'compress-level', 'compress-threads', 'decompress-threads',
-               'compress-wait-thread', 'throttle-trigger-threshold',
-               'cpu-throttle-initial', 'cpu-throttle-increment',
-               'cpu-throttle-tailslow',
-               'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
-               'downtime-limit',
-               'x-checkpoint-delay',
-               'block-incremental',
-               'multifd-channels',
-               'xbzrle-cache-size', 'max-postcopy-bandwidth',
-               'max-cpu-throttle', 'multifd-compression',
-               'multifd-zlib-level', 'multifd-zstd-level',
-               'block-bitmap-mapping',
-               'x-vcpu-dirty-limit-period',
-               'vcpu-dirty-limit'] }
+The latter is a much simpler problem, so let's discuss it first.
 
 
->> Looks like
->> 
->>     "MigrationParameter" (Enum)
->>     ---------------------------
->> 
->> 
->>     Values
->>     ~~~~~~
->> 
->>     "announce-initial"
->>        Not documented
->> 
->>     "announce-max"
->>        Not documented
->> 
->> and so forth.  Sure ugly, but is it really worse than before?  It's now
->> obviously useless, whereas before it was unobviously useless.
->> 
->> This will break when we tighten up the QAPI generator to require member
->> documentation.  Along we a few hundred other violators.
->> 
->> We might want to add a way to say "members intentionally undocumented".
->> Could be useful for qapi/ui.json's QKeyCode.  Most of its 162 members
->> don't really need documentation...
->
-> Yes I'd be super happy if we can declare that in qapi/.
->
-> Please let me know if I missed something above on the trick; you're right
-> it's only about the documentation we want to get rid of.  If we can achieve
-> that with qapi generating the helpers that'll definitely be perfect.
+Enum MigrationParameter is used only internally.  It's in the QAPI
+schema just because we want code generated for it.  It shouldn't be
+documented in the QEMU QMP Reference Manual, but is, because the
+generator is too stupid to elide internal-only stuff.
 
-Done, I think :)
+PATCH 4 moves it out of the schema.  It has to add back the lost
+generated code in hand-written form, which is a bit unfortunate.  I
+proposed to instead drop most of the useless doc comment by exploiting a
+QAPI generator loophole.
+
+Aside: the QAPI generator should elide internal-only stuff from the QEMU
+QMP Reference manual, and it should not require doc comments then.
+Future work, let's not worry about it now.
+
+
+The fusing of MigrationParameters and MigrateSetParameters is kind of
+stuck.  Several options, all with drawbacks or problems:
+
+1. Pick StrOrNull for the tls_FOO members
+
+   This is what PATCH 3 does.  Blocked on the pre-existing class of
+   crash bugs discussed in
+
+    Subject: QAPI string visitors crashes
+    Message-ID: <875y3epv3y.fsf@pond.sub.org>
+    https://lore.kernel.org/qemu-devel/875y3epv3y.fsf@pond.sub.org/
+
+   Needs fixing, but when a fix will be available is unclear.
+
+2. Pick str for the tls_FOO members
+
+   This is what v1 did.  Incompatible change: JSON null no longer works.
+   Libvirt doesn't use it (it uses deprecated "" instead), but we cannot
+   know for sure nothing else out there uses it.
+
+   I don't think reducing development friction (that's what
+   de-duplication accomplishes) justifies breaking our compatibility
+   promise.
+
+   To keep the promise, we'd have to deprecate null, un-deprecate "",
+   let the grace period pass, and only then de-duplicate.
+
+3. Do nothing, live with the duplication
+
+   Giving up like this would be sad.  Unless we commit to a more
+   complete overhaul of migration's QAPI/QMP configuration interface,
+   but I doubt we're ready for that.
+
+Thoughts?
 
