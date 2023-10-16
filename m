@@ -2,77 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0B77C9D60
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 04:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8FB7C9D82
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 04:47:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsDGk-0003vn-G1; Sun, 15 Oct 2023 22:23:46 -0400
+	id 1qsDcR-0007Tw-1b; Sun, 15 Oct 2023 22:46:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsDGi-0003uw-OD; Sun, 15 Oct 2023 22:23:44 -0400
-Received: from mail-vs1-xe2e.google.com ([2607:f8b0:4864:20::e2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsDGg-0000u1-EO; Sun, 15 Oct 2023 22:23:44 -0400
-Received: by mail-vs1-xe2e.google.com with SMTP id
- ada2fe7eead31-457e5dec94dso185005137.3; 
- Sun, 15 Oct 2023 19:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697423021; x=1698027821; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gggVllVZsRUE9SAozXOfdVt6AJq+gOzAotZM+CShfnA=;
- b=bMNc5sJymwies7ELwqcfq7aaJAH4Xk+NkXt+3SfnR75sUBjKlKiiU37Xk3r1dY5wfH
- is0F4K6Mw8qiiWfbjSD3NM2PMA0dQaoknOIfSmjLZ1rTO6HU76uB9soTnIRFYIqbT7iB
- txGYSswxLDHph3X73JvZYjiB41o31HdFhORLwfngG2lss5pqlwvpKCiamEwuajpdT9YE
- v7Wof8FjDbA19b4Uztd+Ve+EkiEDBkww+gXEardLYvhiYY90iTz/OmIHUfE4iN8PdS4C
- ho9wHAT3SZRa3Lss4TbEB4XPDspC9+y8kzjx0Oed3hANvwNo+y4oC6csR2rV41AoM+gp
- QeWw==
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qsDcO-0007Tn-N3
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 22:46:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qsDcL-0004hA-JD
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 22:46:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697424364;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KvgM+lb+IVkMv1rxg3BMId2hK7dnFtUElvsMmvRTX6c=;
+ b=QpBM09JWOTR0p5HfDIqg7du0ImeZQmQ6WX+VqohVH7h4VOft+n1wesNc9BUGMpRL09JUOt
+ knJv4RYDurCD16+e76WuATrDLGIT9SnYyksyIWHMHGYfSonm7M7p0mdUMK/3TuJrkBSdOv
+ Igy335pG5mn6Rk8LW+mi9ax6nbS5v5Y=
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
+ [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-DB2mXpZkMzKdbh2pi2GzkQ-1; Sun, 15 Oct 2023 22:46:00 -0400
+X-MC-Unique: DB2mXpZkMzKdbh2pi2GzkQ-1
+Received: by mail-pf1-f199.google.com with SMTP id
+ d2e1a72fcca58-6b20ef3418cso545197b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 19:45:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697423021; x=1698027821;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gggVllVZsRUE9SAozXOfdVt6AJq+gOzAotZM+CShfnA=;
- b=kaMMNIqQw/L7j0piFVmydq1vt4n9YNcFuCmOSJx44gvIV0zOjSHzkCuFqJn47T5ClV
- Fc17qF+iy8DlPE/NFZsxSF6MTVhI1cxrAiU/oz7Bjv8JsrqKW/fUlpyDxhz7mVOpwjze
- b9XG+flab6E1lcxdrBocFszK0DYP6Xs2Ggspqpl1d+a0Av2Ck8MxqVqqhcRfcUeABGtQ
- KTkPOAoLiodaS7XTyvKtmQS3wD4r7Y9qNGZJZ2fHDhG7bIUfZS0jevheywtYJxopJuJ5
- 3tvYlFVnAEEhclBZKSk1oIoKJmUciczHkcCwe9xBm+A78HDGwX9Vn4IxqwbTCNlbQrs3
- 4U0w==
-X-Gm-Message-State: AOJu0YytFIoJMH27wr/WD5OGGoMUKCh50opHkQjoquv4kONwmQDSHqSG
- 7YSzEXj7c0MoFPZaFJjFj+F5LJXw5U1AaiCurno=
-X-Google-Smtp-Source: AGHT+IEF2q9xahxbrNKdrQnbJur3TYJi1vbfwaga2U6tnVKkBgNlS4z5WOJB1LHWa5e/js+FhwNHVq3TiN5Y0vn6x8g=
-X-Received: by 2002:a67:e048:0:b0:457:c46b:8fba with SMTP id
- n8-20020a67e048000000b00457c46b8fbamr5345232vsl.5.1697423020793; Sun, 15 Oct
- 2023 19:23:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697424359; x=1698029159;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KvgM+lb+IVkMv1rxg3BMId2hK7dnFtUElvsMmvRTX6c=;
+ b=koGc7uJ8IyuPomYyJ0f4VzGL2QKTgDdmRPkzw9mjjWZv4mFW8aBRucwm9NP2MCRiLH
+ 8nARymN0c98OL0E/R9/tQ7kPNSm/C30Bg6cFUQocUJgk4rhkI22S8wxMdr7MLVtmvcBB
+ aW71W0at1rLFlertkXo1gruI1iR2qWeZVb6g/bgAr4ksfML/8sZ6Raus4eEVikNpHEy7
+ EI1b8rVzmWRbAkQ8G7d+Ad+jBsFRiFeiWIcpfaWjGRrofkluET50tYiyHxTYb1NU0egE
+ SndWX0vWSHE03nxRSfAFB2C4hPfQ4vI9e8bJJj9bQ247r99X895kMVJ5eT6bqgpP8NOl
+ 6m2A==
+X-Gm-Message-State: AOJu0YxWKXP2gsNa8zmEgdu8ZrFPbl2ylnd/8N79s0kdW30pYvryuERQ
+ HmCBuwhvJ1Js0FbM73pwzx1QErp4Xio5mdfssbXSH1JDZ+zT7ITNlt0ILIvXo3lw1bprW7tt5YF
+ QE7LZUYUyhO0AjMI/R4+Ljwz1KxU7oWUlrCgshmyI8+ykd407veNp15EpXFNzEhui6tV/KGLuer
+ xGow==
+X-Received: by 2002:a05:6a00:3985:b0:68f:c8b3:3077 with SMTP id
+ fi5-20020a056a00398500b0068fc8b33077mr35491760pfb.1.1697424358921; 
+ Sun, 15 Oct 2023 19:45:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFEZG5poS0Pk+p5tLyeKkISv5P/imjnfij+Z4C9NP5fFGTMctMjM0d925AulmaBVvscNG5xA==
+X-Received: by 2002:a05:6a00:3985:b0:68f:c8b3:3077 with SMTP id
+ fi5-20020a056a00398500b0068fc8b33077mr35491752pfb.1.1697424358453; 
+ Sun, 15 Oct 2023 19:45:58 -0700 (PDT)
+Received: from [10.66.61.39] ([43.228.180.230])
+ by smtp.gmail.com with ESMTPSA id
+ s6-20020aa78286000000b0065a1b05193asm16945488pfm.185.2023.10.15.19.45.57
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 15 Oct 2023 19:45:58 -0700 (PDT)
+Message-ID: <5072f590-a3e1-893d-9722-0499b8bbfce8@redhat.com>
+Date: Mon, 16 Oct 2023 10:45:56 +0800
 MIME-Version: 1.0
-References: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
- <CAKmqyKP=4kGpO=8D13iJw7pJSkD9CFary_DHt236+e1GFMAngA@mail.gmail.com>
- <a89189d3-2975-487e-9d2e-bd8ea60feba5@ventanamicro.com>
-In-Reply-To: <a89189d3-2975-487e-9d2e-bd8ea60feba5@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 16 Oct 2023 12:23:14 +1000
-Message-ID: <CAKmqyKNAPoe+X3w6TzpWZaMgkUj4dxyY=XubwguqbYrc0sLkzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] riscv: RVA22U64 profile support
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2e;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH V5 1/9] accel/kvm: Extract common KVM vCPU {creation,
+ parking} code
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+References: <20231011194355.15628-1-salil.mehta@huawei.com>
+ <20231011194355.15628-2-salil.mehta@huawei.com>
+From: Shaoqin Huang <shahuang@redhat.com>
+In-Reply-To: <20231011194355.15628-2-salil.mehta@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=shahuang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,158 +105,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 13, 2023 at 5:07=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
->
->
-> On 10/11/23 00:01, Alistair Francis wrote:
-> > On Sat, Oct 7, 2023 at 12:23=E2=80=AFAM Daniel Henrique Barboza
-> > <dbarboza@ventanamicro.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >> Several design changes were made in this version after the reviews and
-> >> feedback in the v1 [1]. The high-level summary is:
-> >>
-> >> - we'll no longer allow users to set profile flags for vendor CPUs. If
-> >>    we're to adhere to the current policy of not allowing users to enab=
-le
-> >>    extensions for vendor CPUs, the profile support would become a
-> >>    glorified way of checking if the vendor CPU happens to support a
-> >>    specific profile. If a future vendor CPU supports a profile the CPU
-> >>    can declare it manually in its cpu_init() function, the flag will
-> >>    still be set, but users can't change it;
-> >>
-> >> - disabling a profile will now disable all the mandatory extensions fr=
-om
-> >>    the CPU;
-> >
-> > What happens if you enable one profile and disable a different one?
->
-> With this implementation as is the profiles will be evaluated by the orde=
-r they're
-> declared in riscv_cpu_profiles[]. Which isn't exactly ideal since we're e=
-xchanging
-> a left-to-right ordering in the command line by an arbitrary order that w=
-e happened
-> to set in the code.
->
-> I can make some tweaks to make the profiles sensible to left-to-right ord=
-er between
-> them, while keeping regular extension with higher priority. e.g.:
->
->
-> -cpu rv64,zicbom=3Dtrue,profileA=3Dfalse,profileB=3Dtrue,zicboz=3Dfalse
-> -cpu rv64,profileA=3Dfalse,zicbom=3Dtrue,zicboz=3Dfalse,profileB=3Dtrue
-> -cpu rv64,profileA=3Dfalse,profileB=3Dtrue,zicbom=3Dtrue,zicboz=3Dfalse
 
-I think we should just not allow this.
 
-I don't understand why a user would want this and what they mean here.
-What if profileA and profileB have overlapping extensions?
+On 10/12/23 03:43, Salil Mehta via wrote:
+> KVM vCPU creation is done once during the initialization of the VM when Qemu
+> thread is spawned. This is common to all the architectures.
+> 
+> Hot-unplug of vCPU results in destruction of the vCPU object in QOM but the
+> corresponding KVM vCPU object in the Host KVM is not destroyed and its
+> representative KVM vCPU object/context in Qemu is parked.
+> 
+> Refactor common logic so that some APIs could be reused by vCPU Hotplug code.
+> 
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+> ---
+>   accel/kvm/kvm-all.c    | 64 ++++++++++++++++++++++++++++++++----------
+>   accel/kvm/trace-events |  4 +++
+>   include/sysemu/kvm.h   | 16 +++++++++++
+>   3 files changed, 69 insertions(+), 15 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index ff1578bb32..0dcaa15276 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -137,6 +137,7 @@ static QemuMutex kml_slots_lock;
+>   #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
+>   
+>   static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
+> +static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id);
+>   
+>   static inline void kvm_resample_fd_remove(int gsi)
+>   {
+> @@ -320,14 +321,53 @@ err:
+>       return ret;
+>   }
+>   
+> +void kvm_park_vcpu(CPUState *cpu)
+> +{
+> +    struct KVMParkedVcpu *vcpu;
+> +
+> +    trace_kvm_park_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+> +
+> +    vcpu = g_malloc0(sizeof(*vcpu));
+> +    vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
+> +    vcpu->kvm_fd = cpu->kvm_fd;
+> +    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
+> +}
+> +
+> +int kvm_create_vcpu(CPUState *cpu)
+> +{
+> +    unsigned long vcpu_id = kvm_arch_vcpu_id(cpu);
+> +    KVMState *s = kvm_state;
+> +    int kvm_fd;
+> +
+> +    trace_kvm_create_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+> +
+> +    /* check if the KVM vCPU already exist but is parked */
+> +    kvm_fd = kvm_get_vcpu(s, vcpu_id);
+> +    if (kvm_fd < 0) {
+> +        /* vCPU not parked: create a new KVM vCPU */
+> +        kvm_fd = kvm_vm_ioctl(s, KVM_CREATE_VCPU, vcpu_id);
+> +        if (kvm_fd < 0) {
+> +            error_report("KVM_CREATE_VCPU IOCTL failed for vCPU %lu", vcpu_id);
+> +            return kvm_fd;
+> +        }
+> +    }
+> +
+> +    cpu->kvm_fd = kvm_fd;
+> +    cpu->kvm_state = s;
+> +    cpu->vcpu_dirty = true;
+> +    cpu->dirty_pages = 0;
+> +    cpu->throttle_us_per_full = 0;
+> +
+> +    return 0;
+> +}
+> +
+>   static int do_kvm_destroy_vcpu(CPUState *cpu)
+>   {
+>       KVMState *s = kvm_state;
+>       long mmap_size;
+> -    struct KVMParkedVcpu *vcpu = NULL;
+>       int ret = 0;
+>   
+> -    DPRINTF("kvm_destroy_vcpu\n");
+> +    trace_kvm_destroy_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+>   
+>       ret = kvm_arch_destroy_vcpu(cpu);
+>       if (ret < 0) {
+> @@ -353,10 +393,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+>           }
+>       }
+>   
+> -    vcpu = g_malloc0(sizeof(*vcpu));
+> -    vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
+> -    vcpu->kvm_fd = cpu->kvm_fd;
+> -    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
+> +    kvm_park_vcpu(cpu);
+>   err:
+>       return ret;
+>   }
+> @@ -377,6 +414,8 @@ static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id)
+>           if (cpu->vcpu_id == vcpu_id) {
+>               int kvm_fd;
+>   
+> +            trace_kvm_get_vcpu(vcpu_id);
+> +
+>               QLIST_REMOVE(cpu, node);
+>               kvm_fd = cpu->kvm_fd;
+>               g_free(cpu);
+> @@ -384,7 +423,7 @@ static int kvm_get_vcpu(KVMState *s, unsigned long vcpu_id)
+>           }
+>       }
+>   
+> -    return kvm_vm_ioctl(s, KVM_CREATE_VCPU, (void *)vcpu_id);
+> +    return -ENOENT;
+>   }
+>   
+>   int kvm_init_vcpu(CPUState *cpu, Error **errp)
+> @@ -395,19 +434,14 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+>   
+>       trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+>   
+> -    ret = kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
+> +    ret = kvm_create_vcpu(cpu);
+>       if (ret < 0) {
+> -        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed (%lu)",
+> +        error_setg_errno(errp, -ret,
+> +                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)",
+>                            kvm_arch_vcpu_id(cpu));
+>           goto err;
+>       }
+>   
+> -    cpu->kvm_fd = ret;
+> -    cpu->kvm_state = s;
+> -    cpu->vcpu_dirty = true;
+> -    cpu->dirty_pages = 0;
+> -    cpu->throttle_us_per_full = 0;
+> -
+>       mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
+>       if (mmap_size < 0) {
+>           ret = mmap_size;
+> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+> index 399aaeb0ec..cdd0c95c09 100644
+> --- a/accel/kvm/trace-events
+> +++ b/accel/kvm/trace-events
+> @@ -9,6 +9,10 @@ kvm_device_ioctl(int fd, int type, void *arg) "dev fd %d, type 0x%x, arg %p"
+>   kvm_failed_reg_get(uint64_t id, const char *msg) "Warning: Unable to retrieve ONEREG %" PRIu64 " from KVM: %s"
+>   kvm_failed_reg_set(uint64_t id, const char *msg) "Warning: Unable to set ONEREG %" PRIu64 " to KVM: %s"
+>   kvm_init_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+> +kvm_create_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+> +kvm_get_vcpu(unsigned long arch_cpu_id) "id: %lu"
+> +kvm_destroy_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+> +kvm_park_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+>   kvm_irqchip_commit_routes(void) ""
+>   kvm_irqchip_add_msi_route(char *name, int vector, int virq) "dev %s vector %d virq %d"
+>   kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index ee9025f8e9..740686ab60 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -465,6 +465,22 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int sigmask_len);
+>   int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
+>                                          hwaddr *phys_addr);
+>   
+> +/**
+> + * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
+> + * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
+> + *
+> + * @returns: 0 when success, errno (<0) when failed.
+> + */
+> +int kvm_create_vcpu(CPUState *cpu);
+> +
+> +/**
+> + * kvm_park_vcpu - Park Qemu KVM vCPU context
+> + * @cpu: QOM CPUState object for which Qemu KVM vCPU context has to be parked.
+> + *
+> + * @returns: none
+> + */
+> +void kvm_park_vcpu(CPUState *cpu);
+> +
+>   #endif /* NEED_CPU_H */
+>   
+>   void kvm_cpu_synchronize_state(CPUState *cpu);
 
-Alistair
+-- 
+Shaoqin
 
->
-> These would all do the same thing: "keeping zicbom=3Dtrue and zicboz=3Dfa=
-lse, disable profileA
-> and then enable profile B"
->
-> Switching the profiles order would have a different result:
->
-> -cpu rv64,profileB=3Dtrue,profileA=3Dfalse,zicbom=3Dtrue,zicboz=3Dfalse
->
-> "keeping zicbom=3Dtrue and zicboz=3Dfalse, enable profile B and then disa=
-ble profile A"
->
->
-> I'm happy to hear any other alternative/ideas. We'll either deal with som=
-e left-to-right
-> ordering w.r.t profiles or deal with an internal profile commit ordering.=
- TBH I think
-> it's sensible to demand left-to-right command line ordering for profiles =
-only.
->
->
-> Thanks,
->
->
-> Daniel
->
->
->
->
->
-> >
-> > Alistair
-> >
-> >>
-> >> - the profile logic was moved to realize() time in a step we're callin=
-g
-> >>    'commit profile'. This allows us to enable/disable profile extensio=
-ns
-> >>    after considering user input in other individual extensions. The
-> >>    result is that we don't care about the order in which the profile f=
-lag
-> >>    was set in comparison with other extensions in the command line, i.=
-e.
-> >>    the following lines are equal:
-> >>
-> >>    -cpu rv64,zicbom=3Dfalse,rva22u64=3Dtrue,Zifencei=3Dfalse
-> >>
-> >>    -cpu rv64,rva22u64=3Dtrue,zicbom=3Dfalse,Zifencei=3Dfalse
-> >>
-> >>    and they mean 'enable the rva22u64 profile while keeping zicbom and
-> >>    Zifencei disabled'.
-> >>
-> >>
-> >> Other minor changes were needed as result of these design changes. E.g=
-.
-> >> we're now having to track MISA extensions set by users (patch 7),
-> >> something that we were doing only for multi-letter extensions.
-> >>
-> >> Changes from v1:
-> >> - patch 6 from v1 ("target/riscv/kvm: add 'rva22u64' flag as unavailab=
-le"):
-> >>      - moved up to patch 4
-> >> - patch 5 from v1("target/riscv/tcg-cpu.c: enable profile support for =
-vendor CPUs"):
-> >>      - dropped
-> >> - patch 6 (new):
-> >>    - add riscv_cpu_commit_profile()
-> >> - patch 7 (new):
-> >>    - add user choice hash for MISA extensions
-> >> - patch 9 (new):
-> >>    - handle MISA bits user choice when commiting profiles
-> >> - patch 8 and 10 (new):
-> >>    - helpers to avoid code repetition
-> >> - v1 link: https://lore.kernel.org/qemu-riscv/20230926194951.183767-1-=
-dbarboza@ventanamicro.com/
-> >>
-> >>
-> >> Daniel Henrique Barboza (10):
-> >>    target/riscv/cpu.c: add zicntr extension flag
-> >>    target/riscv/cpu.c: add zihpm extension flag
-> >>    target/riscv: add rva22u64 profile definition
-> >>    target/riscv/kvm: add 'rva22u64' flag as unavailable
-> >>    target/riscv/tcg: add user flag for profile support
-> >>    target/riscv/tcg: commit profiles during realize()
-> >>    target/riscv/tcg: add MISA user options hash
-> >>    target/riscv/tcg: add riscv_cpu_write_misa_bit()
-> >>    target/riscv/tcg: handle MISA bits on profile commit
-> >>    target/riscv/tcg: add hash table insert helpers
-> >>
-> >>   target/riscv/cpu.c         |  29 +++++++
-> >>   target/riscv/cpu.h         |  12 +++
-> >>   target/riscv/cpu_cfg.h     |   2 +
-> >>   target/riscv/kvm/kvm-cpu.c |   7 +-
-> >>   target/riscv/tcg/tcg-cpu.c | 165 +++++++++++++++++++++++++++++++++--=
---
-> >>   5 files changed, 197 insertions(+), 18 deletions(-)
-> >>
-> >> --
-> >> 2.41.0
-> >>
-> >>
 
