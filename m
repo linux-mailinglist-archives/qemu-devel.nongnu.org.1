@@ -2,88 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAD57C9EAE
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 07:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B537C9EB2
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 07:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsG6o-0002hT-1t; Mon, 16 Oct 2023 01:25:42 -0400
+	id 1qsG81-0003Mt-QD; Mon, 16 Oct 2023 01:26:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qsG6l-0002hK-UK
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 01:25:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qsG6k-0003cz-8U
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 01:25:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697433936;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HtvdtLk47cjCWpkFthBwPhpUY8fE3XoyOli0wH32fjU=;
- b=QQJuXbptJEzeYKicljEJ0sDUcJc3HI3iHJ0poF+QulcEBsmHV+LHorWE39ESV7WtH5GGEP
- ytUfbszjW/puTjq9KazxZYUcvQ4CCrOEEQg4K3J4iHAdB7zfMVWK7uGWkZof1JjJ4JncLS
- GYoN4yx304e1QA4XkkAK7ZLpcX7U4b8=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-TJxeFAb5NwS34xeFcybJeg-1; Mon, 16 Oct 2023 01:25:34 -0400
-X-MC-Unique: TJxeFAb5NwS34xeFcybJeg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-5043353efbdso3627060e87.0
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 22:25:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qsG80-0003MY-7E; Mon, 16 Oct 2023 01:26:56 -0400
+Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qsG7y-0003vj-GC; Mon, 16 Oct 2023 01:26:55 -0400
+Received: by mail-vk1-xa2c.google.com with SMTP id
+ 71dfb90a1353d-4a403fdebedso1593916e0c.1; 
+ Sun, 15 Oct 2023 22:26:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697434013; x=1698038813; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lYkTPXzIPamgrFeqy/0g9xh8A1FBuy2HSshzvtgfsRQ=;
+ b=YPVZL+qVkQi3lCVjiAnRekqeTDKumZJVLTnAnly70d8vAwG3ZpVBfwQrrxo5dgVssF
+ s8NHQfA0fnjKk9+iNznuYP1Yg83qSrzE8CQh+cvb8kxLKxeosuc4G8zrlSamgRmFwX30
+ VItBtQsFxvto5pq664w3TghFdBsiYaT8hDNOIKLz5c8r8oUprwGiKemBnqiew36KKinJ
+ xsv4G94GZFzarLG43lDCQql00WOmxrwucmKQ8v16AQgMroDHvhObBirGzycEzit5Jof7
+ Y5mbRrDkY0a6KF5nQ/Hdr7YiBQv7pDCKouYL9Y5C30aWxugItb4S37Rfm02Y4XEceqM7
+ +cQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697433933; x=1698038733;
+ d=1e100.net; s=20230601; t=1697434013; x=1698038813;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HtvdtLk47cjCWpkFthBwPhpUY8fE3XoyOli0wH32fjU=;
- b=SEF0HoZ+BzTOwDVAF5QWTY/D0xmr1oJH+znDaqsTcXcVbyFR2oMRy9FTh7wOjN17bU
- n2D/zMQ3VbOfVrTC/3Ag38GtCpa/S4Ifkmawe3fawt/KOfUrHshngxezFT87QL5c7CY2
- YvNMIyRXLIJzjAMYKUY2hVjL6nfeh0EPUBOocPCRlOoX+kFFPqus9ZYaAnSK3WAmdAAv
- pya0MSn3F+F3VPRwPJwH67NjctZgHsHtIWL4XEQpXWA9EXjuOFmf013wFG5vaGb4ZvWj
- BEnxSK4hIrn9gkX6hQEdv8GXtIomEwTXYHpfVAnz2Ham65hQreuvrwCBwNBSV4xCZEej
- Dc7g==
-X-Gm-Message-State: AOJu0Yw8nE/tsSMf2bu0Fn4bErqFP1m8e5znV5fOQiH5yBsmugQ5V99b
- OZUB2Djq+IXPxb7tz+iY5OZ+ePWpLM8GXNZx8A5KGI04mnrtnakAVv6ACJn7u0gRUxRvUsJgsip
- roHDVzf0tY0itpkHR54epnhHKDcR6QgA=
-X-Received: by 2002:a19:6d1a:0:b0:4ff:7e80:4f1d with SMTP id
- i26-20020a196d1a000000b004ff7e804f1dmr25267089lfc.57.1697433932810; 
- Sun, 15 Oct 2023 22:25:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHF8R+iEtpO7gf0PsvjvgHzDVHRFwuGQ/Z8PMZjVCvFsjsojOzcPmE5VmrbJVu6NNcrdpNFPXETt8VlGOxHTI4=
-X-Received: by 2002:a19:6d1a:0:b0:4ff:7e80:4f1d with SMTP id
- i26-20020a196d1a000000b004ff7e804f1dmr25267078lfc.57.1697433932440; Sun, 15
- Oct 2023 22:25:32 -0700 (PDT)
+ bh=lYkTPXzIPamgrFeqy/0g9xh8A1FBuy2HSshzvtgfsRQ=;
+ b=Yq9Cu50YCISQFMb2xaFc4ZgRQkOyOeZo6tHLF9ENId78orikVTTYtkvWGxwzp82L65
+ 3ZKB5kLypCQAx0zUR+v9pfn/WtcLncj6AqzkjlwJ5idBjKhayHmzo9d7vj+7pegc5zOo
+ EP/ueMtvudD+1ATpoHZKJ5x2vSbQ6YVmdNooc/rSFLEA3KCUZgnindltZSzmKFlNQFTD
+ LtM2eQEoJCEgcER59hEOG6votOnTFs1PDVgJz90hB2YVgpNSLM3lN02Ao0AuRctZRRTb
+ Zt+PjthXIsGJfuXFatpVfWZnw4AmQ7C8C3DwZ1zj8/sqlQ48NWmttYNkYpL//mPhVM1k
+ n/tg==
+X-Gm-Message-State: AOJu0Yz9fZJyJJVY1leaoxqtotIW4w36dfa5Nuk7bqJgEo1jUsDO93np
+ zbeYvoXHo8IALUKmvdEYNaBuNzKwJYflRV5sNBHCsUSCGNg=
+X-Google-Smtp-Source: AGHT+IEd0NaI+PM5F/vPYqP50muCBeJ5gPA/c/17lcq1URrWAXjwbMUZ/z8DMbiyuyYeBaeTfsnoHfIpqlUuPlaXKaM=
+X-Received: by 2002:a1f:dfc1:0:b0:490:c49e:3fe0 with SMTP id
+ w184-20020a1fdfc1000000b00490c49e3fe0mr25339881vkg.11.1697434012758; Sun, 15
+ Oct 2023 22:26:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
- <20231011153944.39572-2-akihiko.odaki@daynix.com>
- <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
- <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
- <CACGkMEuEs2MLJYKMB9qAgT2ixkKLC8LPPE6DsBvfwx0CEaCA_A@mail.gmail.com>
- <12412f11-4395-460f-9523-930ad9270188@daynix.com>
-In-Reply-To: <12412f11-4395-460f-9523-930ad9270188@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 16 Oct 2023 13:25:21 +0800
-Message-ID: <CACGkMEvg37na-2rUAjUoJOhLrKg+mz+O_D_=UnMJr-qoxPSkLQ@mail.gmail.com>
-Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>, 
- Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin" <mst@redhat.com>
+References: <20230926184019.166352-1-dbarboza@ventanamicro.com>
+ <20230926184019.166352-5-dbarboza@ventanamicro.com>
+In-Reply-To: <20230926184019.166352-5-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 16 Oct 2023 15:26:26 +1000
+Message-ID: <CAKmqyKPsLbNf5EPsaj3gm3fmJ1CfFd=6-HyQVM_w+x5D4k=kJw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] target/riscv: handle custom props in
+ qmp_query_cpu_model_expansion
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2c;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2c.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,74 +89,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 13, 2023 at 1:26=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
-.com> wrote:
+On Wed, Sep 27, 2023 at 4:42=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> On 2023/10/13 14:00, Jason Wang wrote:
-> > On Fri, Oct 13, 2023 at 12:14=E2=80=AFPM Akihiko Odaki <akihiko.odaki@d=
-aynix.com> wrote:
-> >>
-> >> On 2023/10/13 10:38, Jason Wang wrote:
-> >>> On Wed, Oct 11, 2023 at 11:40=E2=80=AFPM Akihiko Odaki <akihiko.odaki=
-@daynix.com> wrote:
-> >>>>
-> >>>> It was necessary since an Linux older than 2.6.35 may implement the
-> >>>> virtio-net header but may not allow to change its length. Remove it
-> >>>> since such an old Linux is no longer supported.
-> >>>
-> >>> Where can I see this agreement?
-> >>
-> >> docs/about/build-platforms.rst says:
-> >>   > The project aims to support the most recent major version at all t=
-imes
-> >>   > for up to five years after its initial release. Support for the
-> >>   > previous major version will be dropped 2 years after the new major
-> >>   > version is released or when the vendor itself drops support, which=
-ever
-> >>   > comes first. In this context, third-party efforts to extend the
-> >>   > lifetime of a distro are not considered, even when they are endors=
-ed
-> >>   > by the vendor (eg. Debian LTS); the same is true of repositories t=
-hat
-> >>   > contain packages backported from later releases (e.g. Debian
-> >>   > backports). Within each major release, only the most recent minor
-> >>   > release is considered.
-> >>   >
-> >>   > For the purposes of identifying supported software versions availa=
-ble
-> >>   > on Linux, the project will look at CentOS, Debian, Fedora, openSUS=
-E,
-> >>   > RHEL, SLES and Ubuntu LTS. Other distros will be assumed to ship
-> >>   > similar software versions.
-> >
-> > Well it also says:
-> >
-> > """
-> > If a platform is not listed here, it does not imply that QEMU won't
-> > work. If an unlisted platform has comparable software versions to a
-> > listed platform, there is every expectation that it will work.
-> > """
-> >
-> > A lot of downstream have customized build scripts.
+> Callers can add 'props' when querying for a cpu model expansion to see
+> if a given CPU model supports a certain criteria, and what's the
+> resulting CPU object.
 >
-> Still Linux versions older than 2.6.35 do not look like "comparable
-> software versions to a listed platform" in my opinion.
-
-Linux provides ABI compatibility so I don't know why, unless there is
-a strong dependency on a specific new syscall introduced after 2.6.35.
-
+> If we have 'props' to handle, gather it in a QDict and use the new
+> riscv_cpuobj_validate_qdict_in() helper to validate it. This helper will
+> add the custom properties in the CPU object and validate it using
+> riscv_cpu_finalize_features(). Users will be aware of validation errors
+> if any occur, if not a CPU object with 'props' will be returned.
 >
-> > And is something similar to such removal that has been done for other
-> > subsystems?
+> Here's an example with the veyron-v1 vendor CPU. Disabling vendor CPU
+> extensions is allowed, assuming the final config is valid. Disabling
+> 'smstateen' is a valid expansion:
 >
-> With commit c42e77a90d ("qemu/osdep: Remove fallback for
-> MAP_FIXED_NOREPLACE"), I remove the support for glibc older than 2.28.
-> Linux 2.6.35 is even older.
+> (QEMU) query-cpu-model-expansion type=3Dfull model=3D{"name":"veyron-v1",=
+"props":{"smstateen":false}}
+> {"return": {"model": {"name": "veyron-v1", "props": {"zicond": false, ...=
+, "smstateen": false, ...}
 >
+> But enabling extensions isn't allowed for vendor CPUs. E.g. enabling 'V'
+> for the veyron-v1 CPU isn't allowed:
+>
+> (QEMU) query-cpu-model-expansion type=3Dfull model=3D{"name":"veyron-v1",=
+"props":{"v":true}}
+> {"error": {"class": "GenericError", "desc": "'veyron-v1' CPU does not all=
+ow enabling extensions"}}
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Ok, this explains things a little bit. Btw, we also have soliars
-support for TAP, time to drop that as well?
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Thanks
+Alistair
 
+> ---
+>  target/riscv/riscv-qmp-cmds.c | 65 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 65 insertions(+)
+>
+> diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.=
+c
+> index 2170562e3a..5b2d186c83 100644
+> --- a/target/riscv/riscv-qmp-cmds.c
+> +++ b/target/riscv/riscv-qmp-cmds.c
+> @@ -27,6 +27,9 @@
+>  #include "qapi/error.h"
+>  #include "qapi/qapi-commands-machine-target.h"
+>  #include "qapi/qmp/qdict.h"
+> +#include "qapi/qmp/qerror.h"
+> +#include "qapi/qobject-input-visitor.h"
+> +#include "qapi/visitor.h"
+>  #include "qom/qom-qobject.h"
+>  #include "cpu-qom.h"
+>  #include "cpu.h"
+> @@ -83,14 +86,58 @@ static void riscv_obj_add_multiext_props(Object *obj,=
+ QDict *qdict_out,
+>      }
+>  }
+>
+> +static void riscv_cpuobj_validate_qdict_in(Object *obj, QObject *props,
+> +                                           const QDict *qdict_in,
+> +                                           Error **errp)
+> +{
+> +    const QDictEntry *qe;
+> +    Visitor *visitor;
+> +    Error *local_err =3D NULL;
+> +
+> +    visitor =3D qobject_input_visitor_new(props);
+> +    if (!visit_start_struct(visitor, NULL, NULL, 0, &local_err)) {
+> +        goto err;
+> +    }
+> +
+> +    for (qe =3D qdict_first(qdict_in); qe; qe =3D qdict_next(qdict_in, q=
+e)) {
+> +        object_property_find_err(obj, qe->key, &local_err);
+> +        if (local_err) {
+> +            goto err;
+> +        }
+> +
+> +        object_property_set(obj, qe->key, visitor, &local_err);
+> +        if (local_err) {
+> +            goto err;
+> +        }
+> +    }
+> +
+> +    visit_check_struct(visitor, &local_err);
+> +    if (local_err) {
+> +        goto err;
+> +    }
+> +
+> +    riscv_cpu_finalize_features(RISCV_CPU(obj), &local_err);
+> +    if (local_err) {
+> +        goto err;
+> +    }
+> +
+> +    visit_end_struct(visitor, NULL);
+> +
+> +err:
+> +    error_propagate(errp, local_err);
+> +    visit_free(visitor);
+> +}
+> +
+>  CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionTy=
+pe type,
+>                                                       CpuModelInfo *model=
+,
+>                                                       Error **errp)
+>  {
+>      CpuModelExpansionInfo *expansion_info;
+> +    const QDict *qdict_in =3D NULL;
+>      QDict *qdict_out;
+>      ObjectClass *oc;
+>      Object *obj;
+> +    Error *local_err =3D NULL;
+>
+>      if (type !=3D CPU_MODEL_EXPANSION_TYPE_FULL) {
+>          error_setg(errp, "The requested expansion type is not supported"=
+);
+> @@ -104,8 +151,26 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion=
+(CpuModelExpansionType type,
+>          return NULL;
+>      }
+>
+> +    if (model->props) {
+> +        qdict_in =3D qobject_to(QDict, model->props);
+> +        if (!qdict_in) {
+> +            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, "props", "dict=
+");
+> +            return NULL;
+> +        }
+> +    }
+> +
+>      obj =3D object_new(object_class_get_name(oc));
+>
+> +    if (qdict_in) {
+> +        riscv_cpuobj_validate_qdict_in(obj, model->props, qdict_in,
+> +                                       &local_err);
+> +        if (local_err) {
+> +            error_propagate(errp, local_err);
+> +            object_unref(obj);
+> +            return NULL;
+> +        }
+> +    }
+> +
+>      expansion_info =3D g_new0(CpuModelExpansionInfo, 1);
+>      expansion_info->model =3D g_malloc0(sizeof(*expansion_info->model));
+>      expansion_info->model->name =3D g_strdup(model->name);
+> --
+> 2.41.0
+>
+>
 
