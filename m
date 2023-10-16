@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A747CB2BA
+	by mail.lfdr.de (Postfix) with ESMTPS id D72BE7CB2BD
 	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 20:43:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsSXJ-0007zN-Ry; Mon, 16 Oct 2023 14:41:54 -0400
+	id 1qsSXG-0007z0-TC; Mon, 16 Oct 2023 14:41:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qsSWd-0007fp-If; Mon, 16 Oct 2023 14:41:21 -0400
+ id 1qsSWl-0007iS-RK; Mon, 16 Oct 2023 14:41:21 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qsSWA-0006EZ-4P; Mon, 16 Oct 2023 14:41:06 -0400
+ id 1qsSWa-0006GQ-VH; Mon, 16 Oct 2023 14:41:18 -0400
 Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39GICPlC025694; Mon, 16 Oct 2023 18:40:24 GMT
+ 39GICSTa025846; Mon, 16 Oct 2023 18:40:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=/cDZGKkdSzVYyurrrRqH4O8rR9bgVd/93IYhgrn0eCU=;
- b=PKdUtgWfW+eLI2XbMldKbOdvMZz6L7HdRCfvC1tLLXiiUdrqJkJ5yNn053hgzeYn0tya
- wEP02/yobiuZd4kjRzjJU4kvuMIuxRl01bcZo4v5ExVh5iNmn80JY7as+bZkir47fhDt
- 9jUnWFDSlKDw4MuDKjjMigW7tWRRKbMBeQOZ9HwZDIEKRKzxCMCTKX5HiZ8pzDdJRvvu
- 68k6xLd4rnvg7nluIdlWcDRgrrNiGmzhDGyqd0Nr8aAqXrF3LGAexMWOZ/PoLs5vJkyc
- lZ0qE1C4J2IKE4VT4VSGd1VmcjBz7UsZ4t5C2bNykC7txs7pzY71RZDc8l0+R0pu+/jH VA== 
+ bh=ej0V/DMpcN7JDmJfxY1g6xfw0HAvRAzkX1riFyC4VOg=;
+ b=jZvk6FPgrLcF5VJP6DNClmsHOMWIhzOt+GDFEqB7txSgKTASCgAkFdSYryURvY1/Vf0l
+ D8ZhAXA4/SpZKYV4erf/iWu/3UZw2Y4WvDJcD1S94ISaVJnbcKtUSQe2ZHB6SKHxUu0Y
+ sWSbJYSU6qKsqzk6/MPBU5c1n1N11oSF8RrTbgX7D+74JHbw0lIrLdSDcncInWWZv8fu
+ yS3jJbMtfjwU9cBWFiSlPkoMdACdQyuUNyOZ4uK3ok2muYIjRCfWC0YaY06z82U/tKfK
+ D1auBScUaRQaZXr1SKAkk3HW2wX6fj8RBz/8jPBDgDSIZ85NTMnQ074IQio02L2Jw0t9 bg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsa8cs2tr-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsa8cs38u-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Oct 2023 18:40:22 +0000
+ Mon, 16 Oct 2023 18:40:29 +0000
 Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39GIJOD9014414;
- Mon, 16 Oct 2023 18:40:07 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsa8cs1nc-1
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39GIEjTE000630;
+ Mon, 16 Oct 2023 18:40:18 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsa8cs1nt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Oct 2023 18:40:07 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39GHF67b012858; Mon, 16 Oct 2023 18:39:35 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5py2yv4-1
+ Mon, 16 Oct 2023 18:40:18 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39GIFDQ1027177; Mon, 16 Oct 2023 18:39:36 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tk2mjt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Oct 2023 18:39:35 +0000
+ Mon, 16 Oct 2023 18:39:36 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39GIdW0w9306650
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39GIdXgl45154686
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Oct 2023 18:39:32 GMT
+ Mon, 16 Oct 2023 18:39:33 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8192F20040;
+ by IMSVA (Postfix) with ESMTP id F318020043;
  Mon, 16 Oct 2023 18:39:32 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18E8E20043;
+ by IMSVA (Postfix) with ESMTP id 8A2B82004B;
  Mon, 16 Oct 2023 18:39:32 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -81,18 +81,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Subject: [PATCH v26 12/21] qapi/s390x/cpu topology: CPU_POLARIZATION_CHANGE
- QAPI event
-Date: Mon, 16 Oct 2023 20:39:16 +0200
-Message-Id: <20231016183925.2384704-13-nsg@linux.ibm.com>
+Subject: [PATCH v26 13/21] qapi/s390x/cpu topology: add
+ query-s390x-cpu-polarization command
+Date: Mon, 16 Oct 2023 20:39:17 +0200
+Message-Id: <20231016183925.2384704-14-nsg@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231016183925.2384704-1-nsg@linux.ibm.com>
 References: <20231016183925.2384704-1-nsg@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: MhEqkSYxFvSgct8z-Hk1XhSy0cp3KLX8
-X-Proofpoint-ORIG-GUID: 2OJZCyon5qFtyMgRuUvHdGiI4YnnOMXd
+X-Proofpoint-GUID: 6nlVj5GrQ0frPBv31-Dypco3eL0tM00Z
+X-Proofpoint-ORIG-GUID: jMFgk9tgqgMETuprDyJWTSBCwRJEhpCM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-16_10,2023-10-12_01,2023-05-22_02
@@ -128,10 +128,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierre Morel <pmorel@linux.ibm.com>
 
-When the guest asks to change the polarization this change
-is forwarded to the upper layer using QAPI.
-The upper layer is supposed to take according decisions concerning
-CPU provisioning.
+The query-s390x-cpu-polarization qmp command returns the current
+CPU polarization of the machine.
 
 Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
@@ -140,73 +138,64 @@ Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 ---
- qapi/machine-target.json | 35 +++++++++++++++++++++++++++++++++++
- hw/s390x/cpu-topology.c  |  2 ++
- 2 files changed, 37 insertions(+)
+ qapi/machine-target.json | 30 ++++++++++++++++++++++++++++++
+ hw/s390x/cpu-topology.c  |  8 ++++++++
+ 2 files changed, 38 insertions(+)
 
 diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index 7688f32ffa..ac93a5f82c 100644
+index ac93a5f82c..4e55adbe00 100644
 --- a/qapi/machine-target.json
 +++ b/qapi/machine-target.json
-@@ -417,3 +417,38 @@
+@@ -452,3 +452,33 @@
    'features': [ 'unstable' ],
-   'if': { 'all': [ 'TARGET_S390X' , 'CONFIG_KVM' ] }
+   'if': { 'all': [ 'TARGET_S390X', 'CONFIG_KVM' ] }
  }
 +
 +##
-+# @CPU_POLARIZATION_CHANGE:
++# @CpuPolarizationInfo:
 +#
-+# Emitted when the guest asks to change the polarization.
++# The result of a CPU polarization query.
 +#
-+# The guest can tell the host (via the PTF instruction) whether the
-+# CPUs should be provisioned using horizontal or vertical polarization.
++# @polarization: the CPU polarization
 +#
-+# On horizontal polarization the host is expected to provision all vCPUs
-+# equally.
-+#
-+# On vertical polarization the host can provision each vCPU differently.
-+# The guest will get information on the details of the provisioning
-+# the next time it uses the STSI(15) instruction.
-+#
-+# @polarization: polarization specified by the guest
++# Since: 8.2
++##
++{ 'struct': 'CpuPolarizationInfo',
++  'data': { 'polarization': 'CpuS390Polarization' },
++  'if': { 'all': [ 'TARGET_S390X', 'CONFIG_KVM' ] }
++}
++
++##
++# @query-s390x-cpu-polarization:
 +#
 +# Features:
 +#
-+# @unstable: This event is experimental.
++# @unstable: This command is experimental.
++#
++# Returns: the machine's CPU polarization
 +#
 +# Since: 8.2
-+#
-+# Example:
-+#
-+# <- { "event": "CPU_POLARIZATION_CHANGE",
-+#      "data": { "polarization": "horizontal" },
-+#      "timestamp": { "seconds": 1401385907, "microseconds": 422329 } }
 +##
-+{ 'event': 'CPU_POLARIZATION_CHANGE',
-+  'data': { 'polarization': 'CpuS390Polarization' },
++{ 'command': 'query-s390x-cpu-polarization', 'returns': 'CpuPolarizationInfo',
 +  'features': [ 'unstable' ],
 +  'if': { 'all': [ 'TARGET_S390X', 'CONFIG_KVM' ] }
 +}
 diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
-index f3771f5045..327bccea4f 100644
+index 327bccea4f..f16bdf65fa 100644
 --- a/hw/s390x/cpu-topology.c
 +++ b/hw/s390x/cpu-topology.c
-@@ -24,6 +24,7 @@
- #include "hw/s390x/s390-virtio-ccw.h"
- #include "hw/s390x/cpu-topology.h"
- #include "qapi/qapi-commands-machine-target.h"
-+#include "qapi/qapi-events-machine-target.h"
- 
- /*
-  * s390_topology is used to keep the topology information.
-@@ -136,6 +137,7 @@ void s390_handle_ptf(S390CPU *cpu, uint8_t r1, uintptr_t ra)
-         } else {
-             s390_topology.polarization = polarization;
-             s390_cpu_topology_set_changed(true);
-+            qapi_event_send_cpu_polarization_change(polarization);
-             setcc(cpu, 0);
-         }
-         break;
+@@ -459,3 +459,11 @@ void qmp_set_cpu_topology(uint16_t core,
+                          has_drawer, drawer, has_entitlement, entitlement,
+                          has_dedicated, dedicated, errp);
+ }
++
++CpuPolarizationInfo *qmp_query_s390x_cpu_polarization(Error **errp)
++{
++    CpuPolarizationInfo *info = g_new0(CpuPolarizationInfo, 1);
++
++    info->polarization = s390_topology.polarization;
++    return info;
++}
 -- 
 2.39.2
 
