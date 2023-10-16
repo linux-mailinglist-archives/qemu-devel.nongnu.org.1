@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3CBD7C9FAC
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4D57C9FA8
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:33:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsH8s-0003wy-2C; Mon, 16 Oct 2023 02:31:54 -0400
+	id 1qsH90-00041K-0Y; Mon, 16 Oct 2023 02:32:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH8q-0003uM-4j
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:52 -0400
+ id 1qsH8x-000405-IK
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH8o-0005SM-4O
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:51 -0400
+ id 1qsH8u-0005TD-Va
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697437909;
+ s=mimecast20190719; t=1697437916;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UrHZ5GRzW8lQtPg843T6Htzc+QHUFHYsEY4Zs9sIB4w=;
- b=Ck+Mxs58cn2UMG2dgnbXuDAaMxRx4XWlIExnOeK/sV3xUKZMI1c1Rn32G+6JJM8CcHS9bT
- AHMv7+25XbncVjC1D37Fu+mjAezLI+XZNqULva0Y4iiZ1BKwF+S6WoErAbVhxI67IPHGp8
- TgD+zRmTfyAkN/2ydxIyWHhN7XVwmsY=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QEBhg/nis2v2E6TOtez7OB+wequT7+FUk6KnJtqVqLQ=;
+ b=XBIIPSh2p7wHw/8KxUKuNtEwuOmcCUbUSMDoXuoR1awGxbcBRUS3QOfhe//2i4tpTv2q5/
+ v9+4EaMvOj56dDDNo5WIftjc0Zmany4JvSg78WXTDjh7IYlvRiQqdXBXRFUzoavYUBWyJG
+ xc5+oKqfF+3Sudbm+oLgWG6DuwItO2A=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212-jQtmKb20MdKSxSQaMjqRaQ-1; Mon, 16 Oct 2023 02:31:47 -0400
-X-MC-Unique: jQtmKb20MdKSxSQaMjqRaQ-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2c5073588cbso22571191fa.3
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:31:47 -0700 (PDT)
+ us-mta-462-20BsEUevO1eosAyHqBxjrA-1; Mon, 16 Oct 2023 02:31:48 -0400
+X-MC-Unique: 20BsEUevO1eosAyHqBxjrA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9bf8678af70so79786566b.2
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:31:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697437905; x=1698042705;
+ d=1e100.net; s=20230601; t=1697437907; x=1698042707;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UrHZ5GRzW8lQtPg843T6Htzc+QHUFHYsEY4Zs9sIB4w=;
- b=h2keN6BfUQjgzhe61WxMu/seU2yd4WTNabUplWOVFv983SCXZDQ1b8yUx4JvQutaPK
- q3oUyRew8ans4le0dOKyQYRvfuICwB8+X1oB9RWtKR4h1tnZxtH/T33rvrB33RdC+5Hq
- TvQ/7ZHa2UTct3s3YLFEZ1ON5sfE2Cc53JIKpsdSSPI/Cv585zECX9lJtVE+Nbye80kD
- BoYMI8dWX8AEr2jmRO97n8zrhjnqUlqfw1630YhHBGG8RODpNEgyO5lEYaOY8UNPcNAg
- UX7WEazS0y7j5Sd8a1cjPRQGDxDWPWpZuwyRBTJEYYeIfHDKLVqtqV+k+o0rsCf7cdGx
- vBgw==
-X-Gm-Message-State: AOJu0Yx9CCd0CANOtMXiIEMwqcOqqWH01mrlxFSDXYMYMCd2tdnjqXZ6
- kQPCbRA7Aohz0KrtGOl3Qrff20Vf96ZciRjyV21M724Kwb4nJgsvEhcdR0mt740SrkQ52Ht5AWu
- +hueqb+a41817nuhPcoKJJvVdX5F3BeXvrENTAMSac5+PHWH1Y2kq2x5xmnsCfrod8dmJTnAKsY
- c=
-X-Received: by 2002:a2e:b2d4:0:b0:2c5:19ea:b6ac with SMTP id
- 20-20020a2eb2d4000000b002c519eab6acmr2842191ljz.21.1697437905318; 
- Sun, 15 Oct 2023 23:31:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGz6vF9qFSFNLaIHkjitheYt2SfBmp/5316YZYRGkto31nAklo/j1xnUSkl9UAt70cbvhQO1g==
-X-Received: by 2002:a2e:b2d4:0:b0:2c5:19ea:b6ac with SMTP id
- 20-20020a2eb2d4000000b002c519eab6acmr2842170ljz.21.1697437904773; 
- Sun, 15 Oct 2023 23:31:44 -0700 (PDT)
+ bh=QEBhg/nis2v2E6TOtez7OB+wequT7+FUk6KnJtqVqLQ=;
+ b=r0d7YNi2/GwbOPLbe/AGcV55jghIJNOXteqUafLwgHE4aZrz2Ro40gITaiRo1JhSwm
+ J2m049HdJbrxzyTUMdDiHcdErPXEFiD1NPMsJSwt7HGrtUne2K5zxVFZ1ObydUbfP18s
+ jZxX2YhcMSYomJCtJSYvVdvp9GRKF+1GvMq/LfNtVWex/DRHTF/2QoydFcDsbFHpFH7T
+ SKiUaprvXbZoHKZv6cTbDeIZCGePnloljKX3e1QBHTg2PpssQIt89HeG8TV3KTjKo1Ma
+ WO7PREWndrDGg2fDdxieG+i8zKIfbNEOfWIRJculfo5+9pGZJu2e3Q/UDlaU9N32haEC
+ 7RBA==
+X-Gm-Message-State: AOJu0YwObkRu6hBnCDY3Rlv5Vl+FFfqMoM/Ir+3OOsVGMmn3jEGrZQ0Y
+ 6tRBEqDbXEBG+YW/xNSvki/fz5zuJOkKS3UbPB1ym+sA/b/Nsa7sGUyCL6moKc/uCwpGUJDWGda
+ fA6rh7tUccwhV0EFYm5q+8LUUQETv+VZm07eHwc/UTDPhPWzwWbLJ8aT+LZPVaMP6FYXidunFAa
+ E=
+X-Received: by 2002:a17:906:1092:b0:9bd:8cfd:e588 with SMTP id
+ u18-20020a170906109200b009bd8cfde588mr9430116eju.27.1697437907116; 
+ Sun, 15 Oct 2023 23:31:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG8iKsTJyQLe9NFzfJuJFc04u+LWkH7wByxPCpsdCjH86lkpHt8yWbA1G7Jd7O3KRQAVN8/8w==
+X-Received: by 2002:a17:906:1092:b0:9bd:8cfd:e588 with SMTP id
+ u18-20020a170906109200b009bd8cfde588mr9430104eju.27.1697437906806; 
+ Sun, 15 Oct 2023 23:31:46 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- y25-20020a1709063a9900b009ae3e6c342asm3382543ejd.111.2023.10.15.23.31.43
+ jz28-20020a17090775fc00b009b29553b648sm3285597ejc.206.2023.10.15.23.31.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 23:31:43 -0700 (PDT)
+ Sun, 15 Oct 2023 23:31:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 08/17] configure, tests/tcg: simplify GDB conditionals
-Date: Mon, 16 Oct 2023 08:31:18 +0200
-Message-ID: <20231016063127.161204-9-pbonzini@redhat.com>
+Subject: [PATCH 09/17] configure: clean up plugin option handling
+Date: Mon, 16 Oct 2023 08:31:19 +0200
+Message-ID: <20231016063127.161204-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231016063127.161204-1-pbonzini@redhat.com>
 References: <20231016063127.161204-1-pbonzini@redhat.com>
@@ -100,259 +100,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unify HAVE_GDB_BIN (currently in config-host.mak) and
-HOST_GDB_SUPPORTS_ARCH into a single GDB variable in
-config-target.mak.
+Keep together all the conditions that lead to disabling plugins, and
+remove now-dead code.
+
+Since the option was not in SKIP_OPTIONS, it was present twice in
+the help message, both from configure and from meson-buildoptions.sh.
+Remove the duplication and take the occasion to document the option as
+autodetected, which it is.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                                     | 30 +++++++++----------
- meson.build                                   |  4 +--
- tests/tcg/aarch64/Makefile.target             |  6 ++--
- tests/tcg/multiarch/Makefile.target           | 18 ++++-------
- .../multiarch/system/Makefile.softmmu-target  | 15 ++++------
- tests/tcg/s390x/Makefile.target               |  6 ++--
- 6 files changed, 33 insertions(+), 46 deletions(-)
+ configure                     | 39 +++++++++++++++--------------------
+ scripts/meson-buildoptions.py | 17 ++++++++++-----
+ scripts/meson-buildoptions.sh |  2 +-
+ 3 files changed, 30 insertions(+), 28 deletions(-)
 
 diff --git a/configure b/configure
-index 3da46ed202d..732220fdd45 100755
+index 732220fdd45..7dad78f329b 100755
 --- a/configure
 +++ b/configure
-@@ -1136,6 +1136,18 @@ if test "$tcg" = "auto"; then
-   fi
+@@ -377,7 +377,6 @@ fi
+ 
+ case $targetos in
+ windows)
+-  plugins="no"
+   pie="no"
+ ;;
+ haiku)
+@@ -737,7 +736,6 @@ for opt do
+       default_cflags='-O0 -g'
+   ;;
+   --disable-tcg) tcg="disabled"
+-                 plugins="no"
+   ;;
+   --enable-tcg) tcg="enabled"
+   ;;
+@@ -774,11 +772,7 @@ for opt do
+   ;;
+   --enable-download) download="enabled"; git_submodules_action=update;
+   ;;
+-  --enable-plugins) if test "$targetos" = "windows"; then
+-                        error_exit "TCG plugins not currently supported on Windows platforms"
+-                    else
+-                        plugins="yes"
+-                    fi
++  --enable-plugins) plugins="yes"
+   ;;
+   --disable-plugins) plugins="no"
+   ;;
+@@ -804,11 +798,6 @@ then
+     git_submodules_action="validate"
  fi
  
-+#########################################
-+# gdb test
-+
-+if test -n "$gdb_bin"; then
-+    gdb_version=$($gdb_bin --version | head -n 1)
-+    if version_ge ${gdb_version##* } 9.1; then
-+        gdb_arches=$($python "$source_path/scripts/probe-gdb-support.py" $gdb_bin)
-+    else
-+        gdb_bin=""
-+    fi
-+fi
-+
- ##########################################
- # big/little endian test
- cat > $TMPC << EOF
-@@ -1656,17 +1668,7 @@ fi
- 
- echo "SRC_PATH=$source_path" >> $config_host_mak
- echo "TARGET_DIRS=$target_list" >> $config_host_mak
--
--if test -n "$gdb_bin"; then
--    gdb_version=$($gdb_bin --version | head -n 1)
--    if version_ge ${gdb_version##* } 9.1; then
--        echo "HAVE_GDB_BIN=$gdb_bin" >> $config_host_mak
--        gdb_arches=$($python "$source_path/scripts/probe-gdb-support.py" $gdb_bin)
--    else
--        gdb_bin=""
--    fi
+-# test for any invalid configuration combinations
+-if test "$plugins" = "yes" -a "$tcg" = "disabled"; then
+-    error_exit "Can't enable plugins on non-TCG builds"
 -fi
 -
-+echo "GDB=$gdb_bin" >> $config_host_mak
- if test "$container" != no; then
-     echo "RUNC=$runc" >> $config_host_mak
+ if ! test -f "$source_path/subprojects/keycodemapdb/README" \
+     && test "$download" = disabled
+ then
+@@ -919,8 +908,6 @@ Advanced options (experts only):
+   --enable-debug           enable common debug build options
+   --disable-werror         disable compilation abort on warning
+   --cpu=CPU                Build for host CPU [$cpu]
+-  --enable-plugins
+-                           enable plugins via shared library loading
+   --disable-containers     don't use containers for cross-building
+   --container-engine=TYPE  which container engine to use [$container_engine]
+   --gdb=GDB-path           gdb to use for gdbstub tests [$gdb_bin]
+@@ -1062,15 +1049,27 @@ if test "$targetos" = "bogus"; then
+     error_exit "Unrecognized host OS (uname -s reports '$(uname -s)')"
  fi
-@@ -1711,10 +1713,6 @@ mkdir -p tests/tcg
+ 
++# test for any invalid configuration combinations
++if test "$targetos" = "windows"; then
++  if test "$plugins" = "yes"; then
++    error_exit "TCG plugins not currently supported on Windows platforms"
++  fi
++  plugins="no"
++fi
++if test "$tcg" = "disabled" ; then
++  if test "$plugins" = "yes"; then
++    error_exit "Can't enable plugins on non-TCG builds"
++  fi
++  plugins="no"
++fi
+ if test "$static" = "yes" ; then
+   if test "$plugins" = "yes"; then
+     error_exit "static and plugins are mutually incompatible"
+-  else
+-    plugins="no"
+   fi
++  plugins="no"
+ fi
+-test "$plugins" = "" && plugins=yes
+-if test "$plugins" = "yes"; then
++if test "$plugins" != "no"; then
++  plugins=yes
+   subdirs="$subdirs contrib/plugins"
+ fi
+ 
+@@ -1713,10 +1712,6 @@ mkdir -p tests/tcg
  echo "# Automatically generated by configure - do not modify" > $config_host_mak
  echo "SRC_PATH=$source_path" >> $config_host_mak
  
--# versioned checked in the main config_host.mak above
--if test -n "$gdb_bin"; then
--    echo "HAVE_GDB_BIN=$gdb_bin" >> $config_host_mak
+-if test "$plugins" = "yes" ; then
+-    echo "CONFIG_PLUGIN=y" >> $config_host_mak
 -fi
- if test "$plugins" = "yes" ; then
-     echo "CONFIG_PLUGIN=y" >> $config_host_mak
- fi
-@@ -1751,7 +1749,7 @@ for target in $target_list; do
- 
-       # will GDB work with these binaries?
-       if test "${gdb_arches#*$arch}" != "$gdb_arches"; then
--          echo "HOST_GDB_SUPPORTS_ARCH=y" >> "$config_target_mak"
-+          echo "GDB=$gdb_bin" >> $config_target_mak
-       fi
- 
-       echo "run-tcg-tests-$target: $qemu\$(EXESUF)" >> Makefile.prereqs
-diff --git a/meson.build b/meson.build
-index 251838f2609..87bb4e9243a 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4021,8 +4021,8 @@ summary(summary_info, bool_yn: true, section: 'Directories')
- summary_info = {}
- summary_info += {'python':            '@0@ (version: @1@)'.format(python.full_path(), python.language_version())}
- summary_info += {'sphinx-build':      sphinx_build}
--if config_host.has_key('HAVE_GDB_BIN')
--  summary_info += {'gdb':             config_host['HAVE_GDB_BIN']}
-+if config_host.has_key('GDB')
-+  summary_info += {'gdb':             config_host['GDB']}
- endif
- summary_info += {'iasl':              iasl}
- summary_info += {'genisoimage':       config_host['GENISOIMAGE']}
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index d01b8ff47c8..62b38c792fb 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -105,19 +105,19 @@ sha512-sve: sha512.c
- 
- TESTS += sha512-sve
- 
--ifeq ($(HOST_GDB_SUPPORTS_ARCH),y)
-+ifneq ($(GDB),)
- GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
- 
- run-gdbstub-sysregs: sysregs
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
- 		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve.py, \
- 	basic gdbstub SVE support)
- 
- run-gdbstub-sve-ioctls: sve-ioctls
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
- 		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-ioctl.py, \
- 	basic gdbstub SVE ZLEN support)
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 43bddeaf212..f3bfaf1a228 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -63,45 +63,39 @@ run-test-mmap: test-mmap
- run-test-mmap-%: test-mmap
- 	$(call run-test, test-mmap-$*, $(QEMU) -p $* $<, $< ($* byte pages))
- 
--ifneq ($(HAVE_GDB_BIN),)
--ifeq ($(HOST_GDB_SUPPORTS_ARCH),y)
-+ifneq ($(GDB),)
- GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
- 
- run-gdbstub-sha1: sha1
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/sha1.py, \
- 	basic gdbstub support)
- 
- run-gdbstub-qxfer-auxv-read: sha1
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-qxfer-auxv-read.py, \
- 	basic gdbstub qXfer:auxv:read support)
- 
- run-gdbstub-proc-mappings: sha1
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-proc-mappings.py, \
- 	proc mappings support)
- 
- run-gdbstub-thread-breakpoint: testthread
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-thread-breakpoint.py, \
- 	hitting a breakpoint on non-main thread)
 -
- else
- run-gdbstub-%:
--	$(call skip-test, "gdbstub test $*", "no guest arch support")
--endif
--else
--run-gdbstub-%:
--	$(call skip-test, "gdbstub test $*", "need working gdb")
-+	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
- endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint
-diff --git a/tests/tcg/multiarch/system/Makefile.softmmu-target b/tests/tcg/multiarch/system/Makefile.softmmu-target
-index 90810a32b2f..dee4f58dea1 100644
---- a/tests/tcg/multiarch/system/Makefile.softmmu-target
-+++ b/tests/tcg/multiarch/system/Makefile.softmmu-target
-@@ -14,13 +14,12 @@ VPATH+=$(MULTIARCH_SYSTEM_SRC)
- MULTIARCH_TEST_SRCS=$(wildcard $(MULTIARCH_SYSTEM_SRC)/*.c)
- MULTIARCH_TESTS = $(patsubst $(MULTIARCH_SYSTEM_SRC)/%.c, %, $(MULTIARCH_TEST_SRCS))
+ tcg_tests_targets=
+ for target in $target_list; do
+   arch=${target%%-*}
+diff --git a/scripts/meson-buildoptions.py b/scripts/meson-buildoptions.py
+index 8d2e526132a..b787c84e914 100644
+--- a/scripts/meson-buildoptions.py
++++ b/scripts/meson-buildoptions.py
+@@ -44,6 +44,11 @@
+     "trace_file": "with-trace-file",
+ }
  
--ifneq ($(HAVE_GDB_BIN),)
--ifeq ($(HOST_GDB_SUPPORTS_ARCH),y)
-+ifneq ($(GDB),)
- GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
++# Options that configure autodetects, even though meson defines them as boolean
++AUTO_OPTIONS = {
++    "plugins",
++}
++
+ BUILTIN_OPTIONS = {
+     "b_coverage",
+     "b_lto",
+@@ -168,6 +173,7 @@ def cli_metavar(opt):
  
- run-gdbstub-memory: memory
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) \
- 		--output $<.gdb.out \
- 		--qargs \
-@@ -29,7 +28,7 @@ run-gdbstub-memory: memory
- 	softmmu gdbstub support)
- run-gdbstub-interrupt: interrupt
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) \
- 		--output $<.gdb.out \
- 		--qargs \
-@@ -38,7 +37,7 @@ run-gdbstub-interrupt: interrupt
- 	softmmu gdbstub support)
- run-gdbstub-untimely-packet: hello
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--gdb-args "-ex 'set debug remote 1'" \
- 		--output untimely-packet.gdb.out \
- 		--stderr untimely-packet.gdb.err \
-@@ -51,11 +50,7 @@ run-gdbstub-untimely-packet: hello
- 		"GREP", file untimely-packet.gdb.err)
- else
- run-gdbstub-%:
--	$(call skip-test, "gdbstub test $*", "no guest arch support")
--endif
--else
--run-gdbstub-%:
--	$(call skip-test, "gdbstub test $*", "need working gdb")
-+	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
- endif
+ def print_help(options):
+     print("meson_options_help() {")
++    feature_opts = []
+     for opt in sorted(options, key=cli_help_key):
+         key = cli_help_key(opt)
+         # The first section includes options that have an arguments,
+@@ -176,7 +182,7 @@ def print_help(options):
+             metavar = cli_metavar(opt)
+             left = f"--{key}={metavar}"
+             help_line(left, opt, 27, True)
+-        elif opt["type"] == "boolean":
++        elif opt["type"] == "boolean" and opt["name"] not in AUTO_OPTIONS:
+             left = f"--{key}"
+             help_line(left, opt, 27, False)
+         elif allow_arg(opt):
+@@ -185,16 +191,17 @@ def print_help(options):
+             else:
+                 left = f"--{key}=CHOICE"
+             help_line(left, opt, 27, True)
++        else:
++            feature_opts.append(opt)
  
- MULTIARCH_RUNS += run-gdbstub-memory run-gdbstub-interrupt run-gdbstub-untimely-packet
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index c650aefe5c1..826f0a18e43 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -81,12 +81,12 @@ $(Z15_TESTS): CFLAGS+=-march=z15 -O2
- TESTS+=$(Z15_TESTS)
- endif
+     sh_print()
+     sh_print("Optional features, enabled with --enable-FEATURE and")
+     sh_print("disabled with --disable-FEATURE, default is enabled if available")
+     sh_print("(unless built with --without-default-features):")
+     sh_print()
+-    for opt in options:
+-        key = opt["name"].replace("_", "-")
+-        if opt["type"] != "boolean" and not allow_arg(opt):
+-            help_line(key, opt, 18, False)
++    for opt in sorted(feature_opts, key=cli_option):
++        key = cli_option(opt)
++        help_line(key, opt, 18, False)
+     print("}")
  
--ifeq ($(HOST_GDB_SUPPORTS_ARCH),y)
-+ifneq ($(GDB),)
- GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
  
- run-gdbstub-signals-s390x: signals-s390x
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
- 		--bin $< --test $(S390X_SRC)/gdbstub/test-signals-s390x.py, \
- 	mixing signals and debugging)
-@@ -95,7 +95,7 @@ hello-s390x-asm: CFLAGS+=-nostdlib
- 
- run-gdbstub-svc: hello-s390x-asm
- 	$(call run-test, $@, $(GDB_SCRIPT) \
--		--gdb $(HAVE_GDB_BIN) \
-+		--gdb $(GDB) \
- 		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
- 		--bin $< --test $(S390X_SRC)/gdbstub/test-svc.py, \
- 	single-stepping svc)
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index d4b89e6b443..22d69966606 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -40,7 +40,6 @@ meson_options_help() {
+   printf "%s\n" '                           jemalloc/system/tcmalloc)'
+   printf "%s\n" '  --enable-module-upgrades try to load modules from alternate paths for'
+   printf "%s\n" '                           upgrades'
+-  printf "%s\n" '  --enable-plugins         TCG plugins via shared library loading'
+   printf "%s\n" '  --enable-rng-none        dummy RNG, avoid using /dev/(u)random and'
+   printf "%s\n" '                           getrandom()'
+   printf "%s\n" '  --enable-safe-stack      SafeStack Stack Smash Protection (requires'
+@@ -149,6 +148,7 @@ meson_options_help() {
+   printf "%s\n" '  pa              PulseAudio sound support'
+   printf "%s\n" '  parallels       parallels image format support'
+   printf "%s\n" '  pipewire        PipeWire sound support'
++  printf "%s\n" '  plugins         TCG plugins via shared library loading'
+   printf "%s\n" '  png             PNG support with libpng'
+   printf "%s\n" '  pvrdma          Enable PVRDMA support'
+   printf "%s\n" '  qcow1           qcow1 image format support'
 -- 
 2.41.0
 
