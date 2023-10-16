@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037A47CA490
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DABB7CA49C
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsKHh-0002e3-Gl; Mon, 16 Oct 2023 05:53:13 -0400
+	id 1qsKMD-0004bk-Lm; Mon, 16 Oct 2023 05:57:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qsKHd-0002dq-KB; Mon, 16 Oct 2023 05:53:09 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qsKMB-0004ar-A8
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:57:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qsKHa-0004ow-Is; Mon, 16 Oct 2023 05:53:09 -0400
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S8C4x4jVpz6J9yf;
- Mon, 16 Oct 2023 17:49:37 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 16 Oct 2023 10:52:53 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Mon, 16 Oct 2023 10:52:53 +0100
-To: Miguel Luis <miguel.luis@oracle.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, Marc Zyngier <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>, Jonathan Cameron
- <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
- <lpieralisi@kernel.org>, Peter Maydell <peter.maydell@linaro.org>, "Richard
- Henderson" <richard.henderson@linaro.org>, "imammedo@redhat.com"
- <imammedo@redhat.com>, "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
- "david@redhat.com" <david@redhat.com>, "philmd@linaro.org"
- <philmd@linaro.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "will@kernel.org"
- <will@kernel.org>, "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>, Karl Heubaum
- <karl.heubaum@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, 
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V6 0/9] Add architecture agnostic code to support vCPU
- Hotplug
-Thread-Topic: [PATCH V6 0/9] Add architecture agnostic code to support vCPU
- Hotplug
-Thread-Index: AQHZ/cNQxAxt9PC9FEqdNAxyY88QobBH2dQAgARWpIA=
-Date: Mon, 16 Oct 2023 09:52:53 +0000
-Message-ID: <187d0a24a81b4f1abbb23795325073ea@huawei.com>
-References: <20231013105129.25648-1-salil.mehta@huawei.com>
- <4764CF47-47CA-4685-805C-BBE6310BE164@oracle.com>
-In-Reply-To: <4764CF47-47CA-4685-805C-BBE6310BE164@oracle.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.147.12]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qsKM9-0005m8-EP
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:57:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697450266;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=6V9dxaVn/99eF/ZvK8YhP5v01VZLuqoiSwhRH2Xlmcc=;
+ b=Yp7OWbQadfVO9fyAb1ohmrGcdw5JezdQf+7KN51iaAW85kmCjNYqpRBh9HSTlIzPK320Wv
+ jRjFr4d1YLtf/lQcWFpWCsSdLAZ2XEihF/mSQY4iP3LqOqoLH8rvxiJEtpA8KPakHeYGts
+ yAnECjL3994fqNXvP+riPtK+hbMu5Tk=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-529-psNIiKFSP1uoZ1NWMUrFmw-1; Mon, 16 Oct 2023 05:57:44 -0400
+X-MC-Unique: psNIiKFSP1uoZ1NWMUrFmw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9b9ecd8c351so292804066b.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:57:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697450263; x=1698055063;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6V9dxaVn/99eF/ZvK8YhP5v01VZLuqoiSwhRH2Xlmcc=;
+ b=BFoZGu7dJEDDJcHUFxDPbxUtp/AFBiYHRHWnxQCryLc0ZLg3J2jl8WW8Qkjh0bFX5V
+ PQIQ6V3INUuwIczD8Td7H5TAPF/vc8vsmrdUyXvVXj+tEZLisO8QgvFyiUidK+HPMZzw
+ /O/0o+fdNy62W6GxUAI2JQZQe6WGzGQqiMeRBMWpY6ylNaPQUtvaJGkPBOejHCXe1HFN
+ h0CZ8ASYBpz8gmFZuGPAD0YXm32C0wIe6zTafLKhY8X3LtsIYirCqb3vii0A4OHeHe6o
+ AH9xnnMTaXSSVHPEdpFSqnOJV7Q7tyWDKueFK2Zdwi7KvdjtxgO9rPZyUNO6DzPNq1q9
+ 1Izg==
+X-Gm-Message-State: AOJu0YwH3OB0asWqeveQeJlSHnJdV1xGZFF9CubXD9uXlusRjM/+BUU4
+ IOriny6kFNtNAByx7/P4GXb3JNpKLU6vISUCYw10F3o8yx45kqyw1KkVgXCG3g/eHjLJmelWONa
+ tHkFUjjkPHQADrd4+6UPDrXk=
+X-Received: by 2002:a17:907:9486:b0:9bf:30e8:5bf9 with SMTP id
+ dm6-20020a170907948600b009bf30e85bf9mr4723656ejc.4.1697450263269; 
+ Mon, 16 Oct 2023 02:57:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzmrZKoE5cvrHqcgEa/Qhpco1I0w5xPUbRhpokVk51Np5BSAcA9nP+STrCDwdTVR10UgtiLw==
+X-Received: by 2002:a17:907:9486:b0:9bf:30e8:5bf9 with SMTP id
+ dm6-20020a170907948600b009bf30e85bf9mr4723647ejc.4.1697450262951; 
+ Mon, 16 Oct 2023 02:57:42 -0700 (PDT)
+Received: from [192.168.10.118] ([93.56.160.112])
+ by smtp.googlemail.com with ESMTPSA id
+ c22-20020a170906529600b0099c53c4407dsm3749392ejm.78.2023.10.16.02.57.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 02:57:42 -0700 (PDT)
+Message-ID: <f212ba30-0d10-4bb8-900a-215dadac837c@redhat.com>
+Date: Mon, 16 Oct 2023 11:55:12 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: -drive if=none: can't we make this the default?
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+References: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,40 +97,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgTWlndWVsLA0KDQo+IEZyb206IE1pZ3VlbCBMdWlzIDxtaWd1ZWwubHVpc0BvcmFjbGUuY29t
-Pg0KPiBTZW50OiBGcmlkYXksIE9jdG9iZXIgMTMsIDIwMjMgNTozNCBQTQ0KPiBUbzogU2FsaWwg
-TWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+IENjOiBxZW11LWRldmVsQG5vbmdudS5v
-cmc7IHFlbXUtYXJtQG5vbmdudS5vcmc7IE1hcmMgWnluZ2llcg0KPiA8bWF6QGtlcm5lbC5vcmc+
-OyBqZWFuLXBoaWxpcHBlQGxpbmFyby5vcmc7IEpvbmF0aGFuIENhbWVyb24NCj4gPGpvbmF0aGFu
-LmNhbWVyb25AaHVhd2VpLmNvbT47IGxwaWVyYWxpc2lAa2VybmVsLm9yZzsgUGV0ZXIgTWF5ZGVs
-bA0KPiA8cGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnPjsgUmljaGFyZCBIZW5kZXJzb24NCj4gPHJp
-Y2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmc+OyBpbWFtbWVkb0ByZWRoYXQuY29tOw0KPiBhbmRy
-ZXcuam9uZXNAbGludXguZGV2OyBkYXZpZEByZWRoYXQuY29tOyBwaGlsbWRAbGluYXJvLm9yZzsN
-Cj4gZXJpYy5hdWdlckByZWRoYXQuY29tOyBvbGl2ZXIudXB0b25AbGludXguZGV2OyBwYm9uemlu
-aUByZWRoYXQuY29tOw0KPiBtc3RAcmVkaGF0LmNvbTsgd2lsbEBrZXJuZWwub3JnOyBnc2hhbkBy
-ZWRoYXQuY29tOyByYWZhZWxAa2VybmVsLm9yZzsNCj4gYWxleC5iZW5uZWVAbGluYXJvLm9yZzsg
-bGludXhAYXJtbGludXgub3JnLnVrOw0KPiBkYXJyZW5Ab3MuYW1wZXJlY29tcHV0aW5nLmNvbTsg
-aWxra2FAb3MuYW1wZXJlY29tcHV0aW5nLmNvbTsNCj4gdmlzaG51QG9zLmFtcGVyZWNvbXB1dGlu
-Zy5jb207IEthcmwgSGV1YmF1bSA8a2FybC5oZXViYXVtQG9yYWNsZS5jb20+Ow0KPiBzYWxpbC5t
-ZWh0YUBvcG5zcmMubmV0OyB6aHVrZXFpYW4gPHpodWtlcWlhbjFAaHVhd2VpLmNvbT47IHdhbmd4
-aW9uZ2ZlbmcNCj4gKEMpIDx3YW5neGlvbmdmZW5nMkBodWF3ZWkuY29tPjsgd2FuZ3lhbmFuIChZ
-KSA8d2FuZ3lhbmFuNTVAaHVhd2VpLmNvbT47DQo+IGppYWtlcm5lbDJAZ21haWwuY29tOyBtYW9i
-aWJvQGxvb25nc29uLmNuOyBsaXhpYW5nbGFpQGxvb25nc29uLmNuOyBMaW51eGFybQ0KPiA8bGlu
-dXhhcm1AaHVhd2VpLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBWNiAwLzldIEFkZCBhcmNo
-aXRlY3R1cmUgYWdub3N0aWMgY29kZSB0byBzdXBwb3J0IHZDUFUNCj4gSG90cGx1Zw0KPiANCj4g
-SGkgU2FsaWwsDQo+IA0KPiA+IE9uIDEzIE9jdCAyMDIzLCBhdCAxMDo1MSwgU2FsaWwgTWVodGEg
-PHNhbGlsLm1laHRhQGh1YXdlaS5jb20+IHdyb3RlOg0KPiA+DQo+ID4gVmlydHVhbCBDUFUgaG90
-cGx1ZyBzdXBwb3J0IGlzIGJlaW5nIGFkZGVkIGFjcm9zcyB2YXJpb3VzDQo+IGFyY2hpdGVjdHVy
-ZXNbMV1bM10uDQo+ID4gVGhpcyBzZXJpZXMgYWRkcyB2YXJpb3VzIGNvZGUgYml0cyBjb21tb24g
-YWNyb3NzIGFsbCBhcmNoaXRlY3R1cmVzOg0KDQoNClsuLi5dDQoNCg0KPiBJIHRlc3RlZCBpdCBm
-b3IgQXJtNjQsIG1ha2UgY2hlY2ssIGJvb3QvcmVib290LCBsaXZlIG1pZ3JhdGlvbiBhbmQgZm91
-bmQgbm8NCj4gaXNzdWVzLA0KPiBzbyBmb3IgdGhpcywgcGxlYXNlIGZlZWwgZnJlZSB0byBhZGQ6
-DQo+IA0KPiBUZXN0ZWQtYnk6IE1pZ3VlbCBMdWlzIDxtaWd1ZWwubHVpc0BvcmFjbGUuY29tPg0K
-DQpHcmVhdC4gTWFueSB0aGFua3MgZm9yIHRoZSBjb25maXJtYXRpb24uIA0KDQpJIGd1ZXNzIHlv
-dSBhcmUgcmVwZWF0aW5nIHRoZSBzYW1lIGZvciB4ODYgYXMgd2VsbD8NCg0KU2FsaWwuDQo=
+On 10/14/23 21:16, Michael Tokarev wrote:
+> Can't we make -drive if=none the default?
+> 
+> Yes, I know current default is ide, and whole world have to use if=none explicitly
+> to undo this.  I think at this point we can deprecate if=ide default and switch to
+> if=none in the next release.  I think it will be a welcome change.
+
+I think if anything we should have no default at all.  But if I had my way:
+
+1) if=none would be deprecated (but with a much longer cycle than 1 
+year, probably), and everything that uses it would have to use -blockdev.
+
+2) -drive would be limited to a very small set of suboptions (file, 
+cache, if, and the ones in qemu_common_drive_opts) and anything that 
+specifies the driver would go through -blockdev.
+
+Paolo
+
 
