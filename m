@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B3F7CA08C
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 09:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 180417CA095
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 09:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsHzO-0004FK-3L; Mon, 16 Oct 2023 03:26:10 -0400
+	id 1qsI0B-0004q9-Qd; Mon, 16 Oct 2023 03:26:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsHzJ-0004F4-Ig
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:26:05 -0400
+ id 1qsI08-0004pa-Bk
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:26:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsHzG-0005j9-Uu
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:26:05 -0400
+ id 1qsI04-0005rl-Ix
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:26:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697441162;
+ s=mimecast20190719; t=1697441211;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=hBy/bgj49iIQxplJ6/jQ2+UQ61/uGGLB/25c45ClTQI=;
- b=RD0XaEIaH5NY0klwgLYtlN+UPtHN8wZRHmKgxf0CocFrJiIBskS8123VIZAOYt7NZzqrXk
- YN1nG6P/eVg7AbEHnfGc9qsqyerlB28lNCIjYvqmM7833x2lBNm6G8WogMWnAZ/K/7go8F
- 6d1lDY0PHxMx3dlotrzDs94kqTWQVPA=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sdUDsCJt+mEo5p73/qufWoh0YUeLb5NW42E22qjewm4=;
+ b=U4r6Pl4OJ3BOjLDDvTARGgKyyuNrODNDw6UR0PjEe0I9bfWy72krL5RkBuDK3t6wr3dmYA
+ Sfy9xd7IcvGh/QTzLWm1dK0ag9Dm25bz70hPHhnUEGNnoHFbbrWj82NIp/JQ5XTlBmCUns
+ jBeh4kmdTitFJ/zjcxTkqr5VobwKwGQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-pkjhY9FEPy24GSn1BMVozA-1; Mon, 16 Oct 2023 03:25:55 -0400
-X-MC-Unique: pkjhY9FEPy24GSn1BMVozA-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-5042bc93273so3678447e87.1
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 00:25:54 -0700 (PDT)
+ us-mta-594-san-Jv1VMMeF5zknXXEgCg-1; Mon, 16 Oct 2023 03:26:45 -0400
+X-MC-Unique: san-Jv1VMMeF5zknXXEgCg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-40554735995so32402685e9.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 00:26:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697441153; x=1698045953;
+ d=1e100.net; s=20230601; t=1697441204; x=1698046004;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hBy/bgj49iIQxplJ6/jQ2+UQ61/uGGLB/25c45ClTQI=;
- b=gObcwyTBymWFTz6Sj0EipQUFoXU/29WIw1ToJqN1IAjwG9PgQAM32WPHJniHFv9iqZ
- Eytk3ddYKJdAhvbcQczrzrs6KkEHiH0VZATzpA3Bsz0vMhFaitKb3YGg3cl+o0oyGl56
- pOcTVd00vKNMkcLB6fFaDwSfmuKgqQkcTXg6St+LNgo48zH5kIL4XTjvHj95YaxQUMsl
- mZMwvTWzlIA0uXzjR0SuDWEBv4FigqdaEMnF6pL4uIo9FYIboJIzJ9mtaxAvmjjUBtI7
- d89WEBjla1kW9pKgXlv7DoPc3cweiLvVDbeKYIliIqt/+w5AI67ovmx8oxlL73lkEw49
- i1VA==
-X-Gm-Message-State: AOJu0YwxJnOiJuTLLDLyBhQAlAS+mzGzVqxXi+AHVF4abL9P7LiOzx8B
- FbgV/bKmueJzHB6u4UFiuC7/06uussvljZG4Ku3cLGGOqm94LqmCQmm9PA8ozbtOz3yPao2Zyc6
- i5J0/JiyHjL69sPQ=
-X-Received: by 2002:a05:6512:2022:b0:505:6c99:bd7c with SMTP id
- s2-20020a056512202200b005056c99bd7cmr23758930lfs.57.1697441153727; 
- Mon, 16 Oct 2023 00:25:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLeegASQi+NGGVByMYvmXy+bSo7Z3157Y0QGMsZ2p1URrEyYiBXVxUQxfuYtxIshhO6I5nTw==
-X-Received: by 2002:a05:6512:2022:b0:505:6c99:bd7c with SMTP id
- s2-20020a056512202200b005056c99bd7cmr23758920lfs.57.1697441153430; 
- Mon, 16 Oct 2023 00:25:53 -0700 (PDT)
+ bh=sdUDsCJt+mEo5p73/qufWoh0YUeLb5NW42E22qjewm4=;
+ b=KehMwEoLZLl+mpCdTWcqdkOdHxu7IOpXbde6fPwp3n7sGUGn5MxoYMTE/xCXrajO1L
+ KeyhU/n99aMgJNle8fvDfClxy3QkSa5ZBYnNb3lpcRryWfIZmxWFns8fRAzmxLoWbIwG
+ Hym67cqscYu3yQgNPDFw9d8j2/4j0c1qdFvmgZdpVr5oIvICId8T4d5VZvY8dE1KyKYk
+ a6hLUPlNHICLkRNYclnPerV95YL5SUTVrJLfS5lsHFFHHcGU7IFqBcxxml3JMh+TtHmu
+ At2AUZwl57mdAqKUXcseWzRbJPIhD0k1LHZGgBbNX5U/v67r7n1H/hT5Sqd29rHIaRv7
+ nLdw==
+X-Gm-Message-State: AOJu0Yxe0hT3KHp4VMuBCfdqZr5SVgDI3aaCtp2aRt5T5OarLQf6qcUl
+ OZtf/n3fKjKoYIfoe8/RZ+xfEdCbRfJI6JLH2MMdWDOymtFKlYZJ0kqvoYRcXlHJm+VSuTdZPKQ
+ +unm2DZU0Cf9Acak=
+X-Received: by 2002:a1c:4b1a:0:b0:403:cc79:44f3 with SMTP id
+ y26-20020a1c4b1a000000b00403cc7944f3mr27792901wma.19.1697441204351; 
+ Mon, 16 Oct 2023 00:26:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHj0a+SbAq/hBuXlNytid8X6MHveTmbEa43zVHfSX8g5yDPn3i52jOOl6iDEYeaDZ7Et/lYeQ==
+X-Received: by 2002:a1c:4b1a:0:b0:403:cc79:44f3 with SMTP id
+ y26-20020a1c4b1a000000b00403cc7944f3mr27792886wma.19.1697441204037; 
+ Mon, 16 Oct 2023 00:26:44 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- jb17-20020a05600c54f100b00401bbfb9b2bsm1075734wmb.0.2023.10.16.00.25.52
+ v6-20020adff686000000b0031980294e9fsm26383488wrp.116.2023.10.16.00.26.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 00:25:52 -0700 (PDT)
+ Mon, 16 Oct 2023 00:26:43 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 Cc: peterx@redhat.com,  farosas@suse.de,  leobras@redhat.com,
  qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 3/4] multifd: fix counters in multifd_send_thread
-In-Reply-To: <20231011184358.97349-4-elena.ufimtseva@oracle.com> (Elena
- Ufimtseva's message of "Wed, 11 Oct 2023 11:43:57 -0700")
+Subject: Re: [PATCH v2 4/4] multifd: reset next_packet_len after sending pages
+In-Reply-To: <20231011184358.97349-5-elena.ufimtseva@oracle.com> (Elena
+ Ufimtseva's message of "Wed, 11 Oct 2023 11:43:58 -0700")
 References: <20231011184358.97349-1-elena.ufimtseva@oracle.com>
- <20231011184358.97349-4-elena.ufimtseva@oracle.com>
+ <20231011184358.97349-5-elena.ufimtseva@oracle.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Mon, 16 Oct 2023 09:25:52 +0200
-Message-ID: <871qdv58qn.fsf@secure.mitica>
+Date: Mon, 16 Oct 2023 09:26:42 +0200
+Message-ID: <87wmvn3u4t.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
@@ -102,19 +102,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Elena Ufimtseva <elena.ufimtseva@oracle.com> wrote:
-> Previous commit cbec7eb76879d419e7dbf531ee2506ec0722e825
-> "migration/multifd: Compute transferred bytes correctly"
-> removed accounting for packet_len in non-rdma
-> case, but the next_packet_size only accounts for pages, not for
-> the header packet (normal_pages * PAGE_SIZE) that is being sent
-> as iov[0]. The packet_len part should be added to account for
-> the size of MultiFDPacket and the array of the offsets.
+> Sometimes multifd sends just sync packet with no pages
+> (normal_num is 0). In this case the old value is being
+> preserved and being accounted for while only packet_len
+> is being transferred.
+> Reset it to 0 after sending and accounting for.
 >
 > Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 > Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-
-queued.
 
 
