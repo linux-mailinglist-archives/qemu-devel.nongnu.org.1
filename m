@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476667CA28F
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 388047CA27B
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:50:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJH7-0008JX-8k; Mon, 16 Oct 2023 04:48:33 -0400
+	id 1qsJH7-00009h-MQ; Mon, 16 Oct 2023 04:48:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJGn-00081Q-Kz; Mon, 16 Oct 2023 04:48:15 -0400
+ id 1qsJGx-0008Ic-Ed; Mon, 16 Oct 2023 04:48:25 -0400
 Received: from mgamail.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJGk-0001Al-R6; Mon, 16 Oct 2023 04:48:13 -0400
+ id 1qsJGr-0001Al-9i; Mon, 16 Oct 2023 04:48:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697446090; x=1728982090;
+ t=1697446097; x=1728982097;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Rj1lV+86wlvl4h1F503Bqf0fwK/5J5WBfjLXGPuAsnM=;
- b=LT+eMfXRDURn1UmXbU5du4DARXJSYefkUdU8gsS6awtwASRvMXCbDOC4
- NZl890bMl6tEtsvLp8Hvk0KVxMYJlGmzLTrhdhkg3a7VAJngIB7HHksCS
- CtBnP4wMgWDSKiLu1NcJ7UCyiCNVw0pmZaosCg3BMj7HvuUQzkyhEjk9a
- /5wG97CvqtyUL89+SK2gdUlFopfUfP9+edtomldGomAZhP7AZoIbWOuBJ
- RmIr5wef+YNPBpeZH9Mu/JLzjHVNGx6af7WlnU+3dvwZFdtH/+rXPcmXk
- 8UqsdrTzVwWHo1d+crUxadqEeeuXdwnX/IzwsIFtmN/RofuVakBNgDXHK Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737627"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737627"
+ bh=oPwi6eVw5K0v9Z9FjdMpzuizve7IfLaTuIh1dcsksdc=;
+ b=jslN8OkMqc/lEZxkdCmcIyo14TFz59+WQDUXHnBd2IkNiM3BlVQ0Fbfn
+ bUmBGhjaMdJmMZ6hPTAm1+ZA+4P4Eeic3AY5d0kWOH4vM26KDgghJGZEb
+ VzFNFsjcJFMfetRm3LTLq33aL7ebiFoGxL3YPiT0WWP+Shq8uWtC4ykWM
+ xg2kkBlc6MUczTdXSIEl/uXmQYs8AFp+tJZ9BO16sdZJ1JQIHi9bjyY61
+ KdijJLvqVHup7jnGQAUckUzoq4v5vnrBKo1uDa2XEomnv7bawvl1rK8+0
+ ubJoTFG3DrhPFObg9yTI8aU2HtqzSVRruJa2JBQPxCoGqIvrWN5nlu3Ke g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737639"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737639"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:48:09 -0700
+ 16 Oct 2023 01:48:15 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749222885"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749222885"
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749222913"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749222913"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:48:03 -0700
+ 16 Oct 2023 01:48:09 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -52,10 +52,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  qemu-ppc@nongnu.org (open list:sPAPR (pseries))
-Subject: [PATCH v2 12/27] vfio/container: Move vrdl_list,
- pgsizes and dma_max_mappings to base container
-Date: Mon, 16 Oct 2023 16:32:08 +0800
-Message-Id: <20231016083223.1519410-13-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 13/27] vfio/container: Move listener to base container
+Date: Mon, 16 Oct 2023 16:32:09 +0800
+Message-Id: <20231016083223.1519410-14-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
 References: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
@@ -87,8 +86,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-Move vrdl_list, pgsizes and dma_max_mappings to the base
-container object
+Move listener to base container. Also error and initialized fields
+are moved at the same time.
 
 No functional change intended.
 
@@ -97,376 +96,541 @@ Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-common.h         | 13 --------
- include/hw/vfio/vfio-container-base.h | 13 ++++++++
- hw/vfio/common.c                      | 48 +++++++++++++--------------
- hw/vfio/container-base.c              | 12 +++++++
- hw/vfio/container.c                   | 18 +++++-----
- hw/vfio/spapr.c                       |  4 +--
- 6 files changed, 59 insertions(+), 49 deletions(-)
+ include/hw/vfio/vfio-common.h         |   3 -
+ include/hw/vfio/vfio-container-base.h |   3 +
+ hw/vfio/common.c                      | 116 +++++++++++---------------
+ hw/vfio/container-base.c              |   1 +
+ hw/vfio/container.c                   |  31 +++----
+ hw/vfio/spapr.c                       |   7 +-
+ 6 files changed, 72 insertions(+), 89 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 7bb75bc7cd..18dd676a2a 100644
+index 18dd676a2a..8771160849 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -85,22 +85,9 @@ typedef struct VFIOLegacyContainer {
-     bool initialized;
+@@ -78,11 +78,8 @@ struct VFIOGroup;
+ typedef struct VFIOLegacyContainer {
+     VFIOContainer bcontainer;
+     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+-    MemoryListener listener;
+     MemoryListener prereg_listener;
+     unsigned iommu_type;
+-    Error *error;
+-    bool initialized;
      uint64_t dirty_pgsizes;
      uint64_t max_dirty_bitmap_size;
--    unsigned long pgsizes;
--    unsigned int dma_max_mappings;
      QLIST_HEAD(, VFIOGroup) group_list;
--    QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
- } VFIOLegacyContainer;
- 
--typedef struct VFIORamDiscardListener {
--    VFIOLegacyContainer *container;
--    MemoryRegion *mr;
--    hwaddr offset_within_address_space;
--    hwaddr size;
--    uint64_t granularity;
--    RamDiscardListener listener;
--    QLIST_ENTRY(VFIORamDiscardListener) next;
--} VFIORamDiscardListener;
--
- typedef struct VFIODeviceOps VFIODeviceOps;
- 
- typedef struct VFIODevice {
 diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 49637a1e6c..d6ffd7efc4 100644
+index d6ffd7efc4..96d33495c1 100644
 --- a/include/hw/vfio/vfio-container-base.h
 +++ b/include/hw/vfio/vfio-container-base.h
-@@ -47,6 +47,16 @@ typedef struct VFIOGuestIOMMU {
-     QLIST_ENTRY(VFIOGuestIOMMU) giommu_next;
- } VFIOGuestIOMMU;
- 
-+typedef struct VFIORamDiscardListener {
-+    VFIOContainer *bcontainer;
-+    MemoryRegion *mr;
-+    hwaddr offset_within_address_space;
-+    hwaddr size;
-+    uint64_t granularity;
-+    RamDiscardListener listener;
-+    QLIST_ENTRY(VFIORamDiscardListener) next;
-+} VFIORamDiscardListener;
-+
- typedef struct VFIOHostDMAWindow {
-     hwaddr min_iova;
-     hwaddr max_iova;
-@@ -66,9 +76,12 @@ typedef struct {
+@@ -76,6 +76,9 @@ typedef struct {
  struct VFIOContainer {
      VFIOIOMMUBackendOpsClass *ops;
      VFIOAddressSpace *space;
-+    unsigned long pgsizes;
-+    unsigned int dma_max_mappings;
++    MemoryListener listener;
++    Error *error;
++    bool initialized;
+     unsigned long pgsizes;
+     unsigned int dma_max_mappings;
      bool dirty_pages_supported;
-     QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
-     QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
-+    QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
-     QLIST_ENTRY(VFIOContainer) next;
-     QLIST_HEAD(, VFIODevice) device_list;
- };
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 1c47bcc478..b833def682 100644
+index b833def682..da1d64efca 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -396,13 +396,13 @@ static void vfio_ram_discard_notify_discard(RamDiscardListener *rdl,
- {
-     VFIORamDiscardListener *vrdl = container_of(rdl, VFIORamDiscardListener,
-                                                 listener);
-+    VFIOContainer *bcontainer = vrdl->bcontainer;
-     const hwaddr size = int128_get64(section->size);
-     const hwaddr iova = section->offset_within_address_space;
-     int ret;
- 
-     /* Unmap with a single call. */
--    ret = vfio_container_dma_unmap(&vrdl->container->bcontainer,
--                                   iova, size , NULL);
-+    ret = vfio_container_dma_unmap(bcontainer, iova, size , NULL);
-     if (ret) {
-         error_report("%s: vfio_container_dma_unmap() failed: %s", __func__,
-                      strerror(-ret));
-@@ -414,6 +414,7 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
- {
-     VFIORamDiscardListener *vrdl = container_of(rdl, VFIORamDiscardListener,
-                                                 listener);
-+    VFIOContainer *bcontainer = vrdl->bcontainer;
-     const hwaddr end = section->offset_within_region +
-                        int128_get64(section->size);
-     hwaddr start, next, iova;
-@@ -432,8 +433,8 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
-                section->offset_within_address_space;
-         vaddr = memory_region_get_ram_ptr(section->mr) + start;
- 
--        ret = vfio_container_dma_map(&vrdl->container->bcontainer, iova,
--                                     next - start, vaddr, section->readonly);
-+        ret = vfio_container_dma_map(bcontainer, iova, next - start,
-+                                     vaddr, section->readonly);
-         if (ret) {
-             /* Rollback */
-             vfio_ram_discard_notify_discard(rdl, section);
-@@ -443,7 +444,7 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
-     return 0;
+@@ -602,7 +602,7 @@ static bool vfio_listener_valid_section(MemoryRegionSection *section,
+     return true;
  }
  
--static void vfio_register_ram_discard_listener(VFIOLegacyContainer *container,
-+static void vfio_register_ram_discard_listener(VFIOContainer *bcontainer,
-                                                MemoryRegionSection *section)
+-static bool vfio_get_section_iova_range(VFIOLegacyContainer *container,
++static bool vfio_get_section_iova_range(VFIOContainer *bcontainer,
+                                         MemoryRegionSection *section,
+                                         hwaddr *out_iova, hwaddr *out_end,
+                                         Int128 *out_llend)
+@@ -630,10 +630,7 @@ static bool vfio_get_section_iova_range(VFIOLegacyContainer *container,
+ static void vfio_listener_region_add(MemoryListener *listener,
+                                      MemoryRegionSection *section)
  {
-     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
-@@ -456,7 +457,7 @@ static void vfio_register_ram_discard_listener(VFIOLegacyContainer *container,
-     g_assert(QEMU_IS_ALIGNED(int128_get64(section->size), TARGET_PAGE_SIZE));
- 
-     vrdl = g_new0(VFIORamDiscardListener, 1);
--    vrdl->container = container;
-+    vrdl->bcontainer = bcontainer;
-     vrdl->mr = section->mr;
-     vrdl->offset_within_address_space = section->offset_within_address_space;
-     vrdl->size = int128_get64(section->size);
-@@ -464,14 +465,14 @@ static void vfio_register_ram_discard_listener(VFIOLegacyContainer *container,
-                                                                 section->mr);
- 
-     g_assert(vrdl->granularity && is_power_of_2(vrdl->granularity));
--    g_assert(container->pgsizes &&
--             vrdl->granularity >= 1ULL << ctz64(container->pgsizes));
-+    g_assert(bcontainer->pgsizes &&
-+             vrdl->granularity >= 1ULL << ctz64(bcontainer->pgsizes));
- 
-     ram_discard_listener_init(&vrdl->listener,
-                               vfio_ram_discard_notify_populate,
-                               vfio_ram_discard_notify_discard, true);
-     ram_discard_manager_register_listener(rdm, &vrdl->listener, section);
--    QLIST_INSERT_HEAD(&container->vrdl_list, vrdl, next);
-+    QLIST_INSERT_HEAD(&bcontainer->vrdl_list, vrdl, next);
- 
-     /*
-      * Sanity-check if we have a theoretically problematic setup where we could
-@@ -486,7 +487,7 @@ static void vfio_register_ram_discard_listener(VFIOLegacyContainer *container,
-      * number of sections in the address space we could have over time,
-      * also consuming DMA mappings.
-      */
--    if (container->dma_max_mappings) {
-+    if (bcontainer->dma_max_mappings) {
-         unsigned int vrdl_count = 0, vrdl_mappings = 0, max_memslots = 512;
- 
- #ifdef CONFIG_KVM
-@@ -495,7 +496,7 @@ static void vfio_register_ram_discard_listener(VFIOLegacyContainer *container,
-         }
- #endif
- 
--        QLIST_FOREACH(vrdl, &container->vrdl_list, next) {
-+        QLIST_FOREACH(vrdl, &bcontainer->vrdl_list, next) {
-             hwaddr start, end;
- 
-             start = QEMU_ALIGN_DOWN(vrdl->offset_within_address_space,
-@@ -507,23 +508,23 @@ static void vfio_register_ram_discard_listener(VFIOLegacyContainer *container,
-         }
- 
-         if (vrdl_mappings + max_memslots - vrdl_count >
--            container->dma_max_mappings) {
-+            bcontainer->dma_max_mappings) {
-             warn_report("%s: possibly running out of DMA mappings. E.g., try"
-                         " increasing the 'block-size' of virtio-mem devies."
-                         " Maximum possible DMA mappings: %d, Maximum possible"
--                        " memslots: %d", __func__, container->dma_max_mappings,
-+                        " memslots: %d", __func__, bcontainer->dma_max_mappings,
-                         max_memslots);
-         }
-     }
- }
- 
--static void vfio_unregister_ram_discard_listener(VFIOLegacyContainer *container,
-+static void vfio_unregister_ram_discard_listener(VFIOContainer *bcontainer,
-                                                  MemoryRegionSection *section)
- {
-     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
-     VFIORamDiscardListener *vrdl = NULL;
- 
--    QLIST_FOREACH(vrdl, &container->vrdl_list, next) {
-+    QLIST_FOREACH(vrdl, &bcontainer->vrdl_list, next) {
-         if (vrdl->mr == section->mr &&
-             vrdl->offset_within_address_space ==
-             section->offset_within_address_space) {
-@@ -697,7 +698,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
-                             iommu_idx);
- 
-         ret = memory_region_iommu_set_page_size_mask(giommu->iommu_mr,
--                                                     container->pgsizes,
-+                                                     bcontainer->pgsizes,
-                                                      &err);
-         if (ret) {
-             g_free(giommu);
-@@ -724,7 +725,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
-      * about changes.
-      */
-     if (memory_region_has_ram_discard_manager(section->mr)) {
--        vfio_register_ram_discard_listener(container, section);
-+        vfio_register_ram_discard_listener(bcontainer, section);
+-    VFIOLegacyContainer *container = container_of(listener,
+-                                                  VFIOLegacyContainer,
+-                                                  listener);
+-    VFIOContainer *bcontainer = &container->bcontainer;
++    VFIOContainer *bcontainer = container_of(listener, VFIOContainer, listener);
+     hwaddr iova, end;
+     Int128 llend, llsize;
+     void *vaddr;
+@@ -645,7 +642,8 @@ static void vfio_listener_region_add(MemoryListener *listener,
          return;
      }
  
-@@ -848,7 +849,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
-         pgmask = (1ULL << ctz64(hostwin->iova_pgsizes)) - 1;
-         try_unmap = !((iova & pgmask) || (int128_get64(llsize) & pgmask));
-     } else if (memory_region_has_ram_discard_manager(section->mr)) {
--        vfio_unregister_ram_discard_listener(container, section);
-+        vfio_unregister_ram_discard_listener(bcontainer, section);
-         /* Unregistering will trigger an unmap. */
-         try_unmap = false;
+-    if (!vfio_get_section_iova_range(container, section, &iova, &end, &llend)) {
++    if (!vfio_get_section_iova_range(bcontainer, section, &iova, &end,
++                                     &llend)) {
+         if (memory_region_is_ram_device(section->mr)) {
+             trace_vfio_listener_region_add_no_dma_map(
+                 memory_region_name(section->mr),
+@@ -663,7 +661,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+     hostwin = vfio_find_hostwin(bcontainer, iova, end);
+     if (!hostwin) {
+         error_setg(&err, "Container %p can't map guest IOVA region"
+-                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
++                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, bcontainer, iova, end);
+         goto fail;
      }
-@@ -1332,18 +1333,17 @@ static int vfio_ram_discard_get_dirty_bitmap(MemoryRegionSection *section,
-      * Sync the whole mapped region (spanning multiple individual mappings)
-      * in one go.
+ 
+@@ -750,13 +748,12 @@ static void vfio_listener_region_add(MemoryListener *listener,
+         }
+     }
+ 
+-    ret = vfio_container_dma_map(&container->bcontainer,
+-                                 iova, int128_get64(llsize), vaddr,
+-                                 section->readonly);
++    ret = vfio_container_dma_map(bcontainer, iova, int128_get64(llsize),
++                                 vaddr, section->readonly);
+     if (ret) {
+         error_setg(&err, "vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
+                    "0x%"HWADDR_PRIx", %p) = %d (%s)",
+-                   container, iova, int128_get64(llsize), vaddr, ret,
++                   bcontainer, iova, int128_get64(llsize), vaddr, ret,
+                    strerror(-ret));
+         if (memory_region_is_ram_device(section->mr)) {
+             /* Allow unexpected mappings not to be fatal for RAM devices */
+@@ -778,9 +775,9 @@ fail:
+      * can gracefully fail.  Runtime, there's not much we can do other
+      * than throw a hardware error.
       */
--    return vfio_get_dirty_bitmap(&vrdl->container->bcontainer, iova, size,
--                                 ram_addr);
-+    return vfio_get_dirty_bitmap(vrdl->bcontainer, iova, size, ram_addr);
+-    if (!container->initialized) {
+-        if (!container->error) {
+-            error_propagate_prepend(&container->error, err,
++    if (!bcontainer->initialized) {
++        if (!bcontainer->error) {
++            error_propagate_prepend(&bcontainer->error, err,
+                                     "Region %s: ",
+                                     memory_region_name(section->mr));
+         } else {
+@@ -795,10 +792,7 @@ fail:
+ static void vfio_listener_region_del(MemoryListener *listener,
+                                      MemoryRegionSection *section)
+ {
+-    VFIOLegacyContainer *container = container_of(listener,
+-                                                  VFIOLegacyContainer,
+-                                                  listener);
+-    VFIOContainer *bcontainer = &container->bcontainer;
++    VFIOContainer *bcontainer = container_of(listener, VFIOContainer, listener);
+     hwaddr iova, end;
+     Int128 llend, llsize;
+     int ret;
+@@ -831,7 +825,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
+          */
+     }
+ 
+-    if (!vfio_get_section_iova_range(container, section, &iova, &end, &llend)) {
++    if (!vfio_get_section_iova_range(bcontainer, section, &iova, &end,
++                                     &llend)) {
+         return;
+     }
+ 
+@@ -858,29 +853,29 @@ static void vfio_listener_region_del(MemoryListener *listener,
+         if (int128_eq(llsize, int128_2_64())) {
+             /* The unmap ioctl doesn't accept a full 64-bit span. */
+             llsize = int128_rshift(llsize, 1);
+-            ret = vfio_container_dma_unmap(&container->bcontainer, iova,
++            ret = vfio_container_dma_unmap(bcontainer, iova,
+                                            int128_get64(llsize), NULL);
+             if (ret) {
+                 error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+                              "0x%"HWADDR_PRIx") = %d (%s)",
+-                             container, iova, int128_get64(llsize), ret,
++                             bcontainer, iova, int128_get64(llsize), ret,
+                              strerror(-ret));
+             }
+             iova += int128_get64(llsize);
+         }
+-        ret = vfio_container_dma_unmap(&container->bcontainer, iova,
++        ret = vfio_container_dma_unmap(bcontainer, iova,
+                                        int128_get64(llsize), NULL);
+         if (ret) {
+             error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+                          "0x%"HWADDR_PRIx") = %d (%s)",
+-                         container, iova, int128_get64(llsize), ret,
++                         bcontainer, iova, int128_get64(llsize), ret,
+                          strerror(-ret));
+         }
+     }
+ 
+     memory_region_unref(section->mr);
+ 
+-    vfio_container_del_section_window(&container->bcontainer, section);
++    vfio_container_del_section_window(bcontainer, section);
  }
  
- static int
--vfio_sync_ram_discard_listener_dirty_bitmap(VFIOLegacyContainer *container,
--                                                   MemoryRegionSection *section)
-+vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainer *bcontainer,
-+                                            MemoryRegionSection *section)
- {
-     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
-     VFIORamDiscardListener *vrdl = NULL;
+ typedef struct VFIODirtyRanges {
+@@ -893,16 +888,15 @@ typedef struct VFIODirtyRanges {
+ } VFIODirtyRanges;
  
--    QLIST_FOREACH(vrdl, &container->vrdl_list, next) {
-+    QLIST_FOREACH(vrdl, &bcontainer->vrdl_list, next) {
-         if (vrdl->mr == section->mr &&
-             vrdl->offset_within_address_space ==
-             section->offset_within_address_space) {
-@@ -1397,7 +1397,7 @@ static int vfio_sync_dirty_bitmap(VFIOLegacyContainer *container,
-         }
-         return 0;
-     } else if (memory_region_has_ram_discard_manager(section->mr)) {
--        return vfio_sync_ram_discard_listener_dirty_bitmap(container, section);
-+        return vfio_sync_ram_discard_listener_dirty_bitmap(bcontainer, section);
+ typedef struct VFIODirtyRangesListener {
+-    VFIOLegacyContainer *container;
++    VFIOContainer *bcontainer;
+     VFIODirtyRanges ranges;
+     MemoryListener listener;
+ } VFIODirtyRangesListener;
+ 
+ static bool vfio_section_is_vfio_pci(MemoryRegionSection *section,
+-                                     VFIOLegacyContainer *container)
++                                     VFIOContainer *bcontainer)
+ {
+     VFIOPCIDevice *pcidev;
+-    VFIOContainer *bcontainer = &container->bcontainer;
+     VFIODevice *vbasedev;
+     Object *owner;
+ 
+@@ -931,7 +925,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+     hwaddr iova, end, *min, *max;
+ 
+     if (!vfio_listener_valid_section(section, "tracking_update") ||
+-        !vfio_get_section_iova_range(dirty->container, section,
++        !vfio_get_section_iova_range(dirty->bcontainer, section,
+                                      &iova, &end, NULL)) {
+         return;
+     }
+@@ -955,7 +949,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+      * The alternative would be an IOVATree but that has a much bigger runtime
+      * overhead and unnecessary complexity.
+      */
+-    if (vfio_section_is_vfio_pci(section, dirty->container) &&
++    if (vfio_section_is_vfio_pci(section, dirty->bcontainer) &&
+         iova >= UINT32_MAX) {
+         min = &range->minpci64;
+         max = &range->maxpci64;
+@@ -979,7 +973,7 @@ static const MemoryListener vfio_dirty_tracking_listener = {
+     .region_add = vfio_dirty_tracking_update,
+ };
+ 
+-static void vfio_dirty_tracking_init(VFIOLegacyContainer *container,
++static void vfio_dirty_tracking_init(VFIOContainer *bcontainer,
+                                      VFIODirtyRanges *ranges)
+ {
+     VFIODirtyRangesListener dirty;
+@@ -989,10 +983,10 @@ static void vfio_dirty_tracking_init(VFIOLegacyContainer *container,
+     dirty.ranges.min64 = UINT64_MAX;
+     dirty.ranges.minpci64 = UINT64_MAX;
+     dirty.listener = vfio_dirty_tracking_listener;
+-    dirty.container = container;
++    dirty.bcontainer = bcontainer;
+ 
+     memory_listener_register(&dirty.listener,
+-                             container->bcontainer.space->as);
++                             bcontainer->space->as);
+ 
+     *ranges = dirty.ranges;
+ 
+@@ -1004,12 +998,11 @@ static void vfio_dirty_tracking_init(VFIOLegacyContainer *container,
+     memory_listener_unregister(&dirty.listener);
+ }
+ 
+-static void vfio_devices_dma_logging_stop(VFIOLegacyContainer *container)
++static void vfio_devices_dma_logging_stop(VFIOContainer *bcontainer)
+ {
+     uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature),
+                               sizeof(uint64_t))] = {};
+     struct vfio_device_feature *feature = (struct vfio_device_feature *)buf;
+-    VFIOContainer *bcontainer = &container->bcontainer;
+     VFIODevice *vbasedev;
+ 
+     feature->argsz = sizeof(buf);
+@@ -1030,7 +1023,7 @@ static void vfio_devices_dma_logging_stop(VFIOLegacyContainer *container)
+ }
+ 
+ static struct vfio_device_feature *
+-vfio_device_feature_dma_logging_start_create(VFIOLegacyContainer *container,
++vfio_device_feature_dma_logging_start_create(VFIOContainer *bcontainer,
+                                              VFIODirtyRanges *tracking)
+ {
+     struct vfio_device_feature *feature;
+@@ -1103,16 +1096,15 @@ static void vfio_device_feature_dma_logging_start_destroy(
+     g_free(feature);
+ }
+ 
+-static int vfio_devices_dma_logging_start(VFIOLegacyContainer *container)
++static int vfio_devices_dma_logging_start(VFIOContainer *bcontainer)
+ {
+     struct vfio_device_feature *feature;
+     VFIODirtyRanges ranges;
+-    VFIOContainer *bcontainer = &container->bcontainer;
+     VFIODevice *vbasedev;
+     int ret = 0;
+ 
+-    vfio_dirty_tracking_init(container, &ranges);
+-    feature = vfio_device_feature_dma_logging_start_create(container,
++    vfio_dirty_tracking_init(bcontainer, &ranges);
++    feature = vfio_device_feature_dma_logging_start_create(bcontainer,
+                                                            &ranges);
+     if (!feature) {
+         return -errno;
+@@ -1135,7 +1127,7 @@ static int vfio_devices_dma_logging_start(VFIOLegacyContainer *container)
+ 
+ out:
+     if (ret) {
+-        vfio_devices_dma_logging_stop(container);
++        vfio_devices_dma_logging_stop(bcontainer);
      }
  
+     vfio_device_feature_dma_logging_start_destroy(feature);
+@@ -1145,16 +1137,13 @@ out:
+ 
+ static void vfio_listener_log_global_start(MemoryListener *listener)
+ {
+-    VFIOLegacyContainer *container = container_of(listener,
+-                                                  VFIOLegacyContainer,
+-                                                  listener);
++    VFIOContainer *bcontainer = container_of(listener, VFIOContainer, listener);
+     int ret;
+ 
+-    if (vfio_devices_all_device_dirty_tracking(&container->bcontainer)) {
+-        ret = vfio_devices_dma_logging_start(container);
++    if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
++        ret = vfio_devices_dma_logging_start(bcontainer);
+     } else {
+-        ret = vfio_container_set_dirty_page_tracking(&container->bcontainer,
+-                                                     true);
++        ret = vfio_container_set_dirty_page_tracking(bcontainer, true);
+     }
+ 
+     if (ret) {
+@@ -1166,16 +1155,13 @@ static void vfio_listener_log_global_start(MemoryListener *listener)
+ 
+ static void vfio_listener_log_global_stop(MemoryListener *listener)
+ {
+-    VFIOLegacyContainer *container = container_of(listener,
+-                                                  VFIOLegacyContainer,
+-                                                  listener);
++    VFIOContainer *bcontainer = container_of(listener, VFIOContainer, listener);
+     int ret = 0;
+ 
+-    if (vfio_devices_all_device_dirty_tracking(&container->bcontainer)) {
+-        vfio_devices_dma_logging_stop(container);
++    if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
++        vfio_devices_dma_logging_stop(bcontainer);
+     } else {
+-        ret = vfio_container_set_dirty_page_tracking(&container->bcontainer,
+-                                                     false);
++        ret = vfio_container_set_dirty_page_tracking(bcontainer, false);
+     }
+ 
+     if (ret) {
+@@ -1286,9 +1272,6 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+                                                 vfio_giommu_dirty_notifier, n);
+     VFIOGuestIOMMU *giommu = gdn->giommu;
+     VFIOContainer *bcontainer = giommu->bcontainer;
+-    VFIOLegacyContainer *container = container_of(bcontainer,
+-                                                  VFIOLegacyContainer,
+-                                                  bcontainer);
+     hwaddr iova = iotlb->iova + giommu->iommu_offset;
+     ram_addr_t translated_addr;
+     int ret = -EINVAL;
+@@ -1303,12 +1286,12 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+ 
+     rcu_read_lock();
+     if (vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL)) {
+-        ret = vfio_get_dirty_bitmap(&container->bcontainer, iova,
+-                                    iotlb->addr_mask + 1, translated_addr);
++        ret = vfio_get_dirty_bitmap(bcontainer, iova, iotlb->addr_mask + 1,
++                                    translated_addr);
+         if (ret) {
+             error_report("vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
+                          "0x%"HWADDR_PRIx") = %d (%s)",
+-                         container, iova, iotlb->addr_mask + 1, ret,
++                         bcontainer, iova, iotlb->addr_mask + 1, ret,
+                          strerror(-ret));
+         }
+     }
+@@ -1364,10 +1347,9 @@ vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainer *bcontainer,
+                                                 &vrdl);
+ }
+ 
+-static int vfio_sync_dirty_bitmap(VFIOLegacyContainer *container,
++static int vfio_sync_dirty_bitmap(VFIOContainer *bcontainer,
+                                   MemoryRegionSection *section)
+ {
+-    VFIOContainer *bcontainer = &container->bcontainer;
+     ram_addr_t ram_addr;
+ 
+     if (memory_region_is_iommu(section->mr)) {
+@@ -1403,7 +1385,7 @@ static int vfio_sync_dirty_bitmap(VFIOLegacyContainer *container,
      ram_addr = memory_region_get_ram_addr(section->mr) +
+                section->offset_within_region;
+ 
+-    return vfio_get_dirty_bitmap(&container->bcontainer,
++    return vfio_get_dirty_bitmap(bcontainer,
+                    REAL_HOST_PAGE_ALIGN(section->offset_within_address_space),
+                    int128_get64(section->size), ram_addr);
+ }
+@@ -1411,17 +1393,15 @@ static int vfio_sync_dirty_bitmap(VFIOLegacyContainer *container,
+ static void vfio_listener_log_sync(MemoryListener *listener,
+         MemoryRegionSection *section)
+ {
+-    VFIOLegacyContainer *container = container_of(listener,
+-                                                  VFIOLegacyContainer,
+-                                                  listener);
++    VFIOContainer *bcontainer = container_of(listener, VFIOContainer, listener);
+     int ret;
+ 
+     if (vfio_listener_skipped_section(section)) {
+         return;
+     }
+ 
+-    if (vfio_devices_all_dirty_tracking(&container->bcontainer)) {
+-        ret = vfio_sync_dirty_bitmap(container, section);
++    if (vfio_devices_all_dirty_tracking(bcontainer)) {
++        ret = vfio_sync_dirty_bitmap(bcontainer, section);
+         if (ret) {
+             error_report("vfio: Failed to sync dirty bitmap, err: %d (%s)", ret,
+                          strerror(-ret));
 diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 530ad42c0d..c5a4c5afed 100644
+index c5a4c5afed..29cf954019 100644
 --- a/hw/vfio/container-base.c
 +++ b/hw/vfio/container-base.c
-@@ -98,17 +98,29 @@ void vfio_container_init(VFIOContainer *bcontainer,
+@@ -97,6 +97,7 @@ void vfio_container_init(VFIOContainer *bcontainer,
+ {
      bcontainer->ops = ops;
      bcontainer->space = space;
++    bcontainer->error = NULL;
      bcontainer->dirty_pages_supported = false;
-+    bcontainer->dma_max_mappings = 0;
+     bcontainer->dma_max_mappings = 0;
      QLIST_INIT(&bcontainer->giommu_list);
-     QLIST_INIT(&bcontainer->hostwin_list);
-+    QLIST_INIT(&bcontainer->vrdl_list);
- }
- 
- void vfio_container_destroy(VFIOContainer *bcontainer)
- {
-+    VFIORamDiscardListener *vrdl, *vrdl_tmp;
-     VFIOGuestIOMMU *giommu, *tmp;
-     VFIOHostDMAWindow *hostwin, *next;
- 
-     QLIST_REMOVE(bcontainer, next);
- 
-+    QLIST_FOREACH_SAFE(vrdl, &bcontainer->vrdl_list, next, vrdl_tmp) {
-+        RamDiscardManager *rdm;
-+
-+        rdm = memory_region_get_ram_discard_manager(vrdl->mr);
-+        ram_discard_manager_unregister_listener(rdm, &vrdl->listener);
-+        QLIST_REMOVE(vrdl, next);
-+        g_free(vrdl);
-+    }
-+
-     QLIST_FOREACH_SAFE(giommu, &bcontainer->giommu_list, giommu_next, tmp) {
-         memory_region_unregister_iommu_notifier(
-                 MEMORY_REGION(giommu->iommu_mr), &giommu->n);
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index e278321c0a..66fad1c280 100644
+index 66fad1c280..5b14a9b307 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -162,7 +162,7 @@ static int vfio_legacy_dma_unmap(VFIOContainer *bcontainer, hwaddr iova,
-         if (errno == EINVAL && unmap.size && !(unmap.iova + unmap.size) &&
-             container->iommu_type == VFIO_TYPE1v2_IOMMU) {
-             trace_vfio_legacy_dma_unmap_overflow_workaround();
--            unmap.size -= 1ULL << ctz64(container->pgsizes);
-+            unmap.size -= 1ULL << ctz64(container->bcontainer.pgsizes);
-             continue;
-         }
-         error_report("VFIO_UNMAP_DMA failed: %s", strerror(errno));
-@@ -642,8 +642,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+@@ -382,7 +382,9 @@ static int vfio_legacy_query_dirty_bitmap(VFIOContainer *bcontainer,
+ 
+ static void vfio_listener_release(VFIOLegacyContainer *container)
+ {
+-    memory_listener_unregister(&container->listener);
++    VFIOContainer *bcontainer = &container->bcontainer;
++
++    memory_listener_unregister(&bcontainer->listener);
+     if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+         memory_listener_unregister(&container->prereg_listener);
+     }
+@@ -540,6 +542,7 @@ static void vfio_get_iommu_info_migration(VFIOLegacyContainer *container,
+ {
+     struct vfio_info_cap_header *hdr;
+     struct vfio_iommu_type1_info_cap_migration *cap_mig;
++    VFIOContainer *bcontainer = &container->bcontainer;
+ 
+     hdr = vfio_get_iommu_info_cap(info, VFIO_IOMMU_TYPE1_INFO_CAP_MIGRATION);
+     if (!hdr) {
+@@ -554,7 +557,7 @@ static void vfio_get_iommu_info_migration(VFIOLegacyContainer *container,
+      * qemu_real_host_page_size to mark those dirty.
+      */
+     if (cap_mig->pgsize_bitmap & qemu_real_host_page_size()) {
+-        container->bcontainer.dirty_pages_supported = true;
++        bcontainer->dirty_pages_supported = true;
+         container->max_dirty_bitmap_size = cap_mig->max_dirty_bitmap_size;
+         container->dirty_pgsizes = cap_mig->pgsize_bitmap;
+     }
+@@ -641,7 +644,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+ 
      container = g_malloc0(sizeof(*container));
      container->fd = fd;
-     container->error = NULL;
--    container->dma_max_mappings = 0;
--    QLIST_INIT(&container->vrdl_list);
+-    container->error = NULL;
      bcontainer = &container->bcontainer;
      vfio_container_init(bcontainer, space, ops);
  
-@@ -671,13 +669,13 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+@@ -669,9 +671,9 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
          }
  
          if (info->flags & VFIO_IOMMU_INFO_PGSIZES) {
--            container->pgsizes = info->iova_pgsizes;
-+            container->bcontainer.pgsizes = info->iova_pgsizes;
+-            container->bcontainer.pgsizes = info->iova_pgsizes;
++            bcontainer->pgsizes = info->iova_pgsizes;
          } else {
--            container->pgsizes = qemu_real_host_page_size();
-+            container->bcontainer.pgsizes = qemu_real_host_page_size();
+-            container->bcontainer.pgsizes = qemu_real_host_page_size();
++            bcontainer->pgsizes = qemu_real_host_page_size();
          }
  
--        if (!vfio_get_info_dma_avail(info, &container->dma_max_mappings)) {
--            container->dma_max_mappings = 65535;
-+        if (!vfio_get_info_dma_avail(info, &bcontainer->dma_max_mappings)) {
-+            container->bcontainer.dma_max_mappings = 65535;
-         }
-         vfio_get_iommu_info_migration(container, info);
-         g_free(info);
-@@ -687,7 +685,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-          * information to get the actual window extent rather than assume
-          * a 64-bit IOVA address space.
-          */
--        vfio_host_win_add(bcontainer, 0, (hwaddr)-1, container->pgsizes);
-+        vfio_host_win_add(bcontainer, 0, (hwaddr)-1, bcontainer->pgsizes);
+         if (!vfio_get_info_dma_avail(info, &bcontainer->dma_max_mappings)) {
+@@ -712,10 +714,10 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
  
-         break;
-     }
-@@ -736,7 +734,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+             memory_listener_register(&container->prereg_listener,
+                                      &address_space_memory);
+-            if (container->error) {
++            if (bcontainer->error) {
+                 memory_listener_unregister(&container->prereg_listener);
+                 ret = -1;
+-                error_propagate_prepend(errp, container->error,
++                error_propagate_prepend(errp, bcontainer->error,
+                     "RAM memory listener initialization failed: ");
+                 goto enable_discards_exit;
+             }
+@@ -734,7 +736,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
          }
  
          if (v2) {
--            container->pgsizes = info.ddw.pgsizes;
-+            container->bcontainer.pgsizes = info.ddw.pgsizes;
+-            container->bcontainer.pgsizes = info.ddw.pgsizes;
++            bcontainer->pgsizes = info.ddw.pgsizes;
              /*
               * There is a default window in just created container.
               * To make region_add/del simpler, we better remove this
-@@ -751,7 +749,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+@@ -749,7 +751,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
              }
          } else {
              /* The default table uses 4K pages */
--            container->pgsizes = 0x1000;
-+            container->bcontainer.pgsizes = 0x1000;
+-            container->bcontainer.pgsizes = 0x1000;
++            bcontainer->pgsizes = 0x1000;
              vfio_host_win_add(bcontainer, info.dma32_window_start,
                                info.dma32_window_start +
                                info.dma32_window_size - 1,
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 683252c506..3fdad9d227 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -159,13 +159,13 @@ int vfio_spapr_create_window(VFIOLegacyContainer *container,
-     if (pagesize > rampagesize) {
-         pagesize = rampagesize;
-     }
--    pgmask = container->pgsizes & (pagesize | (pagesize - 1));
-+    pgmask = container->bcontainer.pgsizes & (pagesize | (pagesize - 1));
-     pagesize = pgmask ? (1ULL << (63 - clz64(pgmask))) : 0;
-     if (!pagesize) {
-         error_report("Host doesn't support page size 0x%"PRIx64
-                      ", the supported mask is 0x%lx",
-                      memory_region_iommu_get_min_page_size(iommu_mr),
--                     container->pgsizes);
-+                     container->bcontainer.pgsizes);
-         return -EINVAL;
+@@ -766,19 +768,18 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     group->container = container;
+     QLIST_INSERT_HEAD(&container->group_list, group, container_next);
+ 
+-    container->listener = vfio_memory_listener;
++    bcontainer->listener = vfio_memory_listener;
+ 
+-    memory_listener_register(&container->listener,
+-                             container->bcontainer.space->as);
++    memory_listener_register(&bcontainer->listener, bcontainer->space->as);
+ 
+-    if (container->error) {
++    if (bcontainer->error) {
+         ret = -1;
+-        error_propagate_prepend(errp, container->error,
++        error_propagate_prepend(errp, bcontainer->error,
+             "memory listener initialization failed: ");
+         goto listener_release_exit;
      }
  
+-    container->initialized = true;
++    bcontainer->initialized = true;
+ 
+     return 0;
+ listener_release_exit:
+diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+index 3fdad9d227..7df2a7a672 100644
+--- a/hw/vfio/spapr.c
++++ b/hw/vfio/spapr.c
+@@ -41,6 +41,7 @@ static void vfio_prereg_listener_region_add(MemoryListener *listener,
+ {
+     VFIOLegacyContainer *container = container_of(listener, VFIOLegacyContainer,
+                                                   prereg_listener);
++    VFIOContainer *bcontainer = &container->bcontainer;
+     const hwaddr gpa = section->offset_within_address_space;
+     hwaddr end;
+     int ret;
+@@ -83,9 +84,9 @@ static void vfio_prereg_listener_region_add(MemoryListener *listener,
+          * can gracefully fail.  Runtime, there's not much we can do other
+          * than throw a hardware error.
+          */
+-        if (!container->initialized) {
+-            if (!container->error) {
+-                error_setg_errno(&container->error, -ret,
++        if (!bcontainer->initialized) {
++            if (!bcontainer->error) {
++                error_setg_errno(&bcontainer->error, -ret,
+                                  "Memory registering failed");
+             }
+         } else {
 -- 
 2.34.1
 
