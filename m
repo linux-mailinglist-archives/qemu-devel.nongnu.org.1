@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBD67CA4ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 403DE7CA4F9
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:14:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsKVh-0001RZ-Ur; Mon, 16 Oct 2023 06:07:41 -0400
+	id 1qsKVv-0001ZX-C7; Mon, 16 Oct 2023 06:07:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsKVa-0001Pe-Cj
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:34 -0400
+ id 1qsKVo-0001ZG-Mh
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsKVT-0007QW-Be
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:34 -0400
+ id 1qsKVm-0007TJ-SQ
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697450846;
+ s=mimecast20190719; t=1697450866;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OiLKIO5TbzSXhdgDp9tKmh2z6/MsAlT7rsSFH9LqfWY=;
- b=O+LPC2XSo9E0GsxvkwFhJPQ5zmPJHAxeNPOSOiZNLx5jtYjfzcdRHcaXXrTm90B/O5XQcY
- rKDG9vJi4Af02noh9Wd0sLiT8l/vhTZREE9LJ9bnD104OPFPcp6MkwpV9jRkCH+mzXsZmB
- Sw6UWIvRcAHaxWE6zfXIuLFMiL4k/EQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-157-YLwM_el-PyayI8FKVGjJfA-1; Mon, 16 Oct 2023 06:07:24 -0400
-X-MC-Unique: YLwM_el-PyayI8FKVGjJfA-1
+ bh=bAk3oiumVyieypmTNNycCFwFd2DBmAvPFPTiFRln4pE=;
+ b=ZZC9Y1DfoCIhRBIAA3yoq9HQT4xKdR3tQbq6kSqRfNUwNAenm6Tc4qH5hYmGEFqOJZmKPZ
+ UYI1XyWQG5bw/4feerNa3qskh5mFlSXFiYxKiBdqG/G/1FgC8GcQV77+L1y2myFd91BjpI
+ FAH3tsU2T4zRMVlT083y/C4vxJ5qfIw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-383-LDv9APcnNA6ZbkgK1xwPpQ-1; Mon, 16 Oct 2023 06:07:28 -0400
+X-MC-Unique: LDv9APcnNA6ZbkgK1xwPpQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3B1B93826D2B;
- Mon, 16 Oct 2023 10:07:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9772085530C;
+ Mon, 16 Oct 2023 10:07:27 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0008863F21;
- Mon, 16 Oct 2023 10:07:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7D4BA63F45;
+ Mon, 16 Oct 2023 10:07:24 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,10 +52,11 @@ Cc: qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  John Snow <jsnow@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Thomas Huth <thuth@redhat.com>, Dmitry Frolov <frolov@swemel.ru>
-Subject: [PULL 04/38] migration: fix RAMBlock add NULL check
-Date: Mon, 16 Oct 2023 12:06:32 +0200
-Message-ID: <20231016100706.2551-5-quintela@redhat.com>
+ Thomas Huth <thuth@redhat.com>, Nikolay Borisov <nborisov@suse.com>
+Subject: [PULL 05/38] migration: Add the configuration vmstate to the json
+ writer
+Date: Mon, 16 Oct 2023 12:06:33 +0200
+Message-ID: <20231016100706.2551-6-quintela@redhat.com>
 In-Reply-To: <20231016100706.2551-1-quintela@redhat.com>
 References: <20231016100706.2551-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -69,8 +70,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,38 +86,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dmitry Frolov <frolov@swemel.ru>
+From: Nikolay Borisov <nborisov@suse.com>
 
-qemu_ram_block_from_host() may return NULL, which will be dereferenced w/o
-check. Usualy return value is checked for this function.
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Make the migration json writer part of MigrationState struct, allowing
+the 'configuration' object be serialized to json.
 
-Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+This will facilitate the parsing of the 'configuration' object in the
+next patch that fixes analyze-migration.py for arm.
+
+Signed-off-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231010104851.802947-1-frolov@swemel.ru>
+Message-ID: <20231009184326.15777-2-farosas@suse.de>
 ---
- migration/ram.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ migration/migration.c |  1 +
+ migration/savevm.c    | 20 ++++++++++++++++----
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 24d91de8b3..e8df4dc862 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -4285,6 +4285,11 @@ static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
-     RAMBlock *rb = qemu_ram_block_from_host(host, false, &offset);
-     Error *err = NULL;
+diff --git a/migration/migration.c b/migration/migration.c
+index ed04ca3b1c..98151b1424 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1442,6 +1442,7 @@ int migrate_init(MigrationState *s, Error **errp)
+     error_free(s->error);
+     s->error = NULL;
+     s->hostname = NULL;
++    s->vmdesc = NULL;
  
-+    if (!rb) {
-+        error_report("RAM block not found");
-+        return;
-+    }
+     migrate_set_state(&s->state, MIGRATION_STATUS_NONE, MIGRATION_STATUS_SETUP);
+ 
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 497ce02bd7..bce698b0af 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1217,13 +1217,27 @@ void qemu_savevm_non_migratable_list(strList **reasons)
+ 
+ void qemu_savevm_state_header(QEMUFile *f)
+ {
++    MigrationState *s = migrate_get_current();
 +
-     if (migrate_ram_is_ignored(rb)) {
-         return;
++    s->vmdesc = json_writer_new(false);
++
+     trace_savevm_state_header();
+     qemu_put_be32(f, QEMU_VM_FILE_MAGIC);
+     qemu_put_be32(f, QEMU_VM_FILE_VERSION);
+ 
+-    if (migrate_get_current()->send_configuration) {
++    if (s->send_configuration) {
+         qemu_put_byte(f, QEMU_VM_CONFIGURATION);
+-        vmstate_save_state(f, &vmstate_configuration, &savevm_state, 0);
++
++        /*
++         * This starts the main json object and is paired with the
++         * json_writer_end_object in
++         * qemu_savevm_state_complete_precopy_non_iterable
++         */
++        json_writer_start_object(s->vmdesc, NULL);
++
++        json_writer_start_object(s->vmdesc, "configuration");
++        vmstate_save_state(f, &vmstate_configuration, &savevm_state, s->vmdesc);
++        json_writer_end_object(s->vmdesc);
      }
+ }
+ 
+@@ -1272,8 +1286,6 @@ void qemu_savevm_state_setup(QEMUFile *f)
+     Error *local_err = NULL;
+     int ret;
+ 
+-    ms->vmdesc = json_writer_new(false);
+-    json_writer_start_object(ms->vmdesc, NULL);
+     json_writer_int64(ms->vmdesc, "page_size", qemu_target_page_size());
+     json_writer_start_array(ms->vmdesc, "devices");
+ 
 -- 
 2.41.0
 
