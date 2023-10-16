@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18047CAF16
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37E87CAF27
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:27:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsQO4-0008Lh-LC; Mon, 16 Oct 2023 12:24:12 -0400
+	id 1qsQQV-00018D-R7; Mon, 16 Oct 2023 12:26:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsQO3-0008LX-Al
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:24:11 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1qsQQU-00017m-9s
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:26:42 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsQNy-00085R-K6
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:24:11 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-53df747cfe5so8440372a12.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:24:06 -0700 (PDT)
+ id 1qsQQS-0000Al-Oq
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:26:42 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-53b32dca0bfso9797038a12.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:26:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697473445; x=1698078245; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697473599; x=1698078399; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=/akte+CiF8NMtj2PiHVWNfP6urFYlEiWvzXYLM8C7GE=;
- b=rVNhdE93NSbhtTIJRS06gbq2lwTgHK1rPu9dWcloHXm0s/SYP2NZoQDgwAuB05vX/T
- HGcMBT4TqgNittGzuy6pg0XplDplP5tTX93rlbyu9kDFiqHq7skjBR8KQFFInJ6ARR1p
- RhKZKkoHryScYjsQGFKPDnaN/4BmHmh68OnHjdbG1ltDCew0yNp4TCHQ58PFXHGXv8Uk
- SsKLT/UCTIO7cDnoRU75fewyZESI1zCbccmD6XNrO7f4RZWdErOnpxTEm2Nay/oBu8SN
- 9gVjBB7H34OAQR4NMhRgyad5WuUwitthODoL+xGeQ517VioYXQSUOE9ceEHa2ahcT9R+
- vaXw==
+ bh=3KXegPJz+GGOTIta3r6kQb9Lp4pQ77rh9DVgDUgNd+I=;
+ b=IWbuOqwjcvxf5uHVa4v/xwBmaceMNtLHZfAR8tjWXlF7o2dh5V8pnNj9Q3JQMLKIoo
+ OKV7Y6bvRhnB9VfTF7ngzROruB9hddFeihTnpVYj0Fdc8no3HDDCTdFKSAd7BWVZ+65o
+ 46uqz+uLcIpcqJBIBoWWKRP5f3/tH0Z19CPU2mPiTHbwpFWB8QZAMB2UJUFtGOYs/axF
+ GAiQbRTD4+kL/F/HgWfwBVA9fNJtiXrnINbNVHnmmSQyLdfKgwN7HueQS9v1tq3Frl6i
+ fDP8ozx6s5EmfVDwsz2JYPFJtmNxSePw8XRA04ZRm+WKwcPlTxkGBHIA3G7m38dzZ62q
+ GLPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697473445; x=1698078245;
+ d=1e100.net; s=20230601; t=1697473599; x=1698078399;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=/akte+CiF8NMtj2PiHVWNfP6urFYlEiWvzXYLM8C7GE=;
- b=j2JUfCSb6ho1BXvBJURec2L+i1ZjiKVS5ny+1540lPUC0RaJD+XjHu0xkwaDc4Fuxf
- ljO8S31E1DV/qZiMb3V2ivoi0KZngYZDXiQU06zN4aj1NUz3Soj7uKXZchoIBGCn9XTR
- fV+J08wEu0hB7dFRPLbj8ZSqTP+BXGj7cKm/ZOOofC0YbsvFvvN+qa3irj2gMKq8AF7U
- e4N+mkiCutATRdxOyrB5fPIslp2Jp7ZjfDXye7MJRwtZEvfHmwkasElE5MePP55Ia9Zp
- i3cmsT0SvVNGclZP+i8jAcdChfJJn8Vf9n6+6p2ic04FjdX5zIeX7HRJXubE1xSTr+Pl
- wMfQ==
-X-Gm-Message-State: AOJu0YyNwlzxJJ7DFoc92qZQ40p+a4fEu8Bzpt0SMY/qu3yfruUc19Hg
- ruXS6gB+xpKbQHDb+OaI2TfLcyUO77R4v64KbVIYLg==
-X-Google-Smtp-Source: AGHT+IHuta93Xf+M1IL90q/dYtdGz4sqs44ib/afWfHu7dhADwMPVXCKkB4N2m+gA0sy0PRIuPRmZT/5aLYjRCamgT0=
-X-Received: by 2002:a05:6402:3985:b0:53d:bc68:633a with SMTP id
- fk5-20020a056402398500b0053dbc68633amr16847844edb.5.1697473445111; Mon, 16
- Oct 2023 09:24:05 -0700 (PDT)
+ bh=3KXegPJz+GGOTIta3r6kQb9Lp4pQ77rh9DVgDUgNd+I=;
+ b=Wra/0Q1rjYbWITrJrGLeIce6zUPDACDbjvvbC7hE9qH72aGKS9PHsGneJ5RBk0MyR9
+ 44+nBFGBrPfdk19wvEcAxgcIve6vzirvTxQRBK/S+EM4BoIEKhmlAQjjOYbSaP3Lc5m7
+ 5rbLt/j9wDl80wwFsToislg53cemBQ/6hKeY/WhWTYCmm0aDWsHoPUBJOMuKaoKnK9PI
+ PvVceBSAr39/fMpiZqCKL6WzPGugOw3YkUM3nedSLrIJV77ns74NPsi7yYrEtgkkgPy7
+ knPeAzLRO26UwlPczxuZLLXzQpv0vFFoPWvjCNVxxFJ230Xfkn4TCCekO55E6rxrjEJh
+ 8S4Q==
+X-Gm-Message-State: AOJu0YxMSo99fsFI25gdDKsK8ULlK6VDADJf4BueK7eYNhjK2ur3JGoh
+ ++BJ6BhbOyvmPvKBrpnBlvnRI1JfVkQqm3hsebpT4A==
+X-Google-Smtp-Source: AGHT+IEcZyeF/QfkMhPOY6TPOOJP+ZymI5DcvWJ0JoIhJ7+VxUDNI+eeWvpcSXkMSw3omOYPXHvdFfZRXxi67nwnoQY=
+X-Received: by 2002:a50:c8ca:0:b0:530:ec02:babd with SMTP id
+ k10-20020a50c8ca000000b00530ec02babdmr6868429edh.9.1697473599226; Mon, 16 Oct
+ 2023 09:26:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231012085710.880440-1-mironov@fintech.ru>
-In-Reply-To: <20231012085710.880440-1-mironov@fintech.ru>
+References: <20231012073458.860187-1-thuth@redhat.com>
+In-Reply-To: <20231012073458.860187-1-thuth@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 16 Oct 2023 17:23:54 +0100
-Message-ID: <CAFEAcA_jD+yQq8fJBY0YUobWMgadrjEPwQs1W10DtZ80Pb2ROw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] target/arm: Adding a check for the result of calling
- the CPU information check function
-To: Sergey Mironov <mironov@fintech.ru>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Date: Mon, 16 Oct 2023 17:26:28 +0100
+Message-ID: <CAFEAcA8Kg_nAQPwvb800UbRcHB1qQ6DYogbm62SuSy=0tZC22Q@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm: Move raspberrypi-fw-defs.h to the include/hw/arm/
+ folder
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-arm@nongnu.org, qemu-trivial@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,44 +87,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 12 Oct 2023 at 09:57, Sergey Mironov <mironov@fintech.ru> wrote:
+On Thu, 12 Oct 2023 at 08:35, Thomas Huth <thuth@redhat.com> wrote:
 >
-> 6 out of 7 calls to get_arm_cp_reginfo() are checked
-
-This sounds like it's talking about a Coverity warning, though
-it doesn't say so. Is that the motivation here ? If so,
-it would be good to say so in the commit message. If not,
-the commit message should explain why we're making the change.
-
-That particular Coverity warning is quite prone to false
-positives, since it's only a heuristic. Sometimes it's
-useful to add an assert(), if it helps both Coverity and
-human readers, but not always.
-
-assert()s are also most useful if there's a comment that explains
-why we can assume the thing they're assuming, as Alex suggests.
-
-> Signed-off-by: Sergey Mironov <mironov@fintech.ru>
-> ---
->  target/arm/helper.c | 1 +
->  1 file changed, 1 insertion(+)
+> The file is obviously related to the raspberrypi machine, so
+> it should reside in hw/arm/ instead of hw/misc/. And while we're
+> at it, also adjust the wildcard in MAINTAINERS so that it covers
+> this file, too.
 >
-> diff --git a/target/arm/helper.c b/target/arm/helper.c
-> index 74fbb6e1d7..cffbbaf571 100644
-> --- a/target/arm/helper.c
-> +++ b/target/arm/helper.c
-> @@ -198,6 +198,7 @@ static void add_cpreg_to_list(gpointer key, gpointer opaque)
->      uint32_t regidx = (uintptr_t)key;
->      const ARMCPRegInfo *ri = get_arm_cp_reginfo(cpu->cp_regs, regidx);
->
-> +    assert(ri != NULL);
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
->      if (!(ri->type & (ARM_CP_NO_RAW | ARM_CP_ALIAS))) {
->          cpu->cpreg_indexes[cpu->cpreg_array_len] = cpreg_to_kvm_id(regidx);
->          /* The value array need not be initialized at this point */
-> --
-> 2.31.1
 
-thanks
+
+Applied to target-arm.next, thanks.
+
 -- PMM
 
