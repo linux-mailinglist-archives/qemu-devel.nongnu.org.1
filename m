@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7997CA4C5
+	by mail.lfdr.de (Postfix) with ESMTPS id 779617CA4C6
 	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:08:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsKW4-0001hc-Fj; Mon, 16 Oct 2023 06:08:04 -0400
+	id 1qsKWK-00021u-HD; Mon, 16 Oct 2023 06:08:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsKVx-0001g6-00
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:57 -0400
+ id 1qsKW3-0001ha-09
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:08:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsKVv-0007V3-12
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:56 -0400
+ id 1qsKVy-0007Vz-Hc
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:08:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697450874;
+ s=mimecast20190719; t=1697450877;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QT7DYsh3rLn0leJw2asa1GhQ4CWEuPtmAnuhYisVYhM=;
- b=GAm4oaWAAtSYvgxedO5N67U+agCUq4TS7HsiGAaH45lOc6l3PW6b6cdV11z4WvR1i3t+Kl
- e0maaJW1S6+Mut+HrVRp2bRm4ARiBgaDGyjOBSEKFa7EWJzl31ifcLCgh7zuNaR8uax4l/
- ppHGpxtCcViL8P6v7CkGWUlkEFVzTIU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-600-hlqbnk_nMgummzBfnFHoEA-1; Mon, 16 Oct 2023 06:07:51 -0400
-X-MC-Unique: hlqbnk_nMgummzBfnFHoEA-1
+ bh=FFM+KxjY0FRTwXEN9vOUxGgshX0DnR8Xi/mjhsGnXh0=;
+ b=EPxJpmGjVBFagpg2yUpAo6uhJuXOzsTycqhyy+FF2CYXgEHM/PkEq19X2VKDU6Xx2sXYE1
+ 78/7k4W3AcCHRU8Fqif4QrpjjKMKG14ZJ6DVX/yF/FhpI+VDhxGdFubDy88ujKKkN4L26B
+ gfK5A+i5fgiF/7y016TpS6Y7KCfO7mA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-76-PGh-ZhihOJa3UtTDX5jcKQ-1; Mon, 16 Oct 2023 06:07:54 -0400
+X-MC-Unique: PGh-ZhihOJa3UtTDX5jcKQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A320C85A5BA;
- Mon, 16 Oct 2023 10:07:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 72C7B3826D2B;
+ Mon, 16 Oct 2023 10:07:53 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2188363F21;
- Mon, 16 Oct 2023 10:07:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E3DD263F21;
+ Mon, 16 Oct 2023 10:07:50 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,10 +53,9 @@ Cc: qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 13/38] migration: Non multifd migration don't care about
- multifd flushes
-Date: Mon, 16 Oct 2023 12:06:41 +0200
-Message-ID: <20231016100706.2551-14-quintela@redhat.com>
+Subject: [PULL 14/38] migration: Create migrate_rdma()
+Date: Mon, 16 Oct 2023 12:06:42 +0200
+Message-ID: <20231016100706.2551-15-quintela@redhat.com>
 In-Reply-To: <20231016100706.2551-1-quintela@redhat.com>
 References: <20231016100706.2551-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -86,84 +85,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RDMA was having trouble because
-migrate_multifd_flush_after_each_section() can only be true or false,
-but we don't want to send any flush when we are not in multifd
-migration.
+Helper to say if we are doing a migration over rdma.
 
-CC: Fabiano Rosas <farosas@suse.de
-Fixes: 294e5a4034e81 ("multifd: Only flush once each full round of memory")
-
-Reported-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231011205548.10571-2-quintela@redhat.com>
+Message-ID: <20231011203527.9061-2-quintela@redhat.com>
 ---
- migration/ram.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ migration/migration.h | 2 ++
+ migration/options.h   | 1 +
+ migration/migration.c | 1 +
+ migration/options.c   | 7 +++++++
+ migration/rdma.c      | 4 +++-
+ 5 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index d3d9c8b65b..acb8f95f00 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1395,7 +1395,8 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
-         pss->page = 0;
-         pss->block = QLIST_NEXT_RCU(pss->block, next);
-         if (!pss->block) {
--            if (!migrate_multifd_flush_after_each_section()) {
-+            if (migrate_multifd() &&
-+                !migrate_multifd_flush_after_each_section()) {
-                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
-                 int ret = multifd_send_sync_main(f);
-                 if (ret < 0) {
-@@ -3072,7 +3073,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-         return ret;
+diff --git a/migration/migration.h b/migration/migration.h
+index 974897a8d0..ae82004892 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -469,6 +469,8 @@ struct MigrationState {
+      * switchover has been received.
+      */
+     bool switchover_acked;
++    /* Is this a rdma migration */
++    bool rdma_migration;
+ };
+ 
+ void migrate_set_state(int *state, int old_state, int new_state);
+diff --git a/migration/options.h b/migration/options.h
+index 93ee938ab8..237f2d6b4a 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -56,6 +56,7 @@ bool migrate_zero_copy_send(void);
+ 
+ bool migrate_multifd_flush_after_each_section(void);
+ bool migrate_postcopy(void);
++bool migrate_rdma(void);
+ bool migrate_tls(void);
+ 
+ /* capabilities helpers */
+diff --git a/migration/migration.c b/migration/migration.c
+index 79fa11e3f6..6ba5e145ac 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1452,6 +1452,7 @@ int migrate_init(MigrationState *s, Error **errp)
+     s->iteration_initial_bytes = 0;
+     s->threshold_size = 0;
+     s->switchover_acked = false;
++    s->rdma_migration = false;
+     /*
+      * set mig_stats compression_counters memory to zero for a
+      * new migration
+diff --git a/migration/options.c b/migration/options.c
+index 546cbe3106..42fb818956 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -378,6 +378,13 @@ bool migrate_postcopy(void)
+     return migrate_postcopy_ram() || migrate_dirty_bitmaps();
+ }
+ 
++bool migrate_rdma(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    return s->rdma_migration;
++}
++
+ bool migrate_tls(void)
+ {
+     MigrationState *s = migrate_get_current();
+diff --git a/migration/rdma.c b/migration/rdma.c
+index f6fc226c9b..f155f3e1c8 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -4113,6 +4113,7 @@ static void rdma_accept_incoming_migration(void *opaque)
+ 
+ void rdma_start_incoming_migration(const char *host_port, Error **errp)
+ {
++    MigrationState *s = migrate_get_current();
+     int ret;
+     RDMAContext *rdma;
+ 
+@@ -4144,7 +4145,7 @@ void rdma_start_incoming_migration(const char *host_port, Error **errp)
      }
  
--    if (!migrate_multifd_flush_after_each_section()) {
-+    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
-         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-     }
+     trace_rdma_start_incoming_migration_after_rdma_listen();
+-
++    s->rdma_migration = true;
+     qemu_set_fd_handler(rdma->channel->fd, rdma_accept_incoming_migration,
+                         NULL, (void *)(intptr_t)rdma);
+     return;
+@@ -4220,6 +4221,7 @@ void rdma_start_outgoing_migration(void *opaque,
+     trace_rdma_start_outgoing_migration_after_rdma_connect();
  
-@@ -3184,7 +3185,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
- out:
-     if (ret >= 0
-         && migration_is_setup_or_active(migrate_get_current()->state)) {
--        if (migrate_multifd_flush_after_each_section()) {
-+        if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
-             ret = multifd_send_sync_main(rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
-             if (ret < 0) {
-                 return ret;
-@@ -3261,7 +3262,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
-         return ret;
-     }
- 
--    if (!migrate_multifd_flush_after_each_section()) {
-+    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
-         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-     }
-     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
-@@ -3768,7 +3769,8 @@ int ram_load_postcopy(QEMUFile *f, int channel)
-             break;
-         case RAM_SAVE_FLAG_EOS:
-             /* normal exit */
--            if (migrate_multifd_flush_after_each_section()) {
-+            if (migrate_multifd() &&
-+                migrate_multifd_flush_after_each_section()) {
-                 multifd_recv_sync_main();
-             }
-             break;
-@@ -4046,7 +4048,8 @@ static int ram_load_precopy(QEMUFile *f)
-             break;
-         case RAM_SAVE_FLAG_EOS:
-             /* normal exit */
--            if (migrate_multifd_flush_after_each_section()) {
-+            if (migrate_multifd() &&
-+                migrate_multifd_flush_after_each_section()) {
-                 multifd_recv_sync_main();
-             }
-             break;
+     s->to_dst_file = rdma_new_output(rdma);
++    s->rdma_migration = true;
+     migrate_fd_connect(s, NULL);
+     return;
+ return_path_err:
 -- 
 2.41.0
 
