@@ -2,71 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF497CA249
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 629087CA1B1
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:33:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJGG-0007Xo-VV; Mon, 16 Oct 2023 04:47:41 -0400
+	id 1qsJ1M-0000ds-0Z; Mon, 16 Oct 2023 04:32:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJG7-0007Wo-PM
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:47:32 -0400
-Received: from mgamail.intel.com ([192.55.52.151])
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qsJ1J-0000dB-DG
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:32:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJG5-00018h-5X
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:47:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697446049; x=1728982049;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=dRKZOMcB1np/FNbBw+R0wRE7DGXaXjC9Dz9CMIH3KBQ=;
- b=cbr0mnwSZp5VfnJEtYo5oLv1e6s5fVfpgWHCaMXd6eaIahiA+QPramwj
- qg8TyugKJeoNBoJZ3BmWDfBhT4TKnawro5qyFe0XzGjhe6+2bt9u5EXNY
- 7KG4Ul7boot7g/tpfhqsTsQdBcgckYAkPhKUDwEcZvicPGkPw74HNZzKX
- nrkGBDTJCp0sh5FyOHoD9cFeJqtVt1wnsoOVmSyYvr3uv4PEsKMJcYevc
- TTmGuN6Xy+MpBFOG3mHSGuiSyj6KgvqfoRGFeLrlwAzU17fEY9UWEg0rR
- tHenr/VTJUGteCJ7/k09XaiYr6JTZIUiZdGl4l0XIHO9j17KzcDP5ZyWH w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737528"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737528"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:47:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749222695"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749222695"
-Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
- by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:47:24 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
- peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Yi Sun <yi.y.sun@linux.intel.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 03/27] VFIO/container: Introduce dummy VFIOContainerClass
- implementation
-Date: Mon, 16 Oct 2023 16:31:59 +0800
-Message-Id: <20231016083223.1519410-4-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
-References: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qsJ1D-00074l-IJ
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:32:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697445126;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oXphkgNuPP7XRfrP2vCbRKiRKuwvw7rkNbXDo0LFtr8=;
+ b=Xr/WWuomjr+mDZfZsjtiWip9g4GfVUCVfPXAX82zhKTJFrgAENpv3CnY+yryJ1CqCktifq
+ bpvv3XxWXfJkyTiFm4j0Fz46H+m64Wy1VGYZFQt4PazRbIDEKlFFQr3EdhPdqUsLUndT4V
+ LaFlcBZw6zo2iHaURZIXcfGzDUqvUvk=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-VyORKTNaMFW5CMSGZ_ihUw-1; Mon, 16 Oct 2023 04:32:05 -0400
+X-MC-Unique: VyORKTNaMFW5CMSGZ_ihUw-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7770bfcbdc6so536553185a.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 01:32:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697445123; x=1698049923;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oXphkgNuPP7XRfrP2vCbRKiRKuwvw7rkNbXDo0LFtr8=;
+ b=K7czfgF3E3Yo84e4xY9eZtCS28BOvweZUykMmMTgj06KCCAjVxeT4WCJmNg2KKQaJH
+ cNqlJ2CIuPRtGVMcXwyqLn7TxxxaGZOdyedbWQR9OxEjXLKItEuJfgWq5XSWdCeKCuuV
+ natmz7TGW6jS8HCB1GIfdWhgrcIPtPXaOlpf8mtbruL2vjaBvFmzPKIJbV2QYtuF5WAr
+ l24t9DuWRmRuNv+7LBRvPF0TcA5gegD1w4KJchIpIBXdq5HJubtQPs5PgZAaLi/Dj7ig
+ OYkx9MGA/si7aCi/ORZLKE4KivhRcBKoZ9tuGAr59fIeywwDk8k1r8+j0LY4KDIBJsKN
+ 0rZw==
+X-Gm-Message-State: AOJu0YxExAF5/ldj3sTr7sOqHlh5z/1YTD46KgMLMHsRqRS9ksrgPua2
+ GaxuF15J458hvMMEDFWa1tn/d930JpsHhUFerfWGvYOyXHUGx96sPmOsCo2/xJ5xX2Gv5o4QEHJ
+ 1n4VouU9bqE9M6kQ=
+X-Received: by 2002:a05:620a:2454:b0:76f:1ead:e4fd with SMTP id
+ h20-20020a05620a245400b0076f1eade4fdmr40236338qkn.40.1697445122855; 
+ Mon, 16 Oct 2023 01:32:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/6414wmsV0FCwfso9Sqt2dJlYToqUWNV5QGWxnRBJuviY6HdGLoeZttvAadFdRb/yyPyhiQ==
+X-Received: by 2002:a05:620a:2454:b0:76f:1ead:e4fd with SMTP id
+ h20-20020a05620a245400b0076f1eade4fdmr40236326qkn.40.1697445122578; 
+ Mon, 16 Oct 2023 01:32:02 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ kd9-20020a05622a268900b00410a9dd3d88sm2860416qtb.68.2023.10.16.01.32.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 01:32:02 -0700 (PDT)
+Message-ID: <ba330f83-b84f-4aa1-9855-2577596cdeb7@redhat.com>
+Date: Mon, 16 Oct 2023 10:32:00 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.151;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 05/11] testing/avocado: ppc add new BookE
+ boot_linux_console.py tests
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
+References: <20231010075238.95646-1-npiggin@gmail.com>
+ <20231010075238.95646-6-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <20231010075238.95646-6-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,140 +105,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+On 10/10/23 09:52, Nicholas Piggin wrote:
+> Add simple Linux kernel boot tests for BookE 64-bit and 32-bit CPUs
+> using Guenter Roeck's rootfs images for Linux testing, and a gitlab
+> repository with kernel images that I built since there are very few
+> sources of modern BookE images now.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   tests/avocado/boot_linux_console.py | 53 +++++++++++++++++++++++++++++
+>   1 file changed, 53 insertions(+)
+> 
+> diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+> index 9434304cd3..dc3346ef49 100644
+> --- a/tests/avocado/boot_linux_console.py
+> +++ b/tests/avocado/boot_linux_console.py
+> @@ -1355,6 +1355,59 @@ def test_ppc64_e500(self):
+>           tar_hash = '6951d86d644b302898da2fd701739c9406527fe1'
+>           self.do_test_advcal_2018('19', tar_hash, 'uImage')
+>   
+> +    def test_ppc64_e6500(self):
+> +        """
+> +        :avocado: tags=arch:ppc64
+> +        :avocado: tags=machine:ppce500
+> +        :avocado: tags=cpu:e6500
+> +        :avocado: tags=accel:tcg
+> +        """
+> +        kernel_url = ('https://gitlab.com/npiggin/qemu-ci-images/-/raw/main/ppc/corenet64_vmlinux?ref_type=heads&inline=false')
+> +        kernel_hash = '01051590b083fec66cb3b9e2e553e95d4cf47691'
+> +        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+> +
+> +        initrd_url = ('https://github.com/groeck/linux-build-test/raw/master/rootfs/ppc64/rootfs.cpio.gz')
 
-Let's instantiate a dummy VFIOContainerClass implementation whose
-functions are not yet implemented.
 
-No fucntional change intended.
+I think you should use buildroot images from the qemu_ppc64_e5500 defconfig:
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- include/hw/vfio/vfio-container-base.h |  1 +
- hw/vfio/container-base.c              | 40 +++++++++++++++++++++++++++
- hw/vfio/container.c                   | 22 +++++++++++++++
- hw/vfio/meson.build                   |  1 +
- 4 files changed, 64 insertions(+)
- create mode 100644 hw/vfio/container-base.c
+   https://github.com/buildroot/buildroot/tree/master/board/qemu/ppc64-e5500
 
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index afc8543d22..226e960fb5 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -46,6 +46,7 @@ struct VFIOContainer {
-     VFIOIOMMUBackendOpsClass *ops;
- };
- 
-+#define TYPE_VFIO_IOMMU_BACKEND_LEGACY_OPS "vfio-iommu-backend-legacy-ops"
- #define TYPE_VFIO_IOMMU_BACKEND_OPS "vfio-iommu-backend-ops"
- 
- DECLARE_CLASS_CHECKERS(VFIOIOMMUBackendOpsClass,
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-new file mode 100644
-index 0000000000..0c21e77039
---- /dev/null
-+++ b/hw/vfio/container-base.c
-@@ -0,0 +1,40 @@
-+/*
-+ * VFIO BASE CONTAINER
-+ *
-+ * Copyright (C) 2023 Intel Corporation.
-+ * Copyright Red Hat, Inc. 2023
-+ *
-+ * Authors: Yi Liu <yi.l.liu@intel.com>
-+ *          Eric Auger <eric.auger@redhat.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qemu/error-report.h"
-+#include "hw/vfio/vfio-container-base.h"
-+
-+static const TypeInfo vfio_iommu_backend_ops_type_info = {
-+    .name = TYPE_VFIO_IOMMU_BACKEND_OPS,
-+    .parent = TYPE_OBJECT,
-+    .abstract = true,
-+    .class_size = sizeof(VFIOIOMMUBackendOpsClass),
-+};
-+
-+static void vfio_iommu_backend_ops_register_types(void)
-+{
-+    type_register_static(&vfio_iommu_backend_ops_type_info);
-+}
-+type_init(vfio_iommu_backend_ops_register_types);
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 8fde302ae9..acc4a6bf8a 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -539,6 +539,9 @@ static void vfio_get_iommu_info_migration(VFIOLegacyContainer *container,
- static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-                                   Error **errp)
- {
-+    VFIOIOMMUBackendOpsClass *ops = VFIO_IOMMU_BACKEND_OPS_CLASS(
-+        object_class_by_name(TYPE_VFIO_IOMMU_BACKEND_LEGACY_OPS));
-+    VFIOContainer *bcontainer;
-     VFIOLegacyContainer *container;
-     int ret, fd;
-     VFIOAddressSpace *space;
-@@ -620,6 +623,8 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-     QLIST_INIT(&container->giommu_list);
-     QLIST_INIT(&container->hostwin_list);
-     QLIST_INIT(&container->vrdl_list);
-+    bcontainer = &container->bcontainer;
-+    bcontainer->ops = ops;
- 
-     ret = vfio_init_container(container, group->fd, errp);
-     if (ret) {
-@@ -1160,3 +1165,20 @@ void vfio_detach_device(VFIODevice *vbasedev)
-     vfio_put_base_device(vbasedev);
-     vfio_put_group(group);
- }
-+
-+static void vfio_iommu_backend_legacy_ops_class_init(ObjectClass *oc,
-+                                                     void *data) {
-+}
-+
-+static const TypeInfo vfio_iommu_backend_legacy_ops_type = {
-+    .name = TYPE_VFIO_IOMMU_BACKEND_LEGACY_OPS,
-+
-+    .parent = TYPE_VFIO_IOMMU_BACKEND_OPS,
-+    .class_init = vfio_iommu_backend_legacy_ops_class_init,
-+    .abstract = true,
-+};
-+static void vfio_iommu_backend_legacy_ops_register_types(void)
-+{
-+    type_register_static(&vfio_iommu_backend_legacy_ops_type);
-+}
-+type_init(vfio_iommu_backend_legacy_ops_register_types);
-diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index 2a6912c940..eb6ce6229d 100644
---- a/hw/vfio/meson.build
-+++ b/hw/vfio/meson.build
-@@ -2,6 +2,7 @@ vfio_ss = ss.source_set()
- vfio_ss.add(files(
-   'helpers.c',
-   'common.c',
-+  'container-base.c',
-   'container.c',
-   'spapr.c',
-   'migration.c',
--- 
-2.34.1
+The question is where to store them. I did under my GH account for PPC and
+Aspeed but it is not satisfactory in the long term.
+
+May be could have a common repo for all the buildroot QEMU boards images ?
+and rebuild once a year ?
+
+Thanks,
+
+C.
+
+
+> +        initrd_hash = '798acffc036c3b1ae6cacf95c869bba2'
+> +        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash,
+> +                                       algorithm="md5")
+> +
+> +        self.vm.set_console()
+> +        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
+> +        self.vm.add_args('-smp', '2',
+> +                         '-kernel', kernel_path,
+> +                         '-initrd', initrd_path,
+> +                         '-append', kernel_command_line,
+> +                         '-no-reboot')
+> +        self.vm.launch()
+> +        # Wait for VM to shut down gracefully
+> +        self.vm.wait()
+> +
+> +    def test_ppc32_mpc85xx(self):
+> +        """
+> +        :avocado: tags=arch:ppc
+> +        :avocado: tags=machine:ppce500
+> +        :avocado: tags=cpu:mpc8568
+> +        :avocado: tags=accel:tcg
+> +        """
+> +        kernel_url = ('https://gitlab.com/npiggin/qemu-ci-images/-/raw/main/ppc/mpc85xx_vmlinux?ref_type=heads&inline=false')
+> +        kernel_hash = '726f7f574a491282454850b48546b3827593142b'
+> +        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+> +
+> +        initrd_url = ('https://github.com/groeck/linux-build-test/raw/master/rootfs/ppc/rootfs.cpio.gz')
+> +        initrd_hash = '4d30fa93b742c493e8cf2140e49bbd9a'
+> +        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash,
+> +                                       algorithm="md5")
+> +
+> +        self.vm.set_console()
+> +        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
+> +        self.vm.add_args('-kernel', kernel_path,
+> +                         '-initrd', initrd_path,
+> +                         '-append', kernel_command_line,
+> +                         '-no-reboot')
+> +        self.vm.launch()
+> +        # Wait for VM to shut down gracefully
+> +        self.vm.wait()
+> +
+>       def do_test_ppc64_powernv(self, proc):
+>           self.require_accelerator("tcg")
+>           images_url = ('https://github.com/open-power/op-build/releases/download/v2.7/')
 
 
