@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20727CACDF
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F117CACDE
 	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 17:05:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsP8Y-0001Vn-0B; Mon, 16 Oct 2023 11:04:06 -0400
+	id 1qsP8W-0001Uf-KA; Mon, 16 Oct 2023 11:04:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qsP8T-0001V6-5Q
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:04:02 -0400
+ id 1qsP8H-0001NP-1M
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:03:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qsP8O-0006Xo-R5
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:03:58 -0400
+ id 1qsP8F-0006SE-MX
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:03:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697468636;
+ s=mimecast20190719; t=1697468627;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=l0Mn7+jp2EbdD6tMqOyTqclAZc6aqDVz3lwJBfwAZ0A=;
- b=OINcFwUzuvJf2n7Dy1maNkyMwoATRh7erY/JwrJ4wfDJDxJGVai69EyBQxJrHy7cx50G/R
- blHDvqKkB3denZzVK4vjnOHh2qFkx4NK5ZkU3p2pou25qEfkdph+RDjUIo6mXj+mkfw/sc
- fTBnMgiULYliEfBPUMIFGrMOYlWxQqA=
+ bh=KpFM4UZyH7tZRzTQzd5Hyyt0ytNKx//41Woy1RTOBjA=;
+ b=XJudHZQC5OiHtzT3sJm3kutmst/AvN+OiplH3cdCvJgTgT4rJIdh9I21zRe4E2sXaR+EUl
+ VfzeeFDWuihg2SrtDTzzI59rpea4ggwWkewNUwEQYKDTADfcFKKhdhsJkIaM/oA4c1sVL1
+ ldWpvi4F6IOB4iJ/YsXyBP1LjRsJrbw=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-696-pwojv5P4Of6YjUITQ9dqRA-1; Mon, 16 Oct 2023 11:03:40 -0400
-X-MC-Unique: pwojv5P4Of6YjUITQ9dqRA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-38-cvyhrphrOLKsjjGo8ZE-0g-1; Mon, 16 Oct 2023 11:03:41 -0400
+X-MC-Unique: cvyhrphrOLKsjjGo8ZE-0g-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB5D23C0E45D;
- Mon, 16 Oct 2023 15:03:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C4B883857B7E;
+ Mon, 16 Oct 2023 15:03:39 +0000 (UTC)
 Received: from localhost (unknown [10.39.195.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 09D361C060AE;
- Mon, 16 Oct 2023 15:03:36 +0000 (UTC)
-Date: Mon, 16 Oct 2023 11:03:33 -0400
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4AEA6C15BBC;
+ Mon, 16 Oct 2023 15:03:39 +0000 (UTC)
+Date: Mon, 16 Oct 2023 11:03:38 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Fam Zheng <fam@euphon.net>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Lieven <pl@kamp.de>,
- Jeff Cody <codyprime@gmail.com>,
- "open list:Block Jobs" <qemu-block@nongnu.org>
-Subject: Re: [RFC PATCH v3 02/78] block: add fallthrough pseudo-keyword
-Message-ID: <20231016150333.GC119987@fedora>
+Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Paul Durrant <paul@xen.org>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Alistair Francis <alistair@alistair23.me>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ "open list:virtio-blk" <qemu-block@nongnu.org>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Subject: Re: [RFC PATCH v3 08/78] hw/block: add fallthrough pseudo-keyword
+Message-ID: <20231016150338.GD119987@fedora>
 References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
- <e54aa70630d6d524886d7950b84d5bda39c3d605.1697186560.git.manos.pitsidianakis@linaro.org>
+ <88122696480ffb58fa39af81d254aa656afbcd64.1697186560.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="oYTzAa64K7383oip"
+ protocol="application/pgp-signature"; boundary="3conpdxF4cvXWRP+"
 Content-Disposition: inline
-In-Reply-To: <e54aa70630d6d524886d7950b84d5bda39c3d605.1697186560.git.manos.pitsidianakis@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+In-Reply-To: <88122696480ffb58fa39af81d254aa656afbcd64.1697186560.git.manos.pitsidianakis@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,42 +86,41 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---oYTzAa64K7383oip
+--3conpdxF4cvXWRP+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 13, 2023 at 11:45:30AM +0300, Emmanouil Pitsidianakis wrote:
+On Fri, Oct 13, 2023 at 11:45:36AM +0300, Emmanouil Pitsidianakis wrote:
 > In preparation of raising -Wimplicit-fallthrough to 5, replace all
 > fall-through comments with the fallthrough attribute pseudo-keyword.
 >=20
 > Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 > ---
->  block/block-copy.c    |  1 +
->  block/file-posix.c    |  1 +
->  block/io.c            |  1 +
->  block/iscsi.c         |  1 +
->  block/qcow2-cluster.c |  5 ++++-
->  block/vhdx.c          | 17 +++++++++++++----
->  6 files changed, 21 insertions(+), 5 deletions(-)
+>  hw/block/dataplane/xen-block.c | 4 ++--
+>  hw/block/m25p80.c              | 2 +-
+>  hw/block/onenand.c             | 2 +-
+>  hw/block/pflash_cfi01.c        | 1 +
+>  hw/block/pflash_cfi02.c        | 6 ++++--
+>  5 files changed, 9 insertions(+), 6 deletions(-)
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
---oYTzAa64K7383oip
+--3conpdxF4cvXWRP+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUtUMUACgkQnKSrs4Gr
-c8igkwgAu8zFELOZAKZevXpo1F+zkmES23N25nqjzRUkGLpe4SQSoWQNA0kAx9+X
-CuwZAAkeQFwOFLiWtNOMH7ydTRpWeFThTLcLaqu0A0hzyzPnbtoodt3/9wpYyp8t
-cNODmvSGOv9AIsye2nRc0n0TKY3ZLkvSWG/S0Lo6RPTXHzJBw3srWApxqrqMvdmt
-37LnURP1WF5Iadd1rXAvClaSR1z8mkKh3V0zEoYMRfbE6BIBTJzo1mWFTlEKz3YK
-DdnAqMvzUdd88iurB28ndL4aC2fP5zifv0t78ZKwanzygt96fAjLvfokHXxTMA/N
-PWfSQk0FLnvwusCzHI5Sq4ZQEq7IEw==
-=j3RB
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUtUMoACgkQnKSrs4Gr
+c8j40wf/awIDxB9laWEOFCQZHWk3FLEdHGSb5a0XyPLDAhHe95yPrieUeYNV0Nr+
+mjV5cB1GPAE7kPJzirSUlcC5+fvGDB6QnkI3DjUPTulDd8YHZ9LN1CXggaDF7TNh
+0Z/Du1IG66k1DND6MxIO5ebtFjUJvMyjxzQCS6iJ6jqF8vG8ahY4oFJGvgNYLEI2
+g0JFu2cpN3TdHTKB/GrxQj6xhVkPvnCBa1eapzZ2jSaQuWPt5mv0VCQO9f5LxNHR
+nBb+mn7F2uqka3C69tiZF2LfSZThzR3bww4VBC7Z+HBCm42JirMNpQvyIUROpgh2
+OInCVpsRPcrQPRmKgGpCQGpdSXo6ew==
+=tcx5
 -----END PGP SIGNATURE-----
 
---oYTzAa64K7383oip--
+--3conpdxF4cvXWRP+--
 
 
