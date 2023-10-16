@@ -2,82 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F087CA9FD
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9A67CAA0B
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:43:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsNrF-0008Lt-DZ; Mon, 16 Oct 2023 09:42:09 -0400
+	id 1qsNs2-0001H5-G9; Mon, 16 Oct 2023 09:42:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNrC-0008KS-Qs
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:42:06 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNrB-0003Cg-B3
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:42:06 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-325e9cd483eso4403476f8f.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 06:42:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697463724; x=1698068524; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TheAOitW8gBkDzaFkFGdvcpXeVFi7PA5VVtLtjuC7bs=;
- b=lcII0pRIvQg+KYK3cezzPjbkS8uaqqgv8OWliBpfUK1giIJ7THGde7uLA5M+p0a54O
- 0m0UXGB3MfmmJgQbp6IImpKZKPo7Lm+aJ5Y8arqdJyRt2jPJrr24Z6ucvc417y//Fzoc
- RMUiS3felga14iPh63HNWsmPxfz3Tf1zb2NsExiBwgRGYEA09xn7cgxKcCAOdlYZF4UC
- G0YaLD6NsxD83Htp8U/JDb6azoCnuJDjNAIPMk5L683VqnVBi5avQiLWm7QUc300ywX5
- NUJfhKRES2UL/y7xn2BJ9j72CHYU7R6YAFDWWLug4MnydWOG8tZI7joyAl87LQtcq0Pm
- peFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697463724; x=1698068524;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TheAOitW8gBkDzaFkFGdvcpXeVFi7PA5VVtLtjuC7bs=;
- b=JZ1PDvgz/G3YSDsYpAc+JPxYfXhi4SEvnLoRtPuMeu3pvQv1RMOAO2HmSTFKhZ4l7M
- qWyCu+u4fyDPKPm78hNtiIN9UP0uAOspkQPzWxVmpShxK/MYk0vdDDnPpkRHcLGhBG61
- qLSiunVPVPIphI9BfA46ewEdG9kzcquAdFLyf5mchzfzhzYCvSu3co+BLy0k7Q53guCV
- M+bVFPrVgix/AW0OYWaH+dN8a9ACMAT1BLenUhVqA5EfmfpFTWzxVdJ6z7qFL0tjpaN8
- kF4EGp+MonsaKsr1P8m43r7lrJua6wdkplPV48jE/UnQDkJCuGTXzlvgOFpkp+W7A+tB
- E3xg==
-X-Gm-Message-State: AOJu0Yy6u7gThzyIE4UGjJO/DCGcSc4vH0n0XC2ChU9MYK5kV91BL6ui
- IppFxdszrUb3Rqx0QR6qFLebJw==
-X-Google-Smtp-Source: AGHT+IGX/QN0neIWH15zxxHaAk+5B1aUecdJFufVoYq5O8PAfogBG/f8WIIn/UnN9mWIACuBdhAlRQ==
-X-Received: by 2002:a05:6000:1c5:b0:32d:83b7:bdb4 with SMTP id
- t5-20020a05600001c500b0032d83b7bdb4mr11897951wrx.9.1697463723837; 
- Mon, 16 Oct 2023 06:42:03 -0700 (PDT)
-Received: from [192.168.69.115]
- (tbo33-h01-176-171-211-186.dsl.sta.abo.bbox.fr. [176.171.211.186])
- by smtp.gmail.com with ESMTPSA id
- e11-20020adfe7cb000000b003176c6e87b1sm27237231wrn.81.2023.10.16.06.42.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 06:42:03 -0700 (PDT)
-Message-ID: <09fe73a9-40b4-0d4d-7baf-4d4dc7fcd5db@linaro.org>
-Date: Mon, 16 Oct 2023 15:42:01 +0200
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNrw-0001Ex-45
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:42:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNru-0003I8-4P
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:42:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697463768;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=L6e5W231Q7udcMOb3rPRpfUo/44l0/jlgYuAizCQPfw=;
+ b=dA/nUlAGXikLIuIjFCXCB3Z+cl0337UrZ9uOG/zWFR5EijxxEQQtztxFbqqlPUKlbaCPvQ
+ 6AMfSGLtMCB6N9lxAfvhAfoGukk51UvmO4yLq3bPxe39Hr4hWTOVrJrzGN7u1fn+PDKGOr
+ 9qUmyyTFvpkhh9+hWmzxZsw1M7PRCM8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-436-QpzYOxdFO-ycZCxAbIQWDw-1; Mon, 16 Oct 2023 09:42:46 -0400
+X-MC-Unique: QpzYOxdFO-ycZCxAbIQWDw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B16A862F1E;
+ Mon, 16 Oct 2023 13:42:46 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.211])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 608B4492BEE;
+ Mon, 16 Oct 2023 13:42:45 +0000 (UTC)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-devel@nongnu.org,
+	virtio-fs@redhat.com
+Cc: Hanna Czenczek <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ German Maglione <gmaglione@redhat.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ Anton Kuchin <antonkuchin@yandex-team.ru>
+Subject: [PATCH v5 0/7] vhost-user: Back-end state migration
+Date: Mon, 16 Oct 2023 15:42:36 +0200
+Message-ID: <20231016134243.68248-1-hreitz@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] tests/docker: avoid invalid escape in Python string
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20231016062300.160160-1-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231016062300.160160-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,15 +78,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/10/23 08:23, Paolo Bonzini wrote:
-> This is an error in Python 3.12; fix it by using a raw string literal.
-> 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   tests/docker/docker.py | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+v2:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg02604.html
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+v3:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg03750.html
+
+v4:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg01046.html
+
+
+Based-on: <20231004014532.1228637-1-stefanha@redhat.com>
+          ([PATCH v2 0/3] vhost: clean up device reset)
+
+Based-on: <20231016083201.23736-1-hreitz@redhat.com>
+          ([PATCH] vhost-user: Fix protocol feature bit conflict)
+
+
+Hi,
+
+v5 is basically the same as v4, only that I’ve dropped the patch
+deprecating F_STATUS (which doesn’t affect the rest of the series), that
+I’ve amended the documentation in patch 1 as suggested by Stefan and
+with help from Michael, and that I’ve rebased everything on top of the
+F_SHARED_OBJECT changes that have been merged upstream.
+
+
+git-backport-diff against v4:
+
+Key:
+[----] : patches are identical
+[####] : number of functional differences between upstream/downstream patch
+[down] : patch is downstream-only
+The flags [FC] indicate (F)unctional and (C)ontextual differences, respectively
+
+001/7:[0029] [FC] 'vhost-user.rst: Improve [GS]ET_VRING_BASE doc'
+002/7:[----] [--] 'vhost-user.rst: Clarify enabling/disabling vrings'
+003/7:[----] [--] 'vhost-user.rst: Introduce suspended state'
+004/7:[0006] [FC] 'vhost-user.rst: Migrating back-end-internal state'
+005/7:[0007] [FC] 'vhost-user: Interface for migration state transfer'
+006/7:[----] [--] 'vhost: Add high-level state save/load functions'
+007/7:[----] [--] 'vhost-user-fs: Implement internal migration'
+
+
+Changes patch by patch:
+- Patch 1: Amended documentation
+- Patches 4 and 5: Bumped feature bit and command values as necessary so
+  as not to conflict with F_SHARED_OBJECT
+
+
+Hanna Czenczek (7):
+  vhost-user.rst: Improve [GS]ET_VRING_BASE doc
+  vhost-user.rst: Clarify enabling/disabling vrings
+  vhost-user.rst: Introduce suspended state
+  vhost-user.rst: Migrating back-end-internal state
+  vhost-user: Interface for migration state transfer
+  vhost: Add high-level state save/load functions
+  vhost-user-fs: Implement internal migration
+
+ docs/interop/vhost-user.rst       | 301 ++++++++++++++++++++++++++++--
+ include/hw/virtio/vhost-backend.h |  24 +++
+ include/hw/virtio/vhost-user.h    |   1 +
+ include/hw/virtio/vhost.h         | 113 +++++++++++
+ hw/virtio/vhost-user-fs.c         | 101 +++++++++-
+ hw/virtio/vhost-user.c            | 146 +++++++++++++++
+ hw/virtio/vhost.c                 | 241 ++++++++++++++++++++++++
+ 7 files changed, 906 insertions(+), 21 deletions(-)
+
+-- 
+2.41.0
 
 
