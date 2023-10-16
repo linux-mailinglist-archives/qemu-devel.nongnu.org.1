@@ -2,74 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC20C7CAB9E
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 16:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C77F77CABBD
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 16:39:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsOfV-0002BW-JP; Mon, 16 Oct 2023 10:34:05 -0400
+	id 1qsOjk-0004CI-Ls; Mon, 16 Oct 2023 10:38:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qsOfR-00028L-Lk; Mon, 16 Oct 2023 10:34:01 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsOjg-0004Bs-LJ
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:38:24 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qsOfP-0008Vn-Vz; Mon, 16 Oct 2023 10:34:01 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-9ba081173a3so758127566b.1; 
- Mon, 16 Oct 2023 07:33:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsOjb-0000qv-0k
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:38:24 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-9c3aec5f326so248695566b.1
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 07:38:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697466837; x=1698071637; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Q7AmF2ibfSbsLuTd01TRyHljcOYGwQRWQaNrYJOlcmo=;
- b=Rqp0yP8Y5SlXxzSd6/Jq2/GmNI9QoqqaCsD3Zs9ePFSHhCFAkf+q0hDkEvheInMbJW
- uTlKpIpkAPvv/xVGjQ5ZAPTLge8jUJm17Y4VazBbn446Ayy5v05J4Rsv08t5h0nHnIiV
- tJdoTVQgZ9p0Z62MAHEb7DuzZTNotEcq8La09OP0eDu500F3P0Nxy/IHOKyaGLciYvdg
- qjwE7sgeyoC087DL4SO5soc7CEuLThEvGxfdIde5ZSdc2Ga7Rkpp2bpiypXi+NccAuh8
- bUxe1daZCWCNnScin93uZI5G88aHKRaUstku3aOrpnLc32ANQJe4w0OMrBCo48DO2Hxg
- tcnw==
+ d=linaro.org; s=google; t=1697467097; x=1698071897; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NSLqr6SjIOcO45ea+pK9oSCGiEaOT8FVHOYHorSTAZQ=;
+ b=nbEVMZESpsd7HGPXSMOOG7giU03EDtW4wBIz9JbNOuXS+MfsMU+UOwnQZdb8g4Olun
+ BRpFA4bBQfjn+9qaLCVqeLgf2u4iMMFIv/cJWm8IfMJ92lVCL43EHoEMYT7Q5M+v7aql
+ FoBFm77SehiaTRUEvxtE+3pK+EJ8VafS/nPGmVWbWsccfCmH2TBtBiVdG/7AMjrlHELX
+ eHmSlzqiQd2v5nh662whgeTBa0LtccIJaMbiLLi9rWfRDTjwK/0IxdZpYVx4AS5k4k33
+ xVKbCBSx85IUY6rkb5y6XM4uimsNqXqjdiSE//gzRb3SNDZ87/6TpVL1xWusQdp62MkU
+ 5H/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697466837; x=1698071637;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Q7AmF2ibfSbsLuTd01TRyHljcOYGwQRWQaNrYJOlcmo=;
- b=rI7BYJuesuwPmRhiSS6PA7uN/yCNlqCNkjnqd+ARZAtSmCV8A8iLtyUNfuYdLgFVDN
- ZoTaySZxyRH8RSdwGgYkc6InAkJTD2AxNvFNTJhCAmqTR2+variXbIEDjL2wlFuKicbj
- AjCFz4swegWT9Wz8ek4xwvwvcfq/UcuXHbdYb2YzGFYTilr1RLtlEregRsZGenJleqMP
- 7EIL8BCF3N29YqWsoUuJLAcW/U2VsDqborlj7qrqKYPWxLejjhCio91cdeZaJmCUKNa9
- x4Fp7qyl9NI5g/zVaGklqpN3h6vXGPeNnuzheLa0pJDJ+EEO5m+OKKKAe3YJznhZJKlL
- 5k3g==
-X-Gm-Message-State: AOJu0YzkAst13Vj6Xio9cCwUJ/C/Bv9d0sc0IKI8ucxqq1YTV/Zd5EA4
- xP7s7R+wqZbKfedlhQlVii+Fr2P7kamzlBRAs0iO88CgBtI=
-X-Google-Smtp-Source: AGHT+IEyXCY54TqN/kJzMiFbGqacvBimcxFF1RuuIapQf8kYeI9oPKJtBqMXH/L6cUBtLQmTDT7tEWG2K7uadqliIo0=
-X-Received: by 2002:a17:907:2715:b0:9b2:babd:cd44 with SMTP id
- w21-20020a170907271500b009b2babdcd44mr29266918ejk.44.1697466836351; Mon, 16
- Oct 2023 07:33:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697467097; x=1698071897;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NSLqr6SjIOcO45ea+pK9oSCGiEaOT8FVHOYHorSTAZQ=;
+ b=TDFKCrr8jk8jxL3F5v91qr1Jo6Eo6zUs0vW1Ov0YH9Km3TQblTNjc8GR2wUUsCXlHo
+ 687YV3i9HgTL66jI8VLmwG6EQ6irUqvbdXJKm9RIPEiEE+E7lcVdl0KbI2uXgG2gmOP7
+ gN0Q9ZORT+nQba7Q45bbmrpz5+IVwTnkgbrgDAJ4fIk3aXAmxipAvoX+cNYyN2TmHYy4
+ D/ry54kc1yc07K7WOBFqeHyEqJbMVMgEP5AR8H06QI8vFlKcXjHbZ4S9ruGpd2mUfTOz
+ 9APTbVqFKu+OTrULx0Z+jBUo8IA0puky+afz/lFXrcEIk30YqUDS7tpr23GWi1iz0uBQ
+ yOLg==
+X-Gm-Message-State: AOJu0YxmElfUvFwEobBMry8BXNJpo1N8mbBXuOJs11yBdgqoRUHMUSBT
+ mtE1Pw/knzagiVUve+srLX6NXA==
+X-Google-Smtp-Source: AGHT+IETNUccMjtbY0LEe9sKYEyDv1xFBybk1MkXCA/BvDg0vjbrBILjGaWBd2eKONyyhKYQfWP/NA==
+X-Received: by 2002:a17:906:4b12:b0:9c5:7f5d:42dc with SMTP id
+ y18-20020a1709064b1200b009c57f5d42dcmr290430eju.33.1697467096760; 
+ Mon, 16 Oct 2023 07:38:16 -0700 (PDT)
+Received: from [192.168.69.115]
+ (tbo33-h01-176-171-211-186.dsl.sta.abo.bbox.fr. [176.171.211.186])
+ by smtp.gmail.com with ESMTPSA id
+ gw11-20020a170906f14b00b0098669cc16b2sm4112909ejb.83.2023.10.16.07.38.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 07:38:14 -0700 (PDT)
+Message-ID: <637d33e5-9165-6213-6d53-8a6fa07a2e38@linaro.org>
+Date: Mon, 16 Oct 2023 16:38:12 +0200
 MIME-Version: 1.0
-References: <20230825040556.4217-1-faithilikerun@gmail.com>
-In-Reply-To: <20230825040556.4217-1-faithilikerun@gmail.com>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Mon, 16 Oct 2023 22:33:29 +0800
-Message-ID: <CAAAx-8KYqACA2wfRVud7FQtBRUphvxjF3ZyHGGnF2vu2EEKaAA@mail.gmail.com>
-Subject: Re: [PATCH v2] block/file-posix: fix update_zones_wp() caller
-To: qemu-devel@nongnu.org
-Cc: hare@suse.de, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, 
- dlemoal@kernel.org, stefanha@redhat.com, qemu-block@nongnu.org, 
- dmitry.fomichev@wdc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=faithilikerun@gmail.com; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 5/5] hw/intc/apic: Pass CPU using QOM link property
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: Bernhard Beschow <shentey@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20231003082728.83496-1-philmd@linaro.org>
+ <20231003082728.83496-6-philmd@linaro.org>
+ <3a901d18-a07c-cc6c-f9ce-b500d07556cb@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <3a901d18-a07c-cc6c-f9ce-b500d07556cb@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,50 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sam Li <faithilikerun@gmail.com> =E4=BA=8E2023=E5=B9=B48=E6=9C=8825=E6=97=
-=A5=E5=91=A8=E4=BA=94 12:06=E5=86=99=E9=81=93=EF=BC=9A
->
-> When the zoned request fail, it needs to update only the wp of
-> the target zones for not disrupting the in-flight writes on
-> these other zones. The wp is updated successfully after the
-> request completes.
->
-> Fixed the callers with right offset and nr_zones.
->
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> ---
->  block/file-posix.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+Hi Paolo,
 
-Ping?
+On 6/10/23 01:04, Paolo Bonzini wrote:
+> On 10/3/23 10:27, Philippe Mathieu-Daudé wrote:
+>> -    /* TODO: convert to link<> */
+>> -    apic = APIC_COMMON(cpu->apic_state);
+>> -    apic->cpu = cpu;
+>> -    apic->apicbase = APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE;
+>> +    qdev_prop_set_uint32(cpu->apic_state, "base-addr",
+>> +                         APIC_DEFAULT_ADDRESS | MSR_IA32_APIC
+> 
+> For this to use a link, it's missing the corresponding 
+> object_unref(apic->cpu) + apic->cpu = NULL assignment somewhere.  For 
+> example you can add it in apic_common_unrealize (called by 
+> device_unparent - which is called in turn by x86_cpu_unrealizefn).
 
->
-> diff --git a/block/file-posix.c b/block/file-posix.c
-> index b16e9c21a1..55e7f06a2f 100644
-> --- a/block/file-posix.c
-> +++ b/block/file-posix.c
-> @@ -2522,7 +2522,8 @@ out:
->          }
->      } else {
->          if (type & (QEMU_AIO_WRITE | QEMU_AIO_ZONE_APPEND)) {
-> -            update_zones_wp(bs, s->fd, 0, 1);
-> +            /* write and append write are not allowed to cross zone boun=
-aries */
-> +            update_zones_wp(bs, s->fd, offset, 1);
->          }
->      }
->
-> @@ -3472,7 +3473,7 @@ static int coroutine_fn raw_co_zone_mgmt(BlockDrive=
-rState *bs, BlockZoneOp op,
->                          len >> BDRV_SECTOR_BITS);
->      ret =3D raw_thread_pool_submit(handle_aiocb_zone_mgmt, &acb);
->      if (ret !=3D 0) {
-> -        update_zones_wp(bs, s->fd, offset, i);
-> +        update_zones_wp(bs, s->fd, offset, nrz);
->          error_report("ioctl %s failed %d", op_name, ret);
->          return ret;
->      }
-> --
-> 2.40.1
->
+I am a bit confused.
+
+DEFINE_PROP_LINK() sets OBJ_PROP_LINK_STRONG:
+
+  * If the link property was created with
+  * %OBJ_PROP_LINK_STRONG bit, the old target object is
+  * unreferenced, and a reference is added to the new target object.
+
+Is this what you are pointing at? If so, I agree this should be
+unref in apic_common_unrealize().
 
