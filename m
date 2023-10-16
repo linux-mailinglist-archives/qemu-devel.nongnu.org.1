@@ -2,56 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BA77CB16E
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 19:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 993847CB174
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 19:37:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsRRn-0005Kt-MS; Mon, 16 Oct 2023 13:32:07 -0400
+	id 1qsRVx-0000ma-HL; Mon, 16 Oct 2023 13:36:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1qsRRj-0005D7-SY
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 13:32:04 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qsRVv-0000mQ-2Y
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 13:36:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1qsRRe-000190-3m
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 13:32:03 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qsRVn-0002e2-Ac
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 13:36:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697477516;
+ s=mimecast20190719; t=1697477773;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=SAAkopq4yZa5e5H0e4vJVwk/7CKSpc8ykQ4ecqTAjUI=;
- b=aNRC+W/llQ7NtcfcmcLyzs7bWfgDKehBN39/a+X3s0wgOPmkv/VAXaLrDKno94Nl8ziFsy
- 3buSQLiT5Mzszv9RVRyfOmi5cb8EVOwaQZeZXTkAyZirLxYWiZZVppaJGhcQ82zmDuKiYh
- 9tAB/ytchJiDAMp/vp0ESn8wHweLUQc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-15-XCPe09InMgi25E71b7e7qQ-1; Mon, 16 Oct 2023 13:31:54 -0400
-X-MC-Unique: XCPe09InMgi25E71b7e7qQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=lfSwnm2235wzEmGB6el+Wk9JXfY8teqBUZXENowvMa8=;
+ b=athxyvzcNt04W4IjcmeVfed84koxMT8VIOXUbMPBxNWNGeRwz3EJ/ynZqfO77VIX2rVA5S
+ C+WW+aFj3Si9u69ryjqTn1GNKoUB1E/smqalia8vb2jZONi8N8a/Vke2SJazq0XmkCJGgn
+ eSSaRGQmPZHh70vy6sZkEpczTRyf5H0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-625-JRHrV4BoOsWYuH0YzpRdiw-1; Mon, 16 Oct 2023 13:36:10 -0400
+X-MC-Unique: JRHrV4BoOsWYuH0YzpRdiw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C8103C1F125
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 17:31:54 +0000 (UTC)
-Received: from localhost (unknown [10.42.28.8])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 482BE20296DB;
- Mon, 16 Oct 2023 17:31:54 +0000 (UTC)
-Date: Mon, 16 Oct 2023 18:31:53 +0100
-From: "Richard W.M. Jones" <rjones@redhat.com>
-To: qemu-devel@nongnu.org, pbonzini@redhat.com
-Subject: Re: tcg_flush_jmp_cache replacing qatomic_set loop with memset
-Message-ID: <20231016173153.GR7912@redhat.com>
-References: <20231016154336.GA27462@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 735B9862F1B;
+ Mon, 16 Oct 2023 17:36:10 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 518FA25CB;
+ Mon, 16 Oct 2023 17:36:10 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 46D0821E6A26; Mon, 16 Oct 2023 19:36:09 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Fabiano
+ Rosas <farosas@suse.de>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
+ <thuth@redhat.com>
+Subject: Re: [PATCH v3 4/4] migration/qapi: Drop @MigrationParameter enum
+References: <20230905162335.235619-1-peterx@redhat.com>
+ <20230905162335.235619-5-peterx@redhat.com>
+ <87a5t8is2d.fsf@pond.sub.org> <ZRsrG5QdnEh0jiXd@x1n>
+ <87ttqqiz5f.fsf@pond.sub.org> <ZS1h+pNhqyaXHDhW@x1n>
+Date: Mon, 16 Oct 2023 19:36:09 +0200
+In-Reply-To: <ZS1h+pNhqyaXHDhW@x1n> (Peter Xu's message of "Mon, 16 Oct 2023
+ 12:16:58 -0400")
+Message-ID: <87v8b6eagm.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231016154336.GA27462@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=rjones@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -75,70 +85,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 16, 2023 at 04:43:36PM +0100, Richard W.M. Jones wrote:
-> Hey Paolo,
-> 
-> Quick question.  I'm sure the transformation below is *not* correct,
-> because it doesn't preserve the invariant of the lockless structure.
-> Is there a way to do this while maintaining correctness?  For example
-> putting barrier() after memset?  (Note I'm also zeroing .pc which may
-> be a problem.)
+Peter Xu <peterx@redhat.com> writes:
 
-Alright so ignore this question :-(
+> On Mon, Oct 16, 2023 at 08:29:58AM +0200, Markus Armbruster wrote:
+>> Better, because even stupider: drop the feature flags.  They have no
+>> effect on internal use, and there is no external use.
+>> 
+>>     ##
+>>     # @MigrationParameter:
+>>     #
+>>     # TODO: elide from generated documentation (type is used only
+>>     #     internally, and not visible in QMP)
+>>     #
+>>     # Since: 2.4
+>>     ##
+>>     { 'enum': 'MigrationParameter',
+>>       'data': ['announce-initial', 'announce-max',
+>>                'announce-rounds', 'announce-step',
+>>                'compress-level', 'compress-threads', 'decompress-threads',
+>>                'compress-wait-thread', 'throttle-trigger-threshold',
+>>                'cpu-throttle-initial', 'cpu-throttle-increment',
+>>                'cpu-throttle-tailslow',
+>>                'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
+>>                'downtime-limit',
+>>                'x-checkpoint-delay',
+>>                'block-incremental',
+>>                'multifd-channels',
+>>                'xbzrle-cache-size', 'max-postcopy-bandwidth',
+>>                'max-cpu-throttle', 'multifd-compression',
+>>                'multifd-zlib-level', 'multifd-zstd-level',
+>>                'block-bitmap-mapping',
+>>                'x-vcpu-dirty-limit-period',
+>>                'vcpu-dirty-limit'] }
+>
+> Didn't work either, unfortunately..  Compile is fine, but I still see the
+> lines generated in qemu-qmp-ref.7.
+>
+>         MigrationParameter (Enum)
+>         Values
+>         announce-initial
+>                 Not documented
+>
+>         announce-max
+>                 Not documented
+>
+>         announce-rounds
+>                 Not documented
+>
+>         announce-step
+>                 Not documented
+>
+>         compress-level
+>                 Not documented
+>         [...]
 
-After inspecting the assembly on x86-64, I can see the qatomic_set
-simply expands to a regular store (actually looks like it is
-unrolled by 2):
+I didn't claim these will *not* be generated :)
 
-  716340:       48 c7 00 00 00 00 00    movq   $0x0,(%rax)
-  716347:       48 c7 40 10 00 00 00    movq   $0x0,0x10(%rax)
-  71634e:       00 
-  71634f:       48 83 c0 20             add    $0x20,%rax
-  716353:       48 39 d0                cmp    %rdx,%rax
-  716356:       75 e8                   jne    716340 <tcg_flush_jmp_cache+0x20>
+> Patch attached.
+>
+> Thanks,
 
-My memset version was twice as fast because it used some avx
-instructions.
+Solutions:
 
-I guess this would do something more fancy on aarch64 host ...
+0. Do nothing
 
-Rich.
+   The QEMU QMP Reference manual documents MigrationParameter, even
+   though it is not actually visible in QMP.
 
-> The background to this is that I've been playing around with the very
-> hot tb_lookup function.  Increasing the size of the jump cache (which
-> hasn't changed since, erm, 2005!), looks like it could improve
-> performance, plus a few other changes which I'm playing with.  However
-> increasing the size causes profiles to be dominated by the loop in
-> tcg_flush_jmp_cache, presumably because of all those serialized atomic ops.
-> 
-> diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-> index 8cb6ad3511..6a21b3dba8 100644
-> --- a/accel/tcg/translate-all.c
-> +++ b/accel/tcg/translate-all.c
-> @@ -796,9 +796,7 @@ void tcg_flush_jmp_cache(CPUState *cpu)
->          return;
->      }
->  
-> -    for (int i = 0; i < TB_JMP_CACHE_SIZE; i++) {
-> -        qatomic_set(&jc->array[i].tb, NULL);
-> -    }
-> +    memset(jc->array, 0, TB_JMP_CACHE_SIZE * sizeof jc->array[0]);
->  }
->  
->  /* This is a wrapper for common code that can not use CONFIG_SOFTMMU */
-> 
-> Rich.
-> 
-> -- 
-> Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-> Read my programming and virtualization blog: http://rwmj.wordpress.com
-> nbdkit - Flexible, fast NBD server with plugins
-> https://gitlab.com/nbdkit/nbdkit
+   The documentation source is a duplicate.
 
--- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-nbdkit - Flexible, fast NBD server with plugins
-https://gitlab.com/nbdkit/nbdkit
+1. Dumb down MigrationParameter's doc comment (your attached patch)
+
+   The QEMU QMP Reference manual documents MigrationParameter, even
+   though it is not actually visible in QMP.  In addition to useless,
+   the documentation is embarrassing: lots of "Not documented".
+
+2. Make MigrationParameter a C enum instead of a QAPI enum (your v3
+   patch)
+
+   The QEMU QMP Reference manual doesn't uselessly document
+   MigrationParameter (it still uselessly documents other internal-only
+   things).
+
+   We replace 20 lines of QAPI schema by 100 lines of C.
+
+3. Improve the QAPI generator to generate docs only for definitions
+   visible externally, and to require doc comments only then
+
+   The QEMU QMP Reference manual doesn't uselessly document
+   internal-only stuff.
+
+   This solution doesn't exist, yet.
 
 
