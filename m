@@ -2,82 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316E07C9F42
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A437C9F63
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:19:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsGgz-0004Km-3Q; Mon, 16 Oct 2023 02:03:05 -0400
+	id 1qsGuq-0000Nt-34; Mon, 16 Oct 2023 02:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qsGgw-0004KC-Rn
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:03:03 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qsGgu-0000xM-Ub
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:03:02 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-323ef9a8b59so4020288f8f.3
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697436178; x=1698040978; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=nYyuXB75Gv+Dbv+3MPxHevnBlOWcrCwYbrnfZg18a8o=;
- b=rNMF7/Ib27Ih5OA5CsgHfZKQdTypQtF+MWjaMoFe5/NUWrXnZoE4xriGH3a6Fq+hTZ
- jAzndCKHCVkNUMwMiGpRFfiwnkvX8Y9Z/nT6mYllb+7O463512jxzFfqyRCGRr73SFvm
- t3u8JM8h0LZmm15C/h7i1jdDaCJjE9TiElST8UGjbMoHqkPBGU2UNl1flBYzltyskoXl
- clwyQkcsLTAFyLS2b7fQ5qvaJW3eGE1WYM8BVgQ4sKIEgqV6IS+4rsR6rO55HUopB/N9
- bGJNfBbMnTi1iIpUTg49wU9MLFwNu27UbN7K+49ErEq7rEpqghLh/uyR3+ot7A2u5agv
- WEiQ==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qsGud-0000Jz-1J
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:17:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qsGuZ-000334-7s
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:17:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697437025;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=G/x+QlMrNmwuu009JLUT5ogUV4i1hzzRdhfK+9fHQ0I=;
+ b=ZfJlEPMfEalK9PDLsrPLK/NbjvGlymxHouEZ44azDKyfCQq7m7TuVSCgppZW64S8LMFMtA
+ B3oXRonaCwhF71Us9svkV7WPNjUWDYMB9NZHtfAUQeBmY9vFiaC4pA7aXZzSHhH2jWzYW0
+ yGPH8YZAppce1t5WbUHR/f1Vd3l8sZc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-FNRaRmygMCy6HH-RYRK3lg-1; Mon, 16 Oct 2023 02:17:03 -0400
+X-MC-Unique: FNRaRmygMCy6HH-RYRK3lg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32db6a28e24so346665f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:17:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697436178; x=1698040978;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nYyuXB75Gv+Dbv+3MPxHevnBlOWcrCwYbrnfZg18a8o=;
- b=l6fF3O1nTlLgzhRBI9XTgMnbL4jGB3nv7EEN6mHDaxk75rUf3e7jcH7OLea/5hLXWe
- 0etXvsaFVZcUCAECAlWib6V1ZEYvnzpK1A9XozLouyGn5UZ12kfyyHsuXbYioO44ECT0
- D1/aAvCG7MQQVHTpQYTw7tJWPLSrXTu88mZ2PRY1PM6rRaW7GH7R+wZpusNAg308DbsV
- Y8xi1dyyMbsSCc+OhSC6ql4PYLRJiCCgFNLMxfueTX29a+U3Uli+rnzMze+B9MHkaTXB
- PQPPbqiKDMtmd4Z8XXyK0pIMfo7Vap3RxFD+JJ3UZsIV6+Pz6pcz1YbJDo1WesqEGjm5
- 4h/g==
-X-Gm-Message-State: AOJu0YzZMjbSvUsYklZAnp1zImHhcYMtqn6pZGzHfy4IREhXlAd5gNdy
- BsnJP5LUYx7yiXtv2h1/1H9LC1mQv6eZlZRqC1I=
-X-Google-Smtp-Source: AGHT+IF9premts08Q9HdSF+38Ecv+/O1HuHXXcxRxE1QVEjgVByHf4zN++3ft/oRSwHaoNOVnFxzMQ==
-X-Received: by 2002:a5d:5348:0:b0:32d:8961:d864 with SMTP id
- t8-20020a5d5348000000b0032d8961d864mr9941103wrv.48.1697436177689; 
- Sun, 15 Oct 2023 23:02:57 -0700 (PDT)
-Received: from meli.delivery (adsl-165.37.6.1.tellas.gr. [37.6.1.165])
- by smtp.gmail.com with ESMTPSA id
- j2-20020a5d4482000000b0032d8eecf901sm10218459wrq.3.2023.10.15.23.02.56
+ d=1e100.net; s=20230601; t=1697437022; x=1698041822;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=G/x+QlMrNmwuu009JLUT5ogUV4i1hzzRdhfK+9fHQ0I=;
+ b=wGH15sSp68zGSHtEabhuNS+0j0S0yKCnuEMQ5x76eBVIpntNc0sy4yB+bHBVYzBlX8
+ GY+fTJ+McKkWNLiog+oXsdxU2gM193oOu7oCtSDeDM4g1dsjTOIsHon/UVNlAzoerLZU
+ /fpTBKMoPKL+NL6mf/crx3G8jm8s3smh4PS2ba3prdlPSNEv9CMdDhgCu5VrF8HB4ktd
+ inU9aDbTG2b8KVkBZB226pX+mQWFvSQ79tRmWnk9KvwgjS518MBeokhtlx1m6DKgJVxy
+ J3Jd2FozfLSifJrUb8T/yDCNKUfUgnzDkb6CzPAkuWZsEx9sGAupZ5wPn/sR8hhYNN+u
+ eSbw==
+X-Gm-Message-State: AOJu0Yyis7I03fKO3qUUXrWHlJ9zzuuZwwsTOYd578Ge3dRjCB1KgWLL
+ ATPjmDXIFlX/S4VwD9XPt0G2geyvgmL51Yd4bYaylIkIYAvKBkhmIg/19oSlXPjGxMO0NFftBVB
+ oKG7QcjJEQ6urL6g=
+X-Received: by 2002:adf:fd0e:0:b0:31c:804b:5ec3 with SMTP id
+ e14-20020adffd0e000000b0031c804b5ec3mr30265213wrr.67.1697437022379; 
+ Sun, 15 Oct 2023 23:17:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHilLscyICQSc9qS5HBBDpXXV7wtD9c9TZ67bv858ptPrp4vN0/fu9HB2OrRQ++a4IVsbj2QA==
+X-Received: by 2002:adf:fd0e:0:b0:31c:804b:5ec3 with SMTP id
+ e14-20020adffd0e000000b0031c804b5ec3mr30265194wrr.67.1697437022051; 
+ Sun, 15 Oct 2023 23:17:02 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ bg12-20020a05600c3c8c00b00405959469afsm6288453wmb.3.2023.10.15.23.17.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 23:02:56 -0700 (PDT)
-Date: Mon, 16 Oct 2023 08:44:55 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org, Edmund Raile <edmund.raile@proton.me>
-Cc: marcandre.lureau@redhat.com, kraxel@redhat.com,
- Edmund Raile <edmund.raile@proton.me>
-Subject: Re: [PATCH] qemu-ui-gtk clipboard: fix for freeze-crashes v2
-User-Agent: meli 0.8.2
-References: <20231014084641.42317-2-edmund.raile@proton.me>
-In-Reply-To: <20231014084641.42317-2-edmund.raile@proton.me>
-Message-ID: <2ly4u.m34k3bok1e6@linaro.org>
+ Sun, 15 Oct 2023 23:17:00 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  fam@euphon.net,
+ stefanha@redhat.com,  jsnow@redhat.com,  vsementsov@yandex-team.ru,
+ eblake@redhat.com,  leobras@redhat.com,  farosas@suse.de,
+ peterx@redhat.com,  pbonzini@redhat.com,  t.lamprecht@proxmox.com
+Subject: Re: [PATCH v5] migration: hold the BQL during setup
+In-Reply-To: <20231013105839.415989-1-f.ebner@proxmox.com> (Fiona Ebner's
+ message of "Fri, 13 Oct 2023 12:58:39 +0200")
+References: <20231013105839.415989-1-f.ebner@proxmox.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Mon, 16 Oct 2023 08:16:59 +0200
+Message-ID: <87il775bxg.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,129 +98,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Edmund,
+Fiona Ebner <f.ebner@proxmox.com> wrote:
 
-The reproduction in the bug description sounds convoluted so I will 
-focus on the code and patch instead:
+queued.
 
-First of all, the patch title should not include a `v2`. The versioning 
-(reroll count) must go in the `[PATCH]` prefix, e.g. `[PATCH v2]`
-Secondly, the commit message should describe what the problem is and how 
-the fixes in the patch are a solution for it.
-
-See the "meaningfull commit message" in the QEMU docs.
-
-https://www.qemu.org/docs/master/devel/submitting-a-patch.html
-
-  If your patch fixes a bug in the gitlab bug tracker, please add a line 
-  with “Resolves: <URL-of-the-bug>” to the commit message, too. Gitlab 
-  can close bugs automatically once commits with the “Resolved:” keyword 
-  get merged into the master branch of the project. And if your patch 
-  addresses a bug in another public bug tracker, you can also use a line 
-  with “Buglink: <URL-of-the-bug>” for reference here, too.
-
-  Example:
-
-  Fixes: 14055ce53c2d ("s390x/tcg: avoid overflows in 
-  time2tod/tod2time")
-  Resolves: https://gitlab.com/qemu-project/qemu/-/issues/42
-  Buglink: https://bugs.launchpad.net/qemu/+bug/1804323``
-
-This information should go before your Signed-off-by: trailer line.
-
-You can still include all that information that should not go into the 
-commit message by putting them below the -- line and above the patch, 
-see 
-https://www.qemu.org/docs/master/devel/submitting-a-patch.html#include-version-history-in-patchset-revisions
-
-
-On Sat, 14 Oct 2023 11:48, Edmund Raile <edmund.raile@proton.me> wrote:
->To not risk breaking anything in the mailing list, I'm starting this 
->new mail thread instead of replying to my first one.
-
-That's the right thing to do, replying to old versions will make it less 
-visible to people.
-
-Some code comments follow:
-
+> This is intended to be a semantic revert of commit 9b09503752
+> ("migration: run setup callbacks out of big lock"). There have been so
+> many changes since that commit (e.g. a new setup callback
+> dirty_bitmap_save_setup() that also needs to be adapted now), it's
+> easier to do the revert manually.
 >
->---
-> include/ui/clipboard.h |  2 ++
-> ui/gtk-clipboard.c     | 34 ++++++++++++++++++++--------------
-> 2 files changed, 22 insertions(+), 14 deletions(-)
+> For snapshots, the bdrv_writev_vmstate() function is used during setup
+> (in QIOChannelBlock backing the QEMUFile), but not holding the BQL
+> while calling it could lead to an assertion failure. To understand
+> how, first note the following:
 >
->diff --git a/include/ui/clipboard.h b/include/ui/clipboard.h
->index ab6acdbd8a..123c04fc07 100644
->--- a/include/ui/clipboard.h
->+++ b/include/ui/clipboard.h
->@@ -106,6 +106,7 @@ struct QemuClipboardNotify {
->  * @types: clipboard data array (one entry per type).
->  * @has_serial: whether @serial is available.
->  * @serial: the grab serial counter.
->+ * @serial_last: used by GTK UI to discard outdated transaction results.
->  *
->  * Clipboard content data and metadata.
->  */
->@@ -115,6 +116,7 @@ struct QemuClipboardInfo {
->     QemuClipboardSelection selection;
->     bool has_serial;
->     uint32_t serial;
->+    uint32_t serial_last;
->     struct {
->         bool available;
->         bool requested;
->diff --git a/ui/gtk-clipboard.c b/ui/gtk-clipboard.c
->index 8d8a636fd1..9e96cc2fb5 100644
->--- a/ui/gtk-clipboard.c
->+++ b/ui/gtk-clipboard.c
->@@ -133,26 +133,38 @@ static void gd_clipboard_notify(Notifier *notifier, void *data)
->     }
-> }
-> 
->+/* asynchronous clipboard text transfer (host -> guest): callback */
->+static void gd_clipboard_transfer_text_to_guest_callback(GtkClipboard *clipboard, const gchar *text, gpointer data)
->+{
->+    QemuClipboardInfo *info = (QemuClipboardInfo *)data;
+> 1. Generated coroutine wrappers for block layer functions spawn the
+> coroutine and use AIO_WAIT_WHILE()/aio_poll() to wait for it.
+> 2. If the host OS switches threads at an inconvenient time, it can
+> happen that a bottom half scheduled for the main thread's AioContext
+> is executed as part of a vCPU thread's aio_poll().
+>
+> An example leading to the assertion failure is as follows:
+>
+> main thread:
+> 1. A snapshot-save QMP command gets issued.
+> 2. snapshot_save_job_bh() is scheduled.
+>
+> vCPU thread:
+> 3. aio_poll() for the main thread's AioContext is called (e.g. when
+> the guest writes to a pflash device, as part of blk_pwrite which is a
+> generated coroutine wrapper).
+> 4. snapshot_save_job_bh() is executed as part of aio_poll().
+> 3. qemu_savevm_state() is called.
+> 4. qemu_mutex_unlock_iothread() is called. Now
+> qemu_get_current_aio_context() returns 0x0.
+> 5. bdrv_writev_vmstate() is executed during the usual savevm setup
+> via qemu_fflush(). But this function is a generated coroutine wrapper,
+> so it uses AIO_WAIT_WHILE. There, the assertion
+> assert(qemu_get_current_aio_context() == qemu_get_aio_context());
+> will fail.
+>
+> To fix it, ensure that the BQL is held during setup. While it would
+> only be needed for snapshots, adapting migration too avoids additional
+> logic for conditional locking/unlocking in the setup callbacks.
+> Writing the header could (in theory) also trigger qemu_fflush() and
+> thus bdrv_writev_vmstate(), so the locked section also covers the
+> qemu_savevm_state_header() call, even for migration for consistency.
+>
+> The section around multifd_send_sync_main() needs to be unlocked to
+> avoid a deadlock. In particular, the multifd_save_setup() function calls
+> socket_send_channel_create() using multifd_new_send_channel_async() as a
+> callback and then waits for the callback to signal via the
+> channels_ready semaphore. The connection happens via
 
-
-
->+
->+    // serial_last is intentionally not stored as a static in this function as callbacks implementing other data types (e.g. images) need access as well
-
-This line and several others are too long. If you run 
-scripts/checkpatch.pl on your patch you will see them reported:
-
-  ERROR: line over 90 characters
-  #81: FILE: ui/gtk-clipboard.c:141:
-  +    // serial_last is intentionally not stored as a static in this 
-  function as callbacks implementing other data types (e.g. images) need 
-  access as well
-
-Also, no C99 // comments:
-
-  ERROR: do not use C99 // comments
-  #81: FILE: ui/gtk-clipboard.c:141:
-  +    // serial_last is intentionally not stored as a static in this 
-  function as callbacks implementing other data types (e.g. images) need 
-  access as well
-
-In any case I think this comment is not needed.
-
->+
->+    if (text && (info->serial > info->serial_last)) {
->+        info->types[QEMU_CLIPBOARD_TYPE_TEXT].available = true;
->+        qemu_clipboard_update(info);
->+        info->serial_last = info->serial;
->+    }
->+
->+    qemu_clipboard_info_unref(info);
-
-Does this free `info`? If yes why update its fields in the previous 
-line?
-
---
-Manos
 
