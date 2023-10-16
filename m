@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF3F7CA468
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBEC7CA466
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:40:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsK5O-0007Rn-7u; Mon, 16 Oct 2023 05:40:31 -0400
+	id 1qsK5Y-0007vV-2K; Mon, 16 Oct 2023 05:40:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsK5L-0007MG-Ox
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qsK5V-0007uB-Ie
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsK5J-0002dY-Rf
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:27 -0400
+ id 1qsK5U-0002jy-5w
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697449225;
+ s=mimecast20190719; t=1697449235;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=kigZ1gdB5H+XjWPX4HIf/8kVEM1VbLJvt/chkAEw+1Y=;
- b=WgIYvUvgK+bGnhMlxXJ4scQIH/uBShj+oBUORBc06lA2fj+TH9RuJIoURe/sVMrwP2AlU8
- mGa6NOD+0TnnvdYe2YQHBi7WDLOTMpEY1VezEHJ9e6ZjDqkm9AE9s7DDgWSfC9efR2mL6Q
- ipEWCZq/hViBcT1GMVJV2yI2d0pdd1M=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eVrQ3Ode1goRqOjVfbwKTkSqtROVFEsSIobhzqCWnaE=;
+ b=BB3zkSPKpHfPQz/PJnfKsrsUQzitRCKbV4m24TeAwD8gSb9hEeu0/I6+rKxlK9UD/0BF0W
+ dNRaftwDVb/GcPtLicNHGhPeYF8TJUKAvR7/hhoRgvldnM2pVw7w8e1QpZawlawuLMgYN4
+ EliLbalGUFOSAUM9SoC5xpSNSplNIX0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-CeEe8gdsMKOA92VDYzhI_g-1; Mon, 16 Oct 2023 05:40:22 -0400
-X-MC-Unique: CeEe8gdsMKOA92VDYzhI_g-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-50796a3ac70so3146714e87.3
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:40:22 -0700 (PDT)
+ us-mta-218-HBGexkDQNAGGhPyM0g_THg-1; Mon, 16 Oct 2023 05:40:24 -0400
+X-MC-Unique: HBGexkDQNAGGhPyM0g_THg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9bd91ce3033so274850166b.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:40:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697449220; x=1698054020;
+ d=1e100.net; s=20230601; t=1697449222; x=1698054022;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=kigZ1gdB5H+XjWPX4HIf/8kVEM1VbLJvt/chkAEw+1Y=;
- b=TLKs4CQ58Esq5knLCViSvmDJJirmB+exxVC6VYIA0Ved5EMtaUHVWxX3Ao5LGVag4H
- 41Brwdxc5fdjOKDPRgYZueEkAuIOSRKOarfkPa+NMmrfO9+fJYjrI4DHu4PkRjlglGwr
- QYUSIBOuLABtn2x6Mh/RWR3ldinfy2uvCc/klyM5x8mr8U2qYxwLfZsIDWLJ8UGrZOZ4
- m4QK0YliN/XXaVmSGlxYExAuBw6QYRx5KwfCIQISKvgfExDXTfl7kPd3D3JOvXk8t/0M
- XCzYrQTcaw7iWstr5CyKDKlg8RE3JNPgc5/5TiwgcsZf8rR4B3BpEGPuMYFI+QnpZdWr
- U/Cw==
-X-Gm-Message-State: AOJu0YzGg9wsxSt4PE+IMjXd5b20buftrQqwTjswTasGQAaKwFvZj79c
- ORiD/geItJKnREwccck0Wv4E6pWmg40Snj7oziTWAdnwfG2Ep9cwPG+Sg1Ozv06oYm6ci8fWsM5
- Cpe7w9tz13arVgIvJgw/iNQtuh7+7cZ9tWhG3a8pgI8m57narRNYkXxZ9H+kroLZKS3iVPU2FGH
- A=
-X-Received: by 2002:a05:6512:794:b0:502:cc8d:f1fc with SMTP id
- x20-20020a056512079400b00502cc8df1fcmr24450511lfr.37.1697449220648; 
- Mon, 16 Oct 2023 02:40:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHq6IQTY12+K3Foy9aJtYmNjNFklSwiLQUq6l9Z4eNO7JaJ03SFEksijgqJNE9zyVR+IsyBxw==
-X-Received: by 2002:a05:6512:794:b0:502:cc8d:f1fc with SMTP id
- x20-20020a056512079400b00502cc8df1fcmr24450498lfr.37.1697449220232; 
- Mon, 16 Oct 2023 02:40:20 -0700 (PDT)
+ bh=eVrQ3Ode1goRqOjVfbwKTkSqtROVFEsSIobhzqCWnaE=;
+ b=jzK111nFYUEs2kudEN3iPMJ9BOtphDKmu2/4gF5OEWaaFQDuRX12E15kHnZH7CXZax
+ i8CMypWBLJ/q3qFLzuPWaMmO+pECvcVyhrN66+6AxteELrBSXW+th5lXfcsQhFH7o+tJ
+ sgKja9lx5gjuC29bIT5KTUgQvWK+VXSG8k98J9B8rIjxrQQvtjhno83Tsm17SnLmeI4M
+ YXZiYlXdqzxLA1ut6L+42ua4B/avAfwlD/cO0Z0vR+z6CMYwruLFGl9tvh0psbFwKevW
+ dHjyloi+Bz9zrRvqyda+CJE0xxtxH/WQMn0Ch0bvsRaMUieioMK7+ZX3eK0t7fC4gP0X
+ 8i2g==
+X-Gm-Message-State: AOJu0Yyurt3ysfVpkp8ami8v58Y1bse0k1ptCq1vF1ctT2vtUIPAW0S6
+ ndBSUmyNtJPJyxwATlICwaVPxPNypvxE2AbtAFe89ssrRoGa46IvgNr3gBd1QYYg2YXoLDwz2Wz
+ j4e563V9r258B4Hzjonruvy+nNiraq4076QNlm3Uix8TzeC99aLdTHFL2AwENhaJ1qw2uBG8Au0
+ Y=
+X-Received: by 2002:a17:906:8b:b0:9b2:b149:b81a with SMTP id
+ 11-20020a170906008b00b009b2b149b81amr32556545ejc.64.1697449222525; 
+ Mon, 16 Oct 2023 02:40:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBHDR1gbCqSsDjKKJJuUoXO6XPXEIzpx7ZAGWKF4EtODft/r5sEI8uXa+hxlL++ze/0LkxlA==
+X-Received: by 2002:a17:906:8b:b0:9b2:b149:b81a with SMTP id
+ 11-20020a170906008b00b009b2b149b81amr32556539ejc.64.1697449222252; 
+ Mon, 16 Oct 2023 02:40:22 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- bt8-20020a0564020a4800b0053e4783afbasm4529077edb.63.2023.10.16.02.40.19
+ 17-20020a170906029100b00989828a42e8sm3690889ejf.154.2023.10.16.02.40.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 02:40:19 -0700 (PDT)
+ Mon, 16 Oct 2023 02:40:21 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-Subject: [PATCH] target/hexagon: avoid invalid escape in Python string
-Date: Mon, 16 Oct 2023 11:40:13 +0200
-Message-ID: <20231016094016.173598-2-pbonzini@redhat.com>
+Subject: [PATCH] tests/avocado: avoid invalid escape in Python string
+Date: Mon, 16 Oct 2023 11:40:14 +0200
+Message-ID: <20231016094016.173598-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,31 +102,22 @@ This is an error in Python 3.12; fix it by using a raw string literal.
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/hexagon/hex_common.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/avocado/virtio_check_params.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
-index dce1b852a7b..0da65d6dd6a 100755
---- a/target/hexagon/hex_common.py
-+++ b/target/hexagon/hex_common.py
-@@ -45,7 +45,7 @@ def uniquify(seq):
- immre = re.compile(r"[#]([rRsSuUm])(\d+)(?:[:](\d+))?")
- reg_or_immre = re.compile(
-     r"(((?<!DUP)[MNRCOPQXSGVZA])([stuvwxyzdefg]+)"
--    + "([.]?[LlHh]?)(\d+S?))|([#]([rRsSuUm])(\d+)[:]?(\d+)?)"
-+    r"([.]?[LlHh]?)(\d+S?))|([#]([rRsSuUm])(\d+)[:]?(\d+)?)"
- )
- relimmre = re.compile(r"[#]([rR])(\d+)(?:[:](\d+))?")
- absimmre = re.compile(r"[#]([sSuUm])(\d+)(?:[:](\d+))?")
-@@ -337,7 +337,7 @@ def read_attribs_file(name):
+diff --git a/tests/avocado/virtio_check_params.py b/tests/avocado/virtio_check_params.py
+index 4093da8a674..0b1e99fc24b 100644
+--- a/tests/avocado/virtio_check_params.py
++++ b/tests/avocado/virtio_check_params.py
+@@ -43,7 +43,7 @@
+ class VirtioMaxSegSettingsCheck(QemuSystemTest):
+     @staticmethod
+     def make_pattern(props):
+-        pattern_items = ['{0} = \w+'.format(prop) for prop in props]
++        pattern_items = [r'{0} = \w+'.format(prop) for prop in props]
+         return '|'.join(pattern_items)
  
- 
- def read_overrides_file(name):
--    overridere = re.compile("#define fGEN_TCG_([A-Za-z0-9_]+)\(.*")
-+    overridere = re.compile(r"#define fGEN_TCG_([A-Za-z0-9_]+)\(.*")
-     for line in open(name, "rt").readlines():
-         if not overridere.match(line):
-             continue
+     def query_virtqueue(self, vm, dev_type_name):
 -- 
 2.41.0
 
