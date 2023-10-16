@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AE87C9F99
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E77E7C9F9E
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:33:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsH8z-00040l-Lp; Mon, 16 Oct 2023 02:32:01 -0400
+	id 1qsH8t-0003y9-88; Mon, 16 Oct 2023 02:31:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH8w-0003zJ-1Q
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:58 -0400
+ id 1qsH8r-0003wf-DM
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH8t-0005T1-GG
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:57 -0400
+ id 1qsH8p-0005Sb-V7
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697437914;
+ s=mimecast20190719; t=1697437911;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9QQ5Jv++5JWrJcQC65uokcTL2BMQ3kZau3NHc7ktyfI=;
- b=JdjL0SJTO/e5Lm7K3l5+2VF8pdj++lojTl4jrSGT4vH9pQF+YvTfcWqsoEPGgCvg4YfpdI
- AigZAw7DlIqVAZ4+ZrmoNgK8A8q94DTtUojVK/gXwVXSO9LK3TrGq7mSprKbHmpMt1hNht
- gcnIGSX5Q2uH/wxUy9+lrRwcdvcqwjw=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UWFwfKWsP26Bal1UGvJOrMRc81Ismgv98NyAMzklpAA=;
+ b=Fp41g1HnLVFsG68QwrSoKw8kiMpka7Ohd0TljUd06FxJcpTO1JBXaUQlOcQX9t6ub8zr1p
+ c3zJIpK8iEHmp1BhA5UKfSF4uTjpSVJZrAJJVu4vljqnX2uSl9VoCQREYmcJcyvMKEd3ko
+ jAr1CST3GDsYqBlF8K1+M6fhM2m0Z9U=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-127-VC_bdEVqOkae6hQAGioAEw-1; Mon, 16 Oct 2023 02:31:42 -0400
-X-MC-Unique: VC_bdEVqOkae6hQAGioAEw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-993eeb3a950so260252066b.2
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:31:42 -0700 (PDT)
+ us-mta-423-pj5aymv8MjabHIdWMdSYqA-1; Mon, 16 Oct 2023 02:31:44 -0400
+X-MC-Unique: pj5aymv8MjabHIdWMdSYqA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9ae0bf9c0b4so308478266b.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:31:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697437900; x=1698042700;
+ d=1e100.net; s=20230601; t=1697437902; x=1698042702;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9QQ5Jv++5JWrJcQC65uokcTL2BMQ3kZau3NHc7ktyfI=;
- b=BEraUrID7MKHSoHJjnQmiD2z4nVe9/2MopFRvOMnzguRTDiiHe8YWGA04qG/MecbaG
- 1GPC0hezsFmy0Ar0kMLEmEYNkOS/WgliKq3rCV/o5DBXe4Ly7mpvuOIt2lE64CACb9ws
- yoDze+tz8xQ+WjETYe3Kcuhq6HmSRc0xIAZhul8+FVT8ULL4ZDjGLn6BLqUycHYlfcD0
- 1Az9z8cOW0eh60HbI7ACFXVv7kq3bFp805ytaJ0Q+O79dqDs8+j16hJRFEVgBSYBrpP2
- pJGY8UQljS/JhRP4dEgGGQUFvzWYZrJczTtASQNR0Dk1yh4NBF9z/3ZTojGsAe33xewg
- Uomw==
-X-Gm-Message-State: AOJu0Yz0JyeYve8P4tvzDu3VjhPIAgMkyhWCM4Ug6Mv0PbmAKoXGO/aN
- rIDFqPu7MeA8yHKS7HDm9ND0NKcbzma4i3mk/KUZsCVL0sDxVaiFMYo20nS+mljSzHXjLVIibf2
- qfLOe66lINaynfK/gX4ZtZaTBvEuorwkx/6ywXh14YZkZWsub/3bWl45SecCu1mCN2/fIwyKNsq
- c=
-X-Received: by 2002:a17:906:cc0d:b0:9a2:86b:bb18 with SMTP id
- ml13-20020a170906cc0d00b009a2086bbb18mr27954287ejb.26.1697437900774; 
- Sun, 15 Oct 2023 23:31:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJZkDpMl2j4MMjNlYIGSeWRfUJyCUnuvgxQTwyd4LwUU2QsZIfAfvt1NEF41QG0ayrpMN7Og==
-X-Received: by 2002:a17:906:cc0d:b0:9a2:86b:bb18 with SMTP id
- ml13-20020a170906cc0d00b009a2086bbb18mr27954282ejb.26.1697437900463; 
- Sun, 15 Oct 2023 23:31:40 -0700 (PDT)
+ bh=UWFwfKWsP26Bal1UGvJOrMRc81Ismgv98NyAMzklpAA=;
+ b=G3AS6eZJHC2aro3B+ECKvGTo/+NtJWt5Cxn/hDBa9Cw47HBEwuMOPu1nfT8q0TCoiH
+ x9QiXyAFvnpcjrphrHPwr5/HD3t8gMmIHcdjKRyRnVykOlWMIsfo+oq+zhxL31qNuAK/
+ qGA8m2oaMsJhRJc/xxioxJCsvDC8He5flaqx62ZOfZQkLY/DkQIwPL51VrLT/kzoukNK
+ xuu2KAP4ps6Jw1OnD8UFGPyxw8mZdaZn9WPvARoA94ushbgZcRqou6rU5WX7LkPbI+dB
+ 98FA3a25oxdoVQclzq5pAwIJuRwBxbUE5HNc/oILX+xcA0s5WHbiynPN6pED7SL39LeC
+ nNkQ==
+X-Gm-Message-State: AOJu0Yw0M1xmVJBp4sOo3gTvxh89leZodcMoPrk6OHR9GQF6oohEOR8n
+ ORS8NT83MXAoNWIEfiI1G4/ClYpM6Q5xyBqABeNoYLK8vdEvByR6a/ZYzp28PlvJclK8qH5ISJ6
+ K2VmaJKEpdQX38SGJzy9cf0PHV+8zfxUkWvAHixTmRnDvgijOG9Zm2KA4227zCjzHmzF0zCVB9i
+ U=
+X-Received: by 2002:a17:907:ea1:b0:9be:ef46:6b9d with SMTP id
+ ho33-20020a1709070ea100b009beef466b9dmr5256525ejc.29.1697437902617; 
+ Sun, 15 Oct 2023 23:31:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaIESZJFotBx06sVT+rwuyDzGjszwQKsje+roRzrw0N3haxPz+2QLQwADSw3XCPMoT4KK4ag==
+X-Received: by 2002:a17:907:ea1:b0:9be:ef46:6b9d with SMTP id
+ ho33-20020a1709070ea100b009beef466b9dmr5256509ejc.29.1697437902177; 
+ Sun, 15 Oct 2023 23:31:42 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- f11-20020a170906738b00b00992e94bcfabsm3376851ejl.167.2023.10.15.23.31.39
+ r15-20020a17090638cf00b00997cce73cc7sm3398153ejd.29.2023.10.15.23.31.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 23:31:39 -0700 (PDT)
+ Sun, 15 Oct 2023 23:31:41 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 06/17] hw/remote: move stub vfu_object_set_bus_irq out of
- stubs/
-Date: Mon, 16 Oct 2023 08:31:16 +0200
-Message-ID: <20231016063127.161204-7-pbonzini@redhat.com>
+Subject: [PATCH 07/17] tests/tcg/arm: move non-SVE tests out of conditional
+Date: Mon, 16 Oct 2023 08:31:17 +0200
+Message-ID: <20231016063127.161204-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231016063127.161204-1-pbonzini@redhat.com>
 References: <20231016063127.161204-1-pbonzini@redhat.com>
@@ -101,44 +100,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+test-aes, sha1-vector and sha512-vector need not be conditional on
+$(CROSS_CC_HAS_SVE), reorganize the "if"s to move them outside.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/remote/meson.build                                   | 4 +++-
- stubs/vfio-user-obj.c => hw/remote/vfio-user-obj-stub.c | 0
- stubs/meson.build                                       | 1 -
- 3 files changed, 3 insertions(+), 2 deletions(-)
- rename stubs/vfio-user-obj.c => hw/remote/vfio-user-obj-stub.c (100%)
+ tests/tcg/aarch64/Makefile.target | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/hw/remote/meson.build b/hw/remote/meson.build
-index a1e8708c732..a3aa29aaf17 100644
---- a/hw/remote/meson.build
-+++ b/hw/remote/meson.build
-@@ -7,9 +7,11 @@ remote_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('remote-obj.c'))
- remote_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('proxy.c'))
- remote_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('iohub.c'))
- remote_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('iommu.c'))
--remote_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_true: files('vfio-user-obj.c'))
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 2efacf9a5a3..d01b8ff47c8 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -73,11 +73,6 @@ endif
+ # System Registers Tests
+ AARCH64_TESTS += sysregs
  
- remote_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_true: libvfio_user_dep)
-+remote_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_true: files('vfio-user-obj.c'),
-+              if_false: files('vfio-user-obj-stub.c'))
-+remote_ss.add(when: 'CONFIG_ALL', if_true: files('vfio-user-obj-stub.c'))
+-ifneq ($(CROSS_CC_HAS_SVE),)
+-# SVE ioctl test
+-AARCH64_TESTS += sve-ioctls
+-sve-ioctls: CFLAGS+=-march=armv8.1-a+sve
+-
+ AARCH64_TESTS += test-aes
+ test-aes: CFLAGS += -O -march=armv8-a+aes
+ test-aes: test-aes-main.c.inc
+@@ -100,12 +95,15 @@ sha512-vector: sha512.c
+ TESTS += sha512-vector
  
- specific_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('memory.c'))
- specific_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('proxy-memory-listener.c'))
-diff --git a/stubs/vfio-user-obj.c b/hw/remote/vfio-user-obj-stub.c
-similarity index 100%
-rename from stubs/vfio-user-obj.c
-rename to hw/remote/vfio-user-obj-stub.c
-diff --git a/stubs/meson.build b/stubs/meson.build
-index ef6e39a64d8..025e7d2851f 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -65,4 +65,3 @@ else
-   stub_ss.add(files('qdev.c'))
- endif
- stub_ss.add(files('semihost-all.c'))
--stub_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_false: files('vfio-user-obj.c'))
+ ifneq ($(CROSS_CC_HAS_SVE),)
++# SVE ioctl test
++AARCH64_TESTS += sve-ioctls
++sve-ioctls: CFLAGS+=-march=armv8.1-a+sve
++
+ sha512-sve: CFLAGS=-O3 -march=armv8.1-a+sve
+ sha512-sve: sha512.c
+ 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+ 
+ TESTS += sha512-sve
+-endif
+ 
+ ifeq ($(HOST_GDB_SUPPORTS_ARCH),y)
+ GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
 -- 
 2.41.0
 
