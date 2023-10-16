@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E362B7CA467
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CA17CA465
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:40:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsK5Q-0007bI-6r; Mon, 16 Oct 2023 05:40:32 -0400
+	id 1qsK5U-0007mC-0Z; Mon, 16 Oct 2023 05:40:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsK5O-0007T4-4S
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:30 -0400
+ id 1qsK5R-0007gj-2N
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsK5M-0002gd-JC
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:29 -0400
+ id 1qsK5P-0002ib-Hn
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:40:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697449227;
+ s=mimecast20190719; t=1697449230;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=Ou79WqmD8yS2zOSsjwA8bNuO+KR8sDzpMPHBQmM+hzw=;
- b=E3VVogZ6FmN+avE/iQ4ncziE/9bHceXXSvUIe2m8RkjzxsfmSJIlwSoVsrRHLRMzj7G1//
- KAOsgj9JspY1x8eNT9LuHWretROsHIOgGMKf74bS7OCah+Ft2A+L4Z6X8q6KcgG2thPqO3
- GdyHZNjTXu+kIfWklSqq5IjqJj0s7/g=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yQHSU18s/IxqMTzYLPyCVp4HqDLtdKCCysne3i19W6E=;
+ b=QvlhZAbBU2pT4Ro7be3VX1kT3pvKFzjsFMnwRIEi+5emZ2iExtpqx4K9ybLPyS1uSheFdH
+ J+3Sr2DOhVpaopnWpNDkyLXOc9JYQrUG95pvZi5hmdBZ/CLjt6pWOH9RWMrrLRQQBdioKj
+ S/Q0d5oIAH9oLHOazCUcwcjlB0yR4xE=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-L1mL4jPUM_GuWrrsGSzZrg-1; Mon, 16 Oct 2023 05:40:26 -0400
-X-MC-Unique: L1mL4jPUM_GuWrrsGSzZrg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9ae0601d689so275465466b.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:40:26 -0700 (PDT)
+ us-mta-377-GBQyv45HMOOW6K2-A4ZBMQ-1; Mon, 16 Oct 2023 05:40:28 -0400
+X-MC-Unique: GBQyv45HMOOW6K2-A4ZBMQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9adc78b386cso24790966b.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:40:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697449224; x=1698054024;
+ d=1e100.net; s=20230601; t=1697449226; x=1698054026;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Ou79WqmD8yS2zOSsjwA8bNuO+KR8sDzpMPHBQmM+hzw=;
- b=XBfrFVefXGDLhX7dHzh3oCB0IxH97WanTCzzHo+DiF12SvhugKwtWeUq40u8StvWcC
- aqe50uLzob1UvzNrkR9vKlK/3HTx7SjRw6TCsWsi0QEw8TmEUpthOECqJBxfZXd22hPG
- /LZTWUZ3kXTE6zj1Wdvzx84hHGwBZCM3pFFha4HfVEuGylj3QjkM3/hbamImFmMrked1
- H43s+S4y141iXzinyUm1yEDhuW4YCX/+/9kV6er6BP44+qysjUfcLVnw/QaKlaGnSjl2
- 9TKGamq6xauRvt/xQkFeCTg/h3U4FvVvgo0E2cxuIuuPDvlRVaE+9lqE8qBWSZR4fkWF
- 84Vw==
-X-Gm-Message-State: AOJu0YxCaJ3ZH98S5yhv5M6p3UQ+SyAfQYXXoJOgyIvZiLj0V823LSiT
- gBu8PG4fydukMP0FmkZbbImThrwYWGmVaG79HUeQLhXFw1F5i47QHwdfeeK28Ct0HZGd/JmbCWY
- yeyhPnRbkT7sko5Uuz0wC07AqKiLHvOouD23WHThjDVXUgToBFevohsya9NB6KHIcXltIUeVmrd
- c=
-X-Received: by 2002:a17:907:1c0d:b0:9bf:f20:876d with SMTP id
- nc13-20020a1709071c0d00b009bf0f20876dmr5256975ejc.75.1697449224570; 
- Mon, 16 Oct 2023 02:40:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3uwHBiPuKLrWRVyGYo+Pozl1iQJj69ExnuJrGIsSyOnmaVvD2OYG0QKE7Ajo149WxIOFopA==
-X-Received: by 2002:a17:907:1c0d:b0:9bf:f20:876d with SMTP id
- nc13-20020a1709071c0d00b009bf0f20876dmr5256958ejc.75.1697449224236; 
- Mon, 16 Oct 2023 02:40:24 -0700 (PDT)
+ bh=yQHSU18s/IxqMTzYLPyCVp4HqDLtdKCCysne3i19W6E=;
+ b=Kf33XzpXeFIS9X+QVTS/p6MIwNTyPlbidQIv03F7hFFyxPmR1t7s+z9b6kUibCaHt+
+ TqtfYSIMaTOwzCQnAeSplfplMDTrOhpp8C/cQFrJNdCbBM11PM6dqJrz+hByqGA8usr9
+ yRNqSp67qJR4ggi4bECbTv7RzyHokgk588VKWGSbd0371G5EcS3iuzsYtH2jh1/YcUWg
+ LE8qHaBzylW85wx/ffwjk9k5xYYI7LDf2jc8HveClaAj4f8hO35ndeJTPYFHJ/8ixIp3
+ 42huUE7odasLX98GaXGRdcgkHHuokiUafKYNVyyT4J1A4di57BXAj8cevdrJB88/qrYE
+ HmEA==
+X-Gm-Message-State: AOJu0Yx60nDld4tiEPVe/X6Wn3pPT6NcMfJUot4xVa8bfVzztndRw+fr
+ jsVm2p8u+SWMxrizxoZMCqIrc04J/hTBZGBY6qxfl+vMWoeQf7hdDPJgIYrPpEq1fA4C6dw40rQ
+ UOc5XSQgV09SablfZF6rwVsRn5vmyue+IlINjQSgigqDq6wc2JulOBrpzJpKoAtt8npbiB3qPJ0
+ s=
+X-Received: by 2002:a17:907:608e:b0:9be:ea59:1457 with SMTP id
+ ht14-20020a170907608e00b009beea591457mr4879497ejc.40.1697449226504; 
+ Mon, 16 Oct 2023 02:40:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrdR97NawnhVuCHvO2ILjrtKsTx6Yt2VoSjZGs9TGPMdYO9/TJU1x0UkfMMfNyo/r+A1V6jg==
+X-Received: by 2002:a17:907:608e:b0:9be:ea59:1457 with SMTP id
+ ht14-20020a170907608e00b009beea591457mr4879482ejc.40.1697449226168; 
+ Mon, 16 Oct 2023 02:40:26 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- 30-20020a170906009e00b009ae587ce135sm3682458ejc.223.2023.10.16.02.40.22
+ jz28-20020a17090775fc00b009ae57888718sm3595293ejc.207.2023.10.16.02.40.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 02:40:22 -0700 (PDT)
+ Mon, 16 Oct 2023 02:40:25 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-Subject: [PATCH] tests/vm: avoid invalid escape in Python string
-Date: Mon, 16 Oct 2023 11:40:15 +0200
-Message-ID: <20231016094016.173598-4-pbonzini@redhat.com>
+Subject: [PATCH] tracetool: avoid invalid escape in Python string
+Date: Mon, 16 Oct 2023 11:40:16 +0200
+Message-ID: <20231016094016.173598-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -97,39 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is an error in Python 3.12; fix it by using a raw string literal
-or by double-escaping the backslash.
+This is an error in Python 3.12; fix it by using a raw string literal.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/vm/basevm.py | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/tracetool/__init__.py        | 14 +++++++-------
+ scripts/tracetool/format/log_stap.py |  2 +-
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
-index a97e23b0ce0..6e31698906b 100644
---- a/tests/vm/basevm.py
-+++ b/tests/vm/basevm.py
-@@ -331,8 +331,8 @@ def console_init(self, timeout = None):
-     def console_log(self, text):
-         for line in re.split("[\r\n]", text):
-             # filter out terminal escape sequences
--            line = re.sub("\x1b\[[0-9;?]*[a-zA-Z]", "", line)
--            line = re.sub("\x1b\([0-9;?]*[a-zA-Z]", "", line)
-+            line = re.sub("\x1b\\[[0-9;?]*[a-zA-Z]", "", line)
-+            line = re.sub("\x1b\\([0-9;?]*[a-zA-Z]", "", line)
-             # replace unprintable chars
-             line = re.sub("\x1b", "<esc>", line)
-             line = re.sub("[\x00-\x1f]", ".", line)
-@@ -530,7 +530,7 @@ def get_qemu_version(qemu_path):
-        and return the major number."""
-     output = subprocess.check_output([qemu_path, '--version'])
-     version_line = output.decode("utf-8")
--    version_num = re.split(' |\(', version_line)[3].split('.')[0]
-+    version_num = re.split(r' |\(', version_line)[3].split('.')[0]
-     return int(version_num)
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index 33cf85e2b04..b29594d75e0 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -210,12 +210,12 @@ class Event(object):
  
- def parse_config(config, args):
+     """
+ 
+-    _CRE = re.compile("((?P<props>[\w\s]+)\s+)?"
+-                      "(?P<name>\w+)"
+-                      "\((?P<args>[^)]*)\)"
+-                      "\s*"
+-                      "(?:(?:(?P<fmt_trans>\".+),)?\s*(?P<fmt>\".+))?"
+-                      "\s*")
++    _CRE = re.compile(r"((?P<props>[\w\s]+)\s+)?"
++                      r"(?P<name>\w+)"
++                      r"\((?P<args>[^)]*)\)"
++                      r"\s*"
++                      r"(?:(?:(?P<fmt_trans>\".+),)?\s*(?P<fmt>\".+))?"
++                      r"\s*")
+ 
+     _VALID_PROPS = set(["disable", "vcpu"])
+ 
+@@ -326,7 +326,7 @@ def __repr__(self):
+                                           fmt)
+     # Star matching on PRI is dangerous as one might have multiple
+     # arguments with that format, hence the non-greedy version of it.
+-    _FMT = re.compile("(%[\d\.]*\w+|%.*?PRI\S+)")
++    _FMT = re.compile(r"(%[\d\.]*\w+|%.*?PRI\S+)")
+ 
+     def formats(self):
+         """List conversion specifiers in the argument print format string."""
+diff --git a/scripts/tracetool/format/log_stap.py b/scripts/tracetool/format/log_stap.py
+index 0b6549d534a..b49afababd6 100644
+--- a/scripts/tracetool/format/log_stap.py
++++ b/scripts/tracetool/format/log_stap.py
+@@ -83,7 +83,7 @@ def c_fmt_to_stap(fmt):
+     # and "%ll" is not valid at all. Similarly the size_t
+     # based "%z" size qualifier is not valid. We just
+     # strip all size qualifiers for sanity.
+-    fmt = re.sub("%(\d*)(l+|z)(x|u|d)", "%\\1\\3", "".join(bits))
++    fmt = re.sub(r"%(\d*)(l+|z)(x|u|d)", r"%\1\3", "".join(bits))
+     return fmt
+ 
+ def generate(events, backend, group):
 -- 
 2.41.0
 
