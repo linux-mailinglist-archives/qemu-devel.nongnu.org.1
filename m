@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 511587C9EC2
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 07:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E99B7C9F06
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 07:41:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsGC5-0005k9-1o; Mon, 16 Oct 2023 01:31:09 -0400
+	id 1qsGKs-0008C4-IQ; Mon, 16 Oct 2023 01:40:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qsGC1-0005jj-1z
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 01:31:05 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qsGKp-0008Bj-MY; Mon, 16 Oct 2023 01:40:11 -0400
+Received: from mail-vk1-xa30.google.com ([2607:f8b0:4864:20::a30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qsGBx-0004ZR-Oy
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 01:31:04 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c88b467ef8so27494435ad.0
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 22:31:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qsGKn-0005s7-2X; Mon, 16 Oct 2023 01:40:10 -0400
+Received: by mail-vk1-xa30.google.com with SMTP id
+ 71dfb90a1353d-495eb6e2b80so1064878e0c.1; 
+ Sun, 15 Oct 2023 22:40:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697434260; x=1698039060;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uEhDGBOEHZtCIJzR2bpthJpEIkwVwuX6ztAmFYYzwjY=;
- b=BIfOoP3x5rYVnFrBxwLuCRRLGAFJutqtktgsrb/+tJ+QyDApXHW0jCdGTgw1aMHNPR
- UXdwYMe5C1ciEINVF04gHrps2F97d4EduwO6miS3+xZL0pIwZOaBlJcNwSbSf3mGI284
- 1lH7ssiypiDnLmCs7mk40X5iDYgGj03gwe9uarG/TjftFdfOsj8f2gE2pAMkuZ14v+fQ
- t2j6/TkHQOwLCpPxHtzN8seheO+r4sevSWsnuIcH4+DP7FYSs5y/bRCcjdLjUVCv/rK8
- lDQWKAOsENGfUNgAp0UFDssxVMQ5YqKXeaPZK7N9+rYMMPGDsgwPTxr3SJgFvPVfTugs
- P3WA==
+ d=gmail.com; s=20230601; t=1697434807; x=1698039607; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zE9UwSqwIHGw5aoPS28rfFXvqq3SJsm0lULwwMvhNKM=;
+ b=FttIJ9JIeTe+dCdA289rag6jMHXjdiIsDUvL45otKN7aV/98aS2rVaiPPXMmSHBwix
+ 2+O1hsuxfLEGVhVS2+5LYxxEj2xaedQv9RkOyml0PU9lZTfFBfqDoD+rM0nkhpD/dF3/
+ 1AfHSahNmGVn4zsKCjuFTjGrGpPTbsgu+yyrHioFsUD+lhCeSO/JcHflhhMygb9RWPy+
+ ayFkPAWXf0RnTq6AAld8a1/v+sGZDm9gA5az1xh86v3+LM0OFA1xHEbVk/BSikYjw9VD
+ rF1+mu4X2SATA6GMKeQXJskgIwiYi6eWIJSmcjMcC/U7h2J7JMiXBV3kqfvLVkX6ffaa
+ tq9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697434260; x=1698039060;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uEhDGBOEHZtCIJzR2bpthJpEIkwVwuX6ztAmFYYzwjY=;
- b=kn0FnnZumrqNHfVtwfMLVRk6WTf6/UXWm3JTcKhkACiofy/ng5y2uCYmxI6babHQwu
- 2SMORH70GUxYQTCnR/fk7ZAoqMtG4WTwGdbpMdbvemVcT9HFeWFNYYAByQ/4l/+8PS1O
- +ZVZbo0S1Md/8L+88ewEawB/1y7RuI2cRC0xfutH/ixnqRrUG9aX85HE7cG5w2p2ZMKG
- wOVfWcikzRLDg5uwyn67nAoHjX5qunC1m5t1b+Sy36G9NaL1S0SCRtskNmpJodAxuu7r
- WC9JPgqUJuYe5duLCwF1kb31QsT1+iEc+MCXau/ooNirpZo7osC9TxAAzQP10Kb6yJK8
- z3jA==
-X-Gm-Message-State: AOJu0YxlP4DqPsLMx2MpxUmYtlHh6x+eylOoghTzGtBB+W23FY4jTmEu
- qYiTKw41wA3M0ZYccd8YAtplLw==
-X-Google-Smtp-Source: AGHT+IHtF6RdPBZ0S1eh6kBKDqX1KHxwA/BdUriaKU08tjfRk7+6ZceEh+e0S5I4HwNlTC4yTq6EeA==
-X-Received: by 2002:a17:903:4043:b0:1c9:e072:3398 with SMTP id
- n3-20020a170903404300b001c9e0723398mr6912976pla.41.1697434260362; 
- Sun, 15 Oct 2023 22:31:00 -0700 (PDT)
-Received: from [157.82.206.197] ([157.82.206.197])
- by smtp.gmail.com with ESMTPSA id
- p11-20020a170902c70b00b001b0358848b0sm7678096plp.161.2023.10.15.22.30.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 15 Oct 2023 22:30:59 -0700 (PDT)
-Message-ID: <75aa685f-4ced-4e24-864b-e0cbb4bec73a@daynix.com>
-Date: Mon, 16 Oct 2023 14:30:57 +0900
+ d=1e100.net; s=20230601; t=1697434807; x=1698039607;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zE9UwSqwIHGw5aoPS28rfFXvqq3SJsm0lULwwMvhNKM=;
+ b=n52SDr/4qib1md9KFlO2BYWrFqUDE+QIqAnlG8akWw5dZ9caSbCp3grann+y5a4C38
+ 5/1UPCBYt7nlRkZ7fWnU/XRhAcodMGEiLb4mU1F9r40tBg/y2ngBD2ETD9kfUxE/rKDR
+ lCV+f/HOzlSbyZ5kx+ozBmYQHx7yMErXU9NRBsMmD5+17N/ZGP0E7hJNuucdKb/I3Qd2
+ YftPN2iUiD/vl0FeV4u3jf7pqv5XZOCSohwPu1BgHkI9QSBC1ZjHuM/2SkcLCJBL4GY7
+ g7EtRqBUoS4i8ehzhHFehmweib/WvAeFA1dPf0WH+qVIa3IVDYzdfwmfJ4EfinLxk+Em
+ UaUQ==
+X-Gm-Message-State: AOJu0YwZRfzuJ4KAFVpY4sSDZs6Xq0QjC4TGcF0AOSbsvckke3bL0qld
+ Z78Bl6NxP69GjuiHX9Rvb8REWBuulDf0SLd3Uwk=
+X-Google-Smtp-Source: AGHT+IFvd2Kr7SsbPP7w4Hlzp4oND99v/UnTM5lXKy9mKgTLonLqZ+B1JXgZxHME5hkKFnzR5ZRBxz7q2/QNo1+7PL4=
+X-Received: by 2002:a05:6122:2208:b0:48f:cd3a:108 with SMTP id
+ bb8-20020a056122220800b0048fcd3a0108mr26247931vkb.12.1697434807321; Sun, 15
+ Oct 2023 22:40:07 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/11] tap: Remove tap_probe_vnet_hdr_len()
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychenko <andrew@daynix.com>, "Michael S . Tsirkin"
- <mst@redhat.com>
-References: <20231011153944.39572-1-akihiko.odaki@daynix.com>
- <20231011153944.39572-2-akihiko.odaki@daynix.com>
- <CACGkMEt-kR5EVozeO+Zcx9kxdLLggBM8V98YUKQKutb28TvgCQ@mail.gmail.com>
- <74139826-7e06-48c0-bb1c-0b5bf708c808@daynix.com>
- <CACGkMEuEs2MLJYKMB9qAgT2ixkKLC8LPPE6DsBvfwx0CEaCA_A@mail.gmail.com>
- <12412f11-4395-460f-9523-930ad9270188@daynix.com>
- <CACGkMEvg37na-2rUAjUoJOhLrKg+mz+O_D_=UnMJr-qoxPSkLQ@mail.gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CACGkMEvg37na-2rUAjUoJOhLrKg+mz+O_D_=UnMJr-qoxPSkLQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20230808181715.436395-1-vineetg@rivosinc.com>
+ <20230808181715.436395-2-vineetg@rivosinc.com>
+ <ff43edc3-f160-e57d-deb1-185601ed5b7d@ventanamicro.com>
+ <1aa3bdff-0db4-c589-8863-56bbea825fda@rivosinc.com>
+ <CAKmqyKP2jQ1TYFNjMJNJxGqxHgq5fe5RhBhJDiPE1DoBXpf0gw@mail.gmail.com>
+ <20230811-f81889afd0f38ffdc215883d@orel>
+In-Reply-To: <20230811-f81889afd0f38ffdc215883d@orel>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 16 Oct 2023 15:39:40 +1000
+Message-ID: <CAKmqyKMsND1oboZTPJXmrYb0y1=44KnHsDbpUJM3KeCuw730dg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] riscv: zicond: make default
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: Vineet Gupta <vineetg@rivosinc.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ kito.cheng@gmail.com, Jeff Law <jeffreyalaw@gmail.com>, 
+ Palmer Dabbelt <palmer@rivosinc.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a30;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa30.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,70 +96,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/16 14:25, Jason Wang wrote:
-> On Fri, Oct 13, 2023 at 1:26 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2023/10/13 14:00, Jason Wang wrote:
->>> On Fri, Oct 13, 2023 at 12:14 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>
->>>> On 2023/10/13 10:38, Jason Wang wrote:
->>>>> On Wed, Oct 11, 2023 at 11:40 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>>>
->>>>>> It was necessary since an Linux older than 2.6.35 may implement the
->>>>>> virtio-net header but may not allow to change its length. Remove it
->>>>>> since such an old Linux is no longer supported.
->>>>>
->>>>> Where can I see this agreement?
->>>>
->>>> docs/about/build-platforms.rst says:
->>>>    > The project aims to support the most recent major version at all times
->>>>    > for up to five years after its initial release. Support for the
->>>>    > previous major version will be dropped 2 years after the new major
->>>>    > version is released or when the vendor itself drops support, whichever
->>>>    > comes first. In this context, third-party efforts to extend the
->>>>    > lifetime of a distro are not considered, even when they are endorsed
->>>>    > by the vendor (eg. Debian LTS); the same is true of repositories that
->>>>    > contain packages backported from later releases (e.g. Debian
->>>>    > backports). Within each major release, only the most recent minor
->>>>    > release is considered.
->>>>    >
->>>>    > For the purposes of identifying supported software versions available
->>>>    > on Linux, the project will look at CentOS, Debian, Fedora, openSUSE,
->>>>    > RHEL, SLES and Ubuntu LTS. Other distros will be assumed to ship
->>>>    > similar software versions.
->>>
->>> Well it also says:
->>>
->>> """
->>> If a platform is not listed here, it does not imply that QEMU won't
->>> work. If an unlisted platform has comparable software versions to a
->>> listed platform, there is every expectation that it will work.
->>> """
->>>
->>> A lot of downstream have customized build scripts.
->>
->> Still Linux versions older than 2.6.35 do not look like "comparable
->> software versions to a listed platform" in my opinion.
-> 
-> Linux provides ABI compatibility so I don't know why, unless there is
-> a strong dependency on a specific new syscall introduced after 2.6.35.
+On Fri, Aug 11, 2023 at 5:01=E2=80=AFPM Andrew Jones <ajones@ventanamicro.c=
+om> wrote:
+>
+> On Thu, Aug 10, 2023 at 02:07:17PM -0400, Alistair Francis wrote:
+> > On Tue, Aug 8, 2023 at 6:10=E2=80=AFPM Vineet Gupta <vineetg@rivosinc.c=
+om> wrote:
+> > >
+> > >
+> > >
+> > > On 8/8/23 14:06, Daniel Henrique Barboza wrote:
+> > > > (CCing Alistair and other reviewers)
+> > > >
+> > > > On 8/8/23 15:17, Vineet Gupta wrote:
+> > > >> Again this helps with better testing and something qemu has been d=
+oing
+> > > >> with newer features anyways.
+> > > >>
+> > > >> Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
+> > > >> ---
+> > > >
+> > > > Even if we can reach a consensus about removing the experimental (x=
+-
+> > > > prefix) status
+> > > > from an extension that is Frozen instead of ratified, enabling stuf=
+f
+> > > > in the default
+> > > > CPUs because it's easier to test is something we would like to avoi=
+d.
+> > > > The rv64
+> > > > CPU has a random set of extensions enabled for the most different a=
+nd
+> > > > undocumented
+> > > > reasons, and users don't know what they'll get because we keep beef=
+ing
+> > > > up the
+> > > > generic CPUs arbitrarily.
+> >
+> > The idea was to enable "most" extensions for the virt machine. It's a
+> > bit wishy-washy, but the idea was to enable as much as possible by
+> > default on the virt machine, as long as it doesn't conflict. The goal
+> > being to allow users to get the "best" experience as all their
+> > favourite extensions are enabled.
+> >
+> > It's harder to do in practice, so we are in a weird state where users
+> > don't know what is and isn't enabled.
+> >
+> > We probably want to revisit this. We should try to enable what is
+> > useful for users and make it clear what is and isn't enabled. I'm not
+> > clear on how best to do that though.
+> >
+> > Again, I think this comes back to we need to version the virt machine.
+> > I might do that as a starting point, that allows us to make changes in
+> > a clear way.
+>
+> While some extensions will impact the machine model, as well as cpu
+> models, versioning the machine model won't help much with ambiguity in
+> cpu model extension support. Daniel's proposal of having a base cpu mode,
+> which, on top, users can explicitly enable what they want (including with
+> profile support which work like a shorthand to enable many extensions at
+> once), is, IMO, the best way for users to know what they get. Also, the
+> 'max' cpu model is the best way to "quickly get as much as possible" for
+> testing. To know what's in 'max', or named cpu models, we need to
+> implement qmp_query_cpu_model_expansion(). Something that could be used
+> from the command line would also be nice, but neither x86 nor arm provide
+> that (they have '-cpu help', but arm doesn't output anything for cpu
+> features and x86 dumps all features out without saying what's enabled for
+> any particular cpu model...)
+>
+> I know x86 people have in the past discussed versioning cpu models, but
+> I don't think that should be necessary for riscv with the base+profile
+> approach. A profile would effectively be a versioned cpu model in that
+> case.
+>
+> Finally, I'd discourage versioning the virt machine type until we need
+> to worry about users creating riscv guest images that they are unwilling
+> to modify, despite wanting to update their QEMU versions. And, even then,
 
-This patch drops a pre-check for ioctl introduced with 2.6.35.
+What's the problem with versioning the virt machine though?
 
-> 
->>
->>> And is something similar to such removal that has been done for other
->>> subsystems?
->>
->> With commit c42e77a90d ("qemu/osdep: Remove fallback for
->> MAP_FIXED_NOREPLACE"), I remove the support for glibc older than 2.28.
->> Linux 2.6.35 is even older.
->>
-> 
-> Ok, this explains things a little bit. Btw, we also have soliars
-> support for TAP, time to drop that as well?
+I'm thinking that in the future we would want to switch from PLIC to
+AIA; change the memory map; or change the default extensions (maybe to
+a profile). All of those would require a versioned virt machine.
 
-Do you mean Solaris? Honestly I don't know. I don't think anyone dares 
-to use QEMU on Solaris (or to use Solaris at all), but apparently Oracle 
-has not abandoned it yet.
+I was thinking about doing this now, so we have a base for a few
+releases. So when we do need a change we are ready to go
+
+Alistair
+
+> we should only consider versioning when we're aware of problems for those
+> static guest images, i.e. we introduce a change to the virt machine model
+> which breaks that supported, old guest image. (NB: It was me that
+> advocated to start versioning Arm's virt machine type. In hindsight, I
+> think I may have advocated prematurely. I'm trying not to make that
+> mistake twice!)
+>
+> >
+> > >
+> > > I understand this position given the arbitrary nature of gazillion
+> > > extensions. However pragmatically things like bitmanip and zicond are=
+ so
+> > > fundamental it would be strange for designs to not have them, in a fe=
+w
+> > > years. Besides these don't compete or conflict with other extensions.
+> > > But on face value it is indeed possible for vendors to drop them for
+> > > various reasons or no-reasons.
+> > >
+> > > But having the x- dropped is good enough for our needs as there's
+> > > already mechanisms to enable the toggles from elf attributes.
+> > >
+> > > >
+> > > > Starting on QEMU 8.2 we'll have a 'max' CPU type that will enable a=
+ll
+> > > > non-experimental
+> > > > and non-vendor extensions by default, making it easier for tooling =
+to
+> > > > test new
+> > > > features/extensions. All tooling should consider changing their
+> > > > scripts to use the
+> > > > 'max' CPU when it's available.
+> > >
+> > > That would be great.
+> >
+> > The max CPU helps, but I do feel that the default should allow users
+> > to experience as many RISC-V extensions/features as practical.
+> >
+>
+> If the virt machine type has a default cpu type, then why not set it to
+> 'max'?
+>
+> Thanks,
+> drew
 
