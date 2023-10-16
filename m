@@ -2,89 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCFB7CA291
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3234B7CA2F0
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:58:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJJk-0003OP-2S; Mon, 16 Oct 2023 04:51:16 -0400
+	id 1qsJPy-0001Ao-0r; Mon, 16 Oct 2023 04:57:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsJJU-0003G0-Ob
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:51:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qsJPs-00018s-HQ
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:57:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsJJS-0001sC-9N
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:50:59 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qsJPq-0002nk-Sg
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:57:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697446257;
+ s=mimecast20190719; t=1697446653;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=yWwjDiAnw10Z+AukuB67MMcODBi1gu9REtgxKCH1KmU=;
- b=CunyPZHBvnjfZvlrw3c9nStR6qAQxzZbqwnwoAFGOa11SL05dOeUNjCZRuV9ZxcZMgNikh
- HxbmStnQI3PQOfH6UB9A4YoBr4YqTZTwqyGS0cCznMDJysyMn3ZpfnrkD95CoMw439Hlxd
- uywklTEhMPMlF31j8owzPTPJRDZrcoE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-Ijl5I0_nOIm7IQAuJIIcFQ-1; Mon, 16 Oct 2023 04:50:45 -0400
-X-MC-Unique: Ijl5I0_nOIm7IQAuJIIcFQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32db6a28e24so420181f8f.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 01:50:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697446244; x=1698051044;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yWwjDiAnw10Z+AukuB67MMcODBi1gu9REtgxKCH1KmU=;
- b=gxONIljgzLonOnjwsMGFy4FxKk/y9F4/xEz1+0ExPZtTThY1DRqP8NI3qdWxEBlnUJ
- S6hTqeTdwzu7gg8+yBQPBW1W4YAfDlxWE/SwDjtn4bpXa6+np41dDe7zAtJlf85nfdLw
- 64KzUMaP86mOr4WH68og28j/R8Mq4NBXGMMxBEwRb5ePBViWqilm+4tT2WQDW4gqxn4i
- o6xhXsomahu3x1pcb0I9NIGOlsciAba+jGaMq1/y6wJh1uLS40P9uFj+zAx2tN8B36zQ
- GvN+UYKIW8WnJ32n5+jNxAlKIU2HdHhajABfI52nwV+Ofs5NwnTfHuxXybLxduUftesU
- 0TOQ==
-X-Gm-Message-State: AOJu0Yy3+BYLEDvFrKBo5Y/7JYiv5l1NmxaxHOuDqpLWwwr2vKdQZF0L
- R2G/XIZsNioihW0HTr6dP9T8O6JgkKolDtAK/NtDHVLrLyrpulxSk2/8t0BksB1X/a8oqJ4FD8D
- QrQasT/vFzuYHfV4=
-X-Received: by 2002:adf:ee88:0:b0:32d:b081:ff31 with SMTP id
- b8-20020adfee88000000b0032db081ff31mr2470765wro.66.1697446244448; 
- Mon, 16 Oct 2023 01:50:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVHr1Ru39UNbG2uR53Io4Bv94QVU/YD3XRiK1oEX6DNIVqUJVdQD8OtrjiDi1RzoFLdk5sYw==
-X-Received: by 2002:adf:ee88:0:b0:32d:b081:ff31 with SMTP id
- b8-20020adfee88000000b0032db081ff31mr2470751wro.66.1697446244129; 
- Mon, 16 Oct 2023 01:50:44 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- b3-20020adff243000000b0031431fb40fasm26759110wrp.89.2023.10.16.01.50.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 01:50:43 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Markus Armbruster
- <armbru@redhat.com>,  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 3/3] migration/multifd: Clarify Error usage in
- multifd_channel_connect
-In-Reply-To: <20231012134343.23757-4-farosas@suse.de> (Fabiano Rosas's message
- of "Thu, 12 Oct 2023 10:43:43 -0300")
-References: <20231012134343.23757-1-farosas@suse.de>
- <20231012134343.23757-4-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Mon, 16 Oct 2023 10:50:42 +0200
-Message-ID: <874jir3q8t.fsf@secure.mitica>
+ bh=ZLTwjF+F4Mgjy/DHjtCZX1PwDT0iWNCuwFJXv8/jUy0=;
+ b=D74YdkOwqM4I8a5Khj7wKkoCr2r6BCWpwyGSacwD/xYu7ppcmrUzm7jDTVL0d2Zxhi8pUL
+ 4dKE4JKtxYzHJZP3UW+K0/AO1/R2epSW1R9F3FyxjJ3Qs6PR/CL7VYLe3zUmgU7pYgAtOH
+ IqWrMcCbbK5CN0kUR+MftndchlNRFJE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-580-y7SeVTEjO7iuFmve1MtpcA-1; Mon, 16 Oct 2023 04:57:26 -0400
+X-MC-Unique: y7SeVTEjO7iuFmve1MtpcA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43C021C01529;
+ Mon, 16 Oct 2023 08:57:26 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.45])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AEB5A492BFA;
+ Mon, 16 Oct 2023 08:57:24 +0000 (UTC)
+Date: Mon, 16 Oct 2023 09:57:22 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+Subject: Re: -drive if=none: can't we make this the default?
+Message-ID: <ZSz68rm5JdiMLdt+@redhat.com>
+References: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,23 +76,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> The function is currently called from two sites, one always gives it a
-> NULL Error and the other always gives it a non-NULL Error.
->
-> In the non-NULL case, all it does it trace the error and return. One
-> of the callers already have tracing, add a tracepoint to the other and
-> stop passing the error into the function.
->
-> Cc: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On Sat, Oct 14, 2023 at 10:16:16PM +0300, Michael Tokarev wrote:
+> Can't we make -drive if=none the default?
+> 
+> Yes, I know current default is ide, and whole world have to use if=none explicitly
+> to undo this.  I think at this point we can deprecate if=ide default and switch to
+> if=none in the next release.  I think it will be a welcome change.
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+IMHO we'd be better off investing more effort in pushing people towards
+-blockdev though better documentation of the latter.
 
-queued.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
