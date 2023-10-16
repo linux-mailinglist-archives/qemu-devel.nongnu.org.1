@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3D97CA14A
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5062A7CA169
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:17:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsIe2-0001gD-QL; Mon, 16 Oct 2023 04:08:10 -0400
+	id 1qsIlr-0003mL-9J; Mon, 16 Oct 2023 04:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qsIdx-0001em-SR
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:08:06 -0400
+ id 1qsIlh-0003m9-AM
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:16:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qsIdv-0003j2-MX
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:08:05 -0400
+ id 1qsIlf-00054N-Pg
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:16:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697443681;
+ s=mimecast20190719; t=1697444163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8y5z/3PDI0GIlDQupp0X6VMjE3DLd1Ivx90GwKrOSsY=;
- b=UgZpE3aniLMj/X3DnxyLELI6CuR/JQzsVbrwiWYiwH1iuIg9gqXqVZpb5knHD1qh8fe6tL
- BV6h6pbitzf34N2KjIuFsW4cPSOOQzO2q1paYXJJevs/93mf2esgw/n0pgTusaWbtzT0VJ
- e/eO9xwDh3pzpmYTZdxdvpLyYjogfuk=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kqPN3DviVZcrqGYKQe+I/H0Ogfry1bQz8a5p64cM/Ak=;
+ b=fBp6Se0DppqaMrO343CpvGtqssiCqoEJZwoW8YfpiX3b5eHJWhdpHzMODSB6uEDKBBzdw0
+ 1STC/gPoSVI7vR0YYO+nujNqY7TvzLyX6LBj3R3LC7F7elrwk2qJdP1Z0PBe8aiaueUIog
+ stQV923u5J0DvA89YzNphRk0oC52eJo=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-F1AwFmS7Mey_Tr4LythDOQ-1; Mon, 16 Oct 2023 04:08:00 -0400
-X-MC-Unique: F1AwFmS7Mey_Tr4LythDOQ-1
-Received: by mail-vs1-f69.google.com with SMTP id
- ada2fe7eead31-457d00df345so667088137.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 01:08:00 -0700 (PDT)
+ us-mta-279-8p4bkbg2M8C09yv_-B85mA-1; Mon, 16 Oct 2023 04:15:51 -0400
+X-MC-Unique: 8p4bkbg2M8C09yv_-B85mA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-77586b4ae08so811137285a.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 01:15:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697443680; x=1698048480;
+ d=1e100.net; s=20230601; t=1697444151; x=1698048951;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8y5z/3PDI0GIlDQupp0X6VMjE3DLd1Ivx90GwKrOSsY=;
- b=AYh3vhn+YTTdLxs0Str/ZAS2YykvRVv3d8YhTRLPoFxhU8x1CJcpvbFbKqoPCM0At1
- AlVne5e6CL0doYgtvJJM084D09NT+61VU3ZVHIWzbXNU7Ko+6MJXbGa/wL7XCBCEAd4J
- CgocZaApiLJCXNo/OaYknLnAWnDuxBrZZPFHxwOM5EuhbXklDD5vXpSqG0Uq6tElnh7y
- mDtjapwDetpEEbGUzHrahM4a4PohYVwPNpUAceSTqPO1S0Bw7CuY/aVVYfFiEtoR7kNj
- YjyN1zpdFccw+l87vMTal17BhCeG+RsISFL+D9a4ImYFBoc6II/Nw6UbjeEN2PbMoIS8
- +gHA==
-X-Gm-Message-State: AOJu0YzBuuXgZpVIkEPiWokwIfeLhrx3dRj6jE/ANYkOfMdHSbijkoJE
- 8rhtPGviQfSrw7ENgwIyrDZ7eDlOR/Ka2eouR9DZxY2fh9MZfI1ivPm/XifRNxa8nNSnUWrxqsd
- nkGhYCmFSA0e5FCs=
-X-Received: by 2002:a05:6102:34f1:b0:44e:8353:e86a with SMTP id
- bi17-20020a05610234f100b0044e8353e86amr25247783vsb.24.1697443679927; 
- Mon, 16 Oct 2023 01:07:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFsg4wyEZU/+kZLana8+BTuCIBvrQ5+0Kph77JlFx5fbMg5foHBUBRjTcrB4VNBDxEsrOLZPA==
-X-Received: by 2002:a05:6102:34f1:b0:44e:8353:e86a with SMTP id
- bi17-20020a05610234f100b0044e8353e86amr25247771vsb.24.1697443679638; 
- Mon, 16 Oct 2023 01:07:59 -0700 (PDT)
+ bh=kqPN3DviVZcrqGYKQe+I/H0Ogfry1bQz8a5p64cM/Ak=;
+ b=wAKz5+8cHAbhbx7hWImKP3ZFc2CPS6H58gciFpod7+Z6TXMtSV0c3ZwsVzMyNoC93h
+ bofdTX3Kf0mZoDvij1cvCkXgfb99nObM644s/pns6PIZf5pN38hkRNt01pfHWftb5npU
+ Ri5wy3w0QSsf58cXS7VFZZNl6eliBDEplrIJI01MZBUkvzJwcbA0+cMymGD3s8tP3pSu
+ gUeX3kO2/HpMh7CxRPWD3zHdLJJICGt7NE4IPqCEXB60H/r1NjlykaCHTuSNQzl+E3M5
+ xqLEHs+rXCKXPIapE0+5diWvNh2Mv13cROPFIy5TFW4ZB++Qscge45X7f1I+zZ0S+3LO
+ 6mAQ==
+X-Gm-Message-State: AOJu0Yx/h2OQ/O2wtA0RovN9Pbq3QR80aLM+1Vtc9XP00WRqTVu11G0L
+ ZB4jmt98CZQR20KIB/FTIyiai2kULI0K69mAWTb41EnsRo4Fw3ZxgYF3LXCb2cpA3RmKIvXxSaS
+ zC1w/VXhmHEdIooI=
+X-Received: by 2002:a05:620a:4514:b0:767:c30:517 with SMTP id
+ t20-20020a05620a451400b007670c300517mr9750083qkp.3.1697444151266; 
+ Mon, 16 Oct 2023 01:15:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0btGBfU4r/lEpDdZipgtQU4du8FocxHaC6QggGDlOANUWTIPtPqpPp5kEw7YOhaJcLQU2vA==
+X-Received: by 2002:a05:620a:4514:b0:767:c30:517 with SMTP id
+ t20-20020a05620a451400b007670c300517mr9750066qkp.3.1697444151016; 
+ Mon, 16 Oct 2023 01:15:51 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- px10-20020a056214050a00b00655ec7bbfd0sm3216312qvb.7.2023.10.16.01.07.58
+ df11-20020a056214080b00b0066d1b4ce863sm3238315qvb.31.2023.10.16.01.15.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 01:07:59 -0700 (PDT)
-Message-ID: <87a6cd87-6987-4d75-98a4-1a318b4100a3@redhat.com>
-Date: Mon, 16 Oct 2023 10:07:56 +0200
+ Mon, 16 Oct 2023 01:15:50 -0700 (PDT)
+Message-ID: <6255b221-1116-40d7-8f99-97aceb1dca57@redhat.com>
+Date: Mon, 16 Oct 2023 10:15:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 05/11] testing/avocado: ppc add new BookE
- boot_linux_console.py tests
+Subject: Re: [RFC PATCH 11/11] ppc/pnv: Change powernv default to powernv10
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, Joel Stanley <joel@jms.id.au>,
- Michael Ellerman <mpe@ellerman.id.au>
-Cc: qemu-ppc@nongnu.org, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
 References: <20231010075238.95646-1-npiggin@gmail.com>
- <20231010075238.95646-6-npiggin@gmail.com>
- <CACPK8XcS05gQemgRKFTvhAaQzDLg+5MKH0sVyuU=pOs=Oo_=SA@mail.gmail.com>
- <CW522VQRHMHA.3DKAX1WTT3YAX@wheely>
+ <20231010075238.95646-12-npiggin@gmail.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <CW522VQRHMHA.3DKAX1WTT3YAX@wheely>
+In-Reply-To: <20231010075238.95646-12-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -93,7 +88,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,82 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/23 22:53, Nicholas Piggin wrote:
-> On Tue Oct 10, 2023 at 10:03 PM AEST, Joel Stanley wrote:
->> On Tue, 10 Oct 2023 at 18:23, Nicholas Piggin <npiggin@gmail.com> wrote:
->>>
->>> Add simple Linux kernel boot tests for BookE 64-bit and 32-bit CPUs
->>> using Guenter Roeck's rootfs images for Linux testing, and a gitlab
->>> repository with kernel images that I built since there are very few
->>> sources of modern BookE images now.
->>>
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>
->> Reviewed-by: Joel Stanley <joel@jms.id.au>
->>
->> Should we get mpe to add a https://github.com/linuxppc/qemu-ci-images
->> for you to keep those kernel images? But perhaps you'd prefer to keep
->> them on gitlab. Just a suggestion.
+On 10/10/23 09:52, Nicholas Piggin wrote:
+> POWER10 is the latest IBM Power machine. Although it is not offered in
+> "OPAL mode" (i.e., powernv configuration), so there is a case that it
+> should remain at powernv9, most of the development work is going into
+> powernv10 at the moment.
 > 
-> Not a bad idea. Or we could try for gitlab/qemu/ci-images I suppose.
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Feel free to take these :
+I think we would update skiboot to v7.1 also.
 
-   https://github.com/legoater/qemu-ppc-boot/tree/main/buildroot
-
-Supported machines
-
-     prep/ppc 604 CPU
-     ref405ep/ppc 405EP CPU
-     bamboo/ppc 440EP CPU
-     sam460ex/ppc 460EX CPU (equivalent to a 440)
-     g3beige/ppc G3 CPU
-     mac99/ppc G4 CPU
-     e500mc/ppc e500mc CPU
-     mpc8544ds/ppc e500v2 CPU
-     ppce500/ppc64 e5500, e6500
-     mac99/ppc64 970 CPU with 64bit and 32bit user space
-     pseries/ppc64 POWER5+, 970, 970MP, POWER7
-     pseries/ppc64le POWER8, POWER9, POWER10
-     powernv8/ppc64le POWER8 HV CPU
-     powernv9/ppc64le POWER9 HV CPU
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
 
 
+
+> ---
+>   hw/ppc/pnv.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
->>
->>> ---
->>>   tests/avocado/boot_linux_console.py | 53 +++++++++++++++++++++++++++++
->>>   1 file changed, 53 insertions(+)
->>>
->>> diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
->>> index 9434304cd3..dc3346ef49 100644
->>> --- a/tests/avocado/boot_linux_console.py
->>> +++ b/tests/avocado/boot_linux_console.py
->>> @@ -1355,6 +1355,59 @@ def test_ppc64_e500(self):
->>>           tar_hash = '6951d86d644b302898da2fd701739c9406527fe1'
->>>           self.do_test_advcal_2018('19', tar_hash, 'uImage')
->>>
->>> +    def test_ppc64_e6500(self):
->>> +        """
->>> +        :avocado: tags=arch:ppc64
->>> +        :avocado: tags=machine:ppce500
->>> +        :avocado: tags=cpu:e6500
->>> +        :avocado: tags=accel:tcg
->>> +        """
->>> +        kernel_url = ('https://gitlab.com/npiggin/qemu-ci-images/-/raw/main/ppc/corenet64_vmlinux?ref_type=heads&inline=false')
->>
->> Is the ref_type?heads=inline-false required? I seem to get the file
->> successfully with wget and those omitted.
-> 
-> I just copied the download link, so if it works without then
-> I'll remove it.
-> 
-> Thanks,
-> Nick
-> 
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index eb54f93986..f3dad5ae05 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -2195,8 +2195,6 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
+>   
+>       xfc->match_nvt = pnv_match_nvt;
+>   
+> -    mc->alias = "powernv";
+> -
+>       pmc->compat = compat;
+>       pmc->compat_size = sizeof(compat);
+>       pmc->dt_power_mgt = pnv_dt_power_mgt;
+> @@ -2220,6 +2218,8 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+>       mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+>       compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
+>   
+> +    mc->alias = "powernv";
+> +
+>       pmc->compat = compat;
+>       pmc->compat_size = sizeof(compat);
+>       pmc->dt_power_mgt = pnv_dt_power_mgt;
 
 
