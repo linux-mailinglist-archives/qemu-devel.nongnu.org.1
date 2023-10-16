@@ -2,78 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83027C9D3B
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 03:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B927C9D3C
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 03:53:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsCli-0004QF-R1; Sun, 15 Oct 2023 21:51:42 -0400
+	id 1qsCmc-0004o9-JJ; Sun, 15 Oct 2023 21:52:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsClh-0004Q3-Pu; Sun, 15 Oct 2023 21:51:41 -0400
-Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
+ id 1qsCma-0004nR-Nm; Sun, 15 Oct 2023 21:52:36 -0400
+Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsClg-0003tV-66; Sun, 15 Oct 2023 21:51:41 -0400
-Received: by mail-vk1-xa2b.google.com with SMTP id
- 71dfb90a1353d-49d8dd34f7bso1647285e0c.3; 
- Sun, 15 Oct 2023 18:51:38 -0700 (PDT)
+ id 1qsCmZ-00044b-2t; Sun, 15 Oct 2023 21:52:36 -0400
+Received: by mail-vs1-xe2f.google.com with SMTP id
+ ada2fe7eead31-457c19ebb3aso1071108137.1; 
+ Sun, 15 Oct 2023 18:52:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697421098; x=1698025898; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1697421154; x=1698025954; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=26/2ZeaU/1Yg7sWut+7N0TfyvbhDLf8R/acWeWwg1rU=;
- b=VE2l3YKHx5wZ9BxO15US+BQqhd3tT1xJ4Bg/N6efNFfDntazRPI9OQ0aek4rJVPgYH
- LM/lOFERtd9rUbw25fbFsgLfeTzuK8/zIxjVgizpEkHrSuO9KM3inczGlLgwIgm2Q/Cu
- voQLCi37qG4IYRnoUylFHbQS8IU1DECwtbFvDhtGfksrsZ0hXdUPXlGY98lqXvlW03/5
- aVZ8qKhnnOpBDFGcLmufqhw++R8OXtQkkr1WvhtPnYzzRAqyS84ftJK2MebeuAfKq8o5
- t5lomwvUxQ3i8FGkvD0/CUZW/8yobmnfIuSrGCAfkMdQ9znuPpbjbWDFetEl14r+jLgT
- YoQw==
+ bh=wXT2AYkw2IlOS8KAPm8gmVahQZLt1Ma3OjNk5s7FYJA=;
+ b=SGGQ26GzVQgYOIjJuBaChiIXmw+rZaJIxN80bZj5Q9BChyCNO+SyJnGTmMPBXd8jXB
+ 6vfG805BFygIB7BOXFAa3/Z2UGg4L4wtCJly9CcuYXXq/4YpC8yIKHWmH5uDwWshmAFb
+ dpm0Iurt0KG0YD9WNBmC7cOtLCEtLIw6dFcsALSikqZzrp0nXLhP8QeW14K8cb6BbX6J
+ mdHHraJXWjNoW+2hLJfg4kdq5MwH3VPD01iPTtOIN9O8fFv4zyyq0lYtK1d9t/ihGftX
+ NU4Wde6gvxTp2CSG6UIOYVbs9olSB6qO4AFg0tRQyIAqPdkkmcO+VtLCsN1PT94yL+C0
+ HZyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697421098; x=1698025898;
+ d=1e100.net; s=20230601; t=1697421154; x=1698025954;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=26/2ZeaU/1Yg7sWut+7N0TfyvbhDLf8R/acWeWwg1rU=;
- b=CZdazVSGI2UKSkVE0wkE8XtTjImug+5hOWzQUEwEiRyXVH4AozwYzjmkrG+RnNjuL6
- YXTq70P64+O9upx7EvYmKx5JeO/RhYsJ2UPcpMlmcRJB9qufIC3Vx7eHyoT+Y6M6Lwrb
- uQb2RZmbBeDdwu9HxVuNUvTsTJli+2bGJJEGQTL3Rv/Tlro1plQ7/N9pZOQ6O4wC31Xj
- DMzPLWxxhBKvnm5jG9I+fl5klOZJbpGbPRdgwI1DyKQ9eCOf+lzX/VCAbaxNEXDoCx08
- PIcyJh1Dc7KMb3DEHH2MD0sS/MmxgP/nrjpXZ6qO1XY/Tv8ywCej1XYTbdIaQAC5LaZ2
- hCWQ==
-X-Gm-Message-State: AOJu0Yy89rSeE4HhQdLAQ2AxNoirc4Wd+L90qJWIwPtGn+TdbKL/+KlE
- HiaZgF2nVA+k69658O0ySbVmyvFy+bszO84Geb8=
-X-Google-Smtp-Source: AGHT+IHfiDg0hdLby65x1rJGHvhvWnf1YrazyHSzdjfe0iPVlIF8fVnlYadmPLfFNxaHcVbUO9cGIPjyGBqpJ15rZYQ=
-X-Received: by 2002:a1f:5a06:0:b0:4a4:d34:421b with SMTP id
- o6-20020a1f5a06000000b004a40d34421bmr7763217vkb.7.1697421097817; Sun, 15 Oct
- 2023 18:51:37 -0700 (PDT)
+ bh=wXT2AYkw2IlOS8KAPm8gmVahQZLt1Ma3OjNk5s7FYJA=;
+ b=BCji8QAmdFQxuA7zpAs4a5k8FQkFoc55Po7o32al0+bOhACQglyrs1ZTdNbPVU6Qe3
+ 3y/fY6oU7G8AvM4vD95UbrEs7p52golEBPpIztGbGuTKGyi/IynSIL4j0khF8Ao2CVSB
+ v+WzdnVOxeMvueaByFwcXgS/wYFcy0sGbQ8ySBot+4c8k0ZAtn2itfraFLJBmp5mrwPD
+ EIfstGeG6927GsslDJ62RoL48cjv+m0q9sj+gDcF8wWj3MQB1jRlpr1VSdpaisAXR6H9
+ VFLts2JHpNqONlcqML8EBzZ9lEKvKmQxEvycodkjj1+30BJLywa433Ws2D9SknLQKGA9
+ wqww==
+X-Gm-Message-State: AOJu0Yy6qN7H/c0buwGQ0KTRzF7mw/J2zqE4uxaChijlfWNMcAQ+rztJ
+ avS5KZol9OVRGhHPkE3F0WPpM9ir0EtRcTEmFaI=
+X-Google-Smtp-Source: AGHT+IGeXovy7QL87QUHyYVTnrtSb/IHIaT9fH8uiJGrMJuZAl1XhrLY4tzlDEG5AUalsTXBIIRVj4/lATdvFm/kWJk=
+X-Received: by 2002:a05:6102:2f6:b0:451:124:2bb2 with SMTP id
+ j22-20020a05610202f600b0045101242bb2mr22418237vsj.1.1697421153830; Sun, 15
+ Oct 2023 18:52:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231014033545.15220-1-akihiko.odaki@daynix.com>
- <20231014033545.15220-2-akihiko.odaki@daynix.com>
- <597bf4be-207b-400a-be49-bc18900809a0@ventanamicro.com>
-In-Reply-To: <597bf4be-207b-400a-be49-bc18900809a0@ventanamicro.com>
+References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
+ <b387a1f2114c71be3c88c5bc9d8acb7f53c3b441.1697186560.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <b387a1f2114c71be3c88c5bc9d8acb7f53c3b441.1697186560.git.manos.pitsidianakis@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 16 Oct 2023 11:51:10 +1000
-Message-ID: <CAKmqyKPqk1sURLQNBoH0MeSJVSut72XiN4H0uT=95S953o7Taw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] target/riscv: Do not allow MXL_RV32 for
- TARGET_RISCV64
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov <a.anenkov@yadro.com>,
- qemu-devel@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+Date: Mon, 16 Oct 2023 11:52:07 +1000
+Message-ID: <CAKmqyKPwwiVuH6YMDStptXzn1d0m8fPhbT=g7d4+hr7n3OpVsg@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 27/78] target/riscv: add fallthrough pseudo-keyword
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
  "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,47 +91,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Oct 15, 2023 at 4:05=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On Fri, Oct 13, 2023 at 6:52=E2=80=AFPM Emmanouil Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
 >
+> In preparation of raising -Wimplicit-fallthrough to 5, replace all
+> fall-through comments with the fallthrough attribute pseudo-keyword.
 >
->
-> On 10/14/23 00:35, Akihiko Odaki wrote:
-> > TARGET_RISCV64 does not have riscv-32bit-cpu.xml so it shouldn't accept
-> > MXL_RV32.
-> >
-> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > ---
->
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->
->
-> >   target/riscv/tcg/tcg-cpu.c | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> > index a28918ab30..e0cbc56320 100644
-> > --- a/target/riscv/tcg/tcg-cpu.c
-> > +++ b/target/riscv/tcg/tcg-cpu.c
-> > @@ -161,10 +161,11 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU =
-*cpu, Error **errp)
-> >       case MXL_RV128:
-> >           cc->gdb_core_xml_file =3D "riscv-64bit-cpu.xml";
-> >           break;
-> > -#endif
-> > +#elif defined(TARGET_RISCV32)
-> >       case MXL_RV32:
-> >           cc->gdb_core_xml_file =3D "riscv-32bit-cpu.xml";
-> >           break;
-> > +#endif
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-This isn't the right fix. The idea is that riscv64-softmmu can run
-32-bit CPUs, so we instead should include riscv-32bit-cpu.xml
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
-> >       default:
-> >           g_assert_not_reached();
-> >       }
+> ---
+>  target/riscv/insn_trans/trans_rvi.c.inc   |  2 +-
+>  target/riscv/insn_trans/trans_rvzce.c.inc | 22 +++++++++++-----------
+>  target/riscv/translate.c                  |  4 ++--
+>  3 files changed, 14 insertions(+), 14 deletions(-)
+>
+> diff --git a/target/riscv/insn_trans/trans_rvi.c.inc b/target/riscv/insn_=
+trans/trans_rvi.c.inc
+> index 25cb60558a..98dd2e3cf6 100644
+> --- a/target/riscv/insn_trans/trans_rvi.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvi.c.inc
+> @@ -122,7 +122,7 @@ static TCGCond gen_compare_i128(bool bz, TCGv rl,
+>
+>      case TCG_COND_LTU:
+>          invert =3D true;
+> -        /* fallthrough */
+> +        fallthrough;
+>      case TCG_COND_GEU:
+>          {
+>              TCGv tmp =3D tcg_temp_new();
+> diff --git a/target/riscv/insn_trans/trans_rvzce.c.inc b/target/riscv/ins=
+n_trans/trans_rvzce.c.inc
+> index 2d992e14c4..f0bcbb4f72 100644
+> --- a/target/riscv/insn_trans/trans_rvzce.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvzce.c.inc
+> @@ -125,37 +125,37 @@ static uint32_t decode_push_pop_list(DisasContext *=
+ctx, target_ulong rlist)
+>      case 15:
+>          reg_bitmap |=3D  1 << (X_Sn + 11) ;
+>          reg_bitmap |=3D  1 << (X_Sn + 10) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 14:
+>          reg_bitmap |=3D  1 << (X_Sn + 9) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 13:
+>          reg_bitmap |=3D  1 << (X_Sn + 8) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 12:
+>          reg_bitmap |=3D  1 << (X_Sn + 7) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 11:
+>          reg_bitmap |=3D  1 << (X_Sn + 6) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 10:
+>          reg_bitmap |=3D  1 << (X_Sn + 5) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 9:
+>          reg_bitmap |=3D  1 << (X_Sn + 4) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 8:
+>          reg_bitmap |=3D  1 << (X_Sn + 3) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 7:
+>          reg_bitmap |=3D  1 << (X_Sn + 2) ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 6:
+>          reg_bitmap |=3D  1 << X_S1 ;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 5:
+>          reg_bitmap |=3D 1 << X_S0;
+> -        /* FALL THROUGH */
+> +        fallthrough;
+>      case 4:
+>          reg_bitmap |=3D 1 << xRA;
+>          break;
+> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> index f0be79bb16..c99e513221 100644
+> --- a/target/riscv/translate.c
+> +++ b/target/riscv/translate.c
+> @@ -446,7 +446,7 @@ static TCGv_i64 get_fpr_hs(DisasContext *ctx, int reg=
+_num)
+>          return t;
+>      }
+>  #else
+> -    /* fall through */
+> +    fallthrough;
+>      case MXL_RV64:
+>          return cpu_gpr[reg_num];
+>  #endif
+> @@ -516,7 +516,7 @@ static void gen_set_fpr_hs(DisasContext *ctx, int reg=
+_num, TCGv_i64 t)
+>              tcg_gen_extrl_i64_i32(cpu_gpr[reg_num], t);
+>              break;
+>  #else
+> -        /* fall through */
+> +        fallthrough;
+>          case MXL_RV64:
+>              tcg_gen_mov_i64(cpu_gpr[reg_num], t);
+>              break;
+> --
+> 2.39.2
+>
 >
 
