@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3234B7CA2F0
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA01E7CA323
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:01:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJPy-0001Ao-0r; Mon, 16 Oct 2023 04:57:42 -0400
+	id 1qsJTM-0002NB-Np; Mon, 16 Oct 2023 05:01:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qsJPs-00018s-HQ
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:57:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qsJPq-0002nk-Sg
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:57:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697446653;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ZLTwjF+F4Mgjy/DHjtCZX1PwDT0iWNCuwFJXv8/jUy0=;
- b=D74YdkOwqM4I8a5Khj7wKkoCr2r6BCWpwyGSacwD/xYu7ppcmrUzm7jDTVL0d2Zxhi8pUL
- 4dKE4JKtxYzHJZP3UW+K0/AO1/R2epSW1R9F3FyxjJ3Qs6PR/CL7VYLe3zUmgU7pYgAtOH
- IqWrMcCbbK5CN0kUR+MftndchlNRFJE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-580-y7SeVTEjO7iuFmve1MtpcA-1; Mon, 16 Oct 2023 04:57:26 -0400
-X-MC-Unique: y7SeVTEjO7iuFmve1MtpcA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43C021C01529;
- Mon, 16 Oct 2023 08:57:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.45])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AEB5A492BFA;
- Mon, 16 Oct 2023 08:57:24 +0000 (UTC)
-Date: Mon, 16 Oct 2023 09:57:22 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>
-Subject: Re: -drive if=none: can't we make this the default?
-Message-ID: <ZSz68rm5JdiMLdt+@redhat.com>
-References: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsJT6-0002GY-Gu
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:00:58 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsJSy-0003Td-IG
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:00:56 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40566f89f6eso49045515e9.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:00:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697446846; x=1698051646; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=F6Y/C9DiztGjFTvikOxvNBXBPvbl/HxXELm+35BIOSs=;
+ b=DQwHCe7JYnsQyXydKnOIDMY0hrJfFpQbbbkHAYVyOPkXm4gwiLr+u8b9/mVfQdQbRR
+ eIe7kRk8XrK2mVjg+AJjam/BtrYoROHRf+hutyHglu571cA0fozytSyVGv5igXmv9iiJ
+ 8jIE8MjrXei8BXQOAcxpgR6kJNmxj1x+bmwpHli734q41cAob0Xosnr/WXLewQqVq902
+ +czQjG4v4samL6mqSys45onGyApH6Cc/n4Zlq4rTYZOY5QHgxlNQrPLcKKRVs/uCCKBO
+ OaPYeZzEXS/xfvlQ3Cu0ER80r+XvN2X3QDCaQsMZ6netrHWhpqqGT3f78XVcyShhm15X
+ i33g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697446846; x=1698051646;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=F6Y/C9DiztGjFTvikOxvNBXBPvbl/HxXELm+35BIOSs=;
+ b=iVccnpp1lQMh45KGXLaqtZIUwvxENirlzjAt1LdoTClSjnhNvUPd7vWmGwqs5A0c3d
+ XO0pSPeDU7lUzVPDp3SfJbWLanfMIlk+NtepAO2BYuyApmX0Y+2/frLZC8SE66r5QCKc
+ ajs7nNnpomcs1psmtosXv/kI0r3dP6SJaCW1qiNyob+jWWq3OSIHPecTGYoAnP5z4DaW
+ Ty3yWUfGTwJoQv6VaoqBKk/U8mr80mQCFFEYpCV1nNMh4KZM0IobQOD+wMZl9eukIlYL
+ 0BeZzmlmHTRuR22rNAUN47DYkJOXAJ2RieiU28+OnqcCf7bKDDL4Hq3/Qf4NF2G2xolO
+ /SuA==
+X-Gm-Message-State: AOJu0YyCr5ZvWTAH7eteA9X4MicWR/DbaAOGsHPiVD1R/qCAsWAoICt6
+ FJBBQOZp2q+Ya3SsnEwuZh4Q0eAlmmdu+4t6ANk=
+X-Google-Smtp-Source: AGHT+IF8x7l3B8fm+WpD8InbbFWIxDDU7cJjGHd+nfwdvo+dViPWAg3ZxXWl3BcnTWIrF2fpROzW4Q==
+X-Received: by 2002:a05:600c:21d1:b0:406:53ab:a9af with SMTP id
+ x17-20020a05600c21d100b0040653aba9afmr30498354wmj.10.1697446846417; 
+ Mon, 16 Oct 2023 02:00:46 -0700 (PDT)
+Received: from meli.delivery (ppp-2-87-17-65.home.otenet.gr. [2.87.17.65])
+ by smtp.gmail.com with ESMTPSA id
+ z15-20020a05600c220f00b0040684abb623sm6529436wml.24.2023.10.16.02.00.45
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 16 Oct 2023 02:00:45 -0700 (PDT)
+Date: Mon, 16 Oct 2023 12:00:09 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-stable@nongnu.org
+Subject: Re: [PATCH] tests/docker: avoid invalid escape in Python string
+User-Agent: meli 0.8.2
+References: <20231016062300.160160-1-pbonzini@redhat.com>
+In-Reply-To: <20231016062300.160160-1-pbonzini@redhat.com>
+Message-ID: <2m6d8.vlbgyqc562pl@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d9d1ec6c-d812-4994-968d-bd40228dac51@tls.msk.ru>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,25 +89,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 14, 2023 at 10:16:16PM +0300, Michael Tokarev wrote:
-> Can't we make -drive if=none the default?
+On Mon, 16 Oct 2023 09:23, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>This is an error in Python 3.12; fix it by using a raw string literal.
+>
+>Cc: qemu-stable@nongnu.org
+>Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>---
+> tests/docker/docker.py | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/tests/docker/docker.py b/tests/docker/docker.py
+>index 688ef62989c..3b8a26704df 100755
+>--- a/tests/docker/docker.py
+>+++ b/tests/docker/docker.py
+>@@ -186,7 +186,7 @@ def _check_binfmt_misc(executable):
+>               (binary))
+>         return None, True
 > 
-> Yes, I know current default is ide, and whole world have to use if=none explicitly
-> to undo this.  I think at this point we can deprecate if=ide default and switch to
-> if=none in the next release.  I think it will be a welcome change.
+>-    m = re.search("interpreter (\S+)\n", entry)
+>+    m = re.search(r"interpreter (\S+)\n", entry)
+>     interp = m.group(1)
+>     if interp and interp != executable:
+>         print("binfmt_misc for %s does not point to %s, using %s" %
+>-- 
+>2.41.0
+>
+>
 
-IMHO we'd be better off investing more effort in pushing people towards
--blockdev though better documentation of the latter.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 
