@@ -2,84 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5C57CA999
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEA67CA9CB
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:39:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsNj1-0002bT-Ux; Mon, 16 Oct 2023 09:33:40 -0400
+	id 1qsNnZ-0005bl-OD; Mon, 16 Oct 2023 09:38:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNiz-0002bI-Hf
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:33:37 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNnX-0005bN-Fw
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:38:19 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNiw-0001Jy-Al
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:33:35 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-9b95622c620so798056566b.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 06:33:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNnS-00022N-CS
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:38:19 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-9adca291f99so704535866b.2
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 06:38:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697463211; x=1698068011; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1697463492; x=1698068292; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6RgdrQXuBUVPl+vq06JcVuhwAdo9RCxusolf7rvJiRw=;
- b=nbF0o3EChwsDTbQRAirimo7eU3cNzyKTP1WlXUdLmAe/4rtT1wP9zq1SPhd60/wD3h
- 5GP+7TNIlOS02xNIpuZA55qQEIQhMDxmtI38p9ILjit5h+O7UuT6GXA+wI5RhxiLjNTU
- wcYk3l9dFcFIzfAeNmULlTCTzL02W74JPE7CNCYNCXzq6La1xBsZyOrrL9+fRzHdeUI1
- nYurWlAHkbz2RuUyAF1TquKhrUsEn5ST5PjkaE6ac0+u86ZGkW4Es67hVyYW6w0q1z+z
- hWMMq2dGjn7GQoprdqfxMrwpebWH3QCyTe05VwknbmFqAhogKE0N7nj3Y7dcjQH3pII/
- vhFw==
+ bh=JPAWYrw8wf1TjNLVSnWYNs45JloOe4OwbVNO3aD/7lI=;
+ b=Xe3JAVjZqJoBVdrcWWk2u9dBMvQ6komv3dVhns61Fg7i3JJ3zmsYesexV6cTF+BDBk
+ yhLnI2I9496WAEJ4NrNlXsGtwVy3Efa9Q4VBq6HvWmBz28pVuaJkin51LJbJV6MRffC0
+ hXgdVP6l7+GomMj3wWMi10UixJJ5JCDjnj47vowaJo1JA3N3QJhuESVqavkSOWbuGAVY
+ j9xYqApl2fsO6gI3tUNUvY7M3VdCOMaKx3khv9p2Ab0u25C5BsPUymS0C/PEL7Qof5gi
+ IHFcuZW+dgGMSjQrMmufCG2rVdrCo5uwbiAaYVpe4AHAYUlUUHc83HgIRjt/wibWS4E5
+ W+KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697463211; x=1698068011;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1697463492; x=1698068292;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6RgdrQXuBUVPl+vq06JcVuhwAdo9RCxusolf7rvJiRw=;
- b=eXZwN1KrsPWbsxJpuOVhBJN5WjiqXm2oOTnAY/MjZJG6ScNZpLpyBlbbGLzYSzime2
- uGJmvx7CjlBt6nwyzqkJ9r8GoYEdUkaF35bReU7jxkZwc2bAsleKM6j6l9jCZaMBbyI6
- 7FxpInMKACqBO7kSkNAragaDagrwrQAuDQYlwzjDYZNUDy21Nk/wloVmS9hi/QDX647e
- Ii6jSO5Gvp6V2alltHpPOW2mSH+GjP0oqlsnd6Ao3YDXY/WsD+hbuY965SDakyzXhWkr
- da6PjcGb6Jt3omnDuq6ynUiRrYYITNOiLL5XcmLWf5iZ/pFbRI4twTNWt67rRnPHAxtd
- IpYg==
-X-Gm-Message-State: AOJu0YyBf2VhUrETOptb3RfgDn602vriT9QNWDgsjAEgzlpP3WboJ5wg
- e97mvaA58C/l0Kmra93q6Hq2c2FfLZh7KFrR+eg=
-X-Google-Smtp-Source: AGHT+IENnpcAncOhXImQUOcY+cLHPvGoVQdEVFDDbrxINxt2H4vAyBeCQonRxgKd+UxBZdc/n1wAsA==
-X-Received: by 2002:a17:907:3e21:b0:9c3:c2e1:a38e with SMTP id
- hp33-20020a1709073e2100b009c3c2e1a38emr3557890ejc.15.1697463211132; 
- Mon, 16 Oct 2023 06:33:31 -0700 (PDT)
+ bh=JPAWYrw8wf1TjNLVSnWYNs45JloOe4OwbVNO3aD/7lI=;
+ b=EqtzwAXHyokTwS7PaiJYj0cicdkjzHJjR+uX2knkvctVwf5pkMxBRAm0eB9VHbMx8k
+ 1MKHR+8DKL3Ifkg4suiLDi8cGo1p41FjUdbhwkR7UOGnpu2SjJe9tSD4ZGw7CDAlv0Jl
+ fC9sdmAT4LImGNyT5zwNcItxv9vhzng9PW6vVym4HV6XVoqrdhq85OsW0ICDKNQlNL4d
+ XTbw2fnFz5c4BO3pZvN4AG8Aurbn71oxJ7tY90N/f+zgrOgGAIjOtiCvWvK60PK0bl+d
+ ueQFXCKUgp6bEOoLK2g7BX4MbYSoN5xmxs0uP1Kp/Skp+vl2ruFw6c+rkM7HOo3eiSfq
+ HwJQ==
+X-Gm-Message-State: AOJu0Yw5JmZZARuNRL/YSJu0PgM1alEU8d7mmKIj8hXYWQyJmQdSCxq1
+ u4T5HNDY34SUlvgx+g5awoZbYg==
+X-Google-Smtp-Source: AGHT+IHuXGFtDpAC+s8Psept7dldK/tKE1Z/BgZTBh6eHaQVaXF0p0A09tStH0dMhwe7xyj6aTfoxg==
+X-Received: by 2002:a17:907:7205:b0:9c4:d19:4a64 with SMTP id
+ dr5-20020a170907720500b009c40d194a64mr2612863ejc.25.1697463492599; 
+ Mon, 16 Oct 2023 06:38:12 -0700 (PDT)
 Received: from [192.168.69.115]
  (tbo33-h01-176-171-211-186.dsl.sta.abo.bbox.fr. [176.171.211.186])
  by smtp.gmail.com with ESMTPSA id
- bo8-20020a170906d04800b0097404f4a124sm4055405ejb.2.2023.10.16.06.33.30
+ jl25-20020a17090775d900b00992e265495csm4048740ejc.212.2023.10.16.06.38.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 06:33:30 -0700 (PDT)
-Message-ID: <e8c30d30-4556-3a04-dad7-103708b1eff2@linaro.org>
-Date: Mon, 16 Oct 2023 15:33:29 +0200
+ Mon, 16 Oct 2023 06:38:12 -0700 (PDT)
+Message-ID: <0184aa1d-bca7-d174-9a1a-2a5496f13e39@linaro.org>
+Date: Mon, 16 Oct 2023 15:38:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 04/17] configure: clean up handling of CFI option
+Subject: Re: [RFC PATCH v2 1/9] Add Rust SEV library as subproject
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20231016063127.161204-1-pbonzini@redhat.com>
- <20231016063127.161204-5-pbonzini@redhat.com>
- <ba834d5f-75ec-1115-b054-16e807d2c89c@linaro.org>
- <e6eeb599-ecdb-42fd-94ca-8a78e2112e58@redhat.com>
+To: Tyler Fanelli <tfanelli@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ pbonzini@redhat.com, mtosatti@redhat.com, marcandre.lureau@gmail.com,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Mike Frysinger <vapier@gentoo.org>, WANG Xuerui <xen0n@gentoo.org>,
+ =?UTF-8?Q?Andreas_K=2e_H=c3=bcttel?= <dilfridge@gentoo.org>,
+ Sergei Trofimovich <slyfox@gentoo.org>, YunQiang Su <syq@debian.org>,
+ Michael Tokarev <mjt@tls.msk.ru>, qemu-discuss <qemu-discuss@nongnu.org>,
+ Joelle van Dyne <j@getutm.app>, Stefan Weil <sw@weilnetz.de>
+References: <20231004203418.56508-1-tfanelli@redhat.com>
+ <20231004203418.56508-2-tfanelli@redhat.com>
+ <20231005155448.GA1342722@fedora>
+ <bdca3b98-7c22-4732-adfc-dc51c93c5eca@redhat.com>
+ <CAAjaMXZb1Les+5Q2uhtpm1dgCm11qfs=Rfcq-6dUvQJj2+HQ3w@mail.gmail.com>
+ <60c1bcc0-9b96-4c37-afee-484ffbe40431@redhat.com>
+ <ZSz/dxLsHPt2+2XN@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <e6eeb599-ecdb-42fd-94ca-8a78e2112e58@redhat.com>
+In-Reply-To: <ZSz/dxLsHPt2+2XN@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
 X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,62 +107,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/10/23 11:44, Paolo Bonzini wrote:
-> On 10/16/23 11:22, Philippe Mathieu-Daudé wrote:
->> On 16/10/23 08:31, Paolo Bonzini wrote:
->>> Avoid that --enable-cfi --disable-cfi leaves b_lto set to true.
->>>
->>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->>> ---
->>>   configure | 7 +++----
->>>   1 file changed, 3 insertions(+), 4 deletions(-)
+On 16/10/23 11:16, Daniel P. Berrangé wrote:
+> On Fri, Oct 13, 2023 at 02:20:16PM -0400, Tyler Fanelli wrote:
+>> Hi Manos,
 >>
+>> Thanks for the heads up, I was using rust 1.71.1. Will update the series
+>> with 1.72.1
 >>
->>> @@ -1845,6 +1843,7 @@ if test "$skip_meson" = no; then
->>>     # QEMU options
->>>     test "$cfi" != false && meson_option_add "-Dcfi=$cfi"
->>> +  test "$cfi" != false && meson_option_add "-Db_lto=$cfi"
->>
->> Merge as "-Dcfi=$cfi -Db_lto=$cfi"?
+>> Stefan, Philippe, or Daniel: is there a specific policy for the Rust version
+>> we should be developing on for crates in qemu?
 > 
-> Sure, it also needs a little change to meson_option_add though:
+> There are a couple of dimensions to this.
 > 
-> diff --git a/configure b/configure
-> index 3da46ed202d..fd88ef3fec2 100755
-> --- a/configure
-> +++ b/configure
-> @@ -624,7 +624,10 @@ meson_option_build_array() {
+> First is the matter of what operating system and architecture pairs are
+> supported as targets for the Rust toolchain, and the standard library.
+> We'll need both to work of course.
 > 
->   meson_options=
->   meson_option_add() {
-> -  meson_options="$meson_options $(quote_sh "$1")"
-> +  local arg
-> +  for arg; do
-> +    meson_options="$meson_options $(quote_sh "$arg")"
-> +  done
+> Second there is the matter of what versions of Rust are shipped in the
+> various operating systems currently.
+> 
+> In a previous discussion there was a wiki page fleshed out with this
+> info:
+> 
+>     https://wiki.qemu.org/RustInQemu
+> 
+> but the min versions are certainly out of date now.
+> 
+> Third there is the question of whether distros have facility for pulling
+> in newer toolchain versions, and if so should we be willing to use them.
+> This is relevant for the long life distros like RHEL, which might ship
+> with a variety of Rust versions. Historically we've been very conservative
+> but with Python last year we adopted a more aggressive policy of being
+> willing to take any newer version available from the distro vendor, not
+> merely the oldest baseline. I suspect we'll want a similar approach with
+> rust.
 
-Oh I didn't notice. If you had said I wouldn't had insisted,
-but since you did the change,
+Cc'ing distrib package maintainers to have their feedback on this.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
->   }
->   meson_option_parse() {
->     meson_options="$meson_options $(_meson_option_parse "$@")"
-> @@ -1842,8 +1845,7 @@ if test "$skip_meson" = no; then
->     test "$werror" = yes && meson_option_add -Dwerror=true
-> 
->     # QEMU options
-> -  test "$cfi" != false && meson_option_add "-Dcfi=$cfi"
-> -  test "$cfi" != false && meson_option_add "-Db_lto=$cfi"
-> +  test "$cfi" != false && meson_option_add "-Dcfi=$cfi" "-Db_lto=$cfi"
->     test "$docs" != auto && meson_option_add "-Ddocs=$docs"
->     test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add 
-> "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
->     test "$plugins" = yes && meson_option_add "-Dplugins=true"
-> 
-> Ok to squash that in?
-
-Certainly.
+> Anyhow, I think you could probably start by updatnig that RustInQemu
+> wiki page so that it reflects the current state of the world in terms
+> of support tiers and versions.
 
 
