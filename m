@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0A87CB038
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4AE77CB052
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:51:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsQmg-0007Qa-Dd; Mon, 16 Oct 2023 12:49:38 -0400
+	id 1qsQoM-0000Mx-Iw; Mon, 16 Oct 2023 12:51:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsQmP-0007No-2I
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:49:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsQmN-0006G0-Ks
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:49:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697474958;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/vMjT+8kBV2OtIcrovFH8KN8YLUolB5Ho3/ZwTsGsHI=;
- b=Q9Vas5nVWYaQxAtNCazcLyT/0Vsahdd2FHhvLV7S4LVtbQGks2mdiE8XYFtwKBz0EkkWoq
- xd38jYQ7NAou/fQLo4d3w3qpLAhyPl5TN/x+/RW1uPXuvGUvYkhwNL9yRa7JTyULrb6kg4
- rE0eB7ypXWfVIZH5g3vbjIjE5YI6njQ=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512--SM_kOKSP1aYVasu3I5bLw-1; Mon, 16 Oct 2023 12:49:06 -0400
-X-MC-Unique: -SM_kOKSP1aYVasu3I5bLw-1
-Received: by mail-vs1-f69.google.com with SMTP id
- ada2fe7eead31-457dc70bba9so613760137.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:49:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsQoK-0000MW-K0
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:51:20 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsQoI-0006pZ-OD
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:51:20 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4066241289bso49019865e9.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697475076; x=1698079876; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TbypOqUBR/68ZP0Xcvv2TK7E2f0AUOHCbTp3/+KXUvM=;
+ b=VJ7zCmGE2TOWOtMQ91fcaBhpMyLN1uMaHnuOio47MTKF8BB8NrPWnCHcXytmE76F0S
+ nlxpRBuy6q/329eRPBSfzg7MAq/1+o3yZ6mnxXe7Wa6y6hkXWpo++0mPnBeKHvgYl5yQ
+ U3g0rVY90PR8MobqqXnVmyXDzmdiKiCREXdQ+9RogU6N9blwJuEHnv/IppVPtb8BF+sc
+ 1NLyI4d7fNnFZwE6eXDsWykCdVJZ17/EKZfwqsCm1v8wPuQ5XLkdY5/HFRWoS73wp5hF
+ z1mmokYPvD7Q1s5CR4a+n5xWQ9ZzhV9zc4U3lLzIl3rbu7rcBSDunYb53eZWz6uvocmu
+ 1lXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697474946; x=1698079746;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/vMjT+8kBV2OtIcrovFH8KN8YLUolB5Ho3/ZwTsGsHI=;
- b=YPJZtAeviYSZYKptLFClgH7GoSeCs08DZCEJn0/u52CjUBrEQIslQgPkEO+jggo2p5
- SDwGpBQfY1GqEtDt4bJUwBFDfMObpVsE54UIIv93sbi5dKItquBEOdAKpW/gwXt6VbUJ
- V6ve2ZkYtQF/6ioPMJYMUS0p2SQvTxO9O5f4/XBDCHIEiSG3GWgBOQ8s2PGSkoVHvOpB
- JDqWBW1Oeb46+2w+RtWzhdIxb4GULNFdVxYG+Hke+cFgAZ+6mwiq+rnNuE40aHAufFvW
- aGEKktC3maPpxsUdwl3vPl03NsS8ghPA82yBDu8qvXM6rBWqzK/10iwjVyXFB+OwO8C6
- WQQw==
-X-Gm-Message-State: AOJu0YzIDHrp9qw2p4PZZoX3Nvk2hba2ZTSreKtTND9OpK40+LD2Q2yR
- +g2hE3OZqsnC72AovXdOewzgunUc5GC6Lsgst0nMQzyweLDY1Gb2hPANfckza6kkHbgHJ/QDtnm
- tg+mhFim1M3ui1VAx7F6ErI51OKwueqc=
-X-Received: by 2002:a05:6102:3188:b0:457:b01c:4a8e with SMTP id
- c8-20020a056102318800b00457b01c4a8emr9654689vsh.7.1697474946311; 
- Mon, 16 Oct 2023 09:49:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2nMCgxGH2XJd4mD8dTCNSUsS8USwHn1c/YZKMQzafMZDwWSBWNDWaD0roR+/4gMK/VrK8WbTvEglX51o9bXk=
-X-Received: by 2002:a05:6102:3188:b0:457:b01c:4a8e with SMTP id
- c8-20020a056102318800b00457b01c4a8emr9654681vsh.7.1697474946024; Mon, 16 Oct
- 2023 09:49:06 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697475076; x=1698079876;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TbypOqUBR/68ZP0Xcvv2TK7E2f0AUOHCbTp3/+KXUvM=;
+ b=T7VQC5lmPnD4mTnqVsPdtYMa3k6uOpVrhfCr+e2A8wXh6y2kI0I7yfiir66L/hJKV+
+ 8qMHH+rI9HyfNY/Fi9O3hgoAm/t5Q9NsFt22H3+hOlaHJPAimZ8oXR+Mn50boVtRrf8Q
+ dn1T1dhAfjrPyct4EZIFCMW4NWQh6vjamxotido70jd52s3NcAfn0NSb8v1wUY9eZ4qR
+ J4Dy/W5qGsArYcHHjUp4o1P993pxYbtEmugoU75jU0EU1sVAgfAXMz9b+cyO62Go8CUa
+ UrmgNcx4gePi7vqwf/s3MHGaL1YdrfrD/2EcUTHDIP9WgabQTn4xVgFVuNneTDEmcFuz
+ mAZA==
+X-Gm-Message-State: AOJu0YydAGgcZL9OreKEzhpKfELE8p4034s+zd8npQrKpcHyA0eQ8MXK
+ JOosODGFOJnyTcp3I2o9o1Guzgqcu1U6qjTn1aA=
+X-Google-Smtp-Source: AGHT+IGk11u33mwFN5MWaFMZwq5y+26rSdFcSBeg4aAB52PPhoTlPYjLBy1qSS0t4+JgDcDsm3jt2g==
+X-Received: by 2002:a05:600c:b4b:b0:405:3b1f:968b with SMTP id
+ k11-20020a05600c0b4b00b004053b1f968bmr30550945wmr.21.1697475076727; 
+ Mon, 16 Oct 2023 09:51:16 -0700 (PDT)
+Received: from [192.168.69.115]
+ (tbo33-h01-176-171-211-186.dsl.sta.abo.bbox.fr. [176.171.211.186])
+ by smtp.gmail.com with ESMTPSA id
+ l21-20020a05600c4f1500b003fbe4cecc3bsm7587314wmq.16.2023.10.16.09.51.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 09:51:16 -0700 (PDT)
+Message-ID: <41e302a4-b26d-c308-00fb-347840b3d637@linaro.org>
+Date: Mon, 16 Oct 2023 18:51:14 +0200
 MIME-Version: 1.0
-References: <20230922140914.13906-1-phil@philjordan.eu>
- <4319fcd1-981c-4ef0-b6b9-1f7f57c1c4ca@redhat.com>
- <CAGCz3vuF1=Ee6_G+23QJD-u+-cY0jVJW8kz9Lrgz+KAoMMy1=w@mail.gmail.com>
-In-Reply-To: <CAGCz3vuF1=Ee6_G+23QJD-u+-cY0jVJW8kz9Lrgz+KAoMMy1=w@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 16 Oct 2023 18:48:54 +0200
-Message-ID: <CABgObfaCFS08LgJ2cYKLdqD=cquW3i475fvZFMnA4ih5r+vnGA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] hvf x86 correctness and efficiency improvements
-To: Phil Dennis-Jordan <lists@philjordan.eu>
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>, dirty@apple.com,
- qemu-devel@nongnu.org, rbolshakov@ddn.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [RFC PATCH v3 20/78] target/mips: add fallthrough pseudo-keyword
+Content-Language: en-US
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>, Aurelien Jarno
+ <aurelien@aurel32.net>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+References: <cover.1697186560.git.manos.pitsidianakis@linaro.org>
+ <cd89d16dcaf6d8015ed3f317c30ff2fd6ae0bff1.1697186560.git.manos.pitsidianakis@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <cd89d16dcaf6d8015ed3f317c30ff2fd6ae0bff1.1697186560.git.manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,45 +97,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 16, 2023 at 6:45=E2=80=AFPM Phil Dennis-Jordan <lists@philjorda=
-n.eu> wrote:
->
-> Hi Paolo,
->
->
-> On Mon, 16 Oct 2023 at 16:39, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> >
-> > On 9/22/23 16:09, Phil Dennis-Jordan wrote:
-> > > Patch 1 enables the INVTSC CPUID bit when running with hvf. This can
-> > > enable some optimisations in the guest OS, and I've not found any rea=
-son
-> > > it shouldn't be allowed for hvf based hosts.
-> >
-> > It can be enabled, but it should include a migration blocker.  In fact,
-> > probably HVF itself should include a migration blocker because QEMU
-> > doesn't support TSC scaling.
->
-> I didn't think Qemu's HVF backend supported migration in any form at this=
- point anyway? Or do you mean machine model versioning of the default setti=
-ng?
+On 13/10/23 10:45, Emmanouil Pitsidianakis wrote:
+> In preparation of raising -Wimplicit-fallthrough to 5, replace all
+> fall-through comments with the fallthrough attribute pseudo-keyword.
+> 
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>   target/mips/sysemu/physaddr.c             |  2 +-
+>   target/mips/tcg/micromips_translate.c.inc |  4 +-
+>   target/mips/tcg/mips16e_translate.c.inc   | 30 ++++-----
+>   target/mips/tcg/mxu_translate.c           |  8 +--
+>   target/mips/tcg/nanomips_translate.c.inc  |  4 +-
+>   target/mips/tcg/op_helper.c               |  2 +-
+>   target/mips/tcg/translate.c               | 79 ++++++++++++-----------
+>   7 files changed, 66 insertions(+), 63 deletions(-)
 
-If it doesn't support migration, it needs to register a migration blocker.
-
-> switching to hv_vcpu_run_until() WITHOUT hv_vcpu_interrupt()
-> causes some very obvious problems where the vCPU simply
-> doesn't exit at all for long periods.)
-
-Yes, that makes sense. It looks like hv_vcpu_run_until() has an
-equivalent of a "do ... while (errno =3D=3D EINTR)" loop inside it.
-
-> 1. hv_vcpu_run() exits very frequently, and often there is actually
-> nothing for the VMM to do except call hv_vcpu_run() again. With
-> Qemu's current hvf backend, each exit causes a BQL acquisition,
-> and VMs with a bunch of vCPUs rapidly become limited by BQL
-> contention according to my profiling.
-
-Yes, that should be fixed anyway, but I agree it is a separate issue.
-
-Paolo
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
