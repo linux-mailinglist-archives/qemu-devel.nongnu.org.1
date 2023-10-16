@@ -2,92 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD2D7CA7C6
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 14:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1E17CA7EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 14:25:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsMRY-0002X5-Gj; Mon, 16 Oct 2023 08:11:32 -0400
+	id 1qsMde-0006fP-5F; Mon, 16 Oct 2023 08:24:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@ziepe.ca>) id 1qsMRU-0002Wd-8j
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 08:11:28 -0400
-Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jgg@ziepe.ca>) id 1qsMRS-0000sL-KH
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 08:11:27 -0400
-Received: by mail-qk1-x72d.google.com with SMTP id
- af79cd13be357-7776f0d4187so2907785a.3
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 05:11:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ziepe.ca; s=google; t=1697458285; x=1698063085; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=zAhnYVS9AcMapW7LntALoHk1EkUQiC0DxFM0b/5Rd9U=;
- b=kbe13UdwVkfjiBi99+ReQeXoBOg0hrVxqKCpsyDkIiQFy449ZVJ+nphLUBdSGSnFrg
- CZby7Fg6xPcR+3zzg5Pdtd5pPU/4Z48kp1N2v4obgfX4lw6Hk6AQyprbq1eo2WQOtf53
- 7xuF/je0SBene5wipj+uHw60sqdd5BgVQP4fRk39bA4fCQCkheMkT+DeZ7Fn3bvLSnjd
- woLLj3oe6FpxoM/++TJSLjwQ8CLVwkAJ8ru2bxb1GStDTlCA1jrnluObYzAvzqOzp7hu
- UaLNNGEIMevz/IEmTjnfEYjUm/Hgu7okgVpc4aBRlRCaPXNLUIc5fb7+O3XTLuDQT5og
- sUjA==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qsMdc-0006eu-Aw
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 08:24:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qsMda-0003At-NM
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 08:24:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697459037;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=H686rEkqT0Uuuqev+wOErIOYXeKuI5uadVJZRVGGTDg=;
+ b=b2QR0G3z4rdxpDuYgSeemNAO7S2sv6tSiOaM3GVew7IzZyhBJQSrHwzgm2XftQ58kI+uW3
+ N6GaiLq9RVKgsHShTUuPgTR1bp+xRuKPULomT4HiVtPsP4OlVnPFl272424hWWVcbRJOW7
+ DdoROGMXzys3HY+qvoW93TGUkhyPo+Y=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-508-j8nLcT6RPsaVhdvevJ5WYg-1; Mon, 16 Oct 2023 08:23:55 -0400
+X-MC-Unique: j8nLcT6RPsaVhdvevJ5WYg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-53e02a0ebfdso3257000a12.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 05:23:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697458285; x=1698063085;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zAhnYVS9AcMapW7LntALoHk1EkUQiC0DxFM0b/5Rd9U=;
- b=sNNxV/0ECvb55Psn0torVgZHXHMJHC0HmdGTozCMmlrD6UoXqlf5EUXz0TuK7GWW2q
- V6Aoz56bo53QLaxav6KmFo0WJxgALjm7XDzwfiCU5rFxwUO97Dg+g3uDDw779HBdYcip
- rnKqAD5JmDfUvFwPB+nFMYDWc+Weja47w4Q/1EHkCgX1G04piH1ZMpbAnVbQvGgySzFr
- iUu5XEW0haeA2DcuFvNXvAAI4Tnn/UAihyiC7M6GfeBp3L6GzGLT3WROS/YT943peBgH
- IwrZeQThYE3EwXqAyrz7xMQjSL/MB3EFi1tC6uJ17yDgSFtlMKfGCettQ5AkztO3ayK+
- Aodg==
-X-Gm-Message-State: AOJu0YxEUOg+7u7wM9zGrCzZLC9xeADko6km2mvtWxK6m7GN+OrjJjPA
- lygBCg3sb9931h8tX273ksIEsg==
-X-Google-Smtp-Source: AGHT+IGK2mfYjjZO9zCSPm/Y/SLBTahUJDKWRTidQRGGn9DlssoXWzD7+gB4ys64smmeEZzJWW6FIw==
-X-Received: by 2002:a05:620a:21cc:b0:76f:1e31:93cd with SMTP id
- h12-20020a05620a21cc00b0076f1e3193cdmr33832505qka.43.1697458284945; 
- Mon, 16 Oct 2023 05:11:24 -0700 (PDT)
-Received: from ziepe.ca
- (hlfxns017vw-142-68-26-201.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [142.68.26.201]) by smtp.gmail.com with ESMTPSA id
- e5-20020a05620a12c500b007756c8ce8f5sm2919094qkl.59.2023.10.16.05.11.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 05:11:23 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
- (envelope-from <jgg@ziepe.ca>) id 1qsMRP-001mtq-4i;
- Mon, 16 Oct 2023 09:11:23 -0300
-Date: Mon, 16 Oct 2023 09:11:23 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
- "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "quintela@redhat.com" <quintela@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "leobras@redhat.com" <leobras@redhat.com>
-Subject: Re: [PATCH 39/52] migration/rdma: Convert qemu_rdma_write_one() to
- Error
-Message-ID: <20231016121123.GD282036@ziepe.ca>
-References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-40-armbru@redhat.com>
- <9e117d0c-cf2b-dd01-7fef-55d1c41d254c@fujitsu.com>
- <b8f8ed5d-f20e-4309-f29c-960321ecad83@fujitsu.com>
- <87ttrhgu9e.fsf@pond.sub.org> <87zg17dejj.fsf@pond.sub.org>
- <9a9ac53b-e409-3b87-ea1b-e133903828a5@fujitsu.com>
+ d=1e100.net; s=20230601; t=1697459034; x=1698063834;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=H686rEkqT0Uuuqev+wOErIOYXeKuI5uadVJZRVGGTDg=;
+ b=OKJ2NUBgk5RU0Am5RYAZoMzA7SG7ohaKoH3GaiZ53ZLhukm6PoR7uF6i3cdZl0LvWB
+ 9xd4aH1j91jQkmkEXwlt6034HY5aIeSm71fH8PMTKUp0tYOOuKZvm729ccUwK5RrfoFx
+ CrUHWXDjIOl4ugArLo9yQY88iDcOX/hNm2wi7U0y/26bD2xBh2jKkafdzsNdjFJZdNDN
+ yPFKTkeRr2DhL0YfqsXtsEh+iBYHx751FxBCMlRs9QyxExg1ZWBW0tNk2vyA36c6f++B
+ VsI9GEvA2DxBqie6lQPYpa1awhcf1UOsepXQR/+/c9hk9Cd7s+rONezzmLm5fAPy1qT/
+ 5Ivw==
+X-Gm-Message-State: AOJu0YzsBiuweom1wKM5ZBoR95uicWH3kRVNGMo+O42rjXhO4hiygTx3
+ i7A0Azo9iLd4FZluzZPeceuB2lfzh9flIbwpXfwATVTI6aOAKHiSUINmHmIzOecZy2WFEi5K8du
+ on0ujZKKqTAm4f9QMuqygTKrOl6UoGjk=
+X-Received: by 2002:aa7:c998:0:b0:530:a226:1f25 with SMTP id
+ c24-20020aa7c998000000b00530a2261f25mr27125074edt.17.1697459034572; 
+ Mon, 16 Oct 2023 05:23:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGJkq195uMxyk3BK64KMW//5U6SxM2Wd1PsFeuogGkAQPaICcvcB/Qb4CuNun9PxPgNi020/DSksIovsRRx04k=
+X-Received: by 2002:aa7:c998:0:b0:530:a226:1f25 with SMTP id
+ c24-20020aa7c998000000b00530a2261f25mr27125063edt.17.1697459034308; Mon, 16
+ Oct 2023 05:23:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9a9ac53b-e409-3b87-ea1b-e133903828a5@fujitsu.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72d; envelope-from=jgg@ziepe.ca;
- helo=mail-qk1-x72d.google.com
+References: <20231012104448.1251039-1-mironov@fintech.ru>
+In-Reply-To: <20231012104448.1251039-1-mironov@fintech.ru>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Mon, 16 Oct 2023 16:23:42 +0400
+Message-ID: <CAMxuvazb=kfGHoSxs7J95t9i_OGNdd_oTOmGgHe3hMYk2EwoOA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ui: Replacing pointer in function
+To: Sergey Mironov <mironov@fintech.ru>
+Cc: kraxel@redhat.com, qemu-devel@nongnu.org, 
+ Linux Verification Center <sdl.qemu@linuxtesting.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,18 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 07, 2023 at 03:40:50AM +0000, Zhijian Li (Fujitsu) wrote:
-> +rdma-core
-> 
-> 
-> Is global variable *errno* reliable when the documentation only states
-> "returns 0 on success, or the value of errno on failure (which indicates the failure reason)."
+On Thu, Oct 12, 2023 at 2:46=E2=80=AFPM Sergey Mironov <mironov@fintech.ru>=
+ wrote:
+>
+> At the end of the first if we see 'vc->gfx.surface =3D NULL;',
+> further checking of it is pointless. In the second if, ectx is taken.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Co-developed-by: Linux Verification Center <sdl.qemu@linuxtesting.org>
+> Signed-off-by: Sergey Mironov <mironov@fintech.ru>
 
-I think the intention of this language was that an errno constant is
-returned, the caller should not assume it is stored in errno.
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-errno is difficult, many things overwrite it, you can loose its value
-during error handling.
+> ---
+>  ui/gtk.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/ui/gtk.c b/ui/gtk.c
+> index 935de1209b..5da3f9b022 100644
+> --- a/ui/gtk.c
+> +++ b/ui/gtk.c
+> @@ -1400,7 +1400,7 @@ static void gd_menu_untabify(GtkMenuItem *item, voi=
+d *opaque)
+>              eglDestroySurface(qemu_egl_display, vc->gfx.esurface);
+>              vc->gfx.esurface =3D NULL;
+>          }
+> -        if (vc->gfx.esurface) {
+> +        if (vc->gfx.ectx) {
+>              eglDestroyContext(qemu_egl_display, vc->gfx.ectx);
+>              vc->gfx.ectx =3D NULL;
+>          }
+> --
+> 2.31.1
+>
 
-Jason
 
