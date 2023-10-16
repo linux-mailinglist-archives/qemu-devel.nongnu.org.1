@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E99B7C9F06
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 07:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 316E07C9F42
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:04:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsGKs-0008C4-IQ; Mon, 16 Oct 2023 01:40:14 -0400
+	id 1qsGgz-0004Km-3Q; Mon, 16 Oct 2023 02:03:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsGKp-0008Bj-MY; Mon, 16 Oct 2023 01:40:11 -0400
-Received: from mail-vk1-xa30.google.com ([2607:f8b0:4864:20::a30])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsGgw-0004KC-Rn
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:03:03 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsGKn-0005s7-2X; Mon, 16 Oct 2023 01:40:10 -0400
-Received: by mail-vk1-xa30.google.com with SMTP id
- 71dfb90a1353d-495eb6e2b80so1064878e0c.1; 
- Sun, 15 Oct 2023 22:40:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsGgu-0000xM-Ub
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:03:02 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-323ef9a8b59so4020288f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697434807; x=1698039607; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zE9UwSqwIHGw5aoPS28rfFXvqq3SJsm0lULwwMvhNKM=;
- b=FttIJ9JIeTe+dCdA289rag6jMHXjdiIsDUvL45otKN7aV/98aS2rVaiPPXMmSHBwix
- 2+O1hsuxfLEGVhVS2+5LYxxEj2xaedQv9RkOyml0PU9lZTfFBfqDoD+rM0nkhpD/dF3/
- 1AfHSahNmGVn4zsKCjuFTjGrGpPTbsgu+yyrHioFsUD+lhCeSO/JcHflhhMygb9RWPy+
- ayFkPAWXf0RnTq6AAld8a1/v+sGZDm9gA5az1xh86v3+LM0OFA1xHEbVk/BSikYjw9VD
- rF1+mu4X2SATA6GMKeQXJskgIwiYi6eWIJSmcjMcC/U7h2J7JMiXBV3kqfvLVkX6ffaa
- tq9A==
+ d=linaro.org; s=google; t=1697436178; x=1698040978; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=nYyuXB75Gv+Dbv+3MPxHevnBlOWcrCwYbrnfZg18a8o=;
+ b=rNMF7/Ib27Ih5OA5CsgHfZKQdTypQtF+MWjaMoFe5/NUWrXnZoE4xriGH3a6Fq+hTZ
+ jAzndCKHCVkNUMwMiGpRFfiwnkvX8Y9Z/nT6mYllb+7O463512jxzFfqyRCGRr73SFvm
+ t3u8JM8h0LZmm15C/h7i1jdDaCJjE9TiElST8UGjbMoHqkPBGU2UNl1flBYzltyskoXl
+ clwyQkcsLTAFyLS2b7fQ5qvaJW3eGE1WYM8BVgQ4sKIEgqV6IS+4rsR6rO55HUopB/N9
+ bGJNfBbMnTi1iIpUTg49wU9MLFwNu27UbN7K+49ErEq7rEpqghLh/uyR3+ot7A2u5agv
+ WEiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697434807; x=1698039607;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zE9UwSqwIHGw5aoPS28rfFXvqq3SJsm0lULwwMvhNKM=;
- b=n52SDr/4qib1md9KFlO2BYWrFqUDE+QIqAnlG8akWw5dZ9caSbCp3grann+y5a4C38
- 5/1UPCBYt7nlRkZ7fWnU/XRhAcodMGEiLb4mU1F9r40tBg/y2ngBD2ETD9kfUxE/rKDR
- lCV+f/HOzlSbyZ5kx+ozBmYQHx7yMErXU9NRBsMmD5+17N/ZGP0E7hJNuucdKb/I3Qd2
- YftPN2iUiD/vl0FeV4u3jf7pqv5XZOCSohwPu1BgHkI9QSBC1ZjHuM/2SkcLCJBL4GY7
- g7EtRqBUoS4i8ehzhHFehmweib/WvAeFA1dPf0WH+qVIa3IVDYzdfwmfJ4EfinLxk+Em
- UaUQ==
-X-Gm-Message-State: AOJu0YwZRfzuJ4KAFVpY4sSDZs6Xq0QjC4TGcF0AOSbsvckke3bL0qld
- Z78Bl6NxP69GjuiHX9Rvb8REWBuulDf0SLd3Uwk=
-X-Google-Smtp-Source: AGHT+IFvd2Kr7SsbPP7w4Hlzp4oND99v/UnTM5lXKy9mKgTLonLqZ+B1JXgZxHME5hkKFnzR5ZRBxz7q2/QNo1+7PL4=
-X-Received: by 2002:a05:6122:2208:b0:48f:cd3a:108 with SMTP id
- bb8-20020a056122220800b0048fcd3a0108mr26247931vkb.12.1697434807321; Sun, 15
- Oct 2023 22:40:07 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697436178; x=1698040978;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nYyuXB75Gv+Dbv+3MPxHevnBlOWcrCwYbrnfZg18a8o=;
+ b=l6fF3O1nTlLgzhRBI9XTgMnbL4jGB3nv7EEN6mHDaxk75rUf3e7jcH7OLea/5hLXWe
+ 0etXvsaFVZcUCAECAlWib6V1ZEYvnzpK1A9XozLouyGn5UZ12kfyyHsuXbYioO44ECT0
+ D1/aAvCG7MQQVHTpQYTw7tJWPLSrXTu88mZ2PRY1PM6rRaW7GH7R+wZpusNAg308DbsV
+ Y8xi1dyyMbsSCc+OhSC6ql4PYLRJiCCgFNLMxfueTX29a+U3Uli+rnzMze+B9MHkaTXB
+ PQPPbqiKDMtmd4Z8XXyK0pIMfo7Vap3RxFD+JJ3UZsIV6+Pz6pcz1YbJDo1WesqEGjm5
+ 4h/g==
+X-Gm-Message-State: AOJu0YzZMjbSvUsYklZAnp1zImHhcYMtqn6pZGzHfy4IREhXlAd5gNdy
+ BsnJP5LUYx7yiXtv2h1/1H9LC1mQv6eZlZRqC1I=
+X-Google-Smtp-Source: AGHT+IF9premts08Q9HdSF+38Ecv+/O1HuHXXcxRxE1QVEjgVByHf4zN++3ft/oRSwHaoNOVnFxzMQ==
+X-Received: by 2002:a5d:5348:0:b0:32d:8961:d864 with SMTP id
+ t8-20020a5d5348000000b0032d8961d864mr9941103wrv.48.1697436177689; 
+ Sun, 15 Oct 2023 23:02:57 -0700 (PDT)
+Received: from meli.delivery (adsl-165.37.6.1.tellas.gr. [37.6.1.165])
+ by smtp.gmail.com with ESMTPSA id
+ j2-20020a5d4482000000b0032d8eecf901sm10218459wrq.3.2023.10.15.23.02.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 15 Oct 2023 23:02:56 -0700 (PDT)
+Date: Mon, 16 Oct 2023 08:44:55 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org, Edmund Raile <edmund.raile@proton.me>
+Cc: marcandre.lureau@redhat.com, kraxel@redhat.com,
+ Edmund Raile <edmund.raile@proton.me>
+Subject: Re: [PATCH] qemu-ui-gtk clipboard: fix for freeze-crashes v2
+User-Agent: meli 0.8.2
+References: <20231014084641.42317-2-edmund.raile@proton.me>
+In-Reply-To: <20231014084641.42317-2-edmund.raile@proton.me>
+Message-ID: <2ly4u.m34k3bok1e6@linaro.org>
 MIME-Version: 1.0
-References: <20230808181715.436395-1-vineetg@rivosinc.com>
- <20230808181715.436395-2-vineetg@rivosinc.com>
- <ff43edc3-f160-e57d-deb1-185601ed5b7d@ventanamicro.com>
- <1aa3bdff-0db4-c589-8863-56bbea825fda@rivosinc.com>
- <CAKmqyKP2jQ1TYFNjMJNJxGqxHgq5fe5RhBhJDiPE1DoBXpf0gw@mail.gmail.com>
- <20230811-f81889afd0f38ffdc215883d@orel>
-In-Reply-To: <20230811-f81889afd0f38ffdc215883d@orel>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 16 Oct 2023 15:39:40 +1000
-Message-ID: <CAKmqyKMsND1oboZTPJXmrYb0y1=44KnHsDbpUJM3KeCuw730dg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] riscv: zicond: make default
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: Vineet Gupta <vineetg@rivosinc.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- kito.cheng@gmail.com, Jeff Law <jeffreyalaw@gmail.com>, 
- Palmer Dabbelt <palmer@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a30;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa30.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,135 +93,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 11, 2023 at 5:01=E2=80=AFPM Andrew Jones <ajones@ventanamicro.c=
-om> wrote:
->
-> On Thu, Aug 10, 2023 at 02:07:17PM -0400, Alistair Francis wrote:
-> > On Tue, Aug 8, 2023 at 6:10=E2=80=AFPM Vineet Gupta <vineetg@rivosinc.c=
-om> wrote:
-> > >
-> > >
-> > >
-> > > On 8/8/23 14:06, Daniel Henrique Barboza wrote:
-> > > > (CCing Alistair and other reviewers)
-> > > >
-> > > > On 8/8/23 15:17, Vineet Gupta wrote:
-> > > >> Again this helps with better testing and something qemu has been d=
-oing
-> > > >> with newer features anyways.
-> > > >>
-> > > >> Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
-> > > >> ---
-> > > >
-> > > > Even if we can reach a consensus about removing the experimental (x=
--
-> > > > prefix) status
-> > > > from an extension that is Frozen instead of ratified, enabling stuf=
-f
-> > > > in the default
-> > > > CPUs because it's easier to test is something we would like to avoi=
-d.
-> > > > The rv64
-> > > > CPU has a random set of extensions enabled for the most different a=
-nd
-> > > > undocumented
-> > > > reasons, and users don't know what they'll get because we keep beef=
-ing
-> > > > up the
-> > > > generic CPUs arbitrarily.
-> >
-> > The idea was to enable "most" extensions for the virt machine. It's a
-> > bit wishy-washy, but the idea was to enable as much as possible by
-> > default on the virt machine, as long as it doesn't conflict. The goal
-> > being to allow users to get the "best" experience as all their
-> > favourite extensions are enabled.
-> >
-> > It's harder to do in practice, so we are in a weird state where users
-> > don't know what is and isn't enabled.
-> >
-> > We probably want to revisit this. We should try to enable what is
-> > useful for users and make it clear what is and isn't enabled. I'm not
-> > clear on how best to do that though.
-> >
-> > Again, I think this comes back to we need to version the virt machine.
-> > I might do that as a starting point, that allows us to make changes in
-> > a clear way.
->
-> While some extensions will impact the machine model, as well as cpu
-> models, versioning the machine model won't help much with ambiguity in
-> cpu model extension support. Daniel's proposal of having a base cpu mode,
-> which, on top, users can explicitly enable what they want (including with
-> profile support which work like a shorthand to enable many extensions at
-> once), is, IMO, the best way for users to know what they get. Also, the
-> 'max' cpu model is the best way to "quickly get as much as possible" for
-> testing. To know what's in 'max', or named cpu models, we need to
-> implement qmp_query_cpu_model_expansion(). Something that could be used
-> from the command line would also be nice, but neither x86 nor arm provide
-> that (they have '-cpu help', but arm doesn't output anything for cpu
-> features and x86 dumps all features out without saying what's enabled for
-> any particular cpu model...)
->
-> I know x86 people have in the past discussed versioning cpu models, but
-> I don't think that should be necessary for riscv with the base+profile
-> approach. A profile would effectively be a versioned cpu model in that
-> case.
->
-> Finally, I'd discourage versioning the virt machine type until we need
-> to worry about users creating riscv guest images that they are unwilling
-> to modify, despite wanting to update their QEMU versions. And, even then,
+Hello Edmund,
 
-What's the problem with versioning the virt machine though?
+The reproduction in the bug description sounds convoluted so I will 
+focus on the code and patch instead:
 
-I'm thinking that in the future we would want to switch from PLIC to
-AIA; change the memory map; or change the default extensions (maybe to
-a profile). All of those would require a versioned virt machine.
+First of all, the patch title should not include a `v2`. The versioning 
+(reroll count) must go in the `[PATCH]` prefix, e.g. `[PATCH v2]`
+Secondly, the commit message should describe what the problem is and how 
+the fixes in the patch are a solution for it.
 
-I was thinking about doing this now, so we have a base for a few
-releases. So when we do need a change we are ready to go
+See the "meaningfull commit message" in the QEMU docs.
 
-Alistair
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html
 
-> we should only consider versioning when we're aware of problems for those
-> static guest images, i.e. we introduce a change to the virt machine model
-> which breaks that supported, old guest image. (NB: It was me that
-> advocated to start versioning Arm's virt machine type. In hindsight, I
-> think I may have advocated prematurely. I'm trying not to make that
-> mistake twice!)
+  If your patch fixes a bug in the gitlab bug tracker, please add a line 
+  with “Resolves: <URL-of-the-bug>” to the commit message, too. Gitlab 
+  can close bugs automatically once commits with the “Resolved:” keyword 
+  get merged into the master branch of the project. And if your patch 
+  addresses a bug in another public bug tracker, you can also use a line 
+  with “Buglink: <URL-of-the-bug>” for reference here, too.
+
+  Example:
+
+  Fixes: 14055ce53c2d ("s390x/tcg: avoid overflows in 
+  time2tod/tod2time")
+  Resolves: https://gitlab.com/qemu-project/qemu/-/issues/42
+  Buglink: https://bugs.launchpad.net/qemu/+bug/1804323``
+
+This information should go before your Signed-off-by: trailer line.
+
+You can still include all that information that should not go into the 
+commit message by putting them below the -- line and above the patch, 
+see 
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html#include-version-history-in-patchset-revisions
+
+
+On Sat, 14 Oct 2023 11:48, Edmund Raile <edmund.raile@proton.me> wrote:
+>To not risk breaking anything in the mailing list, I'm starting this 
+>new mail thread instead of replying to my first one.
+
+That's the right thing to do, replying to old versions will make it less 
+visible to people.
+
+Some code comments follow:
+
 >
-> >
-> > >
-> > > I understand this position given the arbitrary nature of gazillion
-> > > extensions. However pragmatically things like bitmanip and zicond are=
- so
-> > > fundamental it would be strange for designs to not have them, in a fe=
-w
-> > > years. Besides these don't compete or conflict with other extensions.
-> > > But on face value it is indeed possible for vendors to drop them for
-> > > various reasons or no-reasons.
-> > >
-> > > But having the x- dropped is good enough for our needs as there's
-> > > already mechanisms to enable the toggles from elf attributes.
-> > >
-> > > >
-> > > > Starting on QEMU 8.2 we'll have a 'max' CPU type that will enable a=
-ll
-> > > > non-experimental
-> > > > and non-vendor extensions by default, making it easier for tooling =
-to
-> > > > test new
-> > > > features/extensions. All tooling should consider changing their
-> > > > scripts to use the
-> > > > 'max' CPU when it's available.
-> > >
-> > > That would be great.
-> >
-> > The max CPU helps, but I do feel that the default should allow users
-> > to experience as many RISC-V extensions/features as practical.
-> >
+>---
+> include/ui/clipboard.h |  2 ++
+> ui/gtk-clipboard.c     | 34 ++++++++++++++++++++--------------
+> 2 files changed, 22 insertions(+), 14 deletions(-)
 >
-> If the virt machine type has a default cpu type, then why not set it to
-> 'max'?
->
-> Thanks,
-> drew
+>diff --git a/include/ui/clipboard.h b/include/ui/clipboard.h
+>index ab6acdbd8a..123c04fc07 100644
+>--- a/include/ui/clipboard.h
+>+++ b/include/ui/clipboard.h
+>@@ -106,6 +106,7 @@ struct QemuClipboardNotify {
+>  * @types: clipboard data array (one entry per type).
+>  * @has_serial: whether @serial is available.
+>  * @serial: the grab serial counter.
+>+ * @serial_last: used by GTK UI to discard outdated transaction results.
+>  *
+>  * Clipboard content data and metadata.
+>  */
+>@@ -115,6 +116,7 @@ struct QemuClipboardInfo {
+>     QemuClipboardSelection selection;
+>     bool has_serial;
+>     uint32_t serial;
+>+    uint32_t serial_last;
+>     struct {
+>         bool available;
+>         bool requested;
+>diff --git a/ui/gtk-clipboard.c b/ui/gtk-clipboard.c
+>index 8d8a636fd1..9e96cc2fb5 100644
+>--- a/ui/gtk-clipboard.c
+>+++ b/ui/gtk-clipboard.c
+>@@ -133,26 +133,38 @@ static void gd_clipboard_notify(Notifier *notifier, void *data)
+>     }
+> }
+> 
+>+/* asynchronous clipboard text transfer (host -> guest): callback */
+>+static void gd_clipboard_transfer_text_to_guest_callback(GtkClipboard *clipboard, const gchar *text, gpointer data)
+>+{
+>+    QemuClipboardInfo *info = (QemuClipboardInfo *)data;
+
+
+
+>+
+>+    // serial_last is intentionally not stored as a static in this function as callbacks implementing other data types (e.g. images) need access as well
+
+This line and several others are too long. If you run 
+scripts/checkpatch.pl on your patch you will see them reported:
+
+  ERROR: line over 90 characters
+  #81: FILE: ui/gtk-clipboard.c:141:
+  +    // serial_last is intentionally not stored as a static in this 
+  function as callbacks implementing other data types (e.g. images) need 
+  access as well
+
+Also, no C99 // comments:
+
+  ERROR: do not use C99 // comments
+  #81: FILE: ui/gtk-clipboard.c:141:
+  +    // serial_last is intentionally not stored as a static in this 
+  function as callbacks implementing other data types (e.g. images) need 
+  access as well
+
+In any case I think this comment is not needed.
+
+>+
+>+    if (text && (info->serial > info->serial_last)) {
+>+        info->types[QEMU_CLIPBOARD_TYPE_TEXT].available = true;
+>+        qemu_clipboard_update(info);
+>+        info->serial_last = info->serial;
+>+    }
+>+
+>+    qemu_clipboard_info_unref(info);
+
+Does this free `info`? If yes why update its fields in the previous 
+line?
+
+--
+Manos
 
