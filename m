@@ -2,68 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A757B7CA37F
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 962AE7CA385
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:07:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJYg-0006kM-5A; Mon, 16 Oct 2023 05:06:46 -0400
+	id 1qsJZD-0007Rn-FP; Mon, 16 Oct 2023 05:07:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qsJYH-0006et-HM
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:06:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qsJYF-0004FW-6l
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:06:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697447173;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=+Pgu6xwPZDll+IT3/B54mKLFrkrQEtd3wETVyi/+Rf0=;
- b=YDqvZuBYen4BQsl/KW1XFS6sibZsFnUK9Gp0CQU610Ub+IY7jZYqplw11bQ3Re0j6d7Gd8
- 7IRRiYv0YJL9upMCNVBqOWYjIcI3ijk+Cs28g3PJhoxC/PTblOJk/H3Pg0vcVEvovcFrZi
- CvYUNQuS+evmSpGoICV+CjYnNJy6ACU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-637-80Ku-92fPgi5PPXL_CGkcw-1; Mon, 16 Oct 2023 05:06:11 -0400
-X-MC-Unique: 80Ku-92fPgi5PPXL_CGkcw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 394F3862DFD
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:06:11 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.45])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9F0D263F21;
- Mon, 16 Oct 2023 09:06:10 +0000 (UTC)
-Date: Mon, 16 Oct 2023 10:06:08 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] tests/vm: netbsd: install dtc
-Message-ID: <ZSz9AFwxPBsoRMih@redhat.com>
-References: <20231013153027.800327-1-pbonzini@redhat.com>
- <cee1cc9f-ed36-4300-a712-d3fbef4bb395@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsJYx-0007Mq-Rs
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:07:00 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsJYp-0004Ll-At
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:06:58 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-32da4ffd7e5so930779f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:06:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697447209; x=1698052009; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=O2V9hpjQiKiHVOCG7nYioqSFTs/DcxhCPNGy30xR+r4=;
+ b=rK/Qe1lficQ3AoIjOTiV6B0dFklCLJQkO/yaDAszJB6YWn0PsaPhvTkJiSbj+/7YaJ
+ Ny/NbvdCfO0ymECnZMO0TJ+8GMqbAGrnh8Y5X+vEPEQIMyCuhn0dH90/S0VTJSMj8zrm
+ k0vUDXYW5TV+D1VL5guEm1WiOEt7SuxPHp4vCqJP3BFuOZj6ljX+WVlypW2+IcK22jvQ
+ z4CBae8ELaQ4VHmOSGdR8jmLQHjAmMQJnWICugwZwJbLxSkLEIDcmRTAMW2vyAMHvudj
+ cr+9j5imsURz+ckHjjrDaJdf8CjTy1Yx5mnJ+PHhXIx7XHQ2RA82EBkgD2lFNehdrrmJ
+ qT/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697447209; x=1698052009;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=O2V9hpjQiKiHVOCG7nYioqSFTs/DcxhCPNGy30xR+r4=;
+ b=opwnT2+pqio9usXL4u5xjGlNXufa2Tf+zYzhVFgAtP7oVH9LllggHQ7hI17mZSB+sS
+ EAgRI9VDLXpn0xsDxVDriZDPvGm8267BHJfdmoDhcdMb6vKy+m8IdZtofmhqwvCPVvtE
+ gvjG89pVlnKCVGCHIGZAIpB5XXk+J9M6mLScUXedChKXKw6zlSwktD7S0/V4mZf30cOn
+ lITl9/Qr7M4ZcIP1hfswSRq9io/9Q5nk86wakpSku7gqZz0a9dzANOaw8sPyJC9Fw0I4
+ O+T2PEZRzZyPQPvTguyF6MuXyPDKqwI31dg+2tLZkOxuIviWeRp6fFupTvgKA/mHB5b5
+ Vojg==
+X-Gm-Message-State: AOJu0YzG9D5ZeMOFZ6WAcpG1i30HhdZgQzX0MVKzRc8btIIS02q90EVb
+ ncpGpSJAax/KlcSS6KkJsHdgsQ0fG02Ai0Hge4Q=
+X-Google-Smtp-Source: AGHT+IE7maFOZ772/eoaAkvqy9hUoMueb3TEMSp+DoRkVTaxW3hKzQQjiUdRi7LFGvp6ma+d5ZhLDw==
+X-Received: by 2002:adf:efd0:0:b0:32d:a89f:ad4 with SMTP id
+ i16-20020adfefd0000000b0032da89f0ad4mr3631451wrp.32.1697447209510; 
+ Mon, 16 Oct 2023 02:06:49 -0700 (PDT)
+Received: from [192.168.69.115]
+ (9r679-h01-176-171-216-136.dsl.sta.abo.bbox.fr. [176.171.216.136])
+ by smtp.gmail.com with ESMTPSA id
+ n18-20020a5d4c52000000b003197869bcd7sm2679271wrt.13.2023.10.16.02.06.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 02:06:49 -0700 (PDT)
+Message-ID: <b48f35cb-8adf-eb4b-3dce-687565d4889d@linaro.org>
+Date: Mon, 16 Oct 2023 11:06:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cee1cc9f-ed36-4300-a712-d3fbef4bb395@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] hw/mips/malta: Use sdram_type enum from
+ 'hw/i2c/smbus_eeprom.h'
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Aurelien Jarno <aurelien@aurel32.net>, Corey Minyard
+ <cminyard@mvista.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+References: <20231009092127.49778-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231009092127.49778-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,111 +93,27 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 16, 2023 at 11:00:14AM +0200, Thomas Huth wrote:
-> On 13/10/2023 17.30, Paolo Bonzini wrote:
-> > Install dtc as it is now a mandatory external dependency in order to build QEMU.
-> > 
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > ---
-> >   tests/vm/netbsd | 3 +++
-> >   1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/tests/vm/netbsd b/tests/vm/netbsd
-> > index 939dc1b22a1..3ef1ec2d9cc 100755
-> > --- a/tests/vm/netbsd
-> > +++ b/tests/vm/netbsd
-> > @@ -40,6 +40,9 @@ class NetBSDVM(basevm.BaseVM):
-> >           "gsed",
-> >           "gettext-tools",
-> > +        # libs: basic
-> > +        "dtc",
-> > +
-> >           # libs: crypto
-> >           "gnutls",
+On 9/10/23 11:21, Philippe Mathieu-Daudé wrote:
+> Since commit 93198b6cad ("i2c: Split smbus into parts") the SDRAM
+> types are enumerated as sdram_type in "hw/i2c/smbus_eeprom.h".
 > 
-> Does this work for you? When I run "make vm-build-netbsd", I'm still getting
-> a failure:
+> Using the enum removes this global shadow warning:
 > 
-> 76 packages to install:
->   git-base-2.41.0nb1 pkgconf-1.9.5 xz-5.4.3 python310-3.10.12
-> py310-expat-3.10.12nb1 ninja-build-1.11.1
->   bash-5.2.15 gmake-4.4.1 gsed-4.9nb1 gettext-tools-0.21.1 dtc-1.7.0
-> gnutls-3.8.0nb3 jpeg-9e png-1.6.39
->   capstone-4.0.2 SDL2-2.26.5nb1 gtk3+-3.24.38 zstd-1.5.5 libslirp-4.7.0nb1
-> pcre2-10.42 curl-8.1.2
->   libuuid-2.32.1nb1 libffi-3.4.4 gettext-lib-0.21.1 p11-kit-0.24.1 nettle-3.9.1
->   mozilla-rootcerts-1.0.20230505 libtasn1-4.19.0 libcfg+-0.7.0 gmp-6.2.1nb3
-> wayland-protocols-1.31nb1
->   wayland-1.21.0nb2 libxkbcommon-1.5.0nb1 libsamplerate-0.2.2nb4
-> shared-mime-info-2.2nb2 pango-1.50.12nb1
->   libcups-2.4.6nb1 libXft-2.3.8 hicolor-icon-theme-0.17nb1 glib2-2.74.6nb1
-> gdk-pixbuf2-2.42.10nb2
->   fribidi-1.0.13 freetype2-2.13.0nb1 fontconfig-2.14.2nb1
-> cairo-gobject-1.16.0nb7 cairo-1.16.0nb9 atk-2.38.0
->   at-spi2-atk-2.38.0nb1 lz4-1.9.4 nghttp2-1.54.0 libidn2-2.3.4
-> readline-8.2nb2 libsndfile-1.2.0nb2
->   fftw-3.3.10nb1 libxslt-1.1.38 libepoll-shim-0.0.20230411
-> at-spi2-core-2.40.3nb2 lzo-2.10 brotli-1.0.9
->   tiff-4.5.1nb1 libpaper-2.1.0nb2 dbus-1.14.6 harfbuzz-7.3.0
-> graphite2-1.3.14nb1 libunistring-1.1
->   libxml2-2.10.4nb1 libgcrypt-1.10.2 mpg123-1.31.3 libvorbis-1.3.7
-> libopus-1.4 libogg-1.3.5nb1 lame-3.100nb5
->   flac-1.4.2 jbigkit-2.1nb1 xmlcatmgr-2.2nb1 libgpg-error-1.47
-> [...]
-> installing dtc-1.7.0...
-> [...]
-> The Meson build system
-> Version: 0.63.3
-> Source dir: /home/qemu/qemu-test.Li0spd/src
-> Build dir: /home/qemu/qemu-test.Li0spd/build
-> Build type: native build
-> Project name: qemu
-> Project version: 8.1.50
-> C compiler for the host machine: cc -m64 -mcx16 (gcc 7.5.0 "cc (nb4
-> 20200810) 7.5.0")
-> C linker for the host machine: cc -m64 -mcx16 ld.bfd 2.31.1
-> [...]
-> Run-time dependency capstone found: YES 4.0.2
-> Library fdt found: NO
-> Initialized empty Git repository in
-> /home/qemu/qemu-test.Li0spd/src/subprojects/dtc/.git/
-> fatal: unable to access 'https://gitlab.com/qemu-project/dtc.git/': SSL
-> certificate problem: unable to get local issuer certificate
+>    hw/mips/malta.c:209:12: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>        enum { SDR = 0x4, DDR2 = 0x8 } type;
+>               ^
+>    include/hw/i2c/smbus_eeprom.h:33:19: note: previous declaration is here
+>    enum sdram_type { SDR = 0x4, DDR = 0x7, DDR2 = 0x8 };
+>                      ^
 > 
-> ../src/meson.build:3076:4: ERROR: Git command failed: ['/usr/pkg/bin/git',
-> 'fetch', '--depth', '1', 'origin',
-> 'b6910bec11614980a21e46fbccc35934b671bd81']
-> 
-> A full log can be found at
-> /home/qemu/qemu-test.Li0spd/build/meson-logs/meson-log.txt
-> 
-> ERROR: meson setup failed
-> 
-> ... so though the NetBSD people finally upgraded their dtc to a usable
-> level, our meson.build seems to be unable to detect it?
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/mips/malta.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-They claim to have version 1.7.0
-
-  https://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc/sysutils/dtc/index.html
-
-and we claim to want 1.5.0, so should be OK.
-
-Suggests that our detection, or test compilation is failing. The
-meson-log.txt might have more info, if you can access that ?
-
-
-Also separately it appears we're missing the public CA cert bundle,
-so we should not see a cert error from gitlab.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Queued to mips-next.
 
 
