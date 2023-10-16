@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9A67CAA0B
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B149F7CAA07
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:43:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsNs2-0001H5-G9; Mon, 16 Oct 2023 09:42:59 -0400
+	id 1qsNs3-0001LA-Rf; Mon, 16 Oct 2023 09:42:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNrw-0001Ex-45
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:42:52 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNry-0001Gy-DL
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:42:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNru-0003I8-4P
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:42:51 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNrw-0003It-R6
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:42:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697463768;
+ s=mimecast20190719; t=1697463772;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=L6e5W231Q7udcMOb3rPRpfUo/44l0/jlgYuAizCQPfw=;
- b=dA/nUlAGXikLIuIjFCXCB3Z+cl0337UrZ9uOG/zWFR5EijxxEQQtztxFbqqlPUKlbaCPvQ
- 6AMfSGLtMCB6N9lxAfvhAfoGukk51UvmO4yLq3bPxe39Hr4hWTOVrJrzGN7u1fn+PDKGOr
- 9qUmyyTFvpkhh9+hWmzxZsw1M7PRCM8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-436-QpzYOxdFO-ycZCxAbIQWDw-1; Mon, 16 Oct 2023 09:42:46 -0400
-X-MC-Unique: QpzYOxdFO-ycZCxAbIQWDw-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CdWmlM8n5hBHntCqcgaGLFEBRBK7ue5xEwrnyEeO4ko=;
+ b=Qtrx+ewsAZ4Yoc0HIFO+IafqpJ14tPYelRXD07U13sS6u4oUgOnW2tI1P98tq983CQL4NR
+ 0iCKqMHVAcP2ljoD8mMhT5w29B52FjCX7SrUHCNAIXH5rHuCW7YBbvlI8aeq4+J01/0elu
+ RoyN864IzPfNw1pb7MU3ZCP/PD0nWgo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-104-9R-C5jVRNeCpWPaInwyHGQ-1; Mon, 16 Oct 2023 09:42:48 -0400
+X-MC-Unique: 9R-C5jVRNeCpWPaInwyHGQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B16A862F1E;
- Mon, 16 Oct 2023 13:42:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DF0D1C0BB4F;
+ Mon, 16 Oct 2023 13:42:48 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.211])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 608B4492BEE;
- Mon, 16 Oct 2023 13:42:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E3110492BEF;
+ Mon, 16 Oct 2023 13:42:47 +0000 (UTC)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-devel@nongnu.org,
 	virtio-fs@redhat.com
@@ -47,9 +48,11 @@ Cc: Hanna Czenczek <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  German Maglione <gmaglione@redhat.com>,
  =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
  Anton Kuchin <antonkuchin@yandex-team.ru>
-Subject: [PATCH v5 0/7] vhost-user: Back-end state migration
-Date: Mon, 16 Oct 2023 15:42:36 +0200
-Message-ID: <20231016134243.68248-1-hreitz@redhat.com>
+Subject: [PATCH v5 1/7] vhost-user.rst: Improve [GS]ET_VRING_BASE doc
+Date: Mon, 16 Oct 2023 15:42:37 +0200
+Message-ID: <20231016134243.68248-2-hreitz@redhat.com>
+In-Reply-To: <20231016134243.68248-1-hreitz@redhat.com>
+References: <20231016134243.68248-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -78,73 +81,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2:
-https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg02604.html
+GET_VRING_BASE does not mention that it stops the respective ring.  Fix
+that.
 
-v3:
-https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg03750.html
+Furthermore, it is not fully clear what the "base offset" these
+commands' documentation refers to is; an offset could be many things.
+Be more precise and verbose about it, especially given that these
+commands use different payload structures depending on whether the vring
+is split or packed.
 
-v4:
-https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg01046.html
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+---
+ docs/interop/vhost-user.rst | 77 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 73 insertions(+), 4 deletions(-)
 
-
-Based-on: <20231004014532.1228637-1-stefanha@redhat.com>
-          ([PATCH v2 0/3] vhost: clean up device reset)
-
-Based-on: <20231016083201.23736-1-hreitz@redhat.com>
-          ([PATCH] vhost-user: Fix protocol feature bit conflict)
-
-
-Hi,
-
-v5 is basically the same as v4, only that I’ve dropped the patch
-deprecating F_STATUS (which doesn’t affect the rest of the series), that
-I’ve amended the documentation in patch 1 as suggested by Stefan and
-with help from Michael, and that I’ve rebased everything on top of the
-F_SHARED_OBJECT changes that have been merged upstream.
-
-
-git-backport-diff against v4:
-
-Key:
-[----] : patches are identical
-[####] : number of functional differences between upstream/downstream patch
-[down] : patch is downstream-only
-The flags [FC] indicate (F)unctional and (C)ontextual differences, respectively
-
-001/7:[0029] [FC] 'vhost-user.rst: Improve [GS]ET_VRING_BASE doc'
-002/7:[----] [--] 'vhost-user.rst: Clarify enabling/disabling vrings'
-003/7:[----] [--] 'vhost-user.rst: Introduce suspended state'
-004/7:[0006] [FC] 'vhost-user.rst: Migrating back-end-internal state'
-005/7:[0007] [FC] 'vhost-user: Interface for migration state transfer'
-006/7:[----] [--] 'vhost: Add high-level state save/load functions'
-007/7:[----] [--] 'vhost-user-fs: Implement internal migration'
-
-
-Changes patch by patch:
-- Patch 1: Amended documentation
-- Patches 4 and 5: Bumped feature bit and command values as necessary so
-  as not to conflict with F_SHARED_OBJECT
-
-
-Hanna Czenczek (7):
-  vhost-user.rst: Improve [GS]ET_VRING_BASE doc
-  vhost-user.rst: Clarify enabling/disabling vrings
-  vhost-user.rst: Introduce suspended state
-  vhost-user.rst: Migrating back-end-internal state
-  vhost-user: Interface for migration state transfer
-  vhost: Add high-level state save/load functions
-  vhost-user-fs: Implement internal migration
-
- docs/interop/vhost-user.rst       | 301 ++++++++++++++++++++++++++++--
- include/hw/virtio/vhost-backend.h |  24 +++
- include/hw/virtio/vhost-user.h    |   1 +
- include/hw/virtio/vhost.h         | 113 +++++++++++
- hw/virtio/vhost-user-fs.c         | 101 +++++++++-
- hw/virtio/vhost-user.c            | 146 +++++++++++++++
- hw/virtio/vhost.c                 | 241 ++++++++++++++++++++++++
- 7 files changed, 906 insertions(+), 21 deletions(-)
-
+diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+index 768fb5c28c..9202b167dd 100644
+--- a/docs/interop/vhost-user.rst
++++ b/docs/interop/vhost-user.rst
+@@ -108,6 +108,43 @@ A vring state description
+ 
+ :num: a 32-bit number
+ 
++A vring descriptor index for split virtqueues
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
+++-------------+---------------------+
++| vring index | index in avail ring |
+++-------------+---------------------+
++
++:vring index: 32-bit index of the respective virtqueue
++
++:index in avail ring: 32-bit value, of which currently only the lower 16
++  bits are used:
++
++  - Bits 0–15: Index of the next *Available Ring* descriptor that the
++    back-end will process.  This is a free-running index that is not
++    wrapped by the ring size.
++  - Bits 16–31: Reserved (set to zero)
++
++Vring descriptor indices for packed virtqueues
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
+++-------------+--------------------+
++| vring index | descriptor indices |
+++-------------+--------------------+
++
++:vring index: 32-bit index of the respective virtqueue
++
++:descriptor indices: 32-bit value:
++
++  - Bits 0–14: Index of the next *Available Ring* descriptor that the
++    back-end will process.  This is a free-running index that is not
++    wrapped by the ring size.
++  - Bit 15: Driver (Available) Ring Wrap Counter
++  - Bits 16–30: Index of the entry in the *Used Ring* where the back-end
++    will place the next descriptor.  This is a free-running index that
++    is not wrapped by the ring size.
++  - Bit 31: Device (Used) Ring Wrap Counter
++
+ A vring address description
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+@@ -1042,18 +1079,50 @@ Front-end message types
+ ``VHOST_USER_SET_VRING_BASE``
+   :id: 10
+   :equivalent ioctl: ``VHOST_SET_VRING_BASE``
+-  :request payload: vring state description
++  :request payload: vring descriptor index/indices
+   :reply payload: N/A
+ 
+-  Sets the base offset in the available vring.
++  Sets the next index to use for descriptors in this vring:
++
++  * For a split virtqueue, sets only the next descriptor index to
++    process in the *Available Ring*.  The device is supposed to read the
++    next index in the *Used Ring* from the respective vring structure in
++    guest memory.
++
++  * For a packed virtqueue, both indices are supplied, as they are not
++    explicitly available in memory.
++
++  Consequently, the payload type is specific to the type of virt queue
++  (*a vring descriptor index for split virtqueues* vs. *vring descriptor
++  indices for packed virtqueues*).
+ 
+ ``VHOST_USER_GET_VRING_BASE``
+   :id: 11
+   :equivalent ioctl: ``VHOST_USER_GET_VRING_BASE``
+   :request payload: vring state description
+-  :reply payload: vring state description
++  :reply payload: vring descriptor index/indices
++
++  Stops the vring and returns the current descriptor index or indices:
++
++    * For a split virtqueue, returns only the 16-bit next descriptor
++      index to process in the *Available Ring*.  Note that this may
++      differ from the available ring index in the vring structure in
++      memory, which points to where the driver will put new available
++      descriptors.  For the *Used Ring*, the device only needs the next
++      descriptor index at which to put new descriptors, which is the
++      value in the vring structure in memory, so this value is not
++      covered by this message.
++
++    * For a packed virtqueue, neither index is explicitly available to
++      read from memory, so both indices (as maintained by the device) are
++      returned.
++
++  Consequently, the payload type is specific to the type of virt queue
++  (*a vring descriptor index for split virtqueues* vs. *vring descriptor
++  indices for packed virtqueues*).
+ 
+-  Get the available vring base offset.
++  The request payload’s *num* field is currently reserved and must be
++  set to 0.
+ 
+ ``VHOST_USER_SET_VRING_KICK``
+   :id: 12
 -- 
 2.41.0
 
