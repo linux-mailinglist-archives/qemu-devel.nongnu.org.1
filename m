@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9CF7CAD83
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C117CAD84
 	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 17:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsPV6-0001Pk-Js; Mon, 16 Oct 2023 11:27:24 -0400
+	id 1qsPVM-0001X9-Nh; Mon, 16 Oct 2023 11:27:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qsPV5-0001PK-3j
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:27:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qsPVK-0001Wa-4o
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:27:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qsPV0-0003Nd-Sc
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:27:22 -0400
+ id 1qsPV4-0003OL-Mk
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:27:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697470038;
+ s=mimecast20190719; t=1697470042;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZU24+3OXqzqGRsUTmTDZye6RwpsWKPMrq3tPjUMAsds=;
- b=W/+V1VscvpwMln/1ugBZ0EPoUciSNevehCNTpSMrMvx+GvLL69xYQOhRyXy3bUjem9mdl4
- UKPCu2TrtbFaMYqQBfrF1q0TjedkyRvRP6AVII/CpzU4RxLrONRdOn59nfbbMX4hUA8mUX
- xV7vVf3eH/Gbk2wF+0J1vKzaZf+A6CY=
+ bh=4UGeHM+wuJlFvsAuVCpcyMS7Unx0q539CcUwF56Xqec=;
+ b=fp1PagbT3WS6zEBhyNQa72WD78isnsq4ZvuYCChgBqcuSiIUKVRrWsaEJcf2L52veD6RsT
+ ZGu2gDD3jed5+aZVq4B4mL7Bzx9qH1fTQhVKRDlpZORIyDDyLAL9kJawoCE6OsdTwpxVle
+ yFT4fIgS0aWTWLpEA2vdJIYGeujy+FQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-376-lUCFi47lNSaC-MEmCP9CGA-1; Mon, 16 Oct 2023 11:27:16 -0400
-X-MC-Unique: lUCFi47lNSaC-MEmCP9CGA-1
+ us-mta-173-3Jp_3TsrNiewVpUPY31ydw-1; Mon, 16 Oct 2023 11:27:18 -0400
+X-MC-Unique: 3Jp_3TsrNiewVpUPY31ydw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 258D0858280
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 15:27:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F1B3C81B15E
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 15:27:17 +0000 (UTC)
 Received: from tapioca.redhat.com (unknown [10.45.225.170])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B263B2022780;
- Mon, 16 Oct 2023 15:27:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8B12B202B17E;
+ Mon, 16 Oct 2023 15:27:16 +0000 (UTC)
 From: Victor Toso <victortoso@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Andrea Bolognani <abologna@redhat.com>
-Subject: [PATCH v2 05/11] qapi: golang: Generate qapi's struct types in Go
-Date: Mon, 16 Oct 2023 17:26:58 +0200
-Message-ID: <20231016152704.221611-6-victortoso@redhat.com>
+Subject: [PATCH v2 06/11] qapi: golang: structs: Address 'null' members
+Date: Mon, 16 Oct 2023 17:26:59 +0200
+Message-ID: <20231016152704.221611-7-victortoso@redhat.com>
 In-Reply-To: <20231016152704.221611-1-victortoso@redhat.com>
 References: <20231016152704.221611-1-victortoso@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,272 +78,368 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch handles QAPI struct types and generates the equivalent
-types in Go. The following patch adds extra logic when a member of the
-struct has a Type that can take JSON Null value (e.g: StrOrNull in
-QEMU)
-
-The highlights of this implementation are:
-
-1. Generating an Go struct that requires a @base type, the @base type
-   fields are copied over to the Go struct. The advantage of this
-   approach is to not have embed structs in any of the QAPI types.
-   Note that embedding a @base type is recursive, that is, if the
-   @base type has a @base, all of those fields will be copied over.
-
-2. About the Go struct's fields:
-
-   i) They can be either by Value or Reference.
-
-  ii) Every field that is marked as optional in the QAPI specification
-      are translated to Reference fields in its Go structure. This
-      design decision is the most straightforward way to check if a
-      given field was set or not. Exception only for types that can
-      take JSON Null value.
-
- iii) Mandatory fields are always by Value with the exception of QAPI
-      arrays, which are handled by Reference (to a block of memory) by
-      Go.
-
-  iv) All the fields are named with Uppercase due Golang's export
-      convention.
-
-   v) In order to avoid any kind of issues when encoding or decoding,
-      to or from JSON, we mark all fields with its @name and, when it is
-      optional, member, with @omitempty
-
-Example:
+Explaining why this is needed needs some context, so taking the
+example of StrOrNull alternate type and considering a simplified
+struct that has two fields:
 
 qapi:
- | { 'struct': 'BlockdevCreateOptionsFile',
- |   'data': { 'filename': 'str',
- |             'size': 'size',
- |             '*preallocation': 'PreallocMode',
- |             '*nocow': 'bool',
- |             '*extent-size-hint': 'size'} }
+ | { 'struct': 'MigrationExample',
+ |   'data': { '*label': 'StrOrNull',
+ |             'target': 'StrOrNull' } }
 
-go:
-| type BlockdevCreateOptionsFile struct {
-|     Filename       string        `json:"filename"`
-|     Size           uint64        `json:"size"`
-|     Preallocation  *PreallocMode `json:"preallocation,omitempty"`
-|     Nocow          *bool         `json:"nocow,omitempty"`
-|     ExtentSizeHint *uint64       `json:"extent-size-hint,omitempty"`
-| }
+We have a optional member 'label' which can have three JSON values:
+ 1. A string: { "target": "a.host.com", "label": "happy" }
+ 2. A null  : { "target": "a.host.com", "label": null }
+ 3. Absent  : { "target": null}
+
+The member 'target' is not optional, hence it can't be absent.
+
+A Go struct that contains a optional type that can be JSON Null like
+'label' in the example above, will need extra care when Marshaling and
+Unmarshaling from JSON.
+
+This patch handles this very specific case:
+ - It implements the Marshaler interface for these structs to properly
+   handle these values.
+ - It adds the interface AbsentAlternate() and implement it for any
+   Alternate that can be JSON Null
 
 Signed-off-by: Victor Toso <victortoso@redhat.com>
 ---
- scripts/qapi/golang.py | 156 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 155 insertions(+), 1 deletion(-)
+ scripts/qapi/golang.py | 243 ++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 228 insertions(+), 15 deletions(-)
 
 diff --git a/scripts/qapi/golang.py b/scripts/qapi/golang.py
-index 3f6692df4b..73d0804d0a 100644
+index 73d0804d0a..6a7e37dd90 100644
 --- a/scripts/qapi/golang.py
 +++ b/scripts/qapi/golang.py
-@@ -116,6 +116,14 @@ def gen_golang(schema: QAPISchema, output_dir: str, prefix: str) -> None:
-     vis.write(output_dir)
+@@ -110,6 +110,26 @@
+ """
  
  
-+def qapi_name_is_base(name: str) -> bool:
-+    return qapi_name_is_object(name) and name.endswith("-base")
++TEMPLATE_STRUCT_WITH_NULLABLE_MARSHAL = """
++func (s {type_name}) MarshalJSON() ([]byte, error) {{
++\tm := make(map[string]any)
++{map_members}{map_special}
++\treturn json.Marshal(&m)
++}}
++
++func (s *{type_name}) UnmarshalJSON(data []byte) error {{
++\ttmp := {struct}{{}}
++
++\tif err := json.Unmarshal(data, &tmp); err != nil {{
++\t\treturn err
++\t}}
++
++{set_members}{set_special}
++\treturn nil
++}}
++"""
 +
 +
-+def qapi_name_is_object(name: str) -> bool:
-+    return name.startswith("q_obj_")
-+
-+
- def qapi_to_field_name(name: str) -> str:
-     return name.title().replace("_", "").replace("-", "")
+ def gen_golang(schema: QAPISchema, output_dir: str, prefix: str) -> None:
+     vis = QAPISchemaGenGolangVisitor(prefix)
+     schema.visit(vis)
+@@ -256,21 +276,31 @@ def get_struct_field(
+     self: QAPISchemaGenGolangVisitor,
+     qapi_name: str,
+     qapi_type_name: str,
++    within_nullable_struct: bool,
+     is_optional: bool,
+     is_variant: bool,
+-) -> dict[str:str]:
++) -> Tuple[dict[str:str], bool]:
  
-@@ -124,6 +132,24 @@ def qapi_to_field_name_enum(name: str) -> str:
-     return name.title().replace("-", "")
+     field = qapi_to_field_name(qapi_name)
+     member_type = qapi_schema_type_to_go_type(qapi_type_name)
++    is_nullable = False
  
+     optional = ""
+     if is_optional:
+-        if member_type not in self.accept_null_types:
++        if member_type in self.accept_null_types:
++            is_nullable = True
++        else:
+             optional = ",omitempty"
  
-+def qapi_to_go_type_name(name: str) -> str:
-+    if qapi_name_is_object(name):
-+        name = name[6:]
-+
-+    # We want to keep CamelCase for Golang types. We want to avoid removing
-+    # already set CameCase names while fixing uppercase ones, eg:
-+    # 1) q_obj_SocketAddress_base -> SocketAddressBase
-+    # 2) q_obj_WATCHDOG-arg -> WatchdogArg
-+    words = list(name.replace("_", "-").split("-"))
-+    name = words[0]
-+    if name.islower() or name.isupper():
-+        name = name.title()
-+
-+    name += "".join(word.title() for word in words[1:])
-+
-+    return name
-+
-+
- def qapi_schema_type_to_go_type(qapitype: str) -> str:
-     schema_types_to_go = {
-         "str": "string",
-@@ -226,6 +252,98 @@ def generate_struct_type(
-     return f"""{with_type} struct{members}"""
+     # Use pointer to type when field is optional
+     isptr = "*" if is_optional and member_type[0] not in "*[" else ""
  
- 
-+def get_struct_field(
-+    self: QAPISchemaGenGolangVisitor,
-+    qapi_name: str,
-+    qapi_type_name: str,
-+    is_optional: bool,
-+    is_variant: bool,
-+) -> dict[str:str]:
++    if within_nullable_struct:
++        # Within a struct which has a field of type that can hold JSON NULL,
++        # we have to _not_ use a pointer, otherwise the Marshal methods are
++        # not called.
++        isptr = "" if member_type in self.accept_null_types else isptr
 +
-+    field = qapi_to_field_name(qapi_name)
-+    member_type = qapi_schema_type_to_go_type(qapi_type_name)
-+
-+    optional = ""
-+    if is_optional:
-+        if member_type not in self.accept_null_types:
-+            optional = ",omitempty"
-+
-+    # Use pointer to type when field is optional
-+    isptr = "*" if is_optional and member_type[0] not in "*[" else ""
-+
-+    fieldtag = (
-+        '`json:"-"`' if is_variant else f'`json:"{qapi_name}{optional}"`'
-+    )
-+    arg = {
-+        "name": f"{field}",
-+        "type": f"{isptr}{member_type}",
-+        "tag": f"{fieldtag}",
-+    }
-+    return arg
+     fieldtag = (
+         '`json:"-"`' if is_variant else f'`json:"{qapi_name}{optional}"`'
+     )
+@@ -279,32 +309,202 @@ def get_struct_field(
+         "type": f"{isptr}{member_type}",
+         "tag": f"{fieldtag}",
+     }
+-    return arg
++    return arg, is_nullable
 +
 +
-+def recursive_base(
-+    self: QAPISchemaGenGolangVisitor,
-+    base: Optional[QAPISchemaObjectType],
-+    discriminator: Optional[str] = None,
-+) -> List[dict[str:str]]:
++# This helper is used whithin a struct that has members that accept JSON NULL.
++def map_and_set(
++    is_nullable: bool, field: str, field_is_optional: bool, name: str
++) -> Tuple[str, str]:
++
++    mapstr = ""
++    setstr = ""
++    if is_nullable:
++        mapstr = f"""
++\tif val, absent := s.{field}.ToAnyOrAbsent(); !absent {{
++\t\tm["{name}"] = val
++\t}}
++"""
++        setstr += f"""
++\tif _, absent := (&tmp.{field}).ToAnyOrAbsent(); !absent {{
++\t\ts.{field} = &tmp.{field}
++\t}}
++"""
++    elif field_is_optional:
++        mapstr = f"""
++\tif s.{field} != nil {{
++\t\tm["{name}"] = s.{field}
++\t}}
++"""
++        setstr = f"""\ts.{field} = tmp.{field}\n"""
++    else:
++        mapstr = f"""\tm["{name}"] = s.{field}\n"""
++        setstr = f"""\ts.{field} = tmp.{field}\n"""
++
++    return mapstr, setstr
++
++
++def recursive_base_nullable(
++    self: QAPISchemaGenGolangVisitor, base: Optional[QAPISchemaObjectType]
++) -> Tuple[List[dict[str:str]], str, str, str, str]:
 +    fields: List[dict[str:str]] = []
++    map_members = ""
++    set_members = ""
++    map_special = ""
++    set_special = ""
 +
 +    if not base:
-+        return fields
++        return fields, map_members, set_members, map_special, set_special
 +
 +    if base.base is not None:
 +        embed_base = self.schema.lookup_entity(base.base.name)
-+        fields = recursive_base(self, embed_base, discriminator)
++        (
++            fields,
++            map_members,
++            set_members,
++            map_special,
++            set_special,
++        ) = recursive_base_nullable(self, embed_base)
 +
 +    for member in base.local_members:
-+        if discriminator and member.name == discriminator:
-+            continue
-+        field = get_struct_field(
-+            self, member.name, member.type.name, member.optional, False
++        field, _ = get_struct_field(
++            self, member.name, member.type.name, True, member.optional, False
 +        )
 +        fields.append(field)
 +
-+    return fields
++        member_type = qapi_schema_type_to_go_type(member.type.name)
++        nullable = member_type in self.accept_null_types
++        field_name = qapi_to_field_name(member.name)
++        tomap, toset = map_and_set(
++            nullable, field_name, member.optional, member.name
++        )
++        if nullable:
++            map_special += tomap
++            set_special += toset
++        else:
++            map_members += tomap
++            set_members += toset
++
++    return fields, map_members, set_members, map_special, set_special
 +
 +
-+# Helper function that is used for most of QAPI types
-+def qapi_to_golang_struct(
++# Helper function. This is executed when the QAPI schema has members
++# that could accept JSON NULL (e.g: StrOrNull in QEMU"s QAPI schema).
++# This struct will need to be extended with Marshal/Unmarshal methods to
++# properly handle such atypical members.
++#
++# Only the Marshallaing methods are generated but we do need to iterate over
++# all the members to properly set/check them in those methods.
++def struct_with_nullable_generate_marshal(
 +    self: QAPISchemaGenGolangVisitor,
 +    name: str,
-+    _: Optional[QAPISourceInfo],
-+    __: QAPISchemaIfCond,
-+    ___: List[QAPISchemaFeature],
 +    base: Optional[QAPISchemaObjectType],
 +    members: List[QAPISchemaObjectTypeMember],
 +    variants: Optional[QAPISchemaVariants],
 +) -> str:
 +
-+    fields = recursive_base(self, base)
++    (
++        fields,
++        map_members,
++        set_members,
++        map_special,
++        set_special,
++    ) = recursive_base_nullable(self, base)
 +
 +    if members:
 +        for member in members:
-+            field = get_struct_field(
-+                self, member.name, member.type.name, member.optional, False
++            field, _ = get_struct_field(
++                self,
++                member.name,
++                member.type.name,
++                True,
++                member.optional,
++                False,
 +            )
 +            fields.append(field)
 +
++            member_type = qapi_schema_type_to_go_type(member.type.name)
++            nullable = member_type in self.accept_null_types
++            tomap, toset = map_and_set(
++                nullable,
++                qapi_to_field_name(member.name),
++                member.optional,
++                member.name,
++            )
++            if nullable:
++                map_special += tomap
++                set_special += toset
++            else:
++                map_members += tomap
++                set_members += toset
++
 +    if variants:
-+        fields.append({"comment": "Variants fields"})
 +        for variant in variants.variants:
 +            if variant.type.is_implicit():
 +                continue
 +
-+            field = get_struct_field(
-+                self, variant.name, variant.type.name, True, True
++            field, _ = get_struct_field(
++                self,
++                variant.name,
++                variant.type.name,
++                True,
++                variant.optional,
++                True,
 +            )
 +            fields.append(field)
 +
++            member_type = qapi_schema_type_to_go_type(variant.type.name)
++            nullable = member_type in self.accept_null_types
++            tomap, toset = map_and_set(
++                nullable,
++                qapi_to_field_name(variant.name),
++                variant.optional,
++                variant.name,
++            )
++            if nullable:
++                map_special += tomap
++                set_special += toset
++            else:
++                map_members += tomap
++                set_members += toset
++
 +    type_name = qapi_to_go_type_name(name)
-+    content = generate_struct_type(type_name, fields)
-+    return content
-+
-+
- def generate_template_alternate(
++    struct = generate_struct_type("", fields, ident=1)[:-1]
++    return TEMPLATE_STRUCT_WITH_NULLABLE_MARSHAL.format(
++        struct=struct[1:],
++        type_name=type_name,
++        map_members=map_members,
++        map_special=map_special,
++        set_members=set_members,
++        set_special=set_special,
++    )
+ 
+ 
+ def recursive_base(
      self: QAPISchemaGenGolangVisitor,
-     name: str,
-@@ -318,12 +436,14 @@ def __init__(self, _: str):
-             "alternate",
-             "enum",
-             "helper",
-+            "struct",
+     base: Optional[QAPISchemaObjectType],
+     discriminator: Optional[str] = None,
+-) -> List[dict[str:str]]:
++) -> Tuple[List[dict[str:str]], bool]:
+     fields: List[dict[str:str]] = []
++    with_nullable = False
+ 
+     if not base:
+-        return fields
++        return fields, with_nullable
+ 
+     if base.base is not None:
+         embed_base = self.schema.lookup_entity(base.base.name)
+-        fields = recursive_base(self, embed_base, discriminator)
++        fields, with_nullable = recursive_base(self, embed_base, discriminator)
+ 
+     for member in base.local_members:
+         if discriminator and member.name == discriminator:
+             continue
+-        field = get_struct_field(
+-            self, member.name, member.type.name, member.optional, False
++        field, nullable = get_struct_field(
++            self, member.name, member.type.name, False, member.optional, False
          )
-         self.target = dict.fromkeys(types, "")
-         self.schema: QAPISchema
-         self.golang_package_name = "qapi"
-         self.enums: dict[str, str] = {}
-         self.alternates: dict[str, str] = {}
-+        self.structs: dict[str, str] = {}
-         self.accept_null_types = []
+         fields.append(field)
++        with_nullable = True if nullable else with_nullable
  
-     def visit_begin(self, schema: QAPISchema) -> None:
-@@ -368,6 +488,7 @@ def visit_end(self) -> None:
-         del self.schema
-         self.target["enum"] += generate_content_from_dict(self.enums)
-         self.target["alternate"] += generate_content_from_dict(self.alternates)
-+        self.target["struct"] += generate_content_from_dict(self.structs)
+-    return fields
++    return fields, with_nullable
  
-     def visit_object_type(
-         self,
-@@ -379,7 +500,40 @@ def visit_object_type(
-         members: List[QAPISchemaObjectTypeMember],
-         variants: Optional[QAPISchemaVariants],
-     ) -> None:
--        pass
-+        # Do not handle anything besides struct.
-+        if (
-+            name == self.schema.the_empty_object_type.name
-+            or not isinstance(name, str)
-+            or info.defn_meta not in ["struct"]
-+        ):
-+            return
-+
-+        # Base structs are embed
-+        if qapi_name_is_base(name):
-+            return
-+
-+        # Safety checks.
-+        assert name not in self.structs
-+
-+        # visit all inner objects as well, they are not going to be
-+        # called by python's generator.
-+        if variants:
-+            for var in variants.variants:
-+                assert isinstance(var.type, QAPISchemaObjectType)
-+                self.visit_object_type(
-+                    self,
-+                    var.type.name,
-+                    var.type.info,
-+                    var.type.ifcond,
-+                    var.type.base,
-+                    var.type.local_members,
-+                    var.type.variants,
-+                )
-+
-+        # Save generated Go code to be written later
-+        self.structs[name] = qapi_to_golang_struct(
-+            self, name, info, ifcond, features, base, members, variants
+ 
+ # Helper function that is used for most of QAPI types
+@@ -319,14 +519,20 @@ def qapi_to_golang_struct(
+     variants: Optional[QAPISchemaVariants],
+ ) -> str:
+ 
+-    fields = recursive_base(self, base)
++    fields, with_nullable = recursive_base(self, base)
+ 
+     if members:
+         for member in members:
+-            field = get_struct_field(
+-                self, member.name, member.type.name, member.optional, False
++            field, nullable = get_struct_field(
++                self,
++                member.name,
++                member.type.name,
++                False,
++                member.optional,
++                False,
+             )
+             fields.append(field)
++            with_nullable = True if nullable else with_nullable
+ 
+     if variants:
+         fields.append({"comment": "Variants fields"})
+@@ -334,13 +540,18 @@ def qapi_to_golang_struct(
+             if variant.type.is_implicit():
+                 continue
+ 
+-            field = get_struct_field(
+-                self, variant.name, variant.type.name, True, True
++            field, nullable = get_struct_field(
++                self, variant.name, variant.type.name, False, True, True
+             )
+             fields.append(field)
++            with_nullable = True if nullable else with_nullable
+ 
+     type_name = qapi_to_go_type_name(name)
+     content = generate_struct_type(type_name, fields)
++    if with_nullable:
++        content += struct_with_nullable_generate_marshal(
++            self, name, base, members, variants
 +        )
+     return content
  
-     def visit_alternate_type(
-         self,
+ 
+@@ -465,7 +676,9 @@ def visit_begin(self, schema: QAPISchema) -> None:
+         for target in self.target:
+             self.target[target] = f"package {self.golang_package_name}\n"
+ 
+-            if target == "helper":
++            if target == "struct":
++                imports = '\nimport "encoding/json"\n'
++            elif target == "helper":
+                 imports = """\nimport (
+ \t"encoding/json"
+ \t"strings"
 -- 
 2.41.0
 
