@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8116D7CA014
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 09:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9887CA072
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 09:25:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsHeQ-0007Ou-IT; Mon, 16 Oct 2023 03:04:30 -0400
+	id 1qsHwq-0003VP-S5; Mon, 16 Oct 2023 03:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsHeJ-0007Mv-6Z
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:04:24 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsHeH-00021y-Iw
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:04:22 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-32db188e254so592456f8f.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 00:04:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697439860; x=1698044660; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eWYHsWav78FLELT+tFlrNloPN870qfN/K9WbOVvbEvA=;
- b=yHCfpJZbpd/r4i+zNxsFfuYqFQX6thVr1wviIl6PnGM/5iLKzMqe0h0Y5PW2V4s5o0
- b87haHyl/xUdNF/i6TcIF2Zpv9/52neS6ku4CZFEGTBUh6r+ejmZi0Uasdp8PhUVVzfl
- nftdI04+FCriYjxY38Aw+tieg9+qi9zJ/0zXdnXbtafRkTDZeURk1TDWr8FzRCDJia4H
- zWLblnmCOI8Douzqasa1FVZqFuowc62zAQOXvh40yi0GSZdH9g+sqtvet5AgdwCLtdMC
- DCwHQNc+oVhwZxmTT09Fc+0n3FEfsFxj67+753vY1sRL+wUfSizLTdMkad0vxOietYco
- 19Ew==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qsHwk-0003VG-Kl
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:23:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qsHwj-0005EP-1G
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:23:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697441003;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=TsFJJDxiFUm5Gl2M+QXmNI4+ApCOQ3IBH+CS1wcbshU=;
+ b=MmsM0R4P5b3J1glbMNgSdFIN6NGTpdR9r9w9yw40ma6zcPKRSiQ56ni0rCZ77fwrfiaCCa
+ 4lNNzpJmizdQXYt07zo7mBqsdeIdQ+/7BD4NSDajPxqBsB6LURCZVTe7aidB5JdIbhA5Fd
+ LVL8BbUF8wKHkiZ9J1zFDGXKVPGykdk=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-TPCvUln_McG0o_d14N0eEw-1; Mon, 16 Oct 2023 03:23:19 -0400
+X-MC-Unique: TPCvUln_McG0o_d14N0eEw-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2c51a7df557so10240651fa.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 00:23:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697439860; x=1698044660;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eWYHsWav78FLELT+tFlrNloPN870qfN/K9WbOVvbEvA=;
- b=YfDhUOWQb/ebR+cokBOcIWRMf+27KHDk+0G7r/Ac2q9+3Bwc88p9q4ywZZTR+fySul
- 1P1FMypRVwOu6lOQRd2MMfzv8f8RTUFFSplMuUVZJcK2+i504rj/JJxdmDUUxM5ZfJxX
- X+E8dQwr03x1T6SbHeMBoJsYvCFpivHPCMs+piqHANljcbc8SmrbkLLX6P/UALFnpQtT
- a7SgPLbLd5FVuE0kb7sRd3vqM2tjnhPYAuFYd/n5BXRJvc1pFBSPc8aKI86sNVgaeXqf
- Lw0aIem/K2O4a7kWg/PbjBUHZvYQGw/5hSZEelzAsLwasjuapPoWaiC5XU9XRJRMU+Dc
- 7S7g==
-X-Gm-Message-State: AOJu0YwDORDiVi8T3r4Oo4lZxThzvlut+PMMVP3d+Om942jSApLvQdTJ
- OoTgEWddZGfVgeXnr4dWQSf3SA==
-X-Google-Smtp-Source: AGHT+IEFAJOWIKIh34xcS0A4orq55wUJa5f9xrTRBjv4h7ApQLKvl4zJ9JZgWOG1EvfXhOPatTSnBw==
-X-Received: by 2002:a5d:6788:0:b0:32d:a4cf:99b3 with SMTP id
- v8-20020a5d6788000000b0032da4cf99b3mr4607191wru.67.1697439859894; 
- Mon, 16 Oct 2023 00:04:19 -0700 (PDT)
-Received: from [192.168.69.115]
- (mdq11-h01-176-173-171-135.dsl.sta.abo.bbox.fr. [176.173.171.135])
- by smtp.gmail.com with ESMTPSA id
- o13-20020adfcf0d000000b0032008f99216sm8296853wrj.96.2023.10.16.00.04.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 00:04:19 -0700 (PDT)
-Message-ID: <bf5d344c-84a1-c6b9-3d17-0362a4c2c9e7@linaro.org>
-Date: Mon, 16 Oct 2023 09:04:17 +0200
+ d=1e100.net; s=20230601; t=1697440998; x=1698045798;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TsFJJDxiFUm5Gl2M+QXmNI4+ApCOQ3IBH+CS1wcbshU=;
+ b=IXjVq1CIle7Jx5/F3OFMrEBU2ymVTnuCfTng3oxOQg5rphN1Q/u5Yalj0tGMvqfxbR
+ HJyzDeHEZBriQNbLBVvM+xutNYYEFL6keu9z//9qzZAZXOtU8RjJwWEIT+//Y8/UF7/e
+ +G2MtHlOVYiAqH7kpfSAWydUjFOc7SRtxl4fTEF5K4sVQNC1ONUEg4g1Om88Migb912P
+ RFCHhwCjyaeTFIXNdltCLNPhetaSdzGpPRrx4T89T8kr/7crO211OfaNlrRQxsqvKtc6
+ tYZqXI8r2+NP/pqcZUkB4msARva0u1+qJE06jidUm4bnTHLj0bfItCbsz4al7zl67LhP
+ I0EQ==
+X-Gm-Message-State: AOJu0YxvvkgQYNnMTjdsoIeX6kmLNZ5kBZC4J38cYrAybPly//hFK680
+ EnXUoCXGhJGl6mR9gTKZ2Ii7q+jaIY4OLvi3IFSQ3k+LPrPhWH09WjoNNp/q1XYpinDlAnWF/yM
+ PdxkXlBSZ1qprq4g=
+X-Received: by 2002:a2e:a789:0:b0:2c5:15dc:ba99 with SMTP id
+ c9-20020a2ea789000000b002c515dcba99mr5117663ljf.51.1697440998426; 
+ Mon, 16 Oct 2023 00:23:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjdMOQtFbB4phiYqM/Hq8Ooi7xGWAZaz2rQb0CONpwAhlmfKTNfCyqnDF/VWr1eVna6YsQlQ==
+X-Received: by 2002:a2e:a789:0:b0:2c5:15dc:ba99 with SMTP id
+ c9-20020a2ea789000000b002c515dcba99mr5117641ljf.51.1697440998091; 
+ Mon, 16 Oct 2023 00:23:18 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ s19-20020a05600c45d300b0040648217f4fsm6407011wmo.39.2023.10.16.00.23.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Oct 2023 00:23:17 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Cc: peterx@redhat.com,  farosas@suse.de,  leobras@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 1/4] migration: check for rate_limit_max for
+ RATE_LIMIT_DISABLED
+In-Reply-To: <20231011184358.97349-2-elena.ufimtseva@oracle.com> (Elena
+ Ufimtseva's message of "Wed, 11 Oct 2023 11:43:55 -0700")
+References: <20231011184358.97349-1-elena.ufimtseva@oracle.com>
+ <20231011184358.97349-2-elena.ufimtseva@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Mon, 16 Oct 2023 09:23:16 +0200
+Message-ID: <875y3758uz.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 3/4] hw/pci-host/bonito: Access memory regions via
- pci_address_space[_io]()
-Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Herv=c3=a9_Poussineau?= <hpoussin@reactos.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Huacai Chen <chenhuacai@kernel.org>, qemu-ppc@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20231011185954.10337-1-philmd@linaro.org>
- <20231011185954.10337-4-philmd@linaro.org>
- <5FD62714-3C33-4A93-B7E3-F3523FCE69C1@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <5FD62714-3C33-4A93-B7E3-F3523FCE69C1@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,29 +98,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/10/23 00:19, Bernhard Beschow wrote:
-> Am 11. Oktober 2023 18:59:53 UTC schrieb "Philippe Mathieu-Daudé" <philmd@linaro.org>:
->> PCI functions are plugged on a PCI bus. They can only access
->> external memory regions via the bus.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->> hw/pci-host/bonito.c | 6 +++---
->> 1 file changed, 3 insertions(+), 3 deletions(-)
+Elena Ufimtseva <elena.ufimtseva@oracle.com> wrote:
+> In migration rate limiting atomic operations are used
+> to read the rate limit variables and transferred bytes and
+> they are expensive. Check first if rate_limit_max is equal
+> to RATE_LIMIT_DISABLED and return false immediately if so.
+>
+> Note that with this patch we will also will stop flushing
+> by not calling qemu_fflush() from migration_transferred_bytes()
+> if the migration rate is not exceeded.
+> This should be fine since migration thread calls in the loop
+> migration_update_counters from migration_rate_limit() that
+> calls the migration_transferred_bytes() and flushes there.
+>
+> Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
 
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
->> @@ -719,7 +719,7 @@ static void bonito_pci_realize(PCIDevice *dev, Error **errp)
->>
->>      memory_region_init_alias(pcimem_alias, NULL, "pci.mem.alias",
->>                               &bs->pci_mem, 0, BONITO_PCIHI_SIZE);
->> -    memory_region_add_subregion(get_system_memory(),
->> +    memory_region_add_subregion(pci_address_space(dev),
-> 
-> I need to keep `get_system_memory()` here to get the same results for `info mtree` in the QEMU console before and after this patch when running `qemu-system-mips64el -M fuloong2e -S`. The other two changes above seem to work as expected.
-
-Good catch, thank you Bernhard!
+queued.
 
 
