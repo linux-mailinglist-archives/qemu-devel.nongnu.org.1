@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA037CAF5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F41F7CAF9C
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:36:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsQVn-0005Wf-MJ; Mon, 16 Oct 2023 12:32:11 -0400
+	id 1qsQYq-00083C-Jf; Mon, 16 Oct 2023 12:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsQVk-0005Vk-Ht
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:32:08 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1qsQYn-000832-2y
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:35:17 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsQVi-0001c9-Un
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:32:08 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-53e2dc8fa02so6629586a12.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:32:06 -0700 (PDT)
+ id 1qsQYl-0002Pd-IP
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:35:16 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-53b32dca0bfso9817721a12.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:35:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697473925; x=1698078725; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697474114; x=1698078914; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qOs686La6Yfor4hdI45g0uJv/XusOOLiHD/JINbFSUI=;
- b=hCVU095Mk/FFy1GpRbU4q/ZFa62jUFzvlKyfuzpprkmfVev9jZ4QR8TbaPKvKskCdI
- ZuaC0H0ioBECOHEEgiNtXDvoRubkzFfUGUYQtYhNY9EbVzvn9Gglkzt6o5RN/RND8nar
- TVHXo2SpdmuBMrYUziXBWcQud4YGk5Wffyp2/NITr9mTTDq9R8xjCOnSs/ibNqZVxB7L
- ArIU0YxTPWFSKtl6nQSxeorEwjwjusVSpmH76tMNLw7CsjiGJA8vthVTIUj3VDXolPRC
- wJCG5ID/jPtnFa5fpU+4u3srAVW0W7j5Ft27KoxB8orT9pWGWSgZ3+X2bRX3nweTxknz
- UF1Q==
+ bh=wxBLoxrbLPMB1pasH5cVOWw9S3wJBYncCBLnHidpH+s=;
+ b=V8i0s8bzm2pGpzWQ3cYng0Bn4AEZ+jstI4nA5mUOOq754SlNOJtSjZL6xwhh0wNLJS
+ 9D7xvB5/EUZLpjyYmh3hyEeSRG+AUnteDYcW6V4URPh5xa7KVUDxaf+IHXWuuEOI3sYu
+ n1se4fhAQBQ6hN3Wa+J9b+VPX0Sj5i95UZmT8x3391hGrh++kYEMjSUvKyjEDrgYPl91
+ OC13HK3OkvKorFKwmST1zborrM5r4O/3bAXyBXGSPswXkxPXN1SbT7Z3ZNaNJ4n5gRV0
+ 83hiHhomhHYBJEttK2hCZ42guEFn276gJf955fw00vXMkhduxUYLuXltKr/7PBdwQle+
+ OeQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697473925; x=1698078725;
+ d=1e100.net; s=20230601; t=1697474114; x=1698078914;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=qOs686La6Yfor4hdI45g0uJv/XusOOLiHD/JINbFSUI=;
- b=hwWA0xKK7FS8YoJeL9Sq5iaaNeRJY4ki1nozXU6AXbPrHUPUH3/lIKZIP8+b1XO5IO
- WjL398hGR0YVxHxoNfCCoJMMpDXCU/kWZwnP4e6iQYxU4RTyGedHjq8GnosZshkjFIra
- GhV/uY5xNxrURTNZEtcvAU3ru5RIWYSguSxPm+rfXKMITSRFPsZVIULN62OQ/STXqFbW
- idFqXFMwIbBkyW6xKS3FdOHKSsZs9nwcdW4z7dR2nTyQO1OsNRk4bJaWTMxO3rhvFlbJ
- RkKiYEyeIPrWMSzImjfLUQP9FYf97p6ThWRSAvwwbmRZj0kxRIPs2bfUZmTXhxcvuJsn
- OWVg==
-X-Gm-Message-State: AOJu0Yzj/GxuRi7lC3nd+RrtOhDegXcZa0sXOfYsS1MKpXGwPQIAUfl4
- NwpjE0qDvv17BcPdPdhZyYWpD4OV3ildU2Dl/K1Ylg==
-X-Google-Smtp-Source: AGHT+IFlqNkO9P0rdXXnYVj64mJgCwbmz43tUY1jiK30xTKWMRZhcttHMofYnQixwzd7SisFWhOVsiGQrRQASwtL7IA=
-X-Received: by 2002:aa7:c998:0:b0:527:ab3f:4350 with SMTP id
- c24-20020aa7c998000000b00527ab3f4350mr29494909edt.38.1697473925339; Mon, 16
- Oct 2023 09:32:05 -0700 (PDT)
+ bh=wxBLoxrbLPMB1pasH5cVOWw9S3wJBYncCBLnHidpH+s=;
+ b=MWbW/lZfhV4bq9kM4S5eYDyPpViA5J0eSZ+pUT4rw+tLyHrpv1nOMyIA0d/FVCTsh8
+ oO0iHuOf3kNOJ4cYlNk5nOi4b265AYb9V/WDCBsJE1o/KfXukt5QHoxc1HFFKyAsHaz5
+ wyCvA25NB8bLcFfPuokuM9+JNk786Z+3t/Fe3KGh5MrS/Dtk+smanxmD8sxOqbu+zgLL
+ 8+6L6P8qM55wTBwN3NH5SJNMD28aYO8JMaWNek8KjSwvNALLyY6g8jXESSG2h28/TwGF
+ Tb8IQ7Iav3RIZ6iM40Fiaz5xFx3uns+vl53JibmApGTONFDcjaXipoLuO8qy7KT5ujfU
+ VK5A==
+X-Gm-Message-State: AOJu0Yy3yMABTRQ7X5weQzzm1OcmYZqXBu8B7I/WmzM6R9ngnEv4g57s
+ cx4S8d/EEVvA98M6P049bU5fDRyor837PSE2YPZbRHOKRDLncUP8
+X-Google-Smtp-Source: AGHT+IHm9f4CSTeK6t9SwUyQlbi//EeuB3DtLdbpB/3f3llg44tfBspex5rtrL52VaFR52j2A67gHd0GQFrO8ZXJhzg=
+X-Received: by 2002:aa7:d597:0:b0:535:cbe5:a039 with SMTP id
+ r23-20020aa7d597000000b00535cbe5a039mr7702594edq.12.1697474113811; Mon, 16
+ Oct 2023 09:35:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231004055713.324009-1-tong.ho@amd.com>
-In-Reply-To: <20231004055713.324009-1-tong.ho@amd.com>
+References: <20230930235317.11469-1-viktor@daynix.com>
+In-Reply-To: <20230930235317.11469-1-viktor@daynix.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 16 Oct 2023 17:31:54 +0100
-Message-ID: <CAFEAcA-vTFaQNeKRAN9hKX+jGR4uK4qbj3YeFNr3jz5vfv-tjA@mail.gmail.com>
-Subject: Re: [PATCH] xlnx-zynqmp-efuse: hw/nvram: Remove deprecated device
- reset
-To: Tong Ho <tong.ho@amd.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, alistair@alistair23.me, 
- edgar.iglesias@gmail.com
+Date: Mon, 16 Oct 2023 17:35:03 +0100
+Message-ID: <CAFEAcA-A-kw2K_OLDri+VUnNz6NnWb25SAcYda5jchNhJ76x7g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] elf2dmp: fixes of code analysis warnings
+To: Viktor Prutyanov <viktor@daynix.com>
+Cc: qemu-devel@nongnu.org, akihiko.odaki@daynix.com, yan@daynix.com, 
+ viktor.prutyanov@phystech.edu
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,21 +85,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 4 Oct 2023 at 06:57, Tong Ho <tong.ho@amd.com> wrote:
+On Sun, 1 Oct 2023 at 00:53, Viktor Prutyanov <viktor@daynix.com> wrote:
 >
-> This change implements the ResettableClass interface for the device.
+> This series tries to fix Coverity warnings.
 >
-> Signed-off-by: Tong Ho <tong.ho@amd.com>
-> ---
+> v2: fix commit authorship, add CIDs
 
-Applied to target-arm.next, thanks.
+Applied to target-arm.next (since I took the last set of
+elf2dmp patches), thanks.
 
-For the future, if you have a small set of basically
-similar patches to related devices like these reset
-ones, it's a bit less effort for me if you send them out
-as a patch-series rather than as separate individual
-patches.
-
-thanks
 -- PMM
 
