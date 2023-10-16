@@ -2,78 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014607CACE0
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 17:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9DC7CAD60
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 17:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsP8a-0001Wj-F1; Mon, 16 Oct 2023 11:04:08 -0400
+	id 1qsPNV-0000V2-G6; Mon, 16 Oct 2023 11:19:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsP8Y-0001Vo-Fm
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:04:06 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsP8T-0006Yp-QU
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 11:04:05 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-53db3811d8fso9564484a12.1
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 08:04:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697468640; x=1698073440; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vWBt0ThzpcXe0XqhBzN6SSKL4Xm+A/nuzJrFtiDIs78=;
- b=vaXmHmW2MstT5TqF+Vm73L9An2v/DNyYI88ARiZuzhcOP4wmz0tX2HgFhjyP6shW/E
- HMm2Mo6tnWFXyw5O6mxlHjX7YsG4g/Dh7FW5E9J/Kb6IpcnjfwC7vwc9OFqyGLzrdea5
- yVmjet/hOrWqXfq7eePGu7B8K8zPGTKrtIfOSgX6nRO0nRg58hflhHrQKrilwqINhCki
- HS23IB9rDBEUg5KfbiQ8scIYr5nc240MTNnx69m+/NgYov2k+S3eSAbUAxgRfNXEv8Qp
- Pjl+oePfoa8IWR5cFPD16fFCjLBHkNYcLbSu4FxgA18bXQ41FUj9mvvKOTZ283ubxtQw
- LyrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697468640; x=1698073440;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vWBt0ThzpcXe0XqhBzN6SSKL4Xm+A/nuzJrFtiDIs78=;
- b=uVSld6j8gLWcTEe7Yh/UxUdK14IgB2Sx6AIqeQzmb9+rJuk66Srnj285qAhuejG7Ot
- 22C0uz45d9d/NW5cdd4qEIH3sJaNipkFrRu+PPDF2rX1X7nqux8ygYsdzhILlLgwVsdo
- OK0SJBSTgxQZbvoBb3Hkogs8NFldynNRt7KHKuhijuoqGM/x6SZdnbh7sdcMrzWf4kyC
- wC98WizyRIesM4DKCV9d/yS60gOO9Q1w4lN9WplXlGYgQzez+YoRl2xMDWPoXFZLIDqH
- B51I3SR4Yvt8Z0Wo2vWul2hH9A/VM7KIbe2xtnnpiFDwcMRd9zuprX3HzbGR03sHGpvT
- ld8w==
-X-Gm-Message-State: AOJu0YzLRNd04PkqEf4fZmP8yYO4OYAWsxOyLPGvKSuoKmSoRJLlW0w3
- Jj412dyFiukZBSrt48FoRh1HvytK+Zm5udXT/EV9MA==
-X-Google-Smtp-Source: AGHT+IGbcUxeK+zLoeLX6zVLCX58lPUIT7Dabk0zyKjiGlFXXneT5uDpbtf8z1b4xWnpmBlHAzCK2VsmsP1PSgLjcLA=
-X-Received: by 2002:a50:d619:0:b0:53d:e91b:7158 with SMTP id
- x25-20020a50d619000000b0053de91b7158mr7099309edi.0.1697468640250; Mon, 16 Oct
- 2023 08:04:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <BATV+ffd15938eba190e275bf+7358+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qsPNO-0000Ob-Gz; Mon, 16 Oct 2023 11:19:27 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+ffd15938eba190e275bf+7358+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qsPNL-0001aR-0Z; Mon, 16 Oct 2023 11:19:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=F3UjuhE2FBKcmgLerw1NnKKsKaQ1Vv0F+THBpoMNMME=; b=RUe0h4t2PDLQe/PbrYmnoJGzBv
+ XpnXvqi6OUXrxehffQ1Zf3iom+dmkFdob8j4mg/Fas49lSB23CT9QoY4sPBHT4gD/sj7ySvs5Vrf1
+ YlBGiPXcApj99d7zg4CiWufTxxd6zJETNOAbQpUZHP7JI/G6hkT4XxZ/Vg0SWIAYmhNl6AkpgMA63
+ e2cWIx2oNICYJZFTgnao0HZdGFu0FriQCdSWlVoDiXrgJFb4ucufo8yvmCSkO1VpYxIYLfrsie/tz
+ 29KhaPmM8aD222XRsxlZECZiMS8rBg9NJydMRO9W4S4Ltm38AFPXw/MPQ+HkcdEr5AesYJTRLYIP9
+ SYkllKNQ==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qsPNC-006lqX-62; Mon, 16 Oct 2023 15:19:14 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
+ Linux)) id 1qsPNB-0005n5-1t; Mon, 16 Oct 2023 16:19:13 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+Subject: [PATCH 0/12] Get Xen PV shim running in qemu
+Date: Mon, 16 Oct 2023 16:18:57 +0100
+Message-Id: <20231016151909.22133-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <cover.1697183081.git.manos.pitsidianakis@linaro.org>
- <87o7h2hey5.fsf@pond.sub.org>
- <CAFEAcA-LQP_dQ0mjeNe8nOtMVy22iwJt2yfG5m_f4oQjQ9ts7w@mail.gmail.com>
- <CAAjaMXYfu2rVVUkwAczqQRHxgFrYr=hQHP_UGn7LVUks+DFz4A@mail.gmail.com>
-In-Reply-To: <CAAjaMXYfu2rVVUkwAczqQRHxgFrYr=hQHP_UGn7LVUks+DFz4A@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 16 Oct 2023 16:03:48 +0100
-Message-ID: <CAFEAcA_fLBe9CuWFYpeuejj8dcerhFtPNX+iVaVFvH4SXx1oAg@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/78] Strict disable implicit fallthrough
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
- "open list:ARM SMMU" <qemu-arm@nongnu.org>,
- "open list:Block Jobs" <qemu-block@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+ffd15938eba190e275bf+7358+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,61 +79,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Oct 2023 at 15:58, Manos Pitsidianakis
-<manos.pitsidianakis@linaro.org> wrote:
->
-> Hello Peter,
->
-> On Mon, 16 Oct 2023, 17:13 Peter Maydell, <peter.maydell@linaro.org> wrote:
->>
->> On Fri, 13 Oct 2023 at 13:42, Markus Armbruster <armbru@redhat.com> wrote:
->> >
->> > Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
->> >
->> > > Hello,
->> > >
->> > > This RFC is inspired by the kernel's move to -Wimplicit-fallthrough=3
->> > > back in 2019.[0]
->> > > We take one step (or two) further by increasing it to 5 which rejects
->> > > fall through comments and requires an attribute statement.
->> > >
->> > > [0]:
->> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a035d552a93b
->> > >
->> > > The line differences are not many, but they spread all over different
->> > > subsystems, architectures and devices. An attempt has been made to split
->> > > them in cohesive patches to aid post-RFC review. Part of the RFC is to
->> > > determine whether these patch divisions needs improvement.
->> > >
->> > > Main questions this RFC poses
->> > > =============================
->> > >
->> > > - Is this change desirable and net-positive.
->> >
->> > Unwanted fallthrough is an easy mistake to make, and
->> > -Wimplicit-fallthrough=N helps avoid it.  The question is how far up we
->> > need to push N.  Right now we're at N=2.  Has unwanted fallthrough been
->> > a problem?
->>
->> Mmm, this is my opinion I think. We have a mechanism for
->> catching "forgot the 'break'" already (our =2 setting) and
->> a way to say "intentional" in a fairly natural way (add the
->> comment). Does pushing N up any further gain us anything
->> except a load of churn?
->>
->> Also, the compiler is not the only thing that processes our
->> code: Coverity also looks for "unexpected fallthrough" issues,
->> so if we wanted to switch away from our current practice we
->> should check whether what we're switching to is an idiom
->> that Coverity recognises.
->
->
-> It is a code style change as the cover letter mentions, it's not related to the static analysis itself.
+I hadn't got round to getting the PV shim running yet; I thought it would
+need work on the multiboot loader. Turns out it doesn't. I *did* need to
+fix a couple of brown-paper-bag bugs in the per-vCPU upcall vector support,
+and implement Xen console support though. Now I can test PV guests:
 
-Yes, exactly. As a code style change it needs a fairly high level
-of justification for the code churn, and the cover letter
-doesn't really provide one...
+ $ qemu-system-x86_64 --accel kvm,xen-version=0x40011,kernel-irqchip=split \
+   -chardev stdio,mux=on,id=char0 -device xen-console,chardev=char0 \
+   -drive file=${GUEST_IMAGE},if=xen -display none -m 1G \
+   -kernel ~/git/xen/xen/xen -initrd ~/git/linux/arch/x86/boot/bzImage \
+   -append "loglvl=all -- console=hvc0 root=/dev/xvda1"
 
-thanks
--- PMM
+ blockdev.c                                     |  15 +++-
+ hw/block/xen-block.c                           |  26 +++++-
+ hw/char/trace-events                           |   8 ++
+ hw/char/xen_console.c                          | 522 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------
+ hw/i386/kvm/meson.build                        |   1 +
+ hw/i386/kvm/trace-events                       |   2 +
+ hw/i386/kvm/xen-stubs.c                        |   5 ++
+ hw/i386/kvm/xen_evtchn.c                       |   6 ++
+ hw/i386/kvm/xen_gnttab.c                       |  32 ++++++-
+ hw/i386/kvm/xen_primary_console.c              | 167 ++++++++++++++++++++++++++++++++++
+ hw/i386/kvm/xen_primary_console.h              |  22 +++++
+ hw/i386/kvm/xen_xenstore.c                     |  21 ++++-
+ hw/xen/xen-backend.c                           |  81 +++++++++++++----
+ hw/xen/xen-bus.c                               |  21 ++++-
+ hw/xen/xen-legacy-backend.c                    |   1 -
+ include/hw/xen/interface/arch-arm.h            |  37 ++++----
+ include/hw/xen/interface/arch-x86/cpuid.h      |  31 +++----
+ include/hw/xen/interface/arch-x86/xen-x86_32.h |  19 +---
+ include/hw/xen/interface/arch-x86/xen-x86_64.h |  19 +---
+ include/hw/xen/interface/arch-x86/xen.h        |  26 +-----
+ include/hw/xen/interface/event_channel.h       |  19 +---
+ include/hw/xen/interface/features.h            |  19 +---
+ include/hw/xen/interface/grant_table.h         |  19 +---
+ include/hw/xen/interface/hvm/hvm_op.h          |  19 +---
+ include/hw/xen/interface/hvm/params.h          |  19 +---
+ include/hw/xen/interface/io/blkif.h            |  27 ++----
+ include/hw/xen/interface/io/console.h          |  19 +---
+ include/hw/xen/interface/io/fbif.h             |  19 +---
+ include/hw/xen/interface/io/kbdif.h            |  19 +---
+ include/hw/xen/interface/io/netif.h            |  25 ++----
+ include/hw/xen/interface/io/protocols.h        |  19 +---
+ include/hw/xen/interface/io/ring.h             |  49 +++++-----
+ include/hw/xen/interface/io/usbif.h            |  19 +---
+ include/hw/xen/interface/io/xenbus.h           |  19 +---
+ include/hw/xen/interface/io/xs_wire.h          |  36 ++++----
+ include/hw/xen/interface/memory.h              |  30 +++----
+ include/hw/xen/interface/physdev.h             |  23 +----
+ include/hw/xen/interface/sched.h               |  19 +---
+ include/hw/xen/interface/trace.h               |  19 +---
+ include/hw/xen/interface/vcpu.h                |  19 +---
+ include/hw/xen/interface/version.h             |  19 +---
+ include/hw/xen/interface/xen-compat.h          |  19 +---
+ include/hw/xen/interface/xen.h                 |  19 +---
+ include/hw/xen/xen-backend.h                   |   4 +
+ include/hw/xen/xen-bus.h                       |   2 +
+ include/sysemu/kvm_xen.h                       |   1 +
+ target/i386/kvm/kvm.c                          |   4 +
+ target/i386/kvm/xen-emu.c                      |  35 ++++++--
+ 48 files changed, 941 insertions(+), 680 deletions(-)
+
+
 
