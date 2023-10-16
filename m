@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E077CAA15
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F2B7CAA7F
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:53:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsNs8-0001NV-T3; Mon, 16 Oct 2023 09:43:04 -0400
+	id 1qsO2F-0000Za-Q3; Mon, 16 Oct 2023 09:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNs6-0001Mu-8O
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:43:02 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsO2A-0000ZG-FF
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:53:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNs3-0003Jg-34
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:43:02 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsO27-0005oa-SV
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:53:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697463777;
+ s=mimecast20190719; t=1697464402;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ofDNtfPj8PrM77nntM+xodRgdiO2lfoToxmvupeYmyg=;
- b=LpBWhGa2oiZbf7QRIZbEcAPsN6jL/7C+TDxgdNHAKWPZfUXfFNIp/+kIumDLfE/g80HnqH
- b05N/Gzv+TBWkwng+V5A5gzAZ9pMvltcbwjrklQ9opKbrGe/0817CShOnOD3aVsdSTjW8j
- qbzCfVSMr7MPUDLRFNbIMXd4VZI6Lpk=
+ bh=keH1q3cOyCyVvKuWrZwLIV80luTRa97b3p1bUQoZVqE=;
+ b=Ws00x/KleOc+0jOTYCbNRWjN3ic2VmTUxM0zmP3fNxd55jTUPRM9XQL3uGB3AQPhl9cX3l
+ NFKSpgyG4zam8cO0tSoV4v5trjr+W9XAYKZZ5buoH5nEnKNbMhJXbfjNR/NdH/hwTA0tZc
+ PE+TR8vRJ1W3yQ+GJInySThXrUaLOrU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-140-6-O2Rlj7PXWSEfNKhjrroA-1; Mon, 16 Oct 2023 09:42:56 -0400
-X-MC-Unique: 6-O2Rlj7PXWSEfNKhjrroA-1
+ us-mta-62-hwkqHv9iMN-O8SUa7hYUyQ-1; Mon, 16 Oct 2023 09:43:25 -0400
+X-MC-Unique: hwkqHv9iMN-O8SUa7hYUyQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E40A3182D3CE;
- Mon, 16 Oct 2023 13:42:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4716F8ECF62;
+ Mon, 16 Oct 2023 13:42:58 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.211])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 17B4725C9;
- Mon, 16 Oct 2023 13:42:54 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A0A7A25C8;
+ Mon, 16 Oct 2023 13:42:57 +0000 (UTC)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-devel@nongnu.org,
 	virtio-fs@redhat.com
@@ -48,9 +48,9 @@ Cc: Hanna Czenczek <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  German Maglione <gmaglione@redhat.com>,
  =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
  Anton Kuchin <antonkuchin@yandex-team.ru>
-Subject: [PATCH v5 4/7] vhost-user.rst: Migrating back-end-internal state
-Date: Mon, 16 Oct 2023 15:42:40 +0200
-Message-ID: <20231016134243.68248-5-hreitz@redhat.com>
+Subject: [PATCH v5 5/7] vhost-user: Interface for migration state transfer
+Date: Mon, 16 Oct 2023 15:42:41 +0200
+Message-ID: <20231016134243.68248-6-hreitz@redhat.com>
 In-Reply-To: <20231016134243.68248-1-hreitz@redhat.com>
 References: <20231016134243.68248-1-hreitz@redhat.com>
 MIME-Version: 1.0
@@ -81,248 +81,395 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For vhost-user devices, qemu can migrate the virtio state, but not the
-back-end's internal state.  To do so, we need to be able to transfer
-this internal state between front-end (qemu) and back-end.
-
-At this point, this new feature is added for the purpose of virtio-fs
-migration.  Because virtiofsd's internal state will not be too large, we
-believe it is best to transfer it as a single binary blob after the
-streaming phase.
-
-These are the additions to the protocol:
-- New vhost-user protocol feature VHOST_USER_PROTOCOL_F_DEVICE_STATE
-- SET_DEVICE_STATE_FD function: Front-end and back-end negotiate a file
-  descriptor over which to transfer the state.
-- CHECK_DEVICE_STATE: After the state has been transferred through the
-  file descriptor, the front-end invokes this function to verify
-  success.  There is no in-band way (through the file descriptor) to
-  indicate failure, so we need to check explicitly.
-
-Once the transfer FD has been established via SET_DEVICE_STATE_FD
-(which includes establishing the direction of transfer and migration
-phase), the sending side writes its data into it, and the reading side
-reads it until it sees an EOF.  Then, the front-end will check for
-success via CHECK_DEVICE_STATE, which on the destination side includes
-checking for integrity (i.e. errors during deserialization).
+Add the interface for transferring the back-end's state during migration
+as defined previously in vhost-user.rst.
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- docs/interop/vhost-user.rst | 172 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 172 insertions(+)
+ include/hw/virtio/vhost-backend.h |  24 +++++
+ include/hw/virtio/vhost-user.h    |   1 +
+ include/hw/virtio/vhost.h         |  78 ++++++++++++++++
+ hw/virtio/vhost-user.c            | 146 ++++++++++++++++++++++++++++++
+ hw/virtio/vhost.c                 |  37 ++++++++
+ 5 files changed, 286 insertions(+)
 
-diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-index 035a23ed35..9f1103f85a 100644
---- a/docs/interop/vhost-user.rst
-+++ b/docs/interop/vhost-user.rst
-@@ -322,6 +322,32 @@ VhostUserShared
- :UUID: 16 bytes UUID, whose first three components (a 32-bit value, then
-   two 16-bit values) are stored in big endian.
+diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
+index 1860b541d8..7d399ec418 100644
+--- a/include/hw/virtio/vhost-backend.h
++++ b/include/hw/virtio/vhost-backend.h
+@@ -26,6 +26,18 @@ typedef enum VhostSetConfigType {
+     VHOST_SET_CONFIG_TYPE_MIGRATION = 1,
+ } VhostSetConfigType;
  
-+Device state transfer parameters
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++typedef enum VhostDeviceStateDirection {
++    /* Transfer state from back-end (device) to front-end */
++    VHOST_TRANSFER_STATE_DIRECTION_SAVE = 0,
++    /* Transfer state from front-end to back-end (device) */
++    VHOST_TRANSFER_STATE_DIRECTION_LOAD = 1,
++} VhostDeviceStateDirection;
 +
-++--------------------+-----------------+
-+| transfer direction | migration phase |
-++--------------------+-----------------+
++typedef enum VhostDeviceStatePhase {
++    /* The device (and all its vrings) is stopped */
++    VHOST_TRANSFER_STATE_PHASE_STOPPED = 0,
++} VhostDeviceStatePhase;
 +
-+:transfer direction: a 32-bit enum, describing the direction in which
-+  the state is transferred:
-+
-+  - 0: Save: Transfer the state from the back-end to the front-end,
-+    which happens on the source side of migration
-+  - 1: Load: Transfer the state from the front-end to the back-end,
-+    which happens on the destination side of migration
-+
-+:migration phase: a 32-bit enum, describing the state in which the VM
-+  guest and devices are:
-+
-+  - 0: Stopped (in the period after the transfer of memory-mapped
-+    regions before switch-over to the destination): The VM guest is
-+    stopped, and the vhost-user device is suspended (see
-+    :ref:`Suspended device state <suspended_device_state>`).
-+
-+  In the future, additional phases might be added e.g. to allow
-+  iterative migration while the device is running.
-+
- C structure
- -----------
+ struct vhost_inflight;
+ struct vhost_dev;
+ struct vhost_log;
+@@ -133,6 +145,15 @@ typedef int (*vhost_set_config_call_op)(struct vhost_dev *dev,
  
-@@ -381,6 +407,7 @@ in the ancillary data:
- * ``VHOST_USER_SET_VRING_ERR``
- * ``VHOST_USER_SET_BACKEND_REQ_FD`` (previous name ``VHOST_USER_SET_SLAVE_REQ_FD``)
- * ``VHOST_USER_SET_INFLIGHT_FD`` (if ``VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD``)
-+* ``VHOST_USER_SET_DEVICE_STATE_FD``
+ typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
  
- If *front-end* is unable to send the full message or receives a wrong
- reply it will close the connection. An optional reconnection mechanism
-@@ -555,6 +582,80 @@ it performs WAKE ioctl's on the userfaultfd to wake the stalled
- back-end.  The front-end indicates support for this via the
- ``VHOST_USER_PROTOCOL_F_PAGEFAULT`` feature.
++typedef bool (*vhost_supports_device_state_op)(struct vhost_dev *dev);
++typedef int (*vhost_set_device_state_fd_op)(struct vhost_dev *dev,
++                                            VhostDeviceStateDirection direction,
++                                            VhostDeviceStatePhase phase,
++                                            int fd,
++                                            int *reply_fd,
++                                            Error **errp);
++typedef int (*vhost_check_device_state_op)(struct vhost_dev *dev, Error **errp);
++
+ typedef struct VhostOps {
+     VhostBackendType backend_type;
+     vhost_backend_init vhost_backend_init;
+@@ -181,6 +202,9 @@ typedef struct VhostOps {
+     vhost_force_iommu_op vhost_force_iommu;
+     vhost_set_config_call_op vhost_set_config_call;
+     vhost_reset_status_op vhost_reset_status;
++    vhost_supports_device_state_op vhost_supports_device_state;
++    vhost_set_device_state_fd_op vhost_set_device_state_fd;
++    vhost_check_device_state_op vhost_check_device_state;
+ } VhostOps;
  
-+.. _migrating_backend_state:
-+
-+Migrating back-end state
-+^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Migrating device state involves transferring the state from one
-+back-end, called the source, to another back-end, called the
-+destination.  After migration, the destination transparently resumes
-+operation without requiring the driver to re-initialize the device at
-+the VIRTIO level.  If the migration fails, then the source can
-+transparently resume operation until another migration attempt is made.
-+
-+Generally, the front-end is connected to a virtual machine guest (which
-+contains the driver), which has its own state to transfer between source
-+and destination, and therefore will have an implementation-specific
-+mechanism to do so.  The ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature
-+provides functionality to have the front-end include the back-end's
-+state in this transfer operation so the back-end does not need to
-+implement its own mechanism, and so the virtual machine may have its
-+complete state, including vhost-user devices' states, contained within a
-+single stream of data.
-+
-+To do this, the back-end state is transferred from back-end to front-end
-+on the source side, and vice versa on the destination side.  This
-+transfer happens over a channel that is negotiated using the
-+``VHOST_USER_SET_DEVICE_STATE_FD`` message.  This message has two
-+parameters:
-+
-+* Direction of transfer: On the source, the data is saved, transferring
-+  it from the back-end to the front-end.  On the destination, the data
-+  is loaded, transferring it from the front-end to the back-end.
-+
-+* Migration phase: Currently, the only supported phase is the period
-+  after the transfer of memory-mapped regions before switch-over to the
-+  destination, when both the source and destination devices are
-+  suspended (:ref:`Suspended device state <suspended_device_state>`).
-+  In the future, additional phases might be supported to allow iterative
-+  migration while the device is running.
-+
-+The nature of the channel is implementation-defined, but it must
-+generally behave like a pipe: The writing end will write all the data it
-+has into it, signalling the end of data by closing its end.  The reading
-+end must read all of this data (until encountering the end of file) and
-+process it.
-+
-+* When saving, the writing end is the source back-end, and the reading
-+  end is the source front-end.  After reading the state data from the
-+  channel, the source front-end must transfer it to the destination
-+  front-end through an implementation-defined mechanism.
-+
-+* When loading, the writing end is the destination front-end, and the
-+  reading end is the destination back-end.  After reading the state data
-+  from the channel, the destination back-end must deserialize its
-+  internal state from that data and set itself up to allow the driver to
-+  seamlessly resume operation on the VIRTIO level.
-+
-+Seamlessly resuming operation means that the migration must be
-+transparent to the guest driver, which operates on the VIRTIO level.
-+This driver will not perform any re-initialization steps, but continue
-+to use the device as if no migration had occurred.  The vhost-user
-+front-end, however, will re-initialize the vhost state on the
-+destination, following the usual protocol for establishing a connection
-+to a vhost-user back-end: This includes, for example, setting up memory
-+mappings and kick and call FDs as necessary, negotiating protocol
-+features, or setting the initial vring base indices (to the same value
-+as on the source side, so that operation can resume).
-+
-+Both on the source and on the destination side, after the respective
-+front-end has seen all data transferred (when the transfer FD has been
-+closed), it sends the ``VHOST_USER_CHECK_DEVICE_STATE`` message to
-+verify that data transfer was successful in the back-end, too.  The
-+back-end responds once it knows whether the transfer and processing was
-+successful or not.
-+
- Memory access
- -------------
+ int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
+diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
+index 1d4121431b..324cd8663a 100644
+--- a/include/hw/virtio/vhost-user.h
++++ b/include/hw/virtio/vhost-user.h
+@@ -31,6 +31,7 @@ enum VhostUserProtocolFeature {
+     VHOST_USER_PROTOCOL_F_STATUS = 16,
+     /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
+     VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 18,
++    VHOST_USER_PROTOCOL_F_DEVICE_STATE = 19,
+     VHOST_USER_PROTOCOL_F_MAX
+ };
  
-@@ -949,6 +1050,7 @@ Protocol features
-   #define VHOST_USER_PROTOCOL_F_STATUS               16
-   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
-   #define VHOST_USER_PROTOCOL_F_SHARED_OBJECT        18
-+  #define VHOST_USER_PROTOCOL_F_DEVICE_STATE         19
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 14621f9e79..a0d03c9fdf 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -348,4 +348,82 @@ static inline int vhost_reset_device(struct vhost_dev *hdev)
+ }
+ #endif /* CONFIG_VHOST */
  
- Front-end message types
- -----------------------
-@@ -1553,6 +1655,76 @@ Front-end message types
-   the requested UUID. Back-end will reply passing the fd when the operation
-   is successful, or no fd otherwise.
++/**
++ * vhost_supports_device_state(): Checks whether the back-end supports
++ * transferring internal device state for the purpose of migration.
++ * Support for this feature is required for vhost_set_device_state_fd()
++ * and vhost_check_device_state().
++ *
++ * @dev: The vhost device
++ *
++ * Returns true if the device supports these commands, and false if it
++ * does not.
++ */
++bool vhost_supports_device_state(struct vhost_dev *dev);
++
++/**
++ * vhost_set_device_state_fd(): Begin transfer of internal state from/to
++ * the back-end for the purpose of migration.  Data is to be transferred
++ * over a pipe according to @direction and @phase.  The sending end must
++ * only write to the pipe, and the receiving end must only read from it.
++ * Once the sending end is done, it closes its FD.  The receiving end
++ * must take this as the end-of-transfer signal and close its FD, too.
++ *
++ * @fd is the back-end's end of the pipe: The write FD for SAVE, and the
++ * read FD for LOAD.  This function transfers ownership of @fd to the
++ * back-end, i.e. closes it in the front-end.
++ *
++ * The back-end may optionally reply with an FD of its own, if this
++ * improves efficiency on its end.  In this case, the returned FD is
++ * stored in *reply_fd.  The back-end will discard the FD sent to it,
++ * and the front-end must use *reply_fd for transferring state to/from
++ * the back-end.
++ *
++ * @dev: The vhost device
++ * @direction: The direction in which the state is to be transferred.
++ *             For outgoing migrations, this is SAVE, and data is read
++ *             from the back-end and stored by the front-end in the
++ *             migration stream.
++ *             For incoming migrations, this is LOAD, and data is read
++ *             by the front-end from the migration stream and sent to
++ *             the back-end to restore the saved state.
++ * @phase: Which migration phase we are in.  Currently, there is only
++ *         STOPPED (device and all vrings are stopped), in the future,
++ *         more phases such as PRE_COPY or POST_COPY may be added.
++ * @fd: Back-end's end of the pipe through which to transfer state; note
++ *      that ownership is transferred to the back-end, so this function
++ *      closes @fd in the front-end.
++ * @reply_fd: If the back-end wishes to use a different pipe for state
++ *            transfer, this will contain an FD for the front-end to
++ *            use.  Otherwise, -1 is stored here.
++ * @errp: Potential error description
++ *
++ * Returns 0 on success, and -errno on failure.
++ */
++int vhost_set_device_state_fd(struct vhost_dev *dev,
++                              VhostDeviceStateDirection direction,
++                              VhostDeviceStatePhase phase,
++                              int fd,
++                              int *reply_fd,
++                              Error **errp);
++
++/**
++ * vhost_set_device_state_fd(): After transferring state from/to the
++ * back-end via vhost_set_device_state_fd(), i.e. once the sending end
++ * has closed the pipe, inquire the back-end to report any potential
++ * errors that have occurred on its side.  This allows to sense errors
++ * like:
++ * - During outgoing migration, when the source side had already started
++ *   to produce its state, something went wrong and it failed to finish
++ * - During incoming migration, when the received state is somehow
++ *   invalid and cannot be processed by the back-end
++ *
++ * @dev: The vhost device
++ * @errp: Potential error description
++ *
++ * Returns 0 when the back-end reports successful state transfer and
++ * processing, and -errno when an error occurred somewhere.
++ */
++int vhost_check_device_state(struct vhost_dev *dev, Error **errp);
++
+ #endif
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index dc2258c4ab..c6f86a4b27 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -103,6 +103,8 @@ typedef enum VhostUserRequest {
+     VHOST_USER_SET_STATUS = 39,
+     VHOST_USER_GET_STATUS = 40,
+     VHOST_USER_GET_SHARED_OBJECT = 41,
++    VHOST_USER_SET_DEVICE_STATE_FD = 42,
++    VHOST_USER_CHECK_DEVICE_STATE = 43,
+     VHOST_USER_MAX
+ } VhostUserRequest;
  
-+``VHOST_USER_SET_DEVICE_STATE_FD``
-+  :id: 42
-+  :equivalent ioctl: N/A
-+  :request payload: device state transfer parameters
-+  :reply payload: ``u64``
-+
-+  Front-end and back-end negotiate a channel over which to transfer the
-+  back-end’s internal state during migration.  Either side (front-end or
-+  back-end) may create the channel.  The nature of this channel is not
-+  restricted or defined in this document, but whichever side creates it
-+  must create a file descriptor that is provided to the respectively
-+  other side, allowing access to the channel.  This FD must behave as
-+  follows:
-+
-+  * For the writing end, it must allow writing the whole back-end state
-+    sequentially.  Closing the file descriptor signals the end of
-+    transfer.
-+
-+  * For the reading end, it must allow reading the whole back-end state
-+    sequentially.  The end of file signals the end of the transfer.
-+
-+  For example, the channel may be a pipe, in which case the two ends of
-+  the pipe fulfill these requirements respectively.
-+
-+  Initially, the front-end creates a channel along with such an FD.  It
-+  passes the FD to the back-end as ancillary data of a
-+  ``VHOST_USER_SET_DEVICE_STATE_FD`` message.  The back-end may create a
-+  different transfer channel, passing the respective FD back to the
-+  front-end as ancillary data of the reply.  If so, the front-end must
-+  then discard its channel and use the one provided by the back-end.
-+
-+  Whether the back-end should decide to use its own channel is decided
-+  based on efficiency: If the channel is a pipe, both ends will most
-+  likely need to copy data into and out of it.  Any channel that allows
-+  for more efficient processing on at least one end, e.g. through
-+  zero-copy, is considered more efficient and thus preferred.  If the
-+  back-end can provide such a channel, it should decide to use it.
-+
-+  The request payload contains parameters for the subsequent data
-+  transfer, as described in the :ref:`Migrating back-end state
-+  <migrating_backend_state>` section.
-+
-+  The value returned is both an indication for success, and whether a
-+  file descriptor for a back-end-provided channel is returned: Bits 0–7
-+  are 0 on success, and non-zero on error.  Bit 8 is the invalid FD
-+  flag; this flag is set when there is no file descriptor returned.
-+  When this flag is not set, the front-end must use the returned file
-+  descriptor as its end of the transfer channel.  The back-end must not
-+  both indicate an error and return a file descriptor.
-+
-+  Using this function requires prior negotiation of the
-+  ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
-+
-+``VHOST_USER_CHECK_DEVICE_STATE``
-+  :id: 43
-+  :equivalent ioctl: N/A
-+  :request payload: N/A
-+  :reply payload: ``u64``
-+
-+  After transferring the back-end’s internal state during migration (see
-+  the :ref:`Migrating back-end state <migrating_backend_state>`
-+  section), check whether the back-end was able to successfully fully
-+  process the state.
-+
-+  The value returned indicates success or error; 0 is success, any
-+  non-zero value is an error.
-+
-+  Using this function requires prior negotiation of the
-+  ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
-+
- Back-end message types
- ----------------------
+@@ -201,6 +203,12 @@ typedef struct {
+     uint32_t size; /* the following payload size */
+ } QEMU_PACKED VhostUserHeader;
  
++/* Request payload of VHOST_USER_SET_DEVICE_STATE_FD */
++typedef struct VhostUserTransferDeviceState {
++    uint32_t direction;
++    uint32_t phase;
++} VhostUserTransferDeviceState;
++
+ typedef union {
+ #define VHOST_USER_VRING_IDX_MASK   (0xff)
+ #define VHOST_USER_VRING_NOFD_MASK  (0x1 << 8)
+@@ -216,6 +224,7 @@ typedef union {
+         VhostUserVringArea area;
+         VhostUserInflight inflight;
+         VhostUserShared object;
++        VhostUserTransferDeviceState transfer_state;
+ } VhostUserPayload;
+ 
+ typedef struct VhostUserMsg {
+@@ -2868,6 +2877,140 @@ static void vhost_user_reset_status(struct vhost_dev *dev)
+     }
+ }
+ 
++static bool vhost_user_supports_device_state(struct vhost_dev *dev)
++{
++    return virtio_has_feature(dev->protocol_features,
++                              VHOST_USER_PROTOCOL_F_DEVICE_STATE);
++}
++
++static int vhost_user_set_device_state_fd(struct vhost_dev *dev,
++                                          VhostDeviceStateDirection direction,
++                                          VhostDeviceStatePhase phase,
++                                          int fd,
++                                          int *reply_fd,
++                                          Error **errp)
++{
++    int ret;
++    struct vhost_user *vu = dev->opaque;
++    VhostUserMsg msg = {
++        .hdr = {
++            .request = VHOST_USER_SET_DEVICE_STATE_FD,
++            .flags = VHOST_USER_VERSION,
++            .size = sizeof(msg.payload.transfer_state),
++        },
++        .payload.transfer_state = {
++            .direction = direction,
++            .phase = phase,
++        },
++    };
++
++    *reply_fd = -1;
++
++    if (!vhost_user_supports_device_state(dev)) {
++        close(fd);
++        error_setg(errp, "Back-end does not support migration state transfer");
++        return -ENOTSUP;
++    }
++
++    ret = vhost_user_write(dev, &msg, &fd, 1);
++    close(fd);
++    if (ret < 0) {
++        error_setg_errno(errp, -ret,
++                         "Failed to send SET_DEVICE_STATE_FD message");
++        return ret;
++    }
++
++    ret = vhost_user_read(dev, &msg);
++    if (ret < 0) {
++        error_setg_errno(errp, -ret,
++                         "Failed to receive SET_DEVICE_STATE_FD reply");
++        return ret;
++    }
++
++    if (msg.hdr.request != VHOST_USER_SET_DEVICE_STATE_FD) {
++        error_setg(errp,
++                   "Received unexpected message type, expected %d, received %d",
++                   VHOST_USER_SET_DEVICE_STATE_FD, msg.hdr.request);
++        return -EPROTO;
++    }
++
++    if (msg.hdr.size != sizeof(msg.payload.u64)) {
++        error_setg(errp,
++                   "Received bad message size, expected %zu, received %" PRIu32,
++                   sizeof(msg.payload.u64), msg.hdr.size);
++        return -EPROTO;
++    }
++
++    if ((msg.payload.u64 & 0xff) != 0) {
++        error_setg(errp, "Back-end did not accept migration state transfer");
++        return -EIO;
++    }
++
++    if (!(msg.payload.u64 & VHOST_USER_VRING_NOFD_MASK)) {
++        *reply_fd = qemu_chr_fe_get_msgfd(vu->user->chr);
++        if (*reply_fd < 0) {
++            error_setg(errp,
++                       "Failed to get back-end-provided transfer pipe FD");
++            *reply_fd = -1;
++            return -EIO;
++        }
++    }
++
++    return 0;
++}
++
++static int vhost_user_check_device_state(struct vhost_dev *dev, Error **errp)
++{
++    int ret;
++    VhostUserMsg msg = {
++        .hdr = {
++            .request = VHOST_USER_CHECK_DEVICE_STATE,
++            .flags = VHOST_USER_VERSION,
++            .size = 0,
++        },
++    };
++
++    if (!vhost_user_supports_device_state(dev)) {
++        error_setg(errp, "Back-end does not support migration state transfer");
++        return -ENOTSUP;
++    }
++
++    ret = vhost_user_write(dev, &msg, NULL, 0);
++    if (ret < 0) {
++        error_setg_errno(errp, -ret,
++                         "Failed to send CHECK_DEVICE_STATE message");
++        return ret;
++    }
++
++    ret = vhost_user_read(dev, &msg);
++    if (ret < 0) {
++        error_setg_errno(errp, -ret,
++                         "Failed to receive CHECK_DEVICE_STATE reply");
++        return ret;
++    }
++
++    if (msg.hdr.request != VHOST_USER_CHECK_DEVICE_STATE) {
++        error_setg(errp,
++                   "Received unexpected message type, expected %d, received %d",
++                   VHOST_USER_CHECK_DEVICE_STATE, msg.hdr.request);
++        return -EPROTO;
++    }
++
++    if (msg.hdr.size != sizeof(msg.payload.u64)) {
++        error_setg(errp,
++                   "Received bad message size, expected %zu, received %" PRIu32,
++                   sizeof(msg.payload.u64), msg.hdr.size);
++        return -EPROTO;
++    }
++
++    if (msg.payload.u64 != 0) {
++        error_setg(errp, "Back-end failed to process its internal state");
++        return -EIO;
++    }
++
++    return 0;
++}
++
+ const VhostOps user_ops = {
+         .backend_type = VHOST_BACKEND_TYPE_USER,
+         .vhost_backend_init = vhost_user_backend_init,
+@@ -2904,4 +3047,7 @@ const VhostOps user_ops = {
+         .vhost_set_inflight_fd = vhost_user_set_inflight_fd,
+         .vhost_dev_start = vhost_user_dev_start,
+         .vhost_reset_status = vhost_user_reset_status,
++        .vhost_supports_device_state = vhost_user_supports_device_state,
++        .vhost_set_device_state_fd = vhost_user_set_device_state_fd,
++        .vhost_check_device_state = vhost_user_check_device_state,
+ };
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index bce97635df..ca4bdd9d66 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -2096,3 +2096,40 @@ int vhost_reset_device(struct vhost_dev *hdev)
+ 
+     return -ENOSYS;
+ }
++
++bool vhost_supports_device_state(struct vhost_dev *dev)
++{
++    if (dev->vhost_ops->vhost_supports_device_state) {
++        return dev->vhost_ops->vhost_supports_device_state(dev);
++    }
++
++    return false;
++}
++
++int vhost_set_device_state_fd(struct vhost_dev *dev,
++                              VhostDeviceStateDirection direction,
++                              VhostDeviceStatePhase phase,
++                              int fd,
++                              int *reply_fd,
++                              Error **errp)
++{
++    if (dev->vhost_ops->vhost_set_device_state_fd) {
++        return dev->vhost_ops->vhost_set_device_state_fd(dev, direction, phase,
++                                                         fd, reply_fd, errp);
++    }
++
++    error_setg(errp,
++               "vhost transport does not support migration state transfer");
++    return -ENOSYS;
++}
++
++int vhost_check_device_state(struct vhost_dev *dev, Error **errp)
++{
++    if (dev->vhost_ops->vhost_check_device_state) {
++        return dev->vhost_ops->vhost_check_device_state(dev, errp);
++    }
++
++    error_setg(errp,
++               "vhost transport does not support migration state transfer");
++    return -ENOSYS;
++}
 -- 
 2.41.0
 
