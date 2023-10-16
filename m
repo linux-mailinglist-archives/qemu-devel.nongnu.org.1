@@ -2,100 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDF57CA009
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 09:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8116D7CA014
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 09:05:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsHar-0006Kj-DP; Mon, 16 Oct 2023 03:00:49 -0400
+	id 1qsHeQ-0007Ou-IT; Mon, 16 Oct 2023 03:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsHah-0006Jy-Qv
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:00:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsHaf-0001hW-Gm
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:00:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697439636;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=/ToLcYH49yh6QYQiqaGt92pVOmozS0WU2Ea1Gy4Et1w=;
- b=Ec5KFQHHU8GR/IK3dx0GhY3UZETkA/HbzzxCzBrlNgzhC84yxU7uuLFqp4vlTl6KAmspIy
- 6SjR+FrFbC9C8UCm9t4c9EW1lGsyh44OPZ+27xut6sJRu+RDwLipyEXs1NIk/zrYBgP8zE
- 0g+81LqbzAXxCPTljdXnOLvNbDTarQI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-VUE7nOYAO-WUkYD52FT9sA-1; Mon, 16 Oct 2023 03:00:35 -0400
-X-MC-Unique: VUE7nOYAO-WUkYD52FT9sA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f5df65f9f4so27254535e9.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 00:00:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsHeJ-0007Mv-6Z
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:04:24 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsHeH-00021y-Iw
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 03:04:22 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-32db188e254so592456f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 00:04:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697439860; x=1698044660; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eWYHsWav78FLELT+tFlrNloPN870qfN/K9WbOVvbEvA=;
+ b=yHCfpJZbpd/r4i+zNxsFfuYqFQX6thVr1wviIl6PnGM/5iLKzMqe0h0Y5PW2V4s5o0
+ b87haHyl/xUdNF/i6TcIF2Zpv9/52neS6ku4CZFEGTBUh6r+ejmZi0Uasdp8PhUVVzfl
+ nftdI04+FCriYjxY38Aw+tieg9+qi9zJ/0zXdnXbtafRkTDZeURk1TDWr8FzRCDJia4H
+ zWLblnmCOI8Douzqasa1FVZqFuowc62zAQOXvh40yi0GSZdH9g+sqtvet5AgdwCLtdMC
+ DCwHQNc+oVhwZxmTT09Fc+0n3FEfsFxj67+753vY1sRL+wUfSizLTdMkad0vxOietYco
+ 19Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697439634; x=1698044434;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/ToLcYH49yh6QYQiqaGt92pVOmozS0WU2Ea1Gy4Et1w=;
- b=molgC9vaHV86xGj3O9PnalpvubZnKP0lb8mvRHAJeD1eGfcww+J8niDSDK7F63QhuF
- g9tfWzH9qp12c3Z68GuwPPQNlst1cQmDVHZz5tbXhUdOr/+tsAMZjyYpE/DGhq/xqcRK
- OqPGUTMizvdqUcmufX6RklaB430AY5J1xMbRVzSPyzMqKj7ipq/h1w9OciuH867f5ISZ
- zs7hMGyBJKE+VXAyu4uM6YaLG20PezGqYbAeKxR8DkWSp3j8vKTXDDdvCuuPWMsS+0RA
- CxJTKAkSctUd4HADoEzyMK7sY5wR8BHtd2dEA+svE/wp7VJx0756SI6u+ohy9pwKTU/M
- FbiA==
-X-Gm-Message-State: AOJu0YzB+LXX78sEmSWtgSh3aXwjxxy1lqNOkW1rptUkbW8c8RPPyymw
- 66oh7Moi4fL2Yc2NTWkwsbpFwBpduIF54RToqo1DEfsnAEOyB4oXzMypfyo9oXuL7RMr7EIli5K
- SsR9tBJfqGZecezs=
-X-Received: by 2002:a05:600c:3b20:b0:406:847a:2934 with SMTP id
- m32-20020a05600c3b2000b00406847a2934mr26741675wms.28.1697439633751; 
- Mon, 16 Oct 2023 00:00:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/l9Pg9fKbyo8jPkaROEMHc33N4kfTIF11WIoewB0RuoBNuKL1hzhTOPzQmLh5nDohGkVeLw==
-X-Received: by 2002:a05:600c:3b20:b0:406:847a:2934 with SMTP id
- m32-20020a05600c3b2000b00406847a2934mr26741650wms.28.1697439633323; 
- Mon, 16 Oct 2023 00:00:33 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- x20-20020a05600c2d1400b003fe2b081661sm6322551wmf.30.2023.10.16.00.00.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 00:00:32 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Fam
- Zheng <fam@euphon.net>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Eric Blake <eblake@redhat.com>,  libvir-list@redhat.com,  Fabiano Rosas
- <farosas@suse.de>,  qemu-block@nongnu.org,  Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,  "Dr. David Alan Gilbert"
- <dave@treblig.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Stefan
- Hajnoczi <stefanha@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Hailiang
- Zhang <zhanghailiang@xfusion.com>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 03/10] migration: migrate 'inc' command option is
- deprecated.
-In-Reply-To: <8734yehdoc.fsf@pond.sub.org> (Markus Armbruster's message of
- "Fri, 13 Oct 2023 15:09:23 +0200")
-References: <20231013104736.31722-1-quintela@redhat.com>
- <20231013104736.31722-4-quintela@redhat.com>
- <8734yehdoc.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Mon, 16 Oct 2023 09:00:31 +0200
-Message-ID: <87a5sj59ww.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1697439860; x=1698044660;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eWYHsWav78FLELT+tFlrNloPN870qfN/K9WbOVvbEvA=;
+ b=YfDhUOWQb/ebR+cokBOcIWRMf+27KHDk+0G7r/Ac2q9+3Bwc88p9q4ywZZTR+fySul
+ 1P1FMypRVwOu6lOQRd2MMfzv8f8RTUFFSplMuUVZJcK2+i504rj/JJxdmDUUxM5ZfJxX
+ X+E8dQwr03x1T6SbHeMBoJsYvCFpivHPCMs+piqHANljcbc8SmrbkLLX6P/UALFnpQtT
+ a7SgPLbLd5FVuE0kb7sRd3vqM2tjnhPYAuFYd/n5BXRJvc1pFBSPc8aKI86sNVgaeXqf
+ Lw0aIem/K2O4a7kWg/PbjBUHZvYQGw/5hSZEelzAsLwasjuapPoWaiC5XU9XRJRMU+Dc
+ 7S7g==
+X-Gm-Message-State: AOJu0YwDORDiVi8T3r4Oo4lZxThzvlut+PMMVP3d+Om942jSApLvQdTJ
+ OoTgEWddZGfVgeXnr4dWQSf3SA==
+X-Google-Smtp-Source: AGHT+IEFAJOWIKIh34xcS0A4orq55wUJa5f9xrTRBjv4h7ApQLKvl4zJ9JZgWOG1EvfXhOPatTSnBw==
+X-Received: by 2002:a5d:6788:0:b0:32d:a4cf:99b3 with SMTP id
+ v8-20020a5d6788000000b0032da4cf99b3mr4607191wru.67.1697439859894; 
+ Mon, 16 Oct 2023 00:04:19 -0700 (PDT)
+Received: from [192.168.69.115]
+ (mdq11-h01-176-173-171-135.dsl.sta.abo.bbox.fr. [176.173.171.135])
+ by smtp.gmail.com with ESMTPSA id
+ o13-20020adfcf0d000000b0032008f99216sm8296853wrj.96.2023.10.16.00.04.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 00:04:19 -0700 (PDT)
+Message-ID: <bf5d344c-84a1-c6b9-3d17-0362a4c2c9e7@linaro.org>
+Date: Mon, 16 Oct 2023 09:04:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 3/4] hw/pci-host/bonito: Access memory regions via
+ pci_address_space[_io]()
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Herv=c3=a9_Poussineau?= <hpoussin@reactos.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Huacai Chen <chenhuacai@kernel.org>, qemu-ppc@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20231011185954.10337-1-philmd@linaro.org>
+ <20231011185954.10337-4-philmd@linaro.org>
+ <5FD62714-3C33-4A93-B7E3-F3523FCE69C1@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <5FD62714-3C33-4A93-B7E3-F3523FCE69C1@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,162 +98,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-> Juan Quintela <quintela@redhat.com> writes:
->
->> Set the 'block_incremental' migration parameter to 'true' instead.
+On 16/10/23 00:19, Bernhard Beschow wrote:
+> Am 11. Oktober 2023 18:59:53 UTC schrieb "Philippe Mathieu-Daudé" <philmd@linaro.org>:
+>> PCI functions are plugged on a PCI bus. They can only access
+>> external memory regions via the bus.
 >>
->> Reviewed-by: Thomas Huth <thuth@redhat.com>
->> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 >> ---
+>> hw/pci-host/bonito.c | 6 +++---
+>> 1 file changed, 3 insertions(+), 3 deletions(-)
+
+
+>> @@ -719,7 +719,7 @@ static void bonito_pci_realize(PCIDevice *dev, Error **errp)
 >>
->> Improve documentation and style (thanks Markus)
->> ---
->>  docs/about/deprecated.rst | 7 +++++++
->>  qapi/migration.json       | 8 +++++++-
->>  migration/migration.c     | 6 ++++++
->>  3 files changed, 20 insertions(+), 1 deletion(-)
->>
->> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->> index 1c4d7f36f0..1b6b2870cf 100644
->> --- a/docs/about/deprecated.rst
->> +++ b/docs/about/deprecated.rst
->> @@ -452,3 +452,10 @@ Migration
->>  ``skipped`` field in Migration stats has been deprecated.  It hasn't
->>  been used for more than 10 years.
->>  
->> +``inc`` migrate command option (since 8.2)
->> +''''''''''''''''''''''''''''''''''''''''''
->> +
->> +The new way to modify migration is using migration parameters.
->> +``inc`` functionality can be achieved by setting the
->> +``block-incremental`` migration parameter to ``true``.
->> +
->> diff --git a/qapi/migration.json b/qapi/migration.json
->> index 6865fea3c5..56bbd55b87 100644
->> --- a/qapi/migration.json
->> +++ b/qapi/migration.json
->> @@ -1492,6 +1492,11 @@
->>  #
->>  # @resume: resume one paused migration, default "off". (since 3.0)
->>  #
->> +# Features:
->> +#
->> +# @deprecated: Member @inc is deprecated.  Use migration parameter
->> +#     @block-incremental instead.
->
-> This is fine now.  It becomes bad advice in PATCH 05, which deprecates
-> @block-incremental.  Two solutions:
->
-> 1. Change this patch to point to an alternative that will *not* be
-> deprecated.
+>>      memory_region_init_alias(pcimem_alias, NULL, "pci.mem.alias",
+>>                               &bs->pci_mem, 0, BONITO_PCIHI_SIZE);
+>> -    memory_region_add_subregion(get_system_memory(),
+>> +    memory_region_add_subregion(pci_address_space(dev),
+> 
+> I need to keep `get_system_memory()` here to get the same results for `info mtree` in the QEMU console before and after this patch when running `qemu-system-mips64el -M fuloong2e -S`. The other two changes above seem to work as expected.
 
-Ok, clearly I am not explaining myself properly O:-)
-
-History of block migration:
-* In the beggining there was -b and -i migrate options
-  There was the only way to do storage of migration.
-* We moved to use parameters and capabilities for migration
-  So we created @block-incremental and @block.
-  But we didn't remove the command line options (for backward
-  compatibility).
-* We were asked to modify migration so some storaged was migrated and
-  some was not migrated during migration.  But block people found that
-  it was a good idea to allow storage migration without migrating the
-  vm, so they created this blockdev-mirror mechanism that is shinny,
-  funny, faster, <whatever> better.
-
-So now we have old code that basically nobody uses (the last big user
-was COLO, but now it can use multifd).  So we want to drop it, but we
-don't care about a direct replacement.
-
-So, why I am interested in removing this?
-- @block and @block-incremental: If you don't use block migration, their
-  existence don't bother you.  They are "quite" independent of the rest
-  of the migration code (they could be better integrated, but not big
-  trouble here).
-- migrate options -i/-b: This ones hurt us each time that we need to
-  do changing in options.  Notice that we have "perfect" replacements
-  with @block and @block-incremental, exactly the same
-  result/semantics/...
-  You can see the trobles in the RFC patches
-
-     * [PATCH v4 07/10] [RFC] migration: Make -i/-b an error for hmp and qmp
-     * [PATCH v4 08/10] [RFC] migration: Remove helpers needed for -i/-b migrate options
-
-So what I want, I want to remove -i/-b in the next version (9.0?).  For
-the other, I want to remove it, but I don't care if the code is around
-in "deprecated" state for another couple of years if there are still
-people that feel that they want it.
-
-This is the reason that I put a pointer for -i/-b to
-@block/@block-incremental.  They are "perfect" replacements.
-
-I can put here to use blockdev-mirror + NBD, but the replacement is not
-so direct.
-
-Does this make sense?
-
-
-> 2. Change PATCH 05.
->
-> Same end result.
->
->> +#
->>  # Returns: nothing on success
->>  #
->>  # Since: 0.14
->> @@ -1513,7 +1518,8 @@
->>  # <- { "return": {} }
->>  ##
->>  { 'command': 'migrate',
->> -  'data': {'uri': 'str', '*blk': 'bool', '*inc': 'bool',
->> +  'data': {'uri': 'str', '*blk': 'bool',
->> +           '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
->>             '*detach': 'bool', '*resume': 'bool' } }
->>  
->>  ##
->> diff --git a/migration/migration.c b/migration/migration.c
->> index 1c6c81ad49..ac4897fe0d 100644
->> --- a/migration/migration.c
->> +++ b/migration/migration.c
->> @@ -1601,6 +1601,12 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
->>  {
->>      Error *local_err = NULL;
->>  
->> +    if (blk_inc) {
->> +        warn_report("@inc/-i migrate option is deprecated, set the"
->
-> This is either about QMP migrate's parameter "inc", or HMP migrate's
-> flags -i.
-
-Needs to be @inc.  I want about the "-i" command option in other place.
-
-> In the former case, we want something like "parameter 'inc' is
-> deprecated".
-
-This one.
-
-> In the latter case, we want something like "-i is deprecated".
-
-Ok, changing.
-
-> Trying to do both in a single message results in a sub-par message.  If
-> you want to do better, you have to check in hmp_migrate(), too.  Then
-> hmp_migrate can refer to "-i", and migrate_prepare() to "parameter
-> 'inc'".  Up to you.
-
-That was the intention, but I forgot to update this message.
-
-> If you decide a single message is good enough, use something like
-> "parameter 'inc' / flag -i is deprecated".
-
-Later, Juan.
+Good catch, thank you Bernhard!
 
 
