@@ -2,67 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8A47C9D94
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 05:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEDB7C9DCC
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 05:24:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsDrs-0001wG-Oc; Sun, 15 Oct 2023 23:02:08 -0400
+	id 1qsEC7-0006jW-TQ; Sun, 15 Oct 2023 23:23:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qsDrp-0001w8-0M
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 23:02:05 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qsDrl-0006ht-LB
- for qemu-devel@nongnu.org; Sun, 15 Oct 2023 23:02:04 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8AxqOicpyxl5jsyAA--.60723S3;
- Mon, 16 Oct 2023 11:01:48 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx7tyYpyxl3gsmAA--.14760S3; 
- Mon, 16 Oct 2023 11:01:47 +0800 (CST)
-Subject: Re: [PATCH 0/4] tcg: Optimize loads and stores to env
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230831025729.1194388-1-richard.henderson@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <8ea9dbf1-d563-8d08-48c8-b2cb204a9c88@loongson.cn>
-Date: Mon, 16 Oct 2023 11:01:44 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qsEC5-0006if-G7
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 23:23:01 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qsEC2-00023V-Tt
+ for qemu-devel@nongnu.org; Sun, 15 Oct 2023 23:23:01 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1c9e06f058bso25750605ad.0
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 20:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697426577; x=1698031377;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YnbixYf1hQ3q9YqgM2cmVXpPwW4YE6MeP9ynhyXXGrk=;
+ b=MzV9au6135f1XEHb+eJT1JV5bXBqvW3J/n3E8Q080oj9EPn94lwamAYsfrL9cR/D/Q
+ RwgsNOZf3aHTSycQO/u8XBw7m9F6P90b2X+ZBiD7oYNFXV0pRFlrj5Vq1QRK83dgSJ42
+ qnPQFtmQOXwhJ+N2Lhl+ARc8HKsNy683grVEM4ttiVF+6W/ZV5Y2naM4okoIegH4K2wo
+ Gw6oRUN+TOAcFxNkQ4lVCVlCUnwzkTIyoKHHQ1YKZ8Mc1ipvfs8ZQqEz0PNVruNefV+W
+ qLZNiDwkkWgTNJR8jN+Ss/DL7SWYFtum+5FfRyQmM+2ACRJITaG2Anooqp8Z8zmjW2AV
+ 3HrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697426577; x=1698031377;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YnbixYf1hQ3q9YqgM2cmVXpPwW4YE6MeP9ynhyXXGrk=;
+ b=v8OxL/l7HEtDUGxMgCj5bz/SDrFo5+tEdGt/4cv1669mn2WqTmJF+pWXD/rnusDs+y
+ szTNcbBGCwlWlg61WyZFAqAKjna7VlhBQK4Ei30PFcZ/xvXqr3lKVfRk/DE1Jv4JITiK
+ 3FxXeRl70gYF67Q4eCEPX/wwce0KbSL3f++2tbxPe/rwLeG6iOdZUNaqPVA4fZEaaqQk
+ Lc7+EhPzeX49Hcx5siN/7iRCjqdgMX04DYlczBp6nauWnUKvFaTCXdqHS8ir043AWlm6
+ lzKoBY39T2C6UtPxLHrc60h5nbcgY6IWk11exXo442X7ZS09TD7ItXE/sjcxmaqtDW7x
+ sdKQ==
+X-Gm-Message-State: AOJu0YygUVZX5pmCum3qJMesTPREuMeSUJJtJzoBVeXL5ZHO83s0CTX6
+ OGRFGFlwm6xJWSYs45jdgCwoFg==
+X-Google-Smtp-Source: AGHT+IFFOk57AjZObUCXgTjv0Yj6bcNgskCF3iI7JBbD+h8uv7n9yUqEhBOimZNzvC8kT9x//bWvAQ==
+X-Received: by 2002:a17:903:1105:b0:1bc:4f04:17f4 with SMTP id
+ n5-20020a170903110500b001bc4f0417f4mr10234502plh.30.1697426577397; 
+ Sun, 15 Oct 2023 20:22:57 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ l18-20020a170902eb1200b001c5fc291ef9sm7412957plb.209.2023.10.15.20.22.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 15 Oct 2023 20:22:57 -0700 (PDT)
+Message-ID: <5670669b-cdfa-4b8f-b02b-b009e7c16540@daynix.com>
+Date: Mon, 16 Oct 2023 12:22:52 +0900
 MIME-Version: 1.0
-In-Reply-To: <20230831025729.1194388-1-richard.henderson@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] target/riscv: Do not allow MXL_RV32 for
+ TARGET_RISCV64
+To: Alistair Francis <alistair23@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+References: <20231014033545.15220-1-akihiko.odaki@daynix.com>
+ <20231014033545.15220-2-akihiko.odaki@daynix.com>
+ <597bf4be-207b-400a-be49-bc18900809a0@ventanamicro.com>
+ <CAKmqyKPqk1sURLQNBoH0MeSJVSut72XiN4H0uT=95S953o7Taw@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CAKmqyKPqk1sURLQNBoH0MeSJVSut72XiN4H0uT=95S953o7Taw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Bx7tyYpyxl3gsmAA--.14760S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7CFWxtr17WF18JF1rZr1DJwc_yoW8GrWDp3
- 95Gw1Ykr1DJFn3Jr13Gw1DWr9xWFyFkF45Xas7J3s5JrZ0vFn2qw1IgrWUCFy7Gw4fuFyj
- qF4Fyr18Ca45AabCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
- 05UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.339,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,42 +107,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2023/8/31 上午10:57, Richard Henderson 写道:
-> This is aimed at improving gvec generated code, which involves large
-> numbers of loads and stores to the env slots of the guest cpu vector
-> registers.  The final patch helps eliminate redundant zero-extensions
-> that can appear with e.g. avx2 and sve.
->
->  From the small amount of timing that I have done, there is no change.
-> But of course as we all know, x86 is very good with redundant memory.
-> And frankly, I haven't found a good test case for measuring.
-> What I need is an algorithm with lots of integer vector code that can
-> be expanded with gvec.  Most of what I've found is either fp (out of
-> line) or too simple (small translation blocks with little scope for
-> optimization).
->
-> That said, it appears to be simple enough, and does eliminate some
-> redundant operations, even in places that I didn't expect.
->
->
-> r~
->
->
-> Richard Henderson (4):
->    tcg: Don't free vector results
->    tcg/optimize: Pipe OptContext into reset_ts
->    tcg: Optimize env memory operations
->    tcg: Eliminate duplicate env store operations
->
->   tcg/optimize.c    | 226 ++++++++++++++++++++++++++++++++++++++++++++--
->   tcg/tcg-op-gvec.c |  39 ++------
->   2 files changed, 225 insertions(+), 40 deletions(-)
->
-Patch 1 and Patch 3,    s  -i  "/cpu_env/tcg_env/g "
 
-Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-Thanks.
-Song Gao
+On 2023/10/16 10:51, Alistair Francis wrote:
+> On Sun, Oct 15, 2023 at 4:05 AM Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com> wrote:
+>>
+>>
+>>
+>> On 10/14/23 00:35, Akihiko Odaki wrote:
+>>> TARGET_RISCV64 does not have riscv-32bit-cpu.xml so it shouldn't accept
+>>> MXL_RV32.
+>>>
+>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> ---
+>>
+>> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>>
+>>
+>>>    target/riscv/tcg/tcg-cpu.c | 3 ++-
+>>>    1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+>>> index a28918ab30..e0cbc56320 100644
+>>> --- a/target/riscv/tcg/tcg-cpu.c
+>>> +++ b/target/riscv/tcg/tcg-cpu.c
+>>> @@ -161,10 +161,11 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+>>>        case MXL_RV128:
+>>>            cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
+>>>            break;
+>>> -#endif
+>>> +#elif defined(TARGET_RISCV32)
+>>>        case MXL_RV32:
+>>>            cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
+>>>            break;
+>>> +#endif
+> 
+> This isn't the right fix. The idea is that riscv64-softmmu can run
+> 32-bit CPUs, so we instead should include riscv-32bit-cpu.xml
 
+In that case I can continue working on the previous version of this 
+series, but is it really true? I see no 32-bit CPUs enabled for 
+riscv64-softmmu. Is there a plan to enable them for riscv64-softmmu?
 
