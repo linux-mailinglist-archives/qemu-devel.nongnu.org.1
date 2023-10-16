@@ -2,134 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53A87CA3F4
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BCD7CA3F8
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:22:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJmi-0007Ar-1J; Mon, 16 Oct 2023 05:21:12 -0400
+	id 1qsJnx-0007x0-Ua; Mon, 16 Oct 2023 05:22:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qsJmf-00079w-0R
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:21:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qsJmd-0007Bm-20
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:21:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697448066;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=xvAhm2koLJ8BRA9kVIM+MrKm+swAu709lT6WeKR0Bgc=;
- b=dLEuWiCj3raEohsRbGZ8HULAmMmaPmR0zOCKHkqaM4efPcrJnApKhnMgftZhEfmVFnrGw4
- czId84xTae7vbfQYbw4zHv9fF3d9hnKVLN+lo1ac+OJNHUIqpNzeoo2E/ZfG4MbT54tVxK
- uPMg+NKGKCpZ1eDv/l6+n3BARoUQsi0=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-LqQ7kHE1Pp-yGviE8N4K-Q-1; Mon, 16 Oct 2023 05:21:03 -0400
-X-MC-Unique: LqQ7kHE1Pp-yGviE8N4K-Q-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-77574c5f713so505038585a.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:21:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsJnv-0007wX-ET
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:22:27 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsJnt-0007Ql-PV
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:22:27 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4054f790190so46299755e9.2
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:22:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697448144; x=1698052944; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+xHpVlTiWXRbLK5e0Vo4yRlRi00EoE1VP6IQAJAfXyA=;
+ b=MWFU/UZXU2KOQiUEeU7lmWQSHVnJvZG+6A7Dmvito9Ah/THOJC4137Lz+6a7wozK36
+ 7L0Q/+MaFDGcBy2R1GUQne/0izCwmf0itMGDsCOOrjwDsM1/F1JXoCp+JopSvJ/+6eed
+ cG4ju62pLXxk+puLfLTmnTCCuAwrGyGLtbbn/d0yZEhT35X265uCI8dTOl7oNK56mkFY
+ B8OlZdhk4usFiBXkmvfubOo/1ISYREtS/8bKlr4RnEJqGLnzbK3ewcyDGQu4OkMhrfeQ
+ M/vL8DDChDRhjcHejYua5aH/8D1HPBOv4x9rlu3eDoArZHDw6NnUMQxy6zqxdlkI8tZ7
+ 0xxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697448062; x=1698052862;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1697448144; x=1698052944;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xvAhm2koLJ8BRA9kVIM+MrKm+swAu709lT6WeKR0Bgc=;
- b=SCN6tgcQezA/iBjgPWwTPdVwP9PLPcaeB/DTgQuaD52MF8LDUwojA88EabYiKFfMWu
- G+9VaSz4U3+Nn0g9xVdt18tzafq0XROP7FRfBHni3wIxA++13CvvppZ9TkQP7Prok8El
- Z/4UiObj4RcmY8avBBtNWaZcdOObVU+1fRiH7Vhna3lqXCnVWUDttFwRx8wf+rhOMaLx
- /9KjW+ndfx8dcTUYNTLcZryPhehsmBOSKL5irMw7s8nH+e5hQpOCAgFJmGjUTo9rsCvd
- F5YLWuNCT1LC/KQtGhax0yVyEh9jKFf8bh2poIpAn+iQIB0P1ShuSQT39xutwGM23v6L
- IU8A==
-X-Gm-Message-State: AOJu0YxRBWTHXYMNrN4TriFLQyFxDbDEqg1sybNGgMzmpBFoIRoumGPw
- paVYkUR9s4HE4Ywgr/NGEqjZLFCmT1JDOEDfFVnLKcDwSI9cP2gLRfzvdkef+V3n/phhCetAAIH
- SocTM9m1svGCLZqM=
-X-Received: by 2002:a05:620a:24c1:b0:76d:aa93:2e3c with SMTP id
- m1-20020a05620a24c100b0076daa932e3cmr40197924qkn.24.1697448062686; 
- Mon, 16 Oct 2023 02:21:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHZA6kGAGwD4PJ6TdnHCks/70p3D1VIwfn3cNVYXybOvAtRCJVlXuu0ahMdxjtYCKpQGlXHMg==
-X-Received: by 2002:a05:620a:24c1:b0:76d:aa93:2e3c with SMTP id
- m1-20020a05620a24c100b0076daa932e3cmr40197915qkn.24.1697448062371; 
- Mon, 16 Oct 2023 02:21:02 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-176.web.vodafone.de.
- [109.43.176.176]) by smtp.gmail.com with ESMTPSA id
- vu8-20020a05620a560800b007743671a41fsm2853849qkn.72.2023.10.16.02.21.01
+ bh=+xHpVlTiWXRbLK5e0Vo4yRlRi00EoE1VP6IQAJAfXyA=;
+ b=ceHJKIQWhHYw8NUxXi7omDKpyR6ZfqtbCb5sY0eHM3kc6I4inO/dB7gUlsh7hWOfLO
+ 1AbE09Yy9KW1RJ+DB8zryOHHf8UADK+0aUV+7ysMW7ucNEDcGehqMm7/V3LzjCcZga5p
+ wfXSM7uxuSIroYy1P3v6GuSt0UHtoq8T2Qk2JL3vMlyDrZYxQqGoyXEh6FA+TaiAcdJd
+ MbYXtZcoKTIIZUiJ+ERdZmhLDtyLp0f8PDjisGcABy+RclkzdpLmMs4Q9ULYHs1JYhgf
+ UgHRh4UyVmfsb7K12kVKURDJqvnf50SygGmMjfi7M2gCvT04GbDGP+A1ZIxhQ/ACgXFb
+ 0Vow==
+X-Gm-Message-State: AOJu0YwDRkhZ34deePRjH9IeEMNcPO12J38LSxD63nCmb1wU2PfsHVCi
+ 6BW0LjIAkNQW/eC7ZHhqCOT6700MJgWyyVIixEk=
+X-Google-Smtp-Source: AGHT+IFPXfuL+7cgouSkBYdxVH3fONpnHnb8JRvia9V4kjRhXeoiwO7fZ59IemlcK01VOsTRbe+7VA==
+X-Received: by 2002:adf:f20e:0:b0:32d:be44:f70c with SMTP id
+ p14-20020adff20e000000b0032dbe44f70cmr97395wro.7.1697448144431; 
+ Mon, 16 Oct 2023 02:22:24 -0700 (PDT)
+Received: from [192.168.69.115]
+ (9r679-h01-176-171-216-136.dsl.sta.abo.bbox.fr. [176.171.216.136])
+ by smtp.gmail.com with ESMTPSA id
+ p7-20020a056000018700b003217cbab88bsm7808349wrx.16.2023.10.16.02.22.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 02:21:02 -0700 (PDT)
-Message-ID: <d956a7d4-35c2-4a59-9c56-6b69afbc3810@redhat.com>
-Date: Mon, 16 Oct 2023 11:20:59 +0200
+ Mon, 16 Oct 2023 02:22:24 -0700 (PDT)
+Message-ID: <ba834d5f-75ec-1115-b054-16e807d2c89c@linaro.org>
+Date: Mon, 16 Oct 2023 11:22:22 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/vm: netbsd: install dtc
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 04/17] configure: clean up handling of CFI option
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Reinoud Zandijk <reinoud@netbsd.org>,
- Ryo ONODERA <ryoon@netbsd.org>
-References: <20231013153027.800327-1-pbonzini@redhat.com>
- <cee1cc9f-ed36-4300-a712-d3fbef4bb395@redhat.com>
- <ZSz9AFwxPBsoRMih@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <ZSz9AFwxPBsoRMih@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20231016063127.161204-1-pbonzini@redhat.com>
+ <20231016063127.161204-5-pbonzini@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231016063127.161204-5-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,122 +93,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/10/2023 11.06, Daniel P. Berrangé wrote:
-> On Mon, Oct 16, 2023 at 11:00:14AM +0200, Thomas Huth wrote:
->> On 13/10/2023 17.30, Paolo Bonzini wrote:
->>> Install dtc as it is now a mandatory external dependency in order to build QEMU.
->>>
->>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->>> ---
->>>    tests/vm/netbsd | 3 +++
->>>    1 file changed, 3 insertions(+)
->>>
->>> diff --git a/tests/vm/netbsd b/tests/vm/netbsd
->>> index 939dc1b22a1..3ef1ec2d9cc 100755
->>> --- a/tests/vm/netbsd
->>> +++ b/tests/vm/netbsd
->>> @@ -40,6 +40,9 @@ class NetBSDVM(basevm.BaseVM):
->>>            "gsed",
->>>            "gettext-tools",
->>> +        # libs: basic
->>> +        "dtc",
->>> +
->>>            # libs: crypto
->>>            "gnutls",
->>
->> Does this work for you? When I run "make vm-build-netbsd", I'm still getting
->> a failure:
->>
->> 76 packages to install:
->>    git-base-2.41.0nb1 pkgconf-1.9.5 xz-5.4.3 python310-3.10.12
->> py310-expat-3.10.12nb1 ninja-build-1.11.1
->>    bash-5.2.15 gmake-4.4.1 gsed-4.9nb1 gettext-tools-0.21.1 dtc-1.7.0
->> gnutls-3.8.0nb3 jpeg-9e png-1.6.39
->>    capstone-4.0.2 SDL2-2.26.5nb1 gtk3+-3.24.38 zstd-1.5.5 libslirp-4.7.0nb1
->> pcre2-10.42 curl-8.1.2
->>    libuuid-2.32.1nb1 libffi-3.4.4 gettext-lib-0.21.1 p11-kit-0.24.1 nettle-3.9.1
->>    mozilla-rootcerts-1.0.20230505 libtasn1-4.19.0 libcfg+-0.7.0 gmp-6.2.1nb3
->> wayland-protocols-1.31nb1
->>    wayland-1.21.0nb2 libxkbcommon-1.5.0nb1 libsamplerate-0.2.2nb4
->> shared-mime-info-2.2nb2 pango-1.50.12nb1
->>    libcups-2.4.6nb1 libXft-2.3.8 hicolor-icon-theme-0.17nb1 glib2-2.74.6nb1
->> gdk-pixbuf2-2.42.10nb2
->>    fribidi-1.0.13 freetype2-2.13.0nb1 fontconfig-2.14.2nb1
->> cairo-gobject-1.16.0nb7 cairo-1.16.0nb9 atk-2.38.0
->>    at-spi2-atk-2.38.0nb1 lz4-1.9.4 nghttp2-1.54.0 libidn2-2.3.4
->> readline-8.2nb2 libsndfile-1.2.0nb2
->>    fftw-3.3.10nb1 libxslt-1.1.38 libepoll-shim-0.0.20230411
->> at-spi2-core-2.40.3nb2 lzo-2.10 brotli-1.0.9
->>    tiff-4.5.1nb1 libpaper-2.1.0nb2 dbus-1.14.6 harfbuzz-7.3.0
->> graphite2-1.3.14nb1 libunistring-1.1
->>    libxml2-2.10.4nb1 libgcrypt-1.10.2 mpg123-1.31.3 libvorbis-1.3.7
->> libopus-1.4 libogg-1.3.5nb1 lame-3.100nb5
->>    flac-1.4.2 jbigkit-2.1nb1 xmlcatmgr-2.2nb1 libgpg-error-1.47
->> [...]
->> installing dtc-1.7.0...
->> [...]
->> The Meson build system
->> Version: 0.63.3
->> Source dir: /home/qemu/qemu-test.Li0spd/src
->> Build dir: /home/qemu/qemu-test.Li0spd/build
->> Build type: native build
->> Project name: qemu
->> Project version: 8.1.50
->> C compiler for the host machine: cc -m64 -mcx16 (gcc 7.5.0 "cc (nb4
->> 20200810) 7.5.0")
->> C linker for the host machine: cc -m64 -mcx16 ld.bfd 2.31.1
->> [...]
->> Run-time dependency capstone found: YES 4.0.2
->> Library fdt found: NO
->> Initialized empty Git repository in
->> /home/qemu/qemu-test.Li0spd/src/subprojects/dtc/.git/
->> fatal: unable to access 'https://gitlab.com/qemu-project/dtc.git/': SSL
->> certificate problem: unable to get local issuer certificate
->>
->> ../src/meson.build:3076:4: ERROR: Git command failed: ['/usr/pkg/bin/git',
->> 'fetch', '--depth', '1', 'origin',
->> 'b6910bec11614980a21e46fbccc35934b671bd81']
->>
->> A full log can be found at
->> /home/qemu/qemu-test.Li0spd/build/meson-logs/meson-log.txt
->>
->> ERROR: meson setup failed
->>
->> ... so though the NetBSD people finally upgraded their dtc to a usable
->> level, our meson.build seems to be unable to detect it?
+On 16/10/23 08:31, Paolo Bonzini wrote:
+> Avoid that --enable-cfi --disable-cfi leaves b_lto set to true.
 > 
-> They claim to have version 1.7.0
-> 
->    https://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc/sysutils/dtc/index.html
-> 
-> and we claim to want 1.5.0, so should be OK.
-> 
-> Suggests that our detection, or test compilation is failing. The
-> meson-log.txt might have more info, if you can access that ?
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   configure | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
 
-Look like libfdt is installed there in an unusual location?
-I can make it work with this patch on top:
 
-diff --git a/tests/vm/netbsd b/tests/vm/netbsd
-index fdf8064cef..2ccc7f2cdd 100755
---- a/tests/vm/netbsd
-+++ b/tests/vm/netbsd
-@@ -69,8 +69,9 @@ class NetBSDVM(basevm.BaseVM):
-          cd $(mktemp -d /home/qemu/qemu-test.XXXXXX);
-          mkdir src build; cd src;
-          tar -xf /dev/rld1a;
--        cd ../build
--        ../src/configure --disable-opengl {configure_opts};
-+        cd ../build;
-+        ../src/configure --disable-opengl --extra-ldflags=-L/usr/pkg/lib \
-+                         --extra-cflags=-I/usr/pkg/include {configure_opts};
-          gmake --output-sync -j{jobs} {target} {verbose};
-      """
-      poweroff = "/sbin/poweroff"
+> @@ -1845,6 +1843,7 @@ if test "$skip_meson" = no; then
+>   
+>     # QEMU options
+>     test "$cfi" != false && meson_option_add "-Dcfi=$cfi"
+> +  test "$cfi" != false && meson_option_add "-Db_lto=$cfi"
 
-Could you add that to your patch, Paolo?
+Merge as "-Dcfi=$cfi -Db_lto=$cfi"?
 
-  Thanks,
-   Thomas
+>     test "$docs" != auto && meson_option_add "-Ddocs=$docs"
+>     test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
+>     test "$plugins" = yes && meson_option_add "-Dplugins=true"
 
 
