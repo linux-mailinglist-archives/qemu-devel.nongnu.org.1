@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77F77CABBD
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 16:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A72D7CABBE
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 16:39:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsOjk-0004CI-Ls; Mon, 16 Oct 2023 10:38:28 -0400
+	id 1qsOjl-0004Cv-Ke; Mon, 16 Oct 2023 10:38:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsOjg-0004Bs-LJ
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:38:24 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qsOji-0004C7-NH
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:38:26 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsOjb-0000qv-0k
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:38:24 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-9c3aec5f326so248695566b.1
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 07:38:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qsOjg-0000rl-TJ
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 10:38:26 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40684f53ef3so49427555e9.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 07:38:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697467097; x=1698071897; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NSLqr6SjIOcO45ea+pK9oSCGiEaOT8FVHOYHorSTAZQ=;
- b=nbEVMZESpsd7HGPXSMOOG7giU03EDtW4wBIz9JbNOuXS+MfsMU+UOwnQZdb8g4Olun
- BRpFA4bBQfjn+9qaLCVqeLgf2u4iMMFIv/cJWm8IfMJ92lVCL43EHoEMYT7Q5M+v7aql
- FoBFm77SehiaTRUEvxtE+3pK+EJ8VafS/nPGmVWbWsccfCmH2TBtBiVdG/7AMjrlHELX
- eHmSlzqiQd2v5nh662whgeTBa0LtccIJaMbiLLi9rWfRDTjwK/0IxdZpYVx4AS5k4k33
- xVKbCBSx85IUY6rkb5y6XM4uimsNqXqjdiSE//gzRb3SNDZ87/6TpVL1xWusQdp62MkU
- 5H/w==
+ d=linaro.org; s=google; t=1697467102; x=1698071902; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nTmpG7pg4KLJVWg+ZcGjpNI9U8juXfRNj1RlWHhKX9o=;
+ b=Zg9EDB3KkgGBntt/BVPvGEK0IAVUVai3MsEgcIljcHhKje2wgDsb4yXZNVY2Qli0It
+ RTMZhwOFCUDgHRYnlcKI80fQYg7KA61Lwd4L6lIsPwgKssBMDnKUTRoRPEygZoqpLtnf
+ UOKm3f3NgaimD+5haA1zgASqpmipQwfBtue7iCfqokRzcwpFw+Rb4Uls3gCbwCMOPaMw
+ /Y0fDyEphI4l27yPaHtLKVtL5Mtt8YVyuWEMV1WxfNKPPehnaGxKsaG5Q2TphNK3jcTz
+ vNDvSl9kLEcZymS7EIBdzUwCQo2Ae/psW86FqJ2Aqzrp035h2rhzez1AuWMK8g8Ts8mM
+ xxNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697467097; x=1698071897;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NSLqr6SjIOcO45ea+pK9oSCGiEaOT8FVHOYHorSTAZQ=;
- b=TDFKCrr8jk8jxL3F5v91qr1Jo6Eo6zUs0vW1Ov0YH9Km3TQblTNjc8GR2wUUsCXlHo
- 687YV3i9HgTL66jI8VLmwG6EQ6irUqvbdXJKm9RIPEiEE+E7lcVdl0KbI2uXgG2gmOP7
- gN0Q9ZORT+nQba7Q45bbmrpz5+IVwTnkgbrgDAJ4fIk3aXAmxipAvoX+cNYyN2TmHYy4
- D/ry54kc1yc07K7WOBFqeHyEqJbMVMgEP5AR8H06QI8vFlKcXjHbZ4S9ruGpd2mUfTOz
- 9APTbVqFKu+OTrULx0Z+jBUo8IA0puky+afz/lFXrcEIk30YqUDS7tpr23GWi1iz0uBQ
- yOLg==
-X-Gm-Message-State: AOJu0YxmElfUvFwEobBMry8BXNJpo1N8mbBXuOJs11yBdgqoRUHMUSBT
- mtE1Pw/knzagiVUve+srLX6NXA==
-X-Google-Smtp-Source: AGHT+IETNUccMjtbY0LEe9sKYEyDv1xFBybk1MkXCA/BvDg0vjbrBILjGaWBd2eKONyyhKYQfWP/NA==
-X-Received: by 2002:a17:906:4b12:b0:9c5:7f5d:42dc with SMTP id
- y18-20020a1709064b1200b009c57f5d42dcmr290430eju.33.1697467096760; 
- Mon, 16 Oct 2023 07:38:16 -0700 (PDT)
-Received: from [192.168.69.115]
- (tbo33-h01-176-171-211-186.dsl.sta.abo.bbox.fr. [176.171.211.186])
+ d=1e100.net; s=20230601; t=1697467102; x=1698071902;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=nTmpG7pg4KLJVWg+ZcGjpNI9U8juXfRNj1RlWHhKX9o=;
+ b=WiwnGkYPr9muxyl6hCBGHwnk/Xw+ibX3rwtqgMN5xo9gnD2Ww/osI6yMAwdSRpwTpd
+ NXTK0Vc7CgXkpudFUKYZoOWzb48/80jMuXAIvyP1+KbB/8Z/m3PNrVxExYG+2qyiNW/Y
+ nc6LqDHlwKkdJt6okLyIes8XnCoX4JMkwxH1z8GRWheghYTDmn4iCmIVcwhK/vC4b0BT
+ PbyGKAbIC9JNUgtmyYEVsPbS9qflTxvZuTIkY93UdFa9aNteE9H+GU/4uZMvLo7pBsUk
+ yc+hsSFD2yzuZ+sOAC0zjq5An7zxIZuMkJhVE2iDs85STJgNXKwXxyJP+gObL6s42/gq
+ /Vlw==
+X-Gm-Message-State: AOJu0YwZO89/rq0CMZE+A5e4ZLDWHyLmWpMoI5eL06t1slXC8OlMuTvV
+ MQYCsywojSV5VFFMoD8LitEmcw==
+X-Google-Smtp-Source: AGHT+IEOEJkzujfbQr1USAZT+321zXvuAugn5GoI2M0oyW1/zSR7govkvxhdc4acWu79sHF8XYIenw==
+X-Received: by 2002:a05:600c:2116:b0:406:53c0:3c71 with SMTP id
+ u22-20020a05600c211600b0040653c03c71mr29573501wml.37.1697467101714; 
+ Mon, 16 Oct 2023 07:38:21 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- gw11-20020a170906f14b00b0098669cc16b2sm4112909ejb.83.2023.10.16.07.38.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 07:38:14 -0700 (PDT)
-Message-ID: <637d33e5-9165-6213-6d53-8a6fa07a2e38@linaro.org>
-Date: Mon, 16 Oct 2023 16:38:12 +0200
+ n34-20020a05600c3ba200b003fe61c33df5sm7441164wms.3.2023.10.16.07.38.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Oct 2023 07:38:21 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 9662B1FFBB;
+ Mon, 16 Oct 2023 15:38:20 +0100 (BST)
+References: <20231003183058.1639121-1-richard.henderson@linaro.org>
+ <20231003183058.1639121-6-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: fei2.wu@intel.com, "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v17 05/16] accel/tcg: Add TBStatistics structure
+Date: Mon, 16 Oct 2023 15:38:15 +0100
+In-reply-to: <20231003183058.1639121-6-richard.henderson@linaro.org>
+Message-ID: <87h6mqd44j.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 5/5] hw/intc/apic: Pass CPU using QOM link property
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Markus Armbruster <armbru@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-References: <20231003082728.83496-1-philmd@linaro.org>
- <20231003082728.83496-6-philmd@linaro.org>
- <3a901d18-a07c-cc6c-f9ce-b500d07556cb@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <3a901d18-a07c-cc6c-f9ce-b500d07556cb@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,30 +97,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
 
-On 6/10/23 01:04, Paolo Bonzini wrote:
-> On 10/3/23 10:27, Philippe Mathieu-Daudé wrote:
->> -    /* TODO: convert to link<> */
->> -    apic = APIC_COMMON(cpu->apic_state);
->> -    apic->cpu = cpu;
->> -    apic->apicbase = APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE;
->> +    qdev_prop_set_uint32(cpu->apic_state, "base-addr",
->> +                         APIC_DEFAULT_ADDRESS | MSR_IA32_APIC
-> 
-> For this to use a link, it's missing the corresponding 
-> object_unref(apic->cpu) + apic->cpu = NULL assignment somewhere.  For 
-> example you can add it in apic_common_unrealize (called by 
-> device_unparent - which is called in turn by x86_cpu_unrealizefn).
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-I am a bit confused.
+> Add code to allocate, reset, and free the structures along
+> with their corresponding TranslationBlocks.  We do not yet
+> collect, display, or enable the statistics.
+>
+> Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+> Signed-off-by: Fei Wu <fei2.wu@intel.com>
+> [rth: Significantly reorganized.]
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-DEFINE_PROP_LINK() sets OBJ_PROP_LINK_STRONG:
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-  * If the link property was created with
-  * %OBJ_PROP_LINK_STRONG bit, the old target object is
-  * unreferenced, and a reference is added to the new target object.
-
-Is this what you are pointing at? If so, I agree this should be
-unref in apic_common_unrealize().
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
