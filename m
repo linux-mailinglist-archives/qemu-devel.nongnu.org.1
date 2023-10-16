@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EA97CA691
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 13:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C77FD7CA698
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 13:20:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsLbn-0002bf-UC; Mon, 16 Oct 2023 07:18:03 -0400
+	id 1qsLbs-0002f2-Bi; Mon, 16 Oct 2023 07:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
- id 1qsLbj-0002bP-Lz
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:17:59 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qsLbm-0002c0-LX
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:18:02 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
- id 1qsLbb-0005ab-Dm
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:17:59 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40776b200e5so22872825e9.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 04:17:42 -0700 (PDT)
+ id 1qsLbb-0005al-E3
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:18:02 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-32daeed7771so1090260f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 04:17:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697455061; x=1698059861;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697455062; x=1698059862;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=o0X746pWBb61XQE/PyM4YL/Nc2C8wn9L+9XF0qSDLec=;
- b=sj1HQSzIuXyHrS07AoFH7gi23QYY6xUEiVZ71bBbs67dIjuMYCSWevLN2fqUwYBdMA
- hMNoRR2uTCjafvBsXM0O/wEHieDlquigA6rWhYFAKgwQhatafLBYMK3xtV//nqUIsNNG
- M21ZpyXi/RxYAgx4DcZUDCF40RWNGnwZcHuuBK2i+qZTyTTQugQwPpDOw2hbGs61GkK1
- uo/iEFFRKEZBv26uacbwfKy1qJvFkXVx2rKp3Djz0gxMRj+dkjuT5uHau6te097vOmZD
- zHPpD0Y6zUlp/GSUSkx30l6401lwC98h485m40A7RuAl+xw0lXYW/ZcIGL6ZhMLXdJUc
- hh9g==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JtzE7my5CmntemfMbbeAb9YICyfQZm1oiOKZ3Hj4AGc=;
+ b=p8dHivGO1RqxnIMHYrGdd/2d4TiimOGSI4vwQdEuyW//9rSl+NhG+WgXi2j0EEKpPv
+ erq6sw+Kt9NGT3roXXhiWwME4cBQx/lOxgX8OybgW0bfkZDow6ydRazRgbkUkIsDSGOk
+ ZOZNm/YtUIz2Y+tBgxMJV6mpworB2tLDxWshE1QQXCsZl9cccpP3CG2kG14kEncq9Yqc
+ RL3KpdoQBpVXXgSs+G0x4l49TaU9Nlv70CnGi6olC0vKvURwmcO2AQyXKhIUugav7K2B
+ fXB7G5CKKmz8mvc3zECMcDu+0KE2EjjX1VU2AWac3JUlxnI0IAqMMlbnOA+VuH1WvV0L
+ lbvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697455061; x=1698059861;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=o0X746pWBb61XQE/PyM4YL/Nc2C8wn9L+9XF0qSDLec=;
- b=BCuoCPCN2J6AI/meGEgPKBFDHsKHK2tgEHCIDn2Fe7hfHrFz1FD0L9AzQAm5jx5McC
- d1Z1f3PITYGVP3Q51myCGkhFNsilhAaArTt2I2Qoe9YaI6DaRaKIirEmPx8LA6TZ/vp3
- tlGm7o/Dxf2/Nju34t68lWOITDLgQpYyCg+yZmeP1uCQHr/JA7v0Rq8Y+wWVuJgGR8JV
- kZ/OA0T+FWxVI9H1XtaGAejyza3E3Cj20iulnkPeQIpiiJwLQ4zfemMOK8h4AGHEJLCY
- 6oxtR65CLj8dvDgSM5NPtU/bW35BAbG7553YUrPvSG9SRQ3RyEdGLYCmuMxIh+sdV7EX
- x5wg==
-X-Gm-Message-State: AOJu0YwC2A5nyqLBI1ab3DgNec8HifwqCYoTJnOUh42JoDMcPAflxtEM
- lgG4cKCcEHySqqVgHIHHHaiDLg==
-X-Google-Smtp-Source: AGHT+IHIdYSbUItU6QiNyeHZSj4SrFHJYkIKdMZs/uSSRSHC467zUCsFn4kzRxzMxPaQnfmAOur9WQ==
-X-Received: by 2002:a1c:6a17:0:b0:401:db82:3edf with SMTP id
- f23-20020a1c6a17000000b00401db823edfmr28934481wmc.39.1697455060601; 
- Mon, 16 Oct 2023 04:17:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697455062; x=1698059862;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JtzE7my5CmntemfMbbeAb9YICyfQZm1oiOKZ3Hj4AGc=;
+ b=e58wq872VEfzLmZroZ0uYmfPa0EkNno8bgBRorMxGNu+m3tXW2ZA4hof9oeKfs5TKJ
+ LWakIs/wP/xPKTyjyhif4VvmNSVn+HlNWdjkUBZsLXy/KGWvjAo4J2hkrFNMntC95j++
+ M4vnpAwej3fpS7b6G+nRZPfnzGs5ZTzXYyH6F5LbirODBZ9GF+junoG5W2NaEi5oh05u
+ BDe0xE/BtajxpmugXja2nLXPHDxFZcgvoDlhFLGsiefH3gz4LoJfmoIGBqmxqxSC004I
+ 10sTWqn5lVZAA1Ct9AZiGJt7Qxb5AgCXGuub2+d5kSkqapgf6xa/tJjDJ+tvwZTK+hCj
+ NCww==
+X-Gm-Message-State: AOJu0Yzr6u/FVyQNJjSyGRkpKS5XBivVtLpcgmP6Fi+9441IetUGPu+0
+ nCZJkt6ZUDEYK7wxE0vqvqn5ww==
+X-Google-Smtp-Source: AGHT+IHt7zBM7oq34Pt1GjqiaqFwpNreACl3dteb8CaiNPSQ8zXFjZXR0Nrv3tRDWkh7QnITBrajQA==
+X-Received: by 2002:adf:f2ce:0:b0:32d:9fc9:d14a with SMTP id
+ d14-20020adff2ce000000b0032d9fc9d14amr6477524wrp.12.1697455061845; 
+ Mon, 16 Oct 2023 04:17:41 -0700 (PDT)
 Received: from localhost.localdomain
  (cpc91760-watf12-2-0-cust235.15-2.cable.virginm.net. [81.111.69.236])
  by smtp.gmail.com with ESMTPSA id
- o15-20020a056000010f00b0032daf848f68sm3114299wrx.59.2023.10.16.04.17.39
+ o15-20020a056000010f00b0032daf848f68sm3114299wrx.59.2023.10.16.04.17.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 04:17:40 -0700 (PDT)
+ Mon, 16 Oct 2023 04:17:41 -0700 (PDT)
 From: Rajnesh Kanwal <rkanwal@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -64,21 +65,23 @@ Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, apatel@ventanamicro.com,
  rkanwal@rivosinc.com
-Subject: [PATCH v5 0/6] target/riscv: Add RISC-V Virtual IRQs and IRQ
- filtering support
-Date: Mon, 16 Oct 2023 12:17:30 +0100
-Message-Id: <20231016111736.28721-1-rkanwal@rivosinc.com>
+Subject: [PATCH v5 1/6] target/riscv: Without H-mode mask all HS mode
+ inturrupts in mie.
+Date: Mon, 16 Oct 2023 12:17:31 +0100
+Message-Id: <20231016111736.28721-2-rkanwal@rivosinc.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231016111736.28721-1-rkanwal@rivosinc.com>
+References: <20231016111736.28721-1-rkanwal@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=rkanwal@rivosinc.com; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=rkanwal@rivosinc.com; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,73 +97,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds M and HS-mode virtual interrupt and IRQ filtering support.
-This allows inserting virtual interrupts from M/HS-mode into S/VS-mode
-using mvien/hvien and mvip/hvip csrs. IRQ filtering is a use case of
-this change, i-e M-mode can stop delegating an interrupt to S-mode and
-instead enable it in MIE and receive those interrupts in M-mode and then
-selectively inject the interrupt using mvien and mvip.
+Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/csr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Also, the spec doesn't mandate the interrupt to be actually supported
-in hardware. Which allows M/HS-mode to assert virtual interrupts to
-S/VS-mode that have no connection to any real interrupt events.
-
-This is defined as part of the AIA specification [0], "5.3 Interrupt
-filtering and virtual interrupts for supervisor level" and "6.3.2 Virtual
-interrupts for VS level".
-
-Most of the testing is done by hacking around OpenSBI and linux host.
-The changes for those can be found at [1] and [2].
-
-It's my first touch on RISC-V qemu IRQ subsystem. Any feedback would
-be much appreciated.
-
-The change can also be found on github [3].
-
-TODO: This change doesn't support delegating virtual interrupts injected
-by M-mode to VS-mode by the Hypervisor. This is true for bits 13:63 only.
-
-Thanks
-Rajnesh
-
-[0]: https://github.com/riscv/riscv-aia/releases/download/1.0/riscv-interrupts-1.0.pdf
-[1]: https://github.com/rajnesh-kanwal/opensbi/tree/dev/rkanwal/irq_filter
-[2]: https://github.com/rajnesh-kanwal/linux/commits/dev/rkanwal/aia_irq_filter
-[3]: https://github.com/rajnesh-kanwal/qemu/tree/dev/rkanwal/riscv_irq_filter
-
-v5:
- * Rebased the patches onto alister/riscv-to-apply.next again. Updated
-   version_id and minimum_version_id in vmstate_riscv_cpu and
-   vmstate_hyper. Also updated AIA spec links.
-
-v4:
- * Rebased the patches onto alister/riscv-to-apply.next. There were
-   some rebasing conflicts due to code restructuring.
-
-v3:
- * Rebased the patches and added reviewed-by tags.
-
-v2:
- * Move RISCV_EXCP_SEMIHOST to switch case and remove special handling.
- * Fix linux-user build.
-
-Rajnesh Kanwal (6):
-  target/riscv: Without H-mode mask all HS mode inturrupts in mie.
-  target/riscv: Check for async flag in case of RISCV_EXCP_SEMIHOST.
-  target/riscv: Set VS* bits to one in mideleg when H-Ext is enabled
-  target/riscv: Split interrupt logic from riscv_cpu_update_mip.
-  target/riscv: Add M-mode virtual interrupt and IRQ filtering support.
-  target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.
-
- target/riscv/cpu.c         |   4 +-
- target/riscv/cpu.h         |  23 ++
- target/riscv/cpu_bits.h    |   6 +
- target/riscv/cpu_helper.c  |  99 ++++++--
- target/riscv/csr.c         | 477 +++++++++++++++++++++++++++++++++----
- target/riscv/machine.c     |  14 +-
- target/riscv/tcg/tcg-cpu.c |   7 +-
- 7 files changed, 551 insertions(+), 79 deletions(-)
-
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 30cc21e979..4847b47a98 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -1525,7 +1525,7 @@ static RISCVException rmw_mie64(CPURISCVState *env, int csrno,
+     env->mie = (env->mie & ~mask) | (new_val & mask);
+ 
+     if (!riscv_has_ext(env, RVH)) {
+-        env->mie &= ~((uint64_t)MIP_SGEIP);
++        env->mie &= ~((uint64_t)HS_MODE_INTERRUPTS);
+     }
+ 
+     return RISCV_EXCP_NONE;
 -- 
 2.34.1
 
