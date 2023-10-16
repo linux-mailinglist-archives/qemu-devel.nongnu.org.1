@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0AA7C9F97
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00DB17C9F9C
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsH9B-00042t-3j; Mon, 16 Oct 2023 02:32:13 -0400
+	id 1qsH9J-00047q-2B; Mon, 16 Oct 2023 02:32:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH94-00042a-0c
+ id 1qsH94-00042j-L4
  for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:32:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH92-0005U7-8z
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:32:05 -0400
+ id 1qsH93-0005UO-4e
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:32:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697437923;
+ s=mimecast20190719; t=1697437924;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qwRXtVjXRc2oO6G7Ta8j3S56M6ZsrgKAu3P/PDdZ/0w=;
- b=Lr94U+o04qeI9TN4hl7C3/+5/v4127xcuLlWibTHWwDxjO/vDbxQajXQF/ij7WLHBuCgPL
- s1Ts5tvvDrW1frXLp2Rb0ejcNOKWGLd+ZcSkb6s+ubeFABXUEyeL9Ua/Ni3WqjBIUBrw97
- eazRreD5Rm8DgekrKQR7UgHhR+mqSsM=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Hhz5NoA8No/Gwx+ZeOtjgQ6Cuap6+7hqMf6Rp4/O1Yk=;
+ b=UORIBvA3GsnKr2rGzrC1q3PLK4BNQoFjXrnJkdclZ7FWZGilg5QBkJAkH69vvN9iNuf33G
+ gp3WqwHhRvvaA2U1lAUQaxNvAKL34cgb3r9vyp3sJH2tTJvyeZhBnyFC5G0A9TyFi1IFw6
+ ra3u5/r3NMD1TNUdK6fNORkJHAEvJFk=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-vrOimNY7O-OzzBnNjQq9UQ-1; Mon, 16 Oct 2023 02:32:01 -0400
-X-MC-Unique: vrOimNY7O-OzzBnNjQq9UQ-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-53e119e615aso4262580a12.0
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:32:00 -0700 (PDT)
+ us-mta-538-YEx8ZihuNPeJirJW-cHfjw-1; Mon, 16 Oct 2023 02:32:02 -0400
+X-MC-Unique: YEx8ZihuNPeJirJW-cHfjw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9ba247e03aeso279585066b.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:32:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697437919; x=1698042719;
+ d=1e100.net; s=20230601; t=1697437921; x=1698042721;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qwRXtVjXRc2oO6G7Ta8j3S56M6ZsrgKAu3P/PDdZ/0w=;
- b=OEmHAyXCTw0aozdbWavnst0HjW/1F1dXyu13GCw6zu03n6a7JTxfiKd5ZokGLaozlz
- SmBodVWZToDibN2YOvgRioDJUy7wZCbjHDjTQoeX9wAjm71LK4RMhyzM9gphGSCJZVA8
- HIeLv9qCbF4TydzLQNUNMGklHX3O2LlnQ6gslrli188GWEyFd7ehEYzxu+DnAjRCfrM/
- Q/7xfMWIlELJke8TcVFlP8tFTDtDXdCwnQooFXDDy8JB7SA/O2Mn+m/4jDFFIxA5lTLn
- bnuS7mBK0eI6+2b7ahndw4/NJ3CCqqRJCnN+cFtmtK0ToA0e1jkxbcKvv0q8+2O85wAT
- UfRQ==
-X-Gm-Message-State: AOJu0YwTE+Q/gcaTL8SDbdKziKt1HAnlCZLOn/Hx8hcxPdbj+lQYOAnW
- uTYxh7aiZJFjtyFE6JIIOQvgIvRwIfiXPBFICBnhcxjJ4Tw4tTiCiRRvbLwux1e+nH3epWpg80h
- ac/iNzghU7rCJfyx8jj1DApaNLxMysgrwVcmFlUhNE2zF05gBZo3vDR6O/tGTanSuOy2+Jp0XxK
- M=
-X-Received: by 2002:a05:6402:35d4:b0:523:2e23:a0bf with SMTP id
- z20-20020a05640235d400b005232e23a0bfmr5668106edc.11.1697437919595; 
- Sun, 15 Oct 2023 23:31:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHH/bHATqgK2GYIe6lhDDd9ce3KvthpjNRoynTWgRZffQfIvDqriC66Cd2+6ogp4Zi8K8PuZg==
-X-Received: by 2002:a05:6402:35d4:b0:523:2e23:a0bf with SMTP id
- z20-20020a05640235d400b005232e23a0bfmr5668092edc.11.1697437919261; 
- Sun, 15 Oct 2023 23:31:59 -0700 (PDT)
+ bh=Hhz5NoA8No/Gwx+ZeOtjgQ6Cuap6+7hqMf6Rp4/O1Yk=;
+ b=gSqaaC8whmaETD+9i1svRHNaS4574a5iiSbnVbxJuO8GAZa4sL0uAqF6uheTAUI3ni
+ /f2CWYv6m1N1qypZAHhMm2gNmi067FmQM135ZlcbEMkx+jJj4hweUfdvSX9mKNqhPSFl
+ CdUsks/PFKudI4X3u77ZqOTpbcXO1QegSUKbChJgnmaIMYr+86HtN3PpN3ZClmQeibx8
+ ojfc70xPU07Yd8uwl+LRfJqBL0eWFQeztXOHU6UVZ8M0/H07C146grrDeowycB957L34
+ AnNYHmreXYGV0ku9+eOCOPBcDDAiPNXmXIRMLMSRnDIIONicKXfcjyht5DBHq2iiYY5q
+ 79sw==
+X-Gm-Message-State: AOJu0YxwRsEfKOn8P3eh0er3w3YLN+DTzSJnuzGnIu6KJ0t+pe4udJz1
+ KCP69mK+2JXGBH48JMaP0iaqX4/CIh6IQfQf+ezFton2vQmVby2ipdiM0Qiown5ad//Nd5aSnhS
+ ByVCYc3J9jorU9VVhdRPqf4YcgoHDrZ8dYqMkIOKXPgN8aparhAwpYUftr67WfwEqK6s3eaEgUk
+ c=
+X-Received: by 2002:a17:906:6a19:b0:9a5:a0c6:9e8e with SMTP id
+ qw25-20020a1709066a1900b009a5a0c69e8emr37462738ejc.31.1697437921274; 
+ Sun, 15 Oct 2023 23:32:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEzg/gggD4uLsmQzqyaQIiFLsMU215D0qbivs4qNkup6bsjQUwuGnObLaLTlkvDZFM2Ip/oDQ==
+X-Received: by 2002:a17:906:6a19:b0:9a5:a0c6:9e8e with SMTP id
+ qw25-20020a1709066a1900b009a5a0c69e8emr37462722ejc.31.1697437920902; 
+ Sun, 15 Oct 2023 23:32:00 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- co25-20020a0564020c1900b0053e36dd75dfsm4540722edb.35.2023.10.15.23.31.58
+ 26-20020a170906225a00b009ade1a4f795sm3365187ejr.168.2023.10.15.23.32.00
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 23:31:58 -0700 (PDT)
+ Sun, 15 Oct 2023 23:32:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 15/17] configure,
- meson: use command line options to configure qemu-ga
-Date: Mon, 16 Oct 2023 08:31:25 +0200
-Message-ID: <20231016063127.161204-16-pbonzini@redhat.com>
+Subject: [PATCH 16/17] meson-buildoptions: document the data at the top
+Date: Mon, 16 Oct 2023 08:31:26 +0200
+Message-ID: <20231016063127.161204-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231016063127.161204-1-pbonzini@redhat.com>
 References: <20231016063127.161204-1-pbonzini@redhat.com>
@@ -101,129 +100,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Preserve the functionality of the environment variables, but
-allow using the command line instead.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                     | 16 +++++++++-------
- meson_options.txt             |  7 +++++++
- qga/meson.build               |  9 ++++++---
- scripts/meson-buildoptions.sh |  9 +++++++++
- 4 files changed, 31 insertions(+), 10 deletions(-)
+ scripts/meson-buildoptions.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/configure b/configure
-index 18dcb0240ed..06b27dd46f4 100755
---- a/configure
-+++ b/configure
-@@ -1589,12 +1589,6 @@ echo >> $config_host_mak
+diff --git a/scripts/meson-buildoptions.py b/scripts/meson-buildoptions.py
+index 2e88732a291..4814a8ff61f 100644
+--- a/scripts/meson-buildoptions.py
++++ b/scripts/meson-buildoptions.py
+@@ -25,11 +25,15 @@
+ import shlex
+ import sys
  
- echo all: >> $config_host_mak
++# Options with nonstandard names (e.g. --with/--without) or OS-dependent
++# defaults.  Try not to add any.
+ SKIP_OPTIONS = {
+     "default_devices",
+     "fuzzing_engine",
+ }
  
--if test "$targetos" = "windows"; then
--  echo "QEMU_GA_MANUFACTURER=${QEMU_GA_MANUFACTURER-QEMU}" >> $config_host_mak
--  echo "QEMU_GA_DISTRO=${QEMU_GA_DISTRO-Linux}" >> $config_host_mak
--  echo "QEMU_GA_VERSION=${QEMU_GA_VERSION-$(cat "$source_path"/VERSION)}" >> $config_host_mak
--fi
--
- echo "SRC_PATH=$source_path" >> $config_host_mak
- echo "TARGET_DIRS=$target_list" >> $config_host_mak
- echo "GDB=$gdb_bin" >> $config_host_mak
-@@ -1721,6 +1715,15 @@ if test "$skip_meson" = no; then
-   if test "$SMBD" != ''; then
-     echo "smbd = $(meson_quote "$SMBD")" >> $cross
-   fi
-+  if test "${QEMU_GA_MANUFACTURER}" != ''; then
-+    echo "qemu_ga_manufacturer = $(meson_quote "${QEMU_GA_MANUFACTURER}")" >> $cross
-+  fi
-+  if test "${QEMU_GA_DISTRO}" != ''; then
-+    echo "qemu_ga_distro = $(meson_quote "${QEMU_GA_DISTRO}")" >> $cross
-+  fi
-+  if test "${QEMU_GA_VERSION}" != ''; then
-+    echo "qemu_ga_version = $(meson_quote "${QEMU_GA_VERSION}")" >> $cross
-+  fi
++# Options whose name doesn't match the option for backwards compatibility
++# reasons, because Meson gives them a funny name, or both
+ OPTION_NAMES = {
+     "b_coverage": "gcov",
+     "b_lto": "lto",
+@@ -49,6 +53,10 @@
+     "werror",
+ }
  
-   echo >> $cross
-   echo "[binaries]" >> $cross
-@@ -1772,7 +1775,6 @@ if test "$skip_meson" = no; then
- 
-   rm -rf meson-private meson-info meson-logs
- 
--  # Built-in options
-   test "$download" = "disabled" && meson_option_add "--wrap-mode=nodownload"
-   test "$default_feature" = no && meson_option_add -Dauto_features=disabled
-   test "$static" = yes && meson_option_add -Dprefer_static=true
-diff --git a/meson_options.txt b/meson_options.txt
-index e237b268469..1b0c02b4a58 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -353,5 +353,12 @@ option('qom_cast_debug', type: 'boolean', value: true,
- option('slirp_smbd', type : 'feature', value : 'auto',
-        description: 'use smbd (at path --smbd=*) in slirp networking')
- 
-+option('qemu_ga_manufacturer', type: 'string', value: 'QEMU',
-+       description: '"manufacturer" name for qemu-ga registry entries')
-+option('qemu_ga_distro', type: 'string', value: 'Linux',
-+       description: 'second path element in qemu-ga registry entries')
-+option('qemu_ga_version', type: 'string', value: '',
-+       description: 'version number for qemu-ga installer')
-+
- option('hexagon_idef_parser', type : 'boolean', value : true,
-        description: 'use idef-parser to automatically generate TCG code for the Hexagon frontend')
-diff --git a/qga/meson.build b/qga/meson.build
-index 59cae0cc6ee..940a51d55db 100644
---- a/qga/meson.build
-+++ b/qga/meson.build
-@@ -145,6 +145,9 @@ if targetos == 'windows'
-     else
-       libpcre = 'libpcre2'
-     endif
-+    qga_msi_version = get_option('qemu_ga_version') == '' \
-+      ? project.version() \
-+      : get_option('qemu_ga_version')
-     qga_msi = custom_target('QGA MSI',
-                             input: files('installer/qemu-ga.wxs'),
-                             output: 'qemu-ga-@0@.msi'.format(host_arch),
-@@ -155,9 +158,9 @@ if targetos == 'windows'
-                               qemu_ga_msi_vss,
-                               '-D', 'BUILD_DIR=' + meson.project_build_root(),
-                               '-D', 'BIN_DIR=' + glib_pc.get_variable('bindir'),
--                              '-D', 'QEMU_GA_VERSION=' + config_host['QEMU_GA_VERSION'],
--                              '-D', 'QEMU_GA_MANUFACTURER=' + config_host['QEMU_GA_MANUFACTURER'],
--                              '-D', 'QEMU_GA_DISTRO=' + config_host['QEMU_GA_DISTRO'],
-+                              '-D', 'QEMU_GA_VERSION=' + qga_msi_version,
-+                              '-D', 'QEMU_GA_MANUFACTURER=' + get_option('qemu_ga_manufacturer'),
-+                              '-D', 'QEMU_GA_DISTRO=' + get_option('qemu_ga_distro'),
-                               '-D', 'LIBPCRE=' + libpcre,
-                             ])
-     all_qga += [qga_msi]
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index dec33820163..bda88993bd1 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -64,6 +64,12 @@ meson_options_help() {
-   printf "%s\n" '  --localstatedir=VALUE    Localstate data directory [/var/local]'
-   printf "%s\n" '  --mandir=VALUE           Manual page directory [share/man]'
-   printf "%s\n" '  --prefix=VALUE           Installation prefix [/usr/local]'
-+  printf "%s\n" '  --qemu-ga-distro=VALUE   second path element in qemu-ga registry entries'
-+  printf "%s\n" '                           [Linux]'
-+  printf "%s\n" '  --qemu-ga-manufacturer=VALUE'
-+  printf "%s\n" '                           "manufacturer" name for qemu-ga registry entries'
-+  printf "%s\n" '                           [QEMU]'
-+  printf "%s\n" '  --qemu-ga-version=VALUE  version number for qemu-ga installer'
-   printf "%s\n" '  --smbd=VALUE             Path to smbd for slirp networking'
-   printf "%s\n" '  --sysconfdir=VALUE       Sysconf data directory [etc]'
-   printf "%s\n" '  --tls-priority=VALUE     Default TLS protocol/cipher priority string'
-@@ -422,6 +428,9 @@ _meson_option_parse() {
-     --enable-qed) printf "%s" -Dqed=enabled ;;
-     --disable-qed) printf "%s" -Dqed=disabled ;;
-     --firmwarepath=*) quote_sh "-Dqemu_firmwarepath=$(meson_option_build_array $2)" ;;
-+    --qemu-ga-distro=*) quote_sh "-Dqemu_ga_distro=$2" ;;
-+    --qemu-ga-manufacturer=*) quote_sh "-Dqemu_ga_manufacturer=$2" ;;
-+    --qemu-ga-version=*) quote_sh "-Dqemu_ga_version=$2" ;;
-     --with-suffix=*) quote_sh "-Dqemu_suffix=$2" ;;
-     --enable-qga-vss) printf "%s" -Dqga_vss=enabled ;;
-     --disable-qga-vss) printf "%s" -Dqga_vss=disabled ;;
++# Builtin options that should be definable via configure.  Some of the others
++# we really do not want (e.g. c_args is defined via the native file, not
++# via -D, because it's a mix of CFLAGS and --extra-cflags); for specific
++# cases "../configure -D" can be used as an escape hatch.
+ BUILTIN_OPTIONS = {
+     "b_coverage",
+     "b_lto",
 -- 
 2.41.0
 
