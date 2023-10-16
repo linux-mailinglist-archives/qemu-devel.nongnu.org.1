@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489517CAA0D
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B92567CAA08
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:43:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsNsD-0001R0-39; Mon, 16 Oct 2023 09:43:09 -0400
+	id 1qsNsF-0001Sz-9S; Mon, 16 Oct 2023 09:43:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNsB-0001Om-Df
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:43:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNsC-0001Rb-QU
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:43:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNs7-0003Kg-QX
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:43:06 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsNsB-0003L9-8E
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:43:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697463782;
+ s=mimecast20190719; t=1697463785;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1h+PIQTkLFGme4NU03xPLK8WlMN8cCfO/fLljXcNHZY=;
- b=Mxn75ovzlXHL8a1kgn27ZMJvuRYnhgwf7q5wM+by1iCnF1EUGJanQeVCjeo9MLnQ5kcR8n
- mWruTucPCpIP+z4nlDlp/dMdphxrCRPPEI+cUjkjOqrbjZSt5QFTbRptsHumVRgICTJyN8
- qK1hqntw0mCHJsWjNwaEUVd9Dkm//3w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-493-HLd-lIIgPo-8qk-_JdCZqw-1; Mon, 16 Oct 2023 09:43:01 -0400
-X-MC-Unique: HLd-lIIgPo-8qk-_JdCZqw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=9ZBkpqxm+T7IKVbIYYr65BEU4VvEReH0vO+YG9VbRzk=;
+ b=QjA/UyC+rmBCaK7MLraP/ETZbcf/7WZ0s8olscKz+STeK9VLL5CfyaeEE/UgeRANdBc8oO
+ AfD470mVDVvCawidyc+jWVmrx5j81Ujv5lzHaxPSwEONPuINM8fmlXiaA+9rky03N3sZOx
+ 5NZ151pFgPowrxVXit+cJSXmcCdfNiQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-308-Lbamh0dVMUyo6bnbOpYUbg-1; Mon, 16 Oct 2023 09:43:03 -0400
+X-MC-Unique: Lbamh0dVMUyo6bnbOpYUbg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D00128001EA;
- Mon, 16 Oct 2023 13:43:00 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F3C381C0BB59;
+ Mon, 16 Oct 2023 13:43:02 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.211])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 035D940C6F79;
- Mon, 16 Oct 2023 13:42:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 793A31C060AE;
+ Mon, 16 Oct 2023 13:43:02 +0000 (UTC)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-devel@nongnu.org,
 	virtio-fs@redhat.com
@@ -48,23 +48,23 @@ Cc: Hanna Czenczek <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  German Maglione <gmaglione@redhat.com>,
  =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
  Anton Kuchin <antonkuchin@yandex-team.ru>
-Subject: [PATCH v5 6/7] vhost: Add high-level state save/load functions
-Date: Mon, 16 Oct 2023 15:42:42 +0200
-Message-ID: <20231016134243.68248-7-hreitz@redhat.com>
+Subject: [PATCH v5 7/7] vhost-user-fs: Implement internal migration
+Date: Mon, 16 Oct 2023 15:42:43 +0200
+Message-ID: <20231016134243.68248-8-hreitz@redhat.com>
 In-Reply-To: <20231016134243.68248-1-hreitz@redhat.com>
 References: <20231016134243.68248-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,278 +81,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vhost_save_backend_state() and vhost_load_backend_state() can be used by
-vhost front-ends to easily save and load the back-end's state to/from
-the migration stream.
+A virtio-fs device's VM state consists of:
+- the virtio device (vring) state (VMSTATE_VIRTIO_DEVICE)
+- the back-end's (virtiofsd's) internal state
 
-Because we do not know the full state size ahead of time,
-vhost_save_backend_state() simply reads the data in 1 MB chunks, and
-writes each chunk consecutively into the migration stream, prefixed by
-its length.  EOF is indicated by a 0-length chunk.
+We get/set the latter via the new vhost operations to transfer migratory
+state.  It is its own dedicated subsection, so that for external
+migration, it can be disabled.
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- include/hw/virtio/vhost.h |  35 +++++++
- hw/virtio/vhost.c         | 204 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 239 insertions(+)
+ hw/virtio/vhost-user-fs.c | 101 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 100 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index a0d03c9fdf..100fcc874d 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -426,4 +426,39 @@ int vhost_set_device_state_fd(struct vhost_dev *dev,
-  */
- int vhost_check_device_state(struct vhost_dev *dev, Error **errp);
+diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
+index 49d699ffc2..eb91723855 100644
+--- a/hw/virtio/vhost-user-fs.c
++++ b/hw/virtio/vhost-user-fs.c
+@@ -298,9 +298,108 @@ static struct vhost_dev *vuf_get_vhost(VirtIODevice *vdev)
+     return &fs->vhost_dev;
+ }
  
 +/**
-+ * vhost_save_backend_state(): High-level function to receive a vhost
-+ * back-end's state, and save it in @f.  Uses
-+ * `vhost_set_device_state_fd()` to get the data from the back-end, and
-+ * stores it in consecutive chunks that are each prefixed by their
-+ * respective length (be32).  The end is marked by a 0-length chunk.
-+ *
-+ * Must only be called while the device and all its vrings are stopped
-+ * (`VHOST_TRANSFER_STATE_PHASE_STOPPED`).
-+ *
-+ * @dev: The vhost device from which to save the state
-+ * @f: Migration stream in which to save the state
-+ * @errp: Potential error message
-+ *
-+ * Returns 0 on success, and -errno otherwise.
++ * Fetch the internal state from virtiofsd and save it to `f`.
 + */
-+int vhost_save_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp);
++static int vuf_save_state(QEMUFile *f, void *pv, size_t size,
++                          const VMStateField *field, JSONWriter *vmdesc)
++{
++    VirtIODevice *vdev = pv;
++    VHostUserFS *fs = VHOST_USER_FS(vdev);
++    Error *local_error = NULL;
++    int ret;
++
++    ret = vhost_save_backend_state(&fs->vhost_dev, f, &local_error);
++    if (ret < 0) {
++        error_reportf_err(local_error,
++                          "Error saving back-end state of %s device %s "
++                          "(tag: \"%s\"): ",
++                          vdev->name, vdev->parent_obj.canonical_path,
++                          fs->conf.tag ?: "<none>");
++        return ret;
++    }
++
++    return 0;
++}
 +
 +/**
-+ * vhost_load_backend_state(): High-level function to load a vhost
-+ * back-end's state from @f, and send it over to the back-end.  Reads
-+ * the data from @f in the format used by `vhost_save_state()`, and uses
-+ * `vhost_set_device_state_fd()` to transfer it to the back-end.
-+ *
-+ * Must only be called while the device and all its vrings are stopped
-+ * (`VHOST_TRANSFER_STATE_PHASE_STOPPED`).
-+ *
-+ * @dev: The vhost device to which to send the sate
-+ * @f: Migration stream from which to load the state
-+ * @errp: Potential error message
-+ *
-+ * Returns 0 on success, and -errno otherwise.
++ * Load virtiofsd's internal state from `f` and send it over to virtiofsd.
 + */
-+int vhost_load_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp);
-+
- #endif
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index ca4bdd9d66..643c1af5a0 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -2133,3 +2133,207 @@ int vhost_check_device_state(struct vhost_dev *dev, Error **errp)
-                "vhost transport does not support migration state transfer");
-     return -ENOSYS;
- }
-+
-+int vhost_save_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp)
++static int vuf_load_state(QEMUFile *f, void *pv, size_t size,
++                          const VMStateField *field)
 +{
-+    /* Maximum chunk size in which to transfer the state */
-+    const size_t chunk_size = 1 * 1024 * 1024;
-+    g_autofree void *transfer_buf = NULL;
-+    g_autoptr(GError) g_err = NULL;
-+    int pipe_fds[2], read_fd = -1, write_fd = -1, reply_fd = -1;
++    VirtIODevice *vdev = pv;
++    VHostUserFS *fs = VHOST_USER_FS(vdev);
++    Error *local_error = NULL;
 +    int ret;
 +
-+    /* [0] for reading (our end), [1] for writing (back-end's end) */
-+    if (!g_unix_open_pipe(pipe_fds, FD_CLOEXEC, &g_err)) {
-+        error_setg(errp, "Failed to set up state transfer pipe: %s",
-+                   g_err->message);
-+        ret = -EINVAL;
-+        goto fail;
-+    }
-+
-+    read_fd = pipe_fds[0];
-+    write_fd = pipe_fds[1];
-+
-+    /*
-+     * VHOST_TRANSFER_STATE_PHASE_STOPPED means the device must be stopped.
-+     * Ideally, it is suspended, but SUSPEND/RESUME currently do not exist for
-+     * vhost-user, so just check that it is stopped at all.
-+     */
-+    assert(!dev->started);
-+
-+    /* Transfer ownership of write_fd to the back-end */
-+    ret = vhost_set_device_state_fd(dev,
-+                                    VHOST_TRANSFER_STATE_DIRECTION_SAVE,
-+                                    VHOST_TRANSFER_STATE_PHASE_STOPPED,
-+                                    write_fd,
-+                                    &reply_fd,
-+                                    errp);
++    ret = vhost_load_backend_state(&fs->vhost_dev, f, &local_error);
 +    if (ret < 0) {
-+        error_prepend(errp, "Failed to initiate state transfer: ");
-+        goto fail;
++        error_reportf_err(local_error,
++                          "Error loading back-end state of %s device %s "
++                          "(tag: \"%s\"): ",
++                          vdev->name, vdev->parent_obj.canonical_path,
++                          fs->conf.tag ?: "<none>");
++        return ret;
 +    }
 +
-+    /* If the back-end wishes to use a different pipe, switch over */
-+    if (reply_fd >= 0) {
-+        close(read_fd);
-+        read_fd = reply_fd;
-+    }
-+
-+    transfer_buf = g_malloc(chunk_size);
-+
-+    while (true) {
-+        ssize_t read_ret;
-+
-+        read_ret = RETRY_ON_EINTR(read(read_fd, transfer_buf, chunk_size));
-+        if (read_ret < 0) {
-+            ret = -errno;
-+            error_setg_errno(errp, -ret, "Failed to receive state");
-+            goto fail;
-+        }
-+
-+        assert(read_ret <= chunk_size);
-+        qemu_put_be32(f, read_ret);
-+
-+        if (read_ret == 0) {
-+            /* EOF */
-+            break;
-+        }
-+
-+        qemu_put_buffer(f, transfer_buf, read_ret);
-+    }
-+
-+    /*
-+     * Back-end will not really care, but be clean and close our end of the pipe
-+     * before inquiring the back-end about whether transfer was successful
-+     */
-+    close(read_fd);
-+    read_fd = -1;
-+
-+    /* Also, verify that the device is still stopped */
-+    assert(!dev->started);
-+
-+    ret = vhost_check_device_state(dev, errp);
-+    if (ret < 0) {
-+        goto fail;
-+    }
-+
-+    ret = 0;
-+fail:
-+    if (read_fd >= 0) {
-+        close(read_fd);
-+    }
-+
-+    return ret;
++    return 0;
 +}
 +
-+int vhost_load_backend_state(struct vhost_dev *dev, QEMUFile *f, Error **errp)
++static bool vuf_is_internal_migration(void *opaque)
 +{
-+    size_t transfer_buf_size = 0;
-+    g_autofree void *transfer_buf = NULL;
-+    g_autoptr(GError) g_err = NULL;
-+    int pipe_fds[2], read_fd = -1, write_fd = -1, reply_fd = -1;
-+    int ret;
++    /* TODO: Return false when an external migration is requested */
++    return true;
++}
 +
-+    /* [0] for reading (back-end's end), [1] for writing (our end) */
-+    if (!g_unix_open_pipe(pipe_fds, FD_CLOEXEC, &g_err)) {
-+        error_setg(errp, "Failed to set up state transfer pipe: %s",
-+                   g_err->message);
-+        ret = -EINVAL;
-+        goto fail;
++static int vuf_check_migration_support(void *opaque)
++{
++    VirtIODevice *vdev = opaque;
++    VHostUserFS *fs = VHOST_USER_FS(vdev);
++
++    if (!vhost_supports_device_state(&fs->vhost_dev)) {
++        error_report("Back-end of %s device %s (tag: \"%s\") does not support "
++                     "migration through qemu",
++                     vdev->name, vdev->parent_obj.canonical_path,
++                     fs->conf.tag ?: "<none>");
++        return -ENOTSUP;
 +    }
 +
-+    read_fd = pipe_fds[0];
-+    write_fd = pipe_fds[1];
++    return 0;
++}
 +
-+    /*
-+     * VHOST_TRANSFER_STATE_PHASE_STOPPED means the device must be stopped.
-+     * Ideally, it is suspended, but SUSPEND/RESUME currently do not exist for
-+     * vhost-user, so just check that it is stopped at all.
-+     */
-+    assert(!dev->started);
++static const VMStateDescription vuf_backend_vmstate;
 +
-+    /* Transfer ownership of read_fd to the back-end */
-+    ret = vhost_set_device_state_fd(dev,
-+                                    VHOST_TRANSFER_STATE_DIRECTION_LOAD,
-+                                    VHOST_TRANSFER_STATE_PHASE_STOPPED,
-+                                    read_fd,
-+                                    &reply_fd,
-+                                    errp);
-+    if (ret < 0) {
-+        error_prepend(errp, "Failed to initiate state transfer: ");
-+        goto fail;
+ static const VMStateDescription vuf_vmstate = {
+     .name = "vhost-user-fs",
+-    .unmigratable = 1,
++    .version_id = 0,
++    .fields = (VMStateField[]) {
++        VMSTATE_VIRTIO_DEVICE,
++        VMSTATE_END_OF_LIST()
++    },
++    .subsections = (const VMStateDescription * []) {
++        &vuf_backend_vmstate,
++        NULL,
 +    }
++};
 +
-+    /* If the back-end wishes to use a different pipe, switch over */
-+    if (reply_fd >= 0) {
-+        close(write_fd);
-+        write_fd = reply_fd;
-+    }
-+
-+    while (true) {
-+        size_t this_chunk_size = qemu_get_be32(f);
-+        ssize_t write_ret;
-+        const uint8_t *transfer_pointer;
-+
-+        if (this_chunk_size == 0) {
-+            /* End of state */
-+            break;
-+        }
-+
-+        if (transfer_buf_size < this_chunk_size) {
-+            transfer_buf = g_realloc(transfer_buf, this_chunk_size);
-+            transfer_buf_size = this_chunk_size;
-+        }
-+
-+        if (qemu_get_buffer(f, transfer_buf, this_chunk_size) <
-+                this_chunk_size)
++static const VMStateDescription vuf_backend_vmstate = {
++    .name = "vhost-user-fs-backend",
++    .version_id = 0,
++    .needed = vuf_is_internal_migration,
++    .pre_load = vuf_check_migration_support,
++    .pre_save = vuf_check_migration_support,
++    .fields = (VMStateField[]) {
 +        {
-+            error_setg(errp, "Failed to read state");
-+            ret = -EINVAL;
-+            goto fail;
-+        }
-+
-+        transfer_pointer = transfer_buf;
-+        while (this_chunk_size > 0) {
-+            write_ret = RETRY_ON_EINTR(
-+                write(write_fd, transfer_pointer, this_chunk_size)
-+            );
-+            if (write_ret < 0) {
-+                ret = -errno;
-+                error_setg_errno(errp, -ret, "Failed to send state");
-+                goto fail;
-+            } else if (write_ret == 0) {
-+                error_setg(errp, "Failed to send state: Connection is closed");
-+                ret = -ECONNRESET;
-+                goto fail;
-+            }
-+
-+            assert(write_ret <= this_chunk_size);
-+            this_chunk_size -= write_ret;
-+            transfer_pointer += write_ret;
-+        }
-+    }
-+
-+    /*
-+     * Close our end, thus ending transfer, before inquiring the back-end about
-+     * whether transfer was successful
-+     */
-+    close(write_fd);
-+    write_fd = -1;
-+
-+    /* Also, verify that the device is still stopped */
-+    assert(!dev->started);
-+
-+    ret = vhost_check_device_state(dev, errp);
-+    if (ret < 0) {
-+        goto fail;
-+    }
-+
-+    ret = 0;
-+fail:
-+    if (write_fd >= 0) {
-+        close(write_fd);
-+    }
-+
-+    return ret;
-+}
++            .name = "back-end",
++            .info = &(const VMStateInfo) {
++                .name = "virtio-fs back-end state",
++                .get = vuf_load_state,
++                .put = vuf_save_state,
++            },
++        },
++        VMSTATE_END_OF_LIST()
++    },
+ };
+ 
+ static Property vuf_properties[] = {
 -- 
 2.41.0
 
