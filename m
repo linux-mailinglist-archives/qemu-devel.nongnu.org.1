@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4409F7CB037
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0A87CB038
 	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:49:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsQmW-0007Md-J6; Mon, 16 Oct 2023 12:49:30 -0400
+	id 1qsQmg-0007Qa-Dd; Mon, 16 Oct 2023 12:49:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsQmB-0007Ku-Uf
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:49:07 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsQm9-0006DK-8Y
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:49:07 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-53da72739c3so7987203a12.3
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:49:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697474943; x=1698079743; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gxoOtV8LW3y4o404KQc9Wo/aX2aY114NNMVZTDq1t/Q=;
- b=P3zyvkkNnbFWRoTu4og1emQ2FnKPJpdt58ozDfnaa8/RFn9l2nosrNqN8NYF3Yzfd7
- FOsgVQ2g4vYk/NbQp79Sk6DjE4x8YfkXmff63K3omAJwwUQ4pqHMOM+CeeKUWg213OAi
- Kse9nJSzwo9V1C7RHni/DqH2yt6CQCrt1OTdgYL+/Y2AZUP17ezv2HFIyVq3T0wmYgwD
- hkRlFzFPVpj88/d/HNZfFmTe9Q24WlfMkeYyBSC/T7DbtLhpMNrbOdu0atbM2ltE1+8L
- scGMSMOnP1QR6JHA3g/L6OqSN5V1uaXMp5xjTJJRzL1Y3lP92o24CwwGIl/9dcCbBeMm
- wGIA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qsQmP-0007No-2I
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:49:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qsQmN-0006G0-Ks
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:49:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697474958;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/vMjT+8kBV2OtIcrovFH8KN8YLUolB5Ho3/ZwTsGsHI=;
+ b=Q9Vas5nVWYaQxAtNCazcLyT/0Vsahdd2FHhvLV7S4LVtbQGks2mdiE8XYFtwKBz0EkkWoq
+ xd38jYQ7NAou/fQLo4d3w3qpLAhyPl5TN/x+/RW1uPXuvGUvYkhwNL9yRa7JTyULrb6kg4
+ rE0eB7ypXWfVIZH5g3vbjIjE5YI6njQ=
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
+ [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-512--SM_kOKSP1aYVasu3I5bLw-1; Mon, 16 Oct 2023 12:49:06 -0400
+X-MC-Unique: -SM_kOKSP1aYVasu3I5bLw-1
+Received: by mail-vs1-f69.google.com with SMTP id
+ ada2fe7eead31-457dc70bba9so613760137.2
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:49:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697474943; x=1698079743;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gxoOtV8LW3y4o404KQc9Wo/aX2aY114NNMVZTDq1t/Q=;
- b=SJ17286d9Iv8egoTFcyFgmVxGHiksCWx6Ks1xQ4jbbWRKAodD8A7ilxj4RTTgvlpMb
- 7p+UpTfLQc9FVG8EYRNpzkmhB/SOjARS2t0AUFMgA/lRnldyESXMZVaQRk7fcvaqHHwD
- UytDknqJJ6vSw7NTAjYxu0HvuZWm7XQac6J4xiUv3csdUfEAA1xtWSCStWHMmNzxJdzS
- w2kYZBe4geZiBgwMF6A2RRFskSzAIuQ0U1nMv3k3UFgf+TdCzLorUQBMlRFUBrwVtHsL
- 0ahIr30MbmChE/4C1lQJnFBp/hRyx02F5nLkMQ/6wvSwbqxEKM5/5FsjC+R4F/IHsF+Q
- KeQQ==
-X-Gm-Message-State: AOJu0Yy0oIMpVuvGqD/5HQOrU6Extdm4La84dw5bn9BUIFjYGVxzuvrm
- fVccN7I0UqunfPADKPxuWkrAGsYtvZVHwt43ynioDQ==
-X-Google-Smtp-Source: AGHT+IEDECBFvYkOAheAAhjBMvEi6r5DLv7fMVzC5Foe174Eb67NCqp2TtVH4LBq9mp6svwDus2wBmUu1qx/PU6B1Ro=
-X-Received: by 2002:a05:6402:4306:b0:53d:e5d7:4148 with SMTP id
- m6-20020a056402430600b0053de5d74148mr15482766edc.1.1697474943345; Mon, 16 Oct
- 2023 09:49:03 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697474946; x=1698079746;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/vMjT+8kBV2OtIcrovFH8KN8YLUolB5Ho3/ZwTsGsHI=;
+ b=YPJZtAeviYSZYKptLFClgH7GoSeCs08DZCEJn0/u52CjUBrEQIslQgPkEO+jggo2p5
+ SDwGpBQfY1GqEtDt4bJUwBFDfMObpVsE54UIIv93sbi5dKItquBEOdAKpW/gwXt6VbUJ
+ V6ve2ZkYtQF/6ioPMJYMUS0p2SQvTxO9O5f4/XBDCHIEiSG3GWgBOQ8s2PGSkoVHvOpB
+ JDqWBW1Oeb46+2w+RtWzhdIxb4GULNFdVxYG+Hke+cFgAZ+6mwiq+rnNuE40aHAufFvW
+ aGEKktC3maPpxsUdwl3vPl03NsS8ghPA82yBDu8qvXM6rBWqzK/10iwjVyXFB+OwO8C6
+ WQQw==
+X-Gm-Message-State: AOJu0YzIDHrp9qw2p4PZZoX3Nvk2hba2ZTSreKtTND9OpK40+LD2Q2yR
+ +g2hE3OZqsnC72AovXdOewzgunUc5GC6Lsgst0nMQzyweLDY1Gb2hPANfckza6kkHbgHJ/QDtnm
+ tg+mhFim1M3ui1VAx7F6ErI51OKwueqc=
+X-Received: by 2002:a05:6102:3188:b0:457:b01c:4a8e with SMTP id
+ c8-20020a056102318800b00457b01c4a8emr9654689vsh.7.1697474946311; 
+ Mon, 16 Oct 2023 09:49:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG2nMCgxGH2XJd4mD8dTCNSUsS8USwHn1c/YZKMQzafMZDwWSBWNDWaD0roR+/4gMK/VrK8WbTvEglX51o9bXk=
+X-Received: by 2002:a05:6102:3188:b0:457:b01c:4a8e with SMTP id
+ c8-20020a056102318800b00457b01c4a8emr9654681vsh.7.1697474946024; Mon, 16 Oct
+ 2023 09:49:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <169635378817.28428.8916197505999208589-0@git.sr.ht>
- <169635378817.28428.8916197505999208589-1@git.sr.ht>
-In-Reply-To: <169635378817.28428.8916197505999208589-1@git.sr.ht>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 16 Oct 2023 17:48:52 +0100
-Message-ID: <CAFEAcA9ziEdL3JFYS6b1zY8cNaS=1imYWS6byOhHraA2kfVJ7A@mail.gmail.com>
-Subject: Re: [PATCH qemu 1/1] Switch memory management calls to new coding
- conventions
-To: "~h0lyalg0rithm" <surajshirvankar@gmail.com>
-Cc: qemu-devel@nongnu.org, trivial@nongnu.org
+References: <20230922140914.13906-1-phil@philjordan.eu>
+ <4319fcd1-981c-4ef0-b6b9-1f7f57c1c4ca@redhat.com>
+ <CAGCz3vuF1=Ee6_G+23QJD-u+-cY0jVJW8kz9Lrgz+KAoMMy1=w@mail.gmail.com>
+In-Reply-To: <CAGCz3vuF1=Ee6_G+23QJD-u+-cY0jVJW8kz9Lrgz+KAoMMy1=w@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 16 Oct 2023 18:48:54 +0200
+Message-ID: <CABgObfaCFS08LgJ2cYKLdqD=cquW3i475fvZFMnA4ih5r+vnGA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] hvf x86 correctness and efficiency improvements
+To: Phil Dennis-Jordan <lists@philjordan.eu>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>, dirty@apple.com,
+ qemu-devel@nongnu.org, rbolshakov@ddn.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,131 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 3 Oct 2023 at 18:23, ~h0lyalg0rithm <h0lyalg0rithm@git.sr.ht> wrote:
+On Mon, Oct 16, 2023 at 6:45=E2=80=AFPM Phil Dennis-Jordan <lists@philjorda=
+n.eu> wrote:
 >
-> From: Suraj Shirvankar <surajshirvankar@gmail.com>
+> Hi Paolo,
 >
-> Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
+>
+> On Mon, 16 Oct 2023 at 16:39, Paolo Bonzini <pbonzini@redhat.com> wrote:
+> >
+> > On 9/22/23 16:09, Phil Dennis-Jordan wrote:
+> > > Patch 1 enables the INVTSC CPUID bit when running with hvf. This can
+> > > enable some optimisations in the guest OS, and I've not found any rea=
+son
+> > > it shouldn't be allowed for hvf based hosts.
+> >
+> > It can be enabled, but it should include a migration blocker.  In fact,
+> > probably HVF itself should include a migration blocker because QEMU
+> > doesn't support TSC scaling.
+>
+> I didn't think Qemu's HVF backend supported migration in any form at this=
+ point anyway? Or do you mean machine model versioning of the default setti=
+ng?
 
-Hi; thanks for this patch. Mostly it looks good, but I
-have a couple of review comments; details below.
+If it doesn't support migration, it needs to register a migration blocker.
 
-> ---
->  contrib/elf2dmp/addrspace.c | 4 ++--
->  contrib/elf2dmp/main.c      | 4 ++--
->  contrib/elf2dmp/pdb.c       | 4 ++--
->  contrib/elf2dmp/qemu_elf.c  | 4 ++--
->  4 files changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
-> index 64b5d680ad..3bfbb5093c 100644
-> --- a/contrib/elf2dmp/addrspace.c
-> +++ b/contrib/elf2dmp/addrspace.c
-> @@ -72,7 +72,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
->          }
->      }
->
-> -    ps->block = malloc(sizeof(*ps->block) * ps->block_nr);
-> +    ps->block = g_new(struct pa_block, ps->block_nr);
->      if (!ps->block) {
->          return 1;
->      }
+> switching to hv_vcpu_run_until() WITHOUT hv_vcpu_interrupt()
+> causes some very obvious problems where the vCPU simply
+> doesn't exit at all for long periods.)
 
-Unlike malloc(), g_new() can never fail. So the error check
-for NULL becomes redundant, and we can remove it. Similarly
-in the other cases below (including the g_malloc() call).
+Yes, that makes sense. It looks like hv_vcpu_run_until() has an
+equivalent of a "do ... while (errno =3D=3D EINTR)" loop inside it.
 
-> @@ -97,7 +97,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
->  void pa_space_destroy(struct pa_space *ps)
->  {
->      ps->block_nr = 0;
-> -    free(ps->block);
-> +    g_free(ps->block);
->  }
->
->  void va_space_set_dtb(struct va_space *vs, uint64_t dtb)
-> diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-> index 5db163bdbe..97baf0c0c1 100644
-> --- a/contrib/elf2dmp/main.c
-> +++ b/contrib/elf2dmp/main.c
-> @@ -120,14 +120,14 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, struct pdb_reader *pdb,
->          }
->      }
->
-> -    kdbg = malloc(kdbg_hdr.Size);
-> +    kdbg = g_malloc(kdbg_hdr.Size);
->      if (!kdbg) {
->          return NULL;
->      }
->
->      if (va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
->          eprintf("Failed to extract entire KDBG\n");
-> -        free(kdbg);
-> +        g_free(kdbg);
->          return NULL;
->      }
+> 1. hv_vcpu_run() exits very frequently, and often there is actually
+> nothing for the VMM to do except call hv_vcpu_run() again. With
+> Qemu's current hvf backend, each exit causes a BQL acquisition,
+> and VMs with a bunch of vCPUs rapidly become limited by BQL
+> contention according to my profiling.
 
-This isn't the only place where we free the memory we
-allocate here. The other place is the "free(kdbg)" at the
-bottom of the main() function. So for consistency we should
-change that also to g_free().
+Yes, that should be fixed anyway, but I agree it is a separate issue.
 
-> diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-> index 6ca5086f02..625001d1cf 100644
-> --- a/contrib/elf2dmp/pdb.c
-> +++ b/contrib/elf2dmp/pdb.c
-> @@ -116,7 +116,7 @@ static void *pdb_ds_read(const PDB_DS_HEADER *header,
->
->      nBlocks = (size + header->block_size - 1) / header->block_size;
->
-> -    buffer = malloc(nBlocks * header->block_size);
-> +    buffer = g_malloc(nBlocks * header->block_size);
->      if (!buffer) {
->          return NULL;
->      }
+Paolo
 
-Similarly here the buffer we allocated is usually returned
-from this function, assigned to some struct field, and then
-free()d much later on. So we should also switch all the other
-free() calls in this file to g_free().
-
-We should end up with no calls to free() left at all in
-the contrib/elf2dmp/ source files, I think.
-
-> @@ -201,7 +201,7 @@ static int pdb_init_symbols(struct pdb_reader *r)
->      return 0;
->
->  out_symbols:
-> -    free(symbols);
-> +    g_free(symbols);
->
->      return err;
->  }
-> diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-> index de6ad744c6..9aa8715108 100644
-> --- a/contrib/elf2dmp/qemu_elf.c
-> +++ b/contrib/elf2dmp/qemu_elf.c
-> @@ -94,7 +94,7 @@ static int init_states(QEMU_Elf *qe)
->
->      printf("%zu CPU states has been found\n", cpu_nr);
->
-> -    qe->state = malloc(sizeof(*qe->state) * cpu_nr);
-> +    qe->state = g_new(QEMUCPUState*, cpu_nr);
->      if (!qe->state) {
->          return 1;
->      }
-> @@ -115,7 +115,7 @@ static int init_states(QEMU_Elf *qe)
->
->  static void exit_states(QEMU_Elf *qe)
->  {
-> -    free(qe->state);
-> +    g_free(qe->state);
->  }
->
->  static bool check_ehdr(QEMU_Elf *qe)
-> --
-> 2.38.5
-
-thanks
--- PMM
 
