@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A937CA424
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F32877CA3E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 11:18:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJt8-0001JA-3a; Mon, 16 Oct 2023 05:27:50 -0400
+	id 1qsJiZ-0003se-Ja; Mon, 16 Oct 2023 05:16:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qsJt6-0001Iy-B0
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:27:48 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qsJt4-0008Tp-EF
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:27:48 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-5079f3f3d7aso3217229e87.1
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 02:27:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697448464; x=1698053264; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=DLJId8i8qkoghJv9vsCw6weLYGoh2+/Xy2QWN8oSiv0=;
- b=qiDkaDAc8391iCqZqjULyBy7TacWn0HNfJwH4gR3IBKe4UJwYu6XIeIwDXsSBH+gWe
- OH+Knab/w8szeGCQAj6zTWmhZEydDiBtAN/pmNmb2byGSuDIRWI3Ke8JkMZBzGnx70O/
- M823mvfWKgCLQlEK2cBWncMOfE1gm6b0F9usE8zMeyEglHOXpI5rc+9zvAAEGn3YWTfq
- Mr10yJYCF5VuGs70CcrRxKYryUIAOhGOZhSZTWXttw+Andp0NoVyDlgA8Owee0RuXVJ4
- 4s7VxgWx9mv6Ih3la4AVGTFdCRk8ukPYgcx9lH6sFWVL/KIdYFfocjztWHAmzcXFjkie
- Aa5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697448464; x=1698053264;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DLJId8i8qkoghJv9vsCw6weLYGoh2+/Xy2QWN8oSiv0=;
- b=WfAAAZN1/2+maRPiM4qHCsZGwG8/WP26uQ45hOrIHOCgqEraUtQvD13GCs9b/oMMz6
- wz+8Lud1tqsurke0580tYaQ1GpJMwQkoN5GA1FGagApoQ53HtIwCM1/J5Wy1j3eBrx9i
- MxQS0dv+s1L/A7ohIEcx/qMQqTZHyg3qhb4AtK9BMdfNvdd5LlJI00ZtXqu3Mid2JHQy
- R3UY2/5Dlih4ArFw1V28z9yO1Xtubh2YHKWgBrhNiX0pzgVRAszKBVO8Mt/cFE5THaFQ
- WneTUqh2Xz4yayhOVflq6b4CxrNst7HZhGKpXVLSGg9ig0hJiTKPS7LMB4g0Bdi6Ep6O
- YUZA==
-X-Gm-Message-State: AOJu0Yzpbgzqk3YidAwpjCxVQgQhUFpu3YEaBJJeS4Rsl6Db0fDk5t49
- 9Uv/jRbKK35lETQvprikcp1oU0o4f/An5QShpWM=
-X-Google-Smtp-Source: AGHT+IHtQ5/cBJhgIrBrrhfwb3n1aGjmdZXkuvqMXHVbymoMOiaWMH3RCwD+9MFXMUpQ/dKniHNnCw==
-X-Received: by 2002:a05:6512:238d:b0:502:a46e:257a with SMTP id
- c13-20020a056512238d00b00502a46e257amr33152487lfv.56.1697448464063; 
- Mon, 16 Oct 2023 02:27:44 -0700 (PDT)
-Received: from meli.delivery (ppp-2-87-17-65.home.otenet.gr. [2.87.17.65])
- by smtp.gmail.com with ESMTPSA id
- v8-20020a05600c444800b00406725f27e1sm6618484wmn.42.2023.10.16.02.27.43
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 16 Oct 2023 02:27:43 -0700 (PDT)
-Date: Mon, 16 Oct 2023 12:12:54 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Cc: 
-Subject: Re: [PATCH 08/17] configure, tests/tcg: simplify GDB conditionals
-User-Agent: meli 0.8.2
-References: <20231016063127.161204-1-pbonzini@redhat.com>
- <20231016063127.161204-9-pbonzini@redhat.com>
-In-Reply-To: <20231016063127.161204-9-pbonzini@redhat.com>
-Message-ID: <2m7m5.9b59l27xkn2@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qsJiW-0003nE-1q
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:16:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qsJiT-0006Cg-29
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 05:16:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697447807;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=u63KcmZcyC5YVAXU7NMVNLyH+VVYdPlU22hT2KKk76w=;
+ b=c9d/94EAT4DB0NYK8AqEpP7OMwuklhQXSpnatMVV4BViwLUzciNtGJqfbSdJlP1DveAAwe
+ FisF+xTcQZHPVrW21MoQskbZJY20XVkJRLoTq4y6jH3chupwb6q0EFayCZ3vZho7L/ss2r
+ cq+kySsknyojaTEYqoGTymJqqC2Nq9g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-680-xXTgslpiNEaIwebEqrOxcw-1; Mon, 16 Oct 2023 05:16:44 -0400
+X-MC-Unique: xXTgslpiNEaIwebEqrOxcw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1D270185A7B2;
+ Mon, 16 Oct 2023 09:16:44 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.45])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 87D1040C6F79;
+ Mon, 16 Oct 2023 09:16:41 +0000 (UTC)
+Date: Mon, 16 Oct 2023 10:16:39 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Tyler Fanelli <tfanelli@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ pbonzini@redhat.com, mtosatti@redhat.com, philmd@linaro.org,
+ marcandre.lureau@gmail.com
+Subject: Re: [RFC PATCH v2 1/9] Add Rust SEV library as subproject
+Message-ID: <ZSz/dxLsHPt2+2XN@redhat.com>
+References: <20231004203418.56508-1-tfanelli@redhat.com>
+ <20231004203418.56508-2-tfanelli@redhat.com>
+ <20231005155448.GA1342722@fedora>
+ <bdca3b98-7c22-4732-adfc-dc51c93c5eca@redhat.com>
+ <CAAjaMXZb1Les+5Q2uhtpm1dgCm11qfs=Rfcq-6dUvQJj2+HQ3w@mail.gmail.com>
+ <60c1bcc0-9b96-4c37-afee-484ffbe40431@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <60c1bcc0-9b96-4c37-afee-484ffbe40431@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,15 +83,218 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Oct 2023 09:31, Paolo Bonzini <pbonzini@redhat.com> wrote:
->Unify HAVE_GDB_BIN (currently in config-host.mak) and
->HOST_GDB_SUPPORTS_ARCH into a single GDB variable in
->config-target.mak.
->
->Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On Fri, Oct 13, 2023 at 02:20:16PM -0400, Tyler Fanelli wrote:
+> Hi Manos,
+> 
+> Thanks for the heads up, I was using rust 1.71.1. Will update the series
+> with 1.72.1
+> 
+> Stefan, Philippe, or Daniel: is there a specific policy for the Rust version
+> we should be developing on for crates in qemu?
 
-Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+There are a couple of dimensions to this.
+
+First is the matter of what operating system and architecture pairs are
+supported as targets for the Rust toolchain, and the standard library.
+We'll need both to work of course.
+
+Second there is the matter of what versions of Rust are shipped in the
+various operating systems currently.
+
+In a previous discussion there was a wiki page fleshed out with this
+info:
+
+   https://wiki.qemu.org/RustInQemu
+
+but the min versions are certainly out of date now.
+
+Third there is the question of whether distros have facility for pulling
+in newer toolchain versions, and if so should we be willing to use them.
+This is relevant for the long life distros like RHEL, which might ship
+with a variety of Rust versions. Historically we've been very conservative
+but with Python last year we adopted a more aggressive policy of being
+willing to take any newer version available from the distro vendor, not
+merely the oldest baseline. I suspect we'll want a similar approach with
+rust.
+
+Anyhow, I think you could probably start by updatnig that RustInQemu
+wiki page so that it reflects the current state of the world in terms
+of support tiers and versions.
+
+> 
+> Tyler
+> 
+> On 10/13/23 2:09 PM, Manos Pitsidianakis wrote:
+> > Hello Tyler!
+> > 
+> > With Rust stable 1.72.1, I get:
+> > 
+> > error: unneeded `return` statement
+> >     --> tests/launch.rs:103:26
+> >      |
+> > 103 |         VcpuExit::Hlt => return,
+> >      |                          ^^^^^^
+> >      |
+> >      = help: for further information visit
+> > https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+> >      = note: `-D clippy::needless-return` implied by `-D warnings`
+> > help: replace `return` with a unit value
+> >      |
+> > 103 |         VcpuExit::Hlt => (),
+> >      |                          ~~
+> > 
+> > error: could not compile `sev` (test "launch") due to previous error
+> > warning: build failed, waiting for other jobs to finish...
+> > 
+> > 
+> > When doing make.
+> > 
+> > --
+> > Manos
+> > 
+> > On Wed, 11 Oct 2023 at 06:11, Tyler Fanelli <tfanelli@redhat.com> wrote:
+> > > On 10/5/23 11:54 AM, Stefan Hajnoczi wrote:
+> > > > On Wed, Oct 04, 2023 at 04:34:10PM -0400, Tyler Fanelli wrote:
+> > > > > The Rust sev library provides a C API for the AMD SEV launch ioctls, as
+> > > > > well as the ability to build with meson. Add the Rust sev library as a
+> > > > > QEMU subproject with the goal of outsourcing all SEV launch ioctls to C
+> > > > > APIs provided by it.
+> > > > > 
+> > > > > Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
+> > > > > ---
+> > > > >    meson.build                   | 8 ++++++++
+> > > > >    meson_options.txt             | 2 ++
+> > > > >    scripts/meson-buildoptions.sh | 3 +++
+> > > > >    subprojects/sev.wrap          | 6 ++++++
+> > > > >    target/i386/meson.build       | 2 +-
+> > > > >    5 files changed, 20 insertions(+), 1 deletion(-)
+> > > > >    create mode 100644 subprojects/sev.wrap
+> > > > > 
+> > > > > diff --git a/meson.build b/meson.build
+> > > > > index 20ceeb8158..8a17c29de8 100644
+> > > > > --- a/meson.build
+> > > > > +++ b/meson.build
+> > > > > @@ -960,6 +960,13 @@ if not get_option('slirp').auto() or have_system
+> > > > >      endif
+> > > > >    endif
+> > > > > 
+> > > > > +sev = not_found
+> > > > > +if not get_option('sev').auto()
+> > > > When 'sev' is auto, then it won't be built. That seems strange. The
+> > > > auto-detection part is missing! I did you test this on a system that
+> > > > doesn't have libsev installed system-wide?
+> > > My testing environment had libsev installed system-wide. Thanks for
+> > > pointing this out.
+> > > 
+> > > > I guess the auto-detection would look something like:
+> > > > 
+> > > >     cargo = find_program('cargo', required: true)
+> > > > 
+> > > >     if not get_option('sev').auto() or cargo.found()
+> > > >         ...
+> > > > 
+> > > > That way 'sev' is only built automatically on systems that have cargo
+> > > > installed.
+> > > > 
+> > > > > +  sev = dependency('sev',
+> > > > > +                   method: 'pkg-config',
+> > > > > +                   required: get_option('sev'))
+> > > > > +endif
+> > > > If you update the auto logic, see the documentation about fallbacks to
+> > > > subprojects for optional dependencies:
+> > > > https://mesonbuild.com/Wrap-dependency-system-manual.html#provide-section
+> > > > 
+> > > > It might be necessary to add dependency(..., fallback='sev').
+> > > Noted. Thanks!
+> > > 
+> > > > > +
+> > > > >    vde = not_found
+> > > > >    if not get_option('vde').auto() or have_system or have_tools
+> > > > >      vde = cc.find_library('vdeplug', has_headers: ['libvdeplug.h'],
+> > > > > @@ -4331,6 +4338,7 @@ summary_info += {'libudev':           libudev}
+> > > > >    # Dummy dependency, keep .found()
+> > > > >    summary_info += {'FUSE lseek':        fuse_lseek.found()}
+> > > > >    summary_info += {'selinux':           selinux}
+> > > > > +summary_info += {'sev':               sev}
+> > > > >    summary_info += {'libdw':             libdw}
+> > > > >    summary(summary_info, bool_yn: true, section: 'Dependencies')
+> > > > > 
+> > > > > diff --git a/meson_options.txt b/meson_options.txt
+> > > > > index 57e265c871..5b8d283717 100644
+> > > > > --- a/meson_options.txt
+> > > > > +++ b/meson_options.txt
+> > > > > @@ -204,6 +204,8 @@ option('sdl_image', type : 'feature', value : 'auto',
+> > > > >           description: 'SDL Image support for icons')
+> > > > >    option('seccomp', type : 'feature', value : 'auto',
+> > > > >           description: 'seccomp support')
+> > > > > +option('sev', type : 'feature', value : 'auto',
+> > > > > +        description: 'Rust AMD SEV library')
+> > > > >    option('smartcard', type : 'feature', value : 'auto',
+> > > > >           description: 'CA smartcard emulation support')
+> > > > >    option('snappy', type : 'feature', value : 'auto',
+> > > > > diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+> > > > > index e4b46d5715..e585a548fa 100644
+> > > > > --- a/scripts/meson-buildoptions.sh
+> > > > > +++ b/scripts/meson-buildoptions.sh
+> > > > > @@ -161,6 +161,7 @@ meson_options_help() {
+> > > > >      printf "%s\n" '  sdl-image       SDL Image support for icons'
+> > > > >      printf "%s\n" '  seccomp         seccomp support'
+> > > > >      printf "%s\n" '  selinux         SELinux support in qemu-nbd'
+> > > > > +  printf "%s\n" '  sev             SEV library support'
+> > > > >      printf "%s\n" '  slirp           libslirp user mode network backend support'
+> > > > >      printf "%s\n" '  slirp-smbd      use smbd (at path --smbd=*) in slirp networking'
+> > > > >      printf "%s\n" '  smartcard       CA smartcard emulation support'
+> > > > > @@ -440,6 +441,8 @@ _meson_option_parse() {
+> > > > >        --disable-seccomp) printf "%s" -Dseccomp=disabled ;;
+> > > > >        --enable-selinux) printf "%s" -Dselinux=enabled ;;
+> > > > >        --disable-selinux) printf "%s" -Dselinux=disabled ;;
+> > > > > +    --enable-sev) printf "%s" -Dsev=enabled ;;
+> > > > > +    --disable-sev) printf "%s" -Dsev=disabled ;;
+> > > > >        --enable-slirp) printf "%s" -Dslirp=enabled ;;
+> > > > >        --disable-slirp) printf "%s" -Dslirp=disabled ;;
+> > > > >        --enable-slirp-smbd) printf "%s" -Dslirp_smbd=enabled ;;
+> > > > > diff --git a/subprojects/sev.wrap b/subprojects/sev.wrap
+> > > > > new file mode 100644
+> > > > > index 0000000000..5be1faccf6
+> > > > > --- /dev/null
+> > > > > +++ b/subprojects/sev.wrap
+> > > > > @@ -0,0 +1,6 @@
+> > > > > +[wrap-git]
+> > > > > +url = https://github.com/tylerfanelli/sev
+> > > > > +revision = b81b1da5df50055600a5b0349b0c4afda677cccb
+> > > > > +
+> > > > > +[provide]
+> > > > > +sev = sev_dep
+> > > > > diff --git a/target/i386/meson.build b/target/i386/meson.build
+> > > > > index 6f1036d469..8972a4fb17 100644
+> > > > > --- a/target/i386/meson.build
+> > > > > +++ b/target/i386/meson.build
+> > > > > @@ -20,7 +20,7 @@ i386_system_ss.add(files(
+> > > > >      'monitor.c',
+> > > > >      'cpu-sysemu.c',
+> > > > >    ))
+> > > > > -i386_system_ss.add(when: 'CONFIG_SEV', if_true: files('sev.c'), if_false: files('sev-sysemu-stub.c'))
+> > > > > +i386_system_ss.add(when: 'CONFIG_SEV', if_true: [sev, files('sev.c')], if_false: files('sev-sysemu-stub.c'))
+> > > > > 
+> > > > >    i386_user_ss = ss.source_set()
+> > > > > 
+> > > > > --
+> > > > > 2.40.1
+> > > > > 
+> > > Tyler
+> > > 
+> > > 
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
