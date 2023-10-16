@@ -2,94 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629087CA1B1
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BC97CA294
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:51:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJ1M-0000ds-0Z; Mon, 16 Oct 2023 04:32:16 -0400
+	id 1qsJGT-0007h0-Sm; Mon, 16 Oct 2023 04:47:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qsJ1J-0000dB-DG
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:32:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qsJGK-0007ab-Up
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:47:46 -0400
+Received: from mgamail.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qsJ1D-00074l-IJ
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:32:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697445126;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oXphkgNuPP7XRfrP2vCbRKiRKuwvw7rkNbXDo0LFtr8=;
- b=Xr/WWuomjr+mDZfZsjtiWip9g4GfVUCVfPXAX82zhKTJFrgAENpv3CnY+yryJ1CqCktifq
- bpvv3XxWXfJkyTiFm4j0Fz46H+m64Wy1VGYZFQt4PazRbIDEKlFFQr3EdhPdqUsLUndT4V
- LaFlcBZw6zo2iHaURZIXcfGzDUqvUvk=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-VyORKTNaMFW5CMSGZ_ihUw-1; Mon, 16 Oct 2023 04:32:05 -0400
-X-MC-Unique: VyORKTNaMFW5CMSGZ_ihUw-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7770bfcbdc6so536553185a.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 01:32:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697445123; x=1698049923;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oXphkgNuPP7XRfrP2vCbRKiRKuwvw7rkNbXDo0LFtr8=;
- b=K7czfgF3E3Yo84e4xY9eZtCS28BOvweZUykMmMTgj06KCCAjVxeT4WCJmNg2KKQaJH
- cNqlJ2CIuPRtGVMcXwyqLn7TxxxaGZOdyedbWQR9OxEjXLKItEuJfgWq5XSWdCeKCuuV
- natmz7TGW6jS8HCB1GIfdWhgrcIPtPXaOlpf8mtbruL2vjaBvFmzPKIJbV2QYtuF5WAr
- l24t9DuWRmRuNv+7LBRvPF0TcA5gegD1w4KJchIpIBXdq5HJubtQPs5PgZAaLi/Dj7ig
- OYkx9MGA/si7aCi/ORZLKE4KivhRcBKoZ9tuGAr59fIeywwDk8k1r8+j0LY4KDIBJsKN
- 0rZw==
-X-Gm-Message-State: AOJu0YxExAF5/ldj3sTr7sOqHlh5z/1YTD46KgMLMHsRqRS9ksrgPua2
- GaxuF15J458hvMMEDFWa1tn/d930JpsHhUFerfWGvYOyXHUGx96sPmOsCo2/xJ5xX2Gv5o4QEHJ
- 1n4VouU9bqE9M6kQ=
-X-Received: by 2002:a05:620a:2454:b0:76f:1ead:e4fd with SMTP id
- h20-20020a05620a245400b0076f1eade4fdmr40236338qkn.40.1697445122855; 
- Mon, 16 Oct 2023 01:32:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/6414wmsV0FCwfso9Sqt2dJlYToqUWNV5QGWxnRBJuviY6HdGLoeZttvAadFdRb/yyPyhiQ==
-X-Received: by 2002:a05:620a:2454:b0:76f:1ead:e4fd with SMTP id
- h20-20020a05620a245400b0076f1eade4fdmr40236326qkn.40.1697445122578; 
- Mon, 16 Oct 2023 01:32:02 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- kd9-20020a05622a268900b00410a9dd3d88sm2860416qtb.68.2023.10.16.01.32.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 01:32:02 -0700 (PDT)
-Message-ID: <ba330f83-b84f-4aa1-9855-2577596cdeb7@redhat.com>
-Date: Mon, 16 Oct 2023 10:32:00 +0200
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qsJGC-00019z-9O
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:47:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1697446056; x=1728982056;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=5yEvxT2rXMhOpXnprf4FOirUqI+6sQBhYa/RMnVdfFM=;
+ b=XUFEETqzoX2ymPJ1G6Fok0J6WoKbDc+u/yMKuG/MUSG2EnrHAWTPNW4e
+ UPTy4f6uJSwXduat/6hxFhzDzH0KTEFV/u6QsR93MVwu2Tt/mSj9XbeBp
+ Y3Zn4OQceriqwHTUBxAiVIUWNnPGKw6ntAOTq+UZ1+7ILzPBovw2ela4a
+ P0ixhvMXA4yYn18/fKww23hUMJ7+riIkvajOCgC829A2cCtpkZCGfcVK/
+ AefJoltnVdMn8s5BChu1GeqSWCp0WOkUU0zL7sVIkwAReGZ49rwbPiBgb
+ ftA7Th8RnU4jWffjM1jdnRyXlEhO4PKc+TDC/okK1y+Cswzz1ZA1qJZ5r w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737535"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737535"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2023 01:47:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749222699"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749222699"
+Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
+ by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2023 01:47:28 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
+ peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
+ yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
+ Yi Sun <yi.y.sun@linux.intel.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v2 04/27] vfio/container: Switch to dma_map|unmap API
+Date: Mon, 16 Oct 2023 16:32:00 +0800
+Message-Id: <20231016083223.1519410-5-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
+References: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 05/11] testing/avocado: ppc add new BookE
- boot_linux_console.py tests
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-References: <20231010075238.95646-1-npiggin@gmail.com>
- <20231010075238.95646-6-npiggin@gmail.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <20231010075238.95646-6-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.151;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,97 +81,277 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/10/23 09:52, Nicholas Piggin wrote:
-> Add simple Linux kernel boot tests for BookE 64-bit and 32-bit CPUs
-> using Guenter Roeck's rootfs images for Linux testing, and a gitlab
-> repository with kernel images that I built since there are very few
-> sources of modern BookE images now.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   tests/avocado/boot_linux_console.py | 53 +++++++++++++++++++++++++++++
->   1 file changed, 53 insertions(+)
-> 
-> diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-> index 9434304cd3..dc3346ef49 100644
-> --- a/tests/avocado/boot_linux_console.py
-> +++ b/tests/avocado/boot_linux_console.py
-> @@ -1355,6 +1355,59 @@ def test_ppc64_e500(self):
->           tar_hash = '6951d86d644b302898da2fd701739c9406527fe1'
->           self.do_test_advcal_2018('19', tar_hash, 'uImage')
->   
-> +    def test_ppc64_e6500(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:ppce500
-> +        :avocado: tags=cpu:e6500
-> +        :avocado: tags=accel:tcg
-> +        """
-> +        kernel_url = ('https://gitlab.com/npiggin/qemu-ci-images/-/raw/main/ppc/corenet64_vmlinux?ref_type=heads&inline=false')
-> +        kernel_hash = '01051590b083fec66cb3b9e2e553e95d4cf47691'
-> +        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-> +
-> +        initrd_url = ('https://github.com/groeck/linux-build-test/raw/master/rootfs/ppc64/rootfs.cpio.gz')
+From: Eric Auger <eric.auger@redhat.com>
 
+No fucntional change intended.
 
-I think you should use buildroot images from the qemu_ppc64_e5500 defconfig:
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ include/hw/vfio/vfio-common.h         |  4 ---
+ include/hw/vfio/vfio-container-base.h |  7 +++++
+ hw/vfio/common.c                      | 45 +++++++++++++++------------
+ hw/vfio/container-base.c              | 22 +++++++++++++
+ hw/vfio/container.c                   | 25 +++++++++++----
+ hw/vfio/trace-events                  |  2 +-
+ 6 files changed, 74 insertions(+), 31 deletions(-)
 
-   https://github.com/buildroot/buildroot/tree/master/board/qemu/ppc64-e5500
-
-The question is where to store them. I did under my GH account for PPC and
-Aspeed but it is not satisfactory in the long term.
-
-May be could have a common repo for all the buildroot QEMU boards images ?
-and rebuild once a year ?
-
-Thanks,
-
-C.
-
-
-> +        initrd_hash = '798acffc036c3b1ae6cacf95c869bba2'
-> +        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash,
-> +                                       algorithm="md5")
-> +
-> +        self.vm.set_console()
-> +        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-> +        self.vm.add_args('-smp', '2',
-> +                         '-kernel', kernel_path,
-> +                         '-initrd', initrd_path,
-> +                         '-append', kernel_command_line,
-> +                         '-no-reboot')
-> +        self.vm.launch()
-> +        # Wait for VM to shut down gracefully
-> +        self.vm.wait()
-> +
-> +    def test_ppc32_mpc85xx(self):
-> +        """
-> +        :avocado: tags=arch:ppc
-> +        :avocado: tags=machine:ppce500
-> +        :avocado: tags=cpu:mpc8568
-> +        :avocado: tags=accel:tcg
-> +        """
-> +        kernel_url = ('https://gitlab.com/npiggin/qemu-ci-images/-/raw/main/ppc/mpc85xx_vmlinux?ref_type=heads&inline=false')
-> +        kernel_hash = '726f7f574a491282454850b48546b3827593142b'
-> +        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-> +
-> +        initrd_url = ('https://github.com/groeck/linux-build-test/raw/master/rootfs/ppc/rootfs.cpio.gz')
-> +        initrd_hash = '4d30fa93b742c493e8cf2140e49bbd9a'
-> +        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash,
-> +                                       algorithm="md5")
-> +
-> +        self.vm.set_console()
-> +        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-> +        self.vm.add_args('-kernel', kernel_path,
-> +                         '-initrd', initrd_path,
-> +                         '-append', kernel_command_line,
-> +                         '-no-reboot')
-> +        self.vm.launch()
-> +        # Wait for VM to shut down gracefully
-> +        self.vm.wait()
-> +
->       def do_test_ppc64_powernv(self, proc):
->           self.require_accelerator("tcg")
->           images_url = ('https://github.com/open-power/op-build/releases/download/v2.7/')
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 9651cf921c..f2aa122c47 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -212,10 +212,6 @@ void vfio_put_address_space(VFIOAddressSpace *space);
+ bool vfio_devices_all_running_and_saving(VFIOLegacyContainer *container);
+ 
+ /* container->fd */
+-int vfio_dma_unmap(VFIOLegacyContainer *container, hwaddr iova,
+-                   ram_addr_t size, IOMMUTLBEntry *iotlb);
+-int vfio_dma_map(VFIOLegacyContainer *container, hwaddr iova,
+-                 ram_addr_t size, void *vaddr, bool readonly);
+ int vfio_set_dirty_page_tracking(VFIOLegacyContainer *container, bool start);
+ int vfio_query_dirty_bitmap(VFIOLegacyContainer *container, VFIOBitmap *vbmap,
+                             hwaddr iova, hwaddr size);
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 226e960fb5..1483e77441 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -46,6 +46,13 @@ struct VFIOContainer {
+     VFIOIOMMUBackendOpsClass *ops;
+ };
+ 
++int vfio_container_dma_map(VFIOContainer *bcontainer,
++                           hwaddr iova, ram_addr_t size,
++                           void *vaddr, bool readonly);
++int vfio_container_dma_unmap(VFIOContainer *bcontainer,
++                             hwaddr iova, ram_addr_t size,
++                             IOMMUTLBEntry *iotlb);
++
+ #define TYPE_VFIO_IOMMU_BACKEND_LEGACY_OPS "vfio-iommu-backend-legacy-ops"
+ #define TYPE_VFIO_IOMMU_BACKEND_OPS "vfio-iommu-backend-ops"
+ 
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index b51ef3a15a..6be1526d79 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -337,7 +337,7 @@ static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+ {
+     VFIOGuestIOMMU *giommu = container_of(n, VFIOGuestIOMMU, n);
+-    VFIOLegacyContainer *container = giommu->container;
++    VFIOContainer *bcontainer = &giommu->container->bcontainer;
+     hwaddr iova = iotlb->iova + giommu->iommu_offset;
+     void *vaddr;
+     int ret;
+@@ -367,21 +367,22 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+          * of vaddr will always be there, even if the memory object is
+          * destroyed and its backing memory munmap-ed.
+          */
+-        ret = vfio_dma_map(container, iova,
+-                           iotlb->addr_mask + 1, vaddr,
+-                           read_only);
++        ret = vfio_container_dma_map(bcontainer, iova,
++                                     iotlb->addr_mask + 1, vaddr,
++                                     read_only);
+         if (ret) {
+-            error_report("vfio_dma_map(%p, 0x%"HWADDR_PRIx", "
++            error_report("vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
+                          "0x%"HWADDR_PRIx", %p) = %d (%s)",
+-                         container, iova,
++                         bcontainer, iova,
+                          iotlb->addr_mask + 1, vaddr, ret, strerror(-ret));
+         }
+     } else {
+-        ret = vfio_dma_unmap(container, iova, iotlb->addr_mask + 1, iotlb);
++        ret = vfio_container_dma_unmap(bcontainer, iova,
++                                       iotlb->addr_mask + 1, iotlb);
+         if (ret) {
+-            error_report("vfio_dma_unmap(%p, 0x%"HWADDR_PRIx", "
++            error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+                          "0x%"HWADDR_PRIx") = %d (%s)",
+-                         container, iova,
++                         bcontainer, iova,
+                          iotlb->addr_mask + 1, ret, strerror(-ret));
+             vfio_set_migration_error(ret);
+         }
+@@ -400,9 +401,10 @@ static void vfio_ram_discard_notify_discard(RamDiscardListener *rdl,
+     int ret;
+ 
+     /* Unmap with a single call. */
+-    ret = vfio_dma_unmap(vrdl->container, iova, size , NULL);
++    ret = vfio_container_dma_unmap(&vrdl->container->bcontainer,
++                                   iova, size , NULL);
+     if (ret) {
+-        error_report("%s: vfio_dma_unmap() failed: %s", __func__,
++        error_report("%s: vfio_container_dma_unmap() failed: %s", __func__,
+                      strerror(-ret));
+     }
+ }
+@@ -430,8 +432,8 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
+                section->offset_within_address_space;
+         vaddr = memory_region_get_ram_ptr(section->mr) + start;
+ 
+-        ret = vfio_dma_map(vrdl->container, iova, next - start,
+-                           vaddr, section->readonly);
++        ret = vfio_container_dma_map(&vrdl->container->bcontainer, iova,
++                                     next - start, vaddr, section->readonly);
+         if (ret) {
+             /* Rollback */
+             vfio_ram_discard_notify_discard(rdl, section);
+@@ -746,10 +748,11 @@ static void vfio_listener_region_add(MemoryListener *listener,
+         }
+     }
+ 
+-    ret = vfio_dma_map(container, iova, int128_get64(llsize),
+-                       vaddr, section->readonly);
++    ret = vfio_container_dma_map(&container->bcontainer,
++                                 iova, int128_get64(llsize), vaddr,
++                                 section->readonly);
+     if (ret) {
+-        error_setg(&err, "vfio_dma_map(%p, 0x%"HWADDR_PRIx", "
++        error_setg(&err, "vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
+                    "0x%"HWADDR_PRIx", %p) = %d (%s)",
+                    container, iova, int128_get64(llsize), vaddr, ret,
+                    strerror(-ret));
+@@ -852,18 +855,20 @@ static void vfio_listener_region_del(MemoryListener *listener,
+         if (int128_eq(llsize, int128_2_64())) {
+             /* The unmap ioctl doesn't accept a full 64-bit span. */
+             llsize = int128_rshift(llsize, 1);
+-            ret = vfio_dma_unmap(container, iova, int128_get64(llsize), NULL);
++            ret = vfio_container_dma_unmap(&container->bcontainer, iova,
++                                           int128_get64(llsize), NULL);
+             if (ret) {
+-                error_report("vfio_dma_unmap(%p, 0x%"HWADDR_PRIx", "
++                error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+                              "0x%"HWADDR_PRIx") = %d (%s)",
+                              container, iova, int128_get64(llsize), ret,
+                              strerror(-ret));
+             }
+             iova += int128_get64(llsize);
+         }
+-        ret = vfio_dma_unmap(container, iova, int128_get64(llsize), NULL);
++        ret = vfio_container_dma_unmap(&container->bcontainer, iova,
++                                       int128_get64(llsize), NULL);
+         if (ret) {
+-            error_report("vfio_dma_unmap(%p, 0x%"HWADDR_PRIx", "
++            error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+                          "0x%"HWADDR_PRIx") = %d (%s)",
+                          container, iova, int128_get64(llsize), ret,
+                          strerror(-ret));
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 0c21e77039..78329935f6 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -26,6 +26,28 @@
+ #include "qemu/error-report.h"
+ #include "hw/vfio/vfio-container-base.h"
+ 
++int vfio_container_dma_map(VFIOContainer *bcontainer,
++                           hwaddr iova, ram_addr_t size,
++                           void *vaddr, bool readonly)
++{
++    if (!bcontainer->ops->dma_map) {
++        return -EINVAL;
++    }
++
++    return bcontainer->ops->dma_map(bcontainer, iova, size, vaddr, readonly);
++}
++
++int vfio_container_dma_unmap(VFIOContainer *bcontainer,
++                             hwaddr iova, ram_addr_t size,
++                             IOMMUTLBEntry *iotlb)
++{
++    if (!bcontainer->ops->dma_unmap) {
++        return -EINVAL;
++    }
++
++    return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
++}
++
+ static const TypeInfo vfio_iommu_backend_ops_type_info = {
+     .name = TYPE_VFIO_IOMMU_BACKEND_OPS,
+     .parent = TYPE_OBJECT,
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index acc4a6bf8a..80aafa21ed 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -121,9 +121,13 @@ unmap_exit:
+ /*
+  * DMA - Mapping and unmapping for the "type1" IOMMU interface used on x86
+  */
+-int vfio_dma_unmap(VFIOLegacyContainer *container, hwaddr iova,
+-                   ram_addr_t size, IOMMUTLBEntry *iotlb)
++static int vfio_legacy_dma_unmap(VFIOContainer *bcontainer, hwaddr iova,
++                                 ram_addr_t size, IOMMUTLBEntry *iotlb)
+ {
++    VFIOLegacyContainer *container = container_of(bcontainer,
++                                                  VFIOLegacyContainer,
++                                                  bcontainer);
++
+     struct vfio_iommu_type1_dma_unmap unmap = {
+         .argsz = sizeof(unmap),
+         .flags = 0,
+@@ -157,7 +161,7 @@ int vfio_dma_unmap(VFIOLegacyContainer *container, hwaddr iova,
+          */
+         if (errno == EINVAL && unmap.size && !(unmap.iova + unmap.size) &&
+             container->iommu_type == VFIO_TYPE1v2_IOMMU) {
+-            trace_vfio_dma_unmap_overflow_workaround();
++            trace_vfio_legacy_dma_unmap_overflow_workaround();
+             unmap.size -= 1ULL << ctz64(container->pgsizes);
+             continue;
+         }
+@@ -176,9 +180,13 @@ int vfio_dma_unmap(VFIOLegacyContainer *container, hwaddr iova,
+     return 0;
+ }
+ 
+-int vfio_dma_map(VFIOLegacyContainer *container, hwaddr iova,
+-                 ram_addr_t size, void *vaddr, bool readonly)
++static int vfio_legacy_dma_map(VFIOContainer *bcontainer, hwaddr iova,
++                               ram_addr_t size, void *vaddr, bool readonly)
+ {
++    VFIOLegacyContainer *container = container_of(bcontainer,
++                                                  VFIOLegacyContainer,
++                                                  bcontainer);
++
+     struct vfio_iommu_type1_dma_map map = {
+         .argsz = sizeof(map),
+         .flags = VFIO_DMA_MAP_FLAG_READ,
+@@ -197,7 +205,8 @@ int vfio_dma_map(VFIOLegacyContainer *container, hwaddr iova,
+      * the VGA ROM space.
+      */
+     if (ioctl(container->fd, VFIO_IOMMU_MAP_DMA, &map) == 0 ||
+-        (errno == EBUSY && vfio_dma_unmap(container, iova, size, NULL) == 0 &&
++        (errno == EBUSY &&
++         vfio_legacy_dma_unmap(bcontainer, iova, size, NULL) == 0 &&
+          ioctl(container->fd, VFIO_IOMMU_MAP_DMA, &map) == 0)) {
+         return 0;
+     }
+@@ -1168,6 +1177,10 @@ void vfio_detach_device(VFIODevice *vbasedev)
+ 
+ static void vfio_iommu_backend_legacy_ops_class_init(ObjectClass *oc,
+                                                      void *data) {
++    VFIOIOMMUBackendOpsClass *ops = VFIO_IOMMU_BACKEND_OPS_CLASS(oc);
++
++    ops->dma_map = vfio_legacy_dma_map;
++    ops->dma_unmap = vfio_legacy_dma_unmap;
+ }
+ 
+ static const TypeInfo vfio_iommu_backend_legacy_ops_type = {
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 0eb2387cf2..9f7fedee98 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -116,7 +116,7 @@ vfio_region_unmap(const char *name, unsigned long offset, unsigned long end) "Re
+ vfio_region_sparse_mmap_header(const char *name, int index, int nr_areas) "Device %s region %d: %d sparse mmap entries"
+ vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long end) "sparse entry %d [0x%lx - 0x%lx]"
+ vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
+-vfio_dma_unmap_overflow_workaround(void) ""
++vfio_legacy_dma_unmap_overflow_workaround(void) ""
+ vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
+ vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
+ 
+-- 
+2.34.1
 
 
