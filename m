@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26CE7C9F9D
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA217C9F95
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 08:32:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsH8c-0003rg-3D; Mon, 16 Oct 2023 02:31:38 -0400
+	id 1qsH8i-0003tL-34; Mon, 16 Oct 2023 02:31:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH8a-0003rU-AK
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:36 -0400
+ id 1qsH8f-0003sQ-P4
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qsH8Y-0005Qy-MK
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:36 -0400
+ id 1qsH8e-0005RV-3R
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 02:31:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697437893;
+ s=mimecast20190719; t=1697437899;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=cgI3E7SNjjA4N3eE0I3y5b6egd29VWH8e2xfnpZN+q8=;
- b=favsJfU1CNxPWaBIvF2ckWDirOZVQcpoHqj9HBzv7t/lG7zs+5VUvEm9ZJWi+kdL60xTp9
- j0Nui4TOfpFYRL5IQ1wEHfCBlDSUZXPnw1bElvXquxWo3mLEaEdOrdjVMxbE2BfrzWkSCv
- +oJNwu3+MnOZYWbjVwIDMCWCNCkOu2M=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=P/65hish4h+ImSzGo/R7iAwPvFu/GpagzDRiJtmjaPI=;
+ b=NSvzrMVTfpCwggmGAazLbufQ0Z6Zn6FCCCKTBMXQXTe9YnltxUocJOyll/f9RLbnS5KaLv
+ ZnezmSVB/1jQQ4CqJOu+cvvUnMGyatsbrrfEJZPC2uBrqjua3RXZBQxheVdh53eqqFHjT2
+ FOrY2XGMZ75EVolDyqXMh5HHl+blGKw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-L1oPeeCdOxGE1XmEinrenw-1; Mon, 16 Oct 2023 02:31:31 -0400
-X-MC-Unique: L1oPeeCdOxGE1XmEinrenw-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9b99b6b8315so301385066b.2
- for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:31:31 -0700 (PDT)
+ us-mta-404-YOCIWuZXOy-nsB_XhhaPlw-1; Mon, 16 Oct 2023 02:31:33 -0400
+X-MC-Unique: YOCIWuZXOy-nsB_XhhaPlw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9a681c3470fso298169566b.1
+ for <qemu-devel@nongnu.org>; Sun, 15 Oct 2023 23:31:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697437889; x=1698042689;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cgI3E7SNjjA4N3eE0I3y5b6egd29VWH8e2xfnpZN+q8=;
- b=mcQ3iE1pQUwCpeAQZm7SbiyifLh/6zMyi0ng48z7zZl/2T/jKVe/ayFAFEPm43vLr4
- M3R5zUdJzFuFYWIC+HG8SFw8DorrR7zDyg9wQ0rpCV3YRNo6Fe4Ijl/xAaQHw4v26Rkf
- VV0dhOg6/4r4nTLTFwKXB++QG23yDt8Es3H3b+bD+lxJBiRgDXakbGSnC2CzIYnydNM/
- q1uEjw+a7qiM+5ITBlOnQcNKITBx41IwIMrJOPtmKoYBe4hmCCxnCZN4R1fHbt25Bxmf
- e02CkWbJzKj5my0PnY9ePAfrlaZZG1p/PuUpV7NHJPlcWaaachEWs+YjIioH4BqUVgqd
- 1nNQ==
-X-Gm-Message-State: AOJu0YxWBp3Mmu4wosurgIuhtS+yjtQIqIt2NrENeOyKj7HEAjGNR8QE
- zuWSS+Y8URM5dPZNxqqCCXUtf88BvzRaZEAaQifGWZSWUSXR0wkg1ALXLgB/VcrFUSXSYU1Z+x0
- EKdbf4jMaSGps3UCWGtihdFa06qaCsIQygWmerlwmjdn/QT62XjoMKy5vIpdn5rePpr7701ZfdY
- 0=
-X-Received: by 2002:a17:906:99c2:b0:9be:7b67:1674 with SMTP id
- s2-20020a17090699c200b009be7b671674mr5616600ejn.3.1697437889543; 
- Sun, 15 Oct 2023 23:31:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEePmq6MUz47iZTa1TeYpbiEWWqCCiLri3+ek94QgQ5zxuTBFKcyc9KZuFWl1UvXUUQ2YkeZA==
-X-Received: by 2002:a17:906:99c2:b0:9be:7b67:1674 with SMTP id
- s2-20020a17090699c200b009be7b671674mr5616586ejn.3.1697437889161; 
- Sun, 15 Oct 2023 23:31:29 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697437891; x=1698042691;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=P/65hish4h+ImSzGo/R7iAwPvFu/GpagzDRiJtmjaPI=;
+ b=QF+/smCSzSDFZzNJIbyl+IEbisXo+9UEXvt59v57VCOEGGr96krhXZ59QXcVezj3Dt
+ 6gnyrm7P3EvuebjigWblMvyq0ZYc15QXps9/Yh8Mnci+GiOS4SepTLLsVNqXTLbHFVX2
+ MhfyQaz0yu0BroRb6XNLBGLWdhDjpf+cKjdrn1TXuHjym6jsAdp8XKTK3fnipzQ4t5tv
+ WwYuxLedsZ6kkFDQDRSdzxeRkycDPf7PlfJE04eSNnw0SYqQHTUa9deWIk8k4MkHMDfT
+ xWUMcxyvDxzSpjmyWvmENLQH3jpf/iXW/tRFk0HnZCCX5+YJFfn6+OjPIRu2Gt/aKSle
+ 24vQ==
+X-Gm-Message-State: AOJu0YxW3R7ZRvTxqbBYkZQz436cUvapjv7J3MO1h7dFGrLBwJ8i1vAz
+ dLrChMv8tfjP/f4OwdkCDUUrqozyqYsyd3nNt5Jcg2slVbjuLeGfP0nnmQ9OItfN2v76lNClmcw
+ iJ7dsOfMhNzXCWSIwOxn4v893DpvfBxjCiqq2U98Qj4Yq+qQ3hq7ZxO/cxXkWPZpM2ovZo/bCwV
+ 8=
+X-Received: by 2002:a17:906:57:b0:9bd:931e:30d8 with SMTP id
+ 23-20020a170906005700b009bd931e30d8mr8273166ejg.14.1697437891412; 
+ Sun, 15 Oct 2023 23:31:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUCXVSxXg/jSqUvg0c5Xh4HJm1WJvB7Ax6+AdUCSo1qFiTc6i0bkVxntRNaWv8wraDkFckDg==
+X-Received: by 2002:a17:906:57:b0:9bd:931e:30d8 with SMTP id
+ 23-20020a170906005700b009bd931e30d8mr8273151ejg.14.1697437890942; 
+ Sun, 15 Oct 2023 23:31:30 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- gx8-20020a1709068a4800b0098f99048053sm3422195ejc.148.2023.10.15.23.31.28
+ 17-20020a170906029100b009786c8249d6sm3431135ejf.175.2023.10.15.23.31.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 15 Oct 2023 23:31:28 -0700 (PDT)
+ Sun, 15 Oct 2023 23:31:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 00/17] More build system cleanups,
- optional non-relocatable installs
-Date: Mon, 16 Oct 2023 08:31:10 +0200
-Message-ID: <20231016063127.161204-1-pbonzini@redhat.com>
+Subject: [PATCH 01/17] meson: do not build shaders by default
+Date: Mon, 16 Oct 2023 08:31:11 +0200
+Message-ID: <20231016063127.161204-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231016063127.161204-1-pbonzini@redhat.com>
+References: <20231016063127.161204-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -97,72 +100,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This mostly removes or simplifies some option parsing code, with some extra
-items of interest:
+They are not needed when building user-mode emulators.
 
-- support for non-relocatable installs, which Michael Tokarev requested
-  a while ago.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ ui/shader/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-- the main change outside configure and meson.build is a simplification
-  of GDB conditionals, by unifying HAVE_GDB_BIN and HOST_GDB_SUPPORTS_ARCH
-  in tests/tcg.
-
-- on the "future work" side, patch 2 adds a macro IS_ENABLED() that can
-  be used in the future to replace #ifdef statements with "if()" so that
-  both sides are compiled.
-
-- qemu-ga parameters (manufacturer, distro, version) can be configured
-  with command-line options in addition to environment variables
-
-- finally, some changes to add comments or put related code together
-
-Paolo
-
-Paolo Bonzini (17):
-  meson: do not build shaders by default
-  meson: do not use set10
-  meson, cutils: allow non-relocatable installs
-  configure: clean up handling of CFI option
-  hw/xen: cleanup sourcesets
-  hw/remote: move stub vfu_object_set_bus_irq out of stubs/
-  tests/tcg/arm: move non-SVE tests out of conditional
-  configure, tests/tcg: simplify GDB conditionals
-  configure: clean up plugin option handling
-  configure: clean up PIE option handling
-  configure: remove some dead cruft
-  configure: move target-specific defaults to an external machine file
-  configure: move environment-specific defaults to config-meson.cross
-  configure: unify handling of several Debian cross containers
-  configure, meson: use command line options to configure qemu-ga
-  meson-buildoptions: document the data at the top
-  meson: add a note on why we use config_host for program paths
-
- configs/meson/windows.txt                     |   9 +
- configure                                     | 250 +++++++-----------
- hw/arm/meson.build                            |   1 -
- hw/i386/meson.build                           |   1 -
- hw/remote/meson.build                         |   4 +-
- .../remote/vfio-user-obj-stub.c               |   0
- hw/xen/meson.build                            |  11 +-
- include/qemu/compiler.h                       |  15 ++
- meson.build                                   |  32 ++-
- meson_options.txt                             |   9 +
- qga/meson.build                               |   9 +-
- scripts/meson-buildoptions.py                 |  32 ++-
- scripts/meson-buildoptions.sh                 |  26 +-
- stubs/meson.build                             |   1 -
- tests/tcg/aarch64/Makefile.target             |  16 +-
- tests/tcg/multiarch/Makefile.target           |  18 +-
- .../multiarch/system/Makefile.softmmu-target  |  15 +-
- tests/tcg/s390x/Makefile.target               |   6 +-
- tests/unit/test-coroutine.c                   |   2 +-
- ui/shader/meson.build                         |   1 +
- util/cutils.c                                 |  11 +-
- util/qemu-coroutine.c                         |   4 +-
- 22 files changed, 251 insertions(+), 222 deletions(-)
- create mode 100644 configs/meson/windows.txt
- rename stubs/vfio-user-obj.c => hw/remote/vfio-user-obj-stub.c (100%)
-
+diff --git a/ui/shader/meson.build b/ui/shader/meson.build
+index 592bf596b9a..3137e65578e 100644
+--- a/ui/shader/meson.build
++++ b/ui/shader/meson.build
+@@ -10,5 +10,6 @@ foreach e : shaders
+                 output: output,
+                 capture: true,
+                 input: files('@0@.@1@'.format(e[0], e[1])),
++                build_by_default: false,
+                 command: [shaderinclude, '@INPUT0@'])
+ endforeach
 -- 
 2.41.0
 
