@@ -2,72 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898EB7CB68E
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 00:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 300FD7CB69B
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 00:34:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsW3G-00089k-L1; Mon, 16 Oct 2023 18:27:06 -0400
+	id 1qsW9d-0001Pk-Ir; Mon, 16 Oct 2023 18:33:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lokesh.jaliminche@gmail.com>)
- id 1qsW3E-00089X-TG; Mon, 16 Oct 2023 18:27:04 -0400
-Received: from mail-qv1-xf33.google.com ([2607:f8b0:4864:20::f33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lokesh.jaliminche@gmail.com>)
- id 1qsW3C-0003bQ-IG; Mon, 16 Oct 2023 18:27:04 -0400
-Received: by mail-qv1-xf33.google.com with SMTP id
- 6a1803df08f44-65af7d102b3so33182626d6.1; 
- Mon, 16 Oct 2023 15:27:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697495221; x=1698100021; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ZldOQ2OSXKAI+VJtfqNv20viTBYn++jH86a6nr7RhYY=;
- b=bwjPrAhn0hzjAJyBlouYcrEvqnlYfUKNUhMnFISDXLx6dyVLUdAMDr7/s6+BvgQpVs
- qqaYsS8oK+bTcCsqoLB3xRZXl91JRVyOYHmK4ZDsr5LAWOCqa/ixD7NayrhoW6I+21/z
- lgcF/ASQ1I/Px+1VPXnB4NPVTP9/fH/0KS0YVNWpDBz+eaRQGg6/9aI5k09PgbCScC9c
- GXI1OHOjlzspU2hfKsiuF8YfcJUe+c7RSc07Jny0opheYYJDPmOO/oimD4YH9HEadJix
- FeR0aWZtAqNNE+5fNY0uRYfO6MGSLVbDq66HfTi51d+/JATxVmZOf0Uk01au2oFR2u5s
- g1VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697495221; x=1698100021;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZldOQ2OSXKAI+VJtfqNv20viTBYn++jH86a6nr7RhYY=;
- b=JhlkXBi5FleubzW92VZSwTdOOJoGJFPcQf+ePiZRdZXNcRt+kfZSqwLpydaSOksQaX
- gLZYV76Gotf7IUWXivtDt3hlIsv1OiZ9GVuQQ+WJudIEmUYf+Q4sULRUgwKKE4Yinlib
- +XCikyK797jIC4tTXm4Yq+BPcipwHVXhPpVATGmTILH/g/mYqmSCy/Uu37pDJMtZcVJ+
- c4f3tVCwqvQf8HTjJETuTLiBk5LbY1SBBKqUpce/OAZRrbXmTw8KLoQI5lEVvqnq4+AE
- Wnmq51x2X5Kgx0fg6xACmq6IadySqVGS1K+EvFVL5SOA8mRHoBGkeZkUru5w98mmXS/c
- XYWw==
-X-Gm-Message-State: AOJu0YyFzNakNvYRMRFBQspZDjCaOhlkLgjRV25+M09NAOT/2qcHXHDw
- 6+RHc81thbojN8pdayL2tVvzAud3aRv7QF2K/R4=
-X-Google-Smtp-Source: AGHT+IF573BEWyr9EcWjtxLyS6MwriARHcu5A/aKAWD+ek45WkO6A9z8th5kPtCZNHUCz8Z423ViDuVOmX7aCqGuW5M=
-X-Received: by 2002:a05:6214:2262:b0:66d:253c:9a80 with SMTP id
- gs2-20020a056214226200b0066d253c9a80mr1010949qvb.54.1697495220764; Mon, 16
- Oct 2023 15:27:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qsW9Z-0001PC-I4; Mon, 16 Oct 2023 18:33:37 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qsW9V-0004al-J8; Mon, 16 Oct 2023 18:33:37 -0400
+Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S8X1j2FCDz67cSV;
+ Tue, 17 Oct 2023 06:32:57 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 16 Oct 2023 23:33:26 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Mon, 16 Oct 2023 23:33:26 +0100
+To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "will@kernel.org"
+ <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
+ <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
+ <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
+ <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
+ <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
+ <karl.heubaum@oracle.com>, "miguel.luis@oracle.com" <miguel.luis@oracle.com>, 
+ "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
+ <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
+ "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
+ <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
+ "lixianglai@loongson.cn" <lixianglai@loongson.cn>
+Subject: RE: [PATCH RFC V2 18/37] arm/virt: Make ARM vCPU *present* status
+ ACPI *persistent*
+Thread-Topic: [PATCH RFC V2 18/37] arm/virt: Make ARM vCPU *present* status
+ ACPI *persistent*
+Thread-Index: AQHZ8GHAnla8Z9z7eEClVl2X9T+5z7Aw0oyAgBxHs+A=
+Date: Mon, 16 Oct 2023 22:33:25 +0000
+Message-ID: <d2479495683f4c1d9337914b451e2282@huawei.com>
+References: <20230926100436.28284-1-salil.mehta@huawei.com>
+ <20230926100436.28284-19-salil.mehta@huawei.com>
+ <550271cb-c415-f98e-afb4-d62df70c3ffb@redhat.com>
+In-Reply-To: <550271cb-c415-f98e-afb4-d62df70c3ffb@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.158.41]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <CAKJOkCoxLG01Dt7xMjOPWRqhyLPuaNGRUaDn-sgAFfhERtAYJA@mail.gmail.com>
- <20231016105538.00000de5@Huawei.com>
-In-Reply-To: <20231016105538.00000de5@Huawei.com>
-From: lokesh jaliminche <lokesh.jaliminche@gmail.com>
-Date: Mon, 16 Oct 2023 15:26:51 -0700
-Message-ID: <CAKJOkCqk-HnzNXMmFxUe8UySqpgdAMLyLM_ciHEoMtvBFKFpNw@mail.gmail.com>
-Subject: Re: Performance Issue with CXL-emulation
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel-request@nongnu.org, linux-cxl@vger.kernel.org, 
- qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000a4447c0607dce766"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f33;
- envelope-from=lokesh.jaliminche@gmail.com; helo=mail-qv1-xf33.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,419 +91,68 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a4447c0607dce766
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Jonathan,
-
-Thanks for your quick and detailed response. I'll explore these options
-further and asses if I get any performance uptick.
-
-Thanks & Regards,
-Lokesh
-
-On Mon, Oct 16, 2023 at 2:56=E2=80=AFAM Jonathan Cameron <
-Jonathan.Cameron@huawei.com> wrote:
-
-> On Sun, 15 Oct 2023 10:39:46 -0700
-> lokesh jaliminche <lokesh.jaliminche@gmail.com> wrote:
->
-> > Hi Everyone,
-> >
-> > I am facing performance issues while copying data to the CXL device
-> > (Emulated with QEMU). I get approximately 500KB/Sec. Any suggestion on
-> how
-> > to improve this?
->
-> Hi Lokesh,
->
-> The target so far of QEMU emulation of CXL devices has been on
-> functionality.
-> I'm in favour of work to improve on that, but it isn't likely to be my
-> focus
-> - can offer some pointers on where to look though!
->
-> The fundamental problem (probably) is address decoding in CXL for
-> interleaving
-> is at a sub page granularity. That means we can't use page table to
-> perform the address
-> look ups in hardware. Note this also has the side effect that kvm won't
-> work if
-> there is any chance that you will run instructions out of the CXL memory =
--
-> it's
-> fine if you are interested in data only (DAX etc). (I've had a note in my
-> todo list
-> to add a warning message about the KVM limitations for a while).
->
-> There have been a few discussions (mostly when we were debugging some TCG
-> issues
-> and considering KVM support) about how we 'might' be able to improve
-> this.  That focused
-> on a general 'fix', but there may be some lower hanging fruit.
->
-> The options I think might work are:
->
-> 1) Special case configurations where there is no interleave going on.
->    I'm not entirely sure how this would fit together and it won't deal
-> with the
->    more interesting cases - if it does work I'd want it to be minimally
-> invasive because
->    those complex cases are the main focus of testing etc.  There is an
-> extension of this
->    where we handle interleave, but only if it is 4k or above (on
-> appropriately configured
->    host).
->
-> 2) Add caching layer to the CXL fixed memory windows.  That would hold
-> copies of a
->    number of pages that have been accessed in a software cache and setup
-> the mappings for
->    the hardware page table walkers to find them. If the page isn't cached
-> we'd trigger
->    a pagefault and have to bring it into the cache. If the configuration
-> of the interleave
->    is touched, all caches would need to be written back etc. This would
-> need to be optional
->    because I don't want to have to add cache coherency protocols etc when
-> we add shared
->    memory support (fun though it would be ;)
->
-> 3) Might be worth looking at the critical paths for lookups in your
-> configuration.
->    Maybe we can optimize the address decoders (basically a software TLB
-> for HPA to DPA).
->    I've not looked at the performance of those paths.  For your example
-> the lookup is
->    * CFMWS - nothing to do
->    * Host bridge - nothing to do beyond a sanity check on range I think.
->    * Nothing to to do.
->    * Type 3 device - basic range match.
->    So I'm not sure it is worth while - but you could do a really simple
-> test by detecting
->    no interleave is going on and caching the offset needed to go HPA to
-> DPA + a device reference
->    for the first time cxl_cfmws_find_device() is called.
->    https://elixir.bootlin.com/qemu/latest/source/hw/cxl/cxl-host.c#L129
->
->
->    Then just match on hwaddr on another call of cxl_cmws_find_device() an=
-d
-> return the device
->    directly.  Maybe also shortcut lookups in cxl_type3_hpa_to_as_and_dpa(=
-)
-> which does the endpoint
->    decoding part. A quick hack would let you know if it was worth looking
-> at something more general.
->
->    Gut feeling is this last approach might get you some perf uptick but
-> not going to solve
->    the fundamental problem that in general we can't do the translation in
-> hardware (unlike most
->    other memory accesses in QEMU).
->
->    Not I believe all writes to file backed memory will go all the way to
-> the file. So you might want
->    to try backing it with RAM but I as with the above, that's not going t=
-o
-> address the fundamental
->    problem.
->
->
-> Jonathan
->
->
->
->
-> >
-> > Steps to reproduce :
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > 1. QEMU Command:
-> > sudo /opt/qemu-cxl/bin/qemu-system-x86_64 \
-> > -hda ./images/ubuntu-22.04-server-cloudimg-amd64.img \
-> > -hdb ./images/user-data.img \
-> > -M q35,cxl=3Don,accel=3Dkvm,nvdimm=3Don \
-> > -smp 16 \
-> > -m 16G,maxmem=3D32G,slots=3D8 \
-> > -object
-> >
-> memory-backend-file,id=3Dcxl-mem1,share=3Don,mem-path=3D/mnt/qemu_files/c=
-xltest.raw,size=3D256M
-> > \
-> > -object
-> >
-> memory-backend-file,id=3Dcxl-lsa1,share=3Don,mem-path=3D/mnt/qemu_files/l=
-sa.raw,size=3D256M
-> > \
-> > -device pxb-cxl,bus_nr=3D12,bus=3Dpcie.0,id=3Dcxl.1 \
-> > -device cxl-rp,port=3D0,bus=3Dcxl.1,id=3Droot_port13,chassis=3D0,slot=
-=3D2 \
-> > -device
-> >
-> cxl-type3,bus=3Droot_port13,persistent-memdev=3Dcxl-mem1,lsa=3Dcxl-lsa1,i=
-d=3Dcxl-pmem0
-> > \
-> > -M cxl-fmw.0.targets.0=3Dcxl.1,cxl-fmw.0.size=3D4G \
-> > -nographic \
-> >
-> > 2. Configure device with fsdax mode
-> > ubuntu@ubuntu:~$ cxl list
-> > [
-> >   {
-> >     "memdevs":[
-> >       {
-> >         "memdev":"mem0",
-> >         "pmem_size":268435456,
-> >         "serial":0,
-> >         "host":"0000:0d:00.0"
-> >       }
-> >     ]
-> >   },
-> >   {
-> >     "regions":[
-> >       {
-> >         "region":"region0",
-> >         "resource":45365592064,
-> >         "size":268435456,
-> >         "type":"pmem",
-> >         "interleave_ways":1,
-> >         "interleave_granularity":1024,
-> >         "decode_state":"commit"
-> >       }
-> >     ]
-> >   }
-> > ]
-> >
-> > 3. Format the device with ext4 file system in dax mode
-> >
-> > 4. Write data to mounted device with dd
-> >
-> > ubuntu@ubuntu:~$ time sudo dd if=3D/dev/urandom
-> > of=3D/home/ubuntu/mnt/pmem0/test bs=3D1M count=3D128
-> > 128+0 records in
-> > 128+0 records out
-> > 134217728 bytes (134 MB, 128 MiB) copied, 244.802 s, 548 kB/s
-> >
-> > real    4m4.850s
-> > user    0m0.014s
-> > sys     0m0.013s
-> >
-> >
-> > Thanks & Regards,
-> > Lokesh
-> >
->
->
-
---000000000000a4447c0607dce766
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi Jonathan,<div><br></div><div>Thanks for your quick and =
-detailed response.=C2=A0I&#39;ll explore these options further and asses if=
- I get any performance uptick.</div><div><br></div><div>Thanks &amp; Regard=
-s,<br>Lokesh</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" cla=
-ss=3D"gmail_attr">On Mon, Oct 16, 2023 at 2:56=E2=80=AFAM Jonathan Cameron =
-&lt;<a href=3D"mailto:Jonathan.Cameron@huawei.com">Jonathan.Cameron@huawei.=
-com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
-x">On Sun, 15 Oct 2023 10:39:46 -0700<br>
-lokesh jaliminche &lt;<a href=3D"mailto:lokesh.jaliminche@gmail.com" target=
-=3D"_blank">lokesh.jaliminche@gmail.com</a>&gt; wrote:<br>
-<br>
-&gt; Hi Everyone,<br>
-&gt; <br>
-&gt; I am facing performance issues while copying data to the CXL device<br=
->
-&gt; (Emulated with QEMU). I get approximately 500KB/Sec. Any suggestion on=
- how<br>
-&gt; to improve this?<br>
-<br>
-Hi Lokesh,<br>
-<br>
-The target so far of QEMU emulation of CXL devices has been on functionalit=
-y.<br>
-I&#39;m in favour of work to improve on that, but it isn&#39;t likely to be=
- my focus<br>
-- can offer some pointers on where to look though!<br>
-<br>
-The fundamental problem (probably) is address decoding in CXL for interleav=
-ing<br>
-is at a sub page granularity. That means we can&#39;t use page table to per=
-form the address<br>
-look ups in hardware. Note this also has the side effect that kvm won&#39;t=
- work if<br>
-there is any chance that you will run instructions out of the CXL memory - =
-it&#39;s<br>
-fine if you are interested in data only (DAX etc). (I&#39;ve had a note in =
-my todo list<br>
-to add a warning message about the KVM limitations for a while).<br>
-<br>
-There have been a few discussions (mostly when we were debugging some TCG i=
-ssues<br>
-and considering KVM support) about how we &#39;might&#39; be able to improv=
-e this.=C2=A0 That focused<br>
-on a general &#39;fix&#39;, but there may be some lower hanging fruit.<br>
-<br>
-The options I think might work are:<br>
-<br>
-1) Special case configurations where there is no interleave going on.<br>
-=C2=A0 =C2=A0I&#39;m not entirely sure how this would fit together and it w=
-on&#39;t deal with the<br>
-=C2=A0 =C2=A0more interesting cases - if it does work I&#39;d want it to be=
- minimally invasive because<br>
-=C2=A0 =C2=A0those complex cases are the main focus of testing etc.=C2=A0 T=
-here is an extension of this<br>
-=C2=A0 =C2=A0where we handle interleave, but only if it is 4k or above (on =
-appropriately configured<br>
-=C2=A0 =C2=A0host).<br>
-<br>
-2) Add caching layer to the CXL fixed memory windows.=C2=A0 That would hold=
- copies of a<br>
-=C2=A0 =C2=A0number of pages that have been accessed in a software cache an=
-d setup the mappings for<br>
-=C2=A0 =C2=A0the hardware page table walkers to find them. If the page isn&=
-#39;t cached we&#39;d trigger<br>
-=C2=A0 =C2=A0a pagefault and have to bring it into the cache. If the config=
-uration of the interleave<br>
-=C2=A0 =C2=A0is touched, all caches would need to be written back etc. This=
- would need to be optional<br>
-=C2=A0 =C2=A0because I don&#39;t want to have to add cache coherency protoc=
-ols etc when we add shared<br>
-=C2=A0 =C2=A0memory support (fun though it would be ;) <br>
-<br>
-3) Might be worth looking at the critical paths for lookups in your configu=
-ration.<br>
-=C2=A0 =C2=A0Maybe we can optimize the address decoders (basically a softwa=
-re TLB for HPA to DPA).<br>
-=C2=A0 =C2=A0I&#39;ve not looked at the performance of those paths.=C2=A0 F=
-or your example the lookup is<br>
-=C2=A0 =C2=A0* CFMWS - nothing to do<br>
-=C2=A0 =C2=A0* Host bridge - nothing to do beyond a sanity check on range I=
- think.<br>
-=C2=A0 =C2=A0* Nothing to to do.<br>
-=C2=A0 =C2=A0* Type 3 device - basic range match.<br>
-=C2=A0 =C2=A0So I&#39;m not sure it is worth while - but you could do a rea=
-lly simple test by detecting<br>
-=C2=A0 =C2=A0no interleave is going on and caching the offset needed to go =
-HPA to DPA + a device reference<br>
-=C2=A0 =C2=A0for the first time cxl_cfmws_find_device() is called. <br>
-=C2=A0 =C2=A0<a href=3D"https://elixir.bootlin.com/qemu/latest/source/hw/cx=
-l/cxl-host.c#L129" rel=3D"noreferrer" target=3D"_blank">https://elixir.boot=
-lin.com/qemu/latest/source/hw/cxl/cxl-host.c#L129</a><br>
-<br>
-<br>
-=C2=A0 =C2=A0Then just match on hwaddr on another call of cxl_cmws_find_dev=
-ice() and return the device<br>
-=C2=A0 =C2=A0directly.=C2=A0 Maybe also shortcut lookups in cxl_type3_hpa_t=
-o_as_and_dpa() which does the endpoint<br>
-=C2=A0 =C2=A0decoding part. A quick hack would let you know if it was worth=
- looking at something more general.<br>
-<br>
-=C2=A0 =C2=A0Gut feeling is this last approach might get you some perf upti=
-ck but not going to solve<br>
-=C2=A0 =C2=A0the fundamental problem that in general we can&#39;t do the tr=
-anslation in hardware (unlike most<br>
-=C2=A0 =C2=A0other memory accesses in QEMU).<br>
-<br>
-=C2=A0 =C2=A0Not I believe all writes to file backed memory will go all the=
- way to the file. So you might want<br>
-=C2=A0 =C2=A0to try backing it with RAM but I as with the above, that&#39;s=
- not going to address the fundamental<br>
-=C2=A0 =C2=A0problem.<br>
-<br>
-<br>
-Jonathan<br>
-<br>
-<br>
-<br>
-<br>
-&gt; <br>
-&gt; Steps to reproduce :<br>
-&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
-&gt; 1. QEMU Command:<br>
-&gt; sudo /opt/qemu-cxl/bin/qemu-system-x86_64 \<br>
-&gt; -hda ./images/ubuntu-22.04-server-cloudimg-amd64.img \<br>
-&gt; -hdb ./images/user-data.img \<br>
-&gt; -M q35,cxl=3Don,accel=3Dkvm,nvdimm=3Don \<br>
-&gt; -smp 16 \<br>
-&gt; -m 16G,maxmem=3D32G,slots=3D8 \<br>
-&gt; -object<br>
-&gt; memory-backend-file,id=3Dcxl-mem1,share=3Don,mem-path=3D/mnt/qemu_file=
-s/cxltest.raw,size=3D256M<br>
-&gt; \<br>
-&gt; -object<br>
-&gt; memory-backend-file,id=3Dcxl-lsa1,share=3Don,mem-path=3D/mnt/qemu_file=
-s/lsa.raw,size=3D256M<br>
-&gt; \<br>
-&gt; -device pxb-cxl,bus_nr=3D12,bus=3Dpcie.0,id=3Dcxl.1 \<br>
-&gt; -device cxl-rp,port=3D0,bus=3Dcxl.1,id=3Droot_port13,chassis=3D0,slot=
-=3D2 \<br>
-&gt; -device<br>
-&gt; cxl-type3,bus=3Droot_port13,persistent-memdev=3Dcxl-mem1,lsa=3Dcxl-lsa=
-1,id=3Dcxl-pmem0<br>
-&gt; \<br>
-&gt; -M cxl-fmw.0.targets.0=3Dcxl.1,cxl-fmw.0.size=3D4G \<br>
-&gt; -nographic \<br>
-&gt; <br>
-&gt; 2. Configure device with fsdax mode<br>
-&gt; ubuntu@ubuntu:~$ cxl list<br>
-&gt; [<br>
-&gt;=C2=A0 =C2=A0{<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&quot;memdevs&quot;:[<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;memdev&quot;:&quot;mem0&quot;,<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;pmem_size&quot;:268435456,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;serial&quot;:0,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;host&quot;:&quot;0000:0d:00.0&q=
-uot;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0 =C2=A0]<br>
-&gt;=C2=A0 =C2=A0},<br>
-&gt;=C2=A0 =C2=A0{<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&quot;regions&quot;:[<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;region&quot;:&quot;region0&quot=
-;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;resource&quot;:45365592064,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;size&quot;:268435456,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;type&quot;:&quot;pmem&quot;,<br=
->
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;interleave_ways&quot;:1,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;interleave_granularity&quot;:10=
-24,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;decode_state&quot;:&quot;commit=
-&quot;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0 =C2=A0]<br>
-&gt;=C2=A0 =C2=A0}<br>
-&gt; ]<br>
-&gt; <br>
-&gt; 3. Format the device with ext4 file system in dax mode<br>
-&gt; <br>
-&gt; 4. Write data to mounted device with dd<br>
-&gt; <br>
-&gt; ubuntu@ubuntu:~$ time sudo dd if=3D/dev/urandom<br>
-&gt; of=3D/home/ubuntu/mnt/pmem0/test bs=3D1M count=3D128<br>
-&gt; 128+0 records in<br>
-&gt; 128+0 records out<br>
-&gt; 134217728 bytes (134 MB, 128 MiB) copied, 244.802 s, 548 kB/s<br>
-&gt; <br>
-&gt; real=C2=A0 =C2=A0 4m4.850s<br>
-&gt; user=C2=A0 =C2=A0 0m0.014s<br>
-&gt; sys=C2=A0 =C2=A0 =C2=A00m0.013s<br>
-&gt; <br>
-&gt; <br>
-&gt; Thanks &amp; Regards,<br>
-&gt; Lokesh<br>
-&gt; <br>
-<br>
-</blockquote></div>
-
---000000000000a4447c0607dce766--
+SGkgR2F2aW4sDQoNCj4gRnJvbTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCj4gU2Vu
+dDogRnJpZGF5LCBTZXB0ZW1iZXIgMjksIDIwMjMgMTI6MTggQU0NCj4gVG86IFNhbGlsIE1laHRh
+IDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOyBxZW11LWFy
+bUBub25nbnUub3JnDQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8u
+b3JnOyBKb25hdGhhbiBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBs
+cGllcmFsaXNpQGtlcm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFy
+ZC5oZW5kZXJzb25AbGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3Lmpv
+bmVzQGxpbnV4LmRldjsgZGF2aWRAcmVkaGF0LmNvbTsNCj4gcGhpbG1kQGxpbmFyby5vcmc7IGVy
+aWMuYXVnZXJAcmVkaGF0LmNvbTsgd2lsbEBrZXJuZWwub3JnOyBhcmRiQGtlcm5lbC5vcmc7DQo+
+IG9saXZlci51cHRvbkBsaW51eC5kZXY7IHBib256aW5pQHJlZGhhdC5jb207IG1zdEByZWRoYXQu
+Y29tOw0KPiByYWZhZWxAa2VybmVsLm9yZzsgYm9ybnRyYWVnZXJAbGludXguaWJtLmNvbTsgYWxl
+eC5iZW5uZWVAbGluYXJvLm9yZzsNCj4gbGludXhAYXJtbGludXgub3JnLnVrOyBkYXJyZW5Ab3Mu
+YW1wZXJlY29tcHV0aW5nLmNvbTsNCj4gaWxra2FAb3MuYW1wZXJlY29tcHV0aW5nLmNvbTsgdmlz
+aG51QG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IGthcmwuaGV1YmF1bUBvcmFjbGUuY29tOyBt
+aWd1ZWwubHVpc0BvcmFjbGUuY29tOyBzYWxpbC5tZWh0YUBvcG5zcmMubmV0Ow0KPiB6aHVrZXFp
+YW4gPHpodWtlcWlhbjFAaHVhd2VpLmNvbT47IHdhbmd4aW9uZ2ZlbmcgKEMpDQo+IDx3YW5neGlv
+bmdmZW5nMkBodWF3ZWkuY29tPjsgd2FuZ3lhbmFuIChZKSA8d2FuZ3lhbmFuNTVAaHVhd2VpLmNv
+bT47DQo+IGppYWtlcm5lbDJAZ21haWwuY29tOyBtYW9iaWJvQGxvb25nc29uLmNuOyBsaXhpYW5n
+bGFpQGxvb25nc29uLmNuDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggUkZDIFYyIDE4LzM3XSBhcm0v
+dmlydDogTWFrZSBBUk0gdkNQVSAqcHJlc2VudCogc3RhdHVzDQo+IEFDUEkgKnBlcnNpc3RlbnQq
+DQo+IA0KPiBIaSBTYWxpbCwNCj4gDQo+IE9uIDkvMjYvMjMgMjA6MDQsIFNhbGlsIE1laHRhIHdy
+b3RlOg0KPiA+IEFSTSBhcmNoIGRvZXMgbm90IGFsbG93IENQVXMgcHJlc2VuY2UgdG8gYmUgY2hh
+bmdlZCBbMV0gYWZ0ZXIga2VybmVsIGhhcyBib290ZWQuDQo+ID4gSGVuY2UsIGZpcm13YXJlL0FD
+UEkvUWVtdSBtdXN0IGVuc3VyZSBwZXJzaXN0ZW50IHZpZXcgb2YgdGhlIHZDUFVzIHRvIHRoZSBH
+dWVzdA0KPiA+IGtlcm5lbCBldmVuIHdoZW4gdGhleSBhcmUgbm90IHByZXNlbnQgaW4gdGhlIFFv
+TSBpLmUuIGFyZSB1bnBsdWdnZWQgb3IgYXJlDQo+ID4geWV0LXRvLWJlLXBsdWdnZWQNCj4gPg0K
+PiA+IFJlZmVyZW5jZXM6DQo+ID4gWzFdIENoZWNrIGNvbW1lbnQgNSBpbiB0aGUgYnVnemlsbGEg
+ZW50cnkNCj4gPiAgICAgTGluazogaHR0cHM6Ly9idWd6aWxsYS50aWFub2NvcmUub3JnL3Nob3df
+YnVnLmNnaT9pZD00NDgxI2M1DQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYWxpbCBNZWh0YSA8
+c2FsaWwubWVodGFAaHVhd2VpLmNvbT4NCj4gPiAtLS0NCj4gPiAgIGNwdXMtY29tbW9uLmMgICAg
+ICAgICB8ICA2ICsrKysrKw0KPiA+ICAgaHcvYXJtL3ZpcnQuYyAgICAgICAgIHwgIDcgKysrKysr
+Kw0KPiA+ICAgaW5jbHVkZS9ody9jb3JlL2NwdS5oIHwgMjAgKysrKysrKysrKysrKysrKysrKysN
+Cj4gPiAgIDMgZmlsZXMgY2hhbmdlZCwgMzMgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+IA0KPiBobW0s
+IGl0J3MgYW5vdGhlciBDUFUgc3RhdGUuIFRoZXJlIGFyZSA0IENQVSBzdGF0ZXMsIHBsdXMgb3Ro
+ZXIgMyBDUFUgc3RhdGVzOg0KPiBwb3NzaWJsZSwgcHJlc2VudCwgZW5hYmxlZC4gTm93IHdlJ3Jl
+IGhhdmluZyBhbHdheXMtcHJlc2VudCBzdGF0ZS4NCg0KUG9zc2libGUgdkNQVSBpcyBub3QgYSBR
+T00gQ1BVU3RhdGUuIE5laXRoZXIgaXQgZ2V0cyByZXByZXNlbnRlZCB0aHJvdWdoDQpBQ1BJIHRv
+IHRoZSBndWVzdCBPUyB0aHJvdWdoIF9TVEEgbWV0aG9kLiBBIGRldmljZSB3aGljaCBpbiB0aGlz
+IGNhc2UgaXMNCmEgQ1BVIGNhbiBiZSBpbiBFTkFCTEVEIHN0YXRlIG9yIGNhbiBqdXN0IGJlIFBS
+RVNFTlQgYnV0IG5vdCBFTkFCTEVELg0KDQpBbGwgcG9zc2libGUgdkNQVXMgZ2V0IGRldGVjdGVk
+IGJ5IGd1ZXN0IE9TIGJ5IHRoZSBtZXJlIHByZXNlbmNlIG9mIEdJQ0MNCkVudHJ5IChFbmFibGVk
+L29ubGluZS1jYXBhYmxlKSBpbiB0aGUgQUNQSSBNQURUIFRhYmxlLg0KDQpBIHBsdWdnZWQgdkNQ
+VSB3aWxsIGJlICdwcmVzZW50JyBpbiBRT00gYW5kIHdpbGwgYmUgQUNQSSBfU1RBLlBSRVNFTlQg
+YXMNCndlbGwuIEEgdW4tcGx1Z2dlZCB2Q1BVIHdpbGwgYmUgJ25vdC1wcmVzZW50JyBpbiBRT00g
+aS5lLiBpdHMgQ1BVU3RhdGUNCm9iamVjdCB3aWxsIGJlIE5VTEwuIFRoaXMgaXMgYWtpbiB0byB4
+ODYgb3IgYW55IG90aGVyIGFyY2hpdGVjdHVyZSBhbmQNCndlIGFyZSBub3QgY2hhbmdpbmcgYW55
+IG9mIHRoaXMgYXQgUU9NIGxldmVsLg0KDQpXaGF0IGNoYW5nZXMgaXMgdGhlIHJlcHJlc2VudGF0
+aW9uIG9mIHVuLXBsdWdnZWQgdkNQVSB0byBHdWVzdCBPUyB2aWENCkFDUEkgX1NUQSBtZXRob2Qu
+IEZvciBBUk0sIHdlICpmYWtlKiBRT00gdW4tcGx1Z2dlZCB2Q1BVIHByZXNlbmNlIHRvIHRoZQ0K
+R3Vlc3QgT1MgdGhyb3VnaCB0aGUgQUNQSSBfU1RBIG1ldGhvZC4gVG8gZGV0ZWN0IHRoaXMgd2Ug
+Y2hlY2sgdGhlIGJvb2wNCidhY3BpX3BlcnNpc3RlbnQnIHBhcnQgb2YgQ1BVU3RhdGUuIFRoaXMg
+aGFzIHRvIGJlIHNldCBleHBsaWNpdGx5IGJ5DQpBcmNoaXRlY3R1cmVzIGxpa2UgQVJNIHdoaWNo
+IGRvIG5vdCBzdXBwb3J0IGhvdC1wbHVnLiBIZW5jZSwgQ1BVcyBhcmUNCmluICdhbHdheXMgcHJl
+c2VudCcgc3RhdGUgQUNQSSB3aXNlIGJ1dCBjYW5ub3QgYmUgdXNlZCBhcyB0aGV5IGFyZSANCkFD
+UEkgZGlzYWJsZWQgaS5lLiBBQ1BJIF9TVEEuRU5BQkxFRD0wLg0KDQoNCj4gSSB0aGluaw0KPiB0
+aG9zZSBDUFUgc3RhdGVzIGNhbiBiZSBzcXVlZXplZCBpbnRvIHRoZSBwcmV2aW91cyBwcmVzZW50
+IHN0YXRlLiBXaGF0IHdlDQo+IG5lZWQgaXMgdG8gZW5zdXJlIGFsbCBwb3NzaWJsZSB2Q1BVcyBh
+cmUgcHJlc2VudCBmcm9tIHRoZSBiZWdpbm5pbmcuDQoNCkFsbCBvZiB0aGlzIGlzIHVubmVjZXNz
+YXJ5LCByZWFsbHkuDQoNCg0KVGhhbmtzDQpTYWxpbC4NCg0KDQoNCg0KDQo=
 
