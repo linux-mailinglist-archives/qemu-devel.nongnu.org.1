@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE0C7CA4CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2570C7CA4D5
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 12:10:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsKVf-0001Qe-Pt; Mon, 16 Oct 2023 06:07:39 -0400
+	id 1qsKVc-0001Nv-4M; Mon, 16 Oct 2023 06:07:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsKVR-0001NG-O9
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:27 -0400
+ id 1qsKVM-0001JJ-8C
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsKVP-0007Q0-M4
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:25 -0400
+ id 1qsKVK-0007Nl-0d
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 06:07:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697450843;
+ s=mimecast20190719; t=1697450837;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=KisSM/xCxP/NZ4mj6+1kynwnDu1jXhao9Kk4dI4g8U4=;
- b=cf9OYqLDvfjJRVqInjQC0uDhIPPfyHaGfcmqNrDVd3D/gXaLgMlwbYn9XRtbHFRCuJqowZ
- sJrBbUFd0sI/+m6iKpG6TJm1ZZTOZWYQ7ay+fAZaVKJTqWnRPiIW6mMn+lIzYZz4H7TPIC
- u+qKOeAlLlbxApyG7au/KWlCg+ZDxHo=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KuYyQQwWfQ7obuS2fy7ZldJSg7RA9HYmz86cPjRoGGk=;
+ b=ckcq9Ck2JKINyKz2mw75+xE1O2yGcs+ltEE6HqCu0Y3fH/cBZEYG5Vlp7VYy9X9JTONIxS
+ wfvqFik0IpZSrrANtJZJWiMOJmDkHUcDGHP/A4EgVKeCIUEWOlRv9I0VNhGQhjGFdGQqPe
+ iH6BuC+EGi73qpsQp/oeshaoRkCentA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-608-TxYwKiRoNxa0i3JOyPhsVw-1; Mon, 16 Oct 2023 06:07:11 -0400
-X-MC-Unique: TxYwKiRoNxa0i3JOyPhsVw-1
+ us-mta-610-FqF2wy3YM_y5SWmfvCZT4Q-1; Mon, 16 Oct 2023 06:07:15 -0400
+X-MC-Unique: FqF2wy3YM_y5SWmfvCZT4Q-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 291AA3C1F124;
- Mon, 16 Oct 2023 10:07:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6CB5D3C1F120;
+ Mon, 16 Oct 2023 10:07:14 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8F8AC63F48;
- Mon, 16 Oct 2023 10:07:07 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7115F63F45;
+ Mon, 16 Oct 2023 10:07:11 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
@@ -51,12 +52,14 @@ Cc: qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  John Snow <jsnow@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 00/38] Migration 20231016 patches
-Date: Mon, 16 Oct 2023 12:06:28 +0200
-Message-ID: <20231016100706.2551-1-quintela@redhat.com>
+ Thomas Huth <thuth@redhat.com>, Wei Wang <wei.w.wang@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>
+Subject: [PULL 01/38] migration: refactor migration_completion
+Date: Mon, 16 Oct 2023 12:06:29 +0200
+Message-ID: <20231016100706.2551-2-quintela@redhat.com>
+In-Reply-To: <20231016100706.2551-1-quintela@redhat.com>
+References: <20231016100706.2551-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
@@ -83,115 +86,259 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 63011373ad22c794a013da69663c03f1297a5c56:
+From: Wei Wang <wei.w.wang@intel.com>
 
-  Merge tag 'pull-riscv-to-apply-20231012-1' of https://github.com/alistair23/qemu into staging (2023-10-12 10:24:44 -0400)
+Current migration_completion function is a bit long. Refactor the long
+implementation into different subfunctions:
+- migration_completion_precopy: completion code related to precopy
+- migration_completion_postcopy: completion code related to postcopy
 
-are available in the Git repository at:
+Rename await_return_path_close_on_source to
+close_return_path_on_source: It is renamed to match with
+open_return_path_on_source.
 
-  https://gitlab.com/juan.quintela/qemu.git tags/migration-20231016-pull-request
+This improves readability and is easier for future updates (e.g. add new
+subfunctions when completion code related to new features are needed). No
+functional changes intended.
 
-for you to fetch changes up to f39b0f42753635b0f2d8b00a26d11bb197bf51e2:
+Signed-off-by: Wei Wang <wei.w.wang@intel.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Message-ID: <20230804093053.5037-1-wei.w.wang@intel.com>
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+---
+ migration/migration.c | 167 ++++++++++++++++++++++++------------------
+ 1 file changed, 94 insertions(+), 73 deletions(-)
 
-  migration/multifd: Clarify Error usage in multifd_channel_connect (2023-10-16 11:01:33 +0200)
-
-----------------------------------------------------------------
-Migration Pull request (20231016)
-
-In this pull request:
-- rdma cleanups
-- removal of QEMUFileHook
-- test for analyze-migration.py
-- test for multifd file
-- multifd cleanups
-- available switchover bandwidth
-- lots of cleanups.
-
-CI: https://gitlab.com/juan.quintela/qemu/-/pipelines/1037878829
-
-Please, apply.
-
-----------------------------------------------------------------
-
-Dmitry Frolov (1):
-  migration: fix RAMBlock add NULL check
-
-Elena Ufimtseva (3):
-  migration: check for rate_limit_max for RATE_LIMIT_DISABLED
-  multifd: fix counters in multifd_send_thread
-  multifd: reset next_packet_len after sending pages
-
-Fabiano Rosas (13):
-  migration: Fix analyze-migration.py 'configuration' parsing
-  migration: Add capability parsing to analyze-migration.py
-  migration: Fix analyze-migration.py when ignore-shared is used
-  migration: Fix analyze-migration read operation signedness
-  tests/qtest/migration: Add a test for the analyze-migration script
-  tests/qtest: migration-test: Add tests for file-based migration
-  migration/ram: Remove RAMState from xbzrle_cache_zero_page
-  migration/ram: Stop passing QEMUFile around in save_zero_page
-  migration/ram: Move xbzrle zero page handling into save_zero_page
-  migration/ram: Merge save_zero_page functions
-  migration/multifd: Remove direct "socket" references
-  migration/multifd: Unify multifd_send_thread error paths
-  migration/multifd: Clarify Error usage in multifd_channel_connect
-
-Fiona Ebner (1):
-  migration: hold the BQL during setup
-
-Juan Quintela (15):
-  migration: Non multifd migration don't care about multifd flushes
-  migration: Create migrate_rdma()
-  migration/rdma: Unfold ram_control_before_iterate()
-  migration/rdma: Unfold ram_control_after_iterate()
-  migration/rdma: Remove all uses of RAM_CONTROL_HOOK
-  migration/rdma: Unfold hook_ram_load()
-  migration/rdma: Create rdma_control_save_page()
-  qemu-file: Remove QEMUFileHooks
-  migration/rdma: Move rdma constants from qemu-file.h to rdma.h
-  migration/rdma: Remove qemu_ prefix from exported functions
-  migration/rdma: Check sooner if we are in postcopy for save_page()
-  migration/rdma: Use i as for index instead of idx
-  migration/rdma: Declare for index variables local
-  migration/rdma: Remove all "ret" variables that are used only once
-  migration: Improve json and formatting
-
-Nikolay Borisov (2):
-  migration: Add the configuration vmstate to the json writer
-  migration/ram: Refactor precopy ram loading code
-
-Peter Xu (1):
-  migration: Allow user to specify available switchover bandwidth
-
-Philippe Mathieu-Daudé (1):
-  migration: Use g_autofree to simplify ram_dirty_bitmap_reload()
-
-Wei Wang (1):
-  migration: refactor migration_completion
-
- qapi/migration.json            |  41 ++++-
- include/migration/register.h   |   2 +-
- migration/migration.h          |   4 +-
- migration/options.h            |   2 +
- migration/qemu-file.h          |  49 ------
- migration/rdma.h               |  42 +++++
- migration/block-dirty-bitmap.c |   3 -
- migration/block.c              |   5 -
- migration/migration-hmp-cmds.c |  14 ++
- migration/migration-stats.c    |   9 +-
- migration/migration.c          | 199 +++++++++++++--------
- migration/multifd.c            | 101 +++++------
- migration/options.c            |  35 ++++
- migration/qemu-file.c          |  61 +------
- migration/ram.c                | 306 ++++++++++++++++++---------------
- migration/rdma.c               | 259 ++++++++++++----------------
- migration/savevm.c             |  22 ++-
- tests/qtest/migration-test.c   | 207 ++++++++++++++++++++++
- migration/trace-events         |  33 ++--
- scripts/analyze-migration.py   |  67 +++++++-
- tests/qtest/meson.build        |   2 +
- 21 files changed, 895 insertions(+), 568 deletions(-)
-
+diff --git a/migration/migration.c b/migration/migration.c
+index 1c6c81ad49..0e1002d017 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -99,7 +99,7 @@ static int migration_maybe_pause(MigrationState *s,
+                                  int *current_active_state,
+                                  int new_state);
+ static void migrate_fd_cancel(MigrationState *s);
+-static int await_return_path_close_on_source(MigrationState *s);
++static int close_return_path_on_source(MigrationState *s);
+ 
+ static bool migration_needs_multiple_sockets(void)
+ {
+@@ -1191,7 +1191,7 @@ static void migrate_fd_cleanup(MigrationState *s)
+      * We already cleaned up to_dst_file, so errors from the return
+      * path might be due to that, ignore them.
+      */
+-    await_return_path_close_on_source(s);
++    close_return_path_on_source(s);
+ 
+     assert(!migration_is_active(s));
+ 
+@@ -2049,8 +2049,7 @@ static int open_return_path_on_source(MigrationState *ms)
+     return 0;
+ }
+ 
+-/* Returns 0 if the RP was ok, otherwise there was an error on the RP */
+-static int await_return_path_close_on_source(MigrationState *ms)
++static int close_return_path_on_source(MigrationState *ms)
+ {
+     int ret;
+ 
+@@ -2317,6 +2316,87 @@ static int migration_maybe_pause(MigrationState *s,
+     return s->state == new_state ? 0 : -EINVAL;
+ }
+ 
++static int migration_completion_precopy(MigrationState *s,
++                                        int *current_active_state)
++{
++    int ret;
++
++    qemu_mutex_lock_iothread();
++    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
++    qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
++
++    s->vm_old_state = runstate_get();
++    global_state_store();
++
++    ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
++    trace_migration_completion_vm_stop(ret);
++    if (ret < 0) {
++        goto out_unlock;
++    }
++
++    ret = migration_maybe_pause(s, current_active_state,
++                                MIGRATION_STATUS_DEVICE);
++    if (ret < 0) {
++        goto out_unlock;
++    }
++
++    /*
++     * Inactivate disks except in COLO, and track that we have done so in order
++     * to remember to reactivate them if migration fails or is cancelled.
++     */
++    s->block_inactive = !migrate_colo();
++    migration_rate_set(RATE_LIMIT_DISABLED);
++    ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
++                                             s->block_inactive);
++out_unlock:
++    qemu_mutex_unlock_iothread();
++    return ret;
++}
++
++static void migration_completion_postcopy(MigrationState *s)
++{
++    trace_migration_completion_postcopy_end();
++
++    qemu_mutex_lock_iothread();
++    qemu_savevm_state_complete_postcopy(s->to_dst_file);
++    qemu_mutex_unlock_iothread();
++
++    /*
++     * Shutdown the postcopy fast path thread.  This is only needed when dest
++     * QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need this.
++     */
++    if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
++        postcopy_preempt_shutdown_file(s);
++    }
++
++    trace_migration_completion_postcopy_end_after_complete();
++}
++
++static void migration_completion_failed(MigrationState *s,
++                                        int current_active_state)
++{
++    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
++                              s->state == MIGRATION_STATUS_DEVICE)) {
++        /*
++         * If not doing postcopy, vm_start() will be called: let's
++         * regain control on images.
++         */
++        Error *local_err = NULL;
++
++        qemu_mutex_lock_iothread();
++        bdrv_activate_all(&local_err);
++        if (local_err) {
++            error_report_err(local_err);
++        } else {
++            s->block_inactive = false;
++        }
++        qemu_mutex_unlock_iothread();
++    }
++
++    migrate_set_state(&s->state, current_active_state,
++                      MIGRATION_STATUS_FAILED);
++}
++
+ /**
+  * migration_completion: Used by migration_thread when there's not much left.
+  *   The caller 'breaks' the loop when this returns.
+@@ -2325,62 +2405,22 @@ static int migration_maybe_pause(MigrationState *s,
+  */
+ static void migration_completion(MigrationState *s)
+ {
+-    int ret;
++    int ret = 0;
+     int current_active_state = s->state;
+ 
+     if (s->state == MIGRATION_STATUS_ACTIVE) {
+-        qemu_mutex_lock_iothread();
+-        s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+-        qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+-
+-        s->vm_old_state = runstate_get();
+-        global_state_store();
+-
+-        ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
+-        trace_migration_completion_vm_stop(ret);
+-        if (ret >= 0) {
+-            ret = migration_maybe_pause(s, &current_active_state,
+-                                        MIGRATION_STATUS_DEVICE);
+-        }
+-        if (ret >= 0) {
+-            /*
+-             * Inactivate disks except in COLO, and track that we
+-             * have done so in order to remember to reactivate
+-             * them if migration fails or is cancelled.
+-             */
+-            s->block_inactive = !migrate_colo();
+-            migration_rate_set(RATE_LIMIT_DISABLED);
+-            ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
+-                                                     s->block_inactive);
+-        }
+-
+-        qemu_mutex_unlock_iothread();
+-
+-        if (ret < 0) {
+-            goto fail;
+-        }
++        ret = migration_completion_precopy(s, &current_active_state);
+     } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
+-        trace_migration_completion_postcopy_end();
+-
+-        qemu_mutex_lock_iothread();
+-        qemu_savevm_state_complete_postcopy(s->to_dst_file);
+-        qemu_mutex_unlock_iothread();
+-
+-        /*
+-         * Shutdown the postcopy fast path thread.  This is only needed
+-         * when dest QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need
+-         * this.
+-         */
+-        if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
+-            postcopy_preempt_shutdown_file(s);
+-        }
+-
+-        trace_migration_completion_postcopy_end_after_complete();
++        migration_completion_postcopy(s);
+     } else {
++        ret = -1;
++    }
++
++    if (ret < 0) {
+         goto fail;
+     }
+ 
+-    if (await_return_path_close_on_source(s)) {
++    if (close_return_path_on_source(s)) {
+         goto fail;
+     }
+ 
+@@ -2401,26 +2441,7 @@ static void migration_completion(MigrationState *s)
+     return;
+ 
+ fail:
+-    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
+-                              s->state == MIGRATION_STATUS_DEVICE)) {
+-        /*
+-         * If not doing postcopy, vm_start() will be called: let's
+-         * regain control on images.
+-         */
+-        Error *local_err = NULL;
+-
+-        qemu_mutex_lock_iothread();
+-        bdrv_activate_all(&local_err);
+-        if (local_err) {
+-            error_report_err(local_err);
+-        } else {
+-            s->block_inactive = false;
+-        }
+-        qemu_mutex_unlock_iothread();
+-    }
+-
+-    migrate_set_state(&s->state, current_active_state,
+-                      MIGRATION_STATUS_FAILED);
++    migration_completion_failed(s, current_active_state);
+ }
+ 
+ /**
+@@ -2563,7 +2584,7 @@ static MigThrError postcopy_pause(MigrationState *s)
+          * path and just wait for the thread to finish. It will be
+          * re-created when we resume.
+          */
+-        await_return_path_close_on_source(s);
++        close_return_path_on_source(s);
+ 
+         migrate_set_state(&s->state, s->state,
+                           MIGRATION_STATUS_POSTCOPY_PAUSED);
 -- 
 2.41.0
 
