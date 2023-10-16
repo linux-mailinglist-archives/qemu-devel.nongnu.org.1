@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D5E7CA28A
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3ED7CA270
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:49:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJIM-0005XM-06; Mon, 16 Oct 2023 04:49:50 -0400
+	id 1qsJIN-00062p-9B; Mon, 16 Oct 2023 04:49:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJI9-0005Ke-Uc; Mon, 16 Oct 2023 04:49:38 -0400
+ id 1qsJIF-0005Tw-GH; Mon, 16 Oct 2023 04:49:45 -0400
 Received: from mgamail.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJI6-0001LN-Dg; Mon, 16 Oct 2023 04:49:36 -0400
+ id 1qsJID-0001HS-Pv; Mon, 16 Oct 2023 04:49:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697446174; x=1728982174;
+ t=1697446181; x=1728982181;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5sTywzEaEW0RCTiGenM/26nMo0a4RpA9GhP1ZwXXWqg=;
- b=CSLw8Bofg+PJHee5P9D1RjBWPjBM1ggzj7Hu5G4A7d8w9GeCNYqdWAyB
- xauNoQevav2m48QM4K0ASF15WRSVtnvoIQ1iyj8IoHsQuupbWD8PzCtwX
- 2C1ZltKeaG6InjtQgVdkdZaNmEUNvf+YhcN7Qt4Cup5PUxsCzMDGlXDFD
- /D8Gm7bXs2hpvaaC6VG3sXEg7z+ye34Ix2FAi4hXYXUCVVXGYbUnZ+Wvz
- fkeLU3MKEdOXmJKK8QfkpKNB/NSmqNOjjeoC+nMVzeVKWYvWIGR6Wonh+
- qWh0htFgmgPDMWTHvNaKIZt3ZAv8iZJe6/tQceXJFP9xyLk3Sh1CXdfTf w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737756"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737756"
+ bh=p2MFIpHYT4awebGkY68CJ2k7+kXfIV8jtABCfQUYiRo=;
+ b=AdZbB/4HjZwvYNUv3TF1a7PUcsBZmyBB2jJNRo6SRZtLn8VAxerDzbww
+ dO1HzvytsS18n1cWynk3uI8xZmJUh1PBa78dPKfl1AVW/xKyI0Aahbm1K
+ NsJlYjUCdclDCTmbW+BVSqDFYBv2OCbw1Oj6yuCSvyZD7ubp2HC8S1FSn
+ /VvqtmGUjy+v3ayA+PETWOduwf9fsYOKWOCnanOyrdPrBYFxpSPTN4vwq
+ xwrcE7+1QQe2X58ryVwYFn0tNDdGbz37phud5JNqADMTdTTu+HfB2gVmb
+ NfRSvH7xoicAkWZXYNRUeQ8L0+W9Q6TvpX4QUaRA0RA6k1XIdWYUU6VQt Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737766"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737766"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:49:11 -0700
+ 16 Oct 2023 01:49:16 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749223075"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749223075"
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749223099"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749223099"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:49:07 -0700
+ 16 Oct 2023 01:49:12 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -46,13 +46,13 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>, Thomas Huth <thuth@redhat.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
  qemu-s390x@nongnu.org (open list:S390 general arch...)
-Subject: [PATCH v2 26/27] vfio/ap: Make vfio cdev pre-openable by passing a
+Subject: [PATCH v2 27/27] vfio/ccw: Make vfio cdev pre-openable by passing a
  file handle
-Date: Mon, 16 Oct 2023 16:32:22 +0800
-Message-Id: <20231016083223.1519410-27-zhenzhong.duan@intel.com>
+Date: Mon, 16 Oct 2023 16:32:23 +0800
+Message-Id: <20231016083223.1519410-28-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
 References: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
@@ -86,52 +86,56 @@ This gives management tools like libvirt a chance to open the vfio
 cdev with privilege and pass FD to qemu. This way qemu never needs
 to have privilege to open a VFIO or iommu cdev node.
 
-Opportunisticly, remove some unnecessory double-cast.
+Opportunisticly, remove a redundant definition of TYPE_VFIO_CCW.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/ap.c | 32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ hw/vfio/ccw.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 1f8e88aeb3..a34cae31a2 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -30,6 +30,7 @@
- #include "hw/s390x/ap-bridge.h"
- #include "exec/address-spaces.h"
- #include "qom/object.h"
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index c7f8e70783..f151652bc2 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -31,6 +31,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
 +#include "monitor/monitor.h"
  
- #define TYPE_VFIO_AP_DEVICE      "vfio-ap"
+ struct VFIOCCWDevice {
+     S390CCWDevice cdev;
+@@ -590,11 +591,12 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
+         }
+     }
  
-@@ -160,7 +161,10 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
-     VFIODevice *vbasedev = &vapdev->vdev;
- 
--    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
 +    if (vfio_device_get_name(vbasedev, errp)) {
 +        return;
 +    }
 +
-     vbasedev->ops = &vfio_ap_ops;
-     vbasedev->type = VFIO_DEVICE_TYPE_AP;
+     vbasedev->ops = &vfio_ccw_ops;
+     vbasedev->type = VFIO_DEVICE_TYPE_CCW;
+-    vbasedev->name = g_strdup_printf("%x.%x.%04x", vcdev->cdev.hostid.cssid,
+-                           vcdev->cdev.hostid.ssid,
+-                           vcdev->cdev.hostid.devid);
      vbasedev->dev = dev;
-@@ -230,11 +234,36 @@ static const VMStateDescription vfio_ap_vmstate = {
+ 
+     /*
+@@ -691,12 +693,37 @@ static const VMStateDescription vfio_ccw_vmstate = {
      .unmigratable = 1,
  };
  
-+static void vfio_ap_instance_init(Object *obj)
++static void vfio_ccw_instance_init(Object *obj)
 +{
-+    VFIOAPDevice *vapdev = VFIO_AP_DEVICE(obj);
++    VFIOCCWDevice *vcdev = VFIO_CCW(obj);
 +
-+    vapdev->vdev.fd = -1;
++    vcdev->vdev.fd = -1;
 +}
 +
 +#ifdef CONFIG_IOMMUFD
-+static void vfio_ap_set_fd(Object *obj, const char *str, Error **errp)
++static void vfio_ccw_set_fd(Object *obj, const char *str, Error **errp)
 +{
-+    VFIOAPDevice *vapdev = VFIO_AP_DEVICE(obj);
++    VFIOCCWDevice *vcdev = VFIO_CCW(obj);
 +    int fd = -1;
 +
 +    fd = monitor_fd_param(monitor_cur(), str, errp);
@@ -139,27 +143,28 @@ index 1f8e88aeb3..a34cae31a2 100644
 +        error_prepend(errp, "Could not parse remote object fd %s:", str);
 +        return;
 +    }
-+    vapdev->vdev.fd = fd;
++    vcdev->vdev.fd = fd;
 +}
 +#endif
 +
- static void vfio_ap_class_init(ObjectClass *klass, void *data)
+ static void vfio_ccw_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
+     S390CCWDeviceClass *cdc = S390_CCW_DEVICE_CLASS(klass);
  
-     device_class_set_props(dc, vfio_ap_properties);
+     device_class_set_props(dc, vfio_ccw_properties);
 +#ifdef CONFIG_IOMMUFD
-+    object_class_property_add_str(klass, "fd", NULL, vfio_ap_set_fd);
++    object_class_property_add_str(klass, "fd", NULL, vfio_ccw_set_fd);
 +#endif
-     dc->vmsd = &vfio_ap_vmstate;
-     dc->desc = "VFIO-based AP device assignment";
+     dc->vmsd = &vfio_ccw_vmstate;
+     dc->desc = "VFIO-based subchannel assignment";
      set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-@@ -249,6 +278,7 @@ static const TypeInfo vfio_ap_info = {
-     .name = TYPE_VFIO_AP_DEVICE,
-     .parent = TYPE_AP_DEVICE,
-     .instance_size = sizeof(VFIOAPDevice),
-+    .instance_init = vfio_ap_instance_init,
-     .class_init = vfio_ap_class_init,
+@@ -714,6 +741,7 @@ static const TypeInfo vfio_ccw_info = {
+     .name = TYPE_VFIO_CCW,
+     .parent = TYPE_S390_CCW,
+     .instance_size = sizeof(VFIOCCWDevice),
++    .instance_init = vfio_ccw_instance_init,
+     .class_init = vfio_ccw_class_init,
  };
  
 -- 
