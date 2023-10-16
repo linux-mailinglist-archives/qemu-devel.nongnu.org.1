@@ -2,60 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBA17CB368
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 21:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87FF7CB369
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 21:41:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsTRG-0008SO-2y; Mon, 16 Oct 2023 15:39:42 -0400
+	id 1qsTSI-0000qt-JK; Mon, 16 Oct 2023 15:40:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qsTRD-0008S0-V4
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 15:39:40 -0400
+ id 1qsTSG-0000ps-5v
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 15:40:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qsTRB-0000sZ-WD
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 15:39:39 -0400
+ id 1qsTSE-0001F1-Mb
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 15:40:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697485176;
+ s=mimecast20190719; t=1697485239;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tQNi8/PVkhcglbIa/KW9Q3o1KGYcHuFRodWRrL+lFeY=;
- b=Mu38BFnIfL8Z+zedpUh0ubmQwkAmsk7iATnU0YKcCJ40mreTW3keHI9onokgPP+M6wc1mi
- 1xwd1OtgBXhUvJAu7ZQFz6PIAoE0QjIWlyAbfvED5URYuIxVmpNu7pZdxp2sRpxVy4CRO0
- SxJr+NaExIEb/lhpF8UwmdL72vV6quY=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sLFYVDAchGKiT54ODHpWEJx0Fx39i332zzbCa69Fsc8=;
+ b=GoW7v5sEA6+sO1L8y3jZmD+XKAr55hGFHPpiYQAplfTuFH9YtQQ4S8rHCBIMw9u/62ykNH
+ HkPFWLlFjKICuxume2ixShwIs42mDe+Y917SHTW5uwIVMyPGuX6S6xFhegEhqepwPplHR6
+ e40imIyWkFNn6alwaLdQjBrG6E7wkn0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-54-RO-YMq6_MK6rSrV1xLSmHA-1; Mon, 16 Oct 2023 15:39:20 -0400
-X-MC-Unique: RO-YMq6_MK6rSrV1xLSmHA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-224-eIYE3NyPMp6NIyKzLtydKg-1; Mon, 16 Oct 2023 15:40:34 -0400
+X-MC-Unique: eIYE3NyPMp6NIyKzLtydKg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DFD2F381258B;
- Mon, 16 Oct 2023 19:39:19 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 132313816C8A;
+ Mon, 16 Oct 2023 19:40:34 +0000 (UTC)
 Received: from localhost (unknown [10.39.195.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6B59D40C6F79;
- Mon, 16 Oct 2023 19:39:19 +0000 (UTC)
-Date: Mon, 16 Oct 2023 15:39:18 -0400
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8C3721C060AE;
+ Mon, 16 Oct 2023 19:40:33 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: lv.mengzhao@zte.com.cn
-Cc: mst@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
- qemu-devel@nongnu.org, hu.jian@zte.com.cn
-Subject: Re: [PATCH] virtio-blk: don't start dataplane during the stop of
- dataplane
-Message-ID: <20231016193918.GA163275@fedora>
-References: <202310111414266586398@zte.com.cn>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: [PULL 0/1] Block patches
+Date: Mon, 16 Oct 2023 15:40:27 -0400
+Message-ID: <20231016194028.163610-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="1NKsJIRyuIDa+bt4"
-Content-Disposition: inline
-In-Reply-To: <202310111414266586398@zte.com.cn>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -64,7 +61,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,65 +77,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit 63011373ad22c794a013da69663c03f1297a5c56:
 
---1NKsJIRyuIDa+bt4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  Merge tag 'pull-riscv-to-apply-20231012-1' of https://github.com/alistair23/qemu into staging (2023-10-12 10:24:44 -0400)
 
-On Wed, Oct 11, 2023 at 02:14:26PM +0800, lv.mengzhao@zte.com.cn wrote:
-> From: hujian <hu.jian@zte.com.cn>
->=20
-> During the stop of dataplane for virtio-blk, virtio_bus_cleanup_host_noti=
-fier() is be
-> called to clean up notifier at the end, if polled ioeventfd, virtio_blk_h=
-andle_output()
-> is used to handle io request. But due to s->dataplane_disabled is false, =
-it will be
-> returned directly, which drops io request.
-> Backtrace:
-> ->virtio_blk_data_plane_stop
->   ->virtio_bus_cleanup_host_notifier
->     ->virtio_queue_host_notifier_read
->       ->virtio_queue_notify_vq
->         ->vq->handle_output
->           ->virtio_blk_handle_output
->             ->if (s->dataplane  && !s->dataplane_stoped)
->               ->if (!s->dataplane_disabled)
->                 ->return *
->             ->virtio_blk_handle_output_do
-> The above problem can occur when using "virsh reset" cmdline to reset gue=
-st, while
-> guest does io.
-> To fix this problem, don't try to start dataplane if s->stopping is true,=
- and io would
-> be handled by virtio_blk_handle_vq().
->=20
-> Signed-off-by: hujian <hu.jian@zte.com.cn>
-> ---
->  hw/block/virtio-blk.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+are available in the Git repository at:
 
-Thanks, applied to my block tree:
-https://gitlab.com/stefanha/qemu/commits/block
+  https://gitlab.com/stefanha/qemu.git tags/block-pull-request
 
-Stefan
+for you to fetch changes up to 071d6d107db2e26dde9bb15457c74956c88ec5b4:
 
---1NKsJIRyuIDa+bt4
-Content-Type: application/pgp-signature; name="signature.asc"
+  virtio-blk: don't start dataplane during the stop of dataplane (2023-10-16 15:39:13 -0400)
 
------BEGIN PGP SIGNATURE-----
+----------------------------------------------------------------
+Pull request
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUtkWYACgkQnKSrs4Gr
-c8jQ2gf9Erm//hSka7v3awToX9qaI+oLcB7T/MJHA+CBdbkvnq/MX30nD0g9+sGY
-9PY/88b1EbEGdNB6A85WZILOooqOaBuAfeKsCcuxN8xuFJpeFYtJKIG2gFeIPqdc
-jsIkNBIAo3htMbWu1VuA1gweyRhmmG64CAByPhgXmgbF1rJTGIcV1szO8byO1loj
-VB7HXGJtdSr6k5rWJ8P7VU13ioQ/hdQVKkIaMNdcfxQqzzcIvW+vul8Q2luRDIfU
-VJ0bbxh9q8PbmCeK/kDvrVcs3XPvVtB338XkFX8khmM32qVas3m1XSKWJnyA4qOH
-PwqDMO7EydZn+g6kdxcIdavZ4jRlPg==
-=jcik
------END PGP SIGNATURE-----
+Contains a virtio-blk IOThread fix.
 
---1NKsJIRyuIDa+bt4--
+----------------------------------------------------------------
+
+hujian (1):
+  virtio-blk: don't start dataplane during the stop of dataplane
+
+ hw/block/virtio-blk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.41.0
 
 
