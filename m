@@ -2,52 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B3B7CB026
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 680367CB027
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 18:49:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsQl1-00065A-5V; Mon, 16 Oct 2023 12:47:55 -0400
+	id 1qsQlY-0006gP-RV; Mon, 16 Oct 2023 12:48:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=JYZe=F6=kaod.org=clg@ozlabs.org>)
- id 1qsQkw-000648-DX; Mon, 16 Oct 2023 12:47:51 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsQlX-0006c0-0Q
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:48:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=JYZe=F6=kaod.org=clg@ozlabs.org>)
- id 1qsQkq-0005tK-Oc; Mon, 16 Oct 2023 12:47:49 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4S8NMD4TzDz4x5K;
- Tue, 17 Oct 2023 03:47:36 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4S8NMB3W7lz4x5J;
- Tue, 17 Oct 2023 03:47:34 +1100 (AEDT)
-Message-ID: <2559a74c-3546-4923-a64c-6aa70fec8032@kaod.org>
-Date: Mon, 16 Oct 2023 18:47:30 +0200
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsQlV-00061r-Af
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 12:48:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697474904;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KZKCcHTisSOd8tU05g/K5DaFqAFFyopsJNZDP8Kxz88=;
+ b=RBY6CffnZFlIrw9k1gntJ+hFPsfMOzrhCy7OgatRYZA1yJyld+IzHYh89NolMArR2GETB6
+ 4YFLe7t1s9DuIWQ2kj/2Jd/ylj5OrKZT9NUVBZuQpxbkSP57bI2Falh9FQdswyMNT+32zZ
+ WOmJPjE5BwaUmj5sh9eto+xq9YkNsTs=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-197-aa7sNMDLN0y6HncTtUd6Ew-1; Mon, 16 Oct 2023 12:48:12 -0400
+X-MC-Unique: aa7sNMDLN0y6HncTtUd6Ew-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-65623d0075aso11198406d6.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 09:48:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697474892; x=1698079692;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KZKCcHTisSOd8tU05g/K5DaFqAFFyopsJNZDP8Kxz88=;
+ b=rI9FDheqjKWMQ/hln31x1jjCwGk3RiDLeVvennX9k2I7KjqvbWzlGMV29PadF1CgzZ
+ 1o/kQBdTtBX+JX7Kji8AWCpo+W2DDcebsWP5Kdvkm2WaMhXvRlUx49sKMVVAog5dPdEM
+ p11k9Cc3sPKFNkIxmzVw3JLn6k3TxpMuvdyrpjpwata5WMSFEfAoVLTz5LsF1AdYiIuP
+ UQJhxKec3pbtwJx4iKb18yzTFf2ase7ZNShSsKWl3FD6hOGWRlF+Uu7bSPzF6DyJI5qu
+ 1IXGzUAyARslp1vVMgD1cjDwbkJUMYYjrUuuxM85bA7BqOwL58WexTpSGDgAgYBkjqvk
+ NMgA==
+X-Gm-Message-State: AOJu0Yzt3r3EFuUw/+1CyeWzfwb6P+Ocp7EnebH6+XLLQJ7Y77HmNDoJ
+ a5BCZC2VcFiqY6Joh+oikzZ3mMyqeXX7LhPHgOnhTLzL5ploI+cgZBTJyWPYS9UWuPkHD2IcGvM
+ cJDw5xEQCCSroObg=
+X-Received: by 2002:a05:6214:c3:b0:66d:264c:450f with SMTP id
+ f3-20020a05621400c300b0066d264c450fmr43433qvs.0.1697474891935; 
+ Mon, 16 Oct 2023 09:48:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8p0I3Nv1lvT5F5Qsho7KfC2lSr4vhvSxiIW8YJHkekX9eXA+MeC9M+Jzndhq8mcbz/Pd9Jw==
+X-Received: by 2002:a05:6214:c3:b0:66d:264c:450f with SMTP id
+ f3-20020a05621400c300b0066d264c450fmr43417qvs.0.1697474891602; 
+ Mon, 16 Oct 2023 09:48:11 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ t5-20020a05620a004500b007678973eaa1sm3135999qkt.127.2023.10.16.09.48.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Oct 2023 09:48:11 -0700 (PDT)
+Date: Mon, 16 Oct 2023 12:48:09 -0400
+From: Peter Xu <peterx@redhat.com>
+To: =?utf-8?Q?=E2=80=9CWilliam?= Roche <william.roche@oracle.com>
+Cc: qemu-devel@nongnu.org, lizhijian@fujitsu.com, pbonzini@redhat.com,
+ quintela@redhat.com, leobras@redhat.com, joao.m.martins@oracle.com,
+ lidongchen@tencent.com
+Subject: Re: [PATCH v4 2/2] migration: prevent migration when a poisoned page
+ is unknown from the VM
+Message-ID: <ZS1pSeL3hj4/73lk@x1n>
+References: <20230920235301.1622672-1-william.roche@oracle.com>
+ <20231013150839.867164-1-william.roche@oracle.com>
+ <20231013150839.867164-3-william.roche@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] hw/ppc: Add pnv pervasive common chiplet units
-Content-Language: en-US
-To: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- calebs@us.ibm.com, saif.abrar@linux.vnet.ibm.com
-References: <20231012160610.2428-1-chalapathi.v@linux.ibm.com>
- <20231012160610.2428-2-chalapathi.v@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231012160610.2428-2-chalapathi.v@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=JYZe=F6=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231013150839.867164-3-william.roche@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,260 +102,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Chalapathi,
+On Fri, Oct 13, 2023 at 03:08:39PM +0000, “William Roche wrote:
+> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+> index 5e95c496bb..e8db6380c1 100644
+> --- a/target/arm/kvm64.c
+> +++ b/target/arm/kvm64.c
+> @@ -1158,7 +1158,6 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+>          ram_addr = qemu_ram_addr_from_host(addr);
+>          if (ram_addr != RAM_ADDR_INVALID &&
+>              kvm_physical_memory_addr_from_host(c->kvm_state, addr, &paddr)) {
+> -            kvm_hwpoison_page_add(ram_addr);
+>              /*
+>               * If this is a BUS_MCEERR_AR, we know we have been called
+>               * synchronously from the vCPU thread, so we can easily
+> @@ -1169,7 +1168,12 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+>               * called synchronously from the vCPU thread, or a bit
+>               * later from the main thread, so doing the injection of
+>               * the error would be more complicated.
+> +             * In this case, BUS_MCEERR_AO errors are unknown from the
+> +             * guest, and we will prevent migration as long as this
+> +             * poisoned page hasn't generated a BUS_MCEERR_AR error
+> +             * that the guest takes into account.
+>               */
+> +            kvm_hwpoison_page_add(ram_addr, (code == BUS_MCEERR_AR));
 
-On 10/12/23 18:06, Chalapathi V wrote:
-> This part of the patchset creates a common pervasive chiplet model where it
-> houses the common units of a chiplets.
-> 
-> The chiplet control unit is common across chiplets and this commit implements
-> the chiplet control registers.
-> 
-> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-If I am correct and remember well, this models the (HW) logic
-common to all chiplets part of a POWER process, connecting them to
-the Pervasive bus (PCB). This "subunit" acts as a communication
-engine and to operate, has a set of registers mapped in the SCOM
-space of the chiplet.
+I'm curious why ARM doesn't forward this event to guest even if it's AO.
+X86 does it, and makes more sense to me.  Not familiar with arm, do you
+know the reason?
 
-Why don't you model this unit as such ? Add a new QOM model,
-that's more or less PnvChipletControlRegs with a memory region
-and implement the access to the registers with the routines
-pnv_chiplet_ctrl_write/read.
+I think this patch needs review from ARM and/or KVM side.  Do you want to
+have the 1st patch merged, or rather wait for the whole set?
 
-The object should be initialized/realized under the chiplet and
-its sub SCOM region mapped in the chiplet region. This would
-be cleaner.
+Another thing to mention: feel free to look at a recent addition of ioctl
+from userfault, where it can inject poisoned ptes:
 
-If you need a backpointer to the chiplet, you would then need to
-introduce a QOIM link to the parent object with a property.
+https://lore.kernel.org/r/20230707215540.2324998-1-axelrasmussen@google.com
 
-Thanks,
+I'm wondering if that'll be helpful to qemu too, where we can migrate
+hwpoison_page_list and enforce the poisoning on dest.  Then even for AO
+when accessed by guest it'll generated another MCE on dest.
 
-C.
+>              if (code == BUS_MCEERR_AR) {
+>                  kvm_cpu_synchronize_state(c);
+>                  if (!acpi_ghes_record_errors(ACPI_HEST_SRC_ID_SEA, paddr)) {
 
-
-> ---
->   hw/ppc/meson.build             |   1 +
->   hw/ppc/pnv_pervasive.c         | 151 +++++++++++++++++++++++++++++++++
->   include/hw/ppc/pnv_pervasive.h |  39 +++++++++
->   3 files changed, 191 insertions(+)
->   create mode 100644 hw/ppc/pnv_pervasive.c
->   create mode 100644 include/hw/ppc/pnv_pervasive.h
-> 
-> diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-> index 7c2c52434a..c80d2f6cfb 100644
-> --- a/hw/ppc/meson.build
-> +++ b/hw/ppc/meson.build
-> @@ -50,6 +50,7 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
->     'pnv_bmc.c',
->     'pnv_homer.c',
->     'pnv_pnor.c',
-> +  'pnv_pervasive.c',
->   ))
->   # PowerPC 4xx boards
->   ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
-> diff --git a/hw/ppc/pnv_pervasive.c b/hw/ppc/pnv_pervasive.c
-> new file mode 100644
-> index 0000000000..ef337625eb
-> --- /dev/null
-> +++ b/hw/ppc/pnv_pervasive.c
-> @@ -0,0 +1,151 @@
-> +/*
-> + * QEMU PowerPC pervasive common chiplet model
-> + *
-> + * Copyright (c) 2023, IBM Corporation.
-> + *
-> + * This library is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU Lesser General Public
-> + * License as published by the Free Software Foundation; either
-> + * version 2.1 of the License, or (at your option) any later version.
-> + *
-> + * This library is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-> + * Lesser General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU Lesser General Public
-> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/log.h"
-> +#include "hw/qdev-properties.h"
-> +#include "hw/ppc/pnv.h"
-> +#include "hw/ppc/pnv_xscom.h"
-> +#include "hw/ppc/pnv_pervasive.h"
-> +#include "hw/ppc/fdt.h"
-> +#include <libfdt.h>
-> +
-> +#define CPLT_CONF0               0x08
-> +#define CPLT_CONF0_OR            0x18
-> +#define CPLT_CONF0_CLEAR         0x28
-> +#define CPLT_CONF1               0x09
-> +#define CPLT_CONF1_OR            0x19
-> +#define CPLT_CONF1_CLEAR         0x29
-> +#define CPLT_STAT0               0x100
-> +#define CPLT_MASK0               0x101
-> +#define CPLT_PROTECT_MODE        0x3FE
-> +#define CPLT_ATOMIC_CLOCK        0x3FF
-> +
-> +uint64_t pnv_chiplet_ctrl_read(PnvChipletControlRegs *ctrl_regs, hwaddr reg,
-> +              unsigned size)
-> +{
-> +    uint64_t val = 0xffffffffffffffffull;
-> +
-> +    /* CPLT_CTRL0 to CPLT_CTRL5 */
-> +    for (int i = 0; i <= 5; i++) {
-> +        if (reg == i) {
-> +            val = ctrl_regs->cplt_ctrl[i];
-> +            return val;
-> +        } else if ((reg == (i + 0x10)) || (reg == (i + 0x20))) {
-> +            qemu_log_mask(LOG_GUEST_ERROR, "%s: Write only register, ignoring "
-> +                                           "xscom read at 0x%016lx\n",
-> +                                          __func__, (unsigned long)reg);
-> +            return val;
-> +        }
-> +    }
-> +
-> +    switch (reg) {
-> +    case CPLT_CONF0:
-> +        val = ctrl_regs->cplt_cfg0;
-> +        break;
-> +    case CPLT_CONF0_OR:
-> +    case CPLT_CONF0_CLEAR:
-> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Write only register, ignoring "
-> +                                   "xscom read at 0x%016lx\n",
-> +                                   __func__, (unsigned long)reg);
-> +        break;
-> +    case CPLT_CONF1:
-> +        val = ctrl_regs->cplt_cfg1;
-> +        break;
-> +    case CPLT_CONF1_OR:
-> +    case CPLT_CONF1_CLEAR:
-> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Write only register, ignoring "
-> +                                   "xscom read at 0x%016lx\n",
-> +                                   __func__, (unsigned long)reg);
-> +        break;
-> +    case CPLT_STAT0:
-> +        val = ctrl_regs->cplt_stat0;
-> +        break;
-> +    case CPLT_MASK0:
-> +        val = ctrl_regs->cplt_mask0;
-> +        break;
-> +    case CPLT_PROTECT_MODE:
-> +        val = ctrl_regs->ctrl_protect_mode;
-> +        break;
-> +    case CPLT_ATOMIC_CLOCK:
-> +        val = ctrl_regs->ctrl_atomic_lock;
-> +        break;
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP, "%s: Chiplet_control_regs: Invalid xscom "
-> +                 "read at 0x%016lx\n", __func__, (unsigned long)reg);
-> +    }
-> +    return val;
-> +}
-> +
-> +void pnv_chiplet_ctrl_write(PnvChipletControlRegs *ctrl_regs, hwaddr reg,
-> +                                 uint64_t val, unsigned size)
-> +{
-> +    /* CPLT_CTRL0 to CPLT_CTRL5 */
-> +    for (int i = 0; i <= 5; i++) {
-> +        if (reg == i) {
-> +            ctrl_regs->cplt_ctrl[i] = val;
-> +            return;
-> +        } else if (reg == (i + 0x10)) {
-> +            ctrl_regs->cplt_ctrl[i] |= val;
-> +            return;
-> +        } else if (reg == (i + 0x20)) {
-> +            ctrl_regs->cplt_ctrl[i] &= ~val;
-> +            return;
-> +        }
-> +    }
-> +
-> +    switch (reg) {
-> +    case CPLT_CONF0:
-> +        ctrl_regs->cplt_cfg0 = val;
-> +        break;
-> +    case CPLT_CONF0_OR:
-> +        ctrl_regs->cplt_cfg0 |= val;
-> +        break;
-> +    case CPLT_CONF0_CLEAR:
-> +        ctrl_regs->cplt_cfg0 &= ~val;
-> +        break;
-> +    case CPLT_CONF1:
-> +        ctrl_regs->cplt_cfg1 = val;
-> +        break;
-> +    case CPLT_CONF1_OR:
-> +        ctrl_regs->cplt_cfg1 |= val;
-> +        break;
-> +    case CPLT_CONF1_CLEAR:
-> +        ctrl_regs->cplt_cfg1 &= ~val;
-> +        break;
-> +    case CPLT_STAT0:
-> +        ctrl_regs->cplt_stat0 = val;
-> +        break;
-> +    case CPLT_MASK0:
-> +        ctrl_regs->cplt_mask0 = val;
-> +        break;
-> +    case CPLT_PROTECT_MODE:
-> +        ctrl_regs->ctrl_protect_mode = val;
-> +        break;
-> +    case CPLT_ATOMIC_CLOCK:
-> +        ctrl_regs->ctrl_atomic_lock = val;
-> +        break;
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP, "%s: Chiplet_control_regs: Invalid xscom "
-> +                       "write at 0x%016lx\n", __func__, (unsigned long)reg);
-> +    }
-> +    return;
-> +}
-> diff --git a/include/hw/ppc/pnv_pervasive.h b/include/hw/ppc/pnv_pervasive.h
-> new file mode 100644
-> index 0000000000..53c40e473c
-> --- /dev/null
-> +++ b/include/hw/ppc/pnv_pervasive.h
-> @@ -0,0 +1,39 @@
-> +/*
-> + * QEMU PowerPC pervasive common chiplet model
-> + *
-> + * Copyright (c) 2023, IBM Corporation.
-> + *
-> + * This library is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU Lesser General Public
-> + * License as published by the Free Software Foundation; either
-> + * version 2.1 of the License, or (at your option) any later version.
-> + *
-> + * This library is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-> + * Lesser General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU Lesser General Public
-> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#ifndef PPC_PNV_PERVASIVE_H
-> +#define PPC_PNV_PERVASIVE_H
-> +
-> +typedef struct PnvChipletControlRegs {
-> +    uint64_t cplt_ctrl[6];
-> +    uint64_t cplt_cfg0;
-> +    uint64_t cplt_cfg1;
-> +    uint64_t cplt_stat0;
-> +    uint64_t cplt_mask0;
-> +    uint64_t ctrl_protect_mode;
-> +    uint64_t ctrl_atomic_lock;
-> +} PnvChipletControlRegs;
-> +
-> +uint64_t pnv_chiplet_ctrl_read(PnvChipletControlRegs *ctrl_regs, hwaddr reg,
-> +                unsigned size);
-> +void pnv_chiplet_ctrl_write(PnvChipletControlRegs *ctrl_regs, hwaddr reg,
-> +                uint64_t val, unsigned size);
-> +#endif /*PPC_PNV_PERVASIVE_H */
+-- 
+Peter Xu
 
 
