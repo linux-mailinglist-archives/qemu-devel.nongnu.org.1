@@ -2,87 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07827CA6EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 13:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5637E7CA734
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 13:55:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsM0e-0007hS-TH; Mon, 16 Oct 2023 07:43:45 -0400
+	id 1qsMB9-0002VG-CB; Mon, 16 Oct 2023 07:54:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qsM0b-0007fg-Tg
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:43:41 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qsMB5-0002V5-AX
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:54:31 -0400
+Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qsM0a-0002oX-Ab
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:43:41 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40776b1ff73so21788415e9.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 04:43:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qsMB3-00052n-0r
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 07:54:30 -0400
+Received: by mail-qt1-x836.google.com with SMTP id
+ d75a77b69052e-419cc494824so31368361cf.2
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 04:54:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697456618; x=1698061418; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1697457268; x=1698062068; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A/1aGyquBYQeVGhqTSWHSHjwgGjmRrHlNcj7N6c3wZE=;
- b=LC1uhSxpJ+HER3+83j22DWcdluwCRoifLfxXCm9GRkXO7EtcD8w0BSHYCaLXLE0rZW
- acIhIIx21XjU6drYXfn+WSZ0pMERU2b7gSr3Ge2T/joWfTEy1pYWxKCDmGCc4QBpwWsG
- H+KoafoFCsJP957YFTzfsNeVNSnId80p+yBZB5XplE7kjA84OtjrzyiQDNIYHYN7ZPn1
- Zo0Ul0nOQUzSn3XXoWyDJ5CWPTPXgD/hnmaZFRFwLUzi5Ev9SZlUIfo5iI5N1YrAnE8c
- GDAMBRS+Y6/NQeFM6POsXFaEL2eJxt///obqZkRfjxS9C3vuWQKS9GztOQecLRD5k6DO
- xXxA==
+ bh=TkGcnTgRWBr6z7Eue5ruetKht8AUadKZ6hrEzetJzsg=;
+ b=MXrAaPBVrCnfrMGzE5Payzb2FJ0lRDOBWMs8ucAEkPfM3bZ4l249vA6Y9ucv+SMBsY
+ iebreJLG5fpMYoYS6TNTXr0I5lkBGmJY/r4f3xSVvZ9TcM8L1lVV2DVuWe9MABXLOhUt
+ cuxyC0TkBNTnzR9UoJyHjQ14bhGcWFW9jKcFBJklp/uCzLRSfbjnOiUkw1PbAC7Nnt5I
+ oYnqyfi1ohIX2+GcONBTNViSngCTPxuDY4jb02XzL5YfBQIfSWaQ2sgnTlubSH+xk2dP
+ u9lJ8CzCXmmqRD7t9uOMB7CbnrdQqYv2XuI3/fQpPVgd/uweZuheolEqvx4E060I/Plk
+ Jifw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697456618; x=1698061418;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=A/1aGyquBYQeVGhqTSWHSHjwgGjmRrHlNcj7N6c3wZE=;
- b=NhvxFMNiNZ+nhw0xY4dMf8MIjP7aDq2Q5NHrlqfNaXJ1WFyMN2OaMrch3gCpOnudiN
- ATmgMt6eIMWU2m8v8UJtz9vvIE/hxKGuwtGbNsE6H/ucdXav+nQhlkjxaqs65FOvAiqC
- FqZ9q9TYU5INuV3gouWZeMkDvDyGZT3ut3YOkA8Zq68Qscvr/UBwl5A5UQ8UxnW+ubZr
- LyEE54JpWAjfJr/MvFBdS7IbS7nlU5etT1U14YQftMCJsASk/PuujytoS5zwi7C8Tuyw
- 0xmePs6Ec9ip+hG3flX/ae+qPWX9xiQiFW+o8iOCop3SepFvAL2IvSi96D/g+bDCarWA
- lRiQ==
-X-Gm-Message-State: AOJu0YyDd8kjhW8rAjd+Pwjq2Uy5HseVFh0TZxitLlAs1gdQ1rGe9z7T
- 90g6UYgMBun6Q0Ndc6bRjFZDMA==
-X-Google-Smtp-Source: AGHT+IF+xQUMwquNqtNJ93phgN67nuX0kODAHihf4K9inAK5POYPXF7YE/oqGlkbF9fxqQqqygLKSw==
-X-Received: by 2002:a1c:721a:0:b0:405:1baf:cedf with SMTP id
- n26-20020a1c721a000000b004051bafcedfmr29554424wmc.24.1697456618297; 
- Mon, 16 Oct 2023 04:43:38 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- m22-20020a05600c4f5600b0040303a9965asm7061561wmq.40.2023.10.16.04.43.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 04:43:38 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 31FA11FFBB;
- Mon, 16 Oct 2023 12:43:37 +0100 (BST)
-References: <20231016083201.23736-1-hreitz@redhat.com>
- <2m60m.9e9wlnnm01vd@linaro.org>
- <20231016103254.7xrnptmwrjnsr3uc@vireshk-i7>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>, "Michael S .
- Tsirkin" <mst@redhat.com>, Albert Esteve <aesteve@redhat.com>, Stefan
- Hajnoczi <stefanha@redhat.com>, "Garhwal, Vikram" <vikram.garhwal@amd.com>
-Subject: Re: [PATCH] vhost-user: Fix protocol feature bit conflict
-Date: Mon, 16 Oct 2023 12:40:36 +0100
-In-reply-to: <20231016103254.7xrnptmwrjnsr3uc@vireshk-i7>
-Message-ID: <87lec2dc7r.fsf@linaro.org>
+ d=1e100.net; s=20230601; t=1697457268; x=1698062068;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TkGcnTgRWBr6z7Eue5ruetKht8AUadKZ6hrEzetJzsg=;
+ b=vzth7Oaz744O1Ipdjb+hcSJEktXER9DOL1NMeYN4LkTn2WmgngAfvNsFDYPgPaP1h+
+ QTvOjYKmjms7tNXlWKc/ELthIEJb4tPqRKJEvjOYm459D3RwxWLRtQfjHfLNmQswXydV
+ eUNhdi+CVLDOb4YuqsPFLfbH2JENvYarm34tyFc967qrJGLr4NNTwHcg7Dh0xhlcDYn/
+ b1ueBC0qK2yxm3HW6eaJyNPx+ilngwruuVlgUDjOd/uGfwC1gKMaDmd14SvPj1XAxjTC
+ prgOmvpoyW2GPxbz52rpPKwWdiRiTE53sazVwgKSyIAYPl3WcrvECuH2ql/0vL9QpZAG
+ oyKg==
+X-Gm-Message-State: AOJu0YzbDLN59H5qCAmQ3aN23Bd8L/CqgCue60U6FZQ2HZNcwTKmL/B4
+ L6Li54dPjJEq+TJiUsz7OIez4/cGK/vU9qcyXdMhl5PAB3Cg7g==
+X-Google-Smtp-Source: AGHT+IHW65hyyy3z5K5RocVFBc+zIR+VSNXuLnATVchsBSD1yHg3J/0IalS4uQ13QqyqawXDyY0yIsgQW+brAK+ZT0E=
+X-Received: by 2002:ac8:5813:0:b0:418:1e88:83ca with SMTP id
+ g19-20020ac85813000000b004181e8883camr45046993qtg.40.1697457267790; Mon, 16
+ Oct 2023 04:54:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20231013151758.1472603-1-quic_acaggian@quicinc.com>
+In-Reply-To: <20231013151758.1472603-1-quic_acaggian@quicinc.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 16 Oct 2023 15:54:16 +0400
+Message-ID: <CAJ+F1CL0781JA30C4w_o2jWB9K=WampzGUeqLqj3q+RnTSw8qg@mail.gmail.com>
+Subject: Re: [PATCH] ui/gtk-egl: Check EGLSurface before doing scanout
+To: Antonio Caggiano <quic_acaggian@quicinc.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x836.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,44 +87,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
 
-Viresh Kumar <viresh.kumar@linaro.org> writes:
-
-> On 16-10-23, 11:45, Manos Pitsidianakis wrote:
->> On Mon, 16 Oct 2023 11:32, Hanna Czenczek <hreitz@redhat.com> wrote:
->> > diff --git a/include/hw/virtio/vhost-user.h
->> > b/include/hw/virtio/vhost-user.h
->> > index 9f9ddf878d..1d4121431b 100644
->> > --- a/include/hw/virtio/vhost-user.h
->> > +++ b/include/hw/virtio/vhost-user.h
->> > @@ -29,7 +29,8 @@ enum VhostUserProtocolFeature {
->> >     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS =3D 14,
->> >     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS =3D 15,
->> >     VHOST_USER_PROTOCOL_F_STATUS =3D 16,
->> > -    VHOST_USER_PROTOCOL_F_SHARED_OBJECT =3D 17,
->> > +    /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
->> > +    VHOST_USER_PROTOCOL_F_SHARED_OBJECT =3D 18,
->> >     VHOST_USER_PROTOCOL_F_MAX
->> > };
->>=20
->> May I ask, why not define VHOST_USER_PROTOCOL_F_XEN_MMAP as well instead=
- of
->> a comment mention?
+On Fri, Oct 13, 2023 at 7:18=E2=80=AFPM Antonio Caggiano
+<quic_acaggian@quicinc.com> wrote:
 >
-> Perhaps because we will never use it from Qemu code ?
-
-Vikram's work on enabling xenpvh support will mean enabling grant
-support and while I suspect most VirtIO backends will be within QEMU
-itself if it ever want to off-load something to a vhost-user backend it
-will need to ensure this flag is set.
-
+> The first time gd_egl_scanout_texture() is called, there's a possibility
+> that the GTK drawing area might not be realized yet, in which case its
+> associated GdkWindow is NULL. This means gd_egl_init() was also skipped
+> and the EGLContext and EGLSurface stored in the VirtualGfxConsole are
+> not valid yet.
 >
-> Anyway:
+> Continuing with the scanout in this conditions would result in hitting
+> an assert in libepoxy: "Couldn't find current GLX or EGL context".
 >
-> Reviewed-by: Viresh Kumar <viresh.kumar@linaro.org>
+> A possible workaround is to just ignore the scanout request, giving the
+> the GTK drawing area some time to finish its realization. At that point,
+> the gd_egl_init() will succeed and the EGLContext and EGLSurface stored
+> in the VirtualGfxConsole will be valid.
+>
+> Signed-off-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+> ---
+>  ui/gtk-egl.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
+>
+> diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+> index a1060fd80f..2eefcd2cf4 100644
+> --- a/ui/gtk-egl.c
+> +++ b/ui/gtk-egl.c
+> @@ -243,12 +243,19 @@ void gd_egl_scanout_texture(DisplayChangeListener *=
+dcl,
+>      vc->gfx.h =3D h;
+>      vc->gfx.y0_top =3D backing_y_0_top;
+>
+> -    eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+> -                   vc->gfx.esurface, vc->gfx.ectx);
+> +    if (!vc->gfx.esurface) {
+> +        gd_egl_init(vc);
+> +        if (!vc->gfx.esurface) {
+> +            return;
+> +        }
+>
+> -    gtk_egl_set_scanout_mode(vc, true);
+> -    egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_heigh=
+t,
+> -                         backing_id, false);
+> +        eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+> +                       vc->gfx.esurface, vc->gfx.ectx);
+> +
 
+trailing whitespace
+
+> +        gtk_egl_set_scanout_mode(vc, true);
+> +        egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_h=
+eight,
+> +                             backing_id, false);
+> +    }
+>  }
+>
+>  void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+
+otherwise, lgtm
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Marc-Andr=C3=A9 Lureau
 
