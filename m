@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708767CA24D
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF497CA249
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 10:48:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsJGG-0007Xr-Vr; Mon, 16 Oct 2023 04:47:42 -0400
+	id 1qsJGG-0007Xo-VV; Mon, 16 Oct 2023 04:47:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJG5-0007WY-0c
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:47:29 -0400
+ id 1qsJG7-0007Wo-PM
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:47:32 -0400
 Received: from mgamail.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qsJG1-00017B-1X
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:47:28 -0400
+ id 1qsJG5-00018h-5X
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 04:47:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697446045; x=1728982045;
+ t=1697446049; x=1728982049;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WT9qSQz4TtbYRvjgBGk6vxxeZVyK82p2m8Y0jyc78SE=;
- b=bRXLWKtFb+pOyUzURjpNgGFUCUSM8jiD86k3Q1nTPpX2bvlRKtc6ZWfJ
- Dnj32fY/tkF1KhbIl+4vccJekGtCFllMjED1gbUhfKHMRH8ZSB+9xtlPu
- eQSIxdm9BbAWxCnUSKWfm0cSu4DIo0t2y/oF0oLKAsVrhQqW3C7zDC3cs
- T7KBxvnb02bEoz62o6aRR4AT9YYav6F1VmY4mH5t1yPEibtpuobwm66ej
- bmNsFI+MAI3C2Oc8G5WxtoZTQ0IzMo9Uz3Ljxo7CwiKXzeY9aHDRIA56F
- 7mychE+UsjIEBmDJ/+w3CdvQ7sbpFg8Zda3+ybQ3eI1TTC8Fp7STwsvLE Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737519"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737519"
+ bh=dRKZOMcB1np/FNbBw+R0wRE7DGXaXjC9Dz9CMIH3KBQ=;
+ b=cbr0mnwSZp5VfnJEtYo5oLv1e6s5fVfpgWHCaMXd6eaIahiA+QPramwj
+ qg8TyugKJeoNBoJZ3BmWDfBhT4TKnawro5qyFe0XzGjhe6+2bt9u5EXNY
+ 7KG4Ul7boot7g/tpfhqsTsQdBcgckYAkPhKUDwEcZvicPGkPw74HNZzKX
+ nrkGBDTJCp0sh5FyOHoD9cFeJqtVt1wnsoOVmSyYvr3uv4PEsKMJcYevc
+ TTmGuN6Xy+MpBFOG3mHSGuiSyj6KgvqfoRGFeLrlwAzU17fEY9UWEg0rR
+ tHenr/VTJUGteCJ7/k09XaiYr6JTZIUiZdGl4l0XIHO9j17KzcDP5ZyWH w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="365737528"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="365737528"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:47:24 -0700
+ 16 Oct 2023 01:47:28 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749222692"
-X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749222692"
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749222695"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; d="scan'208";a="749222695"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2023 01:47:20 -0700
+ 16 Oct 2023 01:47:24 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
@@ -49,10 +49,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
  Yi Sun <yi.y.sun@linux.intel.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 02/27] vfio: Introduce base object for VFIOContainer and
- targetted interface
-Date: Mon, 16 Oct 2023 16:31:58 +0800
-Message-Id: <20231016083223.1519410-3-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 03/27] VFIO/container: Introduce dummy VFIOContainerClass
+ implementation
+Date: Mon, 16 Oct 2023 16:31:59 +0800
+Message-Id: <20231016083223.1519410-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
 References: <20231016083223.1519410-1-zhenzhong.duan@intel.com>
@@ -84,10 +84,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-Introduce a dumb VFIOContainer base object and its targetted interface.
-This is willingly not a QOM object because we don't want it to be
-visible from the user interface.  The VFIOContainer will be smoothly
-populated in subsequent patches as well as interfaces.
+Let's instantiate a dummy VFIOContainerClass implementation whose
+functions are not yet implemented.
 
 No fucntional change intended.
 
@@ -96,50 +94,31 @@ Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-common.h         |  8 +--
- include/hw/vfio/vfio-container-base.h | 82 +++++++++++++++++++++++++++
- 2 files changed, 84 insertions(+), 6 deletions(-)
- create mode 100644 include/hw/vfio/vfio-container-base.h
+ include/hw/vfio/vfio-container-base.h |  1 +
+ hw/vfio/container-base.c              | 40 +++++++++++++++++++++++++++
+ hw/vfio/container.c                   | 22 +++++++++++++++
+ hw/vfio/meson.build                   |  1 +
+ 4 files changed, 64 insertions(+)
+ create mode 100644 hw/vfio/container-base.c
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 34648e518e..9651cf921c 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -30,6 +30,7 @@
- #include <linux/vfio.h>
- #endif
- #include "sysemu/sysemu.h"
-+#include "hw/vfio/vfio-container-base.h"
- 
- #define VFIO_MSG_PREFIX "vfio %s: "
- 
-@@ -81,6 +82,7 @@ typedef struct VFIOAddressSpace {
- struct VFIOGroup;
- 
- typedef struct VFIOLegacyContainer {
-+    VFIOContainer bcontainer;
-     VFIOAddressSpace *space;
-     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
-     MemoryListener listener;
-@@ -200,12 +202,6 @@ typedef struct VFIODisplay {
-     } dmabuf;
- } VFIODisplay;
- 
--typedef struct {
--    unsigned long *bitmap;
--    hwaddr size;
--    hwaddr pages;
--} VFIOBitmap;
--
- void vfio_host_win_add(VFIOLegacyContainer *container,
-                        hwaddr min_iova, hwaddr max_iova,
-                        uint64_t iova_pgsizes);
 diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-new file mode 100644
-index 0000000000..afc8543d22
---- /dev/null
+index afc8543d22..226e960fb5 100644
+--- a/include/hw/vfio/vfio-container-base.h
 +++ b/include/hw/vfio/vfio-container-base.h
-@@ -0,0 +1,82 @@
+@@ -46,6 +46,7 @@ struct VFIOContainer {
+     VFIOIOMMUBackendOpsClass *ops;
+ };
+ 
++#define TYPE_VFIO_IOMMU_BACKEND_LEGACY_OPS "vfio-iommu-backend-legacy-ops"
+ #define TYPE_VFIO_IOMMU_BACKEND_OPS "vfio-iommu-backend-ops"
+ 
+ DECLARE_CLASS_CHECKERS(VFIOIOMMUBackendOpsClass,
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+new file mode 100644
+index 0000000000..0c21e77039
+--- /dev/null
++++ b/hw/vfio/container-base.c
+@@ -0,0 +1,40 @@
 +/*
 + * VFIO BASE CONTAINER
 + *
@@ -163,65 +142,79 @@ index 0000000000..afc8543d22
 + * with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef HW_VFIO_VFIO_BASE_CONTAINER_H
-+#define HW_VFIO_VFIO_BASE_CONTAINER_H
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qemu/error-report.h"
++#include "hw/vfio/vfio-container-base.h"
 +
-+#include "exec/memory.h"
-+#ifndef CONFIG_USER_ONLY
-+#include "exec/hwaddr.h"
-+#endif
-+
-+typedef struct VFIOContainer VFIOContainer;
-+typedef struct VFIODevice VFIODevice;
-+typedef struct VFIOIOMMUBackendOpsClass VFIOIOMMUBackendOpsClass;
-+
-+typedef struct {
-+    unsigned long *bitmap;
-+    hwaddr size;
-+    hwaddr pages;
-+} VFIOBitmap;
-+
-+/*
-+ * This is the base object for vfio container backends
-+ */
-+struct VFIOContainer {
-+    VFIOIOMMUBackendOpsClass *ops;
++static const TypeInfo vfio_iommu_backend_ops_type_info = {
++    .name = TYPE_VFIO_IOMMU_BACKEND_OPS,
++    .parent = TYPE_OBJECT,
++    .abstract = true,
++    .class_size = sizeof(VFIOIOMMUBackendOpsClass),
 +};
 +
-+#define TYPE_VFIO_IOMMU_BACKEND_OPS "vfio-iommu-backend-ops"
++static void vfio_iommu_backend_ops_register_types(void)
++{
++    type_register_static(&vfio_iommu_backend_ops_type_info);
++}
++type_init(vfio_iommu_backend_ops_register_types);
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 8fde302ae9..acc4a6bf8a 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -539,6 +539,9 @@ static void vfio_get_iommu_info_migration(VFIOLegacyContainer *container,
+ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+                                   Error **errp)
+ {
++    VFIOIOMMUBackendOpsClass *ops = VFIO_IOMMU_BACKEND_OPS_CLASS(
++        object_class_by_name(TYPE_VFIO_IOMMU_BACKEND_LEGACY_OPS));
++    VFIOContainer *bcontainer;
+     VFIOLegacyContainer *container;
+     int ret, fd;
+     VFIOAddressSpace *space;
+@@ -620,6 +623,8 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     QLIST_INIT(&container->giommu_list);
+     QLIST_INIT(&container->hostwin_list);
+     QLIST_INIT(&container->vrdl_list);
++    bcontainer = &container->bcontainer;
++    bcontainer->ops = ops;
+ 
+     ret = vfio_init_container(container, group->fd, errp);
+     if (ret) {
+@@ -1160,3 +1165,20 @@ void vfio_detach_device(VFIODevice *vbasedev)
+     vfio_put_base_device(vbasedev);
+     vfio_put_group(group);
+ }
 +
-+DECLARE_CLASS_CHECKERS(VFIOIOMMUBackendOpsClass,
-+                       VFIO_IOMMU_BACKEND_OPS, TYPE_VFIO_IOMMU_BACKEND_OPS)
++static void vfio_iommu_backend_legacy_ops_class_init(ObjectClass *oc,
++                                                     void *data) {
++}
 +
-+struct VFIOIOMMUBackendOpsClass {
-+    /*< private >*/
-+    ObjectClass parent_class;
++static const TypeInfo vfio_iommu_backend_legacy_ops_type = {
++    .name = TYPE_VFIO_IOMMU_BACKEND_LEGACY_OPS,
 +
-+    /*< public >*/
-+    /* required */
-+    int (*dma_map)(VFIOContainer *bcontainer,
-+                   hwaddr iova, ram_addr_t size,
-+                   void *vaddr, bool readonly);
-+    int (*dma_unmap)(VFIOContainer *bcontainer,
-+                     hwaddr iova, ram_addr_t size,
-+                     IOMMUTLBEntry *iotlb);
-+    int (*attach_device)(char *name, VFIODevice *vbasedev,
-+                         AddressSpace *as, Error **errp);
-+    void (*detach_device)(VFIODevice *vbasedev);
-+    /* migration feature */
-+    int (*set_dirty_page_tracking)(VFIOContainer *bcontainer, bool start);
-+    int (*query_dirty_bitmap)(VFIOContainer *bcontainer, VFIOBitmap *vbmap,
-+                              hwaddr iova, hwaddr size);
-+
-+    /* SPAPR specific */
-+    int (*add_window)(VFIOContainer *bcontainer,
-+                      MemoryRegionSection *section,
-+                      Error **errp);
-+    void (*del_window)(VFIOContainer *bcontainer,
-+                       MemoryRegionSection *section);
++    .parent = TYPE_VFIO_IOMMU_BACKEND_OPS,
++    .class_init = vfio_iommu_backend_legacy_ops_class_init,
++    .abstract = true,
 +};
-+
-+#endif /* HW_VFIO_VFIO_BASE_CONTAINER_H */
++static void vfio_iommu_backend_legacy_ops_register_types(void)
++{
++    type_register_static(&vfio_iommu_backend_legacy_ops_type);
++}
++type_init(vfio_iommu_backend_legacy_ops_register_types);
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index 2a6912c940..eb6ce6229d 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -2,6 +2,7 @@ vfio_ss = ss.source_set()
+ vfio_ss.add(files(
+   'helpers.c',
+   'common.c',
++  'container-base.c',
+   'container.c',
+   'spapr.c',
+   'migration.c',
 -- 
 2.34.1
 
