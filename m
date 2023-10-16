@@ -2,101 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0737CA961
-	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5C57CA999
+	for <lists+qemu-devel@lfdr.de>; Mon, 16 Oct 2023 15:35:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsNe8-0000lr-NR; Mon, 16 Oct 2023 09:28:36 -0400
+	id 1qsNj1-0002bT-Ux; Mon, 16 Oct 2023 09:33:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsNe1-0000lZ-CL
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:28:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsNdz-0008Vs-Gq
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:28:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697462906;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=sdHYp+U9X7nad76cR5E8bjjcBBmZxJ3ieCJMtRCh50M=;
- b=OTrsEmYWxNZm3L3R4S+oVxIMQYHquu6dMUlEuTU0F6N4tJnre96LsepypriKDYQ/FX5GHK
- mZzGKDNOjW7b3hrgnTszVuVwDx+3nRC/fW2gYBKy5O8CuDkBn4Q4K6dmxrL9qOa4GDYsLU
- iUeZvQhJIhIx3awpzyPUAMVrENlxI5I=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-zPd9C9JSPcqjxaSqm0GSbA-1; Mon, 16 Oct 2023 09:28:09 -0400
-X-MC-Unique: zPd9C9JSPcqjxaSqm0GSbA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32d931872cbso2448081f8f.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 06:28:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNiz-0002bI-Hf
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:33:37 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsNiw-0001Jy-Al
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 09:33:35 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-9b95622c620so798056566b.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 06:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697463211; x=1698068011; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6RgdrQXuBUVPl+vq06JcVuhwAdo9RCxusolf7rvJiRw=;
+ b=nbF0o3EChwsDTbQRAirimo7eU3cNzyKTP1WlXUdLmAe/4rtT1wP9zq1SPhd60/wD3h
+ 5GP+7TNIlOS02xNIpuZA55qQEIQhMDxmtI38p9ILjit5h+O7UuT6GXA+wI5RhxiLjNTU
+ wcYk3l9dFcFIzfAeNmULlTCTzL02W74JPE7CNCYNCXzq6La1xBsZyOrrL9+fRzHdeUI1
+ nYurWlAHkbz2RuUyAF1TquKhrUsEn5ST5PjkaE6ac0+u86ZGkW4Es67hVyYW6w0q1z+z
+ hWMMq2dGjn7GQoprdqfxMrwpebWH3QCyTe05VwknbmFqAhogKE0N7nj3Y7dcjQH3pII/
+ vhFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697462888; x=1698067688;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sdHYp+U9X7nad76cR5E8bjjcBBmZxJ3ieCJMtRCh50M=;
- b=KLK/C/knowYBnHoodU2F60y4nK4CYeiWn2zcTgx3saM1lf0vwleXK9FkBCRSCeU+fe
- UbVV5vMhf4qKiPmwNMSjnZ7QN0pbwz3FA6E4ePDVPuDo0iFoOtpMusj6k5JSzn58VHbe
- ojNJvazFtqSudkTIvHdJkK+FB8CpiIzIh9PKie0Paoefxf44Fuv2WSEZTRUOBSxRygXL
- dT2UViXIZyDJF8LfNXT59D5KS0RR4+lq43iuz548VgK1Lq/dh+64pb7VNiZduu6V+cQb
- pfnje1OW+C6NMQP4iB17EWMihyzlRWlD6JMm08JmUWZQ3IjKrPwZIrdYNoIaLXW0WyWZ
- P6mQ==
-X-Gm-Message-State: AOJu0YxCXd7cUwcVuNFo9cjc3YovvV4NfP1FSsLq/1RRifhwMsKZIUNy
- DQZUn7hcE78ey/QepSDnciag+URm1hn2OrgADTIm0BjdxZJt4Ew1/L0JRNYYd33irMkAw9JcHkV
- UhNw7Zq0noJo5lNI=
-X-Received: by 2002:a05:6000:698:b0:32d:8819:4620 with SMTP id
- bo24-20020a056000069800b0032d88194620mr15481664wrb.14.1697462888557; 
- Mon, 16 Oct 2023 06:28:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsS61VqmrvhsANQbKIQpTzpqIWHvgaDsgpOVfAvZgR1aO8uDboC/YEsyBQczpRxUuNgBN/wg==
-X-Received: by 2002:a05:6000:698:b0:32d:8819:4620 with SMTP id
- bo24-20020a056000069800b0032d88194620mr15481639wrb.14.1697462888203; 
- Mon, 16 Oct 2023 06:28:08 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- v3-20020adfa1c3000000b0032d8354fb43sm14068571wrv.76.2023.10.16.06.28.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 06:28:07 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Fam
- Zheng <fam@euphon.net>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Eric Blake <eblake@redhat.com>,  libvir-list@redhat.com,  Fabiano Rosas
- <farosas@suse.de>,  qemu-block@nongnu.org,  Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,  "Dr. David Alan Gilbert"
- <dave@treblig.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Stefan
- Hajnoczi <stefanha@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Hailiang
- Zhang <zhanghailiang@xfusion.com>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 03/10] migration: migrate 'inc' command option is
- deprecated.
-In-Reply-To: <87bkcyixwn.fsf@pond.sub.org> (Markus Armbruster's message of
- "Mon, 16 Oct 2023 11:42:44 +0200")
-References: <20231013104736.31722-1-quintela@redhat.com>
- <20231013104736.31722-4-quintela@redhat.com>
- <8734yehdoc.fsf@pond.sub.org> <87a5sj59ww.fsf@secure.mitica>
- <87bkcyixwn.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Mon, 16 Oct 2023 15:28:05 +0200
-Message-ID: <87fs2a3dei.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1697463211; x=1698068011;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6RgdrQXuBUVPl+vq06JcVuhwAdo9RCxusolf7rvJiRw=;
+ b=eXZwN1KrsPWbsxJpuOVhBJN5WjiqXm2oOTnAY/MjZJG6ScNZpLpyBlbbGLzYSzime2
+ uGJmvx7CjlBt6nwyzqkJ9r8GoYEdUkaF35bReU7jxkZwc2bAsleKM6j6l9jCZaMBbyI6
+ 7FxpInMKACqBO7kSkNAragaDagrwrQAuDQYlwzjDYZNUDy21Nk/wloVmS9hi/QDX647e
+ Ii6jSO5Gvp6V2alltHpPOW2mSH+GjP0oqlsnd6Ao3YDXY/WsD+hbuY965SDakyzXhWkr
+ da6PjcGb6Jt3omnDuq6ynUiRrYYITNOiLL5XcmLWf5iZ/pFbRI4twTNWt67rRnPHAxtd
+ IpYg==
+X-Gm-Message-State: AOJu0YyBf2VhUrETOptb3RfgDn602vriT9QNWDgsjAEgzlpP3WboJ5wg
+ e97mvaA58C/l0Kmra93q6Hq2c2FfLZh7KFrR+eg=
+X-Google-Smtp-Source: AGHT+IENnpcAncOhXImQUOcY+cLHPvGoVQdEVFDDbrxINxt2H4vAyBeCQonRxgKd+UxBZdc/n1wAsA==
+X-Received: by 2002:a17:907:3e21:b0:9c3:c2e1:a38e with SMTP id
+ hp33-20020a1709073e2100b009c3c2e1a38emr3557890ejc.15.1697463211132; 
+ Mon, 16 Oct 2023 06:33:31 -0700 (PDT)
+Received: from [192.168.69.115]
+ (tbo33-h01-176-171-211-186.dsl.sta.abo.bbox.fr. [176.171.211.186])
+ by smtp.gmail.com with ESMTPSA id
+ bo8-20020a170906d04800b0097404f4a124sm4055405ejb.2.2023.10.16.06.33.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 06:33:30 -0700 (PDT)
+Message-ID: <e8c30d30-4556-3a04-dad7-103708b1eff2@linaro.org>
+Date: Mon, 16 Oct 2023 15:33:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 04/17] configure: clean up handling of CFI option
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20231016063127.161204-1-pbonzini@redhat.com>
+ <20231016063127.161204-5-pbonzini@redhat.com>
+ <ba834d5f-75ec-1115-b054-16e807d2c89c@linaro.org>
+ <e6eeb599-ecdb-42fd-94ca-8a78e2112e58@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <e6eeb599-ecdb-42fd-94ca-8a78e2112e58@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,89 +92,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-> Juan Quintela <quintela@redhat.com> writes:
->
->> Markus Armbruster <armbru@redhat.com> wrote:
->>> Juan Quintela <quintela@redhat.com> writes:
->> So what I want, I want to remove -i/-b in the next version (9.0?).  For
->> the other, I want to remove it, but I don't care if the code is around
->> in "deprecated" state for another couple of years if there are still
->> people that feel that they want it.
+On 16/10/23 11:44, Paolo Bonzini wrote:
+> On 10/16/23 11:22, Philippe Mathieu-Daudé wrote:
+>> On 16/10/23 08:31, Paolo Bonzini wrote:
+>>> Avoid that --enable-cfi --disable-cfi leaves b_lto set to true.
+>>>
+>>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>>> ---
+>>>   configure | 7 +++----
+>>>   1 file changed, 3 insertions(+), 4 deletions(-)
 >>
->> This is the reason that I put a pointer for -i/-b to
->> @block/@block-incremental.  They are "perfect" replacements.
 >>
->> I can put here to use blockdev-mirror + NBD, but the replacement is not
->> so direct.
+>>> @@ -1845,6 +1843,7 @@ if test "$skip_meson" = no; then
+>>>     # QEMU options
+>>>     test "$cfi" != false && meson_option_add "-Dcfi=$cfi"
+>>> +  test "$cfi" != false && meson_option_add "-Db_lto=$cfi"
 >>
->> Does this make sense?
->
-> I see where you're coming from.  Now let's change perspective for a
-> minute: what's the purpose of deprecating stuff?
->
-> We normally deprecate with intent to remove.
->
-> We don't remove right away, because we promised to first deprecate for a
-> grace period, so users can adjust in an orderly manner.  The deprecation
-> serves as signal "you need to adjust".  The documentation that comes
-> with it should help with the adjustment.  It's commonly of the form "use
-> $alternative instead".  The alternative is often a direct replacement,
-> but not always.  There could even be no replacement at all.  We don't
-> promise replacements, we promise an orderly process, so users can
-> adjust.
->
-> Sometimes, we don't have firm plans to remove, but are more like "maybe
-> remove when gets in the way".  We could soften the "you need to adjust"
-> signal in documentation, but I doubt that's a good idea.  Regardless,
-> the need to help users adjust remains.
->
-> Back to your patches.  There are two separate interfaces to block
-> migration, and both are deprecated at the end of the series:
->
-> 1. Migration parameter @block-incremental & friends
->
->    Not in the way, content to keep around for longer if it helps users.
->
->    The deprecation documentation advises to use block-mirror with NBD
->    instead.  All good.
->
-> 2. QMP migrate parameters @inc and @blk
->
->    Firm intent to remove as soon as the grace period expires, because
->    it's in the way.
->
->    The deprecation documentation advises to use interface 1 instead.
->    But that's deprecated, too!
->
->    Insufficiently careful readers will miss that the replacement is
->    deprecated, and just use it.  Risks surprise when the replacement
->    goes away, too.
->
->    More careful readers will realize that this advises to use something
->    we elsewhere advise not to use.  Contradiction!  Confusion ensues.
->
->    On further reflection, these readers might conclude that the
->    *combined* advice is to use block-mirror with NBD instead.  This is
->    correct.
->
->    So why not tell them?
->
->    Perhaps you'd like to give more nuanced advice, like "you should move
->    to block-mirror with NBD, but if that's not practical for you, you
->    should at least move to @block-incremental & friends, which will
->    likely stick around for longer."  That's fine.  All I'm asking for is
->    to not make things more confusing than they need to be :)
->
-> [...]
+>> Merge as "-Dcfi=$cfi -Db_lto=$cfi"?
+> 
+> Sure, it also needs a little change to meson_option_add though:
+> 
+> diff --git a/configure b/configure
+> index 3da46ed202d..fd88ef3fec2 100755
+> --- a/configure
+> +++ b/configure
+> @@ -624,7 +624,10 @@ meson_option_build_array() {
+> 
+>   meson_options=
+>   meson_option_add() {
+> -  meson_options="$meson_options $(quote_sh "$1")"
+> +  local arg
+> +  for arg; do
+> +    meson_options="$meson_options $(quote_sh "$arg")"
+> +  done
 
-Telling this in deprecated.rst is enough?  or you want me to put it also
-in the error/warn messages and qapi?
+Oh I didn't notice. If you had said I wouldn't had insisted,
+but since you did the change,
 
-Later, Juan.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+>   }
+>   meson_option_parse() {
+>     meson_options="$meson_options $(_meson_option_parse "$@")"
+> @@ -1842,8 +1845,7 @@ if test "$skip_meson" = no; then
+>     test "$werror" = yes && meson_option_add -Dwerror=true
+> 
+>     # QEMU options
+> -  test "$cfi" != false && meson_option_add "-Dcfi=$cfi"
+> -  test "$cfi" != false && meson_option_add "-Db_lto=$cfi"
+> +  test "$cfi" != false && meson_option_add "-Dcfi=$cfi" "-Db_lto=$cfi"
+>     test "$docs" != auto && meson_option_add "-Ddocs=$docs"
+>     test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add 
+> "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
+>     test "$plugins" = yes && meson_option_add "-Dplugins=true"
+> 
+> Ok to squash that in?
+
+Certainly.
 
 
