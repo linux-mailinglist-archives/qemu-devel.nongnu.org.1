@@ -2,65 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102D17CC35B
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 14:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D81F37CC35D
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 14:40:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsjMx-0005SE-Mt; Tue, 17 Oct 2023 08:40:20 -0400
+	id 1qsjNC-0005aO-Kl; Tue, 17 Oct 2023 08:40:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qsjMu-0005Rj-VJ
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:40:16 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qsjMp-0007Th-Uo
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:40:16 -0400
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 23A956169C;
- Tue, 17 Oct 2023 15:40:08 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8006::1:24])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id vdjFjMGOdW20-fg7NFr3R; Tue, 17 Oct 2023 15:40:07 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1697546407;
- bh=d14SytdjteskuKlQn4CTKh8Bksjsp601n5QtI4/AHmY=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=LaCYhcWQ/tCKGteJKEZfDaRwU0/p9oaako0bC3qNaAFzHIDO/2QAqiMDOyiuNziic
- 3RRWW/P0reNR3yVjpYBvdhZETw8/NmjdrQeErAppQSf8X5KJv+mihpLkYo6VTsV+pu
- wgP36RRzE03d/U7FLQi7j0PEr9khy+hpm59UQYEo=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, dave@treblig.org, armbru@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, eblake@redhat.com,
- vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
- den-plotnikov@yandex-team.ru
-Subject: [PATCH v4] virtio: add VIRTQUEUE_ERROR QAPI event
-Date: Tue, 17 Oct 2023 15:39:55 +0300
-Message-Id: <20231017123955.803724-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qsjN7-0005Vd-Uz
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:40:30 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qsjN2-0007Ub-Uv
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:40:26 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-53da72739c3so9418923a12.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 05:40:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697546423; x=1698151223; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=r0QIgBtowzSJ55PrgABlXL74OTmeFvX5QvUBMAW1EAs=;
+ b=Dki+A9eETXuuFsYC00WEh0/vQr9VEV77vFoZJbIgdAjZSCc5X2gVeTzdRtFPAigOaD
+ EE+3RXWQxUnlx7BXugU2dMqdVuwsy6LTsPGF6Pe1snaKtRlRMotOIluzXrvC44zzTlM3
+ Pb5jDP5DJ3L6GZjnRT76DSBkYpwfpmXINNUXwd/CIj7unel/WlZm+fhbTXeIY1HcNP+5
+ IVFCX142m9Gyn59WU20P6WgqfMa5zCOju/Gza0sdNt5FB2oQYe3v7Usud0Kxd36FVqah
+ mPDawGdQQISIUSJfsYQQJe7FmgD86z4h7OktqbVFIRC5aNNSZ6l7YLwGL2prQwMFg3lI
+ sBFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697546423; x=1698151223;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=r0QIgBtowzSJ55PrgABlXL74OTmeFvX5QvUBMAW1EAs=;
+ b=GN9qzMB5llZ7oOQa2JEyJFjK1WudPq3EIww/S//gVOvoW3n4fl2wOVEPLg8By9OCVh
+ wVOjisg/uBSjdEuC0mvMGcBC3YBHoCMdfBw+gwCaNKv1ksgKSgDS1t02JaYiMj+OaoYP
+ 7J357NDOQVL/ZwKm2wtrFgSUpCsGDZVHWxVyZ0tgVFIR7nmCMKpPHXtPwSoxm/57Dx9Y
+ 57KKiDUSABmEQf/HMppvaTdf+WNzPuto6mK8K6AXA/jvaAEQ+RxpAATq2WT3ZL3bH19W
+ V0JXmxriOAQbMW78ugY/1X3XxEJkF8wc3yVYqhNB8ZPUKqL7f0u7xRBY1TaZu7+3airc
+ 7d0g==
+X-Gm-Message-State: AOJu0YyBZxtZObg4ArVXMO5wPxNKHxvVYPgCmOza/1mibyTyuVdWdya/
+ zepuxagBAuwBQ1tTbXZJ98DmCQoV990s7xrRJiByOg==
+X-Google-Smtp-Source: AGHT+IGCIAMcIuVHuVdGJhWmnffWavr+gGhpF0aBbYnLS8xnH4MidD3t/6krAOzIG2H016Zgf+fqJIN4YdRpFGN8rHE=
+X-Received: by 2002:a05:6402:5194:b0:53e:395:59d with SMTP id
+ q20-20020a056402519400b0053e0395059dmr1782315edd.8.1697546422752; Tue, 17 Oct
+ 2023 05:40:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+References: <20230915185453.1871167-1-peter.maydell@linaro.org>
+In-Reply-To: <20230915185453.1871167-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 17 Oct 2023 13:40:11 +0100
+Message-ID: <CAFEAcA_Lppdk-aEXRC1vd0OZpiCvh3kK+mqz8OpaAe01Vy_bFg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] target/arm: Implement Neoverse-N2
+To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -72,149 +88,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For now we only log the vhost device error, when virtqueue is actually
-stopped. Let's add a QAPI event, which makes possible:
+Ping for code review -- Richard or Alex, maybe ?
 
- - collect statistics of such errors
- - make immediate actions: take core dumps or do some other debugging
- - inform the user through a management API or UI, so that (s)he can
-  react somehow, e.g. reset the device driver in the guest or even
-  build up some automation to do so
+thanks
+-- PMM
 
-Note that basically every inconsistency discovered during virtqueue
-processing results in a silent virtqueue stop.  The guest then just
-sees the requests getting stuck somewhere in the device for no visible
-reason.  This event provides a means to inform the management layer of
-this situation in a timely fashion.
-
-The event could be reused for some other virtqueue problems (not only
-for vhost devices) in future. For this it gets a generic name and
-structure.
-
-We keep original VHOST_OPS_DEBUG(), to keep original debug output as is
-here, it's not the only call to VHOST_OPS_DEBUG in the file.
-
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Denis Plotnikov <den-plotnikov@yandex-team.ru>
-Acked-by: Markus Armbruster <armbru@redhat.com>
----
-
-v4: add spacing between @arguments in qapi doc
-    add a-b by Markus
-
- hw/virtio/vhost.c | 12 +++++++++---
- monitor/monitor.c | 10 ++++++++++
- qapi/qdev.json    | 32 ++++++++++++++++++++++++++++++++
- 3 files changed, 51 insertions(+), 3 deletions(-)
-
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 9f37206ba0..a2101c6c4a 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -15,6 +15,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-events-qdev.h"
- #include "hw/virtio/vhost.h"
- #include "qemu/atomic.h"
- #include "qemu/range.h"
-@@ -1367,11 +1368,16 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
-     struct vhost_virtqueue *vq = container_of(n, struct vhost_virtqueue,
-                                               error_notifier);
-     struct vhost_dev *dev = vq->dev;
--    int index = vq - dev->vqs;
- 
-     if (event_notifier_test_and_clear(n) && dev->vdev) {
--        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d",
--                        dev->vq_index + index);
-+        int ind = vq - dev->vqs + dev->vq_index;
-+        DeviceState *ds = &dev->vdev->parent_obj;
-+
-+        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d", ind);
-+        qapi_event_send_virtqueue_error(ds->id, ds->canonical_path, ind,
-+                                        VIRTQUEUE_ERROR_VHOST_VRING_ERROR,
-+                                        "vhost reported failure through vring "
-+                                        "error fd");
-     }
- }
- 
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 941f87815a..cb1ee31156 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -313,6 +313,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_VIRTQUEUE_ERROR]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
- };
-@@ -497,6 +498,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
-         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
-     }
- 
-+    if (evstate->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-+        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
-+    }
-+
-     return hash;
- }
- 
-@@ -524,6 +529,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
-                        qdict_get_str(evb->data, "qom-path"));
-     }
- 
-+    if (eva->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-+        return !strcmp(qdict_get_str(eva->data, "device"),
-+                       qdict_get_str(evb->data, "device"));
-+    }
-+
-     return TRUE;
- }
- 
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index 6bc5a733b8..ac22f1df57 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -161,3 +161,35 @@
- ##
- { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
-   'data': { '*device': 'str', 'path': 'str' } }
-+
-+##
-+# @VirtqueueError:
-+#
-+# @vhost-vring-error: Vhost device reported failure through
-+#     through vring error fd.
-+#
-+# Since: 8.2
-+##
-+{ 'enum': 'VirtqueueError',
-+  'data': [ 'vhost-vring-error' ] }
-+
-+##
-+# @VIRTQUEUE_ERROR:
-+#
-+# Emitted when a device virtqueue fails in runtime.
-+#
-+# @device: the device's ID if it has one
-+#
-+# @path: the device's QOM path
-+#
-+# @virtqueue: virtqueue index
-+#
-+# @error: error identifier
-+#
-+# @description: human readable description
-+#
-+# Since: 8.2
-+##
-+{ 'event': 'VIRTQUEUE_ERROR',
-+ 'data': { '*device': 'str', 'path': 'str', 'virtqueue': 'int',
-+            'error': 'VirtqueueError', 'description': 'str'} }
--- 
-2.34.1
-
+On Fri, 15 Sept 2023 at 19:54, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> This patchset implements a model of the Neoverse-N2 CPU.
+> Because it's very similar to the Cortex-A710 we don't
+> need to implement any new features for it; but because it
+> supports 48 bit physical addresses we can use it in the
+> sbsa-ref board.
+>
+> Patch 1 fixes a few minor errors in the A710 definition
+> that I spotted while I was cross-checking it against the
+> N2 TRM to see what had changed.
+>
+> Patch 2 is the new CPU model.
+>
+> thanks
+> -- PMM
+>
+> Peter Maydell (2):
+>   target/arm: Correct minor errors in Cortex-A710 definition
+>   target/arm: Implement Neoverse N2 CPU model
+>
+>  docs/system/arm/virt.rst |   1 +
+>  hw/arm/sbsa-ref.c        |   1 +
+>  hw/arm/virt.c            |   1 +
+>  target/arm/tcg/cpu64.c   | 114 ++++++++++++++++++++++++++++++++++++++-
+>  4 files changed, 115 insertions(+), 2 deletions(-)
 
