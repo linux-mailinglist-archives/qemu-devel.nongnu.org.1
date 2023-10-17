@@ -2,77 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228EA7CC41A
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279C77CC3F2
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:07:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsjYs-0006me-Go; Tue, 17 Oct 2023 08:52:38 -0400
+	id 1qsjZt-0000fM-2w; Tue, 17 Oct 2023 08:53:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsjYq-0006lc-6r
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:52:36 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qsjZp-0000db-P1
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:53:37 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsjYo-000203-C0
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:52:35 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-5041bb9ce51so6740261e87.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 05:52:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697547152; x=1698151952; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=a89/UZYajdfDiu/Qyo8LXhoRbcItNYhruRfFoObqOi4=;
- b=l4fJNuhiLFD5zlmlT4huTrH27fVal6MFfqrm4YPfJXHGqkvHbmJjPHO5JXKUzf5W92
- 3NpkVhKcj3u3xEbF7uLy785EIi9vgcwielp6kgL35HWOxbGBdDWhCuHdoo5FJnsp902W
- muysQLGuZtPrFsYjeu3i/Bc0buQXVVaBeUBZyfmcDSEx3s3BnOJkqGe2LoYJne9hw/w7
- xKcgtDUkDMH3C9iCRfdYJWB1Rz6T74xuhmLaCcNT8BTeAjlbSmPsoyYxZbYzwjqbMBvA
- Y7XjUQjV9Irj296LA1XxnFtxN9j0lb6jBi+tzsUkYjq4/PK71orBs7LIr7gPYkW7rgce
- Q2tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697547152; x=1698151952;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=a89/UZYajdfDiu/Qyo8LXhoRbcItNYhruRfFoObqOi4=;
- b=XkPRQ91nLkPYdRNUUtxYf7iySZa9e9o40A+eMaubObttOenSBXS5rqPzpXq+zi/Wus
- UL1vqj+9TAAKWUKN01hcGyUPf8ZLWAPzPi+FqCiOUEMRTOLdBU1O3mkAj7JG+hQLwEUx
- OQx2Mf4SjY9+3V4OIEtUphs5Ubucv+Gfe33x1AXEwr18vVcMy7f/7d3DJHbo4vvIOoiO
- FEONfHUWfJOgf/btcooK8r4fP78SaWv/nFQFAcmXSlxUGyEemR8qaJS5dxBJnkjMMQaJ
- VnIRE+Bp6227pJFbhUM3ZRIKRHvsDVIyetZ3tHvWHnCgOWx1yVBE1+1yeGQxcw0iWI9t
- BaFg==
-X-Gm-Message-State: AOJu0Yx6yibBZ5bfTZS9wvxDMHf7MUMmMEepOqcCD6kwlDRGUoKTq9SC
- Kfx6yTA9qg+/jHFtQZOlMOUpAkUKDkVhcumnaxMi4A==
-X-Google-Smtp-Source: AGHT+IHuO2E39DphJKqOfejGVohuwg2DUfCusdjC9lT5z+wuv2rPo7IoqGL0QR9qwTAfBpuojewZlAyUzA8sQFduBks=
-X-Received: by 2002:ac2:5384:0:b0:502:a4f4:ced9 with SMTP id
- g4-20020ac25384000000b00502a4f4ced9mr1697033lfh.62.1697547152502; Tue, 17 Oct
- 2023 05:52:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qsjZo-00025i-4L
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:53:37 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 1A4A21FF19;
+ Tue, 17 Oct 2023 12:53:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697547214; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4rB0keEcFs0VWefaEHrW+JKXUkO1gh4U2aqB4Md/i4Q=;
+ b=me8ZXsDAj5fKZFo3VcfmDdG7M2exse3Wqk4RoUZXIUXwN3M2f6hRPGpB4zn+mx9uS8wJNj
+ +ZgypRFhH87s0xFDXZeSKmg2SgTJomROuH/tf1f8H9hk+ZM3h+6Y+WfKAiE3u0DJ9nmnhR
+ 5ElCQ+re4c7UD4sl0+4ATJ60Z5XAAL8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697547214;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4rB0keEcFs0VWefaEHrW+JKXUkO1gh4U2aqB4Md/i4Q=;
+ b=+IpFdc7TpiyIZgC3STUQtm8MdVpa7w99i05GWnnT4STnEuCSHUz334eSAJXsEHCNWoO5Z7
+ 60cOrSRFJGUkvTBg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A20F013597;
+ Tue, 17 Oct 2023 12:53:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 2mMiG82DLmXpYQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 17 Oct 2023 12:53:33 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 7/9] tests/qtest/migration: Define a machine for all
+ architectures
+In-Reply-To: <87h6mx8c86.fsf@secure.mitica>
+References: <20231006123910.17759-1-farosas@suse.de>
+ <20231006123910.17759-8-farosas@suse.de> <87h6mx8c86.fsf@secure.mitica>
+Date: Tue, 17 Oct 2023 09:53:31 -0300
+Message-ID: <87zg0hwgtw.fsf@suse.de>
 MIME-Version: 1.0
-References: <20231017122302.1692902-1-peter.maydell@linaro.org>
- <20231017122302.1692902-5-peter.maydell@linaro.org>
- <c61b98d3-cafd-862b-09ad-818a5e2f051d@linaro.org>
-In-Reply-To: <c61b98d3-cafd-862b-09ad-818a5e2f051d@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Oct 2023 13:52:21 +0100
-Message-ID: <CAFEAcA8OfRyVnP-tdMWz0g9HvYJtQb6xDha1zO05Dp855_SMfw@mail.gmail.com>
-Subject: Re: [PATCH 4/6] hw/input/stellaris_gamepad: Remove
- StellarisGamepadButton struct
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -4.44
+X-Spamd-Result: default: False [-4.44 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-0.34)[76.07%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[10];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,55 +102,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Oct 2023 at 13:44, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Hi Peter,
->
-> On 17/10/23 14:23, Peter Maydell wrote:
-> > Currently for each button on the device we have a
-> > StellarisGamepadButton struct which has the irq, keycode and pressed
-> > state for it.  When we convert to qdev, the qdev property and GPIO
-> > APIs are going to require that we have separate arrays for the irqs
-> > and keycodes.  Convert from array-of-structs to three separate arrays
-> > in preparation.
-> >
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> >   hw/input/stellaris_gamepad.c | 43 ++++++++++++-----------------------=
--
-> >   1 file changed, 14 insertions(+), 29 deletions(-)
->
->
-> > -static const VMStateDescription vmstate_stellaris_button =3D {
-> > -    .name =3D "stellaris_button",
-> > -    .version_id =3D 0,
-> > -    .minimum_version_id =3D 0,
-> > -    .fields =3D (VMStateField[]) {
-> > -        VMSTATE_UINT8(pressed, StellarisGamepadButton),
-> > -        VMSTATE_END_OF_LIST()
-> > -    }
-> > -};
-> > -
-> >   static const VMStateDescription vmstate_stellaris_gamepad =3D {
-> >       .name =3D "stellaris_gamepad",
-> >       .version_id =3D 2,
-> >       .minimum_version_id =3D 2,
-> >       .fields =3D (VMStateField[]) {
-> >           VMSTATE_INT32(extension, StellarisGamepad),
-> > -        VMSTATE_STRUCT_VARRAY_POINTER_INT32(buttons, StellarisGamepad,
-> > -                                            num_buttons,
-> > -                                            vmstate_stellaris_button,
-> > -                                            StellarisGamepadButton),
-> > +        VMSTATE_VARRAY_UINT32(pressed, StellarisGamepad, num_buttons,
-> > +                              0, vmstate_info_uint8, uint8_t),
->
-> Don't this break the migration stream?
+Juan Quintela <quintela@redhat.com> writes:
 
-Yes; this is OK because we don't care about migration compat
-for this board. But I forgot to mention it in the commit
-message, and we should bump the version_id fields too.
+> Fabiano Rosas <farosas@suse.de> wrote:
+>> Stop relying on defaults and select a machine explicitly for every
+>> architecture.
+>>
+>> This is a prerequisite for being able to select machine types for
+>> migration using different QEMU binaries for source and destination.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  tests/qtest/migration-test.c | 11 ++++++++++-
+>>  1 file changed, 10 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>> index 46f1c275a2..7c10ac925b 100644
+>> --- a/tests/qtest/migration-test.c
+>> +++ b/tests/qtest/migration-test.c
+>> @@ -746,6 +746,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>>      const char *kvm_opts = NULL;
+>>      const char *arch = qtest_get_arch();
+>>      const char *memory_size;
+>> +    const char *machine;
+>>  
+>>      if (args->use_shmem) {
+>>          if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
+>> @@ -758,11 +759,13 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>>      got_dst_resume = false;
+>>      if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
+>>          memory_size = "150M";
+>> +        machine = "pc";
+>
+> I would suggest:
+>
+>       if (strcmp(arch, "i386")) {
+>           machine = "pc";
+>       } else {
+>           machine = "q35";
+>       }
 
-thanks
--- PMM
+Turns out we cannot run the tests with the q35 currently. It seems the
+bootsector we use to print the A and Bs is not recognized by seabios on
+that machine. I'm investigating.
 
