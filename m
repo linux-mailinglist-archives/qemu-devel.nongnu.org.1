@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941337CCD8C
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A30447CCD91
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:11:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsqOE-0003Zu-Km; Tue, 17 Oct 2023 16:10:06 -0400
+	id 1qsqOj-0004fg-3T; Tue, 17 Oct 2023 16:10:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qsqO6-0003Ya-HS; Tue, 17 Oct 2023 16:09:58 -0400
+ id 1qsqOf-0004Po-9L; Tue, 17 Oct 2023 16:10:34 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qsqO4-00065f-Vy; Tue, 17 Oct 2023 16:09:58 -0400
+ id 1qsqOd-0006Li-0G; Tue, 17 Oct 2023 16:10:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=vt/12v/bN3D1UDBLUnDhFGepAg8EYl3o+KQXj4hXb7I=; b=dD++kppZpEIXXPclDYlmY1qgyI
- v28xb9Gl4C1qt2r5gsux2pE7BBMxKdVtmAWPryqTDmPe/ix7AuLfL1s8x9F82+SlEEAJY4+/z+bka
- tyCKDCkijdbeSafqGSAHiNatEEnj5oGvVJd4VY5FZYTVFXjN4USEa59hNv6zivxMnYY7T4xBdWWZ8
- l5CWmm8CfiW0GjOW41iDyo6Urs4fIpg2sWsRfD2msoPWj/YC9eJo80QroN5jOlik+qjAVEzNhnThk
- ax+RzwCcaZGDpj1vC0fhhoyKZY5aY8R3vc1S4rfNQz2j1r44Ayo0f3c6iEtGkSX+8GALvrzGrndYC
- 8DbnZGF0ix9BRSdRaunY8Aibp1lI1dwCufzvlfwZhqnnftPH8tHv87iKeBxbbs8tjwKMICY+rchbO
- KzPd+1+uk6Q2qsRFcc6CnrBTiNqzIL7dRoSLHpmHF9lBYqKzpnxw64o2g32AMRKLaAXdkxch3WCVN
- E7OapKLnjJ9yvq9N6Vv+i2/IamB/AzZklKD1HcfL+TPLBSBSKfaXvkCEUMn+2N8Ob6hexxkr2Fs7n
- czeprJo4porU5gnY6hkdwgdUkK8s40pXUxfpD1XDgdLZ4I+tex8TCWGHN8AXAkThKqKugmX3Afm+g
- WX8r1jYEWS8r5WNZAKxQOVI62zB8PaBgvuoNFrADg=;
+ bh=U23o4OOwj4qPRPlIw1d0Vdg+CJ+lgeeN6m5pLnyfQI4=; b=uWb+jgWg9KYeTr9ObQllozh4xc
+ s7lIZ/2eyV2dUv9legHYNme0qa5tJMCAmRh6mxiE41KVwN9Bm7+YCO6lZWKTd5nVVfimW2wmgeKVx
+ 0jnGi57xlCqbRCCpW6hpv99PdPCemFkx0PcjG77Txb7muU1FHgsf79fX4Oa8N2XDz75qyjdFiTinH
+ BlwmsI+z50XEe+Y2LvfXhTpm9y/maVrP7BNVTxjUPXhGBZsN5golsp0mG2SlcXpWKeZf2wXhMe8lf
+ xjnHdXM6oTmAGQO1IB4wJJ+vIUJUWlGiottRAQ9sp7GK7TodRyEjb3LzNmwomVevOLe2HF2x2xHQK
+ VKN7Q4N+7NF/sMXjP5ySoyEWALuJ+c7O5eiTE3FvR3U1TLk/tu17WqlalERphABuu/1T1pF1sayYj
+ /Eg6pqQP7RAUSyAO9Isnv5WGZqDcpaCnXGVWgvff0ygVUnXSBfKv3Qk9h+8e+55c0RksckTBBqio8
+ dyD7V3q4KG8W89SCkJMLsd2F1mg9s/vvADoUxwtqfZyqdyOvAnDKAosKV98Nyj9QhcAmpX0sQvOtC
+ 0K2SefkvmTz3HWMzSnIdlN16C3z5rBDXUCyyaeoqbSnRNP2F4SKtbY0gd93JcxecZsO/bEaTMfCPb
+ KQI7N5DzwqNW1OnhEPrXr5ZI78jiDZDceTOHKuy8g=;
 Received: from [2a00:23c4:8bb0:3200:407d:a65c:9fb4:b9b4]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qsqNs-0001am-42; Tue, 17 Oct 2023 21:09:48 +0100
-Message-ID: <a7da8f7d-2309-4647-b61d-3498bc80ba28@ilande.co.uk>
-Date: Tue, 17 Oct 2023 21:09:46 +0100
+ id 1qsqOR-0001am-Na; Tue, 17 Oct 2023 21:10:23 +0100
+Message-ID: <88a49583-d4a0-4c86-a26b-b98803630d1e@ilande.co.uk>
+Date: Tue, 17 Oct 2023 21:10:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
@@ -52,7 +52,7 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Alistair Francis <alistair@alistair23.me>, Gerd Hoffmann <kraxel@redhat.com>
 References: <20231017140150.44995-1-philmd@linaro.org>
- <20231017140150.44995-3-philmd@linaro.org>
+ <20231017140150.44995-4-philmd@linaro.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -78,13 +78,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <20231017140150.44995-3-philmd@linaro.org>
+In-Reply-To: <20231017140150.44995-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:3200:407d:a65c:9fb4:b9b4
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 2/7] hw/block/vhost-user-blk: Use DEVICE() /
- VIRTIO_DEVICE() macros
+Subject: Re: [PATCH 3/7] hw/display/virtio-gpu: Use VIRTIO_DEVICE() macro
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -112,35 +111,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 17/10/2023 15:01, Philippe Mathieu-Daudé wrote:
 
-> Access QOM parent with the proper QOM [VIRTIO_]DEVICE() macros.
+> Access QOM parent with the proper QOM VIRTIO_DEVICE() macro.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/block/vhost-user-blk.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   hw/display/virtio-gpu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-> index eecf3f7a81..4b37e26120 100644
-> --- a/hw/block/vhost-user-blk.c
-> +++ b/hw/block/vhost-user-blk.c
-> @@ -405,7 +405,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
+> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> index 93857ad523..51cb517999 100644
+> --- a/hw/display/virtio-gpu.c
+> +++ b/hw/display/virtio-gpu.c
+> @@ -1132,7 +1132,7 @@ static void virtio_gpu_ctrl_bh(void *opaque)
+>       VirtIOGPU *g = opaque;
+>       VirtIOGPUClass *vgc = VIRTIO_GPU_GET_CLASS(g);
 >   
->   static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
->   {
-> -    DeviceState *dev = &s->parent_obj.parent_obj;
-> +    DeviceState *dev = DEVICE(s);
->       int ret;
+> -    vgc->handle_ctrl(&g->parent_obj.parent_obj, g->ctrl_vq);
+> +    vgc->handle_ctrl(VIRTIO_DEVICE(g), g->ctrl_vq);
+>   }
 >   
->       s->connected = false;
-> @@ -423,7 +423,7 @@ static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
->       assert(s->connected);
->   
->       ret = vhost_dev_get_config(&s->dev, (uint8_t *)&s->blkcfg,
-> -                               s->parent_obj.config_len, errp);
-> +                               VIRTIO_DEVICE(s)->config_len, errp);
->       if (ret < 0) {
->           qemu_chr_fe_disconnect(&s->chardev);
->           vhost_dev_cleanup(&s->dev);
+>   static void virtio_gpu_handle_cursor(VirtIODevice *vdev, VirtQueue *vq)
 
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
