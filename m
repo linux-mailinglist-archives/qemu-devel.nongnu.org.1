@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210427CB979
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 06:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67AB7CB98B
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 06:11:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsbEz-0002xK-1b; Mon, 16 Oct 2023 23:59:33 -0400
+	id 1qsbOp-0007N6-1Q; Tue, 17 Oct 2023 00:09:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qsbEw-0002x8-B6; Mon, 16 Oct 2023 23:59:30 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qsbOm-0007Mr-MT
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 00:09:40 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qsbEu-0001Zn-IG; Mon, 16 Oct 2023 23:59:30 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6b20a48522fso2997118b3a.1; 
- Mon, 16 Oct 2023 20:59:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qsbOk-00042w-L1
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 00:09:40 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1c9e06f058bso35016135ad.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 21:09:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697515166; x=1698119966; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/24RlqE5h4heeejIEC6CmucFf6JQcNHa4+NOqFK1tSg=;
- b=N2D0VlAzU5YQkQOXW+F/DjBhiGhtWAs0GPZtdVoFUwo+7B5T5EUV26vwTQMVnAsRpI
- ZpBK2JzBPvTnQTjQ4Uzl/koR15ALukKGqt4YK6FTDnL7yndiMIpSQ9OLjKTYDndKxi73
- yce0ZCTz/7vaToch6F+fNSZ/vq5LS8oFFOnBxN9MFV4eUi3mH498TVqMnXC2/uqcVqT4
- mrPqeOdiZjdwjE4phkcqcs04Z+gvWytMGECemuCr2eRVx8FyH08PMGOvH+CLhx3HtzIb
- MwfBcyPzHXW0F5+80tvSGcndnzFSsxhrf+sWY4OstxstJ4TycAx54feFddZ6nFQpGirs
- 6JpQ==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697515777; x=1698120577;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=E/yHGDStlq6WH86k6FxlNhbYZA+ENm0yo2nN01ItAME=;
+ b=GFpdT03Por3iBdXtPyYlKud8Z65a/fqx8ySJZ0FKXpoRqDbakYwMGbmx6id0XW6t+t
+ 86BASoAKDV05xRCzC/kYW0Dl07U5mD5j7d+QXGaA18/ccfHN+l0rJv6kJgPcGmrGpknO
+ XXRiswp3ow3FvQelVJa8PPoNxEN/IYiLjCYS35LO/xHluBp+Oc0SCbhSi3//R9cLybfN
+ /X4URRBKtHpwBTDZGkyIskla+YsIiVXANuPaBuPzyiPZU0RRFPdK1R9AXccI4X9HFo65
+ KCGwN9pfU9Q1LFry0AHG9gvHPO6zlzyzJU3O2PBA+lIxoQMVYmFYyP3GEpOVN9TbWaxw
+ eCeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697515166; x=1698119966;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=/24RlqE5h4heeejIEC6CmucFf6JQcNHa4+NOqFK1tSg=;
- b=ZPWSNxzdwnj5GP0aq+hdqtf4RDmMqIQSSDr22ayOnNwclINEX3TFFqKs2CzHFCs5n0
- Lki5TGq9J/hFFHzIQ6Nal+cTqAqEn1PyraUE0rIBQ5VOXVbVdXsiHJikFyhbaDYYOJ6B
- b1DHNCuxOwFZGv7cWoraG+RHi+czxChDPlIF47Tgb3GKNmODS9B15TWGgyoYN6Kj9j4h
- icleBs5+OFa6cRtJefNlMWk4cm9Cms+/d2Mbooyhl5Ncvfs0KeD9r/uCBmCYv/N8T/MK
- /qgqUPjccV0gmQq6gxHew5nDHpR0YnyChWxso6snZvHwO57oAfIuYzg+ScHTTGQH/UAQ
- eXvA==
-X-Gm-Message-State: AOJu0YwbaXpbJNfzsrlAA9rFxVwdrCYBZD/v9ROQ5GCiLelmIq4OXdpR
- 16IEeU4dXwhUutVbFXJQaIY=
-X-Google-Smtp-Source: AGHT+IGHe2dCMsxG+vsdBVCjsGh/D9YiNT9L64AB1ERuyJgJIi3V/msQDFTiUQdeyzflVsQZD9k8ZQ==
-X-Received: by 2002:a05:6a00:a29:b0:6be:62e:d5a8 with SMTP id
- p41-20020a056a000a2900b006be062ed5a8mr1199766pfh.0.1697515166098; 
- Mon, 16 Oct 2023 20:59:26 -0700 (PDT)
-Received: from localhost ([1.146.38.123]) by smtp.gmail.com with ESMTPSA id
- f186-20020a6251c3000000b00692754580f0sm354567pfb.187.2023.10.16.20.59.21
+ d=1e100.net; s=20230601; t=1697515777; x=1698120577;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=E/yHGDStlq6WH86k6FxlNhbYZA+ENm0yo2nN01ItAME=;
+ b=MqVyfpLO1yDv1lfEm8MfZygso65hMiuEzqK3jum6I/fScgPznDnhb1/XQyVwQdbh7k
+ qRhiRT2SHK6jfnrzsP1DlqK1MeWUkLVZVtTP/Bs4U+J+Z+j5g3EkB/mk7a2j/C34EyX5
+ 3QjuOMks/hyJ6MN+Kwp5zbc099utWpF382W09zxPMma+WSq9UIzPQKegxKGXrPdnmGmK
+ qCV6Clap2MrsOv7Z0gvI7lM926QdilRitqQBWkRseBwpxIsd6UGc7ee/tc4pTPdOLxWb
+ kE9WhvCPZWhBzFTreuhIXUI1k1SZgLBSS/qGFydyE7toRJPLtrRXEzJ/6TWRw4mUT67C
+ xoew==
+X-Gm-Message-State: AOJu0YxOx3+K02jBt4FKsCHUS8Fw+vgqd76RxtOO94Gec4DDK9SAgZAs
+ fPN6hkFUeREc3M/rRbkLsae8CUg5gq1cFcmnNAIzPg==
+X-Google-Smtp-Source: AGHT+IGVf+cPVQ0AiwMz3P8711XbZj3eT/AHJwadYINn21UGUTVnDnQHzDnTMlC4LFxg0DZ9i5Ym6Q==
+X-Received: by 2002:a17:902:e741:b0:1c9:e77d:62d3 with SMTP id
+ p1-20020a170902e74100b001c9e77d62d3mr1336660plf.10.1697515777124; 
+ Mon, 16 Oct 2023 21:09:37 -0700 (PDT)
+Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with UTF8SMTPSA id
+ u9-20020a170902e80900b001c9d2360b2asm394999plg.22.2023.10.16.21.09.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 20:59:25 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Oct 2023 13:59:18 +1000
-Message-Id: <CWAEWI5YNWTD.11GO4ENF2OC5M@wheely>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <clg@kaod.org>,
- <philmd@linaro.org>, "Bernhard Beschow" <shentey@gmail.com>, "Mark
- Cave-Ayland" <mark.cave-ayland@ilande.co.uk>, "Rene Engel"
- <ReneEngel80@emailn.de>, <vr_qemu@t-online.de>
-Subject: Re: [PATCH v3 0/3] Add emulation of AmigaOne XE board
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <cover.1697311794.git.balaton@eik.bme.hu>
- <81c6d451-a457-16ad-2f5d-5764bd32b4d5@eik.bme.hu>
-In-Reply-To: <81c6d451-a457-16ad-2f5d-5764bd32b4d5@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ Mon, 16 Oct 2023 21:09:36 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v5 00/21] virtio-net RSS/hash report fixes and improvements
+Date: Tue, 17 Oct 2023 13:09:06 +0900
+Message-ID: <20231017040932.62997-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,67 +91,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Oct 17, 2023 at 8:25 AM AEST, BALATON Zoltan wrote:
-> On Sat, 14 Oct 2023, BALATON Zoltan wrote:
-> > Changes in v3:
-> > - Update values, comment and commit message in patch 1 again
-> >
-> > Changes in v2:
-> > - Update comment and commit message in patch 1 (Mark)
-> > - Fix irq mapping in patch 2 (Volker)
-> >
-> > Regards,
-> > BALATON Zoltan
-> >
-> > BALATON Zoltan (3):
-> >  via-ide: Fix legacy mode emulation
-> >  hw/pci-host: Add emulation of Mai Logic Articia S
-> >  hw/ppc: Add emulation of AmigaOne XE board
->
-> Nick, Daniel, C=C3=A9dric,
->
-> Patch 1 is not related to PPC and is still debated but just to make sure=
-=20
-> we don't get too close to freeze again I ask about patch 2 and 3 in the=
-=20
-> maintime. Not sure who will merge this series at the end but if you can=
-=20
-> give an Acked-by for the last two patches maybe Philippe can take care of=
-=20
-> the series or is any of you plan to take it via ppc?
+This series contains fixes and improvements for virtio-net RSS and hash
+reporting feature.
 
-Hey,
+V4 -> V5:
+  Added patch "virtio-net: Do not write hashes to peer buffer".
 
-I could take patch 2/3 via ppc tree, although I don't know much about
-platform and pci so some review/ack would be good.
+V3 -> V4:
+  Extract patches "tap: Remove tap_receive()" and  "net: Remove flag
+  propagation" from "net: Remove receive_raw()".
+  Added patch "virtio-net: Always set populate_hash".
+  Added patch "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT".
+  Added patch "ebpf: Use standard section name".
+  Added patch "ebpf: Simplify error handling".
+  Added patch "ebpf: Return 0 when configuration fails".
+  Added patch "ebpf: Refactor tun_rss_steering_prog()".
+  Added patch "ebpf: Add a separate target for skeleton".
 
-I guess you could submit the Amiga stuff yourself too if you wanted,
-you have much better understanding of it and I don't really know how to
-test either (other than a few of the free to download installer images
-for one or two of those OSes).
+V2 -> V3:
+  Added patch "tap: Remove tap_probe_vnet_hdr_len()".
+  Added patch "tap: Remove qemu_using_vnet_hdr()".
+  Added patch "net: Move virtio-net header length assertion".
+  Added patch "net: Remove receive_raw()".
+  Added patch "tap: Shrink zeroed virtio-net header".
+  Dropped patch "tap: Fix virtio-net header buffer size".
 
-Thanks,
-Nick
+V1 -> V2:
+  Added patch "ebpf: Fix RSS error handling".
 
->
-> Regards,
-> BALATON Zoltan
->
-> > MAINTAINERS                             |   8 +
-> > configs/devices/ppc-softmmu/default.mak |   1 +
-> > hw/ide/via.c                            |  41 +++-
-> > hw/pci-host/Kconfig                     |   5 +
-> > hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
-> > hw/pci-host/meson.build                 |   2 +
-> > hw/ppc/Kconfig                          |   7 +
-> > hw/ppc/amigaone.c                       | 164 +++++++++++++
-> > hw/ppc/meson.build                      |   2 +
-> > include/hw/pci-host/articia.h           |  17 ++
-> > 10 files changed, 535 insertions(+), 5 deletions(-)
-> > create mode 100644 hw/pci-host/articia.c
-> > create mode 100644 hw/ppc/amigaone.c
-> > create mode 100644 include/hw/pci-host/articia.h
-> >
-> >
+Akihiko Odaki (21):
+  tap: Remove tap_probe_vnet_hdr_len()
+  tap: Remove qemu_using_vnet_hdr()
+  net: Move virtio-net header length assertion
+  net: Remove receive_raw()
+  tap: Remove tap_receive()
+  net: Remove flag propagation
+  tap: Shrink zeroed virtio-net header
+  virtio-net: Copy header only when necessary
+  virtio-net: Disable RSS on reset
+  virtio-net: Unify the logic to update NIC state for RSS
+  virtio-net: Return an error when vhost cannot enable RSS
+  virtio-net: Always set populate_hash
+  virtio-net: Do not clear VIRTIO_NET_F_RSS
+  virtio-net: Do not write hashes to peer buffer
+  virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT
+  ebpf: Fix RSS error handling
+  ebpf: Use standard section name
+  ebpf: Simplify error handling
+  ebpf: Return 0 when configuration fails
+  ebpf: Refactor tun_rss_steering_prog()
+  ebpf: Add a separate target for skeleton
+
+ ebpf/ebpf_rss.h          |    2 +-
+ ebpf/rss.bpf.skeleton.h  | 1557 +++++++++++++++++++-------------------
+ include/net/filter.h     |    3 -
+ include/net/net.h        |    7 -
+ include/net/queue.h      |    7 -
+ include/sysemu/replay.h  |    2 +-
+ net/tap_int.h            |    1 -
+ ebpf/ebpf_rss-stub.c     |    4 +-
+ ebpf/ebpf_rss.c          |   80 +-
+ hw/net/e1000e.c          |    1 -
+ hw/net/igb.c             |    1 -
+ hw/net/net_tx_pkt.c      |    4 +-
+ hw/net/virtio-net.c      |  319 ++++----
+ hw/net/vmxnet3.c         |    2 -
+ net/dump.c               |    8 +-
+ net/filter-buffer.c      |    4 +-
+ net/filter-mirror.c      |    6 +-
+ net/filter-replay.c      |    3 +-
+ net/filter-rewriter.c    |    5 +-
+ net/filter.c             |    8 +-
+ net/net.c                |   83 +-
+ net/netmap.c             |    5 -
+ net/queue.c              |   30 +-
+ net/tap-bsd.c            |    5 -
+ net/tap-linux.c          |   20 -
+ net/tap-solaris.c        |    5 -
+ net/tap-stub.c           |    5 -
+ net/tap.c                |   74 +-
+ replay/replay-net.c      |    8 +-
+ tools/ebpf/rss.bpf.c     |   46 +-
+ tools/ebpf/Makefile.ebpf |   15 +-
+ 31 files changed, 1044 insertions(+), 1276 deletions(-)
+
+-- 
+2.42.0
 
 
