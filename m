@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233077CBAAF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDD57CBAC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:17:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsdKC-0000Da-82; Tue, 17 Oct 2023 02:13:04 -0400
+	id 1qsdKC-0000Dp-NX; Tue, 17 Oct 2023 02:13:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdK9-0000C5-Rp
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:01 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qsdKA-0000Ca-JJ
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:02 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdK8-0003sH-8L
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:01 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1ca816f868fso10897855ad.1
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:12:59 -0700 (PDT)
+ id 1qsdK8-0003sN-Vp
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:02 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1c9e06f058bso35619145ad.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:13:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697523179; x=1698127979; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RafFmEyJOAItMlOtA/gMolHSxQeU0aHLQzOGBDw+LBY=;
- b=dRwikxqqsX/AslnRh89hbEV2SXlvNm3B6L18ka5+8juQYUj0kFUpSBs+Wx9hg+nbOo
- T0Yeowdd/Pp6xJgnE8toWJ8FODm9qLzH9e8exbvU6j47Kd4MjkyzBEJYm7vZBVShhY0h
- LlrmLStCJ2tXGw6fpO10NMoAti3QdXIPhJx4GGIlyzF/9aI3k52TNASp4WvHjdpv+UjC
- Z3XCEGXOC0pOcWWRflL+LFNc4kMUewdUPr96j4sy9pzesmq41Ei3DxtAAifwBzYk1A5O
- z0sV9egeAuCwVopRkHaA3dLQ1twZtygWwdFbVqRAA88b9RnVTP+B0Awv/CTyBdkw7ChF
- o9Uw==
+ bh=LRsXuHDffyQpwn6iwozzaEFt19iWrF0/6hbYZNaItec=;
+ b=ggdi0o949RNen9dKjvI4D3PY6M5SwI6LencNnYWbShsr+l1KKX4ARr0reUIPB5XmdT
+ 6CjAOKLihF2ZRuP1vyuFOov6f/QYzhAScd43a5I7gZGjZmmbIvvAnJlWi56Vbedi1UVH
+ M/pKSJBgZPpK7ceKylkAF60NaXo5equzICdSA6S9Tkm/hsn+Rqx8isdLKT4MGgzQkJBR
+ M862+rXWfp1jalrtHyiLaCREeATF6/h+VxD0K0/L7XI1RRX0jrtXTWwQlxQMSs96/BdB
+ 1zze5mqoP19LhTd7EoFbxJ0BLhAq7aVj8sFLyJm1Iv6HebY+Hy1bgcpJpYNHzei9gQhM
+ 0Oig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697523179; x=1698127979;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RafFmEyJOAItMlOtA/gMolHSxQeU0aHLQzOGBDw+LBY=;
- b=S0RB3mWfRPbZII9jNg4wR9Q09B7oBytpg31ED2dtPkpeRW5YXCFlfwd0+PeT6CnA3M
- l1F3FhIHqzzorvHCXMotIuIEnpXg8O8iqpzEYFgjAXY0FVO5/WEYInPpwo6TCVe0cUMB
- taR+zvH9+r9fb7HFy56RWcOu+0NqDR1HkQUYzmb72AWXMN90yNywUy9eTHO5mOrOUCNF
- h+w/fELAg99Dw21XQSlC5s6Qo7osEnJp8jwFKUc4jc8HWZWTJ/0zjxGncsslFdIVoTk1
- KUksNHE2STKNvUoWtnT+Z5lVO7NYwkLeBazRwl2j3szhiyIVfo63OHr4tmaF+REyTaGj
- 5dIA==
-X-Gm-Message-State: AOJu0Yw2cMVdDS8jxDVBUcsnNXQndoOZ8NCRvzPZ099Is9e83YHKDk9b
- inoA2wFCKx2CwR0i1u79FtzGpNva9EEBXc8y1d4=
-X-Google-Smtp-Source: AGHT+IEPH94uzV0kSulEe7nRAA3e2Q+lsKGv2mAm20HkoBC4kcx7OmAJlwFqzvAhqtlPSsnHxNWmFQ==
-X-Received: by 2002:a17:902:d502:b0:1c7:4a8a:32d1 with SMTP id
- b2-20020a170902d50200b001c74a8a32d1mr1627053plg.28.1697523178797; 
- Mon, 16 Oct 2023 23:12:58 -0700 (PDT)
+ bh=LRsXuHDffyQpwn6iwozzaEFt19iWrF0/6hbYZNaItec=;
+ b=MwhpmQjwqzbju4JJBqbAovvQ+uN6h5urTgn8TJrhqYRUbFpoVZDGLeRG99c5aVo92z
+ +0pab4dZuCbpH49XkS+oewq855x2zgX7tTgldP1Y6iKPKLago7k+C79O+pbKuvrX1mud
+ vU+EvtW/qzzfJ5YTOyStQ34X/+ihc+g9qvK0OK4Y3sYJjsnaWIHL9B6A3Zr9r1TRv5A8
+ vYU/26ShWHxPsZbxju0E8+6md0LB8DKmZ8F8VB0Rp9q3S3e6Vi3Y9MjTpTvI/+1C6btd
+ DBBWNa93WocYxWn3i+nzmrku1B8WDMYsdkrhTbzoQVjj1NYrsJUWpxBdI5axBzxaDa+D
+ J5vw==
+X-Gm-Message-State: AOJu0YyN76Vjqz0bXbuKox7Jv2uwzeqszUSsH1zFJ8+1lOEWt8fgIba0
+ xwJygIo+oPpBuKh02G8vl50Z/UOuaDBD54Prhmw=
+X-Google-Smtp-Source: AGHT+IHOplmmT9sI9qfZbSGMOqkeJa14EywHrIe8G8QJrX3Z6fDmzgOIMbJyEnbFkoM4D8GIDm++pA==
+X-Received: by 2002:a17:903:4346:b0:1c9:d358:b3d9 with SMTP id
+ lo6-20020a170903434600b001c9d358b3d9mr1329367plb.18.1697523179553; 
+ Mon, 16 Oct 2023 23:12:59 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  jf4-20020a170903268400b001ca21e05c69sm629150plb.109.2023.10.16.23.12.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 23:12:58 -0700 (PDT)
+ Mon, 16 Oct 2023 23:12:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 15/90] target/sparc: Merge gen_cond with only caller
-Date: Mon, 16 Oct 2023 23:11:29 -0700
-Message-Id: <20231017061244.681584-16-richard.henderson@linaro.org>
+Subject: [PATCH v2 16/90] target/sparc: Merge gen_fcond with only caller
+Date: Mon, 16 Oct 2023 23:11:30 -0700
+Message-Id: <20231017061244.681584-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231017061244.681584-1-richard.henderson@linaro.org>
 References: <20231017061244.681584-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,22 +95,21 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ target/sparc/translate.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index a05cb59cd6..61a75b5fab 100644
+index 61a75b5fab..cc19f0606e 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -1304,20 +1304,6 @@ static void gen_fcompare(DisasCompare *cmp, unsigned int cc, unsigned int cond)
+@@ -1304,19 +1304,6 @@ static void gen_fcompare(DisasCompare *cmp, unsigned int cc, unsigned int cond)
      }
  }
  
--static void gen_cond(TCGv r_dst, unsigned int cc, unsigned int cond,
--                     DisasContext *dc)
+-static void gen_fcond(TCGv r_dst, unsigned int cc, unsigned int cond)
 -{
 -    DisasCompare cmp;
--    gen_compare(&cmp, cc, cond, dc);
+-    gen_fcompare(&cmp, cc, cond);
 -
 -    /* The interface is to return a boolean in r_dst.  */
 -    if (cmp.is_bool) {
@@ -120,24 +119,24 @@ index a05cb59cd6..61a75b5fab 100644
 -    }
 -}
 -
- static void gen_fcond(TCGv r_dst, unsigned int cc, unsigned int cond)
- {
-     DisasCompare cmp;
-@@ -2975,6 +2961,7 @@ static bool advance_jump_cond(DisasContext *dc, bool annul, target_ulong dest)
- static bool do_bpcc(DisasContext *dc, arg_bcc *a)
+ // Inverted logic
+ static const TCGCond gen_tcg_cond_reg[8] = {
+     TCG_COND_NEVER,  /* reserved */
+@@ -2990,6 +2977,7 @@ TRANS(Bicc, ALL, do_bpcc, a)
+ static bool do_fbpfcc(DisasContext *dc, arg_bcc *a)
  {
      target_long target = dc->pc + a->i * 4;
 +    DisasCompare cmp;
  
-     if (unlikely(AM_CHECK(dc))) {
-         target &= 0xffffffffULL;
-@@ -2986,7 +2973,13 @@ static bool do_bpcc(DisasContext *dc, arg_bcc *a)
+     if (gen_trap_ifnofpu(dc)) {
+         return true;
+@@ -3004,7 +2992,13 @@ static bool do_fbpfcc(DisasContext *dc, arg_bcc *a)
          return advance_jump_uncond_always(dc, a->a, target);
      default:
          flush_cond(dc);
--        gen_cond(cpu_cond, a->cc, a->cond, dc);
+-        gen_fcond(cpu_cond, a->cc, a->cond);
 +
-+        gen_compare(&cmp, a->cc, a->cond, dc);
++        gen_fcompare(&cmp, a->cc, a->cond);
 +        if (cmp.is_bool) {
 +            tcg_gen_mov_tl(cpu_cond, cmp.c1);
 +        } else {
