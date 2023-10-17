@@ -2,74 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A567CC49F
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B7DB7CC4A1
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:20:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsjyP-0006Pk-0I; Tue, 17 Oct 2023 09:19:01 -0400
+	id 1qsjzU-0007A3-Eg; Tue, 17 Oct 2023 09:20:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsjyH-0006KZ-CR
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:18:58 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qsjzJ-0006r0-PL; Tue, 17 Oct 2023 09:19:58 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsjyF-0007Zf-I9
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:18:53 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-53e84912038so4729533a12.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 06:18:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697548729; x=1698153529; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TV3do35AYxXbSAgiBkVm5/JXEuDeVl43xHLj4t+2gX4=;
- b=X6l3hUFq8mzRQRYWXziK0hl7dw+hXyGLSwKY+ZYgx4cAwWM5wGBsHloulcUctyioBE
- qTt8XqlMSqn/SRRv/E2gjqzL1eHGLdTc4Xhk35Yh9Ekv93ZDjNNpmQ5lThbiJQaANxhJ
- ZOvu7fN7UrmeSYBwgQkrFznWz8blYd5+SOE0xQdnYzwM10VborYYMW36roEXqxAq8eK7
- LYsnKR1yLGxm0PEmOiRcrkLT/bt/Skx4lUJwiTPo2VG+nsTZXKUxxOmhXCP+o5xbNZiL
- ICIMK/Ps+rK8uZKc2WG1Mm8eUEVXCA9kcfSjXG8GB7WUQF7XEjg+Z9rGB6kf/4ztiOeb
- siZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697548729; x=1698153529;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TV3do35AYxXbSAgiBkVm5/JXEuDeVl43xHLj4t+2gX4=;
- b=SNOgyNBq99Em+tnYsD0CtAMHOvh3YTVp2wdqdKH2QosI8e5X2h5gwijs/Z0qya/R/j
- olAtGqbcXD00mlrA15hmQrOjp2j/M537SbCAfy7WOQWUc9oCS32lfJeDkhs/8q/9VHBe
- Kem/hW2nVMcLcSwKXmmTwqJPQRN3JGOxChBVPyqxREUbxVrQqnGWSJDZtSIkx7z8l2j2
- 10w11Wzw+P4wBhOxjWGhQPznnqonMmkJpV/at1bfdVafDtw/VEOwJoNt66i1YxCNsC58
- InQV5/UbcnRr2MpPMAcz9zNKg/7RHrroywAXLfQFlOm1Pm88okfcETkjQsBLNHD+Ud2a
- FBEw==
-X-Gm-Message-State: AOJu0YwFfJZkuk3Fu4xa6tMHIIvbxijk7Mt+UOiTlY6mmkl7GDp3uvxF
- 8cLAOvZ8ZWdNv5t5Y2At9eUiaE3ZFAHClQaNvSP33w==
-X-Google-Smtp-Source: AGHT+IGWCIkkRvDsucn1VV5dbdbyf6hVSXB/SJe/n9YNGHCAfDSFtMRsep2O8w7Jl6mUnQGuiVQoH3MKsVyjl32/32k=
-X-Received: by 2002:a05:6402:26c9:b0:53d:a3ff:460a with SMTP id
- x9-20020a05640226c900b0053da3ff460amr1863833edd.27.1697548729393; Tue, 17 Oct
- 2023 06:18:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qsjzH-0007fE-Sd; Tue, 17 Oct 2023 09:19:57 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 2737721D1B;
+ Tue, 17 Oct 2023 13:19:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697548792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=EMrhxDlPxtCjyRvyigcjTXAm1LViD8GGRk/5OdgV7dk=;
+ b=I/1yNUDno4nCbdqqs5ZWdsiFyiZ4PY8p62JBV9GfqoyX8fybur6/WQsNJk/7RPDE6hYdPG
+ qE1YJO7mj/c5WbQ+G1eb+pGiSn02yhlipxngGi/stYsBu4Itga+miIswjIOHx/DZdGCj70
+ n/CMbn6DN8zn5nCH1lXPXVdmWfsJLdk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697548792;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=EMrhxDlPxtCjyRvyigcjTXAm1LViD8GGRk/5OdgV7dk=;
+ b=sWNIThMN8vvKBN7MKPTdTqxTenscLEqjYrDhQmfn+7Vs1MHwUb+Nr5Q2kzumUKnrQcT5OP
+ 4yDlVDa3GqpFp+AQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A50D213584;
+ Tue, 17 Oct 2023 13:19:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id /yKzHPeJLmVYcAAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 17 Oct 2023 13:19:51 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Paolo Bonzini
+ <pbonzini@redhat.com>, Vladimir Sementsov-Ogievskiy
+ <vsementsov@yandex-team.ru>, Fam Zheng <fam@euphon.net>, Cleber Rosa
+ <crosa@redhat.com>, Eric Blake <eblake@redhat.com>, Li Zhijian
+ <lizhijian@fujitsu.com>, Peter Xu <peterx@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, John Snow <jsnow@redhat.com>, Stefan Hajnoczi
+ <stefanha@redhat.com>, Leonardo Bras <leobras@redhat.com>, Laurent
+ Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PULL 11/38] tests/qtest: migration-test: Add tests for
+ file-based migration
+In-Reply-To: <87pm1d1k8p.fsf@secure.mitica>
+References: <20231016100706.2551-1-quintela@redhat.com>
+ <20231016100706.2551-12-quintela@redhat.com> <87sf6azapv.fsf@suse.de>
+ <87bkcx3eab.fsf@secure.mitica> <8734y9xwfy.fsf@suse.de>
+ <87pm1d1k8p.fsf@secure.mitica>
+Date: Tue, 17 Oct 2023 10:19:49 -0300
+Message-ID: <87wmvlwfm2.fsf@suse.de>
 MIME-Version: 1.0
-References: <20230922181411.2697135-1-crauer@google.com>
-In-Reply-To: <20230922181411.2697135-1-crauer@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Oct 2023 14:18:38 +0100
-Message-ID: <CAFEAcA8XY1_W9YPtg1NOPYmEyL1H8AS9nT-BTXZGrNkjFBW_dg@mail.gmail.com>
-Subject: Re: [PATCH] hw/timer/npcm7xx_timer: Prevent timer from counting down
- past zero
-To: Chris Rauer <crauer@google.com>
-Cc: kfting@nuvoton.com, wuhaotsh@google.com, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_TWELVE(0.00)[16];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,19 +105,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 22 Sept 2023 at 19:14, Chris Rauer <crauer@google.com> wrote:
+Juan Quintela <quintela@redhat.com> writes:
+
+> Fabiano Rosas <farosas@suse.de> wrote:
+>> Juan Quintela <quintela@redhat.com> writes:
+>>
+>>> Fabiano Rosas <farosas@suse.de> wrote:
+>>> D> Juan Quintela <quintela@redhat.com> writes:
+>>>>
+>>>>> From: Fabiano Rosas <farosas@suse.de>
+>>>>>
+>>>>> Add basic tests for file-based migration.
+>>>>>
+>>>>> Note that we cannot use test_precopy_common because that routine
+>>>>> expects it to be possible to run the migration live. With the file
+>>>>> transport there is no live migration because we must wait for the
+>>>>> source to finish writing the migration data to the file before the
+>>>>> destination can start reading. Add a new migration function
+>>>>> specifically to handle the file migration.
+>>>>>
+>>>>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>>>>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>>>>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>>>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>>>>> Message-ID: <20230712190742.22294-7-farosas@suse.de>
+>>>
+>>>>> +static void file_offset_finish_hook(QTestState *from, QTestState *to,
+>>>>> +                                    void *opaque)
+>>>>> +{
+>>>>> +#if defined(__linux__)
+>>>>> +    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
+>>>>> +    size_t size = FILE_TEST_OFFSET + sizeof(QEMU_VM_FILE_MAGIC);
+>>>>> +    uintptr_t *addr, *p;
+>>>>> +    int fd;
+>>>>> +
+>>>>> +    fd = open(path, O_RDONLY);
+>>>>> +    g_assert(fd != -1);
+>>>>> +    addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
+>>>>> +    g_assert(addr != MAP_FAILED);
+>>>>> +
+>>>>> +    /*
+>>>>> +     * Ensure the skipped offset contains zeros and the migration
+>>>>> +     * stream starts at the right place.
+>>>>> +     */
+>>>>> +    p = addr;
+>>>>> +    while (p < addr + FILE_TEST_OFFSET / sizeof(uintptr_t)) {
+>>>>> +        g_assert(*p == 0);
+>>>>> +        p++;
+>>>>> +    }
+>>>>> +    g_assert_cmpint(cpu_to_be32(*p), ==, QEMU_VM_FILE_MAGIC);
+>>>>
+>>>> This truncates to 32-bits, so it breaks on a BE host. We need this:
+>>>>
+>>>> -->8--
+>>>> From ea0c2d1c988add48d9754891a9fc7f6854a9718a Mon Sep 17 00:00:00 2001
+>>>> From: Fabiano Rosas <farosas@suse.de>
+>>>> Date: Mon, 16 Oct 2023 15:21:49 -0300
+>>>> Subject: [PATCH] fixup! tests/qtest: migration-test: Add tests for file-based
+>>>>  migration
+>>>>
+>>>> ---
+>>>>  tests/qtest/migration-test.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>>>> index da02b6d692..e1c110537b 100644
+>>>> --- a/tests/qtest/migration-test.c
+>>>> +++ b/tests/qtest/migration-test.c
+>>>> @@ -1966,7 +1966,7 @@ static void file_offset_finish_hook(QTestState *from, QTestState *to,
+>>>>          g_assert(*p == 0);
+>>>>          p++;
+>>>>      }
+>>>> -    g_assert_cmpint(cpu_to_be32(*p), ==, QEMU_VM_FILE_MAGIC);
+>>>> +    g_assert_cmpint(cpu_to_be64(*p) >> 32, ==, QEMU_VM_FILE_MAGIC);
+>>>>  
+>>>>      munmap(addr, size);
+>>>>      close(fd);
+>>>
+>>> I am resubmitting with this change.
+>>>
+>>> But I think we need to change this:
+>>>
+>>>>> +    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
+>>>>> +    size_t size = FILE_TEST_OFFSET + sizeof(QEMU_VM_FILE_MAGIC);
+>>>>> +    uintptr_t *addr, *p;
+>>>
+>>> I think we should change the test so the file is 64 bits on every
+>>> architecture.
+>>> Then we can cast to void * or uintptr_t as needed.
+>>
+>> Hm, I don't get what you mean here. What needs to be 64 bits?
 >
-> The counter register is only 24-bits and counts down.  If the timer is
-> running but the qtimer to reset it hasn't fired off yet, there is a chance
-> the regster read can return an invalid result.
+> size_t is 32 bits on 32bits host, and 64 bits on 64 bits host.
+> uintprt_t is the same.
+
+Right, I have thought of that when writing this fix yesterday, but I
+dismissed it because I thought we were never have a 32bit host running
+these tests.
+
+> So using explicit sizes:
 >
-> Signed-off-by: Chris Rauer <crauer@google.com>
+> static void file_offset_finish_hook(QTestState *from, QTestState *to,
+>                                     void *opaque)
+> {
+> #if defined(__linux__)
+>     g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
+>     size_t size = FILE_TEST_OFFSET + sizeof(QEMU_VM_FILE_MAGIC);
+>     uint64_t *addr, *p;
+>     int fd;
+>
+>     fd = open(path, O_RDONLY);
+>     g_assert(fd != -1);
+>     addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
+>     g_assert(addr != MAP_FAILED);
+>
+>     /*
+>      * Ensure the skipped offset contains zeros and the migration
+>      * stream starts at the right place.
+>      */
+>     p = addr;
+>     while (p < (uintprt_t)addr + FILE_TEST_OFFSET) {
+>         g_assert(*p == 0);
+>         p++;
+>     }
+>     g_assert_cmpint(cpu_to_be64(*p) >> 32, ==, QEMU_VM_FILE_MAGIC);
+>
+>     munmap(addr, size);
+>     close(fd);
+> #endif
+> }
+>
+> This is completely untested, but it should make sure that we are reading
+> 64bits integers in both 32 and 64 bits hosts, no?
 
-Applied to target-arm.next, thanks.
-
-(As a side note, if you'd used the ptimer countdown-timer functions
-to implement this timer, this is one of the corner cases that it
-would have got right for you ;-))
-
--- PMM
+Looks like it. I can give it a try and send an update as a separate
+patch.
 
