@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BDD7CCE02
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 215AF7CCE52
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:40:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsqeV-0000t1-TG; Tue, 17 Oct 2023 16:26:55 -0400
+	id 1qsqqZ-0007od-8e; Tue, 17 Oct 2023 16:39:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsqeS-0000i9-RO
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:26:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsqqX-0007oQ-JN
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:39:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsqeL-0000lc-3D
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:26:52 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsqqW-0003Nm-7x
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:39:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697574403;
+ s=mimecast20190719; t=1697575159;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rp5YQ9xMfI27gHt4gsSUZxlCP9AGS7NHKrCi4hwJoAM=;
- b=bu6S3QVzk7t3IpoAwVypMZG66LmeBM96+4IBW/i2YWd9O1uljguPIKY4vVmsgHvBuUfdSm
- W+C67DciZBRF4/3scomHGwc6cfLyJOcXWjdy+Nn+HTOy4wlkDLFcgB+YxQ6nV/LhJPFBX2
- VMOnZHrIGxk/P+Y6a2IMTuCumkm14Rg=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=h6k+g0B0Vg+QIBJMjs/o4gmlz5GREYx4idsrMCdF43s=;
+ b=Z2uApEo9VPSUn0UHZPlg3Bce2+OkJc/zMeJ1Ixrxoj5wWwRSVgxqQZDPRsyXJYiCHCkiKG
+ tehHLhsUQkqIC8mCbF/K4lsNZhidoBXnQBD6fVuZu8+aNrLnOykXRifH4PgVSEpoMasnOr
+ /zBPSwTT1r5VqXf9jmrBzMQqdSzuHag=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-_jigtFY3OhC74L-Gucg1Uw-1; Tue, 17 Oct 2023 16:26:42 -0400
-X-MC-Unique: _jigtFY3OhC74L-Gucg1Uw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66011f0d521so8490546d6.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 13:26:41 -0700 (PDT)
+ us-mta-548-sQ_NgseiPKKJG-v6tR9aOg-1; Tue, 17 Oct 2023 16:38:57 -0400
+X-MC-Unique: sQ_NgseiPKKJG-v6tR9aOg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7756d0fb11dso103480585a.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 13:38:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697574401; x=1698179201;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rp5YQ9xMfI27gHt4gsSUZxlCP9AGS7NHKrCi4hwJoAM=;
- b=tlQveCjhg7j+7QeOY1UNAR+KW6Z41pOYa379Mtq3MqMPIvJZwe0+p+smjDaQfLu6Ql
- 2RozEsslu23eD/ufISBEDvvRQiPpPfiT2yPVsgigaHfgvvAgc2Gj0yKCVs6wH0o+fUSV
- edHk/5vWhgwV4kpqsD6ambOakQFXyKGyszzqV4JlLrolzF8DjSKLMS/BcHQj+4912wuM
- P+/zbyhAuVZKE0U5yAznGSH8enYy7fhUD03HsIRWGefdI0YTHMgaJJu79kMugUweGZFl
- +jnYXEXzEDhQYkyFDCsBJFedv885vCn8hJLeiAkrHtjPBAeaZQORH9gdYSRM9X/lA4YE
- Pfaw==
-X-Gm-Message-State: AOJu0YwQWvlrJkn3UCuhNSixwbtoue5Dnd+kGlz73hVdwQMcQd9yDhCL
- Pkl/YAIi+2IPSzPF9QJDzwhaAcmlRy1eV/vuUwKLSBODFNRMaoIhEnOfP2UruWF+21TXFbNyRSR
- VUbcMb6Wdl1m7DORNOwNIfHEVOjvPS/QS4e8QmmfOHssgIykwaJ4i8RW0HnK4W7ahH/7mR0Q5
-X-Received: by 2002:a05:620a:6c0d:b0:778:8ae9:2247 with SMTP id
- ui13-20020a05620a6c0d00b007788ae92247mr2161246qkn.5.1697574400790; 
- Tue, 17 Oct 2023 13:26:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH75v9ptweOv0T1qw86ziZSF/tdYOfONUeQ7eOv6BmR7cVpN3kLPc0iMNBWfGG2l1UBI5Cy9Q==
-X-Received: by 2002:a05:620a:6c0d:b0:778:8ae9:2247 with SMTP id
- ui13-20020a05620a6c0d00b007788ae92247mr2161231qkn.5.1697574400457; 
- Tue, 17 Oct 2023 13:26:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697575137; x=1698179937;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h6k+g0B0Vg+QIBJMjs/o4gmlz5GREYx4idsrMCdF43s=;
+ b=G52dkPQsAIS8a1BW80Y0BsshQ3UjNOOW+KSPs6sucYL2CZgE+y2bziJbAOMEg9aTLL
+ 5wIpezxjUbFvv0YqbwnHsh12JvPh6NwS3l1JyBc3nj61EQi2+QWl7YVDZYLbF1gbeti7
+ hYySZqcrRS/CC4LGNlTzDeLH68faekCe5jOZrTmx153pTMEKiG0d1jKGPPDnxp2Kydib
+ +CtLqVJJrs+DDiC4dgK4T3geCYrfB2re3ygU473Ahx1QRioc2GWSnyKqQSw43k7V3n22
+ aknTjobjnw+6WMt4JSY/s/QnKT8zm61cVBBKz2UOV1YV3TOfeOTYZBQuJU3uPt6zRkL7
+ VvsQ==
+X-Gm-Message-State: AOJu0YyfVDAIKW4bts/6VkcPQTy2t+1kbnQOhB952k/Qg17i42/ZQatv
+ HAgbarbuziAQNmFp+RpcsVBNZ6sgm86uP/D1d5UNtPWBdLi5wIIFstvt0dyndKinAvOCxaiZu9W
+ +qaQ8RWQe9oodp11d0hg9naPZ52UB/BTvSx/ogdLBrITFwTV7xXtRCMzME7b4jdJ22sIm05CL
+X-Received: by 2002:a05:620a:488a:b0:76e:f686:cad5 with SMTP id
+ ea10-20020a05620a488a00b0076ef686cad5mr3517124qkb.5.1697575136998; 
+ Tue, 17 Oct 2023 13:38:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHi7j8k4uZfk5/FemQxyBrcixsVxxOrCeCE2qwEy5b8VlOiT1nMp9NWaMTyIJOVU7pHER5fag==
+X-Received: by 2002:a05:620a:488a:b0:76e:f686:cad5 with SMTP id
+ ea10-20020a05620a488a00b0076ef686cad5mr3517113qkb.5.1697575136687; 
+ Tue, 17 Oct 2023 13:38:56 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- s17-20020ae9f711000000b0076f16e98851sm931879qkg.102.2023.10.17.13.26.39
+ f9-20020a05620a408900b007677347e20asm940487qko.129.2023.10.17.13.38.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Oct 2023 13:26:40 -0700 (PDT)
+ Tue, 17 Oct 2023 13:38:56 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Juan Quintela <quintela@redhat.com>
-Subject: [PATCH v4 5/5] migration: Change ram_save_queue_pages() retval to bool
-Date: Tue, 17 Oct 2023 16:26:33 -0400
-Message-ID: <20231017202633.296756-6-peterx@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ peterx@redhat.com
+Subject: [PATCH] migration: Fix parse_ramblock() on overwritten retvals
+Date: Tue, 17 Oct 2023 16:38:55 -0400
+Message-ID: <20231017203855.298260-1-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231017202633.296756-1-peterx@redhat.com>
-References: <20231017202633.296756-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URG_BIZ=0.573 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,159 +95,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After we have errp which contains the more detailed error message, make
-ram_save_queue_pages() returns bool in its stack.
+It's possible that some errors can be overwritten with success retval later
+on, and then ignored.  Always capture all errors and report.
 
+Reported by Coverity 1522861, but actually I spot one more in the same
+function.
+
+Fixes: CID 1522861
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/ram.h       |  4 ++--
- migration/migration.c | 16 ++++++++--------
- migration/ram.c       | 18 +++++++++---------
- 3 files changed, 19 insertions(+), 19 deletions(-)
+ migration/ram.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/migration/ram.h b/migration/ram.h
-index af0290f8ab..e22a6b0d1c 100644
---- a/migration/ram.h
-+++ b/migration/ram.h
-@@ -51,8 +51,8 @@ uint64_t ram_bytes_total(void);
- void mig_throttle_counter_reset(void);
- 
- uint64_t ram_pagesize_summary(void);
--int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
--                         Error **errp);
-+bool ram_save_queue_pages(const char *rbname, ram_addr_t start,
-+                          ram_addr_t len, Error **errp);
- void ram_postcopy_migrated_memory_release(MigrationState *ms);
- /* For outgoing discard bitmap */
- void ram_postcopy_send_discard_bitmap(MigrationState *ms);
-diff --git a/migration/migration.c b/migration/migration.c
-index dfb8b48dcb..50bf8422c7 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1820,8 +1820,10 @@ static struct rp_cmd_args {
-  * Process a request for pages received on the return path,
-  * We're allowed to send more than requested (e.g. to round to our page size)
-  * and we don't need to send pages that have already been sent.
-+ *
-+ * Returns true if succeed, false otherwise.
-  */
--static void
-+static bool
- migrate_handle_rp_req_pages(MigrationState *ms, const char* rbname,
-                             ram_addr_t start, size_t len, Error **errp)
- {
-@@ -1837,10 +1839,10 @@ migrate_handle_rp_req_pages(MigrationState *ms, const char* rbname,
-         !QEMU_IS_ALIGNED(len, our_host_ps)) {
-         error_setg(errp, "MIG_RP_MSG_REQ_PAGES: Misaligned page request, start:"
-                    RAM_ADDR_FMT " len: %zd", start, len);
--        return;
-+        return false;
-     }
- 
--    ram_save_queue_pages(rbname, start, len, errp);
-+    return ram_save_queue_pages(rbname, start, len, errp);
- }
- 
- static bool migrate_handle_rp_recv_bitmap(MigrationState *s, char *block_name,
-@@ -1990,8 +1992,7 @@ static void *source_return_path_thread(void *opaque)
-         case MIG_RP_MSG_REQ_PAGES:
-             start = ldq_be_p(buf);
-             len = ldl_be_p(buf + 8);
--            migrate_handle_rp_req_pages(ms, NULL, start, len, &err);
--            if (err) {
-+            if (!migrate_handle_rp_req_pages(ms, NULL, start, len, &err)) {
-                 goto out;
-             }
-             break;
-@@ -2012,9 +2013,8 @@ static void *source_return_path_thread(void *opaque)
-                            header_len, expected_len);
-                 goto out;
-             }
--            migrate_handle_rp_req_pages(ms, (char *)&buf[13], start, len,
--                                        &err);
--            if (err) {
-+            if (!migrate_handle_rp_req_pages(ms, (char *)&buf[13], start, len,
-+                                             &err)) {
-                 goto out;
-             }
-             break;
 diff --git a/migration/ram.c b/migration/ram.c
-index ca77444e18..aca9ae5846 100644
+index c844151ee9..d8bdb53a8f 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -1948,15 +1948,15 @@ static void migration_page_queue_free(RAMState *rs)
-  *
-  * A request from postcopy destination for example.
-  *
-- * Returns zero on success or negative on error
-+ * Returns true on success or false on error (detailed error put in @errp)
-  *
-  * @rbname: Name of the RAMBLock of the request. NULL means the
-  *          same that last one.
-  * @start: starting address from the start of the RAMBlock
-  * @len: length (in bytes) to send
-  */
--int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
--                         Error **errp)
-+bool ram_save_queue_pages(const char *rbname, ram_addr_t start,
-+                          ram_addr_t len, Error **errp)
- {
-     RAMBlock *ramblock;
-     RAMState *rs = ram_state;
-@@ -1974,7 +1974,7 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
-              * it's the 1st request.
-              */
-             error_setg(errp, "MIG_RP_MSG_REQ_PAGES has no previous block");
--            return -1;
-+            return false;
+@@ -3888,6 +3888,8 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+         ret = qemu_ram_resize(block, length, &local_err);
+         if (local_err) {
+             error_report_err(local_err);
++            assert(ret < 0);
++            return ret;
          }
-     } else {
-         ramblock = qemu_ram_block_by_name(rbname);
-@@ -1982,7 +1982,7 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
-         if (!ramblock) {
-             /* We shouldn't be asked for a non-existent RAMBlock */
-             error_setg(errp, "MIG_RP_MSG_REQ_PAGES has no block '%s'", rbname);
--            return -1;
-+            return false;
+     }
+     /* For postcopy we need to check hugepage sizes match */
+@@ -3898,7 +3900,7 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+             error_report("Mismatched RAM page size %s "
+                          "(local) %zd != %" PRId64, block->idstr,
+                          block->page_size, remote_page_size);
+-            ret = -EINVAL;
++            return -EINVAL;
          }
-         rs->last_req_rb = ramblock;
      }
-@@ -1992,7 +1992,7 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
-                    "start=" RAM_ADDR_FMT " len="
-                    RAM_ADDR_FMT " blocklen=" RAM_ADDR_FMT,
-                    start, len, ramblock->used_length);
--        return -1;
-+        return false;
+     if (migrate_ignore_shared()) {
+@@ -3908,7 +3910,7 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+             error_report("Mismatched GPAs for block %s "
+                          "%" PRId64 "!= %" PRId64, block->idstr,
+                          (uint64_t)addr, (uint64_t)block->mr->addr);
+-            ret = -EINVAL;
++            return -EINVAL;
+         }
      }
- 
-     /*
-@@ -2003,7 +2003,7 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
-         ram_addr_t page_start = start >> TARGET_PAGE_BITS;
-         size_t page_size = qemu_ram_pagesize(ramblock);
-         PageSearchStatus *pss = &ram_state->pss[RAM_CHANNEL_POSTCOPY];
--        int ret = 0;
-+        bool ret = true;
- 
-         qemu_mutex_lock(&rs->bitmap_mutex);
- 
-@@ -2026,7 +2026,7 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
-                 error_setg(errp, "ram_save_host_page_urgent() failed: "
-                            "ramblock=%s, start_addr=0x"RAM_ADDR_FMT,
-                            ramblock->idstr, start);
--                ret = -1;
-+                ret = false;
-                 break;
-             }
-             /*
-@@ -2057,7 +2057,7 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
-     migration_make_urgent_request();
-     qemu_mutex_unlock(&rs->src_page_req_mutex);
- 
--    return 0;
-+    return true;
- }
- 
- static bool save_page_use_compression(RAMState *rs)
+     ret = rdma_block_notification_handle(f, block->idstr);
 -- 
 2.41.0
 
