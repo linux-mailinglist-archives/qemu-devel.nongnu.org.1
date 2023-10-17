@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CCD7CBB03
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA997CBAEE
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:21:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsdRw-0005x7-D2; Tue, 17 Oct 2023 02:21:04 -0400
+	id 1qsdRw-0005va-Vq; Tue, 17 Oct 2023 02:21:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdR3-0003lE-9e
+ id 1qsdR3-0003kx-9G
  for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:20:13 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdQt-0005Cw-CX
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:20:05 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6c4fc2ce697so3738955a34.0
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:19:58 -0700 (PDT)
+ id 1qsdQv-0005D5-AJ
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:20:04 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-1e9b6f39f9eso3546425fac.2
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:19:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697523598; x=1698128398; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5QeMUw78p/tJHUkNOYbpeaMRVGvJ9iRUUNxnjmV73p0=;
- b=RcQ37R/dad21Mo7gNt/SGTcOhQLT+DlIyEkzvYWIu//bV2aDBDJTr0szxhJwmQNJ60
- hlGl9B5SJbOnzbGrPDBTfRVcMGxtgTKozM5qt9bgesRq0KLX9aTLn9nd8fGq+/r9Lj8k
- YCH6LFSdpdCerDd4XLve3/mrfxrOa72u3bIjTYQtpTa4UIsbpUA1zjH02KrSb0+Ty8hC
- nyP8nd5/NIds0/XYiqbhNpC8WoNLiez3JBu2td+ThwjI9OsSJ7twKY+a7QQ6k9u+2aRj
- 6lz25AhCORU7+k8k6t+IwWxQCjbQXpvT8Jwa2q8I393dMYcSwKGv0CIG2OOvu++F6dZ9
- sbVA==
+ bh=OsswZ4m+p5sHVQ4VqGmu5XdQhh8AvISCV+JisFOh8vc=;
+ b=msh+iPmpfGF1tbC4Tpy07x1jLi8PlHrguijF1XSflBc8l5xKXQ0bci6BYOMHCQjutj
+ Ae5r5ksPdetTphJZ4I4KSSjmZ/5ySvbRGZdeeP72mtOrpFnbr4uHXmqOvcsvCW0YbieW
+ vmzhQSKOgtKFsalxQBVH6XMs24pY3e+HQ3iXuUQACIbP2700tAFLKir8leC9oEJfEcWX
+ 3SIiwlxD2t9zrDCL2LpmwEwMHKJ66uUW0fNSaKAcwdQSI9HrVgZUnllaXsNvugbPn7i9
+ huLQUNuCMmGfpNLMACmkFSdTPgpwufEUu8M+pVE1AFRo/QgyZczo/PFjoeMqL4FkA19E
+ itHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697523598; x=1698128398;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5QeMUw78p/tJHUkNOYbpeaMRVGvJ9iRUUNxnjmV73p0=;
- b=Y1/eg9oZzYR325nJ/lTfffRuKkllOr1nFz6CU11PkgoOleJWmARB7FL9NvRHzumf7C
- GICaqWPchodDO4IN1+A2J9uP0Txmu6/iPW/S8ofQaVxNqhlL+k4DqJMjbby1X+9RRLV0
- D1mi54eniASZXbxzT5GrY20rY0UchNqPCCTGsnGwRBBFMlAd19SJkN60bkWyWUT9ZVFy
- mTFnQkf5BGt9lleoDzi8lkBNziWQK4Koie9tIr76WB72ULzekOObJkzU45OCLgcSNnpe
- tAw7S+Bw8+r0qdAeTopTUAlsDZb5rcniRjiYFB7PoDHKHbGCUF+lo3qO6FJo3ISKsaDT
- K5nQ==
-X-Gm-Message-State: AOJu0YzxYXL5TJC6WtMYDrfTcWp6yFE3rHaDKWpGiS02ElOfAG0HnpyQ
- lXawhrfGPwVtJEWdcKjaa3apucQP65F4SOPM5R0=
-X-Google-Smtp-Source: AGHT+IG25j/K6vrQTn3U+6wpeqROCDxS4LsOfXHxDlwMBr6BkKQOH6pvBH/yQmxfjqFLcrtLpob7Bw==
-X-Received: by 2002:a05:6870:9e8f:b0:1e9:bc53:b78c with SMTP id
- pu15-20020a0568709e8f00b001e9bc53b78cmr1325438oab.8.1697523597825; 
- Mon, 16 Oct 2023 23:19:57 -0700 (PDT)
+ bh=OsswZ4m+p5sHVQ4VqGmu5XdQhh8AvISCV+JisFOh8vc=;
+ b=YvkVzy4I7V+/SjW656IZtVbmA2gABAUx7kDqouDX9h+PMix55ANd4A4Bk/7G5JNaza
+ yvms32uS6H/ykmP7t+keRLvn9L8WDbZQ+4VOz9X72ePHrgmzciROOQjs6e3Zf4jXgp4z
+ ynNytJlbx/DxVyeGfFmLwKnbwyfAd3/2//7PC4q5rF8MOW1Sn6L4Oe+vBRdq7CT6kgOp
+ eCvXmobIi4pW7Y8YB6QDg3ik517K/j7F4G4PCgErnCqPCxJ27rytmpmu14Cfr0pQxvkN
+ E9UU1ifFmwQcYf4UAoUXe5Rzj9fIoYi5kJVmxfJnFimqhOOenrTeD/4zsjwXRCC3eBzz
+ auYA==
+X-Gm-Message-State: AOJu0YxyE+L50yqxNqd27nJBaw2rUcYJusdwoQ3Jwy+6jJHVrYXP/YW8
+ yK4R0FB7k16oex9VEtrtvl4mTLqdkRq93EYiizc=
+X-Google-Smtp-Source: AGHT+IGA95cnZbCtwLkUdaDfQRWwqsbNSk92nSmma8CzwTOhcsCqdgutyVsiO5u9AB6SodjWMLXkLg==
+X-Received: by 2002:a05:6870:1002:b0:1e9:9bec:c01d with SMTP id
+ 2-20020a056870100200b001e99becc01dmr1317185oai.6.1697523598535; 
+ Mon, 16 Oct 2023 23:19:58 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  by2-20020a056a02058200b00588e8421fa8sm550331pgb.84.2023.10.16.23.19.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 23:19:57 -0700 (PDT)
+ Mon, 16 Oct 2023 23:19:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 85/90] target/sparc: Move FMOVR, FMOVcc,
- FMOVfcc to decodetree
-Date: Mon, 16 Oct 2023 23:12:39 -0700
-Message-Id: <20231017061244.681584-86-richard.henderson@linaro.org>
+Subject: [PATCH v2 86/90] target/sparc: Convert FCMP, FCMPE to decodetree
+Date: Mon, 16 Oct 2023 23:12:40 -0700
+Message-Id: <20231017061244.681584-87-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231017061244.681584-1-richard.henderson@linaro.org>
 References: <20231017061244.681584-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,289 +92,221 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  12 +++
- target/sparc/translate.c  | 192 ++++++++++++++++----------------------
- 2 files changed, 91 insertions(+), 113 deletions(-)
+ target/sparc/insns.decode |   7 ++
+ target/sparc/translate.c  | 145 +++++++++++++++++++++++---------------
+ 2 files changed, 96 insertions(+), 56 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 23db453617..88d4b8529d 100644
+index 88d4b8529d..3167797854 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -277,6 +277,18 @@ FsTOi       10 ..... 110100 00000 0 1101 0001 .....        @r_r2
- FdTOi       10 ..... 110100 00000 0 1101 0010 .....        @r_r2
- FqTOi       10 ..... 110100 00000 0 1101 0011 .....        @r_r2
+@@ -289,6 +289,13 @@ FMOVRs      10 rd:5  110101 rs1:5    0 cond:3  00101 rs2:5
+ FMOVRd      10 rd:5  110101 rs1:5    0 cond:3  00110 rs2:5
+ FMOVRq      10 rd:5  110101 rs1:5    0 cond:3  00111 rs2:5
  
-+FMOVscc     10 rd:5  110101 0 cond:4 1 cc:1 0 000001 rs2:5
-+FMOVdcc     10 rd:5  110101 0 cond:4 1 cc:1 0 000010 rs2:5
-+FMOVqcc     10 rd:5  110101 0 cond:4 1 cc:1 0 000011 rs2:5
-+
-+FMOVsfcc    10 rd:5  110101 0 cond:4 0 cc:2   000001 rs2:5
-+FMOVdfcc    10 rd:5  110101 0 cond:4 0 cc:2   000010 rs2:5
-+FMOVqfcc    10 rd:5  110101 0 cond:4 0 cc:2   000011 rs2:5
-+
-+FMOVRs      10 rd:5  110101 rs1:5    0 cond:3  00101 rs2:5
-+FMOVRd      10 rd:5  110101 rs1:5    0 cond:3  00110 rs2:5
-+FMOVRq      10 rd:5  110101 rs1:5    0 cond:3  00111 rs2:5
++FCMPs       10 000 cc:2 110101 rs1:5  0 0101 0001 rs2:5
++FCMPd       10 000 cc:2 110101 rs1:5  0 0101 0010 rs2:5
++FCMPq       10 000 cc:2 110101 rs1:5  0 0101 0011 rs2:5
++FCMPEs      10 000 cc:2 110101 rs1:5  0 0101 0101 rs2:5
++FCMPEd      10 000 cc:2 110101 rs1:5  0 0101 0110 rs2:5
++FCMPEq      10 000 cc:2 110101 rs1:5  0 0101 0111 rs2:5
 +
  {
    [
      EDGE8cc     10 ..... 110110 ..... 0 0000 0000 .....    @r_r_r
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 7baf8f5cff..84b67ac1a8 100644
+index 84b67ac1a8..8dd5ef0c92 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2381,15 +2381,9 @@ static void gen_stda_asi(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
-     }
- }
+@@ -5212,6 +5212,82 @@ TRANS(FMOVsfcc, 64, do_fmovfcc, a, false, gen_fmovs)
+ TRANS(FMOVdfcc, 64, do_fmovfcc, a, false, gen_fmovd)
+ TRANS(FMOVqfcc, 64, do_fmovfcc, a, true, gen_fmovq)
  
--#ifdef TARGET_SPARC64
--static TCGv get_src1(DisasContext *dc, unsigned int insn)
--{
--    unsigned int rs1 = GET_FIELD(insn, 13, 17);
--    return gen_load_gpr(dc, rs1);
--}
--
- static void gen_fmovs(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
- {
-+#ifdef TARGET_SPARC64
-     TCGv_i32 c32, zero, dst, s1, s2;
- 
-     /* We have two choices here: extend the 32 bit data and use movcond_i64,
-@@ -2412,19 +2406,27 @@ static void gen_fmovs(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
-     tcg_gen_movcond_i32(TCG_COND_NE, dst, c32, zero, s1, s2);
- 
-     gen_store_fpr_F(dc, rd, dst);
-+#else
-+    qemu_build_not_reached();
-+#endif
- }
- 
- static void gen_fmovd(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
- {
-+#ifdef TARGET_SPARC64
-     TCGv_i64 dst = gen_dest_fpr_D(dc, rd);
-     tcg_gen_movcond_i64(cmp->cond, dst, cmp->c1, cmp->c2,
-                         gen_load_fpr_D(dc, rs),
-                         gen_load_fpr_D(dc, rd));
-     gen_store_fpr_D(dc, rd, dst);
-+#else
-+    qemu_build_not_reached();
-+#endif
- }
- 
- static void gen_fmovq(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
- {
-+#ifdef TARGET_SPARC64
-     int qd = QFPREG(rd);
-     int qs = QFPREG(rs);
- 
-@@ -2434,8 +2436,12 @@ static void gen_fmovq(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
-                         cpu_fpr[qs / 2 + 1], cpu_fpr[qd / 2 + 1]);
- 
-     gen_update_fprs_dirty(dc, qd);
-+#else
-+    qemu_build_not_reached();
-+#endif
- }
- 
-+#ifdef TARGET_SPARC64
- static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr)
- {
-     TCGv_i32 r_tl = tcg_temp_new_i32();
-@@ -5140,6 +5146,72 @@ static bool trans_FdMULq(DisasContext *dc, arg_r_r_r *a)
-     return advance_pc(dc);
- }
- 
-+static bool do_fmovr(DisasContext *dc, arg_FMOVRs *a, bool is_128,
-+                     void (*func)(DisasContext *, DisasCompare *, int, int))
++static bool do_fcmps(DisasContext *dc, arg_FCMPs *a, bool e)
 +{
-+    DisasCompare cmp;
++    TCGv_i32 src1, src2;
 +
-+    if (gen_trap_ifnofpu(dc)) {
-+        return true;
++    if (avail_32(dc) && a->cc != 0) {
++        return false;
 +    }
-+    if (is_128 && gen_trap_float128(dc)) {
++    if (gen_trap_ifnofpu(dc)) {
 +        return true;
 +    }
 +
 +    gen_op_clear_ieee_excp_and_FTT();
-+    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
-+    func(dc, &cmp, a->rd, a->rs2);
++    src1 = gen_load_fpr_F(dc, a->rs1);
++    src2 = gen_load_fpr_F(dc, a->rs2);
++    if (e) {
++        gen_op_fcmpes(a->cc, src1, src2);
++    } else {
++        gen_op_fcmps(a->cc, src1, src2);
++    }
 +    return advance_pc(dc);
 +}
 +
-+TRANS(FMOVRs, 64, do_fmovr, a, false, gen_fmovs)
-+TRANS(FMOVRd, 64, do_fmovr, a, false, gen_fmovd)
-+TRANS(FMOVRq, 64, do_fmovr, a, true, gen_fmovq)
++TRANS(FCMPs, ALL, do_fcmps, a, false)
++TRANS(FCMPEs, ALL, do_fcmps, a, true)
 +
-+static bool do_fmovcc(DisasContext *dc, arg_FMOVscc *a, bool is_128,
-+                      void (*func)(DisasContext *, DisasCompare *, int, int))
++static bool do_fcmpd(DisasContext *dc, arg_FCMPd *a, bool e)
 +{
-+    DisasCompare cmp;
++    TCGv_i64 src1, src2;
 +
-+    if (gen_trap_ifnofpu(dc)) {
-+        return true;
++    if (avail_32(dc) && a->cc != 0) {
++        return false;
 +    }
-+    if (is_128 && gen_trap_float128(dc)) {
++    if (gen_trap_ifnofpu(dc)) {
 +        return true;
 +    }
 +
 +    gen_op_clear_ieee_excp_and_FTT();
-+    gen_compare(&cmp, a->cc, a->cond, dc);
-+    func(dc, &cmp, a->rd, a->rs2);
++    src1 = gen_load_fpr_D(dc, a->rs1);
++    src2 = gen_load_fpr_D(dc, a->rs2);
++    if (e) {
++        gen_op_fcmped(a->cc, src1, src2);
++    } else {
++        gen_op_fcmpd(a->cc, src1, src2);
++    }
 +    return advance_pc(dc);
 +}
 +
-+TRANS(FMOVscc, 64, do_fmovcc, a, false, gen_fmovs)
-+TRANS(FMOVdcc, 64, do_fmovcc, a, false, gen_fmovd)
-+TRANS(FMOVqcc, 64, do_fmovcc, a, true, gen_fmovq)
++TRANS(FCMPd, ALL, do_fcmpd, a, false)
++TRANS(FCMPEd, ALL, do_fcmpd, a, true)
 +
-+static bool do_fmovfcc(DisasContext *dc, arg_FMOVsfcc *a, bool is_128,
-+                       void (*func)(DisasContext *, DisasCompare *, int, int))
++static bool do_fcmpq(DisasContext *dc, arg_FCMPq *a, bool e)
 +{
-+    DisasCompare cmp;
-+
++    if (avail_32(dc) && a->cc != 0) {
++        return false;
++    }
 +    if (gen_trap_ifnofpu(dc)) {
 +        return true;
 +    }
-+    if (is_128 && gen_trap_float128(dc)) {
++    if (gen_trap_float128(dc)) {
 +        return true;
 +    }
 +
 +    gen_op_clear_ieee_excp_and_FTT();
-+    gen_fcompare(&cmp, a->cc, a->cond);
-+    func(dc, &cmp, a->rd, a->rs2);
++    gen_op_load_fpr_QT0(QFPREG(a->rs1));
++    gen_op_load_fpr_QT1(QFPREG(a->rs2));
++    if (e) {
++        gen_op_fcmpeq(a->cc);
++    } else {
++        gen_op_fcmpq(a->cc);
++    }
 +    return advance_pc(dc);
 +}
 +
-+TRANS(FMOVsfcc, 64, do_fmovfcc, a, false, gen_fmovs)
-+TRANS(FMOVdfcc, 64, do_fmovfcc, a, false, gen_fmovd)
-+TRANS(FMOVqfcc, 64, do_fmovfcc, a, true, gen_fmovq)
++TRANS(FCMPq, ALL, do_fcmpq, a, false)
++TRANS(FCMPEq, ALL, do_fcmpq, a, true)
 +
  #define CHECK_IU_FEATURE(dc, FEATURE)                      \
      if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
          goto illegal_insn;
-@@ -5173,9 +5245,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+@@ -5222,15 +5298,7 @@ TRANS(FMOVqfcc, 64, do_fmovfcc, a, true, gen_fmovq)
+ /* before an instruction, dc->pc must be static */
+ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+ {
+-    unsigned int opc, rs1, rs2, rd;
+-    TCGv cpu_src1 __attribute__((unused));
+-    TCGv_i32 cpu_src1_32, cpu_src2_32;
+-    TCGv_i64 cpu_src1_64, cpu_src2_64;
+-    TCGv_i32 cpu_dst_32 __attribute__((unused));
+-    TCGv_i64 cpu_dst_64 __attribute__((unused));
+-
+-    opc = GET_FIELD(insn, 0, 1);
+-    rd = GET_FIELD(insn, 2, 6);
++    unsigned int opc = GET_FIELD(insn, 0, 1);
+ 
+     switch (opc) {
+     case 0:
+@@ -5240,61 +5308,22 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+     case 2:                     /* FPU & Logical Operations */
+         {
+             unsigned int xop = GET_FIELD(insn, 7, 12);
+-            TCGv cpu_dst __attribute__((unused)) = tcg_temp_new();
+ 
              if (xop == 0x34) {   /* FPU Operations */
                  goto illegal_insn; /* in decodetree */
              } else if (xop == 0x35) {   /* FPU Operations */
--#ifdef TARGET_SPARC64
--                int cond;
--#endif
+-                if (gen_trap_ifnofpu(dc)) {
+-                    goto jmp_insn;
+-                }
+-                gen_op_clear_ieee_excp_and_FTT();
+-                rs1 = GET_FIELD(insn, 13, 17);
+-                rs2 = GET_FIELD(insn, 27, 31);
+-                xop = GET_FIELD(insn, 18, 26);
+-
+-                switch (xop) {
+-                    case 0x51: /* fcmps, V9 %fcc */
+-                        cpu_src1_32 = gen_load_fpr_F(dc, rs1);
+-                        cpu_src2_32 = gen_load_fpr_F(dc, rs2);
+-                        gen_op_fcmps(rd & 3, cpu_src1_32, cpu_src2_32);
+-                        break;
+-                    case 0x52: /* fcmpd, V9 %fcc */
+-                        cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                        cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                        gen_op_fcmpd(rd & 3, cpu_src1_64, cpu_src2_64);
+-                        break;
+-                    case 0x53: /* fcmpq, V9 %fcc */
+-                        CHECK_FPU_FEATURE(dc, FLOAT128);
+-                        gen_op_load_fpr_QT0(QFPREG(rs1));
+-                        gen_op_load_fpr_QT1(QFPREG(rs2));
+-                        gen_op_fcmpq(rd & 3);
+-                        break;
+-                    case 0x55: /* fcmpes, V9 %fcc */
+-                        cpu_src1_32 = gen_load_fpr_F(dc, rs1);
+-                        cpu_src2_32 = gen_load_fpr_F(dc, rs2);
+-                        gen_op_fcmpes(rd & 3, cpu_src1_32, cpu_src2_32);
+-                        break;
+-                    case 0x56: /* fcmped, V9 %fcc */
+-                        cpu_src1_64 = gen_load_fpr_D(dc, rs1);
+-                        cpu_src2_64 = gen_load_fpr_D(dc, rs2);
+-                        gen_op_fcmped(rd & 3, cpu_src1_64, cpu_src2_64);
+-                        break;
+-                    case 0x57: /* fcmpeq, V9 %fcc */
+-                        CHECK_FPU_FEATURE(dc, FLOAT128);
+-                        gen_op_load_fpr_QT0(QFPREG(rs1));
+-                        gen_op_load_fpr_QT1(QFPREG(rs2));
+-                        gen_op_fcmpeq(rd & 3);
+-                        break;
+-                    default:
+-                        goto illegal_insn;
+-                }
++                goto illegal_insn; /* in decodetree */
+             } else if (xop == 0x36) {
+ #ifdef TARGET_SPARC64
+                 /* VIS */
++                TCGv_i64 cpu_src1_64, cpu_src2_64, cpu_dst_64;
++                TCGv_i32 cpu_dst_32;
++                TCGv cpu_dst = tcg_temp_new();
+                 int opf = GET_FIELD_SP(insn, 5, 13);
+-                rs1 = GET_FIELD(insn, 13, 17);
+-                rs2 = GET_FIELD(insn, 27, 31);
++                int rs1 = GET_FIELD(insn, 13, 17);
++                int rs2 = GET_FIELD(insn, 27, 31);
++                int rd = GET_FIELD(insn, 2, 6);
++
                  if (gen_trap_ifnofpu(dc)) {
                      goto jmp_insn;
                  }
-@@ -5184,110 +5253,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-                 rs2 = GET_FIELD(insn, 27, 31);
-                 xop = GET_FIELD(insn, 18, 26);
+@@ -5479,14 +5508,18 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+         goto illegal_insn; /* in decodetree */
+     }
+     advance_pc(dc);
++#ifdef TARGET_SPARC64
+  jmp_insn:
++#endif
+     return;
+  illegal_insn:
+     gen_exception(dc, TT_ILL_INSN);
+     return;
++#ifdef TARGET_SPARC64
+  nfpu_insn:
+     gen_op_fpexception_im(dc, FSR_FTT_UNIMPFPOP);
+     return;
++#endif
+ }
  
--#ifdef TARGET_SPARC64
--#define FMOVR(sz)                                                  \
--                do {                                               \
--                    DisasCompare cmp;                              \
--                    cond = GET_FIELD_SP(insn, 10, 12);             \
--                    cpu_src1 = get_src1(dc, insn);                 \
--                    gen_compare_reg(&cmp, cond, cpu_src1);         \
--                    gen_fmov##sz(dc, &cmp, rd, rs2);               \
--                } while (0)
--
--                if ((xop & 0x11f) == 0x005) { /* V9 fmovsr */
--                    FMOVR(s);
--                    break;
--                } else if ((xop & 0x11f) == 0x006) { // V9 fmovdr
--                    FMOVR(d);
--                    break;
--                } else if ((xop & 0x11f) == 0x007) { // V9 fmovqr
--                    CHECK_FPU_FEATURE(dc, FLOAT128);
--                    FMOVR(q);
--                    break;
--                }
--#undef FMOVR
--#endif
-                 switch (xop) {
--#ifdef TARGET_SPARC64
--#define FMOVCC(fcc, sz)                                                 \
--                    do {                                                \
--                        DisasCompare cmp;                               \
--                        cond = GET_FIELD_SP(insn, 14, 17);              \
--                        gen_fcompare(&cmp, fcc, cond);                  \
--                        gen_fmov##sz(dc, &cmp, rd, rs2);                \
--                    } while (0)
--
--                    case 0x001: /* V9 fmovscc %fcc0 */
--                        FMOVCC(0, s);
--                        break;
--                    case 0x002: /* V9 fmovdcc %fcc0 */
--                        FMOVCC(0, d);
--                        break;
--                    case 0x003: /* V9 fmovqcc %fcc0 */
--                        CHECK_FPU_FEATURE(dc, FLOAT128);
--                        FMOVCC(0, q);
--                        break;
--                    case 0x041: /* V9 fmovscc %fcc1 */
--                        FMOVCC(1, s);
--                        break;
--                    case 0x042: /* V9 fmovdcc %fcc1 */
--                        FMOVCC(1, d);
--                        break;
--                    case 0x043: /* V9 fmovqcc %fcc1 */
--                        CHECK_FPU_FEATURE(dc, FLOAT128);
--                        FMOVCC(1, q);
--                        break;
--                    case 0x081: /* V9 fmovscc %fcc2 */
--                        FMOVCC(2, s);
--                        break;
--                    case 0x082: /* V9 fmovdcc %fcc2 */
--                        FMOVCC(2, d);
--                        break;
--                    case 0x083: /* V9 fmovqcc %fcc2 */
--                        CHECK_FPU_FEATURE(dc, FLOAT128);
--                        FMOVCC(2, q);
--                        break;
--                    case 0x0c1: /* V9 fmovscc %fcc3 */
--                        FMOVCC(3, s);
--                        break;
--                    case 0x0c2: /* V9 fmovdcc %fcc3 */
--                        FMOVCC(3, d);
--                        break;
--                    case 0x0c3: /* V9 fmovqcc %fcc3 */
--                        CHECK_FPU_FEATURE(dc, FLOAT128);
--                        FMOVCC(3, q);
--                        break;
--#undef FMOVCC
--#define FMOVCC(xcc, sz)                                                 \
--                    do {                                                \
--                        DisasCompare cmp;                               \
--                        cond = GET_FIELD_SP(insn, 14, 17);              \
--                        gen_compare(&cmp, xcc, cond, dc);               \
--                        gen_fmov##sz(dc, &cmp, rd, rs2);                \
--                    } while (0)
--
--                    case 0x101: /* V9 fmovscc %icc */
--                        FMOVCC(0, s);
--                        break;
--                    case 0x102: /* V9 fmovdcc %icc */
--                        FMOVCC(0, d);
--                        break;
--                    case 0x103: /* V9 fmovqcc %icc */
--                        CHECK_FPU_FEATURE(dc, FLOAT128);
--                        FMOVCC(0, q);
--                        break;
--                    case 0x181: /* V9 fmovscc %xcc */
--                        FMOVCC(1, s);
--                        break;
--                    case 0x182: /* V9 fmovdcc %xcc */
--                        FMOVCC(1, d);
--                        break;
--                    case 0x183: /* V9 fmovqcc %xcc */
--                        CHECK_FPU_FEATURE(dc, FLOAT128);
--                        FMOVCC(1, q);
--                        break;
--#undef FMOVCC
--#endif
-                     case 0x51: /* fcmps, V9 %fcc */
-                         cpu_src1_32 = gen_load_fpr_F(dc, rs1);
-                         cpu_src2_32 = gen_load_fpr_F(dc, rs2);
+ static void sparc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
 -- 
 2.34.1
 
