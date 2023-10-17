@@ -2,86 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F827CB9F3
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 07:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7E17CB9F6
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 07:23:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qscXK-00013V-NG; Tue, 17 Oct 2023 01:22:34 -0400
+	id 1qscXz-0002Ue-Ae; Tue, 17 Oct 2023 01:23:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qscXH-00012p-J8; Tue, 17 Oct 2023 01:22:32 -0400
-Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qscXF-0000Jj-DX; Tue, 17 Oct 2023 01:22:31 -0400
-Received: by mail-oo1-xc36.google.com with SMTP id
- 006d021491bc7-57bab4e9e1aso3286712eaf.3; 
- Mon, 16 Oct 2023 22:22:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697520148; x=1698124948; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zGAS6AqZ0I2IEHRUbLOj33fXVjGwvQh98Z0cWyH5ntI=;
- b=j6DdBsk0dipubFZQ+u2ULeqrZb2jbmn+Mc2BDMyQ/5Arr8oNxyYcpK+wkyMR03PyS6
- Ol5tRNEgvPnY4Y834M/VTqfI6vVu3a0aPdo/7xr2Oyjng0EltG8xoDOMnclJmSNpHIAO
- 9vnIuVB2ud78uMttk5CiFZv/czwM4W1e152kVZ5aUxx7xiVzoZHwkJUKklBvA9WK6Puv
- tv9MErSlMGUG7AgqJG+PeiQfYS7JSdeNLkhruYjdjWxTu59yDVXChlZtlsbnMNOVgH/0
- kAQGKptRd9D/WbJqTEOcdRSZLCnDtC+8WdC3pzzKcpkok7omPtah75VIvkr1v6QGWLxb
- MVTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697520148; x=1698124948;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zGAS6AqZ0I2IEHRUbLOj33fXVjGwvQh98Z0cWyH5ntI=;
- b=sEqfA5GfBIC6EHQyR+BN//8Sq8irWuhGrx9Ybx6XTKumzpPxFV1uL9GB5vU0+JNHGc
- dmzHRdMcPxLx2yBFe+wEcUSM56DLcc71ulCkAULxVoEno8NLq0NbZsg1Tm8G+QKQ7jzd
- wDi97xOG1zAvHVe2pgGHccUfsR943ARiLF2Czh8Ua8gxyYRojpCp85q9bzC1RuY9NKyV
- SWFDr8ISbm+FKvXwEVYHlDkBvij1j+DUUfFwRofMPxxLFMRMr5RzYpL+cbar9OXhdpYQ
- 82QoHZJHv378i6kdiY4u8YeQY9UstJiB1tMfHmVyKI3aZtvY4YKlWps8vwr3XMLPUw0c
- kPWw==
-X-Gm-Message-State: AOJu0YxDmJAaB9G4Z8hAK0VWwT4BNOVxKQ/CauNqcRc6Lp2J3ImAYBEx
- 5pwlwItkgt/N63v47TTHly2ocuNlyOFVMg==
-X-Google-Smtp-Source: AGHT+IE+55dM1qgMM0iyOrKvrD0UuIHhtRq/urFKr9X3FH7eIRiWw9iD8ReW87exn1SGmseqxV+k+A==
-X-Received: by 2002:a05:6358:ee46:b0:139:a45c:32b2 with SMTP id
- ik6-20020a056358ee4600b00139a45c32b2mr1632085rwb.11.1697520147809; 
- Mon, 16 Oct 2023 22:22:27 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
- [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
- by smtp.gmail.com with ESMTPSA id
- t26-20020aa7947a000000b006933e71956dsm477222pfq.9.2023.10.16.22.22.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 22:22:26 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: cbrowy@avery-design.com, wilfred.mallawa@wdc.com, mst@redhat.com,
- lukas@wunner.de, kbusch@kernel.org, hchkuo@avery-design.com.tw,
- Jonathan.Cameron@Huawei.com, its@irrelevant.dk, jiewen.yao@intel.com,
- marcel.apfelbaum@gmail.com, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, alistair23@gmail.com,
- qemu-block@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v2 3/3] hw/nvme: Add SPDM over DOE support
-Date: Tue, 17 Oct 2023 15:21:55 +1000
-Message-ID: <20231017052155.173577-4-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231017052155.173577-1-alistair.francis@wdc.com>
-References: <20231017052155.173577-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qscXr-0002J9-PK
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 01:23:07 -0400
+Received: from esa1.fujitsucc.c3s2.iphmx.com ([68.232.152.245])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qscXn-0000Oz-SV
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 01:23:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
+ t=1697520184; x=1729056184;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=H0nE0SiLUG0TNTK+nTnzcmk1fck7TSK1CagEPH4M+do=;
+ b=hLHrs/iYC6FBWkJxX+v7justP2d5nJ3uAVo1C2Pwh+LwPaxve2TOyRxI
+ hnExfVcms0KD3/MV5uxjlyKa+ihxm50YnIYn/2af0jSzuMp843joBJsr2
+ oYjiu8YwEJcEp+KrFcpmiG4LWTQhP8r7j7asm++iJxUyriic2ZrU8uFKc
+ 0eHVeujgSGHJbgO33avxZwKPxRY+cvvMkP6vZrUL+LZR7iwKrVysL8u5J
+ FldtoRUls2W2tREmirqWiSMDoG6ZC3i+cw4pLvoIVvADTFihgugWDVjBf
+ 1N95XR87KowM3/KIew67AeI5idijfDVFHmDEUcGnB54kPBVxgvCF8oUxA A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="10528855"
+X-IronPort-AV: E=Sophos;i="6.03,231,1694703600"; d="scan'208";a="10528855"
+Received: from mail-tycjpn01lp2169.outbound.protection.outlook.com (HELO
+ JPN01-TYC-obe.outbound.protection.outlook.com) ([104.47.23.169])
+ by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2023 14:22:57 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=F3FvPhfcwn0m1nDUG6JvOrv30hNgi2fzhEAK1ms0VDXmWFen78dXuaZt2awBuE4lkQnVDW2bIEIsE52iI20YmYbViqZOLNNpOFBKnEm47qgfzfwvcaovMlsg+aeuRMlDr5OtD4aWIEmRTZHswOhiyL5uUdOc3jOmY8JJVJbohLQWtptLtajJOst8EOnMMgxoS8egucKdSyg7vTogkZFIREDrrc65bWLZJVXX7qQLlKJ7foncOUg/BsJooWtdr5//NrEh/NqBeSIR+tQm85afupyonGSUz6mRaCZ8g8arek+6uFY2mpioVL5wzHBykQ0KKrBH+WOBstTJX0JX3uhTqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H0nE0SiLUG0TNTK+nTnzcmk1fck7TSK1CagEPH4M+do=;
+ b=lL8F+Fdg71pjYt9SF64civmOZ93h1sLMv9q5K14MD1icgCheXt3Wgl3hf9IIoLr2DENYaq/qvYoEr0J60/p+AiXdm65K4lvHFOBqOpawHQtQk/bCBztsZ1f1Rk1BL3evaQNhAIvaV45AGHqn1mWknr1+VJV56i3ZJT3HQubqpX1i4I0AV9tCqyFsXtPXtkLrolo6p7klzTtvoyglmnVVjmOmBXn0dqbeEgqsLEV/6MzKqSsTqD8kRMAuRPFjJlv+4uW46X9ZTSlJ3PS3RHK3XHYEOEQ8KwVt1ciyD8VUlMkDeQP8wnUlzHxOkEuzAotISpx2B29oYfcWO7fTqk8JNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+Received: from OS0PR01MB5442.jpnprd01.prod.outlook.com (2603:1096:604:a6::10)
+ by TYCPR01MB10811.jpnprd01.prod.outlook.com (2603:1096:400:26e::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.35; Tue, 17 Oct
+ 2023 05:22:54 +0000
+Received: from OS0PR01MB5442.jpnprd01.prod.outlook.com
+ ([fe80::858:c858:73ca:610]) by OS0PR01MB5442.jpnprd01.prod.outlook.com
+ ([fe80::858:c858:73ca:610%4]) with mapi id 15.20.6886.034; Tue, 17 Oct 2023
+ 05:22:53 +0000
+From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+CC: Markus Armbruster <armbru@redhat.com>, "linux-rdma@vger.kernel.org"
+ <linux-rdma@vger.kernel.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "quintela@redhat.com" <quintela@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "leobras@redhat.com"
+ <leobras@redhat.com>
+Subject: Re: [PATCH 39/52] migration/rdma: Convert qemu_rdma_write_one() to
+ Error
+Thread-Topic: [PATCH 39/52] migration/rdma: Convert qemu_rdma_write_one() to
+ Error
+Thread-Index: AQHZ6j9fgex1HQn4skmnwwB9vRYjH7AspjSAgAABUICAADsohIABuXlrgA8vfICADrOigIABIDEA
+Date: Tue, 17 Oct 2023 05:22:53 +0000
+Message-ID: <a9f234af-c479-4567-ae44-c0a79b790fd6@fujitsu.com>
+References: <20230918144206.560120-1-armbru@redhat.com>
+ <20230918144206.560120-40-armbru@redhat.com>
+ <9e117d0c-cf2b-dd01-7fef-55d1c41d254c@fujitsu.com>
+ <b8f8ed5d-f20e-4309-f29c-960321ecad83@fujitsu.com>
+ <87ttrhgu9e.fsf@pond.sub.org> <87zg17dejj.fsf@pond.sub.org>
+ <9a9ac53b-e409-3b87-ea1b-e133903828a5@fujitsu.com>
+ <20231016121123.GD282036@ziepe.ca>
+In-Reply-To: <20231016121123.GD282036@ziepe.ca>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS0PR01MB5442:EE_|TYCPR01MB10811:EE_
+x-ms-office365-filtering-correlation-id: d0c6b1dc-3633-4a11-944d-08dbced11d5d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: oL/cog8ziIMgeiebwzBlgovSuIkqqkRbMiw6IOP7H24/Rsl/v85SLHGGyhL7D6bZJ7z0kldyt27Kq2LVJpXJcbWBiwXGKV9SEBedJ4x/3tlyApKgIc4G04q+R7/A3savp71mA8rRg/r7TBM4+JRmbEOwZ6VQdCHJvApCsE9S8u/LheFpdma4+T+KpSdGa1T5/KTWsiSJMF9/FFaDLdR1zd6YPBcT35skPVB3UqiaK6ISio/x4LmMESAtexvywIdZjYnf25qxWzIjbRPI5ViWQJky3+JJeAqbzgKjoNsZqTWOBealBjhxObWGGtaWT9AJmpmXmtFeG3DFZu5PmRdKnDmQS+BxBGzz9LoA0tHP3PQvFj8TsXtZlxMZGZMmCsssrGWfTvQvqKsZk6Pyl+m1vYu2AB9jvlpMCUeC4oOe2mpqBCiFLd2APCo1tSCvqFmhm+pc3bgst/NAvGUhcwJh1Ny7yLn0fHrotyo229ADZiOUr9ZwtMdRfVDY0LWNKeqxJ1wYUh4dxtf1xxIDdeGkbVDayJEGMidobsPGnA+eeH1pgmm4+fftWoXeFkEFeyFkk83Wl0j7HFO4p5vVWkQx8TxNtgJ65jAScqjAE72JlHJSZ999QRz56thEy+2GZNbjICLs7gWnwFrO3XA0Jb9tlaB4YGEN0I+kBr7Po9qs72qnTi4rLAiUw25zPWLWhCNqrf2XbK9VThXnY9LmAUc1kw==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:OS0PR01MB5442.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(136003)(376002)(39860400002)(346002)(396003)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(1590799021)(31686004)(1580799018)(66946007)(478600001)(76116006)(6486002)(71200400001)(91956017)(66446008)(64756008)(54906003)(6916009)(66476007)(66556008)(83380400001)(31696002)(86362001)(82960400001)(38100700002)(316002)(6512007)(2616005)(53546011)(26005)(6506007)(41300700001)(5660300002)(38070700005)(122000001)(85182001)(36756003)(8676002)(2906002)(4326008)(8936002)(4744005)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q2dISHh6WldHcjlnYXBpR2ZjcCszY3FRNDNXeDM5QWRxQnVSTUdmamlJYWVs?=
+ =?utf-8?B?ZFptSzFSZlYyNUhHZU1nZ0VMTFlBeVZsV1NtUE4xZ3JUbkVzL1JSaDJrNkd2?=
+ =?utf-8?B?UVBOOTQ1SkkxRGcvcjJiR3IyZktvRXMvYVo4N01xanVZZ0VwUE5GdE9rMkxO?=
+ =?utf-8?B?Mk9aZU5ZazJXUTEzUU9oTHBrVm0wYmwxWkt6ZW8yNHU3UEVMQ1k5cHNrK2ds?=
+ =?utf-8?B?bFlCbXF1U2doREpWcFR2ZjJ5YW9OQVFURDhreTFqakdnQmtJQ1laSGh0Nnkr?=
+ =?utf-8?B?dHRWOFdjS0ViTTFOYlBIUzJhREFrYmpCVlUwRUs3YThlQzYvUmlJYVdEaGkv?=
+ =?utf-8?B?MHNRSHh6TjlXV1VsOEVDbzhucXIrVFJkb2pUdnd2N1JYQkFmMFpVQ2cxazJR?=
+ =?utf-8?B?THV0VEpOSytjU2R3VFlVTE9PZS85MVo5T2ZKN25UTmhZOWRwdnB1c3ZhRDVm?=
+ =?utf-8?B?NzNhREsyVjFybXVCQ1VremQ2OThLTDZPUmJRd2YvVVYvcWE1dW9neVM5M2lP?=
+ =?utf-8?B?TXdpWUlJdFY2MVJpcDIrUm1kc25Wa25WYlZVZVgybG1YYUVlaVJ3Q1hLNzZh?=
+ =?utf-8?B?WFowR0JjQUtXQldHbkRlbWRXcTBjbS9lWEJKbnJUL3FOSllBKy9UTGxaS1Vt?=
+ =?utf-8?B?bUZGUFdVZytFbVNOR3hLbExMYlUvNndaNVY5L3ZUaUxieWYzUVR3RFBEQmJF?=
+ =?utf-8?B?ajlKNm81a0p4ZXFMWHk0Tm9lb25kZlF0dlZydVFGYkRuNS9WTm1RbFJ6N0xy?=
+ =?utf-8?B?YU5FZFZ2VXNpVklid3NvMXVDTTEyWTFJVXN4TFhxN0RFM1hkTFJjK3ZoUURJ?=
+ =?utf-8?B?Rnljc2FQYVhrVC9IOFdIalVuN3gxOEFNVjlpa3h0YXRCUnRKa3RLc29CaHMr?=
+ =?utf-8?B?dklxT3Q5RlBzUjJuc2FSUzNtbkpsTWs0SFNjSnlwTEdqRndHaUFiQ1JoUVlk?=
+ =?utf-8?B?d050SFJNUm95dkd5alk3QituYm5rbHZpRlBlR1I0RUl6KytCUmh1TjN2d3VI?=
+ =?utf-8?B?VlliV2Z0amNuR29OUXRYQ2M3TjMxWFNKblc2SldVbFBGZDR4MDBWSEd1c2I5?=
+ =?utf-8?B?VGJmbUhUNnRXTi9IeHNFMHJ5d0d3NW1GRUJYMDhPOGwwWmsrMVVCdnR0Q1hu?=
+ =?utf-8?B?U3Q4NDI5Sjg2aVROekhXWHQ5OXdmai9oS3dQQlhXR0htbUg4WmVSdFZXckFE?=
+ =?utf-8?B?UDlMSVNIeGRMckZMQ0hKQ2lRU0RUWVErbFdrVE44UERQYjYyNDl6blJlNVh0?=
+ =?utf-8?B?S0JNUlhhK2RwVERkQnFUSy9NbTFKVEtBWENGd1NIbVBKLzR2dUVSOXhEVTMr?=
+ =?utf-8?B?OVJUM1F0MElLcGdrbDZLN01helJtYjFuSXJWMnFKV3gzaWpZQlBvTmhld1Ux?=
+ =?utf-8?B?WXZJSVJqTWp6WE1oalZFOE5OM1pNbmR3ME1jMThuVEticTFnbEVvYlJEWWVm?=
+ =?utf-8?B?c2tqZWFPYWlRUlprbVl5V0pxUktyN0JHRU42eFFXYXNPY01iT2tRUVhqaEJU?=
+ =?utf-8?B?emdUcTFZcTJiSFNQVE9Cc2lzRlZlVkk1WWpxcERqRm5IdGIwNjZMRDNXSjN2?=
+ =?utf-8?B?NUdvK3FWSmdqK01ZZkNRUUhVU2F6WkhwNmpTNlVxR3NxRmZjQXdvaGlGY2p0?=
+ =?utf-8?B?YnBJVEt4QWpLcEk3RE1YcnplelN4SGJDOThXM3grRVlmcUppcWxhRUgvcWlG?=
+ =?utf-8?B?aG0xYklCYmtHa3laQ2Q4YVhzVG9JTkZpU1dRNzdJb1BWdFplUzRuWFZKTzBx?=
+ =?utf-8?B?dmNmZnRMNHhpSzdGK29oT1A1NGVMQm1Edm1STXc5LzFMWWhMYVZ3clAvbEdD?=
+ =?utf-8?B?Mlp5WldVTFlUbkpzeGNCbmtKamxYcVZBS0dwd3hxVzIyeWdnQ3ZUbkxyRHBK?=
+ =?utf-8?B?WnFaUVZuaG1lUE1EU3dBdHZ5WS9MY3RGQXJjVkdVWHk5U3Q0ZnExTkhkY0ZW?=
+ =?utf-8?B?V09kZmFNWkZJZWpRWHlIcFd0clBQYzlBRS9tZGdWZG52VFZkVjhnWXl1Z01F?=
+ =?utf-8?B?NEZaV2E1Z0w3ck1XV0dEZXpGV2wrQW5xY0hCT3BTTEZ5MlJXWFp6YTArNGZn?=
+ =?utf-8?B?UmpDQVVyL1h2ZWRHUGFyc3lJVXMrb2RZdFJYa2RrSVJaL0EzWklVdGNuZ3FO?=
+ =?utf-8?B?bExCU3NIMnFscFR2TjRRY3pHcVUxUU0vUjgrMDBoV29UR0JUd2N6UUdoQk9r?=
+ =?utf-8?B?aVE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <870DA910272BBA4C81D82A853E171C16@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
- envelope-from=alistair23@gmail.com; helo=mail-oo1-xc36.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: HNc8i8DVpT0ve8GKeITussWjA8x/Em2t7bf+iL4MO/eumPKWntvvy9ZbZNjB+6rgj2hgRDkoFXawjKOLRX8znxd7pF7IffzVr/IeEz21AbH3NGeVuosf0DG2+i8NnNcV5PAxX2z1zg3LnZkR/rt3y4a7sGpMFZ9ftKBX/O0/SKNK/bcLIHI/lE5ftxkCWGvr+raYSk68ZsBOraa+VuhkVRHYglwewSp6III/E9By+2sZ/iUaRYbP4MDW8lXDx4rOOVyZqOSwYzAUaU/mqkcatVMXpT61ziW/33ljeE0IAZwBVOI6zSyJPloaTEurTheOauEQgtdystEbzlAp1ZqqJoWH6FbJPnDkridkq1lSkTOqtneoXCuPMzrjYyRoqDzaPGIwEsmqK6PGWSG7yKIx/Fae9+Z3w/TcxA+fQwofkzwXXXlq9izyNLktN/98S+5X+S7T4m8+vJFyoQtP7VS1eztZCZg49kxaLfxApaK2PJNrs9wakw3stng7eaHDH8DPisar8ubz+MZpjeQiYy//Xf/k/OAjm0xGg5iPEnYeqtFVmnYBiHhw5zdN6zONSUCzPDnHGTATEYyBet1Q39w1ElZQawzNDq0JNa2voRsp3TGLlR3scyQhYvKtvRtOQQJLLuWFVR+VJtdxCpAojwoSTDhOXA4rkGhInwS44ffVxXAvRMz0fLqPuJVsP9PUv1B5R7ahQJD3iCon568SJzunN1EwGVhoQFWqGfnlVCqAOZKZHNG2Z51mFSPZ5ieYYFJs8Cf+MY8UM/e8pRchAky+wRc8JM576fIbGk01QEX8+IXFPraTO3UPCZCgCX7co9Zu6dJq52km0DTKI4l2Tjren6nm5+KWbHiQTee0Kn3cvE4=
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5442.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0c6b1dc-3633-4a11-944d-08dbced11d5d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Oct 2023 05:22:53.8893 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VXlhmuC7BwZ541LqQws77JLjg3LxMiAmQRRiDZr4Mucr4t7CGa3tBsqKEooLXlgIZ3K4ziD4EtVzDhhNjMWAYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10811
+Received-SPF: pass client-ip=68.232.152.245;
+ envelope-from=lizhijian@fujitsu.com; helo=esa1.fujitsucc.c3s2.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,292 +173,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-
-Setup Data Object Exchance (DOE) as an extended capability for the NVME
-controller and connect SPDM to it (CMA) to it.
-
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- docs/specs/index.rst        |   1 +
- docs/specs/spdm.rst         | 114 ++++++++++++++++++++++++++++++++++++
- include/hw/pci/pci_device.h |   5 ++
- include/hw/pci/pcie_doe.h   |   3 +
- hw/nvme/ctrl.c              |  53 +++++++++++++++++
- 5 files changed, 176 insertions(+)
- create mode 100644 docs/specs/spdm.rst
-
-diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index e58be38c41..c398541388 100644
---- a/docs/specs/index.rst
-+++ b/docs/specs/index.rst
-@@ -24,3 +24,4 @@ guest hardware that is specific to QEMU.
-    acpi_erst
-    sev-guest-firmware
-    fw_cfg
-+   spdm
-diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
-new file mode 100644
-index 0000000000..dfdc3cbb4d
---- /dev/null
-+++ b/docs/specs/spdm.rst
-@@ -0,0 +1,114 @@
-+======================================================
-+QEMU Security Protocols and Data Models (SPDM) Support
-+======================================================
-+
-+SPDM enables authentication, attestation and key exchange to assist in
-+providing infrastructure security enablement. It's a standard published
-+by the `DMTF`_.
-+
-+QEMU supports connecting to a SPDM Responder implementation. This allows an
-+external application to emulate the SPDM Responder logic for an SPDM device.
-+
-+Setting up a SPDM server
-+========================
-+
-+When using QEMU with SPDM devices QEMU will connect to a server which
-+implements the SPDM functionality.
-+
-+SPDM-Utils
-+----------
-+
-+You can use `SPDM Utils`_ to emulate a Responder.
-+
-+SPDM-Utils is a Linux applications to manage, test and develop devices
-+supporting DMTF Security Protocol and Data Model (SPDM). It is written in Rust
-+and utilises libspdm.
-+
-+To use SPDM-Utils you will need to do the followoing:
-+
-+ 1. `Build SPDM Utils`_
-+ 2. `Generate the certificates`_
-+ 3. `Run it as a server`_
-+
-+spdm-emu
-+--------
-+
-+You can use `spdm emu`_ to model the
-+SPDM responder.
-+
-+.. code-block:: shell
-+
-+    $ cd spdm-emu
-+    $ git submodule init; git submodule update --recursive
-+    $ mkdir build; cd build
-+    $ cmake -DARCH=x64 -DTOOLCHAIN=GCC -DTARGET=Debug -DCRYPTO=openssl ..
-+    $ make -j32
-+    $ make copy_sample_key # Build certificates, required for SPDM authentication.
-+
-+It is worth noting that the certificates should be in compliance with
-+PCIe r6.1 sec 6.31.3. This means you will need to add the following to
-+openssl.cnf
-+
-+.. code-block::
-+
-+    subjectAltName = otherName:2.23.147;UTF8:Vendor=1b36:Device=0010:CC=010802:REV=02:SSVID=1af4:SSID=1100
-+    2.23.147 = ASN1:OID:2.23.147
-+
-+and then manually regenerate some certificates with:
-+
-+.. code-block:: shell
-+
-+    openssl req -nodes -newkey ec:param.pem -keyout end_responder.key -out end_responder.req -sha384 -batch -subj "/CN=DMTF libspdm ECP384 responder cert"
-+    openssl x509 -req -in end_responder.req -out end_responder.cert -CA inter.cert -CAkey inter.key -sha384 -days 3650 -set_serial 3 -extensions v3_end -extfile ../openssl.cnf
-+    openssl asn1parse -in end_responder.cert -out end_responder.cert.der
-+    cat ca.cert.der inter.cert.der end_responder.cert.der > bundle_responder.certchain.der
-+
-+You can use SPDM-Utils instead as it will generate the correct certificates
-+automatically.
-+
-+The responder can then be launched with
-+
-+.. code-block:: shell
-+
-+    $ cd bin
-+    $ ./spdm_responder_emu --trans PCI_DOE
-+
-+Connecting an SPDM NVMe device
-+==============================
-+
-+Once a SPDM server is running we can start QEMU and connect to the server.
-+
-+For an NVMe device first let's setup a block we can use
-+
-+.. code-block:: shell
-+
-+    $ cd qemu-spdm/linux/image
-+    $ dd if=/dev/zero of=blknvme bs=1M count=2096 # 2GB NNMe Drive
-+
-+Then you can add this to your QEMU command line:
-+
-+.. code-block:: shell
-+
-+    -drive file=blknvme,if=none,id=mynvme,format=raw \
-+    -device nvme,drive=mynvme,serial=deadbeef,spdm=2323
-+
-+At which point QEMU will try to connect to the SPDM server.
-+
-+
-+.. _DMTF:
-+   https://www.dmtf.org/standards/SPDM
-+
-+.. _SPDM Utils:
-+   https://github.com/westerndigitalcorporation/spdm-utils
-+
-+.. _spdm emu:
-+   https://github.com/dmtf/spdm-emu
-+
-+.. _Build SPDM Utils:
-+   https://github.com/westerndigitalcorporation/spdm-utils#building
-+
-+.. _Generate the certificates:
-+   https://github.com/westerndigitalcorporation/spdm-utils#generate-mutable-certificates
-+
-+.. _Run it as a server:
-+   https://github.com/westerndigitalcorporation/spdm-utils#qemu-spdm-device-emulation
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index d3dd0f64b2..b8379c78f1 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -3,6 +3,7 @@
- 
- #include "hw/pci/pci.h"
- #include "hw/pci/pcie.h"
-+#include "hw/pci/pcie_doe.h"
- 
- #define TYPE_PCI_DEVICE "pci-device"
- typedef struct PCIDeviceClass PCIDeviceClass;
-@@ -157,6 +158,10 @@ struct PCIDevice {
-     MSIVectorReleaseNotifier msix_vector_release_notifier;
-     MSIVectorPollNotifier msix_vector_poll_notifier;
- 
-+    /* DOE */
-+    DOECap doe_spdm;
-+    uint16_t spdm_port;
-+
-     /* ID of standby device in net_failover pair */
-     char *failover_pair_id;
-     uint32_t acpi_index;
-diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
-index 15d94661f9..eb8f4e393d 100644
---- a/include/hw/pci/pcie_doe.h
-+++ b/include/hw/pci/pcie_doe.h
-@@ -108,6 +108,9 @@ struct DOECap {
-     /* Protocols and its callback response */
-     DOEProtocol *protocols;
-     uint16_t protocol_num;
-+
-+    /* Used for spdm-socket */
-+    int socket;
- };
- 
- void pcie_doe_init(PCIDevice *pdev, DOECap *doe_cap, uint16_t offset,
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index f026245d1e..661ebe3725 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -203,6 +203,7 @@
- #include "sysemu/hostmem.h"
- #include "hw/pci/msix.h"
- #include "hw/pci/pcie_sriov.h"
-+#include "sysemu/spdm-socket.h"
- #include "migration/vmstate.h"
- 
- #include "nvme.h"
-@@ -8070,6 +8071,28 @@ static int nvme_add_pm_capability(PCIDevice *pci_dev, uint8_t offset)
-     return 0;
- }
- 
-+static bool pcie_doe_spdm_rsp(DOECap *doe_cap)
-+{
-+    void *req = pcie_doe_get_write_mbox_ptr(doe_cap);
-+    uint32_t req_len = pcie_doe_get_obj_len(req) * 4;
-+    void *rsp = doe_cap->read_mbox;
-+    uint32_t rsp_len = SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE;
-+    uint32_t recvd;
-+
-+    recvd = spdm_socket_rsp(doe_cap->socket,
-+                             SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE,
-+                             req, req_len, rsp, rsp_len);
-+    doe_cap->read_mbox_len += DIV_ROUND_UP(recvd, 4);
-+
-+    return recvd != 0;
-+}
-+
-+static DOEProtocol doe_spdm_prot[] = {
-+    { PCI_VENDOR_ID_PCI_SIG, PCI_SIG_DOE_CMA, pcie_doe_spdm_rsp },
-+    { PCI_VENDOR_ID_PCI_SIG, PCI_SIG_DOE_SECURED_CMA, pcie_doe_spdm_rsp },
-+    { }
-+};
-+
- static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- {
-     ERRP_GUARD();
-@@ -8126,6 +8149,24 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- 
-     nvme_update_msixcap_ts(pci_dev, n->conf_msix_qsize);
- 
-+    pcie_cap_deverr_init(pci_dev);
-+
-+    /* DOE Initialisation */
-+    if (pci_dev->spdm_port) {
-+        uint16_t doe_offset = n->params.sriov_max_vfs ?
-+                                  PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
-+                                  : PCI_CONFIG_SPACE_SIZE;
-+
-+        pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset, doe_spdm_prot, true, 0);
-+
-+        pci_dev->doe_spdm.socket = spdm_socket_connect(pci_dev->spdm_port, errp);
-+
-+        if (pci_dev->doe_spdm.socket < 0 ) {
-+            error_setg(errp, "Failed to connect to SPDM socket");
-+            return -ENOTSUP;
-+        }
-+    }
-+
-     if (n->params.cmb_size_mb) {
-         nvme_init_cmb(n, pci_dev);
-     }
-@@ -8412,6 +8453,7 @@ static Property nvme_props[] = {
-                       params.sriov_max_vi_per_vf, 0),
-     DEFINE_PROP_UINT8("sriov_max_vq_per_vf", NvmeCtrl,
-                       params.sriov_max_vq_per_vf, 0),
-+    DEFINE_PROP_UINT16("spdm", PCIDevice, spdm_port, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-@@ -8494,10 +8536,20 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
-                                   uint32_t val, int len)
- {
-     nvme_sriov_pre_write_ctrl(dev, address, val, len);
-+    pcie_doe_write_config(&dev->doe_spdm, address, val, len);
-     pci_default_write_config(dev, address, val, len);
-     pcie_cap_flr_write_config(dev, address, val, len);
- }
- 
-+static uint32_t nvme_pci_read_config(PCIDevice *dev, uint32_t address, int len)
-+{
-+    uint32_t val;
-+    if (pcie_doe_read_config(&dev->doe_spdm, address, len, &val)) {
-+        return val;
-+    }
-+    return pci_default_read_config(dev, address, len);
-+}
-+
- static const VMStateDescription nvme_vmstate = {
-     .name = "nvme",
-     .unmigratable = 1,
-@@ -8510,6 +8562,7 @@ static void nvme_class_init(ObjectClass *oc, void *data)
- 
-     pc->realize = nvme_realize;
-     pc->config_write = nvme_pci_write_config;
-+    pc->config_read = nvme_pci_read_config;
-     pc->exit = nvme_exit;
-     pc->class_id = PCI_CLASS_STORAGE_EXPRESS;
-     pc->revision = 2;
--- 
-2.41.0
-
+DQoNCk9uIDE2LzEwLzIwMjMgMjA6MTEsIEphc29uIEd1bnRob3JwZSB3cm90ZToNCj4gT24gU2F0
+LCBPY3QgMDcsIDIwMjMgYXQgMDM6NDA6NTBBTSArMDAwMCwgWmhpamlhbiBMaSAoRnVqaXRzdSkg
+d3JvdGU6DQo+PiArcmRtYS1jb3JlDQo+Pg0KPj4NCj4+IElzIGdsb2JhbCB2YXJpYWJsZSAqZXJy
+bm8qIHJlbGlhYmxlIHdoZW4gdGhlIGRvY3VtZW50YXRpb24gb25seSBzdGF0ZXMNCj4+ICJyZXR1
+cm5zIDAgb24gc3VjY2Vzcywgb3IgdGhlIHZhbHVlIG9mIGVycm5vIG9uIGZhaWx1cmUgKHdoaWNo
+IGluZGljYXRlcyB0aGUgZmFpbHVyZSByZWFzb24pLiINCj4gDQo+IEkgdGhpbmsgdGhlIGludGVu
+dGlvbiBvZiB0aGlzIGxhbmd1YWdlIHdhcyB0aGF0IGFuIGVycm5vIGNvbnN0YW50IGlzDQo+IHJl
+dHVybmVkLCB0aGUgY2FsbGVyIHNob3VsZCBub3QgYXNzdW1lIGl0IGlzIHN0b3JlZCBpbiBlcnJu
+by4NCj4gDQpVbmRlcnN0b29kLg0KSWYgdGhhdCdzIHRoZSBjYXNlLCBJIHRoaW5rIHNvbWUgcGll
+Y2VzIG9mIGNvZGUgd2VyZSBtaXN1bmRlcnN0b29kIGluIFFFTVUgYmVmb3JlLg0KDQoNClRoYW5r
+cw0KWmhpamlhbg0KDQo+IGVycm5vIGlzIGRpZmZpY3VsdCwgbWFueSB0aGluZ3Mgb3ZlcndyaXRl
+IGl0LCB5b3UgY2FuIGxvb3NlIGl0cyB2YWx1ZQ0KPiBkdXJpbmcgZXJyb3IgaGFuZGxpbmcuDQo+
+IA0KPiBKYXNvbg==
 
