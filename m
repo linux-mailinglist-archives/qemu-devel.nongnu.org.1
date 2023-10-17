@@ -2,68 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F767CCFE4
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 00:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B9F7CCFEA
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 00:14:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qssIA-0000XU-QD; Tue, 17 Oct 2023 18:11:58 -0400
+	id 1qssIv-0001bd-Dm; Tue, 17 Oct 2023 18:12:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qssI8-0000XC-Rt
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:11:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qssI7-0002Bs-7b
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:11:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697580714;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4XpVbJ8SPpdXJKO0HlFVL0QBCotqfPnhl3G0UO16DHA=;
- b=dYg5NOy0K3okq27hvz18+wj4oKpyllkC3GWip1fK9YI9tA+VPcOsicYF2m3rq4SLyNaa8I
- ylBLj+16vIw3vTwvp3GvsEngxNizfscuzpRm0zKgzYoZvgNKGbU71JRIVI3bTXAXlScMSk
- l9vpCHsv4YENd11z/iU/yQEohxvQVoM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-61-GDgg8Qv7Nx2CwMT1gCSbtA-1; Tue, 17 Oct 2023 18:11:50 -0400
-X-MC-Unique: GDgg8Qv7Nx2CwMT1gCSbtA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B621855310;
- Tue, 17 Oct 2023 22:11:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 09BEB1C060B0;
- Tue, 17 Oct 2023 22:11:49 +0000 (UTC)
-Date: Tue, 17 Oct 2023 17:11:48 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- Michael Roth <michael.roth@amd.com>
-Subject: Re: [RFC PATCH v2 04/78] qapi/opts-visitor: add fallthrough
- pseudo-keyword
-Message-ID: <z44yrbxsvk4vqozjqikrmuubidpje5tusumrg5ittwz6zjaw6b@zm4b3lmcnqan>
-References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
- <da9d0ba48a5be92f212e6bc04710803ca0ffa7b3.1697183699.git.manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qssIs-0001ai-F0
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:12:42 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qssIk-0002Sf-7B
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:12:42 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6b5af4662b7so3511730b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 15:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1697580752; x=1698185552; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=JoI3ewOqGPmPitQc47qaIzmOcciESJo39DxkrCwyHlE=;
+ b=SZgf8a3EmpUkcYaw0PwxUHCSHRKjcTl1WVCK0/1CAeJqFk0CgVP0ESSAvUnfHSx+O+
+ axnpHdf4S1nfNMIkNhFSuXMWKprJJZ/GscVNAk9XnaTzhn1VLwa+FyzXH7QHo+nlgg0l
+ gOR0DHUwMoYVYaXDD3rMBdXQb0PI0vjClc2jAXHcFyxHcvZcvopycZj3ygAiYZev2duh
+ xtlom78Eztgi7jepslHm7QYqMOagIgMdGG0PSTnrnbVWnSVwGhw2U4qRfC3rl7+xE97L
+ TAhVnw5NVEqCtgn/BbTiV0Kk7pQ9DCX+fhfWnJg8QwAJ+/zj6RlWSi95f8uMhDTdcqJA
+ pSXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697580752; x=1698185552;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JoI3ewOqGPmPitQc47qaIzmOcciESJo39DxkrCwyHlE=;
+ b=l5EVQNwQ+u6UG6gNredejW+JK7F85rO25t5v06bqTK+575EuTpBqGdmYyhjHntdmtL
+ 39630F+lRMXNEYIc9/AUNGZrf/lk7O7yJvquVayM4TvAvs/xAUynDf5XZk1ENOSp5Pq6
+ tiPqEGauEuVDypL0cOSKRBkG7UhklfiNMfGfT/hcoEORgHtozqsyJ349QyFVrMSNbnYi
+ icuTGHhS1py+sF0xhA6RM9Nitmo2pjP0PGAraTX67ArNspXs7KTwcbeQNK0sF4IWIlmG
+ XG+LYCvDy7GKYyzwrpJ118k+KlnQ1sNLfIxZOtW8B+g6D2DpGbdqPiwKOR8jXjRwEL2D
+ FD8w==
+X-Gm-Message-State: AOJu0Yw2G7CjpapR9ilabABj84iAch9ZOcZdj8frjPOf45w98pQHJFwD
+ IYImYnRyvmQoCCKXzcWTWHqYOxKPEUDXplwY4KM=
+X-Google-Smtp-Source: AGHT+IHvK74gpzwutVPb2MLwrZCOwCwj/bwrKE0VcVPR/b6wbPGK3NXeWQv39Wu4WIiTcXfvO86tLw==
+X-Received: by 2002:a05:6a00:1a51:b0:6ad:535e:6ed9 with SMTP id
+ h17-20020a056a001a5100b006ad535e6ed9mr3527350pfv.16.1697580751933; 
+ Tue, 17 Oct 2023 15:12:31 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([177.45.186.249])
+ by smtp.gmail.com with ESMTPSA id
+ t13-20020a62d14d000000b006be077531aesm2011023pfl.220.2023.10.17.15.12.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Oct 2023 15:12:31 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/6] riscv: zicntr/zihpm flags and disable support
+Date: Tue, 17 Oct 2023 19:12:20 -0300
+Message-ID: <20231017221226.136764-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <da9d0ba48a5be92f212e6bc04710803ca0ffa7b3.1697183699.git.manos.pitsidianakis@linaro.org>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,22 +90,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 13, 2023 at 10:56:31AM +0300, Emmanouil Pitsidianakis wrote:
-> In preparation of raising -Wimplicit-fallthrough to 5, replace all
-> fall-through comments with the fallthrough attribute pseudo-keyword.
-> 
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
->  qapi/opts-visitor.c         | 1 +
->  qapi/string-input-visitor.c | 4 ++--
->  2 files changed, 3 insertions(+), 2 deletions(-)
->
+Hi,
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+This is a follow-up of the work done in [1] after review comments made
+in the rva22u64 profile support review [2].
+
+zicntr and zihpm are already implemented by QEMU before they were added
+as discrete extensions by RVI. This puts QEMU in a weird spot because it
+has enabled default extensions that aren't togglable on/off via user
+flags and aren't reported in riscv,isa as present.
+
+There's no reason to no treat both zicntr and zihpm as regular
+extensions, reporting their existence in riscv,isa DT and allowing users
+to disable them. This will also benefit us in the incoming profile
+support, since disabling a profile should disable all its mandatory
+extensions, and for the rva22u64 profile this means that both zicntr and
+zihpm should be disabled as well. 
+
+Let's add user flags and disable support for both in all accelerators
+(TCG and KVM). FWIW Linux boot doesn't seem to care about the lack of
+both zicntr and zihpm when running TCG, although attempting to use the
+timers will result in SIGILL.
+
+
+[1] https://lore.kernel.org/qemu-riscv/20230717215419.124258-1-dbarboza@ventanamicro.com/
+[2] https://lore.kernel.org/qemu-riscv/20231017-e7a4712137165b59844499e3@orel/T/#m3bb0e3c9b00d9edd168da9f7de0bc26df4f7d6ab
+
+Daniel Henrique Barboza (6):
+  target/riscv/cpu.c: add zicntr extension flag
+  target/riscv/tcg: add ext_zicntr disable support
+  target/riscv/kvm: add zicntr reg
+  target/riscv/cpu.c: add zihpm extension flag
+  target/riscv/tcg: add ext_zihpm disable support
+  target/riscv/kvm: add zihpm reg
+
+ target/riscv/cpu.c         | 15 +++++++++++++++
+ target/riscv/cpu_cfg.h     |  2 ++
+ target/riscv/csr.c         |  4 ++++
+ target/riscv/kvm/kvm-cpu.c |  2 ++
+ target/riscv/tcg/tcg-cpu.c | 21 +++++++++++++++++++++
+ 5 files changed, 44 insertions(+)
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.41.0
 
 
