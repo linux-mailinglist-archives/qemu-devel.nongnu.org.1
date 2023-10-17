@@ -2,71 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9092E7CC20F
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3F07CC217
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:54:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsidW-0004TT-NM; Tue, 17 Oct 2023 07:53:22 -0400
+	id 1qsid0-00043u-OC; Tue, 17 Oct 2023 07:52:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsidU-0004Od-6L
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:53:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsidR-00054M-EH
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:53:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697543596;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=96sXareEzivDc8DjJq1hued/pCJZ9cpHZ6xjlPCp5jI=;
- b=eZOYrPf1Uhmjyjii+TnQnbsv6fdNpfi0j03njAovg+CO1GU6eZS8m9/mCl/cPU3ggZdVT2
- IKpXQs9P7H2KJyT1uQAzULk8LF40pdQ4jHdHJFd7oc6bFW2WSvWXGpSUWZ698VQQSLQ2Q1
- vzW1vCfgL21520TEtej8GCe96NzVm4k=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-339-NZz9beRsOzSjDHgnIjxueQ-1; Tue, 17 Oct 2023 07:52:58 -0400
-X-MC-Unique: NZz9beRsOzSjDHgnIjxueQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 591973C170BC;
- Tue, 17 Oct 2023 11:52:57 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 618C2492BFA;
- Tue, 17 Oct 2023 11:52:55 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: libvir-list@redhat.com, Leonardo Bras <leobras@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fam Zheng <fam@euphon.net>,
- Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
- qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v5 7/7] [RFC] migration: Remove helpers needed for -i/-b
- migrate options
-Date: Tue, 17 Oct 2023 13:52:38 +0200
-Message-ID: <20231017115238.18309-8-quintela@redhat.com>
-In-Reply-To: <20231017115238.18309-1-quintela@redhat.com>
-References: <20231017115238.18309-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsicv-00043V-Oh
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:52:45 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsicu-0004rT-5v
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:52:45 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-53e2dc8fa02so8071302a12.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 04:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697543562; x=1698148362; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lM5B5XR9gM6+adHyTNebOwRjArl0u2qQcUgBG1MiLKo=;
+ b=wawewQeeY9aZ1jwN+8Zv9/iQKrqYNW61FRSM6WD97H/ajXBYxTaBlwQ88+uJJJERSj
+ cEpDOCkY/4koN63mTIDSqj8s22w6hHWvBOhLhHrhAIk/M3jIbvwJMndVvEawcZKSJFvo
+ PWbOqCCyMtBJETRnUTIjGVNszaPwHJkTzTTKSg1ObGWnvs/10gReGDU4/Atjy1t9PFAJ
+ w61+KFBOUTxt0BHkLxeMYmyZz/qVWyhgx6mlzGxTZrh7/7ZJBUII5xrgBDthZZdtXrb3
+ +vAHOvENvCTlo+7ra7HN18pVlwYocnUqMXQcNxBLNxa7uJFD6e3A8GWrPQRO/mPI+Xxs
+ zuTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697543562; x=1698148362;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lM5B5XR9gM6+adHyTNebOwRjArl0u2qQcUgBG1MiLKo=;
+ b=jryXTdynACVny08UQo4Y1affG/XHmX3HVRnJ1/tN8G5Zn+W8aKz102Bm7KdVKA0q47
+ nM6W/zIyB/eRUCWRMkYg1MrtALc1dopc/0rEivO/PB07Ff1GGxp95zXEoqIotc6kqZJA
+ zgtmJtt6wTvmlmWmF85NkRzGHmbBdqDZuQ2raaGENWfBYXb63vOiszV+MZB2JlnfzeY/
+ Cu9eJWl7CkcsPPF2xWZKiTlgZwY6UyNok7rqnA6onrENYN+GAU5mQOtdej26O+16H0i6
+ WiQ7jG0NXzq5Z1Up6ePfHEVHe1bEBJfOv8szHntdO7RrH68V+YfrRp+2tR4GKF8j+S3v
+ cvXw==
+X-Gm-Message-State: AOJu0YxbzulK/nMAmBk6Wvq8BbUyZM4Vuke/Be1RQ8N8UtE0n/MZfPoi
+ 8m5rwSK8L2iTVBuSL9+7OWsLiQ==
+X-Google-Smtp-Source: AGHT+IFS1eGyPhuBjBm53DEb+6xsvCE8DPSaUix48LBGNJyodYCDrjcTDzka+A6r4YAR2G7CNy11tA==
+X-Received: by 2002:a17:907:1c28:b0:9b2:b71f:83be with SMTP id
+ nc40-20020a1709071c2800b009b2b71f83bemr1576365ejc.1.1697543562518; 
+ Tue, 17 Oct 2023 04:52:42 -0700 (PDT)
+Received: from [192.168.69.115] ([176.172.118.33])
+ by smtp.gmail.com with ESMTPSA id
+ hx27-20020a170906847b00b0099e12a49c8fsm1127143ejc.173.2023.10.17.04.52.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Oct 2023 04:52:42 -0700 (PDT)
+Message-ID: <2ccd41e7-bc4a-9223-7f56-04493e0357d4@linaro.org>
+Date: Tue, 17 Oct 2023 13:52:40 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 0/2] tcg: Streamline vector load/store
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, Brian Cain <bcain@quicinc.com>
+References: <20231013175109.124308-1-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231013175109.124308-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,144 +92,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[DON'T MERGE]
+On 13/10/23 19:51, Richard Henderson wrote:
+> We have tcg_gen_qemu_{ld,st}_i128, which can be used to implement
+> load/store of vectors to guest memory.  But at present we have to
+> split into, or concatenated from, two i64 to reference the guest
+> vector register backing store within env.
+> 
+> Provide tcg_gen_{ld,st}_i128, which can avoid the trip through i64.
+> 
+> This does require that the target store i128 in host byte ordering,
+> which is true of i386 (and some other backends) but not arm or s390x.
+> There is definitely further cleanup possible.
 
-We were abusing capabilities and parameters to implement -i/-b.
-Previous patch convert that options into one error.  Remove all the
-helpers needed to implement them.
-
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- migration/migration.h |  4 ----
- migration/options.h   |  6 ------
- migration/migration.c |  2 --
- migration/options.c   | 41 -----------------------------------------
- 4 files changed, 53 deletions(-)
-
-diff --git a/migration/migration.h b/migration/migration.h
-index ae82004892..937a3534c5 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -382,10 +382,6 @@ struct MigrationState {
-     /* mutex to protect errp */
-     QemuMutex error_mutex;
- 
--    /* Do we have to clean up -b/-i from old migrate parameters */
--    /* This feature is deprecated and will be removed */
--    bool must_remove_block_options;
--
-     /*
-      * Global switch on whether we need to store the global state
-      * during migration.
-diff --git a/migration/options.h b/migration/options.h
-index 237f2d6b4a..e41ea38322 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -62,7 +62,6 @@ bool migrate_tls(void);
- /* capabilities helpers */
- 
- bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp);
--bool migrate_cap_set(int cap, bool value, Error **errp);
- 
- /* parameters */
- 
-@@ -93,14 +92,9 @@ const char *migrate_tls_creds(void);
- const char *migrate_tls_hostname(void);
- uint64_t migrate_xbzrle_cache_size(void);
- 
--/* parameters setters */
--
--void migrate_set_block_incremental(bool value);
--
- /* parameters helpers */
- 
- bool migrate_params_check(MigrationParameters *params, Error **errp);
- void migrate_params_init(MigrationParameters *params);
--void block_cleanup_parameters(void);
- 
- #endif
-diff --git a/migration/migration.c b/migration/migration.c
-index 9a695299ba..9792bd98ca 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1205,7 +1205,6 @@ static void migrate_fd_cleanup(MigrationState *s)
-         error_report_err(error_copy(s->error));
-     }
-     notifier_list_notify(&migration_state_notifiers, s);
--    block_cleanup_parameters();
-     yank_unregister_instance(MIGRATION_YANK_INSTANCE);
- }
- 
-@@ -1715,7 +1714,6 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
-                    "a valid migration protocol");
-         migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
-                           MIGRATION_STATUS_FAILED);
--        block_cleanup_parameters();
-     }
- 
-     if (local_err) {
-diff --git a/migration/options.c b/migration/options.c
-index 7cb99a82a5..3be7e35f40 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -631,26 +631,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-     return true;
- }
- 
--bool migrate_cap_set(int cap, bool value, Error **errp)
--{
--    MigrationState *s = migrate_get_current();
--    bool new_caps[MIGRATION_CAPABILITY__MAX];
--
--    if (migration_is_running(s->state)) {
--        error_setg(errp, QERR_MIGRATION_ACTIVE);
--        return false;
--    }
--
--    memcpy(new_caps, s->capabilities, sizeof(new_caps));
--    new_caps[cap] = value;
--
--    if (!migrate_caps_check(s->capabilities, new_caps, errp)) {
--        return false;
--    }
--    s->capabilities[cap] = value;
--    return true;
--}
--
- MigrationCapabilityStatusList *qmp_query_migrate_capabilities(Error **errp)
- {
-     MigrationCapabilityStatusList *head = NULL, **tail = &head;
-@@ -877,29 +857,8 @@ uint64_t migrate_xbzrle_cache_size(void)
-     return s->parameters.xbzrle_cache_size;
- }
- 
--/* parameter setters */
--
--void migrate_set_block_incremental(bool value)
--{
--    MigrationState *s = migrate_get_current();
--
--    s->parameters.block_incremental = value;
--}
--
- /* parameters helpers */
- 
--void block_cleanup_parameters(void)
--{
--    MigrationState *s = migrate_get_current();
--
--    if (s->must_remove_block_options) {
--        /* setting to false can never fail */
--        migrate_cap_set(MIGRATION_CAPABILITY_BLOCK, false, &error_abort);
--        migrate_set_block_incremental(false);
--        s->must_remove_block_options = false;
--    }
--}
--
- AnnounceParameters *migrate_announce_params(void)
- {
-     static AnnounceParameters ap;
--- 
-2.41.0
-
+Is hexagon gen_vreg_load() candidate?
 
