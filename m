@@ -2,102 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DFF7CCECA
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2147CCECF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:55:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsr3d-0003E1-8N; Tue, 17 Oct 2023 16:52:53 -0400
+	id 1qsr5V-0003yM-4I; Tue, 17 Oct 2023 16:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qsr3b-0003D1-2s; Tue, 17 Oct 2023 16:52:51 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qsr5T-0003xu-1y
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:54:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qsr3Y-00062d-Da; Tue, 17 Oct 2023 16:52:50 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39HKh4nM012532; Tue, 17 Oct 2023 20:52:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=uUfFOgnK62rUbLUs588AGihprNGR6WraJCqwbvBlL7Q=;
- b=kKtZWZ8U9KMTAIJiArbozj/+LT/ZU72xIU5lQK6Ie5kvHhV/Yh2VqqLBq1pokgToJFGG
- bNjhAY7NOh7R58LxKFFuGw7p558Vtvk21wt59qIplfHl5yYu1P4O1N3Q9RjSbyJ9OFxq
- QjHU7i3memJhjSXVdBLx82NCEQ0infD+KpHKAD8aAMgJMltF6MTF2SsQDlXLjdbF3ACS
- WyA1XTZqJDJCJh7f2iwiT7OpUHCS0EBSxqCmwAh5nSe6LvqR6+21UXDgDxWh11Pp6CfO
- 5A7Og0aOmznVLveQtPCdEUbfX0PZkyYZi/JP2NWpS6REvXcNN0MMVDYVhFhOyd7KDXM+ uA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tt15216k9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Oct 2023 20:52:37 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39HKh2of012251;
- Tue, 17 Oct 2023 20:52:36 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tt15216jy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Oct 2023 20:52:36 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39HKebw8027385; Tue, 17 Oct 2023 20:52:36 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr5asc0nt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Oct 2023 20:52:36 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39HKqZtr48955974
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 17 Oct 2023 20:52:35 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A950258058;
- Tue, 17 Oct 2023 20:52:35 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 746F158057;
- Tue, 17 Oct 2023 20:52:35 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 17 Oct 2023 20:52:35 +0000 (GMT)
-Message-ID: <6d1553ab505f13ab7553a6e1f4c45f965994bdca.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 0/2] Add PowerNV I2C Controller Model
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, npiggin@gmail.com, fbarrat@linux.ibm.com,
- philmd@linaro.org
-Date: Tue, 17 Oct 2023 15:52:35 -0500
-In-Reply-To: <80d1a481-10bb-4d6c-82a5-418dff62880a@kaod.org>
-References: <20231016222013.3739530-1-milesg@linux.vnet.ibm.com>
- <80d1a481-10bb-4d6c-82a5-418dff62880a@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cxmJ7TeE15lxD0bZ4ZYImSGBcbrspXuQ
-X-Proofpoint-ORIG-GUID: sqQDN2252-DUU9AZPQfOBqAlzAYuAgWg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-17_03,2023-10-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0 suspectscore=0
- adultscore=0 clxscore=1015 spamscore=0 impostorscore=0 lowpriorityscore=0
- mlxlogscore=653 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310170175
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qsr5R-0006Is-IB
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:54:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697576084;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=APXAT0Mufwa4LiaWaETOX+0L3iAc/blRNWWgFHc9wFc=;
+ b=ZbAoHlHkJTXP6BCYHyK9OCO5+AClImVH1U4Rl98F5EQgPnEss1mBZ+Hy+S26nEDcpFDb2L
+ XVvazQonHeTKNtCCw95IMWLH6XAGmH/pV+ta66zfHN9iTaC3vuQ2DTb+1wJtaqo90N0B2U
+ 08DpkRtCnT9M6epfjcLaORQb+kKIisI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-456-coo9FxqWPdOc3Nuw_ATnSA-1; Tue, 17 Oct 2023 16:54:41 -0400
+X-MC-Unique: coo9FxqWPdOc3Nuw_ATnSA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40837aa4a58so3748375e9.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 13:54:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697576075; x=1698180875;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=APXAT0Mufwa4LiaWaETOX+0L3iAc/blRNWWgFHc9wFc=;
+ b=ZerCK4N4xjdsWApl1nMXLNlhr5eHEjaWX/8wcWFnt09xk9i795N2d0O6H7a1PbHJsM
+ i7zHZfTTLTP9HcVYoIAFeLsAHhTZ+3UhtvULCG6363brtJNQZeTdR5DZgLQZZRLiS/9N
+ /f1m3Lgnu2dfvr6S5GX0Aj27hGkR49jHnzJ0UCE5jLDiCHH320qJddsRAjMFPRNKWIIi
+ hmvK1CRtvx97CrQqb0Jb61DF3gNcD6cAaK6j7L0m1P6cULkr1vvZKKgC5lJ+Svt5YZEr
+ A1jpZ3KAKNDlGKCIv+gg8owi2+woE2fVYfSojefjMJz4lyfdhkFTl4mDaRhjYasecoXS
+ VYnQ==
+X-Gm-Message-State: AOJu0YznOqn/UshRqOREiwff0iYebaz1UXCLoJexr3wpjKfOTD1ujufU
+ h5/0dZ/ZxCWZBlqv28x3k2sEOeKgwZdUwjRFNstlqd/jB1rPU71lgGhNeIvGCnXddV3PLyGlfDp
+ M89gEBug31AAaDTeVoBvrs7C+WKXgd6dZ2JFAQWgWia8/a+ujaEDbJ1tEdjuQMS7vIXeOVHt0az
+ mxdwUC
+X-Received: by 2002:a05:600c:4f01:b0:401:c8b9:4b86 with SMTP id
+ l1-20020a05600c4f0100b00401c8b94b86mr2813142wmq.9.1697576074795; 
+ Tue, 17 Oct 2023 13:54:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGtH/iowvLS457ohstlFq966ExjVMhBZBQ5spwGgLhW6SdUsPbiEaMHn5yabx//i4UQuP+EQ==
+X-Received: by 2002:a05:600c:4f01:b0:401:c8b9:4b86 with SMTP id
+ l1-20020a05600c4f0100b00401c8b94b86mr2813122wmq.9.1697576074448; 
+ Tue, 17 Oct 2023 13:54:34 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ z20-20020a05600c0a1400b003feae747ff2sm10748551wmp.35.2023.10.17.13.54.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Oct 2023 13:54:33 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: libvir-list@redhat.com,  Fabiano Rosas <farosas@suse.de>,
+ qemu-block@nongnu.org,  Leonardo Bras <leobras@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Markus Armbruster <armbru@redhat.com>,  Fam Zheng
+ <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Thomas Huth <thuth@redhat.com>, Kevin Wolf
+ <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: [PATCH v6 3/5] migration: migrate 'blk' command option is
+ deprecated.
+In-Reply-To: <20231017172307.22858-4-quintela@redhat.com> (Juan Quintela's
+ message of "Tue, 17 Oct 2023 19:23:05 +0200")
+References: <20231017172307.22858-1-quintela@redhat.com>
+ <20231017172307.22858-4-quintela@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 17 Oct 2023 22:54:32 +0200
+Message-ID: <87v8b5x94n.fsf@secure.mitica>
+MIME-Version: 1.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,47 +103,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-10-17 at 09:01 +0200, Cédric Le Goater wrote:
-> On 10/17/23 00:20, Glenn Miles wrote:
-> > Upstreams the PowerNV I2C controller model originally
-> > authored by Cédric Le Goater with minor changes by
-> > myself to split the actual addition of the model from
-> > wiring it up to a power processor model.
-> > 
-> > This series only attaches the controller to the powernv9
-> > chip model, but is expected to eventually also be attached
-> > to the powernv10 chip model.
-> > 
-> > Cédric Le Goater (2):
-> >    ppc/pnv: Add an I2C controller model
-> >    ppc/pnv: Connect I2C controller model to powernv9 chip
-> 
-> Reviewed-by: Cédric Le Goater <clg@kaod.org>
-> 
-> Thanks for taking care of upstreaming Glenn. Waiting for the P10 part
-> now !
-> 
-> C.
+Juan Quintela <quintela@redhat.com> wrote:
+> Use blocked-mirror with NBD instead.
+>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
-No problem!  Thanks for all of your help as well.
+Hi Kevin and Stefan
 
-Glenn
+Can we change the iotest output to fix this?
 
-> 
-> 
-> >   hw/ppc/meson.build         |   1 +
-> >   hw/ppc/pnv.c               |  28 ++
-> >   hw/ppc/pnv_i2c.c           | 697
-> > +++++++++++++++++++++++++++++++++++++
-> >   include/hw/ppc/pnv_chip.h  |   8 +
-> >   include/hw/ppc/pnv_i2c.h   |  38 ++
-> >   include/hw/ppc/pnv_xscom.h |   3 +
-> >   6 files changed, 775 insertions(+)
-> >   create mode 100644 hw/ppc/pnv_i2c.c
-> >   create mode 100644 include/hw/ppc/pnv_i2c.h
-> > 
+https://gitlab.com/juan.quintela/qemu/-/jobs/5314070229
+
+tput mismatch (see /builds/juan.quintela/qemu/build/tests/qemu-iotests/scratch/raw-file-183/183.out.bad)
+--- /builds/juan.quintela/qemu/tests/qemu-iotests/183.out
++++ /builds/juan.quintela/qemu/build/tests/qemu-iotests/scratch/raw-file-183/183.out.bad
+@@ -28,6 +28,8 @@
+ { 'execute': 'migrate',
+        'arguments': { 'uri': 'unix:SOCK_DIR/migrate', 'blk': true } }
++warning: parameter 'blk is deprecated; use blockdev-mirror with NBD instead
++warning: block migration is deprecated; use blockdev-mirror with NBD instead
+ {"return": {}}
+ { 'execute': 'query-status' }
+ {"return": {"status": "postmigrate", "singlestep": false, "running":
+ false}}
+
+
+I really want to give the warnings two users.
+
+I guess that you want to test blk migration.
+
+What do you recommend?
+
+Later, Juan.
+
+
 
 
