@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1F77CCAC2
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 20:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F057CCAF9
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 20:46:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsouJ-00029Y-RB; Tue, 17 Oct 2023 14:35:07 -0400
+	id 1qsp4A-0005uQ-Vo; Tue, 17 Oct 2023 14:45:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qsouB-000281-UJ
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:34:59 -0400
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qsp40-0005nG-Kk; Tue, 17 Oct 2023 14:45:11 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qsou9-0002vB-8k
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:34:59 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id CD64DCE208C;
- Tue, 17 Oct 2023 18:34:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E33C433C7;
- Tue, 17 Oct 2023 18:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1697567694;
- bh=xUiub3Sw3ZwDDeISNuMoM/nkTfKAh5F9xvHO+JTSKWA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Eqmjfa5jCAEorbiAErkgODkZjI8qIIIKSzh/kksWoudZoONMe1Xt13NZf6xeTcz+5
- UX73GBrrDodGqvrUiI3oRW4QvJlqot+Kh8w4gIUM7JiSBWKyUrXmOl4nNjuvuZlLgO
- J/9nbvhFU6jnR7XixEVN8yp3vhOccQPlC7bMfIjGaGfjh+HkGNfrEQ4lLP17Aamq1l
- F/m0Dk7JpRz2aRnPk81sL3NsrrYa08Gs3sYhVXW01d+C4zeSRI5I+R7mFdefto8ROg
- RqQOTVhBkAjugl6wZF1w7q7JcNnthf91hfEMIYoSPNms2zdX3tHc854/mFbvdAiLF0
- yarYSGHTEmW0g==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 11/11] hw/hppa: Add new HP C3700 machine
-Date: Tue, 17 Oct 2023 20:34:32 +0200
-Message-ID: <20231017183432.117243-12-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231017183432.117243-1-deller@kernel.org>
-References: <20231017183432.117243-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qsp3u-0004rw-Mg; Tue, 17 Oct 2023 14:45:07 -0400
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 0EAF562367;
+ Tue, 17 Oct 2023 21:44:56 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8006::1:24])
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id jipbAUIOliE0-jlyGTHcp; Tue, 17 Oct 2023 21:44:55 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1697568295;
+ bh=T1WAS38/Ih++ujo6Vp5NxaxS79Yh1GbpdUcZ2V0wRxY=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=MKhJ8WXG30V/pTZhwDTckVYANwDb+629QsAcrq4dJJyEoCLOQR6HdY3RmiP0ZcXYf
+ BTArrcS9zG06fxkFEu09d5/CfPBqNg9KViBW9LKlkbLI5Uv3q5gNM4SPZ21pLImZFX
+ 521f0+bSaJwhMZjTLuC38Ycg0vECnRRg5fBwCJH4=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, hreitz@redhat.com, kwolf@redhat.com, den@openvz.org,
+ alexander.ivanov@virtuozzo.com, vsementsov@yandex-team.ru
+Subject: [PATCH v8 0/7] blockdev-replace
+Date: Tue, 17 Oct 2023 21:44:37 +0300
+Message-Id: <20231017184444.932733-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=deller@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,165 +70,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+Hi all!
 
-Add code to create an emulated C3700 machine.
-It includes the following components:
-- HP Powerbar SP2 Diva BMC card (serial port only)
-- PCI 4x serial card (for serial ports #1-#4)
-- USB OHCI controller with USB keyboard and USB mouse
+This series presents a new command blockdev-replace, which helps to
+insert/remove filters anywhere in the block graph. It can:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- hw/hppa/machine.c | 101 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 101 insertions(+)
+ - replace qdev block-node by qdev-id
+ - replace export block-node by export-id
+ - replace any child of parent block-node by node-name and child name
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 2bd02508a9..67d4d1b5e0 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -22,8 +22,10 @@
- #include "hw/input/lasips2.h"
- #include "hw/net/lasi_82596.h"
- #include "hw/nmi.h"
-+#include "hw/usb.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_device.h"
-+#include "hw/pci-host/astro.h"
- #include "hw/pci-host/dino.h"
- #include "hw/misc/lasi.h"
- #include "hppa_hardware.h"
-@@ -300,6 +302,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus)
-     const char *initrd_filename = machine->initrd_filename;
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-     DeviceState *dev;
-+    PCIDevice *pci_dev;
-     char *firmware_filename;
-     uint64_t firmware_low, firmware_high;
-     long size;
-@@ -336,6 +339,36 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus)
-         }
-     }
- 
-+    /* BMC board: HP Powerbar SP2 Diva (with console only) */
-+    pci_dev = pci_new(-1, "pci-serial");
-+    if (!lasi_dev) {
-+        /* bind default keyboard/serial to Diva card */
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev", serial_hd(0));
-+    }
-+    qdev_prop_set_uint8(DEVICE(pci_dev), "prog_if", 0);
-+    pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
-+    pci_config_set_vendor_id(pci_dev->config, PCI_VENDOR_ID_HP);
-+    pci_config_set_device_id(pci_dev->config, 0x1048);
-+    pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_VENDOR_ID], PCI_VENDOR_ID_HP);
-+    pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
-+
-+    /* create a second serial PCI card when running Astro */
-+    if (!lasi_dev) {
-+        pci_dev = pci_new(-1, "pci-serial-4x");
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev3", serial_hd(3));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev4", serial_hd(4));
-+        pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
-+    }
-+
-+    /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
-+    if (!lasi_dev && machine->enable_graphics) {
-+        pci_create_simple(pci_bus, -1, "pci-ohci");
-+        usb_create_simple(usb_bus_find(-1), "usb-kbd");
-+        usb_create_simple(usb_bus_find(-1), "usb-mouse");
-+    }
-+
-     /* register power switch emulation */
-     qemu_register_powerdown_notifier(&hppa_system_powerdown_notifier);
- 
-@@ -520,6 +553,42 @@ static void machine_HP_B160L_init(MachineState *machine)
-     machine_HP_common_init_tail(machine, pci_bus);
- }
- 
-+static AstroState *astro_init(void)
-+{
-+    DeviceState *dev;
-+
-+    dev = qdev_new(TYPE_ASTRO_CHIP);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    return ASTRO_CHIP(dev);
-+}
-+
-+/*
-+ * Create HP C3700 workstation
-+ */
-+static void machine_HP_C3700_init(MachineState *machine)
-+{
-+    PCIBus *pci_bus;
-+    AstroState *astro;
-+    DeviceState *astro_dev;
-+    MemoryRegion *addr_space = get_system_memory();
-+
-+    /* Create CPUs and RAM.  */
-+    machine_HP_common_init_cpus(machine);
-+
-+    /* Init Astro and the Elroys (PCI host bus chips).  */
-+    astro = astro_init();
-+    astro_dev = DEVICE(astro);
-+    memory_region_add_subregion(addr_space, ASTRO_HPA,
-+                                sysbus_mmio_get_region(
-+                                    SYS_BUS_DEVICE(astro_dev), 0));
-+    pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(astro->elroy[0]), "pci"));
-+    assert(pci_bus);
-+
-+    /* Add SCSI discs, NICs, graphics & load firmware */
-+    machine_HP_common_init_tail(machine, pci_bus);
-+}
-+
- static void hppa_machine_reset(MachineState *ms, ShutdownCause reason)
- {
-     unsigned int smp_cpus = ms->smp.cpus;
-@@ -599,9 +668,41 @@ static const TypeInfo HP_B160L_machine_init_typeinfo = {
-     },
- };
- 
-+static void HP_C3700_machine_init_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    NMIClass *nc = NMI_CLASS(oc);
-+
-+    mc->desc = "HP C3700 workstation";
-+    mc->default_cpu_type = TYPE_HPPA_CPU;
-+    mc->init = machine_HP_C3700_init;
-+    mc->reset = hppa_machine_reset;
-+    mc->block_default_type = IF_SCSI;
-+    mc->max_cpus = HPPA_MAX_CPUS;
-+    mc->default_cpus = 1;
-+    mc->is_default = false;
-+    mc->default_ram_size = 1024 * MiB;
-+    mc->default_boot_order = "cd";
-+    mc->default_ram_id = "ram";
-+    mc->default_nic = "tulip";
-+
-+    nc->nmi_monitor_handler = hppa_nmi;
-+}
-+
-+static const TypeInfo HP_C3700_machine_init_typeinfo = {
-+    .name = MACHINE_TYPE_NAME("C3700"),
-+    .parent = TYPE_MACHINE,
-+    .class_init = HP_C3700_machine_init_class_init,
-+    .interfaces = (InterfaceInfo[]) {
-+        { TYPE_NMI },
-+        { }
-+    },
-+};
-+
- static void hppa_machine_init_register_types(void)
- {
-     type_register_static(&HP_B160L_machine_init_typeinfo);
-+    type_register_static(&HP_C3700_machine_init_typeinfo);
- }
- 
- type_init(hppa_machine_init_register_types)
+So insertions is done in two steps:
+
+1. blockdev_add (create filter node, unparented)
+
+    [some parent]  [new filter]
+     |               |
+     V               V
+    [        some child       ]
+
+2. blockdev-replace (replace child by the filter)
+
+    [some parent]
+     | 
+     V
+    [new filter]
+     |
+     V
+    [some child]
+
+And removal is done in reverse order:
+
+1. blockdev-replace (go back to picture 1)
+2. blockdev_del (remove filter node)
+
+
+Ideally, we to do both operations (add + replace or replace + del) in a
+transaction, but that would be another series.
+
+v8: - rebase on master
+    - add documentation
+    - also don't use "preallocate" filter in a test, as we don't support
+    removal of this filter for now. Preallocate filter is rather
+    unusual, see discussion here:
+    https://www.mail-archive.com/qemu-devel@nongnu.org/msg994945.html
+
+Vladimir Sementsov-Ogievskiy (7):
+  block-backend: blk_root(): drop const specifier on return type
+  block/export: add blk_by_export_id()
+  block: make bdrv_find_child() function public
+  qapi: add x-blockdev-replace command
+  block: bdrv_get_xdbg_block_graph(): report export ids
+  iotests.py: introduce VM.assert_edges_list() method
+  iotests: add filter-insertion
+
+ block.c                                       |  17 ++
+ block/block-backend.c                         |   2 +-
+ block/export/export.c                         |  31 +++
+ blockdev.c                                    |  70 ++++--
+ include/block/block_int-io.h                  |   2 +
+ include/block/export.h                        |   1 +
+ include/sysemu/block-backend-global-state.h   |   3 +-
+ qapi/block-core.json                          |  83 ++++++
+ stubs/blk-by-qdev-id.c                        |   9 +
+ stubs/blk-exp-find-by-blk.c                   |   9 +
+ stubs/meson.build                             |   2 +
+ tests/qemu-iotests/iotests.py                 |  17 ++
+ tests/qemu-iotests/tests/filter-insertion     | 236 ++++++++++++++++++
+ tests/qemu-iotests/tests/filter-insertion.out |   5 +
+ 14 files changed, 471 insertions(+), 16 deletions(-)
+ create mode 100644 stubs/blk-by-qdev-id.c
+ create mode 100644 stubs/blk-exp-find-by-blk.c
+ create mode 100755 tests/qemu-iotests/tests/filter-insertion
+ create mode 100644 tests/qemu-iotests/tests/filter-insertion.out
+
 -- 
-2.41.0
+2.34.1
 
 
