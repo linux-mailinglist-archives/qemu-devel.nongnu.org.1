@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E5F7CB997
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 06:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D20637CB98A
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 06:11:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsbPD-0007S8-75; Tue, 17 Oct 2023 00:10:07 -0400
+	id 1qsbPJ-0007So-ST; Tue, 17 Oct 2023 00:10:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qsbPA-0007Qw-Op
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 00:10:04 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1qsbPG-0007SY-7p
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 00:10:10 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qsbP9-0004Hz-9B
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 00:10:04 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1ca82f015e4so9881805ad.1
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 21:10:02 -0700 (PDT)
+ id 1qsbPD-0004Ko-Cj
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 00:10:09 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6b201a93c9cso3026256b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 21:10:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697515802; x=1698120602;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697515806; x=1698120606;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hdRn3xY+r+zZRoAOUO1YfZyC5ZVoV18TeJ1QBbbHIlQ=;
- b=i28XWIQf+z6I4ScCDVe26O7x6HK5XCgw4C8IOWybNTXOl0tVWA93HLp2+z6aYU7R7a
- SSoUkhzQrwgQP29qMmcnM7ox737PbBmEVSZsOneIxAzkEnfqGgYPeUTCJcok4m2Rutw4
- ltd+W85a7SSwwWniXt7mqEPZLm6ZxCQL5KkDlEF6Do0vr6VOjKRJAW10xZxjEqYcTX2M
- /B+Y4QvweljxR31wbqQLkIJldfq3wesG77uWZwU7P0HEhdYgiPtmX+J0aAMYsZfUprhd
- Zwdg3fR6nPevAwZAx0+umYZaAuycA1oCjgR3sfLfteDd1joJ9Ttd+D06Ml3so3Ga6zeC
- vyGA==
+ bh=GwJY41Y5Ssd2yodd2ldhaOgM4YyGsLPHPwk9ht/SrrY=;
+ b=vZ1ZDFAptsLoDIfxnadMpaqnAGSwyIXsv+qrfe/e07oEDuowydp939xnkdihSF+44d
+ O4eRKI3j4TVCP9jHVHmSJPrptJfdO27FPGLR6D0DqWXOyv3leHW3m+I+YAKYCwXNTvce
+ S8VW6BFjHMUgP3yjho02CJ7rqUo84HxaVg+S+opmPHotbGKeBgHCQbsFyJ8FKmbPYdx1
+ 2CqeYj08DCfvOYSx6b/dwlphUudoncp4rN2lYgSXbdcQV5+HxPdOImhS5+fxlQNf7wW0
+ y1CZD+QzO9vlYlFwS5JTIPC4p/ny5cpz8f5oS2LfQrJnZlU+a7AwsTCme2HMfWs9wUCZ
+ D+EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697515802; x=1698120602;
+ d=1e100.net; s=20230601; t=1697515806; x=1698120606;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hdRn3xY+r+zZRoAOUO1YfZyC5ZVoV18TeJ1QBbbHIlQ=;
- b=a/GVmiN7L+MkPaz66a3rN5YeH1RsN4kuxtWFy87uPz4rFXC60QBMgQ6FESbbnsSa5y
- hwn5LNatmVYRdEfr64yscGHVrQcPbd5sbSwNZr0dKS9U1cWvL1BTvxQWxHNiel+Yl8Ml
- OqctL+ZZ3mvB092njafwB4Sp5SttnHvFvoJ8m2PHnrnoGoeTbaEfqKJ/TpCgYSalfXzL
- XQQ5eqACzDBb07e40cDiaDhlt3bxOFIIdLfkiE0qFVyVnm5Rf7s9w26GZOGiqlj75s7c
- FyauRfxms9cLe+g/lDPt8YIlN/0niaiFsqcFbRIm+gv0Ew/JbkxQubJhKNSu9IaaE832
- AR8g==
-X-Gm-Message-State: AOJu0Yw+fKG6B7id2flynuO8IumDf5nKHxF44fSIGKIL7WCMF0ogUOJc
- +9M5rpILpu0vWzZP+vtuMZ5HlsmxFD15hrRVRDbqDA==
-X-Google-Smtp-Source: AGHT+IGhx8I12fCpBMc+MsaqpHuGMSI9ZdFzh/wTeUchqcX4ZFqazM5ixsliRI8qhlgp6KP2zyMw4g==
-X-Received: by 2002:a17:902:c943:b0:1c0:d17a:bfef with SMTP id
- i3-20020a170902c94300b001c0d17abfefmr1219387pla.30.1697515801901; 
- Mon, 16 Oct 2023 21:10:01 -0700 (PDT)
+ bh=GwJY41Y5Ssd2yodd2ldhaOgM4YyGsLPHPwk9ht/SrrY=;
+ b=kEbGecp7U9nOoe0DeQ9uUYoAwd/RLmXIFOEMQYFsOL7nyWglKADaseZguqQikwpELm
+ ImpbH53HVXhnSQmKJIehRZHibmLxQwYN0qKs7ZZgIXfjE9gBc2mVq4eaGx/KFnL6GboU
+ 8v+x38SLDnZlR4NL/u13frswlxgb2Ml+tjniXF/M/yChXDfj/fb3qV2Ut40g6/PcvQ4D
+ 7KAHLfBpSxGyyEgPIfJd8Yku60Wu2J+fNhJm73tgv1SAM3wAvOdcOHRywmF5DhlUfIQz
+ /YHmgWRHKfQJdZrBn0EFOfNC1JifGxsSpyOE2ngKF5c8QyHf98re0zy+nWtDzC7Weudp
+ lA3A==
+X-Gm-Message-State: AOJu0Yy29LQcBtPe0xPwZROGbe/P5WXeCBOsBUVuS+IgVx/LETYawZ+u
+ 6DZKac2OrqdUxWklEYjwjocX9nhthFiIFHJdOXtnTQ==
+X-Google-Smtp-Source: AGHT+IEWi2W1b9wnVpjpQwj5J1Hzz44FiU9NGfSRBWWakyGgyCfzSvi/CzZEYSd8OHGnf2tYmR5EnQ==
+X-Received: by 2002:a05:6a20:54a6:b0:130:7803:57bd with SMTP id
+ i38-20020a056a2054a600b00130780357bdmr1158797pzk.3.1697515806065; 
+ Mon, 16 Oct 2023 21:10:06 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with UTF8SMTPSA id
- e13-20020a17090301cd00b001c88f77a156sm390862plh.153.2023.10.16.21.10.00
+ n14-20020a170902e54e00b001c444106bcasm398484plf.46.2023.10.16.21.10.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 16 Oct 2023 21:10:01 -0700 (PDT)
+ Mon, 16 Oct 2023 21:10:05 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, Yuri Benditovich <yuri.benditovich@daynix.com>,
  Andrew Melnychenko <andrew@daynix.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 07/21] tap: Shrink zeroed virtio-net header
-Date: Tue, 17 Oct 2023 13:09:13 +0900
-Message-ID: <20231017040932.62997-8-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 08/21] virtio-net: Copy header only when necessary
+Date: Tue, 17 Oct 2023 13:09:14 +0900
+Message-ID: <20231017040932.62997-9-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231017040932.62997-1-akihiko.odaki@daynix.com>
 References: <20231017040932.62997-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,28 +94,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tap prepends a zeroed virtio-net header when writing a packet to a
-tap with virtio-net header enabled but not in use. This only happens
-when s->host_vnet_hdr_len == sizeof(struct virtio_net_hdr).
+It is necessary to copy the header only for byte swapping. Worse, when
+byte swapping is not needed, the header can be larger than the buffer
+due to VIRTIO_NET_F_HASH_REPORT, which results in buffer overflow.
 
+Copy the header only when byte swapping is needed.
+
+Fixes: e22f0603fb ("virtio-net: reference implementation of hash report")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- net/tap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/net/virtio-net.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/net/tap.c b/net/tap.c
-index 668d69c0de..4c1eb92076 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -118,7 +118,7 @@ static ssize_t tap_receive_iov(NetClientState *nc, const struct iovec *iov,
-     TAPState *s = DO_UPCAST(TAPState, nc, nc);
-     const struct iovec *iovp = iov;
-     struct iovec iov_copy[iovcnt + 1];
--    struct virtio_net_hdr_mrg_rxbuf hdr = { };
-+    struct virtio_net_hdr hdr = { };
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index cab79f19cb..b1cc74881a 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -361,7 +361,8 @@ static void virtio_net_vnet_endian_status(VirtIONet *n, uint8_t status)
+          * can't do it, we fallback onto fixing the headers in the core
+          * virtio-net code.
+          */
+-        n->needs_vnet_hdr_swap = virtio_net_set_vnet_endian(vdev, n->nic->ncs,
++        n->needs_vnet_hdr_swap = n->has_vnet_hdr &&
++                                 virtio_net_set_vnet_endian(vdev, n->nic->ncs,
+                                                             queue_pairs, true);
+     } else if (virtio_net_started(n, vdev->status)) {
+         /* After using the device, we need to reset the network backend to
+@@ -2690,7 +2691,7 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+             return -EINVAL;
+         }
  
-     if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
-         iov_copy[0].iov_base = &hdr;
+-        if (n->has_vnet_hdr) {
++        if (n->needs_vnet_hdr_swap) {
+             if (iov_to_buf(out_sg, out_num, 0, &mhdr, n->guest_hdr_len) <
+                 n->guest_hdr_len) {
+                 virtio_error(vdev, "virtio-net header incorrect");
+@@ -2698,19 +2699,16 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+                 g_free(elem);
+                 return -EINVAL;
+             }
+-            if (n->needs_vnet_hdr_swap) {
+-                virtio_net_hdr_swap(vdev, (void *) &mhdr);
+-                sg2[0].iov_base = &mhdr;
+-                sg2[0].iov_len = n->guest_hdr_len;
+-                out_num = iov_copy(&sg2[1], ARRAY_SIZE(sg2) - 1,
+-                                   out_sg, out_num,
+-                                   n->guest_hdr_len, -1);
+-                if (out_num == VIRTQUEUE_MAX_SIZE) {
+-                    goto drop;
+-                }
+-                out_num += 1;
+-                out_sg = sg2;
++            virtio_net_hdr_swap(vdev, (void *) &mhdr);
++            sg2[0].iov_base = &mhdr;
++            sg2[0].iov_len = n->guest_hdr_len;
++            out_num = iov_copy(&sg2[1], ARRAY_SIZE(sg2) - 1, out_sg, out_num,
++                               n->guest_hdr_len, -1);
++            if (out_num == VIRTQUEUE_MAX_SIZE) {
++                goto drop;
+             }
++            out_num += 1;
++            out_sg = sg2;
+         }
+         /*
+          * If host wants to see the guest header as is, we can
 -- 
 2.42.0
 
