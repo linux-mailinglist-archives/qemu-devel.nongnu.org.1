@@ -2,82 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52707CC200
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3430D7CC215
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:54:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsiYU-0002KP-KK; Tue, 17 Oct 2023 07:48:10 -0400
+	id 1qsid2-00045Y-Rh; Tue, 17 Oct 2023 07:52:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsiYS-0002KH-UH
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:48:08 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsiYQ-0003RA-Ai
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:48:08 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9b6559cbd74so976655766b.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 04:48:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697543283; x=1698148083; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1o0aOrJZ61ugD64nbIrECyQhTjmYZ/f/X/xNN/b4bFs=;
- b=dW90mQgBxiW8yi6YOR/UxLxanUlrzreSD4IsV48hWgZZH3J713pvNb6wANGOdTSxpn
- nPvJ4QBMD+jmGKHy9ML9RmNqRuEsb1X8zbfLyjEeMqljuJpz2qRAKHlFmFZceSlRR6E5
- bFf/5fr2A0xlS2trYCYd0ucqS8RrigU28e17MYkHoziHCq11E02oGpU+24kI48CsRGFN
- +M/CsfQSXPQILlyjtwlZF7Uh57run0s/sHH7UEB0NwJOVMjJjxxdl/RYWuczg1RVyq06
- OJQs/OLZB0tabJJCtGqnJadWzss/Wu/xFnU3IXS63pC4iuWe9eob+Be81BD6sR+c8xHm
- wysA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697543283; x=1698148083;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1o0aOrJZ61ugD64nbIrECyQhTjmYZ/f/X/xNN/b4bFs=;
- b=THvuosCuiJHDyakEYRplzoon4p/njjACeSdi6/ew1SgZSf6/79lyWMt8Nm70w0ayE8
- hliA3Qq5mIijkGYlL5rzLOJOfqSHlVsAF36sI8RhR9sB19lwestihgT7As+yRgTDzjIh
- b9hmBBe9EiT14Ocio13j4W2mLpEBiVwT7dLk5KYdOCKyc3ZPG33K4aE3tvSwSlpP2X8m
- VTvJ1SXIVKX8dSgbg2PsxAwLR2oXxc8MivwFDq/K1A0JjF4JpB2qiugW58HxLFGSsvjp
- P7fJtID4aqidzZNO+2iE8IKa9fI8ysZOPBoAUrtQMoHHSOLcko3Enex1tDujNPQ8A2Bp
- 4k3Q==
-X-Gm-Message-State: AOJu0Yz+kwI+l4J8a/jt6WcueoVpk2baedp7tOVyeoe86+fDOR0BnUuh
- cN097gr9d/OKsocAdCPx63piRA==
-X-Google-Smtp-Source: AGHT+IGN1mogwc8AIdEoXqD2S79Ii844uRngAgmtRC4Eddu/qEe/qMX0FmS2oSgb1re/KOKt28A1vA==
-X-Received: by 2002:a17:906:fe4b:b0:9ae:6388:e09b with SMTP id
- wz11-20020a170906fe4b00b009ae6388e09bmr1478612ejb.40.1697543283599; 
- Tue, 17 Oct 2023 04:48:03 -0700 (PDT)
-Received: from [192.168.69.115] ([176.172.118.33])
- by smtp.gmail.com with ESMTPSA id
- z1-20020a17090655c100b009a193a5acffsm1110080ejp.121.2023.10.17.04.48.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Oct 2023 04:48:03 -0700 (PDT)
-Message-ID: <385640c8-601d-65fd-118b-c69fecaa8a41@linaro.org>
-Date: Tue, 17 Oct 2023 13:48:01 +0200
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qsicy-000440-K4
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:52:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qsicx-0004rr-1o
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:52:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697543566;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=lmTJ0tq2yiIADZ8uKpITf2hGh1nmbWzgUa3UP3wFNbQ=;
+ b=gUCc7ytt8qyr9eqscDlNea7XbpikMTFAm+Amr+ARmYb6/VOrdn9gaDWXZr94pHT4vMTdbC
+ AVwdIYHxH0nueGqI6yIJKwgbwco14OEL8hCNuxbCVunWwpndTX9hyvh3uUQrxKp1KlFrQd
+ 62mdZwjdJ6vsPRHrEyhVHHKKXA0KHsE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-310-mAVWVlYCMF2__HUfSobAeA-1; Tue, 17 Oct 2023 07:52:42 -0400
+X-MC-Unique: mAVWVlYCMF2__HUfSobAeA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A10651C05EB7;
+ Tue, 17 Oct 2023 11:52:41 +0000 (UTC)
+Received: from secure.mitica (unknown [10.39.194.127])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9F8A8492BFA;
+ Tue, 17 Oct 2023 11:52:39 +0000 (UTC)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: libvir-list@redhat.com, Leonardo Bras <leobras@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
+ qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v5 0/7] Migration deprecated parts
+Date: Tue, 17 Oct 2023 13:52:31 +0200
+Message-ID: <20231017115238.18309-1-quintela@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] tcg: Add tcg_gen_{ld,st}_i128
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20231013175109.124308-1-richard.henderson@linaro.org>
- <20231013175109.124308-2-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231013175109.124308-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,18 +79,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/10/23 19:51, Richard Henderson wrote:
-> Do not require the translators to jump through concat and
-> extract of i64 in order to move values to and from  env.
+Based on: Message-ID: <20231017083003.15951-1-quintela@redhat.com>
+          Migration 20231017 patches
 
-(extra space)
+On this v5:
+- Rebased on top of last migration pull requesnt:
 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/tcg/tcg-op-common.h |  3 +++
->   tcg/tcg-op.c                | 22 ++++++++++++++++++++++
->   2 files changed, 25 insertions(+)
+- address markus comments.  Basically we recommend always
+  blockdev-mirror + NBD.  In deprecated.rst we also put the posiblity
+  of using block-incremental and block, but we state that they are
+  also deprecated.
+  I know, I know, I deprecated them in the following patch.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+- Dropped the removal of block-migration and block-incremental I am
+  only interested in showing why I want to remove the -b/-i options.
+
+Please review.
+
+Later, Juan.
+
+On this v4:
+- addressed all markus comments.
+- rebased on latest.
+- improve formatting of migration.json
+- print block migration status when needed.
+- patches 7-10 are not mean to merge, they just show why we want to
+  deprecate block migration and remove its support.
+- Patch 7 just drop support for -i/-b and qmp equivalents.
+- Patch 8 shows all the helpers and convolutions we need to have to
+  support that -i and -d.
+- patch 9 drops block-incremental migration support.
+- patch 9 drops block migration support.
+
+Please review.
+
+Thanks, Juan.
+
+On this v3:
+
+- Rebase on top of upstream.
+- Changed v8.1 to 8.2 (I left the reviewed by anyways)
+- missing the block deprecation code, please.
+
+Please, review.
+
+Later, Juan.
+
+On this v2:
+
+- dropped -incoming <uri> deprecation
+  Paolo came with a better solution using keyvalues.
+
+- skipped field is already ready for next pull request, so dropped.
+
+- dropped the RFC bits, nermal PATCH.
+
+- Assessed all the review comments.
+
+- Added indentation of migration.json.
+
+- Used the documentation pointer to substitute block migration.
+
+Please review.
+
+[v1]
+Hi this series describe the migration parts that have to be deprecated.
+
+- It is an rfc because I doubt that I did the deprecation process right. Hello Markus O:-)
+
+- skipped field: It is older than me, I have never know what it stands
+  for.  As far as I know it has always been zero.
+
+- inc/blk migrate command options.  They are only used by block
+  migration (that I deprecate on the following patch).  And they are really bad.
+  grep must_remove_block_options.
+
+- block migration.  block jobs, whatever they are called this week are
+  way more flexible.  Current code works, but we broke it here and
+  there, and really nobody has stand up to maintain it.  It is quite
+  contained and can be left there.  Is anyone really using it?
+
+- old compression method.  It don't work.  See last try from Lukas to
+  make a test that works reliabely.  I failed with the same task years
+  ago.  It is really slow, and if compression is good for you, multifd
+  + zlib is going to perform/compress way more.
+
+  I don't know what to do with this code, really.
+
+  * Remove it for this release?  It don't work, and haven't work
+    reliabely in quite a few time.
+
+  * Deprecate it and remove in another couple of releases, i.e. normal
+    deprecation.
+
+  * Ideas?
+
+- -incoming <uri>
+
+  if you need to set parameters (multifd cames to mind, and preempt has
+  the same problem), you really needs to use defer.  So what should we do here?
+
+  This part is not urget, because management apps have a working
+  option that are already using "defer", and the code simplifacation
+  if we remove it is not so big.  So we can leave it until 9.0 or
+  whatever we think fit.
+
+What do you think?
+
+Later, Juan.
+
+Juan Quintela (7):
+  migration: Print block status when needed
+  migration: migrate 'inc' command option is deprecated.
+  migration: migrate 'blk' command option is deprecated.
+  migration: Deprecate block migration
+  migration: Deprecate old compression method
+  [RFC] migration: Make -i/-b an error for hmp and qmp
+  [RFC] migration: Remove helpers needed for -i/-b migrate options
+
+ docs/about/deprecated.rst      |  36 +++++++++++
+ qapi/migration.json            | 110 ++++++++++++++++++++++++---------
+ migration/migration.h          |   4 --
+ migration/options.h            |   6 --
+ migration/block.c              |   3 +
+ migration/migration-hmp-cmds.c |  18 ++++--
+ migration/migration.c          |  35 ++++-------
+ migration/options.c            |  63 +++++++------------
+ 8 files changed, 165 insertions(+), 110 deletions(-)
+
+-- 
+2.41.0
 
 
