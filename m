@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E93F7CC318
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 14:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F57F7CC30B
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 14:24:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsj6Q-0006Zi-EN; Tue, 17 Oct 2023 08:23:15 -0400
+	id 1qsj6S-0006bM-NI; Tue, 17 Oct 2023 08:23:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsj6N-0006Xx-Pc
+ id 1qsj6N-0006YE-Uy
  for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:23:11 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsj6J-0003ux-KW
+ id 1qsj6J-0003v7-Vz
  for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:23:11 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-323168869daso5218985f8f.2
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-32d569e73acso5018297f8f.1
  for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 05:23:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697545386; x=1698150186; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rmBaCpSuRrDiGRxAI74uVjYQUdlqV4XGWEbKnwTHtmk=;
- b=NfcytsncPReH7EnG7ZG/Do8owe4ZVVLdYCIuLB5CP9YDeJ4Bs9d38Z8Euf/S92fWIe
- mVW9vr7lxpppRhzh6xlLEsb3QVStFUEFLxsoULMNf/haf2oDD9b73rFGBuOD1hgLTYXR
- gLny28aL38L5B/XT+tJPCF1TgU7xenVVlzyNFce1Fg7IX0B3F/0XjLJ7C3BS3en7xmDO
- ejtgi6DA1LKlxL46YwDXcaN0k9fEJ/9BnIVzDFmMh6oXsIUa/bH/Ri8y4VYQDJivhcIM
- eLlp4EuPGtxMK/nZ0aWhzcstJZnnOuNhfMMTnkepAiN1AZGho03eE/dEeoAa85tNAWca
- CnDw==
+ :reply-to; bh=sW2pyrUMoN7MAwOg+RbuKX+jV96qwsneZRNARMZQCGw=;
+ b=pPb6PxFdBzUrBXAkz9ChmdzdHV3CeYtxPF7FQDjOU2NhYcxh/gDI5zSCNIeG7/4GIe
+ LTOIM3Erm6ApDd/fSluvlMegbIt53xoRn4GH9h3RNmkiHQUerhl3C5hUJZygwUgFaRkK
+ 5eE2/YBzLdX/yRzw53AePRqPA4r6YmauncxJWSDHEf00bcDGdDCqbSeyiDu51GkZGZxJ
+ XI52rNgqJ5jZohhl6N0Q9SuJ63IQLXLw1HWlBBI2eGkvfn77wEtHZHFy0EZdS3+keRjY
+ npnwcO8JhWq+Ov2AdcT687gRtFfIS+9jqANiDqb0EOJydTQMKTNg498qxwCl8Ts3PZhw
+ 8Jng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697545386; x=1698150186;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rmBaCpSuRrDiGRxAI74uVjYQUdlqV4XGWEbKnwTHtmk=;
- b=FkxMQQ/aWR4w8ZADF0da5Zy5mzNw5r2PEIviGB/q/s/04iBltEPblsCX/98j4vaJZ4
- n6UvVl3BMX2ARDQf7rPp+MfAPwTPqRRtn163vOJ4eQjqQWE65GjpG9+EIQU1CUfieHYi
- KxH07AFSkzbsPTSsQWBoPnjHDjKS1QkrJzPMFXGSNw6Ch+axboL83wMpWccF8X4ryacg
- y+PQ3iVruRXc8XA/LAdmd1KMFJmKbF5NDRzb/xe9rugJb1BSCwECBnEqwLLxOqoeRu71
- br3hn0QCk50dW2i36iv5VYK/x6R60EAzR+8uzGxomjonihzUXo2PeBYVZ35noCu7Y2rK
- xAjg==
-X-Gm-Message-State: AOJu0Yzcx/9d3HjjkUjkk9PpRQBmQXEDuCnPLYDw3RzI3iYgdyvkWye5
- X106Id3CE9ZI3/THpVO/qEzkcVDIKto3AW3osow=
-X-Google-Smtp-Source: AGHT+IHEthwyxzolTvLPHBY1mbmGSOH5zq3naidKqXVo8yc+QPr92iLNWJ+S4RDnMo6bMIdI6qtM2Q==
-X-Received: by 2002:a5d:4245:0:b0:32d:aa56:c0c7 with SMTP id
- s5-20020a5d4245000000b0032daa56c0c7mr1781058wrr.54.1697545386281; 
+ bh=sW2pyrUMoN7MAwOg+RbuKX+jV96qwsneZRNARMZQCGw=;
+ b=X+cY81Kx3PxxLo5wDGy1AYXo5ciIabo5Ri0qUoVaQ6chYz4/asmwlFVd1AEFQ8/z/T
+ dnPShIH48KDZOUEYVI6Ytpq3VbiB9t5h7K9srcky+p77ZuIOsqqEQ+/WVL088Jr3k073
+ yOut7LwzL+y0QN4csKIjUxz6JOR14/ATYxyZtNpw224rTq86nq4MaHmMew7XqL8ft0Ti
+ TYTVySS8h+Zo3EY1+hCW0eJM6ImjKhOeRCU2EPgfrvMKDhiGnffvYTHbLaNq/oqRK9fJ
+ 8WK9syBO7C/+N/KdobNA2AcKFo5Ucya+lG9VwJa6MCr9cZQ2nxN6hjZ+sQ7NcbomR91o
+ XBxA==
+X-Gm-Message-State: AOJu0Yy8O1pNtcyh4MIFbLAEj+eBFrn3fXgu+vlV+1dcTPYFw+/fP4oJ
+ L9/NYWcAN9pG1VbqamrjmHDkL6/7ZBMLtl1Culc=
+X-Google-Smtp-Source: AGHT+IHMPvr8fh2igwNawkxxbeT0ipVNkI2IM5uc7d+FWnrArfsH+zY1Z48CHDTC+ZbYzSWUC45caA==
+X-Received: by 2002:a05:6000:1282:b0:32d:84a3:f3fe with SMTP id
+ f2-20020a056000128200b0032d84a3f3femr1940788wrx.41.1697545386722; 
  Tue, 17 Oct 2023 05:23:06 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- w17-20020a5d4b51000000b0032da4c98ab2sm1590905wrs.35.2023.10.17.05.23.05
+ w17-20020a5d4b51000000b0032da4c98ab2sm1590905wrs.35.2023.10.17.05.23.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Oct 2023 05:23:05 -0700 (PDT)
+ Tue, 17 Oct 2023 05:23:06 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 4/6] hw/input/stellaris_gamepad: Remove StellarisGamepadButton
- struct
-Date: Tue, 17 Oct 2023 13:23:00 +0100
-Message-Id: <20231017122302.1692902-5-peter.maydell@linaro.org>
+Subject: [PATCH 5/6] hw/input/stellaris_input: Convert to qdev
+Date: Tue, 17 Oct 2023 13:23:01 +0100
+Message-Id: <20231017122302.1692902-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231017122302.1692902-1-peter.maydell@linaro.org>
 References: <20231017122302.1692902-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,100 +90,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently for each button on the device we have a
-StellarisGamepadButton struct which has the irq, keycode and pressed
-state for it.  When we convert to qdev, the qdev property and GPIO
-APIs are going to require that we have separate arrays for the irqs
-and keycodes.  Convert from array-of-structs to three separate arrays
-in preparation.
+Convert the hw/input/stellaris_input device to qdev.
+
+The interface uses an array property for the board to specify the
+keycodes to use, so the s->keycodes memory is now allocated by the
+array-property machinery.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/input/stellaris_gamepad.c | 43 ++++++++++++------------------------
- 1 file changed, 14 insertions(+), 29 deletions(-)
+ include/hw/input/stellaris_gamepad.h | 25 +++++++++-
+ hw/arm/stellaris.c                   | 26 +++++++---
+ hw/input/stellaris_gamepad.c         | 73 +++++++++++++++++++---------
+ 3 files changed, 92 insertions(+), 32 deletions(-)
 
-diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
-index 377101a4035..da974400b59 100644
---- a/hw/input/stellaris_gamepad.c
-+++ b/hw/input/stellaris_gamepad.c
-@@ -14,15 +14,11 @@
- #include "ui/console.h"
+diff --git a/include/hw/input/stellaris_gamepad.h b/include/hw/input/stellaris_gamepad.h
+index 23cfd3c95f3..50c17041121 100644
+--- a/include/hw/input/stellaris_gamepad.h
++++ b/include/hw/input/stellaris_gamepad.h
+@@ -11,8 +11,29 @@
+ #ifndef HW_INPUT_STELLARIS_GAMEPAD_H
+ #define HW_INPUT_STELLARIS_GAMEPAD_H
  
- typedef struct {
--    qemu_irq irq;
--    int keycode;
--    uint8_t pressed;
--} StellarisGamepadButton;
--
--typedef struct {
--    StellarisGamepadButton *buttons;
--    int num_buttons;
++#include "hw/sysbus.h"
++#include "qom/object.h"
+ 
+-/* stellaris_gamepad.c */
+-void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode);
++/*
++ * QEMU interface:
++ *  + QOM array property "keycodes": uint32_t QEMU keycodes to handle
++ *  + unnamed GPIO outputs: one per keycode, in the same order as the
++ *    "keycodes" array property entries; asserted when key is down
++ */
++
++#define TYPE_STELLARIS_GAMEPAD "stellaris-gamepad"
++OBJECT_DECLARE_SIMPLE_TYPE(StellarisGamepad, STELLARIS_GAMEPAD)
++
++struct StellarisGamepad {
++    /*< private >*/
++    SysBusDevice parent_obj;
++
++    /*< public >*/
 +    uint32_t num_buttons;
-     int extension;
 +    qemu_irq *irqs;
 +    uint32_t *keycodes;
 +    uint8_t *pressed;
- } StellarisGamepad;
++    int extension;
++};
  
- static void stellaris_gamepad_put_key(void * opaque, int keycode)
-@@ -40,36 +36,23 @@ static void stellaris_gamepad_put_key(void * opaque, int keycode)
-     keycode = (keycode & 0x7f) | s->extension;
+ #endif
+diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
+index 96585dd7106..707b0dae375 100644
+--- a/hw/arm/stellaris.c
++++ b/hw/arm/stellaris.c
+@@ -31,6 +31,7 @@
+ #include "hw/timer/stellaris-gptm.h"
+ #include "hw/qdev-clock.h"
+ #include "qom/object.h"
++#include "qapi/qmp/qlist.h"
  
-     for (i = 0; i < s->num_buttons; i++) {
--        if (s->buttons[i].keycode == keycode
--                && s->buttons[i].pressed != down) {
--            s->buttons[i].pressed = down;
--            qemu_set_irq(s->buttons[i].irq, down);
-+        if (s->keycodes[i] == keycode && s->pressed[i] != down) {
-+            s->pressed[i] = down;
-+            qemu_set_irq(s->irqs[i], down);
-         }
+ #define GPIO_A 0
+ #define GPIO_B 1
+@@ -1274,16 +1275,27 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+         sysbus_connect_irq(SYS_BUS_DEVICE(enet), 0, qdev_get_gpio_in(nvic, 42));
      }
+     if (board->peripherals & BP_GAMEPAD) {
+-        qemu_irq gpad_irq[5];
++        QList *gpad_keycode_list = qlist_new();
+         static const int gpad_keycode[5] = { 0xc8, 0xd0, 0xcb, 0xcd, 0x1d };
++        DeviceState *gpad;
  
-     s->extension = 0;
- }
+-        gpad_irq[0] = qemu_irq_invert(gpio_in[GPIO_E][0]); /* up */
+-        gpad_irq[1] = qemu_irq_invert(gpio_in[GPIO_E][1]); /* down */
+-        gpad_irq[2] = qemu_irq_invert(gpio_in[GPIO_E][2]); /* left */
+-        gpad_irq[3] = qemu_irq_invert(gpio_in[GPIO_E][3]); /* right */
+-        gpad_irq[4] = qemu_irq_invert(gpio_in[GPIO_F][1]); /* select */
++        gpad = qdev_new(TYPE_STELLARIS_GAMEPAD);
++        for (i = 0; i < ARRAY_SIZE(gpad_keycode); i++) {
++            qlist_append_int(gpad_keycode_list, gpad_keycode[i]);
++        }
++        qdev_prop_set_array(gpad, "keycodes", gpad_keycode_list);
++        sysbus_realize_and_unref(SYS_BUS_DEVICE(gpad), &error_fatal);
  
--static const VMStateDescription vmstate_stellaris_button = {
--    .name = "stellaris_button",
--    .version_id = 0,
--    .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
--        VMSTATE_UINT8(pressed, StellarisGamepadButton),
--        VMSTATE_END_OF_LIST()
--    }
--};
+-        stellaris_gamepad_init(5, gpad_irq, gpad_keycode);
++        qdev_connect_gpio_out(gpad, 0,
++                              qemu_irq_invert(gpio_in[GPIO_E][0])); /* up */
++        qdev_connect_gpio_out(gpad, 1,
++                              qemu_irq_invert(gpio_in[GPIO_E][1])); /* down */
++        qdev_connect_gpio_out(gpad, 2,
++                              qemu_irq_invert(gpio_in[GPIO_E][2])); /* left */
++        qdev_connect_gpio_out(gpad, 3,
++                              qemu_irq_invert(gpio_in[GPIO_E][3])); /* right */
++        qdev_connect_gpio_out(gpad, 4,
++                              qemu_irq_invert(gpio_in[GPIO_F][1])); /* select */
+     }
+     for (i = 0; i < 7; i++) {
+         if (board->dc4 & (1 << i)) {
+diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
+index da974400b59..48d37bd6275 100644
+--- a/hw/input/stellaris_gamepad.c
++++ b/hw/input/stellaris_gamepad.c
+@@ -8,19 +8,13 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "hw/input/stellaris_gamepad.h"
+ #include "hw/irq.h"
++#include "hw/qdev-properties.h"
+ #include "migration/vmstate.h"
+ #include "ui/console.h"
+ 
+-typedef struct {
+-    uint32_t num_buttons;
+-    int extension;
+-    qemu_irq *irqs;
+-    uint32_t *keycodes;
+-    uint8_t *pressed;
+-} StellarisGamepad;
 -
- static const VMStateDescription vmstate_stellaris_gamepad = {
-     .name = "stellaris_gamepad",
-     .version_id = 2,
-     .minimum_version_id = 2,
-     .fields = (VMStateField[]) {
-         VMSTATE_INT32(extension, StellarisGamepad),
--        VMSTATE_STRUCT_VARRAY_POINTER_INT32(buttons, StellarisGamepad,
--                                            num_buttons,
--                                            vmstate_stellaris_button,
--                                            StellarisGamepadButton),
-+        VMSTATE_VARRAY_UINT32(pressed, StellarisGamepad, num_buttons,
-+                              0, vmstate_info_uint8, uint8_t),
-         VMSTATE_END_OF_LIST()
+ static void stellaris_gamepad_put_key(void * opaque, int keycode)
+ {
+     StellarisGamepad *s = (StellarisGamepad *)opaque;
+@@ -57,22 +51,55 @@ static const VMStateDescription vmstate_stellaris_gamepad = {
      }
  };
-@@ -81,10 +64,12 @@ void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode)
-     int i;
  
-     s = g_new0(StellarisGamepad, 1);
--    s->buttons = g_new0(StellarisGamepadButton, n);
-+    s->irqs = g_new0(qemu_irq, n);
-+    s->keycodes = g_new0(uint32_t, n);
-+    s->pressed = g_new0(uint8_t, n);
-     for (i = 0; i < n; i++) {
--        s->buttons[i].irq = irq[i];
--        s->buttons[i].keycode = keycode[i];
-+        s->irqs[i] = irq[i];
-+        s->keycodes[i] = keycode[i];
+-/* Returns an array of 5 output slots.  */
+-void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode)
++static void stellaris_gamepad_realize(DeviceState *dev, Error **errp)
+ {
+-    StellarisGamepad *s;
+-    int i;
++    StellarisGamepad *s = STELLARIS_GAMEPAD(dev);
+ 
+-    s = g_new0(StellarisGamepad, 1);
+-    s->irqs = g_new0(qemu_irq, n);
+-    s->keycodes = g_new0(uint32_t, n);
+-    s->pressed = g_new0(uint8_t, n);
+-    for (i = 0; i < n; i++) {
+-        s->irqs[i] = irq[i];
+-        s->keycodes[i] = keycode[i];
++    if (s->num_buttons == 0) {
++        error_setg(errp, "keycodes property array must be set");
++        return;
      }
-     s->num_buttons = n;
-     qemu_add_kbd_event_handler(stellaris_gamepad_put_key, s);
+-    s->num_buttons = n;
+-    qemu_add_kbd_event_handler(stellaris_gamepad_put_key, s);
+-    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
+-                     &vmstate_stellaris_gamepad, s);
++
++    s->irqs = g_new0(qemu_irq, s->num_buttons);
++    s->pressed = g_new0(uint8_t, s->num_buttons);
++    qdev_init_gpio_out(dev, s->irqs, s->num_buttons);
++    qemu_add_kbd_event_handler(stellaris_gamepad_put_key, dev);
+ }
++
++static void stellaris_gamepad_reset_enter(Object *obj, ResetType type)
++{
++    StellarisGamepad *s = STELLARIS_GAMEPAD(obj);
++
++    memset(s->pressed, 0, s->num_buttons * sizeof(uint8_t));
++}
++
++static Property stellaris_gamepad_properties[] = {
++    DEFINE_PROP_ARRAY("keycodes", StellarisGamepad, num_buttons,
++                      keycodes, qdev_prop_uint32, uint32_t),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void stellaris_gamepad_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
++
++    rc->phases.enter = stellaris_gamepad_reset_enter;
++    dc->realize = stellaris_gamepad_realize;
++    dc->vmsd = &vmstate_stellaris_gamepad;
++    device_class_set_props(dc, stellaris_gamepad_properties);
++}
++
++static const TypeInfo stellaris_gamepad_info = {
++    .name = TYPE_STELLARIS_GAMEPAD,
++    .parent = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(StellarisGamepad),
++    .class_init = stellaris_gamepad_class_init,
++};
++
++static void stellaris_gamepad_register_types(void)
++{
++    type_register_static(&stellaris_gamepad_info);
++}
++
++type_init(stellaris_gamepad_register_types);
 -- 
 2.34.1
 
