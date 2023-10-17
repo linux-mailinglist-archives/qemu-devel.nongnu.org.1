@@ -2,56 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131AB7CCDD4
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A49677CCDD7
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:25:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsqaT-0003Ro-TT; Tue, 17 Oct 2023 16:22:45 -0400
+	id 1qsqc4-0006i2-Qx; Tue, 17 Oct 2023 16:24:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qsqaN-0003Jo-6Z
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:22:39 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qsqc1-0006hU-VS; Tue, 17 Oct 2023 16:24:22 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qsqaK-0008C8-Ge
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:22:38 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 2CD0274632B;
- Tue, 17 Oct 2023 22:21:24 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id E0B407456AA; Tue, 17 Oct 2023 22:21:23 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id DEC1B745681;
- Tue, 17 Oct 2023 22:21:23 +0200 (CEST)
-Date: Tue, 17 Oct 2023 22:21:23 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Helge Deller <deller@gmx.de>
-cc: deller@kernel.org, qemu-devel@nongnu.org, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH v2 02/11] pci_ids/tulip: Add PCI vendor ID for HP and
- use it in tulip
-In-Reply-To: <e939ce05-387e-4952-beba-84d566fff0c0@gmx.de>
-Message-ID: <dc2f4220-78b1-4555-897c-3c91cf1d933f@eik.bme.hu>
-References: <20231017154645.95844-1-deller@kernel.org>
- <20231017154645.95844-3-deller@kernel.org>
- <df5da806-4b08-5034-1b80-93d583efd86b@eik.bme.hu>
- <3425e5f9-f2d4-428b-96d2-5e0760871837@gmx.de>
- <5e17898a-c70c-4f79-9bd8-fc20a6179b42@eik.bme.hu>
- <e939ce05-387e-4952-beba-84d566fff0c0@gmx.de>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qsqc0-00007x-Iw; Tue, 17 Oct 2023 16:24:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=suJBhlisOFA7AfQ0f3aNlSDaxHQ24RZK6lGB7WjVQTE=; b=m4AzUw4SirYnJ1Cd2wNSa/wQRG
+ n0KhclPAv+HzG+9pBpMy9QVThtUAxdHmUYlI/2ogHxO5pXnjUtmcFVNDj2YLW1/udnx3FiaSNHaS0
+ 8xeiQY9bxfL0tC4sr5L1gTM6YjGVXC0bSz2/6SP/l2cWqgfwYr4ny4nKfrwEGsaLgMlnl72rm8CKd
+ 803k9SRHW74NfsWEHg8GkM7JmQ16tRYAvN/JIBLOftQcx74C1JeDHEa/S/2Au9LybEv8EQnOZ1lAB
+ Ux3CDKC3Fj1BquG5yZkQmb/awRHRqy1Alz273mgG0zcvNsqYo7YbVInpuEhp2aw9JWAfXhuBqwrjO
+ TmF9nObikLgSwVXqIt1g9c9TEj23mQYfYRcQdBHIO8NUD73X8EQoJF28OXBKg6At2KPgBtBC2Ah2/
+ Lb8bZk0kVsgPmL5d2+INEVB+FDT8B2FZCyGTpGpCpNk/K0pNrnk5Yi3AWsEcU5iiAYCto7q2bQAfD
+ IsZxlIqsz4UfAmhhW35uWOPFifpZ+QtOAIkGTDWJnveVRAgT1bsPeQxmochM5iUgPgaL8H1Ol8HXw
+ i/8cphXaH6GvOHzwIuYc5yMVLI3WLUE8CWrfA6WJ2V4VYEKbWobkW8ddSTAYOs9SIkdXxd8ZbLcUd
+ afAEFsWg2rP70jjQZvGnsnT6yrElfLIV7SBWU1j9g=;
+Received: from [2a00:23c4:8bb0:3200:407d:a65c:9fb4:b9b4]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qsqbr-0001qX-FH; Tue, 17 Oct 2023 21:24:15 +0100
+Message-ID: <edfb2af1-aacc-4549-aff9-bd08a85b12fe@ilande.co.uk>
+Date: Tue, 17 Oct 2023 21:24:13 +0100
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1146477983-1697574083=:50058"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-trivial@nongnu.org
+References: <20231017151933.213780-1-thuth@redhat.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20231017151933.213780-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:3200:407d:a65c:9fb4:b9b4
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH] MAINTAINERS: Add hw/input/lasips2.c to the HPPA machine
+ section
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,79 +102,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 17/10/2023 16:19, Thomas Huth wrote:
 
---3866299591-1146477983-1697574083=:50058
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+> hw/input/lasips2.c and the corresponding header include/hw/input/lasips2.h
+> are only used by the HPPA machine, so add them to the corresponding section
+> in the MAINTAINERS file.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b0416d473e..a0ad23b9b5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1199,9 +1199,11 @@ R: Helge Deller <deller@gmx.de>
+>   S: Odd Fixes
+>   F: configs/devices/hppa-softmmu/default.mak
+>   F: hw/hppa/
+> +F: hw/input/lasips2.c
+>   F: hw/net/*i82596*
+>   F: hw/misc/lasi.c
+>   F: hw/pci-host/dino.c
+> +F: include/hw/input/lasips2.h
+>   F: include/hw/misc/lasi.h
+>   F: include/hw/net/lasi_82596.h
+>   F: include/hw/pci-host/dino.h
 
-On Tue, 17 Oct 2023, Helge Deller wrote:
-> On 10/17/23 21:19, BALATON Zoltan wrote:
->> On Tue, 17 Oct 2023, Helge Deller wrote:
->>> On 10/17/23 18:13, BALATON Zoltan wrote:
->>>> On Tue, 17 Oct 2023, deller@kernel.org wrote:
->>>>> From: Helge Deller <deller@gmx.de>
->>>>> 
->>>>> Signed-off-by: Helge Deller <deller@gmx.de>
->>>>> ---
->>>>> hw/net/tulip.c           | 2 +-
->>>>> include/hw/pci/pci_ids.h | 2 ++
->>>>> 2 files changed, 3 insertions(+), 1 deletion(-)
->>>>> 
->>>>> diff --git a/hw/net/tulip.c b/hw/net/tulip.c
->>>>> index 915e5fb595..11d866e431 100644
->>>>> --- a/hw/net/tulip.c
->>>>> +++ b/hw/net/tulip.c
->>>>> @@ -1020,7 +1020,7 @@ static void tulip_class_init(ObjectClass *klass, 
->>>>> void *data)
->>>>>     k->exit = pci_tulip_exit;
->>>>>     k->vendor_id = PCI_VENDOR_ID_DEC;
->>>>>     k->device_id = PCI_DEVICE_ID_DEC_21143;
->>>>> -    k->subsystem_vendor_id = 0x103c;
->>>>> +    k->subsystem_vendor_id = PCI_VENDOR_ID_HP;
->>>>>     k->subsystem_id = 0x104f;
->>>>>     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
->>>>>     dc->vmsd = &vmstate_pci_tulip;
->>>>> diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
->>>>> index 85469b9b53..3c0e72df0e 100644
->>>>> --- a/include/hw/pci/pci_ids.h
->>>>> +++ b/include/hw/pci/pci_ids.h
->>>>> @@ -171,6 +171,8 @@
->>>>> #define PCI_VENDOR_ID_DEC                0x1011
->>>>> #define PCI_DEVICE_ID_DEC_21143          0x0019
->>>>> 
->>>>> +#define PCI_VENDOR_ID_HP                 0x103c
->>>>> +
->>>> 
->>>> Did not notice this in first round, sorry. These seems to be sorted
->>>> (there's a comment further up about that) so this should be between
->>>> AMD and TI a bit more down.
->>> 
->>> The list isn't sorted at all. I think the comment just wants to
->> 
->> It is still mostly sorted except where people did not get how. Try
->> 
->> grep PCI_VENDOR_ID_ pci_ids.h
->> 
->>> say that you should mention the vendor before the devices.
->> 
->> I think it says that PCI_VENDOR_IDs should be sorted and then DEVICE_IDs 
->> within them should also be sorted but device IDs intervene VENDOR_IDs so 
->> the sorting of VENDOR_IDs may not be obvious at first sight.
->> 
->>> Anyway, as the list currently is, there are multiple positions
->>> where HP could be added...
->> 
->> Yes, some IDs already break this sorting but we could still avoid breaking 
->> it more. [...]
->
-> ... that's why I added "HP" it after "DEC" :-)
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-But it should be sorted by ID number not name that's why it should be 
-between AMD 0x1022 and TI 0x104c.
 
-Regards,
-BALATON Zoltan
---3866299591-1146477983-1697574083=:50058--
+ATB,
+
+Mark.
+
 
