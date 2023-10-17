@@ -2,79 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748D07CC1A8
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A237CC1A9
 	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:17:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsi4D-0004dY-4M; Tue, 17 Oct 2023 07:16:53 -0400
+	id 1qsi4E-0004e6-Mn; Tue, 17 Oct 2023 07:16:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qsi4A-0004bK-GF
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:16:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qsi4C-0004bt-6B
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:16:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qsi48-0005RZ-9H
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:16:50 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qsi4A-0005Rw-Gf
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:16:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697541407;
+ s=mimecast20190719; t=1697541409;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3bSliyoDGSZDPlqclvg0oVqSgISh4B4ZbdCkVOWeacw=;
- b=dCRIxgL07KxqIFCXNx0MSKDOnTtZNsakjnENgiFbf+Ze+/KvBZ1SajyJGgp4neSQfz/KIq
- qjaSotK2ileSaekHpJeG2MaVmk3qT8zyvkZhV48zsPwLDX02y5EElpGQT3/RX/BPHjpetH
- 1/9l3gU1/kmaUqM8RvS0i8HouJk/LlU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-591-S5k2x3rZPeeF8wtAA8XvLA-1; Tue, 17 Oct 2023 07:16:41 -0400
-X-MC-Unique: S5k2x3rZPeeF8wtAA8XvLA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ content-transfer-encoding:content-transfer-encoding;
+ bh=qWQxmDAysZUEX68bbhvKOyk8KrUEURH8YQjB6HFvPVM=;
+ b=M4mS0V26Oo5Rb5Nq6ZA63J7wU9PUfsm2iyqy5KC2xpUD3fROOZEugTAjqO7X/+yB5Gx8Rc
+ 6+nYiwMILDGpLKQU8+x8dHbUV5Ncye3i/JEkitUE9JkvT+QRcXPfLl2R9qlnlxBlLaCh4C
+ BOcpzW5Q56ATrAG0DPtuqV6DhZWToak=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-660-T648OZ81Nj6HmaRuil5oKQ-1; Tue, 17 Oct 2023 07:16:46 -0400
+X-MC-Unique: T648OZ81Nj6HmaRuil5oKQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F4193C025D3;
- Tue, 17 Oct 2023 11:16:40 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 13449C15BB8;
- Tue, 17 Oct 2023 11:16:40 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B8EB221E6A1F; Tue, 17 Oct 2023 13:16:38 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Cc: qemu-devel@nongnu.org,  qemu-s390x@nongnu.org,  Eduardo Habkost
- <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,  Christian Borntraeger
- <borntraeger@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,  Thomas
- Huth <thuth@redhat.com>,  Eric Blake <eblake@redhat.com>,  Michael Roth
- <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Cleber Rosa
- <crosa@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH v26 00/21] s390x: CPU Topology
-References: <20231016183925.2384704-1-nsg@linux.ibm.com>
-Date: Tue, 17 Oct 2023 13:16:38 +0200
-In-Reply-To: <20231016183925.2384704-1-nsg@linux.ibm.com> (Nina
- Schoetterl-Glausch's message of "Mon, 16 Oct 2023 20:39:04 +0200")
-Message-ID: <87ttqp8pnt.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4DC785A5BA;
+ Tue, 17 Oct 2023 11:16:45 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9FBDC2026D6F;
+ Tue, 17 Oct 2023 11:16:44 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: mjt@tls.msk.ru,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH] gtk: force realization of drawing area
+Date: Tue, 17 Oct 2023 15:16:42 +0400
+Message-ID: <20231017111642.1155545-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,10 +78,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPI schema looks ready apart from the a few minor things in PATCH 01.
-Perhaps the maintainer could address them without a respin.  Up to you
-guys.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This was a long, hard push, but you persevered.  Respect!
+Fixes the GL context creation from a widget that isn't yet realized (in
+a hidden tab for example).
+
+Resolves:
+https://gitlab.com/qemu-project/qemu/-/issues/1727
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ ui/gtk.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 935de1209b..2a4c9b84ba 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -2371,6 +2371,7 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+     GdkDisplay *window_display;
+     GtkIconTheme *theme;
+     char *dir;
++    int idx;
+ 
+     if (!gtkinit) {
+         fprintf(stderr, "gtk initialization failed\n");
+@@ -2434,6 +2435,15 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+     gtk_container_add(GTK_CONTAINER(s->window), s->vbox);
+ 
+     gtk_widget_show_all(s->window);
++
++    for (idx = 0;; idx++) {
++        QemuConsole *con = qemu_console_lookup_by_index(idx);
++        if (!con) {
++            break;
++        }
++        gtk_widget_realize(s->vc[idx].gfx.drawing_area);
++    }
++
+     if (opts->u.gtk.has_show_menubar &&
+         !opts->u.gtk.show_menubar) {
+         gtk_widget_hide(s->menu_bar);
+-- 
+2.41.0
 
 
