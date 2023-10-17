@@ -2,87 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82447CC652
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C827B7CC6DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:59:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qslLf-0004iw-0c; Tue, 17 Oct 2023 10:47:07 -0400
+	id 1qslWY-0007zj-UA; Tue, 17 Oct 2023 10:58:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qslLc-0004iU-QR
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:47:04 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qslLW-0006YX-Gx
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:47:04 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-57bca5b9b0aso3029586eaf.3
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 07:46:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697554009; x=1698158809; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fSFvs3HmK9eADeLSzoU8Z7eVYCc2vZjUmCyuGINqf2Y=;
- b=RyqSzFeed09GCblIM0vgsf2vP4yIgtJF9ALobblpsL5fprpm8lYOYxsWhXXjLr5ecH
- dHVetmcmWhd1DV8byC2l98UCq06EWVix1JW1lFHChUCSmHocW4aW1OPklv+qzscydaP0
- j7fdjv7Myfu2UoGgVQQ6oQheLO+cCOJNx0RymKh05782QMe3ppD7XIkqq36fKYPjrJjP
- /XPuxGT0I4H3xQ5iEmydYbeshN/3Wxv9ubxboLFz7AvgnokvizGuYwnWFWFp1nmjtSTA
- HEKvnHFCg05qIXDl/ULonkMfF4A4d7cF3oro5NMtfMwvPtk5wL4yLC6MshAuR3yDJkfk
- imlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697554009; x=1698158809;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fSFvs3HmK9eADeLSzoU8Z7eVYCc2vZjUmCyuGINqf2Y=;
- b=X/E5c2MtTIMXGiP3PcIhY8IOYIsDfDDm+J1dU2Z9P6SNXs3EQzeAeYi2R3e1kH3AK5
- z7e/hUTx16zLI1f8YLmkw4crpW26WlGZANE0AUDtzYtGEoFeX0jpN3ry4scfHo5fof5F
- AYTHdOQB5ThXTMqlf7hlC6/3QpNJDbn6Dtdj/uY22zSXJ9rHUxaoqn9kLFUC4KW/E8CZ
- B7qDTyhyydvJdNHks2UyVgPm1VAXg2jVKfRUh7w7Jrsonfv9EGUiYkBp4pIJj157UZaP
- ObgWIpnj9R7U4D/b0JIAEqNyjI4Qg3hNf8WvGCwznWvxV5unmbYHHmL3qNiwvTOuvRDr
- uz3Q==
-X-Gm-Message-State: AOJu0YywffldByb7c5BKT8GrqIiPtuQ2/yQUcKAt8m5T85O9zDc7tzKi
- EHHcj6DtvThWWDkoxCYAo62CPFFRX65zqa8XiZo=
-X-Google-Smtp-Source: AGHT+IE3dmKaH64Gr/maM1uT02CMr3KjT09uk/T3fK1iEFR6xj7hGHLmtQ9VsXUFSMwE2p/k84e5kO0COUWogWNhCww=
-X-Received: by 2002:a4a:d595:0:b0:57b:7e41:9f11 with SMTP id
- z21-20020a4ad595000000b0057b7e419f11mr2225363oos.2.1697554009574; Tue, 17 Oct
- 2023 07:46:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qslWP-0007zX-3E
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:58:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qslWK-0000Vj-Bp
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:58:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697554674;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jfGIakZ3DxK0NypucjSmdsPcRPnlDFDzc7R9nHFgTwQ=;
+ b=MODAgr9DF7zNBIfcVQaHVNOM8qYt9vN1ICKcB5pm4NP9B3AhHCgHfgSx2lhXlhchvm+MbI
+ 36nWo0ORK76yO9KG4aBrzzyNxkej1FGwZ+6u/ztFt6W9mWla9gEL5dZzTS6Tjz+ZHjlo01
+ qcl9bL9FyK9VD2sBJA40Fibreo1/Lxo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-537-rnwlziI-Pq--ytfB1hIJRg-1; Tue, 17 Oct 2023 10:57:40 -0400
+X-MC-Unique: rnwlziI-Pq--ytfB1hIJRg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43A8A858286;
+ Tue, 17 Oct 2023 14:57:39 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C760B2166B26;
+ Tue, 17 Oct 2023 14:57:38 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A1F1021E6A1F; Tue, 17 Oct 2023 16:57:37 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org,  qemu-devel@nongnu.org,  eblake@redhat.com,
+ dave@treblig.org,  eduardo@habkost.net,  berrange@redhat.com,
+ pbonzini@redhat.com,  hreitz@redhat.com,  kwolf@redhat.com,
+ raphael.norwitz@nutanix.com,  mst@redhat.com,  yc-core@yandex-team.ru,
+ den-plotnikov@yandex-team.ru,  daniil.tatianin@yandex.ru
+Subject: Re: [PATCH 2/4] qapi: introduce device-sync-config
+References: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
+ <20231006202045.1161543-3-vsementsov@yandex-team.ru>
+Date: Tue, 17 Oct 2023 16:57:37 +0200
+In-Reply-To: <20231006202045.1161543-3-vsementsov@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Fri, 6 Oct 2023 23:20:43 +0300")
+Message-ID: <87zg0h2t5q.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20231016083201.23736-1-hreitz@redhat.com>
- <2m60m.9e9wlnnm01vd@linaro.org>
- <20231016103254.7xrnptmwrjnsr3uc@vireshk-i7> <87lec2dc7r.fsf@linaro.org>
- <20231017053638.hhs57axmwqtzbpp6@vireshk-i7>
- <ceeaa1f3-c0ad-65c1-80d1-ec869f976146@redhat.com>
- <20231017075352.2l3htkj46gunyjrm@vireshk-i7>
- <CADSE00JkwkyruO-rhiN7p_T_2efAed8B2Uzp01jVj=YH7Wixmw@mail.gmail.com>
- <CAJSP0QUhc5Ov=gG626gCMq+4V7rpsS2b-8VKzM3bz3VNaZ_3Xg@mail.gmail.com>
- <CADSE00LuFD9TxdVTBrPYqS0G_r_9fdht=BJf_2rG=F4sR-1fYA@mail.gmail.com>
-In-Reply-To: <CADSE00LuFD9TxdVTBrPYqS0G_r_9fdht=BJf_2rG=F4sR-1fYA@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 17 Oct 2023 10:46:37 -0400
-Message-ID: <CAJSP0QUUv357qFUrDbDBz8iybKB78uWicoz9ruXW9JQDcQi3Vw@mail.gmail.com>
-Subject: Re: [PATCH] vhost-user: Fix protocol feature bit conflict
-To: Albert Esteve <aesteve@redhat.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, Hanna Czenczek <hreitz@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org, 
- "Michael S . Tsirkin" <mst@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
- "Garhwal, Vikram" <vikram.garhwal@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2c.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,27 +83,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Oct 2023 at 10:38, Albert Esteve <aesteve@redhat.com> wrote:
-> On Tue, Oct 17, 2023 at 12:57=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.=
-com> wrote:
->>
->> On Tue, 17 Oct 2023 at 04:26, Albert Esteve <aesteve@redhat.com> wrote:
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-Thanks for considering my feedback!
+> Add command to sync config from vhost-user backend to the device. It
+> may be helpful when VHOST_USER_SLAVE_CONFIG_CHANGE_MSG failed or not
+> triggered interrupt to the guest or just not available (not supported
+> by vhost-user server).
+>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-> There is not. In a first thought, I assumed that the backends will be in =
-charge
-> of cleaning their entries from the shared hash table when they are destro=
-yed
-> (prematurely or no). I will look into occurrences of vhost_dev getting de=
-stroyed
-> that may need explicit handling of the leftover entries.
+[...]
 
-QEMU supports hot (un)plug of vhost-user devices. vhost-user backends
-may also crash.
+> diff --git a/qapi/qdev.json b/qapi/qdev.json
+> index fa80694735..2468f8bddf 100644
+> --- a/qapi/qdev.json
+> +++ b/qapi/qdev.json
+> @@ -315,3 +315,17 @@
+>  # Since: 8.2
+>  ##
+>  { 'event': 'X_DEVICE_ON', 'data': 'DeviceAndPath' }
+> +
+> +##
+> +# @x-device-sync-config:
+> +#
+> +# Sync config from backend to the guest.
 
-QEMU cannot rely solely on the backend to take any cleanup action
-because a backend may be buggy or misbehave.
+"Sync" is not a word; "synchronize" is :)
 
-Stefan
+> +#
+> +# @id: the device's ID or QOM path
+> +#
+> +# Returns: Nothing on success
+> +#          If @id is not a valid device, DeviceNotFound
+
+Why not GenericError?  
+
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'command': 'x-device-sync-config', 'data': {'id': 'str'} }
+
+The commit message above and the error message below talk about command
+device-sync-config, but you actually name it x-device-sync-config.
+
+I figure you use x- to signify "unstable".  Please use feature flag
+'unstable' for that.  See docs/devel/qapi-code-gen.rst section
+"Features", in particular "Special features", and also the note on x- in
+section "Naming rules and reserved names".
+
+We tend to eschew abbreviations in QAPI schema names.
+device-synchronize-config is quite a mouthful, though.  What do you
+think?
+
+> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+> index 19c31446d8..b6da24389f 100644
+> --- a/softmmu/qdev-monitor.c
+> +++ b/softmmu/qdev-monitor.c
+> @@ -987,6 +987,29 @@ HotplugInfo *qmp_x_query_hotplug(const char *id, Error **errp)
+>      return hotplug_handler_get_state(hotplug_ctrl, dev, errp);
+>  }
+>  
+> +int qdev_sync_config(DeviceState *dev, Error **errp)
+> +{
+> +    DeviceClass *dc = DEVICE_GET_CLASS(dev);
+> +
+> +    if (!dc->sync_config) {
+> +        error_setg(errp, "device-sync-config is not supported for '%s'",
+> +                   object_get_typename(OBJECT(dev)));
+> +        return -ENOTSUP;
+> +    }
+> +
+> +    return dc->sync_config(dev, errp);
+> +}
+> +
+> +void qmp_x_device_sync_config(const char *id, Error **errp)
+> +{
+> +    DeviceState *dev = find_device_state(id, errp);
+
+Not your patch's fault, but here goes anyway: when @id refers to a
+non-device, find_device_state() fails with "is not a hotpluggable
+device".  "hotpluggable" is misleading.
+
+> +    if (!dev) {
+> +        return;
+> +    }
+> +
+> +    qdev_sync_config(dev, errp);
+> +}
+> +
+>  void hmp_device_add(Monitor *mon, const QDict *qdict)
+>  {
+>      Error *err = NULL;
+
 
