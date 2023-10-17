@@ -2,44 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0852B7CC0DF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 12:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C397CC01D
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 12:05:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qshXd-0003FP-Tk; Tue, 17 Oct 2023 06:43:13 -0400
+	id 1qsgwb-0006Tn-Op; Tue, 17 Oct 2023 06:04:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qshXa-0003BH-58
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 06:43:10 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qsgwW-0006OH-8C; Tue, 17 Oct 2023 06:04:52 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qshXY-0006Ot-3I
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 06:43:09 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 01D6811F37E;
- Tue, 17 Oct 2023 10:43:05 +0000 (UTC)
-From: ~h0lyalg0rithm <h0lyalg0rithm@git.sr.ht>
-Date: Tue, 03 Oct 2023 14:45:14 +0200
-Subject: [PATCH qemu v3 1/1] Switch memory management calls to new coding
- conventions
-Message-ID: <169753938460.23804.11418813007617535750-1@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <169753938460.23804.11418813007617535750-0@git.sr.ht>
-To: qemu-devel@nongnu.org
-Cc: trivial@nongnu.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qsgwT-0007UT-TY; Tue, 17 Oct 2023 06:04:51 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S8qMM5dRpz685Yk;
+ Tue, 17 Oct 2023 18:04:15 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 17 Oct
+ 2023 11:04:45 +0100
+Date: Tue, 17 Oct 2023 11:04:44 +0100
+To: Alistair Francis <alistair23@gmail.com>, <qemu-devel@nongnu.org>
+CC: <cbrowy@avery-design.com>, <wilfred.mallawa@wdc.com>, <mst@redhat.com>,
+ <lukas@wunner.de>, <kbusch@kernel.org>, <hchkuo@avery-design.com.tw>,
+ <its@irrelevant.dk>, <jiewen.yao@intel.com>, <marcel.apfelbaum@gmail.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, <qemu-block@nongnu.org>, Alistair
+ Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH v2 2/3] backends: Initial support for SPDM socket support
+Message-ID: <20231017110444.000058be@Huawei.com>
+In-Reply-To: <20231017052155.173577-3-alistair.francis@wdc.com>
+References: <20231017052155.173577-1-alistair.francis@wdc.com>
+ <20231017052155.173577-3-alistair.francis@wdc.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: 36
-X-Spam_score: 3.6
-X-Spam_bar: +++
-X-Spam_report: (3.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- FREEMAIL_FORGED_REPLYTO=2.095, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,167 +64,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~h0lyalg0rithm <surajshirvankar@gmail.com>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Suraj Shirvankar <surajshirvankar@gmail.com>
+On Tue, 17 Oct 2023 15:21:54 +1000
+Alistair Francis <alistair23@gmail.com> wrote:
 
-Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
----
- contrib/elf2dmp/addrspace.c |  7 ++-----
- contrib/elf2dmp/main.c      |  6 +++---
- contrib/elf2dmp/pdb.c       | 16 ++++++++--------
- contrib/elf2dmp/qemu_elf.c  |  7 ++-----
- 4 files changed, 15 insertions(+), 21 deletions(-)
+> From: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+> 
+> SPDM enables authentication, attestation and key exchange to assist in
+> providing infrastructure security enablement. It's a standard published
+> by the DMTF [1].
+> 
+> SPDM supports multiple transports, including PCIe DOE and MCTP.
+> This patch adds support to QEMU to connect to an external SPDM
+> instance.
+> 
+> SPDM support can be added to any QEMU device by exposing a
+> TCP socket to a SPDM server. The server can then implement the SPDM
+> decoding/encoding support, generally using libspdm [2].
+> 
+> This is similar to how the current TPM implementation works and means
+> that the heavy lifting of setting up certificate chains, capabilities,
+> measurements and complex crypto can be done outside QEMU by a well
+> supported and tested library.
+> 
+> 1: https://www.dmtf.org/standards/SPDM
+> 2: https://github.com/DMTF/libspdm
+> 
+> Signed-off-by: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+> Signed-off-by: Chris Browy <cbrowy@avery-design.com>
+> Co-developed-by: Jonathan Cameron <Jonathan.cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> [ Changes by WM
+>  - Bug fixes from testing
+> ]
+> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+> [ Changes by AF:
+>  - Convert to be more QEMU-ified
+>  - Move to backends as it isn't PCIe specific
+> ]
+> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 
-diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
-index 64b5d680ad..6f608a517b 100644
---- a/contrib/elf2dmp/addrspace.c
-+++ b/contrib/elf2dmp/addrspace.c
-@@ -72,10 +72,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_el=
-f)
-         }
-     }
-=20
--    ps->block =3D malloc(sizeof(*ps->block) * ps->block_nr);
--    if (!ps->block) {
--        return 1;
--    }
-+    ps->block =3D g_new(struct pa_block, ps->block_nr);
-=20
-     for (i =3D 0; i < phdr_nr; i++) {
-         if (phdr[i].p_type =3D=3D PT_LOAD) {
-@@ -97,7 +94,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
- void pa_space_destroy(struct pa_space *ps)
- {
-     ps->block_nr =3D 0;
--    free(ps->block);
-+    g_free(ps->block);
- }
-=20
- void va_space_set_dtb(struct va_space *vs, uint64_t dtb)
-diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index 5db163bdbe..26a15a9d22 100644
---- a/contrib/elf2dmp/main.c
-+++ b/contrib/elf2dmp/main.c
-@@ -120,14 +120,14 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, s=
-truct pdb_reader *pdb,
-         }
-     }
-=20
--    kdbg =3D malloc(kdbg_hdr.Size);
-+    kdbg =3D g_malloc(kdbg_hdr.Size);
-     if (!kdbg) {
-         return NULL;
-     }
-=20
-     if (va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
-         eprintf("Failed to extract entire KDBG\n");
--        free(kdbg);
-+        g_free(kdbg);
-         return NULL;
-     }
-=20
-@@ -643,7 +643,7 @@ int main(int argc, char *argv[])
-     }
-=20
- out_kdbg:
--    free(kdbg);
-+    g_free(kdbg);
- out_pdb:
-     pdb_exit(&pdb);
- out_pdb_file:
-diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-index 6ca5086f02..2404f41404 100644
---- a/contrib/elf2dmp/pdb.c
-+++ b/contrib/elf2dmp/pdb.c
-@@ -90,18 +90,18 @@ uint64_t pdb_resolve(uint64_t img_base, struct pdb_reader=
- *r, const char *name)
-=20
- static void pdb_reader_ds_exit(struct pdb_reader *r)
- {
--    free(r->ds.toc);
-+    g_free(r->ds.toc);
- }
-=20
- static void pdb_exit_symbols(struct pdb_reader *r)
- {
--    free(r->modimage);
--    free(r->symbols);
-+    g_free(r->modimage);
-+    g_free(r->symbols);
- }
-=20
- static void pdb_exit_segments(struct pdb_reader *r)
- {
--    free(r->segs);
-+    g_free(r->segs);
- }
-=20
- static void *pdb_ds_read(const PDB_DS_HEADER *header,
-@@ -116,7 +116,7 @@ static void *pdb_ds_read(const PDB_DS_HEADER *header,
-=20
-     nBlocks =3D (size + header->block_size - 1) / header->block_size;
-=20
--    buffer =3D malloc(nBlocks * header->block_size);
-+    buffer =3D g_malloc(nBlocks * header->block_size);
-     if (!buffer) {
-         return NULL;
-     }
-@@ -201,7 +201,7 @@ static int pdb_init_symbols(struct pdb_reader *r)
-     return 0;
-=20
- out_symbols:
--    free(symbols);
-+    g_free(symbols);
-=20
-     return err;
- }
-@@ -258,7 +258,7 @@ static int pdb_reader_init(struct pdb_reader *r, void *da=
-ta)
- out_sym:
-     pdb_exit_symbols(r);
- out_root:
--    free(r->ds.root);
-+    g_free(r->ds.root);
- out_ds:
-     pdb_reader_ds_exit(r);
-=20
-@@ -269,7 +269,7 @@ static void pdb_reader_exit(struct pdb_reader *r)
- {
-     pdb_exit_segments(r);
-     pdb_exit_symbols(r);
--    free(r->ds.root);
-+    g_free(r->ds.root);
-     pdb_reader_ds_exit(r);
- }
-=20
-diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-index de6ad744c6..055e6f8792 100644
---- a/contrib/elf2dmp/qemu_elf.c
-+++ b/contrib/elf2dmp/qemu_elf.c
-@@ -94,10 +94,7 @@ static int init_states(QEMU_Elf *qe)
-=20
-     printf("%zu CPU states has been found\n", cpu_nr);
-=20
--    qe->state =3D malloc(sizeof(*qe->state) * cpu_nr);
--    if (!qe->state) {
--        return 1;
--    }
-+    qe->state =3D g_new(QEMUCPUState*, cpu_nr);
-=20
-     cpu_nr =3D 0;
-=20
-@@ -115,7 +112,7 @@ static int init_states(QEMU_Elf *qe)
-=20
- static void exit_states(QEMU_Elf *qe)
- {
--    free(qe->state);
-+    g_free(qe->state);
- }
-=20
- static bool check_ehdr(QEMU_Elf *qe)
---=20
-2.38.5
+LGTM.  Will be interesting to see how this evolves as we put more
+requirements on it.
+
+Given I already signed off, I won't give another tag as that would be
+extremely confusing.
+
 
