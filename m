@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC707CC57F
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 723AD7CC581
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:04:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qskeI-0003zw-9y; Tue, 17 Oct 2023 10:02:18 -0400
+	id 1qskes-0004iX-Og; Tue, 17 Oct 2023 10:02:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qskeD-0003yP-P6
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:02:16 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qskei-0004Jh-RI
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:02:48 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qskeA-0008MC-8Y
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:02:12 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-31c5cac3ae2so5047461f8f.3
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 07:02:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qskea-0008PT-CT
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:02:40 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2c50305c5c4so66003731fa.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 07:02:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697551328; x=1698156128; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697551343; x=1698156143; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B7R3ShGuEPvQsYMJ+sC0uKzUQHXrwcjcpcC+wh9jeQo=;
- b=fQ1fBQCwqY6aUlwdW7UDuH77GInRel443gr4dloLqxr055WFYebtDGSJI0GceqlrEv
- C9ZNxk/isWLsm0SjpEG8G9GEjd1Qv0kedttqluzabjGwD1YL3Gtr4Ks4Ug9BD9x9Y0Ew
- sEdgyxX29y+67IZxUpr4u4kzijPnT4IAPJ2Z34pEFwEa2PAff/Wypp50Vn+DpVAYIK14
- t5SWgbEdGeyv6dRRrqPjWTDPfCpp12SBpYgjlWuxie+S3CiFBmEC7e5tV+VQjs0Av6kw
- QTPmva+slRGEa+U8l64grud/ctDIeABGUxSD6KriOfz06W6pdFxL1RKbWJf50H6lI9Jg
- mxdQ==
+ bh=puWItc3Dt59czgvz0D+TYHTdmTo5qF+fqrS6/T95/pw=;
+ b=Jr0gTcj/RCvda45qJVoLxlOfPrQpxeFOoJ2DoUamqij+IWMFPQooAP21YBJEujOIg8
+ EnXLDix5/EJ3ZaMyJ9wBXU/5KG0BhejhGQsh5SXnktfDoEsDrwe1Bw65DxUt85QF0an2
+ NJPXWsiNffazl3UmUeAaMSierH6+Go/ivvvMKsjYyOWWZ5BHI2M5PHsWfwyNXPbidcmQ
+ EDbKvSKuQyc3b2sJBH4CpP498jB09jivLysTpZVwiIIyz4V1jVG9AsWd/YMkFxzSUKvc
+ EwqbP12RNOno5pUZh+3ZZP4y4ssv1/haZmbND1QQo7aDCMDwGSdhOdNZdjLaFsHf5Jq2
+ JrXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697551328; x=1698156128;
+ d=1e100.net; s=20230601; t=1697551343; x=1698156143;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B7R3ShGuEPvQsYMJ+sC0uKzUQHXrwcjcpcC+wh9jeQo=;
- b=UGDzcGzvdeF3VMevFI59d5XDC3rJ1ZYT9sufpby9Hrh3xEEv2m4wSIEF+sBgBoeUu4
- /Bjl6ziBAOUWD3EjKNXmYjfp7kyaP3OxFTeiP0xGl7LYfdenNo05yhPT+5j5tAGDI2V6
- PhrpXT4XaO9Jv+gnrtMvirz5fGT2PdMt9JWiF+RLR5m+7Jqou03N6pMVC4xl8ik+keaV
- zqUZyMOgEuvrV809ELCFaxKHcQs/LwtjBEpMy72L7a4Dfru6SFVf0O9xpUepOiYrlT9Q
- AemsdfyLcCMnX6Gg4xwCgiSAl/RS9DL09ym+WQzB2oSVHsuNmVm8jT47x8UZ4wkg293f
- G1Gw==
-X-Gm-Message-State: AOJu0Yx7asVOxeBOgfTP1gp9FmnPfRjVINkrr9IgW7RMM4nXXTkLqDlJ
- 3xvV/6oIAEvNvRqklG5s5H3SZZYCGriNXXIFelI3Lw==
-X-Google-Smtp-Source: AGHT+IEYn4+LuclmkKRHORiND9cC5xRSMqaBci1mv6L3hiu+9suatqZQQ0anISsAFrdixPBr+8OWHQ==
-X-Received: by 2002:a5d:408c:0:b0:32d:a818:a74d with SMTP id
- o12-20020a5d408c000000b0032da818a74dmr1952521wrp.47.1697551328607; 
- Tue, 17 Oct 2023 07:02:08 -0700 (PDT)
+ bh=puWItc3Dt59czgvz0D+TYHTdmTo5qF+fqrS6/T95/pw=;
+ b=cwjlW0h2eJ/eZS9Bw5643H1V/zndv5bNgf+pq8CT96Mb/CSKAfFIcDN1n2aoqa3RAU
+ 4NxajWf93VZ6+5knTQDGkDOOrClArCHL0QICUdJ0ENRYKfRfjIhN+EX3qXSbfnk14zPN
+ exg/iGR96AirTLrvd/Keozt2ccNT7cn4mpkohVSlg7O766IDfDE6dARBWWKlqaKSLq6M
+ Wix95BdOuc4rST/G1abbG+p8P+VK+jNb16Xw6pcw5X9WhcOVhh4fpGEUat+CKMz80X16
+ OQqN/zEu+5vgdy9U8JEwln1sW+e05zyb0aIBDwmPLdDnoP8zsh4qbFKNckxWZa1YOqv/
+ T5/w==
+X-Gm-Message-State: AOJu0Yy54ElByYEabPMK2kq1ntztc8ivoFAvl00oK9vtUBsbv2zzuzMs
+ +glXAyrJ6oSN85CdiRIGqwgd6AcRgXIstU98toZqzw==
+X-Google-Smtp-Source: AGHT+IGK+KAEB1GS/cibqP/wJaY69f4yyn2AxgcSSpsXAeeJu9f6xBuPtr28EYm9edCiWb3Jx7/d3A==
+X-Received: by 2002:a2e:5052:0:b0:2bc:f78a:e5e0 with SMTP id
+ v18-20020a2e5052000000b002bcf78ae5e0mr1671765ljd.43.1697551343116; 
+ Tue, 17 Oct 2023 07:02:23 -0700 (PDT)
 Received: from m1x-phil.lan ([176.172.118.33])
  by smtp.gmail.com with ESMTPSA id
- p5-20020adfe605000000b0031fb91f23e9sm1752461wrm.43.2023.10.17.07.02.06
+ p11-20020a05600c358b00b004075d5664basm10086258wmq.8.2023.10.17.07.02.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 17 Oct 2023 07:02:08 -0700 (PDT)
+ Tue, 17 Oct 2023 07:02:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -66,18 +66,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Alistair Francis <alistair@alistair23.me>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/7] hw/block/vhost-user-blk: Use DEVICE() / VIRTIO_DEVICE()
- macros
-Date: Tue, 17 Oct 2023 16:01:45 +0200
-Message-ID: <20231017140150.44995-3-philmd@linaro.org>
+Subject: [PATCH 4/7] hw/scsi/virtio-scsi: Use VIRTIO_SCSI_COMMON() macro
+Date: Tue, 17 Oct 2023 16:01:47 +0200
+Message-ID: <20231017140150.44995-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231017140150.44995-1-philmd@linaro.org>
 References: <20231017140150.44995-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,35 +99,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Access QOM parent with the proper QOM [VIRTIO_]DEVICE() macros.
+Access QOM parent with the proper QOM VIRTIO_SCSI_COMMON() macro.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/block/vhost-user-blk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/scsi/virtio-scsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index eecf3f7a81..4b37e26120 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -405,7 +405,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
+diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 45b95ea070..fa53f0902c 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -761,7 +761,7 @@ static void virtio_scsi_fail_cmd_req(VirtIOSCSIReq *req)
  
- static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
+ static int virtio_scsi_handle_cmd_req_prepare(VirtIOSCSI *s, VirtIOSCSIReq *req)
  {
--    DeviceState *dev = &s->parent_obj.parent_obj;
-+    DeviceState *dev = DEVICE(s);
-     int ret;
+-    VirtIOSCSICommon *vs = &s->parent_obj;
++    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(s);
+     SCSIDevice *d;
+     int rc;
  
-     s->connected = false;
-@@ -423,7 +423,7 @@ static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
-     assert(s->connected);
- 
-     ret = vhost_dev_get_config(&s->dev, (uint8_t *)&s->blkcfg,
--                               s->parent_obj.config_len, errp);
-+                               VIRTIO_DEVICE(s)->config_len, errp);
-     if (ret < 0) {
-         qemu_chr_fe_disconnect(&s->chardev);
-         vhost_dev_cleanup(&s->dev);
 -- 
 2.41.0
 
