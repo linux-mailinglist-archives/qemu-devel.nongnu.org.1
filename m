@@ -2,94 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825A17CBD29
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 10:14:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 004947CBD31
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 10:16:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsfCz-0004v3-PT; Tue, 17 Oct 2023 04:13:45 -0400
+	id 1qsfEK-0005b4-N3; Tue, 17 Oct 2023 04:15:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsfCx-0004us-Hv
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 04:13:43 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsfED-0005Zf-IC
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 04:15:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsfCv-000297-EY
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 04:13:43 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qsfEC-0002Hq-5f
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 04:15:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697530419;
+ s=mimecast20190719; t=1697530499;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OAb4Vo1xfKZw7D4FNVJESf3XuTkVxaK6teAzbsA34cQ=;
- b=OW5qfIi9U8MOTUCtMSfpjLEpL9npflmkwtqyXJ1+3g7kZ524nuAErJP/Ml1x8fImlqN9hZ
- RfrVrST7bC8x0S9Z+zK5UpzSfPjGz/9BS5FRAijXSalScs4UWIPaytCvToNVH8pU+KdUFt
- EZBd0XpaPV4GTmspyyswfTct0OKgRXM=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vAUXAak9feFpZtKDm8K9taebrI5e4GOyCoPIhnclnfI=;
+ b=GQ9pi1+/Ii07Fi/pttMv3iAkH+JDPdVPJQvWvuC0m/bywHlOsMSFUgh8xfrdbP0il8hFCY
+ ZFa9m0oMJV6OuBNmP6MblH0zD1V6svp0UchjKgaawUeiKekbsG7vkjaSV6pi1RX/mtPFyv
+ 2brlBQBiHN4ND2t3v9202ajdqXJBkrc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-EXKx6lPrOkuyn9I_O2qGIQ-1; Tue, 17 Oct 2023 04:13:38 -0400
-X-MC-Unique: EXKx6lPrOkuyn9I_O2qGIQ-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c12bb1f751so51233331fa.2
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 01:13:37 -0700 (PDT)
+ us-mta-695-D0h8K1VkP9KQW0awAqLm8A-1; Tue, 17 Oct 2023 04:14:43 -0400
+X-MC-Unique: D0h8K1VkP9KQW0awAqLm8A-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-407558fe418so38033785e9.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 01:14:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697530416; x=1698135216;
+ d=1e100.net; s=20230601; t=1697530481; x=1698135281;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OAb4Vo1xfKZw7D4FNVJESf3XuTkVxaK6teAzbsA34cQ=;
- b=JmZV0kHJrO/NtZzXOWscUc+auBZxilI7L5LnOB37Il45tVAUdKl0fbZdc4rk5fI2Eu
- RtIpnhXiF2HYUH4pOnQ4ZaDM738ciXyX2nvZ+PaZC70gz8NQsSBsc+JfsNbCSAHaRF8i
- 0nKSvM8QtFYDfvv9yvTCRb9Nko/Bxv1Xz7nZJY1M9/0cFFe2HLl2+U/F4W+mSMYwUAsb
- UlFeppofW5dKdhgOuuyHVHi+5480huXkyv1VI2aYkaOjRaHfa10XjDOlPS8/oEph6ivz
- 5xqEu4iwoLRbif3q+yqE+P/7WWKt1cSjyiazN2envxnCAwfs56eqXN4PbHwYLr0AUKH9
- n84A==
-X-Gm-Message-State: AOJu0YywZlYWSyhEHAH7Uf4zp5dbvAM6PB3B6Bi7efrgoO6JnvC/UhZf
- uR7D+0GFMH5aDfLBaCJ0BZKR0iJPKMM+C/lcU11Ux4EkKoqVvIC2Eeb0yrmMwkLLn8R5RgypuOP
- 4a+eYSavqmzjccyw=
-X-Received: by 2002:a05:651c:543:b0:2c4:fdc9:c8a3 with SMTP id
- q3-20020a05651c054300b002c4fdc9c8a3mr1284076ljp.50.1697530416697; 
- Tue, 17 Oct 2023 01:13:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHWIrYY/hoG8f0wT1OzgXsfqxtauFo9WYzRzJcmDquMftIFvWGDD7QwgaRZQyGgtMG1M82TXQ==
-X-Received: by 2002:a05:651c:543:b0:2c4:fdc9:c8a3 with SMTP id
- q3-20020a05651c054300b002c4fdc9c8a3mr1284061ljp.50.1697530416356; 
- Tue, 17 Oct 2023 01:13:36 -0700 (PDT)
+ bh=vAUXAak9feFpZtKDm8K9taebrI5e4GOyCoPIhnclnfI=;
+ b=FdjwWWBWmPEaEMFz4e4Grtqw58MiakguRIxE5GD0FKlKEteva59ZjcWkyq/Ksuw2MW
+ watW1GPprwPqY1DGAvdbdMWgb84Zyx4Po3XL+F1jLpiHisWAEkiVbarJbxSVGEWA2psL
+ ri6B6rUXPgKFAfaNvYqGEshaob28ZXOA3ze+E85F2U84dfguFDze42G5ZQja1CVHVooa
+ 2IDzJLkrUT3faC7sw3Y4xsFnpQ3UZ4dd7IrV+NyJEotuuLl6uLjlACm0uBmASw3L0CCj
+ pvK2Lfp5PYZhDkzO/0CPIvix80JiBgV/X1VxOytY7WqbV4tTbrqTybY6vXsHrQWxM/92
+ d9xw==
+X-Gm-Message-State: AOJu0YzKDc9Y+LNr0jCtQPvWVLlW0EsqyNhu9zPtaj9w2si9f0uW6AH/
+ L0bVXmlI1cF4AlqZF9Fmj4qNCBlnYJgrbhz8iGA281aUpdYY6oy+ClOnFteF1osUlWkxB+MP7jN
+ WtKUesUyu/P2nk9E=
+X-Received: by 2002:a05:600c:46c3:b0:407:5adc:4497 with SMTP id
+ q3-20020a05600c46c300b004075adc4497mr1115184wmo.9.1697530481524; 
+ Tue, 17 Oct 2023 01:14:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHruBX+OfTHUCIEVQNN9nWulXPhAtw7yd5LBMjSHJM4lbiDD1l3hclAoSNpxxoynEtAxpUZ7A==
+X-Received: by 2002:a05:600c:46c3:b0:407:5adc:4497 with SMTP id
+ q3-20020a05600c46c300b004075adc4497mr1115164wmo.9.1697530481144; 
+ Tue, 17 Oct 2023 01:14:41 -0700 (PDT)
 Received: from ?IPV6:2003:cf:d746:c551:3d67:278e:c0a1:87a2?
  (p200300cfd746c5513d67278ec0a187a2.dip0.t-ipconnect.de.
  [2003:cf:d746:c551:3d67:278e:c0a1:87a2])
  by smtp.gmail.com with ESMTPSA id
- bi13-20020a05600c3d8d00b003fee567235bsm9154231wmb.1.2023.10.17.01.13.35
+ t7-20020a1c7707000000b0040586360a36sm9073723wmi.17.2023.10.17.01.14.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Oct 2023 01:13:35 -0700 (PDT)
-Message-ID: <3e26e29a-b861-deb2-b67a-5e505cf58429@redhat.com>
-Date: Tue, 17 Oct 2023 10:13:34 +0200
+ Tue, 17 Oct 2023 01:14:40 -0700 (PDT)
+Message-ID: <50116c43-5fb6-ad87-a748-12e02d596c13@redhat.com>
+Date: Tue, 17 Oct 2023 10:14:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [Virtio-fs] (no subject)
+Subject: Re: [PATCH] vhost-user: Fix protocol feature bit conflict
 Content-Language: en-US
 To: Viresh Kumar <viresh.kumar@linaro.org>
 Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "virtio-fs@redhat.com" <virtio-fs@redhat.com>,
- =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>,
- "maxime.coquelin@redhat.com" <maxime.coquelin@redhat.com>,
- Parav Pandit <parav@nvidia.com>, Anton Kuchin <antonkuchin@yandex-team.ru>,
- Yajun Wu <yajunw@nvidia.com>
-References: <e35f9f71-8d9d-6250-cbaa-70412b5a1149@nvidia.com>
- <3f28b1a4-d618-39df-57e6-6152f61cac6e@redhat.com>
- <8f3694c1-48d4-f34b-8f91-3bc217182ffa@redhat.com>
- <e19eb113-89b1-92ed-3375-8bc93c1ff39c@redhat.com>
- <8f51f02b-4676-c566-7304-f63e76df74ba@nvidia.com>
- <9a36a319-4567-f297-f14a-2025792ae93f@redhat.com> <87lecapxi4.fsf@linaro.org>
- <fbe05651-a65a-23d0-52be-2d611cc5740d@redhat.com> <87lec6mt03.fsf@linaro.org>
- <a7c01dd0-2b41-e294-f20c-a1edf6562a78@redhat.com>
- <20231017074943.gft6f672o6xzeepa@vireshk-i7>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org,
+ "Michael S . Tsirkin" <mst@redhat.com>, Albert Esteve <aesteve@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Garhwal, Vikram" <vikram.garhwal@amd.com>
+References: <20231016083201.23736-1-hreitz@redhat.com>
+ <2m60m.9e9wlnnm01vd@linaro.org> <20231016103254.7xrnptmwrjnsr3uc@vireshk-i7>
+ <87lec2dc7r.fsf@linaro.org> <20231017053638.hhs57axmwqtzbpp6@vireshk-i7>
+ <ceeaa1f3-c0ad-65c1-80d1-ec869f976146@redhat.com>
+ <20231017075352.2l3htkj46gunyjrm@vireshk-i7>
 From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20231017074943.gft6f672o6xzeepa@vireshk-i7>
+In-Reply-To: <20231017075352.2l3htkj46gunyjrm@vireshk-i7>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
@@ -117,52 +110,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17.10.23 09:49, Viresh Kumar wrote:
-> On 13-10-23, 20:02, Hanna Czenczek wrote:
->> On 10.10.23 16:35, Alex Bennée wrote:
->>> I was going to say there is also the rust-vmm vhost-user-master crates
->>> which we've imported:
->>>
->>>     https://github.com/vireshk/vhost
->>>
->>> for the Xen Vhost Frontend:
->>>
->>>     https://github.com/vireshk/xen-vhost-frontend
->>>
->>> but I can't actually see any handling for GET/SET_STATUS at all which
->>> makes me wonder how we actually work. Viresh?
->> As far as I know the only back-end implementation of F_STATUS is in DPDK.
->> As I said, if anyone else implemented it right now, that would be dangerous,
->> because qemu doesn’t adhere to the virtio protocol when it comes to the
->> status byte.
-> Yeah, none of the Rust based Virtio backends enable `STATUS` in
-> `VhostUserProtocolFeatures` and so these messages are never exchanged.
->
-> The generic Rust code for the backends, doesn't even implement them.
-> Not sure if they should or not.
+On 17.10.23 09:53, Viresh Kumar wrote:
+> On 17-10-23, 09:51, Hanna Czenczek wrote:
+>> Not that I’m really opposed to that, but I don’t see the problem with just
+>> doing that in the same work that makes qemu actually use this flag, exactly
+>> because it’s just a -1/+1 change.
+>>
+>> I can send a v2, but should I do the same for libvhost-user and define the
+>> flag there?  Do I have to add a patch to do the same for F_STATUS, which so
+>> far only got a placeholder comment?
+> Sure, that's fine too.
 
-It absolutely should not, for evidence see this whole thread.  qemu 
-sends a SET_STATUS 0, which amounts to a reset, when the VM is merely 
-paused[1], and when it sets status bytes, it does not set them according 
-to virtio specification.  Implementing it right now means relying on and 
-working around qemu’s implementation-defined spec-breaking behavior.  
-Also, note that qemu ignores feature negotiation response through 
-FEATURES_OK, and DEVICE_NEEDS_RESET, so unless it’s worth working around 
-the problems just to get some form of DRIVER_OK information (note this 
-information does not come from the driver, but qemu makes it up), I 
-absolutely would not implement it.
-
-[1] Notably, it does restore the virtio state to the best of its 
-abilities when the VM is resumed, but this is all still wrong (there is 
-no point in doing so much on a pause/resume, it needlessly costs time) 
-and any implementation that does a reset then will rely on the 
-implementation-defined behavior that qemu is actually able to restore 
-all the state that the back-end would lose during a reset. Notably, 
-reset is not even well-defined in the vhost-user specification.  It was 
-argued, in this thread, that DPDK works just fine with this, precisely 
-because it ignores SET_STATUS 0.  Finally, if virtiofsd in particular, 
-as a user of the Rust crates, is reset, it would lose its internal 
-state, which qemu cannot restore short of using the upcoming migration 
-facilities.
+I would rather not, though, and don’t see a tangible benefit in doing so.
 
 
