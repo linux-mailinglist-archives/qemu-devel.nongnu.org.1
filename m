@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451E47CC55C
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E57E97CC563
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:59:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qska5-0006MK-Hl; Tue, 17 Oct 2023 09:57:57 -0400
+	id 1qskbR-0007ln-CU; Tue, 17 Oct 2023 09:59:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qska2-0006KH-Kk
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:57:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qska0-0007UP-If
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:57:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697551071;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vbjgbyig0FQkYUsauAEkyxVVgticsdKm7oRf3+a+VGI=;
- b=itNM2DWtHbGs9xPL2B8IRWkV9yBUaE/TJd4ZGd3FpXUFlejq7YYtbE5uC+vIomhA3g2ZRd
- hHSiYuChjhvNOzYCHQPDjv2dCYY7DwWlqptCwbvtsGBWJfEdHgofDYOMsMOxcfp2+9b1GK
- jPzxMq4OiTrJZmz4k1ew1jTmspongw0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-55-fAHD03MFNnSdF9QfnmPIOg-1; Tue, 17 Oct 2023 09:57:37 -0400
-X-MC-Unique: fAHD03MFNnSdF9QfnmPIOg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D1633C1CC3F;
- Tue, 17 Oct 2023 13:57:36 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5FD31C15BB8;
- Tue, 17 Oct 2023 13:57:36 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5893621E6A1F; Tue, 17 Oct 2023 15:57:35 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org,  libvir-list@redhat.com,  Leonardo Bras
- <leobras@redhat.com>,  Peter Xu <peterx@redhat.com>,  Fam Zheng
- <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  qemu-block@nongnu.org,  Fabiano Rosas
- <farosas@suse.de>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v5 3/7] migration: migrate 'blk' command option is
- deprecated.
-References: <20231017115238.18309-1-quintela@redhat.com>
- <20231017115238.18309-4-quintela@redhat.com>
-Date: Tue, 17 Oct 2023 15:57:35 +0200
-In-Reply-To: <20231017115238.18309-4-quintela@redhat.com> (Juan Quintela's
- message of "Tue, 17 Oct 2023 13:52:34 +0200")
-Message-ID: <87sf695p2o.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qskbO-0007dJ-Rk
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:59:18 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qskbN-0007hb-5k
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:59:18 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68fb85afef4so4581616b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 06:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697551155; x=1698155955; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rY95sNDrK5KHGda3VYHekc/+o8a/W5i3CBLg2DO7qxI=;
+ b=tkzglJBQi7tZukV68+qeVwUpulpavpCwrPUv01WJ8lRHDsYzYzcyS9+cl63/J/Hp/d
+ dNKmY9i57VIUceOFKMJN+IRvqyhRwrh6ylMILdCH6Z90YCdqxlfn6ndr4m6gLrPtyJ9y
+ ABDsfxj+iZBBfgij7QOVUegtSRMbvdW2iXtNAIW/mAhowqV+YkJe+CnkuZRiWN6fc2WY
+ lHTa9nAsiQi1DXvNh+0Sql6UMAt6ONl0tDLrLdZNrbpLE99mUeF6vM0pnZGXgzST7MaB
+ LNhZjgpxKp/D5OSOBLs7MIFKd0uCl4nR8OLyUm3sgsXrnM3+WutBEVGkWn+bh8pq/v82
+ 9pJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697551155; x=1698155955;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rY95sNDrK5KHGda3VYHekc/+o8a/W5i3CBLg2DO7qxI=;
+ b=UklThxYtfXbu3sehVEQGhPQZHySwDJw9ng4ZoJGeuX11ZKscmSLCtACJDRe6wlMXyi
+ 2Uk3vCC7t1kMWWImAkg0AmXMCZmqrzwFOjMY76bPr5TsYXRfyUPjhCnjQOEhuT8kcyXw
+ 234o40qe0xiBr/wphp9a8GYZINvDTM+bf2f8qmb3J0usyrufMAB4H48hJBAPjOOHCbTL
+ cQ3NI3+Z/OQKJPbGcSuMO62KDIbsh+wu30dpLUr3OQiQeqhAuf+VniM+hv3jhDnA24Ll
+ GdxoNfx7TdPNnA1OfI4hD9+n9bYL+AF9b3Fp6dZwjZwDjCOweQG86lWhQGe4wGUxp4wn
+ VN2Q==
+X-Gm-Message-State: AOJu0YxXmtW7mFnYYN9oRO/SDWrqplTRM63yIWr75XGKrCVz5y5o6HUa
+ +LTh/JZMR01OMn+5ULB5DT2IuA==
+X-Google-Smtp-Source: AGHT+IHgcptoosYKAUGb+mm0D7hSRyhAOyEWFJjA1cyoOchjeTEM/K/DFUfVikzdSXmMoH9VYKsa8g==
+X-Received: by 2002:a05:6a20:8f12:b0:125:517c:4f18 with SMTP id
+ b18-20020a056a208f1200b00125517c4f18mr2345404pzk.8.1697551154708; 
+ Tue, 17 Oct 2023 06:59:14 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ gj16-20020a17090b109000b00263b9e75aecsm1339174pjb.41.2023.10.17.06.59.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Oct 2023 06:59:14 -0700 (PDT)
+Message-ID: <5e75813a-3084-454c-9c72-31773e0e0d77@linaro.org>
+Date: Tue, 17 Oct 2023 06:59:12 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] target/loongarch: Use i128 for 128-bit load/store
+ in XVLD
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>
+References: <20231017123849.40834-1-philmd@linaro.org>
+ <20231017123849.40834-3-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231017123849.40834-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,120 +96,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
-
-> Use blocked-mirror with NBD instead.
->
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
->
+On 10/17/23 05:38, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->
-> Improve documentation and style (markus)
-> ---
->  docs/about/deprecated.rst      | 10 ++++++++++
->  qapi/migration.json            |  6 ++++--
->  migration/migration-hmp-cmds.c |  5 +++++
->  migration/migration.c          |  5 +++++
->  4 files changed, 24 insertions(+), 2 deletions(-)
->
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index fc6adf1dea..0149f040b6 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -469,3 +469,13 @@ Use blockdev-mirror with NBD instead.
->  As an intermediate step the ``inc`` functionality can be achieved by
->  setting the ``block-incremental`` migration parameter to ``true``.
->  But this parameter is also deprecated.
+>   target/loongarch/translate.c                |  6 ++++++
+>   target/loongarch/insn_trans/trans_vec.c.inc | 16 +++++++---------
+>   2 files changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
+> index c6edfc800f..89e35770b7 100644
+> --- a/target/loongarch/translate.c
+> +++ b/target/loongarch/translate.c
+> @@ -67,6 +67,12 @@ static inline void get_vreg128(TCGv_i128 dest, int regno, int index)
+>                       offsetof(CPULoongArchState, fpr[regno].vreg.Q(index)));
+>   }
+>   
+> +static inline void set_vreg128(TCGv_i128 src, int regno, int index)
+> +{
+> +    tcg_gen_st_i128(src, tcg_env,
+> +                    offsetof(CPULoongArchState, fpr[regno].vreg.Q(index)));
+> +}
 > +
-> +``blk`` migrate command option (since 8.2)
-> +''''''''''''''''''''''''''''''''''''''''''
-> +
-> +Use blockdev-mirror with NBD instead.
-> +
-> +As an intermediate step the ``blk`` functionality can be achieved by
-> +setting the ``block`` migration capability to ``true``.
-> +But this capability is also deprecated.
-> +
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index fa7f4f2575..59a07b50f0 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -1527,7 +1527,8 @@
->  # Features:
->  #
->  # @deprecated: Member @inc is deprecated.  Use blockdev-mirror with
-> -#     NBD instead.
-> +#     NBD instead.  Member @blk is deprecated.  Use blockdev-mirror
-> +#     with NBD instead.
+>   static inline int plus_1(DisasContext *ctx, int x)
+>   {
+>       return x + 1;
+> diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
+> index dd41f5e48e..c8b7bfa67f 100644
+> --- a/target/loongarch/insn_trans/trans_vec.c.inc
+> +++ b/target/loongarch/insn_trans/trans_vec.c.inc
+> @@ -5458,18 +5458,16 @@ static bool gen_lasx_memory(DisasContext *ctx, arg_vr_i *a,
+>   
+>   static void gen_xvld(DisasContext *ctx, int vreg, TCGv addr)
+>   {
+> -    int i;
+> +    MemOp mop = MO_128 | MO_TE;
+>       TCGv temp = tcg_temp_new();
+> -    TCGv dest = tcg_temp_new();
+> +    TCGv_i128 dest = tcg_temp_new_i128();
+>   
+> -    tcg_gen_qemu_ld_i64(dest, addr, ctx->mem_idx, MO_TEUQ);
+> -    set_vreg64(dest, vreg, 0);
+> +    tcg_gen_qemu_ld_i128(dest, addr, ctx->mem_idx, mop);
+> +    set_vreg128(dest, vreg, 0);
+>   
+> -    for (i = 1; i < 4; i++) {
+> -        tcg_gen_addi_tl(temp, addr, 8 * i);
+> -        tcg_gen_qemu_ld_i64(dest, temp, ctx->mem_idx, MO_TEUQ);
+> -        set_vreg64(dest, vreg, i);
+> -    }
+> +    tcg_gen_addi_tl(temp, addr, 16);
+> +    tcg_gen_qemu_ld_i128(dest, temp, ctx->mem_idx, mop);
+> +    set_vreg128(dest, vreg, 1);
+>   }
+>   
+>   static void gen_xvst(DisasContext * ctx, int vreg, TCGv addr)
 
-Better:
+Missing the matching change to trans_vld.
 
-   # @deprecated: Members @inc and @blk are deprecated.  Use
-   #     blockdev-mirror with NBD instead.
 
->  #
->  # Returns: nothing on success
->  #
-> @@ -1550,7 +1551,8 @@
->  # <- { "return": {} }
->  ##
->  { 'command': 'migrate',
-> -  'data': {'uri': 'str', '*blk': 'bool',
-> +  'data': {'uri': 'str',
-> +           '*blk': { 'type': 'bool', 'features': [ 'deprecated' ] },
->             '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
->             '*detach': 'bool', '*resume': 'bool' } }
->  
-> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-> index fee7079afa..bfeb1a476a 100644
-> --- a/migration/migration-hmp-cmds.c
-> +++ b/migration/migration-hmp-cmds.c
-> @@ -750,6 +750,11 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
->                      " instead.");
->      }
->  
-> +    if (blk) {
-> +        warn_report("option '-b' is deprecated.  Use 'blockdev-mirror + NBD'"
-> +                    " instead.");
-
-           warn_report("option '-b' is deprecated;"
-                       " use blockdev-mirror with NBD instead.");
-
-> +    }
-> +
->      qmp_migrate(uri, !!blk, blk, !!inc, inc,
->                  false, false, true, resume, &err);
->      if (hmp_handle_error(mon, err)) {
-> diff --git a/migration/migration.c b/migration/migration.c
-> index b8b3ba58df..4da7fcfe0f 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -1608,6 +1608,11 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
->                      " NBD instead");
->      }
->  
-> +    if (blk) {
-> +        warn_report("capability 'blk is deprecated.  Use blockdev-mirror with"
-> +                    " NBD instead");
-> +    }
-
-Capability?  Isn't this a parameter?
-
-"'blk" lacks a closing single quote.
-
-I figure we want
-
-           warn_report("parameter 'blk' is deprecated;"
-                       " use blockdev-mirror with NBD instead.");
-
-> +
->      if (resume) {
->          if (s->state != MIGRATION_STATUS_POSTCOPY_PAUSED) {
->              error_setg(errp, "Cannot resume if there is no "
-
-Other than that
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-
+r~
 
