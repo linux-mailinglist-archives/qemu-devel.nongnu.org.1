@@ -2,64 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB277CC580
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9107CC588
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:05:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qskfL-0005yn-92; Tue, 17 Oct 2023 10:03:23 -0400
+	id 1qskgS-0008TB-Do; Tue, 17 Oct 2023 10:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qskfI-0005i3-BP
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:03:20 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qskg9-0008F1-7H
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:04:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qskfG-000077-5e
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:03:19 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qskg2-0000Pg-Im
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:04:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697551397;
+ s=mimecast20190719; t=1697551443;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=GEbeq3xVzZuMF91ApVmu07wMS0/rU1pUgr4SqLfvWYc=;
- b=E9/XWWXckKbI/YDNAq6DTwrhciE0NK25TlsVcopX5oahgJ1+F4r90fEVq71vvM9DFOXWBt
- R5thvmgT1Spf7SCriZ32lLqLTa3DUegFXNc/KCcaW3+fSPQQqk3nQXgR+28edFWR021NEy
- sd+pGNdgOGCEW1tOSo2jo63k9QFQ2uc=
+ bh=G2NMs/c//SR6fisMiteewS/OFZJTWXMg+5i8/TzaPsQ=;
+ b=gDGWZYw7W9L+9L1RlBp0g/UqkKAUmTWuyFdIDwFWS01jx11h8eMT3mjv5UgfgPI0TuaCGL
+ EYi1wVQ51qO3oFJascEANB6T+x9McJXV2jCfCOR4GnKB9Zx1Lgpk7z20iYD1v14g56b2zS
+ tyFjmK7rn4yJeU+HRhH5seB0OylGetM=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-322-B8K4SGpJMlew-Lvr1aXPWA-1; Tue, 17 Oct 2023 10:03:13 -0400
-X-MC-Unique: B8K4SGpJMlew-Lvr1aXPWA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-622-og3wFbJDNUK0BWFgESNIqQ-1; Tue, 17 Oct 2023 10:03:51 -0400
+X-MC-Unique: og3wFbJDNUK0BWFgESNIqQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E3002825E8D;
- Tue, 17 Oct 2023 14:03:05 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C90EF492BEE;
- Tue, 17 Oct 2023 14:03:04 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id BD36921E6A1F; Tue, 17 Oct 2023 16:03:03 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org,  libvir-list@redhat.com,  Leonardo Bras
- <leobras@redhat.com>,  Peter Xu <peterx@redhat.com>,  Fam Zheng
- <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  qemu-block@nongnu.org,  Fabiano Rosas
- <farosas@suse.de>
-Subject: Re: [PATCH v5 5/7] migration: Deprecate old compression method
-References: <20231017115238.18309-1-quintela@redhat.com>
- <20231017115238.18309-6-quintela@redhat.com>
-Date: Tue, 17 Oct 2023 16:03:03 +0200
-In-Reply-To: <20231017115238.18309-6-quintela@redhat.com> (Juan Quintela's
- message of "Tue, 17 Oct 2023 13:52:36 +0200")
-Message-ID: <878r815otk.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C1392825EB9;
+ Tue, 17 Oct 2023 14:03:48 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CF011C15BBC;
+ Tue, 17 Oct 2023 14:03:47 +0000 (UTC)
+Date: Tue, 17 Oct 2023 10:03:46 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: lv.mengzhao@zte.com.cn
+Cc: mst@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
+ qemu-devel@nongnu.org, hu.jian@zte.com.cn
+Subject: Re: [PATCH] virtio-blk: don't start dataplane during the stop of
+ dataplane
+Message-ID: <20231017140346.GA216511@fedora>
+References: <202310111414266586398@zte.com.cn>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="EZKvwwGNz6ys+oC2"
+Content-Disposition: inline
+In-Reply-To: <202310111414266586398@zte.com.cn>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,298 +80,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Acked-by: Peter Xu <peterx@redhat.com>
+--EZKvwwGNz6ys+oC2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Oct 11, 2023 at 02:14:26PM +0800, lv.mengzhao@zte.com.cn wrote:
+> From: hujian <hu.jian@zte.com.cn>
+>=20
+> During the stop of dataplane for virtio-blk, virtio_bus_cleanup_host_noti=
+fier() is be
+> called to clean up notifier at the end, if polled ioeventfd, virtio_blk_h=
+andle_output()
+> is used to handle io request. But due to s->dataplane_disabled is false, =
+it will be
+> returned directly, which drops io request.
+> Backtrace:
+> ->virtio_blk_data_plane_stop
+>   ->virtio_bus_cleanup_host_notifier
+>     ->virtio_queue_host_notifier_read
+>       ->virtio_queue_notify_vq
+>         ->vq->handle_output
+>           ->virtio_blk_handle_output
+>             ->if (s->dataplane  && !s->dataplane_stoped)
+>               ->if (!s->dataplane_disabled)
+>                 ->return *
+>             ->virtio_blk_handle_output_do
+> The above problem can occur when using "virsh reset" cmdline to reset gue=
+st, while
+> guest does io.
+> To fix this problem, don't try to start dataplane if s->stopping is true,=
+ and io would
+> be handled by virtio_blk_handle_vq().
+>=20
+> Signed-off-by: hujian <hu.jian@zte.com.cn>
 > ---
->  docs/about/deprecated.rst |  8 ++++
->  qapi/migration.json       | 79 +++++++++++++++++++++++++--------------
->  migration/options.c       | 13 +++++++
->  3 files changed, 72 insertions(+), 28 deletions(-)
->
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 5eaf096040..f46baf9ee9 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -489,3 +489,11 @@ Please see "QMP invocation for live storage migration with
->  ``blockdev-mirror`` + NBD" in docs/interop/live-block-operations.rst
->  for a detailed explanation.
->  
-> +old compression method (since 8.2)
-> +''''''''''''''''''''''''''''''''''
-> +
-> +Compression method fails too much.  Too many races.  We are going to
-> +remove it if nobody fixes it.  For starters, migration-test
-> +compression tests are disabled becase they fail randomly.  If you need
-> +compression, use multifd compression methods.
-> +
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index c7633b22c0..834506a02b 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -272,6 +272,10 @@
->  # Features:
->  #
->  # @deprecated: Member @disk is deprecated because block migration is.
-> +#     Member @compression is deprecated because it is unreliable and
-> +#     untested. It is recommended to use multifd migration, which
-> +#     offers an alternative compression implementation that is
-> +#     reliable and tested.
+>  hw/block/virtio-blk.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Two spaces between sentences for consistency, please.
+I have dropped this patch again after Fiona pointed out it does not
+compile and Kevin noticed that handling requests from the main loop
+thread while the I/O is still being processed in the IOThread is going
+to cause thread-safety issues.
 
->  #
->  # Since: 0.14
->  ##
-> @@ -289,7 +293,7 @@
->             '*blocked-reasons': ['str'],
->             '*postcopy-blocktime': 'uint32',
->             '*postcopy-vcpu-blocktime': ['uint32'],
-> -           '*compression': 'CompressionStats',
-> +           '*compression': { 'type': 'CompressionStats', 'features': [ 'deprecated' ] },
->             '*socket-address': ['SocketAddress'],
->             '*dirty-limit-throttle-time-per-round': 'uint64',
->             '*dirty-limit-ring-full-time': 'uint64'} }
-> @@ -530,7 +534,10 @@
->  # Features:
->  #
->  # @deprecated: Member @block is deprecated.  Use blockdev-mirror with
-> -#     NBD instead.
-> +#     NBD instead.  Member @compression is deprecated because it is
-> +#     unreliable and untested. It is recommended to use multifd
-> +#     migration, which offers an alternative compression
-> +#     implementation that is reliable and tested.
+Can you explain the problem you are seeing in more detail? You run
+"virsh reset" while the guest is doing I/O. Then what happens?
 
-Likewise.
+Stefan
 
->  #
->  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
->  #
-> @@ -538,7 +545,8 @@
->  ##
->  { 'enum': 'MigrationCapability',
->    'data': ['xbzrle', 'rdma-pin-all', 'auto-converge', 'zero-blocks',
-> -           'compress', 'events', 'postcopy-ram',
-> +           { 'name': 'compress', 'features': [ 'deprecated' ] },
-> +           'events', 'postcopy-ram',
->             { 'name': 'x-colo', 'features': [ 'unstable' ] },
->             'release-ram',
->             { 'name': 'block', 'features': [ 'deprecated' ] },
-> @@ -844,7 +852,9 @@
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated. Use
-> -#     blockdev-mirror with NBD instead.
-> +#     blockdev-mirror with NBD instead. Members @compress-level,
-> +#     @compress-threads, @decompress-threads and @compress-wait-thread
-> +#     are deprecated because @compression is deprecated.
+>=20
+> diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+> index 39e7f23..c2d5938 100644
+> --- a/hw/block/virtio-blk.c
+> +++ b/hw/block/virtio-blk.c
+> @@ -1166,7 +1166,7 @@ static void virtio_blk_handle_output(VirtIODevice *=
+vdev, VirtQueue *vq)
+>  {
+>      VirtIOBlock *s =3D (VirtIOBlock *)vdev;
+>=20
+> -    if (s->dataplane && !s->dataplane_started) {
+> +    if (s->dataplane && !s->dataplane_started && !s->stopping) {
+>          /* Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so =
+start
+>           * dataplane here instead of waiting for .set_status().
+>           */
+> --
+> 1.8.3.1
+>=20
 
-Likewise.
+--EZKvwwGNz6ys+oC2
+Content-Type: application/pgp-signature; name="signature.asc"
 
->  #
->  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
->  #     are experimental.
-> @@ -854,8 +864,11 @@
->  { 'enum': 'MigrationParameter',
->    'data': ['announce-initial', 'announce-max',
->             'announce-rounds', 'announce-step',
-> -           'compress-level', 'compress-threads', 'decompress-threads',
-> -           'compress-wait-thread', 'throttle-trigger-threshold',
-> +           { 'name': 'compress-level', 'features': [ 'deprecated' ] },
-> +           { 'name': 'compress-threads', 'features': [ 'deprecated' ] },
-> +           { 'name': 'decompress-threads', 'features': [ 'deprecated' ] },
-> +           { 'name': 'compress-wait-thread', 'features': [ 'deprecated' ] },
-> +           'throttle-trigger-threshold',
->             'cpu-throttle-initial', 'cpu-throttle-increment',
->             'cpu-throttle-tailslow',
->             'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
-> @@ -885,16 +898,16 @@
->  # @announce-step: Increase in delay (in milliseconds) between
->  #     subsequent packets in the announcement (Since 4.0)
->  #
-> -# @compress-level: compression level
-> +# @compress-level: compression level.
->  #
-> -# @compress-threads: compression thread count
-> +# @compress-threads: compression thread count.
->  #
->  # @compress-wait-thread: Controls behavior when all compression
->  #     threads are currently busy.  If true (default), wait for a free
->  #     compression thread to become available; otherwise, send the page
-> -#     uncompressed.  (Since 3.1)
-> +#     uncompressed. (Since 3.1)
->  #
-> -# @decompress-threads: decompression thread count
-> +# @decompress-threads: decompression thread count.
->  #
->  # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
->  #     bytes_xfer_period to trigger throttling.  It is expressed as
+-----BEGIN PGP SIGNATURE-----
 
-Unrelated.
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUulEIACgkQnKSrs4Gr
+c8gQmAf/WcmzIZiyKGD+gxH6B3znT2OQ58vmC5h26OZypKC20KfICpGZjIvVQR4C
+ds+Pbn2o4MURrWYzYK9ZsRo+kVyYTI/beQMv3EeTk0hGWc0dwNLaHnNf6z5UOjTf
+aRDnFW7q+4OvU9DFgfUak9mhn2Fvj924PFcf273SYW5BJUr1oL5HYupdMMtb0XIv
+NzkRXRKpcuHq3TuYkXGQ3nnZ4eJ7Z2p3WdqvB4s/EW+myqJfwvvgPHq4EDSIaMkW
+oGQ+F7ctmsS3pL9I+i0IdjQ0+OtvPQxxm0KRf/cnuIlCCFm9wG4yx7YXXTZCuMsV
+LexD5EiydLnXeKrFwVlWwfLL0oonZQ==
+=dI3s
+-----END PGP SIGNATURE-----
 
-> @@ -1023,7 +1036,9 @@
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated. Use
-> -#     blockdev-mirror with NBD instead.
-> +#     blockdev-mirror with NBD instead. Members @compress-level,
-> +#     @compress-threads, @decompress-threads and @compress-wait-thread
-> +#     are deprecated because @compression is deprecated.
-
-Two spaces between sentences for consistency, please.
-
->  #
->  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
->  #     are experimental.
-> @@ -1038,10 +1053,14 @@
->              '*announce-max': 'size',
->              '*announce-rounds': 'size',
->              '*announce-step': 'size',
-> -            '*compress-level': 'uint8',
-> -            '*compress-threads': 'uint8',
-> -            '*compress-wait-thread': 'bool',
-> -            '*decompress-threads': 'uint8',
-> +            '*compress-level': { 'type': 'uint8',
-> +                                 'features': [ 'deprecated' ] },
-> +            '*compress-threads':  { 'type': 'uint8',
-> +                                    'features': [ 'deprecated' ] },
-> +            '*compress-wait-thread':  { 'type': 'bool',
-> +                                        'features': [ 'deprecated' ] },
-> +            '*decompress-threads':  { 'type': 'uint8',
-> +                                      'features': [ 'deprecated' ] },
->              '*throttle-trigger-threshold': 'uint8',
->              '*cpu-throttle-initial': 'uint8',
->              '*cpu-throttle-increment': 'uint8',
-> @@ -1078,7 +1097,7 @@
->  # Example:
->  #
->  # -> { "execute": "migrate-set-parameters" ,
-> -#      "arguments": { "compress-level": 1 } }
-> +#      "arguments": { "multifd-channels": 5 } }
->  # <- { "return": {} }
->  ##
-
-Thanks for taking care of updating the example!
-
->  { 'command': 'migrate-set-parameters', 'boxed': true,
-> @@ -1101,16 +1120,16 @@
->  # @announce-step: Increase in delay (in milliseconds) between
->  #     subsequent packets in the announcement (Since 4.0)
->  #
-> -# @compress-level: compression level
-> +# @compress-level: compression level.
->  #
-> -# @compress-threads: compression thread count
-> +# @compress-threads: compression thread count.
->  #
->  # @compress-wait-thread: Controls behavior when all compression
->  #     threads are currently busy.  If true (default), wait for a free
->  #     compression thread to become available; otherwise, send the page
-> -#     uncompressed.  (Since 3.1)
-> +#     uncompressed. (Since 3.1)
->  #
-> -# @decompress-threads: decompression thread count
-> +# @decompress-threads: decompression thread count.
->  #
->  # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
->  #     bytes_xfer_period to trigger throttling.  It is expressed as
-
-Unrelated.
-
-> @@ -1241,7 +1260,9 @@
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated. Use
-> -#     blockdev-mirror with NBD instead.
-> +#     blockdev-mirror with NBD instead. Members @compress-level,
-> +#     @compress-threads, @decompress-threads and @compress-wait-thread
-> +#     are deprecated because @compression is deprecated.
-
-Two spaces between sentences for consistency, please.
-
->  #
->  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
->  #     are experimental.
-> @@ -1253,10 +1274,14 @@
->              '*announce-max': 'size',
->              '*announce-rounds': 'size',
->              '*announce-step': 'size',
-> -            '*compress-level': 'uint8',
-> -            '*compress-threads': 'uint8',
-> -            '*compress-wait-thread': 'bool',
-> -            '*decompress-threads': 'uint8',
-> +            '*compress-level': { 'type': 'uint8',
-> +                                 'features': [ 'deprecated' ] },
-> +            '*compress-threads': { 'type': 'uint8',
-> +                                   'features': [ 'deprecated' ] },
-> +            '*compress-wait-thread': { 'type': 'bool',
-> +                                       'features': [ 'deprecated' ] },
-> +            '*decompress-threads': { 'type': 'uint8',
-> +                                     'features': [ 'deprecated' ] },
->              '*throttle-trigger-threshold': 'uint8',
->              '*cpu-throttle-initial': 'uint8',
->              '*cpu-throttle-increment': 'uint8',
-> @@ -1296,10 +1321,8 @@
->  #
->  # -> { "execute": "query-migrate-parameters" }
->  # <- { "return": {
-> -#          "decompress-threads": 2,
-> +#          "multifd-channels": 2,
->  #          "cpu-throttle-increment": 10,
-> -#          "compress-threads": 8,
-> -#          "compress-level": 1,
->  #          "cpu-throttle-initial": 20,
->  #          "max-bandwidth": 33554432,
->  #          "downtime-limit": 300
-
-Thanks again!
-
-> diff --git a/migration/options.c b/migration/options.c
-> index 0d0a3f8edb..7cb99a82a5 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -483,6 +483,11 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
->                      "Use blockdev-mirror with NBD instead.");
->      }
->  
-> +    if (new_caps[MIGRATION_CAPABILITY_COMPRESS]) {
-> +        warn_report("Old compression method is deprecated. "
-> +                    "Use multifd compression methods instead.");
-> +    }
-> +
->  #ifndef CONFIG_REPLICATION
->      if (new_caps[MIGRATION_CAPABILITY_X_COLO]) {
->          error_setg(errp, "QEMU compiled without replication module"
-> @@ -1321,18 +1326,26 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
->      /* TODO use QAPI_CLONE() instead of duplicating it inline */
->  
->      if (params->has_compress_level) {
-> +        warn_report("Old compression is deprecated. "
-> +                    "Use multifd compression methods instead.");
->          s->parameters.compress_level = params->compress_level;
->      }
->  
->      if (params->has_compress_threads) {
-> +        warn_report("Old compression is deprecated. "
-> +                    "Use multifd compression methods instead.");
->          s->parameters.compress_threads = params->compress_threads;
->      }
->  
->      if (params->has_compress_wait_thread) {
-> +        warn_report("Old compression is deprecated. "
-> +                    "Use multifd compression methods instead.");
->          s->parameters.compress_wait_thread = params->compress_wait_thread;
->      }
->  
->      if (params->has_decompress_threads) {
-> +        warn_report("Old compression is deprecated. "
-> +                    "Use multifd compression methods instead.");
->          s->parameters.decompress_threads = params->decompress_threads;
->      }
-
-Other than that
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+--EZKvwwGNz6ys+oC2--
 
 
