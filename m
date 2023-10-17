@@ -2,92 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967A07CC58B
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D977CC58C
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:06:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qskhk-0004ds-VK; Tue, 17 Oct 2023 10:05:53 -0400
+	id 1qski9-0005eP-DH; Tue, 17 Oct 2023 10:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qskhf-0004W3-4B
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:05:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qskhY-0001Gh-Fs
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:05:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697551539;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=RRYZc5G0/JAkWv7TvD/5tZrI7QtivRkUrs5iKfysWk0=;
- b=QFTXoBG/BDt0ikr2fLxTn5KzzsI14b+hNWNwlp+xX0GOwO7tLfTUY+EgvHKwWV+ZMyw1ew
- mUgdnxCVx6N28drZKAvlZePVCN4BHmcCoJemwyU+/yWuocRtUQObVDU7rJdmc14jak//BI
- FluxrCaKBsOBOzO0IelT3LZDfTRFaak=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-575-QrmJqC8qPauBJF3B4gSfhg-1; Tue, 17 Oct 2023 10:05:37 -0400
-X-MC-Unique: QrmJqC8qPauBJF3B4gSfhg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c51a7df557so26961771fa.0
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 07:05:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697551536; x=1698156336;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RRYZc5G0/JAkWv7TvD/5tZrI7QtivRkUrs5iKfysWk0=;
- b=GsnhOb24O2PY4gY1dXiJLm9JGcmDZiOdKhFfvNiqXiaYyhrAEBVU8WznsU/+jwhS2L
- 6ANPgeVZGDa4cQ6RawZERSwrJeVBNQz3kIZJ9DMRZm/W5SwAp1R4hBo4TtCTyatzdjcH
- XpQhXdkTUi4xbqVLuu2uIoVtOc5qAUMwRwg/nQl/1qdTVBl+FX1KFRkHqR9hiy8kxfUU
- w3hvkzlDx2Zsrdf5+8Nbhit2B1IS9K6rjb+66ZWPOKa8HfEe7a1XZK1WnqQ3AEIMeMO6
- NzYxsRv69bIyU4yAq1nOCLal40MnZlT1aif1QyoFJQB8Q2hRepVyo4o+rSw+aq+Om5tF
- NEZQ==
-X-Gm-Message-State: AOJu0YzLfDIgEruTNy3dfUaeif2WVORCOI1AOhVuY93z42Bz1bu44Jjs
- PpQ2M5CrPte6ufFOVAmgz4U4XDS+gwQiBHb1EmiaIyu9nGd7cK+z1I+kTHU9NObpDpMu2D9PNs0
- YzlJbSua5lZ85N3k=
-X-Received: by 2002:a05:651c:3c1:b0:2bc:d634:2210 with SMTP id
- f1-20020a05651c03c100b002bcd6342210mr1447012ljp.16.1697551535768; 
- Tue, 17 Oct 2023 07:05:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEO6MCnbtZu9f7BOZ5msSztNDta83C3an0YvRN7tAt1ksLQpunaJ1+a9gtibpo4WsZN9scbFg==
-X-Received: by 2002:a05:651c:3c1:b0:2bc:d634:2210 with SMTP id
- f1-20020a05651c03c100b002bcd6342210mr1446965ljp.16.1697551534547; 
- Tue, 17 Oct 2023 07:05:34 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- e13-20020a05600c4e4d00b004065daba6casm10016392wmq.46.2023.10.17.07.05.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Oct 2023 07:05:34 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  "Michael S . Tsirkin" <mst@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,  Jiri Denemark <jdenemar@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,  Fiona Ebner <f.ebner@proxmox.com>,
- Daniel P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH v3 2/3] migration/docs: How to migrate when hosts have
- different features
-In-Reply-To: <ZGQW7W8i+y9/KpO1@x1n> (Peter Xu's message of "Tue, 16 May 2023
- 19:51:09 -0400")
-References: <20230515083201.55060-1-quintela@redhat.com>
- <20230515083201.55060-3-quintela@redhat.com> <ZGQW7W8i+y9/KpO1@x1n>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 17 Oct 2023 16:05:33 +0200
-Message-ID: <871qdt1h02.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qskhx-0005PP-T7
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:06:06 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qskhu-0001JC-Iz
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:06:05 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D12231F88C;
+ Tue, 17 Oct 2023 14:05:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697551558; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TWaZuJ2tdxQxhiVbYORHxAo9YzORkhIFHVfTIWgUZws=;
+ b=ALSPw8yTyTOOodYOlnPGrwLC6D8WhuCHdN7nagVMQ6gIJpnxeDUpfA8bdHFulX9sq6Z4U0
+ q/eHX5p6IM9WbWYKqRxuwQYy2iTUKVmp6IlpzArwbUwqR4M+bcnEnf4CMJZ4t7/1k5oKCC
+ JrEuDAVXwrvqY6OZS7LD5ToXzoLQY+M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697551558;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TWaZuJ2tdxQxhiVbYORHxAo9YzORkhIFHVfTIWgUZws=;
+ b=ocGBXliD0EykEkB3nMUsIUsUd51Ly8ZqI/h4t+ExTFfo0Mg75U3rVKpkQ0BmSJUyrvq52t
+ EgBt0EvUaRqVN0BA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 634D713584;
+ Tue, 17 Oct 2023 14:05:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id TqgfDMaULmU6CwAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 17 Oct 2023 14:05:58 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Alistair Francis
+ <alistair.francis@wdc.com>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Yanan Wang
+ <wangyanan55@huawei.com>
+Subject: Re: [PULL 19/25] gdbstub: Replace gdb_regs with an array
+In-Reply-To: <20231011103329.670525-20-alex.bennee@linaro.org>
+References: <20231011103329.670525-1-alex.bennee@linaro.org>
+ <20231011103329.670525-20-alex.bennee@linaro.org>
+Date: Tue, 17 Oct 2023 11:05:56 -0300
+Message-ID: <87ttqpwdh7.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -5.60
+X-Spamd-Result: default: False [-5.60 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ FREEMAIL_CC(0.00)[daynix.com,wdc.com,linaro.org,habkost.net,gmail.com,huawei.com];
+ BAYES_HAM(-3.00)[99.99%]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]; TAGGED_RCPT(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[9];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]; SUSPICIOUS_RECIPS(1.50)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,52 +104,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> wrote:
-> On Mon, May 15, 2023 at 10:32:00AM +0200, Juan Quintela wrote:
->> +$ qemu-system-x86_64 -cpu host,pcid=off,stibp=off
->> +
->> +Host B:
->> +
->> +$ qemu-system-x86_64 -cpu host,taa-no=off
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+
+> From: Akihiko Odaki <akihiko.odaki@daynix.com>
 >
-> Since we're using cpu as example, shall we at least mention at the end that
-> we don't suggest using -cpu host if migration is needed?
-
-Added something like that.
-
->> +
->> +And you would be able to migrate between them.  It is responsability
->> +of the management application or of the user to make sure that the
->> +configuration is correct.  QEMU don't know how to look at this kind of
->> +features in general.
->> +
->> +Other devices have worse control about individual features.  If they
->> +want to be able to migrate between hosts that show different features,
->> +the device needs a way to configure which ones it is going to use.
->> +
->> +In this section we have considered that we are using the same QEMU
->> +binary in both sides of the migration.  If we use different QEMU
->> +versions process, then we need to have into account all other
->> +differences and the examples become even more complicated.
+> An array is a more appropriate data structure than a list for gdb_regs
+> since it is initialized only with append operation and read-only after
+> initialization.
 >
-> Mostly good to me.  What I worry is how much help this will bring to
-> developers - I'd assume developers working on these will be aware of this.
-> But I guess it's always good to have any documentation than nothing.
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Message-Id: <20230912224107.29669-13-akihiko.odaki@daynix.com>
+> [AJB: fixed a checkpatch violation]
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Message-Id: <20231009164104.369749-20-alex.bennee@linaro.org>
+>
+> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> index 7b8347ed5a..3968369554 100644
+> --- a/include/hw/core/cpu.h
+> +++ b/include/hw/core/cpu.h
+> @@ -502,7 +502,7 @@ struct CPUState {
+>=20=20
+>      CPUJumpCache *tb_jmp_cache;
+>=20=20
+> -    struct GDBRegisterState *gdb_regs;
+> +    GArray *gdb_regs;
+>      int gdb_num_regs;
+>      int gdb_num_g_regs;
+>      QTAILQ_ENTRY(CPUState) node;
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index 62608a5389..b1532118d1 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -51,7 +51,6 @@ typedef struct GDBRegisterState {
+>      gdb_get_reg_cb get_reg;
+>      gdb_set_reg_cb set_reg;
+>      const char *xml;
+> -    struct GDBRegisterState *next;
+>  } GDBRegisterState;
+>=20=20
+>  GDBState gdbserver_state;
+> @@ -386,7 +385,8 @@ static const char *get_feature_xml(const char *p, con=
+st char **newp,
+>                  xml,
+>                  g_markup_printf_escaped("<xi:include href=3D\"%s\"/>",
+>                                          cc->gdb_core_xml_file));
+> -            for (r =3D cpu->gdb_regs; r; r =3D r->next) {
+> +            for (guint i =3D 0; i < cpu->gdb_regs->len; i++) {
 
-I have two hopes here:
+It seems we can reach here before having initialized gdb_regs at
+gdb_register_coprocessor():
 
-- when developer finds a problem with migration, they look there.
+Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
+0x0000555555e5310b in get_feature_xml (p=3D0x555556a99118
+<gdbserver_state+56> "target.xml:0,ffb", newp=3D0x7fffffffc6b0,
+process=3D0x555557a21dd0) at ../gdbstub/gdbstub.c:388
 
-- having a document that I can point when one of this problems happens.
-  What I do now is that I write an email, normally of worse quality and
-  not finding a good example.
+(gdb) p/x cpu->gdb_regs
+$1 =3D 0x0
 
-> Acked-by: Peter Xu <peterx@redhat.com>
 
-Thanks, Juan.
+Using:
+qemu-system-x86 ... -s -s
 
+just connect GDB and it crashes.
 
