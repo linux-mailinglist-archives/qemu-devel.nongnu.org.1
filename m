@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDE77CB977
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 05:57:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 210427CB979
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 06:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsbBs-0001Gj-5E; Mon, 16 Oct 2023 23:56:20 -0400
+	id 1qsbEz-0002xK-1b; Mon, 16 Oct 2023 23:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsbBq-0001GM-AP; Mon, 16 Oct 2023 23:56:18 -0400
-Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qsbEw-0002x8-B6; Mon, 16 Oct 2023 23:59:30 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsbBo-0000cl-Js; Mon, 16 Oct 2023 23:56:18 -0400
-Received: by mail-vk1-xa33.google.com with SMTP id
- 71dfb90a1353d-49d9ef118a5so2332024e0c.1; 
- Mon, 16 Oct 2023 20:56:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qsbEu-0001Zn-IG; Mon, 16 Oct 2023 23:59:30 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6b20a48522fso2997118b3a.1; 
+ Mon, 16 Oct 2023 20:59:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697514974; x=1698119774; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1697515166; x=1698119966; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8icchJzlSWKAfS5JolN6gMdmcrnmh65VzghGD7qByyI=;
- b=I2iYH28OucUplaEDyOvcVs+85DH7x8mC2wZHFmtM3sSJTyUOsri+mqsLQ0eYZ7b5Eb
- 3K/JNUdruE3ZSQv0g8D5LGYmASslz7Xx1QJ7fQaqQiXGkslUTtgawZzvPs1owVyEpju+
- EK+tJGlBqjHJvvs+V1f9hm/APILgcOce5i30hpXzKzVIUZzASCcKeuwIdaBbkMkPOTtw
- Vxl0pTefwo7aVl++TKFQaQ01zPDkIIjRYodQdDbvALaRG+GpzAsJ+HGyjsrTVXobTF4M
- fyBPTOha72o0p2bhQc+adGF0pvC5BsU8SVgd5THrcoZQ9DRTxU/fzCLMrTYnCMXpFxSY
- LOZw==
+ bh=/24RlqE5h4heeejIEC6CmucFf6JQcNHa4+NOqFK1tSg=;
+ b=N2D0VlAzU5YQkQOXW+F/DjBhiGhtWAs0GPZtdVoFUwo+7B5T5EUV26vwTQMVnAsRpI
+ ZpBK2JzBPvTnQTjQ4Uzl/koR15ALukKGqt4YK6FTDnL7yndiMIpSQ9OLjKTYDndKxi73
+ yce0ZCTz/7vaToch6F+fNSZ/vq5LS8oFFOnBxN9MFV4eUi3mH498TVqMnXC2/uqcVqT4
+ mrPqeOdiZjdwjE4phkcqcs04Z+gvWytMGECemuCr2eRVx8FyH08PMGOvH+CLhx3HtzIb
+ MwfBcyPzHXW0F5+80tvSGcndnzFSsxhrf+sWY4OstxstJ4TycAx54feFddZ6nFQpGirs
+ 6JpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697514974; x=1698119774;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8icchJzlSWKAfS5JolN6gMdmcrnmh65VzghGD7qByyI=;
- b=GSzU/oFMfx4Ol8arbyxP6pM2ieQBmdzHwoDVFnYWD2G3MRMOfTs/rfqeF6ACpFLrlu
- lTPHu+dmZ8NYdKvDekibKwctc4kFc7BdX8gb9YmtV9f/aGCE8PRO/Q2jrGBLd6AoCkr4
- fioz/lepBFWZHl73PbCsC5iR0OaQjwzxED0tViemrqpKw0Lh7J+djopoS5D6RYKXgoDK
- fmmNNKVANRNHQayxn2UvwtKnNlEf4ONbhw2hnXvKO8BL0V31UHDuKITIBMhCG9KfdJJ8
- f7LfVni5CS9iOwwmBEwSvpgqyIHV3Y4Oj8lOAL/twNWBlY0/cLUwsxd/5dxszFdnCFgy
- 8Ozw==
-X-Gm-Message-State: AOJu0YyxTimE0uXlJw8wcRcI1R4dOffV4A3AYtMsLhJKF3EI+WzivS/b
- K6nKnVTwnPPoV47EdCmRli3zmSDdZRqIGXuqTAmRnj1anOVxjQ==
-X-Google-Smtp-Source: AGHT+IFpG51nM3OLIacrdzlLe21DEGJQfIfJBytcOERAzI7pMfLLTPC/4JJ8hjrwURDgXpLnEL5J5uiT81z7uglby5w=
-X-Received: by 2002:a05:6122:90d:b0:493:7df9:bcc4 with SMTP id
- j13-20020a056122090d00b004937df9bcc4mr1450426vka.4.1697514974383; Mon, 16 Oct
- 2023 20:56:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
- <CAKmqyKP=4kGpO=8D13iJw7pJSkD9CFary_DHt236+e1GFMAngA@mail.gmail.com>
- <a89189d3-2975-487e-9d2e-bd8ea60feba5@ventanamicro.com>
- <20231016-cf26d23a1fe53ee3b5b68513@orel>
-In-Reply-To: <20231016-cf26d23a1fe53ee3b5b68513@orel>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 17 Oct 2023 13:55:47 +1000
-Message-ID: <CAKmqyKMg0VKRQ_kFLHJQCq19p-Yv4iJqJZF3XGZWxfuYPe3rbQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] riscv: RVA22U64 profile support
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn, 
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
+ d=1e100.net; s=20230601; t=1697515166; x=1698119966;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=/24RlqE5h4heeejIEC6CmucFf6JQcNHa4+NOqFK1tSg=;
+ b=ZPWSNxzdwnj5GP0aq+hdqtf4RDmMqIQSSDr22ayOnNwclINEX3TFFqKs2CzHFCs5n0
+ Lki5TGq9J/hFFHzIQ6Nal+cTqAqEn1PyraUE0rIBQ5VOXVbVdXsiHJikFyhbaDYYOJ6B
+ b1DHNCuxOwFZGv7cWoraG+RHi+czxChDPlIF47Tgb3GKNmODS9B15TWGgyoYN6Kj9j4h
+ icleBs5+OFa6cRtJefNlMWk4cm9Cms+/d2Mbooyhl5Ncvfs0KeD9r/uCBmCYv/N8T/MK
+ /qgqUPjccV0gmQq6gxHew5nDHpR0YnyChWxso6snZvHwO57oAfIuYzg+ScHTTGQH/UAQ
+ eXvA==
+X-Gm-Message-State: AOJu0YwbaXpbJNfzsrlAA9rFxVwdrCYBZD/v9ROQ5GCiLelmIq4OXdpR
+ 16IEeU4dXwhUutVbFXJQaIY=
+X-Google-Smtp-Source: AGHT+IGHe2dCMsxG+vsdBVCjsGh/D9YiNT9L64AB1ERuyJgJIi3V/msQDFTiUQdeyzflVsQZD9k8ZQ==
+X-Received: by 2002:a05:6a00:a29:b0:6be:62e:d5a8 with SMTP id
+ p41-20020a056a000a2900b006be062ed5a8mr1199766pfh.0.1697515166098; 
+ Mon, 16 Oct 2023 20:59:26 -0700 (PDT)
+Received: from localhost ([1.146.38.123]) by smtp.gmail.com with ESMTPSA id
+ f186-20020a6251c3000000b00692754580f0sm354567pfb.187.2023.10.16.20.59.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 20:59:25 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a33;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa33.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Oct 2023 13:59:18 +1000
+Message-Id: <CWAEWI5YNWTD.11GO4ENF2OC5M@wheely>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <clg@kaod.org>,
+ <philmd@linaro.org>, "Bernhard Beschow" <shentey@gmail.com>, "Mark
+ Cave-Ayland" <mark.cave-ayland@ilande.co.uk>, "Rene Engel"
+ <ReneEngel80@emailn.de>, <vr_qemu@t-online.de>
+Subject: Re: [PATCH v3 0/3] Add emulation of AmigaOne XE board
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
+ <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <cover.1697311794.git.balaton@eik.bme.hu>
+ <81c6d451-a457-16ad-2f5d-5764bd32b4d5@eik.bme.hu>
+In-Reply-To: <81c6d451-a457-16ad-2f5d-5764bd32b4d5@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,114 +94,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 16, 2023 at 7:03=E2=80=AFPM Andrew Jones <ajones@ventanamicro.c=
-om> wrote:
+On Tue Oct 17, 2023 at 8:25 AM AEST, BALATON Zoltan wrote:
+> On Sat, 14 Oct 2023, BALATON Zoltan wrote:
+> > Changes in v3:
+> > - Update values, comment and commit message in patch 1 again
+> >
+> > Changes in v2:
+> > - Update comment and commit message in patch 1 (Mark)
+> > - Fix irq mapping in patch 2 (Volker)
+> >
+> > Regards,
+> > BALATON Zoltan
+> >
+> > BALATON Zoltan (3):
+> >  via-ide: Fix legacy mode emulation
+> >  hw/pci-host: Add emulation of Mai Logic Articia S
+> >  hw/ppc: Add emulation of AmigaOne XE board
 >
-> On Thu, Oct 12, 2023 at 04:07:50PM -0300, Daniel Henrique Barboza wrote:
-> >
-> >
-> > On 10/11/23 00:01, Alistair Francis wrote:
-> > > On Sat, Oct 7, 2023 at 12:23=E2=80=AFAM Daniel Henrique Barboza
-> > > <dbarboza@ventanamicro.com> wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > Several design changes were made in this version after the reviews =
-and
-> > > > feedback in the v1 [1]. The high-level summary is:
-> > > >
-> > > > - we'll no longer allow users to set profile flags for vendor CPUs.=
- If
-> > > >    we're to adhere to the current policy of not allowing users to e=
-nable
-> > > >    extensions for vendor CPUs, the profile support would become a
-> > > >    glorified way of checking if the vendor CPU happens to support a
-> > > >    specific profile. If a future vendor CPU supports a profile the =
-CPU
-> > > >    can declare it manually in its cpu_init() function, the flag wil=
-l
-> > > >    still be set, but users can't change it;
-> > > >
-> > > > - disabling a profile will now disable all the mandatory extensions=
- from
-> > > >    the CPU;
-> > >
-> > > What happens if you enable one profile and disable a different one?
-> >
-> > With this implementation as is the profiles will be evaluated by the or=
-der they're
-> > declared in riscv_cpu_profiles[]. Which isn't exactly ideal since we're=
- exchanging
-> > a left-to-right ordering in the command line by an arbitrary order that=
- we happened
-> > to set in the code.
-> >
-> > I can make some tweaks to make the profiles sensible to left-to-right o=
-rder between
-> > them, while keeping regular extension with higher priority. e.g.:
-> >
-> >
-> > -cpu rv64,zicbom=3Dtrue,profileA=3Dfalse,profileB=3Dtrue,zicboz=3Dfalse
-> > -cpu rv64,profileA=3Dfalse,zicbom=3Dtrue,zicboz=3Dfalse,profileB=3Dtrue
-> > -cpu rv64,profileA=3Dfalse,profileB=3Dtrue,zicbom=3Dtrue,zicboz=3Dfalse
-> >
-> > These would all do the same thing: "keeping zicbom=3Dtrue and zicboz=3D=
-false, disable profileA
-> > and then enable profile B"
-> >
-> > Switching the profiles order would have a different result:
-> >
-> > -cpu rv64,profileB=3Dtrue,profileA=3Dfalse,zicbom=3Dtrue,zicboz=3Dfalse
-> >
-> > "keeping zicbom=3Dtrue and zicboz=3Dfalse, enable profile B and then di=
-sable profile A"
-> >
-> >
-> > I'm happy to hear any other alternative/ideas. We'll either deal with s=
-ome left-to-right
-> > ordering w.r.t profiles or deal with an internal profile commit orderin=
-g. TBH I think
-> > it's sensible to demand left-to-right command line ordering for profile=
-s only.
+> Nick, Daniel, C=C3=A9dric,
 >
-> left-to-right ordering is how the rest of QEMU properties work and script=
-s
-> depend on it. For example, one can do -cpu $MODEL,$DEFAULT_PROPS,$MORE_PR=
-OPS
-> where $MORE_PROPS can not only add more props but also override default
-> props (DEFAULT_PROPS=3D'foo=3Doff', MORE_PROPS=3D'foo=3Don' - foo will be=
- on).
-> left-to-right also works with multiple -cpu parameters, i.e. -cpu
-> $MODEL,$DEFAULT_PROPS -cpu $MODEL,$MY_PROPS will replace default props
-> with my props.
+> Patch 1 is not related to PPC and is still debated but just to make sure=
+=20
+> we don't get too close to freeze again I ask about patch 2 and 3 in the=
+=20
+> maintime. Not sure who will merge this series at the end but if you can=
+=20
+> give an Acked-by for the last two patches maybe Philippe can take care of=
+=20
+> the series or is any of you plan to take it via ppc?
 
-That seems like the way to go then
+Hey,
+
+I could take patch 2/3 via ppc tree, although I don't know much about
+platform and pci so some review/ack would be good.
+
+I guess you could submit the Amiga stuff yourself too if you wanted,
+you have much better understanding of it and I don't really know how to
+test either (other than a few of the free to download installer images
+for one or two of those OSes).
+
+Thanks,
+Nick
 
 >
-> I don't think profiles should be treated special with regard to this. The=
-y
-> should behave the same as any property. If one does
-> profileA=3Doff,profileB=3Don and there are overlapping extensions then a
-
-But what does this mean? What intent is the user saying here?
-
-For example if a user says:
-
-    RVA22U64=3Doff,RVA24U64=3Don
-
-They only want the extensions that were added in RVA24U64? What about
-G and the standard extensions?
-
-To me it just seems really strange to have more than 1 profile.
-Profiles are there to help software and users have common platforms.
-Why would a user want to mix-n-match them
-
-Alistair
-
-> sanity check in cpu-finalize should catch that and error out. Otherwise,
-> why not. Profiles are just like big 'G' extensions and 'G' would behave
-> the same way.
+> Regards,
+> BALATON Zoltan
 >
-> Thanks,
-> drew
+> > MAINTAINERS                             |   8 +
+> > configs/devices/ppc-softmmu/default.mak |   1 +
+> > hw/ide/via.c                            |  41 +++-
+> > hw/pci-host/Kconfig                     |   5 +
+> > hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+> > hw/pci-host/meson.build                 |   2 +
+> > hw/ppc/Kconfig                          |   7 +
+> > hw/ppc/amigaone.c                       | 164 +++++++++++++
+> > hw/ppc/meson.build                      |   2 +
+> > include/hw/pci-host/articia.h           |  17 ++
+> > 10 files changed, 535 insertions(+), 5 deletions(-)
+> > create mode 100644 hw/pci-host/articia.c
+> > create mode 100644 hw/ppc/amigaone.c
+> > create mode 100644 include/hw/pci-host/articia.h
+> >
+> >
+
 
