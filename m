@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7672F7CCB50
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 20:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CB77CCB60
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 20:56:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qspD0-000199-RW; Tue, 17 Oct 2023 14:54:26 -0400
+	id 1qspD7-0001Et-LR; Tue, 17 Oct 2023 14:54:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qspCy-00018u-Mi
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:54:24 -0400
+ id 1qspD3-0001Dx-K0
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:54:29 -0400
 Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qspCx-0006zD-26
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:54:24 -0400
+ id 1qspD2-0006zj-3q
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:54:29 -0400
 Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-578d0dcd4e1so3625045a12.2
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 11:54:22 -0700 (PDT)
+ 41be03b00d2f7-578e33b6fb7so3776404a12.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 11:54:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697568862; x=1698173662;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697568867; x=1698173667;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y9a4WcM7W3w4Ibv1QcOl1jK0U40rkzZ0nUtw12AhXXI=;
- b=QwSBZibt364j6No0pwvnA+Y/OltVaivBuptZCizc6/MvX51XfTQCHKelqTYqP7TaDM
- 8YW9I1Bd8NWFRYpLIH2H/rU182Lp+dgIZJSwTMRL18WTsQQkWbpkaT8nGZJZdYAy5U19
- rMXOCX/mfYXZhrin71VLdTIjr8LIj9OL5q0AD+fBdwJmtdv2eQ4830/sPrhUAcBujV05
- y/QDIQ0/GgoVpKJ8MT/cCii1sjxPGYmfySOgIQzAiCJ2qpk3p/+kOVeXunu79zanKpA0
- HXsxKskMHeenmH+a15/XRtgAIGrd0XM7UWYNY5rNCxfoEwNF35mK/soocHfq/67O71NY
- s/qQ==
+ bh=8RGOKdeWRbxy057ThQm8YJtuzOYESlVJp/H5jW1kGqg=;
+ b=cHWOlrXLoVpvr4BYv8N7sDV7wrfgLvCISbO2gIDsi4ZPkOVpK1CfjJiPqknnAIcgj3
+ siNQ4IuhdccEIO6NBpmhl/baHCVeHRiDpJL6oKiX2p8m+dFny1fR2PW/z7IkBbmU3Hqy
+ 7w9BnklsxCMDWGjCAj2PKyIMmeqOTggtY9gJDuOFhU6P2JNj2jLD2C4y064H88D0M5NJ
+ DPWVGlziwAvqCS+97OXKeOZlUhZ41FGRfjFiv7iqq8HMW/gomMu/BVssXK+yAK9kkcnE
+ oj/T58aP/8qEi0n89rCOGAZ3yhv96PEqFfMqZK9nmtOwXdvrZ+fAglNfmMgfcoZDAnVr
+ a2FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697568862; x=1698173662;
+ d=1e100.net; s=20230601; t=1697568867; x=1698173667;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y9a4WcM7W3w4Ibv1QcOl1jK0U40rkzZ0nUtw12AhXXI=;
- b=sS8E/Ec/mObYn9WciIyt+HYibKjf3TwCM1R0KeUuLuOpMm6WsSa+mfbTneJSIlIv9t
- Cv/IkfmYJvqSomzIjxD86L6HyPP/H2oQolAOU4tvsDcVBAjTX4xooN01dMK4F3Q76k38
- AA3bdUX50ge5oyhNVunbcMLyR4zYB3eNE65g622rJ4XXFxQpi3IRzUINA5J1AS80olyh
- wyh2lPqrxQd57OaPqwaZvBsFHzQP+d3f9QCBfLTc2ZyDKICIvMXAa8V6WfHmi8iGQqRg
- IJaeSGZNH0yW+jj+zSiYd3ScTgkbbP3KzAw6upnecsWSFQyz/4T6Fp0x1YI3aWtmH22X
- 1sWQ==
-X-Gm-Message-State: AOJu0YwhXpPE0CpYX7vMRFtOO34eTh4OX5i9T+0I+bRnEZY44XE/reAm
- rtiM0TaAfa6QmuBSCFLSmihUcQ==
-X-Google-Smtp-Source: AGHT+IHVGgorh/PciSnscWxhEHR+3QuQlXySBRRiv0/IJW3NxcQKHxUSbljezhvawYrRBrdMLIyDmQ==
-X-Received: by 2002:a05:6a21:7185:b0:174:63a9:293 with SMTP id
- wq5-20020a056a21718500b0017463a90293mr3356018pzb.48.1697568861643; 
- Tue, 17 Oct 2023 11:54:21 -0700 (PDT)
+ bh=8RGOKdeWRbxy057ThQm8YJtuzOYESlVJp/H5jW1kGqg=;
+ b=XwjrbmT7W4pzXm5J6WxwwfiOgqzb7GmhgTIekExQuVCujz/g3nNCLu2fVN/AGgBGTx
+ P5DUiy26JqayRdaG5jXYMMxE6S71UNbx0J7tQCE+etEbu9Ni0eo5LYbHv8pWPYgHSmZ8
+ YOce8gDk8TaNogw54iPiuOtH8lfI7m49usfYkCp0kz9p7/c5cZ+ZfBBtQuqiKK8d9jwQ
+ txbIIoKrlQo5NOHEKz/FXqftnGqHlcBo2LrZ5cBtbHmV3wydc7j+IYin5/Yumk23yJH6
+ YpLZP8bUc7RGu3+L28raosXXYNFlUm3v1HGkeor9xbWiFnHJEwFDPayEiOucIsjyHn7g
+ EfSA==
+X-Gm-Message-State: AOJu0YzQQ+laDE2LNEYS9gus2Ogzti8YKMi0FuDdhVN4gXw9se3nYbEO
+ foAsDhtsSe/VDX+ebOm6NWgFSA==
+X-Google-Smtp-Source: AGHT+IF1Hb2f+5AaHy7MRn9//LnI5N5MeKQUEZnRYeG/0GUBHnoAKnn2OMsQJ1MqmFuduE6eXfwjLA==
+X-Received: by 2002:a17:903:278a:b0:1c5:d063:b70e with SMTP id
+ jw10-20020a170903278a00b001c5d063b70emr2959336plb.53.1697568866706; 
+ Tue, 17 Oct 2023 11:54:26 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with UTF8SMTPSA id
- w16-20020a170902e89000b001aaf2e8b1eesm1923674plg.248.2023.10.17.11.54.19
+ c5-20020a170902c1c500b001c755810f89sm1935692plc.181.2023.10.17.11.54.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Oct 2023 11:54:21 -0700 (PDT)
+ Tue, 17 Oct 2023 11:54:26 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mikhail Tyutin <m.tyutin@yadro.com>,
  Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 1/5] gdbstub: Check if gdb_regs is NULL
-Date: Wed, 18 Oct 2023 03:53:56 +0900
-Message-ID: <20231017185406.13381-2-akihiko.odaki@daynix.com>
+ Fabiano Rosas <farosas@suse.de>, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
+Subject: [PATCH v4 2/5] target/riscv: Remove misa_mxl validation
+Date: Wed, 18 Oct 2023 03:53:57 +0900
+Message-ID: <20231017185406.13381-3-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231017185406.13381-1-akihiko.odaki@daynix.com>
 References: <20231017185406.13381-1-akihiko.odaki@daynix.com>
@@ -95,73 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu->gdb_regs may be NULL if no coprocessor is registered.
+It is initialized with a simple assignment and there is little room for
+error. In fact, the validation is even more complex.
 
-Fixes: 73c392c26b ("gdbstub: Replace gdb_regs with an array")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- gdbstub/gdbstub.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 1e96a71c0c..29540a0284 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -385,12 +385,14 @@ static const char *get_feature_xml(const char *p, const char **newp,
-                 xml,
-                 g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-                                         cc->gdb_core_xml_file));
--            for (guint i = 0; i < cpu->gdb_regs->len; i++) {
--                r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
--                g_ptr_array_add(
--                    xml,
--                    g_markup_printf_escaped("<xi:include href=\"%s\"/>",
--                                            r->xml));
-+            if (cpu->gdb_regs) {
-+                for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+                    r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+                    g_ptr_array_add(
-+                        xml,
-+                        g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-+                                                r->xml));
-+                }
-             }
-             g_ptr_array_add(xml, g_strdup("</target>"));
-             g_ptr_array_add(xml, NULL);
-@@ -430,10 +432,12 @@ static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-         return cc->gdb_read_register(cpu, buf, reg);
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index a28918ab30..7f45e42000 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -148,7 +148,7 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
+     }
+ }
+ 
+-static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
++static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu)
+ {
+     RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
+     CPUClass *cc = CPU_CLASS(mcc);
+@@ -168,11 +168,6 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+     default:
+         g_assert_not_reached();
+     }
+-
+-    if (env->misa_mxl_max != env->misa_mxl) {
+-        error_setg(errp, "misa_mxl_max must be equal to misa_mxl");
+-        return;
+-    }
+ }
+ 
+ static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
+@@ -573,11 +568,7 @@ static bool tcg_cpu_realize(CPUState *cs, Error **errp)
+         return false;
      }
  
--    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
--        r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
--        if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
--            return r->get_reg(env, buf, reg - r->base_reg);
-+    if (cpu->gdb_regs) {
-+        for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+            r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+            if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
-+                return r->get_reg(env, buf, reg - r->base_reg);
-+            }
-         }
-     }
-     return 0;
-@@ -449,10 +453,12 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
-         return cc->gdb_write_register(cpu, mem_buf, reg);
-     }
+-    riscv_cpu_validate_misa_mxl(cpu, &local_err);
+-    if (local_err != NULL) {
+-        error_propagate(errp, local_err);
+-        return false;
+-    }
++    riscv_cpu_validate_misa_mxl(cpu);
  
--    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
--        r =  &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
--        if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
--            return r->set_reg(env, mem_buf, reg - r->base_reg);
-+    if (cpu->gdb_regs) {
-+        for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+            r =  &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+            if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
-+                return r->set_reg(env, mem_buf, reg - r->base_reg);
-+            }
-         }
-     }
-     return 0;
+     riscv_cpu_validate_priv_spec(cpu, &local_err);
+     if (local_err != NULL) {
 -- 
 2.42.0
 
