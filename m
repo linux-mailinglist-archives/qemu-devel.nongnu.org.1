@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923877CCFD9
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 00:01:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D227CCFE5
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 00:12:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qss79-0007pa-Jt; Tue, 17 Oct 2023 18:00:36 -0400
+	id 1qssHi-0000T8-NJ; Tue, 17 Oct 2023 18:11:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qss6t-0007nW-Ug
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:00:20 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qssHa-0000So-M3
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:11:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qss6q-0000W0-MU
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:00:19 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qssHY-00022X-WB
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:11:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697580013;
+ s=mimecast20190719; t=1697580680;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=MQyFeapujUzC5EPFuR98l+MElDouPf72NlPSas9OsIc=;
- b=WpH9WbC3GWaSEx+zQMc+SSbdmEINoZ7HToLTQqG00G3bm9I0MX+hhGm5eKW3S05RZeGEW7
- QdLSZzdWBhcq0K+cfNoBbo5c1IdvpenQvdrhBhXmC/0TJa919tw2hqmCQwm1vGnXrLNo5i
- Mit6j5YOSK7148Z+f0EA5DPhakRefe0=
+ bh=AKX0p9c/ECNwwnU8GJdz82OtvqAdF1BIqudDgZvMRhA=;
+ b=Tz+F6vP+lOxtyI77xmtloWscZJxGFfVvBI+OokAE8Ni2KEPOdqXRz9bPeYqwDzQFkifzjM
+ k3qrmBNGbSfRQwRbkxowizgoOiSNPPDOpfpZIE1yXM5n/ZAgB1h25MLNQetuIpdnOEXSDw
+ tRjvAa7786V3m9Hv8U1Nm4XJm3dTCvw=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-314-KguWsQ-WNV25D_4hfUfzyg-1; Tue, 17 Oct 2023 18:00:10 -0400
-X-MC-Unique: KguWsQ-WNV25D_4hfUfzyg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-552-oNQ8tAemOMCtLh4U4Spwiw-1; Tue, 17 Oct 2023 18:11:12 -0400
+X-MC-Unique: oNQ8tAemOMCtLh4U4Spwiw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94F9B2932494;
- Tue, 17 Oct 2023 22:00:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B02D729AB3E5;
+ Tue, 17 Oct 2023 22:11:11 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D78B25C8;
- Tue, 17 Oct 2023 22:00:08 +0000 (UTC)
-Date: Tue, 17 Oct 2023 17:00:06 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 614AFC15BB8;
+ Tue, 17 Oct 2023 22:11:10 +0000 (UTC)
+Date: Tue, 17 Oct 2023 17:11:08 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>, 
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>, 
- "open list:ARM SMMU" <qemu-arm@nongnu.org>
-Subject: Re: [RFC PATCH v2 01/78] include/qemu/compiler.h: replace
- QEMU_FALLTHROUGH with fallthrough
-Message-ID: <3e2wiwbl3g5t37msvmxcjxi5mhzpaazkd3phbw2p2dauuophxo@np3sbg6l7fq3>
+Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>, 
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Lieven <pl@kamp.de>, 
+ Jeff Cody <codyprime@gmail.com>, "open list:Block Jobs" <qemu-block@nongnu.org>
+Subject: Re: [RFC PATCH v2 02/78] block: add fallthrough pseudo-keyword
+Message-ID: <7efwgbjschmbjc2fjzuvwphwtl5ltfjydkvslctr5tfh6g7mqb@x2hf2cgps2yb>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
- <2e08cff874b2f9fc4143bdcde87ebba9b70b356c.1697183699.git.manos.pitsidianakis@linaro.org>
+ <e54aa70630d6d524886d7950b84d5bda39c3d605.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2e08cff874b2f9fc4143bdcde87ebba9b70b356c.1697183699.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <e54aa70630d6d524886d7950b84d5bda39c3d605.1697183699.git.manos.pitsidianakis@linaro.org>
 User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -68,7 +67,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,172 +83,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 13, 2023 at 10:56:28AM +0300, Emmanouil Pitsidianakis wrote:
-> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-
-The subject line gives the 'what', but the commit body is
-conspicuously lacking on the 'why'.
-
-> ---
->  audio/pwaudio.c              |  8 ++++----
->  hw/arm/smmuv3.c              |  2 +-
->  include/qemu/compiler.h      | 30 +++++++++++++++++++++++-------
->  include/qemu/osdep.h         |  4 ++--
->  target/loongarch/cpu.c       |  4 ++--
->  target/loongarch/translate.c |  2 +-
->  tcg/optimize.c               |  8 ++++----
->  7 files changed, 37 insertions(+), 21 deletions(-)
+On Fri, Oct 13, 2023 at 10:56:29AM +0300, Emmanouil Pitsidianakis wrote:
+> In preparation of raising -Wimplicit-fallthrough to 5, replace all
+> fall-through comments with the fallthrough attribute pseudo-keyword.
 > 
-> diff --git a/audio/pwaudio.c b/audio/pwaudio.c
-> index 3ce5f6507b..bf26fadb06 100644
-> --- a/audio/pwaudio.c
-> +++ b/audio/pwaudio.c
-> @@ -1,29 +1,29 @@
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>  block/block-copy.c    |  1 +
+>  block/file-posix.c    |  1 +
+>  block/io.c            |  1 +
+>  block/iscsi.c         |  1 +
+>  block/qcow2-cluster.c |  5 ++++-
+>  block/vhdx.c          | 17 +++++++++++++----
+>  6 files changed, 21 insertions(+), 5 deletions(-)
+> 
+> diff --git a/block/block-copy.c b/block/block-copy.c
+> index 1c60368d72..b4ceb6a079 100644
+> --- a/block/block-copy.c
+> +++ b/block/block-copy.c
+...
+>      case COPY_RANGE_FULL:
+>          ret = bdrv_co_copy_range(s->source, offset, s->target, offset, nbytes,
+>                                   0, s->write_flags);
+>          if (ret >= 0) {
+>              /* Successful copy-range, increase chunk size.  */
+>              *method = COPY_RANGE_FULL;
+>              return 0;
+>          }
+>  
+>          trace_block_copy_copy_range_fail(s, offset, ret);
+>          *method = COPY_READ_WRITE;
+>          /* Fall through to read+write with allocated buffer */
+> +        fallthrough;
+>  
+>      case COPY_READ_WRITE_CLUSTER:
+>      case COPY_READ_WRITE:
+
+I like how you kept the comments.
+
+> +++ b/block/qcow2-cluster.c
+> @@ -1327,36 +1327,39 @@ static int coroutine_fn calculate_l2_meta(BlockDriverState *bs,
 >  /*
->   * QEMU PipeWire audio driver
->   *
->   * Copyright (c) 2023 Red Hat Inc.
->   *
->   * Author: Dorinda Bassey       <dbassey@redhat.com>
->   *
->   * SPDX-License-Identifier: GPL-2.0-or-later
+>   * Returns true if writing to the cluster pointed to by @l2_entry
+>   * requires a new allocation (that is, if the cluster is unallocated
+>   * or has refcount > 1 and therefore cannot be written in-place).
 >   */
->  
-> +#include <spa/param/audio/format-utils.h>
-> +#include <spa/utils/ringbuffer.h>
-> +#include <spa/utils/result.h>
-> +#include <spa/param/props.h>
->  #include "qemu/osdep.h"
->  #include "qemu/module.h"
->  #include "audio.h"
->  #include <errno.h>
->  #include "qemu/error-report.h"
->  #include "qapi/error.h"
-> -#include <spa/param/audio/format-utils.h>
-> -#include <spa/utils/ringbuffer.h>
-> -#include <spa/utils/result.h>
-> -#include <spa/param/props.h>
+>  static bool cluster_needs_new_alloc(BlockDriverState *bs, uint64_t l2_entry)
+>  {
+>      switch (qcow2_get_cluster_type(bs, l2_entry)) {
+>      case QCOW2_CLUSTER_NORMAL:
+> +        fallthrough;
+>      case QCOW2_CLUSTER_ZERO_ALLOC:
 
-Rearranging #includes should be called out in the commit message, or
-even better split into its own commit as it is distinct from renaming
-the fallthrough macro.
+Why is this one needed?  It looks two case labels for the same code is
+okay; the fallthrough attribute is only needed once a case label is no
+lonter empty.
 
->  
->  #include <pipewire/pipewire.h>
->  #include "trace.h"
->  
->  #define AUDIO_CAP "pipewire"
->  #define RINGBUFFER_SIZE    (1u << 22)
->  #define RINGBUFFER_MASK    (RINGBUFFER_SIZE - 1)
->  
->  #include "audio_int.h"
-> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-> index 6f2b2bd45f..545d82ff04 100644
-> --- a/hw/arm/smmuv3.c
-> +++ b/hw/arm/smmuv3.c
-> @@ -1166,210 +1166,210 @@ smmuv3_invalidate_ste(gpointer key, gpointer value, gpointer user_data)
+>          if (l2_entry & QCOW_OFLAG_COPIED) {
+>              return false;
+>          }
+> -        /* fallthrough */
+> +        fallthrough;
 
-Wow, your git settings picked up a LOT of context - makes for a longer
-email, but in this particular case, it IS nice to see the impact of
-the fallthrough by seeing the full switch statment.
+This one makes sense.
 
+>      case QCOW2_CLUSTER_UNALLOCATED:
+> +        fallthrough;
+>      case QCOW2_CLUSTER_COMPRESSED:
+> +        fallthrough;
+
+These two also look spurious.
+
+>      case QCOW2_CLUSTER_ZERO_PLAIN:
+>          return true;
+>      default:
+>          abort();
+>      }
+>  }
 ...
->          qemu_mutex_lock(&s->mutex);
->          switch (type) {
->          case SMMU_CMD_SYNC:
+> +++ b/block/vhdx.c
+> @@ -1176,60 +1176,65 @@ static int coroutine_fn GRAPH_RDLOCK
+>  vhdx_co_readv(BlockDriverState *bs, int64_t sector_num, int nb_sectors,
+>                QEMUIOVector *qiov)
 ...
->          case SMMU_CMD_TLBI_NH_ALL:
->              if (!STAGE1_SUPPORTED(s)) {
->                  cmd_error = SMMU_CERROR_ILL;
+>              /* check the payload block state */
+>              switch (s->bat[sinfo.bat_idx] & VHDX_BAT_STATE_BIT_MASK) {
+> -            case PAYLOAD_BLOCK_NOT_PRESENT: /* fall through */
+> +            case PAYLOAD_BLOCK_NOT_PRESENT:
+> +                fallthrough;
+>              case PAYLOAD_BLOCK_UNDEFINED:
+> +                fallthrough;
+>              case PAYLOAD_BLOCK_UNMAPPED:
+> +                fallthrough;
+>              case PAYLOAD_BLOCK_UNMAPPED_v095:
+> +                fallthrough;
+
+All four of these look spurious; although the old comment is also
+spurious, so I'd be happy with deleting it without replacement.
+
+>              case PAYLOAD_BLOCK_ZERO:
+>                  /* return zero */
+>                  qemu_iovec_memset(&hd_qiov, 0, 0, sinfo.bytes_avail);
 >                  break;
->              }
-> -            QEMU_FALLTHROUGH;
-> +            fallthrough;
->          case SMMU_CMD_TLBI_NSNH_ALL:
+>              case PAYLOAD_BLOCK_FULLY_PRESENT:
+>                  qemu_co_mutex_unlock(&s->lock);
+>                  ret = bdrv_co_preadv(bs->file, sinfo.file_offset,
+>                                       sinfo.sectors_avail * BDRV_SECTOR_SIZE,
+>                                       &hd_qiov, 0);
+>                  qemu_co_mutex_lock(&s->lock);
+>                  if (ret < 0) {
+>                      goto exit;
+>                  }
+>                  break;
+>              case PAYLOAD_BLOCK_PARTIALLY_PRESENT:
+>                  /* we don't yet support difference files, fall through
+>                   * to error */
+> +                fallthrough;
+>              default:
 
-Yes, that still looks legible to me.
+But keeping this one because of the comment is reasonable.
 
-> +++ b/include/qemu/compiler.h
-> @@ -1,215 +1,231 @@
 ...
->  #if defined(__OPTIMIZE__)
->  #define QEMU_ALWAYS_INLINE  __attribute__((always_inline))
->  #else
->  #define QEMU_ALWAYS_INLINE
->  #endif
->  
-> -/**
-> - * In most cases, normal "fallthrough" comments are good enough for
-> - * switch-case statements, but sometimes the compiler has problems
-> - * with those. In that case you can use QEMU_FALLTHROUGH instead.
-> +/*
-> + * Add the pseudo keyword 'fallthrough' so case statement blocks
-> + * must end with any of these keywords:
-> + *   break;
-> + *   fallthrough;
-> + *   continue;
-> + *   goto <label>;
-> + *   return [expression];
-> + *
-> + *  gcc: https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html#Statement-Attributes
->   */
-> -#if __has_attribute(fallthrough)
-> -# define QEMU_FALLTHROUGH __attribute__((fallthrough))
-> +
-> +/*
-> + * glib_macros.h contains its own definition of fallthrough, so if we define
-> + * the pseudokeyword here it will expand when the glib header checks for the
-> + * attribute. glib headers must be #included after this header.
-> + */
-> +#ifdef fallthrough
-> +#undef fallthrough
-> +#endif
-> +
-> +#if __has_attribute(__fallthrough__)
-> +# define fallthrough                    __attribute__((__fallthrough__))
->  #else
-> -# define QEMU_FALLTHROUGH do {} while (0) /* fallthrough */
-> +# define fallthrough                    do {} while (0)  /* fallthrough */
->  #endif
->
+>              switch (bat_state) {
+>              case PAYLOAD_BLOCK_ZERO:
+>                  /* in this case, we need to preserve zero writes for
+>                   * data that is not part of this write, so we must pad
+>                   * the rest of the buffer to zeroes */
+>                  use_zero_buffers = true;
+> -                /* fall through */
+> -            case PAYLOAD_BLOCK_NOT_PRESENT: /* fall through */
+> +                fallthrough;
+> +            case PAYLOAD_BLOCK_NOT_PRESENT:
 
-Looks okay.
+This one is necessary;
 
-> +++ b/include/qemu/osdep.h
-> @@ -1,171 +1,171 @@
->  /*
->   * TARGET_WORDS_BIGENDIAN was replaced with TARGET_BIG_ENDIAN. Prevent it from
->   * creeping back in.
->   */
->  #pragma GCC poison TARGET_WORDS_BIGENDIAN
->  
-> -#include "qemu/compiler.h"
-> -
->  /* Older versions of C++ don't get definitions of various macros from
->   * stdlib.h unless we define these macros before first inclusion of
->   * that system header.
->   */
-...
->  /*
->   * This is somewhat like a system header; it must be outside any extern "C"
->   * block because it includes system headers itself, including glib.h,
->   * which will not compile if inside an extern "C" block.
->   */
->  #include "glib-compat.h"
->  
-> +#include "qemu/compiler.h"
-> +
+> +                fallthrough;
+>              case PAYLOAD_BLOCK_UNMAPPED:
+> +                fallthrough;
+>              case PAYLOAD_BLOCK_UNMAPPED_v095:
+> +                fallthrough;
+>              case PAYLOAD_BLOCK_UNDEFINED:
 
-The commit message should detail why we had to sink this include
-later, and any audit you did to ensure that none of the intermediate
-code is impacted by that change.
+but these three seem spurious.
 
-At this point, since the series is RFC, I'll leave merely:
-
-Acked-by: Eric Blake <eblake@redhat.com>
-
-but if others like the approach, I'll probably replace it with R-b in
-the next version.
+I like the direction this is headed in, but there's enough I pointed
+out that I'll withhold R-b on this version.
 
 -- 
 Eric Blake, Principal Software Engineer
