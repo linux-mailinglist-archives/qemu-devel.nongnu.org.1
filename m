@@ -2,50 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6747CC8BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2881A7CC8C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:28:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsmrr-0001BW-VP; Tue, 17 Oct 2023 12:24:27 -0400
+	id 1qsmue-00027o-JN; Tue, 17 Oct 2023 12:27:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qsmrg-0001B9-Mw; Tue, 17 Oct 2023 12:24:16 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qsmre-0001vl-3F; Tue, 17 Oct 2023 12:24:16 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 291FF7456AC;
- Tue, 17 Oct 2023 18:23:02 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id E6260748FF1; Tue, 17 Oct 2023 18:23:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E48E674632B;
- Tue, 17 Oct 2023 18:23:01 +0200 (CEST)
-Date: Tue, 17 Oct 2023 18:23:01 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: deller@kernel.org
-cc: qemu-devel@nongnu.org, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Helge Deller <deller@gmx.de>, qemu-stable@nongnu.org
-Subject: Re: [PATCH v2 05/11] lasips2: LASI PS/2 devices are not
- user-createable
-In-Reply-To: <20231017154645.95844-6-deller@kernel.org>
-Message-ID: <8ab113bb-0c43-da4a-51f7-8113a817ae5d@eik.bme.hu>
-References: <20231017154645.95844-1-deller@kernel.org>
- <20231017154645.95844-6-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qsmub-00025F-OU; Tue, 17 Oct 2023 12:27:17 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qsmuZ-0002dO-Qe; Tue, 17 Oct 2023 12:27:17 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 2564D21C4B;
+ Tue, 17 Oct 2023 16:27:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697560033; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8Ih1ELREGeIRTziNuFs6Pc7Lapu+g0qA7Opr1CPhJ+Q=;
+ b=pubmyVFWD2rmCGuVQWZ03Pk+aIMpqd5Jx+Dd7X6YwJva+zdbUWyZyhADz4PTxB4WnCfdxF
+ 1Fzto7nqYJUQyEwq/QCuoz8Y48ntofEQsLYtYUgB9+I6r70OcvRiNOS0XfRz/tHIV5av/L
+ KBY3lbCdTcXLZdf9+AswjmIq54SmopY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697560033;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8Ih1ELREGeIRTziNuFs6Pc7Lapu+g0qA7Opr1CPhJ+Q=;
+ b=vMBz+oG+EjQK4+B8pdAdx+XjBGvLQC/kkyBX7c1RL4uSEw7ml/NrWNutR1y9k9Pyy0yWCl
+ dCJSDyER+OINJ/Aw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id AB7C913584;
+ Tue, 17 Oct 2023 16:27:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id VbikHeC1LmU/WgAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 17 Oct 2023 16:27:12 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: libvir-list@redhat.com, Leonardo Bras <leobras@redhat.com>, Juan
+ Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fam Zheng <fam@euphon.net>, Stefan Hajnoczi
+ <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH v5 1/7] migration: Print block status when needed
+In-Reply-To: <20231017115238.18309-2-quintela@redhat.com>
+References: <20231017115238.18309-1-quintela@redhat.com>
+ <20231017115238.18309-2-quintela@redhat.com>
+Date: Tue, 17 Oct 2023 13:27:10 -0300
+Message-ID: <87pm1dw6xt.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -6.98
+X-Spamd-Result: default: False [-6.98 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.88)[99.47%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[11];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -62,51 +99,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Oct 2023, deller@kernel.org wrote:
-> From: Helge Deller <deller@gmx.de>
->
-> Those PS/2 ports are created with the LASI controller when
-> a 32-bit PA-RISC machine is created.
->
-> Mark them not user-createable to avoid showing them in
-> the qemu device list.
->
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Cc: qemu-stable@nongnu.org
-> ---
-> hw/input/lasips2.c | 2 ++
-> 1 file changed, 2 insertions(+)
->
-> diff --git a/hw/input/lasips2.c b/hw/input/lasips2.c
-> index ea7c07a2ba..18b94fa060 100644
-> --- a/hw/input/lasips2.c
-> +++ b/hw/input/lasips2.c
-> @@ -351,6 +351,7 @@ static void lasips2_port_class_init(ObjectClass *klass, void *data)
-> {
->     DeviceClass *dc = DEVICE_CLASS(klass);
->
+Juan Quintela <quintela@redhat.com> writes:
 
-This isn't what I've meant but maybe I could not explain it clearly. 
-According to include/hw/qdev-core.h these should have a comment explaining 
-why but a comment just saying "this isn't user creatable" does not explain 
-it. Instead the comment should say why, e.g. Part of LASI, not a separate 
-device or whatever the reason these aren't QDEVs that the user should 
-handle.
+> The new line was only printed when command options were used.  When we
+> used migration parameters and capabilities, it wasn't.
+>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
 
-Regards,
-BALATON Zoltan
-
-> +    dc->user_creatable = false;
->     dc->realize = lasips2_port_realize;
-> }
->
-> @@ -397,6 +398,7 @@ static void lasips2_kbd_port_class_init(ObjectClass *klass, void *data)
->     DeviceClass *dc = DEVICE_CLASS(klass);
->     LASIPS2PortDeviceClass *lpdc = LASIPS2_PORT_CLASS(klass);
->
-> +    dc->user_creatable = false;
->     device_class_set_parent_realize(dc, lasips2_kbd_port_realize,
->                                     &lpdc->parent_realize);
-> }
->
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
