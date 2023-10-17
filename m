@@ -2,53 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A877CC4DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7515A7CC4DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:38:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qskG8-0007pR-N6; Tue, 17 Oct 2023 09:37:20 -0400
+	id 1qskGu-0000Va-DT; Tue, 17 Oct 2023 09:38:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qskG6-0007lw-E1; Tue, 17 Oct 2023 09:37:18 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qskG3-00030S-Tb; Tue, 17 Oct 2023 09:37:18 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 19BE241B9C;
- Tue, 17 Oct 2023 15:37:13 +0200 (CEST)
-Message-ID: <c2a6c1b6-0438-488f-bba3-1014ffdadbce@proxmox.com>
-Date: Tue, 17 Oct 2023 15:37:11 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qskGs-0000VJ-J3
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:38:06 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qskGq-00034f-Ua
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:38:06 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6b9af7d41d2so2475949b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 06:38:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697549883; x=1698154683; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=puadJz5t7xW3vd1KmFXuJisSfN54xdZ0hs6Aa+O15jA=;
+ b=O7qFsWdKrfbRNpWlfypAqKMFMYoyZdoGKlOca501jV7Keds0t4LBKZ2JPtmgWUyzap
+ C/fDh+liEiBJgAnLlou75j/lZMIX1X989SY4idzDj7Lu42EBtaoWscizONHHjUjz/i4K
+ 7wl8pHxNUQfG77YxcUL9ZRr59hn+aRgBFGbmgXf88tRNmtyS8InWeykL5+X6B2e3pvU2
+ PbJPB2Oa/0tBDRtF+hqAXa/lGQvP66cj+Qu6wwwVrnVup/1vb2EBG+WNeHRZ46HW/W/e
+ uT/VAT4hYsH1WHnnlicfftkUrk4W3pPtDKasraORrX83Kz7P2ZWkAHTSvbh2kLjL22pV
+ CCrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697549883; x=1698154683;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=puadJz5t7xW3vd1KmFXuJisSfN54xdZ0hs6Aa+O15jA=;
+ b=lmeGbiEycg3Wm0arSQZkRkTvwrmCw/UGSV1tOhdp5Z/+iOroc/5jG3m9Md5fUS3IuO
+ l4x1lW3XDeprdsg+gYxR9lwOD8EBXPe0QdJR9FYRfbVWz8nAtKB1pnV9gDgImSUfVvuj
+ O9JFUdaoeT14R3fYY2sZoIGt3VfgetZR52Q/tZjTkfpk1X8nrxwWz5H9+v1VgtxNF3G8
+ peWDCB3T02OwCYWhfSTcGOilHGCFOWMnSCO26TeWpn3B0HaNqjLv3lcG5yHJFgYC1whe
+ d/uiX3PXCiNZuhWUwuEkbWPTnrg87tC085oyiifxC7zGAC7n/ObVnesGSiILPrSq8HZB
+ 4xpw==
+X-Gm-Message-State: AOJu0Yx/BUoiRWNcA+WZenHJcdkJYekX4MQfNXFhBYdu6MOV4598/jaR
+ Ybh/VO8ryyzFcVi1amicxO7y4A==
+X-Google-Smtp-Source: AGHT+IFHAd2Dq/e4BTB2rKLwN88BRpDnNY1tykXMtJwef6CnzYbgOSJCtg9HaM4sSQkR1o3XkBm12Q==
+X-Received: by 2002:a05:6a21:32a4:b0:17a:ee7d:c035 with SMTP id
+ yt36-20020a056a2132a400b0017aee7dc035mr2009761pzb.38.1697549883449; 
+ Tue, 17 Oct 2023 06:38:03 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ y2-20020a17090322c200b001b9f7bc3e77sm1529043plg.189.2023.10.17.06.38.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Oct 2023 06:38:03 -0700 (PDT)
+Message-ID: <69691ad3-e4cc-43c7-9f81-b00988ebff76@linaro.org>
+Date: Tue, 17 Oct 2023 06:38:01 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: deadlock when using iothread during backup_clean()
+Subject: Re: [PATCH v2 0/2] tcg: Streamline vector load/store
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, Brian Cain <bcain@quicinc.com>
+References: <20231013175109.124308-1-richard.henderson@linaro.org>
+ <2ccd41e7-bc4a-9223-7f56-04493e0357d4@linaro.org>
 Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, QEMU Developers
- <qemu-devel@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
- John Snow <jsnow@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>,
- Thomas Lamprecht <t.lamprecht@proxmox.com>
-References: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
- <dd12f39d-a364-b186-2ad7-04343ea85e3f@redhat.com>
- <44ff810b-8ec6-0f11-420a-6efa2c7c2475@proxmox.com>
- <2ca4eb06-75c3-7bd8-972b-b37af47743dc@yandex-team.ru>
- <71e3112d-3d3f-fd55-4099-6765d4f22205@proxmox.com>
- <76f9678d-ed92-418e-8d1e-c6dc55f83279@proxmox.com>
- <ZS56FzuqZSApXBbc@redhat.com>
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <ZS56FzuqZSApXBbc@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <2ccd41e7-bc4a-9223-7f56-04493e0357d4@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,94 +95,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 17.10.23 um 14:12 schrieb Kevin Wolf:
-> Am 17.10.2023 um 12:18 hat Fiona Ebner geschrieben:
->> I ran into similar issues now with mirror, (both deadlocks and stuck
->> guest IO at other times), and interestingly, also during job start.
+On 10/17/23 04:52, Philippe Mathieu-Daudé wrote:
+> On 13/10/23 19:51, Richard Henderson wrote:
+>> We have tcg_gen_qemu_{ld,st}_i128, which can be used to implement
+>> load/store of vectors to guest memory.  But at present we have to
+>> split into, or concatenated from, two i64 to reference the guest
+>> vector register backing store within env.
 >>
->> Also had a backtrace similar to [0] once, so I took a closer look.
->> Probably was obvious to others already, but for the record:
+>> Provide tcg_gen_{ld,st}_i128, which can avoid the trip through i64.
 >>
->> 1. the graph is locked by the main thread
->> 2. the iothread holds the AioContext lock
->> 3. the main thread waits on the AioContext lock
->> 4. the iothread waits for coroutine spawned by blk_is_available()
+>> This does require that the target store i128 in host byte ordering,
+>> which is true of i386 (and some other backends) but not arm or s390x.
+>> There is definitely further cleanup possible.
 > 
-> Where does this blk_is_available() in the iothread come from? Having it
-> wait without dropping the AioContext lock sounds like something that
-> we'd want to avoid. Ideally, devices using iothreads shouldn't use
-> synchronous requests at all, but I think scsi-disk might have some of
-> them.
-> 
+> Is hexagon gen_vreg_load() candidate?
 
-It's part of the request handling in virtio-scsi:
-
-> #0  0x00007ff7f5f55136 in __ppoll (fds=0x7ff7e40030c0, nfds=8, timeout=<optimized out>, sigmask=0x0) at ../sysdeps/unix/sysv/linux/ppoll.c:42
-> #1  0x00005587132615ab in qemu_poll_ns (fds=0x7ff7e40030c0, nfds=8, timeout=-1) at ../util/qemu-timer.c:339
-> #2  0x000055871323e8b1 in fdmon_poll_wait (ctx=0x55871598d5e0, ready_list=0x7ff7f288ebe0, timeout=-1) at ../util/fdmon-poll.c:79
-> #3  0x000055871323e1ed in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:670
-> #4  0x0000558713089efa in bdrv_poll_co (s=0x7ff7f288ec90) at /home/febner/repos/qemu/block/block-gen.h:43
-> #5  0x000055871308c362 in blk_is_available (blk=0x55871599e2f0) at block/block-gen.c:1426
-> #6  0x0000558712f6843b in virtio_scsi_ctx_check (s=0x558716c049c0, d=0x55871581cd30) at ../hw/scsi/virtio-scsi.c:290
-> #7  0x0000558712f697e4 in virtio_scsi_handle_cmd_req_prepare (s=0x558716c049c0, req=0x7ff7e400b650) at ../hw/scsi/virtio-scsi.c:788
-> #8  0x0000558712f699b0 in virtio_scsi_handle_cmd_vq (s=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:831
-> #9  0x0000558712f69bcb in virtio_scsi_handle_cmd (vdev=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:867
-> #10 0x0000558712f96812 in virtio_queue_notify_vq (vq=0x558716c0d2a8) at ../hw/virtio/virtio.c:2263
-> #11 0x0000558712f99b75 in virtio_queue_host_notifier_read (n=0x558716c0d31c) at ../hw/virtio/virtio.c:3575
-> #12 0x000055871323d8b5 in aio_dispatch_handler (ctx=0x55871598d5e0, node=0x558716771000) at ../util/aio-posix.c:372
-> #13 0x000055871323d988 in aio_dispatch_ready_handlers (ctx=0x55871598d5e0, ready_list=0x7ff7f288eeb0) at ../util/aio-posix.c:401
+Yes.
 
 
->> As for why it doesn't progress, blk_co_is_available_entry() uses
->> bdrv_graph_co_rdlock() and can't get it, because the main thread has the
->> write lock. Should be fixed once the AioContext locks are gone, but not
->> sure what should be done to avoid it until then.
-> 
-> Then the nested event loop in blk_is_available() would probably be
-> enough to make progress, yes.
-> 
-> Maybe we could actually drop the lock (and immediately reacquire it) in
-> AIO_WAIT_WHILE() even if we're in the home thread? That should give the
-> main thread a chance to make progress.
-> 
-
-Seems to work :) I haven't run into the issue with the following change
-anymore, but I have to say, running into that specific deadlock only
-happened every 10-15 tries or so before. Did 30 tests now. But
-unfortunately, the stuck IO issue is still there.
-
-> diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
-> index 5449b6d742..da159501ca 100644
-> --- a/include/block/aio-wait.h
-> +++ b/include/block/aio-wait.h
-> @@ -88,7 +88,13 @@ extern AioWait global_aio_wait;
->      smp_mb__after_rmw();                                           \
->      if (ctx_ && in_aio_context_home_thread(ctx_)) {                \
->          while ((cond)) {                                           \
-> +            if (unlock && ctx_) {                                  \
-> +                aio_context_release(ctx_);                         \
-> +            }                                                      \
->              aio_poll(ctx_, true);                                  \
-> +            if (unlock && ctx_) {                                  \
-> +                aio_context_acquire(ctx_);                         \
-> +            }                                                      \
->              waited_ = true;                                        \
->          }                                                          \
->      } else {                                                       \
-> 
-> But I think we're actually not very far from removing the AioContext
-> lock, so if we can't find an easy fix in the meantime, waiting for that
-> could be a realistic option.
-> 
-
-Glad to hear :) Do you think it will be in time for QEMU 8.2? Otherwise,
-I'll go ahead and send what I have for fixing the deadlocks from this
-mail thread in the following days. The stuck guest IO can happen even
-without any of those changes (on current master, i.e.
-ebca80bbdb5c1650e4b753a3d13b43634e7dfe05, at least when starting a
-mirror job).
-
-Best Regards,
-Fiona
-
+r~
 
