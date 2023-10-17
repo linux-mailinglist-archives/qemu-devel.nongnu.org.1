@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B9F7CC787
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 17:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D707CC78A
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 17:35:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsm3J-0002Iz-Sg; Tue, 17 Oct 2023 11:32:13 -0400
+	id 1qsm5P-0004fe-1f; Tue, 17 Oct 2023 11:34:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qsm3H-0002IY-Fx; Tue, 17 Oct 2023 11:32:11 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qsm5G-0004cC-7r
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 11:34:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qsm3D-0007eE-IK; Tue, 17 Oct 2023 11:32:10 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c08:ba1:0:640:375a:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 7EE936251B;
- Tue, 17 Oct 2023 18:32:02 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8006::1:24] (unknown
- [2a02:6b8:b081:8006::1:24])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 0WmrmtHOj0U0-kfRkGQGQ; Tue, 17 Oct 2023 18:32:01 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1697556721;
- bh=kecQllbRaymLebxLa8bUXVFrHYmJS7j/1ddWh9L2UE4=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=NdLDWCmKg6XeDZKZ3TCJjqcGX7cZ51Kx382fP6PGmxHvVLIf45zE1gY+Bw5OafeYP
- 33cKRwhAwSyLpjRmWbxPRFyaIy9ZNW0H6GhDCxZ+Hj5bjDKE181PchPvXs2Fmcdwzm
- KlS8HlmF8YHiFHK89Jq2x8e0/4taZACGk27N0c/c=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <9d62a50e-627e-4441-b760-56c096f99c53@yandex-team.ru>
-Date: Tue, 17 Oct 2023 18:32:00 +0300
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qsm5E-0008Gd-Ei
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 11:34:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697556832;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=KrOSix2B/+0quJDvWTe4iyuAwhEDSqer4RjbDciuYh4=;
+ b=XPj9ZnmXs6uBkri55YbLobxvv29iZFM38fqXlqBPHgudvX0eJwDpfwmGZPulOIat+DfrI1
+ xhZeVhzqVg7Usx+qCfHmQZ1eZeDQX4QY0N/d9L9untw7qZPQ83NYwW2RILSONulqxsNS2N
+ 9tWDIi1ooJrJtZh7MsoED8ND8hDldlY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-138-h8oaIfi1P92b70hTdXcKZQ-1; Tue, 17 Oct 2023 11:33:48 -0400
+X-MC-Unique: h8oaIfi1P92b70hTdXcKZQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC4301029F48;
+ Tue, 17 Oct 2023 15:33:47 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.155])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B5CAD8B8;
+ Tue, 17 Oct 2023 15:33:46 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: qemu-trivial@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Song Gao <gaosong@loongson.cn>
+Subject: [PATCH] MAINTAINERS: Add include/hw/intc/loongson_liointc.h to the
+ Loongson-3 virt section
+Date: Tue, 17 Oct 2023 17:33:45 +0200
+Message-ID: <20231017153345.233807-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] qapi: introduce device-sync-config
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, eblake@redhat.com,
- dave@treblig.org, eduardo@habkost.net, berrange@redhat.com,
- pbonzini@redhat.com, hreitz@redhat.com, kwolf@redhat.com,
- raphael.norwitz@nutanix.com, mst@redhat.com, yc-core@yandex-team.ru,
- den-plotnikov@yandex-team.ru, daniil.tatianin@yandex.ru
-References: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
- <20231006202045.1161543-3-vsementsov@yandex-team.ru>
- <87zg0h2t5q.fsf@pond.sub.org>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <87zg0h2t5q.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -78,116 +75,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17.10.23 17:57, Markus Armbruster wrote:
-> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
-> 
->> Add command to sync config from vhost-user backend to the device. It
->> may be helpful when VHOST_USER_SLAVE_CONFIG_CHANGE_MSG failed or not
->> triggered interrupt to the guest or just not available (not supported
->> by vhost-user server).
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> 
-> [...]
-> 
->> diff --git a/qapi/qdev.json b/qapi/qdev.json
->> index fa80694735..2468f8bddf 100644
->> --- a/qapi/qdev.json
->> +++ b/qapi/qdev.json
->> @@ -315,3 +315,17 @@
->>   # Since: 8.2
->>   ##
->>   { 'event': 'X_DEVICE_ON', 'data': 'DeviceAndPath' }
->> +
->> +##
->> +# @x-device-sync-config:
->> +#
->> +# Sync config from backend to the guest.
-> 
-> "Sync" is not a word; "synchronize" is :)
+The corresponding .c file is already listed here, so we should
+mention the header here, too.
 
-Seems, I learn English from code :)
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
->> +#
->> +# @id: the device's ID or QOM path
->> +#
->> +# Returns: Nothing on success
->> +#          If @id is not a valid device, DeviceNotFound
-> 
-> Why not GenericError?
-
-I just designed the command looking at device_del. device_del reports DeviceNotFound in this case. GenericError is OK for me, if you think it's better even in this case. I remember now that everything except GenericError is not recommended.
-
-> 
->> +#
->> +# Since: 8.2
->> +##
->> +{ 'command': 'x-device-sync-config', 'data': {'id': 'str'} }
-> 
-> The commit message above and the error message below talk about command
-> device-sync-config, but you actually name it x-device-sync-config.
-> 
-> I figure you use x- to signify "unstable".  Please use feature flag
-> 'unstable' for that.  See docs/devel/qapi-code-gen.rst section
-> "Features", in particular "Special features", and also the note on x- in
-> section "Naming rules and reserved names".
-> 
-> We tend to eschew abbreviations in QAPI schema names.
-> device-synchronize-config is quite a mouthful, though.  What do you
-> think?
-
-OK for me.
-
-Hmm, could I ask here, is "config" a word?)) device-synchronize-configuration would become a precedent, I'm afraid)
-
-> 
->> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
->> index 19c31446d8..b6da24389f 100644
->> --- a/softmmu/qdev-monitor.c
->> +++ b/softmmu/qdev-monitor.c
->> @@ -987,6 +987,29 @@ HotplugInfo *qmp_x_query_hotplug(const char *id, Error **errp)
->>       return hotplug_handler_get_state(hotplug_ctrl, dev, errp);
->>   }
->>   
->> +int qdev_sync_config(DeviceState *dev, Error **errp)
->> +{
->> +    DeviceClass *dc = DEVICE_GET_CLASS(dev);
->> +
->> +    if (!dc->sync_config) {
->> +        error_setg(errp, "device-sync-config is not supported for '%s'",
->> +                   object_get_typename(OBJECT(dev)));
->> +        return -ENOTSUP;
->> +    }
->> +
->> +    return dc->sync_config(dev, errp);
->> +}
->> +
->> +void qmp_x_device_sync_config(const char *id, Error **errp)
->> +{
->> +    DeviceState *dev = find_device_state(id, errp);
-> 
-> Not your patch's fault, but here goes anyway: when @id refers to a
-> non-device, find_device_state() fails with "is not a hotpluggable
-> device".  "hotpluggable" is misleading.
-
-Hmm. Thanks, OK, I'll rework it somehow in v2.
-
-> 
->> +    if (!dev) {
->> +        return;
->> +    }
->> +
->> +    qdev_sync_config(dev, errp);
->> +}
->> +
->>   void hmp_device_add(Monitor *mon, const QDict *qdict)
->>   {
->>       Error *err = NULL;
-> 
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d0a21cfd9f..c3eb4f90ef 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1359,6 +1359,7 @@ F: hw/intc/loongson_liointc.c
+ F: hw/mips/loongson3_bootp.c
+ F: hw/mips/loongson3_bootp.h
+ F: hw/mips/loongson3_virt.c
++F: include/hw/intc/loongson_liointc.h
+ F: tests/avocado/machine_mips_loongson3v.py
+ 
+ Boston
 -- 
-Best regards,
-Vladimir
+2.41.0
 
 
