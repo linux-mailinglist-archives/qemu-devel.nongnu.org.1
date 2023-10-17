@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEAF7CBAF3
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F51C7CBAF2
 	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:21:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsdKc-0000rE-7p; Tue, 17 Oct 2023 02:13:30 -0400
+	id 1qsdKa-0000q4-RO; Tue, 17 Oct 2023 02:13:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdKT-0000mi-NQ
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:21 -0400
+ id 1qsdKT-0000mh-MV
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:22 -0400
 Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdKQ-0003y1-B1
+ id 1qsdKQ-0003yP-Rs
  for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:21 -0400
 Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c87a85332bso45340555ad.2
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:13:17 -0700 (PDT)
+ d9443c01a7336-1c9e06f058bso35620895ad.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:13:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697523196; x=1698127996; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697523197; x=1698127997; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UCOIS4gOpVGHgOirABjKO6Yw+e6lmcWihb6phG5srXA=;
- b=PVWfjuws0CSz8FmGQmOtNmQ/uPlb53I8Y2D2jJ79EYnLSlUPOHqyK4gmoZWos9bq+i
- 5ErTiIo1MSbwOuM+8/ctsoWNvGwhjIzgc6YpnPXYKtnfTnzDTtS1V3cJAlzK21l95dct
- 7PWtMd3bFacBkRcBno4hiidXV+g2QWDwrD6ck0y/MFyAe2YGei4OUM9g++OpQdeKcFwj
- vNZpiu78bV9dk2u9TMZ/EWKiiC5j1RuD+V9Z+qHEwoGjmozP6aWhAgPZSyVzmcRQ/qGb
- NQKhSLfry3JkwA3VBYJ2J53tQRPMt0tSn/2XRntfed9N47CAy2c96MkMHC3YWEMowZcX
- FUdA==
+ bh=eSGLwNkfnTjcUB7m1SPZtJgpMDDDcjvL4Bd28I/2We4=;
+ b=Z6EbMx1W+y5tAGXiXCWqQnm1Cq9z0CHaET0VxlbB9YLgncoa/3YX6vglIAkfFNQdz6
+ 1zociU9XqmcOlI6ry0SQx/J6VvmWxlRKYDWVCgbu5gvgYmoRTGtwyUbltZI9xsjJB+Pu
+ L5lZm060AIT8wWnWs1elIH2mRtFXhoEPU2TjZTCpbQq8j8PZMS94xPaR5TETiQZbwTLS
+ 7+92obU9cS3Lw1R6M915evioGbN1+KFAq2s3b5lQkcy5OkryzX/6oC9q6Q+3xavhg0od
+ acsugFslJUO39Ti7zocdZT5mma6yYgVhMaVUchpG/mnKtDO770cYAwo8xKNwcw4DX53L
+ LS0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697523196; x=1698127996;
+ d=1e100.net; s=20230601; t=1697523197; x=1698127997;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UCOIS4gOpVGHgOirABjKO6Yw+e6lmcWihb6phG5srXA=;
- b=wgyYxRC6AogV+L7cRCBTpWGPyppQbvr1vQKZUovHB7+4KOD+1n6xl02htNl1HOvLdT
- oDKcG7HrPudFnEWawWMqOemY39NojlOGPCsXNgsY3OWgLT5fhqDLqjoWZxvfFwXuqiMp
- SFre6ddFLWyOyiacnjoSOesITPCBGUukDHzfG+aVa+K00THLr6izVzV4TfcozmXi9ALt
- JLaMXPCpApo8BH+ehM4X2ENIseX0sicLrMcAnrSSQnsLlM3/HW06+zcIuXoFp+HGdupj
- EQkdCrwqfrb7kTfAl5bzoX+OgnqPPPX0mTsKAXVvJEUJQoIhiLjXTVEe/cDVVc79VXUO
- Ycqg==
-X-Gm-Message-State: AOJu0YwYg7SnvrHTMJ9AssyYx6Z22hfmaqaMYoRJwuwxYqiCvUTVBm5y
- Hu5irmGjnZAGYHJLIgFZ0vy2NficjuwcjNVuSm0=
-X-Google-Smtp-Source: AGHT+IGsEuIarHiApv+Z0EzXGIa/ZWTzTXI3AYLhHF4mCfso/cazoLnJrLPNIY/VDmf56y/UTpCCKQ==
-X-Received: by 2002:a17:903:2348:b0:1ca:8e79:538f with SMTP id
- c8-20020a170903234800b001ca8e79538fmr1561753plh.25.1697523196696; 
- Mon, 16 Oct 2023 23:13:16 -0700 (PDT)
+ bh=eSGLwNkfnTjcUB7m1SPZtJgpMDDDcjvL4Bd28I/2We4=;
+ b=Fvb76faB+lciBgNTu3U8po1HLCjvOXTuWx4wgOCtejtUK3Rnc8R3lvXxUc59bgoGLe
+ DxsIjBR50ZBNIZn24MFAvJrV5MK8NZVw1/X6AVehEKsjF/zIfKj5ta476Lj8xheXzOn5
+ G6dkShY02kOOCL6un3BoEVLdezw+K0qJhZ/8xT0Hg0g4OLryYvUmWQgopK3K9GPyCUM2
+ x55GF2xQ3Y0LdErOPjtd1b3NV6vw44ePUNoLx2Rmv7jl3g03dHCno6AK2rCo/xtg3h/6
+ 1yOBHSq2iDHbSp9QmOQNX+64dfxbCs+GFqOuXeo2NCGXxY9PZI5ZD3uWIKie2bTHffa8
+ iN+A==
+X-Gm-Message-State: AOJu0YyUvuVVTzAKPHpUvpN5/z9IZqcElZQj4i2RvX7YvzbV8JnF1TS7
+ fQnMvTe8pAUWujh6aP000aHrtCLb/DIK9jLnmks=
+X-Google-Smtp-Source: AGHT+IHIzj3z2OazqvevqDSpgn0Lf03LdEJCSXQpuxCCOnyjvBtr8jIQiuUpLfZBZStcZIFYn+WpXg==
+X-Received: by 2002:a17:903:5cf:b0:1b5:674d:2aa5 with SMTP id
+ kf15-20020a17090305cf00b001b5674d2aa5mr1155153plb.13.1697523197538; 
+ Mon, 16 Oct 2023 23:13:17 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  jf4-20020a170903268400b001ca21e05c69sm629150plb.109.2023.10.16.23.13.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 23:13:16 -0700 (PDT)
+ Mon, 16 Oct 2023 23:13:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 37/90] target/sparc: Move SLL, SRL, SRA to decodetree
-Date: Mon, 16 Oct 2023 23:11:51 -0700
-Message-Id: <20231017061244.681584-38-richard.henderson@linaro.org>
+Subject: [PATCH v2 38/90] target/sparc: Move MOVcc, MOVR to decodetree
+Date: Mon, 16 Oct 2023 23:11:52 -0700
+Message-Id: <20231017061244.681584-39-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231017061244.681584-1-richard.henderson@linaro.org>
 References: <20231017061244.681584-1-richard.henderson@linaro.org>
@@ -92,243 +92,147 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  14 +++
- target/sparc/translate.c  | 182 ++++++++++++++++----------------------
- 2 files changed, 92 insertions(+), 104 deletions(-)
+ target/sparc/insns.decode |   4 ++
+ target/sparc/translate.c  | 103 +++++++++++++++++---------------------
+ 2 files changed, 51 insertions(+), 56 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 18e2372928..fe0eacd779 100644
+index fe0eacd779..a61d10be5a 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -190,4 +190,18 @@ TADDccTV    10 ..... 100010 ..... . .............          @r_r_ri
- TSUBccTV    10 ..... 100011 ..... . .............          @r_r_ri
- MULScc      10 ..... 100100 ..... . .............          @r_r_ri
+@@ -205,3 +205,7 @@ SRL_i       10 ..... 100110 ..... 1 .   000000 ......      @shifti
+ SRA_i       10 ..... 100111 ..... 1 .   000000 ......      @shifti
  
-+&shiftr     rd rs1 rs2 x:bool
-+@shiftr     .. rd:5  ...... rs1:5 . x:1 ....... rs2:5      &shiftr
-+
-+SLL_r       10 ..... 100101 ..... 0 .   0000000 .....      @shiftr
-+SRL_r       10 ..... 100110 ..... 0 .   0000000 .....      @shiftr
-+SRA_r       10 ..... 100111 ..... 0 .   0000000 .....      @shiftr
-+
-+&shifti     rd rs1 i x:bool
-+@shifti     .. rd:5  ...... rs1:5 . x:1 ...... i:6         &shifti
-+
-+SLL_i       10 ..... 100101 ..... 1 .   000000 ......      @shifti
-+SRL_i       10 ..... 100110 ..... 1 .   000000 ......      @shifti
-+SRA_i       10 ..... 100111 ..... 1 .   000000 ......      @shifti
-+
  Tcc         10 0 cond:4 111010 rs1:5 imm:1 cc:1 00000 rs2_or_imm:7
++
++MOVcc       10 rd:5  101100 1 cond:4 imm:1 cc:1 0 rs2_or_imm:s11
++MOVfcc      10 rd:5  101100 0 cond:4 imm:1 cc:2   rs2_or_imm:s11
++MOVR        10 rd:5  101111 rs1:5    imm:1 cond:3 rs2_or_imm:s10
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 4adf2cc3ae..deea3015b1 100644
+index deea3015b1..0b0b9aa8d3 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -4330,6 +4330,83 @@ static bool trans_MULScc(DisasContext *dc, arg_r_r_ri *a)
-     return do_cc_arith(dc, a, CC_OP_ADD, gen_op_mulscc, NULL);
- }
+@@ -4407,6 +4407,51 @@ TRANS(SLL_i, ALL, do_shift_i, a, true, true)
+ TRANS(SRL_i, ALL, do_shift_i, a, false, true)
+ TRANS(SRA_i, ALL, do_shift_i, a, false, false)
  
-+static bool do_shift_r(DisasContext *dc, arg_shiftr *a, bool l, bool u)
++static bool do_mov_cond(DisasContext *dc, DisasCompare *cmp, int rd, TCGv src2)
 +{
-+    TCGv dst, src1, src2;
++    TCGv dst = gen_load_gpr(dc, rd);
 +
-+    /* Reject 64-bit shifts for sparc32. */
-+    if (avail_32(dc) && a->x) {
-+        return false;
-+    }
-+
-+    src2 = tcg_temp_new();
-+    tcg_gen_andi_tl(src2, gen_load_gpr(dc, a->rs2), a->x ? 63 : 31);
-+    src1 = gen_load_gpr(dc, a->rs1);
-+    dst = gen_dest_gpr(dc, a->rd);
-+
-+    if (l) {
-+        tcg_gen_shl_tl(dst, src1, src2);
-+        if (!a->x) {
-+            tcg_gen_ext32u_tl(dst, dst);
-+        }
-+    } else if (u) {
-+        if (!a->x) {
-+            tcg_gen_ext32u_tl(dst, src1);
-+            src1 = dst;
-+        }
-+        tcg_gen_shr_tl(dst, src1, src2);
-+    } else {
-+        if (!a->x) {
-+            tcg_gen_ext32s_tl(dst, src1);
-+            src1 = dst;
-+        }
-+        tcg_gen_sar_tl(dst, src1, src2);
-+    }
-+    gen_store_gpr(dc, a->rd, dst);
++    tcg_gen_movcond_tl(cmp->cond, dst, cmp->c1, cmp->c2, src2, dst);
++    gen_store_gpr(dc, rd, dst);
 +    return advance_pc(dc);
 +}
 +
-+TRANS(SLL_r, ALL, do_shift_r, a, true, true)
-+TRANS(SRL_r, ALL, do_shift_r, a, false, true)
-+TRANS(SRA_r, ALL, do_shift_r, a, false, false)
-+
-+static bool do_shift_i(DisasContext *dc, arg_shifti *a, bool l, bool u)
++static bool trans_MOVcc(DisasContext *dc, arg_MOVcc *a)
 +{
-+    TCGv dst, src1;
++    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
++    DisasCompare cmp;
 +
-+    /* Reject 64-bit shifts for sparc32. */
-+    if (avail_32(dc) && (a->x || a->i >= 32)) {
++    if (src2 == NULL) {
 +        return false;
 +    }
-+
-+    src1 = gen_load_gpr(dc, a->rs1);
-+    dst = gen_dest_gpr(dc, a->rd);
-+
-+    if (avail_32(dc) || a->x) {
-+        if (l) {
-+            tcg_gen_shli_tl(dst, src1, a->i);
-+        } else if (u) {
-+            tcg_gen_shri_tl(dst, src1, a->i);
-+        } else {
-+            tcg_gen_sari_tl(dst, src1, a->i);
-+        }
-+    } else {
-+        if (l) {
-+            tcg_gen_deposit_z_tl(dst, src1, a->i, 32 - a->i);
-+        } else if (u) {
-+            tcg_gen_extract_tl(dst, src1, a->i, 32 - a->i);
-+        } else {
-+            tcg_gen_sextract_tl(dst, src1, a->i, 32 - a->i);
-+        }
-+    }
-+    gen_store_gpr(dc, a->rd, dst);
-+    return advance_pc(dc);
++    gen_compare(&cmp, a->cc, a->cond, dc);
++    return do_mov_cond(dc, &cmp, a->rd, src2);
 +}
 +
-+TRANS(SLL_i, ALL, do_shift_i, a, true, true)
-+TRANS(SRL_i, ALL, do_shift_i, a, false, true)
-+TRANS(SRA_i, ALL, do_shift_i, a, false, false)
++static bool trans_MOVfcc(DisasContext *dc, arg_MOVfcc *a)
++{
++    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
++    DisasCompare cmp;
++
++    if (src2 == NULL) {
++        return false;
++    }
++    gen_fcompare(&cmp, a->cc, a->cond);
++    return do_mov_cond(dc, &cmp, a->rd, src2);
++}
++
++static bool trans_MOVR(DisasContext *dc, arg_MOVR *a)
++{
++    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
++    DisasCompare cmp;
++
++    if (src2 == NULL) {
++        return false;
++    }
++    gen_compare_reg(&cmp, a->cond, gen_load_gpr(dc, a->rs1));
++    return do_mov_cond(dc, &cmp, a->rd, src2);
++}
 +
  #define CHECK_IU_FEATURE(dc, FEATURE)                      \
      if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
          goto illegal_insn;
-@@ -4678,77 +4755,6 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+@@ -4779,66 +4824,12 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+                         goto illegal_insn;  /* WRTBR, WRHPR in decodetree */
+ #ifdef TARGET_SPARC64
+                     case 0x2c: /* V9 movcc */
+-                        {
+-                            int cc = GET_FIELD_SP(insn, 11, 12);
+-                            int cond = GET_FIELD_SP(insn, 14, 17);
+-                            DisasCompare cmp;
+-                            TCGv dst;
+-
+-                            if (insn & (1 << 18)) {
+-                                if (cc == 0) {
+-                                    gen_compare(&cmp, 0, cond, dc);
+-                                } else if (cc == 2) {
+-                                    gen_compare(&cmp, 1, cond, dc);
+-                                } else {
+-                                    goto illegal_insn;
+-                                }
+-                            } else {
+-                                gen_fcompare(&cmp, cc, cond);
+-                            }
+-
+-                            /* The get_src2 above loaded the normal 13-bit
+-                               immediate field, not the 11-bit field we have
+-                               in movcc.  But it did handle the reg case.  */
+-                            if (IS_IMM) {
+-                                simm = GET_FIELD_SPs(insn, 0, 10);
+-                                tcg_gen_movi_tl(cpu_src2, simm);
+-                            }
+-
+-                            dst = gen_load_gpr(dc, rd);
+-                            tcg_gen_movcond_tl(cmp.cond, dst,
+-                                               cmp.c1, cmp.c2,
+-                                               cpu_src2, dst);
+-                            gen_store_gpr(dc, rd, dst);
+-                            break;
+-                        }
++                    case 0x2f: /* V9 movr */
++                        goto illegal_insn;  /* in decodetree */
+                     case 0x2e: /* V9 popc */
+                         tcg_gen_ctpop_tl(cpu_dst, cpu_src2);
+                         gen_store_gpr(dc, rd, cpu_dst);
+                         break;
+-                    case 0x2f: /* V9 movr */
+-                        {
+-                            int cond = GET_FIELD_SP(insn, 10, 12);
+-                            DisasCompare cmp;
+-                            TCGv dst;
+-
+-                            gen_compare_reg(&cmp, cond, cpu_src1);
+-
+-                            /* The get_src2 above loaded the normal 13-bit
+-                               immediate field, not the 10-bit field we have
+-                               in movr.  But it did handle the reg case.  */
+-                            if (IS_IMM) {
+-                                simm = GET_FIELD_SPs(insn, 0, 9);
+-                                tcg_gen_movi_tl(cpu_src2, simm);
+-                            }
+-
+-                            dst = gen_load_gpr(dc, rd);
+-                            tcg_gen_movcond_tl(cmp.cond, dst,
+-                                               cmp.c1, cmp.c2,
+-                                               cpu_src2, dst);
+-                            gen_store_gpr(dc, rd, dst);
+-                            break;
+-                        }
+ #endif
                      default:
                          goto illegal_insn;
-                 }
--#ifdef TARGET_SPARC64
--            } else if (xop == 0x25) { /* sll, V9 sllx */
--                cpu_src1 = get_src1(dc, insn);
--                if (IS_IMM) {   /* immediate */
--                    simm = GET_FIELDs(insn, 20, 31);
--                    if (insn & (1 << 12)) {
--                        tcg_gen_shli_i64(cpu_dst, cpu_src1, simm & 0x3f);
--                    } else {
--                        tcg_gen_shli_i64(cpu_dst, cpu_src1, simm & 0x1f);
--                    }
--                } else {                /* register */
--                    rs2 = GET_FIELD(insn, 27, 31);
--                    cpu_src2 = gen_load_gpr(dc, rs2);
--                    cpu_tmp0 = tcg_temp_new();
--                    if (insn & (1 << 12)) {
--                        tcg_gen_andi_i64(cpu_tmp0, cpu_src2, 0x3f);
--                    } else {
--                        tcg_gen_andi_i64(cpu_tmp0, cpu_src2, 0x1f);
--                    }
--                    tcg_gen_shl_i64(cpu_dst, cpu_src1, cpu_tmp0);
--                }
--                gen_store_gpr(dc, rd, cpu_dst);
--            } else if (xop == 0x26) { /* srl, V9 srlx */
--                cpu_src1 = get_src1(dc, insn);
--                if (IS_IMM) {   /* immediate */
--                    simm = GET_FIELDs(insn, 20, 31);
--                    if (insn & (1 << 12)) {
--                        tcg_gen_shri_i64(cpu_dst, cpu_src1, simm & 0x3f);
--                    } else {
--                        tcg_gen_andi_i64(cpu_dst, cpu_src1, 0xffffffffULL);
--                        tcg_gen_shri_i64(cpu_dst, cpu_dst, simm & 0x1f);
--                    }
--                } else {                /* register */
--                    rs2 = GET_FIELD(insn, 27, 31);
--                    cpu_src2 = gen_load_gpr(dc, rs2);
--                    cpu_tmp0 = tcg_temp_new();
--                    if (insn & (1 << 12)) {
--                        tcg_gen_andi_i64(cpu_tmp0, cpu_src2, 0x3f);
--                        tcg_gen_shr_i64(cpu_dst, cpu_src1, cpu_tmp0);
--                    } else {
--                        tcg_gen_andi_i64(cpu_tmp0, cpu_src2, 0x1f);
--                        tcg_gen_andi_i64(cpu_dst, cpu_src1, 0xffffffffULL);
--                        tcg_gen_shr_i64(cpu_dst, cpu_dst, cpu_tmp0);
--                    }
--                }
--                gen_store_gpr(dc, rd, cpu_dst);
--            } else if (xop == 0x27) { /* sra, V9 srax */
--                cpu_src1 = get_src1(dc, insn);
--                if (IS_IMM) {   /* immediate */
--                    simm = GET_FIELDs(insn, 20, 31);
--                    if (insn & (1 << 12)) {
--                        tcg_gen_sari_i64(cpu_dst, cpu_src1, simm & 0x3f);
--                    } else {
--                        tcg_gen_ext32s_i64(cpu_dst, cpu_src1);
--                        tcg_gen_sari_i64(cpu_dst, cpu_dst, simm & 0x1f);
--                    }
--                } else {                /* register */
--                    rs2 = GET_FIELD(insn, 27, 31);
--                    cpu_src2 = gen_load_gpr(dc, rs2);
--                    cpu_tmp0 = tcg_temp_new();
--                    if (insn & (1 << 12)) {
--                        tcg_gen_andi_i64(cpu_tmp0, cpu_src2, 0x3f);
--                        tcg_gen_sar_i64(cpu_dst, cpu_src1, cpu_tmp0);
--                    } else {
--                        tcg_gen_andi_i64(cpu_tmp0, cpu_src2, 0x1f);
--                        tcg_gen_ext32s_i64(cpu_dst, cpu_src1);
--                        tcg_gen_sar_i64(cpu_dst, cpu_dst, cpu_tmp0);
--                    }
--                }
--                gen_store_gpr(dc, rd, cpu_dst);
--#endif
-             } else if (xop < 0x36) {
-                 if (xop < 0x20) {
-                     goto illegal_insn;
-@@ -4761,42 +4767,10 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-                     case 0x22: /* taddcctv */
-                     case 0x23: /* tsubcctv */
-                     case 0x24: /* mulscc */
--                        goto illegal_insn;  /* in decodetree */
--#ifndef TARGET_SPARC64
-                     case 0x25:  /* sll */
--                        if (IS_IMM) { /* immediate */
--                            simm = GET_FIELDs(insn, 20, 31);
--                            tcg_gen_shli_tl(cpu_dst, cpu_src1, simm & 0x1f);
--                        } else { /* register */
--                            cpu_tmp0 = tcg_temp_new();
--                            tcg_gen_andi_tl(cpu_tmp0, cpu_src2, 0x1f);
--                            tcg_gen_shl_tl(cpu_dst, cpu_src1, cpu_tmp0);
--                        }
--                        gen_store_gpr(dc, rd, cpu_dst);
--                        break;
-                     case 0x26:  /* srl */
--                        if (IS_IMM) { /* immediate */
--                            simm = GET_FIELDs(insn, 20, 31);
--                            tcg_gen_shri_tl(cpu_dst, cpu_src1, simm & 0x1f);
--                        } else { /* register */
--                            cpu_tmp0 = tcg_temp_new();
--                            tcg_gen_andi_tl(cpu_tmp0, cpu_src2, 0x1f);
--                            tcg_gen_shr_tl(cpu_dst, cpu_src1, cpu_tmp0);
--                        }
--                        gen_store_gpr(dc, rd, cpu_dst);
--                        break;
-                     case 0x27:  /* sra */
--                        if (IS_IMM) { /* immediate */
--                            simm = GET_FIELDs(insn, 20, 31);
--                            tcg_gen_sari_tl(cpu_dst, cpu_src1, simm & 0x1f);
--                        } else { /* register */
--                            cpu_tmp0 = tcg_temp_new();
--                            tcg_gen_andi_tl(cpu_tmp0, cpu_src2, 0x1f);
--                            tcg_gen_sar_tl(cpu_dst, cpu_src1, cpu_tmp0);
--                        }
--                        gen_store_gpr(dc, rd, cpu_dst);
--                        break;
--#endif
-+                        goto illegal_insn;  /* in decodetree */
-                     case 0x30:
-                         goto illegal_insn;  /* WRASR in decodetree */
-                     case 0x32:
 -- 
 2.34.1
 
