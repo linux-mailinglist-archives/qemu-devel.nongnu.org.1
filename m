@@ -2,65 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443897CC423
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C18F7CC422
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:14:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsjtf-0003R0-Dl; Tue, 17 Oct 2023 09:14:07 -0400
+	id 1qsjtc-0003G7-GG; Tue, 17 Oct 2023 09:14:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsjtd-0003OT-4f
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:14:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsjtb-0006oa-Bh
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:14:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697548442;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=e4AEoBaVwriKRemVj3D5NyYzIfjLNSiVYdQVwzjJU68=;
- b=Q1R36bThQFn6qXyXp0A6tOEnz2xmmyh8U93h567M1vMY2BGK4jYNleWgZCf+IIe2tAqCDU
- HJVeMSMbzhg/su+mAQQoMSxWXNfNaDamidjk54lYVe7vyQBChim5vqoe8ILIHIoA02dVzI
- gdFaAWJNRtGRlXl4zzt+/hLXx2zavlE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-60-u-2xCcf8NbSn6CeGVVJaBg-1; Tue, 17 Oct 2023 09:13:46 -0400
-X-MC-Unique: u-2xCcf8NbSn6CeGVVJaBg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B30B3827978;
- Tue, 17 Oct 2023 13:13:46 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 712A51C060AE;
- Tue, 17 Oct 2023 13:13:45 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kyle Evans <kevans@freebsd.org>, Warner Losh <imp@bsdimp.com>,
- Juan Quintela <quintela@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH] ARM: Use normal types
-Date: Tue, 17 Oct 2023 15:13:44 +0200
-Message-ID: <20231017131344.19676-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qsjtY-0003CP-2i
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:14:00 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qsjtW-0006lf-Cd
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:13:59 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40684f53d11so63136175e9.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 06:13:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697548436; x=1698153236; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=m1xOgGPa+5II4aHhHHq1l9iB7EhVG70BjSLwH1qE3VU=;
+ b=bgf6jutCtTSeX1t1bck9INoLrb/Zj+DuCymR52qTGKxSEPpoLgsVLo0ZnUPA6v3ugp
+ Qqzu1VRfaKKO8LgMle9Ijmpql36U9AGitKabDkJ1FqUxuER5e+AmADq2ajZYCxwNicOF
+ nEUp0lnajDAv9ZBEwIwfyM26WuDcJynS3M5nQ7VSXF9SgVBeyORSh1drEHNYq/MqBN8g
+ zdANNj0T1tStT+UmyYNenLNtz1OvGu0uBQO9WeKXNwlQxGFpxL76juKkiZFlYMduLjQK
+ dY4uLj2O/hWbTRcvUg+ynRfSpY/gSUZUFX2VzQgtHQKpGqsrnj1K3ZBgUMHs5lS63ej2
+ GOqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697548436; x=1698153236;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=m1xOgGPa+5II4aHhHHq1l9iB7EhVG70BjSLwH1qE3VU=;
+ b=QWUPcNeeKr3D+b9qEalGDs651PyFxrRKhtHIcXGMtlO6UZH3pstWi+GS9PokzvO3CY
+ lms4Zq8GiG959krPyq6IBBD8XcCdB82Fp31BBr8O+IhFvWW57OgmHcuHaY2u3u1gTjqe
+ SIv/CB3i5qHsSk1e1vEXdoBiZimw1NeEyQgn0FNo7I9JruSUBz/APHDljRVVntyeGsD+
+ BsuRiOctc3aQR+9iCKKYlL1WUMhjbUgwzHieyn9rJnUcYlW3OXFMm2PaQ2FbbRN96AlU
+ RwL7Jcj4Qw5jbiVdaFoZQbLILIW70PiReVL58cOgtekv41Mpd/eUBxgYHpfdYlguGDfy
+ eYew==
+X-Gm-Message-State: AOJu0Yz0En27+iEA1QEsU+CZMM3ffTG+QbvJmbEbwgr+7x6HjiS6AWr6
+ zKeLg/qj/jrQOkZ//tCnAswI2dAP8+S3m9MwoFg=
+X-Google-Smtp-Source: AGHT+IHZRiKmB1QSX4S2/E1R6ombbYhX4Ia/qwpaGWc9kaIZxfiXFR4rb8njOllb2Yy8C1Cgs0b72g==
+X-Received: by 2002:a05:600c:4f51:b0:405:4a78:a892 with SMTP id
+ m17-20020a05600c4f5100b004054a78a892mr1789294wmq.9.1697548436045; 
+ Tue, 17 Oct 2023 06:13:56 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ s19-20020a05600c45d300b0040648217f4fsm9901678wmo.39.2023.10.17.06.13.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Oct 2023 06:13:55 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 2916C1FFBB;
+ Tue, 17 Oct 2023 14:13:55 +0100 (BST)
+References: <20230915185453.1871167-1-peter.maydell@linaro.org>
+ <20230915185453.1871167-2-peter.maydell@linaro.org>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz
+ <marcin.juszkiewicz@linaro.org>, Leif Lindholm
+ <quic_llindhol@quicinc.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ qemu-arm@nongnu.org
+Subject: Re: [PATCH 1/2] target/arm: Correct minor errors in Cortex-A710
+ definition
+Date: Tue, 17 Oct 2023 14:13:51 +0100
+In-reply-to: <20230915185453.1871167-2-peter.maydell@linaro.org>
+Message-ID: <87il75bdd8.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,42 +100,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A bit of history from Warner:
 
-This has been that way the bsd-user sources were reorganized in
-2015. I can find no good reason in the FreeBSD sources to do
-this (we've been transitioning from the pre-standardized BSD
-convention of u_intXX_t -> uintXX_t for 25 years now it seems). I
-don't see any old or ancient usage as far back as I looked why they'd
-be different. Up through FreeBSD 12.x, this was u_int32_t (for all of
-them), but they switched to __uint32_t in FreeBSD 13 to avoid
-namespace pollution.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by:  Warner Losh <imp@bsdimp.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Correct a couple of minor errors in the Cortex-A710 definition:
+>  * ID_AA64DFR0_EL1.DebugVer is 9 (indicating Armv8.4 debug architecture)
+>  * ID_AA64ISAR1_EL1.APA is 5 (indicating more PAuth support)
+>  * there is an IMPDEF CPUCFR_EL1, like that on the Neoverse-N1
+>
+> Fixes: e3d45c0a89576 ("target/arm: Implement cortex-a710")
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
----
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-It looks this got lost on previous release
----
- bsd-user/arm/target_arch_reg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/bsd-user/arm/target_arch_reg.h b/bsd-user/arm/target_arch_reg.h
-index 070fa24da1..5f1eea4291 100644
---- a/bsd-user/arm/target_arch_reg.h
-+++ b/bsd-user/arm/target_arch_reg.h
-@@ -32,7 +32,7 @@ typedef struct target_reg {
- typedef struct target_fp_reg {
-     uint32_t        fp_exponent;
-     uint32_t        fp_mantissa_hi;
--    u_int32_t       fp_mantissa_lo;
-+    uint32_t       fp_mantissa_lo;
- } target_fp_reg_t;
- 
- typedef struct target_fpreg {
--- 
-2.41.0
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
