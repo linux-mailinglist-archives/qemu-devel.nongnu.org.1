@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C397CC01D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 12:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAEDC7CC091
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 12:20:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsgwb-0006Tn-Op; Tue, 17 Oct 2023 06:04:57 -0400
+	id 1qsh9b-0006Ju-8G; Tue, 17 Oct 2023 06:18:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qsgwW-0006OH-8C; Tue, 17 Oct 2023 06:04:52 -0400
+ id 1qsh9X-0006Go-6k; Tue, 17 Oct 2023 06:18:19 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qsgwT-0007UT-TY; Tue, 17 Oct 2023 06:04:51 -0400
+ id 1qsh9T-0001Ze-Gl; Tue, 17 Oct 2023 06:18:18 -0400
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S8qMM5dRpz685Yk;
- Tue, 17 Oct 2023 18:04:15 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S8qcm1gJKz6K6ZD;
+ Tue, 17 Oct 2023 18:15:52 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 17 Oct
- 2023 11:04:45 +0100
-Date: Tue, 17 Oct 2023 11:04:44 +0100
-To: Alistair Francis <alistair23@gmail.com>, <qemu-devel@nongnu.org>
+ 2023 11:18:11 +0100
+Date: Tue, 17 Oct 2023 11:18:10 +0100
+To: Alistair Francis <alistair23@gmail.com>
 CC: <cbrowy@avery-design.com>, <wilfred.mallawa@wdc.com>, <mst@redhat.com>,
  <lukas@wunner.de>, <kbusch@kernel.org>, <hchkuo@avery-design.com.tw>,
  <its@irrelevant.dk>, <jiewen.yao@intel.com>, <marcel.apfelbaum@gmail.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>, <qemu-block@nongnu.org>, Alistair
- Francis <alistair.francis@wdc.com>
-Subject: Re: [PATCH v2 2/3] backends: Initial support for SPDM socket support
-Message-ID: <20231017110444.000058be@Huawei.com>
-In-Reply-To: <20231017052155.173577-3-alistair.francis@wdc.com>
+ <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ <qemu-block@nongnu.org>, Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH v2 3/3] hw/nvme: Add SPDM over DOE support
+Message-ID: <20231017111810.00004a84@Huawei.com>
+In-Reply-To: <20231017052155.173577-4-alistair.francis@wdc.com>
 References: <20231017052155.173577-1-alistair.francis@wdc.com>
- <20231017052155.173577-3-alistair.francis@wdc.com>
+ <20231017052155.173577-4-alistair.francis@wdc.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
@@ -69,49 +69,114 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Oct 2023 15:21:54 +1000
+On Tue, 17 Oct 2023 15:21:55 +1000
 Alistair Francis <alistair23@gmail.com> wrote:
 
-> From: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 > 
-> SPDM enables authentication, attestation and key exchange to assist in
-> providing infrastructure security enablement. It's a standard published
-> by the DMTF [1].
+> Setup Data Object Exchance (DOE) as an extended capability for the NVME
+> controller and connect SPDM to it (CMA) to it.
 > 
-> SPDM supports multiple transports, including PCIe DOE and MCTP.
-> This patch adds support to QEMU to connect to an external SPDM
-> instance.
-> 
-> SPDM support can be added to any QEMU device by exposing a
-> TCP socket to a SPDM server. The server can then implement the SPDM
-> decoding/encoding support, generally using libspdm [2].
-> 
-> This is similar to how the current TPM implementation works and means
-> that the heavy lifting of setting up certificate chains, capabilities,
-> measurements and complex crypto can be done outside QEMU by a well
-> supported and tested library.
-> 
-> 1: https://www.dmtf.org/standards/SPDM
-> 2: https://github.com/DMTF/libspdm
-> 
-> Signed-off-by: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
-> Signed-off-by: Chris Browy <cbrowy@avery-design.com>
-> Co-developed-by: Jonathan Cameron <Jonathan.cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> [ Changes by WM
->  - Bug fixes from testing
-> ]
 > Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> [ Changes by AF:
->  - Convert to be more QEMU-ified
->  - Move to backends as it isn't PCIe specific
-> ]
 > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>  docs/specs/index.rst        |   1 +
+>  docs/specs/spdm.rst         | 114 ++++++++++++++++++++++++++++++++++++
+>  include/hw/pci/pci_device.h |   5 ++
+>  include/hw/pci/pcie_doe.h   |   3 +
+>  hw/nvme/ctrl.c              |  53 +++++++++++++++++
+>  5 files changed, 176 insertions(+)
+>  create mode 100644 docs/specs/spdm.rst
+> 
+> diff --git a/docs/specs/index.rst b/docs/specs/index.rst
+> index e58be38c41..c398541388 100644
+> --- a/docs/specs/index.rst
+> +++ b/docs/specs/index.rst
+> @@ -24,3 +24,4 @@ guest hardware that is specific to QEMU.
+>     acpi_erst
+>     sev-guest-firmware
+>     fw_cfg
+> +   spdm
+> diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
+> new file mode 100644
+> index 0000000000..dfdc3cbb4d
+> --- /dev/null
+> +++ b/docs/specs/spdm.rst
+> @@ -0,0 +1,114 @@
+> +======================================================
+> +QEMU Security Protocols and Data Models (SPDM) Support
+> +======================================================
+> +
+> +SPDM enables authentication, attestation and key exchange to assist in
+> +providing infrastructure security enablement. It's a standard published
+> +by the `DMTF`_.
+> +
+> +QEMU supports connecting to a SPDM Responder implementation. This allows an
+> +external application to emulate the SPDM Responder logic for an SPDM device.
+> +
+> +Setting up a SPDM server
+> +========================
+> +
+> +When using QEMU with SPDM devices QEMU will connect to a server which
+> +implements the SPDM functionality.
+> +
+> +SPDM-Utils
+> +----------
+> +
+> +You can use `SPDM Utils`_ to emulate a Responder.
+> +
+> +SPDM-Utils is a Linux applications to manage, test and develop devices
+> +supporting DMTF Security Protocol and Data Model (SPDM). It is written in Rust
+> +and utilises libspdm.
+> +
+> +To use SPDM-Utils you will need to do the followoing:
 
-LGTM.  Will be interesting to see how this evolves as we put more
-requirements on it.
+Spell check needed. following
 
-Given I already signed off, I won't give another tag as that would be
-extremely confusing.
+> +
+> + 1. `Build SPDM Utils`_
+> + 2. `Generate the certificates`_
+> + 3. `Run it as a server`_
+> +
+> +spdm-emu
+> +--------
+> +
+> +You can use `spdm emu`_ to model the
+> +SPDM responder.
+> +
+> +.. code-block:: shell
+> +
+> +    $ cd spdm-emu
+> +    $ git submodule init; git submodule update --recursive
+> +    $ mkdir build; cd build
+> +    $ cmake -DARCH=x64 -DTOOLCHAIN=GCC -DTARGET=Debug -DCRYPTO=openssl ..
+> +    $ make -j32
+> +    $ make copy_sample_key # Build certificates, required for SPDM authentication.
+> +
+> +It is worth noting that the certificates should be in compliance with
+> +PCIe r6.1 sec 6.31.3. This means you will need to add the following to
+> +openssl.cnf
+> +
+> +.. code-block::
+> +
+> +    subjectAltName = otherName:2.23.147;UTF8:Vendor=1b36:Device=0010:CC=010802:REV=02:SSVID=1af4:SSID=1100
+> +    2.23.147 = ASN1:OID:2.23.147
+> +
+> +and then manually regenerate some certificates with:
+> +
+> +.. code-block:: shell
+> +
+> +    openssl req -nodes -newkey ec:param.pem -keyout end_responder.key -out end_responder.req -sha384 -batch -subj "/CN=DMTF libspdm ECP384 responder cert"
 
+For these no need to have on oneline maybe some \ ?
+to make it easier to read if someone looks at the rst file.
+
+> +    openssl x509 -req -in end_responder.req -out end_responder.cert -CA inter.cert -CAkey inter.key -sha384 -days 3650 -set_serial 3 -extensions v3_end -extfile ../openssl.cnf
+> +    openssl asn1parse -in end_responder.cert -out end_responder.cert.der
+> +    cat ca.cert.der inter.cert.der end_responder.cert.der > bundle_responder.certchain.der
+> +
+
+Otherwise this all looks good to me.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
