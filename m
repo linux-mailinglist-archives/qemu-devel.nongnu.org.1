@@ -2,85 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC8BB7CC917
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B987CC932
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:55:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsnGs-0005yW-A4; Tue, 17 Oct 2023 12:50:18 -0400
+	id 1qsnLG-0001CD-Fv; Tue, 17 Oct 2023 12:54:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qsnGq-0005xj-AS
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:50:16 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qsnGj-0006rk-Dx
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:50:16 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 090F81F8A4;
- Tue, 17 Oct 2023 16:50:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697561407; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qsnL8-0001Bj-DZ
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:54:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qsnL6-0007X1-Jo
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:54:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697561679;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8N2JvrJd0u3JM9oQtB87LSgpWUU5B7n0OVWxDx0y8w4=;
- b=qG7nGOpNiMfFE1d7P+tej+1Qb7NKN1p0XfSGMpq7qmTZWw0nx+k8Alu2JyMbVM2+Ntbh9q
- W+wAwVQPiCi2KhgnWM7jNYF2bmOyzrZWMiEV2TdXSI9yhA42gnZDORy9eUXP7QdgmpYVdC
- xU28knn71LKIaQaFxcoB7/zK0k7p//U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697561407;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8N2JvrJd0u3JM9oQtB87LSgpWUU5B7n0OVWxDx0y8w4=;
- b=6p52dkuh/btebsciijBFz76fjRYDd5RDRCNEUZjaLm1YgIslmANPhTVtvg5z1w8avMVFBz
- g7K7iF62xhIiR5Cw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9099E13597;
- Tue, 17 Oct 2023 16:50:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 2gcjFz67LmXLZQAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 17 Oct 2023 16:50:06 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v2 2/3] migration/doc: How to migrate when hosts have
- different features
-In-Reply-To: <20231017151857.21328-3-quintela@redhat.com>
-References: <20231017151857.21328-1-quintela@redhat.com>
- <20231017151857.21328-3-quintela@redhat.com>
-Date: Tue, 17 Oct 2023 13:50:04 -0300
-Message-ID: <87mswhw5vn.fsf@suse.de>
+ bh=93+EZ9iT/5J5h5rDgQuIvUUaXCtYiQfX6XQBSJugr1Y=;
+ b=i1WadqlrazdH1Skvr64BEKGrTCbeV+zpFdamIBO98lVD0k8jIHQ9tu6ARFK3gd0CJzYV9m
+ HSEek4jkOeSBlLP8aXmPgQxCMktnmQg9/Ue/IuCnnS7PJZVlTvqatxwfnUvwa5dw8dfAJP
+ dI1e8TO3Qw8cJoKfmFr8ahDCnmML5xY=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-546-nlNS7snkOg2gJCxHguFpRQ-1; Tue, 17 Oct 2023 12:54:23 -0400
+X-MC-Unique: nlNS7snkOg2gJCxHguFpRQ-1
+Received: by mail-oi1-f197.google.com with SMTP id
+ 5614622812f47-3b2e21c06f9so711023b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 09:54:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697561662; x=1698166462;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=93+EZ9iT/5J5h5rDgQuIvUUaXCtYiQfX6XQBSJugr1Y=;
+ b=TIlIIjXiVje5Jrxk7eodZI4+IW3Wr7BiAM12c76OX4MVSRcSid7Af70qTvVduUgOVC
+ D2h2xxV9fd3J2lx6DbiGYlyEGzODKWXHaTJsj+3sTbQddT5XkQ1UV1qn0F0sqFLdf6KT
+ yqbHdGXl4/B5JqzwenImX89RSdIvZp0I+HK1zRh2rI7DY8Ap7GW7yPXMR0lwyCKT677p
+ q77WNSuqnl3Tt52QbEwXOYOtRtW5Io57li6bAoputln7p3fliGaJEb03u2mvF4QfSr7o
+ z58bznDPFZllJrEJ8Jd1baDHHIWFI6AkEbHV/Pluh6IgV4yH+4Czqthrb5inTAUSMpyv
+ vKwQ==
+X-Gm-Message-State: AOJu0YzfgcAoWH3Oo43qQw7kl63JVvATPHDNJtilP74bzgrplR+9TbMw
+ 7+/tCPDaVaYt2+QHV+67eYy+PGTgpY8eCuE1+ZTfppBfib135s2N6uPskJdK0ANhtWxzgg/2lb2
+ jhqxZ40KooAkGVfM=
+X-Received: by 2002:a05:6808:218d:b0:3a7:44da:d5e6 with SMTP id
+ be13-20020a056808218d00b003a744dad5e6mr3899165oib.38.1697561662453; 
+ Tue, 17 Oct 2023 09:54:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHw/+fJ/KhFV8m5WYyP12jZXbrowA2hD4ZgxvyB4cOH2oRkISVbXHPiskZXvaRdXUAZTBhBXA==
+X-Received: by 2002:a05:6808:218d:b0:3a7:44da:d5e6 with SMTP id
+ be13-20020a056808218d00b003a744dad5e6mr3899132oib.38.1697561662202; 
+ Tue, 17 Oct 2023 09:54:22 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ az8-20020a056638418800b00454df11c71csm590032jab.97.2023.10.17.09.54.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Oct 2023 09:54:21 -0700 (PDT)
+Date: Tue, 17 Oct 2023 10:54:19 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Ankit Agrawal <ankita@nvidia.com>, "clg@redhat.com" <clg@redhat.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
+ <ani@anisinha.ca>, "berrange@redhat.com" <berrange@redhat.com>,
+ "eduardo@habkost.net" <eduardo@habkost.net>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
+ "eblake@redhat.com" <eblake@redhat.com>, "armbru@redhat.com"
+ <armbru@redhat.com>, "david@redhat.com" <david@redhat.com>,
+ "gshan@redhat.com" <gshan@redhat.com>, "Jonathan.Cameron@huawei.com"
+ <Jonathan.Cameron@huawei.com>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
+ <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
+ (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Andy
+ Currid <acurrid@nvidia.com>, Dheeraj Nigam <dnigam@nvidia.com>, Uday Dhoke
+ <udhoke@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, libvir-list@redhat.com,
+ Laine Stump <laine@redhat.com>
+Subject: Re: [PATCH v2 3/3] qom: Link multiple numa nodes to device using a
+ new object
+Message-ID: <20231017105419.1469e5c9.alex.williamson@redhat.com>
+In-Reply-To: <20231017152830.GC3952@nvidia.com>
+References: <20231007201740.30335-1-ankita@nvidia.com>
+ <20231007201740.30335-4-ankita@nvidia.com>
+ <20231009151611.02175567.alex.williamson@redhat.com>
+ <BY5PR12MB3763CA80432643CE144C7A23B0D6A@BY5PR12MB3763.namprd12.prod.outlook.com>
+ <20231017092116.09ad2737.alex.williamson@redhat.com>
+ <20231017152830.GC3952@nvidia.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -7.10
-X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,151 +120,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+On Tue, 17 Oct 2023 12:28:30 -0300
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-> Sometimes devices have different features depending of things outside
-> of qemu.  For instance the kernel.  Document how to handle that cases.
->
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> Acked-by: Peter Xu <peterx@redhat.com>
->
-> ---
->
-> If you have some example to put here, I am all ears.  I guess that
-> virtio-* with some features that are on qemu but not on all kernel
-> would do the trick, but I am not a virtio guru myself.  Patches
-> welcome.
-> ---
->  docs/devel/migration.rst | 96 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 96 insertions(+)
->
-> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-> index 5ef2b36e9e..e671df729e 100644
-> --- a/docs/devel/migration.rst
-> +++ b/docs/devel/migration.rst
-> @@ -358,6 +358,102 @@ machine types to have the right value: ::
->           ...
->       };
->  
-> +A device with diferent features on both sides
-> +---------------------------------------------
-> +
-> +Let's assume that we are using the same QEMU binary on both sides,
-> +just to make the things easier.  But we have a device that has
-> +different features on both sides of the migration.  That can be
-> +because the devices are different, because the kernel driver of both
-> +devices have different features, whatever.
-> +
-> +How can we get this to work with migration.  The way to do that is
-> +"theoretically" easy.  You have to get the features that the device
-> +has in the source of the migration.  The features that the device has
-> +on the target of the migration, you get the intersection of the
-> +features of both sides, and that is the way that you should launch
-> +QEMU.
-> +
-> +Notice that this is not completely related to QEMU.  The most
-> +important thing here is that this should be handle by the managing
+> On Tue, Oct 17, 2023 at 09:21:16AM -0600, Alex Williamson wrote:
+> 
+> > Do we therefore need some programatic means for the kernel driver to
+> > expose the node configuration to userspace?  What interfaces would
+> > libvirt like to see here?  Is there an opportunity that this could
+> > begin to define flavors or profiles for variant devices like we have
+> > types for mdev devices where the node configuration would be
+> > encompassed in a device profile?   
+> 
+> I don't think we should shift this mess into the kernel..
+> 
+> We have a wide range of things now that the orchestration must do in
+> order to prepare that are fairly device specific. I understand in K8S
+> configurations the preference is using operators (aka user space
+> drivers) to trigger these things.
+> 
+> Supplying a few extra qemu command line options seems minor compared
+> to all the profile and provisioning work that has to happen for other
+> device types.
 
-s/handle/handled/
+This seems to be a growing problem for things like mlx5-vfio-pci where
+there's non-trivial device configuration necessary to enable migration
+support.  It's not super clear to me how those devices are actually
+expected to be used in practice with that configuration burden.
 
-> +application that launches QEMU.  If QEMU is configured correctly, the
-> +migration will suceeed.
+Are we simply saying here that it's implicit knowledge that the
+orchestration must posses that when assigning devices exactly matching
+10de:2342 or 10de:2345 when bound to the nvgrace-gpu-vfio-pci driver
+that 8 additional NUMA nodes should be added to the VM and an ACPI
+generic initiator object created linking those additional nodes to the
+assigned GPU?
 
-s/suceeed/succeed/
+Is libvirt ok with that specification or are we simply going to bubble
+this up as a user problem? Thanks,
 
-> +
-> +Once that we have defined that, doing this is complicated.  Almost all
+Alex
 
-I get what you mean here, but it is slightly confusing. Maybe
-
-"Once we have defined that, doing it is complicated." or
-"That said, actually doing it is complicated."
-
-> +devices are bad at being able to be launched with only some features
-> +enabled.  With one big exception: cpus.
-> +
-> +You can read the documentation for QEMU x86 cpu models here:
-> +
-> +https://qemu-project.gitlab.io/qemu/system/qemu-cpu-models.html
-> +
-> +See when they talk about migration they recommend that one chooses the
-> +newest cpu model that is supported for all cpus.
-> +
-> +Let's say that we have:
-> +
-> +Host A:
-> +
-> +Device X has the feature Y
-> +
-> +Host B:
-> +
-> +Device X has not the feature Y
-> +
-> +If we try to migrate without any care from host A to host B, it will
-> +fail because when migration tries to load the feature Y on
-> +destination, it will find that the hardware is not there.
-> +
-> +Doing this would be the equivalent of doing with cpus:
-> +
-> +Host A:
-> +
-> +$ qemu-system-x86_64 -cpu host
-> +
-> +Host B:
-> +
-> +$ qemu-system-x86_64 -cpu host
-> +
-> +When both hosts have different cpu features this is waranteed to
-> fail.
-
-s/waranteed/guaranteed/
-
-> +Especially if Host B has less features than host A.  If host A has
-> +less features than host B, sometimes it works.  Important word of last
-> +sentence is "sometimes".
-> +
-> +So, forgetting about cpu models and continuing with the -cpu host
-> +example, let's see that the differences of the cpus is that Host A and
-> +B have the following features:
-> +
-> +Features:   'pcid'  'stibp' 'taa-no'
-> +Host A:        X       X
-> +Host B:                        X
-> +
-> +And we want to migrate between them, the way configure both QEMU cpu
-> +will be:
-> +
-> +Host A:
-> +
-> +$ qemu-system-x86_64 -cpu host,pcid=off,stibp=off
-> +
-> +Host B:
-> +
-> +$ qemu-system-x86_64 -cpu host,taa-no=off
-> +
-> +And you would be able to migrate between them.  It is responsability
-> +of the management application or of the user to make sure that the
-> +configuration is correct.  QEMU don't know how to look at this kind of
-
-s/don't/doesn't/
-
-> +features in general.
-> +
-> +Notice that we don't recomend to use -cpu host for migration.  It is
-> +used in this example because it makes the exampler simpler.
-
-s/exampler/example/
-
-> +
-> +Other devices have worse control about individual features.  If they
-> +want to be able to migrate between hosts that show different features,
-> +the device needs a way to configure which ones it is going to use.
-> +
-> +In this section we have considered that we are using the same QEMU
-> +binary in both sides of the migration.  If we use different QEMU
-> +versions process, then we need to have into account all other
-> +differences and the examples become even more complicated.
->  
->  VMState
->  -------
 
