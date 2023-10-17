@@ -2,64 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407187CCF8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 23:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 923877CCFD9
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 00:01:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsrzh-0005uk-J3; Tue, 17 Oct 2023 17:52:53 -0400
+	id 1qss79-0007pa-Jt; Tue, 17 Oct 2023 18:00:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qsrzd-0005uV-4r
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 17:52:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qss6t-0007nW-Ug
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:00:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qsrzb-0007jz-7k
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 17:52:48 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qss6q-0000W0-MU
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 18:00:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697579563;
+ s=mimecast20190719; t=1697580013;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=SSPtkiuj8aRMGBE14v725Qq+saVmS0v8CCRsIBqAVz0=;
- b=WES7IDHkOlLutR6pWG4DBkKoMnCmVU1X+AFG8v40+8cTv4YnKESdxMGNyTZu3axqGvCMmy
- aVelxdFr0jWWXeR4/3UhUW1F+2eWajjkVQAzLGRp+ckIOMyJG/tEcHibVca4qLDerbTyBb
- 3G0V5hGjsIJSqeES3qI9WkhzpGCB8Ow=
+ bh=MQyFeapujUzC5EPFuR98l+MElDouPf72NlPSas9OsIc=;
+ b=WpH9WbC3GWaSEx+zQMc+SSbdmEINoZ7HToLTQqG00G3bm9I0MX+hhGm5eKW3S05RZeGEW7
+ QdLSZzdWBhcq0K+cfNoBbo5c1IdvpenQvdrhBhXmC/0TJa919tw2hqmCQwm1vGnXrLNo5i
+ Mit6j5YOSK7148Z+f0EA5DPhakRefe0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-607-qPQfQxMJPJ6rsW_ixk7hDA-1; Tue, 17 Oct 2023 17:52:26 -0400
-X-MC-Unique: qPQfQxMJPJ6rsW_ixk7hDA-1
+ us-mta-314-KguWsQ-WNV25D_4hfUfzyg-1; Tue, 17 Oct 2023 18:00:10 -0400
+X-MC-Unique: KguWsQ-WNV25D_4hfUfzyg-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2098C3C28643;
- Tue, 17 Oct 2023 21:52:26 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94F9B2932494;
+ Tue, 17 Oct 2023 22:00:09 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B867625C8;
- Tue, 17 Oct 2023 21:52:25 +0000 (UTC)
-Date: Tue, 17 Oct 2023 16:52:24 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D78B25C8;
+ Tue, 17 Oct 2023 22:00:08 +0000 (UTC)
+Date: Tue, 17 Oct 2023 17:00:06 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [RFC PATCH v2 00/78] Strict disable implicit fallthrough
-Message-ID: <sujy5au5epxhg7urtyf626m2syrthpsbzdxdd4f2ua6fzkjnzu@2g3zzocqgyld>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Song Gao <gaosong@loongson.cn>, 
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ "open list:ARM SMMU" <qemu-arm@nongnu.org>
+Subject: Re: [RFC PATCH v2 01/78] include/qemu/compiler.h: replace
+ QEMU_FALLTHROUGH with fallthrough
+Message-ID: <3e2wiwbl3g5t37msvmxcjxi5mhzpaazkd3phbw2p2dauuophxo@np3sbg6l7fq3>
 References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
+ <2e08cff874b2f9fc4143bdcde87ebba9b70b356c.1697183699.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <2e08cff874b2f9fc4143bdcde87ebba9b70b356c.1697183699.git.manos.pitsidianakis@linaro.org>
 User-Agent: NeoMutt/20230517
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,109 +84,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 13, 2023 at 10:56:27AM +0300, Emmanouil Pitsidianakis wrote:
-> /* resubmitted because git-send-email crashed with previous attempt */
-> 
-> Hello,
-> 
-> This RFC is inspired by the kernel's move to -Wimplicit-fallthrough=3
-> back in 2019.[0]
-> We take one step (or two) further by increasing it to 5 which rejects
-> fall through comments and requires an attribute statement.
-> 
-> [0]:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a035d552a93b
-> 
-> The line differences are not many, but they spread all over different
-> subsystems, architectures and devices. An attempt has been made to split
-> them in cohesive patches to aid post-RFC review. Part of the RFC is to
-> determine whether these patch divisions needs improvement.
-> 
-> Main questions this RFC poses
-> =============================
-> 
-> - Is this change desirable and net-positive.
+On Fri, Oct 13, 2023 at 10:56:28AM +0300, Emmanouil Pitsidianakis wrote:
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-I think so - consistency eases code maintenance, and being able to
-define a keyword-like macro used like any other control-flow statement
-is nicer than a magic comment.
+The subject line gives the 'what', but the commit body is
+conspicuously lacking on the 'why'.
 
-> - Should the `fallthrough;` pseudo-keyword be defined like in the Linux
->   kernel, or use glib's G_GNUC_FALLTHROUGH, or keep the already existing
->   QEMU_FALLTHROUGH macro.
+> ---
+>  audio/pwaudio.c              |  8 ++++----
+>  hw/arm/smmuv3.c              |  2 +-
+>  include/qemu/compiler.h      | 30 +++++++++++++++++++++++-------
+>  include/qemu/osdep.h         |  4 ++--
+>  target/loongarch/cpu.c       |  4 ++--
+>  target/loongarch/translate.c |  2 +-
+>  tcg/optimize.c               |  8 ++++----
+>  7 files changed, 37 insertions(+), 21 deletions(-)
+> 
+> diff --git a/audio/pwaudio.c b/audio/pwaudio.c
+> index 3ce5f6507b..bf26fadb06 100644
+> --- a/audio/pwaudio.c
+> +++ b/audio/pwaudio.c
+> @@ -1,29 +1,29 @@
+>  /*
+>   * QEMU PipeWire audio driver
+>   *
+>   * Copyright (c) 2023 Red Hat Inc.
+>   *
+>   * Author: Dorinda Bassey       <dbassey@redhat.com>
+>   *
+>   * SPDX-License-Identifier: GPL-2.0-or-later
+>   */
+>  
+> +#include <spa/param/audio/format-utils.h>
+> +#include <spa/utils/ringbuffer.h>
+> +#include <spa/utils/result.h>
+> +#include <spa/param/props.h>
+>  #include "qemu/osdep.h"
+>  #include "qemu/module.h"
+>  #include "audio.h"
+>  #include <errno.h>
+>  #include "qemu/error-report.h"
+>  #include "qapi/error.h"
+> -#include <spa/param/audio/format-utils.h>
+> -#include <spa/utils/ringbuffer.h>
+> -#include <spa/utils/result.h>
+> -#include <spa/param/props.h>
 
-This seems like it only affects the one place where we define the
-keyword.  As long as all switch statements actually using it stick to
-one style, I'm less concerned about the magic used to get the style
-working in the first place.
+Rearranging #includes should be called out in the commit message, or
+even better split into its own commit as it is distinct from renaming
+the fallthrough macro.
 
-> - Should fallthrough comments be removed if they do not include extra
->   information.
+>  
+>  #include <pipewire/pipewire.h>
+>  #include "trace.h"
+>  
+>  #define AUDIO_CAP "pipewire"
+>  #define RINGBUFFER_SIZE    (1u << 22)
+>  #define RINGBUFFER_MASK    (RINGBUFFER_SIZE - 1)
+>  
+>  #include "audio_int.h"
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 6f2b2bd45f..545d82ff04 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -1166,210 +1166,210 @@ smmuv3_invalidate_ste(gpointer key, gpointer value, gpointer user_data)
 
-That would be fine by me - but we'll see what other reviewers say.
-I'm going to review on just the files I normally touch.
+Wow, your git settings picked up a LOT of context - makes for a longer
+email, but in this particular case, it IS nice to see the impact of
+the fallthrough by seeing the full switch statment.
 
-> 
-> Some external resources
-> =======================
-> 
-> See the RFC discussion in the kernel:
-> 
-> https://lore.kernel.org/lkml/1d2830aadbe9d8151728a7df5b88528fc72a0095.1564549413.git.joe@perches.com/
-> 
-> The `fallthrough;` pseudo-keyword in the kernel source code:
-> 
-> https://elixir.bootlin.com/linux/latest/C/ident/fallthrough
-> 
-> In summary, I quote the doc comment and definition:
-> 
->     /*
->      * Add the pseudo keyword 'fallthrough' so case statement blocks
->      * must end with any of these keywords:
->      *   break;
->      *   fallthrough;
->      *   continue;
->      *   goto <label>;
->      *   return [expression];
->      *
->      *  gcc: https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html#Statement-Attributes
->      */
->     #if __has_attribute(__fallthrough__)
->     # define fallthrough                    __attribute__((__fallthrough__))
->     #else
->     # define fallthrough                    do {} while (0)  /* fallthrough */
->     #endif
-> 
-> Background - Motivation
-> =======================
-> 
-> The C switch statement allows you to conditionally goto different labels
-> depending on a value. A break; statement conveniently goto's the end of
-> the switch. If a "case" does not end in a break, we say that the control
-> flow falls through the next case label, if any, implicitly. This can
-> lead to bugs and QEMU uses the GCC warning -Wimplicit-fallthrough to
-> prevent this.
-> 
-> Currently, QEMU is built with -Wimplicit-fallthrough=2. This makes GCC's
-> static analyzer check for a case-insensitive matches of the .*falls?[
-> \t-]*thr(ough|u).* regular expression. This means the following list of
-> comments taken from QEMU all disable the implicit fallthrough warning:
-> 
-> - /* FALLTHRU */
-> - /* fall through */
-> - /* Fall through.  */
-> - /* Fall through... */
-> - /* fall through if hEventTimeout is signaled */
-> - /* FALL THROUGH */
-> 
-> To keep a constistent code style, this commit adds a macro `fallthrough`
-> that looks like a C keyword but expands to an attribute statement in
-> supported compilers (GCC at the moment).
-> 
-> Note: there was already such a macro, QEMU_FALLTHROUGH, and it was used
-> only around 7 times in the code base. The first commit replaces it.
+...
+>          qemu_mutex_lock(&s->mutex);
+>          switch (type) {
+>          case SMMU_CMD_SYNC:
+...
+>          case SMMU_CMD_TLBI_NH_ALL:
+>              if (!STAGE1_SUPPORTED(s)) {
+>                  cmd_error = SMMU_CERROR_ILL;
+>                  break;
+>              }
+> -            QEMU_FALLTHROUGH;
+> +            fallthrough;
+>          case SMMU_CMD_TLBI_NSNH_ALL:
 
-Seems reasonable to me; we'll see what other comments you get.
+Yes, that still looks legible to me.
+
+> +++ b/include/qemu/compiler.h
+> @@ -1,215 +1,231 @@
+...
+>  #if defined(__OPTIMIZE__)
+>  #define QEMU_ALWAYS_INLINE  __attribute__((always_inline))
+>  #else
+>  #define QEMU_ALWAYS_INLINE
+>  #endif
+>  
+> -/**
+> - * In most cases, normal "fallthrough" comments are good enough for
+> - * switch-case statements, but sometimes the compiler has problems
+> - * with those. In that case you can use QEMU_FALLTHROUGH instead.
+> +/*
+> + * Add the pseudo keyword 'fallthrough' so case statement blocks
+> + * must end with any of these keywords:
+> + *   break;
+> + *   fallthrough;
+> + *   continue;
+> + *   goto <label>;
+> + *   return [expression];
+> + *
+> + *  gcc: https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html#Statement-Attributes
+>   */
+> -#if __has_attribute(fallthrough)
+> -# define QEMU_FALLTHROUGH __attribute__((fallthrough))
+> +
+> +/*
+> + * glib_macros.h contains its own definition of fallthrough, so if we define
+> + * the pseudokeyword here it will expand when the glib header checks for the
+> + * attribute. glib headers must be #included after this header.
+> + */
+> +#ifdef fallthrough
+> +#undef fallthrough
+> +#endif
+> +
+> +#if __has_attribute(__fallthrough__)
+> +# define fallthrough                    __attribute__((__fallthrough__))
+>  #else
+> -# define QEMU_FALLTHROUGH do {} while (0) /* fallthrough */
+> +# define fallthrough                    do {} while (0)  /* fallthrough */
+>  #endif
+>
+
+Looks okay.
+
+> +++ b/include/qemu/osdep.h
+> @@ -1,171 +1,171 @@
+>  /*
+>   * TARGET_WORDS_BIGENDIAN was replaced with TARGET_BIG_ENDIAN. Prevent it from
+>   * creeping back in.
+>   */
+>  #pragma GCC poison TARGET_WORDS_BIGENDIAN
+>  
+> -#include "qemu/compiler.h"
+> -
+>  /* Older versions of C++ don't get definitions of various macros from
+>   * stdlib.h unless we define these macros before first inclusion of
+>   * that system header.
+>   */
+...
+>  /*
+>   * This is somewhat like a system header; it must be outside any extern "C"
+>   * block because it includes system headers itself, including glib.h,
+>   * which will not compile if inside an extern "C" block.
+>   */
+>  #include "glib-compat.h"
+>  
+> +#include "qemu/compiler.h"
+> +
+
+The commit message should detail why we had to sink this include
+later, and any audit you did to ensure that none of the intermediate
+code is impacted by that change.
+
+At this point, since the series is RFC, I'll leave merely:
+
+Acked-by: Eric Blake <eblake@redhat.com>
+
+but if others like the approach, I'll probably replace it with R-b in
+the next version.
 
 -- 
 Eric Blake, Principal Software Engineer
