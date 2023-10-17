@@ -2,78 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930B17CB7AF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 02:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B8E7CB7F4
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 03:27:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsYNF-00034j-HA; Mon, 16 Oct 2023 20:55:55 -0400
+	id 1qsYqw-0001Tw-0o; Mon, 16 Oct 2023 21:26:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsYMf-000316-Br; Mon, 16 Oct 2023 20:55:17 -0400
-Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qsYqt-0001Tl-Mp
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 21:26:31 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qsYMa-0003F3-9e; Mon, 16 Oct 2023 20:55:17 -0400
-Received: by mail-ua1-x932.google.com with SMTP id
- a1e0cc1a2514c-7b61de8e456so1649138241.0; 
- Mon, 16 Oct 2023 17:55:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qsYqr-0000kX-LG
+ for qemu-devel@nongnu.org; Mon, 16 Oct 2023 21:26:31 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-53e08e439c7so8497647a12.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 18:26:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697504111; x=1698108911; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TsqcS5xtjBJPhr3wHZG8wAp/K/rbX/Q53TYOIKjjMVE=;
- b=A7tCPFPNJg3bcN79SWNw5WUzk56o6R3qMkHsx294Nhnco3raSHns7ryb52JeGDBw6p
- n8rfkeyL/khampqrIJYORDsrNiMsA8onRdtJgjurlc/bctPDU58xihDg0A3cHbf1KwuQ
- vRfo5Y0iUu9L73QuzrvptYIpNiy5/p1tTP3J3JgzqsnlArTVjFgDLGBUyLRDRzzAZf4U
- 45COoo9E3pxp+dBbb0gMXIBlFiByA7DED6rGoph6060D3r7UR0V5CUG/9uQSzZxfyBqM
- gqmoCOOUxJ17l48UUH2KFMHNk74Nz4m3vsO6e1UQwOR7MjusKDnZeXym1MxoU/Q7xaqP
- L1BA==
+ d=chromium.org; s=google; t=1697505986; x=1698110786; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=4te3KuQOJmUsyYrku841akAUB/u8DN0JlDTssfoUbDE=;
+ b=a+5MlU7fqpe8e3S+/z6aXY1Xx06SZWZmXKaV78BBRwXxQkwOTYQ2J8NuLPSZalAOC5
+ u2xb4zakFvbmmVpxaRaj3BNcs6JfmFbPmeTHI68mcDlVP0ha5w+DDuQw4y9FlNLc3OSY
+ z3CJK+cHLvFQxTWMmO8UDIYykZSyiyyxk3ok0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697504111; x=1698108911;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TsqcS5xtjBJPhr3wHZG8wAp/K/rbX/Q53TYOIKjjMVE=;
- b=Rb0sZ5yZZGJtKbZcG/RUXVLVhwHUohHcdU/lb8irYlACxk/A+xvT+decqAB5Y3KerB
- XfUNhEsYusDjXtoIh8vdT/VAXoACWy1WnAlIMHvbM9ySx0J38E2My3sDwypd8f1hSYND
- 9b1kRjdwOEKU/2/0Gspx1DU5XRzhVDm7Ljt5F6VqKNgqVkb6PWEq128cYdA+lArn/pJq
- lgNhfxGr8QLQDrm3DXO56iTW+uOqQVa7AfXRDGvaOqJAQ6SDKoHE3eZPNLrryx1KbjXG
- attuBhS88b1J8v+Dvc1MznjAVPpq50wbe3v5CDhA1eH57xM6/J7cKF+HFFZ/3pOR5Adm
- JuQA==
-X-Gm-Message-State: AOJu0YyPRhVNCZ0WRc5+SpfRs5BFai2iCBURGFt6hsRz3H5RSRWRMM8g
- /PWa8ygvapdKtUGl5t/beHt7YG8FHJt3Oe0BdL4=
-X-Google-Smtp-Source: AGHT+IFDwLHG/PI33fbjlg4nTEbV5xbJHELMsF8668qpFyWMTl/If35v6afKuQrghEu/hDae/WUFkTKjA04kPpyu4wM=
-X-Received: by 2002:a1f:9b85:0:b0:49b:adce:e2d1 with SMTP id
- d127-20020a1f9b85000000b0049badcee2d1mr1043441vke.10.1697504110703; Mon, 16
- Oct 2023 17:55:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697505986; x=1698110786;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4te3KuQOJmUsyYrku841akAUB/u8DN0JlDTssfoUbDE=;
+ b=IMY7Fm4KTck2W2nTszeKO7An5VDumW3wZw9swJUHQE2bfOEWydAwfg8rliNZ74Bh/j
+ YcVxeYTfPfo9YGJ0MrSX3Pihb5HDGShJVOL43HA4MuBV/1WllISdme1d24KO7WcSiqB/
+ xnnPxYDvUVfbNxvXltUHmKYe3LNiihGvY+BIo+YriTdWEyUYCmmxizlDQWCxR0inrOAM
+ LbmS/A47LuQhqQjTEgHZGreeTWtxCFFdpF9LtpWB1M+bLEycrV3yZPr6TkEZ/lnxRkUT
+ kzXrNe2gIC8ilAPoaiIXH3g2eQYWqBdjEVwHGFBHBR2lAF9ocH1mTMY61JOEyJDGJ4ul
+ ZcJQ==
+X-Gm-Message-State: AOJu0Yxkt4OwI2Z7S+lWVQKUrQiRsXvvlFNef+0UO81CMvC/FxaQTvSF
+ BKyY3+fZtGY6JnOJH3P5o9WCsXMv9n6hkWEO1qKfisyw
+X-Google-Smtp-Source: AGHT+IGTAmmJtyToDC+k3xDxlz5fTYo/K1o1eZe4Pocfru/xCS+fV/X6dtBPkqrj66PgK6SJaKel6A==
+X-Received: by 2002:aa7:c90c:0:b0:53e:2e74:7e0c with SMTP id
+ b12-20020aa7c90c000000b0053e2e747e0cmr633873edt.24.1697505986206; 
+ Mon, 16 Oct 2023 18:26:26 -0700 (PDT)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com.
+ [209.85.208.48]) by smtp.gmail.com with ESMTPSA id
+ u15-20020a50c04f000000b0053eb69ca1bcsm276803edd.92.2023.10.16.18.26.25
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 16 Oct 2023 18:26:25 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id
+ 4fb4d7f45d1cf-536ef8a7dcdso3977a12.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 18:26:25 -0700 (PDT)
+X-Received: by 2002:a50:d0d1:0:b0:525:573c:643b with SMTP id
+ g17-20020a50d0d1000000b00525573c643bmr36625edf.7.1697505985029; Mon, 16 Oct
+ 2023 18:26:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231016111736.28721-1-rkanwal@rivosinc.com>
-In-Reply-To: <20231016111736.28721-1-rkanwal@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 17 Oct 2023 10:54:43 +1000
-Message-ID: <CAKmqyKN+w_57hMhqi7WNbLdK7nQNJFQL5YNB-cAyuc_hrgW0kQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/6] target/riscv: Add RISC-V Virtual IRQs and IRQ
- filtering support
-To: Rajnesh Kanwal <rkanwal@rivosinc.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, 
- apatel@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x932.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+References: <20231006010835.444-1-gurchetansingh@chromium.org>
+ <CAMxuvay04ZF7awEG0Hv9mhPvUTnjMmQ+TL4a=hMEkFwrgcR5Vw@mail.gmail.com>
+In-Reply-To: <CAMxuvay04ZF7awEG0Hv9mhPvUTnjMmQ+TL4a=hMEkFwrgcR5Vw@mail.gmail.com>
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+Date: Mon, 16 Oct 2023 18:26:13 -0700
+X-Gmail-Original-Message-ID: <CAAfnVBkaU7NRwbkgC3tuf5R4U5vVX2rvj-1=0AE5wyQjT0-=Rw@mail.gmail.com>
+Message-ID: <CAAfnVBkaU7NRwbkgC3tuf5R4U5vVX2rvj-1=0AE5wyQjT0-=Rw@mail.gmail.com>
+Subject: Re: [PATCH v17 0/9] gfxstream + rutabaga_gfx
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
+ akihiko.odaki@gmail.com, 
+ ray.huang@amd.com, alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is, 
+ ernunes@redhat.com, manos.pitsidianakis@linaro.org, 
+ mark.cave-ayland@ilande.co.uk, thuth@redhat.com
+Content-Type: multipart/alternative; boundary="0000000000003ea83d0607df69ce"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,90 +99,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 16, 2023 at 9:19=E2=80=AFPM Rajnesh Kanwal <rkanwal@rivosinc.co=
-m> wrote:
->
-> This series adds M and HS-mode virtual interrupt and IRQ filtering suppor=
-t.
-> This allows inserting virtual interrupts from M/HS-mode into S/VS-mode
-> using mvien/hvien and mvip/hvip csrs. IRQ filtering is a use case of
-> this change, i-e M-mode can stop delegating an interrupt to S-mode and
-> instead enable it in MIE and receive those interrupts in M-mode and then
-> selectively inject the interrupt using mvien and mvip.
->
-> Also, the spec doesn't mandate the interrupt to be actually supported
-> in hardware. Which allows M/HS-mode to assert virtual interrupts to
-> S/VS-mode that have no connection to any real interrupt events.
->
-> This is defined as part of the AIA specification [0], "5.3 Interrupt
-> filtering and virtual interrupts for supervisor level" and "6.3.2 Virtual
-> interrupts for VS level".
->
-> Most of the testing is done by hacking around OpenSBI and linux host.
-> The changes for those can be found at [1] and [2].
->
-> It's my first touch on RISC-V qemu IRQ subsystem. Any feedback would
-> be much appreciated.
->
-> The change can also be found on github [3].
->
-> TODO: This change doesn't support delegating virtual interrupts injected
-> by M-mode to VS-mode by the Hypervisor. This is true for bits 13:63 only.
+--0000000000003ea83d0607df69ce
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks!
+On Mon, Oct 9, 2023 at 12:15=E2=80=AFAM Marc-Andr=C3=A9 Lureau <
+marcandre.lureau@redhat.com> wrote:
 
-Applied to riscv-to-apply.next
+> Hi
+>
+> On Fri, Oct 6, 2023 at 5:08=E2=80=AFAM Gurchetan Singh
+> <gurchetansingh@chromium.org> wrote:
+> >
+> > From: Gurchetan Singh <gurchetansingh@google.com>
+> >
+> > Branch containing changes:
+> >
+> > https://gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxstream-v17
+> >
+> > Changes since v16:
+> >
+> > - Fixed typo mentioned here:
+> >
+> > https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg01407.html
+> >
+> > Antonio Caggiano (2):
+> >   virtio-gpu: CONTEXT_INIT feature
+> >   virtio-gpu: blob prep
+> >
+> > Dr. David Alan Gilbert (1):
+> >   virtio: Add shared memory capability
+> >
+> > Gerd Hoffmann (1):
+> >   virtio-gpu: hostmem
+> >
+> > Gurchetan Singh (5):
+> >   gfxstream + rutabaga prep: added need defintions, fields, and options
+> >   gfxstream + rutabaga: add initial support for gfxstream
+> >   gfxstream + rutabaga: meson support
+> >   gfxstream + rutabaga: enable rutabaga
+> >   docs/system: add basic virtio-gpu documentation
+> >
+>
+> Except for a few misc style issues, the series looks good to me.
+>
+> Gerd, as the virtio-gpu "odd fixes" maintainer, any chance you take a
+> quick look and ack the series? Even better if you send a PR :)
+>
 
-Alistair
+Ping.  Branch containing latest series with the minor fixes Marc suggested
+is here:
+
+https://gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxstream-v18
+
 
 >
-> Thanks
-> Rajnesh
->
-> [0]: https://github.com/riscv/riscv-aia/releases/download/1.0/riscv-inter=
-rupts-1.0.pdf
-> [1]: https://github.com/rajnesh-kanwal/opensbi/tree/dev/rkanwal/irq_filte=
-r
-> [2]: https://github.com/rajnesh-kanwal/linux/commits/dev/rkanwal/aia_irq_=
-filter
-> [3]: https://github.com/rajnesh-kanwal/qemu/tree/dev/rkanwal/riscv_irq_fi=
-lter
->
-> v5:
->  * Rebased the patches onto alister/riscv-to-apply.next again. Updated
->    version_id and minimum_version_id in vmstate_riscv_cpu and
->    vmstate_hyper. Also updated AIA spec links.
->
-> v4:
->  * Rebased the patches onto alister/riscv-to-apply.next. There were
->    some rebasing conflicts due to code restructuring.
->
-> v3:
->  * Rebased the patches and added reviewed-by tags.
->
-> v2:
->  * Move RISCV_EXCP_SEMIHOST to switch case and remove special handling.
->  * Fix linux-user build.
->
-> Rajnesh Kanwal (6):
->   target/riscv: Without H-mode mask all HS mode inturrupts in mie.
->   target/riscv: Check for async flag in case of RISCV_EXCP_SEMIHOST.
->   target/riscv: Set VS* bits to one in mideleg when H-Ext is enabled
->   target/riscv: Split interrupt logic from riscv_cpu_update_mip.
->   target/riscv: Add M-mode virtual interrupt and IRQ filtering support.
->   target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.
->
->  target/riscv/cpu.c         |   4 +-
->  target/riscv/cpu.h         |  23 ++
->  target/riscv/cpu_bits.h    |   6 +
->  target/riscv/cpu_helper.c  |  99 ++++++--
->  target/riscv/csr.c         | 477 +++++++++++++++++++++++++++++++++----
->  target/riscv/machine.c     |  14 +-
->  target/riscv/tcg/tcg-cpu.c |   7 +-
->  7 files changed, 551 insertions(+), 79 deletions(-)
->
-> --
-> 2.34.1
+> thanks
 >
 >
+
+--0000000000003ea83d0607df69ce
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Oct 9, 2023 at 12:15=E2=80=AF=
+AM Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.com=
+">marcandre.lureau@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
+4,204,204);padding-left:1ex">Hi<br>
+<br>
+On Fri, Oct 6, 2023 at 5:08=E2=80=AFAM Gurchetan Singh<br>
+&lt;<a href=3D"mailto:gurchetansingh@chromium.org" target=3D"_blank">gurche=
+tansingh@chromium.org</a>&gt; wrote:<br>
+&gt;<br>
+&gt; From: Gurchetan Singh &lt;<a href=3D"mailto:gurchetansingh@google.com"=
+ target=3D"_blank">gurchetansingh@google.com</a>&gt;<br>
+&gt;<br>
+&gt; Branch containing changes:<br>
+&gt;<br>
+&gt; <a href=3D"https://gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxst=
+ream-v17" rel=3D"noreferrer" target=3D"_blank">https://gitlab.com/gurchetan=
+singh/qemu/-/commits/qemu-gfxstream-v17</a><br>
+&gt;<br>
+&gt; Changes since v16:<br>
+&gt;<br>
+&gt; - Fixed typo mentioned here:<br>
+&gt;<br>
+&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg01=
+407.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archiv=
+e/html/qemu-devel/2023-10/msg01407.html</a><br>
+&gt;<br>
+&gt; Antonio Caggiano (2):<br>
+&gt;=C2=A0 =C2=A0virtio-gpu: CONTEXT_INIT feature<br>
+&gt;=C2=A0 =C2=A0virtio-gpu: blob prep<br>
+&gt;<br>
+&gt; Dr. David Alan Gilbert (1):<br>
+&gt;=C2=A0 =C2=A0virtio: Add shared memory capability<br>
+&gt;<br>
+&gt; Gerd Hoffmann (1):<br>
+&gt;=C2=A0 =C2=A0virtio-gpu: hostmem<br>
+&gt;<br>
+&gt; Gurchetan Singh (5):<br>
+&gt;=C2=A0 =C2=A0gfxstream + rutabaga prep: added need defintions, fields, =
+and options<br>
+&gt;=C2=A0 =C2=A0gfxstream + rutabaga: add initial support for gfxstream<br=
+>
+&gt;=C2=A0 =C2=A0gfxstream + rutabaga: meson support<br>
+&gt;=C2=A0 =C2=A0gfxstream + rutabaga: enable rutabaga<br>
+&gt;=C2=A0 =C2=A0docs/system: add basic virtio-gpu documentation<br>
+&gt;<br>
+<br>
+Except for a few misc style issues, the series looks good to me.<br>
+<br>
+Gerd, as the virtio-gpu &quot;odd fixes&quot; maintainer, any chance you ta=
+ke a<br>
+quick look and ack the series? Even better if you send a PR :)<br></blockqu=
+ote><div><br></div><div>Ping.=C2=A0 Branch containing latest series with th=
+e minor fixes Marc suggested is here:</div><div><br></div><div><a href=3D"h=
+ttps://gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxstream-v18">https:/=
+/gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxstream-v18</a><br></div><=
+div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+thanks<br>
+<br>
+</blockquote></div></div>
+
+--0000000000003ea83d0607df69ce--
 
