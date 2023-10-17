@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FFFA7CBB8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD4E7CBB8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:46:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsdmU-0008I7-I8; Tue, 17 Oct 2023 02:42:18 -0400
+	id 1qsdlq-0007tx-8x; Tue, 17 Oct 2023 02:41:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdlk-0007vE-83
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:41:36 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qsdlZ-0007sG-LN
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:41:22 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdlU-0001qb-K2
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:41:31 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c9c5a1b87bso35997385ad.3
- for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:41:16 -0700 (PDT)
+ id 1qsdlW-0001qn-FZ
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:41:21 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1c77449a6daso42939455ad.0
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:41:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697524875; x=1698129675; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697524876; x=1698129676; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SXWrxOLh0hy4zGD+VY2suBXWmSC9zzwSi5d/2qfqkNE=;
- b=fMdRvMei5fl4zFNydzJTMOYtp8wb8NyfIwdj4qRXv1IYM0CSKzZmNJqbwq5HrnHSWM
- +CC1km9jt/G0tOfWboMipiEgU/cootQtBh7/n7pTPuTDDW8vS5gZ+C2C7q0n/YCOz6tH
- MKvuu6o1440R3ohYU8bdsQTSPJ6U7GzUgWGtsB59CLoWfh1Vfo3xou8c73MWBgS/SbYY
- /OjUinEFewt8h4b6Yy3hvxgZwFGflwMnGxP6G0B9qoJf6GtMnaVinJpO3rRFbv/L3FFg
- scrSuO9ZOvhXEojYjIIgE0kbfYrXAoUr4nZ9DrnSK+5GknXP7wKcEDy1Vv6ZMidcHRB/
- eKiQ==
+ bh=h0OGT/ljR6h/FKMK8az8Ybfl519ArhwT7zqC2zzRTgE=;
+ b=UHEik1I+BlmomG5YP0E2DegfVJOkCf4LTBQPCiLxZygMnAVeb4y/2hu/H/1M4SVQNs
+ g5OV8+8URIcioWxAf4WAoV5O1uLWHkuCzx/6PKn+c6CQZ4R5RDUxxWALs1tQjwKMC4PQ
+ tMmc1vIctq6GKn+aS4pPO2a2NGuRHDlRkS2ywp3zwgIAQ7mzM0RzhiHs+CJTmQaPe2dO
+ vC52w19y1rwl09biV6KopHPhcTnlaevgc2godYLiGAeKBrYUrD2k+FGnu1JocjlzRsFQ
+ UKs/rNXtx5wFkd0XvyYJscyLjSPB6Br2TzeWQzvCXmYytFQJ49gW1k4siEacMxS9qVXM
+ u/Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697524875; x=1698129675;
+ d=1e100.net; s=20230601; t=1697524876; x=1698129676;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SXWrxOLh0hy4zGD+VY2suBXWmSC9zzwSi5d/2qfqkNE=;
- b=YBbyJtBcATrhh0eE82m2k1Z49wX8vmjXCniobV5dWM/O3L8yci6q1r7ithI6tOTIB0
- DZ6PCiejdl055aW94XjxbcQZH5C8u0B/osC8+hLwC6ZE2SPYc6DpgNwT7GmGCKk1NazK
- c1to3MFBadQWsreKnaMAEwj6MJlW0D+bsU1NwvN6OW8kA/E75HM0USXEzvMrPAD3x8s9
- SdUIYjkTzHlntnJcNH7oTCpmVQvYUZjjCCdLbk/XMbM3snUF6r74d7oM3p552DI6caj5
- Df3ck3THfkbzEw7FJGiiIAhLh86qEBZMNPX3u65isCD8nbYPeE0VV9yVelBkUoQZl3d/
- 8g7A==
-X-Gm-Message-State: AOJu0YxAOLpLgKLAKYWbtHuoQP0IrFXRDUPJf5nJ7d2GugapCxd5cFYL
- p3kLZWP4NrS39sFn7Huorb0AK7ACqutLPV9kQWQ=
-X-Google-Smtp-Source: AGHT+IEf4yWUMT1TV7DwHPd5FCXF+z3aMuIrGrycEKoWk7QTi3gSBLquDrrH2YSQJFuBX2bOdoGigQ==
-X-Received: by 2002:a17:903:32d0:b0:1b5:561a:5ca9 with SMTP id
- i16-20020a17090332d000b001b5561a5ca9mr1455121plr.50.1697524875057; 
+ bh=h0OGT/ljR6h/FKMK8az8Ybfl519ArhwT7zqC2zzRTgE=;
+ b=MtLDcQVifzU4gqPtbgPvoto6Cwg31aQyj8GavwWo6bRK2eiUS9fsIkXPy8T5Q/N3Fl
+ 5xMkrrkBgrd8H6al4F0/uj1XNPkuYhcPCRakT1VsrFOP3K+c4oD0vCDnURjpDvWMzuse
+ eZtDhLULB5yl0zuveSL/23pVLUnEraY+mrsUBX93YOANY9IZZR19b1s6GXodG5220hzP
+ ZaxfYWTB1gNxE6cz3ArO/m7A1q7ctuX4ZmsAQKiBbB44lR5KGKfRFAe4IWOql4gsXslG
+ yAnE9JiOKDMJCta36t1XleQr8Xk7YSZeAtZ3KGFZLXV0UnUY2fKK/qlkHTEuQ+U6zo1h
+ XVag==
+X-Gm-Message-State: AOJu0YxbjCm5gq0Bpu7TvoEvIm5VJmrCY7b27lclacLxavCjnLKw8JVh
+ LumXjjHlIKJZeIrm2AONCelMaem2ljlbdsvmgZk=
+X-Google-Smtp-Source: AGHT+IGSGL5+fU+Y2rbputkaiAqT7ixpb+hcSRNxhES21bGA2S8XuQ7A6ZFSvi7oP9AExiDnmjRdIQ==
+X-Received: by 2002:a17:903:11c7:b0:1c3:2532:ac71 with SMTP id
+ q7-20020a17090311c700b001c32532ac71mr1727305plh.31.1697524875757; 
  Mon, 16 Oct 2023 23:41:15 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- x18-20020a17090300d200b001b891259eddsm685682plc.197.2023.10.16.23.41.14
+ x18-20020a17090300d200b001b891259eddsm685682plc.197.2023.10.16.23.41.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 23:41:14 -0700 (PDT)
+ Mon, 16 Oct 2023 23:41:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 06/20] target/sparc: Remove CC_OP_SUB, CC_OP_SUBX, CC_OP_TSUB
-Date: Mon, 16 Oct 2023 23:40:55 -0700
-Message-Id: <20231017064109.681935-7-richard.henderson@linaro.org>
+Subject: [PATCH 07/20] target/sparc: Remove CC_OP_TADDTV, CC_OP_TSUBTV
+Date: Mon, 16 Oct 2023 23:40:56 -0700
+Message-Id: <20231017064109.681935-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231017064109.681935-1-richard.henderson@linaro.org>
 References: <20231017064109.681935-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,406 +90,410 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are all related and implementable with common code.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/cpu.h       |   3 -
- target/sparc/cc_helper.c |  59 ----------
- target/sparc/translate.c | 226 ++++++++++-----------------------------
- 3 files changed, 54 insertions(+), 234 deletions(-)
+ target/sparc/cpu.h       |   2 -
+ target/sparc/cc_helper.c | 267 +--------------------------------------
+ target/sparc/helper.c    |  40 ++++--
+ target/sparc/translate.c |   4 +-
+ 4 files changed, 32 insertions(+), 281 deletions(-)
 
 diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index 4925b35859..8498bd07db 100644
+index 8498bd07db..27f7fed293 100644
 --- a/target/sparc/cpu.h
 +++ b/target/sparc/cpu.h
-@@ -151,9 +151,6 @@ enum {
+@@ -150,8 +150,6 @@ enum {
+ enum {
      CC_OP_DYNAMIC, /* must use dynamic code to get cc_op */
      CC_OP_FLAGS,   /* all cc are back in cc_*_[NZCV] registers */
-     CC_OP_TADDTV,  /* modify all flags except V, CC_DST = res, CC_SRC = src1 */
--    CC_OP_SUB,     /* modify all flags, CC_DST = res, CC_SRC = src1 */
--    CC_OP_SUBX,    /* modify all flags, CC_DST = res, CC_SRC = src1 */
--    CC_OP_TSUB,    /* modify all flags, CC_DST = res, CC_SRC = src1 */
-     CC_OP_TSUBTV,  /* modify all flags except V, CC_DST = res, CC_SRC = src1 */
+-    CC_OP_TADDTV,  /* modify all flags except V, CC_DST = res, CC_SRC = src1 */
+-    CC_OP_TSUBTV,  /* modify all flags except V, CC_DST = res, CC_SRC = src1 */
      CC_OP_NB,
  };
+ 
 diff --git a/target/sparc/cc_helper.c b/target/sparc/cc_helper.c
-index c004a9b1d8..d31aa24b5d 100644
+index d31aa24b5d..cebe03ff51 100644
 --- a/target/sparc/cc_helper.c
 +++ b/target/sparc/cc_helper.c
-@@ -234,64 +234,11 @@ static uint32_t compute_C_sub_xcc(CPUSPARCState *env)
- }
- #endif
+@@ -21,275 +21,12 @@
+ #include "cpu.h"
+ #include "exec/helper-proto.h"
  
--static uint32_t compute_all_sub(CPUSPARCState *env)
+-static inline uint32_t get_NZ_icc(int32_t dst)
 -{
--    uint32_t ret;
+-    uint32_t ret = 0;
 -
--    ret = get_NZ_icc(CC_DST);
--    ret |= get_C_sub_icc(CC_SRC, CC_SRC2);
--    ret |= get_V_sub_icc(CC_DST, CC_SRC, CC_SRC2);
+-    if (dst == 0) {
+-        ret = PSR_ZERO;
+-    } else if (dst < 0) {
+-        ret = PSR_NEG;
+-    }
 -    return ret;
 -}
 -
- static uint32_t compute_C_sub(CPUSPARCState *env)
- {
-     return get_C_sub_icc(CC_SRC, CC_SRC2);
- }
- 
 -#ifdef TARGET_SPARC64
--static uint32_t compute_all_subx_xcc(CPUSPARCState *env)
+-static inline uint32_t get_NZ_xcc(target_long dst)
+-{
+-    uint32_t ret = 0;
+-
+-    if (!dst) {
+-        ret = PSR_ZERO;
+-    } else if (dst < 0) {
+-        ret = PSR_NEG;
+-    }
+-    return ret;
+-}
+-#endif
+-
+-static inline uint32_t get_C_add_icc(uint32_t dst, uint32_t src1)
+-{
+-    uint32_t ret = 0;
+-
+-    if (dst < src1) {
+-        ret = PSR_CARRY;
+-    }
+-    return ret;
+-}
+-
+-static inline uint32_t get_C_addx_icc(uint32_t dst, uint32_t src1,
+-                                      uint32_t src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (((src1 & src2) | (~dst & (src1 | src2))) & (1U << 31)) {
+-        ret = PSR_CARRY;
+-    }
+-    return ret;
+-}
+-
+-static inline uint32_t get_V_add_icc(uint32_t dst, uint32_t src1,
+-                                     uint32_t src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (((src1 ^ src2 ^ -1) & (src1 ^ dst)) & (1U << 31)) {
+-        ret = PSR_OVF;
+-    }
+-    return ret;
+-}
+-
+-#ifdef TARGET_SPARC64
+-static inline uint32_t get_C_add_xcc(target_ulong dst, target_ulong src1)
+-{
+-    uint32_t ret = 0;
+-
+-    if (dst < src1) {
+-        ret = PSR_CARRY;
+-    }
+-    return ret;
+-}
+-
+-static inline uint32_t get_C_addx_xcc(target_ulong dst, target_ulong src1,
+-                                      target_ulong src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (((src1 & src2) | (~dst & (src1 | src2))) & (1ULL << 63)) {
+-        ret = PSR_CARRY;
+-    }
+-    return ret;
+-}
+-
+-static inline uint32_t get_V_add_xcc(target_ulong dst, target_ulong src1,
+-                                     target_ulong src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (((src1 ^ src2 ^ -1) & (src1 ^ dst)) & (1ULL << 63)) {
+-        ret = PSR_OVF;
+-    }
+-    return ret;
+-}
+-
+-static uint32_t compute_all_add_xcc(CPUSPARCState *env)
 -{
 -    uint32_t ret;
 -
 -    ret = get_NZ_xcc(CC_DST);
--    ret |= get_C_subx_xcc(CC_DST, CC_SRC, CC_SRC2);
--    ret |= get_V_sub_xcc(CC_DST, CC_SRC, CC_SRC2);
+-    ret |= get_C_add_xcc(CC_DST, CC_SRC);
+-    ret |= get_V_add_xcc(CC_DST, CC_SRC, CC_SRC2);
 -    return ret;
 -}
 -
--static uint32_t compute_C_subx_xcc(CPUSPARCState *env)
+-static uint32_t compute_C_add_xcc(CPUSPARCState *env)
 -{
--    return get_C_subx_xcc(CC_DST, CC_SRC, CC_SRC2);
+-    return get_C_add_xcc(CC_DST, CC_SRC);
 -}
 -#endif
 -
--static uint32_t compute_all_subx(CPUSPARCState *env)
+-static uint32_t compute_C_add(CPUSPARCState *env)
+-{
+-    return get_C_add_icc(CC_DST, CC_SRC);
+-}
+-
+-static inline uint32_t get_V_tag_icc(target_ulong src1, target_ulong src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if ((src1 | src2) & 0x3) {
+-        ret = PSR_OVF;
+-    }
+-    return ret;
+-}
+-
+-static uint32_t compute_all_taddtv(CPUSPARCState *env)
 -{
 -    uint32_t ret;
 -
 -    ret = get_NZ_icc(CC_DST);
--    ret |= get_C_subx_icc(CC_DST, CC_SRC, CC_SRC2);
--    ret |= get_V_sub_icc(CC_DST, CC_SRC, CC_SRC2);
+-    ret |= get_C_add_icc(CC_DST, CC_SRC);
 -    return ret;
 -}
 -
--static uint32_t compute_C_subx(CPUSPARCState *env)
+-static inline uint32_t get_C_sub_icc(uint32_t src1, uint32_t src2)
 -{
--    return get_C_subx_icc(CC_DST, CC_SRC, CC_SRC2);
+-    uint32_t ret = 0;
+-
+-    if (src1 < src2) {
+-        ret = PSR_CARRY;
+-    }
+-    return ret;
 -}
 -
--static uint32_t compute_all_tsub(CPUSPARCState *env)
+-static inline uint32_t get_C_subx_icc(uint32_t dst, uint32_t src1,
+-                                      uint32_t src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (((~src1 & src2) | (dst & (~src1 | src2))) & (1U << 31)) {
+-        ret = PSR_CARRY;
+-    }
+-    return ret;
+-}
+-
+-static inline uint32_t get_V_sub_icc(uint32_t dst, uint32_t src1,
+-                                     uint32_t src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (((src1 ^ src2) & (src1 ^ dst)) & (1U << 31)) {
+-        ret = PSR_OVF;
+-    }
+-    return ret;
+-}
+-
+-
+-#ifdef TARGET_SPARC64
+-static inline uint32_t get_C_sub_xcc(target_ulong src1, target_ulong src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (src1 < src2) {
+-        ret = PSR_CARRY;
+-    }
+-    return ret;
+-}
+-
+-static inline uint32_t get_C_subx_xcc(target_ulong dst, target_ulong src1,
+-                                      target_ulong src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (((~src1 & src2) | (dst & (~src1 | src2))) & (1ULL << 63)) {
+-        ret = PSR_CARRY;
+-    }
+-    return ret;
+-}
+-
+-static inline uint32_t get_V_sub_xcc(target_ulong dst, target_ulong src1,
+-                                     target_ulong src2)
+-{
+-    uint32_t ret = 0;
+-
+-    if (((src1 ^ src2) & (src1 ^ dst)) & (1ULL << 63)) {
+-        ret = PSR_OVF;
+-    }
+-    return ret;
+-}
+-
+-static uint32_t compute_all_sub_xcc(CPUSPARCState *env)
+-{
+-    uint32_t ret;
+-
+-    ret = get_NZ_xcc(CC_DST);
+-    ret |= get_C_sub_xcc(CC_SRC, CC_SRC2);
+-    ret |= get_V_sub_xcc(CC_DST, CC_SRC, CC_SRC2);
+-    return ret;
+-}
+-
+-static uint32_t compute_C_sub_xcc(CPUSPARCState *env)
+-{
+-    return get_C_sub_xcc(CC_SRC, CC_SRC2);
+-}
+-#endif
+-
+-static uint32_t compute_C_sub(CPUSPARCState *env)
+-{
+-    return get_C_sub_icc(CC_SRC, CC_SRC2);
+-}
+-
+-static uint32_t compute_all_tsubtv(CPUSPARCState *env)
 -{
 -    uint32_t ret;
 -
 -    ret = get_NZ_icc(CC_DST);
 -    ret |= get_C_sub_icc(CC_SRC, CC_SRC2);
--    ret |= get_V_sub_icc(CC_DST, CC_SRC, CC_SRC2);
--    ret |= get_V_tag_icc(CC_SRC, CC_SRC2);
 -    return ret;
 -}
 -
- static uint32_t compute_all_tsubtv(CPUSPARCState *env)
+-typedef struct CCTable {
+-    uint32_t (*compute_all)(CPUSPARCState *env); /* return all the flags */
+-    uint32_t (*compute_c)(CPUSPARCState *env);  /* return the C flag */
+-} CCTable;
+-
+-static const CCTable icc_table[CC_OP_NB] = {
+-    /* CC_OP_DYNAMIC should never happen */
+-    [CC_OP_TADDTV] = { compute_all_taddtv, compute_C_add },
+-    [CC_OP_TSUBTV] = { compute_all_tsubtv, compute_C_sub },
+-};
+-
+-#ifdef TARGET_SPARC64
+-static const CCTable xcc_table[CC_OP_NB] = {
+-    /* CC_OP_DYNAMIC should never happen */
+-    [CC_OP_TADDTV] = { compute_all_add_xcc, compute_C_add_xcc },
+-    [CC_OP_TSUBTV] = { compute_all_sub_xcc, compute_C_sub_xcc },
+-};
+-#endif
+-
+ void helper_compute_psr(CPUSPARCState *env)
  {
-     uint32_t ret;
-@@ -309,9 +256,6 @@ typedef struct CCTable {
- static const CCTable icc_table[CC_OP_NB] = {
-     /* CC_OP_DYNAMIC should never happen */
-     [CC_OP_TADDTV] = { compute_all_taddtv, compute_C_add },
--    [CC_OP_SUB] = { compute_all_sub, compute_C_sub },
--    [CC_OP_SUBX] = { compute_all_subx, compute_C_subx },
--    [CC_OP_TSUB] = { compute_all_tsub, compute_C_sub },
-     [CC_OP_TSUBTV] = { compute_all_tsubtv, compute_C_sub },
- };
+     if (CC_OP == CC_OP_FLAGS) {
+         return;
+     }
+-
+-    uint32_t icc = icc_table[CC_OP].compute_all(env);
+-#ifdef TARGET_SPARC64
+-    uint32_t xcc = xcc_table[CC_OP].compute_all(env);
+-
+-    env->cc_N = deposit64(-(icc & PSR_NEG), 32, 32, -(xcc & PSR_NEG));
+-    env->cc_V = deposit64(-(icc & PSR_OVF), 32, 32, -(xcc & PSR_OVF));
+-    env->cc_icc_C = (uint64_t)icc << (32 - PSR_CARRY_SHIFT);
+-    env->cc_xcc_C = (xcc >> PSR_CARRY_SHIFT) & 1;
+-    env->cc_xcc_Z = ~xcc & PSR_ZERO;
+-#else
+-    env->cc_N = -(icc & PSR_NEG);
+-    env->cc_V = -(icc & PSR_OVF);
+-    env->cc_icc_C = (icc >> PSR_CARRY_SHIFT) & 1;
+-#endif
+-    env->cc_icc_Z = ~icc & PSR_ZERO;
+-
+-    CC_OP = CC_OP_FLAGS;
++    g_assert_not_reached();
+ }
  
-@@ -319,9 +263,6 @@ static const CCTable icc_table[CC_OP_NB] = {
- static const CCTable xcc_table[CC_OP_NB] = {
-     /* CC_OP_DYNAMIC should never happen */
-     [CC_OP_TADDTV] = { compute_all_add_xcc, compute_C_add_xcc },
--    [CC_OP_SUB] = { compute_all_sub_xcc, compute_C_sub_xcc },
--    [CC_OP_SUBX] = { compute_all_subx_xcc, compute_C_subx_xcc },
--    [CC_OP_TSUB] = { compute_all_sub_xcc, compute_C_sub_xcc },
-     [CC_OP_TSUBTV] = { compute_all_sub_xcc, compute_C_sub_xcc },
- };
+ uint32_t helper_compute_C_icc(CPUSPARCState *env)
+@@ -301,5 +38,5 @@ uint32_t helper_compute_C_icc(CPUSPARCState *env)
+         return env->cc_icc_C;
  #endif
+     }
+-    return icc_table[CC_OP].compute_c(env) >> PSR_CARRY_SHIFT;
++    g_assert_not_reached();
+ }
+diff --git a/target/sparc/helper.c b/target/sparc/helper.c
+index 87a4258792..4887f295a5 100644
+--- a/target/sparc/helper.c
++++ b/target/sparc/helper.c
+@@ -204,7 +204,7 @@ uint64_t helper_udivx(CPUSPARCState *env, uint64_t a, uint64_t b)
+ target_ulong helper_taddcctv(CPUSPARCState *env, target_ulong src1,
+                              target_ulong src2)
+ {
+-    target_ulong dst;
++    target_ulong dst, v;
+ 
+     /* Tag overflow occurs if either input has bits 0 or 1 set.  */
+     if ((src1 | src2) & 3) {
+@@ -214,15 +214,23 @@ target_ulong helper_taddcctv(CPUSPARCState *env, target_ulong src1,
+     dst = src1 + src2;
+ 
+     /* Tag overflow occurs if the addition overflows.  */
+-    if (~(src1 ^ src2) & (src1 ^ dst) & (1u << 31)) {
++    v = ~(src1 ^ src2) & (src1 ^ dst);
++    if (v & (1u << 31)) {
+         goto tag_overflow;
+     }
+ 
+     /* Only modify the CC after any exceptions have been generated.  */
+-    env->cc_op = CC_OP_TADDTV;
+-    env->cc_src = src1;
+-    env->cc_src2 = src2;
+-    env->cc_dst = dst;
++    env->cc_V = v;
++    env->cc_N = dst;
++    env->cc_icc_Z = dst;
++#ifdef TARGET_SPARC64
++    env->cc_xcc_Z = dst;
++    env->cc_icc_C = dst ^ src1 ^ src2;
++    env->cc_xcc_C = dst < src1;
++#else
++    env->cc_icc_C = dst < src1;
++#endif
++
+     return dst;
+ 
+  tag_overflow:
+@@ -232,7 +240,7 @@ target_ulong helper_taddcctv(CPUSPARCState *env, target_ulong src1,
+ target_ulong helper_tsubcctv(CPUSPARCState *env, target_ulong src1,
+                              target_ulong src2)
+ {
+-    target_ulong dst;
++    target_ulong dst, v;
+ 
+     /* Tag overflow occurs if either input has bits 0 or 1 set.  */
+     if ((src1 | src2) & 3) {
+@@ -242,15 +250,23 @@ target_ulong helper_tsubcctv(CPUSPARCState *env, target_ulong src1,
+     dst = src1 - src2;
+ 
+     /* Tag overflow occurs if the subtraction overflows.  */
+-    if ((src1 ^ src2) & (src1 ^ dst) & (1u << 31)) {
++    v = (src1 ^ src2) & (src1 ^ dst);
++    if (v & (1u << 31)) {
+         goto tag_overflow;
+     }
+ 
+     /* Only modify the CC after any exceptions have been generated.  */
+-    env->cc_op = CC_OP_TSUBTV;
+-    env->cc_src = src1;
+-    env->cc_src2 = src2;
+-    env->cc_dst = dst;
++    env->cc_V = v;
++    env->cc_N = dst;
++    env->cc_icc_Z = dst;
++#ifdef TARGET_SPARC64
++    env->cc_xcc_Z = dst;
++    env->cc_icc_C = dst ^ src1 ^ src2;
++    env->cc_xcc_C = src1 < src2;
++#else
++    env->cc_icc_C = src1 < src2;
++#endif
++
+     return dst;
+ 
+  tag_overflow:
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 59e96bf39d..ff523a4e7d 100644
+index ff523a4e7d..d8cb669592 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -448,107 +448,58 @@ static void gen_op_addccc(TCGv dst, TCGv src1, TCGv src2)
-     gen_op_addcc_int(dst, src1, src2, gen_carry32());
- }
- 
--static TCGv_i32 gen_add32_carry32(void)
-+static void gen_op_subcc_int(TCGv dst, TCGv src1, TCGv src2, TCGv cin)
- {
--    TCGv_i32 carry_32, cc_src1_32, cc_src2_32;
-+    TCGv z = tcg_constant_tl(0);
- 
--    /* Carry is computed from a previous add: (dst < src)  */
--#if TARGET_LONG_BITS == 64
--    cc_src1_32 = tcg_temp_new_i32();
--    cc_src2_32 = tcg_temp_new_i32();
--    tcg_gen_extrl_i64_i32(cc_src1_32, cpu_cc_dst);
--    tcg_gen_extrl_i64_i32(cc_src2_32, cpu_cc_src);
--#else
--    cc_src1_32 = cpu_cc_dst;
--    cc_src2_32 = cpu_cc_src;
--#endif
--
--    carry_32 = tcg_temp_new_i32();
--    tcg_gen_setcond_i32(TCG_COND_LTU, carry_32, cc_src1_32, cc_src2_32);
--
--    return carry_32;
--}
--
--static TCGv_i32 gen_sub32_carry32(void)
--{
--    TCGv_i32 carry_32, cc_src1_32, cc_src2_32;
--
--    /* Carry is computed from a previous borrow: (src1 < src2)  */
--#if TARGET_LONG_BITS == 64
--    cc_src1_32 = tcg_temp_new_i32();
--    cc_src2_32 = tcg_temp_new_i32();
--    tcg_gen_extrl_i64_i32(cc_src1_32, cpu_cc_src);
--    tcg_gen_extrl_i64_i32(cc_src2_32, cpu_cc_src2);
--#else
--    cc_src1_32 = cpu_cc_src;
--    cc_src2_32 = cpu_cc_src2;
--#endif
--
--    carry_32 = tcg_temp_new_i32();
--    tcg_gen_setcond_i32(TCG_COND_LTU, carry_32, cc_src1_32, cc_src2_32);
--
--    return carry_32;
--}
--
--static void gen_op_sub_cc(TCGv dst, TCGv src1, TCGv src2)
--{
--    tcg_gen_mov_tl(cpu_cc_src, src1);
--    tcg_gen_mov_tl(cpu_cc_src2, src2);
--    tcg_gen_sub_tl(cpu_cc_dst, cpu_cc_src, cpu_cc_src2);
--    tcg_gen_mov_tl(dst, cpu_cc_dst);
--}
--
--static void gen_op_subx_int(DisasContext *dc, TCGv dst, TCGv src1,
--                            TCGv src2, int update_cc)
--{
--    TCGv_i32 carry_32;
--    TCGv carry;
--
--    switch (dc->cc_op) {
--    case CC_OP_TADDTV:
--        carry_32 = gen_add32_carry32();
--        break;
--
--    case CC_OP_SUB:
--    case CC_OP_TSUB:
--    case CC_OP_TSUBTV:
--        if (TARGET_LONG_BITS == 32) {
--            /* We can re-use the host's hardware carry generation by using
--               a SUB2 opcode.  We discard the low part of the output.
--               Ideally we'd combine this operation with the add that
--               generated the carry in the first place.  */
--            carry = tcg_temp_new();
--            tcg_gen_sub2_tl(carry, dst, cpu_cc_src, src1, cpu_cc_src2, src2);
--            goto sub_done;
--        }
--        carry_32 = gen_sub32_carry32();
--        break;
--
--    default:
--        /* We need external help to produce the carry.  */
--        carry_32 = tcg_temp_new_i32();
--        gen_helper_compute_C_icc(carry_32, tcg_env);
--        break;
-+    if (cin) {
-+        tcg_gen_sub2_tl(cpu_cc_N, cpu_cc_C, src1, z, cin, z);
-+        tcg_gen_sub2_tl(cpu_cc_N, cpu_cc_C, cpu_cc_N, cpu_cc_C, src2, z);
-+    } else {
-+        tcg_gen_sub2_tl(cpu_cc_N, cpu_cc_C, src1, z, src2, z);
-     }
--
--#if TARGET_LONG_BITS == 64
--    carry = tcg_temp_new();
--    tcg_gen_extu_i32_i64(carry, carry_32);
--#else
--    carry = carry_32;
-+    tcg_gen_neg_tl(cpu_cc_C, cpu_cc_C);
-+    tcg_gen_xor_tl(cpu_cc_Z, src1, src2);
-+    tcg_gen_xor_tl(cpu_cc_V, cpu_cc_N, src1);
-+    tcg_gen_and_tl(cpu_cc_V, cpu_cc_V, cpu_cc_Z);
-+#ifdef TARGET_SPARC64
-+    tcg_gen_xor_tl(cpu_icc_C, cpu_cc_Z, cpu_cc_N);
-+    tcg_gen_mov_tl(cpu_icc_Z, cpu_cc_N);
- #endif
-+    tcg_gen_mov_tl(cpu_cc_Z, cpu_cc_N);
-+    tcg_gen_mov_tl(dst, cpu_cc_N);
-+}
- 
-+static void gen_op_subcc(TCGv dst, TCGv src1, TCGv src2)
-+{
-+    gen_op_subcc_int(dst, src1, src2, NULL);
-+}
-+
-+static void gen_op_tsubcc(TCGv dst, TCGv src1, TCGv src2)
-+{
-+    TCGv t = tcg_temp_new();
-+
-+    /* Save the tag bits around modification of dst. */
-+    tcg_gen_or_tl(t, src1, src2);
-+
-+    gen_op_subcc(dst, src1, src2);
-+
-+    /* Incorprate tag bits into icc.V */
-+    tcg_gen_andi_tl(t, t, 3);
-+    tcg_gen_neg_tl(t, t);
-+    tcg_gen_ext32u_tl(t, t);
-+    tcg_gen_or_tl(cpu_cc_N, cpu_cc_N, t);
-+}
-+
-+static void gen_op_subc(TCGv dst, TCGv src1, TCGv src2)
-+{
-     tcg_gen_sub_tl(dst, src1, src2);
--    tcg_gen_sub_tl(dst, dst, carry);
-+    tcg_gen_sub_tl(dst, dst, gen_carry32());
-+}
- 
-- sub_done:
--    if (update_cc) {
--        tcg_gen_mov_tl(cpu_cc_src, src1);
--        tcg_gen_mov_tl(cpu_cc_src2, src2);
--        tcg_gen_mov_tl(cpu_cc_dst, dst);
--        tcg_gen_movi_i32(cpu_cc_op, CC_OP_SUBX);
--        dc->cc_op = CC_OP_SUBX;
--    }
-+static void gen_op_subccc(TCGv dst, TCGv src1, TCGv src2)
-+{
-+    gen_op_subcc_int(dst, src1, src2, gen_carry32());
- }
- 
- static void gen_op_mulscc(TCGv dst, TCGv src1, TCGv src2)
-@@ -1035,66 +986,11 @@ static void gen_op_next_insn(void)
- static void gen_compare(DisasCompare *cmp, bool xcc, unsigned int cond,
-                         DisasContext *dc)
- {
--    static int subcc_cond[16] = {
--        TCG_COND_NEVER,
--        TCG_COND_EQ,
--        TCG_COND_LE,
--        TCG_COND_LT,
--        TCG_COND_LEU,
--        TCG_COND_LTU,
--        -1, /* neg */
--        -1, /* overflow */
--        TCG_COND_ALWAYS,
--        TCG_COND_NE,
--        TCG_COND_GT,
--        TCG_COND_GE,
--        TCG_COND_GTU,
--        TCG_COND_GEU,
--        -1, /* pos */
--        -1, /* no overflow */
--    };
--
-     TCGv t1, t2;
- 
-     cmp->is_bool = false;
- 
-     switch (dc->cc_op) {
--
--    case CC_OP_SUB:
--        switch (cond) {
--        case 6:  /* neg */
--        case 14: /* pos */
--            cmp->cond = (cond == 6 ? TCG_COND_LT : TCG_COND_GE);
--            cmp->c2 = tcg_constant_tl(0);
--            if (TARGET_LONG_BITS == 32 || xcc) {
--                cmp->c1 = cpu_cc_dst;
--            } else {
--                cmp->c1 = t1 = tcg_temp_new();
--                tcg_gen_ext32s_tl(t1, cpu_cc_dst);
--            }
--            return;
--
--        case 7: /* overflow */
--        case 15: /* !overflow */
--            break;
--
--        default:
--            cmp->cond = subcc_cond[cond];
--            if (TARGET_LONG_BITS == 32 || xcc) {
--                cmp->c1 = cpu_cc_src;
--                cmp->c2 = cpu_cc_src2;
--            } else {
--                /* Note that sign-extension works for unsigned compares as
--                   long as both operands are sign-extended.  */
--                cmp->c1 = t1 = tcg_temp_new();
--                tcg_gen_ext32s_tl(t1, cpu_cc_src);
--                cmp->c2 = t2 = tcg_temp_new();
--                tcg_gen_ext32s_tl(t2, cpu_cc_src2);
--            }
--            return;
--        }
--        break;
--
-     default:
-         gen_helper_compute_psr(tcg_env);
-         dc->cc_op = CC_OP_FLAGS;
-@@ -3794,7 +3690,7 @@ TRANS(ADDcc, ALL, do_flags_arith, a, CC_OP_FLAGS, gen_op_addcc)
- TRANS(ANDcc, ALL, do_logic_cc, a, tcg_gen_and_tl, tcg_gen_andi_tl)
- TRANS(ORcc, ALL, do_logic_cc, a, tcg_gen_or_tl, tcg_gen_ori_tl)
- TRANS(XORcc, ALL, do_logic_cc, a, tcg_gen_xor_tl, tcg_gen_xori_tl)
--TRANS(SUBcc, ALL, do_cc_arith, a, CC_OP_SUB, gen_op_sub_cc, NULL)
-+TRANS(SUBcc, ALL, do_flags_arith, a, CC_OP_FLAGS, gen_op_subcc)
- TRANS(ANDNcc, ALL, do_logic_cc, a, tcg_gen_andc_tl, NULL)
- TRANS(ORNcc, ALL, do_logic_cc, a, tcg_gen_orc_tl, NULL)
- TRANS(XORNcc, ALL, do_logic_cc, a, tcg_gen_eqv_tl, NULL)
-@@ -3803,7 +3699,7 @@ TRANS(SMULcc, MUL, do_logic_cc, a, gen_op_smul, NULL)
- TRANS(UDIVcc, DIV, do_flags_arith, a, CC_OP_FLAGS, gen_op_udivcc)
+@@ -3700,8 +3700,8 @@ TRANS(UDIVcc, DIV, do_flags_arith, a, CC_OP_FLAGS, gen_op_udivcc)
  TRANS(SDIVcc, DIV, do_flags_arith, a, CC_OP_FLAGS, gen_op_sdivcc)
  TRANS(TADDcc, ALL, do_flags_arith, a, CC_OP_FLAGS, gen_op_taddcc)
--TRANS(TSUBcc, ALL, do_cc_arith, a, CC_OP_TSUB, gen_op_sub_cc, NULL)
-+TRANS(TSUBcc, ALL, do_flags_arith, a, CC_OP_FLAGS, gen_op_tsubcc)
- TRANS(TADDccTV, ALL, do_flags_arith, a, CC_OP_TADDTV, gen_op_taddcctv)
- TRANS(TSUBccTV, ALL, do_flags_arith, a, CC_OP_TSUBTV, gen_op_tsubcctv)
+ TRANS(TSUBcc, ALL, do_flags_arith, a, CC_OP_FLAGS, gen_op_tsubcc)
+-TRANS(TADDccTV, ALL, do_flags_arith, a, CC_OP_TADDTV, gen_op_taddcctv)
+-TRANS(TSUBccTV, ALL, do_flags_arith, a, CC_OP_TSUBTV, gen_op_tsubcctv)
++TRANS(TADDccTV, ALL, do_flags_arith, a, CC_OP_FLAGS, gen_op_taddcctv)
++TRANS(TSUBccTV, ALL, do_flags_arith, a, CC_OP_FLAGS, gen_op_tsubcctv)
  
-@@ -3834,26 +3730,14 @@ static bool trans_ADDCcc(DisasContext *dc, arg_r_r_ri *a)
- 
- static bool trans_SUBC(DisasContext *dc, arg_r_r_ri *a)
+ static TCGv gen_rs2_or_imm(DisasContext *dc, bool imm, int rs2_or_imm)
  {
--    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
--
--    if (src2 == NULL) {
--        return false;
--    }
--    gen_op_subx_int(dc, gen_dest_gpr(dc, a->rd),
--                    gen_load_gpr(dc, a->rs1), src2, false);
--    return advance_pc(dc);
-+    update_psr(dc);
-+    return do_arith(dc, a, gen_op_subc, NULL);
- }
- 
- static bool trans_SUBCcc(DisasContext *dc, arg_r_r_ri *a)
- {
--    TCGv src2 = gen_rs2_or_imm(dc, a->imm, a->rs2_or_imm);
--
--    if (src2 == NULL) {
--        return false;
--    }
--    gen_op_subx_int(dc, gen_dest_gpr(dc, a->rd),
--                    gen_load_gpr(dc, a->rs1), src2, true);
--    return advance_pc(dc);
-+    update_psr(dc);
-+    return do_flags_arith(dc, a, CC_OP_FLAGS, gen_op_subccc);
- }
- 
- static bool trans_MULScc(DisasContext *dc, arg_r_r_ri *a)
-@@ -3874,11 +3758,9 @@ static bool gen_edge(DisasContext *dc, arg_r_r_r *a,
-     s2 = gen_load_gpr(dc, a->rs2);
- 
-     if (cc) {
--        tcg_gen_mov_tl(cpu_cc_src, s1);
--        tcg_gen_mov_tl(cpu_cc_src2, s2);
--        tcg_gen_sub_tl(cpu_cc_dst, s1, s2);
--        tcg_gen_movi_i32(cpu_cc_op, CC_OP_SUB);
--        dc->cc_op = CC_OP_SUB;
-+        gen_op_subcc(cpu_cc_N, s1, s2);
-+        tcg_gen_movi_i32(cpu_cc_op, CC_OP_FLAGS);
-+        dc->cc_op = CC_OP_FLAGS;
-     }
- 
-     /*
 -- 
 2.34.1
 
