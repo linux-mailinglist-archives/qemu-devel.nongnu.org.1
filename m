@@ -2,71 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83F27CC7BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 17:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BFA7CC7ED
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 17:49:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsmF6-0004WG-4Q; Tue, 17 Oct 2023 11:44:24 -0400
+	id 1qsmHh-0005xg-4h; Tue, 17 Oct 2023 11:47:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qsmEv-0004V1-Ev; Tue, 17 Oct 2023 11:44:14 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qsmHe-0005wV-4h
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 11:47:02 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qsmEr-00023J-Sg; Tue, 17 Oct 2023 11:44:13 -0400
-Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:7d8a:0:640:8fc3:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 418FD625BD;
- Tue, 17 Oct 2023 18:44:05 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:8006::1:24] (unknown
- [2a02:6b8:b081:8006::1:24])
- by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 3imqi8BOcmI0-BWPB5GIc; Tue, 17 Oct 2023 18:44:04 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1697557444;
- bh=c//YX3gF8H3lItywUo/DysjMhtfuSc3yCw8LvMJjrrc=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=Ngq0Pyvn6sC52Z4TvwV+A+jLLyyyk1a2bjSoGa5ro7LZ5sMsyZmVjjGaP5zXyZk0p
- PdqhOwpk40Yi+L+9hQpoNZN10esHHQyPHbqO+rwjS97KYQrL6J5/r0ZEsrJzfLLe+I
- PecOoiRTMQiWYYIW7zzj2NnvHY3m6eZcN4wSIT+4=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <ae494c44-1bd6-435e-8bd8-0ec2ba9ceaa6@yandex-team.ru>
-Date: Tue, 17 Oct 2023 18:44:03 +0300
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qsmHc-00032H-Bd
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 11:47:01 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id 38D61CE1F9C;
+ Tue, 17 Oct 2023 15:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2A0C433C7;
+ Tue, 17 Oct 2023 15:46:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1697557609;
+ bh=gstNqH2tB++BOmG34L0bZTZoFcKvYl0zGNHwopbPQ+w=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Rd887k4M7s3KwNeCtF7sL/yXFglBb+sUXLP4TbfS8xeKTaoh6e+CDbxUCjLm8kqm6
+ RxiO2sc7anw7JTd+hYY9V3G0LEiVtYwtnk180VweQBf17KjdxcC/k/Z39Vcf4Go6+p
+ Hea8F2C8lQwaBVSdZO7Fah8xcbAJm8aeU1Tbk0RRW56EgZdtkv2UXCnH4/HnA7Ecal
+ RUdmyJ5tzHzXlTwc4ynM4Ihe2rgG8FqBm1q0Toy3TFQatCxM+CQ8Gqqgc3ir+aK4dD
+ Slnuzsprx5ENdv0ufPXfp3U8dB3tvBfH8XNURrFDT/PARyO0LNLRa52S35aEulr7Ny
+ y1PiZqHF0KRvw==
+From: deller@kernel.org
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Helge Deller <deller@gmx.de>
+Subject: [PATCH v2 00/11] target/hppa: Add emulation of a C3700 HP-PARISC
+ workstation
+Date: Tue, 17 Oct 2023 17:46:34 +0200
+Message-ID: <20231017154645.95844-1-deller@kernel.org>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] qapi: introduce CONFIG_READ event
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, eblake@redhat.com,
- dave@treblig.org, eduardo@habkost.net, berrange@redhat.com,
- pbonzini@redhat.com, hreitz@redhat.com, kwolf@redhat.com,
- raphael.norwitz@nutanix.com, mst@redhat.com, yc-core@yandex-team.ru,
- den-plotnikov@yandex-team.ru, daniil.tatianin@yandex.ru
-References: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
- <20231006202045.1161543-5-vsementsov@yandex-team.ru>
- <87sf692t0i.fsf@pond.sub.org>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <87sf692t0i.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -78,161 +68,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17.10.23 18:00, Markus Armbruster wrote:
-> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
-> 
->> Send a new event when guest reads virtio-pci config after
->> virtio_notify_config() call.
->>
->> That's useful to check that guest fetched modified config, for example
->> after resizing disk backend.
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   hw/virtio/virtio-pci.c |  9 +++++++++
->>   include/monitor/qdev.h |  1 +
->>   monitor/monitor.c      |  1 +
->>   qapi/qdev.json         | 22 ++++++++++++++++++++++
->>   softmmu/qdev-monitor.c |  5 +++++
->>   5 files changed, 38 insertions(+)
->>
->> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
->> index dd4620462b..f24f8ff03d 100644
->> --- a/hw/virtio/virtio-pci.c
->> +++ b/hw/virtio/virtio-pci.c
->> @@ -23,6 +23,7 @@
->>   #include "hw/boards.h"
->>   #include "hw/virtio/virtio.h"
->>   #include "migration/qemu-file-types.h"
->> +#include "monitor/qdev.h"
->>   #include "hw/pci/pci.h"
->>   #include "hw/pci/pci_bus.h"
->>   #include "hw/qdev-properties.h"
->> @@ -541,6 +542,10 @@ static uint64_t virtio_pci_config_read(void *opaque, hwaddr addr,
->>       }
->>       addr -= config;
->>   
->> +    if (vdev->generation > 0) {
->> +        qdev_config_read_event(DEVICE(proxy));
->> +    }
->> +
->>       switch (size) {
->>       case 1:
->>           val = virtio_config_readb(vdev, addr);
->> @@ -1728,6 +1733,10 @@ static uint64_t virtio_pci_device_read(void *opaque, hwaddr addr,
->>           return UINT64_MAX;
->>       }
->>   
->> +    if (vdev->generation > 0) {
->> +        qdev_config_read_event(DEVICE(proxy));
->> +    }
->> +
->>       switch (size) {
->>       case 1:
->>           val = virtio_config_modern_readb(vdev, addr);
->> diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
->> index 949a3672cb..f0b0eab07e 100644
->> --- a/include/monitor/qdev.h
->> +++ b/include/monitor/qdev.h
->> @@ -39,6 +39,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
->>   const char *qdev_set_id(DeviceState *dev, char *id, Error **errp);
->>   
->>   void qdev_hotplug_device_on_event(DeviceState *dev);
->> +void qdev_config_read_event(DeviceState *dev);
->>   
->>   DeviceAndPath *qdev_new_device_and_path(DeviceState *dev);
->>   
->> diff --git a/monitor/monitor.c b/monitor/monitor.c
->> index 941f87815a..f8aa91b190 100644
->> --- a/monitor/monitor.c
->> +++ b/monitor/monitor.c
->> @@ -315,6 +315,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
->>       [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
->>       [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
->>       [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
->> +    [QAPI_EVENT_X_CONFIG_READ]   = { 300 * SCALE_MS },
->>   };
->>   
->>   /*
->> diff --git a/qapi/qdev.json b/qapi/qdev.json
->> index 2468f8bddf..37a8785b81 100644
->> --- a/qapi/qdev.json
->> +++ b/qapi/qdev.json
->> @@ -329,3 +329,25 @@
->>   # Since: 8.2
->>   ##
->>   { 'command': 'x-device-sync-config', 'data': {'id': 'str'} }
->> +
->> +##
->> +# @X_CONFIG_READ:
->> +#
->> +# Emitted whenever guest reads virtio device config after config change.
->> +#
->> +# @device: device name
->> +#
->> +# @path: device path
->> +#
->> +# Since: 5.0.1-24
->> +#
->> +# Example:
->> +#
->> +# <- { "event": "X_CONFIG_READ",
->> +#      "data": { "device": "virtio-net-pci-0",
->> +#                "path": "/machine/peripheral/virtio-net-pci-0" },
->> +#      "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
->> +#
->> +##
->> +{ 'event': 'X_CONFIG_READ',
->> +  'data': { '*device': 'str', 'path': 'str' } }
-> 
-> The commit message talks about event CONFIG_READ, but you actually name
-> it x-device-sync-config.
+From: Helge Deller <deller@gmx.de>
 
-will fix
+This series adds a new PA-RISC machine emulation for the HP-PARISC
+C3700 workstation.
 
-> 
-> I figure you use x- to signify "unstable".  Please use feature flag
-> 'unstable' for that.  See docs/devel/qapi-code-gen.rst section
-> "Features", in particular "Special features", and also the note on x- in
-> section "Naming rules and reserved names".
+The physical HP C3700 machine has a PA2.0 (64-bit) CPU, in contrast to
+the existing emulation of a B160L workstation which is a 32-bit only
+machine and where it's Dino PCI controller isn't 64-bit capable.
 
-OK, will do.
+With the HP C3700 machine emulation (together with the emulated Astro
+Memory controller and the Elroy PCI bridge) it's now possible to
+enhance the hppa CPU emulation to support the 64-bit instruction set
+in upcoming patches.
 
-Hmm, it say
+Helge
 
-    Names beginning with ``x-`` used to signify "experimental".  This
-    convention has been replaced by special feature "unstable".
+V2 changes:
+suggestions by BALATON Zoltan <balaton@eik.bme.hu>:
+- merged pci_ids and tulip patch
+- dropped comments in lasips2
+- mention additional cleanups in patch "Require at least SeaBIOS-hppa version 10"
+suggestions by Philippe Mathieu-Daudé <philmd@linaro.org>:
+- dropped static pci_bus variable
 
-"replaced".. So, I should use "unstable" flag without "x-" prefix? Can't find an example. Seems "unstable" always used together with "x-".
+Helge Deller (11):
+  target/hppa: Update to SeaBIOS-hppa version 10
+  pci_ids/tulip: Add PCI vendor ID for HP and use it in tulip
+  hw/pci-host: Add Astro system bus adapter found on PA-RISC machines
+  MAINTAINERS: Add Astro PCI host for hppa machines
+  lasips2: LASI PS/2 devices are not user-createable
+  pci-host: Wire up new Astro/Elroy PCI bridge
+  hw/hppa: Require at least SeaBIOS-hppa version 10
+  hw/hppa: Export machine name, BTLBs, power-button address via fw_cfg
+  hw/hppa: Provide RTC and DebugOutputPort on CPU #0
+  hw/hppa: Split out machine creation
+  hw/hppa: Add new HP C3700 machine
 
-Also, nothing said about events. Is using "X_" wrong idea? Should it be x-SOME_EVENT instead?
-
-> 
-> The name CONFIG_READ feels overly generic for something that makes sense
-> only with virtio devices.
-
-Hmm, right.. I think, we can say same thing about DEVICE_UNPLUG_GUEST_ERROR.
-
-So, what about DEVICE_GUEST_READ_CONFIG ?
-
-> 
->> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
->> index b485375049..d0f022e925 100644
->> --- a/softmmu/qdev-monitor.c
->> +++ b/softmmu/qdev-monitor.c
->> @@ -1252,3 +1252,8 @@ void qdev_hotplug_device_on_event(DeviceState *dev)
->>       dev->device_on_event_sent = true;
->>       qapi_event_send_x_device_on(dev->id, dev->canonical_path);
->>   }
->> +
->> +void qdev_config_read_event(DeviceState *dev)
->> +{
->> +    qapi_event_send_x_config_read(dev->id, dev->canonical_path);
->> +}
-> 
+ MAINTAINERS                 |   5 +-
+ hw/hppa/Kconfig             |   1 +
+ hw/hppa/hppa_hardware.h     |   1 -
+ hw/hppa/machine.c           | 367 +++++++++++----
+ hw/input/lasips2.c          |   2 +
+ hw/net/tulip.c              |   2 +-
+ hw/pci-host/Kconfig         |   4 +
+ hw/pci-host/astro.c         | 876 ++++++++++++++++++++++++++++++++++++
+ hw/pci-host/meson.build     |   1 +
+ hw/pci-host/trace-events    |  11 +
+ include/hw/pci-host/astro.h |  92 ++++
+ include/hw/pci/pci_ids.h    |   2 +
+ pc-bios/hppa-firmware.img   | Bin 732376 -> 755480 bytes
+ roms/seabios-hppa           |   2 +-
+ 14 files changed, 1284 insertions(+), 82 deletions(-)
+ create mode 100644 hw/pci-host/astro.c
+ create mode 100644 include/hw/pci-host/astro.h
 
 -- 
-Best regards,
-Vladimir
+2.41.0
 
 
