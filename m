@@ -2,67 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A237CC1A9
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C303C7CC1D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:33:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsi4E-0004e6-Mn; Tue, 17 Oct 2023 07:16:54 -0400
+	id 1qsiJH-0008Di-4F; Tue, 17 Oct 2023 07:32:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qsi4C-0004bt-6B
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:16:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qsi4A-0005Rw-Gf
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:16:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697541409;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=qWQxmDAysZUEX68bbhvKOyk8KrUEURH8YQjB6HFvPVM=;
- b=M4mS0V26Oo5Rb5Nq6ZA63J7wU9PUfsm2iyqy5KC2xpUD3fROOZEugTAjqO7X/+yB5Gx8Rc
- 6+nYiwMILDGpLKQU8+x8dHbUV5Ncye3i/JEkitUE9JkvT+QRcXPfLl2R9qlnlxBlLaCh4C
- BOcpzW5Q56ATrAG0DPtuqV6DhZWToak=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-660-T648OZ81Nj6HmaRuil5oKQ-1; Tue, 17 Oct 2023 07:16:46 -0400
-X-MC-Unique: T648OZ81Nj6HmaRuil5oKQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4DC785A5BA;
- Tue, 17 Oct 2023 11:16:45 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.5])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9FBDC2026D6F;
- Tue, 17 Oct 2023 11:16:44 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: mjt@tls.msk.ru,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH] gtk: force realization of drawing area
-Date: Tue, 17 Oct 2023 15:16:42 +0400
-Message-ID: <20231017111642.1155545-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsiJE-0008Da-W3
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:32:25 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsiJD-0000DK-6P
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:32:24 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4054f790190so58825125e9.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 04:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697542341; x=1698147141; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=d7AdbJp2pwbBKBm8y17LKHK2aZ8zGpxOrU9nR0FTKMw=;
+ b=x8zDwtgrZE9OrkVJivdje0a3kWdgbKS9TvZurcf9TEjL0MRWvWDRNTRk9Y1cVCt4/J
+ djbOpguGwhwb6uAqWBEKJt+q1UxcNADxnb9ajW8EA0KDeQnaWxOf5Z1H7GDkHHBmYbEZ
+ qc+GHsMKP41dFF3JPFHYpBkDFkkEDC2IDInVC8psMFwOMLbIh0WADoYSW09VMWzTKJ+k
+ 2Ig9YRkPc8ZUeuYlVRb/OyDcB8X1u5czkCwWt3L0M/mkKN324olG8vpYcLCmJqfVhC5C
+ ttIN9s7IzFcXSYf6AtEF4+QiGDA6OngqtoMQC/Ds1GDbCbU8dV7V2YeXea31MNZ01qLo
+ NWCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697542341; x=1698147141;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=d7AdbJp2pwbBKBm8y17LKHK2aZ8zGpxOrU9nR0FTKMw=;
+ b=R+8ArgsaYeIe7f7RE/+1q2YyUmWS//HpZFgJFJUyUUWYFKCj6uOV/jUFHvOIIFyz/E
+ K4X82LRctXAwwfe48Sn3pY0UiiLFqjctMUnIzHbShBhKYyaJuJNXQHLVoYcHJBNTXBR6
+ AoQS4WRoArH+QHW5cpHlcSKlLMiVUKFGgyWAXc4ZW6D2mOdILSx+bBR+FJ1OxSznrZ9R
+ j9tjZB9wamecJRBxSPkWxdVHgJSWTNx9UJDauF5Vl/hlQbSicLBNgX3JmR7ie6dPS1MK
+ stWez5WSryMO3qT9TbgMimG7qmRwUv2KewmT2XDTp8h20UCkopGQCQEZPM3KuMceyh+d
+ ew9w==
+X-Gm-Message-State: AOJu0YzS1E+GH1cIj/R2Y7MK+tomW7OLUylAB44IF723qZucnvnJ9bCu
+ 8Kba16o2XsXdU464cRpXfOv+aw==
+X-Google-Smtp-Source: AGHT+IGwPO40cZ4eycS64BI5aOH/XBMZebm8w+xLxMQv2aLLjUi+j8FcPMeZbKKxLpJfZJz0UFCUtQ==
+X-Received: by 2002:a05:6000:11c1:b0:32d:857c:d51c with SMTP id
+ i1-20020a05600011c100b0032d857cd51cmr2036802wrx.43.1697542341140; 
+ Tue, 17 Oct 2023 04:32:21 -0700 (PDT)
+Received: from [192.168.69.115] ([176.172.118.33])
+ by smtp.gmail.com with ESMTPSA id
+ n13-20020a5d67cd000000b0032dbf32bd56sm1483503wrw.37.2023.10.17.04.32.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Oct 2023 04:32:20 -0700 (PDT)
+Message-ID: <00a51d67-18c6-37de-eb15-679032af0679@linaro.org>
+Date: Tue, 17 Oct 2023 13:32:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] semihosting/arm-compat: Have TARGET_SYS_EXIT[_EXTENDED]
+ return signed
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+References: <20231005062610.57351-1-philmd@linaro.org>
+ <CAFEAcA_P3s07PpNeDVvy8xB7HLM5+Uvnv=NDycVWW3LR7iT_vg@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA_P3s07PpNeDVvy8xB7HLM5+Uvnv=NDycVWW3LR7iT_vg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,48 +95,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Hi Peter,
 
-Fixes the GL context creation from a widget that isn't yet realized (in
-a hidden tab for example).
+On 16/10/23 18:08, Peter Maydell wrote:
+> On Thu, 5 Oct 2023 at 07:27, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Per the "Semihosting for AArch32 and AArch64" spec. v2 (2023Q3) [*]:
+>>
+>>    6.5   SYS_EXIT (0x18)
+>>    6.5.2   Entry (64-bit)
+>>
+>>      On entry, the PARAMETER REGISTER contains a pointer to
+>>      a two-field argument block:
+>>
+>>      . field 1
+>>        The exception type, which is one of the set of reason
+>>        codes in the above tables.
+>>
+>>      . field 2
+>>        A subcode, whose meaning depends on the reason code in
+>>        field 1.
+>>
+>>      In particular, if field 1 is ADP_Stopped_ApplicationExit
+>>      then field 2 is an exit status code, as passed to the C
+>>      standard library exit() function. [...]
+>>
+>> Having libc exit() is declared as:
+>>
+>>    LIBRARY
+>>         Standard C Library (libc, -lc)
+>>
+>>    SYNOPSIS
+>>
+>>         void
+>>         exit(int status);
+>>
+>> the status is expected to be signed.
+>>
+>> [*] https://github.com/ARM-software/abi-aa/blob/2023q3-release/semihosting/semihosting.rst#652entry-64-bit
+> 
+> Is this actually a visible change in behaviour? It makes
+> more sense to use 'int', I agree, but unless I'm confused
+> about C type conversions then I don't think it actually
+> changes the result in any case, does it?  Given we start with a
+> guest 64 or 32 bit signed integer value and put it into a
+> 'target_ulong' (arg1), it doesn't seem to me to make a
+> difference whether we put it into a 'uint32_t' or an
+> 'int' (ret) before passing it to either exit() or
+> gdb_exit() (which both take 'int')...
 
-Resolves:
-https://gitlab.com/qemu-project/qemu/-/issues/1727
+There should be no behavioral change, it is a cleanup
+to avoid asking "why are we using a uint32_t here?" in
+future reviews. Do you rather I mention it in the commit
+description?
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- ui/gtk.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Regards,
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 935de1209b..2a4c9b84ba 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -2371,6 +2371,7 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
-     GdkDisplay *window_display;
-     GtkIconTheme *theme;
-     char *dir;
-+    int idx;
- 
-     if (!gtkinit) {
-         fprintf(stderr, "gtk initialization failed\n");
-@@ -2434,6 +2435,15 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
-     gtk_container_add(GTK_CONTAINER(s->window), s->vbox);
- 
-     gtk_widget_show_all(s->window);
-+
-+    for (idx = 0;; idx++) {
-+        QemuConsole *con = qemu_console_lookup_by_index(idx);
-+        if (!con) {
-+            break;
-+        }
-+        gtk_widget_realize(s->vc[idx].gfx.drawing_area);
-+    }
-+
-     if (opts->u.gtk.has_show_menubar &&
-         !opts->u.gtk.show_menubar) {
-         gtk_widget_hide(s->menu_bar);
--- 
-2.41.0
-
+Phil.
 
