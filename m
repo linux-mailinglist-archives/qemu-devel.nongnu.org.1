@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535C57CC16D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9F77CC187
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:08:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qshpl-0001RQ-En; Tue, 17 Oct 2023 07:01:57 -0400
+	id 1qshud-00061s-Ra; Tue, 17 Oct 2023 07:06:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qshpe-0001Or-C7
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:01:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qshuP-0005k3-GP; Tue, 17 Oct 2023 07:06:45 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qshpc-0001gR-Df
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:01:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697540506;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=++V9zXgTbxKN73KN7wA3fSAKsxC/lSa93nsKx++xCJ8=;
- b=Rf6fbusSHEg05n9JdU9llXa7dRZxnY5jpsGFJH7cYefzoCGRlPgLIxzHtr02GnoamZLxLw
- hdkTdyQX7oGTNuB88mad3FWLNR6juW4Pk0yz/usw3Tt7ncd79GuDxT057MAr7078qE3ZLw
- hcgqDGYMLoXoE4BxH7QlD62pUE+fzqk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-249-rC3muhAZNWaAqPiCp6LI8Q-1; Tue, 17 Oct 2023 07:01:45 -0400
-X-MC-Unique: rC3muhAZNWaAqPiCp6LI8Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE8962825E81;
- Tue, 17 Oct 2023 11:01:44 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D6CDC15BB8;
- Tue, 17 Oct 2023 11:01:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3089C21E6A1F; Tue, 17 Oct 2023 13:01:40 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Cc: qemu-devel@nongnu.org,  qemu-s390x@nongnu.org,  Eduardo Habkost
- <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,  Christian Borntraeger
- <borntraeger@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,  Thomas
- Huth <thuth@redhat.com>,  Eric Blake <eblake@redhat.com>,  Michael Roth
- <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Cleber Rosa
- <crosa@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,  Pierre Morel <pmorel@linux.ibm.com>
-Subject: Re: [PATCH v26 09/21] qapi/s390x/cpu topology: set-cpu-topology qmp
- command
-References: <20231016183925.2384704-1-nsg@linux.ibm.com>
- <20231016183925.2384704-10-nsg@linux.ibm.com>
-Date: Tue, 17 Oct 2023 13:01:40 +0200
-In-Reply-To: <20231016183925.2384704-10-nsg@linux.ibm.com> (Nina
- Schoetterl-Glausch's message of "Mon, 16 Oct 2023 20:39:13 +0200")
-Message-ID: <878r81a4x7.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qshuI-0003A1-Kr; Tue, 17 Oct 2023 07:06:44 -0400
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c08:ba1:0:640:375a:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 87B1A6236F;
+ Tue, 17 Oct 2023 14:06:30 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8006::1:24] (unknown
+ [2a02:6b8:b081:8006::1:24])
+ by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id R6i4ZkHOoa60-9x3X1mXp; Tue, 17 Oct 2023 14:06:29 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1697540789;
+ bh=8pvqoR2EfmQWgc2zL6d3konBLE9CeojvJ7dEECO+zKI=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=mAJGCL56B+8FlWNsSY9hzfAlPMZqv4AyxyzLrvbDvvwt8QrESZl3rpO3M/6K9/vFX
+ 7UiZ+o9MiD4UyHBo8k535KDyKW9aK+mG9OrVhuK9d8RBNL76DQniG5+m6dlyy/3/lT
+ 0d2flneZc9YiW9k38jVuQ8VjShayk2OQrICp4pbM=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <0b07407b-06bc-40b1-af1b-3c8023cb6bdc@yandex-team.ru>
+Date: Tue, 17 Oct 2023 14:06:26 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/25] Python patches
+Content-Language: en-US
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
+ Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
+ Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, qemu-s390x@nongnu.org,
+ Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ qemu-block@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Jeffery <andrew@aj.id.au>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Eric Farman <farman@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Halil Pasic <pasic@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>
+References: <20231013190941.3699288-1-jsnow@redhat.com>
+ <20231016192101.GA161375@fedora>
+ <CAFn=p-aO0ADr-oD3XvQs=8keNs27p3b5LGHzvZxeoMWLbu-KpQ@mail.gmail.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <CAFn=p-aO0ADr-oD3XvQs=8keNs27p3b5LGHzvZxeoMWLbu-KpQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,33 +92,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nina Schoetterl-Glausch <nsg@linux.ibm.com> writes:
+On 17.10.23 02:44, John Snow wrote:
+> On Mon, Oct 16, 2023 at 3:21 PM Stefan Hajnoczi <stefanha@redhat.com> wrote:
+>>
+>> Applied, thanks.
+>>
+>> Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+> 
+> Hi Vladimir: all done!
+> 
 
-> From: Pierre Morel <pmorel@linux.ibm.com>
->
-> The modification of the CPU attributes are done through a monitor
-> command.
->
-> It allows to move the core inside the topology tree to optimize
-> the cache usage in the case the host's hypervisor previously
-> moved the CPU.
->
-> The same command allows to modify the CPU attributes modifiers
-> like polarization entitlement and the dedicated attribute to notify
-> the guest if the host admin modified scheduling or dedication of a vCPU.
->
-> With this knowledge the guest has the possibility to optimize the
-> usage of the vCPUs.
->
-> The command has a feature unstable for the moment.
->
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Thanks!
 
-QAPI schema
-Acked-by: Markus Armbruster <armbru@redhat.com>
+> I've created a MR to backport your changes to the standalone repo
+> here: https://gitlab.com/qemu-project/python-qemu-qmp/-/merge_requests/30
+
+Looks good to me.
+
+> - please give it a quick glance to make sure I didn't butcher anything
+> in transit.
+> 
+> Thanks,
+> --js
+> 
+
+-- 
+Best regards,
+Vladimir
 
 
