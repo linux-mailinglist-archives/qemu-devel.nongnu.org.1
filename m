@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D897CBAB1
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B8E7CBAB0
 	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:14:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsdKF-0000Lm-R2; Tue, 17 Oct 2023 02:13:07 -0400
+	id 1qsdKG-0000Pn-SV; Tue, 17 Oct 2023 02:13:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdKD-0000FV-7b
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:05 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qsdKE-0000Jt-CK
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:06 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsdKB-0003tC-IU
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:04 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1ca052ec63bso31300585ad.1
+ id 1qsdKC-0003tI-BQ
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:13:06 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1c5cd27b1acso44358455ad.2
  for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:13:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697523182; x=1698127982; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697523183; x=1698127983; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6Ww/eIka2fIiuMHxW6vTYf2n2OXLN4aKw8vXIwfDBzM=;
- b=f3ymxVJxjLmyii4XZrNIBBQzUe9WEGFLmso1yT1Xzn3tUZ79dDVnanCXUJLTadJJYA
- SxkinAmAgX2EMn/Hzj4v7nE7dcILidXMIkp63VdT82JNVP1Ce9nzTYL7lPbn49G3hB2U
- wc0dl2CbwOElKNT8bBqEB9f9OkjhAn/8qKhpaI2nnBOaV6xsfUhtxwizKmSTe8Uf9jDm
- Uy+seZM1oLMmk4N+GIdF6/OCC0dxpqphbR3xYrqhkHjid5kkmOa5vxDMRdGPlGqtPWRP
- JORR6Ts6hu2sSRlFyD40XP7rWAWBKTy+/zZEbQg6gzyglsUNaTeGLtiTKyOc3mJQJDNj
- KGuw==
+ bh=/mTYxiPdr4Iee3Vw86SKy2D5EJuAnTIUSO2hmcgcVG4=;
+ b=x/kvGT1G5ngVH/RjLU3yQmK9MHn4WWynOM+dKlj/YlAT4MAESJFvCVAySs0Ql+Mw4O
+ RVhrTDCPjhWSnwIJX5VToeAn8nPkaSkEtjGeYBigYjRdRIi4xA3CM2Esd2pC9l2+PtfU
+ lHsguG7QscWv5xVG6hS8jK0kf6JVd0gzrIz51c8Qh06rXmuBwR7V/IDB0M0ZnU/vMlGo
+ E+LEFWsFKhlC2H2J9FfgVrAM2vG51nKKtDXP9CXdgFhqkTNW7K/xgp9CJwQvAF3VCvpB
+ U6V80PdSRJ5FCIk3ovhQnEP1rz32bIvxIb0B+sG1DeUbE+xrr8kpw0lF+ovjVdWNzXVx
+ AIeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697523182; x=1698127982;
+ d=1e100.net; s=20230601; t=1697523183; x=1698127983;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6Ww/eIka2fIiuMHxW6vTYf2n2OXLN4aKw8vXIwfDBzM=;
- b=QMALcQhJKbWfsCJYcqqZ3gPfPqn6XAjcGsVvT3iQtXHaVlAyzbR6nx3BuEqw+/5Ddb
- YJ0YSS8rZYmdn7CuGjAF9EcrrwPFd7oO70Ia77GwWCOnm65rn2jstz1vEPwAr3REPnYv
- UPQkYxdUImFMEyBwwgoApQQ++2vKhSkIcB9CYIVedFsYRclgku5w5vaBa0xwgugldxIZ
- x3e/tgHgO8qJEJVA9RyoSYBT2v9++kzZFmavdxZaDjsfjW4jgkjwKGjs9QaueyfnMjnd
- 9IFGXpW4AGpIZtcEW4xRwyh2CQtTCRdWJbTDqhJJ/SSVZLfFOJOJf5UadggXG73HXxn/
- ZZ+g==
-X-Gm-Message-State: AOJu0YzxBO/Dem7j4uGDWfyUEmp2IgZTipnZjKZ8H+b8PG7fJ2cnVlik
- drO32Xs7LWm9rhjPa+S61RXr5l0KeqbSGMr/JcQ=
-X-Google-Smtp-Source: AGHT+IGenCclhrFEy0ZRBnfPkUbfP9Q6+yNfisNaeRsy2d14BWViGVN/tJ+vKjTlHcukjgB247AQfg==
-X-Received: by 2002:a17:902:e5c1:b0:1b9:e241:ad26 with SMTP id
- u1-20020a170902e5c100b001b9e241ad26mr1469930plf.9.1697523182048; 
+ bh=/mTYxiPdr4Iee3Vw86SKy2D5EJuAnTIUSO2hmcgcVG4=;
+ b=C0y6Kpz0hVf+OFtXQRnmOlazsfmIBpfeHZMmNGCuCiQOukGV7f+ykV4dgEfu5H9ti8
+ FTrXEo3nGjmrUHRfY0FbsdwVhSwF1lIo3hsqVDCYqA7jYLeksSWv8Sw5tVX07sKArsCH
+ Wq0BZMud5UCYrEGmW43H321jzmSe5McVjHfRQ23764iNHU6m2tavhdR/UJ5h+D8OWuEg
+ yYtTLOiHp0ClvcJ1erLi1q+vKwmOowTMrptVor9N5XBA5CPevzj1KbuZcMCmu4HGzv+q
+ AzUpbpgnXjkbkpfGvEQVZYMJM6z4zCnrvOaHb6DMtfhRpNmWNHZoiTKcoF8uJ53y7PnI
+ kmzQ==
+X-Gm-Message-State: AOJu0YyjpVg9s30m8GQDT7gAJO0M34MZKxa+8OISDD1vbGCSwgKv+n7n
+ dgchboO3oyO1fyWkjfD38Sn74ZsSFNBh3zbqlc4=
+X-Google-Smtp-Source: AGHT+IFW2TXKOYtCLiAdu0j+LpsreURVlpcVpC9rRGc7FndEUA7o9x5py0+VXZAELqbBajMNYU/hQQ==
+X-Received: by 2002:a17:903:248:b0:1c3:6d97:e89e with SMTP id
+ j8-20020a170903024800b001c36d97e89emr1517318plh.58.1697523182790; 
  Mon, 16 Oct 2023 23:13:02 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- jf4-20020a170903268400b001ca21e05c69sm629150plb.109.2023.10.16.23.13.01
+ jf4-20020a170903268400b001ca21e05c69sm629150plb.109.2023.10.16.23.13.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Oct 2023 23:13:01 -0700 (PDT)
+ Mon, 16 Oct 2023 23:13:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 19/90] target/sparc: Move SETHI to decodetree
-Date: Mon, 16 Oct 2023 23:11:33 -0700
-Message-Id: <20231017061244.681584-20-richard.henderson@linaro.org>
+Subject: [PATCH v2 20/90] target/sparc: Move Tcc to decodetree
+Date: Mon, 16 Oct 2023 23:11:34 -0700
+Message-Id: <20231017061244.681584-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231017061244.681584-1-richard.henderson@linaro.org>
 References: <20231017061244.681584-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,109 +90,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Use the new delay_exceptionv function in the implementation.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  6 +++++
- target/sparc/translate.c  | 50 ++++++++++++---------------------------
- 2 files changed, 21 insertions(+), 35 deletions(-)
+ target/sparc/insns.decode |   2 +
+ target/sparc/translate.c  | 143 +++++++++++++++++---------------------
+ 2 files changed, 66 insertions(+), 79 deletions(-)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 9ab3f2eb82..f6f5401b10 100644
+index f6f5401b10..4d09c102f1 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -3,6 +3,10 @@
- # Sparc instruction decode definitions.
- # Copyright (c) 2023 Richard Henderson <rth@twiddle.net>
+@@ -21,3 +21,5 @@ NCP     00 -   ----     111 ----------------------         # CBcc
+ SETHI   00 rd:5         100 i:22
  
-+##
-+## Major Opcodes 00 and 01 -- branches, call, and sethi.
-+##
-+
- &bcc    i a cond cc
- BPcc    00 a:1 cond:4   001 cc:1 0 - i:s19                 &bcc
- Bicc    00 a:1 cond:4   010          i:s22                 &bcc cc=0
-@@ -14,4 +18,6 @@ BPr     00 a:1 0 cond:3 011 ..     - rs1:5 ..............  i=%d16
- 
- NCP     00 -   ----     111 ----------------------         # CBcc
- 
-+SETHI   00 rd:5         100 i:22
-+
  CALL    01 i:s30
++
++Tcc     10 0 cond:4 111010 rs1:5 imm:1 cc:1 00000 rs2_or_imm:7
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 70bfbb41e9..b53127ecb7 100644
+index b53127ecb7..4a4aab81cd 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2868,6 +2868,10 @@ static bool advance_pc(DisasContext *dc)
-     return true;
+@@ -3053,6 +3053,69 @@ static bool trans_SETHI(DisasContext *dc, arg_SETHI *a)
+     return advance_pc(dc);
  }
  
-+/*
-+ * Major opcodes 00 and 01 -- branches, call, and sethi
-+ */
-+
- static bool advance_jump_uncond_never(DisasContext *dc, bool annul)
- {
-     if (annul) {
-@@ -3040,6 +3044,15 @@ static bool trans_NCP(DisasContext *dc, arg_NCP *a)
- #endif
- }
- 
-+static bool trans_SETHI(DisasContext *dc, arg_SETHI *a)
++static bool trans_Tcc(DisasContext *dc, arg_Tcc *a)
 +{
-+    /* Special-case %g0 because that's the canonical nop.  */
-+    if (a->rd) {
-+        gen_store_gpr(dc, a->rd, tcg_constant_tl((uint32_t)a->i << 10));
++    DisasCompare cmp;
++    TCGLabel *lab;
++    TCGv_i32 trap;
++    int mask;
++
++    /* Reject %xcc for sparc32. */
++    if (avail_32(dc) && a->cc) {
++        return false;
 +    }
++
++    /* For simplicity, we underdecoded the rs2/imm7 field. */
++    if (!a->imm && (a->rs2_or_imm & ~0x1f)) {
++        return false;
++    }
++
++    /* Trap never.  */
++    if (a->cond == 0) {
++        return advance_pc(dc);
++    }
++
++    mask = ((dc->def->features & CPU_FEATURE_HYPV) && supervisor(dc)
++            ? UA2005_HTRAP_MASK : V8_TRAP_MASK);
++
++    if (a->rs2_or_imm == 0) {
++        a->imm = true;
++    }
++    if (a->rs1 == 0 && a->imm) {
++        trap = tcg_constant_i32((a->rs2_or_imm & mask) + TT_TRAP);
++    } else {
++        TCGv src1 = gen_load_gpr(dc, a->rs1);
++        TCGv sum = tcg_temp_new();
++
++        if (a->imm) {
++            tcg_gen_addi_tl(sum, src1, a->rs2_or_imm);
++        } else {
++            tcg_gen_add_tl(sum, src1, gen_load_gpr(dc, a->rs2_or_imm));
++        }
++
++        trap = tcg_temp_new_i32();
++        tcg_gen_trunc_tl_i32(trap, sum);
++        tcg_gen_andi_i32(trap, trap, mask);
++        tcg_gen_addi_i32(trap, trap, TT_TRAP);
++    }
++
++    /* Trap always.  */
++    if (a->cond == 8) {
++        save_state(dc);
++        gen_helper_raise_exception(tcg_env, trap);
++        dc->base.is_jmp = DISAS_NORETURN;
++        return true;
++    }
++
++    /* Conditional trap.  */
++    flush_cond(dc);
++    lab = delay_exceptionv(dc, trap);
++    gen_compare(&cmp, a->cc, a->cond, dc);
++    tcg_gen_brcond_tl(cmp.cond, cmp.c1, cmp.c2, lab);
++
 +    return advance_pc(dc);
 +}
 +
  #define CHECK_IU_FEATURE(dc, FEATURE)                      \
      if (!((dc)->def->features & CPU_FEATURE_ ## FEATURE))  \
          goto illegal_insn;
-@@ -3060,41 +3073,8 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
-     rd = GET_FIELD(insn, 2, 6);
+@@ -3083,85 +3146,7 @@ static void disas_sparc_legacy(DisasContext *dc, unsigned int insn)
+             TCGv cpu_dst = tcg_temp_new();
+             TCGv cpu_tmp0;
  
-     switch (opc) {
--    case 0:                     /* branches/sethi */
--        {
--            unsigned int xop = GET_FIELD(insn, 7, 9);
--            switch (xop) {
--#ifdef TARGET_SPARC64
--            case 0x1:           /* V9 BPcc */
--                g_assert_not_reached(); /* in decodetree */
--            case 0x3:           /* V9 BPr */
--                g_assert_not_reached(); /* in decodetree */
--            case 0x5:           /* V9 FBPcc */
--                g_assert_not_reached(); /* in decodetree */
--#else
--            case 0x7:           /* CBN+x */
--                g_assert_not_reached(); /* in decodetree */
--#endif
--            case 0x2:           /* BN+x */
--                g_assert_not_reached(); /* in decodetree */
--            case 0x6:           /* FBN+x */
--                g_assert_not_reached(); /* in decodetree */
--            case 0x4:           /* SETHI */
--                /* Special-case %g0 because that's the canonical nop.  */
--                if (rd) {
--                    uint32_t value = GET_FIELD(insn, 10, 31);
--                    TCGv t = gen_dest_gpr(dc, rd);
--                    tcg_gen_movi_tl(t, value << 10);
--                    gen_store_gpr(dc, rd, t);
+-            if (xop == 0x3a) {  /* generate trap */
+-                int cond = GET_FIELD(insn, 3, 6);
+-                TCGv_i32 trap;
+-                TCGLabel *l1 = NULL;
+-                int mask;
+-
+-                if (cond == 0) {
+-                    /* Trap never.  */
+-                    break;
 -                }
--                break;
--            case 0x0:           /* UNIMPL */
--            default:
--                goto illegal_insn;
--            }
--            break;
--        }
--        break;
-+    case 0:
-+        goto illegal_insn; /* in decodetree */
-     case 1:
-         g_assert_not_reached(); /* in decodetree */
-     case 2:                     /* FPU & Logical Operations */
+-
+-                save_state(dc);
+-
+-                if (cond != 8) {
+-                    /* Conditional trap.  */
+-                    DisasCompare cmp;
+-#ifdef TARGET_SPARC64
+-                    /* V9 icc/xcc */
+-                    int cc = GET_FIELD_SP(insn, 11, 12);
+-                    if (cc == 0) {
+-                        gen_compare(&cmp, 0, cond, dc);
+-                    } else if (cc == 2) {
+-                        gen_compare(&cmp, 1, cond, dc);
+-                    } else {
+-                        goto illegal_insn;
+-                    }
+-#else
+-                    gen_compare(&cmp, 0, cond, dc);
+-#endif
+-                    l1 = gen_new_label();
+-                    tcg_gen_brcond_tl(tcg_invert_cond(cmp.cond),
+-                                      cmp.c1, cmp.c2, l1);
+-                }
+-
+-                mask = ((dc->def->features & CPU_FEATURE_HYPV) && supervisor(dc)
+-                        ? UA2005_HTRAP_MASK : V8_TRAP_MASK);
+-
+-                /* Don't use the normal temporaries, as they may well have
+-                   gone out of scope with the branch above.  While we're
+-                   doing that we might as well pre-truncate to 32-bit.  */
+-                trap = tcg_temp_new_i32();
+-
+-                rs1 = GET_FIELD_SP(insn, 14, 18);
+-                if (IS_IMM) {
+-                    rs2 = GET_FIELD_SP(insn, 0, 7);
+-                    if (rs1 == 0) {
+-                        tcg_gen_movi_i32(trap, (rs2 & mask) + TT_TRAP);
+-                        /* Signal that the trap value is fully constant.  */
+-                        mask = 0;
+-                    } else {
+-                        TCGv t1 = gen_load_gpr(dc, rs1);
+-                        tcg_gen_trunc_tl_i32(trap, t1);
+-                        tcg_gen_addi_i32(trap, trap, rs2);
+-                    }
+-                } else {
+-                    TCGv t1, t2;
+-                    rs2 = GET_FIELD_SP(insn, 0, 4);
+-                    t1 = gen_load_gpr(dc, rs1);
+-                    t2 = gen_load_gpr(dc, rs2);
+-                    tcg_gen_add_tl(t1, t1, t2);
+-                    tcg_gen_trunc_tl_i32(trap, t1);
+-                }
+-                if (mask != 0) {
+-                    tcg_gen_andi_i32(trap, trap, mask);
+-                    tcg_gen_addi_i32(trap, trap, TT_TRAP);
+-                }
+-
+-                gen_helper_raise_exception(tcg_env, trap);
+-
+-                if (cond == 8) {
+-                    /* An unconditional trap ends the TB.  */
+-                    dc->base.is_jmp = DISAS_NORETURN;
+-                    goto jmp_insn;
+-                } else {
+-                    /* A conditional trap falls through to the next insn.  */
+-                    gen_set_label(l1);
+-                    break;
+-                }
+-            } else if (xop == 0x28) {
++            if (xop == 0x28) {
+                 rs1 = GET_FIELD(insn, 13, 17);
+                 switch(rs1) {
+                 case 0: /* rdy */
 -- 
 2.34.1
 
