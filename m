@@ -2,78 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C83B7CC8EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9887CC8EE
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:34:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsn0V-0005lb-9s; Tue, 17 Oct 2023 12:33:23 -0400
+	id 1qsn1p-0007hi-1i; Tue, 17 Oct 2023 12:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsn0N-0005Zs-8w
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:33:20 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsn0L-0003Vq-Gr
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:33:14 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-507b96095abso2010743e87.3
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 09:33:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697560391; x=1698165191; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ApZ6dWptMed9FFcnGR/+NtEdFJDhlsQueolLsuqiDCw=;
- b=hRERmOC3GaFcyMIe14SXBRwmAsi2+ckso1DH4hgbFKLzG5yfKgxDWl79VdfURHLFHB
- n1DWHsPvAj5G+SJ0TWcGbU//VjprevMKvAOc3L1ftsgrVlhQD9ZmbJ59OCgudLJAVHhX
- megq+4D8qs7P3Hps/ay0LRwQfS45sUr7QQ4+y3EWkgjELyWvC6OHN8a+p7Z+bAoatEBF
- jOs/c+xJUgEUc/+rRU+wYbIvLIQSQ16f/wNUWRslMIs+2sfV03vyHaj+GdAra9AvVoKi
- em04a33mT3FT/LPELPrIAbJ6gXZOc1BabHOEC2vEITih9PCeWjWuOfGoIvIvQFYCf0Oy
- wv/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697560391; x=1698165191;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ApZ6dWptMed9FFcnGR/+NtEdFJDhlsQueolLsuqiDCw=;
- b=OSKashfzNskCf2NycWuvChc3Vx5HeNUF/Jw3JK3Nf5oQjiCI1DJLdrlrdh+8HJYetR
- 2gaNpnq7dj1CS9dzcWPT999n6YdB6opKTUudq9Z5MhA43Rn7GKIhjmhh/Zx5yVVY2aGy
- Qolt+LDyDa+KI8iJM/U5ciJmasHlXliWIG8eJe0yHK7zZ4caIgKwPCnICnzmZsqtjSTZ
- XRdO9MQolK4AHBc/3xH/a30hpNc6j2V7AT0zqI0SJdv5VoH3Bnd5MInCejY3Fws9FrRl
- dGsFJWXRdyzGga5SZpsDymUgjFhqHh3U1ifZ/CIYIZLwLBXTu/Dj0vPIGDbOEvTmHEJm
- 7ymQ==
-X-Gm-Message-State: AOJu0YxcaVUYH4BYpaA+kmDsdn8Nzpvkf7cb1VMQfomueohd4hGi1xjv
- LarVwP8nydYEicXi0QZUw+AMpxzX+Kx++Y3WU0B01Q==
-X-Google-Smtp-Source: AGHT+IFF2DbfqZ7z84t32h1XGJ6Hyxf0V6PHvgCMD65fDHctbBlbQRXafVnoR4KP1TBngu9uyM49Bxp07gwrEBAkFUI=
-X-Received: by 2002:ac2:43af:0:b0:4fd:faa5:64ed with SMTP id
- t15-20020ac243af000000b004fdfaa564edmr2044674lfl.11.1697560391106; Tue, 17
- Oct 2023 09:33:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qsn1m-0007hL-Rs
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:34:42 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qsn1l-00044n-AL
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:34:42 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 584D17456A7;
+ Tue, 17 Oct 2023 18:33:31 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 2095A745681; Tue, 17 Oct 2023 18:33:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1F6BB7456AA;
+ Tue, 17 Oct 2023 18:33:31 +0200 (CEST)
+Date: Tue, 17 Oct 2023 18:33:31 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: deller@kernel.org
+cc: qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH v2 08/11] hw/hppa: Export machine name, BTLBs, power-button
+ address via fw_cfg
+In-Reply-To: <20231017154645.95844-9-deller@kernel.org>
+Message-ID: <5a4278fe-461b-5ec6-852b-d77371babf7a@eik.bme.hu>
+References: <20231017154645.95844-1-deller@kernel.org>
+ <20231017154645.95844-9-deller@kernel.org>
 MIME-Version: 1.0
-References: <20231012121857.31873-1-philmd@linaro.org>
- <20231012121857.31873-4-philmd@linaro.org>
-In-Reply-To: <20231012121857.31873-4-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Oct 2023 17:33:00 +0100
-Message-ID: <CAFEAcA-qgZejcWSvi40p+FsmYS2ipPAua3u9bYA_6LKj8HV3Rg@mail.gmail.com>
-Subject: Re: [PATCH 3/8] hw/pci-host/designware: Add 'host_mem' variable for
- clarity
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Andrey Smirnov <andrew.smirnov@gmail.com>,
- qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,18 +64,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 12 Oct 2023 at 13:19, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+On Tue, 17 Oct 2023, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
 >
-> designware_pcie_root_realize() uses get_system_memory()
-> as the "host side memory region", as opposed to the "PCI
-> side" one. Introduce the 'host_mem' variable for clarity.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Provide necessary info to SeaBIOS-hppa.
+
+If this is needed by the updated SeaBIOS in patch 1 shouldn't this come 
+before that?
+
+Regards,
+BALATON Zoltan
+
+> Signed-off-by: Helge Deller <deller@gmx.de>
 > ---
-
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-
-thanks
--- PMM
+> hw/hppa/machine.c | 22 +++++++++++++++++++---
+> 1 file changed, 19 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+> index c6d8deffcf..de925259ea 100644
+> --- a/hw/hppa/machine.c
+> +++ b/hw/hppa/machine.c
+> @@ -118,11 +118,13 @@ static void fw_cfg_boot_set(void *opaque, const char *boot_device,
+>     fw_cfg_modify_i16(opaque, FW_CFG_BOOT_DEVICE, boot_device[0]);
+> }
+>
+> -static FWCfgState *create_fw_cfg(MachineState *ms)
+> +static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus)
+> {
+>     FWCfgState *fw_cfg;
+>     uint64_t val;
+>     const char qemu_version[] = QEMU_VERSION;
+> +    MachineClass *mc = MACHINE_GET_CLASS(ms);
+> +    int len;
+>
+>     fw_cfg = fw_cfg_init_mem(FW_CFG_IO_BASE, FW_CFG_IO_BASE + 4);
+>     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, ms->smp.cpus);
+> @@ -137,8 +139,20 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
+>     fw_cfg_add_file(fw_cfg, "/etc/cpu/tlb_entries",
+>                     g_memdup(&val, sizeof(val)), sizeof(val));
+>
+> +    val = cpu_to_le64(HPPA_BTLB_ENTRIES);
+> +    fw_cfg_add_file(fw_cfg, "/etc/cpu/btlb_entries",
+> +                    g_memdup(&val, sizeof(val)), sizeof(val));
+> +
+> +    len = strlen(mc->name) + 1;
+> +    fw_cfg_add_file(fw_cfg, "/etc/hppa/machine",
+> +                    g_memdup(mc->name, len), len);
+> +
+>     val = cpu_to_le64(HPA_POWER_BUTTON);
+> -    fw_cfg_add_file(fw_cfg, "/etc/power-button-addr",
+> +    fw_cfg_add_file(fw_cfg, "/etc/hppa/power-button-addr",
+> +                    g_memdup(&val, sizeof(val)), sizeof(val));
+> +
+> +    val = cpu_to_le64(CPU_HPA + 24);
+> +    fw_cfg_add_file(fw_cfg, "/etc/hppa/DebugOutputPort",
+>                     g_memdup(&val, sizeof(val)), sizeof(val));
+>
+>     fw_cfg_add_i16(fw_cfg, FW_CFG_BOOT_DEVICE, ms->boot_config.order[0]);
+> @@ -148,6 +162,8 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
+>                     g_memdup(qemu_version, sizeof(qemu_version)),
+>                     sizeof(qemu_version));
+>
+> +    fw_cfg_add_extra_pci_roots(pci_bus, fw_cfg);
+> +
+>     return fw_cfg;
+> }
+>
+> @@ -250,7 +266,7 @@ static void machine_hppa_init(MachineState *machine)
+>                      parallel_hds[0]);
+>
+>     /* fw_cfg configuration interface */
+> -    create_fw_cfg(machine);
+> +    create_fw_cfg(machine, pci_bus);
+>
+>     /* SCSI disk setup. */
+>     dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
+>
 
