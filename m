@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BD27CBC26
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 09:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 172677CBC2C
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 09:25:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qseOW-0002Ui-Tv; Tue, 17 Oct 2023 03:21:36 -0400
+	id 1qseRj-0003as-7L; Tue, 17 Oct 2023 03:24:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qseOU-0002UZ-Kl
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 03:21:34 -0400
+ id 1qseRg-0003aP-QO
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 03:24:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qseOS-0000h2-Tv
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 03:21:34 -0400
+ id 1qseRa-0001E3-TJ
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 03:24:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697527291;
+ s=mimecast20190719; t=1697527484;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=InTtSCbx3E+vpPsDdSqqSou4+Eqo6+5lDhlOatm4yl8=;
- b=gLPbHUhE+yL4fNlK1gxF9bNUztZGPZCtjTj1fzkowP+qkfjh6D+bKlISEdhbwgZgKZNR+x
- zIVkyFETGAUBccGaXn/0a3x0JOMX0UCmSKs8X1ZN/NiuZh3+EGWdPS7h8qhylNtXy9CKLZ
- TRAk3TFyZ7PviLd91aS6osFH9C/hE8w=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XIZIdED5swPiCZl/uMiQiWNQ4XUZ54clhkSPOBEH2wI=;
+ b=LYBBE9Qjg8NNrX1JpHa8pqTXOna1qpOWqwypkEz3SdF6OX69QX7mx89nudjcTjWJ+7jA4m
+ EaLjMzz//GkKMY8KfadLEpH0m9hyiJUcy+5bYqG3/x2fgKjQCB9ssh1flKeGlCw2LX3aZ4
+ l1a4NZWdPhuAR6glT4OkSxCisURfSKA=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-cHd0VTc8MKSWnw68seL2xw-1; Tue, 17 Oct 2023 03:21:19 -0400
-X-MC-Unique: cHd0VTc8MKSWnw68seL2xw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-32da47641b5so1923147f8f.0
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 00:21:19 -0700 (PDT)
+ us-mta-508-qTvANZKBM3iJet4K3KJMeQ-1; Tue, 17 Oct 2023 03:24:28 -0400
+X-MC-Unique: qTvANZKBM3iJet4K3KJMeQ-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2c5161838d8so23761561fa.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 00:24:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697527278; x=1698132078;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=InTtSCbx3E+vpPsDdSqqSou4+Eqo6+5lDhlOatm4yl8=;
- b=HhVpp0jWxBX8P2v24dZ6hXahy9szloUM2svXp9SNUE9RFqOCDSZcPYTh97ehRxe63d
- ouYdewyiKUn6iVY5WHWl5+9BXd5VfO3rhwnhGwnTyeG5Qj0mQ2lSxyllSXwML3FvhI5X
- 9kXkCj8jhAFlfE8hQHcX5gYxUHSxkqkiwst+miliOkbZyOfahrHZCtXtpwg5TsFEOKwa
- XDNjgdKwiCoKMJE/cuhHFoQVyKt861/ptCsdQW5EDmaHpwY4VABvILSbB9Km8fdpqNRY
- z5aEyqQeuwG2MQR4En+4VxwxA38ZStwx9i2gceLEOOGol2uagX9hpgFg/Fwip+U+T8fw
- ZVxQ==
-X-Gm-Message-State: AOJu0YxfMf9YSqzh5IIpj4x08St+SuHkLwK4yNtyr095TnS99OHj5NO3
- JzWyfu/zGJ/i6zxU2EmTaZOmHGDXjrQ/h8dafE3+V7nGCd/7Ny7z9t2M3bVgwRgAZiW4dwho7sx
- VePGn7MKCVMG7GP4=
-X-Received: by 2002:a05:6000:b0a:b0:329:6d09:61f7 with SMTP id
- dj10-20020a0560000b0a00b003296d0961f7mr1280492wrb.48.1697527278504; 
- Tue, 17 Oct 2023 00:21:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKAtXSrjX7ElfJvVm3AbqvxSc/6ocnl7eRBdZl5nnZeKLXmX3SHd6YulEgYreVAFgUkojLBA==
-X-Received: by 2002:a05:6000:b0a:b0:329:6d09:61f7 with SMTP id
- dj10-20020a0560000b0a00b003296d0961f7mr1280464wrb.48.1697527278084; 
- Tue, 17 Oct 2023 00:21:18 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697527467; x=1698132267;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XIZIdED5swPiCZl/uMiQiWNQ4XUZ54clhkSPOBEH2wI=;
+ b=m5UVVGSNUk/CJXG+51KkRQLJleT/E7LMT5sPVzskWTDeJC+uAs4ld8pcCWpnJn0wxa
+ ggqT9UG9OvMQyeNHyMh5H3FVNADoTyJki+QOq5ZRzipBo+cbhkgCjdGRpK4ho8t+C3sC
+ m5C+CzldXe/XOr7Rgez2wvmaVijWngpyqIINVJjfuvotNt/dYTYEZF61Mlg1N71RxoXm
+ Gmw3vtYA+hk9zcw3ReyO+Eiuzuc3hZGv15PMAY1UVHMk8dwr7EIJi+VfooHbRr6Eir75
+ ZCblZsDVaXD7oUl5g/aK9TmL9vZgF7+7O9T6aW+Krc8w2bpKFAnXQFiea4yaYSmvQgWE
+ P2YQ==
+X-Gm-Message-State: AOJu0Yxbw+/4C1KNmdLUDRpaw0wV0l5A0/o11UxuLZ2lJ2sYmf3xDtj6
+ a5VjbznnYu9SPmilj2SwI2kymzi/gOhFaFukgxkEpNAl+uRT4RDYdGLjFRgGQsmPvnDxe3/WiNt
+ dPf7+fuPt7UspOvQ=
+X-Received: by 2002:a2e:908d:0:b0:2bd:1804:29fa with SMTP id
+ l13-20020a2e908d000000b002bd180429famr1074220ljg.39.1697527466748; 
+ Tue, 17 Oct 2023 00:24:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEE/AJV1F83DWPLW9m4ADeshkBZ4VEH3QbUT9u5WV4BFxJf3Akt2hiq++/juM5XHuKnQJFkkw==
+X-Received: by 2002:a2e:908d:0:b0:2bd:1804:29fa with SMTP id
+ l13-20020a2e908d000000b002bd180429famr1074191ljg.39.1697527466333; 
+ Tue, 17 Oct 2023 00:24:26 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- b6-20020adfee86000000b0032da471c0c1sm1001208wro.7.2023.10.17.00.21.17
+ bg24-20020a05600c3c9800b004053e9276easm9219537wmb.32.2023.10.17.00.24.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Oct 2023 00:21:17 -0700 (PDT)
+ Tue, 17 Oct 2023 00:24:25 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
+To: Stefan Hajnoczi <stefanha@gmail.com>
 Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  Paolo Bonzini
  <pbonzini@redhat.com>,  Vladimir Sementsov-Ogievskiy
  <vsementsov@yandex-team.ru>,  Fam Zheng <fam@euphon.net>,  Cleber Rosa
@@ -71,18 +73,19 @@ Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  Paolo Bonzini
  <lizhijian@fujitsu.com>,  Peter Xu <peterx@redhat.com>,  Markus Armbruster
  <armbru@redhat.com>,  John Snow <jsnow@redhat.com>,  Stefan Hajnoczi
  <stefanha@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PULL 11/38] tests/qtest: migration-test: Add tests for
- file-based migration
-In-Reply-To: <87sf6azapv.fsf@suse.de> (Fabiano Rosas's message of "Mon, 16 Oct
- 2023 15:25:00 -0300")
+ Vivier <lvivier@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Thomas
+ Huth <thuth@redhat.com>
+Subject: Re: [PULL 00/38] Migration 20231016 patches
+In-Reply-To: <CAJSP0QXkTvJnioak5X1Ya3CC6LmiriFqYhyUV+AJ4=JS4SK97w@mail.gmail.com>
+ (Stefan Hajnoczi's message of "Mon, 16 Oct 2023 12:31:33 -0400")
 References: <20231016100706.2551-1-quintela@redhat.com>
- <20231016100706.2551-12-quintela@redhat.com> <87sf6azapv.fsf@suse.de>
+ <CAJSP0QXkTvJnioak5X1Ya3CC6LmiriFqYhyUV+AJ4=JS4SK97w@mail.gmail.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 17 Oct 2023 09:21:16 +0200
-Message-ID: <87bkcx3eab.fsf@secure.mitica>
+Date: Tue, 17 Oct 2023 09:24:25 +0200
+Message-ID: <877cnl3e52.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -91,7 +94,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,90 +111,174 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-D> Juan Quintela <quintela@redhat.com> writes:
->
->> From: Fabiano Rosas <farosas@suse.de>
+Stefan Hajnoczi <stefanha@gmail.com> wrote:
+> On Mon, 16 Oct 2023 at 06:11, Juan Quintela <quintela@redhat.com> wrote:
 >>
->> Add basic tests for file-based migration.
+>> The following changes since commit 63011373ad22c794a013da69663c03f1297a5=
+c56:
 >>
->> Note that we cannot use test_precopy_common because that routine
->> expects it to be possible to run the migration live. With the file
->> transport there is no live migration because we must wait for the
->> source to finish writing the migration data to the file before the
->> destination can start reading. Add a new migration function
->> specifically to handle the file migration.
+>>   Merge tag 'pull-riscv-to-apply-20231012-1' of https://github.com/alist=
+air23/qemu into staging (2023-10-12 10:24:44 -0400)
 >>
->> Reviewed-by: Peter Xu <peterx@redhat.com>
->> Reviewed-by: Juan Quintela <quintela@redhat.com>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> Message-ID: <20230712190742.22294-7-farosas@suse.de>
-
->> +static void file_offset_finish_hook(QTestState *from, QTestState *to,
->> +                                    void *opaque)
->> +{
->> +#if defined(__linux__)
->> +    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
->> +    size_t size = FILE_TEST_OFFSET + sizeof(QEMU_VM_FILE_MAGIC);
->> +    uintptr_t *addr, *p;
->> +    int fd;
->> +
->> +    fd = open(path, O_RDONLY);
->> +    g_assert(fd != -1);
->> +    addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
->> +    g_assert(addr != MAP_FAILED);
->> +
->> +    /*
->> +     * Ensure the skipped offset contains zeros and the migration
->> +     * stream starts at the right place.
->> +     */
->> +    p = addr;
->> +    while (p < addr + FILE_TEST_OFFSET / sizeof(uintptr_t)) {
->> +        g_assert(*p == 0);
->> +        p++;
->> +    }
->> +    g_assert_cmpint(cpu_to_be32(*p), ==, QEMU_VM_FILE_MAGIC);
+>> are available in the Git repository at:
+>>
+>>   https://gitlab.com/juan.quintela/qemu.git tags/migration-20231016-pull=
+-request
+>>
+>> for you to fetch changes up to f39b0f42753635b0f2d8b00a26d11bb197bf51e2:
+>>
+>>   migration/multifd: Clarify Error usage in multifd_channel_connect (202=
+3-10-16 11:01:33 +0200)
+>>
+>> ----------------------------------------------------------------
+>> Migration Pull request (20231016)
+>>
+>> In this pull request:
+>> - rdma cleanups
+>> - removal of QEMUFileHook
+>> - test for analyze-migration.py
+>> - test for multifd file
+>> - multifd cleanups
+>> - available switchover bandwidth
+>> - lots of cleanups.
+>>
+>> CI: https://gitlab.com/juan.quintela/qemu/-/pipelines/1037878829
+>>
+>> Please, apply.
 >
-> This truncates to 32-bits, so it breaks on a BE host. We need this:
+> This CI failure looks migration-related:
+
+It is.
+
+> MALLOC_PERTURB_=3D96
+> PYTHON=3D/home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/build/py=
+venv/bin/python3
+> QTEST_QEMU_BINARY=3D./qemu-system-i386
+> G_TEST_DBUS_DAEMON=3D/home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/q=
+emu/tests/dbus-vmstate-daemon.sh
+> QTEST_QEMU_IMG=3D./qemu-img
+> QTEST_QEMU_STORAGE_DAEMON_BINARY=3D./storage-daemon/qemu-storage-daemon
+> /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/build/tests/qtest=
+/migration-test
+> --tap -k
+> =E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80 =E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95
+> stderr:
+> **
+> ERROR:../tests/qtest/migration-test.c:1969:file_offset_finish_hook:
+> assertion failed (cpu_to_be32(*p) =3D=3D QEMU_VM_FILE_MAGIC): (3 =3D=3D
+> 1363498573)
 >
-> -->8--
-> From ea0c2d1c988add48d9754891a9fc7f6854a9718a Mon Sep 17 00:00:00 2001
-> From: Fabiano Rosas <farosas@suse.de>
-> Date: Mon, 16 Oct 2023 15:21:49 -0300
-> Subject: [PATCH] fixup! tests/qtest: migration-test: Add tests for file-based
->  migration
+> https://gitlab.com/qemu-project/qemu/-/jobs/5301793548
+
+But what I am doing wrong here?
+This time I even posnted the CI link that I passed O:-)
+
+I thought that if I pass the:
+
+$ git push -o ci.variable=3DQEMU_CI=3D2
+
+on my branch, I was doing all the testing that you are doing.  Clearly
+not.
+
+Thanks, Juan.
+
+
+> Stefan
 >
-> ---
->  tests/qtest/migration-test.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index da02b6d692..e1c110537b 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -1966,7 +1966,7 @@ static void file_offset_finish_hook(QTestState *from, QTestState *to,
->          g_assert(*p == 0);
->          p++;
->      }
-> -    g_assert_cmpint(cpu_to_be32(*p), ==, QEMU_VM_FILE_MAGIC);
-> +    g_assert_cmpint(cpu_to_be64(*p) >> 32, ==, QEMU_VM_FILE_MAGIC);
->  
->      munmap(addr, size);
->      close(fd);
-
-I am resubmitting with this change.
-
-But I think we need to change this:
-
->> +    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
->> +    size_t size = FILE_TEST_OFFSET + sizeof(QEMU_VM_FILE_MAGIC);
->> +    uintptr_t *addr, *p;
-
-I think we should change the test so the file is 64 bits on every
-architecture.
-Then we can cast to void * or uintptr_t as needed.
-
-Later, Juan.
+>>
+>> ----------------------------------------------------------------
+>>
+>> Dmitry Frolov (1):
+>>   migration: fix RAMBlock add NULL check
+>>
+>> Elena Ufimtseva (3):
+>>   migration: check for rate_limit_max for RATE_LIMIT_DISABLED
+>>   multifd: fix counters in multifd_send_thread
+>>   multifd: reset next_packet_len after sending pages
+>>
+>> Fabiano Rosas (13):
+>>   migration: Fix analyze-migration.py 'configuration' parsing
+>>   migration: Add capability parsing to analyze-migration.py
+>>   migration: Fix analyze-migration.py when ignore-shared is used
+>>   migration: Fix analyze-migration read operation signedness
+>>   tests/qtest/migration: Add a test for the analyze-migration script
+>>   tests/qtest: migration-test: Add tests for file-based migration
+>>   migration/ram: Remove RAMState from xbzrle_cache_zero_page
+>>   migration/ram: Stop passing QEMUFile around in save_zero_page
+>>   migration/ram: Move xbzrle zero page handling into save_zero_page
+>>   migration/ram: Merge save_zero_page functions
+>>   migration/multifd: Remove direct "socket" references
+>>   migration/multifd: Unify multifd_send_thread error paths
+>>   migration/multifd: Clarify Error usage in multifd_channel_connect
+>>
+>> Fiona Ebner (1):
+>>   migration: hold the BQL during setup
+>>
+>> Juan Quintela (15):
+>>   migration: Non multifd migration don't care about multifd flushes
+>>   migration: Create migrate_rdma()
+>>   migration/rdma: Unfold ram_control_before_iterate()
+>>   migration/rdma: Unfold ram_control_after_iterate()
+>>   migration/rdma: Remove all uses of RAM_CONTROL_HOOK
+>>   migration/rdma: Unfold hook_ram_load()
+>>   migration/rdma: Create rdma_control_save_page()
+>>   qemu-file: Remove QEMUFileHooks
+>>   migration/rdma: Move rdma constants from qemu-file.h to rdma.h
+>>   migration/rdma: Remove qemu_ prefix from exported functions
+>>   migration/rdma: Check sooner if we are in postcopy for save_page()
+>>   migration/rdma: Use i as for index instead of idx
+>>   migration/rdma: Declare for index variables local
+>>   migration/rdma: Remove all "ret" variables that are used only once
+>>   migration: Improve json and formatting
+>>
+>> Nikolay Borisov (2):
+>>   migration: Add the configuration vmstate to the json writer
+>>   migration/ram: Refactor precopy ram loading code
+>>
+>> Peter Xu (1):
+>>   migration: Allow user to specify available switchover bandwidth
+>>
+>> Philippe Mathieu-Daud=C3=A9 (1):
+>>   migration: Use g_autofree to simplify ram_dirty_bitmap_reload()
+>>
+>> Wei Wang (1):
+>>   migration: refactor migration_completion
+>>
+>>  qapi/migration.json            |  41 ++++-
+>>  include/migration/register.h   |   2 +-
+>>  migration/migration.h          |   4 +-
+>>  migration/options.h            |   2 +
+>>  migration/qemu-file.h          |  49 ------
+>>  migration/rdma.h               |  42 +++++
+>>  migration/block-dirty-bitmap.c |   3 -
+>>  migration/block.c              |   5 -
+>>  migration/migration-hmp-cmds.c |  14 ++
+>>  migration/migration-stats.c    |   9 +-
+>>  migration/migration.c          | 199 +++++++++++++--------
+>>  migration/multifd.c            | 101 +++++------
+>>  migration/options.c            |  35 ++++
+>>  migration/qemu-file.c          |  61 +------
+>>  migration/ram.c                | 306 ++++++++++++++++++---------------
+>>  migration/rdma.c               | 259 ++++++++++++----------------
+>>  migration/savevm.c             |  22 ++-
+>>  tests/qtest/migration-test.c   | 207 ++++++++++++++++++++++
+>>  migration/trace-events         |  33 ++--
+>>  scripts/analyze-migration.py   |  67 +++++++-
+>>  tests/qtest/meson.build        |   2 +
+>>  21 files changed, 895 insertions(+), 568 deletions(-)
+>>
+>> --
+>> 2.41.0
+>>
+>>
 
 
