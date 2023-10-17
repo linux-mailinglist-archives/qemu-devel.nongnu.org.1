@@ -2,132 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27CD77CBC6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 09:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7707CBCBC
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 09:49:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qseds-0001BR-Ea; Tue, 17 Oct 2023 03:37:28 -0400
+	id 1qseo3-0004rB-Tc; Tue, 17 Oct 2023 03:47:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qsedq-0001Ao-Bj
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 03:37:26 -0400
-Received: from mail-dm6nam10on2041.outbound.protection.outlook.com
- ([40.107.93.41] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qseo1-0004r1-T9
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 03:47:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qsedo-0003pR-2M
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 03:37:26 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Vb1I0RIH1PV+khsV2AakuY22OXv+qvoiNfT77Zu2qDWeyONoBx1XrAxVKsMSACmlBgMKYKs9D9/rTWVBHoZykukKwegyMhGdwfKp+tl/AjuKUNN/nmSCWoCO65zbWGSFA3BcVmEuKs+5ipGNPksZ+Ans4iJ7+6LefnrOdjvN2CzUwaD401QPn8mmkFwwDDDNUoGOwhpLJ3kgAgDhzdLICibryA6lK7T6q1a6lsfa3GP6K1del6hMzAH3VOkqaU/GTD9n3mWMdTD0pbntvcfS6c7ar4714gvgO1uhPHYLQTsWMMRENC9BsKhUJ9mAMbeND6SOeifCYKbhry9V7tSqZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5an55Ia5MdCZMW/q2Quia5KwVgQ7hSPEAbd2In8Lvsg=;
- b=bSSgw3IOKb8HSX52At2Y8m+yo6rR1s5KTu/2dHxvuYrS1VqSHQATkk2TRcbKNhaAPMXYC/d7ojy/OHkD2xjGEXw2ifrN0iJf75YE0VoSSR7n6LfV4KLgmeU7b9DZGxOZo+2s38r1OG0v/OIZIVq2BhDzYrY6wcPF9e5HxYsCRtfJc7saBpxKBISNOuTLpiGgSgbquVu9WDC5ZwdgNVmmkx37+m6IX02rzC0scRpfL1p2YW1SiKbg6F+LonluOXUhE+IqNg1+r1sh57dcPXT0+ECHCkIheHFvPpzVFkUfYmKF0t2Ro3bvUEYOYmZnSg/IzREI/rD5eJd4G7FlQo2HAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5an55Ia5MdCZMW/q2Quia5KwVgQ7hSPEAbd2In8Lvsg=;
- b=rvdQEvLHd3nebM+bDuUJ9qTtFWjyHW4pYuSgoRvAts0ZKiwed7xSJ5ejmRFYA15Ah7Nm/icSqv276Pe7HpTlmB5xpbNrtJ6wUTt6kmJANNjiHXejCF+HEH5U/LeAfXciIozHpofS+4b3KWQiYdcXnS9CJO5HQvDS6obZvUoLFPebD0cBSxsRZkChNd6Y5fL+pcPUs6F2Hyw5P2MzRohb2pzQTi+Xvy9G/K71+TTh2wL9OTFXmY4h14G9XWNawvyAXzQSt6w+de2uVWjrVx1sNR19ohM8P1dXVLNzCa2ToIANxNxFk+aKhycj9zo4+u5t06uH8VWaiEesd4e3GzC+tg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM4PR12MB5168.namprd12.prod.outlook.com (2603:10b6:5:397::8) by
- PH0PR12MB8176.namprd12.prod.outlook.com (2603:10b6:510:290::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.35; Tue, 17 Oct
- 2023 07:32:16 +0000
-Received: from DM4PR12MB5168.namprd12.prod.outlook.com
- ([fe80::c036:b432:597b:cca7]) by DM4PR12MB5168.namprd12.prod.outlook.com
- ([fe80::c036:b432:597b:cca7%5]) with mapi id 15.20.6886.034; Tue, 17 Oct 2023
- 07:32:16 +0000
-Message-ID: <6c8ebb97-d546-3f1c-4cdd-54e23a566f61@nvidia.com>
-Date: Tue, 17 Oct 2023 15:32:08 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [RFC PATCH 0/5] virtio-net: Introduce LM early load
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>
-References: <20230918044932.1433744-1-yajunw@nvidia.com>
-Content-Language: en-US
-From: Yajun Wu <yajunw@nvidia.com>
-In-Reply-To: <20230918044932.1433744-1-yajunw@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI1PR02CA0008.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::14) To DM4PR12MB5168.namprd12.prod.outlook.com
- (2603:10b6:5:397::8)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qsenz-0005i8-I3
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 03:47:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697528872;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1S9i1OglnJytmWKzFX2c9cJorG+sGWiT4R7eaI6mqHg=;
+ b=R9k94qcNxfyeecVTMtZHCkrG8+dDJnVys6JQNlngQ+p2il9yxud9BLVNqHb+Hs5EfLBWtH
+ Xyw/xdqxdfBH7wjppk6Bu4qaWTIhRuHLdtLQNzBEf9FML54SoYdCQs3elkW9/aobvu7pwj
+ x/XQuZ2UJmyW4GTXguYPv3qNN5+erbI=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-84--x69TuQMOiC9I1KYKspHJA-1; Tue, 17 Oct 2023 03:47:44 -0400
+X-MC-Unique: -x69TuQMOiC9I1KYKspHJA-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2c50d73e212so30153831fa.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 00:47:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697528863; x=1698133663;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1S9i1OglnJytmWKzFX2c9cJorG+sGWiT4R7eaI6mqHg=;
+ b=XvpUVC5Cn2UWUhlmlPII99Z6UXvSn56fxkW6+J/h0bRhyf0QVmVs4+zdoRFOuP57tl
+ z2a6cAfqW7iTqJsE5ZqynrB1nBC2Iq4ym77rcCpv0eNf3F/oVgFUJLBy1AxM8uDWxW4D
+ weyVSCtoo3BLcILxV9xnP9/VZVbZq9gtHzhTzyjsP8n3CDONAB4XQiNRxKs8wBh6uJ7i
+ bIsCW4E/iE4c5RtaZuBaX2VCvmPRaN39ubKPAyVqiuyLrWs6N5xYomTlG/XTXnRvgcUC
+ pV0Gr8EalPNrHzfaRfTdw35D6+Z9fygKQEGWGGZyFWOFaVP2Bg6IXZlP9fzhC8sgiaiN
+ mn5w==
+X-Gm-Message-State: AOJu0YxL51zMEQQ4GVLnsFztiKFluwwAwW8gOnjMTOsBzpdfV5myise6
+ 1ZC1kDLpYwK25HhQXCdv8NtJTscrTsDZeholVPrDRwMU7nQNE9gZcC1Dle8Qs4dQUiMzJC3z37y
+ 5nLBh3lqrSUwBoWJzBT8nI/kfXD7jT2k=
+X-Received: by 2002:a05:651c:1192:b0:2bc:d5ad:2758 with SMTP id
+ w18-20020a05651c119200b002bcd5ad2758mr848363ljo.5.1697528863449; 
+ Tue, 17 Oct 2023 00:47:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGj7BfXAV8XpGUbHz7wPHgEtOPdhxLUOxjKfaz0V2wzhKgjRzwyEKkXyhlnHgaruSHLjvflL7hKjb0TrEJ843k=
+X-Received: by 2002:a05:651c:1192:b0:2bc:d5ad:2758 with SMTP id
+ w18-20020a05651c119200b002bcd5ad2758mr848351ljo.5.1697528863011; Tue, 17 Oct
+ 2023 00:47:43 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5168:EE_|PH0PR12MB8176:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce593d04-f0c0-4f29-bc8c-08dbcee33004
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /1U0MmN/mVbZWCnlchQqexTiMXIfg3COBgXlo/+W+0DlSLFmNEZFePG+Yo4pU3pfx8wBVY5MwBFMmWG8hyygmrBB5AlKAmIe4YthQQefIAokwZikYQ5fhtRaJ5UH3ez2RaFInK7iqB4UUqhOy/8hLloBND0/R+b2bzJ3TuggCAQHSDdn63C3YNZKGu26yirKJbU9cMMvQ7Pok6FBJzszrqj0xKNCWzFGPSZS0eRbMX5IZvZLeDtv7/48HKIP3QVyIFuBEUWnweJ9cE6odXBw9XGW9wUjJDRkoddJTIOT8L7DSBTbmMesFEBFxtG3MMydQUDJ9NIYWyki9WHy7f4i5oEx+xxyQDuqwjhOsuDEcLp1M/fU2gx5alRT1vT2fVrNCwPrSgEEeRGMJb6pTACxbr0yZHp6mGgaYct5jFoTACmAYIIroq8Oksri0D8nHDVhbhNzxzumkvvLm5y7hInTQLb7n9lp7iOrqqTmf70sp6qS5hFmAuITFGTdhWvrg5kMfixcZ+ZAtSEHz8bKoG7WslpR9XgKNw+TsAtduBSdOqBCza6o1d2Pmfo2rnUmc/kZeYuAF8A91KVBDsoxLyDZH0cwadNm1fkk0HkbVGKg0yufScaZyOAWNnQbonvZy5j94l98uUMabTtxZCLuM/80PQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB5168.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(136003)(366004)(396003)(346002)(376002)(230922051799003)(1800799009)(186009)(64100799003)(451199024)(316002)(8936002)(2616005)(6512007)(83380400001)(110136005)(8676002)(66556008)(66476007)(66946007)(6666004)(41300700001)(53546011)(6506007)(966005)(5660300002)(2906002)(478600001)(6486002)(38100700002)(86362001)(31696002)(36756003)(26005)(31686004)(66899024)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L3kxaDNxR3U1TGh3MnpGQ1BMRkFZRUlES2o2RWxnSGF3TFFpdVJ1SFJZb04x?=
- =?utf-8?B?YzV0eWFYY2RpakI2dkkxM2czQkMyMFNHQTdIbGZPcmw1cDZlYXUvbThvM2Z1?=
- =?utf-8?B?ZjdDc05qWmIvWmNHQ2VVdHdBa2RlMm53MUdhVXhTaG1OSDNuR3lacU1IK1pE?=
- =?utf-8?B?QkRjeUpITW5tSFpUa1daUWYvb2p1b2VZV0xwUU9IVFVaUU5XWmg2YVdqQm54?=
- =?utf-8?B?WE9uNzlVc1dwckJLMHdmYXROUWhBSndpQ1h6TC9BSXl0MUdMTkxBeFl2WVRh?=
- =?utf-8?B?SVNydEFkazEvRlZ2OFJPdGZBZno1ZDNPcWVtNGhRUWZmQ1BESjY4YTRLRlpa?=
- =?utf-8?B?c3ZwYkNSREhZYUw3OE1iYmt4Nms0OFJWVVpOMUJJQXh6SkJiQXo3ODZqYkZv?=
- =?utf-8?B?SER3d0l5eUw0OVRFUjFEZ1ZvRHowOHd2N2tNZUJQcC9lNXU0bENKS1VvK3g2?=
- =?utf-8?B?UENGY1lpMEdXNXRTelRhOUttQ1ptMm1sYmRRWHRjQkZwazdGcFdIUy8xeUV0?=
- =?utf-8?B?VnkxaEtCNC9UYkwwZ1Buam1ERlpyNW9BeVhwLzdDeEVSOGFiTlV6a3BHd0Nu?=
- =?utf-8?B?d0JKQjZlRUlyaFJCcFFvMEFBWG03ZXBBMmxJNFZpK01kQjRGYmlhZ2tKeklv?=
- =?utf-8?B?RlFHWWtlWVBRbHJTNWJJbFNFaEtlUGVYRDZjUjdmbTJqSDUwbWRxdC8vK1VX?=
- =?utf-8?B?SkdXazI5ZGRNRmZIOVY5b05vMTVTQkk4WUdaZi9EaUNncUtSWDkyQkFoSmhD?=
- =?utf-8?B?eXJCOTQzOVNUTHY5WG03bzRvVm9SMEV0TlRiK3BjUy8wNVNVdVdDR2ZiSEJm?=
- =?utf-8?B?L2hZZklMZlpHMzJOZ0xyTndXZHVNRS9NbEd1bmpXOFZTd1hSc2MzSC9wbEZ5?=
- =?utf-8?B?c0xDQmZZZTJ4bXIvejN2UFZnRkdWbHRuMkFXQ0JERmQxRHZhbU8vR2ZPVEhB?=
- =?utf-8?B?Wi9KWVN3ZWdFMTArQVBOV2R6SGNGVE54UDhCR2k2aXo3WVRaTUlUZVZIbUMw?=
- =?utf-8?B?RUs4Snp1RUVkWlYyVW5iU0RCVUZRa3lHMkEzRG05ZDZySC9vVlB1TE5VQVp4?=
- =?utf-8?B?YnZZdzBaa1N1cmFnVTVWd3ZRNjJBK1AvVEFVdVNXNkdQWHMyY3NwYmhleWkz?=
- =?utf-8?B?UWgzclZ2ZEdWb3ZSZ0d3VXdPVHRxV0tBcmxVWFlDTVlFbEh5ZGpKVU1SSGo1?=
- =?utf-8?B?WEk5N2diU2d6R1VlU0VzbURBYU9rOVlmUFBhSGlLM1M2ajhxNGRQKzdTQ0x6?=
- =?utf-8?B?S3I0eDRuUjg0KzM3SlNSWG1GYi9KeE42dGZoV09OWDREY3kvN2VHSVFXbTN1?=
- =?utf-8?B?cTBqblBVVFdacUk2ZkF1WmNzL084d1NWNy9ETElYUHRTTFlNbXVwcTh0akxU?=
- =?utf-8?B?TVhmd2ljdDZrMmNpbVJOYWF6c2ZxdkVvWlhlZXBENml4V1pHMW9vaXJna2tD?=
- =?utf-8?B?cHFuVXZRa212Wm4xTWVGNWllNW5oOEJ5QTNCaDNxZTM2ZWJScXRsb000cG8y?=
- =?utf-8?B?RXlUZUMwQlEyL2tBSnZJOGFDWHNiQ2JDL3Z2RUhTVjVsRDBKaDlMKzdGQWJW?=
- =?utf-8?B?d0lJcUdsa2ZEVFJocjZ3TTI4djBQdStrM1lSbWRyRHdLVTJFVGovK21LY1ZN?=
- =?utf-8?B?SHVJOWRjSzVyMk5aSWxrL3NnRzZRcFMvOUVkanFISGxCdTVtQk5pWEJZV3lk?=
- =?utf-8?B?TVQrS1k4bStKdTFEUDA5S2NUNjExZkZuRGZjclBlWTE2RldhQllZa00wMUhj?=
- =?utf-8?B?MUtON1U2VU9uakpDZWtsb1dWR1pQOXN3K0poeHRiMDJaVHhwNU5jSmJZNVN1?=
- =?utf-8?B?OUh3SzZNZVZEcjdTSHo3ZmI1SmtlSml2TGpZL2tDcUNySHB6dWlVL3o2TDVN?=
- =?utf-8?B?T3l6WlJqcEcrV2E4TWhXSWxlZlpOaFR4dWl3dVZYaVBPcXRNNGpERFgyQlZa?=
- =?utf-8?B?YWtjalZtQXI0Q1d5WnJnekc4eDRYNHFhWUNSdmNGZFRGaTl0eEhPSGVnL1Ex?=
- =?utf-8?B?YjNaZHVvQ2llV2h1ODBhQjcwcSs0Y2w0WGdWc3A5a01yUW5OVUkzNGRIMlBx?=
- =?utf-8?B?aW1SMm4xbjBsQjBmTFV3MWswemgyais2RVdzdmN4Ull1VElRSXJ0Z3JNZGJw?=
- =?utf-8?Q?ztbWkWimGx0pFRqhkpOc+o2V6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce593d04-f0c0-4f29-bc8c-08dbcee33004
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5168.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2023 07:32:16.4788 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: glWtIfAgz7jiCLrgtQiBZqBT5jGZlWivOqWfLAHcUvhfuIT5BN7h7eC5QphaVGCMYXo7dhAZkJIq0r/Vf7k1Ug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8176
-Received-SPF: softfail client-ip=40.107.93.41; envelope-from=yajunw@nvidia.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20231013155110.23175-1-anvilleg@cisco.com>
+In-Reply-To: <20231013155110.23175-1-anvilleg@cisco.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Tue, 17 Oct 2023 10:47:32 +0300
+Message-ID: <CAPMcbCr+pvn5b+CYaVXp=UmMCP8FpOjjqMTvzY=R2JQhnMgufQ@mail.gmail.com>
+Subject: Re: [PATCH] guest-agent: improve help for --allow-rpcs and
+ --block-rpcs
+To: "Angel M. Villegas" <anvilleg@cisco.com>
+Cc: qemu-devel@nongnu.org, michael.roth@amd.com
+Content-Type: multipart/alternative; boundary="000000000000e04d330607e4bc01"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,87 +93,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping.
+--000000000000e04d330607e4bc01
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/18/2023 12:49 PM, Yajun Wu wrote:
-> This series of patches aims to minimize the downtime during live migration of a
-> virtio-net device with a vhost-user backend. In the case of hardware virtual
-> Data Path Acceleration (vDPA) implementation, the hardware configuration, which
-> includes tasks like VQ creation and RSS setting, may take above 200ms. This
-> significantly increases the downtime of the VM, particularly in terms of
-> networking.
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+
+On Fri, Oct 13, 2023 at 6:53=E2=80=AFPM Angel M. Villegas <anvilleg@cisco.c=
+om>
+wrote:
+
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1757
 >
-> To reduce the VM downtime, the proposed approach involves capturing the basic
-> device state/configuration during the VM's running stage and performing the
-> initial device configuration(presetup). During the normal configuration process
-> when the VM is in a stopped state, the second configuration is compared to the
-> first one, and only the differences are applied to reduce downtime. Ideally,
-> only the vring available index needs to be changed within VM stop.
+> Updates to qga help output and documentation for --allow-rpcs and
+> --blocks-rpcs
 >
-> This feature is disabled by default, because backend like dpdk also needs
-> adding support for vhost new message. New device property "x-early-migration"
-> can enable this feature.
+> Signed-off-by: Angel M. Villegas <anvilleg@cisco.com>
+> ---
+>  docs/interop/qemu-ga.rst | 8 ++++----
+>  qga/main.c               | 4 ++--
+>  2 files changed, 6 insertions(+), 6 deletions(-)
 >
-> 1. Register a new vmstate for virtio-net with an early_setup flag to send the
->     device state during migration setup.
-> 2. After device state load on destination VM, need to send device status to
->     vhost backend in a new way. Introduce new vhost-user message:
->     VHOST_USER_PRESETUP, to notify backend of presetup.
-> 3. Let virtio-net, vhost-net, vhost-dev support presetup. Main flow:
->     a. vhost-dev sending presetup start.
->     b. virtio-net setting mtu.
->     c. vhost-dev sending vring configuration and setting dummy call/kick fd.
->     d. vhost-net sending vring enable.
->     e. vhost-dev sending presetup end.
+> diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst
+> index 461c5a35ee..72fb75a6f5 100644
+> --- a/docs/interop/qemu-ga.rst
+> +++ b/docs/interop/qemu-ga.rst
+> @@ -81,13 +81,13 @@ Options
+>
+>  .. option:: -b, --block-rpcs=3DLIST
+>
+> -  Comma-separated list of RPCs to disable (no spaces, use ``help`` to
+> -  list available RPCs).
+> +  Comma-separated list of RPCs to disable (no spaces, use
+> ``--block-rpcs=3Dhelp``
+> +  to list available RPCs).
+>
+>  .. option:: -a, --allow-rpcs=3DLIST
+>
+> -  Comma-separated list of RPCs to enable (no spaces, use ``help`` to
+> -  list available RPCs).
+> +  Comma-separated list of RPCs to enable (no spaces, use
+> ``--allow-rpcs=3Dhelp``
+> +  to list available RPCs).
+>
+>  .. option:: -D, --dump-conf
+>
+> diff --git a/qga/main.c b/qga/main.c
+> index 8668b9f3d3..bdf5344584 100644
+> --- a/qga/main.c
+> +++ b/qga/main.c
+> @@ -261,9 +261,9 @@ QEMU_COPYRIGHT "\n"
+>  "  -s, --service     service commands: install, uninstall, vss-install,
+> vss-uninstall\n"
+>  #endif
+>  "  -b, --block-rpcs  comma-separated list of RPCs to disable (no
+> spaces,\n"
+> -"                    use \"help\" to list available RPCs)\n"
+> +"                    use \"--block-rpcs=3Dhelp\" to list available RPCs)=
+\n"
+>  "  -a, --allow-rpcs  comma-separated list of RPCs to enable (no spaces,\=
+n"
+> -"                    use \"help\" to list available RPCs)\n"
+> +"                    use \"--allow-rpcs=3Dhelp\" to list available RPCs)=
+\n"
+>  "  -D, --dump-conf   dump a qemu-ga config file based on current config\=
+n"
+>  "                    options / command-line parameters to stdout\n"
+>  "  -r, --retry-path  attempt re-opening path if it's unavailable or
+> closed\n"
+> --
+> 2.39.2 (Apple Git-143)
 >
 >
-> TODOs:
-> ======
->    - No vhost-vdpa/kernel support. Need to discuss/design new kernel interface
->      if there's same requirement for vhost-vdpa.
->
->    - No vIOMMU support so far. If there is a need for vIOMMU support, it is
->      planned to be addressed in a follow-up patchset.
->
->
-> Test:
-> =====
->    - Live migration VM with 2 virtio-net devices, ping can recover.
->      Together with DPDK patch [1].
->    - The time consumption of DPDK function dev_conf is reduced from 191.4 ms
->      to 6.6 ms.
->
->
-> References:
-> ===========
->
-> [1] https://github.com/Mellanox/dpdk-vhost-vfe/pull/37
->
-> Any comments or feedback are highly appreciated.
->
-> Thanks,
-> Yajun
->
->
-> Yajun Wu (5):
->    vhost-user: Add presetup protocol feature and op
->    vhost: Add support for presetup
->    vhost-net: Add support for presetup
->    virtio: Add VMState for early load
->    virtio-net: Introduce LM early load
->
->   docs/interop/vhost-user.rst       |  10 ++
->   hw/net/trace-events               |   1 +
->   hw/net/vhost_net.c                |  40 +++++++
->   hw/net/virtio-net.c               | 100 ++++++++++++++++++
->   hw/virtio/vhost-user.c            |  30 ++++++
->   hw/virtio/vhost.c                 | 166 +++++++++++++++++++++++++-----
->   hw/virtio/virtio.c                | 152 ++++++++++++++++-----------
->   include/hw/virtio/vhost-backend.h |   3 +
->   include/hw/virtio/vhost.h         |  12 +++
->   include/hw/virtio/virtio-net.h    |   1 +
->   include/hw/virtio/virtio.h        |  10 +-
->   include/net/vhost_net.h           |   3 +
->   12 files changed, 443 insertions(+), 85 deletions(-)
->
+
+--000000000000e04d330607e4bc01
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
+tiuk@redhat.com">kkostiuk@redhat.com</a>&gt;</div><br><div class=3D"gmail_q=
+uote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct 13, 2023 at 6:53=E2=
+=80=AFPM Angel M. Villegas &lt;<a href=3D"mailto:anvilleg@cisco.com">anvill=
+eg@cisco.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex">Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/iss=
+ues/1757" rel=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-proj=
+ect/qemu/-/issues/1757</a><br>
+<br>
+Updates to qga help output and documentation for --allow-rpcs and --blocks-=
+rpcs<br>
+<br>
+Signed-off-by: Angel M. Villegas &lt;<a href=3D"mailto:anvilleg@cisco.com" =
+target=3D"_blank">anvilleg@cisco.com</a>&gt;<br>
+---<br>
+=C2=A0docs/interop/qemu-ga.rst | 8 ++++----<br>
+=C2=A0qga/main.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 4 =
+++--<br>
+=C2=A02 files changed, 6 insertions(+), 6 deletions(-)<br>
+<br>
+diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst<br>
+index 461c5a35ee..72fb75a6f5 100644<br>
+--- a/docs/interop/qemu-ga.rst<br>
++++ b/docs/interop/qemu-ga.rst<br>
+@@ -81,13 +81,13 @@ Options<br>
+<br>
+=C2=A0.. option:: -b, --block-rpcs=3DLIST<br>
+<br>
+-=C2=A0 Comma-separated list of RPCs to disable (no spaces, use ``help`` to=
+<br>
+-=C2=A0 list available RPCs).<br>
++=C2=A0 Comma-separated list of RPCs to disable (no spaces, use ``--block-r=
+pcs=3Dhelp``<br>
++=C2=A0 to list available RPCs).<br>
+<br>
+=C2=A0.. option:: -a, --allow-rpcs=3DLIST<br>
+<br>
+-=C2=A0 Comma-separated list of RPCs to enable (no spaces, use ``help`` to<=
+br>
+-=C2=A0 list available RPCs).<br>
++=C2=A0 Comma-separated list of RPCs to enable (no spaces, use ``--allow-rp=
+cs=3Dhelp``<br>
++=C2=A0 to list available RPCs).<br>
+<br>
+=C2=A0.. option:: -D, --dump-conf<br>
+<br>
+diff --git a/qga/main.c b/qga/main.c<br>
+index 8668b9f3d3..bdf5344584 100644<br>
+--- a/qga/main.c<br>
++++ b/qga/main.c<br>
+@@ -261,9 +261,9 @@ QEMU_COPYRIGHT &quot;\n&quot;<br>
+=C2=A0&quot;=C2=A0 -s, --service=C2=A0 =C2=A0 =C2=A0service commands: insta=
+ll, uninstall, vss-install, vss-uninstall\n&quot;<br>
+=C2=A0#endif<br>
+=C2=A0&quot;=C2=A0 -b, --block-rpcs=C2=A0 comma-separated list of RPCs to d=
+isable (no spaces,\n&quot;<br>
+-&quot;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 use \&quot;help\&quot; to list available RPCs)\n&quot;<br>
++&quot;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 use \&quot;--block-rpcs=3Dhelp\&quot; to list available RPCs)\n&quot;<b=
+r>
+=C2=A0&quot;=C2=A0 -a, --allow-rpcs=C2=A0 comma-separated list of RPCs to e=
+nable (no spaces,\n&quot;<br>
+-&quot;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 use \&quot;help\&quot; to list available RPCs)\n&quot;<br>
++&quot;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 use \&quot;--allow-rpcs=3Dhelp\&quot; to list available RPCs)\n&quot;<b=
+r>
+=C2=A0&quot;=C2=A0 -D, --dump-conf=C2=A0 =C2=A0dump a qemu-ga config file b=
+ased on current config\n&quot;<br>
+=C2=A0&quot;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 options / command-line parameters to stdout\n&quot;<br>
+=C2=A0&quot;=C2=A0 -r, --retry-path=C2=A0 attempt re-opening path if it&#39=
+;s unavailable or closed\n&quot;<br>
+-- <br>
+2.39.2 (Apple Git-143)<br>
+<br>
+</blockquote></div>
+
+--000000000000e04d330607e4bc01--
+
 
