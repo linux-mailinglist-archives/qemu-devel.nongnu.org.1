@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C303C7CC1D4
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C877CC1F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 13:40:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsiJH-0008Di-4F; Tue, 17 Oct 2023 07:32:27 -0400
+	id 1qsiPd-00030z-CZ; Tue, 17 Oct 2023 07:39:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsiJE-0008Da-W3
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:32:25 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qsiPb-00030n-GK
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:38:59 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsiJD-0000DK-6P
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:32:24 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4054f790190so58825125e9.2
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 04:32:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qsiPY-00014N-5f
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 07:38:59 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1c9e06f058bso37613445ad.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 04:36:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697542341; x=1698147141; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=d7AdbJp2pwbBKBm8y17LKHK2aZ8zGpxOrU9nR0FTKMw=;
- b=x8zDwtgrZE9OrkVJivdje0a3kWdgbKS9TvZurcf9TEjL0MRWvWDRNTRk9Y1cVCt4/J
- djbOpguGwhwb6uAqWBEKJt+q1UxcNADxnb9ajW8EA0KDeQnaWxOf5Z1H7GDkHHBmYbEZ
- qc+GHsMKP41dFF3JPFHYpBkDFkkEDC2IDInVC8psMFwOMLbIh0WADoYSW09VMWzTKJ+k
- 2Ig9YRkPc8ZUeuYlVRb/OyDcB8X1u5czkCwWt3L0M/mkKN324olG8vpYcLCmJqfVhC5C
- ttIN9s7IzFcXSYf6AtEF4+QiGDA6OngqtoMQC/Ds1GDbCbU8dV7V2YeXea31MNZ01qLo
- NWCQ==
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1697542611; x=1698147411;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=w+CjORXYbin1I2R24r6eVbW2BrU8KNSBitebl2lNH7Q=;
+ b=2jGRyQtsMoBW9vnDk77KjxjXNf3ZI+7T5NlVVhSHNXHtQH+k8zWOJDDHVnGj8ZInKk
+ vyEGmWhhJyedFrxpzqxw4FE5gXWVdKABNlybmkCE2BQKhsulicCDxmA10hvFfxh0EboA
+ VBFOlBXA94D8XZ8AMr/Vg71r7/alAQ+BUg3DyWDMtsQYcUnbdTSZlnxsR67tVpCTTbjo
+ OWPbCecf4t2IkYc2sP2gDU7omGGO8rFm5uLTrqFJbuxbunou5iBlQmQ5TUTNcMjoQsMq
+ CpTEFpNn38rPDUfJglqUcJ/44zjFGGe3KZmHlakgBWJSeeAxyYvzqilherMzaJPO5Hos
+ PNxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697542341; x=1698147141;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d7AdbJp2pwbBKBm8y17LKHK2aZ8zGpxOrU9nR0FTKMw=;
- b=R+8ArgsaYeIe7f7RE/+1q2YyUmWS//HpZFgJFJUyUUWYFKCj6uOV/jUFHvOIIFyz/E
- K4X82LRctXAwwfe48Sn3pY0UiiLFqjctMUnIzHbShBhKYyaJuJNXQHLVoYcHJBNTXBR6
- AoQS4WRoArH+QHW5cpHlcSKlLMiVUKFGgyWAXc4ZW6D2mOdILSx+bBR+FJ1OxSznrZ9R
- j9tjZB9wamecJRBxSPkWxdVHgJSWTNx9UJDauF5Vl/hlQbSicLBNgX3JmR7ie6dPS1MK
- stWez5WSryMO3qT9TbgMimG7qmRwUv2KewmT2XDTp8h20UCkopGQCQEZPM3KuMceyh+d
- ew9w==
-X-Gm-Message-State: AOJu0YzS1E+GH1cIj/R2Y7MK+tomW7OLUylAB44IF723qZucnvnJ9bCu
- 8Kba16o2XsXdU464cRpXfOv+aw==
-X-Google-Smtp-Source: AGHT+IGwPO40cZ4eycS64BI5aOH/XBMZebm8w+xLxMQv2aLLjUi+j8FcPMeZbKKxLpJfZJz0UFCUtQ==
-X-Received: by 2002:a05:6000:11c1:b0:32d:857c:d51c with SMTP id
- i1-20020a05600011c100b0032d857cd51cmr2036802wrx.43.1697542341140; 
- Tue, 17 Oct 2023 04:32:21 -0700 (PDT)
-Received: from [192.168.69.115] ([176.172.118.33])
+ d=1e100.net; s=20230601; t=1697542611; x=1698147411;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=w+CjORXYbin1I2R24r6eVbW2BrU8KNSBitebl2lNH7Q=;
+ b=YZQqkQujuDyJ4wJSXiGfExQfJZLvW9lYN8kwAvKlddgwFQYY6sHV4ZqWABojlbVFto
+ 3cc9ep4mYVIixyKOCrKF0I1fLM6CE2einALo4ByRYjvumJVWebRarQ+Qtp+TAcB4raLn
+ ymk4erR69MNxyXPYvbFhiajB+O+ZGtI2gZ6LVOH9D1xU3E7zIB53950+/adV8rkOrrlL
+ nolmrVoE28K4WH8T5o5MpCvwHXfz45JX3aZrszsP7iEurbLLZAYx0GKoBMyFJbXdrdcK
+ 3k/lkFHxMRy+ekQx41Hta313eKGdOxVNsqPJkEnql+axniaILEkgiewaRjxITvpSvDst
+ 8jXg==
+X-Gm-Message-State: AOJu0YwLOhJkwVRqweM4NWPTvp+K80ZpDImCBMr8kV6d9orQHSKvY968
+ FLKr8w7gS9GAomOSUgVk67Ua9tU7h43pH9Y51Igh2SQY
+X-Google-Smtp-Source: AGHT+IGYDGXgvj4LGWtSraXyC/S/Akm2wOqTI50KMfuQGAW+nIKk2rtPSPnjSaiFWJALIHGae2fdXg==
+X-Received: by 2002:a17:903:22c2:b0:1c5:9d00:be84 with SMTP id
+ y2-20020a17090322c200b001c59d00be84mr2319428plg.33.1697542611287; 
+ Tue, 17 Oct 2023 04:36:51 -0700 (PDT)
+Received: from localhost.localdomain ([171.216.79.181])
  by smtp.gmail.com with ESMTPSA id
- n13-20020a5d67cd000000b0032dbf32bd56sm1483503wrw.37.2023.10.17.04.32.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Oct 2023 04:32:20 -0700 (PDT)
-Message-ID: <00a51d67-18c6-37de-eb15-679032af0679@linaro.org>
-Date: Tue, 17 Oct 2023 13:32:18 +0200
+ x28-20020aa79a5c000000b00692c5b1a731sm1198647pfj.186.2023.10.17.04.36.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Oct 2023 04:36:47 -0700 (PDT)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Hyman Huang <yong.huang@smartx.com>
+Subject: [PATCH 0/6] dirtylimit: miscellaneous patches 
+Date: Tue, 17 Oct 2023 19:36:03 +0800
+Message-Id: <cover.1697502089.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] semihosting/arm-compat: Have TARGET_SYS_EXIT[_EXTENDED]
- return signed
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <20231005062610.57351-1-philmd@linaro.org>
- <CAFEAcA_P3s07PpNeDVvy8xB7HLM5+Uvnv=NDycVWW3LR7iT_vg@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA_P3s07PpNeDVvy8xB7HLM5+Uvnv=NDycVWW3LR7iT_vg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::629;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,61 +91,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+This is a miscellaneous patchset for dirtylimit that contains
+the following parts:
 
-On 16/10/23 18:08, Peter Maydell wrote:
-> On Thu, 5 Oct 2023 at 07:27, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Per the "Semihosting for AArch32 and AArch64" spec. v2 (2023Q3) [*]:
->>
->>    6.5   SYS_EXIT (0x18)
->>    6.5.2   Entry (64-bit)
->>
->>      On entry, the PARAMETER REGISTER contains a pointer to
->>      a two-field argument block:
->>
->>      . field 1
->>        The exception type, which is one of the set of reason
->>        codes in the above tables.
->>
->>      . field 2
->>        A subcode, whose meaning depends on the reason code in
->>        field 1.
->>
->>      In particular, if field 1 is ADP_Stopped_ApplicationExit
->>      then field 2 is an exit status code, as passed to the C
->>      standard library exit() function. [...]
->>
->> Having libc exit() is declared as:
->>
->>    LIBRARY
->>         Standard C Library (libc, -lc)
->>
->>    SYNOPSIS
->>
->>         void
->>         exit(int status);
->>
->> the status is expected to be signed.
->>
->> [*] https://github.com/ARM-software/abi-aa/blob/2023q3-release/semihosting/semihosting.rst#652entry-64-bit
-> 
-> Is this actually a visible change in behaviour? It makes
-> more sense to use 'int', I agree, but unless I'm confused
-> about C type conversions then I don't think it actually
-> changes the result in any case, does it?  Given we start with a
-> guest 64 or 32 bit signed integer value and put it into a
-> 'target_ulong' (arg1), it doesn't seem to me to make a
-> difference whether we put it into a 'uint32_t' or an
-> 'int' (ret) before passing it to either exit() or
-> gdb_exit() (which both take 'int')...
+1. dirtylimit module: fix for a race situation and
+   replace usleep by g_usleep.
+2. migration test: add dirtylimit test case.
+3. guestperf for migration: add support for dirtylimit migration.
+4. docs for migration: add dirtylimit section. 
 
-There should be no behavioral change, it is a cleanup
-to avoid asking "why are we using a uint32_t here?" in
-future reviews. Do you rather I mention it in the commit
-description?
+Please review, thanks.
 
 Regards,
 
-Phil.
+Yong
+
+Hyman Huang (6):
+  system/dirtylimit: Fix a race situation
+  system/dirtylimit: Drop the reduplicative check
+  tests: Add migration dirty-limit capability test
+  tests/migration: Introduce dirty-ring-size option into guestperf
+  tests/migration: Introduce dirty-limit into guestperf
+  docs/migration: Add the dirty limit section
+
+ docs/devel/migration.rst                |  71 ++++++++++
+ system/dirtylimit.c                     |  24 ++--
+ tests/migration/guestperf/comparison.py |  23 ++++
+ tests/migration/guestperf/engine.py     |  23 +++-
+ tests/migration/guestperf/hardware.py   |   8 +-
+ tests/migration/guestperf/progress.py   |  16 ++-
+ tests/migration/guestperf/scenario.py   |  11 +-
+ tests/migration/guestperf/shell.py      |  24 +++-
+ tests/qtest/migration-test.c            | 164 ++++++++++++++++++++++++
+ 9 files changed, 346 insertions(+), 18 deletions(-)
+
+-- 
+2.39.1
+
 
