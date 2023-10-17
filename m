@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6207CC9C2
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 19:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 472787CC9C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 19:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsnkt-00076O-Bo; Tue, 17 Oct 2023 13:21:19 -0400
+	id 1qsnku-0007At-4A; Tue, 17 Oct 2023 13:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qsnkk-00072F-Tf
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 13:21:10 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsnkn-00076P-GM
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 13:21:14 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qsnkh-0004eM-SK
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 13:21:09 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-32d80ae19f8so4727341f8f.2
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 10:21:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsnkk-0004eg-MQ
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 13:21:13 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2bfed7c4e6dso74948961fa.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 10:21:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697563266; x=1698168066; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9+TYRNSqplKM+iToPLX2vOL24F4DY4NL0tV7Fv3/bqw=;
- b=A1W/f6UPsWWYPyvJ8ZzON5tuJ6KdzdeXf4GlssFSeAwWS/2fPgy4YqJrLREoGOiMin
- yMIiEf8sJnE+o9g/oNWcEtTPBkkv/Q9fxxE79o3e4qoJoqotSMgId8KzgD0q9KO2cc+5
- QbQBONIwmHZ60Fn/q25EtMWYopiccSpmOQgjAphItRhGjZiDK72nOGxZkW4ouFxgsSIj
- A6kMroP/JOvuA2yCckmocXYHTgFKdn2zp0O/oieiJqbTCvWb8Nfqq2Y72qCpX+H0LIpt
- wy0eikEIWyutqOcWYQShNHkPp12X68FR9AQXhOYH08zTzmbW2/6ZB9lcmJei0urKy54X
- pH3w==
+ d=linaro.org; s=google; t=1697563269; x=1698168069; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=IYOQ6o4VfRBqL0+OOnxoc/gz7GiPGve2ZzadNPgd5m4=;
+ b=YipsglzQwiPH/5j+yB6K/IW2tTvp/C7P+X8s+fn/LnV7nkh63RU6owi3aLEPQSMyq5
+ PtqB7lZa97K3rxVUsJF/jl3J/ZhWU8iewbI8TjbGoiwG22qeMgyPyQh2J9orH8FeOmoE
+ iwl6jTiK6VgAcnkIddv7pIzanTUKF7NoGPT8SevoQ192Sv0JldzqjhOTabT9sQp9EmEn
+ 78k36MVlqFlbPmWXFGsnyMoktudgfKLDhkVIjPQjjVj9iQjNXZXoFNYBcnZdD2ERh2u1
+ S2O9Ez61wEqvJ3Z+rfEAu/492moO0OGjBczrVyCfcEqTIewwc0Ukednb9ARZKLDYTDO4
+ 0xyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697563266; x=1698168066;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=9+TYRNSqplKM+iToPLX2vOL24F4DY4NL0tV7Fv3/bqw=;
- b=G6RAGJz2QOdzkjVEazQ3eKeIWbiRL9Kv7WYWZXmuEbJgW29TuZOO2YCtSdTudBPQ7k
- nopnnyVyfsKXNVUtZGsa9Z6sXx8Y7sAz0Nl/5fFA65KdBc43n4Jxb86gWabN6aYkiw6/
- NDWslBVMBV6X92WwUuN1zdjAYpXT+YG9rIjSiB7WQC2HLBxCnMo/lea98VuqIadp6Fzi
- TAOgsLqHLrWA7i6t5GLNcjBTWB+Bm7wL30LcVKXPaDBiLLstB821X1YlITZgMO2iCGOU
- s6FhOvxXmMmL4Zkh2Y97XCzyemed2AARLsTy+3uncHOWQH/trrp9GbT5cKiKZU04xxfP
- vGnw==
-X-Gm-Message-State: AOJu0Yyc1gR5MiaxAe4UpzjPWm9y+va29G2G1GLvfBog2Hk+KMXFH3U0
- 4tYE6lXhvGmynBiZmYyzG/s5ig==
-X-Google-Smtp-Source: AGHT+IEuw+zDJre1njCf0Jl4R8BoRuzmnIaWuVeaYrZQ+mxBMW9wvhT42dpZB1SKWFb49ZRiau5+4w==
-X-Received: by 2002:a5d:6303:0:b0:32d:9a1b:5d7f with SMTP id
- i3-20020a5d6303000000b0032d9a1b5d7fmr2587981wru.29.1697563265710; 
- Tue, 17 Oct 2023 10:21:05 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20230601; t=1697563269; x=1698168069;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IYOQ6o4VfRBqL0+OOnxoc/gz7GiPGve2ZzadNPgd5m4=;
+ b=OcJVrL3smNh86oaOEqb0wyjsDIqWdZ7aeDn5I7881EKEnjXzhNB+0uyTSB2mbQbN3T
+ TXyg+J5qvyY9nq/7CkNCKUuEzl5AuKkFQWRPs0o1GFKuLF01NCFyVlGi5JvKLn6P3uta
+ N48oyqZ381JPCEJEWIt5d+0bCe/ugKBJl7F8YMkuQd9QAfXjKAn4IroYFv4waRSfy6JH
+ 0aaMYLPtetfdTUH7p8xDXoUqvVi0i8wB3Fk9kvGHbfusJZOf2r+7w48F8BV6Gh/XR5N7
+ 79VdO0hqgCLEWynWcbUtIPBhcfQLg1cG3AVVi+4wBzinJHVWyE8CiTIFgPS1ASOGu3rF
+ /AJg==
+X-Gm-Message-State: AOJu0YyEPFf+QwCs4Ut+0I4FaLN2Is9HyyP5niR2P8E5zjwBVlRjJ7VD
+ lZMDWJr0L17Dys0A3tbo33Ko78ByDcNaTHNn3Yg=
+X-Google-Smtp-Source: AGHT+IG6utpYrlVoPmtBIunjL7tH6lwlDUvy8nhHvpj2vXWHHhNo/OooTJjbmB0ks0zTvoNIfeD3Hg==
+X-Received: by 2002:a2e:aa22:0:b0:2c5:2fcd:2598 with SMTP id
+ bf34-20020a2eaa22000000b002c52fcd2598mr1979242ljb.8.1697563268861; 
+ Tue, 17 Oct 2023 10:21:08 -0700 (PDT)
+Received: from meli.delivery (adsl-21.109.242.226.tellas.gr. [109.242.226.21])
  by smtp.gmail.com with ESMTPSA id
- w8-20020a5d6808000000b0032d8ce46caasm196584wru.93.2023.10.17.10.21.05
+ p3-20020a05600c430300b004076f522058sm10321068wme.0.2023.10.17.10.21.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Oct 2023 10:21:05 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 9F7B31FFBB;
- Tue, 17 Oct 2023 18:21:04 +0100 (BST)
-References: <CAHhcV8-HHG36Ndv7Y-K5FrUTb-WwVoRW3PPzaiM4hEesGA-iWw@mail.gmail.com>
- <CAHhcV89tKJiFz6CW5Xm6XP5pDs1uLBew=kjC5qd-k+fNVmdt1g@mail.gmail.com>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Amit Kumar <amit251098@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [Beginner-Help] Help understanding the migration Code
-Date: Tue, 17 Oct 2023 18:19:51 +0100
-In-reply-to: <CAHhcV89tKJiFz6CW5Xm6XP5pDs1uLBew=kjC5qd-k+fNVmdt1g@mail.gmail.com>
-Message-ID: <875y35b1xb.fsf@linaro.org>
+ Tue, 17 Oct 2023 10:21:08 -0700 (PDT)
+Date: Tue, 17 Oct 2023 20:20:27 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-arm@nongnu.org,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Fam Zheng <fam@euphon.net>, qemu-arm@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Gerd Hoffmann <kraxel@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>
+Subject: Re: [PATCH 1/7] hw/virtio/virtio-pmem: Replace impossible check by
+ assertion
+User-Agent: meli 0.8.2
+References: <20231017140150.44995-1-philmd@linaro.org>
+ <20231017140150.44995-2-philmd@linaro.org>
+In-Reply-To: <20231017140150.44995-2-philmd@linaro.org>
+Message-ID: <2oo76.4h7yyj4brumn@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,47 +104,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Amit Kumar <amit251098@gmail.com> writes:
-
-> Following up on the previous email I sent. I want to understand the migra=
-tion code, I have read a couple of papers on
-> how it works in theory, but I am finding it hard to find a starting
-> point where I can start to understand the code.
-
-Start looking at the VMStateDescription and what follows from there.
-This is the principle source of serialisation information when saving
-and restoring device state.
-
-The VMSTATE_* macros wrap up a lot of the structures.
-
+On Tue, 17 Oct 2023 17:01, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>The get_memory_region() handler is used when (un)plugging the
+>device, which can only occur *after* it is realized.
 >
-> Any help would be appreciated.
+>virtio_pmem_realize() ensure the instance can not be realized
+>without 'memdev'. Remove the superfluous check, replacing it
+>by an assertion.
 >
-> Thank you
+>Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>---
+> hw/virtio/virtio-pmem.c | 5 +----
+> 1 file changed, 1 insertion(+), 4 deletions(-)
 >
-> On Wed, Oct 11, 2023 at 9:40=E2=80=AFAM Amit Kumar <amit251098@gmail.com>=
- wrote:
+>diff --git a/hw/virtio/virtio-pmem.c b/hw/virtio/virtio-pmem.c
+>index c3512c2dae..cc24812d2e 100644
+>--- a/hw/virtio/virtio-pmem.c
+>+++ b/hw/virtio/virtio-pmem.c
+>@@ -147,10 +147,7 @@ static void virtio_pmem_fill_device_info(const VirtIOPMEM *pmem,
+> static MemoryRegion *virtio_pmem_get_memory_region(VirtIOPMEM *pmem,
+>                                                    Error **errp)
+> {
+>-    if (!pmem->memdev) {
+>-        error_setg(errp, "'%s' property must be set", VIRTIO_PMEM_MEMDEV_PROP);
+>-        return NULL;
+>-    }
+>+    assert(pmem->memdev);
+> 
+>     return &pmem->memdev->mr;
+> }
+>-- 
+>2.41.0
 >
->  Hi
->  I am trying to understand how migration, more specifically live-migratio=
-n works in QEMU. I've tried going
->  through the source code but didn't understand much, and couldn't find do=
-cumentation either. I want to work on
->  live migration and need help getting to know the code.=20
->  More specifically I want to understand
->  - where the pre/post copy algorithms are implemented
->  - which files/data-structures that I should look at
->  - should I need to make changes, where and how should I start?
->
->  I am new to working with such large code bases, hence need some guidance.
->
->  Thanks
->
->  Amit Kumar
 
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
