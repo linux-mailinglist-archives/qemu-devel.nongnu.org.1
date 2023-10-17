@@ -2,54 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131FD7CCF17
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 23:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C54C97CCF2A
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 23:24:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsrUD-0003Pa-RR; Tue, 17 Oct 2023 17:20:21 -0400
+	id 1qsrXz-0006Z3-35; Tue, 17 Oct 2023 17:24:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+e442e50539a6073fd887+7359+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qsrUA-0003OV-S3
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 17:20:19 -0400
+ id 1qsrXw-0006Wh-HY
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 17:24:12 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+e442e50539a6073fd887+7359+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qsrU5-0002NW-8U
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 17:20:17 -0400
+ id 1qsrXu-0002rI-Nh
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 17:24:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
  In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=54XAuWzYqztzfnivHJHl0zZ8p63OeZefOtsCSd5Zv9o=; b=YP6iIt/NuLsfgN6JrFW3JBqCJb
- M8X2os6vIbYp0nuBfXj+cYQBl4Iy1D0fLbPRbG2JQBe8EVVl/4+QE/XrOLWkhQnKAN5tupRxjJa6F
- y4Kot+oQxYi/+nv8PFA87bepX3k3ca9vH4YzPjBE8hisvgZQ75s6GlDqvYVZXHleotKSIurVFOsn2
- 1H7tDb6HnKdYXEXE5yzQ7xQCP7Jbp4Znktr2CUyRaEILLAOQLuGqHSMFKmPbFp/7rVAklyIEF61n5
- Cki80OEUJ+EZguXHgZAWZUbwFDUw5i/KUw2Oq+FSC1etVPqvlV/egtqtK5Vxks+/M07TT/UXQCUFh
- 6MjMsKBA==;
+ bh=U/xERB24NvRaOJZsK79Qj0uT+Ei+7MF3PTBGJQytKS8=; b=oa2AncPynXE87ZEch7HxLxfasJ
+ IRCu6oFEF9xVF9b8aRM7Po/8UKhPWy06tUjVd+CKGj7THb2IpasWN4cBq+7Sb1aCsEElD3SiFP0bQ
+ WDG4re16376pgk/zX1BDB9ihhrpyP7irb3DjC1Arj8Wi4Q4Eyh7EWfz1Rkdp9pw0g7bviVZtpPAAm
+ +sXIc6VYqU75rmAXvsxiXHAf4R+gs7vrdYuYuv4BqkCJ679bd7XflRr92KHgA3pfPgviiMQhc18Ai
+ LuZzJ4qwVd7C4MiieIRC/BoWPU0HSmyTiyaO/Z48Hh8vaCCkdbnMXCUQOfQZojNlkGoRfkyMce7V2
+ XLsBQTqg==;
 Received: from [2001:8b0:10b:5:b9aa:f92b:5d4c:b38]
  (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qsrTr-00EaaQ-92; Tue, 17 Oct 2023 21:19:59 +0000
-Message-ID: <c72aa2174f60f184e87636a0a3a0394ef8e7afd3.camel@infradead.org>
-Subject: Re: [PATCH v2] intel-iommu: Report interrupt remapping faults, fix
- return value
+ id 1qsrXs-00Ed1W-BW; Tue, 17 Oct 2023 21:24:08 +0000
+Message-ID: <cc387bb1aee43378d32c28266e2369dae24ba54e.camel@infradead.org>
+Subject: Re: [RFC PATCH] hw/timer/hpet: fix IRQ routing in legacy support mode
 From: David Woodhouse <dwmw2@infradead.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, Eduardo Habkost
- <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin" <mst@redhat.com>
-Date: Tue, 17 Oct 2023 22:19:55 +0100
-In-Reply-To: <ZOYnraT/QyOUn4uP@x1n>
-References: <31bbfc9041690449d3ac891f4431ec82174ee1b4.camel@infradead.org>
- <ZOYnraT/QyOUn4uP@x1n>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>
+Date: Tue, 17 Oct 2023 22:24:07 +0100
+In-Reply-To: <6c1f2ced5b329a86a5c6846fb8530f2f1a845a44.camel@infradead.org>
+References: <6c1f2ced5b329a86a5c6846fb8530f2f1a845a44.camel@infradead.org>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-QkuPxmLE8i107Dc/Zxd1"
+ boundary="=-ixR6TnmR9ZBWmUIVNYMg"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -80,39 +78,112 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-QkuPxmLE8i107Dc/Zxd1
+--=-ixR6TnmR9ZBWmUIVNYMg
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2023-08-23 at 11:37 -0400, Peter Xu wrote:
-> On Wed, Aug 23, 2023 at 01:23:25PM +0100, David Woodhouse wrote:
-> > From: David Woodhouse <dwmw@amazon.co.uk>
-> >=20
-> > A generic X86IOMMUClass->int_remap function should not return VT-d
-> > specific values; fix it to return 0 if the interrupt was successfully
-> > translated or -EINVAL if not.
-> >=20
-> > The VTD_FR_IR_xxx values are supposed to be used to actually raise
-> > faults through the fault reporting mechanism, so do that instead for
-> > the case where the IRQ is actually being injected.
-> >=20
-> > There is more work to be done here, as pretranslations for the KVM IRQ
-> > routing table can't fault; an untranslatable IRQ should be handled in
-> > userspace and the fault raised only when the IRQ actually happens (if
-> > indeed the IRTE is still not valid at that time). But we can work on
-> > that later; we can at least raise faults for the direct case.
-> >=20
-> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+On Wed, 2023-08-30 at 21:20 +0100, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 >=20
-> Acked-by: Peter Xu <peterx@redhat.com>
+> The interrupt from timer 0 in legacy mode is supposed to go to IRQ 0 on
+> the i8259 and IRQ 2 on the I/O APIC. The generic x86 GSI handling can't
+> cope with IRQ numbers differing between the two chips (despite it also
+> being the case for PCI INTx routing), so add a special case for the HPET.
+>=20
+> IRQ 2 isn't valid on the i8259; it's the cascade IRQ and would be
+> interpreted as spurious interrupt on the secondary PIC. So we can fix
+> up all attempts to deliver IRQ2, to actually deliver to IRQ0 on the PIC.
+>=20
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+> It ain't ever so pretty, but it's prettier than the INTx routing hack
+> that I just documented and at least this one doesn't rely on guest
+> behaviour.
 
-Thanks.
 
-What do I do with this next? It's still lurking in my working tree.
+I haven't come up with a better way of doing it, and nobody seemed to
+care. Shall I post an identical patch without the [RFC] to see if it
+elicits more of a response?
+
+>=20
+> Do we have tests for HPET interrupt delivery that can be extended to
+> cover this?
+>=20
+>=20
+> =C2=A0hw/i386/x86.c=C2=A0=C2=A0 | 19 +++++++++++++++----
+> =C2=A0hw/timer/hpet.c |=C2=A0 5 ++++-
+> =C2=A02 files changed, 19 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> index a88a126123..0d2c74f2d9 100644
+> --- a/hw/i386/x86.c
+> +++ b/hw/i386/x86.c
+> @@ -602,13 +602,24 @@ DeviceState *cpu_get_current_apic(void)
+> =C2=A0void gsi_handler(void *opaque, int n, int level)
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0 GSIState *s =3D opaque;
+> -
+> +=C2=A0=C2=A0=C2=A0 int i8259_pin =3D n;
+> =C2=A0=C2=A0=C2=A0=C2=A0 trace_x86_gsi_interrupt(n, level);
+> =C2=A0=C2=A0=C2=A0=C2=A0 switch (n) {
+> -=C2=A0=C2=A0=C2=A0 case 0 ... ISA_NUM_IRQS - 1:
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (s->i8259_irq[n]) {
+> +=C2=A0=C2=A0=C2=A0 case 2:
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Special case for HPET=
+ legacy mode, which is defined as routing HPET
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * timer 0 to IRQ2 of th=
+e I/O APIC and IRQ0 of the i8259 PIC. Since
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * IRQ2 on the i8259 is =
+the cascade, it isn't otherwise valid so we
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * handle it via this sp=
+ecial case.
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i8259_pin =3D 0;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* fall through */
+> +=C2=A0=C2=A0=C2=A0 case 0:
+> +=C2=A0=C2=A0=C2=A0 case 1:
+> +=C2=A0=C2=A0=C2=A0 case 3 ... ISA_NUM_IRQS - 1:
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (s->i8259_irq[i8259_pin]) =
+{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+/* Under KVM, Kernel will forward to both PIC and IOAPIC */
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_=
+set_irq(s->i8259_irq[n], level);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_=
+set_irq(s->i8259_irq[i8259_pin], level);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* fall through */
+> =C2=A0=C2=A0=C2=A0=C2=A0 case ISA_NUM_IRQS ... IOAPIC_NUM_PINS - 1:
+> diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+> index 6998094233..9f740ffdee 100644
+> --- a/hw/timer/hpet.c
+> +++ b/hw/timer/hpet.c
+> @@ -196,8 +196,11 @@ static void update_irq(struct HPETTimer *timer, int =
+set)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* if LegacyReplacementR=
+oute bit is set, HPET specification requires
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * timer0 be routed=
+ to IRQ0 in NON-APIC or IRQ2 in the I/O APIC,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * timer1 be routed=
+ to IRQ8 in NON-APIC or IRQ8 in the I/O APIC.
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * There is a special ca=
+se in the x86 gsi_handler() which converts
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * IRQ2 into IRQ0 for th=
+e i8259 PIC and makes this work correctly.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 route =3D (timer->tn =3D=3D 0=
+) ? 0 : RTC_ISA_IRQ;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 route =3D (timer->tn =3D=3D 0=
+) ? 2 : RTC_ISA_IRQ;
+> =C2=A0=C2=A0=C2=A0=C2=A0 } else {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 route =3D timer_int_rout=
+e(timer);
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
 
 
-
---=-QkuPxmLE8i107Dc/Zxd1
+--=-ixR6TnmR9ZBWmUIVNYMg
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -204,25 +275,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDE3MjExOTU1WjAvBgkqhkiG9w0BCQQxIgQgT0MpdodC
-ilpe/2Wm1sHnn6jUcylz1Rr6R8b/F87P/Hkwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDE3MjEyNDA3WjAvBgkqhkiG9w0BCQQxIgQg0fM0IIjd
+oehN81bMwY5K3ysUYrEmBff5wCWaM+UDZX0wgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBQ02fwHTh8D3RI1k26JripyLPcjHeVaAZD
-UVpYIyhwWQIF1acPYMGIsJBuTL9J5uscjNYj3AXSJHwGHaAK/uVROS3w8xE1KN+rDynLilIjFpAB
-Y1LwC8Ga47oN4ZwJUXrtnL4zw+XKKJ4jAoeizyTyMulSVojJRa42zZOZPI+6HkIso87jEESUKGme
-bzJFhMIm5xIiPbn7rFVPLvqFpo+NEVBuYlO+eeFtsE+DphSbKvUCV3EmGtDN8BWkyydTkej/X6/E
-uxQ14v40P4RxjDk7XDNPnOIjpaTRQ1fR2VgdNuqyzKVKuY6s12Pkj9t7iKCuSOXuacgkKpRiJnt5
-Z/FMahh9G1hQxsgJG1Rz+LhjrFIdVPDDpM80e1CnjLd5oXXuTrJ4I0Xk/6xCnM5wRoqd8WkPl1U5
-H2kMD8/2Co90K+jGkv/xfZugYVJtMlrAEeQER+9NdI/zyNslC2EyK2/tDE4kTTmYWHAohwjV7Iue
-26mWA3kzIIj51xYkqf62v8VzAu43reMnBocrHUxFR2Idh3VglBQb0Pa2pKbP4Yv/QpUyaXCqub26
-jHEGUtiKE+pilr0r7PTR7k1+xqMq305ArJ0OBhl4U6ahOOk03BYP1PZmqLA9y8sHBA75XyhylLbN
-xq+20ZpoRYvlTR9Nv9kbO3dJzHMkGOUFk1zUAbNtlwAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCeMyKO7fwvDhsNSrL5/q3wESdqXm/ToR1P
+Z6N6JZWSeIc8aLFMvA0YHGBP62qteZlZ6DJOU2BStjzjzDRa/ohSvAOjBfNOCETTLqtGu/7l6J2s
+rF+zBNIwgzY9QYTgNIh1f5IqEVSSE2rizgCx1YHnTjpHjOTeQAuGb9HxGd3db55AgU4I40+cPxgB
+eDS7zJLf0uUIovweo4aQSRe5ZHnwDq4K/MqfjRQwLgBRwrX6wlL6msn/IbZn4hkchLCceG6PnbnB
+fmfGfPSWYOJ+6iGAdlXi0tr6xPdHQxQApLvPzSeRBFkaBsMcpOgiV97l/C2Me4m4HIIXarmecJk7
+0BhwpKmmR7fhZxmfORjFVwEidEn+NMe9SZW7Irv2KZhAmblv3fNG9SbzCyGz7BEPxGGG4h9RqOCe
+HcGcgLsH0ymPe9P4ItoqMDX7oaHPWv08Qi22TenwxXAGXoox/TFSEkhSoukyDX3PbUQjgSkcz1Cy
+qOy9psSWR7Ef3aY856tb2bll1C9eEPQhDx0Lm5iluqvBHXjwf8WuCDMenL6QSH+5NzsG6joNJNox
+8xbuVJ0lizvDfzzyQcq/IuS2ZJBhC5znvXfG+gHwfZk6l7IoDC0wpMLVOzgzICkZjfaJFpWFYPTS
+hjipwpi1YfT6faFA7qi8DsxbVYG1xh1N22gZ9Fj46AAAAAAAAA==
 
 
---=-QkuPxmLE8i107Dc/Zxd1--
+--=-ixR6TnmR9ZBWmUIVNYMg--
 
