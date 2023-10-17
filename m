@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C507CC9A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 19:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C15F7CC9B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 19:20:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsnfF-0007v2-Hb; Tue, 17 Oct 2023 13:15:29 -0400
+	id 1qsnj1-0004Hl-He; Tue, 17 Oct 2023 13:19:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsnfC-0007us-V3
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 13:15:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qsnfB-0003U3-CB
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 13:15:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697562924;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=FjODC1oe92c3FP0AUPkq7WMZRRc7VPEvFqje6RM3MAc=;
- b=P/H3xD0l1iNDLRfQrAjM5fbWkXbG1HYN2b9cUpVdveoCT0qRc3drP8nEtuTxiqHdZOlx6A
- /SVvRkUMTZ1d0IfTTHqETJ13O22YTOr1UnFdmJ4PU153oigN2KYdlv7e1ewU0V1jdjNl9s
- PyPv0AqcXega7MgtVvQax/cxPKPf/m8=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-rTACFtp4NaiCLMJ4ubL_vg-1; Tue, 17 Oct 2023 13:15:19 -0400
-X-MC-Unique: rTACFtp4NaiCLMJ4ubL_vg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-507b92b4346so1578364e87.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 10:15:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsniz-0004HQ-VM
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 13:19:21 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qsniy-00046F-7G
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 13:19:21 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so1479135e9.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 10:19:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697563158; x=1698167958; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=nYJAR0AMsb/6+NQUw/ZXkNRr+jbwIu4tVYQkOMbEmaw=;
+ b=CpaZoUyyyA7+beCn8Oj7O2A3dDPfW0t8m37X/852Js2YpeQmhQ+NfdWXyy2wjua9Y9
+ 8UVZItElU+F9eJ5uao4h94uEGe6uXYPVCz9ar7wwFZCJKNNN0e5kwqk0aDcFSTnsfQFQ
+ 5B0DAoUehVTpIzzFj4QiFhf0/pwIUMqSXG+KhnteEkej/jD9qro/H7Ev02yhqplA9q3b
+ AOGQhdHQVRz0tlCRdlMmfjvceRR7xtaEsjIMnRguMZy4L9wjhSuWud/efxb6UURs/ToN
+ B9QHDE4TBm4fW9emYy80WXho/ej3/AF4QpXpwtzY1YGLOaeOCcZKK5LyZsjszKHO7cGb
+ PCcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697562917; x=1698167717;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FjODC1oe92c3FP0AUPkq7WMZRRc7VPEvFqje6RM3MAc=;
- b=F1ilpUDF6l5FTTYO7yCBOhU8s4ttGOtjHwV0l6J4pd3UiU3jg09ny2OX51I2DyO0Xq
- ov/ho49Si2Lk6bhSd+4BdK0Bj5tp3UBzPZbNDDaN/y9QqfzBho9TOcNPHFbU0Fl2B+iS
- 0cmKs0Q2ZI5WYXnDqZfQWygKuEmP/eRTLuQQNtgPZhxOWBC/TlFH6sUuCfznLhvuQhOz
- CTSCr+y/XiRgXL/H11uMreZOb3u9FW6JaZZk4mAWyGVLfG/3Ev7aIzUeVO5d4zpjX1Rz
- Fnr/skdDpr1qWCYSxZuPH6vzkyJI4zLcKIBIT8tK9gyjPMnVaHr1vu7UP9ISMpttFJLJ
- 4YFA==
-X-Gm-Message-State: AOJu0Yy983fX9RjUKLnQp9DDyJu0vQBVmY3hscQHeFvsJ4MLQ0pLfgCt
- wOA/uy1UwzqzkY4Cp+769LCZOSEiOEfhp7vf2BGi+dzHq/wUw9DRpv90smMhLuOgQOz4D/6usiB
- Tw/w/dJOTLVO0M74=
-X-Received: by 2002:a05:6512:411:b0:507:975f:1df6 with SMTP id
- u17-20020a056512041100b00507975f1df6mr2252950lfk.14.1697562916977; 
- Tue, 17 Oct 2023 10:15:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFokipB4yj0L3UbyAEwdBvKf4uOSgB6cjcCWzYqln58YVNVPhaq5lfS1Slg/E9EaJ2gvpmHjg==
-X-Received: by 2002:a05:6512:411:b0:507:975f:1df6 with SMTP id
- u17-20020a056512041100b00507975f1df6mr2252936lfk.14.1697562916544; 
- Tue, 17 Oct 2023 10:15:16 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- m10-20020a05600c3b0a00b0040839fcb217sm109142wms.8.2023.10.17.10.15.15
+ d=1e100.net; s=20230601; t=1697563158; x=1698167958;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nYJAR0AMsb/6+NQUw/ZXkNRr+jbwIu4tVYQkOMbEmaw=;
+ b=d84S5ggmfPD4zXLa9QZ3oTkn+y3kfAROxP1QuJ6snAV0NHOBM2kGz1NtwVnZCWKU39
+ Utv8+IopwhIbhkvaB7PH/xklMQ3X6UAL1ZjJJsl8HOuzSgNmJbopA/HaSzfKWQRUN9+T
+ Njd2DeJDZFGRfHNvnW6Qv5tG4r6AIA+xAqAYfDWUN53LFGCPMvtUN0Mbc9SR9DwCAhZM
+ QvpV9HdMxDFbUqDgT8KNp/PZzLi5zdos2xhn49Hj5CsB2ndT+KRv4DYZrtKMft7Ee9on
+ nmKiHRS9NbaGseQIua5XBuq3N3PxVsV/qRZGS87fc+4bbGkKI6wUgW8H518v4UwbWGpT
+ 7NJQ==
+X-Gm-Message-State: AOJu0YxRxteh6WzveAuMkKZ+8pKAWkVNDA8luCGA5AyA55kzOLrA/9Un
+ 3PacVsCzzX9FaPH4cpkeftcHmg==
+X-Google-Smtp-Source: AGHT+IHJsYqstZwNH/iRkFO0R0iLtofkF8eG3srtw0EUzy3LmqHmC0sKSpbWYidfqgfCecJwNSEoNw==
+X-Received: by 2002:a5d:6ac5:0:b0:32d:9a2b:4f83 with SMTP id
+ u5-20020a5d6ac5000000b0032d9a2b4f83mr2644258wrw.33.1697563158158; 
+ Tue, 17 Oct 2023 10:19:18 -0700 (PDT)
+Received: from meli.delivery (adsl-165.37.6.1.tellas.gr. [37.6.1.165])
+ by smtp.gmail.com with ESMTPSA id
+ q18-20020a05600000d200b003233b554e6esm203897wrx.85.2023.10.17.10.19.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Oct 2023 10:15:15 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,  libvir-list@redhat.com,  Leonardo Bras
- <leobras@redhat.com>,  Peter Xu <peterx@redhat.com>,  Fam Zheng
- <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  qemu-block@nongnu.org,  Fabiano Rosas
- <farosas@suse.de>
-Subject: Re: [PATCH v5 5/7] migration: Deprecate old compression method
-In-Reply-To: <878r815otk.fsf@pond.sub.org> (Markus Armbruster's message of
- "Tue, 17 Oct 2023 16:03:03 +0200")
-References: <20231017115238.18309-1-quintela@redhat.com>
- <20231017115238.18309-6-quintela@redhat.com>
- <878r815otk.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 17 Oct 2023 19:15:14 +0200
-Message-ID: <875y35yxul.fsf@secure.mitica>
+ Tue, 17 Oct 2023 10:19:17 -0700 (PDT)
+Date: Tue, 17 Oct 2023 20:15:40 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-block@nongnu.org,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Fam Zheng <fam@euphon.net>, qemu-arm@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Gerd Hoffmann <kraxel@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>
+Subject: Re: [PATCH 2/7] hw/block/vhost-user-blk: Use DEVICE() /
+ VIRTIO_DEVICE() macros
+User-Agent: meli 0.8.2
+References: <20231017140150.44995-1-philmd@linaro.org>
+ <20231017140150.44995-3-philmd@linaro.org>
+In-Reply-To: <20231017140150.44995-3-philmd@linaro.org>
+Message-ID: <2oo43.ni0pj3wuvqqh@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,132 +101,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-> Juan Quintela <quintela@redhat.com> writes:
+On Tue, 17 Oct 2023 17:01, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>Access QOM parent with the proper QOM [VIRTIO_]DEVICE() macros.
 >
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
->> Acked-by: Peter Xu <peterx@redhat.com>
-
-
->>  # @deprecated: Member @disk is deprecated because block migration is.
->> +#     Member @compression is deprecated because it is unreliable and
->> +#     untested. It is recommended to use multifd migration, which
->> +#     offers an alternative compression implementation that is
->> +#     reliable and tested.
+>Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>---
+> hw/block/vhost-user-blk.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> Two spaces between sentences for consistency, please.
-
-I have reviewed all the patches again.  Let's hope that I didn't miss
-one.
-
->>  # @announce-step: Increase in delay (in milliseconds) between
->>  #     subsequent packets in the announcement (Since 4.0)
->>  #
->> -# @compress-level: compression level
->> +# @compress-level: compression level.
->>  #
->> -# @compress-threads: compression thread count
->> +# @compress-threads: compression thread count.
->>  #
->>  # @compress-wait-thread: Controls behavior when all compression
->>  #     threads are currently busy.  If true (default), wait for a free
->>  #     compression thread to become available; otherwise, send the page
->> -#     uncompressed.  (Since 3.1)
->> +#     uncompressed. (Since 3.1)
->>  #
->> -# @decompress-threads: decompression thread count
->> +# @decompress-threads: decompression thread count.
->>  #
->>  # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
->>  #     bytes_xfer_period to trigger throttling.  It is expressed as
+>diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+>index eecf3f7a81..4b37e26120 100644
+>--- a/hw/block/vhost-user-blk.c
+>+++ b/hw/block/vhost-user-blk.c
+>@@ -405,7 +405,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
+> 
+> static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
+> {
+>-    DeviceState *dev = &s->parent_obj.parent_obj;
+>+    DeviceState *dev = DEVICE(s);
+>     int ret;
+> 
+>     s->connected = false;
+>@@ -423,7 +423,7 @@ static int vhost_user_blk_realize_connect(VHostUserBlk *s, Error **errp)
+>     assert(s->connected);
+> 
+>     ret = vhost_dev_get_config(&s->dev, (uint8_t *)&s->blkcfg,
+>-                               s->parent_obj.config_len, errp);
+>+                               VIRTIO_DEVICE(s)->config_len, errp);
+>     if (ret < 0) {
+>         qemu_chr_fe_disconnect(&s->chardev);
+>         vhost_dev_cleanup(&s->dev);
+>-- 
+>2.41.0
 >
-> Unrelated.
-
-Rebases are bad for you O:-)
-
->> @@ -1023,7 +1036,9 @@
->>  # Features:
->>  #
->>  # @deprecated: Member @block-incremental is deprecated. Use
->> -#     blockdev-mirror with NBD instead.
->> +#     blockdev-mirror with NBD instead. Members @compress-level,
->> +#     @compress-threads, @decompress-threads and @compress-wait-thread
->> +#     are deprecated because @compression is deprecated.
 >
-> Two spaces between sentences for consistency, please.
 
-Done.
->> @@ -1078,7 +1097,7 @@
->>  # Example:
->>  #
->>  # -> { "execute": "migrate-set-parameters" ,
->> -#      "arguments": { "compress-level": 1 } }
->> +#      "arguments": { "multifd-channels": 5 } }
->>  # <- { "return": {} }
->>  ##
->
-> Thanks for taking care of updating the example!
-
-You are welcome.  grep for all occurences of compress-level and friends
-has its advantages.
-
->>  # @compress-wait-thread: Controls behavior when all compression
->>  #     threads are currently busy.  If true (default), wait for a free
->>  #     compression thread to become available; otherwise, send the page
->> -#     uncompressed.  (Since 3.1)
->> +#     uncompressed. (Since 3.1)
->>  #
->> -# @decompress-threads: decompression thread count
->> +# @decompress-threads: decompression thread count.
->>  #
->>  # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
->>  #     bytes_xfer_period to trigger throttling.  It is expressed as
->
-> Unrelated.
-
-I have removed the periods.
-
-But I have a question, why the descriptions that are less than one line
-don't have period and the other have it.
->>      if (params->has_compress_level) {
->> +        warn_report("Old compression is deprecated. "
->> +                    "Use multifd compression methods instead.");
->>          s->parameters.compress_level = params->compress_level;
->>      }
->>  
->>      if (params->has_compress_threads) {
->> +        warn_report("Old compression is deprecated. "
->> +                    "Use multifd compression methods instead.");
->>          s->parameters.compress_threads = params->compress_threads;
->>      }
->>  
->>      if (params->has_compress_wait_thread) {
->> +        warn_report("Old compression is deprecated. "
->> +                    "Use multifd compression methods instead.");
->>          s->parameters.compress_wait_thread = params->compress_wait_thread;
->>      }
->>  
->>      if (params->has_decompress_threads) {
->> +        warn_report("Old compression is deprecated. "
-
-Once here, I did s/Old/old/
-
-as all your examples of description start with lowercase.
-
->> +                    "Use multifd compression methods instead.");
->>          s->parameters.decompress_threads = params->decompress_threads;
->>      }
->
-> Other than that
-> Reviewed-by: Markus Armbruster <armbru@redhat.com>
-
-Thanks for your patience.
-
-
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
