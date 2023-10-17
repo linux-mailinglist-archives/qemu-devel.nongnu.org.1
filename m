@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75EA97CBB4C
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 627227CBB75
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 08:42:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsdct-0005Q9-Ft; Tue, 17 Oct 2023 02:32:23 -0400
+	id 1qsdlT-0007q2-L9; Tue, 17 Oct 2023 02:41:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qsdcm-0005Py-BV
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:32:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qsdcj-0008Di-Gl
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:32:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697524331;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YSJCYYcHgux47iWeHMf5NG9GfTpS0M4TjX0EUFuda0Q=;
- b=JiPsKRVm5vuSne/cTAakTkAdH5kKeBFDPhLWkq1GQjktlg8WlYTMKWCNS7Dj8bDZdnkDWe
- 7kV+pzT7lwBMWBOR3AlwvZ0MlZZxuSSHrMVm/6S1K4urQrda2EqtrYV3EE8HuMmlFKLsaa
- v/0z2+MBuMxLu/oMZ9SbbeUnmfj51Xk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-117-_mZTO0LsNEmS8WMWNxiviA-1; Tue, 17 Oct 2023 02:32:04 -0400
-X-MC-Unique: _mZTO0LsNEmS8WMWNxiviA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9635F2932480;
- Tue, 17 Oct 2023 06:32:03 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 589CA1C060AE;
- Tue, 17 Oct 2023 06:32:03 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4A49B21E6A1F; Tue, 17 Oct 2023 08:32:02 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Fabiano
- Rosas <farosas@suse.de>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
- <thuth@redhat.com>
-Subject: Re: [PATCH v3 0/4] qapi/migration: Dedup migration parameter
- objects and fix tls-authz crash
-References: <20230905162335.235619-1-peterx@redhat.com>
- <87h6mqixya.fsf@pond.sub.org> <ZS1k3mBVHgIPrjfO@x1n>
-Date: Tue, 17 Oct 2023 08:32:02 +0200
-In-Reply-To: <ZS1k3mBVHgIPrjfO@x1n> (Peter Xu's message of "Mon, 16 Oct 2023
- 12:29:18 -0400")
-Message-ID: <87v8b5dajh.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qsdlR-0007pu-O7
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:41:13 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qsdlP-0001pc-Sv
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 02:41:13 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1bdf4752c3cso31342645ad.2
+ for <qemu-devel@nongnu.org>; Mon, 16 Oct 2023 23:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697524870; x=1698129670; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xiYuE6LZKR+Ni9ajxMzMvQtYupTJfklVfqzTPwpZ/rQ=;
+ b=HeypVC0ZPPcPvKGioPCFwMTnx93+eooM1EaOHwkaUzDvMtgN5/7EBZ72yAjenwUa/w
+ 5e4p0QG1bF+5J6p+Ftohd1cw8loA4lWddSS96L4VONKwrKMsLOKBnVnxlJjccPEvNXrx
+ NZCmUXw4kkA+V/yu+ZeazHVgGmQ3Nvuf9N4F+gRo0LRi0zc+NRo1hnSEcvQwnrt3Ij23
+ 68KrkckRdNC+kwHqA5l/sEBntHnZfDmWZCNWNzqhey+h/zfnWNqWzugZ1/m/tYg4Ojns
+ MoJM8RKyI1+eRp1s78Lg/4NiHoUpxUVz825FlcMsoxho/ylaRlhvfC3FTzWqX/oABCKO
+ qCJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697524870; x=1698129670;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xiYuE6LZKR+Ni9ajxMzMvQtYupTJfklVfqzTPwpZ/rQ=;
+ b=nSTuj/1wbnz2pUnfTzZDgWQYBf3xaJTTuehFyZtMhLSMOrMnYpcqi1k9xBzgOhm+gK
+ Wp+tzaMB44qdBRj6P011uj6Wk7qSJe5mwAUpx0QjwmWLx+1Zuo1O4dDczaHJF+fn8QRX
+ wyZsj0Lei+t0iifPqA+KdSCOx4OStJvHHV11nSZuzGAfxixqwz7071YM4WD3OOdKr0RS
+ NjYuxsnItmMzZuT/lVwzYb5DXpAwQPfqwSfQUjAdKnKUPBXR/bpPrZLcdW4wkcSIdpLt
+ L20ShR0DNGhaqvR5d4J4hyaKxvM0EprLXjtG3A5ohWTWk/KGssl8iAY4F22k311z6Bh9
+ 9/3A==
+X-Gm-Message-State: AOJu0Yyc9FrzjMbwKEoAS2USrNXZDaPfqoefxEAtf+I3tsUnPWUF1ffD
+ aa+6dP2zkKuJQG/W+qHTFKqPTRHtBAEpLudn7YA=
+X-Google-Smtp-Source: AGHT+IEE47Wy/RzxeDNUU53Q3Oag03qP17tTOta6/oJSfifKK8GN7bfqIwRnJWvmaD3W0sMVRKrZfA==
+X-Received: by 2002:a17:903:28cd:b0:1c9:fb76:42f8 with SMTP id
+ kv13-20020a17090328cd00b001c9fb7642f8mr1274776plb.68.1697524870344; 
+ Mon, 16 Oct 2023 23:41:10 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ x18-20020a17090300d200b001b891259eddsm685682plc.197.2023.10.16.23.41.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Oct 2023 23:41:09 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH 00/20] target/sparc: Cleanup condition codes etc
+Date: Mon, 16 Oct 2023 23:40:49 -0700
+Message-Id: <20231017064109.681935-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,152 +87,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+This was part of my guess for some of the performance problems.
 
-> On Mon, Oct 16, 2023 at 09:08:40AM +0200, Markus Armbruster wrote:
->> Let me try to summarize our findings so far.
->
-> Thanks.  I'll reply here instead of all the rest places.
->
->> 
->> PATCH 1 has been merged.  PATCH 2 has been queued, but not merged (not
->> sure why, accident?).
->
-> (I don't know, either; could be in the next pull)
->
->> 
->> The remaining two are the actual de-triplication:
->> 
->> PATCH 3: Fuse MigrationParameters and MigrateSetParameters
->> 
->> PATCH 4: De-document MigrationParameter
->> 
->> The latter is a much simpler problem, so let's discuss it first.
->> 
->> 
->> Enum MigrationParameter is used only internally.  It's in the QAPI
->> schema just because we want code generated for it.  It shouldn't be
->> documented in the QEMU QMP Reference Manual, but is, because the
->> generator is too stupid to elide internal-only stuff.
->> 
->> PATCH 4 moves it out of the schema.  It has to add back the lost
->> generated code in hand-written form, which is a bit unfortunate.  I
->> proposed to instead drop most of the useless doc comment by exploiting a
->> QAPI generator loophole.
->> 
->> Aside: the QAPI generator should elide internal-only stuff from the QEMU
->> QMP Reference manual, and it should not require doc comments then.
->> Future work, let's not worry about it now.
->
-> Just to double check: @MigrationParameter will not be exported in any form
-> even today, including query-qmp-schema, am I right?
+I saw compute_all_sub quite high in the profile at some point,
+and I believe that the test case has a partially rotated loop
+such that "cmp" is in a delay slot, and so the gen_compare fast
+path for CC_OP_SUB is not visible to the conditional branch
+that uses the output of the compare.  Which means that 
+helper_compute_psr gets called much more often that we'd like.
 
-You are right.
+Move away from CC_OP to explicit computation of conditions.
+This is modeled on target/arm for the (mostly) separate
+representation of the bits.  We can pack icc.[NV] and xcc.[NV]
+into the same target_ulong, but Z and C cannot share.
 
-Checking whether something is in the output of query-qmp-schema is easy:
-look for it in the generated qapi-introspect.c.  Command names appear
-like
+After removing CC_OP, clean up the handling of conditions so
+that we can minimize additional setcond required for env->cond.
 
-    QLIT_QDICT(((QLitDictEntry[]) {
-        [...]
-        { "meta-type", QLIT_QSTR("command"), },
-        { "name", QLIT_QSTR("query-migrate"), },
-        [...]
-    })),
+Finally, inline some division, which can make use of the new
+out-of-line exception path, which means we can expand UDIVX
+and SDIVX with very few host insns.  The 64/32 UDIV insn needs
+only a few more.  Leave UDIVcc and SDIV* out of line, as the
+overflow and saturation computation in these cases is really
+too large to inline.
 
-Events names appear like
 
-    QLIT_QDICT(((QLitDictEntry[]) {
-        [...]
-        { "meta-type", QLIT_QSTR("event"), },
-        { "name", QLIT_QSTR("MIGRATION"), },
-        [...]
-    })),
+r~
 
-Type names appear in comments instead of code, like
+Based-on: 20231017061244.681584-1-richard.henderson@linaro.org
+("[PATCH v2 00/90] target/sparc: Convert to decodetree")
 
-    /* "145" = MigrationParameters */
+Richard Henderson (20):
+  target/sparc: Introduce cpu_put_psr_icc
+  target/sparc: Split psr and xcc into components
+  target/sparc: Remove CC_OP_DIV
+  target/sparc: Remove CC_OP_LOGIC
+  target/sparc: Remove CC_OP_ADD, CC_OP_ADDX, CC_OP_TADD
+  target/sparc: Remove CC_OP_SUB, CC_OP_SUBX, CC_OP_TSUB
+  target/sparc: Remove CC_OP_TADDTV, CC_OP_TSUBTV
+  target/sparc: Remove CC_OP leftovers
+  target/sparc: Remove DisasCompare.is_bool
+  target/sparc: Change DisasCompare.c2 to int
+  target/sparc: Always copy conditions into a new temporary
+  target/sparc: Do flush_cond in advance_jump_cond
+  target/sparc: Merge gen_branch2 into advance_pc
+  target/sparc: Merge advance_jump_uncond_{never,always} into
+    advance_jump_cond
+  target/sparc: Use DISAS_EXIT in do_wrpsr
+  target/sparc: Merge gen_op_next_insn into only caller
+  target/sparc: Record entire jump condition in DisasContext
+  target/sparc: Discard cpu_cond at the end of each insn
+  target/sparc: Implement UDIVX and SDIVX inline
+  target/sparc: Implement UDIV inline
 
-MigrationParameter does not appear.
+ linux-user/sparc/target_cpu.h |    4 +-
+ target/sparc/cpu.h            |   58 +-
+ target/sparc/helper.h         |    9 +-
+ linux-user/sparc/cpu_loop.c   |   23 +-
+ linux-user/sparc/signal.c     |    2 +-
+ target/sparc/cc_helper.c      |  471 -------------
+ target/sparc/cpu.c            |    1 -
+ target/sparc/helper.c         |  156 ++---
+ target/sparc/int32_helper.c   |    5 -
+ target/sparc/int64_helper.c   |    5 -
+ target/sparc/machine.c        |   44 +-
+ target/sparc/translate.c      | 1225 ++++++++++++++-------------------
+ target/sparc/win_helper.c     |   55 +-
+ target/sparc/meson.build      |    1 -
+ 14 files changed, 724 insertions(+), 1335 deletions(-)
+ delete mode 100644 target/sparc/cc_helper.c
 
->> The fusing of MigrationParameters and MigrateSetParameters is kind of
->> stuck.  Several options, all with drawbacks or problems:
->> 
->> 1. Pick StrOrNull for the tls_FOO members
->> 
->>    This is what PATCH 3 does.  Blocked on the pre-existing class of
->>    crash bugs discussed in
->> 
->>     Subject: QAPI string visitors crashes
->>     Message-ID: <875y3epv3y.fsf@pond.sub.org>
->>     https://lore.kernel.org/qemu-devel/875y3epv3y.fsf@pond.sub.org/
->> 
->>    Needs fixing, but when a fix will be available is unclear.
->> 
->> 2. Pick str for the tls_FOO members
->> 
->>    This is what v1 did.  Incompatible change: JSON null no longer works.
->>    Libvirt doesn't use it (it uses deprecated "" instead), but we cannot
->>    know for sure nothing else out there uses it.
->> 
->>    I don't think reducing development friction (that's what
->>    de-duplication accomplishes) justifies breaking our compatibility
->>    promise.
->> 
->>    To keep the promise, we'd have to deprecate null, un-deprecate "",
->>    let the grace period pass, and only then de-duplicate.
->
-> Is "" deprecated already anywhere?
-
-Deprecation was cleary intended (see commit message of 01fa5598269), but
-it looks like it wasn't (and isn't) properly documented.  We were much
-less organized about deprecating stuff back then.
-
->> 3. Do nothing, live with the duplication
->> 
->>    Giving up like this would be sad.  Unless we commit to a more
->>    complete overhaul of migration's QAPI/QMP configuration interface,
->>    but I doubt we're ready for that.
->> 
->> Thoughts?
->
-> I already went 3) on the patch I posted for avail-switchover-bw.  I don't
-> know what's the best for 1) and 2), but if we can at least reduce
-> duplication from 3->2 that's a progress.  I replied in the other thread for
-> that loophole experiment.
->
-> How hard it is to mark an object not requiring documentation on each of its
-> field, if that's what we want in this case?  Currently the loophole didn't
-> work for me for some reason.  If we can have a marker for objects to escape
-> doc check legally, we can apply that to both @MigrationParameter and one
-> other (perhaps @MigrationSetParameters).
-
-I can see two useful QAPI generator features:
-
-* Improved handling of missing member documentation
-
-  Problem: many members lack documentation.  We silently generate
-  documentation like
-
-      name-of-member
-          Not documented
-
-  for them.
-
-  Possible improvement: make missing member documentation a hard error,
-  create a knob to suppress the error for a type.  Open question: how to
-  best document member documentation is incomplete.
-
-* Suppress documentation for internal-only definitions
-
-  Problem: generated documentation covers everything, even types that
-  aren't visible in QMP.  The irrelevant material is distracting and
-  possibly confusing for users, and may be bothersome to maintain for
-  developers.
-
-  Possible improvement: include only the types visible in QMP in
-  documentation, similar to how we do for query-qmp-schema.  Open
-  question: what level of documentation to require for internal-only
-  types.
+-- 
+2.34.1
 
 
