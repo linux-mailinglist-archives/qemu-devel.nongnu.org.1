@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8D97CCBCD
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 21:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7137CCBCE
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 21:09:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qspQJ-0001fv-1y; Tue, 17 Oct 2023 15:08:11 -0400
+	id 1qspQJ-0001fz-Ak; Tue, 17 Oct 2023 15:08:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qspQE-0001dc-KF; Tue, 17 Oct 2023 15:08:06 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1qspQE-0001dg-Um; Tue, 17 Oct 2023 15:08:06 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qspQB-0001NN-4d; Tue, 17 Oct 2023 15:08:06 -0400
+ id 1qspQD-0001NW-2a; Tue, 17 Oct 2023 15:08:06 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 855A8748FF1;
- Tue, 17 Oct 2023 21:06:52 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 7FEC7756201;
+ Tue, 17 Oct 2023 21:06:53 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 35DE87456A7; Tue, 17 Oct 2023 21:06:52 +0200 (CEST)
-Message-Id: <61f37095d62b096168a7d2d4a6fdd22779d6ba9a.1697568616.git.balaton@eik.bme.hu>
+ id 43EB97456A7; Tue, 17 Oct 2023 21:06:53 +0200 (CEST)
+Message-Id: <dea7938f15c3231984546b12ccc8e3b8ba42a203.1697568616.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1697568616.git.balaton@eik.bme.hu>
 References: <cover.1697568616.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v4 3/4] hw/ppc: Add emulation of AmigaOne XE board
+Subject: [RFC PATCH v4 4/4] tests/avocado: Add test for amigaone board
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -33,10 +33,10 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Date: Tue, 17 Oct 2023 21:06:52 +0200 (CEST)
-X-Spam-Probability: 10%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Date: Tue, 17 Oct 2023 21:06:53 +0200 (CEST)
+X-Spam-Probability: 8%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -57,262 +57,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AmigaOne is a rebranded MAI Teron board that uses U-Boot firmware
-with patches to support AmigaOS and is very similar to pegasos2 so can
-be easily emulated sharing most code with pegasos2. The reason to
-emulate it is that AmigaOS comes in different versions for AmigaOne
-and PegasosII which only have drivers for one machine and firmware so
-these only run on the specific machine. Adding this board allows
-another AmigaOS version to be used reusing already existing peagasos2
-emulation. (The AmigaOne was the first of these boards so likely most
-widespread which then inspired Pegasos that was later replaced with
-PegasosII due to problems with Articia S, so these have a lot of
-similarity. Pegasos mainly ran MorphOS while the PegasosII version of
-AmigaOS was added later and therefore less common than the AmigaOne
-version.)
-
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- MAINTAINERS                             |   8 ++
- configs/devices/ppc-softmmu/default.mak |   1 +
- hw/ppc/Kconfig                          |   7 +
- hw/ppc/amigaone.c                       | 164 ++++++++++++++++++++++++
- hw/ppc/meson.build                      |   2 +
- 5 files changed, 182 insertions(+)
- create mode 100644 hw/ppc/amigaone.c
+I have no idea if this works so testing and corrections are welcome
+but this could be a basic test. Booting further is a bit more involved
+as we'd need alternative VGA BIOS and selecting menu items in the
+firmware to allow CD boot so I did not try to automate that.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9bd4fe378d..efc3f369bb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1508,6 +1508,14 @@ F: hw/pci-host/mv64361.c
- F: hw/pci-host/mv643xx.h
- F: include/hw/pci-host/mv64361.h
- 
-+amigaone
-+M: BALATON Zoltan <balaton@eik.bme.hu>
-+L: qemu-ppc@nongnu.org
-+S: Maintained
-+F: hw/ppc/amigaone.c
-+F: hw/pci-host/articia.c
-+F: include/hw/pci-host/articia.h
-+
- Virtual Open Firmware (VOF)
- M: Alexey Kardashevskiy <aik@ozlabs.ru>
- R: David Gibson <david@gibson.dropbear.id.au>
-diff --git a/configs/devices/ppc-softmmu/default.mak b/configs/devices/ppc-softmmu/default.mak
-index a887f5438b..b85fd2bcd7 100644
---- a/configs/devices/ppc-softmmu/default.mak
-+++ b/configs/devices/ppc-softmmu/default.mak
-@@ -14,6 +14,7 @@ CONFIG_SAM460EX=y
- CONFIG_MAC_OLDWORLD=y
- CONFIG_MAC_NEWWORLD=y
- 
-+CONFIG_AMIGAONE=y
- CONFIG_PEGASOS2=y
- 
- # For PReP
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index 5dfbf47ef5..56f0475a8e 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -69,6 +69,13 @@ config SAM460EX
-     select USB_OHCI
-     select FDT_PPC
- 
-+config AMIGAONE
-+    bool
-+    imply ATI_VGA
-+    select ARTICIA
-+    select VT82C686
-+    select SMBUS_EEPROM
-+
- config PEGASOS2
-     bool
-     imply ATI_VGA
-diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+This could be simpler if the u-boot-amigaone.bin could be added to
+pc-bios. It's GPL so should be OK to include and distribute but irs
+sources seem to be lost and could not be recovered or reconstructed so
+we only have this binary. Who should be able to decide about that?
+
+ tests/avocado/ppc_amiga.py | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+ create mode 100644 tests/avocado/ppc_amiga.py
+
+diff --git a/tests/avocado/ppc_amiga.py b/tests/avocado/ppc_amiga.py
 new file mode 100644
-index 0000000000..3589924c8a
+index 0000000000..e3cc2632e9
 --- /dev/null
-+++ b/hw/ppc/amigaone.c
-@@ -0,0 +1,164 @@
-+/*
-+ * QEMU Eyetech AmigaOne/Mai Logic Teron emulation
-+ *
-+ * Copyright (c) 2023 BALATON Zoltan
-+ *
-+ * This work is licensed under the GNU GPL license version 2 or later.
-+ *
-+ */
++++ b/tests/avocado/ppc_amiga.py
+@@ -0,0 +1,37 @@
++# Test AmigaNG boards
++#
++# Copyright (c) 2023 BALATON Zoltan
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
 +
-+#include "qemu/osdep.h"
-+#include "qemu/units.h"
-+#include "qemu/datadir.h"
-+#include "qemu/log.h"
-+#include "qemu/error-report.h"
-+#include "qapi/error.h"
-+#include "hw/ppc/ppc.h"
-+#include "hw/boards.h"
-+#include "hw/loader.h"
-+#include "hw/pci-host/articia.h"
-+#include "hw/isa/vt82c686.h"
-+#include "hw/ide/pci.h"
-+#include "hw/i2c/smbus_eeprom.h"
-+#include "hw/ppc/ppc.h"
-+#include "sysemu/reset.h"
-+#include "kvm_ppc.h"
++from avocado.utils import archive
++from avocado.utils import process
++from avocado_qemu import QemuSystemTest
++from avocado_qemu import wait_for_console_pattern
 +
-+#define BUS_FREQ_HZ 100000000
++class AmigaOneMachine(QemuSystemTest):
 +
-+/*
-+ * Firmware binary available at
-+ * https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28
-+ * then "tail -c 524288 updater.image >u-boot-amigaone.bin"
-+ *
-+ * BIOS emulator in firmware cannot run QEMU vgabios and hangs on it, use
-+ * -device VGA,romfile=VGABIOS-lgpl-latest.bin
-+ * from http://www.nongnu.org/vgabios/ instead.
-+ */
-+#define PROM_FILENAME "u-boot-amigaone.bin"
-+#define PROM_ADDR 0xfff00000
-+#define PROM_SIZE (512 * KiB)
++    timeout = 90
 +
-+static void amigaone_cpu_reset(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
++    def test_ppc_amigaone(self):
++        """
++        :avocado: tags=arch:ppc
++        :avocado: tags=machine:amigaone
++        :avocado: tags=cpu:7457
++        :avocado: tags=device:articia
++        :avocado: tags=accel:tcg
++        """
++        self.require_accelerator("tcg")
++        tar_url = ('https://www.hyperion-entertainment.com/index.php/'
++                   'downloads?view=download&format=raw&file=25')
++        tar_hash = 'c52e59bc73e31d8bcc3cc2106778f7ac84f6c755'
++        file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
++        archive.extract(file_path, self.workdir)
++        cmd = f"tail -c 524288 {self.workdir}/floppy_edition/updater.image >{self.workdir}/u-boot-amigaone.bin"
++        process.run(cmd)
 +
-+    cpu_reset(CPU(cpu));
-+    cpu_ppc_tb_reset(&cpu->env);
-+}
-+
-+static void fix_spd_data(uint8_t *spd)
-+{
-+    uint32_t bank_size = 4 * MiB * spd[31];
-+    uint32_t rows = bank_size / spd[13] / spd[17];
-+    spd[3] = ctz32(rows) - spd[4];
-+}
-+
-+static void amigaone_init(MachineState *machine)
-+{
-+    PowerPCCPU *cpu;
-+    CPUPPCState *env;
-+    MemoryRegion *rom, *pci_mem, *mr;
-+    const char *fwname = machine->firmware ?: PROM_FILENAME;
-+    char *filename;
-+    ssize_t sz;
-+    PCIBus *pci_bus;
-+    Object *via;
-+    DeviceState *dev;
-+    I2CBus *i2c_bus;
-+    uint8_t *spd_data;
-+    int i;
-+
-+    /* init CPU */
-+    cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
-+    env = &cpu->env;
-+    if (PPC_INPUT(env) != PPC_FLAGS_INPUT_6xx) {
-+        error_report("Incompatible CPU, only 6xx bus supported");
-+        exit(1);
-+    }
-+    cpu_ppc_tb_init(env, BUS_FREQ_HZ / 4);
-+    qemu_register_reset(amigaone_cpu_reset, cpu);
-+
-+    /* RAM */
-+    if (machine->ram_size > 2 * GiB) {
-+        error_report("RAM size more than 2 GiB is not supported");
-+        exit(1);
-+    }
-+    memory_region_add_subregion(get_system_memory(), 0, machine->ram);
-+    if (machine->ram_size < 1 * GiB + 32 * KiB) {
-+        /* Firmware uses this area for startup */
-+        mr = g_new(MemoryRegion, 1);
-+        memory_region_init_ram(mr, NULL, "init-cache", 32 * KiB, &error_fatal);
-+        memory_region_add_subregion(get_system_memory(), 0x40000000, mr);
-+    }
-+
-+    /* allocate and load firmware */
-+    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
-+    if (!filename) {
-+        error_report("Could not find firmware '%s'", fwname);
-+        exit(1);
-+    }
-+    rom = g_new(MemoryRegion, 1);
-+    memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
-+    memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
-+    sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE);
-+    if (sz <= 0 || sz > PROM_SIZE) {
-+        error_report("Could not load firmware '%s'", filename);
-+        exit(1);
-+    }
-+    g_free(filename);
-+
-+    /* Articia S */
-+    dev = sysbus_create_simple(TYPE_ARTICIA, 0xfe000000, NULL);
-+
-+    i2c_bus = I2C_BUS(qdev_get_child_bus(dev, "smbus"));
-+    if (machine->ram_size > 512 * MiB) {
-+        spd_data = spd_data_generate(SDR, machine->ram_size / 2);
-+    } else {
-+        spd_data = spd_data_generate(SDR, machine->ram_size);
-+    }
-+    fix_spd_data(spd_data);
-+    smbus_eeprom_init_one(i2c_bus, 0x51, spd_data);
-+    if (machine->ram_size > 512 * MiB) {
-+        smbus_eeprom_init_one(i2c_bus, 0x52, spd_data);
-+    }
-+
-+    pci_mem = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
-+    mr = g_new(MemoryRegion, 1);
-+    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", pci_mem,
-+                             0, 0x1000000);
-+    memory_region_add_subregion(get_system_memory(), 0xfd000000, mr);
-+    mr = g_new(MemoryRegion, 1);
-+    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", pci_mem,
-+                             0x80000000, 0x7d000000);
-+    memory_region_add_subregion(get_system_memory(), 0x80000000, mr);
-+    pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
-+
-+    /* VIA VT82c686B South Bridge (multifunction PCI device) */
-+    via = OBJECT(pci_create_simple_multifunction(pci_bus, PCI_DEVFN(7, 0),
-+                                                 TYPE_VT82C686B_ISA));
-+    object_property_add_alias(OBJECT(machine), "rtc-time",
-+                              object_resolve_path_component(via, "rtc"),
-+                              "date");
-+    qdev_connect_gpio_out(DEVICE(via), 0,
-+                          qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-+        qdev_connect_gpio_out(dev, i, qdev_get_gpio_in_named(DEVICE(via),
-+                                                             "pirq", i));
-+    }
-+    pci_ide_create_devs(PCI_DEVICE(object_resolve_path_component(via, "ide")));
-+    pci_vga_init(pci_bus);
-+}
-+
-+static void amigaone_machine_init(MachineClass *mc)
-+{
-+    mc->desc = "Eyetech AmigaOne/Mai Logic Teron";
-+    mc->init = amigaone_init;
-+    mc->block_default_type = IF_IDE;
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("7457_v1.2");
-+    mc->default_display = "std";
-+    mc->default_ram_id = "ram";
-+    mc->default_ram_size = 128 * MiB;
-+}
-+
-+DEFINE_MACHINE("amigaone", amigaone_machine_init)
-diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index 7c2c52434a..0f76f4cce4 100644
---- a/hw/ppc/meson.build
-+++ b/hw/ppc/meson.build
-@@ -81,6 +81,8 @@ ppc_ss.add(when: 'CONFIG_E500', if_true: files(
- ))
- # PowerPC 440 Xilinx ML507 reference board.
- ppc_ss.add(when: 'CONFIG_VIRTEX', if_true: files('virtex_ml507.c'))
-+# a1xe
-+ppc_ss.add(when: 'CONFIG_AMIGAONE', if_true: files('amigaone.c'))
- # Pegasos2
- ppc_ss.add(when: 'CONFIG_PEGASOS2', if_true: files('pegasos2.c'))
- 
++        self.vm.set_console()
++        self.vm.add_args('-bios', self.workdir + '/u-boot-amigaone.bin')
++        self.vm.launch()
++        wait_for_console_pattern(self, 'FLASH:')
 -- 
 2.30.9
 
