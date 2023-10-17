@@ -2,78 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB337CC328
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 14:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B30E7CC335
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 14:31:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsjAQ-0003MF-F6; Tue, 17 Oct 2023 08:27:22 -0400
+	id 1qsjE4-0004yr-BM; Tue, 17 Oct 2023 08:31:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsjAK-0003Lj-Aq
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:27:16 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qsjE2-0004yZ-7t; Tue, 17 Oct 2023 08:31:06 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsjAB-0004o5-Lk
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:27:15 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-32caaa1c493so4508185f8f.3
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 05:27:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697545626; x=1698150426; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4HsOAhtJhsCXMgyIjrkIukQ3SKJyR2phPKk08rqYntg=;
- b=zDUuwAxzasQNmm5xhPglNqcOjKWJbj6HA7RJzDhZfN+8IL072zLX0vmK0NgM366blD
- At33Ve0bgcQSU7DJqGqnFwWlIfCBDF52JUxNT4d509JADt86k0dj2dbRkjnouMwqxZvE
- 8k6D2XXjyr/DmbBNS18IjrU+nqxLNUIfzrbJAlXc7LtrCvkEc7jlnUs9ZeRlfghxTB2F
- qhd0HsgNf/t9ysmH5oG3Q6gm2UkM9q43Dl6k/fbD7Ha25y/O1Qi7WvS0D/tUASw2oag4
- p+JpGGwulVLWoFVPY2Z/m5mRGKG06oDg0zw2SvCjW2FE3v9EY43z5zj3rvpPgWwCvzJu
- /lSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697545626; x=1698150426;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4HsOAhtJhsCXMgyIjrkIukQ3SKJyR2phPKk08rqYntg=;
- b=lYtQvSerz1+No5EOj69WI4nvzHkQNlPZPLgOf/tVVgQ99biGBciXE2I7DzP6pmoQSn
- c+3S2LIcFXrEnCzXtl+7CYMk9FNz9buVStNuQs1dEpPJ2AZRp1VWDNZWxtxc0PYiGf5S
- ht/eER14BdyrmpDDP1IEGpKEOdZKprqulJP/0YweSU6QsLHM6j1KQtxK+BKDWx3VU6CL
- vBUZhU6vX4um4IbiXU6qKdZdyMMukns+FWyCGP3Rg13KHW/lCykxuj9OUZD8FeP1vK9s
- L5tWBrskv3e8Fk94PZKm5t2YMmLiYH0BRMF3WAaO6xOcpsIJsANJXklGNpTEzz+MVMJR
- lRUw==
-X-Gm-Message-State: AOJu0YwpNNwP6hgH0iS2irIWZ6NLHgEiYYYloUFv5GzTvlc5cs64tL/k
- 2vP41SfXAs+//y1zuimmP0Ov0i/M5P+rFd5pc2GLVg==
-X-Google-Smtp-Source: AGHT+IFUTt2l20aTFooalCDf0sYtos1XbLV6EpPuG2s+9++0I5g2vSkQTIT/Ptmbg1Vr3bOwwdxbRA==
-X-Received: by 2002:a5d:4052:0:b0:323:3b5f:3564 with SMTP id
- w18-20020a5d4052000000b003233b5f3564mr1858198wrp.10.1697545625895; 
- Tue, 17 Oct 2023 05:27:05 -0700 (PDT)
-Received: from m1x-phil.lan ([176.172.118.33])
- by smtp.gmail.com with ESMTPSA id
- q18-20020a056000137200b003143867d2ebsm1575592wrz.63.2023.10.17.05.27.04
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 17 Oct 2023 05:27:05 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Cc: Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH] target/m68k: Use i128 for 128-bit load/store in
- m68k_copy_line()
-Date: Tue, 17 Oct 2023 14:27:02 +0200
-Message-ID: <20231017122702.39311-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qsjDz-0005XP-15; Tue, 17 Oct 2023 08:31:06 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A875921D16;
+ Tue, 17 Oct 2023 12:31:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697545860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z4ZeJRBCGcs/xaSNh1cOZ47KZFNqeZoKfLuUg+Mly0U=;
+ b=Txp+Uwlm4BUjcsLM3JV70/HLw//T3vHvgCeckNNNISfjDmE1gwLURO4aIoPtHWEO3qr3kA
+ iZKYH/chlBnEpCGdPDsdCRSk8JDINn9Y1fksOONUs0QnHl3h4gSuksxezZE8Wyr6ywIkXt
+ WKxy+FKaPz5cMuTwfcrdquiMp0lbnIU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697545860;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z4ZeJRBCGcs/xaSNh1cOZ47KZFNqeZoKfLuUg+Mly0U=;
+ b=wyUkCVqmn5lz5CEls3qtPOjAYVmPBFqmTyV/mxG+SqIYl55GIIFkXsHSvP66QP1O0zhPu/
+ 2MPpu5e1Hty4zOAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 37F2C13597;
+ Tue, 17 Oct 2023 12:31:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 7NVgAYR+LmV8VQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 17 Oct 2023 12:31:00 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Paolo Bonzini
+ <pbonzini@redhat.com>, Vladimir Sementsov-Ogievskiy
+ <vsementsov@yandex-team.ru>, Fam Zheng <fam@euphon.net>, Cleber Rosa
+ <crosa@redhat.com>, Eric Blake <eblake@redhat.com>, Li Zhijian
+ <lizhijian@fujitsu.com>, Peter Xu <peterx@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, John Snow <jsnow@redhat.com>, Stefan Hajnoczi
+ <stefanha@redhat.com>, Leonardo Bras <leobras@redhat.com>, Laurent
+ Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PULL 11/38] tests/qtest: migration-test: Add tests for
+ file-based migration
+In-Reply-To: <87bkcx3eab.fsf@secure.mitica>
+References: <20231016100706.2551-1-quintela@redhat.com>
+ <20231016100706.2551-12-quintela@redhat.com> <87sf6azapv.fsf@suse.de>
+ <87bkcx3eab.fsf@secure.mitica>
+Date: Tue, 17 Oct 2023 09:30:57 -0300
+Message-ID: <8734y9xwfy.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_TWELVE(0.00)[16];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,49 +104,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Based-on: <20231013175109.124308-1-richard.henderson@linaro.org>
-  tcg: Add tcg_gen_{ld,st}_i128
+Juan Quintela <quintela@redhat.com> writes:
 
-RFC because unsure and untested...
----
- target/m68k/translate.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+> Fabiano Rosas <farosas@suse.de> wrote:
+> D> Juan Quintela <quintela@redhat.com> writes:
+>>
+>>> From: Fabiano Rosas <farosas@suse.de>
+>>>
+>>> Add basic tests for file-based migration.
+>>>
+>>> Note that we cannot use test_precopy_common because that routine
+>>> expects it to be possible to run the migration live. With the file
+>>> transport there is no live migration because we must wait for the
+>>> source to finish writing the migration data to the file before the
+>>> destination can start reading. Add a new migration function
+>>> specifically to handle the file migration.
+>>>
+>>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>>> Message-ID: <20230712190742.22294-7-farosas@suse.de>
+>
+>>> +static void file_offset_finish_hook(QTestState *from, QTestState *to,
+>>> +                                    void *opaque)
+>>> +{
+>>> +#if defined(__linux__)
+>>> +    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
+>>> +    size_t size = FILE_TEST_OFFSET + sizeof(QEMU_VM_FILE_MAGIC);
+>>> +    uintptr_t *addr, *p;
+>>> +    int fd;
+>>> +
+>>> +    fd = open(path, O_RDONLY);
+>>> +    g_assert(fd != -1);
+>>> +    addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
+>>> +    g_assert(addr != MAP_FAILED);
+>>> +
+>>> +    /*
+>>> +     * Ensure the skipped offset contains zeros and the migration
+>>> +     * stream starts at the right place.
+>>> +     */
+>>> +    p = addr;
+>>> +    while (p < addr + FILE_TEST_OFFSET / sizeof(uintptr_t)) {
+>>> +        g_assert(*p == 0);
+>>> +        p++;
+>>> +    }
+>>> +    g_assert_cmpint(cpu_to_be32(*p), ==, QEMU_VM_FILE_MAGIC);
+>>
+>> This truncates to 32-bits, so it breaks on a BE host. We need this:
+>>
+>> -->8--
+>> From ea0c2d1c988add48d9754891a9fc7f6854a9718a Mon Sep 17 00:00:00 2001
+>> From: Fabiano Rosas <farosas@suse.de>
+>> Date: Mon, 16 Oct 2023 15:21:49 -0300
+>> Subject: [PATCH] fixup! tests/qtest: migration-test: Add tests for file-based
+>>  migration
+>>
+>> ---
+>>  tests/qtest/migration-test.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>> index da02b6d692..e1c110537b 100644
+>> --- a/tests/qtest/migration-test.c
+>> +++ b/tests/qtest/migration-test.c
+>> @@ -1966,7 +1966,7 @@ static void file_offset_finish_hook(QTestState *from, QTestState *to,
+>>          g_assert(*p == 0);
+>>          p++;
+>>      }
+>> -    g_assert_cmpint(cpu_to_be32(*p), ==, QEMU_VM_FILE_MAGIC);
+>> +    g_assert_cmpint(cpu_to_be64(*p) >> 32, ==, QEMU_VM_FILE_MAGIC);
+>>  
+>>      munmap(addr, size);
+>>      close(fd);
+>
+> I am resubmitting with this change.
+>
+> But I think we need to change this:
+>
+>>> +    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
+>>> +    size_t size = FILE_TEST_OFFSET + sizeof(QEMU_VM_FILE_MAGIC);
+>>> +    uintptr_t *addr, *p;
+>
+> I think we should change the test so the file is 64 bits on every
+> architecture.
+> Then we can cast to void * or uintptr_t as needed.
 
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 4d0110de95..1e3d155bd9 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -4293,23 +4293,17 @@ DISAS_INSN(chk2)
- 
- static void m68k_copy_line(TCGv dst, TCGv src, int index)
- {
-+    MemOp mop = MO_128 | MO_TE;
-+    TCGv_i128 t = tcg_temp_new_i128();
-     TCGv addr;
--    TCGv_i64 t0, t1;
- 
-     addr = tcg_temp_new();
- 
--    t0 = tcg_temp_new_i64();
--    t1 = tcg_temp_new_i64();
--
-     tcg_gen_andi_i32(addr, src, ~15);
--    tcg_gen_qemu_ld_i64(t0, addr, index, MO_TEUQ);
--    tcg_gen_addi_i32(addr, addr, 8);
--    tcg_gen_qemu_ld_i64(t1, addr, index, MO_TEUQ);
-+    tcg_gen_qemu_ld_i128(t, addr, index, mop);
- 
-     tcg_gen_andi_i32(addr, dst, ~15);
--    tcg_gen_qemu_st_i64(t0, addr, index, MO_TEUQ);
--    tcg_gen_addi_i32(addr, addr, 8);
--    tcg_gen_qemu_st_i64(t1, addr, index, MO_TEUQ);
-+    tcg_gen_st_i128(t, addr, index);
- }
- 
- DISAS_INSN(move16_reg)
--- 
-2.41.0
-
+Hm, I don't get what you mean here. What needs to be 64 bits?
 
