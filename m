@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465867CCD72
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFBC7CCD88
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:09:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsqIR-0000jR-I7; Tue, 17 Oct 2023 16:04:07 -0400
+	id 1qsqN3-0002Gh-SN; Tue, 17 Oct 2023 16:08:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qsqIL-0000gq-DF; Tue, 17 Oct 2023 16:04:01 -0400
+ id 1qsqN1-00028t-2o; Tue, 17 Oct 2023 16:08:52 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qsqIJ-0004pW-6T; Tue, 17 Oct 2023 16:04:01 -0400
+ id 1qsqMw-0005h2-8U; Tue, 17 Oct 2023 16:08:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Uuyqiv3nZGm9IgxXvUvISIuIpnNbmO1i/BKyCpPauZg=; b=SCBq71hxcx9gsL/i0Hywr5DGoe
- 8HuzyWolFaLTXsz9p8YsZLFxURbHTVaif2UzYOLac+fvlDzcQn12XQMXDQ3JV9uvBR+xrtx+KvhGN
- ZOK4i8HOYwbZX440K+YUEVIIxcBUDUuRy5GjnRi0onQ6Ynghp3dkLEwMNdqLSuRVzivYKQ9+MgKXm
- XJFRPZPh9Qpr24cSW5hL940CkCim9Kpr7Pl+necms61nFfCnWtNtceMv0ol9xNX7syQYagONk7cH/
- 2w9Ok524668xVApbQHdIHll7kZ4hM4380k8UywivT+9WTXACbFx1y108nWCwaRcNdAqDK12FqzWG0
- hVXdE9hpwbPSXwKjlJv7mtkSokoqoJ8Qhk6yXxqUvH8mHtxrV40YH1Y+ci3Tkl6DtwYwNDSFdALF7
- wC9I9tldydlDRrgfkKyQelCriuKEx7g0RnHy6COLnTSOwLKuipGi/gqKQvzYLkqq69cOgA9QSqxat
- WGhSLlgc/6uChPV1swcjBOtN1N97P/Rn7h6Zkz17Y2xrlfJ+xfYGTI6ZQpHM7PDb/5CmN+AQSvrv6
- 5aCAS4xsJamZGBUYo1vewJEeSwf8b1Lnq9B8xesSPKjxN5cwpNolAiFYS2vD1Yw2ij4gybSBAvhZZ
- TwJQxep0sD9INMZX4KVZV2AoNkgSuuxM5pcPb+b7U=;
+ bh=4bob5xp8m6D+L0/MJDAMMYdtvp5G3z1DGCqJtPgibQo=; b=pwQUwX7XOklasLnjA+iQXhygVU
+ RGUQv6qQUdJZuWOeIXbPizMysqxcIKkul3lkYXUEKSdfmAO5PjsjKT9Lq/g8T8Ib8yq4RR1TwNyiS
+ 9N+05qX/nqj5ozX+ngt0O5RWQb79TJ+YLXSvvyqo3EB5EOrdo+cndWSvBMHc5eu3PndSfQQsMC6be
+ fu2HubH2sFPARXJBPYACIWcB785/ouc5FQM4ggOyMhMBh/3BHaW0Q1MbrMxS0o4Nv0ReQegVdi7cf
+ WiJSBIF9OEfdLDqAnU5ONB0p21EdI6pcjL361rAfLCYiSrGridijBnsGUErSMLuif+CcoaQELulzI
+ zWotMWWEK0vlYYHUb9c5pRTYLLEMafl2u4W2oNXkQ/u77af7q/2/kl0MhZElt03KMtwExux0hmQGC
+ BHKeY0chNYnZslM1xMXW9WpBlt+B6W78FCHxqaTNApFr1Goh5CnD2leGbLFsqmTasioaTjK9l15ok
+ 2lJJ75n04HBfg1W36TdKpD7UaZAGFL9YivLh34JEbbyyw/nGYUy40aZX8ewmcsFgZ8J0qSns2d8Xb
+ lXFvYmbkdkIayWl7wx9fMfU9vULCdmMaVrjYWYu1eb8uMack87CJ7FMAyM9axjXU06FVCP6s8jiyB
+ LiEpJrDwSF0fextCwJRSAIEG0kjUOz0IJ3UET5tOU=;
 Received: from [2a00:23c4:8bb0:3200:407d:a65c:9fb4:b9b4]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qsqI1-0001Wa-Ei; Tue, 17 Oct 2023 21:03:45 +0100
-Message-ID: <b8e0311c-242e-4447-937c-70b43d4d255b@ilande.co.uk>
-Date: Tue, 17 Oct 2023 21:03:42 +0100
+ id 1qsqMk-0001am-MZ; Tue, 17 Oct 2023 21:08:38 +0100
+Message-ID: <72ab4b46-2152-4de3-b971-b31ea9d89bf1@ilande.co.uk>
+Date: Tue, 17 Oct 2023 21:08:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, xen-devel@lists.xenproject.org,
- Stefano Stabellini <sstabellini@kernel.org>, qemu-ppc@nongnu.org,
- Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Song Gao <gaosong@loongson.cn>, Gerd Hoffmann <kraxel@redhat.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20231017131251.43708-1-philmd@linaro.org>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Bernhard Beschow <shentey@gmail.com>,
+ qemu-ppc@nongnu.org, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20231017135058.44247-1-philmd@linaro.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -75,12 +76,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <20231017131251.43708-1-philmd@linaro.org>
+In-Reply-To: <20231017135058.44247-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:3200:407d:a65c:9fb4:b9b4
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH] ui/input: Constify QemuInputHandler structure
+Subject: Re: [PATCH] hw/audio/pcspk: Inline pcspk_init()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -89,8 +90,8 @@ X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,273 +107,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/2023 14:12, Philippe Mathieu-Daudé wrote:
+On 17/10/2023 14:50, Philippe Mathieu-Daudé wrote:
 
-> Access to QemuInputHandlerState::handler are read-only.
+> pcspk_init() is a legacy init function, inline and remove it.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   include/hw/virtio/virtio-input.h | 2 +-
->   include/ui/input.h               | 2 +-
->   chardev/msmouse.c                | 2 +-
->   chardev/wctablet.c               | 2 +-
->   hw/char/escc.c                   | 2 +-
->   hw/display/xenfb.c               | 6 +++---
->   hw/input/adb-kbd.c               | 2 +-
->   hw/input/hid.c                   | 6 +++---
->   hw/input/ps2.c                   | 4 ++--
->   hw/input/virtio-input-hid.c      | 8 ++++----
->   ui/input-legacy.c                | 2 +-
->   ui/input.c                       | 4 ++--
->   ui/vdagent.c                     | 2 +-
->   13 files changed, 22 insertions(+), 22 deletions(-)
+>   include/hw/audio/pcspk.h | 10 ----------
+>   hw/i386/pc.c             |  3 ++-
+>   hw/isa/i82378.c          |  5 ++++-
+>   hw/mips/jazz.c           |  5 ++++-
+>   4 files changed, 10 insertions(+), 13 deletions(-)
 > 
-> diff --git a/include/hw/virtio/virtio-input.h b/include/hw/virtio/virtio-input.h
-> index 08f1591424..a6c9703644 100644
-> --- a/include/hw/virtio/virtio-input.h
-> +++ b/include/hw/virtio/virtio-input.h
-> @@ -84,7 +84,7 @@ struct VirtIOInputHID {
->       VirtIOInput                       parent_obj;
->       char                              *display;
->       uint32_t                          head;
-> -    QemuInputHandler                  *handler;
-> +    const QemuInputHandler            *handler;
->       QemuInputHandlerState             *hs;
->       int                               ledstate;
->       bool                              wheel_axis;
-> diff --git a/include/ui/input.h b/include/ui/input.h
-> index 24d8e4579e..8f9aac562e 100644
-> --- a/include/ui/input.h
-> +++ b/include/ui/input.h
-> @@ -30,7 +30,7 @@ struct QemuInputHandler {
->   };
+> diff --git a/include/hw/audio/pcspk.h b/include/hw/audio/pcspk.h
+> index 9506179587..6be75a6b86 100644
+> --- a/include/hw/audio/pcspk.h
+> +++ b/include/hw/audio/pcspk.h
+> @@ -25,16 +25,6 @@
+>   #ifndef HW_PCSPK_H
+>   #define HW_PCSPK_H
 >   
->   QemuInputHandlerState *qemu_input_handler_register(DeviceState *dev,
-> -                                                   QemuInputHandler *handler);
-> +                                            const QemuInputHandler *handler);
->   void qemu_input_handler_activate(QemuInputHandlerState *s);
->   void qemu_input_handler_deactivate(QemuInputHandlerState *s);
->   void qemu_input_handler_unregister(QemuInputHandlerState *s);
-> diff --git a/chardev/msmouse.c b/chardev/msmouse.c
-> index ab8fe981d6..a774c397b4 100644
-> --- a/chardev/msmouse.c
-> +++ b/chardev/msmouse.c
-> @@ -171,7 +171,7 @@ static int msmouse_chr_write(struct Chardev *s, const uint8_t *buf, int len)
->       return len;
->   }
+> -#include "hw/isa/isa.h"
+> -#include "hw/qdev-properties.h"
+> -#include "qapi/error.h"
+> -
+>   #define TYPE_PC_SPEAKER "isa-pcspk"
 >   
-> -static QemuInputHandler msmouse_handler = {
-> +static const QemuInputHandler msmouse_handler = {
->       .name  = "QEMU Microsoft Mouse",
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_REL,
->       .event = msmouse_input_event,
-> diff --git a/chardev/wctablet.c b/chardev/wctablet.c
-> index 43bdf6b608..f4008bf35b 100644
-> --- a/chardev/wctablet.c
-> +++ b/chardev/wctablet.c
-> @@ -178,7 +178,7 @@ static void wctablet_input_sync(DeviceState *dev)
+> -static inline void pcspk_init(ISADevice *isadev, ISABus *bus, ISADevice *pit)
+> -{
+> -    object_property_set_link(OBJECT(isadev), "pit", OBJECT(pit), NULL);
+> -    isa_realize_and_unref(isadev, bus, &error_fatal);
+> -}
+> -
+>   #endif /* HW_PCSPK_H */
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index bb3854d1d0..3d0b53a583 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1283,7 +1283,8 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+>               /* connect PIT to output control line of the HPET */
+>               qdev_connect_gpio_out(hpet, 0, qdev_get_gpio_in(DEVICE(pit), 0));
+>           }
+> -        pcspk_init(pcms->pcspk, isa_bus, pit);
+> +        object_property_set_link(OBJECT(pcms->pcspk), "pit", OBJECT(pit), NULL);
+> +        isa_realize_and_unref(pcms->pcspk, isa_bus, &error_fatal);
 >       }
->   }
 >   
-> -static QemuInputHandler wctablet_handler = {
-> +static const QemuInputHandler wctablet_handler = {
->       .name  = "QEMU Wacom Pen Tablet",
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_ABS,
->       .event = wctablet_input_event,
-> diff --git a/hw/char/escc.c b/hw/char/escc.c
-> index 4be66053c1..48b30ee760 100644
-> --- a/hw/char/escc.c
-> +++ b/hw/char/escc.c
-> @@ -845,7 +845,7 @@ static void sunkbd_handle_event(DeviceState *dev, QemuConsole *src,
->       put_queue(s, keycode);
->   }
+>       /* Super I/O */
+> diff --git a/hw/isa/i82378.c b/hw/isa/i82378.c
+> index 63e0857208..9474bf994c 100644
+> --- a/hw/isa/i82378.c
+> +++ b/hw/isa/i82378.c
+> @@ -67,6 +67,7 @@ static void i82378_realize(PCIDevice *pci, Error **errp)
+>       uint8_t *pci_conf;
+>       ISABus *isabus;
+>       ISADevice *pit;
+> +    ISADevice *pcspk;
 >   
-> -static QemuInputHandler sunkbd_handler = {
-> +static const QemuInputHandler sunkbd_handler = {
->       .name  = "sun keyboard",
->       .mask  = INPUT_EVENT_MASK_KEY,
->       .event = sunkbd_handle_event,
-> diff --git a/hw/display/xenfb.c b/hw/display/xenfb.c
-> index 0074a9b6f8..b2130a0d70 100644
-> --- a/hw/display/xenfb.c
-> +++ b/hw/display/xenfb.c
-> @@ -321,20 +321,20 @@ static void xenfb_mouse_sync(DeviceState *dev)
->       xenfb->wheel = 0;
->   }
+>       pci_conf = pci->config;
+>       pci_set_word(pci_conf + PCI_COMMAND,
+> @@ -102,7 +103,9 @@ static void i82378_realize(PCIDevice *pci, Error **errp)
+>       pit = i8254_pit_init(isabus, 0x40, 0, NULL);
 >   
-> -static QemuInputHandler xenfb_keyboard = {
-> +static const QemuInputHandler xenfb_keyboard = {
->       .name  = "Xen PV Keyboard",
->       .mask  = INPUT_EVENT_MASK_KEY,
->       .event = xenfb_key_event,
->   };
+>       /* speaker */
+> -    pcspk_init(isa_new(TYPE_PC_SPEAKER), isabus, pit);
+> +    pcspk = isa_new(TYPE_PC_SPEAKER);
+> +    object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), NULL);
+> +    isa_realize_and_unref(pcspk, isabus, &error_fatal);
 >   
-> -static QemuInputHandler xenfb_abs_mouse = {
-> +static const QemuInputHandler xenfb_abs_mouse = {
->       .name  = "Xen PV Mouse",
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_ABS,
->       .event = xenfb_mouse_event,
->       .sync  = xenfb_mouse_sync,
->   };
+>       /* 2 82C37 (dma) */
+>       isa_create_simple(isabus, "i82374");
+> diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
+> index c32d2b0b0a..aac851747c 100644
+> --- a/hw/mips/jazz.c
+> +++ b/hw/mips/jazz.c
+> @@ -177,6 +177,7 @@ static void mips_jazz_init(MachineState *machine,
+>       SysBusDevice *sysbus;
+>       ISABus *isa_bus;
+>       ISADevice *pit;
+> +    ISADevice *pcspk;
+>       DriveInfo *fds[MAX_FD];
+>       MemoryRegion *bios = g_new(MemoryRegion, 1);
+>       MemoryRegion *bios2 = g_new(MemoryRegion, 1);
+> @@ -279,7 +280,9 @@ static void mips_jazz_init(MachineState *machine,
+>       isa_bus_register_input_irqs(isa_bus, i8259);
+>       i8257_dma_init(isa_bus, 0);
+>       pit = i8254_pit_init(isa_bus, 0x40, 0, NULL);
+> -    pcspk_init(isa_new(TYPE_PC_SPEAKER), isa_bus, pit);
+> +    pcspk = isa_new(TYPE_PC_SPEAKER);
+> +    object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), NULL);
+> +    isa_realize_and_unref(pcspk, isa_bus, &error_fatal);
 >   
-> -static QemuInputHandler xenfb_rel_mouse = {
-> +static const QemuInputHandler xenfb_rel_mouse = {
->       .name  = "Xen PV Mouse",
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_REL,
->       .event = xenfb_mouse_event,
-> diff --git a/hw/input/adb-kbd.c b/hw/input/adb-kbd.c
-> index a9088c910c..e21edf9acd 100644
-> --- a/hw/input/adb-kbd.c
-> +++ b/hw/input/adb-kbd.c
-> @@ -355,7 +355,7 @@ static void adb_kbd_reset(DeviceState *dev)
->       s->count = 0;
->   }
->   
-> -static QemuInputHandler adb_keyboard_handler = {
-> +static const QemuInputHandler adb_keyboard_handler = {
->       .name  = "QEMU ADB Keyboard",
->       .mask  = INPUT_EVENT_MASK_KEY,
->       .event = adb_keyboard_event,
-> diff --git a/hw/input/hid.c b/hw/input/hid.c
-> index a9c7dd1ce1..b8e85374ca 100644
-> --- a/hw/input/hid.c
-> +++ b/hw/input/hid.c
-> @@ -510,20 +510,20 @@ void hid_free(HIDState *hs)
->       hid_del_idle_timer(hs);
->   }
->   
-> -static QemuInputHandler hid_keyboard_handler = {
-> +static const QemuInputHandler hid_keyboard_handler = {
->       .name  = "QEMU HID Keyboard",
->       .mask  = INPUT_EVENT_MASK_KEY,
->       .event = hid_keyboard_event,
->   };
->   
-> -static QemuInputHandler hid_mouse_handler = {
-> +static const QemuInputHandler hid_mouse_handler = {
->       .name  = "QEMU HID Mouse",
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_REL,
->       .event = hid_pointer_event,
->       .sync  = hid_pointer_sync,
->   };
->   
-> -static QemuInputHandler hid_tablet_handler = {
-> +static const QemuInputHandler hid_tablet_handler = {
->       .name  = "QEMU HID Tablet",
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_ABS,
->       .event = hid_pointer_event,
-> diff --git a/hw/input/ps2.c b/hw/input/ps2.c
-> index 45af76a837..c8fd23cf36 100644
-> --- a/hw/input/ps2.c
-> +++ b/hw/input/ps2.c
-> @@ -1231,7 +1231,7 @@ static const VMStateDescription vmstate_ps2_mouse = {
->       }
->   };
->   
-> -static QemuInputHandler ps2_keyboard_handler = {
-> +static const QemuInputHandler ps2_keyboard_handler = {
->       .name  = "QEMU PS/2 Keyboard",
->       .mask  = INPUT_EVENT_MASK_KEY,
->       .event = ps2_keyboard_event,
-> @@ -1242,7 +1242,7 @@ static void ps2_kbd_realize(DeviceState *dev, Error **errp)
->       qemu_input_handler_register(dev, &ps2_keyboard_handler);
->   }
->   
-> -static QemuInputHandler ps2_mouse_handler = {
-> +static const QemuInputHandler ps2_mouse_handler = {
->       .name  = "QEMU PS/2 Mouse",
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_REL,
->       .event = ps2_mouse_event,
-> diff --git a/hw/input/virtio-input-hid.c b/hw/input/virtio-input-hid.c
-> index 7053ad72d4..45e4d4c75d 100644
-> --- a/hw/input/virtio-input-hid.c
-> +++ b/hw/input/virtio-input-hid.c
-> @@ -265,7 +265,7 @@ static const TypeInfo virtio_input_hid_info = {
->   
->   /* ----------------------------------------------------------------- */
->   
-> -static QemuInputHandler virtio_keyboard_handler = {
-> +static const QemuInputHandler virtio_keyboard_handler = {
->       .name  = VIRTIO_ID_NAME_KEYBOARD,
->       .mask  = INPUT_EVENT_MASK_KEY,
->       .event = virtio_input_handle_event,
-> @@ -322,7 +322,7 @@ static const TypeInfo virtio_keyboard_info = {
->   
->   /* ----------------------------------------------------------------- */
->   
-> -static QemuInputHandler virtio_mouse_handler = {
-> +static const QemuInputHandler virtio_mouse_handler = {
->       .name  = VIRTIO_ID_NAME_MOUSE,
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_REL,
->       .event = virtio_input_handle_event,
-> @@ -416,7 +416,7 @@ static const TypeInfo virtio_mouse_info = {
->   
->   /* ----------------------------------------------------------------- */
->   
-> -static QemuInputHandler virtio_tablet_handler = {
-> +static const QemuInputHandler virtio_tablet_handler = {
->       .name  = VIRTIO_ID_NAME_TABLET,
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_ABS,
->       .event = virtio_input_handle_event,
-> @@ -541,7 +541,7 @@ static const TypeInfo virtio_tablet_info = {
->   
->   /* ----------------------------------------------------------------- */
->   
-> -static QemuInputHandler virtio_multitouch_handler = {
-> +static const QemuInputHandler virtio_multitouch_handler = {
->       .name  = VIRTIO_ID_NAME_MULTITOUCH,
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_MTT,
->       .event = virtio_input_handle_event,
-> diff --git a/ui/input-legacy.c b/ui/input-legacy.c
-> index 46ea74e44d..210ae5eaca 100644
-> --- a/ui/input-legacy.c
-> +++ b/ui/input-legacy.c
-> @@ -127,7 +127,7 @@ static void legacy_kbd_event(DeviceState *dev, QemuConsole *src,
->       }
->   }
->   
-> -static QemuInputHandler legacy_kbd_handler = {
-> +static const QemuInputHandler legacy_kbd_handler = {
->       .name  = "legacy-kbd",
->       .mask  = INPUT_EVENT_MASK_KEY,
->       .event = legacy_kbd_event,
-> diff --git a/ui/input.c b/ui/input.c
-> index cbe8573c5c..dc745860f4 100644
-> --- a/ui/input.c
-> +++ b/ui/input.c
-> @@ -10,7 +10,7 @@
->   
->   struct QemuInputHandlerState {
->       DeviceState       *dev;
-> -    QemuInputHandler  *handler;
-> +    const QemuInputHandler *handler;
->       int               id;
->       int               events;
->       QemuConsole       *con;
-> @@ -46,7 +46,7 @@ static uint32_t queue_count;
->   static uint32_t queue_limit = 1024;
->   
->   QemuInputHandlerState *qemu_input_handler_register(DeviceState *dev,
-> -                                                   QemuInputHandler *handler)
-> +                                            const QemuInputHandler *handler)
->   {
->       QemuInputHandlerState *s = g_new0(QemuInputHandlerState, 1);
->       static int id = 1;
-> diff --git a/ui/vdagent.c b/ui/vdagent.c
-> index 00d36a8677..706d6d97bd 100644
-> --- a/ui/vdagent.c
-> +++ b/ui/vdagent.c
-> @@ -297,7 +297,7 @@ static void vdagent_pointer_sync(DeviceState *dev)
->       }
->   }
->   
-> -static QemuInputHandler vdagent_mouse_handler = {
-> +static const QemuInputHandler vdagent_mouse_handler = {
->       .name  = "vdagent mouse",
->       .mask  = INPUT_EVENT_MASK_BTN | INPUT_EVENT_MASK_ABS,
->       .event = vdagent_pointer_event,
+>       /* Video card */
+>       switch (jazz_model) {
 
-Looks mostly harmless to me:
+Possibly you might want to pass errp instead of NULL for the last parameter of 
+object_property_set_link() in i82378_realize()? But regardless:
 
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
