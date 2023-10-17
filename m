@@ -2,83 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215AF7CCE52
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8337CCEC0
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 22:50:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsqqZ-0007od-8e; Tue, 17 Oct 2023 16:39:23 -0400
+	id 1qsqzz-0002M7-FI; Tue, 17 Oct 2023 16:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsqqX-0007oQ-JN
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:39:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qsqzx-0002Ll-Gp
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:49:05 -0400
+Received: from mout.gmx.net ([212.227.15.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qsqqW-0003Nm-7x
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:39:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697575159;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=h6k+g0B0Vg+QIBJMjs/o4gmlz5GREYx4idsrMCdF43s=;
- b=Z2uApEo9VPSUn0UHZPlg3Bce2+OkJc/zMeJ1Ixrxoj5wWwRSVgxqQZDPRsyXJYiCHCkiKG
- tehHLhsUQkqIC8mCbF/K4lsNZhidoBXnQBD6fVuZu8+aNrLnOykXRifH4PgVSEpoMasnOr
- /zBPSwTT1r5VqXf9jmrBzMQqdSzuHag=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-548-sQ_NgseiPKKJG-v6tR9aOg-1; Tue, 17 Oct 2023 16:38:57 -0400
-X-MC-Unique: sQ_NgseiPKKJG-v6tR9aOg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7756d0fb11dso103480585a.0
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 13:38:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697575137; x=1698179937;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=h6k+g0B0Vg+QIBJMjs/o4gmlz5GREYx4idsrMCdF43s=;
- b=G52dkPQsAIS8a1BW80Y0BsshQ3UjNOOW+KSPs6sucYL2CZgE+y2bziJbAOMEg9aTLL
- 5wIpezxjUbFvv0YqbwnHsh12JvPh6NwS3l1JyBc3nj61EQi2+QWl7YVDZYLbF1gbeti7
- hYySZqcrRS/CC4LGNlTzDeLH68faekCe5jOZrTmx153pTMEKiG0d1jKGPPDnxp2Kydib
- +CtLqVJJrs+DDiC4dgK4T3geCYrfB2re3ygU473Ahx1QRioc2GWSnyKqQSw43k7V3n22
- aknTjobjnw+6WMt4JSY/s/QnKT8zm61cVBBKz2UOV1YV3TOfeOTYZBQuJU3uPt6zRkL7
- VvsQ==
-X-Gm-Message-State: AOJu0YyfVDAIKW4bts/6VkcPQTy2t+1kbnQOhB952k/Qg17i42/ZQatv
- HAgbarbuziAQNmFp+RpcsVBNZ6sgm86uP/D1d5UNtPWBdLi5wIIFstvt0dyndKinAvOCxaiZu9W
- +qaQ8RWQe9oodp11d0hg9naPZ52UB/BTvSx/ogdLBrITFwTV7xXtRCMzME7b4jdJ22sIm05CL
-X-Received: by 2002:a05:620a:488a:b0:76e:f686:cad5 with SMTP id
- ea10-20020a05620a488a00b0076ef686cad5mr3517124qkb.5.1697575136998; 
- Tue, 17 Oct 2023 13:38:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHi7j8k4uZfk5/FemQxyBrcixsVxxOrCeCE2qwEy5b8VlOiT1nMp9NWaMTyIJOVU7pHER5fag==
-X-Received: by 2002:a05:620a:488a:b0:76e:f686:cad5 with SMTP id
- ea10-20020a05620a488a00b0076ef686cad5mr3517113qkb.5.1697575136687; 
- Tue, 17 Oct 2023 13:38:56 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- f9-20020a05620a408900b007677347e20asm940487qko.129.2023.10.17.13.38.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Oct 2023 13:38:56 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- peterx@redhat.com
-Subject: [PATCH] migration: Fix parse_ramblock() on overwritten retvals
-Date: Tue, 17 Oct 2023 16:38:55 -0400
-Message-ID: <20231017203855.298260-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qsqzu-0005Lf-Vz
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 16:49:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1697575739; x=1698180539; i=deller@gmx.de;
+ bh=yCIKKdyapiFhrxJ7vuoD8A8bFRFk+s7qkGqslNAWufA=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=FJg512J3lQlwuSESizXnCXsC6vYJe/qFLDjFF7TdB8rK+du13vR79kEUvm9m+20i1BmIMsrtoVw
+ kui09UDWrBymPahk2IVbM9YxrYkSPQqMQf3LWOYqr/1v/q97ZimxatEVM8X1JYAZalamBRAEQpxxj
+ zx4O5Ckh9sFgHhDJ82aO8BWlKDI5d6aveP3YbQ/deGtTaloADgou7QSZ0qhkTE7ZQl8C5LTH3MEtF
+ Pqjf6YVoT4m0aT2EM/ay+XLe5jz6Tw9k7c5keXbchm4f57GNGdrHGEnw21hJBTBI+Looz3GkO0Oqr
+ fOOm4FUEUr14UUhxpG1aPt0ByQf+EXvwZRyw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.144.254]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MY68d-1r2v5C0ZSf-00YN9J; Tue, 17
+ Oct 2023 22:48:59 +0200
+Message-ID: <52e92dd9-6035-41c3-b642-e4c40bd7b1fc@gmx.de>
+Date: Tue, 17 Oct 2023 22:48:58 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/11] pci_ids/tulip: Add PCI vendor ID for HP and use
+ it in tulip
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: deller@kernel.org, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20231017154645.95844-1-deller@kernel.org>
+ <20231017154645.95844-3-deller@kernel.org>
+ <df5da806-4b08-5034-1b80-93d583efd86b@eik.bme.hu>
+ <3425e5f9-f2d4-428b-96d2-5e0760871837@gmx.de>
+ <5e17898a-c70c-4f79-9bd8-fc20a6179b42@eik.bme.hu>
+ <e939ce05-387e-4952-beba-84d566fff0c0@gmx.de>
+ <dc2f4220-78b1-4555-897c-3c91cf1d933f@eik.bme.hu>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <dc2f4220-78b1-4555-897c-3c91cf1d933f@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:u+1aTpEjKg3HiOz/xlvUdtkzw+EJLbNjjW+oVNMH0tUaPF/5F8e
+ SfpUC71CRC7bVqiWaVnD1F2MfTix85BP9xHKiXVY8CCHGQs2XoKskyjb1oZXj+kdO5Hwq1h
+ P/yaXXvP/2Puna4RYuhq+Kbmo6CJx3geZdRc9LuBTh9LQZX8ubWXZU4soiHtEaaa886S98S
+ zT4OFWn00TyG79/E3/nBQ==
+UI-OutboundReport: notjunk:1;M01:P0:DWXorWxtQLI=;aCykRhxSHWU8lnPCGKv/4uPBqIC
+ GA7HrgWSwRAC4oq0DCoSlsf86qxwTAS710SaPCPmENgfQ2aCqFTyWhAmgVScjgOtLiXROlP8V
+ UL43PtXbvkthFxNdNm7NpcO+rwUNXLns4FfwTFM/N/bOH7MN8VppzuUGAEMhpS8NDdWl/O9DO
+ ABeq05N6eMzmMwiaT1O5LqfioecgOtk1RE6KRMX3nOmoBe1mzrln0JbYEr1iGioSaPBsUNp/K
+ yLkGMX5+eBMipHLiZVV5OkwmFuE0fITxNJUfsHJfoPdj2WqFlw9JpL+EE7aFuB4MiQntRZg7T
+ fbqQ+mAY085boKQYhVuiDqV5IkRhVIpqJ4hiuOy4wzIKgw5j4pKMzegQAako7m//k1lXm2Jix
+ 6UMuETezFKG5Z4rp9jNpAQr67gXP4tnJu3TvlX8Z7CZH/Oaezm/KCC9f8wO8e59YaSZXDbHX/
+ ZdHB15sTAxEbwgvixnrF3oOQHQsKyPvbyItigotDY+JXKQG6QApSyzenBiKRMyp5Cvt2ykaRo
+ 3YjIaTBpWJHHacqvGN9X1oMbVLXJVi/HzJdUpU1yuy4QQN+266XahdarxjYGmM+w9fHa7vxNc
+ KEkriNgjU73XJP+iMfjRc1CJQrC1aDSqQZeMTYQ8UYxa5djDCSprNv9skrkGZhWBOkWwqThra
+ Mefx0+aqMuQyAf+6dToOCVkJyFu5ze9ZzuHb+osEYTnmu5RBMl+oFtREpBZV1HVxi/XW/Vws9
+ 9RLN4rqinTQHMkgjHufVf9640JTeiEOvdfRDTEnHaoo+UxDpHifFSmfP5S+h41V5/5vR4Fb0Z
+ k+53sZM9DOowRb9+NoYwetR/PLqlotkb4qMuTfzy0rfAYJzj0VfFdOrldl0QKhxdIRQ+MVSfG
+ AdHIVx664oQAekTTLAr1cKRgX1r+AOd8lFAgfHl6F9fBPMIA8xi5tkcYjD4e+Qjtae+EXC/0w
+ 5NIY1yg4Uh4rQejo7L2K7oP035E=
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,50 +137,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's possible that some errors can be overwritten with success retval later
-on, and then ignored.  Always capture all errors and report.
+On 10/17/23 22:21, BALATON Zoltan wrote:
+> On Tue, 17 Oct 2023, Helge Deller wrote:
+>> On 10/17/23 21:19, BALATON Zoltan wrote:
+>>> On Tue, 17 Oct 2023, Helge Deller wrote:
+>>>> On 10/17/23 18:13, BALATON Zoltan wrote:
+>>>>> On Tue, 17 Oct 2023, deller@kernel.org wrote:
+>>>>>> From: Helge Deller <deller@gmx.de>
+>>>>>>
+>>>>>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>>>>> ---
+>>>>>> hw/net/tulip.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 2 +-
+>>>>>> include/hw/pci/pci_ids.h | 2 ++
+>>>>>> 2 files changed, 3 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/hw/net/tulip.c b/hw/net/tulip.c
+>>>>>> index 915e5fb595..11d866e431 100644
+>>>>>> --- a/hw/net/tulip.c
+>>>>>> +++ b/hw/net/tulip.c
+>>>>>> @@ -1020,7 +1020,7 @@ static void tulip_class_init(ObjectClass *kla=
+ss, void *data)
+>>>>>> =C2=A0=C2=A0=C2=A0 k->exit =3D pci_tulip_exit;
+>>>>>> =C2=A0=C2=A0=C2=A0 k->vendor_id =3D PCI_VENDOR_ID_DEC;
+>>>>>> =C2=A0=C2=A0=C2=A0 k->device_id =3D PCI_DEVICE_ID_DEC_21143;
+>>>>>> -=C2=A0=C2=A0=C2=A0 k->subsystem_vendor_id =3D 0x103c;
+>>>>>> +=C2=A0=C2=A0=C2=A0 k->subsystem_vendor_id =3D PCI_VENDOR_ID_HP;
+>>>>>> =C2=A0=C2=A0=C2=A0 k->subsystem_id =3D 0x104f;
+>>>>>> =C2=A0=C2=A0=C2=A0 k->class_id =3D PCI_CLASS_NETWORK_ETHERNET;
+>>>>>> =C2=A0=C2=A0=C2=A0 dc->vmsd =3D &vmstate_pci_tulip;
+>>>>>> diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
+>>>>>> index 85469b9b53..3c0e72df0e 100644
+>>>>>> --- a/include/hw/pci/pci_ids.h
+>>>>>> +++ b/include/hw/pci/pci_ids.h
+>>>>>> @@ -171,6 +171,8 @@
+>>>>>> #define PCI_VENDOR_ID_DEC=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x1011
+>>>>>> #define PCI_DEVICE_ID_DEC_21143=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 0x0019
+>>>>>>
+>>>>>> +#define PCI_VENDOR_ID_HP=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x103c
+>>>>>> +
+>>>>>
+>>>>> Did not notice this in first round, sorry. These seems to be sorted
+>>>>> (there's a comment further up about that) so this should be between
+>>>>> AMD and TI a bit more down.
+>>>>
+>>>> The list isn't sorted at all. I think the comment just wants to
+>>>
+>>> It is still mostly sorted except where people did not get how. Try
+>>>
+>>> grep PCI_VENDOR_ID_ pci_ids.h
+>>>
+>>>> say that you should mention the vendor before the devices.
+>>>
+>>> I think it says that PCI_VENDOR_IDs should be sorted and then DEVICE_I=
+Ds within them should also be sorted but device IDs intervene VENDOR_IDs s=
+o the sorting of VENDOR_IDs may not be obvious at first sight.
+>>>
+>>>> Anyway, as the list currently is, there are multiple positions
+>>>> where HP could be added...
+>>>
+>>> Yes, some IDs already break this sorting but we could still avoid brea=
+king it more. [...]
+>>
+>> ... that's why I added "HP" it after "DEC" :-)
+>
+> But it should be sorted by ID number not name that's why it should be be=
+tween AMD 0x1022 and TI 0x104c.
 
-Reported by Coverity 1522861, but actually I spot one more in the same
-function.
+Oh, I see!
+It's sorted by *numeric* PCI ID number.
+Will fix in next round or before final pull request.
 
-Fixes: CID 1522861
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/ram.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/migration/ram.c b/migration/ram.c
-index c844151ee9..d8bdb53a8f 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3888,6 +3888,8 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
-         ret = qemu_ram_resize(block, length, &local_err);
-         if (local_err) {
-             error_report_err(local_err);
-+            assert(ret < 0);
-+            return ret;
-         }
-     }
-     /* For postcopy we need to check hugepage sizes match */
-@@ -3898,7 +3900,7 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
-             error_report("Mismatched RAM page size %s "
-                          "(local) %zd != %" PRId64, block->idstr,
-                          block->page_size, remote_page_size);
--            ret = -EINVAL;
-+            return -EINVAL;
-         }
-     }
-     if (migrate_ignore_shared()) {
-@@ -3908,7 +3910,7 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
-             error_report("Mismatched GPAs for block %s "
-                          "%" PRId64 "!= %" PRId64, block->idstr,
-                          (uint64_t)addr, (uint64_t)block->mr->addr);
--            ret = -EINVAL;
-+            return -EINVAL;
-         }
-     }
-     ret = rdma_block_notification_handle(f, block->idstr);
--- 
-2.41.0
-
+Helge
 
