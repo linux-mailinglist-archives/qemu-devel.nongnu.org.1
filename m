@@ -2,86 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AB67CC357
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 14:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 102D17CC35B
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 14:40:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsjLr-00036W-R9; Tue, 17 Oct 2023 08:39:11 -0400
+	id 1qsjMx-0005SE-Mt; Tue, 17 Oct 2023 08:40:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsjLn-00031u-E0
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:39:07 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsjLl-0007CQ-VW
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:39:07 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40684f53bfcso51026165e9.0
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 05:39:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697546344; x=1698151144; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ieYLwocsfjjZTkdy/ghGoFyoMGNTUK0znPSRouPjdQc=;
- b=K7sq63H/ZDjDbiH2jCMlwfqrVp6iiDwjdjLatghTaGVlq4j051VYJUdi3Tge/x8QuN
- tLYVLUXTO31VzXmB9VbOVMcD1s0UMGqDFtBus3erl7VCdGt5/M4AYJ8uNMUsffV04CXB
- VdwTJdjBOJLPwYeeD5CwatCOG3YcncFVhTRJ+CQdhJbN3t9MF4vbsVMqCoSqxFdbO4uJ
- lnz30oOGpzmliaEBNwdl3ZiHl+5Lf/lohGxz32aEqY3KzGJHLQHhs/q2kWG6x88YqySg
- flWgWF7PU9ZnTVNfJhoNgzoWuqqihpBnluNNg+Yz2o4zY13KG9YzKxN5p3aCHlr3lmnz
- nt2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697546344; x=1698151144;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ieYLwocsfjjZTkdy/ghGoFyoMGNTUK0znPSRouPjdQc=;
- b=pGyxfQroc5X2eu986jvhwPvhXIX3kBdv2G/KPaaI2OPimenEkViipoLEXOy7BQbZSo
- 18JxIE+GjYrOATN7eVtkF30ehjhRzIlMgkIURxF2RmWevWdlRFZjcBfwBsdeN5jZ+qSC
- tLuIUiJoqF0aYP2am8inko9CbJYlexopOPFptXM0jeszcdQreP6zcwEkxISB7PWID0ti
- lnBTfxZb6kS/E4Cij/DcvrixhUuLrhvs2++sBk0XmF+rphDgPOubu8VJPHwfsZZVgIpW
- R60NG3ssZH/NQPXt9riCPJeFSlrnv/yb+QT4ckw1tj4qJ3TVu3FeT99sn01z+CZgl52E
- 3LcA==
-X-Gm-Message-State: AOJu0YyCqtEXX+XEwVo8YiYyeCdR5Uc5H6/R12L914PfrjoTPK/X01QM
- XzFVEuQECcgPpWBBDD5BenDiep4CnkH5+Y2E7aM7eQ==
-X-Google-Smtp-Source: AGHT+IFAiT0BXbbeIsTOm5wAOzkSS6zgDOoBUguzW10lW2ZjFPNxl/UMZWI9g6BuSKCFP1O+egvaiQ==
-X-Received: by 2002:a05:600c:3b05:b0:401:b6f6:d8fd with SMTP id
- m5-20020a05600c3b0500b00401b6f6d8fdmr1627616wms.6.1697546344409; 
- Tue, 17 Oct 2023 05:39:04 -0700 (PDT)
-Received: from m1x-phil.lan ([176.172.118.33])
- by smtp.gmail.com with ESMTPSA id
- j5-20020a05600c1c0500b003fe1c332810sm9900134wms.33.2023.10.17.05.39.02
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 17 Oct 2023 05:39:03 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Cc: Song Gao <gaosong@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 2/2] target/loongarch: Use i128 for 128-bit load/store in
- XVLD
-Date: Tue, 17 Oct 2023 14:38:49 +0200
-Message-ID: <20231017123849.40834-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231017123849.40834-1-philmd@linaro.org>
-References: <20231017123849.40834-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qsjMu-0005Rj-VJ
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:40:16 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qsjMp-0007Th-Uo
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 08:40:16 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 23A956169C;
+ Tue, 17 Oct 2023 15:40:08 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8006::1:24])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id vdjFjMGOdW20-fg7NFr3R; Tue, 17 Oct 2023 15:40:07 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1697546407;
+ bh=d14SytdjteskuKlQn4CTKh8Bksjsp601n5QtI4/AHmY=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=LaCYhcWQ/tCKGteJKEZfDaRwU0/p9oaako0bC3qNaAFzHIDO/2QAqiMDOyiuNziic
+ 3RRWW/P0reNR3yVjpYBvdhZETw8/NmjdrQeErAppQSf8X5KJv+mihpLkYo6VTsV+pu
+ wgP36RRzE03d/U7FLQi7j0PEr9khy+hpm59UQYEo=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, dave@treblig.org, armbru@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, eblake@redhat.com,
+ vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
+ den-plotnikov@yandex-team.ru
+Subject: [PATCH v4] virtio: add VIRTQUEUE_ERROR QAPI event
+Date: Tue, 17 Oct 2023 15:39:55 +0300
+Message-Id: <20231017123955.803724-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -93,60 +72,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/loongarch/translate.c                |  6 ++++++
- target/loongarch/insn_trans/trans_vec.c.inc | 16 +++++++---------
- 2 files changed, 13 insertions(+), 9 deletions(-)
+For now we only log the vhost device error, when virtqueue is actually
+stopped. Let's add a QAPI event, which makes possible:
 
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index c6edfc800f..89e35770b7 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -67,6 +67,12 @@ static inline void get_vreg128(TCGv_i128 dest, int regno, int index)
-                     offsetof(CPULoongArchState, fpr[regno].vreg.Q(index)));
- }
+ - collect statistics of such errors
+ - make immediate actions: take core dumps or do some other debugging
+ - inform the user through a management API or UI, so that (s)he can
+  react somehow, e.g. reset the device driver in the guest or even
+  build up some automation to do so
+
+Note that basically every inconsistency discovered during virtqueue
+processing results in a silent virtqueue stop.  The guest then just
+sees the requests getting stuck somewhere in the device for no visible
+reason.  This event provides a means to inform the management layer of
+this situation in a timely fashion.
+
+The event could be reused for some other virtqueue problems (not only
+for vhost devices) in future. For this it gets a generic name and
+structure.
+
+We keep original VHOST_OPS_DEBUG(), to keep original debug output as is
+here, it's not the only call to VHOST_OPS_DEBUG in the file.
+
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Denis Plotnikov <den-plotnikov@yandex-team.ru>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+---
+
+v4: add spacing between @arguments in qapi doc
+    add a-b by Markus
+
+ hw/virtio/vhost.c | 12 +++++++++---
+ monitor/monitor.c | 10 ++++++++++
+ qapi/qdev.json    | 32 ++++++++++++++++++++++++++++++++
+ 3 files changed, 51 insertions(+), 3 deletions(-)
+
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 9f37206ba0..a2101c6c4a 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -15,6 +15,7 @@
  
-+static inline void set_vreg128(TCGv_i128 src, int regno, int index)
-+{
-+    tcg_gen_st_i128(src, tcg_env,
-+                    offsetof(CPULoongArchState, fpr[regno].vreg.Q(index)));
-+}
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-events-qdev.h"
+ #include "hw/virtio/vhost.h"
+ #include "qemu/atomic.h"
+ #include "qemu/range.h"
+@@ -1367,11 +1368,16 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
+     struct vhost_virtqueue *vq = container_of(n, struct vhost_virtqueue,
+                                               error_notifier);
+     struct vhost_dev *dev = vq->dev;
+-    int index = vq - dev->vqs;
+ 
+     if (event_notifier_test_and_clear(n) && dev->vdev) {
+-        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d",
+-                        dev->vq_index + index);
++        int ind = vq - dev->vqs + dev->vq_index;
++        DeviceState *ds = &dev->vdev->parent_obj;
 +
- static inline int plus_1(DisasContext *ctx, int x)
- {
-     return x + 1;
-diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index dd41f5e48e..c8b7bfa67f 100644
---- a/target/loongarch/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -5458,18 +5458,16 @@ static bool gen_lasx_memory(DisasContext *ctx, arg_vr_i *a,
- 
- static void gen_xvld(DisasContext *ctx, int vreg, TCGv addr)
- {
--    int i;
-+    MemOp mop = MO_128 | MO_TE;
-     TCGv temp = tcg_temp_new();
--    TCGv dest = tcg_temp_new();
-+    TCGv_i128 dest = tcg_temp_new_i128();
- 
--    tcg_gen_qemu_ld_i64(dest, addr, ctx->mem_idx, MO_TEUQ);
--    set_vreg64(dest, vreg, 0);
-+    tcg_gen_qemu_ld_i128(dest, addr, ctx->mem_idx, mop);
-+    set_vreg128(dest, vreg, 0);
- 
--    for (i = 1; i < 4; i++) {
--        tcg_gen_addi_tl(temp, addr, 8 * i);
--        tcg_gen_qemu_ld_i64(dest, temp, ctx->mem_idx, MO_TEUQ);
--        set_vreg64(dest, vreg, i);
--    }
-+    tcg_gen_addi_tl(temp, addr, 16);
-+    tcg_gen_qemu_ld_i128(dest, temp, ctx->mem_idx, mop);
-+    set_vreg128(dest, vreg, 1);
++        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d", ind);
++        qapi_event_send_virtqueue_error(ds->id, ds->canonical_path, ind,
++                                        VIRTQUEUE_ERROR_VHOST_VRING_ERROR,
++                                        "vhost reported failure through vring "
++                                        "error fd");
+     }
  }
  
- static void gen_xvst(DisasContext * ctx, int vreg, TCGv addr)
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index 941f87815a..cb1ee31156 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -313,6 +313,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
+     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
+     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
++    [QAPI_EVENT_VIRTQUEUE_ERROR]   = { 1000 * SCALE_MS },
+     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
+     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
+ };
+@@ -497,6 +498,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
+         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
+     }
+ 
++    if (evstate->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
++        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
++    }
++
+     return hash;
+ }
+ 
+@@ -524,6 +529,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
+                        qdict_get_str(evb->data, "qom-path"));
+     }
+ 
++    if (eva->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
++        return !strcmp(qdict_get_str(eva->data, "device"),
++                       qdict_get_str(evb->data, "device"));
++    }
++
+     return TRUE;
+ }
+ 
+diff --git a/qapi/qdev.json b/qapi/qdev.json
+index 6bc5a733b8..ac22f1df57 100644
+--- a/qapi/qdev.json
++++ b/qapi/qdev.json
+@@ -161,3 +161,35 @@
+ ##
+ { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
+   'data': { '*device': 'str', 'path': 'str' } }
++
++##
++# @VirtqueueError:
++#
++# @vhost-vring-error: Vhost device reported failure through
++#     through vring error fd.
++#
++# Since: 8.2
++##
++{ 'enum': 'VirtqueueError',
++  'data': [ 'vhost-vring-error' ] }
++
++##
++# @VIRTQUEUE_ERROR:
++#
++# Emitted when a device virtqueue fails in runtime.
++#
++# @device: the device's ID if it has one
++#
++# @path: the device's QOM path
++#
++# @virtqueue: virtqueue index
++#
++# @error: error identifier
++#
++# @description: human readable description
++#
++# Since: 8.2
++##
++{ 'event': 'VIRTQUEUE_ERROR',
++ 'data': { '*device': 'str', 'path': 'str', 'virtqueue': 'int',
++            'error': 'VirtqueueError', 'description': 'str'} }
 -- 
-2.41.0
+2.34.1
 
 
