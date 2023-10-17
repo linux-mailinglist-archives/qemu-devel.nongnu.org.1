@@ -2,88 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 723AD7CC581
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB277CC580
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:04:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qskes-0004iX-Og; Tue, 17 Oct 2023 10:02:54 -0400
+	id 1qskfL-0005yn-92; Tue, 17 Oct 2023 10:03:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qskei-0004Jh-RI
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:02:48 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qskea-0008PT-CT
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:02:40 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2c50305c5c4so66003731fa.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 07:02:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697551343; x=1698156143; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=puWItc3Dt59czgvz0D+TYHTdmTo5qF+fqrS6/T95/pw=;
- b=Jr0gTcj/RCvda45qJVoLxlOfPrQpxeFOoJ2DoUamqij+IWMFPQooAP21YBJEujOIg8
- EnXLDix5/EJ3ZaMyJ9wBXU/5KG0BhejhGQsh5SXnktfDoEsDrwe1Bw65DxUt85QF0an2
- NJPXWsiNffazl3UmUeAaMSierH6+Go/ivvvMKsjYyOWWZ5BHI2M5PHsWfwyNXPbidcmQ
- EDbKvSKuQyc3b2sJBH4CpP498jB09jivLysTpZVwiIIyz4V1jVG9AsWd/YMkFxzSUKvc
- EwqbP12RNOno5pUZh+3ZZP4y4ssv1/haZmbND1QQo7aDCMDwGSdhOdNZdjLaFsHf5Jq2
- JrXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697551343; x=1698156143;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=puWItc3Dt59czgvz0D+TYHTdmTo5qF+fqrS6/T95/pw=;
- b=cwjlW0h2eJ/eZS9Bw5643H1V/zndv5bNgf+pq8CT96Mb/CSKAfFIcDN1n2aoqa3RAU
- 4NxajWf93VZ6+5knTQDGkDOOrClArCHL0QICUdJ0ENRYKfRfjIhN+EX3qXSbfnk14zPN
- exg/iGR96AirTLrvd/Keozt2ccNT7cn4mpkohVSlg7O766IDfDE6dARBWWKlqaKSLq6M
- Wix95BdOuc4rST/G1abbG+p8P+VK+jNb16Xw6pcw5X9WhcOVhh4fpGEUat+CKMz80X16
- OQqN/zEu+5vgdy9U8JEwln1sW+e05zyb0aIBDwmPLdDnoP8zsh4qbFKNckxWZa1YOqv/
- T5/w==
-X-Gm-Message-State: AOJu0Yy54ElByYEabPMK2kq1ntztc8ivoFAvl00oK9vtUBsbv2zzuzMs
- +glXAyrJ6oSN85CdiRIGqwgd6AcRgXIstU98toZqzw==
-X-Google-Smtp-Source: AGHT+IGK+KAEB1GS/cibqP/wJaY69f4yyn2AxgcSSpsXAeeJu9f6xBuPtr28EYm9edCiWb3Jx7/d3A==
-X-Received: by 2002:a2e:5052:0:b0:2bc:f78a:e5e0 with SMTP id
- v18-20020a2e5052000000b002bcf78ae5e0mr1671765ljd.43.1697551343116; 
- Tue, 17 Oct 2023 07:02:23 -0700 (PDT)
-Received: from m1x-phil.lan ([176.172.118.33])
- by smtp.gmail.com with ESMTPSA id
- p11-20020a05600c358b00b004075d5664basm10086258wmq.8.2023.10.17.07.02.21
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 17 Oct 2023 07:02:22 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Fam Zheng <fam@euphon.net>, qemu-arm@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/7] hw/scsi/virtio-scsi: Use VIRTIO_SCSI_COMMON() macro
-Date: Tue, 17 Oct 2023 16:01:47 +0200
-Message-ID: <20231017140150.44995-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231017140150.44995-1-philmd@linaro.org>
-References: <20231017140150.44995-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qskfI-0005i3-BP
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:03:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qskfG-000077-5e
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:03:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697551397;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GEbeq3xVzZuMF91ApVmu07wMS0/rU1pUgr4SqLfvWYc=;
+ b=E9/XWWXckKbI/YDNAq6DTwrhciE0NK25TlsVcopX5oahgJ1+F4r90fEVq71vvM9DFOXWBt
+ R5thvmgT1Spf7SCriZ32lLqLTa3DUegFXNc/KCcaW3+fSPQQqk3nQXgR+28edFWR021NEy
+ sd+pGNdgOGCEW1tOSo2jo63k9QFQ2uc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-322-B8K4SGpJMlew-Lvr1aXPWA-1; Tue, 17 Oct 2023 10:03:13 -0400
+X-MC-Unique: B8K4SGpJMlew-Lvr1aXPWA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E3002825E8D;
+ Tue, 17 Oct 2023 14:03:05 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C90EF492BEE;
+ Tue, 17 Oct 2023 14:03:04 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id BD36921E6A1F; Tue, 17 Oct 2023 16:03:03 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org,  libvir-list@redhat.com,  Leonardo Bras
+ <leobras@redhat.com>,  Peter Xu <peterx@redhat.com>,  Fam Zheng
+ <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  qemu-block@nongnu.org,  Fabiano Rosas
+ <farosas@suse.de>
+Subject: Re: [PATCH v5 5/7] migration: Deprecate old compression method
+References: <20231017115238.18309-1-quintela@redhat.com>
+ <20231017115238.18309-6-quintela@redhat.com>
+Date: Tue, 17 Oct 2023 16:03:03 +0200
+In-Reply-To: <20231017115238.18309-6-quintela@redhat.com> (Juan Quintela's
+ message of "Tue, 17 Oct 2023 13:52:36 +0200")
+Message-ID: <878r815otk.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,27 +83,298 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Access QOM parent with the proper QOM VIRTIO_SCSI_COMMON() macro.
+Juan Quintela <quintela@redhat.com> writes:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/scsi/virtio-scsi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Acked-by: Peter Xu <peterx@redhat.com>
+> ---
+>  docs/about/deprecated.rst |  8 ++++
+>  qapi/migration.json       | 79 +++++++++++++++++++++++++--------------
+>  migration/options.c       | 13 +++++++
+>  3 files changed, 72 insertions(+), 28 deletions(-)
+>
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 5eaf096040..f46baf9ee9 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -489,3 +489,11 @@ Please see "QMP invocation for live storage migration with
+>  ``blockdev-mirror`` + NBD" in docs/interop/live-block-operations.rst
+>  for a detailed explanation.
+>  
+> +old compression method (since 8.2)
+> +''''''''''''''''''''''''''''''''''
+> +
+> +Compression method fails too much.  Too many races.  We are going to
+> +remove it if nobody fixes it.  For starters, migration-test
+> +compression tests are disabled becase they fail randomly.  If you need
+> +compression, use multifd compression methods.
+> +
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index c7633b22c0..834506a02b 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -272,6 +272,10 @@
+>  # Features:
+>  #
+>  # @deprecated: Member @disk is deprecated because block migration is.
+> +#     Member @compression is deprecated because it is unreliable and
+> +#     untested. It is recommended to use multifd migration, which
+> +#     offers an alternative compression implementation that is
+> +#     reliable and tested.
 
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 45b95ea070..fa53f0902c 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -761,7 +761,7 @@ static void virtio_scsi_fail_cmd_req(VirtIOSCSIReq *req)
- 
- static int virtio_scsi_handle_cmd_req_prepare(VirtIOSCSI *s, VirtIOSCSIReq *req)
- {
--    VirtIOSCSICommon *vs = &s->parent_obj;
-+    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(s);
-     SCSIDevice *d;
-     int rc;
- 
--- 
-2.41.0
+Two spaces between sentences for consistency, please.
+
+>  #
+>  # Since: 0.14
+>  ##
+> @@ -289,7 +293,7 @@
+>             '*blocked-reasons': ['str'],
+>             '*postcopy-blocktime': 'uint32',
+>             '*postcopy-vcpu-blocktime': ['uint32'],
+> -           '*compression': 'CompressionStats',
+> +           '*compression': { 'type': 'CompressionStats', 'features': [ 'deprecated' ] },
+>             '*socket-address': ['SocketAddress'],
+>             '*dirty-limit-throttle-time-per-round': 'uint64',
+>             '*dirty-limit-ring-full-time': 'uint64'} }
+> @@ -530,7 +534,10 @@
+>  # Features:
+>  #
+>  # @deprecated: Member @block is deprecated.  Use blockdev-mirror with
+> -#     NBD instead.
+> +#     NBD instead.  Member @compression is deprecated because it is
+> +#     unreliable and untested. It is recommended to use multifd
+> +#     migration, which offers an alternative compression
+> +#     implementation that is reliable and tested.
+
+Likewise.
+
+>  #
+>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+>  #
+> @@ -538,7 +545,8 @@
+>  ##
+>  { 'enum': 'MigrationCapability',
+>    'data': ['xbzrle', 'rdma-pin-all', 'auto-converge', 'zero-blocks',
+> -           'compress', 'events', 'postcopy-ram',
+> +           { 'name': 'compress', 'features': [ 'deprecated' ] },
+> +           'events', 'postcopy-ram',
+>             { 'name': 'x-colo', 'features': [ 'unstable' ] },
+>             'release-ram',
+>             { 'name': 'block', 'features': [ 'deprecated' ] },
+> @@ -844,7 +852,9 @@
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated. Use
+> -#     blockdev-mirror with NBD instead.
+> +#     blockdev-mirror with NBD instead. Members @compress-level,
+> +#     @compress-threads, @decompress-threads and @compress-wait-thread
+> +#     are deprecated because @compression is deprecated.
+
+Likewise.
+
+>  #
+>  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+>  #     are experimental.
+> @@ -854,8 +864,11 @@
+>  { 'enum': 'MigrationParameter',
+>    'data': ['announce-initial', 'announce-max',
+>             'announce-rounds', 'announce-step',
+> -           'compress-level', 'compress-threads', 'decompress-threads',
+> -           'compress-wait-thread', 'throttle-trigger-threshold',
+> +           { 'name': 'compress-level', 'features': [ 'deprecated' ] },
+> +           { 'name': 'compress-threads', 'features': [ 'deprecated' ] },
+> +           { 'name': 'decompress-threads', 'features': [ 'deprecated' ] },
+> +           { 'name': 'compress-wait-thread', 'features': [ 'deprecated' ] },
+> +           'throttle-trigger-threshold',
+>             'cpu-throttle-initial', 'cpu-throttle-increment',
+>             'cpu-throttle-tailslow',
+>             'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
+> @@ -885,16 +898,16 @@
+>  # @announce-step: Increase in delay (in milliseconds) between
+>  #     subsequent packets in the announcement (Since 4.0)
+>  #
+> -# @compress-level: compression level
+> +# @compress-level: compression level.
+>  #
+> -# @compress-threads: compression thread count
+> +# @compress-threads: compression thread count.
+>  #
+>  # @compress-wait-thread: Controls behavior when all compression
+>  #     threads are currently busy.  If true (default), wait for a free
+>  #     compression thread to become available; otherwise, send the page
+> -#     uncompressed.  (Since 3.1)
+> +#     uncompressed. (Since 3.1)
+>  #
+> -# @decompress-threads: decompression thread count
+> +# @decompress-threads: decompression thread count.
+>  #
+>  # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
+>  #     bytes_xfer_period to trigger throttling.  It is expressed as
+
+Unrelated.
+
+> @@ -1023,7 +1036,9 @@
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated. Use
+> -#     blockdev-mirror with NBD instead.
+> +#     blockdev-mirror with NBD instead. Members @compress-level,
+> +#     @compress-threads, @decompress-threads and @compress-wait-thread
+> +#     are deprecated because @compression is deprecated.
+
+Two spaces between sentences for consistency, please.
+
+>  #
+>  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+>  #     are experimental.
+> @@ -1038,10 +1053,14 @@
+>              '*announce-max': 'size',
+>              '*announce-rounds': 'size',
+>              '*announce-step': 'size',
+> -            '*compress-level': 'uint8',
+> -            '*compress-threads': 'uint8',
+> -            '*compress-wait-thread': 'bool',
+> -            '*decompress-threads': 'uint8',
+> +            '*compress-level': { 'type': 'uint8',
+> +                                 'features': [ 'deprecated' ] },
+> +            '*compress-threads':  { 'type': 'uint8',
+> +                                    'features': [ 'deprecated' ] },
+> +            '*compress-wait-thread':  { 'type': 'bool',
+> +                                        'features': [ 'deprecated' ] },
+> +            '*decompress-threads':  { 'type': 'uint8',
+> +                                      'features': [ 'deprecated' ] },
+>              '*throttle-trigger-threshold': 'uint8',
+>              '*cpu-throttle-initial': 'uint8',
+>              '*cpu-throttle-increment': 'uint8',
+> @@ -1078,7 +1097,7 @@
+>  # Example:
+>  #
+>  # -> { "execute": "migrate-set-parameters" ,
+> -#      "arguments": { "compress-level": 1 } }
+> +#      "arguments": { "multifd-channels": 5 } }
+>  # <- { "return": {} }
+>  ##
+
+Thanks for taking care of updating the example!
+
+>  { 'command': 'migrate-set-parameters', 'boxed': true,
+> @@ -1101,16 +1120,16 @@
+>  # @announce-step: Increase in delay (in milliseconds) between
+>  #     subsequent packets in the announcement (Since 4.0)
+>  #
+> -# @compress-level: compression level
+> +# @compress-level: compression level.
+>  #
+> -# @compress-threads: compression thread count
+> +# @compress-threads: compression thread count.
+>  #
+>  # @compress-wait-thread: Controls behavior when all compression
+>  #     threads are currently busy.  If true (default), wait for a free
+>  #     compression thread to become available; otherwise, send the page
+> -#     uncompressed.  (Since 3.1)
+> +#     uncompressed. (Since 3.1)
+>  #
+> -# @decompress-threads: decompression thread count
+> +# @decompress-threads: decompression thread count.
+>  #
+>  # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
+>  #     bytes_xfer_period to trigger throttling.  It is expressed as
+
+Unrelated.
+
+> @@ -1241,7 +1260,9 @@
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated. Use
+> -#     blockdev-mirror with NBD instead.
+> +#     blockdev-mirror with NBD instead. Members @compress-level,
+> +#     @compress-threads, @decompress-threads and @compress-wait-thread
+> +#     are deprecated because @compression is deprecated.
+
+Two spaces between sentences for consistency, please.
+
+>  #
+>  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+>  #     are experimental.
+> @@ -1253,10 +1274,14 @@
+>              '*announce-max': 'size',
+>              '*announce-rounds': 'size',
+>              '*announce-step': 'size',
+> -            '*compress-level': 'uint8',
+> -            '*compress-threads': 'uint8',
+> -            '*compress-wait-thread': 'bool',
+> -            '*decompress-threads': 'uint8',
+> +            '*compress-level': { 'type': 'uint8',
+> +                                 'features': [ 'deprecated' ] },
+> +            '*compress-threads': { 'type': 'uint8',
+> +                                   'features': [ 'deprecated' ] },
+> +            '*compress-wait-thread': { 'type': 'bool',
+> +                                       'features': [ 'deprecated' ] },
+> +            '*decompress-threads': { 'type': 'uint8',
+> +                                     'features': [ 'deprecated' ] },
+>              '*throttle-trigger-threshold': 'uint8',
+>              '*cpu-throttle-initial': 'uint8',
+>              '*cpu-throttle-increment': 'uint8',
+> @@ -1296,10 +1321,8 @@
+>  #
+>  # -> { "execute": "query-migrate-parameters" }
+>  # <- { "return": {
+> -#          "decompress-threads": 2,
+> +#          "multifd-channels": 2,
+>  #          "cpu-throttle-increment": 10,
+> -#          "compress-threads": 8,
+> -#          "compress-level": 1,
+>  #          "cpu-throttle-initial": 20,
+>  #          "max-bandwidth": 33554432,
+>  #          "downtime-limit": 300
+
+Thanks again!
+
+> diff --git a/migration/options.c b/migration/options.c
+> index 0d0a3f8edb..7cb99a82a5 100644
+> --- a/migration/options.c
+> +++ b/migration/options.c
+> @@ -483,6 +483,11 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+>                      "Use blockdev-mirror with NBD instead.");
+>      }
+>  
+> +    if (new_caps[MIGRATION_CAPABILITY_COMPRESS]) {
+> +        warn_report("Old compression method is deprecated. "
+> +                    "Use multifd compression methods instead.");
+> +    }
+> +
+>  #ifndef CONFIG_REPLICATION
+>      if (new_caps[MIGRATION_CAPABILITY_X_COLO]) {
+>          error_setg(errp, "QEMU compiled without replication module"
+> @@ -1321,18 +1326,26 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+>      /* TODO use QAPI_CLONE() instead of duplicating it inline */
+>  
+>      if (params->has_compress_level) {
+> +        warn_report("Old compression is deprecated. "
+> +                    "Use multifd compression methods instead.");
+>          s->parameters.compress_level = params->compress_level;
+>      }
+>  
+>      if (params->has_compress_threads) {
+> +        warn_report("Old compression is deprecated. "
+> +                    "Use multifd compression methods instead.");
+>          s->parameters.compress_threads = params->compress_threads;
+>      }
+>  
+>      if (params->has_compress_wait_thread) {
+> +        warn_report("Old compression is deprecated. "
+> +                    "Use multifd compression methods instead.");
+>          s->parameters.compress_wait_thread = params->compress_wait_thread;
+>      }
+>  
+>      if (params->has_decompress_threads) {
+> +        warn_report("Old compression is deprecated. "
+> +                    "Use multifd compression methods instead.");
+>          s->parameters.decompress_threads = params->decompress_threads;
+>      }
+
+Other than that
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
 
