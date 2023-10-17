@@ -2,81 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A4F7CCA6B
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 20:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EF97CCAA1
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 20:27:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsoYL-0005Et-7s; Tue, 17 Oct 2023 14:12:25 -0400
+	id 1qsolo-0006GZ-3G; Tue, 17 Oct 2023 14:26:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3f84uZQwKCggvijqpm01mnivowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--nabihestefan.bounces.google.com>)
- id 1qsoYF-00053e-6S
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:12:19 -0400
-Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ <BATV+e442e50539a6073fd887+7359+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qsolT-0006EG-Ge
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:26:03 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3f84uZQwKCggvijqpm01mnivowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--nabihestefan.bounces.google.com>)
- id 1qsoYD-0006zi-A8
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:12:18 -0400
-Received: by mail-yb1-xb49.google.com with SMTP id
- 3f1490d57ef6-d9ab7badadeso8241591276.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 11:12:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1697566335; x=1698171135; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=kPxDzb+YY/2cdumCQrGp7YShciNVNdHfYhzmrg5Jh9U=;
- b=XQ5O8iXY4fXoo0mTx+8N1KHOU5UROX1gH4qg7oyLtxeRuLPplJaWgtSS+mC/Mg3wxx
- tdULY2/gT612BadRmUqJZFvfFm7rZVtwtQLhpyN0lutZbv4KsqF0WuxFk1yA6feC+Zk5
- st2hi4O3i1YULQ6Qr1No0muBcjRSUdbDqZA795731kdMpiAMdgnYSCqW/VVl7u/LuVSH
- Ytl3PQeI0xBU1g8KwHuschrKu7EHVtu46YpAwzBoCqg8A4Bojss5SSqjTwLUh90vphvz
- 1tAsbJW2WuaMhFR+ZUSXeWx2kg++B2nSNZmX2P1DnUiP+/TOG8pfTSl5akn+D60DYDLN
- t61A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697566335; x=1698171135;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kPxDzb+YY/2cdumCQrGp7YShciNVNdHfYhzmrg5Jh9U=;
- b=NIsH3lFyvs59FAVyiAMxsfWAHhHTTBCDs0eAjP4UeqaLZZ17ZNiX8f9u/9sQKWspqs
- 6noTJ+0usDKoNexcQhCkSsFaBBZIBvH3KP2YGAquOlb43yydE6PKOY6xjtTmpVBMoqOC
- fV8eUz+MnVk+gCNh7Fh2J5TeTdAIuPIiFyDhd8qMzCyFwDS3i/2OofUa1Qx4MKuAfEHp
- f116I+DMK9gOwPOQyBywr79hCN9PlnM+Q3qRRfwzBkGhXOIdtsuc4wLqtKHYNZedcMWH
- QEivxpcrLFdTVXjTUbPQ+kFPvtQFoAZWRVATDom+xySYekaxAwPfQDbdvuraVIXUGzLy
- hl9Q==
-X-Gm-Message-State: AOJu0Ywj7h7pLSBuoDKNAHRapfwjWMQCEuMI820bJCRdHeTQEjuF5vM2
- Ird6dUwe407HuRBTpEeoLUeDqbA6kyFGjbtqpl4=
-X-Google-Smtp-Source: AGHT+IHKdW/yztpu21GacMtGLSzOv0IqmAahZmlGTVWWBjhxQOMjq6Ng0FfvaX0e9ABbyb/I1nTYy3ay8Mgga9+6eDs=
-X-Received: from nabihestefan.c.googlers.com
- ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a5b:c06:0:b0:d9a:3f67:672c with SMTP
- id f6-20020a5b0c06000000b00d9a3f67672cmr63329ybq.3.1697566335550; Tue, 17 Oct
- 2023 11:12:15 -0700 (PDT)
-Date: Tue, 17 Oct 2023 18:11:52 +0000
-In-Reply-To: <20231017181152.201887-1-nabihestefan@google.com>
-Mime-Version: 1.0
-References: <20231017181152.201887-1-nabihestefan@google.com>
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-Message-ID: <20231017181152.201887-12-nabihestefan@google.com>
-Subject: [PATCH 11/11] tests/qtest: Adding PCS Module test to GMAC Qtest
-From: Nabih Estefan <nabihestefan@google.com>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com, jasonwang@redhat.com, avi.fishman@nuvoton.com, 
- Nabih Estefan Diaz <nabihestefan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
- envelope-from=3f84uZQwKCggvijqpm01mnivowwotm.kwuymu2-lm3mtvwvov2.wzo@flex--nabihestefan.bounces.google.com;
- helo=mail-yb1-xb49.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=no autolearn_force=no
+ <BATV+e442e50539a6073fd887+7359+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qsolQ-0001UC-H5
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 14:25:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=NhekjLfYAXI/NswduTKtqNt6rro27mlB+ofHaT2pumE=; b=B54+8xbjN1/D65brxO5gvxQ/+T
+ BriBIf5aZLrtEU81d1kSwxCW/2Q3v3Lm07bwmbgF3SCQH8JSxQmJKe5uGO79WY9e17xke6XBjjdug
+ 5JeG2ysM8oz9d5Gh1rP3rYRl5P74ainBs3yT5G5gthMXGADJTxMAEXPvN+uAvHvF6R4zwYb/AS9Gf
+ Cz3UH+oaZQFcSOb2gFv/lXdjJAR36Chk/aNPxjE6H3aijnuu9hYbb4ShIkb/Fkral4HJdgGYifV2n
+ jMd/JJwseJX+XdSnaIEPMqA4DDn7AruHt8gpN98o1fSI3bEa9k+BVu+66Reaw/Kf5dh/gqJK5/1UB
+ SW5sUDdg==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qsolL-00DrCr-Or; Tue, 17 Oct 2023 18:25:51 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
+ Linux)) id 1qsolI-000Pai-1v; Tue, 17 Oct 2023 19:25:48 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Jason Wang <jasowang@redhat.com>, xen-devel@lists.xenproject.org
+Subject: [PATCH 0/4] Update QEMU qnic driver to "new" XenDevice model
+Date: Tue, 17 Oct 2023 19:25:41 +0100
+Message-Id: <20231017182545.97973-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+e442e50539a6073fd887+7359+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,189 +78,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan Diaz <nabihestefan@google.com>
+This has been on my TODO list for a while, and Paul's since 2019. Having 
+converted the console driver just to get PV guests booting, I figured I 
+should do this one while I still remember how.
 
- - Add PCS Register check to npcm_gmac-test
+The fact that net_cleanup() frees my NIC from underneath me confused
+me for a while. Not entirely sure what's going on there. Other devices
+seem to survive just because they aren't cleaned up at exit. But XenBus
+devices really should be properly cleaned up on exit, because in some
+cases they leave detritus in XenStore, which outlives QEMU. So "Don't
+Do That Then" doesn't seem like it's the answer.
 
-Signed-off-by: Nabih Estefan Diaz <nabihestefan@google.com>
----
- tests/qtest/npcm_gmac-test.c | 134 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 133 insertions(+), 1 deletion(-)
+The default NIC handling is horrid (I mean, before I even looked at it)
+but that isn't today's yak to shave...
 
-diff --git a/tests/qtest/npcm_gmac-test.c b/tests/qtest/npcm_gmac-test.c
-index 84511fd915..1f0ad664f4 100644
---- a/tests/qtest/npcm_gmac-test.c
-+++ b/tests/qtest/npcm_gmac-test.c
-@@ -20,6 +20,10 @@
- /* Name of the GMAC Device */
- #define TYPE_NPCM_GMAC "npcm-gmac"
- 
-+/* Address of the PCS Module */
-+#define PCS_BASE_ADDRESS 0xf0780000
-+#define NPCM_PCS_IND_AC_BA 0x1fe
-+
- typedef struct GMACModule {
-     int irq;
-     uint64_t base_addr;
-@@ -111,6 +115,62 @@ typedef enum NPCMRegister {
-     NPCM_GMAC_PTP_STNSUR = 0x714,
-     NPCM_GMAC_PTP_TAR = 0x718,
-     NPCM_GMAC_PTP_TTSR = 0x71c,
-+
-+    /* PCS Registers */
-+    NPCM_PCS_SR_CTL_ID1 = 0x3c0008,
-+    NPCM_PCS_SR_CTL_ID2 = 0x3c000a,
-+    NPCM_PCS_SR_CTL_STS = 0x3c0010,
-+
-+    NPCM_PCS_SR_MII_CTRL = 0x3e0000,
-+    NPCM_PCS_SR_MII_STS = 0x3e0002,
-+    NPCM_PCS_SR_MII_DEV_ID1 = 0x3e0004,
-+    NPCM_PCS_SR_MII_DEV_ID2 = 0x3e0006,
-+    NPCM_PCS_SR_MII_AN_ADV = 0x3e0008,
-+    NPCM_PCS_SR_MII_LP_BABL = 0x3e000a,
-+    NPCM_PCS_SR_MII_AN_EXPN = 0x3e000c,
-+    NPCM_PCS_SR_MII_EXT_STS = 0x3e001e,
-+
-+    NPCM_PCS_SR_TIM_SYNC_ABL = 0x3e0e10,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR = 0x3e0e12,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR = 0x3e0e14,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR = 0x3e0e16,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR = 0x3e0e18,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR = 0x3e0e1a,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR = 0x3e0e1c,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR = 0x3e0e1e,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR = 0x3e0e20,
-+
-+    NPCM_PCS_VR_MII_MMD_DIG_CTRL1 = 0x3f0000,
-+    NPCM_PCS_VR_MII_AN_CTRL = 0x3f0002,
-+    NPCM_PCS_VR_MII_AN_INTR_STS = 0x3f0004,
-+    NPCM_PCS_VR_MII_TC = 0x3f0006,
-+    NPCM_PCS_VR_MII_DBG_CTRL = 0x3f000a,
-+    NPCM_PCS_VR_MII_EEE_MCTRL0 = 0x3f000c,
-+    NPCM_PCS_VR_MII_EEE_TXTIMER = 0x3f0010,
-+    NPCM_PCS_VR_MII_EEE_RXTIMER = 0x3f0012,
-+    NPCM_PCS_VR_MII_LINK_TIMER_CTRL = 0x3f0014,
-+    NPCM_PCS_VR_MII_EEE_MCTRL1 = 0x3f0016,
-+    NPCM_PCS_VR_MII_DIG_STS = 0x3f0020,
-+    NPCM_PCS_VR_MII_ICG_ERRCNT1 = 0x3f0022,
-+    NPCM_PCS_VR_MII_MISC_STS = 0x3f0030,
-+    NPCM_PCS_VR_MII_RX_LSTS = 0x3f0040,
-+    NPCM_PCS_VR_MII_MP_TX_BSTCTRL0 = 0x3f0070,
-+    NPCM_PCS_VR_MII_MP_TX_LVLCTRL0 = 0x3f0074,
-+    NPCM_PCS_VR_MII_MP_TX_GENCTRL0 = 0x3f007a,
-+    NPCM_PCS_VR_MII_MP_TX_GENCTRL1 = 0x3f007c,
-+    NPCM_PCS_VR_MII_MP_TX_STS = 0x3f0090,
-+    NPCM_PCS_VR_MII_MP_RX_GENCTRL0 = 0x3f00b0,
-+    NPCM_PCS_VR_MII_MP_RX_GENCTRL1 = 0x3f00b2,
-+    NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0 = 0x3f00ba,
-+    NPCM_PCS_VR_MII_MP_MPLL_CTRL0 = 0x3f00f0,
-+    NPCM_PCS_VR_MII_MP_MPLL_CTRL1 = 0x3f00f2,
-+    NPCM_PCS_VR_MII_MP_MPLL_STS = 0x3f0110,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL2 = 0x3f0126,
-+    NPCM_PCS_VR_MII_MP_LVL_CTRL = 0x3f0130,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL0 = 0x3f0132,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL1 = 0x3f0134,
-+    NPCM_PCS_VR_MII_DIG_CTRL2 = 0x3f01c2,
-+    NPCM_PCS_VR_MII_DIG_ERRCNT_SEL = 0x3f01c4,
- } NPCMRegister;
- 
- static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-@@ -119,6 +179,15 @@ static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-     return qtest_readl(qts, mod->base_addr + regno);
- }
- 
-+static uint16_t pcs_read(QTestState *qts, const GMACModule *mod,
-+                          NPCMRegister regno)
-+{
-+    uint32_t write_value = (regno & 0x3ffe00) >> 9;
-+    qtest_writel(qts, PCS_BASE_ADDRESS + NPCM_PCS_IND_AC_BA, write_value);
-+    uint32_t read_offset = regno & 0x1ff;
-+    return qtest_readl(qts, PCS_BASE_ADDRESS + read_offset);
-+}
-+
- /* Check that GMAC registers are reset to default value */
- static void test_init(gconstpointer test_data)
- {
-@@ -129,7 +198,12 @@ static void test_init(gconstpointer test_data)
- #define CHECK_REG32(regno, value) \
-     do { \
-         g_assert_cmphex(gmac_read(qts, mod, (regno)), ==, (value)); \
--    } while (0)
-+    } while (0) ;
-+
-+#define CHECK_REG_PCS(regno, value) \
-+    do { \
-+        g_assert_cmphex(pcs_read(qts, mod, (regno)), ==, (value)); \
-+    } while (0) ;
- 
-     CHECK_REG32(NPCM_DMA_BUS_MODE, 0x00020100);
-     CHECK_REG32(NPCM_DMA_XMT_POLL_DEMAND, 0);
-@@ -180,6 +254,64 @@ static void test_init(gconstpointer test_data)
-     CHECK_REG32(NPCM_GMAC_PTP_TAR, 0);
-     CHECK_REG32(NPCM_GMAC_PTP_TTSR, 0);
- 
-+    /* TODO Add registers PCS */
-+    if (mod->base_addr == 0xf0802000) {
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID1, 0x699e)
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_STS, 0x8000)
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_CTRL, 0x1140)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_STS, 0x0109)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID1, 0x699e)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID2, 0x0ced0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_ADV, 0x0020)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_LP_BABL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_EXPN, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_EXT_STS, 0xc000)
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_ABL, 0x0003)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR, 0x0038)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR, 0x0038)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR, 0x0058)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR, 0x0048)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR, 0)
-+
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MMD_DIG_CTRL1, 0x2400)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_INTR_STS, 0x000a)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_TC, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DBG_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL0, 0x899c)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_TXTIMER, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_RXTIMER, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_LINK_TIMER_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_STS, 0x0010)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_ICG_ERRCNT1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MISC_STS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_RX_LSTS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_BSTCTRL0, 0x00a)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_LVLCTRL0, 0x007f)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL0, 0x0001)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_STS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL0, 0x0100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL1, 0x1100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0, 0x000e)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL0, 0x0100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL1, 0x0032)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_STS, 0x0001)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_LVL_CTRL, 0x0019)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL0, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_CTRL2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_ERRCNT_SEL, 0)
-+    }
-+
-     qtest_quit(qts);
- }
- 
--- 
-2.42.0.655.g421f12c284-goog
+David Woodhouse (4):
+      hw/xen: only remove peers of PCI NICs on unplug
+      hw/xen: update Xen PV NIC to XenDevice model
+      [WTF] avoid qemu_del_nic() in xen_netdev_unrealize() on shutdown
+      hw/i386/pc: support '-nic' for xen-net-device
+
+ hw/i386/pc.c               |  11 ++-
+ hw/i386/pc_piix.c          |   2 +-
+ hw/i386/pc_q35.c           |   2 +-
+ hw/i386/xen/xen_platform.c |   9 ++-
+ hw/net/meson.build         |   2 +-
+ hw/net/trace-events        |   9 +++
+ hw/net/xen_nic.c           | 434 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------------
+ hw/xen/xen-bus.c           |   4 +-
+ hw/xenpv/xen_machine_pv.c  |   1 -
+ include/hw/i386/pc.h       |   4 +-
+ include/hw/xen/xen-bus.h   |   2 +-
+ 11 files changed, 373 insertions(+), 107 deletions(-)
+
 
 
