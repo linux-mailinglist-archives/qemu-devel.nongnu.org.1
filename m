@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C167CCAFA
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 20:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2AB7CCAFC
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 20:46:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsp4B-0005ut-9r; Tue, 17 Oct 2023 14:45:19 -0400
+	id 1qsp4L-00060V-S4; Tue, 17 Oct 2023 14:45:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qsp43-0005oZ-7X; Tue, 17 Oct 2023 14:45:11 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ id 1qsp45-0005pf-5s; Tue, 17 Oct 2023 14:45:14 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qsp3x-0004sR-Gi; Tue, 17 Oct 2023 14:45:10 -0400
+ id 1qsp3v-0004sd-Gz; Tue, 17 Oct 2023 14:45:12 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 79B936241D;
- Tue, 17 Oct 2023 21:44:59 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 41A9362366;
+ Tue, 17 Oct 2023 21:45:00 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8006::1:24])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id jipbAUIOliE0-hw5yBQ2T; Tue, 17 Oct 2023 21:44:58 +0300
+ ESMTPSA id jipbAUIOliE0-avmLuGzw; Tue, 17 Oct 2023 21:44:59 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1697568298;
- bh=QGx1yJ7zIJSN8exsw4cXv4poinmwSmEnEQAtwJJOYCU=;
+ s=default; t=1697568299;
+ bh=Swbe2puPhj7f4i6yWAywP7KloB3s1bhKV+rXDxt3trk=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Zqod8HHgO2psCpQSBtWotsxjqjKpT4IhOnV6LXFz2VjmJradUznDbT1O8hl/J7cIL
- scyLgur4vKnWUZTLndpcNxQiHy9jY5C/8nY1Gjj4Na48SAxeY2BWtsE0E+2KCzbV90
- 2QTS2ynpkRSQw8S4XAglyze3GwJQu25NYmsJ9vy0=
+ b=UWY/mbMbsfn07L+UwWvSAg2fOTazsQDYFAEwShaHy6Cu0+m8iHPouSQLQpd6AWmZz
+ fLSKzUFDjkwNBym/4qYuMAuMJqzo6JyoD+FwsrST74lkqa+hZ/7ZR4YJgnoBYXrb22
+ Cg8KIodO4zMzdp5BfjD3Etg84kkterRSzMInh1Aw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -40,21 +39,22 @@ To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, armbru@redhat.com,
  eblake@redhat.com, hreitz@redhat.com, kwolf@redhat.com, den@openvz.org,
  alexander.ivanov@virtuozzo.com, vsementsov@yandex-team.ru
-Subject: [PATCH v8 4/7] qapi: add x-blockdev-replace command
-Date: Tue, 17 Oct 2023 21:44:41 +0300
-Message-Id: <20231017184444.932733-5-vsementsov@yandex-team.ru>
+Subject: [PATCH v8 5/7] block: bdrv_get_xdbg_block_graph(): report export ids
+Date: Tue, 17 Oct 2023 21:44:42 +0300
+Message-Id: <20231017184444.932733-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231017184444.932733-1-vsementsov@yandex-team.ru>
 References: <20231017184444.932733-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,203 +71,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a command that can replace bs in following BdrvChild structures:
-
- - qdev blk root child
- - block-export blk root child
- - any child of BlockDriverState selected by child-name
+Currently for block exports we report empty blk names. That's not good.
+Let's try to find corresponding block export and report its id.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- blockdev.c             | 56 ++++++++++++++++++++++++++++
- qapi/block-core.json   | 83 ++++++++++++++++++++++++++++++++++++++++++
- stubs/blk-by-qdev-id.c |  9 +++++
- stubs/meson.build      |  1 +
- 4 files changed, 149 insertions(+)
- create mode 100644 stubs/blk-by-qdev-id.c
+ block.c                     |  4 ++++
+ block/export/export.c       | 13 +++++++++++++
+ include/block/export.h      |  1 +
+ stubs/blk-exp-find-by-blk.c |  9 +++++++++
+ stubs/meson.build           |  1 +
+ 5 files changed, 28 insertions(+)
+ create mode 100644 stubs/blk-exp-find-by-blk.c
 
-diff --git a/blockdev.c b/blockdev.c
-index 49d0aab356..255f4971ec 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -3700,6 +3700,62 @@ void qmp_x_blockdev_set_iothread(const char *node_name, StrOrNull *iothread,
-     aio_context_release(old_context);
+diff --git a/block.c b/block.c
+index 6215ee9f28..e0b83e6181 100644
+--- a/block.c
++++ b/block.c
+@@ -6429,7 +6429,11 @@ XDbgBlockGraph *bdrv_get_xdbg_block_graph(Error **errp)
+     for (blk = blk_all_next(NULL); blk; blk = blk_all_next(blk)) {
+         char *allocated_name = NULL;
+         const char *name = blk_name(blk);
++        BlockExport *exp = blk_exp_find_by_blk(blk);
+ 
++        if (!*name && exp) {
++            name = exp->id;
++        }
+         if (!*name) {
+             name = allocated_name = blk_get_attached_dev_id(blk);
+         }
+diff --git a/block/export/export.c b/block/export/export.c
+index d68c5d78ca..192ae79a24 100644
+--- a/block/export/export.c
++++ b/block/export/export.c
+@@ -60,6 +60,19 @@ BlockExport *blk_exp_find(const char *id)
+     return NULL;
  }
  
-+void qmp_x_blockdev_replace(BlockdevReplace *repl, Error **errp)
++BlockExport *blk_exp_find_by_blk(BlockBackend *blk)
 +{
-+    BdrvChild *child = NULL;
-+    BlockDriverState *new_child_bs;
++    BlockExport *exp;
 +
-+    if (repl->parent_type == BLOCK_PARENT_TYPE_DRIVER) {
-+        BlockDriverState *parent_bs;
-+
-+        parent_bs = bdrv_find_node(repl->u.driver.node_name);
-+        if (!parent_bs) {
-+            error_setg(errp, "Block driver node with node-name '%s' not "
-+                       "found", repl->u.driver.node_name);
-+            return;
-+        }
-+
-+        child = bdrv_find_child(parent_bs, repl->u.driver.child);
-+        if (!child) {
-+            error_setg(errp, "Block driver node '%s' doesn't have child "
-+                       "named '%s'", repl->u.driver.node_name,
-+                       repl->u.driver.child);
-+            return;
-+        }
-+    } else {
-+        /* Other types are similar, they work through blk */
-+        BlockBackend *blk;
-+        bool is_qdev = repl->parent_type == BLOCK_PARENT_TYPE_QDEV;
-+        const char *id =
-+            is_qdev ? repl->u.qdev.qdev_id : repl->u.export.export_id;
-+
-+        assert(is_qdev || repl->parent_type == BLOCK_PARENT_TYPE_EXPORT);
-+
-+        blk = is_qdev ? blk_by_qdev_id(id, errp) : blk_by_export_id(id, errp);
-+        if (!blk) {
-+            return;
-+        }
-+
-+        child = blk_root(blk);
-+        if (!child) {
-+            error_setg(errp, "%s '%s' is empty, nothing to replace",
-+                       is_qdev ? "Device" : "Export", id);
-+            return;
++    QLIST_FOREACH(exp, &block_exports, next) {
++        if (exp->blk == blk) {
++            return exp;
 +        }
 +    }
 +
-+    assert(child);
-+    assert(child->bs);
-+
-+    new_child_bs = bdrv_find_node(repl->new_child);
-+    if (!new_child_bs) {
-+        error_setg(errp, "Node '%s' not found", repl->new_child);
-+        return;
-+    }
-+
-+    bdrv_replace_child_bs(child, new_child_bs, errp);
-+}
-+
- QemuOptsList qemu_common_drive_opts = {
-     .name = "drive",
-     .head = QTAILQ_HEAD_INITIALIZER(qemu_common_drive_opts.head),
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 89751d81f2..cf92e0df8b 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -6054,3 +6054,86 @@
- ##
- { 'struct': 'DummyBlockCoreForceArrays',
-   'data': { 'unused-block-graph-info': ['BlockGraphInfo'] } }
-+
-+##
-+# @BlockParentType:
-+#
-+# @qdev: block device, such as created by device_add, and denoted by
-+#     qdev-id
-+#
-+# @driver: block driver node, such as created by blockdev-add, and
-+#     denoted by node-name
-+#
-+# @export: block export, such created by block-export-add, and
-+#     denoted by export-id
-+#
-+# Since 8.2
-+##
-+{ 'enum': 'BlockParentType',
-+  'data': ['qdev', 'driver', 'export'] }
-+
-+##
-+# @BdrvChildRefQdev:
-+#
-+# @qdev-id: the device's ID or QOM path
-+#
-+# Since 8.2
-+##
-+{ 'struct': 'BdrvChildRefQdev',
-+  'data': { 'qdev-id': 'str' } }
-+
-+##
-+# @BdrvChildRefExport:
-+#
-+# @export-id: block export identifier
-+#
-+# Since 8.2
-+##
-+{ 'struct': 'BdrvChildRefExport',
-+  'data': { 'export-id': 'str' } }
-+
-+##
-+# @BdrvChildRefDriver:
-+#
-+# @node-name: the node name of the parent block node
-+#
-+# @child: name of the child to be replaced, like "file" or "backing"
-+#
-+# Since 8.2
-+##
-+{ 'struct': 'BdrvChildRefDriver',
-+  'data': { 'node-name': 'str', 'child': 'str' } }
-+
-+##
-+# @BlockdevReplace:
-+#
-+# @parent-type: type of the parent, which child is to be replaced
-+#
-+# @new-child: new child for replacement
-+#
-+# Since 8.2
-+##
-+{ 'union': 'BlockdevReplace',
-+  'base': {
-+      'parent-type': 'BlockParentType',
-+      'new-child': 'str'
-+  },
-+  'discriminator': 'parent-type',
-+  'data': {
-+      'qdev': 'BdrvChildRefQdev',
-+      'export': 'BdrvChildRefExport',
-+      'driver': 'BdrvChildRefDriver'
-+  } }
-+
-+##
-+# @x-blockdev-replace:
-+#
-+# Replace a block-node associated with device (selected by
-+# @qdev-id) or with block-export (selected by @export-id) or
-+# any child of block-node (selected by @node-name and @child)
-+# with @new-child block-node.
-+#
-+# Since 8.2
-+##
-+{ 'command': 'x-blockdev-replace', 'boxed': true,
-+  'data': 'BlockdevReplace' }
-diff --git a/stubs/blk-by-qdev-id.c b/stubs/blk-by-qdev-id.c
-new file mode 100644
-index 0000000000..0e751ce4f7
---- /dev/null
-+++ b/stubs/blk-by-qdev-id.c
-@@ -0,0 +1,9 @@
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "sysemu/block-backend.h"
-+
-+BlockBackend *blk_by_qdev_id(const char *id, Error **errp)
-+{
-+    error_setg(errp, "blk '%s' not found", id);
 +    return NULL;
 +}
++
+ static const BlockExportDriver *blk_exp_find_driver(BlockExportType type)
+ {
+     int i;
+diff --git a/include/block/export.h b/include/block/export.h
+index f2fe0f8078..16863d37cf 100644
+--- a/include/block/export.h
++++ b/include/block/export.h
+@@ -82,6 +82,7 @@ struct BlockExport {
+ 
+ BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp);
+ BlockExport *blk_exp_find(const char *id);
++BlockExport *blk_exp_find_by_blk(BlockBackend *blk);
+ void blk_exp_ref(BlockExport *exp);
+ void blk_exp_unref(BlockExport *exp);
+ void blk_exp_request_shutdown(BlockExport *exp);
+diff --git a/stubs/blk-exp-find-by-blk.c b/stubs/blk-exp-find-by-blk.c
+new file mode 100644
+index 0000000000..2fc1da953b
+--- /dev/null
++++ b/stubs/blk-exp-find-by-blk.c
+@@ -0,0 +1,9 @@
++#include "qemu/osdep.h"
++#include "sysemu/block-backend.h"
++#include "block/export.h"
++
++BlockExport *blk_exp_find_by_blk(BlockBackend *blk)
++{
++    return NULL;
++}
++
 diff --git a/stubs/meson.build b/stubs/meson.build
-index cde44972bf..6ff8db71f9 100644
+index 6ff8db71f9..7524a8f90e 100644
 --- a/stubs/meson.build
 +++ b/stubs/meson.build
-@@ -1,6 +1,7 @@
- stub_ss.add(files('bdrv-next-monitor-owned.c'))
+@@ -2,6 +2,7 @@ stub_ss.add(files('bdrv-next-monitor-owned.c'))
  stub_ss.add(files('blk-commit-all.c'))
  stub_ss.add(files('blk-exp-close-all.c'))
-+stub_ss.add(files('blk-by-qdev-id.c'))
+ stub_ss.add(files('blk-by-qdev-id.c'))
++stub_ss.add(files('blk-exp-find-by-blk.c'))
  stub_ss.add(files('blockdev-close-all-bdrv-states.c'))
  stub_ss.add(files('change-state-handler.c'))
  stub_ss.add(files('cmos.c'))
