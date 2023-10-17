@@ -2,73 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC6D7CC4D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A877CC4DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 15:37:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qskE3-0004y1-Vc; Tue, 17 Oct 2023 09:35:12 -0400
+	id 1qskG8-0007pR-N6; Tue, 17 Oct 2023 09:37:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qskE1-0004tW-9Q
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:35:09 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qskDz-0002dm-FN
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 09:35:08 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-53e16f076b3so10657077a12.0
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 06:35:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697549705; x=1698154505; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=nfpFndkZthlox4ukAl4pTUmbJaEe4unU+xRQngnATRo=;
- b=I+DBpV4GSu97u85ZyxHvxLTwU36aO+/eAoyX1r0iC1rRz2uUGKPevfVVTt54TsB1s8
- 2TeQVcDhc4/FVtLZZtOeLPw5ZcydTgA614APbnlc8VR6aK9v8U73IKQIuuPHnV+PGgWx
- Y45khgfUlJk7McHzqwaJNyP1zkqDRgD9SuWttW5gHkYUbgPSvtBDVwsK31M97t2vkktN
- Lo/6kwoFusa+9iCZKUJW89FB+MM0jlFvCND+o1sB2loOKy48WpG0fArN0CZ51DeUWtf4
- 0t6Gga9O2AK9xDCCvfjYK9ynHmNipcoM/muprJIMjHAsn95PhDSpK35oM0eWlR+rX7Ns
- muxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697549705; x=1698154505;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=nfpFndkZthlox4ukAl4pTUmbJaEe4unU+xRQngnATRo=;
- b=WqqmA5uelGnhNDAhitsje9HiPjXomzitUAOuGcfxN3K7xwSFuoMcy7DG4w0B94Ju2x
- MrF9l1TNxzz3eLSFRKFPay4bEquLV3DZIxaTfHwrv4UaCIbcvX8ESwVwmWHaIBQ1+gN6
- dz8dzh50xHptPvyL6MHQJzeGILo/JuP3OR2mrfS8Fyz4M6Wsyto9KzWhunHY6NyDCaH3
- t327Nxd91A8VlJbetvOOyFH4QMNP1iKjLwvbhqvfByq8ybBLuVhoC19RXc1blYj+8SfE
- RvVLCJfyUjqQySh+eamoHdYza0pwtBO0DpOwAXFtTzBPK8CJcYPDrHNyc51f+BnPBwGY
- qIDg==
-X-Gm-Message-State: AOJu0YxQOPRcuhaDacunGST7EAj7sAKxUyt7Ilw3sJUoDSbx98awIaeZ
- qvwXZ+wbfYAqveljaF7+qaHLlXiJ8iifwTkVFjA+nI+sDtlkaxCd
-X-Google-Smtp-Source: AGHT+IH8rBDE+YVDNZVFZNZG5l7aI2SLddzCtzemXVzfxmJqyrPAQr05EOA13d/iM2TQo5q4L2P1pQgWBSmkzj0zT3Y=
-X-Received: by 2002:aa7:c686:0:b0:530:ec02:babd with SMTP id
- n6-20020aa7c686000000b00530ec02babdmr1968413edq.9.1697549705471; Tue, 17 Oct
- 2023 06:35:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qskG6-0007lw-E1; Tue, 17 Oct 2023 09:37:18 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qskG3-00030S-Tb; Tue, 17 Oct 2023 09:37:18 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 19BE241B9C;
+ Tue, 17 Oct 2023 15:37:13 +0200 (CEST)
+Message-ID: <c2a6c1b6-0438-488f-bba3-1014ffdadbce@proxmox.com>
+Date: Tue, 17 Oct 2023 15:37:11 +0200
 MIME-Version: 1.0
-References: <169753938460.23804.11418813007617535750-0@git.sr.ht>
-In-Reply-To: <169753938460.23804.11418813007617535750-0@git.sr.ht>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Oct 2023 14:34:53 +0100
-Message-ID: <CAFEAcA8h-OaQDMbBMA10R4V+J4Y-8k7TEU9WZgctNi2iBBHY6g@mail.gmail.com>
-Subject: Re: [PATCH qemu v3 0/1] Elf2dmp: Conversion of conversions of
- malloc/calloc/free to g_malloc/g_new/g_free
-To: "~h0lyalg0rithm" <surajshirvankar@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: deadlock when using iothread during backup_clean()
+Content-Language: en-US
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, QEMU Developers
+ <qemu-devel@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>,
+ Thomas Lamprecht <t.lamprecht@proxmox.com>
+References: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
+ <dd12f39d-a364-b186-2ad7-04343ea85e3f@redhat.com>
+ <44ff810b-8ec6-0f11-420a-6efa2c7c2475@proxmox.com>
+ <2ca4eb06-75c3-7bd8-972b-b37af47743dc@yandex-team.ru>
+ <71e3112d-3d3f-fd55-4099-6765d4f22205@proxmox.com>
+ <76f9678d-ed92-418e-8d1e-c6dc55f83279@proxmox.com>
+ <ZS56FzuqZSApXBbc@redhat.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <ZS56FzuqZSApXBbc@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,23 +65,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Oct 2023 at 11:44, ~h0lyalg0rithm <h0lyalg0rithm@git.sr.ht> wrote:
->
-> Remove NULL check for g_new changes
->
-> Suraj Shirvankar (1):
->   Switch memory management calls to new coding conventions
+Am 17.10.23 um 14:12 schrieb Kevin Wolf:
+> Am 17.10.2023 um 12:18 hat Fiona Ebner geschrieben:
+>> I ran into similar issues now with mirror, (both deadlocks and stuck
+>> guest IO at other times), and interestingly, also during job start.
+>>
+>> Also had a backtrace similar to [0] once, so I took a closer look.
+>> Probably was obvious to others already, but for the record:
+>>
+>> 1. the graph is locked by the main thread
+>> 2. the iothread holds the AioContext lock
+>> 3. the main thread waits on the AioContext lock
+>> 4. the iothread waits for coroutine spawned by blk_is_available()
+> 
+> Where does this blk_is_available() in the iothread come from? Having it
+> wait without dropping the AioContext lock sounds like something that
+> we'd want to avoid. Ideally, devices using iothreads shouldn't use
+> synchronous requests at all, but I think scsi-disk might have some of
+> them.
+> 
 
-Hi; it looks like you forgot to remove some of the NULL-checks;
-the ones for the g_malloc() changes also are redundant.
-Rather than making you spin a v4 of this patch, I'm going
-to take this patch in to my target-arm.next tree, and
-make those minor fixes here.
+It's part of the request handling in virtio-scsi:
 
-PS: the email address for trivial patches is
-qemu-trivial@nongnu.org, not trivial@.
+> #0  0x00007ff7f5f55136 in __ppoll (fds=0x7ff7e40030c0, nfds=8, timeout=<optimized out>, sigmask=0x0) at ../sysdeps/unix/sysv/linux/ppoll.c:42
+> #1  0x00005587132615ab in qemu_poll_ns (fds=0x7ff7e40030c0, nfds=8, timeout=-1) at ../util/qemu-timer.c:339
+> #2  0x000055871323e8b1 in fdmon_poll_wait (ctx=0x55871598d5e0, ready_list=0x7ff7f288ebe0, timeout=-1) at ../util/fdmon-poll.c:79
+> #3  0x000055871323e1ed in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:670
+> #4  0x0000558713089efa in bdrv_poll_co (s=0x7ff7f288ec90) at /home/febner/repos/qemu/block/block-gen.h:43
+> #5  0x000055871308c362 in blk_is_available (blk=0x55871599e2f0) at block/block-gen.c:1426
+> #6  0x0000558712f6843b in virtio_scsi_ctx_check (s=0x558716c049c0, d=0x55871581cd30) at ../hw/scsi/virtio-scsi.c:290
+> #7  0x0000558712f697e4 in virtio_scsi_handle_cmd_req_prepare (s=0x558716c049c0, req=0x7ff7e400b650) at ../hw/scsi/virtio-scsi.c:788
+> #8  0x0000558712f699b0 in virtio_scsi_handle_cmd_vq (s=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:831
+> #9  0x0000558712f69bcb in virtio_scsi_handle_cmd (vdev=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:867
+> #10 0x0000558712f96812 in virtio_queue_notify_vq (vq=0x558716c0d2a8) at ../hw/virtio/virtio.c:2263
+> #11 0x0000558712f99b75 in virtio_queue_host_notifier_read (n=0x558716c0d31c) at ../hw/virtio/virtio.c:3575
+> #12 0x000055871323d8b5 in aio_dispatch_handler (ctx=0x55871598d5e0, node=0x558716771000) at ../util/aio-posix.c:372
+> #13 0x000055871323d988 in aio_dispatch_ready_handlers (ctx=0x55871598d5e0, ready_list=0x7ff7f288eeb0) at ../util/aio-posix.c:401
 
-Thanks for this code contribution!
 
--- PMM
+>> As for why it doesn't progress, blk_co_is_available_entry() uses
+>> bdrv_graph_co_rdlock() and can't get it, because the main thread has the
+>> write lock. Should be fixed once the AioContext locks are gone, but not
+>> sure what should be done to avoid it until then.
+> 
+> Then the nested event loop in blk_is_available() would probably be
+> enough to make progress, yes.
+> 
+> Maybe we could actually drop the lock (and immediately reacquire it) in
+> AIO_WAIT_WHILE() even if we're in the home thread? That should give the
+> main thread a chance to make progress.
+> 
+
+Seems to work :) I haven't run into the issue with the following change
+anymore, but I have to say, running into that specific deadlock only
+happened every 10-15 tries or so before. Did 30 tests now. But
+unfortunately, the stuck IO issue is still there.
+
+> diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
+> index 5449b6d742..da159501ca 100644
+> --- a/include/block/aio-wait.h
+> +++ b/include/block/aio-wait.h
+> @@ -88,7 +88,13 @@ extern AioWait global_aio_wait;
+>      smp_mb__after_rmw();                                           \
+>      if (ctx_ && in_aio_context_home_thread(ctx_)) {                \
+>          while ((cond)) {                                           \
+> +            if (unlock && ctx_) {                                  \
+> +                aio_context_release(ctx_);                         \
+> +            }                                                      \
+>              aio_poll(ctx_, true);                                  \
+> +            if (unlock && ctx_) {                                  \
+> +                aio_context_acquire(ctx_);                         \
+> +            }                                                      \
+>              waited_ = true;                                        \
+>          }                                                          \
+>      } else {                                                       \
+> 
+> But I think we're actually not very far from removing the AioContext
+> lock, so if we can't find an easy fix in the meantime, waiting for that
+> could be a realistic option.
+> 
+
+Glad to hear :) Do you think it will be in time for QEMU 8.2? Otherwise,
+I'll go ahead and send what I have for fixing the deadlocks from this
+mail thread in the following days. The stuck guest IO can happen even
+without any of those changes (on current master, i.e.
+ebca80bbdb5c1650e4b753a3d13b43634e7dfe05, at least when starting a
+mirror job).
+
+Best Regards,
+Fiona
+
 
