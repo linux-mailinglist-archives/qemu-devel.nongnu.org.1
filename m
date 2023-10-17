@@ -2,80 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB0C7CC5E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1087CC60E
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 16:40:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsl0Y-0002VS-7w; Tue, 17 Oct 2023 10:25:18 -0400
+	id 1qslDn-0001bH-Ca; Tue, 17 Oct 2023 10:38:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsl0S-0002UZ-FE
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:25:12 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsl0L-0008PJ-SQ
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:25:11 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-507b9408c61so1668377e87.0
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 07:24:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697552693; x=1698157493; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VP+Bc7Qr1lCxWV8ncOwMur5ivxl1AKWpiTU4zWjFipk=;
- b=YwbDJMi1aoNgPn56Z/4mtWDVqEgdCjX2WtoAMz8BYwKi7T7tGFWEJqiAxL+ukAMFFx
- AGT3BNOrTaRbvgPGNFbm/uhSghRJrFB4jriNz4ySebIT8iI2hDT+YOWclb3I9rgeslhN
- jqMdckew3tcVTH0f3qIJXiyO6toaRIW6LWlFiAtUpkvDS3fotM3pGaVBOCTH/PZABJB4
- zZORtCUli8PphMfHvDzGaPzR9tsszLGKPbIRs1FWfaaZ7mQ8bpVdIV3nbJSdF5TNjq1q
- K1agE75uGj+yUAaEmRb6gFeQ0LM26S1NLITpoxm3HXsdYlg27rSrytI+INiQe/Ha12o3
- huBA==
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qslDl-0001Zo-At
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:38:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qslDj-0004gS-CD
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 10:38:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697553534;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jz76M+k1ox5P1ztphH/C89c5JUS+TH8+qkS2UvJ8dps=;
+ b=ccUxHU/fDcrmXf9R/294Lml1KGP/kzjszWv678pTyaICOKrTBa350Z5VI6lOVRGxEI4dLw
+ ruXiZrghGQkz3ngJKUAitdGiLvDUkvb0Y66rpnyh7sAnnDeEZcG0KLPWGxRnDv2zFMVq+I
+ Zj/DSLpktDa3SwamNa1LRjZ5671gBa8=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-rMvWZkkOPLSz7WI61t0WKQ-1; Tue, 17 Oct 2023 10:38:41 -0400
+X-MC-Unique: rMvWZkkOPLSz7WI61t0WKQ-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-27d1f57bda4so3833660a91.3
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 07:38:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697552693; x=1698157493;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VP+Bc7Qr1lCxWV8ncOwMur5ivxl1AKWpiTU4zWjFipk=;
- b=qRi2Phrb166o7SV3+yBNByJaD2+ovj4looQ2Csw34xzD1FtZWEScUZtZbT+A1Xmw8z
- mgRoiFQa+LBEAGZi+fMjOJ096x5nMJ1XvM7mOCpjbwjmfFC9ucbKLaxa6jYUE2/DViQL
- ot791LcQ4mC0Jv2cegcZrM7FaTK9gH5cKOICuAZuRvvrj2I/SCJQeG1r+zLXA7NopqRN
- TtZouKQEhb52QLI58dZeUdfhsLExve6/4AsS/1nbJMh7PEvom2pm3FXTInmjG7t0K+H4
- JijMMkGF67t7SFoPh7gDeRlwbcrKUAWzMJn4wDol3QeyDH3JNy71qmCNQ3M7q5/zw81t
- 2mGw==
-X-Gm-Message-State: AOJu0YzuQwd2jGr+Zy5V5NuZ9XnGUZq6K1TnA9Zeajlmxnvvgy3x40nO
- iTZvAcr8qda+Za0kntd5jm+D1bk5RUVs+8IwTKqrNg==
-X-Google-Smtp-Source: AGHT+IG0WN+T6Xzp962N7hB/W9C45vJqjHIPR/MUEiCnt7vZem+j2CAlH2+DUYcY1BjE96+zaekU9NZapamnPIcKDZ0=
-X-Received: by 2002:a05:6512:3b0c:b0:507:9693:12aa with SMTP id
- f12-20020a0565123b0c00b00507969312aamr2572573lfv.15.1697552693482; Tue, 17
- Oct 2023 07:24:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697553521; x=1698158321;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jz76M+k1ox5P1ztphH/C89c5JUS+TH8+qkS2UvJ8dps=;
+ b=Vph39Ee4O39s4cu/c320PjHc8paPliwQIlGWVr2Nr2QOB3WQTnzFY3AG+65eQxPWWV
+ S6xTedrOwqWcX4TIcI1tCNm/Sw2zuYAY2vYEvFS7jYtUT5ZPO9n0/tGBJliwsIac9lrf
+ r0kl948qhjlHj9IY7Gt2saMFg8SAKrHbyNm4pu8xLo5bSjDCVHYI3c6WE7O/zgXXiTm+
+ x6OupR6BWr59RvlnxGrYo0IO/sfORTaHJ3nc8T+ZsDbeYhY/pGVJv9RAf22qGNbVoonO
+ BOfLIDW549ef6DbEIAWI1AQx7F/RlNmED1KvQoeJ3p2Q1Tws7oxZqDA0sHsxmtGVKV/1
+ oZwA==
+X-Gm-Message-State: AOJu0Yyk06lhHzfx9Hqyg+OBlosPVGDwyydUnhlh0/5rtwOGqgiOMx/n
+ QxOaev9AdxFDEX/4Ld+eanGdiaHZEAgs5vuX9fn8TuhTABmj+GiH1hxt9ngqNgnc2Yr4jV98E5x
+ 7NyS3fFhlDle2W0EC7yupOUD1chlksPE=
+X-Received: by 2002:a17:90a:fa11:b0:27d:3fa4:9d9a with SMTP id
+ cm17-20020a17090afa1100b0027d3fa49d9amr2168486pjb.29.1697553520758; 
+ Tue, 17 Oct 2023 07:38:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhOdcU3pOYThlytJ16MfWCekYSDNVx6iZF+J/HLoVp6sjhpwgY9eF/YFYX0pqR8HcYmWvgZTF3SdiPlw0LahU=
+X-Received: by 2002:a17:90a:fa11:b0:27d:3fa4:9d9a with SMTP id
+ cm17-20020a17090afa1100b0027d3fa49d9amr2168462pjb.29.1697553520369; Tue, 17
+ Oct 2023 07:38:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230915185453.1871167-1-peter.maydell@linaro.org>
- <20230915185453.1871167-3-peter.maydell@linaro.org>
- <87edhtbbod.fsf@linaro.org>
-In-Reply-To: <87edhtbbod.fsf@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Oct 2023 15:24:42 +0100
-Message-ID: <CAFEAcA9pbOuo0uRXLMCngkbF+jpDKRivZ=y66xn1KHunC--zrw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] target/arm: Implement Neoverse N2 CPU model
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
+References: <20231016083201.23736-1-hreitz@redhat.com>
+ <2m60m.9e9wlnnm01vd@linaro.org>
+ <20231016103254.7xrnptmwrjnsr3uc@vireshk-i7> <87lec2dc7r.fsf@linaro.org>
+ <20231017053638.hhs57axmwqtzbpp6@vireshk-i7>
+ <ceeaa1f3-c0ad-65c1-80d1-ec869f976146@redhat.com>
+ <20231017075352.2l3htkj46gunyjrm@vireshk-i7>
+ <CADSE00JkwkyruO-rhiN7p_T_2efAed8B2Uzp01jVj=YH7Wixmw@mail.gmail.com>
+ <CAJSP0QUhc5Ov=gG626gCMq+4V7rpsS2b-8VKzM3bz3VNaZ_3Xg@mail.gmail.com>
+In-Reply-To: <CAJSP0QUhc5Ov=gG626gCMq+4V7rpsS2b-8VKzM3bz3VNaZ_3Xg@mail.gmail.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Tue, 17 Oct 2023 16:38:28 +0200
+Message-ID: <CADSE00LuFD9TxdVTBrPYqS0G_r_9fdht=BJf_2rG=F4sR-1fYA@mail.gmail.com>
+Subject: Re: [PATCH] vhost-user: Fix protocol feature bit conflict
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, Hanna Czenczek <hreitz@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ "Garhwal, Vikram" <vikram.garhwal@amd.com>
+Content-Type: multipart/alternative; boundary="00000000000091be040607ea7acd"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,258 +103,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Oct 2023 at 14:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > Implement a model of the Neoverse N2 CPU. This is an Armv9.0-A
-> > processor very similar to the Cortex-A710. The differences are:
-> >  * no FEAT_EVT
-> >  * FEAT_DGH (data gathering hint)
-> >  * FEAT_NV (not yet implemented in QEMU)
-> >  * Statistical Profiling Extension (not implemented in QEMU)
-> >  * 48 bit physical address range, not 40
-> >  * CTR_EL0.DIC =3D 1 (no explicit icache cleaning needed)
-> >  * PMCR_EL0.N =3D 6 (always 6 PMU counters, not 20)
+--00000000000091be040607ea7acd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Oct 17, 2023 at 12:57=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.co=
+m> wrote:
+
+> On Tue, 17 Oct 2023 at 04:26, Albert Esteve <aesteve@redhat.com> wrote:
 > >
-> > Because it has 48-bit physical address support, we can use
-> > this CPU in the sbsa-ref board as well as the virt board.
+> > Hi!
 > >
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> >  docs/system/arm/virt.rst |   1 +
-> >  hw/arm/sbsa-ref.c        |   1 +
-> >  hw/arm/virt.c            |   1 +
-> >  target/arm/tcg/cpu64.c   | 103 +++++++++++++++++++++++++++++++++++++++
-> >  4 files changed, 106 insertions(+)
-> >
-> > diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-> > index e1697ac8f48..7c4c80180c6 100644
-> > --- a/docs/system/arm/virt.rst
-> > +++ b/docs/system/arm/virt.rst
-> > @@ -63,6 +63,7 @@ Supported guest CPU types:
-> >  - ``host`` (with KVM only)
-> >  - ``neoverse-n1`` (64-bit)
-> >  - ``neoverse-v1`` (64-bit)
-> > +- ``neoverse-n2`` (64-bit)
-> >  - ``max`` (same as ``host`` for KVM; best possible emulation with TCG)
-> >
-> >  Note that the default is ``cortex-a15``, so for an AArch64 guest you m=
-ust
-> > diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> > index bc89eb48062..4db287287e1 100644
-> > --- a/hw/arm/sbsa-ref.c
-> > +++ b/hw/arm/sbsa-ref.c
-> > @@ -154,6 +154,7 @@ static const char * const valid_cpus[] =3D {
-> >      ARM_CPU_TYPE_NAME("cortex-a72"),
-> >      ARM_CPU_TYPE_NAME("neoverse-n1"),
-> >      ARM_CPU_TYPE_NAME("neoverse-v1"),
-> > +    ARM_CPU_TYPE_NAME("neoverse-n2"),
-> >      ARM_CPU_TYPE_NAME("max"),
-> >  };
-> >
-> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> > index 8ad78b23c24..42253462735 100644
-> > --- a/hw/arm/virt.c
-> > +++ b/hw/arm/virt.c
-> > @@ -215,6 +215,7 @@ static const char *valid_cpus[] =3D {
-> >      ARM_CPU_TYPE_NAME("a64fx"),
-> >      ARM_CPU_TYPE_NAME("neoverse-n1"),
-> >      ARM_CPU_TYPE_NAME("neoverse-v1"),
-> > +    ARM_CPU_TYPE_NAME("neoverse-n2"),
-> >  #endif
-> >      ARM_CPU_TYPE_NAME("cortex-a53"),
-> >      ARM_CPU_TYPE_NAME("cortex-a57"),
-> > diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-> > index ea43cf3c1ee..370cc82f0ef 100644
-> > --- a/target/arm/tcg/cpu64.c
-> > +++ b/target/arm/tcg/cpu64.c
-> > @@ -963,6 +963,108 @@ static void aarch64_a710_initfn(Object *obj)
-> >      aarch64_add_sve_properties(obj);
-> >  }
-> >
-> > +/* Extra IMPDEF regs in the N2 beyond those in the A710 */
-> > +static const ARMCPRegInfo neoverse_n2_cp_reginfo[] =3D {
-> > +    { .name =3D "CPURNDBR_EL3", .state =3D ARM_CP_STATE_AA64,
-> > +      .opc0 =3D 3, .opc1 =3D 6, .crn =3D 15, .crm =3D 3, .opc2 =3D 0,
-> > +      .access =3D PL3_RW, .type =3D ARM_CP_CONST, .resetvalue =3D 0 },
-> > +    { .name =3D "CPURNDPEID_EL3", .state =3D ARM_CP_STATE_AA64,
-> > +      .opc0 =3D 3, .opc1 =3D 6, .crn =3D 15, .crm =3D 3, .opc2 =3D 1,
-> > +      .access =3D PL3_RW, .type =3D ARM_CP_CONST, .resetvalue =3D 0 },
-> > +};
-> > +
-> > +static void aarch64_neoverse_n2_initfn(Object *obj)
-> > +{
-> > +    ARMCPU *cpu =3D ARM_CPU(obj);
-> > +
-> > +    cpu->dtb_compatible =3D "arm,neoverse-n2";
-> > +    set_feature(&cpu->env, ARM_FEATURE_V8);
-> > +    set_feature(&cpu->env, ARM_FEATURE_NEON);
-> > +    set_feature(&cpu->env, ARM_FEATURE_GENERIC_TIMER);
-> > +    set_feature(&cpu->env, ARM_FEATURE_AARCH64);
-> > +    set_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
-> > +    set_feature(&cpu->env, ARM_FEATURE_EL2);
-> > +    set_feature(&cpu->env, ARM_FEATURE_EL3);
-> > +    set_feature(&cpu->env, ARM_FEATURE_PMU);
-> > +
-> > +    /* Ordered by Section B.5: AArch64 ID registers */
-> > +    cpu->midr          =3D 0x410FD493; /* r0p3 */
-> > +    cpu->revidr        =3D 0;
-> > +    cpu->isar.id_pfr0  =3D 0x21110131;
-> > +    cpu->isar.id_pfr1  =3D 0x00010000; /* GIC filled in later */
-> > +    cpu->isar.id_dfr0  =3D 0x16011099;
-> > +    cpu->id_afr0       =3D 0;
-> > +    cpu->isar.id_mmfr0 =3D 0x10201105;
-> > +    cpu->isar.id_mmfr1 =3D 0x40000000;
-> > +    cpu->isar.id_mmfr2 =3D 0x01260000;
-> > +    cpu->isar.id_mmfr3 =3D 0x02122211;
-> > +    cpu->isar.id_isar0 =3D 0x02101110;
-> > +    cpu->isar.id_isar1 =3D 0x13112111;
-> > +    cpu->isar.id_isar2 =3D 0x21232042;
-> > +    cpu->isar.id_isar3 =3D 0x01112131;
-> > +    cpu->isar.id_isar4 =3D 0x00010142;
-> > +    cpu->isar.id_isar5 =3D 0x11011121; /* with Crypto */
-> > +    cpu->isar.id_mmfr4 =3D 0x01021110;
-> > +    cpu->isar.id_isar6 =3D 0x01111111;
-> > +    cpu->isar.mvfr0    =3D 0x10110222;
-> > +    cpu->isar.mvfr1    =3D 0x13211111;
-> > +    cpu->isar.mvfr2    =3D 0x00000043;
-> > +    cpu->isar.id_pfr2  =3D 0x00000011;
-> > +    cpu->isar.id_aa64pfr0  =3D 0x1201111120111112ull; /* GIC filled in=
- later */
-> > +    cpu->isar.id_aa64pfr1  =3D 0x0000000000000221ull;
-> > +    cpu->isar.id_aa64zfr0  =3D 0x0000110100110021ull; /* with Crypto *=
-/
-> > +    cpu->isar.id_aa64dfr0  =3D 0x000011f210305619ull;
-> > +    cpu->isar.id_aa64dfr1  =3D 0;
-> > +    cpu->id_aa64afr0       =3D 0;
-> > +    cpu->id_aa64afr1       =3D 0;
-> > +    cpu->isar.id_aa64isar0 =3D 0x0221111110212120ull; /* with Crypto *=
-/
-> > +    cpu->isar.id_aa64isar1 =3D 0x0011111101211052ull;
-> > +    cpu->isar.id_aa64mmfr0 =3D 0x0000022200101125ull;
-> > +    cpu->isar.id_aa64mmfr1 =3D 0x0000000010212122ull;
-> > +    cpu->isar.id_aa64mmfr2 =3D 0x1221011112101011ull;
-> > +    cpu->clidr             =3D 0x0000001482000023ull;
-> > +    cpu->gm_blocksize      =3D 4;
-> > +    cpu->ctr               =3D 0x00000004b444c004ull;
-> > +    cpu->dcz_blocksize     =3D 4;
-> > +    /* TODO FEAT_MPAM: mpamidr_el1 =3D 0x0000_0001_001e_01ff */
+> > Thanks for the patch, and sorry for not noticing the flag had already
+> been assigned. The patch looks good to me!
 >
-> Jonathan mentioned he was hacking about with MPAM so if there is a stub
-> implementation of the fields it would be nice to add them.
-
-I'm just following the existing A710 code here. There isn't
-a stub implementation of the fields, which is why there's
-just a TODO comment documenting the ID register value.
-
-> > +
-> > +    /* Section B.7.2: PMCR_EL0 */
-> > +    cpu->isar.reset_pmcr_el0 =3D 0x3000;  /* with 6 counters */
-> > +
-> > +    /* Section B.8.9: ICH_VTR_EL2 */
-> > +    cpu->gic_num_lrs =3D 4;
-> > +    cpu->gic_vpribits =3D 5;
-> > +    cpu->gic_vprebits =3D 5;
-> > +    cpu->gic_pribits =3D 5;
-> > +
-> > +    /* Section 14: Scalable Vector Extensions support */
-> > +    cpu->sve_vq.supported =3D 1 << 0;  /* 128bit */
-> > +
-> > +    /*
-> > +     * The Neoverse N2 TRM does not list CCSIDR values.  The layout of
-> > +     * the caches are in text in Table 7-1, Table 8-1, and Table 9-1.
-> > +     *
-> > +     * L1: 4-way set associative 64-byte line size, total 64K.
-> > +     * L2: 8-way set associative 64 byte line size, total either 512K =
-or 1024K.
-> > +     */
-> > +    cpu->ccsidr[0] =3D make_ccsidr64(4, 64, 64 * KiB);   /* L1 dcache =
-*/
-> > +    cpu->ccsidr[1] =3D cpu->ccsidr[0];                   /* L1 icache =
-*/
-> > +    cpu->ccsidr[2] =3D make_ccsidr64(8, 64, 512 * KiB);  /* L2 cache *=
-/
-> > +
-> > +    /* FIXME: Not documented -- copied from neoverse-v1 */
-> > +    cpu->reset_sctlr =3D 0x30c50838;
+> Hi Albert,
+> I looked at the shared object code for the first time:
+> - There are memory leaks in virtio_add_dmabuf() and
+> virtio_add_vhost_device() when the UUID was added previously.
 >
-> Hmm reset_sctlr might need to be bigger because being used for sctlr_el3
-> is a 64 bit entity which has a number of fields:
 
-In theory, yes. In practice, only if we get to a point where we
-want to set some bit in the top 32 bits, which we don't yet.
+There is a patch already for fixing the leak:
+https://patchew.org/QEMU/c61c13f9a0c67dec473bdbfc8789c29ef26c900b.169662473=
+4.git.quic._5Fmathbern@quicinc.com/
+
+
+> - The hash table is global and there is no spoofing protection, so
+> vhost-user devices can hijack known UUIDs. Is it possible to associate
+> a vhost_dev owner with each shared object and only allow the owner to
+> remove it?
+>
+
+True, it is unprotected from another backend to remove an entry without
+ownership.
+It sounds like a nice addition, I will post a patch. Thanks!
+
+
+> - Is there cleanup code that removes shared objects from the hash
+> table when a vhost_dev is destroyed? Otherwise TYPE_VHOST_DEV shared
+> objects are leaked and their stale vhost_dev pointers could be
+> dereferenced.
+>
+
+There is not. In a first thought, I assumed that the backends will be in
+charge
+of cleaning their entries from the shared hash table when they are destroye=
+d
+(prematurely or no). I will look into occurrences of vhost_dev getting
+destroyed
+that may need explicit handling of the leftover entries.
+
+
+> - virtio-dmabuf.h API naming suggests this is a core VirtIODevice API:
+> virtio_free_resources(), virtio_add_vhost_device(), etc rather than an
+> API for VirtioSharedObject. Can the names be made more specific:
+> virtio_dmabuf_*() or virtio_shobj_*() so it's clear these APIs are
+> related to the dmabufs/shared objects?
+>
+
+Improving the names with what you suggested sounds good to me.
+I guess I'll go with virtio_dmabuf_*, for consistency with the file
+name. But `shobj` would be ok too.
+
 
 >
->   - DSSBS,bit[44] to have some sort of impdef value
->   - the others all look like architecturally UNKNOWN values
+> Thanks,
+> Stefan
 >
-> Otherwise I think this is:
 >
->   - 3 - RES1 29:28
->   - 0 - RES0 + I assume LE EE bit
->   - c - RES1 23, EIS 22 (architecturally UNKNOWN on reset)
->   - 5 - RES1 18, 16
->   - 0 - RES0 15:14, EnDB 13 (architecturally UNKNOWN on reset), I 12 RES0
->   - 8 - EOS 11 (architecturally UNKNOWN on reset)
->   - 3 - RES1 5:4
->   - 8 - SA 3 (architecturally UNKNOWN on reset)
->
-> It's a little confusing because the language describing these
-> architecturally unknown states refers to resetting to EL3 (I assume a
-> decent firmware would make sure everything is set correctly). Which
-> makes me wonder if reset_sctlr is really "sane values for a direct
-> kernel boot"?
 
-It's the hardware reset value, at least nominally speaking.
-We use the value for our SCTLR_EL1 if we aren't emulating EL2 or EL3,
-which means we diverge a little from the hardware which probably doesn't
-support an EL1-only config.
+--00000000000091be040607ea7acd
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-To the extent that we need to set values here for kernel boot, we would
-do that in hw/arm/boot.c. But mostly we don't, because the kernel sets
-up the SCTLR register for the EL it is entered in.
+<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
+ature"><div dir=3D"ltr"><p style=3D"color:rgb(0,0,0);font-family:RedHatText=
+,sans-serif;font-weight:bold;margin:0px;padding:0px;font-size:14px"><br></p=
+></div></div></div><br></div><br><div class=3D"gmail_quote"><div dir=3D"ltr=
+" class=3D"gmail_attr">On Tue, Oct 17, 2023 at 12:57=E2=80=AFPM Stefan Hajn=
+oczi &lt;<a href=3D"mailto:stefanha@gmail.com">stefanha@gmail.com</a>&gt; w=
+rote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
+x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Tue, 17=
+ Oct 2023 at 04:26, Albert Esteve &lt;<a href=3D"mailto:aesteve@redhat.com"=
+ target=3D"_blank">aesteve@redhat.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Hi!<br>
+&gt;<br>
+&gt; Thanks for the patch, and sorry for not noticing the flag had already =
+been assigned. The patch looks good to me!<br>
+<br>
+Hi Albert,<br>
+I looked at the shared object code for the first time:<br>
+- There are memory leaks in virtio_add_dmabuf() and<br>
+virtio_add_vhost_device() when the UUID was added previously.<br></blockquo=
+te><div><br></div><div>There is a patch already for fixing the leak:</div><=
+div><a href=3D"https://patchew.org/QEMU/c61c13f9a0c67dec473bdbfc8789c29ef26=
+c900b.1696624734.git.quic._5Fmathbern@quicinc.com/">https://patchew.org/QEM=
+U/c61c13f9a0c67dec473bdbfc8789c29ef26c900b.1696624734.git.quic._5Fmathbern@=
+quicinc.com/</a></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">
+- The hash table is global and there is no spoofing protection, so<br>
+vhost-user devices can hijack known UUIDs. Is it possible to associate<br>
+a vhost_dev owner with each shared object and only allow the owner to<br>
+remove it?<br></blockquote><div><br></div><div>True, it is unprotected from=
+ another backend to remove an entry without ownership.</div><div>It sounds =
+like a nice addition, I will post a patch. Thanks!</div><div>=C2=A0</div><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
+ft:1px solid rgb(204,204,204);padding-left:1ex">
+- Is there cleanup code that removes shared objects from the hash<br>
+table when a vhost_dev is destroyed? Otherwise TYPE_VHOST_DEV shared<br>
+objects are leaked and their stale vhost_dev pointers could be<br>
+dereferenced.<br></blockquote><div><br></div><div>There is not. In a first =
+thought, I assumed that the backends will be in charge</div><div>of cleanin=
+g their entries from the shared hash table when they are destroyed</div><di=
+v>(prematurely or no). I will look into occurrences of vhost_dev getting de=
+stroyed</div><div>that may need explicit handling of the leftover entries.<=
+/div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px=
+ 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+- virtio-dmabuf.h API naming suggests this is a core VirtIODevice API:<br>
+virtio_free_resources(), virtio_add_vhost_device(), etc rather than an<br>
+API for VirtioSharedObject. Can the names be made more specific:<br>
+virtio_dmabuf_*() or virtio_shobj_*() so it&#39;s clear these APIs are<br>
+related to the dmabufs/shared objects?<br></blockquote><div><br></div><div>=
+Improving the names with what you suggested sounds good to me.</div><div>I =
+guess I&#39;ll go with virtio_dmabuf_*, for consistency with the file</div>=
+<div>name. But `shobj` would be ok too.</div><div>=C2=A0</div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">
+<br>
+Thanks,<br>
+Stefan<br>
+<br>
+</blockquote></div></div>
 
-This used to be a bit better defined on older CPUs when previous
-versions of the architecture weren't so loose about values being
-UNKNOWN on reset. It's unfortunate that we don't have the documented
-value for whatever the IMPDEF reset value is for this CPU. In
-practice, because it's IMPDEF and UNKNOWN it doesn't matter too much --
-guest software will set it as needed. The value used here is "safe"
-because it's one we already use for other CPUs.
+--00000000000091be040607ea7acd--
 
-> > +
-> > +    /*
-> > +     * The Neoverse N2 has all of the Cortex-A710 IMPDEF registers,
-> > +     * and a few more RNG related ones.
-> > +     */
-> > +    define_arm_cp_regs(cpu, cortex_a710_cp_reginfo);
-> > +    define_arm_cp_regs(cpu, neoverse_n2_cp_reginfo);
-> > +
-> > +    aarch64_add_pauth_properties(obj);
-> > +    aarch64_add_sve_properties(obj);
-> > +}
-> > +
-> >  /*
-> >   * -cpu max: a CPU with as many features enabled as our emulation supp=
-orts.
-> >   * The version of '-cpu max' for qemu-system-arm is defined in cpu32.c=
-;
-> > @@ -1159,6 +1261,7 @@ static const ARMCPUInfo aarch64_cpus[] =3D {
-> >      { .name =3D "a64fx",              .initfn =3D aarch64_a64fx_initfn=
- },
-> >      { .name =3D "neoverse-n1",        .initfn =3D aarch64_neoverse_n1_=
-initfn },
-> >      { .name =3D "neoverse-v1",        .initfn =3D aarch64_neoverse_v1_=
-initfn },
-> > +    { .name =3D "neoverse-n2",        .initfn =3D aarch64_neoverse_n2_=
-initfn },
-> >  };
-> >
-> >  static void aarch64_cpu_register_types(void)
-
-thanks
--- PMM
 
