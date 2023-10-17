@@ -2,48 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07DA7CCBEF
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 21:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1517CCC21
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 21:21:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qspTt-00028d-Ay; Tue, 17 Oct 2023 15:11:53 -0400
+	id 1qspcK-0004WV-0b; Tue, 17 Oct 2023 15:20:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qspTq-00022M-L2
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 15:11:50 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1qspcB-0004Vj-QN
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 15:20:27 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qspTo-0002NX-D6
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 15:11:50 -0400
+ id 1qspc9-0004Aa-4p
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 15:20:27 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 58190757206;
- Tue, 17 Oct 2023 21:10:38 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 9AB8E7456A7;
+ Tue, 17 Oct 2023 21:19:14 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 1D4857571FA; Tue, 17 Oct 2023 21:10:38 +0200 (CEST)
+ id E60127456AA; Tue, 17 Oct 2023 21:19:13 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1B62A75715B;
- Tue, 17 Oct 2023 21:10:38 +0200 (CEST)
-Date: Tue, 17 Oct 2023 21:10:38 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id E4016745681;
+ Tue, 17 Oct 2023 21:19:13 +0200 (CEST)
+Date: Tue, 17 Oct 2023 21:19:13 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Helge Deller <deller@gmx.de>
 cc: deller@kernel.org, qemu-devel@nongnu.org, 
  =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
  Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH v2 04/11] MAINTAINERS: Add Astro PCI host for hppa machines
-In-Reply-To: <e6dbd713-36ee-417e-93ff-026edd4e5592@gmx.de>
-Message-ID: <8ffce91c-00ab-2c56-823d-47ed0dd18e7a@eik.bme.hu>
+Subject: Re: [PATCH v2 02/11] pci_ids/tulip: Add PCI vendor ID for HP and
+ use it in tulip
+In-Reply-To: <3425e5f9-f2d4-428b-96d2-5e0760871837@gmx.de>
+Message-ID: <5e17898a-c70c-4f79-9bd8-fc20a6179b42@eik.bme.hu>
 References: <20231017154645.95844-1-deller@kernel.org>
- <20231017154645.95844-5-deller@kernel.org>
- <9a52309d-d5af-d572-aea0-e5315b301e3e@eik.bme.hu>
- <e6dbd713-36ee-417e-93ff-026edd4e5592@gmx.de>
+ <20231017154645.95844-3-deller@kernel.org>
+ <df5da806-4b08-5034-1b80-93d583efd86b@eik.bme.hu>
+ <3425e5f9-f2d4-428b-96d2-5e0760871837@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Type: multipart/mixed;
+ boundary="3866299591-586288090-1697570353=:31151"
 X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -64,79 +66,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-586288090-1697570353=:31151
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
 On Tue, 17 Oct 2023, Helge Deller wrote:
-> On 10/17/23 18:19, BALATON Zoltan wrote:
+> On 10/17/23 18:13, BALATON Zoltan wrote:
 >> On Tue, 17 Oct 2023, deller@kernel.org wrote:
 >>> From: Helge Deller <deller@gmx.de>
 >>> 
 >>> Signed-off-by: Helge Deller <deller@gmx.de>
 >>> ---
->>> MAINTAINERS | 5 ++++-
->>> 1 file changed, 4 insertions(+), 1 deletion(-)
+>>> hw/net/tulip.c           | 2 +-
+>>> include/hw/pci/pci_ids.h | 2 ++
+>>> 2 files changed, 3 insertions(+), 1 deletion(-)
+>>> 
+>>> diff --git a/hw/net/tulip.c b/hw/net/tulip.c
+>>> index 915e5fb595..11d866e431 100644
+>>> --- a/hw/net/tulip.c
+>>> +++ b/hw/net/tulip.c
+>>> @@ -1020,7 +1020,7 @@ static void tulip_class_init(ObjectClass *klass, 
+>>> void *data)
+>>>     k->exit = pci_tulip_exit;
+>>>     k->vendor_id = PCI_VENDOR_ID_DEC;
+>>>     k->device_id = PCI_DEVICE_ID_DEC_21143;
+>>> -    k->subsystem_vendor_id = 0x103c;
+>>> +    k->subsystem_vendor_id = PCI_VENDOR_ID_HP;
+>>>     k->subsystem_id = 0x104f;
+>>>     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
+>>>     dc->vmsd = &vmstate_pci_tulip;
+>>> diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
+>>> index 85469b9b53..3c0e72df0e 100644
+>>> --- a/include/hw/pci/pci_ids.h
+>>> +++ b/include/hw/pci/pci_ids.h
+>>> @@ -171,6 +171,8 @@
+>>> #define PCI_VENDOR_ID_DEC                0x1011
+>>> #define PCI_DEVICE_ID_DEC_21143          0x0019
+>>> 
+>>> +#define PCI_VENDOR_ID_HP                 0x103c
+>>> +
 >> 
->> Is this better squashed in the previous patch adding this device?
+>> Did not notice this in first round, sorry. These seems to be sorted
+>> (there's a comment further up about that) so this should be between
+>> AMD and TI a bit more down.
 >
-> MAINTAINERS is updated by various patches/people, so keeping
-> this change seperate makes handling and bisecting easier.
->
->> Then checkpatch won't complain about that
->
-> It's just a warning, IMHO similiar to a reminder to update it.
->
->> and splitting out just this does not make the previous patch simpler > so 
->> not sure it should be separate patch.
->
-> I disagree.
+> The list isn't sorted at all. I think the comment just wants to
 
-OK, I don't mind much if it's a separate patch either just did not make 
-much sense to me to separate it from the patch that adds the files.
+It is still mostly sorted except where people did not get how. Try
+
+grep PCI_VENDOR_ID_ pci_ids.h
+
+> say that you should mention the vendor before the devices.
+
+I think it says that PCI_VENDOR_IDs should be sorted and then DEVICE_IDs 
+within them should also be sorted but device IDs intervene VENDOR_IDs so 
+the sorting of VENDOR_IDs may not be obvious at first sight.
+
+> Anyway, as the list currently is, there are multiple positions
+> where HP could be added...
+
+Yes, some IDs already break this sorting but we could still avoid breaking 
+it more. Not a big deal though.
 
 Regards,
 BALATON Zoltan
-
->> The last line adding seabios is not mentioned in commit message.
->> Is that related ot just a fixup while you're there.
->
-> Yes, I noticed that this directory was missing.
-> So, I added it while updating the entries.
-> IMHO this additional change is so trivial that I don't think it needs to be
-> mentioned.
->
-> Helge
->
->> Regards,
->> BALATON Zoltan
->> 
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index ceea4c2bf2..68d086a0f3 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -1174,7 +1174,7 @@ F: hw/*/etraxfs_*.c
->>> 
->>> HP-PARISC Machines
->>> ------------------
->>> -HP B160L
->>> +HP B160L, HP C3700
->>> M: Richard Henderson <richard.henderson@linaro.org>
->>> R: Helge Deller <deller@gmx.de>
->>> S: Odd Fixes
->>> @@ -1182,11 +1182,14 @@ F: configs/devices/hppa-softmmu/default.mak
->>> F: hw/hppa/
->>> F: hw/net/*i82596*
->>> F: hw/misc/lasi.c
->>> +F: hw/pci-host/astro.c
->>> F: hw/pci-host/dino.c
->>> F: include/hw/misc/lasi.h
->>> F: include/hw/net/lasi_82596.h
->>> +F: include/hw/pci-host/astro.h
->>> F: include/hw/pci-host/dino.h
->>> F: pc-bios/hppa-firmware.img
->>> +F: roms/seabios-hppa/
->>> 
->>> LoongArch Machines
->>> ------------------
->>> 
->> 
->
->
+--3866299591-586288090-1697570353=:31151--
 
