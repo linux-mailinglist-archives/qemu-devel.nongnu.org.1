@@ -2,55 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEFE7CB7A7
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 02:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 930B17CB7AF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 02:56:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsYJ2-00029t-Iw; Mon, 16 Oct 2023 20:51:32 -0400
+	id 1qsYNF-00034j-HA; Mon, 16 Oct 2023 20:55:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hans@keasigmadelta.com>)
- id 1qsYFo-0001hL-C9
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 20:48:12 -0400
-Received: from mail-4022.proton.ch ([185.70.40.22])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hans@keasigmadelta.com>)
- id 1qsYFk-000241-JB
- for qemu-devel@nongnu.org; Mon, 16 Oct 2023 20:48:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=keasigmadelta.com;
- s=protonmail3; t=1697503684; x=1697762884;
- bh=Bqa6R9KGRueh6YRL2VCRgZ9fFDTerZGQDqZEw5vvLYw=;
- h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
- Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
- b=rkC0CIZJGRK8TfqRAXyW6UFl6ADaHWJfs+H+hoc2JbVwysuuDU90ggdcvdr+Nm1bX
- BddYVfP69NlH01Vw77/OiQypZ38DV0i4gwoYRAgyfnRVJCe7xwol8ra6wQre+GQ4nY
- wbGEFjOCk62q8CzZi4y5gacrjwVFqXS3M2ENDr9gDzPJPtHeuaBbW6Jp10Qj8AbO6L
- 1uuAQw3ajMHRJDyQrIVORoBQH+gWdBeS01142a0W6iqhEhoz8RfqQ1O8rJiIkt2suZ
- 25KXW02MKNlMMN4U5BZYAR5mo5LByZu9mubvmt/knlTzPHDfPvnfyzFV7sIIi2bNnP
- ljLmmwz8B12/A==
-Date: Tue, 17 Oct 2023 00:48:00 +0000
-To: qemu-devel@nongnu.org
-From: Hans de Ruiter <hans@keasigmadelta.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Subject: QEMU Virtio GPU features status & roadmap?
-Message-ID: <65466251-5c0c-90d0-c482-29ebc4e16a20@keasigmadelta.com>
-Feedback-ID: 32757310:user:proton
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qsYMf-000316-Br; Mon, 16 Oct 2023 20:55:17 -0400
+Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qsYMa-0003F3-9e; Mon, 16 Oct 2023 20:55:17 -0400
+Received: by mail-ua1-x932.google.com with SMTP id
+ a1e0cc1a2514c-7b61de8e456so1649138241.0; 
+ Mon, 16 Oct 2023 17:55:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697504111; x=1698108911; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TsqcS5xtjBJPhr3wHZG8wAp/K/rbX/Q53TYOIKjjMVE=;
+ b=A7tCPFPNJg3bcN79SWNw5WUzk56o6R3qMkHsx294Nhnco3raSHns7ryb52JeGDBw6p
+ n8rfkeyL/khampqrIJYORDsrNiMsA8onRdtJgjurlc/bctPDU58xihDg0A3cHbf1KwuQ
+ vRfo5Y0iUu9L73QuzrvptYIpNiy5/p1tTP3J3JgzqsnlArTVjFgDLGBUyLRDRzzAZf4U
+ 45COoo9E3pxp+dBbb0gMXIBlFiByA7DED6rGoph6060D3r7UR0V5CUG/9uQSzZxfyBqM
+ gqmoCOOUxJ17l48UUH2KFMHNk74Nz4m3vsO6e1UQwOR7MjusKDnZeXym1MxoU/Q7xaqP
+ L1BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697504111; x=1698108911;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TsqcS5xtjBJPhr3wHZG8wAp/K/rbX/Q53TYOIKjjMVE=;
+ b=Rb0sZ5yZZGJtKbZcG/RUXVLVhwHUohHcdU/lb8irYlACxk/A+xvT+decqAB5Y3KerB
+ XfUNhEsYusDjXtoIh8vdT/VAXoACWy1WnAlIMHvbM9ySx0J38E2My3sDwypd8f1hSYND
+ 9b1kRjdwOEKU/2/0Gspx1DU5XRzhVDm7Ljt5F6VqKNgqVkb6PWEq128cYdA+lArn/pJq
+ lgNhfxGr8QLQDrm3DXO56iTW+uOqQVa7AfXRDGvaOqJAQ6SDKoHE3eZPNLrryx1KbjXG
+ attuBhS88b1J8v+Dvc1MznjAVPpq50wbe3v5CDhA1eH57xM6/J7cKF+HFFZ/3pOR5Adm
+ JuQA==
+X-Gm-Message-State: AOJu0YyPRhVNCZ0WRc5+SpfRs5BFai2iCBURGFt6hsRz3H5RSRWRMM8g
+ /PWa8ygvapdKtUGl5t/beHt7YG8FHJt3Oe0BdL4=
+X-Google-Smtp-Source: AGHT+IFDwLHG/PI33fbjlg4nTEbV5xbJHELMsF8668qpFyWMTl/If35v6afKuQrghEu/hDae/WUFkTKjA04kPpyu4wM=
+X-Received: by 2002:a1f:9b85:0:b0:49b:adce:e2d1 with SMTP id
+ d127-20020a1f9b85000000b0049badcee2d1mr1043441vke.10.1697504110703; Mon, 16
+ Oct 2023 17:55:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg=pgp-sha256;
- boundary="------bbc313b4ab2ac8239ff65407c0162158432055a95f0116aa574d10dd7698bcfb";
- charset=utf-8
-Received-SPF: pass client-ip=185.70.40.22; envelope-from=hans@keasigmadelta.com;
- helo=mail-4022.proton.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20231016111736.28721-1-rkanwal@rivosinc.com>
+In-Reply-To: <20231016111736.28721-1-rkanwal@rivosinc.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 17 Oct 2023 10:54:43 +1000
+Message-ID: <CAKmqyKN+w_57hMhqi7WNbLdK7nQNJFQL5YNB-cAyuc_hrgW0kQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/6] target/riscv: Add RISC-V Virtual IRQs and IRQ
+ filtering support
+To: Rajnesh Kanwal <rkanwal@rivosinc.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, 
+ apatel@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x932.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 16 Oct 2023 20:51:30 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,84 +89,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------bbc313b4ab2ac8239ff65407c0162158432055a95f0116aa574d10dd7698bcfb
-Content-Type: multipart/mixed;
- boundary=1c8a27eb550a8ff1ccdbe9972a9f792615d68a0aeaab36ceacb79cf47789
-Message-ID: <65466251-5c0c-90d0-c482-29ebc4e16a20@keasigmadelta.com>
-Date: Tue, 17 Oct 2023 08:47:54 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-From: Hans de Ruiter <hans@keasigmadelta.com>
-Subject: QEMU Virtio GPU features status & roadmap?
+On Mon, Oct 16, 2023 at 9:19=E2=80=AFPM Rajnesh Kanwal <rkanwal@rivosinc.co=
+m> wrote:
+>
+> This series adds M and HS-mode virtual interrupt and IRQ filtering suppor=
+t.
+> This allows inserting virtual interrupts from M/HS-mode into S/VS-mode
+> using mvien/hvien and mvip/hvip csrs. IRQ filtering is a use case of
+> this change, i-e M-mode can stop delegating an interrupt to S-mode and
+> instead enable it in MIE and receive those interrupts in M-mode and then
+> selectively inject the interrupt using mvien and mvip.
+>
+> Also, the spec doesn't mandate the interrupt to be actually supported
+> in hardware. Which allows M/HS-mode to assert virtual interrupts to
+> S/VS-mode that have no connection to any real interrupt events.
+>
+> This is defined as part of the AIA specification [0], "5.3 Interrupt
+> filtering and virtual interrupts for supervisor level" and "6.3.2 Virtual
+> interrupts for VS level".
+>
+> Most of the testing is done by hacking around OpenSBI and linux host.
+> The changes for those can be found at [1] and [2].
+>
+> It's my first touch on RISC-V qemu IRQ subsystem. Any feedback would
+> be much appreciated.
+>
+> The change can also be found on github [3].
+>
+> TODO: This change doesn't support delegating virtual interrupts injected
+> by M-mode to VS-mode by the Hypervisor. This is true for bits 13:63 only.
 
---1c8a27eb550a8ff1ccdbe9972a9f792615d68a0aeaab36ceacb79cf47789
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Thanks!
 
-Hi,
+Applied to riscv-to-apply.next
 
-I'm working on Virtio GPU drivers for AmigaOS, and would like to know 
-what features are currently stable enough to use. Looking at the master 
-QEMU branch, both Virgl and blob resources are supported, but NOT at the 
-same time. Is the ability to use both simultaneously coming soon?
+Alistair
 
-Also, what's the state of Venus/Vulkan support? Surveying various 
-forks/branches, it looks very experimental and subject to change.
-
-I have the added difficulty that the AmigaOS Picasso96 driver API 
-expects direct CPU access to all of VRAM, and likes to peek/poke 
-directly into the bitmaps. That's clearly not possible without blob 
-resources, or shared memory (not entirely sure what the shared memory 
-feature is for). This is why I want to know what features are stable or 
-coming soon.
-
-regards,
-Hans
-
-
---1c8a27eb550a8ff1ccdbe9972a9f792615d68a0aeaab36ceacb79cf47789
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; name="publickey - hans@keasigmadelta.com -
- 4293c311.asc"; filename="publickey - hans@keasigmadelta.com - 4293c311.asc"
-Content-Type: application/pgp-keys; name="publickey - hans@keasigmadelta.com
- - 4293c311.asc"; filename="publickey - hans@keasigmadelta.com -
- 4293c311.asc"
-
-LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tClZlcnNpb246IEdvcGVuUEdQIDIu
-Ny4xCkNvbW1lbnQ6IGh0dHBzOi8vZ29wZW5wZ3Aub3JnCgp4ak1FWUZocFFoWUpLd1lCQkFIYVJ3
-OEJBUWRBUEFDckNETHVSSkZPbVl3Mm02a3FxK3VOTlVVbloxYzFlUU5hCmo4TUxZL25OTDJoaGJu
-TkFhMlZoYzJsbmJXRmtaV3gwWVM1amIyMGdQR2hoYm5OQWEyVmhjMmxuYldGa1pXeDAKWVM1amIy
-MCt3bzhFRUJZS0FDQUZBbUJZYVVJR0N3a0hDQU1DQkJVSUNnSUVGZ0lCQUFJWkFRSWJBd0llQVFB
-aApDUkNZL1hnVzF6ckt6aFloQkVLVHd4SFJvelIxamI0OVQ1ajllQmJYT3NyT2I2Y0EvalhkMUhk
-V2paQkV6WUNqCjlmUitEWm5DREplbjNRYzhNRzU0TW9CZHZLZ0FBUDlvM3dqMGhpVXh4RXJhUjhs
-U0tZMGhOVnBwR2Nrb0pLeUIKRlRXR25VRU9BODQ0QkdCWWFVSVNDaXNHQVFRQmwxVUJCUUVCQjBE
-NS9xRWphWUU4MWs4R095OFF1RmNGbGZmWgpWbEw2M1ZsMThWZ3pONXJnSWdNQkNBZkNlQVFZRmdn
-QUNRVUNZRmhwUWdJYkRBQWhDUkNZL1hnVzF6ckt6aFloCkJFS1R3eEhSb3pSMWpiNDlUNWo5ZUJi
-WE9zck9zZXNBL2p5a0taQksxZ3JIVldWalFCbC9iMlVRVk1RVUhDUDkKdjdsM1p4QkZxaGlXQVFD
-UjdjSWtrZ1ZvL1JXUzh5NG9MUXdZNjRQM0tzazRYOHpBZHBjOVl3MDhEQT09Cj0zL0llCi0tLS0t
-RU5EIFBHUCBQVUJMSUMgS0VZIEJMT0NLLS0tLS0=
---1c8a27eb550a8ff1ccdbe9972a9f792615d68a0aeaab36ceacb79cf47789--
-
---------bbc313b4ab2ac8239ff65407c0162158432055a95f0116aa574d10dd7698bcfb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: ProtonMail
-
-wnUEARYIACcFAmUt2cAJkJj9eBbXOsrOFiEEQpPDEdGjNHWNvj1PmP14Ftc6
-ys4AABxJAP0Q6JNJzQjGfNOkpXgwtVN8/qVbgbqlClNAWKubAiFIqwD8DRG/
-1E1+HsKHOg0K8Owz0x5kMN/5l53T2ckWAfQu+wE=
-=JDWf
------END PGP SIGNATURE-----
-
-
---------bbc313b4ab2ac8239ff65407c0162158432055a95f0116aa574d10dd7698bcfb--
-
+>
+> Thanks
+> Rajnesh
+>
+> [0]: https://github.com/riscv/riscv-aia/releases/download/1.0/riscv-inter=
+rupts-1.0.pdf
+> [1]: https://github.com/rajnesh-kanwal/opensbi/tree/dev/rkanwal/irq_filte=
+r
+> [2]: https://github.com/rajnesh-kanwal/linux/commits/dev/rkanwal/aia_irq_=
+filter
+> [3]: https://github.com/rajnesh-kanwal/qemu/tree/dev/rkanwal/riscv_irq_fi=
+lter
+>
+> v5:
+>  * Rebased the patches onto alister/riscv-to-apply.next again. Updated
+>    version_id and minimum_version_id in vmstate_riscv_cpu and
+>    vmstate_hyper. Also updated AIA spec links.
+>
+> v4:
+>  * Rebased the patches onto alister/riscv-to-apply.next. There were
+>    some rebasing conflicts due to code restructuring.
+>
+> v3:
+>  * Rebased the patches and added reviewed-by tags.
+>
+> v2:
+>  * Move RISCV_EXCP_SEMIHOST to switch case and remove special handling.
+>  * Fix linux-user build.
+>
+> Rajnesh Kanwal (6):
+>   target/riscv: Without H-mode mask all HS mode inturrupts in mie.
+>   target/riscv: Check for async flag in case of RISCV_EXCP_SEMIHOST.
+>   target/riscv: Set VS* bits to one in mideleg when H-Ext is enabled
+>   target/riscv: Split interrupt logic from riscv_cpu_update_mip.
+>   target/riscv: Add M-mode virtual interrupt and IRQ filtering support.
+>   target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.
+>
+>  target/riscv/cpu.c         |   4 +-
+>  target/riscv/cpu.h         |  23 ++
+>  target/riscv/cpu_bits.h    |   6 +
+>  target/riscv/cpu_helper.c  |  99 ++++++--
+>  target/riscv/csr.c         | 477 +++++++++++++++++++++++++++++++++----
+>  target/riscv/machine.c     |  14 +-
+>  target/riscv/tcg/tcg-cpu.c |   7 +-
+>  7 files changed, 551 insertions(+), 79 deletions(-)
+>
+> --
+> 2.34.1
+>
+>
 
