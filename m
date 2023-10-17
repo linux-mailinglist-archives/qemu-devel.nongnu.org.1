@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB737CC916
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8BB7CC917
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:50:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsnF4-00043n-Gx; Tue, 17 Oct 2023 12:48:26 -0400
+	id 1qsnGs-0005yW-A4; Tue, 17 Oct 2023 12:50:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qsnF1-00042r-IG
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:48:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qsnEz-0006Jd-7Q
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:48:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697561299;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qsnGq-0005xj-AS
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:50:16 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qsnGj-0006rk-Dx
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:50:16 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 090F81F8A4;
+ Tue, 17 Oct 2023 16:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697561407; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=o8YcZpngfzzT5fegQMC3eTG4FKOcAdWCAuz4bfn/s30=;
- b=f2NCqgmNIM7JP1tPRqIbtWPyKkqrfP3MK+8SBaNANZrXp+X1kYwZfeB3pSFwYROntdcy5c
- lN6uz5ghN+TJKEGz2I3kt/YBMwLhuZa/yfJkXnw2lJz8VvWQmVG+IctmlqUbod2SmEyy+N
- d7mqR68+9m9Sd6tSylsR1AcYS21mTFA=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-19-dl6C7ZHrN4CRgPAtM-ov5A-1; Tue, 17 Oct 2023 12:48:17 -0400
-X-MC-Unique: dl6C7ZHrN4CRgPAtM-ov5A-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-5a7cf717bacso92307417b3.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 09:48:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697561297; x=1698166097;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=o8YcZpngfzzT5fegQMC3eTG4FKOcAdWCAuz4bfn/s30=;
- b=HOlHYUpwwxHDYPG59iu7tvsTLIsJMg5I9NTRciggxK5syO77R/f23P4Q0I170AvQS+
- QkZtpYK5ckymOMKf+55OTKo/N05HbEREhq33FKPxbYoUrvWML6OmxxVPNy1D9ZRfm+NS
- 4zbPbpEP3lNsm1hsQWgu5LZAW41KJ5LAq9I/gBDakA2KPwjUZ1k3XlSC3d991T5Gt/ni
- gUh1q8IDH8nozizC3KVU8cknUzMI2ZaFzijLZq6BLe5AqBZxFBB1rDm69cb60aZBBCpJ
- VwZ7/eLXApE/dMI1i0awQXlaWaPVeLnqVX/Un70FylLguH9O+weE0i9oQstSXhigpooa
- niXw==
-X-Gm-Message-State: AOJu0Yzd6MblKs1I/Jf8tXHuK91uFvUW1ZCJ6uhHDMiJtxCQoG23r1R5
- E+rK2tvCx7LNtUOgHjKQZ4Q+VpbFdirt5zkuWk69o4ncrRD5UiyyXl1+WRBKYks7Ko1odQu3Aua
- JsOLbtcZ28ciWERthE1kK3mT7IYq5NLc=
-X-Received: by 2002:a81:4e05:0:b0:59f:65d1:5c55 with SMTP id
- c5-20020a814e05000000b0059f65d15c55mr3005126ywb.34.1697561296882; 
- Tue, 17 Oct 2023 09:48:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHix2k0TUEpTX6xqhqY2J4+VFj4SGSVemuJE6xXZOoTw1BB8QVw61HtiFW0ozzX2XoDt5B4Vi0YsmBU4Ot15PE=
-X-Received: by 2002:a81:4e05:0:b0:59f:65d1:5c55 with SMTP id
- c5-20020a814e05000000b0059f65d15c55mr3005114ywb.34.1697561296597; Tue, 17 Oct
- 2023 09:48:16 -0700 (PDT)
+ bh=8N2JvrJd0u3JM9oQtB87LSgpWUU5B7n0OVWxDx0y8w4=;
+ b=qG7nGOpNiMfFE1d7P+tej+1Qb7NKN1p0XfSGMpq7qmTZWw0nx+k8Alu2JyMbVM2+Ntbh9q
+ W+wAwVQPiCi2KhgnWM7jNYF2bmOyzrZWMiEV2TdXSI9yhA42gnZDORy9eUXP7QdgmpYVdC
+ xU28knn71LKIaQaFxcoB7/zK0k7p//U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697561407;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8N2JvrJd0u3JM9oQtB87LSgpWUU5B7n0OVWxDx0y8w4=;
+ b=6p52dkuh/btebsciijBFz76fjRYDd5RDRCNEUZjaLm1YgIslmANPhTVtvg5z1w8avMVFBz
+ g7K7iF62xhIiR5Cw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9099E13597;
+ Tue, 17 Oct 2023 16:50:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 2gcjFz67LmXLZQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 17 Oct 2023 16:50:06 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v2 2/3] migration/doc: How to migrate when hosts have
+ different features
+In-Reply-To: <20231017151857.21328-3-quintela@redhat.com>
+References: <20231017151857.21328-1-quintela@redhat.com>
+ <20231017151857.21328-3-quintela@redhat.com>
+Date: Tue, 17 Oct 2023 13:50:04 -0300
+Message-ID: <87mswhw5vn.fsf@suse.de>
 MIME-Version: 1.0
-References: <20230918044932.1433744-1-yajunw@nvidia.com>
-In-Reply-To: <20230918044932.1433744-1-yajunw@nvidia.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 17 Oct 2023 18:47:40 +0200
-Message-ID: <CAJaqyWfuXDY7jBSQsS=0Ws7mpZLcsed6bpQbM+eZGLU5AzCw1Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/5] virtio-net: Introduce LM early load
-To: Yajun Wu <yajunw@nvidia.com>
-Cc: qemu-devel@nongnu.org, jasowang@redhat.com, mst@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,152 +96,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 6:51=E2=80=AFAM Yajun Wu <yajunw@nvidia.com> wrote:
->
-> This series of patches aims to minimize the downtime during live migratio=
-n of a
-> virtio-net device with a vhost-user backend. In the case of hardware virt=
-ual
-> Data Path Acceleration (vDPA) implementation, the hardware configuration,=
- which
-> includes tasks like VQ creation and RSS setting, may take above 200ms. Th=
-is
-> significantly increases the downtime of the VM, particularly in terms of
-> networking.
->
+Juan Quintela <quintela@redhat.com> writes:
 
-Hi!
+> Sometimes devices have different features depending of things outside
+> of qemu.  For instance the kernel.  Document how to handle that cases.
+>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Acked-by: Peter Xu <peterx@redhat.com>
+>
+> ---
+>
+> If you have some example to put here, I am all ears.  I guess that
+> virtio-* with some features that are on qemu but not on all kernel
+> would do the trick, but I am not a virtio guru myself.  Patches
+> welcome.
+> ---
+>  docs/devel/migration.rst | 96 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 96 insertions(+)
+>
+> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+> index 5ef2b36e9e..e671df729e 100644
+> --- a/docs/devel/migration.rst
+> +++ b/docs/devel/migration.rst
+> @@ -358,6 +358,102 @@ machine types to have the right value: ::
+>           ...
+>       };
+>  
+> +A device with diferent features on both sides
+> +---------------------------------------------
+> +
+> +Let's assume that we are using the same QEMU binary on both sides,
+> +just to make the things easier.  But we have a device that has
+> +different features on both sides of the migration.  That can be
+> +because the devices are different, because the kernel driver of both
+> +devices have different features, whatever.
+> +
+> +How can we get this to work with migration.  The way to do that is
+> +"theoretically" easy.  You have to get the features that the device
+> +has in the source of the migration.  The features that the device has
+> +on the target of the migration, you get the intersection of the
+> +features of both sides, and that is the way that you should launch
+> +QEMU.
+> +
+> +Notice that this is not completely related to QEMU.  The most
+> +important thing here is that this should be handle by the managing
 
-Sorry I totally missed this email. Please CC me in next versions.
+s/handle/handled/
 
-Just for completion, there is an ongoing plan to reduce the downtime
-in vhost-vdpa. You can find more details at [1].
+> +application that launches QEMU.  If QEMU is configured correctly, the
+> +migration will suceeed.
 
-To send the state periodically is in the roadmap, but some
-benchmarking detected that memory pinning and unpinning affects more
-to downtime. I'll send a RFC soon with this. The plan was to continue
-with iterative state restoring, so I'm happy to know more people are
-looking into it!
+s/suceeed/succeed/
 
-In the case of vhost-vdpa it already restores the state by not
-enabling dataplane until migration completes. All the load is
-performed using CVQ, as you can see in
-net/vhost-vdpa.c:vhost_vdpa_net_load. After that, all dataplane is
-started again.
+> +
+> +Once that we have defined that, doing this is complicated.  Almost all
 
-My idea is to start vhost-vdpa (by calling vhost_vdpa_dev_start) at
-the destination at the same moment the migration starts, as it will
-not have dataplane enabled. After that, the source should send the
-virtio-net vmstate every time it changes. vhost-vdpa net is able to
-send and receive through CVQ, so it should be able to modify net
-device configuration as many times as needed. I guess that could be
-done by calling something in the line of your
-vhost_user_set_presetup_state.
+I get what you mean here, but it is slightly confusing. Maybe
 
-This can be improved in vhost-vdpa by being able to send only the new state=
-.
+"Once we have defined that, doing it is complicated." or
+"That said, actually doing it is complicated."
 
-When all the migration is completed, vhost-vdpa net dataplane should
-start as it does now.
+> +devices are bad at being able to be launched with only some features
+> +enabled.  With one big exception: cpus.
+> +
+> +You can read the documentation for QEMU x86 cpu models here:
+> +
+> +https://qemu-project.gitlab.io/qemu/system/qemu-cpu-models.html
+> +
+> +See when they talk about migration they recommend that one chooses the
+> +newest cpu model that is supported for all cpus.
+> +
+> +Let's say that we have:
+> +
+> +Host A:
+> +
+> +Device X has the feature Y
+> +
+> +Host B:
+> +
+> +Device X has not the feature Y
+> +
+> +If we try to migrate without any care from host A to host B, it will
+> +fail because when migration tries to load the feature Y on
+> +destination, it will find that the hardware is not there.
+> +
+> +Doing this would be the equivalent of doing with cpus:
+> +
+> +Host A:
+> +
+> +$ qemu-system-x86_64 -cpu host
+> +
+> +Host B:
+> +
+> +$ qemu-system-x86_64 -cpu host
+> +
+> +When both hosts have different cpu features this is waranteed to
+> fail.
 
-If you are interested in saving changes to vhost-user protocol, maybe
-qemu could just disable the dataplane too with
-VHOST_USER_SET_VRING_ENABLE? If not, I think both approaches have a
-lot in common, so I'm sure we can develop one backend on top of
-another.
+s/waranteed/guaranteed/
 
-Thanks!
+> +Especially if Host B has less features than host A.  If host A has
+> +less features than host B, sometimes it works.  Important word of last
+> +sentence is "sometimes".
+> +
+> +So, forgetting about cpu models and continuing with the -cpu host
+> +example, let's see that the differences of the cpus is that Host A and
+> +B have the following features:
+> +
+> +Features:   'pcid'  'stibp' 'taa-no'
+> +Host A:        X       X
+> +Host B:                        X
+> +
+> +And we want to migrate between them, the way configure both QEMU cpu
+> +will be:
+> +
+> +Host A:
+> +
+> +$ qemu-system-x86_64 -cpu host,pcid=off,stibp=off
+> +
+> +Host B:
+> +
+> +$ qemu-system-x86_64 -cpu host,taa-no=off
+> +
+> +And you would be able to migrate between them.  It is responsability
+> +of the management application or of the user to make sure that the
+> +configuration is correct.  QEMU don't know how to look at this kind of
 
-[1] https://lists.gnu.org/archive/html/qemu-devel/2023-04/msg00659.html
+s/don't/doesn't/
 
-> To reduce the VM downtime, the proposed approach involves capturing the b=
-asic
-> device state/configuration during the VM's running stage and performing t=
-he
-> initial device configuration(presetup). During the normal configuration p=
-rocess
-> when the VM is in a stopped state, the second configuration is compared t=
-o the
-> first one, and only the differences are applied to reduce downtime. Ideal=
-ly,
-> only the vring available index needs to be changed within VM stop.
->
-> This feature is disabled by default, because backend like dpdk also needs
-> adding support for vhost new message. New device property "x-early-migrat=
-ion"
-> can enable this feature.
->
-> 1. Register a new vmstate for virtio-net with an early_setup flag to send=
- the
->    device state during migration setup.
-> 2. After device state load on destination VM, need to send device status =
-to
->    vhost backend in a new way. Introduce new vhost-user message:
->    VHOST_USER_PRESETUP, to notify backend of presetup.
-> 3. Let virtio-net, vhost-net, vhost-dev support presetup. Main flow:
->    a. vhost-dev sending presetup start.
->    b. virtio-net setting mtu.
->    c. vhost-dev sending vring configuration and setting dummy call/kick f=
-d.
->    d. vhost-net sending vring enable.
->    e. vhost-dev sending presetup end.
->
->
-> TODOs:
-> =3D=3D=3D=3D=3D=3D
->   - No vhost-vdpa/kernel support. Need to discuss/design new kernel inter=
-face
->     if there's same requirement for vhost-vdpa.
->
->   - No vIOMMU support so far. If there is a need for vIOMMU support, it i=
-s
->     planned to be addressed in a follow-up patchset.
->
->
-> Test:
-> =3D=3D=3D=3D=3D
->   - Live migration VM with 2 virtio-net devices, ping can recover.
->     Together with DPDK patch [1].
->   - The time consumption of DPDK function dev_conf is reduced from 191.4 =
-ms
->     to 6.6 ms.
->
->
-> References:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> [1] https://github.com/Mellanox/dpdk-vhost-vfe/pull/37
->
-> Any comments or feedback are highly appreciated.
->
-> Thanks,
-> Yajun
->
->
-> Yajun Wu (5):
->   vhost-user: Add presetup protocol feature and op
->   vhost: Add support for presetup
->   vhost-net: Add support for presetup
->   virtio: Add VMState for early load
->   virtio-net: Introduce LM early load
->
->  docs/interop/vhost-user.rst       |  10 ++
->  hw/net/trace-events               |   1 +
->  hw/net/vhost_net.c                |  40 +++++++
->  hw/net/virtio-net.c               | 100 ++++++++++++++++++
->  hw/virtio/vhost-user.c            |  30 ++++++
->  hw/virtio/vhost.c                 | 166 +++++++++++++++++++++++++-----
->  hw/virtio/virtio.c                | 152 ++++++++++++++++-----------
->  include/hw/virtio/vhost-backend.h |   3 +
->  include/hw/virtio/vhost.h         |  12 +++
->  include/hw/virtio/virtio-net.h    |   1 +
->  include/hw/virtio/virtio.h        |  10 +-
->  include/net/vhost_net.h           |   3 +
->  12 files changed, 443 insertions(+), 85 deletions(-)
->
-> --
-> 2.27.0
->
->
+> +features in general.
+> +
+> +Notice that we don't recomend to use -cpu host for migration.  It is
+> +used in this example because it makes the exampler simpler.
 
+s/exampler/example/
+
+> +
+> +Other devices have worse control about individual features.  If they
+> +want to be able to migrate between hosts that show different features,
+> +the device needs a way to configure which ones it is going to use.
+> +
+> +In this section we have considered that we are using the same QEMU
+> +binary in both sides of the migration.  If we use different QEMU
+> +versions process, then we need to have into account all other
+> +differences and the examples become even more complicated.
+>  
+>  VMState
+>  -------
 
