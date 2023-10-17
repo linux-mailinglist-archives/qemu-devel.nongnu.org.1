@@ -2,78 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985C87CC8E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 080AD7CC8E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 18:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsmyd-0003kO-98; Tue, 17 Oct 2023 12:31:27 -0400
+	id 1qsmzp-0004bl-P0; Tue, 17 Oct 2023 12:32:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsmyU-0003e2-K8
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:31:18 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <amit251098@gmail.com>)
+ id 1qsmzj-0004YO-O6
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:32:36 -0400
+Received: from mail-qv1-xf36.google.com ([2607:f8b0:4864:20::f36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qsmyR-0003DU-Uf
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:31:18 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-507a29c7eefso4339759e87.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 09:31:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <amit251098@gmail.com>)
+ id 1qsmzi-0003LG-7G
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 12:32:35 -0400
+Received: by mail-qv1-xf36.google.com with SMTP id
+ 6a1803df08f44-65af7d102b3so38224706d6.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 09:32:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697560274; x=1698165074; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8+FdS2Hh0u1oHoP7gY5vka4xuDTHAmavulQ/v+ehkN0=;
- b=A0XXX37az2stadykGsqhQeQcHJerSDf7kKTiezEH76c+QYgoXPahISNaoTxLQm5Qik
- tVxWLkcXBS5MxMZAKhq3UyPR87eutjUR6Nz/OeHAcsMMKlNnpmgmWFqO4y+fU1UslhJR
- Iz1QJj7Uu3dpASCffEULJ1FyvZ3qr7rKSPpqsddxtE/Ui7xRbuJOLsVJlQ0Cho0v4cfY
- 1SE9dPd9WPktPbzK8x0EsLKNHf4lR+Ztqw3ksh89Pqeb3/oR+tNXNlRxQy4e0SuSzuNh
- Fz3nsocifjmlLcml8OREIrbsp6UbljK3cyLx1T4T+JXgTuq8RhbaAeuSsQgB0C3vF1Xr
- cMvA==
+ d=gmail.com; s=20230601; t=1697560352; x=1698165152; darn=nongnu.org;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7S10lM7WUQpoKOJGHz3DIwJOChhseewGJRF/HhvU0CY=;
+ b=M/Drgyitvf5Mq61NPT6uOBD7m2c4LINauB1aoRCKLtC/NGdz/FmZNc8zUFJD/ibhuY
+ uGVe9qZXxWURz2Jw27aoDuFaMT3Uu3IZ33Zxad3OVm7Byprw1dmbZlbRsf9QlAYD9zJr
+ iwUKEOnqL9SbCQ0QJcCHMoQE5OMn9CgpJmX3jgfmw5jjOPYjWkG3Jzh23gO08s5gyYSX
+ g2gkMa6mX9gHg1Z6n4hOtjEVpfqnKPNQcbh9jt1N3JWZAwBTvircvcRfridA/E/eIbca
+ QfvGp5UWwKmsa74PMcf19n+W/pzql28vAU6/zjdz/TrOOtw0SN3tqcD2wcs3Xqe5ygna
+ UarQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697560274; x=1698165074;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8+FdS2Hh0u1oHoP7gY5vka4xuDTHAmavulQ/v+ehkN0=;
- b=hz2zhFnpKx7zBeNEnZ91WAK5rznL4589Nim65Srr/nrPIYaaH+D8RjJyG8Zmxa4U0y
- vJZQeKhIte0nuzSqD8K6JMXEeoU9hG9jyZwsB4zcOWSJQ2/TdIi+Rtw+UUBkiQ48/KrG
- xP/LMjLIEFEw4cHdep1R7dtcv0iDaQTt/L79t2of+8BBCOL2Kr33YjE7xfv65t2yjsDQ
- BYDnbwUUMTQORroTeMrGBrvBPyXk+1PMWD0p1/UxKde/d/VaqC87eb++XMcqiNybIZuq
- UIttLz7tCPnjtHQsT475hdPwO7O6znrwlCtRS38ms+6g4VUa9GullUNDs1ErfDY/AnFG
- bpiw==
-X-Gm-Message-State: AOJu0Ywdee3x+DX/8h5mlkg7fEz5T6+m7+QwUrSRetU/C3VHEwWXv5aa
- ibp1kXM9bVUHGvgW63zf2AF7qw8fHQS/qeUYv7tSXg==
-X-Google-Smtp-Source: AGHT+IFxlCKZQlTd2swzFCdWvdgF3E/+IDWcBGY1d77BMdhuT//kwR4M7wfStyg6QDnm702LjYF2EIfiikEVE06Z580=
-X-Received: by 2002:a19:e05b:0:b0:504:c83e:322b with SMTP id
- g27-20020a19e05b000000b00504c83e322bmr1849374lfj.38.1697560273932; Tue, 17
- Oct 2023 09:31:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697560352; x=1698165152;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7S10lM7WUQpoKOJGHz3DIwJOChhseewGJRF/HhvU0CY=;
+ b=lz3nyvW+VKCmV4OjDycXyiBCJkLaliqXi7wtmiSUgpbpN864tNYW9ATTEWbznXcrFu
+ gwpJ3S5ZS+lB8E/BcRer7cTGbF5QEtc/WPQYtWKr5yVlxfd0kgB18eWbWOW6X1k8Y2m3
+ 24Q/Vl3xTEcjJfixuWZWCf/m04Wq3UGwBsughRAKTqwtYw/u5G0rIMpVdugaruDn1xo8
+ GdCzEh0HAPceZd0OZXc2rl1Djfru7drjZP2zZCCCk1TQfJ3VZfTY/NtXj0emMMyxVoKg
+ Lf3g5f0PIgCbedxnchMs/1Z+CDx/y3D9/lD/pJUk+UEUhvlUc4YWALahWxTizlr+tgFR
+ cfnA==
+X-Gm-Message-State: AOJu0YyXBPlq8Ezd8OI6jyVBRQvpHelIQErpHi2cndT1Qd6JN4yLmpzv
+ c7bwdjswMlYS6ABJI06qMp1INTTHGzWTs8X4BPetMF0N
+X-Google-Smtp-Source: AGHT+IE9FzzE7inmna90JmwcLBm7x/ztPim4xnweP/eA8nWjgJUtUf/sXeuyaW7TMJAQ5dsOEBtABp5C08fxqvXca4E=
+X-Received: by 2002:a05:6214:27c2:b0:66d:43be:7e45 with SMTP id
+ ge2-20020a05621427c200b0066d43be7e45mr3592240qvb.43.1697560352304; Tue, 17
+ Oct 2023 09:32:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231012121857.31873-1-philmd@linaro.org>
- <20231012121857.31873-2-philmd@linaro.org>
-In-Reply-To: <20231012121857.31873-2-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 17 Oct 2023 17:31:02 +0100
-Message-ID: <CAFEAcA_tzc+BE237U1pLZ1JO6KCqLvdbR6LMhZ_0VNC7m73dCQ@mail.gmail.com>
-Subject: Re: [PATCH 1/8] hw/pci-host/designware: Declare CPU QOM types using
- DEFINE_TYPES() macro
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Andrey Smirnov <andrew.smirnov@gmail.com>,
- qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <CAHhcV8-HHG36Ndv7Y-K5FrUTb-WwVoRW3PPzaiM4hEesGA-iWw@mail.gmail.com>
+In-Reply-To: <CAHhcV8-HHG36Ndv7Y-K5FrUTb-WwVoRW3PPzaiM4hEesGA-iWw@mail.gmail.com>
+From: Amit Kumar <amit251098@gmail.com>
+Date: Tue, 17 Oct 2023 22:02:21 +0530
+Message-ID: <CAHhcV89tKJiFz6CW5Xm6XP5pDs1uLBew=kjC5qd-k+fNVmdt1g@mail.gmail.com>
+Subject: Re: [Beginner-Help] Help understanding the migration Code
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000c8b3620607ec115a"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f36;
+ envelope-from=amit251098@gmail.com; helo=mail-qv1-xf36.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,21 +83,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 12 Oct 2023 at 13:19, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> When multiple QOM types are registered in the same file,
-> it is simpler to use the the DEFINE_TYPES() macro. In
-> particular because type array declared with such macro
-> are easier to review.
->
-> Remove a pointless structure declaration in "designware.h".
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
+--000000000000c8b3620607ec115a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Following up on the previous email I sent. I want to understand the
+migration code, I have read a couple of papers on how it works in theory,
+but I am finding it hard to find a starting point where I can start to
+understand the code.
 
-thanks
--- PMM
+Any help would be appreciated.
+
+Thank you
+
+On Wed, Oct 11, 2023 at 9:40=E2=80=AFAM Amit Kumar <amit251098@gmail.com> w=
+rote:
+
+> Hi
+> I am trying to understand how migration, more specifically live-migration
+> works in QEMU. I've tried going through the source code but didn't
+> understand much, and couldn't find documentation either. I want to work o=
+n
+> live migration and need help getting to know the code.
+> More specifically I want to understand
+> - where the pre/post copy algorithms are implemented
+> - which files/data-structures that I should look at
+> - should I need to make changes, where and how should I start?
+>
+> I am new to working with such large code bases, hence need some guidance.
+>
+> Thanks
+>
+> Amit Kumar
+>
+
+--000000000000c8b3620607ec115a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Following up on the previous email I sent. I want to =
+understand the migration code, I have read a couple of papers on how it wor=
+ks in theory, but I am finding it hard to find a starting point where I can=
+ start to understand the code. <br></div><div><br></div><div>Any help=C2=A0=
+would be appreciated.</div><div><br></div><div>Thank you<br></div></div><br=
+><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, O=
+ct 11, 2023 at 9:40=E2=80=AFAM Amit Kumar &lt;<a href=3D"mailto:amit251098@=
+gmail.com">amit251098@gmail.com</a>&gt; wrote:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div>Hi</div><div>I am tr=
+ying to understand how migration, more specifically live-migration works in=
+ QEMU. I&#39;ve tried going through the source code but didn&#39;t understa=
+nd much, and couldn&#39;t find documentation either. I want to work on live=
+ migration and need help getting to know the code. <br></div><div>More spec=
+ifically I want to understand</div><div>- where the pre/post copy algorithm=
+s are implemented</div><div>- which files/data-structures that I should loo=
+k at</div><div>- should I need to make changes, where and how should I star=
+t?</div><div><br></div><div>I am new to working with such large code bases,=
+ hence need some=C2=A0guidance.</div><div><br></div><div>Thanks</div><div><=
+br></div><div>Amit Kumar<br></div></div>
+</blockquote></div>
+
+--000000000000c8b3620607ec115a--
 
