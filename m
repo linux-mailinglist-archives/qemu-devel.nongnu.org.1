@@ -2,28 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C607CCBD1
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 21:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C187CCBCF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 21:09:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qspQG-0001fO-Ua; Tue, 17 Oct 2023 15:08:08 -0400
+	id 1qspQF-0001dM-Hl; Tue, 17 Oct 2023 15:08:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qspQD-0001dE-T5; Tue, 17 Oct 2023 15:08:05 -0400
+ id 1qspQC-0001cv-Ot; Tue, 17 Oct 2023 15:08:04 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qspQB-0001N2-37; Tue, 17 Oct 2023 15:08:05 -0400
+ id 1qspQ9-0001N6-Vc; Tue, 17 Oct 2023 15:08:04 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 3991F7456AA;
- Tue, 17 Oct 2023 21:06:49 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 4983F74632B;
+ Tue, 17 Oct 2023 21:06:50 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 04C807456A7; Tue, 17 Oct 2023 21:06:49 +0200 (CEST)
-Message-Id: <cover.1697568616.git.balaton@eik.bme.hu>
+ id 1DF2C7456A7; Tue, 17 Oct 2023 21:06:50 +0200 (CEST)
+Message-Id: <aaba15a23c2febd154d1b227a5b3b8a212e52d0e.1697568616.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1697568616.git.balaton@eik.bme.hu>
+References: <cover.1697568616.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v4 0/4] Add emulation of AmigaOne XE board
+Subject: [PATCH v4 1/4] via-ide: Fix legacy mode emulation
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -31,7 +33,7 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Date: Tue, 17 Oct 2023 21:06:49 +0200 (CEST)
+Date: Tue, 17 Oct 2023 21:06:50 +0200 (CEST)
 X-Spam-Probability: 8%
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
@@ -55,45 +57,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes in v4:
-- Found typo in comment in patch 1 so ended up rewording it again
-trying to make it more concise. Also take the idea of using
-range_covers_byte from Mark's patch
-- Added RFC patch for avocado test (untested, I don't have Avocado)
+The initial value for BARs were set in reset method for emulating
+legacy mode at start but this does not work because PCI code resets
+BARs after calling device reset method. Remove this ineffective
+default to avoid confusion.
 
-Changes in v3:
-- Update values, comment and commit message in patch 1 again
+Instead move setting the BARs to a callback on writing the PCI config
+regsiter that sets legacy mode (which firmwares needing this mode seem
+to do). This does not fully emulate what the data sheet says (which is
+not very clear on this) but it implements enough to allow both modes
+as used by firmwares and guests on machines we emulate.
 
-Changes in v2:
-- Update comment and commit message in patch 1 (Mark)
-- Fix irq mapping in patch 2 (Volker)
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ hw/ide/via.c | 43 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 38 insertions(+), 5 deletions(-)
 
-Regards,
-BALATON Zoltan
-
-BALATON Zoltan (4):
-  via-ide: Fix legacy mode emulation
-  hw/pci-host: Add emulation of Mai Logic Articia S
-  hw/ppc: Add emulation of AmigaOne XE board
-  tests/avocado: Add test for amigaone board
-
- MAINTAINERS                             |   8 +
- configs/devices/ppc-softmmu/default.mak |   1 +
- hw/ide/via.c                            |  43 +++-
- hw/pci-host/Kconfig                     |   5 +
- hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
- hw/pci-host/meson.build                 |   2 +
- hw/ppc/Kconfig                          |   7 +
- hw/ppc/amigaone.c                       | 164 +++++++++++++
- hw/ppc/meson.build                      |   2 +
- include/hw/pci-host/articia.h           |  17 ++
- tests/avocado/ppc_amiga.py              |  37 +++
- 11 files changed, 574 insertions(+), 5 deletions(-)
- create mode 100644 hw/pci-host/articia.c
- create mode 100644 hw/ppc/amigaone.c
- create mode 100644 include/hw/pci-host/articia.h
- create mode 100644 tests/avocado/ppc_amiga.py
-
+diff --git a/hw/ide/via.c b/hw/ide/via.c
+index fff23803a6..5a1fe38fb8 100644
+--- a/hw/ide/via.c
++++ b/hw/ide/via.c
+@@ -28,6 +28,7 @@
+ #include "hw/pci/pci.h"
+ #include "migration/vmstate.h"
+ #include "qemu/module.h"
++#include "qemu/range.h"
+ #include "sysemu/dma.h"
+ #include "hw/isa/vt82c686.h"
+ #include "hw/ide/pci.h"
+@@ -132,11 +133,6 @@ static void via_ide_reset(DeviceState *dev)
+     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+                  PCI_STATUS_DEVSEL_MEDIUM);
+ 
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 20-23h */
+     pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+ 
+     /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
+@@ -159,6 +155,42 @@ static void via_ide_reset(DeviceState *dev)
+     pci_set_long(pci_conf + 0xc0, 0x00020001);
+ }
+ 
++static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
++                              uint32_t val, int len)
++{
++    pci_default_write_config(pd, addr, val, len);
++    /*
++     * Bits 0 and 2 of the PCI programming interface register are documented to
++     * select between legacy and native mode for the two IDE channels. when the
++     * guest selects legacy mode we reset the PCI BARs to legacy ports which is
++     * their default value. We don't care about setting each channel separately
++     * as no guest is known to do or need that. But only do this when BARs are
++     * unset when writing this register as logs from real hardware show that
++     * setting legacy mode after BARs were set will still use ports set by BARs
++     * not ISA ports (Linux on pegasos2 does this after firmware set native
++     * mode and programmed BARs). If 0x8a is written after reset without
++     * setting BARs then we want legacy ports (this is done by the AmigaOne
++     * firmware). We can't set these in via_ide_reset() because PCI code clears
++     * BARs after calling device reset method.
++     */
++    if (range_covers_byte(addr, len, PCI_CLASS_PROG) &&
++        pd->config[PCI_CLASS_PROG] == 0x8a &&
++        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
++        PCI_BASE_ADDRESS_SPACE_IO) {
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f4
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x374
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++        /* BMIBA: 20-23h */
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++    }
++}
++
+ static void via_ide_realize(PCIDevice *dev, Error **errp)
+ {
+     PCIIDEState *d = PCI_IDE(dev);
+@@ -221,6 +253,7 @@ static void via_ide_class_init(ObjectClass *klass, void *data)
+     /* Reason: only works as function of VIA southbridge */
+     dc->user_creatable = false;
+ 
++    k->config_write = via_ide_cfg_write;
+     k->realize = via_ide_realize;
+     k->exit = via_ide_exitfn;
+     k->vendor_id = PCI_VENDOR_ID_VIA;
 -- 
 2.30.9
 
