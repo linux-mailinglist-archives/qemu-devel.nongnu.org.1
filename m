@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D8B7CE23E
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8637CE21E
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:05:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8vM-0005wu-Cm; Wed, 18 Oct 2023 11:57:32 -0400
+	id 1qt8wd-00013z-T4; Wed, 18 Oct 2023 11:58:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8u0-0003Di-St
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:56:09 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8u8-0003Lt-Ie
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:56:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8ty-0006vL-A9
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:56:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8u7-0006xF-1N
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:56:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644565;
+ s=mimecast20190719; t=1697644574;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ySJRsoNBBcgqyKONkpVDvYCkflnLmxrOPirjci4NdfM=;
- b=X9yKe+F4jBaALb1HZAe7APAX8RbY0MpBZg4FqMJgm4oV2s+K/nf7zDQd2AboqjuCLZqxA5
- jqZ8KOofk67DsgJBBoI9HDyNdQirwqXgeA2uA5Bz/k6mV6y9YNZXzsDZ1BzLVoXdfo5ks+
- IycxHixr8Ps5nlljiDW/N859+dfXBgc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=n62ZCYLMWQB+v9G4ohwIMDOGfFG/zqXCKAbKv3KvAW8=;
+ b=h6MPsRSwexB1piUbv1g4SgLlXCKXC3QmZqMaOukHxSP7dlVwex9KkFvPF8ZcHax8TAtt6M
+ yAjOOQfI6Zp8w6Z/6qRRYDCosPKGth+xmtYmTVaW6kJ4tquMdz4myZpmP4ZTDmUK+vt2yE
+ ZpMtOFJy2atVMNkaS3YK/0aLGdzlCFc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-PPKDzwwSP2agZjUcacNYdQ-1; Wed, 18 Oct 2023 11:56:04 -0400
-X-MC-Unique: PPKDzwwSP2agZjUcacNYdQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32d83fd3765so4284056f8f.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:56:03 -0700 (PDT)
+ us-mta-544-rqgZ_0V4N_milR0Z4MKygg-1; Wed, 18 Oct 2023 11:56:13 -0400
+X-MC-Unique: rqgZ_0V4N_milR0Z4MKygg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4053a5c6a59so44803295e9.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:56:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644562; x=1698249362;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ySJRsoNBBcgqyKONkpVDvYCkflnLmxrOPirjci4NdfM=;
- b=V6bUmaFhx/RazfB4NNdzGKFEnEYctxRZAS38y95H1QghINpMK1+t1otqQaaTTUBOv9
- YjnfVzVd5wzz/DREVrEI+Sxnk45tSVFpUKelvvKqx/iCuKy94heFvJkRW83unNxgbf3i
- CvEGsh9bn5meCyuHV2yc9MlT6w3eV9hygS88qN7gMEetwVSA/mj68ZDt26SSKlELn8x8
- OXHAdO6vof+kBBhI2WKkGfXKLRhj6ljqUfPiwXVz18gC6q8+En/ypkze9aF3n70uUhng
- cg27YE248UMZTHVQjYbiQrTAJvZcR8ZBHsyxtjsufkeI2uNt4LaFePmw8o/sudzch5i1
- /NZA==
-X-Gm-Message-State: AOJu0YxV67cYopgwvCassUYv12c5jVcZ4l0n8lMYVfBNNxCYlVkaVKoW
- peOqkZGBcgbuJNKOikJG5cKxXd3UaM8H+RJ9PTIAwJSs+VW/6FL5lljxLh3WgrR7BvKI9ep1T80
- 4JOLw6KyVv1Ce6qOdK1zt4uVcNZDtfAeB6F8G5QeSc/gZDsLptWQWkpE5++DfrxlQ0zpRIeQ=
-X-Received: by 2002:adf:e387:0:b0:32d:9391:b3ac with SMTP id
- e7-20020adfe387000000b0032d9391b3acmr4517540wrm.60.1697644562075; 
- Wed, 18 Oct 2023 08:56:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEy21dC1Fia4eHdmGNTNpqRhVdk4v6akZ2USc4SPpkw5jcBZdQS/2hzcBmIGgPScHIWo72cIg==
-X-Received: by 2002:adf:e387:0:b0:32d:9391:b3ac with SMTP id
- e7-20020adfe387000000b0032d9391b3acmr4517516wrm.60.1697644561664; 
- Wed, 18 Oct 2023 08:56:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697644571; x=1698249371;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=n62ZCYLMWQB+v9G4ohwIMDOGfFG/zqXCKAbKv3KvAW8=;
+ b=X/837KvuataE/IufwmsBySsXikf5IbGRzxc4eC8Wyhh210QJ9YPpV0tC3EGnYNI1JG
+ /FrPyEExp4okCDfDrHTWSgfrb5A6Fax3cFqMzzoqj65VcRD8BHxLyg5XUTpEMB6EaHzs
+ xW2CVXAMagKMdSzQkvQ2D+bxHbbsUBtwEWpysrbkhz0iciw40bXEsz4998uJn9f3c1yF
+ 3I8JBPOML0omV7tztCHcvFDXAmS05eJQQKF+ujRrBTJaaqUkEgMDEsboFeWzJaLtiQZp
+ LtIhndLeE97QrjxXNfFP/ZvyKAZNPl4IQvWY051rOepCPDzbsGUonUjuP65v0FQFhrgB
+ rxpg==
+X-Gm-Message-State: AOJu0Yy8JzQNYv3CaVHxOTAVh2/dS6qXqbjJERtKP1yZxBRZRc+N4phR
+ jO9LY9Z0czSBXIJ5NJBY4xKPT/dVSCGEqOH7+I7doRQL5QVXvHKvQ8AFfV0TJ5oucyhEqJZM0qm
+ dxW99UO0f3BlWXrN3N/T99qFRvqVaLhio+peMKvTSZ5mQJthjqCyX9EUuqEXaTRBqG+wq+JM=
+X-Received: by 2002:a05:600c:46c6:b0:406:7d74:a2a6 with SMTP id
+ q6-20020a05600c46c600b004067d74a2a6mr4371134wmo.24.1697644571153; 
+ Wed, 18 Oct 2023 08:56:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDvMbCkZcCP+baXwAbNV0BwtseK+A+qqmRi04dO+1BFvCnCOH6f0hFRFZ3wEyq19QH1Og+gA==
+X-Received: by 2002:a05:600c:46c6:b0:406:7d74:a2a6 with SMTP id
+ q6-20020a05600c46c600b004067d74a2a6mr4371119wmo.24.1697644570744; 
+ Wed, 18 Oct 2023 08:56:10 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- d14-20020a056000114e00b003232380ffd5sm2363989wrx.106.2023.10.18.08.55.57
+ v21-20020a05600c12d500b004081a011c0esm1957200wmd.12.2023.10.18.08.56.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:56:01 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:55:55 -0400
+ Wed, 18 Oct 2023 08:56:10 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:56:06 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Laszlo Ersek <lersek@redhat.com>,
- Eugenio Perez Martin <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Albert Esteve <aesteve@redhat.com>
-Subject: [PULL 35/83] vhost-user: call VHOST_USER_SET_VRING_ENABLE
- synchronously
-Message-ID: <77b9150c60b3f26ea235cb7058b9b24bca6234f8.1697644299.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PULL 37/83] vhost-user: do not send RESET_OWNER on device reset
+Message-ID: <984f07e6172035498cd9c9614074a3ee0e775c13.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1697644299.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -105,180 +100,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laszlo Ersek <lersek@redhat.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-(1) The virtio-1.2 specification
-<http://docs.oasis-open.org/virtio/virtio/v1.2/virtio-v1.2.html> writes:
+The VHOST_USER_RESET_OWNER message is deprecated in the spec:
 
-> 3     General Initialization And Device Operation
-> 3.1   Device Initialization
-> 3.1.1 Driver Requirements: Device Initialization
->
-> [...]
->
-> 7. Perform device-specific setup, including discovery of virtqueues for
->    the device, optional per-bus setup, reading and possibly writing the
->    device’s virtio configuration space, and population of virtqueues.
->
-> 8. Set the DRIVER_OK status bit. At this point the device is “live”.
+   This is no longer used. Used to be sent to request disabling all
+   rings, but some back-ends interpreted it to also discard connection
+   state (this interpretation would lead to bugs).  It is recommended
+   that back-ends either ignore this message, or use it to disable all
+   rings.
 
-and
+The only caller of vhost_user_reset_device() is vhost_user_scsi_reset().
+It checks that F_RESET_DEVICE was negotiated before calling it:
 
-> 4         Virtio Transport Options
-> 4.1       Virtio Over PCI Bus
-> 4.1.4     Virtio Structure PCI Capabilities
-> 4.1.4.3   Common configuration structure layout
-> 4.1.4.3.2 Driver Requirements: Common configuration structure layout
->
-> [...]
->
-> The driver MUST configure the other virtqueue fields before enabling the
-> virtqueue with queue_enable.
->
-> [...]
+  static void vhost_user_scsi_reset(VirtIODevice *vdev)
+  {
+      VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
+      struct vhost_dev *dev = &vsc->dev;
 
-(The same statements are present in virtio-1.0 identically, at
-<http://docs.oasis-open.org/virtio/virtio/v1.0/virtio-v1.0.html>.)
+      /*
+       * Historically, reset was not implemented so only reset devices
+       * that are expecting it.
+       */
+      if (!virtio_has_feature(dev->protocol_features,
+                              VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
+          return;
+      }
 
-These together mean that the following sub-sequence of steps is valid for
-a virtio-1.0 guest driver:
+      if (dev->vhost_ops->vhost_reset_device) {
+          dev->vhost_ops->vhost_reset_device(dev);
+      }
+  }
 
-(1.1) set "queue_enable" for the needed queues as the final part of device
-initialization step (7),
+Therefore VHOST_USER_RESET_OWNER is actually never sent by
+vhost_user_reset_device(). Remove the dead code. This effectively moves
+the vhost-user protocol specific code from vhost-user-scsi.c into
+vhost-user.c where it belongs.
 
-(1.2) set DRIVER_OK in step (8),
-
-(1.3) immediately start sending virtio requests to the device.
-
-(2) When vhost-user is enabled, and the VHOST_USER_F_PROTOCOL_FEATURES
-special virtio feature is negotiated, then virtio rings start in disabled
-state, according to
-<https://qemu-project.gitlab.io/qemu/interop/vhost-user.html#ring-states>.
-In this case, explicit VHOST_USER_SET_VRING_ENABLE messages are needed for
-enabling vrings.
-
-Therefore setting "queue_enable" from the guest (1.1) -- which is
-technically "buffered" on the QEMU side until the guest sets DRIVER_OK
-(1.2) -- is a *control plane* operation, which -- after (1.2) -- travels
-from the guest through QEMU to the vhost-user backend, using a unix domain
-socket.
-
-Whereas sending a virtio request (1.3) is a *data plane* operation, which
-evades QEMU -- it travels from guest to the vhost-user backend via
-eventfd.
-
-This means that operations ((1.1) + (1.2)) and (1.3) travel through
-different channels, and their relative order can be reversed, as perceived
-by the vhost-user backend.
-
-That's exactly what happens when OVMF's virtiofs driver (VirtioFsDxe) runs
-against the Rust-language virtiofsd version 1.7.2. (Which uses version
-0.10.1 of the vhost-user-backend crate, and version 0.8.1 of the vhost
-crate.)
-
-Namely, when VirtioFsDxe binds a virtiofs device, it goes through the
-device initialization steps (i.e., control plane operations), and
-immediately sends a FUSE_INIT request too (i.e., performs a data plane
-operation). In the Rust-language virtiofsd, this creates a race between
-two components that run *concurrently*, i.e., in different threads or
-processes:
-
-- Control plane, handling vhost-user protocol messages:
-
-  The "VhostUserSlaveReqHandlerMut::set_vring_enable" method
-  [crates/vhost-user-backend/src/handler.rs] handles
-  VHOST_USER_SET_VRING_ENABLE messages, and updates each vring's "enabled"
-  flag according to the message processed.
-
-- Data plane, handling virtio / FUSE requests:
-
-  The "VringEpollHandler::handle_event" method
-  [crates/vhost-user-backend/src/event_loop.rs] handles the incoming
-  virtio / FUSE request, consuming the virtio kick at the same time. If
-  the vring's "enabled" flag is set, the virtio / FUSE request is
-  processed genuinely. If the vring's "enabled" flag is clear, then the
-  virtio / FUSE request is discarded.
-
-Note that OVMF enables the queue *first*, and sends FUSE_INIT *second*.
-However, if the data plane processor in virtiofsd wins the race, then it
-sees the FUSE_INIT *before* the control plane processor took notice of
-VHOST_USER_SET_VRING_ENABLE and green-lit the queue for the data plane
-processor. Therefore the latter drops FUSE_INIT on the floor, and goes
-back to waiting for further virtio / FUSE requests with epoll_wait.
-Meanwhile OVMF is stuck waiting for the FUSET_INIT response -- a deadlock.
-
-The deadlock is not deterministic. OVMF hangs infrequently during first
-boot. However, OVMF hangs almost certainly during reboots from the UEFI
-shell.
-
-The race can be "reliably masked" by inserting a very small delay -- a
-single debug message -- at the top of "VringEpollHandler::handle_event",
-i.e., just before the data plane processor checks the "enabled" field of
-the vring. That delay suffices for the control plane processor to act upon
-VHOST_USER_SET_VRING_ENABLE.
-
-We can deterministically prevent the race in QEMU, by blocking OVMF inside
-step (1.2) -- i.e., in the write to the device status register that
-"unleashes" queue enablement -- until VHOST_USER_SET_VRING_ENABLE actually
-*completes*. That way OVMF's VCPU cannot advance to the FUSE_INIT
-submission before virtiofsd's control plane processor takes notice of the
-queue being enabled.
-
-Wait for VHOST_USER_SET_VRING_ENABLE completion by:
-
-- setting the NEED_REPLY flag on VHOST_USER_SET_VRING_ENABLE, and waiting
-  for the reply, if the VHOST_USER_PROTOCOL_F_REPLY_ACK vhost-user feature
-  has been negotiated, or
-
-- performing a separate VHOST_USER_GET_FEATURES *exchange*, which requires
-  a backend response regardless of VHOST_USER_PROTOCOL_F_REPLY_ACK.
-
-Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
-Cc: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: German Maglione <gmaglione@redhat.com>
-Cc: Liu Jiang <gerry@linux.alibaba.com>
-Cc: Sergio Lopez Pascual <slp@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Tested-by: Albert Esteve <aesteve@redhat.com>
-[lersek@redhat.com: work Eugenio's explanation into the commit message,
- about QEMU containing step (1.1) until step (1.2)]
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20231002203221.17241-8-lersek@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20231004014532.1228637-2-stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
 ---
- hw/virtio/vhost-user.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ hw/scsi/vhost-user-scsi.c |  9 ---------
+ hw/virtio/vhost-user.c    | 13 +++++++++----
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index df6b66cc1a..78aef4765f 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -67,15 +67,6 @@ static void vhost_user_scsi_reset(VirtIODevice *vdev)
+     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
+     struct vhost_dev *dev = &vsc->dev;
+ 
+-    /*
+-     * Historically, reset was not implemented so only reset devices
+-     * that are expecting it.
+-     */
+-    if (!virtio_has_feature(dev->protocol_features,
+-                            VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
+-        return;
+-    }
+-
+     if (dev->vhost_ops->vhost_reset_device) {
+         dev->vhost_ops->vhost_reset_device(dev);
+     }
 diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 7e452849fa..427ee0ebfb 100644
+index 427ee0ebfb..f9414f03de 100644
 --- a/hw/virtio/vhost-user.c
 +++ b/hw/virtio/vhost-user.c
-@@ -1225,7 +1225,21 @@ static int vhost_user_set_vring_enable(struct vhost_dev *dev, int enable)
-             .num   = enable,
-         };
+@@ -1482,12 +1482,17 @@ static int vhost_user_reset_device(struct vhost_dev *dev)
+ {
+     VhostUserMsg msg = {
+         .hdr.flags = VHOST_USER_VERSION,
++        .hdr.request = VHOST_USER_RESET_DEVICE,
+     };
  
--        ret = vhost_set_vring(dev, VHOST_USER_SET_VRING_ENABLE, &state, false);
-+        /*
-+         * SET_VRING_ENABLE travels from guest to QEMU to vhost-user backend /
-+         * control plane thread via unix domain socket. Virtio requests travel
-+         * from guest to vhost-user backend / data plane thread via eventfd.
-+         * Even if the guest enables the ring first, and pushes its first virtio
-+         * request second (conforming to the virtio spec), the data plane thread
-+         * in the backend may see the virtio request before the control plane
-+         * thread sees the queue enablement. This causes (in fact, requires) the
-+         * data plane thread to discard the virtio request (it arrived on a
-+         * seemingly disabled queue). To prevent this out-of-order delivery,
-+         * don't let the guest proceed to pushing the virtio request until the
-+         * backend control plane acknowledges enabling the queue -- IOW, pass
-+         * wait_for_reply=true below.
-+         */
-+        ret = vhost_set_vring(dev, VHOST_USER_SET_VRING_ENABLE, &state, true);
-         if (ret < 0) {
-             /*
-              * Restoring the previous state is likely infeasible, as well as
+-    msg.hdr.request = virtio_has_feature(dev->protocol_features,
+-                                         VHOST_USER_PROTOCOL_F_RESET_DEVICE)
+-        ? VHOST_USER_RESET_DEVICE
+-        : VHOST_USER_RESET_OWNER;
++    /*
++     * Historically, reset was not implemented so only reset devices
++     * that are expecting it.
++     */
++    if (!virtio_has_feature(dev->protocol_features,
++                            VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
++        return -ENOSYS;
++    }
+ 
+     return vhost_user_write(dev, &msg, NULL, 0);
+ }
 -- 
 MST
 
