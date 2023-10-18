@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA7F7CDD15
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B3A7CDD46
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:29:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6TM-0004NY-2H; Wed, 18 Oct 2023 09:20:28 -0400
+	id 1qt6al-0004Zg-9b; Wed, 18 Oct 2023 09:28:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6TB-0004LV-BM
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:20:17 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6T9-0002Hl-Em
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:20:17 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2c5056059e0so80061851fa.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:20:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697635213; x=1698240013; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PBfHY+i4wONx0Vv1enpd8PbgLKhbdsvN1Nv1qC7ToJE=;
- b=i8cShwimAJvYLu7yaM8vdTUsaS2VYAOmQOz9C3hh9qYERVT3TtyqbsDP9VTLtCBl9P
- EUS8KQHIk7VWRR29s5SQY7BxMg8XT2Q7bZBx8tpo51H8rGI2Vpm178e6viUa9AXyurgo
- S7F7jmowIsdw+/iv+L3BR1L4477tMr51n3rH9YaMoh1uY5wATL+mgOTjdrbTyJN1o7Zq
- /suiQsBhoeaPo2P95YfxHrRpBo5JW2CXSxJ2d91NJqWuZ+wq7S/c0NK/kcQZOf/kfz6C
- 0IuNTBHDfjOwCtUsEzkcKMAvpUQk1qH1X0UczBEVthKflHeovypbnoYn1BSqQUMcZFW2
- E6qw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt6ad-0004Yl-46
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:28:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt6ab-00042l-Ke
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:27:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697635675;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q2CGHvkERvyAnX/3Y6qun7rPuJfcIb7x7iILHqpdU4U=;
+ b=gZ3ny482KbBSTKZnjmm1ONDPz6zzz6HDhC2YTPFamdxxCd4A7HpaBj/HZnTENh6ZeGwExn
+ tMJW9k7EtGGQ/MH2fm/jWBb4FVslIHOSHzDgwOk1iGQI1Sl7NBPZWbWcxaNCJH8zrTkn51
+ zqzNvr5Az/vjs7YsFkhjiMvtT0aLyR8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-550-8z9psDSCPf6j_rg3AVxHig-1; Wed, 18 Oct 2023 09:27:43 -0400
+X-MC-Unique: 8z9psDSCPf6j_rg3AVxHig-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4084163ecd9so773345e9.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:27:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697635213; x=1698240013;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PBfHY+i4wONx0Vv1enpd8PbgLKhbdsvN1Nv1qC7ToJE=;
- b=WsDVgxqYkRbICtvu/TtuuImMV2yJ+41P/VQFkCLQSetEMYq9+CSP1DK6aT28KUh12y
- IKHY/AlqFf19GlH1Hj7gCMWdxgkHa3OgErSE4Fyox6mgUmd/w6UDkvT50f73pV3PWCce
- kgTfZDH5lUVNGD6Ll3+tFuH8X3dFYrtjNIYEkjxtDIMVzWWwgRcTbAG1JhSIGO1/tKrE
- AdiOsh+V3MMXYjCAhZkxetC80AYRqvsPrjKcNbRH+rWxlGi3r3bOAKeTx6+JhHVb6TEG
- jKHrrObwy4HC7VroGLmqBXQwRa8aNtiQM8sY60gZOxIwvmlo5U5Fs1OH9elYvvHFxrmF
- CO6Q==
-X-Gm-Message-State: AOJu0YzaEAB+Lo9uRWGPTgisucTVi2w3fXwJNCy4/aVHs566ChZ2vL1a
- ATXeV8mHqnVo+xknLOe4cOKM1Q==
-X-Google-Smtp-Source: AGHT+IEDN1DNvVW/bylS5bS+5zz806wbV2yINrtEbnRdDjKaSpPko7MyWoaNEXQMF91xDTyZ9wbCSQ==
-X-Received: by 2002:a2e:9b86:0:b0:2c0:14e2:1f5c with SMTP id
- z6-20020a2e9b86000000b002c014e21f5cmr3476863lji.5.1697635213262; 
- Wed, 18 Oct 2023 06:20:13 -0700 (PDT)
-Received: from [192.168.69.115]
- (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr. [176.171.218.149])
+ d=1e100.net; s=20230601; t=1697635662; x=1698240462;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=q2CGHvkERvyAnX/3Y6qun7rPuJfcIb7x7iILHqpdU4U=;
+ b=ZAhbf1+r3KzJWNo6Vvzol6q2xtCkkN2GSwAnTeVK4Trg8JcNVX3UGQC2Npfhb4RfLN
+ Penl9IeFyb82MtBPjXgshrU/0zE5yltnh7m7K+MjLDDFIXnDexgiavKg2Ny8o8tdKuiF
+ 81cdNJ1LpU5MFOURJoHTotf3yaXKfgauRgCjRksncXMoYroAkEXaGN8gijgjw5eXAxQF
+ 9KLjhr6jgSVcgMsrg+uX/TUvjqOWd400EtKuixfcy3HcARyMUku49E6Souy5NSH3fCDD
+ U/+OIf89c8UYTnac57KcDh2PEJb9qoU6+X1+TpTI61kDa3D6OW7PXtHxOcjkmMlHAYF2
+ TgEQ==
+X-Gm-Message-State: AOJu0Yx+FhmwA3GBDVjRj7E2vhTJItz02ipko3kuiL93XJixgpUBPpIF
+ mhSge17YWpTQA8eTMYvln9uAL7kDl8AYj0YAp0UD5sImFK5k0rJvwob34UldrQ5mbx7GUqh/WLp
+ fSz/j05jVpYu8mUY=
+X-Received: by 2002:a05:600c:4f51:b0:405:4a78:a892 with SMTP id
+ m17-20020a05600c4f5100b004054a78a892mr4200432wmq.9.1697635662082; 
+ Wed, 18 Oct 2023 06:27:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRLQmnTOhxa40So/9tgw6ExYiM878K1y9NscxSf609ymSVnj6Z3SZBQdI8bp8hJ2VcClWHYg==
+X-Received: by 2002:a05:600c:4f51:b0:405:4a78:a892 with SMTP id
+ m17-20020a05600c4f5100b004054a78a892mr4200415wmq.9.1697635661693; 
+ Wed, 18 Oct 2023 06:27:41 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- j20-20020a05600c1c1400b003fefb94ccc9sm1536231wms.11.2023.10.18.06.20.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 06:20:12 -0700 (PDT)
-Message-ID: <f12e8129-a77d-e8ee-2a25-b31b5729a0f5@linaro.org>
-Date: Wed, 18 Oct 2023 15:20:10 +0200
+ b17-20020a05600010d100b003197869bcd7sm2125386wrx.13.2023.10.18.06.27.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 06:27:40 -0700 (PDT)
+Date: Wed, 18 Oct 2023 09:27:37 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
+ David Woodhouse <dwmw@amazon.co.uk>
+Subject: Re: [PATCH] i386/pc: Drop pc_machine_kvm_type()
+Message-ID: <20231018092715-mutt-send-email-mst@kernel.org>
+References: <20231007065819.27498-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3] qapi: provide a friendly string representation of QAPI
- classes
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>
-References: <20231018120500.2028642-1-berrange@redhat.com>
- <87y1g0nm1y.fsf@pond.sub.org> <ZS/XgggmI0aoYJR0@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <ZS/XgggmI0aoYJR0@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231007065819.27498-1-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,42 +100,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/10/23 15:02, Daniel P. Berrangé wrote:
-> On Wed, Oct 18, 2023 at 02:37:45PM +0200, Markus Armbruster wrote:
->> Daniel P. Berrangé <berrange@redhat.com> writes:
->>
->>> If printing a QAPI schema object for debugging we get the classname and
->>> a hex value for the instance:
->>>
->>>    <qapi.schema.QAPISchemaEnumType object at 0x7f0ab4c2dad0>
->>>    <qapi.schema.QAPISchemaObjectType object at 0x7f0ab4c2dd90>
->>>    <qapi.schema.QAPISchemaArrayType object at 0x7f0ab4c2df90>
->>>
->>> With this change we instead get the classname and the human friendly
->>> name of the QAPI type instance:
->>>
->>>    <QAPISchemaEnumType:CpuS390State at 0x7f0ab4c2dad0>
->>>    <QAPISchemaObjectType:CpuInfoS390 at 0x7f0ab4c2dd90>
->>>    <QAPISchemaArrayType:CpuInfoFastList at 0x7f0ab4c2df90>
->>>
->>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
->>> ---
-
-
->> Mind if I swap things?  Like so:
->>
->>      def __repr__(self):
->>          if self.name is None:
->>              return "<%s at 0x%x>" % (type(self).__name__, id(self))
->>          else:
->>              return "<%s:%s at 0x%x>" % (type(self).__name__,
->>                                          self.name, id(self))
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+On Sat, Oct 07, 2023 at 02:58:19AM -0400, Xiaoyao Li wrote:
+> pc_machine_kvm_type() was introduced by commit e21be724eaf5 ("i386/xen:
+> add pc_machine_kvm_type to initialize XEN_EMULATE mode") to do Xen
+> specific initialization by utilizing kvm_type method.
 > 
-> Sure, fine with me.
+> commit eeedfe6c6316 ("hw/xen: Simplify emulated Xen platform init")
+> moves the Xen specific initialization to pc_basic_device_init().
 > 
-> With regards,
-> Daniel
+> There is no need to keep the PC specific kvm_type() implementation
+> anymore. So we'll fallback to kvm_arch_get_default_type(), which
+> simply returns 0.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Acked-by: David Woodhouse <dwmw@amazon.co.uk>
+
+Seems ok
+
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+kvm thing so please merge through that tree.
+
+
+> ---
+>  hw/i386/pc.c         | 5 -----
+>  include/hw/i386/pc.h | 3 ---
+>  2 files changed, 8 deletions(-)
+> 
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index aad7e8ccd1d7..41783b137b9a 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1730,11 +1730,6 @@ static void pc_machine_initfn(Object *obj)
+>      cxl_machine_init(obj, &pcms->cxl_devices_state);
+>  }
+>  
+> -int pc_machine_kvm_type(MachineState *machine, const char *kvm_type)
+> -{
+> -    return 0;
+> -}
+> -
+>  static void pc_machine_reset(MachineState *machine, ShutdownCause reason)
+>  {
+>      CPUState *cs;
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index bec38cb92cf7..ad7149cb10b5 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -305,15 +305,12 @@ extern const size_t pc_compat_1_5_len;
+>  extern GlobalProperty pc_compat_1_4[];
+>  extern const size_t pc_compat_1_4_len;
+>  
+> -int pc_machine_kvm_type(MachineState *machine, const char *vm_type);
+> -
+>  #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+>      static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
+>      { \
+>          MachineClass *mc = MACHINE_CLASS(oc); \
+>          optsfn(mc); \
+>          mc->init = initfn; \
+> -        mc->kvm_type = pc_machine_kvm_type; \
+>      } \
+>      static const TypeInfo pc_machine_type_##suffix = { \
+>          .name       = namestr TYPE_MACHINE_SUFFIX, \
+> 
+> base-commit: 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d
+> -- 
+> 2.34.1
+
 
