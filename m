@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4237CD4B0
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 08:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9137CD561
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 09:14:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt0Rq-00087p-KH; Wed, 18 Oct 2023 02:54:31 -0400
+	id 1qt0jW-0003gN-Rq; Wed, 18 Oct 2023 03:12:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt0Rc-000871-V8
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:54:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt0jU-0003eo-MZ
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:12:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt0Rb-0004PJ-E8
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:54:16 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt0jT-0008At-1W
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:12:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697612054;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PoFioH4734qXHH+InawgHw05CWm6OJhkGV6N0AFZ85g=;
- b=c6AQORCEBdMJx+xnkxh8ziR+uPcC25aeAMmIGnpsH3z6NC88XXbTyTwgvzBSKPpMKwni4u
- 4g8sh8k7bbb0tLRd/L9bdhJhGewHFncnLS/y0jFkeXbuXLevvKCNmD5CYPmmK51ryxda2O
- qwuKKOYYotCVFKuEvDZfkx3q8hrtxKg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-670-gSA7WbR4NHmI283rtizNNA-1; Wed, 18 Oct 2023 02:54:13 -0400
-X-MC-Unique: gSA7WbR4NHmI283rtizNNA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 11EDA88CC40;
- Wed, 18 Oct 2023 06:54:13 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C8E4F492BFA;
- Wed, 18 Oct 2023 06:54:12 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B740121E6A1F; Wed, 18 Oct 2023 08:54:11 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel@nongnu.org,
- libvir-list@redhat.com,  Leonardo Bras <leobras@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Fam Zheng <fam@euphon.net>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Eric Blake <eblake@redhat.com>,
- qemu-block@nongnu.org,  Fabiano Rosas <farosas@suse.de>,  Thomas Huth
- <thuth@redhat.com>
-Subject: Re: [PATCH v5 2/7] migration: migrate 'inc' command option is
- deprecated.
-References: <20231017115238.18309-1-quintela@redhat.com>
- <20231017115238.18309-3-quintela@redhat.com>
- <87zg0h5pbh.fsf@pond.sub.org> <87lec1z33t.fsf@secure.mitica>
-Date: Wed, 18 Oct 2023 08:54:11 +0200
-In-Reply-To: <87lec1z33t.fsf@secure.mitica> (Juan Quintela's message of "Tue, 
- 17 Oct 2023 17:21:42 +0200")
-Message-ID: <87r0lsxvxo.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ s=mimecast20190719; t=1697613161;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=6lO1Z5uouFumWnoaDIBzANoAJylwQYQVtj5Q53e69m4=;
+ b=LtmJ3h8jIBNYcExniBt9kKDkX3N0K/R6eCAg6LJiFgAIaHFCRNhfGyUnk5MTr6YN8HhADS
+ OyKx85Vxe5HmizGXyuoaOnVOAX9qwPzJb3Csoq/MH98j9gvwBZqK0WDFLgsPlGdG5KrIsZ
+ JrkMt/9mmPTT6jjNe0MWg8qLY2AAsvA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-cyx2uPVLMPyeYyg6jjewCQ-1; Wed, 18 Oct 2023 03:12:39 -0400
+X-MC-Unique: cyx2uPVLMPyeYyg6jjewCQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4074cdf2566so31830015e9.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 00:12:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697613158; x=1698217958;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6lO1Z5uouFumWnoaDIBzANoAJylwQYQVtj5Q53e69m4=;
+ b=IYfs8OKtbA4r7Yrh5+sSd4jnOsNSiZUoJ4L3N7Hy5OT7yhkMStzd6lXN6Ktb9GVmPf
+ NXxFYcMyVM5gGvxP32ss/T8eIOXJX6v4ambWdXg7ynVQW0WELr3lg7QH4noaN95qPSIR
+ e73nj1bgyUJ3m3R8VIxalimqZfhSYcJd1bIlStryFZxCren/8vtqqkkzYpKAiCRyJJzl
+ WfRnt/iuncBwyVePWjO+FRBi4CVa4YGTY8rbWqB3aDO85ly5k446y+KCxGKs0Q11avlU
+ DhlIdlgftSLSDlyCDqh3psOf0HLg0j6yAlcN5FQEH8JD7Zl/10vY1mv+WxPTF7YKmIDC
+ KnJw==
+X-Gm-Message-State: AOJu0YzwfJFVD1POCNE0vfa3g31Im/fRGcf2StvOtlj7VUcNcKx8NxKz
+ /XeRFtu4DLTx+6f444cDa+/pVecsMLoUAUOhNLUt3Kimpvzlynw9F+/2ze/ClezDKc+fNJfhDA6
+ dEqxt0Ljf36CzRho=
+X-Received: by 2002:a1c:4c08:0:b0:405:29ba:9b5c with SMTP id
+ z8-20020a1c4c08000000b0040529ba9b5cmr3678499wmf.16.1697613158466; 
+ Wed, 18 Oct 2023 00:12:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGF+yJp65oNGOgmL40DdiL64GXFoIH8EmZIggZt9C8fnRnSUxiCrsrmaObYPl4+lfFMaladiA==
+X-Received: by 2002:a1c:4c08:0:b0:405:29ba:9b5c with SMTP id
+ z8-20020a1c4c08000000b0040529ba9b5cmr3678487wmf.16.1697613158162; 
+ Wed, 18 Oct 2023 00:12:38 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ m16-20020a7bca50000000b00405d9a950a2sm852666wml.28.2023.10.18.00.12.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 00:12:36 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] migration: Fix parse_ramblock() on overwritten retvals
+In-Reply-To: <20231017203855.298260-1-peterx@redhat.com> (Peter Xu's message
+ of "Tue, 17 Oct 2023 16:38:55 -0400")
+References: <20231017203855.298260-1-peterx@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 18 Oct 2023 09:12:36 +0200
+Message-ID: <87r0lsxv2z.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,125 +95,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
-
-> Markus Armbruster <armbru@redhat.com> wrote:
->> Juan Quintela <quintela@redhat.com> writes:
->>
->>> Use blockdev-mirror with NBD instead.
->>>
->>> Reviewed-by: Thomas Huth <thuth@redhat.com>
->>> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
->>> Signed-off-by: Juan Quintela <quintela@redhat.com>
->>>
->>> ---
->>>
->>> Improve documentation and style (thanks Markus)
->>> ---
->>>  docs/about/deprecated.rst      | 8 ++++++++
->>>  qapi/migration.json            | 8 +++++++-
->>>  migration/migration-hmp-cmds.c | 5 +++++
->>>  migration/migration.c          | 5 +++++
->>>  4 files changed, 25 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->>> index 2febd2d12f..fc6adf1dea 100644
->>> --- a/docs/about/deprecated.rst
->>> +++ b/docs/about/deprecated.rst
->>> @@ -461,3 +461,11 @@ Migration
->>>  ``skipped`` field in Migration stats has been deprecated.  It hasn't
->>>  been used for more than 10 years.
->>>  
->>> +``inc`` migrate command option (since 8.2)
->>> +''''''''''''''''''''''''''''''''''''''''''
->>> +
->>> +Use blockdev-mirror with NBD instead.
->>> +
->>> +As an intermediate step the ``inc`` functionality can be achieved by
->>> +setting the ``block-incremental`` migration parameter to ``true``.
->>> +But this parameter is also deprecated.
->>> diff --git a/qapi/migration.json b/qapi/migration.json
->>> index db3df12d6c..fa7f4f2575 100644
->>> --- a/qapi/migration.json
->>> +++ b/qapi/migration.json
->>> @@ -1524,6 +1524,11 @@
->>>  #
->>>  # @resume: resume one paused migration, default "off". (since 3.0)
->>>  #
->>> +# Features:
->>> +#
->>> +# @deprecated: Member @inc is deprecated.  Use blockdev-mirror with
->>> +#     NBD instead.
->>> +#
->>>  # Returns: nothing on success
->>>  #
->>>  # Since: 0.14
->>> @@ -1545,7 +1550,8 @@
->>>  # <- { "return": {} }
->>>  ##
->>>  { 'command': 'migrate',
->>> -  'data': {'uri': 'str', '*blk': 'bool', '*inc': 'bool',
->>> +  'data': {'uri': 'str', '*blk': 'bool',
->>> +           '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
->>>             '*detach': 'bool', '*resume': 'bool' } }
->>>  
->>>  ##
->>> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
->>> index a82597f18e..fee7079afa 100644
->>> --- a/migration/migration-hmp-cmds.c
->>> +++ b/migration/migration-hmp-cmds.c
->>> @@ -745,6 +745,11 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
->>>      const char *uri = qdict_get_str(qdict, "uri");
->>>      Error *err = NULL;
->>>  
->>> +    if (inc) {
->>> +        warn_report("option '-i' is deprecated.  Use 'blockdev-mirror + NBD'"
->>> +                    " instead.");
->>
->> Convention: an error or warning message is a single phrase, with no
->> newline or trailing punctuation.  The simplest way to conform to it is
->> something like
->>
->>            warn_report("option '-i' is deprecated;"
->>                        " use blockdev-mirror with NBD instead.");
+Peter Xu <peterx@redhat.com> wrote:
+> It's possible that some errors can be overwritten with success retval later
+> on, and then ignored.  Always capture all errors and report.
 >
-> then the trailing dot is not needed, right?
-
-No!  Comical screwup on my part %-}
-
->>> +    }
->>> +
->>>      qmp_migrate(uri, !!blk, blk, !!inc, inc,
->>>                  false, false, true, resume, &err);
->>>      if (hmp_handle_error(mon, err)) {
->>> diff --git a/migration/migration.c b/migration/migration.c
->>> index 6ba5e145ac..b8b3ba58df 100644
->>> --- a/migration/migration.c
->>> +++ b/migration/migration.c
->>> @@ -1603,6 +1603,11 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
->>>  {
->>>      Error *local_err = NULL;
->>>  
->>> +    if (blk_inc) {
->>> +        warn_report("parameter 'inc' is deprecated.  Use blockdev-mirror with"
->>> +                    " NBD instead");
->>
->> Likewise.
->>
->>> +    }
->>> +
->>>      if (resume) {
->>>          if (s->state != MIGRATION_STATUS_POSTCOPY_PAUSED) {
->>>              error_setg(errp, "Cannot resume if there is no "
->>
->> Other than that
->> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> Reported by Coverity 1522861, but actually I spot one more in the same
+> function.
 >
-> OK, fixing it.
+> Fixes: CID 1522861
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/ram.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/migration/ram.c b/migration/ram.c
+> index c844151ee9..d8bdb53a8f 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -3888,6 +3888,8 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+>          ret = qemu_ram_resize(block, length, &local_err);
+>          if (local_err) {
+>              error_report_err(local_err);
+> +            assert(ret < 0);
+> +            return ret;
 
-Thanks!
+I hate that assert.  If you really want that:
+
+
+         if (ret < 0) {
+            error_report_err(local_err);
+            assert(ret < 0);
+            return ret;
+         }
+
+Rest of the patch looks ok.
+
+Later, Juan.
 
 
