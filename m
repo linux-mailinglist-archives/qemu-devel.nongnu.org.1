@@ -2,54 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D991B7CDA40
+	by mail.lfdr.de (Postfix) with ESMTPS id E01CC7CDA41
 	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:26:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt4gO-0000xI-W7; Wed, 18 Oct 2023 07:25:49 -0400
+	id 1qt4gr-00019t-3X; Wed, 18 Oct 2023 07:26:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qt4gI-0000vT-BT; Wed, 18 Oct 2023 07:25:43 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1qt4gk-000162-Bg
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:26:10 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qt4gF-0005Eu-R3; Wed, 18 Oct 2023 07:25:42 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 38AC5756078;
- Wed, 18 Oct 2023 13:25:32 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id ED857756062; Wed, 18 Oct 2023 13:25:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id EB1DB75606C;
- Wed, 18 Oct 2023 13:25:31 +0200 (CEST)
-Date: Wed, 18 Oct 2023 13:25:31 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
-cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, philmd@linaro.org, 
- Bernhard Beschow <shentey@gmail.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [RFC PATCH v4 4/4] tests/avocado: Add test for amigaone board
-In-Reply-To: <00f18d3d-f0b6-42cf-ae13-46c350e57689@kaod.org>
-Message-ID: <467c0fad-aa60-c8fc-703d-7d05084b72ad@eik.bme.hu>
-References: <cover.1697568616.git.balaton@eik.bme.hu>
- <dea7938f15c3231984546b12ccc8e3b8ba42a203.1697568616.git.balaton@eik.bme.hu>
- <80c9cc1a-7d5b-4840-8dd5-9cbaae51114a@redhat.com>
- <00f18d3d-f0b6-42cf-ae13-46c350e57689@kaod.org>
+ (Exim 4.90_1) (envelope-from <quic_acaggian@quicinc.com>)
+ id 1qt4gf-0005GW-B9
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:26:10 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39I4r2i7017317; Wed, 18 Oct 2023 11:26:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=ztYggaFHGl6w9Dbt79YOuOKnAymuDSkz57q4XkCAi98=;
+ b=UIznMkmMUUeKfmFM+Gb5h6/bDt3Czq1z7Yrq2IF88HFuCU184GJHJ8Z+rGOYkFzAoP3X
+ YMW6AXMJzRHveiVdafg/3tWSUtIt8p2t+0hE08auevReWWSAtjqVEvzKprEj0j35f/28
+ AF8sBUMzVJXsvdJ92Mw960YfPw4HUfreegYnCQp1kSeI53Su7BfmwGNxI4xrb0L0rhsD
+ 1SkggyPwOSmJNV5NYEpOAA+3aapj2/gx4dKVoOIRJj4migAHr7QZIwMpJGA29WsfFTVT
+ ts2Y04k6Esux+L7H7Ke8hJUq9vxZfkDstDECmExI6bwe8lSmn7uPEaszc8A+vQyVFYHQ Fg== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tt1401n7f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Oct 2023 11:26:01 +0000
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39IBQ05n013172
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Oct 2023 11:26:00 GMT
+Received: from [10.251.41.93] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Wed, 18 Oct
+ 2023 04:25:58 -0700
+Message-ID: <4e4d1500-e0f3-041e-1972-ebc96bab287c@quicinc.com>
+Date: Wed, 18 Oct 2023 13:25:56 +0200
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1471827360-1697628331=:90406"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gtk: force realization of drawing area
+Content-Language: en-US
+To: <marcandre.lureau@redhat.com>, <qemu-devel@nongnu.org>
+CC: <mjt@tls.msk.ru>, Gerd Hoffmann <kraxel@redhat.com>
+References: <20231017111642.1155545-1-marcandre.lureau@redhat.com>
+From: Antonio Caggiano <quic_acaggian@quicinc.com>
+In-Reply-To: <20231017111642.1155545-1-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: gblJB7OT3-WZ4ul9MXBg4d2LyeJqwjez
+X-Proofpoint-ORIG-GUID: gblJB7OT3-WZ4ul9MXBg4d2LyeJqwjez
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-18_09,2023-10-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ mlxlogscore=812 mlxscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1011
+ priorityscore=1501 suspectscore=0 phishscore=0 adultscore=0
+ impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2309180000 definitions=main-2310180095
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_acaggian@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,71 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
 
---3866299591-1471827360-1697628331=:90406
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Wed, 18 Oct 2023, Cédric Le Goater wrote:
-> On 10/18/23 07:58, Thomas Huth wrote:
->> Please add a short patch description if this moves from RFC to a real patch
->> 
->> On 17/10/2023 21.06, BALATON Zoltan wrote:
->>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>> ---
->>> I have no idea if this works so testing and corrections are welcome
->> 
->> Why don't you test it on your own? I think this should be sufficient:
->>
->>   make check-avocado AVOCADO_TAGS=machine:amigaone
->
-> Test doesn't pass :
->
-> Fetching asset from 
-> tests/avocado/ppc_amiga.py:AmigaOneMachine.test_ppc_amigaone
-> JOB ID     : 39645d61f6f6c90ae87e3a48fe29beb16146aa73
-> JOB LOG    : 
-> /home/legoater/work/qemu/qemu.git/build/tests/results/job-2023-10-18T05.51-39645d6/job.log
-> (1/1) tests/avocado/ppc_amiga.py:AmigaOneMachine.test_ppc_amigaone:  ERROR: 
-> file is not an archive (0.10 s)
-
-OK then how to extract a zip file? Does it need to have name ending with 
-.zip to work? The download may end up in a strangely named file due to how 
-the URL ends. Anybody knows how to fix this? I never used Avocado, only 
-followed examples found in other tests but possible I did not get how it 
-should work.
-
-Regards,
-BALATON Zoltan
-
-> Interrupting job (failfast).
-> RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | 
-> CANCEL 0
-> JOB TIME   : 2.53 s
->
-> C.
->
->> 
->>> but this could be a basic test. Booting further is a bit more involved
->>> as we'd need alternative VGA BIOS and selecting menu items in the
->>> firmware to allow CD boot so I did not try to automate that.
->>> 
->>> This could be simpler if the u-boot-amigaone.bin could be added to
->>> pc-bios. It's GPL so should be OK to include and distribute but irs
->>> sources seem to be lost and could not be recovered or reconstructed so
->>> we only have this binary. Who should be able to decide about that?
->> 
->> I'm sorry, but if the sources are not available anymore, then I think it 
->> will not be possible to ship the binary in the QEMU tarball - since the GPL 
->> requires that the distributor of the binary can also provide the sources on 
->> request.
->>
->>   Thomas
->> 
->
->
->
---3866299591-1471827360-1697628331=:90406--
+On 17/10/2023 13:16, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> Fixes the GL context creation from a widget that isn't yet realized (in
+> a hidden tab for example).
+> 
+> Resolves:
+> https://gitlab.com/qemu-project/qemu/-/issues/1727
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   ui/gtk.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+> 
+> diff --git a/ui/gtk.c b/ui/gtk.c
+> index 935de1209b..2a4c9b84ba 100644
+> --- a/ui/gtk.c
+> +++ b/ui/gtk.c
+> @@ -2371,6 +2371,7 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+>       GdkDisplay *window_display;
+>       GtkIconTheme *theme;
+>       char *dir;
+> +    int idx;
+>   
+>       if (!gtkinit) {
+>           fprintf(stderr, "gtk initialization failed\n");
+> @@ -2434,6 +2435,15 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+>       gtk_container_add(GTK_CONTAINER(s->window), s->vbox);
+>   
+>       gtk_widget_show_all(s->window);
+> +
+> +    for (idx = 0;; idx++) {
+> +        QemuConsole *con = qemu_console_lookup_by_index(idx);
+> +        if (!con) {
+> +            break;
+> +        }
+> +        gtk_widget_realize(s->vc[idx].gfx.drawing_area);
+> +    }
+> +
+>       if (opts->u.gtk.has_show_menubar &&
+>           !opts->u.gtk.show_menubar) {
+>           gtk_widget_hide(s->menu_bar);
 
