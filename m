@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D919F7CDC95
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FFE7CDC9C
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:05:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6DP-00006G-RK; Wed, 18 Oct 2023 09:04:00 -0400
+	id 1qt6F1-0001vg-9T; Wed, 18 Oct 2023 09:05:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <geert.uytterhoeven@gmail.com>)
- id 1qt6DL-0008TC-T2
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:03:55 -0400
-Received: from mail-yb1-f169.google.com ([209.85.219.169])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6Es-0001o5-DC
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:05:36 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <geert.uytterhoeven@gmail.com>)
- id 1qt6DK-0007Fu-1A
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:03:55 -0400
-Received: by mail-yb1-f169.google.com with SMTP id
- 3f1490d57ef6-d9a398f411fso7702472276.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:03:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6Eq-0007eO-7P
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:05:30 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-53e751aeb3cso7254607a12.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:05:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697634324; x=1698239124; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qJJBz23ZKLaNGx5toSeISCczR8yY7igwrYHbxAA2MSM=;
+ b=d5EEGEjIR2jMu3U5GWlOLnbKyo1nyHlji0WdHomjNXSmulDwJPAn4RCIStJa9GzHDu
+ NP/HEV6oUfJmICJ21g9RPFsJgG2sgv1hQ3C6o36KfoACm6mWu7FdwAYBYXqBHULur7uZ
+ dwa2rvs26JO5giqT1A1ysBH9rXNw5F0rgLOoSy/q6ZwLku/ndelFkIL1c5/ICUaBynat
+ xM8hxxNSp6qrOG0OBu8D5B6rZjt9f1C7ksbfLiORgTqpYG+wHv9w9sx4NW0vO/2UbkO2
+ K2vS6wkMO6EGNyfkzy4kTn64d1F2QYGoEGUIhBAY4EUfE0GFpGEw0xXOp7vQolAgKQ0R
+ EYFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697634232; x=1698239032;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sdycpuLVrzszrN21dw+67+yQgNGaoncSefGig6LAy40=;
- b=pAZ428Lu4QOdupODCKIWr65AUfFi+iX+1ZfvI2m5Pnw0k73PSkxXIrVLwYkhS1p1lK
- 3pJbDtRaoznKpcmyItVdDIRLGQg9d240Ww0o5wU0GVLq6T8kec44kfWv3ySigdSnb+HZ
- s4quUu52cKDGRWdfSce1ihG+dk4z24xTyhYOkZcX9tpRPbzmB0/+/AErKLmMId8HEBzs
- 1pTgwK6i7yv8vGKBqjsTKWp+oyUqvtZdcF/twGeIcQ/z6aNhM/+m3pgscWO/EicO8Bx2
- Sj5Aa7jF9n99TTjBpuTz+S6sd5VtcZ75/T8LKJlUvnOTl13HigluA2QF/SKZZTlSWIwQ
- Yz7g==
-X-Gm-Message-State: AOJu0Yyuyh8Juy6SW6AAPUY9JFExsXarUw5ynciEjDCo7he/mMzj7oCv
- zN1ftmS7Y4X7O9oJe96u95JSKO7XapxJaw==
-X-Google-Smtp-Source: AGHT+IEwLFQW/iuhqFTO9yDD2BO7inRhiNm2XlnT4ku3LL1Qtz/MBHm/Zdk44t5CUZpT0N7l37bY+g==
-X-Received: by 2002:a25:dfd1:0:b0:d9a:6259:5461 with SMTP id
- w200-20020a25dfd1000000b00d9a62595461mr5644984ybg.38.1697634232296; 
- Wed, 18 Oct 2023 06:03:52 -0700 (PDT)
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com.
- [209.85.128.174]) by smtp.gmail.com with ESMTPSA id
- p137-20020a25d88f000000b00d748501d9b4sm1287264ybg.21.2023.10.18.06.03.50
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1697634324; x=1698239124;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qJJBz23ZKLaNGx5toSeISCczR8yY7igwrYHbxAA2MSM=;
+ b=s+6GoT7QjeSjcDToOb/o5ws9+jEDH/B/ZOF9o3TyxeeJwfZVQjrXhhgT6osf8I7I4J
+ 4XmNcn9Acq4mHzmgT1K1qa57m5pH/WX3C3U6Elh4qqF6r3RedKPRmndUhKkQL0+G5C2C
+ MBLIuROk+Whm2BtMiqk4iS8kcqh6nA0TjClE2cpi9vhAwFeNATK1SJoVgEFPOzcHutrE
+ vOx2lpb7MOVwLsa4UIMh4ekaE7hevs9dGS/Y9r+s5p1+S+smhaTlIdTr43+FlTh4Y1Q/
+ 7OMncxL/2qHN/LvwfutMZdhAwJf69Wjh/l0FPyh4jC0wsun2XCZsaw8Aymp0yxR5J/bp
+ KxZA==
+X-Gm-Message-State: AOJu0YzN9ZbDUGUp4zTxNTX1jCn5Wz8uvy4SG9beYrOxOxTmpKYb0OZJ
+ ydpMzKtqRBZgO8oyeIlKMp9UjA==
+X-Google-Smtp-Source: AGHT+IHghcbF56wUGCZ8FKx7R395n68DgaRn8qQwngyRQeLq9k2LoKgY1QS0a61oFjAVTI9Qmvmt5A==
+X-Received: by 2002:a17:907:26cc:b0:9c4:4b20:44a4 with SMTP id
+ bp12-20020a17090726cc00b009c44b2044a4mr4161997ejc.48.1697634324392; 
+ Wed, 18 Oct 2023 06:05:24 -0700 (PDT)
+Received: from [192.168.69.115]
+ (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr. [176.171.218.149])
+ by smtp.gmail.com with ESMTPSA id
+ i27-20020a170906115b00b009b2ba067b37sm1588733eja.202.2023.10.18.06.05.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 06:03:51 -0700 (PDT)
-Received: by mail-yw1-f174.google.com with SMTP id
- 00721157ae682-5a7be88e9ccso85464827b3.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:03:50 -0700 (PDT)
-X-Received: by 2002:a0d:e84a:0:b0:577:3d46:f90e with SMTP id
- r71-20020a0de84a000000b005773d46f90emr5588526ywe.32.1697634230733; Wed, 18
- Oct 2023 06:03:50 -0700 (PDT)
+ Wed, 18 Oct 2023 06:05:23 -0700 (PDT)
+Message-ID: <231e91da-5db6-33dd-cfd4-4b11b06089cf@linaro.org>
+Date: Wed, 18 Oct 2023 15:05:21 +0200
 MIME-Version: 1.0
-References: <20231018124023.2927710-1-geert+renesas@glider.be>
- <6fdd4de08a97060b952e0bfa4dd3144d9c23e800.camel@physik.fu-berlin.de>
-In-Reply-To: <6fdd4de08a97060b952e0bfa4dd3144d9c23e800.camel@physik.fu-berlin.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 18 Oct 2023 15:03:38 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV39vcBSjxHo6+d82jgZHyLnCdoKjT6-jW4QsD8MZ4dpA@mail.gmail.com>
-Message-ID: <CAMuHMdV39vcBSjxHo6+d82jgZHyLnCdoKjT6-jW4QsD8MZ4dpA@mail.gmail.com>
-Subject: Re: [PATCH RFC] hw/sh4/sh7750: Add STBCR/STBCR2 register support
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, 
- Guenter Roeck <linux@roeck-us.net>, qemu-devel@nongnu.org,
- linux-sh@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.219.169;
- envelope-from=geert.uytterhoeven@gmail.com; helo=mail-yb1-f169.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] MAINTAINERS: Add include/hw/intc/loongson_liointc.h to
+ the Loongson-3 virt section
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Huacai Chen <chenhuacai@kernel.org>
+Cc: qemu-trivial@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Song Gao <gaosong@loongson.cn>
+References: <20231017153345.233807-1-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231017153345.233807-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,38 +96,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Adrian,
+On 17/10/23 17:33, Thomas Huth wrote:
+> The corresponding .c file is already listed here, so we should
+> mention the header here, too.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 
-On Wed, Oct 18, 2023 at 2:46=E2=80=AFPM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
-> On Wed, 2023-10-18 at 14:40 +0200, Geert Uytterhoeven wrote:
-> > The new Linux SH7750 clock driver uses the registers for power-down
-> > mode control, causing a crash:
-> >
-> >     byte read to SH7750_STBCR_A7 (0x000000001fc00004) not supported
-> >     Aborted (core dumped)
-> >
-> > Fix this by adding support for the Standby Control Registers STBCR and
-> > STBCR2.
-> >
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
->
-> Is this supposed to be applied on top of Yoshinori's DT conversion series=
-?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-No, it's a patch for QEMU.  Sorry for the confusion.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
 
