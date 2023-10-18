@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413DC7CDD10
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA7F7CDD15
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:20:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6RZ-0006r8-Uh; Wed, 18 Oct 2023 09:18:39 -0400
+	id 1qt6TM-0004NY-2H; Wed, 18 Oct 2023 09:20:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt6RH-0006oB-SX
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:18:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt6RG-0001uF-6v
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:18:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697635096;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EYeXZaaa28TX2qcvt5ezSxrTblylyeqPFfgZbmbvhV8=;
- b=hjL5BWs6W5kC4O41puNKhpIjt1hMmMCz5fwT9ttRoDPAQ9gThInGNka0NglcI7C7i426xG
- NOTzKm5HNatXf8YjkdJn44Q1HoymYZIbN7OmyTeIjUP437LQtpiZ1BZAKhQQuDvI3yDLeF
- z+TnWjE7n5PPkeryuGfyqNtkvzENfqM=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-plnaMNjkO_m3F2BzUrWwFQ-1; Wed, 18 Oct 2023 09:18:09 -0400
-X-MC-Unique: plnaMNjkO_m3F2BzUrWwFQ-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c5047f94bdso39364531fa.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:17:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6TB-0004LV-BM
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:20:17 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6T9-0002Hl-Em
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:20:17 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2c5056059e0so80061851fa.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:20:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697635213; x=1698240013; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=PBfHY+i4wONx0Vv1enpd8PbgLKhbdsvN1Nv1qC7ToJE=;
+ b=i8cShwimAJvYLu7yaM8vdTUsaS2VYAOmQOz9C3hh9qYERVT3TtyqbsDP9VTLtCBl9P
+ EUS8KQHIk7VWRR29s5SQY7BxMg8XT2Q7bZBx8tpo51H8rGI2Vpm178e6viUa9AXyurgo
+ S7F7jmowIsdw+/iv+L3BR1L4477tMr51n3rH9YaMoh1uY5wATL+mgOTjdrbTyJN1o7Zq
+ /suiQsBhoeaPo2P95YfxHrRpBo5JW2CXSxJ2d91NJqWuZ+wq7S/c0NK/kcQZOf/kfz6C
+ 0IuNTBHDfjOwCtUsEzkcKMAvpUQk1qH1X0UczBEVthKflHeovypbnoYn1BSqQUMcZFW2
+ E6qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697635078; x=1698239878;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=EYeXZaaa28TX2qcvt5ezSxrTblylyeqPFfgZbmbvhV8=;
- b=OQQOBOOIhCSmnAwMDd9s8xM4+EYSaX10h7JdYLPHaTYQtYfGZqOwnFAY7UvUZNmX7k
- sPFoomfRte2zSteyyV8CO0PvBEsmlI2A3HwB9265VesCp8bap08IAwfVGOpn8Cs0ElMr
- PO2lyxphlIqOOdbFZs748QBzxOkDlHWZdcKbz1ITUPPNl7k1WfDMC+hDTGkL/FeGYox1
- grOR+ufH6PfI3TBQdpgpHoU8TDsMN68ZkoXvXcOtXTwDKlCN0A+BLaNqUGZTnAM+deiy
- urdtuhh3FsDJaefAm9WwrOTSi0TDJIGD4mCyUidFc9Ywd0lW3wMHpyHp83lPoxKNoIeA
- VoZA==
-X-Gm-Message-State: AOJu0YxvFBybaWJ2yBUzYBrSeqzX2hB26nJFRSa7TNVP+o2JNqbjFV9N
- YT6GBLUvevOlGwmmriffwOOYDsOyMMoXKjLm+M7HUklvjsGUjjm+P06aHLiWEjDhW0imWBqnTiT
- WGrhwIDJZ8IVkGAY=
-X-Received: by 2002:a2e:a593:0:b0:2c5:8a0:b502 with SMTP id
- m19-20020a2ea593000000b002c508a0b502mr4261430ljp.48.1697635078295; 
- Wed, 18 Oct 2023 06:17:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEv3mT0uPOuO7VpRjcIxz+JKdLGA2JS5LfjLwqxiE99mcJjuhx5BVbDvqeoDyGtrwQc148fpw==
-X-Received: by 2002:a2e:a593:0:b0:2c5:8a0:b502 with SMTP id
- m19-20020a2ea593000000b002c508a0b502mr4261411ljp.48.1697635077933; 
- Wed, 18 Oct 2023 06:17:57 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
+ d=1e100.net; s=20230601; t=1697635213; x=1698240013;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PBfHY+i4wONx0Vv1enpd8PbgLKhbdsvN1Nv1qC7ToJE=;
+ b=WsDVgxqYkRbICtvu/TtuuImMV2yJ+41P/VQFkCLQSetEMYq9+CSP1DK6aT28KUh12y
+ IKHY/AlqFf19GlH1Hj7gCMWdxgkHa3OgErSE4Fyox6mgUmd/w6UDkvT50f73pV3PWCce
+ kgTfZDH5lUVNGD6Ll3+tFuH8X3dFYrtjNIYEkjxtDIMVzWWwgRcTbAG1JhSIGO1/tKrE
+ AdiOsh+V3MMXYjCAhZkxetC80AYRqvsPrjKcNbRH+rWxlGi3r3bOAKeTx6+JhHVb6TEG
+ jKHrrObwy4HC7VroGLmqBXQwRa8aNtiQM8sY60gZOxIwvmlo5U5Fs1OH9elYvvHFxrmF
+ CO6Q==
+X-Gm-Message-State: AOJu0YzaEAB+Lo9uRWGPTgisucTVi2w3fXwJNCy4/aVHs566ChZ2vL1a
+ ATXeV8mHqnVo+xknLOe4cOKM1Q==
+X-Google-Smtp-Source: AGHT+IEDN1DNvVW/bylS5bS+5zz806wbV2yINrtEbnRdDjKaSpPko7MyWoaNEXQMF91xDTyZ9wbCSQ==
+X-Received: by 2002:a2e:9b86:0:b0:2c0:14e2:1f5c with SMTP id
+ z6-20020a2e9b86000000b002c014e21f5cmr3476863lji.5.1697635213262; 
+ Wed, 18 Oct 2023 06:20:13 -0700 (PDT)
+Received: from [192.168.69.115]
+ (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr. [176.171.218.149])
  by smtp.gmail.com with ESMTPSA id
- x19-20020a05600c421300b003fc16ee2864sm1626928wmh.48.2023.10.18.06.17.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 06:17:57 -0700 (PDT)
-Date: Wed, 18 Oct 2023 09:17:53 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] docs/about: Mark the old pc-i440fx-2.0 - 2.3 machine
- types as deprecated
-Message-ID: <20231018091534-mutt-send-email-mst@kernel.org>
-References: <20231006075247.403364-1-thuth@redhat.com>
+ j20-20020a05600c1c1400b003fefb94ccc9sm1536231wms.11.2023.10.18.06.20.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Oct 2023 06:20:12 -0700 (PDT)
+Message-ID: <f12e8129-a77d-e8ee-2a25-b31b5729a0f5@linaro.org>
+Date: Wed, 18 Oct 2023 15:20:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231006075247.403364-1-thuth@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v3] qapi: provide a friendly string representation of QAPI
+ classes
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>
+References: <20231018120500.2028642-1-berrange@redhat.com>
+ <87y1g0nm1y.fsf@pond.sub.org> <ZS/XgggmI0aoYJR0@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <ZS/XgggmI0aoYJR0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,69 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 06, 2023 at 09:52:47AM +0200, Thomas Huth wrote:
-> As we've seen in the past, it's useful for deprecating old machine
-> types to finally be able to get of legacy code or do other clean-ups
-> (see e.g. commit ea985d235b868047 that was used to drop the PCI code in
-> the 128k bios binaries to free some precious space in those binaries).
+On 18/10/23 15:02, Daniel P. Berrangé wrote:
+> On Wed, Oct 18, 2023 at 02:37:45PM +0200, Markus Armbruster wrote:
+>> Daniel P. Berrangé <berrange@redhat.com> writes:
+>>
+>>> If printing a QAPI schema object for debugging we get the classname and
+>>> a hex value for the instance:
+>>>
+>>>    <qapi.schema.QAPISchemaEnumType object at 0x7f0ab4c2dad0>
+>>>    <qapi.schema.QAPISchemaObjectType object at 0x7f0ab4c2dd90>
+>>>    <qapi.schema.QAPISchemaArrayType object at 0x7f0ab4c2df90>
+>>>
+>>> With this change we instead get the classname and the human friendly
+>>> name of the QAPI type instance:
+>>>
+>>>    <QAPISchemaEnumType:CpuS390State at 0x7f0ab4c2dad0>
+>>>    <QAPISchemaObjectType:CpuInfoS390 at 0x7f0ab4c2dd90>
+>>>    <QAPISchemaArrayType:CpuInfoFastList at 0x7f0ab4c2df90>
+>>>
+>>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+>>> ---
+
+
+>> Mind if I swap things?  Like so:
+>>
+>>      def __repr__(self):
+>>          if self.name is None:
+>>              return "<%s at 0x%x>" % (type(self).__name__, id(self))
+>>          else:
+>>              return "<%s:%s at 0x%x>" % (type(self).__name__,
+>>                                          self.name, id(self))
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 > 
-> So let's continue deprecating the oldest pc machine types. QEMU 2.3
-> has been released 8 years ago, so that's plenty of time since such
-> machine types have been used by default, thus deprecating pc-i440fx-2.0
-> up to pc-i440fx-2.3 should be fine nowadays.
+> Sure, fine with me.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  docs/about/deprecated.rst | 8 ++++++++
->  hw/i386/pc_piix.c         | 1 +
->  2 files changed, 9 insertions(+)
-> 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index e43de9c183..c016bb9b20 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -277,6 +277,14 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
->  better reflects the way this property affects all random data within
->  the device tree blob, not just the ``kaslr-seed`` node.
->  
-> +``pc-i440fx-2.0`` up to ``pc-i440fx-2.3`` (since 8.2)
-> +'''''''''''''''''''''''''''''''''''''''''''''''''''''
-> +
-> +These old machine types are quite neglected nowadays and thus might have
-> +various pitfalls with regards to live migration. Use a newer machine type
-> +instead.
-> +
-> +
->  Backend options
->  ---------------
-
-Wait a sec. Which tree is this against?
-I don't see this context ever since:
-
-commit f59fb1889f480b0324a7ed0404a68ad5a0ad4f6c
-Author: Thomas Huth <thuth@redhat.com>
-Date:   Mon Jan 17 20:16:39 2022 +0100
-
-    hw/i386/pc_piix: Mark the machine types from version 1.4 to 1.7 as deprecated
-
-
-Also, do we intentionally keep 1.8 and 1.9 as not deprecated?
-
-
-
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index ff8654ecda..9789e9e75c 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -784,6 +784,7 @@ static void pc_i440fx_2_3_machine_options(MachineClass *m)
->  {
->      pc_i440fx_2_4_machine_options(m);
->      m->hw_version = "2.3.0";
-> +    m->deprecation_reason = "old and unattended - use a newer version instead";
->      compat_props_add(m->compat_props, hw_compat_2_3, hw_compat_2_3_len);
->      compat_props_add(m->compat_props, pc_compat_2_3, pc_compat_2_3_len);
->  }
-> -- 
-> 2.41.0
-
+> With regards,
+> Daniel
 
