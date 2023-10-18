@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5253E7CEC15
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAA87CEC1A
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:33:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtG0r-0003TL-8v; Wed, 18 Oct 2023 19:31:41 -0400
+	id 1qtG0s-0003e8-UQ; Wed, 18 Oct 2023 19:31:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0p-0003Q4-Oe
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:39 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1qtG0r-0003Xg-CZ
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:41 -0400
+Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0n-0000E4-V0
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:39 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6b26a3163acso4900255b3a.2
+ id 1qtG0o-0000EJ-5h
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:41 -0400
+Received: by mail-il1-x134.google.com with SMTP id
+ e9e14a558f8ab-35754465cb3so27427085ab.0
  for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697671896; x=1698276696; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=N2V/cEN3iEL8v2gcE5+4KzPjOUIg628qXNKEjFRL6lo=;
- b=dcNeTyyinl42UfQoEVVCbVrnDGDH+Knl4ZKKqku8o+ZDniias41HH/Fs3iXxesEUkJ
- yuGLTZbDIhXySMlSt4NI2Aod2IFtsJGSRlEIRV/Ijhd6PgRLRde1Z910eohTyYfEIlX9
- yuNxGyBDOzebcGY9Qkerx/fLpJVFzYaoLugeqttkrkKoggudkpj1En6PfcZ1TNfaFanU
- 7wa/3QwfhBvDZHD3LNu39t6r4aJMskNC7PkQJsiWkZRcOnXzn+dFXErjiczx5vq3XsVR
- MKLHJ70R+VpR8A+7hBVuW0AyvmDLkmFjTC4rm+S1Hd2ZRfiiZZ7yOm/D6k8NwE9lI61z
- yEHA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=D2oYojizKTJe59+z2rFn3jhqwAzCHsM3phmz2spMImU=;
+ b=X/LzXjG76Ye5xqLNpsqI8HAAVck+vO2Vw35rKs8HRQ7HXUXWNiNhPTuyzYgHuTHBSh
+ ffBa4wnvJr6/MQpF2RtIXxrHDss3qgrou5RFUTp5ucmcQO3vrbgs9vwe2DAZzKc71MIA
+ KWxyYvuNGF8lVaSpMdSu6X87MeMu+fmmCYPrm5+BSGzNLHx/7hjP0L3pVS9ouDg0onn7
+ ofPJktkEaW4jmvTpIsnLvo3wfK6bMk1ui9+9ovC0Jl7MVbLul5qjDL+puw/1ri/5oMnX
+ +s1fmvm2qAP/p7jyilyp28lUfAIfBKbBgBFR9+thSIxV/z8iA/mNoVHMO+F1KvszjiSM
+ zkgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697671896; x=1698276696;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N2V/cEN3iEL8v2gcE5+4KzPjOUIg628qXNKEjFRL6lo=;
- b=D5P1BNyLdVNiqR1HoVfhWLP8ONYxKlDcpLJJWjjhrp7tt/v2zgt4z32F9Ebghlvw6A
- wo69mRmiRpJUWLqnxDKLUXTIDZjq98snqaz5mx70kY1mj3jBof2i9Rw80aRl0/I+xci3
- 8DhEX10vYwUn1iucatqYqPjRa4nGzvZNKPEpyfb+Ls1CvUj+ZXUCQ7YcTSmtljcPv/0F
- Ifm3GxBvzNBjBnA6s+LWE/aiYJWrdeb4W/f+w70YWdw9lHPYOTlQxz5tsyVyVLyLHt2E
- iufVLBxL/Hs0QiRPsCsaVZcynn8weLaoHfTN17MAxukNuQVVqED67KPJDLwgV7DhOJYG
- XjUA==
-X-Gm-Message-State: AOJu0YyhNgUIkHTCVV2drdSODo9RVyIvpAfXUKtvZGlR3rwTEW2a+qEc
- yuteQs5pcFOAz/42TGvkwiebnXWjCvsNAE1ZHtE=
-X-Google-Smtp-Source: AGHT+IEU9VS32Powc1zbqXpm7afPdJsr1kPconkZxtG11CDassQRLNCoTAV4ZsP0GRRGb3oB4bn9tQ==
-X-Received: by 2002:aa7:8883:0:b0:6b1:bf32:4fb5 with SMTP id
- z3-20020aa78883000000b006b1bf324fb5mr514645pfe.28.1697671895531; 
- Wed, 18 Oct 2023 16:31:35 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=D2oYojizKTJe59+z2rFn3jhqwAzCHsM3phmz2spMImU=;
+ b=Qh+bBm6uWVjpZjN56Yo9ILVaFk/mflEl48WLbHA8R2Lim5nmQUMjMjlVNmRSRUEFmG
+ wC1gGkUVEGrEsHffA0YFguyA3NwbQqXDx9G2N5IuihfGNTVTSyUdDvFVyOb8+3z1v4XT
+ jHXmVddGJaTvU34fxJF7LCbwJCvnrHqYnFXojX09A9DgXt4ylLl3vacJHvF0SPwxk1mZ
+ 4T4k4Ppb1oAbLkdXcL08bNlD8y4nqKVya7ISlu2n7v5s0A3/VIw8KT2B99TUM4WcnaTK
+ K3MqLuRBsLX/n2c0WCm647pqkUinTZ0WHjhWRbwS4ghsjGyMjDzGUjR6Q3muAHsNDxh6
+ hgtA==
+X-Gm-Message-State: AOJu0YxBPS7EwHLI/9RtvtnkfYcplrmFGfx7xCURStiBPMmmjAxmeweQ
+ hzfyfoGrj2pb0CvgWuVuErPDqJEUv1iEMO3/YIA=
+X-Google-Smtp-Source: AGHT+IHmz5DFH3zqalCZpjOJdeBVlQotWSVovSL2yng/PdcPHn63ZIcbj2ssXlVulJFWGDMMiXfAEQ==
+X-Received: by 2002:a92:d650:0:b0:350:f956:91c4 with SMTP id
+ x16-20020a92d650000000b00350f95691c4mr728194ilp.4.1697671896348; 
+ Wed, 18 Oct 2023 16:31:36 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.34
- for <qemu-devel@nongnu.org>
+ g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 18 Oct 2023 16:31:35 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/14] linux-user patch queue
-Date: Wed, 18 Oct 2023 16:31:20 -0700
-Message-Id: <20231018233134.1594292-1-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/14] linux-user: Fixes for zero_bss
+Date: Wed, 18 Oct 2023 16:31:21 -0700
+Message-Id: <20231018233134.1594292-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231018233134.1594292-1-richard.henderson@linaro.org>
+References: <20231018233134.1594292-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,54 +92,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit ec6f9f135d5e5596ab0258da2ddd048f1fd8c359:
+The previous change, 2d385be6152, assumed !PAGE_VALID meant that
+the page would be unmapped by the elf image.  However, since we
+reserved the entire image space via mmap, PAGE_VALID will always
+be set.  Instead, assume PROT_NONE for the same condition.
 
-  Merge tag 'migration-20231017-pull-request' of https://gitlab.com/juan.quintela/qemu into staging (2023-10-17 10:06:21 -0400)
+Furthermore, assume bss is only ever present for writable segments,
+and that there is no page overlap between PT_LOAD segments.
+Instead of an assert, return false to indicate failure.
 
-are available in the Git repository at:
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1854
+Fixes: 2d385be6152 ("linux-user: Do not adjust zero_bss for host page size")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/elfload.c | 53 +++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-lu-20231018
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index f21e2e0c3d..213fd3e584 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -2362,31 +2362,58 @@ static abi_ulong setup_arg_pages(struct linux_binprm *bprm,
+  * Map and zero the bss.  We need to explicitly zero any fractional pages
+  * after the data section (i.e. bss).  Return false on mapping failure.
+  */
+-static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss, int prot)
++static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss,
++                     int prot, Error **errp)
+ {
+     abi_ulong align_bss;
+ 
++    /* We only expect writable bss; the code segment shouldn't need this. */
++    if (!(prot & PROT_WRITE)) {
++        error_setg(errp, "PT_LOAD with non-writable bss");
++        return false;
++    }
++
+     align_bss = TARGET_PAGE_ALIGN(start_bss);
+     end_bss = TARGET_PAGE_ALIGN(end_bss);
+ 
+     if (start_bss < align_bss) {
+         int flags = page_get_flags(start_bss);
+ 
+-        if (!(flags & PAGE_VALID)) {
+-            /* Map the start of the bss. */
++        if (!(flags & PAGE_BITS)) {
++            /*
++             * The whole address space of the executable was reserved
++             * at the start, therefore all pages will be VALID.
++             * But assuming there are no PROT_NONE PT_LOAD segments,
++             * a PROT_NONE page means no data all bss, and we can
++             * simply extend the new anon mapping back to the start
++             * of the page of bss.
++             */
+             align_bss -= TARGET_PAGE_SIZE;
+-        } else if (flags & PAGE_WRITE) {
+-            /* The page is already mapped writable. */
+-            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
+         } else {
+-            /* Read-only zeros? */
+-            g_assert_not_reached();
++            /*
++             * The start of the bss shares a page with something.
++             * The only thing that we expect is the data section,
++             * which would already be marked writable.
++             * Overlapping the RX code segment seems malformed.
++             */
++            if (!(flags & PAGE_WRITE)) {
++                error_setg(errp, "PT_LOAD with bss overlapping "
++                           "non-writable page");
++                return false;
++            }
++
++            /* The page is already mapped and writable. */
++            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
+         }
+     }
+ 
+-    return align_bss >= end_bss ||
+-           target_mmap(align_bss, end_bss - align_bss, prot,
+-                       MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) != -1;
++    if (align_bss < end_bss &&
++        target_mmap(align_bss, end_bss - align_bss, prot,
++                    MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) == -1) {
++        error_setg_errno(errp, errno, "Error mapping bss");
++        return false;
++    }
++    return true;
+ }
+ 
+ #if defined(TARGET_ARM)
+@@ -3410,8 +3437,8 @@ static void load_elf_image(const char *image_name, int image_fd,
+ 
+             /* If the load segment requests extra zeros (e.g. bss), map it. */
+             if (vaddr_ef < vaddr_em &&
+-                !zero_bss(vaddr_ef, vaddr_em, elf_prot)) {
+-                goto exit_mmap;
++                !zero_bss(vaddr_ef, vaddr_em, elf_prot, &err)) {
++                goto exit_errmsg;
+             }
+ 
+             /* Find the full program boundaries.  */
+-- 
+2.34.1
 
-for you to fetch changes up to 38ee0a7dfb4b15407678df26448e4a18fd9a51d4:
-
-  linux-user: Remap guest SIGABRT (2023-10-18 16:25:06 -0700)
-
-----------------------------------------------------------------
-linux-user/mips: fix abort on integer overflow
-linux-user/sh4: Fix crashes on signal delivery
-linux-user/loongarch: Enable LSX/LASX in HWCAP
-linux-user: Fixes for zero_bss
-linux-user: Propagate failure in mmap_reserve_or_unmap back to target_munmap
-linux-user: Detect and report host crashes
-linux-user: Remap guest SIGABRT
-
-----------------------------------------------------------------
-Helge Deller (1):
-      linux-user: Detect and report host crashes
-
-Jiajie Chen (1):
-      linux-user/elfload: Enable LSX/LASX in HWCAP for LoongArch
-
-Mikulas Patocka (2):
-      linux-user/mips: fix abort on integer overflow
-      linux-user/sh4: Fix crashes on signal delivery
-
-Richard Henderson (10):
-      linux-user: Fixes for zero_bss
-      linux-user: Propagate failure in mmap_reserve_or_unmap back to target_munmap
-      linux-user: Split out die_with_signal
-      linux-user: Exit not abort in die_with_backtrace
-      linux-user: Only register handlers for core_dump_signal by default
-      linux-user: Map unsupported signals to an out-of-bounds value
-      linux-user: Simplify signal_init
-      linux-user: Split out host_sig{segv,bus}_handler
-      linux-user: Detect and report host SIGILL, SIGFPE, SIGTRAP
-      linux-user: Remap guest SIGABRT
-
- linux-user/elfload.c       |  61 ++++--
- linux-user/mips/cpu_loop.c |   4 +-
- linux-user/mmap.c          |  30 +--
- linux-user/sh4/signal.c    |   8 +
- linux-user/signal.c        | 459 ++++++++++++++++++++++++++++++---------------
- 5 files changed, 379 insertions(+), 183 deletions(-)
 
