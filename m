@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAA87CEC1A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE557CEC23
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:34:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtG0s-0003e8-UQ; Wed, 18 Oct 2023 19:31:42 -0400
+	id 1qtG0s-0003g8-VE; Wed, 18 Oct 2023 19:31:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0r-0003Xg-CZ
+ id 1qtG0r-0003W1-55
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:41 -0400
-Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0o-0000EJ-5h
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:41 -0400
-Received: by mail-il1-x134.google.com with SMTP id
- e9e14a558f8ab-35754465cb3so27427085ab.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:37 -0700 (PDT)
+ id 1qtG0o-0000Fl-Ks
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:40 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6bb4abb8100so3867458b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697671896; x=1698276696; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697671897; x=1698276697; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D2oYojizKTJe59+z2rFn3jhqwAzCHsM3phmz2spMImU=;
- b=X/LzXjG76Ye5xqLNpsqI8HAAVck+vO2Vw35rKs8HRQ7HXUXWNiNhPTuyzYgHuTHBSh
- ffBa4wnvJr6/MQpF2RtIXxrHDss3qgrou5RFUTp5ucmcQO3vrbgs9vwe2DAZzKc71MIA
- KWxyYvuNGF8lVaSpMdSu6X87MeMu+fmmCYPrm5+BSGzNLHx/7hjP0L3pVS9ouDg0onn7
- ofPJktkEaW4jmvTpIsnLvo3wfK6bMk1ui9+9ovC0Jl7MVbLul5qjDL+puw/1ri/5oMnX
- +s1fmvm2qAP/p7jyilyp28lUfAIfBKbBgBFR9+thSIxV/z8iA/mNoVHMO+F1KvszjiSM
- zkgw==
+ bh=1I5j+CVAtN1UYbE5YS09fVUfZ8qAm7sA0ML6lgTI9YE=;
+ b=w3uxCWr+FAeDbgM3yAWT+aejaZA8XRR7mCNEedAyu1+8LFLVrfDXwhSLoHVOAMiwO6
+ KNnWcKl4rNgSSazKdctDoar/OQ9WI+YFT+DQ2Tu2rh7TQcucrt/B5pt/FmBq86br+eOe
+ MFYzhhMwLei2KGlOMnKlaz0bBqvB44RZLpt6A6fLpfsQAJ6d/FRPbbJLJLTR9IZNl86H
+ jcsw9RhuiDrApjaYCqRU9pHa/D6crvoP2a3IYabRGAWTSykjj3REzVaU3eNxwX4L75Z2
+ 5dwhW3sQZekELF2V3FolReYDJM0SbfNixBMjXWaasrXh/MsMdCnQO+oKw9558vpjdqDe
+ wXWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697671896; x=1698276696;
+ d=1e100.net; s=20230601; t=1697671897; x=1698276697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D2oYojizKTJe59+z2rFn3jhqwAzCHsM3phmz2spMImU=;
- b=Qh+bBm6uWVjpZjN56Yo9ILVaFk/mflEl48WLbHA8R2Lim5nmQUMjMjlVNmRSRUEFmG
- wC1gGkUVEGrEsHffA0YFguyA3NwbQqXDx9G2N5IuihfGNTVTSyUdDvFVyOb8+3z1v4XT
- jHXmVddGJaTvU34fxJF7LCbwJCvnrHqYnFXojX09A9DgXt4ylLl3vacJHvF0SPwxk1mZ
- 4T4k4Ppb1oAbLkdXcL08bNlD8y4nqKVya7ISlu2n7v5s0A3/VIw8KT2B99TUM4WcnaTK
- K3MqLuRBsLX/n2c0WCm647pqkUinTZ0WHjhWRbwS4ghsjGyMjDzGUjR6Q3muAHsNDxh6
- hgtA==
-X-Gm-Message-State: AOJu0YxBPS7EwHLI/9RtvtnkfYcplrmFGfx7xCURStiBPMmmjAxmeweQ
- hzfyfoGrj2pb0CvgWuVuErPDqJEUv1iEMO3/YIA=
-X-Google-Smtp-Source: AGHT+IHmz5DFH3zqalCZpjOJdeBVlQotWSVovSL2yng/PdcPHn63ZIcbj2ssXlVulJFWGDMMiXfAEQ==
-X-Received: by 2002:a92:d650:0:b0:350:f956:91c4 with SMTP id
- x16-20020a92d650000000b00350f95691c4mr728194ilp.4.1697671896348; 
- Wed, 18 Oct 2023 16:31:36 -0700 (PDT)
+ bh=1I5j+CVAtN1UYbE5YS09fVUfZ8qAm7sA0ML6lgTI9YE=;
+ b=HljuvF88Qy8CaSVAchtdZm4JDWmGTVWZHvbYt0Z4NoVnS9kvY85AUJOP75L8Hqt05s
+ arQRq+IUEW0vRJY8g6NfZGvDog3OThG2Rdu2f3cNOLSJNxGa2V41gsN0WjCwFQyKsrru
+ 0ezZ1Zw9yE7eDYTUEXqrggvi+YTe++r4UpD1SocZQ0n8It5nE1kbzThVJUITjwljY7LZ
+ JsANNKno18TzhMdgMilSiKHxEVZgbdHlYVP+5z3+PSi7e9qIY2OgMSKQ/UlbK/m32d/F
+ BviBOzB60jNwp+Gbe+ZI5xfvsMImuYzo2WBmNQ15/LVB3FnWP944fd4OVhLl3YnbZRFl
+ 1xTg==
+X-Gm-Message-State: AOJu0YxR5QRX9Zp3V0iBhf4iQI1z5TqjzZ3O1QEQba+Hh7E9aDqiDS/A
+ G480kjHLfYY+UYuZlURT4frq7GDG9FWwn7V87bk=
+X-Google-Smtp-Source: AGHT+IHXiLjylmN8G6bxSVj06uKRlBovtK8IuWHWxvv5A6Zj3AUmyvtjIa8Zsxgv12YL16XFO2t1qg==
+X-Received: by 2002:a05:6a00:1354:b0:692:6d3f:485b with SMTP id
+ k20-20020a056a00135400b006926d3f485bmr641843pfu.3.1697671897116; 
+ Wed, 18 Oct 2023 16:31:37 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.35
+ g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 16:31:35 -0700 (PDT)
+ Wed, 18 Oct 2023 16:31:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/14] linux-user: Fixes for zero_bss
-Date: Wed, 18 Oct 2023 16:31:21 -0700
-Message-Id: <20231018233134.1594292-2-richard.henderson@linaro.org>
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	qemu-stable@nongnu.org
+Subject: [PULL 02/14] linux-user/mips: fix abort on integer overflow
+Date: Wed, 18 Oct 2023 16:31:22 -0700
+Message-Id: <20231018233134.1594292-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018233134.1594292-1-richard.henderson@linaro.org>
 References: <20231018233134.1594292-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,109 +91,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous change, 2d385be6152, assumed !PAGE_VALID meant that
-the page would be unmapped by the elf image.  However, since we
-reserved the entire image space via mmap, PAGE_VALID will always
-be set.  Instead, assume PROT_NONE for the same condition.
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-Furthermore, assume bss is only ever present for writable segments,
-and that there is no page overlap between PT_LOAD segments.
-Instead of an assert, return false to indicate failure.
+QEMU mips userspace emulation crashes with "qemu: unhandled CPU exception
+0x15 - aborting" when one of the integer arithmetic instructions detects
+an overflow.
+
+This patch fixes it so that it delivers SIGFPE with FPE_INTOVF instead.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1854
-Fixes: 2d385be6152 ("linux-user: Do not adjust zero_bss for host page size")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Message-Id: <3ef979a8-3ee1-eb2d-71f7-d788ff88dd11@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 53 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 40 insertions(+), 13 deletions(-)
+ linux-user/mips/cpu_loop.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index f21e2e0c3d..213fd3e584 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2362,31 +2362,58 @@ static abi_ulong setup_arg_pages(struct linux_binprm *bprm,
-  * Map and zero the bss.  We need to explicitly zero any fractional pages
-  * after the data section (i.e. bss).  Return false on mapping failure.
-  */
--static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss, int prot)
-+static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss,
-+                     int prot, Error **errp)
- {
-     abi_ulong align_bss;
- 
-+    /* We only expect writable bss; the code segment shouldn't need this. */
-+    if (!(prot & PROT_WRITE)) {
-+        error_setg(errp, "PT_LOAD with non-writable bss");
-+        return false;
-+    }
-+
-     align_bss = TARGET_PAGE_ALIGN(start_bss);
-     end_bss = TARGET_PAGE_ALIGN(end_bss);
- 
-     if (start_bss < align_bss) {
-         int flags = page_get_flags(start_bss);
- 
--        if (!(flags & PAGE_VALID)) {
--            /* Map the start of the bss. */
-+        if (!(flags & PAGE_BITS)) {
-+            /*
-+             * The whole address space of the executable was reserved
-+             * at the start, therefore all pages will be VALID.
-+             * But assuming there are no PROT_NONE PT_LOAD segments,
-+             * a PROT_NONE page means no data all bss, and we can
-+             * simply extend the new anon mapping back to the start
-+             * of the page of bss.
-+             */
-             align_bss -= TARGET_PAGE_SIZE;
--        } else if (flags & PAGE_WRITE) {
--            /* The page is already mapped writable. */
--            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
-         } else {
--            /* Read-only zeros? */
--            g_assert_not_reached();
-+            /*
-+             * The start of the bss shares a page with something.
-+             * The only thing that we expect is the data section,
-+             * which would already be marked writable.
-+             * Overlapping the RX code segment seems malformed.
-+             */
-+            if (!(flags & PAGE_WRITE)) {
-+                error_setg(errp, "PT_LOAD with bss overlapping "
-+                           "non-writable page");
-+                return false;
-+            }
-+
-+            /* The page is already mapped and writable. */
-+            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
-         }
-     }
- 
--    return align_bss >= end_bss ||
--           target_mmap(align_bss, end_bss - align_bss, prot,
--                       MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) != -1;
-+    if (align_bss < end_bss &&
-+        target_mmap(align_bss, end_bss - align_bss, prot,
-+                    MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) == -1) {
-+        error_setg_errno(errp, errno, "Error mapping bss");
-+        return false;
-+    }
-+    return true;
- }
- 
- #if defined(TARGET_ARM)
-@@ -3410,8 +3437,8 @@ static void load_elf_image(const char *image_name, int image_fd,
- 
-             /* If the load segment requests extra zeros (e.g. bss), map it. */
-             if (vaddr_ef < vaddr_em &&
--                !zero_bss(vaddr_ef, vaddr_em, elf_prot)) {
--                goto exit_mmap;
-+                !zero_bss(vaddr_ef, vaddr_em, elf_prot, &err)) {
-+                goto exit_errmsg;
+diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
+index 8735e58bad..990b03e727 100644
+--- a/linux-user/mips/cpu_loop.c
++++ b/linux-user/mips/cpu_loop.c
+@@ -180,7 +180,9 @@ done_syscall:
              }
- 
-             /* Find the full program boundaries.  */
+             force_sig_fault(TARGET_SIGFPE, si_code, env->active_tc.PC);
+             break;
+-
++	case EXCP_OVERFLOW:
++            force_sig_fault(TARGET_SIGFPE, TARGET_FPE_INTOVF, env->active_tc.PC);
++            break;
+         /* The code below was inspired by the MIPS Linux kernel trap
+          * handling code in arch/mips/kernel/traps.c.
+          */
 -- 
 2.34.1
 
