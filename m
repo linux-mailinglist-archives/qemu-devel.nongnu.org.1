@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844F47CE309
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 793177CE2F2
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:38:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt9YP-0000wr-0R; Wed, 18 Oct 2023 12:37:53 -0400
+	id 1qt9YR-0000xh-Pm; Wed, 18 Oct 2023 12:37:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt9YI-0000wC-SA
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:37:47 -0400
+ id 1qt9YL-0000wc-7C
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:37:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt9YH-0007Nn-9O
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:37:46 -0400
+ id 1qt9YJ-0007O8-MZ
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:37:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697647064;
+ s=mimecast20190719; t=1697647067;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ouuDmH5LRXhpOLGzIT0yUziDNV9zDFXE5DW4RMtCLhc=;
- b=OfNsy5zidnWyY0BcMAz5aQHN4tDpDBwvML/w1EfQPpAhzHZbnRllrScN2jxUUXvnZ8e8/w
- hTWboLGQc7muyFDYxzLjeaVFaqjA7YS6MbJ5tYAbH2NRIX7o76aK8eNq1it3elMToBXjmL
- H4D4JRhHIr0eGFu4skW7NL6Pqs1bmZ0=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mCBjqXciEfbUIqL0Z8mMxzxH/l5EMff3nfa5XLVTjNg=;
+ b=eFZzBt4JwqnN/rtatNWQbwc0n2YrDp5zeNG48loEWqvbK1gzaz77OdyxocAEL2jNis6X6J
+ TlpxuciMc9AJXzQYw/A6GBDewXeyZxb2JBOpJrSUToQKrwsZnOsMmoBcd5+CADL36dbv/C
+ Skr8vBbnwYPdo8tQBmMtYcgINHhOJmM=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-MI1FNrJAMvCmMeoyUbIf5A-1; Wed, 18 Oct 2023 12:37:40 -0400
-X-MC-Unique: MI1FNrJAMvCmMeoyUbIf5A-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-9ae7663e604so307180566b.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:37:39 -0700 (PDT)
+ us-mta-422-9OcnfjbSM7-gK9WOFd72Jw-1; Wed, 18 Oct 2023 12:37:40 -0400
+X-MC-Unique: 9OcnfjbSM7-gK9WOFd72Jw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9bea60bd1adso476196166b.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:37:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697647057; x=1698251857;
+ d=1e100.net; s=20230601; t=1697647059; x=1698251859;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ouuDmH5LRXhpOLGzIT0yUziDNV9zDFXE5DW4RMtCLhc=;
- b=qzFGGJYld1h2pSGiJDQgRDMZYgdZuLPqH8uuMyHk+rJsypmNYsnmeZZU5d4O34GpaC
- InxHmBqXIVyhr2Uo9Z7EC16TSLZyz92zzmerSRcFRjOXOid2GSPG8RcRLwOoL2yG+guo
- tTILyR+eFPcK5mNVX3qb1T/8V908VHn6CgJran98RS+j2pgmYdZZSmXOudb5H4Xiw7ZX
- i0WcdvBFKyh0Yp5u8W0taOXkv6wAtMmGx1RSN75qh4zN22yjShtxUyGFoHJMOcD6r3zK
- /uw3iZZ0WyikyAo1CUwAlUKdiwMBOy81RtpFFra6iL2ADitQgUQdcmVjON5t5v8/k8PU
- IhMg==
-X-Gm-Message-State: AOJu0YzmzqQdisJfko/+J2//scwJu14rRf2lBbBdBAvFnrgoPC+Mx4ly
- 3os1a6CQT0jC9vBoACdDnNL5qNCLkwZ+kpeBsgQAWRZZGwzAslHg9ytQoW5ALCd9O/xTvYse3rC
- conSCOdjpAWi1eBOpaPmztQDkDl0yDAXaHGgU5bRfq7/vTvL+lxU5dNYXupi35DmmkG0ruC3+h0
- g=
-X-Received: by 2002:a17:906:9c84:b0:9a1:680e:8c54 with SMTP id
- fj4-20020a1709069c8400b009a1680e8c54mr4531002ejc.71.1697647057496; 
- Wed, 18 Oct 2023 09:37:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwqnqFKFWSIznf+vTmV4FWwkWoskwg4iYqw68mDALQLcf2pk23jYhWJIbIesxUNLzfu11Vlg==
-X-Received: by 2002:a17:906:9c84:b0:9a1:680e:8c54 with SMTP id
- fj4-20020a1709069c8400b009a1680e8c54mr4530989ejc.71.1697647057161; 
- Wed, 18 Oct 2023 09:37:37 -0700 (PDT)
+ bh=mCBjqXciEfbUIqL0Z8mMxzxH/l5EMff3nfa5XLVTjNg=;
+ b=GT/Mkj5h9F5ZWBYjYWpuR1OyOPBEOEgKKUkHYOnR3CtsK4wveNgijI+IaBxIN+VS15
+ Y3CtgkPdySr2o+9EBwj/hXKUalaST/OXwyz/9B8IEsQHptbOy+30fserFPNfkodTwfmN
+ dHP79x3WRQYfdF36G8uHEjc7Ck4Y1y+/XbgvZznitUtPh5JgyI4RkZrUcvHDdmB8lJt3
+ qH7ihL05rUjeYx/8qazQRAvmULmviFkRRDn7TrnzpHeA54C92GxGHrPdiQmoXrp1X5ke
+ TzNHx2Uw/83vNdjsyDlbOTmi7biVU3Qy/M6Gh+/rNo2GQB4VBbZjfQeUFMTZgRmpdXth
+ qQqg==
+X-Gm-Message-State: AOJu0YxL7u3kf38FkADnYF0FCVv0o/wYbyBPv+TCsxUf33SILIEBd7Vq
+ IPRSwaE+VaTxeTLAdDY45RXLt0P6yBYJXjkH23/g16aXD8JJOhh7nAxE78rHzBVei0UoMiAl+/6
+ gVN2WyJ1YdqGbA4rZmM1XU0m7N8ILSBsOSKx9ponk5LuG2dhW3QSkEgmlzeV7TWEwSF5mSdFp/G
+ s=
+X-Received: by 2002:a17:906:7311:b0:9a1:e0b1:e919 with SMTP id
+ di17-20020a170906731100b009a1e0b1e919mr5029774ejc.4.1697647059089; 
+ Wed, 18 Oct 2023 09:37:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHh6SFbNshg7W+eZJ54cE+pODvDcYVgVD0sVVbRXrqAuZEJ9WBJpNJUC926xRncuTFGqsE0nA==
+X-Received: by 2002:a17:906:7311:b0:9a1:e0b1:e919 with SMTP id
+ di17-20020a170906731100b009a1e0b1e919mr5029761ejc.4.1697647058710; 
+ Wed, 18 Oct 2023 09:37:38 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- mc8-20020a170906eb4800b0098d2d219649sm2006094ejb.174.2023.10.18.09.37.36
+ t7-20020a1709066bc700b009b27d4153cfsm1990501ejs.176.2023.10.18.09.37.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 09:37:36 -0700 (PDT)
+ Wed, 18 Oct 2023 09:37:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 04/17] kvm: require KVM_CAP_IRQFD for kernel irqchip
-Date: Wed, 18 Oct 2023 18:37:15 +0200
-Message-ID: <20231018163728.363879-5-pbonzini@redhat.com>
+Subject: [PATCH 05/17] kvm: drop reference to KVM_CAP_PCI_2_3
+Date: Wed, 18 Oct 2023 18:37:16 +0200
+Message-ID: <20231018163728.363879-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018163728.363879-1-pbonzini@redhat.com>
 References: <20231018163728.363879-1-pbonzini@redhat.com>
@@ -100,134 +100,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM_CAP_IRQFD is always available on architectures that support an in-kernel
-interrupt controller, and was introduced in Linux 2.6.32.  We can require
-it unconditionally.
+This is a remnant of pre-VFIO device assignment; it is not defined
+anymore by Linux and not used by QEMU.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c         | 13 +++++--------
- accel/stubs/kvm-stub.c      |  1 -
- hw/intc/arm_gicv3_its_kvm.c |  2 +-
- include/sysemu/kvm.h        |  6 +++---
- target/riscv/kvm/kvm-cpu.c  |  2 +-
- 5 files changed, 10 insertions(+), 14 deletions(-)
+ accel/kvm/kvm-all.c      | 7 -------
+ include/sysemu/kvm.h     | 1 -
+ include/sysemu/kvm_int.h | 1 -
+ 3 files changed, 9 deletions(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 0c7b0569da4..be50d47f7b4 100644
+index be50d47f7b4..50717a0d634 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -91,7 +91,6 @@ bool kvm_split_irqchip;
- bool kvm_async_interrupts_allowed;
- bool kvm_halt_in_kernel_allowed;
- bool kvm_eventfds_allowed;
--bool kvm_irqfds_allowed;
- bool kvm_resamplefds_allowed;
- bool kvm_msi_via_irqfd_allowed;
- bool kvm_gsi_routing_allowed;
-@@ -2128,10 +2127,6 @@ static int kvm_irqchip_assign_irqfd(KVMState *s, EventNotifier *event,
-         }
-     }
+@@ -2576,8 +2576,6 @@ static int kvm_init(MachineState *ms)
  
--    if (!kvm_irqfds_enabled()) {
--        return -ENOSYS;
--    }
+     s->max_nested_state_len = kvm_check_extension(s, KVM_CAP_NESTED_STATE);
+ 
+-    s->intx_set_mask = kvm_check_extension(s, KVM_CAP_PCI_2_3);
 -
-     return kvm_vm_ioctl(s, KVM_IRQFD, &irqfd);
+     s->irq_set_ioctl = KVM_IRQ_LINE;
+     if (kvm_check_extension(s, KVM_CAP_IRQ_INJECT_STATUS)) {
+         s->irq_set_ioctl = KVM_IRQ_LINE_STATUS;
+@@ -3237,11 +3235,6 @@ int kvm_has_gsi_routing(void)
+ #endif
  }
  
-@@ -2292,6 +2287,11 @@ static void kvm_irqchip_create(KVMState *s)
-         return;
-     }
- 
-+    if (kvm_check_extension(s, KVM_CAP_IRQFD) <= 0) {
-+        fprintf(stderr, "kvm: irqfd not implemented\n");
-+        exit(1);
-+    }
-+
-     /* First probe and see if there's a arch-specific hook to create the
-      * in-kernel irqchip for us */
-     ret = kvm_arch_irqchip_create(s);
-@@ -2589,9 +2589,6 @@ static int kvm_init(MachineState *ms)
-     kvm_eventfds_allowed =
-         (kvm_check_extension(s, KVM_CAP_IOEVENTFD) > 0);
- 
--    kvm_irqfds_allowed =
--        (kvm_check_extension(s, KVM_CAP_IRQFD) > 0);
+-int kvm_has_intx_set_mask(void)
+-{
+-    return kvm_state->intx_set_mask;
+-}
 -
-     kvm_resamplefds_allowed =
-         (kvm_check_extension(s, KVM_CAP_IRQFD_RESAMPLE) > 0);
- 
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index bce005adad8..19d58f2778f 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -18,7 +18,6 @@ KVMState *kvm_state;
- bool kvm_kernel_irqchip;
- bool kvm_async_interrupts_allowed;
- bool kvm_eventfds_allowed;
--bool kvm_irqfds_allowed;
- bool kvm_resamplefds_allowed;
- bool kvm_msi_via_irqfd_allowed;
- bool kvm_gsi_routing_allowed;
-diff --git a/hw/intc/arm_gicv3_its_kvm.c b/hw/intc/arm_gicv3_its_kvm.c
-index 7eda9fb86ea..178f6d7de90 100644
---- a/hw/intc/arm_gicv3_its_kvm.c
-+++ b/hw/intc/arm_gicv3_its_kvm.c
-@@ -124,7 +124,7 @@ static void kvm_arm_its_realize(DeviceState *dev, Error **errp)
- 
-     kvm_msi_use_devid = true;
-     kvm_gsi_direct_mapping = false;
--    kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
-+    kvm_msi_via_irqfd_allowed = true;
- }
- 
- /**
+ bool kvm_arm_supports_user_irq(void)
+ {
+     return kvm_check_extension(kvm_state, KVM_CAP_ARM_USER_IRQ);
 diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index 93dccf5dd92..575dee53b39 100644
+index 575dee53b39..aa299396fba 100644
 --- a/include/sysemu/kvm.h
 +++ b/include/sysemu/kvm.h
-@@ -37,7 +37,6 @@ extern bool kvm_split_irqchip;
- extern bool kvm_async_interrupts_allowed;
- extern bool kvm_halt_in_kernel_allowed;
- extern bool kvm_eventfds_allowed;
--extern bool kvm_irqfds_allowed;
- extern bool kvm_resamplefds_allowed;
- extern bool kvm_msi_via_irqfd_allowed;
- extern bool kvm_gsi_routing_allowed;
-@@ -102,8 +101,10 @@ extern bool kvm_msi_use_devid;
-  * Returns: true if we can use irqfds to inject interrupts into
-  * a KVM CPU (ie the kernel supports irqfds and we are running
-  * with a configuration where it is meaningful to use them).
-+ *
-+ * Always available if running with in-kernel irqchip.
-  */
--#define kvm_irqfds_enabled() (kvm_irqfds_allowed)
-+#define kvm_irqfds_enabled() kvm_irqchip_in_kernel()
+@@ -215,7 +215,6 @@ int kvm_has_debugregs(void);
+ int kvm_max_nested_state_length(void);
+ int kvm_has_many_ioeventfds(void);
+ int kvm_has_gsi_routing(void);
+-int kvm_has_intx_set_mask(void);
  
  /**
-  * kvm_resamplefds_enabled:
-@@ -167,7 +168,6 @@ extern bool kvm_msi_use_devid;
- #define kvm_async_interrupts_enabled() (false)
- #define kvm_halt_in_kernel() (false)
- #define kvm_eventfds_enabled() (false)
--#define kvm_irqfds_enabled() (false)
- #define kvm_resamplefds_enabled() (false)
- #define kvm_msi_via_irqfd_enabled() (false)
- #define kvm_gsi_routing_allowed() (false)
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 090d6176275..26e68c7ab45 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1420,7 +1420,7 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-         exit(1);
-     }
- 
--    kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
-+    kvm_msi_via_irqfd_allowed = true;
- }
- 
- static void kvm_cpu_instance_init(CPUState *cs)
+  * kvm_arm_supports_user_irq
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index a7dacd12d6c..817238b9582 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -85,7 +85,6 @@ struct KVMState
+ #endif
+     int max_nested_state_len;
+     int many_ioeventfds;
+-    int intx_set_mask;
+     int kvm_shadow_mem;
+     bool kernel_irqchip_allowed;
+     bool kernel_irqchip_required;
 -- 
 2.41.0
 
