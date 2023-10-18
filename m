@@ -2,129 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D117CD3A2
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 07:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC9C7CD3B1
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 07:55:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qszS5-00031i-Ds; Wed, 18 Oct 2023 01:50:41 -0400
+	id 1qszVt-0003wX-Ad; Wed, 18 Oct 2023 01:54:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qszS0-00031V-Sg
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:50:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qszVm-0003vx-3f; Wed, 18 Oct 2023 01:54:31 -0400
+Received: from out30-98.freemail.mail.aliyun.com ([115.124.30.98])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qszRz-0002aH-BX
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:50:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697608234;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=UwQ6TNt7KUMsBEgTzM+4MLTlDQavThAudJ8PY6FKbIg=;
- b=iCEKedrHXOQWwMxKnol7Ro9UtJlWTFSNfbiuInF5Ewg9R9wcbOKENQeR5UztGXrS2hJQ4t
- upGJIShdm77TGsLT4e6aYrNpeY7t+NHl11SK/1x8xQkAIpzGvjixqPNAaU8oEGjMvw0tRq
- Zwg95hux7EMk/FvjzFJqjNiW260UQ8I=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-FUZHLF_SPNaOsfhoUPVpmA-1; Wed, 18 Oct 2023 01:50:32 -0400
-X-MC-Unique: FUZHLF_SPNaOsfhoUPVpmA-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d03dcdc6bso77887766d6.1
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 22:50:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697608232; x=1698213032;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UwQ6TNt7KUMsBEgTzM+4MLTlDQavThAudJ8PY6FKbIg=;
- b=OTAr5RoYrwE6G+jblYEaDyei0EWLxJzrqQEHuKjtZYWX2yAlNhX/iCCcPErUZJXog+
- UZ04XDEc3HfeT7JKt1LR5ZpvVQK5IEZquCdueGBH1O2EpOoi3XsPZvcdfa0nviMeWnm2
- EtyiMi18GEzljtUx4vrA2IRM84r8xFa5xgb84nhTBWPbXdmNPBtd0zWF7oge5ap64AF4
- Oog6XLY0PbPmNoFkqtql7WZhplsuoDQQ3SpXT/YX8Hhnq1IRYokii9yGzoEmZ/Bdu4sC
- b44q37A195Cjoh92RdnjwDcHdj8VpkmKfrJrQrDfN4LkF+7S853038mHUtjZ+02nlNzi
- 5AuA==
-X-Gm-Message-State: AOJu0YxGWbAsPegMmwHSW4BHNvCdU2tUMEvGuVBBCCzs5UfbxZKk9TU/
- I8Vyon6FzM1ASd5jJXn0z9r+suBqi98lvPxNu08nY0N2q/xAGUqadK8+td0QMoF5GEgy86qwdub
- eMtYeim2k/YlgVOI=
-X-Received: by 2002:a05:6214:d4c:b0:655:d0e3:5067 with SMTP id
- 12-20020a0562140d4c00b00655d0e35067mr5684690qvr.3.1697608231843; 
- Tue, 17 Oct 2023 22:50:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtWQU9tBWkvmllASXcwyw/hSyF1BhMcwAUzRiGnw4eXzTMdBrIkNg71WH5LmxFJNnGD1AkwA==
-X-Received: by 2002:a05:6214:d4c:b0:655:d0e3:5067 with SMTP id
- 12-20020a0562140d4c00b00655d0e35067mr5684680qvr.3.1697608231547; 
- Tue, 17 Oct 2023 22:50:31 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
- [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- e25-20020a05620a209900b0077434d0f06esm1229187qka.52.2023.10.17.22.50.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Oct 2023 22:50:31 -0700 (PDT)
-Message-ID: <07e4463f-d783-4cfc-8529-c2b041229568@redhat.com>
-Date: Wed, 18 Oct 2023 07:50:27 +0200
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qszVi-0002wx-JQ; Wed, 18 Oct 2023 01:54:29 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R541e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046050;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=13; SR=0;
+ TI=SMTPD_---0VuPZRDO_1697608449; 
+Received: from 30.221.98.192(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VuPZRDO_1697608449) by smtp.aliyun-inc.com;
+ Wed, 18 Oct 2023 13:54:10 +0800
+Message-ID: <a3fd0789-c09b-4a34-b3d3-d36ac5201750@linux.alibaba.com>
+Date: Wed, 18 Oct 2023 13:53:11 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] configure: define "pkg-config" in addition to "pkgconfig"
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20231017153649.309128-1-pbonzini@redhat.com>
+Subject: Re: [PATCH 1/4] target/riscv: Remove misa_mxl validation
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20231012054223.37870-1-akihiko.odaki@daynix.com>
+ <20231012054223.37870-2-akihiko.odaki@daynix.com>
+ <5147b65f-8211-4355-b667-f450dc189ae3@linux.alibaba.com>
+ <64c66917-2e17-47f6-ad0e-a90d7d89eec1@daynix.com>
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231017153649.309128-1-pbonzini@redhat.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <64c66917-2e17-47f6-ad0e-a90d7d89eec1@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.98;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-98.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -140,37 +73,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/2023 17.36, Paolo Bonzini wrote:
-> Meson used to allow both "pkgconfig" and "pkg-config" entries in machine
-> files; the former was used for dependency lookup and the latter
-> was used as return value for "find_program('pkg-config')", which is a less
-> common use-case and one that QEMU does not need.
-> 
-> This inconsistency is going to be fixed by Meson 1.3, which will deprecate
-> "pkgconfig" in favor of "pkg-config" (the less common one, but it makes
-> sense because it matches the name of the binary). For backward
-> compatibility it is still allowed to define both, so do that in the
-> configure-generated machine file.
-> 
-> Related: https://github.com/mesonbuild/meson/pull/12385
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   configure | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/configure b/configure
-> index 8827a29bf4c..b4ea78c77d8 100755
-> --- a/configure
-> +++ b/configure
-> @@ -1736,6 +1736,7 @@ if test "$skip_meson" = no; then
->     echo "ar = [$(meson_quote $ar)]" >> $cross
->     echo "nm = [$(meson_quote $nm)]" >> $cross
->     echo "pkgconfig = [$(meson_quote $pkg_config)]" >> $cross
-> +  echo "pkg-config = [$(meson_quote $pkg_config)]" >> $cross
->     echo "ranlib = [$(meson_quote $ranlib)]" >> $cross
->     if has $sdl2_config; then
->       echo "sdl2-config = [$(meson_quote $sdl2_config)]" >> $cross
++CC Richard
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+On 2023/10/17 11:37, Akihiko Odaki wrote:
+> On 2023/10/17 11:29, LIU Zhiwei wrote:
+>>
+>> On 2023/10/12 13:42, Akihiko Odaki wrote:
+>>> It is initialized with a simple assignment and there is little room for
+>>> error. In fact, the validation is even more complex.
+>>>
+>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> ---
+>>>   target/riscv/cpu.c | 13 ++-----------
+>>>   1 file changed, 2 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>>> index f5572704de..550b357fb7 100644
+>>> --- a/target/riscv/cpu.c
+>>> +++ b/target/riscv/cpu.c
+>>> @@ -1042,7 +1042,7 @@ static void 
+>>> riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+>>>       }
+>>>   }
+>>> -static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+>>> +static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu)
+>>>   {
+>>>       RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
+>>>       CPUClass *cc = CPU_CLASS(mcc);
+>>> @@ -1062,11 +1062,6 @@ static void 
+>>> riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+>>>       default:
+>>>           g_assert_not_reached();
+>>>       }
+>>> -
+>>> -    if (env->misa_mxl_max != env->misa_mxl) {
+>>> -        error_setg(errp, "misa_mxl_max must be equal to misa_mxl");
+>>> -        return;
+>>> -    }
+>>>   }
+>>>   /*
+>>> @@ -1447,11 +1442,7 @@ static void riscv_cpu_realize_tcg(DeviceState 
+>>> *dev, Error **errp)
+>>>           return;
+>>>       }
+>>> -    riscv_cpu_validate_misa_mxl(cpu, &local_err);
+>>> -    if (local_err != NULL) {
+>>> -        error_propagate(errp, local_err);
+>>> -        return;
+>>> -    }
+>>> +    riscv_cpu_validate_misa_mxl(cpu);
+>>
+>> This it not right.  As we are still working on the supporting for 
+>> MXL32 or SXL32, this validation is needed.
+>
+> It's not preventing supporting MXL32 or SXL32. It's removing 
+> env->misa_mxl_max != env->misa_mxl just because it's initialized with 
+> a simple statement:
+> env->misa_mxl_max = env->misa_mxl = mxl;
+>
+> It makes little sense to have a validation code that is more complex 
+> than the validated code.
+>
+>>
+>> And we can't ensure the all RISC-V cpus have the same misa_mxl_max or 
+>> misa_mxl,   it is not right to move it to class.
+>> For example, in the future, riscv64-softmmu can run 32-bit cpu and 
+>> 64-bit cpu. And maybe in heterogeneous SOC,
+>> we have 32-bit cpu and 64-bit cpu together.
+>
+> This patch series does not touch misa_mxl. We don't need to ensure 
+> that all CPUs have the same misa_mxl_max, but we just need to ensure 
+> that CPUs in the same class do. Creating a heterogeneous SoC is still 
+> possible by combining e.g. TYPE_RISCV_CPU_SIFIVE_E31 and 
+> TYPE_RISCV_CPU_SIFIVE_E51, for example.
+
+I see what you mean. It makes sense  to move the misa_mxl_max field from 
+env to the class struct. The misa_mxl_max  is always be set by  cpu init 
+or the migration.
+
+The former  is OK. I don't know whether QEMU supports migration from 
+32-bit CPU to 64-bit CPU. Otherwise,
+
+Acked-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+
+Zhiwei
 
 
