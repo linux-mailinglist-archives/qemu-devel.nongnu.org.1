@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EC57CD69A
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C267CD697
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:32:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1um-0001PC-Oc; Wed, 18 Oct 2023 04:28:28 -0400
+	id 1qt1uY-0000Vj-Lg; Wed, 18 Oct 2023 04:28:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qt1uj-0001JX-Jv
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:25 -0400
-Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qt1uf-0003T0-KB
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:25 -0400
-Received: by mail-pl1-x643.google.com with SMTP id
- d9443c01a7336-1bdf4752c3cso41274325ad.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:26:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1697617576; x=1698222376;
- darn=nongnu.org; 
- h=message-id:in-reply-to:to:references:date:subject:mime-version:from
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cKXetYOn3HgpUnuFeZIaD5GaOkqW5KOe6VfcdmueEKw=;
- b=KoWvOHB6iYZgDuAuG+CdFxXtSn8VhcEKuvqzBTmhzy9gZdlCc3VKZMXyXuCzGqQy8h
- 1xtquI6Q7Xb7RU2ocYRbKfRvvZmdZYTNbV0yW/fJ975hYaW208o2vvTiS2885gIoZ6rv
- 3nrMVDL+lU6+iEszm4Q5nygiCW8bqZGFvJP+yxwZtpeasXAG5u0iu7CENPZqXUWQFpSZ
- UeJl0HdBn58d2PpGtgWshSi/Xmlf8N5Q3x4hi+6kCqmSlvWogMAwIPKozfmvQUDebQ3c
- eBQKtnuhN3BKve4vr87sf/yUDX3FQCT0HnsPZorgw5EJc3JQOmRnA3dcbwRN7v3nNDRS
- 6hXg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qt1uV-0000TL-Th
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qt1uT-0003ZI-Mq
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697617688;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=b83yAfW1EQ3a+gzEXnF60a71GooBannom07e6loOxyI=;
+ b=LPbvZm6UIKIzjjHpWNyqHKHyTO244jie9OFcE5ohSN9OdmjDSyVfIaS6Zy7dkXKY+ASpgQ
+ 7IIdcZPqtK5eo8+GBh8lgHLs16XFgPfMtbdtgJap1gIvTMt4MZPZ6CKXlpWJh5BBhUPBAO
+ rPPyOFEw9uvZh6eR9F/TBzeT+Bi3sRg=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-7q-1Bnn0MkWRE4Iha1rKZg-1; Wed, 18 Oct 2023 04:27:57 -0400
+X-MC-Unique: 7q-1Bnn0MkWRE4Iha1rKZg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9b9ecd8c351so459735466b.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:27:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697617576; x=1698222376;
- h=message-id:in-reply-to:to:references:date:subject:mime-version:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cKXetYOn3HgpUnuFeZIaD5GaOkqW5KOe6VfcdmueEKw=;
- b=bbHrLMi4CF05ws2uSdXlGLR4dMU+Nz01FMuW2K5Or8nD/FSFGJN3O3aI8/iUhL1WR6
- EltjbL0RUjvLsgrRwpQWVtL0EPgaSvaxcOTCafF8fSyWuHrtLJN+UwRvKDWy0CmgiIqc
- WzqI8f5hO0i7WDC8mGlN0uEboeDNhhEu0+4LS53JFRve4IElQgLNDbJ5t9qs2Fjf7/9t
- DlQZpQDP+WP0AZ99M6lh8WgX+I4k2MMTI3Y9cathMLj7AlVQ/cwW9Tem+t/PN1f3Ezkb
- BqwrZB+ON4TZ/ZuK5sgW9e4lHrNsalC2cmFDkTUYRx83MsdOOPPJ6nvegm9AjYF080e3
- evxg==
-X-Gm-Message-State: AOJu0Yyct0S+QRc1QtVTioCLE0MI359f9G6hCJAvXkOQUCU0CpJhH5rv
- RpUyr9tBbQAwkXRpq8cU87OSOg==
-X-Google-Smtp-Source: AGHT+IERJS8XD7WJ5e4DjO41iK67SH8rHpYhAxb7KRd8lFOucvVB7bV2yI/J7gBcyVMFRioVYttJ3g==
-X-Received: by 2002:a17:902:d2cb:b0:1b8:94e9:e7cb with SMTP id
- n11-20020a170902d2cb00b001b894e9e7cbmr4748845plc.21.1697617575782; 
- Wed, 18 Oct 2023 01:26:15 -0700 (PDT)
-Received: from smtpclient.apple ([8.210.91.195])
+ d=1e100.net; s=20230601; t=1697617674; x=1698222474;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=b83yAfW1EQ3a+gzEXnF60a71GooBannom07e6loOxyI=;
+ b=oTU7/BRHMFOZCzuHA2h9KvBiXQI08BuLGJenA0IKgXgKMHpZHxJgfPP+XC5LryoDYT
+ RJ+oSv7MMe+X7bAVroz+wANRVWHJTgOWeZR1oBSkHqbkZSUddrgO1juTWms79rHI2cEK
+ MzvCpOI+zbYI5N4XNZ96R5BRMNPdYl9VWz7dLF0Oszmsuy6mNxCAhvbT7zEG59Vgd8Oo
+ MOFdnct3dtH9kPGyGzeHyKUkpzlFEZwQNAncSh7nVYPGAVgyaQDrSNwDzP1UQMWxitMu
+ wtIIoMbJ2hSPrBRJ/Y4ysrReJEiMRjPGfF3Lxkhm2mlI/WolynpgxLptPShy7vuz2oDn
+ /Z9A==
+X-Gm-Message-State: AOJu0YyaP/+hXEX9lJ8jkPteaVSpOvj/OaP8j9FpVjA2YKU0ZtQhJswl
+ LHuqsXIrf1ekKDSzOULSAZHjIw0yU5ZABMoRVceqtbXRLXEOSICHMZRYnLjD8lqyceQyfRxuIfn
+ NatiQU1PjPhMRqHsKMA8nje/0QNqhFdLU3yo9pEIpv21hovnTNnW5pPz20/inFFBW0/I57a3imG
+ 8=
+X-Received: by 2002:a05:6402:84a:b0:53f:739e:cd34 with SMTP id
+ b10-20020a056402084a00b0053f739ecd34mr55522edz.13.1697617674433; 
+ Wed, 18 Oct 2023 01:27:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbxgNkSe1kkYE7EGCJ1igNSZAdF7sHMtBw9/jmelldvnJuwBfFZABSZTy+wAawsd+CxiOxSA==
+X-Received: by 2002:a05:6402:84a:b0:53f:739e:cd34 with SMTP id
+ b10-20020a056402084a00b0053f739ecd34mr55503edz.13.1697617673888; 
+ Wed, 18 Oct 2023 01:27:53 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- v7-20020a170902b7c700b001b896686c78sm2917598plz.66.2023.10.18.01.26.11
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 18 Oct 2023 01:26:15 -0700 (PDT)
-From: Li Feng <fengli@smartx.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_87F406BE-6FBD-4784-8963-F5A5390EBDFB"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.100.2.1.4\))
-Subject: Re: [PATCH v8 0/5] Implement reconnect for vhost-user-scsi
-Date: Wed, 18 Oct 2023 16:26:10 +0800
-References: <20231009044735.941655-1-fengli@smartx.com>
-To: Markus Armbruster <armbru@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- "open list:Block layer core" <qemu-block@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-In-Reply-To: <20231009044735.941655-1-fengli@smartx.com>
-Message-Id: <9D9DFA75-541B-4EE9-831F-B2FF941B3E41@smartx.com>
-X-Mailer: Apple Mail (2.3774.100.2.1.4)
-Received-SPF: none client-ip=2607:f8b0:4864:20::643;
- envelope-from=fengli@smartx.com; helo=mail-pl1-x643.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ a93-20020a509ee6000000b00536159c6c45sm2439037edf.15.2023.10.18.01.27.53
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 01:27:53 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/32] x86 and build system changes for 2023-10-18
+Date: Wed, 18 Oct 2023 10:27:20 +0200
+Message-ID: <20231018082752.322306-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,181 +97,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit 800485762e6564e04e2ab315132d477069562d91:
 
---Apple-Mail=_87F406BE-6FBD-4784-8963-F5A5390EBDFB
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+  Merge tag 'python-pull-request' of https://gitlab.com/jsnow/qemu into staging (2023-10-16 12:37:48 -0400)
 
-Hello Guys,
-Ping=E2=80=A6=20
-These patches have been waiting for a long time. Can they be merged?
+are available in the Git repository at:
 
-Best Regards,=20
-li
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-> On 9 Oct 2023, at 12:46=E2=80=AFPM, Li Feng <fengli@smartx.com> wrote:
->=20
-> Changes for v8:
-> - [PATCH 3/5] vhost-user-scsi: support reconnect to backend
->  - Fix code style suggested by Manos Pitsidianakis
-> - [PATCH 4/5] vhost-user-scsi: start vhost when guest kicks
->  - Use 'DEVICE()' macro in vhost_user_scsi_handle_output to replace =
-the
->    'parent_obj.parent_obj.parent_obj.parent_obj'.
->=20
-> Changes for v7:
-> - [PATCH 3/5] vhost-user-scsi: support reconnect to backend
->  - Add reporting the error in vhost-scsi;
->  - Rebase to master and fix the conflict.
-> - Add "Reviewed-by" tags.
->=20
-> Changes for v6:
-> - [PATCH] vhost-user: fix lost reconnect
->  - Fix missing assign event_cb.
->=20
-> Changes for v5:
-> - No logic has been changed, just move part of the code from patch 4 =
-to patch 5.
->=20
-> Changes for v4:
-> - Merge
->  =
-https://lore.kernel.org/all/20230830045722.611224-1-fengli@smartx.com/ =
-to
->  this series.
-> - Add ERRP_GUARD in vhost_user_scsi_realize;
-> - Reword the commit messages.
->=20
-> Changes for v3:
-> - Split the vhost_user_scsi_handle_output to a separate patch;
-> - Move the started_vu from vhost scsi common header to vhost-user-scsi =
-header;
-> - Fix a log print error;
->=20
-> Changes for v2:
-> - Split the v1 patch to small separate patchset;
-> - New patch for fixing fd leak, which has sent to reviewers in another
->  mail;
-> - Implement the `vhost_user_scsi_handle_output`;
-> - Add the started_vu safe check;
-> - Fix error handler;
-> - Check the inflight before set/get inflight fd.
->=20
-> Li Feng (5):
->  vhost-user-common: send get_inflight_fd once
->  vhost: move and rename the conn retry times
->  vhost-user-scsi: support reconnect to backend
->  vhost-user-scsi: start vhost when guest kicks
->  vhost-user: fix lost reconnect
->=20
-> hw/block/vhost-user-blk.c             |   6 +-
-> hw/scsi/vhost-scsi-common.c           |  47 ++---
-> hw/scsi/vhost-scsi.c                  |   6 +-
-> hw/scsi/vhost-user-scsi.c             | 250 +++++++++++++++++++++++---
-> hw/virtio/vhost-user-gpio.c           |   5 +-
-> hw/virtio/vhost-user.c                |  10 +-
-> include/hw/virtio/vhost-scsi-common.h |   2 +-
-> include/hw/virtio/vhost-user-scsi.h   |   6 +
-> include/hw/virtio/vhost-user.h        |   3 +-
-> include/hw/virtio/vhost.h             |   2 +
-> 10 files changed, 277 insertions(+), 60 deletions(-)
->=20
-> --=20
-> 2.41.0
->=20
+for you to fetch changes up to 528148980adb78bc368a5254204e2ea98e4f6b6c:
 
+  configure: define "pkg-config" in addition to "pkgconfig" (2023-10-18 10:01:02 +0200)
 
---Apple-Mail=_87F406BE-6FBD-4784-8963-F5A5390EBDFB
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
+----------------------------------------------------------------
+* build system and Python cleanups
+* fix netbsd VM build
+* allow non-relocatable installs
+* allow using command line options to configure qemu-ga
+* target/i386: check intercept for XSETBV
+* target/i386: fix CPUID_HT exposure
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;"><pre id=3D"b" =
-style=3D"font-size: 13px; background: rgb(255, 255, 255); color: rgb(0, =
-0, 51); text-wrap: wrap; font-variant-ligatures: normal; orphans: 2; =
-widows: 2; text-decoration-thickness: initial; text-decoration-style: =
-initial; text-decoration-color: initial;">Hello Guys,</pre><pre id=3D"b" =
-style=3D"font-size: 13px; background: rgb(255, 255, 255); color: rgb(0, =
-0, 51); text-wrap: wrap; font-variant-ligatures: normal; orphans: 2; =
-widows: 2; text-decoration-thickness: initial; text-decoration-style: =
-initial; text-decoration-color: initial;">Ping=E2=80=A6&nbsp;</pre><pre =
-id=3D"b" style=3D"font-size: 13px; background: rgb(255, 255, 255); =
-color: rgb(0, 0, 51); text-wrap: wrap; font-variant-ligatures: normal; =
-orphans: 2; widows: 2; text-decoration-thickness: initial; =
-text-decoration-style: initial; text-decoration-color: initial;">These =
-patches have been waiting for a long time. Can they be merged?</pre><pre =
-id=3D"b" style=3D"font-size: 13px; background: rgb(255, 255, 255); =
-color: rgb(0, 0, 51); text-wrap: wrap; font-variant-ligatures: normal; =
-orphans: 2; widows: 2; text-decoration-thickness: initial; =
-text-decoration-style: initial; text-decoration-color: =
-initial;"><br></pre><pre id=3D"b" style=3D"font-size: 13px; background: =
-rgb(255, 255, 255); color: rgb(0, 0, 51); text-wrap: wrap; =
-font-variant-ligatures: normal; orphans: 2; widows: 2; =
-text-decoration-thickness: initial; text-decoration-style: initial; =
-text-decoration-color: initial;">Best Regards,&nbsp;</pre><pre id=3D"b" =
-style=3D"font-size: 13px; background: rgb(255, 255, 255); color: rgb(0, =
-0, 51); text-wrap: wrap; font-variant-ligatures: normal; orphans: 2; =
-widows: 2; text-decoration-thickness: initial; text-decoration-style: =
-initial; text-decoration-color: initial;">li</pre><pre id=3D"b" =
-style=3D"font-size: 13px; background: rgb(255, 255, 255); color: rgb(0, =
-0, 51); text-wrap: wrap; font-variant-ligatures: normal; orphans: 2; =
-widows: 2; text-decoration-thickness: initial; text-decoration-style: =
-initial; text-decoration-color: =
-initial;"><br></pre><div><div><blockquote type=3D"cite"><div>On 9 Oct =
-2023, at 12:46=E2=80=AFPM, Li Feng &lt;fengli@smartx.com&gt; =
-wrote:</div><br class=3D"Apple-interchange-newline"><div><div>Changes =
-for v8:<br>- [PATCH 3/5] vhost-user-scsi: support reconnect to =
-backend<br> &nbsp;- Fix code style suggested by Manos Pitsidianakis<br>- =
-[PATCH 4/5] vhost-user-scsi: start vhost when guest kicks<br> &nbsp;- =
-Use 'DEVICE()' macro in vhost_user_scsi_handle_output to replace the<br> =
-&nbsp;&nbsp;&nbsp;'parent_obj.parent_obj.parent_obj.parent_obj'.<br><br>Ch=
-anges for v7:<br>- [PATCH 3/5] vhost-user-scsi: support reconnect to =
-backend<br> &nbsp;- Add reporting the error in vhost-scsi;<br> &nbsp;- =
-Rebase to master and fix the conflict.<br>- Add "Reviewed-by" =
-tags.<br><br>Changes for v6:<br>- [PATCH] vhost-user: fix lost =
-reconnect<br> &nbsp;- Fix missing assign event_cb.<br><br>Changes for =
-v5:<br>- No logic has been changed, just move part of the code from =
-patch 4 to patch 5.<br><br>Changes for v4:<br>- Merge<br> =
-&nbsp;https://lore.kernel.org/all/20230830045722.611224-1-fengli@smartx.co=
-m/ to<br> &nbsp;this series.<br>- Add ERRP_GUARD in =
-vhost_user_scsi_realize;<br>- Reword the commit messages.<br><br>Changes =
-for v3:<br>- Split the vhost_user_scsi_handle_output to a separate =
-patch;<br>- Move the started_vu from vhost scsi common header to =
-vhost-user-scsi header;<br>- Fix a log print error;<br><br>Changes for =
-v2:<br>- Split the v1 patch to small separate patchset;<br>- New patch =
-for fixing fd leak, which has sent to reviewers in another<br> =
-&nbsp;mail;<br>- Implement the `vhost_user_scsi_handle_output`;<br>- Add =
-the started_vu safe check;<br>- Fix error handler;<br>- Check the =
-inflight before set/get inflight fd.<br><br>Li Feng (5):<br> =
-&nbsp;vhost-user-common: send get_inflight_fd once<br> &nbsp;vhost: move =
-and rename the conn retry times<br> &nbsp;vhost-user-scsi: support =
-reconnect to backend<br> &nbsp;vhost-user-scsi: start vhost when guest =
-kicks<br> &nbsp;vhost-user: fix lost reconnect<br><br> =
-hw/block/vhost-user-blk.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
-&nbsp;&nbsp;6 +-<br> hw/scsi/vhost-scsi-common.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;47 =
-++---<br> hw/scsi/vhost-scsi.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;6 +-<br> =
-hw/scsi/vhost-user-scsi.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
-250 +++++++++++++++++++++++---<br> hw/virtio/vhost-user-gpio.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
-&nbsp;&nbsp;5 +-<br> hw/virtio/vhost-user.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;| &nbsp;10 +-<br> include/hw/virtio/vhost-scsi-common.h =
-| &nbsp;&nbsp;2 +-<br> include/hw/virtio/vhost-user-scsi.h &nbsp;&nbsp;| =
-&nbsp;&nbsp;6 +<br> include/hw/virtio/vhost-user.h =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;3 +-<br> =
-include/hw/virtio/vhost.h =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
-&nbsp;&nbsp;2 +<br> 10 files changed, 277 insertions(+), 60 =
-deletions(-)<br><br>-- =
-<br>2.41.0<br><br></div></div></blockquote></div><br></div></body></html>=
+----------------------------------------------------------------
+Emmanouil Pitsidianakis (1):
+      scripts/get_maintainer.pl: don't print parentheses
 
---Apple-Mail=_87F406BE-6FBD-4784-8963-F5A5390EBDFB--
+John Snow (2):
+      iotests: get rid of '..' in path environment output
+      iotests: use the correct python to run linters
+
+Paolo Bonzini (26):
+      target/i386: check intercept for XSETBV
+      tests/vm: netbsd: install dtc
+      tests/docker: avoid invalid escape in Python string
+      docs/sphinx: avoid invalid escape in Python string
+      target/hexagon: avoid invalid escape in Python string
+      tests/avocado: avoid invalid escape in Python string
+      tests/vm: avoid invalid escape in Python string
+      tracetool: avoid invalid escape in Python string
+      meson: do not build shaders by default
+      meson: do not use set10
+      meson, cutils: allow non-relocatable installs
+      configure: clean up handling of CFI option
+      hw/xen: cleanup sourcesets
+      hw/remote: move stub vfu_object_set_bus_irq out of stubs/
+      tests/tcg/arm: move non-SVE tests out of conditional
+      configure, tests/tcg: simplify GDB conditionals
+      configure: clean up plugin option handling
+      configure: clean up PIE option handling
+      configure: remove some dead cruft
+      configure: move target-specific defaults to an external machine file
+      configure: move environment-specific defaults to config-meson.cross
+      configure: unify handling of several Debian cross containers
+      configure, meson: use command line options to configure qemu-ga
+      meson-buildoptions: document the data at the top
+      meson: add a note on why we use config_host for program paths
+      configure: define "pkg-config" in addition to "pkgconfig"
+
+Thomas Huth (1):
+      scripts: Mark feature_to_c.py as non-executable to fix a build issue
+
+Xiaoyao Li (1):
+      target/i386/cpu: Fix CPUID_HT exposure
+
+Yonggang Luo (1):
+      Revert "configure: Add workaround for ccache and clang"
+
+ configs/meson/windows.txt                          |   9 +
+ configure                                          | 288 +++++++--------------
+ docs/sphinx/hxtool.py                              |   2 +-
+ hw/arm/meson.build                                 |   1 -
+ hw/i386/meson.build                                |   1 -
+ hw/remote/meson.build                              |   4 +-
+ .../remote/vfio-user-obj-stub.c                    |   0
+ hw/xen/meson.build                                 |  11 +-
+ include/qemu/compiler.h                            |  15 ++
+ meson.build                                        |  31 ++-
+ meson_options.txt                                  |   9 +
+ qga/meson.build                                    |   9 +-
+ scripts/feature_to_c.py                            |   0
+ scripts/get_maintainer.pl                          |   1 +
+ scripts/meson-buildoptions.py                      |  32 ++-
+ scripts/meson-buildoptions.sh                      |  26 +-
+ scripts/tracetool/__init__.py                      |  14 +-
+ scripts/tracetool/format/log_stap.py               |   2 +-
+ stubs/meson.build                                  |   1 -
+ target/hexagon/hex_common.py                       |   4 +-
+ target/i386/cpu.c                                  |   1 +
+ target/i386/kvm/kvm.c                              |   2 +
+ target/i386/svm.h                                  |   1 +
+ target/i386/tcg/translate.c                        |   1 +
+ tests/avocado/virtio_check_params.py               |   2 +-
+ tests/docker/docker.py                             |   2 +-
+ tests/qemu-iotests/linters.py                      |   2 +-
+ tests/qemu-iotests/testenv.py                      |   2 +-
+ tests/tcg/aarch64/Makefile.target                  |  16 +-
+ tests/tcg/multiarch/Makefile.target                |  18 +-
+ tests/tcg/multiarch/system/Makefile.softmmu-target |  15 +-
+ tests/tcg/s390x/Makefile.target                    |   6 +-
+ tests/unit/test-coroutine.c                        |   2 +-
+ tests/vm/basevm.py                                 |   6 +-
+ tests/vm/netbsd                                    |   6 +-
+ ui/shader/meson.build                              |   1 +
+ util/cutils.c                                      |  11 +-
+ util/qemu-coroutine.c                              |   4 +-
+ 38 files changed, 283 insertions(+), 275 deletions(-)
+ create mode 100644 configs/meson/windows.txt
+ rename stubs/vfio-user-obj.c => hw/remote/vfio-user-obj-stub.c (100%)
+ mode change 100755 => 100644 scripts/feature_to_c.py
+-- 
+2.41.0
+
 
