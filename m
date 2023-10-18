@@ -2,134 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B837CD3BC
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 07:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA7C7CD3DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 08:08:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qszaD-0006Us-AA; Wed, 18 Oct 2023 01:59:05 -0400
+	id 1qszi8-0006R2-I4; Wed, 18 Oct 2023 02:07:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qszaB-0006UK-0P
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:59:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qszi6-0006GD-Fp
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:07:14 -0400
+Received: from mout.gmx.net ([212.227.15.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qsza9-0003Yu-HE
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:59:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697608740;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=VjpSLBNlH1r/f2kTnB9Xw/puwdm7Wu2p66V+drevp8Y=;
- b=d5j+/tno41gelVp1I+/9CFXbc5wEIu5kJqvFZnprarSeoNwOwtGDqKBLEKs9NPjxqzO/Tu
- dK47LgN94yQuZiTL7CzDI0J/VFIPwQnAmvyV5UmuGW0c2//BIIEdpn2tXOSw/7sHZ5YQbT
- SBZ/7YbjahsOq2HO7XDjIe85WzZN+kE=
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
- [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-PF-wMOiWNiGNQ_uJByvxTQ-1; Wed, 18 Oct 2023 01:58:47 -0400
-X-MC-Unique: PF-wMOiWNiGNQ_uJByvxTQ-1
-Received: by mail-vk1-f200.google.com with SMTP id
- 71dfb90a1353d-49d8fa96d4bso2234496e0c.2
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 22:58:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697608727; x=1698213527;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VjpSLBNlH1r/f2kTnB9Xw/puwdm7Wu2p66V+drevp8Y=;
- b=WGA6dySrJNO7vc3ycOH+1ACQ7hoNXRaBjmiS/nXFcCfKwInIOEgpYJOhS8iiBJQyN5
- ZW1ZX66SlVEryJT36MQcwYCGgH6yGTR6CMVCeyWT7q3vlq2MV4r0le+Dj/5plT/kjmd5
- 7X44yp2sW7+X3hYLr0Zq7iVyfZh3pSS0/GMMFhzGOIN9VAMLEnKrxNYosAZw23QNuzfP
- zWiaiS/hoRC6AV09nPdcJisKn69QP8a1DZDhWIjk1KbboxD8RfL33dELJI36cP76jkWJ
- ijqx64zEjri0BVAzhDXgCUflsy+4WRdr0c8tsGup1Zcz1X8lHoWxYxSY8XAAv0D8I7sE
- a5sw==
-X-Gm-Message-State: AOJu0Yzlz260YLAviCGnjheYADaXHURZ958mP0P50nhAvi+OwP6/6wjI
- akBvT2McvlOc9fyaYevf174XgMdlyo7avwjsNTYvTkEsjNnuyrGYt9nJKHvMxXSvL5F/J2iidUH
- Hquce0iJoMvClaS8=
-X-Received: by 2002:a1f:a658:0:b0:49a:bff1:23 with SMTP id
- p85-20020a1fa658000000b0049abff10023mr4222027vke.5.1697608727373; 
- Tue, 17 Oct 2023 22:58:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHoHHDJYLpKPvqYEOM+l4zb9g/zNgWRsPy0gWPpiWIDwNnJH5eZPifUr7dcO/yF/8g/UMrxCQ==
-X-Received: by 2002:a1f:a658:0:b0:49a:bff1:23 with SMTP id
- p85-20020a1fa658000000b0049abff10023mr4222012vke.5.1697608727045; 
- Tue, 17 Oct 2023 22:58:47 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
- [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- f7-20020ad45587000000b0065cffe12ae9sm1120459qvx.36.2023.10.17.22.58.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Oct 2023 22:58:45 -0700 (PDT)
-Message-ID: <80c9cc1a-7d5b-4840-8dd5-9cbaae51114a@redhat.com>
-Date: Wed, 18 Oct 2023 07:58:41 +0200
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qszi4-0004s4-GC
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:07:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1697609215; x=1698214015; i=deller@gmx.de;
+ bh=55rsnsN2xcwHLIekWaeUko+R0iPxv7exak+loYDBRx4=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=QxPdggc5sHaRtWaK55e+0Uw2x8/m1CHNvmJod/nV927+V3W+XmqwEqVv7GpQNYmVgkKnbG05Rdl
+ SLI3yzFUHdjilzpaHMyvO3vFZ3kVYddbZdwPuHSdmAMi6K2ph1P04aM3/pOnDCnvWsznodTBROoic
+ m5sH11KllUSIuzbgMBezDlETq4opZOPIbD9vSnCmmGbUMj+SQ3/EXpp7DYL+nD0CJojxZjBTFZ5BS
+ PhmL5KRmUnior5gYJ1k2v+P0DQQ7paVqElS4RaGik2DoXTZaBux1c2eMTzUZdq++Vz19pTJJHHL9x
+ Hg9EBgllToymJ2o7/ra9SSYwr0D+cljecILQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.146.99]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MOA3P-1rCRIE1wxl-00OY2Z; Wed, 18
+ Oct 2023 08:06:55 +0200
+Message-ID: <8e2078b9-4962-46b5-a7cf-29866e39315c@gmx.de>
+Date: Wed, 18 Oct 2023 08:06:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 4/4] tests/avocado: Add test for amigaone board
+Subject: Re: [PATCH 2/2] linux-user: Replace use of lfs64 related functions
+ and macros
+To: Sam James <sam@gentoo.org>, raj.khem@gmail.com
+Cc: laurent@vivier.eu, qemu-devel@nongnu.org
+References: <878r8415bj.fsf@gentoo.org>
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-References: <cover.1697568616.git.balaton@eik.bme.hu>
- <dea7938f15c3231984546b12ccc8e3b8ba42a203.1697568616.git.balaton@eik.bme.hu>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <dea7938f15c3231984546b12ccc8e3b8ba42a203.1697568616.git.balaton@eik.bme.hu>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <878r8415bj.fsf@gentoo.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:LChzyLCwfb0z8+knBz85ioxMbqhWbmfivb5hltu+JdFv9W+wlPO
+ khLt8NnZdINZtgXJYbG1SuIUqXte/CYVygG0E0ayGVtwTZ1XOVkNrtvCne3Jp+Peo6wbsbF
+ upJQhdal3gMlovAbv07i1WL8H4E2KRs9LSnKGLXEmVVUFHKMJklFjH7n/Ple4KRBUTh3Ho/
+ s5OfLEuyD7/Eg+1EJRuxQ==
+UI-OutboundReport: notjunk:1;M01:P0:pywfkJr+CCY=;mJEc0wPXJemZu1/+mQwdYjsV6Es
+ sJNbaeSjahjHRlMWyb0xHGkAN13ExrlMJFxVmuaw2WBSouS8OtNGSCUCvT5aP9AbYzKGk9n7E
+ LYSRtSnYBMkKC7NqKEg6MERQrmdRs73fAwp+aUz6OYnXPn8aqKSBkyCRv1egfIG1WDQwhWpGh
+ +tZWNJInH0HjEtHZuHIQyXZ9evkEbps2NU3WinjwYLesnaWXlXwEvREYEaufYBAWdhyc2194L
+ zJo2D2WF1f/KGQr0RzLos3/xuXr8BYjEPmO5PRpXzfYDjneyJT+lWdhOmJZrb2HN0LrPz8VbO
+ DOb74MAoSKmN3RERclK5dCB1f8TWWu04zHsRgmrr62Blx9TIdDiUtJQ1hixkkVUEzHV2v0kwd
+ ClMTzYqzpTNR9fb8kLF1qrFPYSxVMs1RB4OeKP4GBPFCdP4QAM3oUdkHN4Y6FZe3rRrcHMdoE
+ eNnQx/jxJzfFl9MX3Hea3e5ULrv0k+004dUWVTGn4YjvHY2c5cfoS94DnBHpFSyve7nG0JbhT
+ z/IxbveZLKWYsfUCOzg46FZsrytwkPvnRREryyCcbYS3iDHkDTe9GDRAcD1Eqaqyn7bpSLc8v
+ KEQYb/gliWIJIkLmgp5CEMqBQbeM7s+cimV33rhvqssVlaTndPMc1NwqMxRdw7xBSLIpNJcxE
+ AweadzVp4K2CBkqS3kFbD0nn7S9JsZX2UdHkiJGidU5Qqzn6pAPxl2snjZtHqLpOCCS9hSDXz
+ P3iNhSGHz6AbTRKjIfe4WbVTQcvBVWvDlH1Mbm7fLZ3FeJdGI/wM1l/jDUTHXnllTUJapfXGH
+ r2rflllEAMR3sLCIwAXOUvt24YJYunBuXS3dwct8ilHNHwtyo68CSFqM8r+EU+OOaMMJarxG2
+ DMf7OlKidfrfxw0G8xLmuAP1Awvei0JlwL9U0deekGV1F4AghCbiKLaz8hiCVviuoco1/gFw1
+ kBhBdA==
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -146,31 +129,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Please add a short patch description if this moves from RFC to a real patch
+On 10/15/23 13:39, Sam James wrote:
+> Did anything happen with this, or did it get stuck?
+>
+> We just had another user hit it in Gentoo at
+> https://bugs.gentoo.org/915809.
+>
+> It looks like openembedded (obviously given the author) and Alpine have
+> been using this for nearly a year.
 
-On 17/10/2023 21.06, BALATON Zoltan wrote:
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-> I have no idea if this works so testing and corrections are welcome
+I might be wrong, but it seems this will probably break various 32-bit
+linux-user emulations, e.g. the whole TARGET_ABI_BITS =3D=3D 32 block is d=
+ropped:
 
-Why don't you test it on your own? I think this should be sufficient:
+-#if TARGET_ABI_BITS =3D=3D 32
+-    case TARGET_F_GETLK64:
+-        ret =3D F_GETLK64;
+-        break;
+....
+Where is TARGET_F_GETLK64 handled?
 
-  make check-avocado AVOCADO_TAGS=machine:amigaone
-
-> but this could be a basic test. Booting further is a bit more involved
-> as we'd need alternative VGA BIOS and selecting menu items in the
-> firmware to allow CD boot so I did not try to automate that.
-> 
-> This could be simpler if the u-boot-amigaone.bin could be added to
-> pc-bios. It's GPL so should be OK to include and distribute but irs
-> sources seem to be lost and could not be recovered or reconstructed so
-> we only have this binary. Who should be able to decide about that?
-
-I'm sorry, but if the sources are not available anymore, then I think it 
-will not be possible to ship the binary in the QEMU tarball - since the GPL 
-requires that the distributor of the binary can also provide the sources on 
-request.
-
-  Thomas
-
+Helge
 
