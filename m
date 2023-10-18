@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCDA7CE943
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 624DA7CE935
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:41:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtDLd-0007Bp-MO; Wed, 18 Oct 2023 16:40:57 -0400
+	id 1qtDLf-0007CC-J7; Wed, 18 Oct 2023 16:40:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLa-000797-8n
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:54 -0400
-Received: from sin.source.kernel.org ([145.40.73.55])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLb-00079j-59
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:55 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLV-00010V-PZ
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLX-00010q-Nv
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:54 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id CFCFFCE26EB;
+ by sin.source.kernel.org (Postfix) with ESMTP id 7B6E9CE26EC;
+ Wed, 18 Oct 2023 20:40:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F3DC433C8;
  Wed, 18 Oct 2023 20:40:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BBEC433C9;
- Wed, 18 Oct 2023 20:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1697661645;
- bh=gq81V2jyigN9JS/a9mIXeTME4yQ0gG4TgYnxMo6EYcA=;
+ s=k20201202; t=1697661646;
+ bh=YAOsCYw+oe8yoNCu2Ef5fy0wU/iJfBxizrjqXL2e3R0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=VYHxA1Rt+kqXB7Enorxqi4LRm6YIDXkOWjIkxopdKN7piAITiDkqw7/JRRUB/3+1e
- KPeJepGj8IeyfARpMjzQY781f6ZSHtG+kipZVLLG+mmI8n/5oZL/tr4br3Cc0Nn1Fo
- zSLPZ2Zi2//YNg2gGAjx9twF4n4oCEqU7PSrIdtLRhvL//NtWiDlxTZbfXwSAJM19I
- Ns3r4dFCwWQzt3ELieTp/SRSX6gpVOfhCnc24+Nn+o80rJCwNJJI6uY0F8yM4cs+np
- nCJ2qUUwlALd1PLFx13aDbgDtaXbBTmxBaXrs6SMTqDzjJe+Se/1WkxwRiQA4s59Ig
- YD7c0DWoP+qYQ==
+ b=SsZO1IyW5xlaWd6feZlw0K3VCG7Hz8i+CxlaR3dTZDztoevKsiPQGs+1eZ82wlpNW
+ FSXOKhSr0x+Az9dkYbucaPS8bmfhAhwKkI1QutTx/aTjPO2cfFrb088Y+eq9gEOZQh
+ 8dpxIpcOZUbVl4j2JkgjJp3ldAFh5/7qO46VP/LCRjbMDla28seO6OIvcHKsDngXr8
+ LELgy/DNHw5XhwSQTb/8Ar0/M5y84qo/YrrGMBi97p6n9ic21ispWDkUsSY69VAIEJ
+ l8rCjBjDJhBCRICinyoy/ufHdMzg1sX3KCSR6WqOSxwTLoSsB2VIBe6/UDOz0zprru
+ n96eb2pDGzQ9w==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 06/11] pci-host: Wire up new Astro/Elroy PCI bridge
-Date: Wed, 18 Oct 2023 22:40:25 +0200
-Message-ID: <20231018204030.391572-7-deller@kernel.org>
+Subject: [PULL 07/11] MAINTAINERS: Update HP-PARISC entries
+Date: Wed, 18 Oct 2023 22:40:26 +0200
+Message-ID: <20231018204030.391572-8-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018204030.391572-1-deller@kernel.org>
 References: <20231018204030.391572-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
- helo=sin.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -71,54 +71,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Allow the Astro source to be built.
+Add the new HP C3700 machine, the new Astro PCI host and
+add the missing entry for the seabios-hppa directory.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/Kconfig         | 1 +
- hw/pci-host/Kconfig     | 4 ++++
- hw/pci-host/meson.build | 1 +
- 3 files changed, 6 insertions(+)
+ MAINTAINERS | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/hppa/Kconfig b/hw/hppa/Kconfig
-index 5dd8b5b21e..ff8528aaa8 100644
---- a/hw/hppa/Kconfig
-+++ b/hw/hppa/Kconfig
-@@ -3,6 +3,7 @@ config HPPA_B160L
-     imply PCI_DEVICES
-     imply E1000_PCI
-     imply VIRTIO_VGA
-+    select ASTRO
-     select DINO
-     select LASI
-     select SERIAL
-diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
-index a07070eddf..54a609d2ca 100644
---- a/hw/pci-host/Kconfig
-+++ b/hw/pci-host/Kconfig
-@@ -82,6 +82,10 @@ config DINO
-     bool
-     select PCI
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ceea4c2bf2..68d086a0f3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1174,7 +1174,7 @@ F: hw/*/etraxfs_*.c
  
-+config ASTRO
-+    bool
-+    select PCI
-+
- config GT64120
-     bool
-     select PCI
-diff --git a/hw/pci-host/meson.build b/hw/pci-host/meson.build
-index 64eada76fe..f891f026cb 100644
---- a/hw/pci-host/meson.build
-+++ b/hw/pci-host/meson.build
-@@ -27,6 +27,7 @@ pci_ss.add(when: 'CONFIG_MV64361', if_true: files('mv64361.c'))
- pci_ss.add(when: 'CONFIG_VERSATILE_PCI', if_true: files('versatile.c'))
+ HP-PARISC Machines
+ ------------------
+-HP B160L
++HP B160L, HP C3700
+ M: Richard Henderson <richard.henderson@linaro.org>
+ R: Helge Deller <deller@gmx.de>
+ S: Odd Fixes
+@@ -1182,11 +1182,14 @@ F: configs/devices/hppa-softmmu/default.mak
+ F: hw/hppa/
+ F: hw/net/*i82596*
+ F: hw/misc/lasi.c
++F: hw/pci-host/astro.c
+ F: hw/pci-host/dino.c
+ F: include/hw/misc/lasi.h
+ F: include/hw/net/lasi_82596.h
++F: include/hw/pci-host/astro.h
+ F: include/hw/pci-host/dino.h
+ F: pc-bios/hppa-firmware.img
++F: roms/seabios-hppa/
  
- # HPPA devices
-+pci_ss.add(when: 'CONFIG_ASTRO', if_true: files('astro.c'))
- pci_ss.add(when: 'CONFIG_DINO', if_true: files('dino.c'))
- 
- system_ss.add_all(when: 'CONFIG_PCI', if_true: pci_ss)
+ LoongArch Machines
+ ------------------
 -- 
 2.41.0
 
