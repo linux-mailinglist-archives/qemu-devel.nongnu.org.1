@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8717E7CD356
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 07:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4457B7CD357
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 07:05:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsyi5-0006XG-Ez; Wed, 18 Oct 2023 01:03:09 -0400
+	id 1qsyk3-0001ip-Gp; Wed, 18 Oct 2023 01:05:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsyi4-0006Tr-4V
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:03:08 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsyjz-0001iV-T5
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:05:07 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsyi1-0003V2-V4
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:03:07 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-31427ddd3fbso5346690f8f.0
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 22:03:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qsyju-0003cL-W2
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:05:07 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2b9c907bc68so82504111fa.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 22:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697605383; x=1698210183; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697605501; x=1698210301; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Z1UBsv8xTpsNQKsz+oMHxs/WYEMDgK4yy/kJz1PlCWY=;
- b=IXW0kAIz5ceYhD+FuebYgK6zbTx8jwKlfJ82TzV56YhBxFW+CwhkZN+yzIT5bhRVT6
- Vs93SDlZVrVv7tEKj+kfkMKKTEqbFF7OYzfgjBgEITdtacNQs8/lfMLJIni3+AumFo1J
- UHfEmJ77PslvNJGqsJG3Baf/IMeSEBd7OrKuE6DiTj0+agWOJGdd5prDaGlUGjQftl7D
- bhWPesNEqiMHBFq4sW+7Laq2evLlhLr02VUw1XyS51BaT6VckuXYs+dap4acafnpCc47
- zSUR1VrRF+LoRJwjj0NlKNHIgFDEytZ5x9NV7xyeyAZXIljv1VTyh6lpYNkSOZg6UQdx
- GnRA==
+ bh=K8H5PuQQvXrI1d+CuEbwAz8D/VlFoQM02yrWlgI0Rh8=;
+ b=S2yrDvSPSRoVwnsAAgnmOlFo7OZPWr1bB8kd7ShJCgkA+OoSbRcPsU/7BrsVKMwlLM
+ YdJkAvmSl3YHgz7kOM/iSl0jdMJMRZvwv6zy/bLDDRw5jQivuSGZTCRsHwZJYpkmJboD
+ Sq4Awn3wRgVqb8X4Fum+X/EDSeXZ/Z9OR44hr+iHLeS5UeRnzAs8rmS9lsPgfDf07AcJ
+ sU9EYswODk6Eai8yn2Qba0ivnBt1rBdkCosH3AFVxiEfrx9uBsVpwJ4PnyK0w6q8QM5E
+ UkJfhrw9Uv6SOEmexyBBGxDDCyXpTsuyE88MG3gdyCKc1/RoDIUqkN87VbPiVDSoV+sO
+ FiQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697605383; x=1698210183;
+ d=1e100.net; s=20230601; t=1697605501; x=1698210301;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z1UBsv8xTpsNQKsz+oMHxs/WYEMDgK4yy/kJz1PlCWY=;
- b=pZO3c/NCGBFBBS4ACrO6Ot/lzKAWGKXhwma9eVQfY1UPopBgSCN8LDnLiplxT88rCr
- TIGF+9oesCLHL8K/6tZ7NqsXTND0UDKu/i8+I9cI5Hxl8aE8KSzRtCTko0LXqlgFgpj/
- iDLTs1JjYOx4Le+IuRRU/iTCZjXnw3Cgb+FV1PpCe/0PtCcu+88D8uaJmspdabCR40Ey
- IpHLZOhRoM9qaM8bqewbX1uQXsbyplkwDtlAZ+6seUKD2SYlAE48s83fhVsjNNFoO15m
- MzL1l38hBVIaxOL82sVzKgUhyDYlBSHwq2FRdeRDI2GxfksLVFBAAKCVhLaRsi+tbU5R
- IJzg==
-X-Gm-Message-State: AOJu0Yy01yZiCD4B//sh9vJR9CAm53jWUgoxi7atCnq0/f09bP2SYcmb
- V6JbaH8G3IorZbhoRfMzV4s5Kw==
-X-Google-Smtp-Source: AGHT+IF0frWFCkt/UncbriSh/iMTEZE/2VXlShZQTPI/U6mJkw3ikRBLXGKJ7KQPD7PKbBUThPpo8g==
-X-Received: by 2002:a5d:4990:0:b0:32d:9b52:e7a4 with SMTP id
- r16-20020a5d4990000000b0032d9b52e7a4mr3744446wrq.17.1697605383297; 
- Tue, 17 Oct 2023 22:03:03 -0700 (PDT)
+ bh=K8H5PuQQvXrI1d+CuEbwAz8D/VlFoQM02yrWlgI0Rh8=;
+ b=XLcMWT5Qb2X2p5lhk5abhnK9bPb2eVkhd2koUK225lRFNNqAtbV8IFFAf+UE5D5at7
+ Lue1WuXLLkQBLhvPq+gM3bmJprSjlE0aEZBBbB+DT3JfLKxa2+/BUIX2Jam7TgOxT7Qe
+ pyk8TjZh4GHITmQoQjLZqeWMOS6iZg2kQU2+vHGI6B1fj8AaNh9PvTmEjA6TlyKB0Ys8
+ bpL93ivAFREz9OvZ4SP2rNrD6OVT4r1aMnGZhYIfsSe4JIclO3jzJ30b0iho/gNFnLbo
+ lA2BY+lrpM6HhHa/WICeDGvj5j4wfz5Nfbl5mG8hEJK728tEcQCNmB3mgKe+nP1bZro/
+ AYqw==
+X-Gm-Message-State: AOJu0Yzm6y1cAgFxfiofgmjNaCB4mAE5kaJtQn4nknQRES/eZibDUg4Q
+ /Ht8QOf1FKCJ2ZLcewar+Gb7Rw==
+X-Google-Smtp-Source: AGHT+IHuDu3zZKriGPd2n39pFM07GZWqhAFoZ9DIBU27CdFCvAAHtUht7nAnucJ80fKEeVmFKHY7Mw==
+X-Received: by 2002:a2e:9c51:0:b0:2c5:1bd3:5658 with SMTP id
+ t17-20020a2e9c51000000b002c51bd35658mr2814228ljj.28.1697605500868; 
+ Tue, 17 Oct 2023 22:05:00 -0700 (PDT)
 Received: from [192.168.69.115] ([176.172.118.33])
  by smtp.gmail.com with ESMTPSA id
- i18-20020a5d5592000000b0032da471c0c1sm1190973wrv.7.2023.10.17.22.03.02
+ r9-20020a05600c320900b004083bc9ac90sm621641wmp.24.2023.10.17.22.04.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Oct 2023 22:03:02 -0700 (PDT)
-Message-ID: <578cafa3-8a6a-91dc-eb32-80ae1ec4ae9c@linaro.org>
-Date: Wed, 18 Oct 2023 07:03:01 +0200
+ Tue, 17 Oct 2023 22:05:00 -0700 (PDT)
+Message-ID: <9f310f21-2d8d-91f9-bb25-486fc5e943b5@linaro.org>
+Date: Wed, 18 Oct 2023 07:04:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] tcg: Add tcg_gen_{ld,st}_i128
+Subject: Re: [PATCH] MAINTAINERS: Add hw/input/lasips2.c to the HPPA machine
+ section
 Content-Language: en-US
-To: gaosong <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20231013175109.124308-1-richard.henderson@linaro.org>
- <20231013175109.124308-2-richard.henderson@linaro.org>
- <33e8747b-7a0e-ad9a-8328-1bba68b5572f@loongson.cn>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-trivial@nongnu.org
+References: <20231017151933.213780-1-thuth@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <33e8747b-7a0e-ad9a-8328-1bba68b5572f@loongson.cn>
+In-Reply-To: <20231017151933.213780-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
 X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,21 +94,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/10/23 03:19, gaosong wrote:
-> 在 2023/10/14 上午1:51, Richard Henderson 写道:
->> Do not require the translators to jump through concat and
->> extract of i64 in order to move values to and from  env.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   include/tcg/tcg-op-common.h |  3 +++
->>   tcg/tcg-op.c                | 22 ++++++++++++++++++++++
->>   2 files changed, 25 insertions(+)
-> Reviewed-by: Song Gao <gaosong@loongson.cn>
+On 17/10/23 17:19, Thomas Huth wrote:
+> hw/input/lasips2.c and the corresponding header include/hw/input/lasips2.h
+> are only used by the HPPA machine, so add them to the corresponding section
+> in the MAINTAINERS file.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 2 ++
+>   1 file changed, 2 insertions(+)
 
-And per 
-https://lore.kernel.org/qemu-devel/88015945-49f7-195b-7e78-08d9281d10d6@loongson.cn/:
-
-Tested-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
