@@ -2,57 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4F67CD48B
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 08:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2647CD489
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 08:36:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt090-00035G-Dz; Wed, 18 Oct 2023 02:35:02 -0400
+	id 1qt09E-0003lX-V1; Wed, 18 Oct 2023 02:35:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=IJBG=GA=kaod.org=clg@ozlabs.org>)
- id 1qt08w-0002zN-Uk; Wed, 18 Oct 2023 02:34:58 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1qt09C-0003Vj-7b; Wed, 18 Oct 2023 02:35:14 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=IJBG=GA=kaod.org=clg@ozlabs.org>)
- id 1qt08v-0000rw-5C; Wed, 18 Oct 2023 02:34:58 -0400
+ id 1qt09A-00014u-Gh; Wed, 18 Oct 2023 02:35:13 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4S9LgH652Vz4xPX;
- Wed, 18 Oct 2023 17:34:51 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4S9Lgd3RQnz4xPy;
+ Wed, 18 Oct 2023 17:35:09 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4S9LgF59jhz4xPN;
- Wed, 18 Oct 2023 17:34:49 +1100 (AEDT)
-Message-ID: <291a8a9c-0465-4273-82f1-f1b8ca6ede99@kaod.org>
-Date: Wed, 18 Oct 2023 08:34:47 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4S9LgS5FxJz4xPM;
+ Wed, 18 Oct 2023 17:35:00 +1100 (AEDT)
+Message-ID: <77cbea17-f4c5-4058-9bc9-e51d14e08fca@kaod.org>
+Date: Wed, 18 Oct 2023 08:35:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/8] MAINTAINERS: Update PPC TCG target with tests
+Subject: Re: [PATCH] MAINTAINERS: Add unvalued folders in tests/tcg/ to the
+ right sections
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>,
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20231002155143.400668-1-clg@kaod.org>
- <20231002155143.400668-9-clg@kaod.org>
- <bc9788f5-d9ee-490e-bb8a-f3503dd78016@redhat.com>
+ Laurent Vivier <laurent@vivier.eu>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-trivial@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+References: <20231018062401.20746-1-thuth@redhat.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <bc9788f5-d9ee-490e-bb8a-f3503dd78016@redhat.com>
+In-Reply-To: <20231018062401.20746-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=IJBG=GA=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,38 +73,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/18/23 08:27, Thomas Huth wrote:
-> On 02/10/2023 17.51, Cédric Le Goater wrote:
->> Cc: Richard Henderson <richard.henderson@linaro.org>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   MAINTAINERS | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index e40f7f71d651..174bcfe39210 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -3551,6 +3551,7 @@ PPC TCG target
->>   M: Richard Henderson <richard.henderson@linaro.org>
->>   S: Odd Fixes
->>   F: tcg/ppc/
->> +F: tests/tcg/ppc*
+On 10/18/23 08:24, Thomas Huth wrote:
+> Some subfolders in tests/tcg/ are already listed in the MAINTAINERS
+> file, some others aren't listed yet. Add the missing ones now to the
+> MAINTAINERS file, too, to make sure that get_maintainers.pl reports
+> the correct maintainer.
 > 
-> Sorry, but I think this patch is wrong. This section is about the TCG *host* backend (tcg/ppc/), but tests/tcg/ppc* is about the TCG *guest* frontend.
-> 
-> I just noticed since I just wrote a patch that adds the tests/tcg/ subfolders to the right sections:
-> 
->   https://lore.kernel.org/qemu-devel/20231018062401.20746-1-thuth@redhat.com/
-> 
-> The ppc* subfolders are included there, too, so I'd suggest to drop this patch here.
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-ok. Good for me.
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
 Thanks,
 
 C.
+
+
+> ---
+>   MAINTAINERS | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b3599746c4..b80124f60f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -257,6 +257,7 @@ M: Richard Henderson <richard.henderson@linaro.org>
+>   S: Maintained
+>   F: target/hppa/
+>   F: disas/hppa.c
+> +F: tests/tcg/hppa/
+>   
+>   LoongArch TCG CPUs
+>   M: Song Gao <gaosong@loongson.cn>
+> @@ -270,6 +271,7 @@ M: Laurent Vivier <laurent@vivier.eu>
+>   S: Maintained
+>   F: target/m68k/
+>   F: disas/m68k.c
+> +F: tests/tcg/m68k/
+>   
+>   MicroBlaze TCG CPUs
+>   M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+> @@ -327,6 +329,7 @@ F: hw/ppc/trace*
+>   F: configs/devices/ppc*
+>   F: docs/system/ppc/embedded.rst
+>   F: docs/system/target-ppc.rst
+> +F: tests/tcg/ppc*/*
+>   
+>   RISC-V TCG CPUs
+>   M: Palmer Dabbelt <palmer@dabbelt.com>
+> @@ -345,6 +348,7 @@ F: hw/intc/riscv*
+>   F: include/hw/riscv/
+>   F: linux-user/host/riscv32/
+>   F: linux-user/host/riscv64/
+> +F: tests/tcg/riscv64/
+>   
+>   RISC-V XThead* extensions
+>   M: Christoph Muellner <christoph.muellner@vrull.eu>
+> @@ -386,6 +390,7 @@ F: target/sh4/
+>   F: hw/sh4/
+>   F: disas/sh4.c
+>   F: include/hw/sh4/
+> +F: tests/tcg/sh4/
+>   
+>   SPARC TCG CPUs
+>   M: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> @@ -396,6 +401,7 @@ F: hw/sparc/
+>   F: hw/sparc64/
+>   F: include/hw/sparc/sparc64.h
+>   F: disas/sparc.c
+> +F: tests/tcg/sparc64/
+>   
+>   X86 TCG CPUs
+>   M: Paolo Bonzini <pbonzini@redhat.com>
 
 
