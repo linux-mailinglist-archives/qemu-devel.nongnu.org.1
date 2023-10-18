@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EBA7CD6A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A8F7CD6A7
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:34:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1vY-0002VK-RC; Wed, 18 Oct 2023 04:29:20 -0400
+	id 1qt1vu-00032R-VH; Wed, 18 Oct 2023 04:29:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1vC-0002BU-8b
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:55 -0400
+ id 1qt1vD-0002F5-Tl
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1vA-0003iC-MZ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:54 -0400
+ id 1qt1vC-0003iU-FS
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697617732;
+ s=mimecast20190719; t=1697617733;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Hhz5NoA8No/Gwx+ZeOtjgQ6Cuap6+7hqMf6Rp4/O1Yk=;
- b=hdrsvpi0WYiHf/ao4OAhSR5TtN0xZ0L4gsY/Sa8MXjvNWCKaRLFfJjS0J1xpuSxDsM0GA4
- CLNz4hEWF08KsUC3zw+8CKKSl77sKlOLdn+PuvFbUgq4bDT0rFi4wxQ5MQ4Km/BuHy376u
- CUYxZUw0t3eIRq2HSu258fdjqgmE29o=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rTWaNH6l64cXT7uyRdZIns6tQsnLs5740jLL/+6gUsg=;
+ b=Mwl1xyOSMpHkVCM04ASsoLNLSFKgMFZnVgDoAoeaDPbJMu/YQuyqvtGKXcU8CtVQrly638
+ H1Az26TFPq1FCvS8g5utFZl5WDehfn5SKdhWWnggYK1g32kpaUvCjYgrZbucLjedos9XD8
+ ZPEHE3mejNmRk882+5aKJizkWA41wMQ=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-ZWFP1KLzMP-DlDrq7z7xew-1; Wed, 18 Oct 2023 04:28:50 -0400
-X-MC-Unique: ZWFP1KLzMP-DlDrq7z7xew-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-9b822f5c156so482509166b.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:50 -0700 (PDT)
+ us-mta-592-Yc4Dfm8GMB6kMfn3KAO0vw-1; Wed, 18 Oct 2023 04:28:52 -0400
+X-MC-Unique: Yc4Dfm8GMB6kMfn3KAO0vw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-53e2acda9d6so4444189a12.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697617729; x=1698222529;
+ d=1e100.net; s=20230601; t=1697617730; x=1698222530;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hhz5NoA8No/Gwx+ZeOtjgQ6Cuap6+7hqMf6Rp4/O1Yk=;
- b=LjgH4VxpFfpBnPwgmEntgYXdoGQWxezCNcPylfD0mLUdYWhL6tmF1VeFUywDAqprUy
- ofSDJ0m9T4FJi1mjelSZwjmDTnxSV4caIPqyxE0ZzaRDnMsriJGl8+fzQ2uwmYH6vmHK
- sSaY2qwzyhiBE0aYaJwEgOZIMP0tgu2C/LgSjBiyqMAw1Vbs70GdBFPax5TWTpqriY7e
- EDcdQGRFZtb08vWVUs1cTLI/U2PMcHtPtjZbqjs9qgjuDNZhQDGNdC85zh51+OpgXlwJ
- OHJTU61GQzHUA9FItJpTu2O2JqKJNsgFjIGITQflA6raf7sh1qV2C5i84BAvBJUORlLh
- f/Lw==
-X-Gm-Message-State: AOJu0YynunYFhhpo+W4glsHiauZnWweU7LKIH1M/V9X5R3STaxjOOvh0
- Yd7ft5cewJID7UJyhllLXjC0mDmsBPnnTszXleYmk2kesbbl/PqgAK7zyOUynYTJ2rAIDKWvXF+
- xQKQaibDnixsQT69RuQiPcbpvy4OW1zwNUvEHivyGT/y30Z7zYXKcjg72vN9+ieZzAGq2d2huIM
+ bh=rTWaNH6l64cXT7uyRdZIns6tQsnLs5740jLL/+6gUsg=;
+ b=dORM8swGPmtdmCt/ZR4NIRPsyReiLk+l1WXovcj4meVg50z77aTj7z6s9pHw4mN3jS
+ G6BAFTErOO9J5JGrn0ZoToIAQ8CTXQAI79WGKZBTYj5GDPw4YPutU2MvQka5VYK2L641
+ oa2VbdfoVGJ9T2YM/niMVolIsIaoIxvPOxcAg48c57DH+fx+rbzQHjxGmAUKA4unsMlj
+ 5bxFUuQ7l++0kygLWVuxi5bdoOWHovJYdaE70jjXFWGBmeGUod2LYT6I+DHKhFpIWFUL
+ 5X7ujnPWwt0hClg3VeqBzg7EEOz7MOkmB331CLnXr0C8twxRQ42v2/xKuFKP9Kf22PyH
+ Q15g==
+X-Gm-Message-State: AOJu0Yy057KY/bUSt/Pw1qHwg0F79GOTKScehkDQ9DQd2tQTlmjR7BDt
+ xMx9P1XT3SjZ57sZkRuidqWaVI0Tn1z24Mo2neIe1HzThh1DfaJRdJwng1rDmHr6gz/8c5oFldZ
+ hq3L221oodmgYpO3P/zXvBMWvmK6rgW2VgEi9ivdUdUwVF52qBUwcKPZ4HBwBA25qsHtU+hlZZq
  o=
-X-Received: by 2002:a17:907:6ea8:b0:9c4:b8c9:1bf4 with SMTP id
- sh40-20020a1709076ea800b009c4b8c91bf4mr3994345ejc.19.1697617729019; 
- Wed, 18 Oct 2023 01:28:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFwjcHKxxywjM/JYalw+fIB+w5uPB0G58JVCafeJFk895OP+ZeDdCrwGzK+g4NCP87KuyriKg==
-X-Received: by 2002:a17:907:6ea8:b0:9c4:b8c9:1bf4 with SMTP id
- sh40-20020a1709076ea800b009c4b8c91bf4mr3994335ejc.19.1697617728709; 
- Wed, 18 Oct 2023 01:28:48 -0700 (PDT)
+X-Received: by 2002:a05:6402:51d4:b0:53d:eca8:8775 with SMTP id
+ r20-20020a05640251d400b0053deca88775mr3721521edd.26.1697617730494; 
+ Wed, 18 Oct 2023 01:28:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhxn+bTkMYbGUa3sJBqoTRRh7qE3Agy7oMBZYYwRtmTLOQI2smdb+ZgN4Sc4XE1rpWCRD++w==
+X-Received: by 2002:a05:6402:51d4:b0:53d:eca8:8775 with SMTP id
+ r20-20020a05640251d400b0053deca88775mr3721507edd.26.1697617730172; 
+ Wed, 18 Oct 2023 01:28:50 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- k19-20020a170906579300b0099bd5d28dc4sm1179698ejq.195.2023.10.18.01.28.47
+ cw14-20020a056402228e00b0053e7809615esm2382600edb.80.2023.10.18.01.28.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 01:28:47 -0700 (PDT)
+ Wed, 18 Oct 2023 01:28:49 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 30/32] meson-buildoptions: document the data at the top
-Date: Wed, 18 Oct 2023 10:27:50 +0200
-Message-ID: <20231018082752.322306-31-pbonzini@redhat.com>
+Subject: [PULL 31/32] meson: add a note on why we use config_host for program
+ paths
+Date: Wed, 18 Oct 2023 10:27:51 +0200
+Message-ID: <20231018082752.322306-32-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018082752.322306-1-pbonzini@redhat.com>
 References: <20231018082752.322306-1-pbonzini@redhat.com>
@@ -102,40 +103,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/meson-buildoptions.py | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ meson.build | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/scripts/meson-buildoptions.py b/scripts/meson-buildoptions.py
-index 2e88732a291..4814a8ff61f 100644
---- a/scripts/meson-buildoptions.py
-+++ b/scripts/meson-buildoptions.py
-@@ -25,11 +25,15 @@
- import shlex
- import sys
- 
-+# Options with nonstandard names (e.g. --with/--without) or OS-dependent
-+# defaults.  Try not to add any.
- SKIP_OPTIONS = {
-     "default_devices",
-     "fuzzing_engine",
- }
- 
-+# Options whose name doesn't match the option for backwards compatibility
-+# reasons, because Meson gives them a funny name, or both
- OPTION_NAMES = {
-     "b_coverage": "gcov",
-     "b_lto": "lto",
-@@ -49,6 +53,10 @@
-     "werror",
- }
- 
-+# Builtin options that should be definable via configure.  Some of the others
-+# we really do not want (e.g. c_args is defined via the native file, not
-+# via -D, because it's a mix of CFLAGS and --extra-cflags); for specific
-+# cases "../configure -D" can be used as an escape hatch.
- BUILTIN_OPTIONS = {
-     "b_coverage",
-     "b_lto",
+diff --git a/meson.build b/meson.build
+index 2bda62a2b1b..0182622aede 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4021,6 +4021,11 @@ summary(summary_info, bool_yn: true, section: 'Directories')
+ summary_info = {}
+ summary_info += {'python':            '@0@ (version: @1@)'.format(python.full_path(), python.language_version())}
+ summary_info += {'sphinx-build':      sphinx_build}
++
++# FIXME: the [binaries] section of machine files, which can be probed
++# with find_program(), would be great for passing gdb and genisoimage
++# paths from configure to Meson.  However, there seems to be no way to
++# hide a program (for example if gdb is too old).
+ if config_host.has_key('GDB')
+   summary_info += {'gdb':             config_host['GDB']}
+ endif
 -- 
 2.41.0
 
