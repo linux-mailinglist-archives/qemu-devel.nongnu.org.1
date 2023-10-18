@@ -2,91 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAFD7CD3B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 07:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B837CD3BC
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 07:59:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qszXP-0005IQ-Gi; Wed, 18 Oct 2023 01:56:11 -0400
+	id 1qszaD-0006Us-AA; Wed, 18 Oct 2023 01:59:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qszXJ-0005Ga-OH
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:56:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qszaB-0006UK-0P
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:59:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qszXH-0003KQ-UW
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:56:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qsza9-0003Yu-HE
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 01:59:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697608559;
+ s=mimecast20190719; t=1697608740;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=soquRUSeJwubM3VRgkN8E/H24tKTEkIYCIq/CNEvxBM=;
- b=H4h5H/i3TkvkG7GceZzQ/+kjP+KlcEnkTx4XJlKQm0/Hfn9e6DzPu954G40a/+km/gLvvA
- fpA8qgY4GaIog6ekUYnuQlvNfjufkdwqqGLManIr3146KoXLXPoi1si70X8sJedecOER4l
- 2+rZXgUfzw87/KiaNAPREP/670K44bM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=VjpSLBNlH1r/f2kTnB9Xw/puwdm7Wu2p66V+drevp8Y=;
+ b=d5j+/tno41gelVp1I+/9CFXbc5wEIu5kJqvFZnprarSeoNwOwtGDqKBLEKs9NPjxqzO/Tu
+ dK47LgN94yQuZiTL7CzDI0J/VFIPwQnAmvyV5UmuGW0c2//BIIEdpn2tXOSw/7sHZ5YQbT
+ SBZ/7YbjahsOq2HO7XDjIe85WzZN+kE=
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
+ [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-1htNtBlIMGiTqHFT2UEO2g-1; Wed, 18 Oct 2023 01:55:57 -0400
-X-MC-Unique: 1htNtBlIMGiTqHFT2UEO2g-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-402cd372b8bso50521045e9.2
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 22:55:57 -0700 (PDT)
+ us-mta-418-PF-wMOiWNiGNQ_uJByvxTQ-1; Wed, 18 Oct 2023 01:58:47 -0400
+X-MC-Unique: PF-wMOiWNiGNQ_uJByvxTQ-1
+Received: by mail-vk1-f200.google.com with SMTP id
+ 71dfb90a1353d-49d8fa96d4bso2234496e0c.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 22:58:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697608556; x=1698213356;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=soquRUSeJwubM3VRgkN8E/H24tKTEkIYCIq/CNEvxBM=;
- b=gdOLYrtz/GiHlwje5zo/DHMP+s7R7kB/Vr/CdjF9pnRnasjerccJZxBT2ohDidK8gn
- 9LfQux5IrT/Q7D7yKZxB1qiibUJGXvtnO7Zgt7sSq6b6fkY33fh3LlrzAoYgVqePNVZS
- uTzmiDzbdX/DUrYR9CYPGBik8N1d3M7Wv+M8ecUF6cDAqkfUjepXgPuzxb21Hz9HvR5k
- PiaYY0R7FZkO2euHCjLqtnsdrdn7FaXCPL/1+Q90D665VM5L5oIlD+yAeReZeBVEtb60
- qeawMBuu1oCvi/g852X2q/9gs3gKMyHSzQq/UOITFJBDNYKD7xA5j5gPM/tjZQXt7v3j
- 0TMg==
-X-Gm-Message-State: AOJu0YxYXNfgm8AI4fn9iQJGONrEJdw0hjIkO1H5FbtMWwhgUEJh2KzC
- ONsJMhSU7Y1yRPdt7CyBTLziFlp6Zsok/TIpa8XJjZ/CG+PH5OoLRcgsX+l11u+s/ie7DW4M1TF
- Yx1CMy4z9Ch9v68I=
-X-Received: by 2002:a05:600c:3507:b0:408:3e7a:82ea with SMTP id
- h7-20020a05600c350700b004083e7a82eamr277158wmq.1.1697608556353; 
- Tue, 17 Oct 2023 22:55:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFfhuvA0OyJBJP0VoBnOLHANEls14FhyQdNVJbjgAe+kosEajvMTfsl9SGV1XrcdRJkHGkIFA==
-X-Received: by 2002:a05:600c:3507:b0:408:3e7a:82ea with SMTP id
- h7-20020a05600c350700b004083e7a82eamr277146wmq.1.1697608555949; 
- Tue, 17 Oct 2023 22:55:55 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
- by smtp.gmail.com with ESMTPSA id
- h17-20020a05600c499100b0040772138bb7sm712363wmp.2.2023.10.17.22.55.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Oct 2023 22:55:55 -0700 (PDT)
-Date: Wed, 18 Oct 2023 01:55:46 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org,
- Jason Wang <jasowang@redhat.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: Re: [PATCH] vhost: Perform memory section dirty scans once per
- iteration
-Message-ID: <20231018015401-mutt-send-email-mst@kernel.org>
-References: <20230927111428.15982-1-joao.m.martins@oracle.com>
- <20231003095019-mutt-send-email-mst@kernel.org>
- <6e40003d-d2a6-4120-aa78-de26de088d86@oracle.com>
- <20231006054342-mutt-send-email-mst@kernel.org>
- <454ea1c5-7e77-41b5-b6e6-88efb6c437a3@oracle.com>
+ d=1e100.net; s=20230601; t=1697608727; x=1698213527;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VjpSLBNlH1r/f2kTnB9Xw/puwdm7Wu2p66V+drevp8Y=;
+ b=WGA6dySrJNO7vc3ycOH+1ACQ7hoNXRaBjmiS/nXFcCfKwInIOEgpYJOhS8iiBJQyN5
+ ZW1ZX66SlVEryJT36MQcwYCGgH6yGTR6CMVCeyWT7q3vlq2MV4r0le+Dj/5plT/kjmd5
+ 7X44yp2sW7+X3hYLr0Zq7iVyfZh3pSS0/GMMFhzGOIN9VAMLEnKrxNYosAZw23QNuzfP
+ zWiaiS/hoRC6AV09nPdcJisKn69QP8a1DZDhWIjk1KbboxD8RfL33dELJI36cP76jkWJ
+ ijqx64zEjri0BVAzhDXgCUflsy+4WRdr0c8tsGup1Zcz1X8lHoWxYxSY8XAAv0D8I7sE
+ a5sw==
+X-Gm-Message-State: AOJu0Yzlz260YLAviCGnjheYADaXHURZ958mP0P50nhAvi+OwP6/6wjI
+ akBvT2McvlOc9fyaYevf174XgMdlyo7avwjsNTYvTkEsjNnuyrGYt9nJKHvMxXSvL5F/J2iidUH
+ Hquce0iJoMvClaS8=
+X-Received: by 2002:a1f:a658:0:b0:49a:bff1:23 with SMTP id
+ p85-20020a1fa658000000b0049abff10023mr4222027vke.5.1697608727373; 
+ Tue, 17 Oct 2023 22:58:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHoHHDJYLpKPvqYEOM+l4zb9g/zNgWRsPy0gWPpiWIDwNnJH5eZPifUr7dcO/yF/8g/UMrxCQ==
+X-Received: by 2002:a1f:a658:0:b0:49a:bff1:23 with SMTP id
+ p85-20020a1fa658000000b0049abff10023mr4222012vke.5.1697608727045; 
+ Tue, 17 Oct 2023 22:58:47 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
+ [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
+ f7-20020ad45587000000b0065cffe12ae9sm1120459qvx.36.2023.10.17.22.58.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Oct 2023 22:58:45 -0700 (PDT)
+Message-ID: <80c9cc1a-7d5b-4840-8dd5-9cbaae51114a@redhat.com>
+Date: Wed, 18 Oct 2023 07:58:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <454ea1c5-7e77-41b5-b6e6-88efb6c437a3@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 4/4] tests/avocado: Add test for amigaone board
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+References: <cover.1697568616.git.balaton@eik.bme.hu>
+ <dea7938f15c3231984546b12ccc8e3b8ba42a203.1697568616.git.balaton@eik.bme.hu>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <dea7938f15c3231984546b12ccc8e3b8ba42a203.1697568616.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,128 +146,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 17, 2023 at 05:32:34PM -0700, Si-Wei Liu wrote:
-> 
-> 
-> On 10/6/2023 2:48 AM, Michael S. Tsirkin wrote:
-> > On Fri, Oct 06, 2023 at 09:58:30AM +0100, Joao Martins wrote:
-> > > On 03/10/2023 15:01, Michael S. Tsirkin wrote:
-> > > > On Wed, Sep 27, 2023 at 12:14:28PM +0100, Joao Martins wrote:
-> > > > > On setups with one or more virtio-net devices with vhost on,
-> > > > > dirty tracking iteration increases cost the bigger the number
-> > > > > amount of queues are set up e.g. on idle guests migration the
-> > > > > following is observed with virtio-net with vhost=on:
-> > > > > 
-> > > > > 48 queues -> 78.11%  [.] vhost_dev_sync_region.isra.13
-> > > > > 8 queues -> 40.50%   [.] vhost_dev_sync_region.isra.13
-> > > > > 1 queue -> 6.89%     [.] vhost_dev_sync_region.isra.13
-> > > > > 2 devices, 1 queue -> 18.60%  [.] vhost_dev_sync_region.isra.14
-> > > > > 
-> > > > > With high memory rates the symptom is lack of convergence as soon
-> > > > > as it has a vhost device with a sufficiently high number of queues,
-> > > > > the sufficient number of vhost devices.
-> > > > > 
-> > > > > On every migration iteration (every 100msecs) it will redundantly
-> > > > > query the *shared log* the number of queues configured with vhost
-> > > > > that exist in the guest. For the virtqueue data, this is necessary,
-> > > > > but not for the memory sections which are the same. So
-> > > > > essentially we end up scanning the dirty log too often.
-> > > > > 
-> > > > > To fix that, select a vhost device responsible for scanning the
-> > > > > log with regards to memory sections dirty tracking. It is selected
-> > > > > when we enable the logger (during migration) and cleared when we
-> > > > > disable the logger.
-> > > > > 
-> > > > > The real problem, however, is exactly that: a device per vhost worker/qp,
-> > > > > when there should be a device representing a netdev (for N vhost workers).
-> > > > > Given this problem exists for any Qemu these days, figured a simpler
-> > > > > solution is better to increase stable tree's coverage; thus don't
-> > > > > change the device model of sw vhost to fix this "over log scan" issue.
-> > > > > 
-> > > > > Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> > > > > ---
-> > > > > I am not fully sure the heuristic captures the myriad of different vhost
-> > > > > devices -- I think so. IIUC, the log is always shared, it's just whether
-> > > > > it's qemu head memory or via /dev/shm when other processes want to
-> > > > > access it.
-> > > > Thanks for working on this.
-> > > > 
-> > > > I don't think this works like this because different types of different
-> > > > vhost devices have different regions - see e.g. vhost_region_add_section
-> > > > I am also not sure all devices are running at the same time - e.g.
-> > > > some could be disconnected, and vhost_sync_dirty_bitmap takes this
-> > > > into account.
-> > > > 
-> > > Good point. But this all means logic in selecting the 'logger' to take into
-> > > considering whether vhost_dev::log_enabled or vhost_dev::started right?
-> > > 
-> > > With respect to regions it seems like this can only change depending on whether
-> > > one of the vhost devices, backend_type is VHOST_BACKEND_TYPE_USER *and* whether
-> > > the backend sets vhost_backend_can_merge?
-> > > 
-> > > With respect to 'could be disconnected' during migration not devices can be
-> > > added or removed during migration, so might not be something that occurs during
-> > > migration.
-> > > I placed this in log_sync exactly to just cover migration, unless
-> > > there's some other way that disconnects the vhost and changes these variables
-> > > during migration.
-> > The *frontend* can't be added or removed (ATM - this is just because we lack
-> > good ways to describe devices that can be migrated, so all we
-> > came up with is passing same command line on both sides,
-> > and this breaks if you add/remove things in the process).
-> > We really shouldn't bake this assumption into code if we can
-> > help it though.
-> > 
-> > But I digress.
-> > 
-> > The *backend* can disconnect at any time as this is not guest visible.
-> > 
-> > > > But the idea is I think a good one - I just feel more refactoring is
-> > > > needed.
-> > > Can you expand on what refactoring you were thinking for this fix?
-> > Better separate the idea of logging from device. then we can
-> > have a single logger that collects data from devices to decide
-> > what needs to be logged.
-> Discussion. I think the troublemaker here is the vhost-user clients that
-> attempt to round down&up to (huge) page boundary and then has to merge
-> adjacent sections, leading to differing views between vhost devices. While I
-> agree it is a great idea to separate logging from device, it isn't clear to
-> me how that can help the case where there could be a mix of both vhost-user
-> and vhost-kernel clients in the same qemu process, in which case it would
-> need at least 2 separate vhost loggers for the specific vhost type? Or you
-> would think there's value to unify the two distinct subsystems with one
-> single vhost logger facility?
+Please add a short patch description if this moves from RFC to a real patch
 
-Yes - I think we need a logger per backend type. Reference-count them, too.
+On 17/10/2023 21.06, BALATON Zoltan wrote:
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+> I have no idea if this works so testing and corrections are welcome
 
-> Noted the vhost logging interface (vhost
-> kernel or vhost userspace) doesn't support the notion of separate logging of
-> memory buffer sections against those for VQs, all QEMU can rely on is
-> various sections in the memory table and basically a single dirty bitmap for
-> both guest buffers and VQs are indistinctively shared by all vhost devices.
-> How does it help to just refactor QEMU part of code using today's vhost
-> backend interface, I am not sure.
+Why don't you test it on your own? I think this should be sufficient:
+
+  make check-avocado AVOCADO_TAGS=machine:amigaone
+
+> but this could be a basic test. Booting further is a bit more involved
+> as we'd need alternative VGA BIOS and selecting menu items in the
+> firmware to allow CD boot so I did not try to automate that.
 > 
-> Regardless, IMHO for fixing stable p.o.v it might be less risky and valuable
-> to just limit the fix to vhost-kernel case (to be more precise,
-> non-vhost-user type and without vhost_backend_can_merge defined), my 2c.
-> 
-> 
-> Regards,
-> -Siwei
-> > 
-> > > My thinking on this bug was mostly to address the inneficiency with the smallest
-> > > intrusive fix (if at all possible!) given that virtually all multiqueue vhost
-> > > supported QEMU have this problem. And then move into a 'vhost-device for all
-> > > queues' as it feels like the problem here is the 'device per queue pair' doesn't
-> > > scale.
-> > > 
-> > > At the end of the day the problem on this is the vhost object model in log_sync
-> > > not scaling to amount of queues. But you could also argue that if the log is
-> > > shared that you can just log once for all, plus another one for each deviation
-> > > of normal behaviour, like the points you made in the earlier paragraph, and thus
-> > > the thinking behind this patch would still apply?
-> > The thinking is good, but not the implementation.
-> > 
+> This could be simpler if the u-boot-amigaone.bin could be added to
+> pc-bios. It's GPL so should be OK to include and distribute but irs
+> sources seem to be lost and could not be recovered or reconstructed so
+> we only have this binary. Who should be able to decide about that?
+
+I'm sorry, but if the sources are not available anymore, then I think it 
+will not be possible to ship the binary in the QEMU tarball - since the GPL 
+requires that the distributor of the binary can also provide the sources on 
+request.
+
+  Thomas
 
 
