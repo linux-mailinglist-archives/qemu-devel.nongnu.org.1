@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25847CE236
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B3DD7CE22E
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:07:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8x3-0001al-Tl; Wed, 18 Oct 2023 11:59:17 -0400
+	id 1qt8x5-0001cg-9J; Wed, 18 Oct 2023 11:59:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8wk-0001Hf-FG
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:58:59 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8wq-0001Nt-AT
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:59:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8wi-0007VL-Mq
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:58:58 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8wn-0007cQ-2R
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:59:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644735;
+ s=mimecast20190719; t=1697644740;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=bKxpfI1ewkLWXrLPRKRjX/JTEEf96RdRnERqJjhDehM=;
- b=NIYunSDCIjAzvhDROuiOmFN4nnFJommkTkeE+6+9TMYfmFlh77FA/pX4jBcwVeoFwL1KwV
- vrDG6NIsPt6wNj2KDaArqqDcaLgmZ9moPr4KJOnyS7LSSAgjjRx/e5UjTcXUWQBpxMjJiy
- pGfSZLce+aif1SD/zIslKg+NLdj3Lx4=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dEyHp47zWZMmJ4LBbWEQwLbSqJ+uzpsgbL7RPabK7bU=;
+ b=DKZ26dpPQOyc7nLYRxP/hK220V4/ft6iaGPorxZm/bVf+YfubO4YTeGoIZk2Run2QZbk0O
+ jiFqIptPHrrvreZ8OVaNQpokfFEhi7ToF1PYW4BMfBA/F4ST0Ho9Xnk109hORzsift0bPl
+ CqLL4OpV8M6aBJ/Y448Vwo0ql7J3ors=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-502-7UwL4hsoPACfL6SVBiG_fQ-1; Wed, 18 Oct 2023 11:58:53 -0400
-X-MC-Unique: 7UwL4hsoPACfL6SVBiG_fQ-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c54b040cf2so5283941fa.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:58:53 -0700 (PDT)
+ us-mta-28-B2YKg24JPXOIFtr4yN5jJA-1; Wed, 18 Oct 2023 11:58:58 -0400
+X-MC-Unique: B2YKg24JPXOIFtr4yN5jJA-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-507c8a8e5d1so917254e87.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:58:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644732; x=1698249532;
+ d=1e100.net; s=20230601; t=1697644736; x=1698249536;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bKxpfI1ewkLWXrLPRKRjX/JTEEf96RdRnERqJjhDehM=;
- b=YRWJn7qMV6azkFNqeU5byxDRay+LcTXDnrjEBCzVREX4F2aaVZmRyKSxhTZcoDSfmj
- h9ROLdEicwngF84/QTpAcOv2aDdslndWF33/d3WSUcvbDV/diiwHCtTmowM82M2Pkwyr
- /vhXdqSpxNWfsumt/5VaGWWzDaoBZ97SnREBuO6TLFuDTwth85YWZ13Y3HIeSziPssX0
- RBbfTR9Qu1HFSO1PkthLc8aMdjXTUbI1ZDKWS+kuFWI7pjpoMyphRqW/XDj8MbIGZPzh
- 6hcPp/b02jm2GR4R1UP5wjJ0lT1oFrToYweaFx9v3JF77HVYxyUnT/r38Xo8SP0Rjh3j
- LagA==
-X-Gm-Message-State: AOJu0YyW1LbiCfY2CZVu+tPT4Nl/rpw97k4HjNwr8LyUyEqSBxsJEG0f
- at3B/KijSn8D5cUbzIbhJZZp2V+brEOIHELawvpSIBnAVu/8UDt3rO919niJZijKs8XfMP6CpYX
- O+UqRZHqGIr3/HyLFoMXiQ2Zq6qBhA4WyVy81ro9Iq1T4KgyU2CCKCFKazzbbPjxp49cu3Yc=
-X-Received: by 2002:a05:651c:a08:b0:2c5:55a:b6b5 with SMTP id
- k8-20020a05651c0a0800b002c5055ab6b5mr6317278ljq.28.1697644731813; 
- Wed, 18 Oct 2023 08:58:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKYwuh6OZ9J1uuNsChGnxMnNuSxNvRvne9eHjjDx/eWeGy+nUB+skO1PW/SNorJQYQ9a//mQ==
-X-Received: by 2002:a05:651c:a08:b0:2c5:55a:b6b5 with SMTP id
- k8-20020a05651c0a0800b002c5055ab6b5mr6317248ljq.28.1697644731464; 
- Wed, 18 Oct 2023 08:58:51 -0700 (PDT)
+ bh=dEyHp47zWZMmJ4LBbWEQwLbSqJ+uzpsgbL7RPabK7bU=;
+ b=c6Ca2AFHj/99vdUWT7anrqaiEu4apXGyhqNr7FC1cSCm9VBpJdWsrMw8KearU6YkT9
+ hemhSTeTyUjgkLns+PHEmiuMDYjNhFE/sbpTeodBfefUJTyUAcoyA9EPLC9RYL721x6v
+ 8MK4ylv1jnGPQqLUTGjK13w/UAoFLw9tl2c1SkMOA/begVddYU89xVwM4j9XQcqfo6h2
+ N/rTPZmsfnR3pfJJpvILltKiPzAq5tzJ72ZhY3xeBzcfOqENKr+0uHeBmGb8rQCZhRpD
+ 08aFhwTx0abIZMpLjiIm3WPKoznNb5EzsCmhWY74tYqBIUP0YA0eEqvGRx3idm14HiEY
+ iwVg==
+X-Gm-Message-State: AOJu0YxiMjh39qd+lzjRPdZzwT+7QtDkythddsF1cr+1QNj2yOfIA4hR
+ qG2iGA/FqqT0sDuoncXJZu8CrexjITFSFKFxOtYheCDpJ+ks84UVWJmygqtmkmBNL/B7qHHM5oV
+ aeBk0FbC/lmO3BB38SS5C8OCHmnZRhlti5S9Glk6IrSX3ZLMcubrr2Yl1T5asz45bLiaCP5M=
+X-Received: by 2002:a05:6512:b9e:b0:500:92f1:c341 with SMTP id
+ b30-20020a0565120b9e00b0050092f1c341mr5424890lfv.54.1697644736076; 
+ Wed, 18 Oct 2023 08:58:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF9BBpiZFk2AtITs+j1wRjrBHVJap4nDNjUb86Dfxu1ZIGEoqCxpdYf7QusEt9qkk58+wXBQg==
+X-Received: by 2002:a05:6512:b9e:b0:500:92f1:c341 with SMTP id
+ b30-20020a0565120b9e00b0050092f1c341mr5424879lfv.54.1697644735786; 
+ Wed, 18 Oct 2023 08:58:55 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- i18-20020a05600c481200b00407b93d8085sm1983241wmo.27.2023.10.18.08.58.49
+ n13-20020a05600c3b8d00b004053e9276easm2053317wms.32.2023.10.18.08.58.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:58:50 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:58:47 -0400
+ Wed, 18 Oct 2023 08:58:54 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:58:51 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 71/83] hw/i386/pc_piix: Make PIIX4 south bridge usable in PC
- machine
-Message-ID: <8b152920ea5955b1cba164a0f18c544a69ced13b.1697644299.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Li Feng <fengli@smartx.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PULL 72/83] vhost-user-common: send get_inflight_fd once
+Message-ID: <772346132e16f493c1cd354a0b9bd8561a1372b7.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,165 +99,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Li Feng <fengli@smartx.com>
 
-QEMU's PIIX3 implementation actually models the real PIIX4, but with different
-PCI IDs. Usually, guests deal just fine with it. Still, in order to provide a
-more consistent illusion to guests, allow QEMU's PIIX4 implementation to be used
-in the PC machine.
+Currently the get_inflight_fd will be sent every time the device is started, and
+the backend will allocate shared memory to save the inflight state. If the
+backend finds that it receives the second get_inflight_fd, it will release the
+previous shared memory, which breaks inflight working logic.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20231007123843.127151-30-shentey@gmail.com>
+This patch is a preparation for the following patches.
+
+Signed-off-by: Li Feng <fengli@smartx.com>
+Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
+Message-Id: <20231009044735.941655-2-fengli@smartx.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/i386/pc.h                 |  2 +
- hw/i386/pc.c                         |  1 +
- hw/i386/pc_piix.c                    | 61 +++++++++++++++++++++++++++-
- docs/system/target-i386-desc.rst.inc |  8 ++++
- 4 files changed, 71 insertions(+), 1 deletion(-)
+ hw/scsi/vhost-scsi-common.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index bec38cb92c..29a9724524 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -42,6 +42,7 @@ typedef struct PCMachineState {
-     uint64_t max_ram_below_4g;
-     OnOffAuto vmport;
-     SmbiosEntryPointType smbios_entry_point_type;
-+    const char *south_bridge;
+diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
+index a06f01af26..a61cd0e907 100644
+--- a/hw/scsi/vhost-scsi-common.c
++++ b/hw/scsi/vhost-scsi-common.c
+@@ -52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
  
-     bool acpi_build_enabled;
-     bool smbus_enabled;
-@@ -92,6 +93,7 @@ struct PCMachineClass {
-     /* Device configuration: */
-     bool pci_enabled;
-     bool kvmclock_enabled;
-+    const char *default_south_bridge;
+     vsc->dev.acked_features = vdev->guest_features;
  
-     /* Compat options: */
- 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 355e1b7cf6..6293f57a0c 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1706,6 +1706,7 @@ static void pc_machine_initfn(Object *obj)
- #endif /* CONFIG_VMPORT */
-     pcms->max_ram_below_4g = 0; /* use default */
-     pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
-+    pcms->south_bridge = pcmc->default_south_bridge;
- 
-     /* acpi build is enabled by default if machine supports it */
-     pcms->acpi_build_enabled = pcmc->has_acpi_build;
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index e38942a3c3..334d9a0299 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -262,7 +262,7 @@ static void pc_init1(MachineState *machine,
-         DeviceState *dev;
-         size_t i;
- 
--        pci_dev = pci_new_multifunction(-1, TYPE_PIIX3_DEVICE);
-+        pci_dev = pci_new_multifunction(-1, pcms->south_bridge);
-         object_property_set_bool(OBJECT(pci_dev), "has-usb",
-                                  machine_usb(machine), &error_abort);
-         object_property_set_bool(OBJECT(pci_dev), "has-acpi",
-@@ -394,6 +394,56 @@ static void pc_init1(MachineState *machine,
+-    assert(vsc->inflight == NULL);
+-    vsc->inflight = g_new0(struct vhost_inflight, 1);
+-    ret = vhost_dev_get_inflight(&vsc->dev,
+-                                 vs->conf.virtqueue_size,
+-                                 vsc->inflight);
++    ret = vhost_dev_prepare_inflight(&vsc->dev, vdev);
+     if (ret < 0) {
+-        error_report("Error get inflight: %d", -ret);
++        error_report("Error setting inflight format: %d", -ret);
+         goto err_guest_notifiers;
      }
- }
  
-+typedef enum PCSouthBridgeOption {
-+    PC_SOUTH_BRIDGE_OPTION_PIIX3,
-+    PC_SOUTH_BRIDGE_OPTION_PIIX4,
-+    PC_SOUTH_BRIDGE_OPTION_MAX,
-+} PCSouthBridgeOption;
-+
-+static const QEnumLookup PCSouthBridgeOption_lookup = {
-+    .array = (const char *const[]) {
-+        [PC_SOUTH_BRIDGE_OPTION_PIIX3] = TYPE_PIIX3_DEVICE,
-+        [PC_SOUTH_BRIDGE_OPTION_PIIX4] = TYPE_PIIX4_PCI_DEVICE,
-+    },
-+    .size = PC_SOUTH_BRIDGE_OPTION_MAX
-+};
-+
-+#define NotifyVmexitOption_str(val) \
-+    qapi_enum_lookup(&NotifyVmexitOption_lookup, (val))
-+
-+static int pc_get_south_bridge(Object *obj, Error **errp)
-+{
-+    PCMachineState *pcms = PC_MACHINE(obj);
-+    int i;
-+
-+    for (i = 0; i < PCSouthBridgeOption_lookup.size; i++) {
-+        if (g_strcmp0(PCSouthBridgeOption_lookup.array[i],
-+                      pcms->south_bridge) == 0) {
-+            return i;
+-    ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+-    if (ret < 0) {
+-        error_report("Error set inflight: %d", -ret);
+-        goto err_guest_notifiers;
++    if (vsc->inflight) {
++        if (!vsc->inflight->addr) {
++            ret = vhost_dev_get_inflight(&vsc->dev,
++                                        vs->conf.virtqueue_size,
++                                        vsc->inflight);
++            if (ret < 0) {
++                error_report("Error getting inflight: %d", -ret);
++                goto err_guest_notifiers;
++            }
 +        }
-+    }
 +
-+    error_setg(errp, "Invalid south bridge value set");
-+    return 0;
-+}
-+
-+static void pc_set_south_bridge(Object *obj, int value, Error **errp)
-+{
-+    PCMachineState *pcms = PC_MACHINE(obj);
-+
-+    if (value < 0) {
-+        error_setg(errp, "Value can't be negative");
-+        return;
-+    }
-+
-+    if (value >= PCSouthBridgeOption_lookup.size) {
-+        error_setg(errp, "Value too big");
-+        return;
-+    }
-+
-+    pcms->south_bridge = PCSouthBridgeOption_lookup.array[value];
-+}
-+
- /* Looking for a pc_compat_2_4() function? It doesn't exist.
-  * pc_compat_*() functions that run on machine-init time and
-  * change global QEMU state are deprecated. Please don't create
-@@ -473,6 +523,8 @@ static void pc_xen_hvm_init(MachineState *machine)
- static void pc_i440fx_machine_options(MachineClass *m)
- {
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-+    ObjectClass *oc = OBJECT_CLASS(m);
-+    pcmc->default_south_bridge = TYPE_PIIX3_DEVICE;
-     pcmc->pci_root_uid = 0;
-     pcmc->default_cpu_version = 1;
++        ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
++        if (ret < 0) {
++            error_report("Error setting inflight: %d", -ret);
++            goto err_guest_notifiers;
++        }
+     }
  
-@@ -484,6 +536,13 @@ static void pc_i440fx_machine_options(MachineClass *m)
-     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
-+
-+    object_class_property_add_enum(oc, "x-south-bridge", "PCSouthBridgeOption",
-+                                   &PCSouthBridgeOption_lookup,
-+                                   pc_get_south_bridge,
-+                                   pc_set_south_bridge);
-+    object_class_property_set_description(oc, "x-south-bridge",
-+                                     "Use a different south bridge than PIIX3");
+     ret = vhost_dev_start(&vsc->dev, vdev, true);
+@@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+     return ret;
+ 
+ err_guest_notifiers:
+-    g_free(vsc->inflight);
+-    vsc->inflight = NULL;
+-
+     k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
+ err_host_notifiers:
+     vhost_dev_disable_notifiers(&vsc->dev, vdev);
+@@ -111,12 +116,6 @@ void vhost_scsi_common_stop(VHostSCSICommon *vsc)
+     }
+     assert(ret >= 0);
+ 
+-    if (vsc->inflight) {
+-        vhost_dev_free_inflight(vsc->inflight);
+-        g_free(vsc->inflight);
+-        vsc->inflight = NULL;
+-    }
+-
+     vhost_dev_disable_notifiers(&vsc->dev, vdev);
  }
  
- static void pc_i440fx_8_2_machine_options(MachineClass *m)
-diff --git a/docs/system/target-i386-desc.rst.inc b/docs/system/target-i386-desc.rst.inc
-index 7d1fffacbe..5ebbcda9db 100644
---- a/docs/system/target-i386-desc.rst.inc
-+++ b/docs/system/target-i386-desc.rst.inc
-@@ -71,3 +71,11 @@ machine property, i.e.
-    |qemu_system_x86| some.img \
-    -audiodev <backend>,id=<name> \
-    -machine pcspk-audiodev=<name>
-+
-+Machine-specific options
-+~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+It supports the following machine-specific options:
-+
-+- ``x-south-bridge=PIIX3|piix4-isa`` (Experimental option to select a particular
-+  south bridge. Default: ``PIIX3``)
 -- 
 MST
 
