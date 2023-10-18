@@ -2,95 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DAF67CDF90
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6EC7CDFC9
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:29:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt7U4-0004jr-D1; Wed, 18 Oct 2023 10:25:16 -0400
+	id 1qt7XU-0006W0-Hj; Wed, 18 Oct 2023 10:28:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt7U2-0004ho-8h
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:25:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt7U0-000732-Ms
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:25:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697639111;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=jT4RYAmodD3Z40oT00ZmJ3EMwpg9YVPIx7iCzJYbHtk=;
- b=K9bIESk5t/nKRSToI27O9iYWznqXzcm+/KgDSsB2QOtV5IMsm+Ow/EZ6HPf6QoUw7yNHl3
- b3m1grPrJmO7SM3my9HSipEDYra9Au62IPFOowCLWtB91Lqrh4WoOuvQcABql3Ci3HSP/o
- jf9ncg9ITPCiumV8NavS2oe63Ob61/U=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-jVxsvTaqMTm5hRP0zJQ3UA-1; Wed, 18 Oct 2023 10:25:09 -0400
-X-MC-Unique: jVxsvTaqMTm5hRP0zJQ3UA-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c51d0f97e3so34998971fa.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:25:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697639108; x=1698243908;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jT4RYAmodD3Z40oT00ZmJ3EMwpg9YVPIx7iCzJYbHtk=;
- b=qE/4XUzY5DNg0FC9HMMDCng+KIuJEOnUQ9z7nDufIG34TPz3mD4EWpexII38ssSqgb
- inJp9Un+r/UPODgg/sF488EFdKC5dHXzGPaU1w/k5WwjD6D/RLrMFQiGdsNttitVTslL
- 8ltylMPmUiwVnhxGHdw0chz2/MLDBWs2UXP12ISW7+zpqjDNoYTqf5ofh1WQ1pOejaoM
- lR/yXZ0OTC40HCxf0oz57dCkr7WyHjLrAe9PWOUYaIJeXrN+jQAzz1o2aZ1KtrY0Qde7
- x+zeeg4/VqlfT/no+UWUn4a1mSP38d5rIH66BJSsdfdksbVXJHRZ7j+cAc8GnmSc61/c
- b9hw==
-X-Gm-Message-State: AOJu0YywwI7gLxwFLZLMHxEtj3Z8u+MMeFvvL5NyXj4hyaIxWpDFFGe1
- h5kqXxQStlqZTIwxLvyCUER8p5dXuAdCPtUZrI+R+WO28FIy328p/3Us1EqygtBcy92cMqVnSY5
- axwQlsh8cXH8ayLA=
-X-Received: by 2002:a05:6512:3da3:b0:507:98d0:bec4 with SMTP id
- k35-20020a0565123da300b0050798d0bec4mr5304633lfv.54.1697639108412; 
- Wed, 18 Oct 2023 07:25:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLO+CxqVV7USC4G/LNQ4WJPF1HSZ7JclU1hvqtplOG73kD0JnDa9WDjbWwOXJE+pSTn9fChA==
-X-Received: by 2002:a05:6512:3da3:b0:507:98d0:bec4 with SMTP id
- k35-20020a0565123da300b0050798d0bec4mr5304608lfv.54.1697639108058; 
- Wed, 18 Oct 2023 07:25:08 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- t17-20020a05600001d100b0032d8034724esm2210719wrx.94.2023.10.18.07.25.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 07:25:07 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Daniel
- P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
- =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 10/11] tests/qtest/migration: Support more than one
- QEMU binary
-In-Reply-To: <20231018140736.3618-11-farosas@suse.de> (Fabiano Rosas's message
- of "Wed, 18 Oct 2023 11:07:35 -0300")
-References: <20231018140736.3618-1-farosas@suse.de>
- <20231018140736.3618-11-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 18 Oct 2023 16:25:06 +0200
-Message-ID: <87edhs80u5.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qt7XT-0006Vo-Ao
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:28:47 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qt7XR-0007gz-Cr
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:28:47 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id BCFEA1F383;
+ Wed, 18 Oct 2023 14:28:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697639322; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z5n3VCOIG1/lAD6HoR2Xafic/L1ZQCAGXaSN45y3Hxc=;
+ b=N3IaJQ/nz/RkRj03ucdxY+ZYqNyWCBYU3T73ovYZqCxrLMuOLEAKTTH+r45w3aY92JgTiT
+ utBMAZnUNNER52l4Df2uPoy9JrADucOql85c6WpkkvtktCKveo1mdsrEStqQKRaOrzsMjQ
+ Voj0vqwzrii4K4H5GhrvatVVvsN1Kgc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697639322;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z5n3VCOIG1/lAD6HoR2Xafic/L1ZQCAGXaSN45y3Hxc=;
+ b=FxyKyp+sw6lvOrtK++mtCeulMhLt8bBOUkCDbjiOI9EsSkkJ9e0sihg91Ks1gWjKlda28h
+ lgOEzcgjVto2/fCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4CF9013780;
+ Wed, 18 Oct 2023 14:28:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id iyz0BprrL2XfWAAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 18 Oct 2023 14:28:42 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v13 00/10] migration: Modify 'migrate' and
+ 'migrate-incoming' QAPI commands for migration
+In-Reply-To: <9c263a67-4971-418a-a3f7-95998491fb8f@nutanix.com>
+References: <20231012151052.154106-1-het.gala@nutanix.com>
+ <9c263a67-4971-418a-a3f7-95998491fb8f@nutanix.com>
+Date: Wed, 18 Oct 2023 11:28:39 -0300
+Message-ID: <87h6modmy0.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[11];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,52 +96,225 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-D> We have strict rules around migration compatibility between different
-> QEMU versions but no test to validate the migration state between
-> different binaries.
+Het Gala <het.gala@nutanix.com> writes:
+
+> Fabiano, would your below commits impact this patchset 'make check' 
+> tests ? Because you have added tests for file based migration, which is 
+> still not included in this patchset.
+
+AFAICS, the tests shouldn't break.
+
+> tests/qtest: migration-test: Add tests for file-based migration
+> tests/qtest/migration: Add a test for the analyze-migration script
 >
-> Add infrastructure to allow running the migration tests with two
-> different QEMU binaries as migration source and destination.
->
-> The code now recognizes two new environment variables
-> QTEST_QEMU_BINARY_SRC and QTEST_QEMU_BINARY_DST. In the absence of
-> either of them, the test will use the QTEST_QEMU_BINARY variable. If
-> both are missing then the tests are run with single binary as
-> previously.
->
-> The machine type is selected automatically as the latest machine type
-> version that works with both binaries.
->
-> Usage:
-> QTEST_QEMU_BINARY_SRC=../build-8.2.0/qemu-system-x86_64 \
-> QTEST_QEMU_BINARY_DST=../build-8.1.0/qemu-system-x86_64 \
-> ./tests/qtest/migration-test
->
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> I have tried to address all the g_autoptr() issues observed eariler, and 
+> make check tests failing as a result. All the tests were passing (even 
+> -qcow2 181) when the patch was posted for review. What can be the next 
+> steps here for us? Do we need to add support for file based migration in 
+> these patches or as you said eariler, you will introduce those patches 
+> on top of my patches. Please let me know.
 
-The test works for me.  But I would really like to be able to specify
-the machine type for which I have to test.  I.e. right now, we can test:
+Right, your series is next on my queue for reviewing. I'll get to it
+soon.
 
-qemu-8.2 <-> qemu-8.1
+Here's what I was intending to send on top of it:
 
-and it is going to use q35-8.1
+-->8--
+From 0fc533989366a1a1e19737916d65938f64426c9b Mon Sep 17 00:00:00 2001
+From: Fabiano Rosas <farosas@suse.de>
+Date: Tue, 10 Oct 2023 11:01:32 -0300
+Subject: [PATCH] migration: Convert the file transport to new migration api
 
-But in the case that I want to test that two binaries with q35-8.0,
-there is no way to setup that.
+Convert the file: URI to support the new QAPI syntax.
 
-So basically what I need is
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/file.c      | 22 +++++++---------------
+ migration/file.h      |  8 ++++++--
+ migration/migration.c | 17 +++++++++++------
+ qapi/migration.json   | 20 ++++++++++++++++++--
+ 4 files changed, 42 insertions(+), 25 deletions(-)
 
-QTEST_QEMU_MACHINE_TYPE var, and if that exist, just use that instead of
-the value of "machine"
-
-What do you think?
-
-Later, Juan.
+diff --git a/migration/file.c b/migration/file.c
+index cf5b1bf365..e67c81dd2c 100644
+--- a/migration/file.c
++++ b/migration/file.c
+@@ -19,7 +19,7 @@
+ 
+ /* Remove the offset option from @filespec and return it in @offsetp. */
+ 
+-static int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
++int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
+ {
+     char *option = strstr(filespec, OFFSET_OPTION);
+     int ret;
+@@ -36,20 +36,16 @@ static int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
+     return 0;
+ }
+ 
+-void file_start_outgoing_migration(MigrationState *s, const char *filespec,
++void file_start_outgoing_migration(MigrationState *s, FileMigrationArgs *file_args,
+                                    Error **errp)
+ {
+-    g_autofree char *filename = g_strdup(filespec);
+     g_autoptr(QIOChannelFile) fioc = NULL;
+-    uint64_t offset = 0;
++    g_autofree char *filename = g_strdup(file_args->path);
++    uint64_t offset = file_args->offset;
+     QIOChannel *ioc;
+ 
+     trace_migration_file_outgoing(filename);
+ 
+-    if (file_parse_offset(filename, &offset, errp)) {
+-        return;
+-    }
+-
+     fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
+                                      0600, errp);
+     if (!fioc) {
+@@ -73,19 +69,15 @@ static gboolean file_accept_incoming_migration(QIOChannel *ioc,
+     return G_SOURCE_REMOVE;
+ }
+ 
+-void file_start_incoming_migration(const char *filespec, Error **errp)
++void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
+ {
+-    g_autofree char *filename = g_strdup(filespec);
++    g_autofree char *filename = g_strdup(file_args->path);
+     QIOChannelFile *fioc = NULL;
+-    uint64_t offset = 0;
++    uint64_t offset = file_args->offset;
+     QIOChannel *ioc;
+ 
+     trace_migration_file_incoming(filename);
+ 
+-    if (file_parse_offset(filename, &offset, errp)) {
+-        return;
+-    }
+-
+     fioc = qio_channel_file_new_path(filename, O_RDONLY, 0, errp);
+     if (!fioc) {
+         return;
+diff --git a/migration/file.h b/migration/file.h
+index 90fa4849e0..155f6aab45 100644
+--- a/migration/file.h
++++ b/migration/file.h
+@@ -7,8 +7,12 @@
+ 
+ #ifndef QEMU_MIGRATION_FILE_H
+ #define QEMU_MIGRATION_FILE_H
+-void file_start_incoming_migration(const char *filename, Error **errp);
+ 
+-void file_start_outgoing_migration(MigrationState *s, const char *filename,
++#include "qapi/qapi-types-migration.h"
++
++void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp);
++
++void file_start_outgoing_migration(MigrationState *s, FileMigrationArgs *file_args,
+                                    Error **errp);
++int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp);
+ #endif
+diff --git a/migration/migration.c b/migration/migration.c
+index a651106bff..0b07b7343b 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -468,6 +468,13 @@ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
+         }
+         addr->u.socket.type = saddr->type;
+         addr->u.socket.u = saddr->u;
++    } else if (strstart(uri, "file:", NULL)) {
++        addr->transport = MIGRATION_ADDRESS_TYPE_FILE;
++        addr->u.file.path = g_strdup(uri + strlen("file:"));
++        if (file_parse_offset(addr->u.file.path, &addr->u.file.offset, errp)) {
++            g_free(addr->u.file.path);
++            return false;
++        }
+     } else {
+         error_setg(errp, "unknown migration protocol: %s", uri);
+         return false;
+@@ -483,7 +490,6 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+                                           MigrationChannelList *channels,
+                                           Error **errp)
+ {
+-    const char *p = NULL;
+     MigrationChannel *channel = NULL;
+     MigrationAddress *addr = NULL;
+ 
+@@ -535,8 +541,8 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+  #endif
+     } else if (addr->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
+         exec_start_incoming_migration(addr->u.exec.args, errp);
+-    } else if (strstart(uri, "file:", &p)) {
+-        file_start_incoming_migration(p, errp);
++    } else if (addr->transport == MIGRATION_ADDRESS_TYPE_FILE) {
++        file_start_incoming_migration(&addr->u.file, errp);
+     } else {
+         error_setg(errp, "unknown migration protocol: %s", uri);
+     }
+@@ -1760,7 +1766,6 @@ void qmp_migrate(const char *uri, bool has_channels,
+     bool resume_requested;
+     Error *local_err = NULL;
+     MigrationState *s = migrate_get_current();
+-    const char *p = NULL;
+     MigrationChannel *channel = NULL;
+     MigrationAddress *addr = NULL;
+ 
+@@ -1824,8 +1829,8 @@ void qmp_migrate(const char *uri, bool has_channels,
+ #endif
+     } else if (addr->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
+         exec_start_outgoing_migration(s, addr->u.exec.args, &local_err);
+-    } else if (strstart(uri, "file:", &p)) {
+-        file_start_outgoing_migration(s, p, &local_err);
++    } else if (addr->transport == MIGRATION_ADDRESS_TYPE_FILE) {
++        file_start_outgoing_migration(s, &addr->u.file, &local_err);
+     } else {
+         error_setg(&local_err, QERR_INVALID_PARAMETER_VALUE, "uri",
+                    "a valid migration protocol");
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 7b84c04617..bb0639b9d6 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1489,10 +1489,25 @@
+ #
+ # @rdma: Migrate via RDMA.
+ #
++# @file: Direct the migration stream to a file.
++#
+ # Since 8.2
+ ##
+ { 'enum': 'MigrationAddressType',
+-  'data': ['socket', 'exec', 'rdma'] }
++  'data': ['socket', 'exec', 'rdma', 'file'] }
++
++##
++# @FileMigrationArgs:
++#
++# @path: file path
++#
++# @offset: initial offset for the file
++#
++# Since 8.2
++##
++{ 'struct': 'FileMigrationArgs',
++  'data': {'path': 'str',
++           'offset': 'uint64' } }
+ 
+ ##
+ # @MigrationExecCommand:
+@@ -1517,7 +1532,8 @@
+   'data': {
+     'socket': 'SocketAddress',
+     'exec': 'MigrationExecCommand',
+-    'rdma': 'InetSocketAddress' } }
++    'rdma': 'InetSocketAddress',
++    'file': 'FileMigrationArgs' } }
+ 
+ ##
+ # @MigrationChannelType:
+-- 
+2.35.3
 
 
