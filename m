@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970747CEA53
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB33F7CEAEC
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 00:03:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtESk-0001wP-Sm; Wed, 18 Oct 2023 17:52:22 -0400
+	id 1qtESn-0001zy-G7; Wed, 18 Oct 2023 17:52:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtESQ-00019p-Ay
+ id 1qtESQ-00019q-BD
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:52:05 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtESN-0004Ra-6y
+ id 1qtESO-0004Rf-53
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:52:01 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-57babef76deso4060173eaf.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:58 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-53fbf2c42bfso5473239a12.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697665918; x=1698270718; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697665919; x=1698270719; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pahNvfSbaXH7GCmgh8txSi9o/B1oidjE9rEfxQaDzTc=;
- b=Crh1We5TM6avpIpDTdEZaZHk5/WK/BAj4bMe+eHLo/FETb3TWr9uCy5cJsbwiSZhuq
- UsBvF61sVudl4y4ZRGGA90vSJZc6QPoMXxSG6ga73eJppyHiiG1vKYKSsFCtaX/DWOOR
- ZEaO0Y20Y0QfAaUDHypIPZ0J1LZEFC/tJ5uVP3tKW33zjHe1RqTZE09zLFM+PZoW0cmV
- 1Bfpx2O7NW/YkL1+kdbXSM3mKWl6nZ7E7p8G8LBSMe6BR5xYY6ss8IYSZDRMXhi+6v2E
- XXJbm2tYd6m3m+3nnjYw1BiNpPv3Jvi6fNpEgLhrcd5/jvidXsxbZIIjyuuMxom9O8VJ
- 8ZbA==
+ bh=J7IvWHKNslLXyxg2gDsUoAZIYZRNssROan/QZtA5zx8=;
+ b=C5MnWHZoTGAv0Z3nTmEM8dpenBbjFupjo4DxWkzPdQar78cyjTymNq8VglYO23Dkfu
+ sTnfQIEE6oWz+nawwK+NSxTpJ8xwWNXh+YCfD/nId+VVwNnG8FiZGg35JfwTBWXlNoco
+ yMVl853X8qiU6ykwCpnBysL5g9zBTWNQufWwsND+VZpQhAGgIC/nhWoG5+EQh1TrquWj
+ IJd/7HqekQ/mteeHxpqxwkTP9AgTJBIFS/4IL3EOse20Z7eFVHR+6TPGhaAKdhFTVnGs
+ PR+DQdqqdggWoWXlBIWccSRwJYFKbXIum71949tFF99k4M0+rF6aWhN2toxCwf4MAz9h
+ QHqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697665918; x=1698270718;
+ d=1e100.net; s=20230601; t=1697665919; x=1698270719;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pahNvfSbaXH7GCmgh8txSi9o/B1oidjE9rEfxQaDzTc=;
- b=nkZe47GGAEL0gozueS2sYR4Lgy4FY4gqFYkT/WPzD14vao9bUqLXAw7tdX3vb2DcVN
- E9sHBOtz6eve+nfC7y0i0bkd0LkVjeSnL6wZn5NtWNk2BMHCbatPdw2BEKvkAcMxkqlw
- /V/wAv4pvUFiHjKVQZGqaO6Qg+F65heQagtUrqj3P/USr7Xz8qNfI8Sx7ZFEOhzxn1eL
- DgQHZ9Pu9mUiQ5btf3muOPVSSqCVDQTM8NcP3jHxLjMlcTvcSM72cDBEfguBA9F3iKg0
- OKapwVx0sMGQkvyltUxmvH5BxoEvaYrrFvbGZmIefRAT2LxVjzI2gqGusL5gx9lgUnSn
- aC1Q==
-X-Gm-Message-State: AOJu0YxJtB8mYHqmxt27iE/Rl9kvuWGG1MNm+11R5AD4k3hSn0gur/10
- /urhFhcLiFy+JxedFnaCnsZuRR+GJKRQ6gZmsBU=
-X-Google-Smtp-Source: AGHT+IGf5Q7xFJ+Oxqmpxgr4D5D9Q4oe/j7REOL0a973jv2jA6owJP63G9YuXXF942I86CwWdMHF+g==
-X-Received: by 2002:a05:6359:3015:b0:166:dcf6:cd82 with SMTP id
- rf21-20020a056359301500b00166dcf6cd82mr248039rwb.14.1697665918070; 
+ bh=J7IvWHKNslLXyxg2gDsUoAZIYZRNssROan/QZtA5zx8=;
+ b=WO4TrnPht+d7KRi64U17dZ2qMbuSS//+/dWQkBvgkzy93uKmFNOcHHzgGXxM33wEYa
+ L9B/MEEqYpQVsXvzGRRD8o5u/XN/IYJCOkoRwbez7O46mWt13Olt5om9OEPcSy7n9COw
+ GHqwmkzRKmBq+n/EBa8H52oLdXC0N7eWyWVwTuWjgtrqS8P+BFePRcwvjoiJDNM2QpP3
+ l5aPATzaUABfOaxbaEqxjRqBivraY+942tib4kGTLx9W8k0IvOfGtw8x9KdK/ZnXtkFr
+ NalTc4cyK5ZgaZx8xYYzVBrE3dYPmhTopEhP3acWri9GaXpkSRjB3JUakcVbvmTA4pTv
+ I+2A==
+X-Gm-Message-State: AOJu0YzDckaNj1eoIPYTUq/fQzc63+xfcC99ZRbS2B5yVp97GyieR3K3
+ DzhQMSSbin268cU8zABU8nYaCUEMEV1GZduqO1o=
+X-Google-Smtp-Source: AGHT+IH3qtik9S79chgKlomdD8n790b7kf8E/DYGA19itm2Yjfbp1pfn8ZzI3uxz4j+4AMNb7clmqA==
+X-Received: by 2002:a05:6a20:42a0:b0:16b:c9f2:b632 with SMTP id
+ o32-20020a056a2042a000b0016bc9f2b632mr456356pzj.62.1697665918873; 
  Wed, 18 Oct 2023 14:51:58 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.57
+ w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 14:51:57 -0700 (PDT)
+ Wed, 18 Oct 2023 14:51:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 25/61] target/hppa: Pass d to do_sed_cond
-Date: Wed, 18 Oct 2023 14:50:59 -0700
-Message-Id: <20231018215135.1561375-26-richard.henderson@linaro.org>
+Subject: [PATCH 26/61] target/hppa: Pass d to do_unit_cond
+Date: Wed, 18 Oct 2023 14:51:00 -0700
+Message-Id: <20231018215135.1561375-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018215135.1561375-1-richard.henderson@linaro.org>
 References: <20231018215135.1561375-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,115 +90,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hoist the resolution of d up one level above do_sed_cond.
-The MOVB comparison and the existing shift/extract/deposit
-are all 32-bit.
+Hoist the resolution of d up one level above do_unit_cond.
+All computations are logical, and are simplified by using a mask of the
+correct width, after which the result may be compared with zero.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ target/hppa/translate.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 7a3b0f1de7..1a51ac4869 100644
+index 1a51ac4869..8bea28f0fd 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -1037,10 +1037,10 @@ static DisasCond do_log_cond(DisasContext *ctx, unsigned cf, bool d,
+@@ -1056,11 +1056,12 @@ static DisasCond do_sed_cond(DisasContext *ctx, unsigned orig, bool d,
  
- /* Similar, but for shift/extract/deposit conditions.  */
+ /* Similar, but for unit conditions.  */
  
--static DisasCond do_sed_cond(DisasContext *ctx, unsigned orig, TCGv_reg res)
-+static DisasCond do_sed_cond(DisasContext *ctx, unsigned orig, bool d,
-+                             TCGv_reg res)
+-static DisasCond do_unit_cond(unsigned cf, TCGv_reg res,
++static DisasCond do_unit_cond(unsigned cf, bool d, TCGv_reg res,
+                               TCGv_reg in1, TCGv_reg in2)
  {
-     unsigned c, f;
--    bool d = false;
+     DisasCond cond;
+     TCGv_reg tmp, cb = NULL;
++    target_ureg d_repl = d ? 0x0000000100000001ull : 1;
  
-     /* Convert the compressed condition codes to standard.
-        0-2 are the same as logicals (nv,<,<=), while 3 is OD.
-@@ -3203,7 +3203,8 @@ static bool trans_movb(DisasContext *ctx, arg_movb *a)
-         tcg_gen_mov_reg(dest, cpu_gr[a->r1]);
-     }
+     if (cf & 8) {
+         /* Since we want to test lots of carry-out bits all at once, do not
+@@ -1087,32 +1088,32 @@ static DisasCond do_unit_cond(unsigned cf, TCGv_reg res,
+          * https://graphics.stanford.edu/~seander/bithacks.html#ZeroInWord
+          */
+         tmp = tcg_temp_new();
+-        tcg_gen_subi_reg(tmp, res, 0x01010101u);
++        tcg_gen_subi_reg(tmp, res, d_repl * 0x01010101u);
+         tcg_gen_andc_reg(tmp, tmp, res);
+-        tcg_gen_andi_reg(tmp, tmp, 0x80808080u);
++        tcg_gen_andi_reg(tmp, tmp, d_repl * 0x80808080u);
+         cond = cond_make_0(TCG_COND_NE, tmp);
+         break;
  
--    cond = do_sed_cond(ctx, a->c, dest);
-+    /* All MOVB conditions are 32-bit. */
-+    cond = do_sed_cond(ctx, a->c, false, dest);
-     return do_cbranch(ctx, a->disp, a->n, &cond);
- }
+     case 3: /* SHZ / NHZ */
+         tmp = tcg_temp_new();
+-        tcg_gen_subi_reg(tmp, res, 0x00010001u);
++        tcg_gen_subi_reg(tmp, res, d_repl * 0x00010001u);
+         tcg_gen_andc_reg(tmp, tmp, res);
+-        tcg_gen_andi_reg(tmp, tmp, 0x80008000u);
++        tcg_gen_andi_reg(tmp, tmp, d_repl * 0x80008000u);
+         cond = cond_make_0(TCG_COND_NE, tmp);
+         break;
  
-@@ -3217,7 +3218,8 @@ static bool trans_movbi(DisasContext *ctx, arg_movbi *a)
-     dest = dest_gpr(ctx, a->r);
-     tcg_gen_movi_reg(dest, a->i);
+     case 4: /* SDC / NDC */
+-        tcg_gen_andi_reg(cb, cb, 0x88888888u);
++        tcg_gen_andi_reg(cb, cb, d_repl * 0x88888888u);
+         cond = cond_make_0(TCG_COND_NE, cb);
+         break;
  
--    cond = do_sed_cond(ctx, a->c, dest);
-+    /* All MOVBI conditions are 32-bit. */
-+    cond = do_sed_cond(ctx, a->c, false, dest);
-     return do_cbranch(ctx, a->disp, a->n, &cond);
- }
+     case 6: /* SBC / NBC */
+-        tcg_gen_andi_reg(cb, cb, 0x80808080u);
++        tcg_gen_andi_reg(cb, cb, d_repl * 0x80808080u);
+         cond = cond_make_0(TCG_COND_NE, cb);
+         break;
  
-@@ -3255,7 +3257,7 @@ static bool trans_shrpw_sar(DisasContext *ctx, arg_shrpw_sar *a)
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, dest);
-+        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
-     }
-     return nullify_end(ctx);
- }
-@@ -3291,7 +3293,7 @@ static bool trans_shrpw_imm(DisasContext *ctx, arg_shrpw_imm *a)
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, dest);
-+        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
-     }
-     return nullify_end(ctx);
- }
-@@ -3325,7 +3327,7 @@ static bool trans_extrw_sar(DisasContext *ctx, arg_extrw_sar *a)
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, dest);
-+        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
-     }
-     return nullify_end(ctx);
- }
-@@ -3352,7 +3354,7 @@ static bool trans_extrw_imm(DisasContext *ctx, arg_extrw_imm *a)
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, dest);
-+        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
-     }
-     return nullify_end(ctx);
- }
-@@ -3389,7 +3391,7 @@ static bool trans_depwi_imm(DisasContext *ctx, arg_depwi_imm *a)
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, dest);
-+        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
-     }
-     return nullify_end(ctx);
- }
-@@ -3419,7 +3421,7 @@ static bool trans_depw_imm(DisasContext *ctx, arg_depw_imm *a)
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, dest);
-+        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
-     }
-     return nullify_end(ctx);
- }
-@@ -3456,7 +3458,7 @@ static bool do_depw_sar(DisasContext *ctx, unsigned rt, unsigned c,
-     /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
-     if (c) {
--        ctx->null_cond = do_sed_cond(ctx, c, dest);
-+        ctx->null_cond = do_sed_cond(ctx, c, false, dest);
-     }
-     return nullify_end(ctx);
- }
+     case 7: /* SHC / NHC */
+-        tcg_gen_andi_reg(cb, cb, 0x80008000u);
++        tcg_gen_andi_reg(cb, cb, d_repl * 0x80008000u);
+         cond = cond_make_0(TCG_COND_NE, cb);
+         break;
+ 
+@@ -1428,6 +1429,7 @@ static void do_unit(DisasContext *ctx, unsigned rt, TCGv_reg in1,
+ {
+     TCGv_reg dest;
+     DisasCond cond;
++    bool d = false;
+ 
+     if (cf == 0) {
+         dest = dest_gpr(ctx, rt);
+@@ -1438,7 +1440,7 @@ static void do_unit(DisasContext *ctx, unsigned rt, TCGv_reg in1,
+         dest = tcg_temp_new();
+         fn(dest, in1, in2);
+ 
+-        cond = do_unit_cond(cf, dest, in1, in2);
++        cond = do_unit_cond(cf, d, dest, in1, in2);
+ 
+         if (is_tc) {
+             TCGv_reg tmp = tcg_temp_new();
 -- 
 2.34.1
 
