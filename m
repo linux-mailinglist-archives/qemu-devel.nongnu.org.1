@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EE67CE859
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 21:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3DE47CE850
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 21:58:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtCf6-0003qx-JD; Wed, 18 Oct 2023 15:57:00 -0400
+	id 1qtCf9-0003ra-6b; Wed, 18 Oct 2023 15:57:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtCf3-0003qO-VY
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 15:56:57 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1qtCf6-0003rH-H6
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 15:57:00 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtCf2-0001cZ-0Y
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 15:56:57 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-27d113508bfso5908991a91.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 12:56:55 -0700 (PDT)
+ id 1qtCf4-0001ct-To
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 15:57:00 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-27d153c7f00so4952740a91.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 12:56:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697659014; x=1698263814; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1697659017; x=1698263817; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YMVhWmwdvx30PnU9x/+bnphuULQWrEw6MGAVsHC6ISM=;
- b=jTabJDvNja8bQfAZFnmJmwX9gUEZ5Vcyx86qzwNaMiaqI675cXqULYbeXYItv+jiak
- MSPpnQSXbTRpaqcFydZqWBm6D2QSMwL6jOLeYyZXPQt5iB3SHvOZKXw+8F600ppBbUKt
- ZYAEZ7A7xEvmlsqWcBqK8/cPfi1IkYrtVQMaxQCWBLUbHn1/5hR6NA1RnHEL0GNcVagG
- 8/5EcdJoVgdB4JzfN+6p7Ny3nHpx4P027gKruXkZ3tymxDwxFL6JxWCE69xoJEBCCP9r
- Z/bdKbytb/WfJ1wtMAGC60FGQbBaNHJFT2WkzwziymqSJ4tnmIyYWOhTEb/wxQQIgIhc
- m6ZQ==
+ bh=qIAf4nnuF3OFMrBHbJCzXvrh0kuUQuGTETn7XZtITBo=;
+ b=Th67jkldiGFBX3Kap6mZp/tQQvFmlgm55mDHnndHA27kD19bMzW2oxQ4H00QIJcFzs
+ gXqdNz1zHA9j3EOWe5sQvKHeDYiQtbzle3HfE+kBaI+8P4Q/DO6ZmQh+L9wW+1TRuU0E
+ AzeMdmRTbd5lRUAeR0oDvyAMyEUk9pPenFlHG87M+loS6vPzLDsYHKyAuig4irMjTEA3
+ yNCcrTpM7x1dTAnfWWmCcE7F+yONbOdI8oAJ4PxDgYbgPW6FuJHbJWp7ZTgSe+Sz88v4
+ xL0THCBg8FpYA90yT9FrYXLbafMAJWMqCRThWYOpTHg5KIM4LVqRGLb/qAcbS6589Rh1
+ 1+WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697659014; x=1698263814;
+ d=1e100.net; s=20230601; t=1697659017; x=1698263817;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YMVhWmwdvx30PnU9x/+bnphuULQWrEw6MGAVsHC6ISM=;
- b=dMMvPOuKbbR6hW8O809CFk5RUOBD7BtuQ8QTdYAqmuIEMsiFwhUbH2x5BvZUwMRaXm
- e8ld28YXOMA4v69HjLPIDT0DA6HtogZKfNKiPDGs4nWJBvezJ4mNTAZpQ/Rdc8OO4lIJ
- p06bQftwOON2q76lq2oWSXJyUEyr/O2md/zQHMwLTkDck0pVOhIVwK8v20Vz/yVzt5Ad
- g0BxlqKVn8n9/jZd7vC5TQL36zEc1Yp88OznMwLj0f9AbSuiVzjafV5Y/oRL9jImCkBk
- atduVJyFUn1ruOI2E2KeWioqrPzfQVsXiq5LAgXhS2MPlqz1Tb/gIK6YEYxoPuAw43Yv
- bo9A==
-X-Gm-Message-State: AOJu0Yy8s3OZfZQYvKibtn5eFSbLWl4nfM4fLudChDq1DlWxWiDEldLp
- X5x6Qu7U69JiSq3BxYKMheCmvmRqfhJFxN8hZpM=
-X-Google-Smtp-Source: AGHT+IEIxeEqTl51SVNMJ7WB4kd3Ldzz2OTgkhgPZGwnVUFyggTOozCcrG+ITC+gtxkQfrpIQ4Mf3Q==
-X-Received: by 2002:a17:90a:1a10:b0:27d:3e8f:26db with SMTP id
- 16-20020a17090a1a1000b0027d3e8f26dbmr193676pjk.12.1697659014347; 
- Wed, 18 Oct 2023 12:56:54 -0700 (PDT)
+ bh=qIAf4nnuF3OFMrBHbJCzXvrh0kuUQuGTETn7XZtITBo=;
+ b=czSePXSFW5adMN/JGEuQTvAXeu5vgfbo6qZZlbfUmsTBLN36QUCvAsEZfgI13Fnwfw
+ /GSCcY4F6/NSWhHhg0zCGAXPZQhODUyS+BhlKPhe+mz2CwrT9V/Hn/OmvEipe5UXVUzM
+ GKcuytLeg81OMtBixAGrM1kjl1YM/HWPRUvL8Rxx0rjECdkcU8RYu28tRQYgOX4JS9pt
+ 6wsBzxT9uAs2gtQFfDBsWZDHVRW50fQ+pIWZIKKGvHlVA0wrrup2LEFLavCYbOXXpzLA
+ oSUvqJZlwJWHPQdrddnrOPs5A6mbtrDg99WhdFlWUkoWsS2jOkfPqKq9H072J1cj/kS7
+ g9kg==
+X-Gm-Message-State: AOJu0YxeQ3FAA3V4XVjtoruoWHQWts5Lrvfmz3hcmXxAzayq/kZyfvTL
+ t80V7WcKjxgyuZj5ugSBLPDX8wbqYgBuRd9/zNU=
+X-Google-Smtp-Source: AGHT+IEAVWFCGSlUlfvnHl04fdsNYY9p3Pxwjcg6gEf3mmo/ZxrcscWc0arY2CGUz8+0cPJAC6HUfQ==
+X-Received: by 2002:a17:90b:230a:b0:27d:4129:ecd9 with SMTP id
+ mt10-20020a17090b230a00b0027d4129ecd9mr180202pjb.26.1697659017141; 
+ Wed, 18 Oct 2023 12:56:57 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com ([177.45.186.249])
  by smtp.gmail.com with ESMTPSA id
- ku12-20020a17090b218c00b00268b439a0cbsm256359pjb.23.2023.10.18.12.56.51
+ ku12-20020a17090b218c00b00268b439a0cbsm256359pjb.23.2023.10.18.12.56.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 12:56:53 -0700 (PDT)
+ Wed, 18 Oct 2023 12:56:56 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 3/6] target/riscv/tcg: add tcg_cpu_finalize_features()
-Date: Wed, 18 Oct 2023 16:56:35 -0300
-Message-ID: <20231018195638.211151-4-dbarboza@ventanamicro.com>
+Subject: [PATCH v3 4/6] target/riscv: handle custom props in
+ qmp_query_cpu_model_expansion
+Date: Wed, 18 Oct 2023 16:56:36 -0300
+Message-ID: <20231018195638.211151-5-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018195638.211151-1-dbarboza@ventanamicro.com>
 References: <20231018195638.211151-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,189 +94,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The query-cpu-model-expansion API is capable of passing extra properties
-to a given CPU model and tell callers if this custom configuration is
-valid.
+Callers can add 'props' when querying for a cpu model expansion to see
+if a given CPU model supports a certain criteria, and what's the
+resulting CPU object.
 
-The RISC-V version of the API is not quite there yet. The reason is the
-realize() flow in the TCG driver, where most of the validation is done
-in tcg_cpu_realizefn(). riscv_cpu_finalize_features() is then used to
-validate satp_mode for both TCG and KVM CPUs.
+If we have 'props' to handle, gather it in a QDict and use the new
+riscv_cpuobj_validate_qdict_in() helper to validate it. This helper will
+add the custom properties in the CPU object and validate it using
+riscv_cpu_finalize_features(). Users will be aware of validation errors
+if any occur, if not a CPU object with 'props' will be returned.
 
-Our ARM friends uses a concept of 'finalize_features()', a step done in
-the end of realize() where the CPU features are validated. We have a
-riscv_cpu_finalize_features() helper that, at this moment, is only
-validating satp_mode.
+Here's an example with the veyron-v1 vendor CPU. Disabling vendor CPU
+extensions is allowed, assuming the final config is valid. Disabling
+'smstateen' is a valid expansion:
 
-Re-use this existing helper to do all CPU extension validation we
-required after at the end of realize(). Make it public to allow APIs to
-use it. At this moment only the TCG driver requires a realize() time
-validation, thus, to avoid adding accelerator specific helpers in the
-API, riscv_cpu_finalize_features() uses
-riscv_tcg_cpu_finalize_features() if we are running TCG. The API will
-then use riscv_cpu_finalize_features() regardless of the current
-accelerator.
+(QEMU) query-cpu-model-expansion type=full model={"name":"veyron-v1","props":{"smstateen":false}}
+{"return": {"model": {"name": "veyron-v1", "props": {"zicond": false, ..., "smstateen": false, ...}
+
+But enabling extensions isn't allowed for vendor CPUs. E.g. enabling 'V'
+for the veyron-v1 CPU isn't allowed:
+
+(QEMU) query-cpu-model-expansion type=full model={"name":"veyron-v1","props":{"v":true}}
+{"error": {"class": "GenericError", "desc": "'veyron-v1' CPU does not allow enabling extensions"}}
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c         | 18 +++++++++--
- target/riscv/cpu.h         |  1 +
- target/riscv/tcg/tcg-cpu.c | 63 +++++++++++++++++++++-----------------
- target/riscv/tcg/tcg-cpu.h |  1 +
- 4 files changed, 53 insertions(+), 30 deletions(-)
+ target/riscv/riscv-qmp-cmds.c | 65 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 2f98ce56e0..02db0834dd 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -34,6 +34,7 @@
- #include "sysemu/kvm.h"
- #include "sysemu/tcg.h"
- #include "kvm/kvm_riscv.h"
-+#include "tcg/tcg-cpu.h"
- #include "tcg/tcg.h"
- 
- /* RISC-V CPU definitions */
-@@ -998,11 +999,24 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
+index 2170562e3a..5b2d186c83 100644
+--- a/target/riscv/riscv-qmp-cmds.c
++++ b/target/riscv/riscv-qmp-cmds.c
+@@ -27,6 +27,9 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-machine-target.h"
+ #include "qapi/qmp/qdict.h"
++#include "qapi/qmp/qerror.h"
++#include "qapi/qobject-input-visitor.h"
++#include "qapi/visitor.h"
+ #include "qom/qom-qobject.h"
+ #include "cpu-qom.h"
+ #include "cpu.h"
+@@ -83,14 +86,58 @@ static void riscv_obj_add_multiext_props(Object *obj, QDict *qdict_out,
+     }
  }
- #endif
  
--static void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-+void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
- {
--#ifndef CONFIG_USER_ONLY
-     Error *local_err = NULL;
- 
-+    /*
-+     * KVM accel does not have a specialized finalize()
-+     * callback because its extensions are validated
-+     * in the get()/set() callbacks of each property.
-+     */
-+    if (tcg_enabled()) {
-+        riscv_tcg_cpu_finalize_features(cpu, &local_err);
-+        if (local_err != NULL) {
-+            error_propagate(errp, local_err);
-+            return;
++static void riscv_cpuobj_validate_qdict_in(Object *obj, QObject *props,
++                                           const QDict *qdict_in,
++                                           Error **errp)
++{
++    const QDictEntry *qe;
++    Visitor *visitor;
++    Error *local_err = NULL;
++
++    visitor = qobject_input_visitor_new(props);
++    if (!visit_start_struct(visitor, NULL, NULL, 0, &local_err)) {
++        goto err;
++    }
++
++    for (qe = qdict_first(qdict_in); qe; qe = qdict_next(qdict_in, qe)) {
++        object_property_find_err(obj, qe->key, &local_err);
++        if (local_err) {
++            goto err;
++        }
++
++        object_property_set(obj, qe->key, visitor, &local_err);
++        if (local_err) {
++            goto err;
 +        }
 +    }
 +
-+#ifndef CONFIG_USER_ONLY
-     riscv_cpu_satp_mode_finalize(cpu, &local_err);
-     if (local_err != NULL) {
-         error_propagate(errp, local_err);
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 7f61e17202..8c9ec59d82 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -756,6 +756,7 @@ typedef struct isa_ext_data {
- extern const RISCVIsaExtData isa_edata_arr[];
- char *riscv_cpu_get_name(RISCVCPU *cpu);
- 
-+void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
- void riscv_add_satp_mode_properties(Object *obj);
- 
- /* CSR function table */
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index bbce254ee1..21a46f2a0e 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -548,6 +548,39 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-     riscv_cpu_disable_priv_spec_isa_exts(cpu);
- }
- 
-+void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-+{
-+    CPURISCVState *env = &cpu->env;
-+    Error *local_err = NULL;
-+
-+    riscv_cpu_validate_priv_spec(cpu, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
++    visit_check_struct(visitor, &local_err);
++    if (local_err) {
++        goto err;
 +    }
 +
-+    riscv_cpu_validate_misa_priv(env, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
++    riscv_cpu_finalize_features(RISCV_CPU(obj), &local_err);
++    if (local_err) {
++        goto err;
 +    }
 +
-+    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
-+        /*
-+         * Enhanced PMP should only be available
-+         * on harts with PMP support
-+         */
-+        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
-+        return;
-+    }
++    visit_end_struct(visitor, NULL);
 +
-+    riscv_cpu_validate_set_extensions(cpu, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
-+    }
++err:
++    error_propagate(errp, local_err);
++    visit_free(visitor);
 +}
 +
- static bool riscv_cpu_is_generic(Object *cpu_obj)
+ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+                                                      CpuModelInfo *model,
+                                                      Error **errp)
  {
-     return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
-@@ -563,7 +596,6 @@ static bool riscv_cpu_is_generic(Object *cpu_obj)
- static bool tcg_cpu_realize(CPUState *cs, Error **errp)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
--    CPURISCVState *env = &cpu->env;
-     Error *local_err = NULL;
+     CpuModelExpansionInfo *expansion_info;
++    const QDict *qdict_in = NULL;
+     QDict *qdict_out;
+     ObjectClass *oc;
+     Object *obj;
++    Error *local_err = NULL;
  
-     if (object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST)) {
-@@ -579,34 +611,9 @@ static bool tcg_cpu_realize(CPUState *cs, Error **errp)
-         return false;
+     if (type != CPU_MODEL_EXPANSION_TYPE_FULL) {
+         error_setg(errp, "The requested expansion type is not supported");
+@@ -104,8 +151,26 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+         return NULL;
      }
  
--    riscv_cpu_validate_priv_spec(cpu, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return false;
--    }
--
--    riscv_cpu_validate_misa_priv(env, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return false;
--    }
--
--    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
--        /*
--         * Enhanced PMP should only be available
--         * on harts with PMP support
--         */
--        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
--        return false;
--    }
--
--    riscv_cpu_validate_set_extensions(cpu, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return false;
--    }
--
- #ifndef CONFIG_USER_ONLY
-+    CPURISCVState *env = &cpu->env;
++    if (model->props) {
++        qdict_in = qobject_to(QDict, model->props);
++        if (!qdict_in) {
++            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, "props", "dict");
++            return NULL;
++        }
++    }
 +
-     CPU(cs)->tcg_cflags |= CF_PCREL;
+     obj = object_new(object_class_get_name(oc));
  
-     if (cpu->cfg.ext_sstc) {
-diff --git a/target/riscv/tcg/tcg-cpu.h b/target/riscv/tcg/tcg-cpu.h
-index 630184759d..aa00fbc253 100644
---- a/target/riscv/tcg/tcg-cpu.h
-+++ b/target/riscv/tcg/tcg-cpu.h
-@@ -23,5 +23,6 @@
- #include "cpu.h"
- 
- void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
-+void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
- 
- #endif
++    if (qdict_in) {
++        riscv_cpuobj_validate_qdict_in(obj, model->props, qdict_in,
++                                       &local_err);
++        if (local_err) {
++            error_propagate(errp, local_err);
++            object_unref(obj);
++            return NULL;
++        }
++    }
++
+     expansion_info = g_new0(CpuModelExpansionInfo, 1);
+     expansion_info->model = g_malloc0(sizeof(*expansion_info->model));
+     expansion_info->model->name = g_strdup(model->name);
 -- 
 2.41.0
 
