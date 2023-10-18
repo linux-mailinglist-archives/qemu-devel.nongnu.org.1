@@ -2,68 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27DB7CE94C
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 684D87CE94D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtDQk-0000U8-Ts; Wed, 18 Oct 2023 16:46:14 -0400
+	id 1qtDQl-0000UY-Kk; Wed, 18 Oct 2023 16:46:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtDQi-0000Ti-HY
+ id 1qtDQi-0000Tq-U0
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:46:12 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtDQg-0002Wh-OR
+ id 1qtDQg-0002Wj-RE
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:46:12 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6b20a48522fso4857115b3a.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 13:46:09 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6b44befac59so85047b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 13:46:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697661968; x=1698266768; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=3nPn/hdeMlfSVuN9wtUKnE70a3UoWgeaeda+RCRXZH4=;
- b=cjPtNlZDa2hp6KNwNKaOn0bIEhUJ4X3IZ6duXgDsOijqsnRoLBGt8iTxTfve8x4kpN
- JGQcxoWeTr/Y7Xw0cEAebmHHol1CGxOHMi9IimibPAfh1k5iIYqWdrMriHnNRnAE5Maq
- 3t+ePi2I0/cgD1xzMQ1B+vjO3K+JGyyehEosgMhzX91IgH8tdJW7WB7hM50Yahv8AdPk
- wGvUdYgbh0XlmdIjZNiphiaWFV6qMoycgk2MKHJ+4lVk6UHkWRsfkz0ASz3UAB8f3MBD
- wQrY1eM8TqIV/ZN9XLZGvX+k38ivJEMrvqUGfea/ZLtSzLikuvfFiZkphz+gDaIgWKwe
- PpPQ==
+ d=linaro.org; s=google; t=1697661969; x=1698266769; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=J3OQEiXHHMGRWFPueeKCKBwMI85PiFBLtHqDQ0TceE8=;
+ b=Uu7eLMxJDU35zxqCj6Tyq2QdxeKnWG+MTOU+6Ghf8hJHyvFBi+T5u7fqrDu12gKzGw
+ JPo/JadioTtPZjo+KlA0weziGtkkkaRfm+ZAIXWM/sG1DU9Q5MphSPK8OdFB35WrG7Sb
+ LKJhYNhJe0cWLolbIlQQVW/snLTwPTgVm8RMTydRs0k5JvmhOIFpDwChhMNRMRsi9ulM
+ CZxCAmtilJFrEeRLOMYFcYwdy6/j4zcuKrOoe7sQO9UrnFVt26Uc8LHsqmHgNnB+5Va1
+ fM/taSOuI6CWqdErtWjSU0SJIyiuhtPHQHgzsV+qyEKPraoPuDw1C6oP+pKa/LTdCEEs
+ DQDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697661968; x=1698266768;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3nPn/hdeMlfSVuN9wtUKnE70a3UoWgeaeda+RCRXZH4=;
- b=lZR1r+clCFn4WWksUnCr+UHBfITeAWIT5pm9CdxHs43pnlMNokyTt0tYDrxQNz08i1
- rxEl+l/H0idbTdzKEov59cgEmASg2sCHJyOkvvJZW4iD+cW1AXdf07qwugfTsYHUOZxy
- rYuZ3iBTNOe0b8F3v4jmEH2vWSnHMkKzF/2Z/UZwUaMVDPz/sR/NEbAHqGeZkKVWI2X4
- nJwRaLhGTh3CDU/CN+cd+Vx33m+h8mjOdIpOAXPvdFMkn9aojYhnHuDvdVBdapkPiJhW
- DfhKeot2YvLbS89bbgKxMrqqW8z93HAF5Wv3PsB6mf8CbbzGDzRfY2izHCFN8xhWQJIN
- kZqw==
-X-Gm-Message-State: AOJu0Yy2sN+SUgP/aXvTyaC2znkwa47g16m4wsI6Bi5uMMHRCk39uBSf
- Z7VfcqtMnOulcnsmigQxcLQlXSwt34WdZFq0Qic=
-X-Google-Smtp-Source: AGHT+IEgpJHTkma6T3KtyiSBRn+Q4CCGJVJlI7W9Abwoxsp4PQutMSXvxjJ41vtdbNIuqqBLF+ZvcQ==
-X-Received: by 2002:a05:6a20:9152:b0:173:f8c9:a776 with SMTP id
- x18-20020a056a20915200b00173f8c9a776mr292605pzc.26.1697661968265; 
- Wed, 18 Oct 2023 13:46:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697661969; x=1698266769;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=J3OQEiXHHMGRWFPueeKCKBwMI85PiFBLtHqDQ0TceE8=;
+ b=PrVdrTh6zCkUpB7ZBaTcv2iMCMEBDFCTFzwN72UH5n55a4VnaS0hGho76N0OpldOFM
+ vkEAiSXBnLkKEu8k3SIg2MwD9YQsfvInvyFq+fzKeWCI+49JfNfyn5f/pEU59Ynu6/fA
+ YMkIwkSsFYRGx8O1x+V4v4Pb3Jna4K7xPOeJwi5xxV0dOb7iIZuMYKaMnS46+6WMtbNU
+ EpYwzFXPGx6TexDAZSVnH0IShXPrsSs9ey3FnvOBeViicDh8z27/HOIR7cinUTLFrk+5
+ 8ZkevwcLNuc7rpjIeg6TJIY5isr6TpEWAMdX/iGHYkIA3EWGja9zEpNyLNa5+djBUzBn
+ sHPA==
+X-Gm-Message-State: AOJu0YwmkvzbfXmDMNgKP3CSIf+F+H3HBVZkLGF30cMX57kbZwdeu2In
+ BrvTQgO7co5FTAryo48LGiKA3c2TAUld2mX0UOQ=
+X-Google-Smtp-Source: AGHT+IEj+5RUN3sn2fbTUzKxhNg2XoCiNFcLMYsuOQlUbngno6B5xRzBJmDzhXjqfNN8Ftw4HxAdHQ==
+X-Received: by 2002:a05:6a20:8e0a:b0:14e:2208:d62f with SMTP id
+ y10-20020a056a208e0a00b0014e2208d62fmr575107pzj.22.1697661969038; 
+ Wed, 18 Oct 2023 13:46:09 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k125-20020a632483000000b005742092c211sm2103096pgk.64.2023.10.18.13.46.07
+ k125-20020a632483000000b005742092c211sm2103096pgk.64.2023.10.18.13.46.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 13:46:07 -0700 (PDT)
+ Wed, 18 Oct 2023 13:46:08 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 0/2] tcg: Improve expansion of deposit with constants
-Date: Wed, 18 Oct 2023 13:46:04 -0700
-Message-Id: <20231018204606.1545518-1-richard.henderson@linaro.org>
+Subject: [PATCH 1/2] tcg: Improve expansion of deposit of constant
+Date: Wed, 18 Oct 2023 13:46:05 -0700
+Message-Id: <20231018204606.1545518-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231018204606.1545518-1-richard.henderson@linaro.org>
+References: <20231018204606.1545518-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,27 +89,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The introduction of tcg_gen_deposit_z_* pre-dates the introduction
-of tcg_constant_*.  These days, a reasonably up-to-date translator
-should not need to manually choose between the two deposit functions,
-but instead rely on any zero register to supply tcg_constant*(0)
-as a source operand.
+The extract2 expansion is too difficult for the optimizer to
+simplify.  If we have an immediate input, use and+or instead,
+skipping the and if the field becomes all 1's.
 
-In addition, the hppa front end has some special cases for insertion
-of a constant (depiw instruction), as opposed to the current insertion
-into a constant.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/tcg-op.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-
-r~
-
-
-Richard Henderson (2):
-  tcg: Improve expansion of deposit of constant
-  tcg: Improve expansion of deposit into a constant
-
- tcg/tcg-op.c | 323 ++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 202 insertions(+), 121 deletions(-)
-
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index 393dbcd01c..2ef4b866e2 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -602,6 +602,7 @@ void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
+ {
+     uint32_t mask;
+     TCGv_i32 t1;
++    TCGTemp *ts;
+ 
+     tcg_debug_assert(ofs < 32);
+     tcg_debug_assert(len > 0);
+@@ -617,6 +618,19 @@ void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
+         return;
+     }
+ 
++    /* Deposit of a constant into a value. */
++    ts = tcgv_i32_temp(arg2);
++    if (ts->kind == TEMP_CONST) {
++        uint32_t mask0 = deposit32(-1, ofs, len, 0);
++        uint32_t maski = deposit32(0, ofs, len, ts->val);
++
++        if (mask0 != ~maski) {
++            tcg_gen_andi_i32(ret, arg1, mask0);
++        }
++        tcg_gen_ori_i32(ret, ret, maski);
++        return;
++    }
++
+     t1 = tcg_temp_ebb_new_i32();
+ 
+     if (TCG_TARGET_HAS_extract2_i32) {
+@@ -2217,6 +2231,7 @@ void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
+ {
+     uint64_t mask;
+     TCGv_i64 t1;
++    TCGTemp *ts;
+ 
+     tcg_debug_assert(ofs < 64);
+     tcg_debug_assert(len > 0);
+@@ -2232,6 +2247,19 @@ void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
+         return;
+     }
+ 
++    /* Deposit of a constant into a value. */
++    ts = tcgv_i64_temp(arg2);
++    if (ts->kind == TEMP_CONST) {
++        uint64_t mask0 = deposit64(-1, ofs, len, 0);
++        uint64_t maski = deposit64(0, ofs, len, ts->val);
++
++        if (mask0 != ~maski) {
++            tcg_gen_andi_i64(ret, arg1, mask0);
++        }
++        tcg_gen_ori_i64(ret, ret, maski);
++        return;
++    }
++
+     if (TCG_TARGET_REG_BITS == 32) {
+         if (ofs >= 32) {
+             tcg_gen_deposit_i32(TCGV_HIGH(ret), TCGV_HIGH(arg1),
 -- 
 2.34.1
 
