@@ -2,68 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC877CE341
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 19:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F14CF7CE4C3
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 19:39:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt9te-0003cU-Ks; Wed, 18 Oct 2023 12:59:50 -0400
+	id 1qtAVI-0004QW-9N; Wed, 18 Oct 2023 13:38:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qt9td-0003bV-1C
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:59:49 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qtAVF-0004Q7-HL
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 13:38:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qt9tb-0002l5-GI
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:59:48 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qtAVD-0002Fi-Ra
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 13:38:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697648386;
+ s=mimecast20190719; t=1697650718;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rfmcjfls9ebpsZ+8n47PyHU/NFsmg3nLFcBAEYC8hUQ=;
- b=dVDE2U2ZWX943tteFg9oddd/8NQcTzscsn8Cz87lHZ5jCgR4jOom8kZKZy7+FpA/y6DSU5
- rivxP2+rlep7zia9LDUm/1egl8kRggbNtnQ8yK1FKB4fvmhWoIr8JgaUJzNAbUu/o43kv6
- HgY8tIp1OJ7fh4Ko9Kyvex2BFKDaKaA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-473-zncBTHngM12VRepVlQi1yw-1; Wed, 18 Oct 2023 12:59:41 -0400
-X-MC-Unique: zncBTHngM12VRepVlQi1yw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 538C4857D0C;
- Wed, 18 Oct 2023 16:59:40 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.245])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 884691C060AE;
- Wed, 18 Oct 2023 16:59:38 +0000 (UTC)
-Date: Wed, 18 Oct 2023 18:59:37 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
- eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
- jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
- alexander.ivanov@virtuozzo.com
-Subject: Re: [PATCH v3 5/9] mirror: implement mirror_change method
-Message-ID: <ZTAO+TJuztCHDsUW@redhat.com>
-References: <20231013092143.365296-1-f.ebner@proxmox.com>
- <20231013092143.365296-6-f.ebner@proxmox.com>
+ bh=zkElbI49uRCM6EBauKNVKoQIzC8sICHgysDYlTl7wYY=;
+ b=XhIEoPNN2GfGyp9xrKytA/wICE+CIJrnm1KNLli7gu3KUMjYHOebPZwmqagS7MjIhloUvM
+ oH/734kwVxMKiI3F70XITPPQt/l4zVQB+FS8zYi4x1RAbJR6kSk7gLeemKTyAAGin/1yBD
+ P3rIaDE99bfIlXH0ww0u5tNgxAzXPiY=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-475-iJ63qZXXNoWjO4nZgNq9mQ-1; Wed, 18 Oct 2023 13:38:26 -0400
+X-MC-Unique: iJ63qZXXNoWjO4nZgNq9mQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9bd86510329so516873066b.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 10:38:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697650705; x=1698255505;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zkElbI49uRCM6EBauKNVKoQIzC8sICHgysDYlTl7wYY=;
+ b=N6sDXOI0zsmnxGWM+cxXuoMMemRUFD92/ZLtk5GW2TDmNM7xP4QBksA495eLd5fny2
+ qbWpWhGTy/2P2fa+jLqgao3eo121kR28fjrBYqjelRaXghoH6xjKAIPdTl2RfxTnkVvt
+ dmgWXfcn56FmiwHjLpE4aH1/2T+ca3vzpMAO03VlCgfhpvqHBxuBWVfXqEC4zeuMDvA8
+ YpDLBQbrQyZLJzQriQfZ5lkw7+IFK47GoIRGXWIX7E7oIn5MKvDO+h2Rzl/ZHjSdHrpw
+ NVTGdzMPcw0+BmLmWhydsyD1mvThaHijOVRrcBvnwHn6HtYTJmczBzUMt/Mg3pOc7c5q
+ a4Ow==
+X-Gm-Message-State: AOJu0Yx+Udp7I6F8+jeRbrSVqxtSq+RVx/rf17b0UJVrR/SJhK0/0Ji0
+ xZYaz5WDtyGdo4BtKDZHE+s0psCgiwXPEBATnDiGodaGJqQ1m78eG4J8f4OCNrxJk1B5Je158Sn
+ yM5fXGtmPpHuzvjUZ6VQTZ3Ob2yIpn8M=
+X-Received: by 2002:a17:907:26c1:b0:9bd:d7bd:1a52 with SMTP id
+ bp1-20020a17090726c100b009bdd7bd1a52mr4640408ejc.20.1697650705179; 
+ Wed, 18 Oct 2023 10:38:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFByRpOrqkK2sdvQdXcsFIX6nsCeGrVHd7aWTCxUMe9DTcv7akgRa9twOWXJL+GykTq9vDISANf2+W5/r6sggo=
+X-Received: by 2002:a17:907:26c1:b0:9bd:d7bd:1a52 with SMTP id
+ bp1-20020a17090726c100b009bdd7bd1a52mr4640390ejc.20.1697650704762; Wed, 18
+ Oct 2023 10:38:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231013092143.365296-6-f.ebner@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+References: <20230912120650.371781-1-anisinha@redhat.com>
+ <20231018080451-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231018080451-mutt-send-email-mst@kernel.org>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Wed, 18 Oct 2023 23:08:11 +0530
+Message-ID: <CAK3XEhP-AHh0P12O8=Guia4nVPx1DZjXekYUgoDQ4RKcM4cAfQ@mail.gmail.com>
+Subject: Re: [PATCH] cpu/cpuid: check CPUID_PAE to determine 36 bit processor
+ address space
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="00000000000035e2ff0608011b2c"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,113 +97,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 13.10.2023 um 11:21 hat Fiona Ebner geschrieben:
-> which allows switching the @copy-mode from 'background' to
-> 'write-blocking'.
-> 
-> This is useful for management applications, so they can start out in
-> background mode to avoid limiting guest write speed and switch to
-> active mode when certain criteria are fulfilled.
-> 
-> In presence of an iothread, the copy_mode member is now shared between
-> the iothread and the main thread, so turn accesses to it atomic.
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> ---
-> 
-> Changes in v3:
->     * turn accesses to copy_mode atomic and...
->     * ...slightly adapt error handling in mirror_change as a
->       consequence
+--00000000000035e2ff0608011b2c
+Content-Type: text/plain; charset="UTF-8"
 
-It would be good to have a comment at the field declaration that it's
-meant to be accessed with atomics.
+On Wed, 18 Oct, 2023, 5:35 pm Michael S. Tsirkin, <mst@redhat.com> wrote:
 
-As we don't have further synchonisation, is the idea that during the
-switchover it basically doesn't matter if we read the old or the new
-value?
+> On Tue, Sep 12, 2023 at 05:36:50PM +0530, Ani Sinha wrote:
+> > PAE mode in x86 supports 36 bit address space. Check the PAE CPUID on the
+> > guest processor and set phys_bits to 36 if PAE feature is set. This is in
+> > addition to checking the presence of PSE36 CPUID feature for setting 36
+> bit
+> > phys_bits.
+> >
+> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+>
+> who's applying this?
+>
 
-After reading the whole patch, it seems that the field is only ever
-written under the BQL, while iothreads only read it, and only once per
-request (after the previous patch). This is why no further
-synchonisation is needed. If other threads could write it, too,
-mirror_change() would probably have to be more careful. As the code
-depends on this, adding that to the comment would be useful, too.
+I thought it would be you? What did I miss?
 
->  block/mirror.c       | 33 ++++++++++++++++++++++++++++++---
->  qapi/block-core.json | 13 ++++++++++++-
->  2 files changed, 42 insertions(+), 4 deletions(-)
-> 
-> diff --git a/block/mirror.c b/block/mirror.c
-> index 8992c09172..889cce5414 100644
-> --- a/block/mirror.c
-> +++ b/block/mirror.c
-> @@ -1075,7 +1075,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
->                   */
->                  job_transition_to_ready(&s->common.job);
->              }
-> -            if (s->copy_mode != MIRROR_COPY_MODE_BACKGROUND) {
-> +            if (qatomic_read(&s->copy_mode) != MIRROR_COPY_MODE_BACKGROUND) {
->                  s->actively_synced = true;
->              }
 
-What resets s->actively_synced when we switch away from active mode?
+> > ---
+> >  target/i386/cpu.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > Note: Not sure what tests I should be running in order to make sure I am
+> > not breaking any guest OSes. Usual qtests pass.
+> >
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index 24ee67b42d..f3a5c99117 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -7375,7 +7375,7 @@ static void x86_cpu_realizefn(DeviceState *dev,
+> Error **errp)
+> >              return;
+> >          }
+> >
+> > -        if (env->features[FEAT_1_EDX] & CPUID_PSE36) {
+> > +        if (env->features[FEAT_1_EDX] & (CPUID_PSE36 | CPUID_PAE)) {
+> >              cpu->phys_bits = 36;
+> >          } else {
+> >              cpu->phys_bits = 32;
+> > --
+> > 2.39.1
+>
+>
 
->  
-> @@ -1246,6 +1246,32 @@ static bool commit_active_cancel(Job *job, bool force)
->      return force || !job_is_ready(job);
->  }
->  
-> +static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
-> +                          Error **errp)
-> +{
-> +    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
-> +    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
-> +    MirrorCopyMode current;
+--00000000000035e2ff0608011b2c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is GLOBAL_STATE_CODE(), right? Let's be explicit about it.
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Wed, 18 Oct, 2023, 5:35 pm Michael S. Tsirkin, &lt;=
+<a href=3D"mailto:mst@redhat.com">mst@redhat.com</a>&gt; wrote:<br></div><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px =
+#ccc solid;padding-left:1ex">On Tue, Sep 12, 2023 at 05:36:50PM +0530, Ani =
+Sinha wrote:<br>
+&gt; PAE mode in x86 supports 36 bit address space. Check the PAE CPUID on =
+the<br>
+&gt; guest processor and set phys_bits to 36 if PAE feature is set. This is=
+ in<br>
+&gt; addition to checking the presence of PSE36 CPUID feature for setting 3=
+6 bit<br>
+&gt; phys_bits.<br>
+&gt; <br>
+&gt; Signed-off-by: Ani Sinha &lt;<a href=3D"mailto:anisinha@redhat.com" ta=
+rget=3D"_blank" rel=3D"noreferrer">anisinha@redhat.com</a>&gt;<br>
+<br>
+Acked-by: Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com" target=
+=3D"_blank" rel=3D"noreferrer">mst@redhat.com</a>&gt;<br>
+<br>
+who&#39;s applying this?<br></blockquote></div></div><div dir=3D"auto"><br>=
+</div><div dir=3D"auto">I thought it would be you? What did I miss?</div><d=
+iv dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex">
+<br>
+&gt; ---<br>
+&gt;=C2=A0 target/i386/cpu.c | 2 +-<br>
+&gt;=C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)<br>
+&gt; <br>
+&gt; Note: Not sure what tests I should be running in order to make sure I =
+am<br>
+&gt; not breaking any guest OSes. Usual qtests pass.<br>
+&gt; <br>
+&gt; diff --git a/target/i386/cpu.c b/target/i386/cpu.c<br>
+&gt; index 24ee67b42d..f3a5c99117 100644<br>
+&gt; --- a/target/i386/cpu.c<br>
+&gt; +++ b/target/i386/cpu.c<br>
+&gt; @@ -7375,7 +7375,7 @@ static void x86_cpu_realizefn(DeviceState *dev, =
+Error **errp)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (env-&gt;features[FEAT_1_EDX] &amp; CP=
+UID_PSE36) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (env-&gt;features[FEAT_1_EDX] &amp; (C=
+PUID_PSE36 | CPUID_PAE)) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cpu-&gt;phys_bits =3D =
+36;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cpu-&gt;phys_bits =3D =
+32;<br>
+&gt; -- <br>
+&gt; 2.39.1<br>
+<br>
+</blockquote></div></div></div>
 
-> +
-> +    if (qatomic_read(&s->copy_mode) == change_opts->copy_mode) {
-> +        return;
-> +    }
-> +
-> +    if (change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING) {
-> +        error_setg(errp, "Change to copy mode '%s' is not implemented",
-> +                   MirrorCopyMode_str(change_opts->copy_mode));
-> +        return;
-> +    }
-
-Ah, ok, we don't even allow the switch I was wondering about above. What
-would be needed, apart from removing this check, to make it work?
-
-> +    current = qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND,
-> +                              change_opts->copy_mode);
-> +    if (current != MIRROR_COPY_MODE_BACKGROUND) {
-> +        error_setg(errp, "Expected current copy mode '%s', got '%s'",
-> +                   MirrorCopyMode_str(MIRROR_COPY_MODE_BACKGROUND),
-> +                   MirrorCopyMode_str(current));
-> +    }
-
-The error path is strange. We return an error, but the new mode is still
-set. On the other hand, this is probably also the old mode unless
-someone added a new value to the enum, so it didn't actually change. And
-because this function is the only place that changes copy_mode and we're
-holding the BQL, the case can't even happen and this could be an
-assertion.
-
-> +}
-> +
->  static const BlockJobDriver mirror_job_driver = {
->      .job_driver = {
->          .instance_size          = sizeof(MirrorBlockJob),
-> @@ -1260,6 +1286,7 @@ static const BlockJobDriver mirror_job_driver = {
->          .cancel                 = mirror_cancel,
->      },
->      .drained_poll           = mirror_drained_poll,
-> +    .change                 = mirror_change,
->  };
-
-Kevin
+--00000000000035e2ff0608011b2c--
 
 
