@@ -2,57 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4FE7CE93E
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10ACF7CE946
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:43:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtDLg-0007DO-DG; Wed, 18 Oct 2023 16:41:00 -0400
+	id 1qtDNm-0004u9-Ny; Wed, 18 Oct 2023 16:43:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLd-0007Bt-9Z
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:57 -0400
-Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qtDNN-0004XH-EA; Wed, 18 Oct 2023 16:42:48 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLb-000120-8b
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:57 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id 075E3B82371;
- Wed, 18 Oct 2023 20:40:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9C0C433C8;
- Wed, 18 Oct 2023 20:40:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1697661653;
- bh=xUiub3Sw3ZwDDeISNuMoM/nkTfKAh5F9xvHO+JTSKWA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=RqrvPLAqwNvq0L9P0BzPsvjbAiRguZhPEWNv8TYPtRFXjDchAhtXLUcvAOrH4f0u0
- GQKxNkYp5Z0hXQcu4/G2uqv+jxtLsiNROs9Pzjl6+nXgtG03OTn49MaOsQRJ/rJXMP
- 8zHkmlYtyV05QtqJDWnH07cdt/voOCa9ADFontA+2Iab81TkjJiaBGJPqmGzWueoLV
- 8wuzLk2e++Fs2AKBmrRuM36bSuGB+bJkbGy3nZW9fwt8p8IlfMjLF5HogiwzaBY5U+
- tH9WwOEOgxGvUBd5NupymgiQadrjk7U6j12jno2HEEHNUv9H1ZM+xahAHFHTzROiOA
- 1yyROtZ2YkTEg==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 11/11] hw/hppa: Add new HP C3700 machine
-Date: Wed, 18 Oct 2023 22:40:30 +0200
-Message-ID: <20231018204030.391572-12-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231018204030.391572-1-deller@kernel.org>
-References: <20231018204030.391572-1-deller@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4601:e00::1;
- envelope-from=deller@kernel.org; helo=ams.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qtDNK-0001C3-QM; Wed, 18 Oct 2023 16:42:45 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id CAC9A756062;
+ Wed, 18 Oct 2023 22:42:38 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 93B7D74705E; Wed, 18 Oct 2023 22:42:38 +0200 (CEST)
+Message-Id: <cover.1697661160.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v5 0/4] Add emulation of AmigaOne XE board
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Date: Wed, 18 Oct 2023 22:42:38 +0200 (CEST)
+X-Spam-Probability: 8%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,165 +55,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+Changes in v5:
+- Fixed avocado test
 
-Add code to create an emulated C3700 machine.
-It includes the following components:
-- HP Powerbar SP2 Diva BMC card (serial port only)
-- PCI 4x serial card (for serial ports #1-#4)
-- USB OHCI controller with USB keyboard and USB mouse
+Changes in v4:
+- Found typo in comment in patch 1 so ended up rewording it again
+trying to make it more concise. Also take the idea of using
+range_covers_byte from Mark's patch
+- Added RFC patch for avocado test (untested, I don't have Avocado)
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- hw/hppa/machine.c | 101 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 101 insertions(+)
+Changes in v3:
+- Update values, comment and commit message in patch 1 again
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 2bd02508a9..67d4d1b5e0 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -22,8 +22,10 @@
- #include "hw/input/lasips2.h"
- #include "hw/net/lasi_82596.h"
- #include "hw/nmi.h"
-+#include "hw/usb.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_device.h"
-+#include "hw/pci-host/astro.h"
- #include "hw/pci-host/dino.h"
- #include "hw/misc/lasi.h"
- #include "hppa_hardware.h"
-@@ -300,6 +302,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus)
-     const char *initrd_filename = machine->initrd_filename;
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-     DeviceState *dev;
-+    PCIDevice *pci_dev;
-     char *firmware_filename;
-     uint64_t firmware_low, firmware_high;
-     long size;
-@@ -336,6 +339,36 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus)
-         }
-     }
- 
-+    /* BMC board: HP Powerbar SP2 Diva (with console only) */
-+    pci_dev = pci_new(-1, "pci-serial");
-+    if (!lasi_dev) {
-+        /* bind default keyboard/serial to Diva card */
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev", serial_hd(0));
-+    }
-+    qdev_prop_set_uint8(DEVICE(pci_dev), "prog_if", 0);
-+    pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
-+    pci_config_set_vendor_id(pci_dev->config, PCI_VENDOR_ID_HP);
-+    pci_config_set_device_id(pci_dev->config, 0x1048);
-+    pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_VENDOR_ID], PCI_VENDOR_ID_HP);
-+    pci_set_word(&pci_dev->config[PCI_SUBSYSTEM_ID], 0x1227); /* Powerbar */
-+
-+    /* create a second serial PCI card when running Astro */
-+    if (!lasi_dev) {
-+        pci_dev = pci_new(-1, "pci-serial-4x");
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev1", serial_hd(1));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev2", serial_hd(2));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev3", serial_hd(3));
-+        qdev_prop_set_chr(DEVICE(pci_dev), "chardev4", serial_hd(4));
-+        pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
-+    }
-+
-+    /* create USB OHCI controller for USB keyboard & mouse on Astro machines */
-+    if (!lasi_dev && machine->enable_graphics) {
-+        pci_create_simple(pci_bus, -1, "pci-ohci");
-+        usb_create_simple(usb_bus_find(-1), "usb-kbd");
-+        usb_create_simple(usb_bus_find(-1), "usb-mouse");
-+    }
-+
-     /* register power switch emulation */
-     qemu_register_powerdown_notifier(&hppa_system_powerdown_notifier);
- 
-@@ -520,6 +553,42 @@ static void machine_HP_B160L_init(MachineState *machine)
-     machine_HP_common_init_tail(machine, pci_bus);
- }
- 
-+static AstroState *astro_init(void)
-+{
-+    DeviceState *dev;
-+
-+    dev = qdev_new(TYPE_ASTRO_CHIP);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    return ASTRO_CHIP(dev);
-+}
-+
-+/*
-+ * Create HP C3700 workstation
-+ */
-+static void machine_HP_C3700_init(MachineState *machine)
-+{
-+    PCIBus *pci_bus;
-+    AstroState *astro;
-+    DeviceState *astro_dev;
-+    MemoryRegion *addr_space = get_system_memory();
-+
-+    /* Create CPUs and RAM.  */
-+    machine_HP_common_init_cpus(machine);
-+
-+    /* Init Astro and the Elroys (PCI host bus chips).  */
-+    astro = astro_init();
-+    astro_dev = DEVICE(astro);
-+    memory_region_add_subregion(addr_space, ASTRO_HPA,
-+                                sysbus_mmio_get_region(
-+                                    SYS_BUS_DEVICE(astro_dev), 0));
-+    pci_bus = PCI_BUS(qdev_get_child_bus(DEVICE(astro->elroy[0]), "pci"));
-+    assert(pci_bus);
-+
-+    /* Add SCSI discs, NICs, graphics & load firmware */
-+    machine_HP_common_init_tail(machine, pci_bus);
-+}
-+
- static void hppa_machine_reset(MachineState *ms, ShutdownCause reason)
- {
-     unsigned int smp_cpus = ms->smp.cpus;
-@@ -599,9 +668,41 @@ static const TypeInfo HP_B160L_machine_init_typeinfo = {
-     },
- };
- 
-+static void HP_C3700_machine_init_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    NMIClass *nc = NMI_CLASS(oc);
-+
-+    mc->desc = "HP C3700 workstation";
-+    mc->default_cpu_type = TYPE_HPPA_CPU;
-+    mc->init = machine_HP_C3700_init;
-+    mc->reset = hppa_machine_reset;
-+    mc->block_default_type = IF_SCSI;
-+    mc->max_cpus = HPPA_MAX_CPUS;
-+    mc->default_cpus = 1;
-+    mc->is_default = false;
-+    mc->default_ram_size = 1024 * MiB;
-+    mc->default_boot_order = "cd";
-+    mc->default_ram_id = "ram";
-+    mc->default_nic = "tulip";
-+
-+    nc->nmi_monitor_handler = hppa_nmi;
-+}
-+
-+static const TypeInfo HP_C3700_machine_init_typeinfo = {
-+    .name = MACHINE_TYPE_NAME("C3700"),
-+    .parent = TYPE_MACHINE,
-+    .class_init = HP_C3700_machine_init_class_init,
-+    .interfaces = (InterfaceInfo[]) {
-+        { TYPE_NMI },
-+        { }
-+    },
-+};
-+
- static void hppa_machine_init_register_types(void)
- {
-     type_register_static(&HP_B160L_machine_init_typeinfo);
-+    type_register_static(&HP_C3700_machine_init_typeinfo);
- }
- 
- type_init(hppa_machine_init_register_types)
+Changes in v2:
+- Update comment and commit message in patch 1 (Mark)
+- Fix irq mapping in patch 2 (Volker)
+
+Regards,
+BALATON Zoltan
+
+BALATON Zoltan (4):
+  via-ide: Fix legacy mode emulation
+  hw/pci-host: Add emulation of Mai Logic Articia S
+  hw/ppc: Add emulation of AmigaOne XE board
+  tests/avocado: Add test for amigaone board
+
+ MAINTAINERS                             |   8 +
+ configs/devices/ppc-softmmu/default.mak |   1 +
+ hw/ide/via.c                            |  43 +++-
+ hw/pci-host/Kconfig                     |   5 +
+ hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
+ hw/pci-host/meson.build                 |   2 +
+ hw/ppc/Kconfig                          |   7 +
+ hw/ppc/amigaone.c                       | 164 +++++++++++++
+ hw/ppc/meson.build                      |   2 +
+ include/hw/pci-host/articia.h           |  17 ++
+ tests/avocado/ppc_amiga.py              |  38 +++
+ 11 files changed, 575 insertions(+), 5 deletions(-)
+ create mode 100644 hw/pci-host/articia.c
+ create mode 100644 hw/ppc/amigaone.c
+ create mode 100644 include/hw/pci-host/articia.h
+ create mode 100644 tests/avocado/ppc_amiga.py
+
 -- 
-2.41.0
+2.30.9
 
 
