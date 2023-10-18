@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6BC7CD6B2
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFD17CD6B1
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:35:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1us-0001j0-Sn; Wed, 18 Oct 2023 04:28:34 -0400
+	id 1qt1vA-0001vV-JF; Wed, 18 Oct 2023 04:28:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1uq-0001hz-Oz
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:32 -0400
+ id 1qt1v1-0001ta-Uy
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1uo-0003fK-Nu
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:32 -0400
+ id 1qt1v0-0003h5-FV
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697617710;
+ s=mimecast20190719; t=1697617722;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ci9nsDPUBmPgirpk9Ch50MqJqivmpk1eKdp5QoVu9I4=;
- b=TkfDfca0C8OivJABF4TLCHtwJQfOt6ELvANRqCildSg204j+6at4wIdhcbrilpxBm/RNjU
- EOLsZWwTRoY5P3lU34QrwCa5no8efWdmhfNc23L2eD4aOMRjAqbxsk6jzVWEg0j9U0pKN8
- uNL6Sfp0WGDcO0h8mP6E5I/ymXAkdig=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Jt5quYMWBBvksWop+adbyL29xvQPeeLJ8DpSrfg08L4=;
+ b=A1npGn3neGKINlP5y/TA5gm8C5EwqX13B/EVATC6JopHXVYThr0gbANS53DYgo+t3Wodg3
+ BLeDWY19Naw192aa8trIyN9SqbKIxKUtK/lXio46PfZPWVXXj9xo8y5crARkthawWi9Ar6
+ gzy5yroviARaVMjkZiftgv4U7LC609o=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-iwJA5iYdPpqQrTSRwFACLg-1; Wed, 18 Oct 2023 04:28:28 -0400
-X-MC-Unique: iwJA5iYdPpqQrTSRwFACLg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9c15543088aso375996166b.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:28 -0700 (PDT)
+ us-mta-460-1PMZa2ZjOPi45aWuifbcEw-1; Wed, 18 Oct 2023 04:28:30 -0400
+X-MC-Unique: 1PMZa2ZjOPi45aWuifbcEw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9b95fa56bd5so482926866b.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697617707; x=1698222507;
+ d=1e100.net; s=20230601; t=1697617709; x=1698222509;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ci9nsDPUBmPgirpk9Ch50MqJqivmpk1eKdp5QoVu9I4=;
- b=QqkolZL5A7uxhxOQSoRiYlD4CnS3uhgeeySC3CgEI5oEihd0/kQ2TLaVmbK6lk1wYN
- N8w/JbQ1KftDE/u7cg99gx7kJc1/0fhvPmPkKBG7crfr1BUIC/9gpgzGIsyh+Drwl5pH
- rXrRKaCPbnVyXj+jq8+hCPiGNeKfhFm6b92rEQOo4+vHNJ66SdGWml1UHTSQWXj1ou72
- jVodTuotRZ+atFSRrilVbA6m1HXKLIMgzYF0nUMF9jIWPEE9mqDklXAd9dUMu9ZSMScm
- jICsl9Zy8X6TXMc/qr+VhoU0ZDYuaZwzWoieluwPpH+ERrwkH/FdMDFMwVS2juFeDlZS
- Xf8g==
-X-Gm-Message-State: AOJu0YyFagQcjD9FkTFdFrUmYqiTNWc3e0VJCYV0dEM3CgknJV1OUEHT
- RuByOq/LEZB+sKPaLVlRoiXb7JwKAqA4+61fLz7efJ2t0tmVZp14Ly5iFr0CK3SrYFgCxhXMeIO
- Jr2d0jRzJYMYXbeg60f1lURgjLzkm7k/MOhy4lCB7UBHv3RSJ7PckgMqs31QWWx6PEWVByciGCa
- I=
-X-Received: by 2002:a17:907:9724:b0:9ae:5513:e475 with SMTP id
- jg36-20020a170907972400b009ae5513e475mr4443260ejc.9.1697617706923; 
- Wed, 18 Oct 2023 01:28:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFT+FzaNfapp9aQuNESx8flvtpjYVEFaoGZqGNzYS7X+2RcFpwDi5WBSmXjPdi3Rx2Ae6PmMg==
-X-Received: by 2002:a17:907:9724:b0:9ae:5513:e475 with SMTP id
- jg36-20020a170907972400b009ae5513e475mr4443241ejc.9.1697617706588; 
- Wed, 18 Oct 2023 01:28:26 -0700 (PDT)
+ bh=Jt5quYMWBBvksWop+adbyL29xvQPeeLJ8DpSrfg08L4=;
+ b=o7pBqE1uQ1O1FKizAVuBOIjhfhCNrqKA39b/y/D+PifEUoBDYqHbK8NA0bwOxsuxsN
+ GfDw/UG4z8dBJU74Yjwu3NC4ykZ6wAk/+RXejM2I+AZ38E+rbk6MUjtTzC/ITpzUJI9+
+ uhNIvMZtMlrDHw9vB0SQ4QhZQbPrWyePLw0hNEWvdBIXAdQyqsO22OWKkBub/dsQWTE0
+ Djl9mh9760RIYYX1JxpRk//KKufJMlcaletz2F51bOIRwpRIVlRAVYXE8TwzX1ZhHw2f
+ fNDnV7C32sUZs1toAUbs1LfEGlxj5B5qKbRghvY6bHLBKCUQfpTaMtswVzVwLGIoKTK1
+ 9RSQ==
+X-Gm-Message-State: AOJu0Yw0+0fh0pQBYTMMwiYDZh3olbrTwdmkCSKcU3tJb+Wxzpwem+l4
+ maW0Et4kLtYSQXjWWCdYsa8Cmj6CXne129AFza67TWfrgPyb9Ipe7XQu12EH0cgb1vVe7lk4hEH
+ F+DzDvu+LG+7Ldp+LvqiHmPTlNeuAo5az6WQfC7KI/EKDhvzLse90m58if2fkk6P1rOOhEXUtKo
+ E=
+X-Received: by 2002:a17:906:4fc7:b0:9bf:77ae:3aa9 with SMTP id
+ i7-20020a1709064fc700b009bf77ae3aa9mr3372995ejw.24.1697617708835; 
+ Wed, 18 Oct 2023 01:28:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7AtoMUw3C7lAHwJoSZNdSOYsuP4/g0DITA63o/LU5whGUiVWBxpAVnqwj5xXpVOU/ddcM5w==
+X-Received: by 2002:a17:906:4fc7:b0:9bf:77ae:3aa9 with SMTP id
+ i7-20020a1709064fc700b009bf77ae3aa9mr3372981ejw.24.1697617708432; 
+ Wed, 18 Oct 2023 01:28:28 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- mc8-20020a170906eb4800b009737b8d47b6sm1138613ejb.203.2023.10.18.01.28.25
+ j26-20020a170906255a00b009c503bf61c9sm1162352ejb.165.2023.10.18.01.28.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 01:28:26 -0700 (PDT)
+ Wed, 18 Oct 2023 01:28:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
- Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 17/32] meson, cutils: allow non-relocatable installs
-Date: Wed, 18 Oct 2023 10:27:37 +0200
-Message-ID: <20231018082752.322306-18-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 18/32] configure: clean up handling of CFI option
+Date: Wed, 18 Oct 2023 10:27:38 +0200
+Message-ID: <20231018082752.322306-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018082752.322306-1-pbonzini@redhat.com>
 References: <20231018082752.322306-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -101,156 +101,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Say QEMU is configured with bindir = "/usr/bin" and a firmware path
-that starts with "/usr/share/qemu".  Ever since QEMU 5.2, QEMU's
-install has been relocatable: if you move qemu-system-x86_64 from
-/usr/bin to /home/username/bin, it will start looking for firmware in
-/home/username/share/qemu.  Previously, you would get a non-relocatable
-install where the moved QEMU will keep looking for firmware in
-/usr/share/qemu.
+Avoid that --enable-cfi --disable-cfi leaves b_lto set to true.
 
-Windows almost always wants relocatable installs, and in fact that
-is why QEMU 5.2 introduced relocatability in the first place.
-However, newfangled distribution mechanisms such as AppImage
-(https://docs.appimage.org/reference/best-practices.html), and
-possibly NixOS, also dislike using at runtime the absolute paths
-that were established at build time.
-
-On POSIX systems you almost never care; if you do, your usecase
-dictates which one is desirable, so there's no single answer.
-Obviously relocatability works fine most of the time, because not many
-people have complained about QEMU's switch to relocatable install,
-and that's why until now there was no way to disable relocatability.
-
-But a non-relocatable, non-modular binary can help if you want to do
-experiments with old firmware and new QEMU or vice versa (because you
-can just upgrade/downgrade the firmware package, and use rpm2cpio or
-similar to extract the QEMU binaries outside /usr), so allow both.
-This patch allows one to build a non-relocatable install using a new
-option to configure.  Why?  Because it's not too hard, and because
-it helps the user double check the relocatability of their install.
-
-Note that the same code that handles relocation also lets you run QEMU
-from the build tree and pick e.g. firmware files from the source tree
-transparently.  Therefore that part remains active with this patch,
-even if you configure with --disable-relocatable.
-
-Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                   | 20 ++++++++++++++++++++
- meson_options.txt             |  2 ++
- scripts/meson-buildoptions.sh |  3 +++
- util/cutils.c                 | 11 ++++++++---
- 4 files changed, 33 insertions(+), 3 deletions(-)
+ configure | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 010d2c649c2..1be9f92f7da 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2111,6 +2111,7 @@ config_host_data.set('CONFIG_OPENGL', opengl.found())
- config_host_data.set('CONFIG_PLUGIN', get_option('plugins'))
- config_host_data.set('CONFIG_RBD', rbd.found())
- config_host_data.set('CONFIG_RDMA', rdma.found())
-+config_host_data.set('CONFIG_RELOCATABLE', get_option('relocatable'))
- config_host_data.set('CONFIG_SAFESTACK', get_option('safe_stack'))
- config_host_data.set('CONFIG_SDL', sdl.found())
- config_host_data.set('CONFIG_SDL_IMAGE', sdl_image.found())
-@@ -4054,6 +4055,7 @@ if 'simple' in get_option('trace_backends')
- endif
- summary_info += {'D-Bus display':     dbus_display}
- summary_info += {'QOM debugging':     get_option('qom_cast_debug')}
-+summary_info += {'Relocatable install': get_option('relocatable')}
- summary_info += {'vhost-kernel support': have_vhost_kernel}
- summary_info += {'vhost-net support': have_vhost_net}
- summary_info += {'vhost-user support': have_vhost_user}
-@@ -4356,3 +4358,21 @@ if host_arch == 'unknown' or not supported_oses.contains(targetos)
-   message('If you want to help supporting QEMU on this platform, please')
-   message('contact the developers at qemu-devel@nongnu.org.')
- endif
-+
-+actually_reloc = get_option('relocatable')
-+# check if get_relocated_path() is actually able to relocate paths
-+if get_option('relocatable') and \
-+  not (get_option('prefix') / get_option('bindir')).startswith(get_option('prefix') / '')
-+  message()
-+  warning('bindir not included within prefix, the installation will not be relocatable.')
-+  actually_reloc = false
-+endif
-+if not actually_reloc and (targetos == 'windows' or get_option('relocatable'))
-+  if targetos == 'windows'
-+    message()
-+    warning('Windows installs should usually be relocatable.')
-+  endif
-+  message()
-+  message('QEMU will have to be installed under ' + get_option('prefix') + '.')
-+  message('Use --disable-relocatable to remove this warning.')
-+endif
-diff --git a/meson_options.txt b/meson_options.txt
-index 6a17b909680..e237b268469 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -101,6 +101,8 @@ option('cfi_debug', type: 'boolean', value: false,
-        description: 'Verbose errors in case of CFI violation')
- option('multiprocess', type: 'feature', value: 'auto',
-        description: 'Out of process device emulation support')
-+option('relocatable', type : 'boolean', value : 'true',
-+       description: 'toggle relocatable install')
- option('vfio_user_server', type: 'feature', value: 'disabled',
-        description: 'vfio-user server support')
- option('dbus_display', type: 'feature', value: 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 2a74b0275b3..d4b89e6b443 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -17,6 +17,7 @@ meson_options_help() {
-   printf "%s\n" '                           code for the Hexagon frontend'
-   printf "%s\n" '  --disable-install-blobs  install provided firmware blobs'
-   printf "%s\n" '  --disable-qom-cast-debug cast debugging support'
-+  printf "%s\n" '  --disable-relocatable    toggle relocatable install'
-   printf "%s\n" '  --docdir=VALUE           Base directory for documentation installation'
-   printf "%s\n" '                           (can be empty) [share/doc]'
-   printf "%s\n" '  --enable-block-drv-whitelist-in-tools'
-@@ -421,6 +422,8 @@ _meson_option_parse() {
-     --disable-rbd) printf "%s" -Drbd=disabled ;;
-     --enable-rdma) printf "%s" -Drdma=enabled ;;
-     --disable-rdma) printf "%s" -Drdma=disabled ;;
-+    --enable-relocatable) printf "%s" -Drelocatable=true ;;
-+    --disable-relocatable) printf "%s" -Drelocatable=false ;;
-     --enable-replication) printf "%s" -Dreplication=enabled ;;
-     --disable-replication) printf "%s" -Dreplication=disabled ;;
-     --enable-rng-none) printf "%s" -Drng_none=true ;;
-diff --git a/util/cutils.c b/util/cutils.c
-index c99d26c5e2d..64f817b477b 100644
---- a/util/cutils.c
-+++ b/util/cutils.c
-@@ -1178,9 +1178,11 @@ char *get_relocated_path(const char *dir)
- #else
-         g_string_append(result, dir);
- #endif
--    } else if (!starts_with_prefix(dir) || !starts_with_prefix(bindir)) {
--        g_string_assign(result, dir);
--    } else {
-+        goto out;
-+    }
-+
-+    if (IS_ENABLED(CONFIG_RELOCATABLE) &&
-+        starts_with_prefix(dir) && starts_with_prefix(bindir)) {
-         g_string_assign(result, exec_dir);
+diff --git a/configure b/configure
+index d6103a0141f..9f782054509 100755
+--- a/configure
++++ b/configure
+@@ -625,7 +625,10 @@ meson_option_build_array() {
  
-         /* Advance over common components.  */
-@@ -1203,7 +1205,10 @@ char *get_relocated_path(const char *dir)
-             assert(G_IS_DIR_SEPARATOR(dir[-1]));
-             g_string_append(result, dir - 1);
-         }
-+        goto out;
-     }
- 
-+    g_string_assign(result, dir);
-+out:
-     return g_string_free(result, false);
+ meson_options=
+ meson_option_add() {
+-  meson_options="$meson_options $(quote_sh "$1")"
++  local arg
++  for arg; do
++    meson_options="$meson_options $(quote_sh "$arg")"
++  done
  }
+ meson_option_parse() {
+   meson_options="$meson_options $(_meson_option_parse "$@")"
+@@ -767,11 +770,9 @@ for opt do
+   ;;
+   --disable-werror) werror="no"
+   ;;
+-  --enable-cfi)
+-      cfi="true";
+-      meson_option_add -Db_lto=true
++  --enable-cfi) cfi=true
+   ;;
+-  --disable-cfi) cfi="false"
++  --disable-cfi) cfi=false
+   ;;
+   --disable-download) download="disabled"; git_submodules_action=validate;
+   ;;
+@@ -1845,7 +1846,7 @@ if test "$skip_meson" = no; then
+   test "$werror" = yes && meson_option_add -Dwerror=true
+ 
+   # QEMU options
+-  test "$cfi" != false && meson_option_add "-Dcfi=$cfi"
++  test "$cfi" != false && meson_option_add "-Dcfi=$cfi" "-Db_lto=$cfi"
+   test "$docs" != auto && meson_option_add "-Ddocs=$docs"
+   test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
+   test "$plugins" = yes && meson_option_add "-Dplugins=true"
 -- 
 2.41.0
 
