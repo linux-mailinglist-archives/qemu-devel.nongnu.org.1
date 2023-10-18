@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC407CE205
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE22E7CE210
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:02:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8wd-000121-6W; Wed, 18 Oct 2023 11:58:51 -0400
+	id 1qt8x7-0001gC-RP; Wed, 18 Oct 2023 11:59:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vf-00081g-JY
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vk-00085g-EM
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vd-0007M4-Tg
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:51 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vi-0007MJ-VL
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644669;
+ s=mimecast20190719; t=1697644673;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=07jjqgvNUgYjog87FAd6enRV4Ow+UHErs+Qz1yC1V50=;
- b=DxOAmYkzJri5Lfz/Ebyl74fxZgIgAEK7vEZUWrJQNreKtbHKmn39ZP+NY3cG90Dsx6kQ1B
- kDItxKGdFszrbQZ3of4DHf/fURFyIDbX9fgKqPXRRvW6fyrTbZNTYstFRgmfSd0c0yez+Y
- 3aJNsvLmClKfbMv6m9Ek6HsM5fn2voc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0Znu+ot2If10k79VuPHcVlyjtAkby0fPqJ4/KsGVlXE=;
+ b=HoB9mQTxKNFUwLAICv/MHId/rkmlsXe71JWdI6lCznn75P3eqia/ZZMtFBgWJX3pTBMfIl
+ mkWinUvxkeS66pWaxwnLizEKxUENPz6RyF3NJ6Ehk1n6DvhXXY7FkxQe12dvk9jyOAzHNb
+ K8tyBVhKZclCs7YLqLt/WHZgceIQvBo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-grV7di7IM-q8ae2EY005pg-1; Wed, 18 Oct 2023 11:57:48 -0400
-X-MC-Unique: grV7di7IM-q8ae2EY005pg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-32da87eac93so2477601f8f.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:57:47 -0700 (PDT)
+ us-mta-27-8uggM64XPz2atV_2ISPUwA-1; Wed, 18 Oct 2023 11:57:52 -0400
+X-MC-Unique: 8uggM64XPz2atV_2ISPUwA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4055ce1e8c4so36995575e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:57:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644666; x=1698249466;
+ d=1e100.net; s=20230601; t=1697644670; x=1698249470;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=07jjqgvNUgYjog87FAd6enRV4Ow+UHErs+Qz1yC1V50=;
- b=HwGMPCnrKnFvEQCn63W850g4UeZrnyeTbpoqy/4pRzdCNRJkSakKPun7QqmVhCmJDC
- RCQxmrsMeqaKNiWpgi1mDbBGxmYaYT1SO0Niw1Do7sxKD6wqqjkWl1tYuOhMLyKkGJcQ
- kda1U7sw26eQcfl9bYtExY55ZcwuwfplJnL/f8wsuUKRfcTW4zsqqq9g3XNdsjAIe2jh
- TZHZOH7pdIk1wajSKAskJnTFyu30NjD65eEJ5/DDoPRC0M4oJDaQpEKdwxpQWoz3Dowu
- l0zaPqCfxi71JB0zMuwrWP8qfHGX40fxEuY2BBH+Zn3CYPtKbQOr5xVDGVgy0bFYTKQC
- MpnA==
-X-Gm-Message-State: AOJu0Ywgs/bFz7gyJSh66G1oEeRayFz8SGdrSdBby7qMklXw0FQdwgjn
- WWEQzb/SYcVpJKzCKA00NLFcTnLZXOBSkHKuPfm+BfRLukbLc3iXO5X6OmMau7jQBBwPA/ekyo9
- DJo2zvgGnvpaUwW766BgV9Gw/bTVJ48a+I9q+p1nLR6ZxMlc1coTkSyRQg7oRO+QVW7Tj2TE=
-X-Received: by 2002:a5d:5612:0:b0:32d:82d8:3442 with SMTP id
- l18-20020a5d5612000000b0032d82d83442mr4405783wrv.53.1697644666109; 
- Wed, 18 Oct 2023 08:57:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7RfmysDx3cXp2nj9RS59UMYvfdklpi0Ix7+RStApIQEVhKwRUdduNRCclJTyUDZD2kqlfpQ==
-X-Received: by 2002:a5d:5612:0:b0:32d:82d8:3442 with SMTP id
- l18-20020a5d5612000000b0032d82d83442mr4405768wrv.53.1697644665803; 
- Wed, 18 Oct 2023 08:57:45 -0700 (PDT)
+ bh=0Znu+ot2If10k79VuPHcVlyjtAkby0fPqJ4/KsGVlXE=;
+ b=mXnJXi5ubQL2BZJT3EOeqqUby9XDvimlEPG554/wLwn1hOG8TxZ/3iFiNGAptVUejF
+ kDyDwiueBBkhd7Q2MvMroHgKGPJBUq4v5IKW0kqs2YyPGyfiGbdkEE68YHK2YXhsEBvj
+ 2XZ2F37GbIb8981roqHNZrdiDYrGpbHfQziWVgteI8JT7GFGhy5swXh3XH6DhxDvSZ7Q
+ G0ZGGPllSb3XJj+vNQ0rC6PRDUCsCgqyuNsgwt/2q0l7al4YNi+pV1kndT92naR4QbaV
+ Pye883YtAoceSlPx1bkAtMJ+Gv9bqDII0btO0A0Udq2CnnthUV/LfyegdKLDDNx1eXfj
+ VpOA==
+X-Gm-Message-State: AOJu0YyVB2LU3s4RHS8xZdydTmyzRJVSFxyofw4eAHDzQJZlrr/Gtv0Z
+ KTdf0yYbyv5ztOD0ToR4otQHWvxVDEpXhf1JF26xJM5XZboCTNK2hZVxDmaySGMNLCCmQDOMD1w
+ 5KCmDCs0R3CyIfSwiGnZF1h9Gn1uxSrJohSLdTKjt8rOvQwISRU+ND9glILFvlIMJFTllI2g=
+X-Received: by 2002:a05:6000:23a:b0:319:8c99:989a with SMTP id
+ l26-20020a056000023a00b003198c99989amr5670408wrz.8.1697644670296; 
+ Wed, 18 Oct 2023 08:57:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFzNKBDiLuRbSIta0ccA8G7xXAt6Zd/v2wKe9deqhBteDyNSZORhKYKYVovZRuDg5qyK9hwzg==
+X-Received: by 2002:a05:6000:23a:b0:319:8c99:989a with SMTP id
+ l26-20020a056000023a00b003198c99989amr5670386wrz.8.1697644670021; 
+ Wed, 18 Oct 2023 08:57:50 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- d17-20020a5d4f91000000b0032d72f48555sm2393430wru.36.2023.10.18.08.57.44
+ c12-20020adfe70c000000b0031c6e1ea4c7sm2368769wrm.90.2023.10.18.08.57.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:57:45 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:57:42 -0400
+ Wed, 18 Oct 2023 08:57:49 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:57:46 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 57/83] hw/isa/piix4: Remove unused inbound ISA interrupt lines
-Message-ID: <18b1a595bd0d763856c58a308aaa25bf6e1c2a80.1697644299.git.mst@redhat.com>
+Subject: [PULL 58/83] hw/isa/piix4: Rename "isa" attribute to "isa_irqs_in"
+Message-ID: <9f6357a5404fada0723c324f237293f9395e0020.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,14 +76,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1697644299.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,44 +102,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The Malta board, which is the only user of PIIX4, doesn't connect to the
-exported interrupt lines. PIIX3 doesn't expose such interrupt lines
-either, so remove them for PIIX4 for simplicity and consistency.
+Rename the "isa" attribute to align it with PIIX3 for consolidation.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Message-Id: <20231007123843.127151-17-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20231007123843.127151-16-shentey@gmail.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/isa/piix4.c | 8 --------
- 1 file changed, 8 deletions(-)
+ hw/isa/piix4.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/hw/isa/piix4.c b/hw/isa/piix4.c
-index e0b149f8eb..3c3c7a094c 100644
+index 3c3c7a094c..9c8b6c98ab 100644
 --- a/hw/isa/piix4.c
 +++ b/hw/isa/piix4.c
-@@ -148,12 +148,6 @@ static void piix4_request_i8259_irq(void *opaque, int irq, int level)
-     qemu_set_irq(s->cpu_intr, level);
+@@ -45,7 +45,7 @@
+ struct PIIX4State {
+     PCIDevice dev;
+     qemu_irq cpu_intr;
+-    qemu_irq *isa;
++    qemu_irq *isa_irqs_in;
+ 
+     MC146818RtcState rtc;
+     PCIIDEState ide;
+@@ -75,7 +75,7 @@ static void piix4_set_irq(void *opaque, int irq_num, int level)
+                 pic_level |= pci_bus_get_irq_level(bus, i);
+             }
+         }
+-        qemu_set_irq(s->isa[pic_irq], pic_level);
++        qemu_set_irq(s->isa_irqs_in[pic_irq], pic_level);
+     }
  }
  
--static void piix4_set_i8259_irq(void *opaque, int irq, int level)
--{
--    PIIX4State *s = opaque;
--    qemu_set_irq(s->isa[irq], level);
--}
--
- static void piix4_rcr_write(void *opaque, hwaddr addr, uint64_t val,
-                             unsigned int len)
- {
-@@ -197,8 +191,6 @@ static void piix4_realize(PCIDevice *dev, Error **errp)
+@@ -201,10 +201,10 @@ static void piix4_realize(PCIDevice *dev, Error **errp)
+ 
+     /* initialize i8259 pic */
+     i8259_out_irq = qemu_allocate_irqs(piix4_request_i8259_irq, s, 1);
+-    s->isa = i8259_init(isa_bus, *i8259_out_irq);
++    s->isa_irqs_in = i8259_init(isa_bus, *i8259_out_irq);
+ 
+     /* initialize ISA irqs */
+-    isa_bus_register_input_irqs(isa_bus, s->isa);
++    isa_bus_register_input_irqs(isa_bus, s->isa_irqs_in);
+ 
+     /* initialize pit */
+     i8254_pit_init(isa_bus, 0x40, 0, NULL);
+@@ -236,7 +236,7 @@ static void piix4_realize(PCIDevice *dev, Error **errp)
+     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
          return;
      }
+-    qdev_connect_gpio_out(DEVICE(&s->pm), 0, s->isa[9]);
++    qdev_connect_gpio_out(DEVICE(&s->pm), 0, s->isa_irqs_in[9]);
  
--    qdev_init_gpio_in_named(DEVICE(dev), piix4_set_i8259_irq,
--                            "isa", ISA_NUM_IRQS);
-     qdev_init_gpio_out_named(DEVICE(dev), &s->cpu_intr,
-                              "intr", 1);
- 
+     pci_bus_irqs(pci_bus, piix4_set_irq, s, PIIX_NUM_PIRQS);
+ }
 -- 
 MST
 
