@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815097CE1F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C057CE1E0
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:56:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8tm-0002hU-PY; Wed, 18 Oct 2023 11:55:58 -0400
+	id 1qt8uC-000365-Rs; Wed, 18 Oct 2023 11:56:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8sm-00026u-Kx
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:54:55 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8sp-0002Fy-7c
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:54:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8sj-0006Uj-Gy
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:54:52 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8sl-0006Uy-Di
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:54:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644487;
+ s=mimecast20190719; t=1697644490;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FnWheI9RHYepJZYu2SMx1IQcZHnuNqLDKqzr9JSiyUY=;
- b=Lj/JtRF1p8tPoR8bKiaLvYVwcjx2PNCpZSugz4bJAfO2Sn/bG3Ov9IM0eZzQAMO7tjnxbC
- /Z5xokiS8AlgLWXHhq+hDVGg1o29wCAq1yS0gQ9rC5tRovKYYI4PGauUnF3Cs/Z8/g8Avb
- Lgp5aKSRx0BqIZL95x+/vRcenLiGRRs=
+ bh=Sr5apWx/ScK9oB1nRm3T8OXKBnRMu7sHdlMje9yDWyM=;
+ b=OvunazprAv3RUEkpajfM3AiM+i5Gu+uvnzLq0fX6e284+0FKMi5aaAe1qlGMu1bOS79IB3
+ 07mJAN0ltOYL8XSKpxOvK9NzwzvmYOoFVOckH4LHn5b3bAyicEwViEIkSWBiG9301vF0J4
+ Sa3i28X05fSu5IgI/xvU15Wis/plojI=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-M-t_hTBwPratIOcMP4rJVg-1; Wed, 18 Oct 2023 11:54:46 -0400
-X-MC-Unique: M-t_hTBwPratIOcMP4rJVg-1
+ us-mta-490-ZbQdVtuANcSrGPnMLREJww-1; Wed, 18 Oct 2023 11:54:49 -0400
+X-MC-Unique: ZbQdVtuANcSrGPnMLREJww-1
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40570ccc497so54263405e9.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:54:44 -0700 (PDT)
+ 5b1f17b1804b1-40554735995so52005205e9.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:54:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644483; x=1698249283;
+ d=1e100.net; s=20230601; t=1697644488; x=1698249288;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FnWheI9RHYepJZYu2SMx1IQcZHnuNqLDKqzr9JSiyUY=;
- b=q3OI189bi9fCYWAf7NGVubcDtR3Nri+cnovKD1u5d1t/We1b9HrcUMxGBJSSscrQBo
- tcsIMOuvly3TJD9cufkmNGBYWOiLr8bvceqBZC5GPP1rhqJxYikPyNkCUGJ6hs2d1JTi
- XoeR90J9Uf19YQBJ6tQuEOQfSRlAW4Xl6ytvEHGCQTMUqwDAerc8LTWfa3gGLVIFkgzQ
- e0a/2mCSbJuynHBbWusjKAkDqBE2vNem11pil3qmrEPxwn/595lgoVkpEg3wcfgmHaRs
- cSSCb8c+nlQ+E4ZmQKx9dsMtdZj2hrgcp0MnmJpCwd36WDVo98BONiJ0cSVQip18WyQQ
- z5TA==
-X-Gm-Message-State: AOJu0YwoExoKmnr5uZdp7Uzl7kBB0MBdxM8ZKYKDwmFPjOg61p1v7L5c
- ymXZsxz9BLB7jpCtq+oELMc+CrWQ1RjArQ4JMGI/EKHytDAxn4bjBifIEVXztGeBqisTBjgsT/w
- FaZ++1Nsc8LOL4JDN/8EfdcELq7D/jhtMguLZXZh3gYZVVP7kdUKJDwonuhz9ZWQ9p0AEcBc=
-X-Received: by 2002:a7b:c8da:0:b0:403:31a:77b9 with SMTP id
- f26-20020a7bc8da000000b00403031a77b9mr4674051wml.37.1697644483475; 
- Wed, 18 Oct 2023 08:54:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQXOnQjs8l8rO9Isdo0FwSgeRZJ9gBiKaFjiQGxTFWI4aOQKwif59LGxANz9ygPXIJYv5Ngg==
-X-Received: by 2002:a7b:c8da:0:b0:403:31a:77b9 with SMTP id
- f26-20020a7bc8da000000b00403031a77b9mr4674037wml.37.1697644483110; 
- Wed, 18 Oct 2023 08:54:43 -0700 (PDT)
+ bh=Sr5apWx/ScK9oB1nRm3T8OXKBnRMu7sHdlMje9yDWyM=;
+ b=j01uLWH6fq9VfIMFHNqnslj9v31bYtPPyVMakyCSLDtxNDLS3gOx3iNjMxUGF/6KHb
+ 3+DmGZl7dTrrmfb3h3m7DyyKehJQnv0MPTU/EFYiD3FKVP5g/TgwsaF5kAhymVsiH3oi
+ BFy54OPgR3w65iRyzJe9VsDf1qUKE03YqX16pLc9k0XTopsNHJOwMrGzIGcXoGqM6Q26
+ nJz6Qtl/gt1xmyUHV8efbaW5ECik8C1lbGL7J8DMH4hUYBXaDuuB/sWEJdDsBcBaOHVt
+ 3plBtxfqta+2U0XWHVLZ+R+03mRLygGKhqCH2V9S6fpxqsUomrTWPzprQ4gJ3GCffEV5
+ qd7Q==
+X-Gm-Message-State: AOJu0YzI3e7p/ShagZ0MFnjTufGEJqQojMmZm0G+M3fJg7OS/fPivebX
+ WvsG6Kqlhxpta84AOc20F3kMxLHSzkyIrNOIilVjfF47Ua6x9LRBo2+3NvB+aV5jRTD1yrWd6Cv
+ rEisr3NXdLEb8AwAhVICHkaWDq60aIpKtGcYerKc8jXbnygE/4Zdh0aH8B4ul9eHBaesIaWg=
+X-Received: by 2002:a05:600c:5251:b0:406:411f:742e with SMTP id
+ fc17-20020a05600c525100b00406411f742emr4447007wmb.34.1697644487793; 
+ Wed, 18 Oct 2023 08:54:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbQtUl+ym/B431elIpSmuOJkiL2wQuZ3F/CELEczzm7uo7bmIGPNPC8yGifDLgwufgwqNUfw==
+X-Received: by 2002:a05:600c:5251:b0:406:411f:742e with SMTP id
+ fc17-20020a05600c525100b00406411f742emr4446990wmb.34.1697644487469; 
+ Wed, 18 Oct 2023 08:54:47 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- az15-20020a05600c600f00b00406447b798bsm2012295wmb.37.2023.10.18.08.54.41
+ b24-20020a05600c06d800b004064e3b94afsm1995242wmn.4.2023.10.18.08.54.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:54:42 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:54:39 -0400
+ Wed, 18 Oct 2023 08:54:46 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:54:43 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 20/83] tests: bios-tables-test: Prepare the ACPI table change
- for smbios type4 core count2 test
-Message-ID: <5a91859db1e0d2909c454d45a5b6696814db24b0.1697644299.git.mst@redhat.com>
+Subject: [PULL 21/83] tests: bios-tables-test: Extend smbios core count2 test
+ to cover general topology
+Message-ID: <4d47fd5f5bdc030b1c6054c43e932d69a1c7580f.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,28 +102,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Following the guidelines in tests/qtest/bios-tables-test.c, this
-is step 1 - 3.
+The commit 196ea60a734c3 ("hw/smbios: Fix core count in type4") fixed
+the miscalculation of cores per socket.
 
-List the ACPI tables that will be changed about the type 4 core count2
-test case.
+The original core count2 test (with the topology configured by
+"-smp 275") didn't recognize that topology-related but because it just
+created a special topology with only one socket and one die by default,
+ignoring the effect of more topology levels (between socket and core) on
+the cores per socket calculation.
 
+So for the topology in this case, there're the following considerations:
+1. cores per socket should be more than 255 to ensure we could cover
+   the core count2 field.
+2. The original bug was that cores per socket was miscalculated, so now
+   we should include as many topology levels as possible (mutiple
+   sockets or dies, no module since x86 hasn't supported it) to cover
+   more general topology scenarios, to ensure that the cores per socket
+   encoded in the core count2 field is correct.
+
+Based on these considerations, select the topology with multiple dies:
+
+-smp 260,dies=2,cores=130,threads=1
+
+Note, here we doesn't configure multiple sockets to avoid the error
+("kvm_init_vcpu: kvm_get_vcpu failed (*): Too many open files") if user
+uses the default ulimit seeting on his machine.
+
+And the cores per socket calculation for multiple sockets has already
+been covered by the core count test case, so that only multiple dies
+configuration is enough.
+
+The expected core count2 = cores per socket = cores (130) * dies (2) =
+260.
+
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20230928125943.1816922-9-zhao1.liu@linux.intel.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20230928125943.1816922-10-zhao1.liu@linux.intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/qtest/bios-tables-test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..0f95d1344b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,3 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/q35/APIC.core-count2",
-+"tests/data/acpi/q35/DSDT.core-count2",
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index c20f6f73d0..f3af20cf2c 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -1024,10 +1024,12 @@ static void test_acpi_q35_tcg_core_count2(void)
+         .required_struct_types = base_required_struct_types,
+         .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+         .smbios_core_count = 0xFF,
+-        .smbios_core_count2 = 275,
++        .smbios_core_count2 = 260,
+     };
+ 
+-    test_acpi_one("-machine smbios-entry-point-type=64 -smp 275", &data);
++    test_acpi_one("-machine smbios-entry-point-type=64 "
++                  "-smp 260,dies=2,cores=130,threads=1",
++                  &data);
+     free_test_data(&data);
+ }
+ 
 -- 
 MST
 
