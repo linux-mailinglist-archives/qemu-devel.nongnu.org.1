@@ -2,64 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBEE7CDB02
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0815F7CDB0C
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:56:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt56v-0004Ei-MT; Wed, 18 Oct 2023 07:53:13 -0400
+	id 1qt59R-0007To-AS; Wed, 18 Oct 2023 07:55:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt56u-0004EK-7e
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:53:12 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt59O-0007Qi-33
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:55:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt56s-0001DR-OJ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:53:11 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt59M-0001mT-1i
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:55:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697629989;
+ s=mimecast20190719; t=1697630141;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JVTp81euMeasMpF3QQPkS0JPGrzZL6UmHdiaSyIdL5M=;
- b=W7TOa3WtO/orVDZhTXCkjt4lAXBA6nHs+PoIUhwRwzt/GcaafNnHq7lCFYexK7MJdyyf2f
- Eox1+e7TO6cc/UmAHLONQ5gapiGNCKD6DH878hYTlrJsbLJytSEb2xS28quN1yVDxKUQL0
- +0Xc3MP1StimWIASn8ZV5l1/PQU/h/c=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=43TZrDTPe3S1C0KK0IUVwgiaAV5nXNEqvOYhkqdP5Gw=;
+ b=bW7KYdLaGTTGUEiS3EFrys1OW9sw7dZe6NPCgapyN1kkAYx6DDxmnrSmqpOsQiKSPmXDMu
+ RFnglBpaDBZYWOwzYDZzUE23GLU4CtC39lDVGKJwc1+UaJoolDeUCnLs16wHjtGjJsbz43
+ rDlcB242s4MtFUwvO3Q+jAWQNmJjjcw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-502-jMecBYShMgqu9V8ZdAPViA-1; Wed, 18 Oct 2023 07:52:56 -0400
-X-MC-Unique: jMecBYShMgqu9V8ZdAPViA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-130-C5Z0Z-iHM3yPJ8lJ1FwSlg-1; Wed, 18 Oct 2023 07:55:17 -0400
+X-MC-Unique: C5Z0Z-iHM3yPJ8lJ1FwSlg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 93C7F88B785;
- Wed, 18 Oct 2023 11:52:55 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 722518C1;
- Wed, 18 Oct 2023 11:52:55 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6A1C521E6A1F; Wed, 18 Oct 2023 13:52:54 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH v2] qapi: provide a friendly string representation of
- QAPI classes
-References: <20230922153257.352911-1-berrange@redhat.com>
- <87v8b4ryjf.fsf@pond.sub.org> <ZS+75MJ74uKBXGBc@redhat.com>
-Date: Wed, 18 Oct 2023 13:52:54 +0200
-In-Reply-To: <ZS+75MJ74uKBXGBc@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Wed, 18 Oct 2023 12:05:08 +0100")
-Message-ID: <87ttqop2p5.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CAB1788B7A0;
+ Wed, 18 Oct 2023 11:55:16 +0000 (UTC)
+Received: from secure.mitica (unknown [10.39.194.127])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7BF7C20268C8;
+ Wed, 18 Oct 2023 11:55:14 +0000 (UTC)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Kevin Wolf <kwolf@redhat.com>,
+ Eric Blake <eblake@redhat.com>, qemu-block@nongnu.org,
+ Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Peter Xu <peterx@redhat.com>,
+ libvir-list@redhat.com, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH v8 0/5] Migration deprecated parts
+Date: Wed, 18 Oct 2023 13:55:08 +0200
+Message-ID: <20231018115513.2163-1-quintela@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +64,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,50 +80,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Based on: Message-ID: <20231018100651.32674-1-quintela@redhat.com>
+          [PULL 00/11] Migration 20231018 patches
 
-> On Wed, Oct 18, 2023 at 12:54:28PM +0200, Markus Armbruster wrote:
->> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->>=20
->> > If printing a QAPI schema object for debugging we get the classname and
->> > a hex value for the instance:
->> >
->> >   <qapi.schema.QAPISchemaEnumType object at 0x7f0ab4c2dad0>
->> >   <qapi.schema.QAPISchemaObjectType object at 0x7f0ab4c2dd90>
->> >   <qapi.schema.QAPISchemaArrayType object at 0x7f0ab4c2df90>
->> >
->> > With this change we instead get the classname and the human friendly
->> > name of the QAPI type instance:
->> >
->> >   <QAPISchemaEnumType:CpuS390State>
->> >   <QAPISchemaObjectType:CpuInfoS390>
->> >   <QAPISchemaArrayType:CpuInfoFastList>
->>=20
->> This gains the QAPI name (good), but loses the address.  The actual
->> address is rarely useful (when it is, you're deep in Python innards;
->> good luck, you'll need it).  Except they let me see which objects are
->> the same, and which are different.  Could that be preserved without
->> trouble somehow?
->
-> It appears the hex value comes from  'id(obj)', so yes, I can
-> insert the same hex value into the new representation.
+v8 now:
+- drop changes to 183.out
+- create _filter_migration_block_deprecated
 
-I'd appreciate that.
+And now it passes the iotests.
 
->> > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->> > ---
->> >
->> > v1 was two & half years ago:
->> >
->> >   https://mail.gnu.org/archive/html/qemu-devel/2021-03/msg01645.html
->>=20
->> Was it my fault?  If yes, I apologize.
->
-> No, I forgot about it until I was moving old branches from my previous
-> laptop to my new laptops :-)
+Please review patch 1.
+Rest are unchanged from v6.
 
-Puh!
+Later, Juan.
 
-[...]
+And here we are, at v7:
+- drop black line at the end of deprecated.rst
+- change qemu-iotest output due to warnings for deprecation.
+
+The only real change is the output of the qemu-iotest.  That is the
+reason why I maintained the reviewed-by.  But will be happy if anyone
+of the block people ack the changes.
+
+Thanks, Juan.
+
+On this v6:
+- Fixed Markus comments
+- 1st patch is reviewed
+- dropped the RFC ones.
+
+Later, Juan.
+
+On this v5:
+- Rebased on top of last migration pull requesnt:
+
+- address markus comments.  Basically we recommend always
+  blockdev-mirror + NBD.  In deprecated.rst we also put the posiblity
+  of using block-incremental and block, but we state that they are
+  also deprecated.
+  I know, I know, I deprecated them in the following patch.
+
+- Dropped the removal of block-migration and block-incremental I am
+  only interested in showing why I want to remove the -b/-i options.
+
+Please review.
+
+Later, Juan.
+
+On this v4:
+- addressed all markus comments.
+- rebased on latest.
+- improve formatting of migration.json
+- print block migration status when needed.
+- patches 7-10 are not mean to merge, they just show why we want to
+  deprecate block migration and remove its support.
+- Patch 7 just drop support for -i/-b and qmp equivalents.
+- Patch 8 shows all the helpers and convolutions we need to have to
+  support that -i and -d.
+- patch 9 drops block-incremental migration support.
+- patch 9 drops block migration support.
+
+Please review.
+
+Thanks, Juan.
+
+On this v3:
+
+- Rebase on top of upstream.
+- Changed v8.1 to 8.2 (I left the reviewed by anyways)
+- missing the block deprecation code, please.
+
+Please, review.
+
+Later, Juan.
+
+On this v2:
+
+- dropped -incoming <uri> deprecation
+  Paolo came with a better solution using keyvalues.
+
+- skipped field is already ready for next pull request, so dropped.
+
+- dropped the RFC bits, nermal PATCH.
+
+- Assessed all the review comments.
+
+- Added indentation of migration.json.
+
+- Used the documentation pointer to substitute block migration.
+
+Please review.
+
+[v1]
+Hi this series describe the migration parts that have to be deprecated.
+
+- It is an rfc because I doubt that I did the deprecation process right. Hello Markus O:-)
+
+- skipped field: It is older than me, I have never know what it stands
+  for.  As far as I know it has always been zero.
+
+- inc/blk migrate command options.  They are only used by block
+  migration (that I deprecate on the following patch).  And they are really bad.
+  grep must_remove_block_options.
+
+- block migration.  block jobs, whatever they are called this week are
+  way more flexible.  Current code works, but we broke it here and
+  there, and really nobody has stand up to maintain it.  It is quite
+  contained and can be left there.  Is anyone really using it?
+
+- old compression method.  It don't work.  See last try from Lukas to
+  make a test that works reliabely.  I failed with the same task years
+  ago.  It is really slow, and if compression is good for you, multifd
+  + zlib is going to perform/compress way more.
+
+  I don't know what to do with this code, really.
+
+  * Remove it for this release?  It don't work, and haven't work
+    reliabely in quite a few time.
+
+  * Deprecate it and remove in another couple of releases, i.e. normal
+    deprecation.
+
+  * Ideas?
+
+- -incoming <uri>
+
+  if you need to set parameters (multifd cames to mind, and preempt has
+  the same problem), you really needs to use defer.  So what should we do here?
+
+  This part is not urget, because management apps have a working
+  option that are already using "defer", and the code simplifacation
+  if we remove it is not so big.  So we can leave it until 9.0 or
+  whatever we think fit.
+
+What do you think?
+
+Later, Juan.
+
+Juan Quintela (5):
+  qemu-iotests: Filter warnings about block migration being deprecated
+  migration: migrate 'inc' command option is deprecated.
+  migration: migrate 'blk' command option is deprecated.
+  migration: Deprecate block migration
+  migration: Deprecate old compression method
+
+ docs/about/deprecated.rst        | 35 ++++++++++++
+ qapi/migration.json              | 93 ++++++++++++++++++++++++--------
+ migration/block.c                |  3 ++
+ migration/migration-hmp-cmds.c   | 10 ++++
+ migration/migration.c            | 10 ++++
+ migration/options.c              | 22 +++++++-
+ tests/qemu-iotests/183           |  2 +-
+ tests/qemu-iotests/common.filter |  7 +++
+ 8 files changed, 158 insertions(+), 24 deletions(-)
+
+-- 
+2.41.0
 
 
