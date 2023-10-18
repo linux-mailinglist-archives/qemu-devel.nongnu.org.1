@@ -2,77 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4B57CD764
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 749657CD78F
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:09:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt2Rq-0006Yy-F9; Wed, 18 Oct 2023 05:02:38 -0400
+	id 1qt2XX-0008W5-GH; Wed, 18 Oct 2023 05:08:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qt2Rb-0006YR-Qt
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:02:23 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt2XR-0008Vt-0T
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:08:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qt2RY-0003aY-M3
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:02:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697619741; x=1729155741;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=B6LH3qypfS6IkyLJ99c5BzJdh0fkueEcO4ciBzI4ANk=;
- b=e4fqOLihbEgxU08C/aKqmS6K4qPhTtAgSpEdqWU1+x0QkSJFOwiP7VJb
- NeqVESIpWA13nhTs5b1GWxPJwqyQmu14fegF0nEOAkwBGMVtihbhS12Ue
- VhyxmqsRaItGz8W7dZQH1fJp6PeXJ0ro/to60efOCNsp5EqAr9l1Aecm0
- 72XnA8i6Ujxi2PZ3xHnZWgv3RAqlX69GZlwc9dnn7iz/3M2S6YUKO+JSS
- ytsiqD0a1OVPMopSsRMHQmKujWY6Bb1fTJxvM4zxDfShsQhkyySUrqZfe
- 5SFWgDAJ39fsJbLs4beO9VFOrvrdtx5IZGEbh6vYgOfCYnl7wR3rwMoOg w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="4569030"
-X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
-   d="scan'208";a="4569030"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2023 02:02:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="880153060"
-X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; d="scan'208";a="880153060"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.19.128])
- ([10.93.19.128])
- by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2023 02:02:14 -0700
-Message-ID: <23d209c1-f860-4915-935e-816d9077b65c@intel.com>
-Date: Wed, 18 Oct 2023 17:02:11 +0800
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt2XN-0004LC-7N
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:08:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697620099;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IXh9ZT6PuCnZUuEtXniq9r/0+b8K+f4RTJLdLFDWwbY=;
+ b=EmiczJgWc1mO0f0ohnMISltCO13xos6IGoUNLdjUtcN9HocA37SH6OvH9qzGq+nn9ZI2Jb
+ w+F5EjOHSd/RrbzoEjdYScZw8VZL34dtbNhkQsrPXJ7O/wvnu4/HWfIybDG6PWReQfRTW7
+ fxspJbjsh9s1X+yLYtNPc4DigwePykE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-595-m3j2XQEGPsOm_VAo2MfY6w-1; Wed, 18 Oct 2023 05:08:17 -0400
+X-MC-Unique: m3j2XQEGPsOm_VAo2MfY6w-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9be601277c2so302802366b.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 02:08:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697620096; x=1698224896;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IXh9ZT6PuCnZUuEtXniq9r/0+b8K+f4RTJLdLFDWwbY=;
+ b=SX62kyDT8EIEpq8bAxaZhl+ookx0mndYImDqLp4UA5eL+8cVKR+OYeHO4uuAnsKQhD
+ RylPnR7S6PZCNkA87NLaDlHahW0Ctl6kFHt1jejBVsJXk3uRhxi5/ptYWEl6FbS6wg/l
+ de2Quh9BGdVc+cfntkeKc+/hUE2aiqouW85TCKLC/XIB5PxibwFzGCTGWI8B9fKiFxdC
+ OuLhpFj2cyI4oaANq18CSINEzjZ5sBLWYeUhZn+KMTPrmo2Po0NaTO5x39EQlNQ4w0tK
+ V8H0w61hhFXl6mtmhaqom/zNv2w/Je75DNt9o0KHdzngp8d7VtJpTrEyj7+VN2XAq4KY
+ B8JA==
+X-Gm-Message-State: AOJu0Ywi5TY8AH8ip1W0i2VFVffyLHn0LAPO+iTRCuAPCr6jeoVh03O1
+ I0XmesHH2IKvICuS5BFTYJ2z75hsYAre4zB49WIdUucRaGYsGpvcMfkPbghCJDN1H7JkwWuPXVt
+ Ai/sKxJ9xsByh11Q=
+X-Received: by 2002:a17:907:9706:b0:9ae:5aa4:9fa with SMTP id
+ jg6-20020a170907970600b009ae5aa409famr3823219ejc.42.1697620096487; 
+ Wed, 18 Oct 2023 02:08:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKwMAq4i6clRCiVzvlunZAj62IGGbV1lgb9QIPjv01IMB2eQF7Yz0hUTtvi5+eO/M70UMywg==
+X-Received: by 2002:a17:907:9706:b0:9ae:5aa4:9fa with SMTP id
+ jg6-20020a170907970600b009ae5aa409famr3823194ejc.42.1697620096140; 
+ Wed, 18 Oct 2023 02:08:16 -0700 (PDT)
+Received: from redhat.com ([193.142.201.38]) by smtp.gmail.com with ESMTPSA id
+ bn4-20020a170906c0c400b0099cb0a7098dsm1280525ejb.19.2023.10.18.02.08.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 02:08:15 -0700 (PDT)
+Date: Wed, 18 Oct 2023 05:08:09 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Volker =?iso-8859-1?Q?R=FC?= melin <vr_qemu@t-online.de>,
+ =?utf-8?B?S8WRIHbDoSBnw7MgLCBab2x0w6E=?= n <DirtY.iCE.hu@gmail.com>,
+ Alex =?iso-8859-1?Q?Benn=E9?= e <alex.bennee@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: [PATCH v11 00/11] Add VIRTIO sound card
+Message-ID: <20231018050537-mutt-send-email-mst@kernel.org>
+References: <cover.1696935992.git.manos.pitsidianakis@linaro.org>
+ <2pvjw.psr1yjx1ztc1@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] softmmu/physmem: Warn with
- ram_block_discard_range() on MAP_PRIVATE file mapping
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela
- <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
-References: <20230706075612.67404-1-david@redhat.com>
- <20230706075612.67404-2-david@redhat.com>
- <a23ee3d1-e03b-4442-bdec-341b3e52d3e0@intel.com>
- <e96e96a2-e996-4507-8548-684aa1e56846@redhat.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <e96e96a2-e996-4507-8548-684aa1e56846@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2pvjw.psr1yjx1ztc1@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,108 +108,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/18/2023 3:42 PM, David Hildenbrand wrote:
-> On 18.10.23 05:02, Xiaoyao Li wrote:
->> David,
->>
->> On 7/6/2023 3:56 PM, David Hildenbrand wrote:
->>> ram_block_discard_range() cannot possibly do the right thing in
->>> MAP_PRIVATE file mappings in the general case.
->>>
->>> To achieve the documented semantics, we also have to punch a hole into
->>> the file, possibly messing with other MAP_PRIVATE/MAP_SHARED mappings
->>> of such a file.
->>>
->>> For example, using VM templating -- see commit b17fbbe55cba ("migration:
->>> allow private destination ram with x-ignore-shared") -- in 
->>> combination with
->>> any mechanism that relies on discarding of RAM is problematic. This
->>> includes:
->>> * Postcopy live migration
->>> * virtio-balloon inflation/deflation or free-page-reporting
->>> * virtio-mem
->>>
->>> So at least warn that there is something possibly dangerous is going on
->>> when using ram_block_discard_range() in these cases.
->>>
->>> Acked-by: Peter Xu <peterx@redhat.com>
->>> Tested-by: Mario Casquero <mcasquer@redhat.com>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>    softmmu/physmem.c | 18 ++++++++++++++++++
->>>    1 file changed, 18 insertions(+)
->>>
->>> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
->>> index bda475a719..4ee157bda4 100644
->>> --- a/softmmu/physmem.c
->>> +++ b/softmmu/physmem.c
->>> @@ -3456,6 +3456,24 @@ int ram_block_discard_range(RAMBlock *rb, 
->>> uint64_t start, size_t length)
->>>                 * so a userfault will trigger.
->>>                 */
->>>    #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
->>> +            /*
->>> +             * We'll discard data from the actual file, even though 
->>> we only
->>> +             * have a MAP_PRIVATE mapping, possibly messing with other
->>> +             * MAP_PRIVATE/MAP_SHARED mappings. There is no easy way to
->>> +             * change that behavior whithout violating the promised
->>> +             * semantics of ram_block_discard_range().
->>> +             *
->>> +             * Only warn, because it work as long as nobody else 
->>> uses that
->>> +             * file.
->>> +             */
->>> +            if (!qemu_ram_is_shared(rb)) {
->>> +                warn_report_once("ram_block_discard_range: 
->>> Discarding RAM"
->>> +                                 " in private file mappings is 
->>> possibly"
->>> +                                 " dangerous, because it will modify 
->>> the"
->>> +                                 " underlying file and will affect 
->>> other"
->>> +                                 " users of the file");
->>> +            }
->>> +
->>
->> TDX has two types of memory backend for each RAM, shared memory and
->> private memory. Private memory is serviced by guest memfd and shared
->> memory can also be backed with a fd.
->>
->> At any time, only one type needs to be valid, which means the opposite
->> can be discarded. We do implement the memory discard when TDX converts
->> the memory[1]. It will trigger this warning 100% because by default the
->> guest memfd is not mapped as shared (MAP_SHARED).
+On Wed, Oct 18, 2023 at 11:49:00AM +0300, Manos Pitsidianakis wrote:
+> On Wed, 11 Oct 2023 17:34, Manos Pitsidianakis <manos.pitsidianakis@linaro.org> wrote:
+> > This patch series adds an audio device implementing the recent virtio
+> > sound spec (1.2) and a corresponding PCI wrapper device.
+> > 
+> > v11 can be found online at:
+> > 
+> > https://gitlab.com/epilys/qemu/-/tree/virtio-snd-v11
+> > 
+> > Ref 885b01fe272541fdab5583780d4c3a59bfd8e734
+> > 
+> Hello Gerd, MAINTAINERS says you own the hw/audio subsystem, would you pull
+> this in your tree if/when it is to be merged?
 > 
-> If MAP_PRIVATE is not involved and you are taking the pages directly out 
-> of the memfd, you should mark that thing as shared. 
+> For context, the device was in hw/audio initially but in early list
+> discussions we decided to move it with the rest of virtio devices.
 
-Is it the general rule of Linux? Of just the rule of QEMU memory discard?
+Link to these discussions? virtio-gpu is under ./hw/display
+seems inconsistent. And you are asking Gerd to merge but
+your MAINTAINERS patch wouldn't even let people know
+he needs to be Cc'd on changes.
 
-> Anonymous memory is never involved.
 
-Could you please elaborate more on this? What do you want to express 
-here regrading anonymous memory? (Sorry that I'm newbie for mmap stuff)
-
+> At its current state it LGTM, if there's agreement that there are no issues
+> we can merge this series.
 > 
-> "Private memory" is only private from the guest POV, not from a mmap() 
-> point of view.
+> All the best,
 > 
-> Two different concepts of "private".
-> 
->>
->> Simply remove the warning will fail the purpose of this patch. The other
->> option is to skip the warning for TDX case, which looks vary hacky. Do
->> you have any idea?
-> 
-> For TDX, all memory backends / RAMBlocks should be marked as "shared", 
-> and you should fail if that is not provided by the user.
-
-As I asked above, I want to understand the logic clearly. Is mapped as 
-shared is a must to support the memory discard? i.e., if we want to 
-support memory discard after memory type change, then the memory must be 
-mapped with MAP_SHARED?
-
+> --
+> Manos
 
 
