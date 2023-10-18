@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AB07CD688
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 884527CD6A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:33:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1vD-00027L-Kj; Wed, 18 Oct 2023 04:28:57 -0400
+	id 1qt1vm-0002sO-4w; Wed, 18 Oct 2023 04:29:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1v7-0001yn-4p
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:49 -0400
+ id 1qt1v8-00020b-F4
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1v5-0003hb-78
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:48 -0400
+ id 1qt1v6-0003hh-Sh
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697617726;
+ s=mimecast20190719; t=1697617728;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/FD6YHefX6SOYwoQaJDUAPYd5JubXHFuESbVNleb6xc=;
- b=BxVS87pHZuk7on9kyaxmX2gN7o7G51blD8izunTqoUcoplQX0yJCMvCX4JPJWCbVyHWtxD
- GjRN7RssjELxl5/IIsqXueG/EYfsFZQ7LUW1raTTTy2w56UlQ3ODRcRFbXRovREASD6AzG
- PdG3ebgsXf08JM5103vI/4DU7eNmF3Q=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HByuZthEG86fBBuYqJCXFDeyXnbIS8dEpfmL1flA5kg=;
+ b=UzT32DHrbmi+JqBgDi2mI+q+eNANdDb6cKnjonQ5qfAfcp3N4UuccwPA6NOPYcJWUKAkyT
+ G7EHtW20azygJzwRHCRlE5Ml1ppHlUODkqubNY+pRD4Y1RThBO1E6hpl7PjdULq6VBcWAQ
+ L2lNXZosNNZTnC8v17vpFu4+GU0zaf8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-hI845pAtOQ22PJ-VGGYCcA-1; Wed, 18 Oct 2023 04:28:45 -0400
-X-MC-Unique: hI845pAtOQ22PJ-VGGYCcA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-993eeb3a950so433537766b.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:45 -0700 (PDT)
+ us-mta-534-bXSvAEylPzqnyGMCUYg08Q-1; Wed, 18 Oct 2023 04:28:46 -0400
+X-MC-Unique: bXSvAEylPzqnyGMCUYg08Q-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-99bca0b9234so271150266b.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697617724; x=1698222524;
+ d=1e100.net; s=20230601; t=1697617725; x=1698222525;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/FD6YHefX6SOYwoQaJDUAPYd5JubXHFuESbVNleb6xc=;
- b=CZg8eMgM+t/rvgP5Z7+f47u+5gjMr9DWXVVOvZXieZ333DgM5omm+ZAkvVHVetTpYI
- Bg4uY4ts7hxIA0CAoUYbd08UZTCSdRr42PxwOtxsA8YcFB81DyDHimvM7qVINR4t4sh4
- QXur8ZYaoXWolmE7wpwgwFo37CyjqqHreyKmg32sGA9QT2C5jHUsqzRWLu22WOxNn8Qx
- T961ukLhZcRf+n/DcWFVwEe5IrkJXx6jtDR7/rs6eeaKvju/f73q2MvFcm8Hq1O7XcWo
- 8IBYJ7NKmmoMILYcbSZbAgjrK4mw7r6ek7G690J3WmAqFl37lddX7CPnWb27djsYVebA
- xF3g==
-X-Gm-Message-State: AOJu0Yz/h9Ac56zhNLtagivHpdr5cymYj6pHk7pd8szckJpYkb2RMnX4
- i3y3oLHu7GJzmjMdMNr1FOlidJh4qADeWJIVZxFNVoDZdVaJ5nnJf8qmC55D1mhE+LpA5LVNoTn
- GOpRvFkUreu63vjCJb9FGDc1qC2D+yGfAWdVzu3ztsysUyBou/pCkKBfHflq6oB0YWRHMUQEC4P
- 0=
-X-Received: by 2002:a17:907:a48b:b0:9c7:5437:841e with SMTP id
- vp11-20020a170907a48b00b009c75437841emr121170ejc.11.1697617723372; 
- Wed, 18 Oct 2023 01:28:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFIgYQ9/lGLrwQCgAmcp3hdcER7cHfhSfHMfuF6LDiCBSXJkuTjYsZlf28pLGi8+OmT0OyvQ==
-X-Received: by 2002:a17:907:a48b:b0:9c7:5437:841e with SMTP id
- vp11-20020a170907a48b00b009c75437841emr121160ejc.11.1697617722997; 
- Wed, 18 Oct 2023 01:28:42 -0700 (PDT)
+ bh=HByuZthEG86fBBuYqJCXFDeyXnbIS8dEpfmL1flA5kg=;
+ b=xI2D2zk88YVW7ESy1gN9fPztDAH2KiMAGcPa/o61E5cy+iBoccisr7zZlHnd24hsTh
+ 9TX3uJ391v8WyNHoZsgdZWNnFvlM/8VYgzCLjvrz41itmBA3s90IQ/DqgKIBBztLSYtT
+ 86BFpDZ3miyT8Q4zSnb8NkumAxD+6oEf5dXQR5WFBXzk9xbyjmeSsX3rC7PcKXIUHvys
+ 7PIoEQV4tUR3Lbm4ytILimKdX5r6FonV1GiJVtE7ciBg+p6fk2K0Gbdzt/UOz/Ek6xWH
+ nXEtCDbz05r5UFzrsABe/F78UxzPCq7sRBWMXPWE92068MdC6VjTWLX9OubT7GHqgt2l
+ UUKw==
+X-Gm-Message-State: AOJu0YzJd7AsiPb2Po+qmLF8PnoqVNIBQsKlHVUwIofubibvDAvKrONj
+ dTBynoV/KeN+bwRhfVDWEPXcsOQYaoXlepaRi6j0cGyR7sgYC6vD/4jLYqj2yloiufTrHteWDVQ
+ RLNbPHkcgL0jPfThjOiJFcTC4VcrRcQmkxDeaQ+Zr4VwLOnsOHmCt3287svk6m8R95Pjwy7L7Wb
+ s=
+X-Received: by 2002:a17:907:7f23:b0:9b2:982e:339a with SMTP id
+ qf35-20020a1709077f2300b009b2982e339amr3121268ejc.22.1697617725331; 
+ Wed, 18 Oct 2023 01:28:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxicI5qaKHL//XioM5hXnJrEkRGKFlbjp9HqbWFIEkAYUJUl5yg4hoGvEtK9UMIzvwMFJdeQ==
+X-Received: by 2002:a17:907:7f23:b0:9b2:982e:339a with SMTP id
+ qf35-20020a1709077f2300b009b2982e339amr3121257ejc.22.1697617725021; 
+ Wed, 18 Oct 2023 01:28:45 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- p4-20020a170906b20400b009c7518b131dsm452609ejz.196.2023.10.18.01.28.42
+ dc12-20020a170906c7cc00b009a1dbf55665sm1160257ejb.161.2023.10.18.01.28.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 01:28:42 -0700 (PDT)
+ Wed, 18 Oct 2023 01:28:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 27/32] configure: move environment-specific defaults to
- config-meson.cross
-Date: Wed, 18 Oct 2023 10:27:47 +0200
-Message-ID: <20231018082752.322306-28-pbonzini@redhat.com>
+Subject: [PULL 28/32] configure: unify handling of several Debian cross
+ containers
+Date: Wed, 18 Oct 2023 10:27:48 +0200
+Message-ID: <20231018082752.322306-29-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018082752.322306-1-pbonzini@redhat.com>
 References: <20231018082752.322306-1-pbonzini@redhat.com>
@@ -101,192 +101,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Store the -Werror and SMBD defaults in the machine file, which still allows
-them to be overridden on the command line and enables automatic parsing
-of the related options.
+The Debian and GNU architecture names match very often, even though
+there are common cases (32-bit Arm or 64-bit x86) where they do not
+and other cases in which the GNU triplet is actually a quadruplet.
+But it is still possible to group the common case into a single
+case inside probe_target_compiler.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                     | 37 +++++++++++++----------------------
- scripts/meson-buildoptions.py |  3 ++-
- scripts/meson-buildoptions.sh |  5 +++++
- 3 files changed, 21 insertions(+), 24 deletions(-)
+ configure | 41 +++++------------------------------------
+ 1 file changed, 5 insertions(+), 36 deletions(-)
 
 diff --git a/configure b/configure
-index 8f23c8d1655..200570a3d18 100755
+index 200570a3d18..4b24c572d56 100755
 --- a/configure
 +++ b/configure
-@@ -258,7 +258,6 @@ skip_meson=no
- use_containers="yes"
- gdb_bin=$(command -v "gdb-multiarch" || command -v "gdb")
- gdb_arches=""
--werror=""
- 
- # Don't accept a target_list environment variable.
- unset target_list
-@@ -314,7 +313,6 @@ objcopy="${OBJCOPY-${cross_prefix}objcopy}"
- ld="${LD-${cross_prefix}ld}"
- ranlib="${RANLIB-${cross_prefix}ranlib}"
- nm="${NM-${cross_prefix}nm}"
--smbd="$SMBD"
- strip="${STRIP-${cross_prefix}strip}"
- widl="${WIDL-${cross_prefix}widl}"
- windres="${WINDRES-${cross_prefix}windres}"
-@@ -651,8 +649,6 @@ for opt do
-   ;;
-   --ninja=*) ninja="$optarg"
-   ;;
--  --smbd=*) smbd="$optarg"
--  ;;
-   --extra-cflags=*)
-   ;;
-   --extra-cxxflags=*)
-@@ -744,10 +740,6 @@ for opt do
-   ;;
-   --disable-pie) pie="no"
-   ;;
--  --enable-werror) werror="yes"
--  ;;
--  --disable-werror) werror="no"
--  ;;
-   --enable-cfi) cfi=true
-   ;;
-   --disable-cfi) cfi=false
-@@ -879,7 +871,6 @@ Advanced options (experts only):
-   --cross-prefix-ARCH=PREFIX cross compiler prefix when building ARCH guest test cases
-   --python=PYTHON          use specified python [$python]
-   --ninja=NINJA            use specified ninja [$ninja]
--  --smbd=SMBD              use specified smbd [$smbd]
-   --static                 enable static build [$static]
-   --without-default-features default all --enable-* options to "disabled"
-   --without-default-devices  do not include any device that is not needed to
-@@ -887,7 +878,6 @@ Advanced options (experts only):
-                            desired devices in configs/devices/)
-   --with-devices-ARCH=NAME override default configs/devices
-   --enable-debug           enable common debug build options
--  --disable-werror         disable compilation abort on warning
-   --cpu=CPU                Build for host CPU [$cpu]
-   --disable-containers     don't use containers for cross-building
-   --container-engine=TYPE  which container engine to use [$container_engine]
-@@ -1011,17 +1001,6 @@ if test -z "$ninja"; then
-     fi
- fi
- 
--# Consult white-list to determine whether to enable werror
--# by default.  Only enable by default for git builds
--if test -z "$werror" ; then
--    if test -e "$source_path/.git" && \
--        { test "$targetos" = linux || test "$targetos" = "windows"; }; then
--        werror="yes"
--    else
--        werror="no"
--    fi
--fi
--
- if test "$targetos" = "bogus"; then
-     # Now that we know that we're not printing the help and that
-     # the compiler works (so the results of the check_defines we used
-@@ -1764,6 +1743,20 @@ if test "$skip_meson" = no; then
-   test -n "$objcc" && echo "objc_args = [$(meson_quote $OBJCFLAGS $EXTRA_OBJCFLAGS)]" >> $cross
-   echo "c_link_args = [$(meson_quote $CFLAGS $LDFLAGS $EXTRA_CFLAGS $EXTRA_LDFLAGS)]" >> $cross
-   echo "cpp_link_args = [$(meson_quote $CXXFLAGS $LDFLAGS $EXTRA_CXXFLAGS $EXTRA_LDFLAGS)]" >> $cross
-+
-+  # Only enable by default for git builds and on select OSes
-+  echo "# environment defaults, can still be overridden on " >> $cross
-+  echo "# the command line" >> $cross
-+  if test -e "$source_path/.git" && \
-+      { test "$targetos" = linux || test "$targetos" = "windows"; }; then
-+      echo 'werror = true' >> $cross
-+  fi
-+  echo "[project options]" >> $cross
-+  if test "$SMBD" != ''; then
-+    echo "smbd = $(meson_quote "$SMBD")" >> $cross
-+  fi
-+
-+  echo >> $cross
-   echo "[binaries]" >> $cross
-   echo "c = [$(meson_quote $cc $CPU_CFLAGS)]" >> $cross
-   test -n "$cxx" && echo "cpp = [$(meson_quote $cxx $CPU_CFLAGS)]" >> $cross
-@@ -1818,14 +1811,12 @@ if test "$skip_meson" = no; then
-   test "$default_feature" = no && meson_option_add -Dauto_features=disabled
-   test "$static" = yes && meson_option_add -Dprefer_static=true
-   test "$pie" = no && meson_option_add -Db_pie=false
--  test "$werror" = yes && meson_option_add -Dwerror=true
- 
-   # QEMU options
-   test "$cfi" != false && meson_option_add "-Dcfi=$cfi" "-Db_lto=$cfi"
-   test "$docs" != auto && meson_option_add "-Ddocs=$docs"
-   test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
-   test "$plugins" = yes && meson_option_add "-Dplugins=true"
--  test "$smbd" != '' && meson_option_add "-Dsmbd=$smbd"
-   test "$tcg" != enabled && meson_option_add "-Dtcg=$tcg"
-   run_meson() {
-     NINJA=$ninja $meson setup "$@" "$PWD" "$source_path"
-diff --git a/scripts/meson-buildoptions.py b/scripts/meson-buildoptions.py
-index 0c24bdc1e8c..2e88732a291 100644
---- a/scripts/meson-buildoptions.py
-+++ b/scripts/meson-buildoptions.py
-@@ -28,7 +28,6 @@
- SKIP_OPTIONS = {
-     "default_devices",
-     "fuzzing_engine",
--    "smbd",
- }
- 
- OPTION_NAMES = {
-@@ -47,6 +46,7 @@
- # Options that configure autodetects, even though meson defines them as boolean
- AUTO_OPTIONS = {
-     "plugins",
-+    "werror",
- }
- 
- BUILTIN_OPTIONS = {
-@@ -64,6 +64,7 @@
-     "prefix",
-     "strip",
-     "sysconfdir",
-+    "werror",
- }
- 
- LINE_WIDTH = 76
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index e1522030619..dec33820163 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -64,6 +64,7 @@ meson_options_help() {
-   printf "%s\n" '  --localstatedir=VALUE    Localstate data directory [/var/local]'
-   printf "%s\n" '  --mandir=VALUE           Manual page directory [share/man]'
-   printf "%s\n" '  --prefix=VALUE           Installation prefix [/usr/local]'
-+  printf "%s\n" '  --smbd=VALUE             Path to smbd for slirp networking'
-   printf "%s\n" '  --sysconfdir=VALUE       Sysconf data directory [etc]'
-   printf "%s\n" '  --tls-priority=VALUE     Default TLS protocol/cipher priority string'
-   printf "%s\n" '                           [NORMAL]'
-@@ -205,6 +206,7 @@ meson_options_help() {
-   printf "%s\n" '  vpc             vpc image format support'
-   printf "%s\n" '  vte             vte support for the gtk UI'
-   printf "%s\n" '  vvfat           vvfat image format support'
-+  printf "%s\n" '  werror          Treat warnings as errors'
-   printf "%s\n" '  whpx            WHPX acceleration support'
-   printf "%s\n" '  xen             Xen backend support'
-   printf "%s\n" '  xen-pci-passthrough'
-@@ -453,6 +455,7 @@ _meson_option_parse() {
-     --disable-slirp-smbd) printf "%s" -Dslirp_smbd=disabled ;;
-     --enable-smartcard) printf "%s" -Dsmartcard=enabled ;;
-     --disable-smartcard) printf "%s" -Dsmartcard=disabled ;;
-+    --smbd=*) quote_sh "-Dsmbd=$2" ;;
-     --enable-snappy) printf "%s" -Dsnappy=enabled ;;
-     --disable-snappy) printf "%s" -Dsnappy=disabled ;;
-     --enable-sndio) printf "%s" -Dsndio=enabled ;;
-@@ -529,6 +532,8 @@ _meson_option_parse() {
-     --disable-vte) printf "%s" -Dvte=disabled ;;
-     --enable-vvfat) printf "%s" -Dvvfat=enabled ;;
-     --disable-vvfat) printf "%s" -Dvvfat=disabled ;;
-+    --enable-werror) printf "%s" -Dwerror=true ;;
-+    --disable-werror) printf "%s" -Dwerror=false ;;
-     --enable-whpx) printf "%s" -Dwhpx=enabled ;;
-     --disable-whpx) printf "%s" -Dwhpx=disabled ;;
-     --enable-xen) printf "%s" -Dxen=enabled ;;
+@@ -1281,10 +1281,6 @@ probe_target_compiler() {
+         container_cross_prefix=aarch64-linux-gnu-
+         container_cross_cc=${container_cross_prefix}gcc
+         ;;
+-      alpha)
+-        container_image=debian-alpha-cross
+-        container_cross_prefix=alpha-linux-gnu-
+-        ;;
+       arm)
+         # We don't have any bigendian build tools so we only use this for ARM
+         container_image=debian-armhf-cross
+@@ -1299,10 +1295,6 @@ probe_target_compiler() {
+         container_cross_prefix=hexagon-unknown-linux-musl-
+         container_cross_cc=${container_cross_prefix}clang
+         ;;
+-      hppa)
+-        container_image=debian-hppa-cross
+-        container_cross_prefix=hppa-linux-gnu-
+-        ;;
+       i386)
+         container_image=fedora-i386-cross
+         container_cross_prefix=
+@@ -1311,10 +1303,6 @@ probe_target_compiler() {
+         container_image=debian-loongarch-cross
+         container_cross_prefix=loongarch64-unknown-linux-gnu-
+         ;;
+-      m68k)
+-        container_image=debian-m68k-cross
+-        container_cross_prefix=m68k-linux-gnu-
+-        ;;
+       microblaze)
+         container_image=debian-microblaze-cross
+         container_cross_prefix=microblaze-linux-musl-
+@@ -1327,14 +1315,6 @@ probe_target_compiler() {
+         container_image=debian-mips64-cross
+         container_cross_prefix=mips64-linux-gnuabi64-
+         ;;
+-      mipsel)
+-        container_image=debian-mipsel-cross
+-        container_cross_prefix=mipsel-linux-gnu-
+-        ;;
+-      mips)
+-        container_image=debian-mips-cross
+-        container_cross_prefix=mips-linux-gnu-
+-        ;;
+       nios2)
+         container_image=debian-nios2-cross
+         container_cross_prefix=nios2-linux-gnu-
+@@ -1349,22 +1329,6 @@ probe_target_compiler() {
+         container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
+         container_cross_cc=${container_cross_prefix}gcc-10
+         ;;
+-      riscv64)
+-        container_image=debian-riscv64-test-cross
+-        container_cross_prefix=riscv64-linux-gnu-
+-        ;;
+-      s390x)
+-        container_image=debian-s390x-cross
+-        container_cross_prefix=s390x-linux-gnu-
+-        ;;
+-      sh4)
+-        container_image=debian-sh4-cross
+-        container_cross_prefix=sh4-linux-gnu-
+-        ;;
+-      sparc64)
+-        container_image=debian-sparc64-cross
+-        container_cross_prefix=sparc64-linux-gnu-
+-        ;;
+       tricore)
+         container_image=debian-tricore-cross
+         container_cross_prefix=tricore-
+@@ -1379,6 +1343,11 @@ probe_target_compiler() {
+         # default to the dc232b cpu
+         container_cross_prefix=/opt/2020.07/xtensa-dc232b-elf/bin/xtensa-dc232b-elf-
+         ;;
++      *)
++        # Debian and GNU architecture names usually match
++        container_image=debian-$target_arch-cross
++        container_cross_prefix=$target_arch-linux-gnu-
++        ;;
+     esac
+     : ${container_cross_cc:=${container_cross_prefix}gcc}
+     : ${container_cross_ar:=${container_cross_prefix}ar}
 -- 
 2.41.0
 
