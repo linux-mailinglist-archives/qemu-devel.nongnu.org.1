@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3A07CE252
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D137CE26A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:12:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8yE-0004L7-50; Wed, 18 Oct 2023 12:00:30 -0400
+	id 1qt93O-0006HR-IL; Wed, 18 Oct 2023 12:05:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt8y7-0004Bp-VQ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:00:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt93F-0006FC-Lz
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:05:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt8y5-000859-Ar
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:00:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt93D-0000nR-5Q
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:05:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644820;
+ s=mimecast20190719; t=1697645138;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=niq7Dpfm7wep1QppagjyXm6GUT5pQjTHtzV6Ze2ydK4=;
- b=TsJuWPJUfSc356TiiUcFH8IrCFac8QyzWrsjM8MdQlEFqcTSUZDHxWMzGueaIs57b8B4b7
- EWl/zmFPuinqY2OeSEjDfEtkaNlc7dLIrrhUPJkEcakkH9kpznBpDoBpU+UtQrfj6QlsXw
- /5g4dsDQuHUsrW+ADm281GGhWuRpUwc=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Q4oig/hzpB5AaAp4b4GPxSl5owH8+Typ4kIPdsGFzIU=;
+ b=ZgM2clnh0+Vj/4lccDoC6AMRFj9FCwjcnNXHqFHGfk9hB+ESveLwEm/3zMBeiisKsLKYSZ
+ pz0PEkXBSH8bQsyPrxj4DLXbvG7sQBcjprvFA7wCGKnVb/y6JbKRJlAGFQk2X4oB3Z9jI+
+ rCDxeMO6fIKtHiGzS9A1EpgBwYFNK5w=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-vk0gDmJ4ND2ANvy_VBvdcA-1; Wed, 18 Oct 2023 12:00:19 -0400
-X-MC-Unique: vk0gDmJ4ND2ANvy_VBvdcA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-77405179afdso767716285a.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:00:18 -0700 (PDT)
+ us-mta-591-Rk3xWGk1ME2Fh7EztQ3nYw-1; Wed, 18 Oct 2023 12:05:32 -0400
+X-MC-Unique: Rk3xWGk1ME2Fh7EztQ3nYw-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-418099ca1c2so78983881cf.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:05:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644818; x=1698249618;
+ d=1e100.net; s=20230601; t=1697645131; x=1698249931;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=niq7Dpfm7wep1QppagjyXm6GUT5pQjTHtzV6Ze2ydK4=;
- b=R9FbTrGrBpzDg5ThizRpzLqIECKwbZeUBLg5V74+rmN09j6dWy3M9noD8OS9SSDIj9
- unHgCvOfzzvCRLLI1pwmrxB3C1QUwEBnB+A79DfuTVb5LXFVRgdW7zWunoXGf6tE5xwc
- rtOX1Vjm76Btp9FWmbMKxZb8alnHHb8r5coJd5rpRV3shoQIUq+Ir+AdVGA4roDmbf6u
- 7+a6hectRcLfs5i+VKW6uMSXkgb36D8QzyzXf9LWHEye7zL8j0w8eXKNdaNKmLkOU5SV
- 3h5KpSTLP9/aSKbv6+xE8C1sb9UT32Q3J6nlTjfgzMjpooFDnGgLzzNujz8tescQckSE
- VVrA==
-X-Gm-Message-State: AOJu0Ywd3MLbwtVlCCqluAqAkvtbO4WVRV1s8+P8qxFv0EVZ2VmCD7ka
- GQoTyPteoygI/FaBb+fs8Khk0YrYiOl/uTJst24hbB9gOvrn6f03mUax7KEe5c3QjPj9abx6bk8
- GfxZ6rH1yGmSKbjQ=
-X-Received: by 2002:a05:620a:1726:b0:775:93aa:cb91 with SMTP id
- az38-20020a05620a172600b0077593aacb91mr6430681qkb.35.1697644818522; 
- Wed, 18 Oct 2023 09:00:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQowKHt+I7JRUJG7wYVwvI/9maZk8X54u2QmUK0wUGklaqrbWnsLCU8pr/7p8Ngdp/WolxMQ==
-X-Received: by 2002:a05:620a:1726:b0:775:93aa:cb91 with SMTP id
- az38-20020a05620a172600b0077593aacb91mr6430667qkb.35.1697644818309; 
- Wed, 18 Oct 2023 09:00:18 -0700 (PDT)
+ bh=Q4oig/hzpB5AaAp4b4GPxSl5owH8+Typ4kIPdsGFzIU=;
+ b=p3aaD8E6XDX5FhHLnPcdrO72CqmZ2RHxqqbBz9cqhm+me4MNrzyRTPEHggNBov5QLs
+ YFkHZ9jaZiGohHf5zTbTUZg3ZFG3hz2O8M661pe3eYN+D5/dwOThDGflUugMz1DpwUtr
+ Bi27iPGbbItSGyIRs02u0NuQU8SWY0l7nBtmM12MgNTurcgNwar6RjnFxJmTpbliPs/i
+ HtcNsziNHvEXrIrE3B5xQJjG1X8K6wnT5yx0hDynSyvmS8uqsM7KnLfMVHngLYqbeC5m
+ z9K7RQJqrb6zfvDbN/Bi32Sy3P7Cc2Qk5VHJCzp8pcaNwm38hlc12BhdSEMwCJHwElgK
+ Rriw==
+X-Gm-Message-State: AOJu0YxUpwE3PCXbZ10WuFjIsjbhIrpmgohQLMdzSZUO7n0BtSllEB6C
+ cYCseDlCp46NVlSyrjYUyw+r0OgkoMgExerP6AXpcHwjAnGEft3qB4olo4DhYV0OTrTlp9gvdmS
+ bygd3vL9LOgLbBtM=
+X-Received: by 2002:a05:622a:282:b0:403:fcd9:963 with SMTP id
+ z2-20020a05622a028200b00403fcd90963mr6155479qtw.67.1697645131418; 
+ Wed, 18 Oct 2023 09:05:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjUoNxzh7224M4iwVJ/bu9CzuNkoAGdOoqK5sAn1HcbKUh2lv9RPwoKaq9LFbmATSLV0CyjA==
+X-Received: by 2002:a05:622a:282:b0:403:fcd9:963 with SMTP id
+ z2-20020a05622a028200b00403fcd90963mr6155434qtw.67.1697645131124; 
+ Wed, 18 Oct 2023 09:05:31 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- l23-20020a05620a0c1700b0076f18be9a64sm50405qki.81.2023.10.18.09.00.12
+ h19-20020ac85053000000b004198f248e8dsm52393qtm.76.2023.10.18.09.05.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 09:00:16 -0700 (PDT)
-Message-ID: <86803e52-ec51-4c8f-84a9-85ad545fc8ff@redhat.com>
-Date: Wed, 18 Oct 2023 18:00:12 +0200
+ Wed, 18 Oct 2023 09:05:23 -0700 (PDT)
+Message-ID: <6020a0cd-19a8-4cf7-a99d-781854464887@redhat.com>
+Date: Wed, 18 Oct 2023 18:05:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/12] hw/acpi: Realize ACPI_GED sysbus device before
- accessing it
+Subject: Re: [PATCH 05/12] hw/pci-host/bonito: Do not use SysBus API to map
+ local MMIO region
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -87,7 +87,7 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20231018141151.87466-1-philmd@linaro.org>
- <20231018141151.87466-7-philmd@linaro.org>
+ <20231018141151.87466-6-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -131,18 +131,18 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231018141151.87466-7-philmd@linaro.org>
+In-Reply-To: <20231018141151.87466-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,15 +159,95 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18/10/2023 16.11, Philippe Mathieu-Daudé wrote:
-> sysbus_mmio_map() should not be called on unrealized device.
+> There is no point in exposing an internal MMIO region via
+> SysBus and directly mapping it in the very same device.
+> 
+> Just map it without using the SysBus API.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/arm/virt.c       | 3 +--
->   hw/i386/microvm.c   | 2 +-
->   hw/loongarch/virt.c | 2 +-
->   3 files changed, 3 insertions(+), 4 deletions(-)
+>   hw/pci-host/bonito.c | 29 ++++++++++++++---------------
+>   1 file changed, 14 insertions(+), 15 deletions(-)
+> 
+> diff --git a/hw/pci-host/bonito.c b/hw/pci-host/bonito.c
+> index ee6cb85e97..3b803bcad3 100644
+> --- a/hw/pci-host/bonito.c
+> +++ b/hw/pci-host/bonito.c
+> @@ -654,7 +654,6 @@ static void bonito_host_realize(DeviceState *dev, Error **errp)
+>   static void bonito_pci_realize(PCIDevice *dev, Error **errp)
+>   {
+>       PCIBonitoState *s = PCI_BONITO(dev);
+> -    SysBusDevice *sysbus = SYS_BUS_DEVICE(s->pcihost);
+>       PCIHostState *phb = PCI_HOST_BRIDGE(s->pcihost);
+>       BonitoState *bs = s->pcihost;
+>       MemoryRegion *pcimem_alias = g_new(MemoryRegion, 1);
+> @@ -668,48 +667,48 @@ static void bonito_pci_realize(PCIDevice *dev, Error **errp)
+>       /* set the north bridge register mapping */
+>       memory_region_init_io(&s->iomem, OBJECT(s), &bonito_ops, s,
+>                             "north-bridge-register", BONITO_INTERNAL_REG_SIZE);
+> -    sysbus_init_mmio(sysbus, &s->iomem);
+> -    sysbus_mmio_map(sysbus, 0, BONITO_INTERNAL_REG_BASE);
+> +    memory_region_add_subregion(get_system_memory(), BONITO_INTERNAL_REG_BASE,
+> +                                &s->iomem);
+>   
+>       /* set the north bridge pci configure  mapping */
+>       memory_region_init_io(&phb->conf_mem, OBJECT(s), &bonito_pciconf_ops, s,
+>                             "north-bridge-pci-config", BONITO_PCICONFIG_SIZE);
+> -    sysbus_init_mmio(sysbus, &phb->conf_mem);
+> -    sysbus_mmio_map(sysbus, 1, BONITO_PCICONFIG_BASE);
+> +    memory_region_add_subregion(get_system_memory(), BONITO_PCICONFIG_BASE,
+> +                                &phb->conf_mem);
+>   
+>       /* set the south bridge pci configure  mapping */
+>       memory_region_init_io(&phb->data_mem, OBJECT(s), &bonito_spciconf_ops, s,
+>                             "south-bridge-pci-config", BONITO_SPCICONFIG_SIZE);
+> -    sysbus_init_mmio(sysbus, &phb->data_mem);
+> -    sysbus_mmio_map(sysbus, 2, BONITO_SPCICONFIG_BASE);
+> +    memory_region_add_subregion(get_system_memory(), BONITO_SPCICONFIG_BASE,
+> +                                &phb->data_mem);
+>   
+>       create_unimplemented_device("bonito", BONITO_REG_BASE, BONITO_REG_SIZE);
+>   
+>       memory_region_init_io(&s->iomem_ldma, OBJECT(s), &bonito_ldma_ops, s,
+>                             "ldma", 0x100);
+> -    sysbus_init_mmio(sysbus, &s->iomem_ldma);
+> -    sysbus_mmio_map(sysbus, 3, 0x1fe00200);
+> +    memory_region_add_subregion(get_system_memory(), 0x1fe00200,
+> +                                &s->iomem_ldma);
+>   
+>       /* PCI copier */
+>       memory_region_init_io(&s->iomem_cop, OBJECT(s), &bonito_cop_ops, s,
+>                             "cop", 0x100);
+> -    sysbus_init_mmio(sysbus, &s->iomem_cop);
+> -    sysbus_mmio_map(sysbus, 4, 0x1fe00300);
+> +    memory_region_add_subregion(get_system_memory(), 0x1fe00300,
+> +                                &s->iomem_cop);
+>   
+>       create_unimplemented_device("ROMCS", BONITO_FLASH_BASE, 60 * MiB);
+>   
+>       /* Map PCI IO Space  0x1fd0 0000 - 0x1fd1 0000 */
+>       memory_region_init_alias(&s->bonito_pciio, OBJECT(s), "isa_mmio",
+>                                get_system_io(), 0, BONITO_PCIIO_SIZE);
+> -    sysbus_init_mmio(sysbus, &s->bonito_pciio);
+> -    sysbus_mmio_map(sysbus, 5, BONITO_PCIIO_BASE);
+> +    memory_region_add_subregion(get_system_memory(), BONITO_PCIIO_BASE,
+> +                                &s->bonito_pciio);
+>   
+>       /* add pci local io mapping */
+>   
+>       memory_region_init_alias(&s->bonito_localio, OBJECT(s), "IOCS[0]",
+>                                get_system_io(), 0, 256 * KiB);
+> -    sysbus_init_mmio(sysbus, &s->bonito_localio);
+> -    sysbus_mmio_map(sysbus, 6, BONITO_DEV_BASE);
+> +    memory_region_add_subregion(get_system_memory(), BONITO_DEV_BASE,
+> +                                &s->bonito_localio);
+>       create_unimplemented_device("IOCS[1]", BONITO_DEV_BASE + 1 * 256 * KiB,
+>                                   256 * KiB);
+>       create_unimplemented_device("IOCS[2]", BONITO_DEV_BASE + 2 * 256 * KiB,
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Would it make sense to cache the return value of get_system_memory() in a 
+local variable instead of calling it again and again ...?
+
+  Thomas
 
 
