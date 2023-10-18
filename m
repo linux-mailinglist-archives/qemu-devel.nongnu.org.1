@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FAA7CDB3D
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 14:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A92797CDB3C
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 14:05:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt5Ib-000880-8I; Wed, 18 Oct 2023 08:05:18 -0400
+	id 1qt5IV-00083x-Hz; Wed, 18 Oct 2023 08:05:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qt5IX-00084X-Bw; Wed, 18 Oct 2023 08:05:14 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qt5IS-00083K-Cq
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 08:05:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qt5IT-0003VA-TL; Wed, 18 Oct 2023 08:05:12 -0400
-Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:1bac:0:640:75a2:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id DB92F620BF;
- Wed, 18 Oct 2023 15:05:00 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b667::1:1d] (unknown
- [2a02:6b8:b081:b667::1:1d])
- by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id x4kDGvAOdSw0-1zhNX6FR; Wed, 18 Oct 2023 15:05:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1697630700;
- bh=tyICDHoF6y002cjAWwUEEVKV+0xQ8fINHu98H0D605Y=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=twnf5v1xsmNNFBVBbmw+W/N+/k5o1E6hlnULUfC4fp7GO+xd/52scUy+8mvzvB98V
- QOv8mDRBQlAVpJOKHJ6k5eqgGvkakIohF3TPRbVQ6CgUlEeBoDxzqBp+9IqXXkQeHw
- ud8Zp1NJsRofJTN90UnWCxitjbmjQ7GtfhTrhCJI=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <63825da4-6df0-47a7-8d22-2aa7d75ba85d@yandex-team.ru>
-Date: Wed, 18 Oct 2023 15:04:59 +0300
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qt5IP-0003fo-Rl
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 08:05:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697630703;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LoxUv518wpoi80mnSPlhWHtNGWSr71/xOcRewEUH8gs=;
+ b=Iwfa/ptcyjPRfGp3Bv7+Nej4OxdfoPHUB8530NCH9giaPdY12WJgxVNAHoiRKdBa4QR1n4
+ NzVnOaT4mxSoW5/dEdeBWUcTMlXT7DdwLgKKGu/hPRVMoSDQEcSC9OAQ00Ju7rp4U7OUZD
+ toOrK2yPGc8r3h9yMukYpwlQgtbx7Tc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-464-Wtc0oCcSOwSmAPyLRJIK4w-1; Wed, 18 Oct 2023 08:05:02 -0400
+X-MC-Unique: Wtc0oCcSOwSmAPyLRJIK4w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33B13185A7B9;
+ Wed, 18 Oct 2023 12:05:02 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.44])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 87DA31C060AE;
+ Wed, 18 Oct 2023 12:05:01 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3] qapi: provide a friendly string representation of QAPI
+ classes
+Date: Wed, 18 Oct 2023 13:05:00 +0100
+Message-ID: <20231018120500.2028642-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 4/7] qapi: add x-blockdev-replace command
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
- eblake@redhat.com, hreitz@redhat.com, kwolf@redhat.com, den@openvz.org,
- alexander.ivanov@virtuozzo.com
-References: <20231017184444.932733-1-vsementsov@yandex-team.ru>
- <20231017184444.932733-5-vsementsov@yandex-team.ru>
- <874jiotdis.fsf@pond.sub.org>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <874jiotdis.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,52 +77,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18.10.23 13:45, Markus Armbruster wrote:
-> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
-> 
->> Add a command that can replace bs in following BdrvChild structures:
->>
->>   - qdev blk root child
->>   - block-export blk root child
->>   - any child of BlockDriverState selected by child-name
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+If printing a QAPI schema object for debugging we get the classname and
+a hex value for the instance:
 
-[..]
+  <qapi.schema.QAPISchemaEnumType object at 0x7f0ab4c2dad0>
+  <qapi.schema.QAPISchemaObjectType object at 0x7f0ab4c2dd90>
+  <qapi.schema.QAPISchemaArrayType object at 0x7f0ab4c2df90>
 
->> --- /dev/null
->> +++ b/stubs/blk-by-qdev-id.c
->> @@ -0,0 +1,9 @@
->> +#include "qemu/osdep.h"
->> +#include "qapi/error.h"
->> +#include "sysemu/block-backend.h"
->> +
->> +BlockBackend *blk_by_qdev_id(const char *id, Error **errp)
->> +{
->> +    error_setg(errp, "blk '%s' not found", id);
-> 
-> Is this expected to happen?
+With this change we instead get the classname and the human friendly
+name of the QAPI type instance:
 
-Yes, if call the command from qemu-storage-daemon, where qdev-monitor is not linked in.
+  <QAPISchemaEnumType:CpuS390State at 0x7f0ab4c2dad0>
+  <QAPISchemaObjectType:CpuInfoS390 at 0x7f0ab4c2dd90>
+  <QAPISchemaArrayType:CpuInfoFastList at 0x7f0ab4c2df90>
 
-Maybe, better message would be
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
 
-    "devices are not supported"
+Changed in v3:
 
-Maybe, that possible to use some 'if': notation in qapi, to not include support for qdev into the new command, when it compiled into qemu-storage-daemon? Seems that would not be simple, as we also need to split compilation of the command somehow, now it compiled once both for qemu and qemu tools..
+ - Retain the object hex ID in the new representation
 
-> 
->> +    return NULL;
->> +}
-> 
-> [...]
-> 
-> QAPI schema
-> Acked-by: Markus Armbruster <armbru@redhat.com>
-> 
+ scripts/qapi/schema.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index 231ebf61ba..39c11bb52a 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -73,6 +73,12 @@ def __init__(self, name: str, info, doc, ifcond=None, features=None):
+         self.features = features or []
+         self._checked = False
+ 
++    def __repr__(self):
++        if self.name is not None:
++            return "<%s:%s at 0x%x>" % (type(self).__name__, self.name, id(self))
++        else:
++            return "<%s at 0x%x>" % (type(self).__name__, id(self))
++
+     def c_name(self):
+         return c_name(self.name)
+ 
 -- 
-Best regards,
-Vladimir
+2.41.0
 
 
