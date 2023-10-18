@@ -2,90 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31ABD7CEAFA
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 00:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D10A7CEB4A
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 00:30:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtEhC-0004UH-CW; Wed, 18 Oct 2023 18:07:18 -0400
+	id 1qtEzO-00082f-E9; Wed, 18 Oct 2023 18:26:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtEh9-0004TK-P3
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 18:07:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtEh8-0007aK-A0
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 18:07:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697666833;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XWtnPggCPR5+sA/EzBEkmL41H1S01Zh/G2zxw0h/XC8=;
- b=A0cWfgml/JHKiT9/LDQBZMxf+2zQjnuypu73Y/5JfVfRNfgbRNfjljSnazUzHQRAqwb+t3
- nWsVcCTqLNdvJGuVRaQy3Z+wAmcq4ouVnyGIg+YRiEmNuIXwz3CJhrEZhBF0a1cTvw5G93
- blFnm7kp00ZkEgrhFsBII5M4n0cSHag=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-57Pw31eCPNerea8RA_4iVg-1; Wed, 18 Oct 2023 18:07:10 -0400
-X-MC-Unique: 57Pw31eCPNerea8RA_4iVg-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-5a7af473da1so21511547b3.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 15:07:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qtEzL-00080a-EY
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 18:26:03 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qtEzJ-0002Rk-BU
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 18:26:03 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1c9b70b9656so47865385ad.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 15:26:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697667959; x=1698272759; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AdUTYqC6VfPLHXyehHvPJXNvcdf9+sSHqxpbhS8YlG4=;
+ b=z0wTgsgR7S6f8cP8c1r9DWrucAy9XH7kxB5BjNzo84fIFqFIcW2ocTpy9M/Qj9Lk9I
+ 0kkVTsF7h8mFAXqxFhzSSoAWG9XHG2OUtDmAluOuXuToLKdMhncFjZ/Xi2Ar87wdOsbG
+ DDr6yjI9iyNN91CouqNCNGEYJAB4RMgEmDrmB2B/TEYg3n1Va4DEYjcxg6VQ0TpRKDM3
+ l/1zVeaY++grf/dhFxeIa30VaufBFbCgFUC2PqJUVzMuWC5lMRPnUnFDcb7kpDyZ1Oyz
+ SFisBf1ajxkEek4de1DSqzFeWu7LjYDPI7r0RRw//ceOm+4lmMEoetu5//MxYXfeq4SB
+ XP0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697666830; x=1698271630;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XWtnPggCPR5+sA/EzBEkmL41H1S01Zh/G2zxw0h/XC8=;
- b=Bud6NgMyOSQ+FU+vLaiEWCSIs3y7lUTqu4RDSh+0IIzKphCmXRMe0vqXLSCCtmTNUO
- XsRd06+aG1pCtJN+oRDCC2lOy49ulbtCT0mFlnvJx9pNf59xtlD5t52O/bzKi4Rcbqxn
- OgK1OT4KRAzk3Eu2qI0bPzHbu6Oqw+KgdmU503l3Nf2YcG2oI5P/Dw6lWU1WZQvZ8RWO
- 2x9apyhkDviqMWyN+7m+kO/x7XNNK125X5Hk1AqDo3VOTZFFcdUPoe1Ki0fTmz1aw5qn
- Kh8puFx5LQlui3OuOn58WjvLVBrWbig1nHxUFIVruROUNBRim3DAE526N/FePrNHEznV
- SKig==
-X-Gm-Message-State: AOJu0YxnnccQCl+jZ+2knp7eQzFJWM+aCjmL2HpoF7m4Y1QWqKEGzaxE
- J0evopg6m0Bm4XUFQ8xwRhquThq9E+gHXGXqBQq7PsIkTruAiivUWUaNIIIZ9J8Yxxs7DraxBYZ
- 3GRY5YyPbOn1o708=
-X-Received: by 2002:a81:790e:0:b0:5a7:af72:cb55 with SMTP id
- u14-20020a81790e000000b005a7af72cb55mr592984ywc.2.1697666830003; 
- Wed, 18 Oct 2023 15:07:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSmvZn1jTMam72GLteeOP/Y+qoWZX7XfDrGNGYhzrAOA2b9Mc6ssBOVminjHC7jx6XdqR0QA==
-X-Received: by 2002:a81:790e:0:b0:5a7:af72:cb55 with SMTP id
- u14-20020a81790e000000b005a7af72cb55mr592965ywc.2.1697666829681; 
- Wed, 18 Oct 2023 15:07:09 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- u4-20020a05620a022400b0076efaec147csm277817qkm.45.2023.10.18.15.07.08
+ d=1e100.net; s=20230601; t=1697667959; x=1698272759;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AdUTYqC6VfPLHXyehHvPJXNvcdf9+sSHqxpbhS8YlG4=;
+ b=s0d2QeC3xaZfnMSc4+D0Y/m9UnzHVxDNTcDI/ZQJ31jaKGUSKOfyKTGqn3jtAHLrbT
+ id39yDPtHZGlcwYqfn8ovPGgj69yIhyKJkHlJK7cTIQ4nDqM9DIG0HajnH84vWjkd4fk
+ U1bMDcEP012m1juSyFv5fQUu4tYoBn9lBUIaBkJQrJmMFCHRNpzYWL8X50v+QR5e89GY
+ BZg9NGvZuHE4KKyfF/UTsdP+dyhVAxVYq32eQOGIXD1HkagsUrAfeNY368xCxWgpmXqK
+ r9EnsQjzit4H7X//qYFaT6Y1Cemxz1BqfvQgAva0lfYmrV3wjaguR45QV94spmMwtUY2
+ Tg+w==
+X-Gm-Message-State: AOJu0YxM/76LQB1wyLz4bx7vrX2UqFgF/TmTjaNUtOzlumYffA9kMcVb
+ /gUQ2ZtC94rrY4kCOsET/P7ycU23pWeHAvNKm7U=
+X-Google-Smtp-Source: AGHT+IGNzturcYTO0brYASWoEpIt/6hQjIB9gX76YVnyYrYmgL2K5NkuMIYyK/iFijNHCeu4bd7MYQ==
+X-Received: by 2002:a17:903:8a:b0:1c6:b83:4720 with SMTP id
+ o10-20020a170903008a00b001c60b834720mr651555pld.63.1697667959069; 
+ Wed, 18 Oct 2023 15:25:59 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ 13-20020a170902c24d00b001b9d95945afsm431058plg.155.2023.10.18.15.25.58
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 15:07:09 -0700 (PDT)
-Date: Wed, 18 Oct 2023 18:07:06 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- alex.williamson@redhat.com, clg@redhat.com,
- jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com,
- peter.maydell@linaro.org, david@redhat.com, philmd@linaro.org,
- zhenzhong.duan@intel.com, yi.l.liu@intel.com
-Subject: Re: [PATCH v3 02/13] memory: Introduce
- memory_region_iommu_set_iova_ranges
-Message-ID: <ZTBXCqZDzfm0y1CH@x1n>
-References: <20231011175516.541374-1-eric.auger@redhat.com>
- <20231011175516.541374-3-eric.auger@redhat.com>
+ Wed, 18 Oct 2023 15:25:58 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/29] tcg patch queue
+Date: Wed, 18 Oct 2023 15:25:28 -0700
+Message-Id: <20231018222557.1562065-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231011175516.541374-3-eric.auger@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,15 +87,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 11, 2023 at 07:52:18PM +0200, Eric Auger wrote:
-> This helper will allow to convey information about valid
-> IOVA ranges to virtual IOMMUS.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+The following changes since commit ec6f9f135d5e5596ab0258da2ddd048f1fd8c359:
 
-Acked-by: Peter Xu <peterx@redhat.com>
+  Merge tag 'migration-20231017-pull-request' of https://gitlab.com/juan.quintela/qemu into staging (2023-10-17 10:06:21 -0400)
 
--- 
-Peter Xu
+are available in the Git repository at:
 
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20231018
+
+for you to fetch changes up to b540757b7f711eaf069f530916005cf8cfe7c00f:
+
+  target/i386: Use i128 for 128 and 256-bit loads and stores (2023-10-18 12:33:08 -0700)
+
+----------------------------------------------------------------
+tcg: Drop unused tcg_temp_free define
+tcg: Introduce tcg_use_softmmu
+tcg: Optimize past conditional branches
+tcg: Use constant zero when expanding with divu2
+tcg/ppc: Enable direct branching tcg_out_goto_tb with TCG_REG_TB
+tcg/ppc: Use ADDPCIS for power9
+tcg/ppc: Use prefixed instructions for power10
+tcg/ppc: Disable TCG_REG_TB for Power9/Power10
+
+----------------------------------------------------------------
+Jordan Niethe (1):
+      tcg/ppc: Enable direct branching tcg_out_goto_tb with TCG_REG_TB
+
+Mike Frysinger (1):
+      tcg: drop unused tcg_temp_free define
+
+Richard Henderson (27):
+      tcg/ppc: Untabify tcg-target.c.inc
+      tcg/ppc: Reinterpret tb-relative to TB+4
+      tcg/ppc: Use ADDPCIS in tcg_out_tb_start
+      tcg/ppc: Use ADDPCIS in tcg_out_movi_int
+      tcg/ppc: Use ADDPCIS for the constant pool
+      tcg/ppc: Use ADDPCIS in tcg_out_goto_tb
+      tcg/ppc: Use PADDI in tcg_out_movi
+      tcg/ppc: Use prefixed instructions in tcg_out_mem_long
+      tcg/ppc: Use PLD in tcg_out_movi for constant pool
+      tcg/ppc: Use prefixed instructions in tcg_out_dupi_vec
+      tcg/ppc: Use PLD in tcg_out_goto_tb
+      tcg/ppc: Disable TCG_REG_TB for Power9/Power10
+      tcg: Introduce tcg_use_softmmu
+      tcg: Provide guest_base fallback for system mode
+      tcg/arm: Use tcg_use_softmmu
+      tcg/aarch64: Use tcg_use_softmmu
+      tcg/i386: Use tcg_use_softmmu
+      tcg/loongarch64: Use tcg_use_softmmu
+      tcg/mips: Use tcg_use_softmmu
+      tcg/ppc: Use tcg_use_softmmu
+      tcg/riscv: Do not reserve TCG_GUEST_BASE_REG for guest_base zero
+      tcg/riscv: Use tcg_use_softmmu
+      tcg/s390x: Use tcg_use_softmmu
+      tcg: Use constant zero when expanding with divu2
+      tcg: Optimize past conditional branches
+      tcg: Add tcg_gen_{ld,st}_i128
+      target/i386: Use i128 for 128 and 256-bit loads and stores
+
+ include/tcg/tcg-op-common.h      |   3 +
+ include/tcg/tcg-op.h             |   2 -
+ include/tcg/tcg.h                |   8 +-
+ target/i386/tcg/translate.c      |  63 ++---
+ tcg/optimize.c                   |   8 +-
+ tcg/tcg-op-ldst.c                |  14 +-
+ tcg/tcg-op.c                     |  38 ++-
+ tcg/tcg.c                        |  13 +-
+ tcg/aarch64/tcg-target.c.inc     | 177 ++++++------
+ tcg/arm/tcg-target.c.inc         | 203 +++++++-------
+ tcg/i386/tcg-target.c.inc        | 184 +++++++------
+ tcg/loongarch64/tcg-target.c.inc | 126 +++++----
+ tcg/mips/tcg-target.c.inc        | 231 ++++++++--------
+ tcg/ppc/tcg-target.c.inc         | 561 ++++++++++++++++++++++++++-------------
+ tcg/riscv/tcg-target.c.inc       | 189 ++++++-------
+ tcg/s390x/tcg-target.c.inc       | 161 ++++++-----
+ 16 files changed, 1093 insertions(+), 888 deletions(-)
 
