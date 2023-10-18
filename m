@@ -2,71 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C925C7CD659
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9EC57CD69A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1rH-00078O-2q; Wed, 18 Oct 2023 04:24:51 -0400
+	id 1qt1um-0001PC-Oc; Wed, 18 Oct 2023 04:28:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1qt1rF-000781-KQ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:24:49 -0400
-Received: from esa9.hc1455-7.c3s2.iphmx.com ([139.138.36.223])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1qt1rE-00034K-5k
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:24:49 -0400
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="124902764"
-X-IronPort-AV: E=Sophos;i="6.03,234,1694703600"; d="scan'208";a="124902764"
-Received: from unknown (HELO oym-r1.gw.nic.fujitsu.com) ([210.162.30.89])
- by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2023 17:24:40 +0900
-Received: from oym-m2.gw.nic.fujitsu.com (oym-nat-oym-m2.gw.nic.fujitsu.com
- [192.168.87.59])
- by oym-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id A02D2D29E9
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 17:24:38 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
- [192.51.206.21])
- by oym-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id DBF07BD9AF
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 17:24:37 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 6B83D20050181
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 17:24:37 +0900 (JST)
-Received: from FNSTPC.g08.fujitsu.local (unknown [10.167.226.45])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 056321A0071;
- Wed, 18 Oct 2023 16:24:36 +0800 (CST)
-From: Li Zhijian <lizhijian@fujitsu.com>
-To: jonathan.cameron@huawei.com,
-	fan.ni@samsung.com
-Cc: qemu-devel@nongnu.org, philmd@linaro.org,
- Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v2 2/2] hw/cxl: Pass NULL for a NULL MemoryRegionOps
-Date: Wed, 18 Oct 2023 16:24:08 +0800
-Message-ID: <20231018082408.888098-2-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231018082408.888098-1-lizhijian@fujitsu.com>
-References: <20231018082408.888098-1-lizhijian@fujitsu.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-27942.006
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-27942.006
-X-TMASE-Result: 10-0.932300-10.000000
-X-TMASE-MatchedRID: A9PO4OC4jbws8AejW2/5AU7nLUqYrlslFIuBIWrdOeOjEIt+uIPPOMTr
- /G24o7Rr/AYmuPoHlH41hvF/jmI7sx8TzIzimOwP0C1sQRfQzEHEQdG7H66TyHEqm8QYBtMOrNz
- Vxk5P0Wfy+wrogeTdzEvCQNGwN23tBn9HRZKNlCfOmt0T1qrGFtLeuT62NtczRpluRT/bdcaXC0
- xJ+CBWwnsjn/fEGAWtW4wbpXTb5DJKKve1kh3RY37qSWrndbmQn0bOriG5BVc=
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=139.138.36.223;
- envelope-from=lizhijian@fujitsu.com; helo=esa9.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qt1uj-0001JX-Jv
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:25 -0400
+Received: from mail-pl1-x643.google.com ([2607:f8b0:4864:20::643])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qt1uf-0003T0-KB
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:25 -0400
+Received: by mail-pl1-x643.google.com with SMTP id
+ d9443c01a7336-1bdf4752c3cso41274325ad.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:26:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1697617576; x=1698222376;
+ darn=nongnu.org; 
+ h=message-id:in-reply-to:to:references:date:subject:mime-version:from
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=cKXetYOn3HgpUnuFeZIaD5GaOkqW5KOe6VfcdmueEKw=;
+ b=KoWvOHB6iYZgDuAuG+CdFxXtSn8VhcEKuvqzBTmhzy9gZdlCc3VKZMXyXuCzGqQy8h
+ 1xtquI6Q7Xb7RU2ocYRbKfRvvZmdZYTNbV0yW/fJ975hYaW208o2vvTiS2885gIoZ6rv
+ 3nrMVDL+lU6+iEszm4Q5nygiCW8bqZGFvJP+yxwZtpeasXAG5u0iu7CENPZqXUWQFpSZ
+ UeJl0HdBn58d2PpGtgWshSi/Xmlf8N5Q3x4hi+6kCqmSlvWogMAwIPKozfmvQUDebQ3c
+ eBQKtnuhN3BKve4vr87sf/yUDX3FQCT0HnsPZorgw5EJc3JQOmRnA3dcbwRN7v3nNDRS
+ 6hXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697617576; x=1698222376;
+ h=message-id:in-reply-to:to:references:date:subject:mime-version:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cKXetYOn3HgpUnuFeZIaD5GaOkqW5KOe6VfcdmueEKw=;
+ b=bbHrLMi4CF05ws2uSdXlGLR4dMU+Nz01FMuW2K5Or8nD/FSFGJN3O3aI8/iUhL1WR6
+ EltjbL0RUjvLsgrRwpQWVtL0EPgaSvaxcOTCafF8fSyWuHrtLJN+UwRvKDWy0CmgiIqc
+ WzqI8f5hO0i7WDC8mGlN0uEboeDNhhEu0+4LS53JFRve4IElQgLNDbJ5t9qs2Fjf7/9t
+ DlQZpQDP+WP0AZ99M6lh8WgX+I4k2MMTI3Y9cathMLj7AlVQ/cwW9Tem+t/PN1f3Ezkb
+ BqwrZB+ON4TZ/ZuK5sgW9e4lHrNsalC2cmFDkTUYRx83MsdOOPPJ6nvegm9AjYF080e3
+ evxg==
+X-Gm-Message-State: AOJu0Yyct0S+QRc1QtVTioCLE0MI359f9G6hCJAvXkOQUCU0CpJhH5rv
+ RpUyr9tBbQAwkXRpq8cU87OSOg==
+X-Google-Smtp-Source: AGHT+IERJS8XD7WJ5e4DjO41iK67SH8rHpYhAxb7KRd8lFOucvVB7bV2yI/J7gBcyVMFRioVYttJ3g==
+X-Received: by 2002:a17:902:d2cb:b0:1b8:94e9:e7cb with SMTP id
+ n11-20020a170902d2cb00b001b894e9e7cbmr4748845plc.21.1697617575782; 
+ Wed, 18 Oct 2023 01:26:15 -0700 (PDT)
+Received: from smtpclient.apple ([8.210.91.195])
+ by smtp.gmail.com with ESMTPSA id
+ v7-20020a170902b7c700b001b896686c78sm2917598plz.66.2023.10.18.01.26.11
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 18 Oct 2023 01:26:15 -0700 (PDT)
+From: Li Feng <fengli@smartx.com>
+Content-Type: multipart/alternative;
+ boundary="Apple-Mail=_87F406BE-6FBD-4784-8963-F5A5390EBDFB"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.100.2.1.4\))
+Subject: Re: [PATCH v8 0/5] Implement reconnect for vhost-user-scsi
+Date: Wed, 18 Oct 2023 16:26:10 +0800
+References: <20231009044735.941655-1-fengli@smartx.com>
+To: Markus Armbruster <armbru@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+In-Reply-To: <20231009044735.941655-1-fengli@smartx.com>
+Message-Id: <9D9DFA75-541B-4EE9-831F-B2FF941B3E41@smartx.com>
+X-Mailer: Apple Mail (2.3774.100.2.1.4)
+Received-SPF: none client-ip=2607:f8b0:4864:20::643;
+ envelope-from=fengli@smartx.com; helo=mail-pl1-x643.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,27 +96,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-a NULL parameter is enough for a NULL MemoryRegionOps
 
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
----
- hw/cxl/cxl-component-utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--Apple-Mail=_87F406BE-6FBD-4784-8963-F5A5390EBDFB
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
-diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index 6214dcdcc12..010ed82edab 100644
---- a/hw/cxl/cxl-component-utils.c
-+++ b/hw/cxl/cxl-component-utils.c
-@@ -177,7 +177,7 @@ void cxl_component_register_block_init(Object *obj,
-                        CXL2_COMPONENT_BLOCK_SIZE);
- 
-     /* io registers controls link which we don't care about in QEMU */
--    memory_region_init_io(&cregs->io, obj, NULL, cregs, ".io",
-+    memory_region_init_io(&cregs->io, obj, NULL, NULL, ".io",
-                           CXL2_COMPONENT_IO_REGION_SIZE);
-     memory_region_init_io(&cregs->cache_mem, obj, &cache_mem_ops, cxl_cstate,
-                           ".cache_mem", CXL2_COMPONENT_CM_REGION_SIZE);
--- 
-2.41.0
+Hello Guys,
+Ping=E2=80=A6=20
+These patches have been waiting for a long time. Can they be merged?
 
+Best Regards,=20
+li
+
+> On 9 Oct 2023, at 12:46=E2=80=AFPM, Li Feng <fengli@smartx.com> wrote:
+>=20
+> Changes for v8:
+> - [PATCH 3/5] vhost-user-scsi: support reconnect to backend
+>  - Fix code style suggested by Manos Pitsidianakis
+> - [PATCH 4/5] vhost-user-scsi: start vhost when guest kicks
+>  - Use 'DEVICE()' macro in vhost_user_scsi_handle_output to replace =
+the
+>    'parent_obj.parent_obj.parent_obj.parent_obj'.
+>=20
+> Changes for v7:
+> - [PATCH 3/5] vhost-user-scsi: support reconnect to backend
+>  - Add reporting the error in vhost-scsi;
+>  - Rebase to master and fix the conflict.
+> - Add "Reviewed-by" tags.
+>=20
+> Changes for v6:
+> - [PATCH] vhost-user: fix lost reconnect
+>  - Fix missing assign event_cb.
+>=20
+> Changes for v5:
+> - No logic has been changed, just move part of the code from patch 4 =
+to patch 5.
+>=20
+> Changes for v4:
+> - Merge
+>  =
+https://lore.kernel.org/all/20230830045722.611224-1-fengli@smartx.com/ =
+to
+>  this series.
+> - Add ERRP_GUARD in vhost_user_scsi_realize;
+> - Reword the commit messages.
+>=20
+> Changes for v3:
+> - Split the vhost_user_scsi_handle_output to a separate patch;
+> - Move the started_vu from vhost scsi common header to vhost-user-scsi =
+header;
+> - Fix a log print error;
+>=20
+> Changes for v2:
+> - Split the v1 patch to small separate patchset;
+> - New patch for fixing fd leak, which has sent to reviewers in another
+>  mail;
+> - Implement the `vhost_user_scsi_handle_output`;
+> - Add the started_vu safe check;
+> - Fix error handler;
+> - Check the inflight before set/get inflight fd.
+>=20
+> Li Feng (5):
+>  vhost-user-common: send get_inflight_fd once
+>  vhost: move and rename the conn retry times
+>  vhost-user-scsi: support reconnect to backend
+>  vhost-user-scsi: start vhost when guest kicks
+>  vhost-user: fix lost reconnect
+>=20
+> hw/block/vhost-user-blk.c             |   6 +-
+> hw/scsi/vhost-scsi-common.c           |  47 ++---
+> hw/scsi/vhost-scsi.c                  |   6 +-
+> hw/scsi/vhost-user-scsi.c             | 250 +++++++++++++++++++++++---
+> hw/virtio/vhost-user-gpio.c           |   5 +-
+> hw/virtio/vhost-user.c                |  10 +-
+> include/hw/virtio/vhost-scsi-common.h |   2 +-
+> include/hw/virtio/vhost-user-scsi.h   |   6 +
+> include/hw/virtio/vhost-user.h        |   3 +-
+> include/hw/virtio/vhost.h             |   2 +
+> 10 files changed, 277 insertions(+), 60 deletions(-)
+>=20
+> --=20
+> 2.41.0
+>=20
+
+
+--Apple-Mail=_87F406BE-6FBD-4784-8963-F5A5390EBDFB
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: after-white-space;"><pre id=3D"b" =
+style=3D"font-size: 13px; background: rgb(255, 255, 255); color: rgb(0, =
+0, 51); text-wrap: wrap; font-variant-ligatures: normal; orphans: 2; =
+widows: 2; text-decoration-thickness: initial; text-decoration-style: =
+initial; text-decoration-color: initial;">Hello Guys,</pre><pre id=3D"b" =
+style=3D"font-size: 13px; background: rgb(255, 255, 255); color: rgb(0, =
+0, 51); text-wrap: wrap; font-variant-ligatures: normal; orphans: 2; =
+widows: 2; text-decoration-thickness: initial; text-decoration-style: =
+initial; text-decoration-color: initial;">Ping=E2=80=A6&nbsp;</pre><pre =
+id=3D"b" style=3D"font-size: 13px; background: rgb(255, 255, 255); =
+color: rgb(0, 0, 51); text-wrap: wrap; font-variant-ligatures: normal; =
+orphans: 2; widows: 2; text-decoration-thickness: initial; =
+text-decoration-style: initial; text-decoration-color: initial;">These =
+patches have been waiting for a long time. Can they be merged?</pre><pre =
+id=3D"b" style=3D"font-size: 13px; background: rgb(255, 255, 255); =
+color: rgb(0, 0, 51); text-wrap: wrap; font-variant-ligatures: normal; =
+orphans: 2; widows: 2; text-decoration-thickness: initial; =
+text-decoration-style: initial; text-decoration-color: =
+initial;"><br></pre><pre id=3D"b" style=3D"font-size: 13px; background: =
+rgb(255, 255, 255); color: rgb(0, 0, 51); text-wrap: wrap; =
+font-variant-ligatures: normal; orphans: 2; widows: 2; =
+text-decoration-thickness: initial; text-decoration-style: initial; =
+text-decoration-color: initial;">Best Regards,&nbsp;</pre><pre id=3D"b" =
+style=3D"font-size: 13px; background: rgb(255, 255, 255); color: rgb(0, =
+0, 51); text-wrap: wrap; font-variant-ligatures: normal; orphans: 2; =
+widows: 2; text-decoration-thickness: initial; text-decoration-style: =
+initial; text-decoration-color: initial;">li</pre><pre id=3D"b" =
+style=3D"font-size: 13px; background: rgb(255, 255, 255); color: rgb(0, =
+0, 51); text-wrap: wrap; font-variant-ligatures: normal; orphans: 2; =
+widows: 2; text-decoration-thickness: initial; text-decoration-style: =
+initial; text-decoration-color: =
+initial;"><br></pre><div><div><blockquote type=3D"cite"><div>On 9 Oct =
+2023, at 12:46=E2=80=AFPM, Li Feng &lt;fengli@smartx.com&gt; =
+wrote:</div><br class=3D"Apple-interchange-newline"><div><div>Changes =
+for v8:<br>- [PATCH 3/5] vhost-user-scsi: support reconnect to =
+backend<br> &nbsp;- Fix code style suggested by Manos Pitsidianakis<br>- =
+[PATCH 4/5] vhost-user-scsi: start vhost when guest kicks<br> &nbsp;- =
+Use 'DEVICE()' macro in vhost_user_scsi_handle_output to replace the<br> =
+&nbsp;&nbsp;&nbsp;'parent_obj.parent_obj.parent_obj.parent_obj'.<br><br>Ch=
+anges for v7:<br>- [PATCH 3/5] vhost-user-scsi: support reconnect to =
+backend<br> &nbsp;- Add reporting the error in vhost-scsi;<br> &nbsp;- =
+Rebase to master and fix the conflict.<br>- Add "Reviewed-by" =
+tags.<br><br>Changes for v6:<br>- [PATCH] vhost-user: fix lost =
+reconnect<br> &nbsp;- Fix missing assign event_cb.<br><br>Changes for =
+v5:<br>- No logic has been changed, just move part of the code from =
+patch 4 to patch 5.<br><br>Changes for v4:<br>- Merge<br> =
+&nbsp;https://lore.kernel.org/all/20230830045722.611224-1-fengli@smartx.co=
+m/ to<br> &nbsp;this series.<br>- Add ERRP_GUARD in =
+vhost_user_scsi_realize;<br>- Reword the commit messages.<br><br>Changes =
+for v3:<br>- Split the vhost_user_scsi_handle_output to a separate =
+patch;<br>- Move the started_vu from vhost scsi common header to =
+vhost-user-scsi header;<br>- Fix a log print error;<br><br>Changes for =
+v2:<br>- Split the v1 patch to small separate patchset;<br>- New patch =
+for fixing fd leak, which has sent to reviewers in another<br> =
+&nbsp;mail;<br>- Implement the `vhost_user_scsi_handle_output`;<br>- Add =
+the started_vu safe check;<br>- Fix error handler;<br>- Check the =
+inflight before set/get inflight fd.<br><br>Li Feng (5):<br> =
+&nbsp;vhost-user-common: send get_inflight_fd once<br> &nbsp;vhost: move =
+and rename the conn retry times<br> &nbsp;vhost-user-scsi: support =
+reconnect to backend<br> &nbsp;vhost-user-scsi: start vhost when guest =
+kicks<br> &nbsp;vhost-user: fix lost reconnect<br><br> =
+hw/block/vhost-user-blk.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+&nbsp;&nbsp;6 +-<br> hw/scsi/vhost-scsi-common.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;47 =
+++---<br> hw/scsi/vhost-scsi.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;6 +-<br> =
+hw/scsi/vhost-user-scsi.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+250 +++++++++++++++++++++++---<br> hw/virtio/vhost-user-gpio.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+&nbsp;&nbsp;5 +-<br> hw/virtio/vhost-user.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;| &nbsp;10 +-<br> include/hw/virtio/vhost-scsi-common.h =
+| &nbsp;&nbsp;2 +-<br> include/hw/virtio/vhost-user-scsi.h &nbsp;&nbsp;| =
+&nbsp;&nbsp;6 +<br> include/hw/virtio/vhost-user.h =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;3 +-<br> =
+include/hw/virtio/vhost.h =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+&nbsp;&nbsp;2 +<br> 10 files changed, 277 insertions(+), 60 =
+deletions(-)<br><br>-- =
+<br>2.41.0<br><br></div></div></blockquote></div><br></div></body></html>=
+
+--Apple-Mail=_87F406BE-6FBD-4784-8963-F5A5390EBDFB--
 
