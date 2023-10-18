@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116E87CD6A9
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6CD7CD6AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:34:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1xZ-0000EE-8x; Wed, 18 Oct 2023 04:31:21 -0400
+	id 1qt20D-0000Uw-6l; Wed, 18 Oct 2023 04:34:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt1xI-0007xK-4m
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:31:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt1xG-00047l-Bh
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:31:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697617861;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=53NdlOaN5NnsQH2Dn7kiV7xqkY5R8FOtpalIPF4LmRs=;
- b=g9v+RROH0c8LC1KEp4cTMJD2WBoDAPP6w1eixsiWA8HxpHmvblfLwa0u5z0WZcZMzwbhcV
- 3E0Zr6FQp3ynMIde2mPIzgfcAyOpKdNK4XGqRtYqH8p3fJ2r7w3lrWukD5PZcWc1aL6X5n
- KsXWBMy5CfYV193RbALfDEUsvPh9jNo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-231-Y-3U-bCnM6CgCtg1eR-n9w-1; Wed, 18 Oct 2023 04:30:58 -0400
-X-MC-Unique: Y-3U-bCnM6CgCtg1eR-n9w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B2670185A7B4;
- Wed, 18 Oct 2023 08:30:57 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8ED56492BEF;
- Wed, 18 Oct 2023 08:30:57 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 82E8721E6A1F; Wed, 18 Oct 2023 10:30:56 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org,  libvir-list@redhat.com,  Fabiano Rosas
- <farosas@suse.de>,  qemu-block@nongnu.org,  Leonardo Bras
- <leobras@redhat.com>,  Peter Xu <peterx@redhat.com>,  Fam Zheng
- <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v6 2/5] migration: migrate 'inc' command option is
- deprecated.
-References: <20231017172307.22858-1-quintela@redhat.com>
- <20231017172307.22858-3-quintela@redhat.com>
-Date: Wed, 18 Oct 2023 10:30:56 +0200
-In-Reply-To: <20231017172307.22858-3-quintela@redhat.com> (Juan Quintela's
- message of "Tue, 17 Oct 2023 19:23:04 +0200")
-Message-ID: <87jzrkwcvz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qt207-0000Ae-JJ
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:34:00 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qt205-0004TU-PG
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:33:59 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so6477505e9.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:33:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697618035; x=1698222835; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=CqF8/Ybn68HM49A/EIpkgJLKGNG3vf15RWuCj+eAfPs=;
+ b=USBYuLQEwdDX+aZwp9laqP+eFdHGmfPbso9zCuOhaaCN9mBIL9Ph1UdHOGFTJ215Nf
+ 2vbRArQSPxbtWuTeiT3sQ6cV0Y7fN49HuegbiBk88JQToQAimYak41QzMu6RbwXp9JUP
+ fw2YmPBSp+HhODsYS9+/r7v/n9CmTuanMJUlOQeYlg+mljBy4Kaplr2FCMHhTgOFj5gE
+ g5lVeukujJrD/Vt1N5c5G12+8tXmXF8iSw0hOEaOsT/L1asPrg0Lx0vnM3N3wsCAPNkC
+ xdfDA2fsBMzS9zgEuVnzwy2t79wIbMbarsth4ltweDIbHcVWBs+SWf8dHQlPT4PrSqCj
+ ffrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697618035; x=1698222835;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CqF8/Ybn68HM49A/EIpkgJLKGNG3vf15RWuCj+eAfPs=;
+ b=f0oCGik9IJ54TpoIKhDwCUmNp69Thr/cYVvmX3Cbp6go4/urhe9MYtOpMbpoKTMt6g
+ zFZJkbgJIH9A+76psTp03rylJISlUV+QDt5EkK2x4Z9ilPh0wwsIvBKDD2XqueUiP6l1
+ OxRiNoNAW8gdXp5262l6x8kODDIoLhtF6jTUEedWe26TDURyv+83l5tCWBS59dLbjNHx
+ Glbz+lyW6pa34YbpUpCikl4NNnddK0dA8BzqpijwzMpFPsoVwLh7P6+M2gShoe893hlZ
+ RpbP1GEQr3oTLR//N9HbnFsNvEcsYUQtitoNTTx8PXLYMCBrdwFMs4uwW+gC8o1fBzrk
+ L76Q==
+X-Gm-Message-State: AOJu0YwVnZEcZlV9RN/KYBdMnEGA84QV02Y9vttXROqx2uk75ioQ+2u0
+ CP0KSwk4RP78jz/6XbXMh9SnVQ==
+X-Google-Smtp-Source: AGHT+IElugPjYf+uD34GBP5UfVHsHh0m/66q1+OYfFlsoxh5LH2OtTsAEysMataM7zkreykrAADvhg==
+X-Received: by 2002:a05:600c:4e47:b0:408:3c10:ad47 with SMTP id
+ e7-20020a05600c4e4700b004083c10ad47mr898970wmq.40.1697618035416; 
+ Wed, 18 Oct 2023 01:33:55 -0700 (PDT)
+Received: from meli.delivery (adsl-21.109.242.226.tellas.gr. [109.242.226.21])
+ by smtp.gmail.com with ESMTPSA id
+ b24-20020a05600c06d800b004064e3b94afsm1047329wmn.4.2023.10.18.01.33.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 01:33:54 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:32:40 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: fengli@smartx.com
+Cc: alex.bennee@linaro.org, armbru@redhat.com, fam@euphon.net,
+ hreitz@redhat.com, kwolf@redhat.com, manos.pitsidianakis@linaro.org,
+ mst@redhat.com, pbonzini@redhat.com, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org, raphael.norwitz@nutanix.com, viresh.kumar@linaro.org
+Subject: Re: [PATCH v8 3/5] vhost-user-scsi: support reconnect to backend
+In-Reply-To: <20231009044735.941655-4-fengli@smartx.com>
+Message-ID: <2pugg.q0w0n9hlmdo@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,42 +92,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
-
-> Use blockdev-mirror with NBD instead.
->
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Reviewed-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> If the backend crashes and restarts, the device is broken.
+> This patch adds reconnect for vhost-user-scsi.
+> 
+> This patch also improves the error messages, and reports some silent 
+> errors.
+> 
+> Tested with spdk backend.
+> 
+> Signed-off-by: Li Feng <fengli@smartx.com>
 > ---
->  docs/about/deprecated.rst      | 9 +++++++++
->  qapi/migration.json            | 8 +++++++-
->  migration/migration-hmp-cmds.c | 5 +++++
->  migration/migration.c          | 5 +++++
->  4 files changed, 26 insertions(+), 1 deletion(-)
->
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 2febd2d12f..b51136f50a 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -461,3 +461,12 @@ Migration
->  ``skipped`` field in Migration stats has been deprecated.  It hasn't
->  been used for more than 10 years.
->  
-> +``inc`` migrate command option (since 8.2)
-> +''''''''''''''''''''''''''''''''''''''''''
-> +
-> +Use blockdev-mirror with NBD instead.
-> +
-> +As an intermediate step the ``inc`` functionality can be achieved by
-> +setting the ``block-incremental`` migration parameter to ``true``.
-> +But this parameter is also deprecated.
-> +
 
-If you need to respin for some other reason, drop the blank line at end
-of file.  Same in later patches.
-
-[...]
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
