@@ -2,93 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0168E7CEA2D
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C047CEA31
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:46:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtEJd-0006f8-Li; Wed, 18 Oct 2023 17:42:57 -0400
+	id 1qtELr-0007cU-Fi; Wed, 18 Oct 2023 17:45:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qtEJT-0006eR-20
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:42:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qtEJO-0002aZ-8C
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:42:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697665359;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pPNyo+sNwDLjQJ9EYoQBCZNJN9e5djdUk0VrpcCHbQ4=;
- b=Wumep7dunMnupmmjtDQSkS2pwnwH/5z9G+Up6LKhVybgkhs8p2NouSHobuEi5JJS4k6lC5
- 7Z07RnCQkptqTyojUbCAR4bE+wiv/3l5xDsI7AWwJ46e6vAfB3EUdrUmRE9d/+Mg80+zUr
- fv1sGfoejNj1t8UysMX7kUar9VbS9fY=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-QLjxMu4YNOWJDpKWpelPIw-1; Wed, 18 Oct 2023 17:42:38 -0400
-X-MC-Unique: QLjxMu4YNOWJDpKWpelPIw-1
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-794c9992f15so10354439f.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:42:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qtELp-0007be-8h
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:45:13 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qtELn-00039m-7H
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:45:12 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6b1e46ca282so5746581b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:45:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1697665509; x=1698270309; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wAOEHQ77CDEWxljUHmClboNiozu0PLhNNjRUillm338=;
+ b=bV0GImePWIDWXdor+cUJvbjE0xObAkogcd3STfccACZYOvXO/vJN3eG80mlXV5F02k
+ vY6kvNnuFrWWLrQUy81KoPVz9Mi7oBug73LMsWj0IL8L+a1yv8nPNoIafiK0P3VsSRAM
+ Ads3fiKmQtcvSxZ3Qt6ckJkIAPzfp/htqw4VKroqIHPzviGXtmqhqOxRm3Jwl1ENlmdz
+ RxaXwoudkxiFXlSvJy8P9H+qQEIHo7GwyiJlu3AwSW0iI0XKWJPSSei3vrlb3dBphXiE
+ nHgxjxdJuxCugfEnQsjDfYUS1MVDYgp73oXJH2JgsaBmR9fk6Ky7IF/fp/xBfkXU0kSc
+ cnkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697665357; x=1698270157;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pPNyo+sNwDLjQJ9EYoQBCZNJN9e5djdUk0VrpcCHbQ4=;
- b=jvu1E8cB0MQKvUR4PHUEoPZU5QH5eHzXwOL51dSfAwZtbIPDnmX8YKqQTugdRO5Uud
- aF61wCN02MJr6OE6nr6iCvOOgNFVr61OLbD99fUHWuGwA4ELPHCtR6dplLXr4uZLhuk7
- LNlUwNRYr87LC6qHMEXx4pZvuq7kW+crGygYlY8Fr7edkx62acSioYspRTWcTe6MCMhS
- MKOBfOw5zqJZkYGXFyONJ828sZlb8dM9paSa9KZ5aFGuqoyIUiuVE5awHztEtavRUJD3
- FDWAMDyKWzP4minOEwdMnCyOFZ7F5e++1/VuzVxPJC19DkF4ulesNZz9lFB66VidU48W
- pAXQ==
-X-Gm-Message-State: AOJu0YyJTtd1C0/dR6oVAP8QTDg9+KDoasAA/o5eUBTCEIHhTy4Ma6JI
- bRVajfDRkuSlnUI3ug4ANVhmdI9AsjDzioG8WyIuVwGNStXHdQ6mG7pNzT/WEtZPS9ap94lfyWa
- +xwIVwK/J+wRbWk0=
-X-Received: by 2002:a05:6602:585:b0:79d:27ef:23c3 with SMTP id
- v5-20020a056602058500b0079d27ef23c3mr45539iox.5.1697665357642; 
- Wed, 18 Oct 2023 14:42:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgn9GIBvvKAnH7blaNobxSqFry+4XRY6X6hmqsDowlPeKCFNGeVNs4hutWPwuUIrEhSd24fw==
-X-Received: by 2002:a05:6602:585:b0:79d:27ef:23c3 with SMTP id
- v5-20020a056602058500b0079d27ef23c3mr45524iox.5.1697665357348; 
- Wed, 18 Oct 2023 14:42:37 -0700 (PDT)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- b25-20020a02c999000000b0042bb6431487sm1493101jap.65.2023.10.18.14.42.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 14:42:36 -0700 (PDT)
-Date: Wed, 18 Oct 2023 15:42:34 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- clg@redhat.com, jean-philippe@linaro.org, mst@redhat.com,
- pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
- david@redhat.com, philmd@linaro.org, zhenzhong.duan@intel.com,
- yi.l.liu@intel.com
-Subject: Re: [PATCH v3 13/13] vfio: Remove 64-bit IOVA address space assumption
-Message-ID: <20231018154234.4c47801d.alex.williamson@redhat.com>
-In-Reply-To: <20231011175516.541374-14-eric.auger@redhat.com>
-References: <20231011175516.541374-1-eric.auger@redhat.com>
- <20231011175516.541374-14-eric.auger@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1697665509; x=1698270309;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wAOEHQ77CDEWxljUHmClboNiozu0PLhNNjRUillm338=;
+ b=WnZc//WG5VzamRhDm/Nyw6SM8zPf2gSB4+EWj5tTX244UCOkZMfj4HuGHG7RYomKJy
+ oAOm5JVY6UfSLOemlC7bJfLuQJJrSP76UykG8QGrrjbYsuLWNkMufmcQ8q2izHC1QL4k
+ zc+gz4ZtgyNlN3XeJLqATRUooOsb4xQ/A4ud4ZlNwSvWoKa0Wk445C4FCAakGPWyzy8C
+ /CwlQb3PPpWifWPtLNCyvyvCl5F0xO7vsiJMN9nKVZDYFK9RaynWGuftJsggM7L18Lvj
+ PClD3/5t93M3FRDMjwjKFQ0KytfhdMPo834ZHxMjupXnCt8zNdkwanVh74nyXIa1kJIq
+ no0w==
+X-Gm-Message-State: AOJu0YzQf8jt3dk0bZncbPdAaY89956zxHXPeLxmTSvBIOH/OmygxYSN
+ B1Xug3C6S+9/JhoF3+L2AmLW7w==
+X-Google-Smtp-Source: AGHT+IGRtMZ88AXTbtvNiQTkY6yQhFWKVt9MNY4aZ1jEEECFra4l3Yh35fwXEpn84i1xsSE+4ezPeg==
+X-Received: by 2002:a62:798b:0:b0:690:1c1b:aefd with SMTP id
+ u133-20020a62798b000000b006901c1baefdmr396359pfc.5.1697665509468; 
+ Wed, 18 Oct 2023 14:45:09 -0700 (PDT)
+Received: from [192.168.68.107] ([177.45.186.249])
+ by smtp.gmail.com with ESMTPSA id
+ t23-20020aa79477000000b006bd9422b279sm3783899pfq.54.2023.10.18.14.45.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Oct 2023 14:45:09 -0700 (PDT)
+Message-ID: <2a2febdb-d42e-4d72-aae1-e630f079f2c2@ventanamicro.com>
+Date: Wed, 18 Oct 2023 18:45:04 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/10] riscv: RVA22U64 profile support
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>,
+ Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
+ <CAKmqyKP=4kGpO=8D13iJw7pJSkD9CFary_DHt236+e1GFMAngA@mail.gmail.com>
+ <a89189d3-2975-487e-9d2e-bd8ea60feba5@ventanamicro.com>
+ <20231016-cf26d23a1fe53ee3b5b68513@orel>
+ <CAKmqyKMg0VKRQ_kFLHJQCq19p-Yv4iJqJZF3XGZWxfuYPe3rbQ@mail.gmail.com>
+ <20231017-e7a4712137165b59844499e3@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231017-e7a4712137165b59844499e3@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,140 +101,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 11 Oct 2023 19:52:29 +0200
-Eric Auger <eric.auger@redhat.com> wrote:
 
-> Now we retrieve the usable IOVA ranges from the host,
-> we now the physical IOMMU aperture and we can remove
 
-s/now/use/?
-
-> the assumption of 64b IOVA space when calling
-> vfio_host_win_add().
+On 10/17/23 05:08, Andrew Jones wrote:
+> On Tue, Oct 17, 2023 at 01:55:47PM +1000, Alistair Francis wrote:
+>> On Mon, Oct 16, 2023 at 7:03 PM Andrew Jones <ajones@ventanamicro.com> wrote:
+>>>
+>>> On Thu, Oct 12, 2023 at 04:07:50PM -0300, Daniel Henrique Barboza wrote:
+>>>>
+>>>>
+>>>> On 10/11/23 00:01, Alistair Francis wrote:
+>>>>> On Sat, Oct 7, 2023 at 12:23 AM Daniel Henrique Barboza
+>>>>> <dbarboza@ventanamicro.com> wrote:
+>>>>>>
+>>>>>> Hi,
+>>>>>>
+>>>>>> Several design changes were made in this version after the reviews and
+>>>>>> feedback in the v1 [1]. The high-level summary is:
+>>>>>>
+>>>>>> - we'll no longer allow users to set profile flags for vendor CPUs. If
+>>>>>>     we're to adhere to the current policy of not allowing users to enable
+>>>>>>     extensions for vendor CPUs, the profile support would become a
+>>>>>>     glorified way of checking if the vendor CPU happens to support a
+>>>>>>     specific profile. If a future vendor CPU supports a profile the CPU
+>>>>>>     can declare it manually in its cpu_init() function, the flag will
+>>>>>>     still be set, but users can't change it;
+>>>>>>
+>>>>>> - disabling a profile will now disable all the mandatory extensions from
+>>>>>>     the CPU;
+>>>>>
+>>>>> What happens if you enable one profile and disable a different one?
+>>>>
+>>>> With this implementation as is the profiles will be evaluated by the order they're
+>>>> declared in riscv_cpu_profiles[]. Which isn't exactly ideal since we're exchanging
+>>>> a left-to-right ordering in the command line by an arbitrary order that we happened
+>>>> to set in the code.
+>>>>
+>>>> I can make some tweaks to make the profiles sensible to left-to-right order between
+>>>> them, while keeping regular extension with higher priority. e.g.:
+>>>>
+>>>>
+>>>> -cpu rv64,zicbom=true,profileA=false,profileB=true,zicboz=false
+>>>> -cpu rv64,profileA=false,zicbom=true,zicboz=false,profileB=true
+>>>> -cpu rv64,profileA=false,profileB=true,zicbom=true,zicboz=false
+>>>>
+>>>> These would all do the same thing: "keeping zicbom=true and zicboz=false, disable profileA
+>>>> and then enable profile B"
+>>>>
+>>>> Switching the profiles order would have a different result:
+>>>>
+>>>> -cpu rv64,profileB=true,profileA=false,zicbom=true,zicboz=false
+>>>>
+>>>> "keeping zicbom=true and zicboz=false, enable profile B and then disable profile A"
+>>>>
+>>>>
+>>>> I'm happy to hear any other alternative/ideas. We'll either deal with some left-to-right
+>>>> ordering w.r.t profiles or deal with an internal profile commit ordering. TBH I think
+>>>> it's sensible to demand left-to-right command line ordering for profiles only.
+>>>
+>>> left-to-right ordering is how the rest of QEMU properties work and scripts
+>>> depend on it. For example, one can do -cpu $MODEL,$DEFAULT_PROPS,$MORE_PROPS
+>>> where $MORE_PROPS can not only add more props but also override default
+>>> props (DEFAULT_PROPS='foo=off', MORE_PROPS='foo=on' - foo will be on).
+>>> left-to-right also works with multiple -cpu parameters, i.e. -cpu
+>>> $MODEL,$DEFAULT_PROPS -cpu $MODEL,$MY_PROPS will replace default props
+>>> with my props.
+>>
+>> That seems like the way to go then
+>>
+>>>
+>>> I don't think profiles should be treated special with regard to this. They
+>>> should behave the same as any property. If one does
+>>> profileA=off,profileB=on and there are overlapping extensions then a
+>>
+>> But what does this mean? What intent is the user saying here?
+>>
+>> For example if a user says:
+>>
+>>      RVA22U64=off,RVA24U64=on
+>>
+>> They only want the extensions that were added in RVA24U64? What about
+>> G and the standard extensions?
 > 
-> This works fine in general but in case of an IOMMU memory
-> region this becomes more tricky. For instance the virtio-iommu
-> MR has a 64b aperture by default. If the physical IOMMU has a
-> smaller aperture (typically the case for VTD), this means we
-> would need to resize the IOMMU MR when this latter is linked
-> to a container. However this happens on vfio_listener_region_add()
-> when calling the IOMMU MR set_iova_ranges() callback and this
-> would mean we would have a recursive call the
-> vfio_listener_region_add(). This looks like a wrong usage of
-> he memory API causing duplicate IOMMU MR notifier registration
+> Disabling a profile is certainly odd, because I wouldn't expect profiles
+> to be used with any CPU type other than a base type, i.e. they should be
+> used to enable extensions on a barebones CPU model, which means setting
+> them off would be noops.  And, if a profile is set off for a cpu model
+> where extensions are set either by the model or by previous profile and
+> extension properties, then it also seems like an odd use, but that's at
+> least consistent with how other properties would work, so I'm not sure we
+> need to forbid it.
 
-s/he/the/
+It's weird to add a flag that users can set to 'off' and nothing happens.
 
-> for instance.
+That said, I'm considering profile disablement a debug/development option.
+I am thinking about adding a warning when users disables a profile like:
+
+"disabling a profile is recommended only for troubleshooting and is discouraged
+for regular use"
+
+And also mention something along those lines in the docs as well.
+
+We might be compelled into implementing profile disablement because it's weird
+otherwise, but we're not obligated to promote it. In fact I want to actively
+discourage it.
+
+
+Thanks,
+
+Daniel
+
+
 > 
-> Until we find a better solution, make sure the vfio_find_hostwin()
-> is not called anymore for IOMMU region.
+>>
+>> To me it just seems really strange to have more than 1 profile.
+>> Profiles are there to help software and users have common platforms.
+>> Why would a user want to mix-n-match them
 > 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> I think it's possible users will want to describe platforms which are
+> compatible with more than one profile, e.g. RVA22U64=on,RVA24U64=on.
 > 
-> ---
+> The example I gave Andrea about this was that C may get demoted from
+> mandatory to optional in later profiles. If a platform is built which
+> conforms to an older profile with C and to the later profile where C
+> is only optional, then enabling both profiles will ensure that C is
+> enabled, whereas only enabling the later profile will not, and then
+> C must be added manually after inspecting the older profile to see
+> what will be missed. OIOW, the burden of individual extension management
+> will still be present if only single profiles may be enabled at a time.
+> (And, even if the later profile was a strict superset of the older one,
+> then, if a user wants to explicitly describe a platform which claims
+> compatibility with both profiles, they probably shouldn't be punished
+> for it, even if the resulting extension enablement would be equivalent
+> to only enabling the later profile.)
 > 
-> v2 -> v3:
-> - take into account the avail IOVA range may not be existing
-> - Create as many VFIOHostDMAWindow as valid IOVA ranges
-> - rebase on top of vfio-next
-> 
-> I have not found any working solution to the IOMMU MR resizing.
-> So I can remove this patch or remove the check for IOMMU MR. Maybe
-> this is an issue which can be handled separately?
-
-Am I correct that the only thing we're solving here is the FIXME?
-
-Without this change we assume a 64-bit IOVA address space for the
-"hostwin" and the previous patch 03/ already sets the usable IOVA range
-for the IOMMU aperture.  Kernel code will error on mappings outside of
-the usable IOVA ranges regardless, so at best we're making the failure
-occur earlier in QEMU rather than at the time of the DMA mapping.
-
-I think the FIXME comment had assumed the hostwin support would be more
-universal, but perhaps we're just doubling down on a relic of SPAPR
-support that we can safely ignore, and at some point remove.  It really
-seems to serve the same purpose as the new iova_ranges and if it were
-worthwhile to fail the range in QEMU before trying to map it in the
-kernel, we could test it against iova_ranges directly.
-
-Unless this serves some purpose that I'm not spotting, maybe we should
-drop this patch, consider hostwin to be SPAPR specific, and avoid
-further entanglements with it here so that it can be more easily
-removed.  Thanks,
-
-Alex
-
-> ---
->  hw/vfio/common.c    | 14 +++++++-------
->  hw/vfio/container.c | 23 +++++++++++++++++------
->  2 files changed, 24 insertions(+), 13 deletions(-)
-> 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 9d804152ba..1447b6fdc4 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -654,13 +654,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
->          goto fail;
->      }
->  
-> -    hostwin = vfio_find_hostwin(container, iova, end);
-> -    if (!hostwin) {
-> -        error_setg(&err, "Container %p can't map guest IOVA region"
-> -                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
-> -        goto fail;
-> -    }
-> -
->      memory_region_ref(section->mr);
->  
->      if (memory_region_is_iommu(section->mr)) {
-> @@ -720,6 +713,13 @@ static void vfio_listener_region_add(MemoryListener *listener,
->          return;
->      }
->  
-> +    hostwin = vfio_find_hostwin(container, iova, end);
-> +    if (!hostwin) {
-> +        error_setg(&err, "Container %p can't map guest IOVA region"
-> +                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
-> +        goto fail;
-> +    }
-> +
->      /* Here we assume that memory_region_is_ram(section->mr)==true */
->  
->      /*
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 5122ff6d92..eb9d962881 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -693,12 +693,23 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
->          vfio_get_iommu_info_migration(container, info);
->          g_free(info);
->  
-> -        /*
-> -         * FIXME: We should parse VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE
-> -         * information to get the actual window extent rather than assume
-> -         * a 64-bit IOVA address space.
-> -         */
-> -        vfio_host_win_add(container, 0, (hwaddr)-1, container->pgsizes);
-> +        if (container->nr_iovas == -1) {
-> +            /*
-> +             * no available info on usable IOVA ranges,
-> +             * assume 64b IOVA space
-> +             */
-> +            vfio_host_win_add(container, 0, (hwaddr)-1, container->pgsizes);
-> +        } else {
-> +            GList *l;
-> +
-> +            g_assert(container->nr_iovas);
-> +            for (l = container->iova_ranges; l; l = l->next) {
-> +                Range *r = l->data;
-> +
-> +                vfio_host_win_add(container, range_lob(r), range_upb(r),
-> +                                  container->pgsizes);
-> +            }
-> +        }
->  
->          break;
->      }
-
+> Thanks,
+> drew
 
