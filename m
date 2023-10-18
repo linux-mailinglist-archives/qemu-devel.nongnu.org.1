@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10FD7CD683
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6337CD69B
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:33:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1uw-0001nj-5n; Wed, 18 Oct 2023 04:28:38 -0400
+	id 1qt1uy-0001qz-V0; Wed, 18 Oct 2023 04:28:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1uu-0001n2-1m
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qt1uw-0001o8-AJ
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1us-0003fv-Ft
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:35 -0400
+ id 1qt1uu-0003g8-Mz
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697617714;
+ s=mimecast20190719; t=1697617715;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gMEGfJX5yEubPkar1DYtNMZdMeXfWKJZ/edTNcXbgHQ=;
- b=XLk59ahugnxF8gPZahmNlBJyWU/Xk+NzvxJJmC6XbXT66o4wwEKLbWyIE24n6sXU8IWAST
- ez2ngGLDn2IjubvPzF75PEMdD+bNjUhFpMpo0O66ulOuxpGlw4cGpPg7DIDYvczPtoudhI
- lcqgRI2YwDD+qQonwumV18OwRIei/Lc=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fxx0UVHYrb7uEEGRAehFsixsJ7Yl+etKGjOVzEvVFO0=;
+ b=gEA1rVD3+ottRv9QTIMzUup3qCi8VRM/NiufjHDci5Ur3HI2w5+bre0QeFracThgnGlOcN
+ vwMhyWA7VMNGe+HIdFc910SI5aVn/URn8x4SVG0MM91OC5pBGosgD1eQh2bWg+HMo2pTcG
+ 85bxbAQ8VGWIrWeiAFNAZacIA7ere/o=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-292-i7Kr-3PjMPquvvFdTE1v5Q-1; Wed, 18 Oct 2023 04:28:32 -0400
-X-MC-Unique: i7Kr-3PjMPquvvFdTE1v5Q-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9be8013f2d1so292916666b.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:31 -0700 (PDT)
+ us-mta-277-X0EQ7mt6M2yG71_A3XnU6Q-1; Wed, 18 Oct 2023 04:28:33 -0400
+X-MC-Unique: X0EQ7mt6M2yG71_A3XnU6Q-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-53dd901c9c3so5123199a12.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697617710; x=1698222510;
+ d=1e100.net; s=20230601; t=1697617712; x=1698222512;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gMEGfJX5yEubPkar1DYtNMZdMeXfWKJZ/edTNcXbgHQ=;
- b=VYP88xiH1+AiYCYl6J8aQUF+uykXsTMQ4SMsE6Nz7lVYaFSuuxpU/fNBkOsNzXZlaH
- IuKqyMb1OXXnFt7efuid/5JED8031PiHa+7Rle56hvhrx2sITbE0c1RXzkxGqE2FPTVm
- ZfsaEaoALDvETsmn4q+bnAD4pA8HcZT3CUEYiOm4zXkDWKInYfYxK82MD7yP2mEqABbu
- sG2gwTeoA3G35dWxVGPmTWNe2uS9xzXh05B1t+2zgxVSb0i7PpqJ4LB/jb8kMPnGsYwj
- 9LeeP0uA3Wrq2w7Cd8S+hLBQE3OVvXW1GBcX7CfCnLJSJXXY408oayE/pEwW57p+NxRK
- MvxQ==
-X-Gm-Message-State: AOJu0YxChfzXLbSy0SANvpIYTufWJ54htNxgZwuDtp9xGO9wO7FGGDtd
- E35b8FmOlD2VaMkKzGEwSIKQcTTyzhAF5CgBdI/I1I1HfiOSWDFHXatWTHPEd4W4tP+bqx7jbGE
- pDQpdGhlEXbDHofI3m33h/c1QiK5z9ffKujjjJGpur5rWAIm4MyhY0ErN0Nu114Zw8Ah9fDHCxW
- M=
-X-Received: by 2002:a17:907:9348:b0:9ba:321b:80e1 with SMTP id
- bv8-20020a170907934800b009ba321b80e1mr3700628ejc.0.1697617710507; 
- Wed, 18 Oct 2023 01:28:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgsvshjrABH1NowfhNzEL8PtltCeDBYjwcl4eouTaNWN43Sj+gfXmk77fkJW99XChCCL4gyQ==
-X-Received: by 2002:a17:907:9348:b0:9ba:321b:80e1 with SMTP id
- bv8-20020a170907934800b009ba321b80e1mr3700614ejc.0.1697617710215; 
- Wed, 18 Oct 2023 01:28:30 -0700 (PDT)
+ bh=fxx0UVHYrb7uEEGRAehFsixsJ7Yl+etKGjOVzEvVFO0=;
+ b=GSvqByryIkN81/j7eUJxF4QwqcEn2cwMZHmxeps62tzzJViydZeDt88S97elgioPKI
+ 26GecfxFi1C7CjVN2CkyZObAS8G3ECECU6gERajj41w1ous3wvVwAG7YmdplBgFQEZvF
+ xTdrlxw38b6GnGd50zfi5i+QFTY1e158xDg8x8THNtQRQDb3pYZILksgz87zZdXSQlqF
+ TWrrzwu7uhQMXsuukrPYV0YGZ3vYuHjJY3IS+kNOSuF8KAEXyJGPuFYoUXSJHZISL5Ij
+ FP4II8tWsZsNGh3YT4aNzaps5oOFwLKtEnNBLYQjoxPs5vywJgU5Nl4eBXjmNqGVxLBC
+ DAhg==
+X-Gm-Message-State: AOJu0YzPbVtRWKDOFYl9gGLSIXGHXnyRdpmtlCj9d47hWKXwAdo6YHT4
+ PuuUVoIrPF2In+024PaF9H7HE5pyfKSNm4cV+fWsVoS0p29z/W1di/avO3bXHJvbdPfXtURfcFG
+ f4+9DhTf/w0cXDlyyRmZgKDAjrtQ7nS+0q3+IutXdxXRnsLh7KOIX97a6TfpuQnaZt09IJPUiw3
+ A=
+X-Received: by 2002:a50:cd4b:0:b0:53e:34c5:fc14 with SMTP id
+ d11-20020a50cd4b000000b0053e34c5fc14mr3390324edj.23.1697617711807; 
+ Wed, 18 Oct 2023 01:28:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGwFljxnMZeJzAhAxtHs64AoCJlaJIDZmgt8BrtzVljHdhsEFjBicp3VA+1O4XIK0zCm5rkBg==
+X-Received: by 2002:a50:cd4b:0:b0:53e:34c5:fc14 with SMTP id
+ d11-20020a50cd4b000000b0053e34c5fc14mr3390310edj.23.1697617711464; 
+ Wed, 18 Oct 2023 01:28:31 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- ck3-20020a170906c44300b009bf7a4d591dsm1197143ejb.32.2023.10.18.01.28.29
+ w23-20020a50fa97000000b0053e5edeff3bsm2346562edr.93.2023.10.18.01.28.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 01:28:29 -0700 (PDT)
+ Wed, 18 Oct 2023 01:28:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/32] hw/xen: cleanup sourcesets
-Date: Wed, 18 Oct 2023 10:27:39 +0200
-Message-ID: <20231018082752.322306-20-pbonzini@redhat.com>
+Subject: [PULL 20/32] hw/remote: move stub vfu_object_set_bus_irq out of stubs/
+Date: Wed, 18 Oct 2023 10:27:40 +0200
+Message-ID: <20231018082752.322306-21-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018082752.322306-1-pbonzini@redhat.com>
 References: <20231018082752.322306-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,70 +100,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-xen_ss is added unconditionally to arm_ss and i386_ss (the only
-targets that can have CONFIG_XEN enabled) and its contents are gated by
-CONFIG_XEN; xen_specific_ss has no condition for its constituent files
-but is gated on CONFIG_XEN when its added to specific_ss.
-
-So xen_ss is a duplicate of xen_specific_ss, though defined in a
-different way.  Merge the two by eliminating xen_ss.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/arm/meson.build  |  1 -
- hw/i386/meson.build |  1 -
- hw/xen/meson.build  | 11 ++++-------
- 3 files changed, 4 insertions(+), 9 deletions(-)
+ hw/remote/meson.build                                   | 4 +++-
+ stubs/vfio-user-obj.c => hw/remote/vfio-user-obj-stub.c | 0
+ stubs/meson.build                                       | 1 -
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+ rename stubs/vfio-user-obj.c => hw/remote/vfio-user-obj-stub.c (100%)
 
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 11eb9112f88..a6feaf1af95 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -64,7 +64,6 @@ arm_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
- arm_ss.add(when: 'CONFIG_FSL_IMX6UL', if_true: files('fsl-imx6ul.c', 'mcimx6ul-evk.c'))
- arm_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_soc.c'))
- arm_ss.add(when: 'CONFIG_XEN', if_true: files('xen_arm.c'))
--arm_ss.add_all(xen_ss)
+diff --git a/hw/remote/meson.build b/hw/remote/meson.build
+index a1e8708c732..a3aa29aaf17 100644
+--- a/hw/remote/meson.build
++++ b/hw/remote/meson.build
+@@ -7,9 +7,11 @@ remote_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('remote-obj.c'))
+ remote_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('proxy.c'))
+ remote_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('iohub.c'))
+ remote_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('iommu.c'))
+-remote_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_true: files('vfio-user-obj.c'))
  
- system_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
- system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4_boards.c'))
-diff --git a/hw/i386/meson.build b/hw/i386/meson.build
-index ff879069c98..369c6bf823b 100644
---- a/hw/i386/meson.build
-+++ b/hw/i386/meson.build
-@@ -32,6 +32,5 @@ subdir('kvm')
- subdir('xen')
+ remote_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_true: libvfio_user_dep)
++remote_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_true: files('vfio-user-obj.c'),
++              if_false: files('vfio-user-obj-stub.c'))
++remote_ss.add(when: 'CONFIG_ALL', if_true: files('vfio-user-obj-stub.c'))
  
- i386_ss.add_all(xenpv_ss)
--i386_ss.add_all(xen_ss)
- 
- hw_arch += {'i386': i386_ss}
-diff --git a/hw/xen/meson.build b/hw/xen/meson.build
-index 277f9f292b4..d887fa9ba43 100644
---- a/hw/xen/meson.build
-+++ b/hw/xen/meson.build
-@@ -12,6 +12,10 @@ system_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
- ))
- 
- xen_specific_ss = ss.source_set()
-+xen_specific_ss.add(files(
-+  'xen-mapcache.c',
-+  'xen-hvm-common.c',
-+))
- if have_xen_pci_passthrough
-   xen_specific_ss.add(files(
-     'xen-host-pci-device.c',
-@@ -26,10 +30,3 @@ else
+ specific_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('memory.c'))
+ specific_ss.add(when: 'CONFIG_MULTIPROCESS', if_true: files('proxy-memory-listener.c'))
+diff --git a/stubs/vfio-user-obj.c b/hw/remote/vfio-user-obj-stub.c
+similarity index 100%
+rename from stubs/vfio-user-obj.c
+rename to hw/remote/vfio-user-obj-stub.c
+diff --git a/stubs/meson.build b/stubs/meson.build
+index cde44972bf8..0bf25e6ca53 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -65,4 +65,3 @@ else
+   stub_ss.add(files('qdev.c'))
  endif
- 
- specific_ss.add_all(when: ['CONFIG_XEN', xen], if_true: xen_specific_ss)
--
--xen_ss = ss.source_set()
--
--xen_ss.add(when: 'CONFIG_XEN', if_true: files(
--  'xen-mapcache.c',
--  'xen-hvm-common.c',
--))
+ stub_ss.add(files('semihost-all.c'))
+-stub_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_false: files('vfio-user-obj.c'))
 -- 
 2.41.0
 
