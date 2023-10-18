@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D587CEA44
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A19B7CEA4D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:53:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtESC-00010N-H5; Wed, 18 Oct 2023 17:51:48 -0400
+	id 1qtESh-0001mt-SE; Wed, 18 Oct 2023 17:52:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtES7-0000jE-9S
+ id 1qtES7-0000jI-Rj
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:44 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtES4-0004Mx-RV
+ id 1qtES5-0004N9-Pz
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:43 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6bd0e1b1890so3701732b3a.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:40 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6b20577ef7bso4648803b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697665899; x=1698270699; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697665900; x=1698270700; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3tf30naxwG8ULfBR8Z80R+ehNXjBaz2adScdYG1B0wU=;
- b=NCSlLadgE/GDmykhjXg+w4Y37UXtENolz0RqrRYfRDENiraCzJVMlXRXkpvRWQ/0Xt
- 60LuXd03KPrCyBT7UEy0rPft5YcjVFEbiytVD0tiCP+7eNStLnZMyDl6QP5gurhALeZV
- CAihLL4LLTuhee+uhq41iqBrS5x9JWg6r8ffYxM6IWyTfVk3YNPfsOflyPAlrA27I37c
- sPMwZKnc9kjkvrWZ3mRIXGZS3dcNRAWJQnCibrhtwAZ46YzgMVjHoKfWzNiNWPg3/esB
- UQhEEOWJvNcVAOyv8e+XkVhUt7ffjZSD53ubG94wSdI8kTbCt9T3Ou/SD3oLW4Q9ZyJQ
- Lzmg==
+ bh=mNZMizemvrujc4XnqyNiXy5WpOSPf3XvMMBFfWR0das=;
+ b=ayD/AAtZT34aCcjfvcAfIBSySIo5sKo7Ud8EWRzKvQUDmEspuENEqvZkMuykwdzsIk
+ LRshcKvTqUAi0bd6jdINf9o8lgA4HBUqxxjB4v382KpO4SNhfaD8hxD4AkFB/EQe534H
+ SdmRkraKkvPrCHAzP1Z0Ah5flfv/Nf9GwG+5sgcOIbzxOK8dPT4eOvSsOTQU9W/rLD42
+ dSf43fO6P/cyHyM8sXgwT++mJGii5blzrap5Gqgk/2ke/HMGy9cm4IGTHEVMKneuIKSH
+ j6FfOjvkgbtxopoEkoROZiG5Bb/aQp926mjiLEMJIVunEXGeic/lH7QDil9PUFTgwKjn
+ YlqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697665899; x=1698270699;
+ d=1e100.net; s=20230601; t=1697665900; x=1698270700;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3tf30naxwG8ULfBR8Z80R+ehNXjBaz2adScdYG1B0wU=;
- b=xTmeXCJOjqNtU/9gBe0osm3aamzRBPcHO+7RSTU/WjJqloRmnplOqKdneicRfLJX2J
- DFoSm6IcuIAp08WAnCPOKJsV8FiGblmXFlnaIr5bqPDvQmtJWa0xolT4uKhUiH3qvKkH
- v3IlRUSqwYy4LoZHg8rQTMfCXMmgLRFJplizBJxx7vlIyU3qoJ7DrL5uG+BS97nS/ab0
- izRLJaOyUDoCwxofuAwhB8n4W22jKOHPAMvuKwBqpnPApZqB+I0/lxrD4yN2/l+ovrF3
- tSvBds2Iz5+DcAjwv3O2M/mXTGg11qwK+Qv4vnqtUEbYAQvRgS+NzLNYY1KKsk4NZjhv
- 0yog==
-X-Gm-Message-State: AOJu0YzQr7Lau8b7XJjFFu/XqL7dbKQCImcEi1QHvsD0LNThQTdEBWo/
- bE3IcmCb2BQUnlHdapbh9bt1+zV6b8ZcW1vtb6k=
-X-Google-Smtp-Source: AGHT+IGYJGDuOrbfnUrWbhpI0nFKFd/mvXgWybVVtdRXT3C+j1M7eM+EwGnUnYrGBiY9sqC/mQWPag==
-X-Received: by 2002:a05:6a00:b53:b0:6b5:ec98:4289 with SMTP id
- p19-20020a056a000b5300b006b5ec984289mr357415pfo.14.1697665899423; 
- Wed, 18 Oct 2023 14:51:39 -0700 (PDT)
+ bh=mNZMizemvrujc4XnqyNiXy5WpOSPf3XvMMBFfWR0das=;
+ b=kclm7fy9gPV4PHLc+1nhVEL2DAKtGSg1sJByEpI/JHvQppEIJje2XSPRgJazdu259c
+ t/BP6dQ3paJp65QAIAZ+bp5wc+9ZZLHp/emyegfPlVjvol7JZ9At0Bmu5tqfMfRoyRpJ
+ jbEA9ic4OJEORR9KfKXYQdD031OTzRfIlAzrSAR9F7uCb5mSEs73LBQdKH0Nh9RyGb94
+ qCBFJAGgspYmF6TpRTaB/T5p2sUfiL2DWbgum3N8//KruHPb7+zENOO7+x2W69m7Vqz2
+ 4OrcLjz+KyWIycEaaUGSYvYPOi/M2eJV8vwC0PAIYGZaV3wBXReDCn092aTz56nEaPRo
+ KbxA==
+X-Gm-Message-State: AOJu0YyI4s70w1xHu0AbwgOehq6XUV0PfPeAELyrFLOhF3DFkJnadEYz
+ iDavSww90F33/r8lVNeItc6WZFZcLko4OqBLlkY=
+X-Google-Smtp-Source: AGHT+IHahDbi6lQUK9pwmuToqzheubshgSDWDjq+UHLUFqHkr9+JhiWiZ1TWJnu94iCg8WKiMuCgVA==
+X-Received: by 2002:a62:5e05:0:b0:690:2e46:aca3 with SMTP id
+ s5-20020a625e05000000b006902e46aca3mr327818pfb.25.1697665900218; 
+ Wed, 18 Oct 2023 14:51:40 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.38
+ w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 18 Oct 2023 14:51:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 03/61] target/hppa: Remove get_temp_tl
-Date: Wed, 18 Oct 2023 14:50:37 -0700
-Message-Id: <20231018215135.1561375-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/61] target/hppa: Remove load_const
+Date: Wed, 18 Oct 2023 14:50:38 -0700
+Message-Id: <20231018215135.1561375-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018215135.1561375-1-richard.henderson@linaro.org>
 References: <20231018215135.1561375-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,101 +90,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace with tcg_temp_new_tl without recording into ctx.
+Replace with tcg_constant_reg.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 28 +++-------------------------
- 1 file changed, 3 insertions(+), 25 deletions(-)
+ target/hppa/translate.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 3065fbf625..5302381a56 100644
+index 5302381a56..21f97f63a9 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -254,9 +254,6 @@ typedef struct DisasContext {
-     target_ureg iaoq_n;
-     TCGv_reg iaoq_n_var;
- 
--    int ntempl;
--    TCGv_tl  templ[4];
--
-     DisasCond null_cond;
-     TCGLabel *null_lab;
- 
-@@ -491,15 +488,6 @@ static void cond_free(DisasCond *cond)
+@@ -488,13 +488,6 @@ static void cond_free(DisasCond *cond)
      }
  }
  
--#ifndef CONFIG_USER_ONLY
--static TCGv_tl get_temp_tl(DisasContext *ctx)
+-static TCGv_reg load_const(DisasContext *ctx, target_sreg v)
 -{
--    unsigned i = ctx->ntempl++;
--    g_assert(i < ARRAY_SIZE(ctx->templ));
--    return ctx->templ[i] = tcg_temp_new_tl();
+-    TCGv_reg t = tcg_temp_new();
+-    tcg_gen_movi_reg(t, v);
+-    return t;
 -}
--#endif
 -
- static TCGv_reg load_const(DisasContext *ctx, target_sreg v)
+ static TCGv_reg load_gpr(DisasContext *ctx, unsigned reg)
  {
-     TCGv_reg t = tcg_temp_new();
-@@ -1374,7 +1362,7 @@ static TCGv_i64 space_select(DisasContext *ctx, int sp, TCGv_reg base)
-         if (sp < 0) {
-             sp = ~sp;
-         }
--        spc = get_temp_tl(ctx);
-+        spc = tcg_temp_new_tl();
-         load_spr(ctx, spc, sp);
-         return spc;
+     if (reg == 0) {
+@@ -1164,7 +1157,7 @@ static bool do_add_imm(DisasContext *ctx, arg_rri_cf *a,
+     if (a->cf) {
+         nullify_over(ctx);
      }
-@@ -1384,7 +1372,7 @@ static TCGv_i64 space_select(DisasContext *ctx, int sp, TCGv_reg base)
+-    tcg_im = load_const(ctx, a->i);
++    tcg_im = tcg_constant_reg(a->i);
+     tcg_r2 = load_gpr(ctx, a->r);
+     do_add(ctx, a->t, tcg_im, tcg_r2, 0, 0, is_tsv, is_tc, 0, a->cf);
+     return nullify_end(ctx);
+@@ -1253,7 +1246,7 @@ static bool do_sub_imm(DisasContext *ctx, arg_rri_cf *a, bool is_tsv)
+     if (a->cf) {
+         nullify_over(ctx);
+     }
+-    tcg_im = load_const(ctx, a->i);
++    tcg_im = tcg_constant_reg(a->i);
+     tcg_r2 = load_gpr(ctx, a->r);
+     do_sub(ctx, a->t, tcg_im, tcg_r2, is_tsv, 0, 0, a->cf);
+     return nullify_end(ctx);
+@@ -2808,7 +2801,7 @@ static bool trans_cmpiclr(DisasContext *ctx, arg_rri_cf *a)
+         nullify_over(ctx);
+     }
  
-     ptr = tcg_temp_new_ptr();
-     tmp = tcg_temp_new();
--    spc = get_temp_tl(ctx);
-+    spc = tcg_temp_new_tl();
+-    tcg_im = load_const(ctx, a->i);
++    tcg_im = tcg_constant_reg(a->i);
+     tcg_r2 = load_gpr(ctx, a->r);
+     do_cmpclr(ctx, a->t, tcg_im, tcg_r2, a->cf);
  
-     tcg_gen_shri_reg(tmp, base, TARGET_REGISTER_BITS - 5);
-     tcg_gen_andi_reg(tmp, tmp, 030);
-@@ -1420,7 +1408,7 @@ static void form_gva(DisasContext *ctx, TCGv_tl *pgva, TCGv_reg *pofs,
- #ifdef CONFIG_USER_ONLY
-     *pgva = (modify <= 0 ? ofs : base);
- #else
--    TCGv_tl addr = get_temp_tl(ctx);
-+    TCGv_tl addr = tcg_temp_new_tl();
-     tcg_gen_extu_reg_tl(addr, modify <= 0 ? ofs : base);
-     if (ctx->tb_flags & PSW_W) {
-         tcg_gen_andi_tl(addr, addr, 0x3fffffffffffffffull);
-@@ -4080,9 +4068,6 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     /* Bound the number of instructions by those left on the page.  */
-     bound = -(ctx->base.pc_first | TARGET_PAGE_MASK) / 4;
-     ctx->base.max_insns = MIN(ctx->base.max_insns, bound);
--
--    ctx->ntempl = 0;
--    memset(ctx->templ, 0, sizeof(ctx->templ));
+@@ -2994,7 +2987,7 @@ static bool trans_cmpb(DisasContext *ctx, arg_cmpb *a)
+ static bool trans_cmpbi(DisasContext *ctx, arg_cmpbi *a)
+ {
+     nullify_over(ctx);
+-    return do_cmpb(ctx, a->r, load_const(ctx, a->i), a->c, a->f, a->n, a->disp);
++    return do_cmpb(ctx, a->r, tcg_constant_reg(a->i), a->c, a->f, a->n, a->disp);
  }
  
- static void hppa_tr_tb_start(DisasContextBase *dcbase, CPUState *cs)
-@@ -4111,7 +4096,6 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
-     CPUHPPAState *env = cpu_env(cs);
-     DisasJumpType ret;
--    int i, n;
+ static bool do_addb(DisasContext *ctx, unsigned r, TCGv_reg in1,
+@@ -3033,7 +3026,7 @@ static bool trans_addb(DisasContext *ctx, arg_addb *a)
+ static bool trans_addbi(DisasContext *ctx, arg_addbi *a)
+ {
+     nullify_over(ctx);
+-    return do_addb(ctx, a->r, load_const(ctx, a->i), a->c, a->f, a->n, a->disp);
++    return do_addb(ctx, a->r, tcg_constant_reg(a->i), a->c, a->f, a->n, a->disp);
+ }
  
-     /* Execute one insn.  */
- #ifdef CONFIG_USER_ONLY
-@@ -4150,12 +4134,6 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-         }
+ static bool trans_bb_sar(DisasContext *ctx, arg_bb_sar *a)
+@@ -3345,7 +3338,7 @@ static bool trans_depwi_sar(DisasContext *ctx, arg_depwi_sar *a)
+     if (a->c) {
+         nullify_over(ctx);
      }
+-    return do_depw_sar(ctx, a->t, a->c, a->nz, a->clen, load_const(ctx, a->i));
++    return do_depw_sar(ctx, a->t, a->c, a->nz, a->clen, tcg_constant_reg(a->i));
+ }
  
--    /* Forget any temporaries allocated.  */
--    for (i = 0, n = ctx->ntempl; i < n; ++i) {
--        ctx->templ[i] = NULL;
--    }
--    ctx->ntempl = 0;
--
-     /* Advance the insn queue.  Note that this check also detects
-        a priority change within the instruction queue.  */
-     if (ret == DISAS_NEXT && ctx->iaoq_b != ctx->iaoq_f + 4) {
+ static bool trans_be(DisasContext *ctx, arg_be *a)
+@@ -3852,7 +3845,7 @@ static bool trans_ftest(DisasContext *ctx, arg_ftest *a)
+             return true;
+         }
+         if (inv) {
+-            TCGv_reg c = load_const(ctx, mask);
++            TCGv_reg c = tcg_constant_reg(mask);
+             tcg_gen_or_reg(t, t, c);
+             ctx->null_cond = cond_make(TCG_COND_EQ, t, c);
+         } else {
 -- 
 2.34.1
 
