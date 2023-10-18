@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889D87CFB60
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BD67CFB65
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:41:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTEx-0000nK-RX; Thu, 19 Oct 2023 09:39:10 -0400
+	id 1qtTEt-0000Hz-9n; Thu, 19 Oct 2023 09:39:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1qtNyg-0003AX-GM
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:02:01 -0400
+ id 1qtNyj-0003Ae-9f
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:02:02 -0400
 Received: from mgamail.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1qtNyd-0006LX-4s
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:01:57 -0400
+ id 1qtNyg-0006LE-Qi
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:02:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697702515; x=1729238515;
+ t=1697702518; x=1729238518;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=t9BdIS+sJlH+qsQMBb7HkqEKoFxNHzvd5KGj9Dty4l8=;
- b=HcTlZ4rQD9ODJ2F21eZOpOTXwzeOSjTFgKu5CzpYI557+cWER5389fEA
- 75OV8zA/aXd+bAZ0ncaW/sv9jKxNB5ra8jfWhFkCAT6Gm0xmCZjdTOGS3
- OAVPCCoXKby17miLoOkqG37VeOLHEcDI3du5L9rAAvidLxCS51RuQfD8E
- yFzpSr74WqkzJce2x5U6VwY/jxhCOCZfbKA0zSJZrKN7M2iAugIHkV5PY
- zQx0iv5UaGDZH7X2FgOCMErT6VxDE/bYSBM1T7ehWSF9719/JnrNT0szy
- bb04hkagR9IYQkUqDcRionqe9Z8LbmyzuqSZ28ITp8TapaqirOOsnPKLi A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="383418456"
-X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="383418456"
+ bh=ZhQKN7EFGxpu5IEr8DgBFIeEvHbuo5TQ3WYoPPCFuqM=;
+ b=hKtEcQbKZkI+uam+MRG+ua0cePW3Kk5yFsHC8+SDKgK+S4k2xUM6R2KJ
+ lMVDHhgo1iFYYBby/195jCCAlhulkV4frsoexSq25szr70M6JxcYVlef7
+ PVeCIO9m+Hi9YjPZphp6u33Hxw7qDtdJFAj1CMDyMMCrde23iCt+0Bz4I
+ RgJIBtFvCNqucp8xtzMp+/JHkIN2XB6//oYtOqkdJ7UVnajbxkbs4Wz9u
+ KKtFcInFhOCemupbFcglmsORqtX8U2eUMoiEg9MkSzdGCrxzOVA6YBS/z
+ VYgDpnz5gbupz1yYvRyimH5DKD9GiQDFCPsKaeFTEK1oclMMwYpNGG/fU Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="383418471"
+X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="383418471"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2023 01:01:53 -0700
+ 19 Oct 2023 01:01:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="1004134839"
-X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="1004134839"
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="1004134848"
+X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="1004134848"
 Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by fmsmga006.fm.intel.com with ESMTP; 19 Oct 2023 01:01:50 -0700
+ by fmsmga006.fm.intel.com with ESMTP; 19 Oct 2023 01:01:53 -0700
 From: Yuan Liu <yuan1.liu@intel.com>
 To: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
 Cc: qemu-devel@nongnu.org,
 	yuan1.liu@intel.com,
 	nanhai.zou@intel.com
-Subject: [PATCH 1/5] configure: add qpl meson option
-Date: Thu, 19 Oct 2023 06:12:20 +0800
-Message-Id: <20231018221224.599065-2-yuan1.liu@intel.com>
+Subject: [PATCH 2/5] qapi/migration: Introduce compress-with-iaa migration
+ parameter
+Date: Thu, 19 Oct 2023 06:12:21 +0800
+Message-Id: <20231018221224.599065-3-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20231018221224.599065-1-yuan1.liu@intel.com>
 References: <20231018221224.599065-1-yuan1.liu@intel.com>
@@ -63,7 +64,7 @@ X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
  DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 19 Oct 2023 09:38:19 -0400
+X-Mailman-Approved-At: Thu, 19 Oct 2023 09:38:36 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,97 +79,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Intel Query Processing Library (QPL) is an open-source library that
-supports features of the new Intel In-Memory Analytics Accelerator (IAA)
-available on Intel Xeon Sapphire Rapids processors, including
-high-throughput compression and decompression.
+Introduce the compress-with-iaa=on/off option to enable or disable live
+migration data (de)compression with the In-Memory Analytics Accelerator
+(IAA).
 
-add --enable-qpl and --disable-qpl options for data (de)compression
-using IAA during the live migration process.
+The data (de)compression with IAA feature is based on the migration
+compression capability, which is enabled by setting
+migrate_set_capability compress on. If the migration compression
+capability is enabled and the IAA compression parameter is set, IAA will
+be used instead of CPU for data (de)compression.
 
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
 ---
- meson.build                   | 9 ++++++++-
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 3 +++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ migration/migration-hmp-cmds.c |  8 ++++++++
+ migration/options.c            | 20 ++++++++++++++++++++
+ migration/options.h            |  1 +
+ qapi/migration.json            |  4 +++-
+ 4 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 79aef19bdc..0a69bf68cf 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1032,6 +1032,11 @@ if not get_option('zstd').auto() or have_block
-                     required: get_option('zstd'),
-                     method: 'pkg-config')
- endif
-+qpl = not_found
-+if not get_option('qpl').auto()
-+    qpl = dependency('libqpl', required: get_option('qpl'),
-+                     method: 'pkg-config')
-+endif
- virgl = not_found
- 
- have_vhost_user_gpu = have_tools and targetos == 'linux' and pixman.found()
-@@ -2158,6 +2163,7 @@ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
- config_host_data.set('CONFIG_STATX', has_statx)
- config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
- config_host_data.set('CONFIG_ZSTD', zstd.found())
-+config_host_data.set('CONFIG_QPL', qpl.found())
- config_host_data.set('CONFIG_FUSE', fuse.found())
- config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
- config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
-@@ -3616,7 +3622,7 @@ libmigration = static_library('migration', sources: migration_files + genh,
-                               name_suffix: 'fa',
-                               build_by_default: false)
- migration = declare_dependency(link_with: libmigration,
--                               dependencies: [zlib, qom, io])
-+                               dependencies: [zlib, qom, io, qpl])
- system_ss.add(migration)
- 
- block_ss = block_ss.apply(config_targetos, strict: false)
-@@ -4281,6 +4287,7 @@ summary_info += {'blkio support':     blkio}
- summary_info += {'curl support':      curl}
- summary_info += {'Multipath support': mpathpersist}
- summary_info += {'Linux AIO support': libaio}
-+summary_info += {'Query Processing Library support': qpl}
- summary_info += {'Linux io_uring support': linux_io_uring}
- summary_info += {'ATTR/XATTR support': libattr}
- summary_info += {'RDMA support':      rdma}
-diff --git a/meson_options.txt b/meson_options.txt
-index 6a17b90968..e8e7e37893 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -251,6 +251,8 @@ option('xkbcommon', type : 'feature', value : 'auto',
-        description: 'xkbcommon support')
- option('zstd', type : 'feature', value : 'auto',
-        description: 'zstd compression support')
-+option('qpl', type : 'feature', value : 'auto',
-+       description: 'Query Processing Library support')
- option('fuse', type: 'feature', value: 'auto',
-        description: 'FUSE block device export')
- option('fuse_lseek', type : 'feature', value : 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 2a74b0275b..e2adb13ce5 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -206,6 +206,7 @@ meson_options_help() {
-   printf "%s\n" '                  Xen PCI passthrough support'
-   printf "%s\n" '  xkbcommon       xkbcommon support'
-   printf "%s\n" '  zstd            zstd compression support'
-+  printf "%s\n" '  qpl             Query Processing Library support'
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index c115ef2d23..38e441bb37 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -281,6 +281,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: %u\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_COMPRESS_THREADS),
+             params->compress_threads);
++        assert(params->has_compress_with_iaa);
++        monitor_printf(mon, "%s: %s\n",
++            MigrationParameter_str(MIGRATION_PARAMETER_COMPRESS_WITH_IAA),
++            params->compress_with_iaa ? "on" : "off");
+         assert(params->has_compress_wait_thread);
+         monitor_printf(mon, "%s: %s\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_COMPRESS_WAIT_THREAD),
+@@ -517,6 +521,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         p->has_compress_threads = true;
+         visit_type_uint8(v, param, &p->compress_threads, &err);
+         break;
++    case MIGRATION_PARAMETER_COMPRESS_WITH_IAA:
++        p->has_compress_with_iaa = true;
++        visit_type_bool(v, param, &p->compress_with_iaa, &err);
++        break;
+     case MIGRATION_PARAMETER_COMPRESS_WAIT_THREAD:
+         p->has_compress_wait_thread = true;
+         visit_type_bool(v, param, &p->compress_wait_thread, &err);
+diff --git a/migration/options.c b/migration/options.c
+index 1d1e1321b0..06d4b36b77 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -107,6 +107,8 @@ Property migration_properties[] = {
+     DEFINE_PROP_UINT8("x-compress-threads", MigrationState,
+                       parameters.compress_threads,
+                       DEFAULT_MIGRATE_COMPRESS_THREAD_COUNT),
++    DEFINE_PROP_BOOL("x-compress-with-iaa", MigrationState,
++                      parameters.compress_with_iaa, false),
+     DEFINE_PROP_BOOL("x-compress-wait-thread", MigrationState,
+                       parameters.compress_wait_thread, true),
+     DEFINE_PROP_UINT8("x-decompress-threads", MigrationState,
+@@ -724,6 +726,13 @@ int migrate_compress_threads(void)
+     return s->parameters.compress_threads;
  }
- _meson_option_parse() {
-   case $1 in
-@@ -417,6 +418,8 @@ _meson_option_parse() {
-     --disable-qga-vss) printf "%s" -Dqga_vss=disabled ;;
-     --enable-qom-cast-debug) printf "%s" -Dqom_cast_debug=true ;;
-     --disable-qom-cast-debug) printf "%s" -Dqom_cast_debug=false ;;
-+    --enable-qpl) printf "%s" -Dqpl=enabled ;;
-+    --disable-qpl) printf "%s" -Dqpl=disabled ;;
-     --enable-rbd) printf "%s" -Drbd=enabled ;;
-     --disable-rbd) printf "%s" -Drbd=disabled ;;
-     --enable-rdma) printf "%s" -Drdma=enabled ;;
+ 
++bool migrate_compress_with_iaa(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    return s->parameters.compress_with_iaa;
++}
++
+ int migrate_compress_wait_thread(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -899,6 +908,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->compress_level = s->parameters.compress_level;
+     params->has_compress_threads = true;
+     params->compress_threads = s->parameters.compress_threads;
++    params->has_compress_with_iaa = true;
++    params->compress_with_iaa = s->parameters.compress_with_iaa;
+     params->has_compress_wait_thread = true;
+     params->compress_wait_thread = s->parameters.compress_wait_thread;
+     params->has_decompress_threads = true;
+@@ -969,6 +980,7 @@ void migrate_params_init(MigrationParameters *params)
+     /* Set has_* up only for parameter checks */
+     params->has_compress_level = true;
+     params->has_compress_threads = true;
++    params->has_compress_with_iaa = true;
+     params->has_compress_wait_thread = true;
+     params->has_decompress_threads = true;
+     params->has_throttle_trigger_threshold = true;
+@@ -1195,6 +1207,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+         dest->decompress_threads = params->decompress_threads;
+     }
+ 
++    if (params->has_compress_with_iaa) {
++        dest->compress_with_iaa = params->compress_with_iaa;
++    }
++
+     if (params->has_throttle_trigger_threshold) {
+         dest->throttle_trigger_threshold = params->throttle_trigger_threshold;
+     }
+@@ -1300,6 +1316,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+         s->parameters.decompress_threads = params->decompress_threads;
+     }
+ 
++    if (params->has_compress_with_iaa) {
++        s->parameters.compress_with_iaa = params->compress_with_iaa;
++    }
++
+     if (params->has_throttle_trigger_threshold) {
+         s->parameters.throttle_trigger_threshold = params->throttle_trigger_threshold;
+     }
+diff --git a/migration/options.h b/migration/options.h
+index 045e2a41a2..926d723d0e 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -77,6 +77,7 @@ uint8_t migrate_cpu_throttle_increment(void);
+ uint8_t migrate_cpu_throttle_initial(void);
+ bool migrate_cpu_throttle_tailslow(void);
+ int migrate_decompress_threads(void);
++bool migrate_compress_with_iaa(void);
+ uint64_t migrate_downtime_limit(void);
+ uint8_t migrate_max_cpu_throttle(void);
+ uint64_t migrate_max_bandwidth(void);
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 8843e74b59..8edc622dd9 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -835,7 +835,7 @@
+ { 'enum': 'MigrationParameter',
+   'data': ['announce-initial', 'announce-max',
+            'announce-rounds', 'announce-step',
+-           'compress-level', 'compress-threads', 'decompress-threads',
++           'compress-level', 'compress-threads', 'compress-with-iaa', 'decompress-threads',
+            'compress-wait-thread', 'throttle-trigger-threshold',
+            'cpu-throttle-initial', 'cpu-throttle-increment',
+            'cpu-throttle-tailslow',
+@@ -1008,6 +1008,7 @@
+             '*announce-step': 'size',
+             '*compress-level': 'uint8',
+             '*compress-threads': 'uint8',
++            '*compress-with-iaa': 'bool',
+             '*compress-wait-thread': 'bool',
+             '*decompress-threads': 'uint8',
+             '*throttle-trigger-threshold': 'uint8',
+@@ -1208,6 +1209,7 @@
+             '*announce-step': 'size',
+             '*compress-level': 'uint8',
+             '*compress-threads': 'uint8',
++            '*compress-with-iaa': 'bool',
+             '*compress-wait-thread': 'bool',
+             '*decompress-threads': 'uint8',
+             '*throttle-trigger-threshold': 'uint8',
 -- 
 2.39.3
 
