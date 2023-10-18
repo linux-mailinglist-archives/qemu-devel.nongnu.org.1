@@ -2,103 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1267CE26B
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4B87CE256
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:09:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8xl-0003AB-99; Wed, 18 Oct 2023 12:00:01 -0400
+	id 1qt8xo-0003Gz-5I; Wed, 18 Oct 2023 12:00:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qt8xM-0002BP-Qd; Wed, 18 Oct 2023 11:59:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8xX-0002Xz-4J
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:59:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qt8xJ-0007lm-OG; Wed, 18 Oct 2023 11:59:36 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39IFgS32029092; Wed, 18 Oct 2023 15:59:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=0V83CKe6Sd7zhETMNUqpjPy8v8oq/BQbSFF0potQ20w=;
- b=fj05xqtWalwjeC4Yl85DFGs9Bjx+lOZzDce5BAIYuAMxDivFD7umcKRegKtiUgxYIpHg
- ohyIs4tqu+HrcFhHWyn1FUXE085KjN0WyCfnqo2xmevn84Peul6DY3fR9Q7D5gBpyGAb
- zr1bEFJiRE0Az8ge8hzuIg9z1TM/m6h65SVXg3NrG71/+QwJJpUOD+dVKRZosTfO0HKf
- 21XRb36jrAr2FOp6ewgMiQWAwVsMFiEcHwVCmcqUt7r5ed7krErZL/ZiRqBGo9sahVax
- yx8UJYkdt8m11i0hl4qrekKQJv739OQII0Zw7J9n1vn5Ua+fPZbCdOrZzENvJAKdaJ/6 LQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttj830scw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Oct 2023 15:59:26 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39IFgajc031376;
- Wed, 18 Oct 2023 15:59:25 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttj830sc5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Oct 2023 15:59:25 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39IE2Goo027385; Wed, 18 Oct 2023 15:59:24 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr5asj0uy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Oct 2023 15:59:24 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39IFxOIs37421326
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Oct 2023 15:59:24 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18C0A58055;
- Wed, 18 Oct 2023 15:59:24 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A34805804B;
- Wed, 18 Oct 2023 15:59:23 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 18 Oct 2023 15:59:23 +0000 (GMT)
-Message-ID: <66558e7df3b0eadece637f452bfbf7add72955eb.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 0/4] Add BHRB Facility Support
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>
-Date: Wed, 18 Oct 2023 10:59:23 -0500
-In-Reply-To: <CWBNQ9QDEYH8.3QL9E2V4ZF26G@wheely>
-References: <20230925174351.617891-1-milesg@linux.vnet.ibm.com>
- <CWBNQ9QDEYH8.3QL9E2V4ZF26G@wheely>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IzlhHvNfW6EYm6oV5mQT4A4J_bWfmiAs
-X-Proofpoint-GUID: aC6KqMqUERBnpQb0bhkCFhZeyh7LDKjg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-18_14,2023-10-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1011 mlxscore=0
- impostorscore=0 spamscore=0 mlxlogscore=640 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310180129
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8xU-0007mt-Qh
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:59:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697644783;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yRc5fadVObBzSTIUVVUCoFqEpnBFobcqZOmUrCHqKqM=;
+ b=Lr7/OwsyEfvC+/ZxvMrnAzt3pOGdnYHP/FTfRftvQ+WPbsd4WKJUS4jJ37msvSrP3ri36k
+ zHOg1+e8dQs9LyyIa67YVBdcHM77kH2r5lCoWANFoBnCm7fZwoQZhOPC3LPhl740dpA6RB
+ lx1jXviMtILAwl+M4RwMFj0unGbhn44=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-523-P2-W9NOzPJ-t6T_-pZupeg-1; Wed, 18 Oct 2023 11:59:42 -0400
+X-MC-Unique: P2-W9NOzPJ-t6T_-pZupeg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-406de77fb85so44722525e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:59:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697644781; x=1698249581;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yRc5fadVObBzSTIUVVUCoFqEpnBFobcqZOmUrCHqKqM=;
+ b=qhLoSLt7UYpjlgKFlOprmN4/EXkFewGir71qOkUrHlqiVnaNwQumdF13E0Pqc3Jb5N
+ YWRCnW5oApLIoOjd7igxnlRogfE1JI8mCyRyEVLcVTWr30lswILEO7a29louKGo/dbLr
+ kL8XjOyMbJ5QKU5wSA5SOG8BoXxzYO/ZBPwrJL1HgnED5cxiAmOu9oDRdPrmg1d/mUEe
+ zIAkGMfdeVauxQTYz1zoGEcp1LrwbhxDlF3Qzf+NsugSPfZpfKJsau+vEy6Vs69xvXEp
+ 7V07KyXkq8vp5wZo+eIK/WpIMAkZzJ8f9aN3q2oKhmLU+E41o5jpoAiTtgIQ3D5dLW8g
+ 2iLg==
+X-Gm-Message-State: AOJu0YycRcDf8q8hLifQ4VN/lndNe2ARGxMfnjFnOcyHY2spqpnC2+h3
+ fJDwvySGlUbkjqzi4i/fkEvA4OvbrqcXjhWt5suyf6fCpKi3dzXXf6AShCgd0mUNWNoFHyPUj4a
+ KsMeYdvleEdpislVmsDbtzYMJzMp+Ob15wsN4vTe+8QyAGl7e2iPbWSX7Lk93qhxryJDNPjo=
+X-Received: by 2002:a05:6000:c4:b0:32d:9b3c:9c05 with SMTP id
+ q4-20020a05600000c400b0032d9b3c9c05mr4240575wrx.55.1697644780849; 
+ Wed, 18 Oct 2023 08:59:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8F+zv6MWjKKYcUkHZ4MIK0LBtKcbZJdUYEuNuKSnz4e7Y3EFiSR5HQSpAVC+X8ksmh3RZtQ==
+X-Received: by 2002:a05:6000:c4:b0:32d:9b3c:9c05 with SMTP id
+ q4-20020a05600000c400b0032d9b3c9c05mr4240551wrx.55.1697644780373; 
+ Wed, 18 Oct 2023 08:59:40 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
+ by smtp.gmail.com with ESMTPSA id
+ bs30-20020a056000071e00b0032d9a1f2ec3sm2466007wrb.27.2023.10.18.08.59.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 08:59:39 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:59:34 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 79/83] hw/cxl: Add QTG _DSM support for ACPI0017 device
+Message-ID: <eec8443204bab378ab835289d9fd5f604c606e09.1697644299.git.mst@redhat.com>
+References: <cover.1697644299.git.mst@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1697644299.git.mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,63 +104,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-10-19 at 01:06 +1000, Nicholas Piggin wrote:
-> On Tue Sep 26, 2023 at 3:43 AM AEST, Glenn Miles wrote:
-> > This is a series of patches for adding support for the Branch
-> > History
-> > Rolling Buffer (BHRB) facility.  This was added to the Power ISA
-> > starting with version 2.07.  Changes were subsequently made in
-> > version
-> > 3.1 to limit BHRB recording to instructions run in problem state
-> > only
-> > and to add a control bit to disable recording (MMCRA[BHRBRD]).
-> > 
-> > Version 3 of this series disables branch recording on P8 and P9 due
-> > to a drop in performance caused by recording branches outside of
-> > problem state.
-> 
-> Thanks for these, they all look good to me.
-> 
-> With P10 CPU, Linux perf branch recording appears to work with this
-> series, and I confirmed that Linux does disable BHRB in MMCRA at
-> boot, so it should not take the performance hit.
-> 
-> It had a couple of compile bugs, no matter I fixed them, but I often
-> trip overppc32 and user-mode when working on TCG too, so building
-> with --target-list including ppc64-softmmu,ppc-softmmu,
-> ppc64-linux-user,ppc64le-linux-user,ppc-linux-user is good to catch
-> those.
-> 
-> Thanks,
-> Nick
-> 
+From: Dave Jiang <dave.jiang@intel.com>
 
-Thanks, Nick.  I'll have to remember that for next time!
+Add a simple _DSM call support for the ACPI0017 device to return fake QTG
+ID values of 0 and 1 in all cases. This for _DSM plumbing testing from the OS.
 
-Glenn
+Following edited for readability
 
-> > Glenn Miles (4):
-> >   target/ppc: Add new hflags to support BHRB
-> >   target/ppc: Add recording of taken branches to BHRB
-> >   target/ppc: Add clrbhrb and mfbhrbe instructions
-> >   target/ppc: Add migration support for BHRB
-> > 
-> >  target/ppc/cpu.h                       |  24 ++++++
-> >  target/ppc/cpu_init.c                  |  39 +++++++++-
-> >  target/ppc/helper.h                    |   5 ++
-> >  target/ppc/helper_regs.c               |  35 +++++++++
-> >  target/ppc/insn32.decode               |   8 ++
-> >  target/ppc/machine.c                   |  23 +++++-
-> >  target/ppc/misc_helper.c               |  46 +++++++++++
-> >  target/ppc/power8-pmu-regs.c.inc       |   5 ++
-> >  target/ppc/power8-pmu.c                |  48 +++++++++++-
-> >  target/ppc/power8-pmu.h                |  11 ++-
-> >  target/ppc/spr_common.h                |   1 +
-> >  target/ppc/translate.c                 | 101
-> > +++++++++++++++++++++++--
-> >  target/ppc/translate/bhrb-impl.c.inc   |  43 +++++++++++
-> >  target/ppc/translate/branch-impl.c.inc |   2 +-
-> >  14 files changed, 374 insertions(+), 17 deletions(-)
-> >  create mode 100644 target/ppc/translate/bhrb-impl.c.inc
+Device (CXLM)
+{
+    Name (_HID, "ACPI0017")  // _HID: Hardware ID
+...
+    Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+    {
+        If ((Arg0 == ToUUID ("f365f9a6-a7de-4071-a66a-b40c0b4f8e52")))
+        {
+            If ((Arg2 == Zero))
+            {
+                Return (Buffer (One) { 0x01 })
+            }
+
+            If ((Arg2 == One))
+            {
+                Return (Package (0x02)
+                {
+                    One,
+                    Package (0x02)
+                    {
+                        Zero,
+                        One
+                    }
+                })
+            }
+        }
+    }
+
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20231012125623.21101-3-Jonathan.Cameron@huawei.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ include/hw/acpi/cxl.h |  1 +
+ hw/acpi/cxl.c         | 69 +++++++++++++++++++++++++++++++++++++++++++
+ hw/i386/acpi-build.c  |  1 +
+ 3 files changed, 71 insertions(+)
+
+diff --git a/include/hw/acpi/cxl.h b/include/hw/acpi/cxl.h
+index acf4418886..8f22c71530 100644
+--- a/include/hw/acpi/cxl.h
++++ b/include/hw/acpi/cxl.h
+@@ -25,5 +25,6 @@ void cxl_build_cedt(GArray *table_offsets, GArray *table_data,
+                     BIOSLinker *linker, const char *oem_id,
+                     const char *oem_table_id, CXLState *cxl_state);
+ void build_cxl_osc_method(Aml *dev);
++void build_cxl_dsm_method(Aml *dev);
+ 
+ #endif
+diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
+index 92b46bc932..9cd7905ea2 100644
+--- a/hw/acpi/cxl.c
++++ b/hw/acpi/cxl.c
+@@ -30,6 +30,75 @@
+ #include "qapi/error.h"
+ #include "qemu/uuid.h"
+ 
++void build_cxl_dsm_method(Aml *dev)
++{
++    Aml *method, *ifctx, *ifctx2;
++
++    method = aml_method("_DSM", 4, AML_SERIALIZED);
++    {
++        Aml *function, *uuid;
++
++        uuid = aml_arg(0);
++        function = aml_arg(2);
++        /* CXL spec v3.0 9.17.3.1 _DSM Function for Retrieving QTG ID */
++        ifctx = aml_if(aml_equal(
++            uuid, aml_touuid("F365F9A6-A7DE-4071-A66A-B40C0B4F8E52")));
++
++        /* Function 0, standard DSM query function */
++        ifctx2 = aml_if(aml_equal(function, aml_int(0)));
++        {
++            uint8_t byte_list[1] = { 0x01 }; /* function 1 only */
++
++            aml_append(ifctx2,
++                       aml_return(aml_buffer(sizeof(byte_list), byte_list)));
++        }
++        aml_append(ifctx, ifctx2);
++
++        /*
++         * Function 1
++         * Creating a package with static values. The max supported QTG ID will
++         * be 1 and recommended QTG IDs are 0 and then 1.
++         * The values here are statically created to simplify emulation. Values
++         * from a real BIOS would be determined by the performance of all the
++         * present CXL memory and then assigned.
++         */
++        ifctx2 = aml_if(aml_equal(function, aml_int(1)));
++        {
++            Aml *pak, *pak1;
++
++            /*
++             * Return: A package containing two elements - a WORD that returns
++             * the maximum throttling group that the platform supports, and a
++             * package containing the QTG ID(s) that the platform recommends.
++             * Package {
++             *     Max Supported QTG ID
++             *     Package {QTG Recommendations}
++             * }
++             *
++             * While the SPEC specified WORD that hints at the value being
++             * 16bit, the ACPI dump of BIOS DSDT table showed that the values
++             * are integers with no specific size specification. aml_int() will
++             * be used for the values.
++             */
++            pak1 = aml_package(2);
++            /* Set QTG ID of 0 */
++            aml_append(pak1, aml_int(0));
++            /* Set QTG ID of 1 */
++            aml_append(pak1, aml_int(1));
++
++            pak = aml_package(2);
++            /* Set Max QTG 1 */
++            aml_append(pak, aml_int(1));
++            aml_append(pak, pak1);
++
++            aml_append(ifctx2, aml_return(pak));
++        }
++        aml_append(ifctx, ifctx2);
++    }
++    aml_append(method, ifctx);
++    aml_append(dev, method);
++}
++
+ static void cedt_build_chbs(GArray *table_data, PXBCXLDev *cxl)
+ {
+     PXBDev *pxb = PXB_DEV(cxl);
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index b0e1f074f1..80db183b78 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1417,6 +1417,7 @@ static void build_acpi0017(Aml *table)
+     method = aml_method("_STA", 0, AML_NOTSERIALIZED);
+     aml_append(method, aml_return(aml_int(0x01)));
+     aml_append(dev, method);
++    build_cxl_dsm_method(dev);
+ 
+     aml_append(scope, dev);
+     aml_append(table, scope);
+-- 
+MST
 
 
