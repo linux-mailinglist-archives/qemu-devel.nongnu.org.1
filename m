@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CE27CE26F
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C10397CE26D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:12:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt96N-0001gg-6U; Wed, 18 Oct 2023 12:08:55 -0400
+	id 1qt98f-00031b-Hj; Wed, 18 Oct 2023 12:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt96G-0001VP-RO
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:08:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt98X-0002Wz-FI
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:11:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt96E-0001SL-Sz
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:08:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt98V-0001wc-Qz
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:11:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697645325;
+ s=mimecast20190719; t=1697645466;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=i5eLR4Y03O+qFqGmSuSWp4YUJKeV8dKkaktp82PE8Jo=;
- b=gaEZ0snPLp1U0XUsDflOMdc9AgVRsB0oQsKtiJo4IfAtO2sa8AU/dmrNB7NJRqCzjccEbr
- oMJrUzKDmZz0n1eUyQA6ufH/njhSWk1EW0jF2AGsn146K6TB+LTPB8y471Ui4H3dxJ5ClF
- 2o1bzD4Y36oDXKjtRW9y6s/ECtwB3No=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NmWrwTPmrMqTHP36luarjh3HM3fPZnFrd8otgHY4z3E=;
+ b=b4jFb9pByZkICz0L3zyd5l1Naa3PQx9e8t2wlwFm17kk1pA2JzIcD5nyNg8y0lw92Z5c2q
+ 16Ip4ZBq0lOhTQsUP20kGiVNZioLAd7T1USzK+yEiY5X+Dbu+jmWnh930cjkALgjUpkMZt
+ ytskw9Nz6aA4IhxqIaleQnA0yKxx+Xk=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-468-460pH-1LN7qFAasG1bX64g-1; Wed, 18 Oct 2023 12:08:33 -0400
-X-MC-Unique: 460pH-1LN7qFAasG1bX64g-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d03b02d16so123478186d6.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:08:33 -0700 (PDT)
+ us-mta-103-TQjM-6FWPlCpQDBICsvFAw-1; Wed, 18 Oct 2023 12:10:55 -0400
+X-MC-Unique: TQjM-6FWPlCpQDBICsvFAw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-77892f2ee51so103393885a.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:10:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697645313; x=1698250113;
+ d=1e100.net; s=20230601; t=1697645455; x=1698250255;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i5eLR4Y03O+qFqGmSuSWp4YUJKeV8dKkaktp82PE8Jo=;
- b=lWDt8m64zusch0eTwgbjFnkI+lGXNRWhMw6mDTwXwslXorUfFEqwc5u5OJUT6LeUHk
- W3LAREsRRMG2VzPlGEHY0OYEC0aVrJ+S79V7urln6OnRm/F11Veie3qYjpit9lj6sJHh
- J/F2tmVPCPvvFbpcW0bFEYnuURJasQbWfLt1iDRCuoAd3+x234PyMM3Qxc1OQv9Y7opx
- VLl+xnG7k0V9HvmqY+1nEWBdcshlIalA0ZwbBDVHnf3ytNhIYh8PxWvYnJv2zPsHGMO8
- ErMuCVOxiOJIK3EcEevRxIyM4LRdwG+fwYoN8x5H0n/nvpJxjCkttNzUH4eWV4SDTMo9
- wTwg==
-X-Gm-Message-State: AOJu0YxHLR9KM3zPFewEI8+VNUyBs4II9E5Q0DpOdWaGzdJiVNqFXABv
- qqxaAz6627vXOW1WkwAS5wU3tzDnCsb71YXzdVvzQqLDhmSbwmvDl7eZy4tDTOfa2cIji5lb3NR
- VZ0jO/J1demnf46g=
-X-Received: by 2002:a05:6214:2023:b0:66d:81bb:5234 with SMTP id
- 3-20020a056214202300b0066d81bb5234mr2140478qvf.11.1697645312974; 
- Wed, 18 Oct 2023 09:08:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFe9lzTfiG7vSFBNLZ2tdWANej5pVsItTjWKrkgBDDB1mbPyrVtEXjkGs4H1s8GHRoO3X184A==
-X-Received: by 2002:a05:6214:2023:b0:66d:81bb:5234 with SMTP id
- 3-20020a056214202300b0066d81bb5234mr2140441qvf.11.1697645312761; 
- Wed, 18 Oct 2023 09:08:32 -0700 (PDT)
+ bh=NmWrwTPmrMqTHP36luarjh3HM3fPZnFrd8otgHY4z3E=;
+ b=GUNkcmTzEEucP1kupHBYArv1KKmisHlORvdpJcB7evtNM92JAHJRlgw5NkLi5979Pu
+ XJa//Yr3nI2SEkf3DtvncNDH/aHkvlVAjybkdgqugDyzgI3o4Zaz6gV/SULdMsn56GXu
+ O+3q/jQrP6Y7ZmdGVykoc70RXnzWjxOfEm1U0b0hC4d3zc0v4lSNlcHayEK8gQ/cSzj+
+ O6X2JBoDWFZvf3oqLjoLYbmKA1zvxkViXP23M7dBE3aQC5NmBboRMQIHBa2ICLiPdSTv
+ yQ3yVIuFoJMkLTiBgxRfFX1Cg2xvP6bfOcFV5sBGPz0JOnsPdaTNUyRjGTs/Bx53jzEl
+ TXaQ==
+X-Gm-Message-State: AOJu0YyKLJG+z7ws1WHgV+BoupD3U9QxOsvWK6JbGfYqexmdCPIguHSI
+ d+Wzc2jHsBrSspTY+CLDLkBJt4MdG7NcOZRT+jZlk7tjhwRH1eW0qRJHZZuecpk9CoQGTUclLYI
+ WJpBAqWJNlS7/U0c=
+X-Received: by 2002:a05:620a:29d4:b0:76d:984c:9d01 with SMTP id
+ s20-20020a05620a29d400b0076d984c9d01mr7004329qkp.33.1697645454838; 
+ Wed, 18 Oct 2023 09:10:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3hnJpGIu29J+NeYK8FaiEtkwYeQKr/32B+wzw58cOFgw9rNhiribzVLkswFlaiSH/JaB9EQ==
+X-Received: by 2002:a05:620a:29d4:b0:76d:984c:9d01 with SMTP id
+ s20-20020a05620a29d400b0076d984c9d01mr7004287qkp.33.1697645454558; 
+ Wed, 18 Oct 2023 09:10:54 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- dm9-20020ad44e29000000b0065823d20381sm62884qvb.8.2023.10.18.09.08.21
+ 25-20020a05620a04d900b0076db5b792basm59230qks.75.2023.10.18.09.10.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 09:08:28 -0700 (PDT)
-Message-ID: <1dadf5f0-10ca-4f88-ac1c-c3e5a821de04@redhat.com>
-Date: Wed, 18 Oct 2023 18:08:19 +0200
+ Wed, 18 Oct 2023 09:10:53 -0700 (PDT)
+Message-ID: <6f38c014-5671-41ef-b613-62318b2efd82@redhat.com>
+Date: Wed, 18 Oct 2023 18:10:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/12] hw/qdev: Ensure parent device is not realized
- before adding bus
+Subject: Re: [PATCH 11/12] hw/sysbus: Ensure device is not realized before
+ adding MMIO region
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -87,7 +87,7 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20231018141151.87466-1-philmd@linaro.org>
- <20231018141151.87466-11-philmd@linaro.org>
+ <20231018141151.87466-12-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -131,18 +131,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231018141151.87466-11-philmd@linaro.org>
+In-Reply-To: <20231018141151.87466-12-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,40 +160,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18/10/2023 16.11, Philippe Mathieu-Daudé wrote:
-> qbus_new() should not be called on realized device.
+> sysbus_init_mmio() should not be called on realized device.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/core/bus.c | 7 +++++++
->   1 file changed, 7 insertions(+)
+>   hw/core/sysbus.c | 5 +++++
+>   1 file changed, 5 insertions(+)
 > 
-> diff --git a/hw/core/bus.c b/hw/core/bus.c
-> index c7831b5293..c92d07667b 100644
-> --- a/hw/core/bus.c
-> +++ b/hw/core/bus.c
-> @@ -21,6 +21,7 @@
->   #include "hw/qdev-properties.h"
->   #include "qemu/ctype.h"
->   #include "qemu/module.h"
-> +#include "qemu/error-report.h"
->   #include "qapi/error.h"
+> diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+> index 35f902b582..ce54e2c416 100644
+> --- a/hw/core/sysbus.c
+> +++ b/hw/core/sysbus.c
+> @@ -192,6 +192,11 @@ void sysbus_init_mmio(SysBusDevice *dev, MemoryRegion *memory)
+>       int n;
 >   
->   void qbus_set_hotplug_handler(BusState *bus, Object *handler)
-> @@ -163,6 +164,12 @@ BusState *qbus_new(const char *typename, DeviceState *parent, const char *name)
->   {
->       BusState *bus;
->   
-> +    if (parent->realized) {
-> +        error_report("qbus_new(type:%s parent:%s, name:%s) but parent realized",
-> +                     typename, object_get_typename(OBJECT(parent)), name);
+>       assert(dev->num_mmio < QDEV_MAX_MMIO);
+> +    if (DEVICE(dev)->realized) {
+> +        error_report("sysbus_init_mmio(type:%s) but object is realized",
+> +                     object_get_typename(OBJECT(dev)));
 > +        abort();
 > +    }
-> +
->       bus = BUS(object_new(typename));
->       qbus_init_internal(bus, parent, name);
->   
-
-Sounds like a good idea!
+>       n = dev->num_mmio++;
+>       dev->mmio[n].addr = -1;
+>       dev->mmio[n].memory = memory;
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
