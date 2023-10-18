@@ -2,71 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D1B37CE122
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8607CE171
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:45:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8Oi-0007sq-RK; Wed, 18 Oct 2023 11:23:48 -0400
+	id 1qt8j2-0001Yf-1j; Wed, 18 Oct 2023 11:44:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qt8Of-0007sc-CL
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:23:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qt8Od-0001Ea-My
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:23:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697642621;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0dcLn6WWYbwsPIye+Ya6vBDS1pJC2lAX+gLK6QQOt04=;
- b=PiZ3W395Srmmd92hA5AScKLpv8IOb78UsiODKP+HELsTPkB8GNunvlSfTKxgUG6dgM86XV
- DyvfrTb5zeWQiBS1bteG/P0j9Bdxu3yHln12zOfvFQn1WzgsGv2FYOUKugDCSgkZPZUdCg
- VlJ256pIAShWMan6J2M7xG2dHu3TbRM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-282-asXjOdxVP1iBmcGE3wqbuw-1; Wed, 18 Oct 2023 11:23:29 -0400
-X-MC-Unique: asXjOdxVP1iBmcGE3wqbuw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8BFE188B779
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 15:23:29 +0000 (UTC)
-Received: from localhost (unknown [10.45.225.185])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E810AC15BB8;
- Wed, 18 Oct 2023 15:23:28 +0000 (UTC)
-Date: Wed, 18 Oct 2023 17:23:27 +0200
-From: Victor Toso <victortoso@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>, 
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Andrea Bolognani <abologna@redhat.com>
-Subject: Re: [PATCH v2 02/11] scripts: qapi: black format main.py
-Message-ID: <iwlndli3c4waxnjgtvyo6bi52vc4nundupqkrjeufwilua22s2@rh4j2jk26htq>
-References: <20231016152704.221611-1-victortoso@redhat.com>
- <20231016152704.221611-3-victortoso@redhat.com>
- <87pm1crya0.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1qt8j0-0001Xq-8z
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:44:46 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1qt8ix-0004w3-HS
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:44:46 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4081ccf69dcso11571565e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:44:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697643881; x=1698248681;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BsA4KKgtOM0qliqjEIe/huo0hS3uhQsiMmskyenzp2A=;
+ b=mQivgUV5Ru1fw9kmAcelYb1CiUnQ76qzKxF/FZ4bzURhj7nw8+46Cl7Nv9CloaKMB9
+ paXgx2+5C6rdcbY2soYfHrKbg0jH9l60xRnlBzmVsezxvUAN0crS0G+nZ39YGdz7W3yd
+ eK9+0U605DvuV1Sy4SnCyfv3mISI8Sslpp5wccZtD4Ts8AIf2+Tyud5joqT+Hk4RQNak
+ zWSQdcSEk15wScRJxSteANLCTKjFCVVuF0v0qEkNz4IKAhHFdF25dfw3fvOGCkNreptZ
+ EqHobe/LmcVjbARTnViFKj+2HIvXiQfXL5XEXvL4eFSFdmziE1UVPFxdOKMlDBnnhmTu
+ euVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697643881; x=1698248681;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BsA4KKgtOM0qliqjEIe/huo0hS3uhQsiMmskyenzp2A=;
+ b=qIGJETTu4vnN+9XE7u95S2/K6VHjggmp1x581SMp1tstUs4munBv78hV8+niYIbGVY
+ sexb4Tw1KSHujcjpAYStE2/Wspz1mESST0jEgN7xV2jt79cYh6CTGhNILe4gOyfs4p89
+ 9awE0S9uTX4UohKi5ER/5xlRyYnTYKW6okOLlZK3DFILngzDI4zins8cA7lazCPKUOxN
+ FLrSqIz3BXPeXtErTY+Elp6jzXVP8vjkTAxuNgfm8Q4Gw9JSvJ5lW7mhRyjga0YxgbOJ
+ w/pndgZccOp9XsJdxi4mbBrBmetD83JL6cXDxVdlEqTEkp8DMt9vK/KObKOS/AR9Vhmx
+ vh0A==
+X-Gm-Message-State: AOJu0YytZFrn79bzq3tDClv4D3yclUIRCkqUQIhi1LPZL5QFiiHVENcW
+ 1THPf0TIO+Zif8JJ6HuotPH8N8nGTjG7hT6lkFQTMw==
+X-Google-Smtp-Source: AGHT+IHtaZ213PUGXZkGnX90BWbqjDMrkfbkDf/ooXl+i+v3udxDyEhmDAn0ix2dM56js5oE7KgrWg==
+X-Received: by 2002:a05:600c:1896:b0:405:3be0:c78d with SMTP id
+ x22-20020a05600c189600b004053be0c78dmr5208890wmp.3.1697643881365; 
+ Wed, 18 Oct 2023 08:44:41 -0700 (PDT)
+Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
+ [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
+ b14-20020a05600c4e0e00b0040607da271asm1963580wmq.31.2023.10.18.08.44.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 08:44:40 -0700 (PDT)
+From: Rob Bradford <rbradford@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ Rob Bradford <rbradford@rivosinc.com>
+Subject: [PATCH v4 0/6] Support discontinuous PMU counters
+Date: Wed, 18 Oct 2023 16:39:08 +0100
+Message-ID: <20231018154434.17367-1-rbradford@rivosinc.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="vpo2z7bxt3vwej3c"
-Content-Disposition: inline
-In-Reply-To: <87pm1crya0.fsf@pond.sub.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,61 +91,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Currently the available PMU counters start at HPM3 and run through to
+the number specified by the "pmu-num" property. There is no
+requirement in the specification that the available counters be
+continously numbered. This series add suppport for specifying a
+discountinuous range of counters though a "pmu-mask" property.
 
---vpo2z7bxt3vwej3c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+v4:
 
-On Wed, Oct 18, 2023 at 01:00:07PM +0200, Markus Armbruster wrote:
-> Victor Toso <victortoso@redhat.com> writes:
->=20
-> > flake8 complained:
-> >     ./main.py:60:1: E302 expected 2 blank lines, found 1
-> >
-> > Which is simple enough. My vim has black [0] enabled by default, so it
-> > did some extra formatting. I'm proposing to follow it.
-> >
-> > [0] https://black.readthedocs.io/en/stable/
-> >
-> > Signed-off-by: Victor Toso <victortoso@redhat.com>
-> > ---
-> >  scripts/qapi/main.py | 76 ++++++++++++++++++++++++++++----------------
-> >  1 file changed, 48 insertions(+), 28 deletions(-)
->=20
-> Is this all black hates about scripts/qapi/?
+* Added more R-B tags (just missing from 4 & 5)
+* Added details on how to calculate mask
+* Use custom property for "pmu-num" in order to give deprecation warning 
+* Special case a zero value for "pmu-num"
 
-No, just scripts/qapi/main.py.
+v3:
 
-> Did you configure it in any way, and if yes, how?
+* Use env_archcpu() in csr.c
+* Re-added check to enforce deprectated "num-pmu" below limit
+* Check that standard counters are not included in mask
+* Remove use of MAKE_32BIT_MASK()
 
-Only to reduce line length to 79.
+v2:
 
-I can do a separate series for this, if the idea is accepted.
+* Use cfg.pmu_mask wherever cfg.pmu_num was used previously
+* Deprecate pmu_num property (warning, comment & updated documentation)
+* Override default pmu_mask value iff pmu_num changed from default
 
-Cheers,
-Victor
 
---vpo2z7bxt3vwej3c
-Content-Type: application/pgp-signature; name="signature.asc"
+Rob Bradford (6):
+  target/riscv: Propagate error from PMU setup
+  target/riscv: Don't assume PMU counters are continuous
+  target/riscv: Use existing PMU counter mask in FDT generation
+  target/riscv: Add "pmu-mask" property to replace "pmu-num"
+  docs/about/deprecated: Document RISC-V "pmu-num" deprecation
+  target/riscv: Use MAKE_64BIT_MASK instead of custom macro
 
------BEGIN PGP SIGNATURE-----
+ docs/about/deprecated.rst  | 12 +++++++++++
+ hw/riscv/virt.c            |  2 +-
+ target/riscv/cpu.c         | 31 +++++++++++++++++++++++++++-
+ target/riscv/cpu_cfg.h     |  3 ++-
+ target/riscv/csr.c         |  5 +++--
+ target/riscv/machine.c     |  2 +-
+ target/riscv/pmu.c         | 41 +++++++++++++++++++++-----------------
+ target/riscv/pmu.h         |  5 +++--
+ target/riscv/tcg/tcg-cpu.c | 10 ++++++++--
+ 9 files changed, 83 insertions(+), 28 deletions(-)
 
-iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmUv+G4ACgkQl9kSPeN6
-SE8wCg/9F33/w9SwSXglqRe8H0dtO4wQZlOXe6mzIL+omf373IJJVSRoTbES+yP5
-cVW8vN5XEe+KTrA5DFNpEtEZqj20UgVxlhe4i1uccA6GAPLbw1jzZwtIDlRQEokK
-Zzst9jf8In78w3MmCpWpmPP128lHDdM6xvylULPHsVBGBA7frq6v147NQ1y0DQNj
-ov6VmvDh9HyENrG5/2bjf3ez1g4xfvb+tVsuDX4a00KZiE9qdSfF8wOBfJ8Dw4wu
-zNosDy9p6HXP3Zn3i6C6935eaMLySnrz8qXFXOdTMmOsrFlu8gzu8GSBegzO7o4+
-q3AAWu1c1jZtBAdLsEn+bl0m8LgOOAPye7Lbqtw8LYVZEIM/2dmxjc5+Lv4LdgAw
-G5RT3kbk+gD9+cUoqjMEURR9/PqaOHhRr01Uq9gCwKE3DQCZeYBnvNnn3/ewAkCZ
-YXZDY8NSyCrSWbbM+rykvpkp399Dw3IeFjWi6QfAGqKJb7KOSdIrR0weSIuPCWnd
-SoIG/ffCJS3haDkDHwGHc3sXREIXQm5jiJGMSSOHa3FCOotsjmGpmWNwECylPwQQ
-1RVy0Hvc+RAP3WxYCep4KQP71MXxkf2hEy635D56WmkOPd9SuL9EmxBMhBkxQFsc
-4qToPEKsi2nob4ROozyJWpghkC0HmiwQqela7MEH6GhV37C4Hec=
-=wOGI
------END PGP SIGNATURE-----
-
---vpo2z7bxt3vwej3c--
+-- 
+2.41.0
 
 
