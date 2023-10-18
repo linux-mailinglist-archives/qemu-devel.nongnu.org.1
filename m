@@ -2,94 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D4B7CD6BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1C07CD6E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:46:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt24z-00022E-CZ; Wed, 18 Oct 2023 04:39:01 -0400
+	id 1qt2By-0001ZT-AD; Wed, 18 Oct 2023 04:46:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt24x-00021x-QR
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:38:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qt2Bn-0001XL-Kx
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:46:06 -0400
+Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt24w-0005UV-6y
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:38:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697618337;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OrO8K1y8dZnN/NP8xzNkVpIkNtCihXzISvJSBcpQhiE=;
- b=fTMGAmRPpOd6YrIuLO2q3mc59BMS7Cp9MbFSoPayWQvl+W9k/uCH4PIad/yUkjDyawr3Jt
- cjUD6LWjyaCXFYTmVAFHaZz6guU8SQknTiGq+Y4lm4m0VVjQxbVhUNlbaH6MUOJWyP8laF
- 0OSdr0axxcp+NLCaqfn7Qb1AGpIpnHM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-Gr3TMBJfMuOFyVV4X1Baqw-1; Wed, 18 Oct 2023 04:38:50 -0400
-X-MC-Unique: Gr3TMBJfMuOFyVV4X1Baqw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-9a681c3470fso481720966b.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:38:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697618329; x=1698223129;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OrO8K1y8dZnN/NP8xzNkVpIkNtCihXzISvJSBcpQhiE=;
- b=eXKESJhX6SuPRIgE7nW394xYLJKtv94Y8TRSzomt9iOS+uq5nA2pe/R57YZFOud+O+
- +68JxahHQMfXWlEITZnPBHLqlly0g7LgjhjFd4j0JlZEso9G/mp/zwcgajX283EOWUPp
- Lp+fnJuFqeJbj6FBamXumsp13p1upkGTOR6rmHXimaODkCwOSUEUk1Jp/MqgRo44QsXt
- KWh0tEAGhr2tISTcWadaKaRuCf/fqsabY1CDIO797gq+FhQl0iFe7zIkcyU4DDSdCgp5
- uT5o8S3W6Nr/jz1aESvefWuztmy2aRumrnvgPoA2KEpPr+RDAVj7cOzMKPhoBfTCkSdg
- 9FIQ==
-X-Gm-Message-State: AOJu0YzluWeVm7lJJTpG/wDdIvA/QmN/6omO+niaDTGc3zzN1uwPI1cI
- A7EwE2q7liya5e3cttQcy9stv6FM/XgeDvrxM6MO8fLKlJPwSurmZCz6QaCsESXyHaFiYLGpUK3
- uxjhW8itv2XKXF5w=
-X-Received: by 2002:a17:907:3e11:b0:9bf:122a:7db2 with SMTP id
- hp17-20020a1709073e1100b009bf122a7db2mr3997247ejc.66.1697618329713; 
- Wed, 18 Oct 2023 01:38:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGeqE2g+qCQrxGy20SsTgWeyI8H05enQCX7VkKUxK2ir03QPRrQXhXIJzuQ9GAhR46vMojOQw==
-X-Received: by 2002:a17:907:3e11:b0:9bf:122a:7db2 with SMTP id
- hp17-20020a1709073e1100b009bf122a7db2mr3997230ejc.66.1697618329282; 
- Wed, 18 Oct 2023 01:38:49 -0700 (PDT)
-Received: from redhat.com ([193.142.201.38]) by smtp.gmail.com with ESMTPSA id
- e9-20020a17090681c900b00991faf3810esm1214774ejx.146.2023.10.18.01.38.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 01:38:48 -0700 (PDT)
-Date: Wed, 18 Oct 2023 04:38:41 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Li Feng <fengli@smartx.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- "open list:Block layer core" <qemu-block@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v8 0/5] Implement reconnect for vhost-user-scsi
-Message-ID: <20231018043831-mutt-send-email-mst@kernel.org>
-References: <20231009044735.941655-1-fengli@smartx.com>
- <9D9DFA75-541B-4EE9-831F-B2FF941B3E41@smartx.com>
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qt2Bi-0007A4-V0
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:46:00 -0400
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qt2BQ-00010f-Gh; Wed, 18 Oct 2023 10:45:40 +0200
+Message-ID: <2bc0b25d-b4a2-4cad-9cef-1317f2e3ec8c@maciej.szmigiero.name>
+Date: Wed, 18 Oct 2023 10:45:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9D9DFA75-541B-4EE9-831F-B2FF941B3E41@smartx.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v7_0/7=5D_Hyper-V_Dynamic_Memory_Protocol_?=
+ =?UTF-8?B?ZHJpdmVyIChodi1iYWxsb29uIPCfjogp?=
+Content-Language: en-US, pl-PL
+To: David Hildenbrand <david@redhat.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <cover.1693240836.git.maciej.szmigiero@oracle.com>
+ <94e8a0fd-b6e9-450d-bb63-0e598295eca9@redhat.com>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <94e8a0fd-b6e9-450d-bb63-0e598295eca9@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,88 +110,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued. Thanks!
-On Wed, Oct 18, 2023 at 04:26:10PM +0800, Li Feng wrote:
-> Hello Guys,
+On 18.10.2023 10:00, David Hildenbrand wrote:
+> On 28.08.23 18:48, Maciej S. Szmigiero wrote:
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>
+>> This is a continuation of the v6 of the patch series located here:
+>> https://lore.kernel.org/qemu-devel/cover.1689786474.git.maciej.szmigiero@oracle.com/
+>>
+>>
+>> Changes from v6:
+>> * Split the hv-balloon driver implementation into multiple files holding
+>> particular data structures and their methods in order to make the driver
+>> easier to understand.
+>>
+>> * Split out the PC machine necessary plumbing for the driver and its final
+>> activation into a separate patch.
+>>
+>> * Make sure that patches that bring QAPI-related changes also implement these
+>> in the driver in the same patch.
+>>
+>> * Add a "query-hv-balloon-status-report" QMP command to query the data from
+>> the last received HV_BALLOON_STATUS_REPORT event.
+>>
+>> * Rate limit the HV_BALLOON_STATUS_REPORT QMP event.
+>>
+>> * Replace "TBD" in QAPI changes with the actual targeted QEMU version.
+>>
+>> * Spelling and formatting fixes in QAPI changes.
+>>
+>> * Rebase onto the latest David's patch series.
+>>
+>>
+>> Based-on: <20230825132149.366064-1-david@redhat.com>
+>> Based-on-Repo-Commit: https://github.com/davidhildenbrand/qemu/tree/virtio-mem-memslots b65df116f8a8
 > 
-> Ping… 
-> 
-> These patches have been waiting for a long time. Can they be merged?
-> 
-> 
-> Best Regards, 
-> 
-> li
-> 
-> 
->     On 9 Oct 2023, at 12:46 PM, Li Feng <fengli@smartx.com> wrote:
-> 
->     Changes for v8:
->     - [PATCH 3/5] vhost-user-scsi: support reconnect to backend
->      - Fix code style suggested by Manos Pitsidianakis
->     - [PATCH 4/5] vhost-user-scsi: start vhost when guest kicks
->      - Use 'DEVICE()' macro in vhost_user_scsi_handle_output to replace the
->        'parent_obj.parent_obj.parent_obj.parent_obj'.
-> 
->     Changes for v7:
->     - [PATCH 3/5] vhost-user-scsi: support reconnect to backend
->      - Add reporting the error in vhost-scsi;
->      - Rebase to master and fix the conflict.
->     - Add "Reviewed-by" tags.
-> 
->     Changes for v6:
->     - [PATCH] vhost-user: fix lost reconnect
->      - Fix missing assign event_cb.
-> 
->     Changes for v5:
->     - No logic has been changed, just move part of the code from patch 4 to
->     patch 5.
-> 
->     Changes for v4:
->     - Merge
->      https://lore.kernel.org/all/20230830045722.611224-1-fengli@smartx.com/ to
->      this series.
->     - Add ERRP_GUARD in vhost_user_scsi_realize;
->     - Reword the commit messages.
-> 
->     Changes for v3:
->     - Split the vhost_user_scsi_handle_output to a separate patch;
->     - Move the started_vu from vhost scsi common header to vhost-user-scsi
->     header;
->     - Fix a log print error;
-> 
->     Changes for v2:
->     - Split the v1 patch to small separate patchset;
->     - New patch for fixing fd leak, which has sent to reviewers in another
->      mail;
->     - Implement the `vhost_user_scsi_handle_output`;
->     - Add the started_vu safe check;
->     - Fix error handler;
->     - Check the inflight before set/get inflight fd.
-> 
->     Li Feng (5):
->      vhost-user-common: send get_inflight_fd once
->      vhost: move and rename the conn retry times
->      vhost-user-scsi: support reconnect to backend
->      vhost-user-scsi: start vhost when guest kicks
->      vhost-user: fix lost reconnect
-> 
->     hw/block/vhost-user-blk.c             |   6 +-
->     hw/scsi/vhost-scsi-common.c           |  47 ++---
->     hw/scsi/vhost-scsi.c                  |   6 +-
->     hw/scsi/vhost-user-scsi.c             | 250 +++++++++++++++++++++++---
->     hw/virtio/vhost-user-gpio.c           |   5 +-
->     hw/virtio/vhost-user.c                |  10 +-
->     include/hw/virtio/vhost-scsi-common.h |   2 +-
->     include/hw/virtio/vhost-user-scsi.h   |   6 +
->     include/hw/virtio/vhost-user.h        |   3 +-
->     include/hw/virtio/vhost.h             |   2 +
->     10 files changed, 277 insertions(+), 60 deletions(-)
-> 
->     --
->     2.41.0
-> 
-> 
-> 
+> That is upstream now.
+
+That's great - I see it was pulled into QEMU git on Monday.
+
+> Do you have a new version in the works that further splits up #4?
+> I recall we discussed somewhere separating the hotplug changes from the pure memory ballonning changes if possible.
+
+I will try to prepare an updated patch set next week,
+since unfortunately I am like 120% busy right now.
+
+Thanks,
+Maciej
 
 
