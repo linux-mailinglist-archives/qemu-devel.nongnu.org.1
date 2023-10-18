@@ -2,147 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B907CD7F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8077CD85D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:38:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt2qf-0008WQ-OU; Wed, 18 Oct 2023 05:28:17 -0400
+	id 1qt2zs-00068D-HT; Wed, 18 Oct 2023 05:37:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qt2qb-0008Tq-Sf
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:28:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt2zq-00067Y-6W
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:37:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qt2qY-0008Qt-MI
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:28:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt2zo-0001f6-PG
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:37:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697621290;
+ s=mimecast20190719; t=1697621863;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Y2XU1r8atV6nUQQcLY52GbhL0+MpI+PYu106ES56zpI=;
- b=G+S4wImFvZJVJ+UIaifO4/7Ek5fbUb6t/YqRnzBhBpjiBpWBaG+a+OvL5qr/IKjB/7+hAI
- tR9GgGbCIdbXKXqoZQF+DRQH3iqkj2jT+66r5ulzwnJqTC9q9rOdOTneQpAOWWerHSxoh/
- lxVOsRBeqKx4dYqs2rYwIXvfJPspksg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-270-uCFGmAEsPruPAr1WNx26cw-1; Wed, 18 Oct 2023 05:28:08 -0400
-X-MC-Unique: uCFGmAEsPruPAr1WNx26cw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32dc767e619so793252f8f.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 02:28:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697621287; x=1698226087;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Y2XU1r8atV6nUQQcLY52GbhL0+MpI+PYu106ES56zpI=;
- b=WnR98iQ3wYaKIQWNv2qiUiV6YW5nkFeQltHBCvd6vSZiF4CXCKx5WXJeEAi4fu/wkq
- 5G97Hxuu5Gs7AmNFy1xhmBI2tU0C4YLucyagnjufbQMSTUAOndm00hVwAsU8oercKUYN
- JsVF9H8V4S2OkpX8STrSO8TPLsdbiHi1Miy5Ysazh831tVR5AQDID3FjgDwFkz/13e4Z
- 087pXRALjtNNtn8YMNTTe0DHvbu4m2PAaNyWxFWQaolf1rkrn7N1oI3CBjxKu4gO8VRJ
- JKb2xuPliSVcNefOZubKcmNF7qFbSJYb3vnWZlQ5S8mA0YLJliCIlyCMR/JOU6V7e2H5
- bURQ==
-X-Gm-Message-State: AOJu0YzGLQvbL6QAfSr0Xl0M95ZpD1J2r6V8lvdGL53ouzjshNzuVefQ
- c5GjOgugHLoItnQf0yG+peKsyDz5jOAx8wlyjNAomhiMO4S9iWPWeWAX7kKZ/VsdSW/vdmnSa1K
- EzQE+ZE4R0bKZjm0=
-X-Received: by 2002:a05:6000:1a43:b0:31f:9838:dfc4 with SMTP id
- t3-20020a0560001a4300b0031f9838dfc4mr3516070wry.33.1697621287567; 
- Wed, 18 Oct 2023 02:28:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEI2P1kyG6IGM2btR3CxJo45NO/oh9jalIu8B/WXpJeqciGRlH0YwcRJ+UbhaisbBooDVnNgw==
-X-Received: by 2002:a05:6000:1a43:b0:31f:9838:dfc4 with SMTP id
- t3-20020a0560001a4300b0031f9838dfc4mr3516052wry.33.1697621287018; 
- Wed, 18 Oct 2023 02:28:07 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70a:d300:5c7b:51ce:e3ef:6e01?
- (p200300cbc70ad3005c7b51cee3ef6e01.dip0.t-ipconnect.de.
- [2003:cb:c70a:d300:5c7b:51ce:e3ef:6e01])
- by smtp.gmail.com with ESMTPSA id
- f5-20020a5d50c5000000b003140f47224csm1696282wrt.15.2023.10.18.02.28.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 02:28:06 -0700 (PDT)
-Message-ID: <c04c0c78-8a43-4d27-a9cf-19f386d7c7f5@redhat.com>
-Date: Wed, 18 Oct 2023 11:28:05 +0200
+ in-reply-to:in-reply-to:references:references;
+ bh=fKA1+njlaHE3acQEe6Ar+lqnlHqSoget4WgSQ5cmvSw=;
+ b=Sxf2nxola9KUjUirXKziShVXBaZ4DxSpz/8LwWG4ZHjnmi3sREBPc9ITLTOD86Tk8xM9q2
+ 0B0V57M1ktAxck4Ed7li/WHOA4VYc89iGRKOMchYzRNKR24vsR3jMALovB7uJmlxGEiESy
+ keDUlElj2uUvJWbzLTE5Z4u286vg1y0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-267-jOwnyJH-PSu0m2Qe7bz7_Q-1; Wed, 18 Oct 2023 05:37:40 -0400
+X-MC-Unique: jOwnyJH-PSu0m2Qe7bz7_Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A2ED889059;
+ Wed, 18 Oct 2023 09:37:38 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EF56C2026D4C;
+ Wed, 18 Oct 2023 09:37:37 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E278021E6A1F; Wed, 18 Oct 2023 11:37:36 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  eblake@redhat.com,
+ hreitz@redhat.com,  kwolf@redhat.com,  vsementsov@yandex-team.ru,
+ jsnow@redhat.com,  den@virtuozzo.com,  t.lamprecht@proxmox.com,
+ alexander.ivanov@virtuozzo.com
+Subject: Re: [PATCH v3 6/9] qapi/block-core: use JobType for BlockJobInfo's
+ type
+References: <20231013092143.365296-1-f.ebner@proxmox.com>
+ <20231013092143.365296-7-f.ebner@proxmox.com>
+Date: Wed, 18 Oct 2023 11:37:36 +0200
+In-Reply-To: <20231013092143.365296-7-f.ebner@proxmox.com> (Fiona Ebner's
+ message of "Fri, 13 Oct 2023 11:21:40 +0200")
+Message-ID: <87ttqouv8f.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v7_0/7=5D_Hyper-V_Dynamic_Memory_Protocol_?=
- =?UTF-8?B?ZHJpdmVyIChodi1iYWxsb29uIPCfjogp?=
-Content-Language: en-US
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <cover.1693240836.git.maciej.szmigiero@oracle.com>
- <94e8a0fd-b6e9-450d-bb63-0e598295eca9@redhat.com>
- <2bc0b25d-b4a2-4cad-9cef-1317f2e3ec8c@maciej.szmigiero.name>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <2bc0b25d-b4a2-4cad-9cef-1317f2e3ec8c@maciej.szmigiero.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -159,57 +83,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18.10.23 10:45, Maciej S. Szmigiero wrote:
-> On 18.10.2023 10:00, David Hildenbrand wrote:
->> On 28.08.23 18:48, Maciej S. Szmigiero wrote:
->>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>>
->>> This is a continuation of the v6 of the patch series located here:
->>> https://lore.kernel.org/qemu-devel/cover.1689786474.git.maciej.szmigiero@oracle.com/
->>>
->>>
->>> Changes from v6:
->>> * Split the hv-balloon driver implementation into multiple files holding
->>> particular data structures and their methods in order to make the driver
->>> easier to understand.
->>>
->>> * Split out the PC machine necessary plumbing for the driver and its final
->>> activation into a separate patch.
->>>
->>> * Make sure that patches that bring QAPI-related changes also implement these
->>> in the driver in the same patch.
->>>
->>> * Add a "query-hv-balloon-status-report" QMP command to query the data from
->>> the last received HV_BALLOON_STATUS_REPORT event.
->>>
->>> * Rate limit the HV_BALLOON_STATUS_REPORT QMP event.
->>>
->>> * Replace "TBD" in QAPI changes with the actual targeted QEMU version.
->>>
->>> * Spelling and formatting fixes in QAPI changes.
->>>
->>> * Rebase onto the latest David's patch series.
->>>
->>>
->>> Based-on: <20230825132149.366064-1-david@redhat.com>
->>> Based-on-Repo-Commit: https://github.com/davidhildenbrand/qemu/tree/virtio-mem-memslots b65df116f8a8
->>
->> That is upstream now.
-> 
-> That's great - I see it was pulled into QEMU git on Monday.
-> 
->> Do you have a new version in the works that further splits up #4?
->> I recall we discussed somewhere separating the hotplug changes from the pure memory ballonning changes if possible.
-> 
-> I will try to prepare an updated patch set next week,
-> since unfortunately I am like 120% busy right now.
+Fiona Ebner <f.ebner@proxmox.com> writes:
 
-I feel you. Soft-freeze starts on 2023-11-07, so there is still some 
-time. In the worst case, 9.0 development should open around 2023-12-19.
+> In preparation to turn BlockJobInfo into a union with @type as the
+> discriminator. That requires it to be an enum.
+>
+> No functional change is intended.
+>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
--- 
-Cheers,
+Replacing str by enum makes sense whether we need enum for a union or
+not.
 
-David / dhildenb
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
 
