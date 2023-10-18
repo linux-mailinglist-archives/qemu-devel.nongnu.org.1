@@ -2,47 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCE57CDAB1
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4837CDAE3
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:42:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt4rx-0006WW-TI; Wed, 18 Oct 2023 07:37:46 -0400
+	id 1qt4vc-0007SU-Jl; Wed, 18 Oct 2023 07:41:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qt4rv-0006WK-DB
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:37:43 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qt4rs-0007HC-PJ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:37:43 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 960842B548;
- Wed, 18 Oct 2023 14:37:48 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 504BB2FD22;
- Wed, 18 Oct 2023 14:37:29 +0300 (MSK)
-Message-ID: <b69ac1a7-f52b-4c0d-b761-da0a8244d4a6@tls.msk.ru>
-Date: Wed, 18 Oct 2023 14:37:29 +0300
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qt4vZ-0007SJ-Tl
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:41:30 -0400
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qt4vU-0007p0-Ue
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:41:28 -0400
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-581bca3ebb0so1504888eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 04:41:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697629284; x=1698234084; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=fwV7PSa3sP6IOwckUBfMcJ1RWkT1o0wYNQ8FH2Qk+0M=;
+ b=fpi1kOLzFhYaE0pj2fhCWT4Otnso9eZqI6WwF2qk4AnKOVGesmV/fHIJf5J8u6Vn6Z
+ HQrZXbYDnnlwj5KdlrD1Gv2sQaKscjgZw6b+wGp/pi5PjO62Xfa16GdkaO4rCXPAodTM
+ BuAJmrc2/utdrIgvXkP7JntGgKS0T+VvvcdQ2b9Rkonm8+asRP8dxj5RUPtCB3X5t0WN
+ UY0QX1jw4LPSZAs+88so2oNpLlYPKFPN2AJo4t3GtIHz/qcZmmk5QLr2vQPchSN+2uPH
+ hpwN3k1tWfop5N/1PZbj8pSFctQahcEOL2mct7mfYURaZOfNqb1kP+8rRTm3j8uHOpYq
+ oqLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697629284; x=1698234084;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fwV7PSa3sP6IOwckUBfMcJ1RWkT1o0wYNQ8FH2Qk+0M=;
+ b=iXL1cIyRS0HhHMbnvHhZW6Fahm1WgDEQDk3ZSkIOrshsSd41HK7H9pdpkRNurEukQF
+ wFY5YpmIDGzPY5jPjnt7Bb86Rcdjm8VNLMYXkIP8/Eiil9xeZ4CStPrOMOny7RPMhqYA
+ roFXzSZhJqx8pzC3jCuXDPkEmzNefWzBk5F3pnxFr5JUycmLMmdTvhEdSZbRk1MksIcS
+ RnrmT+SnmpnBQ0lt8KVXOmm3sLOGRImZ2HT4+ZsEDc90ct9m7bvOVoKUnEUABPVCZG7C
+ 4a1Z7kzMpyOKaQzNZPC3/aHGmVYaridgicCe5S8f7470kgItBKvJKTRJ6byNjSqtI/wU
+ 4+YQ==
+X-Gm-Message-State: AOJu0YypaGUyw77j2gfF3Tl/OlrLhtDu9sbrSJXCGTRUYaBG1BhooxMQ
+ X4Lrq0r9hd/LLfV94q5OiYcbXccMzXTe7/T+wE4=
+X-Google-Smtp-Source: AGHT+IFmlSwfl48IOXLgenezXdaJkFVC5GwvMLicnj/pRSOHbqBYG6nYBNvr9oHSSF/zyF6fvfiRVNG0kV/YUiRd8rM=
+X-Received: by 2002:a05:6820:218b:b0:581:ff09:62e4 with SMTP id
+ ce11-20020a056820218b00b00581ff0962e4mr824622oob.2.1697629283708; Wed, 18 Oct
+ 2023 04:41:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 17/32] meson, cutils: allow non-relocatable installs
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <20231018082752.322306-1-pbonzini@redhat.com>
- <20231018082752.322306-18-pbonzini@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20231018082752.322306-18-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20231002203221.17241-1-lersek@redhat.com>
+ <72e1adac-fe95-5650-536b-b70faab7b6d6@redhat.com>
+In-Reply-To: <72e1adac-fe95-5650-536b-b70faab7b6d6@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 18 Oct 2023 07:41:11 -0400
+Message-ID: <CAJSP0QU7S4HzPnDBxaSS6C7mZFvBWAVAh8bLMvRHj=aP59NqnA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ qemu devel list <qemu-devel@nongnu.org>, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc33.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,43 +88,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-18.10.2023 11:27, Paolo Bonzini wrote:
-> Say QEMU is configured with bindir = "/usr/bin" and a firmware path
-> that starts with "/usr/share/qemu".  Ever since QEMU 5.2, QEMU's
-> install has been relocatable: if you move qemu-system-x86_64 from
-> /usr/bin to /home/username/bin, it will start looking for firmware in
-> /home/username/share/qemu.  Previously, you would get a non-relocatable
-> install where the moved QEMU will keep looking for firmware in
-> /usr/share/qemu.
-> 
-> Windows almost always wants relocatable installs, and in fact that
-> is why QEMU 5.2 introduced relocatability in the first place.
-> However, newfangled distribution mechanisms such as AppImage
-> (https://docs.appimage.org/reference/best-practices.html), and
-> possibly NixOS, also dislike using at runtime the absolute paths
-> that were established at build time.
-> 
-> On POSIX systems you almost never care; if you do, your usecase
-> dictates which one is desirable, so there's no single answer.
-> Obviously relocatability works fine most of the time, because not many
-> people have complained about QEMU's switch to relocatable install,
-> and that's why until now there was no way to disable relocatability.
-> 
-> But a non-relocatable, non-modular binary can help if you want to do
-> experiments with old firmware and new QEMU or vice versa (because you
-> can just upgrade/downgrade the firmware package, and use rpm2cpio or
-> similar to extract the QEMU binaries outside /usr), so allow both.
-> This patch allows one to build a non-relocatable install using a new
-> option to configure.  Why?  Because it's not too hard, and because
-> it helps the user double check the relocatability of their install.
-> 
-> Note that the same code that handles relocation also lets you run QEMU
-> from the build tree and pick e.g. firmware files from the source tree
-> transparently.  Therefore that part remains active with this patch,
-> even if you configure with --disable-relocatable.
+On Wed, 18 Oct 2023 at 07:26, Laszlo Ersek <lersek@redhat.com> wrote:
+>
+> Hi Michael,
+>
+> still waiting for you to pick this up, please.
+>
+> In
+> <http://mid.mail-archive.com/20231004122927-mutt-send-email-mst@kernel.org>,
+> you wrote:
+>
+> > OK. I'll need to do another PR soonish since a bunch of patchsets
+> > which I wanted in this PR had issues and I had to drop them.
+> > v3 will be there.
+>
+> (Alt. link:
+> <https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg01164.html>.)
+>
+> That was on 04 Oct 2023 -- exactly two weeks ago :(
+>
+> Stefan, can you perhaps apply this v3 series directly from the list?
 
-Thank you very much for this Paolo.  It was on my todo list for quite
-some time :)
+Michael has been active over the past few days, so I think he'll
+respond and send a pull request with your patches.
 
-/mjt
+Stefan
+
+>
+> Thanks,
+> Laszlo
+>
+> On 10/2/23 22:32, Laszlo Ersek wrote:
+> > v2:
+> >
+> > - http://mid.mail-archive.com/20230830134055.106812-1-lersek@redhat.com
+> > - https://patchwork.ozlabs.org/project/qemu-devel/cover/20230830134055.106812-1-lersek@redhat.com/
+> >
+> > v3 picks up tags from Phil, Eugenio and Albert, and updates the commit
+> > message on patch#7 according to Eugenio's comments.
+> >
+> > Retested.
+> >
+> > Laszlo Ersek (7):
+> >   vhost-user: strip superfluous whitespace
+> >   vhost-user: tighten "reply_supported" scope in "set_vring_addr"
+> >   vhost-user: factor out "vhost_user_write_sync"
+> >   vhost-user: flatten "enforce_reply" into "vhost_user_write_sync"
+> >   vhost-user: hoist "write_sync", "get_features", "get_u64"
+> >   vhost-user: allow "vhost_set_vring" to wait for a reply
+> >   vhost-user: call VHOST_USER_SET_VRING_ENABLE synchronously
+> >
+> >  hw/virtio/vhost-user.c | 216 ++++++++++----------
+> >  1 file changed, 108 insertions(+), 108 deletions(-)
+> >
+> >
+> > base-commit: 36e9aab3c569d4c9ad780473596e18479838d1aa
+>
+>
 
