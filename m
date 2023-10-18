@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC987CDD58
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF45E7CDD6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:36:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6dk-0007en-M5; Wed, 18 Oct 2023 09:31:12 -0400
+	id 1qt6e4-0007gy-PB; Wed, 18 Oct 2023 09:31:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6dg-0007eB-TS
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:08 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6dl-0007f5-Lv
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:14 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6dd-0004gS-9g
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:08 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-32da7ac5c4fso3287228f8f.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:31:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6dj-0004hS-Ov
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:13 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-507a29c7eefso5717610e87.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:31:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697635863; x=1698240663; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=y0+7hkc8r0bhom9dqxmO4lbR5mjdciNCOpFCqrOZhFo=;
- b=Est7AZs68dQAIL1hGoQRx8trBpU5Zlxuy9UA78+6VSCGTij5RhXQOfSPvH7JYVBKkN
- VZCtd9Kgu+rFR0d0jPxlSJ/cda/61zswvCLB+cfBQlblNM78CGZMC0XyNS+eHKIYeps0
- Y4SO52TICXKrTP/X5UocS+4z4OPaSPu9WYMJvV2N5mCdsIpF+YKA8UBQmkg9STC2k5Ei
- G96eCO8fmJdqZEcqDBqM9SN5b7biEQWACCZNeBWrPJ8XlDNp5KIu9bxSXziWbWGYzz7K
- wO/8/3DrpnuI42uXDr4XMKVTztp4mYBxQ10cR/LJMtLYZeNF3vB0CQUg3VZni02T/ycQ
- QTzA==
+ d=linaro.org; s=google; t=1697635869; x=1698240669; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=R88+Z+VGYIDcvDUiZgRkTIEWNSTtdo2zUBsOwzRZMmc=;
+ b=TdqlEWr6rzRpsbUxD3h21MmktH5yi26TbzzBOdYrmiC2kz0Mys8jL3nykzBvHdEMPV
+ vtdAqXVP1JMucNuq/LXB/LXNl3FY1IEE9eUA9U31nDK/fmrL2qZAeNi3Ut5sd5vDHIcS
+ qIpdaISyIqZvdIxAoQwkJYHdUvaCMP0V+WLRriPcK+YKftlhIFXJb2UfZq1mWagzGThQ
+ JVyxaVAmocJIp5BXvozEyigk7rHwTsI9Ch6qd17wizuDZmz0954EWKylP9qXAZArKwbK
+ HgwFW78OjX4L5/6ZRcmdkFRG6RDVclwHA2CAv1CLSwRvsiDkyZmG00SVyEqDlfSJnIfZ
+ SZkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697635863; x=1698240663;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=y0+7hkc8r0bhom9dqxmO4lbR5mjdciNCOpFCqrOZhFo=;
- b=pzgWflYZLonX0RlhKJw5cl/ulq9S6RC3Zisf/Xlu9p2o0dAWasz4FBuSc6lP30dwpj
- GXW/sieE1O4ZtnuHHqAO/3zwgE5IEsO9ojOvMLq+c360td2ui2tXmFhVVbDaQFKUgUkg
- IMVsVy7lSn7d7Jm8seg7gT+UkxZ85MP9agDKXt5h0XVwqiYtVpaUXoan3bSOKlT/DQCc
- gChAldPMIF5JoGaMdVB9JAteFnNVOCkEtyvuRHVROUrOc3AwiKmMKQ6sEF1xcRCs10d4
- yo3GLKsiz9I8SvPuvheCWG5Q3OM9gXTb/wHVrWnkybv6FEr1lzV/eRbg1w3/BjLlmX8m
- vXLw==
-X-Gm-Message-State: AOJu0YxD+ndw6isQ48AB2DfGvBw7kRCNgfh0tgzUzmgyB7w03Izftw51
- tbYNOtKp1iL5Svgy/gJdwN+gn9dBpbqYqvlwlN0=
-X-Google-Smtp-Source: AGHT+IG2umFftAOy3IKeTJuNP/qUqljkWYFWUfDgGMiUtX3yusBvy53xrKPidT+RxDUm4NOPujEGnQ==
-X-Received: by 2002:a5d:4a04:0:b0:320:bae:2dfd with SMTP id
- m4-20020a5d4a04000000b003200bae2dfdmr4400153wrq.5.1697635863253; 
- Wed, 18 Oct 2023 06:31:03 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697635869; x=1698240669;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=R88+Z+VGYIDcvDUiZgRkTIEWNSTtdo2zUBsOwzRZMmc=;
+ b=GUXOkq9c+Y7C+wMi0N1jubRtZxnsF7Ioof0BVUWY325Nq7s5q6p1zOaAMiplH/bzvy
+ NtwBEW04jcRD6SZKfVqTXzx4DnseIEWlO3zG2/OIV9rbLgQWJ3ukAVaJ7fRK36uahauU
+ wQH+cM2lFj6wCri1nkekZ+/JMzlFSRJrMWDbzotNnxeZe6wCR6i0oiYWD4mNdmEBRU5a
+ 4qKjacDAyBMmDWdj8ruw5qbsqi+Hhdx6rdNeIiYJbwqC66y0HkL3l8jqYpJe1y+QYGI+
+ FAUYanBcDQUIXcTucV2wX1/0EKAwkiukdlx5z3tMEGpNGhDgnFDHdVSkZoH0WMIXkJ3h
+ Oj0g==
+X-Gm-Message-State: AOJu0YyIDXRBI1Ztik99GqMAy5bwQ/aGDM8HYUpeefkzyvNjd5DN/KBa
+ wsXF1Q3GSVl7QZDQLW7WDiFaVYg1U1EHb2/tQtg=
+X-Google-Smtp-Source: AGHT+IFxcFaHh/Bj1G95qsKg2cCrSGzutk9+zbqEQ5GaPVW3cYv+8JtnhKA4ZSKWqAoAiyVj7sUHFw==
+X-Received: by 2002:ac2:4315:0:b0:500:d8d6:fc5a with SMTP id
+ l21-20020ac24315000000b00500d8d6fc5amr3887487lfh.37.1697635869405; 
+ Wed, 18 Oct 2023 06:31:09 -0700 (PDT)
 Received: from m1x-phil.lan (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr.
  [176.171.218.149]) by smtp.gmail.com with ESMTPSA id
- d8-20020a5d5388000000b0032da8fb0d05sm2096419wrv.110.2023.10.18.06.31.01
+ r13-20020a5d498d000000b0032da40fd7bdsm2139621wrq.24.2023.10.18.06.31.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 18 Oct 2023 06:31:02 -0700 (PDT)
+ Wed, 18 Oct 2023 06:31:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Gibson <david@gibson.dropbear.id.au>,
@@ -62,22 +63,25 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
  Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/6] hw/ppc: SysBus simplifications
-Date: Wed, 18 Oct 2023 15:30:53 +0200
-Message-ID: <20231018133059.85765-1-philmd@linaro.org>
+Subject: [PATCH 1/6] hw/ppc/pnv_xscom: Rename pnv_xscom_realize(Error **) ->
+ pnv_xscom_init()
+Date: Wed, 18 Oct 2023 15:30:54 +0200
+Message-ID: <20231018133059.85765-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231018133059.85765-1-philmd@linaro.org>
+References: <20231018133059.85765-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,31 +97,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+pnv_xscom_realize() is not used to *realize* QDev object, rename
+it as pnv_xscom_init(). The Error** argument is unused: remove it.
 
-There is no point in exposing an internal MMIO region via
-SysBus and directly mapping it in the very same device.
-
-This series replaces a sequence of:
-- sysbus_init_mmio()
-- sysbus_mmio_map()
-by a single call to memory_region_add_subregion().
-
-Philippe Mathieu-Daudé (6):
-  hw/ppc/pnv_xscom: Rename pnv_xscom_realize(Error **) ->
-    pnv_xscom_init()
-  hw/ppc/pnv_xscom: Move sysbus_mmio_map() call within pnv_xscom_init()
-  hw/ppc/pnv_xscom: Do not use SysBus API to map local MMIO region
-  hw/ppc/pnv: Do not use SysBus API to map local MMIO region
-  hw/intc/spapr_xive: Move sysbus_init_mmio() calls around
-  hw/intc/spapr_xive: Do not use SysBus API to map local MMIO region
-
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
  include/hw/ppc/pnv_xscom.h |  2 +-
- hw/intc/spapr_xive.c       | 12 ++++++------
- hw/ppc/pnv.c               | 26 +++++---------------------
- hw/ppc/pnv_xscom.c         |  5 ++---
- 4 files changed, 14 insertions(+), 31 deletions(-)
+ hw/ppc/pnv.c               | 18 +++---------------
+ hw/ppc/pnv_xscom.c         |  2 +-
+ 3 files changed, 5 insertions(+), 17 deletions(-)
 
+diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+index 9bc6463547..41671001da 100644
+--- a/include/hw/ppc/pnv_xscom.h
++++ b/include/hw/ppc/pnv_xscom.h
+@@ -170,7 +170,7 @@ struct PnvXScomInterfaceClass {
+ #define PNV10_XSCOM_PEC_PCI_BASE   0x8010800 /* index goes upwards ... */
+ #define PNV10_XSCOM_PEC_PCI_SIZE   0x200
+ 
+-void pnv_xscom_realize(PnvChip *chip, uint64_t size, Error **errp);
++void pnv_xscom_init(PnvChip *chip, uint64_t size);
+ int pnv_dt_xscom(PnvChip *chip, void *fdt, int root_offset,
+                  uint64_t xscom_base, uint64_t xscom_size,
+                  const char *compat, int compat_size);
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index eb54f93986..456631c9dc 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1249,11 +1249,7 @@ static void pnv_chip_power8_realize(DeviceState *dev, Error **errp)
+     assert(chip8->xics);
+ 
+     /* XSCOM bridge is first */
+-    pnv_xscom_realize(chip, PNV_XSCOM_SIZE, &local_err);
+-    if (local_err) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
++    pnv_xscom_init(chip, PNV_XSCOM_SIZE);
+     sysbus_mmio_map(SYS_BUS_DEVICE(chip), 0, PNV_XSCOM_BASE(chip));
+ 
+     pcc->parent_realize(dev, &local_err);
+@@ -1512,11 +1508,7 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+     Error *local_err = NULL;
+ 
+     /* XSCOM bridge is first */
+-    pnv_xscom_realize(chip, PNV9_XSCOM_SIZE, &local_err);
+-    if (local_err) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
++    pnv_xscom_init(chip, PNV9_XSCOM_SIZE);
+     sysbus_mmio_map(SYS_BUS_DEVICE(chip), 0, PNV9_XSCOM_BASE(chip));
+ 
+     pcc->parent_realize(dev, &local_err);
+@@ -1727,11 +1719,7 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+     Error *local_err = NULL;
+ 
+     /* XSCOM bridge is first */
+-    pnv_xscom_realize(chip, PNV10_XSCOM_SIZE, &local_err);
+-    if (local_err) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
++    pnv_xscom_init(chip, PNV10_XSCOM_SIZE);
+     sysbus_mmio_map(SYS_BUS_DEVICE(chip), 0, PNV10_XSCOM_BASE(chip));
+ 
+     pcc->parent_realize(dev, &local_err);
+diff --git a/hw/ppc/pnv_xscom.c b/hw/ppc/pnv_xscom.c
+index d820e05e40..af57b55863 100644
+--- a/hw/ppc/pnv_xscom.c
++++ b/hw/ppc/pnv_xscom.c
+@@ -221,7 +221,7 @@ const MemoryRegionOps pnv_xscom_ops = {
+     .endianness = DEVICE_BIG_ENDIAN,
+ };
+ 
+-void pnv_xscom_realize(PnvChip *chip, uint64_t size, Error **errp)
++void pnv_xscom_init(PnvChip *chip, uint64_t size)
+ {
+     SysBusDevice *sbd = SYS_BUS_DEVICE(chip);
+     char *name;
 -- 
 2.41.0
 
