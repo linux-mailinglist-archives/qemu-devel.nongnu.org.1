@@ -2,97 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57CF7CD588
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 09:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B72007CD599
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 09:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt12y-0006jt-80; Wed, 18 Oct 2023 03:32:52 -0400
+	id 1qt1C0-0008Ei-AE; Wed, 18 Oct 2023 03:42:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qt12w-0006jW-Jd
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:32:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qt1By-0008Cm-QY
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:42:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qt12u-0002kM-Tc
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:32:50 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qt1Bx-0004Xa-4v
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:42:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697614367;
+ s=mimecast20190719; t=1697614927;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=H9ARuw3ocrq2zuIRYqvsxkWkuBZXz4JrIIs6MzQ7cA8=;
- b=jIvKBBG+DUqOUGPdYb+IWa2FKRPT+5jimUUBL5tHid3M1py7IztoGE3e8CTznXrZRwhiJo
- zviNHvzpuRtTiu+0dxq0/hcOKhFinGA464MTsGdAXfrGlYigpq1EwuvY3vxzw0rGen/RJG
- tOBgmK7cWD3rxox3jISAplxzSG/fb74=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=/4nRpMW5FOpa4J63biAqTubkdZc0C50DlgI5RmzJ1o0=;
+ b=a0u2jQVhYabWrcolaxbnuyzCk9SiuUrleUIHzXArFFTwi31zBiCZYZnCSWt6wuUJ9N+ZqS
+ lWyMg4dHVE4OhctCGr6JzLZVKdwlGMRmc0Zwm7OiIsysLHW3E9AMGl1x5Yk5hpclttDw11
+ cvqPlrrDCoQVuOLgLPaz9fyna0aJNXk=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-510-TsWgzEJRMze41Qd62rpu5w-1; Wed, 18 Oct 2023 03:32:45 -0400
-X-MC-Unique: TsWgzEJRMze41Qd62rpu5w-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-66d75988385so11958696d6.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 00:32:45 -0700 (PDT)
+ us-mta-641-vUQMX_b4NfWsFzZNH_xliA-1; Wed, 18 Oct 2023 03:42:05 -0400
+X-MC-Unique: vUQMX_b4NfWsFzZNH_xliA-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c50257772bso57143071fa.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 00:42:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697614365; x=1698219165;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=H9ARuw3ocrq2zuIRYqvsxkWkuBZXz4JrIIs6MzQ7cA8=;
- b=BrANO/YY5kxD2skXH0sdyVQdQnK6y8wt42k1qhosSIkL6QgbWa0gnyB9r/Y1Y0wJqr
- twIpbWh3MjwwC+TFemOHM40UE+TCh6pvSRreJtpl+FTKu6p2N9lEqrT/CPoFtmPha1oe
- xe5hrtXIiYO2KbnQ8JxwKYsfddlbF6ZU9j9yXdl0fJiwlUsdSjmbA38kD10AbMl2ol3T
- ndjTrcZtqYVHa495NtZgDpukMFXzB0bfMxe5SnLKJWL35PSRhG8dTDepk699LMiRVXJn
- QDfokIx1X8crItDNxkzmYyhihufH/ftkT7tSNz1owjfCvriyUHyoEHF30oijVHjx3w/S
- dEAA==
-X-Gm-Message-State: AOJu0Ywpg+sjISmwuWvZrvEDIHKtz4uA0PPB5gV+GJUd8XXQPqSBNXuc
- yICuPkJy5uwqsX8UAVkyIxO4snljLUpTiy9WTw18Wg2EU6LzeeNivpoGVKtIKT9eb+xY6ZxZWt7
- clfP41n5Zkpq5puI=
-X-Received: by 2002:a05:6214:1c0b:b0:66d:6845:ea2d with SMTP id
- u11-20020a0562141c0b00b0066d6845ea2dmr5259209qvc.53.1697614365115; 
- Wed, 18 Oct 2023 00:32:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVEqA4xPTiOaWetvvswhtwmlji+EpyS13eyeJ+VOWUsrcyK46S4glHUKGMSbBqRqY7/INBJw==
-X-Received: by 2002:a05:6214:1c0b:b0:66d:6845:ea2d with SMTP id
- u11-20020a0562141c0b00b0066d6845ea2dmr5259182qvc.53.1697614364748; 
- Wed, 18 Oct 2023 00:32:44 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- qh29-20020a0562144c1d00b0066d1b4ce863sm1166386qvb.31.2023.10.18.00.32.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 00:32:44 -0700 (PDT)
-Date: Wed, 18 Oct 2023 09:32:39 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
- <hreitz@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>, Anthony
- Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau <marcandre.lureau@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Richard Henderson
- <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, kvm@vger.kernel.org
-Subject: Re: [PATCH 11/12] hw/xen: automatically assign device index to
- block devices
-Message-ID: <20231018093239.3d525fd8@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231016151909.22133-12-dwmw2@infradead.org>
-References: <20231016151909.22133-1-dwmw2@infradead.org>
- <20231016151909.22133-12-dwmw2@infradead.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1697614924; x=1698219724;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/4nRpMW5FOpa4J63biAqTubkdZc0C50DlgI5RmzJ1o0=;
+ b=IsCw6OvSXyAsbE2di4QY8YgSkqdtXyipzl6A3ZXsOaE9tztTLbFWcmBB0f89zvQwqP
+ La7ZlunTG3K81w8nuNy2r0lxaFIkpcGtU8Qi7L3FRXnwK0vowLd9y1QaFN7r5jaXsHJF
+ p++UQXVS2u8NN/VdBshDVWJsPCOgfAlVB/To4KGymBA2P2T+oi8KcCwQAZLzfNmJUDT2
+ mr2akcSGZ5DoRQ7UaO9Kvxqsllm9uk+Lwcs3lypdZT+QBp8hXeY/Gi7ve8tHtAIztQFs
+ 0r/wbNPIY8VqneseMXRMhga1G28YtNGTG2nr9E39k2Q/owkLgw0KquPx71gQPw1Z35ua
+ 9MOw==
+X-Gm-Message-State: AOJu0Yzj481/K41mUIi2/B2VKnjKjw+LFWEKJuRzx8+TO47p6aBBLLt6
+ U1cDWWjbmS8/ZVjXuFBDsyFeViGgLXfTtiqGMjuJDebR7o4CBiz5N9ZzeC/dHnZpKHYWbOiaYfr
+ Buu5L8iir0aSXM5k=
+X-Received: by 2002:a2e:b174:0:b0:2bf:fab9:db28 with SMTP id
+ a20-20020a2eb174000000b002bffab9db28mr3148014ljm.6.1697614924098; 
+ Wed, 18 Oct 2023 00:42:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFQbaAGtC73ayWulJSVlESVB27Pydy658vXuusDiIteZmlJ7Uh5SqpETta19J4ZCGOhfhXCg==
+X-Received: by 2002:a2e:b174:0:b0:2bf:fab9:db28 with SMTP id
+ a20-20020a2eb174000000b002bffab9db28mr3147996ljm.6.1697614923643; 
+ Wed, 18 Oct 2023 00:42:03 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70a:d300:5c7b:51ce:e3ef:6e01?
+ (p200300cbc70ad3005c7b51cee3ef6e01.dip0.t-ipconnect.de.
+ [2003:cb:c70a:d300:5c7b:51ce:e3ef:6e01])
+ by smtp.gmail.com with ESMTPSA id
+ p15-20020a05600c1d8f00b00402d34ea099sm920551wms.29.2023.10.18.00.42.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Oct 2023 00:42:03 -0700 (PDT)
+Message-ID: <e96e96a2-e996-4507-8548-684aa1e56846@redhat.com>
+Date: Wed, 18 Oct 2023 09:42:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] softmmu/physmem: Warn with
+ ram_block_discard_range() on MAP_PRIVATE file mapping
+To: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
+References: <20230706075612.67404-1-david@redhat.com>
+ <20230706075612.67404-2-david@redhat.com>
+ <a23ee3d1-e03b-4442-bdec-341b3e52d3e0@intel.com>
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <a23ee3d1-e03b-4442-bdec-341b3e52d3e0@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,99 +153,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 16 Oct 2023 16:19:08 +0100
-David Woodhouse <dwmw2@infradead.org> wrote:
+On 18.10.23 05:02, Xiaoyao Li wrote:
+> David,
+> 
+> On 7/6/2023 3:56 PM, David Hildenbrand wrote:
+>> ram_block_discard_range() cannot possibly do the right thing in
+>> MAP_PRIVATE file mappings in the general case.
+>>
+>> To achieve the documented semantics, we also have to punch a hole into
+>> the file, possibly messing with other MAP_PRIVATE/MAP_SHARED mappings
+>> of such a file.
+>>
+>> For example, using VM templating -- see commit b17fbbe55cba ("migration:
+>> allow private destination ram with x-ignore-shared") -- in combination with
+>> any mechanism that relies on discarding of RAM is problematic. This
+>> includes:
+>> * Postcopy live migration
+>> * virtio-balloon inflation/deflation or free-page-reporting
+>> * virtio-mem
+>>
+>> So at least warn that there is something possibly dangerous is going on
+>> when using ram_block_discard_range() in these cases.
+>>
+>> Acked-by: Peter Xu <peterx@redhat.com>
+>> Tested-by: Mario Casquero <mcasquer@redhat.com>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> ---
+>>    softmmu/physmem.c | 18 ++++++++++++++++++
+>>    1 file changed, 18 insertions(+)
+>>
+>> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+>> index bda475a719..4ee157bda4 100644
+>> --- a/softmmu/physmem.c
+>> +++ b/softmmu/physmem.c
+>> @@ -3456,6 +3456,24 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
+>>                 * so a userfault will trigger.
+>>                 */
+>>    #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+>> +            /*
+>> +             * We'll discard data from the actual file, even though we only
+>> +             * have a MAP_PRIVATE mapping, possibly messing with other
+>> +             * MAP_PRIVATE/MAP_SHARED mappings. There is no easy way to
+>> +             * change that behavior whithout violating the promised
+>> +             * semantics of ram_block_discard_range().
+>> +             *
+>> +             * Only warn, because it work as long as nobody else uses that
+>> +             * file.
+>> +             */
+>> +            if (!qemu_ram_is_shared(rb)) {
+>> +                warn_report_once("ram_block_discard_range: Discarding RAM"
+>> +                                 " in private file mappings is possibly"
+>> +                                 " dangerous, because it will modify the"
+>> +                                 " underlying file and will affect other"
+>> +                                 " users of the file");
+>> +            }
+>> +
+> 
+> TDX has two types of memory backend for each RAM, shared memory and
+> private memory. Private memory is serviced by guest memfd and shared
+> memory can also be backed with a fd.
+> 
+> At any time, only one type needs to be valid, which means the opposite
+> can be discarded. We do implement the memory discard when TDX converts
+> the memory[1]. It will trigger this warning 100% because by default the
+> guest memfd is not mapped as shared (MAP_SHARED).
 
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
+If MAP_PRIVATE is not involved and you are taking the pages directly out 
+of the memfd, you should mark that thing as shared. Anonymous memory is 
+never involved.
 
-is this index a user (guest) visible?
+"Private memory" is only private from the guest POV, not from a mmap() 
+point of view.
 
-> There's no need to force the user to assign a vdev. We can automatically
-> assign one, starting at xvda and searching until we find the first disk
-> name that's unused.
+Two different concepts of "private".
+
 > 
-> This means we can now allow '-drive if=xen,file=xxx' to work without an
-> explicit separate -driver argument, just like if=virtio.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->  blockdev.c           | 15 ++++++++++++---
->  hw/block/xen-block.c | 25 +++++++++++++++++++++++++
->  2 files changed, 37 insertions(+), 3 deletions(-)
-> 
-> diff --git a/blockdev.c b/blockdev.c
-> index 325b7a3bef..9dec4c9c74 100644
-> --- a/blockdev.c
-> +++ b/blockdev.c
-> @@ -255,13 +255,13 @@ void drive_check_orphaned(void)
->           * Ignore default drives, because we create certain default
->           * drives unconditionally, then leave them unclaimed.  Not the
->           * users fault.
-> -         * Ignore IF_VIRTIO, because it gets desugared into -device,
-> -         * so we can leave failing to -device.
-> +         * Ignore IF_VIRTIO or IF_XEN, because it gets desugared into
-> +         * -device, so we can leave failing to -device.
->           * Ignore IF_NONE, because leaving unclaimed IF_NONE remains
->           * available for device_add is a feature.
->           */
->          if (dinfo->is_default || dinfo->type == IF_VIRTIO
-> -            || dinfo->type == IF_NONE) {
-> +            || dinfo->type == IF_XEN || dinfo->type == IF_NONE) {
->              continue;
->          }
->          if (!blk_get_attached_dev(blk)) {
-> @@ -977,6 +977,15 @@ DriveInfo *drive_new(QemuOpts *all_opts, BlockInterfaceType block_default_type,
->          qemu_opt_set(devopts, "driver", "virtio-blk", &error_abort);
->          qemu_opt_set(devopts, "drive", qdict_get_str(bs_opts, "id"),
->                       &error_abort);
-> +    } else if (type == IF_XEN) {
-> +        QemuOpts *devopts;
-> +        devopts = qemu_opts_create(qemu_find_opts("device"), NULL, 0,
-> +                                   &error_abort);
-> +        qemu_opt_set(devopts, "driver",
-> +                     (media == MEDIA_CDROM) ? "xen-cdrom" : "xen-disk",
-> +                     &error_abort);
-> +        qemu_opt_set(devopts, "drive", qdict_get_str(bs_opts, "id"),
-> +                     &error_abort);
->      }
->  
->      filename = qemu_opt_get(legacy_opts, "file");
-> diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-> index 9262338535..20fa783cbe 100644
-> --- a/hw/block/xen-block.c
-> +++ b/hw/block/xen-block.c
-> @@ -34,6 +34,31 @@ static char *xen_block_get_name(XenDevice *xendev, Error **errp)
->      XenBlockDevice *blockdev = XEN_BLOCK_DEVICE(xendev);
->      XenBlockVdev *vdev = &blockdev->props.vdev;
->  
-> +    if (blockdev->props.vdev.type == XEN_BLOCK_VDEV_TYPE_INVALID) {
-> +        char name[11];
-> +        int disk = 0;
-> +        unsigned long idx;
-> +
-> +        /* Find an unoccupied device name */
-> +        while (disk < (1 << 20)) {
-> +            if (disk < (1 << 4)) {
-> +                idx = (202 << 8) | (disk << 4);
-> +            } else {
-> +                idx = (1 << 28) | (disk << 8);
-> +            }
-> +            snprintf(name, sizeof(name), "%lu", idx);
-> +            if (!xen_backend_exists("qdisk", name)) {
-> +                vdev->type = XEN_BLOCK_VDEV_TYPE_XVD;
-> +                vdev->partition = 0;
-> +                vdev->disk = disk;
-> +                vdev->number = idx;
-> +                return g_strdup(name);
-> +            }
-> +            disk++;
-> +        }
-> +        error_setg(errp, "cannot find device vdev for block device");
-> +        return NULL;
-> +    }
->      return g_strdup_printf("%lu", vdev->number);
->  }
->  
+> Simply remove the warning will fail the purpose of this patch. The other
+> option is to skip the warning for TDX case, which looks vary hacky. Do
+> you have any idea?
+
+For TDX, all memory backends / RAMBlocks should be marked as "shared", 
+and you should fail if that is not provided by the user.
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
