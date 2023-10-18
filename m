@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B437CE223
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D25847CE236
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:08:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8xi-0002Yl-R5; Wed, 18 Oct 2023 11:59:58 -0400
+	id 1qt8x3-0001al-Tl; Wed, 18 Oct 2023 11:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8xL-00028W-O9
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:59:35 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8wk-0001Hf-FG
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:58:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8xJ-0007ln-MA
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:59:35 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8wi-0007VL-Mq
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:58:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644772;
+ s=mimecast20190719; t=1697644735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=x3My//pc/qVW2ftl9aWSgQDTy/uh8IXpNIimgHcVE8A=;
- b=g5PUduQ0LLdXZqlSFeIzGcLD8F3yxNhz+td7VMK1HliQCVjG984KmksZZktFAvDTz2BsDc
- S7glbQ5HeycPFnxGmE5gCy0R/ocopFhBswkPPaY/kqVtxl8Z7GAEGBjJsMRao46G/aW2sI
- XeCn9lB+48qjys1Gyj6oWeH1UxaKcfI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bKxpfI1ewkLWXrLPRKRjX/JTEEf96RdRnERqJjhDehM=;
+ b=NIYunSDCIjAzvhDROuiOmFN4nnFJommkTkeE+6+9TMYfmFlh77FA/pX4jBcwVeoFwL1KwV
+ vrDG6NIsPt6wNj2KDaArqqDcaLgmZ9moPr4KJOnyS7LSSAgjjRx/e5UjTcXUWQBpxMjJiy
+ pGfSZLce+aif1SD/zIslKg+NLdj3Lx4=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-99GWxeLOMSCYox7xwcGfbg-1; Wed, 18 Oct 2023 11:58:55 -0400
-X-MC-Unique: 99GWxeLOMSCYox7xwcGfbg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32d9b520d15so2819933f8f.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:58:49 -0700 (PDT)
+ us-mta-502-7UwL4hsoPACfL6SVBiG_fQ-1; Wed, 18 Oct 2023 11:58:53 -0400
+X-MC-Unique: 7UwL4hsoPACfL6SVBiG_fQ-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c54b040cf2so5283941fa.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:58:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644727; x=1698249527;
+ d=1e100.net; s=20230601; t=1697644732; x=1698249532;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=x3My//pc/qVW2ftl9aWSgQDTy/uh8IXpNIimgHcVE8A=;
- b=CddMqOyGh3BUT7rmMnyk3+MJjKRWcE3Lz2uh3NigqXnoqr4JVHS7E3GSBlwNmZIYfJ
- Nb6S7ApfWHVRgrpGnBYBWGp3FZShg2XvmMn0xKDl3fAXqvK6pAycDq4SVPL85qig5xzb
- 2mJ0RlSFdecHKUyhrUSvbtMoaYSRXT8vhRJkGcfJgIaktkgYiGwyDwR4kGDgqv0lgCJ+
- w4HDTpCT6lTxB1sOneQE1kDq1nuRgiWSxaleQk+SYUfuNKK1cqhvthO5lm1Qui+V7hZ2
- bplWmpABQP+mo4BGS8BUkn12Sz9/ZNFq61TEcSCHZY2V3vBNug54yZVobVjmF3G9OhgG
- nMnA==
-X-Gm-Message-State: AOJu0YxbFk/kwSR5d9Igv+3dTgUYRCS1Yva4Rwb0o912L+mIXDdPf7wq
- EJSXKscRqUXEBTHl/G3fw28cC0SPlg3w6o/1iUz9Yoe66mEFn4Q0mxAIbublmkGY/i5Dgey0QLC
- aUw9iTxG5gMKUPhaxKqmxpFEFUVSTr8rSLgdzZBT3WpZ+BaEk5EmJZqGj7NI6z1LsD0naPmo=
-X-Received: by 2002:a5d:4c81:0:b0:32d:9d66:5742 with SMTP id
- z1-20020a5d4c81000000b0032d9d665742mr5034875wrs.10.1697644727514; 
- Wed, 18 Oct 2023 08:58:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFznfcmpkY3gNQYQQJq5HO9C2vamX3P0lTImSm2ErmrV3qktRKNya3dmsBsPHQaM5tTBjr23Q==
-X-Received: by 2002:a5d:4c81:0:b0:32d:9d66:5742 with SMTP id
- z1-20020a5d4c81000000b0032d9d665742mr5034858wrs.10.1697644727220; 
- Wed, 18 Oct 2023 08:58:47 -0700 (PDT)
+ bh=bKxpfI1ewkLWXrLPRKRjX/JTEEf96RdRnERqJjhDehM=;
+ b=YRWJn7qMV6azkFNqeU5byxDRay+LcTXDnrjEBCzVREX4F2aaVZmRyKSxhTZcoDSfmj
+ h9ROLdEicwngF84/QTpAcOv2aDdslndWF33/d3WSUcvbDV/diiwHCtTmowM82M2Pkwyr
+ /vhXdqSpxNWfsumt/5VaGWWzDaoBZ97SnREBuO6TLFuDTwth85YWZ13Y3HIeSziPssX0
+ RBbfTR9Qu1HFSO1PkthLc8aMdjXTUbI1ZDKWS+kuFWI7pjpoMyphRqW/XDj8MbIGZPzh
+ 6hcPp/b02jm2GR4R1UP5wjJ0lT1oFrToYweaFx9v3JF77HVYxyUnT/r38Xo8SP0Rjh3j
+ LagA==
+X-Gm-Message-State: AOJu0YyW1LbiCfY2CZVu+tPT4Nl/rpw97k4HjNwr8LyUyEqSBxsJEG0f
+ at3B/KijSn8D5cUbzIbhJZZp2V+brEOIHELawvpSIBnAVu/8UDt3rO919niJZijKs8XfMP6CpYX
+ O+UqRZHqGIr3/HyLFoMXiQ2Zq6qBhA4WyVy81ro9Iq1T4KgyU2CCKCFKazzbbPjxp49cu3Yc=
+X-Received: by 2002:a05:651c:a08:b0:2c5:55a:b6b5 with SMTP id
+ k8-20020a05651c0a0800b002c5055ab6b5mr6317278ljq.28.1697644731813; 
+ Wed, 18 Oct 2023 08:58:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKYwuh6OZ9J1uuNsChGnxMnNuSxNvRvne9eHjjDx/eWeGy+nUB+skO1PW/SNorJQYQ9a//mQ==
+X-Received: by 2002:a05:651c:a08:b0:2c5:55a:b6b5 with SMTP id
+ k8-20020a05651c0a0800b002c5055ab6b5mr6317248ljq.28.1697644731464; 
+ Wed, 18 Oct 2023 08:58:51 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- f12-20020adfb60c000000b00318147fd2d3sm2388456wre.41.2023.10.18.08.58.44
+ i18-20020a05600c481200b00407b93d8085sm1983241wmo.27.2023.10.18.08.58.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:58:46 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:58:42 -0400
+ Wed, 18 Oct 2023 08:58:50 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:58:47 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- =?utf-8?B?SGVydsOp?= Poussineau <hpoussin@reactos.org>
-Subject: [PULL 70/83] hw/isa/piix: Implement multi-process QEMU support also
- for PIIX4
-Message-ID: <461585efb5d8ee352209cf5e37116046f1410b94.1697644299.git.mst@redhat.com>
+ Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 71/83] hw/i386/pc_piix: Make PIIX4 south bridge usable in PC
+ machine
+Message-ID: <8b152920ea5955b1cba164a0f18c544a69ced13b.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -105,45 +104,163 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-So far multi-process QEMU was only implemented for PIIX3. Move the support into
-the base class to achieve feature parity between both device models.
+QEMU's PIIX3 implementation actually models the real PIIX4, but with different
+PCI IDs. Usually, guests deal just fine with it. Still, in order to provide a
+more consistent illusion to guests, allow QEMU's PIIX4 implementation to be used
+in the PC machine.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20231007123843.127151-29-shentey@gmail.com>
+Message-Id: <20231007123843.127151-30-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/isa/piix.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ include/hw/i386/pc.h                 |  2 +
+ hw/i386/pc.c                         |  1 +
+ hw/i386/pc_piix.c                    | 61 +++++++++++++++++++++++++++-
+ docs/system/target-i386-desc.rst.inc |  8 ++++
+ 4 files changed, 71 insertions(+), 1 deletion(-)
 
-diff --git a/hw/isa/piix.c b/hw/isa/piix.c
-index cba2098ca2..04ebed5b52 100644
---- a/hw/isa/piix.c
-+++ b/hw/isa/piix.c
-@@ -374,6 +374,7 @@ static void pci_piix_realize(PCIDevice *dev, const char *uhci_type,
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index bec38cb92c..29a9724524 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -42,6 +42,7 @@ typedef struct PCMachineState {
+     uint64_t max_ram_below_4g;
+     OnOffAuto vmport;
+     SmbiosEntryPointType smbios_entry_point_type;
++    const char *south_bridge;
+ 
+     bool acpi_build_enabled;
+     bool smbus_enabled;
+@@ -92,6 +93,7 @@ struct PCMachineClass {
+     /* Device configuration: */
+     bool pci_enabled;
+     bool kvmclock_enabled;
++    const char *default_south_bridge;
+ 
+     /* Compat options: */
+ 
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 355e1b7cf6..6293f57a0c 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1706,6 +1706,7 @@ static void pc_machine_initfn(Object *obj)
+ #endif /* CONFIG_VMPORT */
+     pcms->max_ram_below_4g = 0; /* use default */
+     pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
++    pcms->south_bridge = pcmc->default_south_bridge;
+ 
+     /* acpi build is enabled by default if machine supports it */
+     pcms->acpi_build_enabled = pcmc->has_acpi_build;
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index e38942a3c3..334d9a0299 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -262,7 +262,7 @@ static void pc_init1(MachineState *machine,
+         DeviceState *dev;
+         size_t i;
+ 
+-        pci_dev = pci_new_multifunction(-1, TYPE_PIIX3_DEVICE);
++        pci_dev = pci_new_multifunction(-1, pcms->south_bridge);
+         object_property_set_bool(OBJECT(pci_dev), "has-usb",
+                                  machine_usb(machine), &error_abort);
+         object_property_set_bool(OBJECT(pci_dev), "has-acpi",
+@@ -394,6 +394,56 @@ static void pc_init1(MachineState *machine,
      }
- 
-     pci_bus_irqs(pci_bus, piix_set_pci_irq, d, PIIX_NUM_PIRQS);
-+    pci_bus_set_route_irq_fn(pci_bus, piix_route_intx_pin_to_irq);
  }
  
- static void build_pci_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
-@@ -454,15 +455,7 @@ static const TypeInfo piix_pci_type_info = {
- 
- static void piix3_realize(PCIDevice *dev, Error **errp)
++typedef enum PCSouthBridgeOption {
++    PC_SOUTH_BRIDGE_OPTION_PIIX3,
++    PC_SOUTH_BRIDGE_OPTION_PIIX4,
++    PC_SOUTH_BRIDGE_OPTION_MAX,
++} PCSouthBridgeOption;
++
++static const QEnumLookup PCSouthBridgeOption_lookup = {
++    .array = (const char *const[]) {
++        [PC_SOUTH_BRIDGE_OPTION_PIIX3] = TYPE_PIIX3_DEVICE,
++        [PC_SOUTH_BRIDGE_OPTION_PIIX4] = TYPE_PIIX4_PCI_DEVICE,
++    },
++    .size = PC_SOUTH_BRIDGE_OPTION_MAX
++};
++
++#define NotifyVmexitOption_str(val) \
++    qapi_enum_lookup(&NotifyVmexitOption_lookup, (val))
++
++static int pc_get_south_bridge(Object *obj, Error **errp)
++{
++    PCMachineState *pcms = PC_MACHINE(obj);
++    int i;
++
++    for (i = 0; i < PCSouthBridgeOption_lookup.size; i++) {
++        if (g_strcmp0(PCSouthBridgeOption_lookup.array[i],
++                      pcms->south_bridge) == 0) {
++            return i;
++        }
++    }
++
++    error_setg(errp, "Invalid south bridge value set");
++    return 0;
++}
++
++static void pc_set_south_bridge(Object *obj, int value, Error **errp)
++{
++    PCMachineState *pcms = PC_MACHINE(obj);
++
++    if (value < 0) {
++        error_setg(errp, "Value can't be negative");
++        return;
++    }
++
++    if (value >= PCSouthBridgeOption_lookup.size) {
++        error_setg(errp, "Value too big");
++        return;
++    }
++
++    pcms->south_bridge = PCSouthBridgeOption_lookup.array[value];
++}
++
+ /* Looking for a pc_compat_2_4() function? It doesn't exist.
+  * pc_compat_*() functions that run on machine-init time and
+  * change global QEMU state are deprecated. Please don't create
+@@ -473,6 +523,8 @@ static void pc_xen_hvm_init(MachineState *machine)
+ static void pc_i440fx_machine_options(MachineClass *m)
  {
--    ERRP_GUARD();
--    PCIBus *pci_bus = pci_get_bus(dev);
--
-     pci_piix_realize(dev, TYPE_PIIX3_USB_UHCI, errp);
--    if (*errp) {
--        return;
--    }
--
--    pci_bus_set_route_irq_fn(pci_bus, piix_route_intx_pin_to_irq);
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++    ObjectClass *oc = OBJECT_CLASS(m);
++    pcmc->default_south_bridge = TYPE_PIIX3_DEVICE;
+     pcmc->pci_root_uid = 0;
+     pcmc->default_cpu_version = 1;
+ 
+@@ -484,6 +536,13 @@ static void pc_i440fx_machine_options(MachineClass *m)
+     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
++
++    object_class_property_add_enum(oc, "x-south-bridge", "PCSouthBridgeOption",
++                                   &PCSouthBridgeOption_lookup,
++                                   pc_get_south_bridge,
++                                   pc_set_south_bridge);
++    object_class_property_set_description(oc, "x-south-bridge",
++                                     "Use a different south bridge than PIIX3");
  }
  
- static void piix3_init(Object *obj)
+ static void pc_i440fx_8_2_machine_options(MachineClass *m)
+diff --git a/docs/system/target-i386-desc.rst.inc b/docs/system/target-i386-desc.rst.inc
+index 7d1fffacbe..5ebbcda9db 100644
+--- a/docs/system/target-i386-desc.rst.inc
++++ b/docs/system/target-i386-desc.rst.inc
+@@ -71,3 +71,11 @@ machine property, i.e.
+    |qemu_system_x86| some.img \
+    -audiodev <backend>,id=<name> \
+    -machine pcspk-audiodev=<name>
++
++Machine-specific options
++~~~~~~~~~~~~~~~~~~~~~~~~
++
++It supports the following machine-specific options:
++
++- ``x-south-bridge=PIIX3|piix4-isa`` (Experimental option to select a particular
++  south bridge. Default: ``PIIX3``)
 -- 
 MST
 
