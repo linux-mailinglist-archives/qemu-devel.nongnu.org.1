@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2CF7CEC20
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49CC37CEC14
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:32:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtG13-00046l-Kt; Wed, 18 Oct 2023 19:31:54 -0400
+	id 1qtG1B-000483-EG; Wed, 18 Oct 2023 19:32:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0s-0003lt-RW
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:42 -0400
-Received: from mail-io1-xd2e.google.com ([2607:f8b0:4864:20::d2e])
+ id 1qtG0t-0003rB-AS
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:43 -0400
+Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0q-0000Ia-Ti
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:42 -0400
-Received: by mail-io1-xd2e.google.com with SMTP id
- ca18e2360f4ac-7a67ebc2cb3so25267739f.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:40 -0700 (PDT)
+ id 1qtG0r-0000JX-Jf
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:43 -0400
+Received: by mail-il1-x12c.google.com with SMTP id
+ e9e14a558f8ab-35757bfb3f7so28872835ab.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697671899; x=1698276699; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697671900; x=1698276700; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MZQXmTezubKvZiknkUGl30NcUMWQlr0tOKsu9AI7N20=;
- b=UhBV2fP1i+sf410LUy7MV1QCAkxH0dUu5tc5OXyfssKTcB/JDs7KAcuECptazKt9sc
- SoxUyKh6R2buAjA8gdpQkqswEf2T8kHbmzD7/y5KOZxfouy245m/w6StsALM6O8T9lUb
- VU0Db382NgXvi6kRFLyPzKqZZUejah0d63qOWrB8+JpW1CvRjmiyQsJCoAKisB38BRZ1
- Qw9RhQ1+1RKSDuZh9XpbEAahPJSnCFTnps56s6SKwrJBRnicsGIBWv6iqggL2JYZVNZo
- n3BmQRVvvrjJfSb9u6QWR/rt6gmQTy7xMijmFj94ke/DxhgETUUvPdrWOfitcvowMTsE
- r3bg==
+ bh=HR6OhNjXMnjPeW+GKwBhvGRBpRXClWtOK/vmyhs99O8=;
+ b=Q2h+rqhZP/VuOhuhJBPUC+pYz1Ni0cd+/mXSDmr6rBfHRuAjzeT8Hq4ACQo/VwcjOK
+ bNsmiLaWnMavwKjZRjfdA4SFwYvXS+MgQCQo9IcaJc5ZPwvuhWdlVJMqE+rVNlY9T/n9
+ 0MR8IJdGmJgh6Ujz49P8PYzo7Z5ULMGromwIzREJBGL3xnRUb5QBp71GJYDWPmOZjW+O
+ Q5LQ0m1FmPZcmm+8klaTPELYzT9nd8fJGY/WovEyuh55CaiAJ71qy1gli6Bp4G4AnDLe
+ O630yfdG5WyDGVUr+jV32p4M4/r8ahFHZSh3AIW0sC6gzMoAUUblKOAFZ7G5eUGKjGAe
+ DFCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697671899; x=1698276699;
+ d=1e100.net; s=20230601; t=1697671900; x=1698276700;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MZQXmTezubKvZiknkUGl30NcUMWQlr0tOKsu9AI7N20=;
- b=oa/maBS1fNyVPdNUQGlbHvl9zUguwASecHEzBplv0O15fgt60dy6CRb+Kt1GZ5Q+5r
- N5Mk+Tcc0wrwdYxIU+SPEqUtwvMdBM5eFTyBZkFrAy1spuqKGlttX2mCc1PDGAnlVDZV
- ItSOsOwx+lfOqMElm2y8av1P5wNsDg/ACoHYaa2gCHfCm0EfiRC8NbmioBHBR6x2qDrg
- gyu4vhlNfuSnjmShPAhQX1UFS9p1caNfsFCGWA9T3e50IHfCm5lKL0ecJ+wRX+sRPwQJ
- lFyQTAUT4FSHBArumUkwfTQ19A8GAFEUFMqPsMIjt1T8pVY4pVIzaXl/S7W1hxOfaTKu
- Zqug==
-X-Gm-Message-State: AOJu0YzRTAqaQS71dzjKMSHdk2Yzs93qXkYQ1I5S2kxqJehSsC2wWb5B
- eMBfhxDfQDRvOmq6tMf1WMB6EyQ8g/f6zsVLzz0=
-X-Google-Smtp-Source: AGHT+IG0cvDfSc31AsKD9KH3tqSINpuriv8QFpiwDjClajVqOPjn59WWu7C7ypCmw58YTZAxyyvmeg==
-X-Received: by 2002:a05:6e02:2168:b0:357:7b04:721 with SMTP id
- s8-20020a056e02216800b003577b040721mr948604ilv.32.1697671899501; 
- Wed, 18 Oct 2023 16:31:39 -0700 (PDT)
+ bh=HR6OhNjXMnjPeW+GKwBhvGRBpRXClWtOK/vmyhs99O8=;
+ b=XWP3j2rC+GO+CqlA+DcgJN81THZF02YuV8qJHJYQFlcFVJHw6vVICse30F7BvrWLdx
+ 6+xU8it0q+GIMTwdKRd7ee3PL91v2PvKinbr3GFwS/iVVpuC9WQEA1HJOlbjCrr5X7l7
+ /ZPOEYk7ZMv83sy1s8Az1R4wMP0uY30m0vxrauoZhscOmkQky3GDTIzg7j1wVhmeWKvn
+ XhYfOUYIWtldcnEm/r/yNlB1dC8OgmxbH1yRtRpgqJ8hmp4kzabdQm68sEiUVlLMWwYl
+ jJ97oMEK/KqarFAb4KhRSOIvYAzRcVkUo8b8F/pgsBqTNgZ6UaTr8C7uMM+au6EoHDC2
+ 6dRA==
+X-Gm-Message-State: AOJu0YxlA/cUCafIsRRcnyNpAIqOoO4WRTk5VUCtjdNSZEjzrNsTXLXM
+ M2E1fL0CGtZaSeM3gi1UmGrzKamNX/ZpyVSSf/A=
+X-Google-Smtp-Source: AGHT+IE1VFj4HJaZkhv20LfcraCD09eH6yPZXMQCghbmIYGz99xBpR4xzK4BR0sR99N+7Pus/dntCw==
+X-Received: by 2002:a05:6e02:219b:b0:357:72e5:4adf with SMTP id
+ j27-20020a056e02219b00b0035772e54adfmr1090888ila.26.1697671900599; 
+ Wed, 18 Oct 2023 16:31:40 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.38
+ g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 16:31:39 -0700 (PDT)
+ Wed, 18 Oct 2023 16:31:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Andreas Schwab <schwab@suse.de>
-Subject: [PULL 05/14] linux-user: Propagate failure in mmap_reserve_or_unmap
- back to target_munmap
-Date: Wed, 18 Oct 2023 16:31:25 -0700
-Message-Id: <20231018233134.1594292-6-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 06/14] linux-user: Split out die_with_signal
+Date: Wed, 18 Oct 2023 16:31:26 -0700
+Message-Id: <20231018233134.1594292-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018233134.1594292-1-richard.henderson@linaro.org>
 References: <20231018233134.1594292-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d2e;
- envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,93 +92,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not assert success, but return any failure received.
-Additionally, fix the method of earlier error return in target_munmap.
+Because we trap so many signals for use by the guest,
+we have to take extra steps to exit properly.
 
-Reported-by: Andreas Schwab <schwab@suse.de>
+Acked-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ linux-user/signal.c | 52 ++++++++++++++++++++++++---------------------
+ 1 file changed, 28 insertions(+), 24 deletions(-)
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 8ccaab7859..7b44b9ff49 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -778,7 +778,7 @@ fail:
-     return -1;
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index a67ab47d30..b7a2c47837 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -689,13 +689,39 @@ void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
  }
  
--static void mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
-+static int mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
- {
-     abi_ulong real_start;
-     abi_ulong real_last;
-@@ -807,7 +807,7 @@ static void mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
-             prot |= page_get_flags(a + 1);
-         }
-         if (prot != 0) {
--            return;
-+            return 0;
-         }
-     } else {
-         for (prot = 0, a = real_start; a < start; a += TARGET_PAGE_SIZE) {
-@@ -825,7 +825,7 @@ static void mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
-         }
- 
-         if (real_last < real_start) {
--            return;
-+            return 0;
-         }
-     }
- 
-@@ -836,32 +836,36 @@ static void mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
-         void *ptr = mmap(host_start, real_len, PROT_NONE,
-                          MAP_FIXED | MAP_ANONYMOUS
-                          | MAP_PRIVATE | MAP_NORESERVE, -1, 0);
--        assert(ptr == host_start);
--    } else {
--        int ret = munmap(host_start, real_len);
--        assert(ret == 0);
-+        return ptr == host_start ? 0 : -1;
-     }
-+    return munmap(host_start, real_len);
- }
- 
- int target_munmap(abi_ulong start, abi_ulong len)
- {
-+    int ret;
+ /* abort execution with signal */
++static G_NORETURN
++void die_with_signal(int host_sig)
++{
++    struct sigaction act = {
++        .sa_handler = SIG_DFL,
++    };
 +
-     trace_target_munmap(start, len);
++    /*
++     * The proper exit code for dying from an uncaught signal is -<signal>.
++     * The kernel doesn't allow exit() or _exit() to pass a negative value.
++     * To get the proper exit code we need to actually die from an uncaught
++     * signal.  Here the default signal handler is installed, we send
++     * the signal and we wait for it to arrive.
++     */
++    sigfillset(&act.sa_mask);
++    sigaction(host_sig, &act, NULL);
++
++    kill(getpid(), host_sig);
++
++    /* Make sure the signal isn't masked (reusing the mask inside of act). */
++    sigdelset(&act.sa_mask, host_sig);
++    sigsuspend(&act.sa_mask);
++
++    /* unreachable */
++    abort();
++}
++
+ static G_NORETURN
+ void dump_core_and_abort(CPUArchState *env, int target_sig)
+ {
+     CPUState *cpu = env_cpu(env);
+     TaskState *ts = (TaskState *)cpu->opaque;
+     int host_sig, core_dumped = 0;
+-    struct sigaction act;
  
-     if (start & ~TARGET_PAGE_MASK) {
--        return -TARGET_EINVAL;
-+        errno = EINVAL;
-+        return -1;
+     host_sig = target_to_host_signal(target_sig);
+     trace_user_dump_core_and_abort(env, target_sig, host_sig);
+@@ -719,29 +745,7 @@ void dump_core_and_abort(CPUArchState *env, int target_sig)
      }
-     len = TARGET_PAGE_ALIGN(len);
-     if (len == 0 || !guest_range_valid_untagged(start, len)) {
--        return -TARGET_EINVAL;
-+        errno = EINVAL;
-+        return -1;
-     }
  
-     mmap_lock();
--    mmap_reserve_or_unmap(start, len);
--    page_set_flags(start, start + len - 1, 0);
--    shm_region_rm_complete(start, start + len - 1);
-+    ret = mmap_reserve_or_unmap(start, len);
-+    if (likely(ret == 0)) {
-+        page_set_flags(start, start + len - 1, 0);
-+        shm_region_rm_complete(start, start + len - 1);
-+    }
-     mmap_unlock();
- 
--    return 0;
-+    return ret;
+     preexit_cleanup(env, 128 + target_sig);
+-
+-    /* The proper exit code for dying from an uncaught signal is
+-     * -<signal>.  The kernel doesn't allow exit() or _exit() to pass
+-     * a negative value.  To get the proper exit code we need to
+-     * actually die from an uncaught signal.  Here the default signal
+-     * handler is installed, we send ourself a signal and we wait for
+-     * it to arrive. */
+-    sigfillset(&act.sa_mask);
+-    act.sa_handler = SIG_DFL;
+-    act.sa_flags = 0;
+-    sigaction(host_sig, &act, NULL);
+-
+-    /* For some reason raise(host_sig) doesn't send the signal when
+-     * statically linked on x86-64. */
+-    kill(getpid(), host_sig);
+-
+-    /* Make sure the signal isn't masked (just reuse the mask inside
+-    of act) */
+-    sigdelset(&act.sa_mask, host_sig);
+-    sigsuspend(&act.sa_mask);
+-
+-    /* unreachable */
+-    abort();
++    die_with_signal(host_sig);
  }
  
- abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+ /* queue a signal so that it will be send to the virtual CPU as soon
 -- 
 2.34.1
 
