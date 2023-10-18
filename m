@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B681E7CD677
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C89E07CD696
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:32:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1uW-0000Tz-MB; Wed, 18 Oct 2023 04:28:12 -0400
+	id 1qt1uY-0000Vc-HZ; Wed, 18 Oct 2023 04:28:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1uU-0000PQ-U5
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:10 -0400
+ id 1qt1uW-0000UL-8V
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1uS-0003ZB-Rk
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:10 -0400
+ id 1qt1uT-0003ZK-Ry
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697617687;
+ s=mimecast20190719; t=1697617688;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZvnDkgkojYakbouPNQnSNioH7Xg+71/AImlTm5h72Ow=;
- b=H1Pdc6hWTvovxSjLl8o7kpa3RhL4ozzEj56AAKz0WLz1LfYBT+ObaF6CiinMdVDJQ6z1S1
- 6QomSEPteXYtT72scQFZBCBRc1qjcEjL8d8tA6dSlAAsVax63DYWkcYktXu+vjEO68tShd
- xY1kBNSUZtM/as+2WoSXYVJ/Hj+bVCg=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qs2cdu48NJ8nNMZ+IMyHr6DXt2M1atOD37VWsF3E5pY=;
+ b=jH0Jlf2AobtcLGHF/NTg9lWxUo5JFbAeIcR68+OtVuCCjzueWuKPTo08pOJBUgsJEkn3f5
+ D0AJ+mllY85EMXLQgdOoIUp6gSeIU0H1iBMRrw2/J+Rl1clkMVvLJ3xb/cjJPTk81Ixn39
+ +S14L4VRChY6kn61ZUpX3wcprY2vkMs=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-B7t_9HZfMduqfynNgdd7uA-1; Wed, 18 Oct 2023 04:28:06 -0400
-X-MC-Unique: B7t_9HZfMduqfynNgdd7uA-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5362b33e8ffso5105291a12.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:05 -0700 (PDT)
+ us-mta-576-XkWsb5C6MFWcO7a69Utwmw-1; Wed, 18 Oct 2023 04:28:07 -0400
+X-MC-Unique: XkWsb5C6MFWcO7a69Utwmw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99c8bbc902eso494975466b.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697617684; x=1698222484;
+ d=1e100.net; s=20230601; t=1697617686; x=1698222486;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZvnDkgkojYakbouPNQnSNioH7Xg+71/AImlTm5h72Ow=;
- b=c1s4RzK1YP8O64gNGL2VpZeQuuko1+C4oaGcGxSDnc4WCyns8aTwiBsr5W9yviSNWM
- 6jNfiTHhD5P4QutBpGtTRUFwLdScvuLvujsznGn92MTpSkUg93QPww0xNntYwbb9AZ5Z
- q2kEIwODxwz2EcULqULKzxs0iQtFtfA6QT4AQ9OtO/gSQfkQn/QRNhaJ1oqCAiBQj8M5
- x6bfH1XKp9+m0qClTeUz6hSjOUNaegb4Ug8MQiUUWrkhv/wlZxiaeMhI/haj3OvJz5Cx
- p2WW/Ck/7Hk6nsn2LF+u7u+zEOj3iG0OLJXZnRYvyNmuYPYhuhiZk5MjTCXx3kcnX3CI
- i2PQ==
-X-Gm-Message-State: AOJu0Yw7Wn1Vt+IijmMR7bQBW3gRAeGESFaof/o+Rnf/LvrsQ7nM3UPX
- hPxLisYiaIMGKVa6grnVzDr1QAY/n10HRKmSvTl/uxohw9hP1AlplImSAXsIObGQNWji9AmbvhM
- U2KPG5vWwBSZxfptmy3UfVL8qFi6Mpey8nZA/M5DNWfse947MlRXDewbtjmu3lIxsPrl6Yke2Ch
- w=
-X-Received: by 2002:a50:f616:0:b0:53e:6f96:dcf with SMTP id
- c22-20020a50f616000000b0053e6f960dcfmr3187527edn.34.1697617684553; 
- Wed, 18 Oct 2023 01:28:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/FlKvS+wayjuaWYqMSY2DBn+TOCwqdqJrnF/l+E8wTZ3+cp9zEw8VZ28e7dktTaq6jmRWtQ==
-X-Received: by 2002:a50:f616:0:b0:53e:6f96:dcf with SMTP id
- c22-20020a50f616000000b0053e6f960dcfmr3187518edn.34.1697617684179; 
- Wed, 18 Oct 2023 01:28:04 -0700 (PDT)
+ bh=qs2cdu48NJ8nNMZ+IMyHr6DXt2M1atOD37VWsF3E5pY=;
+ b=qNUybpaViLh7zS7c1C1s3RZywts1Hc0zxx6vSjCWPiUYTlv1pydKRf6gSNBn1Jl+E4
+ IdlCdXrujJzXs745q1rBDTd05kQhT88hN3rieJ+ll7tL1P2Dc3TgmabCBraLY1hVHWM4
+ eCoeUA/9eV8k5l25n0PRLKHQHCSbXE/uls82r1MFqGCTf/ah51DFU5uRR3TNhcqsJ570
+ BwBQdLUvDReMbkKCue43N7bja23nA8lzCHJSnDsy8E4hgJhk544vFWdeJBUikwHAQSzU
+ az5Fr1iiSzUqMBDdlCln5y0D4HhERfM8gTTuNMJAM2Z5CppYFJQfhB2txK8q2anRz+R6
+ 3L4Q==
+X-Gm-Message-State: AOJu0YyQ4PzG7YAgiQL4ZgOgzI779KCghR7tMesVJOLqiC8hJIsHMXRt
+ kHwc1NHEFnreW8Df4fhDrVm83TMzeSEjkCemlrOAIbXrToxixuQ54JGhFvID5V25RKXN3s04EHW
+ sOf2qbRBXFeHVZxj5z6jxdS7WseiAm6uJi0Ksaj1B78w6WXb5eEyWjOg2ntNEOP94IuQL54IpJN
+ E=
+X-Received: by 2002:a17:907:7ea8:b0:9b6:50cd:a222 with SMTP id
+ qb40-20020a1709077ea800b009b650cda222mr3866957ejc.54.1697617686197; 
+ Wed, 18 Oct 2023 01:28:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFymaQkNqQ8KkpLXAD/zpxsAJEH6icUNfNn//G1pTbldiB6YlaaW5DoBJD+AlwlycSYSA3gQ==
+X-Received: by 2002:a17:907:7ea8:b0:9b6:50cd:a222 with SMTP id
+ qb40-20020a1709077ea800b009b650cda222mr3866943ejc.54.1697617685789; 
+ Wed, 18 Oct 2023 01:28:05 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- cx11-20020a05640222ab00b0053da777f7d1sm2386753edb.10.2023.10.18.01.28.03
- for <qemu-devel@nongnu.org>
+ e26-20020a170906749a00b009adc5802d08sm1177397ejl.190.2023.10.18.01.28.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 01:28:03 -0700 (PDT)
+ Wed, 18 Oct 2023 01:28:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/32] target/i386: check intercept for XSETBV
-Date: Wed, 18 Oct 2023 10:27:25 +0200
-Message-ID: <20231018082752.322306-6-pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 06/32] tests/vm: netbsd: install dtc
+Date: Wed, 18 Oct 2023 10:27:26 +0200
+Message-ID: <20231018082752.322306-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018082752.322306-1-pbonzini@redhat.com>
 References: <20231018082752.322306-1-pbonzini@redhat.com>
@@ -100,39 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Note that this intercept is special; it is checked before the #GP
-exception.
+Install dtc as it is now a mandatory external dependency in order to build QEMU.
 
+Co-developed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/svm.h           | 1 +
- target/i386/tcg/translate.c | 1 +
- 2 files changed, 2 insertions(+)
+ tests/vm/netbsd | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/svm.h b/target/i386/svm.h
-index f9a785489d8..1bd78447306 100644
---- a/target/i386/svm.h
-+++ b/target/i386/svm.h
-@@ -132,6 +132,7 @@
- /* only included in documentation, maybe wrong */
- #define SVM_EXIT_MONITOR	0x08a
- #define SVM_EXIT_MWAIT		0x08b
-+#define SVM_EXIT_XSETBV		0x08d
- #define SVM_EXIT_NPF  		0x400
+diff --git a/tests/vm/netbsd b/tests/vm/netbsd
+index c7e3f1e7357..40b27a34694 100755
+--- a/tests/vm/netbsd
++++ b/tests/vm/netbsd
+@@ -40,6 +40,9 @@ class NetBSDVM(basevm.BaseVM):
+         "gsed",
+         "gettext-tools",
  
- #define SVM_EXIT_ERR		-1
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index d2061ec44a0..4f6f9fa7e52 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -5916,6 +5916,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-                                  | PREFIX_REPZ | PREFIX_REPNZ))) {
-                 goto illegal_op;
-             }
-+            gen_svm_check_intercept(s, SVM_EXIT_XSETBV);
-             if (!check_cpl0(s)) {
-                 break;
-             }
++        # libs: basic
++        "dtc",
++
+         # libs: crypto
+         "gnutls",
+ 
+@@ -67,7 +70,8 @@ class NetBSDVM(basevm.BaseVM):
+         mkdir src build; cd src;
+         tar -xf /dev/rld1a;
+         cd ../build
+-        ../src/configure --disable-opengl {configure_opts};
++        ../src/configure --disable-opengl --extra-ldflags=-L/usr/pkg/lib \
++                          --extra-cflags=-I/usr/pkg/include {configure_opts};
+         gmake --output-sync -j{jobs} {target} {verbose};
+     """
+     poweroff = "/sbin/poweroff"
 -- 
 2.41.0
 
