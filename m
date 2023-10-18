@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4007CDDC3
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2558C7CDDF1
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:54:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6u4-0003uI-C7; Wed, 18 Oct 2023 09:48:04 -0400
+	id 1qt6zj-0003vu-1U; Wed, 18 Oct 2023 09:53:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt6tr-0003k6-76
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:47:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt6zZ-0003oL-8U
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:53:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt6tp-0007lz-AP
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:47:50 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt6zX-0000Mh-O3
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:53:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697636868;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PX2i5N9Fh7so94FIWeVovUmDHU1ycnDXffuxlGosg2k=;
- b=PTWJYJFeb1AIa3Oa3HtuDNlpx4kkpX14r+vgnpN2+A0OJg23003o6EFsnZ0Are6CZZN+mb
- L9ZqCWI3Nh6VOuH+RT7rMGjWu5cYKBB2UX44XQA855Wu1xhsWJJfjnezgjmGRp8m7Ks0XH
- rk/Kr/cpUBfDcVpTav5bTS1+m8Nuw1I=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697637222;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=+O+ywQo+XPePe/w5kx6Z2E6xmE+2rY0s8hcY2eFRHBI=;
+ b=ON5uXtPPGYDUVf1FYVi0LeCBBQOXm9d8WrpEJVpwOPI7vO3CF9ogUUp30AXJI704mg9qNJ
+ hZnHLccvJ/WGJ6rMR9+mLF/DMNI8KwReUpf3XvLuWD0vh4vIkYRt/leXGu7L2RmQJz3LlG
+ Pix5weFV3k0MHuRDNsrFi5TflW/kQEg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-fVINERdTNr-btHJitV7_aw-1; Wed, 18 Oct 2023 09:47:46 -0400
-X-MC-Unique: fVINERdTNr-btHJitV7_aw-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c50c873604so48210051fa.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:47:46 -0700 (PDT)
+ us-mta-630--tXemE6OOjiaQ1k--9yeHQ-1; Wed, 18 Oct 2023 09:53:41 -0400
+X-MC-Unique: -tXemE6OOjiaQ1k--9yeHQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32db9cd71d7so1568188f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:53:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697636865; x=1698241665;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PX2i5N9Fh7so94FIWeVovUmDHU1ycnDXffuxlGosg2k=;
- b=HAHiKrUEIGHLxR0gW28ZYiT7pEi0JmIQSJSAXQDcyj1/DeYQkUc4cEdln8obO1CB3L
- giIX9MMkrxmEES7SOw8xKWwcGbOaPiulLQRsx6FObO6Jkx0hbvRxi4Rb6DUER9jD95Do
- 2+dKvieBk67lFdnCEW4KOTzaJn7unP2qHTa+5dAD444GEzQ5vgTh+/DDPkBg79V+8Am8
- p9f7g3DdihQhiHzUItpj7IVj90wuLhq++b0ZaHQtHY2cGmVnOObAlLE1IF5wsz994BbW
- e4hSogbdOCZTAU2EwUx4t1Lj9i/r8Ff8f/j4il5qRMGDRnXVnkPW9QP2ltA1OHwkRfqf
- RDJQ==
-X-Gm-Message-State: AOJu0Ywe1AWenCWF0YnmGdnUDt6+hZ7MiQCf1BMVe6BbXU++YhpLDJrO
- 5xW2ogTbZzIm4QlTHp7OTzx8hgAvLwvjNf5HJEMlsAs9ihTB8o0g+y9vTY2A2O75sCGMMnvDK6/
- JZSNjg8UAPA/lJLs=
-X-Received: by 2002:a2e:9c51:0:b0:2c0:d06:9e65 with SMTP id
- t17-20020a2e9c51000000b002c00d069e65mr3796740ljj.8.1697636865508; 
- Wed, 18 Oct 2023 06:47:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmVnMU4/5sd070MK9dVAoMshsvYCw/XVvkGBmzAm/u9AFKXPrjWf0IMXWrjzHveVLVxwXOmQ==
-X-Received: by 2002:a2e:9c51:0:b0:2c0:d06:9e65 with SMTP id
- t17-20020a2e9c51000000b002c00d069e65mr3796722ljj.8.1697636865126; 
- Wed, 18 Oct 2023 06:47:45 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
- by smtp.gmail.com with ESMTPSA id
- j20-20020a05600c191400b0040641a9d49bsm1744116wmq.17.2023.10.18.06.47.43
+ d=1e100.net; s=20230601; t=1697637220; x=1698242020;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+O+ywQo+XPePe/w5kx6Z2E6xmE+2rY0s8hcY2eFRHBI=;
+ b=CCE4V2uDLK+D9m9KFwJWtwc/ODGzNBjwuzRhoAYUrHF8+bD8ehW3TWGeMHrUTG4jQt
+ hSvN9CrqcjiuB6IKW6VsNeGNQByzD8URMZ1K6OIqzy2atJx5ouPF+NLGP9GIXIL7lqTR
+ oJ117D+j8D0fB+ZRUIS/E10jFeJlmYQ++LHbbMvQCvLvrmGV/VfkFwpMWhgltJAZKWcI
+ xA+eBTJCNtkoTgvSNBZOXR0qVMo7Q8YsT4x8QN2ZqPgy6lCC2ZmQpD7rO+5kOX4Rx5bH
+ 2mpJ7mlyNKDP/nc6ahyK8zdQFBUTJxI3xSKNMo0qe6OTiaCGVwL0yEHs9cO+JlSyVqj6
+ CT8w==
+X-Gm-Message-State: AOJu0Yyp3mbNL6Baw/2bSxIMnOdqqHK+p4UySgTvIxq0ogRl/ZTicplg
+ KLpizZmxUrCpBgIat8IsqmE57gJLjjtp4if8a6GGlJChMPsWH78oECgsF5bwFKr//BrFGPLrw/+
+ ycpqhANTsxS/L56M=
+X-Received: by 2002:a5d:4a49:0:b0:32d:cb04:829b with SMTP id
+ v9-20020a5d4a49000000b0032dcb04829bmr3392795wrs.12.1697637220073; 
+ Wed, 18 Oct 2023 06:53:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFW+WRBC6F2Owh8M6Y/JKVTOTwBdoVqHnpm//4Yyf7ScRPjHt1fm9pmT7lrNDffxAiZEG095w==
+X-Received: by 2002:a5d:4a49:0:b0:32d:cb04:829b with SMTP id
+ v9-20020a5d4a49000000b0032dcb04829bmr3392774wrs.12.1697637219756; 
+ Wed, 18 Oct 2023 06:53:39 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ q12-20020a05600c2e4c00b0040648217f4fsm1709181wmf.39.2023.10.18.06.53.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 06:47:44 -0700 (PDT)
-Date: Wed, 18 Oct 2023 09:47:40 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Patrick Rudolph <patrick.rudolph@9elements.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
- anisinha@redhat.com, marcel.apfelbaum@gmail.com
-Subject: Re: [PATCH 0/3] hw/i386: Add MTD controller on ICH9
-Message-ID: <20231018094701-mutt-send-email-mst@kernel.org>
-References: <20231018115231.3547102-1-patrick.rudolph@9elements.com>
+ Wed, 18 Oct 2023 06:53:39 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
+ <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH V5] migration: simplify blockers
+In-Reply-To: <1697634216-84215-1-git-send-email-steven.sistare@oracle.com>
+ (Steve Sistare's message of "Wed, 18 Oct 2023 06:03:36 -0700")
+References: <1697634216-84215-1-git-send-email-steven.sistare@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 18 Oct 2023 15:53:38 +0200
+Message-ID: <87r0ls82al.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231018115231.3547102-1-patrick.rudolph@9elements.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,38 +96,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 18, 2023 at 01:52:28PM +0200, Patrick Rudolph wrote:
-> This series implements a feature complete MTD SPI flash controller
-> as found on real ICH9, adds cache coherent BIOS MMAPing and implements
-> a few SMM bits to allow x86 firmware build for real ICH9 to operate on
-> the flash controller to store (UEFI) variables or do firmware updates.
-> 
-> Patrick Rudolph (3):
->   hw/isa/ich9: Add SPI controller
->   hw/isa/lpc_ich9: Implement SMI_STS for APMC
->   hw/i386/pc_sysfw: Do not create BIOS region if MTD is present
+Steve Sistare <steven.sistare@oracle.com> wrote:
+> Modify migrate_add_blocker and migrate_del_blocker to take an Error **
+> reason.  This allows migration to own the Error object, so that if
+> an error occurs in migrate_add_blocker, migration code can free the Error
+> and clear the client handle, simplifying client code.  It also simplifies
+> the migrate_del_blocker call site.
+>
+> In addition, this is a pre-requisite for a proposed future patch that would
+> add a mode argument to migration requests to support live update, and
+> maintain a list of blockers for each mode.  A blocker may apply to a single
+> mode or to multiple modes, and passing Error** will allow one Error object
+> to be registered for multiple modes.
+>
+> No functional change.
+>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Tested-by: Michael Galaxy <mgalaxy@akamai.com>
+> Reviewed-by: Michael Galaxy <mgalaxy@akamai.com>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
 
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-Given all this is guest-visible, one thing we need for sure is
-a flag disabling this new stuff, and tied to existing machine types.
+Something weird happened with your rebase:
 
->  hw/acpi/ich9.c                    |   5 +
->  hw/acpi/ich9_tco.c                |   5 +
->  hw/i386/pc_sysfw.c                |   6 +
->  hw/isa/Kconfig                    |   2 +
->  hw/isa/lpc_ich9.c                 |   4 +
->  hw/isa/meson.build                |   2 +-
->  hw/isa/spi_ich9.c                 | 448 ++++++++++++++++++++++++++++++
->  include/hw/southbridge/ich9.h     |   6 +
->  include/hw/southbridge/ich9_spi.h |  80 ++++++
->  9 files changed, 557 insertions(+), 1 deletion(-)
->  create mode 100644 hw/isa/spi_ich9.c
->  create mode 100644 include/hw/southbridge/ich9_spi.h
-> 
-> -- 
-> 2.41.0
+(next *|AM 1/1)$ find . -name "*rej"
+./block/vpc.c.rej
+./block/qcow.c.rej
+./block/parallels.c.rej
+./block/vdi.c.rej
+(next *|AM 1/1)$ 
+
+trivial to fix, so I did it.
+
+queued.
 
 
