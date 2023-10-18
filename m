@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AA37CE667
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 20:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5287CE66B
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 20:28:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtBGP-00087o-EM; Wed, 18 Oct 2023 14:27:25 -0400
+	id 1qtBGg-0000H5-Gr; Wed, 18 Oct 2023 14:27:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtBFt-00083c-71
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:26:53 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtBGa-000080-HG
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:27:36 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtBFr-0003Gs-LF
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:26:52 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-9be1ee3dc86so782761766b.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 11:26:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtBGX-0003Kc-Fd
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:27:36 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-9adb9fa7200so1494839666b.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 11:27:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697653609; x=1698258409; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697653651; x=1698258451; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=v0O6QkQIfHxfDYCocjtWA/gx85Y3GhqSdWEfZKggQ6g=;
- b=MRqKmT0noYwwtgVe0IjvHM5tjh/zL2ITOw+dwLbroN0j2udwkIbnvdF+lUnAFwKft/
- KW0a+3Zxp0Es7gDO3X3y46NsM5+90oOQ45nBTCwe7YUHfPCJB7AlaF6ixqTiIytHzNBx
- UyBPU5RCbltEp9bdvzjzWfJjKMzDtw0bUDF4o6SiJI6kMtlp/m2HMNFUZMytRgjbLoGL
- Z60oWSTyAT2QqtjcVFDgEq3Cyr/cpzwriluAJ6hDPxcvTXjiiUMi4RgX5OOx4xCj6IlG
- tkr/YU8+DjrGeJpWvEIY3mK/9zDLV+takVnEYmTkotMgfbI/AVd30Mv8tDDXadYypaIl
- C+AQ==
+ bh=J/aJnUer9JoXuSRF4qWJ0uKCMgAvC0REJ0j6S3rh7wA=;
+ b=RooYbhYBjYsrWZhgUjEknMc4bd1+qkimEmpWkNrZKy7MSfKKGRi9mZRGul4NT4CLM0
+ +dxZaKV+MIoXbl7uXm2r7pb1ulD2xzL/z5NyUKjYVQ0dWLLHzoDxLPDQJxiRZRzgbV4F
+ COJi7j1S4phHi5vJ7SP6o61Gi1c8zF9Loruee6SkMbDEjjvi8fYGcmSDAhoVdz7i6tJ2
+ plHz0pTuQtoShVlZGl2cyzpMA/TjzHIGdTPY9SdJCcmAmTHy2oUYKllnfO0dcEXQqshl
+ X6/or74OT6urIVKh+wenbhvV3taXuMMpVD3yhdXmMSuhwIq2XDH87v57+1f8SKAFydhI
+ iYQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697653609; x=1698258409;
+ d=1e100.net; s=20230601; t=1697653651; x=1698258451;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=v0O6QkQIfHxfDYCocjtWA/gx85Y3GhqSdWEfZKggQ6g=;
- b=EE1I3lsSYExo8QqiTxwm255KsoLXPFV6ZRZkmmiYlbbusGTh0GaRIoaMp/r8fugsMb
- T31cGaDsxebj88Aq9RhMqjOybwo/itgyvsrOKCReHPQ9haIV4sVLnG5QnPKNUgsztELc
- g6gGQDd6qZYxy+hMOrO3T6PdUd1q2yXuUNRbEFqgqRlbFaolGN+8qgkjMbtZPJ67kIVp
- m7SCEaR7JoKz2dfS4/+UMPvWUYQ8yAmCSwqoMCpMqWW1xd60KorjmxRlOIVzRaqQ3aH2
- VDS6Y/6Qo7A2RmNtj3r8QAPgbE+kaKit+qNlz0ueocoSESlpD7h3rxuKfgcMKi+675lX
- nfCQ==
-X-Gm-Message-State: AOJu0YxZxoX99LaWiN39tnGfOR6HxG6hzuh5EIR3hOy2Bc8Oj58Zjfvc
- 1TsgRlG7JnqF0YzTePl7bLhLDg==
-X-Google-Smtp-Source: AGHT+IEf9NYxQ4uu5A/9neGRx+8DbLaDarkV0megFeylxumnqMlMLuW0hry7679gsTl15M1m/W0SFg==
-X-Received: by 2002:a17:906:4784:b0:9be:36c2:162 with SMTP id
- cw4-20020a170906478400b009be36c20162mr58267ejc.31.1697653608888; 
- Wed, 18 Oct 2023 11:26:48 -0700 (PDT)
+ bh=J/aJnUer9JoXuSRF4qWJ0uKCMgAvC0REJ0j6S3rh7wA=;
+ b=B7A2mcTBUFUUXg1J6lpcpO1s9VBokLNWgpC7sMYB0KygK4DGRQyMeQCYwOa1mZWU6U
+ 3yW1ObP3NFL6cpVwfowSyKwppJ0dB9CXRO3CD8i02YCPNQVdEK7mNmgR8+borCDxSyyv
+ QypEMFF9/WkKwO2aRSVnqDKfcSqNxpJCI30pfe0IOswJn3jL6rnz6FeZ3kMABRleIJkl
+ OP7CIDfLvCkyRfB+6j+TCsQTKa7UYdVJBuMOikTT1QDKILQYe5dku0mqbCW5nFa7kVl6
+ eSyitiDjBWMHNShNKwIMVByx/D5Xm98B2Zgrw34fVhT4MOxwwCdxdaF1P12gw+9Q3Zdu
+ Kazw==
+X-Gm-Message-State: AOJu0Yx/pF9pd4o6HAw78oAB383VWFVrvudMGAoWmkVGEN+H8rVpaYCu
+ zb9dCJrQ+nJzZ8lw1n1xVhafKg==
+X-Google-Smtp-Source: AGHT+IGUoF1KPzHu8kB1WzooujveaqcaVLsErBGsB72mAG/XHL0/GT7h0CXvuSEZgRHduQ2EVgvtdw==
+X-Received: by 2002:a17:907:2da5:b0:9bf:c00f:654a with SMTP id
+ gt37-20020a1709072da500b009bfc00f654amr190882ejc.24.1697653650821; 
+ Wed, 18 Oct 2023 11:27:30 -0700 (PDT)
 Received: from [192.168.69.115]
  (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr. [176.171.218.149])
  by smtp.gmail.com with ESMTPSA id
- b24-20020a170906039800b009bf7a4d591bsm2112585eja.45.2023.10.18.11.26.45
+ v15-20020a17090651cf00b009a168ab6ee2sm2118955ejk.164.2023.10.18.11.27.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 11:26:48 -0700 (PDT)
-Message-ID: <d5dd91d5-ecc3-c8d4-6cd9-4ec3f277d15f@linaro.org>
-Date: Wed, 18 Oct 2023 20:26:44 +0200
+ Wed, 18 Oct 2023 11:27:30 -0700 (PDT)
+Message-ID: <ff33d529-fe47-bd89-c445-55afc1651848@linaro.org>
+Date: Wed, 18 Oct 2023 20:27:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 08/12] hw/isa: Realize ISA BUS sysbus device before
+Subject: Re: [PATCH 09/12] hw/s390x/css-bridge: Realize sysbus device before
  accessing it
 Content-Language: en-US
 To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
@@ -81,14 +81,14 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 References: <20231018141151.87466-1-philmd@linaro.org>
- <20231018141151.87466-9-philmd@linaro.org>
- <a9a6adeb-ab58-40fa-b940-5c5897c82cc8@redhat.com>
+ <20231018141151.87466-10-philmd@linaro.org>
+ <869ec507-0a64-4275-895d-dea04a79a1fc@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <a9a6adeb-ab58-40fa-b940-5c5897c82cc8@redhat.com>
+In-Reply-To: <869ec507-0a64-4275-895d-dea04a79a1fc@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -111,53 +111,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/10/23 17:57, Thomas Huth wrote:
+On 18/10/23 17:06, Thomas Huth wrote:
 > On 18/10/2023 16.11, Philippe Mathieu-Daudé wrote:
 >> sysbus_mmio_map() should not be called on unrealized device.
 > 
-> I also cannot spot a sysbus_mmio_map() here ... do you mean qdev_new() 
-> instead?
+> Can you elaborate? I don't see a sysbus_mmio_map() in this code here...?
 
-Yeah, bad copy/paste :/
+I meant 's/sysbus_mmio_map/qbus_new'. Sorry, long day.
 
 > 
 >   Thomas
 > 
+> 
 >> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 >> ---
->>   hw/isa/isa-bus.c | 11 +++++++++--
->>   1 file changed, 9 insertions(+), 2 deletions(-)
+>>   hw/s390x/css-bridge.c | 7 +++----
+>>   1 file changed, 3 insertions(+), 4 deletions(-)
 >>
->> diff --git a/hw/isa/isa-bus.c b/hw/isa/isa-bus.c
->> index a289eccfb1..f1e0f14007 100644
->> --- a/hw/isa/isa-bus.c
->> +++ b/hw/isa/isa-bus.c
->> @@ -52,18 +52,25 @@ static const TypeInfo isa_bus_info = {
->>   ISABus *isa_bus_new(DeviceState *dev, MemoryRegion* address_space,
->>                       MemoryRegion *address_space_io, Error **errp)
+>> diff --git a/hw/s390x/css-bridge.c b/hw/s390x/css-bridge.c
+>> index 4017081d49..15d26efc95 100644
+>> --- a/hw/s390x/css-bridge.c
+>> +++ b/hw/s390x/css-bridge.c
+>> @@ -95,7 +95,6 @@ static const TypeInfo virtual_css_bus_info = {
+>>   VirtualCssBus *virtual_css_bus_init(void)
 >>   {
->> +    DeviceState *bridge = NULL;
+>> -    VirtualCssBus *cbus;
+>>       BusState *bus;
+>>       DeviceState *dev;
+>> @@ -103,19 +102,19 @@ VirtualCssBus *virtual_css_bus_init(void)
+>>       dev = qdev_new(TYPE_VIRTUAL_CSS_BRIDGE);
+>>       object_property_add_child(qdev_get_machine(), 
+>> TYPE_VIRTUAL_CSS_BRIDGE,
+>>                                 OBJECT(dev));
+>> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>>       /* Create bus on bridge device */
+>>       bus = qbus_new(TYPE_VIRTUAL_CSS_BUS, dev, "virtual-css");
+>> -    cbus = VIRTUAL_CSS_BUS(bus);
+>>       /* Enable hotplugging */
+>>       qbus_set_hotplug_handler(bus, OBJECT(dev));
+>> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
 >> +
->>       if (isabus) {
->>           error_setg(errp, "Can't create a second ISA bus");
->>           return NULL;
->>       }
->>       if (!dev) {
->> -        dev = qdev_new("isabus-bridge");
->> -        sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->> +        bridge = qdev_new("isabus-bridge");
->> +        dev = bridge;
->>       }
->>       isabus = ISA_BUS(qbus_new(TYPE_ISA_BUS, dev, NULL));
->>       isabus->address_space = address_space;
->>       isabus->address_space_io = address_space_io;
->> +
->> +    if (bridge) {
->> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(bridge), &error_fatal);
->> +    }
->> +
->>       return isabus;
->>   }
+>>       css_register_io_adapters(CSS_IO_ADAPTER_VIRTIO, true, false,
+>>                                0, &error_abort);
+>> -    return cbus;
+>> +    return VIRTUAL_CSS_BUS(bus);
+>>    }
+>>   /***************** Virtual-css Bus Bridge Device ********************/
 > 
 
 
