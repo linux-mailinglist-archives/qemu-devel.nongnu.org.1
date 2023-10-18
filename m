@@ -2,145 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C62F7CE2AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0587CE2C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:28:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt9La-0002JR-4r; Wed, 18 Oct 2023 12:24:38 -0400
+	id 1qt9OK-0004ix-P1; Wed, 18 Oct 2023 12:27:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt9LY-0002IN-BX
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:24:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qt9O9-0004hO-Ed
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:27:17 -0400
+Received: from mgamail.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt9LW-0005JH-Kd
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:24:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697646273;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=DxaQpWyohR1989GHWUZ08ZEv6gnHvALDQAL8GToFJnI=;
- b=I+9jfjp3HrM2GeFwq9e+m41xIRg/6+l0Zv3uwgOERP5IMcfWqlFLCSG2iAkfNsl2Dtu9Ib
- C4HU7i5tS2lc8p/Ukth9mCjfLwCFpYCJDe+D/fxI190IWbOZMyz5QmjDZwNbtAod2TwfGY
- JywN+wD3fASWwtrH16tzWubIqbYFn5s=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-Xc1KJW5TOz2AlKyq0W_lMA-1; Wed, 18 Oct 2023 12:24:22 -0400
-X-MC-Unique: Xc1KJW5TOz2AlKyq0W_lMA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d120c28afso78821436d6.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:24:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697646262; x=1698251062;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DxaQpWyohR1989GHWUZ08ZEv6gnHvALDQAL8GToFJnI=;
- b=QHif2MBA+LwTrMJxak25Y/jjnLps9oUI8WFu4iendBM22EW4XoVcNVG+zCAAF2w6+V
- U+eJAY5xIsFCpPvf4jgeFxn7kehiNeBz6zPlv/ktzVUGvAlYdm4HD4B8pDd7W4NWgZ/g
- 2HuHpDHt5E3b+NQCrc+ypuuZHDl0m5x2k7RyQPlk2WWW5CNDSKIJ0H6P0422IwkodT6q
- ZEKFHg8WfhtRKi69y5XmmFtwgp33fDYMLqluYi8l9MsabuumyBWMrGSyb0d7QWMvwplV
- W+gepIy3p7pvECPujf5tAjXsr7t/6GU/wbxYMqZHSzhv4exueQz3uNAIpuVTu7lbO8P8
- MUqQ==
-X-Gm-Message-State: AOJu0YzrgmOBVUaXrhmW4m8OgMa0zdSEOaGYQ/+Xx1DOFt6FklEdib7U
- 0TapPekrWJI9aDosIGZr3ByY+1ix9v6owvpj81twHf/eCUnHTI462s7J/PmKYmUG1LLmRpxd71r
- srzVgBd7ViYd3i6g=
-X-Received: by 2002:a05:6214:19e7:b0:66d:5d84:f833 with SMTP id
- q7-20020a05621419e700b0066d5d84f833mr7772484qvc.37.1697646262012; 
- Wed, 18 Oct 2023 09:24:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQOmx6p05ths3+p98SzON4t9VewvnypVnUB+SkjmQcrv2reZkR8U/8FnPr/Mmzznn7t+BqTA==
-X-Received: by 2002:a05:6214:19e7:b0:66d:5d84:f833 with SMTP id
- q7-20020a05621419e700b0066d5d84f833mr7772455qvc.37.1697646261738; 
- Wed, 18 Oct 2023 09:24:21 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
- [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- p18-20020a0cfad2000000b006564afc5908sm66189qvo.111.2023.10.18.09.24.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 09:24:21 -0700 (PDT)
-Message-ID: <393f1aa0-afb5-4269-8499-80afd5b98e48@redhat.com>
-Date: Wed, 18 Oct 2023 18:24:13 +0200
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qt9O5-0005ny-Er
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:27:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1697646433; x=1729182433;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=b4kEMoajX+fy+gDiLuH8EYMyslKZDVMZ/zxmUc7zPSY=;
+ b=IF/9N49C2gm1kTQj5f/okYRQZZY78ViOQeisyMlmPG5evBBiGNwTdsxu
+ TJ5YTq5TpEVw8crWIACDJD9O3VLndWZYcz4oIC2ueHRs4OJR79aIkKawK
+ rO7HzuB3qz58twNZp5wfi3yiT8kihOGzl8buHvWnZKAGAvvLTKdnnpmwR
+ pO8h+1am4qpZHYP1pzEQo6HGVb+oEEDOiqdulpIDq0+Qt5SQtHmx+A7bL
+ ds9IGQAA3EQW2heMCcrdo0M94SZ2aoW1JNkM02DylxNurESaMfD6DNP+V
+ EFtxQVsT7z1jRMLx5STbNRILpb+YADXNc9Q6hwsIgMqhc7I6KetYPiRb1 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="371112860"
+X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; d="scan'208";a="371112860"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Oct 2023 09:27:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
+   d="scan'208";a="4608611"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.19.128])
+ ([10.93.19.128])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Oct 2023 09:27:11 -0700
+Message-ID: <a3aca8df-1b4a-4efe-9f79-107aa2fd1a39@intel.com>
+Date: Thu, 19 Oct 2023 00:27:04 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/12] hw: Strengthen SysBus & QBus API
+Subject: Re: [PATCH v2 1/4] softmmu/physmem: Warn with
+ ram_block_discard_range() on MAP_PRIVATE file mapping
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
- qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231018141151.87466-1-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231018141151.87466-1-philmd@linaro.org>
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
+References: <20230706075612.67404-1-david@redhat.com>
+ <20230706075612.67404-2-david@redhat.com>
+ <a23ee3d1-e03b-4442-bdec-341b3e52d3e0@intel.com>
+ <e96e96a2-e996-4507-8548-684aa1e56846@redhat.com>
+ <23d209c1-f860-4915-935e-816d9077b65c@intel.com>
+ <ab0d4962-1e38-4758-bd3c-88c8754b433f@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ab0d4962-1e38-4758-bd3c-88c8754b433f@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=134.134.136.126;
+ envelope-from=xiaoyao.li@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -156,117 +89,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/10/2023 16.11, Philippe Mathieu-Daudé wrote:
-> Hi,
+On 10/18/2023 5:26 PM, David Hildenbrand wrote:
+> On 18.10.23 11:02, Xiaoyao Li wrote:
+>> On 10/18/2023 3:42 PM, David Hildenbrand wrote:
+>>> On 18.10.23 05:02, Xiaoyao Li wrote:
+>>>> David,
+>>>>
+>>>> On 7/6/2023 3:56 PM, David Hildenbrand wrote:
+>>>>> ram_block_discard_range() cannot possibly do the right thing in
+>>>>> MAP_PRIVATE file mappings in the general case.
+>>>>>
+>>>>> To achieve the documented semantics, we also have to punch a hole into
+>>>>> the file, possibly messing with other MAP_PRIVATE/MAP_SHARED mappings
+>>>>> of such a file.
+>>>>>
+>>>>> For example, using VM templating -- see commit b17fbbe55cba 
+>>>>> ("migration:
+>>>>> allow private destination ram with x-ignore-shared") -- in
+>>>>> combination with
+>>>>> any mechanism that relies on discarding of RAM is problematic. This
+>>>>> includes:
+>>>>> * Postcopy live migration
+>>>>> * virtio-balloon inflation/deflation or free-page-reporting
+>>>>> * virtio-mem
+>>>>>
+>>>>> So at least warn that there is something possibly dangerous is 
+>>>>> going on
+>>>>> when using ram_block_discard_range() in these cases.
+>>>>>
+>>>>> Acked-by: Peter Xu <peterx@redhat.com>
+>>>>> Tested-by: Mario Casquero <mcasquer@redhat.com>
+>>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>>>> ---
+>>>>>     softmmu/physmem.c | 18 ++++++++++++++++++
+>>>>>     1 file changed, 18 insertions(+)
+>>>>>
+>>>>> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+>>>>> index bda475a719..4ee157bda4 100644
+>>>>> --- a/softmmu/physmem.c
+>>>>> +++ b/softmmu/physmem.c
+>>>>> @@ -3456,6 +3456,24 @@ int ram_block_discard_range(RAMBlock *rb,
+>>>>> uint64_t start, size_t length)
+>>>>>                  * so a userfault will trigger.
+>>>>>                  */
+>>>>>     #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+>>>>> +            /*
+>>>>> +             * We'll discard data from the actual file, even though
+>>>>> we only
+>>>>> +             * have a MAP_PRIVATE mapping, possibly messing with 
+>>>>> other
+>>>>> +             * MAP_PRIVATE/MAP_SHARED mappings. There is no easy 
+>>>>> way to
+>>>>> +             * change that behavior whithout violating the promised
+>>>>> +             * semantics of ram_block_discard_range().
+>>>>> +             *
+>>>>> +             * Only warn, because it work as long as nobody else
+>>>>> uses that
+>>>>> +             * file.
+>>>>> +             */
+>>>>> +            if (!qemu_ram_is_shared(rb)) {
+>>>>> +                warn_report_once("ram_block_discard_range:
+>>>>> Discarding RAM"
+>>>>> +                                 " in private file mappings is
+>>>>> possibly"
+>>>>> +                                 " dangerous, because it will modify
+>>>>> the"
+>>>>> +                                 " underlying file and will affect
+>>>>> other"
+>>>>> +                                 " users of the file");
+>>>>> +            }
+>>>>> +
+>>>>
+>>>> TDX has two types of memory backend for each RAM, shared memory and
+>>>> private memory. Private memory is serviced by guest memfd and shared
+>>>> memory can also be backed with a fd.
+>>>>
+>>>> At any time, only one type needs to be valid, which means the opposite
+>>>> can be discarded. We do implement the memory discard when TDX converts
+>>>> the memory[1]. It will trigger this warning 100% because by default the
+>>>> guest memfd is not mapped as shared (MAP_SHARED).
+>>>
+>>> If MAP_PRIVATE is not involved and you are taking the pages directly out
+>>> of the memfd, you should mark that thing as shared.
+>>
+>> Is it the general rule of Linux? Of just the rule of QEMU memory discard?
+>>
 > 
-> This series ensure:
+> MAP_SHARED vs. MAP_PRIVATE is a common UNIX principle, and that's what 
+> this flag and the check is about.
 > 
-> - qbus_new() and sysbus_init_mmio() are called *before*
->    a device is realized,
-> - sysbus_mmio_map() is called *after* it is realized.
+>  From mmap(2)
 > 
-> First we fix some abuse, then we enforce in qdev/sysbus
-> core code.
+> MAP_SHARED: Share this mapping.  Updates to the mapping are visible to 
+> other processes mapping the same region, and (in the case of file-backed 
+> mappings) are carried through to the underlying file.
+> 
+> MAP_PRIVATE: Create a private copy-on-write mapping.  Updates to the 
+> mapping are not visible to other processes mapping the same file, and 
+> are not carried through to the underlying file.  It is unspecified 
+> whether changes made  to the file after the mmap() call are visible in 
+> the mapped region.
+> 
+> For your purpose (no mmap() at all), we behave like MAP_SHARED -- as if 
+> nothing special is done. No Copy-on-write, no anonymous memory.
+> 
+>>> Anonymous memory is never involved.
+>>
+>> Could you please elaborate more on this? What do you want to express
+>> here regrading anonymous memory? (Sorry that I'm newbie for mmap stuff)
+> 
+> Anonymous memory is memory that is private to a specific process, and 
+> (see MAP_PRIVATE) modifications remain private to the process and are 
+> not reflected to the file.
+> 
+> If you have a MAP_PRIVATE file mapping and write to a virtual memory 
+> location, you'll get a process-private copy of the underlying pagecache 
+> page. that's what we call anonymous memory, because it does not belong 
+> to a specific file. fallocate(punch) would not free up that anonymous 
+> memory.
 
-I like the idea, and just had a try with "make check-qtest" with the patches 
-here, but seems like there are more spots that need attention:
+For guest memfd, it does implement kvm_gmem_fallocate as .fallocate() 
+callback, which calls truncate_inode_pages_range() [*].
 
-  10/433 qemu:qtest+qtest-ppc64 / qtest-ppc64/qom-test 
-              ERROR           0.72s   killed by signal 6 SIGABRT
- >>> MALLOC_PERTURB_=217 QTEST_QEMU_IMG=./qemu-img 
-G_TEST_DBUS_DAEMON=/home/thuth/devel/qemu/tests/dbus-vmstate-daemon.sh 
-PYTHON=/home/thuth/tmp/qemu-build/pyvenv/bin/python3 
-QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon 
-QTEST_QEMU_BINARY=./qemu-system-ppc64 
-/home/thuth/tmp/qemu-build/tests/qtest/qom-test --tap -k
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀ 
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-stderr:
-qemu-system-ppc64: sysbus_mmio_map(type:power9_v2.2-pnv-chip, index:0, 
-addr:0x603fc00000000, prio:0) but object is not realized
-Broken pipe
-../../devel/qemu/tests/qtest/libqtest.c:203: kill_qemu() detected QEMU death 
-from signal 6 (Aborted) (core dumped)
+I'm not sure if it frees up the memory. I need to learn it.
 
-(test program exited with status code -6)
+[*] 
+https://github.com/kvm-x86/linux/blob/911b515af3ec5f53992b9cc162cf7d3893c2fbe2/virt/kvm/guest_memfd.c#L147C73-L147C73
 
-TAP parsing error: Too few tests run (expected 17, got 0)
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+>>
+>>>
+>>> "Private memory" is only private from the guest POV, not from a mmap()
+>>> point of view.
+>>>
+>>> Two different concepts of "private".
+>>>
+>>>>
+>>>> Simply remove the warning will fail the purpose of this patch. The 
+>>>> other
+>>>> option is to skip the warning for TDX case, which looks vary hacky. Do
+>>>> you have any idea?
+>>>
+>>> For TDX, all memory backends / RAMBlocks should be marked as "shared",
+>>> and you should fail if that is not provided by the user.
+>>
+>> As I asked above, I want to understand the logic clearly. Is mapped as
+>> shared is a must to support the memory discard? i.e., if we want to
+>> support memory discard after memory type change, then the memory must be
+>> mapped with MAP_SHARED?
+> 
+> MAP_PIRVATE means that it's not sufficient to only fallocate(punch) the 
+> fd to free up all memory for a virtual address, because there might be 
+> anonymous memory in a private mapping that has to be freed up using 
+> MADV_DONTNEED. 
 
-...
+I can understand this. But it seems unrelated to my question: Is mapped 
+as shared is a must to support the memory discard?
 
-  24/433 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test 
-              ERROR           5.94s   killed by signal 6 SIGABRT
- >>> QTEST_QEMU_BINARY=./qemu-system-aarch64 
-G_TEST_DBUS_DAEMON=/home/thuth/devel/qemu/tests/dbus-vmstate-daemon.sh 
-QTEST_QEMU_IMG=./qemu-img 
-PYTHON=/home/thuth/tmp/qemu-build/pyvenv/bin/python3 
-QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon 
-MALLOC_PERTURB_=105 /home/thuth/tmp/qemu-build/tests/qtest/qom-test --tap -k
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀ 
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-stderr:
-qemu-system-aarch64: sysbus_init_mmio(type:pxa2xx_pic) but object is realized
-Broken pipe
-../../devel/qemu/tests/qtest/libqtest.c:203: kill_qemu() detected QEMU death 
-from signal 6 (Aborted) (core dumped)
+e.g., if use below parameters to specify the RAM for a VM
 
-(test program exited with status code -6)
+	-object memory-backend-memfd,id=mem0,size=2G	\
+	-machine memory-backend=mem0
 
-TAP parsing error: Too few tests run (expected 95, got 3)
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+since not specifying "share" property, the ram_block doesn't have 
+RAM_SHARED set. If want to discard some range of this memfd, it triggers 
+the warning. Is this warning expected?
 
-...
+I know it is not a possible case for current QEMU, but it's true for 
+future TDX VM. TDX VM can have memory-backend-memfd as the backend for 
+shared memory and kvm gmem memfd for private memory. At any time, for 
+any memory range, only one type is valid, thus the range in opposite 
+memfd can be fallocated.
 
-  73/433 qemu:qtest+qtest-ppc64 / qtest-ppc64/boot-serial-test 
-              ERROR           2.65s   killed by signal 6 SIGABRT
- >>> QTEST_QEMU_IMG=./qemu-img 
-G_TEST_DBUS_DAEMON=/home/thuth/devel/qemu/tests/dbus-vmstate-daemon.sh 
-PYTHON=/home/thuth/tmp/qemu-build/pyvenv/bin/python3 
-QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon 
-MALLOC_PERTURB_=129 QTEST_QEMU_BINARY=./qemu-system-ppc64 
-/home/thuth/tmp/qemu-build/tests/qtest/boot-serial-test --tap -k
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀ 
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-stderr:
-qemu-system-ppc64: sysbus_mmio_map(type:spapr-xive, index:0, 
-addr:0x6010000000000, prio:0) but object is not realized
-Broken pipe
-../../devel/qemu/tests/qtest/libqtest.c:203: kill_qemu() detected QEMU death 
-from signal 6 (Aborted) (core dumped)
+Here I get your message as "the ramblock needs to have RAM_SHARED flag 
+to allow the fallocate of the memfd". This is what I don't understand.
 
-(test program exited with status code -6)
-
-TAP parsing error: Too few tests run (expected 7, got 3)
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-
-...
-
-270/433 qemu:qtest+qtest-ppc64 / qtest-ppc64/cpu-plug-test 
-             ERROR           0.40s   killed by signal 6 SIGABRT
- >>> QTEST_QEMU_IMG=./qemu-img 
-G_TEST_DBUS_DAEMON=/home/thuth/devel/qemu/tests/dbus-vmstate-daemon.sh 
-PYTHON=/home/thuth/tmp/qemu-build/pyvenv/bin/python3 
-QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon 
-MALLOC_PERTURB_=175 QTEST_QEMU_BINARY=./qemu-system-ppc64 
-/home/thuth/tmp/qemu-build/tests/qtest/cpu-plug-test --tap -k
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀ 
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-stderr:
-qemu-system-ppc64: qbus_new(type:spapr-vio-bus parent:spapr-vio-bridge, 
-name:spapr-vio) but parent realized
-Broken pipe
-../../devel/qemu/tests/qtest/libqtest.c:203: kill_qemu() detected QEMU death 
-from signal 6 (Aborted) (core dumped)
-
-(test program exited with status code -6)
-
-TAP parsing error: Too few tests run (expected 3, got 0)
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-
-...
-
-  HTH,
-   Thomas
+That's why this functions handles both cases differently,
+> and warns if something possibly nasty is being done.
+> 
 
 
