@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA17C7CEA7C
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D727CEAF1
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 00:05:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtEVq-0002RK-Lo; Wed, 18 Oct 2023 17:55:34 -0400
+	id 1qtESj-0001nA-Gk; Wed, 18 Oct 2023 17:52:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtEVo-0002NK-Mb
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:55:32 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qtESF-000171-Qu
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:52 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtEVm-00059e-MR
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:55:32 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6b87c1edfd5so4164064b3a.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:55:30 -0700 (PDT)
+ id 1qtESE-0004P1-AX
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:51 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6cd0964a994so634634a34.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697666129; x=1698270929; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697665909; x=1698270709; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bHJACBbF9+uJIXW5w/FHxtZpUnFRR5qhz5RTWQgzwyE=;
- b=dSgcWlCfzhAx+Tb6iYsZCaT5ZgDQBvMWum4STXVeXIhhPxhTBNg9zVkxqzbd9Fo2qu
- rTwRWC22w5P/HQmaMq3Ig02m9act/JNMSGXRKVz21CcMkKmGyVLLi6EaCQGF4hGhDc3U
- YqNI9gKB5weHPWhYOok0fKx32hba4EZ6swdq8qSOcdCY1cQfO3A9bjTczVwg7S5ahmLm
- mw4LL3cgfXUYym6NuMLVAR5XuFrT0vtqqlJLlkU/T/emF0BTZRZocEot+lbeDg2kVP3D
- peYEl21yp4WyAvS/IEidkspq5gbJAi7Qt0j3QR4FSg4ta0rGNVzsO1/pz53m6cG5s1Yi
- 7+vw==
+ bh=BuwEn/6tALxgxX8K5Z/25NI6Kvm0qV/PZyiXdtk4l3g=;
+ b=cS4i09oyx+YNPo+afAne13vVJfcog+vH08H05bAPOhfcRFFY7LU66CDv1GrNe6oTe2
+ eUQuC6m6PXCUV8OfKTGmEREklFCLe+jvlQrOCUDx3s4IOcAAj2lkRenJ+AunZc30ZwbD
+ 5iaRCnvJ7ZX/SiNAEt3cCLY5+1y0r2QkxefunOD0wNB8pBh5rVfCZGKtIbdHXPbcuWZ1
+ 5/ACpGyM6hiuV9nIDFG5lUjWdso1gBakKG0Mifqp7bS0jgBZ5uthqGC5yTJQBI7DQrXd
+ jSRlBA+gB2c4u96J3//jVWEBQIYHyZeuliyaO9uyDViEF4MhLeeaDCP/GdH6fdCG+/cr
+ 0OLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697666129; x=1698270929;
+ d=1e100.net; s=20230601; t=1697665909; x=1698270709;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bHJACBbF9+uJIXW5w/FHxtZpUnFRR5qhz5RTWQgzwyE=;
- b=TVf69puw3wv43mA7Ks7F62KvFtcfXtn/5vIFG2v7V988rp0Wzl4Epc79OUyUkYFINo
- T0ioZIl+5cQiSr4JHJUvNZFf8MFAhHMlDXBEGqatDW2x2wrCiIiuKIfIBU/0PiUISi5S
- XCUQsQUNL03GVZUoHfMTHns1NGfzJX5pWtN4Lmd8P6PjzbXe5zQMxjW956J060ZgJHt0
- YRcvPYyLMcmWrmLcdZXULQ2fRC6yfy1y5OVSXYQ+nH5x/IAihxvMcX+zxZigc7yeGF5K
- 4v4KlK9eQvaZrNIvLmuhCFk0p+7R9vtuP7nyOiX6unbkLsxX05KK4B5Hj2sW30HUUkoG
- yL4A==
-X-Gm-Message-State: AOJu0Yy18YcBVmuWJ5SCIPAm+eevCVX5FEKhX6DYnm1o8LcwoqCEBV+g
- UjxLy1zfLx8idurrA04w+M1Pz0RU6mlDK4RVGeU=
-X-Google-Smtp-Source: AGHT+IG+eLqL3CGQ2mgCgE1Xgh7vd7rshBzReNb+um9k7z8QSrOMRt6cWtDc+ecqcju5yOOJKWQ2Tg==
-X-Received: by 2002:a05:6a00:a1a:b0:6be:43d5:6505 with SMTP id
- p26-20020a056a000a1a00b006be43d56505mr417860pfh.6.1697666129395; 
- Wed, 18 Oct 2023 14:55:29 -0700 (PDT)
+ bh=BuwEn/6tALxgxX8K5Z/25NI6Kvm0qV/PZyiXdtk4l3g=;
+ b=W6WzgdAh0pY9qNORNPyEuAUQ48wpdfVvmIdwMK3oeTy2/kcDS5+2c4irccHjyexeb+
+ ga/oQV2AF+1R6XqdgcPhPpFZg25WAj+7zTeSWHh9/i5QGnkfgK4vwqXztItYZXrR2S1/
+ d+YhW3aP50mOpJikhuCUvu5tj4TVpNqNtr5V6iYJyaVvrGOjtvQqsg1eaDf/Ed/+aSyh
+ 93ij8UQoyy7DDI2zmBapBgBBksply/lY4U4jX8kx4UENxt5kLm+cLsj4kM7KZ1yeyGJo
+ Kksnaw7BMOqDj/txcCuHiSpbwq63dOqzCUd33iZddOKOvq/ZCvTSTOokMWK7BB+RKthb
+ B2zA==
+X-Gm-Message-State: AOJu0Yz6XWNcSN5dWgrwpiEEE8w+vDCrvzUWBZkj1ahUf8X9USweb2hF
+ goLNvn/yf+TYJdFFuvivtz+nS28ZwlcCLHzM47Q=
+X-Google-Smtp-Source: AGHT+IHYHnK3atizDl6phSRbdyOQL15QChj5TNvOEetpYj1HN9Z95r5Vpa3tS4B3vehxwT8p6suAwg==
+X-Received: by 2002:a05:6830:3493:b0:6b9:bd9d:e333 with SMTP id
+ c19-20020a056830349300b006b9bd9de333mr831791otu.3.1697665909039; 
+ Wed, 18 Oct 2023 14:51:49 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- r15-20020aa7962f000000b006889348ba6esm3796263pfg.127.2023.10.18.14.55.28
+ w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 14:55:29 -0700 (PDT)
+ Wed, 18 Oct 2023 14:51:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 61/61] target/hppa: Simplify trans_dep*_imm
-Date: Wed, 18 Oct 2023 14:51:35 -0700
-Message-Id: <20231018215135.1561375-62-richard.henderson@linaro.org>
+Subject: [PATCH 15/61] target/hppa: Implement hppa_cpu_class_by_name
+Date: Wed, 18 Oct 2023 14:50:49 -0700
+Message-Id: <20231018215135.1561375-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018215135.1561375-1-richard.henderson@linaro.org>
 References: <20231018215135.1561375-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,124 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All of the special cases here are now handled during
-generic expansion.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 80 +++++++++++++----------------------------
- 1 file changed, 25 insertions(+), 55 deletions(-)
+ linux-user/hppa/target_elf.h |  2 +-
+ target/hppa/cpu.c            | 10 +++++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index a9e0e1706f..e8ce41b5a7 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3473,80 +3473,50 @@ static bool trans_extr_imm(DisasContext *ctx, arg_extr_imm *a)
-     return nullify_end(ctx);
- }
- 
--static bool trans_depi_imm(DisasContext *ctx, arg_depi_imm *a)
-+static bool do_dep_imm(DisasContext *ctx, unsigned rt, unsigned c,
-+                       bool d, unsigned len, unsigned cpos,
-+                       TCGv_i64 src, TCGv_i64 val)
+diff --git a/linux-user/hppa/target_elf.h b/linux-user/hppa/target_elf.h
+index 82b4e9535e..9bb865ae92 100644
+--- a/linux-user/hppa/target_elf.h
++++ b/linux-user/hppa/target_elf.h
+@@ -9,6 +9,6 @@
+ #define HPPA_TARGET_ELF_H
+ static inline const char *cpu_get_model(uint32_t eflags)
  {
--    unsigned len, width;
--    uint64_t mask0, mask1;
-+    unsigned width = d ? 64 : 32;
-     TCGv_i64 dest;
+-    return "any";
++    return TYPE_HPPA_CPU;
+ }
+ #endif
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 1975aa9621..6bf415139f 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -159,7 +159,15 @@ static void hppa_cpu_initfn(Object *obj)
  
--    if (!ctx->is_pa20 && a->d) {
--        return false;
-+    if (cpos + len > width) {
-+        len = width - cpos;
-     }
--    if (a->c) {
+ static ObjectClass *hppa_cpu_class_by_name(const char *cpu_model)
+ {
+-    return object_class_by_name(TYPE_HPPA_CPU);
++    g_autofree char *typename = g_strconcat(cpu_model, "-cpu", NULL);
++    ObjectClass *oc = object_class_by_name(typename);
 +
-+    if (c) {
-         nullify_over(ctx);
-     }
- 
--    len = a->len;
--    width = a->d ? 64 : 32;
--    if (a->cpos + len > width) {
--        len = width - a->cpos;
--    }
-+    dest = dest_gpr(ctx, rt);
-+    tcg_gen_deposit_i64(dest, src, val, cpos, len);
-+    save_gpr(ctx, rt, dest);
- 
--    dest = dest_gpr(ctx, a->t);
--    mask0 = deposit64(0, a->cpos, len, a->i);
--    mask1 = deposit64(-1, a->cpos, len, a->i);
--
--    if (a->nz) {
--        TCGv_i64 src = load_gpr(ctx, a->t);
--        tcg_gen_andi_i64(dest, src, mask1);
--        tcg_gen_ori_i64(dest, dest, mask0);
--    } else {
--        tcg_gen_movi_i64(dest, mask0);
--    }
--    save_gpr(ctx, a->t, dest);
--
--    /* Install the new nullification.  */
-     cond_free(&ctx->null_cond);
--    if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
-+    if (c) {
-+        ctx->null_cond = do_sed_cond(ctx, c, d, dest);
-     }
-     return nullify_end(ctx);
++    if (oc &&
++        !object_class_is_abstract(oc) &&
++        object_class_dynamic_cast(oc, TYPE_HPPA_CPU)) {
++        return oc;
++    }
++    return NULL;
  }
  
--static bool trans_dep_imm(DisasContext *ctx, arg_dep_imm *a)
-+static bool trans_depi_imm(DisasContext *ctx, arg_depi_imm *a)
- {
--    unsigned rs = a->nz ? a->t : 0;
--    unsigned len, width;
--    TCGv_i64 dest, val;
--
-     if (!ctx->is_pa20 && a->d) {
-         return false;
-     }
--    if (a->c) {
--        nullify_over(ctx);
--    }
-+    return do_dep_imm(ctx, a->t, a->c, a->d, a->len, a->cpos,
-+                      a->nz ? load_gpr(ctx, a->t) : ctx->zero,
-+                      tcg_constant_i64(a->i));
-+}
- 
--    len = a->len;
--    width = a->d ? 64 : 32;
--    if (a->cpos + len > width) {
--        len = width - a->cpos;
-+static bool trans_dep_imm(DisasContext *ctx, arg_dep_imm *a)
-+{
-+    if (!ctx->is_pa20 && a->d) {
-+        return false;
-     }
--
--    dest = dest_gpr(ctx, a->t);
--    val = load_gpr(ctx, a->r);
--    if (rs == 0) {
--        tcg_gen_deposit_z_i64(dest, val, a->cpos, len);
--    } else {
--        tcg_gen_deposit_i64(dest, cpu_gr[rs], val, a->cpos, len);
--    }
--    save_gpr(ctx, a->t, dest);
--
--    /* Install the new nullification.  */
--    cond_free(&ctx->null_cond);
--    if (a->c) {
--        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
--    }
--    return nullify_end(ctx);
-+    return do_dep_imm(ctx, a->t, a->c, a->d, a->len, a->cpos,
-+                      a->nz ? load_gpr(ctx, a->t) : ctx->zero,
-+                      load_gpr(ctx, a->r));
- }
- 
- static bool do_dep_sar(DisasContext *ctx, unsigned rt, unsigned c,
+ static void hppa_cpu_list_entry(gpointer data, gpointer user_data)
 -- 
 2.34.1
 
