@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE397CE23A
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D3E7CE239
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:08:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8xr-0003QO-RW; Wed, 18 Oct 2023 12:00:07 -0400
+	id 1qt8y5-0003ub-G7; Wed, 18 Oct 2023 12:00:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8xd-0002sk-5S
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:59:56 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8xt-0003aH-Hg
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:00:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8xb-0007nN-7p
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:59:52 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8xr-0007pY-Gc
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:00:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644790;
+ s=mimecast20190719; t=1697644806;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=3gMlvdquObTcfo3FR9W9RmnS7UYRddpgF0RI5ANGAvI=;
- b=JtFZaT6XLxaRiq4e3YvasO5U05JIfxqmXSg1cQ7CY31WUxPgQNt+mx5uNw3lE1S0oidtI1
- nwvkaoK7SL1588R/qd4yi1Mn9qqnGEJyM4ZAdpELvUBjbmbRvYKiR6XGZojuQD1Wq66YOr
- mzbU1axhI9lUGE/aqiN5AjPNc4o4pyE=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JiiYhEn2+u0WRlW+XdV6xUMe7KHlpW6+J9WCJ40wsY8=;
+ b=V8d5lcilz7WBpzpEBr+UFgG53xroF5xBht1u+yTSXEEfyuzho/DuBd0ui+QzmYEuKUWlzP
+ WETW2MexJbIyoKrslP83Y5qd3tLbsuTVX+ToaX7JUK/NzvUMtQzKpEQ46MW9q4FV7ByQ/V
+ uVj54Tq2+7VOlH/W/VOnb3PbDzU3WS0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-176-x1kqF8YUPfmlzld_LSMjxQ-1; Wed, 18 Oct 2023 11:59:48 -0400
-X-MC-Unique: x1kqF8YUPfmlzld_LSMjxQ-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c50c873604so49686571fa.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:59:48 -0700 (PDT)
+ us-mta-516-1BJL-xzWN1Okq1HdZfQyRQ-1; Wed, 18 Oct 2023 11:59:54 -0400
+X-MC-Unique: 1BJL-xzWN1Okq1HdZfQyRQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-407558fe418so47214185e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:59:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644786; x=1698249586;
+ d=1e100.net; s=20230601; t=1697644791; x=1698249591;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3gMlvdquObTcfo3FR9W9RmnS7UYRddpgF0RI5ANGAvI=;
- b=Go1X9RtjPNSJNivEM98lFZb/nvDFg8xGmWH0F2cY5Vi9kvzuBDjv5s5GfqjjubA6tB
- WVu0918ywrJmXm8hKYOEsgitlv7aPslI8Vduu/cgDwyYU6ERfLHoU47kpj/4/pqM4dpH
- U6nJxu9DxOZZM1E6cEcZLt3OQK/GhJ3MowGmSaQV31wr8YpZiILddLGkmLc4v1k2zTC9
- 61FHBe8If2HtGDCdiyuvf9a4ibMQxayatDZPJH4nf0XrpWSm5hXXV5AE3kduijbsRptH
- g4BJ30rtNtj7fLhzMIWoPJumUx8e+qPKm38im3xhpaDGBl3geDb/Mrgf2el6CuKEqBib
- K2kw==
-X-Gm-Message-State: AOJu0YyrLmvLQwg43cSvvrqtoY5DDu3qOlAXAqO1gfafwG0OJf2jlOFJ
- aS962+h7UZ2UFdOPYrLX+9YW7hB4iXxg0eus7rmcAwtvCq4DW8tYeizjyXO0DA3JtdlV1jbqP4G
- L1TXRWdAkAHGnh9fp8PLuVyI/ThpLxhEVAnZh2x99M46dtMnCQQY7cbrJxhA8U7ynuAUNvtU=
-X-Received: by 2002:a2e:5411:0:b0:2c5:d3c:8f4d with SMTP id
- i17-20020a2e5411000000b002c50d3c8f4dmr4075303ljb.13.1697644786699; 
- Wed, 18 Oct 2023 08:59:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGd3vesm4SqiLLk+CGYKGyRMOcIaYi16iAE0O++nITUqHeOTdkECIzJB2DQoCunRaHUA+uXPQ==
-X-Received: by 2002:a2e:5411:0:b0:2c5:d3c:8f4d with SMTP id
- i17-20020a2e5411000000b002c50d3c8f4dmr4075284ljb.13.1697644786377; 
- Wed, 18 Oct 2023 08:59:46 -0700 (PDT)
+ bh=JiiYhEn2+u0WRlW+XdV6xUMe7KHlpW6+J9WCJ40wsY8=;
+ b=MdNbTw7h/C2B17hzPvnpaYUQRW8H9sDX6FO7YCx5dGBfKxgqFkTjvHfhRHI4gtR6q5
+ NCLLXt56i75mnVntui8WTiJZmwugl39Mb7J5ZHam++e20AEODaZlGwqWaucOXylN95Mc
+ A2tJTv4aik3Wb+eUeDvlStOFX8vMjP8h/o3g1l/NzleWwEdUqcAUZGuT07FCKbTTHAaw
+ sqxewCnOqJxRnXwAWAgHpZW91eV1SQCbxwCDgh9gAtEhjExZAcZkHkrWgwZQbMfoOFdt
+ g88j2sYxY9Q4sFdbs9AaQcpH3C46R1SeskTKQNV+WsMuHZw8lO8HeURY3J3MKO55nXnu
+ iNmw==
+X-Gm-Message-State: AOJu0YyaLWFW88SmUyt83mBJBawAJT4vNAqXRetp7K8/nkc1qopk75RX
+ MTx3evn83nlDzGmLUfMYtjKd+4gK2kvXjyNaBHxjSj6g20D1HcSdiG6/K6l22KW1T0IAcfrQ7rr
+ P1NxFFrNMBqlOS8WBiZ4rjgg8SLxD8uBiMafn1WnoH+rvadPQv+hBtJ6MQwKMwlhve9OwER4=
+X-Received: by 2002:a05:600c:46c3:b0:407:5adc:4497 with SMTP id
+ q3-20020a05600c46c300b004075adc4497mr4403161wmo.9.1697644791313; 
+ Wed, 18 Oct 2023 08:59:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCBNE6ahs0MfkCRU/T2kOXiCA/qfxDRNFscrUldC7EgTkk5rEjCk5DAZRC1FEGZixORG+2zA==
+X-Received: by 2002:a05:600c:46c3:b0:407:5adc:4497 with SMTP id
+ q3-20020a05600c46c300b004075adc4497mr4403141wmo.9.1697644790926; 
+ Wed, 18 Oct 2023 08:59:50 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a05600c099800b0040652e8ca13sm1978163wmp.43.2023.10.18.08.59.43
+ w4-20020a5d4b44000000b003271be8440csm2385204wrs.101.2023.10.18.08.59.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:59:45 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:59:40 -0400
+ Wed, 18 Oct 2023 08:59:50 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:59:46 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>, Dave Jiang <dave.jiang@intel.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 80/83] tests/acpi: Update DSDT.cxl with QTG DSM
-Message-ID: <7c6f17793f3f3338d8a4018588c3fc3a1527c064.1697644299.git.mst@redhat.com>
+ Hanna Czenczek <hreitz@redhat.com>,
+ Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 81/83] vhost-user: Fix protocol feature bit conflict
+Message-ID: <7a71e4031156d9b0c3cdf34d4b48d5724da1eeec.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -100,40 +102,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Hanna Czenczek <hreitz@redhat.com>
 
-Description of change in previous patch.
+The VHOST_USER_PROTOCOL_F_XEN_MMAP feature bit was defined in
+f21e95ee97d, which has been part of qemu's 8.1.0 release.  However, it
+seems it was never added to qemu's code, but it is well possible that it
+is already used by different front-ends outside of qemu (i.e., Xen).
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Message-Id: <20231012125623.21101-4-Jonathan.Cameron@huawei.com>
+VHOST_USER_PROTOCOL_F_SHARED_OBJECT in contrast was added to qemu's code
+in 16094766627, but never defined in the vhost-user specification.  As a
+consequence, both bits were defined to be 17, which cannot work.
+
+Regardless of whether actual code or the specification should take
+precedence, F_XEN_MMAP is already part of a qemu release, while
+F_SHARED_OBJECT is not.  Therefore, bump the latter to take number 18
+instead of 17, and add this to the specification.
+
+Take the opportunity to add at least a little note on the
+VhostUserShared structure to the specification.  This structure is
+referenced by the new commands introduced in 16094766627, but was not
+defined.
+
+Fixes: 160947666276c5b7f6bca4d746bcac2966635d79
+       ("vhost-user: add shared_object msg")
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+Message-Id: <20231016083201.23736-1-hreitz@redhat.com>
+Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- tests/data/acpi/q35/DSDT.cxl                | Bin 9655 -> 9713 bytes
- 2 files changed, 1 deletion(-)
+ include/hw/virtio/vhost-user.h            |  3 ++-
+ subprojects/libvhost-user/libvhost-user.h |  3 ++-
+ docs/interop/vhost-user.rst               | 11 +++++++++++
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 9ce0f596cc..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/q35/DSDT.cxl",
-diff --git a/tests/data/acpi/q35/DSDT.cxl b/tests/data/acpi/q35/DSDT.cxl
-index ee16a861c2de7b7caaf11d91c50fcdf308815233..145301c52af9a17242bb306c210f8a7e0f01b827 100644
-GIT binary patch
-delta 118
-zcmV-+0Ez#%OYutzL{mgm@g)EN0r#;Aks)191z%G_Ut5Ak1w&X&O$c8|Nkk1nLr_UD
-zFflg(6bN5aR6ziw0Tef1L{m)+pfHnY5fcg!ruk*_-luUurfRed3r~(xpb3*|0HhHE
-Y0Rf;6lWGB^5(okT5(EMOv%Vqu1A4<F)c^nh
-
-delta 60
-zcmez9z1^G3CD<ioyD9?%qu)lZiHgc9@xe~<(M__>5k9^g@gANoypGNRo(2Yn<_sbn
-Q@xdXE3`;iuQ2faZ03i7h)c^nh
-
+diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
+index 6b06ecb1bd..20b69d8e85 100644
+--- a/include/hw/virtio/vhost-user.h
++++ b/include/hw/virtio/vhost-user.h
+@@ -29,7 +29,8 @@ enum VhostUserProtocolFeature {
+     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
+     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+     VHOST_USER_PROTOCOL_F_STATUS = 16,
+-    VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 17,
++    /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
++    VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 18,
+     VHOST_USER_PROTOCOL_F_MAX
+ };
+ 
+diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvhost-user/libvhost-user.h
+index b36a42a7ca..c2352904f0 100644
+--- a/subprojects/libvhost-user/libvhost-user.h
++++ b/subprojects/libvhost-user/libvhost-user.h
+@@ -65,7 +65,8 @@ enum VhostUserProtocolFeature {
+     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
+     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+     /* Feature 16 is reserved for VHOST_USER_PROTOCOL_F_STATUS. */
+-    VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 17,
++    /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
++    VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 18,
+     VHOST_USER_PROTOCOL_F_MAX
+ };
+ 
+diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+index 415bb47a19..768fb5c28c 100644
+--- a/docs/interop/vhost-user.rst
++++ b/docs/interop/vhost-user.rst
+@@ -275,6 +275,16 @@ Inflight description
+ 
+ :queue size: a 16-bit size of virtqueues
+ 
++VhostUserShared
++^^^^^^^^^^^^^^^
++
+++------+
++| UUID |
+++------+
++
++:UUID: 16 bytes UUID, whose first three components (a 32-bit value, then
++  two 16-bit values) are stored in big endian.
++
+ C structure
+ -----------
+ 
+@@ -885,6 +895,7 @@ Protocol features
+   #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
+   #define VHOST_USER_PROTOCOL_F_STATUS               16
+   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
++  #define VHOST_USER_PROTOCOL_F_SHARED_OBJECT        18
+ 
+ Front-end message types
+ -----------------------
 -- 
 MST
 
