@@ -2,51 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E574B7CD481
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 08:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB547CD482
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 08:34:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt05k-0007Xt-4e; Wed, 18 Oct 2023 02:31:40 -0400
+	id 1qt07I-0000cR-DC; Wed, 18 Oct 2023 02:33:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=IJBG=GA=kaod.org=clg@ozlabs.org>)
- id 1qt05Y-0007XV-9j; Wed, 18 Oct 2023 02:31:28 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=IJBG=GA=kaod.org=clg@ozlabs.org>)
- id 1qt05U-0000XF-P8; Wed, 18 Oct 2023 02:31:27 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4S9Lb76jrsz4x80;
- Wed, 18 Oct 2023 17:31:15 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4S9Lb62S7zz4x5l;
- Wed, 18 Oct 2023 17:31:14 +1100 (AEDT)
-Message-ID: <07bbedb9-1596-4b3b-910e-c18e6d6fbbf5@kaod.org>
-Date: Wed, 18 Oct 2023 08:31:10 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt07D-0000bQ-Rb
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:33:12 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt077-0000jf-Qj
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:33:09 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40806e4106dso8184985e9.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 23:33:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697610784; x=1698215584; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vIQa35M4vNuq7r8TCh/9iWXv3FeOcxQan7gdaZ0ndjQ=;
+ b=HSw2Vw/SLXeSjtkq1JzTUCc1eiLW1AGpx+UQJ8hvSr/a9p8WX2O6oNkqCSCJ30atMj
+ 0eaTysP1xT8LWtvZtOIId4dftPnSWiWYWFM2z9sXlzFp1aze/Hs49Mz/x2OATHRJgbci
+ OzBH/uWME5+u8dUolRC2NhSjssGmHw30j3OupbS5WlJ7npLktWHgfEy4f+lDpGPtqkN1
+ 265mu/uRrOt1ptlF2ODa/wb8TsrFoh8Kur1i7/CIAdTTMrG/0E9gcpJxC88c6utf4mb6
+ zlxerDlP5txOZVZz4MJ9fOb8kjVEKUYbbDqZOn1Cbw4sFpBCgjDpq+l4eyVTS2LgqlbO
+ AC9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697610784; x=1698215584;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vIQa35M4vNuq7r8TCh/9iWXv3FeOcxQan7gdaZ0ndjQ=;
+ b=a8hw0syMMujsR1Xew6/lhrG+LNJbfb0vdTLPyMqcl+FRgRGxO5DcKm2Puk1U8NVDi/
+ MjwMoB9yO09xjyuhG5CbhrkunZn3sZoICF3GEZEPObhiynI3V2avk4aVVccpBAcg8F+I
+ 0R4xiTY60c6ra7U/BbVFRJNI0cdR8DtBJMjN+1f8C5MEKVHIGrKKrD3yaLS1vbxhpAGj
+ qStcsi1lsR3cljFAcdkD6qDPccQIGENNbxFeqojE+5+7OcY75AHSAJrOicwWzDtfIRzK
+ r6sEUNWtuHM7B0ruoqMuchzFRY4lLUG4PQf1NVR6IvZQ/Q9X7Yf8EL0K9MC+CoAQJMQB
+ CJ9w==
+X-Gm-Message-State: AOJu0YwW3qWyRFlB+Wo8Gqodo83/shZhUBmJ5878IYlgEcIKo5SYUFPv
+ fIqVVL2tQVle09iWKnMs9lMIFg==
+X-Google-Smtp-Source: AGHT+IGRyiCQapq4fS9KmFugKCJFJ5QT77XXEsx1JVrVAmsitt+96+HdIcl38+5glm/8cUimHHP68g==
+X-Received: by 2002:a05:600c:3d14:b0:405:2d29:1648 with SMTP id
+ bh20-20020a05600c3d1400b004052d291648mr3724373wmb.19.1697610783872; 
+ Tue, 17 Oct 2023 23:33:03 -0700 (PDT)
+Received: from [192.168.69.115] ([176.172.118.33])
+ by smtp.gmail.com with ESMTPSA id
+ fc8-20020a05600c524800b0040535648639sm785401wmb.36.2023.10.17.23.33.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Oct 2023 23:33:03 -0700 (PDT)
+Message-ID: <4a34d96b-7eb7-d04e-e602-77a1d8ae8a7e@linaro.org>
+Date: Wed, 18 Oct 2023 08:33:01 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ppc/pnv: Connect PNV I2C controller to powernv10
-To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, npiggin@gmail.com, fbarrat@linux.ibm.com
-References: <20231017221434.810363-1-milesg@linux.vnet.ibm.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] MAINTAINERS: Add unvalued folders in tests/tcg/ to the
+ right sections
 Content-Language: en-US
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231017221434.810363-1-milesg@linux.vnet.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-trivial@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+References: <20231018062401.20746-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231018062401.20746-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=IJBG=GA=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,122 +104,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/18/23 00:14, Glenn Miles wrote:
-> Wires up four I2C controller instances to the powernv10 chip
-> XSCOM address space.
+On 18/10/23 08:24, Thomas Huth wrote:
+> Some subfolders in tests/tcg/ are already listed in the MAINTAINERS
+> file, some others aren't listed yet. Add the missing ones now to the
+> MAINTAINERS file, too, to make sure that get_maintainers.pl reports
+> the correct maintainer.
 > 
-> Each controller instance is wired up to two I2C buses of
-> its own.  No other I2C devices are connected to the buses
-> at this time.
-> 
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
-> Based-on: <20231016222013.3739530-1-milesg@linux.vnet.ibm.com>
-> ([PATCH v3 0/2] Add PowerNV I2C Controller Model)
+>   MAINTAINERS | 6 ++++++
+>   1 file changed, 6 insertions(+)
 
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
-> 
->   hw/ppc/pnv.c               | 29 +++++++++++++++++++++++++++++
->   include/hw/ppc/pnv_chip.h  |  4 ++++
->   include/hw/ppc/pnv_xscom.h |  3 +++
->   3 files changed, 36 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index e0b3478325..2655b6e506 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -1695,6 +1695,10 @@ static void pnv_chip_power10_instance_init(Object *obj)
->           object_initialize_child(obj, "pec[*]", &chip10->pecs[i],
->                                   TYPE_PNV_PHB5_PEC);
->       }
-> +
-> +    for (i = 0; i < pcc->i2c_num_engines; i++) {
-> +        object_initialize_child(obj, "i2c[*]", &chip10->i2c[i], TYPE_PNV_I2C);
-> +    }
->   }
->   
->   static void pnv_chip_power10_quad_realize(Pnv10Chip *chip10, Error **errp)
-> @@ -1753,6 +1757,7 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->       PnvChip *chip = PNV_CHIP(dev);
->       Pnv10Chip *chip10 = PNV10_CHIP(dev);
->       Error *local_err = NULL;
-> +    int i;
->   
->       /* XSCOM bridge is first */
->       pnv_xscom_realize(chip, PNV10_XSCOM_SIZE, &local_err);
-> @@ -1863,6 +1868,28 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->           error_propagate(errp, local_err);
->           return;
->       }
-> +
-> +
-> +    /*
-> +     * I2C
-> +     */
-> +    for (i = 0; i < pcc->i2c_num_engines; i++) {
-> +        Object *obj =  OBJECT(&chip10->i2c[i]);
-> +
-> +        object_property_set_int(obj, "engine", i + 1, &error_fatal);
-> +        object_property_set_int(obj, "num-busses", pcc->i2c_num_ports,
-> +                                &error_fatal);
-> +        object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
-> +        if (!qdev_realize(DEVICE(obj), NULL, errp)) {
-> +            return;
-> +        }
-> +        pnv_xscom_add_subregion(chip, PNV10_XSCOM_I2CM_BASE +
-> +                                chip10->i2c[i].engine * PNV10_XSCOM_I2CM_SIZE,
-> +                                &chip10->i2c[i].xscom_regs);
-> +        qdev_connect_gpio_out(DEVICE(&chip10->i2c[i]), 0,
-> +                              qdev_get_gpio_in(DEVICE(&chip10->psi),
-> +                                               PSIHB9_IRQ_SBE_I2C));
-> +    }
->   }
->   
->   static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip, uint64_t addr)
-> @@ -1890,6 +1917,8 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
->       k->xscom_pcba = pnv_chip_power10_xscom_pcba;
->       dc->desc = "PowerNV Chip POWER10";
->       k->num_pecs = PNV10_CHIP_MAX_PEC;
-> +    k->i2c_num_engines = PNV10_CHIP_MAX_I2C;
-> +    k->i2c_num_ports = PNV10_CHIP_MAX_I2C_PORTS;
->   
->       device_class_set_parent_realize(dc, pnv_chip_power10_realize,
->                                       &k->parent_realize);
-> diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-> index 90cfbad1a5..5815d96ecf 100644
-> --- a/include/hw/ppc/pnv_chip.h
-> +++ b/include/hw/ppc/pnv_chip.h
-> @@ -120,6 +120,10 @@ struct Pnv10Chip {
->   
->   #define PNV10_CHIP_MAX_PEC 2
->       PnvPhb4PecState pecs[PNV10_CHIP_MAX_PEC];
-> +
-> +#define PNV10_CHIP_MAX_I2C 4
-> +#define PNV10_CHIP_MAX_I2C_PORTS 2
-> +    PnvI2C       i2c[PNV10_CHIP_MAX_I2C];
->   };
->   
->   #define PNV10_PIR2FUSEDCORE(pir) (((pir) >> 3) & 0xf)
-> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-> index 0c8b873c4c..2b607b22c9 100644
-> --- a/include/hw/ppc/pnv_xscom.h
-> +++ b/include/hw/ppc/pnv_xscom.h
-> @@ -152,6 +152,9 @@ struct PnvXScomInterfaceClass {
->   #define PNV10_XSCOM_PSIHB_BASE     0x3011D00
->   #define PNV10_XSCOM_PSIHB_SIZE     0x100
->   
-> +#define PNV10_XSCOM_I2CM_BASE      PNV9_XSCOM_I2CM_BASE
-> +#define PNV10_XSCOM_I2CM_SIZE      PNV9_XSCOM_I2CM_SIZE
-> +
->   #define PNV10_XSCOM_OCC_BASE       PNV9_XSCOM_OCC_BASE
->   #define PNV10_XSCOM_OCC_SIZE       PNV9_XSCOM_OCC_SIZE
->   
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
