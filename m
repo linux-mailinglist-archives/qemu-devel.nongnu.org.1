@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD027CEB3C
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 00:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 682847CEB49
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 00:30:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtEze-00088a-7p; Wed, 18 Oct 2023 18:26:22 -0400
+	id 1qtEzf-00089d-Cx; Wed, 18 Oct 2023 18:26:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtEzY-00087P-95
+ id 1qtEzY-00087Q-9M
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 18:26:16 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtEzW-0002UZ-4R
+ id 1qtEzW-0002Ui-F4
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 18:26:15 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6be840283ceso1880609b3a.3
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1caad0bcc95so6812565ad.0
  for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 15:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697667972; x=1698272772; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VXDCPRqwkNHEWZB52f+OeRGLQD3oaL6U6LhW5ET5dXA=;
- b=M3GSem2w/jPkHgHeXslOAw/uV/t332ckk0u6RkvnzcAHkfDicR6buABOIzOkQvTw6t
- imVmXkNy/uc6dib2tz6AKBtv3A1Dxprm52JVo/wvH8abEBbyOXqMhaj9ZJfElqTEK+ny
- O+Dt72ra6ewr44hT4iX5oyac8lugeHSs6S/eIwiqIuf1NtMsI+yKbo1qUaxC+TBDDYCz
- W8Doz17BhC2jVEMc2nW0OswLxQwooo3O5tA6BkwRYjKas1ntDe/+3tFTTYKHBwXUIM5T
- 3UO1oc+HUc+7mxpmPypaHnj7gmMssAzlOwtvDGolzOOR54Q3kDhMQ7MXp0EpPnH3KJkd
- NfVQ==
+ bh=YGlbtLg90LV1uY25eQEYhNteHi+RQnuiWgmb0RTVS6Y=;
+ b=GexO8dz2NDh1NJv+wHDqTyyoLZtCtou9JYjSENpKgfr0HOANba2P6T3g9I4JPzWknX
+ xVqQQzSs/YiqEdWBa8wWeSt97XuPkvWi53vKVzzZ3sVXlwtKrqhHOpTn8RDeUPrXgoL+
+ SjrHNEivfquiUqACqjZ9VvX3e7CX0ujml6CKsvzMkEKMobVR9KgzZDNN7h5opLyG3saE
+ Dkp7TpFsI2ZDjgvTZtTQatrQW8qjgz5d3kHnmfwDE0xeM6xJW1pAcqRv/2n2nQQXAxUq
+ 1XaUPjoG9BNGLWCdTZPrBRkKRZiWmhTi5cmCCAfnEZqHiAtgcJPweVzg5ewLK4T5FRXg
+ fdDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697667972; x=1698272772;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VXDCPRqwkNHEWZB52f+OeRGLQD3oaL6U6LhW5ET5dXA=;
- b=k0gOznO91h6ypqP/C56Ipwo0Q66NltWgqnFmm6WKb0/oWfqSNyEPD0nF0ZeogbPceq
- SynYgSpyEnqeeG+LoOoPVmSuomcSgKxS/KSMKsSC+kvhRwnD2NVJamOfuZuUxfhRePms
- DGQDfNKm1VuWQI4tb0Hu9tkuIBqH4dQPO43HsuUZZIVJPrqeO5RTSkPN/WJGGO9cCq6K
- XjziZYM4hb+1so2f8Ev5e+L1+UmqMtwhQq0JHBeK3n93CbgsMlsF8xeP7cijB1GhxWZ9
- hI7U6Rl09M5+B1mxSYubsbSnF7n6gkxsTf6IV4QgMU/usw8RlHduR2RqbsvZ059KA04B
- N9Fw==
-X-Gm-Message-State: AOJu0Yz/IdqshwqPamrW2IT6libA3nfm3JzgbLKEvkP/NorFgtkb95Rv
- Takw74slEXvihuV81zOSdvMcqrgerWgMJY6IvlA=
-X-Google-Smtp-Source: AGHT+IEWfV4MeprmbUxeCCh7hkWuzXBYT4sngQLMEpmEGyXax6y19rRTYdqhgJZOYzNdVH+hNWUG0A==
-X-Received: by 2002:a05:6a20:549b:b0:179:f81b:12d9 with SMTP id
- i27-20020a056a20549b00b00179f81b12d9mr595284pzk.11.1697667971861; 
- Wed, 18 Oct 2023 15:26:11 -0700 (PDT)
+ bh=YGlbtLg90LV1uY25eQEYhNteHi+RQnuiWgmb0RTVS6Y=;
+ b=S40q64ooLaOKiHecFSTZ94gEGWiChr8dVSdVF6ik2KjVNVLYJHCdrSSXNejf7pRzhd
+ vRsrlcRMH3srzOz4WSUCEzA3RDSadLguAwUOHKayAEzFmSlKgwm2lscPKM/bkh3VjdkB
+ QBoW5j2RyMRMhUgbq+v15hShtNJlxemuBxv+y4UsNaDsBEFNyjrOGgcK6bxlfWA1HmU5
+ xcsyWDiFcYHyq57moUpSiGeYq4ma6FjMWOMUqI7R3Pu47mZdkt7uah+bFxwe/8aGvd9W
+ 5DBIfsExfoNm7gcAFN/S51I8k9t0vGtaTN+ZFUyntzV7SIB8ZQ9pRHs4wfW5JBZMxm+M
+ 6FrA==
+X-Gm-Message-State: AOJu0YwU+1k9KGjybQ57X4roK0zVhaIwQGuoJd6XHf8NBOkLrtgbIr18
+ FR+52ZqQEjILziTaB0bGG/WThYchy18nY5ww408=
+X-Google-Smtp-Source: AGHT+IF1C5bw6qmHlZa7boSd2ny2Yyuu0fdwpO6bD/x2DXRIGq7fzQZDJ7mn0aXFHzoNLr12ModcSw==
+X-Received: by 2002:a17:902:d2cd:b0:1ca:87a1:cdf1 with SMTP id
+ n13-20020a170902d2cd00b001ca87a1cdf1mr784920plc.27.1697667972614; 
+ Wed, 18 Oct 2023 15:26:12 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- 13-20020a170902c24d00b001b9d95945afsm431058plg.155.2023.10.18.15.26.11
+ 13-20020a170902c24d00b001b9d95945afsm431058plg.155.2023.10.18.15.26.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 15:26:11 -0700 (PDT)
+ Wed, 18 Oct 2023 15:26:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/29] tcg: Introduce tcg_use_softmmu
-Date: Wed, 18 Oct 2023 15:25:42 -0700
-Message-Id: <20231018222557.1562065-15-richard.henderson@linaro.org>
+Subject: [PULL 15/29] tcg: Provide guest_base fallback for system mode
+Date: Wed, 18 Oct 2023 15:25:43 -0700
+Message-Id: <20231018222557.1562065-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018222557.1562065-1-richard.henderson@linaro.org>
 References: <20231018222557.1562065-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,122 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Begin disconnecting CONFIG_SOFTMMU from !CONFIG_USER_ONLY.
-Introduce a variable which can be set at startup to select
-one method or another for user-only.
+Provide a define to allow !tcg_use_softmmu code paths to
+compile in system mode, but require elimination.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h |  8 ++++++--
- tcg/tcg-op-ldst.c | 14 +++++++-------
- tcg/tcg.c         |  9 ++++++---
- 3 files changed, 19 insertions(+), 12 deletions(-)
+ tcg/tcg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 680ff00722..a9282cdcc6 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -488,11 +488,9 @@ struct TCGContext {
-     int nb_ops;
-     TCGType addr_type;            /* TCG_TYPE_I32 or TCG_TYPE_I64 */
- 
--#ifdef CONFIG_SOFTMMU
-     int page_mask;
-     uint8_t page_bits;
-     uint8_t tlb_dyn_max_bits;
--#endif
-     uint8_t insn_start_words;
-     TCGBar guest_mo;
- 
-@@ -573,6 +571,12 @@ static inline bool temp_readonly(TCGTemp *ts)
-     return ts->kind >= TEMP_FIXED;
- }
- 
-+#ifdef CONFIG_USER_ONLY
-+extern bool tcg_use_softmmu;
-+#else
-+#define tcg_use_softmmu  true
-+#endif
-+
- extern __thread TCGContext *tcg_ctx;
- extern const void *tcg_code_gen_epilogue;
- extern uintptr_t tcg_splitwx_diff;
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index df4f22c427..2b96687699 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -34,13 +34,13 @@
- 
- static void check_max_alignment(unsigned a_bits)
- {
--#if defined(CONFIG_SOFTMMU)
-     /*
-      * The requested alignment cannot overlap the TLB flags.
-      * FIXME: Must keep the count up-to-date with "exec/cpu-all.h".
-      */
--    tcg_debug_assert(a_bits + 5 <= tcg_ctx->page_bits);
--#endif
-+    if (tcg_use_softmmu) {
-+        tcg_debug_assert(a_bits + 5 <= tcg_ctx->page_bits);
-+    }
- }
- 
- static MemOp tcg_canonicalize_memop(MemOp op, bool is64, bool st)
-@@ -411,10 +411,11 @@ void tcg_gen_qemu_st_i64_chk(TCGv_i64 val, TCGTemp *addr, TCGArg idx,
-  */
- static bool use_two_i64_for_i128(MemOp mop)
- {
--#ifdef CONFIG_SOFTMMU
-     /* Two softmmu tlb lookups is larger than one function call. */
--    return false;
--#else
-+    if (tcg_use_softmmu) {
-+        return false;
-+    }
-+
-     /*
-      * For user-only, two 64-bit operations may well be smaller than a call.
-      * Determine if that would be legal for the requested atomicity.
-@@ -432,7 +433,6 @@ static bool use_two_i64_for_i128(MemOp mop)
-     default:
-         g_assert_not_reached();
-     }
--#endif
- }
- 
- static void canonicalize_memop_i128_as_i64(MemOp ret[2], MemOp orig)
 diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 637b9e6870..d3a4a17ef2 100644
+index d3a4a17ef2..35158a0846 100644
 --- a/tcg/tcg.c
 +++ b/tcg/tcg.c
-@@ -226,6 +226,10 @@ static TCGAtomAlign atom_and_align_for_opc(TCGContext *s, MemOp opc,
-                                            MemOp host_atom, bool allow_two_ops)
-     __attribute__((unused));
+@@ -178,6 +178,10 @@ static bool tcg_target_const_match(int64_t val, TCGType type, int ct, int vece);
+ static int tcg_out_ldst_finalize(TCGContext *s);
+ #endif
  
-+#ifdef CONFIG_USER_ONLY
-+bool tcg_use_softmmu;
++#ifndef CONFIG_USER_ONLY
++#define guest_base  ({ qemu_build_not_reached(); (uintptr_t)0; })
 +#endif
 +
- TCGContext tcg_init_ctx;
- __thread TCGContext *tcg_ctx;
- 
-@@ -404,13 +408,12 @@ static uintptr_t G_GNUC_UNUSED get_jmp_target_addr(TCGContext *s, int which)
-     return (uintptr_t)tcg_splitwx_to_rx(&s->gen_tb->jmp_target_addr[which]);
- }
- 
--#if defined(CONFIG_SOFTMMU) && !defined(CONFIG_TCG_INTERPRETER)
--static int tlb_mask_table_ofs(TCGContext *s, int which)
-+static int __attribute__((unused))
-+tlb_mask_table_ofs(TCGContext *s, int which)
- {
-     return (offsetof(CPUNegativeOffsetState, tlb.f[which]) -
-             sizeof(CPUNegativeOffsetState));
- }
--#endif
- 
- /* Signal overflow, starting over with fewer guest insns. */
- static G_NORETURN
+ typedef struct TCGLdstHelperParam {
+     TCGReg (*ra_gen)(TCGContext *s, const TCGLabelQemuLdst *l, int arg_reg);
+     unsigned ntmp;
 -- 
 2.34.1
 
