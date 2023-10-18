@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0892F7CE1EE
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC937CE209
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:01:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8vO-0006Ks-Ua; Wed, 18 Oct 2023 11:57:34 -0400
+	id 1qt8vS-0006ju-FL; Wed, 18 Oct 2023 11:57:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8uu-0004X6-Bo
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:13 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vK-0005zi-Nh
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8us-00078f-QI
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:03 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vI-0007JF-R8
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644622;
+ s=mimecast20190719; t=1697644648;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=R8vGmlEfppo+TqGZX0HrmOY6HWL1WGWh7BLfVKf8if4=;
- b=f61k1oqtWNKC2UFG/9/wuMEYvz1j6UvJD2/ZDAA46qd3jD0oJ+t+QHJrJqp5b/zp4gY3x9
- cIZc112egOoGz6VNiopirQOBP4Ep+OXusjztTE68dlNoPsqQP76MeI9P8Lk+SazgOOJQ12
- +P39/B494kpU1dEgc1nggjp+gixit/k=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4mhfXj45nr0zKARw7EbZ1yJ39RO40+yefJvQYbdbnLw=;
+ b=HUiA9mcm3aPVd3QEeKGYL4bgUBjVIUPzYMF/gXy3O/8OGNDLK8cf6Aa8kTgLfZjUsnwXPS
+ II9o06ZN6m+DzwTNjTtOdAxrT5oQYlIQTiwGc8m5iTHmDXaT19nNxzJNwHaoja6ldIeEcU
+ +AAAmC2QzH6lW+D+PssnCtS3mmJOTic=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-19-JDIJTJE4P3msmGhqaZ9kUg-1; Wed, 18 Oct 2023 11:56:50 -0400
-X-MC-Unique: JDIJTJE4P3msmGhqaZ9kUg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2c520e0a9a7so34428291fa.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:56:50 -0700 (PDT)
+ us-mta-633-7c3685XpM0q3jFiybGFrIQ-1; Wed, 18 Oct 2023 11:57:16 -0400
+X-MC-Unique: 7c3685XpM0q3jFiybGFrIQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4053a5c6a59so44809395e9.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:57:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644609; x=1698249409;
+ d=1e100.net; s=20230601; t=1697644635; x=1698249435;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R8vGmlEfppo+TqGZX0HrmOY6HWL1WGWh7BLfVKf8if4=;
- b=X5fBNQ7K0a66vk/5EIAhkXpR2GA6GVEXLOaVF2cSkPzfcyoWVkiz7IXjLpV5GlRtN2
- Fo5BKWJfDpihDrxYeRs/9WBdynT17Aj2nJtnj5GLfHVBy9x93MnvxFjrb6OE5siXdv66
- vg388D6xhv0Tb7UbU29nQNENE1XIitx2hh6oKptUjiOrH7p67FcF/voNDFstrzqgn1P7
- hDUD5x2XRUYKzBE151DHkwokAHNe8A+smBHKsLV2K/5AhaR/OWpQ3sZ2QCidK8jX+7LM
- SisKc5Du0frXy8pl99sLkv9bAN/pVTuiDmoG2cW/bqNRa3ypeyej9XL9LTY7oBwXoc2q
- RBHA==
-X-Gm-Message-State: AOJu0YyLbDzIfGm37Siaa3OejrXzD7ChwItkTL8OF4NugC8kyL+9kgxQ
- T6pZgQZdJeL7Y/SWSOzVogGqXrbkXyJKaawb8VwEGQaav3MF7IYS2SVOsZ8X5UPNRqD3Rc78Aqk
- FJs7+LtLTk6MB4H1TtXzOChLuRYrQ+rk3yZts3cRmVeQQouQh6HyO0bKqS9B86ILbycyVvIg=
-X-Received: by 2002:a2e:878d:0:b0:2b6:e958:5700 with SMTP id
- n13-20020a2e878d000000b002b6e9585700mr4426902lji.4.1697644608866; 
- Wed, 18 Oct 2023 08:56:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGGxBSVeKm7PIZnk3OUL9d/jCO70NXoy64yYxolzV5NUed3DUY8rRx0lGE68xWghWsbdMDtLQ==
-X-Received: by 2002:a2e:878d:0:b0:2b6:e958:5700 with SMTP id
- n13-20020a2e878d000000b002b6e9585700mr4426887lji.4.1697644608584; 
- Wed, 18 Oct 2023 08:56:48 -0700 (PDT)
+ bh=4mhfXj45nr0zKARw7EbZ1yJ39RO40+yefJvQYbdbnLw=;
+ b=bfenzwEwx3mJKcqrkXtzMLPh4nSWY5BENKyRRgCwQH3o3wcO/2IQ+efS1EZ1ySv2Sz
+ Stv13cSgZKJ7VUF/JiBy7xVVkzA6QsCm+behJNqKJ8zEudgm3v9o6d+899xq9usfCh9m
+ dWhdFblq8EAiQcEItxSbkVVhz42WMOb9sc685iSo2NT+wMITqruiWtICt1HxldiRUx1K
+ OaJuEFXf/2Sq5V6eFv48ft8hT0Q5bOGfZgcwlcyIj8RUwmN+HEAdU+Jm7IasByt8KqdN
+ JYWgBGDAjdCs90dXhl43LSKJWkMj0L0etUvpZZPF9mPlxWg7qN36yGyZaX7IgMg3nq65
+ 6f6w==
+X-Gm-Message-State: AOJu0YwTELoiKGvly3eXvpCbKKyy2VMURjjL+O9uQztEHOYqMe0r7cFA
+ g1Ah99xSTDW7rkM8HN/2cqLmZPWuxeiXELoC6xjG+h27aedHDM6fSF5AkZzqxOqH4qWkHmjuN5C
+ gl6EU+CoWdEY/nyYBOqFPYkqMxMqYrDjqiebOnXQTHOFQtCQ1fxF6eu8h/n60KWGncHTuM9w=
+X-Received: by 2002:a05:600c:3b2a:b0:406:847a:2934 with SMTP id
+ m42-20020a05600c3b2a00b00406847a2934mr4426143wms.28.1697644634870; 
+ Wed, 18 Oct 2023 08:57:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfE8AQgClSjGCnYIj1Px+ZWiGoaw4sLEpmfFVGXbzrbahUkm9t1Agci4QuFZwWnbhR8cPKJw==
+X-Received: by 2002:a05:600c:3b2a:b0:406:847a:2934 with SMTP id
+ m42-20020a05600c3b2a00b00406847a2934mr4426117wms.28.1697644634405; 
+ Wed, 18 Oct 2023 08:57:14 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- h14-20020a05600c314e00b003fbe4cecc3bsm2024920wmo.16.2023.10.18.08.56.46
+ f13-20020a1c6a0d000000b003fe23b10fdfsm1964667wmc.36.2023.10.18.08.57.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:56:48 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:56:44 -0400
+ Wed, 18 Oct 2023 08:57:13 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:57:09 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -69,9 +69,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 45/83] hw/i386/pc_piix: Assign PIIX3's ISA interrupts before
- its realize()
-Message-ID: <c89f01c55615ad112a2120c79d2b345cec434ba0.1697644299.git.mst@redhat.com>
+Subject: [PULL 50/83] hw/i386/pc_q35: Wire ICH9 LPC function's interrupts
+ before its realize()
+Message-ID: <1594e3eee0f85bdc017a7ebf089167296ef394a7.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -105,45 +105,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Unlike its PIIX4 counterpart, TYPE_PIIX3_DEVICE doesn't instantiate a PIC
-itself. Instead, it relies on the board to do so. This means that the board
-needs to wire the ISA IRQs to the PIIX3 device model. As long as the board
-assigns the ISA IRQs after PIIX3's realize(), internal devices can't be wired in
-pci_piix3_realize() since the qemu_irqs are still NULL. Fix that by assigning
-the ISA interrupts before realize(). This will allow for embedding child devices
-into the host device as already done for PIIX4.
+When the board assigns the ISA IRQs after the device's realize(), internal
+devices such as the RTC can't be wired in ich9_lpc_realize() since the qemu_irqs
+are still NULL. Fix that by assigning the ISA interrupts before realize().
+
+This change is necessary for PIIX consolidation because PIIX4 wires the RTC
+interrupts in its realize() method, so PIIX3 needs to do so as well. Since the
+PC and Q35 boards share RTC code, and since PIIX3 needs the change, ICH9 needs
+to be adapted as well.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-
-Message-Id: <20231007123843.127151-4-shentey@gmail.com>
+Message-Id: <20231007123843.127151-9-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc_piix.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/i386/pc_q35.c  | 14 +++++++-------
+ hw/isa/lpc_ich9.c |  6 +++---
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 6d2f5509e6..a003923788 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -265,6 +265,8 @@ static void pc_init1(MachineState *machine,
-         PCIDevice *pci_dev;
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index a7386f2ca2..597943ff1b 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -242,11 +242,18 @@ static void pc_q35_init(MachineState *machine)
+     host_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pcie.0"));
+     pcms->bus = host_bus;
  
-         pci_dev = pci_new_multifunction(-1, TYPE_PIIX3_DEVICE);
-+        piix3 = PIIX3_PCI_DEVICE(pci_dev);
-+        piix3->pic = x86ms->gsi;
-         pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
++    /* irq lines */
++    gsi_state = pc_gsi_create(&x86ms->gsi, pcmc->pci_enabled);
++
+     /* create ISA bus */
+     lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC),
+                                 TYPE_ICH9_LPC_DEVICE);
+     qdev_prop_set_bit(DEVICE(lpc), "smm-enabled",
+                       x86_machine_is_smm_enabled(x86ms));
++    lpc_dev = DEVICE(lpc);
++    for (i = 0; i < IOAPIC_NUM_PINS; i++) {
++        qdev_connect_gpio_out_named(lpc_dev, ICH9_GPIO_GSI, i, x86ms->gsi[i]);
++    }
+     pci_realize_and_unref(lpc, host_bus, &error_fatal);
  
-         if (xen_enabled()) {
-@@ -281,8 +283,6 @@ static void pc_init1(MachineState *machine,
-                          XEN_IOAPIC_NUM_PIRQS);
-         }
+     rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
+@@ -273,13 +280,6 @@ static void pc_q35_init(MachineState *machine)
+                                    "true", true);
+     }
  
--        piix3 = PIIX3_PCI_DEVICE(pci_dev);
--        piix3->pic = x86ms->gsi;
-         piix3_devfn = piix3->dev.devfn;
-         isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(piix3), "isa.0"));
-         rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
+-    /* irq lines */
+-    gsi_state = pc_gsi_create(&x86ms->gsi, pcmc->pci_enabled);
+-
+-    lpc_dev = DEVICE(lpc);
+-    for (i = 0; i < IOAPIC_NUM_PINS; i++) {
+-        qdev_connect_gpio_out_named(lpc_dev, ICH9_GPIO_GSI, i, x86ms->gsi[i]);
+-    }
+     isa_bus = ISA_BUS(qdev_get_child_bus(lpc_dev, "isa.0"));
+ 
+     if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
+diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+index 3f59980aa0..3fcefc5a8a 100644
+--- a/hw/isa/lpc_ich9.c
++++ b/hw/isa/lpc_ich9.c
+@@ -675,6 +675,9 @@ static void ich9_lpc_initfn(Object *obj)
+ 
+     object_initialize_child(obj, "rtc", &lpc->rtc, TYPE_MC146818_RTC);
+ 
++    qdev_init_gpio_out_named(DEVICE(lpc), lpc->gsi, ICH9_GPIO_GSI,
++                             IOAPIC_NUM_PINS);
++
+     object_property_add_uint8_ptr(obj, ACPI_PM_PROP_SCI_INT,
+                                   &lpc->sci_gsi, OBJ_PROP_FLAG_READ);
+     object_property_add_uint8_ptr(OBJECT(lpc), ACPI_PM_PROP_ACPI_ENABLE_CMD,
+@@ -691,7 +694,6 @@ static void ich9_lpc_initfn(Object *obj)
+ static void ich9_lpc_realize(PCIDevice *d, Error **errp)
+ {
+     ICH9LPCState *lpc = ICH9_LPC_DEVICE(d);
+-    DeviceState *dev = DEVICE(d);
+     PCIBus *pci_bus = pci_get_bus(d);
+     ISABus *isa_bus;
+ 
+@@ -734,8 +736,6 @@ static void ich9_lpc_realize(PCIDevice *d, Error **errp)
+                                         ICH9_RST_CNT_IOPORT, &lpc->rst_cnt_mem,
+                                         1);
+ 
+-    qdev_init_gpio_out_named(dev, lpc->gsi, ICH9_GPIO_GSI, IOAPIC_NUM_PINS);
+-
+     isa_bus_register_input_irqs(isa_bus, lpc->gsi);
+ 
+     i8257_dma_init(isa_bus, 0);
 -- 
 MST
 
