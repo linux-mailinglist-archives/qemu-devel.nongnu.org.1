@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1087CEA91
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 415967CEA5D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:56:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtEVj-0002Ef-VO; Wed, 18 Oct 2023 17:55:28 -0400
+	id 1qtEVl-0002GE-NI; Wed, 18 Oct 2023 17:55:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtEVi-0002E5-IZ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:55:26 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ id 1qtEVk-0002F0-2z
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:55:28 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtEVh-000561-0D
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:55:26 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-57bce354d94so3791014eaf.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:55:24 -0700 (PDT)
+ id 1qtEVi-00056v-FL
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:55:27 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6b7f0170d7bso4679475b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:55:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697666124; x=1698270924; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697666125; x=1698270925; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=C8gelUNFkNxUiOo/PW3mwBHCQ9wwJJl5VkUEA5tOyCI=;
- b=Ylqou8GkiBxYC1OqFb5d9Of59YmiLOVt7RX/p/7BZjUs1gJViOJAlITaVk3Wafxy0F
- j+bPCfqcRs4qAWo3at8fEXXtcNQboYynr4Q2vJtaDBYP2zdQIAHBDcvLM9boenPYGgFk
- PZ/EMB5nmMBZxwmTOUI02JTygDXkaJf9j5C+2BCJdVjtCk0iqZYd6d/Q1RleWDvD78bi
- w4EcFAf5QS7M0kGhXeEAoqXMBi10JVvKGNjK2zMIZo5SezG2VuVW+FyAryh9GIwsC05V
- L+UOiLGtaRCnh+gh4bOYec8uJhlIjd1KYZOQcjajhRFUwjKWL3iopSJIAv7TtUtRacMn
- pEHg==
+ bh=fX4ajZFmvp6CPtzRyMzFGScgJS40L/02z7dwrdi6gaE=;
+ b=LdXupNzn2C3Ots7zMuGR37goXOW6fZI6BPK6uClqdg0cRmXP8WncgWrcaJeMU77ASn
+ G4XhuUJ3dQ8mpipJSGF5HY5s67N9VQYAVKyMC9szzu44tGRj0PZ8A6V/h8aLnwrWPs7t
+ fp9n3huHy8abYjARC1Dx0BPpXy0E3y/K+qm3qS7laiDZhHYC1/Jy9xL3v1jRKnlP+/qd
+ zP9HzK8wHengvCzzpngYjJDA982Rhy6GXFAXsvC3xdL/n2wezvC3TVyBlqbd3fGIJVYs
+ 69FwIjow6cwtcdg5g8fD0jD0ESceY3yUplsNvcZ13xWP745t4iuMmezI2gLnXSrHA1dx
+ zHEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697666124; x=1698270924;
+ d=1e100.net; s=20230601; t=1697666125; x=1698270925;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C8gelUNFkNxUiOo/PW3mwBHCQ9wwJJl5VkUEA5tOyCI=;
- b=LktfQGh4PohYIziMerRZQnfWgTN9lf69F5cBXzydybcvhYHoe3vFD3WgFr1n1rqMKj
- uNIBFsmqK2q5nLQBWSwJmOt9Hny28I0rx3t3TeV2gq9s4omE73ECiiJtV41iEdfqbY7P
- 4n80+ZuAHPGHhyFhOImO3E7105CmGTR/YUPRtxT6xJP8A8+XTDX864nspl/hjUbjXI67
- 8N7k6jha33vlctvzr34KB8Ea3ZZllf7j+ys0l2yNAX1fPGFxSJcIRBpLxNNLeLmSavik
- TXF9R76CeZgJnmqvjzxeHfMIR35c5E31DcDrIiBUh+PxAJqngxxAFv4PM/HV0nu2b1Ba
- IcwQ==
-X-Gm-Message-State: AOJu0YyGM2BVgcuG7HcKYBEW3iUSf08Fh8Vn3QXmkWx7jmUAURGn1D9V
- MoVNfqQ5MOEvJP1O57hZDMTEcl/uSYEs5CbhEsA=
-X-Google-Smtp-Source: AGHT+IHIEcg4m7ob2BnCuJ/l+z2uhfiiP2BUmOZzkPAoRsn0UuBK1nEWPUG1I5YPawYsHNyS8M9W+g==
-X-Received: by 2002:a05:6359:100e:b0:12b:e47a:8191 with SMTP id
- ib14-20020a056359100e00b0012be47a8191mr249750rwb.16.1697666123735; 
- Wed, 18 Oct 2023 14:55:23 -0700 (PDT)
+ bh=fX4ajZFmvp6CPtzRyMzFGScgJS40L/02z7dwrdi6gaE=;
+ b=QV1USjRQy7FzxxSXQ6mraeU1+cG4UL4yDlso6ZcnDJnvhXq1geOQkJn3W+mEexx02W
+ RDz0eEHHGD/vkJ+t+QVo0ElUyvar66wp/HeMlE1kYFMAGqc4srlL8XryzU3c59dTsIH4
+ U4E9nzBw8mrJQSVJfD9JZtG3dQoXF3hhA9wfuwMe2JPuJerxEvXJN+R5SYzEZbrSElIQ
+ qx60ORg72Joox8cQfiMDc2la6iMSJZ5NzV64ksxbRrhdoJcgpKN7i5iqT/Xqh9YrvEzK
+ rImRPWe/GhnhgohY9b7XsNwX+mLC5HCNKSqty8FnsQy1kfGYIyVtqIIcguR1WM/Pmbiv
+ N1Yg==
+X-Gm-Message-State: AOJu0YwREn/zMEhwuAJltSl7Dmc/U38lxycpC/kP2PLTK76ITZWoqd++
+ rYArZ7gVK28TlOwcx5NQ+sO5CAEBa3ulBB5oa8I=
+X-Google-Smtp-Source: AGHT+IGSvpTbx0xJFvzMV+I0cjywGnz6jSFSqSHuZH30fcRZfvTw/Kre/vj6BZP5J/JLOQCrSGPdFg==
+X-Received: by 2002:a05:6a00:15d0:b0:690:28d0:b7b3 with SMTP id
+ o16-20020a056a0015d000b0069028d0b7b3mr388786pfu.13.1697666125210; 
+ Wed, 18 Oct 2023 14:55:25 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- r15-20020aa7962f000000b006889348ba6esm3796263pfg.127.2023.10.18.14.55.23
+ r15-20020aa7962f000000b006889348ba6esm3796263pfg.127.2023.10.18.14.55.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 14:55:23 -0700 (PDT)
+ Wed, 18 Oct 2023 14:55:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 54/61] target/hppa: Implement HSHL, HSHR
-Date: Wed, 18 Oct 2023 14:51:28 -0700
-Message-Id: <20231018215135.1561375-55-richard.henderson@linaro.org>
+Subject: [PATCH 56/61] target/hppa: Implement MIXH, MIXW
+Date: Wed, 18 Oct 2023 14:51:30 -0700
+Message-Id: <20231018215135.1561375-57-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018215135.1561375-1-richard.henderson@linaro.org>
 References: <20231018215135.1561375-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,86 +92,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode |  5 +++++
- target/hppa/translate.c  | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+)
+ target/hppa/insns.decode |  5 ++++
+ target/hppa/translate.c  | 55 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+)
 
 diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index fb0f9d6dbd..f0c4866ca2 100644
+index d7befbf73d..323e9275bf 100644
 --- a/target/hppa/insns.decode
 +++ b/target/hppa/insns.decode
-@@ -69,6 +69,7 @@
- &rrr_cf         t r1 r2 cf
- &rrr_cf_d       t r1 r2 cf d
- &rrr_cf_d_sh    t r1 r2 cf d sh
-+&rri            t r i
- &rri_cf         t r i cf
- &rri_cf_d       t r i cf d
- 
-@@ -216,6 +217,10 @@ hadd_us         000010 ..... ..... 00000011 00 0 .....  @rrr
- 
- havg            000010 ..... ..... 00000010 11 0 .....  @rrr
- 
-+hshl            111110 00000 r:5   100010 i:4  0 t:5    &rri
-+hshr_s          111110 r:5   00000 110011 i:4  0 t:5    &rri
-+hshr_u          111110 r:5   00000 110010 i:4  0 t:5    &rri
-+
- hsub            000010 ..... ..... 00000001 11 0 .....  @rrr
+@@ -233,6 +233,11 @@ hsub            000010 ..... ..... 00000001 11 0 .....  @rrr
  hsub_ss         000010 ..... ..... 00000001 01 0 .....  @rrr
  hsub_us         000010 ..... ..... 00000001 00 0 .....  @rrr
+ 
++mixh_l          111110 ..... ..... 1 00 00100000 .....  @rrr
++mixh_r          111110 ..... ..... 1 10 00100000 .....  @rrr
++mixw_l          111110 ..... ..... 1 00 00000000 .....  @rrr
++mixw_r          111110 ..... ..... 1 10 00000000 .....  @rrr
++
+ ####
+ # Index Mem
+ ####
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index b3335ba595..b912673531 100644
+index b0aefecd2e..bd8a858da6 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -2761,6 +2761,26 @@ static bool do_multimedia(DisasContext *ctx, arg_rrr *a,
-     return nullify_end(ctx);
+@@ -2863,6 +2863,61 @@ static bool trans_hsub_us(DisasContext *ctx, arg_rrr *a)
+     return do_multimedia(ctx, a, gen_helper_hsub_us);
  }
  
-+static bool do_multimedia_sh(DisasContext *ctx, arg_rri *a,
-+                             void (*fn)(TCGv_i64, TCGv_i64, int64_t))
++static void gen_mixh_l(TCGv_i64 dst, TCGv_i64 r1, TCGv_i64 r2)
 +{
-+    TCGv_i64 r, dest;
++    uint64_t mask = 0xffff0000ffff0000ull;
++    TCGv_i64 tmp = tcg_temp_new_i64();
 +
-+    if (!ctx->is_pa20) {
-+        return false;
-+    }
-+
-+    nullify_over(ctx);
-+
-+    r = load_gpr(ctx, a->r);
-+    dest = dest_gpr(ctx, a->t);
-+
-+    fn(dest, r, a->i);
-+    save_gpr(ctx, a->t, dest);
-+
-+    return nullify_end(ctx);
++    tcg_gen_andi_i64(tmp, r2, mask);
++    tcg_gen_andi_i64(dst, r1, mask);
++    tcg_gen_shri_i64(tmp, tmp, 16);
++    tcg_gen_or_i64(dst, dst, tmp);
 +}
 +
- static bool trans_hadd(DisasContext *ctx, arg_rrr *a)
++static bool trans_mixh_l(DisasContext *ctx, arg_rrr *a)
++{
++    return do_multimedia(ctx, a, gen_mixh_l);
++}
++
++static void gen_mixh_r(TCGv_i64 dst, TCGv_i64 r1, TCGv_i64 r2)
++{
++    uint64_t mask = 0x0000ffff0000ffffull;
++    TCGv_i64 tmp = tcg_temp_new_i64();
++
++    tcg_gen_andi_i64(tmp, r1, mask);
++    tcg_gen_andi_i64(dst, r2, mask);
++    tcg_gen_shli_i64(tmp, tmp, 16);
++    tcg_gen_or_i64(dst, dst, tmp);
++}
++
++static bool trans_mixh_r(DisasContext *ctx, arg_rrr *a)
++{
++    return do_multimedia(ctx, a, gen_mixh_r);
++}
++
++static void gen_mixw_l(TCGv_i64 dst, TCGv_i64 r1, TCGv_i64 r2)
++{
++    TCGv_i64 tmp = tcg_temp_new_i64();
++
++    tcg_gen_shri_i64(tmp, r2, 32);
++    tcg_gen_deposit_i64(dst, r1, tmp, 0, 32);
++}
++
++static bool trans_mixw_l(DisasContext *ctx, arg_rrr *a)
++{
++    return do_multimedia(ctx, a, gen_mixw_l);
++}
++
++static void gen_mixw_r(TCGv_i64 dst, TCGv_i64 r1, TCGv_i64 r2)
++{
++    tcg_gen_deposit_i64(dst, r2, r1, 32, 32);
++}
++
++static bool trans_mixw_r(DisasContext *ctx, arg_rrr *a)
++{
++    return do_multimedia(ctx, a, gen_mixw_r);
++}
++
+ static bool trans_ld(DisasContext *ctx, arg_ldst *a)
  {
-     return do_multimedia(ctx, a, tcg_gen_vec_add16_i64);
-@@ -2781,6 +2801,21 @@ static bool trans_havg(DisasContext *ctx, arg_rrr *a)
-     return do_multimedia(ctx, a, gen_helper_havg);
- }
- 
-+static bool trans_hshl(DisasContext *ctx, arg_rri *a)
-+{
-+    return do_multimedia_sh(ctx, a, tcg_gen_vec_shl16i_i64);
-+}
-+
-+static bool trans_hshr_s(DisasContext *ctx, arg_rri *a)
-+{
-+    return do_multimedia_sh(ctx, a, tcg_gen_vec_sar16i_i64);
-+}
-+
-+static bool trans_hshr_u(DisasContext *ctx, arg_rri *a)
-+{
-+    return do_multimedia_sh(ctx, a, tcg_gen_vec_shr16i_i64);
-+}
-+
- static bool trans_hsub(DisasContext *ctx, arg_rrr *a)
- {
-     return do_multimedia(ctx, a, tcg_gen_vec_sub16_i64);
+     if (!ctx->is_pa20 && a->size > MO_32) {
 -- 
 2.34.1
 
