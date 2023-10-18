@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515907CE716
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 20:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D377CE749
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 21:03:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtBWW-0001xQ-6V; Wed, 18 Oct 2023 14:44:04 -0400
+	id 1qtBnf-0006ZB-ND; Wed, 18 Oct 2023 15:01:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtBWU-0001xD-Kc
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:44:02 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtBnM-0006Uc-FU
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 15:01:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtBWT-0005uC-84
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:44:02 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtBnK-0000m0-SG
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 15:01:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697654640;
+ s=mimecast20190719; t=1697655685;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=nzv3pFD5f3Y0KSCyOV0yRvL5MdhYRV5PQ5VGwHuyeRM=;
- b=UoDh4avsjtaqcCmPCbC2/8zIbJsOwx7Q67dg0i45t1lnFR95jdeerRHsvs9yrflqnUBhBm
- r7mGos7oQEmZxBojmGtXZawm6doi6SYOkFzp0NGm6Z0yZY+GQCsoXUNbtnzkzsOev/SULg
- x+KLj3zncSGiXUKAkbaTAh//FDEurGU=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FQyPnzbyIc8+8bcU9PxA+yscZOkI56e6lhL8g+3/YN8=;
+ b=BxKeWtDzyrzFOyHvO1h1j9FPQ76xWj0TsQVkrIsAKxGxlSd3MgqVB6+dzOoE2yTFQN0+3n
+ owAm40HV9T4jyYEXaY06kMkeVliZcCugZe+yY1v298fM5g6ZNf+zL81cV+LkldbCONz880
+ SR1845y++LccqIOkHEgT9Sjb4QPAdZU=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-cRkYf6yMM8eVlV7J8bLSpg-1; Wed, 18 Oct 2023 14:43:48 -0400
-X-MC-Unique: cRkYf6yMM8eVlV7J8bLSpg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d7b75c854so1826196d6.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 11:43:48 -0700 (PDT)
+ us-mta-142-MXGroT4tODCHTlB_0kbfOQ-1; Wed, 18 Oct 2023 15:01:23 -0400
+X-MC-Unique: MXGroT4tODCHTlB_0kbfOQ-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-775842dc945so127206985a.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 12:01:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697654628; x=1698259428;
+ d=1e100.net; s=20230601; t=1697655683; x=1698260483;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nzv3pFD5f3Y0KSCyOV0yRvL5MdhYRV5PQ5VGwHuyeRM=;
- b=DJ5dHEse+Z1FhF2PKXgDZdwUwtcn/ma22Xpg8dJxNG9iXajHGOhz8muEdHUeAvhUCG
- Yxyhubu5EywZYfqqbAQSDNFm10+CzBC/cevCrtzRp6HdD9Ai2oURrfMFvkpstwLxfN2t
- c9av0G1wafRsHeML3evIQrFrcKAvQJ9pvuR5H0bmo7MZLK41neSBfIYP0BO59z+z3FKi
- e87TEvOP+TsRD+baZCgjaUxjBesdgBrbmYS/WBTlwbylaWGvE3yZUwpJnrD9MpiLE5nS
- sUbPAo27RuBnaWyCAsksHam/kC0FQHi4Nb4Onqec9ZuK7Mj+244t9kCd34cgA3WeWUhR
- uJXQ==
-X-Gm-Message-State: AOJu0YxMevZXirOAJZNAVd5FZf0NubX6k2R2UKHqkaeUBm42Zgm8GTBj
- 95V2B5gY6hKBoUmRiSkxYdZ8S9zos5kMR67RhjaonFrGWvsZLLIkOWHF2BV8Teetx+Rd8uVY2wz
- DdDJ1g+YG2312cIU=
-X-Received: by 2002:a05:6214:11a3:b0:66d:169a:a661 with SMTP id
- u3-20020a05621411a300b0066d169aa661mr93491qvv.4.1697654628456; 
- Wed, 18 Oct 2023 11:43:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUHRUhPwYm6/1bR8/oarcJItBNyCWc0edO8tRMHPeJ76cemEDQVjd/9griKOO52HAoH/H1iA==
-X-Received: by 2002:a05:6214:11a3:b0:66d:169a:a661 with SMTP id
- u3-20020a05621411a300b0066d169aa661mr93477qvv.4.1697654628142; 
- Wed, 18 Oct 2023 11:43:48 -0700 (PDT)
+ bh=FQyPnzbyIc8+8bcU9PxA+yscZOkI56e6lhL8g+3/YN8=;
+ b=oUs6rySmx5fvE6jVxLARz88NvowUuMlvRpVMbcDpgMDT3g94YhuCUq+DEIKgcjQWAF
+ zvvw+OpK/cfkJuyzC2iBfgUxjmJ8K+pb+GUKHiOClN1WwyvZ3wvpuzd+YtSncQwXCE+a
+ 5J3dBUnL4AQXJubgh6pPFptHNZtIQNyH7iKyw7tNinc4z9R6bx57LcxCwIqRPjRjUM6B
+ kPBkCsugdOus9oj8+3jcqhG0EUFr6PFwwWWeipU08X30tvy/IG7tRR+JiKoBunHlucZG
+ ZrBRVqCXaMrbeO0CQPnqM/5WD7jnW6mae8NbZhkiGi41Rlrn7jLqI2oVpYNvaAKXeE/6
+ rcKw==
+X-Gm-Message-State: AOJu0Yw46E4qHK7zjj/4PIjFj/m/pJBDvTUgjZbZvDWY7c5agAP2yLTo
+ 4hdZgJ255jPn4pFGboJELNSC0iMYbYx9LyT52a0sfO5HrdLnXXD/xr9eK2AHQTFDQhq4Ygy9d3H
+ w/bF/+Bx3JzjOnYY=
+X-Received: by 2002:a05:620a:1a87:b0:778:96e8:90af with SMTP id
+ bl7-20020a05620a1a8700b0077896e890afmr46092qkb.5.1697655683300; 
+ Wed, 18 Oct 2023 12:01:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTo+uA/gKA8eguf4iSaw3N7ioi4UiLWa1rf3AdTQ2/y6eY/1OBqH/YZFWuzabg44dawv2J1A==
+X-Received: by 2002:a05:620a:1a87:b0:778:96e8:90af with SMTP id
+ bl7-20020a05620a1a8700b0077896e890afmr46075qkb.5.1697655682968; 
+ Wed, 18 Oct 2023 12:01:22 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- ec15-20020ad44e6f000000b0065cfb75fe81sm156112qvb.67.2023.10.18.11.43.47
+ e25-20020a05620a12d900b0077412ca0ae1sm169912qkl.65.2023.10.18.12.01.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 11:43:47 -0700 (PDT)
-Date: Wed, 18 Oct 2023 14:43:45 -0400
+ Wed, 18 Oct 2023 12:01:22 -0700 (PDT)
+Date: Wed, 18 Oct 2023 15:01:14 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
@@ -68,17 +68,16 @@ Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 10/11] tests/qtest/migration: Support more than one
- QEMU binary
-Message-ID: <ZTAnYf6Q7m2CHBFv@x1n>
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v3 00/11] tests/migration-test: Allow testing older
+ machine types
+Message-ID: <ZTAretx8ppmUXkod@x1n>
 References: <20231018140736.3618-1-farosas@suse.de>
- <20231018140736.3618-11-farosas@suse.de>
+ <87jzrkdne2.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231018140736.3618-11-farosas@suse.de>
+In-Reply-To: <87jzrkdne2.fsf@suse.de>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -103,14 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 18, 2023 at 11:07:35AM -0300, Fabiano Rosas wrote:
-> Usage:
-> QTEST_QEMU_BINARY_SRC=../build-8.2.0/qemu-system-x86_64 \
-> QTEST_QEMU_BINARY_DST=../build-8.1.0/qemu-system-x86_64 \
-> ./tests/qtest/migration-test
+On Wed, Oct 18, 2023 at 11:19:01AM -0300, Fabiano Rosas wrote:
+> Let me point out two situations that came up while developing this:
+> 
+> 1) There was a generic command line change in QEMU (-audio option)
+>    introduced this cycle that was ported to the command line used by
+>    libqtest.c. This means that when using the same command line to
+>    start both guests, the older one will not recognize the option and
+>    will break.
+> 
+>    Ideally, we would keep command lines out of the library and require
+>    each test to provide their own. Then maybe the migration code could
+>    cope with the change somehow.
 
-Please also touch up this example when repost; I think it's not allowed
-now..
+Yeah this is unfortunate, and I hit it as soon as trying this out with an
+old binary.
+
+One other thing on top of this: the cross binary tests for different
+devices, where we used to hit issues when some specific pci device or a
+pcie root port failed to be compatible with old binaries, iirc.
+
+I'm still not sure what's the best way to do that, though, especially if
+the migration failure can only trigger when a device driver setup the
+device first.  Maybe we can start with migrating a device with the reset
+status between binaries.  Having this series is definitely better than
+nothing already.
+
+Thanks,
 
 -- 
 Peter Xu
