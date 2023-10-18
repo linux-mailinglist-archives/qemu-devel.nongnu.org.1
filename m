@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A0D7CEA59
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F297CEA84
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:59:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtESc-0001cz-Af; Wed, 18 Oct 2023 17:52:14 -0400
+	id 1qtESV-00018r-S0; Wed, 18 Oct 2023 17:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtESE-00015C-I1
+ id 1qtESE-00015E-Ia
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:50 -0400
-Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtESB-0004OU-6b
+ id 1qtESB-0004Oa-PP
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:49 -0400
-Received: by mail-il1-x135.google.com with SMTP id
- e9e14a558f8ab-35749078a59so29497765ab.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:46 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-1ea82246069so1519476fac.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697665906; x=1698270706; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T6DEfOhGSAuzHVOiFy6ZRmh1nqeZSzZi7HDKv5g8+j0=;
- b=mAX1CG8eaS2c6s2OMWAjQWUkDDyiAPnzno2nxLyv2r/k9uVfJ/X9/pSs9L4NUlp6To
- +NPHljC0cb/DrPKRqMYzjJSR7HYjLZGF61H5eJTgwUOb0xiygJfk7G9sTV+9QDjkdAQU
- zCOcc7d835IIWCcP8wmzgTcm1QnpFdEIx4F+BCXz1J+mDc6hzDP5Wyju9TKdORB6BMhe
- dvKBRoSOyCQsL4bbcKm9DzHdb4nO6yxnigDcnHfz/mldNqo/rofm9d8SUrHdYBjOFTil
- ekiAIP/Yizl6NXbYBpF/+e06yAdefinB1676CLoXfLYct6zMGK21f5yq6EfnShpTIiwK
- PQSA==
+ bh=cjdPIOgHmvrr+30vbWYAH4JEvq1rx9Ce0rUnUJEWHoQ=;
+ b=SeD0Az0dBHb7xSoXjFMGlJbSuXXxDlZj/nB5zduenr34ujmDZMFUrg8ajQivjvNSHe
+ QJXPddKJlyc6WVlOn6HVn6pQeeVeUoPJ5Rf8xnkKoHJJ9YiBAyNg1qaZXJTzVnJLOBbI
+ vg7KMo01RkKPSL5rRWSurFkKptsi23R2hR9lJI4n6MveBsCgXxgPXGoE4seSIR/Jchd0
+ PX0oDxtx6dUWuJcoBUBPBE2BNq8KtdQr7WFLv7EePJyRVhO60plY5QvTvq9utcug0EfE
+ wDQldeX8pKHGcq2xrTwveH96McjTaMNSH6tu3BUIVvQv5S6HCPHSPX4iFQQiXkrHpp2p
+ PgLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697665906; x=1698270706;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T6DEfOhGSAuzHVOiFy6ZRmh1nqeZSzZi7HDKv5g8+j0=;
- b=guZi7vEECwSVvQlJBqbHKIyKkXD1vZ0WxOZ45upMOtWywgr3zTMxXhiOhk0iuqiKHM
- rMNexcMLsdwlxjmf5LNMgRha8Mdj5Zhe97Egix5R3dg4IW1Omq4IyLAmTn5vmi1rw7Tf
- i7BvjXcY/M/IymrSRBXLGCdITbhbo1Ai7+btTfGp0kI74nnpfgjeeGdwEvHVvfhgmsUi
- Xys5m9iA5/zYJR73yE9/mo1s4dKCudPRhTo6uT6GNb16D4k6y5MXrKdsfY4Oxd2HK4/O
- yrhHwmLwVgXLsOP4JISe56kDRtfPD937E4R33DllfB+R6ruCjS1AUK+N7sc1DzFzB88S
- PELw==
-X-Gm-Message-State: AOJu0YyIbn3wSs9ROW6tq7ScKYg7V5JEBrludFcxmckj3IO8tJXKoxWE
- KTWezIIUoiwKUCXNT0XN+/NEdiwVUFoqq6y6gP4=
-X-Google-Smtp-Source: AGHT+IF9c4+NsvBZhHxRGkjfJ8Wu2w/FNsbrkV2oI1v/n/t3sAGHgaKxLt6T+/LpVxbiKpC4x3b4UA==
-X-Received: by 2002:a05:6e02:b4b:b0:357:627a:52 with SMTP id
- f11-20020a056e020b4b00b00357627a0052mr761487ilu.28.1697665905976; 
- Wed, 18 Oct 2023 14:51:45 -0700 (PDT)
+ bh=cjdPIOgHmvrr+30vbWYAH4JEvq1rx9Ce0rUnUJEWHoQ=;
+ b=T1L7A4xYcgn26mg5So6j00jU6eLpNJ2+H/zurqrimQb1aavKc66yXofW/0nQCl4QEh
+ PV6QgAbV2BN3u18hmG5KYjn2gz1oho9lsT3yVD8rTSwS3KYjRtY0LzyW2tckiPYRGYYv
+ GhvJ6srgfyjrmsFpHm8qbyRzUSaeufskp6IGJWbKUvmFnLzdX7TrsBPkmQ/Uco4hMTom
+ zS3G4zNIehXJYsTCXbe9Sp5K2y3LqKOroMES5GsfhOFDX8+wwcvsdgVyOzPnb2eItM2I
+ hYi5dUdJSu5IIHRU710GdmVqonXZhUe/KwRS9EU2+eXReo1WYah5qJtjTEJP4JuYjZIY
+ DWRg==
+X-Gm-Message-State: AOJu0YyoR89mSVogSrmdvN8642Sf7PkaeOecF+NJhaTxGhUlCoxxoqNb
+ B8QEWXIIgc/BBfp0GPnom+JfO0LiDj2dSnHmhDA=
+X-Google-Smtp-Source: AGHT+IE72wZEgbzWcSF1B2tVVJJos6PkL59U5SUugE2SWxzwn7ZiY763xj11NntGRAsVJeWsCay7IA==
+X-Received: by 2002:a05:6870:cb82:b0:1ea:478c:a26b with SMTP id
+ ov2-20020a056870cb8200b001ea478ca26bmr788073oab.9.1697665906695; 
+ Wed, 18 Oct 2023 14:51:46 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.45
+ w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 14:51:45 -0700 (PDT)
+ Wed, 18 Oct 2023 14:51:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 11/61] target/hppa: Fix extrw and depw with sar for hppa64
-Date: Wed, 18 Oct 2023 14:50:45 -0700
-Message-Id: <20231018215135.1561375-12-richard.henderson@linaro.org>
+Subject: [PATCH 12/61] target/hppa: Introduce TYPE_HPPA64_CPU
+Date: Wed, 18 Oct 2023 14:50:46 -0700
+Message-Id: <20231018215135.1561375-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018215135.1561375-1-richard.henderson@linaro.org>
 References: <20231018215135.1561375-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x135.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,38 +90,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are 32-bit operations regardless of processor.
+Prepare for the qemu binary supporting both pa10 and pa20
+at the same time.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ target/hppa/cpu-qom.h   |  1 +
+ target/hppa/cpu.h       |  7 +++++++
+ target/hppa/cpu.c       | 17 +++++++++++++++++
+ target/hppa/translate.c |  3 +++
+ 4 files changed, 28 insertions(+)
 
+diff --git a/target/hppa/cpu-qom.h b/target/hppa/cpu-qom.h
+index b96e0318c7..4a85ebf5e0 100644
+--- a/target/hppa/cpu-qom.h
++++ b/target/hppa/cpu-qom.h
+@@ -24,6 +24,7 @@
+ #include "qom/object.h"
+ 
+ #define TYPE_HPPA_CPU "hppa-cpu"
++#define TYPE_HPPA64_CPU "hppa64-cpu"
+ 
+ OBJECT_DECLARE_CPU_TYPE(HPPACPU, HPPACPUClass, HPPA_CPU)
+ 
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 798d0c26d7..743fc90e14 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -239,10 +239,17 @@ struct ArchCPU {
+ 
+     CPUHPPAState env;
+     QEMUTimer *alarm_timer;
++
++    bool is_pa20;
+ };
+ 
+ #include "exec/cpu-all.h"
+ 
++static inline bool hppa_is_pa20(HPPACPU *cpu)
++{
++    return cpu->is_pa20;
++}
++
+ static inline int cpu_mmu_index(CPUHPPAState *env, bool ifetch)
+ {
+ #ifdef CONFIG_USER_ONLY
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 1644297bf8..ed5b6afd10 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -218,9 +218,26 @@ static const TypeInfo hppa_cpu_type_info = {
+     .class_init = hppa_cpu_class_init,
+ };
+ 
++#ifdef TARGET_HPPA64
++static void hppa64_cpu_initfn(Object *obj)
++{
++    HPPACPU *cpu = HPPA_CPU(obj);
++    cpu->is_pa20 = true;
++}
++
++static const TypeInfo hppa64_cpu_type_info = {
++    .name = TYPE_HPPA64_CPU,
++    .parent = TYPE_HPPA_CPU,
++    .instance_init = hppa64_cpu_initfn,
++};
++#endif
++
+ static void hppa_cpu_register_types(void)
+ {
+     type_register_static(&hppa_cpu_type_info);
++#ifdef TARGET_HPPA64
++    type_register_static(&hppa64_cpu_type_info);
++#endif
+ }
+ 
+ type_init(hppa_cpu_register_types)
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 119422870c..f86ea9b9ca 100644
+index f86ea9b9ca..9d6670f91c 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -3230,7 +3230,9 @@ static bool trans_extrw_sar(DisasContext *ctx, arg_extrw_sar *a)
-     tmp = tcg_temp_new();
+@@ -262,6 +262,7 @@ typedef struct DisasContext {
+     int mmu_idx;
+     int privilege;
+     bool psw_n_nonzero;
++    bool is_pa20;
  
-     /* Recall that SAR is using big-endian bit numbering.  */
--    tcg_gen_xori_reg(tmp, cpu_sar, TARGET_REGISTER_BITS - 1);
-+    tcg_gen_andi_reg(tmp, cpu_sar, 31);
-+    tcg_gen_xori_reg(tmp, tmp, 31);
-+
-     if (a->se) {
-         tcg_gen_sar_reg(dest, src, tmp);
-         tcg_gen_sextract_reg(dest, dest, 0, len);
-@@ -3355,7 +3357,8 @@ static bool do_depw_sar(DisasContext *ctx, unsigned rt, unsigned c,
-     tmp = tcg_temp_new();
+ #ifdef CONFIG_USER_ONLY
+     MemOp unalign;
+@@ -4087,10 +4088,12 @@ static bool trans_diag(DisasContext *ctx, arg_diag *a)
+ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
++    HPPACPU *cpu = HPPA_CPU(cs);
+     int bound;
  
-     /* Convert big-endian bit numbering in SAR to left-shift.  */
--    tcg_gen_xori_reg(shift, cpu_sar, TARGET_REGISTER_BITS - 1);
-+    tcg_gen_andi_reg(shift, cpu_sar, 31);
-+    tcg_gen_xori_reg(shift, shift, 31);
+     ctx->cs = cs;
+     ctx->tb_flags = ctx->base.tb->flags;
++    ctx->is_pa20 = cpu->is_pa20;
  
-     mask = tcg_temp_new();
-     tcg_gen_movi_reg(mask, msb + (msb - 1));
+ #ifdef CONFIG_USER_ONLY
+     ctx->privilege = MMU_IDX_TO_PRIV(MMU_USER_IDX);
 -- 
 2.34.1
 
