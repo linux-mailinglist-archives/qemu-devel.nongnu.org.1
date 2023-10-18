@@ -2,100 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900FC7CE063
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FBD7CE03C
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:40:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt7t8-0003wn-IQ; Wed, 18 Oct 2023 10:51:10 -0400
+	id 1qt7hs-0002wH-DO; Wed, 18 Oct 2023 10:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt7t5-0003wW-Qh
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:51:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qt7hp-0002vx-KH
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:39:30 -0400
+Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt7t0-0003Zf-Ro
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:51:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697640661;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jLKEGJT+8WxybR9JfNG78kHzUE7TpLHv69cBuB9Io1s=;
- b=g49epNQ5MW/NzQX78PkMNdmmUjG19YQr4DZnESvsa6rcvSnt3XSI6J+3YV+rEiBMpM9rsC
- hHFKRByUe+Pkf3PkNxHPBYaZiDIYfcPeSQ0P60mScYZTgRnjD0bCDfPPW87z+fwMhRXxZ1
- ZeuqfCF4DM/6gYSPbyQviC06ooDCrO8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-221-6r6SiKnsPtOjdcjoL2SKHA-1; Wed, 18 Oct 2023 10:50:55 -0400
-X-MC-Unique: 6r6SiKnsPtOjdcjoL2SKHA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40837aa4a58so8505075e9.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:50:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697640654; x=1698245454;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jLKEGJT+8WxybR9JfNG78kHzUE7TpLHv69cBuB9Io1s=;
- b=aH3yXj8VuKUgeRIFVRRjPHAHhAZ5tUkMHlma86vMXw7lFXmiWmb8VUkW+zwj66p1Cm
- BLW1/ccputwbfCgl3gsJ7US2R391JCuoh9aktPs6j+LNGTkcXhCiigVuScO9ce7ShHQ0
- kDJG5LwvBCnkKY05+MWA3qOp9IFMSTox8QtAQibe1iUpLqmDmssFvzw9oEmMNDzRJjBv
- TJsNqBWOiO3ad/EzveVTiCbyCueuDkFNuQkmhPCtA7ONxj6dDwERoA3pzV0MglK3TVqZ
- 593hQGkvxYGO0rZyfrhZMT2K+a8XKGO/oZhPl8suOlXJZK5wiw955DWbEgeht54oixiO
- bIbg==
-X-Gm-Message-State: AOJu0Yyxygc6j7FL1CdcPlfhZ48JbEGdXEHQcQxOtHzhXgzNiAE44AEt
- NZmQIers8v3oR6LXxLBEZUErFGGq9OoA3X4y7qFXrUltC5sBvWPje+Ad0Ify11rsXO0omnR3WdO
- glaVsUtH0/9uthh8=
-X-Received: by 2002:a05:600c:1c84:b0:405:784a:d53e with SMTP id
- k4-20020a05600c1c8400b00405784ad53emr4551011wms.20.1697640653876; 
- Wed, 18 Oct 2023 07:50:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVRIvU4w6TckLtgvQsA893KVT9bpr4NWmCcXhJpIjpaH+lSnSW9bn+ABJZLdMr7iNVqKwB2g==
-X-Received: by 2002:a05:600c:1c84:b0:405:784a:d53e with SMTP id
- k4-20020a05600c1c8400b00405784ad53emr4550991wms.20.1697640653557; 
- Wed, 18 Oct 2023 07:50:53 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
- by smtp.gmail.com with ESMTPSA id
- je6-20020a05600c1f8600b004063ea92492sm1897975wmb.22.2023.10.18.07.50.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 07:50:52 -0700 (PDT)
-Date: Wed, 18 Oct 2023 10:50:46 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?=  <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Volker =?iso-8859-1?Q?R=FC?= melin <vr_qemu@t-online.de>,
- =?utf-8?B?S8WRIHbDoSBnw7MgLCBab2x0w6E=?= n <DirtY.iCE.hu@gmail.com>,
- Alex =?iso-8859-1?Q?Benn=E9?= e <alex.bennee@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: [PATCH v11 00/11] Add VIRTIO sound card
-Message-ID: <20231018104939-mutt-send-email-mst@kernel.org>
-References: <cover.1696935992.git.manos.pitsidianakis@linaro.org>
- <2pvjw.psr1yjx1ztc1@linaro.org>
- <20231018050537-mutt-send-email-mst@kernel.org>
- <2q986.633fbwmm52y@linaro.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qt7hm-00011S-TT
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:39:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1697639966; x=1729175966;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=tzXrWecTO5JbPSxCqsbFF8qNy3rO6rDaNVYwULlRBq8=;
+ b=R0O6u0vhKi7g1zlL/Hx6SXA+yLiBDnIJXmcxbOI8/4Y3ZK6Rnz1yNJRN
+ UaUVmSfAcEZhpRnr/7GJL5Sb/0un6cwIKtnJOBK9Ag9nyNZ4sCJOnAJfS
+ uI1QLaKYjx+Lh+f7KNg9lvQ5IVAUogwJs6aOg6fPgKHHyusjlfp0p/E24
+ 1ZAnlA7zlz840MmqXcJiQLep+G/LRRXXqvtAKTji5tekWH6vlu8ZLBBr7
+ IgdShKogX4oS2UtPkfAOfIZ3SX80juF1Tz2g66AWq2xkzBVITWiWeIWNt
+ LSgAntO+XyUKeC/TmAbiunDKfM3YNQPtewUz6GCaPB36F2XxjcJ203enU Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="389902757"
+X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; d="scan'208";a="389902757"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Oct 2023 07:39:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="706474654"
+X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; d="scan'208";a="706474654"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga003.jf.intel.com with ESMTP; 18 Oct 2023 07:39:20 -0700
+Date: Wed, 18 Oct 2023 22:50:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 3/3] docs: re-generate x86_64 ABI compatibility CSV
+Message-ID: <ZS/w0AcItaUklEmW@liuzhao-OptiPlex-7080>
+References: <20230718092631.730255-1-berrange@redhat.com>
+ <20230718092631.730255-4-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2q986.633fbwmm52y@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230718092631.730255-4-berrange@redhat.com>
+Received-SPF: pass client-ip=134.134.136.65; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,48 +81,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 18, 2023 at 04:44:00PM +0300, Manos Pitsidianakis wrote:
-> Hello Michael,
+On Tue, Jul 18, 2023 at 10:26:31AM +0100, Daniel P. Berrangé wrote:
+> Date: Tue, 18 Jul 2023 10:26:31 +0100
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: [PATCH v2 3/3] docs: re-generate x86_64 ABI compatibility CSV
 > 
-> Thank you for your reply;
+> This picks up the new EPYC-Genoa, SapphireRapids & GraniteRapids CPUs,
+> removes the now deleted Icelake-Client CPU, and adds the newer versions
+> of many existing CPUs.
 > 
-> On Wed, 18 Oct 2023 12:08, "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> > On Wed, Oct 18, 2023 at 11:49:00AM +0300, Manos Pitsidianakis wrote:
-> > > On Wed, 11 Oct 2023 17:34, Manos Pitsidianakis <manos.pitsidianakis@linaro.org> wrote:
-> > > > This patch series adds an audio device implementing the recent virtio
-> > > > sound spec (1.2) and a corresponding PCI wrapper device.
-> > > > > v11 can be found online at:
-> > > > > https://gitlab.com/epilys/qemu/-/tree/virtio-snd-v11
-> > > > > Ref 885b01fe272541fdab5583780d4c3a59bfd8e734
-> > > > Hello Gerd, MAINTAINERS says you own the hw/audio subsystem, would
-> > > you pull
-> > > this in your tree if/when it is to be merged?
-> > > 
-> > > For context, the device was in hw/audio initially but in early list
-> > > discussions we decided to move it with the rest of virtio devices.
-> > 
-> > Link to these discussions? virtio-gpu is under ./hw/display
-> > seems inconsistent.
-> 
-> I agree that it is inconsistent, but I do not know if there is a general
-> consensus on this. I am fine with placing it anywhere that is deemed
-> appropriate.
-> 
-> <87a5xkde0c.fsf@linaro.org>
-> https://lore.kernel.org/qemu-devel/87a5xkde0c.fsf@linaro.org/
-> 
-> > And you are asking Gerd to merge but
-> > your MAINTAINERS patch wouldn't even let people know
-> > he needs to be Cc'd on changes.
-> 
-> No, I didn't ask to merge this, I asked if Gerd would be the one merging it
-> because I am not sure myself and wanted more information. What do you think
-> should be the correct process?
-> 
-> --
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-I'd put it under audio and then you get an unambigous maintainer
-to go through.
-
+> ---
+>  docs/system/cpu-models-x86-abi.csv | 20 ++++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
+> 
+> diff --git a/docs/system/cpu-models-x86-abi.csv b/docs/system/cpu-models-x86-abi.csv
+> index f3f3b60be1..38b9bae310 100644
+> --- a/docs/system/cpu-models-x86-abi.csv
+> +++ b/docs/system/cpu-models-x86-abi.csv
+> @@ -8,27 +8,37 @@ Cascadelake-Server-v1,✅,✅,✅,✅
+>  Cascadelake-Server-v2,✅,✅,✅,✅
+>  Cascadelake-Server-v3,✅,✅,✅,✅
+>  Cascadelake-Server-v4,✅,✅,✅,✅
+> +Cascadelake-Server-v5,✅,✅,✅,✅
+>  Conroe-v1,✅,,,
+>  Cooperlake-v1,✅,✅,✅,✅
+> +Cooperlake-v2,✅,✅,✅,✅
+>  Denverton-v1,✅,✅,,
+>  Denverton-v2,✅,✅,,
+> +Denverton-v3,✅,✅,,
+>  Dhyana-v1,✅,✅,✅,
+> +Dhyana-v2,✅,✅,✅,
+> +EPYC-Genoa-v1,✅,✅,✅,✅
+>  EPYC-Milan-v1,✅,✅,✅,
+> +EPYC-Milan-v2,✅,✅,✅,
+>  EPYC-Rome-v1,✅,✅,✅,
+>  EPYC-Rome-v2,✅,✅,✅,
+> +EPYC-Rome-v3,✅,✅,✅,
+> +EPYC-Rome-v4,✅,✅,✅,
+>  EPYC-v1,✅,✅,✅,
+>  EPYC-v2,✅,✅,✅,
+>  EPYC-v3,✅,✅,✅,
+> +EPYC-v4,✅,✅,✅,
+> +GraniteRapids-v1,✅,✅,✅,✅
+>  Haswell-v1,✅,✅,✅,
+>  Haswell-v2,✅,✅,✅,
+>  Haswell-v3,✅,✅,✅,
+>  Haswell-v4,✅,✅,✅,
+> -Icelake-Client-v1,✅,✅,✅,
+> -Icelake-Client-v2,✅,✅,✅,
+>  Icelake-Server-v1,✅,✅,✅,✅
+>  Icelake-Server-v2,✅,✅,✅,✅
+>  Icelake-Server-v3,✅,✅,✅,✅
+>  Icelake-Server-v4,✅,✅,✅,✅
+> +Icelake-Server-v5,✅,✅,✅,✅
+> +Icelake-Server-v6,✅,✅,✅,✅
+>  IvyBridge-v1,✅,✅,,
+>  IvyBridge-v2,✅,✅,,
+>  KnightsMill-v1,✅,✅,✅,
+> @@ -42,15 +52,21 @@ Opteron_G5-v1,✅,✅,,
+>  Penryn-v1,✅,,,
+>  SandyBridge-v1,✅,✅,,
+>  SandyBridge-v2,✅,✅,,
+> +SapphireRapids-v1,✅,✅,✅,✅
+> +SapphireRapids-v2,✅,✅,✅,✅
+>  Skylake-Client-v1,✅,✅,✅,
+>  Skylake-Client-v2,✅,✅,✅,
+>  Skylake-Client-v3,✅,✅,✅,
+> +Skylake-Client-v4,✅,✅,✅,
+>  Skylake-Server-v1,✅,✅,✅,✅
+>  Skylake-Server-v2,✅,✅,✅,✅
+>  Skylake-Server-v3,✅,✅,✅,✅
+>  Skylake-Server-v4,✅,✅,✅,✅
+> +Skylake-Server-v5,✅,✅,✅,✅
+>  Snowridge-v1,✅,✅,,
+>  Snowridge-v2,✅,✅,,
+> +Snowridge-v3,✅,✅,,
+> +Snowridge-v4,✅,✅,,
+>  Westmere-v1,✅,✅,,
+>  Westmere-v2,✅,✅,,
+>  athlon-v1,,,,
+> -- 
+> 2.41.0
+> 
+> 
 
