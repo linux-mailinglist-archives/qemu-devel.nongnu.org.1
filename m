@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597817CE30B
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 796DF7CE302
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:39:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt9Yf-0001Io-St; Wed, 18 Oct 2023 12:38:11 -0400
+	id 1qt9ZA-0001m0-LX; Wed, 18 Oct 2023 12:38:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt9YX-00015v-NS
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:38:03 -0400
+ id 1qt9Yj-0001OY-Sy
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:38:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt9YW-0007PO-85
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:38:01 -0400
+ id 1qt9Yi-0007QG-Eg
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:38:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697647079;
+ s=mimecast20190719; t=1697647091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+hNy/PELxO0LF0vJtqdJo5ueuCedDBfVu0vtDyuyZxs=;
- b=LGHr5VA/NXYTZBw7P5WuPH+o4DaGt6UJ7WWhND0nnfntO9sgrVDUYEBKVDHjYBOy18cdlk
- 5ofkMTUaMaCtP6Hom73yWSOZWozQRahX1uIKeQxU2tSUEOVotFUKgdnc33VnTZOffVbLQ8
- vKpjj5b2RN8ZKAvWYQ71c88LXGM2zE8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=duiHUT8st5eyEW1wOxW61bUKxv0U4vv/DGWXwswcz+Y=;
+ b=ZuqeB/lAD43N8nqeIYjjW/AGloHTu3+KQi5IB5LHnK9PUzHXWG6eHTcEODYLb+6o1EkvEy
+ 8ePwmzT4pTVoVjUCWcCloaxwbt4c5Aa3IQwP7wDp3NZMCRtvVPtAIyU0zrZ4PpfScBaSAB
+ fFh9FJgLFmadOBP83RoGNu2Eyhyr80k=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-524-1sUdqgXrPS2LaUWDI_oKBA-1; Wed, 18 Oct 2023 12:37:52 -0400
-X-MC-Unique: 1sUdqgXrPS2LaUWDI_oKBA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9bf8678af70so305756366b.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:37:52 -0700 (PDT)
+ us-mta-570-hXoO9FBZPnG6eAAH5uppjw-1; Wed, 18 Oct 2023 12:37:54 -0400
+X-MC-Unique: hXoO9FBZPnG6eAAH5uppjw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-993eeb3a950so471041166b.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:37:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697647071; x=1698251871;
+ d=1e100.net; s=20230601; t=1697647073; x=1698251873;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+hNy/PELxO0LF0vJtqdJo5ueuCedDBfVu0vtDyuyZxs=;
- b=tX4BjerR7ndVGdMCH5dehlfph5veFPhIxS+7kBdw0n6KR7Hroj/OQYPrHO9okwlny5
- e7zdcUQkvJ8LU2QfPD2WQDvGPknMClG5G6Aec5LQfDI7EhTKQXLiXtKz46M7JbSkvxzj
- Lf+SVtY1ewUJnGdUFiA27dVtTP224v7W2nQCmhDw5iyiJYvhFpfaod4dxU99dSMBHpQw
- wRKzW2DyKT9jKqamtZFk1zko6MOOMIJNhtvVmSo7a8IL56QhL5WZAmfB0KTQivlkqXCH
- imlPr9KOYefI/IhI5t4CpZJSJDlugO2phKpNiyTfspclwtZp4qdnC+P05GoG5eYA6Yef
- 5XpQ==
-X-Gm-Message-State: AOJu0YxkRVzR3rXsO8w+dz0ostEBRaHoQLLAT4ZUgAujK7hHPNoi9x6H
- Zk5Lep6W0gouXaMTUyngjK++lfMXLmFGpUuC1qjGZy8MrW1c99jXnzq8NSXhUPLvDuEvQ204X8G
- apFacr64V0+lg49Hhq8Nv4G2kZgdJcmoNgtC+1FFa06G2b77/w4Ox+fj3EWIwAvfRDfI/e5wzux
- E=
-X-Received: by 2002:a17:907:3e99:b0:9bd:c336:21e5 with SMTP id
- hs25-20020a1709073e9900b009bdc33621e5mr4173832ejc.56.1697647071342; 
- Wed, 18 Oct 2023 09:37:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkNmKEi8Qn3S+jHyt7bhLOBEdNAXJB0tM3ofBpQaSvsmAx3oK1UQxbbQfcZWhKDVrleHa0Uw==
-X-Received: by 2002:a17:907:3e99:b0:9bd:c336:21e5 with SMTP id
- hs25-20020a1709073e9900b009bdc33621e5mr4173817ejc.56.1697647070924; 
- Wed, 18 Oct 2023 09:37:50 -0700 (PDT)
+ bh=duiHUT8st5eyEW1wOxW61bUKxv0U4vv/DGWXwswcz+Y=;
+ b=ObVsuHWI6LzVljuWmOT37XEsiqA+gODjrhUF4B9fLRmHY0Xu1JNXzqfewCetggyn0L
+ aXJKBS3oOlAKG+KyAu36VFuqIqLSERGM9CNBFuCe1zRo4PgE712D/HZGYjnlxL7hjJ7K
+ HGxfcnhtJIfz6jZXyAuQNiuILsYTTWsC/8/Zn2I4D2migsAH/iT1HEVItQqjtEJc3uKl
+ txh9LzsBWPdqVcdRDghiZps4V7sABJogv9w2U/KPH/nx5bPJNjSAyYYT1IW7Be2Mr2GR
+ 4eb1L4swdpCKheb2FEdhz/fLq3Yk3WokzXzbT6TOrn47PsHhJQb2OrDNyheK5fOSi6s+
+ A1SQ==
+X-Gm-Message-State: AOJu0YwOR2aArq5v53C02DNNrKDhAoG3yUQFpT+gHS+bFECd5YGTXfcB
+ 7htHU2LJMyc/NDizo+ITG3yVBQnipoBnsD+WezqmALSr4gzS4BNhGMRLfJ8L85fD9EhiqK7aDkC
+ NtDQ+WYtdT1cgKDmn4NHWQz0Aq44Yz1d50lcciY/T9BFjnbIbMWu/o1MhLWtoF5LDTJ2o6d+wnj
+ M=
+X-Received: by 2002:a17:906:ee86:b0:9be:cdca:dae9 with SMTP id
+ wt6-20020a170906ee8600b009becdcadae9mr4589168ejb.36.1697647072919; 
+ Wed, 18 Oct 2023 09:37:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEV1tOGmBtg6EPRNfybbGe8bXWdinz3Zno8piiSpInItRhmqoeLYg47+FGFneRKOK6IZTXw8g==
+X-Received: by 2002:a17:906:ee86:b0:9be:cdca:dae9 with SMTP id
+ wt6-20020a170906ee8600b009becdcadae9mr4589150ejb.36.1697647072474; 
+ Wed, 18 Oct 2023 09:37:52 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- u7-20020a1709060b0700b009b64987e1absm1982707ejg.139.2023.10.18.09.37.50
+ z9-20020a1709063a0900b009c758b6cdefsm261859eje.128.2023.10.18.09.37.51
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 09:37:50 -0700 (PDT)
+ Wed, 18 Oct 2023 09:37:51 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 10/17] kvm: i386: move KVM_CAP_IRQ_ROUTING detection to
- kvm_arch_required_capabilities
-Date: Wed, 18 Oct 2023 18:37:21 +0200
-Message-ID: <20231018163728.363879-11-pbonzini@redhat.com>
+Subject: [PATCH 11/17] kvm: i386: require KVM_CAP_DEBUGREGS
+Date: Wed, 18 Oct 2023 18:37:22 +0200
+Message-ID: <20231018163728.363879-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018163728.363879-1-pbonzini@redhat.com>
 References: <20231018163728.363879-1-pbonzini@redhat.com>
@@ -101,37 +100,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simple code cleanup.
+This was introduced in KVM in Linux 2.6.35, we can require it unconditionally.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ accel/kvm/kvm-all.c      | 9 ---------
+ include/sysemu/kvm.h     | 1 -
+ include/sysemu/kvm_int.h | 1 -
+ target/i386/kvm/kvm.c    | 9 +--------
+ 4 files changed, 1 insertion(+), 19 deletions(-)
 
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index b59a48da924..aeda902b3e9 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2528,10 +2528,6 @@ static int kvm_init(MachineState *ms)
+     s->robust_singlestep =
+         kvm_check_extension(s, KVM_CAP_X86_ROBUST_SINGLESTEP);
+ 
+-#ifdef KVM_CAP_DEBUGREGS
+-    s->debugregs = kvm_check_extension(s, KVM_CAP_DEBUGREGS);
+-#endif
+-
+     s->max_nested_state_len = kvm_check_extension(s, KVM_CAP_NESTED_STATE);
+ 
+     s->irq_set_ioctl = KVM_IRQ_LINE;
+@@ -3152,11 +3148,6 @@ int kvm_has_robust_singlestep(void)
+     return kvm_state->robust_singlestep;
+ }
+ 
+-int kvm_has_debugregs(void)
+-{
+-    return kvm_state->debugregs;
+-}
+-
+ int kvm_max_nested_state_length(void)
+ {
+     return kvm_state->max_nested_state_len;
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index c06982fd64c..16fddeef663 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -192,7 +192,6 @@ unsigned int kvm_get_free_memslots(void);
+ bool kvm_has_sync_mmu(void);
+ int kvm_has_vcpu_events(void);
+ int kvm_has_robust_singlestep(void);
+-int kvm_has_debugregs(void);
+ int kvm_max_nested_state_length(void);
+ int kvm_has_gsi_routing(void);
+ 
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index 840b905a2e9..151ecc84233 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -79,7 +79,6 @@ struct KVMState
+     bool coalesced_flush_in_progress;
+     int vcpu_events;
+     int robust_singlestep;
+-    int debugregs;
+ #ifdef KVM_CAP_SET_GUEST_DEBUG
+     QTAILQ_HEAD(, kvm_sw_breakpoint) kvm_sw_breakpoints;
+ #endif
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index ab7d39d5399..91dd43eaa9b 100644
+index 91dd43eaa9b..86af39c437a 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -92,6 +92,7 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-     KVM_CAP_INFO(EXT_CPUID),
+@@ -93,6 +93,7 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
      KVM_CAP_INFO(MP_STATE),
      KVM_CAP_INFO(SIGNAL_MSI),
-+    KVM_CAP_INFO(IRQ_ROUTING),
+     KVM_CAP_INFO(IRQ_ROUTING),
++    KVM_CAP_INFO(DEBUGREGS),
      KVM_CAP_LAST_INFO
  };
  
-@@ -2590,11 +2591,6 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         return ret;
-     }
+@@ -4601,10 +4602,6 @@ static int kvm_put_debugregs(X86CPU *cpu)
+     struct kvm_debugregs dbgregs;
+     int i;
  
--    if (!kvm_check_extension(s, KVM_CAP_IRQ_ROUTING)) {
--        error_report("kvm: KVM_CAP_IRQ_ROUTING not supported by KVM");
--        return -ENOTSUP;
+-    if (!kvm_has_debugregs()) {
+-        return 0;
 -    }
 -
-     has_xsave = kvm_check_extension(s, KVM_CAP_XSAVE);
-     has_xcrs = kvm_check_extension(s, KVM_CAP_XCRS);
-     has_pit_state2 = kvm_check_extension(s, KVM_CAP_PIT_STATE2);
+     memset(&dbgregs, 0, sizeof(dbgregs));
+     for (i = 0; i < 4; i++) {
+         dbgregs.db[i] = env->dr[i];
+@@ -4622,10 +4619,6 @@ static int kvm_get_debugregs(X86CPU *cpu)
+     struct kvm_debugregs dbgregs;
+     int i, ret;
+ 
+-    if (!kvm_has_debugregs()) {
+-        return 0;
+-    }
+-
+     ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_DEBUGREGS, &dbgregs);
+     if (ret < 0) {
+         return ret;
 -- 
 2.41.0
 
