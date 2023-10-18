@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7F97CEC1D
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 126197CEC12
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:32:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtG13-00046m-MP; Wed, 18 Oct 2023 19:31:55 -0400
+	id 1qtG12-00046k-W9; Wed, 18 Oct 2023 19:31:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0x-00044s-2n
+ id 1qtG0x-00045t-Hs
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:47 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0v-0000Lp-2x
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:46 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-57b5ef5b947so4745129eaf.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:44 -0700 (PDT)
+ id 1qtG0v-0000M3-T7
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:47 -0400
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-57b5f0d658dso4313547eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697671904; x=1698276704; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UKWfNxY8ZBT24vryvV7tNUff057UO3MB5fEykagaJko=;
- b=UbN7ggD/knFsrh6J2kylQfTclqqk2mpjtFLBZmj3WV70we/mhb/JZ4rT12cHyXVJx/
- SYnV79oHZBXNNsFoYgdIO0px2IEPDXKTnfeTRDyCEvX0xbthXWCtHMG5y9HRZ/yLJPEe
- Q2Y/vLzWhKUbm8GX5G7HG2fKROzHn91wuGZ+MddUFXb33a0EMMfqm2tpGeuG1ccGA8Aa
- xll5YEU6kyQRJlP1VUAcvzylV2NydDC2EWLd68lMXfJq5RW2p7oORo47ErrrW+OaVrMm
- vUY4gpFZJkr7aHdQf0zOEhiQQbFC56wZcPflbuEo4NOvlwyxw+5HJtx5UgFwJO4V/F8D
- xMwQ==
+ bh=ypG+ldHB73o41Fm0bO8P6h70i3rbf+HtP65cG8LvxlI=;
+ b=pzG5zr46atE5QdTXGfnCBd4stxYeKsXYGtFMl7A8ZcxYviExjTX8HwCKlrFZHyy1AM
+ An25RFjTnbph3IrIkomaYHFjIFBLDrFrRDnCJmQb+rhOaRfAG2yGiUnFTLwHx9NVDx9s
+ EoB7PfHaWcjHHnK9s4CZlMKy4pG/PuzFKf7jvvQ6GRW9RURkJrRea7r/z8YLj/zDrHfs
+ b9tOuklMN80IlPKTM20/138fG0qWP+hPBJmwIxbFGIrUHdhp9WkqK77vxhi+aDYVWoye
+ iGKhNCGA3J31YZ11rRDVnuig1pTIVw4g9fatPC+yz0KYtuDr4EWfj4+neApcpjPIf+ny
+ /KiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697671904; x=1698276704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UKWfNxY8ZBT24vryvV7tNUff057UO3MB5fEykagaJko=;
- b=eNbZKn4H2WwiWwqqZfUGZW3CkGtjfBPl/f5S8066fk3KHZrSHoA4TX4RtoE1G8eTnQ
- QXEFAfgcRQCSjQGD2U/wHfYtXWsSas+DQfrhoIxQqTlCVqI/YcC0L6Za1Obyx7F+5prg
- xpfMcppQb6JjiTVc9UGWjjmS2e6MO9ihCDTUsFeeh9Hueh1yKyA81qqSwz0QGNF96n9a
- cKdW8Nf0hqp0ebRK8/a4W+SGM0JfCbWgAzARdysvZ3yDJbTxgDvESSIgd2dSE89WZLwP
- o75QcEvO3FWiSQK6wDQD3FbSftMjHyqzHbdiiH22y+0NZuVh3mh7Zs1c66y46HjgTOU5
- Brsw==
-X-Gm-Message-State: AOJu0YxABLazEsGwKuOpeWx7uakuLLgAQMg2pcqqG9V5kViS54SQycxZ
- Lhnn+Jvb2gUvb3oaYmFwEHKANHwZBs+knW2MR6o=
-X-Google-Smtp-Source: AGHT+IHcIJkYa6B91qw/GdY/qa/2bUqeSZ9CRv/rHVqCXsOpRmSTmdSfjdTkrrscL2C6/VN6wRLdRw==
-X-Received: by 2002:a05:6358:3a0e:b0:168:9f53:9d67 with SMTP id
- g14-20020a0563583a0e00b001689f539d67mr493003rwe.20.1697671903722; 
- Wed, 18 Oct 2023 16:31:43 -0700 (PDT)
+ bh=ypG+ldHB73o41Fm0bO8P6h70i3rbf+HtP65cG8LvxlI=;
+ b=huRgmOl8U2DpvKbr2rksGBYlDU7rfvZZbMf8k0d0BKkwlQy0bF3rqK2yWNQMhYWjBR
+ Xz4F5+ZmCc7LOmJR55ChtWw6i1XArRt6lIh5TzpFHaIoK53BcpJ02g6ob6KchThOgyzG
+ eetAHwmZitSi1CwVWOo3lqSOG8WHo84O3D6Fn8w6O/jRWkup0Ro1CMBgGDnMqKw/ZMVE
+ 5fXYO8F7jDqA+dUsNsnX4SgDexsiolpAD2JoxaAYd4snpXb/jUhkp4+3fsh7lpA5kT6d
+ ctCUAZsllQKXwCg2wWbeIr26KPTQGep8UVUBU/+bX2Ef1REQpVVUVU+3xOKPfnWCEKxp
+ D6EQ==
+X-Gm-Message-State: AOJu0YybdRJc/AhjxsuCsq257HTv9kIrtt0ypECm9QTlynrqQmKihRUw
+ CHZfLgABzLE9RsOZPZLSaYTd+2xIhgbZg724qPI=
+X-Google-Smtp-Source: AGHT+IEl7mPttHERM78ISqrmIPoyBEJmmolLhmHzT1Ds/3Lfh5w/nRCnvrcIltrcev3e/AAjp+c0Zw==
+X-Received: by 2002:a05:6358:ca6:b0:143:8084:e625 with SMTP id
+ o38-20020a0563580ca600b001438084e625mr514122rwj.11.1697671904636; 
+ Wed, 18 Oct 2023 16:31:44 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 16:31:43 -0700 (PDT)
+ Wed, 18 Oct 2023 16:31:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 10/14] linux-user: Map unsupported signals to an out-of-bounds
- value
-Date: Wed, 18 Oct 2023 16:31:30 -0700
-Message-Id: <20231018233134.1594292-11-richard.henderson@linaro.org>
+Subject: [PULL 11/14] linux-user: Simplify signal_init
+Date: Wed, 18 Oct 2023 16:31:31 -0700
+Message-Id: <20231018233134.1594292-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018233134.1594292-1-richard.henderson@linaro.org>
 References: <20231018233134.1594292-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,143 +90,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not return a valid signal number in one domain
-when given an invalid signal number in the other domain.
+Install the host signal handler at the same time we are
+probing the target signals for SIG_IGN/SIG_DFL.  Ignore
+unmapped target signals.
 
 Acked-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/signal.c | 72 ++++++++++++++++++++++++---------------------
- 1 file changed, 38 insertions(+), 34 deletions(-)
+ linux-user/signal.c | 42 ++++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
 diff --git a/linux-user/signal.c b/linux-user/signal.c
-index aab05f8eec..653fd2f9fd 100644
+index 653fd2f9fd..09840b0eb0 100644
 --- a/linux-user/signal.c
 +++ b/linux-user/signal.c
-@@ -44,9 +44,8 @@ abi_ulong default_sigreturn;
- abi_ulong default_rt_sigreturn;
- 
- /*
-- * System includes define _NSIG as SIGRTMAX + 1,
-- * but qemu (like the kernel) defines TARGET_NSIG as TARGET_SIGRTMAX
-- * and the first signal is SIGHUP defined as 1
-+ * System includes define _NSIG as SIGRTMAX + 1, but qemu (like the kernel)
-+ * defines TARGET_NSIG as TARGET_SIGRTMAX and the first signal is 1.
-  * Signal number 0 is reserved for use as kill(pid, 0), to test whether
-  * a process exists without sending it a signal.
-  */
-@@ -57,7 +56,6 @@ static uint8_t host_to_target_signal_table[_NSIG] = {
- #define MAKE_SIG_ENTRY(sig)     [sig] = TARGET_##sig,
-         MAKE_SIGNAL_LIST
- #undef MAKE_SIG_ENTRY
--    /* next signals stay the same */
- };
- 
- static uint8_t target_to_host_signal_table[TARGET_NSIG + 1];
-@@ -65,18 +63,24 @@ static uint8_t target_to_host_signal_table[TARGET_NSIG + 1];
- /* valid sig is between 1 and _NSIG - 1 */
- int host_to_target_signal(int sig)
- {
--    if (sig < 1 || sig >= _NSIG) {
-+    if (sig < 1) {
-         return sig;
-     }
-+    if (sig >= _NSIG) {
-+        return TARGET_NSIG + 1;
-+    }
-     return host_to_target_signal_table[sig];
- }
- 
- /* valid sig is between 1 and TARGET_NSIG */
- int target_to_host_signal(int sig)
- {
--    if (sig < 1 || sig > TARGET_NSIG) {
-+    if (sig < 1) {
-         return sig;
-     }
-+    if (sig > TARGET_NSIG) {
-+        return _NSIG;
-+    }
-     return target_to_host_signal_table[sig];
- }
- 
-@@ -507,48 +511,48 @@ static int core_dump_signal(int sig)
- 
- static void signal_table_init(void)
- {
--    int host_sig, target_sig, count;
-+    int hsig, tsig, count;
- 
-     /*
-      * Signals are supported starting from TARGET_SIGRTMIN and going up
--     * until we run out of host realtime signals.
--     * glibc at least uses only the lower 2 rt signals and probably
--     * nobody's using the upper ones.
--     * it's why SIGRTMIN (34) is generally greater than __SIGRTMIN (32)
--     * To fix this properly we need to do manual signal delivery multiplexed
--     * over a single host signal.
-+     * until we run out of host realtime signals.  Glibc uses the lower 2
-+     * RT signals and (hopefully) nobody uses the upper ones.
-+     * This is why SIGRTMIN (34) is generally greater than __SIGRTMIN (32).
-+     * To fix this properly we would need to do manual signal delivery
-+     * multiplexed over a single host signal.
-      * Attempts for configure "missing" signals via sigaction will be
-      * silently ignored.
-      */
--    for (host_sig = SIGRTMIN; host_sig <= SIGRTMAX; host_sig++) {
--        target_sig = host_sig - SIGRTMIN + TARGET_SIGRTMIN;
--        if (target_sig <= TARGET_NSIG) {
--            host_to_target_signal_table[host_sig] = target_sig;
-+    for (hsig = SIGRTMIN; hsig <= SIGRTMAX; hsig++) {
-+        tsig = hsig - SIGRTMIN + TARGET_SIGRTMIN;
-+        if (tsig <= TARGET_NSIG) {
-+            host_to_target_signal_table[hsig] = tsig;
-         }
-     }
- 
--    /* generate signal conversion tables */
--    for (target_sig = 1; target_sig <= TARGET_NSIG; target_sig++) {
--        target_to_host_signal_table[target_sig] = _NSIG; /* poison */
--    }
--    for (host_sig = 1; host_sig < _NSIG; host_sig++) {
--        if (host_to_target_signal_table[host_sig] == 0) {
--            host_to_target_signal_table[host_sig] = host_sig;
--        }
--        target_sig = host_to_target_signal_table[host_sig];
--        if (target_sig <= TARGET_NSIG) {
--            target_to_host_signal_table[target_sig] = host_sig;
-+    /* Invert the mapping that has already been assigned. */
-+    for (hsig = 1; hsig < _NSIG; hsig++) {
-+        tsig = host_to_target_signal_table[hsig];
-+        if (tsig) {
-+            assert(target_to_host_signal_table[tsig] == 0);
-+            target_to_host_signal_table[tsig] = hsig;
-         }
-     }
- 
--    if (trace_event_get_state_backends(TRACE_SIGNAL_TABLE_INIT)) {
--        for (target_sig = 1, count = 0; target_sig <= TARGET_NSIG; target_sig++) {
--            if (target_to_host_signal_table[target_sig] == _NSIG) {
--                count++;
--            }
-+    /* Map everything else out-of-bounds. */
-+    for (hsig = 1; hsig < _NSIG; hsig++) {
-+        if (host_to_target_signal_table[hsig] == 0) {
-+            host_to_target_signal_table[hsig] = TARGET_NSIG + 1;
-         }
--        trace_signal_table_init(count);
-     }
-+    for (count = 0, tsig = 1; tsig <= TARGET_NSIG; tsig++) {
-+        if (target_to_host_signal_table[tsig] == 0) {
-+            target_to_host_signal_table[tsig] = _NSIG;
-+            count++;
-+        }
-+    }
-+
-+    trace_signal_table_init(count);
- }
- 
+@@ -558,10 +558,7 @@ static void signal_table_init(void)
  void signal_init(void)
+ {
+     TaskState *ts = (TaskState *)thread_cpu->opaque;
+-    struct sigaction act;
+-    struct sigaction oact;
+-    int i;
+-    int host_sig;
++    struct sigaction act, oact;
+ 
+     /* initialize signal conversion tables */
+     signal_table_init();
+@@ -572,23 +569,28 @@ void signal_init(void)
+     sigfillset(&act.sa_mask);
+     act.sa_flags = SA_SIGINFO;
+     act.sa_sigaction = host_signal_handler;
+-    for(i = 1; i <= TARGET_NSIG; i++) {
+-        host_sig = target_to_host_signal(i);
+-        sigaction(host_sig, NULL, &oact);
+-        if (oact.sa_sigaction == (void *)SIG_IGN) {
+-            sigact_table[i - 1]._sa_handler = TARGET_SIG_IGN;
+-        } else if (oact.sa_sigaction == (void *)SIG_DFL) {
+-            sigact_table[i - 1]._sa_handler = TARGET_SIG_DFL;
+-        }
+-        /* If there's already a handler installed then something has
+-           gone horribly wrong, so don't even try to handle that case.  */
+-        /* Install some handlers for our own use.  We need at least
+-           SIGSEGV and SIGBUS, to detect exceptions.  We can not just
+-           trap all signals because it affects syscall interrupt
+-           behavior.  But do trap all default-fatal signals.  */
+-        if (core_dump_signal(i)) {
+-            sigaction(host_sig, &act, NULL);
++
++    /*
++     * A parent process may configure ignored signals, but all other
++     * signals are default.  For any target signals that have no host
++     * mapping, set to ignore.  For all core_dump_signal, install our
++     * host signal handler so that we may invoke dump_core_and_abort.
++     * This includes SIGSEGV and SIGBUS, which are also need our signal
++     * handler for paging and exceptions.
++     */
++    for (int tsig = 1; tsig <= TARGET_NSIG; tsig++) {
++        int hsig = target_to_host_signal(tsig);
++        abi_ptr thand = TARGET_SIG_IGN;
++
++        if (hsig < _NSIG) {
++            struct sigaction *iact = core_dump_signal(tsig) ? &act : NULL;
++
++            sigaction(hsig, iact, &oact);
++            if (oact.sa_sigaction != (void *)SIG_IGN) {
++                thand = TARGET_SIG_DFL;
++            }
+         }
++        sigact_table[tsig - 1]._sa_handler = thand;
+     }
+ }
+ 
 -- 
 2.34.1
 
