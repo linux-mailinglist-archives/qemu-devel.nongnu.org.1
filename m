@@ -2,70 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF097CD712
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A7D7CD757
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:00:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt2JF-0001tB-Lk; Wed, 18 Oct 2023 04:53:46 -0400
+	id 1qt2Oc-00040e-VX; Wed, 18 Oct 2023 04:59:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt2JD-0001sV-Pv
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:53:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt2JC-0001Uy-Gx
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:53:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697619221;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OAqS7Uan21YVUCZGxEhspHgkn+WNwtqXQgsFw5olNL0=;
- b=Rm0dtzLy3jB5pctDnrFmEh2qriGCL0CYFg/I/CmLoxXwwWRLdYPoX/6C+H/O6sGKwzZ/Lj
- HlTSfXexMtk+Hkuoq9yE/V0pvgW3nRL+v7arasn0z0V2Ea/0LgCMOFtTJF7XqzMy/CRI7e
- RbkOycKm3f8t7dmG0RWY+J6lE1A6QqI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-223-qaT4skUeO6SvTNcEndFSzg-1; Wed, 18 Oct 2023 04:53:40 -0400
-X-MC-Unique: qaT4skUeO6SvTNcEndFSzg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D02E229AB40B;
- Wed, 18 Oct 2023 08:53:39 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2796CC15BB8;
- Wed, 18 Oct 2023 08:53:39 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1BD3721E6A1F; Wed, 18 Oct 2023 10:53:38 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Victor Toso de Carvalho <victortoso@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,  Michael Roth
- <michael.roth@amd.com>
-Subject: Re: [PATCH v5 3/3] qapi: re-establish linting baseline
-References: <20231004230532.3002201-1-jsnow@redhat.com>
- <20231004230532.3002201-4-jsnow@redhat.com>
-Date: Wed, 18 Oct 2023 10:53:38 +0200
-In-Reply-To: <20231004230532.3002201-4-jsnow@redhat.com> (John Snow's message
- of "Wed, 4 Oct 2023 19:05:32 -0400")
-Message-ID: <878r80wbu5.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qt2OZ-0003zp-VA
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:59:15 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qt2OW-0002mA-1F
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:59:14 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxNvFbni9l1tUyAA--.32631S3;
+ Wed, 18 Oct 2023 16:59:07 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxbNxani9lTf0oAA--.20518S2; 
+ Wed, 18 Oct 2023 16:59:06 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, philmd@redhat.com, peter.maydell@linaro.org,
+ eblake@redhat.com, armbru@redhat.com, maobibo@loongson.cn
+Subject: [PATCH v1 0/3] Allow user enable/disable LSX/LASX features
+Date: Wed, 18 Oct 2023 16:59:05 +0800
+Message-Id: <20231018085908.3327130-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxbNxani9lTf0oAA--.20518S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,12 +61,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+Hi,
 
-> Some very minor housekeeping to make the linters happy once more.
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
+This series adds the cpu model 'max' support. and allow users
+enable/disable LSX/LASX features.
 
-Queued.  Thanks!
+Song Gao (3):
+  target/loongarch: Add cpu model 'max'
+  target/loongarch: Allow user enable/disable LSX/LASX features
+  target/loongarch: Implement query-cpu-model-expansion
+
+ qapi/machine-target.json              |  6 ++-
+ target/loongarch/cpu.c                | 71 +++++++++++++++++++++++++++
+ target/loongarch/cpu.h                |  7 +++
+ target/loongarch/loongarch-qmp-cmds.c | 64 ++++++++++++++++++++++++
+ 4 files changed, 146 insertions(+), 2 deletions(-)
+
+-- 
+2.25.1
 
 
