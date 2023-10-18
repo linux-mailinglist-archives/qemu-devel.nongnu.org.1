@@ -2,89 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BC97CDFF1
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F32A77CDFF9
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:34:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt7be-0007xx-Iq; Wed, 18 Oct 2023 10:33:06 -0400
+	id 1qt7cc-0008SQ-Po; Wed, 18 Oct 2023 10:34:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt7bd-0007xm-2l
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:33:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1qt7cX-0008Mx-37; Wed, 18 Oct 2023 10:34:01 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt7ba-0008Ka-Oz
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:33:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697639580;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=xrCnGMChRNfdQfFSuRZ/yFuBtLxtuc83ebW6lFTfXTE=;
- b=YVU2gTSlhf8pxHvWRdi0G/OOU/U4W9DIZVgEUyBhhuh5OCQwlumyzwTyGbUeU5/kFsvZQK
- CfDS8k521ybcBUDMCCfURc1DLdXdmo9v0N+lP5vMJE1iNL8zSVZg9zO7hhKvCx1vA6QaOo
- YTN63d4K91HD5NwAPlChXJvmLsC+5n0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-0fv6QZYdMn-uzH6vWjDcFQ-1; Wed, 18 Oct 2023 10:32:48 -0400
-X-MC-Unique: 0fv6QZYdMn-uzH6vWjDcFQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4083a670d25so6198595e9.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:32:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697639566; x=1698244366;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xrCnGMChRNfdQfFSuRZ/yFuBtLxtuc83ebW6lFTfXTE=;
- b=Ynrlr8d3+TJcmwOLJFqojrMqHBT/VzgA/u6qasyR7wSG96W7lBVr+u99ZXNdb9Zh3c
- Sdd1m2GRLHj2+HjbeUjTqz8WcJQIcpvdrLAIv3+HVHkF60xYoiaZEtQBRZ71ng3SVLCH
- reU2dy8v+dDktnCzRsBcZ0NTf+OyaK4SpFKYYGZOKDx4hh5yT2HxgfmD0b+u+dA/BULs
- yHnE+WyXyjgW3XNX/dTHAbT9SVUhnoM0Z3jrkHiBeBFs9EuPgsb/K2KiumL9GTHKdVq8
- z12JyWglcbPKhEm2tlLNf5iDz8kBzW7c1uDBWFfr/lf/QZzRvNs+6HokpqC3VSy8066A
- O8Dg==
-X-Gm-Message-State: AOJu0YzkUr5Va9nmPN/Ot0tNrGnR/VP5iTK3VFjVQo0X5dEbC+g2lI56
- 55vBYUPfqKe2CvHoI7iYBWwji72HD5hmtsERSnPrJLqsQ57/D+toadpEI4GIGvcvz/aV4NAHUHw
- lGkHoydBrffuaqhA=
-X-Received: by 2002:a05:600c:5492:b0:408:3ab3:a029 with SMTP id
- iv18-20020a05600c549200b004083ab3a029mr1943687wmb.38.1697639566657; 
- Wed, 18 Oct 2023 07:32:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGg4DLSgizE6Vptu4yuRqhRJksjg4vAdG4e1x4C+l3D9tcIcSXgCB2iT8N/nBlMY7jNRR/D+w==
-X-Received: by 2002:a05:600c:5492:b0:408:3ab3:a029 with SMTP id
- iv18-20020a05600c549200b004083ab3a029mr1943663wmb.38.1697639566234; 
- Wed, 18 Oct 2023 07:32:46 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- k6-20020a05600c1c8600b003fe1c332810sm1809112wms.33.2023.10.18.07.32.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 07:32:45 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Li Zhijian <lizhijian@fujitsu.com>,  leobras@redhat.com,
- qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH v2 1/2] migration: Fix rdma migration failed
-In-Reply-To: <ZSAtKmOFkomgXyJ7@x1n> (Peter Xu's message of "Fri, 6 Oct 2023
- 11:52:10 -0400")
-References: <20230926100103.201564-1-lizhijian@fujitsu.com>
- <87edib5ybg.fsf@secure.mitica> <ZSAtKmOFkomgXyJ7@x1n>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 18 Oct 2023 16:32:45 +0200
-Message-ID: <87a5sg80he.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1qt7cV-0008VO-1X; Wed, 18 Oct 2023 10:34:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=o4av8QNV4tVroMlLYxeUZim18cwUW3pZBcX7BnarRVk=; b=cobQLwKbjKOkz48O6+5FKoT/Ah
+ fG+Iq7qSscCbxGnhyx8hAWM+s59dncbmiUUNJ31KFb7+77n5z2tPq+JdhLSeCF2Gn1PRh7ugOeXqK
+ TxtO7EIAxhdh5kI/2VWtzu6Lsq8LGCiBPkRoLuO4pa5EY6vDfXEDA0nA6C8daZgFS/Ku4ep7CDU62
+ R3oeqx8cr+HP+r3qBKRY0Rl8A7cLaIxyeVJD+A9cOzDcwfol8EorlDkBQALl4BfmzZKZI/MGI7rGe
+ vbkdLAJBDqlvlot/W96Ag460Ero2ERekqIQsDLJ1T5Iydh+xpS6KKyWoyxIPxnMvr4HxwEqJHDhWo
+ WceXq33g==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+ (envelope-from <dg@treblig.org>) id 1qt7cP-005Hdo-1v;
+ Wed, 18 Oct 2023 14:33:53 +0000
+Date: Wed, 18 Oct 2023 14:33:53 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, eblake@redhat.com,
+ eduardo@habkost.net, pbonzini@redhat.com, hreitz@redhat.com,
+ kwolf@redhat.com, raphael.norwitz@nutanix.com,
+ yc-core@yandex-team.ru, den-plotnikov@yandex-team.ru,
+ daniil.tatianin@yandex.ru
+Subject: Re: [PATCH 4/4] qapi: introduce CONFIG_READ event
+Message-ID: <ZS_s0RE0ES9mvFar@gallifrey>
+References: <20231006202045.1161543-5-vsementsov@yandex-team.ru>
+ <87sf692t0i.fsf@pond.sub.org>
+ <ae494c44-1bd6-435e-8bd8-0ec2ba9ceaa6@yandex-team.ru>
+ <877cnkzasr.fsf@pond.sub.org>
+ <a55e8b57-3411-4587-affd-3bc0635af4fe@yandex-team.ru>
+ <878r80tdyd.fsf@pond.sub.org>
+ <20231018064912-mutt-send-email-mst@kernel.org>
+ <ZS+6g+vtYz9Uh6G3@redhat.com> <87o7gwp29r.fsf@pond.sub.org>
+ <ZS/KhowbXegXtYxA@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZS/KhowbXegXtYxA@redhat.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-12-amd64 (x86_64)
+X-Uptime: 14:32:53 up 32 days, 17:31, 1 user, load average: 0.03, 0.01, 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,42 +83,86 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+* Daniel P. Berrangé (berrange@redhat.com) wrote:
+> On Wed, Oct 18, 2023 at 02:02:08PM +0200, Markus Armbruster wrote:
+> > Daniel P. Berrangé <berrange@redhat.com> writes:
+> > 
+> > > On Wed, Oct 18, 2023 at 06:51:41AM -0400, Michael S. Tsirkin wrote:
+> > >> On Wed, Oct 18, 2023 at 12:36:10PM +0200, Markus Armbruster wrote:
+> > >> > > x- seems safer for management tool that doesn't know about "unstable" properties..
+> > >> > 
+> > >> > Easy, traditional, and unreliable :)
+> > >> 
+> > >> > > But on the other hand, changing from x- to no-prefix is already
+> > >> > > done when the feature is stable, and thouse who use it already
+> > >> > > use the latest version of interface, so, removing the prefix is
+> > >> > > just extra work.
+> > >> > 
+> > >> > Exactly.
+> > >> > 
+> > >> 
+> > >> I think "x-" is still better for command line use of properties - we
+> > >> don't have an API to mark things unstable there, do we?
+> > >
+> > > Personally I like to see "x-" prefix present *everywhere* there is
+> > > an unstable feature, and consider the need to rename when declaring
+> > > it stable to be good thing as it sets an easily identifiable line
+> > > in the sand and is self-evident to outside observers.
+> > >
+> > > The self-documenting nature of the "x-" prefer is what makes it most
+> > > compelling to me. A patch submission, or command line invokation or
+> > > an example QMP command, or a bug report, that exhibit an 'x-' prefix
+> > > are an immediate red flag to anyone who sees them.
+> > 
+> > Except when it isn't, like in "x-origin".
+> > 
+> > > If someone sees a QMP comamnd / a typical giant QEMU command line,
+> > > they are never going to go look at the QAPI schema to check whether
+> > > any feature used had an 'unstable' marker. The 'unstable' marker
+> > > might as well not exist in most cases.
+> > >
+> > > IOW, having the 'unstable' flag in the QAPI schema is great for machine
+> > > introspection, but it isn't a substitute for having an 'x-' prefix used
+> > > for the benefit of humans IMHO.
+> > 
+> > I'm not sure there's disagreement.  Quoting myself:
+> > 
+> >     The "x-" can remind humans "this is unstable" better than a feature
+> >     flag can (for machines, it's the other way round).
+> > 
+> > CLI and HMP are for humans.  We continue to use "x-" there.
+> > 
+> > QMP is for machines.  The feature flag is the sole source of truth.
+> > Additional use of "x-" is fine, but not required.
+> 
+> I guess we have different defintions of "for humans" in this context.
+> I consider QMP  data still relevant for humans, because humans are
+> reviewing patches to libvirt that add usage of QMP features, or
+> triaging bug reports that include examples of usage, and in both
+> cases it is pretty relevant to make unstable features stand out to
+> the human via the x- prefix IMHO.
 
-I see in upstream already:
+Using x- for events makes sense to me; the semantics of events can be
+quite subtle; often you don't find out how broken they are until you
+wire them through libvirt and up the stack; so it's not impossible
+you might need to change it - but then without the x- the semantics
+(rather than existence) of the event is carved in stone.
 
-(master)$ g branch --show-current 
-master
-(master)$ g branch --contains d4f34485ca8a077c98fc2303451e9bece9200dd7
-* master
-(master)$ 
+Dave
 
-
-commit d4f34485ca8a077c98fc2303451e9bece9200dd7
-Author: Juan Quintela <quintela@redhat.com>
-Date:   Wed Oct 11 22:55:48 2023 +0200
-
-    migration: Non multifd migration don't care about multifd flushes
-    
-    RDMA was having trouble because
-    migrate_multifd_flush_after_each_section() can only be true or false,
-    but we don't want to send any flush when we are not in multifd
-    migration.
-    
-    CC: Fabiano Rosas <farosas@suse.de
-    Fixes: 294e5a4034e81 ("multifd: Only flush once each full round of memory")
-    
-    Reported-by: Li Zhijian <lizhijian@fujitsu.com>
-    Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
-    Reviewed-by: Peter Xu <peterx@redhat.com>
-    Signed-off-by: Juan Quintela <quintela@redhat.com>
-    Message-ID: <20231011205548.10571-2-quintela@redhat.com>
-
-Or I am missing something?
-
-Later, Juan.
-
+> With regards,
+> Daniel
+> -- 
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
