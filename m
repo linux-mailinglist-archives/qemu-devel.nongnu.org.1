@@ -2,69 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716357CD1C3
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 03:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8887CD1C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 03:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsvE3-0004uT-Rd; Tue, 17 Oct 2023 21:19:55 -0400
+	id 1qsvHD-0005gu-Mr; Tue, 17 Oct 2023 21:23:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qsvDy-0004uF-8W
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 21:19:50 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qsvDw-0008H5-DA
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 21:19:50 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Bxd+iwMi9lAr0yAA--.62184S3;
- Wed, 18 Oct 2023 09:19:44 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxbNywMi9l9YMoAA--.19573S3; 
- Wed, 18 Oct 2023 09:19:44 +0800 (CST)
-Subject: Re: [PATCH v2 1/2] tcg: Add tcg_gen_{ld,st}_i128
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20231013175109.124308-1-richard.henderson@linaro.org>
- <20231013175109.124308-2-richard.henderson@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <33e8747b-7a0e-ad9a-8328-1bba68b5572f@loongson.cn>
-Date: Wed, 18 Oct 2023 09:19:44 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qsvHB-0005gd-6G
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 21:23:09 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qsvH9-00011e-Le
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 21:23:08 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6bb4abb8100so2898187b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 18:23:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697592186; x=1698196986; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=53FWt/I4TMg+o6dv6RYCr7S9W9TM5CB6z01xcoAY83g=;
+ b=pxO6ebvETGssSmCa5/V4WQGcn3y/iRHf8HwspjUaOhDjX3uvul4yccYXHyIaVJRymD
+ pXkoAq3fsmgoUoemHEoyCIIUwdEu0aBf6BjnrvYqSZsmJzhCyfSOVc0AsMm3LIN0je1D
+ PME37BXu3dNDkYBT+NI8LY2A4p2T5UVRVnw0c9caPFCgjLqSqfD2rDwlrZrzK7BFla6c
+ Eww883sTm0YSCWHRH4ysa2kZJt/rC9zqsc8BRn+JH0iAA7cOiGbEod9hULJfwEAHkYdG
+ DktQ2Xmg1+gneF1Mc0p/tGAGvLKcJPyEvD8fmuptMO1crxW/EoXFeBDgcPuaVOC8lCDF
+ YaCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697592186; x=1698196986;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=53FWt/I4TMg+o6dv6RYCr7S9W9TM5CB6z01xcoAY83g=;
+ b=VCnVnNejj8SQhiVcqeffNhWu51fDNF70w28/6C1v34uotqW++Fc80UagRMnx2ksAH+
+ kOp/9/VDPmmmJzZsQG9y4xJTf0vwiFWREnu22JdhzsHbvYIOhhtd87WxqFFCr9SMICCe
+ GmtdpVfoyit6wcP/liWKqNIck2YBL9rWE2HKcRrRzlzSAEpfMT/cf5Zy0FngziP8GnQa
+ IJZZkwBFExKx4enI97GeCwwVdO5nm+g9PNqGVkVaMnGMBJB3n6Himqvdr0jb4NfK1UV7
+ XJbSslYiqhnjs5gAgGGyzOGQcsNMi+3yogsz6EhJUAueZaSRA3WyAl9npi/xm3Hh1E5l
+ /26A==
+X-Gm-Message-State: AOJu0YzqX0kmn4Vid3WZBLDt/Z2sU0oSiUlXpB0v5ofmvnHtPUItrK1F
+ L3QcLps16TpOCUVjFnYZWE+e0g==
+X-Google-Smtp-Source: AGHT+IF27ehtrf3KMA7LaDHZE+QNQ9CJwhUXa+JQ0uay/Ag4OiGh87KNqAFuxXRQ2kmrpA7QpWO/hw==
+X-Received: by 2002:a05:6a21:7187:b0:159:fe1d:2f32 with SMTP id
+ wq7-20020a056a21718700b00159fe1d2f32mr3413573pzb.42.1697592185747; 
+ Tue, 17 Oct 2023 18:23:05 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ iw9-20020a170903044900b001c73f3a9b7fsm2232418plb.185.2023.10.17.18.23.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 17 Oct 2023 18:23:05 -0700 (PDT)
+Message-ID: <321c65a7-e698-485e-a262-02a11715223a@linaro.org>
+Date: Tue, 17 Oct 2023 18:23:03 -0700
 MIME-Version: 1.0
-In-Reply-To: <20231013175109.124308-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/18] target/i386: group common checks in the decoding
+ phase
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8BxbNywMi9l9YMoAA--.19573S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Kw4rCFWkCF13Cr1UXrWUGFX_yoW8tFy3pF
- 18X3y5WrZFyr1xKF9xAw1Y9ayrWw4vkw1jqryfGrZrGrs0yFy0yF13Kw4aqryxJa1DZr1U
- AFZIyF40krn5J3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1QV
- y3UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20231014100121.109817-1-pbonzini@redhat.com>
+ <20231014100121.109817-2-pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231014100121.109817-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-3.339, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,65 +94,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/10/14 ÉÏÎç1:51, Richard Henderson Ð´µÀ:
-> Do not require the translators to jump through concat and
-> extract of i64 in order to move values to and from  env.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/tcg/tcg-op-common.h |  3 +++
->   tcg/tcg-op.c                | 22 ++++++++++++++++++++++
->   2 files changed, 25 insertions(+)
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+On 10/14/23 03:01, Paolo Bonzini wrote:
+> @@ -224,6 +233,8 @@ struct X86OpEntry {
+>       unsigned     vex_class:8;
+>       X86VEXSpecial vex_special:8;
+>       uint16_t     valid_prefix:16;
+> +    uint8_t      check:8;
+> +    uint8_t      intercept:8;
+>       bool         is_decode:1;
+>   };
 
-Thanks.
-Song Gao
-> diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
-> index 2048f92b5e..56d4e9cb9f 100644
-> --- a/include/tcg/tcg-op-common.h
-> +++ b/include/tcg/tcg-op-common.h
-> @@ -747,6 +747,9 @@ void tcg_gen_mov_i128(TCGv_i128 dst, TCGv_i128 src);
->   void tcg_gen_extr_i128_i64(TCGv_i64 lo, TCGv_i64 hi, TCGv_i128 arg);
->   void tcg_gen_concat_i64_i128(TCGv_i128 ret, TCGv_i64 lo, TCGv_i64 hi);
->   
-> +void tcg_gen_ld_i128(TCGv_i128 ret, TCGv_ptr base, tcg_target_long offset);
-> +void tcg_gen_st_i128(TCGv_i128 val, TCGv_ptr base, tcg_target_long offset);
-> +
->   static inline void tcg_gen_concat32_i64(TCGv_i64 ret, TCGv_i64 lo, TCGv_i64 hi)
->   {
->       tcg_gen_deposit_i64(ret, lo, hi, 32, 32);
-> diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-> index 393dbcd01c..12bcedf42f 100644
-> --- a/tcg/tcg-op.c
-> +++ b/tcg/tcg-op.c
-> @@ -2880,6 +2880,28 @@ void tcg_gen_mov_i128(TCGv_i128 dst, TCGv_i128 src)
->       }
->   }
->   
-> +void tcg_gen_ld_i128(TCGv_i128 ret, TCGv_ptr base, tcg_target_long offset)
-> +{
-> +    if (HOST_BIG_ENDIAN) {
-> +        tcg_gen_ld_i64(TCGV128_HIGH(ret), base, offset);
-> +        tcg_gen_ld_i64(TCGV128_LOW(ret), base, offset + 8);
-> +    } else {
-> +        tcg_gen_ld_i64(TCGV128_LOW(ret), base, offset);
-> +        tcg_gen_ld_i64(TCGV128_HIGH(ret), base, offset + 8);
-> +    }
-> +}
-> +
-> +void tcg_gen_st_i128(TCGv_i128 val, TCGv_ptr base, tcg_target_long offset)
-> +{
-> +    if (HOST_BIG_ENDIAN) {
-> +        tcg_gen_st_i64(TCGV128_HIGH(val), base, offset);
-> +        tcg_gen_st_i64(TCGV128_LOW(val), base, offset + 8);
-> +    } else {
-> +        tcg_gen_st_i64(TCGV128_LOW(val), base, offset);
-> +        tcg_gen_st_i64(TCGV128_HIGH(val), base, offset + 8);
-> +    }
-> +}
-> +
->   /* QEMU specific operations.  */
->   
->   void tcg_gen_exit_tb(const TranslationBlock *tb, unsigned idx)
+Unless you have a good reason otherwise, use "unsigned" with bit fields. In this case, 
+'uint8_t' is really 'unsigned char', and so gdb will print the ascii by defailt.
 
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
