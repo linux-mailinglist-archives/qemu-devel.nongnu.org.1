@@ -2,83 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C047CEA31
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF6B37CEA46
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:52:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtELr-0007cU-Fi; Wed, 18 Oct 2023 17:45:15 -0400
+	id 1qtESE-00014e-Gm; Wed, 18 Oct 2023 17:51:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtELp-0007be-8h
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:45:13 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qtES5-0000is-TK
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:42 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtELn-00039m-7H
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:45:12 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6b1e46ca282so5746581b3a.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:45:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qtES2-0004Mg-Ti
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:41 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6934202b8bdso6378350b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697665509; x=1698270309; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wAOEHQ77CDEWxljUHmClboNiozu0PLhNNjRUillm338=;
- b=bV0GImePWIDWXdor+cUJvbjE0xObAkogcd3STfccACZYOvXO/vJN3eG80mlXV5F02k
- vY6kvNnuFrWWLrQUy81KoPVz9Mi7oBug73LMsWj0IL8L+a1yv8nPNoIafiK0P3VsSRAM
- Ads3fiKmQtcvSxZ3Qt6ckJkIAPzfp/htqw4VKroqIHPzviGXtmqhqOxRm3Jwl1ENlmdz
- RxaXwoudkxiFXlSvJy8P9H+qQEIHo7GwyiJlu3AwSW0iI0XKWJPSSei3vrlb3dBphXiE
- nHgxjxdJuxCugfEnQsjDfYUS1MVDYgp73oXJH2JgsaBmR9fk6Ky7IF/fp/xBfkXU0kSc
- cnkw==
+ d=linaro.org; s=google; t=1697665897; x=1698270697; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8/S8sSHxU6SsNqJ7pUVzXGT8Rv+p2JizeJrho9KZ9JM=;
+ b=I8h6xbfDiSye8PAScOVCCK2+G99toazOIVwvJQ5wpX+ziCS7njDwpcKy2daI3s/6En
+ BgyrG++TjkYB7z73GOF/PnsqLQUuIzVQTMeRmMufC7MNtvq/79Tebq64q/1YT0BYFqut
+ NUh1sQNz1nHlLSxwscsX5WDvxvkN5LlBOVLEjOqezPSOvIilcueDoJhdssKo3KKOXFis
+ YJD7FuNxev0uRPZj7dOOE4PzOf6gtWRzcllKcbrrEcKag7pXodZZ092l7AnNHn7BsiZG
+ j5bMysj5YyQlHduib74e1LmrVnCioIvROfpjZRqb5iw+jaQBssqj5SOco1WTJdMFAfUK
+ 64Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697665509; x=1698270309;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wAOEHQ77CDEWxljUHmClboNiozu0PLhNNjRUillm338=;
- b=WnZc//WG5VzamRhDm/Nyw6SM8zPf2gSB4+EWj5tTX244UCOkZMfj4HuGHG7RYomKJy
- oAOm5JVY6UfSLOemlC7bJfLuQJJrSP76UykG8QGrrjbYsuLWNkMufmcQ8q2izHC1QL4k
- zc+gz4ZtgyNlN3XeJLqATRUooOsb4xQ/A4ud4ZlNwSvWoKa0Wk445C4FCAakGPWyzy8C
- /CwlQb3PPpWifWPtLNCyvyvCl5F0xO7vsiJMN9nKVZDYFK9RaynWGuftJsggM7L18Lvj
- PClD3/5t93M3FRDMjwjKFQ0KytfhdMPo834ZHxMjupXnCt8zNdkwanVh74nyXIa1kJIq
- no0w==
-X-Gm-Message-State: AOJu0YzQf8jt3dk0bZncbPdAaY89956zxHXPeLxmTSvBIOH/OmygxYSN
- B1Xug3C6S+9/JhoF3+L2AmLW7w==
-X-Google-Smtp-Source: AGHT+IGRtMZ88AXTbtvNiQTkY6yQhFWKVt9MNY4aZ1jEEECFra4l3Yh35fwXEpn84i1xsSE+4ezPeg==
-X-Received: by 2002:a62:798b:0:b0:690:1c1b:aefd with SMTP id
- u133-20020a62798b000000b006901c1baefdmr396359pfc.5.1697665509468; 
- Wed, 18 Oct 2023 14:45:09 -0700 (PDT)
-Received: from [192.168.68.107] ([177.45.186.249])
- by smtp.gmail.com with ESMTPSA id
- t23-20020aa79477000000b006bd9422b279sm3783899pfq.54.2023.10.18.14.45.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 14:45:09 -0700 (PDT)
-Message-ID: <2a2febdb-d42e-4d72-aae1-e630f079f2c2@ventanamicro.com>
-Date: Wed, 18 Oct 2023 18:45:04 -0300
+ d=1e100.net; s=20230601; t=1697665897; x=1698270697;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8/S8sSHxU6SsNqJ7pUVzXGT8Rv+p2JizeJrho9KZ9JM=;
+ b=MJxeUc3t7+nKdYm/gsBlC0+56R+kBx3+00wUbb1WOLa8jCcXrjHJqh3POjoiksQNJL
+ osKFVqtDyX7VUzX1M52EhAdG1MHV1itGKNa+1NxqOb/a76W8u1Qiw4xte1koAOBimjw5
+ Xj9tu4aF0/UqPrUSbDu5pIm8HBI7cojwiAKueb3y7lSboJlsHOQONPnpENhafNKKszfl
+ IeY2vz8dy1M2kv0pioI3/NYBBsDj2o2IJLoxoWxyho21s7uMvGyvzvzdpuBgfb6V2Apl
+ nl8jPoLXaUq8yGdlfXmjh3fm0KVio5uczZUg81duCjgtEvKIHoZKbZ33zuSFUxx4JaKW
+ z4nQ==
+X-Gm-Message-State: AOJu0Yx7Sddaeb4aRHHMa9qi//h1JizxMDxI2C7Ss1sn4Wl4/rkvfKoo
+ 6KrdN7ndyBOeW1MN/30d4NUjYlpdWKcOB1V3Lpg=
+X-Google-Smtp-Source: AGHT+IHDoqrz6lhI9JxwUcG5Rq1PE+dzEFoHjvMIVBSKrHsEPEs9rW9AqxCZyjIzX6GjFuJoUAp9Yw==
+X-Received: by 2002:a05:6a00:c91:b0:690:ce36:8b00 with SMTP id
+ a17-20020a056a000c9100b00690ce368b00mr451446pfv.2.1697665896863; 
+ Wed, 18 Oct 2023 14:51:36 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 14:51:36 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: deller@gmx.de
+Subject: [PATCH 00/61] target/hppa: Implement hppa64-cpu
+Date: Wed, 18 Oct 2023 14:50:34 -0700
+Message-Id: <20231018215135.1561375-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/10] riscv: RVA22U64 profile support
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
- <CAKmqyKP=4kGpO=8D13iJw7pJSkD9CFary_DHt236+e1GFMAngA@mail.gmail.com>
- <a89189d3-2975-487e-9d2e-bd8ea60feba5@ventanamicro.com>
- <20231016-cf26d23a1fe53ee3b5b68513@orel>
- <CAKmqyKMg0VKRQ_kFLHJQCq19p-Yv4iJqJZF3XGZWxfuYPe3rbQ@mail.gmail.com>
- <20231017-e7a4712137165b59844499e3@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231017-e7a4712137165b59844499e3@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,140 +87,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is the pa2.0 cpu that should populate Helge's C3700 workstation.
+
+I have adjusted both user and system binaries to always support the
+64-bit cpu but default to the 32-bit cpu.
+
+I have not yet copied the linux kernel sigframe hackery to save
+the upper halves of the registers across signals.  I couldn't get
+hppa-linux-gcc to produce 64-bit code with -march=2.0.  I did some
+some manual testing with hppa64-linux-gnu, but that expects lp64
+and a full 64-bit system library, so the tests has to be small
+and self-contained and also required some manual adjustment for
+the .got pointer references.
+
+But! With said adjustments we can run tests/tcg/multilib/sha512,
+which uses uint64_t a fair bit.  Bugs were found and fixed.
 
 
-On 10/17/23 05:08, Andrew Jones wrote:
-> On Tue, Oct 17, 2023 at 01:55:47PM +1000, Alistair Francis wrote:
->> On Mon, Oct 16, 2023 at 7:03 PM Andrew Jones <ajones@ventanamicro.com> wrote:
->>>
->>> On Thu, Oct 12, 2023 at 04:07:50PM -0300, Daniel Henrique Barboza wrote:
->>>>
->>>>
->>>> On 10/11/23 00:01, Alistair Francis wrote:
->>>>> On Sat, Oct 7, 2023 at 12:23 AM Daniel Henrique Barboza
->>>>> <dbarboza@ventanamicro.com> wrote:
->>>>>>
->>>>>> Hi,
->>>>>>
->>>>>> Several design changes were made in this version after the reviews and
->>>>>> feedback in the v1 [1]. The high-level summary is:
->>>>>>
->>>>>> - we'll no longer allow users to set profile flags for vendor CPUs. If
->>>>>>     we're to adhere to the current policy of not allowing users to enable
->>>>>>     extensions for vendor CPUs, the profile support would become a
->>>>>>     glorified way of checking if the vendor CPU happens to support a
->>>>>>     specific profile. If a future vendor CPU supports a profile the CPU
->>>>>>     can declare it manually in its cpu_init() function, the flag will
->>>>>>     still be set, but users can't change it;
->>>>>>
->>>>>> - disabling a profile will now disable all the mandatory extensions from
->>>>>>     the CPU;
->>>>>
->>>>> What happens if you enable one profile and disable a different one?
->>>>
->>>> With this implementation as is the profiles will be evaluated by the order they're
->>>> declared in riscv_cpu_profiles[]. Which isn't exactly ideal since we're exchanging
->>>> a left-to-right ordering in the command line by an arbitrary order that we happened
->>>> to set in the code.
->>>>
->>>> I can make some tweaks to make the profiles sensible to left-to-right order between
->>>> them, while keeping regular extension with higher priority. e.g.:
->>>>
->>>>
->>>> -cpu rv64,zicbom=true,profileA=false,profileB=true,zicboz=false
->>>> -cpu rv64,profileA=false,zicbom=true,zicboz=false,profileB=true
->>>> -cpu rv64,profileA=false,profileB=true,zicbom=true,zicboz=false
->>>>
->>>> These would all do the same thing: "keeping zicbom=true and zicboz=false, disable profileA
->>>> and then enable profile B"
->>>>
->>>> Switching the profiles order would have a different result:
->>>>
->>>> -cpu rv64,profileB=true,profileA=false,zicbom=true,zicboz=false
->>>>
->>>> "keeping zicbom=true and zicboz=false, enable profile B and then disable profile A"
->>>>
->>>>
->>>> I'm happy to hear any other alternative/ideas. We'll either deal with some left-to-right
->>>> ordering w.r.t profiles or deal with an internal profile commit ordering. TBH I think
->>>> it's sensible to demand left-to-right command line ordering for profiles only.
->>>
->>> left-to-right ordering is how the rest of QEMU properties work and scripts
->>> depend on it. For example, one can do -cpu $MODEL,$DEFAULT_PROPS,$MORE_PROPS
->>> where $MORE_PROPS can not only add more props but also override default
->>> props (DEFAULT_PROPS='foo=off', MORE_PROPS='foo=on' - foo will be on).
->>> left-to-right also works with multiple -cpu parameters, i.e. -cpu
->>> $MODEL,$DEFAULT_PROPS -cpu $MODEL,$MY_PROPS will replace default props
->>> with my props.
->>
->> That seems like the way to go then
->>
->>>
->>> I don't think profiles should be treated special with regard to this. They
->>> should behave the same as any property. If one does
->>> profileA=off,profileB=on and there are overlapping extensions then a
->>
->> But what does this mean? What intent is the user saying here?
->>
->> For example if a user says:
->>
->>      RVA22U64=off,RVA24U64=on
->>
->> They only want the extensions that were added in RVA24U64? What about
->> G and the standard extensions?
-> 
-> Disabling a profile is certainly odd, because I wouldn't expect profiles
-> to be used with any CPU type other than a base type, i.e. they should be
-> used to enable extensions on a barebones CPU model, which means setting
-> them off would be noops.  And, if a profile is set off for a cpu model
-> where extensions are set either by the model or by previous profile and
-> extension properties, then it also seems like an odd use, but that's at
-> least consistent with how other properties would work, so I'm not sure we
-> need to forbid it.
-
-It's weird to add a flag that users can set to 'off' and nothing happens.
-
-That said, I'm considering profile disablement a debug/development option.
-I am thinking about adding a warning when users disables a profile like:
-
-"disabling a profile is recommended only for troubleshooting and is discouraged
-for regular use"
-
-And also mention something along those lines in the docs as well.
-
-We might be compelled into implementing profile disablement because it's weird
-otherwise, but we're not obligated to promote it. In fact I want to actively
-discourage it.
+r~
 
 
-Thanks,
+Helge Deller (2):
+  target/hppa: sar register allows only 5 bits on 32-bit CPU
+  target/hppa: Fix interruption based on default PSW
 
-Daniel
+Richard Henderson (59):
+  include/hw/elf: Remove truncating signed casts
+  target/hppa: Remove get_temp
+  target/hppa: Remove get_temp_tl
+  target/hppa: Remove load_const
+  target/hppa: Fix hppa64 case in machine.c
+  target/hppa: Fix load in do_load_32
+  target/hppa: Truncate rotate count in trans_shrpw_sar
+  target/hppa: Fix trans_ds for hppa64
+  target/hppa: Fix do_add, do_sub for hppa64
+  target/hppa: Fix bb_sar for hppa64
+  target/hppa: Fix extrw and depw with sar for hppa64
+  target/hppa: Introduce TYPE_HPPA64_CPU
+  target/hppa: Make HPPA_BTLB_ENTRIES variable
+  target/hppa: Implement cpu_list
+  target/hppa: Implement hppa_cpu_class_by_name
+  target/hppa: Update cpu_hppa_get/put_psw for hppa64
+  target/hppa: Handle absolute addresses for pa2.0
+  target/hppa: Adjust hppa_cpu_dump_state for hppa64
+  hw/hppa: Translate phys addresses for the cpu
+  target/hppa: Fix hppa64 addressing
+  target/hppa: Pass d to do_cond
+  target/hppa: Pass d to do_sub_cond
+  target/hppa: Pass d to do_log_cond
+  target/hppa: Pass d to do_sed_cond
+  target/hppa: Pass d to do_unit_cond
+  linux-user/hppa: Fixes for TARGET_ABI32
+  target/hppa: Drop attempted gdbstub support for hppa64
+  target/hppa: Remove TARGET_HPPA64
+  target/hppa: Decode d for logical instructions
+  target/hppa: Decode d for unit instructions
+  target/hppa: Decode d for cmpclr instructions
+  target/hppa: Decode d for add instructions
+  target/hppa: Decode d for sub instructions
+  target/hppa: Decode d for bb instructions
+  target/hppa: Decode d for cmpb instructions
+  target/hppa: Decode CMPIB double-word
+  target/hppa: Decode ADDB double-word
+  target/hppa: Implement LDD, LDCD, LDDA, STD, STDA
+  target/hppa: Implement DEPD, DEPDI
+  target/hppa: Implement EXTRD
+  target/hppa: Implement SHRPD
+  target/hppa: Implement CLRBTS, POPBTS, PUSHBTS, PUSHNOM
+  target/hppa: Implement STDBY
+  target/hppa: Implement IDTLBT, IITLBT
+  target/hppa: Remove TARGET_REGISTER_BITS
+  target/hppa: Remove most of the TARGET_REGISTER_BITS redirections
+  target/hppa: Remove remaining TARGET_REGISTER_BITS redirections
+  target/hppa: Use tcg_temp_new_i64 not tcg_temp_new
+  target/hppa: Replace tcg_gen_*_tl with tcg_gen_*_i64
+  target/hppa: Implement HADD
+  target/hppa: Implement HSUB
+  target/hppa: Implement HAVG
+  target/hppa: Implement HSHL, HSHR
+  target/hppa: Implement HSHLADD, HSHRADD
+  target/hppa: Implement MIXH, MIXW
+  target/hppa: Implement PERMH
+  target/hppa: Precompute zero into DisasContext
+  target/hppa: Return zero for r0 from load_gpr
+  target/hppa: Simplify trans_dep*_imm
 
+ configs/targets/hppa-linux-user.mak |    1 +
+ include/hw/elf_ops.h                |   17 +-
+ linux-user/hppa/target_elf.h        |    2 +-
+ target/hppa/cpu-param.h             |   22 +-
+ target/hppa/cpu-qom.h               |    1 +
+ target/hppa/cpu.h                   |   99 +-
+ target/hppa/helper.h                |   53 +-
+ target/hppa/insns.decode            |  169 ++-
+ hw/hppa/machine.c                   |   93 +-
+ linux-user/hppa/signal.c            |    6 +-
+ target/hppa/cpu.c                   |   52 +-
+ target/hppa/gdbstub.c               |   26 +-
+ target/hppa/helper.c                |   91 +-
+ target/hppa/int_helper.c            |   30 +-
+ target/hppa/machine.c               |   13 +-
+ target/hppa/mem_helper.c            |  141 +-
+ target/hppa/op_helper.c             |  310 +++-
+ target/hppa/sys_helper.c            |   13 +-
+ target/hppa/translate.c             | 2030 +++++++++++++++------------
+ 19 files changed, 1959 insertions(+), 1210 deletions(-)
 
-> 
->>
->> To me it just seems really strange to have more than 1 profile.
->> Profiles are there to help software and users have common platforms.
->> Why would a user want to mix-n-match them
-> 
-> I think it's possible users will want to describe platforms which are
-> compatible with more than one profile, e.g. RVA22U64=on,RVA24U64=on.
-> 
-> The example I gave Andrea about this was that C may get demoted from
-> mandatory to optional in later profiles. If a platform is built which
-> conforms to an older profile with C and to the later profile where C
-> is only optional, then enabling both profiles will ensure that C is
-> enabled, whereas only enabling the later profile will not, and then
-> C must be added manually after inspecting the older profile to see
-> what will be missed. OIOW, the burden of individual extension management
-> will still be present if only single profiles may be enabled at a time.
-> (And, even if the later profile was a strict superset of the older one,
-> then, if a user wants to explicitly describe a platform which claims
-> compatibility with both profiles, they probably shouldn't be punished
-> for it, even if the resulting extension enablement would be equivalent
-> to only enabling the later profile.)
-> 
-> Thanks,
-> drew
+-- 
+2.34.1
+
 
