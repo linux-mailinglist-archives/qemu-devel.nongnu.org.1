@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B147CEC13
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9E27CEC48
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:49:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtG1J-0004Ho-JB; Wed, 18 Oct 2023 19:32:09 -0400
+	id 1qtGGT-0003Ua-0r; Wed, 18 Oct 2023 19:47:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG10-00046n-7s
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:51 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ id 1qtGGO-0003U3-D6
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:47:44 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0y-0000Md-2O
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:49 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-57be3d8e738so4161992eaf.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:47 -0700 (PDT)
+ id 1qtGGM-0005Ij-Mz
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:47:44 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6bd73395bceso175954b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:47:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697671907; x=1698276707; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bnu9T106+3Frnuh9qTylVBrRrlFzWm5MBIT4IbQZiD0=;
- b=bGdIuMhRHz4aRB7J3gowVA8JKknhwObHJvk3PnhzNtSGbGG7KzLc24hvke0P4pAf2k
- 3cLfROlbtFfXJiFZ2LG7FRYnrUlWOsknkN7CMnJMsaSfBj04gWiafeC/PqrQK/dLLdX/
- LmeI6EEyt5KAi4IoeeFcDK9LXt7cs0d3L6p15IIO2QTrB5qT/sjT0xNsH7RiaY8jdtLv
- FkxDlY3r10F5EqU9Z8rf5GN7NVblkswi8bWySeI5PICer5wcy14UDW7nD4cB95JwnlCb
- P7MxmQf4+t5tqoSoOPgApiOXIbJqOJqHFdAqmx3QFeWRITPQX/BkDQztzudH4M/tBEUS
- 95tw==
+ d=linaro.org; s=google; t=1697672860; x=1698277660; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VFcySX4HVLN4VTmQe1z4Y+xyMXQ9kxDCJmkafmz00p4=;
+ b=V+rq+qzVTifvW0QANvo83BLeDn4370ZWKh/5Z/+v7E//1L6KxTlZj2hoDxLWoI4mBm
+ FD3HHOnAXqsJhjmqGLsTYOtkVRVe2tjnaLS0zCkF/ON1MyjcEdPVWA77koe5iocDRHw1
+ foMUkxu9SBih5YEKZmisVt2Nhdu+yPTkAaCcRc/EhStyKqw05S0I93evFauhmWMDYQ0L
+ pg70g3SFXXKQkwiAHHp/wkgcOOD3Od2HwZFZwIv2F6Y4g8/UM1g9PMRInof02UTVhUoC
+ QoTJpSIUzWsbOo6XNWTdFWty0ZOIUdO4J/idD7tCUr1dYAp+PUEy2XbxDrT6GWFWbH0c
+ eP2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697671907; x=1698276707;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bnu9T106+3Frnuh9qTylVBrRrlFzWm5MBIT4IbQZiD0=;
- b=D+AE1z0xAHzpjnIl5F8eJJEpbTQiA/spqhqbZu3xyumHJ/xy4kUycJTCYysc46D6U1
- tylO24+G8NL8E8dqSbverXBxyKVa3VccGxWtacaZukJyUMxIEt3bemPO5Y479ESif3X8
- m2f58vpzMEzRjdP6z305JPFXTegmmP5xVlUe+OwwqSbLw3lk6leRd/fkooS+F0ATXQmJ
- jouhEkftdqNFMfSL3dp/1+Oe8ESegWK9yaEOxakKQ19Jb/eUPCRkf/cKBTOtBne3BGJK
- 2gvD3OSap6J/iAm1/bB/tDDv2ur/ScbmN0wduNEcbbipadowSKslVuH8BQCc2l1yCLzM
- Sgow==
-X-Gm-Message-State: AOJu0Yw6NuexBVOV8U6EDNVyRqaE3HaDKTded6aHLmJZyso5YVXSlcjR
- cJVXrxLDwnCVCsHtzZSUM90WnVf/3MbCNCCGBZY=
-X-Google-Smtp-Source: AGHT+IGHGeg/Thp/MvOBWr47nlNt2wd1PoccI1xeNEuUJCZpfAB/CqMIrIui43oupOxyxJ2uSoktGg==
-X-Received: by 2002:a05:6359:5e18:b0:164:8d78:258a with SMTP id
- pw24-20020a0563595e1800b001648d78258amr419570rwb.20.1697671906794; 
- Wed, 18 Oct 2023 16:31:46 -0700 (PDT)
-Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 16:31:46 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 14/14] linux-user: Remap guest SIGABRT
-Date: Wed, 18 Oct 2023 16:31:34 -0700
-Message-Id: <20231018233134.1594292-15-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231018233134.1594292-1-richard.henderson@linaro.org>
-References: <20231018233134.1594292-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1697672860; x=1698277660;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VFcySX4HVLN4VTmQe1z4Y+xyMXQ9kxDCJmkafmz00p4=;
+ b=VbPC7arX0gQpSxgyG8wCfSPCZx7xUbSfiarT8PpwZhPmlFGLC59c0hlNoTwfor3+qC
+ xiqbaXH8nWGQvn5Z/2CxEW3VHtcKeGoC233lgC+DdkqJWO93uy1BGvwvvpnso87HiPOC
+ tn6ztFDPkC0N6ITDNY6njq8aLiHlWJhvsnlf/4NbajJe66i/+LQvrMPivmLksG9QdHfO
+ U5fnxeGrdm2i7f3srMQwSwkdL3DLoIC/5W8UiJ/MzWisn+8gKQ80Nbff2V31W3zy5t3d
+ fsE7jGQJqlO82b0EeJBsDpl+CZhmhgLywtnd2YiCo0Wfr0JQ+/69i+W2c28QespK/Jom
+ DIrQ==
+X-Gm-Message-State: AOJu0YxP+hEK66NGnTRAjUj84yI9Op9KLo7s54KMYKa0AgZRGd6Cc9PT
+ FWM3tqXZ1zCiz5A2H5813C7BjQ==
+X-Google-Smtp-Source: AGHT+IHEJYucTm+l4gDU4tL0A05X0V8NJvMrFjZg7WHIjAQWxY4iOJmVK0Fwxw+TTe506SXpgoHGCg==
+X-Received: by 2002:a05:6a00:4788:b0:68f:c4a2:fb1f with SMTP id
+ dh8-20020a056a00478800b0068fc4a2fb1fmr474848pfb.8.1697672860174; 
+ Wed, 18 Oct 2023 16:47:40 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ s188-20020a625ec5000000b006bb45a6a011sm4018038pfb.128.2023.10.18.16.47.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Oct 2023 16:47:39 -0700 (PDT)
+Message-ID: <88eb5431-9183-4619-8049-2910544f6b68@linaro.org>
+Date: Wed, 18 Oct 2023 16:47:38 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc33.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/3] target/loongarch: Allow user enable/disable
+ LSX/LASX features
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: philmd@redhat.com, peter.maydell@linaro.org, eblake@redhat.com,
+ armbru@redhat.com, maobibo@loongson.cn
+References: <20231018085908.3327130-1-gaosong@loongson.cn>
+ <20231018085908.3327130-3-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231018085908.3327130-3-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,99 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Distinguish host SIGABRT from guest SIGABRT by mapping
-the guest signal onto one of the host RT signals.
+On 10/18/23 01:59, Song Gao wrote:
+> Some users may not need LSX/LASX, this patch allows the user
+> enable/disable LSX/LASX features.
+> 
+>   e.g
+>   '-cpu max,lsx=on,lasx=on'   (default);
+>   '-cpu max,lsx=on,lasx=off'  (enabled LSX);
+>   '-cpu max,lsx=off,lasx=on'  (error, need lsx=on);
+>   '-cpu max,lsx=off'          (disable LSX and LASX).
 
-This prevents a cycle by which a host assertion failure
-is caught and handled by host_signal_handler, queued for
-the guest, and then we attempt to continue past the
-host abort.  What happens next depends on the host libc,
-but is neither good nor helpful.
+...
 
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/signal.c | 42 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 7 deletions(-)
+> +    /* CPU has LSX */
+> +    bool has_lsx;
+> +    /* CPU has  LASX */
+> +    bool has_lasx;
 
-diff --git a/linux-user/signal.c b/linux-user/signal.c
-index b67077f320..3b8efec89f 100644
---- a/linux-user/signal.c
-+++ b/linux-user/signal.c
-@@ -522,8 +522,21 @@ static void signal_table_init(void)
-      * multiplexed over a single host signal.
-      * Attempts for configure "missing" signals via sigaction will be
-      * silently ignored.
-+     *
-+     * Remap the target SIGABRT, so that we can distinguish host abort
-+     * from guest abort.  When the guest registers a signal handler or
-+     * calls raise(SIGABRT), the host will raise SIG_RTn.  If the guest
-+     * arrives at dump_core_and_abort(), we will map back to host SIGABRT
-+     * so that the parent (native or emulated) sees the correct signal.
-+     * Finally, also map host to guest SIGABRT so that the emulated
-+     * parent sees the correct mapping from wait status.
-      */
--    for (hsig = SIGRTMIN; hsig <= SIGRTMAX; hsig++) {
-+
-+    hsig = SIGRTMIN;
-+    host_to_target_signal_table[SIGABRT] = 0;
-+    host_to_target_signal_table[hsig++] = TARGET_SIGABRT;
-+
-+    for (; hsig <= SIGRTMAX; hsig++) {
-         tsig = hsig - SIGRTMIN + TARGET_SIGRTMIN;
-         if (tsig <= TARGET_NSIG) {
-             host_to_target_signal_table[hsig] = tsig;
-@@ -539,6 +552,8 @@ static void signal_table_init(void)
-         }
-     }
- 
-+    host_to_target_signal_table[SIGABRT] = TARGET_SIGABRT;
-+
-     /* Map everything else out-of-bounds. */
-     for (hsig = 1; hsig < _NSIG; hsig++) {
-         if (host_to_target_signal_table[hsig] == 0) {
-@@ -582,13 +597,21 @@ void signal_init(void)
-         int hsig = target_to_host_signal(tsig);
-         abi_ptr thand = TARGET_SIG_IGN;
- 
--        if (hsig < _NSIG) {
--            struct sigaction *iact = core_dump_signal(tsig) ? &act : NULL;
-+        if (hsig >= _NSIG) {
-+            continue;
-+        }
- 
-+        /* As we force remap SIGABRT, cannot probe and install in one step. */
-+        if (tsig == TARGET_SIGABRT) {
-+            sigaction(SIGABRT, NULL, &oact);
-+            sigaction(hsig, &act, NULL);
-+        } else {
-+            struct sigaction *iact = core_dump_signal(tsig) ? &act : NULL;
-             sigaction(hsig, iact, &oact);
--            if (oact.sa_sigaction != (void *)SIG_IGN) {
--                thand = TARGET_SIG_DFL;
--            }
-+        }
-+
-+        if (oact.sa_sigaction != (void *)SIG_IGN) {
-+            thand = TARGET_SIG_DFL;
-         }
-         sigact_table[tsig - 1]._sa_handler = thand;
-     }
-@@ -711,7 +734,12 @@ void dump_core_and_abort(CPUArchState *env, int target_sig)
-     TaskState *ts = (TaskState *)cpu->opaque;
-     int host_sig, core_dumped = 0;
- 
--    host_sig = target_to_host_signal(target_sig);
-+    /* On exit, undo the remapping of SIGABRT. */
-+    if (target_sig == TARGET_SIGABRT) {
-+        host_sig = SIGABRT;
-+    } else {
-+        host_sig = target_to_host_signal(target_sig);
-+    }
-     trace_user_dump_core_and_abort(env, target_sig, host_sig);
-     gdb_signalled(env, target_sig);
- 
--- 
-2.34.1
+Why do you need these variables?
 
+I suspect that you've copied them from one of the more complex Arm cases where we need to 
+resolve multiple properties simultaneously during realize.
+
+You'll get identical behaviour in your current code if you drop these and rely only on the 
+CPUCFG2 bits.
+
+If you wanted to do something more complex, you could use OnOffAuto, so that you can 
+detect conflicting settings (such as #3 above), but not generate an error for
+
+   -cpu foo,lasx=on
+
+where 'foo' is some cpu model which does *no* default lsx=on.  You would see that 
+has_lsx==AUTO && has_lasx==ON and then set lsx=ON.
+
+
+r~
 
