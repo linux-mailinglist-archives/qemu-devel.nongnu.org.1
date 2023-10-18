@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13AEC7CE267
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDCA7CE279
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:14:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8wl-0001EH-OU; Wed, 18 Oct 2023 11:58:59 -0400
+	id 1qt8wv-0001KS-Vn; Wed, 18 Oct 2023 11:59:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8w8-0000Xw-MA
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:58:22 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8wI-0000nF-Qm
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:58:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8w6-0007ON-OV
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:58:20 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8wG-0007QF-7p
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:58:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644697;
+ s=mimecast20190719; t=1697644707;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lH1AqdjPXgfR1Memi78dfyy1TzArPQZzj3BdRAkG12A=;
- b=ixUKBSt5YFpWUKQmUvuYw6ezee/8rURWCMzRxBPS7iat5F4oPconBXD0oEzYKn2fRYMxl6
- 64zr1gJVw0oI2i+ewxkU9nyvlqj3GPNt5rvaEQJ3W7dl0XJDqTUgKSu+z1xDDciqH5mk3z
- lNTrmQ65xnXna5VMgUYuW9Oo35eyk4g=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=f/7Z3H+51oJIJWzVgGhiU5HVqcfMDnbILXmSBJdNG3g=;
+ b=DgnXKSq8u6hL+4lUMdy1D3ghAKW96JU//gofuH0d1RlTw9WOdSuPczdavFSNzEIapJVi9h
+ K/eltECVNkm5fpF9ZlLViJykWihnWt1kRrITXA2u7YHBbVB2n/Bfsnp5e4G2g4xAr+SSFX
+ R7UsxTTO+Piw82i9Ulw9O63xKZPR/38=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-263-AQ99QkY2OQCSBfE1sYf2gA-1; Wed, 18 Oct 2023 11:58:15 -0400
-X-MC-Unique: AQ99QkY2OQCSBfE1sYf2gA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4074cdf2566so35123125e9.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:58:15 -0700 (PDT)
+ us-mta-67-VLPQ2JWCOgi5NTkUghYXiw-1; Wed, 18 Oct 2023 11:58:20 -0400
+X-MC-Unique: VLPQ2JWCOgi5NTkUghYXiw-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-507a3ae32beso4505380e87.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:58:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644694; x=1698249494;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lH1AqdjPXgfR1Memi78dfyy1TzArPQZzj3BdRAkG12A=;
- b=xJWt5NUy0zTIiOxzEdvhvcgLbo8qVJVgCuWOQRhUvekgL2fEp0N3OYhuESwy02l/IK
- +/tiI0r7BTy0vifE3rjfpJ+s75hxtfAGsiikTZA6yXZbxUT24cqMzlZ6HpYaCZHGArgt
- 7mVDvEMfd6dZIPXAABo/CrBmF03B0RV+7c+nnMXENjC9pSGu5rx/Jg6z6SYuBBpN50tO
- DW/AC6b7akiEPLzOHucu84foZ/UamHinvQLk/MVFB/xzt+e7nmA02Nu6ki/za1mSGjIt
- Vv3r2JUggjS7MZRe/2hmwtcSEoj75ICbsxGXEUNRmxRM8tX867h7SiU48Ap5pWcMofOD
- XqLw==
-X-Gm-Message-State: AOJu0YxuIoCP1o6w0kQv61MKXq/687IgFFZWa9maHH5FBHMfpCQA7HSo
- cgZZm7zycDmdZiSc3I0gy2T/rG05EH9Bctlm0gjWiXeRaFzYUa0ILABRO2dGM/jGZlwi2xC3kfb
- 9JeOxjOOhSc+YisS0hsOmlhPvBUhwZObUtAHvzyd1zeGk0fEEV/730y5zvChfsZngXpDF9ZE=
-X-Received: by 2002:a05:600c:1d26:b0:407:5de2:ea4d with SMTP id
- l38-20020a05600c1d2600b004075de2ea4dmr5105135wms.13.1697644694123; 
- Wed, 18 Oct 2023 08:58:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhqMvPWK74jLPKgfXn6rsH8oZZKxJYpNAvwLJIUaBm4yZfVBzGatHkKUDGiGqfOF3j/BqoiA==
-X-Received: by 2002:a05:600c:1d26:b0:407:5de2:ea4d with SMTP id
- l38-20020a05600c1d2600b004075de2ea4dmr5105103wms.13.1697644693639; 
- Wed, 18 Oct 2023 08:58:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697644698; x=1698249498;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=f/7Z3H+51oJIJWzVgGhiU5HVqcfMDnbILXmSBJdNG3g=;
+ b=HjGgEiapSm/8hlQC5NdeORiEyJynsy4eOie+o/TKEcOSy8fzknjV8beC+heJG3Y0fx
+ KSiVFPXr/0PzUIdaDM8YuDsoFqQLwkZ7EDCj84fXgxtT1l4GP44VLUNgi9B5trPZV2qh
+ O9OWvjXTxCplJmgShQ811evIoY5y1VOgmqx9xl97Oz6TzxrRKhEk24obJic7Knvdsvw5
+ kwr8pgF/TwRX4lQeUsbOww3JxXbA8b4MlbLjR4nEIOBHc+Gk/iJut9TP7/5+Kuq392PF
+ VR4WKYlUJVFGxh+aHuJpklWbQB0KlomyYdeV4FaERLqVezYaQOXo4LmLtoi+crJnv0G0
+ v3YQ==
+X-Gm-Message-State: AOJu0YxGXF5rL6DON9/2tukW/Zg2/n1MFiH1fydNnJhDjDl1cP1mJHkZ
+ ue08OzFd3XrK/x9hvAl/KNKKlLOgbe7bNbHX8Ad8/4N478Hs9n5HXfeDU0QBJnwQ3gGD92KAGxn
+ h5QdSaWo5UqQwm579txfu//TkTNpRdepS10l0w9faauuCH8ZmKQc1bKSOa/zw5Odoc2F+jiU=
+X-Received: by 2002:a19:e041:0:b0:503:99d:5a97 with SMTP id
+ g1-20020a19e041000000b00503099d5a97mr4494718lfj.20.1697644698695; 
+ Wed, 18 Oct 2023 08:58:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHm2UcGcTSLn4PwHqeyN+e0jMbyLHTT9BSNzW++LdJ+IfPRdrrpog7kAQF8I05DTP2Ly1WGdA==
+X-Received: by 2002:a19:e041:0:b0:503:99d:5a97 with SMTP id
+ g1-20020a19e041000000b00503099d5a97mr4494701lfj.20.1697644698322; 
+ Wed, 18 Oct 2023 08:58:18 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- o36-20020a05600c512400b00405959469afsm2034151wms.3.2023.10.18.08.58.10
+ az15-20020a05600c600f00b00406447b798bsm2019928wmb.37.2023.10.18.08.58.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:58:13 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:58:08 -0400
+ Wed, 18 Oct 2023 08:58:17 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:58:13 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?utf-8?B?SGVydsOp?= Poussineau <hpoussin@reactos.org>,
+ Bernhard Beschow <shentey@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PULL 63/83] hw/isa/piix: Allow for optional PIT creation in PIIX3
-Message-ID: <9a43333153a589e122b185aee78971024d437ea0.1697644299.git.mst@redhat.com>
+ Aurelien Jarno <aurelien@aurel32.net>,
+ =?utf-8?B?SGVydsOp?= Poussineau <hpoussin@reactos.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 64/83] hw/isa/piix: Harmonize names of reset control memory
+ regions
+Message-ID: <d45007395f005ca449e8b5e9d911d9f750a5c123.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1697644299.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -106,71 +107,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-In the PC machine, the PIT is created in board code to allow it to be
-virtualized with various virtualization techniques. So explicitly disable its
-creation in the PC machine via a property which defaults to enabled. Once the
-PIIX implementations are consolidated this default will keep Malta working
-without further ado.
+There is no need for having different names here. Having the same name
+further allows code to be shared between PIIX3 and PIIX4.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20231007123843.127151-22-shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20231007123843.127151-23-shentey@gmail.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/southbridge/piix.h | 1 +
- hw/i386/pc_piix.c             | 2 ++
- hw/isa/piix.c                 | 6 ++++++
- 3 files changed, 9 insertions(+)
+ hw/isa/piix.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/southbridge/piix.h b/include/hw/southbridge/piix.h
-index 08491693b4..86709ba2e4 100644
---- a/include/hw/southbridge/piix.h
-+++ b/include/hw/southbridge/piix.h
-@@ -70,6 +70,7 @@ struct PIIXState {
- 
-     bool has_acpi;
-     bool has_pic;
-+    bool has_pit;
-     bool has_usb;
-     bool smm_enabled;
- };
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index fa39afd891..e38942a3c3 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -270,6 +270,8 @@ static void pc_init1(MachineState *machine,
-                                  &error_abort);
-         object_property_set_bool(OBJECT(pci_dev), "has-pic", false,
-                                  &error_abort);
-+        object_property_set_bool(OBJECT(pci_dev), "has-pit", false,
-+                                 &error_abort);
-         qdev_prop_set_uint32(DEVICE(pci_dev), "smb_io_base", 0xb100);
-         object_property_set_bool(OBJECT(pci_dev), "smm-enabled",
-                                  x86_machine_is_smm_enabled(x86ms),
 diff --git a/hw/isa/piix.c b/hw/isa/piix.c
-index d6d9ac6473..270b8eb1f7 100644
+index 270b8eb1f7..bd66fb7475 100644
 --- a/hw/isa/piix.c
 +++ b/hw/isa/piix.c
-@@ -361,6 +361,11 @@ static void pci_piix3_realize(PCIDevice *dev, Error **errp)
+@@ -339,7 +339,7 @@ static void pci_piix3_realize(PCIDevice *dev, Error **errp)
+     }
  
-     isa_bus_register_input_irqs(isa_bus, d->isa_irqs_in);
+     memory_region_init_io(&d->rcr_mem, OBJECT(dev), &rcr_ops, d,
+-                          "piix3-reset-control", 1);
++                          "piix-reset-control", 1);
+     memory_region_add_subregion_overlap(pci_address_space_io(dev),
+                                         PIIX_RCR_IOPORT, &d->rcr_mem, 1);
  
-+    /* PIT */
-+    if (d->has_pit) {
-+        i8254_pit_init(isa_bus, 0x40, 0, NULL);
-+    }
-+
-     i8257_dma_init(isa_bus, 0);
+@@ -532,7 +532,7 @@ static void piix4_realize(PCIDevice *dev, Error **errp)
+                              "intr", 1);
  
-     /* RTC */
-@@ -436,6 +441,7 @@ static Property pci_piix3_props[] = {
-     DEFINE_PROP_UINT32("smb_io_base", PIIXState, smb_io_base, 0),
-     DEFINE_PROP_BOOL("has-acpi", PIIXState, has_acpi, true),
-     DEFINE_PROP_BOOL("has-pic", PIIXState, has_pic, true),
-+    DEFINE_PROP_BOOL("has-pit", PIIXState, has_pit, true),
-     DEFINE_PROP_BOOL("has-usb", PIIXState, has_usb, true),
-     DEFINE_PROP_BOOL("smm-enabled", PIIXState, smm_enabled, false),
-     DEFINE_PROP_END_OF_LIST(),
+     memory_region_init_io(&s->rcr_mem, OBJECT(dev), &rcr_ops, s,
+-                          "reset-control", 1);
++                          "piix-reset-control", 1);
+     memory_region_add_subregion_overlap(pci_address_space_io(dev),
+                                         PIIX_RCR_IOPORT, &s->rcr_mem, 1);
+ 
 -- 
 MST
 
