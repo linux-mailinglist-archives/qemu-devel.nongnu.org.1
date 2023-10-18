@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8667CEC17
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D408F7CEC1F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:34:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtG0w-00040F-SC; Wed, 18 Oct 2023 19:31:46 -0400
+	id 1qtG0y-00045x-FD; Wed, 18 Oct 2023 19:31:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0v-0003xQ-2C
+ id 1qtG0v-0003yy-S3
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:45 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtG0t-0000KW-7w
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:44 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-6c646b5028dso4867856a34.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:42 -0700 (PDT)
+ id 1qtG0u-0000LX-4m
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:31:45 -0400
+Received: by mail-oo1-xc2b.google.com with SMTP id
+ 006d021491bc7-581f78a0206so621684eaf.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:31:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697671902; x=1698276702; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697671903; x=1698276703; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OQP2+HZbJmIj9sXXPBVMTwI7vC2S6c38AoM7akl90XU=;
- b=IBuuzY6E+oFSysj0ymtpPsytGO+XLWJHp9Omipe5GFCQ7d8fo1maMom5k7tYXDDRWi
- 6RZV9X86jzzpz7N9P/tyNnntz451y5iOQa3yC0rPU/vp7+v/guOFnvLz6lCOtja5I4XV
- rYrkudo7lKT9mqWdDja7EZeL31scldfO/GJP7pAv0PARYh8R+GSiwAznEV7rl8hxZ//k
- B6LSDDQ+rk5oJVFfmArKYFqSxLs1ObSJsD5qaOaNBeBDUKy3E4z8Hkqu4+Z3+26V7pev
- ZoUC5LycWJGvdOISPjYFmgMRWX5enpTflDPvySiz3fGHefJbKJrcKSP75M8rakThoJFo
- wwaA==
+ bh=N8YP8FFBP63+6pJ6d97ew/Y5ZJwzVjBAkzrh/+j6myU=;
+ b=ldUBiC9t4xg2eP9SVkGMYPf+O6B8F/z/eEQjjbaWv19rHu5cT9OQHIsnAGKS+zhv9E
+ R/xGG9tFXDsPC1ECVceT7aWN5fZ7DtdElfZiWeWFmH/R7aA4Cz5adZbMcOIY9ud5efye
+ ON+G5Ts0IkU0UE8rrCGBkdVWdBsL2zIESGPKUabW4WxjpElL/djugugqhGY0q8ygr+Rp
+ wFQrI0RP8nExb5ogRG0pvWfq60u0r/eveUrJTMyERRgO+RRCUWjz9bSRMhsS/j+73b/T
+ YlWyDKK18vcYu8Chkt74j4e7DT1jgOShmMLuk5x7nTVFcWOzDcSNR1ssyx+c/kAeCYJg
+ P5kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697671902; x=1698276702;
+ d=1e100.net; s=20230601; t=1697671903; x=1698276703;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OQP2+HZbJmIj9sXXPBVMTwI7vC2S6c38AoM7akl90XU=;
- b=qJocHFZHalqChORdaHxDJDg3aXuPETGc+G4thmpKtJ5Ajk31b3XuBb8M4yvXKT8UaD
- aRmOVM9sNEzBQoir1MVVeBD/B83mzLRMMCoNI39d09mQ1AhicYpQuW7otWxMCl4h8wGp
- G4xRK8uHu24XdkAb9gKvAUj7UzJFi/GSlYSslYSQC52EYlCvpQHgTSTpymllah42JmVN
- 6xoWmrw4TercJOEb9FNJMiFYsHRucvQaMfMYab7qQZvQ/F+YfgX7kSe97T6OHtjjYFHN
- 3js6JoM5qv1GEmh4w4o66UR28e1FLIPm66TAT8HjhUqX/xHMNCRZbDU9EZzzotO6GR+D
- 7QQA==
-X-Gm-Message-State: AOJu0YwzeuGvNE1hvRQsmJJu64802Vmfi0nnJPzQGmD2W1yXAJ5abNUl
- YPYSIpYfBJZwP3t0s6ha+8H+UuGqJYcgFu5/MXs=
-X-Google-Smtp-Source: AGHT+IG9w7aQvEiov3fhjzsyLoZuCqQv31fh2lf4djm2MMCbVsWOXBnZKoFGpptx9KR6dj7Tn5rAMg==
-X-Received: by 2002:a9d:4d07:0:b0:6bc:fb5f:7b06 with SMTP id
- n7-20020a9d4d07000000b006bcfb5f7b06mr731046otf.17.1697671901979; 
- Wed, 18 Oct 2023 16:31:41 -0700 (PDT)
+ bh=N8YP8FFBP63+6pJ6d97ew/Y5ZJwzVjBAkzrh/+j6myU=;
+ b=Pjy8j5NJQ64Ad0dUsGKtKUwNaY6+U1Q3xveL4n5DiIqint0sGH4elM33ShNaIrOpIh
+ ee2w0WY5v6YUP0UeMzxb9lMetA9b5+qRYLHGRb0D2kxpirQL5mk+Dmb5tTGkPt7jUiwX
+ hTqJyqMyI4UKWEbDx8eEixcBzkJJqGrPmWRJGNbT1CvDq/qWETjyYCUs3AWUz17099IJ
+ XEeeUxnzejsx8UXXqFeosD8z2MGHo5Ueu28f02DEt5W0Nk7UV8WiOhqrM10b6hl4KR5B
+ p631fOJvKbwkY4zkZsEFW81K9jbtL9DI28qO90NCsX8v8bp01PurB1qrMSpCopISNJmG
+ awaw==
+X-Gm-Message-State: AOJu0YwTbpe0gzLDIoxYgVbRNlkfszk4PnZQF29t8Lz4h4O1FqzVdyic
+ MuX0dUvBtfMne9eVWNnUrfUWyhIB3W9zRvRW818=
+X-Google-Smtp-Source: AGHT+IEUsWEnHKPFEP8Pq2bG3ixCk50BGeyeMtKwvwXDaBPHvVBLHuqUELfNw5B0CBtcbQrzXyznjw==
+X-Received: by 2002:a05:6358:9f85:b0:139:9fc3:eade with SMTP id
+ fy5-20020a0563589f8500b001399fc3eademr429405rwb.29.1697671902800; 
+ Wed, 18 Oct 2023 16:31:42 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.41
+ g9-20020aa796a9000000b006be5af77f06sm3881690pfk.2.2023.10.18.16.31.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 16:31:41 -0700 (PDT)
+ Wed, 18 Oct 2023 16:31:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 08/14] linux-user: Detect and report host crashes
-Date: Wed, 18 Oct 2023 16:31:28 -0700
-Message-Id: <20231018233134.1594292-9-richard.henderson@linaro.org>
+Subject: [PULL 09/14] linux-user: Only register handlers for core_dump_signal
+ by default
+Date: Wed, 18 Oct 2023 16:31:29 -0700
+Message-Id: <20231018233134.1594292-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018233134.1594292-1-richard.henderson@linaro.org>
 References: <20231018233134.1594292-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,120 +91,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+The set of fatal signals is really immaterial.  If one arrives,
+and is unhandled, then the qemu process dies and the parent gets
+the correct signal.
 
-If there is an internal program error in the qemu source code which
-raises SIGSEGV or SIGBUS, we currently assume the signal belongs to
-the guest.  With an artificial error introduced, we will now print
+It is only for those signals which we would like to perform a
+guest core dump instead of a host core dump that we need to catch.
 
-   QEMU internal SIGSEGV {code=MAPERR, addr=(nil)}
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Message-Id: <20230812164314.352131-1-deller@gmx.de>
-[rth: Use in_code_gen_buffer and die_with_signal; drop backtrace]
+Acked-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/signal.c | 69 +++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 63 insertions(+), 6 deletions(-)
+ linux-user/signal.c | 43 ++++++++++++++-----------------------------
+ 1 file changed, 14 insertions(+), 29 deletions(-)
 
 diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 84a56b76cc..9fadc51347 100644
+index 9fadc51347..aab05f8eec 100644
 --- a/linux-user/signal.c
 +++ b/linux-user/signal.c
-@@ -32,6 +32,7 @@
- #include "signal-common.h"
- #include "host-signal.h"
- #include "user/safe-syscall.h"
-+#include "tcg/tcg.h"
+@@ -488,26 +488,6 @@ void target_to_host_siginfo(siginfo_t *info, const target_siginfo_t *tinfo)
+     info->si_value.sival_ptr = (void *)(long)sival_ptr;
+ }
  
- static struct target_sigaction sigact_table[TARGET_NSIG];
- 
-@@ -779,6 +780,50 @@ static inline void rewind_if_in_safe_syscall(void *puc)
+-static int fatal_signal (int sig)
+-{
+-    switch (sig) {
+-    case TARGET_SIGCHLD:
+-    case TARGET_SIGURG:
+-    case TARGET_SIGWINCH:
+-        /* Ignored by default.  */
+-        return 0;
+-    case TARGET_SIGCONT:
+-    case TARGET_SIGSTOP:
+-    case TARGET_SIGTSTP:
+-    case TARGET_SIGTTIN:
+-    case TARGET_SIGTTOU:
+-        /* Job control signals.  */
+-        return 0;
+-    default:
+-        return 1;
+-    }
+-}
+-
+ /* returns 1 if given signal should dump core if not handled */
+ static int core_dump_signal(int sig)
+ {
+@@ -602,8 +582,9 @@ void signal_init(void)
+            SIGSEGV and SIGBUS, to detect exceptions.  We can not just
+            trap all signals because it affects syscall interrupt
+            behavior.  But do trap all default-fatal signals.  */
+-        if (fatal_signal (i))
++        if (core_dump_signal(i)) {
+             sigaction(host_sig, &act, NULL);
++        }
      }
  }
  
-+static G_NORETURN
-+void die_from_signal(siginfo_t *info)
-+{
-+    char sigbuf[4], codebuf[12];
-+    const char *sig, *code = NULL;
-+
-+    switch (info->si_signo) {
-+    case SIGSEGV:
-+        sig = "SEGV";
-+        switch (info->si_code) {
-+        case SEGV_MAPERR:
-+            code = "MAPERR";
-+            break;
-+        case SEGV_ACCERR:
-+            code = "ACCERR";
-+            break;
-+        }
-+        break;
-+    case SIGBUS:
-+        sig = "BUS";
-+        switch (info->si_code) {
-+        case BUS_ADRALN:
-+            code = "ADRALN";
-+            break;
-+        case BUS_ADRERR:
-+            code = "ADRERR";
-+            break;
-+        }
-+        break;
-+    default:
-+        snprintf(sigbuf, sizeof(sigbuf), "%d", info->si_signo);
-+        sig = sigbuf;
-+        break;
-+    }
-+    if (code == NULL) {
-+        snprintf(codebuf, sizeof(sigbuf), "%d", info->si_code);
-+        code = codebuf;
-+    }
-+
-+    error_report("QEMU internal SIG%s {code=%s, addr=%p}",
-+                 sig, code, info->si_addr);
-+    die_with_signal(info->si_signo);
-+}
-+
- static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
+@@ -997,7 +978,6 @@ int do_sigaction(int sig, const struct target_sigaction *act,
+                  struct target_sigaction *oact, abi_ulong ka_restorer)
  {
-     CPUState *cpu = thread_cpu;
-@@ -814,16 +859,28 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
-         is_write = host_signal_write(info, uc);
-         access_type = adjust_signal_pc(&pc, is_write);
+     struct target_sigaction *k;
+-    struct sigaction act1;
+     int host_sig;
+     int ret = 0;
  
-+        /* If this was a write to a TB protected page, restart. */
-+        if (is_write
-+            && host_sig == SIGSEGV
-+            && info->si_code == SEGV_ACCERR
-+            && h2g_valid(host_addr)
-+            && handle_sigsegv_accerr_write(cpu, sigmask, pc, guest_addr)) {
-+            return;
-+        }
+@@ -1057,22 +1037,27 @@ int do_sigaction(int sig, const struct target_sigaction *act,
+             return 0;
+         }
+         if (host_sig != SIGSEGV && host_sig != SIGBUS) {
++            struct sigaction act1;
 +
-+        /*
-+         * If the access was not on behalf of the guest, within the executable
-+         * mapping of the generated code buffer, then it is a host bug.
-+         */
-+        if (access_type != MMU_INST_FETCH
-+            && !in_code_gen_buffer((void *)(pc - tcg_splitwx_diff))) {
-+            die_from_signal(info);
-+        }
-+
-         if (host_sig == SIGSEGV) {
-             bool maperr = true;
- 
-             if (info->si_code == SEGV_ACCERR && h2g_valid(host_addr)) {
--                /* If this was a write to a TB protected page, restart. */
--                if (is_write &&
--                    handle_sigsegv_accerr_write(cpu, sigmask, pc, guest_addr)) {
--                    return;
--                }
--
-                 /*
-                  * With reserved_va, the whole address space is PROT_NONE,
-                  * which means that we may get ACCERR when we want MAPERR.
+             sigfillset(&act1.sa_mask);
+             act1.sa_flags = SA_SIGINFO;
+-            if (k->sa_flags & TARGET_SA_RESTART)
+-                act1.sa_flags |= SA_RESTART;
+-            /* NOTE: it is important to update the host kernel signal
+-               ignore state to avoid getting unexpected interrupted
+-               syscalls */
+             if (k->_sa_handler == TARGET_SIG_IGN) {
++                /*
++                 * It is important to update the host kernel signal ignore
++                 * state to avoid getting unexpected interrupted syscalls.
++                 */
+                 act1.sa_sigaction = (void *)SIG_IGN;
+             } else if (k->_sa_handler == TARGET_SIG_DFL) {
+-                if (fatal_signal (sig))
++                if (core_dump_signal(sig)) {
+                     act1.sa_sigaction = host_signal_handler;
+-                else
++                } else {
+                     act1.sa_sigaction = (void *)SIG_DFL;
++                }
+             } else {
+                 act1.sa_sigaction = host_signal_handler;
++                if (k->sa_flags & TARGET_SA_RESTART) {
++                    act1.sa_flags |= SA_RESTART;
++                }
+             }
+             ret = sigaction(host_sig, &act1, NULL);
+         }
 -- 
 2.34.1
 
