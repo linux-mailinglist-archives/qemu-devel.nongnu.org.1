@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492567CE22F
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A747CE27E
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:15:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8wR-0000oV-1I; Wed, 18 Oct 2023 11:58:39 -0400
+	id 1qt8vH-0005Jt-0v; Wed, 18 Oct 2023 11:57:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8ta-0002nM-E0
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:55:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8tn-00031Q-Uy
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:56:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8tW-0006r9-13
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:55:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8tm-0006uK-AY
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:55:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644536;
+ s=mimecast20190719; t=1697644553;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=axsLHZnyDqeJsUPQJ6Te7VvBOL93A3E/3UAHlG8ASYU=;
- b=GpXT4o5ElYXSEd/m9uMswnQkxvJjfBJyxqq4BTC9A7yZT/oTXIHACoCSAio7nrDOM1mceF
- RyA1oLMlx3lqmP+/iyumkNgFdisswT9SFKGGTSVWmyMEl9U4WZ/ic0Bq28sH87a1/3YYua
- dF/o9Ks4JlZHBayoq70uyeiPWPTmr2E=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fxQyEGJG94rK4SLZUCeD2LfRemmWxcyxJsLSwEgXUzM=;
+ b=Y4XnsliJtBIDxxhd4fYCmNPGRFMl3D0lQC2Ke/W+M9YR4LksFVEJlG2DiEcPdlkVruF5to
+ Y7o9HyD4zBQwd2P3NqGO0cX9W2ItO/tlxUccL+2op/vd44h/OnGD+gSDWn25IzWBSMA26j
+ fVPazA1wgpPjp907dodZ46rxglRq5pU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-g66TNcWbNcCTrIxMF0A3PQ-1; Wed, 18 Oct 2023 11:55:30 -0400
-X-MC-Unique: g66TNcWbNcCTrIxMF0A3PQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-402cd372b8bso54058305e9.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:55:30 -0700 (PDT)
+ us-mta-556-3Nc2FyMIMCKaYvrt8Lo3yQ-1; Wed, 18 Oct 2023 11:55:47 -0400
+X-MC-Unique: 3Nc2FyMIMCKaYvrt8Lo3yQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f5df65f9f4so44564145e9.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:55:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644529; x=1698249329;
+ d=1e100.net; s=20230601; t=1697644545; x=1698249345;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=axsLHZnyDqeJsUPQJ6Te7VvBOL93A3E/3UAHlG8ASYU=;
- b=ht8+5JDPA9D0RwEq7QoT+Fg7rhxA67gxEffgVGkE2mRP5SdNqCquwM+uwQA2bM7wfy
- 8lRru1bD+x2z5NvMBD2le8TupsbhSo0QFwiFSRJWtHwKKllpA3WgO1n01kRiwI1lbITz
- 3ZVRrnGTGc8DPRGsw7WnxrHtvKTCUDZJtRdufNBNfiEBo0SwIpVuia/ok2YNW4cDyuBp
- 2YcMHnyWwZA5Aobe5nGsY5lCgbg/qbhWh5EdNnhZOInjkrs4ZDQDCec/7gIV6258j6st
- /ah2+qAeQ7L+yT+MPsdsk3W5SpLIRE1YbUEWMAhZEcz9ktQOximfIJHw5M1pKyyIesmu
- niNg==
-X-Gm-Message-State: AOJu0YxG71cKxlzq82z5dowPw5ExkckvR1UtchcYQl7Nz7BngixIfDWE
- /eJJDkwm/hZPYykn1ljlr7bbmOCqDq2j3HndFHfzqww6hxA5vhsDw0PvP8IR4jKWCaLpCQmxhUo
- v09jTJDu30T/dWmoyEyZWOKkBJ+KLC+VI73nP0fgaUBII4R6Uz5DAv/xePoQjcgu+dl906PY=
-X-Received: by 2002:adf:f447:0:b0:32d:a910:6c2a with SMTP id
- f7-20020adff447000000b0032da9106c2amr4220789wrp.30.1697644528953; 
- Wed, 18 Oct 2023 08:55:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHiTU+xrY2Wa39hEO14e8sVy8tRgj/VZ+xYps/WCTf6Xjj58e5TvQov+JOr0BNbUfYQYEPGSQ==
-X-Received: by 2002:adf:f447:0:b0:32d:a910:6c2a with SMTP id
- f7-20020adff447000000b0032da9106c2amr4220766wrp.30.1697644528598; 
- Wed, 18 Oct 2023 08:55:28 -0700 (PDT)
+ bh=fxQyEGJG94rK4SLZUCeD2LfRemmWxcyxJsLSwEgXUzM=;
+ b=K7A3UmAqB61snNBCXUqyZRqzsBQo4mj4Z2MoODzbDUvOJfEWfYsx346UHJG0wWAbWs
+ fD+KAKhfPbFKBiLY3oHAnpzR0qHkilIp/FeDK9O9vgj1yMTxGmiYSWvoTc60n4PsWpKy
+ DEgcOB5t34OxE/1T5YVXCSv5ZwUPakSarrJ8L2zg6dCn20lKWVukxN23/sTw8rfYaA3/
+ BvZElbd9GJ7iwy82ZAuwJeJrmPcEJEyD9kUyJkhpGumlCIbpNYufmBJikmXuLRXAnC6I
+ U108I4CEiU9aCdJ2GLXqfNmnMc/Dh8VllL5h3K+JOhDSPc6JP030dBR75S3iEVlwZdHV
+ 7cgw==
+X-Gm-Message-State: AOJu0YxRz62r1nuHonWeFaLwqD7tCnopZGyrsXxiWUq/eTrwRdTVNR87
+ +Lu+fg+raIgkIrNByD1NDgVCgYRL/XHNw073X7y4BLhwyy6NVZjxt0S5C1+v6Os8nurHqOxJyRf
+ ceOY/jwPPxqTHJGjZEHAoVgmxyc0Aj8+MpurN6rY4oUJLkPpm27T0FBoe/Ki2P6pFkWhSpg0=
+X-Received: by 2002:a05:600c:418c:b0:407:58e1:24ed with SMTP id
+ p12-20020a05600c418c00b0040758e124edmr4286672wmh.39.1697644545079; 
+ Wed, 18 Oct 2023 08:55:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOlYVfw/P+UGkIVXgQqpRfSqSASliyYCrvnzxZNy5KGTBcEW0zMHraK2m4bcO1YGoMJDmyLA==
+X-Received: by 2002:a05:600c:418c:b0:407:58e1:24ed with SMTP id
+ p12-20020a05600c418c00b0040758e124edmr4286642wmh.39.1697644544571; 
+ Wed, 18 Oct 2023 08:55:44 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- f12-20020adfb60c000000b00318147fd2d3sm2382642wre.41.2023.10.18.08.55.24
+ k6-20020a05600c1c8600b0040839fcb217sm2045776wms.8.2023.10.18.08.55.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:55:28 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:55:21 -0400
+ Wed, 18 Oct 2023 08:55:44 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:55:39 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Laszlo Ersek <lersek@redhat.com>,
@@ -71,8 +71,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Laszlo Ersek <lersek@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Albert Esteve <aesteve@redhat.com>
-Subject: [PULL 29/83] vhost-user: strip superfluous whitespace
-Message-ID: <b5d1fc465e97e2d8ff6ad86e986ea378978b8948.1697644299.git.mst@redhat.com>
+Subject: [PULL 32/83] vhost-user: flatten "enforce_reply" into
+ "vhost_user_write_sync"
+Message-ID: <999280bc8c079d5ff9d956bfb598a2f1a42bc682.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -107,6 +108,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Laszlo Ersek <lersek@redhat.com>
 
+At this point, only "vhost_user_write_sync" calls "enforce_reply"; embed
+the latter into the former.
+
+This is purely refactoring -- no observable change.
+
 Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
 Cc: Eugenio Perez Martin <eperezma@redhat.com>
 Cc: German Maglione <gmaglione@redhat.com>
@@ -114,30 +120,67 @@ Cc: Liu Jiang <gerry@linux.alibaba.com>
 Cc: Sergio Lopez Pascual <slp@redhat.com>
 Cc: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Tested-by: Albert Esteve <aesteve@redhat.com>
 Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20231002203221.17241-2-lersek@redhat.com>
+Message-Id: <20231002203221.17241-5-lersek@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/virtio/vhost-user.c | 32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
 diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 68eb1f0c99..3e33a2e9e0 100644
+index 95dbf9880c..23e9039922 100644
 --- a/hw/virtio/vhost-user.c
 +++ b/hw/virtio/vhost-user.c
-@@ -388,7 +388,7 @@ static int vhost_user_write(struct vhost_dev *dev, VhostUserMsg *msg,
-      * operations such as configuring device memory mappings or issuing device
-      * resets, which affect the whole device instead of individual VQs,
-      * vhost-user messages should only be sent once.
--     * 
-+     *
-      * Devices with multiple vhost_devs are given an associated dev->vq_index
-      * so per_device requests are only sent if vq_index is 0.
-      */
+@@ -1292,24 +1292,6 @@ static int vhost_user_get_features(struct vhost_dev *dev, uint64_t *features)
+     return 0;
+ }
+ 
+-static int enforce_reply(struct vhost_dev *dev,
+-                         const VhostUserMsg *msg)
+-{
+-    uint64_t dummy;
+-
+-    if (msg->hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
+-        return process_message_reply(dev, msg);
+-    }
+-
+-   /*
+-    * We need to wait for a reply but the backend does not
+-    * support replies for the command we just sent.
+-    * Send VHOST_USER_GET_FEATURES which makes all backends
+-    * send a reply.
+-    */
+-    return vhost_user_get_features(dev, &dummy);
+-}
+-
+ /* Note: "msg->hdr.flags" may be modified. */
+ static int vhost_user_write_sync(struct vhost_dev *dev, VhostUserMsg *msg,
+                                  bool wait_for_reply)
+@@ -1330,7 +1312,19 @@ static int vhost_user_write_sync(struct vhost_dev *dev, VhostUserMsg *msg,
+     }
+ 
+     if (wait_for_reply) {
+-        return enforce_reply(dev, msg);
++        uint64_t dummy;
++
++        if (msg->hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
++            return process_message_reply(dev, msg);
++        }
++
++       /*
++        * We need to wait for a reply but the backend does not
++        * support replies for the command we just sent.
++        * Send VHOST_USER_GET_FEATURES which makes all backends
++        * send a reply.
++        */
++        return vhost_user_get_features(dev, &dummy);
+     }
+ 
+     return 0;
 -- 
 MST
 
