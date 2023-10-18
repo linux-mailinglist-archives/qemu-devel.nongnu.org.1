@@ -2,85 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461137CDD59
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD7C7CDD57
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:32:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6e6-0007rY-04; Wed, 18 Oct 2023 09:31:34 -0400
+	id 1qt6eS-0008TA-Ea; Wed, 18 Oct 2023 09:31:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6e0-0007i8-5y
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:31 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qt6eO-0008Pp-Pt
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:52 -0400
+Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6dy-0004kH-Ns
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:27 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-5079eed8bfbso6733647e87.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:31:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qt6eM-0004oC-N9
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:52 -0400
+Received: by mail-oo1-xc32.google.com with SMTP id
+ 006d021491bc7-581ed744114so585330eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:31:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697635884; x=1698240684; darn=nongnu.org;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697635909; x=1698240709;
+ darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fBk/AjaKXtg/3Cadooq/dQVl7/DOz/dAP5kScFSNmWc=;
- b=of69JM1oVBiO75ATbpKdHXA4eBv8VaJ0MisgGaLLOjgvy29uhJf3v3wQbLowpJ/WsY
- 6/n5leuYZzvut3E3Myb+fk60/Gcb9ReYCsrSW6KS/Q20BEW/9y4EQHgBhUnkuk1eo31O
- vGu37exCPbgtoGNnVqrh684Z9IO2Z36Pu4D14o3M4Mq9PbWjG6GieIDJbj0WXrLhIx7+
- yeDa3Dv4PMptbIUj6bq3rcGP7MntbVf/wEZ31LgiRXpTbNIeRNuQpeDGu+BcHWdVspOw
- a00Y6/YkggN6wSnX5qETBhpvqXEVGOLQTKEkWpI8qFTmaJrWpIgSk1TrlawKUdR6ND0O
- MgfQ==
+ bh=K23Xh8N4kYHlu50jLUbEO25YDhTdGuiVDWvQqAk9P/g=;
+ b=pmEsnrgTtoZlYEbH+vlqxxOTrCrnJhqYpPjLjFSPdeA19LsVR+6Q2C63tfrLoNbPyb
+ wLfUsqSa/aTqKpZFXduxTFsOnGNjpFxypwZeRa6PJlwY3XeJ4jPeTQH2QJvQeWRhVm8j
+ +ir/Xju9n8GS0y8C8Iwn5pirkpsyJtnUnXkpnvgR5X/DvcKdK2b9UOYRt2JvKbsTYQtJ
+ F1z3dTe2+wNDIW0hinzIXaR/F7aPUFsrpgxwCNbKGT0ZKKMBVJQRPI0tQH18vftUrEJA
+ r1bSJVMU5/6Q9KbCF9enqxwFyfVra2odf0MJ0/eyLRj57hmxiOP11uzE0dmZ7EWhNmjX
+ tppg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697635884; x=1698240684;
+ d=1e100.net; s=20230601; t=1697635909; x=1698240709;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fBk/AjaKXtg/3Cadooq/dQVl7/DOz/dAP5kScFSNmWc=;
- b=igl5TOdPaW0Ruc0Ay9HaDxe8BT9voT4mdDNQkBxhMpj4Et6bI8oaOz+V8iHv+I4Vrk
- qCkmeFl/7Ji8Y4E7CZrPkL4mA/EeTxS9LaxUWFe/WJABpzOTAtb8DiU6bvDRqjP9Q7CX
- piUPhsdbHDw6xyADo/2UNgYmoqziRE008mug2Kw0AuGFEiYIWoLxnW02y2Aoint4KtyY
- HfDlBebzLyQ4iOVJWHa1+2PK+SV0PC956tfDvNdpaENBxqmu24edbB/BuGhy0mxrV5VB
- lTiMrCJ2mb5AiL8X5WqYNZw6LDRy8hof3xT6zT8bdySLnnZ2Utn7Y77XjKSOUkqBW2H1
- OGeA==
-X-Gm-Message-State: AOJu0YyPmiD+zcpNLe8oW2OGCrDZ+v/qDPUaHfgu5NuI7DyVOgmP8aWI
- 0Q67qbzOpZMtu6T3HDGKM02N9w==
-X-Google-Smtp-Source: AGHT+IEjkU6WOf7I/JW3FatBUlF6eEuhf0csyBXUSIjcfWng9BiI7tYYPpRIY56LttAFzQ7ddcNbAw==
-X-Received: by 2002:a05:6512:3195:b0:503:34b8:20b with SMTP id
- i21-20020a056512319500b0050334b8020bmr5379788lfe.65.1697635884004; 
- Wed, 18 Oct 2023 06:31:24 -0700 (PDT)
-Received: from [192.168.69.115]
- (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr. [176.171.218.149])
+ bh=K23Xh8N4kYHlu50jLUbEO25YDhTdGuiVDWvQqAk9P/g=;
+ b=M6pBMmfe8f3+jveyzRyCdhxS1hyeAut1Jd3YjLS8lMpmETsZmCHRlWzr34FljN8VJH
+ kYR8Np1deBWuiEqH5o9TT1r2Q3PmJDsrAgXon4IiNE4TvNApeGANZ3fMzbsSnokOxQI4
+ uzxXrEh0Mxkuj1KabDV/JWtTnfQdIO/ws/0vT1ihwSyI1zRBtszXlgTZ8kTr7gvA+Jik
+ 5jYQ47xU0pZqDY3LGSiLRxnZOU5gDqvEz2dYaR4P9XURuZLEW+h3v7fNDoLAv6uoViKF
+ ezb4m/JRTpUwSz6AEgNsBJDm3QBINHXvtcjjc5xTwwhYW8XaQqJUjD5IH2cS/RCCV7BH
+ k1xQ==
+X-Gm-Message-State: AOJu0Yy77XdVn05nFLpZVIhH+TnP2JCG3j30BpyIauqAT/MWOdfIpXLL
+ 3GWLoN+ZY8CvdWmPsRThI7m63Q==
+X-Google-Smtp-Source: AGHT+IG0eX3YM8YbmuqM2Cukx4g0csZalEcgKr6lZIxej6uLGQ/cjyYEYmdDT1FCmgt0L4Pxda+NJQ==
+X-Received: by 2002:a05:6359:628d:b0:142:d097:b14a with SMTP id
+ se13-20020a056359628d00b00142d097b14amr3909472rwb.13.1697635909051; 
+ Wed, 18 Oct 2023 06:31:49 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- f19-20020adfb613000000b003232380ffd7sm2105895wre.102.2023.10.18.06.31.22
+ v7-20020a626107000000b0069319bfed42sm3412565pfb.79.2023.10.18.06.31.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 06:31:23 -0700 (PDT)
-Message-ID: <fc662ca4-9d74-ca37-f65b-4d852f1eb1ee@linaro.org>
-Date: Wed, 18 Oct 2023 15:31:21 +0200
+ Wed, 18 Oct 2023 06:31:48 -0700 (PDT)
+Message-ID: <ebb52078-2182-4656-a224-928b65124cd3@daynix.com>
+Date: Wed, 18 Oct 2023 22:31:44 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] MAINTAINERS: Add docs/devel/ebpf_rss.rst to the EBPF
- section
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/5] target/riscv: Move misa_mxl_max to class
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Jason Wang <jasowang@redhat.com>
-Cc: qemu-trivial@nongnu.org, Andrew Melnychenko <andrew@daynix.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>
-References: <20231017151740.213679-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231017151740.213679-1-thuth@redhat.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
+References: <20231017185406.13381-1-akihiko.odaki@daynix.com>
+ <20231017185406.13381-4-akihiko.odaki@daynix.com>
+ <a829aa4c-0b6f-40b9-a357-99c43d066f3b@ventanamicro.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <a829aa4c-0b6f-40b9-a357-99c43d066f3b@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::c32;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc32.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,15 +103,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/23 17:17, Thomas Huth wrote:
-> This doc file obviously belongs to the EBPF section.
+On 2023/10/18 22:01, Daniel Henrique Barboza wrote:
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
+> 
+> On 10/17/23 15:53, Akihiko Odaki wrote:
+>> misa_mxl_max is common for all instances of a RISC-V CPU class so they
+>> are better put into class.
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+> 
+> I'll repeat what I said in the v1: this patch is adding an extra class 
+> parameter,
+> an extra param required to each class_init, and an extra CPUClass cast 
+> every time
+> we want to read misa_mxl_max, all of that because we want to assign 
+> gdb_core_xml_file
+> earlier.
+> 
+> If my previous suggestion of assigning gdb_core directly into 
+> riscv_cpu_class_init()
+> doesn't work necause we need misa_mxl_max to do it, a good alternative 
+> is setting
+> gdb_core_xml_file in riscv_cpu_post_init(), which is executed after all 
+> cpu_init()
+> functions where we already have env->misa_mxl_max set properly.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-
+We want to assign gdb_core_xml_file *earlier* so assigning it after 
+cpu_init() is not OK. In general it should be considered unsafe to 
+initialize a class variable after class_init(); otherwise other 
+subsystems cannot know when it becomes available.
 
