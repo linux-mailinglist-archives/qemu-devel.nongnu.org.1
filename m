@@ -2,92 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34AF7CDA3A
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D991B7CDA40
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:26:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt4fB-0008R7-5j; Wed, 18 Oct 2023 07:24:33 -0400
+	id 1qt4gO-0000xI-W7; Wed, 18 Oct 2023 07:25:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt4f7-0008Qk-Bn
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:24:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qt4gI-0000vT-BT; Wed, 18 Oct 2023 07:25:43 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt4f5-0004na-Hf
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:24:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697628266;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Ug5cT3WMDuE8s0u+ZCMrurGgDF0l9gdle2RsmZHbRgQ=;
- b=fDR+Exs/pjRFRhjV9ATd4d2YAbfba3vPeKIvePCEEwXQ6S+HeSRakYyZ5cMt3cLYLYiEOK
- SNJ1ggHR5wxBiw4NTHr/AfUL3B1AeYE3QX250n5+4LiP0T9eIFvUNbe1hZHUKkvjPJJmuF
- o1rAwKHV9gwmHkMJnvzFrreeNUhM1Y0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-pdJKpM7FP0GcOnXo9hlZXg-1; Wed, 18 Oct 2023 07:24:10 -0400
-X-MC-Unique: pdJKpM7FP0GcOnXo9hlZXg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-327ab41de6cso4385655f8f.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 04:24:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697628249; x=1698233049;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ug5cT3WMDuE8s0u+ZCMrurGgDF0l9gdle2RsmZHbRgQ=;
- b=UPul/gMXheH9yGgXvijkyKBe/wZo/o3lV+b3pL4Lh2slIYpP/VtHyPmxxebSwnx75c
- 9Xq5QuAENMJCd+2cVeCVW5pfrUH52b4aQMzCarSICCNBj9WqmnIRl6RZ/Kg8gbxDqj9J
- bAEKHX4g/Sv3XraW+NWA+MR6egnIH0R7tSVyLmgKEPtAR95UMQbQDeplcfs8/I6EMCRg
- askGvD5cvThneyyNZJbQ5L+GyGRKoXQ2SdQPlbXyyD8VcGA4D+1v957q7f89nokml3Mc
- joNKyFxf/dN9JFu9HwK7x3G9AdAZ6zRoGzauxcV3biRHXna/Af3qK4voeeOkzNVKWjBC
- yE5w==
-X-Gm-Message-State: AOJu0Yy/OFmXj/7eirK2H8wqJwzwkv4CpIM7IbDoPTI5HwC19w42z0bX
- RXH4rZ56g0vkLaconzaseJi9FbFjHKigpS2DeB9pZ211swtz7TcM6YqcqhYKb2Z1HZgc/DfNw/p
- q/CoQ1EJy3GXmRrc=
-X-Received: by 2002:a5d:4f91:0:b0:32d:ba78:2b33 with SMTP id
- d17-20020a5d4f91000000b0032dba782b33mr4132032wru.63.1697628249055; 
- Wed, 18 Oct 2023 04:24:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEof/gY7Nkoe9LTJIMRQYZtiwX3H6k1mjgvjfwPdqBoo0q7XBmMpQma5lMlQQog0KRno/ciTA==
-X-Received: by 2002:a5d:4f91:0:b0:32d:ba78:2b33 with SMTP id
- d17-20020a5d4f91000000b0032dba782b33mr4132018wru.63.1697628248684; 
- Wed, 18 Oct 2023 04:24:08 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- r16-20020a056000015000b0031aef72a021sm1880617wrx.86.2023.10.18.04.24.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 04:24:06 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Vladimir
- Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: Re: [PATCH v2 1/3] migration/doc: Add documentation for backwards
- compatiblity
-In-Reply-To: <CAFEAcA8brMkW8Y6=sOq1YpEwY+Wjvt+NxSqCBTQFw2tBeYRbEw@mail.gmail.com>
- (Peter Maydell's message of "Tue, 17 Oct 2023 17:20:01 +0100")
-References: <20231017151857.21328-1-quintela@redhat.com>
- <20231017151857.21328-2-quintela@redhat.com>
- <CAFEAcA8brMkW8Y6=sOq1YpEwY+Wjvt+NxSqCBTQFw2tBeYRbEw@mail.gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 18 Oct 2023 13:24:06 +0200
-Message-ID: <87il74kwbt.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qt4gF-0005Eu-R3; Wed, 18 Oct 2023 07:25:42 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 38AC5756078;
+ Wed, 18 Oct 2023 13:25:32 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id ED857756062; Wed, 18 Oct 2023 13:25:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id EB1DB75606C;
+ Wed, 18 Oct 2023 13:25:31 +0200 (CEST)
+Date: Wed, 18 Oct 2023 13:25:31 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
+cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, philmd@linaro.org, 
+ Bernhard Beschow <shentey@gmail.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [RFC PATCH v4 4/4] tests/avocado: Add test for amigaone board
+In-Reply-To: <00f18d3d-f0b6-42cf-ae13-46c350e57689@kaod.org>
+Message-ID: <467c0fad-aa60-c8fc-703d-7d05084b72ad@eik.bme.hu>
+References: <cover.1697568616.git.balaton@eik.bme.hu>
+ <dea7938f15c3231984546b12ccc8e3b8ba42a203.1697568616.git.balaton@eik.bme.hu>
+ <80c9cc1a-7d5b-4840-8dd5-9cbaae51114a@redhat.com>
+ <00f18d3d-f0b6-42cf-ae13-46c350e57689@kaod.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1471827360-1697628331=:90406"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,72 +63,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> wrote:
-> On Tue, 17 Oct 2023 at 16:20, Juan Quintela <quintela@redhat.com> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-1471827360-1697628331=:90406
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Wed, 18 Oct 2023, Cédric Le Goater wrote:
+> On 10/18/23 07:58, Thomas Huth wrote:
+>> Please add a short patch description if this moves from RFC to a real patch
+>> 
+>> On 17/10/2023 21.06, BALATON Zoltan wrote:
+>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>> ---
+>>> I have no idea if this works so testing and corrections are welcome
+>> 
+>> Why don't you test it on your own? I think this should be sufficient:
 >>
->> State what are the requeriments to get migration working between qemu
->> versions.  And once there explain how one is supposed to implement a
->> new feature/default value and not break migration.
->>
->> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> Acked-by: Peter Xu <peterx@redhat.com>
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>  docs/devel/migration.rst | 217 +++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 217 insertions(+)
->>
->> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
->> index c3e1400c0c..5ef2b36e9e 100644
->> --- a/docs/devel/migration.rst
->> +++ b/docs/devel/migration.rst
->> @@ -142,6 +142,223 @@ General advice for device developers
->>    may be different on the destination.  This can result in the
->>    device state being loaded into the wrong device.
->>
->> +How backwards compatibility works
->> +---------------------------------
+>>   make check-avocado AVOCADO_TAGS=machine:amigaone
 >
-> Is there a better place in this document that we could add
-> this information?
+> Test doesn't pass :
+>
+> Fetching asset from 
+> tests/avocado/ppc_amiga.py:AmigaOneMachine.test_ppc_amigaone
+> JOB ID     : 39645d61f6f6c90ae87e3a48fe29beb16146aa73
+> JOB LOG    : 
+> /home/legoater/work/qemu/qemu.git/build/tests/results/job-2023-10-18T05.51-39645d6/job.log
+> (1/1) tests/avocado/ppc_amiga.py:AmigaOneMachine.test_ppc_amigaone:  ERROR: 
+> file is not an archive (0.10 s)
 
-> At the moment these new sections have
-> been placed in the middle of the "Saving the state of one device"
-> section, which doesn't seem right; worse, it's between the
-> "General advice for device developers" and the "VMState"
-> subsections of that section, which means that we end up with
-> a very long part of the document that is talking about edge
-> cases, and which splits up the two parts of the document that
-> are really all most device model authors need to think about.
+OK then how to extract a zip file? Does it need to have name ending with 
+.zip to work? The download may end up in a strangely named file due to how 
+the URL ends. Anybody knows how to fix this? I never used Avocado, only 
+followed examples found in other tests but possible I did not get how it 
+should work.
 
-You are right.  I didn't know for a good place either.
-I created a new section:
+Regards,
+BALATON Zoltan
 
-Backwards compatibility
-
-At the end of the archive.
-
-> My guess is that the extra documentation on backwards
-> compatibility that these patches are adding should get
-> a new section of its own (at the same level as the current
-> top-level sections "Transports", "Debugging", etc) which
-> then has its own subsections; and that this should probably
-> go either at the bottom of the document, after "Firmware",
-> or else just before "Stream structure".
-
-End it is.
-
-> We should probably also add a
-> .. contents::
-> directive near the start of the page, since it's now big
-> enough and has enough sections and subsections that a
-> table of contents would be helpful.
-
-Also done.
-
-Thanks a lot.
-
+> Interrupting job (failfast).
+> RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | 
+> CANCEL 0
+> JOB TIME   : 2.53 s
+>
+> C.
+>
+>> 
+>>> but this could be a basic test. Booting further is a bit more involved
+>>> as we'd need alternative VGA BIOS and selecting menu items in the
+>>> firmware to allow CD boot so I did not try to automate that.
+>>> 
+>>> This could be simpler if the u-boot-amigaone.bin could be added to
+>>> pc-bios. It's GPL so should be OK to include and distribute but irs
+>>> sources seem to be lost and could not be recovered or reconstructed so
+>>> we only have this binary. Who should be able to decide about that?
+>> 
+>> I'm sorry, but if the sources are not available anymore, then I think it 
+>> will not be possible to ship the binary in the QEMU tarball - since the GPL 
+>> requires that the distributor of the binary can also provide the sources on 
+>> request.
+>>
+>>   Thomas
+>> 
+>
+>
+>
+--3866299591-1471827360-1697628331=:90406--
 
