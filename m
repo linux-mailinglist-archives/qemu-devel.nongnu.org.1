@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F947CEA7E
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA887CEA81
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:59:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtESo-000248-R2; Wed, 18 Oct 2023 17:52:26 -0400
+	id 1qtESp-000253-Jv; Wed, 18 Oct 2023 17:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtESZ-0001UJ-94
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:52:11 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ id 1qtESb-0001cj-Ar
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:52:13 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtESX-0004Tk-GJ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:52:11 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-1ea4a3d0a44so2317582fac.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:52:08 -0700 (PDT)
+ id 1qtESY-0004U1-DD
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:52:12 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6b1e46ca282so5750796b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:52:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697665927; x=1698270727; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697665929; x=1698270729; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X8D0T8IVajXJnrSYefRA6ZV+yd9zhaNhLNtJGAv0oPE=;
- b=Wi72NawyS6YK63OBWyi/HgwfGbqA47Q8yvJYw+6xpWsJm7ekT+jfJVJVSu98rqBijw
- 2C/GMCO/kd4EKUgMLQINTsDFfkm4DrYiXu4nQd5bErV4phqNnpSbW5zG75jzVbkvdjd5
- Ci4QLSQ+liHivUlH8MHmCMhnHovYB5AsYadgstH47EDhiCIczSusrA7y6rQtSxkfH+e+
- uQ+8LtDYNpnWUAsQqnIC8pK6CdQrCh0NQx4RyYipC8WJHZe8IH+bC3WGjSIuW/WJmHUF
- V2mRQ9yUbeQhu+ITQTjuXOuZWYEw1OeIjqv52VrKXFPiQXiHzUNAg62oggotbuzeKP7e
- XHOA==
+ bh=BTsHGEmbn21c10ys+IjqGnSmEEiyrrhk+QQul6l60rI=;
+ b=nKnKRpkpSWxDkshiyJr7QXtzsFM1jq2Iz4ymY6lpSJ+omHKqlQQXr6Ifg9vT5VYuzM
+ LZF1FU5jNlicH+Gv5iethsT9V8veDUW8U12WITfXrsa59o1fIQ8fq0dhHCWYLJX8cMu6
+ du+bTTH6vhykQlqOg4PBgxhwKHS6Mm1hdjI1SZHagQX9LbtRtK6u1KsejK8FsYlpuELh
+ 0UbDs9Uu04YAWjqm+kV3bqX0ZYY26yUf+6bsTcTm53b4UTuEFjaMTTVsKfsavWwgRgzt
+ 6UAnVL+2J/ITdlAS3CVrGwnriQNO/atOGPt+R7B0nX/WYZeOYhMXCdHbyVr2tpcL+avB
+ VX6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697665927; x=1698270727;
+ d=1e100.net; s=20230601; t=1697665929; x=1698270729;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X8D0T8IVajXJnrSYefRA6ZV+yd9zhaNhLNtJGAv0oPE=;
- b=rEl0E7ANXZpq7de85G9LqAo9N8o8OprQwKOTHMr9UmgyYmGzkNpOC8NvucaXSeAE7t
- jnEPkywFMVtIxthqhfegq05yln8bcp3FGGC2XssPqu7fHVdrxFQNwDEvyc+MhYYVSkWO
- PJcZJIVVZjqqYEI5hQS3bvDX6J2joyWZ+xHsP7sBeWsmyls6HVlHfUWoEE0uAcMs7WTo
- KN3sUy+V9+vLjxCPkgiollb0QzmGnOlqGsfEPZVU86HL7lD9IKRR8sz0lfkL3OzSrpEJ
- j59pPmF8iJsYo0PwYxrzr8wxVSMLarpLyoA8crprMLOLFHBiNyZ6s3NCyFdVh+qUGlkK
- c+4g==
-X-Gm-Message-State: AOJu0YwOjZeeoj8R6jqmERAcrZ6fAhSULFqQnHTBZDnp64X81lsmpuZ6
- Hqk4lVg+txmK551bMGnl/N4B/PBx1QBhxmh9+wY=
-X-Google-Smtp-Source: AGHT+IG5qlZQKwPOUAQCLLERlWms4zTiIX0hczwrZr+/YqVBxrPwj+k9mvGlnJrHVVzaQfQKfQzgLQ==
-X-Received: by 2002:a05:6870:be99:b0:1e9:feb7:71db with SMTP id
- nx25-20020a056870be9900b001e9feb771dbmr636418oab.36.1697665927272; 
- Wed, 18 Oct 2023 14:52:07 -0700 (PDT)
+ bh=BTsHGEmbn21c10ys+IjqGnSmEEiyrrhk+QQul6l60rI=;
+ b=Z2we735haMmFXwCgt0Zp5AhcUbP73mJsBe0IdvFIr5TWn0oH8FyVhph+DeeVJVe6E7
+ E0BikIHZjOd/p1kZFt3c2dYv/JA88HsiFkMyufbCd7l73Rb83D8ZuCO+HxkPMhB7stbt
+ xlIfd2z+ainRhxORNygm9HvlhHKf9XRatBouO76RjKjIUIY49ivk2Kzfko2Z1CUQoN6Y
+ TvRHQCr2vWSI7yx1f5KN2fJjpa0jRm9EvDKrta2V4VJouZEQZls4Ox+2Q9m/Sw8qZuDO
+ 5Seo7mtypJXRgFBPjwh+EZQPkQZc4McfxRmooVwo5CoIcV1fV7GIc2vbTC3RzgeaTmix
+ vDMQ==
+X-Gm-Message-State: AOJu0YyGfc4OPOWCABUHtGOl8Pn4S32lDRgXRY0QbdyqsmBjTEFyo2vV
+ J5TGM/Vg+bcnvnFeDYIExa1xERYGa6xAgKXDxNE=
+X-Google-Smtp-Source: AGHT+IG8VJc+U5itxrLHYvJ0Z+v6jIbnbbHHbXX/1s77fHNc8Nrpa6NqUogvE1k793smam1mbllrhA==
+X-Received: by 2002:a05:6a21:4881:b0:16b:79b3:2285 with SMTP id
+ av1-20020a056a21488100b0016b79b32285mr391796pzc.56.1697665928827; 
+ Wed, 18 Oct 2023 14:52:08 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.52.06
+ w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.52.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 14:52:06 -0700 (PDT)
+ Wed, 18 Oct 2023 14:52:08 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 37/61] target/hppa: Decode CMPIB double-word
-Date: Wed, 18 Oct 2023 14:51:11 -0700
-Message-Id: <20231018215135.1561375-38-richard.henderson@linaro.org>
+Subject: [PATCH 39/61] target/hppa: Implement LDD, LDCD, LDDA, STD, STDA
+Date: Wed, 18 Oct 2023 14:51:13 -0700
+Message-Id: <20231018215135.1561375-40-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018215135.1561375-1-richard.henderson@linaro.org>
 References: <20231018215135.1561375-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,83 +92,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode | 10 ++++++++--
- target/hppa/translate.c  | 11 ++++++++++-
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ target/hppa/insns.decode | 15 +++++++++++----
+ target/hppa/translate.c  |  4 ++++
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index fc327e2bb3..48f09c9b06 100644
+index 48f09c9b06..33eec3f4c3 100644
 --- a/target/hppa/insns.decode
 +++ b/target/hppa/insns.decode
-@@ -51,6 +51,7 @@
- %pos_to_m       0:1      !function=pos_to_m
- %neg_to_m       0:1      !function=neg_to_m
- %a_to_m         2:1      !function=neg_to_m
-+%cmpbid_c       13:2     !function=cmpbid_c
+@@ -215,9 +215,14 @@ ld              000011 ..... ..... .. . 0 -- 00 size:2 ......   @ldstx
+ st              000011 ..... ..... .. . 1 -- 10 size:2 ......   @stim5
+ ldc             000011 ..... ..... .. . 1 -- 0111      ......   @ldim5 size=2
+ ldc             000011 ..... ..... .. . 0 -- 0111      ......   @ldstx size=2
++ldc             000011 ..... ..... .. . 1 -- 0101      ......   @ldim5 size=3
++ldc             000011 ..... ..... .. . 0 -- 0101      ......   @ldstx size=3
+ lda             000011 ..... ..... .. . 1 -- 0110      ......   @ldim5 size=2
+ lda             000011 ..... ..... .. . 0 -- 0110      ......   @ldstx size=2
++lda             000011 ..... ..... .. . 1 -- 0100      ......   @ldim5 size=3
++lda             000011 ..... ..... .. . 0 -- 0100      ......   @ldstx size=3
+ sta             000011 ..... ..... .. . 1 -- 1110      ......   @stim5 size=2
++sta             000011 ..... ..... .. . 1 -- 1111      ......   @stim5 size=3
+ stby            000011 b:5 r:5 sp:2 a:1 1 -- 1100 m:1   .....   disp=%im5_0
+ 
+ @fldstwx        ...... b:5 x:5   sp:2 scale:1 ....... m:1 ..... \
+@@ -244,6 +249,8 @@ fstd            001011 ..... ..... .. . 1 -- 100 0 . .....      @fldstdi
+ # Offset Mem
+ ####
+ 
++@ldstim11       ...... b:5 t:5 sp:2 ..............      \
++                &ldst disp=%assemble_11a m=%ma2_to_m x=0 scale=0 size=3
+ @ldstim14       ...... b:5 t:5 sp:2 ..............      \
+                 &ldst disp=%lowsign_14 x=0 scale=0 m=0
+ @ldstim14m      ...... b:5 t:5 sp:2 ..............      \
+@@ -275,11 +282,11 @@ fstw            011110 b:5 ..... sp:2 ..............    \
+ fstw            011111 b:5 ..... sp:2 ...........0..    \
+                 &ldst disp=%assemble_12a t=%rm64 m=0 x=0 scale=0 size=2
+ 
+-fldd            010100 b:5 t:5   sp:2 .......... .. 1 . \
+-                &ldst disp=%assemble_11a m=%ma2_to_m x=0 scale=0 size=3
++ld              010100 ..... ..... .. ............0.    @ldstim11
++fldd            010100 ..... ..... .. ............1.    @ldstim11
+ 
+-fstd            011100 b:5 t:5   sp:2 .......... .. 1 . \
+-                &ldst disp=%assemble_11a m=%ma2_to_m x=0 scale=0 size=3
++st              011100 ..... ..... .. ............0.    @ldstim11
++fstd            011100 ..... ..... .. ............1.    @ldstim11
  
  ####
- # Argument set definitions
-@@ -69,6 +70,7 @@
- &rrb_c_f        disp n c f r1 r2
- &rrb_c_d_f      disp n c d f r1 r2
- &rib_c_f        disp n c f r i
-+&rib_c_d_f      disp n c d f r i
- 
- ####
- # Format definitions
-@@ -88,6 +90,8 @@
-                 &rrb_c_d_f disp=%assemble_12
- @rib_cf         ...... r:5 ..... c:3 ........... n:1 .  \
-                 &rib_c_f disp=%assemble_12 i=%im5_16
-+@rib_cdf        ...... r:5 ..... c:3 ........... n:1 .  \
-+                &rib_c_d_f disp=%assemble_12 i=%im5_16
- 
- ####
- # System
-@@ -303,8 +307,10 @@ cmpb            100000 ..... ..... ... ........... . .  @rrb_cdf d=0 f=0
- cmpb            100010 ..... ..... ... ........... . .  @rrb_cdf d=0 f=1
- cmpb            100111 ..... ..... ... ........... . .  @rrb_cdf d=1 f=0
- cmpb            101111 ..... ..... ... ........... . .  @rrb_cdf d=1 f=1
--cmpbi           100001 ..... ..... ... ........... . .  @rib_cf f=0
--cmpbi           100011 ..... ..... ... ........... . .  @rib_cf f=1
-+cmpbi           100001 ..... ..... ... ........... . .  @rib_cdf d=0 f=0
-+cmpbi           100011 ..... ..... ... ........... . .  @rib_cdf d=0 f=1
-+cmpbi           111011 r:5 ..... f:1 .. ........... n:1 . \
-+                &rib_c_d_f d=1 disp=%assemble_12 c=%cmpbid_c i=%im5_16
- 
- addb            101000 ..... ..... ... ........... . .  @rrb_cf f=0
- addb            101010 ..... ..... ... ........... . .  @rrb_cf f=1
+ # Floating-point Multiply Add
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 681c955125..753748082b 100644
+index 7e723dcd24..308b8dd263 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -329,6 +329,12 @@ static int expand_shl11(DisasContext *ctx, int val)
-     return val << 11;
- }
+@@ -2951,6 +2951,10 @@ static bool trans_ldc(DisasContext *ctx, arg_ldst *a)
+     TCGv_reg zero, dest, ofs;
+     TCGv_tl addr;
  
-+/* Translate CMPI doubleword conditions to standard. */
-+static int cmpbid_c(DisasContext *ctx, int val)
-+{
-+    return val ? val : 4; /* 0 == "*<<" */
-+}
-+
- 
- /* Include the auto-generated decoder.  */
- #include "decode-insns.c.inc"
-@@ -3101,9 +3107,12 @@ static bool trans_cmpb(DisasContext *ctx, arg_cmpb *a)
- 
- static bool trans_cmpbi(DisasContext *ctx, arg_cmpbi *a)
- {
-+    if (!ctx->is_pa20 && a->d) {
-+        return false;
++    if (unlikely(TARGET_REGISTER_BITS == 32 && a->size > MO_32)) {
++        return gen_illegal(ctx);
 +    }
++
      nullify_over(ctx);
-     return do_cmpb(ctx, a->r, tcg_constant_reg(a->i),
--                   a->c, a->f, false, a->n, a->disp);
-+                   a->c, a->f, a->d, a->n, a->disp);
- }
  
- static bool do_addb(DisasContext *ctx, unsigned r, TCGv_reg in1,
+     if (a->m) {
 -- 
 2.34.1
 
