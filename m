@@ -2,69 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38D97CD9F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186657CDA02
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:06:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt4Hf-0003o4-M8; Wed, 18 Oct 2023 07:00:15 -0400
+	id 1qt4Ml-0001jE-Bg; Wed, 18 Oct 2023 07:05:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt4Hd-0003nM-FM
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:00:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qt4Mg-0001hH-9H
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:05:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt4Hb-0000DG-G1
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:00:13 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qt4Me-0001Bt-Av
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:05:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697626810;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1697627123;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OD0SsVLHgIwSnBryw35mX8ohwPTcU5lSxzdTSPKBa9w=;
- b=LQr00itDm+bWcqEQ0Wvk5JKS6AcOTuboFlQTzMhsaoZr094t+so2w3NDzgKDWjfs3TWxWB
- 1NMPmQ8YAjtUOKYd8NhPoZVxLkIFV5r9bEY605PPrAx5G6X43EdsymIXhMLO1gWAgLqVjQ
- sAUMkZU9npZvPe1y6SfvsziM79Ho5Qk=
+ bh=0SVX9SpNFxsTlmc5/A5ArRvYP6NuOnUH+dvZJjfyiZY=;
+ b=UWgEdloTkbAoR4DBq5dyJyjt9zzhyFx/NDyfKjNFMlZdegoJbNV895x8Xp7QG6m9l38se+
+ J8QWhyPcYgsn4b/PZF7YXcLg8zQ+dSWFF+HZgghKxTc/+4bfzZ6ADZu+Ua/MnOUmauK9pb
+ VxKpZ8Z8bzkVSthikraRImf+HI5Dh9w=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-648-CT5MZHmlNaanMn77AVZf6A-1; Wed, 18 Oct 2023 07:00:08 -0400
-X-MC-Unique: CT5MZHmlNaanMn77AVZf6A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-681-EevCUflNM3qnrm0AGxQYNA-1; Wed, 18 Oct 2023 07:05:12 -0400
+X-MC-Unique: EevCUflNM3qnrm0AGxQYNA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 80A4F88B76E
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 11:00:08 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6016F2026D4C
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 11:00:08 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6B68621E6A1F; Wed, 18 Oct 2023 13:00:07 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Daniel P .
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Andrea Bolognani
- <abologna@redhat.com>
-Subject: Re: [PATCH v2 02/11] scripts: qapi: black format main.py
-References: <20231016152704.221611-1-victortoso@redhat.com>
- <20231016152704.221611-3-victortoso@redhat.com>
-Date: Wed, 18 Oct 2023 13:00:07 +0200
-In-Reply-To: <20231016152704.221611-3-victortoso@redhat.com> (Victor Toso's
- message of "Mon, 16 Oct 2023 17:26:55 +0200")
-Message-ID: <87pm1crya0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A3B1A800C7A;
+ Wed, 18 Oct 2023 11:05:11 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.44])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F252F1121314;
+ Wed, 18 Oct 2023 11:05:10 +0000 (UTC)
+Date: Wed, 18 Oct 2023 12:05:08 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH v2] qapi: provide a friendly string representation of
+ QAPI classes
+Message-ID: <ZS+75MJ74uKBXGBc@redhat.com>
+References: <20230922153257.352911-1-berrange@redhat.com>
+ <87v8b4ryjf.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v8b4ryjf.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,28 +80,75 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Victor Toso <victortoso@redhat.com> writes:
+On Wed, Oct 18, 2023 at 12:54:28PM +0200, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > If printing a QAPI schema object for debugging we get the classname and
+> > a hex value for the instance:
+> >
+> >   <qapi.schema.QAPISchemaEnumType object at 0x7f0ab4c2dad0>
+> >   <qapi.schema.QAPISchemaObjectType object at 0x7f0ab4c2dd90>
+> >   <qapi.schema.QAPISchemaArrayType object at 0x7f0ab4c2df90>
+> >
+> > With this change we instead get the classname and the human friendly
+> > name of the QAPI type instance:
+> >
+> >   <QAPISchemaEnumType:CpuS390State>
+> >   <QAPISchemaObjectType:CpuInfoS390>
+> >   <QAPISchemaArrayType:CpuInfoFastList>
+> 
+> This gains the QAPI name (good), but loses the address.  The actual
+> address is rarely useful (when it is, you're deep in Python innards;
+> good luck, you'll need it).  Except they let me see which objects are
+> the same, and which are different.  Could that be preserved without
+> trouble somehow?
 
-> flake8 complained:
->     ./main.py:60:1: E302 expected 2 blank lines, found 1
->
-> Which is simple enough. My vim has black [0] enabled by default, so it
-> did some extra formatting. I'm proposing to follow it.
->
-> [0] https://black.readthedocs.io/en/stable/
->
-> Signed-off-by: Victor Toso <victortoso@redhat.com>
-> ---
->  scripts/qapi/main.py | 76 ++++++++++++++++++++++++++++----------------
->  1 file changed, 48 insertions(+), 28 deletions(-)
+It appears the hex value comes from  'id(obj)', so yes, I can
+insert the same hex value into the new representation.
 
-Is this all black hates about scripts/qapi/?
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >
+> > v1 was two & half years ago:
+> >
+> >   https://mail.gnu.org/archive/html/qemu-devel/2021-03/msg01645.html
+> 
+> Was it my fault?  If yes, I apologize.
 
-Did you configure it in any way, and if yes, how?
+No, I forgot about it until I was moving old branches from my previous
+laptop to my new laptops :-)
 
-[...]
+> 
+> >  scripts/qapi/schema.py | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+> > index 231ebf61ba..20ffacbdf0 100644
+> > --- a/scripts/qapi/schema.py
+> > +++ b/scripts/qapi/schema.py
+> > @@ -73,6 +73,12 @@ def __init__(self, name: str, info, doc, ifcond=None, features=None):
+> >          self.features = features or []
+> >          self._checked = False
+> >  
+> > +    def __repr__(self):
+> > +        if self.name is not None:
+> > +            return "<%s:%s>" % (type(self).__name__, self.name)
+> > +        else:
+> > +            return "<%s>" % type(self).__name__
+> > +
+> >      def c_name(self):
+> >          return c_name(self.name)
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
