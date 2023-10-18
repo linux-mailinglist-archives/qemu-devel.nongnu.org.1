@@ -2,63 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B01A7CD985
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 12:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2857CD9B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 12:52:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt45O-0001Vx-A3; Wed, 18 Oct 2023 06:47:34 -0400
+	id 1qt49d-0003gZ-Ai; Wed, 18 Oct 2023 06:51:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt45M-0001Ty-0f
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:47:32 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt49b-0003bg-Bp
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:51:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt45K-0006Ce-J3
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:47:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt49Y-0007A5-28
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:51:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697626049;
+ s=mimecast20190719; t=1697626311;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=fWUgdy5s1LBxAuMgojeRfjiKawmdIIoxhwyqq/gk/48=;
- b=Exe5lu6oIWX0TpMYx3HI8JJY7FT//JvuoNbcY6+1u5Ihc0OXYqfHUcUFuuUZhKk6IAChXN
- qbo3HRDLZrXGB5VupTn3H4IU1upokArD1q+DEM5PkToCZEhIwU8STrqAYlsbChnbjBBKdV
- Chpca0S91a1R8y061qcvkxlLNpLxBOw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-672-UT9vlkl8P1m32z_b3lZIqA-1; Wed, 18 Oct 2023 06:47:28 -0400
-X-MC-Unique: UT9vlkl8P1m32z_b3lZIqA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 943C1185A7B5;
- Wed, 18 Oct 2023 10:47:27 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3740D2026D4C;
- Wed, 18 Oct 2023 10:47:27 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 41DC221E6A1F; Wed, 18 Oct 2023 12:47:26 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,
- philmd@redhat.com,  peter.maydell@linaro.org,  eblake@redhat.com,
- maobibo@loongson.cn
-Subject: Re: [PATCH v1 3/3] target/loongarch: Implement
- query-cpu-model-expansion
-References: <20231018085908.3327130-1-gaosong@loongson.cn>
- <20231018085908.3327130-4-gaosong@loongson.cn>
-Date: Wed, 18 Oct 2023 12:47:26 +0200
-In-Reply-To: <20231018085908.3327130-4-gaosong@loongson.cn> (Song Gao's
- message of "Wed, 18 Oct 2023 16:59:08 +0800")
-Message-ID: <87zg0gryv5.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=Ky8S2VrF4gmpu+BSPvFMvLj6/JP3yAM2tK+aIbSWzMc=;
+ b=ilOGj59Fn11dCZDqpedMkrveRI7eWul9Tjk5ek5UT+DA5ZJF67mMpisN2rSkvGOMWFnyNQ
+ wBcMDA3XNPWCmaRiDr6nI5HjkMmzoUo4RcsFtb4N+M3jfqWldtOdZpMfWDDiKHXN+xKecy
+ 9gyEmMzIm4gbEPUf+YQ0/1hDObckW8Q=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-552-lioU959jOVGXUyh195JrOQ-1; Wed, 18 Oct 2023 06:51:49 -0400
+X-MC-Unique: lioU959jOVGXUyh195JrOQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9ae0bf9c0b4so506497066b.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 03:51:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697626308; x=1698231108;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ky8S2VrF4gmpu+BSPvFMvLj6/JP3yAM2tK+aIbSWzMc=;
+ b=HL7S4eHjPHpQQazQjHbmdEQ6h4TW8/RZxga4OqKEtycYEhDPnoTTu0EKKrQZBJ267n
+ Qr+eB418NpvPGOusitRgJ5nCvd4WmVj0hmM8wplWPvtgLFTCzWJtj02mdGODh8PCLd/t
+ DbAx4SPNY9R8LHSmKASTD4QXraUiMKrHzWiVPmiQER0hmuHUzu0wV7QPQ1dRAfk0cqiK
+ XwmNQDrG1uqX92a17sdw/eH8LCxMUl1523IwnRdZZ1WFhrWHEODooSyhNiLFGEsr1t+M
+ 9+wzFgrcrlWJ6BsvyvyvKpw7C32Cg5078woYewqMq6Wz9yGu1dEnpayGL/uo15KPFj6+
+ q/fQ==
+X-Gm-Message-State: AOJu0Yy9IRKsfxSVYuiFk3ImqGwkZfko2RG5YyhKE45ZQga9pN88QF3F
+ TXLK4mXMCw+qlsI+I1Nk53CfGA54F98M0B82Y69pHj8M8grfGB9v7hIUTsPx/zgziwxULN0piS2
+ Nhe8AYUfHDTV4i1k=
+X-Received: by 2002:a17:907:3f04:b0:9bf:2d82:53b9 with SMTP id
+ hq4-20020a1709073f0400b009bf2d8253b9mr3756761ejc.59.1697626308692; 
+ Wed, 18 Oct 2023 03:51:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkf3ey4XjvjL7JIHH0POHs9hoET5HpOUnUWLXsqw+gLp0Mr3QKS7KS5vc6zLs9RyC8pFB7cQ==
+X-Received: by 2002:a17:907:3f04:b0:9bf:2d82:53b9 with SMTP id
+ hq4-20020a1709073f0400b009bf2d8253b9mr3756736ejc.59.1697626308344; 
+ Wed, 18 Oct 2023 03:51:48 -0700 (PDT)
+Received: from redhat.com ([193.142.201.38]) by smtp.gmail.com with ESMTPSA id
+ p4-20020a170906b20400b009c7518b131dsm706171ejz.196.2023.10.18.03.51.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 03:51:47 -0700 (PDT)
+Date: Wed, 18 Oct 2023 06:51:41 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, eblake@redhat.com,
+ dave@treblig.org, eduardo@habkost.net, berrange@redhat.com,
+ pbonzini@redhat.com, hreitz@redhat.com, kwolf@redhat.com,
+ raphael.norwitz@nutanix.com, yc-core@yandex-team.ru,
+ den-plotnikov@yandex-team.ru, daniil.tatianin@yandex.ru
+Subject: Re: [PATCH 4/4] qapi: introduce CONFIG_READ event
+Message-ID: <20231018064912-mutt-send-email-mst@kernel.org>
+References: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
+ <20231006202045.1161543-5-vsementsov@yandex-team.ru>
+ <87sf692t0i.fsf@pond.sub.org>
+ <ae494c44-1bd6-435e-8bd8-0ec2ba9ceaa6@yandex-team.ru>
+ <877cnkzasr.fsf@pond.sub.org>
+ <a55e8b57-3411-4587-affd-3bc0635af4fe@yandex-team.ru>
+ <878r80tdyd.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <878r80tdyd.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,53 +105,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Song Gao <gaosong@loongson.cn> writes:
+On Wed, Oct 18, 2023 at 12:36:10PM +0200, Markus Armbruster wrote:
+> > x- seems safer for management tool that doesn't know about "unstable" properties..
+> 
+> Easy, traditional, and unreliable :)
 
-> Add support for the query-cpu-model-expansion QMP command to LoongArch.
-> We only support query the 'max' cpu features.
->
->   e.g
->     start with '-cpu max,lasx=off'
->
->     (QEMU) query-cpu-model-expansion type=static  model={"name":"max"}
->     {"return": {"model": {"name": "max", "props": {"lasx": false, "lsx": true}}}}
+> > But on the other hand, changing from x- to no-prefix is already done when the feature is stable, and thouse who use it already use the latest version of interface, so, removing the prefix is just extra work.
+> 
+> Exactly.
+> 
 
-Suggest to show what happens when you try to query something else.
+I think "x-" is still better for command line use of properties - we
+don't have an API to mark things unstable there, do we?
 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->  qapi/machine-target.json              |  6 ++-
->  target/loongarch/loongarch-qmp-cmds.c | 64 +++++++++++++++++++++++++++
->  2 files changed, 68 insertions(+), 2 deletions(-)
->
-> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-> index f0a6b72414..752b18cced 100644
-> --- a/qapi/machine-target.json
-> +++ b/qapi/machine-target.json
-> @@ -228,7 +228,8 @@
->    'data': { 'model': 'CpuModelInfo' },
->    'if': { 'any': [ 'TARGET_S390X',
->                     'TARGET_I386',
-> -                   'TARGET_ARM' ] } }
-> +                   'TARGET_ARM',
-> +                   'TARGET_LOONGARCH64' ] } }
->  
->  ##
->  # @query-cpu-model-expansion:
-> @@ -273,7 +274,8 @@
->    'returns': 'CpuModelExpansionInfo',
->    'if': { 'any': [ 'TARGET_S390X',
->                     'TARGET_I386',
-> -                   'TARGET_ARM' ] } }
-> +                   'TARGET_ARM',
-> +                   'TARGET_LOONGARCH64' ] } }
->  
->  ##
->  # @CpuDefinitionInfo:
-
-QAPI schema
-Acked-by: Markus Armbruster <armbru@redhat.com>
-
-[...]
+-- 
+MST
 
 
