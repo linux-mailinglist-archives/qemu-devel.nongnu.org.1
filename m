@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123837CEAEA
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 00:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A0D7CEA59
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:55:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtESm-0001y8-9z; Wed, 18 Oct 2023 17:52:24 -0400
+	id 1qtESc-0001cz-Af; Wed, 18 Oct 2023 17:52:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtESE-00015D-IR
+ id 1qtESE-00015C-I1
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:50 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtESA-0004OH-AP
+ id 1qtESB-0004OU-6b
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 17:51:49 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-1c0fcbf7ae4so5076552fac.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:45 -0700 (PDT)
+Received: by mail-il1-x135.google.com with SMTP id
+ e9e14a558f8ab-35749078a59so29497765ab.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 14:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697665905; x=1698270705; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697665906; x=1698270706; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+3Cca9a0dUfxOMmsrbDZSCnt4BuRnsfCclCPiSMy9B8=;
- b=FVjQ2RAtxT2KrWlgEhrtiRn00QAYXOTeYlkbbVIN3yG3ng8WFSj96ZMMGaTah4QxFg
- QMZ1BrMAbIyp5aucF3Roz93ylnmrxIgAXD5GhwbjMbQug3okqnNj9tjDagXUbeOantxE
- nes0asv+XxAWQ1r6q1DgyVgoCUDVduyoqGiYenI3vB8JzF4VTxDGkVp4p+NMMgzliXit
- efZJKExF861l9kXuV1k8M8L7gCV49WW7mD+OI7DLkS+QMEAKxqYvFmuTRpQTC3O2Otfv
- 7C9uVOtLDFpRcz64/8lPV2Xk//7MI8olf00yHe4q022wke98WpL/NO0ZYPVDJDWBOr+6
- z/pQ==
+ bh=T6DEfOhGSAuzHVOiFy6ZRmh1nqeZSzZi7HDKv5g8+j0=;
+ b=mAX1CG8eaS2c6s2OMWAjQWUkDDyiAPnzno2nxLyv2r/k9uVfJ/X9/pSs9L4NUlp6To
+ +NPHljC0cb/DrPKRqMYzjJSR7HYjLZGF61H5eJTgwUOb0xiygJfk7G9sTV+9QDjkdAQU
+ zCOcc7d835IIWCcP8wmzgTcm1QnpFdEIx4F+BCXz1J+mDc6hzDP5Wyju9TKdORB6BMhe
+ dvKBRoSOyCQsL4bbcKm9DzHdb4nO6yxnigDcnHfz/mldNqo/rofm9d8SUrHdYBjOFTil
+ ekiAIP/Yizl6NXbYBpF/+e06yAdefinB1676CLoXfLYct6zMGK21f5yq6EfnShpTIiwK
+ PQSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697665905; x=1698270705;
+ d=1e100.net; s=20230601; t=1697665906; x=1698270706;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+3Cca9a0dUfxOMmsrbDZSCnt4BuRnsfCclCPiSMy9B8=;
- b=T3GX8F1zQ0vnFOkU4fRdZ2a8ACmCDSCaw5hTKGYArBbzXJyZBD0zAtgGWXbicy46KG
- fkVsPWVPU+F9LkjChEgkeJOr+Vh42CmSyvDOVg5UHoJC5lzS/d5SiHLeTOogvs4xOT4k
- ur9gnZteQO3VPsPsHglAA3kFcQ2/6UjpWVB/wUocfv02MrgYddIo4ZA3xZTN/+Npyc9B
- +U6/SkUhg/zSJU8vKseKsmsLvprWUlWdPZPOjsAdXhCAAeWr7EqmYtepGmDDeIP59JZq
- ARCZ4corBOQRucwEkuWCC4jzADGYey/HRX861UVU/vNwH2NTJdbO6Ecut/8WbWb228on
- 1XLQ==
-X-Gm-Message-State: AOJu0YxgMAu4LBiRObfjr6ztDbd4r1mzoxDB4oouXHkd1QOMuJQAiyM9
- ySgGyTjcPkBLNI4PyHzU5Q6KqWSWTXXWpy0jgds=
-X-Google-Smtp-Source: AGHT+IHEPmoPeHeiK1hyU8bwnzH2S3Fc8i9VLTYf8jnAoXPIT2l5/4IEoWTO3RFjY7lWAQXR9/Lf7g==
-X-Received: by 2002:a05:6870:1094:b0:1e9:f0ef:dd8b with SMTP id
- 20-20020a056870109400b001e9f0efdd8bmr609837oaq.54.1697665905146; 
+ bh=T6DEfOhGSAuzHVOiFy6ZRmh1nqeZSzZi7HDKv5g8+j0=;
+ b=guZi7vEECwSVvQlJBqbHKIyKkXD1vZ0WxOZ45upMOtWywgr3zTMxXhiOhk0iuqiKHM
+ rMNexcMLsdwlxjmf5LNMgRha8Mdj5Zhe97Egix5R3dg4IW1Omq4IyLAmTn5vmi1rw7Tf
+ i7BvjXcY/M/IymrSRBXLGCdITbhbo1Ai7+btTfGp0kI74nnpfgjeeGdwEvHVvfhgmsUi
+ Xys5m9iA5/zYJR73yE9/mo1s4dKCudPRhTo6uT6GNb16D4k6y5MXrKdsfY4Oxd2HK4/O
+ yrhHwmLwVgXLsOP4JISe56kDRtfPD937E4R33DllfB+R6ruCjS1AUK+N7sc1DzFzB88S
+ PELw==
+X-Gm-Message-State: AOJu0YyIbn3wSs9ROW6tq7ScKYg7V5JEBrludFcxmckj3IO8tJXKoxWE
+ KTWezIIUoiwKUCXNT0XN+/NEdiwVUFoqq6y6gP4=
+X-Google-Smtp-Source: AGHT+IF9c4+NsvBZhHxRGkjfJ8Wu2w/FNsbrkV2oI1v/n/t3sAGHgaKxLt6T+/LpVxbiKpC4x3b4UA==
+X-Received: by 2002:a05:6e02:b4b:b0:357:627a:52 with SMTP id
+ f11-20020a056e020b4b00b00357627a0052mr761487ilu.28.1697665905976; 
  Wed, 18 Oct 2023 14:51:45 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.44
+ w17-20020a63f511000000b005b61a024ec7sm2176380pgh.74.2023.10.18.14.51.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 14:51:44 -0700 (PDT)
+ Wed, 18 Oct 2023 14:51:45 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 10/61] target/hppa: Fix bb_sar for hppa64
-Date: Wed, 18 Oct 2023 14:50:44 -0700
-Message-Id: <20231018215135.1561375-11-richard.henderson@linaro.org>
+Subject: [PATCH 11/61] target/hppa: Fix extrw and depw with sar for hppa64
+Date: Wed, 18 Oct 2023 14:50:45 -0700
+Message-Id: <20231018215135.1561375-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231018215135.1561375-1-richard.henderson@linaro.org>
 References: <20231018215135.1561375-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,56 +90,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+These are 32-bit operations regardless of processor.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ target/hppa/translate.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 8ebe7523a7..119422870c 100644
+index 119422870c..f86ea9b9ca 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -3073,14 +3073,21 @@ static bool trans_bb_sar(DisasContext *ctx, arg_bb_sar *a)
- {
-     TCGv_reg tmp, tcg_r;
-     DisasCond cond;
-+    bool d = false;
- 
-     nullify_over(ctx);
- 
+@@ -3230,7 +3230,9 @@ static bool trans_extrw_sar(DisasContext *ctx, arg_extrw_sar *a)
      tmp = tcg_temp_new();
-     tcg_r = load_gpr(ctx, a->r);
--    tcg_gen_shl_reg(tmp, tcg_r, cpu_sar);
-+    if (cond_need_ext(ctx, d)) {
-+        /* Force shift into [32,63] */
-+        tcg_gen_ori_reg(tmp, cpu_sar, 32);
-+        tcg_gen_shl_reg(tmp, tcg_r, tmp);
-+    } else {
-+        tcg_gen_shl_reg(tmp, tcg_r, cpu_sar);
-+    }
  
--    cond = cond_make_0(a->c ? TCG_COND_GE : TCG_COND_LT, tmp);
-+    cond = cond_make_0_tmp(a->c ? TCG_COND_GE : TCG_COND_LT, tmp);
-     return do_cbranch(ctx, a->disp, a->n, &cond);
- }
- 
-@@ -3088,12 +3095,15 @@ static bool trans_bb_imm(DisasContext *ctx, arg_bb_imm *a)
- {
-     TCGv_reg tmp, tcg_r;
-     DisasCond cond;
-+    bool d = false;
-+    int p;
- 
-     nullify_over(ctx);
- 
+     /* Recall that SAR is using big-endian bit numbering.  */
+-    tcg_gen_xori_reg(tmp, cpu_sar, TARGET_REGISTER_BITS - 1);
++    tcg_gen_andi_reg(tmp, cpu_sar, 31);
++    tcg_gen_xori_reg(tmp, tmp, 31);
++
+     if (a->se) {
+         tcg_gen_sar_reg(dest, src, tmp);
+         tcg_gen_sextract_reg(dest, dest, 0, len);
+@@ -3355,7 +3357,8 @@ static bool do_depw_sar(DisasContext *ctx, unsigned rt, unsigned c,
      tmp = tcg_temp_new();
-     tcg_r = load_gpr(ctx, a->r);
--    tcg_gen_shli_reg(tmp, tcg_r, a->p);
-+    p = a->p | (cond_need_ext(ctx, d) ? 32 : 0);
-+    tcg_gen_shli_reg(tmp, tcg_r, p);
  
-     cond = cond_make_0(a->c ? TCG_COND_GE : TCG_COND_LT, tmp);
-     return do_cbranch(ctx, a->disp, a->n, &cond);
+     /* Convert big-endian bit numbering in SAR to left-shift.  */
+-    tcg_gen_xori_reg(shift, cpu_sar, TARGET_REGISTER_BITS - 1);
++    tcg_gen_andi_reg(shift, cpu_sar, 31);
++    tcg_gen_xori_reg(shift, shift, 31);
+ 
+     mask = tcg_temp_new();
+     tcg_gen_movi_reg(mask, msb + (msb - 1));
 -- 
 2.34.1
 
