@@ -2,64 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E83A7CD797
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C53397CD7CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:23:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt2bk-0001np-Ml; Wed, 18 Oct 2023 05:12:52 -0400
+	id 1qt2l5-0004XT-Fj; Wed, 18 Oct 2023 05:22:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt2bf-0001nG-Qn
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:12:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt2be-0005Ki-F7
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:12:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697620365;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=8avDTUmYPtMtEszHmwwduqtHigDYKYLBMjtTWtsF6Q8=;
- b=cHw9DqTtFSq9MqQViEcGjn5SBXcCFK0BqU/RmMN02oqy4UlUgO3ycbFCAOW868AwCCPHrQ
- Y5lvWdltI1bf+Zf4F4TIs6ed1B0+aKlVAVTxRaIZ4WCsL/Tat8DhSX/TdKzsmnjcncr8uh
- ivYumSNVE+8q2mTjsSX5AjHhkca3klo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-161-uYXxLaTrODuK-jYZdnV-8w-1; Wed, 18 Oct 2023 05:12:43 -0400
-X-MC-Unique: uYXxLaTrODuK-jYZdnV-8w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6BE7128EA6F9;
- Wed, 18 Oct 2023 09:12:43 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.109])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5B8281C060AE;
- Wed, 18 Oct 2023 09:12:41 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Leonardo Bras <leobras@redhat.com>
-Cc: qemu-s390x@nongnu.org
-Subject: [PATCH] tests/qtest/migration-test: Disable the analyze-migration.py
- test on s390x
-Date: Wed, 18 Oct 2023 11:12:39 +0200
-Message-ID: <20231018091239.164452-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt2kk-0004Uy-D9
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:22:11 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt2ki-00076D-QU
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:22:10 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-53e84912038so6177377a12.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 02:22:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697620926; x=1698225726; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NXpq5twkhkVtITAA0lmpSh3SnangYX1AgL0ZDdqXMw4=;
+ b=eHf+0EnTSXpPpyjbSdCygXuVWzOmNep/pd+nFB8+ct1YndRwUtprgABBLWHcV5EuDW
+ C7fQxUT+66SVJaK2+1z1zroCEJ5LsAVEqtqoFrS8C3Ik9/gtShMQs5TO18WJOjYDrWV6
+ J6kps9dLniZ6xgW1LNzgYZQ1AhIvEOnGdWD5HvzcroiZMAnE3ptAN1fvZu0rzFOjEToT
+ XSMj7hj57FvVEsfmcMWpC/wESu1GFMqeQaDFjMDue4Nv5SnSFLS1Kgk8L0mdBO/Orgzf
+ pGL9YZz60t3TQlyWzp36G7lf+/SgVIUCQ2gqcf/aycBGq6D9ot+zSGEP72XezucAUgyD
+ nURA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697620926; x=1698225726;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NXpq5twkhkVtITAA0lmpSh3SnangYX1AgL0ZDdqXMw4=;
+ b=jSfd3OCBjNE+DnoigX3JTxCFgskPWSf0DgmrGmcq3qlVAaMYf0Wo7c9I8Sj3Fo+IXB
+ uEvlbfgYuvySHByrs1HeHv41Oqgo9/qPVzqYxZdEI550HeeGr5Y5B05zQTMhad/ZwMMv
+ 38VZzO+dZvB1EciXbSPpkgilOjg8XeOSEkGZL66LSndhMbKVwASqXp95gYB+gPkLIajt
+ eTcpthSGLcNmLdKl856aFKrCDGLPoKEtKTpgzFfoUbno+eJN3l+4ygrLB6JqfCEMiQ5s
+ sjUyv97pMkfWnv/LvDmou1Q1qDe9GgmUHiIJf+VePvHeEnbptORLAMsMaToq+TlEkl6u
+ bKMQ==
+X-Gm-Message-State: AOJu0YwW6be77WGkaQeffFJgZ+/wj69XrQaNUVEht6sZISoFRxO4RGJE
+ MGGinp3yS+6A7taaDXCVavv6bQ==
+X-Google-Smtp-Source: AGHT+IEexXIW8fwb9DRJKcuQOXDqNogjyJ6S8+7yVHRrXNlU+f2VM4ueyxbks2zFDw3ePepQrhg7Ug==
+X-Received: by 2002:a17:907:80b:b0:9af:9c4f:b579 with SMTP id
+ wv11-20020a170907080b00b009af9c4fb579mr3302761ejb.18.1697620926260; 
+ Wed, 18 Oct 2023 02:22:06 -0700 (PDT)
+Received: from [192.168.69.115] ([176.172.118.33])
+ by smtp.gmail.com with ESMTPSA id
+ mc8-20020a170906eb4800b009737b8d47b6sm1228593ejb.203.2023.10.18.02.22.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Oct 2023 02:22:05 -0700 (PDT)
+Message-ID: <dd146c6b-7c4b-fb43-5e28-b53b00adc102@linaro.org>
+Date: Wed, 18 Oct 2023 11:22:02 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 08/11] hw/net/cadence_gem: use FIELD to describe DESCONF6
+ register fields
+Content-Language: en-US
+To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Frederic Konrad <frederic.konrad@amd.com>,
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+References: <20231017194422.4124691-1-luc.michel@amd.com>
+ <20231017194422.4124691-9-luc.michel@amd.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231017194422.4124691-9-luc.michel@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,39 +99,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The analyze-migration.py script fails on s390x hosts:
+On 17/10/23 21:44, Luc Michel wrote:
+> Use the FIELD macro to describe the DESCONF6 register fields.
+> 
+> Signed-off-by: Luc Michel <luc.michel@amd.com>
+> ---
+>   hw/net/cadence_gem.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
- Traceback (most recent call last):
-   File "scripts/analyze-migration.py", line 662, in <module>
-     dump.read(dump_memory = args.memory)
-   File "scripts/analyze-migration.py", line 596, in read
-     classdesc = self.section_classes[section_key]
- KeyError: ('s390-storage_attributes', 0)
-
-It obviously never has been adapted to s390x yet, so until this
-has been done, disable this test on s390x.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/qtest/migration-test.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index e1c110537b..241b409857 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -3034,7 +3034,9 @@ int main(int argc, char **argv)
- 
-     qtest_add_func("/migration/bad_dest", test_baddest);
- #ifndef _WIN32
--    qtest_add_func("/migration/analyze-script", test_analyze_script);
-+    if (!g_str_equal(arch, "s390x")) {
-+        qtest_add_func("/migration/analyze-script", test_analyze_script);
-+    }
- #endif
-     qtest_add_func("/migration/precopy/unix/plain", test_precopy_unix_plain);
-     qtest_add_func("/migration/precopy/unix/xbzrle", test_precopy_unix_xbzrle);
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
