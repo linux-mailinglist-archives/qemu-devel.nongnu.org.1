@@ -2,97 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1781F7CDDF0
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4007CDDC3
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:48:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6z2-0002p7-MB; Wed, 18 Oct 2023 09:53:12 -0400
+	id 1qt6u4-0003uI-C7; Wed, 18 Oct 2023 09:48:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qt6yz-0002oA-Jm
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:53:09 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qt6yp-0000EO-PO
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:53:02 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40572aeb6d0so63782845e9.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697637177; x=1698241977; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Sacgj2KFP04ZAu6MVUAzpAsE/3CnVWF8wRRl9fzyJPA=;
- b=qmkPprriDYdtSyxV011dxwbdm/U1sY7vawAlSoXpg8zWLK4F7X0ZOt7f/7/a2/EpNk
- kgZXwXqR7bCWeRb7r4VXEOZx9fj7qmfqpqk009xejQRmDWfvRKer7iNJEgLAh5ElWX4H
- EWgSJxdR1GHAYqCnjsgtZjP2bbMaOJycC3+r1Uhl07L+xF6kFLC3QlYW8URc8rCrT7Gl
- Zlg/pm/0lSpBKXSJVJYIY97/q6hTBg8Lp6nwe+spmlc414AZyolE9oPISZv2pBm8/NVl
- YHjPhVwxDE9269j7kVmqFK6DJWtOL9mM70J6V3V6Z/NrN+/23XlBCMcQbXWjCtkRNI7Y
- 7rIA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt6tr-0003k6-76
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:47:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt6tp-0007lz-AP
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:47:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697636868;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PX2i5N9Fh7so94FIWeVovUmDHU1ycnDXffuxlGosg2k=;
+ b=PTWJYJFeb1AIa3Oa3HtuDNlpx4kkpX14r+vgnpN2+A0OJg23003o6EFsnZ0Are6CZZN+mb
+ L9ZqCWI3Nh6VOuH+RT7rMGjWu5cYKBB2UX44XQA855Wu1xhsWJJfjnezgjmGRp8m7Ks0XH
+ rk/Kr/cpUBfDcVpTav5bTS1+m8Nuw1I=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-fVINERdTNr-btHJitV7_aw-1; Wed, 18 Oct 2023 09:47:46 -0400
+X-MC-Unique: fVINERdTNr-btHJitV7_aw-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2c50c873604so48210051fa.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:47:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697637177; x=1698241977;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Sacgj2KFP04ZAu6MVUAzpAsE/3CnVWF8wRRl9fzyJPA=;
- b=sPtNyLOwXn+GoQFwT49qKP/xCTc3BopbFcDqNSCoG9/jChA1qkZCIi2oFruAWrHzyU
- SvSLrxiW+/hX/P0PLV+qhozJ+WBbQydLA/FaQ6rIrTCovJawKJNL4fXfbPvT1EcCsfut
- MM5pjzdZhp/Oe8hKb/EMvmPGJ9WRHgssAR97p/Og0dvvhy1PQ0b1csC4O4TzB5Z/+VCO
- 0fOJgYe5dcifEVGGSXN+AH/aTZqbdKIhKCsZI6HhUHPdltzX6FJo5qS9EQTmhN0b86Nv
- RZfWjFuUL2AwiNY0ZlSQTPbksvS1dVxe8cXMa/KD7/mtnkvcZy0+pd2selIIjcKAe4LP
- sxJg==
-X-Gm-Message-State: AOJu0Yx+6MslbyaVKueyi3M2rnN5EGF0qtDoemHFx/qeIWHa17M3Bs2j
- aJ9fYWEpGGEpdzb5tXnJD+OpWw==
-X-Google-Smtp-Source: AGHT+IEv59KaetSAvF5irM11DlGYkFBz1/Tcj7ru9vIPNHcJQ7DEfZedPyoDI18U9q1xz1VFVe6eNw==
-X-Received: by 2002:a05:600c:3c8a:b0:401:b2c7:349b with SMTP id
- bg10-20020a05600c3c8a00b00401b2c7349bmr3910338wmb.7.1697637177638; 
- Wed, 18 Oct 2023 06:52:57 -0700 (PDT)
-Received: from meli.delivery (adsl-141.37.6.162.tellas.gr. [37.6.162.141])
+ d=1e100.net; s=20230601; t=1697636865; x=1698241665;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PX2i5N9Fh7so94FIWeVovUmDHU1ycnDXffuxlGosg2k=;
+ b=HAHiKrUEIGHLxR0gW28ZYiT7pEi0JmIQSJSAXQDcyj1/DeYQkUc4cEdln8obO1CB3L
+ giIX9MMkrxmEES7SOw8xKWwcGbOaPiulLQRsx6FObO6Jkx0hbvRxi4Rb6DUER9jD95Do
+ 2+dKvieBk67lFdnCEW4KOTzaJn7unP2qHTa+5dAD444GEzQ5vgTh+/DDPkBg79V+8Am8
+ p9f7g3DdihQhiHzUItpj7IVj90wuLhq++b0ZaHQtHY2cGmVnOObAlLE1IF5wsz994BbW
+ e4hSogbdOCZTAU2EwUx4t1Lj9i/r8Ff8f/j4il5qRMGDRnXVnkPW9QP2ltA1OHwkRfqf
+ RDJQ==
+X-Gm-Message-State: AOJu0Ywe1AWenCWF0YnmGdnUDt6+hZ7MiQCf1BMVe6BbXU++YhpLDJrO
+ 5xW2ogTbZzIm4QlTHp7OTzx8hgAvLwvjNf5HJEMlsAs9ihTB8o0g+y9vTY2A2O75sCGMMnvDK6/
+ JZSNjg8UAPA/lJLs=
+X-Received: by 2002:a2e:9c51:0:b0:2c0:d06:9e65 with SMTP id
+ t17-20020a2e9c51000000b002c00d069e65mr3796740ljj.8.1697636865508; 
+ Wed, 18 Oct 2023 06:47:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGmVnMU4/5sd070MK9dVAoMshsvYCw/XVvkGBmzAm/u9AFKXPrjWf0IMXWrjzHveVLVxwXOmQ==
+X-Received: by 2002:a2e:9c51:0:b0:2c0:d06:9e65 with SMTP id
+ t17-20020a2e9c51000000b002c00d069e65mr3796722ljj.8.1697636865126; 
+ Wed, 18 Oct 2023 06:47:45 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- g19-20020a05600c4ed300b003fefaf299b6sm1778988wmq.38.2023.10.18.06.52.56
+ j20-20020a05600c191400b0040641a9d49bsm1744116wmq.17.2023.10.18.06.47.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 06:52:57 -0700 (PDT)
-Date: Wed, 18 Oct 2023 16:44:00 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Volker R=?UTF-8?B?w7wg?=melin <vr_qemu@t-online.de>,
- "K=?UTF-8?B?xZEg?=v=?UTF-8?B?w6Eg?=g=?UTF-8?B?w7Mg?=,
- Zolt=?UTF-8?B?w6Eg?=n" <DirtY.iCE.hu@gmail.com>,
- Alex Benn=?UTF-8?B?w6kg?=e <alex.bennee@linaro.org>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: [PATCH v11 00/11] Add VIRTIO sound card
-User-Agent: meli 0.8.2
-References: <cover.1696935992.git.manos.pitsidianakis@linaro.org>
- <2pvjw.psr1yjx1ztc1@linaro.org>
- <20231018050537-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231018050537-mutt-send-email-mst@kernel.org>
-Message-ID: <2q986.633fbwmm52y@linaro.org>
+ Wed, 18 Oct 2023 06:47:44 -0700 (PDT)
+Date: Wed, 18 Oct 2023 09:47:40 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Patrick Rudolph <patrick.rudolph@9elements.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
+ anisinha@redhat.com, marcel.apfelbaum@gmail.com
+Subject: Re: [PATCH 0/3] hw/i386: Add MTD controller on ICH9
+Message-ID: <20231018094701-mutt-send-email-mst@kernel.org>
+References: <20231018115231.3547102-1-patrick.rudolph@9elements.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231018115231.3547102-1-patrick.rudolph@9elements.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,46 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Michael,
+On Wed, Oct 18, 2023 at 01:52:28PM +0200, Patrick Rudolph wrote:
+> This series implements a feature complete MTD SPI flash controller
+> as found on real ICH9, adds cache coherent BIOS MMAPing and implements
+> a few SMM bits to allow x86 firmware build for real ICH9 to operate on
+> the flash controller to store (UEFI) variables or do firmware updates.
+> 
+> Patrick Rudolph (3):
+>   hw/isa/ich9: Add SPI controller
+>   hw/isa/lpc_ich9: Implement SMI_STS for APMC
+>   hw/i386/pc_sysfw: Do not create BIOS region if MTD is present
 
-Thank you for your reply;
 
-On Wed, 18 Oct 2023 12:08, "Michael S. Tsirkin" <mst@redhat.com> wrote:
->On Wed, Oct 18, 2023 at 11:49:00AM +0300, Manos Pitsidianakis wrote:
->> On Wed, 11 Oct 2023 17:34, Manos Pitsidianakis <manos.pitsidianakis@linaro.org> wrote:
->> > This patch series adds an audio device implementing the recent virtio
->> > sound spec (1.2) and a corresponding PCI wrapper device.
->> > 
->> > v11 can be found online at:
->> > 
->> > https://gitlab.com/epilys/qemu/-/tree/virtio-snd-v11
->> > 
->> > Ref 885b01fe272541fdab5583780d4c3a59bfd8e734
->> > 
->> Hello Gerd, MAINTAINERS says you own the hw/audio subsystem, would you pull
->> this in your tree if/when it is to be merged?
->> 
->> For context, the device was in hw/audio initially but in early list
->> discussions we decided to move it with the rest of virtio devices.
->
->Link to these discussions? virtio-gpu is under ./hw/display
->seems inconsistent.
+Given all this is guest-visible, one thing we need for sure is
+a flag disabling this new stuff, and tied to existing machine types.
 
-I agree that it is inconsistent, but I do not know if there is a general 
-consensus on this. I am fine with placing it anywhere that is deemed 
-appropriate.
+>  hw/acpi/ich9.c                    |   5 +
+>  hw/acpi/ich9_tco.c                |   5 +
+>  hw/i386/pc_sysfw.c                |   6 +
+>  hw/isa/Kconfig                    |   2 +
+>  hw/isa/lpc_ich9.c                 |   4 +
+>  hw/isa/meson.build                |   2 +-
+>  hw/isa/spi_ich9.c                 | 448 ++++++++++++++++++++++++++++++
+>  include/hw/southbridge/ich9.h     |   6 +
+>  include/hw/southbridge/ich9_spi.h |  80 ++++++
+>  9 files changed, 557 insertions(+), 1 deletion(-)
+>  create mode 100644 hw/isa/spi_ich9.c
+>  create mode 100644 include/hw/southbridge/ich9_spi.h
+> 
+> -- 
+> 2.41.0
 
-<87a5xkde0c.fsf@linaro.org>
-https://lore.kernel.org/qemu-devel/87a5xkde0c.fsf@linaro.org/
-
->And you are asking Gerd to merge but
->your MAINTAINERS patch wouldn't even let people know
->he needs to be Cc'd on changes.
-
-No, I didn't ask to merge this, I asked if Gerd would be the one merging 
-it because I am not sure myself and wanted more information. What do you 
-think should be the correct process?
-
---
-Manos
 
