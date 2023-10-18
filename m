@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912587CE1D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7A27CE1E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:57:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8rr-0004wz-VQ; Wed, 18 Oct 2023 11:53:56 -0400
+	id 1qt8rt-00059p-OU; Wed, 18 Oct 2023 11:53:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8ro-0004vQ-FM
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:53:52 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8rr-0004yi-VQ
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:53:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8rm-0006Mt-Gp
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:53:52 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8rq-0006NU-Cb
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:53:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644430;
+ s=mimecast20190719; t=1697644433;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ichudybxzU8iz9vDb7x7lgGWFY23q5nvCS0lnP0+5LI=;
- b=Hj1WR7DJ6gXF0EW3f1TzHHS6/kbqUST6wpFLaxNFcgDxO9FlH9HFU4ii3ttEjlKoSSO4kG
- oc4Bmdn9w9NyYCDDwCzokl5ZGK4sO18dCsk+KKHvln75NHPqRqno+cs8x7UidTB/DXvKwi
- XJ/3BmGo4eAZR0Ke/sHkx015kqivZgo=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WotlR6MwHv4Nd3GfFkTO3DbeM+x4JzncXWx5AQNhzFU=;
+ b=VahAxSI1X44TbNgg8hmjgSxc1bnv9clEzns+konnl3+A5H4h4z4K7UQ4aDqmZhp7jOn1S+
+ tiEiZL2gXUozfwDssmqduPBd/8RMQOD34OryGcL9dWbD/6WBDOCD14OsPik25DndWLN+HI
+ PfBpQW/ahIv6BpqVPgqXnsF6/9/Kkt0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-9m6Qtx8kM0O-YYXgNgzdTw-1; Wed, 18 Oct 2023 11:53:48 -0400
-X-MC-Unique: 9m6Qtx8kM0O-YYXgNgzdTw-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c2845cc163so66947581fa.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:53:48 -0700 (PDT)
+ us-mta-314--brqh_OmNhuxMj5CfVFK5w-1; Wed, 18 Oct 2023 11:53:52 -0400
+X-MC-Unique: -brqh_OmNhuxMj5CfVFK5w-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-32db6a28e24so1978508f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:53:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644427; x=1698249227;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ichudybxzU8iz9vDb7x7lgGWFY23q5nvCS0lnP0+5LI=;
- b=sl+j0ChSdUVQWYD0IVt9GUwxusu6Ux35YlczYQoXTv0u8qlKBAo6MgR+2xxa1My2Ya
- 90hEc9FIPrw7cqxX8DOaVbwHfJT9RSWLbdDmgUiYyyO5DEWmAfZWoUHBK1aVDQqQEtxX
- NDJSLsunPdqTjulOmdcrFvCY9nilyc1XT0Bug+EVJ+fkWSysNR2M9bYnlaAviCQh1rtm
- 2qBpxFUyoW1QIcYQsW1tSZQAEZaRFMWdsxQROxXw9cMdA4UcQRBOXADDjnLTo2SL9a9Q
- GI/QlNMV09lgz3SSM0Lv135OssfgxN3x57vMVHMwXGSykKKpTlNno8HA1Mo9bkunk+2K
- mjkw==
-X-Gm-Message-State: AOJu0Yz60ZU065yfWCxTj0NWUe44/86dcdqDNfDGbLBNfgxv2UB2X+i3
- q/SCBrCqAutaNo63o82L9zs+AjpBprfEwuMilGPlg5kB6NlB+VUyGHV1tfA0lDTjygWfESx1pRx
- LgDBzSbI9nInsCu+XOFfFmZPQbHcXKXcr8nZUBzw1cirT5EKNGgc5IsFTqYUA22oncrKW4W8=
-X-Received: by 2002:a2e:7e0f:0:b0:2c5:2d16:6d94 with SMTP id
- z15-20020a2e7e0f000000b002c52d166d94mr3997979ljc.47.1697644426770; 
- Wed, 18 Oct 2023 08:53:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLSVGWQiLJAYt3C9lUFLju8yoXVJ6khmvrxCWxvOHZX/Nc77ot/mDaBJaUp4OiNU+lXMb0DQ==
-X-Received: by 2002:a2e:7e0f:0:b0:2c5:2d16:6d94 with SMTP id
- z15-20020a2e7e0f000000b002c52d166d94mr3997967ljc.47.1697644426343; 
- Wed, 18 Oct 2023 08:53:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697644430; x=1698249230;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WotlR6MwHv4Nd3GfFkTO3DbeM+x4JzncXWx5AQNhzFU=;
+ b=hpzGh/bQZGwVjhKntgcYlCJ5qX5EHHh5PIPZMj75mVPN3haoi417O7timgMeGOSA2O
+ 4i7nUr4xXPIPL/mLUVvqMrnR405EkgwlYx8KjSa/mf2uLI+/gcyqDOcb0gCB+qWjkbCb
+ rhBGbl6x//qLbwXJrg43vqnH+Q2YqiLm2dB3X/+/CNqQAfothSCpDJeJl/cX2t8fDnn2
+ kWF27My5uYMPMDNc3ZBapxzUBvgaWM8hzbFKxzDeyHnKya4Pujsj1AGtPg+e5oKDy5Hg
+ cX3xv71sMG19EYdtfYEeH1A6Z2DJ2gk15T/t+4N3lX5Rf4LS41q5f0JQ541bnmUzZpja
+ H5NQ==
+X-Gm-Message-State: AOJu0YyaVvEyFODD+lrUBtsuo8UyOPnsVpQELa88IyEatKuBoxdPHhLk
+ kEbSifUbv49CvXv/iS0XqJJL43qh7GwKDN43xQwMVLK/lPSXf/YcGtSLqowAvcuC+fmRsDNoImH
+ Xw5ECItnE+wOiXSb1bT3kaY0aRfKeFmBq+HwVDw8K2Y1NxJOz+X0GLMEudghCziNYKnbowDM=
+X-Received: by 2002:adf:e50f:0:b0:32d:9ce0:35ae with SMTP id
+ j15-20020adfe50f000000b0032d9ce035aemr4535777wrm.52.1697644430657; 
+ Wed, 18 Oct 2023 08:53:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHJqGoc1XIPGCONuT8NLbhVrhOScjtRChZVNVocjgIrfWJ1XZ/wkS1zHlwXAL9RsYBQfgXAQ==
+X-Received: by 2002:adf:e50f:0:b0:32d:9ce0:35ae with SMTP id
+ j15-20020adfe50f000000b0032d9ce035aemr4535763wrm.52.1697644430379; 
+ Wed, 18 Oct 2023 08:53:50 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- o30-20020a05600c511e00b004063cd8105csm2039098wms.22.2023.10.18.08.53.44
+ l13-20020a5d480d000000b0032d9523de65sm2369456wrq.48.2023.10.18.08.53.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:53:45 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:53:42 -0400
+ Wed, 18 Oct 2023 08:53:49 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:53:46 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 07/83] vdpa: Send cvq state load commands in parallel
-Message-ID: <acec5f685c7ad6bd3c9bb9a57d4e509160480376.1697644299.git.mst@redhat.com>
+ Hawkins Jiawei <yin31149@gmail.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 08/83] vdpa: Restore hash calculation state
+Message-ID: <1908cfd6e1748d94680e468b9df6321087b8fcf2.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1697644299.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -104,291 +100,132 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hawkins Jiawei <yin31149@gmail.com>
 
-This patch enables sending CVQ state load commands
-in parallel at device startup by following steps:
+This patch introduces vhost_vdpa_net_load_rss() to restore
+the hash calculation state at device's startup.
 
-  * Refactor vhost_vdpa_net_load_cmd() to iterate through
-the control commands shadow buffers. This allows different
-CVQ state load commands to use their own unique buffers.
+Note that vhost_vdpa_net_load_rss() has `do_rss` argument,
+which allows future code to reuse this function to restore
+the receive-side scaling state when the VIRTIO_NET_F_RSS
+feature is enabled in SVQ. Currently, vhost_vdpa_net_load_rss()
+could only be invoked when `do_rss` is set to false.
 
-  * Delay the polling and checking of buffers until either
-the SVQ is full or control commands shadow buffers are full.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <9350f32278e39f7bce297b8f2d82dac27c6f8c9a.1697165821.git.yin31149@gmail.com>
+Message-Id: <f5ffad10699001107022851e0560cb394039d6b0.1693297766.git.yin31149@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 165 +++++++++++++++++++++++++++++------------------
- 1 file changed, 102 insertions(+), 63 deletions(-)
+ net/vhost-vdpa.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index ef4d242811..4b7c3b81b8 100644
+index 4b7c3b81b8..40d0bcbc0b 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -661,6 +661,31 @@ static void vhost_vdpa_net_load_cursor_reset(VhostVDPAState *s,
-     in_cursor->iov_len = vhost_vdpa_net_cvq_cmd_page_len();
+@@ -817,6 +817,88 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
+     return 0;
  }
  
-+/*
-+ * Poll SVQ for multiple pending control commands and check the device's ack.
-+ *
-+ * Caller should hold the BQL when invoking this function.
-+ *
-+ * @s: The VhostVDPAState
-+ * @len: The length of the pending status shadow buffer
-+ */
-+static ssize_t vhost_vdpa_net_svq_flush(VhostVDPAState *s, size_t len)
++static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
++                                   struct iovec *out_cursor,
++                                   struct iovec *in_cursor, bool do_rss)
 +{
-+    /* device uses a one-byte length ack for each control command */
-+    ssize_t dev_written = vhost_vdpa_net_svq_poll(s, len);
-+    if (unlikely(dev_written != len)) {
-+        return -EIO;
++    struct virtio_net_rss_config cfg;
++    ssize_t r;
++    g_autofree uint16_t *table = NULL;
++
++    /*
++     * According to VirtIO standard, "Initially the device has all hash
++     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
++     *
++     * Therefore, there is no need to send this CVQ command if the
++     * driver disable the all hash types, which aligns with
++     * the device's defaults.
++     *
++     * Note that the device's defaults can mismatch the driver's
++     * configuration only at live migration.
++     */
++    if (!n->rss_data.enabled ||
++        n->rss_data.hash_types == VIRTIO_NET_HASH_REPORT_NONE) {
++        return 0;
 +    }
 +
-+    /* check the device's ack */
-+    for (int i = 0; i < len; ++i) {
-+        if (s->status[i] != VIRTIO_NET_OK) {
-+            return -EIO;
-+        }
++    cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
++
++    /*
++     * According to VirtIO standard, "Field reserved MUST contain zeroes.
++     * It is defined to make the structure to match the layout of
++     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
++     *
++     * Therefore, we need to zero the fields in struct virtio_net_rss_config,
++     * which corresponds the `reserved` field in
++     * struct virtio_net_hash_config.
++     */
++    memset(&cfg.indirection_table_mask, 0,
++           sizeof_field(struct virtio_net_hash_config, reserved));
++
++    table = g_malloc_n(n->rss_data.indirections_len,
++                       sizeof(n->rss_data.indirections_table[0]));
++    for (int i = 0; i < n->rss_data.indirections_len; ++i) {
++        table[i] = cpu_to_le16(n->rss_data.indirections_table[i]);
 +    }
++
++    /*
++     * Consider that virtio_net_handle_rss() currently does not restore the
++     * hash key length parsed from the CVQ command sent from the guest into
++     * n->rss_data and uses the maximum key length in other code, so we also
++     * employthe the maxium key length here.
++     */
++    cfg.hash_key_length = sizeof(n->rss_data.key);
++
++    const struct iovec data[] = {
++        {
++            .iov_base = &cfg,
++            .iov_len = offsetof(struct virtio_net_rss_config,
++                                indirection_table),
++        }, {
++            .iov_base = table,
++            .iov_len = n->rss_data.indirections_len *
++                       sizeof(n->rss_data.indirections_table[0]),
++        }, {
++            .iov_base = &cfg.max_tx_vq,
++            .iov_len = offsetof(struct virtio_net_rss_config, hash_key_data) -
++                       offsetof(struct virtio_net_rss_config, max_tx_vq),
++        }, {
++            .iov_base = (void *)n->rss_data.key,
++            .iov_len = sizeof(n->rss_data.key),
++        }
++    };
++
++    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
++                                VIRTIO_NET_CTRL_MQ,
++                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
++                                data, ARRAY_SIZE(data));
++    if (unlikely(r < 0)) {
++        return r;
++    }
++
 +    return 0;
 +}
 +
- static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-                                        struct iovec *out_cursor,
-                                        struct iovec *in_cursor, uint8_t class,
-@@ -671,11 +696,31 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-         .class = class,
-         .cmd = cmd,
-     };
--    size_t data_size = iov_size(data_sg, data_num);
-+    size_t data_size = iov_size(data_sg, data_num), cmd_size;
-     struct iovec out, in;
-     ssize_t r;
-+    unsigned dummy_cursor_iov_cnt;
-+    VhostShadowVirtqueue *svq = g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
- 
-     assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
-+    cmd_size = sizeof(ctrl) + data_size;
-+    if (vhost_svq_available_slots(svq) < 2 ||
-+        iov_size(out_cursor, 1) < cmd_size) {
-+        /*
-+         * It is time to flush all pending control commands if SVQ is full
-+         * or control commands shadow buffers are full.
-+         *
-+         * We can poll here since we've had BQL from the time
-+         * we sent the descriptor.
-+         */
-+        r = vhost_vdpa_net_svq_flush(s, in_cursor->iov_base -
-+                                     (void *)s->status);
-+        if (unlikely(r < 0)) {
-+            return r;
-+        }
-+
-+        vhost_vdpa_net_load_cursor_reset(s, out_cursor, in_cursor);
-+    }
- 
-     /* pack the CVQ command header */
-     iov_from_buf(out_cursor, 1, 0, &ctrl, sizeof(ctrl));
-@@ -684,7 +729,7 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-                out_cursor->iov_base + sizeof(ctrl), data_size);
- 
-     /* extract the required buffer from the cursor for output */
--    iov_copy(&out, 1, out_cursor, 1, 0, sizeof(ctrl) + data_size);
-+    iov_copy(&out, 1, out_cursor, 1, 0, cmd_size);
-     /* extract the required buffer from the cursor for input */
-     iov_copy(&in, 1, in_cursor, 1, 0, sizeof(*s->status));
- 
-@@ -693,11 +738,13 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
+ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+                                   const VirtIONet *n,
+                                   struct iovec *out_cursor,
+@@ -842,6 +924,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
          return r;
      }
  
--    /*
--     * We can poll here since we've had BQL from the time
--     * we sent the descriptor.
--     */
--    return vhost_vdpa_net_svq_poll(s, 1);
-+    /* iterate the cursors */
-+    dummy_cursor_iov_cnt = 1;
-+    iov_discard_front(&out_cursor, &dummy_cursor_iov_cnt, cmd_size);
-+    dummy_cursor_iov_cnt = 1;
-+    iov_discard_front(&in_cursor, &dummy_cursor_iov_cnt, sizeof(*s->status));
++    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
++        return 0;
++    }
 +
-+    return 0;
++    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
++    if (unlikely(r < 0)) {
++        return r;
++    }
++
+     return 0;
  }
  
- static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-@@ -709,15 +756,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_base = (void *)n->mac,
-             .iov_len = sizeof(n->mac),
-         };
--        ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_MAC,
--                                                  VIRTIO_NET_CTRL_MAC_ADDR_SET,
--                                                  &data, 1);
--        if (unlikely(dev_written < 0)) {
--            return dev_written;
--        }
--        if (*s->status != VIRTIO_NET_OK) {
--            return -EIO;
-+        ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                            VIRTIO_NET_CTRL_MAC,
-+                                            VIRTIO_NET_CTRL_MAC_ADDR_SET,
-+                                            &data, 1);
-+        if (unlikely(r < 0)) {
-+            return r;
-         }
-     }
- 
-@@ -762,15 +806,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_len = mul_macs_size,
-         },
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                VIRTIO_NET_CTRL_MAC,
--                                VIRTIO_NET_CTRL_MAC_TABLE_SET,
--                                data, ARRAY_SIZE(data));
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                        VIRTIO_NET_CTRL_MAC,
-+                                        VIRTIO_NET_CTRL_MAC_TABLE_SET,
-+                                        data, ARRAY_SIZE(data));
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -782,7 +823,7 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-                                   struct iovec *in_cursor)
- {
-     struct virtio_net_ctrl_mq mq;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_MQ)) {
-         return 0;
-@@ -793,15 +834,12 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-         .iov_base = &mq,
-         .iov_len = sizeof(mq),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_MQ,
--                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_MQ,
-+                                VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
-+                                &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -813,7 +851,7 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-                                         struct iovec *in_cursor)
- {
-     uint64_t offloads;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj,
-                                  VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
-@@ -841,15 +879,12 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-         .iov_base = &offloads,
-         .iov_len = sizeof(offloads),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_GUEST_OFFLOADS,
-+                                VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
-+                                &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -865,16 +900,12 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPAState *s,
-         .iov_base = &on,
-         .iov_len = sizeof(on),
-     };
--    ssize_t dev_written;
-+    ssize_t r;
- 
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_RX,
--                                          cmd, &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_RX, cmd, &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1031,15 +1062,12 @@ static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
-         .iov_base = &vid,
-         .iov_len = sizeof(vid),
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_VLAN,
--                                                  VIRTIO_NET_CTRL_VLAN_ADD,
--                                                  &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (unlikely(*s->status != VIRTIO_NET_OK)) {
--        return -EIO;
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                        VIRTIO_NET_CTRL_VLAN,
-+                                        VIRTIO_NET_CTRL_VLAN_ADD,
-+                                        &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1106,6 +1134,17 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
-         if (unlikely(r)) {
-             return r;
-         }
-+
-+        /*
-+         * We need to poll and check all pending device's used buffers.
-+         *
-+         * We can poll here since we've had BQL from the time
-+         * we sent the descriptor.
-+         */
-+        r = vhost_vdpa_net_svq_flush(s, in_cursor.iov_base - (void *)s->status);
-+        if (unlikely(r)) {
-+            return r;
-+        }
-     }
- 
-     for (int i = 0; i < v->dev->vq_index; ++i) {
 -- 
 MST
 
