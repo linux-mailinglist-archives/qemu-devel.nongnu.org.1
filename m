@@ -2,97 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279A67CE6A7
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 20:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88937CE707
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 20:43:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtBLO-0002lA-Ip; Wed, 18 Oct 2023 14:32:34 -0400
+	id 1qtBTu-0000Ge-0d; Wed, 18 Oct 2023 14:41:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtBLN-0002kq-6H
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:32:33 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtBLL-0003uC-5f
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:32:32 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9ae2cc4d17eso1156935366b.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 11:32:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697653949; x=1698258749; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mbtYO3FVscziXI6WqkBGQAZiD+XUBy2z2f1p9zcPQPw=;
- b=T/w2x0r0qVrjxKF35MGg6aGDE7h/TZH5+6PyUlp/zuTL2nVZp/o4RJ4VRI574ARbUa
- 3MEwOGR6C1ACBlISGy5TTSfJqEZabLF8HAPwpVbT1pyzJdKJFN8bcwSvGyEdlli8WmEg
- fnHItTC0OyylbAPoQHaWPMOc718Hd7iadex6aLMDb6P2UYxc9hUItDa6YHLbPEruh+n4
- gJfxvaYvWBmCDxm2oOQVxzucqkfc/yc/tMcFWMJqMQ+EAQIxinlzCyDxGlIGwjhc7m2T
- 6tstre63mcXm/VzP+3BhFE++CTUnjVAkL+9n2SK0XzdIqo7hlWxe2/fU4cLJoNVK7PkN
- v6Ww==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qtBTr-0000Eo-Sw
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:41:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qtBTq-0005gL-D7
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 14:41:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697654476;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hVRpz4N57vf0F1Ie7+yJZsDCC62d/0IX2bN2ey/uP4o=;
+ b=gwqtvJPii5e9F5BJjGdqDZ53/lofUqSwvZ6xeLNjbnSh1AFX7w9WC5BhjDi9NZzGPx2MOy
+ 82YeT52Y3Kp+TvsEfBCB2YTqyxJ9qpoyA5wReL3GgS1HL73tpaIR5ZDVOIgAS0rUZ/bt5U
+ hky3rPtsL1zeXhbSbS95eZJtvIjMN4Y=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-214-8hsyvH4LMjeVGLl1Pd0fjQ-1; Wed, 18 Oct 2023 14:41:13 -0400
+X-MC-Unique: 8hsyvH4LMjeVGLl1Pd0fjQ-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-5b7bf88d712so2625538a12.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 11:41:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697653949; x=1698258749;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mbtYO3FVscziXI6WqkBGQAZiD+XUBy2z2f1p9zcPQPw=;
- b=dyDRTqHUTNEo05ZWk4HCpMJPAhhF3yUB8QlYt+01f7+tXTm9f6Z9op0JjSmWYQsBwS
- eEoY54qEweXAz0tM3GniRXrxmFo+/cQPdnubYrHyBZ3ke6nmfMj4f2J2FyXpYLnR4InE
- JL7xdujk3rg1AIMyLxIDgHOjqga5kiUZdtDtZo5tP7eLnd3IWGlZmHBv2Ml6NBW379Dj
- 1kC62GfAVYKKio4LXJBiXjKdtDi+yAI1/ezGIsoPNqGnh4gla9UOiIqFcI5HQvHzMo+q
- J/+ql2UCFDZ1z9VMUvbRqiCgegUwGHvHOfL/TxGDf+p6uQcbQMICO2+NeZvXb2Qk04v7
- NkbQ==
-X-Gm-Message-State: AOJu0YyANirXKkiINpzaIsGsRWbJh/+CCoR8SRFxVqEpfiXOop49obRg
- z9UWzESqdTe/iVnX6/2t3WEZAw==
-X-Google-Smtp-Source: AGHT+IHBAfRr+/x2bJw8ayHDGy2EREASDcrGt7mraaG+8BaIAMTogx32v9eiFpvhq5Z9YdPAh85Ztg==
-X-Received: by 2002:a17:907:3687:b0:99d:e617:abeb with SMTP id
- bi7-20020a170907368700b0099de617abebmr82140ejc.23.1697653949135; 
- Wed, 18 Oct 2023 11:32:29 -0700 (PDT)
-Received: from [192.168.69.115]
- (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr. [176.171.218.149])
- by smtp.gmail.com with ESMTPSA id
- m20-20020a1709060d9400b0099bd046170fsm2144780eji.104.2023.10.18.11.32.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 11:32:28 -0700 (PDT)
-Message-ID: <66f04f0f-604a-e609-2d21-39b881d4ab64@linaro.org>
-Date: Wed, 18 Oct 2023 20:32:24 +0200
+ d=1e100.net; s=20230601; t=1697654472; x=1698259272;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hVRpz4N57vf0F1Ie7+yJZsDCC62d/0IX2bN2ey/uP4o=;
+ b=tPxUvHMV/VXy12N/RzB1FTb/QJDzi2o68Ie/NcET6lsOpNQFppa0Vsv009dhcy7foG
+ siaUIyV1BY36dnFU0Wjtit67dQ0Y+TMtpGzDms47mlRHvjSC0MBy30UnmP2krDk7I1ZV
+ A+Ym8g5mY7CA/66pjBb4uRTF94l8ElnXFSk7+tA9ZiLlnGPK+AUstAP57iuPvHiC4mIg
+ P4dQm7NFG5/X0ZcSyW0wyEo3CLaqlV0Tp5f511ik2FdQw/KiM74hgu9HLelTohxwXhoP
+ 8ZbBENZRUPlMTd5TTKdCqcW+DeigxDvgMZ+DReA4k47P3fX1Cayw+DacZOsYUowF3Px0
+ yu8Q==
+X-Gm-Message-State: AOJu0YwyVfOzLQwLEDeASNMmW/FSuiPh3GI0qI1w01jKQ4YfJZfDhUmX
+ eaRKkvGXQlIV4LmgrXMTdFLl+lbiUCGyp4scEusQFlylm4O1XWWBeUHY/tv/HbPyW4B6ahoKbFu
+ pBxG+vsgp2yCeKgoEGhlbFavl399HKCM=
+X-Received: by 2002:a05:6a20:441d:b0:13e:debc:3657 with SMTP id
+ ce29-20020a056a20441d00b0013edebc3657mr249932pzb.30.1697654472331; 
+ Wed, 18 Oct 2023 11:41:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG9aR977Oq31OXsoFjmTyxyGFXSYuzTrblTPcsU2Wm2dJHNS/FIetxx07TsF0ht4BJ8qIxa8wTJ+boz0WDoAbw=
+X-Received: by 2002:a05:6a20:441d:b0:13e:debc:3657 with SMTP id
+ ce29-20020a056a20441d00b0013edebc3657mr249907pzb.30.1697654471970; Wed, 18
+ Oct 2023 11:41:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 00/12] hw: Strengthen SysBus & QBus API
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
- qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231018141151.87466-1-philmd@linaro.org>
- <393f1aa0-afb5-4269-8499-80afd5b98e48@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <393f1aa0-afb5-4269-8499-80afd5b98e48@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <20231004230532.3002201-1-jsnow@redhat.com>
+ <20231004230532.3002201-4-jsnow@redhat.com>
+ <878r80wbu5.fsf@pond.sub.org>
+In-Reply-To: <878r80wbu5.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Wed, 18 Oct 2023 14:41:00 -0400
+Message-ID: <CAFn=p-aM=zG=pAb78x6VGbUsBeJnR-Di6NkJ0oY7wdihD98c4w@mail.gmail.com>
+Subject: Re: [PATCH v5 3/3] qapi: re-establish linting baseline
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Victor Toso de Carvalho <victortoso@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Michael Roth <michael.roth@amd.com>
+Content-Type: multipart/alternative; boundary="000000000000c0e79b060801fbf8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,50 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/10/23 18:24, Thomas Huth wrote:
-> On 18/10/2023 16.11, Philippe Mathieu-Daudé wrote:
->> Hi,
->>
->> This series ensure:
->>
->> - qbus_new() and sysbus_init_mmio() are called *before*
->>    a device is realized,
->> - sysbus_mmio_map() is called *after* it is realized.
->>
->> First we fix some abuse, then we enforce in qdev/sysbus
->> core code.
-> 
-> I like the idea, and just had a try with "make check-qtest" with the 
-> patches here, but seems like there are more spots that need attention:
+--000000000000c0e79b060801fbf8
+Content-Type: text/plain; charset="UTF-8"
 
+On Wed, Oct 18, 2023, 4:53 AM Markus Armbruster <armbru@redhat.com> wrote:
 
->   24/433 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test              
-> ERROR           5.94s   killed by signal 6 SIGABRT
->  >>> QTEST_QEMU_BINARY=./qemu-system-aarch64 
-> G_TEST_DBUS_DAEMON=/home/thuth/devel/qemu/tests/dbus-vmstate-daemon.sh 
-> QTEST_QEMU_IMG=./qemu-img 
-> PYTHON=/home/thuth/tmp/qemu-build/pyvenv/bin/python3 
-> QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon 
-> MALLOC_PERTURB_=105 /home/thuth/tmp/qemu-build/tests/qtest/qom-test 
-> --tap -k
-> ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― 
-> ✀ ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-> stderr:
-> qemu-system-aarch64: sysbus_init_mmio(type:pxa2xx_pic) but object is 
-> realized
-> Broken pipe
-> ../../devel/qemu/tests/qtest/libqtest.c:203: kill_qemu() detected QEMU 
-> death from signal 6 (Aborted) (core dumped)
+> John Snow <jsnow@redhat.com> writes:
+>
+> > Some very minor housekeeping to make the linters happy once more.
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+>
+> Queued.  Thanks!
+>
 
-I neglected to mention that in the cover letter. This is mentioned here
-https://lore.kernel.org/qemu-devel/1b159c7a-f52c-3705-8757-c2b80a04965b@linaro.org/
+Hehehe. Thank you O:-)
 
-I ping'd Peter on IRC because I'm not sure how to fix this PXA2xx code.
-Apparently it cames from commit 3f6c925f37 ("Use i2c_slave_init() to
-allocate the PXA (dummy) I2C slave"), which I presume was how to model
-slave<->master transactions *before* I2C bus modelling.
+--000000000000c0e79b060801fbf8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
+<div dir=3D"auto"><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" clas=
+s=3D"gmail_attr">On Wed, Oct 18, 2023, 4:53 AM Markus Armbruster &lt;<a hre=
+f=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px =
+#ccc solid;padding-left:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redhat.c=
+om" target=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt; writes:<b=
+r>
+<br>
+&gt; Some very minor housekeeping to make the linters happy once more.<br>
+&gt;<br>
+&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
+t=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt;<br>
+<br>
+Queued.=C2=A0 Thanks!<br></blockquote></div></div><div dir=3D"auto"><br></d=
+iv><div dir=3D"auto">Hehehe. Thank you O:-)</div></div>
 
-Phil.
+--000000000000c0e79b060801fbf8--
+
 
