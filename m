@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333617CDF76
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAF67CDF90
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:25:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt7Sd-0002TB-BK; Wed, 18 Oct 2023 10:23:47 -0400
+	id 1qt7U4-0004jr-D1; Wed, 18 Oct 2023 10:25:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qt7Sb-0002ST-KB
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:23:45 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qt7SZ-0006gw-9j
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:23:45 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1dcfb2a3282so4379641fac.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:23:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697639020; x=1698243820; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NKq5+3IT/K4C2fQ9GoiiLjFY6jIqcYTFiC5kzwPxen8=;
- b=A28BaHUdsOhDeENJ+43fHQWZlLNUXNXXvOZM1ycg60JJf6bJv6A4YmkTky6hGr4BOi
- zgeZBaIptbIeiUcn1jF/tAOgpWMweG0Clj2JBezntUeCRFlNIWnUKjFM0r3JON+z0oxD
- gb2qTOOrFHdO9ZDPT82dUfITxDferxZmb3jPxvBufpRMEXAPMEQ00SgdKsDABgFOkVcK
- PjnTbVtImbJfg2wHdX9sEjMHNlQw/xnPrQMeZ2MigH2An62lbXBoyg/2ARVFZhx+52+b
- 3bYXteiXwA45uxKCDV7f65jzEcjR5Dy+b+IX4j+sh2PLe7Vy6HPi5KnBBWKKwfE2HYIZ
- XPFw==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt7U2-0004ho-8h
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:25:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt7U0-000732-Ms
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:25:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697639111;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=jT4RYAmodD3Z40oT00ZmJ3EMwpg9YVPIx7iCzJYbHtk=;
+ b=K9bIESk5t/nKRSToI27O9iYWznqXzcm+/KgDSsB2QOtV5IMsm+Ow/EZ6HPf6QoUw7yNHl3
+ b3m1grPrJmO7SM3my9HSipEDYra9Au62IPFOowCLWtB91Lqrh4WoOuvQcABql3Ci3HSP/o
+ jf9ncg9ITPCiumV8NavS2oe63Ob61/U=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-336-jVxsvTaqMTm5hRP0zJQ3UA-1; Wed, 18 Oct 2023 10:25:09 -0400
+X-MC-Unique: jVxsvTaqMTm5hRP0zJQ3UA-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c51d0f97e3so34998971fa.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:25:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697639020; x=1698243820;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NKq5+3IT/K4C2fQ9GoiiLjFY6jIqcYTFiC5kzwPxen8=;
- b=VeLtoWhdzgRKWp51UAN1b0LfPXgFf6ODNXiCGJ7m+/Vfssgr5+GPBT1zKxvlC/Hdf1
- GSaGQ9Dv1od4ZSKCkRwsELe65qqwZStv39dKKXuwHeqsBfoiM+OM9NhACDjj+qveV4jW
- HUDoeyMx0/eEbTK0IY/JeuxYnp2juCg9AuvwRwNN3SCbf/bWjyxkQ8YHUZ4esQLHy6zN
- TvpMN95ChcFjJ7bg5k0/+Ymaf0UvX0jgTEeE+qUg7B1ZK7n2Yvz+keysyOdhijXxXeGH
- PKGg/Wb0OKVTBCwEkKsPZCxUGCj6aam4CNXAQ6021ndOMlqOqr9mmBsjzspH6XjePnSQ
- v8Ng==
-X-Gm-Message-State: AOJu0YzeYhZs+6VOt3tlQ15Wx74CmASN4QV1YwnNIy55a7PG5qgYVg9s
- 5HcU7RWYP19EfeBANDjw3ng9ow==
-X-Google-Smtp-Source: AGHT+IGtMkbCOMXmH71zlByl/EvUpx0ErXDnlNsQKMXIMDiUBzqTBFJyYPy+G6cxpyZK8i1cfZIYVQ==
-X-Received: by 2002:a05:6870:11cf:b0:1e9:90ec:140 with SMTP id
- 15-20020a05687011cf00b001e990ec0140mr5022329oav.58.1697639020680; 
- Wed, 18 Oct 2023 07:23:40 -0700 (PDT)
-Received: from [192.168.68.107] ([177.45.186.249])
- by smtp.gmail.com with ESMTPSA id
- c19-20020a056a00249300b006b1e8f17b85sm3392207pfv.201.2023.10.18.07.23.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 07:23:40 -0700 (PDT)
-Message-ID: <f1b4af6c-dc83-4d48-bf3f-c4ae408539cd@ventanamicro.com>
-Date: Wed, 18 Oct 2023 11:23:34 -0300
+ d=1e100.net; s=20230601; t=1697639108; x=1698243908;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jT4RYAmodD3Z40oT00ZmJ3EMwpg9YVPIx7iCzJYbHtk=;
+ b=qE/4XUzY5DNg0FC9HMMDCng+KIuJEOnUQ9z7nDufIG34TPz3mD4EWpexII38ssSqgb
+ inJp9Un+r/UPODgg/sF488EFdKC5dHXzGPaU1w/k5WwjD6D/RLrMFQiGdsNttitVTslL
+ 8ltylMPmUiwVnhxGHdw0chz2/MLDBWs2UXP12ISW7+zpqjDNoYTqf5ofh1WQ1pOejaoM
+ lR/yXZ0OTC40HCxf0oz57dCkr7WyHjLrAe9PWOUYaIJeXrN+jQAzz1o2aZ1KtrY0Qde7
+ x+zeeg4/VqlfT/no+UWUn4a1mSP38d5rIH66BJSsdfdksbVXJHRZ7j+cAc8GnmSc61/c
+ b9hw==
+X-Gm-Message-State: AOJu0YywwI7gLxwFLZLMHxEtj3Z8u+MMeFvvL5NyXj4hyaIxWpDFFGe1
+ h5kqXxQStlqZTIwxLvyCUER8p5dXuAdCPtUZrI+R+WO28FIy328p/3Us1EqygtBcy92cMqVnSY5
+ axwQlsh8cXH8ayLA=
+X-Received: by 2002:a05:6512:3da3:b0:507:98d0:bec4 with SMTP id
+ k35-20020a0565123da300b0050798d0bec4mr5304633lfv.54.1697639108412; 
+ Wed, 18 Oct 2023 07:25:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHLO+CxqVV7USC4G/LNQ4WJPF1HSZ7JclU1hvqtplOG73kD0JnDa9WDjbWwOXJE+pSTn9fChA==
+X-Received: by 2002:a05:6512:3da3:b0:507:98d0:bec4 with SMTP id
+ k35-20020a0565123da300b0050798d0bec4mr5304608lfv.54.1697639108058; 
+ Wed, 18 Oct 2023 07:25:08 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ t17-20020a05600001d100b0032d8034724esm2210719wrx.94.2023.10.18.07.25.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 07:25:07 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Daniel
+ P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
+ =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 10/11] tests/qtest/migration: Support more than one
+ QEMU binary
+In-Reply-To: <20231018140736.3618-11-farosas@suse.de> (Fabiano Rosas's message
+ of "Wed, 18 Oct 2023 11:07:35 -0300")
+References: <20231018140736.3618-1-farosas@suse.de>
+ <20231018140736.3618-11-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 18 Oct 2023 16:25:06 +0200
+Message-ID: <87edhs80u5.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/5] target/riscv: Move misa_mxl_max to class
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-References: <20231017185406.13381-1-akihiko.odaki@daynix.com>
- <20231017185406.13381-4-akihiko.odaki@daynix.com>
- <a829aa4c-0b6f-40b9-a357-99c43d066f3b@ventanamicro.com>
- <ebb52078-2182-4656-a224-928b65124cd3@daynix.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <ebb52078-2182-4656-a224-928b65124cd3@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x31.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,60 +103,52 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fabiano Rosas <farosas@suse.de> wrote:
+D> We have strict rules around migration compatibility between different
+> QEMU versions but no test to validate the migration state between
+> different binaries.
+>
+> Add infrastructure to allow running the migration tests with two
+> different QEMU binaries as migration source and destination.
+>
+> The code now recognizes two new environment variables
+> QTEST_QEMU_BINARY_SRC and QTEST_QEMU_BINARY_DST. In the absence of
+> either of them, the test will use the QTEST_QEMU_BINARY variable. If
+> both are missing then the tests are run with single binary as
+> previously.
+>
+> The machine type is selected automatically as the latest machine type
+> version that works with both binaries.
+>
+> Usage:
+> QTEST_QEMU_BINARY_SRC=../build-8.2.0/qemu-system-x86_64 \
+> QTEST_QEMU_BINARY_DST=../build-8.1.0/qemu-system-x86_64 \
+> ./tests/qtest/migration-test
+>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
+The test works for me.  But I would really like to be able to specify
+the machine type for which I have to test.  I.e. right now, we can test:
 
-On 10/18/23 10:31, Akihiko Odaki wrote:
-> On 2023/10/18 22:01, Daniel Henrique Barboza wrote:
->>
->>
->> On 10/17/23 15:53, Akihiko Odaki wrote:
->>> misa_mxl_max is common for all instances of a RISC-V CPU class so they
->>> are better put into class.
->>>
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> ---
->>
->> I'll repeat what I said in the v1: this patch is adding an extra class parameter,
->> an extra param required to each class_init, and an extra CPUClass cast every time
->> we want to read misa_mxl_max, all of that because we want to assign gdb_core_xml_file
->> earlier.
->>
->> If my previous suggestion of assigning gdb_core directly into riscv_cpu_class_init()
->> doesn't work necause we need misa_mxl_max to do it, a good alternative is setting
->> gdb_core_xml_file in riscv_cpu_post_init(), which is executed after all cpu_init()
->> functions where we already have env->misa_mxl_max set properly.
-> 
-> We want to assign gdb_core_xml_file *earlier* so assigning it after cpu_init() is not OK. In general it should be considered unsafe to initialize a class variable after class_init(); otherwise other subsystems cannot know when it becomes available.
+qemu-8.2 <-> qemu-8.1
 
-There's no difference in assigning it during .instance_init (cpu_init()) and
-.instance_post_init. The callbacks are called one after the other during
-init time. See qom/object.c,  object_initialize_with_type().
+and it is going to use q35-8.1
 
-Now, if we want to be strict with only initializing class variables during class_init(),
-which is something that I will defer to the maintainers, we want to minimize the use
-of env->misa_mxl_max in the code before converting it to a class variable. env->misa_mxl
-is always equal to env->misa_mxl_max, and they are being used interchangeably, but if
-misa_mxl_max is going to be a class variable then we want to use env->misa_mxl instead
-to avoid the RISCV_CPU_GET_CLASS() overhead.
+But in the case that I want to test that two binaries with q35-8.0,
+there is no way to setup that.
 
-I suggest a pre-patch to change the uses of env->misa_mxl_max to env->misa_mxl in
-riscv_is_32bit(), riscv_cpu_gdb_read_register(), riscv_cpu_gdb_write_register() and
-so on (there are quite a few places). And then apply this patch on top of it. This would
-at least minimize the amount of casts being done.
+So basically what I need is
 
-All this considered, there's still one extra class cast that we will have to deal with
-in riscv_tr_init_disas_context(). I am not sure how hot this function is but, taking a
-look at other .init_disas_context implementations from other archs and not finding class
-casts in them, I'm worried about the overhead it'll add. It seems like we can just do
-"ctx->misa_mxl_max = env->misa_mxl" to avoid it.
+QTEST_QEMU_MACHINE_TYPE var, and if that exist, just use that instead of
+the value of "machine"
 
+What do you think?
 
-Thanks,
-
-
-Daniel
+Later, Juan.
 
 
