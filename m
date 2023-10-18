@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BB77CE937
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF4F7CE93D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:42:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtDLc-0007BF-TO; Wed, 18 Oct 2023 16:40:56 -0400
+	id 1qtDLg-0007CR-0N; Wed, 18 Oct 2023 16:41:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLZ-00078O-Vl
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:54 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLc-0007B7-3t
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:56 -0400
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLV-00010w-PI
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:53 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qtDLZ-00011Q-OA
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:40:55 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id B32CA6194F;
+ by sin.source.kernel.org (Postfix) with ESMTP id 00F57CE26B6;
+ Wed, 18 Oct 2023 20:40:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1084C433C7;
  Wed, 18 Oct 2023 20:40:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F246C433CA;
- Wed, 18 Oct 2023 20:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1697661648;
- bh=LtsT3+C0oZ5sExfPYx4Q4kZBMR5ZW+7e31OtsUD5Rzo=;
+ s=k20201202; t=1697661650;
+ bh=P9lOt1zhr8EoLg+6EC27KcemcHD4V4dF6HhXq1h5+cg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=nhIjofiu+7q1D/jMf0XKSB6cbNiT5ZVka29YcDMK7AQ53/g4rX18VqN+V/bYuUAvC
- 47djJZygwau/gWiPX4fTWcEANtA/j7mVaHFL4xDox8t6k9Avr0Zl+Cc27qOOn0eDxm
- x081GycMJWL7WJzu3Q1KOK2ihvg/A19Q+C1lVMQsyKicwdGb09m9UzvERNil2JWo8j
- gNTekA4t7UVsWr95ZWyMvOjPNn+nKiIC03Of6V/g5EtUxXI4ArLSZFV6pvITw/J482
- 3+ZEsbU0x3BzDTv26YrIzYSqF7ql/koD1ANKJczcm7N/j/tE4mSc20kWOMtYQO+4xs
- WajJWzkihw7qA==
+ b=m4DVasqX8JpCaMeDf0obKp9WdBVJABhOHzrTN6FQAvETbsoQ3POKkS+nV1ugJVLfz
+ KOC/lyFwxulsCvYLoesxhP56zSRBCxSKzI8/rI4RexrCC9uGblaqzZbILbzDWpVJue
+ DjiouMDv/dEJ5regHshdU5PcHARX/oOKN8SHegf1op3ozkq6s1QzMVyf5bbe7lK5OX
+ xHebfXMwWikcGliXlb85HuITMtvv0MDoamOb1ZWtuyAwJ61M9gWcrO8IaC/yQghYai
+ gxpYDkxk4AdbqmxIVgRz2Nbt4d7GmAugF8gI77+7VaWoBnWX+nAN8WEP+2cO61vY4p
+ mGaGwj7Bv/1UQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 08/11] hw/hppa: Export machine name, BTLBs,
- power-button address via fw_cfg
-Date: Wed, 18 Oct 2023 22:40:27 +0200
-Message-ID: <20231018204030.391572-9-deller@kernel.org>
+Subject: [PULL 09/11] hw/hppa: Provide RTC and DebugOutputPort on CPU #0
+Date: Wed, 18 Oct 2023 22:40:28 +0200
+Message-ID: <20231018204030.391572-10-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018204030.391572-1-deller@kernel.org>
 References: <20231018204030.391572-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,72 +71,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Provide necessary info to SeaBIOS-hppa.
+For SeaBIOS-hppa, the RTC and DebugOutputPort were in the I/O area of
+the LASI chip of the emulated B160L machine.
+Since we will add other machines without a LASI chip, move the emulated
+devices into the I/O area of CPU#0 instead.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/hppa/machine.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ hw/hppa/hppa_hardware.h |  1 -
+ hw/hppa/machine.c       | 67 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 67 insertions(+), 1 deletion(-)
 
+diff --git a/hw/hppa/hppa_hardware.h b/hw/hppa/hppa_hardware.h
+index a5ac3dd0fd..a9be7bb851 100644
+--- a/hw/hppa/hppa_hardware.h
++++ b/hw/hppa/hppa_hardware.h
+@@ -18,7 +18,6 @@
+ #define LASI_UART_HPA   0xffd05000
+ #define LASI_SCSI_HPA   0xffd06000
+ #define LASI_LAN_HPA    0xffd07000
+-#define LASI_RTC_HPA    0xffd09000
+ #define LASI_LPT_HPA    0xffd02000
+ #define LASI_AUDIO_HPA  0xffd04000
+ #define LASI_PS2KBD_HPA 0xffd08000
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index c6d8deffcf..de925259ea 100644
+index de925259ea..d459ba631b 100644
 --- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -118,11 +118,13 @@ static void fw_cfg_boot_set(void *opaque, const char *boot_device,
-     fw_cfg_modify_i16(opaque, FW_CFG_BOOT_DEVICE, boot_device[0]);
+@@ -103,6 +103,63 @@ static ISABus *hppa_isa_bus(void)
+     return isa_bus;
  }
  
--static FWCfgState *create_fw_cfg(MachineState *ms)
-+static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus)
++/*
++ * Helper functions to emulate RTC clock and DebugOutputPort
++ */
++static time_t rtc_ref;
++
++static uint64_t io_cpu_read(void *opaque, hwaddr addr, unsigned size)
++{
++    uint64_t val = 0;
++
++    switch (addr) {
++    case 0:             /* RTC clock */
++        val = time(NULL);
++        val += rtc_ref;
++        break;
++    case 8:             /* DebugOutputPort */
++        return 0xe9;    /* readback */
++    }
++    return val;
++}
++
++static void io_cpu_write(void *opaque, hwaddr addr,
++                         uint64_t val, unsigned size)
++{
++    unsigned char ch;
++    Chardev *debugout;
++
++    switch (addr) {
++    case 0:             /* RTC clock */
++        rtc_ref = val - time(NULL);
++        break;
++    case 8:             /* DebugOutputPort */
++        ch = val;
++        debugout = serial_hd(0);
++        if (debugout) {
++            qemu_chr_fe_write_all(debugout->be, &ch, 1);
++        } else {
++            fprintf(stderr, "%c", ch);
++        }
++        break;
++    }
++}
++
++static const MemoryRegionOps hppa_io_helper_ops = {
++    .read = io_cpu_read,
++    .write = io_cpu_write,
++    .endianness = DEVICE_BIG_ENDIAN,
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
++    .impl = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
++};
++
++
+ static uint64_t cpu_hppa_to_phys(void *opaque, uint64_t addr)
  {
-     FWCfgState *fw_cfg;
-     uint64_t val;
-     const char qemu_version[] = QEMU_VERSION;
-+    MachineClass *mc = MACHINE_GET_CLASS(ms);
-+    int len;
- 
-     fw_cfg = fw_cfg_init_mem(FW_CFG_IO_BASE, FW_CFG_IO_BASE + 4);
-     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, ms->smp.cpus);
-@@ -137,8 +139,20 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
-     fw_cfg_add_file(fw_cfg, "/etc/cpu/tlb_entries",
+     addr &= (0x10000000 - 1);
+@@ -151,6 +208,10 @@ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus)
+     fw_cfg_add_file(fw_cfg, "/etc/hppa/power-button-addr",
                      g_memdup(&val, sizeof(val)), sizeof(val));
  
-+    val = cpu_to_le64(HPPA_BTLB_ENTRIES);
-+    fw_cfg_add_file(fw_cfg, "/etc/cpu/btlb_entries",
++    val = cpu_to_le64(CPU_HPA + 16);
++    fw_cfg_add_file(fw_cfg, "/etc/hppa/rtc-addr",
 +                    g_memdup(&val, sizeof(val)), sizeof(val));
 +
-+    len = strlen(mc->name) + 1;
-+    fw_cfg_add_file(fw_cfg, "/etc/hppa/machine",
-+                    g_memdup(mc->name, len), len);
-+
-     val = cpu_to_le64(HPA_POWER_BUTTON);
--    fw_cfg_add_file(fw_cfg, "/etc/power-button-addr",
-+    fw_cfg_add_file(fw_cfg, "/etc/hppa/power-button-addr",
-+                    g_memdup(&val, sizeof(val)), sizeof(val));
-+
-+    val = cpu_to_le64(CPU_HPA + 24);
-+    fw_cfg_add_file(fw_cfg, "/etc/hppa/DebugOutputPort",
+     val = cpu_to_le64(CPU_HPA + 24);
+     fw_cfg_add_file(fw_cfg, "/etc/hppa/DebugOutputPort",
                      g_memdup(&val, sizeof(val)), sizeof(val));
+@@ -222,6 +283,12 @@ static void machine_hppa_init(MachineState *machine)
+         g_free(name);
+     }
  
-     fw_cfg_add_i16(fw_cfg, FW_CFG_BOOT_DEVICE, ms->boot_config.order[0]);
-@@ -148,6 +162,8 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
-                     g_memdup(qemu_version, sizeof(qemu_version)),
-                     sizeof(qemu_version));
- 
-+    fw_cfg_add_extra_pci_roots(pci_bus, fw_cfg);
++    /* RTC and DebugOutputPort on CPU #0 */
++    cpu_region = g_new(MemoryRegion, 1);
++    memory_region_init_io(cpu_region, OBJECT(cpu[0]), &hppa_io_helper_ops,
++                          cpu[0], "cpu0-io-rtc", 2 * sizeof(uint64_t));
++    memory_region_add_subregion(addr_space, CPU_HPA + 16, cpu_region);
 +
-     return fw_cfg;
- }
- 
-@@ -250,7 +266,7 @@ static void machine_hppa_init(MachineState *machine)
-                      parallel_hds[0]);
- 
-     /* fw_cfg configuration interface */
--    create_fw_cfg(machine);
-+    create_fw_cfg(machine, pci_bus);
- 
-     /* SCSI disk setup. */
-     dev = DEVICE(pci_create_simple(pci_bus, -1, "lsi53c895a"));
+     /* Main memory region. */
+     if (machine->ram_size > 3 * GiB) {
+         error_report("RAM size is currently restricted to 3GB");
 -- 
 2.41.0
 
