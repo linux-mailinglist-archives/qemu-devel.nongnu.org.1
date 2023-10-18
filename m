@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBC97CE228
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C4F7CE26C
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:12:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8x0-0001UT-T5; Wed, 18 Oct 2023 11:59:15 -0400
+	id 1qt8vg-0007P7-JJ; Wed, 18 Oct 2023 11:57:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vF-0005JS-H0
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:25 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vL-00062b-31
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vD-0007J0-TB
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:25 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8vJ-0007JL-Bj
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:57:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644643;
+ s=mimecast20190719; t=1697644648;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uLW4nacuIeTJ5EH0RbV4BQZpdBCvivCuyeSzP1OfKNM=;
- b=c1cSMVqWC0dXTI64PjN3M/sSh4SBc2X27TaHEPV3DfXeKTYc0WYw27VQh5/CpwGvwnUWaw
- vGCDOkFzTtXt1SVb8DiMsZuHIfiMPK0BMf/X46CsrGJ4S1JEkMDMX/AC6J5weownaPcz17
- gg2DTdgMQpnrdrF2gdQFmH2CLgLFT/E=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fwUMxQ8ncCyAsWqYRxNdCC8jhYTNvx8/arhoeUue154=;
+ b=N0LE5CdxthspnbsIds78wqKhvHBeX7ZfmYi/zuwhmaR6ygl/ihqqOA5upIvHJIKe1keNxc
+ +KIfafHFo+XjdJVaj2zPp8ee0ngEQWlgrNyull7K2CAmmNMAQiNqc8DVWx+kjiiUwoWDNA
+ 47mgbsZ5Pfwj37yV7HOQMf2vSbcpvc0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-iCJRQtHZPda8w0ahRN18Uw-1; Wed, 18 Oct 2023 11:57:21 -0400
-X-MC-Unique: iCJRQtHZPda8w0ahRN18Uw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40566c578b7so50252355e9.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:57:21 -0700 (PDT)
+ us-mta-266-aTlagBoxNvuDmQifwPFhOw-1; Wed, 18 Oct 2023 11:57:25 -0400
+X-MC-Unique: aTlagBoxNvuDmQifwPFhOw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-406de77fb85so44710995e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:57:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644640; x=1698249440;
+ d=1e100.net; s=20230601; t=1697644643; x=1698249443;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uLW4nacuIeTJ5EH0RbV4BQZpdBCvivCuyeSzP1OfKNM=;
- b=lCkCQ3Tn+Lf5iBIbnk4Tzz4dR6u3L4yqTvAdZKva6NvEGXONAppfGwSvNuZIjarS6N
- r0BZ8+oJ5pjLqLgIsXGWU8WPbdeetqKHBbyFiKaPmRcMJ1l3Y+1swMzO/qggUzDef+4x
- Ps+xFVlG/8/0byE/WjbdTWr1U6ediVzQx80/DbJURXCXStN30phKBqpjL11YiIv/ePxi
- RiMBYZd8OIwOpaJl9Rb7pEwPRYjj4TDdNY7QfcidezLh2zR8y6dpxcihW8vUCKVlR0OA
- 1IIyRlPU6wYgjR8I2ZydVPB/F0XseCdHjyH13eKjQ3io4C4/lbVQuVfCnQv6FeIBaZyn
- KO+A==
-X-Gm-Message-State: AOJu0Yxmxy4aE81NNK/H3ciBFJYeG33MpOIrBSNA4T4QjAq34YD3YgwN
- XKkQDrkVAPESCKIo0qeuLInzc3rWkEyzt34iLReeqy7gEeCv0TeBXXliuvH4yMOowc+YvlhX4sn
- 3w6UVSR/Mis0GcgQY8n9SIyEkRIkFyWgulCg4FkzB5N4/4uzcNMgIPEG0fqRm7UZDKc/G9+c=
-X-Received: by 2002:adf:f20e:0:b0:32d:a781:111 with SMTP id
- p14-20020adff20e000000b0032da7810111mr4872921wro.15.1697644639773; 
- Wed, 18 Oct 2023 08:57:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhF8nQF+ovBq1uagItTQQS/ECiw8zvrwiOCNT68g+hghMkMgwPeoQeBP5lhsAq21OWCNPzWQ==
-X-Received: by 2002:adf:f20e:0:b0:32d:a781:111 with SMTP id
- p14-20020adff20e000000b0032da7810111mr4872898wro.15.1697644639374; 
- Wed, 18 Oct 2023 08:57:19 -0700 (PDT)
+ bh=fwUMxQ8ncCyAsWqYRxNdCC8jhYTNvx8/arhoeUue154=;
+ b=NL0KMuUeFtXEg6caIeuibGpIUwG9ps5UtvtoB7pHvxvZHlAb/pVoyr2KeGHS/Jc8uX
+ oDB4+z9KdmGcMe9lKGvVtT889haQ5yS9EW/hKXyvPaTuACbJdP+1yY/5CyiP1xnMTg8C
+ +13PHGS6S9jkXi7tdfL13tH8fEJEqJlb2Zisq/3z0BrDddhZLdv2bx50lQB9SFEDnyso
+ XBZyFR2r/PHAICgRbVSJf34nKIUkBC/Uy/g2gzIjpf+rMHex+f2FGqUL9p0rdqdpWbi9
+ cyM2dPLZ8wQC/E940WSF+353lXuzH2FKBdbUG3ji76J5gNqRD45rRngDZ5WMgUPXAHbj
+ lE8Q==
+X-Gm-Message-State: AOJu0YzCa5EigZbGr+Mx0Vs8SiorSa+Jyiwv1xxsKlteZQ01Okia7yDT
+ nYYE1sDA72WxcXRQ5EbG5AuVwaCh5fCtWBiUaIYzyTI55KhaUFyoK+WfkDJKm4IT/+IEusiW6Nk
+ 7EhfT2XKf6nodPO5lrEWHwHjoCfr0KSZPDXm3OCVu8Ew77SkyZY7bvwim7tKEA5pHlOFjfxE=
+X-Received: by 2002:a05:600c:1393:b0:402:cc9a:31a7 with SMTP id
+ u19-20020a05600c139300b00402cc9a31a7mr4575267wmf.19.1697644643504; 
+ Wed, 18 Oct 2023 08:57:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG9rohLRA6JBGXgDJeX5oGo0An68aqWKUPuiA9NN78phgSbKQ3FZ6z97L2X6dTG3j8FTX0xnA==
+X-Received: by 2002:a05:600c:1393:b0:402:cc9a:31a7 with SMTP id
+ u19-20020a05600c139300b00402cc9a31a7mr4575249wmf.19.1697644643162; 
+ Wed, 18 Oct 2023 08:57:23 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- f12-20020adfb60c000000b00318147fd2d3sm2385909wre.41.2023.10.18.08.57.16
+ j17-20020a05600c489100b0040776008abdsm1980675wmp.40.2023.10.18.08.57.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:57:18 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:57:14 -0400
+ Wed, 18 Oct 2023 08:57:22 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:57:19 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 51/83] hw/isa/piix3: Wire PIC IRQs to ISA bus in host device
-Message-ID: <3cccc57a6adad904fe5e94e05326160965cfc4a6.1697644299.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 52/83] hw/i386/pc: Wire RTC ISA IRQs in south bridges
+Message-ID: <899e94ffd8ecd3b399d466a31928f2eae790829b.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,53 +104,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Thie PIIX3 south bridge implements both the PIC and the ISA bus, so wiring the
-interrupts there makes the device model more self-contained. Furthermore, this
-allows the ISA interrupts to be wired to internal child devices in
-pci_piix3_realize() which will be performed in subsequent patches.
+Makes the south bridges a bit more self-contained and aligns PIIX3 more with
+PIIX4. The latter is needed for consolidating the PIIX south bridges.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20231007123843.127151-10-shentey@gmail.com>
+Message-Id: <20231007123843.127151-11-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc_piix.c | 2 +-
- hw/isa/piix3.c    | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ hw/i386/pc.c      | 7 ++-----
+ hw/isa/lpc_ich9.c | 3 +++
+ hw/isa/piix3.c    | 3 +++
+ 3 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index cd6c00c0b3..5988656279 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -293,6 +293,7 @@ static void pc_init1(MachineState *machine,
-     } else {
-         isa_bus = isa_bus_new(NULL, system_memory, system_io,
-                               &error_abort);
-+        isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
- 
-         rtc_state = isa_new(TYPE_MC146818_RTC);
-         qdev_prop_set_int32(DEVICE(rtc_state), "base_year", 2000);
-@@ -301,7 +302,6 @@ static void pc_init1(MachineState *machine,
-         i8257_dma_init(isa_bus, 0);
-         pcms->hpet_enabled = false;
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 7e6c4dc526..355e1b7cf6 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1244,12 +1244,9 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+         pit_isa_irq = -1;
+         pit_alt_irq = qdev_get_gpio_in(hpet, HPET_LEGACY_PIT_INT);
+         rtc_irq = qdev_get_gpio_in(hpet, HPET_LEGACY_RTC_INT);
++
++        /* overwrite connection created by south bridge */
+         qdev_connect_gpio_out(DEVICE(rtc_state), 0, rtc_irq);
+-    } else {
+-        uint32_t irq = object_property_get_uint(OBJECT(rtc_state),
+-                                                "irq",
+-                                                &error_fatal);
+-        isa_connect_gpio_out(rtc_state, 0, irq);
      }
--    isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
  
-     if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
-         pc_i8259_create(isa_bus, gsi_state->i8259_irq);
+     object_property_add_alias(OBJECT(pcms), "rtc-time", OBJECT(rtc_state),
+diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+index 3fcefc5a8a..23eba64f22 100644
+--- a/hw/isa/lpc_ich9.c
++++ b/hw/isa/lpc_ich9.c
+@@ -696,6 +696,7 @@ static void ich9_lpc_realize(PCIDevice *d, Error **errp)
+     ICH9LPCState *lpc = ICH9_LPC_DEVICE(d);
+     PCIBus *pci_bus = pci_get_bus(d);
+     ISABus *isa_bus;
++    uint32_t irq;
+ 
+     if ((lpc->smi_host_features & BIT_ULL(ICH9_LPC_SMI_F_CPU_HOT_UNPLUG_BIT)) &&
+         !(lpc->smi_host_features & BIT_ULL(ICH9_LPC_SMI_F_CPU_HOTPLUG_BIT))) {
+@@ -745,6 +746,8 @@ static void ich9_lpc_realize(PCIDevice *d, Error **errp)
+     if (!qdev_realize(DEVICE(&lpc->rtc), BUS(isa_bus), errp)) {
+         return;
+     }
++    irq = object_property_get_uint(OBJECT(&lpc->rtc), "irq", &error_fatal);
++    isa_connect_gpio_out(ISA_DEVICE(&lpc->rtc), 0, irq);
+ 
+     pci_bus_irqs(pci_bus, ich9_lpc_set_irq, d, ICH9_LPC_NB_PIRQS);
+     pci_bus_map_irqs(pci_bus, ich9_lpc_map_irq);
 diff --git a/hw/isa/piix3.c b/hw/isa/piix3.c
-index 616f5418fa..3e7c42fa68 100644
+index 3e7c42fa68..11d72ca2bb 100644
 --- a/hw/isa/piix3.c
 +++ b/hw/isa/piix3.c
-@@ -278,6 +278,8 @@ static void pci_piix3_realize(PCIDevice *dev, Error **errp)
-     memory_region_add_subregion_overlap(pci_address_space_io(dev),
-                                         PIIX_RCR_IOPORT, &d->rcr_mem, 1);
+@@ -266,6 +266,7 @@ static void pci_piix3_realize(PCIDevice *dev, Error **errp)
+ {
+     PIIX3State *d = PIIX3_PCI_DEVICE(dev);
+     ISABus *isa_bus;
++    uint32_t irq;
  
-+    isa_bus_register_input_irqs(isa_bus, d->isa_irqs_in);
-+
-     i8257_dma_init(isa_bus, 0);
+     isa_bus = isa_bus_new(DEVICE(d), pci_address_space(dev),
+                           pci_address_space_io(dev), errp);
+@@ -287,6 +288,8 @@ static void pci_piix3_realize(PCIDevice *dev, Error **errp)
+     if (!qdev_realize(DEVICE(&d->rtc), BUS(isa_bus), errp)) {
+         return;
+     }
++    irq = object_property_get_uint(OBJECT(&d->rtc), "irq", &error_fatal);
++    isa_connect_gpio_out(ISA_DEVICE(&d->rtc), 0, irq);
+ }
  
-     /* RTC */
+ static void build_pci_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
 -- 
 MST
 
