@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2EC7CD8E0
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 12:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A90347CD8DE
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 12:09:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt3SR-0007Nk-Pd; Wed, 18 Oct 2023 06:07:19 -0400
+	id 1qt3SR-0007MP-1l; Wed, 18 Oct 2023 06:07:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt3SA-0007JI-O7
+ id 1qt3SA-0007JJ-O0
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:07:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt3S7-0007gr-Tp
+ id 1qt3S8-0007gv-TT
  for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:07:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697623618;
+ s=mimecast20190719; t=1697623619;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7SCQdudatnyGI3PFcpQsCGYuttr/lCxGiua3H8DQmlE=;
- b=hwFCUuFKsED1QUMuhI3ErFdoVq0+K8h0df5Mzve8XbtnKkOKQrqmbevPJb0JIOXnAgIkqZ
- L3t6LICx0EMu4/IcOJhYOkHEy9wr4wX9flxueVOktrdJ+15lRjVz8Nnf4fBhcGNWcG2zAA
- W1GL1gZoV5EvVU0LzoTV/ECcwlE0XUw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-30-rcW8SklfOY6_KpJInI_I8w-1; Wed, 18 Oct 2023 06:06:55 -0400
-X-MC-Unique: rcW8SklfOY6_KpJInI_I8w-1
+ bh=0zkT9Acnej87x6wRVG/5fD+gyy+jX5E1Wl9CdFy55FI=;
+ b=i1Ug/J7BUbUEItMVpUDWyOKTAAehTbqmGf75Sy/J5a4ozyuns2uWLFYEOzn8gtdYr1hkkp
+ 4TX7HuxlZCcCL1SjjCD52Vs4TsHEaJ0/f4m5/lFbhmRqcq3laBve98BjdCMt2s6u/ZmmR1
+ 6s3whlDU8e0TfcHfnd321R3RGn8w6EQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-54-5wbV48ANOB238f2wbJHLcw-1; Wed, 18 Oct 2023 06:06:56 -0400
+X-MC-Unique: 5wbV48ANOB238f2wbJHLcw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A704D28AC1E4;
- Wed, 18 Oct 2023 10:06:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EDEA310201E3;
+ Wed, 18 Oct 2023 10:06:55 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 865EE2026D4C;
- Wed, 18 Oct 2023 10:06:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E73952026D4C;
+ Wed, 18 Oct 2023 10:06:54 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Lukas Straub <lukasstraub2@web.de>
-Subject: [PULL 01/11] migration: RDMA is not compatible with anything else
-Date: Wed, 18 Oct 2023 12:06:41 +0200
-Message-ID: <20231018100651.32674-2-quintela@redhat.com>
+Subject: [PULL 02/11] migration: Move compression_counters cleanup
+ ram-compress.c
+Date: Wed, 18 Oct 2023 12:06:42 +0200
+Message-ID: <20231018100651.32674-3-quintela@redhat.com>
 In-Reply-To: <20231018100651.32674-1-quintela@redhat.com>
 References: <20231018100651.32674-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -79,38 +80,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So give an error instead of just ignoring the other methods.
-
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 Reviewed-by: Lukas Straub <lukasstraub2@web.de>
-Message-ID: <20230613145757.10131-4-quintela@redhat.com>
+Message-ID: <20230613145757.10131-6-quintela@redhat.com>
 ---
- migration/migration.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ migration/migration.c    | 4 +---
+ migration/ram-compress.c | 5 +++++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 6ba5e145ac..81862fcaa9 100644
+index 81862fcaa9..a808abd294 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -447,6 +447,18 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
-         socket_start_incoming_migration(p ? p : uri, errp);
- #ifdef CONFIG_RDMA
-     } else if (strstart(uri, "rdma:", &p)) {
-+        if (migrate_compress()) {
-+            error_setg(errp, "RDMA and compression can't be used together");
-+            return;
-+        }
-+        if (migrate_xbzrle()) {
-+            error_setg(errp, "RDMA and XBZRLE can't be used together");
-+            return;
-+        }
-+        if (migrate_multifd()) {
-+            error_setg(errp, "RDMA and multifd can't be used together");
-+            return;
-+        }
-         rdma_start_incoming_migration(p, errp);
- #endif
-     } else if (strstart(uri, "exec:", &p)) {
+@@ -1466,11 +1466,9 @@ int migrate_init(MigrationState *s, Error **errp)
+     s->switchover_acked = false;
+     s->rdma_migration = false;
+     /*
+-     * set mig_stats compression_counters memory to zero for a
+-     * new migration
++     * set mig_stats memory to zero for a new migration
+      */
+     memset(&mig_stats, 0, sizeof(mig_stats));
+-    memset(&compression_counters, 0, sizeof(compression_counters));
+     migration_reset_vfio_bytes_transferred();
+ 
+     return 0;
+diff --git a/migration/ram-compress.c b/migration/ram-compress.c
+index 06254d8c69..a0f6a56470 100644
+--- a/migration/ram-compress.c
++++ b/migration/ram-compress.c
+@@ -430,6 +430,11 @@ int compress_threads_load_setup(QEMUFile *f)
+         return 0;
+     }
+ 
++    /*
++     * set compression_counters memory to zero for a new migration
++     */
++    memset(&compression_counters, 0, sizeof(compression_counters));
++
+     thread_count = migrate_decompress_threads();
+     decompress_threads = g_new0(QemuThread, thread_count);
+     decomp_param = g_new0(DecompressParam, thread_count);
 -- 
 2.41.0
 
