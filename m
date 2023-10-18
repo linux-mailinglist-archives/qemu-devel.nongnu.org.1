@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4564D7CDD06
+	by mail.lfdr.de (Postfix) with ESMTPS id 7020C7CDD08
 	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:17:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6MO-0007PL-QP; Wed, 18 Oct 2023 09:13:18 -0400
+	id 1qt6Mc-0007ds-BV; Wed, 18 Oct 2023 09:13:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6Lk-00075N-Qy
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:12:39 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6Lq-00075p-AF
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:12:46 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6Lh-0000eh-0t
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:12:35 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c523ac38fbso46009641fa.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:12:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6Lk-0000fM-WB
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:12:42 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9b6559cbd74so1176723666b.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:12:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697634749; x=1698239549; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697634755; x=1698239555; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WuH7XtOKs5G9Ns2H+BnAt+HjsoiLIzrJP7Sikrea0Vo=;
- b=SrSJkTYOkevL7GWhmn+UksdlmmebYoVEuuwc/4qVjplfAedN/SrDBvnNvee/v8vT4H
- ujqxKqDUfDXjgu+7zT6y8HyCMyr5vdGcDu89V/C8Zg60x7QeeFehfct5l10+SokgFsE3
- hUA2eJ9j7IK+Y6T3HVYeUAMOk+Dvaz+HLHyHxsnkJYPHIol0Thq6g7DSw4lwOdmJgafp
- Ey/ID04u2Re5GcQ2qTdegqtyV7sOp3dgn6fCfTcT4LGDFn1SCM8SqzFe8/EJM/KfEgAA
- qcxj6UokGAMjMzDGqqX+apre3Cv/m+pqo9/JxBDOF/dMrAAIxxXISoHifUHx7ToJBWXT
- KS5w==
+ bh=AJfJ06RDafLRLEOQTU58KKvhb0KtBRhLr9Bft9JesEY=;
+ b=nwLHPQxcxrq0eIiAVJQcQdEJTcBjisfsAsYuM+ZewX85WmC0wdX/3bzAZGTLo9mucG
+ NJzDa41pPtkflueCbvcHh/xzOWCYid6oIKuCUmWH+fxV0NtHuKn/YKprso7D6zs81pIB
+ mjh4WE1vRoXLdxysBEm34RaNrVTlzL9bRtQ3IHVLlsWIW5vkuUQviNZgdTrE0nWDQN+8
+ vmqZYGz7TyKrmgePGS/v+0Co5AcgBdv1dliA7/Ld640ztZ/IMYExicsQD5NvdUNYKhAx
+ voc0Jdz/TTJcF/jpFcX3JOFAtzkw/5LMMsFQM3JB1Bb7YAAe/R/B2HX8PdEj2+dXsoH0
+ cFNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697634749; x=1698239549;
+ d=1e100.net; s=20230601; t=1697634755; x=1698239555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WuH7XtOKs5G9Ns2H+BnAt+HjsoiLIzrJP7Sikrea0Vo=;
- b=d6jv8nkP5erkKIfzW9CY5sP7V4yr32IXzy94ZXaCKPL7ka70s1teL6ygE6l/tO32YF
- NT1jDSTpaHGqfyL8eRp9T9uttMFJak8kpB0xGhTzUZodcT9eEgUpLjXiOoK0wpfqYHvr
- aWblVjGIAWyaECBpx7sD4q2GU3tWN5R7kt5ND8dZnFG3a6QVPdvMpAxTYtg94Qj7xD1n
- yfB8+6+hl+5QPGEw9F4T+G9Da7+AAkXPTvnml4PfQGrRh9IrvVL9rxLaoKVG1RYAkccc
- YLloAiJCnOwQac+ZGbQOMAy64SlP0B0YhHstizspndav5712rmWEkm8XfTvkIq/WQT4r
- tjxg==
-X-Gm-Message-State: AOJu0YyV8eBLu4D+c9dG5UoSvf2W0IHz/BQcnUTn74BaWo4n+IO8gZQB
- NhfFZURZucqbJxf0MupgEXtKyAr1Dm6KxdpPMfM=
-X-Google-Smtp-Source: AGHT+IHLPxsD0sCBOFgs9a222m+CPiKUuLKlMJozJW90w1t4MDN0n0qh0oWAR1/30qtstysx+luFhA==
-X-Received: by 2002:ac2:4d86:0:b0:500:d970:6541 with SMTP id
- g6-20020ac24d86000000b00500d9706541mr3793512lfe.39.1697634749089; 
- Wed, 18 Oct 2023 06:12:29 -0700 (PDT)
+ bh=AJfJ06RDafLRLEOQTU58KKvhb0KtBRhLr9Bft9JesEY=;
+ b=kERiIwSSaDxCeKJUSQbEHGwq8p4oHDfnRn5vBinaFNglRV7VICXh4owyBzVKv8sH9j
+ +ajXu6BnBVOgchg/RCQqOHBJUZmRpmYgUaVkDMlbSIrjb0AKwDpFllr86AneQWToGjHt
+ GDA/e0aZ5d3GXzyIi4O6sezW+YeXfOvl1yqdA30dMjzx0TSwYTQz6HvAFmi3iPVT3dZD
+ heNxdFoG+2qdvGWyXiioTz2wVtH5LgbMYc0/yd8Mg1J6nDrnoykObGKzwKDJraE/Jzbv
+ tkW3LclF1pDs+md10vLbxKr250X01YOUxgCdh+P+RsuMDn/+m5jhujN5O0Jya3tDDuJt
+ Omkg==
+X-Gm-Message-State: AOJu0Yxdb3EVJ2r+ughy1xv4UVBYif6UJCqd6id1AWMK3ftolj6FG65c
+ Xs5tCGNLdfbS1dNUyAvbr18hUbGC+pPmaPlGipo=
+X-Google-Smtp-Source: AGHT+IEhye1VJhb3Hz7aHt6f4DRfkmZq7F7Sf0JcZYdaawkRznya3z7iWohlpu6DW7Pr3nnkIUnd3Q==
+X-Received: by 2002:a17:906:fe4b:b0:9ae:6388:e09b with SMTP id
+ wz11-20020a170906fe4b00b009ae6388e09bmr3768847ejb.40.1697634754942; 
+ Wed, 18 Oct 2023 06:12:34 -0700 (PDT)
 Received: from m1x-phil.lan (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr.
  [176.171.218.149]) by smtp.gmail.com with ESMTPSA id
- b42-20020a509f2d000000b0053e43492ef1sm2855045edf.65.2023.10.18.06.12.27
+ og49-20020a1709071df100b009c657110cf2sm1664374ejc.99.2023.10.18.06.12.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 18 Oct 2023 06:12:28 -0700 (PDT)
+ Wed, 18 Oct 2023 06:12:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/8] hw/sd/pxa2xx: Realize sysbus device before accessing it
-Date: Wed, 18 Oct 2023 15:12:13 +0200
-Message-ID: <20231018131220.84380-2-philmd@linaro.org>
+Subject: [PATCH 2/8] hw/sd/pxa2xx: Do not open-code sysbus_create_simple()
+Date: Wed, 18 Oct 2023 15:12:14 +0200
+Message-ID: <20231018131220.84380-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018131220.84380-1-philmd@linaro.org>
 References: <20231018131220.84380-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,31 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sysbus_mmio_map() and sysbus_connect_irq() should not be
-called on unrealized device.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/pxa2xx_mmci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/sd/pxa2xx_mmci.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/hw/sd/pxa2xx_mmci.c b/hw/sd/pxa2xx_mmci.c
-index 124fbf8bbd..9f7a880bac 100644
+index 9f7a880bac..4749e935d8 100644
 --- a/hw/sd/pxa2xx_mmci.c
 +++ b/hw/sd/pxa2xx_mmci.c
-@@ -483,11 +483,11 @@ PXA2xxMMCIState *pxa2xx_mmci_init(MemoryRegion *sysmem,
+@@ -479,13 +479,8 @@ PXA2xxMMCIState *pxa2xx_mmci_init(MemoryRegion *sysmem,
+                 qemu_irq irq, qemu_irq rx_dma, qemu_irq tx_dma)
+ {
+     DeviceState *dev;
+-    SysBusDevice *sbd;
  
-     dev = qdev_new(TYPE_PXA2XX_MMCI);
-     sbd = SYS_BUS_DEVICE(dev);
-+    sysbus_realize_and_unref(sbd, &error_fatal);
-     sysbus_mmio_map(sbd, 0, base);
-     sysbus_connect_irq(sbd, 0, irq);
+-    dev = qdev_new(TYPE_PXA2XX_MMCI);
+-    sbd = SYS_BUS_DEVICE(dev);
+-    sysbus_realize_and_unref(sbd, &error_fatal);
+-    sysbus_mmio_map(sbd, 0, base);
+-    sysbus_connect_irq(sbd, 0, irq);
++    dev = sysbus_create_simple(TYPE_PXA2XX_MMCI, base, irq);
      qdev_connect_gpio_out_named(dev, "rx-dma", 0, rx_dma);
      qdev_connect_gpio_out_named(dev, "tx-dma", 0, tx_dma);
--    sysbus_realize_and_unref(sbd, &error_fatal);
  
-     return PXA2XX_MMCI(dev);
- }
 -- 
 2.41.0
 
