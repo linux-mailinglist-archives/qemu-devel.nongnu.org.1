@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94377CDCC6
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 937C67CDCB9
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:08:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6HY-0004Sw-FZ; Wed, 18 Oct 2023 09:08:16 -0400
+	id 1qt6H3-0004Cy-6z; Wed, 18 Oct 2023 09:07:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt6H5-0004Lm-VX
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:07:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt6H0-0004CD-6f
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:07:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt6H4-0007yt-2H
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:07:47 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qt6Gy-0007xt-LO
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:07:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697634465;
+ s=mimecast20190719; t=1697634459;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TppKG0m+yq0DBZlEnNTstB5ilmksDEBfnyvEfeJZYWE=;
- b=SloOeSwJVxYIDc6Z73P9u6+6C77VdKgGmGYFBVv9hRWRRNUHEc+3MHYT/5NMn61Fn68R2N
- 9j3sFEzH8C6LCkMJ17gFzC2h+77JbS8dFuLDFpDOQMIpJmHR50bKXYYdWiOteY4/tg8hjd
- KdQXUfYaPC/mWa0xtyjCjdhx4eEuoTU=
+ bh=Nt8FnL5/ofazqAvViAcI8m5iQGHQh0F8aBouRe2mRDQ=;
+ b=h8IsjS0wdDKR/0YJddTSgT1nZf3SU4ys4XxXBpoTOOLWpe0YTQs5cMmDY202UhRgg/DmT8
+ YGvWCOAxLEm/vmyif6bcmec7ahnwMv1FLh4qA138+sh8bP/nAuqs2sX2IYYoHYcD9OWxPD
+ 807wmBXaCGQyhsQPXMjlgzVgiBtcDTE=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-103-BrfbAu2qNoOCX6d3mYgEgw-1; Wed, 18 Oct 2023 09:07:34 -0400
-X-MC-Unique: BrfbAu2qNoOCX6d3mYgEgw-1
+ us-mta-347-RK3YWCQNMP2JHA8IYZdtxQ-1; Wed, 18 Oct 2023 09:07:36 -0400
+X-MC-Unique: RK3YWCQNMP2JHA8IYZdtxQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 249791DD35D5;
- Wed, 18 Oct 2023 13:07:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 304F01DD35CA;
+ Wed, 18 Oct 2023 13:07:36 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.109])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E921E20268C8;
- Wed, 18 Oct 2023 13:07:32 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A3D3520268C8;
+ Wed, 18 Oct 2023 13:07:34 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-s390x@nongnu.org,
  Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Subject: [PULL 09/25] qapi/s390x/cpu topology: set-cpu-topology qmp command
-Date: Wed, 18 Oct 2023 15:07:00 +0200
-Message-ID: <20231018130716.286638-10-thuth@redhat.com>
+Subject: [PULL 10/25] machine: adding s390 topology to query-cpu-fast
+Date: Wed, 18 Oct 2023 15:07:01 +0200
+Message-ID: <20231018130716.286638-11-thuth@redhat.com>
 In-Reply-To: <20231018130716.286638-1-thuth@redhat.com>
 References: <20231018130716.286638-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -60,7 +60,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,246 +78,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierre Morel <pmorel@linux.ibm.com>
 
-The modification of the CPU attributes are done through a monitor
-command.
+S390x provides two more topology attributes, entitlement and dedication.
 
-It allows to move the core inside the topology tree to optimize
-the cache usage in the case the host's hypervisor previously
-moved the CPU.
-
-The same command allows to modify the CPU attributes modifiers
-like polarization entitlement and the dedicated attribute to notify
-the guest if the host admin modified scheduling or dedication of a vCPU.
-
-With this knowledge the guest has the possibility to optimize the
-usage of the vCPUs.
-
-The command has a feature unstable for the moment.
+Let's add these CPU attributes to the QAPI command query-cpu-fast.
 
 Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
 Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20231016183925.2384704-10-nsg@linux.ibm.com>
+Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Message-ID: <20231016183925.2384704-11-nsg@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- qapi/machine-target.json |  42 +++++++++++++
- hw/s390x/cpu-topology.c  | 132 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 174 insertions(+)
+ qapi/machine.json  | 9 ++++++++-
+ target/s390x/cpu.c | 9 +++++++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index 93cbf1c128..7688f32ffa 100644
---- a/qapi/machine-target.json
-+++ b/qapi/machine-target.json
-@@ -4,6 +4,8 @@
- # This work is licensed under the terms of the GNU GPL, version 2 or later.
- # See the COPYING file in the top-level directory.
- 
-+{ 'include': 'machine-common.json' }
-+
- ##
- # @CpuModelInfo:
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 17b69a6aea..b4bd26f716 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -57,9 +57,16 @@
  #
-@@ -375,3 +377,43 @@
-   'data': [ 'horizontal', 'vertical' ],
-   'if': 'TARGET_S390X'
- }
-+
-+##
-+# @set-cpu-topology:
+ # @cpu-state: the virtual CPU's state
+ #
++# @dedicated: the virtual CPU's dedication (since 8.2)
 +#
-+# Modify the topology by moving the CPU inside the topology tree,
-+# or by changing a modifier attribute of a CPU.
-+# Absent values will not be modified.
++# @entitlement: the virtual CPU's entitlement (since 8.2)
 +#
-+# @core-id: the vCPU ID to be moved
-+#
-+# @socket-id: destination socket to move the vCPU to
-+#
-+# @book-id: destination book to move the vCPU to
-+#
-+# @drawer-id: destination drawer to move the vCPU to
-+#
-+# @entitlement: entitlement to set
-+#
-+# @dedicated: whether the provisioning of real to virtual CPU is dedicated
-+#
-+# Features:
-+#
-+# @unstable: This command is experimental.
-+#
-+# Returns: Nothing on success.
-+#
-+# Since: 8.2
-+##
-+{ 'command': 'set-cpu-topology',
-+  'data': {
-+      'core-id': 'uint16',
-+      '*socket-id': 'uint16',
-+      '*book-id': 'uint16',
-+      '*drawer-id': 'uint16',
-+      '*entitlement': 'CpuS390Entitlement',
-+      '*dedicated': 'bool'
-+  },
-+  'features': [ 'unstable' ],
-+  'if': { 'all': [ 'TARGET_S390X' , 'CONFIG_KVM' ] }
-+}
-diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
-index 4e4c35f6da..f3771f5045 100644
---- a/hw/s390x/cpu-topology.c
-+++ b/hw/s390x/cpu-topology.c
-@@ -23,6 +23,7 @@
- #include "target/s390x/cpu.h"
- #include "hw/s390x/s390-virtio-ccw.h"
- #include "hw/s390x/cpu-topology.h"
-+#include "qapi/qapi-commands-machine-target.h"
+ # Since: 2.12
+ ##
+-{ 'struct': 'CpuInfoS390', 'data': { 'cpu-state': 'CpuS390State' } }
++{ 'struct': 'CpuInfoS390',
++  'data': { 'cpu-state': 'CpuS390State',
++            '*dedicated': 'bool',
++            '*entitlement': 'CpuS390Entitlement' } }
  
- /*
-  * s390_topology is used to keep the topology information.
-@@ -257,6 +258,29 @@ static bool s390_topology_check(uint16_t socket_id, uint16_t book_id,
-     return true;
+ ##
+ # @CpuInfoFast:
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index ba646461a1..6acfa1c91b 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -38,6 +38,7 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "sysemu/reset.h"
+ #endif
++#include "hw/s390x/cpu-topology.h"
+ 
+ #define CR0_RESET       0xE0UL
+ #define CR14_RESET      0xC2000000UL;
+@@ -146,6 +147,14 @@ static void s390_query_cpu_fast(CPUState *cpu, CpuInfoFast *value)
+     S390CPU *s390_cpu = S390_CPU(cpu);
+ 
+     value->u.s390x.cpu_state = s390_cpu->env.cpu_state;
++#if !defined(CONFIG_USER_ONLY)
++    if (s390_has_topology()) {
++        value->u.s390x.has_dedicated = true;
++        value->u.s390x.dedicated = s390_cpu->env.dedicated;
++        value->u.s390x.has_entitlement = true;
++        value->u.s390x.entitlement = s390_cpu->env.entitlement;
++    }
++#endif
  }
  
-+/**
-+ * s390_topology_need_report
-+ * @cpu: Current cpu
-+ * @drawer_id: future drawer ID
-+ * @book_id: future book ID
-+ * @socket_id: future socket ID
-+ * @entitlement: future entitlement
-+ * @dedicated: future dedicated
-+ *
-+ * A modified topology change report is needed if the topology
-+ * tree or the topology attributes change.
-+ */
-+static bool s390_topology_need_report(S390CPU *cpu, int drawer_id,
-+                                      int book_id, int socket_id,
-+                                      uint16_t entitlement, bool dedicated)
-+{
-+    return cpu->env.drawer_id != drawer_id ||
-+           cpu->env.book_id != book_id ||
-+           cpu->env.socket_id != socket_id ||
-+           cpu->env.entitlement != entitlement ||
-+           cpu->env.dedicated != dedicated;
-+}
-+
- /**
-  * s390_update_cpu_props:
-  * @ms: the machine state
-@@ -325,3 +349,111 @@ void s390_topology_setup_cpu(MachineState *ms, S390CPU *cpu, Error **errp)
-     /* topology tree is reflected in props */
-     s390_update_cpu_props(ms, cpu);
- }
-+
-+static void s390_change_topology(uint16_t core_id,
-+                                 bool has_socket_id, uint16_t socket_id,
-+                                 bool has_book_id, uint16_t book_id,
-+                                 bool has_drawer_id, uint16_t drawer_id,
-+                                 bool has_entitlement,
-+                                 CpuS390Entitlement entitlement,
-+                                 bool has_dedicated, bool dedicated,
-+                                 Error **errp)
-+{
-+    MachineState *ms = current_machine;
-+    int old_socket_entry;
-+    int new_socket_entry;
-+    bool report_needed;
-+    S390CPU *cpu;
-+
-+    cpu = s390_cpu_addr2state(core_id);
-+    if (!cpu) {
-+        error_setg(errp, "Core-id %d does not exist!", core_id);
-+        return;
-+    }
-+
-+    /* Get attributes not provided from cpu and verify the new topology */
-+    if (!has_socket_id) {
-+        socket_id = cpu->env.socket_id;
-+    }
-+    if (!has_book_id) {
-+        book_id = cpu->env.book_id;
-+    }
-+    if (!has_drawer_id) {
-+        drawer_id = cpu->env.drawer_id;
-+    }
-+    if (!has_dedicated) {
-+        dedicated = cpu->env.dedicated;
-+    }
-+
-+    /*
-+     * When the user specifies the entitlement as 'auto' on the command line,
-+     * QEMU will set the entitlement as:
-+     * Medium when the CPU is not dedicated.
-+     * High when dedicated is true.
-+     */
-+    if (!has_entitlement || entitlement == S390_CPU_ENTITLEMENT_AUTO) {
-+        if (dedicated) {
-+            entitlement = S390_CPU_ENTITLEMENT_HIGH;
-+        } else {
-+            entitlement = S390_CPU_ENTITLEMENT_MEDIUM;
-+        }
-+    }
-+
-+    if (!s390_topology_check(socket_id, book_id, drawer_id,
-+                             entitlement, dedicated, errp)) {
-+        return;
-+    }
-+
-+    /* Check for space on new socket */
-+    old_socket_entry = s390_socket_nb(cpu);
-+    new_socket_entry = s390_socket_nb_from_ids(drawer_id, book_id, socket_id);
-+
-+    if (new_socket_entry != old_socket_entry) {
-+        if (s390_topology.cores_per_socket[new_socket_entry] >=
-+            ms->smp.cores) {
-+            error_setg(errp, "No more space on this socket");
-+            return;
-+        }
-+        /* Update the count of cores in sockets */
-+        s390_topology.cores_per_socket[new_socket_entry] += 1;
-+        s390_topology.cores_per_socket[old_socket_entry] -= 1;
-+    }
-+
-+    /* Check if we will need to report the modified topology */
-+    report_needed = s390_topology_need_report(cpu, drawer_id, book_id,
-+                                              socket_id, entitlement,
-+                                              dedicated);
-+
-+    /* All checks done, report new topology into the vCPU */
-+    cpu->env.drawer_id = drawer_id;
-+    cpu->env.book_id = book_id;
-+    cpu->env.socket_id = socket_id;
-+    cpu->env.dedicated = dedicated;
-+    cpu->env.entitlement = entitlement;
-+
-+    /* topology tree is reflected in props */
-+    s390_update_cpu_props(ms, cpu);
-+
-+    /* Advertise the topology change */
-+    if (report_needed) {
-+        s390_cpu_topology_set_changed(true);
-+    }
-+}
-+
-+void qmp_set_cpu_topology(uint16_t core,
-+                          bool has_socket, uint16_t socket,
-+                          bool has_book, uint16_t book,
-+                          bool has_drawer, uint16_t drawer,
-+                          bool has_entitlement, CpuS390Entitlement entitlement,
-+                          bool has_dedicated, bool dedicated,
-+                          Error **errp)
-+{
-+    if (!s390_has_topology()) {
-+        error_setg(errp, "This machine doesn't support topology");
-+        return;
-+    }
-+
-+    s390_change_topology(core, has_socket, socket, has_book, book,
-+                         has_drawer, drawer, has_entitlement, entitlement,
-+                         has_dedicated, dedicated, errp);
-+}
+ /* S390CPUClass::reset() */
 -- 
 2.41.0
 
