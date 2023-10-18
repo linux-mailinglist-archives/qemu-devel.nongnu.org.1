@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CD07CE1E3
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B477CE1ED
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8sX-000152-7O; Wed, 18 Oct 2023 11:54:37 -0400
+	id 1qt8u2-0002yU-3c; Wed, 18 Oct 2023 11:56:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8sV-0000w4-7y
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:54:35 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8ss-0002Jz-E3
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:55:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8sR-0006TI-Ql
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:54:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt8sp-0006VN-Ad
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:54:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697644471;
+ s=mimecast20190719; t=1697644494;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=/dyAdtMXs5MOlnY+c0RKRlUAiX3zrFFL27lez8xm9p4=;
- b=IITV2s/Fctrdu2HiYORqaSuxuS/lVho5OM5T5aumfNmebKi/x2HpqblxLU7IDWLrCZiylL
- TTqrqIIDZfSlKMbtzyC0khXEeSsKWSxiyt/y9VJ6vIlAHTuJ2FVzyPa6D8MLuZkGS+Qg/Y
- 7YfCnmECIoP4yzo1crRSAwa1r+FWYu0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cibLSC4g5DfzF1uzGTZFBiDGn6bu3Z5ynQe7SZ/WaQs=;
+ b=MgNJCo3GljaEUuoylx0WkU09Qit23a8livY1CHnO1AXAJBBkjPdDAN2s3QIBPkuNC6vJdy
+ RLI9IfozYBB3NGvK4HXfHRXcvDdpjj8tMms09k4ajdeiZiLLFuIKD8uw+3NFjZzWhwDZDR
+ ZfB+8FCq5iVVew/RhWIhB9CkiLij988=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-u-ACO80uPMm_w1jH0Cz6Pw-1; Wed, 18 Oct 2023 11:54:29 -0400
-X-MC-Unique: u-ACO80uPMm_w1jH0Cz6Pw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32db9cd71d7so1648704f8f.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:54:29 -0700 (PDT)
+ us-mta-149-4VUiYVngOPmbMYvXNeW7hA-1; Wed, 18 Oct 2023 11:54:42 -0400
+X-MC-Unique: 4VUiYVngOPmbMYvXNeW7hA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32da215295fso2777508f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:54:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697644468; x=1698249268;
+ d=1e100.net; s=20230601; t=1697644480; x=1698249280;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/dyAdtMXs5MOlnY+c0RKRlUAiX3zrFFL27lez8xm9p4=;
- b=GCYO0Qm3cAfKPkUSb2clBFtQTfw9fWe73cv3B2+DZtXxk5bfzAI+XechG8K4PUOA0I
- 0Mwg919xKxA5z4c5g/Lv1JoEclz4bxiUuPovugDhm0tZwx47YnLYcD1Wc40OIu6dOPue
- 5swo/JR760PpIvMLyZBlQSAG8MO+Q+uXpFb8UjHnHZEmjEKrqhmaTb6ln0MWFPGLcKLH
- eLri0H7uUxqqcB//puRh8JEhE4B8jnzrUvgt+DcFQHp503H+ff3xgOW5pwJPHensw924
- UbbZUwfsVPvR4xHBdrWeB4/Zwjp3lGkO+odx/umWecd7OT8+qPIkfSVxEXSXjaioobPm
- Xy0g==
-X-Gm-Message-State: AOJu0YzMXyuOYiyc3CYfflwpy8THUuDCkHHJC4mmizdH7/FE7EgbsMjT
- MBsCuPfW7e4o7TxoUY4FnTfydadDWt2k8ta8BRIvamIxU39wxIpHwrM79wKeQmSXEL4bXZ/KME4
- +/hOKFlI6Y/BWS/Im92WzhYF0I6j3coPuwXnLu4nzs51EroFR7DeZrNBPRG41jyKN/tcFTJU=
-X-Received: by 2002:adf:f092:0:b0:32d:980e:ae7 with SMTP id
- n18-20020adff092000000b0032d980e0ae7mr5049939wro.2.1697644467714; 
- Wed, 18 Oct 2023 08:54:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHHkr1l91JHNL+0ghIvw1XM8Cg6HmNsdltunMY9vKhCJL3FwUg3fdGvKfZNuE7+auqqb/ay3A==
-X-Received: by 2002:adf:f092:0:b0:32d:980e:ae7 with SMTP id
- n18-20020adff092000000b0032d980e0ae7mr5049906wro.2.1697644467059; 
- Wed, 18 Oct 2023 08:54:27 -0700 (PDT)
+ bh=cibLSC4g5DfzF1uzGTZFBiDGn6bu3Z5ynQe7SZ/WaQs=;
+ b=L2F9Wv9fyVQzQMWVmfb3PySGUvbPNDQsHgITyKUnCj0F0d708adGamiNZgxwKsL44U
+ o3K/7HK5oVnVwKw6yRB4Be5m6UdZSHq4JvA+UePIhVbQgkvMWYOlIOb5o2u6NUeUG+DM
+ 3FH890bDbeaV7/jiVDkaXWl8SsgIgQHKNDtxQHh+DRWc80lNfNO4x8Fv8V/BUpdgpehQ
+ yTicBs99C/i/O4GTlmjM4JvLO/CN+umVZz7GOK10dWPwTzrmx+FH68Z3rfgHjdqCuC0P
+ VEFFbNE2Y1RXnV4DC3ZHYaRVnSjWwZdRfhgqi8bM4Vui90pSTpx2hQU0CyyMZhJnVkep
+ CvJA==
+X-Gm-Message-State: AOJu0YzVC0pxYv0+1oWG+KR5gHvxPEBis7XZZ/avMLqkBrTB2+qyx9rl
+ 01rxRGsdXE06mY52Q2LV1R5m8qXq5a5ZCboAUcJzETao2FRrd5WgzpkCKE/5+t/TMHbbJJCchuJ
+ 2S1nBGKXE7WwWrzS78sXkb9Y3G+PrddV+6ngvNpN5ddj4nDqtRR9Gyu3FTmWhJNQqn5isM1o=
+X-Received: by 2002:adf:f551:0:b0:32d:a688:8814 with SMTP id
+ j17-20020adff551000000b0032da6888814mr4860676wrp.19.1697644479469; 
+ Wed, 18 Oct 2023 08:54:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFqFzTrslzd28d9teRV+8DRnGyjTD8Dx+wk94jQ27iBBScE6cVsyKu7HjXKwOIH4EEyKFuauQ==
+X-Received: by 2002:adf:f551:0:b0:32d:a688:8814 with SMTP id
+ j17-20020adff551000000b0032da6888814mr4860654wrp.19.1697644478916; 
+ Wed, 18 Oct 2023 08:54:38 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
  by smtp.gmail.com with ESMTPSA id
- y18-20020a5d4712000000b0031984b370f2sm2385245wrq.47.2023.10.18.08.54.24
+ d14-20020a056000114e00b003232380ffd5sm2361623wrx.106.2023.10.18.08.54.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 08:54:26 -0700 (PDT)
-Date: Wed, 18 Oct 2023 11:54:22 -0400
+ Wed, 18 Oct 2023 08:54:38 -0700 (PDT)
+Date: Wed, 18 Oct 2023 11:54:35 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 16/83] tests: bios-tables-test: Add ACPI table binaries for
- smbios type4 count test
-Message-ID: <5b080806b8bdffca8952c2db89d1105b4df4e665.1697644299.git.mst@redhat.com>
+Subject: [PULL 19/83] tests: bios-tables-test: Add ACPI table binaries for
+ smbios type4 core count test
+Message-ID: <ece9021e24c95b43cb36aa4cdb7bd38be753d98f.1697644299.git.mst@redhat.com>
 References: <cover.1697644299.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -113,7 +113,7 @@ FACP:
 + * AML/ASL+ Disassembler version 20200925 (64-bit version)
 + * Copyright (c) 2000 - 2020 Intel Corporation
 + *
-+ * Disassembly of /tmp/aml-W37791, Wed Aug 23 10:36:32 2023
++ * Disassembly of /tmp/aml-Y6WW91, Wed Aug 23 15:43:43 2023
 + *
 + * ACPI Data Table [FACP]
 + *
@@ -267,7 +267,7 @@ FACP:
 +[0EAh 0234   1]                   Bit Offset : 00
 +[0EBh 0235   1]         Encoded Access Width : 00 [Undefined/Legacy]
 +[0ECh 0236   8]                      Address : 0000000000000000
-+
+
 ...
 
 APIC:
@@ -277,7 +277,7 @@ APIC:
 + * AML/ASL+ Disassembler version 20200925 (64-bit version)
 + * Copyright (c) 2000 - 2020 Intel Corporation
 + *
-+ * Disassembly of /tmp/aml-687791, Wed Aug 23 10:36:32 2023
++ * Disassembly of /tmp/aml-FFXW91, Wed Aug 23 15:43:43 2023
 + *
 + * ACPI Data Table [APIC]
 + *
@@ -285,9 +285,9 @@ APIC:
 + */
 +
 +[000h 0000   4]                    Signature : "APIC"    [Multiple APIC Description Table (MADT)]
-+[004h 0004   4]                 Table Length : 00000430
++[004h 0004   4]                 Table Length : 00000220
 +[008h 0008   1]                     Revision : 03
-+[009h 0009   1]                     Checksum : C5
++[009h 0009   1]                     Checksum : 3C
 +[00Ah 0010   6]                       Oem ID : "BOCHS "
 +[010h 0016   8]                 Oem Table ID : "BXPC    "
 +[018h 0024   4]                 Oem Revision : 00000001
@@ -305,85 +305,77 @@ APIC:
 +[030h 0048   4]        Flags (decoded below) : 00000001
 +                           Processor Enabled : 1
 +                      Runtime Online Capable : 0
-+
-+[034h 0052   1]                Subtable Type : 00 [Processor Local APIC]
-+[035h 0053   1]                       Length : 08
-+[036h 0054   1]                 Processor ID : 01
-+[037h 0055   1]                Local Apic ID : 01
-+[038h 0056   4]        Flags (decoded below) : 00000001
-+                           Processor Enabled : 1
-+                      Runtime Online Capable : 0
 
 [snip]
 
-+[3E4h 0996   1]                Subtable Type : 00 [Processor Local APIC]
-+[3E5h 0997   1]                       Length : 08
-+[3E6h 0998   1]                 Processor ID : 77
-+[3E7h 0999   1]                Local Apic ID : 9E
-+[3E8h 1000   4]        Flags (decoded below) : 00000000
-+                           Processor Enabled : 0
++[1D4h 0468   1]                Subtable Type : 00 [Processor Local APIC]
++[1D5h 0469   1]                       Length : 08
++[1D6h 0470   1]                 Processor ID : 35
++[1D7h 0471   1]                Local Apic ID : 6A
++[1D8h 0472   4]        Flags (decoded below) : 00000001
++                           Processor Enabled : 1
 +                      Runtime Online Capable : 0
 +
-+[3ECh 1004   1]                Subtable Type : 01 [I/O APIC]
-+[3EDh 1005   1]                       Length : 0C
-+[3EEh 1006   1]                  I/O Apic ID : 00
-+[3EFh 1007   1]                     Reserved : 00
-+[3F0h 1008   4]                      Address : FEC00000
-+[3F4h 1012   4]                    Interrupt : 00000000
++[1DCh 0476   1]                Subtable Type : 01 [I/O APIC]
++[1DDh 0477   1]                       Length : 0C
++[1DEh 0478   1]                  I/O Apic ID : 00
++[1DFh 0479   1]                     Reserved : 00
++[1E0h 0480   4]                      Address : FEC00000
++[1E4h 0484   4]                    Interrupt : 00000000
 +
-+[3F8h 1016   1]                Subtable Type : 02 [Interrupt Source Override]
-+[3F9h 1017   1]                       Length : 0A
-+[3FAh 1018   1]                          Bus : 00
-+[3FBh 1019   1]                       Source : 00
-+[3FCh 1020   4]                    Interrupt : 00000002
-+[400h 1024   2]        Flags (decoded below) : 0000
++[1E8h 0488   1]                Subtable Type : 02 [Interrupt Source Override]
++[1E9h 0489   1]                       Length : 0A
++[1EAh 0490   1]                          Bus : 00
++[1EBh 0491   1]                       Source : 00
++[1ECh 0492   4]                    Interrupt : 00000002
++[1F0h 0496   2]        Flags (decoded below) : 0000
 +                                    Polarity : 0
 +                                Trigger Mode : 0
 +
-+[402h 1026   1]                Subtable Type : 02 [Interrupt Source Override]
-+[403h 1027   1]                       Length : 0A
-+[404h 1028   1]                          Bus : 00
-+[405h 1029   1]                       Source : 05
-+[406h 1030   4]                    Interrupt : 00000005
-+[40Ah 1034   2]        Flags (decoded below) : 000D
++[1F2h 0498   1]                Subtable Type : 02 [Interrupt Source Override]
++[1F3h 0499   1]                       Length : 0A
++[1F4h 0500   1]                          Bus : 00
++[1F5h 0501   1]                       Source : 05
++[1F6h 0502   4]                    Interrupt : 00000005
++[1FAh 0506   2]        Flags (decoded below) : 000D
 +                                    Polarity : 1
 +                                Trigger Mode : 3
 +
-+[40Ch 1036   1]                Subtable Type : 02 [Interrupt Source Override]
-+[40Dh 1037   1]                       Length : 0A
-+[40Eh 1038   1]                          Bus : 00
-+[40Fh 1039   1]                       Source : 09
-+[410h 1040   4]                    Interrupt : 00000009
-+[414h 1044   2]        Flags (decoded below) : 000D
++[1FCh 0508   1]                Subtable Type : 02 [Interrupt Source Override]
++[1FDh 0509   1]                       Length : 0A
++[1FEh 0510   1]                          Bus : 00
++[1FFh 0511   1]                       Source : 09
++[200h 0512   4]                    Interrupt : 00000009
++[204h 0516   2]        Flags (decoded below) : 000D
 +                                    Polarity : 1
 +                                Trigger Mode : 3
 +
-+[416h 1046   1]                Subtable Type : 02 [Interrupt Source Override]
-+[417h 1047   1]                       Length : 0A
-+[418h 1048   1]                          Bus : 00
-+[419h 1049   1]                       Source : 0A
-+[41Ah 1050   4]                    Interrupt : 0000000A
-+[41Eh 1054   2]        Flags (decoded below) : 000D
++[206h 0518   1]                Subtable Type : 02 [Interrupt Source Override]
++[207h 0519   1]                       Length : 0A
++[208h 0520   1]                          Bus : 00
++[209h 0521   1]                       Source : 0A
++[20Ah 0522   4]                    Interrupt : 0000000A
++[20Eh 0526   2]        Flags (decoded below) : 000D
 +                                    Polarity : 1
 +                                Trigger Mode : 3
 +
-+[420h 1056   1]                Subtable Type : 02 [Interrupt Source Override]
-+[421h 1057   1]                       Length : 0A
-+[422h 1058   1]                          Bus : 00
-+[423h 1059   1]                       Source : 0B
-+[424h 1060   4]                    Interrupt : 0000000B
-+[428h 1064   2]        Flags (decoded below) : 000D
++[210h 0528   1]                Subtable Type : 02 [Interrupt Source Override]
++[211h 0529   1]                       Length : 0A
++[212h 0530   1]                          Bus : 00
++[213h 0531   1]                       Source : 0B
++[214h 0532   4]                    Interrupt : 0000000B
++[218h 0536   2]        Flags (decoded below) : 000D
 +                                    Polarity : 1
 +                                Trigger Mode : 3
 +
-+[42Ah 1066   1]                Subtable Type : 04 [Local APIC NMI]
-+[42Bh 1067   1]                       Length : 06
-+[42Ch 1068   1]                 Processor ID : FF
-+[42Dh 1069   2]        Flags (decoded below) : 0000
++[21Ah 0538   1]                Subtable Type : 04 [Local APIC NMI]
++[21Bh 0539   1]                       Length : 06
++[21Ch 0540   1]                 Processor ID : FF
++[21Dh 0541   2]        Flags (decoded below) : 0000
 +                                    Polarity : 0
 +                                Trigger Mode : 0
-+[42Fh 1071   1]         Interrupt Input LINT : 01
-+
++[21Fh 0543   1]         Interrupt Input LINT : 01
+
 ...
 
 DSDT:
@@ -395,13 +387,13 @@ DSDT:
 + *
 + * Disassembling to symbolic ASL+ operators
 + *
-+ * Disassembly of /tmp/aml-8G8791, Wed Aug 23 10:36:32 2023
++ * Disassembly of /tmp/aml-9ZXW91, Wed Aug 23 15:43:43 2023
 + *
 + * Original Table Header:
 + *     Signature        "DSDT"
-+ *     Length           0x0000489D (18589)
++ *     Length           0x00003271 (12913)
 + *     Revision         0x01 **** 32-bit table (V1), no 64-bit math support
-+ *     Checksum         0xDB
++ *     Checksum         0xAF
 + *     OEM ID           "BOCHS "
 + *     OEM Table ID     "BXPC    "
 + *     OEM Revision     0x00000001 (1)
@@ -433,11 +425,35 @@ DSDT:
 +            DBGB = 0x0A
 +        }
 +    }
-+
 
 [snip]
 
++        Device (\_SB.CPUS)
++        {
++            Name (_HID, "ACPI0010" /* Processor Container Device */)  // _HID: Hardware ID
++            Name (_CID, EisaId ("PNP0A05") /* Generic Container Device */)  // _CID: Compatible ID
++            Method (CTFY, 2, NotSerialized)
++            {
++                If ((Arg0 == Zero))
++                {
++                    Notify (C000, Arg1)
++                }
 +
++                If ((Arg0 == One))
++                {
++                    Notify (C001, Arg1)
++                }
+
+[snip]
+
++                If ((Arg0 == 0x35))
++                {
++                    Notify (C035, Arg1)
++                }
++            }
+
+[snip]
+
 +            Processor (C000, 0x00, 0x00000000, 0x00)
 +            {
 +                Method (_STA, 0, Serialized)  // _STA: Status
@@ -479,189 +495,157 @@ DSDT:
 
 [snip]
 
-+            Processor (C077, 0x77, 0x00000000, 0x00)
++            Processor (C035, 0x35, 0x00000000, 0x00)
 +            {
 +                Method (_STA, 0, Serialized)  // _STA: Status
 +                {
-+                    Return (CSTA (0x77))
++                    Return (CSTA (0x35))
 +                }
 +
 +                Name (_MAT, Buffer (0x08)  // _MAT: Multiple APIC Table Entry
 +                {
-+                     0x00, 0x08, 0x77, 0x9E, 0x01, 0x00, 0x00, 0x00   // ..w.....
++                     0x00, 0x08, 0x35, 0x6A, 0x01, 0x00, 0x00, 0x00   // ..5j....
 +                })
 +                Method (_EJ0, 1, NotSerialized)  // _EJx: Eject Device, x=0-9
 +                {
-+                    CEJ0 (0x77)
++                    CEJ0 (0x35)
 +                }
 +
 +                Method (_OST, 3, Serialized)  // _OST: OSPM Status Indication
 +                {
-+                    COST (0x77, Arg0, Arg1, Arg2)
++                    COST (0x35, Arg0, Arg1, Arg2)
 +                }
 +            }
-+        }
-+    }
-+
+
 ...
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20230928125943.1816922-5-zhao1.liu@linux.intel.com>
+Message-Id: <20230928125943.1816922-8-zhao1.liu@linux.intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
  tests/qtest/bios-tables-test-allowed-diff.h |   3 ---
- tests/data/acpi/q35/APIC.type4-count        | Bin 0 -> 1072 bytes
- tests/data/acpi/q35/DSDT.type4-count        | Bin 0 -> 18589 bytes
- tests/data/acpi/q35/FACP.type4-count        | Bin 0 -> 244 bytes
+ tests/data/acpi/q35/APIC.core-count         | Bin 0 -> 544 bytes
+ tests/data/acpi/q35/DSDT.core-count         | Bin 0 -> 12913 bytes
+ tests/data/acpi/q35/FACP.core-count         | Bin 0 -> 244 bytes
  4 files changed, 3 deletions(-)
 
 diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 0ce6f8fc72..dfb8523c8b 100644
+index b9bc196130..dfb8523c8b 100644
 --- a/tests/qtest/bios-tables-test-allowed-diff.h
 +++ b/tests/qtest/bios-tables-test-allowed-diff.h
 @@ -1,4 +1 @@
  /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/q35/APIC.type4-count",
--"tests/data/acpi/q35/DSDT.type4-count",
--"tests/data/acpi/q35/FACP.type4-count",
-diff --git a/tests/data/acpi/q35/APIC.type4-count b/tests/data/acpi/q35/APIC.type4-count
-index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..ab60a6ef065d8ce53ae93d311d3777d2d4afb9f6 100644
+-"tests/data/acpi/q35/APIC.core-count",
+-"tests/data/acpi/q35/DSDT.core-count",
+-"tests/data/acpi/q35/FACP.core-count",
+diff --git a/tests/data/acpi/q35/APIC.core-count b/tests/data/acpi/q35/APIC.core-count
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..d9d7ca9a896159791f6e74842d02786dc2608cb3 100644
 GIT binary patch
-literal 1072
-zcmXxjX)mKu7{>9_YU}A{8~a-OZpzsAwwBgf>(n~-!C>rL5ClOG1VQjwyzxDJ5<E};
-zagzJ~UFYQFB<IC#bGsZ?jSxO>_Ev|p!(#Wi9Ts`1gb+$r6yp8Et0V-fRH#;?j|Meb
-z)ap<tp|2h#1L{p^Fr(2AO#x^QM86>P55|BH3=GAfaQqR0!I2mejiE6Z7K`EDe+elf
-zo_%BjMkQf%GRCA}Y#PR;qa_35voIkW6LT=hipjZ{l834Jm{x%4g_u!{nI)K2irM9u
-zQ-MD#(OQkUHq5i*uNus+#ezC4bYhVUiyN?{2}_%?tOd*6SkZ=+?O4@`)m>=oM!N?c
-zJy_F=wf$H(fc1mu975MHHjH577&eV#^8~g`V(S#Tr?G7Y+h?(34m;<uYXQ3#@%J)%
-zR<LIkd)KjV1N%2|U<(Jg@y`wp?c(qrj_l*;0gfGd$3+@H!ii)2dxDdvICX~8=lJge
-zXD)H}3g@oz{|(OH;=&y+-s92(E<fVR6Rtkv+KZyfr1aMhrK=5cDM3kEt*lu|di{4Y
-Q$QL*>8of!Q`;?#f0%hq@0RR91
+literal 544
+zcmXxh*-pYh7(n5_rLA2+0RaKGf`EYgcISn(YQP%{E<vx<s8OHNNAXF}nVvYw%y*`l
+zOq$Ff8O5O~k~xj8<KayhO_MlO!w?bOT9Kbwsw;wqfu@NW3oRRM2OSsZJam2Z^5_>Z
+zC}OsRxiZdIaG{F%8W!qUO#f5d#RmIQ6U!~Ev~j6})h^b0SnuQV8LkX)HNv%XT))8Z
+z5*tHoj&S1&TM4$u*qPwwEq3p)caQxkZav`kBknxm?lbPa;QlKfyy4+H9(~~PC!Tz1
+jjjVpV@0ngrUrimlY+ISr<$3?*s{?!sg0w8>S6%T3A7&l_
 
 literal 0
 HcmV?d00001
 
-diff --git a/tests/data/acpi/q35/DSDT.type4-count b/tests/data/acpi/q35/DSDT.type4-count
-index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..edc23198cdb47a981bcbc82bc8e392b815abb554 100644
+diff --git a/tests/data/acpi/q35/DSDT.core-count b/tests/data/acpi/q35/DSDT.core-count
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..a24b04cbdbf09383b933a42a2a15182545543a87 100644
 GIT binary patch
-literal 18589
-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%0ALbj|l0}uT;__N_ymyhGKP{
-zR41hRw<@VlNp(qzKh{Z)3F+~7D(NvLJ(i@z6P@&gke>WnB|V{}Cz90nR3|+pq^Eza
-zlAco1Q%UN7rjwo#(zCx&NzW+hnIsLY=%f`wTKQX*v_eTMk~H{SCp{;m=f6=&&nfA-
-zBn`dLNiPWL#owu<7nJk@NYS0JX%;pBS2MAMA-4MB23p*=6e(=sJ8Ic4L9p$^V<GFG
-zzicsl{4)D{OmB{wKZkz~n?X2khS|=LKfv8Thh4h`emKG~{)hdn2fH8tAI<ys{Gz{M
-z_zcevegxq+E&hS^Wf*_&x#u1H638F<J@3xHg*9)UP52tvEB+t`-zwo8HE?eY>~pTH
-z+5zYj7HQ$vR@iTjBw?d7-@}Z@$>wF)o;{tkU;_efm}Z-odm4KhP5AYZ%Ia94m@C4!
-z0v!S;X_Jl6I_q8dUD(_X8?TSdLi%!FwWBd$LhYdYs~y3B<+EU;4p;+t54I6GBOiv!
-z>dEXC8<qpGfT>Jj26h%D&|9fE(hzCD?beaZ&RN_*7b$e%qgYuDm18mZOq5KQpqr!R
-z*f2NX5i<?AvR#g+4ftIX5D7>0p@7b#<*anxgB!W?r753Pv%(QOz>-wnoId5pH0X)<
-zn)v^l;QwMxrSQhan{?2CZR}GS)LFb4#hYBPvf4kMN<%UH$8h|xp9p(`?G5-SY`3<I
-znl+<lnDBI4G#24+ua7;d`wN$5+^9CV%1@$#RzolTXiQ}_F;Sd`Rdvn|!1;o$>#&E4
-z_(rUjQS%f3C;nit_cbFY>`MhVrUAS+kNMgEv)>5zMp(>&(zNYX6M{TgJVV!wx?u);
-k4HL_0D`%79y!#9|m3SZ}4*20fB#f^~_-_Ll_+6a;1CLN!@c;k-
+literal 12913
+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
+Pm7vcgZUt5Fe;xh|kQQ*J
 
 literal 0
 HcmV?d00001
 
-diff --git a/tests/data/acpi/q35/FACP.type4-count b/tests/data/acpi/q35/FACP.type4-count
+diff --git a/tests/data/acpi/q35/FACP.core-count b/tests/data/acpi/q35/FACP.core-count
 index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..31fa5dd19c213034eef4eeefa6a04e61dadd8a2a 100644
 GIT binary patch
 literal 244
