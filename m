@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579A57CFB52
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C64D97CFB6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:41:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTEw-0000jB-UE; Thu, 19 Oct 2023 09:39:07 -0400
+	id 1qtTF6-0001uB-Il; Thu, 19 Oct 2023 09:39:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1qtNyo-0003BS-Qr
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:02:08 -0400
+ id 1qtNyx-0003FI-3G
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:02:15 -0400
 Received: from mgamail.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1qtNym-0006MN-Ip
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:02:06 -0400
+ id 1qtNyu-0006N8-SX
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:02:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697702524; x=1729238524;
+ t=1697702532; x=1729238532;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wZYxJmWSfUug2p3jTY5+EH28LA+GLCN7OAdwgFeYHKU=;
- b=Cu4D4HLpI/WkweN+SJCBOctGynhfnz9ndiKlCJjGCiGawAWA/5EKE7ug
- bqQ7bXQSeVMvP8Bhhqrul8ifiYjmg9Pte09L3gJcvF7TPa6fLFVocUM2u
- 49f5YxvWaIXhK1L5il6YUfT7pud3IffOKSNlruceYC3W1JQE4U+U092U7
- 5OpOIt3MxIJZERofoahF5g1xA0aY7myqsrfnQ5TWglOEb8cd/ZEHAVkkn
- h/DauI8nHSQvKX5W6KmIErIhZvbgI9LEznEaGVc5loqe/tOqWC+Jdk+QW
- /DTZWZdHDO94HG1RNYg9DI40voZLnzm9ljMmQQwTGz3IEq+50JPixwI9n g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="383418488"
-X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="383418488"
+ bh=TFLaIokBr3NS3B84d8PU4bnFn7b2kvq59OhP5EiNt2U=;
+ b=Q3Ymo2NegoI/DwMszjrzxoitkRJdQoeFyQ5rBwd4AhnABzy528MTo5OK
+ b5VQTuwsCEUFuiuHMkI2UmWv7SgKz1iuM4w1S9okchhseqqmh50r60zhS
+ ai2BHur+DRNBVJTA4qwDoGn0Z+CVUIaY6HHswDNcqSvqlLTpMpdcjukAx
+ v9zmxjzjHpN/kw0fDBMmGYedEjmrAR7MNMzIQ0iVAW5U9DDTbWLEUfMOH
+ FOQwR2B8Wk5wBlRZCaLVr9ZkrmPPB+a1s4L57jqjYXK77ARvtUfN9fh4U
+ RmkE0OzfpyKUpvuZXfI7s1MkH25dt0yssq8vr1stqQYoAbTDXSoyKeQUu Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="383418517"
+X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="383418517"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2023 01:02:02 -0700
+ 19 Oct 2023 01:02:11 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="1004134861"
-X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="1004134861"
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="1004134875"
+X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="1004134875"
 Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by fmsmga006.fm.intel.com with ESMTP; 19 Oct 2023 01:02:00 -0700
+ by fmsmga006.fm.intel.com with ESMTP; 19 Oct 2023 01:02:08 -0700
 From: Yuan Liu <yuan1.liu@intel.com>
 To: quintela@redhat.com, peterx@redhat.com, farosas@suse.de, leobras@redhat.com
 Cc: qemu-devel@nongnu.org,
 	yuan1.liu@intel.com,
 	nanhai.zou@intel.com
-Subject: [PATCH 4/5] migration iaa-compress: Add IAA initialization and
- deinitialization
-Date: Thu, 19 Oct 2023 06:12:23 +0800
-Message-Id: <20231018221224.599065-5-yuan1.liu@intel.com>
+Subject: [PATCH 5/5] migration iaa-compress: Implement IAA compression
+Date: Thu, 19 Oct 2023 06:12:24 +0800
+Message-Id: <20231018221224.599065-6-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20231018221224.599065-1-yuan1.liu@intel.com>
 References: <20231018221224.599065-1-yuan1.liu@intel.com>
@@ -79,285 +78,350 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch defines the structure for IAA jobs related to data
-compression and decompression, as well as the initialization and
-deinitialization processes for IAA.
+Implement the functions of IAA for data compression and decompression.
+The implementation uses non-blocking job submission and polling to check
+the job completion status to reduce IAA's overhead in the live migration
+process.
 
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
 ---
- migration/iaa-ram-compress.c | 152 +++++++++++++++++++++++++++++++++++
- migration/iaa-ram-compress.h |  20 +++++
- migration/meson.build        |   1 +
- migration/ram-compress.c     |  21 +++--
- 4 files changed, 189 insertions(+), 5 deletions(-)
- create mode 100644 migration/iaa-ram-compress.c
- create mode 100644 migration/iaa-ram-compress.h
+ migration/iaa-ram-compress.c | 167 +++++++++++++++++++++++++++++++++++
+ migration/iaa-ram-compress.h |   7 ++
+ migration/ram-compress.c     |  10 ++-
+ migration/ram.c              |  56 ++++++++++--
+ 4 files changed, 232 insertions(+), 8 deletions(-)
 
 diff --git a/migration/iaa-ram-compress.c b/migration/iaa-ram-compress.c
-new file mode 100644
-index 0000000000..da45952594
---- /dev/null
+index da45952594..243aeb6d55 100644
+--- a/migration/iaa-ram-compress.c
 +++ b/migration/iaa-ram-compress.c
-@@ -0,0 +1,152 @@
-+/*
-+ * QEMU IAA compression support
-+ *
-+ * Copyright (c) 2023 Intel Corporation
-+ *  Written by:
-+ *  Yuan Liu<yuan1.liu@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ */
+@@ -12,6 +12,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
 +
-+#include "qemu/osdep.h"
-+#include "qemu/cutils.h"
-+#include "qemu/error-report.h"
-+#include "migration.h"
-+#include "options.h"
-+#include "io/channel-null.h"
-+#include "exec/target_page.h"
-+#include "exec/ramblock.h"
-+#include "iaa-ram-compress.h"
-+#include "qpl/qpl.h"
-+
-+/* The IAA work queue maximum depth */
-+#define IAA_JOB_NUM (512)
-+
-+typedef struct {
-+    CompressResult result;
-+    ram_addr_t offset; /* The offset of the compressed page in the block */
-+    RAMBlock *block; /* The block of the compressed page */
-+} iaa_comp_param;
-+
-+typedef struct {
-+    uint8_t *host; /* Target address for decompression page */
-+} iaa_decomp_param;
-+
-+typedef struct IaaJob {
-+    QSIMPLEQ_ENTRY(IaaJob) entry;
-+    bool is_compression;
-+    uint32_t in_len;
-+    uint32_t out_len;
-+    uint8_t *in_buf;
-+    uint8_t *out_buf;
-+    qpl_job *qpl; /* It is used to submit (de)compression work to IAA */
-+    union {
-+        iaa_comp_param comp;
-+        iaa_decomp_param decomp;
-+    } param;
-+} IaaJob;
-+
-+typedef struct IaaJobPool {
-+    uint32_t pos;
-+    uint32_t cnt;
-+    IaaJob *jobs[IAA_JOB_NUM];
-+    uint8_t *job_in_buf; /* The IAA device input buffers for all IAA jobs */
-+    uint8_t *job_out_buf; /* The IAA device output buffers for all IAA jobs */
-+    size_t buf_size;
-+} IaaJobPool;
-+
-+static IaaJobPool iaa_job_pool;
-+/* This is used to record jobs that have been submitted but not yet completed */
-+static QSIMPLEQ_HEAD(, IaaJob) polling_queue =
-+                                   QSIMPLEQ_HEAD_INITIALIZER(polling_queue);
-+
-+void iaa_compress_deinit(void)
+ #include "qemu/error-report.h"
+ #include "migration.h"
+ #include "options.h"
+@@ -62,6 +63,31 @@ static IaaJobPool iaa_job_pool;
+ static QSIMPLEQ_HEAD(, IaaJob) polling_queue =
+                                    QSIMPLEQ_HEAD_INITIALIZER(polling_queue);
+ 
++static IaaJob *get_job(send_iaa_data send_page)
 +{
-+    for (int i = 0; i < IAA_JOB_NUM; i++) {
-+        if (iaa_job_pool.jobs[i]) {
-+            if (iaa_job_pool.jobs[i]->qpl) {
-+                qpl_fini_job(iaa_job_pool.jobs[i]->qpl);
-+                g_free(iaa_job_pool.jobs[i]->qpl);
++    IaaJob *job;
++
++retry:
++    /* Wait for a job to complete when there is no available job */
++    if (iaa_job_pool.cnt == IAA_JOB_NUM) {
++        flush_iaa_jobs(false, send_page);
++        goto retry;
++    }
++    job = iaa_job_pool.jobs[iaa_job_pool.pos];
++    iaa_job_pool.pos++;
++    iaa_job_pool.cnt++;
++    if (iaa_job_pool.pos == IAA_JOB_NUM) {
++        iaa_job_pool.pos = 0;
++    }
++    return job;
++}
++
++static void put_job(IaaJob *job)
++{
++    assert(iaa_job_pool.cnt > 0);
++    iaa_job_pool.cnt--;
++}
++
+ void iaa_compress_deinit(void)
+ {
+     for (int i = 0; i < IAA_JOB_NUM; i++) {
+@@ -150,3 +176,144 @@ init_err:
+     iaa_compress_deinit();
+     return -1;
+ }
++
++static void process_completed_job(IaaJob *job, send_iaa_data send_page)
++{
++    if (job->is_compression) {
++        send_page(job->param.comp.block, job->param.comp.offset,
++                  job->out_buf, job->out_len, job->param.comp.result);
++    } else {
++        assert(job->out_len == qemu_target_page_size());
++        memcpy(job->param.decomp.host, job->out_buf, job->out_len);
++    }
++    put_job(job);
++}
++
++static qpl_status check_job_status(IaaJob *job, bool block)
++{
++    qpl_status status;
++    qpl_job *qpl = job->qpl;
++
++    status = block ? qpl_wait_job(qpl) : qpl_check_job(qpl);
++    if (status == QPL_STS_OK) {
++        job->out_len = qpl->total_out;
++        if (job->is_compression) {
++            job->param.comp.result = RES_COMPRESS;
++            /* if no compression benefit, send a normal page for migration */
++            if (job->out_len == qemu_target_page_size()) {
++                iaa_comp_param *param = &(job->param.comp);
++                memcpy(job->out_buf, (param->block->host + param->offset),
++                       job->out_len);
++                job->param.comp.result = RES_NONE;
 +            }
-+            g_free(iaa_job_pool.jobs[i]);
++        }
++    } else if (status == QPL_STS_MORE_OUTPUT_NEEDED) {
++        if (job->is_compression) {
++            /*
++             * if the compressed data is larger than the original data, send a
++             * normal page for migration, in this case, IAA has copied the
++             * original data to job->out_buf automatically.
++             */
++            job->out_len = qemu_target_page_size();
++            job->param.comp.result = RES_NONE;
++            status = QPL_STS_OK;
 +        }
 +    }
-+    if (iaa_job_pool.job_in_buf) {
-+        munmap(iaa_job_pool.job_in_buf, iaa_job_pool.buf_size);
-+        iaa_job_pool.job_in_buf = NULL;
-+    }
-+    if (iaa_job_pool.job_out_buf) {
-+        munmap(iaa_job_pool.job_out_buf, iaa_job_pool.buf_size);
-+        iaa_job_pool.job_out_buf = NULL;
++    return status;
++}
++
++static void check_polling_jobs(send_iaa_data send_page)
++{
++    IaaJob *job, *job_next;
++    qpl_status status;
++
++    QSIMPLEQ_FOREACH_SAFE(job, &polling_queue, entry, job_next) {
++        status = check_job_status(job, false);
++        if (status == QPL_STS_OK) { /* job has done */
++            process_completed_job(job, send_page);
++            QSIMPLEQ_REMOVE_HEAD(&polling_queue, entry);
++        } else if (status == QPL_STS_BEING_PROCESSED) { /* job is running */
++            break;
++        } else {
++            abort();
++        }
 +    }
 +}
 +
-+int iaa_compress_init(bool is_decompression)
++static int submit_new_job(IaaJob *job)
 +{
 +    qpl_status status;
-+    IaaJob *job = NULL;
-+    uint32_t qpl_hw_size = 0;
-+    int flags = MAP_PRIVATE | MAP_POPULATE | MAP_ANONYMOUS;
-+    size_t buf_size = IAA_JOB_NUM * qemu_target_page_size();
++    qpl_job *qpl = job->qpl;
 +
-+    QSIMPLEQ_INIT(&polling_queue);
-+    memset(&iaa_job_pool, 0, sizeof(IaaJobPool));
-+    iaa_job_pool.buf_size = buf_size;
-+    iaa_job_pool.job_out_buf = mmap(NULL, buf_size, PROT_READ | PROT_WRITE,
-+                                    flags, -1, 0);
-+    if (iaa_job_pool.job_out_buf == MAP_FAILED) {
-+        error_report("Failed to allocate iaa output buffer, error %s",
-+                     strerror(errno));
++    qpl->op = job->is_compression ? qpl_op_compress : qpl_op_decompress;
++    qpl->next_in_ptr = job->in_buf;
++    qpl->next_out_ptr = job->out_buf;
++    qpl->available_in = job->in_len;
++    qpl->available_out = qemu_target_page_size(); /* outbuf maximum size */
++    qpl->flags = QPL_FLAG_FIRST | QPL_FLAG_LAST | QPL_FLAG_OMIT_VERIFY;
++    qpl->level = 1; /* only level 1 compression is supported */
++
++    do {
++        status = qpl_submit_job(qpl);
++    } while (status == QPL_STS_QUEUES_ARE_BUSY_ERR);
++
++    if (status != QPL_STS_OK) {
++        error_report("Failed to submit iaa job, error %d", status);
 +        return -1;
 +    }
-+    /*
-+     * There is no need to allocate an input buffer for the compression
-+     * function, the IAA hardware can directly access the virtual machine
-+     * memory through the host address through Share Virtual Memory(SVM)
-+     */
-+    if (is_decompression) {
-+        iaa_job_pool.job_in_buf = mmap(NULL, buf_size, PROT_READ | PROT_WRITE,
-+                                       flags, -1, 0);
-+        if (iaa_job_pool.job_in_buf == MAP_FAILED) {
-+            error_report("Failed to allocate iaa input buffer, error %s",
-+                         strerror(errno));
-+            goto init_err;
++    QSIMPLEQ_INSERT_TAIL(&polling_queue, job, entry);
++    return 0;
++}
++
++int flush_iaa_jobs(bool flush_all_jobs, send_iaa_data send_page)
++{
++    IaaJob *job, *job_next;
++
++    QSIMPLEQ_FOREACH_SAFE(job, &polling_queue, entry, job_next) {
++        if (check_job_status(job, true) != QPL_STS_OK) {
++            return -1;
 +        }
-+    }
-+    status = qpl_get_job_size(qpl_path_hardware, &qpl_hw_size);
-+    if (status != QPL_STS_OK) {
-+        error_report("Failed to initialize iaa hardware, error %d", status);
-+        goto init_err;
-+    }
-+    for (int i = 0; i < IAA_JOB_NUM; i++) {
-+        size_t buf_offset = qemu_target_page_size() * i;
-+        job = g_try_malloc0(sizeof(IaaJob));
-+        if (!job) {
-+            error_report("Failed to allocate iaa job memory, error %s",
-+                         strerror(errno));
-+            goto init_err;
-+        }
-+        iaa_job_pool.jobs[i] = job;
-+        job->qpl = g_try_malloc0(qpl_hw_size);
-+        if (!job->qpl) {
-+            error_report("Failed to allocate iaa qpl memory, error %s",
-+                         strerror(errno));
-+            goto init_err;
-+        }
-+        if (is_decompression) {
-+            job->in_buf = iaa_job_pool.job_in_buf + buf_offset;
-+        }
-+        job->out_buf = iaa_job_pool.job_out_buf + buf_offset;
-+        status = qpl_init_job(qpl_path_hardware, job->qpl);
-+        if (status != QPL_STS_OK) {
-+            error_report("Failed to initialize iaa qpl, error %d", status);
-+            goto init_err;
++        process_completed_job(job, send_page);
++        QSIMPLEQ_REMOVE_HEAD(&polling_queue, entry);
++        if (!flush_all_jobs) {
++            break;
 +        }
 +    }
 +    return 0;
-+init_err:
-+    iaa_compress_deinit();
-+    return -1;
++}
++
++int compress_page_with_iaa(RAMBlock *block, ram_addr_t offset,
++                           send_iaa_data send_page)
++{
++    IaaJob *job;
++
++    if (iaa_job_pool.cnt != 0) {
++        check_polling_jobs(send_page);
++    }
++    if (buffer_is_zero(block->host + offset, qemu_target_page_size())) {
++        send_page(block, offset, NULL, 0, RES_ZEROPAGE);
++        return 1;
++    }
++    job = get_job(send_page);
++    job->is_compression = true;
++    job->in_buf = block->host + offset;
++    job->in_len = qemu_target_page_size();
++    job->param.comp.offset = offset;
++    job->param.comp.block = block;
++    return (submit_new_job(job) == 0 ? 1 : 0);
++}
++
++int decompress_data_with_iaa(QEMUFile *f, void *host, int len)
++{
++    IaaJob *job;
++
++    if (iaa_job_pool.cnt != 0) {
++        check_polling_jobs(NULL);
++    }
++    job = get_job(NULL);
++    job->is_compression = false;
++    qemu_get_buffer(f, job->in_buf, len);
++    job->in_len = len;
++    job->param.decomp.host = host;
++    return submit_new_job(job);
 +}
 diff --git a/migration/iaa-ram-compress.h b/migration/iaa-ram-compress.h
-new file mode 100644
-index 0000000000..27998b255b
---- /dev/null
+index 27998b255b..5a555b3b8d 100644
+--- a/migration/iaa-ram-compress.h
 +++ b/migration/iaa-ram-compress.h
-@@ -0,0 +1,20 @@
-+/*
-+ * QEMU IAA compression support
-+ *
-+ * Copyright (c) 2023 Intel Corporation
-+ *  Written by:
-+ *  Yuan Liu<yuan1.liu@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ */
-+
-+#ifndef QEMU_MIGRATION_IAA_COMPRESS_H
-+#define QEMU_MIGRATION_IAA_COMPRESS_H
-+#include "qemu-file.h"
-+#include "ram-compress.h"
-+
-+int iaa_compress_init(bool is_decompression);
-+void iaa_compress_deinit(void);
-+#endif
-diff --git a/migration/meson.build b/migration/meson.build
-index 92b1cc4297..9131815420 100644
---- a/migration/meson.build
-+++ b/migration/meson.build
-@@ -40,6 +40,7 @@ if get_option('live_block_migration').allowed()
-   system_ss.add(files('block.c'))
- endif
- system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
-+system_ss.add(when: qpl, if_true: files('iaa-ram-compress.c'))
+@@ -15,6 +15,13 @@
+ #include "qemu-file.h"
+ #include "ram-compress.h"
  
- specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
-                 if_true: files('ram.c',
++typedef int (*send_iaa_data) (RAMBlock *block, ram_addr_t offset, uint8_t *data,
++                              uint32_t data_len, CompressResult result);
++
+ int iaa_compress_init(bool is_decompression);
+ void iaa_compress_deinit(void);
++int compress_page_with_iaa(RAMBlock *block, ram_addr_t offset,
++                           send_iaa_data send_page);
++int decompress_data_with_iaa(QEMUFile *f, void *host, int len);
++int flush_iaa_jobs(bool flush_all_jobs, send_iaa_data send_page);
+ #endif
 diff --git a/migration/ram-compress.c b/migration/ram-compress.c
-index 47357352f7..acc511ce57 100644
+index acc511ce57..0bddf8b9ea 100644
 --- a/migration/ram-compress.c
 +++ b/migration/ram-compress.c
-@@ -30,6 +30,9 @@
- #include "qemu/cutils.h"
- 
- #include "ram-compress.h"
-+#ifdef CONFIG_QPL
-+#include "iaa-ram-compress.h"
-+#endif
- 
- #include "qemu/error-report.h"
- #include "migration.h"
-@@ -484,10 +487,11 @@ int ram_compress_save_setup(void)
-     if (!migrate_compress()) {
+@@ -370,10 +370,11 @@ int wait_for_decompress_done(void)
          return 0;
      }
+ 
 +#ifdef CONFIG_QPL
      if (migrate_compress_with_iaa()) {
 -        /* Implement in next patch */
 -        return 0;
-+        return iaa_compress_init(false);
++        return flush_iaa_jobs(true, NULL);
      }
 +#endif
-     return compress_threads_save_setup();
- }
  
-@@ -496,10 +500,12 @@ void ram_compress_save_cleanup(void)
-     if (!migrate_compress()) {
-         return;
-     }
+     thread_count = migrate_decompress_threads();
+     qemu_mutex_lock(&decomp_done_lock);
+@@ -511,9 +512,12 @@ void ram_compress_save_cleanup(void)
+ 
+ void ram_decompress_data(QEMUFile *f, void *host, int len)
+ {
 +#ifdef CONFIG_QPL
      if (migrate_compress_with_iaa()) {
 -        /* Implement in next patch */
-+        iaa_compress_deinit();
-         return;
-     }
-+#endif
-     compress_threads_save_cleanup();
- }
- 
-@@ -516,9 +522,11 @@ int ram_compress_load_setup(QEMUFile *f)
-     if (!migrate_compress()) {
-         return 0;
-     }
-+#ifdef CONFIG_QPL
-     if (migrate_compress_with_iaa()) {
--        /* Implement in next patch */
-+        return iaa_compress_init(true);
-     }
-+#endif
-     return compress_threads_load_setup(f);
- }
- 
-@@ -527,8 +535,11 @@ void ram_compress_load_cleanup(void)
-     if (!migrate_compress()) {
-         return;
-     }
-+#ifdef CONFIG_QPL
-     if (migrate_compress_with_iaa()) {
--        /* Implement in next patch */
-+        iaa_compress_deinit();
++        decompress_data_with_iaa(f, host, len);
 +        return;
      }
 +#endif
-     compress_threads_load_cleanup();
+     decompress_data_with_multi_threads(f, host, len);
  }
+ 
+diff --git a/migration/ram.c b/migration/ram.c
+index 34ee1de332..5ef818112c 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -69,6 +69,9 @@
+ #include "qemu/userfaultfd.h"
+ #endif /* defined(__linux__) */
+ 
++#ifdef CONFIG_QPL
++#include "iaa-ram-compress.h"
++#endif
+ /***********************************************************/
+ /* ram save/restore */
+ 
+@@ -1342,16 +1345,59 @@ static int send_queued_data(CompressParam *param)
+     return len;
+ }
+ 
++#ifdef CONFIG_QPL
++static int send_iaa_compressed_page(RAMBlock *block, ram_addr_t offset,
++                                    uint8_t *data, uint32_t data_len,
++                                    CompressResult result)
++{
++    PageSearchStatus *pss = &ram_state->pss[RAM_CHANNEL_PRECOPY];
++    MigrationState *ms = migrate_get_current();
++    QEMUFile *file = ms->to_dst_file;
++    int len = 0;
++
++    assert(block == pss->last_sent_block);
++    if (result == RES_ZEROPAGE) {
++        len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_ZERO);
++        qemu_put_byte(file, 0);
++        len += 1;
++        ram_release_page(block->idstr, offset);
++        stat64_add(&mig_stats.zero_pages, 1);
++    } else if (result == RES_COMPRESS) {
++        assert(data != NULL);
++        assert((data_len > 0) && (data_len < qemu_target_page_size()));
++        len += save_page_header(pss, file, block,
++                                offset | RAM_SAVE_FLAG_COMPRESS_PAGE);
++        qemu_put_be32(file, data_len);
++        qemu_put_buffer(file, data, data_len);
++        len += data_len;
++        /* 8 means a header with RAM_SAVE_FLAG_CONTINUE. */
++        compression_counters.compressed_size += len - 8;
++        compression_counters.pages++;
++    } else if (result == RES_NONE) {
++        assert((data != NULL) && (data_len == TARGET_PAGE_SIZE));
++        len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_PAGE);
++        qemu_put_buffer(file, data, data_len);
++        len += data_len;
++        stat64_add(&mig_stats.normal_pages, 1);
++    } else {
++        abort();
++    }
++    ram_transferred_add(len);
++    return len;
++}
++#endif
++
+ static void ram_flush_compressed_data(RAMState *rs)
+ {
+     if (!save_page_use_compression(rs)) {
+         return;
+     }
++#ifdef CONFIG_QPL
+     if (migrate_compress_with_iaa()) {
+-        /* Implement in next patch */
++        flush_iaa_jobs(true, send_iaa_compressed_page);
+         return;
+     }
+-
++#endif
+     flush_compressed_data(send_queued_data);
+ }
+ 
+@@ -2102,11 +2148,11 @@ static bool save_compress_page(RAMState *rs, PageSearchStatus *pss,
+         ram_flush_compressed_data(rs);
+         return false;
+     }
+-
++#ifdef CONFIG_QPL
+     if (migrate_compress_with_iaa()) {
+-        /* Implement in next patch */
+-        return true;
++        return compress_page_with_iaa(block, offset, send_iaa_compressed_page);
+     }
++#endif
+     if (compress_page_with_multi_thread(block, offset, send_queued_data) > 0) {
+         return true;
+     }
 -- 
 2.39.3
 
