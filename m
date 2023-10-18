@@ -2,71 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9607CD869
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E547CD86B
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:42:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt345-0003Qb-51; Wed, 18 Oct 2023 05:42:09 -0400
+	id 1qt34L-0004Bm-V4; Wed, 18 Oct 2023 05:42:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt342-0003AM-Cl
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:42:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qt34J-0004Ab-Hp; Wed, 18 Oct 2023 05:42:23 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt340-0002fh-Cn
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:42:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697622123;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=p3SIiBchNR1V5iriYG4l/tY0NNMp2lAGW3tid8RV3Es=;
- b=QlLp1g8SANLKK0hEhkUE7yN0PXabCS5L9w9jaQuB+CKrn40eCLPl6bzabpQD0YOjB3yrk7
- LSZ4dMuOrtfkCsbZ+WYHTNWNB4oe2FOZvP+q9sb5W3xq91l1nwGHMhmcm/ZvVwzGQciDUr
- 9LLWoYhrEj/CtMpdsnENVREH7pYXPzI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-426-NjQLFBIzOkSCIIH6-wpHxg-1; Wed, 18 Oct 2023 05:41:52 -0400
-X-MC-Unique: NjQLFBIzOkSCIIH6-wpHxg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5A861C051A4;
- Wed, 18 Oct 2023 09:41:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 82DF7492BFA;
- Wed, 18 Oct 2023 09:41:51 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7C24621E6A1F; Wed, 18 Oct 2023 11:41:50 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  armbru@redhat.com,
- eblake@redhat.com,  hreitz@redhat.com,  kwolf@redhat.com,
- vsementsov@yandex-team.ru,  jsnow@redhat.com,  den@virtuozzo.com,
- t.lamprecht@proxmox.com,  alexander.ivanov@virtuozzo.com
-Subject: Re: [PATCH v3 0/9] mirror: allow switching from background to
- active mode
-References: <20231013092143.365296-1-f.ebner@proxmox.com>
-Date: Wed, 18 Oct 2023 11:41:50 +0200
-In-Reply-To: <20231013092143.365296-1-f.ebner@proxmox.com> (Fiona Ebner's
- message of "Fri, 13 Oct 2023 11:21:34 +0200")
-Message-ID: <87lec0uv1d.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qt34H-0002ih-3m; Wed, 18 Oct 2023 05:42:23 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 131D0429B0;
+ Wed, 18 Oct 2023 11:42:10 +0200 (CEST)
+Message-ID: <3e1c941b-2b76-4f85-88cb-4a2a968eb3e6@proxmox.com>
+Date: Wed, 18 Oct 2023 11:42:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: deadlock when using iothread during backup_clean()
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, QEMU Developers
+ <qemu-devel@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>,
+ Thomas Lamprecht <t.lamprecht@proxmox.com>
+References: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
+ <dd12f39d-a364-b186-2ad7-04343ea85e3f@redhat.com>
+ <44ff810b-8ec6-0f11-420a-6efa2c7c2475@proxmox.com>
+ <2ca4eb06-75c3-7bd8-972b-b37af47743dc@yandex-team.ru>
+ <71e3112d-3d3f-fd55-4099-6765d4f22205@proxmox.com>
+ <76f9678d-ed92-418e-8d1e-c6dc55f83279@proxmox.com>
+ <ZS56FzuqZSApXBbc@redhat.com>
+ <c2a6c1b6-0438-488f-bba3-1014ffdadbce@proxmox.com>
+ <ZS6YFtYKyFLbfrrP@redhat.com>
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <ZS6YFtYKyFLbfrrP@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,51 +67,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fiona Ebner <f.ebner@proxmox.com> writes:
+Am 17.10.23 um 16:20 schrieb Kevin Wolf:
+> Am 17.10.2023 um 15:37 hat Fiona Ebner geschrieben:
+>> Am 17.10.23 um 14:12 schrieb Kevin Wolf:
+>>> Am 17.10.2023 um 12:18 hat Fiona Ebner geschrieben:
+>>>> I ran into similar issues now with mirror, (both deadlocks and stuck
+>>>> guest IO at other times), and interestingly, also during job start.
+>>>>
+>>>> Also had a backtrace similar to [0] once, so I took a closer look.
+>>>> Probably was obvious to others already, but for the record:
+>>>>
+>>>> 1. the graph is locked by the main thread
+>>>> 2. the iothread holds the AioContext lock
+>>>> 3. the main thread waits on the AioContext lock
+>>>> 4. the iothread waits for coroutine spawned by blk_is_available()
+>>>
+>>> Where does this blk_is_available() in the iothread come from? Having it
+>>> wait without dropping the AioContext lock sounds like something that
+>>> we'd want to avoid. Ideally, devices using iothreads shouldn't use
+>>> synchronous requests at all, but I think scsi-disk might have some of
+>>> them.
+>>>
+>>
+>> It's part of the request handling in virtio-scsi:
+>>
+>>> #0  0x00007ff7f5f55136 in __ppoll (fds=0x7ff7e40030c0, nfds=8, timeout=<optimized out>, sigmask=0x0) at ../sysdeps/unix/sysv/linux/ppoll.c:42
+>>> #1  0x00005587132615ab in qemu_poll_ns (fds=0x7ff7e40030c0, nfds=8, timeout=-1) at ../util/qemu-timer.c:339
+>>> #2  0x000055871323e8b1 in fdmon_poll_wait (ctx=0x55871598d5e0, ready_list=0x7ff7f288ebe0, timeout=-1) at ../util/fdmon-poll.c:79
+>>> #3  0x000055871323e1ed in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:670
+>>> #4  0x0000558713089efa in bdrv_poll_co (s=0x7ff7f288ec90) at /home/febner/repos/qemu/block/block-gen.h:43
+>>> #5  0x000055871308c362 in blk_is_available (blk=0x55871599e2f0) at block/block-gen.c:1426
+>>> #6  0x0000558712f6843b in virtio_scsi_ctx_check (s=0x558716c049c0, d=0x55871581cd30) at ../hw/scsi/virtio-scsi.c:290
+> 
+> Oh... So essentially for an assertion.
+> 
+> I wonder if the blk_is_available() check introduced in 2a2d69f490c is
+> even necessary any more, because BlockBackend has its own AioContext
+> now. And if blk_bs(blk) != NULL isn't what we actually want to check if
+> the check is necessary, because calling bdrv_is_inserted() doesn't seem
+> to have been intended. blk_bs() wouldn't have to poll.
+> 
 
-> Changes in v3:
->     * unlock the job mutex when calling the new block job driver
->       'query' handler
->     * squash patch adapting iotest output into patch that changes the
->       output
->     * turn accesses to copy_mode and actively_synced atomic
->     * slightly rework error handling in mirror_change
->
-> Changes in v2:
->     * move bitmap to filter which allows to avoid draining when
->       changing the copy mode
->     * add patch to determine copy_to_target only once
->     * drop patches returning redundant information upon query
->     * update QEMU version in QAPI
->     * update indentation in QAPI
->     * update indentation in QAPI (like in a937b6aa73 ("qapi: Reformat
->       doc comments to conform to current conventions"))
->     * add patch to adapt iotest output
->
-> Discussion of v2:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg02290.html
->
-> Discussion of v1:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-02/msg07216.html
->
-> With active mode, the guest write speed is limited by the synchronous
-> writes to the mirror target. For this reason, management applications
-> might want to start out in background mode and only switch to active
-> mode later, when certain conditions are met. This series adds a
-> block-job-change QMP command to achieve that, as well as
-> job-type-specific information when querying block jobs, which
-> can be used to decide when the switch should happen.
->
-> For now, only the direction background -> active is supported.
->
-> The information added upon querying is whether the target is actively
-> synced, the total data sent, and the remaining dirty bytes.
->
-> Initially, I tried to go for a more general 'job-change' command, but
-> to avoid mutual inclusion of block-core.json and job.json, more
-> preparation would be required.
+Could virtio_scsi_hotunplug() be an issue with removing or modifying the
+check? There's a call there which sets the blk's AioContext to
+qemu_get_aio_context(). Or are we sure that the assert in
+virtio_scsi_ctx_check() can't be reached after that?
 
-Can you elaborate a bit?  A more generic command is preferable, and we
-need to understand what it would take.
+>>> #7  0x0000558712f697e4 in virtio_scsi_handle_cmd_req_prepare (s=0x558716c049c0, req=0x7ff7e400b650) at ../hw/scsi/virtio-scsi.c:788
+>>> #8  0x0000558712f699b0 in virtio_scsi_handle_cmd_vq (s=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:831
+>>> #9  0x0000558712f69bcb in virtio_scsi_handle_cmd (vdev=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:867
+>>> #10 0x0000558712f96812 in virtio_queue_notify_vq (vq=0x558716c0d2a8) at ../hw/virtio/virtio.c:2263
+>>> #11 0x0000558712f99b75 in virtio_queue_host_notifier_read (n=0x558716c0d31c) at ../hw/virtio/virtio.c:3575
+>>> #12 0x000055871323d8b5 in aio_dispatch_handler (ctx=0x55871598d5e0, node=0x558716771000) at ../util/aio-posix.c:372
+>>> #13 0x000055871323d988 in aio_dispatch_ready_handlers (ctx=0x55871598d5e0, ready_list=0x7ff7f288eeb0) at ../util/aio-posix.c:401
+>>
+>>
+>>>> As for why it doesn't progress, blk_co_is_available_entry() uses
+>>>> bdrv_graph_co_rdlock() and can't get it, because the main thread has the
+>>>> write lock. Should be fixed once the AioContext locks are gone, but not
+>>>> sure what should be done to avoid it until then.
+>>>
+>>> Then the nested event loop in blk_is_available() would probably be
+>>> enough to make progress, yes.
+>>>
+>>> Maybe we could actually drop the lock (and immediately reacquire it) in
+>>> AIO_WAIT_WHILE() even if we're in the home thread? That should give the
+>>> main thread a chance to make progress.
+>>
+>> Seems to work :) I haven't run into the issue with the following change
+>> anymore, but I have to say, running into that specific deadlock only
+>> happened every 10-15 tries or so before. Did 30 tests now. But
+>> unfortunately, the stuck IO issue is still there.
+>>
+>>> diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
+>>> index 5449b6d742..da159501ca 100644
+>>> --- a/include/block/aio-wait.h
+>>> +++ b/include/block/aio-wait.h
+>>> @@ -88,7 +88,13 @@ extern AioWait global_aio_wait;
+>>>      smp_mb__after_rmw();                                           \
+>>>      if (ctx_ && in_aio_context_home_thread(ctx_)) {                \
+>>>          while ((cond)) {                                           \
+>>> +            if (unlock && ctx_) {                                  \
+>>> +                aio_context_release(ctx_);                         \
+>>> +            }                                                      \
+>>>              aio_poll(ctx_, true);                                  \
+>>> +            if (unlock && ctx_) {                                  \
+>>> +                aio_context_acquire(ctx_);                         \
+>>> +            }                                                      \
+>>>              waited_ = true;                                        \
+>>>          }                                                          \
+>>>      } else {                                                       \
+> 
+> For reacquiring the lock, I really meant "immediately". Calling
+> aio_poll() without the lock is wrong.
+
+Unfortunately, then it's not enough, because the call to aio_poll() is
+blocking and because the lock is held during that call, the very same
+deadlock can still happen.
+
+> 
+> What does the stuck I/O look like? Is it stuck in the backend, i.e. the
+> device started requests that never complete? Or stuck from the guest
+> perspective, i.e. the device never checks for new requests?
+> 
+
+AFAICT, from the guest perspective.
+
+> I don't really have an idea immediately, we'd have to find out where the
+> stuck I/O stops being processed.
+> 
+
+I've described it in an earlier mail in this thread:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg01900.html
+
+Quoting from there:
+
+> After the IO was stuck in the guest, I used bdrv_next_all_states() to
+> iterate over the states and there's only the bdrv_raw and the
+> bdrv_host_device. For both, tracked_requests was empty.
+> 
+> What is also very interesting is that the IO isn't always dead
+> immediately. It can be that the fio command still runs with lower speed
+> for a while (sometimes even up to about a minute, but most often about
+> 10-15 seconds or so). During that time, I still can see calls to
+> virtio_scsi_handle_cmd() and blk_aio_write_entry(). Then they suddenly stop.
+
+Noting again that (at least for backup) it happens with both virtio-blk
+and virtio-scsi and with both aio=io_uring and aio=threads. I also tried
+different host kernels 5.15, 6.2 and 6.5 and guest kernels 5.10 and 6.1.
+
+>>> But I think we're actually not very far from removing the AioContext
+>>> lock, so if we can't find an easy fix in the meantime, waiting for that
+>>> could be a realistic option.
+>>>
+>>
+>> Glad to hear :) Do you think it will be in time for QEMU 8.2? Otherwise,
+>> I'll go ahead and send what I have for fixing the deadlocks from this
+>> mail thread in the following days. The stuck guest IO can happen even
+>> without any of those changes (on current master, i.e.
+>> ebca80bbdb5c1650e4b753a3d13b43634e7dfe05, at least when starting a
+>> mirror job).
+> 
+> Having it in 8.2 is certainly the plan, but plans don't always work out.
+> If you have fixes that aren't too ugly, we can still apply them.
+> 
+
+Okay, I'll give the ones for the deadlocks via
+block_job_remove_all_bdrv() and bdrv_close() another look/spin and try
+to send them in the next few days.
+
+Best Regards,
+Fiona
 
 
