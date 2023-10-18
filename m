@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36227CD68A
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:31:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C62F7CD66A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 10:28:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt1uh-0001DW-CR; Wed, 18 Oct 2023 04:28:23 -0400
+	id 1qt1ug-0001Dq-IU; Wed, 18 Oct 2023 04:28:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1uc-0000th-O1
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:18 -0400
+ id 1qt1ue-00013w-7F
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qt1ub-0003cA-1U
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:18 -0400
+ id 1qt1uc-0003cX-NO
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:28:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697617696;
+ s=mimecast20190719; t=1697617698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=osYb4P7yKsOqBYf2AssoFGvXP8FQaTw6Vd8tofb+mDQ=;
- b=NhW1yR0VDKO8/UdVgPZI1SRvN0lnMU7wSBLtvauKgT8CCaKCu+wgmU+vNI3KEJ/H7oklE5
- AEFbjy8+CH+WW1Lv0cTSo10q9sTT/KIXWospaWyJnmxpgauDZTVk+th5JzS9Si0sJkHlzB
- Ny6if/21W6YHeIoh5lWvQp7s8A2WB90=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kigZ1gdB5H+XjWPX4HIf/8kVEM1VbLJvt/chkAEw+1Y=;
+ b=e5DqfJwcSw0XSWACgZC7ww1ft7GPzclFNsN5qMFevwqKdTzDHBU1KQYBPabZac7GJ4AOdb
+ t9qRQ60XgWM2neRJWTfYlrfpqABxcQw08rofS7EFDsNbgbMoxQRHM2UtSWbdjgZdKCjhIs
+ t1gpYQsj79Mkm/iGfAPI2xRZyUftDJg=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-nE43XSaMOBiSbKkhEN_KwA-1; Wed, 18 Oct 2023 04:28:15 -0400
-X-MC-Unique: nE43XSaMOBiSbKkhEN_KwA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-99bcb13d8ddso486634966b.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:14 -0700 (PDT)
+ us-mta-608-_7rmjzOPNzCDiu5nK-yOkw-1; Wed, 18 Oct 2023 04:28:17 -0400
+X-MC-Unique: _7rmjzOPNzCDiu5nK-yOkw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9b95fa56bd5so482905666b.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 01:28:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697617693; x=1698222493;
+ d=1e100.net; s=20230601; t=1697617695; x=1698222495;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=osYb4P7yKsOqBYf2AssoFGvXP8FQaTw6Vd8tofb+mDQ=;
- b=IsdKsUNZz7fjU99aHztPZjMzoak3eN2Myiyxvcb4fqa8dQCsviz27vKRxDMibD955f
- bTXamz9YKMPM1Ewvy+ZiTOIzgArRkDkDhhNhwerXBh5pzFSGXwk/b3PQtSAYkuN2l8og
- 02PWbovzNXoWQ75Y+kwl5AC1gXgkwViaTfb5nvfW4vy3OaZWNzGvR+XxhIJzFNynli7O
- fgLSNXbceuMT1/phHlxYuEXLzQfSE7l2PtUW58L4VzH4svHQVAGkIhvV2sWhOzrHYAlb
- 9GECEMbTf+PTagKa4SgJ9v0yWNUd5smmZVF71QCw74fs0E4Bc4RTgfsr3lAP4nQJiCEy
- 1a4A==
-X-Gm-Message-State: AOJu0YwyH5BbM844/C5t0U5GPgo+Ufbwzz9DBWcQO84UaORv7HG+xYFF
- aPthjPAQC/Ex4oNP3dIsm6Bc9dUVKjySEbSB3wfBsmR9q0Z20s5XZdkf9vDWnvTJ9v/0S1Tz+Jm
- 2PYRSfTWgddBTyfrX5/p0YSlebYbgrBESyBpfZMTfN0ecgpJKF7QmbNuFaunuhr9olHADEW2ds9
+ bh=kigZ1gdB5H+XjWPX4HIf/8kVEM1VbLJvt/chkAEw+1Y=;
+ b=IOL3k5crubvFiW14t7FxDHqs3E3GfZ55rWZ+H5XanW+wMwHDAAFfPueBmResCiHiUz
+ g97RE5WaeqgP2T9kvqMS0Tw9vx7cTT5gzARNPkibHVEVhiGdZrcnci5/YqVIUajVbsQb
+ NRnQhPLgYe3GPY/HcWINxt1gn98V7HK+WRNbHe4ODJO/R5WkdBT91YT3b4IfRx35RCgy
+ /71FTlwiLFhIRpquaQZ1Cg0zcG+fbPM7jNZKeIsvRsFkAeGuB53aVQPs6WB+2ycuilGZ
+ q7eb6Cr50uhvGAzIu4fydFKnYaWm4AOI3k5Wb1CxXPzg8Pg2yPRjG5y7qygW5RZOCuWl
+ w8nw==
+X-Gm-Message-State: AOJu0YwcHMw/kj1jaE531/oJjQK0MDRILya2by7j/f978cNfq46aeNxX
+ vzg/nKzZU1qRv5egNmG58Wh7d7k86yA8mYKQA8TbxVuxD+4WikjbWNUiBC9Wn7wrqrfr/AGY+Qo
+ UtapVcPXFjp2LjS7b9o2zIinjQxyIZKlUB7vZRpHLacr632kig9Ko2MBof3iVwCqvIvIcQGlsZy
  w=
-X-Received: by 2002:a17:907:1b0a:b0:9bf:10f3:e435 with SMTP id
- mp10-20020a1709071b0a00b009bf10f3e435mr3153500ejc.1.1697617693275; 
- Wed, 18 Oct 2023 01:28:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGchnyx0RIse5pR/YExo1XrD5ZYoEMELwlhoB7/XU3808fhoOLyva9lwJBKo+gWmO5dz4Y+Ww==
-X-Received: by 2002:a17:907:1b0a:b0:9bf:10f3:e435 with SMTP id
- mp10-20020a1709071b0a00b009bf10f3e435mr3153488ejc.1.1697617692843; 
- Wed, 18 Oct 2023 01:28:12 -0700 (PDT)
+X-Received: by 2002:a17:907:31ce:b0:9be:a86:571f with SMTP id
+ xf14-20020a17090731ce00b009be0a86571fmr3149952ejb.34.1697617695237; 
+ Wed, 18 Oct 2023 01:28:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/4rcuERhN5GRkhtyWWw3nn32ToUNUxDahEkY261Z+1vicy+vlwzh8ACeP82cnGAe22ukNYA==
+X-Received: by 2002:a17:907:31ce:b0:9be:a86:571f with SMTP id
+ xf14-20020a17090731ce00b009be0a86571fmr3149943ejb.34.1697617694914; 
+ Wed, 18 Oct 2023 01:28:14 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- c8-20020a17090603c800b0098ec690e6d7sm1181297eja.73.2023.10.18.01.28.11
+ f18-20020a170906739200b0099bc8bd9066sm1194780ejl.150.2023.10.18.01.28.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 01:28:11 -0700 (PDT)
+ Wed, 18 Oct 2023 01:28:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-Subject: [PULL 10/32] docs/sphinx: avoid invalid escape in Python string
-Date: Wed, 18 Oct 2023 10:27:30 +0200
-Message-ID: <20231018082752.322306-11-pbonzini@redhat.com>
+Subject: [PULL 11/32] target/hexagon: avoid invalid escape in Python string
+Date: Wed, 18 Oct 2023 10:27:31 +0200
+Message-ID: <20231018082752.322306-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018082752.322306-1-pbonzini@redhat.com>
 References: <20231018082752.322306-1-pbonzini@redhat.com>
@@ -105,22 +105,31 @@ This is an error in Python 3.12; fix it by using a raw string literal.
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/sphinx/hxtool.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/hexagon/hex_common.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/sphinx/hxtool.py b/docs/sphinx/hxtool.py
-index fb0649a3d5b..9f6b9d87dcc 100644
---- a/docs/sphinx/hxtool.py
-+++ b/docs/sphinx/hxtool.py
-@@ -49,7 +49,7 @@ def serror(file, lnum, errtext):
+diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
+index dce1b852a7b..0da65d6dd6a 100755
+--- a/target/hexagon/hex_common.py
++++ b/target/hexagon/hex_common.py
+@@ -45,7 +45,7 @@ def uniquify(seq):
+ immre = re.compile(r"[#]([rRsSuUm])(\d+)(?:[:](\d+))?")
+ reg_or_immre = re.compile(
+     r"(((?<!DUP)[MNRCOPQXSGVZA])([stuvwxyzdefg]+)"
+-    + "([.]?[LlHh]?)(\d+S?))|([#]([rRsSuUm])(\d+)[:]?(\d+)?)"
++    r"([.]?[LlHh]?)(\d+S?))|([#]([rRsSuUm])(\d+)[:]?(\d+)?)"
+ )
+ relimmre = re.compile(r"[#]([rR])(\d+)(?:[:](\d+))?")
+ absimmre = re.compile(r"[#]([sSuUm])(\d+)(?:[:](\d+))?")
+@@ -337,7 +337,7 @@ def read_attribs_file(name):
  
- def parse_directive(line):
-     """Return first word of line, if any"""
--    return re.split('\W', line)[0]
-+    return re.split(r'\W', line)[0]
  
- def parse_defheading(file, lnum, line):
-     """Handle a DEFHEADING directive"""
+ def read_overrides_file(name):
+-    overridere = re.compile("#define fGEN_TCG_([A-Za-z0-9_]+)\(.*")
++    overridere = re.compile(r"#define fGEN_TCG_([A-Za-z0-9_]+)\(.*")
+     for line in open(name, "rt").readlines():
+         if not overridere.match(line):
+             continue
 -- 
 2.41.0
 
