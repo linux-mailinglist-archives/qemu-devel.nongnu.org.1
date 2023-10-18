@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B4D7CD1D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 03:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E497CD1D9
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 03:34:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsvPx-0008OL-3v; Tue, 17 Oct 2023 21:32:13 -0400
+	id 1qsvRf-0001AT-QW; Tue, 17 Oct 2023 21:33:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsvPv-0008O3-1R
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 21:32:11 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1qsvRd-0001A1-Qg
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 21:33:57 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qsvPt-0002I2-Ek
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 21:32:10 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6c4bad60a1aso3829410a34.2
- for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 18:32:09 -0700 (PDT)
+ id 1qsvRc-0002jR-7L
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 21:33:57 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6b709048f32so3280144b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 18:33:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697592728; x=1698197528; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697592835; x=1698197635; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=5cpwCrNFCAnJpw52aH4drcADNWDED5Ud2Jf1TGVy0SQ=;
- b=k2g+g+O9/uh9wC9k1N2NOfh6krOBOAITsIR0br77WE4z9KagqkDSsRB8HPKvL/vfaX
- GDbyQPmLo81zpisGeyOzEpLNQe34jwC159LuPrShHgPIpc60XSPxZj7LGOtutoHmVPUM
- Vswkmsg4EfQTYqnQP5h+eKU5LwxrjEaL1TZDOSHsFNRFNg6CbzEgZVeZ8Sfx0zlQtbeH
- tKsBJqvKJ1JfENpd+20xxhF0Fdyw4bTwc33MeDEn0CZqtIJCsxVZhqu+DPeIACclJ1wx
- sTHNrn7qrEFdhe+Fh1tEVqhRAE6/rF/EL+3BatIr/i+xVxxlHSd7R7+g55eaPcW+0FTx
- dd8Q==
+ bh=2xs0BLIsdmJFNS+yu7PReUGpjpfBUR++ynzHUGauQfQ=;
+ b=JNUVjLYFNdaIXh1GBVzncbVGYnPkGv02k/CEO9Uvss9EMsMvI3f4kBdeGnGng1ct09
+ cWJNxKEaqB/E9TKXLAZYPUUmxZ+EkDr60Ql3Zbqzy7nhRcqkT3M5CThXvYvi8r5ZyIZ9
+ dB6/chfjyY9mYcotW44DeQbd1sNI+2jJInUoGQ+UOJwB7JG+7RuqzGR2IVHgZgf0urqy
+ XWEmxK7pIkjoxcpuYhi4BaZoh5WvQzsjxbXAuiqA6JIOYxTD2SiGjnLk+f+Fv6lN1j0E
+ 1lJyODn/KU0CdA2vRUODYj3CHk5RFt00NVQyGHbTI4zVio/3FIq300qS7xQi8sZnuM+9
+ Bx2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697592728; x=1698197528;
+ d=1e100.net; s=20230601; t=1697592835; x=1698197635;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5cpwCrNFCAnJpw52aH4drcADNWDED5Ud2Jf1TGVy0SQ=;
- b=nNua2Ot4P4mFBkG2cO1E3cueGw/ARKbIq2CXapptTvvdCE6BBvDo34QqCRCO1J6Lxc
- LGGg6b83oZxaiNemS+peIHEYsP4LLdXGm7EiwcokEPUJERlFI4P6n586b8mk3wHRHwHn
- aox1YRfcMyu257dQjOAItUKTyrMjzbYNnQB0fZRhZxDOzz6PcAZ6KNn7g7t6CoR7koI7
- RWt01V54Zu1t3pSCFVx6+Q+bSeE8pp9sJ6L/iEwao/wMqNoayeRt1StafmAN6nW04nEv
- DGNTcc59mfKFtTR/cJONI3nRJMrf8CzSi8fXsi7UpLo5zuhHZxIIb64HjGCe6kkeHxPh
- 8qow==
-X-Gm-Message-State: AOJu0YzzAvV32LIcVPX1hgbU1WFi+dI6ACOy3q5kvjb4jooqwE1gYSVH
- fuYBqoNB4O0DqxLLBQZtJgvEnQ==
-X-Google-Smtp-Source: AGHT+IHzLjKP2pFY3PQyz2zzbLYOoqwslCYYnFT5q8Zj/VrfyEEDjEG/VKGmf+eZEeQmtr9yU+wXiw==
-X-Received: by 2002:a05:6830:25d2:b0:6b9:a795:512f with SMTP id
- d18-20020a05683025d200b006b9a795512fmr4599348otu.10.1697592728144; 
- Tue, 17 Oct 2023 18:32:08 -0700 (PDT)
+ bh=2xs0BLIsdmJFNS+yu7PReUGpjpfBUR++ynzHUGauQfQ=;
+ b=aD1aV9PnyuuzLbPz+0Fw9D/0KJ8tfflFi2mK9v8k2ra4aatZfO74Pg2+/Vw7NCXLuN
+ SWKdsI/pv0a94VJ4nDVB/fl+o5zdRctqY1d0dbjIzpr7318hpXP+qAnGKXIUPPdO9DM0
+ Tc8yHroRIhnsbCDw5XZS4Z9QnYyuugg0rUkSkQCqWUDPVPL/ZRhKugOXnxPLuyJHDVFo
+ oajucRTD1dGbaa1RMACAG5UUU1iU524u30c8W6yImvR/ih1jJzRjZqwN23baRblj4t3o
+ rRQSd8k6jHxA9KOeZJNVTvx4EijrN/X/kOJoPjGWSGzUaTSzDDzbCUAB9G2mKip9lvgO
+ 9okw==
+X-Gm-Message-State: AOJu0YzdRIko6t74qMvevfFWfalu9e1eZy1QUbdeN+j89ogj3H1YQB/x
+ g9DgF2Pgt1APaocEdOAXkpzj6Q==
+X-Google-Smtp-Source: AGHT+IHHmIQebqEAelgNUz2MiM3QULAYjwhHUgzoZqmZqZ9cGtV828IzJbPzM42BsYuvrC7r2ijFCA==
+X-Received: by 2002:a05:6a20:7d97:b0:129:3bb4:77f1 with SMTP id
+ v23-20020a056a207d9700b001293bb477f1mr4278592pzj.0.1697592834629; 
+ Tue, 17 Oct 2023 18:33:54 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- g24-20020a633758000000b005b18c53d73csm533648pgn.16.2023.10.17.18.32.07
+ c13-20020a170902d48d00b001c7453fae33sm2204214plg.280.2023.10.17.18.33.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 17 Oct 2023 18:32:07 -0700 (PDT)
-Message-ID: <d8275c6d-f16c-4317-a54b-237b0684c7d0@linaro.org>
-Date: Tue, 17 Oct 2023 18:32:05 -0700
+ Tue, 17 Oct 2023 18:33:54 -0700 (PDT)
+Message-ID: <db34f1a4-84e4-47ea-adbc-d2c7b0c92eca@linaro.org>
+Date: Tue, 17 Oct 2023 18:33:52 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/18] target/i386: accept full MemOp in gen_ext_tl
+Subject: Re: [PATCH 09/18] target/i386: do not clobber A0 in POP translation
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20231014100121.109817-1-pbonzini@redhat.com>
- <20231014100121.109817-7-pbonzini@redhat.com>
+ <20231014100121.109817-10-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231014100121.109817-7-pbonzini@redhat.com>
+In-Reply-To: <20231014100121.109817-10-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,47 +94,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/14/23 03:01, Paolo Bonzini wrote:
-> Use MO_SIGN to indicate signed vs. unsigned extension, and filter out
-> bits other than MO_SIGN and MO_SIZE.
+> The new decoder likes to compute the address in A0 very early, so the
+> gen_lea_v_seg in gen_pop_T0 would clobber the address of the memory
+> operand.  Instead use T0 since it is already available and will be
+> overwritten immediately after.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   target/i386/tcg/translate.c | 30 +++++++++++++++---------------
->   1 file changed, 15 insertions(+), 15 deletions(-)
-> 
-> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-> index 4f6f9fa7e52..d7d6c85877d 100644
-> --- a/target/i386/tcg/translate.c
-> +++ b/target/i386/tcg/translate.c
-> @@ -699,18 +699,18 @@ static inline void gen_op_movl_T0_Dshift(DisasContext *s, MemOp ot)
->       tcg_gen_shli_tl(s->T0, s->T0, ot);
->   };
->   
-> -static TCGv gen_ext_tl(TCGv dst, TCGv src, MemOp size, bool sign)
-> +static TCGv gen_ext_tl(TCGv dst, TCGv src, MemOp ot)
->   {
-> -    switch (size) {
-> +    switch (ot & MO_SIZE) {
->       case MO_8:
-> -        if (sign) {
-> +        if (ot & MO_SIGN) {
->               tcg_gen_ext8s_tl(dst, src);
->           } else {
->               tcg_gen_ext8u_tl(dst, src);
->           }
->           return dst;
->       case MO_16:
-> -        if (sign) {
-> +        if (ot & MO_SIGN) {
->               tcg_gen_ext16s_tl(dst, src);
->           } else {
->               tcg_gen_ext16u_tl(dst, src);
+>   target/i386/tcg/translate.c | 34 ++++++++++++++++++++--------------
+>   1 file changed, 20 insertions(+), 14 deletions(-)
 
-A reminder yet again that I should make this generic -- we've several copies in the code 
-base...
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
