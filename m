@@ -2,134 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45597CD95C
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 12:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 429727CD961
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 12:37:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt3uI-0000Mo-Bf; Wed, 18 Oct 2023 06:36:06 -0400
+	id 1qt3ug-0001PX-Sb; Wed, 18 Oct 2023 06:36:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1qt3uE-0000I6-7g
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:36:02 -0400
-Received: from mail-dm6nam10on20618.outbound.protection.outlook.com
- ([2a01:111:f400:7e88::618]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt3uV-00018e-Js
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:36:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1qt3uC-0004WT-IJ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:36:02 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EQMfGjMUCCGBjtCk+vFN7huhsUZB+FBknNVV8W2AmbGIEybnQcv/MyAE+kmh6l7xCc5rVZ2psXGZVuKw9j9Hv/8Ew/VMokf4AwIloX8YSD4KJ22tGplDOTNg4vnHuZqOOd9TmglRNPrChaYXtEz3DCbhbUz7MPraoo3NcfX3UX+IqTUMojYWpgbaCusVfwb4P6wVAKCFBarwpviuLV6iTFRJNKLuZGY5dow0RHPhxTdDnSv5M7aPfiYR1Sq/e4l+LlrtNRj0rVJ8KVVWO6QAfTvopGCxujM5DFV+kxlfE7fVndBJPKHLw701GKOEin4dEce9wy6GiH1fjdHmX+Uvxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oIr9NtOKK462CpJFIsXWFidxb8e1WT/BW9/aMLf1hJw=;
- b=H2kT5ZHaslIOCCIH54XKnzGSKxoQ0ZPZhaQoEikEDb4j9jN+26T66JvmZNZU8TqHsTdE18y/B2dQILlqelvnGb7djRRNNLKFbBYDR8D5HlRBA1FDakRwWriH73ZrjZXduk9wfSnfFEkvzgV6oUi/+3OuczolOxk22tGSJKZJwqEKeaVpVu5Un1PCXuBMnzKfmal6kAVdF9NK5mkeFnzWd47D8ykTpIPfJI3tCQwdJgsyxyl0AmguK8Fmr3BF/QL+KP4XlAyhd8vJvE/tFGPtNeziG1ZP+v11FXjtiqy8yZI8NFYNwVTwxxHA5LKoRqinxnKIoI+ipAoHFrvRoV/lrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oIr9NtOKK462CpJFIsXWFidxb8e1WT/BW9/aMLf1hJw=;
- b=x6SRJsQ5XiPyj8l/PWxnxRzH5JXxvWtKw6RTYpeHTQfGYvzh4RMWMFBAoGC0GPq+QCyH2OEnjoEGwKTHtvAd2Yai9rYukBoanU//LQh2r1RWQrTRDnWWcz+0vxfyEkGfhE0LET93EYKKG2aX8gaq9UB2ok6c/saptq6neSkJpb4=
-Received: from DS7PR12MB5741.namprd12.prod.outlook.com (2603:10b6:8:70::7) by
- SA1PR12MB7126.namprd12.prod.outlook.com (2603:10b6:806:2b0::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36; Wed, 18 Oct
- 2023 10:35:50 +0000
-Received: from DS7PR12MB5741.namprd12.prod.outlook.com
- ([fe80::8f6b:fb45:d9a1:d4f5]) by DS7PR12MB5741.namprd12.prod.outlook.com
- ([fe80::8f6b:fb45:d9a1:d4f5%3]) with mapi id 15.20.6907.021; Wed, 18 Oct 2023
- 10:35:49 +0000
-From: "Boddu, Sai Pavan" <sai.pavan.boddu@amd.com>
-To: "Michel, Luc" <Luc.Michel@amd.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "Michel, Luc" <Luc.Michel@amd.com>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Peter Maydell
- <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
- =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, "Iglesias,
- Francisco" <francisco.iglesias@amd.com>, "Konrad, Frederic"
- <Frederic.Konrad@amd.com>
-Subject: RE: [PATCH 10/11] hw/net/cadence_gem: perform PHY access on write only
-Thread-Topic: [PATCH 10/11] hw/net/cadence_gem: perform PHY access on write
- only
-Thread-Index: AQHaATJtbMx39yZw1kGKeo2IjEWVurBPWznw
-Date: Wed, 18 Oct 2023 10:35:49 +0000
-Message-ID: <DS7PR12MB574160C5DF0DE3E636D00380B6D5A@DS7PR12MB5741.namprd12.prod.outlook.com>
-References: <20231017194422.4124691-1-luc.michel@amd.com>
- <20231017194422.4124691-11-luc.michel@amd.com>
-In-Reply-To: <20231017194422.4124691-11-luc.michel@amd.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS7PR12MB5741:EE_|SA1PR12MB7126:EE_
-x-ms-office365-filtering-correlation-id: b4ab0820-0f65-4f6f-dd1a-08dbcfc5ff28
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ajE37FlX44DQ9PzTA3dSYdhCSqpdykL1pmLmNzRXf/mGAAquXU1pN5xF4ryMRIe07XTIMuY6L1QPkqW9QFxFjGTs2pzDnpqOZqHWVssuNd6JooBQJVLSI9CL3iUYJimpaartJvC/SQzpl6ls+hMw9WzSDgL7I+e8/4M1ry9gXlb7/MjKZyZAhDxZWMNJBXpOASdkUdm7/trt92Ga8QuUI0RYBiTMOmi1IUf2qGfyGbEB33p+5sa57vg38EV9V7j9ZVz7CHakS/nFdrZ3HpAIpSFnvoobnR/jdSwQAUZxzeR+kDCRM3unyDhMEJWPj/cfTvYtNuAxf7sq/HKqT6fTgUsw/PQGhw2gegih+DhBR34e8ThLEwpiOxO+S8zHNHXGlphV9erkR0+QNvHatypPe7VfA9k+SFLNcmu3IV7VL1nLN6ifLSilbgxeGVNqtYHc12nptdFzPOj1nGJuu3cCe9cawMpQLXAwzwZxIX9c8J5cZEQA49QKCvTitnhlNir0NaTVjN5pqhvL0g97BGm+AMUX7KnzklFusFFxMPBw4ACSXdZKvY4cz4vrafnzo3PcA4vDDD/g0AqMHAkKGm2iQ0vTetAJaE0+uwWwvr0DJZqESs03CntiqbWO0+5O9R0m
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS7PR12MB5741.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(39860400002)(366004)(396003)(376002)(346002)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(38100700002)(55016003)(33656002)(26005)(122000001)(83380400001)(8936002)(8676002)(4326008)(5660300002)(478600001)(52536014)(110136005)(76116006)(66946007)(316002)(66556008)(66476007)(66446008)(64756008)(54906003)(6506007)(7696005)(38070700005)(9686003)(41300700001)(71200400001)(86362001)(2906002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?1Ko51oC0RojhI/UYoxeNd2OoTEC1hi+JAmEdj8eqmQ5NwknV5Pr7m0UAR4?=
- =?iso-8859-1?Q?TH4ya7fEEEOfzPwKAP7CH9isInzomUA6+xewn7VzAalaEn0+GmrKnbcFbn?=
- =?iso-8859-1?Q?y6CI0meTtTjQgxk/8ZhE0jOEJKnrcTG8z6Jf+UbVXI0zOZnQwKTib3JV0n?=
- =?iso-8859-1?Q?7WOJxuWuVY9gReq2sn7y8uR542cb42S1SYKH1nijtEvLz1DrcyGd28PjTQ?=
- =?iso-8859-1?Q?DaxhhxofyQ0hapZqgmkALfP5niQSlIwbIeoixlGKXcpqTT9F4EIZrmAfna?=
- =?iso-8859-1?Q?MfbTQ1MjLHdfOXOrzQwjlm+3+0451H+PK4DMEnn6cicWtfGCkNGStZxQ3Y?=
- =?iso-8859-1?Q?Uuhxi521REbGd3yhXYZFj6y8J0ImGyfX3D91NNTC+NlhViKcvMwUgSqu/V?=
- =?iso-8859-1?Q?B3WwNbbeYoQ8DRNSB+A70/ZVD2zqF5lZkIXReqnz9HsuZ+optLGFnrEjmn?=
- =?iso-8859-1?Q?LTcg1Ne98yiMWSH2EjkD7i3MfkgpSMO6bVnxyu/Hyj/5n8fXy+DOfNcS5b?=
- =?iso-8859-1?Q?71GaRAIc/xVfpC7VmBlJhqLQ/D3vrwOdMxrtLKTPlNdfACIoe1t4OM7kDq?=
- =?iso-8859-1?Q?go+xJ01cW7M/1pIOOZWeUo7FOApzGzHiNb2Gx9Qnx3yTX1gOceWUdywmQ2?=
- =?iso-8859-1?Q?SjZA3OYU5g3GxCMVo+ldAjT95I12LhWUTPcPFv+bucv4ufZ/fV6pTPFqLm?=
- =?iso-8859-1?Q?igZl4eJF2p3RxPjpNfpD5bdLIhaoPm6crvc+Ls8vP12Avlmo2wjUMZ3exh?=
- =?iso-8859-1?Q?YBdM+Y90YrVSGqlz2dmXWO7Yvm0QUOeUZ28dntz5jo0ExxDkXTIpoqUdgL?=
- =?iso-8859-1?Q?MHYW8DLOC9Sd7IiSLxVqA6JHBqlIrTbSGU9iV3vKL0nmlJO3PI42OwAhL8?=
- =?iso-8859-1?Q?xDcyTsVi1jD4NF4iRpFM1MtPg+A4qHBz7yb6lRbKTBujKBbITFSJSlBmLV?=
- =?iso-8859-1?Q?VGmYP7TDgBVUkH4jxZh8JQpTjXsg9pMLt8AkNPGpdGYkg/2JvQ5cdf03VE?=
- =?iso-8859-1?Q?WG3l/+mHEFykbywUupNFML6OW42Jqu14OzP2Oy53CW+6irVr+mfvDMIycN?=
- =?iso-8859-1?Q?iZgYqRH43jwjGksVQz12NJCTGf9PkNIz/F27iimh6enpF2iNqycjxrdQ7V?=
- =?iso-8859-1?Q?Dkp63amqiITsSLlFjW6SdmLa8ZuFA0ZqVw0Ih/u/dK/cXCWrMJpMob9Q6/?=
- =?iso-8859-1?Q?t8m1Mu8G13gXql3Vu7BiYlH7V0pskSnS1rTRnHaw+lSDptVfp6FJ4V5TU9?=
- =?iso-8859-1?Q?9FjvEQLKLNHpnx5f3ZlIY90dAROBustYbVtwk3QFrmC+bQO87zgEfkBiWi?=
- =?iso-8859-1?Q?LiO9q45pLp3txSEmBxma8RbGb9/L501CuiL8qcAHEx58ZnfMKQ2BYCG9Lj?=
- =?iso-8859-1?Q?7GzD3yawzVoHql6PRH0rdL7I/IqPM5hTCzVis2FAXYvfciC8kg1cYM4e2p?=
- =?iso-8859-1?Q?zI9TX5A20dSskqPnshsmPVyqPPbk6KGOIePjSNn6hEkCf+Xjqz3QZsl41+?=
- =?iso-8859-1?Q?dWsGtOEyTTzOtNDnC0VntJiSStU9vjAgAU/Hzv7Nn+4yFMhl9nQP/0xoCa?=
- =?iso-8859-1?Q?cOVFTuiCCnBMR4WP/2ml6yrsHB7bt+7l5n0QUS45XTfDmHbT5S4G7Mkbwv?=
- =?iso-8859-1?Q?65DD/OfAO87/8=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt3uT-0004fC-Gl
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:36:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697625377;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=iRAoJ/UQGSfOC20mwkXtROWM4Ehq8lF8yUT4p97bEag=;
+ b=C+ZhZkbIW0Iw5Oxbvj7qp+i8zYpsZVLBBulcEpi65kkBAmWpooafzI7CG1ug9w9Kandjdi
+ x4aQncYAqfqCISiQvtDDYmmcfyv0TD5OSJpux6hxH1/dNVpOjLdLBdlclXNrc/VadX/QEz
+ p2+lh593Uny5oY3sIhW2Vd8Yf/GzBWI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-522-Fi5veOdlOweESd_mX4aoPg-1; Wed, 18 Oct 2023 06:36:12 -0400
+X-MC-Unique: Fi5veOdlOweESd_mX4aoPg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44101185A7B3;
+ Wed, 18 Oct 2023 10:36:12 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C55DC40C6CA0;
+ Wed, 18 Oct 2023 10:36:11 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id CD80021E6A1F; Wed, 18 Oct 2023 12:36:10 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: Markus Armbruster <armbru@redhat.com>,  qemu-block@nongnu.org,
+ qemu-devel@nongnu.org,  eblake@redhat.com,  dave@treblig.org,
+ eduardo@habkost.net,  berrange@redhat.com,  pbonzini@redhat.com,
+ hreitz@redhat.com,  kwolf@redhat.com,  raphael.norwitz@nutanix.com,
+ mst@redhat.com,  yc-core@yandex-team.ru,  den-plotnikov@yandex-team.ru,
+ daniil.tatianin@yandex.ru
+Subject: Re: [PATCH 4/4] qapi: introduce CONFIG_READ event
+References: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
+ <20231006202045.1161543-5-vsementsov@yandex-team.ru>
+ <87sf692t0i.fsf@pond.sub.org>
+ <ae494c44-1bd6-435e-8bd8-0ec2ba9ceaa6@yandex-team.ru>
+ <877cnkzasr.fsf@pond.sub.org>
+ <a55e8b57-3411-4587-affd-3bc0635af4fe@yandex-team.ru>
+Date: Wed, 18 Oct 2023 12:36:10 +0200
+In-Reply-To: <a55e8b57-3411-4587-affd-3bc0635af4fe@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Wed, 18 Oct 2023 11:51:31 +0300")
+Message-ID: <878r80tdyd.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB5741.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4ab0820-0f65-4f6f-dd1a-08dbcfc5ff28
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2023 10:35:49.9250 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Q41ARO3M2/Dpjd0yDconLfCbDu8qtyOyURm8Q33AvMKKiHenzdJKXSb+S2TQjafN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7126
-Received-SPF: softfail client-ip=2a01:111:f400:7e88::618;
- envelope-from=sai.pavan.boddu@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,137 +88,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
+> On 18.10.23 09:47, Markus Armbruster wrote:
+>> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+>> 
+>>> On 17.10.23 18:00, Markus Armbruster wrote:
+>>>> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+>>>>
+>>>>> Send a new event when guest reads virtio-pci config after
+>>>>> virtio_notify_config() call.
+>>>>>
+>>>>> That's useful to check that guest fetched modified config, for example
+>>>>> after resizing disk backend.
+>>>>>
+>>>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> [...]
+>> 
+>>>>> diff --git a/qapi/qdev.json b/qapi/qdev.json
+>>>>> index 2468f8bddf..37a8785b81 100644
+>>>>> --- a/qapi/qdev.json
+>>>>> +++ b/qapi/qdev.json
+>>>>> @@ -329,3 +329,25 @@
+>>>>>    # Since: 8.2
+>>>>>    ##
+>>>>>    { 'command': 'x-device-sync-config', 'data': {'id': 'str'} }
+>>>>> +
+>>>>> +##
+>>>>> +# @X_CONFIG_READ:
+>>>>> +#
+>>>>> +# Emitted whenever guest reads virtio device config after config change.
+>>>>> +#
+>>>>> +# @device: device name
+>>>>> +#
+>>>>> +# @path: device path
+>>>>> +#
+>>>>> +# Since: 5.0.1-24
+>>>>> +#
+>>>>> +# Example:
+>>>>> +#
+>>>>> +# <- { "event": "X_CONFIG_READ",
+>>>>> +#      "data": { "device": "virtio-net-pci-0",
+>>>>> +#                "path": "/machine/peripheral/virtio-net-pci-0" },
+>>>>> +#      "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
+>>>>> +#
+>>>>> +##
+>>>>> +{ 'event': 'X_CONFIG_READ',
+>>>>> +  'data': { '*device': 'str', 'path': 'str' } }
+>>>>
+>>>> The commit message talks about event CONFIG_READ, but you actually name
+>>>> it x-device-sync-config.
+>>>
+>>> will fix
+>>>
+>>>> I figure you use x- to signify "unstable".  Please use feature flag
+>>>> 'unstable' for that.  See docs/devel/qapi-code-gen.rst section
+>>>> "Features", in particular "Special features", and also the note on x- in
+>>>> section "Naming rules and reserved names".
+>>>
+>>> OK, will do.
+>>>
+>>> Hmm, it say
+>>>
+>>>     Names beginning with ``x-`` used to signify "experimental".  This
+>>>     convention has been replaced by special feature "unstable".
+>>>
+>>> "replaced".. So, I should use "unstable" flag without "x-" prefix? Can't find an example. Seems "unstable" always used together with "x-".
+>>
+>> True.
+>>
+>> The "x-" prefix originated with qdev properties.  First use might be
+>> commit f0c07c7c7b4.  The convention wasn't documented then, but QOM/qdev
+>> properties have always been a documentation wasteland.  It then spread
+>> to other places, and eventually to the QAPI schema.  Where we try pretty
+>> hard to document things properly.  We documented the "x-" prefix in
+>> commit e790e666518:
+>>
+>>      Any name (command, event, type, field, or enum value) beginning with
+>>      "x-" is marked experimental, and may be withdrawn or changed
+>>      incompatibly in a future release.
+>>
+>> Minor pain point: when things grow up from experimental to stable, we
+>> have to rename.
+>>
+>> The convention didn't stop us from naming non-experimental things x-FOO,
+>> e.g. QOM property "x-origin" in commit 6105683da35.  Made it to the QAPI
+>> schema in commit 8825587b53c.  Point is: the prefix isn't a reliable
+>> marker for "unstable".
+>>
+>> Since I needed a reliable marker for my "set policy for unstable
+>> interfaces" feature (see CLI option -compat), I created special feature
+>> flag "unstable", and dropped the "x-" convention for the QAPI schema.
+>>
+>> Renaming existing "x-" names felt like pointless churn, so I didn't.
+>>
+>> I'm not objecting to new names starting with "x-".  Nor am I objecting
+>> to feature 'unstable' on names that don't start with "x-".
+>>
+>> I guess "x-" remains just fine for things we don't intend to make stable
+>> at some point.  The "x-" can remind humans "this is unstable" better
+>> than a feature flag can (for machines, it's the other way round).
+>>
+>> For things we do intend (hope?) to make stable, I wouldn't bother with
+>> the "x-".
+>>
+>> Clearer now?
+>
+> Yes, thanks.
+>
+> x- seems safer for management tool that doesn't know about "unstable" properties..
 
->-----Original Message-----
->From: Luc Michel <luc.michel@amd.com>
->Sent: Wednesday, October 18, 2023 1:14 AM
->To: qemu-devel@nongnu.org
->Cc: Michel, Luc <Luc.Michel@amd.com>; qemu-arm@nongnu.org; Edgar E .
->Iglesias <edgar.iglesias@gmail.com>; Alistair Francis <alistair@alistair23=
-.me>;
->Peter Maydell <peter.maydell@linaro.org>; Jason Wang
-><jasowang@redhat.com>; Philippe Mathieu-Daud=E9 <philmd@linaro.org>;
->Iglesias, Francisco <francisco.iglesias@amd.com>; Konrad, Frederic
-><Frederic.Konrad@amd.com>; Boddu, Sai Pavan
-><sai.pavan.boddu@amd.com>
->Subject: [PATCH 10/11] hw/net/cadence_gem: perform PHY access on write
->only
->
->The MDIO access is done only on a write to the PHYMNTNC register. A
->subsequent read is used to retrieve the result but does not trigger an MDI=
-O
->access by itself.
->
->Refactor the PHY access logic to perform all accesses (MDIO reads and
->writes) at PHYMNTNC write time.
->
->Signed-off-by: Luc Michel <luc.michel@amd.com>
+Easy, traditional, and unreliable :)
 
-Reviewed-by: sai.pavan.boddu@amd.com
+> But on the other hand, changing from x- to no-prefix is already done when the feature is stable, and thouse who use it already use the latest version of interface, so, removing the prefix is just extra work.
 
+Exactly.
 
+> So, I think, I'd go without prefix.
 
->---
-> hw/net/cadence_gem.c | 56 ++++++++++++++++++++++++++------------------
-> 1 file changed, 33 insertions(+), 23 deletions(-)
+Makes sense.
+
+>>> Also, nothing said about events. Is using "X_" wrong idea? Should it be x-SOME_EVENT instead?
+>>
+>> Since this is the first unstable event, there is no precedent.  Let's
+>> use no prefix, and move on.
+>> 
+>>>> The name CONFIG_READ feels overly generic for something that makes sense
+>>>> only with virtio devices.
+>>>
+>>> Hmm, right.. I think, we can say same thing about DEVICE_UNPLUG_GUEST_ERROR.
+>>
+>> That one came to be as a generalization of existing MEM_UNPLUG_ERROR and
+>> a concrete need to signal CPU unplug errors.  Demonstrates "unplug guest
+>> errors" can happen for different kinds of devices.  So we went with a
+>> generic event we can use for all of them.
+>> This doesn't seem to be the case for this patch's event.  Thoughts?
 >
->diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c index
->4c5fe10316..21146f4242 100644
->--- a/hw/net/cadence_gem.c
->+++ b/hw/net/cadence_gem.c
->@@ -1519,10 +1519,42 @@ static void gem_phy_write(CadenceGEMState *s,
->unsigned reg_num, uint16_t val)
->         break;
->     }
->     s->phy_regs[reg_num] =3D val;
-> }
->
->+static void gem_handle_phy_access(CadenceGEMState *s) {
->+    uint32_t val =3D s->regs[R_PHYMNTNC];
->+    uint32_t phy_addr, reg_num;
->+
->+    phy_addr =3D FIELD_EX32(val, PHYMNTNC, PHY_ADDR);
->+
->+    if (phy_addr !=3D s->phy_addr) {
->+        /* no phy at this address */
->+        if (FIELD_EX32(val, PHYMNTNC, OP) =3D=3D MDIO_OP_READ) {
->+            s->regs[R_PHYMNTNC] =3D FIELD_DP32(val, PHYMNTNC, DATA, 0xfff=
-f);
->+        }
->+        return;
->+    }
->+
->+    reg_num =3D FIELD_EX32(val, PHYMNTNC, REG_ADDR);
->+
->+    switch (FIELD_EX32(val, PHYMNTNC, OP)) {
->+    case MDIO_OP_READ:
->+        s->regs[R_PHYMNTNC] =3D FIELD_DP32(val, PHYMNTNC, DATA,
->+                                         gem_phy_read(s, reg_num));
->+        break;
->+
->+    case MDIO_OP_WRITE:
->+        gem_phy_write(s, reg_num, val);
->+        break;
->+
->+    default:
->+        break; /* only clause 22 operations are supported */
->+    }
->+}
->+
-> /*
->  * gem_read32:
->  * Read a GEM register.
->  */
-> static uint64_t gem_read(void *opaque, hwaddr offset, unsigned size) @@ -
->1539,24 +1571,10 @@ static uint64_t gem_read(void *opaque, hwaddr
->offset, unsigned size)
->     switch (offset) {
->     case R_ISR:
->         DB_PRINT("lowering irqs on ISR read\n");
->         /* The interrupts get updated at the end of the function. */
->         break;
->-    case R_PHYMNTNC:
->-        if (FIELD_EX32(retval, PHYMNTNC, OP) =3D=3D MDIO_OP_READ) {
->-            uint32_t phy_addr, reg_num;
->-
->-            phy_addr =3D FIELD_EX32(retval, PHYMNTNC, PHY_ADDR);
->-            if (phy_addr =3D=3D s->phy_addr) {
->-                reg_num =3D FIELD_EX32(retval, PHYMNTNC, REG_ADDR);
->-                retval &=3D 0xFFFF0000;
->-                retval |=3D gem_phy_read(s, reg_num);
->-            } else {
->-                retval |=3D 0xFFFF; /* No device at this address */
->-            }
->-        }
->-        break;
->     }
->
->     /* Squash read to clear bits */
->     s->regs[offset] &=3D ~(s->regs_rtc[offset]);
->
->@@ -1663,19 +1681,11 @@ static void gem_write(void *opaque, hwaddr
->offset, uint64_t val,
->     case R_SPADDR3HI:
->     case R_SPADDR4HI:
->         s->sar_active[(offset - R_SPADDR1HI) / 2] =3D true;
->         break;
->     case R_PHYMNTNC:
->-        if (FIELD_EX32(val, PHYMNTNC, OP) =3D=3D MDIO_OP_WRITE) {
->-            uint32_t phy_addr, reg_num;
->-
->-            phy_addr =3D FIELD_EX32(val, PHYMNTNC, PHY_ADDR);
->-            if (phy_addr =3D=3D s->phy_addr) {
->-                reg_num =3D FIELD_EX32(val, PHYMNTNC, REG_ADDR);
->-                gem_phy_write(s, reg_num, val);
->-            }
->-        }
->+        gem_handle_phy_access(s);
->         break;
->     }
->
->     DB_PRINT("newval: 0x%08x\n", s->regs[offset]);  }
->--
->2.39.2
+> Right.. VIRTIO_CONFIG_READ maybe?
+
+Works for me.
+
+[...]
 
 
