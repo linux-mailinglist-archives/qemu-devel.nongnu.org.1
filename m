@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF327CDA32
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D34AF7CDA3A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 13:25:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt4d7-0007Ym-It; Wed, 18 Oct 2023 07:22:25 -0400
+	id 1qt4fB-0008R7-5j; Wed, 18 Oct 2023 07:24:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt4d5-0007YF-VQ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:22:23 -0400
+ id 1qt4f7-0008Qk-Bn
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:24:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qt4d4-0004JB-9i
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:22:23 -0400
+ id 1qt4f5-0004na-Hf
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:24:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697628141;
+ s=mimecast20190719; t=1697628266;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fdD92zdUa7HtkSq851i5F3FijmAPCZeGmMpkFwt8FGE=;
- b=ITh4WRIlFjwCIsH8pP59WpbM1w3XaEYsQFvE+NO4BOmuvxl8zIyjWi0Vh8KfJwvKXS/YmU
- d9leWrNlK/MsiTgyPMoZVDw5zN5EC2qTEgwXqERojaRnY8gHAD+y2nIelleesNCaIAMxHs
- DNm56UiF7/4M6TboT7OfT0304t2EQtk=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=Ug5cT3WMDuE8s0u+ZCMrurGgDF0l9gdle2RsmZHbRgQ=;
+ b=fDR+Exs/pjRFRhjV9ATd4d2YAbfba3vPeKIvePCEEwXQ6S+HeSRakYyZ5cMt3cLYLYiEOK
+ SNJ1ggHR5wxBiw4NTHr/AfUL3B1AeYE3QX250n5+4LiP0T9eIFvUNbe1hZHUKkvjPJJmuF
+ o1rAwKHV9gwmHkMJnvzFrreeNUhM1Y0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-uWmcBE6gOwa9djfFREg-Yg-1; Wed, 18 Oct 2023 07:22:20 -0400
-X-MC-Unique: uWmcBE6gOwa9djfFREg-Yg-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-5043c463bf9so6380641e87.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 04:22:19 -0700 (PDT)
+ us-mta-433-pdJKpM7FP0GcOnXo9hlZXg-1; Wed, 18 Oct 2023 07:24:10 -0400
+X-MC-Unique: pdJKpM7FP0GcOnXo9hlZXg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-327ab41de6cso4385655f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 04:24:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697628134; x=1698232934;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fdD92zdUa7HtkSq851i5F3FijmAPCZeGmMpkFwt8FGE=;
- b=v8Wi7iHRThUBwiJbUun6SMD5zyX99X9KGES90jVOeRsAqjUu++piS5OuLD0ao0FAYM
- yZ37rALp40fapG5GYNckgiTMLttIulfYSaYsUvx/siC0fF+DCdVTRbOn9JycHzxHNiYQ
- QDL1WDCWs4K2wakdPluSG2ykDi4HC3Z5eRydmD039wrtNCkeUiLEFo2z35lkVToYzn2m
- cixPBo+ormwxEv00J2gQaFEojzfcDZYkCBJE4LXuYQdQMAyvnrNCczpfFCAfs4X0cSv/
- crsR6u45aoUmA9Vltd+zdaBzy2sFLlcJGnZ9X3w2dzIv8gwQgdYEqUQ/MzpWFiVxPiNI
- O7Hw==
-X-Gm-Message-State: AOJu0YwwWGD5B8u1bXWwzoOVPPC+jAa+T/piKYIFiS2xw8v9BG4ntg+a
- X8Adzn4fy9P+Oyeeml3xy2dg9nFJurqNXZsMB756Z2kFlPh1PjEK42B1s0H9yjTJO4HNcC5Q0eG
- bPrOXqSkC6ysbN7A=
-X-Received: by 2002:ac2:5398:0:b0:4f9:54f0:b6db with SMTP id
- g24-20020ac25398000000b004f954f0b6dbmr4198619lfh.13.1697628133732; 
- Wed, 18 Oct 2023 04:22:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPn50hjBeBBj00EtH2oKPqpq6abOtitxJptMUaQ5TsDN/oZwidKLA3b2pCt1MXSv+DvCLzQg==
-X-Received: by 2002:ac2:5398:0:b0:4f9:54f0:b6db with SMTP id
- g24-20020ac25398000000b004f954f0b6dbmr4198595lfh.13.1697628133351; 
- Wed, 18 Oct 2023 04:22:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697628249; x=1698233049;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ug5cT3WMDuE8s0u+ZCMrurGgDF0l9gdle2RsmZHbRgQ=;
+ b=UPul/gMXheH9yGgXvijkyKBe/wZo/o3lV+b3pL4Lh2slIYpP/VtHyPmxxebSwnx75c
+ 9Xq5QuAENMJCd+2cVeCVW5pfrUH52b4aQMzCarSICCNBj9WqmnIRl6RZ/Kg8gbxDqj9J
+ bAEKHX4g/Sv3XraW+NWA+MR6egnIH0R7tSVyLmgKEPtAR95UMQbQDeplcfs8/I6EMCRg
+ askGvD5cvThneyyNZJbQ5L+GyGRKoXQ2SdQPlbXyyD8VcGA4D+1v957q7f89nokml3Mc
+ joNKyFxf/dN9JFu9HwK7x3G9AdAZ6zRoGzauxcV3biRHXna/Af3qK4voeeOkzNVKWjBC
+ yE5w==
+X-Gm-Message-State: AOJu0Yy/OFmXj/7eirK2H8wqJwzwkv4CpIM7IbDoPTI5HwC19w42z0bX
+ RXH4rZ56g0vkLaconzaseJi9FbFjHKigpS2DeB9pZ211swtz7TcM6YqcqhYKb2Z1HZgc/DfNw/p
+ q/CoQ1EJy3GXmRrc=
+X-Received: by 2002:a5d:4f91:0:b0:32d:ba78:2b33 with SMTP id
+ d17-20020a5d4f91000000b0032dba782b33mr4132032wru.63.1697628249055; 
+ Wed, 18 Oct 2023 04:24:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEof/gY7Nkoe9LTJIMRQYZtiwX3H6k1mjgvjfwPdqBoo0q7XBmMpQma5lMlQQog0KRno/ciTA==
+X-Received: by 2002:a5d:4f91:0:b0:32d:ba78:2b33 with SMTP id
+ d17-20020a5d4f91000000b0032dba782b33mr4132018wru.63.1697628248684; 
+ Wed, 18 Oct 2023 04:24:08 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- q1-20020adffec1000000b00326b8a0e817sm1889129wrs.84.2023.10.18.04.22.12
+ r16-20020a056000015000b0031aef72a021sm1880617wrx.86.2023.10.18.04.24.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 04:22:12 -0700 (PDT)
+ Wed, 18 Oct 2023 04:24:06 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  Fam Zheng
- <fam@euphon.net>,  Peter Xu <peterx@redhat.com>,  Kevin Wolf
- <kwolf@redhat.com>,  Markus Armbruster <armbru@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>,
- libvir-list@redhat.com,  Hanna Reitz <hreitz@redhat.com>,  Stefan
- Hajnoczi <stefanha@redhat.com>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v7 0/4] Migration deprecated parts
-In-Reply-To: <ZS+43SAy3xEMF4fh@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Wed, 18 Oct 2023 11:52:13 +0100")
-References: <20231018103204.33444-1-quintela@redhat.com>
- <87bkcwxlkd.fsf@secure.mitica> <ZS+43SAy3xEMF4fh@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Vladimir
+ Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH v2 1/3] migration/doc: Add documentation for backwards
+ compatiblity
+In-Reply-To: <CAFEAcA8brMkW8Y6=sOq1YpEwY+Wjvt+NxSqCBTQFw2tBeYRbEw@mail.gmail.com>
+ (Peter Maydell's message of "Tue, 17 Oct 2023 17:20:01 +0100")
+References: <20231017151857.21328-1-quintela@redhat.com>
+ <20231017151857.21328-2-quintela@redhat.com>
+ <CAFEAcA8brMkW8Y6=sOq1YpEwY+Wjvt+NxSqCBTQFw2tBeYRbEw@mail.gmail.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 18 Oct 2023 13:22:12 +0200
-Message-ID: <87mswgkwez.fsf@secure.mitica>
+Date: Wed, 18 Oct 2023 13:24:06 +0200
+Message-ID: <87il74kwbt.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -109,51 +104,68 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> On Wed, Oct 18, 2023 at 12:38:10PM +0200, Juan Quintela wrote:
->> Juan Quintela <quintela@redhat.com> wrote:
->> > Based on: Message-ID: <20231018100651.32674-1-quintela@redhat.com>
->> >           [PULL 00/11] Migration 20231018 patches
->> >
->> > And here we are, at v7:
->> > - drop black line at the end of deprecated.rst
->> > - change qemu-iotest output due to warnings for deprecation.
->> >
->> > The only real change is the output of the qemu-iotest.  That is the
->> > reason why I maintained the reviewed-by.  But will be happy if anyone
->> > of the block people ack the changes.
->>=20
->> I forgot to include the link to the CI of the previous failure.
->>=20
->> https://gitlab.com/juan.quintela/qemu/-/jobs/5314070229
->>=20
->> tput mismatch (see /builds/juan.quintela/qemu/build/tests/qemu-iotests/s=
-cratch/raw-file-183/183.out.bad)
->> --- /builds/juan.quintela/qemu/tests/qemu-iotests/183.out
->> +++ /builds/juan.quintela/qemu/build/tests/qemu-iotests/scratch/raw-file=
--183/183.out.bad
->> @@ -28,6 +28,8 @@
->>  { 'execute': 'migrate',
->>         'arguments': { 'uri': 'unix:SOCK_DIR/migrate', 'blk': true } }
->> +warning: parameter 'blk is deprecated; use blockdev-mirror with NBD ins=
-tead
->> +warning: block migration is deprecated; use blockdev-mirror with NBD in=
-stead
->>  {"return": {}}
->>  { 'execute': 'query-status' }
->>  {"return": {"status": "postmigrate", "singlestep": false, "running":
->>  false}}
+Peter Maydell <peter.maydell@linaro.org> wrote:
+> On Tue, 17 Oct 2023 at 16:20, Juan Quintela <quintela@redhat.com> wrote:
+>>
+>> State what are the requeriments to get migration working between qemu
+>> versions.  And once there explain how one is supposed to implement a
+>> new feature/default value and not break migration.
+>>
+>> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> Acked-by: Peter Xu <peterx@redhat.com>
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> ---
+>>  docs/devel/migration.rst | 217 +++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 217 insertions(+)
+>>
+>> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+>> index c3e1400c0c..5ef2b36e9e 100644
+>> --- a/docs/devel/migration.rst
+>> +++ b/docs/devel/migration.rst
+>> @@ -142,6 +142,223 @@ General advice for device developers
+>>    may be different on the destination.  This can result in the
+>>    device state being loaded into the wrong device.
+>>
+>> +How backwards compatibility works
+>> +---------------------------------
 >
-> IIUC, the JSON bits are being written on stdout, and the warnings
-> are being written on stderr. The interleaving of the data is
-> potentially going to be non-deterministic in the .out file.
-> Generally you'd want a filter in the iotests that culls the
-> warning: lines to avoid this mixing of stdout/err streams.
+> Is there a better place in this document that we could add
+> this information?
 
-Thanks.
+> At the moment these new sections have
+> been placed in the middle of the "Saving the state of one device"
+> section, which doesn't seem right; worse, it's between the
+> "General advice for device developers" and the "VMState"
+> subsections of that section, which means that we end up with
+> a very long part of the document that is talking about edge
+> cases, and which splits up the two parts of the document that
+> are really all most device model authors need to think about.
 
-So here I am, going to v8 to create filters.
+You are right.  I didn't know for a good place either.
+I created a new section:
 
-Later, Juan.
+Backwards compatibility
+
+At the end of the archive.
+
+> My guess is that the extra documentation on backwards
+> compatibility that these patches are adding should get
+> a new section of its own (at the same level as the current
+> top-level sections "Transports", "Debugging", etc) which
+> then has its own subsections; and that this should probably
+> go either at the bottom of the document, after "Firmware",
+> or else just before "Stream structure".
+
+End it is.
+
+> We should probably also add a
+> .. contents::
+> directive near the start of the page, since it's now big
+> enough and has enough sections and subsections that a
+> table of contents would be helpful.
+
+Also done.
+
+Thanks a lot.
 
 
