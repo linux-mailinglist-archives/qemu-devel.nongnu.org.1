@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAEA7CDD54
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E64AE7CDD5F
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:34:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6e7-0007vg-7v; Wed, 18 Oct 2023 09:31:35 -0400
+	id 1qt6e5-0007qi-O8; Wed, 18 Oct 2023 09:31:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6ds-0007hO-Tl
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:27 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6dy-0007hr-VP
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:31 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6dp-0004i8-Df
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:20 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-50435ad51bbso9073325e87.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:31:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt6dw-0004k5-2Y
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:31:26 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-32d9552d765so5321022f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 06:31:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697635875; x=1698240675; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697635881; x=1698240681; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4JzNT1BOnEa9xt/v/nMXe1GFFvZS33OkSi1pdN0E7RE=;
- b=iqiTj8zu8CT367PAtB1vzD+K/+MTlHCDhyNSy9nLLMxRYnDj517dXjp4r3nJ8eCeI6
- IZ/Y6zXpil4iv8+0JXRLy0vTw3+i03ZE8wc2EqYj3KF20PE04tGpR/sdcQa8ichPxnS4
- wQk27XpNRN6BTFTTjqKNYS6YFLZE3tkk/R0+TnnP/V52luqs5cqH2mETZCXlN9FVXWWm
- s8ErfAFX+HK+IOnNJ2hvCDvTEK9hufZkOpTOWj2oM/ljyO0ycF9klecB+3ae6wE8A98F
- jJSztiHgOeBarVCLyE3rJIPRrlhohBhZzSzto5LnlDYExr+y4rQyT2FrRfgOYYSVbyrf
- jg9A==
+ bh=T/OzLFcKSh0UPM5Lh64d1MpdKJAnWvLj8FsUJLUNjvo=;
+ b=VYVsTTWeNDrE4l/vtCPuXX8NUI+4C6lNbImc9WVJd3Jo5YZIuv8vCPlbXWdCsQC6Dz
+ sURxUyujmp1aE73D+fy7CT4L/8Xq2A6Jwg9KNSdANG0mREhanQi7PGKS9Y7rSy3d8Oa3
+ MONCTX/Jp5oTKKLa+niQ+AQ1Y5mPq3f0/78eIwRCdMVbDRrpNuBLEwIMTfqhvro8N4/F
+ fWtOjVGE0GyJsCFiTZ1FrJbk1vnv5s1y/i2Td1WFV36wHmPZi85PF6p1fjNZPvM+DpuF
+ 3YiEyj10B4TzNZqIxOBLcBqD7ZZOIBjMldftpTEOUCNutdcihyHDzfP5AAQN6l3MB/By
+ Fh4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697635875; x=1698240675;
+ d=1e100.net; s=20230601; t=1697635881; x=1698240681;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4JzNT1BOnEa9xt/v/nMXe1GFFvZS33OkSi1pdN0E7RE=;
- b=E+IPkImFt6QPFNEr/JqxYxNQvMIhfaSlQHVI06BIAiH1ajIdnGgMH7RETumUBVnqfl
- ZPdAsfm9gxEbciFQ86jleau3CEVReU61qCeA670PGO/IADQtB2PFUzquixAEVdjWUj51
- 7WxF+HxC8calKIXrUE70WxTmJb0nijVQUHPx8CcsvESu9hAi9IfLrL09UPAr0r0SH3wg
- G83/Z7Evub4LVLBHKzlYFTc2R5SyBRrGrS9qpwaqymsWgTk53d0rym1Jj5LvxIiGGoPg
- 9TMduQqBDt7bVkmqdwp63Bb7xb+6NeIP32rC2VUoEAttCK9XNoiViyXPw2zED82ji0Bu
- uI3w==
-X-Gm-Message-State: AOJu0Yw2oMUS90RNjRFs0JTT7i2vBcMAJ6tlMLe9ufnGzBBfI371hSBq
- vUynz2ZtSNq1vnaYK5hWtOKk8THtfUNyJmhvNw0=
-X-Google-Smtp-Source: AGHT+IGGC/DB16P3BB1nPMWKF5VXyCaUMtP+5TJuuZKA2x7kSuINdEw73p8KJAwQkuLGO7HIMlxqNA==
-X-Received: by 2002:a19:7411:0:b0:507:95ea:1e72 with SMTP id
- v17-20020a197411000000b0050795ea1e72mr4327162lfe.22.1697635875553; 
- Wed, 18 Oct 2023 06:31:15 -0700 (PDT)
+ bh=T/OzLFcKSh0UPM5Lh64d1MpdKJAnWvLj8FsUJLUNjvo=;
+ b=GbKuUx6pm8HO27rrbOFWzmQ3Ugch/JHlgDuhdgoddAb2Gy1u7VdSO5SuDw3TTiDlw3
+ J1PppEptUKjqTrfmENKBjFhohwI5LMDw2EP+hoFx5cvYDksgy19iCfs6R97CHTwUvcsd
+ 2K6Ra+Asja3aAtU1blmLVDgv5smg597tOOjlRYIOsMhz7Y5fXBnoSBtzwIP9YtTaeMNW
+ TKKdud4hCaLECTSNZKgVoWUei0uKu+bW67p9vJjzazeagqrTcgeQHWrMtyxzROXCMcKl
+ wfsrFXExQAyz2FFOEwgGmmdtp4EdVzEzYzfY2cP5K+5VQ2ndKmwLaPoeIWrjggJnGwih
+ cn2Q==
+X-Gm-Message-State: AOJu0YweSKJDy8ZpfNj/E+nETEtR4faoRFz9b03ohWnwWaqyGANBh7CO
+ 7//O3CCyVnEaLc5NHZ3hnOkE3EfyHkAYbw6kFHE=
+X-Google-Smtp-Source: AGHT+IHsgV4PzEBsYH1psVLwaff1VJl3OmiviOP4eeuhxOuFo1IIuUZpLReUOyt8uDoVUQI9Jp/36g==
+X-Received: by 2002:adf:f982:0:b0:32d:b06c:80b2 with SMTP id
+ f2-20020adff982000000b0032db06c80b2mr4791674wrr.0.1697635881371; 
+ Wed, 18 Oct 2023 06:31:21 -0700 (PDT)
 Received: from m1x-phil.lan (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr.
  [176.171.218.149]) by smtp.gmail.com with ESMTPSA id
- z3-20020a5d6403000000b0032db430fb9bsm2114410wru.68.2023.10.18.06.31.14
+ p14-20020adfcc8e000000b0032db1d741a6sm2128974wrj.99.2023.10.18.06.31.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 18 Oct 2023 06:31:15 -0700 (PDT)
+ Wed, 18 Oct 2023 06:31:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Gibson <david@gibson.dropbear.id.au>,
@@ -63,18 +63,18 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
  Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/6] hw/ppc/pnv_xscom: Move sysbus_mmio_map() call within
- pnv_xscom_init()
-Date: Wed, 18 Oct 2023 15:30:55 +0200
-Message-ID: <20231018133059.85765-3-philmd@linaro.org>
+Subject: [PATCH 3/6] hw/ppc/pnv_xscom: Do not use SysBus API to map local MMIO
+ region
+Date: Wed, 18 Oct 2023 15:30:56 +0200
+Message-ID: <20231018133059.85765-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018133059.85765-1-philmd@linaro.org>
 References: <20231018133059.85765-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,81 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to make the next commit trivial, move sysbus_init_mmio()
-calls just before the corresponding sysbus_mmio_map() calls.
+There is no point in exposing an internal MMIO region via
+SysBus and directly mapping it in the very same device.
+
+Just map it without using the SysBus API.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/ppc/pnv_xscom.h | 2 +-
- hw/ppc/pnv.c               | 9 +++------
- hw/ppc/pnv_xscom.c         | 3 ++-
- 3 files changed, 6 insertions(+), 8 deletions(-)
+ hw/ppc/pnv_xscom.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-index 41671001da..35b19610f7 100644
---- a/include/hw/ppc/pnv_xscom.h
-+++ b/include/hw/ppc/pnv_xscom.h
-@@ -170,7 +170,7 @@ struct PnvXScomInterfaceClass {
- #define PNV10_XSCOM_PEC_PCI_BASE   0x8010800 /* index goes upwards ... */
- #define PNV10_XSCOM_PEC_PCI_SIZE   0x200
- 
--void pnv_xscom_init(PnvChip *chip, uint64_t size);
-+void pnv_xscom_init(PnvChip *chip, uint64_t size, hwaddr addr);
- int pnv_dt_xscom(PnvChip *chip, void *fdt, int root_offset,
-                  uint64_t xscom_base, uint64_t xscom_size,
-                  const char *compat, int compat_size);
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 456631c9dc..10158f7684 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1249,8 +1249,7 @@ static void pnv_chip_power8_realize(DeviceState *dev, Error **errp)
-     assert(chip8->xics);
- 
-     /* XSCOM bridge is first */
--    pnv_xscom_init(chip, PNV_XSCOM_SIZE);
--    sysbus_mmio_map(SYS_BUS_DEVICE(chip), 0, PNV_XSCOM_BASE(chip));
-+    pnv_xscom_init(chip, PNV_XSCOM_SIZE, PNV_XSCOM_BASE(chip));
- 
-     pcc->parent_realize(dev, &local_err);
-     if (local_err) {
-@@ -1508,8 +1507,7 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-     Error *local_err = NULL;
- 
-     /* XSCOM bridge is first */
--    pnv_xscom_init(chip, PNV9_XSCOM_SIZE);
--    sysbus_mmio_map(SYS_BUS_DEVICE(chip), 0, PNV9_XSCOM_BASE(chip));
-+    pnv_xscom_init(chip, PNV9_XSCOM_SIZE, PNV9_XSCOM_BASE(chip));
- 
-     pcc->parent_realize(dev, &local_err);
-     if (local_err) {
-@@ -1719,8 +1717,7 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     Error *local_err = NULL;
- 
-     /* XSCOM bridge is first */
--    pnv_xscom_init(chip, PNV10_XSCOM_SIZE);
--    sysbus_mmio_map(SYS_BUS_DEVICE(chip), 0, PNV10_XSCOM_BASE(chip));
-+    pnv_xscom_init(chip, PNV10_XSCOM_SIZE, PNV10_XSCOM_BASE(chip));
- 
-     pcc->parent_realize(dev, &local_err);
-     if (local_err) {
 diff --git a/hw/ppc/pnv_xscom.c b/hw/ppc/pnv_xscom.c
-index af57b55863..cf892c9fe8 100644
+index cf892c9fe8..805b1d0c87 100644
 --- a/hw/ppc/pnv_xscom.c
 +++ b/hw/ppc/pnv_xscom.c
-@@ -221,7 +221,7 @@ const MemoryRegionOps pnv_xscom_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
+@@ -223,14 +223,12 @@ const MemoryRegionOps pnv_xscom_ops = {
  
--void pnv_xscom_init(PnvChip *chip, uint64_t size)
-+void pnv_xscom_init(PnvChip *chip, uint64_t size, hwaddr addr)
+ void pnv_xscom_init(PnvChip *chip, uint64_t size, hwaddr addr)
  {
-     SysBusDevice *sbd = SYS_BUS_DEVICE(chip);
+-    SysBusDevice *sbd = SYS_BUS_DEVICE(chip);
      char *name;
-@@ -230,6 +230,7 @@ void pnv_xscom_init(PnvChip *chip, uint64_t size)
+ 
+     name = g_strdup_printf("xscom-%x", chip->chip_id);
      memory_region_init_io(&chip->xscom_mmio, OBJECT(chip), &pnv_xscom_ops,
                            chip, name, size);
-     sysbus_init_mmio(sbd, &chip->xscom_mmio);
-+    sysbus_mmio_map(sbd, 0, addr);
+-    sysbus_init_mmio(sbd, &chip->xscom_mmio);
+-    sysbus_mmio_map(sbd, 0, addr);
++    memory_region_add_subregion(get_system_memory(), addr, &chip->xscom_mmio);
  
      memory_region_init(&chip->xscom, OBJECT(chip), name, size);
      address_space_init(&chip->xscom_as, &chip->xscom, name);
