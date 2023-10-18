@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F147CDDB2
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 243E57CDDB0
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 15:44:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt6lK-0008Ru-0V; Wed, 18 Oct 2023 09:39:02 -0400
+	id 1qt6lL-0008T9-GO; Wed, 18 Oct 2023 09:39:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qt6lF-0008NH-OJ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:38:57 -0400
+ id 1qt6lJ-0008SG-TF
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:39:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qt6lD-0006CU-Ig
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:38:57 -0400
+ id 1qt6lH-0006DR-MX
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 09:39:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697636334;
+ s=mimecast20190719; t=1697636339;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8tekbQ8dc6eVQqWGwmAxzuhv07EEyzoaXzuD1sAwzyc=;
- b=DBfPE4FEbWRO7ggWNhs+LDdqSwSljQUOpRjOtwjQxsHODUy5bdhS69Bc8YIV3NO2QlfoH+
- +TT8vZmaRhl3Z34xXvo1uKUXRJfxaMNN0cezg6Lc6Q5XBStds5xDAlxXCtJw0fDpEbNbSG
- b4k0SM/49l2pq+5loGC15uYp7rB3wOo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-355-WzP4LV6uNn-UjLEz93aV0w-1; Wed, 18 Oct 2023 09:38:51 -0400
-X-MC-Unique: WzP4LV6uNn-UjLEz93aV0w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ bh=t2z+Jyqs3B+QrIMXiV5YUpL+rrIemvToEH1MmhrX9vA=;
+ b=gCn3lXe8mNtPEYjS4U947wZsSRc2Rp1IoVtbFHEam7cDDkWTuJLZ5b06eGJ/Iy+qnWymfM
+ HFpV9j1I740bcbaemRo1hrxyAy3ZRF6RJUwCcKfZJn5qu4jQVDEw9G6tm4CTSyqGcJaROD
+ F1Lh+5zjI1YdKqLQkeizvO5cUFf+nYs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-395-P0cS1x4SM0i0m1aF8L4oiw-1; Wed, 18 Oct 2023 09:38:55 -0400
+X-MC-Unique: P0cS1x4SM0i0m1aF8L4oiw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F1BA887A9F7;
- Wed, 18 Oct 2023 13:38:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 47BAF1C00046;
+ Wed, 18 Oct 2023 13:38:55 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.50])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9C7178C2;
- Wed, 18 Oct 2023 13:38:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B3A481C060B0;
+ Wed, 18 Oct 2023 13:38:53 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,15 +53,15 @@ Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Eric Blake <eblake@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v4 06/19] ui/vc: console-vc requires PIXMAN
-Date: Wed, 18 Oct 2023 17:38:07 +0400
-Message-ID: <20231018133820.1556962-7-marcandre.lureau@redhat.com>
+Subject: [PATCH v4 07/19] qmp/hmp: disable screendump if PIXMAN is missing
+Date: Wed, 18 Oct 2023 17:38:08 +0400
+Message-ID: <20231018133820.1556962-8-marcandre.lureau@redhat.com>
 In-Reply-To: <20231018133820.1556962-1-marcandre.lureau@redhat.com>
 References: <20231018133820.1556962-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -89,93 +89,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Add stubs for the fallback paths.
-
-get_vc() now returns NULL by default if !PIXMAN.
+The command requires color conversion and line-by-line feeding. We could
+have a simple fallback for simple formats though.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- ui/console-vc-stubs.c | 33 +++++++++++++++++++++++++++++++++
- ui/console.c          |  3 +++
- ui/meson.build        |  2 +-
- 3 files changed, 37 insertions(+), 1 deletion(-)
- create mode 100644 ui/console-vc-stubs.c
+ qapi/ui.json     | 3 ++-
+ ui/ui-hmp-cmds.c | 2 ++
+ ui/ui-qmp-cmds.c | 2 ++
+ hmp-commands.hx  | 2 ++
+ 4 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/ui/console-vc-stubs.c b/ui/console-vc-stubs.c
-new file mode 100644
-index 0000000000..2afc52329f
---- /dev/null
-+++ b/ui/console-vc-stubs.c
-@@ -0,0 +1,33 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * QEMU VC stubs
-+ */
-+#include "qemu/osdep.h"
-+
-+#include "qapi/error.h"
-+#include "qemu/error-report.h"
-+#include "qemu/option.h"
-+#include "chardev/char.h"
-+#include "ui/console-priv.h"
-+
-+void qemu_text_console_select(QemuTextConsole *c)
-+{
-+}
-+
-+const char *
-+qemu_text_console_get_label(QemuTextConsole *c)
-+{
-+    return NULL;
-+}
-+
-+void qemu_text_console_update_cursor(void)
-+{
-+}
-+
-+void qemu_text_console_handle_keysym(QemuTextConsole *s, int keysym)
-+{
-+}
-+
-+void qemu_console_early_init(void)
-+{
-+}
-diff --git a/ui/console.c b/ui/console.c
-index a758ed62ad..a72c495b5a 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1685,8 +1685,11 @@ const char *qemu_display_get_vc(DisplayOptions *opts)
-     if (dpys[opts->type]->vc) {
-         return dpys[opts->type]->vc;
-     } else {
-+#ifdef CONFIG_PIXMAN
-         return "vc:80Cx24C";
-+#endif
+diff --git a/qapi/ui.json b/qapi/ui.json
+index 006616aa77..e74cc3efb6 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -200,7 +200,8 @@
+ { 'command': 'screendump',
+   'data': {'filename': 'str', '*device': 'str', '*head': 'int',
+            '*format': 'ImageFormat'},
+-  'coroutine': true }
++  'coroutine': true,
++  'if': 'CONFIG_PIXMAN' }
+ 
+ ##
+ # == Spice
+diff --git a/ui/ui-hmp-cmds.c b/ui/ui-hmp-cmds.c
+index c671389473..26c8ced1f2 100644
+--- a/ui/ui-hmp-cmds.c
++++ b/ui/ui-hmp-cmds.c
+@@ -437,6 +437,7 @@ void sendkey_completion(ReadLineState *rs, int nb_args, const char *str)
      }
-+    return NULL;
  }
  
- void qemu_display_help(void)
-diff --git a/ui/meson.build b/ui/meson.build
-index 0a1e8272a3..3085e10a72 100644
---- a/ui/meson.build
-+++ b/ui/meson.build
-@@ -6,7 +6,6 @@ system_ss.add(png)
- system_ss.add(files(
-   'clipboard.c',
-   'console.c',
--  'console-vc.c',
-   'cursor.c',
-   'input-keymap.c',
-   'input-legacy.c',
-@@ -19,6 +18,7 @@ system_ss.add(files(
-   'ui-qmp-cmds.c',
-   'util.c',
- ))
-+system_ss.add(when: pixman, if_true: files('console-vc.c'), if_false: files('console-vc-stubs.c'))
- if dbus_display
-   system_ss.add(files('dbus-module.c'))
- endif
++#ifdef CONFIG_PIXMAN
+ void coroutine_fn
+ hmp_screendump(Monitor *mon, const QDict *qdict)
+ {
+@@ -458,6 +459,7 @@ hmp_screendump(Monitor *mon, const QDict *qdict)
+ end:
+     hmp_handle_error(mon, err);
+ }
++#endif
+ 
+ void hmp_client_migrate_info(Monitor *mon, const QDict *qdict)
+ {
+diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
+index debc07d678..d772e1cb7f 100644
+--- a/ui/ui-qmp-cmds.c
++++ b/ui/ui-qmp-cmds.c
+@@ -212,6 +212,7 @@ void qmp_client_migrate_info(const char *protocol, const char *hostname,
+     error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "protocol", "'spice'");
+ }
+ 
++#ifdef CONFIG_PIXMAN
+ #ifdef CONFIG_PNG
+ /**
+  * png_save: Take a screenshot as PNG
+@@ -391,3 +392,4 @@ qmp_screendump(const char *filename, const char *device,
+         }
+     }
+ }
++#endif /* CONFIG_PIXMAN */
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 63eac22734..c343d82fbc 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -252,6 +252,7 @@ SRST
+ 
+ ERST
+ 
++#ifdef CONFIG_PIXMAN
+     {
+         .name       = "screendump",
+         .args_type  = "filename:F,format:-fs,device:s?,head:i?",
+@@ -267,6 +268,7 @@ SRST
+ ``screendump`` *filename*
+   Save screen into PPM image *filename*.
+ ERST
++#endif
+ 
+     {
+         .name       = "logfile",
 -- 
 2.41.0
 
