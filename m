@@ -2,88 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5811E7CDC39
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 14:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FAA7CDB3D
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 14:05:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt5vo-0007LK-67; Wed, 18 Oct 2023 08:45:48 -0400
+	id 1qt5Ib-000880-8I; Wed, 18 Oct 2023 08:05:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick.rudolph@9elements.com>)
- id 1qt56P-0003wO-CD
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:52:41 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <patrick.rudolph@9elements.com>)
- id 1qt56N-0001Ak-Sq
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:52:41 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2c53c5f7aaaso23942911fa.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 04:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=9elements.com; s=google; t=1697629957; x=1698234757; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3ELDyLuwVctu4VdhuDRUgD/j2w95dUA1duJhkxZjjSY=;
- b=BSRjJ4da6WiMvVzXOLzOCeKJjVkfKgGHhe3ENR7gF1HFdxmSQZJj1dtoAtsXvmALK0
- SfUVdnqP9UfkTIhsRlNkX7ow11MI82LzeK+YULKzeFClkTrKO7Yj/dcbWtwvQltsg7U6
- H3lddpYglyX8JjeIWG6ay7oxKyvm36mcyMDcsImGMQ12To9l9yBSSzFhEzBkvv7ZfUBd
- SlvmpMaU5OtHx0REKyd/hCkVUXB1CsyyuG4dUsW893bIxxKyLMkz2NGsaOgAm1k69R4n
- HU1qdzkM97j+qjH70jMNOpKvXxc2VeUmniNIA5TNOTVsrTnX5iXlWgIWaH+XaQWfRKlI
- y45g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697629957; x=1698234757;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3ELDyLuwVctu4VdhuDRUgD/j2w95dUA1duJhkxZjjSY=;
- b=xQgyX693H/FQewP55s9Xs6lRyuyZsqHs3S+Qtwrc6hSrOz9guwFP7xXTvJ9Z+08tIZ
- wCAbISuAJwRTsavp3xFQjh2dHwpkKx6eXgbZFHuzNy4/ukzOmk0ubWwGrhdV5KGOlhHg
- fjABVFMKAmbn4W9xtgi1lb1XPf8UoPQlsqoYdJxqvvhz8wi1toGySNfIFOxmzw9ePje8
- T9lXoDtFCJM4kX3Ais/kAH7FAAmL7AgDefU39rcwJormA9Ri/JktwDRiXojBBIUxKltR
- CALOjxErO4rolnrBqKWzWGQJS6FUTPTpblqGigOOU4OPmpkjvGYdLpNyeQLw8Fz8SzqE
- Epqg==
-X-Gm-Message-State: AOJu0YzrchIswiF2qN4869lQ4jHWWGHBEnjDtAmhy8pvSATHQU9je1/l
- HY2aFprTF7GKQOeaaYPUoYddDDHC4PqsTR6ohPO7eA==
-X-Google-Smtp-Source: AGHT+IGl4fJRlYCzLGMtSOj8F5EgeJ+o6r+7+cr+xTyD57Q/aTMKP3KoxrIQlzgHTPjfI9oU+edFsg==
-X-Received: by 2002:a2e:9f4a:0:b0:2c2:9414:7dc8 with SMTP id
- v10-20020a2e9f4a000000b002c294147dc8mr3589712ljk.36.1697629957362; 
- Wed, 18 Oct 2023 04:52:37 -0700 (PDT)
-Received: from fedora.9e.network
- (ip-078-094-000-052.um19.pools.vodafone-ip.de. [78.94.0.52])
- by smtp.gmail.com with ESMTPSA id
- j17-20020a05600c489100b0040776008abdsm1455303wmp.40.2023.10.18.04.52.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 04:52:37 -0700 (PDT)
-From: Patrick Rudolph <patrick.rudolph@9elements.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, mst@redhat.com, imammedo@redhat.com,
- anisinha@redhat.com, marcel.apfelbaum@gmail.com,
- Patrick Rudolph <patrick.rudolph@9elements.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 3/3] hw/i386/pc_sysfw: Do not create BIOS region if MTD is
- present
-Date: Wed, 18 Oct 2023 13:52:31 +0200
-Message-ID: <20231018115231.3547102-4-patrick.rudolph@9elements.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231018115231.3547102-1-patrick.rudolph@9elements.com>
-References: <20231018115231.3547102-1-patrick.rudolph@9elements.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qt5IX-00084X-Bw; Wed, 18 Oct 2023 08:05:14 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qt5IT-0003VA-TL; Wed, 18 Oct 2023 08:05:12 -0400
+Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:1bac:0:640:75a2:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id DB92F620BF;
+ Wed, 18 Oct 2023 15:05:00 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b667::1:1d] (unknown
+ [2a02:6b8:b081:b667::1:1d])
+ by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id x4kDGvAOdSw0-1zhNX6FR; Wed, 18 Oct 2023 15:05:00 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1697630700;
+ bh=tyICDHoF6y002cjAWwUEEVKV+0xQ8fINHu98H0D605Y=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=twnf5v1xsmNNFBVBbmw+W/N+/k5o1E6hlnULUfC4fp7GO+xd/52scUy+8mvzvB98V
+ QOv8mDRBQlAVpJOKHJ6k5eqgGvkakIohF3TPRbVQ6CgUlEeBoDxzqBp+9IqXXkQeHw
+ ud8Zp1NJsRofJTN90UnWCxitjbmjQ7GtfhTrhCJI=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <63825da4-6df0-47a7-8d22-2aa7d75ba85d@yandex-team.ru>
+Date: Wed, 18 Oct 2023 15:04:59 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=patrick.rudolph@9elements.com; helo=mail-lj1-x235.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 4/7] qapi: add x-blockdev-replace command
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
+ eblake@redhat.com, hreitz@redhat.com, kwolf@redhat.com, den@openvz.org,
+ alexander.ivanov@virtuozzo.com
+References: <20231017184444.932733-1-vsementsov@yandex-team.ru>
+ <20231017184444.932733-5-vsementsov@yandex-team.ru>
+ <874jiotdis.fsf@pond.sub.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <874jiotdis.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 18 Oct 2023 08:45:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,33 +76,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The newly introduced ICH9 SPI MTD controller creates the BIOS
-region itself as it needs to update the mmaped BIOS region as
-well when the MTD device is updated though the SPI controller.
+On 18.10.23 13:45, Markus Armbruster wrote:
+> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+> 
+>> Add a command that can replace bs in following BdrvChild structures:
+>>
+>>   - qdev blk root child
+>>   - block-export blk root child
+>>   - any child of BlockDriverState selected by child-name
+>>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
----
- hw/i386/pc_sysfw.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+[..]
 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index c8d9e71b88..b98077422c 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -211,6 +211,12 @@ void pc_system_firmware_init(PCMachineState *pcms,
-         x86_bios_rom_init(MACHINE(pcms), "bios.bin", rom_memory, true);
-         return;
-     }
-+    DriveInfo *dinfo = drive_get(IF_MTD, 0, 0);
-+    if (dinfo) {
-+        /* SPI flash and BIOS will be emulated by MTD controller */
-+        pc_system_flash_cleanup_unused(pcms);
-+        return;
-+    }
- 
-     /* Map legacy -drive if=pflash to machine properties */
-     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
+>> --- /dev/null
+>> +++ b/stubs/blk-by-qdev-id.c
+>> @@ -0,0 +1,9 @@
+>> +#include "qemu/osdep.h"
+>> +#include "qapi/error.h"
+>> +#include "sysemu/block-backend.h"
+>> +
+>> +BlockBackend *blk_by_qdev_id(const char *id, Error **errp)
+>> +{
+>> +    error_setg(errp, "blk '%s' not found", id);
+> 
+> Is this expected to happen?
+
+Yes, if call the command from qemu-storage-daemon, where qdev-monitor is not linked in.
+
+Maybe, better message would be
+
+    "devices are not supported"
+
+Maybe, that possible to use some 'if': notation in qapi, to not include support for qdev into the new command, when it compiled into qemu-storage-daemon? Seems that would not be simple, as we also need to split compilation of the command somehow, now it compiled once both for qemu and qemu tools..
+
+> 
+>> +    return NULL;
+>> +}
+> 
+> [...]
+> 
+> QAPI schema
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+> 
+
 -- 
-2.41.0
+Best regards,
+Vladimir
 
 
