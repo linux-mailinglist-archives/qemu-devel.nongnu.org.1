@@ -2,87 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734AB7CE0F9
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D1B37CE122
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 17:24:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt8Hu-0005OR-F4; Wed, 18 Oct 2023 11:16:46 -0400
+	id 1qt8Oi-0007sq-RK; Wed, 18 Oct 2023 11:23:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1qt8Hs-0005Nf-Fd
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:16:44 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1qt8Hq-0008TQ-Kw
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:16:44 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3226cc3e324so6213262f8f.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 08:16:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=opnsrc.net; s=google; t=1697642200; x=1698247000; darn=nongnu.org;
- h=content-transfer-encoding:content-language:mime-version:user-agent
- :date:message-id:cc:subject:from:to:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DExL8xTBIeVwgqkt5P2msyuVyJabWD53OfdkNH0aH7E=;
- b=W/rxaB1nQ+yEnk7z7haIKEFXtvBJAeZ1r4mUkbHRmJ0HOZhmzDVMXQWwmr0gp9YJsP
- JZh0iBQTRYTycZ2GfMfIGXLmtqIfmhkb3KyKT8rYvOCWeeEn3Z9jmm5ziP4RKnyiWxQW
- hVS78yDtiCxZ3TgkYDOvUETCoO0254JkTYrhw0dxbIrD6ti42FC7xhfr0DFxL8TKSaQP
- 0UkFM+rwi0fn3lJEigpHZFWRl+Y/xX5XoVkh66g3vFDbcukjQtxsihjARjciqM8n+UKy
- oZvM5VWOnHpPAUbA7Oqsn1rKhKGnNn93bKEDr6+XrkVyH1AQEwQ6lJ23GaGgJQRt31Mc
- ZLMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697642200; x=1698247000;
- h=content-transfer-encoding:content-language:mime-version:user-agent
- :date:message-id:cc:subject:from:to:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DExL8xTBIeVwgqkt5P2msyuVyJabWD53OfdkNH0aH7E=;
- b=kamvyRI0mG7zUdTq2Ek4OqBKghV34UCX6PxVz4gFOqjhfAEo6dBFl0Y/tVzYJkMYSI
- jW3fC5PgQ/Aj/HYpaHSSL6XYqyXj4Ze0m/86dhXG6P0NMG99J1NCNVx7O6VASZNS3T7b
- uTP9+CXfzWnGpdDIHHjwRZ5yOamC70Luw8LeHZwNuEZ7Zkn7CX/FmQDFxop407JAvou8
- ylktC1Py3ESmnNLICFq6vMRNCVCTVZYj5DFKm8fD1p4ZjdHkpWLMMZTxRyDYDGxi+FeQ
- oQJ7OPSin235kIHQmrzJ05i6oRt3q/Ee3VzyrsSgO3ejbjyFTD1Hyn8xPbdyace+ohcg
- v8/Q==
-X-Gm-Message-State: AOJu0YycGB8JjzJDMtCLJmtBoLQ2XjUSVka6HZdo73Ay4vCxfoIDTX8F
- Dm5mGI+XBW8ZbBBWSL81LCITMA==
-X-Google-Smtp-Source: AGHT+IHq36s1rn0eLwa29Fkh8dYepyZmJVmtnDMF8A6JBJ9p7sxYOaO/CultxqrVby+wXmxMMxY2ZA==
-X-Received: by 2002:adf:fa47:0:b0:319:67ac:4191 with SMTP id
- y7-20020adffa47000000b0031967ac4191mr4226851wrr.37.1697642200432; 
- Wed, 18 Oct 2023 08:16:40 -0700 (PDT)
-Received: from [10.8.0.13] ([185.223.232.243])
- by smtp.gmail.com with ESMTPSA id
- q13-20020adff78d000000b00326dd5486dcsm2321285wrp.107.2023.10.18.08.16.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 08:16:40 -0700 (PDT)
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-From: Salil Mehta <salil.mehta@opnsrc.net>
-Subject: [Question] x86/microvm: why has_hotpluggable_cpus = false but
- hot(ub)plug APIs exist?
-Cc: "mst@redhat.com" <mst@redhat.com>,
- "imammedo@redhat.com >> Igor Mammedov" <imammedo@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "david@redhat.com >> David Hildenbrand" <david@redhat.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Salil Mehta <salil.mehta@huawei.com>
-Message-ID: <78103368-9ea5-167b-5700-7d3d174ff564@opnsrc.net>
-Date: Wed, 18 Oct 2023 16:16:39 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1qt8Of-0007sc-CL
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:23:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1qt8Od-0001Ea-My
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 11:23:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697642621;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0dcLn6WWYbwsPIye+Ya6vBDS1pJC2lAX+gLK6QQOt04=;
+ b=PiZ3W395Srmmd92hA5AScKLpv8IOb78UsiODKP+HELsTPkB8GNunvlSfTKxgUG6dgM86XV
+ DyvfrTb5zeWQiBS1bteG/P0j9Bdxu3yHln12zOfvFQn1WzgsGv2FYOUKugDCSgkZPZUdCg
+ VlJ256pIAShWMan6J2M7xG2dHu3TbRM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-282-asXjOdxVP1iBmcGE3wqbuw-1; Wed, 18 Oct 2023 11:23:29 -0400
+X-MC-Unique: asXjOdxVP1iBmcGE3wqbuw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8BFE188B779
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 15:23:29 +0000 (UTC)
+Received: from localhost (unknown [10.45.225.185])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E810AC15BB8;
+ Wed, 18 Oct 2023 15:23:28 +0000 (UTC)
+Date: Wed, 18 Oct 2023 17:23:27 +0200
+From: Victor Toso <victortoso@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>, 
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Andrea Bolognani <abologna@redhat.com>
+Subject: Re: [PATCH v2 02/11] scripts: qapi: black format main.py
+Message-ID: <iwlndli3c4waxnjgtvyo6bi52vc4nundupqkrjeufwilua22s2@rh4j2jk26htq>
+References: <20231016152704.221611-1-victortoso@redhat.com>
+ <20231016152704.221611-3-victortoso@redhat.com>
+ <87pm1crya0.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=salil.mehta@opnsrc.net; helo=mail-wr1-x432.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="vpo2z7bxt3vwej3c"
+Content-Disposition: inline
+In-Reply-To: <87pm1crya0.fsf@pond.sub.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,36 +82,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
 
-Came across below code excerpt in x86/microvm code and wanted to know 
-why 'has_hotpluggable_cpus' flag has been set to 'false' while various 
-hot(un)plug APIs have been defined?
+--vpo2z7bxt3vwej3c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-static void microvm_class_init(ObjectClass *oc, void *data)
-{
-     X86MachineClass *x86mc = X86_MACHINE_CLASS(oc);
-     MachineClass *mc = MACHINE_CLASS(oc);
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
+On Wed, Oct 18, 2023 at 01:00:07PM +0200, Markus Armbruster wrote:
+> Victor Toso <victortoso@redhat.com> writes:
+>=20
+> > flake8 complained:
+> >     ./main.py:60:1: E302 expected 2 blank lines, found 1
+> >
+> > Which is simple enough. My vim has black [0] enabled by default, so it
+> > did some extra formatting. I'm proposing to follow it.
+> >
+> > [0] https://black.readthedocs.io/en/stable/
+> >
+> > Signed-off-by: Victor Toso <victortoso@redhat.com>
+> > ---
+> >  scripts/qapi/main.py | 76 ++++++++++++++++++++++++++++----------------
+> >  1 file changed, 48 insertions(+), 28 deletions(-)
+>=20
+> Is this all black hates about scripts/qapi/?
 
-     mc->init = microvm_machine_state_init;
+No, just scripts/qapi/main.py.
 
-     mc->family = "microvm_i386";
-     [...]
-     mc->max_cpus = 288;
-     mc->has_hotpluggable_cpus = false;  --------> This one
-     [...]
+> Did you configure it in any way, and if yes, how?
 
-     /* hotplug (for cpu coldplug) */
-     mc->get_hotplug_handler = microvm_get_hotplug_handler;
-     hc->pre_plug = microvm_device_pre_plug_cb;
-     hc->plug = microvm_device_plug_cb;
-     hc->unplug_request = microvm_device_unplug_request_cb;
-     hc->unplug = microvm_device_unplug_cb;
-     [...]
-}
+Only to reduce line length to 79.
 
+I can do a separate series for this, if the idea is accepted.
 
-Best regards
-Salil
+Cheers,
+Victor
+
+--vpo2z7bxt3vwej3c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmUv+G4ACgkQl9kSPeN6
+SE8wCg/9F33/w9SwSXglqRe8H0dtO4wQZlOXe6mzIL+omf373IJJVSRoTbES+yP5
+cVW8vN5XEe+KTrA5DFNpEtEZqj20UgVxlhe4i1uccA6GAPLbw1jzZwtIDlRQEokK
+Zzst9jf8In78w3MmCpWpmPP128lHDdM6xvylULPHsVBGBA7frq6v147NQ1y0DQNj
+ov6VmvDh9HyENrG5/2bjf3ez1g4xfvb+tVsuDX4a00KZiE9qdSfF8wOBfJ8Dw4wu
+zNosDy9p6HXP3Zn3i6C6935eaMLySnrz8qXFXOdTMmOsrFlu8gzu8GSBegzO7o4+
+q3AAWu1c1jZtBAdLsEn+bl0m8LgOOAPye7Lbqtw8LYVZEIM/2dmxjc5+Lv4LdgAw
+G5RT3kbk+gD9+cUoqjMEURR9/PqaOHhRr01Uq9gCwKE3DQCZeYBnvNnn3/ewAkCZ
+YXZDY8NSyCrSWbbM+rykvpkp399Dw3IeFjWi6QfAGqKJb7KOSdIrR0weSIuPCWnd
+SoIG/ffCJS3haDkDHwGHc3sXREIXQm5jiJGMSSOHa3FCOotsjmGpmWNwECylPwQQ
+1RVy0Hvc+RAP3WxYCep4KQP71MXxkf2hEy635D56WmkOPd9SuL9EmxBMhBkxQFsc
+4qToPEKsi2nob4ROozyJWpghkC0HmiwQqela7MEH6GhV37C4Hec=
+=wOGI
+-----END PGP SIGNATURE-----
+
+--vpo2z7bxt3vwej3c--
+
 
