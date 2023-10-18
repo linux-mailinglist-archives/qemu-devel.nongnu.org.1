@@ -2,90 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9519D7CE328
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 18:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC877CE341
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 19:01:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt9iw-000889-Ad; Wed, 18 Oct 2023 12:48:46 -0400
+	id 1qt9te-0003cU-Ks; Wed, 18 Oct 2023 12:59:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1qt9is-00087m-Po
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:48:42 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <salil.mehta@opnsrc.net>)
- id 1qt9iq-0001DY-Rf
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:48:42 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32db8924201so2591451f8f.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 09:48:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=opnsrc.net; s=google; t=1697647719; x=1698252519; darn=nongnu.org;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6ScXxLFvrycuHZuLcW8y1GOWkWqutsobUdVs5TCopLg=;
- b=NsGTJGKZZbssDZ7d0bSvHs+/ZvGaBmNX2F/hyWbX/QgGHG/UIhmXfS+PyfiImhKL3T
- lrPmYyc2glqO5tvSrhn1dVkZs+ZH33QcR8zCr+JPXkpXrZc5V+7JxUW6tWvyqTZMRJXS
- WPkEJcndLQmaUXxOIvadBNBzfZ6sWR0c+R6Cic3Oqk/Ry1auEAZsV/uohbeZUDP43o1R
- pUPjbRacHYXoEo88k+EtiWK2X45IHMMIbdNlJhOzgrjgYdgjvdV2ErWlW6CprQ/qP0QY
- 9Y6OHQhU3MH6oy1j7mXKhZXPyYLbZP7bCmLmiwPpMBmZ0X8XIuyl/s8tmpeHqjW5nfaJ
- QhQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697647719; x=1698252519;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6ScXxLFvrycuHZuLcW8y1GOWkWqutsobUdVs5TCopLg=;
- b=uj6PeUAcxBK3ukHjDR5eaxJtpVOcbuORcYVObn4dJ0wwaozHzEdN6XJ8e4V2rNnLmP
- 1UutMWEeP24yDAco3khSQpHFr11MVSwrxLopdpJPXF/4q4KvRzc4TbpWri/fz289lwOp
- ensdY8Jtd0NUIruTjK61Nwgp/D7VZ6Ax9Q5NsFaAKzky7BRfDC7nmPr2M0rXA/rwfhiE
- 9Jd3OIxG/v0rrV674AdQU0hQDkqIlSsSz+uiM7+KLwmSjNoUZtAXu9cRISIRW5Wb0AIV
- T3yg6cRW6MXwQqdbETFlTAShPeE/EsNIXotKr/VmKsBkwqeEkQm3mMehZWKHKGd5ZRvD
- kBXA==
-X-Gm-Message-State: AOJu0Yyexa9zNAsgcZc4yU6fDr/eZ1vKnG8fAg5C4Ncpp6OLY2Anxjzc
- OVhsEqREre4ORJwKnv42wG6QOtB1w7D7PXUE558=
-X-Google-Smtp-Source: AGHT+IH1PvVzOKF0KyYw+Jesa1AjXzt4lNCG+HX/pa7bG/6wUggzYLlwdoSPY8F7KEvSUzfcbVj4tA==
-X-Received: by 2002:a5d:5612:0:b0:32d:8b1a:31a7 with SMTP id
- l18-20020a5d5612000000b0032d8b1a31a7mr4822560wrv.29.1697647718833; 
- Wed, 18 Oct 2023 09:48:38 -0700 (PDT)
-Received: from [10.8.0.13] ([185.223.232.243])
- by smtp.gmail.com with ESMTPSA id
- b3-20020adff243000000b003258934a4bcsm2488165wrp.42.2023.10.18.09.48.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 09:48:38 -0700 (PDT)
-Subject: Re: [Question] x86/microvm: why has_hotpluggable_cpus = false but
- hot(ub)plug APIs exist?
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: "mst@redhat.com" <mst@redhat.com>,
- "imammedo@redhat.com >> Igor Mammedov" <imammedo@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "david@redhat.com >> David Hildenbrand" <david@redhat.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org
-References: <78103368-9ea5-167b-5700-7d3d174ff564@opnsrc.net>
- <87o7gw9btp.fsf@linaro.org>
-From: Salil Mehta <salil.mehta@opnsrc.net>
-Message-ID: <cbbf59ba-b7ab-b536-12ab-91a0bfc7f1c6@opnsrc.net>
-Date: Wed, 18 Oct 2023 17:48:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qt9td-0003bV-1C
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:59:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qt9tb-0002l5-GI
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 12:59:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697648386;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rfmcjfls9ebpsZ+8n47PyHU/NFsmg3nLFcBAEYC8hUQ=;
+ b=dVDE2U2ZWX943tteFg9oddd/8NQcTzscsn8Cz87lHZ5jCgR4jOom8kZKZy7+FpA/y6DSU5
+ rivxP2+rlep7zia9LDUm/1egl8kRggbNtnQ8yK1FKB4fvmhWoIr8JgaUJzNAbUu/o43kv6
+ HgY8tIp1OJ7fh4Ko9Kyvex2BFKDaKaA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-473-zncBTHngM12VRepVlQi1yw-1; Wed, 18 Oct 2023 12:59:41 -0400
+X-MC-Unique: zncBTHngM12VRepVlQi1yw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 538C4857D0C;
+ Wed, 18 Oct 2023 16:59:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.245])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 884691C060AE;
+ Wed, 18 Oct 2023 16:59:38 +0000 (UTC)
+Date: Wed, 18 Oct 2023 18:59:37 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
+ eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
+ jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
+ alexander.ivanov@virtuozzo.com
+Subject: Re: [PATCH v3 5/9] mirror: implement mirror_change method
+Message-ID: <ZTAO+TJuztCHDsUW@redhat.com>
+References: <20231013092143.365296-1-f.ebner@proxmox.com>
+ <20231013092143.365296-6-f.ebner@proxmox.com>
 MIME-Version: 1.0
-In-Reply-To: <87o7gw9btp.fsf@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=salil.mehta@opnsrc.net; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231013092143.365296-6-f.ebner@proxmox.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,92 +79,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alex,
-
-On 18/10/2023 16:41, Alex Bennée wrote:
+Am 13.10.2023 um 11:21 hat Fiona Ebner geschrieben:
+> which allows switching the @copy-mode from 'background' to
+> 'write-blocking'.
 > 
-> Salil Mehta <salil.mehta@opnsrc.net> writes:
+> This is useful for management applications, so they can start out in
+> background mode to avoid limiting guest write speed and switch to
+> active mode when certain criteria are fulfilled.
 > 
->> Hello,
->>
->> Came across below code excerpt in x86/microvm code and wanted to know
->> why 'has_hotpluggable_cpus' flag has been set to 'false' while various
->> hot(un)plug APIs have been defined?
->>
->> static void microvm_class_init(ObjectClass *oc, void *data)
->> {
->>      X86MachineClass *x86mc = X86_MACHINE_CLASS(oc);
->>      MachineClass *mc = MACHINE_CLASS(oc);
->>      HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
->>
->>      mc->init = microvm_machine_state_init;
->>
->>      mc->family = "microvm_i386";
->>      [...]
->>      mc->max_cpus = 288;
->>      mc->has_hotpluggable_cpus = false;  --------> This one
->>      [...]
+> In presence of an iothread, the copy_mode member is now shared between
+> the iothread and the main thread, so turn accesses to it atomic.
 > 
->  From the original commit that added it:
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
 > 
->    It's a minimalist machine type without PCI nor ACPI support, designed
->    for short-lived guests. microvm also establishes a baseline for
->    benchmarking and optimizing both QEMU and guest operating systems,
->    since it is optimized for both boot time and footprint.
+> Changes in v3:
+>     * turn accesses to copy_mode atomic and...
+>     * ...slightly adapt error handling in mirror_change as a
+>       consequence
 
+It would be good to have a comment at the field declaration that it's
+meant to be accessed with atomics.
 
-Agreed. It looks like ACPI is supported but neither CPU/Memory Hotplug 
-is supported for this minimalist machine type.
+As we don't have further synchonisation, is the idea that during the
+switchover it basically doesn't matter if we read the old or the new
+value?
 
+After reading the whole patch, it seems that the field is only ever
+written under the BQL, while iothreads only read it, and only once per
+request (after the previous patch). This is why no further
+synchonisation is needed. If other threads could write it, too,
+mirror_change() would probably have to be more careful. As the code
+depends on this, adding that to the comment would be useful, too.
 
-static void microvm_devices_init(MicrovmMachineState *mms)
-{
-     const char *default_firmware;
-     X86MachineState *x86ms = X86_MACHINE(mms);
-
-    [...]
-
-     /* Optional and legacy devices */
-     if (x86_machine_is_acpi_enabled(x86ms)) {
-         DeviceState *dev = qdev_new(TYPE_ACPI_GED_X86);
-         qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_EVT);
-         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
-      /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_MEMHP); */
-
-         [...]
-
-         sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-         x86ms->acpi_dev = HOTPLUG_HANDLER(dev);
-     }
-    [...]
-}
-
-
-
+>  block/mirror.c       | 33 ++++++++++++++++++++++++++++++---
+>  qapi/block-core.json | 13 ++++++++++++-
+>  2 files changed, 42 insertions(+), 4 deletions(-)
 > 
-> Generally hotplug requires a dance between the VMM and the firmware to
-> properly shutdown and restart hotplug devices. The principle
-> communication mechanism for this is ACPI.
+> diff --git a/block/mirror.c b/block/mirror.c
+> index 8992c09172..889cce5414 100644
+> --- a/block/mirror.c
+> +++ b/block/mirror.c
+> @@ -1075,7 +1075,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
+>                   */
+>                  job_transition_to_ready(&s->common.job);
+>              }
+> -            if (s->copy_mode != MIRROR_COPY_MODE_BACKGROUND) {
+> +            if (qatomic_read(&s->copy_mode) != MIRROR_COPY_MODE_BACKGROUND) {
+>                  s->actively_synced = true;
+>              }
 
-Agreed.
+What resets s->actively_synced when we switch away from active mode?
 
+>  
+> @@ -1246,6 +1246,32 @@ static bool commit_active_cancel(Job *job, bool force)
+>      return force || !job_is_ready(job);
+>  }
+>  
+> +static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
+> +                          Error **errp)
+> +{
+> +    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
+> +    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
+> +    MirrorCopyMode current;
 
+This is GLOBAL_STATE_CODE(), right? Let's be explicit about it.
 
-> 
->>
->>      /* hotplug (for cpu coldplug) */
->>      mc->get_hotplug_handler = microvm_get_hotplug_handler;
->>      hc->pre_plug = microvm_device_pre_plug_cb;
->>      hc->plug = microvm_device_plug_cb;
->>      hc->unplug_request = microvm_device_unplug_request_cb;
->>      hc->unplug = microvm_device_unplug_cb;
+> +
+> +    if (qatomic_read(&s->copy_mode) == change_opts->copy_mode) {
+> +        return;
+> +    }
+> +
+> +    if (change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING) {
+> +        error_setg(errp, "Change to copy mode '%s' is not implemented",
+> +                   MirrorCopyMode_str(change_opts->copy_mode));
+> +        return;
+> +    }
 
-sorry, I also missed the definitions of the last 2 functions which says 
-that unplug is not supported so perhaps these functions are only 
-required to support cold plugging which corroborates with the comment as 
-well.
+Ah, ok, we don't even allow the switch I was wondering about above. What
+would be needed, apart from removing this check, to make it work?
 
-Thanks
-Salil.
+> +    current = qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND,
+> +                              change_opts->copy_mode);
+> +    if (current != MIRROR_COPY_MODE_BACKGROUND) {
+> +        error_setg(errp, "Expected current copy mode '%s', got '%s'",
+> +                   MirrorCopyMode_str(MIRROR_COPY_MODE_BACKGROUND),
+> +                   MirrorCopyMode_str(current));
+> +    }
+
+The error path is strange. We return an error, but the new mode is still
+set. On the other hand, this is probably also the old mode unless
+someone added a new value to the enum, so it didn't actually change. And
+because this function is the only place that changes copy_mode and we're
+holding the BQL, the case can't even happen and this could be an
+assertion.
+
+> +}
+> +
+>  static const BlockJobDriver mirror_job_driver = {
+>      .job_driver = {
+>          .instance_size          = sizeof(MirrorBlockJob),
+> @@ -1260,6 +1286,7 @@ static const BlockJobDriver mirror_job_driver = {
+>          .cancel                 = mirror_cancel,
+>      },
+>      .drained_poll           = mirror_drained_poll,
+> +    .change                 = mirror_change,
+>  };
+
+Kevin
 
 
