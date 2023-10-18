@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA277CD898
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E297CD899
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:52:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt38D-0000yT-ED; Wed, 18 Oct 2023 05:46:25 -0400
+	id 1qt38D-0000ye-Ny; Wed, 18 Oct 2023 05:46:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=VFJy=GA=redhat.com=clg@ozlabs.org>)
- id 1qt37o-0000M2-Hd
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:46:13 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1qt37o-0000Ly-4i
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:46:05 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=VFJy=GA=redhat.com=clg@ozlabs.org>)
- id 1qt37m-0003Sb-1k
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:46:00 -0400
+ id 1qt37m-0003SZ-1O
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:45:59 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4S9Qvh3dVWz4xbK;
- Wed, 18 Oct 2023 20:45:52 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4S9Qvl0tVfz4xbN;
+ Wed, 18 Oct 2023 20:45:55 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4S9Qvf2ztdz4xZg;
- Wed, 18 Oct 2023 20:45:50 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4S9Qvj0CBLz4xbC;
+ Wed, 18 Oct 2023 20:45:52 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, Yi Liu <yi.l.liu@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/22] vfio/common: Introduce
- vfio_container_add|del_section_window()
-Date: Wed, 18 Oct 2023 11:45:14 +0200
-Message-ID: <20231018094531.733211-6-clg@redhat.com>
+Subject: [PULL 06/22] vfio/common: Extract out vfio_kvm_device_[add/del]_fd
+Date: Wed, 18 Oct 2023 11:45:15 +0200
+Message-ID: <20231018094531.733211-7-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018094531.733211-1-clg@redhat.com>
 References: <20231018094531.733211-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=VFJy=GA=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,205 +67,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Introduce helper functions that isolate the code used for
-VFIO_SPAPR_TCE_v2_IOMMU.
+Introduce two new helpers, vfio_kvm_device_[add/del]_fd
+which take as input a file descriptor which can be either a group fd or
+a cdev fd. This uses the new KVM_DEV_VFIO_FILE VFIO KVM device group,
+which aliases to the legacy KVM_DEV_VFIO_GROUP.
 
-Those helpers hide implementation details beneath the container object
-and make the vfio_listener_region_add/del() implementations more
-readable. No code change intended.
+vfio_kvm_device_[add/del]_group then call those new helpers.
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/common.c | 156 +++++++++++++++++++++++++++--------------------
- 1 file changed, 89 insertions(+), 67 deletions(-)
+ include/hw/vfio/vfio-common.h |  3 ++
+ hw/vfio/common.c              | 55 +++++++++++++++++++++++++----------
+ 2 files changed, 42 insertions(+), 16 deletions(-)
 
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index e0483893d14b536a79c372b8d02471255ea3da25..c4e7c3b4a7757087ab4bc02b634216bf3ae857d6 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -226,6 +226,9 @@ struct vfio_device_info *vfio_get_device_info(int fd);
+ int vfio_get_device(VFIOGroup *group, const char *name,
+                     VFIODevice *vbasedev, Error **errp);
+ 
++int vfio_kvm_device_add_fd(int fd, Error **errp);
++int vfio_kvm_device_del_fd(int fd, Error **errp);
++
+ extern const MemoryRegionOps vfio_region_ops;
+ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
+ extern VFIOGroupList vfio_group_list;
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index c54a72ec803779b45803573c6c633a170c5bad1f..0397788aa58c8deaa8cf3ed19fa8eb40e91d7678 100644
+index 0397788aa58c8deaa8cf3ed19fa8eb40e91d7678..d8ed432cb6d0e8e955984401cdbbe921d87636f7 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -807,6 +807,92 @@ static bool vfio_get_section_iova_range(VFIOContainer *container,
-     return true;
+@@ -1818,17 +1818,17 @@ void vfio_reset_handler(void *opaque)
+     }
  }
  
-+static int vfio_container_add_section_window(VFIOContainer *container,
-+                                             MemoryRegionSection *section,
-+                                             Error **errp)
-+{
-+    VFIOHostDMAWindow *hostwin;
-+    hwaddr pgsize = 0;
-+    int ret;
-+
-+    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
+-static void vfio_kvm_device_add_group(VFIOGroup *group)
++int vfio_kvm_device_add_fd(int fd, Error **errp)
+ {
+ #ifdef CONFIG_KVM
+     struct kvm_device_attr attr = {
+-        .group = KVM_DEV_VFIO_GROUP,
+-        .attr = KVM_DEV_VFIO_GROUP_ADD,
+-        .addr = (uint64_t)(unsigned long)&group->fd,
++        .group = KVM_DEV_VFIO_FILE,
++        .attr = KVM_DEV_VFIO_FILE_ADD,
++        .addr = (uint64_t)(unsigned long)&fd,
+     };
+ 
+     if (!kvm_enabled()) {
+-        return;
 +        return 0;
-+    }
-+
-+    /* For now intersections are not allowed, we may relax this later */
-+    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
-+        if (ranges_overlap(hostwin->min_iova,
-+                           hostwin->max_iova - hostwin->min_iova + 1,
-+                           section->offset_within_address_space,
-+                           int128_get64(section->size))) {
-+            error_setg(errp,
-+                "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
-+                "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
-+                section->offset_within_address_space,
-+                section->offset_within_address_space +
-+                    int128_get64(section->size) - 1,
-+                hostwin->min_iova, hostwin->max_iova);
-+            return -EINVAL;
-+        }
-+    }
-+
-+    ret = vfio_spapr_create_window(container, section, &pgsize);
-+    if (ret) {
-+        error_setg_errno(errp, -ret, "Failed to create SPAPR window");
-+        return ret;
-+    }
-+
-+    vfio_host_win_add(container, section->offset_within_address_space,
-+                      section->offset_within_address_space +
-+                      int128_get64(section->size) - 1, pgsize);
-+#ifdef CONFIG_KVM
-+    if (kvm_enabled()) {
-+        VFIOGroup *group;
-+        IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
-+        struct kvm_vfio_spapr_tce param;
-+        struct kvm_device_attr attr = {
-+            .group = KVM_DEV_VFIO_GROUP,
-+            .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
-+            .addr = (uint64_t)(unsigned long)&param,
-+        };
-+
-+        if (!memory_region_iommu_get_attr(iommu_mr, IOMMU_ATTR_SPAPR_TCE_FD,
-+                                          &param.tablefd)) {
-+            QLIST_FOREACH(group, &container->group_list, container_next) {
-+                param.groupfd = group->fd;
-+                if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
-+                    error_setg_errno(errp, errno,
-+                                     "vfio: failed GROUP_SET_SPAPR_TCE for "
-+                                     "KVM VFIO device %d and group fd %d",
-+                                     param.tablefd, param.groupfd);
-+                    return -errno;
-+                }
-+                trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
-+            }
-+        }
-+    }
-+#endif
+     }
+ 
+     if (vfio_kvm_device_fd < 0) {
+@@ -1837,38 +1837,61 @@ static void vfio_kvm_device_add_group(VFIOGroup *group)
+         };
+ 
+         if (kvm_vm_ioctl(kvm_state, KVM_CREATE_DEVICE, &cd)) {
+-            error_report("Failed to create KVM VFIO device: %m");
+-            return;
++            error_setg_errno(errp, errno, "Failed to create KVM VFIO device");
++            return -errno;
+         }
+ 
+         vfio_kvm_device_fd = cd.fd;
+     }
+ 
+     if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+-        error_report("Failed to add group %d to KVM VFIO device: %m",
+-                     group->groupid);
++        error_setg_errno(errp, errno, "Failed to add fd %d to KVM VFIO device",
++                         fd);
++        return -errno;
+     }
+ #endif
++    return 0;
+ }
+ 
+-static void vfio_kvm_device_del_group(VFIOGroup *group)
++int vfio_kvm_device_del_fd(int fd, Error **errp)
+ {
+ #ifdef CONFIG_KVM
+     struct kvm_device_attr attr = {
+-        .group = KVM_DEV_VFIO_GROUP,
+-        .attr = KVM_DEV_VFIO_GROUP_DEL,
+-        .addr = (uint64_t)(unsigned long)&group->fd,
++        .group = KVM_DEV_VFIO_FILE,
++        .attr = KVM_DEV_VFIO_FILE_DEL,
++        .addr = (uint64_t)(unsigned long)&fd,
+     };
+ 
+     if (vfio_kvm_device_fd < 0) {
+-        return;
++        error_setg(errp, "KVM VFIO device isn't created yet");
++        return -EINVAL;
+     }
+ 
+     if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+-        error_report("Failed to remove group %d from KVM VFIO device: %m",
+-                     group->groupid);
++        error_setg_errno(errp, errno,
++                         "Failed to remove fd %d from KVM VFIO device", fd);
++        return -errno;
+     }
+ #endif
 +    return 0;
 +}
 +
-+static void vfio_container_del_section_window(VFIOContainer *container,
-+                                              MemoryRegionSection *section)
++static void vfio_kvm_device_add_group(VFIOGroup *group)
 +{
-+    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
-+        return;
-+    }
++    Error *err = NULL;
 +
-+    vfio_spapr_remove_window(container,
-+                             section->offset_within_address_space);
-+    if (vfio_host_win_del(container,
-+                          section->offset_within_address_space,
-+                          section->offset_within_address_space +
-+                          int128_get64(section->size) - 1) < 0) {
-+        hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
-+                 __func__, section->offset_within_address_space);
++    if (vfio_kvm_device_add_fd(group->fd, &err)) {
++        error_reportf_err(err, "group ID %d: ", group->groupid);
 +    }
 +}
 +
- static void vfio_listener_region_add(MemoryListener *listener,
-                                      MemoryRegionSection *section)
- {
-@@ -833,62 +919,8 @@ static void vfio_listener_region_add(MemoryListener *listener,
-         return;
-     }
- 
--    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
--        hwaddr pgsize = 0;
--
--        /* For now intersections are not allowed, we may relax this later */
--        QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
--            if (ranges_overlap(hostwin->min_iova,
--                               hostwin->max_iova - hostwin->min_iova + 1,
--                               section->offset_within_address_space,
--                               int128_get64(section->size))) {
--                error_setg(&err,
--                    "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
--                    "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
--                    section->offset_within_address_space,
--                    section->offset_within_address_space +
--                        int128_get64(section->size) - 1,
--                    hostwin->min_iova, hostwin->max_iova);
--                goto fail;
--            }
--        }
--
--        ret = vfio_spapr_create_window(container, section, &pgsize);
--        if (ret) {
--            error_setg_errno(&err, -ret, "Failed to create SPAPR window");
--            goto fail;
--        }
--
--        vfio_host_win_add(container, section->offset_within_address_space,
--                          section->offset_within_address_space +
--                          int128_get64(section->size) - 1, pgsize);
--#ifdef CONFIG_KVM
--        if (kvm_enabled()) {
--            VFIOGroup *group;
--            IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
--            struct kvm_vfio_spapr_tce param;
--            struct kvm_device_attr attr = {
--                .group = KVM_DEV_VFIO_GROUP,
--                .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
--                .addr = (uint64_t)(unsigned long)&param,
--            };
--
--            if (!memory_region_iommu_get_attr(iommu_mr, IOMMU_ATTR_SPAPR_TCE_FD,
--                                              &param.tablefd)) {
--                QLIST_FOREACH(group, &container->group_list, container_next) {
--                    param.groupfd = group->fd;
--                    if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
--                        error_setg_errno(&err, errno,
--                                         "vfio: failed GROUP_SET_SPAPR_TCE for "
--                                         "KVM VFIO device %d and group fd %d",
--                                         param.tablefd, param.groupfd);
--                        goto fail;
--                    }
--                    trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
--                }
--            }
--        }
--#endif
-+    if (vfio_container_add_section_window(container, section, &err)) {
-+        goto fail;
-     }
- 
-     hostwin = vfio_find_hostwin(container, iova, end);
-@@ -1105,17 +1137,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
- 
-     memory_region_unref(section->mr);
- 
--    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
--        vfio_spapr_remove_window(container,
--                                 section->offset_within_address_space);
--        if (vfio_host_win_del(container,
--                              section->offset_within_address_space,
--                              section->offset_within_address_space +
--                              int128_get64(section->size) - 1) < 0) {
--            hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
--                     __func__, section->offset_within_address_space);
--        }
--    }
-+    vfio_container_del_section_window(container, section);
++static void vfio_kvm_device_del_group(VFIOGroup *group)
++{
++    Error *err = NULL;
++
++    if (vfio_kvm_device_del_fd(group->fd, &err)) {
++        error_reportf_err(err, "group ID %d: ", group->groupid);
++    }
  }
  
- static int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
+ static VFIOAddressSpace *vfio_get_address_space(AddressSpace *as)
 -- 
 2.41.0
 
