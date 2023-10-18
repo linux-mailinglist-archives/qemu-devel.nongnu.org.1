@@ -2,58 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92797CDB3C
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 14:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 789507CDB41
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 14:06:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt5IV-00083x-Hz; Wed, 18 Oct 2023 08:05:11 -0400
+	id 1qt5Il-0008Af-TW; Wed, 18 Oct 2023 08:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qt5IS-00083K-Cq
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 08:05:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt5Ij-0008AF-3g
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 08:05:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qt5IP-0003fo-Rl
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 08:05:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qt5If-0003iT-RZ
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 08:05:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697630703;
+ s=mimecast20190719; t=1697630720;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=LoxUv518wpoi80mnSPlhWHtNGWSr71/xOcRewEUH8gs=;
- b=Iwfa/ptcyjPRfGp3Bv7+Nej4OxdfoPHUB8530NCH9giaPdY12WJgxVNAHoiRKdBa4QR1n4
- NzVnOaT4mxSoW5/dEdeBWUcTMlXT7DdwLgKKGu/hPRVMoSDQEcSC9OAQ00Ju7rp4U7OUZD
- toOrK2yPGc8r3h9yMukYpwlQgtbx7Tc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-464-Wtc0oCcSOwSmAPyLRJIK4w-1; Wed, 18 Oct 2023 08:05:02 -0400
-X-MC-Unique: Wtc0oCcSOwSmAPyLRJIK4w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33B13185A7B9;
- Wed, 18 Oct 2023 12:05:02 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.44])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 87DA31C060AE;
- Wed, 18 Oct 2023 12:05:01 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3] qapi: provide a friendly string representation of QAPI
- classes
-Date: Wed, 18 Oct 2023 13:05:00 +0100
-Message-ID: <20231018120500.2028642-1-berrange@redhat.com>
+ in-reply-to:in-reply-to:references:references;
+ bh=qH9CQFX98asudpDkMQddGXjROVjXOu9ERE5DKOV0w7M=;
+ b=BxViP2qA0M4qxiVV9hXLhgan5OIkFA+Z02t2oRgfS8mTBX9ar96d7FF+DTmdZj+bJeOkmH
+ LtSlqt5IAw/IZLgWGt4TSoy1Hd2i7gBkDPOXjymeLNZBXJoRujpR9g99jmDCxf3yJqS9jM
+ cEoWBJOjk2RwpnUKkn4Wm6pV3E0n1hQ=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-448-nzpQRzPeNti4mmwhGJO6AQ-1; Wed, 18 Oct 2023 08:05:19 -0400
+X-MC-Unique: nzpQRzPeNti4mmwhGJO6AQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-99bcb13d8ddso501675166b.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 05:05:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697630718; x=1698235518;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qH9CQFX98asudpDkMQddGXjROVjXOu9ERE5DKOV0w7M=;
+ b=uPj9ZB8DmyEuVK/n4vx2zRAs4tlVb9I2IdHoNclzWbTZ923BMVothSzGVGuAukzNmj
+ NNmLEAYWC4c5ZC7W4Q88p6asnkDm4UOKEhjFyBIiGhAWnkSLWAitu4OfC4zEHj40WKK8
+ /Y+ypxi69cNlfb4likSWNYihNJG/EfauotDhtQ5pURVkQiUCBT5s/i+ZLvBJCAV1e+/e
+ 727cog3qla/LacAr0UREZ9e7E42FjTlmZTg+fS2Aka651S3Ds8KqldTSAlBgj5OXolvH
+ J9N85QLFk8FvNLufnjQUVsZ2mQGBilPwPqsDmJtEZ9I4U+W1XbezrJiWouk2QhNuDjFJ
+ Lf9w==
+X-Gm-Message-State: AOJu0YwpS7OAuq277tn0jOrv2F7TvpdQOJjtpu0ImkQWUoj18o55NkBf
+ WhgNDA+M1zFS857/SRi3Hf8Ll4lIz3psbPT2DMxAZkkqMc0D8jopH4G4fiJM/okY8pXs7sVN+AB
+ msqLPIXH/spEEUwY=
+X-Received: by 2002:a05:6402:26cc:b0:53e:3584:d395 with SMTP id
+ x12-20020a05640226cc00b0053e3584d395mr4387431edd.34.1697630717896; 
+ Wed, 18 Oct 2023 05:05:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGetRYzW08JxI56q8zpiogn7gr08v6Bj2/0Slvzy0fgzPfacBgG8FFMArBka6rxy9J+eLfnEg==
+X-Received: by 2002:a05:6402:26cc:b0:53e:3584:d395 with SMTP id
+ x12-20020a05640226cc00b0053e3584d395mr4387409edd.34.1697630717571; 
+ Wed, 18 Oct 2023 05:05:17 -0700 (PDT)
+Received: from redhat.com ([193.142.201.38]) by smtp.gmail.com with ESMTPSA id
+ j30-20020a508a9e000000b0053f11e3c019sm2722485edj.90.2023.10.18.05.05.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 05:05:16 -0700 (PDT)
+Date: Wed, 18 Oct 2023 08:05:11 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: david@redhat.com, pbonzini@redhat.com, richard.henderson@linaro.org,
+ philmd@linaro.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH] cpu/cpuid: check CPUID_PAE to determine 36 bit processor
+ address space
+Message-ID: <20231018080451-mutt-send-email-mst@kernel.org>
+References: <20230912120650.371781-1-anisinha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230912120650.371781-1-anisinha@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -77,48 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If printing a QAPI schema object for debugging we get the classname and
-a hex value for the instance:
+On Tue, Sep 12, 2023 at 05:36:50PM +0530, Ani Sinha wrote:
+> PAE mode in x86 supports 36 bit address space. Check the PAE CPUID on the
+> guest processor and set phys_bits to 36 if PAE feature is set. This is in
+> addition to checking the presence of PSE36 CPUID feature for setting 36 bit
+> phys_bits.
+> 
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
 
-  <qapi.schema.QAPISchemaEnumType object at 0x7f0ab4c2dad0>
-  <qapi.schema.QAPISchemaObjectType object at 0x7f0ab4c2dd90>
-  <qapi.schema.QAPISchemaArrayType object at 0x7f0ab4c2df90>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-With this change we instead get the classname and the human friendly
-name of the QAPI type instance:
+who's applying this?
 
-  <QAPISchemaEnumType:CpuS390State at 0x7f0ab4c2dad0>
-  <QAPISchemaObjectType:CpuInfoS390 at 0x7f0ab4c2dd90>
-  <QAPISchemaArrayType:CpuInfoFastList at 0x7f0ab4c2df90>
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
-
-Changed in v3:
-
- - Retain the object hex ID in the new representation
-
- scripts/qapi/schema.py | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 231ebf61ba..39c11bb52a 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -73,6 +73,12 @@ def __init__(self, name: str, info, doc, ifcond=None, features=None):
-         self.features = features or []
-         self._checked = False
- 
-+    def __repr__(self):
-+        if self.name is not None:
-+            return "<%s:%s at 0x%x>" % (type(self).__name__, self.name, id(self))
-+        else:
-+            return "<%s at 0x%x>" % (type(self).__name__, id(self))
-+
-     def c_name(self):
-         return c_name(self.name)
- 
--- 
-2.41.0
+> ---
+>  target/i386/cpu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Note: Not sure what tests I should be running in order to make sure I am
+> not breaking any guest OSes. Usual qtests pass.
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 24ee67b42d..f3a5c99117 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -7375,7 +7375,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+>              return;
+>          }
+>  
+> -        if (env->features[FEAT_1_EDX] & CPUID_PSE36) {
+> +        if (env->features[FEAT_1_EDX] & (CPUID_PSE36 | CPUID_PAE)) {
+>              cpu->phys_bits = 36;
+>          } else {
+>              cpu->phys_bits = 32;
+> -- 
+> 2.39.1
 
 
