@@ -2,95 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804947CDEC6
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882207CDED6
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:14:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt7Io-00036V-KG; Wed, 18 Oct 2023 10:13:38 -0400
+	id 1qt7Is-0003ZO-5j; Wed, 18 Oct 2023 10:13:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt7Im-0002qq-F1
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:13:36 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt7Ik-0004yy-KR
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:13:36 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-53e16f076b3so13148830a12.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:13:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697638411; x=1698243211; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=III6J63m6TXPzGkHNGeaIlMVjIpH5ItVsLY/wuEjMjM=;
- b=WcRJDmg5KTLuWJ+FhW+WLf2lwM8zZ7S5OCn+ylDZi2SN2LF5LLPC2QRBnIdb5FD/KA
- Rj1JEuVx3GVAihiK8Le+AL9WbqkIOWTEnUyHxP9wsTssX/cLAY+xvozGZdYMref/x33F
- +7g/rUzDGK7K1UL7fMIkb6ylwF9Var05F423cyJYDbcyjkv9nOCq0vdKZWyAaexTi9Yw
- ynH4z1cNH9F2yOP9yks9r9NZX/F9mTGbaAMPPbPl4B4l8AmU5Z7NYcjqusYKg/5+WIKl
- wJiz4lRQEvDeJSrTxhL7WQtgSLw+53M+OnfsCOtdWrFGivHp292Hr2isKJmen4sdli2q
- o3SA==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt7Ip-0003L7-K3
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:13:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qt7In-0004zn-RG
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:13:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697638416;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=4oYaF9loHTbYp00Wu0cUHGGD/JvBxQRB/RcpyJE1WZA=;
+ b=ZSYXNo3WmzIfRa6CocCcITyPvkdnoxhk2rpr5ydcOlcT8cFzC6afj6TuIJl957M2toBmfg
+ O5oe41ZvNkcy37V9/QV3dkoIsdt71bUZCevZJJUruBJx0a5U8URD2NhpG6w3OtYFiS6zjZ
+ Uboz5aPqz8SOt/cMXkwdcnIWA+8tETk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-459-2S3w4MZTPeO7zyPkG33goQ-1; Wed, 18 Oct 2023 10:13:35 -0400
+X-MC-Unique: 2S3w4MZTPeO7zyPkG33goQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-408374a3d6bso8114645e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:13:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697638411; x=1698243211;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1697638414; x=1698243214;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=III6J63m6TXPzGkHNGeaIlMVjIpH5ItVsLY/wuEjMjM=;
- b=Rpasx2LDxTzh7VfoPDPUTa9YEL0pOtkto2Lr0GcgEJMfeVftZ5Z9ERyMpTiEC7Pi2C
- lL/GJ/2OLfcoR/Sz4g/tup1ESz3VW6Ug6fDbH0fMxWKIe7Uf+BHmFGBaxIFo0I87at5A
- fK+IxfGj1GZAENaDqzApCwGw42d177ueZ16AsRAJj7treKwb3I3CTJXZhz4rzG0yiYkA
- LUqOCIgU4wLqy40wJZUr6lTf0wOtKd5cyk+sDFWiK8xqUQSzU4KDtYmoqaQ2juGyBqTl
- 30XVrItllggx6qCjonVnfFOVNF8lymLyJw/w5xvAJlxrTi9A1jXJ/UdGw0T1KFeWUzTa
- f8mA==
-X-Gm-Message-State: AOJu0YwZpE/Eir0Kzm/BzS5+HgV8JB2qtLZI4FmwNctiVUqaF5HQW/jw
- iADscy6um82CI3mGp6P6XbcmT/b9LfmLAOZxAMs=
-X-Google-Smtp-Source: AGHT+IHFXVrnJjpBkzC/RyaQ86259GrscbtKPhqODfrn0Svehpjam42pT9DwSl/dNQGiOIxO9MRRLA==
-X-Received: by 2002:a17:907:ea1:b0:9bf:c00f:654a with SMTP id
- ho33-20020a1709070ea100b009bfc00f654amr4948996ejc.24.1697638411390; 
- Wed, 18 Oct 2023 07:13:31 -0700 (PDT)
-Received: from m1x-phil.lan (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr.
- [176.171.218.149]) by smtp.gmail.com with ESMTPSA id
- t3-20020a1709064f0300b009c3f1b3e988sm1734423eju.90.2023.10.18.07.13.28
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 18 Oct 2023 07:13:31 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
- qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ bh=4oYaF9loHTbYp00Wu0cUHGGD/JvBxQRB/RcpyJE1WZA=;
+ b=xL+hrZwKkygFwiefVtqmSzwqDs9JGaib+ssge7bmcudIMxcRP2uAGSXlL/JLziA83D
+ c263Dms6i6FH/SmVAl3ZPr5UcaATRCa6o3MUgbxORTC6xNadAxwau60cHg3BLElYcFVt
+ DqUcIZSs005gI3TXCSUTszxxKTelwF2T91VFxqJ19BZtmbZkbg3sP0VginnjT7L+Fgbu
+ RNd9Y1LXKe2KNbdWpiHSxrsegRzJPHQs/SeRH3ZgFmfrmp0Q7KyyeHCm9DyxjrY/Xhvx
+ jdS0QCaAHcQaiJRuymmSArn4V/Nf0q3ZfccBSYOZjjZjpj4U4N/dZzF3lm+XhxOt6Uy3
+ +YGQ==
+X-Gm-Message-State: AOJu0YxwA2gfq9161FjEWJLjiUzIB0w/7E399L1JoNvFew8u4Hp61WbR
+ cYoqt7/P0895E/AzyfeTyhj4zbrefw4EG+wm2yYlLwJgI+qiw0aIU97rIuF6qhLR6yzXwemqLDz
+ w8ax3+EJNzGTfEys=
+X-Received: by 2002:a05:600c:a47:b0:405:4a78:a890 with SMTP id
+ c7-20020a05600c0a4700b004054a78a890mr4209618wmq.8.1697638414135; 
+ Wed, 18 Oct 2023 07:13:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqB0NpAsrH4qlAhLzf1jBOBf2IbRu2SK6W9Ja3A+VWznHqDnZWxhJzDnH1XFkpA472+IdM5g==
+X-Received: by 2002:a05:600c:a47:b0:405:4a78:a890 with SMTP id
+ c7-20020a05600c0a4700b004054a78a890mr4209597wmq.8.1697638413846; 
+ Wed, 18 Oct 2023 07:13:33 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ bh9-20020a05600c3d0900b003feae747ff2sm1787500wmb.35.2023.10.18.07.13.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 07:13:33 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Daniel
+ P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
+ =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 12/12] hw/sysbus: Ensure device is realized before mapping it
-Date: Wed, 18 Oct 2023 16:11:50 +0200
-Message-ID: <20231018141151.87466-13-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231018141151.87466-1-philmd@linaro.org>
-References: <20231018141151.87466-1-philmd@linaro.org>
+Subject: Re: [PATCH v3 02/11] tests/qtest: Introduce qtest_init_with_env
+In-Reply-To: <20231018140736.3618-3-farosas@suse.de> (Fabiano Rosas's message
+ of "Wed, 18 Oct 2023 11:07:27 -0300")
+References: <20231018140736.3618-1-farosas@suse.de>
+ <20231018140736.3618-3-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 18 Oct 2023 16:13:32 +0200
+Message-ID: <87il7481df.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,43 +102,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sysbus_mmio_map() should not be called on unrealized device.
+Fabiano Rosas <farosas@suse.de> wrote:
+> Add a version of qtest_init() that takes an environment variable
+> containing the path of the QEMU binary. This allows tests to use more
+> than one QEMU binary.
+>
+> If no variable is provided or the environment variable does not exist,
+> that is not an error. Fallback to using QTEST_QEMU_BINARY.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/core/sysbus.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
-index ce54e2c416..a46828a808 100644
---- a/hw/core/sysbus.c
-+++ b/hw/core/sysbus.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qemu/module.h"
-+#include "qemu/error-report.h"
- #include "hw/sysbus.h"
- #include "monitor/monitor.h"
- #include "exec/address-spaces.h"
-@@ -132,6 +133,13 @@ static void sysbus_mmio_map_common(SysBusDevice *dev, int n, hwaddr addr,
- {
-     assert(n >= 0 && n < dev->num_mmio);
- 
-+    if (!DEVICE(dev)->realized) {
-+        error_report("sysbus_mmio_map(type:%s, index:%d, addr:0x%"HWADDR_PRIx","
-+                     " prio:%d) but object is not realized",
-+                     object_get_typename(OBJECT(dev)), n, addr, priority);
-+        abort();
-+    }
-+
-     if (dev->mmio[n].addr == addr) {
-         /* ??? region already mapped here.  */
-         return;
--- 
-2.41.0
+But I need that thomas or someone else also agrees.
 
 
