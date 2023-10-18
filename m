@@ -2,78 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1B07CE959
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 22:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4F27CE9A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 23:00:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtDQl-0000UX-M3; Wed, 18 Oct 2023 16:46:15 -0400
+	id 1qtDda-0007Tv-Fc; Wed, 18 Oct 2023 16:59:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtDQk-0000U6-5l
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:46:14 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtDQh-0002Wo-EK
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:46:13 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-27d104fa285so5941304a91.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 13:46:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697661970; x=1698266770; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2zsMSRhlbZwVzQVen6DKnQDDskBCrZAwA6YeAeDVn/c=;
- b=ErZWRhpUKGdLedMS6zhvV73KG2HzJ4PrAUoON6/LdrWdko8aVLWbEuIywNIHpX0Oie
- Ew8HFcSZqVAjsmLHtDYGxoFPpQg9FQXcpdRizy+yvxa2z4cVI10b5TZYwab9w+jJLcq5
- 0YnsrLwi5CrS1iqJCKTHcbYsbrQg918Wj1hcyb2NOCKQhaHSk9F4jRnjPMBhzOXXQCLf
- jAvOyZ0dFJIGoQRfyDvwGZMTngSiohkY0tcLuc5OjbNaTTuddJayDoqCejZK0c8epCYT
- l/emkTkz3we0uiETTDDLGJkWyDKx1pJ9M/CRWzrVvuZ+MfMT1s+iCrzlqwmzbQDqIlTk
- VfzA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtDdY-0007Th-Cq
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:59:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtDdW-0004BV-SY
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 16:59:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697662765;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZFQKlyk2M/dzaJ7O9Fz1oEtIbqyqqMz0hdrREjKkaYI=;
+ b=gctSEelpyscWb7c0KZBzU/JTp/dvAA78LwYHWsFfGNKzsuZ3R1+aWF3JPmo3WAWFLjS1pk
+ otIoKPPuQ1MawBnanOvFVonzAdxPxZLsmVuzrNaDobcp0wlhImsSOf00s2Tw9o035N4O4E
+ xgNTGgY0ROHiQQaSHbvO8gLn7IDFU8E=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-222-iK4uOz5XNf6XPYoRPKvI2A-1; Wed, 18 Oct 2023 16:59:24 -0400
+X-MC-Unique: iK4uOz5XNf6XPYoRPKvI2A-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41810d0d8c2so21122121cf.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 13:59:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697661970; x=1698266770;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2zsMSRhlbZwVzQVen6DKnQDDskBCrZAwA6YeAeDVn/c=;
- b=OyrlENpSyX3jxouYVIwPQnPTEonxOdc3P/2SZwNTnkUPDAInwCQQBGmdD1AHG+NwkR
- 8J5jjc9jh7nTflfVdYLcxHhDRn+Jx5Ol2u8Njw7qoLFJ4kHJdsCNA4bjb1aRgs9yhdmT
- gAOQSQQLNMkxPqVNaqmPA1DR2X/g3Q8sopd+PaqRbV+1UFR2YZkrDMCTCMs1H+HT9iVI
- ySZlkBdCwqFM5z93yoTTXEfcP7Cejpk8cn9p2nv0e0Qr2+hVQ5TkdASq8WsBVn7UbHhU
- arhZotLUc8Ma2yhLsDieDWZFajrFRWyQze+UHo8ZHFuE/sP70yBsM7h8WdFebBEzRSN9
- Z6UA==
-X-Gm-Message-State: AOJu0Ywy+mIqLxAFd9u4ZB/wkioJu+OgwhC9eeLvLiUaKtridqosNTja
- +m0+VPmZa+EKqBiampss3RUo2XR9Q/mX26SPU1I=
-X-Google-Smtp-Source: AGHT+IG7+IP+3LoTmY9H8LVRhuUKiW7acXWuuGZ9piKBr61hpqnBb76ZChGlGMRwWojBgxxZmdXo8g==
-X-Received: by 2002:a17:90b:892:b0:27d:2054:9641 with SMTP id
- bj18-20020a17090b089200b0027d20549641mr273819pjb.36.1697661969860; 
- Wed, 18 Oct 2023 13:46:09 -0700 (PDT)
-Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k125-20020a632483000000b005742092c211sm2103096pgk.64.2023.10.18.13.46.09
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1697662763; x=1698267563;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZFQKlyk2M/dzaJ7O9Fz1oEtIbqyqqMz0hdrREjKkaYI=;
+ b=ihjQE5I1uKta4pJoZruvjB/VtaBtGLCPT24kSevD9g3UTGTl8DwKIatbRoQEgPuh7S
+ PYgrZ2HWFr6Hja6YNOyE3jLiD+cKZQSx4hdscI7YXBh3w9ZhMBLQWcSEdyEZVuHzDKoa
+ cfrKwUG0/otzidcuUpO+fDAGq6IeZXX2k7lFuhQZmulfawaDJmeQDuCTH5TGadzyLraA
+ 6QXun5+UXAJ0FNm5gJmfhpBB/xqLwByUJYfCzgvcd8+jSHLd7k/aYuy6mMVDgmaFKLja
+ KiOwLBrx8ACW/BdzA9sXL7L2ynlBULhF8cUqYJgDP6quCy98CbASA6bXcXJOpVbMn3VG
+ 3T9A==
+X-Gm-Message-State: AOJu0YzRggH76ei004Ptxk8Js2iBHFrEr2zpP+0nXST8z5IsOSWbsqrH
+ g7V1CYXjfiH/63J+xM64fD0KI/+dfk89wN6B8iG5jweDetClZ2AL8eDDBYCPVdbgW5RBXoqVgcu
+ +O3NdFuW360XMiiU=
+X-Received: by 2002:a05:622a:6a4a:b0:41c:c83d:a94d with SMTP id
+ ig10-20020a05622a6a4a00b0041cc83da94dmr44915qtb.5.1697662763546; 
+ Wed, 18 Oct 2023 13:59:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKEOKtZ1eMc25EID7xTvseawUGwn0XJ72Ep0KhzCgw+RLLK8SuggwPIplUFUt/dA6BpXusEQ==
+X-Received: by 2002:a05:622a:6a4a:b0:41c:c83d:a94d with SMTP id
+ ig10-20020a05622a6a4a00b0041cc83da94dmr44903qtb.5.1697662763141; 
+ Wed, 18 Oct 2023 13:59:23 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ c19-20020ac84e13000000b00418122186ccsm235789qtw.12.2023.10.18.13.59.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Oct 2023 13:46:09 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 2/2] tcg: Improve expansion of deposit into a constant
-Date: Wed, 18 Oct 2023 13:46:06 -0700
-Message-Id: <20231018204606.1545518-3-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231018204606.1545518-1-richard.henderson@linaro.org>
-References: <20231018204606.1545518-1-richard.henderson@linaro.org>
+ Wed, 18 Oct 2023 13:59:22 -0700 (PDT)
+Date: Wed, 18 Oct 2023 16:59:20 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 02/12] tests/qtest: Introduce qtest_init_with_env
+Message-ID: <ZTBHKOwCy72Bu5CE@x1n>
+References: <20231018192741.25885-1-farosas@suse.de>
+ <20231018192741.25885-3-farosas@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231018192741.25885-3-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,356 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Generalize tcg_gen_deposit_z_* from 0 to any constant.
-Use this to automatically simplify tcg_gen_deposit_*.
+On Wed, Oct 18, 2023 at 04:27:31PM -0300, Fabiano Rosas wrote:
+> +/**
+> + * qtest_init_with_env:
+> + * @var: Environment variable from where to take the QEMU binary
+> + * @extra_args: Other arguments to pass to QEMU.  CAUTION: these
+> + * arguments are subject to word splitting and shell evaluation.
+> + *
+> + * Like qtest_init(), but use a different environment variable for the
+> + * QEMU binary.
+> + *
+> + * Returns: #QTestState instance.
+> + */
+> +QTestState *qtest_init_with_env(const char *var, const char *extra_args);
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/tcg-op.c | 295 ++++++++++++++++++++++++++++++---------------------
- 1 file changed, 174 insertions(+), 121 deletions(-)
+Another way to do is instead of passing over the env var, passing over
+"char *qemu_bin" always, and take qtest_qemu_binary() as default.  Also
+relevant to patch 1.  Not a big deal though, so can be done for later.
 
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 2ef4b866e2..049b684ccc 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -597,6 +597,70 @@ void tcg_gen_rotri_i32(TCGv_i32 ret, TCGv_i32 arg1, int32_t arg2)
-     }
- }
- 
-+static void tcg_gen_deposit_i_i32(TCGv_i32 ret, uint32_t i, TCGv_i32 arg,
-+                                  unsigned int ofs, unsigned int len)
-+{
-+    i = deposit32(i, ofs, len, 0);
-+
-+    if (ofs + len == 32) {
-+        tcg_gen_shli_i32(ret, arg, ofs);
-+        goto finish;
-+    }
-+    if (ofs == 0) {
-+        tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
-+        goto finish;
-+    }
-+    if (TCG_TARGET_HAS_deposit_i32
-+        && TCG_TARGET_deposit_i32_valid(ofs, len)) {
-+        tcg_gen_op5ii_i32(INDEX_op_deposit_i32, ret,
-+                          tcg_constant_i32(i), arg, ofs, len);
-+        return;
-+    }
-+
-+    /*
-+     * To help two-operand hosts we prefer to zero-extend first,
-+     * which allows ARG to stay live.
-+     */
-+    switch (len) {
-+    case 16:
-+        if (TCG_TARGET_HAS_ext16u_i32) {
-+            tcg_gen_ext16u_i32(ret, arg);
-+            tcg_gen_shli_i32(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    case 8:
-+        if (TCG_TARGET_HAS_ext8u_i32) {
-+            tcg_gen_ext8u_i32(ret, arg);
-+            tcg_gen_shli_i32(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    }
-+    /* Otherwise prefer zero-extension over AND for code size.  */
-+    switch (ofs + len) {
-+    case 16:
-+        if (TCG_TARGET_HAS_ext16u_i32) {
-+            tcg_gen_shli_i32(ret, arg, ofs);
-+            tcg_gen_ext16u_i32(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    case 8:
-+        if (TCG_TARGET_HAS_ext8u_i32) {
-+            tcg_gen_shli_i32(ret, arg, ofs);
-+            tcg_gen_ext8u_i32(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    }
-+    tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
-+    tcg_gen_shli_i32(ret, ret, ofs);
-+
-+ finish:
-+    tcg_gen_ori_i32(ret, ret, i);
-+}
-+
- void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
-                          unsigned int ofs, unsigned int len)
- {
-@@ -613,6 +677,14 @@ void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
-         tcg_gen_mov_i32(ret, arg2);
-         return;
-     }
-+
-+    /* Deposit of a value into a constant. */
-+    ts = tcgv_i32_temp(arg1);
-+    if (ts->kind == TEMP_CONST) {
-+        tcg_gen_deposit_i_i32(ret, ts->val, arg2, ofs, len);
-+        return;
-+    }
-+
-     if (TCG_TARGET_HAS_deposit_i32 && TCG_TARGET_deposit_i32_valid(ofs, len)) {
-         tcg_gen_op5ii_i32(INDEX_op_deposit_i32, ret, arg1, arg2, ofs, len);
-         return;
-@@ -667,53 +739,7 @@ void tcg_gen_deposit_z_i32(TCGv_i32 ret, TCGv_i32 arg,
-     tcg_debug_assert(len <= 32);
-     tcg_debug_assert(ofs + len <= 32);
- 
--    if (ofs + len == 32) {
--        tcg_gen_shli_i32(ret, arg, ofs);
--    } else if (ofs == 0) {
--        tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
--    } else if (TCG_TARGET_HAS_deposit_i32
--               && TCG_TARGET_deposit_i32_valid(ofs, len)) {
--        TCGv_i32 zero = tcg_constant_i32(0);
--        tcg_gen_op5ii_i32(INDEX_op_deposit_i32, ret, zero, arg, ofs, len);
--    } else {
--        /* To help two-operand hosts we prefer to zero-extend first,
--           which allows ARG to stay live.  */
--        switch (len) {
--        case 16:
--            if (TCG_TARGET_HAS_ext16u_i32) {
--                tcg_gen_ext16u_i32(ret, arg);
--                tcg_gen_shli_i32(ret, ret, ofs);
--                return;
--            }
--            break;
--        case 8:
--            if (TCG_TARGET_HAS_ext8u_i32) {
--                tcg_gen_ext8u_i32(ret, arg);
--                tcg_gen_shli_i32(ret, ret, ofs);
--                return;
--            }
--            break;
--        }
--        /* Otherwise prefer zero-extension over AND for code size.  */
--        switch (ofs + len) {
--        case 16:
--            if (TCG_TARGET_HAS_ext16u_i32) {
--                tcg_gen_shli_i32(ret, arg, ofs);
--                tcg_gen_ext16u_i32(ret, ret);
--                return;
--            }
--            break;
--        case 8:
--            if (TCG_TARGET_HAS_ext8u_i32) {
--                tcg_gen_shli_i32(ret, arg, ofs);
--                tcg_gen_ext8u_i32(ret, ret);
--                return;
--            }
--            break;
--        }
--        tcg_gen_andi_i32(ret, arg, (1u << len) - 1);
--        tcg_gen_shli_i32(ret, ret, ofs);
--    }
-+    tcg_gen_deposit_i_i32(ret, 0, arg, ofs, len);
- }
- 
- void tcg_gen_extract_i32(TCGv_i32 ret, TCGv_i32 arg,
-@@ -2226,6 +2252,98 @@ void tcg_gen_rotri_i64(TCGv_i64 ret, TCGv_i64 arg1, int64_t arg2)
-     }
- }
- 
-+static void tcg_gen_deposit_i_i64(TCGv_i64 ret, uint64_t i, TCGv_i64 arg,
-+                                  unsigned int ofs, unsigned int len)
-+{
-+    i = deposit64(i, ofs, len, 0);
-+
-+    if (ofs + len == 64) {
-+        tcg_gen_shli_i64(ret, arg, ofs);
-+        goto finish;
-+    }
-+    if (ofs == 0) {
-+        tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
-+        goto finish;
-+    }
-+    if (TCG_TARGET_HAS_deposit_i64
-+        && TCG_TARGET_deposit_i64_valid(ofs, len)) {
-+        tcg_gen_op5ii_i64(INDEX_op_deposit_i64, ret,
-+                          tcg_constant_i64(i), arg, ofs, len);
-+        return;
-+    }
-+
-+    if (TCG_TARGET_REG_BITS == 32) {
-+        if (ofs >= 32) {
-+            tcg_gen_deposit_i_i32(TCGV_HIGH(ret), i >> 32,
-+                                  TCGV_LOW(arg), ofs - 32, len);
-+            tcg_gen_movi_i32(TCGV_LOW(ret), i);
-+            return;
-+        }
-+        if (ofs + len <= 32) {
-+            tcg_gen_deposit_i_i32(TCGV_LOW(ret), i, TCGV_LOW(arg), ofs, len);
-+            tcg_gen_movi_i32(TCGV_HIGH(ret), i >> 32);
-+            return;
-+        }
-+    }
-+
-+    /*
-+     * To help two-operand hosts we prefer to zero-extend first,
-+     * which allows ARG to stay live.
-+     */
-+    switch (len) {
-+    case 32:
-+        if (TCG_TARGET_HAS_ext32u_i64) {
-+            tcg_gen_ext32u_i64(ret, arg);
-+            tcg_gen_shli_i64(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    case 16:
-+        if (TCG_TARGET_HAS_ext16u_i64) {
-+            tcg_gen_ext16u_i64(ret, arg);
-+            tcg_gen_shli_i64(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    case 8:
-+        if (TCG_TARGET_HAS_ext8u_i64) {
-+            tcg_gen_ext8u_i64(ret, arg);
-+            tcg_gen_shli_i64(ret, ret, ofs);
-+            goto finish;
-+        }
-+        break;
-+    }
-+    /* Otherwise prefer zero-extension over AND for code size.  */
-+    switch (ofs + len) {
-+    case 32:
-+        if (TCG_TARGET_HAS_ext32u_i64) {
-+            tcg_gen_shli_i64(ret, arg, ofs);
-+            tcg_gen_ext32u_i64(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    case 16:
-+        if (TCG_TARGET_HAS_ext16u_i64) {
-+            tcg_gen_shli_i64(ret, arg, ofs);
-+            tcg_gen_ext16u_i64(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    case 8:
-+        if (TCG_TARGET_HAS_ext8u_i64) {
-+            tcg_gen_shli_i64(ret, arg, ofs);
-+            tcg_gen_ext8u_i64(ret, ret);
-+            goto finish;
-+        }
-+        break;
-+    }
-+    tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
-+    tcg_gen_shli_i64(ret, ret, ofs);
-+
-+ finish:
-+    tcg_gen_ori_i64(ret, ret, i);
-+}
-+
- void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
-                          unsigned int ofs, unsigned int len)
- {
-@@ -2242,6 +2360,14 @@ void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
-         tcg_gen_mov_i64(ret, arg2);
-         return;
-     }
-+
-+    /* Deposit of a value into a constant. */
-+    ts = tcgv_i64_temp(arg1);
-+    if (ts->kind == TEMP_CONST) {
-+        tcg_gen_deposit_i_i64(ret, ts->val, arg2, ofs, len);
-+        return;
-+    }
-+
-     if (TCG_TARGET_HAS_deposit_i64 && TCG_TARGET_deposit_i64_valid(ofs, len)) {
-         tcg_gen_op5ii_i64(INDEX_op_deposit_i64, ret, arg1, arg2, ofs, len);
-         return;
-@@ -2311,80 +2437,7 @@ void tcg_gen_deposit_z_i64(TCGv_i64 ret, TCGv_i64 arg,
-     tcg_debug_assert(len <= 64);
-     tcg_debug_assert(ofs + len <= 64);
- 
--    if (ofs + len == 64) {
--        tcg_gen_shli_i64(ret, arg, ofs);
--    } else if (ofs == 0) {
--        tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
--    } else if (TCG_TARGET_HAS_deposit_i64
--               && TCG_TARGET_deposit_i64_valid(ofs, len)) {
--        TCGv_i64 zero = tcg_constant_i64(0);
--        tcg_gen_op5ii_i64(INDEX_op_deposit_i64, ret, zero, arg, ofs, len);
--    } else {
--        if (TCG_TARGET_REG_BITS == 32) {
--            if (ofs >= 32) {
--                tcg_gen_deposit_z_i32(TCGV_HIGH(ret), TCGV_LOW(arg),
--                                      ofs - 32, len);
--                tcg_gen_movi_i32(TCGV_LOW(ret), 0);
--                return;
--            }
--            if (ofs + len <= 32) {
--                tcg_gen_deposit_z_i32(TCGV_LOW(ret), TCGV_LOW(arg), ofs, len);
--                tcg_gen_movi_i32(TCGV_HIGH(ret), 0);
--                return;
--            }
--        }
--        /* To help two-operand hosts we prefer to zero-extend first,
--           which allows ARG to stay live.  */
--        switch (len) {
--        case 32:
--            if (TCG_TARGET_HAS_ext32u_i64) {
--                tcg_gen_ext32u_i64(ret, arg);
--                tcg_gen_shli_i64(ret, ret, ofs);
--                return;
--            }
--            break;
--        case 16:
--            if (TCG_TARGET_HAS_ext16u_i64) {
--                tcg_gen_ext16u_i64(ret, arg);
--                tcg_gen_shli_i64(ret, ret, ofs);
--                return;
--            }
--            break;
--        case 8:
--            if (TCG_TARGET_HAS_ext8u_i64) {
--                tcg_gen_ext8u_i64(ret, arg);
--                tcg_gen_shli_i64(ret, ret, ofs);
--                return;
--            }
--            break;
--        }
--        /* Otherwise prefer zero-extension over AND for code size.  */
--        switch (ofs + len) {
--        case 32:
--            if (TCG_TARGET_HAS_ext32u_i64) {
--                tcg_gen_shli_i64(ret, arg, ofs);
--                tcg_gen_ext32u_i64(ret, ret);
--                return;
--            }
--            break;
--        case 16:
--            if (TCG_TARGET_HAS_ext16u_i64) {
--                tcg_gen_shli_i64(ret, arg, ofs);
--                tcg_gen_ext16u_i64(ret, ret);
--                return;
--            }
--            break;
--        case 8:
--            if (TCG_TARGET_HAS_ext8u_i64) {
--                tcg_gen_shli_i64(ret, arg, ofs);
--                tcg_gen_ext8u_i64(ret, ret);
--                return;
--            }
--            break;
--        }
--        tcg_gen_andi_i64(ret, arg, (1ull << len) - 1);
--        tcg_gen_shli_i64(ret, ret, ofs);
--    }
-+    tcg_gen_deposit_i_i64(ret, 0, arg, ofs, len);
- }
- 
- void tcg_gen_extract_i64(TCGv_i64 ret, TCGv_i64 arg,
+Thanks,
+
 -- 
-2.34.1
+Peter Xu
 
 
