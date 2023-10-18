@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126B57CDEA8
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE867CDEC9
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 16:14:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt7IR-0000cF-1b; Wed, 18 Oct 2023 10:13:15 -0400
+	id 1qt7Ic-0001SI-TN; Wed, 18 Oct 2023 10:13:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt7IO-0000Y2-7a
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:13:12 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt7IY-00010d-VQ
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:13:22 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt7IL-0004u9-Ow
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:13:11 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9adb9fa7200so1435695366b.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:13:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qt7IT-0004uw-E9
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 10:13:22 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-50797cf5b69so7074374e87.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 07:13:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697638387; x=1698243187; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697638395; x=1698243195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5QjYWheBMzRDx+1pua16/AosP+NmrpkNMedodm6UtRk=;
- b=di3V6BbdVruqxTchq4NR9tUEEqcWl6eQgprs6b5/8dCF5QTUt5LNOOPtb7acxhVDQ7
- 6O3Jw/laLyBrjvX00bos53GPOvbOop/aigO+rvkrZu8NJow1uc1TOUAzoxntrh5/tpVS
- At41nmiHIVbjtOv2bbSUw7IHcAVXjGXiT0w5MrN8lMwKR/FZl8bjHGH010KntQBAfFpg
- ZeEzxojJcZd8h/8bZik19prC9Yk4s5aOxvYog2JkcQzwvwmtQaLnNQK/etUf/3s5OoMy
- U2pfS0J+Y4LNcQzi611GhoFqWezKJMnAZdGWpk8VbTyuIz7iY9O5kEC/pVO0HGB5Y417
- XAVA==
+ bh=HdVcxCWktT39vzMZdxBJ8XXhyBvhi+GxO2un0WHgbj0=;
+ b=N7gxpKTjgD05fXEbaT1N6TVkXMRa3HHGW9Dcx4ZtDMuHct1IywVCHDBDdFkkpVAzOd
+ X8G6j9+qYOt4I1Sw/jM/bgkMAUVR/y3WEYNUt+sv6LH/XnswXaJcCp49ZkMxwrWM7hV4
+ WPgOzJCW1YW9OzGyMDUTa4sQ9S0vnP5kDjQqwHkYlTo05TU6zm5PER3G5MEvYG4Cng7M
+ etDIn+0qNXHwXwZHTt8lVQiZKkMeqBaVqc5BXOeEjvlqsvVmbv8JBs4ATo++w/Mr3xSL
+ vmI7mz9bkgMmhvIP5Cyd5g+0237gmDoHc0TDmRd37lGHFdowqYDPBhv4LA/aX8LmbnHR
+ Hj9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697638387; x=1698243187;
+ d=1e100.net; s=20230601; t=1697638395; x=1698243195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5QjYWheBMzRDx+1pua16/AosP+NmrpkNMedodm6UtRk=;
- b=Rt7gD3QopXERVoDGJF7k2bwTtEPiwYioEuRcfZI5uMSqiLsUeastuQjW9s3Jvn2iIg
- 3M3NDeShLr9bhve5ggGpB9OYkl1MKZOH4z8mSbJRNG5ZMoImZ4X+xYvy8WYQvQ64JTpC
- xGyEhEiZN76mgRe2JDSE5gRP5oHHNP+FW0Czasol0h/nksJm8ieDZwLBOZO+W/hYhHSV
- C4Aut/Q4nyScXpF+VrpxczEyf1gQXopoBlYszQX409gAb1hH0KURILrpyID+HPyWSZPA
- uaF+APAkvYx09emtNqwbOcD49O/YOmtHtD/XE4kO6qa7ODlpoUh5AFxuSCqS4k4AnQDQ
- hQOw==
-X-Gm-Message-State: AOJu0YzWTsmZlFBclXzQisc/rbv96Qh/xEWLj1IxpCNzzoNZ8+VVA/dJ
- tIW3NNGd3edDfyQ3IPzvCN9uqByIACw0gonjIJw=
-X-Google-Smtp-Source: AGHT+IGjlTWHpCOMT0QFUjuIGmJMfOY/C6d5YoCal4txOEFUGOMZeulJD8ipLal8AWH4HNNr9d+Npg==
-X-Received: by 2002:a17:907:86ac:b0:9ad:8641:e91b with SMTP id
- qa44-20020a17090786ac00b009ad8641e91bmr4831802ejc.11.1697638387711; 
- Wed, 18 Oct 2023 07:13:07 -0700 (PDT)
+ bh=HdVcxCWktT39vzMZdxBJ8XXhyBvhi+GxO2un0WHgbj0=;
+ b=SVTdohCp9gzikZtxRes4AZF0qV4puH6OBYvpXi18Ymn2OOsBsOTXHOMIx4bQ1ENmqP
+ jRNs6I/7dRpmCLpXA9JI3pnR2T4/6ugJJrXXTD9XKK6JMn0CtHuxyw2Q1zzF9AbhRVI2
+ bJFxTfMXpC6w6UyjacFVJ0tT5t6iz979GUyWOriMj9ZQvxcXvocVbcX73iT4pK6H0hEV
+ AvDl4Zl/0I200l2y2qRPzcbEFKChBVTOjmBAfIcD9unh0/W63yDODVEUJac9Zju0iuJ1
+ 6+FIjU8X9vl3uvODS0wFC/m0OK0JxO6NrPEEMUc8SjD0bHq9teV4tv1diugqTxGzoKiF
+ ARTw==
+X-Gm-Message-State: AOJu0YyWut6FLDpiaRSPJPPRL8KPfSrtfzNIbWdT5+Flvf2e3RZhsRwD
+ bttr1Cs25+MdqKfX0FqW48CtdV/saTLx1auKMQw=
+X-Google-Smtp-Source: AGHT+IE8xPSrZq7CBsw2bMWAkHoT7sqvlumWoOpWRK3y5mGvkqfIzUK09Dz2IHSV0PFECHL6gQUZTw==
+X-Received: by 2002:a19:7503:0:b0:503:38fe:4598 with SMTP id
+ y3-20020a197503000000b0050338fe4598mr4328425lfe.64.1697638395402; 
+ Wed, 18 Oct 2023 07:13:15 -0700 (PDT)
 Received: from m1x-phil.lan (gyl59-h01-176-171-218-149.dsl.sta.abo.bbox.fr.
  [176.171.218.149]) by smtp.gmail.com with ESMTPSA id
- fi10-20020a170906da0a00b0098669cc16b2sm1753999ejb.83.2023.10.18.07.13.04
+ s23-20020a50d497000000b0053dfd3519f4sm2933046edi.22.2023.10.18.07.13.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 18 Oct 2023 07:13:07 -0700 (PDT)
+ Wed, 18 Oct 2023 07:13:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -73,18 +73,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 09/12] hw/s390x/css-bridge: Realize sysbus device before
- accessing it
-Date: Wed, 18 Oct 2023 16:11:47 +0200
-Message-ID: <20231018141151.87466-10-philmd@linaro.org>
+Subject: [PATCH 10/12] hw/qdev: Ensure parent device is not realized before
+ adding bus
+Date: Wed, 18 Oct 2023 16:11:48 +0200
+Message-ID: <20231018141151.87466-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231018141151.87466-1-philmd@linaro.org>
 References: <20231018141151.87466-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,48 +107,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sysbus_mmio_map() should not be called on unrealized device.
+qbus_new() should not be called on realized device.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/s390x/css-bridge.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ hw/core/bus.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/s390x/css-bridge.c b/hw/s390x/css-bridge.c
-index 4017081d49..15d26efc95 100644
---- a/hw/s390x/css-bridge.c
-+++ b/hw/s390x/css-bridge.c
-@@ -95,7 +95,6 @@ static const TypeInfo virtual_css_bus_info = {
+diff --git a/hw/core/bus.c b/hw/core/bus.c
+index c7831b5293..c92d07667b 100644
+--- a/hw/core/bus.c
++++ b/hw/core/bus.c
+@@ -21,6 +21,7 @@
+ #include "hw/qdev-properties.h"
+ #include "qemu/ctype.h"
+ #include "qemu/module.h"
++#include "qemu/error-report.h"
+ #include "qapi/error.h"
  
- VirtualCssBus *virtual_css_bus_init(void)
+ void qbus_set_hotplug_handler(BusState *bus, Object *handler)
+@@ -163,6 +164,12 @@ BusState *qbus_new(const char *typename, DeviceState *parent, const char *name)
  {
--    VirtualCssBus *cbus;
      BusState *bus;
-     DeviceState *dev;
  
-@@ -103,19 +102,19 @@ VirtualCssBus *virtual_css_bus_init(void)
-     dev = qdev_new(TYPE_VIRTUAL_CSS_BRIDGE);
-     object_property_add_child(qdev_get_machine(), TYPE_VIRTUAL_CSS_BRIDGE,
-                               OBJECT(dev));
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-     /* Create bus on bridge device */
-     bus = qbus_new(TYPE_VIRTUAL_CSS_BUS, dev, "virtual-css");
--    cbus = VIRTUAL_CSS_BUS(bus);
- 
-     /* Enable hotplugging */
-     qbus_set_hotplug_handler(bus, OBJECT(dev));
- 
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    if (parent->realized) {
++        error_report("qbus_new(type:%s parent:%s, name:%s) but parent realized",
++                     typename, object_get_typename(OBJECT(parent)), name);
++        abort();
++    }
 +
-     css_register_io_adapters(CSS_IO_ADAPTER_VIRTIO, true, false,
-                              0, &error_abort);
+     bus = BUS(object_new(typename));
+     qbus_init_internal(bus, parent, name);
  
--    return cbus;
-+    return VIRTUAL_CSS_BUS(bus);
-  }
- 
- /***************** Virtual-css Bus Bridge Device ********************/
 -- 
 2.41.0
 
