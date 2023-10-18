@@ -2,64 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6537CDC33
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 14:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8C27CDC31
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 14:47:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt5vr-0007Nq-0H; Wed, 18 Oct 2023 08:45:51 -0400
+	id 1qt5vn-0007KD-T9; Wed, 18 Oct 2023 08:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qt3Bf-00068T-Nw
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:50:02 -0400
-Received: from mgamail.intel.com ([134.134.136.65])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qt3BQ-0004Ob-Mo
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 05:49:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697622584; x=1729158584;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=rXT6Mlyo8nMUo+Xa/LhY3Ep4TFB4IYJ1y3RgX521rUk=;
- b=eIsFy0+g6TYkerDbTcxYfbuF0ecbGK2B4Dta7i0m8mx4XQa5cbd/lKzq
- fz7AH8QXH5lOzRxXKO81aVVr2jlF7bqIWg/43EpGsEgEodgj+moShaTmg
- xKE7dBySdvoHJDaZDAsOSH62DWiLqOXG1gjfpy2PCS6qJL3JB6vis9ODR
- qM2sIXncOrKz0qKkrovc1wvxwBkcJfpDeZS54SDAU7oax797fVVOXovtN
- a8rmXbjcRzgDq35RkfvOkNHX2MLqwT9Nl6oB4d6BFYlDHuyuaMSomGVMT
- 8mrORL86dPBK5AGvU4NJSAF145MYE9DQ5j/VJe4JEFaY3vu0DHlfeJSF3 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="389855113"
-X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; d="scan'208";a="389855113"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2023 02:49:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="760162781"
-X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; d="scan'208";a="760162781"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga007.fm.intel.com with ESMTP; 18 Oct 2023 02:49:35 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] scripts/cpu-x86-uarch-abi.py: Fix parameter error of cmd
-Date: Wed, 18 Oct 2023 18:00:11 +0800
-Message-Id: <20231018100011.685867-1-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <patrick.rudolph@9elements.com>)
+ id 1qt56N-0003w0-VL
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:52:39 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <patrick.rudolph@9elements.com>)
+ id 1qt56L-0001A6-Ka
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 07:52:39 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4064876e8b8so68790785e9.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 04:52:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=9elements.com; s=google; t=1697629955; x=1698234755; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ImLTGIUdc27WQDyZGTUT/EY9Io7N8OOwkJv7jhNP3uI=;
+ b=LxCT41RzKnrsS6h+9MoxFYBsOIG355GaLFzn8djqsaDxodJIk0PJaKBnunXLIsQmQL
+ iOot7IVUcPUWy1B8Olasb1lg/3rjiRonSMk0F9q1LEd+Sxkurjm0gXfkGE2wxIHYiIjI
+ MD9N5yJxm0Isuawu4uE5lIdV687TopaydPAc5z/nyJv+VClA5U0IWjNhRtX1IhK6GRQi
+ gKrV6S+XYYZPns7jbI0pDrjAkf3rbOc5QF9Qcwva/JADZv9hSH4xaCBE6lCMnxLBf5Iz
+ oPm9AL1yvuBRhWKn7KjFdb+J6z80K1vHNyhRcqSO00whM+zGgPgBcW8oGFL6A4CPm1ZT
+ UlFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697629955; x=1698234755;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ImLTGIUdc27WQDyZGTUT/EY9Io7N8OOwkJv7jhNP3uI=;
+ b=D8UALbhR1TsspsDi4Pf9Swsw6EPKkqs0ZozqPH0n5Hz/kvJlcee0JbbiG64KyaJQxw
+ KCLpIXwt8wpZZT49YzwjHXrMZE+RjtfQdqii/h8rkRWXTPeR9XX+NE6V48gJnr9m4hIw
+ mNEArBwez688+yAloA/cYJBVRRNw4ieOJT/eyYV4EV2sju0BUKLs4uGpqFqePRpUvEhH
+ 5Oh5Xp6FUgC+kv0SAeymTJr+M022KWI8xkd5W2PhGVSqe22Gle7chrKzGRE0Tt8N/QaJ
+ Rn38zFrhNfTf4lRzDEfIX/RSTMZob0mbNE4dsFRcK+MlSZq7yQsRaXD3syNYlrm9GJ10
+ lNCw==
+X-Gm-Message-State: AOJu0YySO5B8btl6xdHfz1KVgQ6XSAOWPwovlmKg3QqLYdxI+V9NNgJ/
+ 4VcE3vEQodKpDZ/lZHTEUu+mUrPiFC2rdmCFM1NPYw==
+X-Google-Smtp-Source: AGHT+IG7u4Hfi5Tw0ARZmsNS41naOrtOuPbDZ+aGZ/85Ej2ACVex57Wkz0IkgPm+9/dcHl134M9Kbg==
+X-Received: by 2002:a05:600c:1f94:b0:3fe:2b8c:9f0b with SMTP id
+ je20-20020a05600c1f9400b003fe2b8c9f0bmr3710389wmb.23.1697629954639; 
+ Wed, 18 Oct 2023 04:52:34 -0700 (PDT)
+Received: from fedora.9e.network
+ (ip-078-094-000-052.um19.pools.vodafone-ip.de. [78.94.0.52])
+ by smtp.gmail.com with ESMTPSA id
+ j17-20020a05600c489100b0040776008abdsm1455303wmp.40.2023.10.18.04.52.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 04:52:34 -0700 (PDT)
+From: Patrick Rudolph <patrick.rudolph@9elements.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mst@redhat.com, imammedo@redhat.com,
+ anisinha@redhat.com, marcel.apfelbaum@gmail.com,
+ Patrick Rudolph <patrick.rudolph@9elements.com>
+Subject: [PATCH 0/3] hw/i386: Add MTD controller on ICH9
+Date: Wed, 18 Oct 2023 13:52:28 +0200
+Message-ID: <20231018115231.3547102-1-patrick.rudolph@9elements.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=134.134.136.65;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=patrick.rudolph@9elements.com; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Wed, 18 Oct 2023 08:45:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,48 +92,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+This series implements a feature complete MTD SPI flash controller
+as found on real ICH9, adds cache coherent BIOS MMAPing and implements
+a few SMM bits to allow x86 firmware build for real ICH9 to operate on
+the flash controller to store (UEFI) variables or do firmware updates.
 
-When run this script, there's the error:
+Patrick Rudolph (3):
+  hw/isa/ich9: Add SPI controller
+  hw/isa/lpc_ich9: Implement SMI_STS for APMC
+  hw/i386/pc_sysfw: Do not create BIOS region if MTD is present
 
-python3 scripts/cpu-x86-uarch-abi.py /tmp/qmp
-Traceback (most recent call last):
-  File "/path-to-qemu/qemu/scripts/cpu-x86-uarch-abi.py", line 96, in <module>
-    cpu = shell.cmd("query-cpu-model-expansion",
-TypeError: QEMUMonitorProtocol.cmd() takes 2 positional arguments but 3 were given
+ hw/acpi/ich9.c                    |   5 +
+ hw/acpi/ich9_tco.c                |   5 +
+ hw/i386/pc_sysfw.c                |   6 +
+ hw/isa/Kconfig                    |   2 +
+ hw/isa/lpc_ich9.c                 |   4 +
+ hw/isa/meson.build                |   2 +-
+ hw/isa/spi_ich9.c                 | 448 ++++++++++++++++++++++++++++++
+ include/hw/southbridge/ich9.h     |   6 +
+ include/hw/southbridge/ich9_spi.h |  80 ++++++
+ 9 files changed, 557 insertions(+), 1 deletion(-)
+ create mode 100644 hw/isa/spi_ich9.c
+ create mode 100644 include/hw/southbridge/ich9_spi.h
 
-Commit 7f521b023bc28 ("scripts/cpu-x86-uarch-abi.py: use .command()
-instead of .cmd()") converts the the original .cmd() to .command()
-(which was later renamed to "cmd" to replace the original one).
-
-But the new .cmd() only accepts typing.Mapping as the parameter instead
-of typing.Dict (see _qmp.execute()).
-
-Change the paremeters of "query-cpu-model-expansion" to typing.Mapping
-format to fix this error.
-
-Fixes: 7f521b023bc28 ("scripts/cpu-x86-uarch-abi.py: use .command() instead of .cmd()")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- scripts/cpu-x86-uarch-abi.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/cpu-x86-uarch-abi.py b/scripts/cpu-x86-uarch-abi.py
-index f6baeeff2400..052ddd751424 100644
---- a/scripts/cpu-x86-uarch-abi.py
-+++ b/scripts/cpu-x86-uarch-abi.py
-@@ -94,8 +94,8 @@
- 
- for name in sorted(names):
-     cpu = shell.cmd("query-cpu-model-expansion",
--                    { "type": "static",
--                      "model": { "name": name }})
-+                    type="static",
-+                    model={ "name": name })
- 
-     got = {}
-     for (feature, present) in cpu["model"]["props"].items():
 -- 
-2.34.1
+2.41.0
 
 
