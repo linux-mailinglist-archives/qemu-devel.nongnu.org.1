@@ -2,66 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D23D7CD3DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 08:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5EA7CD43E
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 08:19:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qszjp-0008Ds-2d; Wed, 18 Oct 2023 02:09:01 -0400
+	id 1qszsR-0002xk-Cp; Wed, 18 Oct 2023 02:17:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qszjn-0008Dg-JU
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:08:59 -0400
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qszsN-0002wS-1o
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:17:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qszjl-00053f-U9
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:08:59 -0400
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qszs9-0006qo-DY
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 02:17:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697609337;
+ s=mimecast20190719; t=1697609856;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TVMdIbbDc/31aRzyw6acoIAphGQRYfYT+ENMjNCZgrI=;
- b=OvVyvFu1lZFO0lmsoHHDCqEMYimEdVQwx/V7fn8sMTeD11JgkIdAfegl1d3KWeo7XboWYO
- OXU37mxpArJ5QslgoDw/tYXbQ4IOpvQU4N007oFDNDp52IhMrtzmasQz+t19G6O6K9NLyS
- 7OGsh+jJSHprLEZerDNuDIIeM7nTsh4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-212-4hpcN22sNGuMdTeEungHfw-1; Wed, 18 Oct 2023 02:08:51 -0400
-X-MC-Unique: 4hpcN22sNGuMdTeEungHfw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1B13D857F8C;
- Wed, 18 Oct 2023 06:08:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6922A40C6CAF;
- Wed, 18 Oct 2023 06:08:50 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 59FCC21E6A1F; Wed, 18 Oct 2023 08:08:49 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-block@nongnu.org,  qemu-devel@nongnu.org,  eblake@redhat.com,
- dave@treblig.org,  eduardo@habkost.net,  berrange@redhat.com,
- pbonzini@redhat.com,  hreitz@redhat.com,  kwolf@redhat.com,
- raphael.norwitz@nutanix.com,  mst@redhat.com,  yc-core@yandex-team.ru,
- den-plotnikov@yandex-team.ru,  daniil.tatianin@yandex.ru
-Subject: Re: [PATCH 2/4] qapi: introduce device-sync-config
-References: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
- <20231006202045.1161543-3-vsementsov@yandex-team.ru>
- <87zg0h2t5q.fsf@pond.sub.org>
- <9d62a50e-627e-4441-b760-56c096f99c53@yandex-team.ru>
-Date: Wed, 18 Oct 2023 08:08:49 +0200
-In-Reply-To: <9d62a50e-627e-4441-b760-56c096f99c53@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Tue, 17 Oct 2023 18:32:00 +0300")
-Message-ID: <87ttqozclq.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=ZDDLzOIAg6GvgSicVc0pzO+zlRjHuWM4sAbID1q+nJc=;
+ b=WN2pNBQKfJZTzs9y6KB6hYvio8SPCCi5RtgMcywdHyYDuFf7GAkbeVHJlIM9I1RCdt+2SG
+ P54iEY7ObvTwJ7TwyTOHVBhUBX9Cj3qdKK/UIP5iUDAjiB9BupECnm/0nMN/tcpmG0m6DF
+ WnviMaVyf6wFTyWaT/SYXAIPk57pOoA=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-672-qGzyIOZbNwuGhqOJ602azg-1; Wed, 18 Oct 2023 02:17:34 -0400
+X-MC-Unique: qGzyIOZbNwuGhqOJ602azg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-53e1fe5b328so4631390a12.1
+ for <qemu-devel@nongnu.org>; Tue, 17 Oct 2023 23:17:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697609853; x=1698214653;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZDDLzOIAg6GvgSicVc0pzO+zlRjHuWM4sAbID1q+nJc=;
+ b=KZA9XXayyYeWek6pCV67cQElh+wVLvyEx3aSRng6lJ5MRCO76x1pdtlWtn1U+mQLxM
+ kvkFVgGwVQrtcL3sVc2luIeSuMGjF652C5koERJoSUKfA5mTxgTV6Xy08bt80l9+bCbC
+ 1V5gTug6qvLBHaAXBH4dOyaYhdogvc7URCbGfP0WmDFaXIKN2dS+JnwwsaZIomlo1oad
+ gF0H0CnipFdVZcVkDCZpLMa7JXKxL4tox2w8RAaejSMz2Vfixhlo5evYlp260fDpt5Fd
+ /mvhemMVkePKZNQN4/S/70QBfgyFBErPldE43bdH5gXhO2Az2TzPYqQQ3ejOg2BR7lOY
+ vkcw==
+X-Gm-Message-State: AOJu0YwkU/J/qTTetN8l/fByzwhtP9DjZ4+nYtau5RM5wzTVxzJY16dN
+ WrZYuJEr5bO2z8qGhNFgVUUrwUdla/KAayZPrVHTz8jsi9gSJstEbexmUeRXJLHArqkUVZfEZpQ
+ +TQdJSBq613ULvQucEneHsVpL6QwtYZ3CQHKqjG0=
+X-Received: by 2002:a05:6402:3550:b0:530:a186:f8a8 with SMTP id
+ f16-20020a056402355000b00530a186f8a8mr3530557edd.37.1697609852971; 
+ Tue, 17 Oct 2023 23:17:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFJg+vCMHSDZ40B9EB7r4TV/oHhUqs1MTkzbIrl4cDDYp3wmxdwJlYRMQaxuXAIL6tCinU6nEKRQgf8w7AHIw8=
+X-Received: by 2002:a05:6402:3550:b0:530:a186:f8a8 with SMTP id
+ f16-20020a056402355000b00530a186f8a8mr3530545edd.37.1697609852663; Tue, 17
+ Oct 2023 23:17:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+References: <20231012222438.13853-1-dongwon.kim@intel.com>
+ <CAMxuvawxX8+o-dm3rNFHo-OtA-aMJfLFoaub299Zs-khzDLgxA@mail.gmail.com>
+ <PH8PR11MB6879025B167EF9219023D91EFAD6A@PH8PR11MB6879.namprd11.prod.outlook.com>
+In-Reply-To: <PH8PR11MB6879025B167EF9219023D91EFAD6A@PH8PR11MB6879.namprd11.prod.outlook.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Wed, 18 Oct 2023 10:17:21 +0400
+Message-ID: <CAMxuvayrza86DssyJYVG3JTgjw-ZZFqJph-Y5kah6TtX26bkxQ@mail.gmail.com>
+Subject: Re: [PATCH] ui/gtk: full-screening all detached windows
+To: "Kim, Dongwon" <dongwon.kim@intel.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -69,7 +79,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,135 +95,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+Hi
 
-> On 17.10.23 17:57, Markus Armbruster wrote:
->> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
->> 
->>> Add command to sync config from vhost-user backend to the device. It
->>> may be helpful when VHOST_USER_SLAVE_CONFIG_CHANGE_MSG failed or not
->>> triggered interrupt to the guest or just not available (not supported
->>> by vhost-user server).
->>>
->>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> [...]
->> 
->>> diff --git a/qapi/qdev.json b/qapi/qdev.json
->>> index fa80694735..2468f8bddf 100644
->>> --- a/qapi/qdev.json
->>> +++ b/qapi/qdev.json
->>> @@ -315,3 +315,17 @@
->>>   # Since: 8.2
->>>   ##
->>>   { 'event': 'X_DEVICE_ON', 'data': 'DeviceAndPath' }
->>> +
->>> +##
->>> +# @x-device-sync-config:
->>> +#
->>> +# Sync config from backend to the guest.
->>
->> "Sync" is not a word; "synchronize" is :)
+On Wed, Oct 18, 2023 at 3:45=E2=80=AFAM Kim, Dongwon <dongwon.kim@intel.com=
+> wrote:
 >
-> Seems, I learn English from code :)
-
-It's working, so no worries ;)
-
->>> +#
->>> +# @id: the device's ID or QOM path
->>> +#
->>> +# Returns: Nothing on success
->>> +#          If @id is not a valid device, DeviceNotFound
->>
->> Why not GenericError?
+> Hi Marc-Andr=C3=A9,
 >
-> I just designed the command looking at device_del. device_del reports DeviceNotFound in this case. GenericError is OK for me, if you think it's better even in this case. I remember now that everything except GenericError is not recommended.
-
-I figure you picked up DeviceNotFound by reusing find_device_state().
-
-Same happened when commit 9680caee0fa added blk_by_qdev_id().  At least
-some of its users don't document the error code.  I'm not sure the
-unwanted use of DeviceNotFound is worth fixing after all this time.  But
-I certainly don't want it documented.
-
-For your patch, not reusing find_device_state() would let you avoid
-DeviceNotFound at the price of a few more lines of code.
-
->>> +#
->>> +# Since: 8.2
->>> +##
->>> +{ 'command': 'x-device-sync-config', 'data': {'id': 'str'} }
->>
->> The commit message above and the error message below talk about command
->> device-sync-config, but you actually name it x-device-sync-config.
->>
->> I figure you use x- to signify "unstable".  Please use feature flag
->> 'unstable' for that.  See docs/devel/qapi-code-gen.rst section
->> "Features", in particular "Special features", and also the note on x- in
->> section "Naming rules and reserved names".
->>
->> We tend to eschew abbreviations in QAPI schema names.
->> device-synchronize-config is quite a mouthful, though.  What do you
->> think?
+> > Hi
+> >
+> > On Fri, Oct 13, 2023 at 2:51=E2=80=AFAM Dongwon Kim <dongwon.kim@intel.=
+com>
+> > wrote:
+> > >
+> > > When turning on or off full-screen menu, all detached windows should
+> > > be full-screened or un-full-screened altogether.
+> >
+> > I am not convinced this is desirable. Not only having multiple fullscre=
+en windows
+> > on the same screen is usually a bit harder to deal with. You typically =
+want one
+> > imho.
+> >
+> > But the most annoying thing is probably that detached windows/consoles =
+do not
+> > have the same shortcuts as the main window, and you can't unfullscreen =
+them
+> > then...
+> >
+> > Wouldn't you prefer to have a working fullscreen keyboard shortcut for
+> > detached tabs instead? This way, each window can be toggled full/unfull
+> > individually.
 >
-> OK for me.
+> [DW] That is right. Two detached windows on the same display would be ove=
+rlapped, which will be ugly. I also thought about that as well as other und=
+esirable situations but my initial thought was the full-screen
+> menu is global and all QEMU windows should be controlled by it. Anyhow, I=
+ like your idea about individual control.. so we would probably need to add=
+ more full-screen menus, like 'fullscreen1, fullscreen2, fullscreen3..."
+> to the menu then also assign a hotkey to each one of them?
+
+The same shortcut should be used, only it applies to the currently
+focused window.
+
 >
-> Hmm, could I ask here, is "config" a word?)) device-synchronize-configuration would become a precedent, I'm afraid)
-
-In the words of Captain Barbossa, it's "more what you'd call
-'guidelines' than actual rules."
-
-I didn't come up with the "avoid abbreviations" stylistic guideline.  I
-inherited it.
-
-I do like consistent style.  I don't like excessively long names.
-Sometimes these likes conflict, and we need to pick.
-
-Checking... alright, there precedence both for 'config' and for 'sync'
-in the QAPI schema.  You pick what you like best.
-
->>> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
->>> index 19c31446d8..b6da24389f 100644
->>> --- a/softmmu/qdev-monitor.c
->>> +++ b/softmmu/qdev-monitor.c
->>> @@ -987,6 +987,29 @@ HotplugInfo *qmp_x_query_hotplug(const char *id, Error **errp)
->>>       return hotplug_handler_get_state(hotplug_ctrl, dev, errp);
->>>   }
->>>   +int qdev_sync_config(DeviceState *dev, Error **errp)
->>> +{
->>> +    DeviceClass *dc = DEVICE_GET_CLASS(dev);
->>> +
->>> +    if (!dc->sync_config) {
->>> +        error_setg(errp, "device-sync-config is not supported for '%s'",
->>> +                   object_get_typename(OBJECT(dev)));
->>> +        return -ENOTSUP;
->>> +    }
->>> +
->>> +    return dc->sync_config(dev, errp);
->>> +}
->>> +
->>> +void qmp_x_device_sync_config(const char *id, Error **errp)
->>> +{
->>> +    DeviceState *dev = find_device_state(id, errp);
->>
->> Not your patch's fault, but here goes anyway: when @id refers to a
->> non-device, find_device_state() fails with "is not a hotpluggable
->> device".  "hotpluggable" is misleading.
+> >
+> > thanks
+> >
+> > >
+> > > Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > > Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+> > > ---
+> > >  ui/gtk.c | 44 ++++++++++++++++++++++++++++++++++----------
+> > >  1 file changed, 34 insertions(+), 10 deletions(-)
+> > >
+> > > diff --git a/ui/gtk.c b/ui/gtk.c
+> > > index 935de1209b..3a380f8d59 100644
+> > > --- a/ui/gtk.c
+> > > +++ b/ui/gtk.c
+> > > @@ -1452,29 +1452,53 @@ static void gd_accel_show_menubar(void
+> > > *opaque)  static void gd_menu_full_screen(GtkMenuItem *item, void
+> > > *opaque)  {
+> > >      GtkDisplayState *s =3D opaque;
+> > > -    VirtualConsole *vc =3D gd_vc_find_current(s);
+> > > +    VirtualConsole *vc;
+> > > +    int i;
+> > >
+> > >      if (!s->full_screen) {
+> > >          gtk_notebook_set_show_tabs(GTK_NOTEBOOK(s->notebook), FALSE)=
+;
+> > >          gtk_widget_hide(s->menu_bar);
+> > > -        if (vc->type =3D=3D GD_VC_GFX) {
+> > > -            gtk_widget_set_size_request(vc->gfx.drawing_area, -1, -1=
+);
+> > > -        }
+> > > -        gtk_window_fullscreen(GTK_WINDOW(s->window));
+> > >          s->full_screen =3D TRUE;
+> > > +        gtk_window_fullscreen(GTK_WINDOW(s->window));
+> > > +
+> > > +        for (i =3D 0; i < s->nb_vcs; i++) {
+> > > +            vc =3D &s->vc[i];
+> > > +            if (!vc->window) {
+> > > +                continue;
+> > > +            }
+> > > +            if (vc->type =3D=3D GD_VC_GFX) {
+> > > +                gtk_widget_set_size_request(vc->gfx.drawing_area, -1=
+, -1);
+> > > +            }
+> > > +            gtk_window_fullscreen(GTK_WINDOW(vc->window));
+> > > +        }
+> > >      } else {
+> > >          gtk_window_unfullscreen(GTK_WINDOW(s->window));
+> > > +
+> > > +        for (i =3D 0; i < s->nb_vcs; i++) {
+> > > +            vc =3D &s->vc[i];
+> > > +            if (!vc->window) {
+> > > +                continue;
+> > > +            }
+> > > +            gtk_window_unfullscreen(GTK_WINDOW(vc->window));
+> > > +
+> > > +            if (vc->type =3D=3D GD_VC_GFX) {
+> > > +                vc->gfx.scale_x =3D 1.0;
+> > > +                vc->gfx.scale_y =3D 1.0;
+> > > +                gd_update_windowsize(vc);
+> > > +            }
+> > > +        }
+> > > +
+> > >          gd_menu_show_tabs(GTK_MENU_ITEM(s->show_tabs_item), s);
+> > >          if (gtk_check_menu_item_get_active(
+> > >                      GTK_CHECK_MENU_ITEM(s->show_menubar_item))) {
+> > >              gtk_widget_show(s->menu_bar);
+> > >          }
+> > >          s->full_screen =3D FALSE;
+> > > -        if (vc->type =3D=3D GD_VC_GFX) {
+> > > -            vc->gfx.scale_x =3D 1.0;
+> > > -            vc->gfx.scale_y =3D 1.0;
+> > > -            gd_update_windowsize(vc);
+> > > -        }
+> > > +    }
+> > > +
+> > > +    vc =3D gd_vc_find_current(s);
+> > > +    if (!vc) {
+> > > +        return;
+> > >      }
+> > >
+> > >      gd_update_cursor(vc);
+> > > --
+> > > 2.20.1
+> > >
 >
-> Hmm. Thanks, OK, I'll rework it somehow in v2.
-
-I think "hotpluggable" is misleading for all the existing uses of
-find_device_state().  Suggest a preliminary patch deleting the word.
-
->>> +    if (!dev) {
->>> +        return;
->>> +    }
->>> +
->>> +    qdev_sync_config(dev, errp);
->>> +}
->>> +
->>>   void hmp_device_add(Monitor *mon, const QDict *qdict)
->>>   {
->>>       Error *err = NULL;
->> 
 
 
