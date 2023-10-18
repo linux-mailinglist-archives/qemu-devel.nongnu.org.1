@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D587CD9B7
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 12:53:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7FB7CD9B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 12:53:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt4A9-0004AY-RH; Wed, 18 Oct 2023 06:52:29 -0400
+	id 1qt4AK-0004HC-S6; Wed, 18 Oct 2023 06:52:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qt4A5-00047U-EJ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:52:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+8ac6f4fe82fdef80538c+7360+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qt4AC-0004D0-7j; Wed, 18 Oct 2023 06:52:32 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qt4A3-0007Co-1w
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 06:52:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697626342;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=z2aTU6V2HyPqAWas4KxHiq2PKkcisCH5M9P/7yN7Rsc=;
- b=OSM0uI7MLCdas8M7Em2puM/wHvUMufI0ohj7eE/ZN5XV1WoJ03UwPtwkYw+eJdsqNsR80p
- hkbhCBAi3OJZaL5R+NeRMZ2Bosyp7dvSHR/l0FweulHY6eHp8BHPUNrp8it5TuKGwbsxvO
- BbpGEs+NFiIiJUHICFThxa7cDXebdKY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-231-zT5PTf5AOT6-Bo6d0PMk_Q-1; Wed, 18 Oct 2023 06:52:18 -0400
-X-MC-Unique: zT5PTf5AOT6-Bo6d0PMk_Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D98DF8E4145;
- Wed, 18 Oct 2023 10:52:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0BC562166B26;
- Wed, 18 Oct 2023 10:52:15 +0000 (UTC)
-Date: Wed, 18 Oct 2023 11:52:13 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>, Peter Xu <peterx@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- libvir-list@redhat.com, Hanna Reitz <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v7 0/4] Migration deprecated parts
-Message-ID: <ZS+43SAy3xEMF4fh@redhat.com>
-References: <20231018103204.33444-1-quintela@redhat.com>
- <87bkcwxlkd.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from
+ <BATV+8ac6f4fe82fdef80538c+7360+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qt4A7-0007DC-OL; Wed, 18 Oct 2023 06:52:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=RWOu6EufHEslEOT/ml7cID1dexo8WUA6sXS9WUg+E2Y=; b=KlsB4trtSyY2ao3J1JLNbhGBgU
+ H/ZltPjXh0zqWWylZVMfZZ3L3wwuMudtJKMB3mr4vnuU2hwbu76dW8sQ9Y2i1zBJSFN3M5o6OEhrc
+ DRkB1MWU01QlTRsxTpcnY4Qw9RWdKzH8hhGkCP5fJznJc5p9nXIV8RBbg5UxWOeSa8nfuBzUORc7k
+ fGSHYO+/FdwaauyUjAwXqLYybRlqB5dJAGN9x2gP+dCxqyWTUYs5D2ODKqZlkVw7DEBw56rzEpi/e
+ QEsDQ8UpdOYBu8UEId864KXB9J9w1eVoE7xk6eFrxI9MNDdyiXSmzKp6enAw7uE/Ie+9w644/0nAY
+ 8QInMWew==;
+Received: from [2001:8b0:10b:5:d4f9:734b:fde4:c827]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qt4A3-000TTo-0I; Wed, 18 Oct 2023 10:52:23 +0000
+Message-ID: <950f3a62dfcecce902037f95575f1013697a5925.camel@infradead.org>
+Subject: Re: [PATCH 11/12] hw/xen: automatically assign device index to
+ block devices
+From: David Woodhouse <dwmw2@infradead.org>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, Stefano
+ Stabellini <sstabellini@kernel.org>, Anthony Perard
+ <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Richard Henderson
+ <richard.henderson@linaro.org>,  Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org, 
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+Date: Wed, 18 Oct 2023 11:52:22 +0100
+In-Reply-To: <ZS+cutIjulWBQakk@redhat.com>
+References: <20231016151909.22133-1-dwmw2@infradead.org>
+ <20231016151909.22133-12-dwmw2@infradead.org> <ZS+cutIjulWBQakk@redhat.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-vjw1R5siplEBMZaWAzvC"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87bkcwxlkd.fsf@secure.mitica>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+8ac6f4fe82fdef80538c+7360+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,52 +79,198 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 18, 2023 at 12:38:10PM +0200, Juan Quintela wrote:
-> Juan Quintela <quintela@redhat.com> wrote:
-> > Based on: Message-ID: <20231018100651.32674-1-quintela@redhat.com>
-> >           [PULL 00/11] Migration 20231018 patches
-> >
-> > And here we are, at v7:
-> > - drop black line at the end of deprecated.rst
-> > - change qemu-iotest output due to warnings for deprecation.
-> >
-> > The only real change is the output of the qemu-iotest.  That is the
-> > reason why I maintained the reviewed-by.  But will be happy if anyone
-> > of the block people ack the changes.
-> 
-> I forgot to include the link to the CI of the previous failure.
-> 
-> https://gitlab.com/juan.quintela/qemu/-/jobs/5314070229
-> 
-> tput mismatch (see /builds/juan.quintela/qemu/build/tests/qemu-iotests/scratch/raw-file-183/183.out.bad)
-> --- /builds/juan.quintela/qemu/tests/qemu-iotests/183.out
-> +++ /builds/juan.quintela/qemu/build/tests/qemu-iotests/scratch/raw-file-183/183.out.bad
-> @@ -28,6 +28,8 @@
->  { 'execute': 'migrate',
->         'arguments': { 'uri': 'unix:SOCK_DIR/migrate', 'blk': true } }
-> +warning: parameter 'blk is deprecated; use blockdev-mirror with NBD instead
-> +warning: block migration is deprecated; use blockdev-mirror with NBD instead
->  {"return": {}}
->  { 'execute': 'query-status' }
->  {"return": {"status": "postmigrate", "singlestep": false, "running":
->  false}}
 
-IIUC, the JSON bits are being written on stdout, and the warnings
-are being written on stderr. The interleaving of the data is
-potentially going to be non-deterministic in the .out file.
-Generally you'd want a filter in the iotests that culls the
-warning: lines to avoid this mixing of stdout/err streams.
+--=-vjw1R5siplEBMZaWAzvC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 2023-10-18 at 10:52 +0200, Kevin Wolf wrote:
+> Am 16.10.2023 um 17:19 hat David Woodhouse geschrieben:
+> > From: David Woodhouse <dwmw@amazon.co.uk>
+> >=20
+> > There's no need to force the user to assign a vdev. We can automaticall=
+y
+> > assign one, starting at xvda and searching until we find the first disk
+> > name that's unused.
+> >=20
+> > This means we can now allow '-drive if=3Dxen,file=3Dxxx' to work withou=
+t an
+> > explicit separate -driver argument, just like if=3Dvirtio.
+> >=20
+> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+>=20
+> Actually, how does this play together with xen_config_dev_blk()? This
+> looks like it tried to implement a very similar thing (which is IF_XEN
+> even already existed).
+
+Ah yes, thanks for spotting that! I hadn't been looking at the xenfv
+
+> Are we now trying to attach each if=3Dxen disk twice in the 'xenpv'
+> machine? Or if something prevents this, is it dead code.
+
+I suspect we end up creating them twice (and probably thus failing to
+lock the backing file).
+
+The old Xen PV device drivers in Qemu, before Paul's XenDevice
+conversion, were purely reactive. If they see nodes in XenStore
+describing a backend which they should implement, they'd do so.
+
+The code in xen_config_dev_blk() is *creating* those nodes for the
+frontend (guest) and backend (host/qemu) to see, which prompts the
+xen-block and xen-net drivers into action.
+
+In the new XenDevice model, we can just instantiate a device (e.g.
+qdev_new(TYPE_XEN_DISK_DEVICE) and its realize() method will create the
+corresponding XenStore nodes (with some help from the generic XenBus
+code for the common ones).
+
+The new XenDevice/XenBus model will *also* react to nodes which it
+discovers in XenStore, and instantiate the corresponding devices.
+
+So I suspect what'll happen is xen_config_dev_blk() will create the
+nodes starting at xvda (int vdev =3D 202 * 256 + 16 * disk->unit), and
+later my new code will create a new set starting from xvdb or wherever
+the next free one is.
+
+> I think in both cases, we would want to delete that function and remove
+> the loop that calls it in xen_init_pv()?
+
+Yes, I think so. The xen_config_dev_blk() one can just die, as can
+xen_config_dev_console() which isn't called from anywhere anyway.
+
+The vkbd/vfb ones can stay until/unless those drivers are converted to
+the new XenDevice model.
+
+And xen_config_dev_nic() probably just needs to loop doing the same as
+I did in pc_init_nic() in
+https://lore.kernel.org/qemu-devel/20231017182545.97973-5-dwmw2@infradead.o=
+rg/T/#u
+
++        if (xen_bus && (!nd->model || g_str_equal(model, "xen-net-device")=
+)) {
++            DeviceState *dev =3D qdev_new("xen-net-device");
++            qdev_set_nic_properties(dev, nd);
++            qdev_realize_and_unref(dev, xen_bus, &error_fatal);
 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+... but this just reinforces what I said there about "if
+qmp_device_add() can find the damn bus and do this right, why do we
+have to litter it through platform code?"
 
+--=-vjw1R5siplEBMZaWAzvC
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDE4MTA1MjIyWjAvBgkqhkiG9w0BCQQxIgQg2FOXzkZD
+QYrxwmh9RjDjX6z/2aXuJ8hYWFbWEDzb71wwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCctzndAZbafBIa4WmO3EkD2Ky0ta6UBCnF
+oPTZyXnWM45JPD+RtjDFDCU1PN2VL3TM6r/9zl7nCmDUL0zG57uUFN5wmBceWlQhVNYpu41zd/HT
+N4F7dc8EcziwJ3+fV2yUhXymPQdo5VK2QXu0yhw9Fqha3+fcBXCchl0ZCBgGxXFmkRFyy8RIW5oH
+iZ0by3PsYAv5H1PYiOwDzFZ91FZxcOImwa2dzzwPM4JUjfz2vahsZosR0HcArpczfQBufnCBIT8m
+1SExZvThSSMcASQY5uDfrz+M/3cW1wRzF3MdwqmmUyOpb1t8C/ixEo1XYbqpIYjL2xj/DY36fI/f
+jfLWzW5raIugtgImPfq4VwTF/u1RMmqO2eLSu3DaYE/iwjC3xJEp2CfsJbgBPW0ATd5ks0E4pVng
+7NrgQBRH3Sza2b4rGR0AqZ8L9VJko3ummhMJ+PUzJLrukhJkeMpW5vfPkc8BwCfn2CxWlY9EJiIa
+iiHh7jeNIkmdqlmJa80WQuhVPR9Zq08ZwqO6GpDOeoPc54J5tDwjr3MQForhLtT6KRqkQW7xDV4t
+8OiKhoaqJ6OM6w9DEW1xO0S9v/EESuqoxcH7FQGpiK2e8F0ilL86OeQMCNCNSiRkjAcKhSKTsMWr
+EJ8wUix7Wd2N8Uu+skPJvhu6EJUUJuPVLMdyCwUV/gAAAAAAAA==
+
+
+--=-vjw1R5siplEBMZaWAzvC--
 
