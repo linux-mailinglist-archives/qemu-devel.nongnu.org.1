@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF0B7CD758
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7727CD75A
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 11:00:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt2Of-00041F-1W; Wed, 18 Oct 2023 04:59:21 -0400
+	id 1qt2Of-00041I-GE; Wed, 18 Oct 2023 04:59:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qt2Oa-00040M-Vl
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:59:16 -0400
+ id 1qt2Oa-00040N-Vm
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:59:17 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qt2OW-0002mL-BY
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:59:16 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qt2OV-0002mC-N5
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 04:59:15 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxbOpbni9l3NUyAA--.5292S3;
+ by gateway (Coremail) with SMTP id _____8Cxrutcni9l3tUyAA--.30017S3;
  Wed, 18 Oct 2023 16:59:08 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxbNxani9lTf0oAA--.20518S4; 
+ AQAAf8BxbNxani9lTf0oAA--.20518S5; 
  Wed, 18 Oct 2023 16:59:07 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@redhat.com, peter.maydell@linaro.org,
  eblake@redhat.com, armbru@redhat.com, maobibo@loongson.cn
-Subject: [PATCH v1 2/3] target/loongarch: Allow user enable/disable LSX/LASX
- features
-Date: Wed, 18 Oct 2023 16:59:07 +0800
-Message-Id: <20231018085908.3327130-3-gaosong@loongson.cn>
+Subject: [PATCH v1 3/3] target/loongarch: Implement query-cpu-model-expansion
+Date: Wed, 18 Oct 2023 16:59:08 +0800
+Message-Id: <20231018085908.3327130-4-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20231018085908.3327130-1-gaosong@loongson.cn>
 References: <20231018085908.3327130-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxbNxani9lTf0oAA--.20518S4
+X-CM-TRANSID: AQAAf8BxbNxani9lTf0oAA--.20518S5
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,126 +63,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some users may not need LSX/LASX, this patch allows the user
-enable/disable LSX/LASX features.
+Add support for the query-cpu-model-expansion QMP command to LoongArch.
+We only support query the 'max' cpu features.
 
- e.g
- '-cpu max,lsx=on,lasx=on'   (default);
- '-cpu max,lsx=on,lasx=off'  (enabled LSX);
- '-cpu max,lsx=off,lasx=on'  (error, need lsx=on);
- '-cpu max,lsx=off'          (disable LSX and LASX).
+  e.g
+    start with '-cpu max,lasx=off'
+
+    (QEMU) query-cpu-model-expansion type=static  model={"name":"max"}
+    {"return": {"model": {"name": "max", "props": {"lasx": false, "lsx": true}}}}
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c | 64 ++++++++++++++++++++++++++++++++++++++++++
- target/loongarch/cpu.h |  7 +++++
- 2 files changed, 71 insertions(+)
+ qapi/machine-target.json              |  6 ++-
+ target/loongarch/loongarch-qmp-cmds.c | 64 +++++++++++++++++++++++++++
+ 2 files changed, 68 insertions(+), 2 deletions(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index ef6922e812..8a47d85d8a 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -478,6 +478,7 @@ static void loongarch_max_initfn(Object *obj)
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index f0a6b72414..752b18cced 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -228,7 +228,8 @@
+   'data': { 'model': 'CpuModelInfo' },
+   'if': { 'any': [ 'TARGET_S390X',
+                    'TARGET_I386',
+-                   'TARGET_ARM' ] } }
++                   'TARGET_ARM',
++                   'TARGET_LOONGARCH64' ] } }
+ 
+ ##
+ # @query-cpu-model-expansion:
+@@ -273,7 +274,8 @@
+   'returns': 'CpuModelExpansionInfo',
+   'if': { 'any': [ 'TARGET_S390X',
+                    'TARGET_I386',
+-                   'TARGET_ARM' ] } }
++                   'TARGET_ARM',
++                   'TARGET_LOONGARCH64' ] } }
+ 
+ ##
+ # @CpuDefinitionInfo:
+diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
+index 6c25957881..645672ff59 100644
+--- a/target/loongarch/loongarch-qmp-cmds.c
++++ b/target/loongarch/loongarch-qmp-cmds.c
+@@ -7,8 +7,13 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "qapi/qapi-commands-machine-target.h"
+ #include "cpu.h"
++#include "qapi/qmp/qerror.h"
++#include "qapi/qmp/qdict.h"
++#include "qapi/qobject-input-visitor.h"
++#include "qom/qom-qobject.h"
+ 
+ static void loongarch_cpu_add_definition(gpointer data, gpointer user_data)
  {
-     /* '-cpu max' for TCG: we use cpu la464. */
-     loongarch_la464_initfn(obj);
-+    loongarch_cpu_post_init(obj);
+@@ -35,3 +40,62 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
+ 
+     return cpu_list;
  }
- 
- static void loongarch_cpu_list_entry(gpointer data, gpointer user_data)
-@@ -622,6 +623,69 @@ static const MemoryRegionOps loongarch_qemu_ops = {
- };
- #endif
- 
-+static bool loongarch_get_lsx(Object *obj, Error **errp)
++
++static const char *cpu_model_advertised_features[] = {
++    "lsx", "lasx", NULL
++};
++
++CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
++                                                     CpuModelInfo *model,
++                                                     Error **errp)
 +{
-+    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++    CpuModelExpansionInfo *expansion_info;
++    QDict *qdict_out;
++    ObjectClass *oc;
++    Object *obj;
++    const char *name;
++    int i;
 +
-+    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LSX)) {
-+        cpu->has_lsx = true;
-+    } else {
-+        cpu->has_lsx = false;
-+    }
-+    return cpu->has_lsx;
-+}
-+
-+static void loongarch_set_lsx(Object *obj, bool value, Error **errp)
-+{
-+    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
-+
-+    if (value) {
-+        cpu->env.cpucfg[2] = FIELD_DP32(cpu->env.cpucfg[2], CPUCFG2, LSX, 1);
-+    } else {
-+        cpu->env.cpucfg[2] = FIELD_DP32(cpu->env.cpucfg[2], CPUCFG2, LSX, 0);
-+        cpu->env.cpucfg[2] = FIELD_DP32(cpu->env.cpucfg[2], CPUCFG2, LASX, 0);
++    if (type != CPU_MODEL_EXPANSION_TYPE_STATIC) {
++        error_setg(errp, "The requested expansion type is not supported");
++        return NULL;
 +    }
 +
-+    cpu->has_lsx = value;
-+}
-+
-+static bool loongarch_get_lasx(Object *obj, Error **errp)
-+{
-+    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
-+
-+    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LASX)) {
-+        cpu->has_lasx = true;
-+    } else {
-+        cpu->has_lasx = false;
-+    }
-+    return cpu->has_lasx;
-+}
-+
-+static void loongarch_set_lasx(Object *obj, bool value, Error **errp)
-+{
-+    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
-+
-+    if (value) {
-+        if (!FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LSX)) {
-+            error_setg(errp, "Enabled LASX, need enabled LSX first!");
-+            return;
-+	}
-+        cpu->env.cpucfg[2] = FIELD_DP32(cpu->env.cpucfg[2], CPUCFG2, LASX, 1);
-+    } else {
-+        cpu->env.cpucfg[2] = FIELD_DP32(cpu->env.cpucfg[2], CPUCFG2, LASX, 0);
++    oc = cpu_class_by_name(TYPE_LOONGARCH_CPU, model->name);
++    if (!oc) {
++        error_setg(errp, "The CPU type '%s' is not a recognized LoongArch CPU type",
++                   model->name);
++        return NULL;
 +    }
 +
-+    cpu->has_lasx = value;
++    obj = object_new(object_class_get_name(oc));
++
++    expansion_info = g_new0(CpuModelExpansionInfo, 1);
++    expansion_info->model = g_malloc0(sizeof(*expansion_info->model));
++    expansion_info->model->name = g_strdup(model->name);
++
++    qdict_out = qdict_new();
++
++    i = 0;
++    while ((name = cpu_model_advertised_features[i++]) != NULL) {
++        ObjectProperty *prop = object_property_find(obj, name);
++        if (prop) {
++            QObject *value;
++
++            assert(prop->get);
++            value = object_property_get_qobject(obj, name, &error_abort);
++
++            qdict_put_obj(qdict_out, name, value);
++        }
++    }
++
++    if (!qdict_size(qdict_out)) {
++        qobject_unref(qdict_out);
++    } else {
++        expansion_info->model->props = QOBJECT(qdict_out);
++    }
++
++    object_unref(obj);
++
++    return expansion_info;
 +}
-+
-+void loongarch_cpu_post_init(Object *obj)
-+{
-+    object_property_add_bool(obj, "lsx", loongarch_get_lsx,
-+                             loongarch_set_lsx);
-+    object_property_add_bool(obj, "lasx", loongarch_get_lasx,
-+                             loongarch_set_lasx);
-+}
-+
- static void loongarch_cpu_init(Object *obj)
- {
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 8b54cf109c..d927377c49 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -381,6 +381,11 @@ struct ArchCPU {
- 
-     /* 'compatible' string for this CPU for Linux device trees */
-     const char *dtb_compatible;
-+
-+    /* CPU has LSX */
-+    bool has_lsx;
-+    /* CPU has  LASX */
-+    bool has_lasx;
- };
- 
- #define TYPE_LOONGARCH_CPU "loongarch-cpu"
-@@ -486,4 +491,6 @@ void loongarch_cpu_list(void);
- #define LOONGARCH_CPU_TYPE_NAME(model) model LOONGARCH_CPU_TYPE_SUFFIX
- #define CPU_RESOLVING_TYPE TYPE_LOONGARCH_CPU
- 
-+void loongarch_cpu_post_init(Object *obj);
-+
- #endif /* LOONGARCH_CPU_H */
 -- 
 2.25.1
 
