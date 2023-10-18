@@ -2,65 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09787CD566
-	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 09:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C57CF7CD588
+	for <lists+qemu-devel@lfdr.de>; Wed, 18 Oct 2023 09:34:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qt0ky-0004PB-12; Wed, 18 Oct 2023 03:14:16 -0400
+	id 1qt12y-0006jt-80; Wed, 18 Oct 2023 03:32:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt0kv-0004P0-Fj
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:14:13 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qt12w-0006jW-Jd
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:32:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qt0kt-0008GV-OF
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:14:13 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qt12u-0002kM-Tc
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 03:32:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697613251;
+ s=mimecast20190719; t=1697614367;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fQX3kPf6xf4u7jNwA07UViHI5z7DRZzumN0hZn2kqkk=;
- b=RcEqD7bjtgzMUf2WTtX8zeU9E02UwlswoucH8177p9bJFeRqoWAdbOYi7AmdUO1dIegWnL
- ANAednpCDrGOXfOHV9VojacM+ykeXPcKcXSs2cIeaSPvnGiUfih50yrPXxNUgy84svu5kZ
- F/d/qkHeeTwbw2WVW5zG3OiiBGW1JHM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-260-e_1teE3JPtuZuqHLeYLhng-1; Wed, 18 Oct 2023 03:13:59 -0400
-X-MC-Unique: e_1teE3JPtuZuqHLeYLhng-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 68A60185A79B;
- Wed, 18 Oct 2023 07:13:59 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 27EDD2166B26;
- Wed, 18 Oct 2023 07:13:59 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1B77321E6A1F; Wed, 18 Oct 2023 09:13:58 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel@nongnu.org,
- libvir-list@redhat.com,  Leonardo Bras <leobras@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Fam Zheng <fam@euphon.net>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Eric Blake <eblake@redhat.com>,
- qemu-block@nongnu.org,  Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH v5 5/7] migration: Deprecate old compression method
-References: <20231017115238.18309-1-quintela@redhat.com>
- <20231017115238.18309-6-quintela@redhat.com>
- <878r815otk.fsf@pond.sub.org> <875y35yxul.fsf@secure.mitica>
-Date: Wed, 18 Oct 2023 09:13:58 +0200
-In-Reply-To: <875y35yxul.fsf@secure.mitica> (Juan Quintela's message of "Tue, 
- 17 Oct 2023 19:15:14 +0200")
-Message-ID: <87lec0xv0p.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=H9ARuw3ocrq2zuIRYqvsxkWkuBZXz4JrIIs6MzQ7cA8=;
+ b=jIvKBBG+DUqOUGPdYb+IWa2FKRPT+5jimUUBL5tHid3M1py7IztoGE3e8CTznXrZRwhiJo
+ zviNHvzpuRtTiu+0dxq0/hcOKhFinGA464MTsGdAXfrGlYigpq1EwuvY3vxzw0rGen/RJG
+ tOBgmK7cWD3rxox3jISAplxzSG/fb74=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-510-TsWgzEJRMze41Qd62rpu5w-1; Wed, 18 Oct 2023 03:32:45 -0400
+X-MC-Unique: TsWgzEJRMze41Qd62rpu5w-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-66d75988385so11958696d6.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 00:32:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697614365; x=1698219165;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=H9ARuw3ocrq2zuIRYqvsxkWkuBZXz4JrIIs6MzQ7cA8=;
+ b=BrANO/YY5kxD2skXH0sdyVQdQnK6y8wt42k1qhosSIkL6QgbWa0gnyB9r/Y1Y0wJqr
+ twIpbWh3MjwwC+TFemOHM40UE+TCh6pvSRreJtpl+FTKu6p2N9lEqrT/CPoFtmPha1oe
+ xe5hrtXIiYO2KbnQ8JxwKYsfddlbF6ZU9j9yXdl0fJiwlUsdSjmbA38kD10AbMl2ol3T
+ ndjTrcZtqYVHa495NtZgDpukMFXzB0bfMxe5SnLKJWL35PSRhG8dTDepk699LMiRVXJn
+ QDfokIx1X8crItDNxkzmYyhihufH/ftkT7tSNz1owjfCvriyUHyoEHF30oijVHjx3w/S
+ dEAA==
+X-Gm-Message-State: AOJu0Ywpg+sjISmwuWvZrvEDIHKtz4uA0PPB5gV+GJUd8XXQPqSBNXuc
+ yICuPkJy5uwqsX8UAVkyIxO4snljLUpTiy9WTw18Wg2EU6LzeeNivpoGVKtIKT9eb+xY6ZxZWt7
+ clfP41n5Zkpq5puI=
+X-Received: by 2002:a05:6214:1c0b:b0:66d:6845:ea2d with SMTP id
+ u11-20020a0562141c0b00b0066d6845ea2dmr5259209qvc.53.1697614365115; 
+ Wed, 18 Oct 2023 00:32:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVEqA4xPTiOaWetvvswhtwmlji+EpyS13eyeJ+VOWUsrcyK46S4glHUKGMSbBqRqY7/INBJw==
+X-Received: by 2002:a05:6214:1c0b:b0:66d:6845:ea2d with SMTP id
+ u11-20020a0562141c0b00b0066d6845ea2dmr5259182qvc.53.1697614364748; 
+ Wed, 18 Oct 2023 00:32:44 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ qh29-20020a0562144c1d00b0066d1b4ce863sm1166386qvb.31.2023.10.18.00.32.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Oct 2023 00:32:44 -0700 (PDT)
+Date: Wed, 18 Oct 2023 09:32:39 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
+ <hreitz@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>, Anthony
+ Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau <marcandre.lureau@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+Subject: Re: [PATCH 11/12] hw/xen: automatically assign device index to
+ block devices
+Message-ID: <20231018093239.3d525fd8@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231016151909.22133-12-dwmw2@infradead.org>
+References: <20231016151909.22133-1-dwmw2@infradead.org>
+ <20231016151909.22133-12-dwmw2@infradead.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,139 +109,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+On Mon, 16 Oct 2023 16:19:08 +0100
+David Woodhouse <dwmw2@infradead.org> wrote:
 
-> Markus Armbruster <armbru@redhat.com> wrote:
->> Juan Quintela <quintela@redhat.com> writes:
->>
->>> Signed-off-by: Juan Quintela <quintela@redhat.com>
->>> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
->>> Acked-by: Peter Xu <peterx@redhat.com>
->
->
->>>  # @deprecated: Member @disk is deprecated because block migration is.
->>> +#     Member @compression is deprecated because it is unreliable and
->>> +#     untested. It is recommended to use multifd migration, which
->>> +#     offers an alternative compression implementation that is
->>> +#     reliable and tested.
->>
->> Two spaces between sentences for consistency, please.
->
-> I have reviewed all the patches again.  Let's hope that I didn't miss
-> one.
->
->>>  # @announce-step: Increase in delay (in milliseconds) between
->>>  #     subsequent packets in the announcement (Since 4.0)
->>>  #
->>> -# @compress-level: compression level
->>> +# @compress-level: compression level.
->>>  #
->>> -# @compress-threads: compression thread count
->>> +# @compress-threads: compression thread count.
->>>  #
->>>  # @compress-wait-thread: Controls behavior when all compression
->>>  #     threads are currently busy.  If true (default), wait for a free
->>>  #     compression thread to become available; otherwise, send the page
->>> -#     uncompressed.  (Since 3.1)
->>> +#     uncompressed. (Since 3.1)
->>>  #
->>> -# @decompress-threads: decompression thread count
->>> +# @decompress-threads: decompression thread count.
->>>  #
->>>  # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
->>>  #     bytes_xfer_period to trigger throttling.  It is expressed as
->>
->> Unrelated.
->
-> Rebases are bad for you O:-)
->
->>> @@ -1023,7 +1036,9 @@
->>>  # Features:
->>>  #
->>>  # @deprecated: Member @block-incremental is deprecated. Use
->>> -#     blockdev-mirror with NBD instead.
->>> +#     blockdev-mirror with NBD instead. Members @compress-level,
->>> +#     @compress-threads, @decompress-threads and @compress-wait-thread
->>> +#     are deprecated because @compression is deprecated.
->>
->> Two spaces between sentences for consistency, please.
->
-> Done.
->>> @@ -1078,7 +1097,7 @@
->>>  # Example:
->>>  #
->>>  # -> { "execute": "migrate-set-parameters" ,
->>> -#      "arguments": { "compress-level": 1 } }
->>> +#      "arguments": { "multifd-channels": 5 } }
->>>  # <- { "return": {} }
->>>  ##
->>
->> Thanks for taking care of updating the example!
->
-> You are welcome.  grep for all occurences of compress-level and friends
-> has its advantages.
->
->>>  # @compress-wait-thread: Controls behavior when all compression
->>>  #     threads are currently busy.  If true (default), wait for a free
->>>  #     compression thread to become available; otherwise, send the page
->>> -#     uncompressed.  (Since 3.1)
->>> +#     uncompressed. (Since 3.1)
->>>  #
->>> -# @decompress-threads: decompression thread count
->>> +# @decompress-threads: decompression thread count.
->>>  #
->>>  # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
->>>  #     bytes_xfer_period to trigger throttling.  It is expressed as
->>
->> Unrelated.
->
-> I have removed the periods.
->
-> But I have a question, why the descriptions that are less than one line
-> don't have period and the other have it.
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
 
-When the description consists of multiple sentences, we obviously need
-to end them with punctuation.
+is this index a user (guest) visible?
 
-Sometimes the description isn't a sentence, just a phrase,
-e.g. "decompression thread count".  No punctuation then.
-
-Sometimes it's a single sentence.  Then we roll dice.
-
->>>      if (params->has_compress_level) {
->>> +        warn_report("Old compression is deprecated. "
->>> +                    "Use multifd compression methods instead.");
->>>          s->parameters.compress_level = params->compress_level;
->>>      }
->>>  
->>>      if (params->has_compress_threads) {
->>> +        warn_report("Old compression is deprecated. "
->>> +                    "Use multifd compression methods instead.");
->>>          s->parameters.compress_threads = params->compress_threads;
->>>      }
->>>  
->>>      if (params->has_compress_wait_thread) {
->>> +        warn_report("Old compression is deprecated. "
->>> +                    "Use multifd compression methods instead.");
->>>          s->parameters.compress_wait_thread = params->compress_wait_thread;
->>>      }
->>>  
->>>      if (params->has_decompress_threads) {
->>> +        warn_report("Old compression is deprecated. "
->
-> Once here, I did s/Old/old/
->
-> as all your examples of description start with lowercase.
-
-Yes, please.
-
->>> +                    "Use multifd compression methods instead.");
->>>          s->parameters.decompress_threads = params->decompress_threads;
->>>      }
->>
->> Other than that
->> Reviewed-by: Markus Armbruster <armbru@redhat.com>
->
-> Thanks for your patience.
+> There's no need to force the user to assign a vdev. We can automatically
+> assign one, starting at xvda and searching until we find the first disk
+> name that's unused.
+> 
+> This means we can now allow '-drive if=xen,file=xxx' to work without an
+> explicit separate -driver argument, just like if=virtio.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>  blockdev.c           | 15 ++++++++++++---
+>  hw/block/xen-block.c | 25 +++++++++++++++++++++++++
+>  2 files changed, 37 insertions(+), 3 deletions(-)
+> 
+> diff --git a/blockdev.c b/blockdev.c
+> index 325b7a3bef..9dec4c9c74 100644
+> --- a/blockdev.c
+> +++ b/blockdev.c
+> @@ -255,13 +255,13 @@ void drive_check_orphaned(void)
+>           * Ignore default drives, because we create certain default
+>           * drives unconditionally, then leave them unclaimed.  Not the
+>           * users fault.
+> -         * Ignore IF_VIRTIO, because it gets desugared into -device,
+> -         * so we can leave failing to -device.
+> +         * Ignore IF_VIRTIO or IF_XEN, because it gets desugared into
+> +         * -device, so we can leave failing to -device.
+>           * Ignore IF_NONE, because leaving unclaimed IF_NONE remains
+>           * available for device_add is a feature.
+>           */
+>          if (dinfo->is_default || dinfo->type == IF_VIRTIO
+> -            || dinfo->type == IF_NONE) {
+> +            || dinfo->type == IF_XEN || dinfo->type == IF_NONE) {
+>              continue;
+>          }
+>          if (!blk_get_attached_dev(blk)) {
+> @@ -977,6 +977,15 @@ DriveInfo *drive_new(QemuOpts *all_opts, BlockInterfaceType block_default_type,
+>          qemu_opt_set(devopts, "driver", "virtio-blk", &error_abort);
+>          qemu_opt_set(devopts, "drive", qdict_get_str(bs_opts, "id"),
+>                       &error_abort);
+> +    } else if (type == IF_XEN) {
+> +        QemuOpts *devopts;
+> +        devopts = qemu_opts_create(qemu_find_opts("device"), NULL, 0,
+> +                                   &error_abort);
+> +        qemu_opt_set(devopts, "driver",
+> +                     (media == MEDIA_CDROM) ? "xen-cdrom" : "xen-disk",
+> +                     &error_abort);
+> +        qemu_opt_set(devopts, "drive", qdict_get_str(bs_opts, "id"),
+> +                     &error_abort);
+>      }
+>  
+>      filename = qemu_opt_get(legacy_opts, "file");
+> diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+> index 9262338535..20fa783cbe 100644
+> --- a/hw/block/xen-block.c
+> +++ b/hw/block/xen-block.c
+> @@ -34,6 +34,31 @@ static char *xen_block_get_name(XenDevice *xendev, Error **errp)
+>      XenBlockDevice *blockdev = XEN_BLOCK_DEVICE(xendev);
+>      XenBlockVdev *vdev = &blockdev->props.vdev;
+>  
+> +    if (blockdev->props.vdev.type == XEN_BLOCK_VDEV_TYPE_INVALID) {
+> +        char name[11];
+> +        int disk = 0;
+> +        unsigned long idx;
+> +
+> +        /* Find an unoccupied device name */
+> +        while (disk < (1 << 20)) {
+> +            if (disk < (1 << 4)) {
+> +                idx = (202 << 8) | (disk << 4);
+> +            } else {
+> +                idx = (1 << 28) | (disk << 8);
+> +            }
+> +            snprintf(name, sizeof(name), "%lu", idx);
+> +            if (!xen_backend_exists("qdisk", name)) {
+> +                vdev->type = XEN_BLOCK_VDEV_TYPE_XVD;
+> +                vdev->partition = 0;
+> +                vdev->disk = disk;
+> +                vdev->number = idx;
+> +                return g_strdup(name);
+> +            }
+> +            disk++;
+> +        }
+> +        error_setg(errp, "cannot find device vdev for block device");
+> +        return NULL;
+> +    }
+>      return g_strdup_printf("%lu", vdev->number);
+>  }
+>  
 
 
