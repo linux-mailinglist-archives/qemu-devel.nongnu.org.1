@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EFC7D0421
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5DD7D0422
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:42:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaly-0005mV-VR; Thu, 19 Oct 2023 17:41:42 -0400
+	id 1qtamM-0006mS-LV; Thu, 19 Oct 2023 17:42:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtalw-0005fx-Q2
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:41:40 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtamJ-0006bu-0C
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:42:03 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtalu-0000Rz-4Z
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:41:40 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-53e70b0a218so132069a12.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:41:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtamH-0000t3-HC
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:42:02 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-408425c7c10so1270295e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:42:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697751696; x=1698356496; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697751719; x=1698356519; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=g9fHF1Lm2z45kA/ks0p/qc2goX8ifReYHByDbDQUh3c=;
- b=crIaWZws03rSZWplmR4I6dz+OpahGg/HYRPxYpUK2ywx4TwNDSwG1oOy8thQFywDR9
- RPr1MCyOe5V5VdSDDj6jA0RKf/Pi5G2o0xG/OZ+O3WLT1owSD+cPmhKaYtmYCloyZzhg
- PEBx1JrbIx9tfUIW5YSfALxCtDZvdSav43O5Y90UwZXriD39OX5yqH1MAFYtM+PW/mG4
- 63ZBsfpxZPAYM8+iro60FOmd1uGH0XUbQAB0gFYPm4I0/4Ru8QHOwmHxpeDLzjRk/xbE
- nTvVKOalGgRXHszbLkS97tHzCNoTh/5f1PWndk6Zoqp/IwVZjFKfgy7Nkyes8hkdeH4W
- h03g==
+ bh=iJaGa6xJu/JHhh5O53jFh8ALYoJ2QIrqMEDbhV9uQG8=;
+ b=CgNYXbm0gbp5R4vlbyxtbkLUDDOwWhW1NOshsIpNOtKr0FXtdz3mh1RZIVLwIo6Jko
+ 3wT9REdZo1evt6SdmIogAEFcmLLQtZROuniZoWSb4rfUuf5ShcBCLG90v0hAvI9J9KNN
+ oUBT/LZxv1cdNPIN2D/nlxUSx1ICuFTcXYsWkb2auLnxhHfTp9O0VgRsTsT7Z9TjKmsg
+ jyoe7ufIO6IeRvk16VXcTcU6Y5yUWbX2Atm+fGtKSRz84rr3IENDUY/vlMe/3lvzyybA
+ z5HguTKRpfLFiKjCwYhwYc0yUPQdGHi18JvvMqmJK9j+Sl+cLliUwxbaxUgQeSf0MZJG
+ Reng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697751696; x=1698356496;
+ d=1e100.net; s=20230601; t=1697751719; x=1698356519;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g9fHF1Lm2z45kA/ks0p/qc2goX8ifReYHByDbDQUh3c=;
- b=SIWf9dwitDYLaDz4PPCLhPhoyvg9+H0mZW3iy9heWup5RB9p4E2xFcUjSpWnHT7Flo
- h+bCbsVlkKZtzDcDb8TJdfJVJqwewpEUCiuipvvmlQI2ClX2rDTv6N1w08io73SnOYqv
- 9xrSDTyaL282w1pOCwGe2RsziY/BLOuTWbLXUCqnijHaCCMx4Bo6ti7D2AQppimoUgUU
- HcyOGMswI43NyteB+MWf1EdfXx7tkwOdt2fWyw/LhUbFW1hCiK9FMxQ1I6RXCIdqlTcN
- YRKsF6bfjVEn2UZB1DSn1k4WgG5/0tK6i1psUK4OEVaae5XV32d7Yc2v4Qph+Jq4HD64
- 5K0w==
-X-Gm-Message-State: AOJu0Yww8M3eg4UxgU9oIpxlv23Rb+OKfr8q3B2FV3JEOAoEsjmZk/I4
- fGm1jFJhf++85myy1cs82YHsYp+gSebSIaUY0ywsXA==
-X-Google-Smtp-Source: AGHT+IGhNYfnBMC8MggQaEl8LZP7PDTBG6LSNJrwV/C+KBZDbLv2jVQ60ul4+5wvmgA7oPXpHYj+vA==
-X-Received: by 2002:a17:907:60d4:b0:9ba:1d08:ad43 with SMTP id
- hv20-20020a17090760d400b009ba1d08ad43mr3496384ejc.70.1697751696023; 
- Thu, 19 Oct 2023 14:41:36 -0700 (PDT)
+ bh=iJaGa6xJu/JHhh5O53jFh8ALYoJ2QIrqMEDbhV9uQG8=;
+ b=ZNTKugPRBCEeTE7GxyGroIj0RfIMcaI1cq16+pfaONBlzA/vrFrgOUs28DKvjYxxzT
+ A5w2U4cEgBoXa8+uoS8x6JbWvUpXch1xd89SaVniSv2ojDXyvkFgwQlLLHAdvynAHAHJ
+ hlOOUwdHjSy1GUq094QDEg/Gb7ZRIRMBG0kty0iX7dBKBeXfsdVVmMNPfy+XhenbRiEK
+ A8nBjx0ZGlOVciGuQVxcaXIOUsZQxYEcBgJurMnSWV5SUYOrqbiMSepyn8Sw6ZkgdCzu
+ ukVHkz8pulMWUu1BMvEr2RYo/TLjFj+vie4n6v1BvQ7wi//KE6T2KiKSWaU09x4+013I
+ 4yGA==
+X-Gm-Message-State: AOJu0Yw1T35c53DbkJXGk5GU3ewElhhgQmia/S4ljJSZi7fRu5q8tLp/
+ TsNdYbDdQTDrJYBQyFpadimVelmVqGggzEi09eLxDQ==
+X-Google-Smtp-Source: AGHT+IHEpSb8qMFYR/UNiwgXEvUWR6SZOmri7Z/lqFEqynWCIvvjYl1tIO0mfDodPRspcpTnTik5Bg==
+X-Received: by 2002:a05:600c:1f83:b0:404:fc52:a3c6 with SMTP id
+ je3-20020a05600c1f8300b00404fc52a3c6mr78062wmb.25.1697751719502; 
+ Thu, 19 Oct 2023 14:41:59 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-216-177.abo.bbox.fr.
  [176.131.216.177]) by smtp.gmail.com with ESMTPSA id
- a7-20020a1709062b0700b009932337747esm224113ejg.86.2023.10.19.14.41.33
+ n15-20020a7bcbcf000000b004060f0a0fdbsm5331241wmi.41.2023.10.19.14.41.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 14:41:35 -0700 (PDT)
-Message-ID: <b2d724ca-5369-76ab-30bb-88cf9bcedcb6@linaro.org>
-Date: Thu, 19 Oct 2023 23:41:32 +0200
+ Thu, 19 Oct 2023 14:41:59 -0700 (PDT)
+Message-ID: <1562189c-2aab-993d-2240-304cabe6f62a@linaro.org>
+Date: Thu, 19 Oct 2023 23:41:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 0/7] hw: Few more QOM/QDev cleanups
+Subject: Re: [PATCH] ui/input: Constify QemuInputHandler structure
 Content-Language: en-US
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Fam Zheng <fam@euphon.net>, qemu-arm@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Gerd Hoffmann <kraxel@redhat.com>
-References: <20231017140150.44995-1-philmd@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, xen-devel@lists.xenproject.org,
+ Stefano Stabellini <sstabellini@kernel.org>, qemu-ppc@nongnu.org,
+ Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Song Gao <gaosong@loongson.cn>, Gerd Hoffmann <kraxel@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20231017131251.43708-1-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231017140150.44995-1-philmd@linaro.org>
+In-Reply-To: <20231017131251.43708-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -99,15 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/23 16:01, Philippe Mathieu-Daudé wrote:
+On 17/10/23 15:12, Philippe Mathieu-Daudé wrote:
+> Access to QemuInputHandlerState::handler are read-only.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/hw/virtio/virtio-input.h | 2 +-
+>   include/ui/input.h               | 2 +-
+>   chardev/msmouse.c                | 2 +-
+>   chardev/wctablet.c               | 2 +-
+>   hw/char/escc.c                   | 2 +-
+>   hw/display/xenfb.c               | 6 +++---
+>   hw/input/adb-kbd.c               | 2 +-
+>   hw/input/hid.c                   | 6 +++---
+>   hw/input/ps2.c                   | 4 ++--
+>   hw/input/virtio-input-hid.c      | 8 ++++----
+>   ui/input-legacy.c                | 2 +-
+>   ui/input.c                       | 4 ++--
+>   ui/vdagent.c                     | 2 +-
+>   13 files changed, 22 insertions(+), 22 deletions(-)
 
-> Philippe Mathieu-Daudé (7):
->    hw/virtio/virtio-pmem: Replace impossible check by assertion
->    hw/block/vhost-user-blk: Use DEVICE() / VIRTIO_DEVICE() macros
->    hw/display/virtio-gpu: Use VIRTIO_DEVICE() macro
->    hw/scsi/virtio-scsi: Use VIRTIO_SCSI_COMMON() macro
->    hw/dma: Declare link using static DEFINE_PROP_LINK() macro
->    hw/net: Declare link using static DEFINE_PROP_LINK() macro
-
-Patches 1-6 queued to hw-misc.
+Patch queued to hw-misc.
 
