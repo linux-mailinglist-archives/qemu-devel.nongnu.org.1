@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DAA7CF882
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FE07CF887
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:16:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtRvD-0008Ub-9H; Thu, 19 Oct 2023 08:14:39 -0400
+	id 1qtRwi-0003bi-4m; Thu, 19 Oct 2023 08:16:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qtRuw-0008Ou-Bg
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:14:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qtRut-00085f-NN
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:14:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697717658;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vCjHXQ67dfjwM4d28yPczalsclVjgKxSY8S0DPjLQK0=;
- b=Gci15tlYpG3sHJPdWmb9iipG72NWnDB1R9xLyoOXJeFf9+0IaJKw4yLLMd/HINjn0dOkL6
- t/d/bLUTQYDr2Y/YbRSYRgYyhR5KPIDKA7VkblW5SapkWXPa8XiVV9L62mWlNyhuZfcu4O
- lTNHZrm0lgJyzU9xmepciTOFcsq2uKk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-486-bneKH_gsPPuB5GMg9F43iQ-1; Thu, 19 Oct 2023 08:14:14 -0400
-X-MC-Unique: bneKH_gsPPuB5GMg9F43iQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4EE4129AA381;
- Thu, 19 Oct 2023 12:14:14 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.120])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E30732026D4C;
- Thu, 19 Oct 2023 12:14:12 +0000 (UTC)
-Date: Thu, 19 Oct 2023 14:14:11 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
- QEMU Developers <qemu-devel@nongnu.org>,
- Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>,
- Thomas Lamprecht <t.lamprecht@proxmox.com>
-Subject: Re: deadlock when using iothread during backup_clean()
-Message-ID: <ZTEdk5gKXlIrKNm8@redhat.com>
-References: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
- <dd12f39d-a364-b186-2ad7-04343ea85e3f@redhat.com>
- <44ff810b-8ec6-0f11-420a-6efa2c7c2475@proxmox.com>
- <2ca4eb06-75c3-7bd8-972b-b37af47743dc@yandex-team.ru>
- <71e3112d-3d3f-fd55-4099-6765d4f22205@proxmox.com>
- <76f9678d-ed92-418e-8d1e-c6dc55f83279@proxmox.com>
- <ZS56FzuqZSApXBbc@redhat.com>
- <c2a6c1b6-0438-488f-bba3-1014ffdadbce@proxmox.com>
- <ZS6YFtYKyFLbfrrP@redhat.com>
- <3e1c941b-2b76-4f85-88cb-4a2a968eb3e6@proxmox.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qtRwX-0003Wt-7N
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:16:02 -0400
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qtRwV-0008TY-CQ
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:16:00 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-1dd5b98d9aeso383467fac.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 05:15:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1697717757; x=1698322557; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=GT7PX3u/u07Xpwj34/mqgt1W5Ac4zq+LdeTQ6ZORZnY=;
+ b=FjAZKVkGlc/z4g77WaInHgukehWn/xVceQzCfpYu7HzSff2zAQdKjCQ1gjakr613DB
+ d746yEtfg5o4Z9WM8/yK3JW12QstbQ/dl7jIkni+O5SKK3Cr/0Odq7AXhMKGs4WK6owL
+ R4HBglLwArAFHtnrRA4KpMiLb3wmWmXCL/xDI9nh2MNpDBj1qbPxlgjCro2bibNdk8Mh
+ XpVrbOzVSnGWK7zvojX4GKJeIcNMaF56IAyotkNUi2g8+2xW1ZO/88Yitkn4j+LRp6QL
+ dJ9xm/+rP+iKH8lpmB6DBB08c2J9CvVZchy5J/vsCnojcaX+cdExBYeEXOrZsya9NX+F
+ Hdww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697717757; x=1698322557;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GT7PX3u/u07Xpwj34/mqgt1W5Ac4zq+LdeTQ6ZORZnY=;
+ b=CqS7JvW6RB9rOLIeRXU5aBtTxZ1BjpDTEUGssd+cSpKZrpZEN4jVPTqGexHGe5BT7b
+ Cn/fpcTvb32/lOlca/GAHpEi6rsJAQA2QgEH87RItY0gNR1pwEZ2huNSUXpaOv4cchX/
+ 5p+Gdqr38l02ebL3dnJ+zfOGhoP6qIjHJfdiIALDHveMIwlefxeR0oSJ8uWuZtI0JrQX
+ NsWwnVbJECGIJv053+clx0c9KuIecFPV9ISg7+48h9c7qlsPHG+D5hLRAeBM05Zj9HGL
+ 7XkSTKlC8Nu8j3wfEUV+lBRTz5HYAA76WcyVTGRs2oB+dl0+KnyGNnq7zg+2r1lp4iMr
+ 43TQ==
+X-Gm-Message-State: AOJu0YxTu953C9pEiTQEA07ZCDvvs9ejOjVJciXM5T+OD3rQ8SmFQFzS
+ oFnwnK6cRnrDGMhlIqS5XlmZ+8J3TXJ//AVkPyI=
+X-Google-Smtp-Source: AGHT+IEku7zifYgH1VQvzO3RDMVaVVg1r+Pvdti7RWjkwu0oPsADxz9WcA8sUfdEld5llU7LxIOZEB1aLYOWc8I9fSw=
+X-Received: by 2002:a05:6870:b424:b0:1e9:e280:6c37 with SMTP id
+ x36-20020a056870b42400b001e9e2806c37mr797350oap.6.1697717757493; Thu, 19 Oct
+ 2023 05:15:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3e1c941b-2b76-4f85-88cb-4a2a968eb3e6@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <202310191528414853267@zte.com.cn>
+In-Reply-To: <202310191528414853267@zte.com.cn>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 19 Oct 2023 05:15:45 -0700
+Message-ID: <CAJSP0QXFHat0wgpC-y-ZZbqWNhoN1V03PE7+hnLhbny6NwN3Lg@mail.gmail.com>
+Subject: Re: Re: [PATCH] virtio-blk: don't start dataplane during the stop of
+ dataplane
+To: lv.mengzhao@zte.com.cn
+Cc: stefanha@redhat.com, mst@redhat.com, kwolf@redhat.com, hreitz@redhat.com, 
+ qemu-devel@nongnu.org, hu.jian@zte.com.cn, cv11411@126.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=stefanha@gmail.com; helo=mail-oa1-x2b.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,165 +86,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 18.10.2023 um 11:42 hat Fiona Ebner geschrieben:
-> Am 17.10.23 um 16:20 schrieb Kevin Wolf:
-> > Am 17.10.2023 um 15:37 hat Fiona Ebner geschrieben:
-> >> Am 17.10.23 um 14:12 schrieb Kevin Wolf:
-> >>> Am 17.10.2023 um 12:18 hat Fiona Ebner geschrieben:
-> >>>> I ran into similar issues now with mirror, (both deadlocks and stuck
-> >>>> guest IO at other times), and interestingly, also during job start.
-> >>>>
-> >>>> Also had a backtrace similar to [0] once, so I took a closer look.
-> >>>> Probably was obvious to others already, but for the record:
-> >>>>
-> >>>> 1. the graph is locked by the main thread
-> >>>> 2. the iothread holds the AioContext lock
-> >>>> 3. the main thread waits on the AioContext lock
-> >>>> 4. the iothread waits for coroutine spawned by blk_is_available()
-> >>>
-> >>> Where does this blk_is_available() in the iothread come from? Having it
-> >>> wait without dropping the AioContext lock sounds like something that
-> >>> we'd want to avoid. Ideally, devices using iothreads shouldn't use
-> >>> synchronous requests at all, but I think scsi-disk might have some of
-> >>> them.
-> >>>
-> >>
-> >> It's part of the request handling in virtio-scsi:
-> >>
-> >>> #0  0x00007ff7f5f55136 in __ppoll (fds=0x7ff7e40030c0, nfds=8, timeout=<optimized out>, sigmask=0x0) at ../sysdeps/unix/sysv/linux/ppoll.c:42
-> >>> #1  0x00005587132615ab in qemu_poll_ns (fds=0x7ff7e40030c0, nfds=8, timeout=-1) at ../util/qemu-timer.c:339
-> >>> #2  0x000055871323e8b1 in fdmon_poll_wait (ctx=0x55871598d5e0, ready_list=0x7ff7f288ebe0, timeout=-1) at ../util/fdmon-poll.c:79
-> >>> #3  0x000055871323e1ed in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:670
-> >>> #4  0x0000558713089efa in bdrv_poll_co (s=0x7ff7f288ec90) at /home/febner/repos/qemu/block/block-gen.h:43
-> >>> #5  0x000055871308c362 in blk_is_available (blk=0x55871599e2f0) at block/block-gen.c:1426
-> >>> #6  0x0000558712f6843b in virtio_scsi_ctx_check (s=0x558716c049c0, d=0x55871581cd30) at ../hw/scsi/virtio-scsi.c:290
-> > 
-> > Oh... So essentially for an assertion.
-> > 
-> > I wonder if the blk_is_available() check introduced in 2a2d69f490c is
-> > even necessary any more, because BlockBackend has its own AioContext
-> > now. And if blk_bs(blk) != NULL isn't what we actually want to check if
-> > the check is necessary, because calling bdrv_is_inserted() doesn't seem
-> > to have been intended. blk_bs() wouldn't have to poll.
-> > 
-> 
-> Could virtio_scsi_hotunplug() be an issue with removing or modifying
-> the check? There's a call there which sets the blk's AioContext to
-> qemu_get_aio_context(). Or are we sure that the assert in
-> virtio_scsi_ctx_check() can't be reached after that?
+On Thu, 19 Oct 2023 at 00:31, <lv.mengzhao@zte.com.cn> wrote:
+>
+> On Tue, Oct 17, 2023 at 10:04PM +0800, stefanha@redhat.com wrote:
+>
+> > > From: hujian <hu.jian@zte.com.cn>
+>
+> > >
+>
+> > > During the stop of dataplane for virtio-blk, virtio_bus_cleanup_host_notifier() is be
+>
+> > > called to clean up notifier at the end, if polled ioeventfd, virtio_blk_handle_output()
+>
+> > > is used to handle io request. But due to s->dataplane_disabled is false, it will be
+>
+> > > returned directly, which drops io request.
+>
+> > > Backtrace:
+>
+> > > ->virtio_blk_data_plane_stop
+>
+> > >   ->virtio_bus_cleanup_host_notifier
+>
+> > >     ->virtio_queue_host_notifier_read
+>
+> > >       ->virtio_queue_notify_vq
+>
+> > >         ->vq->handle_output
+>
+> > >           ->virtio_blk_handle_output
+>
+> > >             ->if (s->dataplane  && !s->dataplane_stoped)
+>
+> > >               ->if (!s->dataplane_disabled)
+>
+> > >                 ->return *
+>
+> > >             ->virtio_blk_handle_output_do
+>
+> > > The above problem can occur when using "virsh reset" cmdline to reset guest, while
+>
+> > > guest does io.
+>
+> > > To fix this problem, don't try to start dataplane if s->stopping is true, and io would
+>
+> > > be handled by virtio_blk_handle_vq().
+>
+> > >
+>
+> > > Signed-off-by: hujian <hu.jian@zte.com.cn>
+>
+> > > ---
+>
+> > >  hw/block/virtio-blk.c | 2 +-
+>
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> >
+>
+> > I have dropped this patch again after Fiona pointed out it does not
+>
+> > compile and Kevin noticed that handling requests from the main loop
+>
+> > thread while the I/O is still being processed in the IOThread is going
+>
+> > to cause thread-safety issues.
+>
+> >
+>
+> > Can you explain the problem you are seeing in more detail? You run
+>
+> > "virsh reset" while the guest is doing I/O. Then what happens?
+>
+> >
+>
+> > Stefan
+>
+>
+> 1 Compilation issues
+>
+> I'm sorry to be in such a hurry to submit the patch that I forgot to compile it locally.
+>
+> Compilable patches are at the bottom.
+>
+>
+> 2 Troubleshooting
 
-I think that would be the kind of bug that the assertion tries to
-catch, because then we would be sending requests to blk from a thread
-that doesn't match its AioContext (which will be allowed soon, but not
-quite yet).
+I won't be able to reply until November 2nd. Maybe Kevin or Hanna can
+discuss this with you in the meantime.
 
-Before resetting the AioContext, virtio_scsi_hotunplug() calls
-qdev_simple_device_unplug_cb(), which unrealizes the SCSI device. This
-calls scsi_qdev_unrealize() -> scsi_device_purge_requests(), which in
-turn drains blk and cancels all pending requests. So there should be
-nothing left that could call into virtio_scsi_ctx_check() any more.
+Stefan
 
-The other argument is that after unrealize, virtio_scsi_device_get()
-would return NULL anyway, so even if a request were still pending, it
-would just fail instead of accessing the unplugged device.
-
-> >>> #7  0x0000558712f697e4 in virtio_scsi_handle_cmd_req_prepare (s=0x558716c049c0, req=0x7ff7e400b650) at ../hw/scsi/virtio-scsi.c:788
-> >>> #8  0x0000558712f699b0 in virtio_scsi_handle_cmd_vq (s=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:831
-> >>> #9  0x0000558712f69bcb in virtio_scsi_handle_cmd (vdev=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:867
-> >>> #10 0x0000558712f96812 in virtio_queue_notify_vq (vq=0x558716c0d2a8) at ../hw/virtio/virtio.c:2263
-> >>> #11 0x0000558712f99b75 in virtio_queue_host_notifier_read (n=0x558716c0d31c) at ../hw/virtio/virtio.c:3575
-> >>> #12 0x000055871323d8b5 in aio_dispatch_handler (ctx=0x55871598d5e0, node=0x558716771000) at ../util/aio-posix.c:372
-> >>> #13 0x000055871323d988 in aio_dispatch_ready_handlers (ctx=0x55871598d5e0, ready_list=0x7ff7f288eeb0) at ../util/aio-posix.c:401
-> >>
-> >>
-> >>>> As for why it doesn't progress, blk_co_is_available_entry() uses
-> >>>> bdrv_graph_co_rdlock() and can't get it, because the main thread has the
-> >>>> write lock. Should be fixed once the AioContext locks are gone, but not
-> >>>> sure what should be done to avoid it until then.
-> >>>
-> >>> Then the nested event loop in blk_is_available() would probably be
-> >>> enough to make progress, yes.
-> >>>
-> >>> Maybe we could actually drop the lock (and immediately reacquire it) in
-> >>> AIO_WAIT_WHILE() even if we're in the home thread? That should give the
-> >>> main thread a chance to make progress.
-> >>
-> >> Seems to work :) I haven't run into the issue with the following change
-> >> anymore, but I have to say, running into that specific deadlock only
-> >> happened every 10-15 tries or so before. Did 30 tests now. But
-> >> unfortunately, the stuck IO issue is still there.
-> >>
-> >>> diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
-> >>> index 5449b6d742..da159501ca 100644
-> >>> --- a/include/block/aio-wait.h
-> >>> +++ b/include/block/aio-wait.h
-> >>> @@ -88,7 +88,13 @@ extern AioWait global_aio_wait;
-> >>>      smp_mb__after_rmw();                                           \
-> >>>      if (ctx_ && in_aio_context_home_thread(ctx_)) {                \
-> >>>          while ((cond)) {                                           \
-> >>> +            if (unlock && ctx_) {                                  \
-> >>> +                aio_context_release(ctx_);                         \
-> >>> +            }                                                      \
-> >>>              aio_poll(ctx_, true);                                  \
-> >>> +            if (unlock && ctx_) {                                  \
-> >>> +                aio_context_acquire(ctx_);                         \
-> >>> +            }                                                      \
-> >>>              waited_ = true;                                        \
-> >>>          }                                                          \
-> >>>      } else {                                                       \
-> > 
-> > For reacquiring the lock, I really meant "immediately". Calling
-> > aio_poll() without the lock is wrong.
-> 
-> Unfortunately, then it's not enough, because the call to aio_poll() is
-> blocking and because the lock is held during that call, the very same
-> deadlock can still happen.
-
-Oh, right. What we would need is an aio_poll() that drops the lock
-while it blocks, pretty much like the main loop does with the BQL. I
-seem to remember that this was an intentional difference, but I don't
-remember why.
-
-Paolo, I'm sure you remember?
-
-> > 
-> > What does the stuck I/O look like? Is it stuck in the backend, i.e. the
-> > device started requests that never complete? Or stuck from the guest
-> > perspective, i.e. the device never checks for new requests?
-> > 
-> 
-> AFAICT, from the guest perspective.
-> 
-> > I don't really have an idea immediately, we'd have to find out where the
-> > stuck I/O stops being processed.
-> > 
-> 
-> I've described it in an earlier mail in this thread:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg01900.html
-> 
-> Quoting from there:
-> 
-> > After the IO was stuck in the guest, I used bdrv_next_all_states() to
-> > iterate over the states and there's only the bdrv_raw and the
-> > bdrv_host_device. For both, tracked_requests was empty.
-
-And bs->in_flight and blk->in_flight are 0, too?
-
-Is anything quiesced?
-
-> > What is also very interesting is that the IO isn't always dead
-> > immediately. It can be that the fio command still runs with lower speed
-> > for a while (sometimes even up to about a minute, but most often about
-> > 10-15 seconds or so). During that time, I still can see calls to
-> > virtio_scsi_handle_cmd() and blk_aio_write_entry(). Then they suddenly stop.
-> 
-> Noting again that (at least for backup) it happens with both virtio-blk
-> and virtio-scsi and with both aio=io_uring and aio=threads. I also tried
-> different host kernels 5.15, 6.2 and 6.5 and guest kernels 5.10 and 6.1.
-
-You say "at least for backup". Did you see the bug for other job types,
-too?
-
-Kevin
-
+> We have done a lifecycle test for the VM (QEMU version: 4.1.0, Host kernel version: 4.18),
+>
+> which is loop execution: virsh create -> virsh suspend -> virsh resume -> virsh reset ->
+>
+> virsh shutdown, and io stress test inside the virtual machine. After the loop is executed
+>
+> about 200 times, after "virsh reset" is executed, the virtual machine goes into emergency
+>
+> mode and fails to start normally. Theoretically, "virsh reset" may causes data loss of
+>
+> virtual machine, but not enough to put it into emergency mode.
+>
+>
+> Coincidentally, I happen to be fixing another different fault with the same phenomenon,
+>
+> which is caused by a our private patch, this patch calls virtio_blk_data_plane_ [stop|start]
+>
+> to operate the dataplane, if QEMU is processing io requests at same time, it may cause the
+>
+> loss of io requests.
+>
+>
+> Analyzing virtio_blk_data_plane_stop(), virtio_bus_cleanup_host_notifier() is used to
+>
+> clean up notifiers, and my understanding is that it would handle the remaining IO requests.
+>
+> The stack is as follows, I add the print at the star line and find that virtio_blk_handle_output()
+>
+> returned directly instead of continuing to call virtio_blk_handle_vq() to handle io. So I modify
+>
+> the code here to make it don't return during the stop of dataplane, and our internal private patch
+>
+> works normally.
+>
+>
+> Backtrace:
+>
+> ->virtio_blk_data_plane_stop
+>
+>   ->virtio_bus_cleanup_host_notifier
+>
+>     ->virtio_queue_host_notifier_read
+>
+>       ->virtio_queue_notify_vq
+>
+>         ->vq->handle_output
+>
+>           ->virtio_blk_handle_output
+>
+>             ->if (s->dataplane  && !s->dataplane_stoped)
+>
+>               ->if (!s->dataplane_disabled)
+>
+>                 ->return *
+>
+>             ->virtio_blk_handle_vq
+>
+>
+> Back to the problem caused by the virsh reset, libvirt sends the "system_reset" QEMU
+>
+> monitor command to QEMU, and QEMU calls qmp_system_reset(), and eventually calls
+>
+> virtio_blk_data_plane_[stop|start] to reset devices. I suspect that io loss will
+>
+> also occur if QEMU still has io to process during the stop of dataplane.
+>
+>
+> 3 Thread-safety issues
+>
+> virtio_blk_data_plane_stop() calls blk_set_aio_context() to switch bs back to the QEMU
+>
+> main loop after virtio_bus_cleanup_host_notifier(), so the remaining IO requests
+>
+> are still handling by iothread(if configured). I'm a little confused as to why there
+>
+> is thread-safety issues.
+>
+>
+> Lastly, please CC to cv11411@126.com, this is my private email, so I can contact with
+>
+> you in my free time, Thanks.
+>
+>
+> 4 Compilable patches
+>
+> diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+>
+> index 39e7f23..d3a719c 100644
+>
+> --- a/hw/block/virtio-blk.c
+>
+> +++ b/hw/block/virtio-blk.c
+>
+> @@ -1165,8 +1165,9 @@ void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq)
+>
+>  static void virtio_blk_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+>
+>  {
+>
+>      VirtIOBlock *s = (VirtIOBlock *)vdev;
+>
+> +    VirtIOBlockDataPlane *dp = s->dataplane;
+>
+>
+> -    if (s->dataplane && !s->dataplane_started) {
+>
+> +    if (s->dataplane && !s->dataplane_started && !dp->stopping) {
+>
+>          /* Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
+>
+>           * dataplane here instead of waiting for .set_status().
+>
+>           */
+>
+>
+>
+>
+>
 
