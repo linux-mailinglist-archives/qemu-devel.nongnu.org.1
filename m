@@ -2,94 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1777D0343
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CD37D0344
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:42:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZp4-0001Qm-WD; Thu, 19 Oct 2023 16:40:51 -0400
+	id 1qtZqj-0005WY-5a; Thu, 19 Oct 2023 16:42:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qtZp3-0001IG-3V; Thu, 19 Oct 2023 16:40:49 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qtZqf-0005Un-3C; Thu, 19 Oct 2023 16:42:29 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qtZp1-0008Ny-8f; Thu, 19 Oct 2023 16:40:48 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qtZqc-00019h-9J; Thu, 19 Oct 2023 16:42:28 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKbNu1007210; Thu, 19 Oct 2023 20:40:33 GMT
+ 39JKdbR6017571; Thu, 19 Oct 2023 20:42:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=XUAOuseRYN8+T/Y4dPMa5M+Q7MPC4OXUlcvHDpJFw7k=;
- b=c/Ku3YfmQENKnWi0u0SFhJaMXWvAgfpfYuP5sz3IOuKCqa/uGZMWBekBEqTzASPpMzBs
- YKc/p8Cfukd7o1nQBbCX9UTyy5rlMEMPcwhbRRskK3aJ3yu8ga3CDpgnwqIM+vWhsJ11
- YZHbf4vx+3L7/HF7g81wfqOHaIbnuvreDhsQBx3DR5KrAqOunjsiSubHB60aRBHKmfUS
- nWUGWOX5ZyNkWGbg1oMvEAeiOysCwUZTJFlRU+Vh5wHacfbehROIjcllFK+yhf+wVSPV
- ygWjRW7o1MGz2G59tFfLnxYkjxMZlUDwhIEuY9Yrd3foFk5cJmLDV2GQ7KgK9QsEOYtm tw== 
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubnc875a-1
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=F7DQLMKjdfplScNXTL2KFwcgN3jHl0LsOzFJERq22q8=;
+ b=p+vbT1dhWYwuQQTgJXJA3GRp0sW0YWL7wU1wwRhgE2ipVLNfyRANLP8ehtc9c1aqtG14
+ L7A7O+vsmLz9E9gPnc8H5+OxsyTWAF7KpUpoFXgnzmkjIQFAV4aksNFTnRUvN0FS1Iq8
+ WmkA3DrLGv4cXh350riqatdrmFd1dQYnOQ/4nKeFoCpxXHhwARI9pJcj5ejyG4/oS0k+
+ hUzNXH34widC0/io25hb31XQT/ZQB2aSdZSLYN9I3RoErH2GBDcU/QyGrMagIrWbxS7q
+ c1ens7i7yg3hEkzIX+HFbcpWmIn5VrjvQ7e+jod6eRVrQ6WUitQt/+0Jnf97ds+evcvT Vw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubpfr5su-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:40:32 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JIIU90026885; Thu, 19 Oct 2023 20:40:31 GMT
+ Thu, 19 Oct 2023 20:42:14 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKdYNt017086;
+ Thu, 19 Oct 2023 20:42:13 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubpfr5rd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Oct 2023 20:42:13 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39JKRrfF019884; Thu, 19 Oct 2023 20:42:12 GMT
 Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr5asuqpr-1
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr8122ya5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:40:31 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
+ Thu, 19 Oct 2023 20:42:12 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
  by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39JKeVtB36831622
+ 39JKgC9624117566
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:40:31 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E891C58053;
- Thu, 19 Oct 2023 20:40:30 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7EAAF5805D;
- Thu, 19 Oct 2023 20:40:30 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 19 Oct 2023 20:40:30 +0000 (GMT)
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- andrew@codeconstruct.com.au, Joel Stanley <joel@jms.id.au>
-Subject: [PATCH 2/2] misc/pca9552: Let external devices set pca9552 inputs
-Date: Thu, 19 Oct 2023 15:40:11 -0500
-Message-Id: <20231019204011.3174115-3-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
-References: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
+ Thu, 19 Oct 2023 20:42:12 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E196C58058;
+ Thu, 19 Oct 2023 20:42:11 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 763C158057;
+ Thu, 19 Oct 2023 20:42:08 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Thu, 19 Oct 2023 20:42:08 +0000 (GMT)
+Message-ID: <7f200fc5-3db3-cb13-3b9c-9861dfb358ec@linux.ibm.com>
+Date: Thu, 19 Oct 2023 16:42:07 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 13/13] migration: Use vmstate_register_any() for vmware_vga
+Content-Language: en-US
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-s390x@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+ Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, qemu-arm@nongnu.org,
+ Jason Wang <jasowang@redhat.com>, Corey Minyard <minyard@acm.org>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
+ <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20231019190831.20363-1-quintela@redhat.com>
+ <20231019190831.20363-14-quintela@redhat.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20231019190831.20363-14-quintela@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: t591Esu_ex-3av8gfEyZonzsEQ0OhV-G
-X-Proofpoint-GUID: t591Esu_ex-3av8gfEyZonzsEQ0OhV-G
+X-Proofpoint-GUID: UJjskGeC5GbfGf-vt7aQWVjyRxjyAZ7q
+X-Proofpoint-ORIG-GUID: A225qCHXuKPmbXyd9c6iPZMs_prm4gfG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-19_20,2023-10-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- mlxlogscore=999 clxscore=1015 mlxscore=0 suspectscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310190176
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ clxscore=1015 adultscore=0
+ mlxlogscore=999 priorityscore=1501 impostorscore=0 phishscore=0
+ spamscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310190176
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -52
+X-Spam_score: -5.3
+X-Spam_bar: -----
+X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,149 +134,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow external devices to drive pca9552 input pins by adding
-input GPIO's to the model.  This allows a device to connect
-its output GPIO's to the pca9552 input GPIO's.
 
-In order for an external device to set the state of a pca9552
-pin, the pin must first be configured for high impedance (LED
-is off).  If the pca9552 pin is configured to drive the pin low
-(LED is on), then external input will be ignored.
+On 10/19/23 15:08, Juan Quintela wrote:
+> I have no idea if we can have more than one vmware_vga device, so play
+> it safe.
+>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
 
-Here is a table describing the logical state of a pca9552 pin
-given the state being driven by the pca9552 and an external device:
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
-                   PCA9552
-                   Configured
-                   State
+> ---
+>   hw/display/vmware_vga.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
+> index 09591fbd39..7490d43881 100644
+> --- a/hw/display/vmware_vga.c
+> +++ b/hw/display/vmware_vga.c
+> @@ -1264,7 +1264,7 @@ static void vmsvga_init(DeviceState *dev, struct vmsvga_state_s *s,
+>
+>       vga_common_init(&s->vga, OBJECT(dev), &error_fatal);
+>       vga_init(&s->vga, OBJECT(dev), address_space, io, true);
+> -    vmstate_register(NULL, 0, &vmstate_vga_common, &s->vga);
+> +    vmstate_register_any(NULL, &vmstate_vga_common, &s->vga);
 
-                  | Hi-Z | Low |
-            ------+------+-----+
-  External   Hi-Z |  Hi  | Low |
-  Device    ------+------+-----+
-  State      Low  |  Low | Low |
-            ------+------+-----+
+And the first one registered with 'any' will again have instance_id = 0 
+assigned. So there's no side effect to be expected with any of these 
+device, I suppose.
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
 
-Changes from previous version:
- - Added #define's for external state values
- - Added logic state table to commit message
- - Added cover letter
-
- hw/misc/pca9552.c         | 41 ++++++++++++++++++++++++++++++++++-----
- include/hw/misc/pca9552.h |  3 ++-
- 2 files changed, 38 insertions(+), 6 deletions(-)
-
-diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-index 445f56a9e8..ed814d1f98 100644
---- a/hw/misc/pca9552.c
-+++ b/hw/misc/pca9552.c
-@@ -44,6 +44,8 @@ DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
- #define PCA9552_LED_OFF  0x1
- #define PCA9552_LED_PWM0 0x2
- #define PCA9552_LED_PWM1 0x3
-+#define PCA9552_PIN_LOW  0x0
-+#define PCA9552_PIN_HIZ  0x1
- 
- static const char *led_state[] = {"on", "off", "pwm0", "pwm1"};
- 
-@@ -116,16 +118,22 @@ static void pca955x_update_pin_input(PCA955xState *s)
-         switch (config) {
-         case PCA9552_LED_ON:
-             /* Pin is set to 0V to turn on LED */
--            qemu_set_irq(s->gpio[i], 0);
-+            qemu_set_irq(s->gpio_out[i], 0);
-             s->regs[input_reg] &= ~(1 << input_shift);
-             break;
-         case PCA9552_LED_OFF:
-             /*
-              * Pin is set to Hi-Z to turn off LED and
--             * pullup sets it to a logical 1.
-+             * pullup sets it to a logical 1 unless
-+             * external device drives it low.
-              */
--            qemu_set_irq(s->gpio[i], 1);
--            s->regs[input_reg] |= 1 << input_shift;
-+            if (s->ext_state[i] == PCA9552_PIN_LOW) {
-+                qemu_set_irq(s->gpio_out[i], 0);
-+                s->regs[input_reg] &= ~(1 << input_shift);
-+            } else {
-+                qemu_set_irq(s->gpio_out[i], 1);
-+                s->regs[input_reg] |= 1 << input_shift;
-+            }
-             break;
-         case PCA9552_LED_PWM0:
-         case PCA9552_LED_PWM1:
-@@ -340,6 +348,7 @@ static const VMStateDescription pca9552_vmstate = {
-         VMSTATE_UINT8(len, PCA955xState),
-         VMSTATE_UINT8(pointer, PCA955xState),
-         VMSTATE_UINT8_ARRAY(regs, PCA955xState, PCA955X_NR_REGS),
-+        VMSTATE_UINT8_ARRAY(ext_state, PCA955xState, PCA955X_PIN_COUNT_MAX),
-         VMSTATE_I2C_SLAVE(i2c, PCA955xState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -358,6 +367,7 @@ static void pca9552_reset(DeviceState *dev)
-     s->regs[PCA9552_LS2] = 0x55;
-     s->regs[PCA9552_LS3] = 0x55;
- 
-+    memset(s->ext_state, PCA9552_PIN_HIZ, PCA955X_PIN_COUNT_MAX);
-     pca955x_update_pin_input(s);
- 
-     s->pointer = 0xFF;
-@@ -380,6 +390,26 @@ static void pca955x_initfn(Object *obj)
-     }
- }
- 
-+static void pca955x_set_ext_state(PCA955xState *s, int pin, int level)
-+{
-+    if (s->ext_state[pin] != level) {
-+        uint16_t pins_status = pca955x_pins_get_status(s);
-+        s->ext_state[pin] = level;
-+        pca955x_update_pin_input(s);
-+        pca955x_display_pins_status(s, pins_status);
-+    }
-+}
-+
-+static void pca955x_gpio_in_handler(void *opaque, int pin, int level)
-+{
-+
-+    PCA955xState *s = PCA955X(opaque);
-+    PCA955xClass *k = PCA955X_GET_CLASS(s);
-+
-+    assert((pin >= 0) && (pin < k->pin_count));
-+    pca955x_set_ext_state(s, pin, level);
-+}
-+
- static void pca955x_realize(DeviceState *dev, Error **errp)
- {
-     PCA955xClass *k = PCA955X_GET_CLASS(dev);
-@@ -389,7 +419,8 @@ static void pca955x_realize(DeviceState *dev, Error **errp)
-         s->description = g_strdup("pca-unspecified");
-     }
- 
--    qdev_init_gpio_out(dev, s->gpio, k->pin_count);
-+    qdev_init_gpio_out(dev, s->gpio_out, k->pin_count);
-+    qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
- }
- 
- static Property pca955x_properties[] = {
-diff --git a/include/hw/misc/pca9552.h b/include/hw/misc/pca9552.h
-index b6f4e264fe..c36525f0c3 100644
---- a/include/hw/misc/pca9552.h
-+++ b/include/hw/misc/pca9552.h
-@@ -30,7 +30,8 @@ struct PCA955xState {
-     uint8_t pointer;
- 
-     uint8_t regs[PCA955X_NR_REGS];
--    qemu_irq gpio[PCA955X_PIN_COUNT_MAX];
-+    qemu_irq gpio_out[PCA955X_PIN_COUNT_MAX];
-+    uint8_t ext_state[PCA955X_PIN_COUNT_MAX];
-     char *description; /* For debugging purpose only */
- };
- 
--- 
-2.31.1
-
+>       s->new_depth = 32;
+>   }
+>
 
