@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6AF7D01C9
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA59B7D01AA
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:34:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXoF-0000u9-Ou; Thu, 19 Oct 2023 14:31:51 -0400
+	id 1qtXpS-0006Yp-Al; Thu, 19 Oct 2023 14:33:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtXo3-0000iR-T9
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:31:43 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtXo1-0007bZ-N6
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:31:39 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-27d17f5457fso889571a91.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:31:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697740295; x=1698345095; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UV3fV/dZ656RIQwVZI5FxfcIhR6su+VKTq+o7PgF8AA=;
- b=bRsKipKYk3GuB5yzqKGQfiZPAXIIby8Pb3+l8N762PrNHZCKQD4skFi5IkUif8d/QS
- O7BaxMbm0+zjI4FF+TZoonr5Ke4GuHakdkkzYO/taP/g2sCwsGnnsbLHWef7Kz2O75Ou
- 52B27w+SqYvm8CwyQ75RiWAf254lQzaJ+dDXoXg1oMUeqsfOgzCgukZf2zZizrfVAGiH
- vyzji5UsE5uXZRR3jgGsw6S4+5I4CfheAanku1jHAqfahyushZPw+V6aPd78XDH4irfZ
- aksAyVMERUcIEHqGg14i2id0W9McpM1agUrU4akjQQRvN404iZM8M8u31QirTQv191Je
- Wewg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697740295; x=1698345095;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UV3fV/dZ656RIQwVZI5FxfcIhR6su+VKTq+o7PgF8AA=;
- b=hREZ0Jx+swVvbIZ3PCrvMU7QJjy+O24HnfmIY0Yp/hFQRCGO0h6Ic79zFuFzV1n/Wq
- 8ZFYAIjgpf1qpzUuJZXeF2i7Et8Mrflmb7LN9TLD0/+PsE+cmKe9GhtX1Zsc9RnxVjMP
- Ex7zPkg1H/R2EIO9kK9bpUxrocZJoMZ6BSgf5uD0ec146edtNFRrjuq9hjjwY8C1yPE8
- crvLxn+yQa/2VUygAxECY2PdPjnA28VZaJSC2XHsW0HC/agzlrq+Z6M6dNrdyc45Zr2k
- bfhFyY+/ifMEs75oXwam3U/8v4fdXfvUMCnFEP+3Q1P88j/PDokgIVb/meI8z9qp/vYv
- EsPw==
-X-Gm-Message-State: AOJu0YxxK2XlZwkvBEbIwkGiK7i7Wc70/JgcneKFqZIu+Tf+6qcj6bwr
- 6h/5Z8hSN96h80ysiPS6OrBSSQ==
-X-Google-Smtp-Source: AGHT+IG8o+K/POx2dCAdRj38sdLYwgAx5XBtAlj3pJ7yncKhByFeqbpnBKSjgmDtQf3b3JouDzUAnQ==
-X-Received: by 2002:a17:90a:a206:b0:277:4be4:7a84 with SMTP id
- u6-20020a17090aa20600b002774be47a84mr4042191pjp.19.1697740295382; 
- Thu, 19 Oct 2023 11:31:35 -0700 (PDT)
-Received: from [192.168.68.107] ([177.45.186.249])
- by smtp.gmail.com with ESMTPSA id
- x3-20020aa79563000000b006bdd7cbcf98sm96405pfq.182.2023.10.19.11.31.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 11:31:34 -0700 (PDT)
-Message-ID: <1bc517bb-0902-45a5-ada6-eebe8d12fa74@ventanamicro.com>
-Date: Thu, 19 Oct 2023 15:31:30 -0300
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qtXpP-0006Qc-MH; Thu, 19 Oct 2023 14:33:03 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qtXpN-0007m5-5U; Thu, 19 Oct 2023 14:33:03 -0400
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39JHLliO017804; Thu, 19 Oct 2023 18:32:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=Y/f/pgBe7uF4kgxUtbkvjVoNU94KxcfCsyOxwBFNTlo=;
+ b=JPd7xFAQnCe4G27dGEgtsaDdrDDpF8g5YjK8AT3XqMOfGDhuXz5Kn/7T6lxTDtSMTLtA
+ Tdm4Ts1YsCrc7Z5fPLo8CmxPbc0sGtb2Rnd2rtFuciyTYGdJ416HOgJO4V0mjwIgTgn4
+ ANhDB2lRQbiIXJjRQLkMS3f/QrQs1JyY4x3moTQsAdH0MrEbhGYCporoZ6rRTga39Rn7
+ /Nw0nwviyVlG7elgnit97kPuSPUQImPRHoZNBHq+Ml7KZaX6IFqAKqEUsamo4Qhfn6hX
+ 6vOMWyX3Y1kb2RrS9NKINVxDg7/2WOPx6FhyQGGBgoy3s63fW8JyqCzYxBJ6aImxKYyh 8Q== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ttg82um1m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Oct 2023 18:32:57 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39JIWuSr009970
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Oct 2023 18:32:56 GMT
+Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Thu, 19 Oct 2023 11:32:56 -0700
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: <bcain@quicinc.com>, <alex.bennee@linaro.org>, <qemu-trivial@nongnu.org>
+Subject: [PATCH] semihosting: fix memleak at semihosting_arg_fallback
+Date: Thu, 19 Oct 2023 15:32:46 -0300
+Message-ID: <ebb2ec1150da633507c2b735ca8ea1cab05ec92a.1697740364.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 12/54] target/riscv: deprecate the 'any' CPU type
-To: Richard Henderson <richard.henderson@linaro.org>,
- Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20231012041051.2572507-1-alistair.francis@wdc.com>
- <20231012041051.2572507-13-alistair.francis@wdc.com>
- <7dc0b6cc-7112-4f12-b52e-13f217d8dae3@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <7dc0b6cc-7112-4f12-b52e-13f217d8dae3@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102b.google.com
+Content-Type: text/plain
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: g4-adTB35bv-SqdMOpo9OGYtdbzUe6cb
+X-Proofpoint-ORIG-GUID: g4-adTB35bv-SqdMOpo9OGYtdbzUe6cb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-19_17,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 impostorscore=0
+ mlxlogscore=690 spamscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2310190157
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_mathbern@quicinc.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,67 +93,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We duplicate "cmd" as strtok may modify its argument, but we forgot
+to free it later. Furthermore, add_semihosting_arg doesn't take
+responsibility for this memory either (it strdup's the argument).
 
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+---
+ semihosting/config.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-On 10/19/23 15:13, Richard Henderson wrote:
-> On 10/11/23 21:10, Alistair Francis wrote:
->> From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->>
->> The 'any' CPU type was introduced in commit dc5bd18fa5725 ("RISC-V CPU
->> Core Definition"), being around since the beginning. It's not an easy
->> CPU to use: it's undocumented and its name doesn't tell users much about
->> what the CPU is supposed to bring. 'git log' doesn't help us either in
->> knowing what was the original design of this CPU type.
->>
->> The closest we have is a comment from Alistair [1] where he recalls from
->> memory that the 'any' CPU is supposed to behave like the newly added
->> 'max' CPU. He also suggested that the 'any' CPU should be removed.
->>
->> The default CPUs are rv32 and rv64, so removing the 'any' CPU will have
->> impact only on users that might have a script that uses '-cpu any'.
->> And those users are better off using the default CPUs or the new 'max'
->> CPU.
->>
->> We would love to just remove the code and be done with it, but one does
->> not simply remove a feature in QEMU. We'll put the CPU in quarantine
->> first, letting users know that we have the intent of removing it in the
->> future.
->>
->> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02891.html
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
->> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Message-ID: <20230912132423.268494-13-dbarboza@ventanamicro.com>
->> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
->> ---
->>   docs/about/deprecated.rst | 12 ++++++++++++
->>   target/riscv/cpu.c        |  5 +++++
->>   2 files changed, 17 insertions(+)
->>
->> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->> index 8b136320e2..5e3965a674 100644
->> --- a/docs/about/deprecated.rst
->> +++ b/docs/about/deprecated.rst
->> @@ -327,6 +327,18 @@ QEMU's ``vhost`` feature, which would eliminate the high latency costs under
->>   which the 9p ``proxy`` backend currently suffers. However as of to date nobody
->>   has indicated plans for such kind of reimplementation unfortunately.
->> +RISC-V 'any' CPU type ``-cpu any`` (since 8.2)
-> 
-> You forgot to update linux-user/riscv/target_elf.h, which still uses "any", and thus all qemu-riscv64 invocations trigger the warning.
+diff --git a/semihosting/config.c b/semihosting/config.c
+index 249a377ae8..32aa210460 100644
+--- a/semihosting/config.c
++++ b/semihosting/config.c
+@@ -112,17 +112,19 @@ static int add_semihosting_arg(void *opaque,
+ /* Use strings passed via -kernel/-append to initialize semihosting.argv[] */
+ void semihosting_arg_fallback(const char *file, const char *cmd)
+ {
+-    char *cmd_token;
++    char *cmd_token, *cmd_dup;
+ 
+     /* argv[0] */
+     add_semihosting_arg(&semihosting, "arg", file, NULL);
+ 
+     /* split -append and initialize argv[1..n] */
+-    cmd_token = strtok(g_strdup(cmd), " ");
++    cmd_dup = g_strdup(cmd);
++    cmd_token = strtok(cmd_dup, " ");
+     while (cmd_token) {
+         add_semihosting_arg(&semihosting, "arg", cmd_token, NULL);
+         cmd_token = strtok(NULL, " ");
+     }
++    g_free(cmd_dup);
+ }
+ 
+ void qemu_semihosting_enable(void)
+-- 
+2.37.2
 
-Ouch. I'll send a patch.
-
-
-Thanks,
-
-
-Daniel
-
-> 
-> 
-> r~
-> 
 
