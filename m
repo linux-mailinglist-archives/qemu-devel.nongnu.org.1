@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DBA7CFD76
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 861E87CFD79
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:01:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtUVS-0005YO-Ng; Thu, 19 Oct 2023 11:00:14 -0400
+	id 1qtUWB-0006SB-F8; Thu, 19 Oct 2023 11:00:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtUVQ-0005W1-Pl
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:00:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qtUW8-0006RE-7n
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:00:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtUVN-0000AH-Ao
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:00:12 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qtUW6-0000Hl-9S
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:00:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697727608;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=U26FJ2WAPF3TCjOt0sE90VW9s4jxBxo+wfHWRJ9AMYg=;
- b=ARuTVLoemaTSvq9sBWPiaU8ZuEINEPh/oTcI8XHvxR5FnOfbp/MgayaB/o63C8FoTQl0Fi
- zf4LtIwoX4hmjznjdvY0/PKl5uQ0NCQEPYYRScXvCGvjUfzL4yPDkcQoQdSTtF7byh0B+k
- Sex+MYMOnzbYOWh/hzac0g+17yWZPiE=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697727653;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z7/aVhq+QiOzWDu/inl/wyWRRuvBnEcox2pup5PdDHg=;
+ b=OKGHj1TpTSTkskz2mQvH3GuarUdAnwjoZqY6O5GC1N8KSlyhjdJnrkSHHbFhOP4madybgR
+ MgN73gz1g/apMmcP/QloTZeXPw+FannF9YLvtxDLqqlHUOyQeUp8Hue+N/IhMS2dY7VcWA
+ 8Y1pl1ULG+QPmoL+QQB/bOEUyK2otvA=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-09nOyZ2hMQOgfbWAQ9X2Jw-1; Thu, 19 Oct 2023 11:00:07 -0400
-X-MC-Unique: 09nOyZ2hMQOgfbWAQ9X2Jw-1
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-5a8ead739c3so3900237b3.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:00:06 -0700 (PDT)
+ us-mta-133-Jaj2bckvPlmcj-nTOOKMZg-1; Thu, 19 Oct 2023 11:00:51 -0400
+X-MC-Unique: Jaj2bckvPlmcj-nTOOKMZg-1
+Received: by mail-yw1-f200.google.com with SMTP id
+ 00721157ae682-5a7aa161b2fso124887467b3.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:00:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697727606; x=1698332406;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1697727650; x=1698332450;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U26FJ2WAPF3TCjOt0sE90VW9s4jxBxo+wfHWRJ9AMYg=;
- b=iGaB5bgr9cJaP8vicH0iqZYVHjZ75iLq7o7S23hpW/TLfdeEJacqX+R0+qp1Tc8EWW
- yI4GQ9hQ1ZnMxLBapczsqc+7ElMtOOwtZGBEMgR7x/y9bJde1PwZLhSEeBc2Ryqi9MM9
- Cnab5bzRuGAinQpvXwCLMOfCxbxR/x2BTXmqcKPxy2bSyDmyq3qiLqTggyFyXM6PtEZW
- qEuQyqA7tp9MBqGyMrWvxQGloK/hDK2m9PmPqPM89e0wOWwBeV3vKMA0rHJhzNRA38F6
- 6Vl/NbspCAez3qFYeKVvEkvY/WaLabNPVqUhpa7a80U2COU8LjNzjCuzZdsmgH6hV3vv
- 76cQ==
-X-Gm-Message-State: AOJu0Ywl/kQ6OSySGKEvklo1kikyzoh9fYyErzHle4XSlRO9ZLSaBMAo
- gePNKMGJfCCk5D46Zjs9gfhb/olVGcx+DhtmxUFxlf4HjF4GRZJ/46JC7xk1SZRXSJLHWcGq4jl
- UhZ9+T6ZXALxnSkQ=
-X-Received: by 2002:a0d:d741:0:b0:5a8:d92b:fbf3 with SMTP id
- z62-20020a0dd741000000b005a8d92bfbf3mr2756520ywd.38.1697727606335; 
- Thu, 19 Oct 2023 08:00:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFH9HUtnepq/CHM47hbMs5bI2TPWtaPYdpL4ftjpIc6+ziZWltQ2+cafLF64R34q2kz2cKvtA==
-X-Received: by 2002:a0d:d741:0:b0:5a8:d92b:fbf3 with SMTP id
- z62-20020a0dd741000000b005a8d92bfbf3mr2756487ywd.38.1697727605882; 
- Thu, 19 Oct 2023 08:00:05 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- qp13-20020a05620a388d00b0076eee688a95sm811023qkn.0.2023.10.19.08.00.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 08:00:05 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>,  qemu-devel@nongnu.org,  Leonardo Bras
- <leobras@redhat.com>,  Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
- semaphore
-In-Reply-To: <ZTE+lmbvtYNDU80q@x1n> (Peter Xu's message of "Thu, 19 Oct 2023
- 10:35:02 -0400")
-References: <20231012140651.13122-1-farosas@suse.de>
- <20231012140651.13122-2-farosas@suse.de>
- <87sf676kxt.fsf@secure.mitica> <ZTE+lmbvtYNDU80q@x1n>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 19 Oct 2023 17:00:02 +0200
-Message-ID: <871qdq4pzh.fsf@secure.mitica>
+ bh=Z7/aVhq+QiOzWDu/inl/wyWRRuvBnEcox2pup5PdDHg=;
+ b=xOiMIxXugx5WEEGKB7uYT48gVxsZelDYIR84B8D+KXihsypJUwp5RQJ6unV+Qt19+T
+ Jowz+JWPma2FDJ2lhW/1IkpkEX9X9gxxLxb82RK47YAuMd3TSG81i2uE71gDlBEK1aQB
+ UotTmyvJwM2x/ObBhodyVm9V7/CH3sgvawseSTaq4lvT0+nV45dNcuNn/PwCzlbNWrez
+ gXS73R5Nal41MclcmdzaX6wesNMEz0tFJw/wNEV+cLJDmOIlLZF3tr83IXoKu0Vbzi84
+ rF7+SrSmJRzBKnh6jCD9yTsMWKWMO2Wc79lTlDXgAxofPyAHWrQlbJo/y6cw7M8/biRw
+ Yx4g==
+X-Gm-Message-State: AOJu0YwT5EF+QKuGm/NQvkhg1ndKNc0IrKt1BOiV8nHvCrk5OqkUGIpl
+ rRA/irWdvDuPUO2+Bt8xQvVOkd/RNbPQkj5K4x5q4QpMTyATQZZlwIlbBpk0u2Hw7e0Rg6SbO+t
+ Obp4JBb1RWO/LY/FjP9yEehxdkft6YQ0=
+X-Received: by 2002:a25:8811:0:b0:d9b:d61e:2370 with SMTP id
+ c17-20020a258811000000b00d9bd61e2370mr2816418ybl.12.1697727649153; 
+ Thu, 19 Oct 2023 08:00:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF95PX07qtmqcjMPey0XulP8HKzCkygRITdMPRMonF9gbN7iwsl0KIQ74YBPmWKkt/7y2Bxn9zPrp3WvXvQK/4=
+X-Received: by 2002:a25:8811:0:b0:d9b:d61e:2370 with SMTP id
+ c17-20020a258811000000b00d9bd61e2370mr2816379ybl.12.1697727648661; Thu, 19
+ Oct 2023 08:00:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+References: <20230918044932.1433744-1-yajunw@nvidia.com>
+ <CAJaqyWfuXDY7jBSQsS=0Ws7mpZLcsed6bpQbM+eZGLU5AzCw1Q@mail.gmail.com>
+ <6d9b034f-fe16-7ed8-6156-9c404a860489@nvidia.com>
+In-Reply-To: <6d9b034f-fe16-7ed8-6156-9c404a860489@nvidia.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 19 Oct 2023 17:00:12 +0200
+Message-ID: <CAJaqyWdLHdXpTdnxdMn6SbvKywFB7oD=m806TebUcR23u7iokg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/5] virtio-net: Introduce LM early load
+To: Yajun Wu <yajunw@nvidia.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, 
+ "mst@redhat.com" <mst@redhat.com>, parav@nvidia.com, jiri@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,130 +94,197 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> wrote:
-> Fabiano,
+On Wed, Oct 18, 2023 at 8:41=E2=80=AFAM Yajun Wu <yajunw@nvidia.com> wrote:
 >
-> Sorry to look at this series late; I messed up my inbox after I reworked my
-> arrangement methodology of emails. ;)
 >
-> On Thu, Oct 19, 2023 at 11:06:06AM +0200, Juan Quintela wrote:
->> Fabiano Rosas <farosas@suse.de> wrote:
->> > The channels_ready semaphore is a global variable not linked to any
->> > single multifd channel. Waiting on it only means that "some" channel
->> > has become ready to send data. Since we need to address the channels
->> > by index (multifd_send_state->params[i]), that information adds
->> > nothing of value.
->> 
->> NAK.
->> 
->> I disagree here O:-)
->> 
->> the reason why that channel exist is for multifd_send_pages()
->> 
->> And simplifying the function what it does is:
->> 
->> sem_wait(channels_ready);
->> 
->> for_each_channel()
->>    look if it is empty()
->> 
->> But with the semaphore, we guarantee that when we go to the loop, there
->> is a channel ready, so we know we donat busy wait searching for a
->> channel that is free.
->> 
->> Notice that I fully agree that the sem is not needed for locking.
->> Locking is done with the mutex.  It is just used to make sure that we
->> don't busy loop on that loop.
->> 
->> And we use a sem, because it is the easiest way to know how many
->> channels are ready (even when we only care if there is one when we
->> arrive to that code).
->> 
->> We lost count of that counter, and we fixed that here:
->> 
->> commit d2026ee117147893f8d80f060cede6d872ecbd7f
->> Author: Juan Quintela <quintela@redhat.com>
->> Date:   Wed Apr 26 12:20:36 2023 +0200
->> 
->>     multifd: Fix the number of channels ready
->> 
->>     We don't wait in the sem when we are doing a sync_main.  Make it
->> 
->> And we were addressing the problem that some users where finding that we
->> were busy waiting on that loop.
+> On 10/18/2023 12:47 AM, Eugenio Perez Martin wrote:
+> > External email: Use caution opening links or attachments
+> >
+> >
+> > On Mon, Sep 18, 2023 at 6:51=E2=80=AFAM Yajun Wu <yajunw@nvidia.com> wr=
+ote:
+> >> This series of patches aims to minimize the downtime during live migra=
+tion of a
+> >> virtio-net device with a vhost-user backend. In the case of hardware v=
+irtual
+> >> Data Path Acceleration (vDPA) implementation, the hardware configurati=
+on, which
+> >> includes tasks like VQ creation and RSS setting, may take above 200ms.=
+ This
+> >> significantly increases the downtime of the VM, particularly in terms =
+of
+> >> networking.
+> >>
+> > Hi!
+> >
+> > Sorry I totally missed this email. Please CC me in next versions.
+> >
+> > Just for completion, there is an ongoing plan to reduce the downtime
+> > in vhost-vdpa. You can find more details at [1].
+> >
+> > To send the state periodically is in the roadmap, but some
+> > benchmarking detected that memory pinning and unpinning affects more
+> > to downtime. I'll send a RFC soon with this. The plan was to continue
+> > with iterative state restoring, so I'm happy to know more people are
+> > looking into it!
+> >
+> > In the case of vhost-vdpa it already restores the state by not
+> > enabling dataplane until migration completes. All the load is
+> > performed using CVQ, as you can see in
+> > net/vhost-vdpa.c:vhost_vdpa_net_load. After that, all dataplane is
+> > started again.
+> >
+> > My idea is to start vhost-vdpa (by calling vhost_vdpa_dev_start) at
+> > the destination at the same moment the migration starts, as it will
+> > not have dataplane enabled. After that, the source should send the
+> > virtio-net vmstate every time it changes. vhost-vdpa net is able to
+> > send and receive through CVQ, so it should be able to modify net
+> > device configuration as many times as needed. I guess that could be
+> > done by calling something in the line of your
+> > vhost_user_set_presetup_state.
+> This is very good approach. How do you know when virtio-net vmstate
+> change? vhost-user and vhost-vdpa should share same code of virtio-net
+> vmstate early sync.
+
+CVQ in vhost-vdpa must be shadowed already to be able to migrate.
+Everytime the guest places a buffer in CVQ,
+net/vhost-vdpa.c:vhost_vdpa_net_handle_ctrl_avail is called, which
+calls virtio_net_handle_ctrl_iov.
+
+So virtio_net_handle_ctrl_iov should be able to check if we're
+migrating and signal that the state must be re-sent.
+
+> >
+> > This can be improved in vhost-vdpa by being able to send only the new s=
+tate.
+> >
+> > When all the migration is completed, vhost-vdpa net dataplane should
+> > start as it does now.
+> >
+> > If you are interested in saving changes to vhost-user protocol, maybe
+> > qemu could just disable the dataplane too with
+> > VHOST_USER_SET_VRING_ENABLE? If not, I think both approaches have a
+> > lot in common, so I'm sure we can develop one backend on top of
+> > another.
+> >
+> > Thanks!
+> >
+> > [1] https://lists.gnu.org/archive/html/qemu-devel/2023-04/msg00659.html
 >
-> Juan,
+> I'm afraid just like DRIVER_OK as a hint for vhost-user vDPA to apply
+> all the configuration to HW. Vhost-user also needs same hint as the end
+> of each round vmstate sync to apply configuration to HW. That's why I
+> need define new protocol message.
 >
-> I can understand why send_pages needs that sem, but not when sync main.
-> IOW, why multifd_send_sync_main() needs:
+> Because of MQ can also change, VQ enable is a valid parameter to HW. HW
+> will create only enabled queue, number of enabled queues affects RSS
+> setting.
 >
->         qemu_sem_wait(&multifd_send_state->channels_ready);
+
+I'm not sure I follow 100%, the first part is true for properties like
+vq address etc. For that to change, a full device reset in the
+destination is needed.
+
+But for the number of queues, the destination QEMU is able to send
+multiple CVQ commands before starting the dataplane as long as the
+device supports the dataplane late enabling.
+
 >
-> If it has:
+> >
+> >> To reduce the VM downtime, the proposed approach involves capturing th=
+e basic
+> >> device state/configuration during the VM's running stage and performin=
+g the
+> >> initial device configuration(presetup). During the normal configuratio=
+n process
+> >> when the VM is in a stopped state, the second configuration is compare=
+d to the
+> >> first one, and only the differences are applied to reduce downtime. Id=
+eally,
+> >> only the vring available index needs to be changed within VM stop.
+> >>
+> >> This feature is disabled by default, because backend like dpdk also ne=
+eds
+> >> adding support for vhost new message. New device property "x-early-mig=
+ration"
+> >> can enable this feature.
+> >>
+> >> 1. Register a new vmstate for virtio-net with an early_setup flag to s=
+end the
+> >>     device state during migration setup.
+> >> 2. After device state load on destination VM, need to send device stat=
+us to
+> >>     vhost backend in a new way. Introduce new vhost-user message:
+> >>     VHOST_USER_PRESETUP, to notify backend of presetup.
+> >> 3. Let virtio-net, vhost-net, vhost-dev support presetup. Main flow:
+> >>     a. vhost-dev sending presetup start.
+> >>     b. virtio-net setting mtu.
+> >>     c. vhost-dev sending vring configuration and setting dummy call/ki=
+ck fd.
+> >>     d. vhost-net sending vring enable.
+> >>     e. vhost-dev sending presetup end.
+> >>
+> >>
+> >> TODOs:
+> >> =3D=3D=3D=3D=3D=3D
+> >>    - No vhost-vdpa/kernel support. Need to discuss/design new kernel i=
+nterface
+> >>      if there's same requirement for vhost-vdpa.
+> >>
+> >>    - No vIOMMU support so far. If there is a need for vIOMMU support, =
+it is
+> >>      planned to be addressed in a follow-up patchset.
+> >>
+> >>
+> >> Test:
+> >> =3D=3D=3D=3D=3D
+> >>    - Live migration VM with 2 virtio-net devices, ping can recover.
+> >>      Together with DPDK patch [1].
+> >>    - The time consumption of DPDK function dev_conf is reduced from 19=
+1.4 ms
+> >>      to 6.6 ms.
+> >>
+> >>
+> >> References:
+> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >>
+> >> [1] https://github.com/Mellanox/dpdk-vhost-vfe/pull/37
+> >>
+> >> Any comments or feedback are highly appreciated.
+> >>
+> >> Thanks,
+> >> Yajun
+> >>
+> >>
+> >> Yajun Wu (5):
+> >>    vhost-user: Add presetup protocol feature and op
+> >>    vhost: Add support for presetup
+> >>    vhost-net: Add support for presetup
+> >>    virtio: Add VMState for early load
+> >>    virtio-net: Introduce LM early load
+> >>
+> >>   docs/interop/vhost-user.rst       |  10 ++
+> >>   hw/net/trace-events               |   1 +
+> >>   hw/net/vhost_net.c                |  40 +++++++
+> >>   hw/net/virtio-net.c               | 100 ++++++++++++++++++
+> >>   hw/virtio/vhost-user.c            |  30 ++++++
+> >>   hw/virtio/vhost.c                 | 166 +++++++++++++++++++++++++---=
+--
+> >>   hw/virtio/virtio.c                | 152 ++++++++++++++++-----------
+> >>   include/hw/virtio/vhost-backend.h |   3 +
+> >>   include/hw/virtio/vhost.h         |  12 +++
+> >>   include/hw/virtio/virtio-net.h    |   1 +
+> >>   include/hw/virtio/virtio.h        |  10 +-
+> >>   include/net/vhost_net.h           |   3 +
+> >>   12 files changed, 443 insertions(+), 85 deletions(-)
+> >>
+> >> --
+> >> 2.27.0
+> >>
+> >>
 >
->         qemu_sem_wait(&p->sem_sync);
->
-> How does a busy loop happen?
-
-What does multifd_send_thread() for a SYNC packet.
-
-static void *multifd_send_thread(void *opaque)
-{
-    while (true) {
-        qemu_sem_post(&multifd_send_state->channels_ready);
-        qemu_sem_wait(&p->sem);
-
-        qemu_mutex_lock(&p->mutex);
-
-        if (p->pending_job) {
-            ....
-            qemu_mutex_unlock(&p->mutex);
-
-            if (flags & MULTIFD_FLAG_SYNC) {
-                qemu_sem_post(&p->sem_sync);
-            }
-    }
-}
-
-I have simplified it a lot, but yot the idea.
-
-See the 1st post of channel_ready().
-We do it for every packet sent.  Even for the SYNC ones.
-
-Now what multifd_send_page() does?
-
-static int multifd_send_pages(QEMUFile *f)
-{
-    qemu_sem_wait(&multifd_send_state->channels_ready);
-    ....
-}
-
-See, we are decreasing the numbers of channels_ready because we know we
-are using one.
-
-As we are sending packets for multifd_send_sync_main(), we need to do a
-hack in multifd_send_thread() and say that sync packets don't
-account. Or we need to decrease that semaphore in multifd_send_sync_main()
-
-int multifd_send_sync_main(QEMUFile *f)
-{
-    ....
-    for (i = 0; i < migrate_multifd_channels(); i++) {
-        qemu_sem_wait(&multifd_send_state->channels_ready);
-        ...
-    }
-}
-
-And that is what we do here.
-We didn't had this last line (not needed for making sure the channels
-are ready here).
-
-But needed to make sure that we are maintaining channels_ready exact.
-
-Later, Juan.
 
 
