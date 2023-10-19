@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D817D7D03B7
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3147D040A
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:29:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaRo-0000sQ-Bj; Thu, 19 Oct 2023 17:20:52 -0400
+	id 1qtaRr-0000vP-Ah; Thu, 19 Oct 2023 17:20:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRm-0000mO-6p
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:50 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRp-0000uL-8X
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:53 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRk-0005c1-0I
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:49 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4084e49a5e5so991425e9.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:20:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRm-0005do-TQ
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:53 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4083cd39188so939375e9.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:20:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750442; x=1698355242; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750449; x=1698355249; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+goD7LWLLFlekg91oCfVK0c1MbYgJUFGIQyLFSXN/qg=;
- b=xqWe5ihyuk0+TNFL5KnXF2wwqxS3v0AJvdzp3rw95bQk3FssjmYF9m3nz6rAJBI6bv
- PnOa13ojUMHUtUMfOHm0Qhp6KbuhMPW+nAsl3E1vvEuThYa0ir2z4DpVOAm52W7M/VIm
- 5vre2mF1ReaTR4Ns9yZWcFNIuQilw48YdO2reuh3MhHFAK02TgCzxGQ439mdugqmSNlY
- anIspcu7Ra9HBES2fWlK+uaP+x+sF9fTtVs/kq3zRx6z9vQdodSQpJEvJFfbKuvBULO/
- HYa/oIz2drtoHaXPYlsSETyaCS0vDx0dnnvCQFG5JJ0Vw5tulTEel/rSnETs+WcPwL5h
- Phyw==
+ bh=kG3m+UrB+1tXa81IHczK7QBkGPM1a1yV1vD8kixZHhU=;
+ b=zxWNbtDBgcvI2l+R/7m3HyIXyXO79WWJGiO70Tyg+MJ+nj4ReWReEiuTC1eqjddfMj
+ HsUdd//q6a7Wmo5tQ3GALNuYLw6lIJ0nhGcQAuvcsFVFz4oXBmDLkylxG+KrQcXNByI/
+ iUPFyXjV3JlcqYqIsHA8/1Up6YX0p4dtQqxgnIQ3/XHlt0/NdoV1Vrdu+oFSPFQrZpXg
+ rK7st6hyZZciHqj02XZ10a+1OIuBIXcZNNl1cZTLY27kZJBG/QKiXjsXkCTCG399dUtD
+ sO8sgTGnH+N+W5B6brwukB+0RlOk0A3WgYpeYx+vxz2tmc9+3PX+cv6ZUSts9wead9l8
+ HE6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750442; x=1698355242;
+ d=1e100.net; s=20230601; t=1697750449; x=1698355249;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+goD7LWLLFlekg91oCfVK0c1MbYgJUFGIQyLFSXN/qg=;
- b=Ji8aAuX7i1U4c4X0hv2vxCYNg8PAUVerk9YDMhgBcc90iAxDbld7JwOmWIF/19P9hb
- 73iLPnN3wv4t1rX3ivBaProykm6icwUVXz7glFShP/KAQBPgPtoRAiH5hXc1JVrOn0OP
- 6hjpNZt4lg/+pHxvOgyevXRrm/z9MY7YvChfBEH3BqAGjYepIpdoi0/HYr6m63jaFEkv
- oqTExuDYbMA+XjHjRpQPYi6z3K3qlzWzt7fIzM2X/xisUX4JhmJek0dWsUrbb5qddSuw
- BtsLx2Vy3dxrZaaVF7F3AH/kZahGKgPNfrDtcmPMhvq3MAiTNDXpo9cGWtSQFiQo9uKQ
- 2Q0w==
-X-Gm-Message-State: AOJu0YwHnyylX7nS5y1AoSrLZfwnOpMmlSAi4aSYyZ0CKXbsK9yWwsrg
- 7lHQaJSTmwc4qs1xlx0SjPx7fGOis+/jB6UelKpaIQ==
-X-Google-Smtp-Source: AGHT+IFatdTNTq0UHD5Q5955XeoWvrhhnFKOBSwcpYmcAdt9HraU+f+/vbYvqrZVHi5IZvG2YZIvgw==
-X-Received: by 2002:a05:600c:35ca:b0:405:3955:5872 with SMTP id
- r10-20020a05600c35ca00b0040539555872mr15966wmq.18.1697750442279; 
- Thu, 19 Oct 2023 14:20:42 -0700 (PDT)
+ bh=kG3m+UrB+1tXa81IHczK7QBkGPM1a1yV1vD8kixZHhU=;
+ b=QznS8Y9Ta1bJDUTHQ74l8TGPauekRjpF1mm5xpz3j6OQcMWUrG7eLiHt1UR2wpG3B4
+ RkqhFGfCahxr8TvEworBpO5V9A6bairbk3Y66BW5a9VKYSO4iMlm+5xfg/cfwxyYU8bs
+ 2xHGo8LytrXXRM/PZiSKyCUQSwoxoM5GCBvXoh7yfkDYJAz6gWPfxKGIctJ1dD6NocZA
+ dWQExMhEpymeNDodSSw1vRfb1A0PpsB2xTkHHANBV7Z68cXHa37XP3YgjGAHkUQjUIdO
+ vJrgLsnNnnlLe0W4PC+S+/YhSKtmmvndTOt8DdS8gJLKEkfRiUM2kQM4rUrTt3LWmnpk
+ bb6Q==
+X-Gm-Message-State: AOJu0YyOBcNLCAM2pjYHhSxcD5w5Wj3RRjDM/b+hpNMXxTKBAZAMmcoM
+ m4dTrRfBYJpoojYcG+1F92n296XH9FsWnUxAvM3PPA==
+X-Google-Smtp-Source: AGHT+IH7Chkm57EbayQ+rA08dWmaUxzQAq1pAUtC21KE7tNcrWX5XkoI450jvyx16/2SVy3fCzPfYQ==
+X-Received: by 2002:a05:600c:1d25:b0:408:3eaa:aea6 with SMTP id
+ l37-20020a05600c1d2500b004083eaaaea6mr69227wms.7.1697750449130; 
+ Thu, 19 Oct 2023 14:20:49 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- fm12-20020a05600c0c0c00b004030e8ff964sm5346723wmb.34.2023.10.19.14.20.40
+ t6-20020a05600c450600b0040535648639sm515316wmo.36.2023.10.19.14.20.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:20:41 -0700 (PDT)
+ Thu, 19 Oct 2023 14:20:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 22/46] hw/intc/apic: Use ERRP_GUARD() in apic_common_realize()
-Date: Thu, 19 Oct 2023 23:17:47 +0200
-Message-ID: <20231019211814.30576-23-philmd@linaro.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Thomas Huth <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 23/46] hw/ppc/spapr_vio: Realize SPAPR_VIO_BRIDGE device before
+ accessing it
+Date: Thu, 19 Oct 2023 23:17:48 +0200
+Message-ID: <20231019211814.30576-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,39 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-APICCommonClass::realize() is a DeviceRealize() handler which
-take an Error** parameter and can fail. Do not proceed further
-on failure.
+qbus_new() should not be called on unrealized device.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20231003082728.83496-2-philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20231019131647.19690-2-philmd@linaro.org>
 ---
- hw/intc/apic_common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/ppc/spapr_vio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
-index 68ad30e2f5..bccb4241c2 100644
---- a/hw/intc/apic_common.c
-+++ b/hw/intc/apic_common.c
-@@ -257,6 +257,7 @@ static const VMStateDescription vmstate_apic_common;
+diff --git a/hw/ppc/spapr_vio.c b/hw/ppc/spapr_vio.c
+index 9d4fec2c04..f8ef2b6fa8 100644
+--- a/hw/ppc/spapr_vio.c
++++ b/hw/ppc/spapr_vio.c
+@@ -574,13 +574,14 @@ SpaprVioBus *spapr_vio_bus_init(void)
  
- static void apic_common_realize(DeviceState *dev, Error **errp)
- {
-+    ERRP_GUARD();
-     APICCommonState *s = APIC_COMMON(dev);
-     APICCommonClass *info;
-     static DeviceState *vapic;
-@@ -267,6 +268,9 @@ static void apic_common_realize(DeviceState *dev, Error **errp)
+     /* Create bridge device */
+     dev = qdev_new(TYPE_SPAPR_VIO_BRIDGE);
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
  
-     info = APIC_COMMON_GET_CLASS(s);
-     info->realize(dev, errp);
-+    if (*errp) {
-+        return;
-+    }
+     /* Create bus on bridge device */
+     qbus = qbus_new(TYPE_SPAPR_VIO_BUS, dev, "spapr-vio");
+     bus = SPAPR_VIO_BUS(qbus);
+     bus->next_reg = SPAPR_VIO_REG_BASE;
  
-     /* Note: We need at least 1M to map the VAPIC option ROM */
-     if (!vapic && s->vapic_control & VAPIC_ENABLE_MASK &&
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++
+     /* hcall-vio */
+     spapr_register_hypercall(H_VIO_SIGNAL, h_vio_signal);
+ 
 -- 
 2.41.0
 
