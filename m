@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543537CF5B9
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFDF7CF59E
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:47:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQYU-0006Ih-Dx; Thu, 19 Oct 2023 06:47:06 -0400
+	id 1qtQYW-0006X6-OJ; Thu, 19 Oct 2023 06:47:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtQYR-0006FQ-7H
+ id 1qtQYS-0006FT-B2
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtQYP-0006Ca-Lz
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:02 -0400
+ id 1qtQYQ-0006Cp-Rq
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697712420;
+ s=mimecast20190719; t=1697712422;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=O0fO7ODbzYSAx28Rwy633NyqFTt8J0HLgXe91UBK6GM=;
- b=X8Am7y2iEu5tTIylBbVrLo4V7Oxr8A9IaDQXYfAMMJ2bxOUVKByWEbhqNdwHbRVNvlD9Tf
- Z5z+GhO6O1cD2IfkwP8qT6od439owkfJLrga/D53HDXywriwZzBQy4o+dS4L3wNa8LTJn3
- H5mpTiF8ILICLjRVG1FkEedurKD53Wg=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=e9AH2w7IcRILYZ2JEj5EmCtr4xLbCojrRKRbWDyxGwE=;
+ b=O2rzjq+h1RG5bi1Vky4bkpb12XqoIhECTBnKW+Qame8s4hZ+5o8fyvFMiGDOi29uMBqt9T
+ oYBPdp3/lq6dwe+uB2TzwOPyOdsLh3idyrhR8r3XgQWnLjkFuqQgH8lpGBkDnHaE4pF7Ne
+ 5PNY6vPHZUdfY7sEoL2x9aiebVNdJzA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-84-wyELXB9mOAG3xZzY4Elqvw-1; Thu, 19 Oct 2023 06:46:59 -0400
-X-MC-Unique: wyELXB9mOAG3xZzY4Elqvw-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9b822f5c156so584548366b.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:46:58 -0700 (PDT)
+ us-mta-94-hOG-D-DaMw61vcb1i2MGaA-1; Thu, 19 Oct 2023 06:47:01 -0400
+X-MC-Unique: hOG-D-DaMw61vcb1i2MGaA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99bcb13d8ddso577675066b.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:47:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697712417; x=1698317217;
+ d=1e100.net; s=20230601; t=1697712419; x=1698317219;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O0fO7ODbzYSAx28Rwy633NyqFTt8J0HLgXe91UBK6GM=;
- b=Tv0sTgfJ/5WB6F9S+SAVywDMG6j+tRI21mPeDYPrhYxq2hSAqbN2u5p7TEi2ZSbMYV
- Todth0V3Cg/Y5IUWa3155+WtLCGpanci4zdff9+YqEalSP9Zz8mJHpzNgslksDmDAUM7
- ewkY75nljbYzGi7kmcjejlHbx1EAIvo+bo1/KOMwywfyJlIKTay0h9wTBe2u60mrLlYH
- UkWCAFVD1td3nsIK9wSxuxRumWKAeMS7YChA4ZLe96YImZKk0yB8M11vCIx3VUvdTuQo
- 0rNSEt7V/wo+J1dbpR01mNWhhDWrvWnNlRsvG68uMHt6Mt1XO/CMHpy3yJQCsQsZq/A1
- 1pNQ==
-X-Gm-Message-State: AOJu0YxF0uIiyJSejlNGbufKxQhkuVMDXq9McdjnWQ5Cf3EDzPz0MWNX
- 5LAxTUyJyTf5etRc6dR7cdJPMi9SOJ0bKYbq853+oT2fhY1n5CiDkIQurVHGw42nuzB7j8gvJv3
- kloVKVJom71Bnhf6EirGpIxU/5v5Dd0knTdGUZeiROWJdamHnH6NGMUk6ckPD2V6OWL4S9LkvJk
- I=
-X-Received: by 2002:a17:907:25c9:b0:9ad:e180:16e3 with SMTP id
- ae9-20020a17090725c900b009ade18016e3mr1301468ejc.37.1697712417613; 
- Thu, 19 Oct 2023 03:46:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHkTBqXwNLTNdQltyVMqnG4j9JcLUHPARHTpRIFS3dbboKMK8IeEiuoP0x6XQyaw0M4XY/ZNA==
-X-Received: by 2002:a17:907:25c9:b0:9ad:e180:16e3 with SMTP id
- ae9-20020a17090725c900b009ade18016e3mr1301455ejc.37.1697712417327; 
- Thu, 19 Oct 2023 03:46:57 -0700 (PDT)
+ bh=e9AH2w7IcRILYZ2JEj5EmCtr4xLbCojrRKRbWDyxGwE=;
+ b=ge6ErDdLpHu5oNbp0yW1LDxMhe8vnyVVgIMVJRB7FdDeZZ3iRhDAKMkaJ0uY7+tJOW
+ m7zfZwZYbRtpT8hiGNqkwKZu/1d2HWUo+qUaro3dxCC5WyX9rAD2FO6IPT0i2Qf5tOKX
+ SWBvex64R44CCABBVhoSSPDrNhvJm9XdZ8R1oRc/aavFcVEYfn1S8wlIGcygegzO4A9O
+ 0/vAqw7F9iws8EDBrumW3EfqwYKZDXytRGb9eDfgzsjQs5C+wVlk8Mm0Ds1LkqvCtc20
+ X04IQVeExwUkChg8lCXCHRg/81Vqs4OB/ckJ4DpI70FhVPk9kWklCFLftrAzk1Jtu7b4
+ 9Yvw==
+X-Gm-Message-State: AOJu0Yy4gh/MnHpqnW4Y0dNuyoD4fRMKrpw+CmxghIcNCvQ58Oyf/DV1
+ xAbzvfi2pHG71dhupJYQ7o6aPHOwOLP+S1FiDHiEG+PWjIysJben5QJNWCJQZjmgk9KkpkzSYoe
+ ovW8BJTTa9pBQLgtjdLo8PD30GVLC5xdKDm0Bq+UMtVCdKphFifDUXBYcLnX8jMOLJ/yQRjgiiv
+ 4=
+X-Received: by 2002:a17:906:eec5:b0:9bd:b8d0:c096 with SMTP id
+ wu5-20020a170906eec500b009bdb8d0c096mr1576490ejb.21.1697712419523; 
+ Thu, 19 Oct 2023 03:46:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbxz1GVwrajUgSC73v7tyV1Cg8PS9hKAufc34pV+bqCKRMqqbUVJU+SW/33jx/1OaxBmpKgg==
+X-Received: by 2002:a17:906:eec5:b0:9bd:b8d0:c096 with SMTP id
+ wu5-20020a170906eec500b009bdb8d0c096mr1576479ejb.21.1697712419188; 
+ Thu, 19 Oct 2023 03:46:59 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- bh12-20020a170906a0cc00b0099bd7b26639sm3387872ejb.6.2023.10.19.03.46.56
+ p6-20020a1709061b4600b009b65b2be80bsm3295871ejg.76.2023.10.19.03.46.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 03:46:56 -0700 (PDT)
+ Thu, 19 Oct 2023 03:46:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 04/19] tests/tcg/i386: initialize more registers in test-avx
-Date: Thu, 19 Oct 2023 12:46:33 +0200
-Message-ID: <20231019104648.389942-5-pbonzini@redhat.com>
+Subject: [PATCH v2 05/19] tests/tcg/i386: test-avx: add test cases for SHA new
+ instructions
+Date: Thu, 19 Oct 2023 12:46:34 +0200
+Message-ID: <20231019104648.389942-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019104648.389942-1-pbonzini@redhat.com>
 References: <20231019104648.389942-1-pbonzini@redhat.com>
@@ -100,54 +101,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some instructions use YMM0 implicitly, or use YMM9 as a read-modify-write
-register destination.  Initialize those registers as well.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/tcg/i386/test-avx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/tcg/i386/test-avx.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/tcg/i386/test-avx.c b/tests/tcg/i386/test-avx.c
-index c39c0e5bce8..2a04c1ecf15 100644
---- a/tests/tcg/i386/test-avx.c
-+++ b/tests/tcg/i386/test-avx.c
-@@ -316,6 +316,8 @@ int main(int argc, char *argv[])
-     int i;
+diff --git a/tests/tcg/i386/test-avx.py b/tests/tcg/i386/test-avx.py
+index 641a2ef69eb..6063fb2d11d 100755
+--- a/tests/tcg/i386/test-avx.py
++++ b/tests/tcg/i386/test-avx.py
+@@ -9,7 +9,7 @@
+ archs = [
+     "SSE", "SSE2", "SSE3", "SSSE3", "SSE4_1", "SSE4_2",
+     "AES", "AVX", "AVX2", "AES+AVX", "VAES+AVX",
+-    "F16C", "FMA",
++    "F16C", "FMA", "SHA",
+ ]
  
-     init_all(&initI);
-+    init_intreg(&initI.ymm[0]);
-+    init_intreg(&initI.ymm[9]);
-     init_intreg(&initI.ymm[10]);
-     init_intreg(&initI.ymm[11]);
-     init_intreg(&initI.ymm[12]);
-@@ -324,6 +326,8 @@ int main(int argc, char *argv[])
-     dump_regs(&initI);
- 
-     init_all(&initF16);
-+    init_f16reg(&initF16.ymm[0]);
-+    init_f16reg(&initF16.ymm[9]);
-     init_f16reg(&initF16.ymm[10]);
-     init_f16reg(&initF16.ymm[11]);
-     init_f16reg(&initF16.ymm[12]);
-@@ -333,6 +337,8 @@ int main(int argc, char *argv[])
-     dump_regs(&initF16);
- 
-     init_all(&initF32);
-+    init_f32reg(&initF32.ymm[0]);
-+    init_f32reg(&initF32.ymm[9]);
-     init_f32reg(&initF32.ymm[10]);
-     init_f32reg(&initF32.ymm[11]);
-     init_f32reg(&initF32.ymm[12]);
-@@ -342,6 +348,8 @@ int main(int argc, char *argv[])
-     dump_regs(&initF32);
- 
-     init_all(&initF64);
-+    init_f64reg(&initF64.ymm[0]);
-+    init_f64reg(&initF64.ymm[9]);
-     init_f64reg(&initF64.ymm[10]);
-     init_f64reg(&initF64.ymm[11]);
-     init_f64reg(&initF64.ymm[12]);
+ ignore = set(["FISTTP",
+@@ -43,6 +43,7 @@
+     'vPS[LR][AL][WDQ]': 0x3f,
+     'vPS[RL]LDQ': 0x1f,
+     'vROUND[PS][SD]': 0x7,
++    'SHA1RNDS4': 0x03,
+     'vSHUFPD': 0x0f,
+     'vSHUFPS': 0xff,
+     'vAESKEYGENASSIST': 0xff,
 -- 
 2.41.0
 
