@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7D47CEF3B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 07:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2BC97CEF3E
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 07:46:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtLpm-0000eS-Gl; Thu, 19 Oct 2023 01:44:39 -0400
+	id 1qtLqz-0001J4-6v; Thu, 19 Oct 2023 01:45:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLpY-0000dK-TC
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:44:25 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLqw-0001FO-Jo
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:45:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLpX-0006X4-H8
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:44:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLqu-0007Mh-6Q
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:45:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697694262;
+ s=mimecast20190719; t=1697694328;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=rspcU9F6smOHbowDOnv69uUY40faMrTtGMcXCKEOeIQ=;
- b=O+d+47nRdWBmMzs9+UodHqkRufFAb8U6WrGKSlki4Shz1r13b//p/OGg57dsQDlyLXKT4S
- csOqDZZlDn5+4B4NFS9USIoGqIZXlsUBV3Ic1pLY87DLeHOQ/1F/FNXhhcDhyRoWITQZ1t
- FUBNlmtbsBMuFny8aLtz4CQwG57vzFM=
+ bh=jJydT9i5tsAWGNCf+sck7pu/49OXjN1IIdnoQSV7hno=;
+ b=EdRogM+PVTNkDcGuLNpFqckLDwv2hso+oMRucUNHQ0delGTBePiRHHChwG/OTd14h3RfVT
+ JHeJtgbbiyDSGqKAMZXuFKo7CMdVnVGrTvl9EBKZkGNOPuTnWckwMLHClvHgDcdEPnNeis
+ 852qsiESRxC6htpw0YVGrj1xh8r+2y4=
 Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
  [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-TC_HZCHuON-h06GdqHOGow-1; Thu, 19 Oct 2023 01:44:19 -0400
-X-MC-Unique: TC_HZCHuON-h06GdqHOGow-1
+ us-mta-93-xPMKulXcMj-KfI5SO-4XTg-1; Thu, 19 Oct 2023 01:45:25 -0400
+X-MC-Unique: xPMKulXcMj-KfI5SO-4XTg-1
 Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66cffe51b07so89615306d6.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 22:44:19 -0700 (PDT)
+ 6a1803df08f44-66d75988385so23659526d6.2
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 22:45:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697694259; x=1698299059;
+ d=1e100.net; s=20230601; t=1697694325; x=1698299125;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rspcU9F6smOHbowDOnv69uUY40faMrTtGMcXCKEOeIQ=;
- b=Cm1o+JRLjniXMP/5EsZ9TV//eAcioP0NhDnPHRcP5jHJZgTS/5+ZkYsf9YuO07MhHH
- DPcDLrVgG9Oc5mQkpiNy+Hp0FTb08F4XyTIjoIkZKNUOjOYIPK3K+3uVS2U2ZzZVH/H7
- WBSja59hVoAWA6gA3y2N9rUXTleHhc6M8qTIFNf8t/OJ6AqBjLUttNfiu9xELrgl2uvq
- izK7vi2Iim3EQK61VDX7WKZOW/Ewz7eAcIel3+YBXQgGqt+LZmENY9uQSXcfuN6k6Q6Z
- TXSkHSpN6TkQStRfvFA7L2TPy1OfxU7U0S63Am+uZUlfoCPKHUAyHtU3xvVh7+m69XIM
- O6Sw==
-X-Gm-Message-State: AOJu0YwoBvUOVbyCRGDb5/f5s6LTjJiK5a7D56dlpgvQCmXxqlg7yzq0
- GaFyCr2Ag8jyGVSDbcNZdUvdHGixl6NzauecOLWcBgRvdjfdFcMJjPpmsrmmtNbNkSqMuOo0sBd
- TdYZ0pF5NDDRrEwI=
-X-Received: by 2002:a05:6214:2628:b0:66d:2b1b:acfa with SMTP id
- gv8-20020a056214262800b0066d2b1bacfamr1845535qvb.50.1697694259199; 
- Wed, 18 Oct 2023 22:44:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHHoSmBmEx/K4AqoQIZxD2h/ag5DfrgebAgLasNBVyc7u9lBrLqPM9r5wbBFCCwnkqRB+sXzQ==
-X-Received: by 2002:a05:6214:2628:b0:66d:2b1b:acfa with SMTP id
- gv8-20020a056214262800b0066d2b1bacfamr1845529qvb.50.1697694258998; 
- Wed, 18 Oct 2023 22:44:18 -0700 (PDT)
+ bh=jJydT9i5tsAWGNCf+sck7pu/49OXjN1IIdnoQSV7hno=;
+ b=E8v0sJbIErNTawTN8Ek1KKt6FRZ8ZAN7ePc+y45/c6BwC8YPFLXj0sFM1ghaIhHlWg
+ y8xDhkR7GTH45ZmA4lVFf6217u7wNNBbfbta7cte8Forjl7YDBc+yVHP4zbNaVAFLn4F
+ oYYQKfAn9XvNatnxeUIfRHP5xUvsTsbNFum81UaFUBGOQCPkaWYDVD5fOugnyWrxI3A0
+ kK1PrGXkSY0yEE5lA5v3yXt6zN1lHvqGbNUhf6VdpvFcrUvidkY7OeI1mdnb7yUWhg2c
+ X1gHwsm2LQOk/VsT9j2A13F3vD2jWFlU6chEDXpngeTMcUe0lXBl8Y4iWdZoCpzcEmaL
+ KGFA==
+X-Gm-Message-State: AOJu0Ywf9OFdLCx8drfxOdUoH+QEdqNfS3Isu2CwCX3V4mF9HgdQF9s1
+ RVJgtyh1rxcvNR6AJPmBFP8XrjL/YpnKky5hoPOpb/JCVyRHHQC6GQz+2BZlfJGBeIbco6hUSfH
+ jP5tsEkQlYDpL5cY=
+X-Received: by 2002:a05:6214:f29:b0:66d:59da:d225 with SMTP id
+ iw9-20020a0562140f2900b0066d59dad225mr1636310qvb.15.1697694325166; 
+ Wed, 18 Oct 2023 22:45:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG2L3tSJCuFbk8EBJK6K5VVSGyTdvMqAzxSMnmnxUX/pilLBKxqkzKWMZhqKIRbbOfZd6O0Jw==
+X-Received: by 2002:a05:6214:f29:b0:66d:59da:d225 with SMTP id
+ iw9-20020a0562140f2900b0066d59dad225mr1636293qvb.15.1697694324919; 
+ Wed, 18 Oct 2023 22:45:24 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- p18-20020a0cfad2000000b006564afc5908sm535103qvo.111.2023.10.18.22.44.17
+ p18-20020a0cfad2000000b006564afc5908sm535103qvo.111.2023.10.18.22.45.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 22:44:18 -0700 (PDT)
-Message-ID: <08b2004d-e4a1-4c72-af6a-b27fa9896a4f@redhat.com>
-Date: Thu, 19 Oct 2023 07:44:16 +0200
+ Wed, 18 Oct 2023 22:45:24 -0700 (PDT)
+Message-ID: <add787ae-a2cf-4692-906f-bbfe5fa201a6@redhat.com>
+Date: Thu, 19 Oct 2023 07:45:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] hw/ppc/pnv: Do not use SysBus API to map local MMIO
- region
+Subject: Re: [PATCH 5/6] hw/intc/spapr_xive: Move sysbus_init_mmio() calls
+ around
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -77,7 +77,7 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
  Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org
 References: <20231018133059.85765-1-philmd@linaro.org>
- <20231018133059.85765-5-philmd@linaro.org>
+ <20231018133059.85765-6-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,7 +121,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231018133059.85765-5-philmd@linaro.org>
+In-Reply-To: <20231018133059.85765-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -149,17 +149,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18/10/2023 15.30, Philippe Mathieu-Daudé wrote:
-> There is no point in exposing an internal MMIO region via
-> SysBus and directly mapping it in the very same device.
-> 
-> Just map it without using the SysBus API.
+> In order to make the next commit trivial, move sysbus_init_mmio()
+> calls just before the corresponding sysbus_mmio_map() calls.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/ppc/pnv.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
+>   hw/intc/spapr_xive.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-
 
 
