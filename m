@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E847D0246
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 21:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA1A7D0247
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 21:12:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtYPW-0001y8-Sc; Thu, 19 Oct 2023 15:10:22 -0400
+	id 1qtYPW-0001vp-GD; Thu, 19 Oct 2023 15:10:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtYPF-0001IM-NJ
+ id 1qtYPF-0001IH-Kz
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:10:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtYPB-0005Zu-F3
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:10:04 -0400
+ id 1qtYP9-0005Te-AM
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:10:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697742600;
+ s=mimecast20190719; t=1697742597;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=i7WF6z3NoHmdgkRpLAcccCpB+KwzJHQ8ydtWeaQ3LqQ=;
- b=EYfBvtFj1O92lwd6Cj8ZbUd5NTCMfHqFTZ2JzgERMfB8OqF8aq5hCNe2qiXI9YSR05WvDR
- G6CrSJUX66vKzwp8giyTH9uG9ESgbXD6nX8+TqPEQlTuunFXv2IFANFlL5k3XN/k6ZgGbr
- /AhW6mkKXirLgLfXeDYRVx3SFe6v+UI=
+ bh=xXpghZgxXfjzdj4iZW+QGkAoeoW+TbyEJIWXFwrNOTg=;
+ b=GXnsXDK4Yb7Z7qtQXnSQrbRjrxOrLV6QWOwkJ1l8YtNq5+3Pjbfek8SbYUK66NAUlNspSD
+ QxOy7vVQmVpyv1GhnxcZWwUCkAKf0QoTcOOBDseuNGrCW7guNE1T/JwNT3ukSPiWci0bAf
+ iQMwiofTug3p4hHYy1w01oqTwHExLCI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-478-w83OONg8P0ad5j6dBHycNg-1; Thu, 19 Oct 2023 15:09:52 -0400
-X-MC-Unique: w83OONg8P0ad5j6dBHycNg-1
+ us-mta-264-x9AZaYXVNEmqc0lSA50PUQ-1; Thu, 19 Oct 2023 15:09:54 -0400
+X-MC-Unique: x9AZaYXVNEmqc0lSA50PUQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1772A8B3A23;
- Thu, 19 Oct 2023 19:09:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4EC521802A08;
+ Thu, 19 Oct 2023 19:09:49 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 03C4C111D782;
- Thu, 19 Oct 2023 19:09:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 582381121314;
+ Thu, 19 Oct 2023 19:09:44 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
@@ -66,9 +66,9 @@ Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Halil Pasic <pasic@linux.ibm.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH 12/13] migration: Use vmstate_register_any() for eeprom93xx
-Date: Thu, 19 Oct 2023 21:08:30 +0200
-Message-ID: <20231019190831.20363-13-quintela@redhat.com>
+Subject: [PATCH 13/13] migration: Use vmstate_register_any() for vmware_vga
+Date: Thu, 19 Oct 2023 21:08:31 +0200
+Message-ID: <20231019190831.20363-14-quintela@redhat.com>
 In-Reply-To: <20231019190831.20363-1-quintela@redhat.com>
 References: <20231019190831.20363-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -98,27 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can have more than one eeprom93xx.
-For instance:
-
-e100_nic_realize() -> eeprom93xx_new()
+I have no idea if we can have more than one vmware_vga device, so play
+it safe.
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- hw/nvram/eeprom93xx.c | 2 +-
+ hw/display/vmware_vga.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/nvram/eeprom93xx.c b/hw/nvram/eeprom93xx.c
-index 1081e2cc0d..57d63638d7 100644
---- a/hw/nvram/eeprom93xx.c
-+++ b/hw/nvram/eeprom93xx.c
-@@ -321,7 +321,7 @@ eeprom_t *eeprom93xx_new(DeviceState *dev, uint16_t nwords)
-     /* Output DO is tristate, read results in 1. */
-     eeprom->eedo = 1;
-     logout("eeprom = 0x%p, nwords = %u\n", eeprom, nwords);
--    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_eeprom, eeprom);
-+    vmstate_register_any(VMSTATE_IF(dev), &vmstate_eeprom, eeprom);
-     return eeprom;
+diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
+index 09591fbd39..7490d43881 100644
+--- a/hw/display/vmware_vga.c
++++ b/hw/display/vmware_vga.c
+@@ -1264,7 +1264,7 @@ static void vmsvga_init(DeviceState *dev, struct vmsvga_state_s *s,
+ 
+     vga_common_init(&s->vga, OBJECT(dev), &error_fatal);
+     vga_init(&s->vga, OBJECT(dev), address_space, io, true);
+-    vmstate_register(NULL, 0, &vmstate_vga_common, &s->vga);
++    vmstate_register_any(NULL, &vmstate_vga_common, &s->vga);
+     s->new_depth = 32;
  }
  
 -- 
