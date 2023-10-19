@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2397D0187
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9407D0170
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:28:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXhG-0008UC-F2; Thu, 19 Oct 2023 14:24:38 -0400
+	id 1qtXfi-0006pg-9t; Thu, 19 Oct 2023 14:23:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXfD-0006Ok-1a
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:22:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXed-0005hI-Ea
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:21:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXf9-0000kL-K4
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:22:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXeb-0000gL-RZ
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:21:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697739742;
+ s=mimecast20190719; t=1697739713;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=fqm+3g2pVOW5m/nVt88A5JfMQVm/PoWF4WmYjiRU9/k=;
- b=hKMufRQDn/1D7ZhnqxgbvNwHyRa89wmUIn+YJr1Y3EODF1cDyGGoGVPA3x7xuJp9qwYS7y
- PlNzWJ+PH+ivhpfKmHHg4HZn8UA6MbKrdMUxBW6oL0uLmR6X1B6TiVnM66acHN4RFnP1U9
- tpkmGSRr3MVslmIDx53qIS2xnt8+olU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NwMMcG5cEaHfQ2TgGjb60VwjA/LGsrSX8V2jHOn88fg=;
+ b=CUKrUxh3JgR2X0/OYX7NLmxoS/YHo0l78n+t5pSiiYwt+GJtvng9iwtTjYdxtBU1eIN8oz
+ boWjQQi/ScO1lvetyWx4jbSzNTh62GnwcYgbMKgekCed7vrvfH1dHr/qZyx89r6fXY6HlI
+ eT/Nr68zd5vaMtoIplGC/rDUy3hxfC8=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-k32ZZ2FTOHyn2ZZRET_xsQ-1; Thu, 19 Oct 2023 14:21:47 -0400
-X-MC-Unique: k32ZZ2FTOHyn2ZZRET_xsQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4084e263ec4so2528015e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:21:39 -0700 (PDT)
+ us-mta-252-5zngDwRzMEeWeKDo-IYYjQ-1; Thu, 19 Oct 2023 14:21:41 -0400
+X-MC-Unique: 5zngDwRzMEeWeKDo-IYYjQ-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2c51ca27f71so49416471fa.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:21:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697739697; x=1698344497;
+ d=1e100.net; s=20230601; t=1697739700; x=1698344500;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fqm+3g2pVOW5m/nVt88A5JfMQVm/PoWF4WmYjiRU9/k=;
- b=jsYX6xrFRSoatO7ria/Vs22MhaAdRZVU1+ruvZSqObhjYgEwq6nyj6vtRo2Y0YY2oT
- /uulYFeqDvB1tJG8LtCE1mW4LSL8Q+AiuSDcsAGIFZTdd5HIKU3GouSIqaGy7MTw1Roo
- rMup77Gt0kXvz0s+2og5hiuz0jQjzsSsupwy3B7EHfuKT2hkrOki1hYEhxm09P7O1CBE
- zVN6G5D+Y8A4l0YLSKZekr5IezsJLYT8cjYYxLvTtbJrj6+CCKKiREXAMFLI6Y/VCH2s
- ImINUMxlJ7Q5Top0j2G2zreud+NNMAFJEYip2jerp6kcxz/pSRpWa5d98g7VChv/WGde
- pZyw==
-X-Gm-Message-State: AOJu0YxgeQm20uEAZ/zjjSz1TJBXwVWo0C+i0qjuoc/UH6EBnaJhfMHR
- q5J60amBEBF+WT+r8DG+DrlXdM6ebFRUlKcpyllPdR8LkOsaocTMfJM0pWUNDtuM/44sK2Qt6kX
- po0dYAVfM4J0pig3Bpv2asC50+gOgkqJdrUTZrpD9Ea9J2mRV+Fs3NE4exPT7sn4lU03N
-X-Received: by 2002:a5d:5310:0:b0:32d:9395:dec2 with SMTP id
- e16-20020a5d5310000000b0032d9395dec2mr1905770wrv.71.1697739697551; 
- Thu, 19 Oct 2023 11:21:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHmBKPb4ez6aUKkorBWiJGEbY3bLSTA7OB2wvhJS0KghwdCsA+2+ZUCVJFNU9zl99R91uYgTQ==
-X-Received: by 2002:a5d:5310:0:b0:32d:9395:dec2 with SMTP id
- e16-20020a5d5310000000b0032d9395dec2mr1905756wrv.71.1697739697189; 
- Thu, 19 Oct 2023 11:21:37 -0700 (PDT)
+ bh=NwMMcG5cEaHfQ2TgGjb60VwjA/LGsrSX8V2jHOn88fg=;
+ b=jBicCSKRyHEs1pmSWttUknKlGzZY/MOJZTcFebjz7jvtpl5dfFoYAO3NtTeZ0gx6Nb
+ 1TZtTnrlqzV93Pg6OjYVJwoUlVKDrVK3EyN/bmQWFxXHSk9PAudREl4+xioZ8FBQNPCz
+ sgPZ2lwzGasJpIKBDG7dvgGNsabPkuYL2ScaAA4WinZRQYPDW/V76u0QR4PAMCSAXj9g
+ +gOaptWpW14llshxK2/L9lWHsrqBHqFHm9fF3SyefvtO2QibN6MjbCqXqQJoHGWmVExp
+ LSLGXG7PDeq1B1FjYfzdol1dlYyym+CWVIYNJGH18Yb3JYkVmW0xIgAY49zJnQnemD+C
+ tpLQ==
+X-Gm-Message-State: AOJu0YyT/L9Co3sLmffDF0QHuIhaJMNAsUnHw8+Fa0aY6LmziG/xBTGQ
+ pDaVIKzCqnp299le/+fbTHX0BCs1ii9TR6b/afvpca4zAV3MApvSmGB4EBu4TVy4Vh8lN0+VX01
+ 9V3btVi5QWueJaw6UJyf7xNrLynD9xSFygsrRJWmuMlh3V5x1P3vZBQBF7wOw0ZDX/I9q
+X-Received: by 2002:a2e:b0e1:0:b0:2c5:1f46:3323 with SMTP id
+ h1-20020a2eb0e1000000b002c51f463323mr2047505ljl.47.1697739699758; 
+ Thu, 19 Oct 2023 11:21:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFT2v1h+YX61qvaKU1lSOJ+6GEtGMVcMdz1Uw+70TspVHxNhl+yqY2QaucfYKvU9UgcN5VzyA==
+X-Received: by 2002:a2e:b0e1:0:b0:2c5:1f46:3323 with SMTP id
+ h1-20020a2eb0e1000000b002c51f463323mr2047494ljl.47.1697739699458; 
+ Thu, 19 Oct 2023 11:21:39 -0700 (PDT)
 Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
  by smtp.gmail.com with ESMTPSA id
- j14-20020adfea4e000000b0032d81837433sm5109606wrn.30.2023.10.19.11.21.36
+ e38-20020a05600c4ba600b004075d5664basm4943631wmp.8.2023.10.19.11.21.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 11:21:36 -0700 (PDT)
-Date: Thu, 19 Oct 2023 14:21:35 -0400
+ Thu, 19 Oct 2023 11:21:39 -0700 (PDT)
+Date: Thu, 19 Oct 2023 14:21:37 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [PULL v2 09/78] tests: bios-tables-test: Prepare the ACPI table
- change for smbios type4 count test
-Message-ID: <9717aa04085e6c5f69e05a426b73386cd8bd9570.1697739629.git.mst@redhat.com>
+Subject: [PULL v2 10/78] tests: bios-tables-test: Add test for smbios type4
+ count
+Message-ID: <a0380d46fe0119dc0d88ae1e1366f0d31d4b7c01.1697739629.git.mst@redhat.com>
 References: <cover.1697739629.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,14 +76,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1697739629.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,43 +102,126 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Following the guidelines in tests/qtest/bios-tables-test.c, this
-is step 1 - 3.
+This tests the commit d79a284a44bb7 ("hw/smbios: Fix smbios_smp_sockets
+calculation").
 
-List the ACPI tables that will be added to test the type 4 count.
+In smbios_get_tables() (hw/smbios/smbios.c), smbios type4 table is built
+for each socket, so the count of type4 tables should be equal to the
+number of sockets.
 
+Thus for the topology in this case, there're the following considerations:
+1. The topology should include multiple sockets to ensure smbios could
+   create type4 tables for each socket.
+2. In addition to sockets, for the more general topology, we should also
+   configure as many topology levels as possible (multiple dies, no
+   module since x86 hasn't supported it), to ensure that smbios is able
+   to exclude the effect of other topology levels to create the type4
+   tables only for sockets.
+3. The original miscalculation bug also misused "smp.cpus", so it's
+   necessary to configure "cpus" (presented threads for machine) and
+   "maxcpus" (total threads for machine) as well to make sure that
+   configuring unpluged CPUs in smp (cpus < maxcpus) does not affect
+   the correctness of the count of type4 tables.
+
+Based on these considerations, select the topology as the follow:
+
+-smp cpus=100,maxcpus=120,sockets=5,dies=2,cores=4,threads=3
+
+The expected count of type4 tables = sockets (5).
+
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20230928125943.1816922-3-zhao1.liu@linux.intel.com>
+Message-Id: <20230928125943.1816922-4-zhao1.liu@linux.intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 3 +++
- tests/data/acpi/q35/APIC.type4-count        | 0
- tests/data/acpi/q35/DSDT.type4-count        | 0
- tests/data/acpi/q35/FACP.type4-count        | 0
- 4 files changed, 3 insertions(+)
- create mode 100644 tests/data/acpi/q35/APIC.type4-count
- create mode 100644 tests/data/acpi/q35/DSDT.type4-count
- create mode 100644 tests/data/acpi/q35/FACP.type4-count
+ tests/qtest/bios-tables-test.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..0ce6f8fc72 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,4 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/q35/APIC.type4-count",
-+"tests/data/acpi/q35/DSDT.type4-count",
-+"tests/data/acpi/q35/FACP.type4-count",
-diff --git a/tests/data/acpi/q35/APIC.type4-count b/tests/data/acpi/q35/APIC.type4-count
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/q35/DSDT.type4-count b/tests/data/acpi/q35/DSDT.type4-count
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/q35/FACP.type4-count b/tests/data/acpi/q35/FACP.type4-count
-new file mode 100644
-index 0000000000..e69de29bb2
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 9f4bc15aab..cdbfb51559 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -97,6 +97,7 @@ typedef struct {
+     uint16_t smbios_core_count2;
+     uint8_t *required_struct_types;
+     int required_struct_types_len;
++    int type4_count;
+     QTestState *qts;
+ } test_data;
+ 
+@@ -673,12 +674,21 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+     }
+ }
+ 
++static void smbios_type4_count_test(test_data *data, int type4_count)
++{
++    int expected_type4_count = data->type4_count;
++
++    if (expected_type4_count) {
++        g_assert_cmpuint(type4_count, ==, expected_type4_count);
++    }
++}
++
+ static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
+ {
+     DECLARE_BITMAP(struct_bitmap, SMBIOS_MAX_TYPE+1) = { 0 };
+ 
+     SmbiosEntryPoint *ep_table = &data->smbios_ep_table;
+-    int i = 0, len, max_len = 0;
++    int i = 0, len, max_len = 0, type4_count = 0;
+     uint8_t type, prv, crt;
+     uint64_t addr;
+ 
+@@ -704,6 +714,7 @@ static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
+ 
+         if (type == 4) {
+             smbios_cpu_test(data, addr, ep_type);
++            type4_count++;
+         }
+ 
+         /* seek to end of unformatted string area of this struct ("\0\0") */
+@@ -747,6 +758,8 @@ static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
+     for (i = 0; i < data->required_struct_types_len; i++) {
+         g_assert(test_bit(data->required_struct_types[i], struct_bitmap));
+     }
++
++    smbios_type4_count_test(data, type4_count);
+ }
+ 
+ static void test_acpi_load_tables(test_data *data)
+@@ -970,6 +983,22 @@ static void test_acpi_q35_tcg(void)
+     free_test_data(&data);
+ }
+ 
++static void test_acpi_q35_tcg_type4_count(void)
++{
++    test_data data = {
++        .machine = MACHINE_Q35,
++        .variant = ".type4-count",
++        .required_struct_types = base_required_struct_types,
++        .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
++        .type4_count = 5,
++    };
++
++    test_acpi_one("-machine smbios-entry-point-type=64 "
++                  "-smp cpus=100,maxcpus=120,sockets=5,"
++                  "dies=2,cores=4,threads=3", &data);
++    free_test_data(&data);
++}
++
+ static void test_acpi_q35_tcg_core_count2(void)
+ {
+     test_data data = {
+@@ -2147,6 +2176,8 @@ int main(int argc, char *argv[])
+             if (has_kvm) {
+                 qtest_add_func("acpi/q35/kvm/xapic", test_acpi_q35_kvm_xapic);
+                 qtest_add_func("acpi/q35/kvm/dmar", test_acpi_q35_kvm_dmar);
++                qtest_add_func("acpi/q35/type4-count",
++                               test_acpi_q35_tcg_type4_count);
+                 qtest_add_func("acpi/q35/core-count2",
+                                test_acpi_q35_tcg_core_count2);
+             }
 -- 
 MST
 
