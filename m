@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806387D0409
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3FF7D039C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaQA-0005Fl-38; Thu, 19 Oct 2023 17:19:10 -0400
+	id 1qtaQF-0005el-Vi; Thu, 19 Oct 2023 17:19:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQ7-0005BQ-OR
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:07 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQE-0005dq-H5
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:14 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQ5-0004wo-CR
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:07 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-32d9effe314so105220f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:19:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQB-0004zs-Te
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:14 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40837ebba42so1064675e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:19:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750343; x=1698355143; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750350; x=1698355150; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CDOh9aTp1V6NdKCqXsAlRdEiv+EPu9d2PQpbnuZZmkw=;
- b=ijlTvkQhrA3R7DrCIJnjQNsHxaS17/o7LvU/mECsrx3oBkl3Ep/PbuEaUfNcjOgYLl
- 9MVo7MlAIVHmhSC3tlKcWB4WEPfzPNV0ptPV8ZUXeJ4+CRQy3mKUhxbvSWW2a+IIImbE
- 6xf4C04VFGe13A5CPWMbkplORssUc4+5TMzH+qXqCEIy8V2Ly/mDD/U8NKZu6P//0hAj
- qQF26hcN/3VQcDHQfG5fj0MlHapuRD00ykRupgigccoeAx5PCynLrj8p7WDufnHAg5CD
- 7aChIhWOhdtzqfrqZOK7jiZJ2YSHZ0nrXRfpya38F7KCSfS7Y330GTfRM3RUziZDrGNo
- in8g==
+ bh=TF53WRurKJJRsNtHQwV6C2hpFVA8ru1RM8pOdggQzFc=;
+ b=XGL9SjUjp4RnXicJhvC+Ia522Nuzf4htD5YZRDyh7oiHHG+rBaTKeV9CqLwTaVZ5C9
+ AbzzAlWHFyWH7xp1oY/SKqDojRrbE6JUnZjSMHY7Cct6Xvrsetjzqrhm7J320TD7pGgE
+ j15vucvuJ37+TmOn3sGBLfi/6JTMRoiGrOZKy6qQ4UWqmhpD6PHBo8kHtFg/2Px1bJZX
+ sZ04RIi27tpnWHsokv5Ygnt2GLYb4pLjlUjP4Y4vlleSii7Qtnt2hquEQwC0sT4ZnJ2S
+ Pt0ddurjj/VgMAUgHSzDet4lX1WsPeqSPKw29Eznf00sMy+s4dadeCilIsxqi0BoyRf/
+ WAVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750343; x=1698355143;
+ d=1e100.net; s=20230601; t=1697750350; x=1698355150;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CDOh9aTp1V6NdKCqXsAlRdEiv+EPu9d2PQpbnuZZmkw=;
- b=tHlQSGKRMSHKQZnrZAqFfAwGvpVcxR9WAlNnHTPTlOJuBRnk4C3o4DlSK7Up8JlC35
- Y0G3nR+QHCvOTvC0X/FprVZwkRhiADlgS/XcZ9PQWPRUMk1EzHqQAAgqUOM79fkZcTw7
- J+pAzkpwDBWaefCRid7jhFd/U1vJHp6R7NuA//7RJrZ1TnYZyJ/aECaV667btboC4mAT
- eH9AH9olJswt2yccLs/QWaxRAdZAQ901TNfGbu3InwzsSusQYYzTp9xbb2eZsBtuXqMN
- wV658arlCVumkIe/22bt5UBkZRnm1oI/dKOyY0mwwUCeR3LB5QFhgsl3yhUKcSdkRCEt
- Gisg==
-X-Gm-Message-State: AOJu0YwNTETfb3fqCXjjlJ306ABjtMP7K2QXDFseAc9Nk9y8/nSq0XCY
- OXAghtfssyiDJFgUBpHKSBVgz4TSXEMuMX+U73oDGw==
-X-Google-Smtp-Source: AGHT+IGF4II5OHXhGE0cqNO3Jdq+VR1QOLcL/iQ2jZdOa0CFlnSKMH+o99Ds04Ae6z+AHCKJR4ZZOQ==
-X-Received: by 2002:a5d:6189:0:b0:327:e073:d604 with SMTP id
- j9-20020a5d6189000000b00327e073d604mr2005103wru.45.1697750343472; 
- Thu, 19 Oct 2023 14:19:03 -0700 (PDT)
+ bh=TF53WRurKJJRsNtHQwV6C2hpFVA8ru1RM8pOdggQzFc=;
+ b=qHsqIiSH3d4xe9cqvK13YzYxdukeaZqP6BDTgpe8uqdMzqQE2qZ/5n+XRV7B9CKy6m
+ rbBdo43J17RzZaDvX5HV2zjfEGgl0XM00vaL06LPJOAqK5duyrJhxb/tOPInRJWGEYIP
+ uA7hsSi8dQHmDpwT2pUlhmIs9noAizgFOUVQ2bsG0LHuRncdpZUc3DXKYTvkcVDE//cq
+ Cy/5lawaw3Lj0b2nGqX4wS2RYKzuDLdLIF3Axlk/4dVZwcx6YICNJEFtrnZCrdsnQXam
+ IUiVDYfxJXS4BuURQ1EoZ4NEVPJX4gC00IHtZwSRvfgOVq/sCqh4oKxaZsmIqLe0a+yK
+ +YpA==
+X-Gm-Message-State: AOJu0YwCA6z3SmwmoypZAdWEf+v/BwTscxe+YULVQlM9yx6aDfyKwzrX
+ GLGV7FlRhATeaMxpcHA6tTeeFucH4/57wLeun0ixeg==
+X-Google-Smtp-Source: AGHT+IE/yEI8tIP6eI9Kg7MbK2xVvooO0cuDCQtLnLLzKppYnICOhJpRIDm7mcCUPkMCDbIJG5v5DA==
+X-Received: by 2002:a05:600c:3b20:b0:405:4f78:e128 with SMTP id
+ m32-20020a05600c3b2000b004054f78e128mr63402wms.4.1697750350299; 
+ Thu, 19 Oct 2023 14:19:10 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- y10-20020a5d470a000000b0032d9efeccd8sm220126wrq.51.2023.10.19.14.19.01
+ p5-20020a05600c358500b004053a6b8c41sm515635wmq.12.2023.10.19.14.19.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:19:03 -0700 (PDT)
+ Thu, 19 Oct 2023 14:19:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 07/46] buildsys: Only display Objective-C information when
- Objective-C is used
-Date: Thu, 19 Oct 2023 23:17:32 +0200
-Message-ID: <20231019211814.30576-8-philmd@linaro.org>
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>
+Subject: [PULL 08/46] memory: drop needless argument
+Date: Thu, 19 Oct 2023 23:17:33 +0200
+Message-ID: <20231019211814.30576-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When configuring with '--disable-cocoa --disable-coreaudio'
-on Darwin, we get:
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
- meson.build:4081:58: ERROR: Tried to access compiler for language "objc", not specified for host machine.
- meson.build:4097:47: ERROR: Tried to access unknown option 'objc_args'.
+The argument is unused since commit bdc44640c ("cpu: Use QTAILQ for CPU list").
 
-Instead of unconditionally display Objective-C informations
-on Darwin, display them when Objective-C is discovered.
-
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20231009075231.150568-1-marcandre.lureau@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20231009093812.52915-1-philmd@linaro.org>
 ---
- meson.build | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ system/memory_mapping.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 259dc5f308..4961c82a6b 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4087,8 +4087,10 @@ if 'cpp' in all_languages
- else
-   summary_info += {'C++ compiler':      false}
- endif
--if targetos == 'darwin'
-+if 'objc' in all_languages
-   summary_info += {'Objective-C compiler': ' '.join(meson.get_compiler('objc').cmd_array())}
-+else
-+  summary_info += {'Objective-C compiler': false}
- endif
- option_cflags = (get_option('debug') ? ['-g'] : [])
- if get_option('optimization') != 'plain'
-@@ -4098,7 +4100,7 @@ summary_info += {'CFLAGS':            ' '.join(get_option('c_args') + option_cfl
- if 'cpp' in all_languages
-   summary_info += {'CXXFLAGS':        ' '.join(get_option('cpp_args') + option_cflags)}
- endif
--if targetos == 'darwin'
-+if 'objc' in all_languages
-   summary_info += {'OBJCFLAGS':       ' '.join(get_option('objc_args') + option_cflags)}
- endif
- link_args = get_option('c_link_args')
+diff --git a/system/memory_mapping.c b/system/memory_mapping.c
+index d7f1d096e0..8ba9968f8c 100644
+--- a/system/memory_mapping.c
++++ b/system/memory_mapping.c
+@@ -291,7 +291,7 @@ void guest_phys_blocks_append(GuestPhysBlockList *list)
+     memory_listener_unregister(&g.listener);
+ }
+ 
+-static CPUState *find_paging_enabled_cpu(CPUState *start_cpu)
++static CPUState *find_paging_enabled_cpu(void)
+ {
+     CPUState *cpu;
+ 
+@@ -312,7 +312,7 @@ void qemu_get_guest_memory_mapping(MemoryMappingList *list,
+     GuestPhysBlock *block;
+     ram_addr_t offset, length;
+ 
+-    first_paging_enabled_cpu = find_paging_enabled_cpu(first_cpu);
++    first_paging_enabled_cpu = find_paging_enabled_cpu();
+     if (first_paging_enabled_cpu) {
+         for (cpu = first_paging_enabled_cpu; cpu != NULL;
+              cpu = CPU_NEXT(cpu)) {
 -- 
 2.41.0
 
