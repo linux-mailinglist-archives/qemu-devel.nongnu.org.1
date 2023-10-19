@@ -2,123 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15CD37D0344
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C0A7D0355
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZqj-0005WY-5a; Thu, 19 Oct 2023 16:42:33 -0400
+	id 1qtZw8-0007NG-Hx; Thu, 19 Oct 2023 16:48:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qtZqf-0005Un-3C; Thu, 19 Oct 2023 16:42:29 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1qtZvx-0007F7-Bf
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:58 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qtZqc-00019h-9J; Thu, 19 Oct 2023 16:42:28 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKdbR6017571; Thu, 19 Oct 2023 20:42:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=F7DQLMKjdfplScNXTL2KFwcgN3jHl0LsOzFJERq22q8=;
- b=p+vbT1dhWYwuQQTgJXJA3GRp0sW0YWL7wU1wwRhgE2ipVLNfyRANLP8ehtc9c1aqtG14
- L7A7O+vsmLz9E9gPnc8H5+OxsyTWAF7KpUpoFXgnzmkjIQFAV4aksNFTnRUvN0FS1Iq8
- WmkA3DrLGv4cXh350riqatdrmFd1dQYnOQ/4nKeFoCpxXHhwARI9pJcj5ejyG4/oS0k+
- hUzNXH34widC0/io25hb31XQT/ZQB2aSdZSLYN9I3RoErH2GBDcU/QyGrMagIrWbxS7q
- c1ens7i7yg3hEkzIX+HFbcpWmIn5VrjvQ7e+jod6eRVrQ6WUitQt/+0Jnf97ds+evcvT Vw== 
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1qtZvt-0003SH-3T
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:56 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39JKigFH019248; Thu, 19 Oct 2023 20:47:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id; s=corp-2023-03-30;
+ bh=EeLS0knyndViJ2fyxcNsjRT5McE9V6nIPhfcBe0C4tk=;
+ b=l1d9g339asQwSeYhSuswkyHfdllOOyIcctI7TM5IdtLm8X8JHvLvG4W4WRLrQEsNNgRJ
+ LvJag78KOjj0MOt+eLAU8kCktDLblJTuody5Phxwmoy7Ih4N9iqupI+2GX5r5fcyipyv
+ 214/T7+MFavUTMURH04L1Ngh2dSDiZ6+KRx2pLQSlscmm4/vAclD9ljpdrgdySBxCVKY
+ 5CLfEr34NUVo2sms3+NTaVi3H6QFqt9VCnUyNfeza4oD0xincdYRKKEQvGVg7S4VZHND
+ OZu9ubiy73wzKd1Db5OJ+ysEBGnT+/dXHXAOqYK0fbliWn+jXvY5sRBm1Mz4NeHp0Tzk AQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqk1bukc5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Oct 2023 20:47:49 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 39JJUXZ7040437; Thu, 19 Oct 2023 20:47:48 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubpfr5su-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:42:14 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKdYNt017086;
- Thu, 19 Oct 2023 20:42:13 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubpfr5rd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:42:13 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKRrfF019884; Thu, 19 Oct 2023 20:42:12 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr8122ya5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:42:12 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39JKgC9624117566
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:42:12 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E196C58058;
- Thu, 19 Oct 2023 20:42:11 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 763C158057;
- Thu, 19 Oct 2023 20:42:08 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 19 Oct 2023 20:42:08 +0000 (GMT)
-Message-ID: <7f200fc5-3db3-cb13-3b9c-9861dfb358ec@linux.ibm.com>
-Date: Thu, 19 Oct 2023 16:42:07 -0400
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 13/13] migration: Use vmstate_register_any() for vmware_vga
-Content-Language: en-US
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, qemu-s390x@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Stefan Weil <sw@weilnetz.de>, qemu-arm@nongnu.org,
- Jason Wang <jasowang@redhat.com>, Corey Minyard <minyard@acm.org>,
- Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
- <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20231019190831.20363-1-quintela@redhat.com>
- <20231019190831.20363-14-quintela@redhat.com>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20231019190831.20363-14-quintela@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UJjskGeC5GbfGf-vt7aQWVjyRxjyAZ7q
-X-Proofpoint-ORIG-GUID: A225qCHXuKPmbXyd9c6iPZMs_prm4gfG
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3trfyqqagu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Oct 2023 20:47:48 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKllWG014514;
+ Thu, 19 Oct 2023 20:47:47 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 3trfyqqafy-1; Thu, 19 Oct 2023 20:47:47 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V1 0/4] Live Update reboot mode
+Date: Thu, 19 Oct 2023 13:47:42 -0700
+Message-Id: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-19_20,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- mlxlogscore=999 priorityscore=1501 impostorscore=0 phishscore=0
- spamscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ adultscore=0
+ phishscore=0 spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310190176
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Proofpoint-GUID: aAErt1S6ZjJP2h33CVBrWYP07cznXdp6
+X-Proofpoint-ORIG-GUID: aAErt1S6ZjJP2h33CVBrWYP07cznXdp6
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -134,36 +94,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add a mode migration parameter that can be used to select alternate
+migration algorithms.  The default mode is normal, representing the
+current migration algorithm, and does not need to be explicitly set.
 
-On 10/19/23 15:08, Juan Quintela wrote:
-> I have no idea if we can have more than one vmware_vga device, so play
-> it safe.
->
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
+Provide the cpr-reboot migration mode for live update, which saves state to
+a file.  This allows one to quit qemu, reboot to an updated kernel, install
+an updated version of qemu, and resume via the migrate-incoming command.
+The caller must specify a migration URI that writes to and reads from a file,
+and must set the mode parameter before invoking the migrate or migrate-incoming
+commands.
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Unlike normal mode, the use of certain local storage options does not block
+cpr-reboot mode, but the caller must not modify guest block devices between
+the quit and restart.  The guest RAM memory-backend must be shared, and the
+@x-ignore-shared migration capability must be set, to avoid saving RAM to the
+file.  Guest RAM must be non-volatile across reboot, which can be achieved by
+backing it with a dax device, or /dev/shm PKRAM as proposed in
+https://lore.kernel.org/lkml/1617140178-8773-1-git-send-email-anthony.yznaga@oracle.com
+but this is not enforced.  The restarted qemu arguments must match those used
+to initially start qemu, plus the -incoming option.
 
-> ---
->   hw/display/vmware_vga.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
-> index 09591fbd39..7490d43881 100644
-> --- a/hw/display/vmware_vga.c
-> +++ b/hw/display/vmware_vga.c
-> @@ -1264,7 +1264,7 @@ static void vmsvga_init(DeviceState *dev, struct vmsvga_state_s *s,
->
->       vga_common_init(&s->vga, OBJECT(dev), &error_fatal);
->       vga_init(&s->vga, OBJECT(dev), address_space, io, true);
-> -    vmstate_register(NULL, 0, &vmstate_vga_common, &s->vga);
-> +    vmstate_register_any(NULL, &vmstate_vga_common, &s->vga);
+This patch series contains minimal functionality.  Future patches will enhance
+reboot mode by preserving vfio devices for suspended guests.  They will also
+add a new mode for updating qemu using the exec system call, which will keep
+vfio devices and certain character devices alive.
 
-And the first one registered with 'any' will again have instance_id = 0 
-assigned. So there's no side effect to be expected with any of these 
-device, I suppose.
+Here is an example of updating the host kernel using reboot mode.
 
+window 1                                        | window 2
+                                                |
+# qemu-system-$arch -monitor stdio              |
+  mem-path=/dev/dax0.0 ...                      |
+QEMU 8.1.50 monitor - type 'help' for more info |
+(qemu) info status                              |
+VM status: running                              |
+                                                | # yum update kernel-uek
+(qemu) migrate_set_capability x-ignore-shared on|
+(qemu) migrate_set_parameter mode cpr-reboot    |
+(qemu) migrate -d file:vm.state                 |
+(qemu) info status                              |
+VM status: paused (postmigrate)                 |
+(qemu) quit                                     |
+                                                |
+# systemctl kexec                               |
+kexec_core: Starting new kernel                 |
+...                                             |
+                                                |
+# qemu-system-$arch -monitor stdio              |
+  mem-path=/dev/dax0.0 -incoming defer ...      |
+QEMU 8.1.50 monitor - type 'help' for more info |
+(qemu) info status                              |
+VM status: paused (inmigrate)                   |
+(qemu) migrate_set_capability x-ignore-shared on|
+(qemu) migrate_set_parameter mode cpr-reboot    |
+(qemu) migrate_incoming file:vm.state           |
+(qemu) info status                              |
+VM status: running                              |
 
->       s->new_depth = 32;
->   }
->
+Steve Sistare (4):
+  migration: mode parameter
+  migration: per-mode blockers
+  cpr: relax some blockers
+  cpr: reboot mode
+
+ backends/tpm/tpm_emulator.c         |  2 +-
+ block/parallels.c                   |  2 +-
+ block/qcow.c                        |  2 +-
+ block/vdi.c                         |  2 +-
+ block/vhdx.c                        |  2 +-
+ block/vmdk.c                        |  2 +-
+ block/vpc.c                         |  2 +-
+ block/vvfat.c                       |  2 +-
+ hw/9pfs/9p.c                        |  2 +-
+ hw/core/qdev-properties-system.c    | 12 +++++
+ hw/scsi/vhost-scsi.c                |  2 +-
+ hw/virtio/vhost.c                   |  2 +-
+ include/hw/qdev-properties-system.h |  4 ++
+ include/migration/blocker.h         | 44 +++++++++++++++--
+ include/migration/misc.h            |  1 +
+ migration/migration-hmp-cmds.c      |  8 ++++
+ migration/migration.c               | 95 ++++++++++++++++++++++++++++++++-----
+ migration/options.c                 | 21 ++++++++
+ migration/options.h                 |  1 +
+ qapi/migration.json                 | 41 ++++++++++++++--
+ stubs/migr-blocker.c                | 10 ++++
+ target/i386/nvmm/nvmm-all.c         |  3 +-
+ 22 files changed, 230 insertions(+), 32 deletions(-)
+
+-- 
+1.8.3.1
+
 
