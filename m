@@ -2,94 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788337CF8A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C9D7CF8FE
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:33:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtS46-0000lA-2N; Thu, 19 Oct 2023 08:23:50 -0400
+	id 1qtSBn-00023x-TE; Thu, 19 Oct 2023 08:31:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtS43-0000jH-J6
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:23:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtS42-0003uG-1X
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:23:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697718225;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=6TeqVwUSqD95zt7KZp/rA4+jzcR5SOvQ8Ek+xtJ4/RA=;
- b=IInG0l/PCyjAC85t5sap1kOSHzWcpqo9a3TyzsKaC3Ijr9A9evQn7hczSvVUeQFgolt/T6
- yhlLipQiH1QWVI/RxEDpGwdOEelWvsmSaBxrv/EfxOAie68qWIyUP+HYo1KOFCQqoNdHyU
- DzlBnX0FPyb+sLZjM/XGwxzgUx/zeP0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-300-6C8TYwTKOp2dmMYJsJ6sWg-1; Thu, 19 Oct 2023 08:23:38 -0400
-X-MC-Unique: 6C8TYwTKOp2dmMYJsJ6sWg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-32dcad22c5fso1094267f8f.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 05:23:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qtSBP-0001rs-R4
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:31:25 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qtSBM-0006Rj-56
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:31:21 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-53b32dca0bfso1603899a12.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 05:31:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697718676; x=1698323476; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=2hyHjOLrvFMewnfFTD2xl3OUPurv+Xcb2TEDNwdOGU8=;
+ b=VEMfQCrNinCdB9lgY653MW/drfhy5ubTsmFyyTA/Cb7tv2uZoYsBoub5PmjGPKwBZn
+ JwbTtBkCFkVtM0zPvnmh3xMauO+IAx+V+aG/7PEDmJM8wBDvPltW/IK8BH2Ax5X8sl1Y
+ B6SPV16apM9/Y0I/vnuWSGoX4yWzctunpZ8EGqfTy+bL9pP3r+KJqsNK9uFyn7C1dYjG
+ ppgbfc8xfMTGj2bud2iiUViipciSmeHmxQ+z6UsQ5c+kdAKf7v6aGlzdn++HFqfD1CLd
+ x21vmIvFX8TNbBOyFf5SvaYHigMb3s9QE0vM4mK3pj5IoxD5Ob8veN73fZLuQz6hZFek
+ l0ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697718217; x=1698323017;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6TeqVwUSqD95zt7KZp/rA4+jzcR5SOvQ8Ek+xtJ4/RA=;
- b=lQcS51a3xn/PTQZnC493x77nbOo4EWKQhI+M2W+Q9RgGrUl0xuP0dIu2GyE6GAdt4Q
- jHlrC3WqMu2wBpEkdHmxTcdkrR8YpoajnCr0xWHbCijTQtxmJB61TM8tQVaz2mmZFNAL
- qz1acr1M1QnDsr3Re/QUQo6vW8hWE+/c+LLTkML9ZcCB7n2OBKxPYpYH6LdPcTQQqRY/
- Th3JqbH/U2FP8lASaIP89jMqnFkRdAXf8Dh0CSfy+imk0FtBgY5gbsptp55nFau05vbk
- UXaGeX/u0wSDZInv8ECEmBPkP/ml9nDS3IogYZz0mOCPQWsBrEUl8KBnLHPa8SVmuL5q
- 2lkw==
-X-Gm-Message-State: AOJu0YwgSvbew8IybWL5cqQwV2tPgc4f+9uGLcS9R5BHHWf/ZLQ9ieAU
- 5OjdOPi9zUMBl3+6ZoXannAYgV1JFxADKWGGsv5gyr1fe8r2XijpTsjcndA2GWPXCc5LKNKJx4o
- VQdeNiC8GlfipxvY=
-X-Received: by 2002:a05:6000:bc3:b0:32d:9d66:5742 with SMTP id
- dm3-20020a0560000bc300b0032d9d665742mr1735498wrb.10.1697718217655; 
- Thu, 19 Oct 2023 05:23:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFI5KfqN0GZKG0+S061kbTJoDfhFiM5h6loIqmYm5s4Fe84A5b+Pr5/AhoCzkhlgw6qdjgaAg==
-X-Received: by 2002:a05:6000:bc3:b0:32d:9d66:5742 with SMTP id
- dm3-20020a0560000bc300b0032d9d665742mr1735478wrb.10.1697718217302; 
- Thu, 19 Oct 2023 05:23:37 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- k8-20020adfe3c8000000b0032710f5584fsm4364759wrm.25.2023.10.19.05.23.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 05:23:36 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>,  qemu-devel@nongnu.org,  Fabiano Rosas
- <farosas@suse.de>,  Chensheng Dong <chdong@redhat.com>,  Zhiyi Guo
- <zhguo@redhat.com>,  Eric Blake <eblake@redhat.com>,  Joao Martins
- <joao.m.martins@oracle.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>
-Subject: Re: [PATCH v4] migration: Allow user to specify available
- switchover bandwidth
-In-Reply-To: <87wmvkxvza.fsf@pond.sub.org> (Markus Armbruster's message of
- "Wed, 18 Oct 2023 08:53:13 +0200")
-References: <20231010221922.40638-1-peterx@redhat.com>
- <87y1g149t3.fsf@pond.sub.org> <ZS6qJ0F1uRlKWe45@x1n>
- <87wmvkxvza.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 19 Oct 2023 14:23:35 +0200
-Message-ID: <875y324x88.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1697718676; x=1698323476;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2hyHjOLrvFMewnfFTD2xl3OUPurv+Xcb2TEDNwdOGU8=;
+ b=LJB+ENSWwpdyqk7fCxDaFxvdtbMmCSvzB1k5HwHVwmiFc3KZUUTqU6rO9+jOSm13wE
+ TEYlrwYYHJDtLyq2OHNm/isqn9LZMvccvoIY067hxIEQsJnKUZTxGpa5nHx+3NNOHLUk
+ c0CJDYLh3npKhlBmFsxr7dude5r9zv38N+BAkxy5N0dewmhAZTVCFbnltnOG2BBE4T2u
+ qKzXL+v5ls6Oyvt1gswaQ7o7bn/wmRWxIiDZinYaRfhpwHF1O3BM8HVfsT45fnZEzsWM
+ TZNNG5tMgKGWZFmrBt9tLPTI3XPT08zRPgzAqDk3cnI7e+mE8N7vQTATaq2TGY1cxNMu
+ L2Lw==
+X-Gm-Message-State: AOJu0YyHszgCEkeMmUjFOdD5CjBopUTyfZfULyasN5HcXF7JTT4/q8CQ
+ 7npB5SrWHd3ZzKxzq2L0GbToASZgETql6ZvlcJHSmQ==
+X-Google-Smtp-Source: AGHT+IF+oxqe92OAvsesmyMryOvRmgW7PKKChpMeO5kWR/D56N1UAR6ICb3UEBsLcoGx16WfT9iBQrhs1zDKB+09xdM=
+X-Received: by 2002:a50:9f88:0:b0:533:ccec:552 with SMTP id
+ c8-20020a509f88000000b00533ccec0552mr1638264edf.9.1697718676613; Thu, 19 Oct
+ 2023 05:31:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <cover.1696477105.git.mst@redhat.com>
+ <e967413fe0f2f3fe022658bb279aef95d24210ec.1696477105.git.mst@redhat.com>
+In-Reply-To: <e967413fe0f2f3fe022658bb279aef95d24210ec.1696477105.git.mst@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 19 Oct 2023 13:31:05 +0100
+Message-ID: <CAFEAcA9VQ8KBCT7+CbY-1so5KVDUfydwP=MEJfc+1rkddFaq4A@mail.gmail.com>
+Subject: Re: [PULL v2 38/53] hw/cxl: Support 4 HDM decoders at all levels of
+ topology
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Fan Ni <fan.ni@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,36 +84,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-> Peter Xu <peterx@redhat.com> writes:
-
-[..]
-
->>> "unconvergence" isn't a word :)
->>> 
->>> Suggest "like migration not converging, because the automatically
->>> detected migration bandwidth is hilariously low for whatever reason."
->>> 
->>> Appreciate the thorough explanation!
->>
->> Thanks for reviewing!
->>
->> The patch is already in today's migration pull, so unfortunately no planned
->> repost for now.  I'll amend the commit message and collect the ACK if I'll
->> need to redo it.
+On Thu, 5 Oct 2023 at 04:45, Michael S. Tsirkin <mst@redhat.com> wrote:
 >
-> Didn't see the PR, and didn't expect it so soon.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Support these decoders in CXL host bridges (pxb-cxl), CXL Switch USP
+> and CXL Type 3 end points.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
 
-Sorry.
 
-When a series is at v4 reviewed I tend to be faster pulling.
-For new series, I try to let them in the list for a couple of days to
-let people comment.
 
-Later, Juan.
+> -/* TODO: Support multiple HDM decoders and DPA skip */
+>  static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
+>  {
+>      int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
+>      uint32_t *cache_mem = ct3d->cxl_cstate.crb.cache_mem_registers;
+> -    uint64_t decoder_base, decoder_size, hpa_offset;
+> -    uint32_t hdm0_ctrl;
+> -    int ig, iw;
+> -    int i = 0;
+> +    unsigned int hdm_count;
+> +    uint32_t cap;
+> +    uint64_t dpa_base = 0;
+> +    int i;
+>
+> -    decoder_base =
+> -        (((uint64_t)cache_mem[R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc] << 32) |
+> -                    cache_mem[R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc]);
+> -    if ((uint64_t)host_addr < decoder_base) {
+> -        return false;
+> +    cap = ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
+> +    hdm_count = cxl_decoder_count_dec(FIELD_EX32(cap,
+> +                                                 CXL_HDM_DECODER_CAPABILITY,
+> +                                                 DECODER_COUNT));
+> +
+> +    for (i = 0; i < hdm_count; i++) {
+> +        uint64_t decoder_base, decoder_size, hpa_offset, skip;
+> +        uint32_t hdm_ctrl, low, high;
+> +        int ig, iw;
+> +
+> +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc);
+> +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc);
+> +        decoder_base = ((uint64_t)high << 32) | (low & 0xf0000000);
+> +
+> +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc);
+> +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc);
+> +        decoder_size = ((uint64_t)high << 32) | (low & 0xf0000000);
+> +
+> +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_LO +
+> +                       i * hdm_inc);
+> +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_HI +
+> +                        i * hdm_inc);
+> +        skip = ((uint64_t)high << 32) | (low & 0xf0000000);
+> +        dpa_base += skip;
+> +
+> +        hpa_offset = (uint64_t)host_addr - decoder_base;
+> +
+> +        hdm_ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i * hdm_inc);
+> +        iw = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IW);
+> +        ig = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IG);
+> +        if (!FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
+> +            return false;
+> +        }
+> +        if (((uint64_t)host_addr < decoder_base) ||
+> +            (hpa_offset >= decoder_size)) {
+> +            dpa_base += decoder_size /
+> +                cxl_interleave_ways_dec(iw, &error_fatal);
 
+I noticed this because of a Coverity false-positive, but should
+this really be using error_fatal? It looks like a guest program
+writing bogus values to registers could trip this, and generally
+we don't like to let the guest make QEMU exit.
+
+thanks
+-- PMM
 
