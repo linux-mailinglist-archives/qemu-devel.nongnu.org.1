@@ -2,77 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B37D7CF699
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 594987CF6AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:26:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtR6D-0003vd-3H; Thu, 19 Oct 2023 07:21:57 -0400
+	id 1qtR9D-0005Mp-C0; Thu, 19 Oct 2023 07:25:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qtR61-0003ux-VZ
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:21:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qtR98-0005Ll-SU
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:24:58 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qtR60-0008Dp-7X
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:21:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697714503;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wJbjQEX6r4FVtVGUs3f8q9Y8qBJ81kVTcIhxYAo3Mqk=;
- b=I4Fy1zkXJ+i4ar6jj/tCSAnfPsq/o7f5vphWb2XTK3zXgc9GChMpEbAmnYWsa1OqvYRasU
- hdpyxqMNqJBxQoW54IIBp2+yOdkNkoMBkJUCK0x1Tzn1Uup8W+iqM/wvDGasyBVsAAWh3Q
- +TPFC0SFg6J3CiQU5MSEHzsn32QJ5Bg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-578-SK7vo6K2NX2TQ2jYrduzJQ-1; Thu, 19 Oct 2023 07:21:40 -0400
-X-MC-Unique: SK7vo6K2NX2TQ2jYrduzJQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 57E82801234;
- Thu, 19 Oct 2023 11:21:39 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.120])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D792A492BFB;
- Thu, 19 Oct 2023 11:21:36 +0000 (UTC)
-Date: Thu, 19 Oct 2023 13:21:35 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, kvm@vger.kernel.org
-Subject: Re: [PATCH 11/12] hw/xen: automatically assign device index to block
- devices
-Message-ID: <ZTERPwrbUJf7kty2@redhat.com>
-References: <20231016151909.22133-1-dwmw2@infradead.org>
- <20231016151909.22133-12-dwmw2@infradead.org>
- <ZS+cutIjulWBQakk@redhat.com>
- <950f3a62dfcecce902037f95575f1013697a5925.camel@infradead.org>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qtR95-0002MT-Ez
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:24:58 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB52m65KPz67HSr;
+ Thu, 19 Oct 2023 19:24:16 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 19 Oct
+ 2023 12:24:49 +0100
+Date: Thu, 19 Oct 2023 12:24:48 +0100
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: <linuxarm@huawei.com>, <qemu-devel@nongnu.org>,
+ <linux-cxl@vger.kernel.org>, Michael Tokarev <mjt@tls.msk.ru>, Fan Ni
+ <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH v4 2/4] hw/cxl: Use switch statements for read and write
+ of cachemem registers
+Message-ID: <20231019122448.0000009e@Huawei.com>
+In-Reply-To: <20231019052242-mutt-send-email-mst@kernel.org>
+References: <20231012140514.3697-1-Jonathan.Cameron@huawei.com>
+ <20231012140514.3697-3-Jonathan.Cameron@huawei.com>
+ <20231018103907-mutt-send-email-mst@kernel.org>
+ <20231018172239.00005f3d@Huawei.com>
+ <20231018173142.00003739@Huawei.com>
+ <20231019100547.00003eef@huawei.com>
+ <20231019052242-mutt-send-email-mst@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <950f3a62dfcecce902037f95575f1013697a5925.camel@infradead.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,32 +71,199 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 18.10.2023 um 12:52 hat David Woodhouse geschrieben:
-> > Actually, how does this play together with xen_config_dev_blk()? This
-> > looks like it tried to implement a very similar thing (which is IF_XEN
-> > even already existed).
-> 
-> Ah yes, thanks for spotting that! I hadn't been looking at the xenfv
-> 
-> > Are we now trying to attach each if=xen disk twice in the 'xenpv'
-> > machine? Or if something prevents this, is it dead code.
-> 
-> I suspect we end up creating them twice (and probably thus failing to
-> lock the backing file).
->
-> [...]
->
-> ... but this just reinforces what I said there about "if
-> qmp_device_add() can find the damn bus and do this right, why do we
-> have to litter it through platform code?"
+On Thu, 19 Oct 2023 05:23:04 -0400
+"Michael S. Tsirkin" <mst@redhat.com> wrote:
 
-Indeed, if you can do -device, it's always the best option. For block
-devices not the least because it gives you a way to use -blockdev with
-it. I'm happy whenever I see a drive_get() call go away.
+> On Thu, Oct 19, 2023 at 10:09:24AM +0100, Jonathan Cameron wrote:
+> > On Wed, 18 Oct 2023 17:31:42 +0100
+> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> >   
+> > > On Wed, 18 Oct 2023 17:22:39 +0100
+> > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> > >   
+> > > > On Wed, 18 Oct 2023 10:40:45 -0400
+> > > > "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> > > >     
+> > > > > On Thu, Oct 12, 2023 at 03:05:12PM +0100, Jonathan Cameron wrote:      
+> > > > > > Establishing that only register accesses of size 4 and 8 can occur
+> > > > > > using these functions requires looking at their callers. Make it
+> > > > > > easier to see that by using switch statements.
+> > > > > > Assertions are used to enforce that the register storage is of the
+> > > > > > matching size, allowing fixed values to be used for divisors of
+> > > > > > the array indices.
+> > > > > > 
+> > > > > > Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
+> > > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > > Reviewed-by: Fan Ni <fan.ni@samsung.com>        
+> > > > > 
+> > > > > Fails with clang:
+> > > > > 
+> > > > > ../hw/cxl/cxl-component-utils.c:130:9: error: expected expression
+> > > > >         QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_regs_write_mask) != 4);
+> > > > >         ^
+> > > > > ../include/qemu/compiler.h:76:30: note: expanded from macro 'QEMU_BUILD_BUG_ON'
+> > > > > #define QEMU_BUILD_BUG_ON(x) QEMU_BUILD_BUG_MSG(x, "not expecting: " #x)
+> > > > >                              ^
+> > > > > ../include/qemu/compiler.h:74:36: note: expanded from macro 'QEMU_BUILD_BUG_MSG'
+> > > > > #define QEMU_BUILD_BUG_MSG(x, msg) _Static_assert(!(x), msg)
+> > > > >                                    ^
+> > > > > 1 error generated.
+> > > > > 
+> > > > > See e.g.
+> > > > > 
+> > > > > https://gitlab.com/mstredhat/qemu/-/jobs/5320879531      
+> > > > 
+> > > > Thanks. Will see if I can figure out what is going wrong.
+> > > > This code seems cursed.  I need to figure out a way to run the CI again.
+> > > > Ran into credit problems I couldn't solve last time I tried.
+> > > > 
+> > > > In meantime I can replicate this locally but not immediately obvious to me
+> > > > why it is failing.    
+> > > 
+> > > Any clang experts around?  This seems to be fixed by reducing the scope
+> > > 
+> > > case 4:
+> > > {
+> > > 	QEMU_BUILD_BUG_ON();
+> > > }
+> > > I have no idea why though...
+> > >   
+> > 
+> > For anyone following along I asked a friendly compiler guy...
+> > 
+> > https://github.com/llvm/llvm-project/issues/69572
+> > 
+> > Given that we realistically need to work around this whatever the outcome
+> > I'll add some brackets and send an update.
+> > 
+> > thanks,
+> > 
+> > Jonathan  
+> 
+> We don't seem to use QEMU_BUILD_BUG_ON outside of functions - just add
+> brackets inside it?
 
-Kevin
+Makes sense.  I'll give that a go and see if anything odd happens.
+
+Jonathan
+
+> 
+> > >   
+> > > > 
+> > > > Jonathan
+> > > >     
+> > > > > 
+> > > > > 
+> > > > >       
+> > > > > > ---
+> > > > > > v4: Use QEMU_BUILD_BUG_ON() instead of static_assert with missing
+> > > > > >     error message.
+> > > > > > 
+> > > > > >  hw/cxl/cxl-component-utils.c | 65 +++++++++++++++++++++++-------------
+> > > > > >  1 file changed, 42 insertions(+), 23 deletions(-)
+> > > > > > 
+> > > > > > diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+> > > > > > index f3bbf0fd13..d1997a52e6 100644
+> > > > > > --- a/hw/cxl/cxl-component-utils.c
+> > > > > > +++ b/hw/cxl/cxl-component-utils.c
+> > > > > > @@ -67,16 +67,24 @@ static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
+> > > > > >      CXLComponentState *cxl_cstate = opaque;
+> > > > > >      ComponentRegisters *cregs = &cxl_cstate->crb;
+> > > > > >  
+> > > > > > -    if (size == 8) {
+> > > > > > +    switch (size) {
+> > > > > > +    case 4:
+> > > > > > +        if (cregs->special_ops && cregs->special_ops->read) {
+> > > > > > +            return cregs->special_ops->read(cxl_cstate, offset, 4);
+> > > > > > +        } else {
+> > > > > > +            QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_registers) != 4);
+> > > > > > +            return cregs->cache_mem_registers[offset / 4];
+> > > > > > +        }
+> > > > > > +    case 8:
+> > > > > >          qemu_log_mask(LOG_UNIMP,
+> > > > > >                        "CXL 8 byte cache mem registers not implemented\n");
+> > > > > >          return 0;
+> > > > > > -    }
+> > > > > > -
+> > > > > > -    if (cregs->special_ops && cregs->special_ops->read) {
+> > > > > > -        return cregs->special_ops->read(cxl_cstate, offset, size);
+> > > > > > -    } else {
+> > > > > > -        return cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
+> > > > > > +    default:
+> > > > > > +        /*
+> > > > > > +         * In line with specifiction limitaions on access sizes, this
+> > > > > > +         * routine is not called with other sizes.
+> > > > > > +         */
+> > > > > > +        g_assert_not_reached();
+> > > > > >      }
+> > > > > >  }
+> > > > > >  
+> > > > > > @@ -117,25 +125,36 @@ static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
+> > > > > >      ComponentRegisters *cregs = &cxl_cstate->crb;
+> > > > > >      uint32_t mask;
+> > > > > >  
+> > > > > > -    if (size == 8) {
+> > > > > > +    switch (size) {
+> > > > > > +    case 4:
+> > > > > > +        QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_regs_write_mask) != 4);
+> > > > > > +        QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_registers) != 4);
+> > > > > > +        mask = cregs->cache_mem_regs_write_mask[offset / 4];
+> > > > > > +        value &= mask;
+> > > > > > +        /* RO bits should remain constant. Done by reading existing value */
+> > > > > > +        value |= ~mask & cregs->cache_mem_registers[offset / 4];
+> > > > > > +        if (cregs->special_ops && cregs->special_ops->write) {
+> > > > > > +            cregs->special_ops->write(cxl_cstate, offset, value, size);
+> > > > > > +            return;
+> > > > > > +        }
+> > > > > > +
+> > > > > > +        if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
+> > > > > > +            offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
+> > > > > > +            dumb_hdm_handler(cxl_cstate, offset, value);
+> > > > > > +        } else {
+> > > > > > +            cregs->cache_mem_registers[offset / 4] = value;
+> > > > > > +        }
+> > > > > > +        return;
+> > > > > > +    case 8:
+> > > > > >          qemu_log_mask(LOG_UNIMP,
+> > > > > >                        "CXL 8 byte cache mem registers not implemented\n");
+> > > > > >          return;
+> > > > > > -    }
+> > > > > > -    mask = cregs->cache_mem_regs_write_mask[offset / sizeof(*cregs->cache_mem_regs_write_mask)];
+> > > > > > -    value &= mask;
+> > > > > > -    /* RO bits should remain constant. Done by reading existing value */
+> > > > > > -    value |= ~mask & cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
+> > > > > > -    if (cregs->special_ops && cregs->special_ops->write) {
+> > > > > > -        cregs->special_ops->write(cxl_cstate, offset, value, size);
+> > > > > > -        return;
+> > > > > > -    }
+> > > > > > -
+> > > > > > -    if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
+> > > > > > -        offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
+> > > > > > -        dumb_hdm_handler(cxl_cstate, offset, value);
+> > > > > > -    } else {
+> > > > > > -        cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)] = value;
+> > > > > > +    default:
+> > > > > > +        /*
+> > > > > > +         * In line with specifiction limitaions on access sizes, this
+> > > > > > +         * routine is not called with other sizes.
+> > > > > > +         */
+> > > > > > +        g_assert_not_reached();
+> > > > > >      }
+> > > > > >  }
+> > > > > >  
+> > > > > > -- 
+> > > > > > 2.39.2        
+> > > > > 
+> > > > >       
+> > > >     
+> > > 
+> > > 
+> > >   
+> 
 
 
