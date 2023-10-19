@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E04E7CF249
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 10:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 410867CF253
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 10:21:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtOEy-000878-Ax; Thu, 19 Oct 2023 04:18:48 -0400
+	id 1qtOGZ-0001uk-Kp; Thu, 19 Oct 2023 04:20:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qtOEu-00085r-RZ
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:18:44 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qtOGO-0001ri-1c
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:20:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qtOEs-000436-Lu
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:18:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=u/b8xDxRURj+FneDBqO74VkAm3maivUuuKoOx5QaBNo=; b=c72NL2VTvdZAn8E6OZj+P0KiS+
- d51epMavd6OF2+M91XXyU1I7A8Cs3rZipyhcYPtNJIzLVeDFajidfEMQmBxDmz3ejD9TXEkxFfA8p
- ad6viKcw4Rt+ap7f9fTsGpOH2JAh5wdAfXlhx+tONxGG1WbUCof/xIJKCabxk4+SFdmoWqWJW0mSY
- k2YDD1VCkyVc1FRM8uLAMciyK1RJgm1rVRDYPSPHvT52OZMgVJxFPgUpZKBqMIBu7Zqo0cetBUJCc
- iM1uVheYRZHWS5df5Wjc7v8aVLbQqNBi0AW/bTsT+Z9Z5ncQwCpT9PADCRo2FyJNsmosn3ro2Fsay
- ZHmsD23w==;
-Received: from [2001:8b0:10b:5:d4f9:734b:fde4:c827]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qtOET-005wLJ-84; Thu, 19 Oct 2023 08:18:17 +0000
-Message-ID: <c7e35408b5dbe01957f3cf6c89b7cf4916ce2abb.camel@infradead.org>
-Subject: Re: [PATCH v2] intel-iommu: Report interrupt remapping faults, fix
- return value
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  qemu-devel
- <qemu-devel@nongnu.org>
-Date: Thu, 19 Oct 2023 09:18:11 +0100
-In-Reply-To: <20231018114617-mutt-send-email-mst@kernel.org>
-References: <31bbfc9041690449d3ac891f4431ec82174ee1b4.camel@infradead.org>
- <ZOYnraT/QyOUn4uP@x1n>
- <c72aa2174f60f184e87636a0a3a0394ef8e7afd3.camel@infradead.org>
- <20231017172812-mutt-send-email-mst@kernel.org>
- <a62712bed8b86b6d4ebe1cc8deda6528d8e02032.camel@infradead.org>
- <20231018114617-mutt-send-email-mst@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-tHcpZYTyWpxoE5c7N77S"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qtOGL-0004S2-SX
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:20:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697703612;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZjQk1l1bubtvwFmYywbmcoGQEjbBBac+Uh0OJpVtHbs=;
+ b=bAEMkKObScjS68sUwm1kpsAHyKd5jdBl1n+/HNIDAi169NZmuXpILCUnvDDpowbt4fkIc4
+ 8qNoPOykKn4RujstuTFZOWPsJw7H9FJDmQByeZ9aBf2N35ZfsxEKGbZ9yQyOtWMRuCmf52
+ nrTw/HvzBVLFY9agGBGqUcXVvHmW0dI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-684-6dBE8WhIPsaMM3eut5DiuQ-1; Thu, 19 Oct 2023 04:20:09 -0400
+X-MC-Unique: 6dBE8WhIPsaMM3eut5DiuQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D1D77857D0C;
+ Thu, 19 Oct 2023 08:20:08 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.60])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BA6271C060AE;
+ Thu, 19 Oct 2023 08:20:06 +0000 (UTC)
+Date: Thu, 19 Oct 2023 09:20:04 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Ninad Palsule <ninad@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@aj.id.au, joel@jms.id.au, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, thuth@redhat.com, philmd@linaro.org,
+ lvivier@redhat.com, qemu-arm@nongnu.org
+Subject: Re: [PATCH v5 02/10] hw/fsi: Introduce IBM's scratchpad
+Message-ID: <ZTDmtBUkuvYNkFlQ@redhat.com>
+References: <20231011151339.2782132-1-ninad@linux.ibm.com>
+ <20231011151339.2782132-3-ninad@linux.ibm.com>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231011151339.2782132-3-ninad@linux.ibm.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,132 +82,240 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Oct 11, 2023 at 10:13:31AM -0500, Ninad Palsule wrote:
+> This is a part of patchset where scratchpad is introduced.
+> 
+> The scratchpad provides a set of non-functional registers. The firmware
+> is free to use them, hardware does not support any special management
+> support. The scratchpad registers can be read or written from LBUS
+> slave.
+> 
+> In this model, The LBUS device is parent for the scratchpad.
+> 
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+> ---
+> v2:
+> - Incorporated Joel's review comments.
+> v5:
+> - Incorporated review comments by Cedric.
+> ---
+>  include/hw/fsi/engine-scratchpad.h | 33 ++++++++++
+>  hw/fsi/engine-scratchpad.c         | 99 ++++++++++++++++++++++++++++++
+>  hw/fsi/Kconfig                     |  4 ++
+>  hw/fsi/meson.build                 |  1 +
+>  hw/fsi/trace-events                |  2 +
+>  5 files changed, 139 insertions(+)
+>  create mode 100644 include/hw/fsi/engine-scratchpad.h
+>  create mode 100644 hw/fsi/engine-scratchpad.c
+>  create mode 100644 hw/fsi/trace-events
+> 
+> diff --git a/include/hw/fsi/engine-scratchpad.h b/include/hw/fsi/engine-scratchpad.h
+> new file mode 100644
+> index 0000000000..17e9570c5c
+> --- /dev/null
+> +++ b/include/hw/fsi/engine-scratchpad.h
+> @@ -0,0 +1,33 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM scratchpad engne
+> + */
+> +#ifndef FSI_ENGINE_SCRATCHPAD_H
+> +#define FSI_ENGINE_SCRATCHPAD_H
+> +
+> +#include "qemu/bitops.h"
+> +
+> +#include "hw/fsi/lbus.h"
+> +
+> +#define ENGINE_CONFIG_NEXT              BE_BIT(0)
+> +#define ENGINE_CONFIG_VPD               BE_BIT(1)
+> +#define ENGINE_CONFIG_SLOTS             BE_GENMASK(8, 15)
+> +#define ENGINE_CONFIG_VERSION           BE_GENMASK(16, 19)
+> +#define ENGINE_CONFIG_TYPE              BE_GENMASK(20, 27)
+> +#define   ENGINE_CONFIG_TYPE_PEEK       (0x02 << 4)
+> +#define   ENGINE_CONFIG_TYPE_FSI        (0x03 << 4)
+> +#define   ENGINE_CONFIG_TYPE_SCRATCHPAD (0x06 << 4)
+> +#define ENGINE_CONFIG_CRC              BE_GENMASK(28, 31)
+> +
+> +#define TYPE_SCRATCHPAD "scratchpad"
+> +#define SCRATCHPAD(obj) OBJECT_CHECK(ScratchPad, (obj), TYPE_SCRATCHPAD)
+> +
+> +typedef struct ScratchPad {
+> +        FSILBusDevice parent;
+> +
+> +        uint32_t reg;
+> +} ScratchPad;
+> +
+> +#endif /* FSI_ENGINE_SCRATCHPAD_H */
+> diff --git a/hw/fsi/engine-scratchpad.c b/hw/fsi/engine-scratchpad.c
+> new file mode 100644
+> index 0000000000..60f678eec4
+> --- /dev/null
+> +++ b/hw/fsi/engine-scratchpad.c
+> @@ -0,0 +1,99 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM scratchpad engine
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +
+> +#include "qapi/error.h"
+> +#include "qemu/log.h"
+> +#include "trace.h"
+> +
+> +#include "hw/fsi/engine-scratchpad.h"
+> +
+> +static uint64_t scratchpad_read(void *opaque, hwaddr addr, unsigned size)
+> +{
+> +    ScratchPad *s = SCRATCHPAD(opaque);
+> +
+> +    trace_scratchpad_read(addr, size);
+> +
+> +    if (addr) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for %u\n",
+> +                      __func__, addr, size);
 
---=-tHcpZYTyWpxoE5c7N77S
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+We already have a trace point in the line above. I don't think we should
+be unconditionally logging errors like this, as this becomes a guest
+triggerable denial of service on the host log collector for the guest.
+eg it could flood the logfile connected to stderr with unlimited data
+by repeatedly doing bad reads/writes.
 
-On Wed, 2023-10-18 at 11:46 -0400, Michael S. Tsirkin wrote:
-> I fixed some tab-indent issues and picked it up.
+> +        return 0;
+> +    }
+> +
+> +    return s->reg;
+> +}
+> +
+> +static void scratchpad_write(void *opaque, hwaddr addr, uint64_t data,
+> +                                 unsigned size)
+> +{
+> +    ScratchPad *s = SCRATCHPAD(opaque);
+> +
+> +    trace_scratchpad_write(addr, size, data);
+> +
+> +    if (addr) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: Out of bounds write: 0x%"HWADDR_PRIx" for %u\n",
+> +                      __func__, addr, size);
+> +        return;
+> +    }
+> +
+> +    s->reg = data;
+> +}
+> +
+> +static const struct MemoryRegionOps scratchpad_ops = {
+> +    .read = scratchpad_read,
+> +    .write = scratchpad_write,
+> +    .endianness = DEVICE_BIG_ENDIAN,
+> +};
+> +
+> +static void scratchpad_realize(DeviceState *dev, Error **errp)
+> +{
+> +    FSILBusDevice *ldev = FSI_LBUS_DEVICE(dev);
+> +
+> +    memory_region_init_io(&ldev->iomem, OBJECT(ldev), &scratchpad_ops,
+> +                          ldev, TYPE_SCRATCHPAD, 0x400);
+> +}
+> +
+> +static void scratchpad_reset(DeviceState *dev)
+> +{
+> +    ScratchPad *s = SCRATCHPAD(dev);
+> +
+> +    s->reg = 0;
+> +}
+> +
+> +static void scratchpad_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    FSILBusDeviceClass *ldc = FSI_LBUS_DEVICE_CLASS(klass);
+> +
+> +    dc->realize = scratchpad_realize;
+> +    dc->reset = scratchpad_reset;
+> +
+> +    ldc->config =
+> +          ENGINE_CONFIG_NEXT            /* valid */
+> +        | 0x00010000                    /* slots */
+> +        | 0x00001000                    /* version */
+> +        | ENGINE_CONFIG_TYPE_SCRATCHPAD /* type */
+> +        | 0x00000007;                   /* crc */
 
-Oops, sorry about that. That patch must date from a time before I
-taught emacs about qemu.
+More common QEMU style would be for the "|" to be on the end
+of line rather than start.
 
+End of line:
 
---=-tHcpZYTyWpxoE5c7N77S
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+$ git grep '.*\s|\s*$' "*.c" | wc -l
+5381
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDE5MDgxODExWjAvBgkqhkiG9w0BCQQxIgQglJEMCZag
-5+1K1FYaCz/WfyHejDAGKEqd9NDkqtG+dzQwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAQqO0tDS0x7R5/6qhQJmvpuvPP1DVcJWPV
-PmKE7yTvOMPHLaJkWw74G7ypYld+LQCNu/0XBZu+CrwJk22fvZzfB1dbVtQMzHBewGxkhd7YN7Er
-eXZMSUSP1aiqJkc1cPXnYjvzRpGP36DsbkQFYQ14Uo51Mv1lR30M+FTXgYJTWeq6gJKUt0ZD/DLc
-qfbEYEiRJYt1VfNTgvvRYkr/6R0yjcE7NBRz/RiqCxuxBnytmfPZhV1dqGgC6ya4oDS2+apgc3x7
-kpLwdh7RSZSG1HvOiNQgLbAe8vX6SrCY3LfRUqzx9kyCsCXManl8ts0z2NtDjNu7P8o+KeVDcgiZ
-UadmE6SchCt5P0i260qTU4g5EdK5XH+RoayVETdhlp49ihRjNCslPCKmPMblGP1NtPlv7RLH02Ns
-+yq9nECJE8GlOd+cFYXNys6cNUMCbOnfA+TBlXYX/oPlT5yWEfepxZHo0yyu+hE4X7b13VFFg6cn
-P6nFYsX7KOG7V3rROviS0ZwsZNPlTAl9WiHzHVKS+AxhuipnyN/wsDYQPN8bS7b3v34NpWleVhUg
-8M87xL042yw/moFDDo7AwGeBT5Ozb8wrqOxqSVts+/poZcIEhbcyHT62zdyJ/k9tHDAK85bk9qc7
-2gD9pSESc5D/NXbtpA8UiSBE2LXmshpVa5Nu7QBmewAAAAAAAA==
+Start of line:
+
+$ git grep '^\s*|\s.*' "*.c" | wc -l
+581
 
 
---=-tHcpZYTyWpxoE5c7N77S--
+> +}
+> +
+> +static const TypeInfo scratchpad_info = {
+> +    .name = TYPE_SCRATCHPAD,
+> +    .parent = TYPE_FSI_LBUS_DEVICE,
+> +    .instance_size = sizeof(ScratchPad),
+> +    .class_init = scratchpad_class_init,
+> +    .class_size = sizeof(FSILBusDeviceClass),
+> +};
+> +
+> +static void scratchpad_register_types(void)
+> +{
+> +    type_register_static(&scratchpad_info);
+> +}
+> +
+> +type_init(scratchpad_register_types);
+> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+> index e650c660f0..f7c7fd1b28 100644
+> --- a/hw/fsi/Kconfig
+> +++ b/hw/fsi/Kconfig
+> @@ -1,2 +1,6 @@
+> +config FSI_SCRATCHPAD
+> +    bool
+> +    select FSI_LBUS
+> +
+>  config FSI_LBUS
+>      bool
+> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
+> index 4074d3a7d2..d45a98c223 100644
+> --- a/hw/fsi/meson.build
+> +++ b/hw/fsi/meson.build
+> @@ -1 +1,2 @@
+>  system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
+> +system_ss.add(when: 'CONFIG_FSI_SCRATCHPAD', if_true: files('engine-scratchpad.c'))
+> diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
+> new file mode 100644
+> index 0000000000..97fd070354
+> --- /dev/null
+> +++ b/hw/fsi/trace-events
+> @@ -0,0 +1,2 @@
+> +scratchpad_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
+> +scratchpad_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
+> -- 
+> 2.39.2
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
