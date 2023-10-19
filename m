@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A4737D03D2
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF8F7D03B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:22:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaSQ-0001Lb-2A; Thu, 19 Oct 2023 17:21:30 -0400
+	id 1qtaSS-0001OF-79; Thu, 19 Oct 2023 17:21:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaSL-0001Gc-Go
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:21:26 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaSO-0001Ji-Fv
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:21:28 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaSI-0006MM-IZ
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:21:25 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-31fa15f4cc6so102235f8f.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:21:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaSM-0006kX-7k
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:21:28 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40790b0a224so1090255e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:21:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750476; x=1698355276; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750484; x=1698355284; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cJy63F2Y201nxV5c/iu+pbyPejqWGhQMq+Ig4NcSxhc=;
- b=ezq+9gKjbreK17jkciDT3qwR9FXiK2WpCpVX4Z59wGCma84onKJgq/dPJHttdBpXfP
- w/k19ZwSbvyjYXKxay+EkbHKS2mqsFahrEWy+GSvZPtdgEBze8A77seQO+FYO3DItFvf
- uos8G7wgZ3S0sd7CWa4uOtjQPSUHQaFtHG2haFePlMJua8dxwsNhNuXQyAc4da4ZP6U5
- 7q/H4p1ER1I9IHJqgTZ1bDpXKoEprLE2UGwsn8dq4xSC10nC6oHvTTHAvhU52Npzf/SC
- 23Mtg4kBrp2cy932HqH/9Ud3TShfKxjh4xhC2FYyfCb2S98cs18x8H7iJY7VBEDVXVs5
- ueqw==
+ bh=L77YzspB8FLbeJAi/xMSeTxKS717pbBpnSqxW2g70VQ=;
+ b=ullVvB39rcaCkPICFdiESGxAOLYEaJe2fO++yDn9Ek/WeRbqYTd/k0wLAFIt2eP3dN
+ vdTHAZLTe1mxrUS/5CtbDkBZSTOA52MS4UiaqCfwyIApoWUv8RViiNne88CRJ24WwS4j
+ Xs8WDgiPWrqhxVLeTu9LL5MaZ77ZrLAhw2H/FOqVHovfYp/b7KKfEkYOHpbjeJWXUXFB
+ YXHu1N4k794mIwXuo4hojO6ql7BV10x6Z+nHoPHVuNapNoZvkxg/wOWTntqstHq4Finh
+ 5dWwhqMlLTdNuJ8l0WzCT5n7Kxg4zpCCFD7W1gvTaF7GdpRc106MXliEdTTsANwRshLb
+ IojQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750476; x=1698355276;
+ d=1e100.net; s=20230601; t=1697750484; x=1698355284;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cJy63F2Y201nxV5c/iu+pbyPejqWGhQMq+Ig4NcSxhc=;
- b=ERuytQm41Z541feIWrAddHZAwIyULO1A+fm9JJtg1TBJGzyWZw999yXkIWEEcyhcon
- Zzg+rpvOr2mNTZYMmUx8kOb3z9/ilfaU1H8L9uNmty1M2a1T7AR2mzYNL2bfUSHgGS7h
- 8e52zZ/TRtH4KEDMbisfUBlKOEHmiGl67A84eo961xYfL8EsYIt2edj8GIwTz6MG65Cu
- CBUFp3XrkiKbrFucgnPd4AanBpdYJitw1sED1Dzp3dddbL+wP+35xkwUsew/JQH4fl+d
- H5xJ+NM13tVX1qn1EKX5ig7eHRu1tUyX3rXdcYwWtpupwL3PhJn6NqJfArF0rkWCPJUQ
- BgCw==
-X-Gm-Message-State: AOJu0Yy5IoVrN1/7C8wXdMHhiJAGfwx3tFKFZksS/S45rVKdC17pJ68O
- lo3HOz7K9YnvuEIhIFl00WOrcnsaxqzvvBFZljib9Q==
-X-Google-Smtp-Source: AGHT+IEOWe3rxfDLA6ssBL42Q672Z8/PvDEtHk3hTCO0fXmewHyMJ1DrkAfLIx4jyDodSE/qiizMxw==
-X-Received: by 2002:adf:e80e:0:b0:32d:a98c:aa20 with SMTP id
- o14-20020adfe80e000000b0032da98caa20mr2342791wrm.59.1697750476607; 
- Thu, 19 Oct 2023 14:21:16 -0700 (PDT)
+ bh=L77YzspB8FLbeJAi/xMSeTxKS717pbBpnSqxW2g70VQ=;
+ b=PRzi5tQ2qGh8/yI3MRjmd/nJA7hp0syUckOid1tJgO+91tTedjrP5VFNv3P+OfGhjo
+ yHEmRFrWH0kdl1H67jIo7bQ/l8qq+Q88PcLhOHakXeWe2ljyc1wGNHLmpVwOy30viLNl
+ YvrHghtgEp45FL4+BaYWK6s3Uy2bYXCm81iX1n7HI6dgy5XrFHyecPHGdqx7DYFBHfvw
+ 2h0tUTzqEFpFtjiDWwfUSaxhzJxkMFORWF/Z7OhWnT2NckppMJpmF3mTuLq0/84Esirn
+ wTUWuv2nnatjSsUd3UOnbJk5r7IRo42YwLrLCsWKjZDyhPjxfY9Gdj19w0cMBAj/6+u1
+ 5VlA==
+X-Gm-Message-State: AOJu0YyXX19fecpBfawTscbWPzvSfAIJxVvyqtFCGMOBhQTQpixs+yxO
+ vbd1SzW/hqMYni9WiMRPA9YbIMFRYDG3+LfOVfmCvA==
+X-Google-Smtp-Source: AGHT+IE726gEZWi+fVYl0Imj5UwOv4K5Ikhw5wndNQiJDAhvymb/RAO42rHfkVteF//jrD+KueeeXA==
+X-Received: by 2002:a05:600c:4992:b0:406:513d:7373 with SMTP id
+ h18-20020a05600c499200b00406513d7373mr67452wmp.11.1697750484293; 
+ Thu, 19 Oct 2023 14:21:24 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- w11-20020a5d608b000000b0032008f99216sm213341wrt.96.2023.10.19.14.21.14
+ b24-20020a05600c06d800b004064e3b94afsm5307518wmn.4.2023.10.19.14.21.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:21:16 -0700 (PDT)
+ Thu, 19 Oct 2023 14:21:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
@@ -63,19 +63,21 @@ Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  Thomas Huth <thuth@redhat.com>, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PULL 27/46] hw/ppc/pnv: Do not use SysBus API to map local MMIO
- region
-Date: Thu, 19 Oct 2023 23:17:52 +0200
-Message-ID: <20231019211814.30576-28-philmd@linaro.org>
+Subject: [PULL 28/46] hw/intc/spapr_xive: Move sysbus_init_mmio() calls around
+Date: Thu, 19 Oct 2023 23:17:53 +0200
+Message-ID: <20231019211814.30576-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,51 +100,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no point in exposing an internal MMIO region via
-SysBus and directly mapping it in the very same device.
-
-Just map it without using the SysBus API.
-
-Transformation done using the following coccinelle script:
-
-  @@
-  expression sbdev;
-  expression index;
-  expression addr;
-  expression subregion;
-  @@
-  -    sysbus_init_mmio(sbdev, subregion);
-       ... when != sbdev
-  -    sysbus_mmio_map(sbdev, index, addr);
-  +    memory_region_add_subregion(get_system_memory(), addr, subregion);
+In order to make the next commit trivial, move sysbus_init_mmio()
+calls just before the corresponding sysbus_mmio_map() calls.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Message-Id: <20231019131647.19690-6-philmd@linaro.org>
+Message-Id: <20231019131647.19690-7-philmd@linaro.org>
 ---
- hw/ppc/pnv.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ hw/intc/spapr_xive.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 10158f7684..c0e34fffbc 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1217,10 +1217,9 @@ static void pnv_chip_icp_realize(Pnv8Chip *chip8, Error **errp)
+diff --git a/hw/intc/spapr_xive.c b/hw/intc/spapr_xive.c
+index 7f701d414b..12057ffe5b 100644
+--- a/hw/intc/spapr_xive.c
++++ b/hw/intc/spapr_xive.c
+@@ -316,7 +316,6 @@ static void spapr_xive_realize(DeviceState *dev, Error **errp)
+     if (!qdev_realize(DEVICE(xsrc), NULL, errp)) {
+         return;
+     }
+-    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &xsrc->esb_mmio);
  
-     name = g_strdup_printf("icp-%x", chip->chip_id);
-     memory_region_init(&chip8->icp_mmio, OBJECT(chip), name, PNV_ICP_SIZE);
--    sysbus_init_mmio(SYS_BUS_DEVICE(chip), &chip8->icp_mmio);
-     g_free(name);
--
--    sysbus_mmio_map(SYS_BUS_DEVICE(chip), 1, PNV_ICP_BASE(chip));
-+    memory_region_add_subregion(get_system_memory(), PNV_ICP_BASE(chip),
-+                                &chip8->icp_mmio);
+     /*
+      * Initialize the END ESB source
+@@ -328,7 +327,6 @@ static void spapr_xive_realize(DeviceState *dev, Error **errp)
+     if (!qdev_realize(DEVICE(end_xsrc), NULL, errp)) {
+         return;
+     }
+-    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &end_xsrc->esb_mmio);
  
-     /* Map the ICP registers for each thread */
-     for (i = 0; i < chip->nr_cores; i++) {
+     /* Set the mapping address of the END ESB pages after the source ESBs */
+     xive->end_base = xive->vc_base + xive_source_esb_len(xsrc);
+@@ -347,14 +345,16 @@ static void spapr_xive_realize(DeviceState *dev, Error **errp)
+     /* TIMA initialization */
+     memory_region_init_io(&xive->tm_mmio, OBJECT(xive), &spapr_xive_tm_ops,
+                           xive, "xive.tima", 4ull << TM_SHIFT);
+-    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &xive->tm_mmio);
+ 
+     /*
+      * Map all regions. These will be enabled or disabled at reset and
+      * can also be overridden by KVM memory regions if active
+      */
++    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &xsrc->esb_mmio);
+     sysbus_mmio_map(SYS_BUS_DEVICE(xive), 0, xive->vc_base);
++    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &end_xsrc->esb_mmio);
+     sysbus_mmio_map(SYS_BUS_DEVICE(xive), 1, xive->end_base);
++    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &xive->tm_mmio);
+     sysbus_mmio_map(SYS_BUS_DEVICE(xive), 2, xive->tm_base);
+ }
+ 
 -- 
 2.41.0
 
