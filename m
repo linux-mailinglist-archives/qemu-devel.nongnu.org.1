@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27077D0356
+	by mail.lfdr.de (Postfix) with ESMTPS id 6737F7D0353
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZw9-0007Pb-2d; Thu, 19 Oct 2023 16:48:09 -0400
+	id 1qtZw8-0007MN-4X; Thu, 19 Oct 2023 16:48:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qtZvz-0007G4-4p
+ id 1qtZvz-0007Ft-44
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:59 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qtZvu-0003To-IP
+ id 1qtZvu-0003UH-R6
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:58 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKi5RF028662; Thu, 19 Oct 2023 20:47:51 GMT
+ 39JKi2x3018410; Thu, 19 Oct 2023 20:47:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=q8E4V2n2dPrbJ5dVbcfm802wPss1Ul4Z/5tl9bw+K7I=;
- b=dT/Tz02zCaRePHme6C7rRtPTDL04F+qPscTn+qEbG11NE/JfZ+dtnRwCQvO+xnDtjL+n
- h9MpIpTUGu1gUSXNSNumHLS2uAUEkWh4pnsb5Ww0HGjmQ7Y2Yv4NEff6+s7S9xeni4GV
- lBNaJqrWyBKa6jum8yY43EclaoZrIdjdpj679DwjFIuh4QedHxPYkB3TR+Gxo8PlBLhO
- Ckvm4fXipe4EjWTry7G/jhW9kv37Ep47vDwehYwxUeRxPA+8++N52omGzWxR6RshpYBy
- GQEMvueLbGTgqfPtVNvLimYFQbAsJmQGm3+3DChUkl7szr4u3/714AgqBCB65np/XKFE GA== 
+ bh=Z+8UkLXHCexLBhyfXs689DSS20WcqOi1euY/xjYqLm8=;
+ b=o3OGZevt4kKqquCNb6jLXkXuvzTTHknz64phkFUem8FJjWT6fmKdJUNwa7EPcsK+Xd7w
+ mV13SL2vToa77gP1ZUUkIpr02IcNcD6muZ07YdPnXrOSHBoU/lf1xis9+wpdttXoLK4D
+ zV9S64d3neJCA7pE9zzDCqxhudR/Cl37SQ2/QLf0/O8NFp7b9uDLBVzTPz/OEX6PgMTD
+ 54zE2TDEZVJqwa6i8AV9WRX/EMZsNIxOiglNY5SEdrwgWFhKKr9nj8nbBfDMgLvyWlMP
+ g8SXTQXODmA8QT9tvc3xId+EFp/lkE3MFHUNIA/+qoMzkdo7utR9Z9NG8d+KPHHEZBlq rQ== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqkhubuga-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqk1bukcc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:47:51 +0000
+ Thu, 19 Oct 2023 20:47:53 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 39JJtgbX040431; Thu, 19 Oct 2023 20:47:50 GMT
+ with ESMTP id 39JJiVAU040584; Thu, 19 Oct 2023 20:47:53 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3trfyqqaj0-1
+ 3trfyqqakg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:47:50 +0000
+ Thu, 19 Oct 2023 20:47:52 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKllWK014514;
- Thu, 19 Oct 2023 20:47:49 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKllWM014514;
+ Thu, 19 Oct 2023 20:47:52 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3trfyqqafy-3; Thu, 19 Oct 2023 20:47:49 +0000
+ ESMTP id 3trfyqqafy-4; Thu, 19 Oct 2023 20:47:52 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 2/4] migration: per-mode blockers
-Date: Thu, 19 Oct 2023 13:47:44 -0700
-Message-Id: <1697748466-373230-3-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 3/4] cpr: relax some blockers
+Date: Thu, 19 Oct 2023 13:47:45 -0700
+Message-Id: <1697748466-373230-4-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
 References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
@@ -70,10 +70,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  phishscore=0 spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310190176
-X-Proofpoint-GUID: BT8CdHFrqyiwIxAlTJOo35VG_Tm9npJV
-X-Proofpoint-ORIG-GUID: BT8CdHFrqyiwIxAlTJOo35VG_Tm9npJV
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-GUID: B5DWqqBRlkM8LI8lC05VXd5rrfLpeKKa
+X-Proofpoint-ORIG-GUID: B5DWqqBRlkM8LI8lC05VXd5rrfLpeKKa
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -96,274 +96,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend the blocker interface so that a blocker can be registered for
-one or more migration modes.  The existing interfaces register a
-blocker for all modes, and the new interfaces take a varargs list
-of modes.
-
-Internally, maintain a separate blocker list per mode.  The same Error
-object may be added to multiple lists.  When a block is deleted, it is
-removed from every list, and the Error is freed.
+Some devices block migration because they rely on local state that
+is not migrated to the target host, such as for local filesystems.
+These need not block cpr, which will restart qemu on the same host.
+Narrow the scope of these blockers so they only apply to normal mode.
+They will not block cpr modes when they are added in subsequent patches.
 
 No functional change until a new mode is added.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- include/migration/blocker.h | 44 +++++++++++++++++++--
- migration/migration.c       | 95 ++++++++++++++++++++++++++++++++++++++-------
- stubs/migr-blocker.c        | 10 +++++
- 3 files changed, 132 insertions(+), 17 deletions(-)
+ backends/tpm/tpm_emulator.c | 2 +-
+ block/parallels.c           | 2 +-
+ block/qcow.c                | 2 +-
+ block/vdi.c                 | 2 +-
+ block/vhdx.c                | 2 +-
+ block/vmdk.c                | 2 +-
+ block/vpc.c                 | 2 +-
+ block/vvfat.c               | 2 +-
+ hw/9pfs/9p.c                | 2 +-
+ hw/scsi/vhost-scsi.c        | 2 +-
+ hw/virtio/vhost.c           | 2 +-
+ target/i386/nvmm/nvmm-all.c | 3 ++-
+ 12 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/include/migration/blocker.h b/include/migration/blocker.h
-index b048f30..a687ac0 100644
---- a/include/migration/blocker.h
-+++ b/include/migration/blocker.h
-@@ -14,8 +14,12 @@
- #ifndef MIGRATION_BLOCKER_H
- #define MIGRATION_BLOCKER_H
+diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
+index bf1a90f..ac66aee 100644
+--- a/backends/tpm/tpm_emulator.c
++++ b/backends/tpm/tpm_emulator.c
+@@ -534,7 +534,7 @@ static int tpm_emulator_block_migration(TPMEmulator *tpm_emu)
+         error_setg(&tpm_emu->migration_blocker,
+                    "Migration disabled: TPM emulator does not support "
+                    "migration");
+-        if (migrate_add_blocker(&tpm_emu->migration_blocker, &err) < 0) {
++        if (migrate_add_blocker_normal(&tpm_emu->migration_blocker, &err) < 0) {
+             error_report_err(err);
+             return -1;
+         }
+diff --git a/block/parallels.c b/block/parallels.c
+index 1697a2e..8a520db 100644
+--- a/block/parallels.c
++++ b/block/parallels.c
+@@ -1369,7 +1369,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+                bdrv_get_device_or_node_name(bs));
+     bdrv_graph_rdunlock_main_loop();
  
-+#include "qapi/qapi-types-migration.h"
-+
-+#define MIG_MODE_ALL MIG_MODE__MAX
-+
- /**
-- * @migrate_add_blocker - prevent migration from proceeding
-+ * @migrate_add_blocker - prevent all modes of migration from proceeding
-  *
-  * @reasonp - address of an error to be returned whenever migration is attempted
-  *
-@@ -30,8 +34,8 @@
- int migrate_add_blocker(Error **reasonp, Error **errp);
+-    ret = migrate_add_blocker(&s->migration_blocker, errp);
++    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+     if (ret < 0) {
+         error_setg(errp, "Migration blocker error");
+         goto fail;
+diff --git a/block/qcow.c b/block/qcow.c
+index fdd4c83..eab68e3 100644
+--- a/block/qcow.c
++++ b/block/qcow.c
+@@ -307,7 +307,7 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
+                bdrv_get_device_or_node_name(bs));
+     bdrv_graph_rdunlock_main_loop();
  
- /**
-- * @migrate_add_blocker_internal - prevent migration from proceeding without
-- *                                 only-migrate implications
-+ * @migrate_add_blocker_internal - prevent all modes of migration from
-+ *                                 proceeding, but ignore -only-migratable
-  *
-  * @reasonp - address of an error to be returned whenever migration is attempted
-  *
-@@ -50,7 +54,7 @@ int migrate_add_blocker(Error **reasonp, Error **errp);
- int migrate_add_blocker_internal(Error **reasonp, Error **errp);
- 
- /**
-- * @migrate_del_blocker - remove a blocking error from migration and free it.
-+ * @migrate_del_blocker - remove a migration blocker from all modes and free it.
-  *
-  * @reasonp - address of the error blocking migration
-  *
-@@ -58,4 +62,36 @@ int migrate_add_blocker_internal(Error **reasonp, Error **errp);
-  */
- void migrate_del_blocker(Error **reasonp);
- 
-+/**
-+ * @migrate_add_blocker_normal - prevent normal migration mode from proceeding
-+ *
-+ * @reasonp - address of an error to be returned whenever migration is attempted
-+ *
-+ * @errp - [out] The reason (if any) we cannot block migration right now.
-+ *
-+ * @returns - 0 on success, -EBUSY/-EACCES on failure, with errp set.
-+ *
-+ * *@reasonp is freed and set to NULL if failure is returned.
-+ * On success, the caller must not free @reasonp, except by
-+ *   calling migrate_del_blocker.
-+ */
-+int migrate_add_blocker_normal(Error **reasonp, Error **errp);
-+
-+/**
-+ * @migrate_add_blocker_modes - prevent some modes of migration from proceeding
-+ *
-+ * @reasonp - address of an error to be returned whenever migration is attempted
-+ *
-+ * @errp - [out] The reason (if any) we cannot block migration right now.
-+ *
-+ * @mode - one or more migration modes to be blocked.  The list is terminated
-+ *         by -1 or MIG_MODE_ALL.  For the latter, all modes are blocked.
-+ *
-+ * @returns - 0 on success, -EBUSY/-EACCES on failure, with errp set.
-+ *
-+ * *@reasonp is freed and set to NULL if failure is returned.
-+ * On success, the caller must not free *@reasonp before the blocker is removed.
-+ */
-+int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...);
-+
- #endif
-diff --git a/migration/migration.c b/migration/migration.c
-index 67547eb..b8b54e6 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -92,7 +92,7 @@ enum mig_rp_message_type {
- static MigrationState *current_migration;
- static MigrationIncomingState *current_incoming;
- 
--static GSList *migration_blockers;
-+static GSList *migration_blockers[MIG_MODE__MAX];
- 
- static bool migration_object_check(MigrationState *ms, Error **errp);
- static int migration_maybe_pause(MigrationState *s,
-@@ -1011,7 +1011,7 @@ static void fill_source_migration_info(MigrationInfo *info)
- {
-     MigrationState *s = migrate_get_current();
-     int state = qatomic_read(&s->state);
--    GSList *cur_blocker = migration_blockers;
-+    GSList *cur_blocker = migration_blockers[migrate_mode()];
- 
-     info->blocked_reasons = NULL;
- 
-@@ -1475,38 +1475,105 @@ int migrate_init(MigrationState *s, Error **errp)
-     return 0;
- }
- 
--int migrate_add_blocker_internal(Error **reasonp, Error **errp)
-+static bool is_busy(Error **reasonp, Error **errp)
- {
-+    ERRP_GUARD();
-+
-     /* Snapshots are similar to migrations, so check RUN_STATE_SAVE_VM too. */
-     if (runstate_check(RUN_STATE_SAVE_VM) || !migration_is_idle()) {
-         error_propagate_prepend(errp, *reasonp,
-                                 "disallowing migration blocker "
-                                 "(migration/snapshot in progress) for: ");
-         *reasonp = NULL;
--        return -EBUSY;
-+        return true;
+-    ret = migrate_add_blocker(&s->migration_blocker, errp);
++    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+     if (ret < 0) {
+         goto fail;
      }
--
--    migration_blockers = g_slist_prepend(migration_blockers, *reasonp);
--    return 0;
-+    return false;
- }
+diff --git a/block/vdi.c b/block/vdi.c
+index fd7e365..c647d72 100644
+--- a/block/vdi.c
++++ b/block/vdi.c
+@@ -498,7 +498,7 @@ static int vdi_open(BlockDriverState *bs, QDict *options, int flags,
+                bdrv_get_device_or_node_name(bs));
+     bdrv_graph_rdunlock_main_loop();
  
--int migrate_add_blocker(Error **reasonp, Error **errp)
-+static bool is_only_migratable(Error **reasonp, Error **errp, int modes)
- {
--    if (only_migratable) {
-+    ERRP_GUARD();
-+
-+    if (only_migratable && (modes & BIT(MIG_MODE_NORMAL))) {
-         error_propagate_prepend(errp, *reasonp,
-                                 "disallowing migration blocker "
-                                 "(--only-migratable) for: ");
-         *reasonp = NULL;
-+        return true;
-+    }
-+    return false;
-+}
-+
-+static int get_modes(MigMode mode, va_list ap)
-+{
-+    int modes = 0;
-+
-+    while (mode != -1 && mode != MIG_MODE_ALL) {
-+        assert(mode >= MIG_MODE_NORMAL && mode < MIG_MODE__MAX);
-+        modes |= BIT(mode);
-+        mode = va_arg(ap, MigMode);
-+    }
-+    if (mode == MIG_MODE_ALL) {
-+        modes = BIT(MIG_MODE__MAX) - 1;
-+    }
-+    return modes;
-+}
-+
-+static int add_blockers(Error **reasonp, Error **errp, int modes)
-+{
-+    for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-+        if (modes & BIT(mode)) {
-+            migration_blockers[mode] = g_slist_prepend(migration_blockers[mode],
-+                                                       *reasonp);
-+        }
-+    }
-+    return 0;
-+}
-+
-+int migrate_add_blocker(Error **reasonp, Error **errp)
-+{
-+    return migrate_add_blocker_modes(reasonp, errp, MIG_MODE_ALL);
-+}
-+
-+int migrate_add_blocker_normal(Error **reasonp, Error **errp)
-+{
-+    return migrate_add_blocker_modes(reasonp, errp, MIG_MODE_NORMAL, -1);
-+}
-+
-+int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...)
-+{
-+    int modes;
-+    va_list ap;
-+
-+    va_start(ap, mode);
-+    modes = get_modes(mode, ap);
-+    va_end(ap);
-+
-+    if (is_only_migratable(reasonp, errp, modes)) {
-         return -EACCES;
-+    } else if (is_busy(reasonp, errp)) {
-+        return -EBUSY;
+-    ret = migrate_add_blocker(&s->migration_blocker, errp);
++    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+     if (ret < 0) {
+         goto fail_free_bmap;
      }
-+    return add_blockers(reasonp, errp, modes);
-+}
- 
--    return migrate_add_blocker_internal(reasonp, errp);
-+int migrate_add_blocker_internal(Error **reasonp, Error **errp)
-+{
-+    int modes = BIT(MIG_MODE__MAX) - 1;
-+
-+    if (is_busy(reasonp, errp)) {
-+        return -EBUSY;
-+    }
-+    return add_blockers(reasonp, errp, modes);
- }
- 
- void migrate_del_blocker(Error **reasonp)
- {
-     if (*reasonp) {
--        migration_blockers = g_slist_remove(migration_blockers, *reasonp);
-+        for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-+            migration_blockers[mode] = g_slist_remove(migration_blockers[mode],
-+                                                      *reasonp);
-+        }
-         error_free(*reasonp);
-         *reasonp = NULL;
+diff --git a/block/vhdx.c b/block/vhdx.c
+index e37f8c0..a9d0874 100644
+--- a/block/vhdx.c
++++ b/block/vhdx.c
+@@ -1096,7 +1096,7 @@ static int vhdx_open(BlockDriverState *bs, QDict *options, int flags,
+     error_setg(&s->migration_blocker, "The vhdx format used by node '%s' "
+                "does not support live migration",
+                bdrv_get_device_or_node_name(bs));
+-    ret = migrate_add_blocker(&s->migration_blocker, errp);
++    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+     if (ret < 0) {
+         goto fail;
      }
-@@ -1602,12 +1669,14 @@ void qmp_migrate_pause(Error **errp)
+diff --git a/block/vmdk.c b/block/vmdk.c
+index 1335d39..85864b8 100644
+--- a/block/vmdk.c
++++ b/block/vmdk.c
+@@ -1386,7 +1386,7 @@ static int vmdk_open(BlockDriverState *bs, QDict *options, int flags,
+     error_setg(&s->migration_blocker, "The vmdk format used by node '%s' "
+                "does not support live migration",
+                bdrv_get_device_or_node_name(bs));
+-    ret = migrate_add_blocker(&s->migration_blocker, errp);
++    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+     if (ret < 0) {
+         goto fail;
+     }
+diff --git a/block/vpc.c b/block/vpc.c
+index c30cf86..aa1a48a 100644
+--- a/block/vpc.c
++++ b/block/vpc.c
+@@ -452,7 +452,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
+                bdrv_get_device_or_node_name(bs));
+     bdrv_graph_rdunlock_main_loop();
  
- bool migration_is_blocked(Error **errp)
- {
-+    GSList *blockers = migration_blockers[migrate_mode()];
-+
-     if (qemu_savevm_state_blocked(errp)) {
-         return true;
+-    ret = migrate_add_blocker(&s->migration_blocker, errp);
++    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+     if (ret < 0) {
+         goto fail;
+     }
+diff --git a/block/vvfat.c b/block/vvfat.c
+index 266e036..9d050ba 100644
+--- a/block/vvfat.c
++++ b/block/vvfat.c
+@@ -1268,7 +1268,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
+                    "The vvfat (rw) format used by node '%s' "
+                    "does not support live migration",
+                    bdrv_get_device_or_node_name(bs));
+-        ret = migrate_add_blocker(&s->migration_blocker, errp);
++        ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
+         if (ret < 0) {
+             goto fail;
+         }
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index af636cf..369dfc8 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -1501,7 +1501,7 @@ static void coroutine_fn v9fs_attach(void *opaque)
+         error_setg(&s->migration_blocker,
+                    "Migration is disabled when VirtFS export path '%s' is mounted in the guest using mount_tag '%s'",
+                    s->ctx.fs_root ? s->ctx.fs_root : "NULL", s->tag);
+-        err = migrate_add_blocker(&s->migration_blocker, NULL);
++        err = migrate_add_blocker_normal(&s->migration_blocker, NULL);
+         if (err < 0) {
+             clunk_fid(s, fid);
+             goto out;
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 14e23cc..bf528d5 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -208,7 +208,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+                 "When external environment supports it (Orchestrator migrates "
+                 "target SCSI device state or use shared storage over network), "
+                 "set 'migratable' property to true to enable migration.");
+-        if (migrate_add_blocker(&vsc->migration_blocker, errp) < 0) {
++        if (migrate_add_blocker_normal(&vsc->migration_blocker, errp) < 0) {
+             goto free_virtio;
+         }
+     }
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index d737671..f5e9625 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1527,7 +1527,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
      }
  
--    if (migration_blockers) {
--        error_propagate(errp, error_copy(migration_blockers->data));
-+    if (blockers) {
-+        error_propagate(errp, error_copy(blockers->data));
-         return true;
-     }
+     if (hdev->migration_blocker != NULL) {
+-        r = migrate_add_blocker(&hdev->migration_blocker, errp);
++        r = migrate_add_blocker_normal(&hdev->migration_blocker, errp);
+         if (r < 0) {
+             goto fail_busyloop;
+         }
+diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
+index 7d752bc..0cfcdac 100644
+--- a/target/i386/nvmm/nvmm-all.c
++++ b/target/i386/nvmm/nvmm-all.c
+@@ -929,7 +929,8 @@ nvmm_init_vcpu(CPUState *cpu)
+         error_setg(&nvmm_migration_blocker,
+             "NVMM: Migration not supported");
  
-diff --git a/stubs/migr-blocker.c b/stubs/migr-blocker.c
-index 17a5dbf..11cbff2 100644
---- a/stubs/migr-blocker.c
-+++ b/stubs/migr-blocker.c
-@@ -6,6 +6,16 @@ int migrate_add_blocker(Error **reasonp, Error **errp)
-     return 0;
- }
- 
-+int migrate_add_blocker_normal(Error **reasonp, Error **errp)
-+{
-+    return 0;
-+}
-+
-+int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...)
-+{
-+    return 0;
-+}
-+
- void migrate_del_blocker(Error **reasonp)
- {
- }
+-        if (migrate_add_blocker(&nvmm_migration_blocker, &local_error) < 0) {
++        ret = migrate_add_blocker_normal(&nvmm_migration_blocker, &local_error);
++        if (ret < 0) {
+             error_report_err(local_error);
+             return -EINVAL;
+         }
 -- 
 1.8.3.1
 
