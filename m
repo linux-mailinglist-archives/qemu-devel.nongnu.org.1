@@ -2,104 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB4C7CF382
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24A47CF387
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:07:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtOxh-0003qs-II; Thu, 19 Oct 2023 05:05:01 -0400
+	id 1qtOzO-0005Fr-OC; Thu, 19 Oct 2023 05:06:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1qtOxf-0003nI-BS
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:04:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtOz3-0005Dm-58
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:06:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1qtOxc-0000At-Vw
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:04:59 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtOz1-0000XH-CT
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:06:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697706295;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rGPyu2oyb6K1VJTFIEw7kMpYSIo1edfld6pQEvAngzc=;
- b=VumxcHLCSlqt+ko8yFWJXTAMndqKth6VQMaSnfpzYPqkJerOjbpEGBxaWsrw0tDxEM9Eev
- MMvWaNXzSzQeXqsKg6hCOOR/iTJbtZCbWkHclDzBfvsz5YkjxHfRucYyF+qTdgMqpZGQMc
- P6PEesABP+xXWuRCY36Lmp7lM4jsPnA=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697706375;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=pbSYvyuyEPZugfJGSMk6Dma+H1+O9xQqUavGitpyqN8=;
+ b=TCOsS51l/LU8ONkIRnKBwQiyAPNi2mkJoyvbWfRS8jy6hP3niBV9/g3UN+m5U4cCxMB870
+ USAEQ++4wfeB/HG65OZdWPiaPPG+nX+VK8jTenLulp91iy0QryGPJREwx5SCsbRUwjpwI7
+ 4Qi+fGtfd5521gT9RFf+AcTFsS1VUBA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-xrLd5ayBM5iVI9dvQBHicg-1; Thu, 19 Oct 2023 05:04:53 -0400
-X-MC-Unique: xrLd5ayBM5iVI9dvQBHicg-1
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-6bd9ff6db0aso1417617b3a.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 02:04:53 -0700 (PDT)
+ us-mta-336-cCUaKzdfN1ee-QkYcCnnig-1; Thu, 19 Oct 2023 05:06:09 -0400
+X-MC-Unique: cCUaKzdfN1ee-QkYcCnnig-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-406710d9a4aso55043025e9.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 02:06:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697706293; x=1698311093;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rGPyu2oyb6K1VJTFIEw7kMpYSIo1edfld6pQEvAngzc=;
- b=XlgP+PLgvSHDeUsMeOZtcdYl41WbZt0+9e9mMfevam7bqVXoWO3km3K5SpVOrXqMWi
- K7+vhnySGu3tfv0RQzUrHIq2xMhU3YCje1VPD18OEiUBVD2verBXNh6Hn43Iqjqi3eP1
- YOlJbIckluqWMILf6yMmdvpeaZsVTEBDoO5zLH+X+wQu3H8j/amVdklLcQrtSPH9vJF5
- CQeafeeAfnS2wC0000fow0PNmr2Et6S6fTGnTpgVpwbS618GVs/VjUVReSerR+Z9ofCO
- aD7N/EDNwFlBu6lf1ZN6cEhBkrUtRI5w/nTM0rzPAUOC0gFNt34GP32goUGq8th5fHJx
- /j5g==
-X-Gm-Message-State: AOJu0YwCQ0HXkq67eMhYoOyyoG5ojVtHRt6AMJN/bFkdniSj4ucnyt1R
- mK2smThEayZeR1CR3miFki1IAaVQp8SFH2G/JMC/o1kpGKeU/UBLvu3vhm6QwPr4a4aeIAjUGwI
- t38pla0n/4+Nyzjg=
-X-Received: by 2002:a05:6a20:4401:b0:13d:fff1:c672 with SMTP id
- ce1-20020a056a20440100b0013dfff1c672mr1960398pzb.4.1697706292711; 
- Thu, 19 Oct 2023 02:04:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwq2Zl2u24IzxJ6NTOOa8Ta2tWs8a6pr4RnpbSu1wJ/K7gUgNKHO3NfUzNdANXBHe3Y0IDaA==
-X-Received: by 2002:a05:6a20:4401:b0:13d:fff1:c672 with SMTP id
- ce1-20020a056a20440100b0013dfff1c672mr1960361pzb.4.1697706292374; 
- Thu, 19 Oct 2023 02:04:52 -0700 (PDT)
-Received: from [10.66.61.39] ([43.228.180.230])
- by smtp.gmail.com with ESMTPSA id
- mz24-20020a17090b379800b00256799877ffsm1133812pjb.47.2023.10.19.02.04.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 02:04:51 -0700 (PDT)
-Message-ID: <d1278ad1-cb78-90f1-64a6-c3e8711bacd7@redhat.com>
-Date: Thu, 19 Oct 2023 17:04:44 +0800
+ d=1e100.net; s=20230601; t=1697706368; x=1698311168;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pbSYvyuyEPZugfJGSMk6Dma+H1+O9xQqUavGitpyqN8=;
+ b=xHNc2AYA9CXnNiE7icDFXWbWpRGSYPBO8xcOU9dOuo692cJBIGmuUIsZ9z9pk7R6dd
+ PDHYcjhHPr83X2ns7saejR0jYcqIgOcO1gvHN5B6uSH9d+iA/74sPWXG5tW+R7y8fc8z
+ hBv1mHdTdUVKz7yE7JTjJv4AAk20cd/rGOOzy+QV5OQYTmQHlgd+STXIymYkavR7XF/d
+ 1YkojvO/E0UAnG9YFF7sZC26ZIAf8VVoRWObWBwV3FHki4HMZCJE2mSJKnAm3h5Vmzqc
+ 3Tb1mtVhO/8wSDT4Qn+Ja/NACwjVnPKSPo+65Xt6/06+XfvCu1onX59/8wqBjHiBe6u1
+ 0xbA==
+X-Gm-Message-State: AOJu0YztbyHERjEAJ/5Hons/jm5wZiGsLex8otIb0Z6RXqECMCv2AWg5
+ 3d7IUS8dn4/VmcK84eONutEFzPdV+RAWSKRSkhlfq1xiBHRvI/osvqIKF+t7cIaOlzk6U0WOKj8
+ bD9tyNbqOnW7mmwM=
+X-Received: by 2002:a5d:5444:0:b0:32d:a405:b6b7 with SMTP id
+ w4-20020a5d5444000000b0032da405b6b7mr1112746wrv.32.1697706367910; 
+ Thu, 19 Oct 2023 02:06:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAVDsNOj7/PxlZNnBY1mXjcC+mRfUx6ybYc9EMq6PEZtGSoKhEDA2v2R1agGXEM7xfRHrY1Q==
+X-Received: by 2002:a5d:5444:0:b0:32d:a405:b6b7 with SMTP id
+ w4-20020a5d5444000000b0032da405b6b7mr1112728wrv.32.1697706367464; 
+ Thu, 19 Oct 2023 02:06:07 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ k1-20020a5d66c1000000b0032dbf99bf4fsm3974083wrw.89.2023.10.19.02.06.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 02:06:06 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
+ semaphore
+In-Reply-To: <20231012140651.13122-2-farosas@suse.de> (Fabiano Rosas's message
+ of "Thu, 12 Oct 2023 11:06:46 -0300")
+References: <20231012140651.13122-1-farosas@suse.de>
+ <20231012140651.13122-2-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 19 Oct 2023 11:06:06 +0200
+Message-ID: <87sf676kxt.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH V6 0/9] Add architecture agnostic code to support vCPU
- Hotplug
-To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org
-Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com,
- oliver.upton@linux.dev, pbonzini@redhat.com, mst@redhat.com,
- will@kernel.org, gshan@redhat.com, rafael@kernel.org,
- alex.bennee@linaro.org, linux@armlinux.org.uk,
- darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
- vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
- wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
- maobibo@loongson.cn, lixianglai@loongson.cn, linuxarm@huawei.com
-References: <20231013105129.25648-1-salil.mehta@huawei.com>
-Content-Language: en-US
-From: Shaoqin Huang <shahuang@redhat.com>
-In-Reply-To: <20231013105129.25648-1-salil.mehta@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=shahuang@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,128 +98,172 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fabiano Rosas <farosas@suse.de> wrote:
+> The channels_ready semaphore is a global variable not linked to any
+> single multifd channel. Waiting on it only means that "some" channel
+> has become ready to send data. Since we need to address the channels
+> by index (multifd_send_state->params[i]), that information adds
+> nothing of value.
 
+NAK.
 
-On 10/13/23 18:51, Salil Mehta via wrote:
-> Virtual CPU hotplug support is being added across various architectures[1][3].
-> This series adds various code bits common across all architectures:
-> 
-> 1. vCPU creation and Parking code refactor [Patch 1]
-> 2. Update ACPI GED framework to support vCPU Hotplug [Patch 4,6,7]
-> 3. ACPI CPUs AML code change [Patch 5]
-> 4. Helper functions to support unrealization of CPU objects [Patch 8,9]
-> 5. Misc [Patch 2,3]
-> 
-> 
-> Repository:
-> 
-> [*] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v2.common.v6
-> 
-> 
-> Revision History:
-> 
-> Patch-set  V5 -> V6
-> 1. Addressed Gavin Shan's comments
->     - Fixed the assert() ranges of address spaces
->     - Rebased the patch-set to latest changes in the qemu.git
->     - Added Reviewed-by tags for patches {8,9}
-> 2. Addressed Jonathan Cameron's comments
->     - Updated commit-log for [Patch V5 1/9] with mention of trace events
->     - Added Reviewed-by tags for patches {1,5}
-> 3. Added Tested-by tags from Xianglai Li
-> 4. Fixed checkpatch.pl error "Qemu -> QEMU" in [Patch V5 1/9]
-> Link: https://lore.kernel.org/qemu-devel/20231011194355.15628-1-salil.mehta@huawei.com/
-> 
-> Patch-set  V4 -> V5
-> 1. Addressed Gavin Shan's comments
->     - Fixed the trace events print string for kvm_{create,get,park,destroy}_vcpu
->     - Added Reviewed-by tag for patch {1}
-> 2. Added Shaoqin Huang's Reviewed-by tags for Patches {2,3}
-> 3. Added Tested-by Tag from Vishnu Pajjuri to the patch-set
-> 4. Dropped the ARM specific [Patch V4 10/10]
-> Link: https://lore.kernel.org/qemu-devel/20231009203601.17584-1-salil.mehta@huawei.com/
-> 
-> Patch-set  V3 -> V4
-> 1. Addressed David Hilderbrand's comments
->     - Fixed the wrong doc comment of kvm_park_vcpu API prototype
->     - Added Reviewed-by tags for patches {2,4}
-> Link: https://lore.kernel.org/qemu-devel/20231009112812.10612-1-salil.mehta@huawei.com/
-> 
-> Patch-set  V2 -> V3
-> 1. Addressed Jonathan Cameron's comments
->     - Fixed 'vcpu-id' type wrongly changed from 'unsigned long' to 'integer'
->     - Removed unnecessary use of variable 'vcpu_id' in kvm_park_vcpu
->     - Updated [Patch V2 3/10] commit-log with details of ACPI_CPU_SCAN_METHOD macro
->     - Updated [Patch V2 5/10] commit-log with details of conditional event handler method
->     - Added Reviewed-by tags for patches {2,3,4,6,7}
-> 2. Addressed Gavin Shan's comments
->     - Remove unnecessary use of variable 'vcpu_id' in kvm_par_vcpu
->     - Fixed return value in kvm_get_vcpu from -1 to -ENOENT
->     - Reset the value of 'gdb_num_g_regs' in gdb_unregister_coprocessor_all
->     - Fixed the kvm_{create,park}_vcpu prototypes docs
->     - Added Reviewed-by tags for patches {2,3,4,5,6,7,9,10}
-> 3. Addressed one earlier missed comment by Alex Bennée in RFC V1
->     - Added traces instead of DPRINTF in the newly added and some existing functions
-> Link: https://lore.kernel.org/qemu-devel/20230930001933.2660-1-salil.mehta@huawei.com/
-> 
-> Patch-set V1 -> V2
-> 1. Addressed Alex Bennée's comments
->     - Refactored the kvm_create_vcpu logic to get rid of goto
->     - Added the docs for kvm_{create,park}_vcpu prototypes
->     - Splitted the gdbstub and AddressSpace destruction change into separate patches
->     - Added Reviewed-by tags for patches {2,10}
-> Link: https://lore.kernel.org/qemu-devel/20230929124304.13672-1-salil.mehta@huawei.com/
-> 
-> References:
-> 
-> [1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/
-> [2] https://lore.kernel.org/all/20230913163823.7880-1-james.morse@arm.com/
-> [3] https://lore.kernel.org/qemu-devel/cover.1695697701.git.lixianglai@loongson.cn/
-> 
-> 
-> Salil Mehta (9):
->    accel/kvm: Extract common KVM vCPU {creation,parking} code
->    hw/acpi: Move CPU ctrl-dev MMIO region len macro to common header file
->    hw/acpi: Add ACPI CPU hotplug init stub
->    hw/acpi: Init GED framework with CPU hotplug events
->    hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
->    hw/acpi: Update GED _EVT method AML with CPU scan
->    hw/acpi: Update ACPI GED framework to support vCPU Hotplug
->    physmem: Add helper function to destroy CPU AddressSpace
->    gdbstub: Add helper function to unregister GDB register space
-> 
->   accel/kvm/kvm-all.c                    | 64 ++++++++++++++++++++------
->   accel/kvm/trace-events                 |  4 ++
->   gdbstub/gdbstub.c                      | 12 +++++
->   hw/acpi/acpi-cpu-hotplug-stub.c        |  6 +++
->   hw/acpi/cpu.c                          | 27 +++++++----
->   hw/acpi/generic_event_device.c         | 22 +++++++++
->   hw/i386/acpi-build.c                   |  3 +-
->   include/exec/cpu-common.h              |  8 ++++
->   include/exec/gdbstub.h                 |  5 ++
->   include/hw/acpi/cpu.h                  |  5 +-
->   include/hw/acpi/cpu_hotplug.h          |  4 ++
->   include/hw/acpi/generic_event_device.h |  5 ++
->   include/hw/core/cpu.h                  |  1 +
->   include/sysemu/kvm.h                   | 16 +++++++
->   system/physmem.c                       | 29 ++++++++++++
->   15 files changed, 184 insertions(+), 27 deletions(-)
-> 
+I disagree here O:-)
 
-Hi salil,
+the reason why that channel exist is for multifd_send_pages()
 
-All patches looks good to me. Thanks for you effort to update it so 
-actively. No issues being found by simply testing and several daily use.
+And simplifying the function what it does is:
 
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+sem_wait(channels_ready);
 
-Thanks,
-Shaoqin
+for_each_channel()
+   look if it is empty()
 
--- 
-Shaoqin
+But with the semaphore, we guarantee that when we go to the loop, there
+is a channel ready, so we know we donat busy wait searching for a
+channel that is free.
+
+Notice that I fully agree that the sem is not needed for locking.
+Locking is done with the mutex.  It is just used to make sure that we
+don't busy loop on that loop.
+
+And we use a sem, because it is the easiest way to know how many
+channels are ready (even when we only care if there is one when we
+arrive to that code).
+
+We lost count of that counter, and we fixed that here:
+
+commit d2026ee117147893f8d80f060cede6d872ecbd7f
+Author: Juan Quintela <quintela@redhat.com>
+Date:   Wed Apr 26 12:20:36 2023 +0200
+
+    multifd: Fix the number of channels ready
+
+    We don't wait in the sem when we are doing a sync_main.  Make it
+
+And we were addressing the problem that some users where finding that we
+were busy waiting on that loop.
+
+> The channel being addressed is not necessarily the
+> one that just released the semaphore.
+
+We only care that there is at least one free.  We are going to search
+the next one.
+
+Does this explanation makes sense?
+
+Later, Juan.
+
+> The only usage of this semaphore that makes sense is to wait for it in
+> a loop that iterates for the number of channels. That could mean: all
+> channels have been setup and are operational OR all channels have
+> finished their work and are idle.
+>
+> Currently all code that waits on channels_ready is redundant. There is
+> always a subsequent lock or semaphore that does the actual data
+> protection/synchronization.
+>
+> - at multifd_send_pages: Waiting on channels_ready doesn't mean the
+>   'next_channel' is ready, it could be any other channel. So there are
+>   already cases where this code runs as if no semaphore was there.
+
+>   Waiting outside of the loop is also incorrect because if the current
+>   channel already has a pending_job, then it will loop into the next
+>   one without waiting the semaphore and the count will be greater than
+>   zero at the end of the execution.
+>
+>   Checking that "any" channel is ready as a proxy for all channels
+>   being ready would work, but it's not what the code is doing and not
+>   really needed because the channel lock and 'sem' would be enough.
+>
+> - at multifd_send_sync: This usage is correct, but it is made
+>   redundant by the wait on sem_sync. What this piece of code is doing
+>   is making sure all channels have sent the SYNC packet and became
+>   idle afterwards.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  migration/multifd.c | 10 ----------
+>  1 file changed, 10 deletions(-)
+>
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 0f6b203877..e26f5f246d 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -362,8 +362,6 @@ struct {
+>      MultiFDPages_t *pages;
+>      /* global number of generated multifd packets */
+>      uint64_t packet_num;
+> -    /* send channels ready */
+> -    QemuSemaphore channels_ready;
+>      /*
+>       * Have we already run terminate threads.  There is a race when it
+>       * happens that we got one error while we are exiting.
+> @@ -403,7 +401,6 @@ static int multifd_send_pages(QEMUFile *f)
+>          return -1;
+>      }
+>  
+> -    qemu_sem_wait(&multifd_send_state->channels_ready);
+>      /*
+>       * next_channel can remain from a previous migration that was
+>       * using more channels, so ensure it doesn't overflow if the
+> @@ -554,7 +551,6 @@ void multifd_save_cleanup(void)
+>              error_free(local_err);
+>          }
+>      }
+> -    qemu_sem_destroy(&multifd_send_state->channels_ready);
+>      g_free(multifd_send_state->params);
+>      multifd_send_state->params = NULL;
+>      multifd_pages_clear(multifd_send_state->pages);
+> @@ -630,7 +626,6 @@ int multifd_send_sync_main(QEMUFile *f)
+>      for (i = 0; i < migrate_multifd_channels(); i++) {
+>          MultiFDSendParams *p = &multifd_send_state->params[i];
+>  
+> -        qemu_sem_wait(&multifd_send_state->channels_ready);
+>          trace_multifd_send_sync_main_wait(p->id);
+>          qemu_sem_wait(&p->sem_sync);
+>  
+> @@ -664,7 +659,6 @@ static void *multifd_send_thread(void *opaque)
+>      p->num_packets = 1;
+>  
+>      while (true) {
+> -        qemu_sem_post(&multifd_send_state->channels_ready);
+>          qemu_sem_wait(&p->sem);
+>  
+>          if (qatomic_read(&multifd_send_state->exiting)) {
+> @@ -759,7 +753,6 @@ out:
+>       */
+>      if (ret != 0) {
+>          qemu_sem_post(&p->sem_sync);
+> -        qemu_sem_post(&multifd_send_state->channels_ready);
+>      }
+>  
+>      qemu_mutex_lock(&p->mutex);
+> @@ -796,7 +789,6 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+>           * is not created, and then tell who pay attention to me.
+>           */
+>          p->quit = true;
+> -        qemu_sem_post(&multifd_send_state->channels_ready);
+>          qemu_sem_post(&p->sem_sync);
+>      }
+>  }
+> @@ -874,7 +866,6 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
+>  {
+>       migrate_set_error(migrate_get_current(), err);
+>       /* Error happen, we need to tell who pay attention to me */
+> -     qemu_sem_post(&multifd_send_state->channels_ready);
+>       qemu_sem_post(&p->sem_sync);
+>       /*
+>        * Although multifd_send_thread is not created, but main migration
+> @@ -919,7 +910,6 @@ int multifd_save_setup(Error **errp)
+>      multifd_send_state = g_malloc0(sizeof(*multifd_send_state));
+>      multifd_send_state->params = g_new0(MultiFDSendParams, thread_count);
+>      multifd_send_state->pages = multifd_pages_init(page_count);
+> -    qemu_sem_init(&multifd_send_state->channels_ready, 0);
+>      qatomic_set(&multifd_send_state->exiting, 0);
+>      multifd_send_state->ops = multifd_ops[migrate_multifd_compression()];
 
 
