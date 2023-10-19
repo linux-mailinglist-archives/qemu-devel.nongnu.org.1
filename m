@@ -2,136 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4287CF00F
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 08:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EB07CF012
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 08:28:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtMTn-0007iv-Py; Thu, 19 Oct 2023 02:25:59 -0400
+	id 1qtMVE-0008R8-Pj; Thu, 19 Oct 2023 02:27:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtMTi-0007h7-7I
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 02:25:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtMV9-0008Pc-11
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 02:27:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtMTd-0008Nu-8e
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 02:25:53 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtMV4-00005z-DT
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 02:27:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697696747;
+ s=mimecast20190719; t=1697696837;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=UeZZqJCGHH0M8UDUlN29++l8j1hB4yy6gIYyKTbI2Hs=;
- b=ezN3W9ao5/6mX3mGXYm7mC5grcsIOeqEy3On4KXt5gDyZ3nSHqLhGIAedAE3LMEM6Atgum
- JHz6pNw074RjmGpMSlh2Smmi3HmytVrl0mf0vzf2gU/FP0t4CLNXNXap9IUNR+nywtLjOW
- sqydTRlpOSJxiMphEBrYWPABymeqmVA=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-21-raOYTUVyMsq6bPLHvqL35Q-1; Thu, 19 Oct 2023 02:25:45 -0400
-X-MC-Unique: raOYTUVyMsq6bPLHvqL35Q-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-41b8299aad9so30039461cf.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 23:25:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697696745; x=1698301545;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UeZZqJCGHH0M8UDUlN29++l8j1hB4yy6gIYyKTbI2Hs=;
- b=fls59qO+HjM/XuOiwmEXGLv+NLhPUGLcTRpxu92xHzXodMI59k0JQO6m8lCzM6jQaN
- xrIFB2z7HBhU1y5rRPlc085mWjVWUdtzBjuVO9pGTNLIoU9+GAxouhkOx2UQs0C8gut5
- 1Ll7OQjU0+go4E6X9uwr9IevYu7n9sve26pwziZd1+qhNuWroDKnFUPcr1jV790pIQZh
- 3GR93CtXHrESXpiZ52C0oQ58SSMkyjQesibSX1tq0ztGXbPw2TkYDNmNzwy4GcMhG4X2
- M1nLkJ/b82zQlZxwq4/p+N2MTtID23lZtaY8MbS/sHxUz+8qUGZNckMeWA701MMnKCgt
- bDeA==
-X-Gm-Message-State: AOJu0YydA2M0NvcH2UvHxfg+YOA+fwl3FK6vPQxYKjoA/8/QL5v5cD0s
- EBhrl0nMLJlSbYoa6ulo9qt6csig4q4SHqKVr/JMvSwHAQcF2lXJq6LmfXlYIGPQuOP+e35o5dC
- pyd6WULuUJybDKTU=
-X-Received: by 2002:a05:622a:1910:b0:417:a514:72cd with SMTP id
- w16-20020a05622a191000b00417a51472cdmr1631119qtc.19.1697696745251; 
- Wed, 18 Oct 2023 23:25:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERh32oCoyts0TdBV0nkFLHNoapdDnqb1PVM3u9lHPQjpftj1z9crG+ka/sdJOub2W7K//cQw==
-X-Received: by 2002:a05:622a:1910:b0:417:a514:72cd with SMTP id
- w16-20020a05622a191000b00417a51472cdmr1631101qtc.19.1697696744948; 
- Wed, 18 Oct 2023 23:25:44 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
- [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- o9-20020ac85a49000000b004199f47ccdbsm531701qta.51.2023.10.18.23.25.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 23:25:44 -0700 (PDT)
-Message-ID: <1b7b78b2-4292-4daa-91a2-79966aa72a9d@redhat.com>
-Date: Thu, 19 Oct 2023 08:25:41 +0200
+ in-reply-to:in-reply-to:references:references;
+ bh=76tVPgaGbG3IOE03a5SQs52Dd7dlwB3sKqsypgM3u6o=;
+ b=ScfBorru6+f1MMQqVuWmFJ+dnuOUMhmU07MuqePIEeV7NZ7brQyYNizX0hR6ag9FCDwfXg
+ f6MFIMjKtuKMa1bLWAeRfzBomIexmM6yEbToey3i7azD77BXz8q90SY7ZOPjtOhuVCxPt3
+ /zw2IyrdASqry6P9NoyIH4FS0hCmpHk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-696-QD4cz6mNNxeYlPtnbBs_NQ-1; Thu, 19 Oct 2023 02:27:00 -0400
+X-MC-Unique: QD4cz6mNNxeYlPtnbBs_NQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4A939185A795
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:27:00 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E7C691C060AE
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:26:59 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id DD5BF21E6A1F; Thu, 19 Oct 2023 08:26:58 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Daniel P .
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v3 10/10] qapi: scripts: add a generator for qapi's
+ examples
+References: <20230919201857.675913-1-victortoso@redhat.com>
+ <20230919201857.675913-11-victortoso@redhat.com>
+ <87o7hv7ply.fsf@pond.sub.org>
+ <gfsdkqobnul2i6mgfwe2w3pwtvjf3db34ntpo3oo253eh6gyqe@5gc25wboaocl>
+Date: Thu, 19 Oct 2023 08:26:58 +0200
+In-Reply-To: <gfsdkqobnul2i6mgfwe2w3pwtvjf3db34ntpo3oo253eh6gyqe@5gc25wboaocl>
+ (Victor Toso's message of "Wed, 18 Oct 2023 21:35:41 +0200")
+Message-ID: <87r0lrktzh.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/12] tests/qtest/migration: Define a machine for all
- architectures
-Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20231018192741.25885-1-farosas@suse.de>
- <20231018192741.25885-8-farosas@suse.de>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231018192741.25885-8-farosas@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -148,98 +83,417 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/10/2023 21.27, Fabiano Rosas wrote:
-> Stop relying on defaults and select a machine explicitly for every
-> architecture.
-> 
-> This is a prerequisite for being able to select machine types for
-> migration using different QEMU binaries for source and destination.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->   tests/qtest/migration-test.c | 16 +++++++++++++---
->   1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index e1c110537b..43d0b83771 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -743,6 +743,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->       const char *kvm_opts = NULL;
->       const char *arch = qtest_get_arch();
->       const char *memory_size;
-> +    const char *machine_alias, *machine_opts = "";
->   
->       if (args->use_shmem) {
->           if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
-> @@ -755,11 +756,13 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->       got_dst_resume = false;
->       if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
->           memory_size = "150M";
-> +        machine_alias = "pc";
->           arch_opts = g_strdup_printf("-drive file=%s,format=raw", bootpath);
->           start_address = X86_TEST_MEM_START;
->           end_address = X86_TEST_MEM_END;
->       } else if (g_str_equal(arch, "s390x")) {
->           memory_size = "128M";
-> +        machine_alias = "s390-ccw-virtio";
->           arch_opts = g_strdup_printf("-bios %s", bootpath);
->           start_address = S390_TEST_MEM_START;
->           end_address = S390_TEST_MEM_END;
-> @@ -771,11 +774,14 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->                                         "'nvramrc=hex .\" _\" begin %x %x "
->                                         "do i c@ 1 + i c! 1000 +loop .\" B\" 0 "
->                                         "until'", end_address, start_address);
-> -        arch_opts = g_strdup("-nodefaults -machine vsmt=8");
-> +        machine_alias = "pseries";
-> +        machine_opts = "vsmt=8";
-> +        arch_opts = g_strdup("-nodefaults");
->       } else if (strcmp(arch, "aarch64") == 0) {
->           memory_size = "150M";
-> -        arch_opts = g_strdup_printf("-machine virt,gic-version=max -cpu max "
-> -                                    "-kernel %s", bootpath);
-> +        machine_alias = "virt";
-> +        machine_opts = "gic-version=max";
-> +        arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
->           start_address = ARM_TEST_MEM_START;
->           end_address = ARM_TEST_MEM_END;
->       } else {
-> @@ -810,11 +816,13 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->       }
->   
->       cmd_source = g_strdup_printf("-accel kvm%s -accel tcg "
-> +                                 "-machine %s,%s "
->                                    "-name source,debug-threads=on "
->                                    "-m %s "
->                                    "-serial file:%s/src_serial "
->                                    "%s %s %s %s %s",
->                                    kvm_opts ? kvm_opts : "",
-> +                                 machine_alias, machine_opts,
->                                    memory_size, tmpfs,
->                                    arch_opts ? arch_opts : "",
->                                    arch_source ? arch_source : "",
-> @@ -829,12 +837,14 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->       }
->   
->       cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
-> +                                 "-machine %s,%s "
+Victor Toso <victortoso@redhat.com> writes:
 
-If machine_opts is empty, there will be a lonely "," at the end of the 
-parameter ... seems to work, but it's a little bit ugly.
+> Hi Markus,
+>
+> Sorry the delay on reply here.
+>
+> On Thu, Sep 21, 2023 at 01:06:01PM +0200, Markus Armbruster wrote:
+>> Victor Toso <victortoso@redhat.com> writes:
+>> 
+>> > This generator has two goals:
+>> >  1. Mechanical validation of QAPI examples
+>> >  2. Generate the examples in a JSON format to be consumed for extra
+>> >     validation.
+>> >
+>> > The generator iterates over every Example section, parsing both server
+>> > and client messages. The generator prints any inconsistency found, for
+>> > example:
+>> >
+>> >  |  Error: Extra data: line 1 column 39 (char 38)
+>> >  |  Location: cancel-vcpu-dirty-limit at qapi/migration.json:2017
+>> >  |  Data: {"execute": "cancel-vcpu-dirty-limit"},
+>> >  |      "arguments": { "cpu-index": 1 } }
+>> 
+>> What language does it parse?
+>
+> It parsers the Example section. Fetches client and server JSON
+> messages. Validate them.
+>
+>> Can you give a grammar?
+>
+> Not sure if needed? I just fetch the json from the example
+> section and validate it.
 
-Anyway:
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+The C++ parser just fetches the code from the text file and compiles it
+:)
 
+There are way too many parsers out there that show signs of "I'm not
+parsing / I don't to nail down the language" delusions.
 
->                                    "-name target,debug-threads=on "
->                                    "-m %s "
->                                    "-serial file:%s/dest_serial "
->                                    "-incoming %s "
->                                    "%s %s %s %s %s",
->                                    kvm_opts ? kvm_opts : "",
-> +                                 machine_alias, machine_opts,
->                                    memory_size, tmpfs, uri,
->                                    arch_opts ? arch_opts : "",
->                                    arch_target ? arch_target : "",
+Let's start with an informal description of the language.
+
+An example is a sequence of QMP input, QMP output, and explanatory text.
+
+QMP input / output is a sequence of lines where the first one starts
+with "<- " / "-> ", and the remaining ones start with " ".
+
+Lines that are not QMP input / output are explanatory text.
+
+>> Should the parser be integrated into the doc parser, i.e. class QAPIDoc?
+>
+> Yes, that would be better. I'll try that in the next iteration.
+>
+>> > The generator will output other JSON file with all the examples in the
+>> 
+>> Another JSON file, or other JSON files?
+>
+> JSON files. QEMU'S QAPI qapi/migration.json will generate a
+> migration.json with the format mentioned bellow.
+>> 
+>> > QAPI module that they came from. This can be used to validate the
+>> > introspection between QAPI/QMP to language bindings, for example:
+>> >
+>> >  | { "examples": [
+>> >  |   {
+>> >  |     "id": "ksuxwzfayw",
+>> >  |     "client": [
+>> >  |     {
+>> >  |       "sequence-order": 1
+>> 
+>> Missing comma
+>> 
+>> >  |       "message-type": "command",
+>> >  |       "message":
+>> >  |       { "arguments":
+>> >  |         { "device": "scratch", "size": 1073741824 },
+>> >  |         "execute": "block_resize"
+>> >  |       },
+>> >  |    } ],
+>> >  |    "server": [
+>> >  |    {
+>> >  |      "sequence-order": 2
+>> 
+>> Another one.
+>> 
+>> >  |      "message-type": "return",
+>> >  |      "message": { "return": {} },
+>> 
+>> Extra comma.
+>> 
+>> >  |    } ]
+>> >  |    }
+>> >  |  ] }
+>> 
+>> Indentation is kind of weird.
+>
+> The missing comma was likely my fault on copy & paste.  The
+> indentation should be what json.dumps() provides, but I think I
+> changed somehow in the git log too.
+>  
+>> The JSON's Valid structure and semantics are not documented.
+>> We've developed a way specify that, you might've heard of it,
+>> it's called "QAPI schema" ;-P
+>> 
+>> Kidding aside, we've done this before.  E.g. docs/interop/firmware.json
+>> specifies firmware descriptors.  We have some in pc-bios/descriptors/.
+>
+> Oh, that's neat. You meant to use QAPI schema as a way to
+> document output from examples.py?
+
+Exactly!
+
+>> > Note that the order matters, as read by the Example section and
+>> > translated into "sequence-order". A language binding project can then
+>> > consume this files to Marshal and Unmarshal, comparing if the results
+>> > are what is to be expected.
+>> >
+>> > RFC discussion:
+>> >     https://lists.gnu.org/archive/html/qemu-devel/2022-08/msg04641.html
+>> >
+>> > Signed-off-by: Victor Toso <victortoso@redhat.com>
+>> > ---
+>> >  scripts/qapi/dumpexamples.py | 208 +++++++++++++++++++++++++++++++++++
+>> >  scripts/qapi/main.py         |   3 +-
+>> >  2 files changed, 210 insertions(+), 1 deletion(-)
+>> >  create mode 100644 scripts/qapi/dumpexamples.py
+>> >
+>> > diff --git a/scripts/qapi/dumpexamples.py b/scripts/qapi/dumpexamples.py
+>> > new file mode 100644
+>> > index 0000000000..55d9f13ab7
+>> > --- /dev/null
+>> > +++ b/scripts/qapi/dumpexamples.py
+>> 
+>> Let's name this examples.py.  It already does a bit more than
+>> dump (namely validate), and any future code dealing with
+>> examples will likely go into this file.
+>
+> Ack.
+>
+>> > @@ -0,0 +1,208 @@
+>> > +"""
+>> > +Dump examples for Developers
+>> > +"""
+>> > +# Copyright (c) 2023 Red Hat Inc.
+>> > +#
+>> > +# Authors:
+>> > +#  Victor Toso <victortoso@redhat.com>
+>> > +#
+>> > +# This work is licensed under the terms of the GNU GPL, version 2.
+>> 
+>> We should've insisted on v2+ for the QAPI generator back when we had a
+>> chance.  *Sigh*
+>
+> :)
+>  
+>> > +# See the COPYING file in the top-level directory.
+>> > +
+>> > +# Just for type hint on self
+>> > +from __future__ import annotations
+>> > +
+>> > +import os
+>> > +import json
+>> > +import random
+>> > +import string
+>> > +
+>> > +from typing import Dict, List, Optional
+>> > +
+>> > +from .schema import (
+>> > +    QAPISchema,
+>> > +    QAPISchemaType,
+>> > +    QAPISchemaVisitor,
+>> > +    QAPISchemaEnumMember,
+>> > +    QAPISchemaFeature,
+>> > +    QAPISchemaIfCond,
+>> > +    QAPISchemaObjectType,
+>> > +    QAPISchemaObjectTypeMember,
+>> > +    QAPISchemaVariants,
+>> 
+>> pylint warns
+>> 
+>>     scripts/qapi/dumpexamples.py:22:0: W0611: Unused QAPISchemaEnumMember imported from schema (unused-import)
+>>     scripts/qapi/dumpexamples.py:22:0: W0611: Unused QAPISchemaObjectTypeMember imported from schema (unused-import)
+>>     scripts/qapi/dumpexamples.py:22:0: W0611: Unused QAPISchemaVariants imported from schema (unused-import)
+>
+> Yes, now I learned a few tricks around python linters and
+> formatting. Next iteration will be better.
+>  
+>> > +)
+>> > +from .source import QAPISourceInfo
+>> > +
+>> > +
+>> > +def gen_examples(schema: QAPISchema,
+>> > +                 output_dir: str,
+>> > +                 prefix: str) -> None:
+>> > +    vis = QAPISchemaGenExamplesVisitor(prefix)
+>> > +    schema.visit(vis)
+>> > +    vis.write(output_dir)
+>> 
+>> The other backends have this at the end of the file.  Either order
+>> works, but consistency is nice.
+>
+> Ok.
+>  
+>> > +
+>> > +
+>> > +def get_id(random, size: int) -> str:
+>> 
+>> pylint warns
+>> 
+>>     scripts/qapi/dumpexamples.py:44:11: W0621: Redefining name
+>>     'random' from outer scope (line 17) (redefined-outer-name)
+>> 
+>> > +    letters = string.ascii_lowercase
+>> > +    return ''.join(random.choice(letters) for i in range(size))
+>> > +
+>> > +
+>> > +def next_object(text, start, end, context) -> (Dict, bool):
+>> > +    # Start of json object
+>> > +    start = text.find("{", start)
+>> > +    end = text.rfind("}", start, end+1)
+>> 
+>> Single quotes, please, for consistency with quote use elsewhere.
+>> 
+>> Rules of thumb:
+>> 
+>> * Double quotes for english text (e.g. error messages), so we don't have
+>>   to escape apostrophes.
+>> 
+>> * Double quotes when they reduce the escaping
+>> 
+>> * Else single quotes
+>> 
+>> More elsewhere, not flagged.
+>> 
+>> > +
+>> > +    # try catch, pretty print issues
+>> 
+>> Is this comment useful?
+>
+> I'll remove.
+>  
+>> > +    try:
+>> > +        ret = json.loads(text[start:end+1])
+>> > +    except Exception as e:
+>> 
+>> pylint warns
+>> 
+>>     scripts/qapi/dumpexamples.py:57:11: W0703: Catching too general exception Exception (broad-except)
+>> 
+>> Catch JSONDecodeError?
+>
+> Ack.
+>
+>> > +        print("Error: {}\nLocation: {}\nData: {}\n".format(
+>> > +              str(e), context, text[start:end+1]))
+>> 
+>> Errors need to go to stderr.
+>> 
+>> Have you considered using QAPIError to report these errors?
+>
+> Did not cross my mind, no. I'll take a look.
+>  
+>> > +        return {}, True
+>> > +    else:
+>> > +        return ret, False
+>> > +
+>> > +
+>> > +def parse_text_to_dicts(text: str, context: str) -> (List[Dict], bool):
+>> 
+>> Before I review the parser, I'd like to know the (intended) language
+>> being parsed.
+>
+> Ok, I'll add documentation about it in the next iteration.
+>  
+>> > +    examples, clients, servers = [], [], []
+>> > +    failed = False
+>> > +
+>> > +    count = 1
+>> > +    c, s = text.find("->"), text.find("<-")
+>> > +    while c != -1 or s != -1:
+>> > +        if c == -1 or (s != -1 and s < c):
+>> > +            start, target = s, servers
+>> > +        else:
+>> > +            start, target = c, clients
+>> > +
+>> > +        # Find the client and server, if any
+>> > +        if c != -1:
+>> > +            c = text.find("->", start + 1)
+>> > +        if s != -1:
+>> > +            s = text.find("<-", start + 1)
+>> > +
+>> > +        # Find the limit of current's object.
+>> > +        # We first look for the next message, either client or server. If none
+>> > +        # is avaible, we set the end of the text as limit.
+>> > +        if c == -1 and s != -1:
+>> > +            end = s
+>> > +        elif c != -1 and s == -1:
+>> > +            end = c
+>> > +        elif c != -1 and s != -1:
+>> > +            end = (c < s) and c or s
+>> 
+>> pylint advises
+>> 
+>>     scripts/qapi/dumpexamples.py:91:12: R1706: Consider using ternary (c if c < s else s) (consider-using-ternary)
+>> 
+>> > +        else:
+>> > +            end = len(text) - 1
+>> > +
+>> > +        message, error = next_object(text, start, end, context)
+>> > +        if error:
+>> > +            failed = True
+>> > +
+>> > +        if len(message) > 0:
+>> > +            message_type = "return"
+>> > +            if "execute" in message:
+>> > +                message_type = "command"
+>> > +            elif "event" in message:
+>> > +                message_type = "event"
+>> > +
+>> > +            target.append({
+>> > +                "sequence-order": count,
+>> > +                "message-type": message_type,
+>> > +                "message": message
+>> > +            })
+>> > +            count += 1
+>> > +
+>> > +    examples.append({"client": clients, "server": servers})
+>> > +    return examples, failed
+>> > +
+>> > +
+>> > +def parse_examples_of(self: QAPISchemaGenExamplesVisitor,
+>> 
+>> Uh, shouldn't this be a method of QAPISchemaGenExamplesVisitor?
+>
+> Indeed.
+>  
+>> > +                      name: str):
+>> > +
+>> > +    assert(name in self.schema._entity_dict)
+>> 
+>> Makes both pycodestyle and pylint unhappy.  Better:
+>> 
+>>        assert name in self.schema._entity_dict
+>> 
+>> pylint warns
+>> 
+>>     scripts/qapi/dumpexamples.py:120:19: W0212: Access to a protected member _entity_dict of a client class (protected-access)
+>> 
+>> here and two more times below.
+>
+> Thanks, I'll have all of those fixed.
+>  
+>> > +    obj = self.schema._entity_dict[name]
+>> > +
+>> > +    if not obj.info.pragma.doc_required:
+>> > +        return
+>> > +
+>> > +    assert((obj.doc is not None))
+>> 
+>> Better:
+>> 
+>>        assert obj.doc is not None
+>> 
+>> > +    module_name = obj._module.name
+>> > +
+>> > +    # We initialize random with the name so that we get consistent example
+>> > +    # ids over different generations. The ids of a given example might
+>> > +    # change when adding/removing examples, but that's acceptable as the
+>> > +    # goal is just to grep $id to find what example failed at a given test
+>> > +    # with minimum chorn over regenerating.
+>> 
+>> churn from?
+>
+> There is one id per example section. The idea of having an id is
+> that, if a test failed, we can easily find what test failed.
+>
+> The comment tries to clarify that the goal is the id to be kept
+> intact (hence, we seed from its name), reducing the churn over
+> regenerating the output.
+
+I'm not sure "over" is the correct preposition here.
+
+[...]
+
+>> I think before I dig deeper, we should discuss my findings so far.
+>
+> Yes, I think I agreed with mostly of your suggestions. I'm
+> learning how to write proper python, so sorry that we saw many
+> basic lint failures here.
+
+No problem at all!  Such things only become a problem when people refuse
+/ are unable to learn ;)
+
+>> Here's my .pylintrc, in case you want to run pylint yourself:
+>> 
+>> disable=
+>>     consider-using-f-string,
+>>     fixme,
+>>     invalid-name,
+>>     missing-docstring,
+>>     too-few-public-methods,
+>>     too-many-arguments,
+>>     too-many-branches,
+>>     too-many-instance-attributes,
+>>     too-many-lines,
+>>     too-many-locals,
+>>     too-many-statements,
+>>     unused-argument,
+>>     unused-wildcard-import,
+>
+> Thanks again for the review, I really appreciate it.
+
+You're welcome!
 
 
