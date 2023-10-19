@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3334F7D0139
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA567D014A
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:22:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXYr-0004eU-Dh; Thu, 19 Oct 2023 14:15:57 -0400
+	id 1qtXeH-0005dd-JQ; Thu, 19 Oct 2023 14:21:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXYp-0004e6-GW
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:15:55 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXeB-0005dP-PM
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:21:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXYn-00085Z-Vo
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:15:55 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXe7-0000bF-AA
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:21:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697739352;
+ s=mimecast20190719; t=1697739681;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LJ+/dSkhB9tkTffYHbrEh20K8ME+i+dVet5nO4yzjz8=;
- b=W6W+qi6lfBLOX882Jn0XvitLRZodGzQghpsL61CP7uRcBLltpzYHEuDSChiwpf4omt05vI
- 1Dprn3XjuthdPAghpIyNuALktXNC3HHYiiMxE4y/quoq5Ls4mM5fiS3bZlEALg+arKbNnn
- Zchk2QnOo6uksRQgKrGtu7BGiFFYgs4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Aub/+wNbCvirFXr2bctIYe5dvlzn9T6vBOGQpLtPcEM=;
+ b=AUglXx7ptvC4tCnPiRzh+/BZGJNwMEVWjjL9N8a8wGxgYQA0dKfur0+/SATonPRRZDxqLy
+ kyBgKEZsSVSlPolZJOyRUei+z1LMJ6ghA9LW7E99ScbaHCFIonnKE36L8uEirtm7+LqTOR
+ hKPlUle6TOfCtBMSmcAHsYSyAuTgvo8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-1-CVLq6Jo_MMGEusBwLcc4nA-1; Thu, 19 Oct 2023 14:15:51 -0400
-X-MC-Unique: CVLq6Jo_MMGEusBwLcc4nA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-31f79595669so588633f8f.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:15:51 -0700 (PDT)
+ us-mta-653-SPRyGp9GMLKYjbc4UMKl8A-1; Thu, 19 Oct 2023 14:21:19 -0400
+X-MC-Unique: SPRyGp9GMLKYjbc4UMKl8A-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4077ee09a4eso34067755e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:21:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697739350; x=1698344150;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LJ+/dSkhB9tkTffYHbrEh20K8ME+i+dVet5nO4yzjz8=;
- b=dlU1NWo1Io25NvjOjrpr3YK8HMgjlAmUSlsyp7FKs81R0VJX5pZH4SPhqz+10qPb5O
- 882PYbaO7My73S0a1xFWmsw+cQyzASUQ1MF9LE1geBRIr0TTEVH6rGNq9Is9KfX2p7p3
- 9OatieIHdy8FwUrf1tU1VEnzr7qHAMTnJMHwc7e/V6JkvMw8wVnb/6PDy2Rutza+FPSN
- oeafj75Z6pu21CHJXSzwVmoRnbWh15mDgxT/qN87cCca/kNp5LZeqnbr2GdqWHBN4TgE
- N2ypUilPLaSD8re/dcK3yDhN/JvgIKLlFfMGcAZNnhuPeYDeb6EPnWZ/1Y/HKb63KT5B
- OtuA==
-X-Gm-Message-State: AOJu0Yw17Pu2YEoJbrs8wBZUZI397ysVhCh6vp8oh0ZdUbjfI0Mr6Rpl
- 08gQBp8y+4d/MiPpb1LBvzJN94QxtIz8OXfP45hvad9I+p1L6S7wXhflLVI9eziEbN3B2OnKHq0
- l6GYWpV7Y4G8NJZk=
-X-Received: by 2002:a5d:4ed0:0:b0:317:6579:2b9f with SMTP id
- s16-20020a5d4ed0000000b0031765792b9fmr2297638wrv.30.1697739350171; 
- Thu, 19 Oct 2023 11:15:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFu6JdQB4EgQNJqx8wX7+xA/aek+k+VCyNWmkYKlCNbwXz2GDihoDJoc11UEv4qfvpZuCA5DQ==
-X-Received: by 2002:a5d:4ed0:0:b0:317:6579:2b9f with SMTP id
- s16-20020a5d4ed0000000b0031765792b9fmr2297619wrv.30.1697739349800; 
- Thu, 19 Oct 2023 11:15:49 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697739677; x=1698344477;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Aub/+wNbCvirFXr2bctIYe5dvlzn9T6vBOGQpLtPcEM=;
+ b=m+ZIuMfE7YIKIPJQIcwVmIpaprmK+UFVVUYgYJvsRS4dK3lvu8l4iC9ODlT6NIlZPW
+ uNYkVVSrRa2C37oCOJx2fEyQ6usAiGp8+p6HImtsp5/zcJ8osYABAQUuSD7SqWw5W6Z9
+ LxyfXtCtsTmm+Izk8hIpThm7WhT/1XMvWy4QRLkcDa1OyOoz27A2gZLnNk5f9ULqOIxb
+ Yep49nZe1FGxgTAjsX5h/Xl1OompUvG80z9oGBARWF+eioDwI4wNPCCoAkYVAKUEAFTZ
+ 6xDxihQU+vF095gR/7lXaRl7vPB3Ld9o1vk6rj61N8pSqJp+Mq0D9X4mYwAHG6lt2VD6
+ l1yg==
+X-Gm-Message-State: AOJu0Yx6WOtZyhND6OWKjGrcP22UKW99SS0HGzmZtqgAAYdzK059QmOq
+ L8RScqdXM/dzw4exxWm17EYe/ih5dhkU7ezYDLTRibQZ5+ID8x2Jl1uBUxHBFW9BwHgzUs5iQNv
+ haJBLWcg5M1+FQlh4wnzFHFwh4RKFrHJ+qMKIskvvBtugSeLsRamasLl5zQe3jUGcFv2/
+X-Received: by 2002:a05:600c:5118:b0:408:3739:68fd with SMTP id
+ o24-20020a05600c511800b00408373968fdmr2441970wms.6.1697739677580; 
+ Thu, 19 Oct 2023 11:21:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHG/z9puFej3FZip3+tMBYgrzCuXmm++0m+wOTRhpXNpZuZ4sLbLkWxWsSzVPWexcwr2/gKsA==
+X-Received: by 2002:a05:600c:5118:b0:408:3739:68fd with SMTP id
+ o24-20020a05600c511800b00408373968fdmr2441953wms.6.1697739677127; 
+ Thu, 19 Oct 2023 11:21:17 -0700 (PDT)
 Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
  by smtp.gmail.com with ESMTPSA id
- d18-20020a056000115200b003217cbab88bsm4952933wrx.16.2023.10.19.11.15.48
+ 17-20020a05600c231100b00401d8181f8bsm4998280wmo.25.2023.10.19.11.21.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 11:15:49 -0700 (PDT)
-Date: Thu, 19 Oct 2023 14:15:46 -0400
+ Thu, 19 Oct 2023 11:21:16 -0700 (PDT)
+Date: Thu, 19 Oct 2023 14:21:15 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: Salil Mehta <salil.mehta@opnsrc.net>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Sergio Lopez <slp@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PULL v2 29/53] hw/i386: Remove now redundant TYPE_ACPI_GED_X86
-Message-ID: <20231019141517-mutt-send-email-mst@kernel.org>
-References: <cover.1696477105.git.mst@redhat.com>
- <c9c8ba69d5dbe5c1c6370e1f09ebd7531509d075.1696477105.git.mst@redhat.com>
- <15e70616-6abb-63a4-17d0-820f4a254607@opnsrc.net>
- <BE6564AF-6317-49CB-91AF-C88F1D31DF4E@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Hawkins Jiawei <yin31149@gmail.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL v2 01/78] vdpa: Use iovec for vhost_vdpa_net_cvq_add()
+Message-ID: <0e6bff0d43bf04c6e7a16c2775879816ca056b3d.1697739629.git.mst@redhat.com>
+References: <cover.1697739629.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <BE6564AF-6317-49CB-91AF-C88F1D31DF4E@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1697739629.git.mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -106,26 +102,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 10:33:08AM +0000, Bernhard Beschow wrote:
-> 
-> 
-> Am 18. Oktober 2023 17:38:33 UTC schrieb Salil Mehta <salil.mehta@opnsrc.net>:
-> >Hello,
-> 
-> Hi Salil,
-> 
-> >Can we assume that every machine type will have all the features which a GED Device can multiplex present together? like will Memory and CPU Hotplug makes sense for all the type of machines?
-> 
-> I can't really answer these questions -- I'm by no means an ACPI expert. My idea about removing TYPE_ACPI_GED_X86 really was not more than the commit message says: To remove unneeded code.
-> 
-> That said, I wonder myself if the GED device could be uniformly implemented across architectures and if -- in theory -- it could be used in the pc-i440fx machine instead of the Frankenstein hotplug implementation in PIIX4.
-> 
-> Best regards,
-> Bernhard
+From: Hawkins Jiawei <yin31149@gmail.com>
 
+Next patches in this series will no longer perform an
+immediate poll and check of the device's used buffers
+for each CVQ state load command. Consequently, there
+will be multiple pending buffers in the shadow VirtQueue,
+making it a must for every control command to have its
+own buffer.
 
+To achieve this, this patch refactor vhost_vdpa_net_cvq_add()
+to accept `struct iovec`, which eliminates the coupling of
+control commands to `s->cvq_cmd_out_buffer` and `s->status`,
+allowing them to use their own buffer.
 
-I am redoing the pull anyway. I dropped this until this discussion
-concludes then.
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <8a328f146fb043f34edb75ba6d043d2d6de88f99.1697165821.git.yin31149@gmail.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ net/vhost-vdpa.c | 39 ++++++++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
+
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 939c984d5b..618758596a 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -618,22 +618,14 @@ static void vhost_vdpa_net_cvq_stop(NetClientState *nc)
+     vhost_vdpa_net_client_stop(nc);
+ }
+ 
+-static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s, size_t out_len,
+-                                      size_t in_len)
++static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s,
++                                    const struct iovec *out_sg, size_t out_num,
++                                    const struct iovec *in_sg, size_t in_num)
+ {
+-    /* Buffers for the device */
+-    const struct iovec out = {
+-        .iov_base = s->cvq_cmd_out_buffer,
+-        .iov_len = out_len,
+-    };
+-    const struct iovec in = {
+-        .iov_base = s->status,
+-        .iov_len = sizeof(virtio_net_ctrl_ack),
+-    };
+     VhostShadowVirtqueue *svq = g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
+     int r;
+ 
+-    r = vhost_svq_add(svq, &out, 1, &in, 1, NULL);
++    r = vhost_svq_add(svq, out_sg, out_num, in_sg, in_num, NULL);
+     if (unlikely(r != 0)) {
+         if (unlikely(r == -ENOSPC)) {
+             qemu_log_mask(LOG_GUEST_ERROR, "%s: No space on device queue\n",
+@@ -659,6 +651,15 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
+         .cmd = cmd,
+     };
+     size_t data_size = iov_size(data_sg, data_num);
++    /* Buffers for the device */
++    const struct iovec out = {
++        .iov_base = s->cvq_cmd_out_buffer,
++        .iov_len = sizeof(ctrl) + data_size,
++    };
++    const struct iovec in = {
++        .iov_base = s->status,
++        .iov_len = sizeof(*s->status),
++    };
+ 
+     assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
+ 
+@@ -669,8 +670,7 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
+     iov_to_buf(data_sg, data_num, 0,
+                s->cvq_cmd_out_buffer + sizeof(ctrl), data_size);
+ 
+-    return vhost_vdpa_net_cvq_add(s, data_size + sizeof(ctrl),
+-                                  sizeof(virtio_net_ctrl_ack));
++    return vhost_vdpa_net_cvq_add(s, &out, 1, &in, 1);
+ }
+ 
+ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n)
+@@ -1248,10 +1248,15 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
+         .iov_base = s->cvq_cmd_out_buffer,
+     };
+     /* in buffer used for device model */
+-    const struct iovec in = {
++    const struct iovec model_in = {
+         .iov_base = &status,
+         .iov_len = sizeof(status),
+     };
++    /* in buffer used for vdpa device */
++    const struct iovec vdpa_in = {
++        .iov_base = s->status,
++        .iov_len = sizeof(*s->status),
++    };
+     ssize_t dev_written = -EINVAL;
+ 
+     out.iov_len = iov_to_buf(elem->out_sg, elem->out_num, 0,
+@@ -1285,7 +1290,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
+             goto out;
+         }
+     } else {
+-        dev_written = vhost_vdpa_net_cvq_add(s, out.iov_len, sizeof(status));
++        dev_written = vhost_vdpa_net_cvq_add(s, &out, 1, &vdpa_in, 1);
+         if (unlikely(dev_written < 0)) {
+             goto out;
+         }
+@@ -1301,7 +1306,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
+     }
+ 
+     status = VIRTIO_NET_ERR;
+-    virtio_net_handle_ctrl_iov(svq->vdev, &in, 1, &out, 1);
++    virtio_net_handle_ctrl_iov(svq->vdev, &model_in, 1, &out, 1);
+     if (status != VIRTIO_NET_OK) {
+         error_report("Bad CVQ processing in model");
+     }
+-- 
+MST
 
 
