@@ -2,90 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C415E7CF398
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B43197CF39D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:10:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtP1a-0001O0-TZ; Thu, 19 Oct 2023 05:09:02 -0400
+	id 1qtP2I-0002S3-N9; Thu, 19 Oct 2023 05:09:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtP1Z-0001Ns-I4
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:09:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qtP26-00026C-5a
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:09:35 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtP1Y-0000sn-0y
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:09:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697706539;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=n1cEteaF21nH0SCXqPADy+NEw3TzElj8VgX8VMLrFc4=;
- b=RKvSp19fjjaefWnZ1oWROBa50JJh1mZ1Q54D6o5ITyWscD8b5pTnttrgpGBYR8dJEKfdds
- 4njdjd+iHGArEdjppXenNpOqTcATa84E6+KB/2XOvMX6B1ob5QAmhwkueTYK2xwNP+r8/r
- P9uA0XgEQ2PivmD1Hlos2BitGFLfWpI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-58-7JoLKaZDP4OIM056MxQfbA-1; Thu, 19 Oct 2023 05:08:55 -0400
-X-MC-Unique: 7JoLKaZDP4OIM056MxQfbA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4074cdf2566so3057155e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 02:08:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697706534; x=1698311334;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=n1cEteaF21nH0SCXqPADy+NEw3TzElj8VgX8VMLrFc4=;
- b=w+UhB92CMNBlvqUT+3XPykSMMQw+5fyDu7nP38UQZYsvOAiaB/U08RTXX+ahHBwpIS
- IOZMfoMdtlQBIe3hZpWq2XVzfC1boq56r6ueAqtX8zeyXQGkwS2DjjdMKHAvMX2kZn/H
- m9AxOF2aQXNMbb0FU8r00jBev1cM3wzpZaBp4trvd4uIri9lPSbM583Oato+6xCK02rr
- iBGgRfMBpGmVEBxQIxN0VUSq9nKL94wjBZ4aAq+paA82sYlD9/vS3DaD5v4L26m//79P
- /uG+pN2QP4kyzPGmLVMPGkpz21gZBHAB+aX591k4SM2SSxLGr7SZ6NbesTX+2joYhw54
- nj3w==
-X-Gm-Message-State: AOJu0Yxv3s7wkgUm0OczoT2SlmvKyQfCrOpMGGtGWE4DliYif8gYFp9o
- 1D8dIVT7QWhlkx7KpWE+vPy874mvs/fBGwwGny2x8rBhzsC+pXP1OzVIBrxjNca4B12+nBz3EpR
- /TfBlhcQJ4llV6qQ=
-X-Received: by 2002:a05:600c:4b1c:b0:405:3ab3:e640 with SMTP id
- i28-20020a05600c4b1c00b004053ab3e640mr1050597wmp.20.1697706534777; 
- Thu, 19 Oct 2023 02:08:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH24RL7LkxdIld9ffYbPCbK3cw9ql00a0foaFYkfFsRwwE7TC41ZidRKz96koBUIuLLeX2N/Q==
-X-Received: by 2002:a05:600c:4b1c:b0:405:3ab3:e640 with SMTP id
- i28-20020a05600c4b1c00b004053ab3e640mr1050583wmp.20.1697706534414; 
- Thu, 19 Oct 2023 02:08:54 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- j17-20020a05600c489100b0040776008abdsm3840021wmp.40.2023.10.19.02.08.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 02:08:53 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [RFC PATCH v2 2/6] migration/multifd: Stop checking p->quit in
- multifd_send_thread
-In-Reply-To: <20231012140651.13122-3-farosas@suse.de> (Fabiano Rosas's message
- of "Thu, 12 Oct 2023 11:06:47 -0300")
-References: <20231012140651.13122-1-farosas@suse.de>
- <20231012140651.13122-3-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 19 Oct 2023 11:08:53 +0200
-Message-ID: <87o7gv6kt6.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qtP22-0001hu-83
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:09:33 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB20N6zgNz6K5m2;
+ Thu, 19 Oct 2023 17:07:00 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 19 Oct
+ 2023 10:09:26 +0100
+Date: Thu, 19 Oct 2023 10:09:24 +0100
+To: "Michael S. Tsirkin" <mst@redhat.com>, <linuxarm@huawei.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Michael Tokarev
+ <mjt@tls.msk.ru>, Fan Ni <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Ma?=
+ =?ISO-8859-1?Q?thieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v4 2/4] hw/cxl: Use switch statements for read and write
+ of cachemem registers
+Message-ID: <20231019100547.00003eef@huawei.com>
+In-Reply-To: <20231018173142.00003739@Huawei.com>
+References: <20231012140514.3697-1-Jonathan.Cameron@huawei.com>
+ <20231012140514.3697-3-Jonathan.Cameron@huawei.com>
+ <20231018103907-mutt-send-email-mst@kernel.org>
+ <20231018172239.00005f3d@Huawei.com>
+ <20231018173142.00003739@Huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,46 +68,186 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> We don't need to check p->quit in the multifd_send_thread() because it
-> is shadowed by the 'exiting' flag. Ever since that flag was added
-> p->quit became obsolete as a way to stop the thread.
->
-> Since p->quit is set at multifd_send_terminate_threads() under the
-> p->mutex lock, the thread will only see it once it loops, so 'exiting'
-> will always be seen first.
->
-> Note that setting p->quit at multifd_send_terminate_threads() still
-> makes sense because we need a way to inform multifd_send_pages() that
-> the channel has stopped.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On Wed, 18 Oct 2023 17:31:42 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+> On Wed, 18 Oct 2023 17:22:39 +0100
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> 
+> > On Wed, 18 Oct 2023 10:40:45 -0400
+> > "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> >   
+> > > On Thu, Oct 12, 2023 at 03:05:12PM +0100, Jonathan Cameron wrote:    
+> > > > Establishing that only register accesses of size 4 and 8 can occur
+> > > > using these functions requires looking at their callers. Make it
+> > > > easier to see that by using switch statements.
+> > > > Assertions are used to enforce that the register storage is of the
+> > > > matching size, allowing fixed values to be used for divisors of
+> > > > the array indices.
+> > > > 
+> > > > Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
+> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > Reviewed-by: Fan Ni <fan.ni@samsung.com>      
+> > > 
+> > > Fails with clang:
+> > > 
+> > > ../hw/cxl/cxl-component-utils.c:130:9: error: expected expression
+> > >         QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_regs_write_mask) != 4);
+> > >         ^
+> > > ../include/qemu/compiler.h:76:30: note: expanded from macro 'QEMU_BUILD_BUG_ON'
+> > > #define QEMU_BUILD_BUG_ON(x) QEMU_BUILD_BUG_MSG(x, "not expecting: " #x)
+> > >                              ^
+> > > ../include/qemu/compiler.h:74:36: note: expanded from macro 'QEMU_BUILD_BUG_MSG'
+> > > #define QEMU_BUILD_BUG_MSG(x, msg) _Static_assert(!(x), msg)
+> > >                                    ^
+> > > 1 error generated.
+> > > 
+> > > See e.g.
+> > > 
+> > > https://gitlab.com/mstredhat/qemu/-/jobs/5320879531    
+> > 
+> > Thanks. Will see if I can figure out what is going wrong.
+> > This code seems cursed.  I need to figure out a way to run the CI again.
+> > Ran into credit problems I couldn't solve last time I tried.
+> > 
+> > In meantime I can replicate this locally but not immediately obvious to me
+> > why it is failing.  
+> 
+> Any clang experts around?  This seems to be fixed by reducing the scope
+> 
+> case 4:
+> {
+> 	QEMU_BUILD_BUG_ON();
+> }
+> I have no idea why though...
+> 
 
-But then should we remove the quit altogether?
+For anyone following along I asked a friendly compiler guy...
 
-> ---
->  migration/multifd.c | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index e26f5f246d..92ae61a50f 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -731,9 +731,6 @@ static void *multifd_send_thread(void *opaque)
->              if (flags & MULTIFD_FLAG_SYNC) {
->                  qemu_sem_post(&p->sem_sync);
->              }
-> -        } else if (p->quit) {
-> -            qemu_mutex_unlock(&p->mutex);
-> -            break;
->          } else {
->              qemu_mutex_unlock(&p->mutex);
->              /* sometimes there are spurious wakeups */
+https://github.com/llvm/llvm-project/issues/69572
+
+Given that we realistically need to work around this whatever the outcome
+I'll add some brackets and send an update.
+
+thanks,
+
+Jonathan
+
+> 
+> > 
+> > Jonathan
+> >   
+> > > 
+> > > 
+> > >     
+> > > > ---
+> > > > v4: Use QEMU_BUILD_BUG_ON() instead of static_assert with missing
+> > > >     error message.
+> > > > 
+> > > >  hw/cxl/cxl-component-utils.c | 65 +++++++++++++++++++++++-------------
+> > > >  1 file changed, 42 insertions(+), 23 deletions(-)
+> > > > 
+> > > > diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+> > > > index f3bbf0fd13..d1997a52e6 100644
+> > > > --- a/hw/cxl/cxl-component-utils.c
+> > > > +++ b/hw/cxl/cxl-component-utils.c
+> > > > @@ -67,16 +67,24 @@ static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
+> > > >      CXLComponentState *cxl_cstate = opaque;
+> > > >      ComponentRegisters *cregs = &cxl_cstate->crb;
+> > > >  
+> > > > -    if (size == 8) {
+> > > > +    switch (size) {
+> > > > +    case 4:
+> > > > +        if (cregs->special_ops && cregs->special_ops->read) {
+> > > > +            return cregs->special_ops->read(cxl_cstate, offset, 4);
+> > > > +        } else {
+> > > > +            QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_registers) != 4);
+> > > > +            return cregs->cache_mem_registers[offset / 4];
+> > > > +        }
+> > > > +    case 8:
+> > > >          qemu_log_mask(LOG_UNIMP,
+> > > >                        "CXL 8 byte cache mem registers not implemented\n");
+> > > >          return 0;
+> > > > -    }
+> > > > -
+> > > > -    if (cregs->special_ops && cregs->special_ops->read) {
+> > > > -        return cregs->special_ops->read(cxl_cstate, offset, size);
+> > > > -    } else {
+> > > > -        return cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
+> > > > +    default:
+> > > > +        /*
+> > > > +         * In line with specifiction limitaions on access sizes, this
+> > > > +         * routine is not called with other sizes.
+> > > > +         */
+> > > > +        g_assert_not_reached();
+> > > >      }
+> > > >  }
+> > > >  
+> > > > @@ -117,25 +125,36 @@ static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
+> > > >      ComponentRegisters *cregs = &cxl_cstate->crb;
+> > > >      uint32_t mask;
+> > > >  
+> > > > -    if (size == 8) {
+> > > > +    switch (size) {
+> > > > +    case 4:
+> > > > +        QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_regs_write_mask) != 4);
+> > > > +        QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_registers) != 4);
+> > > > +        mask = cregs->cache_mem_regs_write_mask[offset / 4];
+> > > > +        value &= mask;
+> > > > +        /* RO bits should remain constant. Done by reading existing value */
+> > > > +        value |= ~mask & cregs->cache_mem_registers[offset / 4];
+> > > > +        if (cregs->special_ops && cregs->special_ops->write) {
+> > > > +            cregs->special_ops->write(cxl_cstate, offset, value, size);
+> > > > +            return;
+> > > > +        }
+> > > > +
+> > > > +        if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
+> > > > +            offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
+> > > > +            dumb_hdm_handler(cxl_cstate, offset, value);
+> > > > +        } else {
+> > > > +            cregs->cache_mem_registers[offset / 4] = value;
+> > > > +        }
+> > > > +        return;
+> > > > +    case 8:
+> > > >          qemu_log_mask(LOG_UNIMP,
+> > > >                        "CXL 8 byte cache mem registers not implemented\n");
+> > > >          return;
+> > > > -    }
+> > > > -    mask = cregs->cache_mem_regs_write_mask[offset / sizeof(*cregs->cache_mem_regs_write_mask)];
+> > > > -    value &= mask;
+> > > > -    /* RO bits should remain constant. Done by reading existing value */
+> > > > -    value |= ~mask & cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
+> > > > -    if (cregs->special_ops && cregs->special_ops->write) {
+> > > > -        cregs->special_ops->write(cxl_cstate, offset, value, size);
+> > > > -        return;
+> > > > -    }
+> > > > -
+> > > > -    if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
+> > > > -        offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
+> > > > -        dumb_hdm_handler(cxl_cstate, offset, value);
+> > > > -    } else {
+> > > > -        cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)] = value;
+> > > > +    default:
+> > > > +        /*
+> > > > +         * In line with specifiction limitaions on access sizes, this
+> > > > +         * routine is not called with other sizes.
+> > > > +         */
+> > > > +        g_assert_not_reached();
+> > > >      }
+> > > >  }
+> > > >  
+> > > > -- 
+> > > > 2.39.2      
+> > > 
+> > >     
+> >   
+> 
+> 
+> 
 
 
