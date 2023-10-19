@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664CD7CFFBF
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7C57CFFEF
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtW31-0007zN-RZ; Thu, 19 Oct 2023 12:38:59 -0400
+	id 1qtWBx-0004cm-FR; Thu, 19 Oct 2023 12:48:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtW30-0007zB-GM
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:38:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtWBu-0004Py-AH
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:48:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtW2y-0002TO-Uf
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:38:58 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtWBs-0006ZQ-SW
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:48:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697733536;
+ s=mimecast20190719; t=1697734087;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=P16AJghaPzRoxNRPx9FzYJH7oONn5tsf3DVrtZs3RlE=;
- b=IIHAR1xa4YjJ7Mk/NDtDNaN2dG2HftTqNqTCP0bX3k0Lz1UA/HizxxESodIpb+SZDwdjRx
- 7MsR6LJlMV6FJKLzbXBKd1KUZ5bD/6pLK+rkEmddSg/mArCtOeJF/kL41Y9gPgaDkxmIIF
- EQ6A5CbQ5s2bwZ7QTLrL1ob6Z+9RTw4=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wMrFwHC+VEK/KMfHbu/efLJRFTu6JxuCIKT7ttSO5Z0=;
+ b=BoK90dTjus6PHcsz8J+W7dKRGc7X7MZmYQ9irU74sfTWHxwWy2yZhrVeLzQUEl3vVYGGUA
+ in+2NeEf0yrF68Rs7ztzMimfPYc/KMgNJTJ4abkVVi2+f+xvxgX9O4vUL4d58ncgvZcAd/
+ hDR7BhPHzWTEq4hVDD5PPrl/XetCX2s=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-19-8wf9OBl4NsCGEanaga-ZmA-1; Thu, 19 Oct 2023 12:38:54 -0400
-X-MC-Unique: 8wf9OBl4NsCGEanaga-ZmA-1
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3b3e601436cso745166b6e.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:38:54 -0700 (PDT)
+ us-mta-360-vlkKIkW3Pvy3SLaA8iTi-g-1; Thu, 19 Oct 2023 12:48:05 -0400
+X-MC-Unique: vlkKIkW3Pvy3SLaA8iTi-g-1
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-d9a3942461aso11899140276.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:48:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697733534; x=1698338334;
+ d=1e100.net; s=20230601; t=1697734085; x=1698338885;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P16AJghaPzRoxNRPx9FzYJH7oONn5tsf3DVrtZs3RlE=;
- b=b4qXwcVT2mmb5w3/cROQQaZFEWCqEeCz7YmutCbCZSYXyAR8g39Ru6oxhUl3qX/DRI
- A8CCZAa3L28Uya5FH3yXd3B3GZfeyRKlGWfHjJptOQMHmIgrVwSOEIipaVKT2eUg6W9s
- seDR86KxF2ciEBNN7RhQsqStu8eBVGmMCcCEZyuePJuuCxRqoyPz+FSSX3U7sVSLIVcg
- 9eVZZwrCx8LpnADHlQN6+8nVPsakdU0tJseOPUH2ZBlgqSoAHeGBfx39S2KB2ZFjWMRf
- 23E2OFz22cwlFZX84IPYFPCPznnb/HAUx7c928+A4tJD/ArjIeI3KWTSUEXVTr+r6V4V
- yEhw==
-X-Gm-Message-State: AOJu0YxWfsJLliOvYwzTUfh7MfLggwBPRoaQtui1XWl4qtonpR5Qz3GH
- V2a2hUCHMc+pr0wOnGvgHag46ASIXNn7cS8yinmZcDb21+CZtkOiLRflCDwdjxXVSY87QlzuHkV
- Cnk/yTplCsG0GkDs=
-X-Received: by 2002:a05:6808:2202:b0:3af:7956:10d4 with SMTP id
- bd2-20020a056808220200b003af795610d4mr3806231oib.0.1697733533983; 
- Thu, 19 Oct 2023 09:38:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyVTajRI33nJrsJaxnZ9ogULNBQ6d+R0oSIBwZQPbEJzlqTQzGqiDmioJaxABqiC+ZeqtftQ==
-X-Received: by 2002:a05:6808:2202:b0:3af:7956:10d4 with SMTP id
- bd2-20020a056808220200b003af795610d4mr3806217oib.0.1697733533760; 
- Thu, 19 Oct 2023 09:38:53 -0700 (PDT)
+ bh=wMrFwHC+VEK/KMfHbu/efLJRFTu6JxuCIKT7ttSO5Z0=;
+ b=SMabUb8FYvk/hGB+Z0V5VX+rUVst8HOoSSPGmeFLrv/YawDm/t6K9ou4zol3kPhKqh
+ ctWFrYvdhRCazd4QoDay4o0Wt7UQ0jeCYMhG83ksE6g5sMNnwgj/JuMQ1qtMXLZ3OdB/
+ 5yM5BaMk5BmpCvMiUA+b9FFmUNoozxQlVIM9HwaVnWNcK1y77mSAfK1IInv8c2iE2lPO
+ o9GubSZAK0mwYJ0teSAd7N0qahrdVFy7wUF2s1NuzqVYc40t7CW82p81ucZLuUxfIztM
+ i6rMprt+uzOzZU77KF9ZBeHR7KY/rTXi+bA3syrp0oJ6wBA/aU9wybAQpz3tD0B4Jt/G
+ NQnQ==
+X-Gm-Message-State: AOJu0YyHbAGlDGa2Pom2LXBwB4u4ZvFQQ8Wdo1c4RgMM3ZbgWxEP52BB
+ Lae25MJeF7ygYEPRwHJAvdOmvJBxe2+NYgm34KZBNtSvDV+b9Olh8iu8zOOFpbXVhKgEmMs5TZc
+ if2XOiGmXwUUy+dKWDGdSfI0=
+X-Received: by 2002:a25:3493:0:b0:d9a:b7cd:47f5 with SMTP id
+ b141-20020a253493000000b00d9ab7cd47f5mr2950779yba.56.1697734085175; 
+ Thu, 19 Oct 2023 09:48:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFd4uhQoygZUGPuRpGPl26uFq9ri+cfb6HdZsqurBlYF/MlaT2UmB4Spoi5cGez6gb8J2OM+g==
+X-Received: by 2002:a25:3493:0:b0:d9a:b7cd:47f5 with SMTP id
+ b141-20020a253493000000b00d9ab7cd47f5mr2950762yba.56.1697734084895; 
+ Thu, 19 Oct 2023 09:48:04 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- x18-20020ae9e912000000b0076ceb5eb309sm858817qkf.74.2023.10.19.09.38.52
+ x15-20020ac87ecf000000b00419801b1094sm852509qtj.13.2023.10.19.09.48.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 09:38:53 -0700 (PDT)
-Message-ID: <ae2bf5fa-3ce5-48af-9577-beb4d584c78c@redhat.com>
-Date: Thu, 19 Oct 2023 18:38:51 +0200
+ Thu, 19 Oct 2023 09:48:04 -0700 (PDT)
+Message-ID: <8e51a767-2ff2-4c2b-9f28-2ca89fbbd223@redhat.com>
+Date: Thu, 19 Oct 2023 18:48:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] docs/specs/vmw_pvscsi-spec: Convert to rST
+Subject: Re: [PATCH 2/8] docs/specs/edu: Convert to rST
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
 References: <20230927151205.70930-1-peter.maydell@linaro.org>
- <20230927151205.70930-2-peter.maydell@linaro.org>
+ <20230927151205.70930-3-peter.maydell@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -113,17 +113,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20230927151205.70930-2-peter.maydell@linaro.org>
+In-Reply-To: <20230927151205.70930-3-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -141,23 +141,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 27/09/2023 17.11, Peter Maydell wrote:
-> Convert the docs/specs/vmw_pvscsi-spec.txt file to rST format.
-> This conversion includes some minor wordsmithing of the text
-> to fix some grammar nits.
+> Convert docs/specs/edu.txt to rST format.
 > 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
-> The number of lines changed for markup formatting was
-> such a large amount of the document that it didn't seem
-> worth breaking out the wording tweaks separately...
-> ---
->   MAINTAINERS                    |   1 +
->   docs/specs/index.rst           |   1 +
->   docs/specs/vmw_pvscsi-spec.rst | 115 +++++++++++++++++++++++++++++++++
->   docs/specs/vmw_pvscsi-spec.txt |  92 --------------------------
->   4 files changed, 117 insertions(+), 92 deletions(-)
->   create mode 100644 docs/specs/vmw_pvscsi-spec.rst
->   delete mode 100644 docs/specs/vmw_pvscsi-spec.txt
+>   MAINTAINERS                     |  1 +
+>   docs/specs/{edu.txt => edu.rst} | 84 ++++++++++++++++++++-------------
+>   docs/specs/index.rst            |  1 +
+>   3 files changed, 54 insertions(+), 32 deletions(-)
+>   rename docs/specs/{edu.txt => edu.rst} (64%)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
