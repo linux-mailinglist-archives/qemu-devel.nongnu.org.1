@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23F17CFD04
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4827CFCEE
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:38:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtU7M-0006hw-Bx; Thu, 19 Oct 2023 10:35:20 -0400
+	id 1qtU7O-0006iN-2S; Thu, 19 Oct 2023 10:35:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qtU7G-0006fw-Vg
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qtU7I-0006gr-FX
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qtU7F-0000E6-0g
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:14 -0400
+ id 1qtU7F-0000EP-0N
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697726105;
+ s=mimecast20190719; t=1697726108;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xwkJ56Y8CyPhNwdfkrBkH0NmqylaQ1f/M06fKeI6RyE=;
- b=c/p0N6dH32900Qv5aEOyYIUOGqC8WqWzAJz7axHIMcaPWp5VBUAyIOc9SPZxVgS4xBlGUb
- BqkQb9osx/mUMkEEqJeP+9RC5tkKLHhMK/ehxu3kvQvAghi+gfL78rzdI+Bc5K2Q59OOda
- 95rUhQNVql3o3GWmfbGMNZRd/LGEVSw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-455-1y0Y6EfQNyK0S8OrSL8qOg-1; Thu, 19 Oct 2023 10:35:02 -0400
-X-MC-Unique: 1y0Y6EfQNyK0S8OrSL8qOg-1
+ bh=nQ+WpdvvJI24llpfzQGTyGYh4KyA8lB+9C1zEcUf2rs=;
+ b=QuM20v4oKRzZ910GIS/yri8RkMB3fuV4PoN3tYtmIba40akDf97cJC9aWi8Lh+kaE7EjBz
+ XbQoRrob4ud4lLIKt2yljndWULSTWnuH2cFPfbCPHQ2fDGKRQvNECBTh2ra5RTZoyyydwx
+ 1eLKeZ+Fpc1+zQ84i/nIhokpfBY2AgA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-326-t2yfWJJCMDqJkm_Ny3-tow-1; Thu, 19 Oct 2023 10:35:05 -0400
+X-MC-Unique: t2yfWJJCMDqJkm_Ny3-tow-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 468D38EB373;
- Thu, 19 Oct 2023 14:35:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B80AA3813BEE;
+ Thu, 19 Oct 2023 14:35:04 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.192.162])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 15644C15BB8;
- Thu, 19 Oct 2023 14:34:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 82530C15BB8;
+ Thu, 19 Oct 2023 14:35:02 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Shannon <shannon.nelson@amd.com>, Parav Pandit <parav@mellanox.com>,
@@ -52,23 +52,23 @@ Cc: Shannon <shannon.nelson@amd.com>, Parav Pandit <parav@mellanox.com>,
  Dragos Tatulea <dtatulea@nvidia.com>, Juan Quintela <quintela@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, si-wei.liu@oracle.com,
  Gautam Dawar <gdawar@xilinx.com>
-Subject: [RFC PATCH 01/18] vdpa: add VhostVDPAShared
-Date: Thu, 19 Oct 2023 16:34:38 +0200
-Message-Id: <20231019143455.2377694-2-eperezma@redhat.com>
+Subject: [RFC PATCH 02/18] vdpa: move iova tree to the shared struct
+Date: Thu, 19 Oct 2023 16:34:39 +0200
+Message-Id: <20231019143455.2377694-3-eperezma@redhat.com>
 In-Reply-To: <20231019143455.2377694-1-eperezma@redhat.com>
 References: <20231019143455.2377694-1-eperezma@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,130 +85,238 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It will hold properties shared among all vhost_vdpa instances associated
-with of the same device.  For example, we just need one iova_tree or one
-memory listener for the entire device.
+Next patches will register the vhost_vdpa memory listener while the VM
+is migrating at the destination, so we can map the memory to the device
+before stopping the VM at the source.  The main goal is to reduce the
+downtime.
 
-Next patches will register the vhost_vdpa memory listener at the
-beginning of the VM migration at the destination. This enables QEMU to
-map the memory to the device before stopping the VM at the source,
-instead of doing while both source and destination are stopped, thus
-minimizing the downtime.
-
-However, the destination QEMU is unaware of which vhost_vdpa struct will
+However, the destination QEMU is unaware of which vhost_vdpa device will
 register its memory_listener.  If the source guest has CVQ enabled, it
-will be the one associated with the CVQ.  Otherwise, it will be the
-first one.
+will be the CVQ device.  Otherwise, it  will be the first one.
 
-Save the memory operations related members in a common place rather than
-always in the first / last vhost_vdpa.
+Move the iova tree to VhostVDPAShared so all vhost_vdpa can use it,
+rather than always in the first or last vhost_vdpa.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- include/hw/virtio/vhost-vdpa.h |  5 +++++
- net/vhost-vdpa.c               | 24 ++++++++++++++++++++++--
- 2 files changed, 27 insertions(+), 2 deletions(-)
+ include/hw/virtio/vhost-vdpa.h |  4 +--
+ hw/virtio/vhost-vdpa.c         | 19 ++++++------
+ net/vhost-vdpa.c               | 54 +++++++++++++++-------------------
+ 3 files changed, 35 insertions(+), 42 deletions(-)
 
 diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index 5407d54fd7..eb1a56d75a 100644
+index eb1a56d75a..ac036055d3 100644
 --- a/include/hw/virtio/vhost-vdpa.h
 +++ b/include/hw/virtio/vhost-vdpa.h
-@@ -30,6 +30,10 @@ typedef struct VhostVDPAHostNotifier {
-     void *addr;
- } VhostVDPAHostNotifier;
+@@ -32,6 +32,8 @@ typedef struct VhostVDPAHostNotifier {
  
-+/* Info shared by all vhost_vdpa device models */
-+typedef struct vhost_vdpa_shared {
-+} VhostVDPAShared;
-+
+ /* Info shared by all vhost_vdpa device models */
+ typedef struct vhost_vdpa_shared {
++    /* IOVA mapping used by the Shadow Virtqueue */
++    VhostIOVATree *iova_tree;
+ } VhostVDPAShared;
+ 
  typedef struct vhost_vdpa {
-     int device_fd;
-     int index;
-@@ -46,6 +50,7 @@ typedef struct vhost_vdpa {
+@@ -48,8 +50,6 @@ typedef struct vhost_vdpa {
+     bool shadow_data;
+     /* Device suspended successfully */
      bool suspended;
-     /* IOVA mapping used by the Shadow Virtqueue */
-     VhostIOVATree *iova_tree;
-+    VhostVDPAShared *shared;
+-    /* IOVA mapping used by the Shadow Virtqueue */
+-    VhostIOVATree *iova_tree;
+     VhostVDPAShared *shared;
      GPtrArray *shadow_vqs;
      const VhostShadowVirtqueueOps *shadow_vq_ops;
-     void *shadow_vq_ops_opaque;
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 819b2d811a..9cee38cb6d 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -358,7 +358,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+         mem_region.size = int128_get64(llsize) - 1,
+         mem_region.perm = IOMMU_ACCESS_FLAG(true, section->readonly),
+ 
+-        r = vhost_iova_tree_map_alloc(v->iova_tree, &mem_region);
++        r = vhost_iova_tree_map_alloc(v->shared->iova_tree, &mem_region);
+         if (unlikely(r != IOVA_OK)) {
+             error_report("Can't allocate a mapping (%d)", r);
+             goto fail;
+@@ -379,7 +379,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+ 
+ fail_map:
+     if (v->shadow_data) {
+-        vhost_iova_tree_remove(v->iova_tree, mem_region);
++        vhost_iova_tree_remove(v->shared->iova_tree, mem_region);
+     }
+ 
+ fail:
+@@ -441,13 +441,13 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+             .size = int128_get64(llsize) - 1,
+         };
+ 
+-        result = vhost_iova_tree_find_iova(v->iova_tree, &mem_region);
++        result = vhost_iova_tree_find_iova(v->shared->iova_tree, &mem_region);
+         if (!result) {
+             /* The memory listener map wasn't mapped */
+             return;
+         }
+         iova = result->iova;
+-        vhost_iova_tree_remove(v->iova_tree, *result);
++        vhost_iova_tree_remove(v->shared->iova_tree, *result);
+     }
+     vhost_vdpa_iotlb_batch_begin_once(v);
+     /*
+@@ -1059,7 +1059,8 @@ static void vhost_vdpa_svq_unmap_ring(struct vhost_vdpa *v, hwaddr addr)
+     const DMAMap needle = {
+         .translated_addr = addr,
+     };
+-    const DMAMap *result = vhost_iova_tree_find_iova(v->iova_tree, &needle);
++    const DMAMap *result = vhost_iova_tree_find_iova(v->shared->iova_tree,
++                                                     &needle);
+     hwaddr size;
+     int r;
+ 
+@@ -1075,7 +1076,7 @@ static void vhost_vdpa_svq_unmap_ring(struct vhost_vdpa *v, hwaddr addr)
+         return;
+     }
+ 
+-    vhost_iova_tree_remove(v->iova_tree, *result);
++    vhost_iova_tree_remove(v->shared->iova_tree, *result);
+ }
+ 
+ static void vhost_vdpa_svq_unmap_rings(struct vhost_dev *dev,
+@@ -1103,7 +1104,7 @@ static bool vhost_vdpa_svq_map_ring(struct vhost_vdpa *v, DMAMap *needle,
+ {
+     int r;
+ 
+-    r = vhost_iova_tree_map_alloc(v->iova_tree, needle);
++    r = vhost_iova_tree_map_alloc(v->shared->iova_tree, needle);
+     if (unlikely(r != IOVA_OK)) {
+         error_setg(errp, "Cannot allocate iova (%d)", r);
+         return false;
+@@ -1115,7 +1116,7 @@ static bool vhost_vdpa_svq_map_ring(struct vhost_vdpa *v, DMAMap *needle,
+                            needle->perm == IOMMU_RO);
+     if (unlikely(r != 0)) {
+         error_setg_errno(errp, -r, "Cannot map region to device");
+-        vhost_iova_tree_remove(v->iova_tree, *needle);
++        vhost_iova_tree_remove(v->shared->iova_tree, *needle);
+     }
+ 
+     return r == 0;
+@@ -1216,7 +1217,7 @@ static bool vhost_vdpa_svqs_start(struct vhost_dev *dev)
+             goto err;
+         }
+ 
+-        vhost_svq_start(svq, dev->vdev, vq, v->iova_tree);
++        vhost_svq_start(svq, dev->vdev, vq, v->shared->iova_tree);
+         ok = vhost_vdpa_svq_map_rings(dev, svq, &addr, &err);
+         if (unlikely(!ok)) {
+             goto err_map;
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 939c984d5b..a2f9855288 100644
+index a2f9855288..15e7579b13 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -238,6 +238,10 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
-         qemu_close(s->vhost_vdpa.device_fd);
-         s->vhost_vdpa.device_fd = -1;
+@@ -345,8 +345,8 @@ static void vhost_vdpa_net_data_start_first(VhostVDPAState *s)
+ 
+     add_migration_state_change_notifier(&s->migration_state);
+     if (v->shadow_vqs_enabled) {
+-        v->iova_tree = vhost_iova_tree_new(v->iova_range.first,
+-                                           v->iova_range.last);
++        v->shared->iova_tree = vhost_iova_tree_new(v->iova_range.first,
++                                                   v->iova_range.last);
      }
-+    if (s->vhost_vdpa.index != 0) {
-+        return;
-+    }
-+    g_free(s->vhost_vdpa.shared);
  }
  
- static bool vhost_vdpa_has_vnet_hdr(NetClientState *nc)
-@@ -1428,6 +1432,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-                                        bool svq,
-                                        struct vhost_vdpa_iova_range iova_range,
-                                        uint64_t features,
-+                                       VhostVDPAShared *shared,
-                                        Error **errp)
+@@ -371,11 +371,6 @@ static int vhost_vdpa_net_data_start(NetClientState *nc)
+         return 0;
+     }
+ 
+-    if (v->shadow_vqs_enabled) {
+-        VhostVDPAState *s0 = vhost_vdpa_net_first_nc_vdpa(s);
+-        v->iova_tree = s0->vhost_vdpa.iova_tree;
+-    }
+-
+     return 0;
+ }
+ 
+@@ -408,9 +403,8 @@ static void vhost_vdpa_net_client_stop(NetClientState *nc)
+ 
+     dev = s->vhost_vdpa.dev;
+     if (dev->vq_index + dev->nvqs == dev->vq_index_end) {
+-        g_clear_pointer(&s->vhost_vdpa.iova_tree, vhost_iova_tree_delete);
+-    } else {
+-        s->vhost_vdpa.iova_tree = NULL;
++        g_clear_pointer(&s->vhost_vdpa.shared->iova_tree,
++                        vhost_iova_tree_delete);
+     }
+ }
+ 
+@@ -464,7 +458,7 @@ static int vhost_vdpa_set_address_space_id(struct vhost_vdpa *v,
+ 
+ static void vhost_vdpa_cvq_unmap_buf(struct vhost_vdpa *v, void *addr)
  {
-     NetClientState *nc = NULL;
-@@ -1463,6 +1468,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-     if (queue_pair_index == 0) {
-         vhost_vdpa_net_valid_svq_features(features,
-                                           &s->vhost_vdpa.migration_blocker);
-+        s->vhost_vdpa.shared = g_new0(VhostVDPAShared, 1);
-     } else if (!is_datapath) {
-         s->cvq_cmd_out_buffer = mmap(NULL, vhost_vdpa_net_cvq_cmd_page_len(),
-                                      PROT_READ | PROT_WRITE,
-@@ -1475,11 +1481,16 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-         s->vhost_vdpa.shadow_vq_ops_opaque = s;
-         s->cvq_isolated = cvq_isolated;
-     }
-+    if (queue_pair_index != 0) {
-+        s->vhost_vdpa.shared = shared;
-+    }
-+
-     ret = vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index, nvqs);
-     if (ret) {
-         qemu_del_net_client(nc);
-         return NULL;
-     }
-+
-     return nc;
+-    VhostIOVATree *tree = v->iova_tree;
++    VhostIOVATree *tree = v->shared->iova_tree;
+     DMAMap needle = {
+         /*
+          * No need to specify size or to look for more translations since
+@@ -498,7 +492,7 @@ static int vhost_vdpa_cvq_map_buf(struct vhost_vdpa *v, void *buf, size_t size,
+     map.translated_addr = (hwaddr)(uintptr_t)buf;
+     map.size = size - 1;
+     map.perm = write ? IOMMU_RW : IOMMU_RO,
+-    r = vhost_iova_tree_map_alloc(v->iova_tree, &map);
++    r = vhost_iova_tree_map_alloc(v->shared->iova_tree, &map);
+     if (unlikely(r != IOVA_OK)) {
+         error_report("Cannot map injected element");
+         return r;
+@@ -513,7 +507,7 @@ static int vhost_vdpa_cvq_map_buf(struct vhost_vdpa *v, void *buf, size_t size,
+     return 0;
+ 
+ dma_map_err:
+-    vhost_iova_tree_remove(v->iova_tree, map);
++    vhost_iova_tree_remove(v->shared->iova_tree, map);
+     return r;
  }
  
-@@ -1591,17 +1602,26 @@ int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
-     ncs = g_malloc0(sizeof(*ncs) * queue_pairs);
- 
-     for (i = 0; i < queue_pairs; i++) {
-+        VhostVDPAShared *shared = NULL;
-+
-+        if (i) {
-+            shared = DO_UPCAST(VhostVDPAState, nc, ncs[0])->vhost_vdpa.shared;
-+        }
-         ncs[i] = net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
-                                      vdpa_device_fd, i, 2, true, opts->x_svq,
--                                     iova_range, features, errp);
-+                                     iova_range, features, shared, errp);
-         if (!ncs[i])
-             goto err;
+@@ -573,24 +567,22 @@ out:
+         return 0;
      }
  
-     if (has_cvq) {
-+        VhostVDPAState *s0 = DO_UPCAST(VhostVDPAState, nc, ncs[0]);
-+        VhostVDPAShared *shared = s0->vhost_vdpa.shared;
-+
-         nc = net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
-                                  vdpa_device_fd, i, 1, false,
--                                 opts->x_svq, iova_range, features, errp);
-+                                 opts->x_svq, iova_range, features, shared,
-+                                 errp);
-         if (!nc)
-             goto err;
+-    if (s0->vhost_vdpa.iova_tree) {
+-        /*
+-         * SVQ is already configured for all virtqueues.  Reuse IOVA tree for
+-         * simplicity, whether CVQ shares ASID with guest or not, because:
+-         * - Memory listener need access to guest's memory addresses allocated
+-         *   in the IOVA tree.
+-         * - There should be plenty of IOVA address space for both ASID not to
+-         *   worry about collisions between them.  Guest's translations are
+-         *   still validated with virtio virtqueue_pop so there is no risk for
+-         *   the guest to access memory that it shouldn't.
+-         *
+-         * To allocate a iova tree per ASID is doable but it complicates the
+-         * code and it is not worth it for the moment.
+-         */
+-        v->iova_tree = s0->vhost_vdpa.iova_tree;
+-    } else {
+-        v->iova_tree = vhost_iova_tree_new(v->iova_range.first,
+-                                           v->iova_range.last);
++    /*
++     * If other vhost_vdpa already have an iova_tree, reuse it for simplicity,
++     * whether CVQ shares ASID with guest or not, because:
++     * - Memory listener need access to guest's memory addresses allocated in
++     *   the IOVA tree.
++     * - There should be plenty of IOVA address space for both ASID not to
++     *   worry about collisions between them.  Guest's translations are still
++     *   validated with virtio virtqueue_pop so there is no risk for the guest
++     *   to access memory that it shouldn't.
++     *
++     * To allocate a iova tree per ASID is doable but it complicates the code
++     * and it is not worth it for the moment.
++     */
++    if (!v->shared->iova_tree) {
++        v->shared->iova_tree = vhost_iova_tree_new(v->iova_range.first,
++                                                   v->iova_range.last);
      }
+ 
+     r = vhost_vdpa_cvq_map_buf(&s->vhost_vdpa, s->cvq_cmd_out_buffer,
 -- 
 2.39.3
 
