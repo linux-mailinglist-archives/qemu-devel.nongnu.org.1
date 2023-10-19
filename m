@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD0C7CF4F2
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1337CF532
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQ6C-0005fG-S6; Thu, 19 Oct 2023 06:17:52 -0400
+	id 1qtQFC-0001Dz-Uw; Thu, 19 Oct 2023 06:27:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qtQ5z-0005ep-7z
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:17:40 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1qtQFA-0001Do-HB
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:27:08 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qtQ5t-0001Ff-W5
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:17:37 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1c9e072472bso52014475ad.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:17:33 -0700 (PDT)
+ id 1qtQF8-00067N-Am
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:27:08 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6b5e6301a19so5347827b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:27:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697710652; x=1698315452;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697711225; x=1698316025;
  darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=43ITPoUUF/xKfnM/vZJRGDRmtPTbadQHPjaCAxxIxqo=;
- b=uL750ag+YPSMymNz9nfvNggX31g2Rm7pasezCxGDj0DjGMqJBIG3HQjddAlNDp3SY/
- +Ixw9uSzPTreccNAWcVdEGwdC0DLReyJQftfHO9KRNSIh1ZNwmnoYyb9yKdNgI5/MfLv
- 2HE5dQgrHsNpDAeT1u59LLYnOtEnEs9zU5rRdTu+Vvu5TBb86oMYrn+BNL9BGgLzCyyK
- kDt6a7uWNG9wGdnysYrhjGGKAO7kZQnLAe5cx4lOBIBFZ+IiZCplPid+XDB0S1BXSqC4
- +qbHQ7Ih5aJYEDGdCxPalu/Y55Vj/WdlZGLFSYL5mJz3JuqNegtrzIyszIlCBLE/IQFY
- WHDA==
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CWSxv70b2eqY/EQxC1xXG5fUg9FJMJqHt1J5c9RkGm4=;
+ b=aCjwDSl21AUWNiXO+wSnITAKwelgfjy2XX71nX6Sh21RqPmDDvOWuJqQ+qFfAWx8Ni
+ eRoG6T3kbTmIibjaBhWO29NRv/HrDTTT8Z54O5Cn0XhCfYH5WduPRMmL+WSac17tIp8/
+ 4iDX+Md1yn/nZpIj8vl5YhxuJfdQo+kpGgIyOkT1Nc5Bz3stMH0cAglVyg8JRpU7gXNV
+ FwjzMsyb7xAKdWTZDtr054VVS+D+SKC1iHyjO1ClW+522G04cf3k/PG1d3Yv9L8hn+Qi
+ F0eEMWSH6urV2NSlCVSzXFEG0QlmlQAjwx6/itq84cr5lOTXHIz3zYRUetcqtVS68eCw
+ 9waw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697710652; x=1698315452;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=43ITPoUUF/xKfnM/vZJRGDRmtPTbadQHPjaCAxxIxqo=;
- b=hl9dJvsTs/tIYPyRj8O/R9d5jMFaOyuJ55A2li+5ZJJ6rcRIUPQNEvmWu98cKgUmTu
- eNj3YfItahqIhoujdaExk3nRvNbs/EqZg/sDbDAKTS+3D6lGS/fLjRm4Nwrg+K/nQ+Xw
- HW7ylV48Y4Rdi5xewIX0/0GieBNvvEGDvYSCKGS7nkr52FZQ9TaDg4YUantFX0gXuliq
- 9K7h69NVu0ZwEjDlxwezYKS72mcgZD8bfAVoCIoXadh2Uok0xnxmgXbU664I9JVfG/L3
- TtXSXoiWdX/um8Z2eR9r5ZyYgH9rXBT1AtDsJFxvOqi7+rrT7XJ0KvqRqNbnC7g5+HkK
- gGbw==
-X-Gm-Message-State: AOJu0YzvwNgz1XsMVrm8qZ1fmVK9wLHDpbBeQImbHdmI70dUS2Oa5Dsx
- fKizlHiPzUzomhJPPFhHeFdFKA==
-X-Google-Smtp-Source: AGHT+IFyazvGdtKbkG6GjzpMvg2ZyGtxJYyG9hUdBa+xwNXUBQuBvJCH/Bon4VjCJWMC/D2osrz6iQ==
-X-Received: by 2002:a17:903:449:b0:1c7:3558:721a with SMTP id
- iw9-20020a170903044900b001c73558721amr1721199plb.58.1697710652516; 
- Thu, 19 Oct 2023 03:17:32 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- ji4-20020a170903324400b001b016313b1dsm1571815plb.86.2023.10.19.03.17.29
+ d=1e100.net; s=20230601; t=1697711225; x=1698316025;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CWSxv70b2eqY/EQxC1xXG5fUg9FJMJqHt1J5c9RkGm4=;
+ b=RhVejjuS/A1Phw8khyS80RU6nWU1KvmVNwSWQ6zQI/gV7tM0J9BHj/J1H3ije+9C0L
+ k/WWNmry9KaGW06cToTcfajkwnagGRsVGZk8wzcxQAkfdU+GMokP0abBvuztIsCwDZwZ
+ eq7v2lOshGgujJzyF6YijO+DyjRabTS8IpM+sVnVTiVMZAWB23a7qrc89TTkhjnPGMtU
+ nrHqbF1EfOoaRnDMoZGecGVGtSun9Tm+SWf0oHcFG3oOiE4CWzoUsJ++qKznZJyw1Dua
+ QiVSytJO683j9TWfiSBIGfs4WH6eGuEKsd8dOCTm6hY4aSyuT37nrqj6Q8B8vGd4lqNw
+ x1iQ==
+X-Gm-Message-State: AOJu0YzQuRJBcWu2Tj+m6wVz6/AQHfKl8gstZHT442qqLOEmVr9YsdT8
+ LQiTa+Rv666shoCFK+O1ZaCNDpjoHBJu+0YydFK+7w==
+X-Google-Smtp-Source: AGHT+IFOYn3eSTbOZwaRCqsI5kymbx9phwDcUMdCy3H8ws0l5ERdDVSuM62scvSAB5timmYCgeMG6A==
+X-Received: by 2002:a05:6a00:1402:b0:690:3b59:cc7a with SMTP id
+ l2-20020a056a00140200b006903b59cc7amr1601489pfu.23.1697711224825; 
+ Thu, 19 Oct 2023 03:27:04 -0700 (PDT)
+Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with UTF8SMTPSA id
+ g26-20020aa79dda000000b0069268e3a659sm4768291pfq.132.2023.10.19.03.27.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 03:17:32 -0700 (PDT)
-Message-ID: <867e1c2f-8e7e-4f87-a08d-5a1f849a3210@daynix.com>
-Date: Thu, 19 Oct 2023 19:17:28 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/5] target/riscv: Move misa_mxl_max to class
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-References: <20231017185406.13381-1-akihiko.odaki@daynix.com>
- <20231017185406.13381-4-akihiko.odaki@daynix.com>
- <a829aa4c-0b6f-40b9-a357-99c43d066f3b@ventanamicro.com>
- <ebb52078-2182-4656-a224-928b65124cd3@daynix.com>
- <f1b4af6c-dc83-4d48-bf3f-c4ae408539cd@ventanamicro.com>
-Content-Language: en-US
+ Thu, 19 Oct 2023 03:27:04 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <f1b4af6c-dc83-4d48-bf3f-c4ae408539cd@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: 
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>,
+ Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v14 00/18] plugins: Allow to read registers
+Date: Thu, 19 Oct 2023 19:26:35 +0900
+Message-ID: <20231019102657.129512-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,95 +93,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/10/18 23:23, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 10/18/23 10:31, Akihiko Odaki wrote:
->> On 2023/10/18 22:01, Daniel Henrique Barboza wrote:
->>>
->>>
->>> On 10/17/23 15:53, Akihiko Odaki wrote:
->>>> misa_mxl_max is common for all instances of a RISC-V CPU class so they
->>>> are better put into class.
->>>>
->>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>> ---
->>>
->>> I'll repeat what I said in the v1: this patch is adding an extra 
->>> class parameter,
->>> an extra param required to each class_init, and an extra CPUClass 
->>> cast every time
->>> we want to read misa_mxl_max, all of that because we want to assign 
->>> gdb_core_xml_file
->>> earlier.
->>>
->>> If my previous suggestion of assigning gdb_core directly into 
->>> riscv_cpu_class_init()
->>> doesn't work necause we need misa_mxl_max to do it, a good 
->>> alternative is setting
->>> gdb_core_xml_file in riscv_cpu_post_init(), which is executed after 
->>> all cpu_init()
->>> functions where we already have env->misa_mxl_max set properly.
->>
->> We want to assign gdb_core_xml_file *earlier* so assigning it after 
->> cpu_init() is not OK. In general it should be considered unsafe to 
->> initialize a class variable after class_init(); otherwise other 
->> subsystems cannot know when it becomes available.
-> 
-> There's no difference in assigning it during .instance_init (cpu_init()) 
-> and
-> .instance_post_init. The callbacks are called one after the other during
-> init time. See qom/object.c,  object_initialize_with_type().
-> 
-> Now, if we want to be strict with only initializing class variables 
-> during class_init(),
-> which is something that I will defer to the maintainers, we want to 
-> minimize the use
-> of env->misa_mxl_max in the code before converting it to a class 
-> variable. env->misa_mxl
-> is always equal to env->misa_mxl_max, and they are being used 
-> interchangeably, but if
-> misa_mxl_max is going to be a class variable then we want to use 
-> env->misa_mxl instead
-> to avoid the RISCV_CPU_GET_CLASS() overhead.
-> 
-> I suggest a pre-patch to change the uses of env->misa_mxl_max to 
-> env->misa_mxl in
-> riscv_is_32bit(), riscv_cpu_gdb_read_register(), 
-> riscv_cpu_gdb_write_register() and
-> so on (there are quite a few places). And then apply this patch on top 
-> of it. This would
-> at least minimize the amount of casts being done.
+Based-on: <20231019101030.128431-1-akihiko.odaki@daynix.com>
+("[PATCH v5 0/6] gdbstub and TCG plugin improvements")
 
-misa_mxl and misa_mxl_max may be same for now, but they exist because 
-they will be different in the future; otherwise there is no reason to 
-have misa_mxl_max at the first place. misa_mxl represents the current 
-effective value and misa_mxl_max represents the maximum value the 
-emulated CPU supports.
+I and other people in the University of Tokyo, where I research processor
+design, found TCG plugins are very useful for processor design exploration.
 
-So we need to preserve the existing choice of misa_mxl and misa_mxl_max 
-in general. riscv_cpu_gdb_read_register() and 
-riscv_cpu_gdb_write_register(), for example, must use misa_mxl_max 
-instead of misa_mxl since GDB doesn't support changing register width at 
-runtime, and the register width should match with the feature 
-description provided by gdb_core_xml_file.
+The feature we find missing is the capability to read registers from
+plugins. In this series, I propose to add such a capability by reusing
+gdbstub code.
 
-The use of env->misa_mxl_max in riscv_is_32bit(), however, looks not 
-good to me. If a 64-bit processor is in 32-bit mode, the 32-bit kernel 
-should be loaded. I added a patch to change it to env->misa_mxl in v5.
+The reuse of gdbstub code ensures the long-term stability of the TCG plugin
+interface for register access without incurring a burden to maintain yet
+another interface for register access.
 
-> 
-> All this considered, there's still one extra class cast that we will 
-> have to deal with
-> in riscv_tr_init_disas_context(). I am not sure how hot this function is 
-> but, taking a
-> look at other .init_disas_context implementations from other archs and 
-> not finding class
-> casts in them, I'm worried about the overhead it'll add. It seems like 
-> we can just do
-> "ctx->misa_mxl_max = env->misa_mxl" to avoid it.
+This process to add TCG plugin involves four major changes. The first one
+is to add GDBFeature structure that represents a GDB feature, which usually
+includes registers. GDBFeature can be generated from static XML files or
+dynamically generated by architecture-specific code. In fact, this is a
+refactoring independent of the feature this series adds, and potentially
+it's benefitial even without the plugin feature. The plugin feature will
+utilize this new structure to describe registers exposed to plugins.
 
-The cost of the class type check should be negligible considering that 
-init_disas_context() is followed by the TCG translation, which takes 
-most of execution time.
+The second one is to make gdb_read_register/gdb_write_register usable
+outside of gdbstub context.
+
+The third one is to actually make registers readable for plugins.
+
+The execlog plugin will have new options to demonstrate the new feature.
+I also have a plugin that uses this new feature to generate execution
+traces for Sniper processor simulator, which is available at:
+https://github.com/shioya-lab/sniper/tree/akihikodaki/bb
+
+The below is a summary of patches:
+Patch [01, 12] introduces num_regs member to GDBFeature.
+Patch 13 adds members useful to identify registers to GDBFeature.
+Patch 14 makes registers readable outside of gdbstub context.
+Patch [15, 18] add the feature to read registers from plugins.
+
+V13 -> V14:
+  Fixed RISC-V CSR register numbers.
+
+V12 -> V13:
+  Rebased to "[PATCH v4 0/5] gdbstub and TCG plugin improvements".
+
+V11 -> V12:
+  Rebased to "[PATCH v2 0/3] gdbstub and TCG plugin improvements".
+
+V10 -> V11:
+  Fixed QEMU_PLUGIN_CB_RW_REGS.
+
+V9 -> V10:
+  Rebased to "[PATCH 0/4] gdbstub and TCG plugin improvements".
+  Dropped patch "plugins: Support C++".
+  Removed the unnecessary QEMU_PLUGIN_VERSION change.
+
+V8 -> V9:
+  Rebased to "[PATCH 00/25] October maintainer omnibus pre-PR (tests,
+  gdbstub, plugins)".
+  Added patch "target/riscv: Move MISA limits to class".
+  Added patch "target/riscv: Remove misa_mxl validation".
+  Added patch "target/riscv: Validate misa_mxl_max only once".
+  Added patch "plugins: Use different helpers when reading".
+  Moved contrib/plugins/cc.cc to tests/plugin/cc.cc.
+
+V7 -> V8:
+  Rebased to "[PATCH v3 00/12] gdbstub and TCG plugin improvements".
+  Clarified that initialization and exit hooks affect TCG state.
+  Simplified by adding the core feature to gdb_regs.
+
+V6 -> V7:
+  Rebased to "[PATCH v2 00/11] gdbstub and TCG plugin improvements".
+  Replaced functions to get register identifiers.
+
+V5 -> V6:
+  Rebased to "[PATCH 0/8] gdbstub and TCG plugin improvements".
+
+V4 -> V5:
+  Corrected g_rw_lock_writer_lock() call. (Richard Henderson)
+  Replaced abort() with g_assert_not_reached(). (Richard Henderson)
+  Fixed CSR name leak in target/riscv. (Richard Henderson)
+  Removed gdb_has_xml variable.
+
+V3 -> V4:
+  Added execlog changes I forgot to include in the last version.
+
+V2 -> V3:
+  Added patch "hw/core/cpu: Return static value with gdb_arch_name()".
+  Added patch "gdbstub: Dynamically allocate target.xml buffer".
+  (Alex Bennée)
+  Added patch "gdbstub: Introduce GDBFeatureBuilder". (Alex Bennée)
+  Dropped Reviewed-by tags for "target/*: Use GDBFeature for dynamic XML".
+  Changed gdb_find_static_feature() to abort on failure. (Alex Bennée)
+  Changed the execlog plugin to log the register value only when changed.
+  (Alex Bennée)
+  Dropped 0x prefixes for register value logs for conciseness.
+
+V1 -> V2:
+  Added SPDX-License-Identifier: GPL-2.0-or-later. (Philippe Mathieu-Daudé)
+  Split long lines. (Philippe Mathieu-Daudé)
+  Renamed gdb_features to gdb_static_features (Philippe Mathieu-Daudé)
+  Dropped RFC.
+
+Akihiko Odaki (18):
+  gdbstub: Add num_regs member to GDBFeature
+  gdbstub: Introduce gdb_find_static_feature()
+  gdbstub: Introduce GDBFeatureBuilder
+  target/arm: Use GDBFeature for dynamic XML
+  target/ppc: Use GDBFeature for dynamic XML
+  target/riscv: Use GDBFeature for dynamic XML
+  gdbstub: Use GDBFeature for gdb_register_coprocessor
+  gdbstub: Use GDBFeature for GDBRegisterState
+  gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
+  gdbstub: Simplify XML lookup
+  gdbstub: Infer number of core registers from XML
+  hw/core/cpu: Remove gdb_get_dynamic_xml member
+  gdbstub: Add members to identify registers to GDBFeature
+  gdbstub: Expose functions to read registers
+  cpu: Call plugin hooks only when ready
+  plugins: Use different helpers when reading registers
+  plugins: Allow to read registers
+  contrib/plugins: Allow to log registers
+
+ docs/devel/tcg-plugins.rst   |  10 +-
+ accel/tcg/plugin-helpers.h   |   3 +-
+ include/exec/gdbstub.h       |  42 +++++-
+ include/exec/plugin-gen.h    |   4 +-
+ include/hw/core/cpu.h        |  11 +-
+ include/qemu/plugin.h        |   3 +
+ include/qemu/qemu-plugin.h   |  50 ++++++-
+ plugins/plugin.h             |   5 +-
+ target/arm/cpu.h             |  27 ++--
+ target/arm/internals.h       |  14 +-
+ target/hexagon/internal.h    |   4 +-
+ target/microblaze/cpu.h      |   4 +-
+ target/ppc/cpu-qom.h         |   4 +-
+ target/ppc/cpu.h             |   2 -
+ target/riscv/cpu.h           |   5 +-
+ target/s390x/cpu.h           |   2 -
+ accel/tcg/plugin-gen.c       |  41 ++++--
+ accel/tcg/translator.c       |   2 +-
+ contrib/plugins/execlog.c    | 120 ++++++++++++-----
+ cpu-target.c                 |  11 --
+ gdbstub/gdbstub.c            | 246 ++++++++++++++++++++++++++---------
+ hw/core/cpu-common.c         |  15 ++-
+ plugins/api.c                |  34 ++++-
+ plugins/core.c               |  28 ++--
+ target/arm/cpu.c             |   2 -
+ target/arm/cpu64.c           |   1 -
+ target/arm/gdbstub.c         | 230 ++++++++++++++++----------------
+ target/arm/gdbstub64.c       | 122 ++++++++---------
+ target/avr/cpu.c             |   1 -
+ target/hexagon/cpu.c         |   4 +-
+ target/hexagon/gdbstub.c     |  10 +-
+ target/i386/cpu.c            |   2 -
+ target/loongarch/cpu.c       |   2 -
+ target/loongarch/gdbstub.c   |  13 +-
+ target/m68k/cpu.c            |   1 -
+ target/m68k/helper.c         |  26 +++-
+ target/microblaze/cpu.c      |   6 +-
+ target/microblaze/gdbstub.c  |   9 +-
+ target/ppc/cpu_init.c        |   7 -
+ target/ppc/gdbstub.c         | 114 ++++++++--------
+ target/riscv/cpu.c           |  15 ---
+ target/riscv/gdbstub.c       | 139 +++++++++++---------
+ target/rx/cpu.c              |   1 -
+ target/s390x/cpu.c           |   1 -
+ target/s390x/gdbstub.c       | 105 +++++++++------
+ plugins/qemu-plugins.symbols |   3 +
+ scripts/feature_to_c.py      |  58 ++++++++-
+ 47 files changed, 983 insertions(+), 576 deletions(-)
+
+-- 
+2.42.0
+
 
