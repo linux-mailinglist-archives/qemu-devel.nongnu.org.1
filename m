@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5307E7D03B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FC37D03E2
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:23:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaSX-0001Q5-1O; Thu, 19 Oct 2023 17:21:37 -0400
+	id 1qtaSf-0001ec-Dt; Thu, 19 Oct 2023 17:21:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaSV-0001PE-IG
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:21:35 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaSd-0001YQ-5A
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:21:43 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaST-0007AV-3e
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:21:35 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4083f61322fso1062225e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:21:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaSa-0007KL-Jw
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:21:42 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-32d895584f1so110264f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:21:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750491; x=1698355291; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750498; x=1698355298; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v2FEPKvYUQPXlVYljpSlyvIweR9xsIaSQUX0X9ROFrQ=;
- b=Io5dx2HJ2QF9qta9RzXxG3iuyp9hpO5BOPfXcB1LF53zd1w/nhHjJgkR+A8T8EG6+I
- XKTLdNPfTil217slE+Hv2tpAo4KJSvRgxGXfLLHWiJiPOVzo6rjx9Ej2q3cAf0dtNXJ3
- jxi+hCc8torXPMqCH3GIAqFaVEWzpKLrrtgfxwXW2YpkCg+VWWjxsBGNo7B3tPbOrd1v
- ejgaMICIsxyB3noRUtIEev9HUt4KHyRLOXlVT+HPvwRpGh+xZcH0rnrISRnaYzWtjvpW
- qp9wjq7TCghj0L7gfqeZa0sy9np6FO5EvGdbZ+IEZAlEFlW5htfJBCOGcn53bqCnNy01
- vlfA==
+ bh=1TkahiOfYYlesTz2N92yWSyEJwEKIj0IcIbfbK44s1s=;
+ b=MKp0xZOuDjvHEliVoE6UmU1Ykp93jFr/mSXbpYO0STgl3nSgp0ZNxUT54ZBXVEgKTD
+ 3ViwrEDxwq/aW4KdktO6OP5MAZX/5NcmAb3xKy9pHfU3QH5bCoguGLFkHpJ5kpkbDqGV
+ yK0MJ/gAw/CVhYb4f8dBODM9uY82tmgQlvuoQI4+HrVXjxVDwKHyo7FDuo/tXwpCuRf1
+ mOc3j6Ce9D+OSTrc/ihFCbdI4S0xLIcJ40acKAn2DtCFdcu2LfzKtIZUfrCuGWgqPVuh
+ GITKMRwThhELNoQLm7sU4f/2MYGRvV0UnYQQ1TZZfTnwHomA5LPtiVhKkw79X0cZZt8+
+ f3RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750491; x=1698355291;
+ d=1e100.net; s=20230601; t=1697750498; x=1698355298;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v2FEPKvYUQPXlVYljpSlyvIweR9xsIaSQUX0X9ROFrQ=;
- b=e9/PWvPRxoeo/uDBRyXhmzz5g4C2YGorCjW+/+3yzXRk9wPSIsuYpYayqxgavD8LFu
- E8ZOXLwonSbSerPdk/DC9EEr9IGZSovtQufcNtvX0o8NYV33SD2axMmiDQPvggwgzq3L
- G8SBFqVj7Ru7KeppivVRIvlR+heXCDoYrrsP36sCMVEnyS0+GoRA0KSEkDzHd5TKaotp
- aVR0vgRbHnUnCM83ZJA2lgdZiCe8j2xsmi1HYlKf6N8/t8XCGJJFwkvTgLqe3k8sTzCk
- ZmAD87q/B0JWw2hTGl5cjw0TNm7VxLZAPSCob/WdgPSAi3+fOU6PzV7KBgay/nETVjY6
- e1Tw==
-X-Gm-Message-State: AOJu0Yx0LctmNc9lthYwJ6hj1qlX5n75z+7CqrTomYVZFNUtNf0NPb4K
- jHFK+GrroTuhcBUk1eAnk4dXlpR5kV1RmQ8aETD83g==
-X-Google-Smtp-Source: AGHT+IHZVRlRQJuSV9tZxAn03EAS0vCfkRenWR+CBaRN6dfJzGHs+1YUtGHFq2xIba/iiVF3kXkDZw==
-X-Received: by 2002:a05:600c:1c8d:b0:402:ea83:45cf with SMTP id
- k13-20020a05600c1c8d00b00402ea8345cfmr38255wms.2.1697750491527; 
- Thu, 19 Oct 2023 14:21:31 -0700 (PDT)
+ bh=1TkahiOfYYlesTz2N92yWSyEJwEKIj0IcIbfbK44s1s=;
+ b=ZV5B6VyR8RxpRLRq7bIGxXgCCRtAoh9KHs8Pp9T96hAWkuVErinl1q3ylbgVCiQt0D
+ pVGYRxwkHMhk1sbn1dvLZlwEmmp61YQfOVOlXuMI9prOjeUCBOoMnUdMVXrAGH2Qllpz
+ wPZixt0HM4ITtJI6cqKXX4lpHZ6F0iwH9S2FDHovpzCJU1CqJwgz1yMwgaU0SNg/POC4
+ miTGdJswkDhxGaNzd5nBy+DWGlOM2SxEYI2cRigfpd7eJ8SNjc1w11z2T/djjn+ZZtAc
+ 7D+AIhdc+j6hNDL4OY44bPqSC2PZZRAcFuyypGKl34FK3rVQc9CQt3YaUo0he6Ee8lhP
+ RDNA==
+X-Gm-Message-State: AOJu0Yxbd5yGX//+1HxhNEJSynGjL5uPtfYsJwvprIH7RJBS07f1RSY5
+ yUwUQflAOgqzxJmOaF38LMGpH276oZ6162KLQCNS/A==
+X-Google-Smtp-Source: AGHT+IGpYtqbKREh8/LZ7VDGYJR/bwgr9m+ZxwdwLgFxyuZumP2Y+3tfAa3k3JDKRf7SM6j6Cy7Ygg==
+X-Received: by 2002:adf:fc07:0:b0:32c:ea14:89e5 with SMTP id
+ i7-20020adffc07000000b0032cea1489e5mr2409581wrr.39.1697750498710; 
+ Thu, 19 Oct 2023 14:21:38 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- z6-20020a05600c220600b0040684abb623sm5244918wml.24.2023.10.19.14.21.29
+ x12-20020a5d650c000000b0032d9a1f2ec3sm228657wru.27.2023.10.19.14.21.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:21:31 -0700 (PDT)
+ Thu, 19 Oct 2023 14:21:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PULL 29/46] hw/intc/spapr_xive: Do not use SysBus API to map local
- MMIO region
-Date: Thu, 19 Oct 2023 23:17:54 +0200
-Message-ID: <20231019211814.30576-30-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 30/46] hw/audio/pcspk: Inline pcspk_init()
+Date: Thu, 19 Oct 2023 23:17:55 +0200
+Message-ID: <20231019211814.30576-31-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,57 +101,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no point in exposing an internal MMIO region via
-SysBus and directly mapping it in the very same device.
+pcspk_init() is a legacy init function, inline and remove it.
 
-Just map it without using the SysBus API.
+Since the device is realized using &error_fatal, use the same
+error for setting the "pit" link.
 
-Transformation done using the following coccinelle script:
-
-  @@
-  expression sbdev;
-  expression index;
-  expression addr;
-  expression subregion;
-  @@
-  -    sysbus_init_mmio(sbdev, subregion);
-       ... when != sbdev
-  -    sysbus_mmio_map(sbdev, index, addr);
-  +    memory_region_add_subregion(get_system_memory(), addr, subregion);
-
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Message-Id: <20231019131647.19690-8-philmd@linaro.org>
+Message-Id: <20231019073307.99608-1-philmd@linaro.org>
 ---
- hw/intc/spapr_xive.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/hw/audio/pcspk.h | 10 ----------
+ hw/i386/pc.c             |  4 +++-
+ hw/isa/i82378.c          |  5 ++++-
+ hw/mips/jazz.c           |  5 ++++-
+ 4 files changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/hw/intc/spapr_xive.c b/hw/intc/spapr_xive.c
-index 12057ffe5b..199c261b07 100644
---- a/hw/intc/spapr_xive.c
-+++ b/hw/intc/spapr_xive.c
-@@ -350,12 +350,12 @@ static void spapr_xive_realize(DeviceState *dev, Error **errp)
-      * Map all regions. These will be enabled or disabled at reset and
-      * can also be overridden by KVM memory regions if active
-      */
--    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &xsrc->esb_mmio);
--    sysbus_mmio_map(SYS_BUS_DEVICE(xive), 0, xive->vc_base);
--    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &end_xsrc->esb_mmio);
--    sysbus_mmio_map(SYS_BUS_DEVICE(xive), 1, xive->end_base);
--    sysbus_init_mmio(SYS_BUS_DEVICE(xive), &xive->tm_mmio);
--    sysbus_mmio_map(SYS_BUS_DEVICE(xive), 2, xive->tm_base);
-+    memory_region_add_subregion(get_system_memory(), xive->vc_base,
-+                                &xsrc->esb_mmio);
-+    memory_region_add_subregion(get_system_memory(), xive->end_base,
-+                                &end_xsrc->esb_mmio);
-+    memory_region_add_subregion(get_system_memory(), xive->tm_base,
-+                                &xive->tm_mmio);
- }
+diff --git a/include/hw/audio/pcspk.h b/include/hw/audio/pcspk.h
+index 9506179587..6be75a6b86 100644
+--- a/include/hw/audio/pcspk.h
++++ b/include/hw/audio/pcspk.h
+@@ -25,16 +25,6 @@
+ #ifndef HW_PCSPK_H
+ #define HW_PCSPK_H
  
- static int spapr_xive_get_eas(XiveRouter *xrtr, uint8_t eas_blk,
+-#include "hw/isa/isa.h"
+-#include "hw/qdev-properties.h"
+-#include "qapi/error.h"
+-
+ #define TYPE_PC_SPEAKER "isa-pcspk"
+ 
+-static inline void pcspk_init(ISADevice *isadev, ISABus *bus, ISADevice *pit)
+-{
+-    object_property_set_link(OBJECT(isadev), "pit", OBJECT(pit), NULL);
+-    isa_realize_and_unref(isadev, bus, &error_fatal);
+-}
+-
+ #endif /* HW_PCSPK_H */
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index bb3854d1d0..f7ee638bec 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1283,7 +1283,9 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+             /* connect PIT to output control line of the HPET */
+             qdev_connect_gpio_out(hpet, 0, qdev_get_gpio_in(DEVICE(pit), 0));
+         }
+-        pcspk_init(pcms->pcspk, isa_bus, pit);
++        object_property_set_link(OBJECT(pcms->pcspk), "pit",
++                                 OBJECT(pit), &error_fatal);
++        isa_realize_and_unref(pcms->pcspk, isa_bus, &error_fatal);
+     }
+ 
+     /* Super I/O */
+diff --git a/hw/isa/i82378.c b/hw/isa/i82378.c
+index 63e0857208..79ffbb52a0 100644
+--- a/hw/isa/i82378.c
++++ b/hw/isa/i82378.c
+@@ -67,6 +67,7 @@ static void i82378_realize(PCIDevice *pci, Error **errp)
+     uint8_t *pci_conf;
+     ISABus *isabus;
+     ISADevice *pit;
++    ISADevice *pcspk;
+ 
+     pci_conf = pci->config;
+     pci_set_word(pci_conf + PCI_COMMAND,
+@@ -102,7 +103,9 @@ static void i82378_realize(PCIDevice *pci, Error **errp)
+     pit = i8254_pit_init(isabus, 0x40, 0, NULL);
+ 
+     /* speaker */
+-    pcspk_init(isa_new(TYPE_PC_SPEAKER), isabus, pit);
++    pcspk = isa_new(TYPE_PC_SPEAKER);
++    object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), &error_fatal);
++    isa_realize_and_unref(pcspk, isabus, &error_fatal);
+ 
+     /* 2 82C37 (dma) */
+     isa_create_simple(isabus, "i82374");
+diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
+index 86dfe05ea8..d33a76ad4d 100644
+--- a/hw/mips/jazz.c
++++ b/hw/mips/jazz.c
+@@ -176,6 +176,7 @@ static void mips_jazz_init(MachineState *machine,
+     SysBusDevice *sysbus;
+     ISABus *isa_bus;
+     ISADevice *pit;
++    ISADevice *pcspk;
+     DriveInfo *fds[MAX_FD];
+     MemoryRegion *bios = g_new(MemoryRegion, 1);
+     MemoryRegion *bios2 = g_new(MemoryRegion, 1);
+@@ -278,7 +279,9 @@ static void mips_jazz_init(MachineState *machine,
+     isa_bus_register_input_irqs(isa_bus, i8259);
+     i8257_dma_init(isa_bus, 0);
+     pit = i8254_pit_init(isa_bus, 0x40, 0, NULL);
+-    pcspk_init(isa_new(TYPE_PC_SPEAKER), isa_bus, pit);
++    pcspk = isa_new(TYPE_PC_SPEAKER);
++    object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), &error_fatal);
++    isa_realize_and_unref(pcspk, isa_bus, &error_fatal);
+ 
+     /* Video card */
+     switch (jazz_model) {
 -- 
 2.41.0
 
