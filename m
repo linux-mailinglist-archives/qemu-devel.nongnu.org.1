@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C867CFD68
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC727CFD6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:58:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtURt-00089p-Vy; Thu, 19 Oct 2023 10:56:34 -0400
+	id 1qtUTd-0002gl-7J; Thu, 19 Oct 2023 10:58:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtURr-000849-TN
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:56:31 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtUTa-0002Xi-TM
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:58:18 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtURo-0007mN-MZ
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:56:31 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-694ed847889so6686759b3a.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 07:56:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697727387; x=1698332187; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=VBz7fh+niNpIfFTKr4YltqId9B6aODAxLDxZKiwpaws=;
- b=OXOEfRchKbu8ezkskqwYQVZyCDVAVboRHYxh8A+fwAzPJXfcwibpaY/YU8RZMP9+bT
- BOW2uwPNEDJGqYq/ckRYTac/Z5gIOYgz5h74+oaxzQkMIdMnP5/vY+271bVjc5N3Yl3m
- 4Px0O7xfYtCA3X464EfUPaAgny2+/LKbiaAWkbkbycYPuH5tPIs2+nZgHuE8u6mU6fz2
- q21x+TNcXW2ZpY5fLzp2y2aWu82PE4wXn2D9UpMpx4Nvt/SHA5qXbgRfb2zTcfV+5q4J
- lSW/wry747/+hgibmURrGzxF8E64Ml45kkAcTdE/uhnjiw8iJe3HOP0NC7fPSKz/N77q
- 3nzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697727387; x=1698332187;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VBz7fh+niNpIfFTKr4YltqId9B6aODAxLDxZKiwpaws=;
- b=Yncmbv4HKYi/YAdtbNVA7tKmNBOggDEcPLHe1sWRhUGyS5Li+5OQO/Jvyfkp4gzfk5
- yRJX3ICcsUd4jbKo+xagFCjjPhe13qfoVwP2aiiZuQ77KEZYk99EtFBuiF451Oo1SW4V
- r0FjUwApzTLlsrI0qOZDjpAMXX/0OakJoRFUI5l4QsIO2PXp5YHl0n7Yedn2IWY/5zYU
- ATxxUMjXZ7e+CtLhhyVCCBdn34V9Xrli9O0yBeU+UtsTYhbOl5/OUU8dEJtaBC/FhihX
- BTZ7Q4TIkr0qZzXZZxR0MU/bgRnwe9D3MiswGsjBp4lO40LmYuFgxwUKOCvRiZWGnSvo
- TqkA==
-X-Gm-Message-State: AOJu0YwIdOL+C1yY5Tsl++p77P3oCO6SRJL+o9LkZrbJOWOrNsTVqTYm
- sBwjDUjMjH2h3MQ7bYttKFoKQEMK9YlOyqGH54k=
-X-Google-Smtp-Source: AGHT+IFPHb6c4ndER8r9ye+2dRE5fGwn1y5YFn7qz6Rtek05TcD04WvrjS0FqYxaBWtP5idMz9WUAQ==
-X-Received: by 2002:a05:6a20:7fa5:b0:15b:c800:48af with SMTP id
- d37-20020a056a207fa500b0015bc80048afmr3054257pzj.23.1697727386882; 
- Thu, 19 Oct 2023 07:56:26 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- l28-20020a63ba5c000000b0057825bd3448sm3074818pgu.51.2023.10.19.07.56.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 07:56:26 -0700 (PDT)
-Message-ID: <c98ed118-a6f9-40dd-919a-cb3b719cf67b@linaro.org>
-Date: Thu, 19 Oct 2023 07:56:24 -0700
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtUTZ-00085F-Dl
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:58:18 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 404A221A80;
+ Thu, 19 Oct 2023 14:58:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697727496; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=oPPSTrteIjwLwcDXSrWIPEVGaBqZ94eF+TmZVLoXbwo=;
+ b=C56bBsMKUcKSkLdvPgetD4FBI1xkU0huqTID6nkWa5wb2SIV6J/mxYhddt/kPWERienZji
+ RL4wHr1TpT0veo0Le94VKJ2ey3s9Q8JVlcDWGkEzWI1YtSVs9ztAT5gw/Aleg/CybRmOHl
+ 87PSOQJJCbNbpLEWGkdOkc9xW+1ZjCc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697727496;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=oPPSTrteIjwLwcDXSrWIPEVGaBqZ94eF+TmZVLoXbwo=;
+ b=Y+YtyZ99gT3Odcjq7pCO/gFRy2tw4wmBoL5ag7RwxmxenCxN9ld6Rw7RLtnG0eTusD/JOo
+ SbA8tNNSp9hv56DA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C89131357F;
+ Thu, 19 Oct 2023 14:58:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id eE2UJAdEMWUoEwAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 14:58:15 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH v2 2/6] migration/multifd: Stop checking p->quit in
+ multifd_send_thread
+In-Reply-To: <87o7gv6kt6.fsf@secure.mitica>
+References: <20231012140651.13122-1-farosas@suse.de>
+ <20231012140651.13122-3-farosas@suse.de> <87o7gv6kt6.fsf@secure.mitica>
+Date: Thu, 19 Oct 2023 11:58:13 -0300
+Message-ID: <87o7guy7zu.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/18] target/i386: move operand load and writeback out of
- gen_cmovcc1
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20231014100121.109817-1-pbonzini@redhat.com>
- <20231014100121.109817-16-pbonzini@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231014100121.109817-16-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -6.03
+X-Spamd-Result: default: False [-6.03 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-1.93)[94.64%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,22 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/14/23 03:01, Paolo Bonzini wrote:
-> Similar to gen_setcc1, make gen_cmovcc1 receive TCGv.  This is more friendly
-> to simultaneous implementation in the old and the new decoder.
-> 
-> A small wart is that s->T0 of CMOV is currently the *second* argument (which
-> would ordinarily be in T1).  Therefore, the condition as to be inverted in
-> order to overwrite s->T0 with cpu_regs[reg] if the MOV is not performed.
-> 
-> This only applies to the old decoder, and this code will go away soon.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   target/i386/tcg/translate.c | 20 ++++++++------------
->   1 file changed, 8 insertions(+), 12 deletions(-)
+Juan Quintela <quintela@redhat.com> writes:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Fabiano Rosas <farosas@suse.de> wrote:
+>> We don't need to check p->quit in the multifd_send_thread() because it
+>> is shadowed by the 'exiting' flag. Ever since that flag was added
+>> p->quit became obsolete as a way to stop the thread.
+>>
+>> Since p->quit is set at multifd_send_terminate_threads() under the
+>> p->mutex lock, the thread will only see it once it loops, so 'exiting'
+>> will always be seen first.
+>>
+>> Note that setting p->quit at multifd_send_terminate_threads() still
+>> makes sense because we need a way to inform multifd_send_pages() that
+>> the channel has stopped.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>
+> But then should we remove the quit altogether?
+>
 
-r~
+It still serves a purpose to allow multifd_send_pages() to see that the
+channel has exited. While that function does also check
+multifd_send_state->exiting, it could already be waiting at the mutex
+when the channel aborts. So we need to either check 'exiting' again or
+keep p->quit.
 
