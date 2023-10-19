@@ -2,74 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0AD7CF930
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 212A97CF93C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:43:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtSKU-0008JY-44; Thu, 19 Oct 2023 08:40:46 -0400
+	id 1qtSN3-0002JW-FQ; Thu, 19 Oct 2023 08:43:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtSKS-0008Im-0q
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:40:44 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtSMu-0002HX-1V
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:43:16 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtSKQ-0002tH-CF
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:40:43 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-53e08b60febso12434022a12.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 05:40:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtSMs-0003Gn-Gb
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:43:15 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4083f613275so12373995e9.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 05:43:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697719240; x=1698324040; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=CIct3ewjP1yj7ohmeMlgBxA2sPXB2y8/9mQnfFKm5uA=;
- b=eC1VdhRSy1C1eC6IanxT4pT2ICnMlLnOD7r+GXMkxrxzjCcO+7OZFjh+hYlnN8bMFD
- FU8yNd1ounnbvMoIKm1JjI/zraZUhMEWsUkVO/sG33asawqN7EKVZfSlGt7PqymUYERm
- CXH+Nl2R5CnGpEML/kkjusGk91skh4wUTCBQfwanJFu8XNp8AzKjRWXjw2KylMrKOsgM
- NrGl37ropcEDydQZb0YS0JRO9TXdVJz5PFenmPbXRcnk/K+sXGZwaD4D0ayOWmjqJ/6I
- QObs0wu9///54QSWJZ1pxo9cL6Hhv6pATHVoovODShyKWbph67nNY/R58Y70kVeH/7zh
- AL0A==
+ d=linaro.org; s=google; t=1697719393; x=1698324193; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fSbi8YAvF7elK9VBpLDP7jqWL+BJNgPQlgL+AJlHZdo=;
+ b=qKnfrqjS4d4H2Zf/TP1VLShTx5XPTvl33q43cjPxU0apugyJkZ20A1tGV5CO0KC7Bf
+ suAUsUmcB2GSm8TihbjIVl88iPwAjKBHfBQ9yHUekvuCz6+9JOg3GNyPGmwfwBuJBKl9
+ JdOSDDHAcqKK4tMhyMiHUFFnnZSJSvxRPYrrqxMa6xhrugrkOx9pw+3SbOWfXeCY33h4
+ TQoTImlwgoFjYLTDP0S72xYKElichsnq4fF3WQBzvNt/+Ak1qECyNu0Txpc9RIyZ3FM8
+ wvrJkJFSAkWcTbvD0i2WvXQMKwKN76sJ7olpXnPNkH/ich0M1rFfR1OmUVjYjuupzrzr
+ iwGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697719240; x=1698324040;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CIct3ewjP1yj7ohmeMlgBxA2sPXB2y8/9mQnfFKm5uA=;
- b=sVVMAaEtBIRrwA27sm+wjgqdpegFfXSWebjJEdjEYQASUvRt8UaelfekYUJY9HyfM4
- KG+jxHHME/4Z591dgnPOmiIAHuz2VM1HMet+wY5edS5a+pgbx07dWjSHZhB+s2zKil9W
- /u+mKuov44IhTic9adjlTsvJcY2dEZBkPQORXh0HJafXLnaxCNyw7PFYC+wfZOeW9h3h
- iPPCZYFgiAkXvGpJo9vnudNNXdZGCP6fKVVOmDXPIyrgUw8jb+VOcQytZ/+218HyLfWK
- sAg+hkx/kTcKsqG8QsD+kjaijw4Nt9CVgWpF2XXz4vrQGwQN1w6fu+8ihjoYfHlTxqfv
- PMrw==
-X-Gm-Message-State: AOJu0YwI8m8Q6b44cH3e/wRsobGSyqlhp92vjWMaktAnqO0G60NGr7rq
- oMb1lCltQgeTnINmXdQ3Tibhjgfx31blwI+4d7+pHA==
-X-Google-Smtp-Source: AGHT+IFPWBX062KyFQZ4i2TqC5Am8/Q2mnlwtvQkLNV931Z5Oq8jUy53s7MwXmsAPtU4i3qMC75lGgDslLTzntSnbTg=
-X-Received: by 2002:a50:bb44:0:b0:53e:3d9f:3c72 with SMTP id
- y62-20020a50bb44000000b0053e3d9f3c72mr1527629ede.18.1697719240322; Thu, 19
- Oct 2023 05:40:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697719393; x=1698324193;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=fSbi8YAvF7elK9VBpLDP7jqWL+BJNgPQlgL+AJlHZdo=;
+ b=IY4kph6GoQbtfM46AlLzAL14kGxdD5kFujK3wqog5N7ZAUzJrOxnxZrB9wN/nGQzeF
+ y+1rMfcH+Pf/uL9TgBEKxLSC7e8Mfazg0sBQurrCETVV73kujA6fwpYHO8Q7qcu3BhIZ
+ w1OpjfF+qaBxKuRXNZNBHRDkHDEc2Zbd7X6TVLNbiyolpyYYs3Hn+GPmvBSOiChuG+qs
+ GDBj9Nijo+n/CcRTSCxLw2SbbH8l1ab3H5CVK77OkYl/iueV/Ifgv9Sfwadjkjy1INi8
+ h3yHyPDwQGi1ybeyNpJKSHQeW1peMAx/8g3NezdYU8S8lZperQf0WWmVu8qUdYhPLXdI
+ GMPg==
+X-Gm-Message-State: AOJu0YzufLdD9zGC3qY6gq9s2/ydkbV93k43e/0JQVdq5FycfbODzqYY
+ eFgAA1o5p31ajli+3xlfkWMaDQ==
+X-Google-Smtp-Source: AGHT+IGqMfrpKgI8gvYT6dpFCV8zXXkHttgRjapdg6aHe8DDk3wTUhRpH638FZLN/6J3AyokBuFlOQ==
+X-Received: by 2002:a05:600c:5118:b0:401:2ee0:7558 with SMTP id
+ o24-20020a05600c511800b004012ee07558mr1722591wms.32.1697719392702; 
+ Thu, 19 Oct 2023 05:43:12 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ o24-20020a05600c339800b0040303a9965asm4322681wmp.40.2023.10.19.05.43.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 05:43:12 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id EB4991FFBB;
+ Thu, 19 Oct 2023 13:43:11 +0100 (BST)
+References: <cover.1697183699.git.manos.pitsidianakis@linaro.org>
+ <2e08cff874b2f9fc4143bdcde87ebba9b70b356c.1697183699.git.manos.pitsidianakis@linaro.org>
+ <871qdsb4qd.fsf@linaro.org> <2q0zq.6gn2tubfhjrk@linaro.org>
+ <87sf689is8.fsf@linaro.org>
+ <CAFEAcA9DQ6oR3fNicuUpntfZ8QdSA8PqO5irRuzNrpkpXUJUCA@mail.gmail.com>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Gerd Hoffmann
+ <kraxel@redhat.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, Eric
+ Auger <eric.auger@redhat.com>, Song Gao <gaosong@loongson.cn>, Xiaojuan
+ Yang <yangxiaojuan@loongson.cn>, Richard Henderson
+ <richard.henderson@linaro.org>, qemu-devel <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+Subject: Re: [RFC PATCH v2 01/78] include/qemu/compiler.h: replace
+ QEMU_FALLTHROUGH with fallthrough
+Date: Thu, 19 Oct 2023 13:42:00 +0100
+In-reply-to: <CAFEAcA9DQ6oR3fNicuUpntfZ8QdSA8PqO5irRuzNrpkpXUJUCA@mail.gmail.com>
+Message-ID: <87ttqm940w.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20231017203855.298260-1-peterx@redhat.com>
-In-Reply-To: <20231017203855.298260-1-peterx@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 19 Oct 2023 13:40:29 +0100
-Message-ID: <CAFEAcA-xOf+TLL9jbjQvdaqOK0ew_xbjnoajTzaxLbkhEz9Vig@mail.gmail.com>
-Subject: Re: [PATCH] migration: Fix parse_ramblock() on overwritten retvals
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,39 +106,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 17 Oct 2023 at 21:40, Peter Xu <peterx@redhat.com> wrote:
+
+Peter Maydell <peter.maydell@linaro.org> writes:
+
+> On Wed, 18 Oct 2023 at 14:12, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>>
+>> Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+>>
+>> > On Wed, 18 Oct 2023 13:32, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>> >>> diff --git a/audio/pwaudio.c b/audio/pwaudio.c
+>> >>> index 3ce5f6507b..bf26fadb06 100644
+>> >>> --- a/audio/pwaudio.c
+>> >>> +++ b/audio/pwaudio.c
+>> >>> @@ -1,29 +1,29 @@
+>> >>>  /*
+>> >>>   * QEMU PipeWire audio driver
+>> >>>   *
+>> >>>   * Copyright (c) 2023 Red Hat Inc.
+>> >>>   *
+>> >>>   * Author: Dorinda Bassey       <dbassey@redhat.com>
+>> >>>   *
+>> >>>   * SPDX-License-Identifier: GPL-2.0-or-later
+>> >>>   */
+>> >>>  +#include <spa/param/audio/format-utils.h>
+>> >>> +#include <spa/utils/ringbuffer.h>
+>> >>> +#include <spa/utils/result.h>
+>> >>> +#include <spa/param/props.h>
+>> >>>  #include "qemu/osdep.h"
+>> >>>  #include "qemu/module.h"
+>> >>>  #include "audio.h"
+>> >>>  #include <errno.h>
+>> >>>  #include "qemu/error-report.h"
+>> >>>  #include "qapi/error.h"
+>> >>> -#include <spa/param/audio/format-utils.h>
+>> >>> -#include <spa/utils/ringbuffer.h>
+>> >>> -#include <spa/utils/result.h>
+>> >>> -#include <spa/param/props.h>
+>> >>
+>> >>Was this an autofmt change sneaking in? osdep.h should always be first
+>> >>per style.rst.
+>> >
+>> > It should have been mentioned in the commit message and in a code
+>> > comment. libspa throws errors because the preprocessor changes
+>> > `fallthrough` to our macro definition. I do not like the reordering.
+>> > My other thought was to undef fallthrough and re-include
+>> > "qemu/compiler.h" after the libspa includes.
+>>
+>> Ahh this stuff:
+>>
+>>   #if defined(__clang__) && defined(__cplusplus) && __cplusplus >=3D 201=
+103L
+>>      /* clang's fallthrough annotations are only available starting in C=
+++11. */
+>>   #  define SPA_FALLTHROUGH [[clang::fallthrough]];
+>>   #elif __GNUC__ >=3D 7 || __clang_major__ >=3D 10
+>>   #  define SPA_FALLTHROUGH __attribute__ ((fallthrough));
+>>   #else
+>>   #  define SPA_FALLTHROUGH /* FALLTHROUGH */
+>>   #endif
+>>
+>> I think this is papering over a potential problem we might have with
+>> multiple libraries and probably an argument in favour of an explicit
+>> QEMU_FALLTHROUGH macro to avoid the attribute clash.
 >
-> It's possible that some errors can be overwritten with success retval later
-> on, and then ignored.  Always capture all errors and report.
->
-> Reported by Coverity 1522861, but actually I spot one more in the same
-> function.
+> Is there a reason this thread lost the qemu-devel cc ?
 
-The other one is CID 1522862, I think.
+Not deliberately. I think my mail clients objected to open list:ARM SMMU
+<qemu-arm@nongnu.org> and skipped the last two CC's and I didn't notice.
 
-> Fixes: CID 1522861
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-
-> ---
->  migration/ram.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/migration/ram.c b/migration/ram.c
-> index c844151ee9..d8bdb53a8f 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -3888,6 +3888,8 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
->          ret = qemu_ram_resize(block, length, &local_err);
->          if (local_err) {
->              error_report_err(local_err);
-> +            assert(ret < 0);
-
-We usually don't bother asserting for this kind of "function
-reports errors two ways" code.
-
-> +            return ret;
->          }
-
-thanks
--- PMM
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
