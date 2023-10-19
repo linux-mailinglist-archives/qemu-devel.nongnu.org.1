@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E967CF438
+	by mail.lfdr.de (Postfix) with ESMTPS id 328DB7CF436
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:43:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtPXo-0003XL-Uy; Thu, 19 Oct 2023 05:42:20 -0400
+	id 1qtPYJ-0004Ui-CL; Thu, 19 Oct 2023 05:42:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtPXl-0003JM-A4
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:42:17 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtPYF-0004ET-AI
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:42:47 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtPXf-0008Gs-4Q
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:42:16 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40837ebba42so17321915e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 02:42:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtPYD-0008MR-6P
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:42:47 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-507973f3b65so9971420e87.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 02:42:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697708529; x=1698313329; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697708563; x=1698313363; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Bv96NAByx13vsgalOF5LGzpaTwsZOld5KEIy032w7f0=;
- b=CUc9G7BqQOjQSuVT6qkOvkG0w759keudI5vxidzk97ZofcBapbpp8WsebfnGl5pphA
- REs1+ZI7lcEZ8hZTxuXyvgcob0Ed5wYhRAQP9SrE3LthX/dekEzgt9Mdv6JS5PMqArX0
- FLDnI8+xW7tffeXAAWHSLrKSSWj2LJm2/q2uCvFgiphl0SJfl3ZPi8BTG6zKck9IlFOQ
- B07QIrA7sPNdqgAce6/dkCTU28Bjp4EydUnClSghs/pDOScSh7CnDIha7NlKaJOM4uZP
- gNUsnOwa4mBxkvon/AFW/VoFPwUoihui1AJpnwaOrx4kOrq3a3VbChKwhtBugi6oQ2qi
- RTZw==
+ bh=cnz5jDoGJyh0DY4HjdQ/8ALKwdxQU6M15ROp/FZemDA=;
+ b=T/GNi9HXdsfiEORdVRPm8bLFWieIUP/ldZILcHVTqGVKd255AJ8WNkcxQ0K9FQYejP
+ Trw+oxYRun7OtLzV7hiD5hgX1o90gFzOIv6JrX7iFt+IuEEyLgENQTVBVaxLnnR+vVoQ
+ 5zAq1D3QQKq/bd+WWdezPRJw2nvTHmsdbnRBB7czLx3Oha8OEndNn2LJXr8JnCfdiwdH
+ h1RJGCewYzjL2QYvA2AqtJtq/GcrC6gWUF3gJe5+NQhZKPVg/fdp/URgQGD9SwIaHHEN
+ B/Sdx0hwwlilYRYQfVnl99+Ju8bzreR8OOq5bs3P5m8wGVd7pVcGqOq3rVDQPF/n+svj
+ k9bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697708529; x=1698313329;
+ d=1e100.net; s=20230601; t=1697708563; x=1698313363;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Bv96NAByx13vsgalOF5LGzpaTwsZOld5KEIy032w7f0=;
- b=DEEQV2KM86s7otCuj92CItqmQKga8hsWddr8f5Dw0nMQp6OmJPVeqXaSvvY3va7K5C
- qm+SATrOyHY73Crtdm9Pp0Y4lzcF9WMWij7oc9KkALzKWwhijXg36rKEmyw2Q6grACOx
- 6LZPVng+ic/DK5lFqisnvt/MxYFsSModPzX98b53OJDybRai4FTSVhVNFTPiRXXTf2Y0
- 3c0jp5TBPVkeGlS2BwiQIgCxRTbLsjwfUveC0apoCSB2Ei9G8dmn4mAdaYjw2T+uyEU7
- wb3PJSKzAIknKY2sds28Yq01XNGO0HQ1NwhCHyYStnP7N1nrEuDl3qQJT5l02mwGfovt
- up0A==
-X-Gm-Message-State: AOJu0YzC7daWizz2PZUQ9eX9qrHtlWzBxQbDNEdxntfMENuGMM2hy+DI
- 9haL0RGIwZ4VcAn67mzVhqQ5Mw==
-X-Google-Smtp-Source: AGHT+IFWxTKFqjPV0ytQ9NWuhm7Yfj20ta7x2pCBO3Lg2+C0zgezI2pQRCy7cBMMHQtQhPCNhMqoSg==
-X-Received: by 2002:a05:600c:4507:b0:3ff:233f:2cfb with SMTP id
- t7-20020a05600c450700b003ff233f2cfbmr1371783wmo.23.1697708529430; 
- Thu, 19 Oct 2023 02:42:09 -0700 (PDT)
+ bh=cnz5jDoGJyh0DY4HjdQ/8ALKwdxQU6M15ROp/FZemDA=;
+ b=eIpsvga9mRSOii7/Go5R5jzLQtVFGvOkw+TZuMBsoH+jz5Pw63apP/3L7uMk7ovr9r
+ 5HAMAJ7o/uDOYPVt+hbgJv5lpGu0KluxYVjNTc96CFwW9jmndUVKtyTSQsyKvBzzaXWE
+ gB8oUwjsbv498n4xOlqbA70p9LpVi1eeQgoVm67JqlHEIodnTIgUWkdaOER/UWVWZ1xU
+ p+97lc+mB5m0NDWtlhUrQhHWNmFP0qhOsYvDGN4nmnHNpCMpJnLt5zyRRGsTPRE3zQTa
+ AST1AhKRyFZqUhyPVbDC2CKd+rV26zFU3kdSXFyLRonKuTbPYTXxBbC2jJviLogp6ZHm
+ uHYw==
+X-Gm-Message-State: AOJu0YxylhxATGsSuZYqJz12VvJVPtYWzE9UQdu3V+UKOM/xkKpVeyr+
+ AahEYcZkaWu+LEQH/gwLTN12Tw==
+X-Google-Smtp-Source: AGHT+IEfoOKhLdOoxSsfzybAqbEiRz5y/vWoPaPBbkag1IGjtD52iPVzXbS5MobunwIKwC0zrfqOYA==
+X-Received: by 2002:ac2:5b9e:0:b0:507:99f8:4f5e with SMTP id
+ o30-20020ac25b9e000000b0050799f84f5emr1044884lfn.12.1697708563149; 
+ Thu, 19 Oct 2023 02:42:43 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-216-177.abo.bbox.fr.
  [176.131.216.177]) by smtp.gmail.com with ESMTPSA id
- m11-20020a056000180b00b0032db8f7f378sm4065502wrh.71.2023.10.19.02.42.08
+ z3-20020a5d6403000000b0032db430fb9bsm4030361wru.68.2023.10.19.02.42.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 02:42:08 -0700 (PDT)
-Message-ID: <5f40402e-8448-c7af-0f76-ff4c08d4affe@linaro.org>
-Date: Thu, 19 Oct 2023 11:42:07 +0200
+ Thu, 19 Oct 2023 02:42:42 -0700 (PDT)
+Message-ID: <dfde3142-c2ee-2ad7-48e8-10e5ce16f8bc@linaro.org>
+Date: Thu, 19 Oct 2023 11:42:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 03/61] target/hppa: Remove get_temp_tl
+Subject: Re: [PATCH 06/61] target/hppa: Fix load in do_load_32
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@gmx.de
 References: <20231018215135.1561375-1-richard.henderson@linaro.org>
- <20231018215135.1561375-4-richard.henderson@linaro.org>
+ <20231018215135.1561375-7-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231018215135.1561375-4-richard.henderson@linaro.org>
+In-Reply-To: <20231018215135.1561375-7-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -94,12 +94,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18/10/23 23:50, Richard Henderson wrote:
-> Replace with tcg_temp_new_tl without recording into ctx.
+> The destination is TCGv_i32, so use tcg_gen_qemu_ld_i32
+> not tcg_gen_qemu_ld_reg.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/hppa/translate.c | 28 +++-------------------------
->   1 file changed, 3 insertions(+), 25 deletions(-)
+>   target/hppa/translate.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
