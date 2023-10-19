@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B12D7CFCEF
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CB77CFD06
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:40:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtU7P-0006iw-AB; Thu, 19 Oct 2023 10:35:23 -0400
+	id 1qtU7M-0006i6-I2; Thu, 19 Oct 2023 10:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qtU7M-0006i8-HB
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qtU7I-0006gq-DY
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qtU7J-0000Gd-L2
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:20 -0400
+ id 1qtU7F-0000FK-Ve
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697726116;
+ s=mimecast20190719; t=1697726113;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XsIAntQYdWLeT+2YVHjDJvl/kMvjNkLvmgtOnVCusOs=;
- b=SHxXwtzgiKe9U3g/nPxCDye7FK+hPoHnmX96nrzpb1Wo1q5opOOdXkjjAuicosywqDOdRX
- rPmA+BUyC4rmhLUpW6yY+iG+rWnFRkcvgD7wJSeC7kcKIaykwWd6iABZLwn4ra6zco8tVn
- LxO9tR0tA6N0+PgZftV3Y2SB+IUhIvQ=
+ bh=5JvnvZjI3INtTAjzXeyMt4WdhTcdqcyEbjYGoNW65M0=;
+ b=VkTeoaED//V6hsP/0/ri+FW38magwUnGei1W6ToJu5r3uaQ+7xCHAeRVSxysIdPY2DoNCI
+ I8JaMp9UFZBkD7iKups2nh8djOhuDXT+kV3yvfzs6zhplevGx6nz6wUWE7UyXL1R48e8KN
+ rQI+3FNZQqQRSt6wP8Ro3LoEHXecYcc=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-623-UUXGMxmJMDmHek3QD78Vaw-1; Thu, 19 Oct 2023 10:35:08 -0400
-X-MC-Unique: UUXGMxmJMDmHek3QD78Vaw-1
+ us-mta-66-AtnOkfmZMtmjviHPnXHOeA-1; Thu, 19 Oct 2023 10:35:10 -0400
+X-MC-Unique: AtnOkfmZMtmjviHPnXHOeA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 324658EB366;
- Thu, 19 Oct 2023 14:35:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A13678EB361;
+ Thu, 19 Oct 2023 14:35:09 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.192.162])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 005C9C15BB8;
- Thu, 19 Oct 2023 14:35:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6D87EC15BB8;
+ Thu, 19 Oct 2023 14:35:07 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Shannon <shannon.nelson@amd.com>, Parav Pandit <parav@mellanox.com>,
@@ -52,23 +52,23 @@ Cc: Shannon <shannon.nelson@amd.com>, Parav Pandit <parav@mellanox.com>,
  Dragos Tatulea <dtatulea@nvidia.com>, Juan Quintela <quintela@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, si-wei.liu@oracle.com,
  Gautam Dawar <gdawar@xilinx.com>
-Subject: [RFC PATCH 03/18] vdpa: move iova_range to vhost_vdpa_shared
-Date: Thu, 19 Oct 2023 16:34:40 +0200
-Message-Id: <20231019143455.2377694-4-eperezma@redhat.com>
+Subject: [RFC PATCH 04/18] vdpa: move shadow_data to vhost_vdpa_shared
+Date: Thu, 19 Oct 2023 16:34:41 +0200
+Message-Id: <20231019143455.2377694-5-eperezma@redhat.com>
 In-Reply-To: <20231019143455.2377694-1-eperezma@redhat.com>
 References: <20231019143455.2377694-1-eperezma@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,148 +94,138 @@ However, the destination QEMU is unaware of which vhost_vdpa device will
 register its memory_listener.  If the source guest has CVQ enabled, it
 will be the CVQ device.  Otherwise, it  will be the first one.
 
-Move the iova range to VhostVDPAShared so all vhost_vdpa can use it,
-rather than always in the first or last vhost_vdpa.
+Move the shadow_data member to VhostVDPAShared so all vhost_vdpa can use
+it, rather than always in the first or last vhost_vdpa.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- include/hw/virtio/vhost-vdpa.h |  3 ++-
- hw/virtio/vdpa-dev.c           |  5 ++++-
- hw/virtio/vhost-vdpa.c         | 16 ++++++++++------
- net/vhost-vdpa.c               | 10 +++++-----
- 4 files changed, 21 insertions(+), 13 deletions(-)
+ include/hw/virtio/vhost-vdpa.h |  5 +++--
+ hw/virtio/vhost-vdpa.c         |  6 +++---
+ net/vhost-vdpa.c               | 23 ++++++-----------------
+ 3 files changed, 12 insertions(+), 22 deletions(-)
 
 diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index ac036055d3..8d52a7e498 100644
+index 8d52a7e498..01e0f25e27 100644
 --- a/include/hw/virtio/vhost-vdpa.h
 +++ b/include/hw/virtio/vhost-vdpa.h
-@@ -32,6 +32,8 @@ typedef struct VhostVDPAHostNotifier {
+@@ -36,6 +36,9 @@ typedef struct vhost_vdpa_shared {
  
- /* Info shared by all vhost_vdpa device models */
- typedef struct vhost_vdpa_shared {
-+    struct vhost_vdpa_iova_range iova_range;
-+
      /* IOVA mapping used by the Shadow Virtqueue */
      VhostIOVATree *iova_tree;
++
++    /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
++    bool shadow_data;
  } VhostVDPAShared;
-@@ -43,7 +45,6 @@ typedef struct vhost_vdpa {
-     bool iotlb_batch_begin_sent;
-     uint32_t address_space_id;
+ 
+ typedef struct vhost_vdpa {
+@@ -47,8 +50,6 @@ typedef struct vhost_vdpa {
      MemoryListener listener;
--    struct vhost_vdpa_iova_range iova_range;
      uint64_t acked_features;
      bool shadow_vqs_enabled;
-     /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
-diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-index f22d5d5bc0..457960d28a 100644
---- a/hw/virtio/vdpa-dev.c
-+++ b/hw/virtio/vdpa-dev.c
-@@ -114,7 +114,8 @@ static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
-                    strerror(-ret));
-         goto free_vqs;
-     }
--    v->vdpa.iova_range = iova_range;
-+    v->vdpa.shared = g_new0(VhostVDPAShared, 1);
-+    v->vdpa.shared->iova_range = iova_range;
- 
-     ret = vhost_dev_init(&v->dev, &v->vdpa, VHOST_BACKEND_TYPE_VDPA, 0, NULL);
-     if (ret < 0) {
-@@ -162,6 +163,7 @@ vhost_cleanup:
-     vhost_dev_cleanup(&v->dev);
- free_vqs:
-     g_free(vqs);
-+    g_free(v->vdpa.shared);
- out:
-     qemu_close(v->vhostfd);
-     v->vhostfd = -1;
-@@ -184,6 +186,7 @@ static void vhost_vdpa_device_unrealize(DeviceState *dev)
-     g_free(s->config);
-     g_free(s->dev.vqs);
-     vhost_dev_cleanup(&s->dev);
-+    g_free(s->vdpa.shared);
-     qemu_close(s->vhostfd);
-     s->vhostfd = -1;
- }
+-    /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
+-    bool shadow_data;
+     /* Device suspended successfully */
+     bool suspended;
+     VhostVDPAShared *shared;
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 9cee38cb6d..2bceadd118 100644
+index 2bceadd118..ec028e4c56 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -213,10 +213,10 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-     RCU_READ_LOCK_GUARD();
-     /* check if RAM section out of device range */
-     llend = int128_add(int128_makes64(iotlb->addr_mask), int128_makes64(iova));
--    if (int128_gt(llend, int128_make64(v->iova_range.last))) {
-+    if (int128_gt(llend, int128_make64(v->shared->iova_range.last))) {
-         error_report("RAM section out of device range (max=0x%" PRIx64
-                      ", end addr=0x%" PRIx64 ")",
--                     v->iova_range.last, int128_get64(llend));
-+                     v->shared->iova_range.last, int128_get64(llend));
-         return;
+@@ -353,7 +353,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+                                          vaddr, section->readonly);
+ 
+     llsize = int128_sub(llend, int128_make64(iova));
+-    if (v->shadow_data) {
++    if (v->shared->shadow_data) {
+         int r;
+ 
+         mem_region.translated_addr = (hwaddr)(uintptr_t)vaddr,
+@@ -380,7 +380,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+     return;
+ 
+ fail_map:
+-    if (v->shadow_data) {
++    if (v->shared->shadow_data) {
+         vhost_iova_tree_remove(v->shared->iova_tree, mem_region);
      }
  
-@@ -316,8 +316,10 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-     int page_size = qemu_target_page_size();
-     int page_mask = -page_size;
+@@ -435,7 +435,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
  
--    if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
--                                            v->iova_range.last, page_mask)) {
-+    if (vhost_vdpa_listener_skipped_section(section,
-+                                            v->shared->iova_range.first,
-+                                            v->shared->iova_range.last,
-+                                            page_mask)) {
-         return;
-     }
-     if (memory_region_is_iommu(section->mr)) {
-@@ -403,8 +405,10 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-     int page_size = qemu_target_page_size();
-     int page_mask = -page_size;
+     llsize = int128_sub(llend, int128_make64(iova));
  
--    if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
--                                            v->iova_range.last, page_mask)) {
-+    if (vhost_vdpa_listener_skipped_section(section,
-+                                            v->shared->iova_range.first,
-+                                            v->shared->iova_range.last,
-+                                            page_mask)) {
-         return;
-     }
-     if (memory_region_is_iommu(section->mr)) {
+-    if (v->shadow_data) {
++    if (v->shared->shadow_data) {
+         const DMAMap *result;
+         const void *vaddr = memory_region_get_ram_ptr(section->mr) +
+             section->offset_within_region +
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 15e7579b13..9648b0ef7e 100644
+index 9648b0ef7e..01202350ea 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -345,8 +345,8 @@ static void vhost_vdpa_net_data_start_first(VhostVDPAState *s)
- 
-     add_migration_state_change_notifier(&s->migration_state);
-     if (v->shadow_vqs_enabled) {
--        v->shared->iova_tree = vhost_iova_tree_new(v->iova_range.first,
--                                                   v->iova_range.last);
-+        v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
-+                                                   v->shared->iova_range.last);
-     }
+@@ -282,15 +282,6 @@ static ssize_t vhost_vdpa_receive(NetClientState *nc, const uint8_t *buf,
+     return size;
  }
  
-@@ -581,8 +581,8 @@ out:
-      * and it is not worth it for the moment.
-      */
-     if (!v->shared->iova_tree) {
--        v->shared->iova_tree = vhost_iova_tree_new(v->iova_range.first,
--                                                   v->iova_range.last);
-+        v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
-+                                                   v->shared->iova_range.last);
+-/** From any vdpa net client, get the netclient of the first queue pair */
+-static VhostVDPAState *vhost_vdpa_net_first_nc_vdpa(VhostVDPAState *s)
+-{
+-    NICState *nic = qemu_get_nic(s->nc.peer);
+-    NetClientState *nc0 = qemu_get_peer(nic->ncs, 0);
+-
+-    return DO_UPCAST(VhostVDPAState, nc, nc0);
+-}
+-
+ static void vhost_vdpa_net_log_global_enable(VhostVDPAState *s, bool enable)
+ {
+     struct vhost_vdpa *v = &s->vhost_vdpa;
+@@ -360,10 +351,10 @@ static int vhost_vdpa_net_data_start(NetClientState *nc)
+     if (s->always_svq ||
+         migration_is_setup_or_active(migrate_get_current()->state)) {
+         v->shadow_vqs_enabled = true;
+-        v->shadow_data = true;
++        v->shared->shadow_data = true;
+     } else {
+         v->shadow_vqs_enabled = false;
+-        v->shadow_data = false;
++        v->shared->shadow_data = false;
      }
  
-     r = vhost_vdpa_cvq_map_buf(&s->vhost_vdpa, s->cvq_cmd_out_buffer,
-@@ -1455,12 +1455,12 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+     if (v->index == 0) {
+@@ -513,7 +504,7 @@ dma_map_err:
+ 
+ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
+ {
+-    VhostVDPAState *s, *s0;
++    VhostVDPAState *s;
+     struct vhost_vdpa *v;
+     int64_t cvq_group;
+     int r;
+@@ -524,12 +515,10 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
+     s = DO_UPCAST(VhostVDPAState, nc, nc);
+     v = &s->vhost_vdpa;
+ 
+-    s0 = vhost_vdpa_net_first_nc_vdpa(s);
+-    v->shadow_data = s0->vhost_vdpa.shadow_vqs_enabled;
+-    v->shadow_vqs_enabled = s0->vhost_vdpa.shadow_vqs_enabled;
++    v->shadow_vqs_enabled = s->always_svq;
+     s->vhost_vdpa.address_space_id = VHOST_VDPA_GUEST_PA_ASID;
+ 
+-    if (s->vhost_vdpa.shadow_data) {
++    if (v->shared->shadow_data) {
+         /* SVQ is already configured for all virtqueues */
+         goto out;
+     }
+@@ -1455,12 +1444,12 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
      s->always_svq = svq;
      s->migration_state.notify = vdpa_net_migration_state_notifier;
      s->vhost_vdpa.shadow_vqs_enabled = svq;
--    s->vhost_vdpa.iova_range = iova_range;
-     s->vhost_vdpa.shadow_data = svq;
+-    s->vhost_vdpa.shadow_data = svq;
      if (queue_pair_index == 0) {
          vhost_vdpa_net_valid_svq_features(features,
                                            &s->vhost_vdpa.migration_blocker);
          s->vhost_vdpa.shared = g_new0(VhostVDPAShared, 1);
-+        s->vhost_vdpa.shared->iova_range = iova_range;
+         s->vhost_vdpa.shared->iova_range = iova_range;
++        s->vhost_vdpa.shared->shadow_data = svq;
      } else if (!is_datapath) {
          s->cvq_cmd_out_buffer = mmap(NULL, vhost_vdpa_net_cvq_cmd_page_len(),
                                       PROT_READ | PROT_WRITE,
