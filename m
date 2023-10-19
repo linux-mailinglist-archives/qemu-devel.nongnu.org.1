@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693867D03FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3207D0412
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:39:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaUa-0001kx-Im; Thu, 19 Oct 2023 17:23:44 -0400
+	id 1qtaif-00020S-Jn; Thu, 19 Oct 2023 17:38:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtaUY-0001TN-F5
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:23:42 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaid-00020A-Rs
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:38:15 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtaUW-0001mU-Tm
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:23:42 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 8A33C1F45B;
- Thu, 19 Oct 2023 21:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697750619; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2kwqI8mOveVpP06Ur8RJy1f9QASw52bmBjPxFk1SAMc=;
- b=Qcls3jwl9trG3qFHMGwMMiZ9VNFw85+1woAIk8g3G5jP+o45k5FnqN5gl+vkJHroay7nfb
- 9AppyVzgsyTGfAMWnvTJ36zW581Z49JSrDVHsLIKTTOWnzQ9nAVuEybtComFf+qcq9PWZI
- KawGJRGNQbuJYbGKXV0H8NLWPluaVVs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697750619;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2kwqI8mOveVpP06Ur8RJy1f9QASw52bmBjPxFk1SAMc=;
- b=3E5ygPbJxSPXxi4vuRh4XKMRgVcOSG2rTqapoQeGGl0oWMSz/Y2U2z0z91QL4QP/08DPoM
- hALafaVu7n6v2nDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 10BDA139C2;
- Thu, 19 Oct 2023 21:23:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id pz/0MlqeMWVgRQAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 21:23:38 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Li Zhijian <lizhijian@fujitsu.com>, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 2/2] migration: Rename ram_handle_compressed() to
- ram_handle_zero()
-In-Reply-To: <20231019085259.13307-3-quintela@redhat.com>
-References: <20231019085259.13307-1-quintela@redhat.com>
- <20231019085259.13307-3-quintela@redhat.com>
-Date: Thu, 19 Oct 2023 18:23:36 -0300
-Message-ID: <87zg0egvc7.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaic-00077t-9D
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:38:15 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-99357737980so26896066b.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:38:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697751492; x=1698356292; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3CeRPiYyFBNOveaPAMyUact9Jjxt8XFEWnZM7/bb7Ew=;
+ b=uhjJEPLj/Hy/sk6NQno+bqoiCZA+Djbj02I+SD/aOHohmzE1dae1LScVgrhOXuaOMa
+ Fvhea0Ao0FDyQZcpa135BpU+H4BmsaiVyGWS2sYq1ZAq97b8EdjuWF3T7BzRpDY86leN
+ Oyb5o+t2Nvqty1G6ZSZdhjs7OCeAwoop7X/1ETrp4izsvln/+yR3PmMMDg2PFpDsIhpH
+ WHrEBrDmc7vMnkzUw7eH+tKbVwPq+CmZJTyZBYqYnSgmiirq4LG97IMm+rT8ombDbYY5
+ FXsJpO6T67F92wNlgP9NSFsr1YoEY08xqJmZCLvIdnT+0HKnrQLndn5oucE0Ih8geKBo
+ RujQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697751492; x=1698356292;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3CeRPiYyFBNOveaPAMyUact9Jjxt8XFEWnZM7/bb7Ew=;
+ b=euBYrhcnj2Ix9ny4ZcgZ9CGkLEL+JVIQTXVcu5OqXXE2m9QAnPoSYJr+58tVTn9H0P
+ SyUVoADZ3RsHSg/Quqnot2Uj+VsthCp3YMpaqADcRaeh0s0ghwKZhCBaQOz7Sw6eB5Nm
+ cg1uEUpJGjEANyM99uji6z8zHw7x8VcHFmePL0X30tLei4gFtZ0iBXhsZRHJ2cdfnfLA
+ rk13ukVCDHPpqGTAhKbhtJuc+sClAmtOXUxKExSovVTpZCnNkCPm8VQOaTvN7Uf6SCF9
+ 1W2eB7VYJFgsnN7BBdt19T1XStcHoVuHSnJIkx+/+7Q2DnlDVwaUBS0PzyoXSF45enDj
+ 9I5w==
+X-Gm-Message-State: AOJu0Yxdfc0y7wK7niGpqU18UwlcztmCsLCbIY2NIvC8M41Y89VifL+a
+ qILxZCGKEv/renM3bAq1kMuy5XrpUBttItMVSACrdg==
+X-Google-Smtp-Source: AGHT+IGQc0X1oe4w6lZ31cLypSSErlqo5gDWztiZVNBCj+EbdVsXN32/oBfFZoCo1TfqwcMEKmup9A==
+X-Received: by 2002:a17:906:4fcd:b0:9bf:30e8:5bfb with SMTP id
+ i13-20020a1709064fcd00b009bf30e85bfbmr3056516ejw.48.1697751491747; 
+ Thu, 19 Oct 2023 14:38:11 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-216-177.abo.bbox.fr.
+ [176.131.216.177]) by smtp.gmail.com with ESMTPSA id
+ x22-20020a170906711600b0099b7276235esm228609ejj.93.2023.10.19.14.38.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 14:38:11 -0700 (PDT)
+Message-ID: <f4a43dd8-a206-6c78-f9e6-89174102679e@linaro.org>
+Date: Thu, 19 Oct 2023 23:38:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -7.08
-X-Spamd-Result: default: False [-7.08 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.98)[99.93%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[6];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v3 0/7] hw/ppc: SysBus simplifications
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ David Gibson <david@gibson.dropbear.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20231019131647.19690-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231019131647.19690-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,12 +98,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+On 19/10/23 15:16, Philippe Mathieu-Daudé wrote:
 
-> Now that we know it only handles zero, we can remove the ch parameter.
->
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Philippe Mathieu-Daudé (7):
+>    hw/ppc/spapr_vio: Realize SPAPR_VIO_BRIDGE device before accessing it
+>    hw/ppc/pnv_xscom: Rename pnv_xscom_realize(Error **) ->
+>      pnv_xscom_init()
+>    hw/ppc/pnv_xscom: Move sysbus_mmio_map() call within pnv_xscom_init()
+>    hw/ppc/pnv_xscom: Do not use SysBus API to map local MMIO region
+>    hw/ppc/pnv: Do not use SysBus API to map local MMIO region
+>    hw/intc/spapr_xive: Move sysbus_init_mmio() calls around
+>    hw/intc/spapr_xive: Do not use SysBus API to map local MMIO region
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Series queued to hw-misc.
 
 
