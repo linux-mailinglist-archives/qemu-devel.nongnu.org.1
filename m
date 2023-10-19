@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5D47D032B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBBB7D0377
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:05:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZfF-0002VS-8U; Thu, 19 Oct 2023 16:30:41 -0400
+	id 1qtaBe-0002t4-Qt; Thu, 19 Oct 2023 17:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qtZfC-0002U1-BK; Thu, 19 Oct 2023 16:30:38 -0400
+ id 1qtaBL-0002p4-PN; Thu, 19 Oct 2023 17:03:52 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qtZfA-00051v-DR; Thu, 19 Oct 2023 16:30:37 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ id 1qtaBJ-0001QS-Oc; Thu, 19 Oct 2023 17:03:51 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKS9BQ022374; Thu, 19 Oct 2023 20:30:12 GMT
+ 39JL0WLv029786; Thu, 19 Oct 2023 21:03:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=nnrEyjGp5QZQoZPRgiOl9huuA1pIeT9IyWWA9zGnSgY=;
- b=nklG672Dpwm3GpYpJhxfFRAXGrjdbe/mZuaNlqMpwlm8hRcqUicRqGLTRyaSsvZ2k7nn
- r5INAzki0ikIU82ZkWjc9R/HPs3bB+p3E4P0DSq9Vn+W73YhFrsEb08doNaCfh1r9HcP
- PFwPS1vNhPjUDc96kQiOpV+9/FVLm78dDVSUaWwkIkgIIzS1mQlum6tJd51obLuA4PDe
- 3S22+UUJr4qqOhL7VTeKvKn6HuPlHEm0c7Zp2o98h55F/R4b8v/5aZOfTIW2JCMGm+mB
- DsoMKJfzBQrO7uOgGIQagOv1dY+oejQS+Rqy6aqwmid0/+M5gHSnmOkoYvEjq1A6GD/u ow== 
+ bh=R/3h87s0xeLqmjIb7mURZ4HmMkSUJrD+xg+924aPtlM=;
+ b=orkHFEMnVgZ96qNwvJ+KDBNZixIFKRUwqoXIFMJ5V7R6KqQcMNDs4R6rLi97lN/s9gOp
+ 2X6mKv/DSV/esk6xeOrOdw2CF+5AELdz75FJjkc3zKn6gbORJ69evZkCsP192nKYrSh7
+ zig0MeH0DDQaUlMhiAQozG0KmJDaEby4DT6+BO5BHxacVW2vbKtgkQZVxLD+TxtArz+C
+ 4KnAimIA/eTgI58gMtRJjx/R1dOGSXrrvY/jWNWBEbvonSKjLvZ8jo9+CzkHblXd5HNj
+ ON11BeyAH6jFOqyRMtdbce266npln3SQh32Eljz38sj2eTVSKmNRQgnW6fFzqMdA38q2 jA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tub8m8drc-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuc058ab7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:30:11 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKT0R4025550;
- Thu, 19 Oct 2023 20:30:10 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tub8m8dpe-1
+ Thu, 19 Oct 2023 21:03:32 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JL0fRE030363;
+ Thu, 19 Oct 2023 21:03:20 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuc0589aa-3
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:30:10 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JIt5fk012949; Thu, 19 Oct 2023 20:30:09 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5pyujej-1
+ Thu, 19 Oct 2023 21:03:20 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39JJhi2D027130; Thu, 19 Oct 2023 20:38:20 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tku8k9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:30:09 +0000
+ Thu, 19 Oct 2023 20:38:20 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
  [10.241.53.100])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39JKU8e623790278
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39JKcJQK48496988
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:30:09 GMT
+ Thu, 19 Oct 2023 20:38:19 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 962BA58057;
- Thu, 19 Oct 2023 20:30:08 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 88E9358059;
+ Thu, 19 Oct 2023 20:38:19 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A7CB58062;
- Thu, 19 Oct 2023 20:30:04 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7EFF058057;
+ Thu, 19 Oct 2023 20:38:16 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
  by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 19 Oct 2023 20:30:03 +0000 (GMT)
-Message-ID: <6b3104ad-c48b-c9f9-78ee-1148e5a0227e@linux.ibm.com>
-Date: Thu, 19 Oct 2023 16:30:02 -0400
+ Thu, 19 Oct 2023 20:38:16 +0000 (GMT)
+Message-ID: <8b7a67bf-6d45-374c-13ee-fbb85b4b21bc@linux.ibm.com>
+Date: Thu, 19 Oct 2023 16:38:15 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 06/13] migration: Use VMSTATE_INSTANCE_ID_ANY for s390
- devices
+Subject: Re: [PATCH 10/13] migration: Improve example and documentation of
+ vmstate_register()
 Content-Language: en-US
 To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
 Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
@@ -94,23 +94,23 @@ Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
  <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
 References: <20231019190831.20363-1-quintela@redhat.com>
- <20231019190831.20363-7-quintela@redhat.com>
+ <20231019190831.20363-11-quintela@redhat.com>
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20231019190831.20363-7-quintela@redhat.com>
+In-Reply-To: <20231019190831.20363-11-quintela@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PHDvnHg4F6tfbDT_67m_4uG7bo1X-pR2
-X-Proofpoint-ORIG-GUID: EhFtIFuLunSUKxdtRftQXT3dXc0xAg6y
+X-Proofpoint-GUID: AFRDLxnl0cnlKe5z7up_F34GBaDdsUSv
+X-Proofpoint-ORIG-GUID: 37p4IB-0PDqTaExATMDl8XywRTb2HTuY
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_20,2023-10-19_01,2023-05-22_02
+ definitions=2023-10-19_21,2023-10-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- malwarescore=0 mlxscore=0 impostorscore=0 phishscore=0 clxscore=1015
- adultscore=0 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310190174
+ bulkscore=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 mlxlogscore=994 lowpriorityscore=0
+ adultscore=0 clxscore=1015 phishscore=0 impostorscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310190177
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -52
@@ -137,62 +137,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/19/23 15:08, Juan Quintela wrote:
-> Just with make check I can see that we can have more than one of this
-> devices, so use ANY.
->
-> ok 5 /s390x/device/introspect/abstract-interfaces
-> ...
-> Broken pipe
-> ../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
-> Aborted (core dumped)
->
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 > ---
->   hw/s390x/s390-skeys.c    | 3 ++-
->   hw/s390x/s390-stattrib.c | 3 ++-
->   2 files changed, 4 insertions(+), 2 deletions(-)
+>   docs/devel/migration.rst | 12 ++++++++----
+>   1 file changed, 8 insertions(+), 4 deletions(-)
 >
-> diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-> index 5024faf411..ef089e1967 100644
-> --- a/hw/s390x/s390-skeys.c
-> +++ b/hw/s390x/s390-skeys.c
-> @@ -22,6 +22,7 @@
->   #include "sysemu/kvm.h"
->   #include "migration/qemu-file-types.h"
->   #include "migration/register.h"
-> +#include "migration/vmstate.h"
+> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+> index c3e1400c0c..a9fde75862 100644
+> --- a/docs/devel/migration.rst
+> +++ b/docs/devel/migration.rst
+> @@ -165,13 +165,17 @@ An example (from hw/input/pckbd.c)
+>         }
+>     };
 >
->   #define S390_SKEYS_BUFFER_SIZE (128 * KiB)  /* Room for 128k storage keys */
->   #define S390_SKEYS_SAVE_FLAG_EOS 0x01
-> @@ -457,7 +458,7 @@ static inline void s390_skeys_set_migration_enabled(Object *obj, bool value,
->       ss->migration_enabled = value;
+> -We are declaring the state with name "pckbd".
+> -The ``version_id`` is 3, and the fields are 4 uint8_t in a KBDState structure.
+> -We registered this with:
+> +We are declaring the state with name "pckbd".  The ``version_id`` is
+> +3, and the fields are 4 uint8_t in a KBDState structure.  We
+
+and there are 4  uint8_t fields in the KBDState structure.
+
+
+> +registered this with one of those.  The first one will generate a
+
+I am not sure what this means 'We registered this with one of those'. 
+What is 'one of those'?
+
+Maybe you mean: We register the KBDState with one of the following 
+functions.
+
+> +device ``instance_id`` different for each registration.  Use the
+> +second one if you already have an id different for each instance of
+> +the device:
+... have an id that is is different for each ...
 >
->       if (ss->migration_enabled) {
-> -        register_savevm_live(TYPE_S390_SKEYS, 0, 1,
-> +        register_savevm_live(TYPE_S390_SKEYS, VMSTATE_INSTANCE_ID_ANY, 1,
->                                &savevm_s390_storage_keys, ss);
->       } else {
->           unregister_savevm(VMSTATE_IF(ss), TYPE_S390_SKEYS, ss);
-> diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
-> index 220e845d12..055d382c3c 100644
-> --- a/hw/s390x/s390-stattrib.c
-> +++ b/hw/s390x/s390-stattrib.c
-> @@ -13,6 +13,7 @@
->   #include "qemu/units.h"
->   #include "migration/qemu-file.h"
->   #include "migration/register.h"
-> +#include "migration/vmstate.h"
->   #include "hw/s390x/storage-attributes.h"
->   #include "qemu/error-report.h"
->   #include "exec/ram_addr.h"
-> @@ -380,7 +381,7 @@ static void s390_stattrib_instance_init(Object *obj)
->   {
->       S390StAttribState *sas = S390_STATTRIB(obj);
+>   .. code:: c
 >
-> -    register_savevm_live(TYPE_S390_STATTRIB, 0, 0,
-> +    register_savevm_live(TYPE_S390_STATTRIB, VMSTATE_INSTANCE_ID_ANY, 0,
->                            &savevm_s390_stattrib_handlers, sas);
+> -    vmstate_register(NULL, 0, &vmstate_kbd, s);
+> +    vmstate_register_any(NULL, &vmstate_kbd, s);
+> +    vmstate_register(NULL, instance_id, &vmstate_kbd, s);
 >
->       object_property_add_bool(obj, "migration-enabled",
+>   For devices that are ``qdev`` based, we can register the device in the class
+>   init function:
 
