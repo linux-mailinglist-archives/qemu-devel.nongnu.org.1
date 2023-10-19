@@ -2,90 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4450D7D041B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A347D0418
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:41:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtakY-0003cP-Ud; Thu, 19 Oct 2023 17:40:14 -0400
+	id 1qtal5-00045O-RT; Thu, 19 Oct 2023 17:40:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtakW-0003an-KE
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:12 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtal3-00044e-J4
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:45 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtakT-0000A9-9q
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:12 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-53db1fbee70so123270a12.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:40:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtal2-0000Jj-5G
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:45 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-9c603e2354fso38964566b.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:40:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697751607; x=1698356407; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697751642; x=1698356442; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rbmDuYpvV88iKNjkf/AlL0vQESOVZTA9WYJH0rHE3Qs=;
- b=P3YEnKlEgBOYYnKFSNxEDfaNSMB1VgPgnVcAF50a5PyajiJ5wukXknXY+eGfPqf59P
- fHRQ+43SmTuUK1YHgdZsSs8e485v7G16TOKK/5RCQqOfz/RYehv5d4tw9G22/eozBBw5
- ZPQWgoWN1k6y9X47TC6iWUUVlxsYEj7cncnasi7x9N3LXiUKoCigj8o9vmoVeIWRolg4
- VvuiJePE7lEudiVVzA39APnZ2TnjFPjGgvVMQiJ97Kqp1JL4CbLEePJeYBGtGyPjg/ec
- n+Wg5Tm4u4lYnQRV6e3N7ZlFNzu19uwppW1VM0mp9C77N3aukdCkEr+IlpjIsn+naP7w
- W9SQ==
+ bh=EjopA27rRiWdYW2uvmQgTqz6C8hzHp8lMBO0zXs9HhM=;
+ b=mJEjkIcHMpoT8K1NAfuLQvvkbg9LVnNZq0+E2Gqczu8QnPqiRcFME2Y5pC5mHJ4/BV
+ QS4qYP/1QNJzS6+tbfwkF5xTaQG0tXVgiTp5HfhaHNjOEXIXMCWqRWpUjQ8dwnD4dd1j
+ jctNCDsPDmWX60r5nNdaWCm+NXEYoKio2C0Qy/X4/eMJplFG/WO46OhC2mXLIpUZuSJs
+ NRksdWxINCTWQJtcjZrLHfALHQZxl6mmsZ5VKsjCEHpTEQCTVBmCc6PxmGzgMqDorClv
+ kwUj0Eu+9DZoHagGqvqEGmpk02sKVoSlDnGYu356H/3jQuzU4TCrpjOdCFpd1KXxSKy3
+ i9iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697751607; x=1698356407;
+ d=1e100.net; s=20230601; t=1697751642; x=1698356442;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rbmDuYpvV88iKNjkf/AlL0vQESOVZTA9WYJH0rHE3Qs=;
- b=M/Oq1xtmR2aM/yLLOoEW26A+mZw3cm0srIq4e63WZM8+nNvXUI7sB2XB+nW4IZysZC
- BHb+cddM1eYLD+jkP2WuQrAFr7ky/osK87hbQaalYaDxQCY2nOqiOZZlDTHZ4cYslOiy
- QMZgRkZRg6mrYpV+FIA5jwdBNg21XXTaFKvzP2rF1dIRkuXf+v2J4Na08mSFWQaEwXTT
- QEbOpoReAzVr6euwqkwNPyRBbZbBj6U6s5USOxchLrnKMkGttBZ2MPxRZgCyiFJqw0X2
- vY+VLlS5/9M72eHD9Sh7oQpJ1vQLeQPCvGgSWKyn2moYIPOypx2M4tE5N+mfnGsMpwV5
- 0Pfg==
-X-Gm-Message-State: AOJu0YzcN+YzeJk7s3HoyC+T6ktxSgv4rtnt7+TzGzmPhQeGZADOsxNp
- 8+xqDwKFxoy4fPjYg/DfbBephk+uEGNFLuxwirhQ/A==
-X-Google-Smtp-Source: AGHT+IFgj1tEqwjH3TKAjoC7MTEJRzP7+VhYONVf57ly/RM4/prZw/85yBB7loAQZvtGej1eByRsdA==
-X-Received: by 2002:a50:d719:0:b0:53e:1815:ed0f with SMTP id
- t25-20020a50d719000000b0053e1815ed0fmr106515edi.31.1697751607172; 
- Thu, 19 Oct 2023 14:40:07 -0700 (PDT)
+ bh=EjopA27rRiWdYW2uvmQgTqz6C8hzHp8lMBO0zXs9HhM=;
+ b=F4XJTJJOEyuZTGRSvroOu7RuMjQRbr9tavZLfV3FI1iQ/IwxJA4r8fnFKWdWrQ20xc
+ oXh/3MynhNIa1X89QmX9GJDDChBgXerLPj63x+tHd6UPpCS4DzJ0ez+YWyDp/9inAg0H
+ UAZbAfH2muhKzL3jsq71/cDygP2I69tsq69SpNH1PDMt9PHAvdeK4Xr++4Um4U+SDsS2
+ hffPOLFa7pNM1NHIJJYZuN+3Lx/7bfnxtivJauYKF6/TvAMuwyKUy8sKqs43etiDskzo
+ xUazJ485w8/PldJ+1RKTVLCCTrI6yoGx3D0ZkEAurmRuGKem43mOWEzCjIJ1P3UJ3/bJ
+ nhQA==
+X-Gm-Message-State: AOJu0YzqneP8Xv+tE5m1+C0lhpC17BAPRTXxGUA2atRUn3uz/jYRBLFZ
+ r8DJrtc89TetRev+hxeCl6A1Lg==
+X-Google-Smtp-Source: AGHT+IGOYVwU1wsij2Jr8UeB7SjCMQREhpfFnU4Jkxdd9fTelelcFa9PTIp6IhqwaVxdyYH8v3VfhA==
+X-Received: by 2002:a17:906:ee8c:b0:9c3:dc6b:b7ad with SMTP id
+ wt12-20020a170906ee8c00b009c3dc6bb7admr2709984ejb.22.1697751642395; 
+ Thu, 19 Oct 2023 14:40:42 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-216-177.abo.bbox.fr.
  [176.131.216.177]) by smtp.gmail.com with ESMTPSA id
- g2-20020a50d5c2000000b0053e36dd75dfsm268482edj.35.2023.10.19.14.40.04
+ bm11-20020a170906c04b00b009a193a5acffsm223157ejb.121.2023.10.19.14.40.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 14:40:06 -0700 (PDT)
-Message-ID: <1e0f77e0-5a93-28f7-8c7b-819366c3c5e0@linaro.org>
-Date: Thu, 19 Oct 2023 23:40:03 +0200
+ Thu, 19 Oct 2023 14:40:42 -0700 (PDT)
+Message-ID: <3493f5dd-92cb-8afd-5566-60642c32e2a5@linaro.org>
+Date: Thu, 19 Oct 2023 23:40:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 00/12] hw: Strengthen SysBus & QBus API
+Subject: Re: [PATCH] MAINTAINERS: Add include/hw/intc/loongson_liointc.h to
+ the Loongson-3 virt section
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Huacai Chen <chenhuacai@kernel.org>, Beniamino Galvani
- <b.galvani@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Eric Farman <farman@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-s390x@nongnu.org, Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Song Gao <gaosong@loongson.cn>,
- Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
- Sergio Lopez <slp@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-References: <20231019071611.98885-1-philmd@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Huacai Chen <chenhuacai@kernel.org>
+Cc: qemu-trivial@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Song Gao <gaosong@loongson.cn>
+References: <20231017153345.233807-1-thuth@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231019071611.98885-1-philmd@linaro.org>
+In-Reply-To: <20231017153345.233807-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -108,20 +95,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/10/23 09:15, Philippe Mathieu-Daudé wrote:
+On 17/10/23 17:33, Thomas Huth wrote:
+> The corresponding .c file is already listed here, so we should
+> mention the header here, too.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 
-> Philippe Mathieu-Daudé (12):
->    hw/i386/amd_iommu: Do not use SysBus API to map local MMIO region
->    hw/i386/intel_iommu: Do not use SysBus API to map local MMIO region
->    hw/misc/allwinner-dramc: Move sysbus_mmio_map call from init ->
->      realize
->    hw/misc/allwinner-dramc: Do not use SysBus API to map local MMIO
->      region
->    hw/pci-host/bonito: Do not use SysBus API to map local MMIO region
->    hw/acpi: Realize ACPI_GED sysbus device before accessing it
->    hw/arm/virt: Realize ARM_GICV2M sysbus device before accessing it
->    hw/isa: Realize ISA BUS sysbus device before accessing it
->    hw/s390x/css-bridge: Realize sysbus device before accessing it
+Thanks, queued to hw-misc.
 
-Patches 1-9 queued to hw-misc.
 
