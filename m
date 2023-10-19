@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5201C7CEF38
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 07:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7D47CEF3B
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 07:44:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtLoe-0007PO-Oq; Thu, 19 Oct 2023 01:43:28 -0400
+	id 1qtLpm-0000eS-Gl; Thu, 19 Oct 2023 01:44:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLoZ-0007I5-Qn
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:43:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLpY-0000dK-TC
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:44:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLoX-0006Hx-Ug
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:43:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLpX-0006X4-H8
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:44:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697694200;
+ s=mimecast20190719; t=1697694262;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=u84LnlCUn6576pjGDryACn9kuza92GjZ8H1S2ytwIvM=;
- b=eAjWQcwxIx1SXge6ydFJdfGc0a8ZCUri972QQStedaxT0D4Ix3rwWezxECor9rOdcgzJZd
- 7nsunv9i9zSDB2fdsWjhvYkOKUdeisCaz+mq+Cr6Fdk04Qd0VFeqT18AuAREUtUicnXRMo
- 26eDZXjVJ/iBa/7OHsXCX5m619c85HU=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rspcU9F6smOHbowDOnv69uUY40faMrTtGMcXCKEOeIQ=;
+ b=O+d+47nRdWBmMzs9+UodHqkRufFAb8U6WrGKSlki4Shz1r13b//p/OGg57dsQDlyLXKT4S
+ csOqDZZlDn5+4B4NFS9USIoGqIZXlsUBV3Ic1pLY87DLeHOQ/1F/FNXhhcDhyRoWITQZ1t
+ FUBNlmtbsBMuFny8aLtz4CQwG57vzFM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-WBJVeAxyN2uprztjoHpw1w-1; Thu, 19 Oct 2023 01:43:19 -0400
-X-MC-Unique: WBJVeAxyN2uprztjoHpw1w-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-41b81423b71so36745271cf.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 22:43:18 -0700 (PDT)
+ us-mta-5-TC_HZCHuON-h06GdqHOGow-1; Thu, 19 Oct 2023 01:44:19 -0400
+X-MC-Unique: TC_HZCHuON-h06GdqHOGow-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-66cffe51b07so89615306d6.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 22:44:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697694198; x=1698298998;
+ d=1e100.net; s=20230601; t=1697694259; x=1698299059;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=u84LnlCUn6576pjGDryACn9kuza92GjZ8H1S2ytwIvM=;
- b=Jpn39CEl6MU8x+Wm3RQwC1e3toNrte0KsUhZ9w/TPJSZJDvxCL2sz/d554OlPrG5X5
- 6zmXPIKa4SqqwI8Q6SrHooKIsxsbnocF+Syx7w32FRJdm3A82NNsV+cTGBLynYHLF5mN
- 12xwlL9gMT/NMHze2uG1byhM3V3vn7o1BoIKFWRTJO6nr032MfKeefRs+wQ85jnONQ2Q
- sATHR9yqSL25XJIQr/QFWWWlQ1C13mXWVTfIpvfIgJ6lTMuz+y+Onzcp70tDFEkHwHCT
- hXkxIAoDJP2lMugh+5qJGTghf06HlsNMfNRa3+vU1IQPgiVVnkUiiZw31dF5mx5qsGUg
- Vwzw==
-X-Gm-Message-State: AOJu0YwLB6Ec53hPao7gO0lJbIbey5cr1FZFgmvk1+PQNgwGj/L/8zxY
- TOM/YCGp2+wC39G+WkUmipk3oaksEvYCS5tyKPvY4AVb9Bq9aGardoq+jWEq0jaMpF0XSljMQOu
- yJlhJ1FroApDvACU=
-X-Received: by 2002:ad4:596d:0:b0:65a:fcd1:1d85 with SMTP id
- eq13-20020ad4596d000000b0065afcd11d85mr1199674qvb.60.1697694198346; 
- Wed, 18 Oct 2023 22:43:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3Vo7d9hWIX6TDZznRj1AgxgElDUCYDtH1b/i5mK28kf91QOTTuzqyiu7y4LpEqKtJPGgydQ==
-X-Received: by 2002:ad4:596d:0:b0:65a:fcd1:1d85 with SMTP id
- eq13-20020ad4596d000000b0065afcd11d85mr1199661qvb.60.1697694198067; 
- Wed, 18 Oct 2023 22:43:18 -0700 (PDT)
+ bh=rspcU9F6smOHbowDOnv69uUY40faMrTtGMcXCKEOeIQ=;
+ b=Cm1o+JRLjniXMP/5EsZ9TV//eAcioP0NhDnPHRcP5jHJZgTS/5+ZkYsf9YuO07MhHH
+ DPcDLrVgG9Oc5mQkpiNy+Hp0FTb08F4XyTIjoIkZKNUOjOYIPK3K+3uVS2U2ZzZVH/H7
+ WBSja59hVoAWA6gA3y2N9rUXTleHhc6M8qTIFNf8t/OJ6AqBjLUttNfiu9xELrgl2uvq
+ izK7vi2Iim3EQK61VDX7WKZOW/Ewz7eAcIel3+YBXQgGqt+LZmENY9uQSXcfuN6k6Q6Z
+ TXSkHSpN6TkQStRfvFA7L2TPy1OfxU7U0S63Am+uZUlfoCPKHUAyHtU3xvVh7+m69XIM
+ O6Sw==
+X-Gm-Message-State: AOJu0YwoBvUOVbyCRGDb5/f5s6LTjJiK5a7D56dlpgvQCmXxqlg7yzq0
+ GaFyCr2Ag8jyGVSDbcNZdUvdHGixl6NzauecOLWcBgRvdjfdFcMJjPpmsrmmtNbNkSqMuOo0sBd
+ TdYZ0pF5NDDRrEwI=
+X-Received: by 2002:a05:6214:2628:b0:66d:2b1b:acfa with SMTP id
+ gv8-20020a056214262800b0066d2b1bacfamr1845535qvb.50.1697694259199; 
+ Wed, 18 Oct 2023 22:44:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHHoSmBmEx/K4AqoQIZxD2h/ag5DfrgebAgLasNBVyc7u9lBrLqPM9r5wbBFCCwnkqRB+sXzQ==
+X-Received: by 2002:a05:6214:2628:b0:66d:2b1b:acfa with SMTP id
+ gv8-20020a056214262800b0066d2b1bacfamr1845529qvb.50.1697694258998; 
+ Wed, 18 Oct 2023 22:44:18 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- p18-20020a0cfad2000000b006564afc5908sm535103qvo.111.2023.10.18.22.43.16
+ p18-20020a0cfad2000000b006564afc5908sm535103qvo.111.2023.10.18.22.44.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 22:43:17 -0700 (PDT)
-Message-ID: <7ea44b37-4ba0-4dd8-be62-67ee8e1f3770@redhat.com>
-Date: Thu, 19 Oct 2023 07:43:16 +0200
+ Wed, 18 Oct 2023 22:44:18 -0700 (PDT)
+Message-ID: <08b2004d-e4a1-4c72-af6a-b27fa9896a4f@redhat.com>
+Date: Thu, 19 Oct 2023 07:44:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] hw/ppc/pnv_xscom: Do not use SysBus API to map local
- MMIO region
+Subject: Re: [PATCH 4/6] hw/ppc/pnv: Do not use SysBus API to map local MMIO
+ region
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -77,7 +77,7 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
  Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org
 References: <20231018133059.85765-1-philmd@linaro.org>
- <20231018133059.85765-4-philmd@linaro.org>
+ <20231018133059.85765-5-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,17 +121,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231018133059.85765-4-philmd@linaro.org>
+In-Reply-To: <20231018133059.85765-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -156,8 +156,8 @@ On 18/10/2023 15.30, Philippe Mathieu-Daudé wrote:
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/ppc/pnv_xscom.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
+>   hw/ppc/pnv.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
