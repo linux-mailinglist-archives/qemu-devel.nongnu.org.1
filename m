@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7217D0199
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2BA7D0169
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:27:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXhP-0000TS-Pw; Thu, 19 Oct 2023 14:24:48 -0400
+	id 1qtXi8-000247-05; Thu, 19 Oct 2023 14:25:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXfg-00073W-A1
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:23:02 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXfY-0006u4-Gv
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:22:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXfe-0000rE-Jz
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:23:00 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXfW-0000ps-5F
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:22:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697739777;
+ s=mimecast20190719; t=1697739769;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fsLh7ia6XRW9dnJHrit24Lv0bVF86UyjHpRok70ZRQs=;
- b=aHr5jwN9/azps51BdrL8cGEWyHLwIIDfkzmGMW2v49MdnoRBrU/sfi/VQ1o3Mw7axJelSr
- 9mOsFe3HbVOolu6XsPqgRiG1OmC5KDtJl17HdMbzcdpYsDpRhLq84qO55JUjk6Pg5qoRXJ
- gbkuwW/2B8N+lJL4PgaEdmLhVyA1tWE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zsFr5HTvA8+mbntnG9MNra2wwSZ6tjasq8RRYVZ+VPU=;
+ b=WXcYonTkiBVqJ0BJx8kBYF93P4JEBZZo1N3DY6+on+vptVp4TnFNvYI0GIORBNbzItAq26
+ IV9zNo9NWkIP8nl91qV+0hDPYMSZSkVjgFUfqWLmrTghwgJOjtALbyNiTiM6621WdtS3rA
+ cYWabXYrn1XvkuS0aB60V6sDBvS6+Hk=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-LebOQAXfNtG6N58jkLZKcQ-1; Thu, 19 Oct 2023 14:22:46 -0400
-X-MC-Unique: LebOQAXfNtG6N58jkLZKcQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-32d9751ca2cso4298539f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:22:45 -0700 (PDT)
+ us-mta-169-0XaymeZ9PqKgYw7Y734iwQ-1; Thu, 19 Oct 2023 14:22:48 -0400
+X-MC-Unique: 0XaymeZ9PqKgYw7Y734iwQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32d9a31dc55so3704102f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:22:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697739764; x=1698344564;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fsLh7ia6XRW9dnJHrit24Lv0bVF86UyjHpRok70ZRQs=;
- b=OXWIVEPlnP7bpgLuiZt517RMs1mQ4s9DgGY2stQwi7T1Y3T8r1V3BtKMGgWEXL+IzV
- wXLOdbHYgxR2J0XQPD3UTsf8TC195zEVxoMkcKnL2R0MmtbWo2uMIp2OA+jfcpaA8p/v
- X8ikSBUH05fPtiIed4vSX8PzCUNEss3QdR5Y30vlsjuzO4+dN+ieqCuhj4/tTzN6TD4Q
- e5X4iUtG8mx2XMl98nFAWSNaHYQ2Hk4Fc+AgC96uamh+EKVfokUqKIUSwojQVjtp3+P0
- crNuw3JOz0WCq6AGpdWeddTwsreIo+vDlirxFy0WDj8L8LM/ZeIp4zlHhFjG/FHyhwvt
- L4xg==
-X-Gm-Message-State: AOJu0Ywup7ubPcBiHWsmFG0vRBcu7RM53iLf4C1DdbNO2nEPVpTgzzU7
- P9Q8A+CjEEjNIzI79WMJEtB5//1wI776ICClyd9YSYaid1fyL++cD72FMSqMzMr5A7YfxazST4i
- LcTt/IUx1rzRHCzFjbD0cWSE92YgdC72aCNgAIcPq0qabZUKUmOK1KHZrlBnTGOhExgEC
-X-Received: by 2002:adf:f7d1:0:b0:32d:89c5:45b6 with SMTP id
- a17-20020adff7d1000000b0032d89c545b6mr2216775wrq.38.1697739764111; 
- Thu, 19 Oct 2023 11:22:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGeXJdri2FDqXjhuUgwmz76D4ESaCHB2zV12TyElNdojSX97JY7f/Cm4hvBw3tORkDtlR/GAA==
-X-Received: by 2002:adf:f7d1:0:b0:32d:89c5:45b6 with SMTP id
- a17-20020adff7d1000000b0032d89c545b6mr2216757wrq.38.1697739763766; 
- Thu, 19 Oct 2023 11:22:43 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697739767; x=1698344567;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zsFr5HTvA8+mbntnG9MNra2wwSZ6tjasq8RRYVZ+VPU=;
+ b=G8qYBiqZfqMuNXUMggl23nVVf8Se8O4TEm0JSKNsaUBGaLrRgwgRwoklf2GxJq+ThK
+ 9yvGBalKGtinlILlGbIw1IzcAzI0T0qOgcW6bq/EDL1M4LWt9Hf5cs2SsNhV4l+yO2kr
+ E/aVENB/BnTfYibd1WtvaAFFXGT8C5DE8ds3T2ONpWJlFojhoDoZSg35Cl/CEfLQgy15
+ vxMEEql33P3ZBsUWGdnYTCdrpba4gZCjR/Pu3BNtzE0taxDa9Mte856Cz5jx/ayZtHU6
+ 1oSIFdFZayJsTpxbHtP+F5M0OcljCD2/iMWsILyBdtPgQeCpRQUE1/lUNGbM7w5ZNBdf
+ JETg==
+X-Gm-Message-State: AOJu0YzVhLNE5AlM6/VWCFyqTHlkqp1AJgDsnWRmhCAfXYDkiBfDypOe
+ mfGT6z9Ie+wql5ny6c8WonYt1iK7WNfQrxdcrKQxLs3NXRFoPVO/p+xtp1kk9Xe00oVbRbxfjYl
+ +aJs2Z9I68otnxZFh/hDRSZ4KXiDoxcjlLLp0tpIiGM3tkaGee4Ix5eouOmMnFHkNzvHy
+X-Received: by 2002:adf:f682:0:b0:32d:8cfd:5780 with SMTP id
+ v2-20020adff682000000b0032d8cfd5780mr2390463wrp.27.1697739766854; 
+ Thu, 19 Oct 2023 11:22:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+fG2DPbcbPmmwru9zexJQDD8jxNyHV5Sn064eO0i73tfd4ZRr0BZvrvgjFcmN2MLKS2VozQ==
+X-Received: by 2002:adf:f682:0:b0:32d:8cfd:5780 with SMTP id
+ v2-20020adff682000000b0032d8cfd5780mr2390444wrp.27.1697739766477; 
+ Thu, 19 Oct 2023 11:22:46 -0700 (PDT)
 Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
  by smtp.gmail.com with ESMTPSA id
- e11-20020adffd0b000000b0032dbf26e7aesm4975157wrr.65.2023.10.19.11.22.42
+ b16-20020a056000055000b00326f5d0ce0asm5056028wrf.21.2023.10.19.11.22.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 11:22:43 -0700 (PDT)
-Date: Thu, 19 Oct 2023 14:22:41 -0400
+ Thu, 19 Oct 2023 11:22:45 -0700 (PDT)
+Date: Thu, 19 Oct 2023 14:22:44 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Hanna Czenczek <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 34/78] virtio: call ->vhost_reset_device() during reset
-Message-ID: <b7e9e78ade053308ef52b8dadeba15bd55623d20.1697739629.git.mst@redhat.com>
+ Bernhard Beschow <shentey@gmail.com>, Ani Sinha <anisinha@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL v2 35/78] hw/i386/acpi-build: Remove build-time assertion on
+ PIIX/ICH9 reset registers being identical
+Message-ID: <59cce3602fc40aebf265ec74378d8be998d4d0cd.1697739629.git.mst@redhat.com>
 References: <cover.1697739629.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1697739629.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -105,135 +107,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-vhost-user-scsi has a VirtioDeviceClass->reset() function that calls
-->vhost_reset_device(). The other vhost devices don't notify the vhost
-device upon reset.
+Commit 6103451aeb74 ("hw/i386: Build-time assertion on pc/q35 reset register
+being identical.") introduced a build-time check where the addresses of the
+reset registers are expected to be equal. Back then rev3 of the FADT was used
+which required the reset register to be populated and there was common code.
+In commit 3a3fcc75f92a ("pc: acpi: force FADT rev1 for 440fx based machine
+types") the FADT was downgraded to rev1 for PIIX where the reset register isn't
+available. Thus, there is no need for the assertion any longer, so remove it.
 
-Stateful vhost devices may need to handle device reset in order to free
-resources or prevent stale device state from interfering after reset.
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Call ->vhost_device_reset() from virtio_reset() so that that vhost
-devices are notified of device reset.
-
-This patch affects behavior as follows:
-- vhost-kernel: No change in behavior since ->vhost_reset_device() is
-  not implemented.
-- vhost-user: back-ends that negotiate
-  VHOST_USER_PROTOCOL_F_RESET_DEVICE now receive a
-  VHOST_USER_DEVICE_RESET message upon device reset. Otherwise there is
-  no change in behavior. DPDK, SPDK, libvhost-user, and the
-  vhost-user-backend crate do not negotiate
-  VHOST_USER_PROTOCOL_F_RESET_DEVICE automatically.
-- vhost-vdpa: an extra SET_STATUS 0 call is made during device reset.
-
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-Id: <20231004014532.1228637-4-stefanha@redhat.com>
+Message-Id: <20231004092355.12929-1-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- include/hw/virtio/vhost.h | 10 ++++++++++
- hw/scsi/vhost-user-scsi.c | 11 -----------
- hw/virtio/vhost.c         |  9 +++++++++
- hw/virtio/virtio.c        |  4 ++++
- meson.build               |  1 +
- 5 files changed, 24 insertions(+), 11 deletions(-)
+ hw/i386/acpi-build.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index c7e5467693..00e0a669b8 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -339,4 +339,14 @@ int vhost_dev_set_inflight(struct vhost_dev *dev,
- int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
-                            struct vhost_inflight *inflight);
- bool vhost_dev_has_iommu(struct vhost_dev *dev);
-+
-+#ifdef CONFIG_VHOST
-+int vhost_reset_device(struct vhost_dev *hdev);
-+#else
-+static inline int vhost_reset_device(struct vhost_dev *hdev)
-+{
-+    return -ENOSYS;
-+}
-+#endif /* CONFIG_VHOST */
-+
- #endif
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 78aef4765f..b7c6100f3e 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -62,16 +62,6 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     }
- }
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 3f2b27cf75..b0e1f074f1 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -56,7 +56,6 @@
  
--static void vhost_user_scsi_reset(VirtIODevice *vdev)
--{
--    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
--    struct vhost_dev *dev = &vsc->dev;
+ /* Supported chipsets: */
+ #include "hw/southbridge/ich9.h"
+-#include "hw/southbridge/piix.h"
+ #include "hw/acpi/pcihp.h"
+ #include "hw/i386/fw_cfg.h"
+ #include "hw/i386/pc.h"
+@@ -242,10 +241,6 @@ static void acpi_get_pm_info(MachineState *machine, AcpiPmInfo *pm)
+     pm->pcihp_io_len =
+         object_property_get_uint(obj, ACPI_PCIHP_IO_LEN_PROP, NULL);
+ 
+-    /* The above need not be conditional on machine type because the reset port
+-     * happens to be the same on PIIX (pc) and ICH9 (q35). */
+-    QEMU_BUILD_BUG_ON(ICH9_RST_CNT_IOPORT != PIIX_RCR_IOPORT);
 -
--    if (dev->vhost_ops->vhost_reset_device) {
--        dev->vhost_ops->vhost_reset_device(dev);
--    }
--}
--
- static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
- {
- }
-@@ -191,7 +181,6 @@ static void vhost_user_scsi_class_init(ObjectClass *klass, void *data)
-     vdc->get_features = vhost_scsi_common_get_features;
-     vdc->set_config = vhost_scsi_common_set_config;
-     vdc->set_status = vhost_user_scsi_set_status;
--    vdc->reset = vhost_user_scsi_reset;
-     fwc->get_dev_path = vhost_scsi_common_get_fw_dev_path;
- }
- 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 9f37206ba0..92a6933f66 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -2154,3 +2154,12 @@ int vhost_net_set_backend(struct vhost_dev *hdev,
- 
-     return -ENOSYS;
- }
-+
-+int vhost_reset_device(struct vhost_dev *hdev)
-+{
-+    if (hdev->vhost_ops->vhost_reset_device) {
-+        return hdev->vhost_ops->vhost_reset_device(hdev);
-+    }
-+
-+    return -ENOSYS;
-+}
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 6facd64fbc..fb24bc927b 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2136,6 +2136,10 @@ void virtio_reset(void *opaque)
-         vdev->device_endian = virtio_default_endian();
-     }
- 
-+    if (vdev->vhost_started) {
-+        vhost_reset_device(k->get_vhost(vdev));
-+    }
-+
-     if (k->reset) {
-         k->reset(vdev);
-     }
-diff --git a/meson.build b/meson.build
-index e0d1f84b26..cbee764817 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2134,6 +2134,7 @@ config_host_data.set('CONFIG_TPM', have_tpm)
- config_host_data.set('CONFIG_TSAN', get_option('tsan'))
- config_host_data.set('CONFIG_USB_LIBUSB', libusb.found())
- config_host_data.set('CONFIG_VDE', vde.found())
-+config_host_data.set('CONFIG_VHOST', have_vhost)
- config_host_data.set('CONFIG_VHOST_NET', have_vhost_net)
- config_host_data.set('CONFIG_VHOST_NET_USER', have_vhost_net_user)
- config_host_data.set('CONFIG_VHOST_NET_VDPA', have_vhost_net_vdpa)
+     /* Fill in optional s3/s4 related properties */
+     o = object_property_get_qobject(obj, ACPI_PM_PROP_S3_DISABLED, NULL);
+     if (o) {
 -- 
 MST
 
