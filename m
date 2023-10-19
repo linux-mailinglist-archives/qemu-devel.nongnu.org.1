@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092077D01C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C40007D01F5
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:41:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXr3-0005EJ-6M; Thu, 19 Oct 2023 14:34:45 -0400
+	id 1qtXxg-0004CD-7n; Thu, 19 Oct 2023 14:41:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXqs-00057t-Kz
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:34:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtXxe-0004Bw-CH
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:41:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXqi-0008BR-KY
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:34:26 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtXxc-00018L-OH
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:41:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697740463;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Z3fcryDGvTJU/hlxIF1uDSZzdchz3i2Hwc66oEyMAnw=;
- b=Q4p1TT+gPw058g+xmSXlILh6KxrRRVngS5NhzVaj/sVqTPIv/i5jqHa/wFH3KphVJwNjeP
- lXrJov9kuxcboVr/x/afmx2Df23rnOVhTfi+c4c2LPBFSVJR9ucA/oOvwngXKoMwDEzt/N
- mxyBHDEiFXnyMoMe9f+zFBrgpeAJRkg=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697740892;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=Iu6BmbSKr95QfOuqDyfQadoyKGmgBWkVpNduy3nGOCg=;
+ b=X57JnjyyJxY8TtVVURUOll0SOAGXBJIYYgNzoiq4HdbAD4y2tZ+BMHJw666l3JximW0bBS
+ lpH2YOrfdBj5y8F3vjjYrEGHC6zTXOFeRt28e/n7td7P84vX2f7yf3KU+7RbuAUKMYqWm3
+ QOXHBrlz680m7YTOeBLGVdd6v3iA1Rw=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-eZlwPPR3NyqwYRsBW8efLw-1; Thu, 19 Oct 2023 14:34:21 -0400
-X-MC-Unique: eZlwPPR3NyqwYRsBW8efLw-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-507cc15323aso1988584e87.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:34:21 -0700 (PDT)
+ us-mta-594-AwG384wSNM2KDpJj2tVfDA-1; Thu, 19 Oct 2023 14:41:30 -0400
+X-MC-Unique: AwG384wSNM2KDpJj2tVfDA-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-507d0e4eedaso1098307e87.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:41:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697740460; x=1698345260;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z3fcryDGvTJU/hlxIF1uDSZzdchz3i2Hwc66oEyMAnw=;
- b=ccXZpUOMTxxUOJWrEyaTdUm5uOi6vvBjweRLgEjeQxET92R1JcgNpkLa3BpFhzlmL3
- 2qNSXKc+eajvQaFPRCvA7FWGiHr3n1dkUokP5Tx/194CzXOnwXsYkpopOpAYojS4wGn9
- XfFve2aKlLl3l3xNT8ss27i3vtUTqduDHbBmHT5Ag0cHOtBluh42cDwJmsukb8CxnbkK
- JPDLFE/QuXNLMmtpGM3SiejNb7QRwP1VPzVg/kFYnh07ZNa8FPLty8HkqWKNXjb86EKB
- RWhH2N5LkrYiYYcUPZrxOX9lHcGzNXyc/1sXBr5RGPKldK4eeLFcCK3P6rohSo3226Ts
- KkyA==
-X-Gm-Message-State: AOJu0Yxc0lxU3BpR6Fht5L1i/vd8/7BMvLG0LazupMbipj10UZ1RaP2X
- SOtLAJRhGU0ljqvKXLECND+AzkgTJ9tKEYR35yEa9AEutj1nnI7oKUN6RzOMZ4DiYGKwLy3TQ/M
- zRimNVfPSVI3H854=
-X-Received: by 2002:a05:6512:4024:b0:503:c51:74e1 with SMTP id
- br36-20020a056512402400b005030c5174e1mr2833616lfb.15.1697740460344; 
- Thu, 19 Oct 2023 11:34:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGULNil3n53nmS1adjweNAEpvN+luTUlLCv4KI8gcUcSglwDs2HcRD1s0wLQ5y2c27JBCHeZQ==
-X-Received: by 2002:a05:6512:4024:b0:503:c51:74e1 with SMTP id
- br36-20020a056512402400b005030c5174e1mr2833603lfb.15.1697740459973; 
- Thu, 19 Oct 2023 11:34:19 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
- by smtp.gmail.com with ESMTPSA id
- bg34-20020a05600c3ca200b00402f713c56esm241113wmb.2.2023.10.19.11.34.18
+ d=1e100.net; s=20230601; t=1697740889; x=1698345689;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Iu6BmbSKr95QfOuqDyfQadoyKGmgBWkVpNduy3nGOCg=;
+ b=wfHwlfGZ89kULDA3IkXB49EBUajgtXFNYlehcoctp/7O5qOx+CBfvgO/RaEzLnetg6
+ 6587E059Tzc8u3ATfIXoxvy8XXIMf2fcvpjGYFW+O+QZ+uAsBXmzs8zO24pLYjDQPEnb
+ mwvUJe14iwX0SNZHzAxuC+SW1Z7oRVKgMcDlMnQvKaVyVXpQyOFSIMBFqzSNru11urg4
+ ZjJmPD9mjM+/t6e/528auaugs5h16CgF4e0F7R/AQVBmNnJEXtVoGYWnfwCeDt2vjSyb
+ MPMgTs00K94e4RyV+WZdbb3DheKl1vALQDDT6LCoVySSBPL7Xguxqggvp39TE9TsH8gS
+ uR3w==
+X-Gm-Message-State: AOJu0YwroTob2YRVcVEfhFWYOzl689BgbNxV5vzt/Uld7M4ctG6Wmn/P
+ /nsmkm43rLpXgAQa5u52fGo+o5H2QUVRcsRoKraEdmMWgYCeK0ya2s3TGWmDhbtvNvBbFFeDBAr
+ OhG2qeai5G2r4UbU=
+X-Received: by 2002:a05:6512:2244:b0:4ff:7f7f:22e7 with SMTP id
+ i4-20020a056512224400b004ff7f7f22e7mr2472373lfu.17.1697740888883; 
+ Thu, 19 Oct 2023 11:41:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuec+RlVnNOhGHo5zJBsxhOVM2pSUPusw4sk0Mu4udm3jL/9ObO1783IKwbo/Ywv5LOdjPvw==
+X-Received: by 2002:a05:6512:2244:b0:4ff:7f7f:22e7 with SMTP id
+ i4-20020a056512224400b004ff7f7f22e7mr2472361lfu.17.1697740888449; 
+ Thu, 19 Oct 2023 11:41:28 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ m21-20020a194355000000b00501b9fc977csm662lfj.37.2023.10.19.11.41.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 11:34:19 -0700 (PDT)
-Date: Thu, 19 Oct 2023 14:34:16 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>, Jason Wang <jasowang@redhat.com>
-Subject: Re: [PULL 08/83] vdpa: Restore hash calculation state
-Message-ID: <20231019143240-mutt-send-email-mst@kernel.org>
-References: <cover.1697644299.git.mst@redhat.com>
- <1908cfd6e1748d94680e468b9df6321087b8fcf2.1697644299.git.mst@redhat.com>
- <CAJSP0QVTi2QxMdzmPoPF2w5xm-r19W_0GtTaqJzGnoibT9iDNg@mail.gmail.com>
+ Thu, 19 Oct 2023 11:41:27 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
+ semaphore
+In-Reply-To: <87lebyy5ac.fsf@suse.de> (Fabiano Rosas's message of "Thu, 19 Oct
+ 2023 12:56:43 -0300")
+References: <20231012140651.13122-1-farosas@suse.de>
+ <20231012140651.13122-2-farosas@suse.de>
+ <87sf676kxt.fsf@secure.mitica> <87r0lqy83p.fsf@suse.de>
+ <87wmvi3akc.fsf@secure.mitica> <87lebyy5ac.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 19 Oct 2023 20:41:26 +0200
+Message-ID: <87a5se3161.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJSP0QVTi2QxMdzmPoPF2w5xm-r19W_0GtTaqJzGnoibT9iDNg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,168 +100,178 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 09:32:28AM -0700, Stefan Hajnoczi wrote:
-> On Wed, 18 Oct 2023 at 08:56, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > From: Hawkins Jiawei <yin31149@gmail.com>
-> >
-> > This patch introduces vhost_vdpa_net_load_rss() to restore
-> > the hash calculation state at device's startup.
-> >
-> > Note that vhost_vdpa_net_load_rss() has `do_rss` argument,
-> > which allows future code to reuse this function to restore
-> > the receive-side scaling state when the VIRTIO_NET_F_RSS
-> > feature is enabled in SVQ. Currently, vhost_vdpa_net_load_rss()
-> > could only be invoked when `do_rss` is set to false.
-> >
-> > Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> > Message-Id: <f5ffad10699001107022851e0560cb394039d6b0.1693297766.git.yin31149@gmail.com>
-> > Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> >  net/vhost-vdpa.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 91 insertions(+)
-> >
-> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > index 4b7c3b81b8..40d0bcbc0b 100644
-> > --- a/net/vhost-vdpa.c
-> > +++ b/net/vhost-vdpa.c
-> > @@ -817,6 +817,88 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-> >      return 0;
-> >  }
-> >
-> > +static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
-> > +                                   struct iovec *out_cursor,
-> > +                                   struct iovec *in_cursor, bool do_rss)
-> > +{
-> > +    struct virtio_net_rss_config cfg;
-> > +    ssize_t r;
-> > +    g_autofree uint16_t *table = NULL;
-> > +
-> > +    /*
-> > +     * According to VirtIO standard, "Initially the device has all hash
-> > +     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
-> > +     *
-> > +     * Therefore, there is no need to send this CVQ command if the
-> > +     * driver disable the all hash types, which aligns with
-> > +     * the device's defaults.
-> > +     *
-> > +     * Note that the device's defaults can mismatch the driver's
-> > +     * configuration only at live migration.
-> > +     */
-> > +    if (!n->rss_data.enabled ||
-> > +        n->rss_data.hash_types == VIRTIO_NET_HASH_REPORT_NONE) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
-> > +
-> > +    /*
-> > +     * According to VirtIO standard, "Field reserved MUST contain zeroes.
-> > +     * It is defined to make the structure to match the layout of
-> > +     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
-> > +     *
-> > +     * Therefore, we need to zero the fields in struct virtio_net_rss_config,
-> > +     * which corresponds the `reserved` field in
-> > +     * struct virtio_net_hash_config.
-> > +     */
-> > +    memset(&cfg.indirection_table_mask, 0,
-> > +           sizeof_field(struct virtio_net_hash_config, reserved));
-> 
-> Please take a look at the following CI failure:
-> 
-> In file included from /usr/include/string.h:495,
-> from /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/include/qemu/osdep.h:116,
-> from ../net/vhost-vdpa.c:12:
-> In function ‘memset’,
-> inlined from ‘vhost_vdpa_net_load_rss’ at ../net/vhost-vdpa.c:874:9:
-> /usr/include/s390x-linux-gnu/bits/string_fortified.h:71:10: error:
-> ‘__builtin_memset’ offset [7, 12] from the object at ‘cfg’ is out of
-> the bounds of referenced subobject ‘indirection_table_mask’ with type
-> ‘short unsigned int’ at offset 4 [-Werror=array-bounds]
-> 71 | return __builtin___memset_chk (__dest, __ch, __len, __bos0 (__dest));
-> | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
-> 
-> https://gitlab.com/qemu-project/qemu/-/jobs/5329820077
+Fabiano Rosas <farosas@suse.de> wrote:
+> Juan Quintela <quintela@redhat.com> writes:
+>
+>> Fabiano Rosas <farosas@suse.de> wrote:
+>>> Juan Quintela <quintela@redhat.com> writes:
+>>>
+>>
+>> This is a common pattern for concurrency.  To not have your mutex locked
+>> too long, you put a variable (that can only be tested/changed with the
+>> lock) to explain that the "channel" is busy, the struct that lock
+>> protects is not (see how we make sure that the channel don't use any
+>> variable of the struct without the locking).
+>
+> Sure, but what purpose is to mark the channel as busy? The migration
+> thread cannot access the p->packet anyway. From multifd_send_pages()
+> perspective, as soon as the channel releases the lock to start with the
+> IO, the packet has been sent. It could start preparing the next pages
+> struct while the channel is doing IO. No?
 
-I wonder how come CI passed for me with this commit included:
+ok, we remove the pending.
+Then we are sending that packet.
 
-https://gitlab.com/mstredhat/qemu/-/pipelines/1041296083
+But see what happens on multifd_send_pages()
 
-do you know?
+channels_ready is 0.
+this is channel 1
+next_channel == 1
+channel 0 gets ready, so it increases channels_ready.
 
+static int multifd_send_pages(QEMUFile *f)
+{
 
-> > +
-> > +    table = g_malloc_n(n->rss_data.indirections_len,
-> > +                       sizeof(n->rss_data.indirections_table[0]));
-> > +    for (int i = 0; i < n->rss_data.indirections_len; ++i) {
-> > +        table[i] = cpu_to_le16(n->rss_data.indirections_table[i]);
-> > +    }
-> > +
-> > +    /*
-> > +     * Consider that virtio_net_handle_rss() currently does not restore the
-> > +     * hash key length parsed from the CVQ command sent from the guest into
-> > +     * n->rss_data and uses the maximum key length in other code, so we also
-> > +     * employthe the maxium key length here.
-> > +     */
-> > +    cfg.hash_key_length = sizeof(n->rss_data.key);
-> > +
-> > +    const struct iovec data[] = {
-> > +        {
-> > +            .iov_base = &cfg,
-> > +            .iov_len = offsetof(struct virtio_net_rss_config,
-> > +                                indirection_table),
-> > +        }, {
-> > +            .iov_base = table,
-> > +            .iov_len = n->rss_data.indirections_len *
-> > +                       sizeof(n->rss_data.indirections_table[0]),
-> > +        }, {
-> > +            .iov_base = &cfg.max_tx_vq,
-> > +            .iov_len = offsetof(struct virtio_net_rss_config, hash_key_data) -
-> > +                       offsetof(struct virtio_net_rss_config, max_tx_vq),
-> > +        }, {
-> > +            .iov_base = (void *)n->rss_data.key,
-> > +            .iov_len = sizeof(n->rss_data.key),
-> > +        }
-> > +    };
-> > +
-> > +    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> > +                                VIRTIO_NET_CTRL_MQ,
-> > +                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
-> > +                                data, ARRAY_SIZE(data));
-> > +    if (unlikely(r < 0)) {
-> > +        return r;
-> > +    }
-> > +
-> > +    return 0;
-> > +}
-> > +
-> >  static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-> >                                    const VirtIONet *n,
-> >                                    struct iovec *out_cursor,
-> > @@ -842,6 +924,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-> >          return r;
-> >      }
-> >
-> > +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
-> > +    if (unlikely(r < 0)) {
-> > +        return r;
-> > +    }
-> > +
-> >      return 0;
-> >  }
-> >
-> > --
-> > MST
-> >
-> >
+    qemu_sem_wait(&multifd_send_state->channels_ready);
+    // we pass this
+
+    next_channel %= migrate_multifd_channels();
+    for (i = next_channel;; i = (i + 1) % migrate_multifd_channels()) {
+        p = &multifd_send_state->params[i];
+
+        // remember that i == 0
+
+        qemu_mutex_lock(&p->mutex);
+        if (p->quit) {
+            error_report("%s: channel %d has already quit!", __func__, i);
+            qemu_mutex_unlock(&p->mutex);
+            return -1;
+        }
+        if (!p->pending_job) {
+            p->pending_job++;
+            next_channel = (i + 1) % migrate_multifd_channels();
+            break;
+        }
+        qemu_mutex_unlock(&p->mutex);
+
+// We choose 1, to send the packet through it.
+// channel 1 is busy.
+// channel 0 is idle but receives no work.
+    }
+...
+}
+
+So the variable is there to differentiate what channels are busy/idle to
+send the work to the idle channels.
+
+> We don't touch p after the IO aside from p->pending_jobs-- and we
+> already distribute the load uniformly by incrementing next_channel.
+
+I know.  After multifd_send_threads() releases the mutex it will only
+touch ->pending_job (taking the mutex 1st).
+
+> I'm not saying this would be more performant, just wondering if it would
+> be possible.
+
+Yeap, but as said before quite suboptimal.
+
+>> As said, we don't want that.  Because channels can go a different speeds
+>> due to factors outside of our control.
+>>
+>> If the semaphore bothers you, you can change it to to a condition
+>> variable, but you just move the complexity from one side to the other
+>> (Initial implementation had a condition variable, but Paolo said that
+>> the semaphore is more efficient, so he won)
+>
+> Oh, it doesn't bother me. I'm just trying to unequivocally understand
+> it's effects. And if it logically follows that it's not necessary, only
+> then remove it.
+
+Both channels_ready and pending_job makes the scheme more performant.
+Without them it will not fail, just work way slower.
+
+In the example that just showed you, if we started always from channel 0
+to search for a idle channel, we would even do worse (that would be an
+actual error):
+
+start with channels_ready == 0;
+channels_ready is 0.
+channel 1 gets ready, so it increases channels_ready.
+
+static int multifd_send_pages(QEMUFile *f)
+{
+    qemu_sem_wait(&multifd_send_state->channels_ready);
+    // we pass this
+
+    for (i = 0;; i = (i + 1) % migrate_multifd_channels()) {
+        p = &multifd_send_state->params[i];
+
+        // remember that i == 0
+
+        qemu_mutex_lock(&p->mutex);
+        if (p->quit) {
+            error_report("%s: channel %d has already quit!", __func__, i);
+            qemu_mutex_unlock(&p->mutex);
+            return -1;
+        }
+        if (!p->pending_job) {
+            p->pending_job++;
+            next_channel = (i + 1) % migrate_multifd_channels();
+            break;
+        }
+        // As there is no test to see if this is idle, we put the page here
+        qemu_mutex_unlock(&p->mutex);
+
+        // We put here the page info
+    }
+...
+}
+
+channel 2 guest ready, so it increses channels_ready
+
+static int multifd_send_pages(QEMUFile *f)
+{
+    qemu_sem_wait(&multifd_send_state->channels_ready);
+    // we pass this
+
+    for (i = 0;; i = (i + 1) % migrate_multifd_channels()) {
+        p = &multifd_send_state->params[i];
+
+        // remember that i == 0
+
+        qemu_mutex_lock(&p->mutex);
+        if (p->quit) {
+            error_report("%s: channel %d has already quit!", __func__, i);
+            qemu_mutex_unlock(&p->mutex);
+            return -1;
+        }
+        if (!p->pending_job) {
+            p->pending_job++;
+            next_channel = (i + 1) % migrate_multifd_channels();
+            break;
+        }
+        // As there is no test to see if this is idle, we put the page here
+        qemu_mutex_unlock(&p->mutex);
+
+        // We put here the page info
+        // channel 0 is still transmitting the 1st page
+        // And overwrote the previous page info
+   }
+...
+}
+
+In this particular case, using next_channel in round robin would have
+saved the case.  When you put info for a channel to consume
+asynhronously, you need to mark somehow that the channel has finished to
+use the data before ordering it to put do more job.
+
+We can changing pending_job to a bool if you preffer.  I think that we
+have nailed all the off_by_one errors by now (famous last words).
+
+Later, Juan.
 
 
