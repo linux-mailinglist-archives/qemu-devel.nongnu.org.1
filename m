@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E559C7CF013
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 08:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59F37CF015
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 08:29:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtMW5-0000dq-0z; Thu, 19 Oct 2023 02:28:21 -0400
+	id 1qtMX6-0001JS-P5; Thu, 19 Oct 2023 02:29:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtMW2-0000dc-PZ
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 02:28:18 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtMWn-0001HP-R2
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 02:29:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtMW0-0000Hi-G9
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 02:28:17 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtMWm-0000R6-BK
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 02:29:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697696895;
+ s=mimecast20190719; t=1697696943;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=a54ik+O3YOn/8eQJ2hwvn15SCtmmM9COnSSFlhcrQXM=;
- b=Rl7RlCLWeoU/lRW/H1hCoBTxPsnW4bi5R63Bc7Qe1FJGXI75zdoymk8ukZr680cAzUB5ez
- Yf/YbTxFnD4GyfcqkcGGv5Uzv+dFC8/d08d4Gi/Veju6yJCVEmf7H7cYGDW7ZxQ5GcR6rX
- Yrwfwh1ApT/liRWvyiuHEQWQbHicibQ=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=L0Azqc0fHJY2mZMt/G5v5PR3xHgLEc57RfLXarEv5iY=;
+ b=ghaiYJOBMdDjgazpV44YwdVn48QKQd33FZWVOZMYbUGeC3pCOYzls+GqxkTlPKdiaDWso0
+ Nj2JrUCUNLQObREjvxobuap8DtUP8/9f69WDasYiVRDZEUltnZ0g4M5fxYgH4TFIcyM9uZ
+ OPwNuc864BrcZupDIxGA58WIdcormkc=
+Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
+ [209.85.221.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-7Y-RxRXbPhmFJDo0fkLH3w-1; Thu, 19 Oct 2023 02:28:14 -0400
-X-MC-Unique: 7Y-RxRXbPhmFJDo0fkLH3w-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-66d03dcdc6bso91486756d6.1
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 23:28:13 -0700 (PDT)
+ us-mta-83-oJzscDXWN--t_OVF4tfiFA-1; Thu, 19 Oct 2023 02:29:02 -0400
+X-MC-Unique: oJzscDXWN--t_OVF4tfiFA-1
+Received: by mail-vk1-f198.google.com with SMTP id
+ 71dfb90a1353d-49aa40b39adso2508335e0c.3
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 23:29:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697696893; x=1698301693;
+ d=1e100.net; s=20230601; t=1697696941; x=1698301741;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a54ik+O3YOn/8eQJ2hwvn15SCtmmM9COnSSFlhcrQXM=;
- b=HycPDhRo+QpmpciiBfyOEMRfuw/tR1H1fitAEagpeJozNV6HJcXMJEWpnqkzRv1psv
- vQIXH4N+bbKwNezwqVyX2zJCTCLYhA5P4k1wPsBcfWfhvuqqtaDEltWYEzyxlLSv042L
- WCJTam+GhdUDkXFRmWp/8huqofACpXDr83DFImZu2qJTTQMZgeJ2o73Hi4hOFBY3KcnF
- dBPyN8Byfv8AgWPz+DFHAGwHXoaxRLRsriFLspDzzQx5sMBxy2eqWujnM87/kxXm7RgA
- sdaZCnVl1zVZlrU7AFe3ip3owK+nAsigDZ6RFBlveGU4fDymy/xsc3R6ISlR9yONqXNL
- q+4g==
-X-Gm-Message-State: AOJu0YyeSxNJSwwR2LUJ+OOEU+QITYWWpshMjLTpGYFz93a7SNQlfEO/
- 7BGJdV16XGu2wsYs5xR2SCIYjq9Mwt4I2b0+w5ZU2BTKrKelOOmO2TE6bBuGtnNkBgyTEOUvIBa
- bzBL0Mb+Y6trAseQ=
-X-Received: by 2002:a05:6214:508b:b0:66d:2aa3:cd49 with SMTP id
- kk11-20020a056214508b00b0066d2aa3cd49mr1490019qvb.14.1697696893336; 
- Wed, 18 Oct 2023 23:28:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHs5MYZ0tH9pOqb6w4Pll+/gVK6rURTmOKVE8aU9AZOXcILuTOPJBEC7h1Z+AgKTBg6enSv6A==
-X-Received: by 2002:a05:6214:508b:b0:66d:2aa3:cd49 with SMTP id
- kk11-20020a056214508b00b0066d2aa3cd49mr1490008qvb.14.1697696893102; 
- Wed, 18 Oct 2023 23:28:13 -0700 (PDT)
+ bh=L0Azqc0fHJY2mZMt/G5v5PR3xHgLEc57RfLXarEv5iY=;
+ b=V+qo+S80ehctzLY8+jvtzq2pFt/gELA3sLDrGw8IJFwhyeb+s8KK2KXMXLDpTIKIoC
+ CWJUimnazvZ5/wivnTzNMDjanE/rmYBnxnurxJOPWpK4LY5D8EKc9HNwbQsOYDtzVOlc
+ C36cnygDhHxa5oVGCnrOGYLcFXyxAmONiUAE2/rXS6qBGO7FWD2ebbXfsF1MYlvKZq4K
+ XOX9DXlejdG6z8mDd90/muz9+h2SDrQcL9aS+6ySyDoKYNIS0g4qaNLXVlBKODLSi55U
+ u/mZCGpSV9cq3gB3Y/a6wbvSrgHZf7KOlIReuyaqfTKYgNzowqwc397dXUy1iA9WZd2M
+ IYuA==
+X-Gm-Message-State: AOJu0YwHqsytQHdVwCQrOTjHK2NQvhFgiSyWlyr75yFetVkFBAnx2se2
+ y2AqZd6aj+wFOONTnV6a0wQlTsWEvvur51GH5LNi2aqCIPCC2SLtgoA1pNNP6PSvwkAb/SOZK3L
+ QczX4upmRs/5sxZg=
+X-Received: by 2002:a05:6122:468b:b0:49d:f67:208 with SMTP id
+ di11-20020a056122468b00b0049d0f670208mr1294763vkb.1.1697696941623; 
+ Wed, 18 Oct 2023 23:29:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGWqd0M/mShDSelQctHnhVpVAqjinIW9gyi3NdvFh8IOCKsPRtRvsAvooSuApJpc9OJ87keUw==
+X-Received: by 2002:a05:6122:468b:b0:49d:f67:208 with SMTP id
+ di11-20020a056122468b00b0049d0f670208mr1294753vkb.1.1697696941345; 
+ Wed, 18 Oct 2023 23:29:01 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- p18-20020a0cfad2000000b0066d132b1c8bsm553995qvo.102.2023.10.18.23.28.11
+ p18-20020a0cfad2000000b0066d132b1c8bsm553995qvo.102.2023.10.18.23.28.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 23:28:12 -0700 (PDT)
-Message-ID: <ac008712-663d-4e7e-855a-5108a3d06126@redhat.com>
-Date: Thu, 19 Oct 2023 08:28:09 +0200
+ Wed, 18 Oct 2023 23:29:01 -0700 (PDT)
+Message-ID: <4b623620-f9f5-48bd-b8e2-88e38cc15f9d@redhat.com>
+Date: Thu, 19 Oct 2023 08:28:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 08/12] tests/qtest/migration: Specify the geometry of
- the bootsector
+Subject: Re: [PATCH v4 09/12] tests/qtest/migration: Set q35 as the default
+ machine for x86_86
 Content-Language: en-US
 To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -76,7 +76,7 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
 References: <20231018192741.25885-1-farosas@suse.de>
- <20231018192741.25885-9-farosas@suse.de>
+ <20231018192741.25885-10-farosas@suse.de>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -120,7 +120,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231018192741.25885-9-farosas@suse.de>
+In-Reply-To: <20231018192741.25885-10-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -148,45 +148,36 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18/10/2023 21.27, Fabiano Rosas wrote:
-> We're about to enable the x86_64 tests to run with the q35 machine,
-> but that machine does not work with the program we use to dirty the
-> memory for the tests.
-> 
-> The issue is that QEMU needs to guess the geometry of the "disk" we
-> give to it and the guessed geometry doesn't pass the sanity checks
-> done by SeaBIOS. This causes SeaBIOS to interpret the geometry as if
-> needing a translation from LBA to CHS and SeaBIOS ends up miscomputing
-> the number of cylinders and aborting due to that.
-> 
-> The reason things work with the "pc" machine is that is uses ATA
-> instead of AHCI like q35 and SeaBIOS has an exception for ATA that
-> ends up skipping the sanity checks and ignoring translation
-> altogether.
-> 
-> Workaround this situation by specifying a geometry in the command
-> line.
+> Change the x86_64 to use the q35 machines in tests from now on. Keep
+> testing the pc macine on 32bit.
 > 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->   tests/qtest/migration-test.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+> this could affect bisecting, so I put it in separate patch to be
+> easier to revert
+> ---
+>   tests/qtest/migration-test.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
 > 
 > diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 43d0b83771..b45a389de8 100644
+> index b45a389de8..b718634b1c 100644
 > --- a/tests/qtest/migration-test.c
 > +++ b/tests/qtest/migration-test.c
-> @@ -757,7 +757,9 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+> @@ -756,7 +756,12 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>       got_dst_resume = false;
 >       if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
 >           memory_size = "150M";
->           machine_alias = "pc";
-> -        arch_opts = g_strdup_printf("-drive file=%s,format=raw", bootpath);
-> +        arch_opts = g_strdup_printf(
-> +            "-drive if=none,id=d0,file=%s,format=raw "
-> +            "-device ide-hd,drive=d0,secs=1,cyls=1,heads=1", bootpath);
->           start_address = X86_TEST_MEM_START;
->           end_address = X86_TEST_MEM_END;
->       } else if (g_str_equal(arch, "s390x")) {
+> -        machine_alias = "pc";
+> +
+> +        if (g_str_equal(arch, "i386")) {
+> +            machine_alias = "pc";
+> +        } else {
+> +            machine_alias = "q35";
+> +        }
+>           arch_opts = g_strdup_printf(
+>               "-drive if=none,id=d0,file=%s,format=raw "
+>               "-device ide-hd,drive=d0,secs=1,cyls=1,heads=1", bootpath);
 
-Acked-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
