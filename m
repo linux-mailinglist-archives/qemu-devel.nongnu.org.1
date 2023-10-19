@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE227D015B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A36C7D01DC
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:37:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXgQ-0007jl-8z; Thu, 19 Oct 2023 14:23:46 -0400
+	id 1qtXhI-0000J9-N5; Thu, 19 Oct 2023 14:24:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXf8-0006LI-KV
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:22:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXfD-0006Ol-2F
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:22:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXf6-0000kT-9Z
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:22:25 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXfA-0000lB-1i
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:22:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697739743;
+ s=mimecast20190719; t=1697739745;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E99g4CTTfhJ51zXlgqHdg/7C/6fC/h1geeLvGMNmvCc=;
- b=Bu7BaZrj7hm5m5vsn9W5GBQfIGs4deQKKhsrmJyfV+0LwvtOYaOBrf6TXN20QZAeK9GnsU
- TwtJaX+v0Fdcr5v0Fk2nGTlvsJGfd190BcSGzB/mTpuj2Sr8PKaImvYhSAIGLa03LH/ZxN
- HEElbvpJzxkRpc8J2KKXjntIhVxdPIk=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BFZkemHVKMpqq9uyVp58jnRD/h5a0Rr9UNCxOcsmGpE=;
+ b=JQC7bAnfRwWQSEkMvFeEL0qGTVETn2WF9D+VhYsZGrN+h2Az70RHb8+zEHi6adWBoAjre+
+ HteSQPDEwp1SDyVKY0isrPAp/u4GkiGWJtWKQjnrRINkFqAlbGkJpCCBHfsA1Iyn6M0aWg
+ HNHDhHpWLkhQ5MD1dIpadgZUNqIPfl4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-gIe3UD7LMxuXXXyHHWCxgw-1; Thu, 19 Oct 2023 14:22:22 -0400
-X-MC-Unique: gIe3UD7LMxuXXXyHHWCxgw-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c50c873604so63503181fa.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:22:21 -0700 (PDT)
+ us-mta-286-7Bqu0No4PTOf0E223IdTIw-1; Thu, 19 Oct 2023 14:22:24 -0400
+X-MC-Unique: 7Bqu0No4PTOf0E223IdTIw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32d83fd3765so4899147f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:22:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697739740; x=1698344540;
+ d=1e100.net; s=20230601; t=1697739743; x=1698344543;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=E99g4CTTfhJ51zXlgqHdg/7C/6fC/h1geeLvGMNmvCc=;
- b=qoIur8s7RqchMdEpQo4lk7ak9pp9p6HiBEeUNyGFevzMVAswS9dHAnFlXFsBUOIETE
- piL6W7yGwjCRpKOxl1+wwAJlnsvW9MOeP+S+GdnFxkbgmrulSX7HaDUhOS1QQnrrtul1
- /zbO4MEr0LMs7g/LqJkkcxpHDjItOLXlAMAdrBTvHNw6JtNDDPzfvL962dERwiiZY6a6
- 15+VW2UQyEOzt/SVe6b6BXyyg+uFqPwv25yDT3Eq6Ln+dXfXJbXnkAbm+v70X1I0zX+W
- 3FS2ei0VRm9xiuasIT4Sqk0xmabDBwsEowYIdcqC5E9dth+mmJljt4Q3HoUCJjp+FkAh
- 9J0w==
-X-Gm-Message-State: AOJu0YztaFvoz5EMu3H6oAhJ3r6+lNznHpCndSae8+Wf3AZPpcHFPE/k
- y9iKieFbyUK34pBrlO28N9bbBvYKUaJLh8fsgiNs7m3zIy2tdbd1xmV6K+MVYm/IT5CpuvesY7I
- 17MdCQo2vssYsMgfVIjJT00N9kcN4ip8MCGRrIr49N+AnLP3oJIY0gEifccG29ifGv8Jr
-X-Received: by 2002:a2e:351a:0:b0:2c2:9810:3677 with SMTP id
- z26-20020a2e351a000000b002c298103677mr2060123ljz.6.1697739740231; 
- Thu, 19 Oct 2023 11:22:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWGdP8qtNjEaB4O3XLAm0p2U9bc0IKV26clMdzSwRGx7uJfphKjDtSmj7abWVB2kyX0BfrRQ==
-X-Received: by 2002:a2e:351a:0:b0:2c2:9810:3677 with SMTP id
- z26-20020a2e351a000000b002c298103677mr2060108ljz.6.1697739739937; 
- Thu, 19 Oct 2023 11:22:19 -0700 (PDT)
+ bh=BFZkemHVKMpqq9uyVp58jnRD/h5a0Rr9UNCxOcsmGpE=;
+ b=FmikO6thDzeYfYv3hu5QzJ+zoDSOf2t5RLuWckc0IS86qPF1tY+5U92tIYdlQfMaYm
+ JJ0a59IjXaM/Q1QqbyeW8peqNNgq39eAiAlupUJCdk1fhpKgOfIk9PKq7+X4A32+2IlF
+ /RLd5I4KiHQORQ3AgJ9rqVvVfjsY1SdgWbF3t/0XLCNyc2o9srd4jYQ4uKg13f9wLNyp
+ UlC6iaZq5G9oePcg0UcFMKq+QRPd/puLlsS1wcD3JilYokf/1OOn32ijiilrLshEVi6y
+ Qwp0PXA28+3K0zNt+WLl6ZDNY2v+c63WvIlLQfETM1BuMKQHlC6+6SJpbSuRuiLc6hP0
+ Xz7Q==
+X-Gm-Message-State: AOJu0YwtQbi9sUbZkfWbvj9e4P0K5ZXqu038u/nxI6i9Ig1ZpoLVm7u7
+ U9ZlS7gvjma+u9SAS9KXudUtWfLA2AuDHmypxOuwzoMLd3+HKtEu1J4lgehQaL5YXAy70eYQCU2
+ TfdKX34tPUCM99/kgDpJMB2UPn/fyBsccFYkT/CVJ4hc63mLfRDaQnFUocSfhZtxxg6Ku
+X-Received: by 2002:adf:f2c6:0:b0:32d:ccde:73a0 with SMTP id
+ d6-20020adff2c6000000b0032dccde73a0mr2102919wrp.33.1697739742864; 
+ Thu, 19 Oct 2023 11:22:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZI+mq0ZKtX0zYOF388GOcD9VpjKIrKCcGNiHRBMALhajjnkgJlG3C3pJFVTcgo061P0JpnA==
+X-Received: by 2002:adf:f2c6:0:b0:32d:ccde:73a0 with SMTP id
+ d6-20020adff2c6000000b0032dccde73a0mr2102901wrp.33.1697739742541; 
+ Thu, 19 Oct 2023 11:22:22 -0700 (PDT)
 Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
  by smtp.gmail.com with ESMTPSA id
- y34-20020a05600c342200b004063977eccesm4993458wmp.42.2023.10.19.11.22.18
+ y15-20020a5d614f000000b003142e438e8csm4986748wrt.26.2023.10.19.11.22.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 11:22:19 -0700 (PDT)
-Date: Thu, 19 Oct 2023 14:22:17 -0400
+ Thu, 19 Oct 2023 11:22:22 -0700 (PDT)
+Date: Thu, 19 Oct 2023 14:22:20 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Laszlo Ersek <lersek@redhat.com>,
@@ -69,11 +69,10 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, Laszlo Ersek <lersek@redhat.com>,
  German Maglione <gmaglione@redhat.com>,
  Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
- Albert Esteve <aesteve@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 25/78] vhost-user: tighten "reply_supported" scope in
- "set_vring_addr"
-Message-ID: <c0c12102686aa08962667555b1cce9295bc86f25.1697739629.git.mst@redhat.com>
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Albert Esteve <aesteve@redhat.com>
+Subject: [PULL v2 26/78] vhost-user: factor out "vhost_user_write_sync"
+Message-ID: <7c8be448c483f01c32021ccee4ba09ef0a69ff3e.1697739629.git.mst@redhat.com>
 References: <cover.1697739629.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -108,11 +107,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Laszlo Ersek <lersek@redhat.com>
 
-In the vhost_user_set_vring_addr() function, we calculate
-"reply_supported" unconditionally, even though we'll only need it if
-"wait_for_reply" is also true.
-
-Restrict the scope of "reply_supported" to the minimum.
+The tails of the "vhost_user_set_vring_addr" and "vhost_user_set_u64"
+functions are now byte-for-byte identical. Factor the common tail out to a
+new function called "vhost_user_write_sync".
 
 This is purely refactoring -- no observable change.
 
@@ -123,45 +120,112 @@ Cc: Liu Jiang <gerry@linux.alibaba.com>
 Cc: Sergio Lopez Pascual <slp@redhat.com>
 Cc: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Tested-by: Albert Esteve <aesteve@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20231002203221.17241-3-lersek@redhat.com>
+Message-Id: <20231002203221.17241-4-lersek@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-user.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ hw/virtio/vhost-user.c | 66 ++++++++++++++++++------------------------
+ 1 file changed, 28 insertions(+), 38 deletions(-)
 
 diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 3e33a2e9e0..6c7b4cc75c 100644
+index 6c7b4cc75c..95dbf9880c 100644
 --- a/hw/virtio/vhost-user.c
 +++ b/hw/virtio/vhost-user.c
-@@ -1321,17 +1321,18 @@ static int vhost_user_set_vring_addr(struct vhost_dev *dev,
-         .hdr.size = sizeof(msg.payload.addr),
-     };
+@@ -1310,10 +1310,35 @@ static int enforce_reply(struct vhost_dev *dev,
+     return vhost_user_get_features(dev, &dummy);
+ }
  
--    bool reply_supported = virtio_has_feature(dev->protocol_features,
--                                              VHOST_USER_PROTOCOL_F_REPLY_ACK);
--
-     /*
-      * wait for a reply if logging is enabled to make sure
-      * backend is actually logging changes
-      */
-     bool wait_for_reply = addr->flags & (1 << VHOST_VRING_F_LOG);
- 
--    if (reply_supported && wait_for_reply) {
--        msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
++/* Note: "msg->hdr.flags" may be modified. */
++static int vhost_user_write_sync(struct vhost_dev *dev, VhostUserMsg *msg,
++                                 bool wait_for_reply)
++{
++    int ret;
++
 +    if (wait_for_reply) {
 +        bool reply_supported = virtio_has_feature(dev->protocol_features,
 +                                          VHOST_USER_PROTOCOL_F_REPLY_ACK);
 +        if (reply_supported) {
-+            msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
++            msg->hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
 +        }
-     }
++    }
++
++    ret = vhost_user_write(dev, msg, NULL, 0);
++    if (ret < 0) {
++        return ret;
++    }
++
++    if (wait_for_reply) {
++        return enforce_reply(dev, msg);
++    }
++
++    return 0;
++}
++
+ static int vhost_user_set_vring_addr(struct vhost_dev *dev,
+                                      struct vhost_vring_addr *addr)
+ {
+-    int ret;
+     VhostUserMsg msg = {
+         .hdr.request = VHOST_USER_SET_VRING_ADDR,
+         .hdr.flags = VHOST_USER_VERSION,
+@@ -1327,24 +1352,7 @@ static int vhost_user_set_vring_addr(struct vhost_dev *dev,
+      */
+     bool wait_for_reply = addr->flags & (1 << VHOST_VRING_F_LOG);
  
-     ret = vhost_user_write(dev, &msg, NULL, 0);
+-    if (wait_for_reply) {
+-        bool reply_supported = virtio_has_feature(dev->protocol_features,
+-                                          VHOST_USER_PROTOCOL_F_REPLY_ACK);
+-        if (reply_supported) {
+-            msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+-        }
+-    }
+-
+-    ret = vhost_user_write(dev, &msg, NULL, 0);
+-    if (ret < 0) {
+-        return ret;
+-    }
+-
+-    if (wait_for_reply) {
+-        return enforce_reply(dev, &msg);
+-    }
+-
+-    return 0;
++    return vhost_user_write_sync(dev, &msg, wait_for_reply);
+ }
+ 
+ static int vhost_user_set_u64(struct vhost_dev *dev, int request, uint64_t u64,
+@@ -1356,26 +1364,8 @@ static int vhost_user_set_u64(struct vhost_dev *dev, int request, uint64_t u64,
+         .payload.u64 = u64,
+         .hdr.size = sizeof(msg.payload.u64),
+     };
+-    int ret;
+ 
+-    if (wait_for_reply) {
+-        bool reply_supported = virtio_has_feature(dev->protocol_features,
+-                                          VHOST_USER_PROTOCOL_F_REPLY_ACK);
+-        if (reply_supported) {
+-            msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+-        }
+-    }
+-
+-    ret = vhost_user_write(dev, &msg, NULL, 0);
+-    if (ret < 0) {
+-        return ret;
+-    }
+-
+-    if (wait_for_reply) {
+-        return enforce_reply(dev, &msg);
+-    }
+-
+-    return 0;
++    return vhost_user_write_sync(dev, &msg, wait_for_reply);
+ }
+ 
+ static int vhost_user_set_status(struct vhost_dev *dev, uint8_t status)
 -- 
 MST
 
