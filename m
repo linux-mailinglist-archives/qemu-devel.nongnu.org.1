@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16917CFF07
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F06347CFF12
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:08:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVWK-0000kK-Gy; Thu, 19 Oct 2023 12:05:12 -0400
+	id 1qtVYi-0005wb-5W; Thu, 19 Oct 2023 12:07:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVWH-0000XR-43
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:05:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVYZ-0005oa-VE
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:07:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVWF-0003Rk-7y
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:05:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVYX-0003yx-PQ
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:07:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697731506;
+ s=mimecast20190719; t=1697731647;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=lcc7KSLAl8R+GEmJaINwyz4rtiTnxiafEDIKKi+uzV8=;
- b=B2hUvu+gzMcAi5w4uBNLU4NsoeDsB6xvHKwxL8N0+nddnJlgVgeTCj/qrReJjeGMd4skBR
- z4aKkKr2MppehbkSsKu8umD+AaAqWP3JeW1fvalU6roF1dlumsnUK20u/wb6TX/fDQ8TyQ
- yEDVoYHHJHS+o3zcxiYMNndqjl2mTwA=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gUP2fxHPR3Onki9DBL6P85z9WueUZFgX49QUb20kiE4=;
+ b=CFhpeCTQ4K1B8o7vbVHa44su8EKEDc7lSBRaiKGQzP9qrDDKwT2Az3BTsTb6f9xaVNVqpV
+ xvB+kXISQpVj8TrY/Nubv/lJrdfnmdpL2LxSEAtmDAL4tgYyBvf08VVaM1SK1svHJxvAi8
+ C2vna/ihm2/64HvOW+mK/K3/MY9KZcY=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-189-KF3gNFfzPmyBi1GX1VXE7g-1; Thu, 19 Oct 2023 12:05:04 -0400
-X-MC-Unique: KF3gNFfzPmyBi1GX1VXE7g-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-417fd6a8575so94061511cf.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:05:04 -0700 (PDT)
+ us-mta-425-xc9l2iVfM76Znc8mgjq4-g-1; Thu, 19 Oct 2023 12:07:25 -0400
+X-MC-Unique: xc9l2iVfM76Znc8mgjq4-g-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-41cbb2970f4so23354251cf.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:07:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697731504; x=1698336304;
+ d=1e100.net; s=20230601; t=1697731645; x=1698336445;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lcc7KSLAl8R+GEmJaINwyz4rtiTnxiafEDIKKi+uzV8=;
- b=AM8qEdEoS4Hu8c0ZYAGz3NH7paFbpSnasaqtB5pbvXmHADm5Mk3Fa9uJ29TrlVgZzT
- 8cv7Z6KkFHCifZ1+0N7rqllGV6TtO6s1sDh8I0goHPbfry6NunGKswj+/+kv+WbSMgrs
- B10JHcw7xZsnYTQ5+OTvHb98gHaFaxfbNvQyleUD9T2WIcgOfUvNGyykdDieqCNJOh0U
- 8iboBGOB/04HP0NEcPg3d4eVU2Rpwex9GmlepUcI5kMmem2BclTlo/j97U2LVOvL3wPN
- Q+K09lMf6+eGodXXwfP04nNdFq8MWNC7ZiSbO3ytKPEevaY6VNNegGDl8tKNXBM8OhVw
- 8NVw==
-X-Gm-Message-State: AOJu0YzD1dFCLB5XINoe0gXvUTwXXiGh/V+vu6HptHPWXz+nYQBJKfY+
- aPafpcQjlKMSE3lOv82VnAdWD4jfsRzg6Z7Q+QYRUbAIS5iI33ANchZ1uCi5Xg/Lmde8g66KW3A
- q8OTan8C5goPXJTh3KczQIHk=
-X-Received: by 2002:ac8:57c2:0:b0:418:c8e9:45e5 with SMTP id
- w2-20020ac857c2000000b00418c8e945e5mr2806073qta.24.1697731503744; 
- Thu, 19 Oct 2023 09:05:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1SNKlkrUjh2hAGQolDCPTatBqrRwlU8ZzX7+9KZYj0VsFTjHGudzOhbmY7UO4fl7AWWoLTg==
-X-Received: by 2002:ac8:57c2:0:b0:418:c8e9:45e5 with SMTP id
- w2-20020ac857c2000000b00418c8e945e5mr2806043qta.24.1697731503363; 
- Thu, 19 Oct 2023 09:05:03 -0700 (PDT)
+ bh=gUP2fxHPR3Onki9DBL6P85z9WueUZFgX49QUb20kiE4=;
+ b=m/t4HNZI1Nqm5ZxfGO3avUJLI7CplI8BuQ0SAP7iKyc+e1RY3ZuYjPLJlkgl9jLBnc
+ K7y6/59cGNE5Fq7YSIJGPlULsAgoreIIIB83ZxUjDi6C+8HCv0bRL43o07gphpyhpiv+
+ PpfhaOu/uHRZPfvLhctVWIH6THqoG+fb+6zIBrskjsxbOuDk9Smxq0pg3V0obdH+Q+A0
+ a3Q3VQnlUEM5Anhhr4Bp3ksUPuIS3CagDWZRGfksplVKyI6pbWCUcv9J0pVGeWW94QvJ
+ nvIRTwVxEzmn6a634/3CIz4nHTcZq2Ha1lW7YnlGIigKHV4FUpIRapDKo613sfGsym5G
+ ZXxA==
+X-Gm-Message-State: AOJu0Yy+z9jE3G5tUZxEko+TnrnJZM0/QrKvtFnn93BGwqjNCcT5SEml
+ c5dZHOWssV05Hh2O/Hqgvj2m4ye2b2GoUqgIVDcUjPWaV/64N6r6XuBt3X5DQBvimylscR76+fT
+ JwIRYpeTmqmUaTmE=
+X-Received: by 2002:a05:622a:1920:b0:40d:589d:9ce5 with SMTP id
+ w32-20020a05622a192000b0040d589d9ce5mr3346254qtc.34.1697731645152; 
+ Thu, 19 Oct 2023 09:07:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHpuYW7J0llvz3xnz1R4m2slEEzhvVPe3Cs4SZRwBB4/Nx6pp778dU0QFzrmnKrRgU4IfWPig==
+X-Received: by 2002:a05:622a:1920:b0:40d:589d:9ce5 with SMTP id
+ w32-20020a05622a192000b0040d589d9ce5mr3346214qtc.34.1697731644693; 
+ Thu, 19 Oct 2023 09:07:24 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- y12-20020ac8128c000000b004196d75d79csm828688qti.46.2023.10.19.09.05.02
+ c2-20020ac86602000000b004199c98f87dsm823993qtp.74.2023.10.19.09.07.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 09:05:03 -0700 (PDT)
-Message-ID: <9191fbc3-47e7-4e6e-87a5-2598435c584d@redhat.com>
-Date: Thu, 19 Oct 2023 18:05:02 +0200
+ Thu, 19 Oct 2023 09:07:24 -0700 (PDT)
+Message-ID: <848c65fb-1c32-4a18-91c7-1a0fe7544e68@redhat.com>
+Date: Thu, 19 Oct 2023 18:07:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/9] hw/pcmcia/pxa2xx: Realize sysbus device before
- accessing it
+Subject: Re: [PATCH v2 4/9] hw/pcmcia/pxa2xx: Do not open-code
+ sysbus_create_simple()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
 References: <20231019130925.18744-1-philmd@linaro.org>
- <20231019130925.18744-4-philmd@linaro.org>
+ <20231019130925.18744-5-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,7 +116,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231019130925.18744-4-philmd@linaro.org>
+In-Reply-To: <20231019130925.18744-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -144,35 +144,36 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 19/10/2023 15.09, Philippe Mathieu-Daudé wrote:
-> sysbus_mmio_map() should not be called on unrealized device.
-> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/pcmcia/pxa2xx.c | 7 ++-----
->   1 file changed, 2 insertions(+), 5 deletions(-)
+>   hw/pcmcia/pxa2xx.c | 8 +-------
+>   1 file changed, 1 insertion(+), 7 deletions(-)
 > 
 > diff --git a/hw/pcmcia/pxa2xx.c b/hw/pcmcia/pxa2xx.c
-> index fcca7e571b..e7264feb45 100644
+> index e7264feb45..a2ab96d749 100644
 > --- a/hw/pcmcia/pxa2xx.c
 > +++ b/hw/pcmcia/pxa2xx.c
-> @@ -142,15 +142,12 @@ PXA2xxPCMCIAState *pxa2xx_pcmcia_init(MemoryRegion *sysmem,
+> @@ -141,13 +141,7 @@ static void pxa2xx_pcmcia_set_irq(void *opaque, int line, int level)
+>   PXA2xxPCMCIAState *pxa2xx_pcmcia_init(MemoryRegion *sysmem,
 >                                         hwaddr base)
 >   {
->       DeviceState *dev;
-> -    PXA2xxPCMCIAState *s;
->   
->       dev = qdev_new(TYPE_PXA2XX_PCMCIA);
-> -    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
-> -    s = PXA2XX_PCMCIA(dev);
+> -    DeviceState *dev;
 > -
->       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
->   
-> -    return s;
-> +    return PXA2XX_PCMCIA(dev);
+> -    dev = qdev_new(TYPE_PXA2XX_PCMCIA);
+> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> -    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+> -
+> -    return PXA2XX_PCMCIA(dev);
+> +    return PXA2XX_PCMCIA(sysbus_create_simple(TYPE_PXA2XX_PCMCIA, base, NULL));
 >   }
->   
->   static void pxa2xx_pcmcia_initfn(Object *obj)
+
+I'd maybe prefer
+
+     dev = sysbus_create_simple(TYPE_PXA2XX_PCMCIA, base, NULL);
+
+     return PXA2XX_PCMCIA(dev);
+
+for readability, but that's just a matter of taste, so:
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
