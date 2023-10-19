@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1EE7D017B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 392B77D01E0
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:37:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXiM-0002nD-Ln; Thu, 19 Oct 2023 14:25:46 -0400
+	id 1qtXhp-0001ev-Ks; Thu, 19 Oct 2023 14:25:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXhB-0000AS-D3
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:24:35 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXhC-0000Bx-OI
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:24:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXh8-0002WX-OJ
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:24:32 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXhA-0002cO-3p
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:24:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697739869;
+ s=mimecast20190719; t=1697739871;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=VzMBUbudylul0FJkLWku7UAionEGDwih3IlnCHi1rwI=;
- b=BLjowySFaXwppJufb1mUVSMWgTa0mbYcRH2p5iRAQVXkznNFDK/ug1D8mu3BPg/ruEyVI1
- Iuh3RRcMbdzMBR7dL1nCvTgPLekG5sjatUElueY4VxoJwNRZGcRpU+4nKIuLPxqRVoJoFH
- 3sE8KdTSInYQYpAeESx7yoXhUWnOKE4=
+ bh=YGr1H8ijLV736mqcmWstFWaefAIRGO/VVLKqx2ky5/4=;
+ b=f+xOQYp29fDj7Dy6wM+nGfaca8tcdWqPPxJMGbLKzfcCM+uFMekMUKHQ+m9S2cR9UM+Y5w
+ NDgyRRBlenXGiJ2gFDIXUUPflFN1mCyUzUqI1+53E7lj2MylwzjvHuIXUy9Y7WrzRthlFj
+ EAKD9Y8GwbR2PI7o9diO69o48tC/gMg=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-189-g5X_kCGXPKmab_wek0-ZeA-1; Thu, 19 Oct 2023 14:24:28 -0400
-X-MC-Unique: g5X_kCGXPKmab_wek0-ZeA-1
+ us-mta-693-87VvnVhANk2KdA2_9dm-7A-1; Thu, 19 Oct 2023 14:24:30 -0400
+X-MC-Unique: 87VvnVhANk2KdA2_9dm-7A-1
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-407558fe418so54926385e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:24:27 -0700 (PDT)
+ 5b1f17b1804b1-4084e4ce543so1822405e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:24:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697739866; x=1698344666;
+ d=1e100.net; s=20230601; t=1697739868; x=1698344668;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VzMBUbudylul0FJkLWku7UAionEGDwih3IlnCHi1rwI=;
- b=qPdGyjyX1A5uc2M8jDYUsmmzJyXeY4nN5uqmxRdcv4hWRb29yn2tJ9wIIZQgH6y5jg
- 6TVvq4FjqNumGeK8bMJufuKRHrL0K6q7+M4dy3SGAYfeWZ3X5ipmX2FqQlZcgiMHyyzb
- mLrkBRu/VriDfLxT7CXCDQ8u0h2bCqzqUrdQJcp/Xs/NF3h7MoH5uXX0LO3iq036Ihz9
- /qpfsTqEca0pu9ArvW7Rl6anNBgBVtBeJNCLlcIDo6zzLJFgVGnidkAxcPoVk8IyvqZA
- v44Z01VBZ26YBkx9V97yZ0/8+rNyhKHuMCq2gbrZu8z8eZDNXsNzRIXwawUEy8sPqGWg
- XMhg==
-X-Gm-Message-State: AOJu0YxcIaiWQp2XfjIe9dqEEEKWT1mrngZ4wevm5u3NKZNMWNKZ0CcB
- 4LopYbvUb0ppAtZgXauQQEkwq9uQKYtXDmuRIfQcMm/KZC56/pAyNuQFyTqh1IVUpQjLAMH1Uva
- dKZgiu3l506aIVgpaI1NBSNzVAkAj3vlFm7aWUVSsxf1iF3aasEYnmnM+za5sWv7LtqoQ
-X-Received: by 2002:a05:600c:3b8a:b0:3ff:ca80:eda3 with SMTP id
- n10-20020a05600c3b8a00b003ffca80eda3mr2340851wms.10.1697739866254; 
- Thu, 19 Oct 2023 11:24:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+Wt17pbKsItcCjqS1vZev2/DFOLJ0yQ5YafPAKfRVDlg4Vgn2OCFoJ0EmilqGpdbJLt+PxA==
-X-Received: by 2002:a05:600c:3b8a:b0:3ff:ca80:eda3 with SMTP id
- n10-20020a05600c3b8a00b003ffca80eda3mr2340836wms.10.1697739865880; 
- Thu, 19 Oct 2023 11:24:25 -0700 (PDT)
+ bh=YGr1H8ijLV736mqcmWstFWaefAIRGO/VVLKqx2ky5/4=;
+ b=OCEPPusfaA+uc/Qc/yo/9H09QlVSL0hJ6MYMEqDVU1YcbuiBXJfY8oHUIWDQ1S18Cr
+ 9VruFdu55Ypv3cLBTicowi0RD60wKbejBMKPKnSdGKGOuzPMj3GH4i9hYtH2fu93VmDN
+ lPu1RvAkEBubhCK+BlCGCSQo6LvK2dObu+ZBqFDgNRuH9iaKXPvaENqJwtUgsEr4HACW
+ SvYWa8FRUZOVIWO6Cxy/Mv41OqQsLHHV2HJs3Yf1xwXbYfUDI7o1pf1Z96qXHcahpvSW
+ k7pk2uVnWZP2Xf/UGQ9HHZjKUlU3MMC4MlH+8HHfoGjv3ucA25t7RzGEhtHpKHPy0NeY
+ Na5A==
+X-Gm-Message-State: AOJu0Ywz35/hNqwtp5S9OoilMWmhOWrsUNMu5EmRrPVdoMljU7Nmmq+Q
+ o5Y5zOghFkuq8u2ITwmehZM5Yh3bHss8/fk2dOmhPe5ktrc4LmDcKGZ7P1SaOt5gB4669tIbkh8
+ Muk8Or4iWoAjLGo9x+GLoF/sAu526rRtHNKIGYBt8b08f46sz+ykyUcDF7xxw2zgFILmH
+X-Received: by 2002:a05:600c:1c29:b0:408:4cf1:e9d7 with SMTP id
+ j41-20020a05600c1c2900b004084cf1e9d7mr1300766wms.20.1697739868611; 
+ Thu, 19 Oct 2023 11:24:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFu661INcDNvwm+2L6Gy1/2bpANGX5tPFEZY7FaN1QvF3L9iFMQOQQrd/0WUF6LnmxygUmhbQ==
+X-Received: by 2002:a05:600c:1c29:b0:408:4cf1:e9d7 with SMTP id
+ j41-20020a05600c1c2900b004084cf1e9d7mr1300748wms.20.1697739868228; 
+ Thu, 19 Oct 2023 11:24:28 -0700 (PDT)
 Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
  by smtp.gmail.com with ESMTPSA id
- g9-20020a05600c4ec900b004064ac107cfsm200652wmq.39.2023.10.19.11.24.24
+ h15-20020a05600c350f00b003fe1fe56202sm191581wmq.33.2023.10.19.11.24.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 11:24:25 -0700 (PDT)
-Date: Thu, 19 Oct 2023 14:24:23 -0400
+ Thu, 19 Oct 2023 11:24:27 -0700 (PDT)
+Date: Thu, 19 Oct 2023 14:24:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Ani Sinha <anisinha@redhat.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v2 72/78] hw/i386/cxl: ensure maxram is greater than ram size
- for calculating cxl range
-Message-ID: <e9a5ce6265c31a11f8da17c3b09f0a65ec96ac66.1697739629.git.mst@redhat.com>
+ Fan Ni <fan.ni@samsung.com>, Dave Jiang <dave.jiang@intel.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL v2 73/78] tests/acpi: Allow update of DSDT.cxl
+Message-ID: <ca5140c48f9ad7c2dd2ddd7b0c01535decc72706.1697739629.git.mst@redhat.com>
 References: <cover.1697739629.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,40 +100,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-pc_get_device_memory_range() finds the device memory size by calculating the
-difference between maxram and ram sizes. This calculation makes sense only when
-maxram is greater than the ram size. Make sure we check for that before calling
-pc_get_device_memory_range().
+Addition of QTG in following patch requires an update to the test
+data.
 
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Message-Id: <20231011105335.42296-1-anisinha@redhat.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Message-Id: <20231012125623.21101-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 6293f57a0c..dbaefa7617 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -781,10 +781,12 @@ static void pc_get_device_memory_range(PCMachineState *pcms,
- static uint64_t pc_get_cxl_range_start(PCMachineState *pcms)
- {
-     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-+    MachineState *ms = MACHINE(pcms);
-     hwaddr cxl_base;
-     ram_addr_t size;
- 
--    if (pcmc->has_reserved_memory) {
-+    if (pcmc->has_reserved_memory &&
-+        (ms->ram_size < ms->maxram_size)) {
-         pc_get_device_memory_range(pcms, &cxl_base, &size);
-         cxl_base += size;
-     } else {
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..9ce0f596cc 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/q35/DSDT.cxl",
 -- 
 MST
 
