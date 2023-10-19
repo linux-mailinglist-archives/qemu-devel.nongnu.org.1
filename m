@@ -2,96 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89367D010F
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF0C7D0110
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 19:59:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXHt-0001IZ-Pu; Thu, 19 Oct 2023 13:58:25 -0400
+	id 1qtXHW-0000dy-6l; Thu, 19 Oct 2023 13:58:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qtXHr-00014Z-D4; Thu, 19 Oct 2023 13:58:23 -0400
+ id 1qtXHT-0000da-Fq; Thu, 19 Oct 2023 13:57:59 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qtXHp-0001Rz-DY; Thu, 19 Oct 2023 13:58:23 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ id 1qtXHR-0001Pp-Av; Thu, 19 Oct 2023 13:57:59 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JHlJSb022932; Thu, 19 Oct 2023 17:58:19 GMT
+ 39JHtYla006435; Thu, 19 Oct 2023 17:57:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  content-transfer-encoding : mime-version; s=pp1;
- bh=OwY9xZ266K8KxTGPeJc4XWdPqYn+uuxmjHU1GiVomqM=;
- b=nMhHh0gCDuEbk4LBkBoSESX7YuFO9iNZ43fLKLsS3y70qUgzTlAwPBPeGTP/aIXYKHj4
- dIFN8u8qFb9O6CqmsUg1Vi37fJHkMHemDYJTa6K2TupnlveZHFJihC8N9Nfgk+6q6h1E
- d+vtpa9c2fdreBa2V/fQr5QwS0A7TVPZDaGGV0uklPdJPXzEXoYfFe8ZDddZjUAlbHSZ
- nzR9Z6InvEFlZWcqQC5UHTpBPAwNEdVTf4gSCRC7L0fMCdwR3dM/Gm3uldEiukPj2EG7
- PebKtYorlkfMo+QBoXGpMrMq6zjbAvm0bXijDkA5Py83ejRyJ/t3e94qwDS4U6LAbWnH uQ== 
+ bh=E/DIS1uampXHFe66MjXnmkpMkRQERnxg1SM+gciCpeM=;
+ b=GPHNkzFnyt5U35HUeq13nWCtuKvSNuFZLkmKoptldGPl1wQEVPvGTCcRzeRI5fdMLcQj
+ 5qbu0ABiJcPPP3G6BcnC5F/aWWl29+W93HLLNjSf4ECfo8WYsyf70bytuQYjZQRcgUH0
+ KTrKkVWwuwAkitv6wJ8hQJtdpWN9KruROyFN6jx2v8CUwuRWYflFJMYtCtPWL0WoSKdb
+ LGcBfYBviDYQ/hgCdD9fiHCrZZT9z+uK3jt0lLEgrnk6bpFGH4AhUvV4s9ttfWHVRBPk
+ UR1nmYS2qYEEe+3I5aCL22b0fDSbjVLUUsEb4VMb13pahq+rvdXnSwspICHFy2ZKZtB7 YA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tu95pre5u-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tu95qgb0h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 17:58:19 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JHlShB024173;
- Thu, 19 Oct 2023 17:58:16 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tu95prd5b-1
+ Thu, 19 Oct 2023 17:57:54 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JHuhV5017730;
+ Thu, 19 Oct 2023 17:57:54 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tu95qgays-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 17:58:15 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JHIE38027154; Thu, 19 Oct 2023 17:55:37 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tktbym-1
+ Thu, 19 Oct 2023 17:57:54 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39JFxaCw026875; Thu, 19 Oct 2023 17:57:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr5astu3a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 17:55:37 +0000
+ Thu, 19 Oct 2023 17:57:53 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39JHtZfK41091506
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39JHvpBh55837038
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 17:55:35 GMT
+ Thu, 19 Oct 2023 17:57:51 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 481EA20043;
- Thu, 19 Oct 2023 17:55:35 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C6FD720043;
+ Thu, 19 Oct 2023 17:57:51 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC30520040;
- Thu, 19 Oct 2023 17:55:34 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7167320040;
+ Thu, 19 Oct 2023 17:57:51 +0000 (GMT)
 Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
  [9.171.84.173]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 19 Oct 2023 17:55:34 +0000 (GMT)
-Message-ID: <991f3195f7e4e3989e43e45e9e1910cda410c444.camel@linux.ibm.com>
-Subject: Re: [PULL 06/25] s390x/cpu topology: resetting the
- Topology-Change-Report
+ Thu, 19 Oct 2023 17:57:51 +0000 (GMT)
+Message-ID: <05b66fe93ec995d48b8c8fbfbd5f9c6098199851.camel@linux.ibm.com>
+Subject: Re: [PULL 03/25] s390x/cpu topology: add topology entries on CPU
+ hotplug
 From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Pierre Morel <pmorel@linux.vnet.ibm.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-s390x@nongnu.org
-Date: Thu, 19 Oct 2023 19:55:34 +0200
-In-Reply-To: <CAJSP0QXc1yeRYMaEZ_1cRc2d7_E2-vb7Ai4D2P0uRQYTqDqDsA@mail.gmail.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-s390x@nongnu.org
+Date: Thu, 19 Oct 2023 19:57:51 +0200
+In-Reply-To: <20231018130716.286638-4-thuth@redhat.com>
 References: <20231018130716.286638-1-thuth@redhat.com>
- <20231018130716.286638-7-thuth@redhat.com>
- <CAJSP0QXc1yeRYMaEZ_1cRc2d7_E2-vb7Ai4D2P0uRQYTqDqDsA@mail.gmail.com>
+ <20231018130716.286638-4-thuth@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EzNC1ZJY2BMLh_D1rwigzjCyWAWcPcL9
-X-Proofpoint-ORIG-GUID: mgsmykuW2zvX5Rmmb_93wlXudEA_wQXH
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SfgIz4mfhw8r6PiJtuCqktRnwvXcXiM6
+X-Proofpoint-ORIG-GUID: hGzhrjaqhv57rh8f4Nuri-parExlHlN7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-19_17,2023-10-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ suspectscore=0 phishscore=0
+ malwarescore=0 adultscore=0 priorityscore=1501 mlxscore=0 bulkscore=0
+ mlxlogscore=999 impostorscore=0 lowpriorityscore=0 clxscore=1015
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310190152
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
@@ -117,84 +113,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-10-19 at 09:35 -0700, Stefan Hajnoczi wrote:
-> On Wed, 18 Oct 2023 at 06:09, Thomas Huth <thuth@redhat.com> wrote:
-> >=20
-> > From: Pierre Morel <pmorel@linux.ibm.com>
-> >=20
-> > During a subsystem reset the Topology-Change-Report is cleared
-> > by the machine.
-> > Let's ask KVM to clear the Modified Topology Change Report (MTCR)
-> > bit of the SCA in the case of a subsystem reset.
-> >=20
-> > Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> > Reviewed-by: Thomas Huth <thuth@redhat.com>
-> > Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> > Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> > Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> > Message-ID: <20231016183925.2384704-7-nsg@linux.ibm.com>
-> > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > ---
-> >  include/hw/s390x/cpu-topology.h |  1 +
-> >  target/s390x/cpu.h              |  1 +
-> >  target/s390x/kvm/kvm_s390x.h    |  1 +
-> >  hw/s390x/cpu-topology.c         | 11 +++++++++++
-> >  hw/s390x/s390-virtio-ccw.c      |  3 +++
-> >  target/s390x/cpu-sysemu.c       | 13 +++++++++++++
-> >  target/s390x/kvm/kvm.c          | 17 +++++++++++++++++
-> >  7 files changed, 47 insertions(+)
-> >=20
-> > diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-top=
-ology.h
-> > index f95d26d37c..e33e7c66df 100644
-> > --- a/include/hw/s390x/cpu-topology.h
-> > +++ b/include/hw/s390x/cpu-topology.h
-> > @@ -56,6 +56,7 @@ static inline void s390_topology_setup_cpu(MachineSta=
-te *ms,
-> >  #endif
-> >=20
-> >  extern S390Topology s390_topology;
-> > +void s390_topology_reset(void);
+On Wed, 2023-10-18 at 15:06 +0200, Thomas Huth wrote:
+> From: Pierre Morel <pmorel@linux.ibm.com>
 >=20
-> Please take a look at the following CI failure:
+> The topology information are attributes of the CPU and are
+> specified during the CPU device creation.
 >=20
-> /usr/bin/ld: libqemu-s390x-softmmu.fa.p/hw_s390x_s390-virtio-ccw.c.o:
-> in function `subsystem_reset':
-> /home/gitlab-runner/builds/E8PpwMky/0/qemu-project/qemu/build/../hw/s390x=
-/s390-virtio-ccw.c:128:
-> undefined reference to `s390_topology_reset'
+> On hot plug we:
+> - calculate the default values for the topology for drawers,
+>   books and sockets in the case they are not specified.
+> - verify the CPU attributes
+> - check that we have still room on the desired socket
 >=20
-> https://gitlab.com/qemu-project/qemu/-/jobs/5330218593
+> The possibility to insert a CPU in a mask is dependent on the
+> number of cores allowed in a socket, a book or a drawer, the
+> checking is done during the hot plug of the CPU to have an
+> immediate answer.
+>=20
+> If the complete topology is not specified, the core is added
+> in the physical topology based on its core ID and it gets
+> defaults values for the modifier attributes.
+>=20
+> This way, starting QEMU without specifying the topology can
+> still get some advantage of the CPU topology.
+>=20
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Message-ID: <20231016183925.2384704-4-nsg@linux.ibm.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  MAINTAINERS                     |   6 +
+>  include/hw/s390x/cpu-topology.h |  54 +++++++
+>  hw/s390x/cpu-topology.c         | 259 ++++++++++++++++++++++++++++++++
+>  hw/s390x/s390-virtio-ccw.c      |  22 ++-
+>  hw/s390x/meson.build            |   1 +
+>  5 files changed, 340 insertions(+), 2 deletions(-)
+>  create mode 100644 include/hw/s390x/cpu-topology.h
+>  create mode 100644 hw/s390x/cpu-topology.c
 
-I can replicate this with --disable-kvm, tho I don't think that's what the =
-CI does.
-Fix looks something like this (copy pasted):
+[...]
 
---- a/include/hw/s390x/cpu-topology.h
-+++ b/include/hw/s390x/cpu-topology.h
-@@ -45,6 +45,7 @@ typedef QTAILQ_HEAD(, S390TopologyEntry) S390TopologyList;
- #ifdef CONFIG_KVM
- bool s390_has_topology(void);
- void s390_topology_setup_cpu(MachineState *ms, S390CPU *cpu, Error **errp);
-+void s390_topology_reset(void);
- #else
- static inline bool s390_has_topology(void)
- {
-@@ -53,10 +54,14 @@ static inline bool s390_has_topology(void)
- static inline void s390_topology_setup_cpu(MachineState *ms,
-                                            S390CPU *cpu,
-                                            Error **errp) {}
-+static inline void s390_topology_reset(void)
-+{
-+    /* Unreachable, CPU topology not implemented for TCG */
-+    assert(false);
-+}
- #endif
+> --- /dev/null
+> +++ b/include/hw/s390x/cpu-topology.h
+> @@ -0,0 +1,54 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * CPU Topology
+> + *
+> + * Copyright IBM Corp. 2022, 2023
+> + * Author(s): Pierre Morel <pmorel@linux.ibm.com>
+> + *
+> + */
+> +#ifndef HW_S390X_CPU_TOPOLOGY_H
+> +#define HW_S390X_CPU_TOPOLOGY_H
+> +
+> +#ifndef CONFIG_USER_ONLY
+> +
+> +#include "qemu/queue.h"
+> +#include "hw/boards.h"
+> +#include "qapi/qapi-types-machine-target.h"
+> +
+> +typedef struct S390Topology {
+> +    uint8_t *cores_per_socket;
+> +} S390Topology;
+> +
+> +#ifdef CONFIG_KVM
+> +bool s390_has_topology(void);
+> +void s390_topology_setup_cpu(MachineState *ms, S390CPU *cpu, Error **err=
+p);
+> +#else
+> +static inline bool s390_has_topology(void)
+> +{
+> +       return false;
 
- extern S390Topology s390_topology;
--void s390_topology_reset(void);
+Just noticed that the indent is off here :(
 
- static inline int s390_std_socket(int n, CpuTopology *smp)
- {
+> +}
 
+[...]
 
