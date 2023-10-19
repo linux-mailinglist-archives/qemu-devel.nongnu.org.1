@@ -2,88 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2784F7CF550
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE387CF535
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:28:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQGv-0003hk-Rk; Thu, 19 Oct 2023 06:28:58 -0400
+	id 1qtQFq-0001Xi-6Z; Thu, 19 Oct 2023 06:27:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qtQGb-00031M-Ih
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:28:38 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qtQGZ-00079W-7U
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:28:37 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1ca82f015e4so30887235ad.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:28:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697711312; x=1698316112;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
- b=Xc/QZcwc+ym2D5lVwM9w/ZdZS0I05XhpQtaWQbQjV4ezJwdPvEcuf/XrK6O+mULwiI
- dZDzQEuLw8VDT3QYz56CGaVDZuBMRgB7X9sTdITz8gtJ8pRUgtFrl/6Pa7INKsKt3eHH
- qs9aNq5McMLzs2FplKNU/oGUpoBo4IUOXumYNTaN+MQEekEFEsbWeE0YC3OZSbmJKQOT
- KMngx7495ZCNFRzwnZcbrWSoxMq2nHxWGsn0i75SB70hBaiBNfCfATmrfrrVYnrKTaxS
- GmQ8WmAYiDUEndetbnDryVqxj+toagRoWU/mqjyy6Xir/fKwQczTMQTUygMG42tyjiJO
- nZJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697711312; x=1698316112;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JCJCzqQ6Ba4FCVkTkN3rupr67lFRisvbzNM+HnYlWm0=;
- b=M9O3Pr0Ytzmon7zZzc1/UvzgOltpCWFRMJpZy+NbrSAXjE4IonqBmjjqyRyOzEaKXB
- kGs55U9qkj8JXf+V2RYNzGaAkhzPLSdCV4pw3dwGuM+EcxBtfHG5d7R9/fLGHmzHgRMe
- ohyb5d+FkhJJE9+1DsQarmenhFMkbItw2+sAc/tAYLouUeKjVeKixNeDX6lkijUuyqXE
- meQeG00d0TBjXIYCa5AeAxXOXoJOy+QY28mXiLtwtdfN096Kj6i1BrcFNTl8FGZOj4NR
- tgfWcBIZo0fkKCvT3b10JHjB8NP+ALvoT1JahsnWcyZeV5SzRxZKCKVNL/GF50+YNzyM
- 370A==
-X-Gm-Message-State: AOJu0Yy4qs+3vH8cDf60wAl0NY82sy1xnLK0eaTlWL8v1639/jnlbcl4
- O17xFjHhxgY3SCWwYemFJThwrQ==
-X-Google-Smtp-Source: AGHT+IHqyH/Om1RTIEei97uIgFgro4d47SOu2KHopNXqhOQIA8lPbEDFzbWWMNAtCW/lbuUMNSQ5WA==
-X-Received: by 2002:a17:903:320c:b0:1ca:8169:e847 with SMTP id
- s12-20020a170903320c00b001ca8169e847mr1808248plh.63.1697711312575; 
- Thu, 19 Oct 2023 03:28:32 -0700 (PDT)
-Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with UTF8SMTPSA id
- u17-20020a17090341d100b001c1f4edfb9csm1572188ple.173.2023.10.19.03.28.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 03:28:32 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v14 18/18] contrib/plugins: Allow to log registers
-Date: Thu, 19 Oct 2023 19:26:53 +0900
-Message-ID: <20231019102657.129512-19-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231019102657.129512-1-akihiko.odaki@daynix.com>
-References: <20231019102657.129512-1-akihiko.odaki@daynix.com>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qtQFl-0001VX-2L; Thu, 19 Oct 2023 06:27:45 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qtQFh-0006xB-QO; Thu, 19 Oct 2023 06:27:44 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB3jT0f7fz6HJMR;
+ Thu, 19 Oct 2023 18:24:13 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Thu, 19 Oct 2023 11:27:37 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Thu, 19 Oct 2023 11:27:37 +0100
+To: =?utf-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
+ <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
+ <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V6 4/9] hw/acpi: Init GED framework with CPU hotplug events
+Thread-Topic: [PATCH V6 4/9] hw/acpi: Init GED framework with CPU hotplug
+ events
+Thread-Index: AQHZ/cN5nupvt1X/j0S+fZufTSL4urBQ3j+AgAATTTA=
+Date: Thu, 19 Oct 2023 10:27:37 +0000
+Message-ID: <a7025265329d486f8684f43a573acaa4@huawei.com>
+References: <20231013105129.25648-1-salil.mehta@huawei.com>
+ <20231013105129.25648-5-salil.mehta@huawei.com> <87fs26apcd.fsf@linaro.org>
+In-Reply-To: <87fs26apcd.fsf@linaro.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.171.120]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::629;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,252 +89,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This demonstrates how a register can be read from a plugin.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- docs/devel/tcg-plugins.rst |  10 +++-
- contrib/plugins/execlog.c  | 120 +++++++++++++++++++++++++++----------
- 2 files changed, 97 insertions(+), 33 deletions(-)
-
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index 81dcd43a61..c9f8b27590 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -497,6 +497,15 @@ arguments if required::
-   $ qemu-system-arm $(QEMU_ARGS) \
-     -plugin ./contrib/plugins/libexeclog.so,ifilter=st1w,afilter=0x40001808 -d plugin
- 
-+This plugin can also dump a specified register. The specification of register
-+follows `GDB standard target features <https://sourceware.org/gdb/onlinedocs/gdb/Standard-Target-Features.html>`__.
-+
-+Specify the name of the feature that contains the register and the name of the
-+register with ``rfile`` and ``reg`` options, respectively::
-+
-+  $ qemu-system-arm $(QEMU_ARGS) \
-+    -plugin ./contrib/plugins/libexeclog.so,rfile=org.gnu.gdb.arm.core,reg=sp -d plugin
-+
- - contrib/plugins/cache.c
- 
- Cache modelling plugin that measures the performance of a given L1 cache
-@@ -583,4 +592,3 @@ The following API is generated from the inline documentation in
- include the full kernel-doc annotations.
- 
- .. kernel-doc:: include/qemu/qemu-plugin.h
--
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 82dc2f584e..f3e714c888 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -15,27 +15,43 @@
- 
- #include <qemu-plugin.h>
- 
-+typedef struct CPU {
-+    /* Store last executed instruction on each vCPU as a GString */
-+    GString *last_exec;
-+    GByteArray *reg_history[2];
-+
-+    int reg;
-+} CPU;
-+
- QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
- 
--/* Store last executed instruction on each vCPU as a GString */
--static GPtrArray *last_exec;
-+static CPU *cpus;
-+static int num_cpus;
- static GRWLock expand_array_lock;
- 
- static GPtrArray *imatches;
- static GArray *amatches;
- 
-+static char *rfile_name;
-+static char *reg_name;
-+
- /*
-- * Expand last_exec array.
-+ * Expand cpu array.
-  *
-  * As we could have multiple threads trying to do this we need to
-  * serialise the expansion under a lock.
-  */
--static void expand_last_exec(int cpu_index)
-+static void expand_cpu(int cpu_index)
- {
-     g_rw_lock_writer_lock(&expand_array_lock);
--    while (cpu_index >= last_exec->len) {
--        GString *s = g_string_new(NULL);
--        g_ptr_array_add(last_exec, s);
-+    if (cpu_index >= num_cpus) {
-+        cpus = g_realloc_n(cpus, cpu_index + 1, sizeof(*cpus));
-+        while (cpu_index >= num_cpus) {
-+            cpus[num_cpus].last_exec = g_string_new(NULL);
-+            cpus[num_cpus].reg_history[0] = g_byte_array_new();
-+            cpus[num_cpus].reg_history[1] = g_byte_array_new();
-+            num_cpus++;
-+        }
-     }
-     g_rw_lock_writer_unlock(&expand_array_lock);
- }
-@@ -50,8 +66,8 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
- 
-     /* Find vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
--    g_assert(cpu_index < last_exec->len);
--    s = g_ptr_array_index(last_exec, cpu_index);
-+    g_assert(cpu_index < num_cpus);
-+    s = cpus[cpu_index].last_exec;
-     g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Indicate type of memory access */
-@@ -77,28 +93,42 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
-  */
- static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
- {
--    GString *s;
-+    int n;
-+    int i;
- 
--    /* Find or create vCPU in array */
-     g_rw_lock_reader_lock(&expand_array_lock);
--    if (cpu_index >= last_exec->len) {
--        g_rw_lock_reader_unlock(&expand_array_lock);
--        expand_last_exec(cpu_index);
--        g_rw_lock_reader_lock(&expand_array_lock);
--    }
--    s = g_ptr_array_index(last_exec, cpu_index);
--    g_rw_lock_reader_unlock(&expand_array_lock);
- 
-     /* Print previous instruction in cache */
--    if (s->len) {
--        qemu_plugin_outs(s->str);
-+    if (cpus[cpu_index].last_exec->len) {
-+        if (cpus[cpu_index].reg >= 0) {
-+            GByteArray *current = cpus[cpu_index].reg_history[0];
-+            GByteArray *last = cpus[cpu_index].reg_history[1];
-+
-+            g_byte_array_set_size(current, 0);
-+            n = qemu_plugin_read_register(current, cpus[cpu_index].reg);
-+
-+            if (n != last->len || memcmp(current->data, last->data, n)) {
-+                g_string_append(cpus[cpu_index].last_exec, ", reg,");
-+                for (i = 0; i < n; i++) {
-+                    g_string_append_printf(cpus[cpu_index].last_exec, " %02x",
-+                                           current->data[i]);
-+                }
-+            }
-+
-+            cpus[cpu_index].reg_history[0] = last;
-+            cpus[cpu_index].reg_history[1] = current;
-+        }
-+
-+        qemu_plugin_outs(cpus[cpu_index].last_exec->str);
-         qemu_plugin_outs("\n");
-     }
- 
-     /* Store new instruction in cache */
-     /* vcpu_mem will add memory access information to last_exec */
--    g_string_printf(s, "%u, ", cpu_index);
--    g_string_append(s, (char *)udata);
-+    g_string_printf(cpus[cpu_index].last_exec, "%u, ", cpu_index);
-+    g_string_append(cpus[cpu_index].last_exec, (char *)udata);
-+
-+    g_rw_lock_reader_unlock(&expand_array_lock);
- }
- 
- /**
-@@ -167,8 +197,10 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-                                              QEMU_PLUGIN_MEM_RW, NULL);
- 
-             /* Register callback on instruction */
--            qemu_plugin_register_vcpu_insn_exec_cb(insn, vcpu_insn_exec,
--                                                   QEMU_PLUGIN_CB_NO_REGS, output);
-+            qemu_plugin_register_vcpu_insn_exec_cb(
-+                insn, vcpu_insn_exec,
-+                rfile_name ? QEMU_PLUGIN_CB_R_REGS : QEMU_PLUGIN_CB_NO_REGS,
-+                output);
- 
-             /* reset skip */
-             skip = (imatches || amatches);
-@@ -177,17 +209,33 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-     }
- }
- 
-+static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
-+{
-+    int reg = -1;
-+
-+    expand_cpu(vcpu_index);
-+
-+    if (rfile_name) {
-+        int rfile = qemu_plugin_find_register_file(vcpu_index, rfile_name);
-+        if (rfile >= 0) {
-+            reg = qemu_plugin_find_register(vcpu_index, rfile, reg_name);
-+        }
-+    }
-+
-+    g_rw_lock_writer_lock(&expand_array_lock);
-+    cpus[vcpu_index].reg = reg;
-+    g_rw_lock_writer_unlock(&expand_array_lock);
-+}
-+
- /**
-  * On plugin exit, print last instruction in cache
-  */
- static void plugin_exit(qemu_plugin_id_t id, void *p)
- {
-     guint i;
--    GString *s;
--    for (i = 0; i < last_exec->len; i++) {
--        s = g_ptr_array_index(last_exec, i);
--        if (s->str) {
--            qemu_plugin_outs(s->str);
-+    for (i = 0; i < num_cpus; i++) {
-+        if (cpus[i].last_exec->str) {
-+            qemu_plugin_outs(cpus[i].last_exec->str);
-             qemu_plugin_outs("\n");
-         }
-     }
-@@ -224,9 +272,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-      * we don't know the size before emulation.
-      */
-     if (info->system_emulation) {
--        last_exec = g_ptr_array_sized_new(info->system.max_vcpus);
--    } else {
--        last_exec = g_ptr_array_new();
-+        cpus = g_new(CPU, info->system.max_vcpus);
-     }
- 
-     for (int i = 0; i < argc; i++) {
-@@ -236,13 +282,23 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-             parse_insn_match(tokens[1]);
-         } else if (g_strcmp0(tokens[0], "afilter") == 0) {
-             parse_vaddr_match(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "rfile") == 0) {
-+            rfile_name = g_strdup(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "reg") == 0) {
-+            reg_name = g_strdup(tokens[1]);
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", opt);
-             return -1;
-         }
-     }
- 
-+    if ((!rfile_name) != (!reg_name)) {
-+        fputs("file and reg need to be set at the same time\n", stderr);
-+        return -1;
-+    }
-+
-     /* Register translation block and exit callbacks */
-+    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
-     qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-     qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
- 
--- 
-2.42.0
-
+SGkgQWxleCwNCg0KPiBGcm9tOiBBbGV4IEJlbm7DqWUgPGFsZXguYmVubmVlQGxpbmFyby5vcmc+
+DQo+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVyIDE5LCAyMDIzIDExOjE2IEFNDQo+IFRvOiBTYWxp
+bCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4NCj4gQ2M6IHFlbXUtZGV2ZWxAbm9uZ251
+Lm9yZzsgcWVtdS1hcm1Abm9uZ251Lm9yZzsgbWF6QGtlcm5lbC5vcmc7IGplYW4tDQo+IHBoaWxp
+cHBlQGxpbmFyby5vcmc7IEpvbmF0aGFuIENhbWVyb24gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2Vp
+LmNvbT47DQo+IGxwaWVyYWxpc2lAa2VybmVsLm9yZzsgcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3Jn
+Ow0KPiByaWNoYXJkLmhlbmRlcnNvbkBsaW5hcm8ub3JnOyBpbWFtbWVkb0ByZWRoYXQuY29tOyBh
+bmRyZXcuam9uZXNAbGludXguZGV2Ow0KPiBkYXZpZEByZWRoYXQuY29tOyBwaGlsbWRAbGluYXJv
+Lm9yZzsgZXJpYy5hdWdlckByZWRoYXQuY29tOw0KPiBvbGl2ZXIudXB0b25AbGludXguZGV2OyBw
+Ym9uemluaUByZWRoYXQuY29tOyBtc3RAcmVkaGF0LmNvbTsNCj4gd2lsbEBrZXJuZWwub3JnOyBn
+c2hhbkByZWRoYXQuY29tOyByYWZhZWxAa2VybmVsLm9yZzsNCj4gbGludXhAYXJtbGludXgub3Jn
+LnVrOyBkYXJyZW5Ab3MuYW1wZXJlY29tcHV0aW5nLmNvbTsNCj4gaWxra2FAb3MuYW1wZXJlY29t
+cHV0aW5nLmNvbTsgdmlzaG51QG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IGthcmwuaGV1YmF1
+bUBvcmFjbGUuY29tOyBtaWd1ZWwubHVpc0BvcmFjbGUuY29tOyBzYWxpbC5tZWh0YUBvcG5zcmMu
+bmV0Ow0KPiB6aHVrZXFpYW4gPHpodWtlcWlhbjFAaHVhd2VpLmNvbT47IHdhbmd4aW9uZ2Zlbmcg
+KEMpDQo+IDx3YW5neGlvbmdmZW5nMkBodWF3ZWkuY29tPjsgd2FuZ3lhbmFuIChZKSA8d2FuZ3lh
+bmFuNTVAaHVhd2VpLmNvbT47DQo+IGppYWtlcm5lbDJAZ21haWwuY29tOyBtYW9iaWJvQGxvb25n
+c29uLmNuOyBsaXhpYW5nbGFpQGxvb25nc29uLmNuOyBMaW51eGFybQ0KPiA8bGludXhhcm1AaHVh
+d2VpLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBWNiA0LzldIGh3L2FjcGk6IEluaXQgR0VE
+IGZyYW1ld29yayB3aXRoIENQVSBob3RwbHVnDQo+IGV2ZW50cw0KPiANCj4gDQo+IFNhbGlsIE1l
+aHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPiB3cml0ZXM6DQo+IA0KPiA+IEFDUEkgR0VEKGFz
+IGRlc2NyaWJlZCBpbiB0aGUgQUNQSSA2LjIgc3BlYykgY2FuIGJlIHVzZWQgdG8gZ2VuZXJhdGUg
+QUNQSSBldmVudHMNCj4gPiB3aGVuIE9TUE0vZ3Vlc3QgcmVjZWl2ZXMgYW4gaW50ZXJydXB0IGxp
+c3RlZCBpbiB0aGUgX0NSUyBvYmplY3Qgb2YgR0VELiBPU1BNDQo+ID4gdGhlbiBtYXBzIG9yIGRl
+bXVsdGlwbGV4ZXMgdGhlIGV2ZW50IGJ5IGV2YWx1YXRpbmcgX0VWVCBtZXRob2QuDQo+ID4NCj4g
+PiBUaGlzIGNoYW5nZSBhZGRzIHRoZSBzdXBwb3J0IG9mIENQVSBob3RwbHVnIGV2ZW50IGluaXRp
+YWxpemF0aW9uIGluIHRoZQ0KPiA+IGV4aXN0aW5nIEdFRCBmcmFtZXdvcmsuDQo+IA0KPiBTaG91
+bGQgd2UgYWxzbyB1cGRhdGUgdGhlIGRvY3MgaGVyZToNCj4gDQo+ICAgaHR0cHM6Ly9xZW11LnJl
+YWR0aGVkb2NzLmlvL2VuL21hc3Rlci9zcGVjcy9hY3BpX2h3X3JlZHVjZWRfaG90cGx1Zy5odG1s
+DQo+IA0KPiAoc2VlIGRvY3Mvc3BlY3MvYWNwaV9od19yZWR1Y2VkX2hvdHBsdWcucnN0KQ0KDQoN
+Ckdvb2QgcG9pbnQuIFdpbGwgZG8uDQoNCg0KPiB0byBhZGQgdGhlIG5ldyBiaXRzPyBPciBtYXli
+ZSBhbiB1cGRhdGUgdG8gZG9jdW1lbnRhdGlvbiBhcyB0aGUgbGFzdA0KPiBjb21taXQ/DQoNCldp
+bGwgYWRkIG9uZSBtb3JlIHBhdGNoIGF0IHRoZSBsYXN0IGZvciB0aGlzIGRvY3VtZW50YXRpb24g
+Y2hhbmdlLg0KDQpUaGFua3MgZm9yIGlkZW50aWZ5aW5nIHRoaXMuDQoNCkNoZWVycw0KU2FsaWwu
+DQoNCg0KPiANCj4gPg0KPiA+IENvLWRldmVsb3BlZC1ieTogS2VxaWFuIFpodSA8emh1a2VxaWFu
+MUBodWF3ZWkuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEtlcWlhbiBaaHUgPHpodWtlcWlhbjFA
+aHVhd2VpLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFA
+aHVhd2VpLmNvbT4NCj4gPiBSZXZpZXdlZC1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9uYXRoYW4u
+Q2FtZXJvbkBodWF3ZWkuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBHYXZpbiBTaGFuIDxnc2hhbkBy
+ZWRoYXQuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVk
+aGF0LmNvbT4NCj4gPiBUZXN0ZWQtYnk6IFZpc2hudSBQYWpqdXJpIDx2aXNobnVAb3MuYW1wZXJl
+Y29tcHV0aW5nLmNvbT4NCj4gPiBUZXN0ZWQtYnk6IFhpYW5nbGFpIExpIDxsaXhpYW5nbGFpQGxv
+b25nc29uLmNuPg0KPiA+IC0tLQ0KPiA+ICBody9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmMg
+ICAgICAgICB8IDggKysrKysrKysNCj4gPiAgaW5jbHVkZS9ody9hY3BpL2dlbmVyaWNfZXZlbnRf
+ZGV2aWNlLmggfCA1ICsrKysrDQo+ID4gIDIgZmlsZXMgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygr
+KQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2h3L2FjcGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuYw0K
+PiBiL2h3L2FjcGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuYw0KPiA+IGluZGV4IGEzZDMxNjMxZmUu
+LmQyZmExZDBlNGEgMTAwNjQ0DQo+ID4gLS0tIGEvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2Rldmlj
+ZS5jDQo+ID4gKysrIGIvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2RldmljZS5jDQo+ID4gQEAgLTI1
+LDYgKzI1LDcgQEAgc3RhdGljIGNvbnN0IHVpbnQzMl90IGdlZF9zdXBwb3J0ZWRfZXZlbnRzW10g
+PSB7DQo+ID4gICAgICBBQ1BJX0dFRF9NRU1fSE9UUExVR19FVlQsDQo+ID4gICAgICBBQ1BJX0dF
+RF9QV1JfRE9XTl9FVlQsDQo+ID4gICAgICBBQ1BJX0dFRF9OVkRJTU1fSE9UUExVR19FVlQsDQo+
+ID4gKyAgICBBQ1BJX0dFRF9DUFVfSE9UUExVR19FVlQsDQo+ID4gIH07DQo+ID4NCj4gPiAgLyoN
+Cj4gPiBAQCAtNDAwLDYgKzQwMSwxMyBAQCBzdGF0aWMgdm9pZCBhY3BpX2dlZF9pbml0Zm4oT2Jq
+ZWN0ICpvYmopDQo+ID4gICAgICBtZW1vcnlfcmVnaW9uX2luaXRfaW8oJmdlZF9zdC0+cmVncywg
+b2JqLCAmZ2VkX3JlZ3Nfb3BzLCBnZWRfc3QsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgVFlQRV9BQ1BJX0dFRCAiLXJlZ3MiLCBBQ1BJX0dFRF9SRUdfQ09VTlQpOw0KPiA+ICAgICAg
+c3lzYnVzX2luaXRfbW1pbyhzYmQsICZnZWRfc3QtPnJlZ3MpOw0KPiA+ICsNCj4gPiArICAgIHMt
+PmNwdWhwLmRldmljZSA9IE9CSkVDVChzKTsNCj4gPiArICAgIG1lbW9yeV9yZWdpb25faW5pdCgm
+cy0+Y29udGFpbmVyX2NwdWhwLCBPQkpFQ1QoZGV2KSwgImNwdWhwDQo+IGNvbnRhaW5lciIsDQo+
+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgQUNQSV9DUFVfSE9UUExVR19SRUdfTEVOKTsNCj4g
+PiArICAgIHN5c2J1c19pbml0X21taW8oU1lTX0JVU19ERVZJQ0UoZGV2KSwgJnMtPmNvbnRhaW5l
+cl9jcHVocCk7DQo+ID4gKyAgICBjcHVfaG90cGx1Z19od19pbml0KCZzLT5jb250YWluZXJfY3B1
+aHAsIE9CSkVDVChkZXYpLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAmcy0+Y3B1aHBf
+c3RhdGUsIDApOw0KPiA+ICB9DQo+ID4NCj4gPiAgc3RhdGljIHZvaWQgYWNwaV9nZWRfY2xhc3Nf
+aW5pdChPYmplY3RDbGFzcyAqY2xhc3MsIHZvaWQgKmRhdGEpDQo+ID4gZGlmZiAtLWdpdCBhL2lu
+Y2x1ZGUvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2RldmljZS5oDQo+IGIvaW5jbHVkZS9ody9hY3Bp
+L2dlbmVyaWNfZXZlbnRfZGV2aWNlLmgNCj4gPiBpbmRleCBiYTg0Y2UwMjE0Li5hODAzZWE4MThl
+IDEwMDY0NA0KPiA+IC0tLSBhL2luY2x1ZGUvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2RldmljZS5o
+DQo+ID4gKysrIGIvaW5jbHVkZS9ody9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmgNCj4gPiBA
+QCAtNjAsNiArNjAsNyBAQA0KPiA+ICAjZGVmaW5lIEhXX0FDUElfR0VORVJJQ19FVkVOVF9ERVZJ
+Q0VfSA0KPiA+DQo+ID4gICNpbmNsdWRlICJody9zeXNidXMuaCINCj4gPiArI2luY2x1ZGUgImh3
+L2FjcGkvY3B1X2hvdHBsdWcuaCINCj4gPiAgI2luY2x1ZGUgImh3L2FjcGkvbWVtb3J5X2hvdHBs
+dWcuaCINCj4gPiAgI2luY2x1ZGUgImh3L2FjcGkvZ2hlcy5oIg0KPiA+ICAjaW5jbHVkZSAicW9t
+L29iamVjdC5oIg0KPiA+IEBAIC05NSw2ICs5Niw3IEBAIE9CSkVDVF9ERUNMQVJFX1NJTVBMRV9U
+WVBFKEFjcGlHZWRTdGF0ZSwgQUNQSV9HRUQpDQo+ID4gICNkZWZpbmUgQUNQSV9HRURfTUVNX0hP
+VFBMVUdfRVZUICAgMHgxDQo+ID4gICNkZWZpbmUgQUNQSV9HRURfUFdSX0RPV05fRVZUICAgICAg
+MHgyDQo+ID4gICNkZWZpbmUgQUNQSV9HRURfTlZESU1NX0hPVFBMVUdfRVZUIDB4NA0KPiA+ICsj
+ZGVmaW5lIEFDUElfR0VEX0NQVV9IT1RQTFVHX0VWVCAgICAweDgNCj4gPg0KPiA+ICB0eXBlZGVm
+IHN0cnVjdCBHRURTdGF0ZSB7DQo+ID4gICAgICBNZW1vcnlSZWdpb24gZXZ0Ow0KPiA+IEBAIC0x
+MDYsNiArMTA4LDkgQEAgc3RydWN0IEFjcGlHZWRTdGF0ZSB7DQo+ID4gICAgICBTeXNCdXNEZXZp
+Y2UgcGFyZW50X29iajsNCj4gPiAgICAgIE1lbUhvdHBsdWdTdGF0ZSBtZW1ocF9zdGF0ZTsNCj4g
+PiAgICAgIE1lbW9yeVJlZ2lvbiBjb250YWluZXJfbWVtaHA7DQo+ID4gKyAgICBDUFVIb3RwbHVn
+U3RhdGUgY3B1aHBfc3RhdGU7DQo+ID4gKyAgICBNZW1vcnlSZWdpb24gY29udGFpbmVyX2NwdWhw
+Ow0KPiA+ICsgICAgQWNwaUNwdUhvdHBsdWcgY3B1aHA7DQo+ID4gICAgICBHRURTdGF0ZSBnZWRf
+c3RhdGU7DQo+ID4gICAgICB1aW50MzJfdCBnZWRfZXZlbnRfYml0bWFwOw0KPiA+ICAgICAgcWVt
+dV9pcnEgaXJxOw0KPiANCj4gDQo+IC0tDQo+IEFsZXggQmVubsOpZQ0KPiBWaXJ0dWFsaXNhdGlv
+biBUZWNoIExlYWQgQCBMaW5hcm8NCg0K
 
