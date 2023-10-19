@@ -2,92 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C69E7CF68A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B37D7CF699
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtR4k-0002q5-48; Thu, 19 Oct 2023 07:20:26 -0400
+	id 1qtR6D-0003vd-3H; Thu, 19 Oct 2023 07:21:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtR4g-0002jA-Hj
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:20:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qtR61-0003ux-VZ
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:21:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtR4e-00070d-U0
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:20:22 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qtR60-0008Dp-7X
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:21:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697714420;
+ s=mimecast20190719; t=1697714503;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QsiiIgVEUL3UGVOMVNFEQRH2cM2Q62VYmh37DytOtz0=;
- b=LOWPXg5lv5SSs9p1LEWfINeiLQTqimsOKuD9R6/LAx52qIW2u9PI2Vkr1tOzYCzFVhRkGv
- kSTmi5LTMl7XE+hSdJ+ZMWFYhqIIgeBi/gBTOS/a/30vpeSaw5ZERwQf60Usuz5U/3SbZt
- 2YKcOgGleLnouxAYgfebWbDTH/uX9L8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-pEWDyIqWPNWI2PJPdkbTsA-1; Thu, 19 Oct 2023 07:20:18 -0400
-X-MC-Unique: pEWDyIqWPNWI2PJPdkbTsA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4083c9b426fso9489635e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 04:20:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697714418; x=1698319218;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QsiiIgVEUL3UGVOMVNFEQRH2cM2Q62VYmh37DytOtz0=;
- b=tfph8N1/rtmdJSq2vX3V61VdHkzD6YR1Ly6uIvg6ktJphiMTjH3YHQnZK2ImNKMP+g
- 0/Vuq3RqDApo/Zx7h2bbCPuzC1QWIpRsd8154RPz4j0BX8qVyZycdTiNr21Waewp19a6
- vB9f+vdkLvlJ/Tb8KWAv0mWKtPPYCnyTIkpyjLUEYq9LRqAUuym0k/TmVxjXMUwu2gCq
- EJ/vphBHbM0kf48F+UMyA6qSfPjfYaQHLn8ugmCIlo6qyiywjO5gJ1ZIdqZ3O1PbBB6L
- NECq28vIqgGYp3GYh7yD+Itl9orAzLJ3gBpBOSdB+ifWiuv7wXDZUoeZV7JAIT27LCEP
- qCxw==
-X-Gm-Message-State: AOJu0YyJsVniFHRYraK0Luc0qKf8wzYK+91QhK4hjUWRkK29cSLAwCCE
- m597uKpdXglhcYGYmhKEvau8vIPp7cUON8uWS/E82kBEHSRkVIkYLszioRzkqgUMNE2xBoUmhe+
- NX12Pws3x0ll+9XI=
-X-Received: by 2002:adf:cf0f:0:b0:32d:96a7:954c with SMTP id
- o15-20020adfcf0f000000b0032d96a7954cmr1339448wrj.45.1697714417895; 
- Thu, 19 Oct 2023 04:20:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJZMyNxGfYJ78KdHEWBH6smT/zBw+JmyARYlEI8fV9btmK8oPIexHWKE4SiCuX9eV5ieqEMw==
-X-Received: by 2002:adf:cf0f:0:b0:32d:96a7:954c with SMTP id
- o15-20020adfcf0f000000b0032d96a7954cmr1339424wrj.45.1697714417596; 
- Thu, 19 Oct 2023 04:20:17 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f2:2037:f34:d61b:7da0:a7be])
- by smtp.gmail.com with ESMTPSA id
- d17-20020a5d4f91000000b0032d72f48555sm4240119wru.36.2023.10.19.04.20.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 04:20:17 -0700 (PDT)
-Date: Thu, 19 Oct 2023 07:20:11 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Cc: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- alex.williamson@redhat.com, jean-philippe@linaro.org,
- pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
- david@redhat.com, philmd@linaro.org, zhenzhong.duan@intel.com,
- yi.l.liu@intel.com
-Subject: Re: [PATCH v3 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
-Message-ID: <20231019072002-mutt-send-email-mst@kernel.org>
-References: <20231011175516.541374-1-eric.auger@redhat.com>
- <20231018093723-mutt-send-email-mst@kernel.org>
- <9ddc3f2e-8be7-4e03-bf9f-3ac930650a52@redhat.com>
+ bh=wJbjQEX6r4FVtVGUs3f8q9Y8qBJ81kVTcIhxYAo3Mqk=;
+ b=I4Fy1zkXJ+i4ar6jj/tCSAnfPsq/o7f5vphWb2XTK3zXgc9GChMpEbAmnYWsa1OqvYRasU
+ hdpyxqMNqJBxQoW54IIBp2+yOdkNkoMBkJUCK0x1Tzn1Uup8W+iqM/wvDGasyBVsAAWh3Q
+ +TPFC0SFg6J3CiQU5MSEHzsn32QJ5Bg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-578-SK7vo6K2NX2TQ2jYrduzJQ-1; Thu, 19 Oct 2023 07:21:40 -0400
+X-MC-Unique: SK7vo6K2NX2TQ2jYrduzJQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 57E82801234;
+ Thu, 19 Oct 2023 11:21:39 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.120])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D792A492BFB;
+ Thu, 19 Oct 2023 11:21:36 +0000 (UTC)
+Date: Thu, 19 Oct 2023 13:21:35 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, kvm@vger.kernel.org
+Subject: Re: [PATCH 11/12] hw/xen: automatically assign device index to block
+ devices
+Message-ID: <ZTERPwrbUJf7kty2@redhat.com>
+References: <20231016151909.22133-1-dwmw2@infradead.org>
+ <20231016151909.22133-12-dwmw2@infradead.org>
+ <ZS+cutIjulWBQakk@redhat.com>
+ <950f3a62dfcecce902037f95575f1013697a5925.camel@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9ddc3f2e-8be7-4e03-bf9f-3ac930650a52@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <950f3a62dfcecce902037f95575f1013697a5925.camel@infradead.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,26 +88,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 01:07:41PM +0200, Cédric Le Goater wrote:
-> On 10/18/23 15:37, Michael S. Tsirkin wrote:
-> > On Wed, Oct 11, 2023 at 07:52:16PM +0200, Eric Auger wrote:
-> > > This applies on top of vfio-next:
-> > > https://github.com/legoater/qemu/, vfio-next branch
-> > 
-> > virtio things make sense
-> > 
-> > Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> > 
-> > let me know how you want to merge all this.
+Am 18.10.2023 um 12:52 hat David Woodhouse geschrieben:
+> > Actually, how does this play together with xen_config_dev_blk()? This
+> > looks like it tried to implement a very similar thing (which is IF_XEN
+> > even already existed).
 > 
-> Michael,
+> Ah yes, thanks for spotting that! I hadn't been looking at the xenfv
 > 
-> I will grab the series if that's OK.
+> > Are we now trying to attach each if=xen disk twice in the 'xenpv'
+> > machine? Or if something prevents this, is it dead code.
+> 
+> I suspect we end up creating them twice (and probably thus failing to
+> lock the backing file).
+>
+> [...]
+>
+> ... but this just reinforces what I said there about "if
+> qmp_device_add() can find the damn bus and do this right, why do we
+> have to litter it through platform code?"
 
-fine by me
+Indeed, if you can do -device, it's always the best option. For block
+devices not the least because it gives you a way to use -blockdev with
+it. I'm happy whenever I see a drive_get() call go away.
 
-> Thanks,
-> 
-> C.
+Kevin
 
 
