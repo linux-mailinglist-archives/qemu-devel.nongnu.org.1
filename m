@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA6C7CEE76
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 05:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029217CEED6
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 06:53:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtJod-0002qe-AV; Wed, 18 Oct 2023 23:35:19 -0400
+	id 1qtL0h-0005XI-P1; Thu, 19 Oct 2023 00:51:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtJob-0002qM-EZ
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 23:35:17 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1qtL0f-0005X8-DV
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 00:51:49 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtJoY-0006qP-U4
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 23:35:17 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-27d4372322aso3818068a91.3
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 20:35:14 -0700 (PDT)
+ id 1qtL0d-0001eU-K1
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 00:51:49 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-581ed744114so985824eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 21:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697686513; x=1698291313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697691105; x=1698295905; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=XxYUoOFyAJNHyVXhNR6HdTghDr/N0IJWKv1SyyBKg9E=;
- b=NUurRsoR3H6q9yHK/6d881L3PyOR0GZ0iNhU1Xr1KJh1x9KjIPGJjwXCQGhkdsQSJb
- urQEyHQtdXIIxpBZVm/svARbiJbsQVmUQ9mOZ2ssacundFtycckXYMSNLH1c9OwZbLYu
- fMU/ExC04KHQOcXL5WuuyaWoT8HVbypJHajOUKiBHQnwB8H/rvDb7ZxxQtIUNmeI6hF2
- YTk3wb1nHdVY3oYGJoaoFulSaCoa4qKbHAvCSjMb0yfvLDQH/J50hiwbQOgCqR5shGPD
- v5BIdpWcXWGiRHKmfbRRmPMFkwNM3+imiwRefN08BKu/jCsapTpCdgUccnNP1lizoS/r
- GH+w==
+ bh=jSb3yksZTOf3f7VTW9N+in5yUgegXDeeO49aeAA6ay4=;
+ b=PAx1X9NRMJzJdryw8yDdDG+5kIwOteCwM/fHH8gGqE4MHPU+1SFT8xd6QW3ITdFmn8
+ orK/Be3UKauSXhz7LEdrr4FEh/oBN8kThzkBNSkGL/yh7g+AfKwqC6x1HXmnguUwlVA4
+ a8yUqOM1uMvZ/6kQUf2xBKXY+8SdbTt4kUTji9DhvF/1fHAw9MgTQxfJvBXLENH07J3W
+ u13hRPkgXf1X/+5geghiojk7T83Dkhq0ds//zFoyOr/t7QfxUoBvT/YoXzB8ecJ8IAYB
+ CK0bn9TgiCrgw1do4OCNoqxYis6QLqXm8en7wuMr8H1WSsKuByRWCNJq6oME6APH7Nn+
+ Y5kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697686513; x=1698291313;
+ d=1e100.net; s=20230601; t=1697691105; x=1698295905;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XxYUoOFyAJNHyVXhNR6HdTghDr/N0IJWKv1SyyBKg9E=;
- b=TjmW19tVj6kMX49cQWmnOOFxXnsbuvGN01tJrxRT1dP0wAkVhUXbi//yeJvjxhLYaI
- U/1aIQ/6iL4/iydSUXBdjYKS8HYt3/cn+H0PH5Pb1npW3FDt4MiUrDa/3l+LHVfJxLKS
- 00jfqjt/T0DcC6Qygi0dVaDiPzzX/ImMv16O1ZSx/CNd3Acsk0Bexc4uchQhYO9jk9TX
- EJUVlgTIFcDd7P0Y+V77RK8xohk9gOVBDUiWduXYwBg0nW8c+P2q4F92Q2TXmdgDboHg
- lo+8bwC4VV1sPpnNSS6l4B41ckWlbb3uTeQL4hDk052BLPXTS1CevjJzK/Jn6xf8SvZt
- A0Cw==
-X-Gm-Message-State: AOJu0YwOnIZicvJoVuQ4VxZkQpX8ZT+qyew1ho/oRauKHPy/evo2GyBs
- EwvksGI4puQpujJAVOZ7pvZrX1DikD9hdJYHoh0=
-X-Google-Smtp-Source: AGHT+IFPovUR3NjkMCMTEaGgr6uJ2kcA0+px/Oku0Y+lAaYNgXphsxoPoMpUNoDuh1GC64Jydr0Siw==
-X-Received: by 2002:a17:90b:3d84:b0:27d:b488:92ee with SMTP id
- pq4-20020a17090b3d8400b0027db48892eemr1010911pjb.2.1697686512933; 
- Wed, 18 Oct 2023 20:35:12 -0700 (PDT)
+ bh=jSb3yksZTOf3f7VTW9N+in5yUgegXDeeO49aeAA6ay4=;
+ b=aCffpBdIYKoAh3KazXbnHeZRwRobBBotDrAIVzeF1Av+GWeyJvoZizJEgP2dJ+w09O
+ g1W8KCj8eCpLgyCRKbnqRPKejhxR/3MurGVj2rldzTU7k//X6Mbg5ykf3tYb1+/0C3q6
+ WgArvxrxcBkusE9ioLtGkrDBKPH9i546047MteVlhAMPmMBBmXxhDosRpZvz9NqsP7tJ
+ SG/uda+BNP6ttCOrZGlMsWFvTKZ/UBOZNgUshOEgjlFx2NpK4jk3sCWWHjdsbR7njS+i
+ phZ5f6JVuN6Nq87iIHapAjl/H1NIVNQ4miN1EQIb3MZSF/vU4NTTqsmcf+66yhYcHxS5
+ xLHA==
+X-Gm-Message-State: AOJu0YyyXRn4dY7KmueyaEkNVO5rJ8dqI9T3nc3VzTuCewYP+w4OWpRV
+ af8Gz/zcz6JKSvy5Eh0nm3G4Ng==
+X-Google-Smtp-Source: AGHT+IGgqps6XIzB63PtuYDMqdr3nM8hTfuIQt6tRMbOiLTyHeGFkM/KCW6l/Y4mvPTXk0IksEc33w==
+X-Received: by 2002:a05:6359:6291:b0:132:dc58:b372 with SMTP id
+ se17-20020a056359629100b00132dc58b372mr720737rwb.19.1697691105201; 
+ Wed, 18 Oct 2023 21:51:45 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- b12-20020a17090acc0c00b0027d12b1e29dsm623740pju.25.2023.10.18.20.35.12
+ y11-20020aa7942b000000b006b84ed9371esm4305660pfo.177.2023.10.18.21.51.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 20:35:12 -0700 (PDT)
-Message-ID: <546ec2af-08be-4fb6-b745-e4ba4d4b91a8@linaro.org>
-Date: Wed, 18 Oct 2023 20:35:10 -0700
+ Wed, 18 Oct 2023 21:51:44 -0700 (PDT)
+Message-ID: <cee7b317-9ffd-4278-bf6d-66789cb93bd4@linaro.org>
+Date: Wed, 18 Oct 2023 21:51:42 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/18] target/i386: split eflags computation out of
- gen_compute_eflags
+Subject: Re: [PATCH 14/18] target/i386: move 60-BF opcodes to new decoder
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20231014100121.109817-1-pbonzini@redhat.com>
- <20231014100121.109817-14-pbonzini@redhat.com>
+ <20231014100121.109817-15-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231014100121.109817-14-pbonzini@redhat.com>
+In-Reply-To: <20231014100121.109817-15-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,76 +94,92 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/14/23 03:01, Paolo Bonzini wrote:
-> The new x86 decoder wants to compute EFLAGS before writeback, which
-> can be an issue for some instructions such as ARPL.  Extract code
-> to compute the EFLAGS without clobbering CC_SRC, in case the ARPL
-> memory write causes a fault.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   target/i386/tcg/translate.c | 18 +++++++++++++-----
->   1 file changed, 13 insertions(+), 5 deletions(-)
-> 
-> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-> index e13bf7df591..2da7c357cdc 100644
-> --- a/target/i386/tcg/translate.c
-> +++ b/target/i386/tcg/translate.c
-> @@ -872,18 +872,20 @@ static void gen_op_update_neg_cc(DisasContext *s)
->       tcg_gen_movi_tl(s->cc_srcT, 0);
->   }
->   
-> -/* compute all eflags to cc_src */
-> -static void gen_compute_eflags(DisasContext *s)
-> +/* compute all eflags to reg */
-> +static void gen_mov_eflags(DisasContext *s, TCGv reg)
->   {
->       TCGv zero, dst, src1, src2;
->       int live, dead;
->   
->       if (s->cc_op == CC_OP_EFLAGS) {
-> +        if (reg != cpu_cc_src) {
-> +            tcg_gen_mov_tl(reg, cpu_cc_src);
-> +        }
+> @@ -179,6 +180,9 @@
+>  #define p_66_f3_f2    .valid_prefix = P_66 | P_F3 | P_F2,
+>  #define p_00_66_f3_f2 .valid_prefix = P_00 | P_66 | P_F3 | P_F2,
+>  
+> +static X86OpEntry illegal_opcode =
+> +    X86_OP_ENTRY0(illegal);
 
-tcg_gen_mov_tl already takes care of eliding the nop move.
+const.
 
->           return;
->       }
->       if (s->cc_op == CC_OP_CLR) {
-> -        tcg_gen_movi_tl(cpu_cc_src, CC_Z | CC_P);
-> -        set_cc_op(s, CC_OP_EFLAGS);
-> +        tcg_gen_movi_tl(reg, CC_Z | CC_P);
->           return;
->       }
->   
-> @@ -909,7 +911,13 @@ static void gen_compute_eflags(DisasContext *s)
->       }
->   
->       gen_update_cc_op(s);
-> -    gen_helper_cc_compute_all(cpu_cc_src, dst, src1, src2, cpu_cc_op);
-> +    gen_helper_cc_compute_all(reg, dst, src1, src2, cpu_cc_op);
+> +static void gen_ARPL(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+> +{
+> +    TCGLabel *label1 = gen_new_label();
+> +    TCGv rpl_adj = tcg_temp_new();
+> +
+> +    gen_mov_eflags(s, s->tmp4);
+> +    tcg_gen_andi_tl(s->tmp4, s->tmp4, ~CC_Z);
+> +
+> +    /* Compute dest[rpl] - src[rpl], adjust if result <0.  */
+> +    tcg_gen_andi_tl(rpl_adj, s->T0, 3);
+> +    tcg_gen_andi_tl(s->T1, s->T1, 3);
+> +    tcg_gen_sub_tl(rpl_adj, rpl_adj, s->T1);
+> +
+> +    tcg_gen_brcondi_tl(TCG_COND_LT, rpl_adj, 0, label1);
+> +
+> +    /* Subtract dest[rpl] - src[rpl] to set dest[rpl] = src[rpl].  */
+> +    tcg_gen_sub_tl(s->T0, s->T0, rpl_adj);
+> +    tcg_gen_ori_tl(s->tmp4, s->tmp4, CC_Z);
+> +    gen_set_label(label1);
+> +
+> +    decode->cc_src = s->tmp4;
+> +    set_cc_op(s, CC_OP_EFLAGS);
 > +}
 
-You don't want to gen_update_cc_op.
-I think you want
+If you're going to adjust the algorithm here,
+you might as well make it branchless:
 
-     TCGv_i32 cc_op = cpu_cc_op;
-     if (s->cc_op != CC_OP_DYNAMIC)
-         cc_op = tcg_constant_i32(s->cc_op);
-     gen_helper_cc_compute_all(..., cc_op);
+     tcg_gen_negsetcond_tl(TCG_COND_GE, mask, rpl_adj, tcg_constant_tl(0));
+     tcg_gen_and_tl(rpl_adj, rpl_adj, mask);
+     tcg_gen_sub_tl(t0, t0, rpl_adj);
+     tcg_gen_andi_tl(mask, mask, CC_Z);
+     tcg_gen_or_tl(tmp4, tmp4, mask);
 
-No write to cpu_cc_op required at all, since...
-
-> +/* compute all eflags to cc_src */
-> +static void gen_compute_eflags(DisasContext *s)
+> +static void gen_CBW(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
 > +{
-> +    gen_mov_eflags(s, cpu_cc_src);
->       set_cc_op(s, CC_OP_EFLAGS);
->   }
+> +    switch(decode->op[0].ot) {
+> +#ifdef TARGET_X86_64
+> +        case MO_64:
+> +            tcg_gen_ext32s_tl(s->T0, s->T0);
+> +            break;
+> +#endif
+> +        case MO_32:
+> +            tcg_gen_ext16s_tl(s->T0, s->T0);
+> +            break;
+> +        case MO_16:
+> +            tcg_gen_ext8s_tl(s->T0, s->T0);
+> +            break;
+> +        default:
+> +            abort();
+> +    }
+> +}
 
-... this will modify it again anyway.
+Reuse gen_ext_tl(t0, t0, (ot - 1) | MO_SIGN)?
+
+> +static void gen_CWD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+> +{
+> +    int shift = 8 << decode->op[0].ot;
+> +    switch (shift) {
+> +    case 64:
+> +        break;
+> +    case 32:
+> +        tcg_gen_ext32s_tl(s->T0, s->T0);
+> +        break;
+> +    case 16:
+> +        tcg_gen_ext16s_tl(s->T0, s->T0);
+> +        break;
+> +    default:
+> +        abort();
+> +    }
+> +    tcg_gen_sari_tl(s->T0, s->T0, shift - 1);
+
+Better as
+
+   tcg_gen_sextract_tl(t0, t0, shift - 1, 1)
+
+to just extract and replicate the one bit you wanted.
 
 
 r~
-
 
