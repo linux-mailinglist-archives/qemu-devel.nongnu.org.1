@@ -2,113 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA7E7CF489
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81EDB7CF4A2
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:06:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtPnn-0001uQ-R0; Thu, 19 Oct 2023 05:58:51 -0400
+	id 1qtPtl-0004Hh-Fx; Thu, 19 Oct 2023 06:05:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qtPnc-0001Z0-7q; Thu, 19 Oct 2023 05:58:44 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qtPnZ-0007Bw-S1; Thu, 19 Oct 2023 05:58:39 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39J9vQPJ020424; Thu, 19 Oct 2023 09:57:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=7UCw8gqcX8rmfJGucnEkFUQcWfBlCd12cwD7PXxd7i0=;
- b=rBuYCd5tmd5xJ5+9Y7q0m+VaHHyjA4X2GV4I/vKkq/RSFDl9z5hIH2fB0gRC/I21XEfx
- YwmOvr6fq+AKNJoZCzPJ5nD3sQYmUzzE83WkFXd8RTCfG7TNppxqxTN1+Cf/vKx3iSjF
- qjc0YP+QgraUIvuWiZJbjCysZfe/DM/ap4VzfQ73R0U3Ik66LfuGXS3c4NKYBGPR+olg
- By1QmJJM1X6BSI4j2cu1JueZdvVhDLW4XWk7fD2MF2i4tboQ80+cpoBFfCfliPo0bDxg
- VoqfUE4D+tf4Mxrpd5wCACPrakMIjNB6q4L/iqCuvlVCjMBxBNMxaiUzxClxBH1xktnw XA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tu29c0025-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 09:57:25 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39J9vPsK020307;
- Thu, 19 Oct 2023 09:57:25 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tu29c001e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 09:57:24 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39J8RBxt020508; Thu, 19 Oct 2023 09:57:23 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6anfxxx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 09:57:23 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39J9vKZ415073884
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 09:57:20 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 45A1D2005A;
- Thu, 19 Oct 2023 09:57:20 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1ED8C20040;
- Thu, 19 Oct 2023 09:57:19 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.171.71.149]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 19 Oct 2023 09:57:19 +0000 (GMT)
-Message-ID: <f1620197264e60dec8f08933cc26ffb8901ddf41.camel@linux.ibm.com>
-Subject: Re: [PATCH v26 01/21] qapi: machine.json: change docs regarding CPU
- topology
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Eduardo Habkost
- <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, Halil
- Pasic <pasic@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Eric Blake
- <eblake@redhat.com>, Michael Roth <michael.roth@amd.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Yanan Wang
- <wangyanan55@huawei.com>, "Daniel P." =?ISO-8859-1?Q?Berrang=E9?=
- <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa
- <crosa@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Date: Thu, 19 Oct 2023 11:57:18 +0200
-In-Reply-To: <794c2523-b64c-4d16-b156-07a9e3aa94c2@redhat.com>
-References: <20231016183925.2384704-1-nsg@linux.ibm.com>
- <20231016183925.2384704-2-nsg@linux.ibm.com> <878r81bn8b.fsf@pond.sub.org>
- <794c2523-b64c-4d16-b156-07a9e3aa94c2@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qtPti-0004HC-K0
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:04:58 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qtPtf-00039p-5V
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:04:57 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-507c5249d55so3224783e87.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697709892; x=1698314692; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+JG26xVIG/welpgP2Z7phWQDVgc+NAbnYlDOSgYpntU=;
+ b=egIiaWwcPeU+0bka4d4t9rew/Cozd6RvRuB9lK8WWAi/LUphB1UwSJksQ7/5Hy6HXE
+ Rpq8xbKOYJGPfAZD7cFK/SHdsBtT4QCIebshUVN3aOdkLgXUeWgcAeLEXgV2aAW7Doxe
+ xIwfYxM8UcCcnD8WFWkuCgNohHVPK+B2jZDtXaJGe3cMQvewT/I7uJyq5MFN68ngDIjk
+ YeCj2TDwe+dBdGt7PqFubW6s9gyF8gNsvLLUD/81QBvjaLVANJgE4NWBzAYbfh4YtjHt
+ lXzovZImN8FN7nTe7kMNruvuSzXI9jnWZUCR3j1v8//AIjJsKjLZDAaYxq/aJUl7gvwV
+ CfVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697709892; x=1698314692;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+JG26xVIG/welpgP2Z7phWQDVgc+NAbnYlDOSgYpntU=;
+ b=dZlrnZU0KGaiNXTU4LNC9ZdC1P/EL9f1RTd+p6xeTHoOgO5kkOpqzA4jnmvqPUv/Ip
+ tFigusbeNcg7fpUDuEXyEP/7Q6C327sIEibTQY9X8enh+m1gYsTuknEdWzBwpZOMd4Hd
+ m2T1CNApDaEl0UM3PmcEHSLoc6jqoD7Z1fQGWO1nuMH8F2OmA8mIpzkZD2otW7RRXfut
+ eZf1uTXV7MMHOneW0v03DoCxVUcnGcW6Aj/0d16TIH2GnCC7+tagTnvv2EyaVvZRKKbW
+ x9xNxXBgiwoEY7HEykSEfTK20Ux3YPWjJIHO7Id7NfNvuB85hWzHrT0t97tsRbjZ7J4L
+ jQ2w==
+X-Gm-Message-State: AOJu0Yzw2O4n/8sFPdylcX73KvadVbX38HG9geSq/M7gVGOn4UDeMgOB
+ iHxdt5yXZCtvVTuxmy9/jZC8mxyNQLotux5UlXY=
+X-Google-Smtp-Source: AGHT+IFtvLgv8bfdXeQQkPviQN6+KeSu2oe5Dt8qoPhVmtFsrxw7uRRthQYGS6fwL62LOuzfgdvAlA==
+X-Received: by 2002:a05:6512:201b:b0:507:9ef2:fb1c with SMTP id
+ a27-20020a056512201b00b005079ef2fb1cmr1087094lfb.2.1697709892331; 
+ Thu, 19 Oct 2023 03:04:52 -0700 (PDT)
+Received: from localhost.localdomain (adsl-141.37.6.162.tellas.gr.
+ [37.6.162.141]) by smtp.gmail.com with ESMTPSA id
+ d13-20020a5d538d000000b003232d122dbfsm4110307wrv.66.2023.10.19.03.04.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 03:04:51 -0700 (PDT)
+From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org,
+	"Gerd Hoffmann" <kraxel@redhat.com>
+Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ "Igor Skalkin" <Igor.Skalkin@opensynergy.com>,
+ "Anton Yakovlev" <Anton.Yakovlev@opensynergy.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ "Eduardo Habkost" <eduardo@habkost.net>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ =?UTF-8?q?K=C5=91v=C3=A1g=C3=B3=2C=20Zolt=C3=A1n?= <DirtY.iCE.hu@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Mark Cave-Ayland" <mark.cave-ayland@ilande.co.uk>,
+ "Stefano Garzarella" <sgarzare@redhat.com>
+Subject: [PATCH v12 00/11] Add VIRTIO sound card
+Date: Thu, 19 Oct 2023 13:03:44 +0300
+Message-Id: <cover.1697709630.git.manos.pitsidianakis@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RZM46fOx3T-kYuHw04ANmSUuDeWUuvzU
-X-Proofpoint-GUID: 7Yu66CNT_Usbu4FhN32hVd2cLIM2bZzs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_08,2023-10-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 mlxlogscore=766 impostorscore=0 adultscore=0 spamscore=0
- suspectscore=0 mlxscore=0 phishscore=0 malwarescore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310190084
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -125,36 +104,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-10-17 at 13:10 +0200, Thomas Huth wrote:
-> On 17/10/2023 11.40, Markus Armbruster wrote:
-> > Nina Schoetterl-Glausch <nsg@linux.ibm.com> writes:
-> >=20
-> > > Clarify roles of different architectures.
-> > > Also change things a bit in anticipation of additional members being
-> > > added.
-> > >=20
-> > > Suggested-by: Markus Armbruster <armbru@redhat.com>
-> > > Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> > > ---
-> > >   qapi/machine.json | 58 +++++++++++++++++++++++++++++++-------------=
----
-> > >   1 file changed, 38 insertions(+), 20 deletions(-)
-> ...
-> >=20
-> > Address my nitpicks one way or the other, and you may add
-> > Acked-by: Markus Armbruster <armbru@redhat.com>
-> >=20
->=20
-> Thanks Markus!
->=20
-> Nina, if you agree, I can fix the nitpicks while picking the patches up, =
-so=20
-> you don't have to respin again?
+This patch series adds an audio device implementing the recent virtio
+sound spec (1.2) and a corresponding PCI wrapper device.
 
-Thanks for going ahead with it! I was out sick the last couple of days.
+v12 can be found online at:
 
->=20
->   Thomas
->=20
+https://gitlab.com/epilys/qemu/-/tree/virtio-snd-v12
+
+Ref c660c8427853d90784a89b6f3b0c31e19cc3be95
+
+Main differences with v11 patch series [^v11]:
+
+- Moved devices from hw/virtio under hw/audio.
+
+v10[^v10] -> v11[^v11]
+======================
+
+- Rebased against upstream, which has minor changes to the AUD_* API.
+- Fixed noise in playback because of invalid bounds when accessing the
+  audio data in the VirtQueueElement.
+- Refactor invalid I/O message queue flushing into separate function.
+- Removed attempt to write unwritten bytes to QEMU sound backend when
+  flushing: it should only happen when the stream STARTs.
+- Set latency_bytes to buffer size when returning TX I/O message because
+  it happens immediately after writing the last bytes to the QEMU
+  backend, therefore there might be up to <buffer size> bytes to be
+  played before all the buffer data has finished playing.
+- Addressed [^v10] review comments:
+  - Refactored VirtIOSoundPCMBuffer return code into a function instead
+    of using goto labels in output/input audio callbacks. (Suggested by
+    <philmd@linaro.org>)
+
+v9[^v9] -> v10[^v10]
+====================
+
+- Addressed [^v9] review comments.
+- Copy buffer data just before playing it on the host instead of when
+  the IO message arrives. This in most cases takes care of the buffer
+  not being populated with data from the guest application when it
+  firsts arrives.
+
+v8[^v8] -> v9[^v9]
+==================
+
+- Addressed [^v8] review comments.
+- Add cpu_to_le32(_) and le32_to_cpu(_) conversions for messages from/to
+  the guest according to the virtio spec.
+- Inlined some functions and types to reduce review complexity.
+- Corrected the replies to IO messages; now both Playback and Capture
+  work correctly for me. (If you hear cracks in pulseaudio+guest, try
+  pipewire+guest).
+
+v7[^v7] -> v8[^v8]
+==================
+
+- Addressed [^v7] review comments.
+  Functions that were called from more than one place for code re-use
+  are not created until they are actually needed.
+- Fixed cases where block->offset was not respected in Playback
+
+v6[^v6] -> v7[^v7]
+==================
+
+- Removed minor stale/duplicate code.
+- Addressed [^v6] review comments.
+  Notably, the audio driver name is now `virtio` instead of
+  `virtio-sound`.
+- Fixed some invalid pointer logic.
+- Fixed minor typos and updated documentation.
+
+v5[^v5] -> v6[^v6]
+==================
+
+- Free any existing PCM stream resources before allocating a new one.
+- Add docs.
+
+v4[^v4] -> v5[^v5]
+==================
+
+- Use ERRP_GUARD() to propagate errors.
+- Use virtio_add_feature() instead of XORing constants.
+- Use %zu format specifier for size_t.
+
+v3[^v3] -> v4[^v4]
+==================
+
+- Addressed review style comments.
+- Split patches for easier review.
+
+v2[^v2] -> v3[^v3]
+==================
+
+- Addressed review comments.
+
+v1[^v1] -> v2[^v2]
+==================
+
+- Split virtio-snd and virtio-snd-pci devices to two commits
+- Added audio capture support
+
+Previously:
+
+[^v11]:
+https://lore.kernel.org/qemu-devel/cover.1696935992.git.manos.pitsidianakis@linaro.org/
+[^v10]:
+https://lore.kernel.org/qemu-devel/cover.1695996196.git.manos.pitsidianakis@linaro.org/
+[^v9]:
+https://lore.kernel.org/qemu-devel/cover.1694588927.git.manos.pitsidianakis@linaro.org/
+[^v8]:
+https://lore.kernel.org/qemu-devel/cover.1693252037.git.manos.pitsidianakis@linaro.org/
+[^v7]:
+https://lore.kernel.org/qemu-devel/cover.1692731646.git.manos.pitsidianakis@linaro.org/
+[^v6]:
+https://lore.kernel.org/qemu-devel/cover.1692089917.git.manos.pitsidianakis@linaro.org/
+[^v5]:
+https://lore.kernel.org/qemu-devel/cover.1690626150.git.manos.pitsidianakis@linaro.org/
+[^v4]:
+https://lore.kernel.org/qemu-devel/cover.1689857559.git.manos.pitsidianakis@linaro.org/
+[^v3]:
+https://lore.kernel.org/qemu-devel/cover.1689692765.git.manos.pitsidianakis@linaro.org/
+[^v2]:
+https://lore.kernel.org/qemu-devel/cover.1686238728.git.manos.pitsidianakis@linaro.org/
+[^v1]:
+https://lore.kernel.org/qemu-devel/20230526204845.673031-1-manos.pitsidianakis@linaro.org/
+
+Emmanouil Pitsidianakis (11):
+  Add virtio-sound device stub
+  Add virtio-sound-pci device
+  virtio-sound: handle control messages and streams
+  virtio-sound: handle VIRTIO_SND_R_PCM_INFO request
+  virtio-sound: handle VIRTIO_SND_R_PCM_{START,STOP}
+  virtio-sound: handle VIRTIO_SND_R_PCM_SET_PARAMS
+  virtio-sound: handle VIRTIO_SND_R_PCM_PREPARE
+  virtio-sound: handle VIRTIO_SND_R_PCM_RELEASE
+  virtio-sound: implement audio output (TX)
+  virtio-sound: implement audio capture (RX)
+  docs/system: add basic virtio-snd documentation
+
+ MAINTAINERS                        |    9 +
+ docs/system/device-emulation.rst   |    1 +
+ docs/system/devices/virtio-snd.rst |   49 +
+ hw/audio/Kconfig                   |    5 +
+ hw/audio/meson.build               |    2 +
+ hw/audio/trace-events              |   20 +
+ hw/audio/virtio-snd-pci.c          |   93 ++
+ hw/audio/virtio-snd.c              | 1409 ++++++++++++++++++++++++++++
+ include/hw/audio/virtio-snd.h      |  235 +++++
+ system/qdev-monitor.c              |    1 +
+ 10 files changed, 1824 insertions(+)
+ create mode 100644 docs/system/devices/virtio-snd.rst
+ create mode 100644 hw/audio/virtio-snd-pci.c
+ create mode 100644 hw/audio/virtio-snd.c
+ create mode 100644 include/hw/audio/virtio-snd.h
+
+
+base-commit: deaca3fd30d3a8829160f8d3705d65ad83176800
+-- 
+2.39.2
 
 
