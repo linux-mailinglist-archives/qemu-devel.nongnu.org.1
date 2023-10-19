@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFAF7D0401
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2277D0403
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:27:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaRH-0007mu-GB; Thu, 19 Oct 2023 17:20:19 -0400
+	id 1qtaRO-0007wC-9s; Thu, 19 Oct 2023 17:20:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRE-0007Yb-4h
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:16 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRI-0007ph-Lp
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:21 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaR8-0005QO-PR
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:14 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-32d9552d765so107340f8f.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:20:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRF-0005SI-Cc
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:20 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40790b0a224so1084585e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:20:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750409; x=1698355209; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750415; x=1698355215; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LI6P3mAOEt0J+sULk7AcXOottYXxMcEMeJJN40YsQ7M=;
- b=kQqYdsN1+P7v/CetlfsBLjCcEuit0FbcZ2z27r0ove0HbXjpyg5RxIFN3ibJO/ubw9
- x3VwInzt33O1VyMezJIJrlCF8qjTyuZWjxZtQcMrMIknKQgr/9NTbwPh4TVijOoV3GQG
- XAXmVgb7GRl1feXNwkSMWdMSgxsbpnp187BEjRXF/zZ6ilzQOxipHhKWZVeeb5jqSQGK
- Xm7iBwI7MzzHHnwi0N6eT55FolNNFlEZK1JrHbZklS+rSmaPgp+RE+s8Db/0bxZeq+nT
- NjAfRPYpQfZLBKrsCn8PJOpYomqn8TpLTuVmSrPXKVxDw1hoPw+mgmXK4rGrtr2M3qq9
- 57NA==
+ bh=K26pjgbN/XJgbsjyyabQMj6h89ERK847wNhqfJ3+FrQ=;
+ b=tgIbW72gdEe0J15DAGSFo5F5RL+D00EVqjq94AFWCipRgfE+i21DryN4ksgImS8FGu
+ kcanE4YKdt5Vvsv83hOxi3QNmHD+a5bqKRTBzwaWyTIz1pjEIdSJYyJZeMuVsIPt+zvJ
+ G1SCyFjlLcAcI8z/538/VLhQajdwdcDgcQf9A6FYoDJGokZyhekAKO39o7f2CmbUgNWN
+ UkK+vpqPgxPyO3M/tsAaF/7E/SPRxA+YqFER2xbLbKAKN7q2zLIQFjCLrUPYxzNfezlr
+ 1NhTxKhjXsrXe+uYPP7iVVURqB7dCWK4lE/ok5iB4iTZ0mSWUXd9S6mL/iVR4Rp7p6XB
+ XbKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750409; x=1698355209;
+ d=1e100.net; s=20230601; t=1697750415; x=1698355215;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LI6P3mAOEt0J+sULk7AcXOottYXxMcEMeJJN40YsQ7M=;
- b=w2bWmq3/WlHGooWjM6W7xOrhOcCO3yrT7bkQmYua8SzUxfMKPkITe5RKqgDasC/MRL
- 22i273/RxyZCzQU+sTp58yxHrhGDceEW05QJz3HEtDbmC1OY/lDA3WkkpRk0KWEdTS38
- DRTwPohDx5cCEA4+Ewjn/5lPhwXx3aineDr4e390KnfpK69KMTtmZN8DZq44JTE/ihNL
- jg2aF4QPqpad+RxdTUrHVX+e91vClJpTtI7di2P8J2xQXWH2ybN9q/K6VzDJzwFQknlA
- 7fXx/BsxqYJxATZvDSUWt3bCca4JHBu9hvpDTUYXViLCCHGW8NzFHeW+MUtTcaieUL15
- omLQ==
-X-Gm-Message-State: AOJu0YxvtNlD0ZMJb9OkrDxyeluhBIW5irye+8cn/cJ4zkrwIZ9LY9Ng
- QXvgMN3ToT1Sxycy0Jhc+GE6DE7X+SLdAvsstBUM5Q==
-X-Google-Smtp-Source: AGHT+IFcY6+fpORFpwEUaIxkb0pAKsJFYS6aIFrc8okInhBqUvrZT6XoQLFoghOm9Em5VHl4OL9ANA==
-X-Received: by 2002:a5d:5592:0:b0:32d:b06c:80b2 with SMTP id
- i18-20020a5d5592000000b0032db06c80b2mr15671wrv.0.1697750409162; 
- Thu, 19 Oct 2023 14:20:09 -0700 (PDT)
+ bh=K26pjgbN/XJgbsjyyabQMj6h89ERK847wNhqfJ3+FrQ=;
+ b=Wkon2Wyg1lwFaHfZte7INBmkQANnTWvO9ImKH2g7s4ezwGCn8ynGgtzjiE3D7kIltN
+ Q5o5L0xO4wiMXvBcr25DYU3xkSv+aph2YAJAE4YTOBSQl13iH5Cg4JQ8TbCgHtzyRDT2
+ xjEbsjp0rT4Ib+7iO4bSam/9BZwn97ob3QjhoIrSiYWQ/R64WfWoNbtAimlPlA+34hkK
+ zisb5LdTqTOUP+wBjcQVL5iP/I1P9Vm8jN9G8Yi9YolcnLWZtoQRMritFiBB7kijMOZX
+ vaSPBcoa6Jil81vTd3y3w1Izqf3YcULR8w8rtFV0FHbpLYNZR4pT9nlqhGzlutZMbgRY
+ 1mlA==
+X-Gm-Message-State: AOJu0Yyd2hO4VnkrszL+n/HDVy4jhcMWqRP6MtgLGA8wmuTTEoD7iRKb
+ a++QO9D/RAGTsZSFuDSdFwIMHHx1Vvq9S6SWtsW3Gw==
+X-Google-Smtp-Source: AGHT+IGFyEVnluLvh4ti0n6ItjO27mnAck1ch29Fy3FWNfG9z+/o28J/7u+rc1v0qlrTSQZ2SDJMuQ==
+X-Received: by 2002:a05:600c:4f8d:b0:401:a0b1:aef6 with SMTP id
+ n13-20020a05600c4f8d00b00401a0b1aef6mr67981wmq.2.1697750415641; 
+ Thu, 19 Oct 2023 14:20:15 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- p6-20020a5d6386000000b00327b5ca093dsm208164wru.117.2023.10.19.14.20.07
+ o12-20020a05600c4fcc00b0040775501256sm525525wmq.16.2023.10.19.14.20.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:20:08 -0700 (PDT)
+ Thu, 19 Oct 2023 14:20:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
-Subject: [PULL 17/46] hw/pci-host/sh_pcic: Replace magic value by proper
- definition
-Date: Thu, 19 Oct 2023 23:17:42 +0200
-Message-ID: <20231019211814.30576-18-philmd@linaro.org>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PULL 18/46] hw/sparc64/ebus: Access memory regions via
+ pci_address_space_io()
+Date: Thu, 19 Oct 2023 23:17:43 +0200
+Message-ID: <20231019211814.30576-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,36 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
-Message-Id: <20231012041237.22281-4-philmd@linaro.org>
----
- hw/pci-host/sh_pci.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+PCI functions are plugged on a PCI bus. They can only access
+external memory regions via the bus.
 
-diff --git a/hw/pci-host/sh_pci.c b/hw/pci-host/sh_pci.c
-index 580e273d96..4edebced5e 100644
---- a/hw/pci-host/sh_pci.c
-+++ b/hw/pci-host/sh_pci.c
-@@ -40,7 +40,7 @@ struct SHPCIState {
-     PCIHostState parent_obj;
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Message-Id: <20231011185954.10337-5-philmd@linaro.org>
+---
+ hw/sparc64/sun4u.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index d908a38f73..c871170378 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -360,11 +360,11 @@ static void ebus_realize(PCIDevice *pci_dev, Error **errp)
+     pci_dev->config[0x09] = 0x00; // programming i/f
+     pci_dev->config[0x0D] = 0x0a; // latency_timer
  
-     PCIDevice *dev;
--    qemu_irq irq[4];
-+    qemu_irq irq[PCI_NUM_PINS];
-     MemoryRegion memconfig_p4;
-     MemoryRegion memconfig_a7;
-     MemoryRegion isa;
-@@ -131,7 +131,8 @@ static void sh_pcic_host_realize(DeviceState *dev, Error **errp)
-                                      s->irq,
-                                      get_system_memory(),
-                                      get_system_io(),
--                                     PCI_DEVFN(0, 0), 4, TYPE_PCI_BUS);
-+                                     PCI_DEVFN(0, 0), PCI_NUM_PINS,
-+                                     TYPE_PCI_BUS);
-     memory_region_init_io(&s->memconfig_p4, OBJECT(s), &sh_pci_reg_ops, s,
-                           "sh_pci", 0x224);
-     memory_region_init_alias(&s->memconfig_a7, OBJECT(s), "sh_pci.2",
+-    memory_region_init_alias(&s->bar0, OBJECT(s), "bar0", get_system_io(),
+-                             0, 0x1000000);
++    memory_region_init_alias(&s->bar0, OBJECT(s), "bar0",
++                             pci_address_space_io(pci_dev), 0, 0x1000000);
+     pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &s->bar0);
+-    memory_region_init_alias(&s->bar1, OBJECT(s), "bar1", get_system_io(),
+-                             0, 0x8000);
++    memory_region_init_alias(&s->bar1, OBJECT(s), "bar1",
++                             pci_address_space_io(pci_dev), 0, 0x8000);
+     pci_register_bar(pci_dev, 1, PCI_BASE_ADDRESS_SPACE_IO, &s->bar1);
+ }
+ 
 -- 
 2.41.0
 
