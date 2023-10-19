@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F2B7CF40A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 233FA7CF425
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:36:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtPIi-0002dj-J6; Thu, 19 Oct 2023 05:26:44 -0400
+	id 1qtPQm-0006Mf-ST; Thu, 19 Oct 2023 05:35:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qtPIg-0002da-Gy
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:26:42 -0400
-Received: from mgamail.intel.com ([134.134.136.100])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qtPQf-0006Lz-BQ; Thu, 19 Oct 2023 05:34:57 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qtPId-0000Sl-Bc
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:26:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697707599; x=1729243599;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=N4MdEO85LKnBu3PCzRWaCLz3HMwHARssD3D4ahz8/zQ=;
- b=c7DZVtAKo1q1rqf4XE5eXVrUou0XP9fYF/c7mWMyE3DE3wGyC0H/Xb/v
- ix8Gedd6XhPt3VtiboTFxodzNKJl+E502awN91LIx7Gv1b1GKq1Q3LFwe
- AxQzLH7zyVWKgoUl1JMH55hSlRa7kdVhj7ubcJQgdUJtaoKG2GG93utWv
- uL7XWZvkhfMY3DHsZlgjdliAzwVILRkHpHTduBhtLW65GDZGBD4pG4vym
- gkD/uop2YxfcRcMu5hMVOfrrsB3RXbcQePZP1JyoY9H346ohCQnXAFFIj
- 1TcISNEE55mLHz319Xd4p8qHD814ZrAgGR8FwqArqG0CZyHQ0Ks0BNuR/ w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="452679848"
-X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="452679848"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2023 02:26:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="930540492"
-X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; d="scan'208";a="930540492"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.19.128])
- ([10.93.19.128])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2023 02:26:31 -0700
-Message-ID: <f958c479-d861-4579-b683-112c5de7b51f@intel.com>
-Date: Thu, 19 Oct 2023 17:26:28 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] softmmu/physmem: Warn with
- ram_block_discard_range() on MAP_PRIVATE file mapping
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qtPQb-0004Eb-VG; Thu, 19 Oct 2023 05:34:57 -0400
+Received: from lhrpeml100003.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB2bc4CVCz6K6gc;
+ Thu, 19 Oct 2023 17:34:04 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Thu, 19 Oct 2023 10:34:36 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Thu, 19 Oct 2023 10:34:36 +0100
+To: Shaoqin Huang <shahuang@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
+ <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V6 0/9] Add architecture agnostic code to support vCPU
+ Hotplug
+Thread-Topic: [PATCH V6 0/9] Add architecture agnostic code to support vCPU
+ Hotplug
+Thread-Index: AQHZ/cNQxAxt9PC9FEqdNAxyY88QobBQylAAgAAYu3A=
+Date: Thu, 19 Oct 2023 09:34:36 +0000
+Message-ID: <262138951966462dbc7f05a5efa146d6@huawei.com>
+References: <20231013105129.25648-1-salil.mehta@huawei.com>
+ <d1278ad1-cb78-90f1-64a6-c3e8711bacd7@redhat.com>
+In-Reply-To: <d1278ad1-cb78-90f1-64a6-c3e8711bacd7@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela
- <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
-References: <20230706075612.67404-1-david@redhat.com>
- <20230706075612.67404-2-david@redhat.com>
- <a23ee3d1-e03b-4442-bdec-341b3e52d3e0@intel.com>
- <e96e96a2-e996-4507-8548-684aa1e56846@redhat.com>
- <23d209c1-f860-4915-935e-816d9077b65c@intel.com>
- <ab0d4962-1e38-4758-bd3c-88c8754b433f@redhat.com>
- <a3aca8df-1b4a-4efe-9f79-107aa2fd1a39@intel.com>
- <0e436056-95c3-4ed6-a17e-a46a780e5ab9@redhat.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <0e436056-95c3-4ed6-a17e-a46a780e5ab9@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.100;
- envelope-from=xiaoyao.li@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.171.120]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,239 +90,132 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/19/2023 4:26 PM, David Hildenbrand wrote:
-> On 18.10.23 18:27, Xiaoyao Li wrote:
->> On 10/18/2023 5:26 PM, David Hildenbrand wrote:
->>> On 18.10.23 11:02, Xiaoyao Li wrote:
->>>> On 10/18/2023 3:42 PM, David Hildenbrand wrote:
->>>>> On 18.10.23 05:02, Xiaoyao Li wrote:
->>>>>> David,
->>>>>>
->>>>>> On 7/6/2023 3:56 PM, David Hildenbrand wrote:
->>>>>>> ram_block_discard_range() cannot possibly do the right thing in
->>>>>>> MAP_PRIVATE file mappings in the general case.
->>>>>>>
->>>>>>> To achieve the documented semantics, we also have to punch a hole 
->>>>>>> into
->>>>>>> the file, possibly messing with other MAP_PRIVATE/MAP_SHARED 
->>>>>>> mappings
->>>>>>> of such a file.
->>>>>>>
->>>>>>> For example, using VM templating -- see commit b17fbbe55cba
->>>>>>> ("migration:
->>>>>>> allow private destination ram with x-ignore-shared") -- in
->>>>>>> combination with
->>>>>>> any mechanism that relies on discarding of RAM is problematic. This
->>>>>>> includes:
->>>>>>> * Postcopy live migration
->>>>>>> * virtio-balloon inflation/deflation or free-page-reporting
->>>>>>> * virtio-mem
->>>>>>>
->>>>>>> So at least warn that there is something possibly dangerous is
->>>>>>> going on
->>>>>>> when using ram_block_discard_range() in these cases.
->>>>>>>
->>>>>>> Acked-by: Peter Xu <peterx@redhat.com>
->>>>>>> Tested-by: Mario Casquero <mcasquer@redhat.com>
->>>>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>>>>>> ---
->>>>>>>      softmmu/physmem.c | 18 ++++++++++++++++++
->>>>>>>      1 file changed, 18 insertions(+)
->>>>>>>
->>>>>>> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
->>>>>>> index bda475a719..4ee157bda4 100644
->>>>>>> --- a/softmmu/physmem.c
->>>>>>> +++ b/softmmu/physmem.c
->>>>>>> @@ -3456,6 +3456,24 @@ int ram_block_discard_range(RAMBlock *rb,
->>>>>>> uint64_t start, size_t length)
->>>>>>>                   * so a userfault will trigger.
->>>>>>>                   */
->>>>>>>      #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
->>>>>>> +            /*
->>>>>>> +             * We'll discard data from the actual file, even though
->>>>>>> we only
->>>>>>> +             * have a MAP_PRIVATE mapping, possibly messing with
->>>>>>> other
->>>>>>> +             * MAP_PRIVATE/MAP_SHARED mappings. There is no easy
->>>>>>> way to
->>>>>>> +             * change that behavior whithout violating the promised
->>>>>>> +             * semantics of ram_block_discard_range().
->>>>>>> +             *
->>>>>>> +             * Only warn, because it work as long as nobody else
->>>>>>> uses that
->>>>>>> +             * file.
->>>>>>> +             */
->>>>>>> +            if (!qemu_ram_is_shared(rb)) {
->>>>>>> +                warn_report_once("ram_block_discard_range:
->>>>>>> Discarding RAM"
->>>>>>> +                                 " in private file mappings is
->>>>>>> possibly"
->>>>>>> +                                 " dangerous, because it will 
->>>>>>> modify
->>>>>>> the"
->>>>>>> +                                 " underlying file and will affect
->>>>>>> other"
->>>>>>> +                                 " users of the file");
->>>>>>> +            }
->>>>>>> +
->>>>>>
->>>>>> TDX has two types of memory backend for each RAM, shared memory and
->>>>>> private memory. Private memory is serviced by guest memfd and shared
->>>>>> memory can also be backed with a fd.
->>>>>>
->>>>>> At any time, only one type needs to be valid, which means the 
->>>>>> opposite
->>>>>> can be discarded. We do implement the memory discard when TDX 
->>>>>> converts
->>>>>> the memory[1]. It will trigger this warning 100% because by 
->>>>>> default the
->>>>>> guest memfd is not mapped as shared (MAP_SHARED).
->>>>>
->>>>> If MAP_PRIVATE is not involved and you are taking the pages 
->>>>> directly out
->>>>> of the memfd, you should mark that thing as shared.
->>>>
->>>> Is it the general rule of Linux? Of just the rule of QEMU memory 
->>>> discard?
->>>>
->>>
->>> MAP_SHARED vs. MAP_PRIVATE is a common UNIX principle, and that's what
->>> this flag and the check is about.
->>>
->>>   From mmap(2)
->>>
->>> MAP_SHARED: Share this mapping.  Updates to the mapping are visible to
->>> other processes mapping the same region, and (in the case of file-backed
->>> mappings) are carried through to the underlying file.
->>>
->>> MAP_PRIVATE: Create a private copy-on-write mapping.  Updates to the
->>> mapping are not visible to other processes mapping the same file, and
->>> are not carried through to the underlying file.  It is unspecified
->>> whether changes made  to the file after the mmap() call are visible in
->>> the mapped region.
->>>
->>> For your purpose (no mmap() at all), we behave like MAP_SHARED -- as if
->>> nothing special is done. No Copy-on-write, no anonymous memory.
->>>
->>>>> Anonymous memory is never involved.
->>>>
->>>> Could you please elaborate more on this? What do you want to express
->>>> here regrading anonymous memory? (Sorry that I'm newbie for mmap stuff)
->>>
->>> Anonymous memory is memory that is private to a specific process, and
->>> (see MAP_PRIVATE) modifications remain private to the process and are
->>> not reflected to the file.
->>>
->>> If you have a MAP_PRIVATE file mapping and write to a virtual memory
->>> location, you'll get a process-private copy of the underlying pagecache
->>> page. that's what we call anonymous memory, because it does not belong
->>> to a specific file. fallocate(punch) would not free up that anonymous
->>> memory.
->>
->> For guest memfd, it does implement kvm_gmem_fallocate as .fallocate()
->> callback, which calls truncate_inode_pages_range() [*].
->>
->> I'm not sure if it frees up the memory. I need to learn it.
->>
->> [*]
->> https://github.com/kvm-x86/linux/blob/911b515af3ec5f53992b9cc162cf7d3893c2fbe2/virt/kvm/guest_memfd.c#L147C73-L147C73
->>
->>>>
->>>>>
->>>>> "Private memory" is only private from the guest POV, not from a mmap()
->>>>> point of view.
->>>>>
->>>>> Two different concepts of "private".
->>>>>
->>>>>>
->>>>>> Simply remove the warning will fail the purpose of this patch. The
->>>>>> other
->>>>>> option is to skip the warning for TDX case, which looks vary 
->>>>>> hacky. Do
->>>>>> you have any idea?
->>>>>
->>>>> For TDX, all memory backends / RAMBlocks should be marked as "shared",
->>>>> and you should fail if that is not provided by the user.
->>>>
->>>> As I asked above, I want to understand the logic clearly. Is mapped as
->>>> shared is a must to support the memory discard? i.e., if we want to
->>>> support memory discard after memory type change, then the memory 
->>>> must be
->>>> mapped with MAP_SHARED?
->>>
->>> MAP_PIRVATE means that it's not sufficient to only fallocate(punch) the
->>> fd to free up all memory for a virtual address, because there might be
->>> anonymous memory in a private mapping that has to be freed up using
->>> MADV_DONTNEED.
->>
->> I can understand this. But it seems unrelated to my question: Is mapped
->> as shared is a must to support the memory discard?
-> 
-> Sorry, I don't quite get what you are asking that I haven't answered 
-> yet. Let's talk about the issue you are seeing below.
-> 
->>
->> e.g., if use below parameters to specify the RAM for a VM
->>
->>     -object memory-backend-memfd,id=mem0,size=2G    \
->>     -machine memory-backend=mem0
->>
->> since not specifying "share" property, the ram_block doesn't have
->> RAM_SHARED set. If want to discard some range of this memfd, it triggers
->> the warning. Is this warning expected?
-> 
-> That should not be the case. See "memfd_backend_instance_init" where we 
-> set share=true. In memfd_backend_memory_alloc(), we set RAM_SHARED.
-> 
-> We only default to share=off for memory-backend-file (well, and 
-> memory-backend-ram).
-> 
-> So are you sure you get this error message in the configuration you are 
-> describing here?
-
-Sorry, I made an mistake. I was using "-object 
-memory-backend-ram,id=mem0,size=2G" instead of "memory-backend-memfd".
-
-yes, when using "memory-backend-memfd" as the backend for TDX shared 
-memory, it doesn't trigger the warning because 
-memfd_backend_instance_init() set "share" to true.
-
-When using "memory-backend-ram" as the backend for TDX shared memory, 
-the warning is triggered converting memory from private (kvm gmem) to 
-shared (backend-ram). In this case, there is a valid fd (kvm gmem fd), 
-so it goes to the path of need_fallocate. However, 
-qemu_ram_is_shared(rb) returns false because "memory-backend-ram" 
-doesn't have "share" default on. Thus, the warning is triggered.
-
-It seems I need figure out a more proper solution to refactor the 
-ram_block_discard_range(), to make it applicable for kvm gmem discard case.
-
->>
->> I know it is not a possible case for current QEMU, but it's true for
->> future TDX VM. TDX VM can have memory-backend-memfd as the backend for
->> shared memory and kvm gmem memfd for private memory. At any time, for
->> any memory range, only one type is valid, thus the range in opposite
->> memfd can be fallocated.
-> 
-> Right.
-> 
->>
->> Here I get your message as "the ramblock needs to have RAM_SHARED flag
->> to allow the fallocate of the memfd". This is what I don't understand.
-> 
-> The problem I am seeing is that either
-> 
-> (a) Someone explicitly sets share=off for some reason for 
-> memory-backend-memfd, triggering the warning.
-> 
-> (b) We somehow lose RAM_SHARED in above configuration, which would be 
-> bad and trigger the warning.
-> 
-> Can you make sure that (a) is not the case?
-
-Above reply answers it. Sorry for it.
-
+SGkgU2hhb3FpbiwNCg0KPiBGcm9tOiBTaGFvcWluIEh1YW5nIDxzaGFodWFuZ0ByZWRoYXQuY29t
+Pg0KPiBTZW50OiBUaHVyc2RheSwgT2N0b2JlciAxOSwgMjAyMyAxMDowNSBBTQ0KPiBUbzogU2Fs
+aWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7
+IHFlbXUtDQo+IGFybUBub25nbnUub3JnDQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGls
+aXBwZUBsaW5hcm8ub3JnOyBKb25hdGhhbiBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1
+YXdlaS5jb20+OyBscGllcmFsaXNpQGtlcm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJv
+Lm9yZzsgcmljaGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNv
+bTsgYW5kcmV3LmpvbmVzQGxpbnV4LmRldjsgZGF2aWRAcmVkaGF0LmNvbTsNCj4gcGhpbG1kQGxp
+bmFyby5vcmc7IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xpdmVyLnVwdG9uQGxpbnV4LmRldjsN
+Cj4gcGJvbnppbmlAcmVkaGF0LmNvbTsgbXN0QHJlZGhhdC5jb207IHdpbGxAa2VybmVsLm9yZzsg
+Z3NoYW5AcmVkaGF0LmNvbTsNCj4gcmFmYWVsQGtlcm5lbC5vcmc7IGFsZXguYmVubmVlQGxpbmFy
+by5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFycmVuQG9zLmFtcGVyZWNvbXB1dGlu
+Zy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IHZpc2hudUBvcy5hbXBlcmVj
+b21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNvbTsNCj4gbWlndWVsLmx1aXNAb3Jh
+Y2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsgemh1a2VxaWFuDQo+IDx6aHVrZXFpYW4x
+QGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKSA8d2FuZ3hpb25nZmVuZzJAaHVhd2VpLmNv
+bT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1YXdlaS5jb20+OyBqaWFrZXJuZWwy
+QGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29uZ3Nvbi5jbjsgbGl4aWFuZ2xhaUBsb29uZ3Nvbi5j
+bjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0gg
+VjYgMC85XSBBZGQgYXJjaGl0ZWN0dXJlIGFnbm9zdGljIGNvZGUgdG8gc3VwcG9ydCB2Q1BVDQo+
+IEhvdHBsdWcNCj4gDQo+IA0KPiANCj4gT24gMTAvMTMvMjMgMTg6NTEsIFNhbGlsIE1laHRhIHZp
+YSB3cm90ZToNCj4gPiBWaXJ0dWFsIENQVSBob3RwbHVnIHN1cHBvcnQgaXMgYmVpbmcgYWRkZWQg
+YWNyb3NzIHZhcmlvdXMNCj4gYXJjaGl0ZWN0dXJlc1sxXVszXS4NCj4gPiBUaGlzIHNlcmllcyBh
+ZGRzIHZhcmlvdXMgY29kZSBiaXRzIGNvbW1vbiBhY3Jvc3MgYWxsIGFyY2hpdGVjdHVyZXM6DQo+
+ID4NCj4gPiAxLiB2Q1BVIGNyZWF0aW9uIGFuZCBQYXJraW5nIGNvZGUgcmVmYWN0b3IgW1BhdGNo
+IDFdDQo+ID4gMi4gVXBkYXRlIEFDUEkgR0VEIGZyYW1ld29yayB0byBzdXBwb3J0IHZDUFUgSG90
+cGx1ZyBbUGF0Y2ggNCw2LDddDQo+ID4gMy4gQUNQSSBDUFVzIEFNTCBjb2RlIGNoYW5nZSBbUGF0
+Y2ggNV0NCj4gPiA0LiBIZWxwZXIgZnVuY3Rpb25zIHRvIHN1cHBvcnQgdW5yZWFsaXphdGlvbiBv
+ZiBDUFUgb2JqZWN0cyBbUGF0Y2ggOCw5XQ0KPiA+IDUuIE1pc2MgW1BhdGNoIDIsM10NCj4gPg0K
+PiA+DQo+ID4gUmVwb3NpdG9yeToNCj4gPg0KPiA+IFsqXSBodHRwczovL2dpdGh1Yi5jb20vc2Fs
+aWwtbWVodGEvcWVtdS5naXQgdmlydC1jcHVocC1hcm12OC9yZmMtDQo+IHYyLmNvbW1vbi52Ng0K
+PiA+DQo+ID4NCj4gPiBSZXZpc2lvbiBIaXN0b3J5Og0KPiA+DQo+ID4gUGF0Y2gtc2V0ICBWNSAt
+PiBWNg0KPiA+IDEuIEFkZHJlc3NlZCBHYXZpbiBTaGFuJ3MgY29tbWVudHMNCj4gPiAgICAgLSBG
+aXhlZCB0aGUgYXNzZXJ0KCkgcmFuZ2VzIG9mIGFkZHJlc3Mgc3BhY2VzDQo+ID4gICAgIC0gUmVi
+YXNlZCB0aGUgcGF0Y2gtc2V0IHRvIGxhdGVzdCBjaGFuZ2VzIGluIHRoZSBxZW11LmdpdA0KPiA+
+ICAgICAtIEFkZGVkIFJldmlld2VkLWJ5IHRhZ3MgZm9yIHBhdGNoZXMgezgsOX0NCj4gPiAyLiBB
+ZGRyZXNzZWQgSm9uYXRoYW4gQ2FtZXJvbidzIGNvbW1lbnRzDQo+ID4gICAgIC0gVXBkYXRlZCBj
+b21taXQtbG9nIGZvciBbUGF0Y2ggVjUgMS85XSB3aXRoIG1lbnRpb24gb2YgdHJhY2UgZXZlbnRz
+DQo+ID4gICAgIC0gQWRkZWQgUmV2aWV3ZWQtYnkgdGFncyBmb3IgcGF0Y2hlcyB7MSw1fQ0KPiA+
+IDMuIEFkZGVkIFRlc3RlZC1ieSB0YWdzIGZyb20gWGlhbmdsYWkgTGkNCj4gPiA0LiBGaXhlZCBj
+aGVja3BhdGNoLnBsIGVycm9yICJRZW11IC0+IFFFTVUiIGluIFtQYXRjaCBWNSAxLzldDQo+ID4g
+TGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcWVtdS1kZXZlbC8yMDIzMTAxMTE5NDM1NS4x
+NTYyOC0xLQ0KPiBzYWxpbC5tZWh0YUBodWF3ZWkuY29tLw0KPiA+DQo+ID4gUGF0Y2gtc2V0ICBW
+NCAtPiBWNQ0KPiA+IDEuIEFkZHJlc3NlZCBHYXZpbiBTaGFuJ3MgY29tbWVudHMNCj4gPiAgICAg
+LSBGaXhlZCB0aGUgdHJhY2UgZXZlbnRzIHByaW50IHN0cmluZyBmb3INCj4ga3ZtX3tjcmVhdGUs
+Z2V0LHBhcmssZGVzdHJveX1fdmNwdQ0KPiA+ICAgICAtIEFkZGVkIFJldmlld2VkLWJ5IHRhZyBm
+b3IgcGF0Y2ggezF9DQo+ID4gMi4gQWRkZWQgU2hhb3FpbiBIdWFuZydzIFJldmlld2VkLWJ5IHRh
+Z3MgZm9yIFBhdGNoZXMgezIsM30NCj4gPiAzLiBBZGRlZCBUZXN0ZWQtYnkgVGFnIGZyb20gVmlz
+aG51IFBhamp1cmkgdG8gdGhlIHBhdGNoLXNldA0KPiA+IDQuIERyb3BwZWQgdGhlIEFSTSBzcGVj
+aWZpYyBbUGF0Y2ggVjQgMTAvMTBdDQo+ID4gTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcv
+cWVtdS1kZXZlbC8yMDIzMTAwOTIwMzYwMS4xNzU4NC0xLQ0KPiBzYWxpbC5tZWh0YUBodWF3ZWku
+Y29tLw0KPiA+DQo+ID4gUGF0Y2gtc2V0ICBWMyAtPiBWNA0KPiA+IDEuIEFkZHJlc3NlZCBEYXZp
+ZCBIaWxkZXJicmFuZCdzIGNvbW1lbnRzDQo+ID4gICAgIC0gRml4ZWQgdGhlIHdyb25nIGRvYyBj
+b21tZW50IG9mIGt2bV9wYXJrX3ZjcHUgQVBJIHByb3RvdHlwZQ0KPiA+ICAgICAtIEFkZGVkIFJl
+dmlld2VkLWJ5IHRhZ3MgZm9yIHBhdGNoZXMgezIsNH0NCj4gPiBMaW5rOiBodHRwczovL2xvcmUu
+a2VybmVsLm9yZy9xZW11LWRldmVsLzIwMjMxMDA5MTEyODEyLjEwNjEyLTEtDQo+IHNhbGlsLm1l
+aHRhQGh1YXdlaS5jb20vDQo+ID4NCj4gPiBQYXRjaC1zZXQgIFYyIC0+IFYzDQo+ID4gMS4gQWRk
+cmVzc2VkIEpvbmF0aGFuIENhbWVyb24ncyBjb21tZW50cw0KPiA+ICAgICAtIEZpeGVkICd2Y3B1
+LWlkJyB0eXBlIHdyb25nbHkgY2hhbmdlZCBmcm9tICd1bnNpZ25lZCBsb25nJyB0bw0KPiAnaW50
+ZWdlcicNCj4gPiAgICAgLSBSZW1vdmVkIHVubmVjZXNzYXJ5IHVzZSBvZiB2YXJpYWJsZSAndmNw
+dV9pZCcgaW4ga3ZtX3BhcmtfdmNwdQ0KPiA+ICAgICAtIFVwZGF0ZWQgW1BhdGNoIFYyIDMvMTBd
+IGNvbW1pdC1sb2cgd2l0aCBkZXRhaWxzIG9mDQo+IEFDUElfQ1BVX1NDQU5fTUVUSE9EIG1hY3Jv
+DQo+ID4gICAgIC0gVXBkYXRlZCBbUGF0Y2ggVjIgNS8xMF0gY29tbWl0LWxvZyB3aXRoIGRldGFp
+bHMgb2YgY29uZGl0aW9uYWwNCj4gZXZlbnQgaGFuZGxlciBtZXRob2QNCj4gPiAgICAgLSBBZGRl
+ZCBSZXZpZXdlZC1ieSB0YWdzIGZvciBwYXRjaGVzIHsyLDMsNCw2LDd9DQo+ID4gMi4gQWRkcmVz
+c2VkIEdhdmluIFNoYW4ncyBjb21tZW50cw0KPiA+ICAgICAtIFJlbW92ZSB1bm5lY2Vzc2FyeSB1
+c2Ugb2YgdmFyaWFibGUgJ3ZjcHVfaWQnIGluIGt2bV9wYXJfdmNwdQ0KPiA+ICAgICAtIEZpeGVk
+IHJldHVybiB2YWx1ZSBpbiBrdm1fZ2V0X3ZjcHUgZnJvbSAtMSB0byAtRU5PRU5UDQo+ID4gICAg
+IC0gUmVzZXQgdGhlIHZhbHVlIG9mICdnZGJfbnVtX2dfcmVncycgaW4NCj4gZ2RiX3VucmVnaXN0
+ZXJfY29wcm9jZXNzb3JfYWxsDQo+ID4gICAgIC0gRml4ZWQgdGhlIGt2bV97Y3JlYXRlLHBhcmt9
+X3ZjcHUgcHJvdG90eXBlcyBkb2NzDQo+ID4gICAgIC0gQWRkZWQgUmV2aWV3ZWQtYnkgdGFncyBm
+b3IgcGF0Y2hlcyB7MiwzLDQsNSw2LDcsOSwxMH0NCj4gPiAzLiBBZGRyZXNzZWQgb25lIGVhcmxp
+ZXIgbWlzc2VkIGNvbW1lbnQgYnkgQWxleCBCZW5uw6llIGluIFJGQyBWMQ0KPiA+ICAgICAtIEFk
+ZGVkIHRyYWNlcyBpbnN0ZWFkIG9mIERQUklOVEYgaW4gdGhlIG5ld2x5IGFkZGVkIGFuZCBzb21l
+DQo+IGV4aXN0aW5nIGZ1bmN0aW9ucw0KPiA+IExpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3Jn
+L3FlbXUtZGV2ZWwvMjAyMzA5MzAwMDE5MzMuMjY2MC0xLQ0KPiBzYWxpbC5tZWh0YUBodWF3ZWku
+Y29tLw0KPiA+DQo+ID4gUGF0Y2gtc2V0IFYxIC0+IFYyDQo+ID4gMS4gQWRkcmVzc2VkIEFsZXgg
+QmVubsOpZSdzIGNvbW1lbnRzDQo+ID4gICAgIC0gUmVmYWN0b3JlZCB0aGUga3ZtX2NyZWF0ZV92
+Y3B1IGxvZ2ljIHRvIGdldCByaWQgb2YgZ290bw0KPiA+ICAgICAtIEFkZGVkIHRoZSBkb2NzIGZv
+ciBrdm1fe2NyZWF0ZSxwYXJrfV92Y3B1IHByb3RvdHlwZXMNCj4gPiAgICAgLSBTcGxpdHRlZCB0
+aGUgZ2Ric3R1YiBhbmQgQWRkcmVzc1NwYWNlIGRlc3RydWN0aW9uIGNoYW5nZSBpbnRvDQo+IHNl
+cGFyYXRlIHBhdGNoZXMNCj4gPiAgICAgLSBBZGRlZCBSZXZpZXdlZC1ieSB0YWdzIGZvciBwYXRj
+aGVzIHsyLDEwfQ0KPiA+IExpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3FlbXUtZGV2ZWwv
+MjAyMzA5MjkxMjQzMDQuMTM2NzItMS0NCj4gc2FsaWwubWVodGFAaHVhd2VpLmNvbS8NCj4gPg0K
+PiA+IFJlZmVyZW5jZXM6DQo+ID4NCj4gPiBbMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcWVt
+dS1kZXZlbC8yMDIzMDkyNjEwMDQzNi4yODI4NC0xLQ0KPiBzYWxpbC5tZWh0YUBodWF3ZWkuY29t
+Lw0KPiA+IFsyXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyMzA5MTMxNjM4MjMuNzg4
+MC0xLQ0KPiBqYW1lcy5tb3JzZUBhcm0uY29tLw0KPiA+IFszXSBodHRwczovL2xvcmUua2VybmVs
+Lm9yZy9xZW11LQ0KPiBkZXZlbC9jb3Zlci4xNjk1Njk3NzAxLmdpdC5saXhpYW5nbGFpQGxvb25n
+c29uLmNuLw0KPiA+DQo+ID4NCj4gPiBTYWxpbCBNZWh0YSAoOSk6DQo+ID4gICAgYWNjZWwva3Zt
+OiBFeHRyYWN0IGNvbW1vbiBLVk0gdkNQVSB7Y3JlYXRpb24scGFya2luZ30gY29kZQ0KPiA+ICAg
+IGh3L2FjcGk6IE1vdmUgQ1BVIGN0cmwtZGV2IE1NSU8gcmVnaW9uIGxlbiBtYWNybyB0byBjb21t
+b24gaGVhZGVyIGZpbGUNCj4gPiAgICBody9hY3BpOiBBZGQgQUNQSSBDUFUgaG90cGx1ZyBpbml0
+IHN0dWINCj4gPiAgICBody9hY3BpOiBJbml0IEdFRCBmcmFtZXdvcmsgd2l0aCBDUFUgaG90cGx1
+ZyBldmVudHMNCj4gPiAgICBody9hY3BpOiBVcGRhdGUgQ1BVcyBBTUwgd2l0aCBjcHUtKGN0cmwp
+ZGV2IGNoYW5nZQ0KPiA+ICAgIGh3L2FjcGk6IFVwZGF0ZSBHRUQgX0VWVCBtZXRob2QgQU1MIHdp
+dGggQ1BVIHNjYW4NCj4gPiAgICBody9hY3BpOiBVcGRhdGUgQUNQSSBHRUQgZnJhbWV3b3JrIHRv
+IHN1cHBvcnQgdkNQVSBIb3RwbHVnDQo+ID4gICAgcGh5c21lbTogQWRkIGhlbHBlciBmdW5jdGlv
+biB0byBkZXN0cm95IENQVSBBZGRyZXNzU3BhY2UNCj4gPiAgICBnZGJzdHViOiBBZGQgaGVscGVy
+IGZ1bmN0aW9uIHRvIHVucmVnaXN0ZXIgR0RCIHJlZ2lzdGVyIHNwYWNlDQo+ID4NCj4gPiAgIGFj
+Y2VsL2t2bS9rdm0tYWxsLmMgICAgICAgICAgICAgICAgICAgIHwgNjQgKysrKysrKysrKysrKysr
+KysrKystLS0tLS0NCj4gPiAgIGFjY2VsL2t2bS90cmFjZS1ldmVudHMgICAgICAgICAgICAgICAg
+IHwgIDQgKysNCj4gPiAgIGdkYnN0dWIvZ2Ric3R1Yi5jICAgICAgICAgICAgICAgICAgICAgIHwg
+MTIgKysrKysNCj4gPiAgIGh3L2FjcGkvYWNwaS1jcHUtaG90cGx1Zy1zdHViLmMgICAgICAgIHwg
+IDYgKysrDQo+ID4gICBody9hY3BpL2NwdS5jICAgICAgICAgICAgICAgICAgICAgICAgICB8IDI3
+ICsrKysrKystLS0tDQo+ID4gICBody9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmMgICAgICAg
+ICB8IDIyICsrKysrKysrKw0KPiA+ICAgaHcvaTM4Ni9hY3BpLWJ1aWxkLmMgICAgICAgICAgICAg
+ICAgICAgfCAgMyArLQ0KPiA+ICAgaW5jbHVkZS9leGVjL2NwdS1jb21tb24uaCAgICAgICAgICAg
+ICAgfCAgOCArKysrDQo+ID4gICBpbmNsdWRlL2V4ZWMvZ2Ric3R1Yi5oICAgICAgICAgICAgICAg
+ICB8ICA1ICsrDQo+ID4gICBpbmNsdWRlL2h3L2FjcGkvY3B1LmggICAgICAgICAgICAgICAgICB8
+ICA1ICstDQo+ID4gICBpbmNsdWRlL2h3L2FjcGkvY3B1X2hvdHBsdWcuaCAgICAgICAgICB8ICA0
+ICsrDQo+ID4gICBpbmNsdWRlL2h3L2FjcGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuaCB8ICA1ICsr
+DQo+ID4gICBpbmNsdWRlL2h3L2NvcmUvY3B1LmggICAgICAgICAgICAgICAgICB8ICAxICsNCj4g
+PiAgIGluY2x1ZGUvc3lzZW11L2t2bS5oICAgICAgICAgICAgICAgICAgIHwgMTYgKysrKysrKw0K
+PiA+ICAgc3lzdGVtL3BoeXNtZW0uYyAgICAgICAgICAgICAgICAgICAgICAgfCAyOSArKysrKysr
+KysrKysNCj4gPiAgIDE1IGZpbGVzIGNoYW5nZWQsIDE4NCBpbnNlcnRpb25zKCspLCAyNyBkZWxl
+dGlvbnMoLSkNCj4gPg0KPiANCj4gSGkgc2FsaWwsDQo+IA0KPiBBbGwgcGF0Y2hlcyBsb29rcyBn
+b29kIHRvIG1lLiBUaGFua3MgZm9yIHlvdSBlZmZvcnQgdG8gdXBkYXRlIGl0IHNvDQo+IGFjdGl2
+ZWx5LiBObyBpc3N1ZXMgYmVpbmcgZm91bmQgYnkgc2ltcGx5IHRlc3RpbmcgYW5kIHNldmVyYWwg
+ZGFpbHkgdXNlLg0KPiANCj4gUmV2aWV3ZWQtYnk6IFNoYW9xaW4gSHVhbmcgPHNoYWh1YW5nQHJl
+ZGhhdC5jb20+DQoNCk1hbnkgdGhhbmtzISBKdXN0IHdhbnRlZCB0byBjb25maXJtIGlmIHlvdSBo
+YXZlIHRlc3RlZCB0aGlzIHBhdGNoIG92ZXINCng4NiBwbGF0Zm9ybSBhcyB3ZWxsPw0KDQoNCkNo
+ZWVycw0KU2FsaWwuDQo=
 
