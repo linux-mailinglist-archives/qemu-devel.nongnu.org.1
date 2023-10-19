@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B178F7CFB4A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F747CFB62
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:40:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTCP-00028F-0a; Thu, 19 Oct 2023 09:36:29 -0400
+	id 1qtTCs-00041u-QU; Thu, 19 Oct 2023 09:36:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBp-0001rZ-9e
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:54 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qtTBq-0001rh-Lo
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:57 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBg-0001Cp-7x
+ id 1qtTBg-0001Cy-OG
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:49 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4084095722aso12277785e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:43 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-32d81864e3fso6132392f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697722543; x=1698327343; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=XDLwNQSP4GKAO/ZxD0EOo3uqYEUKkTNSdvXAsFN5ifk=;
- b=E58V+jJis1EdTBnuqkOqOq24nNdCob7ubovgUhXINd0mF5AQguhZhUyuvFrprJLuYe
- y5ERFJDihNfT95/ZtQNamj/6SH0SzoTKotKD3cpEzx2g3X/1+tH+9iKBy462clZ0I/oa
- kI7WizxbTSEUfrwEum15YDMnE9exCVZj9iXX2SrQq9ESlpNeX13e+ERHdRMvNFATPSyZ
- VdZlkNiqAmBTkaK9dDbUQVhkjX06HuSvi/Pbpid9yErAjbYgB8GVhHtBlokpWky2rVSF
- cFZko5Q08xtaTHNMgP6hbCcp/LhFvbhYPGEXv9Hq4C5inH6+k2mYeEE7am+nT6Bx0nnv
- kAYA==
+ :reply-to; bh=43lpcz9vl3gP1eW9caBPH21GU6XgpA6looK2xil7svA=;
+ b=WV2D/6kQYXh6803Ds1QXr9pk1X0Y6mYE4yE64eaeDxmKSWpgSWpZgmzi/Ew+OyyajH
+ 2ZE8RYdqB8UM64Kz1V1eb2l/kaCyn8+MUJuQtP3uFt+WbEwLysNgEzoZCX5QjNq695Bw
+ OVhLwpeweNREhFnyUXyJpW8Vd2W9KWQhxWkc/bM4zDnNjESydmcB8QtjYZbYDRjjEb2A
+ T5qti7d2Pa9cn0r5nrBMdf4hIj+///3wyyZpva9JYIbz4FNXlKiqWw8C3Ul4uR+/WGox
+ jYY9Qd0EjERF7vd1vRDPAmkl8w3C8FfDJMsTP9ZFz/P1QtoX/cWOJMhdBHBcw8nvs5vv
+ 1SFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697722543; x=1698327343;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XDLwNQSP4GKAO/ZxD0EOo3uqYEUKkTNSdvXAsFN5ifk=;
- b=QrOgfBFsmOsXA+wdeAiNB/FScZFInfCM3hUCwXJ9p9TQtBrFCcJ1G9Vby31nO9T8bX
- EZhkW4+WEt1mik13+yxcSWa1yEDTzSzi30JhvY7VG5aNFwCKNuMrb21SguiaHhPEjvr4
- TQv1wzYUSFHenSiCCuUzpmk7AyRBr5FbSNHfuavPUMyD0dLgaKIe9OJHdQhdrDw4i3Se
- +rRCXBZ4RgAFCRYndJ/uM7Khh4OgPXetke/XeYo6TYLUOzpNxBNMNa8vJDxnGcwkEK6w
- BEOEUTm7njIh21Kw5jf7KBGk65EbLQ42Pt/CzzIT9QK0a7EvVqxs5/se2/ZbvLmvyzrl
- Zt+A==
-X-Gm-Message-State: AOJu0YzuJQkgoldAYiyS/sCo1f21Q1bA3FQp1+GbzGMTUPtW8fiLpDZG
- PDn1qL0S+8sCLdsXHNDfIMNmmgcy4m3yJJZBsRo=
-X-Google-Smtp-Source: AGHT+IEQ3G5wy0JDPP+HQnT9hRC0A+XesuhR4cuiajHWS394O7ARXnOYT5bjUZdaIehAa/3pgpSE3Q==
-X-Received: by 2002:a05:600c:1383:b0:405:48ba:9c with SMTP id
- u3-20020a05600c138300b0040548ba009cmr1821138wmf.16.1697722542692; 
- Thu, 19 Oct 2023 06:35:42 -0700 (PDT)
+ bh=43lpcz9vl3gP1eW9caBPH21GU6XgpA6looK2xil7svA=;
+ b=VbfxWhK7JMh/D79b0+FdSa3z2qVhts+R7xLhZ2uqcsSGFAYglzM74vfURNJCv21soL
+ ILFuU4gW71sF573LPcZt/XSkfmD6rVUyevH1BQ9Ffn8QSjMwPEuFcGE6QYcYAjCRX54i
+ l/3d2fJK+uXFf1dJ3t5m8zNKrgMZ2WEXVzYj8RTCer+fvLVSuYGg7VhtUu/rDn0lgJHX
+ QjYykJeggUzZdlqGJUVxMIGe0jFYLg+vf/5uC2csMzuAuo75iUAfD9QZ9f9nymT9AjYC
+ /1Nku+LLjYNCtMTPdA16kjImx+4AwbLZEzEUcjJSejK/Z44ZtSv4vEx+0PwVVAQgcrvX
+ 4rWQ==
+X-Gm-Message-State: AOJu0YzAFuMLpqmhQKbTfaEoWJxxnImsHdQ00xLKOVxfDbQ7oEjgyGOu
+ VdTdVRKT+tFF/XWCs96UafbnZFRqm5pgTYQqCLY=
+X-Google-Smtp-Source: AGHT+IF2x95JcqLLU88hITJiwgKSE5imJyQAxpN8+NH/yOFeoNV/t7oW4oxNJxvZ992dnA2mLQuOSw==
+X-Received: by 2002:a5d:4391:0:b0:32d:d2ef:b0c1 with SMTP id
+ i17-20020a5d4391000000b0032dd2efb0c1mr1313369wrq.33.1697722543157; 
+ Thu, 19 Oct 2023 06:35:43 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.42
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 19 Oct 2023 06:35:42 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/24] elf2dmp: check array bounds in pdb_get_file_size
-Date: Thu, 19 Oct 2023 14:35:21 +0100
-Message-Id: <20231019133537.2114929-9-peter.maydell@linaro.org>
+Subject: [PULL 09/24] target/arm: Fix CNTPCT_EL0 trapping from EL0 when
+ HCR_EL2.E2H is 0
+Date: Thu, 19 Oct 2023 14:35:22 +0100
+Message-Id: <20231019133537.2114929-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231019133537.2114929-1-peter.maydell@linaro.org>
 References: <20231019133537.2114929-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,58 +91,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Viktor Prutyanov <viktor@daynix.com>
+From: Michal Orzel <michal.orzel@amd.com>
 
-Index in file_size array must be checked against num_files, because the
-entries we are looking for may be absent in the PDB.
+On an attempt to access CNTPCT_EL0 from EL0 using a guest running on top
+of Xen, a trap from EL2 was observed which is something not reproducible
+on HW (also, Xen does not trap accesses to physical counter).
 
-Fixes: Coverity CID 1521597
-Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230930235317.11469-3-viktor@daynix.com
+This is because gt_counter_access() checks for an incorrect bit (1
+instead of 0) of CNTHCTL_EL2 if HCR_EL2.E2H is 0 and access is made to
+physical counter. Refer ARM ARM DDI 0487J.a, D19.12.2:
+When HCR_EL2.E2H is 0:
+ - EL1PCTEN, bit [0]: refers to physical counter
+ - EL1PCEN, bit [1]: refers to physical timer registers
+
+Drop entire block "if (hcr & HCR_E2H) {...} else {...}" from EL0 case
+and fall through to EL1 case, given that after fixing checking for the
+correct bit, the handling is the same.
+
+Fixes: 5bc8437136fb ("target/arm: Update timer access for VHE")
+Signed-off-by: Michal Orzel <michal.orzel@amd.com>
+Tested-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Message-id: 20230928094404.20802-1-michal.orzel@amd.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/pdb.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ target/arm/helper.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-index 6ca5086f02e..8e3c18c82f7 100644
---- a/contrib/elf2dmp/pdb.c
-+++ b/contrib/elf2dmp/pdb.c
-@@ -25,6 +25,10 @@
- 
- static uint32_t pdb_get_file_size(const struct pdb_reader *r, unsigned idx)
- {
-+    if (idx >= r->ds.toc->num_files) {
-+        return 0;
-+    }
-+
-     return r->ds.toc->file_size[idx];
- }
- 
-@@ -159,16 +163,17 @@ static void *pdb_ds_read_file(struct pdb_reader* r, uint32_t file_number)
- 
- static int pdb_init_segments(struct pdb_reader *r)
- {
--    char *segs;
-     unsigned stream_idx = r->segments;
- 
--    segs = pdb_ds_read_file(r, stream_idx);
--    if (!segs) {
-+    r->segs = pdb_ds_read_file(r, stream_idx);
-+    if (!r->segs) {
-         return 1;
-     }
- 
--    r->segs = segs;
-     r->segs_size = pdb_get_file_size(r, stream_idx);
-+    if (!r->segs_size) {
-+        return 1;
-+    }
- 
-     return 0;
- }
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 74fbb6e1d78..01cd1474565 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -2475,22 +2475,7 @@ static CPAccessResult gt_counter_access(CPUARMState *env, int timeridx,
+         if (!extract32(env->cp15.c14_cntkctl, timeridx, 1)) {
+             return CP_ACCESS_TRAP;
+         }
+-
+-        /* If HCR_EL2.<E2H,TGE> == '10': check CNTHCTL_EL2.EL1PCTEN. */
+-        if (hcr & HCR_E2H) {
+-            if (timeridx == GTIMER_PHYS &&
+-                !extract32(env->cp15.cnthctl_el2, 10, 1)) {
+-                return CP_ACCESS_TRAP_EL2;
+-            }
+-        } else {
+-            /* If HCR_EL2.<E2H> == 0: check CNTHCTL_EL2.EL1PCEN. */
+-            if (has_el2 && timeridx == GTIMER_PHYS &&
+-                !extract32(env->cp15.cnthctl_el2, 1, 1)) {
+-                return CP_ACCESS_TRAP_EL2;
+-            }
+-        }
+-        break;
+-
++        /* fall through */
+     case 1:
+         /* Check CNTHCTL_EL2.EL1PCTEN, which changes location based on E2H. */
+         if (has_el2 && timeridx == GTIMER_PHYS &&
 -- 
 2.34.1
 
