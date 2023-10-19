@@ -2,69 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145987CFD40
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CBA7CFD52
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:51:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtUKh-0008W0-W9; Thu, 19 Oct 2023 10:49:08 -0400
+	id 1qtUMN-0006jU-8v; Thu, 19 Oct 2023 10:50:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtUKd-0008Pz-DG
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:49:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtUM1-0006b8-KK
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:50:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtUKb-0004nK-P1
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:49:03 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtULz-0006bt-3c
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:50:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697726940;
+ s=mimecast20190719; t=1697727026;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=31L48cgsVYtwVUHXVVFf6jMfN0mCgNZJS1t01YoYc1c=;
- b=E/+dQPgAnrc7WhINlw51mCG6mOPMJYy5zwS01k2erl5b3v/UTydutohiMpk50kmS9a4VQN
- e5YuqWEctP/XjBgaNmM9+4bZInD1n8mOZBW27INggbk2KMTIKGFfJsov+X/1jKvBl/kOk1
- VyPFZAFmcbRNsP8vZ5fnRJH6wnnvlJE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-689-3CgfNHzGMSChx4tqDxc5ng-1; Thu, 19 Oct 2023 10:48:57 -0400
-X-MC-Unique: 3CgfNHzGMSChx4tqDxc5ng-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2CFF10201FB;
- Thu, 19 Oct 2023 14:48:56 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8311A503B;
- Thu, 19 Oct 2023 14:48:56 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 837F521E6A37; Thu, 19 Oct 2023 16:48:55 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 3/3] qapi: provide a friendly string representation of QAPI
- classes
-Date: Thu, 19 Oct 2023 16:48:55 +0200
-Message-ID: <20231019144855.833802-4-armbru@redhat.com>
-In-Reply-To: <20231019144855.833802-1-armbru@redhat.com>
-References: <20231019144855.833802-1-armbru@redhat.com>
+ bh=VvWPKAp0GcZVD9rd/s6SCmLA+pIKieNUzG5psatn4fI=;
+ b=TFV/tXGXTIzwYw9cIa6Ck5I8DIV4LWKTQozs5Q5kx9nlt4QF1wMkq8MbwLwOd1LXEc4kMY
+ NYkE4kVuwsLBlt/SASyY/SWrsAvxiMHmhOxHyuwhEQWzcM17HP4/ytXChFM5z7kvoLPkmd
+ 1Stb9wCtHghEvKWAr3UlvLY+UZifMVw=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-F-6yHtG3PT2QHH-dS3pLtw-1; Thu, 19 Oct 2023 10:50:14 -0400
+X-MC-Unique: F-6yHtG3PT2QHH-dS3pLtw-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-778a5286540so2521585a.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 07:50:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697727014; x=1698331814;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VvWPKAp0GcZVD9rd/s6SCmLA+pIKieNUzG5psatn4fI=;
+ b=sd+raALTCX3E8O2Q8Aiqi1J9MRIyTGd9NUFage/+MAJFY3rJOuXihtAifVUifOhsnx
+ QtY9VCZWIUpgxffI+4Hn+T0vgmYNI+t91W7aKt8tBzweJmQwcPW0ZzL7ec/gZ+G1Q1IN
+ k1f+PRt5nkC6pfAmoxE+AZ6Qr+XBQu6lwjNJQQ61MBZFFmJaZexxt2rAPmOZA/gnp1FZ
+ gUs/EEsWLiGhyxRJY5ubSOHBNRJEmUCKT+LUVaCNQNhTwQglKlOcBGjDwTQBQyQgEJff
+ 0Gz3hD9fjF29yFdAwqtdahxjtnHKNPDJ1uOtBWjmF/WuTRADbtZK2YLBybjApBcdNHxO
+ R4nA==
+X-Gm-Message-State: AOJu0Yzd0JDmwAo6ciPUTIphOBkF2427ospUD4UE2rm2lHtBz4kicT/+
+ 7/FRwW4H/H3NxBwPIyi8iJLVcw85nA0XkOpBygTWXpdPeDwR6gv1S5xe/wOgdduV5q6tTs7itGy
+ PvBj++3HzngPptc4=
+X-Received: by 2002:a05:620a:8cb:b0:76f:1118:9b62 with SMTP id
+ z11-20020a05620a08cb00b0076f11189b62mr2259502qkz.3.1697727014438; 
+ Thu, 19 Oct 2023 07:50:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1vX9FRdeee0fsGcGPF9fjWXc38S3aFyk3W1iXZHvZphS5RW0VQwku2bcTMryD7y5jZMUnwg==
+X-Received: by 2002:a05:620a:8cb:b0:76f:1118:9b62 with SMTP id
+ z11-20020a05620a08cb00b0076f11189b62mr2259485qkz.3.1697727014145; 
+ Thu, 19 Oct 2023 07:50:14 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ bj36-20020a05620a192400b0077434d0f06esm788670qkb.52.2023.10.19.07.50.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 07:50:13 -0700 (PDT)
+Date: Thu, 19 Oct 2023 10:50:12 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] migration: Fix parse_ramblock() on overwritten retvals
+Message-ID: <ZTFCJLnmdf6l/LJp@x1n>
+References: <20231017203855.298260-1-peterx@redhat.com>
+ <CAFEAcA-xOf+TLL9jbjQvdaqOK0ew_xbjnoajTzaxLbkhEz9Vig@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA-xOf+TLL9jbjQvdaqOK0ew_xbjnoajTzaxLbkhEz9Vig@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,50 +97,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+On Thu, Oct 19, 2023 at 01:40:29PM +0100, Peter Maydell wrote:
+> On Tue, 17 Oct 2023 at 21:40, Peter Xu <peterx@redhat.com> wrote:
+> >
+> > It's possible that some errors can be overwritten with success retval later
+> > on, and then ignored.  Always capture all errors and report.
+> >
+> > Reported by Coverity 1522861, but actually I spot one more in the same
+> > function.
+> 
+> The other one is CID 1522862, I think.
 
-If printing a QAPI schema object for debugging we get the classname and
-a hex value for the instance:
+Yes..
 
-  <qapi.schema.QAPISchemaEnumType object at 0x7f0ab4c2dad0>
-  <qapi.schema.QAPISchemaObjectType object at 0x7f0ab4c2dd90>
-  <qapi.schema.QAPISchemaArrayType object at 0x7f0ab4c2df90>
+> 
+> > Fixes: CID 1522861
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> 
+> > ---
+> >  migration/ram.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/migration/ram.c b/migration/ram.c
+> > index c844151ee9..d8bdb53a8f 100644
+> > --- a/migration/ram.c
+> > +++ b/migration/ram.c
+> > @@ -3888,6 +3888,8 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+> >          ret = qemu_ram_resize(block, length, &local_err);
+> >          if (local_err) {
+> >              error_report_err(local_err);
+> > +            assert(ret < 0);
+> 
+> We usually don't bother asserting for this kind of "function
+> reports errors two ways" code.
 
-With this change we instead get the classname and the human friendly
-name of the QAPI type instance:
+Juan, please feel free to drop the assert() if it's in the queue.
 
-  <QAPISchemaEnumType:CpuS390State at 0x7f0ab4c2dad0>
-  <QAPISchemaObjectType:CpuInfoS390 at 0x7f0ab4c2dd90>
-  <QAPISchemaArrayType:CpuInfoFastList at 0x7f0ab4c2df90>
+After this one lands, I'll send a patch to remove qemu_ram_resize retval
+and only rely on Error*.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20231018120500.2028642-1-berrange@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-[Conditional swapped to avoid negation]
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-[Tweaked to mollify pylint]
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- scripts/qapi/schema.py | 5 +++++
- 1 file changed, 5 insertions(+)
+Thanks,
 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 231ebf61ba..d739e558e9 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -73,6 +73,11 @@ def __init__(self, name: str, info, doc, ifcond=None, features=None):
-         self.features = features or []
-         self._checked = False
- 
-+    def __repr__(self):
-+        if self.name is None:
-+            return "<%s at 0x%x>" % (type(self).__name__, id(self))
-+        return "<%s:%s at 0x%x>" % type(self).__name__, self.name, id(self)
-+
-     def c_name(self):
-         return c_name(self.name)
- 
 -- 
-2.41.0
+Peter Xu
 
 
