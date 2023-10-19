@@ -2,89 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC87A7CF5C5
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 510247CF5C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:50:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQZj-0001UY-Qq; Thu, 19 Oct 2023 06:48:23 -0400
+	id 1qtQb2-0004uH-E5; Thu, 19 Oct 2023 06:49:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtQZh-0001Nj-Ca
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:48:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtQZf-000755-EL
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:48:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697712498;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kpdWFUP0vMGhbrH5/Yc8WKNagHY+QCFuagQ4DnKD+Uw=;
- b=iMa5bXhIFeMHdhMcYgRnAqfi8F+k4haugXQdPu+iBp8ylqFmVnYlsz/adciB01iQfwx0Pd
- cktWWhRggiKGKNOKuxrDf6/0EHKsnRnARd3v8U9NX0mz3vbOVsQc+WihcPfCzBjfRBqW+p
- 13PbmtOl12UtF6XSqhiGhS3xTQJ4Mxk=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-WW81fJiaNea1y70YeTNepg-1; Thu, 19 Oct 2023 06:48:17 -0400
-X-MC-Unique: WW81fJiaNea1y70YeTNepg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9bd86510329so565477966b.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:48:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtQaw-0004cU-EP
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:49:39 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtQas-0007HR-1A
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:49:35 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40651a726acso68030115e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:49:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697712572; x=1698317372; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PVB0hf0dgPONyyXai2FsjtWxXx5FUoKYORTKC7VUilw=;
+ b=LZD+VETGlxccX5MDKKIllr0dsod4YhEZQLgvD+zaL8h9a98vZsjI4LMgxI1SoQhoj8
+ EpmmSYnc+HJR9EiSZU1HGKnFJUVhR+KriAuo3YykByhJcFfhz07cQyXTEcNYOUeP/Gko
+ WWxxPRBLJ2KgPpt9lyBjHPwVVK5aBh1MiosmM7vXkVI5xh0tSxuRU2wTiu3WY83PWKvy
+ QTp/7cp1anwdW7ckexnO/4b+K12xKKGx+i8Z2qoU9PKnNPE7ACfXnLYpmgd04mKQ3XxM
+ t1Mn7tcD8r+VdAXVWyoLgderbszSOEWx0+Ms5uD/NkAAKm9u54chkABtWDsiR6nxHVeH
+ gjoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697712495; x=1698317295;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kpdWFUP0vMGhbrH5/Yc8WKNagHY+QCFuagQ4DnKD+Uw=;
- b=OGjw5H1uYGJm+cFZzazzxddzGLCCEk/qafbKyoIrZ8cfSQk9Q9NVN7Kg2eDX3JrGts
- 0LtrDCr1J7OoQxWnrtl8bop6G1jnfi0DHHH5/Esyy0a5b9pHc0emdtjrMKmucN84pGsp
- BHvYgBKW5gPcQpzp6sgJtQJok5vA/YGlXC12jH4zViQBuYibajLLHNOLu92oS+cV5MUh
- LssLJp2oBEIpDkWh1xbIXxKKTvXhH1HPqlxk+zxXd+9fOWKOQAbpuZGDuoUHMleyBz3q
- gZFJRm7Wi10SmhCq/7l1nfyk7oTPPp45rRh0uqGcYRbMR4fj8mdcvOQGpoeZXw/gmV3S
- utSw==
-X-Gm-Message-State: AOJu0Yy1IC0lvzFoXgDKO64EEyB0e7/pqHc1WSdO2526iX6zzfGh1qMg
- PLEiYNWSp+kaVVM41k4OvfViYbxXhwVK72JB4WgjNxItKVC9zkCFH4LnS1JqkOpXoE2kTqAcsUu
- YeVqkxIUlxPKshmzTF4yazdk2zxlH051/f/qwWHij8Yb+gSJmdkEBIQR3HgQW6oSE1ZlZDHe6Rv
- M=
-X-Received: by 2002:a17:907:3603:b0:9bd:d405:4e7e with SMTP id
- bk3-20020a170907360300b009bdd4054e7emr1305877ejc.6.1697712495515; 
- Thu, 19 Oct 2023 03:48:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3mygLDT/hyXoe/m8Pa7L+aDbh1DnfMEcUwMj/L8fDXYURm2LxuIqFPZ2cYcTPgHO3XTcJJw==
-X-Received: by 2002:a17:907:3603:b0:9bd:d405:4e7e with SMTP id
- bk3-20020a170907360300b009bdd4054e7emr1305868ejc.6.1697712495147; 
- Thu, 19 Oct 2023 03:48:15 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ d=1e100.net; s=20230601; t=1697712572; x=1698317372;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PVB0hf0dgPONyyXai2FsjtWxXx5FUoKYORTKC7VUilw=;
+ b=gBP/LeDwWDhSBm5JuP4iV4/djjGwADOApfKH9AnF4k+///O6qenMvDYcnABYjJ32pa
+ wZ+1/ow5P3ufHa61HJzMBnzF1BPWc56WtBVASDXFpQm2kUTcJBp1kzuAm0bRSbu4Yzar
+ 2pIQDUmL2bf2xB9vm/ddZHZxwfWFJgHzsPJ26b2XkcmijseNTTRe2Gypeon1YYGVzAMZ
+ L5ArcP8lITgkG15yqosDm05SuCFiMRAEDsurfe79KqtWe0oczMBSHz8zuKrQoHsmB3R1
+ E8QyNGVM34UqosujyOqs1GePGmFLBrHKM33pikunVyX/4+rIW1vrJOo40A0o9m6te3Oh
+ bvCQ==
+X-Gm-Message-State: AOJu0YzPw4aOahUqWI55F9PJkSrbzj6zMn6T2NbI/1EVFSxo0dwsYxNw
+ aaocH+oHmOSlrcPovy0NzE8EtFzCLOMf7YT6XxsxPA==
+X-Google-Smtp-Source: AGHT+IHA4Se1R7O8ru4f12yewLqT2guRTpSlW1ST8vwqqRrAnS0nyHoVeorMvzJ0SnCwAkKj3yCpig==
+X-Received: by 2002:a5d:4a85:0:b0:32d:ad8b:29fc with SMTP id
+ o5-20020a5d4a85000000b0032dad8b29fcmr1259599wrq.7.1697712572197; 
+ Thu, 19 Oct 2023 03:49:32 -0700 (PDT)
+Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- a13-20020a1709064a4d00b009930042510csm3340599ejv.222.2023.10.19.03.48.14
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 03:48:14 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ q28-20020adfab1c000000b003248a490e3asm4228920wrc.39.2023.10.19.03.49.31
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 19 Oct 2023 03:49:31 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 19/19] target/i386: remove gen_op
-Date: Thu, 19 Oct 2023 12:48:07 +0200
-Message-ID: <20231019104807.390468-5-pbonzini@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <huth@tuxfamily.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] hw/char/mcf_uart: Have mcf_uart_create() return DeviceState
+Date: Thu, 19 Oct 2023 12:49:29 +0200
+Message-ID: <20231019104929.16517-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231019104648.389942-1-pbonzini@redhat.com>
-References: <20231019104648.389942-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,199 +90,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is not used anymore by the old decoder, inline the CMP case into CMPS and SCAS.
+There is no point in having mcf_uart_init() demote the DeviceState
+pointer and return a void one. Directly return the real typedef.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+mcf_uart_init() do both init + realize: rename as mcf_uart_create().
+
+Similarly, mcf_uart_mm_init() do init / realize / mmap: rename as
+mcf_uart_create_mmap().
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/tcg/translate.c | 145 +++---------------------------------
- 1 file changed, 12 insertions(+), 133 deletions(-)
+ include/hw/m68k/mcf.h |  4 ++--
+ hw/char/mcf_uart.c    | 13 +++++++------
+ hw/m68k/mcf5206.c     |  6 +++---
+ hw/m68k/mcf5208.c     |  6 +++---
+ 4 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 6e091fdb7f6..3d5cdf4d29a 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -238,21 +238,8 @@ static void gen_eob(DisasContext *s);
- static void gen_jr(DisasContext *s);
- static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num);
- static void gen_jmp_rel_csize(DisasContext *s, int diff, int tb_num);
--static void gen_op(DisasContext *s1, int op, MemOp ot, int d);
- static void gen_exception_gpf(DisasContext *s);
+diff --git a/include/hw/m68k/mcf.h b/include/hw/m68k/mcf.h
+index 8cbd587bbf..5d9f876ffe 100644
+--- a/include/hw/m68k/mcf.h
++++ b/include/hw/m68k/mcf.h
+@@ -10,8 +10,8 @@ uint64_t mcf_uart_read(void *opaque, hwaddr addr,
+                        unsigned size);
+ void mcf_uart_write(void *opaque, hwaddr addr,
+                     uint64_t val, unsigned size);
+-void *mcf_uart_init(qemu_irq irq, Chardev *chr);
+-void mcf_uart_mm_init(hwaddr base, qemu_irq irq, Chardev *chr);
++DeviceState *mcf_uart_create(qemu_irq irq, Chardev *chr);
++DeviceState *mcf_uart_create_mmap(hwaddr base, qemu_irq irq, Chardev *chr);
  
--/* i386 arith/logic operations */
--enum {
--    OP_ADDL,
--    OP_ORL,
--    OP_ADCL,
--    OP_SBBL,
--    OP_ANDL,
--    OP_SUBL,
--    OP_XORL,
--    OP_CMPL,
--};
+ /* mcf_intc.c */
+ qemu_irq *mcf_intc_init(struct MemoryRegion *sysmem,
+diff --git a/hw/char/mcf_uart.c b/hw/char/mcf_uart.c
+index 6fa4ac502c..f9cbc9bdc4 100644
+--- a/hw/char/mcf_uart.c
++++ b/hw/char/mcf_uart.c
+@@ -342,25 +342,26 @@ static void mcf_uart_register(void)
+ 
+ type_init(mcf_uart_register)
+ 
+-void *mcf_uart_init(qemu_irq irq, Chardev *chrdrv)
++DeviceState *mcf_uart_create(qemu_irq irq, Chardev *chrdrv)
+ {
+-    DeviceState  *dev;
++    DeviceState *dev;
+ 
+     dev = qdev_new(TYPE_MCF_UART);
+     if (chrdrv) {
+         qdev_prop_set_chr(dev, "chardev", chrdrv);
+     }
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
 -
- /* i386 shift ops */
- enum {
-     OP_ROL,
-@@ -853,13 +840,6 @@ static void gen_op_update2_cc(DisasContext *s)
-     tcg_gen_mov_tl(cpu_cc_dst, s->T0);
+     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq);
+ 
+     return dev;
  }
  
--static void gen_op_update3_cc(DisasContext *s, TCGv reg)
--{
--    tcg_gen_mov_tl(cpu_cc_src2, reg);
--    tcg_gen_mov_tl(cpu_cc_src, s->T1);
--    tcg_gen_mov_tl(cpu_cc_dst, s->T0);
--}
--
- static inline void gen_op_testl_T0_T1_cc(DisasContext *s)
+-void mcf_uart_mm_init(hwaddr base, qemu_irq irq, Chardev *chrdrv)
++DeviceState *mcf_uart_create_mmap(hwaddr base, qemu_irq irq, Chardev *chrdrv)
  {
-     tcg_gen_and_tl(cpu_cc_dst, s->T0, s->T1);
-@@ -1288,7 +1268,12 @@ static void gen_scas(DisasContext *s, MemOp ot)
- {
-     gen_string_movl_A0_EDI(s);
-     gen_op_ld_v(s, ot, s->T1, s->A0);
--    gen_op(s, OP_CMPL, ot, R_EAX);
-+    gen_op_mov_v_reg(s, ot, s->T0, R_EAX);
-+    tcg_gen_mov_tl(cpu_cc_src, s->T1);
-+    tcg_gen_mov_tl(s->cc_srcT, s->T0);
-+    tcg_gen_sub_tl(cpu_cc_dst, s->T0, s->T1);
-+    set_cc_op(s, CC_OP_SUBB + ot);
+-    DeviceState  *dev;
++    DeviceState *dev;
+ 
+-    dev = mcf_uart_init(irq, chrdrv);
++    dev = mcf_uart_create(irq, chrdrv);
+     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
 +
-     gen_op_movl_T0_Dshift(s, ot);
-     gen_op_add_reg_T0(s, s->aflag, R_EDI);
++    return dev;
  }
-@@ -1298,7 +1283,12 @@ static void gen_cmps(DisasContext *s, MemOp ot)
-     gen_string_movl_A0_EDI(s);
-     gen_op_ld_v(s, ot, s->T1, s->A0);
-     gen_string_movl_A0_ESI(s);
--    gen_op(s, OP_CMPL, ot, OR_TMP0);
-+    gen_op_ld_v(s, ot, s->T0, s->A0);
-+    tcg_gen_mov_tl(cpu_cc_src, s->T1);
-+    tcg_gen_mov_tl(s->cc_srcT, s->T0);
-+    tcg_gen_sub_tl(cpu_cc_dst, s->T0, s->T1);
-+    set_cc_op(s, CC_OP_SUBB + ot);
-+
-     gen_op_movl_T0_Dshift(s, ot);
-     gen_op_add_reg_T0(s, s->aflag, R_ESI);
-     gen_op_add_reg_T0(s, s->aflag, R_EDI);
-@@ -1506,117 +1496,6 @@ static bool check_iopl(DisasContext *s)
-     return false;
+diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
+index 2ab1b4f059..673861574c 100644
+--- a/hw/m68k/mcf5206.c
++++ b/hw/m68k/mcf5206.c
+@@ -167,7 +167,7 @@ typedef struct {
+     MemoryRegion iomem;
+     qemu_irq *pic;
+     m5206_timer_state *timer[2];
+-    void *uart[2];
++    DeviceState *uart[2];
+     uint8_t scr;
+     uint8_t icr[14];
+     uint16_t imr; /* 1 == interrupt is masked.  */
+@@ -599,8 +599,8 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
+     s->pic = qemu_allocate_irqs(m5206_mbar_set_irq, s, 14);
+     s->timer[0] = m5206_timer_init(s->pic[9]);
+     s->timer[1] = m5206_timer_init(s->pic[10]);
+-    s->uart[0] = mcf_uart_init(s->pic[12], serial_hd(0));
+-    s->uart[1] = mcf_uart_init(s->pic[13], serial_hd(1));
++    s->uart[0] = mcf_uart_create(s->pic[12], serial_hd(0));
++    s->uart[1] = mcf_uart_create(s->pic[13], serial_hd(1));
+     s->cpu = M68K_CPU(qemu_get_cpu(0));
  }
  
--/* if d == OR_TMP0, it means memory operand (address in A0) */
--static void gen_op(DisasContext *s1, int op, MemOp ot, int d)
--{
--    if (d != OR_TMP0) {
--        if (s1->prefix & PREFIX_LOCK) {
--            /* Lock prefix when destination is not memory.  */
--            gen_illegal_opcode(s1);
--            return;
--        }
--        gen_op_mov_v_reg(s1, ot, s1->T0, d);
--    } else if (!(s1->prefix & PREFIX_LOCK)) {
--        gen_op_ld_v(s1, ot, s1->T0, s1->A0);
--    }
--    switch(op) {
--    case OP_ADCL:
--        gen_compute_eflags_c(s1, s1->tmp4);
--        if (s1->prefix & PREFIX_LOCK) {
--            tcg_gen_add_tl(s1->T0, s1->tmp4, s1->T1);
--            tcg_gen_atomic_add_fetch_tl(s1->T0, s1->A0, s1->T0,
--                                        s1->mem_index, ot | MO_LE);
--        } else {
--            tcg_gen_add_tl(s1->T0, s1->T0, s1->T1);
--            tcg_gen_add_tl(s1->T0, s1->T0, s1->tmp4);
--            gen_op_st_rm_T0_A0(s1, ot, d);
--        }
--        gen_op_update3_cc(s1, s1->tmp4);
--        set_cc_op(s1, CC_OP_ADCB + ot);
--        break;
--    case OP_SBBL:
--        gen_compute_eflags_c(s1, s1->tmp4);
--        if (s1->prefix & PREFIX_LOCK) {
--            tcg_gen_add_tl(s1->T0, s1->T1, s1->tmp4);
--            tcg_gen_neg_tl(s1->T0, s1->T0);
--            tcg_gen_atomic_add_fetch_tl(s1->T0, s1->A0, s1->T0,
--                                        s1->mem_index, ot | MO_LE);
--        } else {
--            tcg_gen_sub_tl(s1->T0, s1->T0, s1->T1);
--            tcg_gen_sub_tl(s1->T0, s1->T0, s1->tmp4);
--            gen_op_st_rm_T0_A0(s1, ot, d);
--        }
--        gen_op_update3_cc(s1, s1->tmp4);
--        set_cc_op(s1, CC_OP_SBBB + ot);
--        break;
--    case OP_ADDL:
--        if (s1->prefix & PREFIX_LOCK) {
--            tcg_gen_atomic_add_fetch_tl(s1->T0, s1->A0, s1->T1,
--                                        s1->mem_index, ot | MO_LE);
--        } else {
--            tcg_gen_add_tl(s1->T0, s1->T0, s1->T1);
--            gen_op_st_rm_T0_A0(s1, ot, d);
--        }
--        gen_op_update2_cc(s1);
--        set_cc_op(s1, CC_OP_ADDB + ot);
--        break;
--    case OP_SUBL:
--        if (s1->prefix & PREFIX_LOCK) {
--            tcg_gen_neg_tl(s1->T0, s1->T1);
--            tcg_gen_atomic_fetch_add_tl(s1->cc_srcT, s1->A0, s1->T0,
--                                        s1->mem_index, ot | MO_LE);
--            tcg_gen_sub_tl(s1->T0, s1->cc_srcT, s1->T1);
--        } else {
--            tcg_gen_mov_tl(s1->cc_srcT, s1->T0);
--            tcg_gen_sub_tl(s1->T0, s1->T0, s1->T1);
--            gen_op_st_rm_T0_A0(s1, ot, d);
--        }
--        gen_op_update2_cc(s1);
--        set_cc_op(s1, CC_OP_SUBB + ot);
--        break;
--    default:
--    case OP_ANDL:
--        if (s1->prefix & PREFIX_LOCK) {
--            tcg_gen_atomic_and_fetch_tl(s1->T0, s1->A0, s1->T1,
--                                        s1->mem_index, ot | MO_LE);
--        } else {
--            tcg_gen_and_tl(s1->T0, s1->T0, s1->T1);
--            gen_op_st_rm_T0_A0(s1, ot, d);
--        }
--        gen_op_update1_cc(s1);
--        set_cc_op(s1, CC_OP_LOGICB + ot);
--        break;
--    case OP_ORL:
--        if (s1->prefix & PREFIX_LOCK) {
--            tcg_gen_atomic_or_fetch_tl(s1->T0, s1->A0, s1->T1,
--                                       s1->mem_index, ot | MO_LE);
--        } else {
--            tcg_gen_or_tl(s1->T0, s1->T0, s1->T1);
--            gen_op_st_rm_T0_A0(s1, ot, d);
--        }
--        gen_op_update1_cc(s1);
--        set_cc_op(s1, CC_OP_LOGICB + ot);
--        break;
--    case OP_XORL:
--        if (s1->prefix & PREFIX_LOCK) {
--            tcg_gen_atomic_xor_fetch_tl(s1->T0, s1->A0, s1->T1,
--                                        s1->mem_index, ot | MO_LE);
--        } else {
--            tcg_gen_xor_tl(s1->T0, s1->T0, s1->T1);
--            gen_op_st_rm_T0_A0(s1, ot, d);
--        }
--        gen_op_update1_cc(s1);
--        set_cc_op(s1, CC_OP_LOGICB + ot);
--        break;
--    case OP_CMPL:
--        tcg_gen_mov_tl(cpu_cc_src, s1->T1);
--        tcg_gen_mov_tl(s1->cc_srcT, s1->T0);
--        tcg_gen_sub_tl(cpu_cc_dst, s1->T0, s1->T1);
--        set_cc_op(s1, CC_OP_SUBB + ot);
--        break;
--    }
--}
--
- /* if d == OR_TMP0, it means memory operand (address in A0) */
- static void gen_inc(DisasContext *s1, MemOp ot, int d, int c)
- {
+diff --git a/hw/m68k/mcf5208.c b/hw/m68k/mcf5208.c
+index be1033f84f..d22d8536db 100644
+--- a/hw/m68k/mcf5208.c
++++ b/hw/m68k/mcf5208.c
+@@ -261,9 +261,9 @@ static void mcf5208evb_init(MachineState *machine)
+     /* Internal peripherals.  */
+     pic = mcf_intc_init(address_space_mem, 0xfc048000, cpu);
+ 
+-    mcf_uart_mm_init(0xfc060000, pic[26], serial_hd(0));
+-    mcf_uart_mm_init(0xfc064000, pic[27], serial_hd(1));
+-    mcf_uart_mm_init(0xfc068000, pic[28], serial_hd(2));
++    mcf_uart_create_mmap(0xfc060000, pic[26], serial_hd(0));
++    mcf_uart_create_mmap(0xfc064000, pic[27], serial_hd(1));
++    mcf_uart_create_mmap(0xfc068000, pic[28], serial_hd(2));
+ 
+     mcf5208_sys_init(address_space_mem, pic);
+ 
 -- 
 2.41.0
 
