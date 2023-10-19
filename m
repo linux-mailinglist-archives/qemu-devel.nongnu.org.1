@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA477CFEF3
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C94A7D0060
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 19:21:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVRg-0006sE-Eq; Thu, 19 Oct 2023 12:00:24 -0400
+	id 1qtWhs-0002YI-C3; Thu, 19 Oct 2023 13:21:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtVRc-0006rE-Vu
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:00:21 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qtWhp-0002Vp-5V; Thu, 19 Oct 2023 13:21:09 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtVRa-0002Oy-Cw
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:00:20 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5a9bc2ec556so4636405a12.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:00:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qtWhn-0003ex-GL; Thu, 19 Oct 2023 13:21:08 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9ba1eb73c27so1354739166b.3; 
+ Thu, 19 Oct 2023 10:21:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697731216; x=1698336016; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jpB2UUK3rXwMef8/0D7EGmoaiLKvaTfr8l4NhVfttds=;
- b=NxxX96HJka4sJPT8oIvTycTaUF7DlxPpPMVKnocI6fpxEQqmIgKL6JbjOWFqVTT/vV
- O3PRT86dPlGQ/DnO57NtsvjnXBJSrEPtnrtdjszZvxQ2gWdcMhofKvBS7cxRgbD6HUpw
- LDV5RT22wCsDCqJQjAEfwbuestJMRe9/2Nt5aVlFQizoEJb0SeZdSiF2dY2zFcQbDlH/
- 2D/qhTU+WCiS7qDXI2BbCOz+C+GuzPllFgpDTjZMrmWUJpHvNgviMvJDRKqmPFmsVI4v
- JuGYZbyHFa0s5PJVMpN+4U1+r5Kptcu8hYpFyYEnh6Ga+UYFb3b4GoRtgzrFanF4dTsP
- CVAQ==
+ d=gmail.com; s=20230601; t=1697736064; x=1698340864; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ocrsLyDY2xO0og8i+B4U9kq1qYU67Aps7ZFbb01KyWs=;
+ b=eEejSd3szN9dNOnA1hlTuw0DylwA6O5II6El/6WzKka2JGP7tv5SVJ3z5SxcxVNqAP
+ GukTLNclkOGg181bn9oObvMb7Vl6+fOHThs65EHcm3TIf2fMOsFX2v66Ya6Wm6kjcOgU
+ 8zpF3ulhBHgQqqM85SELidxG40c2YfEcw98xfqCyaY5boYX8bfPC1loWVPfZPmm5lyNG
+ 7Jd2g4ns+iJS+6iNloxESM57GgSYGspFmoG/kAQyXitqFhocmIVf4VANhB1eHK532MZ6
+ Kz5r7fpGtlDNQwx4PlSB0ccBKMrWrj2LHSKoYpRSNT01jtHNhPcPC1KduRTmd0gjIen0
+ ZEfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697731216; x=1698336016;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jpB2UUK3rXwMef8/0D7EGmoaiLKvaTfr8l4NhVfttds=;
- b=HFvKn793yUyElJWvLM3RKaOZHUJDG1BZWfSnn2F1KPdO7vl7WQe96fQeoY4z1ngHwU
- Fv5MV7F+g9tp1kxL0vq8mOWUi0lB8UoqFh8CLfg6iKyHGCgywxiU5jNAJmk6AIs/MoEL
- x71Ej2+v5dLoUYA3cJ6SbxpKJLawAjqSxr/RtqaYFKBEWQZl2T/NR6KdpsBPTwAGSnEH
- 1M6f8rLFejDliidjS2gxbP46w3g2A2tBB7NlAyEhhNgDcMeQK+HHuw03FLFd0elDQETX
- gLzyuHyFylsqYxujX0+FcWBZz+zpD6S96EBgrtLxvf+bFyhmiTbN970lKAu3l8DDhASo
- nH+A==
-X-Gm-Message-State: AOJu0YwEcfqeOTPr0UUwLUgXIzKu+Ymgwn2M6F/zBz3AnlqSMYgMvupH
- dDoFx6u45x/3eKQK1hFy7Tnv35QAXCukfkocDZU=
-X-Google-Smtp-Source: AGHT+IF8NWIgy4WkjnG8GLDtYfLMzwTjksxaCzFVpua9aCC2WuMrtt3/0LlzLk4alHYNFv8JqJC5Ng==
-X-Received: by 2002:a17:90a:fd17:b0:27d:24ec:4fcf with SMTP id
- cv23-20020a17090afd1700b0027d24ec4fcfmr2283328pjb.22.1697731216241; 
- Thu, 19 Oct 2023 09:00:16 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- o14-20020a17090ab88e00b002636dfcc6f5sm1729799pjr.3.2023.10.19.09.00.15
+ d=1e100.net; s=20230601; t=1697736064; x=1698340864;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ocrsLyDY2xO0og8i+B4U9kq1qYU67Aps7ZFbb01KyWs=;
+ b=QH1ERPUiQVyaaZxHNQXxr+JpO5/62vH1P0OHZ+cXX6Dvn9Ps5AnwTlvlzpJU5lGYG0
+ cGHE6osqD8F9I30jU9U/3IvxcxxQ2RrbEdR4/ev7a/RS3X7wh95CeaLJLkaB77Wq+whE
+ Ni4LFUwR5HD5BGHOEZH6EwyPjl3yi5Uxy71RHLT9fBQHRx8flj8G+EjB/xioyXH8CYlV
+ Sj1f5sFR6WkLurP9YoW3KEUJriPwpbwEkTdiz3Mt4N2ngrDVowd8ekFzhoomW3pv7HGZ
+ /tO9pToISlbokVpy0jw77wfXWR6mOh/3FXRpNJa3WIJse6XcfVqD1o83h3daCHHhZ2FO
+ c93Q==
+X-Gm-Message-State: AOJu0YximszxzjmcTXZuOfn740b0E4M7LCv+16e9CID9D7Ut6MW0iYEg
+ oikVuALQSrkYo9YQzgtylwY=
+X-Google-Smtp-Source: AGHT+IGEwYocvS4Oc8/QuXzmYE3iKGFxFUycEO6PGFsqYVKEjsaZqGJWKa+BdkEF9NFvPO0tfr2ZwQ==
+X-Received: by 2002:a17:907:a0c9:b0:9be:e6d4:5751 with SMTP id
+ hw9-20020a170907a0c900b009bee6d45751mr2363308ejc.55.1697736064431; 
+ Thu, 19 Oct 2023 10:21:04 -0700 (PDT)
+Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ mc8-20020a170906eb4800b009737b8d47b6sm3744024ejb.203.2023.10.19.10.21.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 09:00:15 -0700 (PDT)
-Message-ID: <7814eedc-930b-430f-ad36-09f95809ab37@linaro.org>
-Date: Thu, 19 Oct 2023 09:00:14 -0700
+ Thu, 19 Oct 2023 10:21:04 -0700 (PDT)
+Date: Thu, 19 Oct 2023 10:23:14 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: qemu-ppc@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH v2] hw/audio/pcspk: Inline pcspk_init()
+In-Reply-To: <20231019073307.99608-1-philmd@linaro.org>
+References: <20231019073307.99608-1-philmd@linaro.org>
+Message-ID: <C044C8A9-952A-4F9A-8B9F-DE689A5FEF46@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/19] tcg: add negsetcondi
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20231019104648.389942-1-pbonzini@redhat.com>
- <20231019104648.389942-15-pbonzini@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231019104648.389942-15-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,21 +97,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/19/23 03:46, Paolo Bonzini wrote:
-> This can be useful to write a shift bit extraction that does not
-> depend on TARGET_LONG_BITS.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   include/tcg/tcg-op-common.h |  4 ++++
->   include/tcg/tcg-op.h        |  2 ++
->   tcg/tcg-op.c                | 12 ++++++++++++
->   3 files changed, 18 insertions(+)
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-I'll cherry-pick this to tcg-next.
 
 
-r~
+Am 19=2E Oktober 2023 07:33:07 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
+philmd@linaro=2Eorg>:
+>pcspk_init() is a legacy init function, inline and remove it=2E
+>
+>Since the device is realized using &error_fatal, use the same
+>error for setting the "pit" link=2E
+>
+>Reviewed-by: Mark Cave-Ayland <mark=2Ecave-ayland@ilande=2Eco=2Euk>
+>Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>---
+> include/hw/audio/pcspk=2Eh | 10 ----------
+> hw/i386/pc=2Ec             |  4 +++-
+> hw/isa/i82378=2Ec          |  5 ++++-
+> hw/mips/jazz=2Ec           |  5 ++++-
+> 4 files changed, 11 insertions(+), 13 deletions(-)
+>
+>diff --git a/include/hw/audio/pcspk=2Eh b/include/hw/audio/pcspk=2Eh
+>index 9506179587=2E=2E6be75a6b86 100644
+>--- a/include/hw/audio/pcspk=2Eh
+>+++ b/include/hw/audio/pcspk=2Eh
+>@@ -25,16 +25,6 @@
+> #ifndef HW_PCSPK_H
+> #define HW_PCSPK_H
+>=20
+>-#include "hw/isa/isa=2Eh"
+>-#include "hw/qdev-properties=2Eh"
+>-#include "qapi/error=2Eh"
+>-
+> #define TYPE_PC_SPEAKER "isa-pcspk"
+>=20
+>-static inline void pcspk_init(ISADevice *isadev, ISABus *bus, ISADevice =
+*pit)
+>-{
+>-    object_property_set_link(OBJECT(isadev), "pit", OBJECT(pit), NULL);
+>-    isa_realize_and_unref(isadev, bus, &error_fatal);
+>-}
+>-
+> #endif /* HW_PCSPK_H */
+>diff --git a/hw/i386/pc=2Ec b/hw/i386/pc=2Ec
+>index bb3854d1d0=2E=2Ef7ee638bec 100644
+>--- a/hw/i386/pc=2Ec
+>+++ b/hw/i386/pc=2Ec
+>@@ -1283,7 +1283,9 @@ void pc_basic_device_init(struct PCMachineState *pc=
+ms,
+>             /* connect PIT to output control line of the HPET */
+>             qdev_connect_gpio_out(hpet, 0, qdev_get_gpio_in(DEVICE(pit),=
+ 0));
+>         }
+>-        pcspk_init(pcms->pcspk, isa_bus, pit);
+>+        object_property_set_link(OBJECT(pcms->pcspk), "pit",
+>+                                 OBJECT(pit), &error_fatal);
+>+        isa_realize_and_unref(pcms->pcspk, isa_bus, &error_fatal);
+>     }
+>=20
+>     /* Super I/O */
+>diff --git a/hw/isa/i82378=2Ec b/hw/isa/i82378=2Ec
+>index 63e0857208=2E=2E79ffbb52a0 100644
+>--- a/hw/isa/i82378=2Ec
+>+++ b/hw/isa/i82378=2Ec
+>@@ -67,6 +67,7 @@ static void i82378_realize(PCIDevice *pci, Error **errp=
+)
+>     uint8_t *pci_conf;
+>     ISABus *isabus;
+>     ISADevice *pit;
+>+    ISADevice *pcspk;
+>=20
+>     pci_conf =3D pci->config;
+>     pci_set_word(pci_conf + PCI_COMMAND,
+>@@ -102,7 +103,9 @@ static void i82378_realize(PCIDevice *pci, Error **er=
+rp)
+>     pit =3D i8254_pit_init(isabus, 0x40, 0, NULL);
+>=20
+>     /* speaker */
+>-    pcspk_init(isa_new(TYPE_PC_SPEAKER), isabus, pit);
+>+    pcspk =3D isa_new(TYPE_PC_SPEAKER);
+>+    object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), &error_f=
+atal);
+>+    isa_realize_and_unref(pcspk, isabus, &error_fatal);
+
+Why not pass errp here? I think that was Mark's comment in v1=2E
+
+>=20
+>     /* 2 82C37 (dma) */
+>     isa_create_simple(isabus, "i82374");
+>diff --git a/hw/mips/jazz=2Ec b/hw/mips/jazz=2Ec
+>index c32d2b0b0a=2E=2Ecdc37126c2 100644
+>--- a/hw/mips/jazz=2Ec
+>+++ b/hw/mips/jazz=2Ec
+>@@ -177,6 +177,7 @@ static void mips_jazz_init(MachineState *machine,
+>     SysBusDevice *sysbus;
+>     ISABus *isa_bus;
+>     ISADevice *pit;
+>+    ISADevice *pcspk;
+>     DriveInfo *fds[MAX_FD];
+>     MemoryRegion *bios =3D g_new(MemoryRegion, 1);
+>     MemoryRegion *bios2 =3D g_new(MemoryRegion, 1);
+>@@ -279,7 +280,9 @@ static void mips_jazz_init(MachineState *machine,
+>     isa_bus_register_input_irqs(isa_bus, i8259);
+>     i8257_dma_init(isa_bus, 0);
+>     pit =3D i8254_pit_init(isa_bus, 0x40, 0, NULL);
+>-    pcspk_init(isa_new(TYPE_PC_SPEAKER), isa_bus, pit);
+>+    pcspk =3D isa_new(TYPE_PC_SPEAKER);
+>+    object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), &error_f=
+atal);
+>+    isa_realize_and_unref(pcspk, isa_bus, &error_fatal);
+>=20
+>     /* Video card */
+>     switch (jazz_model) {
 
