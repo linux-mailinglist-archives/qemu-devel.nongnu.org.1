@@ -2,63 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA3D7CFA8D
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6897CFA6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:10:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtSjA-0006xi-FP; Thu, 19 Oct 2023 09:06:16 -0400
+	id 1qtSmm-0004fL-5M; Thu, 19 Oct 2023 09:10:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qtSiD-00067h-NH; Thu, 19 Oct 2023 09:05:18 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qtSiB-0005hq-EP; Thu, 19 Oct 2023 09:05:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=VRRbRVpnG45VT30RoNT9iVwXDIgnElwwGsandZ69zOU=; b=RK0Bu0aRC3QPXbdGiXPlbMQGk9
- ysHBpNi5DxZ+WapqUoBRJZT/x1Qh58uTOSyQgdIseTf9rcTzH5VKWtMkRrnzyzcjXFKL2+tl7rexf
- v/WV4FGv6w7t3DIJAhQwKj9vkqmr9hif+9MyCABymPFffFv7LVshYoeA77/YOJZP+/tRkcz2V/d7E
- 2fOCoyFl//kwJYawUxBzS9xg+EhZz/uzgt0Yi2D84FeJTVPQLdvpDglckqSJ0EUWr7PbuuOWTrfbE
- v3/dWX230XsqO96oree5cmPaeDN0/7pMVT8noQLEKs7EuYA06+ND/ha6FGXe2motzsgyyxYw17Jty
- spnMNFmA/dyeAAeUDYGsKtVIVYp2lmnoT8kxn0qxQpZN53EOR93R7fUXQKgmpi58KQfSpxnN7lTmM
- 1qTKCucP9QpISZrgEJuE5AT5vtc6A/6n9t3iXb/SXr15ECiStCVK4CZrkgZ09czB0BJiZkkO9ldF8
- v6Cr6ueelgjz+L6HKfGNLyqGG4GLIsdgy5FRGTyhG7+Q7XKJGO9tOvjIOHfW+iD8rLWp//+ix9is/
- awBmS6GNUC2nOqB3nquKiGY0UlPqZ49YUXKYwbEhmnC50aYgnU0pVJFMlYyYHbCDbxnDQMi3Lqcbh
- 1NT8FrkInFQGUwNyu+UKVb8VtE0BgCY+q0CRjXlTE=;
-Received: from host86-130-37-248.range86-130.btcentralplus.com
- ([86.130.37.248] helo=localhost.localdomain)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qtSi1-0006iW-1k; Thu, 19 Oct 2023 14:05:09 +0100
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: jsnow@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org,
- balaton@eik.bme.hu, philmd@linaro.org, shentey@gmail.com
-Date: Thu, 19 Oct 2023 14:04:52 +0100
-Message-Id: <20231019130452.508426-3-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
-References: <20231019130452.508426-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtSmR-0004MA-1n
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:09:47 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtSmO-0007Bg-S2
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:09:38 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-32d9552d765so6171780f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:09:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697720968; x=1698325768; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=y6l2KIf5+R7TUFSxlxouVzOchcCkcjWpO60Z6OF//2w=;
+ b=CWBT3U59eAnGzhsmh+wpvr+Yb0olkpT7B5vR0dTI9d6bKWaVJxzDZhaGmjXCSWFgE7
+ v66wN0GmZvSLdLa1ukRyE+FLx+kqzY6KYyhnpPtKeZA8xMOkz+Xf0cCKhWt3OFAVoy5F
+ cdSVDPcmzpB3DPnh4o5b/3N2P25Xqi+Dcsi+iuC5HbNcLAZiswZ/58ZzqDzPO16FnuKD
+ 17JNxxZXs1QMGX5NbN1q1hoYjXiJm1Zgd21pWNJ1N1P5mD1wLqBGPrlcvXlSFIU0TcFe
+ 0srSdLiVWP3kyWoTp5F8iTvHCbLwPg91GuHf+zKN/4MXyjaO85NtBMCQfu+0GkbaiKKG
+ 5vPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697720968; x=1698325768;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=y6l2KIf5+R7TUFSxlxouVzOchcCkcjWpO60Z6OF//2w=;
+ b=JYHDc5X9h8fhoY/j8hVysvNR9BuTvnJ0gZigRCkkJTjgdtjEMIsuHqSoXgZvVluTYW
+ OxMswtuFBZfTukw4yoivykaoB68pTJ3PEMwu6SWxlcZ80bx1wgE/AZVjA9z1GL5EKskm
+ SqPNpHpRZMIyzNtGHdDcMHYOfEejzMjdIpQN/Gli5a6tlZX5nXxWJSa7XVwzOqqoQ3Q+
+ zaWcPrFGPeUHSzgK3NOutodZuOO80/kTn3rdlY5glfxyS0MeHAeI09helY2U260/fJKX
+ NtwAcyqhcPqlujIEzOB50BcktABU2fv3M2JyMYHahJarWu5uW6wF/iLYVwYZjBWaa6o7
+ YpiQ==
+X-Gm-Message-State: AOJu0YzsXcqf+GrfjKeDAC0fwPyQ1xXD1oZbmZf190wKoOE594yXErmu
+ 5WeKExCP5DkSZHgnw2XjRiLxKCl7NU0L812/6oOEvA==
+X-Google-Smtp-Source: AGHT+IHJSW00kAUMQ0kRsmnPOlDLNWSw/YdKlkzZN7pZcZsWVJFo4BYxaST+qwyFB4D3zgTzQlER0g==
+X-Received: by 2002:a5d:6583:0:b0:32d:7efc:7e1f with SMTP id
+ q3-20020a5d6583000000b0032d7efc7e1fmr1372866wru.71.1697720967866; 
+ Thu, 19 Oct 2023 06:09:27 -0700 (PDT)
+Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
+ by smtp.gmail.com with ESMTPSA id
+ v14-20020a5d4a4e000000b0032196c508e3sm4397656wrs.53.2023.10.19.06.09.26
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 19 Oct 2023 06:09:27 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/9] hw/arm/pxa2xx: SysBus/QDev fixes
+Date: Thu, 19 Oct 2023 15:09:15 +0200
+Message-ID: <20231019130925.18744-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.130.37.248
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 2/2] hw/ide/via: implement legacy/native mode switching
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,86 +89,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the VIA IDE controller to switch between both legacy and native modes by
-calling pci_ide_update_mode() to reconfigure the device whenever PCI_CLASS_PROG
-is updated.
+Hi,
 
-This patch also moves the setting of PCI_CLASS_PROG from via_ide_realize() to
-via_ide_reset() and clears PCI_INTERRUPT_PIN to ensure that if a PCI device
-reset occurs then the device configuration is always consistent.
+Extracted from a bigger series which enforce QDev state machine
+(qdev instance must be realized before external API is used on
+it).
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/ide/via.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+While here, pxa2xx i2c/intc devices received some qdev fondness.
 
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index fff23803a6..e6278dd419 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -28,6 +28,7 @@
- #include "hw/pci/pci.h"
- #include "migration/vmstate.h"
- #include "qemu/module.h"
-+#include "qemu/range.h"
- #include "sysemu/dma.h"
- #include "hw/isa/vt82c686.h"
- #include "hw/ide/pci.h"
-@@ -128,6 +129,9 @@ static void via_ide_reset(DeviceState *dev)
-         ide_bus_reset(&d->bus[i]);
-     }
- 
-+    pci_config_set_prog_interface(pci_conf, 0x8a); /* legacy mode */
-+    pci_ide_update_mode(d);
-+
-     pci_set_word(pci_conf + PCI_COMMAND, PCI_COMMAND_IO | PCI_COMMAND_WAIT);
-     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
-                  PCI_STATUS_DEVSEL_MEDIUM);
-@@ -137,7 +141,7 @@ static void via_ide_reset(DeviceState *dev)
-     pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
-     pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
-     pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 20-23h */
--    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
-+    pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000000e);
- 
-     /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
-     pci_set_long(pci_conf + 0x40, 0x0a090600);
-@@ -159,6 +163,18 @@ static void via_ide_reset(DeviceState *dev)
-     pci_set_long(pci_conf + 0xc0, 0x00020001);
- }
- 
-+static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
-+                              uint32_t val, int len)
-+{
-+    PCIIDEState *d = PCI_IDE(pd);
-+
-+    pci_default_write_config(pd, addr, val, len);
-+
-+    if (range_covers_byte(addr, len, PCI_CLASS_PROG)) {
-+        pci_ide_update_mode(d);
-+    }
-+}
-+
- static void via_ide_realize(PCIDevice *dev, Error **errp)
- {
-     PCIIDEState *d = PCI_IDE(dev);
-@@ -166,7 +182,6 @@ static void via_ide_realize(PCIDevice *dev, Error **errp)
-     uint8_t *pci_conf = dev->config;
-     int i;
- 
--    pci_config_set_prog_interface(pci_conf, 0x8a); /* legacy mode */
-     pci_set_long(pci_conf + PCI_CAPABILITY_LIST, 0x000000c0);
-     dev->wmask[PCI_INTERRUPT_LINE] = 0;
-     dev->wmask[PCI_CLASS_PROG] = 5;
-@@ -221,6 +236,7 @@ static void via_ide_class_init(ObjectClass *klass, void *data)
-     /* Reason: only works as function of VIA southbridge */
-     dc->user_creatable = false;
- 
-+    k->config_write = via_ide_cfg_write;
-     k->realize = via_ide_realize;
-     k->exit = via_ide_exitfn;
-     k->vendor_id = PCI_VENDOR_ID_VIA;
+Since v2:
+- Fixed i2c_init_bus() call in pxa2xx_i2c_init() (new patch)
+
+Philippe Mathieu-Daudé (9):
+  hw/sd/pxa2xx: Realize sysbus device before accessing it
+  hw/sd/pxa2xx: Do not open-code sysbus_create_simple()
+  hw/pcmcia/pxa2xx: Realize sysbus device before accessing it
+  hw/pcmcia/pxa2xx: Do not open-code sysbus_create_simple()
+  hw/pcmcia/pxa2xx: Inline pxa2xx_pcmcia_init()
+  hw/intc/pxa2xx: Convert to Resettable interface
+  hw/intc/pxa2xx: Pass CPU reference using QOM link property
+  hw/intc/pxa2xx: Factor pxa2xx_pic_realize() out of pxa2xx_pic_init()
+  hw/arm/pxa2xx: Realize PXA2XX_I2C device before accessing it
+
+ include/hw/arm/pxa.h |  2 --
+ hw/arm/pxa2xx.c      | 17 +++++++++++------
+ hw/arm/pxa2xx_pic.c  | 38 +++++++++++++++++++++++++++++---------
+ hw/pcmcia/pxa2xx.c   | 15 ---------------
+ hw/sd/pxa2xx_mmci.c  |  7 +------
+ 5 files changed, 41 insertions(+), 38 deletions(-)
+
 -- 
-2.39.2
+2.41.0
 
 
