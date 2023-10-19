@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAFF7CF816
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC547CF84B
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:07:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtRkr-0005M7-4d; Thu, 19 Oct 2023 08:03:57 -0400
+	id 1qtRnF-0001La-83; Thu, 19 Oct 2023 08:06:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtRkm-0004ny-2V
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:03:52 -0400
+ id 1qtRnC-0001Iz-GN
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:06:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtRkj-0002ko-Kl
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:03:51 -0400
+ id 1qtRnB-0003Kj-4V
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:06:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697717028;
+ s=mimecast20190719; t=1697717180;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=osN42eSL+20VeNBLNbvZsxcyjJkeitcb/m5JZkFCzWo=;
- b=dGh9L9wrcXxmUzyqRPtQD4W2HOD7S20FyTgMq9ZbSXo9feTM2TwEmI2Pej++/kW/TTWQE4
- M44rjm46wKzhymWkurGkd6m3CJzgn3zBDKvA+pyEgHeLAuX+mJyRIlE7cPG/6iEUVFvw01
- R0N5E0GpReKpzqs7qbWrUMAR5vD208g=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vYCi4yps77wnPous6tl1/uvUcq/JxvKkhddXUaHZbS8=;
+ b=KTXUTaHMJx7xAqlJTKdnnE43k5cbxQK8Hn1u3lJdbjQRMR07+sxL2GcJ4hJ3+lJn3NY77/
+ siuzbjVdd0Gyqkxa/7VxbDc/3wwOrKav5AMM2QoE5Pvp6cToV17lP6POCqmU0CH0XsLS1D
+ 0X/Dyljx4Cs0FWuxjQ+DlG7ZbsUPJSc=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-mG4u_R1aNv-Spw9RmVE3Dg-1; Thu, 19 Oct 2023 08:03:42 -0400
-X-MC-Unique: mG4u_R1aNv-Spw9RmVE3Dg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4053a5c6a59so50241305e9.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 05:03:42 -0700 (PDT)
+ us-mta-342-X3X5m0FCOIiIA1_pPV3A2A-1; Thu, 19 Oct 2023 08:06:19 -0400
+X-MC-Unique: X3X5m0FCOIiIA1_pPV3A2A-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-507d0e4eedaso677575e87.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 05:06:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697717021; x=1698321821;
+ d=1e100.net; s=20230601; t=1697717177; x=1698321977;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=osN42eSL+20VeNBLNbvZsxcyjJkeitcb/m5JZkFCzWo=;
- b=EC7v+GP/3rcdNQJsr494f0mJ4pSLlG62CrK+x59/++T0zmFGAgqhzmCA+65eRqvS5x
- RTdFoD579m3N9vxsMp5cd/kfSvG8CoIDBz/bPKy+rehsoK0hZqQ6o+G/zuPLKPybvhzp
- 1AKwgyhDyNR/Esh+mgMCiKdRavdxyTd6XHFlDCs8rHzhyuOcpynW9ypOCcU5q0j6G4kJ
- azN4WTWgyMnwD1BessOCx2oNdqYS41z3QaEP3rZOeOONK8bCNShnNjdqrVhkM3weDcVv
- 9t4ZBYkA82pn2r1uqIkqIVUm8FzwlBZrLkthdDW9yp7gFWvU5vOW6vhxgSdctnVeMItH
- VvzA==
-X-Gm-Message-State: AOJu0YzdamJ30OFXZf/OklNEHLaCnmLBwWs2g9rvDkj6Kz6B4RMj2nsS
- aixOTVPF9SJlMj9e9XMd3hfyn15QJyU0Msxom8tnrr2pumD0BG0cwPc1525by4f1mRIdooewS5F
- zhHJl0FUAF3Q4Yzc=
-X-Received: by 2002:a05:600c:4747:b0:405:3ae6:2413 with SMTP id
- w7-20020a05600c474700b004053ae62413mr1665987wmo.25.1697717021089; 
- Thu, 19 Oct 2023 05:03:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgS65jwj9WZJOfrgvnjxj0YkPRTF+Mim9TENRwpcibqLxc03J0ApUhyZDAya+CF19YgzIVzg==
-X-Received: by 2002:a05:600c:4747:b0:405:3ae6:2413 with SMTP id
- w7-20020a05600c474700b004053ae62413mr1665927wmo.25.1697717019816; 
- Thu, 19 Oct 2023 05:03:39 -0700 (PDT)
+ bh=vYCi4yps77wnPous6tl1/uvUcq/JxvKkhddXUaHZbS8=;
+ b=BJSgdjv7h/vpExrkRDibatoIrFOJ1tK+ue3I+oBhYd/SZqYU5h8po+9VBvOn7NsUlX
+ FUA93umIXWiHzlFrD2Q6igaSCH4w1SrJj+TPdHb4GNoTGX4nUpk3QWRwNK2iKpUOdsqG
+ UY/DSmZF8iUelfP1YeO5j5XWbtIJ1IrhoMvx3LWQfxnIlV66S6NRjmEfDh26M3CZPwMD
+ zLsUak19H11mnBXbsaYBCpvBemv1jnV6BJ2ZQwuK0LlccZobM412nmZ5EgOUomg4BDld
+ R2EGULbv+o14wI0fTdDVerHPdgxBrAon3WLICLKlG2zrow7HmG4NhVKQBaTq9+VbQ9k4
+ SNnQ==
+X-Gm-Message-State: AOJu0YzqOXuSHbCXN71B4u5EyZMvMc1FdTn9ANbkL+3QMUuilXuiNU3o
+ 1biW/8hqgStDwMnBG8KwKYhhj+IrECYv7mrBwGq8ZtQaB6PWT+vmSXQjqbNcSadYNktg2UIsntU
+ lmn8ALDlpaNYYjkI=
+X-Received: by 2002:a05:6512:5d5:b0:507:9787:6773 with SMTP id
+ o21-20020a05651205d500b0050797876773mr1306980lfo.36.1697717177779; 
+ Thu, 19 Oct 2023 05:06:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFI62+s6sX8HKvQXLha48RVA6hBSAQ3RPfiFRshhX4WrHfYaKGFsaj9su9wQNjxcWf1ZFuV4w==
+X-Received: by 2002:a05:6512:5d5:b0:507:9787:6773 with SMTP id
+ o21-20020a05651205d500b0050797876773mr1306967lfo.36.1697717177463; 
+ Thu, 19 Oct 2023 05:06:17 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- i18-20020a05600c481200b00407b93d8085sm4199326wmo.27.2023.10.19.05.03.39
+ d14-20020a056000114e00b003232380ffd5sm4294785wrx.106.2023.10.19.05.06.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 05:03:39 -0700 (PDT)
+ Thu, 19 Oct 2023 05:06:16 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org,  Eric Blake <eblake@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Leonardo Bras
- <leobras@redhat.com>,  Vladimir Sementsov-Ogievskiy
- <vsementsov@yandex-team.ru>,  Markus Armbruster <armbru@redhat.com>,
- Peter Xu <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Fam
- Zheng <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>,  Li
- Zhijian <lizhijian@fujitsu.com>,  John Snow <jsnow@redhat.com>,
- qemu-block@nongnu.org,  Cleber Rosa <crosa@redhat.com>,  Laurent Vivier
- <lvivier@redhat.com>
-Subject: Re: [PULL 13/38] migration: Non multifd migration don't care about
- multifd flushes
-In-Reply-To: <5322a867-8675-4257-8dc1-5b0d3054d44f@tls.msk.ru> (Michael
- Tokarev's message of "Thu, 19 Oct 2023 14:47:53 +0300")
-References: <20231017083003.15951-1-quintela@redhat.com>
- <20231017083003.15951-14-quintela@redhat.com>
- <5322a867-8675-4257-8dc1-5b0d3054d44f@tls.msk.ru>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Daniel
+ P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alex =?utf-8?Q?Benn?=
+ =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 11/12] tests/qtest/migration: Allow user to specify a
+ machine type
+In-Reply-To: <20231018192741.25885-12-farosas@suse.de> (Fabiano Rosas's
+ message of "Wed, 18 Oct 2023 16:27:40 -0300")
+References: <20231018192741.25885-1-farosas@suse.de>
+ <20231018192741.25885-12-farosas@suse.de>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 19 Oct 2023 14:03:38 +0200
-Message-ID: <87mswe4y5h.fsf@secure.mitica>
+Date: Thu, 19 Oct 2023 14:06:16 +0200
+Message-ID: <87il724y13.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
@@ -93,7 +90,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,19 +107,19 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Michael Tokarev <mjt@tls.msk.ru> wrote:
-> 17.10.2023 11:29, Juan Quintela:
->> RDMA was having trouble because
->> migrate_multifd_flush_after_each_section() can only be true or false,
->> but we don't want to send any flush when we are not in multifd
->> migration.
->> CC: Fabiano Rosas <farosas@suse.de
->> Fixes: 294e5a4034e81 ("multifd: Only flush once each full round of memory")
+Fabiano Rosas <farosas@suse.de> wrote:
+> Accept the QTEST_QEMU_MACHINE_TYPE environment variable to take a
+> machine type to use in the tests.
 >
-> Is it worth to pick it up for stable-8.1?
+> The full machine type is recognized (e.g. pc-q35-8.2). Aliases
+> (e.g. pc) are also allowed and resolve to the latest machine version
+> for that alias, or, if using two QEMU binaries, to the latest common
+> machine version between the two.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Yeap, please.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-Later, Juan.
+Thanks.
 
 
