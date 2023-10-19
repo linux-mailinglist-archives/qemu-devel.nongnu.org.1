@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19EF7CFF21
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A8B7CFF49
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:18:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVav-0001B3-1B; Thu, 19 Oct 2023 12:09:57 -0400
+	id 1qtViI-0004s4-Lq; Thu, 19 Oct 2023 12:17:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qtVar-00019U-KM
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:09:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qtVap-0005Lc-Pj
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:09:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697731791;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cOl87/Sn2+mciPhEfa7y9UxN8cmVP6hNGOYdzHeBpD0=;
- b=eMiz+LCkztdZPhejwnU+9n++Mw+zI99rVsV5VaYQVWlS1Z1baAeTFAfqQ4gdlOUgR7k6PY
- 9pGLhYqT3zd+2VDNjoHSSmjjzUkAAL9Kce9PHlxazxAVIXiT2AohV8fcTXwdrTDf7A1lPD
- MfV2HdYftTjK2wrgIIWdlSbLibyOR0U=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-296-mZ3EmrY7Pc6H40BWPSMv-Q-1; Thu, 19 Oct 2023 12:09:47 -0400
-X-MC-Unique: mZ3EmrY7Pc6H40BWPSMv-Q-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3368D3816B42;
- Thu, 19 Oct 2023 16:09:47 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.60])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 51E6F2026D66;
- Thu, 19 Oct 2023 16:09:45 +0000 (UTC)
-Date: Thu, 19 Oct 2023 17:09:43 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Ninad Palsule <ninad@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
- andrew@aj.id.au, joel@jms.id.au, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, thuth@redhat.com, philmd@linaro.org,
- lvivier@redhat.com, qemu-arm@nongnu.org
-Subject: Re: [PATCH v5 01/10] hw/fsi: Introduce IBM's Local bus
-Message-ID: <ZTFUx/YiaCKHxwf7@redhat.com>
-References: <20231011151339.2782132-1-ninad@linux.ibm.com>
- <20231011151339.2782132-2-ninad@linux.ibm.com>
- <ZTDlf2jfj5tYGuSM@redhat.com>
- <1159f076-385b-491c-974e-fe72f850f341@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtViG-0004re-SV
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:17:32 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtViF-0002tk-A9
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:17:32 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40790b0a224so26495805e9.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697732249; x=1698337049; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gYk4QCu3g6fu7ptIR+Y+ak74EdA9tlsGhp3ow44agnU=;
+ b=WQsZs6py1PzXcZAiNyaVncGmvoB0uITS/1289EUKv6N85fJGkA2NYyRIOtrHxKhtOM
+ lXJ32gRzbncDJUpZLJmFL0aoJJNfQQMBFFavRA8FBJVqBS3+PKKSy6OKYVWlaoQpDmJw
+ Cr57gCWAmWIcLvjXEgotSBVYmc6dWKJZEWLggLdDjCR8UHaUbjQxqkgClcJ0JL1pY2cL
+ r6zxLkEDMBbLnntkzwBar1izMAivM8K/KgDSu3JiZ2DXEXNDMU1pNnhhIOc8oJOaOUN5
+ X6C+mLxUda3DHjBbDVj53FNQEjwDmpd7lNr6JfUXPWTSRyJgvd707CFjqn/52YVoPW0I
+ TzCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697732249; x=1698337049;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gYk4QCu3g6fu7ptIR+Y+ak74EdA9tlsGhp3ow44agnU=;
+ b=HCb+n8JJozSaOUYbzHybuyX4M8WH5V0g57ryiWFBkJy5CTgT4S+A44zjsko2HdUuvf
+ 7ruZ6UCyqj2eXJ8J4eZ00xXnV+p1r7X9QvPcLyfyQeC30OdklC+fp2XiGaJ+Ll1Ll/hf
+ I0OANuMwhGWdvWsSoSKPkImHCkTHQNdxSFXVbs7gnsOf5vdYlaSSM/dTBVkrPsokE6t2
+ CbhfbYUzTkv5pB1fI6IOvCumVM4wsyhzSWJO/gx7r1q6eM7J9GRe8U+W2E9Z1CaSybj5
+ YLjRpA5IBzf+0fo2J2tDGnpFFr3gxMhTSbw09pagkRbiyMkDWOnlkemLRXa53k85mryT
+ o4tw==
+X-Gm-Message-State: AOJu0YxJEEzZleE7DxLt6nhI34YpRhL95BztI47foPt+PGhDZl2QFZDs
+ X1tlfjPYXEZGSjH4wJONR23yIg==
+X-Google-Smtp-Source: AGHT+IGnjYlqFz1TplWyw/flL8Qc+t3rHcvkgJR8eyFD9/avrdO9G+advUmKrJPpxax4UmfKxX82Tw==
+X-Received: by 2002:a05:600c:138f:b0:3fe:dcd0:2e32 with SMTP id
+ u15-20020a05600c138f00b003fedcd02e32mr2316419wmf.19.1697732249233; 
+ Thu, 19 Oct 2023 09:17:29 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-216-177.abo.bbox.fr.
+ [176.131.216.177]) by smtp.gmail.com with ESMTPSA id
+ l32-20020a05600c1d2000b00402f713c56esm4892949wms.2.2023.10.19.09.17.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 09:17:28 -0700 (PDT)
+Message-ID: <fd7ab62d-2141-7199-40f6-fb8d3e7c66cf@linaro.org>
+Date: Thu, 19 Oct 2023 18:17:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] MAINTAINERS: Fix typo in openpic_kvm.c entry
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>
+References: <20231019155822.499027-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231019155822.499027-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1159f076-385b-491c-974e-fe72f850f341@linux.ibm.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,73 +93,19 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 10:34:52AM -0500, Ninad Palsule wrote:
-> Hello Daniel,
+On 19/10/23 17:58, Thomas Huth wrote:
+> It's a .c file, not a header!
 > 
-> On 10/19/23 03:14, Daniel P. Berrangé wrote:
-> > On Wed, Oct 11, 2023 at 10:13:30AM -0500, Ninad Palsule wrote:
-> > > This is a part of patchset where IBM's Flexible Service Interface is
-> > > introduced.
-> > > 
-> > > The LBUS is modelled to maintain the qdev bus hierarchy and to take
-> > > advantage of the object model to automatically generate the CFAM
-> > > configuration block. The configuration block presents engines in the
-> > > order they are attached to the CFAM's LBUS. Engine implementations
-> > > should subclass the LBusDevice and set the 'config' member of
-> > > LBusDeviceClass to match the engine's type.
-> > > 
-> > > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> > > Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> > > Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
-> > > ---
-> > > v2:
-> > > - Incorporated Joel's review comments.
-> > > v5:
-> > > - Incorporated review comments by Cedric.
-> > > ---
-> > >   include/hw/fsi/lbus.h | 51 +++++++++++++++++++++++++
-> > >   include/qemu/bitops.h |  6 +++
-> > >   hw/fsi/lbus.c         | 87 +++++++++++++++++++++++++++++++++++++++++++
-> > >   hw/Kconfig            |  1 +
-> > >   hw/fsi/Kconfig        |  2 +
-> > >   hw/fsi/meson.build    |  1 +
-> > >   hw/meson.build        |  1 +
-> > >   7 files changed, 149 insertions(+)
-> > >   create mode 100644 include/hw/fsi/lbus.h
-> > >   create mode 100644 hw/fsi/lbus.c
-> > >   create mode 100644 hw/fsi/Kconfig
-> > >   create mode 100644 hw/fsi/meson.build
-> > > +DeviceState *lbus_create_device(FSILBus *bus, const char *type, uint32_t addr)
-> > > +{
-> > > +    DeviceState *dev;
-> > > +    FSILBusNode *node;
-> > > +    BusState *state = BUS(bus);
-> > > +
-> > > +    dev = qdev_new(type);
-> > > +    qdev_prop_set_uint8(dev, "address", addr);
-> > > +    qdev_realize_and_unref(dev, state, &error_fatal);
-> > > +
-> > > +    /* Move to post_load */
-> > > +    node = g_malloc(sizeof(struct FSILBusNode));
-> > This allocation pattern is discouraged in favour of:
-> > 
-> >      node = g_new0(FSILBusNode, 1);
-> 
-> I am using g_malloc() because I want program to terminate. I don't think
-> g_new0 provide this functionality. Please let me know.
+> Fixes: ff8cdbbd7e ("MAINTAINERS: Add information for OpenPIC")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-All the glib memory allocation functions terminate on OOM, except
-for the ones with '_try_' in their name.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
