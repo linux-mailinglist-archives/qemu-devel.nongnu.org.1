@@ -2,86 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D5C7CFEE1
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C8C7CFEE8
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:59:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVOI-0003tA-RJ; Thu, 19 Oct 2023 11:56:54 -0400
+	id 1qtVQ5-0005JO-PI; Thu, 19 Oct 2023 11:58:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtVOG-0003sr-4i
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:56:52 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtVOD-0001S0-Un
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:56:51 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVQ4-0005Il-9O
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:58:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVQ2-0001vv-P6
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:58:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697731118;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ZcOP1lA8HWTfx+Eo3ICubUBQXDWQYDG5uQalFHTKJAc=;
+ b=Hfn38YxtoVzEE/TsbiPWiDKkSzHI3U7D9ZMqtf5W2s0RVO5XEORiEDbZKKYt5LYyx+rvNb
+ OsBE7P+e4i/6QCwswvC4LIpXgYMDEcrjZ8CXHauOREmC1xDwPa/JIB7d6VIrDk+FO4k9ZP
+ wSrkEEyLbMc9KurxgYIyHysuphhPWaI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-20-wZKDcaIQP_KGZbhCJE8kAg-1; Thu, 19 Oct 2023 11:58:27 -0400
+X-MC-Unique: wZKDcaIQP_KGZbhCJE8kAg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8C5D321A6A;
- Thu, 19 Oct 2023 15:56:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697731006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xniYC3JDQdqZBFdwD6pT/keDTNMUgmGhZyD3dqIAT6U=;
- b=LbbXlVf3ZvoNIkPDDUBQSL01MgmNX1kfd0hWDY2dbm2ECCfW/yL70wriCyy8oGmqVP9mZY
- e35P2XUs2hsrTnPJoqDc/OQrJPaQD6FJbtJFb0OpAOa2l0r+2goTv4cFoEOmcRn7v8XTQp
- OgigGN2dJ07JoRa/4Su2W59alOODWxc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697731006;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xniYC3JDQdqZBFdwD6pT/keDTNMUgmGhZyD3dqIAT6U=;
- b=WR0lCmsI51N/Tk4WKushqEBR7Xf8UOIHqA2Avn6rsmzKrgIjPYIW7+/hMWids/O/+ALP1A
- 5eex2PyEHJJzAoDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 200B9139C2;
- Thu, 19 Oct 2023 15:56:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id Rbj4Nr1RMWWIMwAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 15:56:45 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
- <leobras@redhat.com>, Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
- semaphore
-In-Reply-To: <87wmvi3akc.fsf@secure.mitica>
-References: <20231012140651.13122-1-farosas@suse.de>
- <20231012140651.13122-2-farosas@suse.de> <87sf676kxt.fsf@secure.mitica>
- <87r0lqy83p.fsf@suse.de> <87wmvi3akc.fsf@secure.mitica>
-Date: Thu, 19 Oct 2023 12:56:43 -0300
-Message-ID: <87lebyy5ac.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 747761C29B08;
+ Thu, 19 Oct 2023 15:58:24 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.68])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E35C82026D66;
+ Thu, 19 Oct 2023 15:58:22 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>
+Subject: [PATCH] MAINTAINERS: Fix typo in openpic_kvm.c entry
+Date: Thu, 19 Oct 2023 17:58:22 +0200
+Message-ID: <20231019155822.499027-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -7.10
-X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,115 +76,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+It's a .c file, not a header!
 
-> Fabiano Rosas <farosas@suse.de> wrote:
->> Juan Quintela <quintela@redhat.com> writes:
->>
->>> Fabiano Rosas <farosas@suse.de> wrote:
->>>> The channels_ready semaphore is a global variable not linked to any
->>>> single multifd channel. Waiting on it only means that "some" channel
->>>> has become ready to send data. Since we need to address the channels
->>>> by index (multifd_send_state->params[i]), that information adds
->>>> nothing of value.
->>>
->>> NAK.
->>>
->>> I disagree here O:-)
->>>
->>> the reason why that channel exist is for multifd_send_pages()
->>>
->>> And simplifying the function what it does is:
->>>
->>> sem_wait(channels_ready);
->>>
->>> for_each_channel()
->>>    look if it is empty()
->>>
->>> But with the semaphore, we guarantee that when we go to the loop, there
->>> is a channel ready, so we know we donat busy wait searching for a
->>> channel that is free.
->>>
->>
->> Ok, so that clarifies the channels_ready usage.
->>
->> Now, thinking out loud... can't we simply (famous last words) remove the
->> "if (!p->pending_job)" line and let multifd_send_pages() prepare another
->> payload for the channel? That way multifd_send_pages() could already
->> return and the channel would see one more pending_job and proceed to
->> send it.
->
-> No.
->
-> See the while loop in multifd_send_thread()
->
->     while (true) {
->         qemu_mutex_lock(&p->mutex);
->
->         if (p->pending_job) {
->
->             ......
->             Do things with parts of the struct that are shared with the
->             migration thread
->             ....
->             qemu_mutex_unlock(&p->mutex);
->
->             // Drop the lock
->             // Do mothing things on the channel, pending_job means that
->             // it is working
->             // mutex dropped means that migration_thread can use the
->             // shared variables, but not the channel
->
->             // now here we decrease pending_job, so main thread can
->             // change things as it wants
->             // But we need to take the lock first.
->             qemu_mutex_lock(&p->mutex);
->             p->pending_job--;
->             qemu_mutex_unlock(&p->mutex);
->             ......
->         }
->     }
->
-> This is a common pattern for concurrency.  To not have your mutex locked
-> too long, you put a variable (that can only be tested/changed with the
-> lock) to explain that the "channel" is busy, the struct that lock
-> protects is not (see how we make sure that the channel don't use any
-> variable of the struct without the locking).
+Fixes: ff8cdbbd7e ("MAINTAINERS: Add information for OpenPIC")
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sure, but what purpose is to mark the channel as busy? The migration
-thread cannot access the p->packet anyway. From multifd_send_pages()
-perspective, as soon as the channel releases the lock to start with the
-IO, the packet has been sent. It could start preparing the next pages
-struct while the channel is doing IO. No?
-
-We don't touch p after the IO aside from p->pending_jobs-- and we
-already distribute the load uniformly by incrementing next_channel.
-
-I'm not saying this would be more performant, just wondering if it would
-be possible.
-
->
->
->> Or, since there's no resending anyway, we could dec pending_jobs earlier
->> before unlocking the channel. It seems the channel could be made ready
->> for another job as soon as the packet is built and the lock is released.
->
-> pending_jobs can be transformed in a bool.  We just need to make sure
-> that we didn't screw it in _sync().
->
->> That way we could remove the semaphore and let the mutex do the job of
->> waiting for the channel to become ready.
->
-> As said, we don't want that.  Because channels can go a different speeds
-> due to factors outside of our control.
->
-> If the semaphore bothers you, you can change it to to a condition
-> variable, but you just move the complexity from one side to the other
-> (Initial implementation had a condition variable, but Paolo said that
-> the semaphore is more efficient, so he won)
-
-Oh, it doesn't bother me. I'm just trying to unequivocally understand
-it's effects. And if it logically follows that it's not necessary, only
-then remove it.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c12511c73b..a110a0c7a4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1418,7 +1418,7 @@ F: hw/pci-host/ppce500.c
+ F: include/hw/ppc/ppc_e500.h
+ F: include/hw/pci-host/ppce500.h
+ F: pc-bios/u-boot.e500
+-F: hw/intc/openpic_kvm.h
++F: hw/intc/openpic_kvm.c
+ F: include/hw/ppc/openpic_kvm.h
+ F: docs/system/ppc/ppce500.rst
+ 
+-- 
+2.41.0
 
 
