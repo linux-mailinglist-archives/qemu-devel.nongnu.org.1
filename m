@@ -2,85 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638367D0352
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D26A7D0360
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:50:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZw8-0007Ms-FN; Thu, 19 Oct 2023 16:48:08 -0400
+	id 1qtZxt-0002gx-MV; Thu, 19 Oct 2023 16:49:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qtZw1-0007GX-5q
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:48:04 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qtZxp-0002fQ-R6
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:49:53 -0400
+Received: from 3.mo552.mail-out.ovh.net ([178.33.254.192])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qtZvw-0003UO-VB
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:59 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKigCG019245; Thu, 19 Oct 2023 20:47:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=Qz6ejEXqSijzF/+p48FQJqT95+eOBkqedt9aGGSYXqY=;
- b=Wqb4HFtOrYyV5jGTpilXnsQN2V1aA0JBa1vbHO/ZrEjjHfCIYvJPgZKLTcJNEenZDHA3
- yb5vo3rLdOaoefd0VoAz6JkAhx8fI2Gw80H6CqsdYxPp7c/QxHsmZL7RPJjbXrKPnYdt
- 2N8/M7mfifzVm6WooH6vyx4t5lcJ7PNrHKdQ2lgl1yBpKG6CXPhMoe24j3DMnjcXSIjO
- HUl3IqCr1fyayeT2/o0lOkI8Z61xxJv2ZEiXM/GOHMbU7Yf5+VwDbia2j/7Z8oWX7i+3
- wDcB/IezYMJQrp/sXTcxUiV7/8sgeejmUiEvhkH78Yb6x6FBwJ2HaI8UflKFU7uVR+MG sw== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqk1bukce-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:47:55 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 39JJd7Ss040665; Thu, 19 Oct 2023 20:47:54 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3trfyqqamb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:47:54 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKllWO014514;
- Thu, 19 Oct 2023 20:47:53 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3trfyqqafy-5; Thu, 19 Oct 2023 20:47:53 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 4/4] cpr: reboot mode
-Date: Thu, 19 Oct 2023 13:47:46 -0700
-Message-Id: <1697748466-373230-5-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
-References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_20,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- adultscore=0
- phishscore=0 spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310190176
-X-Proofpoint-GUID: zYXW5Y3qR-_C0SYPhc9NRoeLlHooa121
-X-Proofpoint-ORIG-GUID: zYXW5Y3qR-_C0SYPhc9NRoeLlHooa121
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qtZxn-0004sv-6U
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:49:53 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.124])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 171E32C550;
+ Thu, 19 Oct 2023 20:49:39 +0000 (UTC)
+Received: from kaod.org (37.59.142.110) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 19 Oct
+ 2023 22:49:37 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-110S004e4e44197-2c7d-41ce-abad-59af31aa2463,
+ 40A84FA1BFAB306571EA24E7D640879C68C08F1A) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 88.179.9.154
+Date: Thu, 19 Oct 2023 22:49:35 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Juan Quintela <quintela@redhat.com>
+CC: <qemu-devel@nongnu.org>, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, <qemu-ppc@nongnu.org>,
+ Nicholas Piggin <npiggin@gmail.com>, <qemu-s390x@nongnu.org>, Gerd Hoffmann
+ <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>, Samuel Thibault
+ <samuel.thibault@ens-lyon.org>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, "Ilya
+ Leoshkevich" <iii@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>, "Eric
+ Farman" <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>, "Harsh Prateek
+ Bora" <harshpb@linux.ibm.com>, John Snow <jsnow@redhat.com>,
+ <qemu-block@nongnu.org>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, =?UTF-8?B?TWFyYy1BbmRy?=
+ =?UTF-8?B?w6k=?= Lureau <marcandre.lureau@redhat.com>, Stefan Weil
+ <sw@weilnetz.de>, <qemu-arm@nongnu.org>, Jason Wang <jasowang@redhat.com>,
+ Corey Minyard <minyard@acm.org>, Leonardo Bras <leobras@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, "Michael
+ S. Tsirkin" <mst@redhat.com>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
+ <clg@kaod.org>, David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
+ <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: Re: [PATCH 07/13] RFC migration: icp/server is a mess
+Message-ID: <20231019224935.03232495@bahia>
+In-Reply-To: <20231019190831.20363-8-quintela@redhat.com>
+References: <20231019190831.20363-1-quintela@redhat.com>
+ <20231019190831.20363-8-quintela@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.110]
+X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: b8ab38fa-49a4-4d46-b91e-e57b645b5a28
+X-Ovh-Tracer-Id: 10836223656682035575
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrjeeigdduhedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgfgihesthejfedtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnheptefffeehgfegueetteeghfeufffhveeuudegtdefieeftdehveegvdduhfeggefgnecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdduuddtpdekkedrudejledrledrudehgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehgrhhouhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepqhhuihhnthgvlhgrsehrvgguhhgrthdrtghomhdpuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdpmhhsthesrhgvughhrghtrdgtohhmpdhpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdpthhhuhhthhesrhgvughhrghtrdgtohhmpdhlvghosghrrghssehrvgguhhgrthdrtghomhdpmhhinhihrghrugesrggtmhdrohhrghdpjhgrshhofigrnhhgsehrvgguhhgrthdrtghomhdpqhgvmhhuqdgrrhhmsehnoh
+ hnghhnuhdrohhrghdpshifseifvghilhhnvghtiidruggvpdhmrghrtggrnhgurhgvrdhluhhrvggruhesrhgvughhrghtrdgtohhmpdgsohhrnhhtrhgrvghgvghrsehlihhnuhigrdhisghmrdgtohhmpdhmrghrkhdrtggrvhgvqdgrhihlrghnugesihhlrghnuggvrdgtohdruhhkpdhqvghmuhdqsghlohgtkhesnhhonhhgnhhurdhorhhgpdhjshhnohifsehrvgguhhgrthdrtghomhdpphgrshhitgeslhhinhhugidrihgsmhdrtghomhdphhgrrhhshhhpsgeslhhinhhugidrihgsmhdrtghomhdpfhgrrhhmrghnsehlihhnuhigrdhisghmrdgtohhmpdhfrghrohhsrghssehsuhhsvgdruggvpdhiihhisehlihhnuhigrdhisghmrdgtohhmpdgurghvihgusehrvgguhhgrthdrtghomhdprhhitghhrghrugdrhhgvnhguvghrshhonheslhhinhgrrhhordhorhhgpdhsrghmuhgvlhdrthhhihgsrghulhhtsegvnhhsqdhlhihonhdrohhrghdptghmihhnhigrrhgusehmvhhishhtrgdrtghomhdpkhhrrgigvghlsehrvgguhhgrthdrtghomhdpqhgvmhhuqdhsfeeltdigsehnohhnghhnuhdrohhrghdpnhhpihhgghhinhesghhmrghilhdrtghomhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdpmhgrrhgtvghlrdgrphhfvghlsggruhhmsehgmhgrihhlrdgtohhmpdhsthgvfhgrnhgssehlihhnuhigrdhvnhgvthdrihgsmhdrtghomhdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpphgvthgvrhi
+ gsehrvgguhhgrthdrtghomhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpoffvtefjohhsthepmhhoheehvddpmhhouggvpehsmhhtphhouhht
+Received-SPF: pass client-ip=178.33.254.192; envelope-from=groug@kaod.org;
+ helo=3.mo552.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,72 +89,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the cpr-reboot migration mode.  Usage:
+Hi Juan,
 
-$ qemu-system-$arch -monitor stdio ...
-QEMU 8.1.50 monitor - type 'help' for more information
-(qemu) migrate_set_capability x-ignore-shared on
-(qemu) migrate_set_parameter mode cpr-reboot
-(qemu) migrate -d file:vm.state
-(qemu) info status
-VM status: paused (postmigrate)
-(qemu) quit
+On Thu, 19 Oct 2023 21:08:25 +0200
+Juan Quintela <quintela@redhat.com> wrote:
 
-$ qemu-system-$arch -monitor stdio -incoming defer ...
-QEMU 8.1.50 monitor - type 'help' for more information
-(qemu) migrate_set_capability x-ignore-shared on
-(qemu) migrate_set_parameter mode cpr-reboot
-(qemu) migrate_incoming file:vm.state
-(qemu) info status
-VM status: running
+> Current code does:
+> - register pre_2_10_vmstate_dummy_icp with "icp/server" and instance
+>   dependinfg on cpu number
+> - for newer machines, it register vmstate_icp with "icp/server" name
+>   and instance 0
+> - now it unregisters "icp/server" for the 1st instance.
+> 
 
-In this mode, the migrate command saves state to a file, allowing one
-to quit qemu, reboot to an updated kernel, and restart an updated version
-of qemu.  The caller must specify a migration URI that writes to and reads
-from a file.  Unlike normal mode, the use of certain local storage options
-does not block the migration, but the caller must not modify guest block
-devices between the quit and restart.  The guest RAM memory-backend must
-be shared, and the @x-ignore-shared migration capability must be set,
-to avoid saving RAM to the file.  Guest RAM must be non-volatile across
-reboot, such as by backing it with a dax device, but this is not enforced.
-The restarted qemu arguments must match those used to initially start qemu,
-plus the -incoming option.
+Heh I remember about this hack... it was caused by some rework in
+the interrupt controller that broke migration.
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- qapi/migration.json | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+> This is wrong at many levels:
+> - we shouldn't have two VMSTATEDescriptions with the same name
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 184fb78..2d862fa 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -620,9 +620,23 @@
- #
- # @normal: the original form of migration. (since 8.2)
- #
-+# @cpr-reboot: The migrate command saves state to a file, allowing one to
-+#              quit qemu, reboot to an updated kernel, and restart an updated
-+#              version of qemu.  The caller must specify a migration URI
-+#              that writes to and reads from a file.  Unlike normal mode,
-+#              the use of certain local storage options does not block the
-+#              migration, but the caller must not modify guest block devices
-+#              between the quit and restart.  The guest RAM memory-backend
-+#              must be shared, and the @x-ignore-shared migration capability
-+#              must be set, to avoid saving it to the file.  Guest RAM must
-+#              be non-volatile across reboot, such as by backing it with
-+#              a dax device, but this is not enforced.  The restarted qemu
-+#              arguments must match those used to initially start qemu, plus
-+#              the -incoming option. (since 8.2)
-+#
- ##
- { 'enum': 'MigMode',
--  'data': [ 'normal' ] }
-+  'data': [ 'normal', 'cpr-reboot' ] }
- 
- ##
- # @BitmapMigrationBitmapAliasTransform:
+I don't know how bad it is. The idea here is to send extra
+state in the stream because older QEMU expect it (but won't use
+it), so it made sense to keep the same name.
+
+> - In case this is the only solution that we can came with, it needs to
+>   be:
+>   * register pre_2_10_vmstate_dummy_icp
+>   * unregister pre_2_10_vmstate_dummy_icp
+>   * register real vmstate_icp
+> 
+> As the initialization of this machine is already complex enough, I
+> need help from PPC maintainers to fix this.
+> 
+
+What about dropping all this code, i.e. basically reverting 46f7afa37096 ("spapr:
+fix migration of ICPState objects from/to older QEMU") ?
+
+Unless we still care to migrate pseries machine types from 2017 of
+course...
+
+> Volunteers?
+> 
+
+Not working on PPC anymore since almost two years, I certainly don't have time,
+nor motivation to fix this. I might be able to answer some questions or to
+review someone else's patch that gets rid of the offending code, at best.
+
+Cheers,
+
+--
+Greg
+
+
+> CC: Cedric Le Goater <clg@kaod.org>
+> CC: Daniel Henrique Barboza <danielhb413@gmail.com>
+> CC: David Gibson <david@gibson.dropbear.id.au>
+> CC: Greg Kurz <groug@kaod.org>
+> 
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> ---
+>  hw/ppc/spapr.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index cb840676d3..8531d13492 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -143,7 +143,12 @@ static bool pre_2_10_vmstate_dummy_icp_needed(void *opaque)
+>  }
+>  
+>  static const VMStateDescription pre_2_10_vmstate_dummy_icp = {
+> -    .name = "icp/server",
+> +    /*
+> +     * Hack ahead.  We can't have two devices with the same name and
+> +     * instance id.  So I rename this to pass make check.
+> +     * Real help from people who knows the hardware is needed.
+> +     */
+> +    .name = "pre-2.10-icp/server",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = pre_2_10_vmstate_dummy_icp_needed,
+
+
+
 -- 
-1.8.3.1
-
+Greg
 
