@@ -2,63 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594987CF6AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 972927CF6B9
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:28:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtR9D-0005Mp-C0; Thu, 19 Oct 2023 07:25:03 -0400
+	id 1qtRBf-0007c5-OA; Thu, 19 Oct 2023 07:27:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qtR98-0005Ll-SU
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:24:58 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtRBc-0007V7-Tm
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:27:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qtR95-0002MT-Ez
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:24:58 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB52m65KPz67HSr;
- Thu, 19 Oct 2023 19:24:16 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 19 Oct
- 2023 12:24:49 +0100
-Date: Thu, 19 Oct 2023 12:24:48 +0100
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: <linuxarm@huawei.com>, <qemu-devel@nongnu.org>,
- <linux-cxl@vger.kernel.org>, Michael Tokarev <mjt@tls.msk.ru>, Fan Ni
- <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v4 2/4] hw/cxl: Use switch statements for read and write
- of cachemem registers
-Message-ID: <20231019122448.0000009e@Huawei.com>
-In-Reply-To: <20231019052242-mutt-send-email-mst@kernel.org>
-References: <20231012140514.3697-1-Jonathan.Cameron@huawei.com>
- <20231012140514.3697-3-Jonathan.Cameron@huawei.com>
- <20231018103907-mutt-send-email-mst@kernel.org>
- <20231018172239.00005f3d@Huawei.com>
- <20231018173142.00003739@Huawei.com>
- <20231019100547.00003eef@huawei.com>
- <20231019052242-mutt-send-email-mst@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtRBa-000378-IY
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:27:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697714847;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=/UKhXqbHobe0CtLZoqm46zlE8/XzwVYkVlVIh5zL3zk=;
+ b=AHt2db6Ctl1vj86iiMlvOA/3p8Yi/TEzg2rJfkY9XqtdB1/Jbd4uGkGT2ticsksxILqUJf
+ g8/KiRoHa/ABT604CxHyplmgWuF0NL1LOcoycc2Jqr54cVUM6e2XH3yxOUOiX6HEfmOxPb
+ +HeK14VbUBrizSRJsfVcoiR1/39PjHI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-333-An_8UMf6O96H5_ZdQH5kAw-1; Thu, 19 Oct 2023 07:27:16 -0400
+X-MC-Unique: An_8UMf6O96H5_ZdQH5kAw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3231fceb811so4542379f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 04:27:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697714833; x=1698319633;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/UKhXqbHobe0CtLZoqm46zlE8/XzwVYkVlVIh5zL3zk=;
+ b=DU6nBmA/6yO4nD1YVoZ9bHLlnef4QZlUnx7Xv8rvfD9jafNc1ABevLLAqIV7x7FbC3
+ h8BJSh40BLwBLgVkllOShCKFA3k4u7orfFhBmaWD5N+BP1L16q9om3HuioIT6isFDtWL
+ dQsvhb2QPr1acPKrKtcJbJXAyoVnTauwDbklCYDq/pKlqKo0APkQQURFjsowxeLnufiB
+ x1rIH7CkKNYAgawmudBcSyrQKL8Hvu9CufM4aBnRIxvWGlv4GT8elINl56ZY76sYD15c
+ UbMh66ElMxGSRFzUL0f2YlkwZWsUk8WtoX/VPc4e3phxCwz8dXkdg3nuR/2SAcQtgqa+
+ iklA==
+X-Gm-Message-State: AOJu0Yw4tDRLXls5s+6CQ77XKY7RdF5juuPvbb9DcsWPO6iqhjQxPgLq
+ 2zlqPO1lox7RK7DURRvHjPmrfNPJLU5peg6N1xWtUH4x/m5xDFPzD/Z+4V54Vs/yqhy5RYyjBH1
+ 4/U9AUMqbhShB2XA=
+X-Received: by 2002:a5d:5341:0:b0:320:1c7:fd30 with SMTP id
+ t1-20020a5d5341000000b0032001c7fd30mr1301093wrv.17.1697714833663; 
+ Thu, 19 Oct 2023 04:27:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGlFQR5rFQ1j3gXy5rKIWGjvTkCuBtPFbLpXJFSU9iLe3wwbrZkAD2l+K1Auy5r3KCPWfgiMg==
+X-Received: by 2002:a5d:5341:0:b0:320:1c7:fd30 with SMTP id
+ t1-20020a5d5341000000b0032001c7fd30mr1301078wrv.17.1697714833356; 
+ Thu, 19 Oct 2023 04:27:13 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ f4-20020a056000128400b0031c5e9c2ed7sm4265828wrx.92.2023.10.19.04.27.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 04:27:12 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: peterx@redhat.com,  farosas@suse.de,  leobras@redhat.com,
+ qemu-devel@nongnu.org,  nanhai.zou@intel.com
+Subject: Re: [PATCH 4/5] migration iaa-compress: Add IAA initialization and
+ deinitialization
+In-Reply-To: <20231018221224.599065-5-yuan1.liu@intel.com> (Yuan Liu's message
+ of "Thu, 19 Oct 2023 06:12:23 +0800")
+References: <20231018221224.599065-1-yuan1.liu@intel.com>
+ <20231018221224.599065-5-yuan1.liu@intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 19 Oct 2023 13:27:12 +0200
+Message-ID: <87leby6een.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,199 +98,107 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Oct 2023 05:23:04 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+Yuan Liu <yuan1.liu@intel.com> wrote:
+> This patch defines the structure for IAA jobs related to data
+> compression and decompression, as well as the initialization and
+> deinitialization processes for IAA.
+>
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
 
-> On Thu, Oct 19, 2023 at 10:09:24AM +0100, Jonathan Cameron wrote:
-> > On Wed, 18 Oct 2023 17:31:42 +0100
-> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> >   
-> > > On Wed, 18 Oct 2023 17:22:39 +0100
-> > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> > >   
-> > > > On Wed, 18 Oct 2023 10:40:45 -0400
-> > > > "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> > > >     
-> > > > > On Thu, Oct 12, 2023 at 03:05:12PM +0100, Jonathan Cameron wrote:      
-> > > > > > Establishing that only register accesses of size 4 and 8 can occur
-> > > > > > using these functions requires looking at their callers. Make it
-> > > > > > easier to see that by using switch statements.
-> > > > > > Assertions are used to enforce that the register storage is of the
-> > > > > > matching size, allowing fixed values to be used for divisors of
-> > > > > > the array indices.
-> > > > > > 
-> > > > > > Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
-> > > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > > > Reviewed-by: Fan Ni <fan.ni@samsung.com>        
-> > > > > 
-> > > > > Fails with clang:
-> > > > > 
-> > > > > ../hw/cxl/cxl-component-utils.c:130:9: error: expected expression
-> > > > >         QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_regs_write_mask) != 4);
-> > > > >         ^
-> > > > > ../include/qemu/compiler.h:76:30: note: expanded from macro 'QEMU_BUILD_BUG_ON'
-> > > > > #define QEMU_BUILD_BUG_ON(x) QEMU_BUILD_BUG_MSG(x, "not expecting: " #x)
-> > > > >                              ^
-> > > > > ../include/qemu/compiler.h:74:36: note: expanded from macro 'QEMU_BUILD_BUG_MSG'
-> > > > > #define QEMU_BUILD_BUG_MSG(x, msg) _Static_assert(!(x), msg)
-> > > > >                                    ^
-> > > > > 1 error generated.
-> > > > > 
-> > > > > See e.g.
-> > > > > 
-> > > > > https://gitlab.com/mstredhat/qemu/-/jobs/5320879531      
-> > > > 
-> > > > Thanks. Will see if I can figure out what is going wrong.
-> > > > This code seems cursed.  I need to figure out a way to run the CI again.
-> > > > Ran into credit problems I couldn't solve last time I tried.
-> > > > 
-> > > > In meantime I can replicate this locally but not immediately obvious to me
-> > > > why it is failing.    
-> > > 
-> > > Any clang experts around?  This seems to be fixed by reducing the scope
-> > > 
-> > > case 4:
-> > > {
-> > > 	QEMU_BUILD_BUG_ON();
-> > > }
-> > > I have no idea why though...
-> > >   
-> > 
-> > For anyone following along I asked a friendly compiler guy...
-> > 
-> > https://github.com/llvm/llvm-project/issues/69572
-> > 
-> > Given that we realistically need to work around this whatever the outcome
-> > I'll add some brackets and send an update.
-> > 
-> > thanks,
-> > 
-> > Jonathan  
-> 
-> We don't seem to use QEMU_BUILD_BUG_ON outside of functions - just add
-> brackets inside it?
+You should be using orderfile.
 
-Makes sense.  I'll give that a go and see if anything odd happens.
+$ less .git/config
+...
+[diff]
+        orderFile = scripts/git.orderfile
 
-Jonathan
+So .h and friends came first in patches.
 
-> 
-> > >   
-> > > > 
-> > > > Jonathan
-> > > >     
-> > > > > 
-> > > > > 
-> > > > >       
-> > > > > > ---
-> > > > > > v4: Use QEMU_BUILD_BUG_ON() instead of static_assert with missing
-> > > > > >     error message.
-> > > > > > 
-> > > > > >  hw/cxl/cxl-component-utils.c | 65 +++++++++++++++++++++++-------------
-> > > > > >  1 file changed, 42 insertions(+), 23 deletions(-)
-> > > > > > 
-> > > > > > diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-> > > > > > index f3bbf0fd13..d1997a52e6 100644
-> > > > > > --- a/hw/cxl/cxl-component-utils.c
-> > > > > > +++ b/hw/cxl/cxl-component-utils.c
-> > > > > > @@ -67,16 +67,24 @@ static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
-> > > > > >      CXLComponentState *cxl_cstate = opaque;
-> > > > > >      ComponentRegisters *cregs = &cxl_cstate->crb;
-> > > > > >  
-> > > > > > -    if (size == 8) {
-> > > > > > +    switch (size) {
-> > > > > > +    case 4:
-> > > > > > +        if (cregs->special_ops && cregs->special_ops->read) {
-> > > > > > +            return cregs->special_ops->read(cxl_cstate, offset, 4);
-> > > > > > +        } else {
-> > > > > > +            QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_registers) != 4);
-> > > > > > +            return cregs->cache_mem_registers[offset / 4];
-> > > > > > +        }
-> > > > > > +    case 8:
-> > > > > >          qemu_log_mask(LOG_UNIMP,
-> > > > > >                        "CXL 8 byte cache mem registers not implemented\n");
-> > > > > >          return 0;
-> > > > > > -    }
-> > > > > > -
-> > > > > > -    if (cregs->special_ops && cregs->special_ops->read) {
-> > > > > > -        return cregs->special_ops->read(cxl_cstate, offset, size);
-> > > > > > -    } else {
-> > > > > > -        return cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
-> > > > > > +    default:
-> > > > > > +        /*
-> > > > > > +         * In line with specifiction limitaions on access sizes, this
-> > > > > > +         * routine is not called with other sizes.
-> > > > > > +         */
-> > > > > > +        g_assert_not_reached();
-> > > > > >      }
-> > > > > >  }
-> > > > > >  
-> > > > > > @@ -117,25 +125,36 @@ static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
-> > > > > >      ComponentRegisters *cregs = &cxl_cstate->crb;
-> > > > > >      uint32_t mask;
-> > > > > >  
-> > > > > > -    if (size == 8) {
-> > > > > > +    switch (size) {
-> > > > > > +    case 4:
-> > > > > > +        QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_regs_write_mask) != 4);
-> > > > > > +        QEMU_BUILD_BUG_ON(sizeof(*cregs->cache_mem_registers) != 4);
-> > > > > > +        mask = cregs->cache_mem_regs_write_mask[offset / 4];
-> > > > > > +        value &= mask;
-> > > > > > +        /* RO bits should remain constant. Done by reading existing value */
-> > > > > > +        value |= ~mask & cregs->cache_mem_registers[offset / 4];
-> > > > > > +        if (cregs->special_ops && cregs->special_ops->write) {
-> > > > > > +            cregs->special_ops->write(cxl_cstate, offset, value, size);
-> > > > > > +            return;
-> > > > > > +        }
-> > > > > > +
-> > > > > > +        if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
-> > > > > > +            offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
-> > > > > > +            dumb_hdm_handler(cxl_cstate, offset, value);
-> > > > > > +        } else {
-> > > > > > +            cregs->cache_mem_registers[offset / 4] = value;
-> > > > > > +        }
-> > > > > > +        return;
-> > > > > > +    case 8:
-> > > > > >          qemu_log_mask(LOG_UNIMP,
-> > > > > >                        "CXL 8 byte cache mem registers not implemented\n");
-> > > > > >          return;
-> > > > > > -    }
-> > > > > > -    mask = cregs->cache_mem_regs_write_mask[offset / sizeof(*cregs->cache_mem_regs_write_mask)];
-> > > > > > -    value &= mask;
-> > > > > > -    /* RO bits should remain constant. Done by reading existing value */
-> > > > > > -    value |= ~mask & cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
-> > > > > > -    if (cregs->special_ops && cregs->special_ops->write) {
-> > > > > > -        cregs->special_ops->write(cxl_cstate, offset, value, size);
-> > > > > > -        return;
-> > > > > > -    }
-> > > > > > -
-> > > > > > -    if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
-> > > > > > -        offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
-> > > > > > -        dumb_hdm_handler(cxl_cstate, offset, value);
-> > > > > > -    } else {
-> > > > > > -        cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)] = value;
-> > > > > > +    default:
-> > > > > > +        /*
-> > > > > > +         * In line with specifiction limitaions on access sizes, this
-> > > > > > +         * routine is not called with other sizes.
-> > > > > > +         */
-> > > > > > +        g_assert_not_reached();
-> > > > > >      }
-> > > > > >  }
-> > > > > >  
-> > > > > > -- 
-> > > > > > 2.39.2        
-> > > > > 
-> > > > >       
-> > > >     
-> > > 
-> > > 
-> > >   
-> 
+> diff --git a/migration/ram-compress.c b/migration/ram-compress.c
+> index 47357352f7..acc511ce57 100644
+> --- a/migration/ram-compress.c
+> +++ b/migration/ram-compress.c
+> @@ -30,6 +30,9 @@
+>  #include "qemu/cutils.h"
+>  
+>  #include "ram-compress.h"
+> +#ifdef CONFIG_QPL
+> +#include "iaa-ram-compress.h"
+> +#endif
+>  
+>  #include "qemu/error-report.h"
+>  #include "migration.h"
+> @@ -484,10 +487,11 @@ int ram_compress_save_setup(void)
+>      if (!migrate_compress()) {
+>          return 0;
+>      }
+> +#ifdef CONFIG_QPL
+>      if (migrate_compress_with_iaa()) {
+> -        /* Implement in next patch */
+> -        return 0;
+> +        return iaa_compress_init(false);
+>      }
+> +#endif
+>      return compress_threads_save_setup();
+>  }
+>  
+> @@ -496,10 +500,12 @@ void ram_compress_save_cleanup(void)
+>      if (!migrate_compress()) {
+>          return;
+>      }
+> +#ifdef CONFIG_QPL
+>      if (migrate_compress_with_iaa()) {
+> -        /* Implement in next patch */
+> +        iaa_compress_deinit();
+>          return;
+>      }
+> +#endif
+>      compress_threads_save_cleanup();
+>  }
+>  
+> @@ -516,9 +522,11 @@ int ram_compress_load_setup(QEMUFile *f)
+>      if (!migrate_compress()) {
+>          return 0;
+>      }
+> +#ifdef CONFIG_QPL
+>      if (migrate_compress_with_iaa()) {
+> -        /* Implement in next patch */
+> +        return iaa_compress_init(true);
+>      }
+> +#endif
+>      return compress_threads_load_setup(f);
+>  }
+>  
+> @@ -527,8 +535,11 @@ void ram_compress_load_cleanup(void)
+>      if (!migrate_compress()) {
+>          return;
+>      }
+> +#ifdef CONFIG_QPL
+>      if (migrate_compress_with_iaa()) {
+> -        /* Implement in next patch */
+> +        iaa_compress_deinit();
+> +        return;
+>      }
+> +#endif
+>      compress_threads_load_cleanup();
+>  }
+
+I think it would be easier to understand and implement if you drop
+patch3, and just add at each place that there is a:
+
+compress_threads_load_cleanup()
+
+a
+
+iaa_load_cleanup()
+
+And the same for everything else.
+
+Later, Juan.
 
 
