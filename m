@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C94A7D0060
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5EF7D0061
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 19:21:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtWhs-0002YI-C3; Thu, 19 Oct 2023 13:21:13 -0400
+	id 1qtWiB-0002dI-UG; Thu, 19 Oct 2023 13:21:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qtWhp-0002Vp-5V; Thu, 19 Oct 2023 13:21:09 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qtWhp-0002W0-Ps
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 13:21:09 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qtWhn-0003ex-GL; Thu, 19 Oct 2023 13:21:08 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9ba1eb73c27so1354739166b.3; 
- Thu, 19 Oct 2023 10:21:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qtWhn-0003bn-Fs
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 13:21:09 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9ada2e6e75fso1404224266b.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 10:21:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697736064; x=1698340864; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1697736063; x=1698340863; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ocrsLyDY2xO0og8i+B4U9kq1qYU67Aps7ZFbb01KyWs=;
- b=eEejSd3szN9dNOnA1hlTuw0DylwA6O5II6El/6WzKka2JGP7tv5SVJ3z5SxcxVNqAP
- GukTLNclkOGg181bn9oObvMb7Vl6+fOHThs65EHcm3TIf2fMOsFX2v66Ya6Wm6kjcOgU
- 8zpF3ulhBHgQqqM85SELidxG40c2YfEcw98xfqCyaY5boYX8bfPC1loWVPfZPmm5lyNG
- 7Jd2g4ns+iJS+6iNloxESM57GgSYGspFmoG/kAQyXitqFhocmIVf4VANhB1eHK532MZ6
- Kz5r7fpGtlDNQwx4PlSB0ccBKMrWrj2LHSKoYpRSNT01jtHNhPcPC1KduRTmd0gjIen0
- ZEfg==
+ bh=NvqPmdWFyP5NJ2WRRryk/Qk0Cxi5tD/muXIQ1DxwZGQ=;
+ b=mJHlIQELO+w7bI/MLmnueGplM6q7P5sE+oa84Njm43K/RJnorAZqv3H15T7WE8NXFP
+ UaBcdhh9O8HbRyiIokAZgMh0FThoh1OqeItmuCaGmhrjyrVVSsgzU1k1KpvgB2Jmv47E
+ 2CZAsRZl4vGzkisvvdfrv4l7ho8tp1s6dDq533azfDYm7Wh7FtkkjfEYE11Ny+ulQRSJ
+ s6MaOPtZSshewztR/4G871OW0IlUZZvidV+daJuhYuA/Bb+EPA02EEa+HTItdVxNVO/w
+ MQqkQDBb44eCwdu2qIRHm3W50mJf9j4dsJp+TG0w4f+OGMKAKcVNBSnHw29pRfjrwSkQ
+ zoUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697736064; x=1698340864;
+ d=1e100.net; s=20230601; t=1697736063; x=1698340863;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ocrsLyDY2xO0og8i+B4U9kq1qYU67Aps7ZFbb01KyWs=;
- b=QH1ERPUiQVyaaZxHNQXxr+JpO5/62vH1P0OHZ+cXX6Dvn9Ps5AnwTlvlzpJU5lGYG0
- cGHE6osqD8F9I30jU9U/3IvxcxxQ2RrbEdR4/ev7a/RS3X7wh95CeaLJLkaB77Wq+whE
- Ni4LFUwR5HD5BGHOEZH6EwyPjl3yi5Uxy71RHLT9fBQHRx8flj8G+EjB/xioyXH8CYlV
- Sj1f5sFR6WkLurP9YoW3KEUJriPwpbwEkTdiz3Mt4N2ngrDVowd8ekFzhoomW3pv7HGZ
- /tO9pToISlbokVpy0jw77wfXWR6mOh/3FXRpNJa3WIJse6XcfVqD1o83h3daCHHhZ2FO
- c93Q==
-X-Gm-Message-State: AOJu0YximszxzjmcTXZuOfn740b0E4M7LCv+16e9CID9D7Ut6MW0iYEg
- oikVuALQSrkYo9YQzgtylwY=
-X-Google-Smtp-Source: AGHT+IGEwYocvS4Oc8/QuXzmYE3iKGFxFUycEO6PGFsqYVKEjsaZqGJWKa+BdkEF9NFvPO0tfr2ZwQ==
-X-Received: by 2002:a17:907:a0c9:b0:9be:e6d4:5751 with SMTP id
- hw9-20020a170907a0c900b009bee6d45751mr2363308ejc.55.1697736064431; 
- Thu, 19 Oct 2023 10:21:04 -0700 (PDT)
+ bh=NvqPmdWFyP5NJ2WRRryk/Qk0Cxi5tD/muXIQ1DxwZGQ=;
+ b=mlKOWTUBMJtelQRRMFUkgYhboteUwsWjVxXAWrU0XZop/WR8DG5TnbAaMdGROqEK4I
+ 2wCSIEqmuW2bsF+yVYCxmkCZDyVYYn+q+KVwbYQUJiGp2ijhRzGboeuCOvbFcdqn9O7e
+ JxPj9o6TZqf+f3hbAWVAnIKfIjZYJ750TjACSa2WXB2JWkL4NjByPKRcQOiseOYJt4EX
+ VRuzpd71E84Vdpe0nm5Dsj+DXDUN1Rqr9OI+k/zGndS32zIWtgF/yul5QDl9AJ6dE8Qy
+ RQMfz5dZtGDeNS+0LGbBdbXkVLIsV8Z15eAqh14QwBKWe4dqr1eBRbqb4IWnz6SeQWw/
+ spYA==
+X-Gm-Message-State: AOJu0YxdIkTYE4thQ4JCOSuQgXNmpIkcYaQh1ZSHj4xL0m8C/QsdBBHP
+ CtOqR+KO+QKl22SF1/Zp4IE=
+X-Google-Smtp-Source: AGHT+IFRFqxVrOkc7JiLN7cG+wAc9Bs6H8Iz+QJlIKywxc/05t9dpyStlzWdbGtA3hVBT21VIZvwRA==
+X-Received: by 2002:a17:907:3687:b0:9bd:abb2:d4e0 with SMTP id
+ bi7-20020a170907368700b009bdabb2d4e0mr2006500ejc.22.1697736063157; 
+ Thu, 19 Oct 2023 10:21:03 -0700 (PDT)
 Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- mc8-20020a170906eb4800b009737b8d47b6sm3744024ejb.203.2023.10.19.10.21.03
+ lc21-20020a170906f91500b009a19701e7b5sm3918168ejb.96.2023.10.19.10.21.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 10:21:04 -0700 (PDT)
-Date: Thu, 19 Oct 2023 10:23:14 +0000
+ Thu, 19 Oct 2023 10:21:02 -0700 (PDT)
+Date: Thu, 19 Oct 2023 10:33:08 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+To: Salil Mehta <salil.mehta@opnsrc.net>, "Michael S. Tsirkin" <mst@redhat.com>,
  qemu-devel@nongnu.org
-CC: qemu-ppc@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+CC: Peter Maydell <peter.maydell@linaro.org>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH v2] hw/audio/pcspk: Inline pcspk_init()
-In-Reply-To: <20231019073307.99608-1-philmd@linaro.org>
-References: <20231019073307.99608-1-philmd@linaro.org>
-Message-ID: <C044C8A9-952A-4F9A-8B9F-DE689A5FEF46@gmail.com>
+ Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: Re: [PULL v2 29/53] hw/i386: Remove now redundant TYPE_ACPI_GED_X86
+In-Reply-To: <15e70616-6abb-63a4-17d0-820f4a254607@opnsrc.net>
+References: <cover.1696477105.git.mst@redhat.com>
+ <c9c8ba69d5dbe5c1c6370e1f09ebd7531509d075.1696477105.git.mst@redhat.com>
+ <15e70616-6abb-63a4-17d0-820f4a254607@opnsrc.net>
+Message-ID: <BE6564AF-6317-49CB-91AF-C88F1D31DF4E@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -5
 X-Spam_score: -0.6
 X-Spam_bar: /
@@ -99,112 +100,156 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 19=2E Oktober 2023 07:33:07 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
-philmd@linaro=2Eorg>:
->pcspk_init() is a legacy init function, inline and remove it=2E
->
->Since the device is realized using &error_fatal, use the same
->error for setting the "pit" link=2E
->
->Reviewed-by: Mark Cave-Ayland <mark=2Ecave-ayland@ilande=2Eco=2Euk>
->Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->---
-> include/hw/audio/pcspk=2Eh | 10 ----------
-> hw/i386/pc=2Ec             |  4 +++-
-> hw/isa/i82378=2Ec          |  5 ++++-
-> hw/mips/jazz=2Ec           |  5 ++++-
-> 4 files changed, 11 insertions(+), 13 deletions(-)
->
->diff --git a/include/hw/audio/pcspk=2Eh b/include/hw/audio/pcspk=2Eh
->index 9506179587=2E=2E6be75a6b86 100644
->--- a/include/hw/audio/pcspk=2Eh
->+++ b/include/hw/audio/pcspk=2Eh
->@@ -25,16 +25,6 @@
-> #ifndef HW_PCSPK_H
-> #define HW_PCSPK_H
->=20
->-#include "hw/isa/isa=2Eh"
->-#include "hw/qdev-properties=2Eh"
->-#include "qapi/error=2Eh"
->-
-> #define TYPE_PC_SPEAKER "isa-pcspk"
->=20
->-static inline void pcspk_init(ISADevice *isadev, ISABus *bus, ISADevice =
-*pit)
->-{
->-    object_property_set_link(OBJECT(isadev), "pit", OBJECT(pit), NULL);
->-    isa_realize_and_unref(isadev, bus, &error_fatal);
->-}
->-
-> #endif /* HW_PCSPK_H */
->diff --git a/hw/i386/pc=2Ec b/hw/i386/pc=2Ec
->index bb3854d1d0=2E=2Ef7ee638bec 100644
->--- a/hw/i386/pc=2Ec
->+++ b/hw/i386/pc=2Ec
->@@ -1283,7 +1283,9 @@ void pc_basic_device_init(struct PCMachineState *pc=
-ms,
->             /* connect PIT to output control line of the HPET */
->             qdev_connect_gpio_out(hpet, 0, qdev_get_gpio_in(DEVICE(pit),=
- 0));
->         }
->-        pcspk_init(pcms->pcspk, isa_bus, pit);
->+        object_property_set_link(OBJECT(pcms->pcspk), "pit",
->+                                 OBJECT(pit), &error_fatal);
->+        isa_realize_and_unref(pcms->pcspk, isa_bus, &error_fatal);
->     }
->=20
->     /* Super I/O */
->diff --git a/hw/isa/i82378=2Ec b/hw/isa/i82378=2Ec
->index 63e0857208=2E=2E79ffbb52a0 100644
->--- a/hw/isa/i82378=2Ec
->+++ b/hw/isa/i82378=2Ec
->@@ -67,6 +67,7 @@ static void i82378_realize(PCIDevice *pci, Error **errp=
-)
->     uint8_t *pci_conf;
->     ISABus *isabus;
->     ISADevice *pit;
->+    ISADevice *pcspk;
->=20
->     pci_conf =3D pci->config;
->     pci_set_word(pci_conf + PCI_COMMAND,
->@@ -102,7 +103,9 @@ static void i82378_realize(PCIDevice *pci, Error **er=
-rp)
->     pit =3D i8254_pit_init(isabus, 0x40, 0, NULL);
->=20
->     /* speaker */
->-    pcspk_init(isa_new(TYPE_PC_SPEAKER), isabus, pit);
->+    pcspk =3D isa_new(TYPE_PC_SPEAKER);
->+    object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), &error_f=
-atal);
->+    isa_realize_and_unref(pcspk, isabus, &error_fatal);
+Am 18=2E Oktober 2023 17:38:33 UTC schrieb Salil Mehta <salil=2Emehta@opns=
+rc=2Enet>:
+>Hello,
 
-Why not pass errp here? I think that was Mark's comment in v1=2E
+Hi Salil,
 
->=20
->     /* 2 82C37 (dma) */
->     isa_create_simple(isabus, "i82374");
->diff --git a/hw/mips/jazz=2Ec b/hw/mips/jazz=2Ec
->index c32d2b0b0a=2E=2Ecdc37126c2 100644
->--- a/hw/mips/jazz=2Ec
->+++ b/hw/mips/jazz=2Ec
->@@ -177,6 +177,7 @@ static void mips_jazz_init(MachineState *machine,
->     SysBusDevice *sysbus;
->     ISABus *isa_bus;
->     ISADevice *pit;
->+    ISADevice *pcspk;
->     DriveInfo *fds[MAX_FD];
->     MemoryRegion *bios =3D g_new(MemoryRegion, 1);
->     MemoryRegion *bios2 =3D g_new(MemoryRegion, 1);
->@@ -279,7 +280,9 @@ static void mips_jazz_init(MachineState *machine,
->     isa_bus_register_input_irqs(isa_bus, i8259);
->     i8257_dma_init(isa_bus, 0);
->     pit =3D i8254_pit_init(isa_bus, 0x40, 0, NULL);
->-    pcspk_init(isa_new(TYPE_PC_SPEAKER), isa_bus, pit);
->+    pcspk =3D isa_new(TYPE_PC_SPEAKER);
->+    object_property_set_link(OBJECT(pcspk), "pit", OBJECT(pit), &error_f=
-atal);
->+    isa_realize_and_unref(pcspk, isa_bus, &error_fatal);
->=20
->     /* Video card */
->     switch (jazz_model) {
+>Can we assume that every machine type will have all the features which a =
+GED Device can multiplex present together? like will Memory and CPU Hotplug=
+ makes sense for all the type of machines?
+
+I can't really answer these questions -- I'm by no means an ACPI expert=2E=
+ My idea about removing TYPE_ACPI_GED_X86 really was not more than the comm=
+it message says: To remove unneeded code=2E
+
+That said, I wonder myself if the GED device could be uniformly implemente=
+d across architectures and if -- in theory -- it could be used in the pc-i4=
+40fx machine instead of the Frankenstein hotplug implementation in PIIX4=2E
+
+Best regards,
+Bernhard
+
+>
+>If answer is no, then shouldn't every machine type override the base GED =
+type and define it own versions of instance_init() function? AFAICS, GED ca=
+n multiplex non-hotplug events as well=2E
+>
+>To support CPU Htoplug on ARM platforms we are using GED but x86/microvm =
+does not supports hot-plugging and while creating TYPE_GED_DEVICE it will e=
+nd up initializing CPU Hotplug regions and code as well=2E This is far from=
+ clean=2E
+>
+>Beside 'qtest' fails for x86/microvm machine type because 'possible_cpus_=
+arch_ids' is not defined for x86/microvm so we get errors like below:
+>
+>stderr:
+>qemu-system-x86_64: =2E=2E/hw/acpi/cpu=2Ec:224: cpu_hotplug_hw_init: Asse=
+rtion `mc->possible_cpu_arch_ids' failed=2E
+>Broken pipe
+>=2E=2E/tests/qtest/libqtest=2Ec:200: kill_qemu() detected QEMU death from=
+ signal 6 (Aborted) (core dumped)
+>
+>Above can be avoided if cpu_hotplug_hw_init() does not gets called for x8=
+6/microvm machine=2E
+>
+>ARM can have its own version of generic_event_device_arm64=2Ec with its o=
+wn version of instance_init() having a call to cpu_hotplug_hw_init()=2E
+>
+>Maybe I have missed something here?
+>
+>
+>Many thanks
+>Salil=2E
+>
+>
+>On 05/10/2023 04:44, Michael S=2E Tsirkin wrote:
+>> From: Bernhard Beschow <shentey@gmail=2Ecom>
+>>=20
+>> Now that TYPE_ACPI_GED_X86 doesn't assign AcpiDeviceIfClass::madt_cpu a=
+ny more
+>> it is the same as TYPE_ACPI_GED=2E
+>>=20
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>> Message-Id: <20230908084234=2E17642-6-shentey@gmail=2Ecom>
+>> Reviewed-by: Michael S=2E Tsirkin <mst@redhat=2Ecom>
+>> Signed-off-by: Michael S=2E Tsirkin <mst@redhat=2Ecom>
+>> ---
+>>   include/hw/acpi/generic_event_device=2Eh |  2 --
+>>   hw/i386/generic_event_device_x86=2Ec     | 27 -----------------------=
+---
+>>   hw/i386/microvm=2Ec                      |  2 +-
+>>   hw/i386/meson=2Ebuild                    |  1 -
+>>   4 files changed, 1 insertion(+), 31 deletions(-)
+>>   delete mode 100644 hw/i386/generic_event_device_x86=2Ec
+>>=20
+>> diff --git a/include/hw/acpi/generic_event_device=2Eh b/include/hw/acpi=
+/generic_event_device=2Eh
+>> index d831bbd889=2E=2Eba84ce0214 100644
+>> --- a/include/hw/acpi/generic_event_device=2Eh
+>> +++ b/include/hw/acpi/generic_event_device=2Eh
+>> @@ -69,8 +69,6 @@
+>>   #define TYPE_ACPI_GED "acpi-ged"
+>>   OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>>   -#define TYPE_ACPI_GED_X86 "acpi-ged-x86"
+>> -
+>>   #define ACPI_GED_EVT_SEL_OFFSET    0x0
+>>   #define ACPI_GED_EVT_SEL_LEN       0x4
+>>   diff --git a/hw/i386/generic_event_device_x86=2Ec b/hw/i386/generic_e=
+vent_device_x86=2Ec
+>> deleted file mode 100644
+>> index 8fc233e1f1=2E=2E0000000000
+>> --- a/hw/i386/generic_event_device_x86=2Ec
+>> +++ /dev/null
+>> @@ -1,27 +0,0 @@
+>> -/*
+>> - * x86 variant of the generic event device for hw reduced acpi
+>> - *
+>> - * This program is free software; you can redistribute it and/or modif=
+y it
+>> - * under the terms and conditions of the GNU General Public License,
+>> - * version 2 or later, as published by the Free Software Foundation=2E
+>> - */
+>> -
+>> -#include "qemu/osdep=2Eh"
+>> -#include "hw/acpi/generic_event_device=2Eh"
+>> -
+>> -static const TypeInfo acpi_ged_x86_info =3D {
+>> -    =2Ename          =3D TYPE_ACPI_GED_X86,
+>> -    =2Eparent        =3D TYPE_ACPI_GED,
+>> -    =2Einterfaces =3D (InterfaceInfo[]) {
+>> -        { TYPE_HOTPLUG_HANDLER },
+>> -        { TYPE_ACPI_DEVICE_IF },
+>> -        { }
+>> -    }
+>> -};
+>> -
+>> -static void acpi_ged_x86_register_types(void)
+>> -{
+>> -    type_register_static(&acpi_ged_x86_info);
+>> -}
+>> -
+>> -type_init(acpi_ged_x86_register_types)
+>> diff --git a/hw/i386/microvm=2Ec b/hw/i386/microvm=2Ec
+>> index 8deeb62774=2E=2Eb9c93039e2 100644
+>> --- a/hw/i386/microvm=2Ec
+>> +++ b/hw/i386/microvm=2Ec
+>> @@ -204,7 +204,7 @@ static void microvm_devices_init(MicrovmMachineStat=
+e *mms)
+>>         /* Optional and legacy devices */
+>>       if (x86_machine_is_acpi_enabled(x86ms)) {
+>> -        DeviceState *dev =3D qdev_new(TYPE_ACPI_GED_X86);
+>> +        DeviceState *dev =3D qdev_new(TYPE_ACPI_GED);
+>>           qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_EVT)=
+;
+>>           sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
+>>           /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_MEMH=
+P); */
+>> diff --git a/hw/i386/meson=2Ebuild b/hw/i386/meson=2Ebuild
+>> index cfdbfdcbcb=2E=2Eff879069c9 100644
+>> --- a/hw/i386/meson=2Ebuild
+>> +++ b/hw/i386/meson=2Ebuild
+>> @@ -20,7 +20,6 @@ i386_ss=2Eadd(when: 'CONFIG_SGX', if_true: files('sgx=
+-epc=2Ec','sgx=2Ec'),
+>>                                   if_false: files('sgx-stub=2Ec'))
+>>     i386_ss=2Eadd(when: 'CONFIG_ACPI', if_true: files('acpi-common=2Ec'=
+))
+>> -i386_ss=2Eadd(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('generic_=
+event_device_x86=2Ec'))
+>>   i386_ss=2Eadd(when: 'CONFIG_PC', if_true: files(
+>>     'pc=2Ec',
+>>     'pc_sysfw=2Ec',
+>>=20
 
