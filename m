@@ -2,60 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD487CF647
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C407CF645
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQsf-0001v2-4H; Thu, 19 Oct 2023 07:07:57 -0400
+	id 1qtQtE-0002uP-Gr; Thu, 19 Oct 2023 07:08:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtQsW-0001aD-Mr
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:07:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qtQsr-0002WN-0n
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:08:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtQsU-0000fP-3j
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:07:47 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qtQsl-0000jU-R9
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:08:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697713662;
+ s=mimecast20190719; t=1697713682;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8wfCxek9OoPColiW0oHwTCqU4sKgH5HqEBvo1BgtFVs=;
- b=NvcmJvbNTIrK3pIvd/QamS8kK6p9UdKQzWG4A3l7NWwsGsLk1SqZrgmsr6CxPX7XxzTNGE
- FddxKK3IwqGcM0xiQ1OysGxOniZPt8hkyxgeOAzBjewIlFzOM4qagcZcSTSQ9yOqCqt/vr
- JuhAvoyb+zwfnlF2Lcb8MSglyb61yRg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-475-K7uulQQpMq-F3ldfLegzAA-1; Thu, 19 Oct 2023 07:07:41 -0400
-X-MC-Unique: K7uulQQpMq-F3ldfLegzAA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4BF588B770;
- Thu, 19 Oct 2023 11:07:40 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C444F25C8;
- Thu, 19 Oct 2023 11:07:39 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>
-Subject: [PATCH v2 11/11] migration: Rename ram_compressed_pages() to
- compress_ram_pages()
-Date: Thu, 19 Oct 2023 13:07:24 +0200
-Message-ID: <20231019110724.15324-12-quintela@redhat.com>
-In-Reply-To: <20231019110724.15324-1-quintela@redhat.com>
-References: <20231019110724.15324-1-quintela@redhat.com>
+ bh=Bn7yn/L6CuW3xBfEyBUWzp1Zh5rICznAgtSojoJxIK8=;
+ b=T0ZOpJLQT+hqwVRz+Wulz1vAZLibg+IjcCfPy1Eht1rb4ym/4w23v3DRSQlzaY/BrtLdJ0
+ y3aEmCz8ADiDUZMjwLlBXjtjOAtIv29OCh7sHJlrR94Y6Kj8rrjqFckP4FZTIzePH/I7bz
+ R724lVwfVesiJm/jVBL8KKMWxfThtqY=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-79-VtArIWsVPwuTEfj3m7tONA-1; Thu, 19 Oct 2023 07:07:46 -0400
+X-MC-Unique: VtArIWsVPwuTEfj3m7tONA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41cc5b9d26eso10453291cf.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 04:07:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697713666; x=1698318466;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Bn7yn/L6CuW3xBfEyBUWzp1Zh5rICznAgtSojoJxIK8=;
+ b=s/jdN9t94sPr6XOL81+l+JqFqasfviRQQepmS5O/6N/Yn7xglWyQf1FVR6e9qgrL3z
+ /Qq3X7VwBphxbetxUUT118GjtOR4wMqiNsFEicOfvF9vEC2LIaLqlOlWziwcLOSP+gyW
+ Laten9OYsIDWlXKk3xz2v2mOVC45Ib3pEBUgmvZisV/0rycSYNWLU/bo8teesznMRqpz
+ EmTUkbcd3QDHy3ZwsHQNUpxsRJoW+Ei5xfBOWYT/xcdqaZka1lQrAwqCw4XrNsymCqyu
+ EFGxXmX2QwvePEVV6c/5qzZjC1yVEOQnJjjvgusCXQM9usrwc6G4+awBnjdnY6P61jUq
+ /lEg==
+X-Gm-Message-State: AOJu0YxGLuj3+lTuzNXp6q5sOUDH0mUAvvVWqqDapmSI7C79kgytZZko
+ bdHQtA71egv1XFsuIKdZBwvEi/wQfUSQ5geSlo6hjxHagCaonVo8aZ5hEPMpq5ilbkmVeF7/Cku
+ kM1JPwfGZ/Aa8PYU=
+X-Received: by 2002:a05:622a:1903:b0:418:11ab:1bf7 with SMTP id
+ w3-20020a05622a190300b0041811ab1bf7mr2109354qtc.30.1697713666166; 
+ Thu, 19 Oct 2023 04:07:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGd2vfEsznJXqTXLEW1eF3AdYelTbVd6qlUgD38/Dxc0TXtynVInCjuBnE0O1Y3ES+Pl0KVOA==
+X-Received: by 2002:a05:622a:1903:b0:418:11ab:1bf7 with SMTP id
+ w3-20020a05622a190300b0041811ab1bf7mr2109319qtc.30.1697713665853; 
+ Thu, 19 Oct 2023 04:07:45 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ c2-20020ac86602000000b004199c98f87dsm647443qtp.74.2023.10.19.04.07.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 04:07:45 -0700 (PDT)
+Message-ID: <9ddc3f2e-8be7-4e03-bf9f-3ac930650a52@redhat.com>
+Date: Thu, 19 Oct 2023 13:07:41 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>, Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ alex.williamson@redhat.com, jean-philippe@linaro.org, pbonzini@redhat.com,
+ peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
+ philmd@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com
+References: <20231011175516.541374-1-eric.auger@redhat.com>
+ <20231018093723-mutt-send-email-mst@kernel.org>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231018093723-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -63,7 +87,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,56 +103,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are moving to have all functions exported from ram-compress.c to
-start with compress_.
+On 10/18/23 15:37, Michael S. Tsirkin wrote:
+> On Wed, Oct 11, 2023 at 07:52:16PM +0200, Eric Auger wrote:
+>> This applies on top of vfio-next:
+>> https://github.com/legoater/qemu/, vfio-next branch
+> 
+> virtio things make sense
+> 
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> 
+> let me know how you want to merge all this.
 
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- migration/ram-compress.h | 2 +-
- migration/ram-compress.c | 2 +-
- migration/ram.c          | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+Michael,
 
-diff --git a/migration/ram-compress.h b/migration/ram-compress.h
-index e222887fb7..0d89a2f55e 100644
---- a/migration/ram-compress.h
-+++ b/migration/ram-compress.h
-@@ -68,7 +68,7 @@ int compress_threads_load_setup(QEMUFile *f);
- void decompress_data_with_multi_threads(QEMUFile *f, void *host, int len);
- 
- void populate_compress(MigrationInfo *info);
--uint64_t ram_compressed_pages(void);
-+uint64_t compress_ram_pages(void);
- void update_compress_thread_counts(const CompressParam *param, int bytes_xmit);
- void compress_update_rates(uint64_t page_count);
- int compress_send_queued_data(CompressParam *param);
-diff --git a/migration/ram-compress.c b/migration/ram-compress.c
-index 036e44085b..fa4388f6a6 100644
---- a/migration/ram-compress.c
-+++ b/migration/ram-compress.c
-@@ -516,7 +516,7 @@ void populate_compress(MigrationInfo *info)
-     info->compression->compression_rate = compression_counters.compression_rate;
- }
- 
--uint64_t ram_compressed_pages(void)
-+uint64_t compress_ram_pages(void)
- {
-     return compression_counters.pages;
- }
-diff --git a/migration/ram.c b/migration/ram.c
-index 4a07406c9a..e8a1527d82 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -932,7 +932,7 @@ uint64_t ram_get_total_transferred_pages(void)
- {
-     return stat64_get(&mig_stats.normal_pages) +
-         stat64_get(&mig_stats.zero_pages) +
--        ram_compressed_pages() + xbzrle_counters.pages;
-+        compress_ram_pages() + xbzrle_counters.pages;
- }
- 
- static void migration_update_rates(RAMState *rs, int64_t end_time)
--- 
-2.41.0
+I will grab the series if that's OK.
+
+Thanks,
+
+C.
 
 
