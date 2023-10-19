@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FDA7CFF00
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D16917CFF07
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:05:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVVp-0007gi-6d; Thu, 19 Oct 2023 12:04:41 -0400
+	id 1qtVWK-0000kK-Gy; Thu, 19 Oct 2023 12:05:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVVn-0007dC-4a
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:04:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVWH-0000XR-43
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:05:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVVl-0003Bs-Lt
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:04:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVWF-0003Rk-7y
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:05:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697731475;
+ s=mimecast20190719; t=1697731506;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=w89cLQNT8CFTOlsKFZKNdV5vAE9T44gnZpusnIdfVEQ=;
- b=X6FmxwKNamQNTD30eB7t+uBzFFIk9DjwFnVlEfryyavSMcsp/g5KK7EsB6WCxfv13ZNo7+
- G95fCNujKtZeC4/iWByra1l8dqGcP0yp/Jei9tbqrp0HEL7dWCSxza24vENBGGZAvcVJUO
- kEa3p+SFdwTlBRM03JDUgtQm0lyMX3U=
+ bh=lcc7KSLAl8R+GEmJaINwyz4rtiTnxiafEDIKKi+uzV8=;
+ b=B2hUvu+gzMcAi5w4uBNLU4NsoeDsB6xvHKwxL8N0+nddnJlgVgeTCj/qrReJjeGMd4skBR
+ z4aKkKr2MppehbkSsKu8umD+AaAqWP3JeW1fvalU6roF1dlumsnUK20u/wb6TX/fDQ8TyQ
+ yEDVoYHHJHS+o3zcxiYMNndqjl2mTwA=
 Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
  [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-154-qJ75ynqYP1yIUtZGsfjnFg-1; Thu, 19 Oct 2023 12:04:33 -0400
-X-MC-Unique: qJ75ynqYP1yIUtZGsfjnFg-1
+ us-mta-189-KF3gNFfzPmyBi1GX1VXE7g-1; Thu, 19 Oct 2023 12:05:04 -0400
+X-MC-Unique: KF3gNFfzPmyBi1GX1VXE7g-1
 Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4180bc4227bso15243841cf.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:04:33 -0700 (PDT)
+ d75a77b69052e-417fd6a8575so94061511cf.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:05:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697731473; x=1698336273;
+ d=1e100.net; s=20230601; t=1697731504; x=1698336304;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w89cLQNT8CFTOlsKFZKNdV5vAE9T44gnZpusnIdfVEQ=;
- b=OljeZzUGZ4zGILvBcG3zyVKW35J8uDnmezjDruxrMwfSjm/Pk1hQCEBoG8fdkSJwGZ
- yUA956qACYNrdvT7EJRQoXP+WiXcIdhmsKAGjmtBSJAKVAroxSM3M8tpUaHFkhmFy5UI
- jgZ3Ge8gg8eBUnnSkLcjZnIrYJWS0Z9lrnnqC/EqV8dhxAJc9h26rxBJxeWfGhjoRH8U
- RevT779eomSn7Cwfdduasr6+SW/HOQ2tQY8MuDMYnmbOJb6NTFu/ofQEOVtyr2yHKsXR
- srrdZZqqia4xxskvPNgTbJwHDkQXZvRdjG9C0By5vAY9+t/z+v6RVBg35fv4LZip6J72
- XbtQ==
-X-Gm-Message-State: AOJu0YwxUFzQzFfCf6qHbhIRX8b4G/5qwcOzySN/lmk17EM62Gvh3US/
- afxCHF7h8hqaVSDBeziCB3fSmxO0jubejHRtLOIxzSNqY3Nm5ITfNPC5nAlB99sq9jrzJFbzGqr
- bzF1nDmaDGCIZxho=
-X-Received: by 2002:a05:622a:1790:b0:41c:c27e:f8f6 with SMTP id
- s16-20020a05622a179000b0041cc27ef8f6mr2991545qtk.23.1697731472596; 
- Thu, 19 Oct 2023 09:04:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFA0WJxiQyRYNRjTLTBGekjT5LKRggFgI0ViUU9BD3mziAVkmy+PrFnEimug34P4IdDHKqAaQ==
-X-Received: by 2002:a05:622a:1790:b0:41c:c27e:f8f6 with SMTP id
- s16-20020a05622a179000b0041cc27ef8f6mr2991505qtk.23.1697731472185; 
- Thu, 19 Oct 2023 09:04:32 -0700 (PDT)
+ bh=lcc7KSLAl8R+GEmJaINwyz4rtiTnxiafEDIKKi+uzV8=;
+ b=AM8qEdEoS4Hu8c0ZYAGz3NH7paFbpSnasaqtB5pbvXmHADm5Mk3Fa9uJ29TrlVgZzT
+ 8cv7Z6KkFHCifZ1+0N7rqllGV6TtO6s1sDh8I0goHPbfry6NunGKswj+/+kv+WbSMgrs
+ B10JHcw7xZsnYTQ5+OTvHb98gHaFaxfbNvQyleUD9T2WIcgOfUvNGyykdDieqCNJOh0U
+ 8iboBGOB/04HP0NEcPg3d4eVU2Rpwex9GmlepUcI5kMmem2BclTlo/j97U2LVOvL3wPN
+ Q+K09lMf6+eGodXXwfP04nNdFq8MWNC7ZiSbO3ytKPEevaY6VNNegGDl8tKNXBM8OhVw
+ 8NVw==
+X-Gm-Message-State: AOJu0YzD1dFCLB5XINoe0gXvUTwXXiGh/V+vu6HptHPWXz+nYQBJKfY+
+ aPafpcQjlKMSE3lOv82VnAdWD4jfsRzg6Z7Q+QYRUbAIS5iI33ANchZ1uCi5Xg/Lmde8g66KW3A
+ q8OTan8C5goPXJTh3KczQIHk=
+X-Received: by 2002:ac8:57c2:0:b0:418:c8e9:45e5 with SMTP id
+ w2-20020ac857c2000000b00418c8e945e5mr2806073qta.24.1697731503744; 
+ Thu, 19 Oct 2023 09:05:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1SNKlkrUjh2hAGQolDCPTatBqrRwlU8ZzX7+9KZYj0VsFTjHGudzOhbmY7UO4fl7AWWoLTg==
+X-Received: by 2002:ac8:57c2:0:b0:418:c8e9:45e5 with SMTP id
+ w2-20020ac857c2000000b00418c8e945e5mr2806043qta.24.1697731503363; 
+ Thu, 19 Oct 2023 09:05:03 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- y12-20020ac8128c000000b004196d75d79csm828688qti.46.2023.10.19.09.04.31
+ y12-20020ac8128c000000b004196d75d79csm828688qti.46.2023.10.19.09.05.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 09:04:31 -0700 (PDT)
-Message-ID: <05b8d889-4dc1-49b5-9a2c-3e809aa8a931@redhat.com>
-Date: Thu, 19 Oct 2023 18:04:30 +0200
+ Thu, 19 Oct 2023 09:05:03 -0700 (PDT)
+Message-ID: <9191fbc3-47e7-4e6e-87a5-2598435c584d@redhat.com>
+Date: Thu, 19 Oct 2023 18:05:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/9] hw/sd/pxa2xx: Do not open-code
- sysbus_create_simple()
+Subject: Re: [PATCH v2 3/9] hw/pcmcia/pxa2xx: Realize sysbus device before
+ accessing it
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
 References: <20231019130925.18744-1-philmd@linaro.org>
- <20231019130925.18744-3-philmd@linaro.org>
+ <20231019130925.18744-4-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -116,18 +116,18 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231019130925.18744-3-philmd@linaro.org>
+In-Reply-To: <20231019130925.18744-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,31 +144,36 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 19/10/2023 15.09, Philippe Mathieu-Daudé wrote:
+> sysbus_mmio_map() should not be called on unrealized device.
+> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/sd/pxa2xx_mmci.c | 7 +------
->   1 file changed, 1 insertion(+), 6 deletions(-)
+>   hw/pcmcia/pxa2xx.c | 7 ++-----
+>   1 file changed, 2 insertions(+), 5 deletions(-)
 > 
-> diff --git a/hw/sd/pxa2xx_mmci.c b/hw/sd/pxa2xx_mmci.c
-> index 9f7a880bac..4749e935d8 100644
-> --- a/hw/sd/pxa2xx_mmci.c
-> +++ b/hw/sd/pxa2xx_mmci.c
-> @@ -479,13 +479,8 @@ PXA2xxMMCIState *pxa2xx_mmci_init(MemoryRegion *sysmem,
->                   qemu_irq irq, qemu_irq rx_dma, qemu_irq tx_dma)
+> diff --git a/hw/pcmcia/pxa2xx.c b/hw/pcmcia/pxa2xx.c
+> index fcca7e571b..e7264feb45 100644
+> --- a/hw/pcmcia/pxa2xx.c
+> +++ b/hw/pcmcia/pxa2xx.c
+> @@ -142,15 +142,12 @@ PXA2xxPCMCIAState *pxa2xx_pcmcia_init(MemoryRegion *sysmem,
+>                                         hwaddr base)
 >   {
 >       DeviceState *dev;
-> -    SysBusDevice *sbd;
+> -    PXA2xxPCMCIAState *s;
 >   
-> -    dev = qdev_new(TYPE_PXA2XX_MMCI);
-> -    sbd = SYS_BUS_DEVICE(dev);
-> -    sysbus_realize_and_unref(sbd, &error_fatal);
-> -    sysbus_mmio_map(sbd, 0, base);
-> -    sysbus_connect_irq(sbd, 0, irq);
-> +    dev = sysbus_create_simple(TYPE_PXA2XX_MMCI, base, irq);
->       qdev_connect_gpio_out_named(dev, "rx-dma", 0, rx_dma);
->       qdev_connect_gpio_out_named(dev, "tx-dma", 0, tx_dma);
+>       dev = qdev_new(TYPE_PXA2XX_PCMCIA);
+> -    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+> -    s = PXA2XX_PCMCIA(dev);
+> -
+>       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+>   
+> -    return s;
+> +    return PXA2XX_PCMCIA(dev);
+>   }
+>   
+>   static void pxa2xx_pcmcia_initfn(Object *obj)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-
 
 
