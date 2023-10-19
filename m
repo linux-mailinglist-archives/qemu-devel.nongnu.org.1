@@ -2,113 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C667CFD75
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DBA7CFD76
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:00:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtUUw-0004Wj-OB; Thu, 19 Oct 2023 10:59:42 -0400
+	id 1qtUVS-0005YO-Ng; Thu, 19 Oct 2023 11:00:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qtUUu-0004Vc-Ry
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:59:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtUVQ-0005W1-Pl
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:00:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qtUUr-0008Kb-98
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:59:40 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtUVN-0000AH-Ao
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:00:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697727575;
+ s=mimecast20190719; t=1697727608;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Vh9vI2k+fqi+B1e5cZrsePMAeuW5m9+239fJY0/Ef2w=;
- b=DEeayGMV9E7ISHdUCvjf18ttiKz662MPoV5HcF/IzG7O/TqigrHvB0dT+Vsw/EEG1qxx6C
- feIlAslTu5WRr9Yu0kry4JDkbGPDInh7kJcuFbb4EmIEKATJw5Xp0jIX8JrQU+olJ4r0Vj
- Wwh+NvfwotpBXRnykdJgBbBCpUqQc48=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=U26FJ2WAPF3TCjOt0sE90VW9s4jxBxo+wfHWRJ9AMYg=;
+ b=ARuTVLoemaTSvq9sBWPiaU8ZuEINEPh/oTcI8XHvxR5FnOfbp/MgayaB/o63C8FoTQl0Fi
+ zf4LtIwoX4hmjznjdvY0/PKl5uQ0NCQEPYYRScXvCGvjUfzL4yPDkcQoQdSTtF7byh0B+k
+ Sex+MYMOnzbYOWh/hzac0g+17yWZPiE=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-lkSjKANPPwKgNwr9_8PRdw-1; Thu, 19 Oct 2023 10:59:24 -0400
-X-MC-Unique: lkSjKANPPwKgNwr9_8PRdw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-65afd7515aaso94635066d6.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 07:59:24 -0700 (PDT)
+ us-mta-272-09nOyZ2hMQOgfbWAQ9X2Jw-1; Thu, 19 Oct 2023 11:00:07 -0400
+X-MC-Unique: 09nOyZ2hMQOgfbWAQ9X2Jw-1
+Received: by mail-yw1-f199.google.com with SMTP id
+ 00721157ae682-5a8ead739c3so3900237b3.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:00:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697727564; x=1698332364;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Vh9vI2k+fqi+B1e5cZrsePMAeuW5m9+239fJY0/Ef2w=;
- b=i3GkhgKlaoSAH1+szX9ZtFjFgCqnNKwxVsUZdgQm580XgX2FTfblv8YTTWqq1bJfLV
- KlLdZjgoLnepZBuHB+oBmORWzJx+0lGxQ/zQsygJJMv5eNXaCadw4kautYHuNkdsC9yL
- 3zES5DMyHfsMBtbPN0NbTFkqKchWD5hC02R452KznrXebTWFqszbQulkPzDq5bdQ8EP1
- 1v7D8jNpcYFqU+RiZGFL3oFJKog/XZ73bdFUr1lwOoA/vXetuaDO+f34du3Ya9/FRNVM
- eNTsw7bZcQGeF+8EiGMhNyeXQMkfjcgt90h3tEAfnQCTIwfxFCf3nl4JUAkpCHciloGd
- 0O2Q==
-X-Gm-Message-State: AOJu0Yw0UMrn5QgUF0UQkba28bLu7JJlHEkxJCSfi8UgTEYn6VoQ6RvE
- Bzx6AAdsjRIKp9oNdMmFpfckmDxfmZh8M4VGBP9wiQBRjZ14WFUoKD+J2ko02d7w4Z2xRhC7V0s
- 4t3r5KZzYpNhQiD8=
-X-Received: by 2002:a05:6214:f0b:b0:66d:33c1:3750 with SMTP id
- gw11-20020a0562140f0b00b0066d33c13750mr2239150qvb.49.1697727563774; 
- Thu, 19 Oct 2023 07:59:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBDetSLx1FjLn5dePVdf3AFwfmzOaSyfxN9GUB0NaV1CQ4wEfKyoGQI52aj39LW0UxqhUImQ==
-X-Received: by 2002:a05:6214:f0b:b0:66d:33c1:3750 with SMTP id
- gw11-20020a0562140f0b00b0066d33c13750mr2239119qvb.49.1697727563390; 
- Thu, 19 Oct 2023 07:59:23 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- jh21-20020a0562141fd500b0066d0621bb67sm828455qvb.114.2023.10.19.07.59.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 07:59:22 -0700 (PDT)
-Message-ID: <745ea518-5633-b671-9b1e-f2aa0af3a3bd@redhat.com>
-Date: Thu, 19 Oct 2023 16:59:16 +0200
+ d=1e100.net; s=20230601; t=1697727606; x=1698332406;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=U26FJ2WAPF3TCjOt0sE90VW9s4jxBxo+wfHWRJ9AMYg=;
+ b=iGaB5bgr9cJaP8vicH0iqZYVHjZ75iLq7o7S23hpW/TLfdeEJacqX+R0+qp1Tc8EWW
+ yI4GQ9hQ1ZnMxLBapczsqc+7ElMtOOwtZGBEMgR7x/y9bJde1PwZLhSEeBc2Ryqi9MM9
+ Cnab5bzRuGAinQpvXwCLMOfCxbxR/x2BTXmqcKPxy2bSyDmyq3qiLqTggyFyXM6PtEZW
+ qEuQyqA7tp9MBqGyMrWvxQGloK/hDK2m9PmPqPM89e0wOWwBeV3vKMA0rHJhzNRA38F6
+ 6Vl/NbspCAez3qFYeKVvEkvY/WaLabNPVqUhpa7a80U2COU8LjNzjCuzZdsmgH6hV3vv
+ 76cQ==
+X-Gm-Message-State: AOJu0Ywl/kQ6OSySGKEvklo1kikyzoh9fYyErzHle4XSlRO9ZLSaBMAo
+ gePNKMGJfCCk5D46Zjs9gfhb/olVGcx+DhtmxUFxlf4HjF4GRZJ/46JC7xk1SZRXSJLHWcGq4jl
+ UhZ9+T6ZXALxnSkQ=
+X-Received: by 2002:a0d:d741:0:b0:5a8:d92b:fbf3 with SMTP id
+ z62-20020a0dd741000000b005a8d92bfbf3mr2756520ywd.38.1697727606335; 
+ Thu, 19 Oct 2023 08:00:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFH9HUtnepq/CHM47hbMs5bI2TPWtaPYdpL4ftjpIc6+ziZWltQ2+cafLF64R34q2kz2cKvtA==
+X-Received: by 2002:a0d:d741:0:b0:5a8:d92b:fbf3 with SMTP id
+ z62-20020a0dd741000000b005a8d92bfbf3mr2756487ywd.38.1697727605882; 
+ Thu, 19 Oct 2023 08:00:05 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ qp13-20020a05620a388d00b0076eee688a95sm811023qkn.0.2023.10.19.08.00.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 08:00:05 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>,  qemu-devel@nongnu.org,  Leonardo Bras
+ <leobras@redhat.com>,  Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
+ semaphore
+In-Reply-To: <ZTE+lmbvtYNDU80q@x1n> (Peter Xu's message of "Thu, 19 Oct 2023
+ 10:35:02 -0400")
+References: <20231012140651.13122-1-farosas@suse.de>
+ <20231012140651.13122-2-farosas@suse.de>
+ <87sf676kxt.fsf@secure.mitica> <ZTE+lmbvtYNDU80q@x1n>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 19 Oct 2023 17:00:02 +0200
+Message-ID: <871qdq4pzh.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3] hw/pci: modify pci_setup_iommu() to set PCIIOMMUOps
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Joao Martins <joao.m.martins@oracle.com>, Liu Yi L <yi.l.liu@intel.com>,
- Kevin Tian <kevin.tian@intel.com>, Jacob Pan
- <jacob.jun.pan@linux.intel.com>, Peter Xu <peterx@redhat.com>,
- Yi Sun <yi.y.sun@linux.intel.com>, David Gibson
- <david@gibson.dropbear.id.au>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, Helge Deller <deller@gmx.de>,
- =?UTF-8?Q?Herv=c3=a9_Poussineau?= <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>
-References: <20231019115417.951497-1-clg@redhat.com>
- <dccc6f2f-7f01-8dde-8b89-ecf2ff1773c9@redhat.com>
- <3ffe9ae6-0b39-41a0-b340-b4538fdb0be2@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <3ffe9ae6-0b39-41a0-b340-b4538fdb0be2@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,712 +99,130 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+Peter Xu <peterx@redhat.com> wrote:
+> Fabiano,
+>
+> Sorry to look at this series late; I messed up my inbox after I reworked my
+> arrangement methodology of emails. ;)
+>
+> On Thu, Oct 19, 2023 at 11:06:06AM +0200, Juan Quintela wrote:
+>> Fabiano Rosas <farosas@suse.de> wrote:
+>> > The channels_ready semaphore is a global variable not linked to any
+>> > single multifd channel. Waiting on it only means that "some" channel
+>> > has become ready to send data. Since we need to address the channels
+>> > by index (multifd_send_state->params[i]), that information adds
+>> > nothing of value.
+>> 
+>> NAK.
+>> 
+>> I disagree here O:-)
+>> 
+>> the reason why that channel exist is for multifd_send_pages()
+>> 
+>> And simplifying the function what it does is:
+>> 
+>> sem_wait(channels_ready);
+>> 
+>> for_each_channel()
+>>    look if it is empty()
+>> 
+>> But with the semaphore, we guarantee that when we go to the loop, there
+>> is a channel ready, so we know we donat busy wait searching for a
+>> channel that is free.
+>> 
+>> Notice that I fully agree that the sem is not needed for locking.
+>> Locking is done with the mutex.  It is just used to make sure that we
+>> don't busy loop on that loop.
+>> 
+>> And we use a sem, because it is the easiest way to know how many
+>> channels are ready (even when we only care if there is one when we
+>> arrive to that code).
+>> 
+>> We lost count of that counter, and we fixed that here:
+>> 
+>> commit d2026ee117147893f8d80f060cede6d872ecbd7f
+>> Author: Juan Quintela <quintela@redhat.com>
+>> Date:   Wed Apr 26 12:20:36 2023 +0200
+>> 
+>>     multifd: Fix the number of channels ready
+>> 
+>>     We don't wait in the sem when we are doing a sync_main.  Make it
+>> 
+>> And we were addressing the problem that some users where finding that we
+>> were busy waiting on that loop.
+>
+> Juan,
+>
+> I can understand why send_pages needs that sem, but not when sync main.
+> IOW, why multifd_send_sync_main() needs:
+>
+>         qemu_sem_wait(&multifd_send_state->channels_ready);
+>
+> If it has:
+>
+>         qemu_sem_wait(&p->sem_sync);
+>
+> How does a busy loop happen?
 
-On 10/19/23 16:02, Cédric Le Goater wrote:
-> On 10/19/23 14:33, Eric Auger wrote:
->> Hi Cédric,
->>
->> On 10/19/23 13:54, Cédric Le Goater wrote:
->>> From: Liu Yi L <yi.l.liu@intel.com>
->>>
->>> This patch modifies pci_setup_iommu() to set PCIIOMMUOps
->>> instead of setting PCIIOMMUFunc. PCIIOMMUFunc is used to
->>> get an address space for a PCI device in vendor specific
->>> way. The PCIIOMMUOps still offers this functionality. But
->>> using PCIIOMMUOps leaves space to add more iommu related
->>> vendor specific operations.
->>>
->>> Cc: Kevin Tian <kevin.tian@intel.com>
->>> Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
->>> Cc: Peter Xu <peterx@redhat.com>
->>> Cc: Eric Auger <eric.auger@redhat.com>
->>> Cc: Yi Sun <yi.y.sun@linux.intel.com>
->>> Cc: David Gibson <david@gibson.dropbear.id.au>
->>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->>> Cc: Eric Auger <eric.auger@redhat.com>
->>> Cc: Peter Maydell <peter.maydell@linaro.org>
->>> Cc: Paolo Bonzini <pbonzini@redhat.com>
->>> Cc: Peter Xu <peterx@redhat.com>
->>> Cc: Jason Wang <jasowang@redhat.com>
->>> Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
->>> Cc: Helge Deller <deller@gmx.de>
->>> Cc: Hervé Poussineau <hpoussin@reactos.org>
->>> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>> Cc: BALATON Zoltan <balaton@eik.bme.hu>
->>> Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>
->>> Cc: Jagannathan Raman <jag.raman@oracle.com>
->>> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
->>> Cc: Eric Farman <farman@linux.ibm.com>
->>> Cc: Halil Pasic <pasic@linux.ibm.com>
->>> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
->>> Cc: Thomas Huth <thuth@redhat.com>
->>> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
->>> Reviewed-by: Peter Xu <peterx@redhat.com>
->>> Signed-off-by: Liu Yi L <yi.l.liu@intel.com>
->>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> [ clg: - refreshed on latest QEMU
->>>         - included hw/remote/iommu.c
->>>         - documentation update
->>>         - asserts in pci_setup_iommu()
->>>         - removed checks on iommu_bus->iommu_ops->get_address_space ]
->>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->>> ---
->>>
->>>   Hello,
->>>
->>>   Initially sent by Yi Liu as part of series "intel_iommu: expose
->>>   Shared Virtual Addressing to VMs" [1], this patch would also simplify
->>>   the changes Joao wants to introduce in "vfio: VFIO migration support
->>>   with vIOMMU" [2].
->>>
->>>   Has anyone objections ?
->>>
->>>   Thanks,
->>>
->>>   C.
->>>
->>>   [1]
->>> https://lore.kernel.org/qemu-devel/20210302203827.437645-5-yi.l.liu@intel.com/
->>>   [2]
->>> https://lore.kernel.org/qemu-devel/20230622214845.3980-1-joao.m.martins@oracle.com/
->>>
->>>   Changes in v3 :
->>>
->>>   - New Documentation
->>>   - Create a pci.rst for the kernel-doc comments of
->>>     include/hw/pci/pci.h
->>>   - asserts in pci_setup_iommu()
->>>   - removed checks on iommu_bus->iommu_ops->get_address_space
->>>
->>>   Changes in v2 :
->>>
->>>   - PCIIOMMUOps definition cleanups
->>>     docs/devel/index-api.rst |  1 +
->>>   docs/devel/pci.rst       |  8 ++++++++
->>>   include/hw/pci/pci.h     | 39 +++++++++++++++++++++++++++++++++++++--
->>>   include/hw/pci/pci_bus.h |  2 +-
->>>   hw/alpha/typhoon.c       |  6 +++++-
->>>   hw/arm/smmu-common.c     |  6 +++++-
->>>   hw/i386/amd_iommu.c      |  6 +++++-
->>>   hw/i386/intel_iommu.c    |  6 +++++-
->>>   hw/pci-host/designware.c |  6 +++++-
->>>   hw/pci-host/dino.c       |  6 +++++-
->>>   hw/pci-host/pnv_phb3.c   |  6 +++++-
->>>   hw/pci-host/pnv_phb4.c   |  6 +++++-
->>>   hw/pci-host/ppce500.c    |  6 +++++-
->>>   hw/pci-host/raven.c      |  6 +++++-
->>>   hw/pci-host/sabre.c      |  6 +++++-
->>>   hw/pci/pci.c             | 18 +++++++++++++-----
->>>   hw/ppc/ppc440_pcix.c     |  6 +++++-
->>>   hw/ppc/spapr_pci.c       |  6 +++++-
->>>   hw/remote/iommu.c        |  6 +++++-
->>>   hw/s390x/s390-pci-bus.c  |  8 ++++++--
->>>   hw/virtio/virtio-iommu.c |  6 +++++-
->>>   21 files changed, 141 insertions(+), 25 deletions(-)
->>>   create mode 100644 docs/devel/pci.rst
->>>
->>> diff --git a/docs/devel/index-api.rst b/docs/devel/index-api.rst
->>> index
->>> 539ad29c215e803568b1d7b0ba6766c0cc9d2b8b..fe01b2b488d0b61376560011a660389603e4ce8e
->>> 100644
->>> --- a/docs/devel/index-api.rst
->>> +++ b/docs/devel/index-api.rst
->>> @@ -11,6 +11,7 @@ generated from in-code annotations to function
->>> prototypes.
->>>      loads-stores
->>>      memory
->>>      modules
->>> +   pci
->>>      qom-api
->>>      qdev-api
->>>      ui
->>> diff --git a/docs/devel/pci.rst b/docs/devel/pci.rst
->>> new file mode 100644
->>> index
->>> 0000000000000000000000000000000000000000..68739334f3c936cc28b8fceac6dbebbfe68e78a2
->>> --- /dev/null
->>> +++ b/docs/devel/pci.rst
->>> @@ -0,0 +1,8 @@
->>> +=============
->>> +PCI subsystem
->>> +=============
->>> +
->>> +API Reference
->>> +-------------
->>> +
->>> +.. kernel-doc:: include/hw/pci/pci.h
->>> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
->>> index
->>> b70a0b95ff5ae367ed7f98483ec8d1d1b6274530..0a4bcd13f39fde60326a548a3cd6637ec2287475
->>> 100644
->>> --- a/include/hw/pci/pci.h
->>> +++ b/include/hw/pci/pci.h
->>> @@ -366,10 +366,45 @@ void pci_bus_get_w64_range(PCIBus *bus, Range
->>> *range);
->>>     void pci_device_deassert_intx(PCIDevice *dev);
->>>   -typedef AddressSpace *(*PCIIOMMUFunc)(PCIBus *, void *, int);
->>> +
->>> +/**
->>> + * struct PCIIOMMUOps: callbacks structure for specific IOMMU handlers
->>> + * of a PCIBus
->>> + *
->>> + * Allows to modify the behavior of some IOMMU operations of the PCI
->>> + * framework for a set of devices on a PCI bus.
->>> + */
->>> +typedef struct PCIIOMMUOps {
->>> +    /**
->>> +     * @get_address_space: get the address space for a set of devices
->>> +     * on a PCI bus.
->>> +     *
->>> +     * Returns a pointer to AddressSpace, otherwise NULL.
->>> +     *
->>> +     * Optional method: if this method is not set, then the default
->>> +     * address_space is used.
->> isn't it a mandated method? You assert on
->>
->> pci_setup_iommu() if it isn't set, right?
->
-> I made it mandatory in pci_setup_iommu() indeed and now, PCIIOMMUOps
-> can be NULL but if not NULL, the .get_address_space() handler should
-> be defined.
->
-> I will fix the comment.
-OK. with that fixed, feel free to add my
+What does multifd_send_thread() for a SYNC packet.
 
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+static void *multifd_send_thread(void *opaque)
+{
+    while (true) {
+        qemu_sem_post(&multifd_send_state->channels_ready);
+        qemu_sem_wait(&p->sem);
 
-Thanks
+        qemu_mutex_lock(&p->mutex);
 
-Eric
->
-> Thanks,
->
-> C.
->
->  
->> Eric
->>
->>> +     *
->>> +     * @bus: the #PCIBus being accessed.
->>> +     *
->>> +     * @opaque: the data passed to pci_setup_iommu().
->>> +     *
->>> +     * @devfn: device and function number
->>> +     */
->>> +   AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque,
->>> int devfn);
->>> +} PCIIOMMUOps;
->>>     AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
->>> -void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque);
->>> +
->>> +/**
->>> + * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
->>> + *
->>> + * Let PCI host bridges define specific operations.
->>> + *
->>> + * @bus: the #PCIBus being updated.
->>> + * @ops: the #PCIIOMMUOps
->>> + * @opaque: passed to callbacks of the @ops structure.
->>> + */
->>> +void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void
->>> *opaque);
->>>     pcibus_t pci_bar_address(PCIDevice *d,
->>>                            int reg, uint8_t type, pcibus_t size);
->>> diff --git a/include/hw/pci/pci_bus.h b/include/hw/pci/pci_bus.h
->>> index
->>> 56531759578ffe2c6eccc92ebae4acabf47e390d..226131254621f257eefb45356489c125381e6a87
->>> 100644
->>> --- a/include/hw/pci/pci_bus.h
->>> +++ b/include/hw/pci/pci_bus.h
->>> @@ -33,7 +33,7 @@ enum PCIBusFlags {
->>>   struct PCIBus {
->>>       BusState qbus;
->>>       enum PCIBusFlags flags;
->>> -    PCIIOMMUFunc iommu_fn;
->>> +    const PCIIOMMUOps *iommu_ops;
->>>       void *iommu_opaque;
->>>       uint8_t devfn_min;
->>>       uint32_t slot_reserved_mask;
->>> diff --git a/hw/alpha/typhoon.c b/hw/alpha/typhoon.c
->>> index
->>> 49a80550c54d4ed9ee40f9959cbf2c83240d8e39..e8711ae16a3e16c733405034be5e65688ef4d3df
->>> 100644
->>> --- a/hw/alpha/typhoon.c
->>> +++ b/hw/alpha/typhoon.c
->>> @@ -738,6 +738,10 @@ static AddressSpace
->>> *typhoon_pci_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->>>       return &s->pchip.iommu_as;
->>>   }
->>>   +static const PCIIOMMUOps typhoon_iommu_ops = {
->>> +    .get_address_space = typhoon_pci_dma_iommu,
->>> +};
->>> +
->>>   static void typhoon_set_irq(void *opaque, int irq, int level)
->>>   {
->>>       TyphoonState *s = opaque;
->>> @@ -897,7 +901,7 @@ PCIBus *typhoon_init(MemoryRegion *ram, qemu_irq
->>> *p_isa_irq,
->>>                                "iommu-typhoon", UINT64_MAX);
->>>       address_space_init(&s->pchip.iommu_as,
->>> MEMORY_REGION(&s->pchip.iommu),
->>>                          "pchip0-pci");
->>> -    pci_setup_iommu(b, typhoon_pci_dma_iommu, s);
->>> +    pci_setup_iommu(b, &typhoon_iommu_ops, s);
->>>         /* Pchip0 PCI special/interrupt acknowledge,
->>> 0x801.F800.0000, 64MB.  */
->>>       memory_region_init_io(&s->pchip.reg_iack, OBJECT(s),
->>> &alpha_pci_iack_ops,
->>> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
->>> index
->>> f35ae9aa22cb1a62cc16c2534cb3c290862b0799..9a8ac45431abb80fc5e9f60104248cb356509088
->>> 100644
->>> --- a/hw/arm/smmu-common.c
->>> +++ b/hw/arm/smmu-common.c
->>> @@ -605,6 +605,10 @@ static AddressSpace *smmu_find_add_as(PCIBus
->>> *bus, void *opaque, int devfn)
->>>       return &sdev->as;
->>>   }
->>>   +static const PCIIOMMUOps smmu_ops = {
->>> +    .get_address_space = smmu_find_add_as,
->>> +};
->>> +
->>>   IOMMUMemoryRegion *smmu_iommu_mr(SMMUState *s, uint32_t sid)
->>>   {
->>>       uint8_t bus_n, devfn;
->>> @@ -661,7 +665,7 @@ static void smmu_base_realize(DeviceState *dev,
->>> Error **errp)
->>>       s->smmu_pcibus_by_busptr = g_hash_table_new(NULL, NULL);
->>>         if (s->primary_bus) {
->>> -        pci_setup_iommu(s->primary_bus, smmu_find_add_as, s);
->>> +        pci_setup_iommu(s->primary_bus, &smmu_ops, s);
->>>       } else {
->>>           error_setg(errp, "SMMU is not attached to any PCI bus!");
->>>       }
->>> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
->>> index
->>> 8d0f2f99ddbf49c3df834b6d40d2b23cafbb81ea..94f0f8a7f22130e5684926a8790182376723e58e
->>> 100644
->>> --- a/hw/i386/amd_iommu.c
->>> +++ b/hw/i386/amd_iommu.c
->>> @@ -1450,6 +1450,10 @@ static AddressSpace
->>> *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->>>       return &iommu_as[devfn]->as;
->>>   }
->>>   +static const PCIIOMMUOps amdvi_iommu_ops = {
->>> +    .get_address_space = amdvi_host_dma_iommu,
->>> +};
->>> +
->>>   static const MemoryRegionOps mmio_mem_ops = {
->>>       .read = amdvi_mmio_read,
->>>       .write = amdvi_mmio_write,
->>> @@ -1582,7 +1586,7 @@ static void amdvi_sysbus_realize(DeviceState
->>> *dev, Error **errp)
->>>         sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->mmio);
->>>       sysbus_mmio_map(SYS_BUS_DEVICE(s), 0, AMDVI_BASE_ADDR);
->>> -    pci_setup_iommu(bus, amdvi_host_dma_iommu, s);
->>> +    pci_setup_iommu(bus, &amdvi_iommu_ops, s);
->>>       amdvi_init(s);
->>>   }
->>>   diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->>> index
->>> 2c832ab68b3774dbec6eee4ffe7c13e7a1bf7bcc..87b07a390482160e6db630a2c2c4f6f522e0dc72
->>> 100644
->>> --- a/hw/i386/intel_iommu.c
->>> +++ b/hw/i386/intel_iommu.c
->>> @@ -4034,6 +4034,10 @@ static AddressSpace
->>> *vtd_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
->>>       return &vtd_as->as;
->>>   }
->>>   +static PCIIOMMUOps vtd_iommu_ops = {
->>> +    .get_address_space = vtd_host_dma_iommu,
->>> +};
->>> +
->>>   static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
->>>   {
->>>       X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
->>> @@ -4157,7 +4161,7 @@ static void vtd_realize(DeviceState *dev,
->>> Error **errp)
->>>                                         g_free, g_free);
->>>       vtd_init(s);
->>>       sysbus_mmio_map(SYS_BUS_DEVICE(s), 0,
->>> Q35_HOST_BRIDGE_IOMMU_ADDR);
->>> -    pci_setup_iommu(bus, vtd_host_dma_iommu, dev);
->>> +    pci_setup_iommu(bus, &vtd_iommu_ops, dev);
->>>       /* Pseudo address space under root PCI bus. */
->>>       x86ms->ioapic_as = vtd_host_dma_iommu(bus, s,
->>> Q35_PSEUDO_DEVFN_IOAPIC);
->>>       qemu_add_machine_init_done_notifier(&vtd_machine_done_notify);
->>> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
->>> index
->>> 6f5442f108874f6217fa122ac08c1ce27ad20cb9..f477f97847d753341f341281ed2abed2ce242574
->>> 100644
->>> --- a/hw/pci-host/designware.c
->>> +++ b/hw/pci-host/designware.c
->>> @@ -663,6 +663,10 @@ static AddressSpace
->>> *designware_pcie_host_set_iommu(PCIBus *bus, void *opaque,
->>>       return &s->pci.address_space;
->>>   }
->>>   +static const PCIIOMMUOps designware_iommu_ops = {
->>> +    .get_address_space = designware_pcie_host_set_iommu,
->>> +};
->>> +
->>>   static void designware_pcie_host_realize(DeviceState *dev, Error
->>> **errp)
->>>   {
->>>       PCIHostState *pci = PCI_HOST_BRIDGE(dev);
->>> @@ -705,7 +709,7 @@ static void
->>> designware_pcie_host_realize(DeviceState *dev, Error **errp)
->>>       address_space_init(&s->pci.address_space,
->>>                          &s->pci.address_space_root,
->>>                          "pcie-bus-address-space");
->>> -    pci_setup_iommu(pci->bus, designware_pcie_host_set_iommu, s);
->>> +    pci_setup_iommu(pci->bus, &designware_iommu_ops, s);
->>>         qdev_realize(DEVICE(&s->root), BUS(pci->bus), &error_fatal);
->>>   }
->>> diff --git a/hw/pci-host/dino.c b/hw/pci-host/dino.c
->>> index
->>> 82503229faf8a44b3974b2256b641ce18a77692b..5b0947a16c9ec4abf8668bc4563b1cc181f154f3
->>> 100644
->>> --- a/hw/pci-host/dino.c
->>> +++ b/hw/pci-host/dino.c
->>> @@ -354,6 +354,10 @@ static AddressSpace
->>> *dino_pcihost_set_iommu(PCIBus *bus, void *opaque,
->>>       return &s->bm_as;
->>>   }
->>>   +static const PCIIOMMUOps dino_iommu_ops = {
->>> +    .get_address_space = dino_pcihost_set_iommu,
->>> +};
->>> +
->>>   /*
->>>    * Dino interrupts are connected as shown on Page 78, Table 23
->>>    * (Little-endian bit numbers)
->>> @@ -481,7 +485,7 @@ static void dino_pcihost_init(Object *obj)
->>>           g_free(name);
->>>       }
->>>   -    pci_setup_iommu(phb->bus, dino_pcihost_set_iommu, s);
->>> +    pci_setup_iommu(phb->bus, &dino_iommu_ops, s);
->>>         sysbus_init_mmio(sbd, &s->this_mem);
->>>   diff --git a/hw/pci-host/pnv_phb3.c b/hw/pci-host/pnv_phb3.c
->>> index
->>> c5e58f4086aef34fa0b5307c10b261c0c6e3ac34..2a74dbe45f59b207b57b3b8af8856ac5cf04d114
->>> 100644
->>> --- a/hw/pci-host/pnv_phb3.c
->>> +++ b/hw/pci-host/pnv_phb3.c
->>> @@ -968,6 +968,10 @@ static AddressSpace *pnv_phb3_dma_iommu(PCIBus
->>> *bus, void *opaque, int devfn)
->>>       return &ds->dma_as;
->>>   }
->>>   +static PCIIOMMUOps pnv_phb3_iommu_ops = {
->>> +    .get_address_space = pnv_phb3_dma_iommu,
->>> +};
->>> +
->>>   static void pnv_phb3_instance_init(Object *obj)
->>>   {
->>>       PnvPHB3 *phb = PNV_PHB3(obj);
->>> @@ -1012,7 +1016,7 @@ void pnv_phb3_bus_init(DeviceState *dev,
->>> PnvPHB3 *phb)
->>>       object_property_set_int(OBJECT(pci->bus), "chip-id",
->>> phb->chip_id,
->>>                               &error_abort);
->>>   -    pci_setup_iommu(pci->bus, pnv_phb3_dma_iommu, phb);
->>> +    pci_setup_iommu(pci->bus, &pnv_phb3_iommu_ops, phb);
->>>   }
->>>     static void pnv_phb3_realize(DeviceState *dev, Error **errp)
->>> diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
->>> index
->>> 29cb11a5d94c6a72a8111dd95346be906a7bc4fe..37c7afc18c9b17b25df8356907f0d87d7d621ac2
->>> 100644
->>> --- a/hw/pci-host/pnv_phb4.c
->>> +++ b/hw/pci-host/pnv_phb4.c
->>> @@ -1518,6 +1518,10 @@ static void pnv_phb4_xscom_realize(PnvPHB4 *phb)
->>>                               &phb->phb_regs_mr);
->>>   }
->>>   +static PCIIOMMUOps pnv_phb4_iommu_ops = {
->>> +    .get_address_space = pnv_phb4_dma_iommu,
->>> +};
->>> +
->>>   static void pnv_phb4_instance_init(Object *obj)
->>>   {
->>>       PnvPHB4 *phb = PNV_PHB4(obj);
->>> @@ -1557,7 +1561,7 @@ void pnv_phb4_bus_init(DeviceState *dev,
->>> PnvPHB4 *phb)
->>>       object_property_set_int(OBJECT(pci->bus), "chip-id",
->>> phb->chip_id,
->>>                               &error_abort);
->>>   -    pci_setup_iommu(pci->bus, pnv_phb4_dma_iommu, phb);
->>> +    pci_setup_iommu(pci->bus, &pnv_phb4_iommu_ops, phb);
->>>       pci->bus->flags |= PCI_BUS_EXTENDED_CONFIG_SPACE;
->>>   }
->>>   diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
->>> index
->>> 38814247f2a5b7c1a6b55e18673f3fe8c348fbee..453a4e6ed3b02ed448c3fad71bd45eb73a5dbbb3
->>> 100644
->>> --- a/hw/pci-host/ppce500.c
->>> +++ b/hw/pci-host/ppce500.c
->>> @@ -435,6 +435,10 @@ static AddressSpace
->>> *e500_pcihost_set_iommu(PCIBus *bus, void *opaque,
->>>       return &s->bm_as;
->>>   }
->>>   +static const PCIIOMMUOps ppce500_iommu_ops = {
->>> +    .get_address_space = e500_pcihost_set_iommu,
->>> +};
->>> +
->>>   static void e500_pcihost_realize(DeviceState *dev, Error **errp)
->>>   {
->>>       SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
->>> @@ -469,7 +473,7 @@ static void e500_pcihost_realize(DeviceState
->>> *dev, Error **errp)
->>>       memory_region_init(&s->bm, OBJECT(s), "bm-e500", UINT64_MAX);
->>>       memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
->>>       address_space_init(&s->bm_as, &s->bm, "pci-bm");
->>> -    pci_setup_iommu(b, e500_pcihost_set_iommu, s);
->>> +    pci_setup_iommu(b, &ppce500_iommu_ops, s);
->>>         pci_create_simple(b, 0, "e500-host-bridge");
->>>   diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
->>> index
->>> 9a11ac4b2b610646790ed2016f73a16bce4fa42f..86c3a4908712988637484967e88155afb1413742
->>> 100644
->>> --- a/hw/pci-host/raven.c
->>> +++ b/hw/pci-host/raven.c
->>> @@ -223,6 +223,10 @@ static AddressSpace
->>> *raven_pcihost_set_iommu(PCIBus *bus, void *opaque,
->>>       return &s->bm_as;
->>>   }
->>>   +static const PCIIOMMUOps raven_iommu_ops = {
->>> +    .get_address_space = raven_pcihost_set_iommu,
->>> +};
->>> +
->>>   static void raven_change_gpio(void *opaque, int n, int level)
->>>   {
->>>       PREPPCIState *s = opaque;
->>> @@ -320,7 +324,7 @@ static void raven_pcihost_initfn(Object *obj)
->>>       memory_region_add_subregion(&s->bm, 0         ,
->>> &s->bm_pci_memory_alias);
->>>       memory_region_add_subregion(&s->bm, 0x80000000,
->>> &s->bm_ram_alias);
->>>       address_space_init(&s->bm_as, &s->bm, "raven-bm");
->>> -    pci_setup_iommu(&s->pci_bus, raven_pcihost_set_iommu, s);
->>> +    pci_setup_iommu(&s->pci_bus, &raven_iommu_ops, s);
->>>         h->bus = &s->pci_bus;
->>>   diff --git a/hw/pci-host/sabre.c b/hw/pci-host/sabre.c
->>> index
->>> dcb2e230b67274d4b87c86eb884e052c26031c27..d0851b48b02237d41f64f6cce6f0aa4740ca0d87
->>> 100644
->>> --- a/hw/pci-host/sabre.c
->>> +++ b/hw/pci-host/sabre.c
->>> @@ -112,6 +112,10 @@ static AddressSpace *sabre_pci_dma_iommu(PCIBus
->>> *bus, void *opaque, int devfn)
->>>       return &is->iommu_as;
->>>   }
->>>   +static const PCIIOMMUOps sabre_iommu_ops = {
->>> +    .get_address_space = sabre_pci_dma_iommu,
->>> +};
->>> +
->>>   static void sabre_config_write(void *opaque, hwaddr addr,
->>>                                  uint64_t val, unsigned size)
->>>   {
->>> @@ -384,7 +388,7 @@ static void sabre_realize(DeviceState *dev,
->>> Error **errp)
->>>       /* IOMMU */
->>>       memory_region_add_subregion_overlap(&s->sabre_config, 0x200,
->>>                      
->>> sysbus_mmio_get_region(SYS_BUS_DEVICE(s->iommu), 0), 1);
->>> -    pci_setup_iommu(phb->bus, sabre_pci_dma_iommu, s->iommu);
->>> +    pci_setup_iommu(phb->bus, &sabre_iommu_ops, s->iommu);
->>>         /* APB secondary busses */
->>>       pci_dev = pci_new_multifunction(PCI_DEVFN(1, 0),
->>> TYPE_SIMBA_PCI_BRIDGE);
->>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>> index
->>> b0d21bf43a9da8e624507dad868f0aa775fb2ad6..553a91d53c24249bb28e336bce7ee3790ddbfbc9
->>> 100644
->>> --- a/hw/pci/pci.c
->>> +++ b/hw/pci/pci.c
->>> @@ -2685,7 +2685,7 @@ AddressSpace
->>> *pci_device_iommu_address_space(PCIDevice *dev)
->>>       PCIBus *iommu_bus = bus;
->>>       uint8_t devfn = dev->devfn;
->>>   -    while (iommu_bus && !iommu_bus->iommu_fn &&
->>> iommu_bus->parent_dev) {
->>> +    while (iommu_bus && !iommu_bus->iommu_ops &&
->>> iommu_bus->parent_dev) {
->>>           PCIBus *parent_bus = pci_get_bus(iommu_bus->parent_dev);
->>>             /*
->>> @@ -2724,15 +2724,23 @@ AddressSpace
->>> *pci_device_iommu_address_space(PCIDevice *dev)
->>>             iommu_bus = parent_bus;
->>>       }
->>> -    if (!pci_bus_bypass_iommu(bus) && iommu_bus &&
->>> iommu_bus->iommu_fn) {
->>> -        return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque,
->>> devfn);
->>> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus->iommu_ops) {
->>> +        return iommu_bus->iommu_ops->get_address_space(bus,
->>> +                                 iommu_bus->iommu_opaque, devfn);
->>>       }
->>>       return &address_space_memory;
->>>   }
->>>   -void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque)
->>> +void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void
->>> *opaque)
->>>   {
->>> -    bus->iommu_fn = fn;
->>> +    /*
->>> +     * If called, pci_setup_iommu() should provide a minimum set of
->>> +     * useful callbacks for the bus.
->>> +     */
->>> +    assert(ops);
->>> +    assert(ops->get_address_space);
->>> +
->>> +    bus->iommu_ops = ops;
->>>       bus->iommu_opaque = opaque;
->>>   }
->>>   diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
->>> index
->>> 672090de9478e9c8e9ba8151b72bcaf93495d223..df4ee374d04bea092c4f81098f82514c12c0519c
->>> 100644
->>> --- a/hw/ppc/ppc440_pcix.c
->>> +++ b/hw/ppc/ppc440_pcix.c
->>> @@ -449,6 +449,10 @@ static AddressSpace
->>> *ppc440_pcix_set_iommu(PCIBus *b, void *opaque, int devfn)
->>>       return &s->bm_as;
->>>   }
->>>   +static const PCIIOMMUOps ppc440_iommu_ops = {
->>> +    .get_address_space = ppc440_pcix_set_iommu,
->>> +};
->>> +
->>>   /*
->>>    * Some guests on sam460ex write all kinds of garbage here such as
->>>    * missing enable bit and low bits set and still expect this to work
->>> @@ -503,7 +507,7 @@ static void ppc440_pcix_realize(DeviceState
->>> *dev, Error **errp)
->>>       memory_region_init(&s->bm, OBJECT(s), "bm-ppc440-pcix",
->>> UINT64_MAX);
->>>       memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
->>>       address_space_init(&s->bm_as, &s->bm, "pci-bm");
->>> -    pci_setup_iommu(h->bus, ppc440_pcix_set_iommu, s);
->>> +    pci_setup_iommu(h->bus, &ppc440_iommu_ops, s);
->>>         memory_region_init(&s->container, OBJECT(s),
->>> "pci-container", PCI_ALL_SIZE);
->>>       memory_region_init_io(&h->conf_mem, OBJECT(s),
->>> &ppc440_pcix_host_conf_ops,
->>> diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
->>> index
->>> 370c5a90f2184bbe75de9a3b950096960c67189e..a27024e45a4188c5b21e7d41ecf3d337bbbb47f0
->>> 100644
->>> --- a/hw/ppc/spapr_pci.c
->>> +++ b/hw/ppc/spapr_pci.c
->>> @@ -780,6 +780,10 @@ static AddressSpace *spapr_pci_dma_iommu(PCIBus
->>> *bus, void *opaque, int devfn)
->>>       return &phb->iommu_as;
->>>   }
->>>   +static const PCIIOMMUOps spapr_iommu_ops = {
->>> +    .get_address_space = spapr_pci_dma_iommu,
->>> +};
->>> +
->>>   static char *spapr_phb_vfio_get_loc_code(SpaprPhbState *sphb, 
->>> PCIDevice *pdev)
->>>   {
->>>       g_autofree char *path = NULL;
->>> @@ -1978,7 +1982,7 @@ static void spapr_phb_realize(DeviceState
->>> *dev, Error **errp)
->>>       memory_region_add_subregion(&sphb->iommu_root,
->>> SPAPR_PCI_MSI_WINDOW,
->>>                                   &sphb->msiwindow);
->>>   -    pci_setup_iommu(bus, spapr_pci_dma_iommu, sphb);
->>> +    pci_setup_iommu(bus, &spapr_iommu_ops, sphb);
->>>         pci_bus_set_route_irq_fn(bus, spapr_route_intx_pin_to_irq);
->>>   diff --git a/hw/remote/iommu.c b/hw/remote/iommu.c
->>> index
->>> 1391dd712ceda0bb5b524651362350471f31f93a..7c56aad0fc14a3a411303dcf3baacef5edfd3d1e
->>> 100644
->>> --- a/hw/remote/iommu.c
->>> +++ b/hw/remote/iommu.c
->>> @@ -100,6 +100,10 @@ static void remote_iommu_finalize(Object *obj)
->>>       iommu->elem_by_devfn = NULL;
->>>   }
->>>   +static const PCIIOMMUOps remote_iommu_ops = {
->>> +    .get_address_space = remote_iommu_find_add_as,
->>> +};
->>> +
->>>   void remote_iommu_setup(PCIBus *pci_bus)
->>>   {
->>>       RemoteIommu *iommu = NULL;
->>> @@ -108,7 +112,7 @@ void remote_iommu_setup(PCIBus *pci_bus)
->>>         iommu = REMOTE_IOMMU(object_new(TYPE_REMOTE_IOMMU));
->>>   -    pci_setup_iommu(pci_bus, remote_iommu_find_add_as, iommu);
->>> +    pci_setup_iommu(pci_bus, &remote_iommu_ops, iommu);
->>>         object_property_add_child(OBJECT(pci_bus), "remote-iommu",
->>> OBJECT(iommu));
->>>   diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
->>> index
->>> 2ca36f9f3be11866b6c9cb83a61da01d93a4b7c0..347580ebacfe1dd832063b667aa593097ba6926d
->>> 100644
->>> --- a/hw/s390x/s390-pci-bus.c
->>> +++ b/hw/s390x/s390-pci-bus.c
->>> @@ -652,6 +652,10 @@ static AddressSpace *s390_pci_dma_iommu(PCIBus
->>> *bus, void *opaque, int devfn)
->>>       return &iommu->as;
->>>   }
->>>   +static const PCIIOMMUOps s390_iommu_ops = {
->>> +    .get_address_space = s390_pci_dma_iommu,
->>> +};
->>> +
->>>   static uint8_t set_ind_atomic(uint64_t ind_loc, uint8_t to_be_set)
->>>   {
->>>       uint8_t expected, actual;
->>> @@ -839,7 +843,7 @@ static void s390_pcihost_realize(DeviceState
->>> *dev, Error **errp)
->>>       b = pci_register_root_bus(dev, NULL, s390_pci_set_irq,
->>> s390_pci_map_irq,
->>>                                 NULL, get_system_memory(),
->>> get_system_io(), 0,
->>>                                 64, TYPE_PCI_BUS);
->>> -    pci_setup_iommu(b, s390_pci_dma_iommu, s);
->>> +    pci_setup_iommu(b, &s390_iommu_ops, s);
->>>         bus = BUS(b);
->>>       qbus_set_hotplug_handler(bus, OBJECT(dev));
->>> @@ -1058,7 +1062,7 @@ static void s390_pcihost_plug(HotplugHandler
->>> *hotplug_dev, DeviceState *dev,
->>>             pdev = PCI_DEVICE(dev);
->>>           pci_bridge_map_irq(pb, dev->id, s390_pci_map_irq);
->>> -        pci_setup_iommu(&pb->sec_bus, s390_pci_dma_iommu, s);
->>> +        pci_setup_iommu(&pb->sec_bus, &s390_iommu_ops, s);
->>>             qbus_set_hotplug_handler(BUS(&pb->sec_bus), OBJECT(s));
->>>   diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
->>> index
->>> be51635895ce88cb69ec987a5c7d3fa33a703c9e..4c62378f210a63dcd49e596a56802101bb14f0af
->>> 100644
->>> --- a/hw/virtio/virtio-iommu.c
->>> +++ b/hw/virtio/virtio-iommu.c
->>> @@ -444,6 +444,10 @@ static AddressSpace
->>> *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
->>>       return &sdev->as;
->>>   }
->>>   +static const PCIIOMMUOps virtio_iommu_ops = {
->>> +    .get_address_space = virtio_iommu_find_add_as,
->>> +};
->>> +
->>>   static int virtio_iommu_attach(VirtIOIOMMU *s,
->>>                                  struct virtio_iommu_req_attach *req)
->>>   {
->>> @@ -1206,7 +1210,7 @@ static void
->>> virtio_iommu_device_realize(DeviceState *dev, Error **errp)
->>>       s->as_by_busptr = g_hash_table_new_full(NULL, NULL, NULL,
->>> g_free);
->>>         if (s->primary_bus) {
->>> -        pci_setup_iommu(s->primary_bus, virtio_iommu_find_add_as, s);
->>> +        pci_setup_iommu(s->primary_bus, &virtio_iommu_ops, s);
->>>       } else {
->>>           error_setg(errp, "VIRTIO-IOMMU is not attached to any PCI
->>> bus!");
->>>       }
->>
->
+        if (p->pending_job) {
+            ....
+            qemu_mutex_unlock(&p->mutex);
+
+            if (flags & MULTIFD_FLAG_SYNC) {
+                qemu_sem_post(&p->sem_sync);
+            }
+    }
+}
+
+I have simplified it a lot, but yot the idea.
+
+See the 1st post of channel_ready().
+We do it for every packet sent.  Even for the SYNC ones.
+
+Now what multifd_send_page() does?
+
+static int multifd_send_pages(QEMUFile *f)
+{
+    qemu_sem_wait(&multifd_send_state->channels_ready);
+    ....
+}
+
+See, we are decreasing the numbers of channels_ready because we know we
+are using one.
+
+As we are sending packets for multifd_send_sync_main(), we need to do a
+hack in multifd_send_thread() and say that sync packets don't
+account. Or we need to decrease that semaphore in multifd_send_sync_main()
+
+int multifd_send_sync_main(QEMUFile *f)
+{
+    ....
+    for (i = 0; i < migrate_multifd_channels(); i++) {
+        qemu_sem_wait(&multifd_send_state->channels_ready);
+        ...
+    }
+}
+
+And that is what we do here.
+We didn't had this last line (not needed for making sure the channels
+are ready here).
+
+But needed to make sure that we are maintaining channels_ready exact.
+
+Later, Juan.
 
 
