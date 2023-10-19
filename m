@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6737F7D0353
+	by mail.lfdr.de (Postfix) with ESMTPS id 638367D0352
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZw8-0007MN-4X; Thu, 19 Oct 2023 16:48:08 -0400
+	id 1qtZw8-0007Ms-FN; Thu, 19 Oct 2023 16:48:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qtZvz-0007Ft-44
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:59 -0400
+ id 1qtZw1-0007GX-5q
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:48:04 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qtZvu-0003UH-R6
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:58 -0400
+ id 1qtZvw-0003UO-VB
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:59 -0400
 Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKi2x3018410; Thu, 19 Oct 2023 20:47:53 GMT
+ 39JKigCG019245; Thu, 19 Oct 2023 20:47:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=Z+8UkLXHCexLBhyfXs689DSS20WcqOi1euY/xjYqLm8=;
- b=o3OGZevt4kKqquCNb6jLXkXuvzTTHknz64phkFUem8FJjWT6fmKdJUNwa7EPcsK+Xd7w
- mV13SL2vToa77gP1ZUUkIpr02IcNcD6muZ07YdPnXrOSHBoU/lf1xis9+wpdttXoLK4D
- zV9S64d3neJCA7pE9zzDCqxhudR/Cl37SQ2/QLf0/O8NFp7b9uDLBVzTPz/OEX6PgMTD
- 54zE2TDEZVJqwa6i8AV9WRX/EMZsNIxOiglNY5SEdrwgWFhKKr9nj8nbBfDMgLvyWlMP
- g8SXTQXODmA8QT9tvc3xId+EFp/lkE3MFHUNIA/+qoMzkdo7utR9Z9NG8d+KPHHEZBlq rQ== 
+ bh=Qz6ejEXqSijzF/+p48FQJqT95+eOBkqedt9aGGSYXqY=;
+ b=Wqb4HFtOrYyV5jGTpilXnsQN2V1aA0JBa1vbHO/ZrEjjHfCIYvJPgZKLTcJNEenZDHA3
+ yb5vo3rLdOaoefd0VoAz6JkAhx8fI2Gw80H6CqsdYxPp7c/QxHsmZL7RPJjbXrKPnYdt
+ 2N8/M7mfifzVm6WooH6vyx4t5lcJ7PNrHKdQ2lgl1yBpKG6CXPhMoe24j3DMnjcXSIjO
+ HUl3IqCr1fyayeT2/o0lOkI8Z61xxJv2ZEiXM/GOHMbU7Yf5+VwDbia2j/7Z8oWX7i+3
+ wDcB/IezYMJQrp/sXTcxUiV7/8sgeejmUiEvhkH78Yb6x6FBwJ2HaI8UflKFU7uVR+MG sw== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqk1bukcc-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqk1bukce-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:47:53 +0000
+ Thu, 19 Oct 2023 20:47:55 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 39JJiVAU040584; Thu, 19 Oct 2023 20:47:53 GMT
+ with ESMTP id 39JJd7Ss040665; Thu, 19 Oct 2023 20:47:54 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3trfyqqakg-1
+ 3trfyqqamb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:47:52 +0000
+ Thu, 19 Oct 2023 20:47:54 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKllWM014514;
- Thu, 19 Oct 2023 20:47:52 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKllWO014514;
+ Thu, 19 Oct 2023 20:47:53 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3trfyqqafy-4; Thu, 19 Oct 2023 20:47:52 +0000
+ ESMTP id 3trfyqqafy-5; Thu, 19 Oct 2023 20:47:53 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 3/4] cpr: relax some blockers
-Date: Thu, 19 Oct 2023 13:47:45 -0700
-Message-Id: <1697748466-373230-4-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 4/4] cpr: reboot mode
+Date: Thu, 19 Oct 2023 13:47:46 -0700
+Message-Id: <1697748466-373230-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
 References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
@@ -70,8 +70,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  phishscore=0 spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310190176
-X-Proofpoint-GUID: B5DWqqBRlkM8LI8lC05VXd5rrfLpeKKa
-X-Proofpoint-ORIG-GUID: B5DWqqBRlkM8LI8lC05VXd5rrfLpeKKa
+X-Proofpoint-GUID: zYXW5Y3qR-_C0SYPhc9NRoeLlHooa121
+X-Proofpoint-ORIG-GUID: zYXW5Y3qR-_C0SYPhc9NRoeLlHooa121
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -96,187 +96,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some devices block migration because they rely on local state that
-is not migrated to the target host, such as for local filesystems.
-These need not block cpr, which will restart qemu on the same host.
-Narrow the scope of these blockers so they only apply to normal mode.
-They will not block cpr modes when they are added in subsequent patches.
+Add the cpr-reboot migration mode.  Usage:
 
-No functional change until a new mode is added.
+$ qemu-system-$arch -monitor stdio ...
+QEMU 8.1.50 monitor - type 'help' for more information
+(qemu) migrate_set_capability x-ignore-shared on
+(qemu) migrate_set_parameter mode cpr-reboot
+(qemu) migrate -d file:vm.state
+(qemu) info status
+VM status: paused (postmigrate)
+(qemu) quit
+
+$ qemu-system-$arch -monitor stdio -incoming defer ...
+QEMU 8.1.50 monitor - type 'help' for more information
+(qemu) migrate_set_capability x-ignore-shared on
+(qemu) migrate_set_parameter mode cpr-reboot
+(qemu) migrate_incoming file:vm.state
+(qemu) info status
+VM status: running
+
+In this mode, the migrate command saves state to a file, allowing one
+to quit qemu, reboot to an updated kernel, and restart an updated version
+of qemu.  The caller must specify a migration URI that writes to and reads
+from a file.  Unlike normal mode, the use of certain local storage options
+does not block the migration, but the caller must not modify guest block
+devices between the quit and restart.  The guest RAM memory-backend must
+be shared, and the @x-ignore-shared migration capability must be set,
+to avoid saving RAM to the file.  Guest RAM must be non-volatile across
+reboot, such as by backing it with a dax device, but this is not enforced.
+The restarted qemu arguments must match those used to initially start qemu,
+plus the -incoming option.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- backends/tpm/tpm_emulator.c | 2 +-
- block/parallels.c           | 2 +-
- block/qcow.c                | 2 +-
- block/vdi.c                 | 2 +-
- block/vhdx.c                | 2 +-
- block/vmdk.c                | 2 +-
- block/vpc.c                 | 2 +-
- block/vvfat.c               | 2 +-
- hw/9pfs/9p.c                | 2 +-
- hw/scsi/vhost-scsi.c        | 2 +-
- hw/virtio/vhost.c           | 2 +-
- target/i386/nvmm/nvmm-all.c | 3 ++-
- 12 files changed, 13 insertions(+), 12 deletions(-)
+ qapi/migration.json | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index bf1a90f..ac66aee 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -534,7 +534,7 @@ static int tpm_emulator_block_migration(TPMEmulator *tpm_emu)
-         error_setg(&tpm_emu->migration_blocker,
-                    "Migration disabled: TPM emulator does not support "
-                    "migration");
--        if (migrate_add_blocker(&tpm_emu->migration_blocker, &err) < 0) {
-+        if (migrate_add_blocker_normal(&tpm_emu->migration_blocker, &err) < 0) {
-             error_report_err(err);
-             return -1;
-         }
-diff --git a/block/parallels.c b/block/parallels.c
-index 1697a2e..8a520db 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -1369,7 +1369,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-                bdrv_get_device_or_node_name(bs));
-     bdrv_graph_rdunlock_main_loop();
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 184fb78..2d862fa 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -620,9 +620,23 @@
+ #
+ # @normal: the original form of migration. (since 8.2)
+ #
++# @cpr-reboot: The migrate command saves state to a file, allowing one to
++#              quit qemu, reboot to an updated kernel, and restart an updated
++#              version of qemu.  The caller must specify a migration URI
++#              that writes to and reads from a file.  Unlike normal mode,
++#              the use of certain local storage options does not block the
++#              migration, but the caller must not modify guest block devices
++#              between the quit and restart.  The guest RAM memory-backend
++#              must be shared, and the @x-ignore-shared migration capability
++#              must be set, to avoid saving it to the file.  Guest RAM must
++#              be non-volatile across reboot, such as by backing it with
++#              a dax device, but this is not enforced.  The restarted qemu
++#              arguments must match those used to initially start qemu, plus
++#              the -incoming option. (since 8.2)
++#
+ ##
+ { 'enum': 'MigMode',
+-  'data': [ 'normal' ] }
++  'data': [ 'normal', 'cpr-reboot' ] }
  
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         error_setg(errp, "Migration blocker error");
-         goto fail;
-diff --git a/block/qcow.c b/block/qcow.c
-index fdd4c83..eab68e3 100644
---- a/block/qcow.c
-+++ b/block/qcow.c
-@@ -307,7 +307,7 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
-                bdrv_get_device_or_node_name(bs));
-     bdrv_graph_rdunlock_main_loop();
- 
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/vdi.c b/block/vdi.c
-index fd7e365..c647d72 100644
---- a/block/vdi.c
-+++ b/block/vdi.c
-@@ -498,7 +498,7 @@ static int vdi_open(BlockDriverState *bs, QDict *options, int flags,
-                bdrv_get_device_or_node_name(bs));
-     bdrv_graph_rdunlock_main_loop();
- 
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail_free_bmap;
-     }
-diff --git a/block/vhdx.c b/block/vhdx.c
-index e37f8c0..a9d0874 100644
---- a/block/vhdx.c
-+++ b/block/vhdx.c
-@@ -1096,7 +1096,7 @@ static int vhdx_open(BlockDriverState *bs, QDict *options, int flags,
-     error_setg(&s->migration_blocker, "The vhdx format used by node '%s' "
-                "does not support live migration",
-                bdrv_get_device_or_node_name(bs));
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/vmdk.c b/block/vmdk.c
-index 1335d39..85864b8 100644
---- a/block/vmdk.c
-+++ b/block/vmdk.c
-@@ -1386,7 +1386,7 @@ static int vmdk_open(BlockDriverState *bs, QDict *options, int flags,
-     error_setg(&s->migration_blocker, "The vmdk format used by node '%s' "
-                "does not support live migration",
-                bdrv_get_device_or_node_name(bs));
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/vpc.c b/block/vpc.c
-index c30cf86..aa1a48a 100644
---- a/block/vpc.c
-+++ b/block/vpc.c
-@@ -452,7 +452,7 @@ static int vpc_open(BlockDriverState *bs, QDict *options, int flags,
-                bdrv_get_device_or_node_name(bs));
-     bdrv_graph_rdunlock_main_loop();
- 
--    ret = migrate_add_blocker(&s->migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/vvfat.c b/block/vvfat.c
-index 266e036..9d050ba 100644
---- a/block/vvfat.c
-+++ b/block/vvfat.c
-@@ -1268,7 +1268,7 @@ static int vvfat_open(BlockDriverState *bs, QDict *options, int flags,
-                    "The vvfat (rw) format used by node '%s' "
-                    "does not support live migration",
-                    bdrv_get_device_or_node_name(bs));
--        ret = migrate_add_blocker(&s->migration_blocker, errp);
-+        ret = migrate_add_blocker_normal(&s->migration_blocker, errp);
-         if (ret < 0) {
-             goto fail;
-         }
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index af636cf..369dfc8 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -1501,7 +1501,7 @@ static void coroutine_fn v9fs_attach(void *opaque)
-         error_setg(&s->migration_blocker,
-                    "Migration is disabled when VirtFS export path '%s' is mounted in the guest using mount_tag '%s'",
-                    s->ctx.fs_root ? s->ctx.fs_root : "NULL", s->tag);
--        err = migrate_add_blocker(&s->migration_blocker, NULL);
-+        err = migrate_add_blocker_normal(&s->migration_blocker, NULL);
-         if (err < 0) {
-             clunk_fid(s, fid);
-             goto out;
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 14e23cc..bf528d5 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -208,7 +208,7 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
-                 "When external environment supports it (Orchestrator migrates "
-                 "target SCSI device state or use shared storage over network), "
-                 "set 'migratable' property to true to enable migration.");
--        if (migrate_add_blocker(&vsc->migration_blocker, errp) < 0) {
-+        if (migrate_add_blocker_normal(&vsc->migration_blocker, errp) < 0) {
-             goto free_virtio;
-         }
-     }
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index d737671..f5e9625 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1527,7 +1527,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     }
- 
-     if (hdev->migration_blocker != NULL) {
--        r = migrate_add_blocker(&hdev->migration_blocker, errp);
-+        r = migrate_add_blocker_normal(&hdev->migration_blocker, errp);
-         if (r < 0) {
-             goto fail_busyloop;
-         }
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index 7d752bc..0cfcdac 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -929,7 +929,8 @@ nvmm_init_vcpu(CPUState *cpu)
-         error_setg(&nvmm_migration_blocker,
-             "NVMM: Migration not supported");
- 
--        if (migrate_add_blocker(&nvmm_migration_blocker, &local_error) < 0) {
-+        ret = migrate_add_blocker_normal(&nvmm_migration_blocker, &local_error);
-+        if (ret < 0) {
-             error_report_err(local_error);
-             return -EINVAL;
-         }
+ ##
+ # @BitmapMigrationBitmapAliasTransform:
 -- 
 1.8.3.1
 
