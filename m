@@ -2,67 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53CD7CFFB0
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CBD7CFFBE
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:38:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVzu-00061s-1o; Thu, 19 Oct 2023 12:35:46 -0400
+	id 1qtW21-0007Le-61; Thu, 19 Oct 2023 12:37:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qtVzd-00060B-4Q; Thu, 19 Oct 2023 12:35:34 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ id 1qtW1y-0007L9-Js
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:37:54 -0400
+Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qtVzZ-0000sv-Oo; Thu, 19 Oct 2023 12:35:28 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-57bc2c2f13dso4595117eaf.2; 
- Thu, 19 Oct 2023 09:35:24 -0700 (PDT)
+ id 1qtW1w-0001lI-V4
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:37:54 -0400
+Received: by mail-oo1-xc2b.google.com with SMTP id
+ 006d021491bc7-57f0f81b2aeso4502033eaf.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:37:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697733324; x=1698338124; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3raebs6EiNu4tLj/ikDhbtHjY7n1xUxZVwRvUY8oKTE=;
- b=KCcZfZodozjax6NamstI0iIxMpdMTjk5rLzgm15eHNdjf96KJwBafhWrdFaBBS/z9N
- Q2/m7AFMJqF+p5kNqgILKrQCoYqJdVot+6YdVIi20Xf2AXAUhubWJFgwAp1QsYLup1Sh
- +DfVkgckPZt3kfnQapTBAnYmPfIBC/xdQUQrE81qIkePGPQDlf+11hyWdE5QBktjsNKV
- Tmyf+3qhR/KEaIc7q06XGzONKLm3mRhkvO/sBzniul1Jztgra6ncbJn9bx60x3NSrVjt
- 6gNzzKBoPe2EboncfExDggBgN7sQ9AdggoaykU0DV4XUm73rZkd7QcmhAOIQ5/RJ0Tds
- UIrg==
+ d=gmail.com; s=20230601; t=1697733471; x=1698338271; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BK/7ZKNYyGuZVOHuVRvwN/uhLoGLu0FIBBKzWuuVk5s=;
+ b=Y5iC0Cor8FjTT5MNgAuFheN0zI9UUgCdixKMp3Dqsdj9V7meNeWd6NL2/Y5r2bH4oN
+ TsR17IEqytG5p5LLIP5sfC19VHqvedkne9tm/g7py1Pwzey7yCckdRRTdrB1N9NiaFh+
+ 3PTazf/HRxzHByXlWiosa/bcF47uYZFTUncx7fCCE9zcac8GfD/nbN5exPlRAAr0aAwp
+ XUlUBH/epoDODg5APHCzXVE+5jnIEy/Us3c0FN/wYk8caydcxPR/KF1t9Q/tKXP1n+1A
+ 3ENo+Rhyiaez7Dq/7/aIbCX1GkZ+UtDxaxFFIK1xFiSIlBjUdgQbZn5nvA4s/YF55MBp
+ RkbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697733324; x=1698338124;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3raebs6EiNu4tLj/ikDhbtHjY7n1xUxZVwRvUY8oKTE=;
- b=r8oEYGQgkeDhgU4l/QDc2IUpE0FWOO2ovbzP6DKaNyfpFptUTCc4MsAPqJJVsrdFqZ
- g86KU89dCNlgC6NFqmEu4MOBmqi/ESaZ2MiQo8mx5qz7hiQQip0iwWzwtIJCp+cSlsxs
- w+Sunp8XDDS/clUZWmOjfOLfv68kUY7NQiTkgXgvcI6Xr9rt2D4tGoZzRmZucHP9ASlg
- AWqxa6kKFzbxLw2V3uLiFpvNR19nU/7W6ZyMyRVjlw/YPU4LYdoV8i3jN0inIEqSA+VF
- 8BYYtkNJ9CmTzpIrGqhWotw8lznroRQ+wBJ3Nn6pNoWPGojgPkubx/w7LrTBz3rCwLVd
- eDrw==
-X-Gm-Message-State: AOJu0YxwTdnoS2AwE/XTiuzmeWeLxjY783c8fdkI+vK+hhi2wbg2M8fA
- +MVBgTQJy7/U1+alaAG2T0jUu8F8fwBQpvE6u3Y=
-X-Google-Smtp-Source: AGHT+IEnaHNoMJgOs0w7UWcdtxVoK+3reW4hnwcht/anxyY/9NC2lW5VuOab80BqZZRf1/l18Kz/SdxSMGfF5TolEUw=
-X-Received: by 2002:a4a:a34d:0:b0:582:99ae:ca47 with SMTP id
- u13-20020a4aa34d000000b0058299aeca47mr2900266ool.3.1697733323948; Thu, 19 Oct
- 2023 09:35:23 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697733471; x=1698338271;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BK/7ZKNYyGuZVOHuVRvwN/uhLoGLu0FIBBKzWuuVk5s=;
+ b=UznXRnOuLccusl1xjIY4jvIgQbxjr3URPtLt8VrwZsbZLuTHnnU0KWKltJ74jwAWoQ
+ tIy1RUQ/XJq4+uzYMrqSxFMqJ9YSH7breWqs684OkeGbQjYvzFYtmi6Sxx24wh2dqjhC
+ Lsp8JBUEDj1/SF/Qz4HDN0s7pwPO5hrQobx1QPz+4HAjqADSFJmTFkOfm2u8RpkKDwLx
+ MY/3EZk2ehYz7R58wl91gDWSrR65upgipssylgruHaFXcWO2bZ9DzVk+IYuZle15i+9k
+ qQ2eWhqL/j6cipuKWToU5oJyNqNevgO/p+vjhNnAny8JuYWQXQeRkGm5CNXhkGpADclo
+ wQwA==
+X-Gm-Message-State: AOJu0YzufgLAw8itDayG214JR/bNKJu20MJxW4/vuNGvEzkB9N40+BCd
+ RNtKQni0vGllb5eBm/opP70f/wk7W4qsR7ZjkWWQIPZ20Fno7w==
+X-Google-Smtp-Source: AGHT+IH6HOidpVlIBV2bOMjrWMqbfurSrFLuzA32wffg09Y0McftzVMf7cZqfqx+nIVBY3LS89QVohnhmB9PevbESwI=
+X-Received: by 2002:a05:6820:828:b0:581:f6d8:5ca2 with SMTP id
+ bg40-20020a056820082800b00581f6d85ca2mr3463354oob.6.1697733471428; Thu, 19
+ Oct 2023 09:37:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231018130716.286638-1-thuth@redhat.com>
- <20231018130716.286638-7-thuth@redhat.com>
-In-Reply-To: <20231018130716.286638-7-thuth@redhat.com>
+References: <20231018222557.1562065-1-richard.henderson@linaro.org>
+ <20231018222557.1562065-16-richard.henderson@linaro.org>
+In-Reply-To: <20231018222557.1562065-16-richard.henderson@linaro.org>
 From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 19 Oct 2023 09:35:12 -0700
-Message-ID: <CAJSP0QXc1yeRYMaEZ_1cRc2d7_E2-vb7Ai4D2P0uRQYTqDqDsA@mail.gmail.com>
-Subject: Re: [PULL 06/25] s390x/cpu topology: resetting the
- Topology-Change-Report
-To: Thomas Huth <thuth@redhat.com>, Pierre Morel <pmorel@linux.vnet.ibm.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-s390x@nongnu.org, Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Date: Thu, 19 Oct 2023 09:37:39 -0700
+Message-ID: <CAJSP0QW1wL4T5mAYREyfTtF9vRmoEZ7VvATMkywiHvJQPkap8g@mail.gmail.com>
+Subject: Re: [PULL 15/29] tcg: Provide guest_base fallback for system mode
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc31.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,164 +88,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 18 Oct 2023 at 06:09, Thomas Huth <thuth@redhat.com> wrote:
+On Wed, 18 Oct 2023 at 15:30, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> From: Pierre Morel <pmorel@linux.ibm.com>
+> Provide a define to allow !tcg_use_softmmu code paths to
+> compile in system mode, but require elimination.
 >
-> During a subsystem reset the Topology-Change-Report is cleared
-> by the machine.
-> Let's ask KVM to clear the Modified Topology Change Report (MTCR)
-> bit of the SCA in the case of a subsystem reset.
->
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Message-ID: <20231016183925.2384704-7-nsg@linux.ibm.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  include/hw/s390x/cpu-topology.h |  1 +
->  target/s390x/cpu.h              |  1 +
->  target/s390x/kvm/kvm_s390x.h    |  1 +
->  hw/s390x/cpu-topology.c         | 11 +++++++++++
->  hw/s390x/s390-virtio-ccw.c      |  3 +++
->  target/s390x/cpu-sysemu.c       | 13 +++++++++++++
->  target/s390x/kvm/kvm.c          | 17 +++++++++++++++++
->  7 files changed, 47 insertions(+)
+>  tcg/tcg.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-topology.h
-> index f95d26d37c..e33e7c66df 100644
-> --- a/include/hw/s390x/cpu-topology.h
-> +++ b/include/hw/s390x/cpu-topology.h
-> @@ -56,6 +56,7 @@ static inline void s390_topology_setup_cpu(MachineState *ms,
+> diff --git a/tcg/tcg.c b/tcg/tcg.c
+> index d3a4a17ef2..35158a0846 100644
+> --- a/tcg/tcg.c
+> +++ b/tcg/tcg.c
+> @@ -178,6 +178,10 @@ static bool tcg_target_const_match(int64_t val, TCGT=
+ype type, int ct, int vece);
+>  static int tcg_out_ldst_finalize(TCGContext *s);
 >  #endif
 >
->  extern S390Topology s390_topology;
-> +void s390_topology_reset(void);
+> +#ifndef CONFIG_USER_ONLY
+> +#define guest_base  ({ qemu_build_not_reached(); (uintptr_t)0; })
+> +#endif
 
-Please take a look at the following CI failure:
+Please take a look at this CI failure:
 
-/usr/bin/ld: libqemu-s390x-softmmu.fa.p/hw_s390x_s390-virtio-ccw.c.o:
-in function `subsystem_reset':
-/home/gitlab-runner/builds/E8PpwMky/0/qemu-project/qemu/build/../hw/s390x/s390-virtio-ccw.c:128:
-undefined reference to `s390_topology_reset'
+cc -m64 -mcx16 -Itcg/libtcg_system.fa.p -Itcg -I../tcg -I. -Iqapi
+-Itrace -Iui -Iui/shader -I/usr/local/include/glib-2.0
+-I/usr/local/lib/glib-2.0/include -I/usr/local/include
+-fcolor-diagnostics -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O2 -g
+-fstack-protector-strong -Wundef -Wwrite-strings -Wmissing-prototypes
+-Wstrict-prototypes -Wredundant-decls -Wold-style-definition
+-Wtype-limits -Wformat-security -Wformat-y2k -Winit-self
+-Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels
+-Wexpansion-to-defined -Wmissing-format-attribute
+-Wno-initializer-overrides -Wno-missing-include-dirs
+-Wno-shift-negative-value -Wno-string-plus-int
+-Wno-typedef-redefinition -Wno-tautological-type-limit-compare
+-Wno-psabi -Wno-gnu-variable-sized-type-not-at-end -Wthread-safety
+-iquote . -iquote /tmp/cirrus-ci-build -iquote
+/tmp/cirrus-ci-build/include -iquote
+/tmp/cirrus-ci-build/host/include/x86_64 -iquote
+/tmp/cirrus-ci-build/host/include/generic -iquote
+/tmp/cirrus-ci-build/tcg/i386 -pthread -D_GNU_SOURCE
+-D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
+-fno-common -fwrapv -fPIE -DCONFIG_SOFTMMU -MD -MQ
+tcg/libtcg_system.fa.p/tcg.c.o -MF tcg/libtcg_system.fa.p/tcg.c.o.d -o
+tcg/libtcg_system.fa.p/tcg.c.o -c ../tcg/tcg.c
+In file included from ../tcg/tcg.c:744:
+/tmp/cirrus-ci-build/tcg/i386/tcg-target.c.inc:1953:35: error: cannot
+take the address of an rvalue of type 'uintptr_t' (aka 'unsigned
+long')
+if (sysarch(AMD64_SET_GSBASE, &guest_base) =3D=3D 0) {
+^~~~~~~~~~~
+1 error generated.
 
-https://gitlab.com/qemu-project/qemu/-/jobs/5330218593
+https://gitlab.com/qemu-project/qemu/-/jobs/5329820109
 
->
->  static inline int s390_std_socket(int n, CpuTopology *smp)
->  {
-> diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-> index 09bff39fe4..40c5cedd0e 100644
-> --- a/target/s390x/cpu.h
-> +++ b/target/s390x/cpu.h
-> @@ -654,6 +654,7 @@ typedef struct SysIBCPUListEntry {
->  QEMU_BUILD_BUG_ON(sizeof(SysIBCPUListEntry) != 16);
->
->  void insert_stsi_15_1_x(S390CPU *cpu, int sel2, uint64_t addr, uint8_t ar, uintptr_t ra);
-> +void s390_cpu_topology_set_changed(bool changed);
->
->  /* MMU defines */
->  #define ASCE_ORIGIN           (~0xfffULL) /* segment table origin             */
-> diff --git a/target/s390x/kvm/kvm_s390x.h b/target/s390x/kvm/kvm_s390x.h
-> index f9785564d0..649dae5948 100644
-> --- a/target/s390x/kvm/kvm_s390x.h
-> +++ b/target/s390x/kvm/kvm_s390x.h
-> @@ -47,5 +47,6 @@ void kvm_s390_crypto_reset(void);
->  void kvm_s390_restart_interrupt(S390CPU *cpu);
->  void kvm_s390_stop_interrupt(S390CPU *cpu);
->  void kvm_s390_set_diag318(CPUState *cs, uint64_t diag318_info);
-> +int kvm_s390_topology_set_mtcr(uint64_t attr);
->
->  #endif /* KVM_S390X_H */
-> diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
-> index 13168341b6..7ec9319272 100644
-> --- a/hw/s390x/cpu-topology.c
-> +++ b/hw/s390x/cpu-topology.c
-> @@ -90,6 +90,17 @@ static void s390_topology_init(MachineState *ms)
->                                              smp->books * smp->drawers);
->  }
->
-> +/**
-> + * s390_topology_reset:
-> + *
-> + * Generic reset for CPU topology, calls s390_topology_reset()
-> + * to reset the kernel Modified Topology Change Record.
-> + */
-> +void s390_topology_reset(void)
-> +{
-> +    s390_cpu_topology_set_changed(false);
-> +}
 > +
->  /**
->   * s390_topology_cpu_default:
->   * @cpu: pointer to a S390CPU
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 7fe2bce20c..6012165d41 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -124,6 +124,9 @@ static void subsystem_reset(void)
->              device_cold_reset(dev);
->          }
->      }
-> +    if (s390_has_topology()) {
-> +        s390_topology_reset();
-> +    }
->  }
->
->  static int virtio_ccw_hcall_notify(const uint64_t *args)
-> diff --git a/target/s390x/cpu-sysemu.c b/target/s390x/cpu-sysemu.c
-> index 8112561e5e..1cd30c1d84 100644
-> --- a/target/s390x/cpu-sysemu.c
-> +++ b/target/s390x/cpu-sysemu.c
-> @@ -307,3 +307,16 @@ void s390_do_cpu_set_diag318(CPUState *cs, run_on_cpu_data arg)
->          kvm_s390_set_diag318(cs, arg.host_ulong);
->      }
->  }
-> +
-> +void s390_cpu_topology_set_changed(bool changed)
-> +{
-> +    int ret;
-> +
-> +    if (kvm_enabled()) {
-> +        ret = kvm_s390_topology_set_mtcr(changed);
-> +        if (ret) {
-> +            error_report("Failed to set Modified Topology Change Report: %s",
-> +                         strerror(-ret));
-> +        }
-> +    }
-> +}
-> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-> index 53d6300809..d6bda3a2a8 100644
-> --- a/target/s390x/kvm/kvm.c
-> +++ b/target/s390x/kvm/kvm.c
-> @@ -2664,6 +2664,23 @@ int kvm_s390_get_zpci_op(void)
->      return cap_zpci_op;
->  }
->
-> +int kvm_s390_topology_set_mtcr(uint64_t attr)
-> +{
-> +    struct kvm_device_attr attribute = {
-> +        .group = KVM_S390_VM_CPU_TOPOLOGY,
-> +        .attr  = attr,
-> +    };
-> +
-> +    if (!s390_has_feat(S390_FEAT_CONFIGURATION_TOPOLOGY)) {
-> +        return 0;
-> +    }
-> +    if (!kvm_vm_check_attr(kvm_state, KVM_S390_VM_CPU_TOPOLOGY, attr)) {
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    return kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attribute);
-> +}
-> +
->  void kvm_arch_accel_class_init(ObjectClass *oc)
->  {
->  }
+>  typedef struct TCGLdstHelperParam {
+>      TCGReg (*ra_gen)(TCGContext *s, const TCGLabelQemuLdst *l, int arg_r=
+eg);
+>      unsigned ntmp;
 > --
-> 2.41.0
+> 2.34.1
 >
 >
 
