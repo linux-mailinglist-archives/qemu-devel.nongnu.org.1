@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792897D041A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EFC7D0421
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:41:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtalM-0004M1-2k; Thu, 19 Oct 2023 17:41:04 -0400
+	id 1qtaly-0005mV-VR; Thu, 19 Oct 2023 17:41:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtalK-0004I0-7I
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:41:02 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtalw-0005fx-Q2
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:41:40 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtalI-0000Mj-Ns
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:41:01 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-507973f3b65so156287e87.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:41:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtalu-0000Rz-4Z
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:41:40 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-53e70b0a218so132069a12.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:41:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697751659; x=1698356459; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697751696; x=1698356496; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Zr55r2AeBcnjH3tOVL5JBchW9ADcgy5ONzknaHE7wsM=;
- b=dBCxYAOd0TgnUuWy5qd9dbxdgq1GijQAbzpxDUnyhhY2TplNktpbGI6RJBtFUVj49a
- YN7uuxgGt9cuGjUfkeDetugnIokyf6nWx4GeKfE0A7iVYcNspuImG1dHrl2dsDOZiqpY
- DCoW4UqwVEBSfXfYg4ETIJ3FDWyo0DQV/lUdJ44OCKyYvP43qV51nx7HpSycpe3RfjS/
- 5oGTzIkZHfpTKaVlJFJxl0V886O0rfHET1cc7a3BAkuE94/0VpL9NNggOiZQCpapXhnq
- Ud9kFkCtxpwvz+e2zttqVm08YjE/aFyelBBdqfThrl4gjGb+GksfuKZhTueqXS8iN8fr
- XRwg==
+ bh=g9fHF1Lm2z45kA/ks0p/qc2goX8ifReYHByDbDQUh3c=;
+ b=crIaWZws03rSZWplmR4I6dz+OpahGg/HYRPxYpUK2ywx4TwNDSwG1oOy8thQFywDR9
+ RPr1MCyOe5V5VdSDDj6jA0RKf/Pi5G2o0xG/OZ+O3WLT1owSD+cPmhKaYtmYCloyZzhg
+ PEBx1JrbIx9tfUIW5YSfALxCtDZvdSav43O5Y90UwZXriD39OX5yqH1MAFYtM+PW/mG4
+ 63ZBsfpxZPAYM8+iro60FOmd1uGH0XUbQAB0gFYPm4I0/4Ru8QHOwmHxpeDLzjRk/xbE
+ nTvVKOalGgRXHszbLkS97tHzCNoTh/5f1PWndk6Zoqp/IwVZjFKfgy7Nkyes8hkdeH4W
+ h03g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697751659; x=1698356459;
+ d=1e100.net; s=20230601; t=1697751696; x=1698356496;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zr55r2AeBcnjH3tOVL5JBchW9ADcgy5ONzknaHE7wsM=;
- b=WLU0bootrAFQBLNicio+GRLobJsFvyONltp6caJ+XFXNlXbK/SgKwV1rHBdAv8RLP3
- 8qKz8XbH4t/v22iGVEYkx3LqdGYp1TMpCJsL4rDK/Rd+SaGMcreYTPG5gtsFQAXX4AtK
- DVk8XhYPRYEV8hd0DGsuEelu82lIIdA+Co91Dlf3dK6MTShbHBwhqVo0g5Onj8BetF6f
- yi3oU963fbQ3Us1yjIHWTVg/R512zRmUdEsfoBEplD+YO8OmtMa5aiZ9nbaSW1UOGB/x
- lZHOdkoClycajmYrRXmjlWKrZYpAh6QNYDvlXCoqLb071XX2JLZ/i3/RMSpWd+Vi5LPr
- uxHA==
-X-Gm-Message-State: AOJu0Yzwp+aVmD7vh99OmEJtq5dp6LC58x4X3nidVNYlXc/IthD5CWlB
- SLHmVn7iQC2VNTjLcmxj0f7mB8/RxNRBkfxPi6RUHQ==
-X-Google-Smtp-Source: AGHT+IFYe5cNFsa9gqi9uksRIG2tEg57YcUKM+qVrbDsL9LuIpkPhm1xHu4XZzkMvqr/dP6NXVmlrg==
-X-Received: by 2002:a05:6512:612:b0:507:9787:6776 with SMTP id
- b18-20020a056512061200b0050797876776mr2393552lfe.5.1697751658872; 
- Thu, 19 Oct 2023 14:40:58 -0700 (PDT)
+ bh=g9fHF1Lm2z45kA/ks0p/qc2goX8ifReYHByDbDQUh3c=;
+ b=SIWf9dwitDYLaDz4PPCLhPhoyvg9+H0mZW3iy9heWup5RB9p4E2xFcUjSpWnHT7Flo
+ h+bCbsVlkKZtzDcDb8TJdfJVJqwewpEUCiuipvvmlQI2ClX2rDTv6N1w08io73SnOYqv
+ 9xrSDTyaL282w1pOCwGe2RsziY/BLOuTWbLXUCqnijHaCCMx4Bo6ti7D2AQppimoUgUU
+ HcyOGMswI43NyteB+MWf1EdfXx7tkwOdt2fWyw/LhUbFW1hCiK9FMxQ1I6RXCIdqlTcN
+ YRKsF6bfjVEn2UZB1DSn1k4WgG5/0tK6i1psUK4OEVaae5XV32d7Yc2v4Qph+Jq4HD64
+ 5K0w==
+X-Gm-Message-State: AOJu0Yww8M3eg4UxgU9oIpxlv23Rb+OKfr8q3B2FV3JEOAoEsjmZk/I4
+ fGm1jFJhf++85myy1cs82YHsYp+gSebSIaUY0ywsXA==
+X-Google-Smtp-Source: AGHT+IGhNYfnBMC8MggQaEl8LZP7PDTBG6LSNJrwV/C+KBZDbLv2jVQ60ul4+5wvmgA7oPXpHYj+vA==
+X-Received: by 2002:a17:907:60d4:b0:9ba:1d08:ad43 with SMTP id
+ hv20-20020a17090760d400b009ba1d08ad43mr3496384ejc.70.1697751696023; 
+ Thu, 19 Oct 2023 14:41:36 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-216-177.abo.bbox.fr.
  [176.131.216.177]) by smtp.gmail.com with ESMTPSA id
- mb8-20020a170906eb0800b009ae57888718sm215110ejb.207.2023.10.19.14.40.57
+ a7-20020a1709062b0700b009932337747esm224113ejg.86.2023.10.19.14.41.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 14:40:58 -0700 (PDT)
-Message-ID: <53d5ddf4-20c0-bdb4-5fd2-82555990a6f7@linaro.org>
-Date: Thu, 19 Oct 2023 23:40:56 +0200
+ Thu, 19 Oct 2023 14:41:35 -0700 (PDT)
+Message-ID: <b2d724ca-5369-76ab-30bb-88cf9bcedcb6@linaro.org>
+Date: Thu, 19 Oct 2023 23:41:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] MAINTAINERS: Add hw/input/lasips2.c to the HPPA machine
- section
+Subject: Re: [PATCH 0/7] hw: Few more QOM/QDev cleanups
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-trivial@nongnu.org
-References: <20231017151933.213780-1-thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Fam Zheng <fam@euphon.net>, qemu-arm@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Gerd Hoffmann <kraxel@redhat.com>
+References: <20231017140150.44995-1-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231017151933.213780-1-thuth@redhat.com>
+In-Reply-To: <20231017140150.44995-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -94,15 +99,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/10/23 17:19, Thomas Huth wrote:
-> hw/input/lasips2.c and the corresponding header include/hw/input/lasips2.h
-> are only used by the HPPA machine, so add them to the corresponding section
-> in the MAINTAINERS file.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS | 2 ++
->   1 file changed, 2 insertions(+)
+On 17/10/23 16:01, Philippe Mathieu-Daudé wrote:
 
-Thanks, queued to hw-misc.
+> Philippe Mathieu-Daudé (7):
+>    hw/virtio/virtio-pmem: Replace impossible check by assertion
+>    hw/block/vhost-user-blk: Use DEVICE() / VIRTIO_DEVICE() macros
+>    hw/display/virtio-gpu: Use VIRTIO_DEVICE() macro
+>    hw/scsi/virtio-scsi: Use VIRTIO_SCSI_COMMON() macro
+>    hw/dma: Declare link using static DEFINE_PROP_LINK() macro
+>    hw/net: Declare link using static DEFINE_PROP_LINK() macro
+
+Patches 1-6 queued to hw-misc.
 
