@@ -2,79 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A6E7D0420
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4450D7D041B
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:41:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtakX-0003b0-3U; Thu, 19 Oct 2023 17:40:13 -0400
+	id 1qtakY-0003cP-Ud; Thu, 19 Oct 2023 17:40:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qtakV-0003Yg-Fk
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:11 -0400
-Received: from 6.mo548.mail-out.ovh.net ([188.165.58.48])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qtakQ-0008QT-GH
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:11 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.108.1.250])
- by mo548.mail-out.ovh.net (Postfix) with ESMTPS id A5679203E7;
- Thu, 19 Oct 2023 21:40:00 +0000 (UTC)
-Received: from kaod.org (37.59.142.106) by DAG6EX1.mxp5.local (172.16.2.51)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 19 Oct
- 2023 23:39:59 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-106R006070d8609-c87f-452f-983d-aa90b36fabe4,
- 40A84FA1BFAB306571EA24E7D640879C68C08F1A) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 88.179.9.154
-Date: Thu, 19 Oct 2023 23:39:58 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Juan Quintela <quintela@redhat.com>
-CC: <qemu-devel@nongnu.org>, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, <qemu-ppc@nongnu.org>,
- Nicholas Piggin <npiggin@gmail.com>, <qemu-s390x@nongnu.org>, Gerd Hoffmann
- <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>, Samuel Thibault
- <samuel.thibault@ens-lyon.org>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, "Ilya
- Leoshkevich" <iii@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>, "Eric
- Farman" <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>, "Harsh Prateek
- Bora" <harshpb@linux.ibm.com>, John Snow <jsnow@redhat.com>,
- <qemu-block@nongnu.org>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, =?UTF-8?B?TWFyYy1BbmRy?=
- =?UTF-8?B?w6k=?= Lureau <marcandre.lureau@redhat.com>, Stefan Weil
- <sw@weilnetz.de>, <qemu-arm@nongnu.org>, Jason Wang <jasowang@redhat.com>,
- Corey Minyard <minyard@acm.org>, Leonardo Bras <leobras@redhat.com>, "Thomas
- Huth" <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, "Michael
- S. Tsirkin" <mst@redhat.com>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@kaod.org>, David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
- <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH 07/13] RFC migration: icp/server is a mess
-Message-ID: <20231019233958.17abb488@bahia>
-In-Reply-To: <20231019190831.20363-8-quintela@redhat.com>
-References: <20231019190831.20363-1-quintela@redhat.com>
- <20231019190831.20363-8-quintela@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtakW-0003an-KE
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:12 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtakT-0000A9-9q
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:12 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-53db1fbee70so123270a12.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:40:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697751607; x=1698356407; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rbmDuYpvV88iKNjkf/AlL0vQESOVZTA9WYJH0rHE3Qs=;
+ b=P3YEnKlEgBOYYnKFSNxEDfaNSMB1VgPgnVcAF50a5PyajiJ5wukXknXY+eGfPqf59P
+ fHRQ+43SmTuUK1YHgdZsSs8e485v7G16TOKK/5RCQqOfz/RYehv5d4tw9G22/eozBBw5
+ ZPQWgoWN1k6y9X47TC6iWUUVlxsYEj7cncnasi7x9N3LXiUKoCigj8o9vmoVeIWRolg4
+ VvuiJePE7lEudiVVzA39APnZ2TnjFPjGgvVMQiJ97Kqp1JL4CbLEePJeYBGtGyPjg/ec
+ n+Wg5Tm4u4lYnQRV6e3N7ZlFNzu19uwppW1VM0mp9C77N3aukdCkEr+IlpjIsn+naP7w
+ W9SQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697751607; x=1698356407;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rbmDuYpvV88iKNjkf/AlL0vQESOVZTA9WYJH0rHE3Qs=;
+ b=M/Oq1xtmR2aM/yLLOoEW26A+mZw3cm0srIq4e63WZM8+nNvXUI7sB2XB+nW4IZysZC
+ BHb+cddM1eYLD+jkP2WuQrAFr7ky/osK87hbQaalYaDxQCY2nOqiOZZlDTHZ4cYslOiy
+ QMZgRkZRg6mrYpV+FIA5jwdBNg21XXTaFKvzP2rF1dIRkuXf+v2J4Na08mSFWQaEwXTT
+ QEbOpoReAzVr6euwqkwNPyRBbZbBj6U6s5USOxchLrnKMkGttBZ2MPxRZgCyiFJqw0X2
+ vY+VLlS5/9M72eHD9Sh7oQpJ1vQLeQPCvGgSWKyn2moYIPOypx2M4tE5N+mfnGsMpwV5
+ 0Pfg==
+X-Gm-Message-State: AOJu0YzcN+YzeJk7s3HoyC+T6ktxSgv4rtnt7+TzGzmPhQeGZADOsxNp
+ 8+xqDwKFxoy4fPjYg/DfbBephk+uEGNFLuxwirhQ/A==
+X-Google-Smtp-Source: AGHT+IFgj1tEqwjH3TKAjoC7MTEJRzP7+VhYONVf57ly/RM4/prZw/85yBB7loAQZvtGej1eByRsdA==
+X-Received: by 2002:a50:d719:0:b0:53e:1815:ed0f with SMTP id
+ t25-20020a50d719000000b0053e1815ed0fmr106515edi.31.1697751607172; 
+ Thu, 19 Oct 2023 14:40:07 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-216-177.abo.bbox.fr.
+ [176.131.216.177]) by smtp.gmail.com with ESMTPSA id
+ g2-20020a50d5c2000000b0053e36dd75dfsm268482edj.35.2023.10.19.14.40.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 14:40:06 -0700 (PDT)
+Message-ID: <1e0f77e0-5a93-28f7-8c7b-819366c3c5e0@linaro.org>
+Date: Thu, 19 Oct 2023 23:40:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.106]
-X-ClientProxiedBy: DAG1EX1.mxp5.local (172.16.2.1) To DAG6EX1.mxp5.local
- (172.16.2.51)
-X-Ovh-Tracer-GUID: 788fb555-ab1a-435b-9d14-6f76b08a239c
-X-Ovh-Tracer-Id: 11686841037111007607
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrjeejgddtudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeegkeejtdevgeekieelffdvtedvvdegtdduudeigffhhffgvdfhgeejteekheefkeenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtiedpkeekrddujeelrdelrdduheegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehquhhinhhtvghlrgesrhgvughhrghtrdgtohhmpdgurghvihgusehgihgsshhonhdrughrohhpsggvrghrrdhiugdrrghupdhmshhtsehrvgguhhgrthdrtghomhdpphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorhhgpdhthhhuthhhsehrvgguhhgrthdrtghomhdplhgvohgsrhgrshesrhgvughhrghtrdgtohhmpdhmihhnhigrrhgusegrtghmrdhorhhgpdhjrghsohifrghnghesrhgvughhrghtrdgtohhmpdhqvghmuhdqrghrmhesnhhonh
- hgnhhurdhorhhgpdhsfiesfigvihhlnhgvthiirdguvgdpmhgrrhgtrghnughrvgdrlhhurhgvrghusehrvgguhhgrthdrtghomhdpsghorhhnthhrrggvghgvrheslhhinhhugidrihgsmhdrtghomhdpmhgrrhhkrdgtrghvvgdqrgihlhgrnhgusehilhgrnhguvgdrtghordhukhdpqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrghdpjhhsnhhofiesrhgvughhrghtrdgtohhmpdhprghsihgtsehlihhnuhigrdhisghmrdgtohhmpdhhrghrshhhphgssehlihhnuhigrdhisghmrdgtohhmpdhfrghrmhgrnheslhhinhhugidrihgsmhdrtghomhdpfhgrrhhoshgrshesshhushgvrdguvgdpihhiiheslhhinhhugidrihgsmhdrtghomhdpuggrvhhiugesrhgvughhrghtrdgtohhmpdhrihgthhgrrhgurdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdpshgrmhhuvghlrdhthhhisggruhhlthesvghnshdqlhihohhnrdhorhhgpdgtmhhinhihrghrugesmhhvihhsthgrrdgtohhmpdhkrhgrgigvlhesrhgvughhrghtrdgtohhmpdhqvghmuhdqshefledtgiesnhhonhhgnhhurdhorhhgpdhnphhighhgihhnsehgmhgrihhlrdgtohhmpdhqvghmuhdqphhptgesnhhonhhgnhhurdhorhhgpdhmrghrtggvlhdrrghpfhgvlhgsrghumhesghhmrghilhdrtghomhdpshhtvghfrghnsgeslhhinhhugidrvhhnvghtrdhisghmrdgtohhmpdhqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhpvghtvghrgie
- srhgvughhrghtrdgtohhmpdgurghnihgvlhhhsgegudefsehgmhgrihhlrdgtohhmpdfovfetjfhoshhtpehmohehgeekpdhmohguvgepshhmthhpohhuth
-Received-SPF: pass client-ip=188.165.58.48; envelope-from=groug@kaod.org;
- helo=6.mo548.mail-out.ovh.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 00/12] hw: Strengthen SysBus & QBus API
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Beniamino Galvani
+ <b.galvani@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-arm@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Eric Farman <farman@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-s390x@nongnu.org, Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ Sergio Lopez <slp@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
+References: <20231019071611.98885-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231019071611.98885-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,64 +108,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Oct 2023 21:08:25 +0200
-Juan Quintela <quintela@redhat.com> wrote:
+On 19/10/23 09:15, Philippe Mathieu-Daudé wrote:
 
-> Current code does:
-> - register pre_2_10_vmstate_dummy_icp with "icp/server" and instance
->   dependinfg on cpu number
-> - for newer machines, it register vmstate_icp with "icp/server" name
->   and instance 0
-> - now it unregisters "icp/server" for the 1st instance.
-> 
-> This is wrong at many levels:
-> - we shouldn't have two VMSTATEDescriptions with the same name
-> - In case this is the only solution that we can came with, it needs to
->   be:
->   * register pre_2_10_vmstate_dummy_icp
->   * unregister pre_2_10_vmstate_dummy_icp
->   * register real vmstate_icp
-> 
-> As the initialization of this machine is already complex enough, I
-> need help from PPC maintainers to fix this.
-> 
-> Volunteers?
-> 
-> CC: Cedric Le Goater <clg@kaod.org>
-> CC: Daniel Henrique Barboza <danielhb413@gmail.com>
-> CC: David Gibson <david@gibson.dropbear.id.au>
-> CC: Greg Kurz <groug@kaod.org>
-> 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->  hw/ppc/spapr.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index cb840676d3..8531d13492 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -143,7 +143,12 @@ static bool pre_2_10_vmstate_dummy_icp_needed(void *opaque)
->  }
->  
->  static const VMStateDescription pre_2_10_vmstate_dummy_icp = {
-> -    .name = "icp/server",
-> +    /*
-> +     * Hack ahead.  We can't have two devices with the same name and
-> +     * instance id.  So I rename this to pass make check.
-> +     * Real help from people who knows the hardware is needed.
-> +     */
-> +    .name = "pre-2.10-icp/server",
->      .version_id = 1,
->      .minimum_version_id = 1,
->      .needed = pre_2_10_vmstate_dummy_icp_needed,
+> Philippe Mathieu-Daudé (12):
+>    hw/i386/amd_iommu: Do not use SysBus API to map local MMIO region
+>    hw/i386/intel_iommu: Do not use SysBus API to map local MMIO region
+>    hw/misc/allwinner-dramc: Move sysbus_mmio_map call from init ->
+>      realize
+>    hw/misc/allwinner-dramc: Do not use SysBus API to map local MMIO
+>      region
+>    hw/pci-host/bonito: Do not use SysBus API to map local MMIO region
+>    hw/acpi: Realize ACPI_GED sysbus device before accessing it
+>    hw/arm/virt: Realize ARM_GICV2M sysbus device before accessing it
+>    hw/isa: Realize ISA BUS sysbus device before accessing it
+>    hw/s390x/css-bridge: Realize sysbus device before accessing it
 
-I guess this fix is acceptable as well and a lot simpler than
-reverting the hack actually. Outcome is the same : drop
-compat with pseries-2.9 and older.
-
-Reviewed-by: Greg Kurz <groug@kaod.org>
-
--- 
-Greg
+Patches 1-9 queued to hw-misc.
 
