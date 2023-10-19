@@ -2,51 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1ADE7D0288
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 21:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E96E7D026F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 21:25:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtYcn-00064s-RP; Thu, 19 Oct 2023 15:24:05 -0400
+	id 1qtYcq-0006A1-El; Thu, 19 Oct 2023 15:24:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtYcl-00061g-Pm
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:24:03 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtYco-00067X-KA
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:24:06 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtYck-0004ry-3M
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:24:03 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtYcn-0004sb-1M
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:24:06 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id CC5DE21A63;
- Thu, 19 Oct 2023 19:23:58 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A370B1FD84;
+ Thu, 19 Oct 2023 19:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697743438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1697743442; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mrGSzXr+Xw8NneZiJOrBrc+5keAbMKby0ZStEj+MOCI=;
- b=jYs4m16ONdizyGxzoWU/fGc6N8B6jfTFn9wy5LXCq9LvtwSpN/SOk9059W/tifQrpkTJ7B
- 8aatKYi5479XoPDBiTS+fSAPKa7aEFQNDIt7C4b7hImVPU/ymnf2CQCGdKFQCYZ9Yii/1i
- 3eJ412gHUYheJm+ZKn3gC3K+FtjmNBo=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AWg1Jhd+A5ApoooDn6635fYMYZlwnfnLNm6k6rQi7PI=;
+ b=FfZd1L4DTr3OVZb7Vt4cpG2NYIbvfa4g+AkalIHf9/3AE1GS4wiJPBFwLiPnBssxjtj7r0
+ mIq3kt2RtBAPLgb6aDkkijOlg47uGqkLxoUMQCqfSbVV0295gGbnyK5hqhAOBfJiiJjPvT
+ NaCR4iS1K3PsAfMMr/ObLwuttA47ua4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697743438;
+ s=susede2_ed25519; t=1697743442;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mrGSzXr+Xw8NneZiJOrBrc+5keAbMKby0ZStEj+MOCI=;
- b=Q1vH3WMOGnFs5GWQRAMhnhp/YyjstegofC0Ty5lV2AXkYmN8Bfn/CaHpE1As62DKQC7ANH
- kc8/OnkRcXA2DKCg==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AWg1Jhd+A5ApoooDn6635fYMYZlwnfnLNm6k6rQi7PI=;
+ b=RvZsQ9utueLoSEAfu0w+mjWHiXno7uAO/y/tT4WlI/EpkItzT2IEZDgpn+JfY2Vz+nqBAb
+ nDuzqD/Yqr68DfCA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8C4EA1357F;
- Thu, 19 Oct 2023 19:23:55 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5847B13A97;
+ Thu, 19 Oct 2023 19:23:59 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id G7MVFUuCMWWWEwAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 19:23:55 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id oBzXAk+CMWWWEwAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 19:23:59 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: prerna.saxena@nutanix.com, dgilbert@redhat.com, pbonzini@redhat.com,
@@ -54,18 +56,19 @@ Cc: prerna.saxena@nutanix.com, dgilbert@redhat.com, pbonzini@redhat.com,
  manish.mishra@nutanix.com, aravind.retnakaran@nutanix.com,
  Het Gala <het.gala@nutanix.com>, Juan Quintela <quintela@redhat.com>,
  Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v14 00/14] migration: Modify 'migrate' and 'migrate-incoming'
- QAPI commands for migration
-Date: Thu, 19 Oct 2023 16:23:39 -0300
-Message-Id: <20231019192353.31500-1-farosas@suse.de>
+Subject: [PATCH v14 01/14] migration: New QAPI type 'MigrateAddress'
+Date: Thu, 19 Oct 2023 16:23:40 -0300
+Message-Id: <20231019192353.31500-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20231019192353.31500-1-farosas@suse.de>
+References: <20231019192353.31500-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
+Authentication-Results: smtp-out2.suse.de;
 	none
-X-Spam-Score: -6.10
-X-Spamd-Result: default: False [-6.10 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: -6.09
+X-Spamd-Result: default: False [-6.09 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  NEURAL_HAM_LONG(-3.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
@@ -73,9 +76,9 @@ X-Spamd-Result: default: False [-6.10 / 50.00]; ARC_NA(0.00)[];
  NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_TWELVE(0.00)[13];
  MID_CONTAINS_FROM(1.00)[]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[99.99%]
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-2.99)[99.97%]
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -98,57 +101,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Het Gala <het.gala@nutanix.com>
 
-I had to make this a new version because the file: tests are already
-merged and Het's patches break them unless we also convert the file
-transport to the new API.
+This patch introduces well defined MigrateAddress struct
+and its related child objects.
 
-I did the conversion and added separate patches as fixups so we can
-review my additions separately.
+The existing argument of 'migrate' and 'migrate-incoming' QAPI
+- 'uri' is of type string. The current implementation follows
+double encoding scheme for fetching migration parameters like
+'uri' and this is not an ideal design.
 
-Het's series untouched aside from conflict resolution.
+Motive for intoducing struct level design is to prevent double
+encoding of QAPI arguments, as Qemu should be able to directly
+use the QAPI arguments without any level of encoding.
 
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/1043006299
+Note: this commit only adds the type, and actual uses comes
+in later commits.
 
-v13 by Het Gala:
-https://lore.kernel.org/r/20231012151052.154106-1-het.gala@nutanix.com
+Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+Signed-off-by: Het Gala <het.gala@nutanix.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ qapi/migration.json | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-Fabiano Rosas (4):
-  fixup! migration: New QAPI type 'MigrateAddress'
-  fixup! migration: convert migration 'uri' into 'MigrateAddress'
-  migration: Convert the file backend the new QAPI syntax
-  fixup! migration: New migrate and migrate-incoming argument 'channels'
-
-Het Gala (10):
-  migration: New QAPI type 'MigrateAddress'
-  migration: convert migration 'uri' into 'MigrateAddress'
-  migration: convert socket backend to accept MigrateAddress
-  migration: convert rdma backend to accept MigrateAddress
-  migration: convert exec backend to accept MigrateAddress.
-  migration: New migrate and migrate-incoming argument 'channels'
-  migration: modify migration_channels_and_uri_compatible() for new QAPI
-    syntax
-  migration: Implement MigrateChannelList to qmp migration flow.
-  migration: Implement MigrateChannelList to hmp migration flow.
-  migration: modify test_multifd_tcp_none() to use new QAPI syntax.
-
- migration/exec.c               |  74 ++++++++----
- migration/exec.h               |   8 +-
- migration/file.c               |  24 ++--
- migration/file.h               |  10 +-
- migration/migration-hmp-cmds.c |  27 ++++-
- migration/migration.c          | 203 ++++++++++++++++++++++++++-------
- migration/migration.h          |   3 +-
- migration/rdma.c               |  33 ++----
- migration/rdma.h               |   6 +-
- migration/socket.c             |  39 ++-----
- migration/socket.h             |   7 +-
- qapi/migration.json            | 174 +++++++++++++++++++++++++++-
- system/vl.c                    |   2 +-
- tests/qtest/migration-test.c   |   7 +-
- 14 files changed, 467 insertions(+), 150 deletions(-)
-
+diff --git a/qapi/migration.json b/qapi/migration.json
+index db3df12d6c..c352c7ac52 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1508,6 +1508,47 @@
+ ##
+ { 'command': 'migrate-continue', 'data': {'state': 'MigrationStatus'} }
+ 
++##
++# @MigrationAddressType:
++#
++# The migration stream transport mechanisms.
++#
++# @socket: Migrate via socket.
++#
++# @exec: Direct the migration stream to another process.
++#
++# @rdma: Migrate via RDMA.
++#
++# Since 8.2
++##
++{ 'enum': 'MigrationAddressType',
++  'data': ['socket', 'exec', 'rdma'] }
++
++##
++# @MigrationExecCommand:
++#
++# @args: command (list head) and arguments to execute.
++#
++# Since 8.2
++##
++{ 'struct': 'MigrationExecCommand',
++  'data': {'args': [ 'str' ] } }
++
++##
++# @MigrationAddress:
++#
++# Migration endpoint configuration.
++#
++# Since 8.2
++##
++{ 'union': 'MigrationAddress',
++  'base': { 'transport' : 'MigrationAddressType'},
++  'discriminator': 'transport',
++  'data': {
++    'socket': 'SocketAddress',
++    'exec': 'MigrationExecCommand',
++    'rdma': 'InetSocketAddress' } }
++
+ ##
+ # @migrate:
+ #
 -- 
 2.35.3
 
