@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF267CFE7C
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585F47CFE92
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:46:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtV8e-0002EN-CW; Thu, 19 Oct 2023 11:40:44 -0400
+	id 1qtV8Z-000296-Q8; Thu, 19 Oct 2023 11:40:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+298c059cf2aa39b7dc34+7361+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1qtV8Y-00028D-1m; Thu, 19 Oct 2023 11:40:38 -0400
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ <BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qtV8V-00024n-6B; Thu, 19 Oct 2023 11:40:35 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+298c059cf2aa39b7dc34+7361+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1qtV8T-0001jO-LI; Thu, 19 Oct 2023 11:40:37 -0400
+ <BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qtV8R-0001ir-VJ; Thu, 19 Oct 2023 11:40:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=nvRcjzw6M/XXwV3zCk205Erqe071/IUToCid+vBMiOQ=; b=h7T/JZlXs4eYvi1D1r24IXvFZf
- eQnVE76BMO469Wvs1/Uyq8bo4pP8Oil1b3lK53uwNMfi/cWcct9pw89KU2TCiHFjLLJXAyh2oooj2
- 9nPGS3gW6k1clnADbrXpN9PZ4G+kyLAPAZTjw7p/X2f3YiHWie8G1j0XlzkF07La89N9IyaA2rOdU
- Emvs6HGrzswQq1fb7HLyn4LLiprMl/woS11v1T4GUKtd0WBpO+/Lcf1AoyBXnzharnjokIaVKgCUx
- KXewbqi1OP/EnfsDd3SAx9ocBT8oG5pf8XmIybKckp+iiV9/0IBKNgJwmBPg82PyeLpGVJRtMC3lc
- RwCZ1nQQ==;
+ bh=myF4kySQnt1R/jNl7y+DJzz8cGVKJ4FVkI+b72NBJHs=; b=motVjdfWE1GstniTdCu1wyhH13
+ qEBExY7YPMY43dkg0DEqqvbr9P7356o1yb6boWXyNWqMcVVx/4OPNZcbnpslzrsbD7zzZjOP7aYu9
+ TCZ1oeIaBkooBoOYWR3KPNh4kRyJ+oHJN6nm5S+GIb7EsvBYP44PDwj1osnfpYv85OJ3oFzZoUpgq
+ VQlR3J8D0afyD12EnD8A7t+S3o2mmRJuAQHycDcUTMaD3CLWvyh+bGwGV4YFBzoIEOevNkv5p7G3r
+ IuUA237noQcqX9vza0iCbsgnWJCR5mhcQJKpi0PUmZBjG6pbJVYE5xyvNSBgXvjg/E9MTjWhlnVuE
+ VnFlJCiA==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1qtV8M-009yCq-2Z; Thu, 19 Oct 2023 15:40:27 +0000
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qtV8M-007osl-TV; Thu, 19 Oct 2023 15:40:26 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1qtV8M-000PuF-12; Thu, 19 Oct 2023 16:40:26 +0100
+ Linux)) id 1qtV8M-000PuJ-1F; Thu, 19 Oct 2023 16:40:26 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -51,20 +51,20 @@ Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-block@nongnu.org,
  xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Bernhard Beschow <shentey@gmail.com>, Joel Upham <jupham125@gmail.com>
-Subject: [PATCH v2 09/24] i386/xen: advertise XEN_HVM_CPUID_UPCALL_VECTOR in
- CPUID
-Date: Thu, 19 Oct 2023 16:40:05 +0100
-Message-Id: <20231019154020.99080-10-dwmw2@infradead.org>
+Subject: [PATCH v2 10/24] hw/xen: populate store frontend nodes with XenStore
+ PFN/port
+Date: Thu, 19 Oct 2023 16:40:06 +0100
+Message-Id: <20231019154020.99080-11-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231019154020.99080-1-dwmw2@infradead.org>
 References: <20231019154020.99080-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+298c059cf2aa39b7dc34+7361+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -89,29 +89,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-This will allow Linux guests (since v6.0) to use the per-vCPU upcall
-vector delivered as MSI through the local APIC.
+This is kind of redundant since without being able to get these through
+some other method (HVMOP_get_param) the guest wouldn't be able to access
+XenStore in order to find them. But Xen populates them, and it does
+allow guests to *rebind* to the event channel port after a reset.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- target/i386/kvm/kvm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/i386/kvm/xen_xenstore.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index ab72bcdfad..bd774b3e02 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -1889,6 +1889,10 @@ int kvm_arch_init_vcpu(CPUState *cs)
-                 c->eax |= XEN_HVM_CPUID_VCPU_ID_PRESENT;
-                 c->ebx = cs->cpu_index;
-             }
-+
-+            if (cs->kvm_state->xen_version >= XEN_VERSION(4, 17)) {
-+                c->eax |= XEN_HVM_CPUID_UPCALL_VECTOR;
-+            }
-         }
+diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
+index ef8aaa4c42..61692d4489 100644
+--- a/hw/i386/kvm/xen_xenstore.c
++++ b/hw/i386/kvm/xen_xenstore.c
+@@ -1434,6 +1434,7 @@ static void alloc_guest_port(XenXenstoreState *s)
+ int xen_xenstore_reset(void)
+ {
+     XenXenstoreState *s = xen_xenstore_singleton;
++    GList *perms;
+     int err;
  
-         r = kvm_xen_init_vcpu(cs);
+     if (!s) {
+@@ -1461,6 +1462,16 @@ int xen_xenstore_reset(void)
+     }
+     s->be_port = err;
+ 
++    /* Create frontend store nodes */
++    perms = g_list_append(NULL, xs_perm_as_string(XS_PERM_NONE, DOMID_QEMU));
++    perms = g_list_append(perms, xs_perm_as_string(XS_PERM_READ, xen_domid));
++
++    relpath_printf(s, perms, "store/port", "%u", s->guest_port);
++    relpath_printf(s, perms, "store/ring-ref", "%lu",
++                   XEN_SPECIAL_PFN(XENSTORE));
++
++    g_list_free_full(perms, g_free);
++
+     /*
+      * We don't actually access the guest's page through the grant, because
+      * this isn't real Xen, and we can just use the page we gave it in the
 -- 
 2.40.1
 
