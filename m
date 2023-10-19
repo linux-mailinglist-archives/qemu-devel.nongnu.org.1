@@ -2,71 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5E27CF921
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC907CF92F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:41:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtSHc-00039u-9s; Thu, 19 Oct 2023 08:37:48 -0400
+	id 1qtSKH-0008HA-7c; Thu, 19 Oct 2023 08:40:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qtSHX-000332-NK
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:37:44 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qtSHU-00029V-21
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:37:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=M8ZtQJm4spIcwBKs1cE9Y+VmbG/oqkYGXqzc+V9etOI=; b=WFM6+SLBj+2VN8uhQkj80V/C8y
- jNzHTXoblAEqfqoQUfCIAusdxj0aGNCOD03ubmu3UmcnXNebuI4KpQCF1udwMmIlYWe26n+KgfebG
- ve5jfzhtp6rDQNIneQJPIjhwHa+4xvCoIYHlV1Ism1R8mI8WSpbZ7nl4WAKWau/19Ih6N9El941LB
- g5FfivmRTOric36GQa6WlnV8TacAshTMJ/MCq+gn3lE9VxSGUMXxR3R9LyhzkNLKc0PzrnRfwlxRe
- LrHfH33lL3hXakfPivQ90UIuEaR42ILflh2zGAA6E/WrEWr6kMbqvvg+IDu5vJARSHTsbvZPO409I
- 5Z/NKrGQ==;
-Received: from [2001:8b0:10b:5:583b:153f:ff9:f813]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qtSHL-0072lR-8h; Thu, 19 Oct 2023 12:37:31 +0000
-Message-ID: <bad8f05b72710e436d01555704139839415249d6.camel@infradead.org>
-Subject: Re: [PATCH v1 20/23] xen platform: unplug ahci object
-From: David Woodhouse <dwmw2@infradead.org>
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org, Joel Upham
- <jupham125@gmail.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>, Anthony Perard
- <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, "Michael S.
- Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>,  Eduardo Habkost <eduardo@habkost.net>,
- xen-devel@lists.xenproject.org
-Date: Thu, 19 Oct 2023 13:37:30 +0100
-In-Reply-To: <CB4239A2-8502-406A-A594-3065C0D3B104@gmail.com>
-References: <cover.1687278381.git.jupham125@gmail.com>
- <9b8183903cbf20db4e2f0dafda9e0ed271a86a8e.1687278381.git.jupham125@gmail.com>
- <CB4239A2-8502-406A-A594-3065C0D3B104@gmail.com>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-bRDKDojRd76wga/45xFW"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtSKE-0008GK-HJ
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:40:30 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtSKB-0002nR-9V
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 08:40:30 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2c514cbbe7eso74568481fa.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 05:40:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697719225; x=1698324025; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/8+ZGXg3QALhBBYt5SOXOpRYBAi+zfA4xfcRwbZuMII=;
+ b=UAMaWJO6+ngZfH8XxCK+3/30/CvUZsgqBLUU5QyPwykrVtJHqyKHPJveD6YV1msfza
+ Wo1VlVBdiqCz/bGqfe+i7haMOrB3H635wZQdiU1EufaU/kqIZ9EERIHU24CnGLbPeoi8
+ IY0reIPhc9opLWxro0KCQ/4XBOu5X8B5l0tcUBk5k1+9ektD/eim4/t7vvM56IV0yc1s
+ Sm78MzHwPRn2j2QS2xq+Ow3LU7hePCyN6hQ/2mnbI7DoyUzUMZHnJAmOVaGIuw+iBahk
+ vtJRpRdJS0NYhTmWhpfcSO2aJJGw55IH1NqlWRpfzqpcSFKYiIEoTNdZkFTb4DHgpKzQ
+ Lc9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697719225; x=1698324025;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=/8+ZGXg3QALhBBYt5SOXOpRYBAi+zfA4xfcRwbZuMII=;
+ b=t/qJuzhszFwc4vqqNUHFxgNi5lzsGLvLZ0wMXltdD7H4nc+FcRV9vtjU7zNDAmXRcX
+ SnsBj8D0fWfirYP48zjl2FzEYqXJkb2nthPm1HhhbNFwuOGqinM/flptirHVR9zEz571
+ /BxgOBOJsCOIHFE64su1eO1h2G1EBcrYbt9dH1zBYpE+t9ily2P0O+Wf2DW0LWyTe4rF
+ uVo7OUzKucXp9WzNQo/xlLgGrzP7kdi7C6/1wbEpJc195odHymPVDoxqXD57MW+pkOmk
+ XmxVuT2iR2xxrBX8tZjvgMVmOXo57CqE3nXlTxhON0dl28KPVi91/+p+VBkbPiBMJv/4
+ zY/g==
+X-Gm-Message-State: AOJu0YwHeLc2MNfXQuuV1xA9TdChS7wFG9OPy274ADpnEm1sdDoQGC0o
+ VEQw0DvJjptj6NnlMus5i4kDnQ==
+X-Google-Smtp-Source: AGHT+IHMr7gnoSTks9bWnl4MgCTmg9A7wTTknuUMeebWWrCjX3qlPGTuV6JKMnto2A285fiFXxyWng==
+X-Received: by 2002:a2e:8654:0:b0:2c0:52e:eafa with SMTP id
+ i20-20020a2e8654000000b002c0052eeafamr1594579ljj.29.1697719225496; 
+ Thu, 19 Oct 2023 05:40:25 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ v11-20020a5d590b000000b003247d3e5d99sm4405132wrd.55.2023.10.19.05.40.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 05:40:25 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id A1ACC1FFBB;
+ Thu, 19 Oct 2023 13:40:24 +0100 (BST)
+References: <20230731091042.139159-1-akihiko.odaki@daynix.com>
+ <20230731091042.139159-3-akihiko.odaki@daynix.com>
+ <8df33f0f-c394-5eb8-ca0c-5601790745f8@redhat.com>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Juan Quintela <quintela@redhat.com>, Peter Xu
+ <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, "Edgar E . Iglesias"
+ <edgar.iglesias@gmail.com>, Brian Cain <bcain@quicinc.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Song Gao
+ <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Aurelien Jarno
+ <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Aleksandar Rikalo
+ <aleksandar.rikalo@syrmia.com>, Chris Wulff <crwulff@gmail.com>, Marek
+ Vasut <marex@denx.de>, David Hildenbrand <david@redhat.com>, Ilya
+ Leoshkevich <iii@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org, qemu-arm@nongnu.org
+Subject: Re: [PATCH v2 2/2] tests/tcg: Add -fno-stack-protector
+Date: Thu, 19 Oct 2023 13:40:06 +0100
+In-reply-to: <8df33f0f-c394-5eb8-ca0c-5601790745f8@redhat.com>
+Message-ID: <87y1fy945j.fsf@linaro.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,273 +112,49 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-bRDKDojRd76wga/45xFW
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thomas Huth <thuth@redhat.com> writes:
 
-On Thu, 2023-06-22 at 05:40 +0000, Bernhard Beschow wrote:
-> Am 20. Juni 2023 17:24:54 UTC schrieb Joel Upham <jupham125@gmail.com>:
-> > This will unplug the ahci device when the Xen driver calls for an unplu=
-g.
-> > This has been tested to work in linux and Windows guests.
-> > When q35 is detected, we will remove the ahci controller
-> > with the hard disks.=C2=A0 In the libxl config, cdrom devices
-> > are put on a seperate ahci controller. This allows for 6 cdrom
-> > devices to be added, and 6 qemu hard disks.
->=20
-> Does this also work with KVM Xen emulation? If so, the QEMU manual
-> should be updated accordingly in this patch since it explicitly rules
-> out Q35 due to missing AHCI unplug:
-> https://gitlab.com/qemu-project/qemu/-/blob/stable-8.0/docs/system/i386/x=
-en.rst?plain=3D1&ref_type=3Dheads#L51
+> On 31/07/2023 11.10, Akihiko Odaki wrote:
+>> A build of GCC 13.2 will have stack protector enabled by default if it
+>> was configured with --enable-default-ssp option. For such a compiler,
+>> it is necessary to explicitly disable stack protector when linking
+>> without standard libraries.
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   tests/tcg/mips/hello-mips.c       | 4 ++--
+>>   tests/tcg/Makefile.target         | 2 +-
+>>   tests/tcg/aarch64/Makefile.target | 2 +-
+>>   tests/tcg/arm/Makefile.target     | 2 +-
+>>   tests/tcg/cris/Makefile.target    | 2 +-
+>>   tests/tcg/hexagon/Makefile.target | 2 +-
+>>   tests/tcg/i386/Makefile.target    | 2 +-
+>>   tests/tcg/minilib/Makefile.target | 2 +-
+>>   tests/tcg/mips/Makefile.target    | 2 +-
+>>   9 files changed, 10 insertions(+), 10 deletions(-)
+>> diff --git a/tests/tcg/mips/hello-mips.c
+>> b/tests/tcg/mips/hello-mips.c
+>> index 4e1cf501af..0ba5f1bf23 100644
+>> --- a/tests/tcg/mips/hello-mips.c
+>> +++ b/tests/tcg/mips/hello-mips.c
+>> @@ -5,8 +5,8 @@
+>>   * http://www.linux-mips.org/wiki/MIPSABIHistory
+>>   * http://www.linux.com/howtos/Assembly-HOWTO/mips.shtml
+>>   *
+>> -* mipsel-linux-gcc -nostdlib -mno-abicalls -fno-PIC -mabi=3D32 \
+>> -*                  -O2 -static -o hello-mips hello-mips.c
+>> +* mipsel-linux-gcc -nostdlib -mno-abicalls -fno-PIC -fno-stack-protecto=
+r \
+>> +                   -mabi=3D32 -O2 -static -o hello-mips hello-mips.c
+>
+> You've lost the "*" at the beginning of the comment line here.
+>
+> But apart from that nit, the patch looks sane to me.
+>
+> Cc:-ing Alex Benn=C3=A9e ... could pick this patch up?
 
-No, it doesn't work.=C2=A0Those assumptions about the topology and which
-disk/cdrom devices are attached to which AHCI device on which PCI bus,
-are not valid in the general case. So if I boot an HVM guest thus...
+Queued to testing/next with tweak to comment, thanks.
 
- $ qemu-system-x86_64 -M q35 -m 1g -display none -serial mon:stdio \
-     --accel kvm,xen-version=3D0x40011,kernel-irqchip=3Dsplit \
-     -drive file=3D${GUEST_IMAGE},if=3Dxen=C2=A0\
-     -drive file=3D${GUEST_IMAGE},file.locking=3Doff,if=3Dide
-
-... it still sees the AHCI disk when it boots:
-
-[root@localhost ~]# cat /proc/partitions=20
-major minor  #blocks  name
-
- 202        0   20971520 xvda
- 202        1   18874368 xvda1
- 202        2    2096128 xvda2
-   8        0   20971520 sda
-   8        1   18874368 sda1
-   8        2    2096128 sda2
-  11        0    1048575 sr0
-[root@localhost ~]# lspci
-00:00.0 Host bridge: Intel Corporation 82G33/G31/P35/P31 Express DRAM Contr=
-oller
-00:01.0 Unassigned class [ff80]: XenSource, Inc. Xen Platform Device (rev 0=
-1)
-00:02.0 VGA compatible controller: Device 1234:1111 (rev 02)
-00:1f.0 ISA bridge: Intel Corporation 82801IB (ICH9) LPC Interface Controll=
-er (rev 02)
-00:1f.2 SATA controller: Intel Corporation 82801IR/IO/IH (ICH9R/DO/DH) 6 po=
-rt SATA Controller [AHCI mode] (rev 02)
-00:1f.3 SMBus: Intel Corporation 82801I (ICH9 Family) SMBus Controller (rev=
- 02)
-
-We probably do need to iterate over the children of the PCI device and
-selectively destroy them. Which can be the *same* for IDE and AHCI.
-Patch below.
-
-It would be slightly more natural to do ide_dev_unplug() with an
-'if (!idedev) return;' but I've done it this way to keep the
-indentation the same, and thus highlight that it's just using the
-existing blk unplug magic. I kind of hate that we *need* that magic,
-shouldn't object_unparent() Just Work=E2=84=A2 and unwire everything?
-(It *doesn't*; qemu later crashes. But I think it *should*).
-
-As I'm literally about to hit send on this, I realise I messed up the
-'aux' logic. But as a proof of concept for this approach, this works OK
-for both pc and q35 machines with Xen emulation tested as in the above
-command line. Feel free to use it as you see fit, to which end:
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-
---- a/hw/i386/xen/xen_platform.c
-+++ b/hw/i386/xen/xen_platform.c
-@@ -169,37 +169,49 @@ static void pci_unplug_nics(PCIBus *bus)
-  *
-  * [1] https://xenbits.xen.org/gitweb/?p=3Dxen.git;a=3Dblob;f=3Ddocs/misc/=
-hvm-emulated-unplug.pandoc
-  */
--static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
-+static int ide_dev_unplug(DeviceState *dev, void *opaque)
- {
--    DeviceState *dev =3D DEVICE(d);
--    PCIIDEState *pci_ide;
--    int i;
-     IDEDevice *idedev;
-     IDEBus *idebus;
-     BlockBackend *blk;
-+    int unit;
-=20
--    pci_ide =3D PCI_IDE(dev);
--
--    for (i =3D aux ? 1 : 0; i < 4; i++) {
--        idebus =3D &pci_ide->bus[i / 2];
--        blk =3D idebus->ifs[i % 2].blk;
-+    idedev =3D IDE_DEVICE(object_dynamic_cast(OBJECT(dev), "ide-hd"));
-+    if (idedev) {
-+        idebus =3D IDE_BUS(qdev_get_parent_bus(dev));
-=20
--        if (blk && idebus->ifs[i % 2].drive_kind !=3D IDE_CD) {
--            if (!(i % 2)) {
--                idedev =3D idebus->master;
--            } else {
--                idedev =3D idebus->slave;
--            }
-+        unit =3D (idedev =3D=3D idebus->slave);
-+        assert(unit || idedev =3D=3D idebus->master);
-=20
-+        blk =3D idebus->ifs[unit].blk;
-+        if (blk) {
-             blk_drain(blk);
-             blk_flush(blk);
-=20
-             blk_detach_dev(blk, DEVICE(idedev));
--            idebus->ifs[i % 2].blk =3D NULL;
-+            idebus->ifs[unit].blk =3D NULL;
-             idedev->conf.blk =3D NULL;
-             monitor_remove_blk(blk);
-             blk_unref(blk);
-         }
-+
-+        object_unparent(OBJECT(dev));
-+    }
-+
-+    return 0;
-+}
-+
-+static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
-+{
-+    DeviceState *dev =3D DEVICE(d);
-+
-+    if (!aux) {
-+        IDEBus *idebus =3D IDE_BUS(qdev_get_child_bus(DEVICE(dev), "ide.0"=
-));
-+        if (idebus && idebus->master) {
-+            ide_dev_unplug(DEVICE(idebus->master), NULL);
-+        }
-+    } else {
-+        qdev_walk_children(dev, NULL, NULL, ide_dev_unplug, NULL, NULL);
-     }
-     pci_device_reset(d);
- }
-@@ -216,6 +228,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, void =
-*opaque)
-=20
-     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
-     case PCI_CLASS_STORAGE_IDE:
-+    case PCI_CLASS_STORAGE_SATA:
-         pci_xen_ide_unplug(d, aux);
-         break;
-=20
 --=20
-2.34.1
-
-
-
---=-bRDKDojRd76wga/45xFW
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDE5MTIzNzMwWjAvBgkqhkiG9w0BCQQxIgQgiRU49FbN
-n1S93DctcGtQGIwrVjDZZhP1gzon/qCa4Rowgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgACTUyOv0W38LyAPRHHXE5r54l0NZkUUyu9
-HrlakIcoRWOSIfpiOhugdJpWjzdRYeGxZpA/LP1HGDcOSOC61mmfp+jrhKTdth1kFPwquPWQW6sI
-zgaWTsY74FsMbNwIgAgyYoQSKHniF8N3sZBTC2QOQD5c8HclVcoFE3Jec19NdHECWhWwTmhWJg27
-224lqu1cnnAJSPWVmy/xQnc4VOg3TvpnaadIv89r2TCz+aP12tPy6XRXtzBTJuq+pi3aH1SjlTUA
-rn/lBqfI6dqmEUzsYWpyKr6jDhw9+8ayTjx4bgEXjjKPR0ccpgrdoxhJyXLgKNXWFGdM9i/YL+UL
-+6/AKM+3Kkv23FzR41pNfnUCgkShh6aiB4ZqsTyp1I0XjQtsUZnmuywqj9f61SytaowY9qdlTQpj
-G3BWzHdj51k2EQyxurVBPc0XpjiXjij8SUl+ZCD/JxhGTQ+zGYDRI9pw3PShjds3YlnTsL12GDXP
-/tkGEived/2CiJILZA9/7gOXOPHlEnw1tELqq2LsAszyYGeYdnb58ov6TwRp1OZPR/+3R/B7wPCl
-dRs+nAmXXegogL5xeP4aU6wimWhI5+2hxMWN6AmVRp5Lk+0MabIQcok/1Wa3qyw0k4QZgK5FpOkn
-xSMlUxii60sJleo47/GujeGje+MbP5LwfUnghwDW2AAAAAAAAA==
-
-
---=-bRDKDojRd76wga/45xFW--
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
