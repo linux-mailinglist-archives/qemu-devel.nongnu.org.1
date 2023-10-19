@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF9B7CFB6E
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D607CFB6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:41:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTCc-0002oZ-Ih; Thu, 19 Oct 2023 09:36:42 -0400
+	id 1qtTCe-00038N-TG; Thu, 19 Oct 2023 09:36:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBw-0001z9-8e
+ id 1qtTBw-00021i-I8
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:36:02 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBn-0001Ef-9I
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:57 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32db8924201so3260558f8f.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:48 -0700 (PDT)
+ id 1qtTBr-0001Ei-Fx
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:36:00 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-32d849cc152so7012087f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697722548; x=1698327348; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pWFnlBnEBWziPmtTDaxLrH+se8eDbl8V/1Yai8/lSj8=;
- b=HWxsWR+YwnjR6yfr/BeKqovILeL8MQLQFhRvZ89REu8eN4rfUdgtvOp8Ylbp+SARzt
- 3P9liYHMbfGMyaexXKkSDOq8t+6Y7+bAWP0RASfUYBVmRyjlyf5Kxn7OQOP91C41OEjK
- 9rwh+0Xk3dQviRxx5UFwie3e7sB0OZarHdmFtVpT8wrKM3/KVWNCU9/CWVXKIQZTVgwu
- 0kKUp+C9flP6m3/B6kOWPVV9pn+UDDrRtEBT8+muaYsLhtoz34ZnWkMIZxqRuLPRElMJ
- t/kvWPtzrrc0+TMON5qqNyRlbfLGWAwh7KGiMP/n/SQJR80miFJl/iTkXuwWdFqKu9fY
- w0Fw==
+ :reply-to; bh=Y0fdYuZ/itTuCs4C9nQ/nu3aGMsyGS4D2cdzozItBYw=;
+ b=ckdpjNORJQs2G4XiwGOsB1k9dCu+cSVTqJdVr7lx9hl2Q+aHsXrGhmqPy00BhRH4DY
+ Sd9XPq228nRYzHyomQ935QLjJrp3G/oBIKyUysVB++Ah+FMUZMorZ5lNMUrjVTm5Kc/g
+ g4aYXdEeaYfK8kuFBG8w4pwiUSMWdNyOnQ/SLSHy0JcDs48KnjtLkzHssYKU1IOyzG7R
+ WTjQb2aP76H0U1S2/pOfhpVUw9mk6ZxvXbe/N4Lyx0Um8+9xoYF9CIU9SolnQiva+z51
+ ijE0Ux3ysD0jazO4728ndEiGNGatsGK1pDnSxybt008cm843Iw1V9G1fFC2mvQxgo9r8
+ Xo4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697722548; x=1698327348;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pWFnlBnEBWziPmtTDaxLrH+se8eDbl8V/1Yai8/lSj8=;
- b=vMyqi28iMPt76hxIrCYTz1MJn2ZUGwtYt6cUEgHhNmvozvlEt8Fs/SZz79yogWQNxx
- J/P6QgWp8DPTVk19rbSTRZ0AdwZzW2UHpLQJJLgzw6ptvz9qrWiaJlqtRC51crETO7qb
- SpqchPaaSpzzp9rCvsR1K7OiFjX3Y6w01n3RMU/7WZ1w7BVxzcSi+iOBqWjd+uRHqmso
- lc4V+WNwiufuKHXS/LXmTp7akNYxAHTp7x/JPdCRPc3ELjvycrIoQiybPw02amcvroDW
- YV9C6DR6n4uEhAJYL82x8171orZdJjFclC1aOaa36BdwMlUiZq/j9oaWtrWsYLiFiJRr
- hlIg==
-X-Gm-Message-State: AOJu0YxayffnD+QUbXFinse/e+0JrRjIZpcgRasGAgkLWbm7U3IlalIV
- 77VMJ1j7aCEsL+dBld5kMSliK69Qh7vf40kqi+U=
-X-Google-Smtp-Source: AGHT+IGmhr1Lf60auRbZjFH0Gk0uTJOQw4EKiyqxqJ8VS3JorsmLuxiaEdnsEao44RCDRtuQdD/xZw==
-X-Received: by 2002:a5d:5442:0:b0:32d:9d91:6273 with SMTP id
- w2-20020a5d5442000000b0032d9d916273mr1162791wrv.71.1697722547982; 
- Thu, 19 Oct 2023 06:35:47 -0700 (PDT)
+ bh=Y0fdYuZ/itTuCs4C9nQ/nu3aGMsyGS4D2cdzozItBYw=;
+ b=drwRQ51PonwNig04+yWMCYdlpCMDM3/Zw7M5DSEj9e9L9w6t6qkh48+ypKfixVGS1G
+ hI673zAVOfoC0ZoXQvWmHL3sEaMF6TkBPTe2GPgp0QI7frjjC7fp8rlVcf7andJ8YYep
+ v4OyAq9bJFCoc1UA/zFu3WHBY9W0D6Xu9lFVU8CJ8d6PxOONFas5nXSZPvnZa5ZD7Ry8
+ HNbrcEBqqa29KpbGu9ZUZ2ASIaIAlbbUDuRDZ9zn4hpFlxr6q9lX0SmR4WR6gulHOPfl
+ jNaB1HIywNvX1F7TkpyE78mC8WGN93zKwRICKTNfVxnC1AhPJydF0YgaHcpMMtDf5YD6
+ zO4A==
+X-Gm-Message-State: AOJu0YxuHlr9AS1OrsHNanOqfcAVZlAKFFggZIjIWaqb74YpG/dzCnlo
+ A54rwgWSUx9bVFAjgkqIu2cYskV1Rgy5O7tB7ZI=
+X-Google-Smtp-Source: AGHT+IFGkU1ZyQv2mBfsA8de4YXOBNKd0srFv9mSGqtSW6TEwL7fDeHGrGpJ5uBQi0+QysWMEfmQxQ==
+X-Received: by 2002:a5d:6dc4:0:b0:32d:82b4:1957 with SMTP id
+ d4-20020a5d6dc4000000b0032d82b41957mr1480529wrz.40.1697722548353; 
+ Thu, 19 Oct 2023 06:35:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.47
+ d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 06:35:47 -0700 (PDT)
+ Thu, 19 Oct 2023 06:35:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/24] target/arm/kvm64.c: Remove unused include
-Date: Thu, 19 Oct 2023 14:35:33 +0100
-Message-Id: <20231019133537.2114929-21-peter.maydell@linaro.org>
+Subject: [PULL 21/24] target/arm/common-semi-target.h: Remove unnecessary
+ boot.h include
+Date: Thu, 19 Oct 2023 14:35:34 +0100
+Message-Id: <20231019133537.2114929-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231019133537.2114929-1-peter.maydell@linaro.org>
 References: <20231019133537.2114929-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,33 +91,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The include of hw/arm/virt.h in kvm64.c is unnecessary and also a
-layering violation since the generic KVM code shouldn't need to know
-anything about board-specifics.  The include line is an accidental
-leftover from commit 15613357ba53a4763, where we cleaned up the code
-to not depend on virt board internals but forgot to also remove the
-now-redundant include line.
+The hw/arm/boot.h include in common-semi-target.h is not actually
+needed, and it's a bit odd because it pulls a hw/arm header into a
+target/arm file.
+
+This include was originally needed because the semihosting code used
+the arm_boot_info struct to get the base address of the RAM in system
+emulation, to use in a (bad) heuristic for the return values for the
+SYS_HEAPINFO semihosting call.  We've since overhauled how we
+calculate the HEAPINFO values in system emulation, and the code no
+longer uses the arm_boot_info struct.
+
+Remove the now-redundant include line, and instead directly include
+the cpu-qom.h header that we were previously getting via boot.h.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230925110429.3917202-1-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230925112219.3919261-1-peter.maydell@linaro.org
 ---
- target/arm/kvm64.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/arm/common-semi-target.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 558c0b88dd6..4bb68646e43 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -30,7 +30,6 @@
- #include "internals.h"
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/ghes.h"
--#include "hw/arm/virt.h"
+diff --git a/target/arm/common-semi-target.h b/target/arm/common-semi-target.h
+index 19438ed8cd3..da51f2d7f54 100644
+--- a/target/arm/common-semi-target.h
++++ b/target/arm/common-semi-target.h
+@@ -10,9 +10,7 @@
+ #ifndef TARGET_ARM_COMMON_SEMI_TARGET_H
+ #define TARGET_ARM_COMMON_SEMI_TARGET_H
  
- static bool have_guest_debug;
+-#ifndef CONFIG_USER_ONLY
+-#include "hw/arm/boot.h"
+-#endif
++#include "target/arm/cpu-qom.h"
  
+ static inline target_ulong common_semi_arg(CPUState *cs, int argno)
+ {
 -- 
 2.34.1
 
