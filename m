@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1BC7CFB49
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A847CFB79
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:43:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTCh-0003BU-M7; Thu, 19 Oct 2023 09:36:47 -0400
+	id 1qtTCd-00030N-KP; Thu, 19 Oct 2023 09:36:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBs-0001sP-Pe
+ id 1qtTBr-0001sM-NT
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:57 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBj-0001Dn-Ak
+ id 1qtTBk-0001Du-SE
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:55 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4084e49a5e5so465885e9.3
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-32da9ef390fso3856292f8f.2
  for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697722545; x=1698327345; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697722546; x=1698327346; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GZd0Sp79j4a2EdYyRqKY/xWbpD0HX364iiDAlt9cITU=;
- b=Bth19nMlJEViACDzYZqsKdzzxGm0j7mNJgvVr44laVjHuY2UcJL1CSTd8K0XAj4w7Q
- DYg0Bl9xTSMwavuwxigcEsG/GpLfYZzVaKYwEdAIUqccjuZ3NYApxgNmVKbgFfIzWLIA
- 8paNxwwA2wEIPCkmI07MOhkgBK2y/mH4qDug8fImJ8wgaMWx64cYCjWYxVQSfV3TAvVh
- dLtcYRZ8hDuFVxl7JhUHKLWNS+7wJiEoiZOlDR4hgjg5Ay+r9UubE6jAnp3ea9c46D3T
- V0Pqs0oMfm7uvmknitro+avWCA5IyuekFdQ0FUVbTNFwp2EPYSfEhQdwh6KIDIUp9CBD
- HPuA==
+ :reply-to; bh=lqB1Xmtdz/E0jdyC0rVkWpk74xBjeEcGHTFzp7iJZ4U=;
+ b=URtkvWB0tMZ2SgqOaE3JCcebPY9hqHIOtuQqvp7CkqKTut1KMv+2U1H8gfeJOXmg4p
+ eChCR4FKQ9lGRDQMC6cc5hgX2oB7Z09rzOhXh3bxjqiYO1cEaD0RPvMSLA+G4ePr7iXF
+ 4T4UppnWVm8b/w/pgKflZ+tE+o+gDVdi4lgh8eztA9AeoFduk9svoMIJrEx3gIbE6DEB
+ mD7ZxWeflgQeF5V/xE0NqyutGZvr5+mFhIzUfQTlq1iEGggW+XqCtgGIbdryTJegBao8
+ H4qkzAcJzwFLcoZ2wcdbNMocrsf1Joha0+Od7fXaw39LOqZGT/vweCGKKjTsmenHnZCK
+ cWjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697722545; x=1698327345;
+ d=1e100.net; s=20230601; t=1697722546; x=1698327346;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GZd0Sp79j4a2EdYyRqKY/xWbpD0HX364iiDAlt9cITU=;
- b=YboDUQSr6YoHnt55T4Tlxm9JFGvJqaVoCaDRas0k3PKPMD3B+DbqU/GawGcxZEcV7R
- nT5owsPC9y30j4o3BqWCQ6W/irJ971hkiLOiTpAstUt1xuQRor93dqt47/JT7Vn2FPEh
- ygxFDV0YF3y0GTulwUrn8q/GKoAc1ccqDz4plmFWbkbB6ZPaCMNPzPnNn9inlRA8Nj8z
- WN59kYeE74irNvyEJIOFvI7XBeak1oK0obutLAL7OvY+o/Fnf/PpVO22j7VapKEFRLRb
- m/CzXXAGo2tn5xGhac5yxpEhtKL9HuBsytzCY5fFei2Z8CSQmK4P0Qpd3g4jvKT8AP2f
- cNtQ==
-X-Gm-Message-State: AOJu0Yz7DoAPAUZy40wsTGigdiMFRosYkRp7trCcM15+qbp6142xJiu9
- OdZUqHAcTyQ7r9yXImylnOYEhfQ44MDP52LIRs0=
-X-Google-Smtp-Source: AGHT+IGzAjyYcxNLqnXq6wNSsD2eLT68h6jQI4IVJ+mclNfVNXnS1IrmiKblk3lQAs6MzacWiGlO5w==
-X-Received: by 2002:a05:6000:71e:b0:32d:9701:90e5 with SMTP id
- bs30-20020a056000071e00b0032d970190e5mr1666075wrb.34.1697722545311; 
+ bh=lqB1Xmtdz/E0jdyC0rVkWpk74xBjeEcGHTFzp7iJZ4U=;
+ b=ltfM66IPo+1V6OlM20NiK/xiVl64s8XQHK7NNbvjYY/bHqzFjtYBbtZavhvLUbUpN9
+ 6E+CpkxBmsn96JBL90hTyZD9MswRgnPABJ66/cCbN+0U1ZC9Ib6YEdBbTQ65/zdc0QFv
+ HqXNJbPyrHCdB3WTU9Yz3MxecYlgahXOozLpNG3vpTaa5atU/auObjIGfWwus8NNEoK4
+ DvmeRkIwYa7GY8J5txX0zZTPYA4xs/V0ebaXSDWe9GvJAq1TUgQOOvFlqF0Qr5EkziIo
+ daCVMOqNkJupS5xagXJwtgENScPI7MfQ5y06RlhSJGlOxu/hYNzSIysNAZvPM2vWK+W+
+ mK6Q==
+X-Gm-Message-State: AOJu0Yx338qz+0UIfyjr94RvugYycsHc6/qe4/XEbI5emaXKzGA2d+bx
+ PbL0muWrSUtgQAWtdam+UxzzEFZOcRLaNlt1nbs=
+X-Google-Smtp-Source: AGHT+IG92CVRT2B2BL+/S1sTzGahwlyexYIJMBP2DS2RCZAqXV+lXUGKVc791M3tIOvKyXPzavIIIA==
+X-Received: by 2002:adf:ee08:0:b0:32d:8830:edb with SMTP id
+ y8-20020adfee08000000b0032d88300edbmr1561827wrn.38.1697722545748; 
  Thu, 19 Oct 2023 06:35:45 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.44
+ d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 19 Oct 2023 06:35:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/24] arm/kvm: convert to kvm_get_one_reg
-Date: Thu, 19 Oct 2023 14:35:27 +0100
-Message-Id: <20231019133537.2114929-15-peter.maydell@linaro.org>
+Subject: [PULL 15/24] target/arm: Permit T32 LDM with single register
+Date: Thu, 19 Oct 2023 14:35:28 +0100
+Message-Id: <20231019133537.2114929-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231019133537.2114929-1-peter.maydell@linaro.org>
 References: <20231019133537.2114929-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,230 +91,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cornelia Huck <cohuck@redhat.com>
+For the Thumb T32 encoding of LDM, if only a single register is
+specified in the register list this instruction is UNPREDICTABLE,
+with the following choices:
+ * instruction UNDEFs
+ * instruction is a NOP
+ * instruction loads a single register
+ * instruction loads an unspecified set of registers
 
-We can neaten the code by switching the callers that work on a
-CPUstate to the kvm_get_one_reg function.
+Currently we choose to UNDEF (a behaviour chosen in commit
+4b222545dbf30 in 2019; previously we treated it as "load the
+specified single register").
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231010142453.224369-3-cohuck@redhat.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Unfortunately there is real world code out there (which shipped in at
+least Android 11, 12 and 13) which incorrectly uses this
+UNPREDICTABLE insn on the assumption that it does a single register
+load, which is (presumably) what it happens to do on real hardware,
+and is also what it does on the equivalent A32 encoding.
+
+Revert to the pre-4b222545dbf30 behaviour of not UNDEFing
+for this T32 encoding.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1799
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230927101853.39288-1-peter.maydell@linaro.org
 ---
- target/arm/kvm.c   | 15 +++---------
- target/arm/kvm64.c | 57 ++++++++++++----------------------------------
- 2 files changed, 18 insertions(+), 54 deletions(-)
+ target/arm/tcg/translate.c | 37 +++++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 1a8084c4601..7903e2ddde1 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -553,24 +553,19 @@ bool write_kvmstate_to_list(ARMCPU *cpu)
-     bool ok = true;
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 48927fbb8ce..b3660173d1d 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -7882,7 +7882,7 @@ static void op_addr_block_post(DisasContext *s, arg_ldst_block *a,
+     }
+ }
  
-     for (i = 0; i < cpu->cpreg_array_len; i++) {
--        struct kvm_one_reg r;
-         uint64_t regidx = cpu->cpreg_indexes[i];
-         uint32_t v32;
-         int ret;
- 
--        r.id = regidx;
--
-         switch (regidx & KVM_REG_SIZE_MASK) {
-         case KVM_REG_SIZE_U32:
--            r.addr = (uintptr_t)&v32;
--            ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &r);
-+            ret = kvm_get_one_reg(cs, regidx, &v32);
-             if (!ret) {
-                 cpu->cpreg_values[i] = v32;
-             }
-             break;
-         case KVM_REG_SIZE_U64:
--            r.addr = (uintptr_t)(cpu->cpreg_values + i);
--            ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &r);
-+            ret = kvm_get_one_reg(cs, regidx, cpu->cpreg_values + i);
-             break;
-         default:
-             g_assert_not_reached();
-@@ -706,17 +701,13 @@ int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
- void kvm_arm_get_virtual_time(CPUState *cs)
+-static bool op_stm(DisasContext *s, arg_ldst_block *a, int min_n)
++static bool op_stm(DisasContext *s, arg_ldst_block *a)
  {
-     ARMCPU *cpu = ARM_CPU(cs);
--    struct kvm_one_reg reg = {
--        .id = KVM_REG_ARM_TIMER_CNT,
--        .addr = (uintptr_t)&cpu->kvm_vtime,
--    };
-     int ret;
+     int i, j, n, list, mem_idx;
+     bool user = a->u;
+@@ -7899,7 +7899,14 @@ static bool op_stm(DisasContext *s, arg_ldst_block *a, int min_n)
  
-     if (cpu->kvm_vtime_dirty) {
-         return;
+     list = a->list;
+     n = ctpop16(list);
+-    if (n < min_n || a->rn == 15) {
++    /*
++     * This is UNPREDICTABLE for n < 1 in all encodings, and we choose
++     * to UNDEF. In the T32 STM encoding n == 1 is also UNPREDICTABLE,
++     * but hardware treats it like the A32 version and implements the
++     * single-register-store, and some in-the-wild (buggy) software
++     * assumes that, so we don't UNDEF on that case.
++     */
++    if (n < 1 || a->rn == 15) {
+         unallocated_encoding(s);
+         return true;
      }
+@@ -7935,8 +7942,7 @@ static bool op_stm(DisasContext *s, arg_ldst_block *a, int min_n)
  
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, KVM_REG_ARM_TIMER_CNT, &cpu->kvm_vtime);
-     if (ret) {
-         error_report("Failed to get KVM_REG_ARM_TIMER_CNT");
-         abort();
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 047b269a791..558c0b88dd6 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -909,14 +909,11 @@ int kvm_arch_put_registers(CPUState *cs, int level)
- static int kvm_arch_get_fpsimd(CPUState *cs)
+ static bool trans_STM(DisasContext *s, arg_ldst_block *a)
  {
-     CPUARMState *env = &ARM_CPU(cs)->env;
--    struct kvm_one_reg reg;
-     int i, ret;
+-    /* BitCount(list) < 1 is UNPREDICTABLE */
+-    return op_stm(s, a, 1);
++    return op_stm(s, a);
+ }
  
-     for (i = 0; i < 32; i++) {
-         uint64_t *q = aa64_vfp_qreg(env, i);
--        reg.id = AARCH64_SIMD_CORE_REG(fp_regs.vregs[i]);
--        reg.addr = (uintptr_t)q;
--        ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+        ret = kvm_get_one_reg(cs, AARCH64_SIMD_CORE_REG(fp_regs.vregs[i]), q);
-         if (ret) {
-             return ret;
-         } else {
-@@ -940,15 +937,12 @@ static int kvm_arch_get_sve(CPUState *cs)
+ static bool trans_STM_t32(DisasContext *s, arg_ldst_block *a)
+@@ -7946,11 +7952,10 @@ static bool trans_STM_t32(DisasContext *s, arg_ldst_block *a)
+         unallocated_encoding(s);
+         return true;
+     }
+-    /* BitCount(list) < 2 is UNPREDICTABLE */
+-    return op_stm(s, a, 2);
++    return op_stm(s, a);
+ }
+ 
+-static bool do_ldm(DisasContext *s, arg_ldst_block *a, int min_n)
++static bool do_ldm(DisasContext *s, arg_ldst_block *a)
  {
-     ARMCPU *cpu = ARM_CPU(cs);
-     CPUARMState *env = &cpu->env;
--    struct kvm_one_reg reg;
-     uint64_t *r;
-     int n, ret;
+     int i, j, n, list, mem_idx;
+     bool loaded_base;
+@@ -7979,7 +7984,14 @@ static bool do_ldm(DisasContext *s, arg_ldst_block *a, int min_n)
  
-     for (n = 0; n < KVM_ARM64_SVE_NUM_ZREGS; ++n) {
-         r = &env->vfp.zregs[n].d[0];
--        reg.addr = (uintptr_t)r;
--        reg.id = KVM_REG_ARM64_SVE_ZREG(n, 0);
--        ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+        ret = kvm_get_one_reg(cs, KVM_REG_ARM64_SVE_ZREG(n, 0), r);
-         if (ret) {
-             return ret;
-         }
-@@ -957,9 +951,7 @@ static int kvm_arch_get_sve(CPUState *cs)
- 
-     for (n = 0; n < KVM_ARM64_SVE_NUM_PREGS; ++n) {
-         r = &env->vfp.pregs[n].p[0];
--        reg.addr = (uintptr_t)r;
--        reg.id = KVM_REG_ARM64_SVE_PREG(n, 0);
--        ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+        ret = kvm_get_one_reg(cs, KVM_REG_ARM64_SVE_PREG(n, 0), r);
-         if (ret) {
-             return ret;
-         }
-@@ -967,9 +959,7 @@ static int kvm_arch_get_sve(CPUState *cs)
+     list = a->list;
+     n = ctpop16(list);
+-    if (n < min_n || a->rn == 15) {
++    /*
++     * This is UNPREDICTABLE for n < 1 in all encodings, and we choose
++     * to UNDEF. In the T32 LDM encoding n == 1 is also UNPREDICTABLE,
++     * but hardware treats it like the A32 version and implements the
++     * single-register-load, and some in-the-wild (buggy) software
++     * assumes that, so we don't UNDEF on that case.
++     */
++    if (n < 1 || a->rn == 15) {
+         unallocated_encoding(s);
+         return true;
      }
- 
-     r = &env->vfp.pregs[FFR_PRED_NUM].p[0];
--    reg.addr = (uintptr_t)r;
--    reg.id = KVM_REG_ARM64_SVE_FFR(0);
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, KVM_REG_ARM64_SVE_FFR(0), r);
-     if (ret) {
-         return ret;
+@@ -8045,8 +8057,7 @@ static bool trans_LDM_a32(DisasContext *s, arg_ldst_block *a)
+         unallocated_encoding(s);
+         return true;
      }
-@@ -980,7 +970,6 @@ static int kvm_arch_get_sve(CPUState *cs)
+-    /* BitCount(list) < 1 is UNPREDICTABLE */
+-    return do_ldm(s, a, 1);
++    return do_ldm(s, a);
+ }
  
- int kvm_arch_get_registers(CPUState *cs)
+ static bool trans_LDM_t32(DisasContext *s, arg_ldst_block *a)
+@@ -8056,16 +8067,14 @@ static bool trans_LDM_t32(DisasContext *s, arg_ldst_block *a)
+         unallocated_encoding(s);
+         return true;
+     }
+-    /* BitCount(list) < 2 is UNPREDICTABLE */
+-    return do_ldm(s, a, 2);
++    return do_ldm(s, a);
+ }
+ 
+ static bool trans_LDM_t16(DisasContext *s, arg_ldst_block *a)
  {
--    struct kvm_one_reg reg;
-     uint64_t val;
-     unsigned int el;
-     uint32_t fpr;
-@@ -990,31 +979,24 @@ int kvm_arch_get_registers(CPUState *cs)
-     CPUARMState *env = &cpu->env;
+     /* Writeback is conditional on the base register not being loaded.  */
+     a->w = !(a->list & (1 << a->rn));
+-    /* BitCount(list) < 1 is UNPREDICTABLE */
+-    return do_ldm(s, a, 1);
++    return do_ldm(s, a);
+ }
  
-     for (i = 0; i < 31; i++) {
--        reg.id = AARCH64_CORE_REG(regs.regs[i]);
--        reg.addr = (uintptr_t) &env->xregs[i];
--        ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+        ret = kvm_get_one_reg(cs, AARCH64_CORE_REG(regs.regs[i]),
-+                              &env->xregs[i]);
-         if (ret) {
-             return ret;
-         }
-     }
- 
--    reg.id = AARCH64_CORE_REG(regs.sp);
--    reg.addr = (uintptr_t) &env->sp_el[0];
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, AARCH64_CORE_REG(regs.sp), &env->sp_el[0]);
-     if (ret) {
-         return ret;
-     }
- 
--    reg.id = AARCH64_CORE_REG(sp_el1);
--    reg.addr = (uintptr_t) &env->sp_el[1];
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, AARCH64_CORE_REG(sp_el1), &env->sp_el[1]);
-     if (ret) {
-         return ret;
-     }
- 
--    reg.id = AARCH64_CORE_REG(regs.pstate);
--    reg.addr = (uintptr_t) &val;
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, AARCH64_CORE_REG(regs.pstate), &val);
-     if (ret) {
-         return ret;
-     }
-@@ -1031,9 +1013,7 @@ int kvm_arch_get_registers(CPUState *cs)
-      */
-     aarch64_restore_sp(env, 1);
- 
--    reg.id = AARCH64_CORE_REG(regs.pc);
--    reg.addr = (uintptr_t) &env->pc;
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, AARCH64_CORE_REG(regs.pc), &env->pc);
-     if (ret) {
-         return ret;
-     }
-@@ -1047,9 +1027,7 @@ int kvm_arch_get_registers(CPUState *cs)
-         aarch64_sync_64_to_32(env);
-     }
- 
--    reg.id = AARCH64_CORE_REG(elr_el1);
--    reg.addr = (uintptr_t) &env->elr_el[1];
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, AARCH64_CORE_REG(elr_el1), &env->elr_el[1]);
-     if (ret) {
-         return ret;
-     }
-@@ -1059,9 +1037,8 @@ int kvm_arch_get_registers(CPUState *cs)
-      * KVM SPSRs 0-4 map to QEMU banks 1-5
-      */
-     for (i = 0; i < KVM_NR_SPSR; i++) {
--        reg.id = AARCH64_CORE_REG(spsr[i]);
--        reg.addr = (uintptr_t) &env->banked_spsr[i + 1];
--        ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+        ret = kvm_get_one_reg(cs, AARCH64_CORE_REG(spsr[i]),
-+                              &env->banked_spsr[i + 1]);
-         if (ret) {
-             return ret;
-         }
-@@ -1082,17 +1059,13 @@ int kvm_arch_get_registers(CPUState *cs)
-         return ret;
-     }
- 
--    reg.addr = (uintptr_t)(&fpr);
--    reg.id = AARCH64_SIMD_CTRL_REG(fp_regs.fpsr);
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, AARCH64_SIMD_CTRL_REG(fp_regs.fpsr), &fpr);
-     if (ret) {
-         return ret;
-     }
-     vfp_set_fpsr(env, fpr);
- 
--    reg.addr = (uintptr_t)(&fpr);
--    reg.id = AARCH64_SIMD_CTRL_REG(fp_regs.fpcr);
--    ret = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
-+    ret = kvm_get_one_reg(cs, AARCH64_SIMD_CTRL_REG(fp_regs.fpcr), &fpr);
-     if (ret) {
-         return ret;
-     }
+ static bool trans_CLRM(DisasContext *s, arg_CLRM *a)
 -- 
 2.34.1
 
