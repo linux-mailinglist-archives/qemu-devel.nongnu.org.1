@@ -2,89 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D404F7CFCEC
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 950067CFCF0
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:38:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtU7L-0006hO-Rp; Thu, 19 Oct 2023 10:35:19 -0400
+	id 1qtUA1-0005l4-2t; Thu, 19 Oct 2023 10:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtU7F-0006fY-Hu
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtU7C-0000EA-1Q
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697726105;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7EQ5lRMNvxuEPJB2lJA801QdMaEc/FnxMTJjrxKPung=;
- b=Oq0vlEdZIp6bz8j4LgPNDzuF7D4lt35UWkPNSFjEmaWm7ZBGuBbs0ab8SRcstuO0XBhTLU
- JAwoL39p443kggtNCPI3HUBaqzhMn99CwCEftzXTLwy49m/u9u2d+BOKddOkmg/g1yIPr0
- HavTCC7wSpUP3qMycQxEfkKQQgvu70E=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-KQQuItPjPR-rC8kwEk-mAw-1; Thu, 19 Oct 2023 10:35:04 -0400
-X-MC-Unique: KQQuItPjPR-rC8kwEk-mAw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d2fdf80beso15310566d6.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 07:35:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697726104; x=1698330904;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtU9y-0005Y3-JR
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:38:02 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtU9w-00012K-Fs
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:38:02 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-50797cf5b69so8608371e87.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 07:38:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697726278; x=1698331078; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7EQ5lRMNvxuEPJB2lJA801QdMaEc/FnxMTJjrxKPung=;
- b=IU3gHlwZyHCU1oMqrjV31mK9b5KxEC7/CoWcytVy8hbnRc1rdeRd5M+hDshmLcnKrJ
- bQEN7TBz79GXEfMIi3D66Pe4lVOYWaGKRKiTO3NvrYhf/IXMHKsdzU2NvQCCsAkX/QNH
- O7gvmJL3qkUFPmEV5oyEI9igT+96ddBnhubXrjPQ0EcH/NIAgZyM97pX+/beToshcZcm
- vpuj3B/giO08xkmN9pii+PBnlJGCwBiaY7GgtwhmiI9/SX7BtdVB4dubrXt7EOmRQMGK
- 5tdEVsEAtP/GUJEW9JFZYDPULAJsCQfSHh54NX2cZso7wvlKtk3mYateYE3lqy+RYnqp
- kaWA==
-X-Gm-Message-State: AOJu0YwvvWyxFdxSezgHWi4qWJQaUL8ni/FdQL1RWMQXlLKaZvR0hpW+
- s2tjGLDzIrxTjel32uPKfocCfiBamhNchyELGz0PUAdrkWTLItIU6YlMXNZsqdFnbQjq9i0UDc6
- +p+hmRx++co0xZT8=
-X-Received: by 2002:a05:6214:4001:b0:66d:5d31:999b with SMTP id
- kd1-20020a056214400100b0066d5d31999bmr2463124qvb.3.1697726103886; 
- Thu, 19 Oct 2023 07:35:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFeKgT1PXshEbS2Q0LAQ23eqLDogxjzGd6M3mZcxj4GVNsSwcV9HsyY7eolBgvOAXjRt7tXTQ==
-X-Received: by 2002:a05:6214:4001:b0:66d:5d31:999b with SMTP id
- kd1-20020a056214400100b0066d5d31999bmr2463106qvb.3.1697726103633; 
- Thu, 19 Oct 2023 07:35:03 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- et10-20020a056214176a00b0064906cfe430sm815725qvb.135.2023.10.19.07.35.02
+ bh=joBq233t7wX5Q6V2Jc6m/9uKDsqIT/4FKvuUIbEBG/8=;
+ b=h6Z4xIWx1OkUC5olz0cc1Ipuic2e05I8xBlkMM9+Ib9FghwNIWe8iBas1oqe5BaKBl
+ MTaOnN3aAfBucjN0hyqrHVfo7cxYpNQgeDvjI714V86+X7sZyatVZ7r6qZ6asybCcCfK
+ n0x8VhjHOZvq4K0h2FCaXZhRvsrrWzRHQa5Sc9HiyDHQnyRVw8RES0H9EWCq3hGHEY32
+ 25wOvgFFgJLP4GODITGoBf8yuglqhwRCCx2k/9C4lcW6dAW1Y6l05SeulelQ2TPA8mSE
+ 93gUha4jldCARRP2pg2Dsl5/9EsXKkAIkUBcwI7+ELzM7C8S7nJ+Dg8QGGvRBJ/l8gTG
+ 0TqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697726278; x=1698331078;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=joBq233t7wX5Q6V2Jc6m/9uKDsqIT/4FKvuUIbEBG/8=;
+ b=b/wK5/4A2NX8GZwYzYMiPI/7fpDyLbRUfr+6v50S/k4mjQbp18ZXBVZ8PXLof7rpIf
+ EUY2MzP8lNVdcfinna/FF3ZyBbbqnaJ6wstGbAQ1VBPxvv4T4SyW+J3BwZN2MuMh00ut
+ HZg4Kn5ni2w4tmN7ViusJJ8KqCiOexYL+8ipsILj5Ag9/K0qgqJofQwsFKvEn8zRm9OR
+ AeCNiUUQMss54l4EBAG60yQ4xCsXCrIFywvwMGQaKdU/JwnwTLSas9U8G7/e4iqP6cqq
+ V9ARpT+liYTJLpJGnbGf4BCq3ZYc57OPWK+EDQddhZPMaxnyuuVs6MIJSwuX5cTq0Pdh
+ zbHQ==
+X-Gm-Message-State: AOJu0Yz0agG/X+EywcoHoN9tTJfe6t3sBH7jzrmPEMXy80GsoLlaNnBj
+ PkZiuhRYjp6+7wwouqIhXiSiuw==
+X-Google-Smtp-Source: AGHT+IF6g7Yl3/dc1zjXWAla2fmn6VNFRHGjWS9r2ZaLA2wuRMyJIN8xHg8GGOLSUR7UzF4J/crR9Q==
+X-Received: by 2002:ac2:4c32:0:b0:506:8d2a:e31f with SMTP id
+ u18-20020ac24c32000000b005068d2ae31fmr1547542lfq.46.1697726278644; 
+ Thu, 19 Oct 2023 07:37:58 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n15-20020a5d4c4f000000b0032dc24ae625sm4603251wrt.12.2023.10.19.07.37.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 07:35:03 -0700 (PDT)
-Date: Thu, 19 Oct 2023 10:35:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Leonardo Bras <leobras@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
- semaphore
-Message-ID: <ZTE+lmbvtYNDU80q@x1n>
-References: <20231012140651.13122-1-farosas@suse.de>
- <20231012140651.13122-2-farosas@suse.de>
- <87sf676kxt.fsf@secure.mitica>
+ Thu, 19 Oct 2023 07:37:58 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id C6D5D1FFBB;
+ Thu, 19 Oct 2023 15:37:57 +0100 (BST)
+References: <cover.1697709630.git.manos.pitsidianakis@linaro.org>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, Igor Skalkin
+ <Igor.Skalkin@opensynergy.com>, Anton Yakovlev
+ <Anton.Yakovlev@opensynergy.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, Volker =?utf-8?Q?R=C3=BCmelin?=
+ <vr_qemu@t-online.de>,
+ =?utf-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: [PATCH v12 00/11] Add VIRTIO sound card
+Date: Thu, 19 Oct 2023 15:37:17 +0100
+In-reply-to: <cover.1697709630.git.manos.pitsidianakis@linaro.org>
+Message-ID: <87pm1a8ypm.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87sf676kxt.fsf@secure.mitica>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,73 +107,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano,
 
-Sorry to look at this series late; I messed up my inbox after I reworked my
-arrangement methodology of emails. ;)
+Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
 
-On Thu, Oct 19, 2023 at 11:06:06AM +0200, Juan Quintela wrote:
-> Fabiano Rosas <farosas@suse.de> wrote:
-> > The channels_ready semaphore is a global variable not linked to any
-> > single multifd channel. Waiting on it only means that "some" channel
-> > has become ready to send data. Since we need to address the channels
-> > by index (multifd_send_state->params[i]), that information adds
-> > nothing of value.
-> 
-> NAK.
-> 
-> I disagree here O:-)
-> 
-> the reason why that channel exist is for multifd_send_pages()
-> 
-> And simplifying the function what it does is:
-> 
-> sem_wait(channels_ready);
-> 
-> for_each_channel()
->    look if it is empty()
-> 
-> But with the semaphore, we guarantee that when we go to the loop, there
-> is a channel ready, so we know we donat busy wait searching for a
-> channel that is free.
-> 
-> Notice that I fully agree that the sem is not needed for locking.
-> Locking is done with the mutex.  It is just used to make sure that we
-> don't busy loop on that loop.
-> 
-> And we use a sem, because it is the easiest way to know how many
-> channels are ready (even when we only care if there is one when we
-> arrive to that code).
-> 
-> We lost count of that counter, and we fixed that here:
-> 
-> commit d2026ee117147893f8d80f060cede6d872ecbd7f
-> Author: Juan Quintela <quintela@redhat.com>
-> Date:   Wed Apr 26 12:20:36 2023 +0200
-> 
->     multifd: Fix the number of channels ready
-> 
->     We don't wait in the sem when we are doing a sync_main.  Make it
-> 
-> And we were addressing the problem that some users where finding that we
-> were busy waiting on that loop.
+> This patch series adds an audio device implementing the recent virtio
+> sound spec (1.2) and a corresponding PCI wrapper device.
+>
+> v12 can be found online at:
+>
+> https://gitlab.com/epilys/qemu/-/tree/virtio-snd-v12
+>
+> Ref c660c8427853d90784a89b6f3b0c31e19cc3be95
+>
+> Main differences with v11 patch series [^v11]:
+>
+> - Moved devices from hw/virtio under hw/audio.
 
-Juan,
 
-I can understand why send_pages needs that sem, but not when sync main.
-IOW, why multifd_send_sync_main() needs:
+OK I've tested record and playback and everything seems to be working
+fine so have a:
 
-        qemu_sem_wait(&multifd_send_state->channels_ready);
+Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-If it has:
+for the series.
 
-        qemu_sem_wait(&p->sem_sync);
+Gerd,
 
-How does a busy loop happen?
+Are you happy to merge?
 
-Thanks,
-
--- 
-Peter Xu
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
