@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54AF67CFB48
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2757CFB6B
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:41:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTCd-0002y9-E2; Thu, 19 Oct 2023 09:36:43 -0400
+	id 1qtTCc-0002hY-8Y; Thu, 19 Oct 2023 09:36:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBn-0001rN-HG
+ id 1qtTBp-0001rX-9S
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:54 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBf-0001Ce-Go
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:47 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4083f613275so12850515e9.2
+ id 1qtTBg-0001Ck-18
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:49 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40806e40fccso21758515e9.2
  for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697722542; x=1698327342; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=980RYNOEtgl+U05wTxrGNkJ8Z29zZamfuIhgBMTwwfM=;
- b=gR1FPoc4Hzz5pBMKYXN2wvfpXRCmnYJjkckJyzN+0YMKk3TDxysTLQT8vK6SPTGSmn
- //zw2GdHpChLVTuU2EpZSEdZIcG47Ms+YVRO7biQGkCcxpZbYeDc6kVtttTEI1E6tMV0
- g41w0pipkUdlmmyjxlhgeCSIUgWPbRVHYMBLOyY/UUObXSVYbUFQO4PME9jcdwXfEL35
- Jz5oVu9ZKHCrGqBaLwEtc6Wb5Izo8lXvZgvzTEo7NY0ohCNY19FZD9U0sME51WJl4xEC
- Ya0LLuTipN4F2yU7nY9iXtJOvhFKBe+v4y5tQMw8WCjAF21A+3Rmrwg98ua4/UxBqqMT
- izQw==
+ :reply-to; bh=g9r6zIkMYz7JcnSG+rRRxCK1RkPWO1zbCKf8oqt+HSA=;
+ b=FyPoHSuYTT3zGbpuGNnOuW0mK3OanV1ilmoJKA82SiJ/9nOd+wkLcRVAbJDdOOvtL1
+ H9q8WisnC+gWBoskk6qzUqX6XNUdQkTa0Mc6LMxQhlI0KJTfloIQ60/Ci/qC2JYlOdJA
+ AKml5mnHKp7D8pW9caRNe92hjX8uXM1VYqvIitcGzEJdTo7OKbrJj7cvurmsa6j/yutM
+ KbOTzOgTxslvb1ww7B6v89etnuaPA9pqCMcfR0cwQR0P8Lj+Gs77xGPJm3Z1V5GMT+/E
+ U98+f01SfN+GVhiNclEml+DJAMPnh7GTLgFZNREV11K/bB6tPcwIQWAhpN4iazsoXq26
+ gHSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697722542; x=1698327342;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=980RYNOEtgl+U05wTxrGNkJ8Z29zZamfuIhgBMTwwfM=;
- b=eZX9yxOrUph12TKwy0NMoaUiCkbP6zIimIuAZ3rjqZ+4tAGiVpoaxVfTDkeStx7RSJ
- +JDdSHXoxcvDiRqB7LfJ5lAuf1zmjCXjJhZFk4RxqTy8A21/RmpOypz8LhH1DHXMx0qy
- FEK3G7WAMFVR/prgEPcBhWOnS6e1TxkMIEKndcm2KdKcf0f79JmJXYzjznVQ7VEqndCu
- /iEpVOGN9wME+iwu02OlKi1e0JKL0Bs7tz2U/5v9DXmWksybrVj9Vy/K64bac8RUstrM
- iFRXBzg7ThNC9hJmwCa+0ME9CSC/xfhOOyF8/5Dnhj690/HSQ3i/FvQVDnEI52iNMSOs
- dmeg==
-X-Gm-Message-State: AOJu0YwMebw4mup9U17Qe64Ge4FdbOSbTICKmEaZsYzolNq8hoQggkWR
- OmENRod2N6EV9CA/IubTytXTGyOxW5kMQjss/vY=
-X-Google-Smtp-Source: AGHT+IFfa13mXzWw2tw8TeITPDadRYhul7ygs5Bw0CXJ0waRWSMDulToG33a19XZKgsik0unxnJQUQ==
-X-Received: by 2002:a05:600c:1e11:b0:405:5ffd:21d2 with SMTP id
- ay17-20020a05600c1e1100b004055ffd21d2mr1954010wmb.19.1697722541933; 
- Thu, 19 Oct 2023 06:35:41 -0700 (PDT)
+ bh=g9r6zIkMYz7JcnSG+rRRxCK1RkPWO1zbCKf8oqt+HSA=;
+ b=jlaID1BhzsD9Kw5A/nVllYJ4bhCpbEmHRi6B/k89asHxwDLeiA5sPtVHniJUXH3g9t
+ zZkYsb2tb9hpCUK143q7Lx1nW//Lq/RDXSwL173VxaRTI5YG8Fr1i1cCICjE0ytSTOIk
+ F9s8HqFoIkGZJ+V5plD/J4xnQkcZqYZnXTYOvLkeD1yjkNWyv4q+1WiYIvGrAv+Jc+R0
+ +OrkHDwTwj/Mw1x0qQOmEKsl4xZUovRAcLHWbW/8Zj0kQRN3yzWVvfuPy4UL5og3tR6g
+ iHYGAy9SWpeAwBqyY13SjFuV1PEAvf5PDlnQN+buxWSZ1LqO36BoCwhUp+eTQKNVrkW7
+ JOPA==
+X-Gm-Message-State: AOJu0YyH2qj4LQtkjIyqTWT0rD3PAVxlrRGipP5J8pDYPfrAeV2C6p5u
+ 1a0r6fdFoYnacWFhSVMdFvg/sBy/4Ah+ziZcPjY=
+X-Google-Smtp-Source: AGHT+IHFH0XD/I6YtzDU1wXg8atVkWbrl2SYTICBFYXkfkEGTPqR2T0Uq8SGNnjvY7Rr+D7mniNDew==
+X-Received: by 2002:a05:6000:1203:b0:32d:9789:6066 with SMTP id
+ e3-20020a056000120300b0032d97896066mr1856449wrx.5.1697722542324; 
+ Thu, 19 Oct 2023 06:35:42 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.41
+ d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 06:35:41 -0700 (PDT)
+ Thu, 19 Oct 2023 06:35:42 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/24] xlnx-bbram: hw/nvram: Use dot in device type name
-Date: Thu, 19 Oct 2023 14:35:19 +0100
-Message-Id: <20231019133537.2114929-7-peter.maydell@linaro.org>
+Subject: [PULL 07/24] elf2dmp: limit print length for sign_rsds
+Date: Thu, 19 Oct 2023 14:35:20 +0100
+Message-Id: <20231019133537.2114929-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231019133537.2114929-1-peter.maydell@linaro.org>
 References: <20231019133537.2114929-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,32 +90,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tong Ho <tong.ho@amd.com>
+From: Viktor Prutyanov <viktor@daynix.com>
 
-This replaces the comma (,) to dot (.) in the device type name
-so the name can be used with the 'driver=' command line option.
+String sign_rsds isn't terminated, so the print length must be limited.
 
-Signed-off-by: Tong Ho <tong.ho@amd.com>
-Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
-Message-id: 20231003052139.199665-1-tong.ho@amd.com
+Fixes: Coverity CID 1521598
+Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-id: 20230930235317.11469-2-viktor@daynix.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/nvram/xlnx-bbram.h | 2 +-
+ contrib/elf2dmp/main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/nvram/xlnx-bbram.h b/include/hw/nvram/xlnx-bbram.h
-index 87d59ef3c0c..6fc13f8cc17 100644
---- a/include/hw/nvram/xlnx-bbram.h
-+++ b/include/hw/nvram/xlnx-bbram.h
-@@ -34,7 +34,7 @@
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index 5db163bdbe8..6de5c9808ef 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -478,7 +478,7 @@ static bool pe_check_pdb_name(uint64_t base, void *start_addr,
+     }
  
- #define RMAX_XLNX_BBRAM ((0x4c / 4) + 1)
- 
--#define TYPE_XLNX_BBRAM "xlnx,bbram-ctrl"
-+#define TYPE_XLNX_BBRAM "xlnx.bbram-ctrl"
- OBJECT_DECLARE_SIMPLE_TYPE(XlnxBBRam, XLNX_BBRAM);
- 
- struct XlnxBBRam {
+     if (memcmp(&rsds->Signature, sign_rsds, sizeof(sign_rsds))) {
+-        eprintf("CodeView signature is \'%.4s\', \'%s\' expected\n",
++        eprintf("CodeView signature is \'%.4s\', \'%.4s\' expected\n",
+                 rsds->Signature, sign_rsds);
+         return false;
+     }
 -- 
 2.34.1
 
