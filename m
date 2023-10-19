@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FDA7D0318
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A4D7D0319
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:21:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZUb-0004FC-JJ; Thu, 19 Oct 2023 16:19:41 -0400
+	id 1qtZVU-0006pP-62; Thu, 19 Oct 2023 16:20:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qtZUZ-0004ER-Mc; Thu, 19 Oct 2023 16:19:39 -0400
+ id 1qtZVR-0006nC-74; Thu, 19 Oct 2023 16:20:33 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qtZUY-0007wq-2f; Thu, 19 Oct 2023 16:19:39 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ id 1qtZVP-0008LM-IO; Thu, 19 Oct 2023 16:20:32 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKHN2h026647; Thu, 19 Oct 2023 20:19:25 GMT
+ 39JKHIPv010550; Thu, 19 Oct 2023 20:20:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=V3UMxFvfmv7WSj9863Vfdwh+2Pd4meyaFjMizB3RxYM=;
- b=MPvP5od1EE3mDkoIx6Ou5dRgxHH0flYdsjD5EKdhGAY2RifSQ3+q3yevWM4Di0SkZT4v
- 5nIr+6XcQOFL2uFFWF6kSuACT5CUfFAb4earxGT40t6a5axiOlsiOjvpgctibUWZ+04Y
- JqwwRi648yUyqZ3uZFGweGnqsDVNsunz5D3o9yK9zRRtSIJUsGSZGtdV0LL/thQPjU6R
- rlHtyTNqgHc0HKLPQQ+nz/wmwLPq/TVurCIFuWFI29TlkqGKcYQDwUY0VyBmxpr/YD0F
- iGzNg3ZeyQmSrWZs+MJMtiWHcjttZ4fcPhUzwtkiC55x8Fpzt7FdbK+iE4kBLM9MX1Lv sQ== 
+ bh=ztRYCBysnSriCmZVtZ2FhzbB0XgQY+Jj5Gzo1L0B3fU=;
+ b=koD0R+bHxA2UXmPGp1qn/ljvoM8KbF2XjcdK1tm+6XYizp1wgWwpkL+FsoBK6eycBzoS
+ okr9X0AU01oZxLITSgP/5OF78kzk2wgCBvVCtr11KIRvqL20TDKkO9KxDbL/HIQ8ExRZ
+ BdiOGLkGnW9UNVh1h1q5r6WSt3KwsvzLlW9SBlvKljahZkr6GhNAM0P0g8rgVdDAJRzF
+ sIllHtkv+q8jKOiZIivAKN6mfi2+6edoHUrI6gwgkehoETnUKZJUl3uoBBZZaQIL45pc
+ Vxu2Pdb50y5K13WEuOgI81my6j3BgyIL4XK9NkXZPidZSI6qU7cBP/uM67L06kItvM9+ rw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubc202gs-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubc1g3gk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:19:25 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKHgFn027362;
- Thu, 19 Oct 2023 20:19:24 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubc202fg-1
+ Thu, 19 Oct 2023 20:20:14 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKHQsQ011668;
+ Thu, 19 Oct 2023 20:20:13 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubc1g3fn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:19:24 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JIIU1I026885; Thu, 19 Oct 2023 20:19:22 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr5asum40-1
+ Thu, 19 Oct 2023 20:20:13 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39JK13wA027154; Thu, 19 Oct 2023 20:20:11 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tku5je-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:19:22 +0000
+ Thu, 19 Oct 2023 20:20:11 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
  [10.241.53.100])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39JKJLIp63308050
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39JKKA7017695276
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:19:21 GMT
+ Thu, 19 Oct 2023 20:20:11 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1DFB458058;
- Thu, 19 Oct 2023 20:19:21 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5F81158058;
+ Thu, 19 Oct 2023 20:20:10 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C45358057;
- Thu, 19 Oct 2023 20:19:19 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 82A125805D;
+ Thu, 19 Oct 2023 20:20:08 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
  by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 19 Oct 2023 20:19:18 +0000 (GMT)
-Message-ID: <a1ba9a5b-f5f2-e786-60e4-a9f59af85fa6@linux.ibm.com>
-Date: Thu, 19 Oct 2023 16:19:17 -0400
+ Thu, 19 Oct 2023 20:20:08 +0000 (GMT)
+Message-ID: <8eaa395b-3c42-ace3-9013-72ea80c2a1e8@linux.ibm.com>
+Date: Thu, 19 Oct 2023 16:20:07 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 03/13] migration: Use vmstate_register_any() for isa-ide
+Subject: Re: [PATCH 04/13] migration: Use vmstate_register_any() for ipmi-bt*
 Content-Language: en-US
 To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
 Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
@@ -93,23 +93,23 @@ Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
  <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
 References: <20231019190831.20363-1-quintela@redhat.com>
- <20231019190831.20363-4-quintela@redhat.com>
+ <20231019190831.20363-5-quintela@redhat.com>
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20231019190831.20363-4-quintela@redhat.com>
+In-Reply-To: <20231019190831.20363-5-quintela@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4vZb2HZePsoFrpXybNHZtgRLMw8irLVl
-X-Proofpoint-ORIG-GUID: HoppaDRofukUo8kjS8npJ0gcpVtbz1iq
+X-Proofpoint-ORIG-GUID: MEjCY6TciJCsgIvapVqiRskCyNWz59yA
+X-Proofpoint-GUID: N9tpfNFMKk6SV7gk5BVl8gsTMmbFNXfl
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-19_20,2023-10-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0
- malwarescore=0 suspectscore=0 clxscore=1015 mlxscore=0 priorityscore=1501
- phishscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310190173
+ phishscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
+ mlxlogscore=999 priorityscore=1501 spamscore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310190173
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -52
@@ -136,32 +136,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/19/23 15:08, Juan Quintela wrote:
-> Otherwise qom-test fails.
+> Otherwise device-introspection-test fails.
 >
-> ok 4 /i386/qom/x-remote
-> qemu-system-i386: savevm_state_handler_insert: Detected duplicate SaveStateEntry: id=isa-ide, instance_id=0x0
+> $ ./tests/qtest/device-introspect-test
+> ...
 > Broken pipe
 > ../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
 > Aborted (core dumped)
-> $
 >
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 > ---
->   hw/ide/isa.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/ipmi/ipmi_bmc_extern.c | 2 +-
+>   hw/ipmi/ipmi_bmc_sim.c    | 2 +-
+>   hw/ipmi/isa_ipmi_bt.c     | 2 +-
+>   hw/ipmi/isa_ipmi_kcs.c    | 2 +-
+>   4 files changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/hw/ide/isa.c b/hw/ide/isa.c
-> index 95053e026f..ea60c08116 100644
-> --- a/hw/ide/isa.c
-> +++ b/hw/ide/isa.c
-> @@ -73,7 +73,7 @@ static void isa_ide_realizefn(DeviceState *dev, Error **errp)
->       ide_bus_init(&s->bus, sizeof(s->bus), dev, 0, 2);
->       ide_init_ioport(&s->bus, isadev, s->iobase, s->iobase2);
->       ide_bus_init_output_irq(&s->bus, isa_get_irq(isadev, s->irqnum));
-> -    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_ide_isa, s);
-> +    vmstate_register_any(VMSTATE_IF(dev), &vmstate_ide_isa, s);
->       ide_bus_register_restart_cb(&s->bus);
+> diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
+> index e232d35ba2..324a2c8835 100644
+> --- a/hw/ipmi/ipmi_bmc_extern.c
+> +++ b/hw/ipmi/ipmi_bmc_extern.c
+> @@ -504,7 +504,7 @@ static void ipmi_bmc_extern_init(Object *obj)
+>       IPMIBmcExtern *ibe = IPMI_BMC_EXTERN(obj);
+>
+>       ibe->extern_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, extern_timeout, ibe);
+> -    vmstate_register(NULL, 0, &vmstate_ipmi_bmc_extern, ibe);
+> +    vmstate_register_any(NULL, &vmstate_ipmi_bmc_extern, ibe);
 >   }
 >
+>   static void ipmi_bmc_extern_finalize(Object *obj)
+> diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
+> index 905e091094..404db5d5bc 100644
+> --- a/hw/ipmi/ipmi_bmc_sim.c
+> +++ b/hw/ipmi/ipmi_bmc_sim.c
+> @@ -2188,7 +2188,7 @@ static void ipmi_sim_realize(DeviceState *dev, Error **errp)
+>
+>       ibs->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, ipmi_timeout, ibs);
+>
+> -    vmstate_register(NULL, 0, &vmstate_ipmi_sim, ibs);
+> +    vmstate_register_any(NULL, &vmstate_ipmi_sim, ibs);
+>   }
+>
+>   static Property ipmi_sim_properties[] = {
+> diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
+> index a83e7243d6..afb76b548a 100644
+> --- a/hw/ipmi/isa_ipmi_bt.c
+> +++ b/hw/ipmi/isa_ipmi_bt.c
+> @@ -125,7 +125,7 @@ static void isa_ipmi_bt_init(Object *obj)
+>
+>       ipmi_bmc_find_and_link(obj, (Object **) &iib->bt.bmc);
+>
+> -    vmstate_register(NULL, 0, &vmstate_ISAIPMIBTDevice, iib);
+> +    vmstate_register_any(NULL, &vmstate_ISAIPMIBTDevice, iib);
+>   }
+>
+>   static void *isa_ipmi_bt_get_backend_data(IPMIInterface *ii)
+> diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
+> index b2ed70b9da..5ab63b2fcf 100644
+> --- a/hw/ipmi/isa_ipmi_kcs.c
+> +++ b/hw/ipmi/isa_ipmi_kcs.c
+> @@ -132,7 +132,7 @@ static void isa_ipmi_kcs_init(Object *obj)
+>        * IPMI device, so receive it, but transmit a different
+>        * version.
+>        */
+> -    vmstate_register(NULL, 0, &vmstate_ISAIPMIKCSDevice, iik);
+> +    vmstate_register_any(NULL, &vmstate_ISAIPMIKCSDevice, iik);
+>   }
+>
+>   static void *isa_ipmi_kcs_get_backend_data(IPMIInterface *ii)
 
