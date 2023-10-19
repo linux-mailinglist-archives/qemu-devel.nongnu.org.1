@@ -2,88 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42277CEC5E
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 01:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 721AB7CEC8C
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 02:03:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtGLV-0005Kp-3t; Wed, 18 Oct 2023 19:53:01 -0400
+	id 1qtGTj-0000ZP-FS; Wed, 18 Oct 2023 20:01:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtGLG-0005JM-3i
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:52:46 -0400
-Received: from mail-yb1-xb29.google.com ([2607:f8b0:4864:20::b29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtGLE-0005wC-4z
- for qemu-devel@nongnu.org; Wed, 18 Oct 2023 19:52:45 -0400
-Received: by mail-yb1-xb29.google.com with SMTP id
- 3f1490d57ef6-d81d09d883dso8297834276.0
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 16:52:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697673162; x=1698277962; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DjfoBd+om0ODEuMyksjfYohCj2uTX2efCaRHn1fBosc=;
- b=g0B/Lxv/hYh11nr66oaw46ZSKuTvwsuAEik+7GQFmi/KLNmw9PE7OFVaTDm647uk9z
- 53SyQcZOgj0pf/QKHbH7qB70byQUDK4yNWdn4bduWA2lcsRsT42LLVp56yEtDnBD6vqq
- UA/CxCXSydJUp3CEA7zWvvn1ME+H61x1G3+5qdGn59qeuvU4ZdcqlXtKJM2AGXwuH0XK
- 4eaG3HZZzyQLqKPOorvO7Ry8LPdgv0odJqsivh0ap407hwA767X9WGL/zSTzEtGvr/ba
- UajaofDPYYNatrpBfJ3IIACsIcGQSSILlATUyI84xE9ailVqYgB/IB0Q0PYO8Gaz/l66
- Irvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697673162; x=1698277962;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DjfoBd+om0ODEuMyksjfYohCj2uTX2efCaRHn1fBosc=;
- b=EN+Df4mLeQ8GNP6HhUPLvyQDaT9Cnb8KEnsqttBmrbOTDKxUKELuuyG6hYPB9dFRbS
- 7Pyjog2QBJYSFx+m7JXXlhQkyV1cnZuXWGUoVROZ0eKuiPJvW2aBvRQflOtA3R7HRlJ6
- pXpYdnGql+76fHrxx0/DKVMPcHA9Gd+SW3shNXMy5we7RwTa0lLgtz/qisQ3xN1wpZ+o
- qSAvUXad9FHBkMoPOwIAPxJHL20ATklvmMPuNj2GEJSxMLwddqIPHVI+t+3TIvcnmwb5
- VP5cgqzPjNlZsAPgVuKEc1zO8OoTnx/FWLGNfgCxb8qqetEtHKUbicxsdOzkslrwrRX9
- 44BA==
-X-Gm-Message-State: AOJu0YwM7tTlyeOnDaCwHvqrSn8wSKWyAq4wE7yHjwuRpTemlykxuUKu
- J5z6Paut5kYCD0HmbBlKOMXz2w==
-X-Google-Smtp-Source: AGHT+IGyuRyc38nLgJ/guQmzZ65gd90vknMEM+WIc2FrdJPzcOYZ9TXak3or+Ok5KLTyHEGMPmav7g==
-X-Received: by 2002:a25:2bc1:0:b0:d9a:43d9:a12e with SMTP id
- r184-20020a252bc1000000b00d9a43d9a12emr952505ybr.2.1697673162057; 
- Wed, 18 Oct 2023 16:52:42 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- f17-20020aa79d91000000b0069342d58ea0sm4007651pfq.90.2023.10.18.16.52.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 16:52:41 -0700 (PDT)
-Message-ID: <07311b80-e43f-4d4f-bc2e-1e1a366e8fd2@linaro.org>
-Date: Wed, 18 Oct 2023 16:52:39 -0700
+ (Exim 4.90_1) (envelope-from
+ <BATV+298c059cf2aa39b7dc34+7361+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1qtGTX-0000Yn-9d
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 20:01:23 -0400
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+298c059cf2aa39b7dc34+7361+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1qtGTR-0007z6-Iu
+ for qemu-devel@nongnu.org; Wed, 18 Oct 2023 20:01:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=CamM7a9S+maLlC1YZrtxHI6SkakDNXB97dJyLDq6Rn8=; b=JmW32zRUddkmnUERMEfckmPt9R
+ TgmNJbWhS807telf6HHy4RvAhIc5EfH1VGHS/6SP+PwDsN5F4a/hSvgv7FFvPJ7+o+IcK83geVtjg
+ JBLWrpF1dh/6KD56PWmlFZiidJQcOiXnfwoAwMcEC211dlyO3wbKUPCB8Wk416WlaT4l5sZIXFKFB
+ cWI4bnewaSOVmfhgLnPLKovBDVD8dqIO8yqt9rBgzByFHAgWZASDJKN5124aRfMR7mJ23LHgHmmZ2
+ uagulJWDzuRkG+WRMrXk3PjaKBaBIzPZ5MgbXINiT2f6b9cZlpQEcGFTr/UhGS34aiRj0fhAro5EU
+ sRwVhs6g==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+ by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+ id 1qtGTC-008VeQ-0Q; Thu, 19 Oct 2023 00:00:58 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
+ Linux)) id 1qtGTA-000Gpx-1X; Thu, 19 Oct 2023 01:00:56 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH] hw/timer/hpet: fix IRQ routing in legacy support mode
+Date: Thu, 19 Oct 2023 01:00:33 +0100
+Message-Id: <20231019000033.64684-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] hw/ppc: SysBus simplifications
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org
-References: <20231018133059.85765-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231018133059.85765-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b29;
- envelope-from=richard.henderson@linaro.org; helo=mail-yb1-xb29.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+298c059cf2aa39b7dc34+7361+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,34 +75,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/18/23 06:30, Philippe Mathieu-Daudé wrote:
-> Hi,
-> 
-> There is no point in exposing an internal MMIO region via
-> SysBus and directly mapping it in the very same device.
-> 
-> This series replaces a sequence of:
-> - sysbus_init_mmio()
-> - sysbus_mmio_map()
-> by a single call to memory_region_add_subregion().
-> 
-> Philippe Mathieu-Daudé (6):
->    hw/ppc/pnv_xscom: Rename pnv_xscom_realize(Error **) ->
->      pnv_xscom_init()
->    hw/ppc/pnv_xscom: Move sysbus_mmio_map() call within pnv_xscom_init()
->    hw/ppc/pnv_xscom: Do not use SysBus API to map local MMIO region
->    hw/ppc/pnv: Do not use SysBus API to map local MMIO region
->    hw/intc/spapr_xive: Move sysbus_init_mmio() calls around
->    hw/intc/spapr_xive: Do not use SysBus API to map local MMIO region
-> 
->   include/hw/ppc/pnv_xscom.h |  2 +-
->   hw/intc/spapr_xive.c       | 12 ++++++------
->   hw/ppc/pnv.c               | 26 +++++---------------------
->   hw/ppc/pnv_xscom.c         |  5 ++---
->   4 files changed, 14 insertions(+), 31 deletions(-)
-> 
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+The interrupt from timer 0 in legacy mode is supposed to go to IRQ 0 on
+the i8259 and IRQ 2 on the I/O APIC. The generic x86 GSI handling can't
+cope with IRQ numbers differing between the two chips (despite it also
+being the case for PCI INTx routing), so add a special case for the HPET.
 
-r~
+IRQ 2 isn't valid on the i8259; it's the cascade IRQ and would be
+interpreted as spurious interrupt on the secondary PIC. So we can fix
+up all attempts to deliver IRQ2, to actually deliver to IRQ0 on the PIC.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ hw/i386/x86.c   | 19 +++++++++++++++----
+ hw/timer/hpet.c |  5 ++++-
+ 2 files changed, 19 insertions(+), 5 deletions(-)
+
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index b3d054889b..cb1a8901ff 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -597,13 +597,24 @@ DeviceState *cpu_get_current_apic(void)
+ void gsi_handler(void *opaque, int n, int level)
+ {
+     GSIState *s = opaque;
+-
++    int i8259_pin = n;
+     trace_x86_gsi_interrupt(n, level);
+     switch (n) {
+-    case 0 ... ISA_NUM_IRQS - 1:
+-        if (s->i8259_irq[n]) {
++    case 2:
++        /*
++         * Special case for HPET legacy mode, which is defined as routing HPET
++         * timer 0 to IRQ2 of the I/O APIC and IRQ0 of the i8259 PIC. Since
++         * IRQ2 on the i8259 is the cascade, it isn't otherwise valid so we
++         * handle it via this special case.
++         */
++        i8259_pin = 0;
++        /* fall through */
++    case 0:
++    case 1:
++    case 3 ... ISA_NUM_IRQS - 1:
++        if (s->i8259_irq[i8259_pin]) {
+             /* Under KVM, Kernel will forward to both PIC and IOAPIC */
+-            qemu_set_irq(s->i8259_irq[n], level);
++            qemu_set_irq(s->i8259_irq[i8259_pin], level);
+         }
+         /* fall through */
+     case ISA_NUM_IRQS ... IOAPIC_NUM_PINS - 1:
+diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+index 6998094233..9f740ffdee 100644
+--- a/hw/timer/hpet.c
++++ b/hw/timer/hpet.c
+@@ -196,8 +196,11 @@ static void update_irq(struct HPETTimer *timer, int set)
+         /* if LegacyReplacementRoute bit is set, HPET specification requires
+          * timer0 be routed to IRQ0 in NON-APIC or IRQ2 in the I/O APIC,
+          * timer1 be routed to IRQ8 in NON-APIC or IRQ8 in the I/O APIC.
++         *
++         * There is a special case in the x86 gsi_handler() which converts
++         * IRQ2 into IRQ0 for the i8259 PIC and makes this work correctly.
+          */
+-        route = (timer->tn == 0) ? 0 : RTC_ISA_IRQ;
++        route = (timer->tn == 0) ? 2 : RTC_ISA_IRQ;
+     } else {
+         route = timer_int_route(timer);
+     }
+-- 
+2.40.1
+
 
