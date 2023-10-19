@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B007CFB4E
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4E27CFB42
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:37:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTCd-0002yH-C1; Thu, 19 Oct 2023 09:36:43 -0400
+	id 1qtTCl-0003H1-Ma; Thu, 19 Oct 2023 09:36:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBp-0001ra-9g
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:54 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qtTBw-0001zO-9C
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:36:02 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBi-0001DY-Fb
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:49 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-32dcd3e5f3fso1461633f8f.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:45 -0700 (PDT)
+ id 1qtTBq-0001Dh-F3
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:59 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so18275995e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697722544; x=1698327344; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697722545; x=1698327345; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NdZbt+1sSHwtsO7gY0q3tnj/BPqK0sWsSu3jh1jJfxY=;
- b=qz557kmhm3LAcCaHejKCS/8GX/1Nemq/Thk0+LQ3NB19ZNU6LraBt6eLJe+KIMYsSj
- 7/EWzo5Pm6A6l0Vst98pM5uUUWadF23vlMOTwF4zhwMbTPKiHXy8C/80jMsYca72mbKL
- rRPQrWr1g5swwpHO01mfM8Qog9YuWqwP1gzdns+vHLdHmLrDPDXzk1btEekExwvLmoTw
- xi/zp3fRV0VrZZGSJB02JVnzpuLSESIxQ+02q2Rm8Solcq01wqsdC5j3iRIw/wqsEM+f
- YjG0D3/TkaDWUwlGjuwm7lVhZvIp1OwfVGWxboAyiaj14UtXY8YUrcJpZbItVoCQN3NX
- UibA==
+ :reply-to; bh=JjwEGCnWRdnzpw2/wu0zwaRKL9Af9lEaMljStQ4GHxU=;
+ b=VOPlsts7P4ZfLZrqHVMz9DC0Y6duX7ZdW7BxaYO/13p+fBOVPvgj7BBO+ksl5JCIOI
+ giOB9n2UhLfKbTSSqdI3npD+vfmrA/plX2eX9zkRbOHlP44yytaRihZBZZJGQctpRUfa
+ D7nf2DJEDgIhimjgSeSi+fdryD3g/qwYuqv+joIgcMQxDWjyvephsNMIbqjFFF8+sxmJ
+ CapHIi+An0R9P6yqxsKmy/hpfgD6/A07nZNXsnAyppjLBotG8PdQksms+EFbSuO2i6MW
+ cbeD7WnSAPuMp8+0pCTg268PThLjkcRHp91UIDYG0U0d+/0fsiALELMtxcmBFWttegQ0
+ jM4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697722544; x=1698327344;
+ d=1e100.net; s=20230601; t=1697722545; x=1698327345;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NdZbt+1sSHwtsO7gY0q3tnj/BPqK0sWsSu3jh1jJfxY=;
- b=XfQX0OX+Jjs2X/kHKQF1NYA4FpShvPH3npyiF34xPiW25qsV2ioTxtfw8+H/4HV23D
- tsJfCgj8TOOvf6XLLYAuh1tAiPHZGUEzkQf9jGdp4DRCUcDSsQDqurXAQCTOtrSgImiB
- s+hcMQ/q/gBbZFtaemdE7F4fkhoULNDytgDONu0EbcEpBboerQG2iHSqlslBG4u5Sipy
- RaDtOb7ZoQJ5Ehf8Qy2SHvBI9N2MbwRUtQt2+UDfpoY49k7RAS7zzKnRJmpIVulJ+Pys
- F8e1yZnOeRPGkM73qvxE6aWdOA+zi6+DB9I7cQTPrawP5/+WxpqFQoHJJmwrDJvmIHfq
- W8Qw==
-X-Gm-Message-State: AOJu0YxdDxE+/8FIb4TsD+KpG54Qs64ytZYXcPdWjaWQ7Z20SP4epPYI
- G3MA5NxiPdwDyau6ep2wwrFvEKEQ5gVwqYod7ZQ=
-X-Google-Smtp-Source: AGHT+IHIszz8xnUhWVV/9FCino+v9gi7P5fNRNJgCDpqah3hDGuaoHWHBKXbye7ztMFyoeT20G/CkQ==
-X-Received: by 2002:a5d:5b1f:0:b0:32d:a2a0:bd6c with SMTP id
- bx31-20020a5d5b1f000000b0032da2a0bd6cmr2040420wrb.34.1697722544387; 
+ bh=JjwEGCnWRdnzpw2/wu0zwaRKL9Af9lEaMljStQ4GHxU=;
+ b=nb/HOm/ApyRFlWsGj/0YT4FOrbafMRnoGD1cedsBiBPesa5V9cjGy7lTWXbBdPmDKc
+ ni4OOh56/81yBNM3H9oXICeszMHqmh3HfwemxeBpaLdHWNbxlt7FrN/4Gype4BgHGF1W
+ IC/u2+2wdZxuT27hBATZokUf1W/pH5+xnGqX8ZNoLHEwVhph57HkNhsHly0Do8zPWXCI
+ AQCj8Pro7v+b8SJQwZ5lvG+aK7pI0Cl66/ux9uokNG5hg1gAi0QohrkdGyT6m/gg9/4B
+ b/Wxa3FsrotSeV1nVhE24IIw7idGFyNKHT4OEorLmGVvi2KIMSSpU5ZE24jDN6tJGiBT
+ NExQ==
+X-Gm-Message-State: AOJu0YysC/KjunzH/ddCKJid2wRVMHRCQgCQw/AEurjO47x8a71h5Ecg
+ j8d6KeBXCS+jk8Fe5YGQxcO2lt4VrKhViDtKUV0=
+X-Google-Smtp-Source: AGHT+IHIAYG/DuLyzL5PjpHPxO0ANVzt3BvpWR8rrEheFnfszxJpGWRzBuJjYAMLTbxtFc10PSHjZw==
+X-Received: by 2002:a5d:4fcc:0:b0:32d:ad8b:2a04 with SMTP id
+ h12-20020a5d4fcc000000b0032dad8b2a04mr1498546wrw.14.1697722544848; 
  Thu, 19 Oct 2023 06:35:44 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 19 Oct 2023 06:35:44 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/24] hw/arm/sbsa-ref: use bsa.h for PPI definitions
-Date: Thu, 19 Oct 2023 14:35:25 +0100
-Message-Id: <20231019133537.2114929-13-peter.maydell@linaro.org>
+Subject: [PULL 13/24] arm/kvm: convert to kvm_set_one_reg
+Date: Thu, 19 Oct 2023 14:35:26 +0100
+Message-Id: <20231019133537.2114929-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231019133537.2114929-1-peter.maydell@linaro.org>
 References: <20231019133537.2114929-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,85 +91,254 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leif Lindholm <quic_llindhol@quicinc.com>
+From: Cornelia Huck <cohuck@redhat.com>
 
-Use the private peripheral interrupt definitions from bsa.h instead of
-defining them locally. Refactor to use the INTIDs defined there instead
-of the PPI# used previously.
+We can neaten the code by switching to the kvm_set_one_reg function.
 
-Signed-off-by: Leif Lindholm <quic_llindhol@quicinc.com>
-Message-id: 20230919090229.188092-4-quic_llindhol@quicinc.com
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20231010142453.224369-2-cohuck@redhat.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/sbsa-ref.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ target/arm/kvm.c   | 13 +++------
+ target/arm/kvm64.c | 66 +++++++++++++---------------------------------
+ 2 files changed, 21 insertions(+), 58 deletions(-)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 3c7dfcd6dc5..e8a82618f0a 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -2,6 +2,7 @@
-  * ARM SBSA Reference Platform emulation
-  *
-  * Copyright (c) 2018 Linaro Limited
-+ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  * Written by Hongbo Zhang <hongbo.zhang@linaro.org>
-  *
-  * This program is free software; you can redistribute it and/or modify it
-@@ -30,6 +31,7 @@
- #include "exec/hwaddr.h"
- #include "kvm_arm.h"
- #include "hw/arm/boot.h"
-+#include "hw/arm/bsa.h"
- #include "hw/arm/fdt.h"
- #include "hw/arm/smmuv3.h"
- #include "hw/block/flash.h"
-@@ -55,14 +57,6 @@
- #define NUM_SMMU_IRQS   4
- #define NUM_SATA_PORTS  6
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index b66b936a958..1a8084c4601 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -589,7 +589,6 @@ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
+     bool ok = true;
  
--#define VIRTUAL_PMU_IRQ        7
--#define ARCH_GIC_MAINT_IRQ     9
--#define ARCH_TIMER_VIRT_IRQ    11
--#define ARCH_TIMER_S_EL1_IRQ   13
--#define ARCH_TIMER_NS_EL1_IRQ  14
--#define ARCH_TIMER_NS_EL2_IRQ  10
--#define ARCH_TIMER_NS_EL2_VIRT_IRQ  12
--
- enum {
-     SBSA_FLASH,
-     SBSA_MEM,
-@@ -479,7 +473,7 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
-      */
-     for (i = 0; i < smp_cpus; i++) {
-         DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
--        int ppibase = NUM_IRQS + i * GIC_INTERNAL + GIC_NR_SGIS;
-+        int intidbase = NUM_IRQS + i * GIC_INTERNAL;
-         int irq;
-         /*
-          * Mapping from the output timer irq lines from the CPU to the
-@@ -496,14 +490,17 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
-         for (irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
-             qdev_connect_gpio_out(cpudev, irq,
-                                   qdev_get_gpio_in(sms->gic,
--                                                   ppibase + timer_irq[irq]));
-+                                                   intidbase + timer_irq[irq]));
+     for (i = 0; i < cpu->cpreg_array_len; i++) {
+-        struct kvm_one_reg r;
+         uint64_t regidx = cpu->cpreg_indexes[i];
+         uint32_t v32;
+         int ret;
+@@ -598,19 +597,17 @@ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
+             continue;
          }
  
-         qdev_connect_gpio_out_named(cpudev, "gicv3-maintenance-interrupt", 0,
--                                    qdev_get_gpio_in(sms->gic, ppibase
-+                                    qdev_get_gpio_in(sms->gic,
-+                                                     intidbase
-                                                      + ARCH_GIC_MAINT_IRQ));
-+
-         qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0,
--                                    qdev_get_gpio_in(sms->gic, ppibase
-+                                    qdev_get_gpio_in(sms->gic,
-+                                                     intidbase
-                                                      + VIRTUAL_PMU_IRQ));
+-        r.id = regidx;
+         switch (regidx & KVM_REG_SIZE_MASK) {
+         case KVM_REG_SIZE_U32:
+             v32 = cpu->cpreg_values[i];
+-            r.addr = (uintptr_t)&v32;
++            ret = kvm_set_one_reg(cs, regidx, &v32);
+             break;
+         case KVM_REG_SIZE_U64:
+-            r.addr = (uintptr_t)(cpu->cpreg_values + i);
++            ret = kvm_set_one_reg(cs, regidx, cpu->cpreg_values + i);
+             break;
+         default:
+             g_assert_not_reached();
+         }
+-        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &r);
+         if (ret) {
+             /* We might fail for "unknown register" and also for
+              * "you tried to set a register which is constant with
+@@ -731,17 +728,13 @@ void kvm_arm_get_virtual_time(CPUState *cs)
+ void kvm_arm_put_virtual_time(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+-    struct kvm_one_reg reg = {
+-        .id = KVM_REG_ARM_TIMER_CNT,
+-        .addr = (uintptr_t)&cpu->kvm_vtime,
+-    };
+     int ret;
  
-         sysbus_connect_irq(gicbusdev, i, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
+     if (!cpu->kvm_vtime_dirty) {
+         return;
+     }
+ 
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, KVM_REG_ARM_TIMER_CNT, &cpu->kvm_vtime);
+     if (ret) {
+         error_report("Failed to set KVM_REG_ARM_TIMER_CNT");
+         abort();
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index 5e95c496bb9..047b269a791 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -540,14 +540,10 @@ static int kvm_arm_sve_set_vls(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     uint64_t vls[KVM_ARM64_SVE_VLS_WORDS] = { cpu->sve_vq.map };
+-    struct kvm_one_reg reg = {
+-        .id = KVM_REG_ARM64_SVE_VLS,
+-        .addr = (uint64_t)&vls[0],
+-    };
+ 
+     assert(cpu->sve_max_vq <= KVM_ARM64_SVE_VQ_MAX);
+ 
+-    return kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    return kvm_set_one_reg(cs, KVM_REG_ARM64_SVE_VLS, &vls[0]);
+ }
+ 
+ #define ARM_CPU_ID_MPIDR       3, 0, 0, 0, 5
+@@ -726,19 +722,17 @@ static void kvm_inject_arm_sea(CPUState *c)
+ static int kvm_arch_put_fpsimd(CPUState *cs)
+ {
+     CPUARMState *env = &ARM_CPU(cs)->env;
+-    struct kvm_one_reg reg;
+     int i, ret;
+ 
+     for (i = 0; i < 32; i++) {
+         uint64_t *q = aa64_vfp_qreg(env, i);
+ #if HOST_BIG_ENDIAN
+         uint64_t fp_val[2] = { q[1], q[0] };
+-        reg.addr = (uintptr_t)fp_val;
++        ret = kvm_set_one_reg(cs, AARCH64_SIMD_CORE_REG(fp_regs.vregs[i]),
++                                                        fp_val);
+ #else
+-        reg.addr = (uintptr_t)q;
++        ret = kvm_set_one_reg(cs, AARCH64_SIMD_CORE_REG(fp_regs.vregs[i]), q);
+ #endif
+-        reg.id = AARCH64_SIMD_CORE_REG(fp_regs.vregs[i]);
+-        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+         if (ret) {
+             return ret;
+         }
+@@ -759,14 +753,11 @@ static int kvm_arch_put_sve(CPUState *cs)
+     CPUARMState *env = &cpu->env;
+     uint64_t tmp[ARM_MAX_VQ * 2];
+     uint64_t *r;
+-    struct kvm_one_reg reg;
+     int n, ret;
+ 
+     for (n = 0; n < KVM_ARM64_SVE_NUM_ZREGS; ++n) {
+         r = sve_bswap64(tmp, &env->vfp.zregs[n].d[0], cpu->sve_max_vq * 2);
+-        reg.addr = (uintptr_t)r;
+-        reg.id = KVM_REG_ARM64_SVE_ZREG(n, 0);
+-        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++        ret = kvm_set_one_reg(cs, KVM_REG_ARM64_SVE_ZREG(n, 0), r);
+         if (ret) {
+             return ret;
+         }
+@@ -775,9 +766,7 @@ static int kvm_arch_put_sve(CPUState *cs)
+     for (n = 0; n < KVM_ARM64_SVE_NUM_PREGS; ++n) {
+         r = sve_bswap64(tmp, r = &env->vfp.pregs[n].p[0],
+                         DIV_ROUND_UP(cpu->sve_max_vq * 2, 8));
+-        reg.addr = (uintptr_t)r;
+-        reg.id = KVM_REG_ARM64_SVE_PREG(n, 0);
+-        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++        ret = kvm_set_one_reg(cs, KVM_REG_ARM64_SVE_PREG(n, 0), r);
+         if (ret) {
+             return ret;
+         }
+@@ -785,9 +774,7 @@ static int kvm_arch_put_sve(CPUState *cs)
+ 
+     r = sve_bswap64(tmp, &env->vfp.pregs[FFR_PRED_NUM].p[0],
+                     DIV_ROUND_UP(cpu->sve_max_vq * 2, 8));
+-    reg.addr = (uintptr_t)r;
+-    reg.id = KVM_REG_ARM64_SVE_FFR(0);
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, KVM_REG_ARM64_SVE_FFR(0), r);
+     if (ret) {
+         return ret;
+     }
+@@ -797,7 +784,6 @@ static int kvm_arch_put_sve(CPUState *cs)
+ 
+ int kvm_arch_put_registers(CPUState *cs, int level)
+ {
+-    struct kvm_one_reg reg;
+     uint64_t val;
+     uint32_t fpr;
+     int i, ret;
+@@ -814,9 +800,8 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+     }
+ 
+     for (i = 0; i < 31; i++) {
+-        reg.id = AARCH64_CORE_REG(regs.regs[i]);
+-        reg.addr = (uintptr_t) &env->xregs[i];
+-        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++        ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.regs[i]),
++                              &env->xregs[i]);
+         if (ret) {
+             return ret;
+         }
+@@ -827,16 +812,12 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+      */
+     aarch64_save_sp(env, 1);
+ 
+-    reg.id = AARCH64_CORE_REG(regs.sp);
+-    reg.addr = (uintptr_t) &env->sp_el[0];
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.sp), &env->sp_el[0]);
+     if (ret) {
+         return ret;
+     }
+ 
+-    reg.id = AARCH64_CORE_REG(sp_el1);
+-    reg.addr = (uintptr_t) &env->sp_el[1];
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(sp_el1), &env->sp_el[1]);
+     if (ret) {
+         return ret;
+     }
+@@ -847,23 +828,17 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+     } else {
+         val = cpsr_read(env);
+     }
+-    reg.id = AARCH64_CORE_REG(regs.pstate);
+-    reg.addr = (uintptr_t) &val;
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.pstate), &val);
+     if (ret) {
+         return ret;
+     }
+ 
+-    reg.id = AARCH64_CORE_REG(regs.pc);
+-    reg.addr = (uintptr_t) &env->pc;
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.pc), &env->pc);
+     if (ret) {
+         return ret;
+     }
+ 
+-    reg.id = AARCH64_CORE_REG(elr_el1);
+-    reg.addr = (uintptr_t) &env->elr_el[1];
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(elr_el1), &env->elr_el[1]);
+     if (ret) {
+         return ret;
+     }
+@@ -882,9 +857,8 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+ 
+     /* KVM 0-4 map to QEMU banks 1-5 */
+     for (i = 0; i < KVM_NR_SPSR; i++) {
+-        reg.id = AARCH64_CORE_REG(spsr[i]);
+-        reg.addr = (uintptr_t) &env->banked_spsr[i + 1];
+-        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++        ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(spsr[i]),
++                              &env->banked_spsr[i + 1]);
+         if (ret) {
+             return ret;
+         }
+@@ -899,18 +873,14 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+         return ret;
+     }
+ 
+-    reg.addr = (uintptr_t)(&fpr);
+     fpr = vfp_get_fpsr(env);
+-    reg.id = AARCH64_SIMD_CTRL_REG(fp_regs.fpsr);
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, AARCH64_SIMD_CTRL_REG(fp_regs.fpsr), &fpr);
+     if (ret) {
+         return ret;
+     }
+ 
+-    reg.addr = (uintptr_t)(&fpr);
+     fpr = vfp_get_fpcr(env);
+-    reg.id = AARCH64_SIMD_CTRL_REG(fp_regs.fpcr);
+-    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
++    ret = kvm_set_one_reg(cs, AARCH64_SIMD_CTRL_REG(fp_regs.fpcr), &fpr);
+     if (ret) {
+         return ret;
+     }
 -- 
 2.34.1
 
