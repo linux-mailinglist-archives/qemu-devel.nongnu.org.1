@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA59B7D01AA
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 092077D01C8
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:36:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXpS-0006Yp-Al; Thu, 19 Oct 2023 14:33:06 -0400
+	id 1qtXr3-0005EJ-6M; Thu, 19 Oct 2023 14:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qtXpP-0006Qc-MH; Thu, 19 Oct 2023 14:33:03 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXqs-00057t-Kz
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:34:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qtXpN-0007m5-5U; Thu, 19 Oct 2023 14:33:03 -0400
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JHLliO017804; Thu, 19 Oct 2023 18:32:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=Y/f/pgBe7uF4kgxUtbkvjVoNU94KxcfCsyOxwBFNTlo=;
- b=JPd7xFAQnCe4G27dGEgtsaDdrDDpF8g5YjK8AT3XqMOfGDhuXz5Kn/7T6lxTDtSMTLtA
- Tdm4Ts1YsCrc7Z5fPLo8CmxPbc0sGtb2Rnd2rtFuciyTYGdJ416HOgJO4V0mjwIgTgn4
- ANhDB2lRQbiIXJjRQLkMS3f/QrQs1JyY4x3moTQsAdH0MrEbhGYCporoZ6rRTga39Rn7
- /Nw0nwviyVlG7elgnit97kPuSPUQImPRHoZNBHq+Ml7KZaX6IFqAKqEUsamo4Qhfn6hX
- 6vOMWyX3Y1kb2RrS9NKINVxDg7/2WOPx6FhyQGGBgoy3s63fW8JyqCzYxBJ6aImxKYyh 8Q== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ttg82um1m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 18:32:57 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39JIWuSr009970
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 18:32:56 GMT
-Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Thu, 19 Oct 2023 11:32:56 -0700
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: <bcain@quicinc.com>, <alex.bennee@linaro.org>, <qemu-trivial@nongnu.org>
-Subject: [PATCH] semihosting: fix memleak at semihosting_arg_fallback
-Date: Thu, 19 Oct 2023 15:32:46 -0300
-Message-ID: <ebb2ec1150da633507c2b735ca8ea1cab05ec92a.1697740364.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXqi-0008BR-KY
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:34:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697740463;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z3fcryDGvTJU/hlxIF1uDSZzdchz3i2Hwc66oEyMAnw=;
+ b=Q4p1TT+gPw058g+xmSXlILh6KxrRRVngS5NhzVaj/sVqTPIv/i5jqHa/wFH3KphVJwNjeP
+ lXrJov9kuxcboVr/x/afmx2Df23rnOVhTfi+c4c2LPBFSVJR9ucA/oOvwngXKoMwDEzt/N
+ mxyBHDEiFXnyMoMe9f+zFBrgpeAJRkg=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-675-eZlwPPR3NyqwYRsBW8efLw-1; Thu, 19 Oct 2023 14:34:21 -0400
+X-MC-Unique: eZlwPPR3NyqwYRsBW8efLw-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-507cc15323aso1988584e87.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:34:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697740460; x=1698345260;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z3fcryDGvTJU/hlxIF1uDSZzdchz3i2Hwc66oEyMAnw=;
+ b=ccXZpUOMTxxUOJWrEyaTdUm5uOi6vvBjweRLgEjeQxET92R1JcgNpkLa3BpFhzlmL3
+ 2qNSXKc+eajvQaFPRCvA7FWGiHr3n1dkUokP5Tx/194CzXOnwXsYkpopOpAYojS4wGn9
+ XfFve2aKlLl3l3xNT8ss27i3vtUTqduDHbBmHT5Ag0cHOtBluh42cDwJmsukb8CxnbkK
+ JPDLFE/QuXNLMmtpGM3SiejNb7QRwP1VPzVg/kFYnh07ZNa8FPLty8HkqWKNXjb86EKB
+ RWhH2N5LkrYiYYcUPZrxOX9lHcGzNXyc/1sXBr5RGPKldK4eeLFcCK3P6rohSo3226Ts
+ KkyA==
+X-Gm-Message-State: AOJu0Yxc0lxU3BpR6Fht5L1i/vd8/7BMvLG0LazupMbipj10UZ1RaP2X
+ SOtLAJRhGU0ljqvKXLECND+AzkgTJ9tKEYR35yEa9AEutj1nnI7oKUN6RzOMZ4DiYGKwLy3TQ/M
+ zRimNVfPSVI3H854=
+X-Received: by 2002:a05:6512:4024:b0:503:c51:74e1 with SMTP id
+ br36-20020a056512402400b005030c5174e1mr2833616lfb.15.1697740460344; 
+ Thu, 19 Oct 2023 11:34:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGULNil3n53nmS1adjweNAEpvN+luTUlLCv4KI8gcUcSglwDs2HcRD1s0wLQ5y2c27JBCHeZQ==
+X-Received: by 2002:a05:6512:4024:b0:503:c51:74e1 with SMTP id
+ br36-20020a056512402400b005030c5174e1mr2833603lfb.15.1697740459973; 
+ Thu, 19 Oct 2023 11:34:19 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
+ by smtp.gmail.com with ESMTPSA id
+ bg34-20020a05600c3ca200b00402f713c56esm241113wmb.2.2023.10.19.11.34.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 11:34:19 -0700 (PDT)
+Date: Thu, 19 Oct 2023 14:34:16 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Hawkins Jiawei <yin31149@gmail.com>, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PULL 08/83] vdpa: Restore hash calculation state
+Message-ID: <20231019143240-mutt-send-email-mst@kernel.org>
+References: <cover.1697644299.git.mst@redhat.com>
+ <1908cfd6e1748d94680e468b9df6321087b8fcf2.1697644299.git.mst@redhat.com>
+ <CAJSP0QVTi2QxMdzmPoPF2w5xm-r19W_0GtTaqJzGnoibT9iDNg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: g4-adTB35bv-SqdMOpo9OGYtdbzUe6cb
-X-Proofpoint-ORIG-GUID: g4-adTB35bv-SqdMOpo9OGYtdbzUe6cb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_17,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0
- mlxlogscore=690 spamscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- mlxscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310190157
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_mathbern@quicinc.com; helo=mx0b-0031df01.pphosted.com
+In-Reply-To: <CAJSP0QVTi2QxMdzmPoPF2w5xm-r19W_0GtTaqJzGnoibT9iDNg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,42 +100,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We duplicate "cmd" as strtok may modify its argument, but we forgot
-to free it later. Furthermore, add_semihosting_arg doesn't take
-responsibility for this memory either (it strdup's the argument).
+On Thu, Oct 19, 2023 at 09:32:28AM -0700, Stefan Hajnoczi wrote:
+> On Wed, 18 Oct 2023 at 08:56, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > From: Hawkins Jiawei <yin31149@gmail.com>
+> >
+> > This patch introduces vhost_vdpa_net_load_rss() to restore
+> > the hash calculation state at device's startup.
+> >
+> > Note that vhost_vdpa_net_load_rss() has `do_rss` argument,
+> > which allows future code to reuse this function to restore
+> > the receive-side scaling state when the VIRTIO_NET_F_RSS
+> > feature is enabled in SVQ. Currently, vhost_vdpa_net_load_rss()
+> > could only be invoked when `do_rss` is set to false.
+> >
+> > Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> > Message-Id: <f5ffad10699001107022851e0560cb394039d6b0.1693297766.git.yin31149@gmail.com>
+> > Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> >  net/vhost-vdpa.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 91 insertions(+)
+> >
+> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> > index 4b7c3b81b8..40d0bcbc0b 100644
+> > --- a/net/vhost-vdpa.c
+> > +++ b/net/vhost-vdpa.c
+> > @@ -817,6 +817,88 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
+> >      return 0;
+> >  }
+> >
+> > +static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
+> > +                                   struct iovec *out_cursor,
+> > +                                   struct iovec *in_cursor, bool do_rss)
+> > +{
+> > +    struct virtio_net_rss_config cfg;
+> > +    ssize_t r;
+> > +    g_autofree uint16_t *table = NULL;
+> > +
+> > +    /*
+> > +     * According to VirtIO standard, "Initially the device has all hash
+> > +     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
+> > +     *
+> > +     * Therefore, there is no need to send this CVQ command if the
+> > +     * driver disable the all hash types, which aligns with
+> > +     * the device's defaults.
+> > +     *
+> > +     * Note that the device's defaults can mismatch the driver's
+> > +     * configuration only at live migration.
+> > +     */
+> > +    if (!n->rss_data.enabled ||
+> > +        n->rss_data.hash_types == VIRTIO_NET_HASH_REPORT_NONE) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
+> > +
+> > +    /*
+> > +     * According to VirtIO standard, "Field reserved MUST contain zeroes.
+> > +     * It is defined to make the structure to match the layout of
+> > +     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
+> > +     *
+> > +     * Therefore, we need to zero the fields in struct virtio_net_rss_config,
+> > +     * which corresponds the `reserved` field in
+> > +     * struct virtio_net_hash_config.
+> > +     */
+> > +    memset(&cfg.indirection_table_mask, 0,
+> > +           sizeof_field(struct virtio_net_hash_config, reserved));
+> 
+> Please take a look at the following CI failure:
+> 
+> In file included from /usr/include/string.h:495,
+> from /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/include/qemu/osdep.h:116,
+> from ../net/vhost-vdpa.c:12:
+> In function ‘memset’,
+> inlined from ‘vhost_vdpa_net_load_rss’ at ../net/vhost-vdpa.c:874:9:
+> /usr/include/s390x-linux-gnu/bits/string_fortified.h:71:10: error:
+> ‘__builtin_memset’ offset [7, 12] from the object at ‘cfg’ is out of
+> the bounds of referenced subobject ‘indirection_table_mask’ with type
+> ‘short unsigned int’ at offset 4 [-Werror=array-bounds]
+> 71 | return __builtin___memset_chk (__dest, __ch, __len, __bos0 (__dest));
+> | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+> 
+> https://gitlab.com/qemu-project/qemu/-/jobs/5329820077
 
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
----
- semihosting/config.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+I wonder how come CI passed for me with this commit included:
 
-diff --git a/semihosting/config.c b/semihosting/config.c
-index 249a377ae8..32aa210460 100644
---- a/semihosting/config.c
-+++ b/semihosting/config.c
-@@ -112,17 +112,19 @@ static int add_semihosting_arg(void *opaque,
- /* Use strings passed via -kernel/-append to initialize semihosting.argv[] */
- void semihosting_arg_fallback(const char *file, const char *cmd)
- {
--    char *cmd_token;
-+    char *cmd_token, *cmd_dup;
- 
-     /* argv[0] */
-     add_semihosting_arg(&semihosting, "arg", file, NULL);
- 
-     /* split -append and initialize argv[1..n] */
--    cmd_token = strtok(g_strdup(cmd), " ");
-+    cmd_dup = g_strdup(cmd);
-+    cmd_token = strtok(cmd_dup, " ");
-     while (cmd_token) {
-         add_semihosting_arg(&semihosting, "arg", cmd_token, NULL);
-         cmd_token = strtok(NULL, " ");
-     }
-+    g_free(cmd_dup);
- }
- 
- void qemu_semihosting_enable(void)
--- 
-2.37.2
+https://gitlab.com/mstredhat/qemu/-/pipelines/1041296083
+
+do you know?
+
+
+> > +
+> > +    table = g_malloc_n(n->rss_data.indirections_len,
+> > +                       sizeof(n->rss_data.indirections_table[0]));
+> > +    for (int i = 0; i < n->rss_data.indirections_len; ++i) {
+> > +        table[i] = cpu_to_le16(n->rss_data.indirections_table[i]);
+> > +    }
+> > +
+> > +    /*
+> > +     * Consider that virtio_net_handle_rss() currently does not restore the
+> > +     * hash key length parsed from the CVQ command sent from the guest into
+> > +     * n->rss_data and uses the maximum key length in other code, so we also
+> > +     * employthe the maxium key length here.
+> > +     */
+> > +    cfg.hash_key_length = sizeof(n->rss_data.key);
+> > +
+> > +    const struct iovec data[] = {
+> > +        {
+> > +            .iov_base = &cfg,
+> > +            .iov_len = offsetof(struct virtio_net_rss_config,
+> > +                                indirection_table),
+> > +        }, {
+> > +            .iov_base = table,
+> > +            .iov_len = n->rss_data.indirections_len *
+> > +                       sizeof(n->rss_data.indirections_table[0]),
+> > +        }, {
+> > +            .iov_base = &cfg.max_tx_vq,
+> > +            .iov_len = offsetof(struct virtio_net_rss_config, hash_key_data) -
+> > +                       offsetof(struct virtio_net_rss_config, max_tx_vq),
+> > +        }, {
+> > +            .iov_base = (void *)n->rss_data.key,
+> > +            .iov_len = sizeof(n->rss_data.key),
+> > +        }
+> > +    };
+> > +
+> > +    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+> > +                                VIRTIO_NET_CTRL_MQ,
+> > +                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
+> > +                                data, ARRAY_SIZE(data));
+> > +    if (unlikely(r < 0)) {
+> > +        return r;
+> > +    }
+> > +
+> > +    return 0;
+> > +}
+> > +
+> >  static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+> >                                    const VirtIONet *n,
+> >                                    struct iovec *out_cursor,
+> > @@ -842,6 +924,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+> >          return r;
+> >      }
+> >
+> > +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
+> > +    if (unlikely(r < 0)) {
+> > +        return r;
+> > +    }
+> > +
+> >      return 0;
+> >  }
+> >
+> > --
+> > MST
+> >
+> >
 
 
