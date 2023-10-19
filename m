@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4311A7D03F4
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D817D7D03B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:22:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaRn-0000nn-2f; Thu, 19 Oct 2023 17:20:51 -0400
+	id 1qtaRo-0000sQ-Bj; Thu, 19 Oct 2023 17:20:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRk-0000cZ-Cv
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:48 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRm-0000mO-6p
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:50 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRZ-0005bU-9T
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:47 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32dc9ff4a8fso104055f8f.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:20:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaRk-0005c1-0I
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:20:49 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4084e49a5e5so991425e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:20:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750436; x=1698355236; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750442; x=1698355242; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Si0DsDiy36BQtzeYXOqgI06tIdtT+TQj4MXOqeI0hyk=;
- b=kIM5z9uH+FFeJPRWS4gQyanyoY0XCbVJ0EEHAsI0lT5UlTbH2faIkbM4Ld0USmnhZm
- bO47wukreg3HlPGALSgA23rkRaRNC5ggaLtzaqZBYGpBK5pizz6sx0vbmCppQtaW5DhY
- 0VkTfBrPSciTVibfJcylciRXotwYZM4NHWegoTyizUuoReN2/AKhiRcA2rIYKXKVNm0E
- lPGIehXo0X2/AuzBmhaDuA74kjK0cNYdQYPkrz3iQ4r6F5balBLAly7xG+aLlyiTMe4S
- KXJKR2f+A+ydWGxI5QPH2IE6Jlng446cGNqJ8eocVrs+K0tLFkOsjcoi3vRGFaeEmXTN
- itbQ==
+ bh=+goD7LWLLFlekg91oCfVK0c1MbYgJUFGIQyLFSXN/qg=;
+ b=xqWe5ihyuk0+TNFL5KnXF2wwqxS3v0AJvdzp3rw95bQk3FssjmYF9m3nz6rAJBI6bv
+ PnOa13ojUMHUtUMfOHm0Qhp6KbuhMPW+nAsl3E1vvEuThYa0ir2z4DpVOAm52W7M/VIm
+ 5vre2mF1ReaTR4Ns9yZWcFNIuQilw48YdO2reuh3MhHFAK02TgCzxGQ439mdugqmSNlY
+ anIspcu7Ra9HBES2fWlK+uaP+x+sF9fTtVs/kq3zRx6z9vQdodSQpJEvJFfbKuvBULO/
+ HYa/oIz2drtoHaXPYlsSETyaCS0vDx0dnnvCQFG5JJ0Vw5tulTEel/rSnETs+WcPwL5h
+ Phyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750436; x=1698355236;
+ d=1e100.net; s=20230601; t=1697750442; x=1698355242;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Si0DsDiy36BQtzeYXOqgI06tIdtT+TQj4MXOqeI0hyk=;
- b=PR+jM1AKUoD07LnfF2Pp1en3rtDwyqrbUtqwj+wZqCLlseTX6UwmOHU8F4LsWbMsT+
- XvgW6/tAdBuaE+cq7isaVAPxIXS2ACx8tao2SBW8Cads5KJZBWyCbKVw+WIg64rNIKKN
- 7NM4PU+8pkUfvxR204rl/JfSNXrEFVLlkkhJL+poTtXDzyRM8xB4KPs+1d5iViDxqMDd
- MlhicmLOMnquDEWq7cS1JvwK19yjuZDWW+3n3tpbnMUgIdK/8cjXKrArseYKY0WsWxai
- hrDuulTTwb5kKEUa78IR0kq97Oam+NmZfSGiqpQkdiCoAPtOjoiq29ihYf2e6xik0WKn
- fp8g==
-X-Gm-Message-State: AOJu0YzYdgfcZ+e2FxvKUNy46c22s61xgq0hVpa9quJ5mQ4Fe1Brxid8
- ZNhFx356w+V92MA5v2c+rGx4iWU29bxwOoDsiKTumQ==
-X-Google-Smtp-Source: AGHT+IFvITzFiLPMskf/GbGdfoIzC7S+QBjZMzmg1v9ES6bxQ7ClujPkx9nkeKn4zWoPgif7Y1H5jA==
-X-Received: by 2002:adf:f190:0:b0:317:50b7:2ce3 with SMTP id
- h16-20020adff190000000b0031750b72ce3mr2485494wro.51.1697750435854; 
- Thu, 19 Oct 2023 14:20:35 -0700 (PDT)
+ bh=+goD7LWLLFlekg91oCfVK0c1MbYgJUFGIQyLFSXN/qg=;
+ b=Ji8aAuX7i1U4c4X0hv2vxCYNg8PAUVerk9YDMhgBcc90iAxDbld7JwOmWIF/19P9hb
+ 73iLPnN3wv4t1rX3ivBaProykm6icwUVXz7glFShP/KAQBPgPtoRAiH5hXc1JVrOn0OP
+ 6hjpNZt4lg/+pHxvOgyevXRrm/z9MY7YvChfBEH3BqAGjYepIpdoi0/HYr6m63jaFEkv
+ oqTExuDYbMA+XjHjRpQPYi6z3K3qlzWzt7fIzM2X/xisUX4JhmJek0dWsUrbb5qddSuw
+ BtsLx2Vy3dxrZaaVF7F3AH/kZahGKgPNfrDtcmPMhvq3MAiTNDXpo9cGWtSQFiQo9uKQ
+ 2Q0w==
+X-Gm-Message-State: AOJu0YwHnyylX7nS5y1AoSrLZfwnOpMmlSAi4aSYyZ0CKXbsK9yWwsrg
+ 7lHQaJSTmwc4qs1xlx0SjPx7fGOis+/jB6UelKpaIQ==
+X-Google-Smtp-Source: AGHT+IFatdTNTq0UHD5Q5955XeoWvrhhnFKOBSwcpYmcAdt9HraU+f+/vbYvqrZVHi5IZvG2YZIvgw==
+X-Received: by 2002:a05:600c:35ca:b0:405:3955:5872 with SMTP id
+ r10-20020a05600c35ca00b0040539555872mr15966wmq.18.1697750442279; 
+ Thu, 19 Oct 2023 14:20:42 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- p17-20020a5d68d1000000b0032d687fd9d0sm228826wrw.19.2023.10.19.14.20.33
+ fm12-20020a05600c0c0c00b004030e8ff964sm5346723wmb.34.2023.10.19.14.20.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:20:35 -0700 (PDT)
+ Thu, 19 Oct 2023 14:20:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 21/46] hw/s390x: Clean up global variable shadowing in
- quiesce_powerdown_req()
-Date: Thu, 19 Oct 2023 23:17:46 +0200
-Message-ID: <20231019211814.30576-22-philmd@linaro.org>
+ Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 22/46] hw/intc/apic: Use ERRP_GUARD() in apic_common_realize()
+Date: Thu, 19 Oct 2023 23:17:47 +0200
+Message-ID: <20231019211814.30576-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,51 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix:
-
-  hw/s390x/sclpquiesce.c:90:22: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      QuiesceNotifier *qn = container_of(n, QuiesceNotifier, notifier);
-                       ^
-  hw/s390x/sclpquiesce.c:86:3: note: previous declaration is here
-  } qn;
-    ^
+APICCommonClass::realize() is a DeviceRealize() handler which
+take an Error** parameter and can fail. Do not proceed further
+on failure.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20231010115048.11856-7-philmd@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20231003082728.83496-2-philmd@linaro.org>
 ---
- hw/s390x/sclpquiesce.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/intc/apic_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/s390x/sclpquiesce.c b/hw/s390x/sclpquiesce.c
-index ce07b16884..a641089929 100644
---- a/hw/s390x/sclpquiesce.c
-+++ b/hw/s390x/sclpquiesce.c
-@@ -78,12 +78,10 @@ static const VMStateDescription vmstate_sclpquiesce = {
-      }
- };
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index 68ad30e2f5..bccb4241c2 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -257,6 +257,7 @@ static const VMStateDescription vmstate_apic_common;
  
--typedef struct QuiesceNotifier QuiesceNotifier;
--
--static struct QuiesceNotifier {
-+typedef struct QuiesceNotifier {
-     Notifier notifier;
-     SCLPEvent *event;
--} qn;
-+} QuiesceNotifier;
- 
- static void quiesce_powerdown_req(Notifier *n, void *opaque)
+ static void apic_common_realize(DeviceState *dev, Error **errp)
  {
-@@ -97,6 +95,8 @@ static void quiesce_powerdown_req(Notifier *n, void *opaque)
++    ERRP_GUARD();
+     APICCommonState *s = APIC_COMMON(dev);
+     APICCommonClass *info;
+     static DeviceState *vapic;
+@@ -267,6 +268,9 @@ static void apic_common_realize(DeviceState *dev, Error **errp)
  
- static int quiesce_init(SCLPEvent *event)
- {
-+    static QuiesceNotifier qn;
-+
-     qn.notifier.notify = quiesce_powerdown_req;
-     qn.event = event;
+     info = APIC_COMMON_GET_CLASS(s);
+     info->realize(dev, errp);
++    if (*errp) {
++        return;
++    }
  
+     /* Note: We need at least 1M to map the VAPIC option ROM */
+     if (!vapic && s->vapic_control & VAPIC_ENABLE_MASK &&
 -- 
 2.41.0
 
