@@ -2,91 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42267CFE95
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A92F7CFE9D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:47:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVEI-00073n-O3; Thu, 19 Oct 2023 11:46:34 -0400
+	id 1qtVF1-0007qZ-F4; Thu, 19 Oct 2023 11:47:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtVEH-00070A-4Z
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:46:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVEx-0007lz-Eh
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:47:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtVEF-0007VW-5Y
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:46:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVEs-0007fe-Qv
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:47:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697730389;
+ s=mimecast20190719; t=1697730430;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XAHZmjx0D1vdZGmqHoTiUz7Cddu/Se2XB60IwRQqxB8=;
- b=GdYo9SXn42xf9K7A40H+Rmbm67Y3c2GLioU25CVmvZJvzRZAOJd31BPgah0d3VtK2xyH57
- Xlc/cn+UpErBjPj9HLkS4TJx7Dl5SGg2kfnxmeBKJz1Jzef/AcZ5hvPTijnfNAIvveBN0+
- gEqYkeD43E5Lfy5ITwSyw/b/leEgaCo=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=ysVg6szlqcfWGXjVtTl7pXBvAyfCwaHTFu5dq/oBkSQ=;
+ b=XKq2c/oCtb4ce+0vXqpEgT1cJoLNfxI8Ki649ekWBI4VcAbi179EftcDr5HZ8+WlGpgjB8
+ Jc3mVD8KzU0nk17t/i4RDWtAGXlwpSK4H+zfBPjIMhrTdZvNpUVG/S1qX1ReXPCNzzVSV7
+ E+97Q1apbMMfLababCRZLEe8h6BEdz4=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-BLdtpDhtNE6jAs6-hh7egw-1; Thu, 19 Oct 2023 11:46:28 -0400
-X-MC-Unique: BLdtpDhtNE6jAs6-hh7egw-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3ae35e37ff8so2013006b6e.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:46:28 -0700 (PDT)
+ us-mta-529-WvZmP8lrOZmKDIXjC6_Mww-1; Thu, 19 Oct 2023 11:47:06 -0400
+X-MC-Unique: WvZmP8lrOZmKDIXjC6_Mww-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99bcb13d8ddso597212366b.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:47:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697730387; x=1698335187;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XAHZmjx0D1vdZGmqHoTiUz7Cddu/Se2XB60IwRQqxB8=;
- b=LHq7UDft/nkNsBuC3UiR02qBLnsao7mFv3Cstcn50+NojJ99LHz0lj8ddQdI8IYlgF
- HaXBjaGvt+jAYTfjpluWmT0Ew4pK3WRySATdYeIxd3uY5QllGRKFIIeWGmjr/uwknM2p
- 6r3F0p5DWGMpGtKxEvGzNtviCWmSt2c9JiLY6zzE20cdS92pfhYuTqJiai8LW9rjr8z8
- PLPH1YP7iIxFlh8C7T15bdbTnL8IYYY+9FtxJgifQd1/CYL8lXuWMXQx/d875HQ5DvFW
- QxtPswQpGG2qgZjW7GxfJal9Ih77FwP6SKTa6Kk6wZI1MpbyqWmS6fuZV/lbDG4AjEnb
- rwag==
-X-Gm-Message-State: AOJu0YwgjNGnITCosl9R/G6apfiyRIwNTrQrfmdfgFezxaAzFSuUibKo
- s0/Jn+FNtKO0MfCGVIdARJSgkMaltLSce+tE6euRYykH/4Kvstb6t5LwpwdSAy764yJSGQ+SuEQ
- lFihn+pVPvhxTl/4=
-X-Received: by 2002:a05:6808:1b21:b0:3b2:e224:73d0 with SMTP id
- bx33-20020a0568081b2100b003b2e22473d0mr2425319oib.5.1697730387450; 
- Thu, 19 Oct 2023 08:46:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6k516bary9/RrhEi9mS98scF9oq4EdSLu6OOSZWYHg+K9gyKq75GLsy//AaZWVwNG4ug25A==
-X-Received: by 2002:a05:6808:1b21:b0:3b2:e224:73d0 with SMTP id
- bx33-20020a0568081b2100b003b2e22473d0mr2425296oib.5.1697730387079; 
- Thu, 19 Oct 2023 08:46:27 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- ne14-20020a056214424e00b0065b0771f2edsm865089qvb.136.2023.10.19.08.46.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 08:46:26 -0700 (PDT)
-Date: Thu, 19 Oct 2023 11:46:25 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Leonardo Bras <leobras@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
- semaphore
-Message-ID: <ZTFPUUdJ5Y8/szaA@x1n>
-References: <20231012140651.13122-1-farosas@suse.de>
- <20231012140651.13122-2-farosas@suse.de>
- <87sf676kxt.fsf@secure.mitica> <ZTE+lmbvtYNDU80q@x1n>
- <871qdq4pzh.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1697730425; x=1698335225;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ysVg6szlqcfWGXjVtTl7pXBvAyfCwaHTFu5dq/oBkSQ=;
+ b=k9BwmfUXk3/WmfYbGGW0APlOMNZ9aSaQSPlUBeFIaIZrUTVIXgfrB8lSqDCQsQfF3x
+ uYuXBX+fX4A6Scz+/WTeoujqzkwO/MDhvDIT0rK5O4V/1h0xgwKjPn96St2G0rgaatE6
+ yBWaWEcYIcNeeW1RVdI9RGiGNFpyfhuqRIsip4ES5FMZxNMV4qFmNhUwyUt+QwpCh63b
+ E556WG0poaPffgaz7eBQaNWVhuPhlfdHZIzJxoalAqxWmeCVpP+he1E3UFbFTslv6L5S
+ lkfTKQGjzcG/Za18xi/ODZD2pWBi9ExytAvxpgiBNVFmVWuBF81mjSnYrDFNfnijNgBQ
+ QcpA==
+X-Gm-Message-State: AOJu0Yzijt9iP68bi/HvthvT4YJcEJxsrOcQwoI1IVRFnua+zrO96KPp
+ jtUJREVzfWUiDR4WGx1aDFd8jbNqruuCyZjF8C7LkEIbmFyZDkgf+lg0mK61xyJMuwjVpWbIvtk
+ toiFAZrHpCeAUyFA=
+X-Received: by 2002:a17:906:9fc1:b0:9be:aa01:22d with SMTP id
+ hj1-20020a1709069fc100b009beaa01022dmr2597295ejc.75.1697730425682; 
+ Thu, 19 Oct 2023 08:47:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkec4lMsVkKcQNn4NnBB9gjK/4vWC7gam+hefJtxiJYaUmBQDECgAvxOkcmvlKcMIxqDgB/w==
+X-Received: by 2002:a17:906:9fc1:b0:9be:aa01:22d with SMTP id
+ hj1-20020a1709069fc100b009beaa01022dmr2597267ejc.75.1697730425324; 
+ Thu, 19 Oct 2023 08:47:05 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
+ [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
+ a4-20020a170906684400b009ad75d318ffsm3880107ejs.17.2023.10.19.08.47.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 08:47:05 -0700 (PDT)
+Message-ID: <dd6b4635-28de-484a-bdaf-54a160511d6d@redhat.com>
+Date: Thu, 19 Oct 2023 17:47:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <871qdq4pzh.fsf@secure.mitica>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/7] hw/ppc/spapr_vio: Realize SPAPR_VIO_BRIDGE device
+ before accessing it
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ David Gibson <david@gibson.dropbear.id.au>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20231019131647.19690-1-philmd@linaro.org>
+ <20231019131647.19690-2-philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231019131647.19690-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,158 +149,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 19, 2023 at 05:00:02PM +0200, Juan Quintela wrote:
-> Peter Xu <peterx@redhat.com> wrote:
-> > Fabiano,
-> >
-> > Sorry to look at this series late; I messed up my inbox after I reworked my
-> > arrangement methodology of emails. ;)
-> >
-> > On Thu, Oct 19, 2023 at 11:06:06AM +0200, Juan Quintela wrote:
-> >> Fabiano Rosas <farosas@suse.de> wrote:
-> >> > The channels_ready semaphore is a global variable not linked to any
-> >> > single multifd channel. Waiting on it only means that "some" channel
-> >> > has become ready to send data. Since we need to address the channels
-> >> > by index (multifd_send_state->params[i]), that information adds
-> >> > nothing of value.
-> >> 
-> >> NAK.
-> >> 
-> >> I disagree here O:-)
-> >> 
-> >> the reason why that channel exist is for multifd_send_pages()
-> >> 
-> >> And simplifying the function what it does is:
-> >> 
-> >> sem_wait(channels_ready);
-> >> 
-> >> for_each_channel()
-> >>    look if it is empty()
-> >> 
-> >> But with the semaphore, we guarantee that when we go to the loop, there
-> >> is a channel ready, so we know we donat busy wait searching for a
-> >> channel that is free.
-> >> 
-> >> Notice that I fully agree that the sem is not needed for locking.
-> >> Locking is done with the mutex.  It is just used to make sure that we
-> >> don't busy loop on that loop.
-> >> 
-> >> And we use a sem, because it is the easiest way to know how many
-> >> channels are ready (even when we only care if there is one when we
-> >> arrive to that code).
-> >> 
-> >> We lost count of that counter, and we fixed that here:
-> >> 
-> >> commit d2026ee117147893f8d80f060cede6d872ecbd7f
-> >> Author: Juan Quintela <quintela@redhat.com>
-> >> Date:   Wed Apr 26 12:20:36 2023 +0200
-> >> 
-> >>     multifd: Fix the number of channels ready
-> >> 
-> >>     We don't wait in the sem when we are doing a sync_main.  Make it
-> >> 
-> >> And we were addressing the problem that some users where finding that we
-> >> were busy waiting on that loop.
-> >
-> > Juan,
-> >
-> > I can understand why send_pages needs that sem, but not when sync main.
-> > IOW, why multifd_send_sync_main() needs:
-> >
-> >         qemu_sem_wait(&multifd_send_state->channels_ready);
-> >
-> > If it has:
-> >
-> >         qemu_sem_wait(&p->sem_sync);
-> >
-> > How does a busy loop happen?
+On 19/10/2023 15.16, Philippe Mathieu-Daudé wrote:
+> qbus_new() should not be called on unrealized device.
 > 
-> What does multifd_send_thread() for a SYNC packet.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/ppc/spapr_vio.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> static void *multifd_send_thread(void *opaque)
-> {
->     while (true) {
->         qemu_sem_post(&multifd_send_state->channels_ready);
->         qemu_sem_wait(&p->sem);
-> 
->         qemu_mutex_lock(&p->mutex);
-> 
->         if (p->pending_job) {
->             ....
->             qemu_mutex_unlock(&p->mutex);
-> 
->             if (flags & MULTIFD_FLAG_SYNC) {
->                 qemu_sem_post(&p->sem_sync);
->             }
->     }
-> }
-> 
-> I have simplified it a lot, but yot the idea.
-> 
-> See the 1st post of channel_ready().
-> We do it for every packet sent.  Even for the SYNC ones.
-> 
-> Now what multifd_send_page() does?
-> 
-> static int multifd_send_pages(QEMUFile *f)
-> {
->     qemu_sem_wait(&multifd_send_state->channels_ready);
->     ....
-> }
-> 
-> See, we are decreasing the numbers of channels_ready because we know we
-> are using one.
-> 
-> As we are sending packets for multifd_send_sync_main(), we need to do a
-> hack in multifd_send_thread() and say that sync packets don't
-> account. Or we need to decrease that semaphore in multifd_send_sync_main()
-> 
-> int multifd_send_sync_main(QEMUFile *f)
-> {
->     ....
->     for (i = 0; i < migrate_multifd_channels(); i++) {
->         qemu_sem_wait(&multifd_send_state->channels_ready);
->         ...
->     }
-> }
-> 
-> And that is what we do here.
-> We didn't had this last line (not needed for making sure the channels
-> are ready here).
-> 
-> But needed to make sure that we are maintaining channels_ready exact.
+> diff --git a/hw/ppc/spapr_vio.c b/hw/ppc/spapr_vio.c
+> index 9d4fec2c04..f8ef2b6fa8 100644
+> --- a/hw/ppc/spapr_vio.c
+> +++ b/hw/ppc/spapr_vio.c
+> @@ -574,13 +574,14 @@ SpaprVioBus *spapr_vio_bus_init(void)
+>   
+>       /* Create bridge device */
+>       dev = qdev_new(TYPE_SPAPR_VIO_BRIDGE);
+> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>   
+>       /* Create bus on bridge device */
+>       qbus = qbus_new(TYPE_SPAPR_VIO_BUS, dev, "spapr-vio");
+>       bus = SPAPR_VIO_BUS(qbus);
+>       bus->next_reg = SPAPR_VIO_REG_BASE;
+>   
+> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+> +
+>       /* hcall-vio */
+>       spapr_register_hypercall(H_VIO_SIGNAL, h_vio_signal);
 
-I didn't expect it to be exact, I think that's the major part of confusion.
-For example, I see this comment:
-
-static void *multifd_send_thread(void *opaque)
-       ...
-        } else {
-            qemu_mutex_unlock(&p->mutex);
-            /* sometimes there are spurious wakeups */
-        }
-
-So do we have spurious wakeup anywhere for either p->sem or channels_ready?
-They are related, because if we got spurious p->sem wakeups, then we'll
-boost channels_ready one more time too there.
-
-I think two ways to go here:
-
-  - If we want to make them all exact: we'd figure out where are spurious
-    wake ups and we fix all of them.  Or,
-
-  - IMHO we can also make them not exact.  It means they can allow
-    spurious, and code can actually also work like that.  One example is
-    e.g. what happens if we get spurious wakeup in multifd_send_pages() for
-    channels_ready?  We simply do some cpu loops as long as we double check
-    with each channel again, we can even do better that if looping over N
-    channels and see all busy, "goto retry" and wait on the sem again.
-
-What do you think?
-
-Thanks,
-
--- 
-Peter Xu
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
