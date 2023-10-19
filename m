@@ -2,101 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0457CFBB3
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 896B57CFBB7
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:53:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTRS-0003WH-0H; Thu, 19 Oct 2023 09:52:02 -0400
+	id 1qtTSq-000632-Bv; Thu, 19 Oct 2023 09:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qtTR9-0003Kv-Tx
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:51:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qtTSZ-0005xy-GS; Thu, 19 Oct 2023 09:53:11 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qtTR8-0003pg-7v
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:51:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697723500;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2WT758E5/3Zc2NyFoIrIc/bVq2NyqZ85qvSn6rFHfMU=;
- b=ab8HlGL0LyMQOG1Of1KQ5zRq40yuchy/wliwVw1zSHWd54ococlP1cSDYzdpTm9YobJBBq
- I2biF2Uw0WBe4kdf5CveCLKIFUSxrFFdT/vsbSpU5uCXDnDcbQYKl5qlr5VMGb9VL3ZrlE
- caPsYPpc36yin+Py5MFBrQuamPuUVkg=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-5QGfGfe1O8ShR4N8ey590A-1; Thu, 19 Oct 2023 09:51:38 -0400
-X-MC-Unique: 5QGfGfe1O8ShR4N8ey590A-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-77892f2ee51so250793685a.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:51:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697723498; x=1698328298;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2WT758E5/3Zc2NyFoIrIc/bVq2NyqZ85qvSn6rFHfMU=;
- b=JjGSekBEcvKr19HpdAnSHvjOQjG5soA24EQpG7IMS5vre29cuH8TOfdpyNuR6dRjYY
- V8bLTk4DRSWghvHbU7hiP7CP4Mw04wwZuKhFR3IHkWL0RyyQSfnftKbbkJvJ1L73h+40
- GrMdSztX0s4W6vMljxppP/+3ithE5OkTGiO8t1q4RJOAFGf7fda2wZDejaLhcscaFkeF
- 73DCXErVsG2nj9/E0Z+wyjvyeLFWEiMsN7BFoHdSTCCQvBmmSi/8VApgdWBzImX6sHn0
- xFGFMn3hWeMgA68WqyOPMCuyn5X2wKl9N5zbdocZvOcgwTN4eOZsdD0BD1zmmIlgpO/D
- Y02Q==
-X-Gm-Message-State: AOJu0Yw9BHeiHoWPz5TMCfWSncv9VW7mFbaDQMlYZByrt97PRqHDMtaT
- MOoxdAJcnn220Yno2vcaW+hBRhs9XVvcIhYujhsFumkpSiJR5Cq+Dd+h7RlSPYJmXTW3gtA/VGL
- 0MuqzBF2jBpUSoDc=
-X-Received: by 2002:a05:620a:8295:b0:778:91f0:e541 with SMTP id
- ox21-20020a05620a829500b0077891f0e541mr1836182qkn.23.1697723498113; 
- Thu, 19 Oct 2023 06:51:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQjpUWBwRFp1RLztiby5LvEkEMTfXReKE+/WLOWOW03CuuRaOyPdkAmAYQe4Ltd2nsgYbZjg==
-X-Received: by 2002:a05:620a:8295:b0:778:91f0:e541 with SMTP id
- ox21-20020a05620a829500b0077891f0e541mr1836161qkn.23.1697723497868; 
- Thu, 19 Oct 2023 06:51:37 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- d6-20020a05620a140600b00767d8e12ce3sm761408qkj.49.2023.10.19.06.51.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 06:51:36 -0700 (PDT)
-Message-ID: <9a8912df-23d1-64c0-134d-cc42838b34d8@redhat.com>
-Date: Thu, 19 Oct 2023 15:51:32 +0200
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qtTSW-00043d-Oi; Thu, 19 Oct 2023 09:53:11 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 33C0E430CC;
+ Thu, 19 Oct 2023 15:53:05 +0200 (CEST)
+Message-ID: <b8007a25-10e1-483c-81c4-9d7dc3c67ed9@proxmox.com>
+Date: Thu, 19 Oct 2023 15:53:00 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+User-Agent: Mozilla Thunderbird
+Subject: Re: deadlock when using iothread during backup_clean()
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- alex.williamson@redhat.com, jean-philippe@linaro.org, pbonzini@redhat.com,
- peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
- philmd@linaro.org, zhenzhong.duan@intel.com, yi.l.liu@intel.com,
- YangHang Liu <yanghliu@redhat.com>
-References: <20231011175516.541374-1-eric.auger@redhat.com>
- <20231018093723-mutt-send-email-mst@kernel.org>
- <9ddc3f2e-8be7-4e03-bf9f-3ac930650a52@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <9ddc3f2e-8be7-4e03-bf9f-3ac930650a52@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, QEMU Developers
+ <qemu-devel@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>,
+ Thomas Lamprecht <t.lamprecht@proxmox.com>
+References: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
+ <dd12f39d-a364-b186-2ad7-04343ea85e3f@redhat.com>
+ <44ff810b-8ec6-0f11-420a-6efa2c7c2475@proxmox.com>
+ <2ca4eb06-75c3-7bd8-972b-b37af47743dc@yandex-team.ru>
+ <71e3112d-3d3f-fd55-4099-6765d4f22205@proxmox.com>
+ <76f9678d-ed92-418e-8d1e-c6dc55f83279@proxmox.com>
+ <ZS56FzuqZSApXBbc@redhat.com>
+ <c2a6c1b6-0438-488f-bba3-1014ffdadbce@proxmox.com>
+ <ZS6YFtYKyFLbfrrP@redhat.com>
+ <3e1c941b-2b76-4f85-88cb-4a2a968eb3e6@proxmox.com>
+ <ZTEdk5gKXlIrKNm8@redhat.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <ZTEdk5gKXlIrKNm8@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,38 +66,137 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
-
-On 10/19/23 13:07, Cédric Le Goater wrote:
-> On 10/18/23 15:37, Michael S. Tsirkin wrote:
->> On Wed, Oct 11, 2023 at 07:52:16PM +0200, Eric Auger wrote:
->>> This applies on top of vfio-next:
->>> https://github.com/legoater/qemu/, vfio-next branch
+Am 19.10.23 um 14:14 schrieb Kevin Wolf:
+> Am 18.10.2023 um 11:42 hat Fiona Ebner geschrieben:
+>> Am 17.10.23 um 16:20 schrieb Kevin Wolf:
+>>> Am 17.10.2023 um 15:37 hat Fiona Ebner geschrieben:
+>>>> Am 17.10.23 um 14:12 schrieb Kevin Wolf:
+>>>>> Am 17.10.2023 um 12:18 hat Fiona Ebner geschrieben:
+>>>>>> I ran into similar issues now with mirror, (both deadlocks and stuck
+>>>>>> guest IO at other times), and interestingly, also during job start.
+>>>>>>
+>>>>>> Also had a backtrace similar to [0] once, so I took a closer look.
+>>>>>> Probably was obvious to others already, but for the record:
+>>>>>>
+>>>>>> 1. the graph is locked by the main thread
+>>>>>> 2. the iothread holds the AioContext lock
+>>>>>> 3. the main thread waits on the AioContext lock
+>>>>>> 4. the iothread waits for coroutine spawned by blk_is_available()
+>>>>>
+>>>>> Where does this blk_is_available() in the iothread come from? Having it
+>>>>> wait without dropping the AioContext lock sounds like something that
+>>>>> we'd want to avoid. Ideally, devices using iothreads shouldn't use
+>>>>> synchronous requests at all, but I think scsi-disk might have some of
+>>>>> them.
+>>>>>
+>>>>
+>>>> It's part of the request handling in virtio-scsi:
+>>>>
+>>>>> #0  0x00007ff7f5f55136 in __ppoll (fds=0x7ff7e40030c0, nfds=8, timeout=<optimized out>, sigmask=0x0) at ../sysdeps/unix/sysv/linux/ppoll.c:42
+>>>>> #1  0x00005587132615ab in qemu_poll_ns (fds=0x7ff7e40030c0, nfds=8, timeout=-1) at ../util/qemu-timer.c:339
+>>>>> #2  0x000055871323e8b1 in fdmon_poll_wait (ctx=0x55871598d5e0, ready_list=0x7ff7f288ebe0, timeout=-1) at ../util/fdmon-poll.c:79
+>>>>> #3  0x000055871323e1ed in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:670
+>>>>> #4  0x0000558713089efa in bdrv_poll_co (s=0x7ff7f288ec90) at /home/febner/repos/qemu/block/block-gen.h:43
+>>>>> #5  0x000055871308c362 in blk_is_available (blk=0x55871599e2f0) at block/block-gen.c:1426
+>>>>> #6  0x0000558712f6843b in virtio_scsi_ctx_check (s=0x558716c049c0, d=0x55871581cd30) at ../hw/scsi/virtio-scsi.c:290
+>>>
+>>> Oh... So essentially for an assertion.
+>>>
+>>> I wonder if the blk_is_available() check introduced in 2a2d69f490c is
+>>> even necessary any more, because BlockBackend has its own AioContext
+>>> now. And if blk_bs(blk) != NULL isn't what we actually want to check if
+>>> the check is necessary, because calling bdrv_is_inserted() doesn't seem
+>>> to have been intended. blk_bs() wouldn't have to poll.
+>>>
 >>
->> virtio things make sense
->>
->> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->>
->> let me know how you want to merge all this.
->
-> Michael,
->
-> I will grab the series if that's OK.
+>> Could virtio_scsi_hotunplug() be an issue with removing or modifying
+>> the check? There's a call there which sets the blk's AioContext to
+>> qemu_get_aio_context(). Or are we sure that the assert in
+>> virtio_scsi_ctx_check() can't be reached after that?
+> 
+> I think that would be the kind of bug that the assertion tries to
+> catch, because then we would be sending requests to blk from a thread
+> that doesn't match its AioContext (which will be allowed soon, but not
+> quite yet).
+> 
+> Before resetting the AioContext, virtio_scsi_hotunplug() calls
+> qdev_simple_device_unplug_cb(), which unrealizes the SCSI device. This
+> calls scsi_qdev_unrealize() -> scsi_device_purge_requests(), which in
+> turn drains blk and cancels all pending requests. So there should be
+> nothing left that could call into virtio_scsi_ctx_check() any more.
+> 
+> The other argument is that after unrealize, virtio_scsi_device_get()
+> would return NULL anyway, so even if a request were still pending, it
+> would just fail instead of accessing the unplugged device.
+> 
 
-I have just sent a v4 taking into account Alex' suggestions, collecting
-Michael's and Alex' R-b, and YangHang's T-b.
-This should be ready to go if you don't have any other comments and if
-this survives your non regression tests ;-)
+Okay, sounds like a way to get around that deadlock issue then :)
 
-Eric
->
-> Thanks,
->
-> C.
->
+(...)
+
+>>>
+>>> What does the stuck I/O look like? Is it stuck in the backend, i.e. the
+>>> device started requests that never complete? Or stuck from the guest
+>>> perspective, i.e. the device never checks for new requests?
+>>>
+>>
+>> AFAICT, from the guest perspective.
+>>
+>>> I don't really have an idea immediately, we'd have to find out where the
+>>> stuck I/O stops being processed.
+>>>
+>>
+>> I've described it in an earlier mail in this thread:
+>> https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg01900.html
+>>
+>> Quoting from there:
+>>
+>>> After the IO was stuck in the guest, I used bdrv_next_all_states() to
+>>> iterate over the states and there's only the bdrv_raw and the
+>>> bdrv_host_device. For both, tracked_requests was empty.
+> 
+> And bs->in_flight and blk->in_flight are 0, too?
+> 
+
+Yes. And queued_requests in the BlockBackend is also empty.
+
+> Is anything quiesced?
+
+No. quiesce_counter is 0 for both BlockDriverState instances as well as
+for the BlockBackend. quiesced_parent is false for both parents (i.e.
+child_root for the bdrv_raw and child_of_bds for the bdrv_file (this
+time I used VirtIO SCSI, in the quote it was VirtIO block)).
+
+>>> What is also very interesting is that the IO isn't always dead
+>>> immediately. It can be that the fio command still runs with lower speed
+>>> for a while (sometimes even up to about a minute, but most often about
+>>> 10-15 seconds or so). During that time, I still can see calls to
+>>> virtio_scsi_handle_cmd() and blk_aio_write_entry(). Then they suddenly stop.
+>>
+>> Noting again that (at least for backup) it happens with both virtio-blk
+>> and virtio-scsi and with both aio=io_uring and aio=threads. I also tried
+>> different host kernels 5.15, 6.2 and 6.5 and guest kernels 5.10 and 6.1.
+> 
+> You say "at least for backup". Did you see the bug for other job types,
+> too?
+> 
+
+Yes, sorry. I meant to say that I only tested it for the backup
+canceling with all those configurations. I did run into the stuck guest
+IO issue in three different scenarios: canceling backup, canceling
+mirror and starting mirror:
+
+>>>>> Am 17.10.2023 um 12:18 hat Fiona Ebner geschrieben:
+>>>>>> I ran into similar issues now with mirror, (both deadlocks and stuck
+>>>>>> guest IO at other times), and interestingly, also during job start.
+
+But for mirror, I only used VirtIO SCSI and aio=io_uring and didn't test
+other configurations.
+
+Best Regards,
+Fiona
 
 
