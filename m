@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546717D0408
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EDA7D03B2
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:22:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaPs-0004yq-Cm; Thu, 19 Oct 2023 17:18:52 -0400
+	id 1qtaPw-00052H-Vl; Thu, 19 Oct 2023 17:18:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaPo-0004v5-2n
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:18:48 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaPu-00050i-Ed
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:18:54 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaPl-0004W6-HK
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:18:47 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3296b49c546so97957f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:18:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaPr-0004jc-Nj
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:18:54 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-32db8f8441eso121316f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750324; x=1698355124; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750330; x=1698355130; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kiEw9YpCoXl5uwZnYD6Z6QL4RjcbavrFkOGyAF3Ak2A=;
- b=TSSkRj/b5FdRwYnmfAj+2T+70VEgqQ48MGSrRDOdcXeZ0fSVzb6EeGQJ43whoNXJIH
- vPvVg8+bXHnr0mkAWQVZM00Qk3F5yYtrNtQOhUKsI12bqISDEiWZDVt2xBnYj5JCcklJ
- rx+lJH7gxhZqekM5xh0kXeBsR1ceIXJMmFXZTrvnGbNpUu4vkEUOR03Zoxo9qbYOEI/F
- ct7Dz0ren0XiekVxRIGjtMsGP6LAsmI8ryRL5FYCjfZMxYqHwileQ+FgACf2Vxm7a8rF
- 9qRvuPG26Rv0uZlVHXSDno+lOSjhqMh4vejx9bweX0k8vxQfVkMOB+13OpNRocWIQILN
- Sl6A==
+ bh=qBlkrh9XfjJWP3OFrpnOYz+jcm6RPWBlnbPyzymUXR4=;
+ b=i6bTcQDN1XqcRXhAn6iPmjvPNv9e4WKHXNw7r5vQLZIgxBlL9t18uelH5nZ8itBJ+j
+ Ju94ziSGVfqy1dCdWai0ya0ly7YLEiRAql75O77C/ogHHlhGhsFwPsHwMxIzCcVaimUb
+ 3lRQg2CMxP+tkJSNTt+YWVwmfkT58DTdTWKJwiGWot853XShTAzcTpDty8Hce0OqdSdx
+ kjUfGLaOp0Tnggmimji9J8Ke2OrbBDMA64L/RjcFlfO8K7fayH2tbyES8U9eX60YkIkz
+ OQsW+kzA++dwTRu/2PR71Z4IgdTEwCgWrAI0eApfooPrRisP5I/FszNc+wQ9wKCphQ0l
+ yjRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750324; x=1698355124;
+ d=1e100.net; s=20230601; t=1697750330; x=1698355130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kiEw9YpCoXl5uwZnYD6Z6QL4RjcbavrFkOGyAF3Ak2A=;
- b=tpCN24lvwkZEDe4GDho5BUsoArC6rwYeQAkJ9hys6w1x5g9QP4e92g6OMVzlQrGrIo
- P1Bs64aN4ZCLgPtn2ZD/ix+UuQo3tUoLSvrEda/E5nPRQhsqZXtB0LdBFHwNDRQkPOhO
- KPAdnIzCVjnA0UNnBSYXZwGvmwdL9PWosKCGG3hRaJBqK94DdBXsFpWylrs5ov0DuyK4
- tiNVWWuhDSb/wmh8IJN6X1AHcAKqTr5qLC5OL7C11OhU6b/jqyqKA3cfzi2myTCeS1yu
- iIgzZC4/RcbDDRaVBvitJEYMMuw0K5UUIhn9A92m/DopGgsMCM5r5RrjNtvyAbiKA76X
- 9O0A==
-X-Gm-Message-State: AOJu0YzTJUUVbjHDt+xheNbt380Jhmf7XjmkIZeQHhyjnuUGpSzPvXy4
- aCOcx3U5yVDYWzd26n+tQhWtCynEgqThCwOOrvaL/g==
-X-Google-Smtp-Source: AGHT+IEgFUHRyV9z8ITqbBgPBCaLiMxjMDcpKV0JS1zIs+kqsSW/Y8BtxwpEsR1JFhzjoJUyb+GUaA==
-X-Received: by 2002:adf:ee49:0:b0:32d:bc7d:c431 with SMTP id
- w9-20020adfee49000000b0032dbc7dc431mr2176023wro.1.1697750324033; 
- Thu, 19 Oct 2023 14:18:44 -0700 (PDT)
+ bh=qBlkrh9XfjJWP3OFrpnOYz+jcm6RPWBlnbPyzymUXR4=;
+ b=mR5NfRD3NjKpKb0xy3fllJKwhXGdscWaTecStP2Im5AVus1LhMVnpbUnhtWyE8HbfG
+ XUoUKmxKmQcYeIFlSkxFf2re39nDr77v7mteWIKTTKJwPneOacHCVfvuYKdKOwPDS2FM
+ BRuIxCZiPsXxsrBjubt0pEFw2uUag9lYrzQ1yqUbEWhCXE6JkSeeIVaq7WKtth58JntH
+ AWmW2nf1nKDQmDwTc31kVqUjZklECyELNwZq1qv/A5WpkclgCNjzUbzD6MwhuxDayb6Z
+ XF7VlW6qVBG33UAJktQyaV6/WM2O2N92XbfVOqxVXrnkWKrI5QLKHNI1O6dVXz3lWrIb
+ u4yw==
+X-Gm-Message-State: AOJu0YyWk8QMrTX1ham6wESohSc/Y0krt5w3KjQZphDJK2G2TRHa4j/S
+ /GDDbISBl2xGd2FuNeuDQ3+3amYQsACiB9v79BNV8w==
+X-Google-Smtp-Source: AGHT+IHp0Vlk6sMVD9p9mn/YYZDKpJF/9rNttjjxX1ak5n4MQGk5RNaAf4T481ncMptUcg5/jUtDQw==
+X-Received: by 2002:a5d:630b:0:b0:32d:8b1a:31ad with SMTP id
+ i11-20020a5d630b000000b0032d8b1a31admr2287558wru.24.1697750330284; 
+ Thu, 19 Oct 2023 14:18:50 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- f1-20020adff8c1000000b0032da75af3easm212753wrq.80.2023.10.19.14.18.42
+ l9-20020a5d5609000000b0032da7454ebesm208905wrv.79.2023.10.19.14.18.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:18:43 -0700 (PDT)
+ Thu, 19 Oct 2023 14:18:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PULL 04/46] MAINTAINERS: Add include/hw/intc/loongson_liointc.h to
- the Loongson-3 virt section
-Date: Thu, 19 Oct 2023 23:17:29 +0200
-Message-ID: <20231019211814.30576-5-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 05/46] MAINTAINERS: Add include/hw/openrisc/ to the OpenRISC
+ section
+Date: Thu, 19 Oct 2023 23:17:30 +0200
+Message-ID: <20231019211814.30576-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,30 +95,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The corresponding .c file is already listed here, so we should
-mention the header here, too.
+hw/openrisc/ is already listed here, so we should mention
+the folder for the headers here, too.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20231017153345.233807-1-thuth@redhat.com>
+Message-ID: <20231017154242.234133-1-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
  MAINTAINERS | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 29b350f819..91ca93328a 100644
+index 91ca93328a..fe11c98669 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1336,6 +1336,7 @@ F: hw/intc/loongson_liointc.c
- F: hw/mips/loongson3_bootp.c
- F: hw/mips/loongson3_bootp.h
- F: hw/mips/loongson3_virt.c
-+F: include/hw/intc/loongson_liointc.h
- F: tests/avocado/machine_mips_loongson3v.py
+@@ -295,6 +295,7 @@ S: Odd Fixes
+ F: docs/system/openrisc/cpu-features.rst
+ F: target/openrisc/
+ F: hw/openrisc/
++F: include/hw/openrisc/
+ F: tests/tcg/openrisc/
  
- Boston
+ PowerPC TCG CPUs
 -- 
 2.41.0
 
