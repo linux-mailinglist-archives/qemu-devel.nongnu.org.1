@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B25577D0135
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBDB7D0136
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:14:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtXW7-0006mS-EF; Thu, 19 Oct 2023 14:13:07 -0400
+	id 1qtXWn-0002PC-JP; Thu, 19 Oct 2023 14:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXW5-0006VB-DD
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:13:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qtXW3-00079s-5D
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:13:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697739182;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ogzGSPILxiB5Kai4YD2O7qVhR1otbOlkfN4zLPqc4G8=;
- b=ixuaXjfAxg2Fzoe7RPSCZiuO6e/4y95sbQeEKOMExZQI3uL2/CONxzaxMnOf3X1wPjEC1f
- dblPJoipr6F06JgDeJXUHDUJPUeSM2hSqneKAByCxBkZUguulHRaT7SDyCRF3s58FlRpcH
- y4hiTaFvUFUQMhf7iwOTsDkWwZMYxVI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-62-4QxYIDz2Mz-LKsVORNlfIw-1; Thu, 19 Oct 2023 14:12:21 -0400
-X-MC-Unique: 4QxYIDz2Mz-LKsVORNlfIw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-32da87eac93so3087522f8f.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:12:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qtXWk-0002Ax-SE
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:13:46 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qtXWj-0007CM-2Z
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:13:46 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6bb4abb8100so15666b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:13:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697739223; x=1698344023; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pybdNtLwm8pfpbyF8OSvAQPiYQ1DBDO5Kd2nRg3dGws=;
+ b=U5tMyZRNGywyJb3SavT+TP6WWPI9E7Zid6CQD6J7Iy1Ybsq/WgmfD4UxHNu1MLU4FI
+ 7jj9y/L6wozB6SRcgHAvHhJaHU+YqcrnenG5OpFRDc2bCBTnPKDGF8IBqvBe5wiCdHbd
+ sNKITdz5lVMM69p/3Fzd02GNJtAXJmTxVPWDVKrsMQA6LF2ocLwwPNrH719DbizbGmtG
+ uROGuU7rVtyDMMadvpn5T8rrmW/MZx6+r2lESHVgBrIwqndQ4/1LQbLqPuQjQD3j/mdA
+ IKlFn8l0UdATTBRSlUDlKzoznh8NjN3omM0J036YuslsBiz0VlhbPUUyWFCYNyOZFmDr
+ 0kcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697739133; x=1698343933;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ogzGSPILxiB5Kai4YD2O7qVhR1otbOlkfN4zLPqc4G8=;
- b=Y60YE+Lnhpj5bqkFd5Y1VB1RYjVjyP8sdaSj9UsOo8K3jdSK9NuO85F6wOYxUhUjQP
- F1/x3o6RBSqw/ymoCj488ZwpJ5hraqrk5TJGoNNUeNLwwBjVW6BfRmJqRYt7TmzbgbqW
- LZkET2ny14lwkPvHgIyyT+2o1Mi4fI/HhTsq06ZSnHlwfuZWQas7ofJ+jxkvae3fvhGe
- oSLof0UwCkBhZcXFm2z75i/YiTOQfyrPqwOCqHrsY2r1B5mSQX/G6WL5yXw4wUpjP3sB
- LtPjOhRjT/PWmy2aM8hqpgQ3V/BhmCr/d4bGBZoJT1cj2H6gleelAXB05AW6GujFMtQx
- LdCw==
-X-Gm-Message-State: AOJu0YyjgQOLCyw/lD+L22kK4GARN4tCzkebBn6XpqEiXAoipfyaEEVR
- hUpiLcUExWWShF2A/mcNWkNH/z0vw01b7uZi46+bFlfUIktf4jNPqo45dnH7YmF+QZh4+Y6zUdU
- zEQzcu2y8yB1GdXk=
-X-Received: by 2002:adf:f9d0:0:b0:32d:a40f:d918 with SMTP id
- w16-20020adff9d0000000b0032da40fd918mr2129616wrr.68.1697739132905; 
- Thu, 19 Oct 2023 11:12:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtA3zIxHKncd+1pP6wBmUBeFriXaTW/OjPQ14cgkwBKJQJNJJhjoPyhtyjNySjpTnknHP/iQ==
-X-Received: by 2002:adf:f9d0:0:b0:32d:a40f:d918 with SMTP id
- w16-20020adff9d0000000b0032da40fd918mr2129602wrr.68.1697739132565; 
- Thu, 19 Oct 2023 11:12:12 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
+ d=1e100.net; s=20230601; t=1697739223; x=1698344023;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pybdNtLwm8pfpbyF8OSvAQPiYQ1DBDO5Kd2nRg3dGws=;
+ b=wDBZqplHGLGHwIp0zDinW6vEj7uK4gQW8sadHsLi8Pug6glvEOtlBXs8Pv4LLqv77F
+ wSxm/GwQypUpQi5kRg8UBBlFBkaKiLgEf/X/dAJMAEzD+2tOgkS4OGpckMAzfzxuK5uf
+ WRzhg7yLP/49EA2UV2iGGXw0VSnz1/p3x2WLtv767oD9qRi0KuD/+6CKbuub4lfChnNr
+ rOjuNUjcXwX/qlsUIIGiLi933VwkvezNZiocwJAqozIcww8JVXykPMSkW0X4zlnconFy
+ 3YLfXR+1TjgIAEYci8ldZQ1Q4DlS8dtaTRtm9VaGlvaz6Woy7qEv35vyQxyBft9LNSg4
+ joog==
+X-Gm-Message-State: AOJu0YyBQNyonspsFkYXXphd4IXAPNbWRzreJSCcdZ98EGmKr+FcOciO
+ vLbTcbhHSvFhGeCu39Ktclheew==
+X-Google-Smtp-Source: AGHT+IEAz11ldgbAilffmuVBGZXKfERx5MDkuIS1msonvOfqqTCr0WeMYWukMOEoYPDPEGv+B6yAkw==
+X-Received: by 2002:a05:6a00:18a2:b0:693:3963:847a with SMTP id
+ x34-20020a056a0018a200b006933963847amr3558647pfh.30.1697739223416; 
+ Thu, 19 Oct 2023 11:13:43 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- d15-20020adfef8f000000b003231ca246b6sm4999619wro.95.2023.10.19.11.12.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 11:12:12 -0700 (PDT)
-Date: Thu, 19 Oct 2023 14:12:09 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org,
- 18801353760@163.com
-Subject: Re: [PATCH v3 0/3] Vhost-vdpa Shadow Virtqueue RSS Support
-Message-ID: <20231019141200-mutt-send-email-mst@kernel.org>
-References: <cover.1693299194.git.yin31149@gmail.com>
+ y21-20020aa79af5000000b0068be348e35fsm86762pfp.166.2023.10.19.11.13.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 11:13:43 -0700 (PDT)
+Message-ID: <7dc0b6cc-7112-4f12-b52e-13f217d8dae3@linaro.org>
+Date: Thu, 19 Oct 2023 11:13:41 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1693299194.git.yin31149@gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 12/54] target/riscv: deprecate the 'any' CPU type
+Content-Language: en-US
+To: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20231012041051.2572507-1-alistair.francis@wdc.com>
+ <20231012041051.2572507-13-alistair.francis@wdc.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231012041051.2572507-13-alistair.francis@wdc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,73 +97,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 29, 2023 at 05:11:14PM +0800, Hawkins Jiawei wrote:
-> This series enables shadowed CVQ to intercept RSS command
-> through shadowed CVQ, update the virtio NIC device model
-> so qemu send it in a migration, and the restore of that
-> RSS state in the destination.
+On 10/11/23 21:10, Alistair Francis wrote:
+> From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > 
-> Note that this patch should be based on
-> patch "Vhost-vdpa Shadow Virtqueue Hash calculation Support" at [1].
+> The 'any' CPU type was introduced in commit dc5bd18fa5725 ("RISC-V CPU
+> Core Definition"), being around since the beginning. It's not an easy
+> CPU to use: it's undocumented and its name doesn't tell users much about
+> what the CPU is supposed to bring. 'git log' doesn't help us either in
+> knowing what was the original design of this CPU type.
 > 
-> [1]. https://lore.kernel.org/all/cover.1693297766.git.yin31149@gmail.com/
+> The closest we have is a comment from Alistair [1] where he recalls from
+> memory that the 'any' CPU is supposed to behave like the newly added
+> 'max' CPU. He also suggested that the 'any' CPU should be removed.
+> 
+> The default CPUs are rv32 and rv64, so removing the 'any' CPU will have
+> impact only on users that might have a script that uses '-cpu any'.
+> And those users are better off using the default CPUs or the new 'max'
+> CPU.
+> 
+> We would love to just remove the code and be done with it, but one does
+> not simply remove a feature in QEMU. We'll put the CPU in quarantine
+> first, letting users know that we have the intent of removing it in the
+> future.
+> 
+> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02891.html
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Message-ID: <20230912132423.268494-13-dbarboza@ventanamicro.com>
+> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>   docs/about/deprecated.rst | 12 ++++++++++++
+>   target/riscv/cpu.c        |  5 +++++
+>   2 files changed, 17 insertions(+)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 8b136320e2..5e3965a674 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -327,6 +327,18 @@ QEMU's ``vhost`` feature, which would eliminate the high latency costs under
+>   which the 9p ``proxy`` backend currently suffers. However as of to date nobody
+>   has indicated plans for such kind of reimplementation unfortunately.
+>   
+> +RISC-V 'any' CPU type ``-cpu any`` (since 8.2)
 
-dropped due to dependency.
+You forgot to update linux-user/riscv/target_elf.h, which still uses "any", and thus all 
+qemu-riscv64 invocations trigger the warning.
 
-> TestStep
-> ========
-> 1. test the migration using vp-vdpa device
->   - For L0 guest, boot QEMU with two virtio-net-pci net device with
-> `in-qemu` RSS, command line like:
-> 	-netdev tap,vhost=off...
-> 	-device virtio-net-pci,disable-legacy=on,disable-modern=off,
-> iommu_platform=on,mq=on,ctrl_vq=on,hash=on,rss=on,guest_announce=off,
-> indirect_desc=off,queue_reset=off,...
-> 
->   - For L1 guest, apply the relative patch series and compile the
-> source code, start QEMU with two vdpa device with svq mode on,
-> enable the `ctrl_vq`, `mq`, `rss` features on, command line like:
->       -netdev type=vhost-vdpa,x-svq=true,...
->       -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
-> rss=on,...
-> 
->   - For L2 source guest, run the following bash command:
-> ```bash
-> #!/bin/sh
-> 
-> ethtool -K eth0 rxhash on
-> ```
-> 
->   - Execute the live migration in L2 source monitor
-> 
->   - Result
->     * with this series, L2 QEMU can execute without
-> triggering any error or warning. L0 QEMU echo
-> "Can't load eBPF RSS - fallback to software RSS".
-> 
-> ChangeLog
-> =========
-> v3:
->   - resolve conflict with updated patch
-> "Vhost-vdpa Shadow Virtqueue Hash calculation Support" in patch
-> "vdpa: Restore receive-side scaling state"
-> 
-> RFC v2: https://lore.kernel.org/all/cover.1691926415.git.yin31149@gmail.com/
->   - Correct the feature usage to VIRTIO_NET_F_HASH_REPORT when
-> loading the hash calculation state in
-> patch "vdpa: Restore receive-side scaling state"
-> 
-> RFC v1: https://lore.kernel.org/all/cover.1691766252.git.yin31149@gmail.com/
-> 
-> Hawkins Jiawei (3):
->   vdpa: Add SetSteeringEBPF method for NetClientState
->   vdpa: Restore receive-side scaling state
->   vdpa: Allow VIRTIO_NET_F_RSS in SVQ
-> 
->  net/vhost-vdpa.c | 63 ++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 45 insertions(+), 18 deletions(-)
-> 
-> -- 
-> 2.25.1
+
+r~
 
 
