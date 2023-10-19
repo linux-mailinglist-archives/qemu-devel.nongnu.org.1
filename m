@@ -2,77 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CBD7CFFBE
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 664CD7CFFBF
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:39:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtW21-0007Le-61; Thu, 19 Oct 2023 12:37:57 -0400
+	id 1qtW31-0007zN-RZ; Thu, 19 Oct 2023 12:38:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qtW1y-0007L9-Js
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:37:54 -0400
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qtW1w-0001lI-V4
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:37:54 -0400
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-57f0f81b2aeso4502033eaf.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:37:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697733471; x=1698338271; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BK/7ZKNYyGuZVOHuVRvwN/uhLoGLu0FIBBKzWuuVk5s=;
- b=Y5iC0Cor8FjTT5MNgAuFheN0zI9UUgCdixKMp3Dqsdj9V7meNeWd6NL2/Y5r2bH4oN
- TsR17IEqytG5p5LLIP5sfC19VHqvedkne9tm/g7py1Pwzey7yCckdRRTdrB1N9NiaFh+
- 3PTazf/HRxzHByXlWiosa/bcF47uYZFTUncx7fCCE9zcac8GfD/nbN5exPlRAAr0aAwp
- XUlUBH/epoDODg5APHCzXVE+5jnIEy/Us3c0FN/wYk8caydcxPR/KF1t9Q/tKXP1n+1A
- 3ENo+Rhyiaez7Dq/7/aIbCX1GkZ+UtDxaxFFIK1xFiSIlBjUdgQbZn5nvA4s/YF55MBp
- RkbQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtW30-0007zB-GM
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:38:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtW2y-0002TO-Uf
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:38:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697733536;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=P16AJghaPzRoxNRPx9FzYJH7oONn5tsf3DVrtZs3RlE=;
+ b=IIHAR1xa4YjJ7Mk/NDtDNaN2dG2HftTqNqTCP0bX3k0Lz1UA/HizxxESodIpb+SZDwdjRx
+ 7MsR6LJlMV6FJKLzbXBKd1KUZ5bD/6pLK+rkEmddSg/mArCtOeJF/kL41Y9gPgaDkxmIIF
+ EQ6A5CbQ5s2bwZ7QTLrL1ob6Z+9RTw4=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-19-8wf9OBl4NsCGEanaga-ZmA-1; Thu, 19 Oct 2023 12:38:54 -0400
+X-MC-Unique: 8wf9OBl4NsCGEanaga-ZmA-1
+Received: by mail-oi1-f197.google.com with SMTP id
+ 5614622812f47-3b3e601436cso745166b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:38:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697733471; x=1698338271;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BK/7ZKNYyGuZVOHuVRvwN/uhLoGLu0FIBBKzWuuVk5s=;
- b=UznXRnOuLccusl1xjIY4jvIgQbxjr3URPtLt8VrwZsbZLuTHnnU0KWKltJ74jwAWoQ
- tIy1RUQ/XJq4+uzYMrqSxFMqJ9YSH7breWqs684OkeGbQjYvzFYtmi6Sxx24wh2dqjhC
- Lsp8JBUEDj1/SF/Qz4HDN0s7pwPO5hrQobx1QPz+4HAjqADSFJmTFkOfm2u8RpkKDwLx
- MY/3EZk2ehYz7R58wl91gDWSrR65upgipssylgruHaFXcWO2bZ9DzVk+IYuZle15i+9k
- qQ2eWhqL/j6cipuKWToU5oJyNqNevgO/p+vjhNnAny8JuYWQXQeRkGm5CNXhkGpADclo
- wQwA==
-X-Gm-Message-State: AOJu0YzufgLAw8itDayG214JR/bNKJu20MJxW4/vuNGvEzkB9N40+BCd
- RNtKQni0vGllb5eBm/opP70f/wk7W4qsR7ZjkWWQIPZ20Fno7w==
-X-Google-Smtp-Source: AGHT+IH6HOidpVlIBV2bOMjrWMqbfurSrFLuzA32wffg09Y0McftzVMf7cZqfqx+nIVBY3LS89QVohnhmB9PevbESwI=
-X-Received: by 2002:a05:6820:828:b0:581:f6d8:5ca2 with SMTP id
- bg40-20020a056820082800b00581f6d85ca2mr3463354oob.6.1697733471428; Thu, 19
- Oct 2023 09:37:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697733534; x=1698338334;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=P16AJghaPzRoxNRPx9FzYJH7oONn5tsf3DVrtZs3RlE=;
+ b=b4qXwcVT2mmb5w3/cROQQaZFEWCqEeCz7YmutCbCZSYXyAR8g39Ru6oxhUl3qX/DRI
+ A8CCZAa3L28Uya5FH3yXd3B3GZfeyRKlGWfHjJptOQMHmIgrVwSOEIipaVKT2eUg6W9s
+ seDR86KxF2ciEBNN7RhQsqStu8eBVGmMCcCEZyuePJuuCxRqoyPz+FSSX3U7sVSLIVcg
+ 9eVZZwrCx8LpnADHlQN6+8nVPsakdU0tJseOPUH2ZBlgqSoAHeGBfx39S2KB2ZFjWMRf
+ 23E2OFz22cwlFZX84IPYFPCPznnb/HAUx7c928+A4tJD/ArjIeI3KWTSUEXVTr+r6V4V
+ yEhw==
+X-Gm-Message-State: AOJu0YxWfsJLliOvYwzTUfh7MfLggwBPRoaQtui1XWl4qtonpR5Qz3GH
+ V2a2hUCHMc+pr0wOnGvgHag46ASIXNn7cS8yinmZcDb21+CZtkOiLRflCDwdjxXVSY87QlzuHkV
+ Cnk/yTplCsG0GkDs=
+X-Received: by 2002:a05:6808:2202:b0:3af:7956:10d4 with SMTP id
+ bd2-20020a056808220200b003af795610d4mr3806231oib.0.1697733533983; 
+ Thu, 19 Oct 2023 09:38:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyVTajRI33nJrsJaxnZ9ogULNBQ6d+R0oSIBwZQPbEJzlqTQzGqiDmioJaxABqiC+ZeqtftQ==
+X-Received: by 2002:a05:6808:2202:b0:3af:7956:10d4 with SMTP id
+ bd2-20020a056808220200b003af795610d4mr3806217oib.0.1697733533760; 
+ Thu, 19 Oct 2023 09:38:53 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
+ [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
+ x18-20020ae9e912000000b0076ceb5eb309sm858817qkf.74.2023.10.19.09.38.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 09:38:53 -0700 (PDT)
+Message-ID: <ae2bf5fa-3ce5-48af-9577-beb4d584c78c@redhat.com>
+Date: Thu, 19 Oct 2023 18:38:51 +0200
 MIME-Version: 1.0
-References: <20231018222557.1562065-1-richard.henderson@linaro.org>
- <20231018222557.1562065-16-richard.henderson@linaro.org>
-In-Reply-To: <20231018222557.1562065-16-richard.henderson@linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 19 Oct 2023 09:37:39 -0700
-Message-ID: <CAJSP0QW1wL4T5mAYREyfTtF9vRmoEZ7VvATMkywiHvJQPkap8g@mail.gmail.com>
-Subject: Re: [PULL 15/29] tcg: Provide guest_base fallback for system mode
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] docs/specs/vmw_pvscsi-spec: Convert to rST
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230927151205.70930-1-peter.maydell@linaro.org>
+ <20230927151205.70930-2-peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20230927151205.70930-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,72 +140,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 18 Oct 2023 at 15:30, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Provide a define to allow !tcg_use_softmmu code paths to
-> compile in system mode, but require elimination.
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 27/09/2023 17.11, Peter Maydell wrote:
+> Convert the docs/specs/vmw_pvscsi-spec.txt file to rST format.
+> This conversion includes some minor wordsmithing of the text
+> to fix some grammar nits.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  tcg/tcg.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/tcg/tcg.c b/tcg/tcg.c
-> index d3a4a17ef2..35158a0846 100644
-> --- a/tcg/tcg.c
-> +++ b/tcg/tcg.c
-> @@ -178,6 +178,10 @@ static bool tcg_target_const_match(int64_t val, TCGT=
-ype type, int ct, int vece);
->  static int tcg_out_ldst_finalize(TCGContext *s);
->  #endif
->
-> +#ifndef CONFIG_USER_ONLY
-> +#define guest_base  ({ qemu_build_not_reached(); (uintptr_t)0; })
-> +#endif
+> The number of lines changed for markup formatting was
+> such a large amount of the document that it didn't seem
+> worth breaking out the wording tweaks separately...
+> ---
+>   MAINTAINERS                    |   1 +
+>   docs/specs/index.rst           |   1 +
+>   docs/specs/vmw_pvscsi-spec.rst | 115 +++++++++++++++++++++++++++++++++
+>   docs/specs/vmw_pvscsi-spec.txt |  92 --------------------------
+>   4 files changed, 117 insertions(+), 92 deletions(-)
+>   create mode 100644 docs/specs/vmw_pvscsi-spec.rst
+>   delete mode 100644 docs/specs/vmw_pvscsi-spec.txt
 
-Please take a look at this CI failure:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-cc -m64 -mcx16 -Itcg/libtcg_system.fa.p -Itcg -I../tcg -I. -Iqapi
--Itrace -Iui -Iui/shader -I/usr/local/include/glib-2.0
--I/usr/local/lib/glib-2.0/include -I/usr/local/include
--fcolor-diagnostics -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O2 -g
--fstack-protector-strong -Wundef -Wwrite-strings -Wmissing-prototypes
--Wstrict-prototypes -Wredundant-decls -Wold-style-definition
--Wtype-limits -Wformat-security -Wformat-y2k -Winit-self
--Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels
--Wexpansion-to-defined -Wmissing-format-attribute
--Wno-initializer-overrides -Wno-missing-include-dirs
--Wno-shift-negative-value -Wno-string-plus-int
--Wno-typedef-redefinition -Wno-tautological-type-limit-compare
--Wno-psabi -Wno-gnu-variable-sized-type-not-at-end -Wthread-safety
--iquote . -iquote /tmp/cirrus-ci-build -iquote
-/tmp/cirrus-ci-build/include -iquote
-/tmp/cirrus-ci-build/host/include/x86_64 -iquote
-/tmp/cirrus-ci-build/host/include/generic -iquote
-/tmp/cirrus-ci-build/tcg/i386 -pthread -D_GNU_SOURCE
--D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
--fno-common -fwrapv -fPIE -DCONFIG_SOFTMMU -MD -MQ
-tcg/libtcg_system.fa.p/tcg.c.o -MF tcg/libtcg_system.fa.p/tcg.c.o.d -o
-tcg/libtcg_system.fa.p/tcg.c.o -c ../tcg/tcg.c
-In file included from ../tcg/tcg.c:744:
-/tmp/cirrus-ci-build/tcg/i386/tcg-target.c.inc:1953:35: error: cannot
-take the address of an rvalue of type 'uintptr_t' (aka 'unsigned
-long')
-if (sysarch(AMD64_SET_GSBASE, &guest_base) =3D=3D 0) {
-^~~~~~~~~~~
-1 error generated.
-
-https://gitlab.com/qemu-project/qemu/-/jobs/5329820109
-
-> +
->  typedef struct TCGLdstHelperParam {
->      TCGReg (*ra_gen)(TCGContext *s, const TCGLabelQemuLdst *l, int arg_r=
-eg);
->      unsigned ntmp;
-> --
-> 2.34.1
->
->
 
