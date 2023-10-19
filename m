@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3207D0412
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A6E7D0420
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:41:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaif-00020S-Jn; Thu, 19 Oct 2023 17:38:17 -0400
+	id 1qtakX-0003b0-3U; Thu, 19 Oct 2023 17:40:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaid-00020A-Rs
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:38:15 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaic-00077t-9D
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:38:15 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-99357737980so26896066b.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697751492; x=1698356292; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3CeRPiYyFBNOveaPAMyUact9Jjxt8XFEWnZM7/bb7Ew=;
- b=uhjJEPLj/Hy/sk6NQno+bqoiCZA+Djbj02I+SD/aOHohmzE1dae1LScVgrhOXuaOMa
- Fvhea0Ao0FDyQZcpa135BpU+H4BmsaiVyGWS2sYq1ZAq97b8EdjuWF3T7BzRpDY86leN
- Oyb5o+t2Nvqty1G6ZSZdhjs7OCeAwoop7X/1ETrp4izsvln/+yR3PmMMDg2PFpDsIhpH
- WHrEBrDmc7vMnkzUw7eH+tKbVwPq+CmZJTyZBYqYnSgmiirq4LG97IMm+rT8ombDbYY5
- FXsJpO6T67F92wNlgP9NSFsr1YoEY08xqJmZCLvIdnT+0HKnrQLndn5oucE0Ih8geKBo
- RujQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697751492; x=1698356292;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3CeRPiYyFBNOveaPAMyUact9Jjxt8XFEWnZM7/bb7Ew=;
- b=euBYrhcnj2Ix9ny4ZcgZ9CGkLEL+JVIQTXVcu5OqXXE2m9QAnPoSYJr+58tVTn9H0P
- SyUVoADZ3RsHSg/Quqnot2Uj+VsthCp3YMpaqADcRaeh0s0ghwKZhCBaQOz7Sw6eB5Nm
- cg1uEUpJGjEANyM99uji6z8zHw7x8VcHFmePL0X30tLei4gFtZ0iBXhsZRHJ2cdfnfLA
- rk13ukVCDHPpqGTAhKbhtJuc+sClAmtOXUxKExSovVTpZCnNkCPm8VQOaTvN7Uf6SCF9
- 1W2eB7VYJFgsnN7BBdt19T1XStcHoVuHSnJIkx+/+7Q2DnlDVwaUBS0PzyoXSF45enDj
- 9I5w==
-X-Gm-Message-State: AOJu0Yxdfc0y7wK7niGpqU18UwlcztmCsLCbIY2NIvC8M41Y89VifL+a
- qILxZCGKEv/renM3bAq1kMuy5XrpUBttItMVSACrdg==
-X-Google-Smtp-Source: AGHT+IGQc0X1oe4w6lZ31cLypSSErlqo5gDWztiZVNBCj+EbdVsXN32/oBfFZoCo1TfqwcMEKmup9A==
-X-Received: by 2002:a17:906:4fcd:b0:9bf:30e8:5bfb with SMTP id
- i13-20020a1709064fcd00b009bf30e85bfbmr3056516ejw.48.1697751491747; 
- Thu, 19 Oct 2023 14:38:11 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-216-177.abo.bbox.fr.
- [176.131.216.177]) by smtp.gmail.com with ESMTPSA id
- x22-20020a170906711600b0099b7276235esm228609ejj.93.2023.10.19.14.38.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 14:38:11 -0700 (PDT)
-Message-ID: <f4a43dd8-a206-6c78-f9e6-89174102679e@linaro.org>
-Date: Thu, 19 Oct 2023 23:38:08 +0200
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qtakV-0003Yg-Fk
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:11 -0400
+Received: from 6.mo548.mail-out.ovh.net ([188.165.58.48])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qtakQ-0008QT-GH
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:40:11 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.108.1.250])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id A5679203E7;
+ Thu, 19 Oct 2023 21:40:00 +0000 (UTC)
+Received: from kaod.org (37.59.142.106) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 19 Oct
+ 2023 23:39:59 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-106R006070d8609-c87f-452f-983d-aa90b36fabe4,
+ 40A84FA1BFAB306571EA24E7D640879C68C08F1A) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 88.179.9.154
+Date: Thu, 19 Oct 2023 23:39:58 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Juan Quintela <quintela@redhat.com>
+CC: <qemu-devel@nongnu.org>, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, <qemu-ppc@nongnu.org>,
+ Nicholas Piggin <npiggin@gmail.com>, <qemu-s390x@nongnu.org>, Gerd Hoffmann
+ <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>, Samuel Thibault
+ <samuel.thibault@ens-lyon.org>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, "Ilya
+ Leoshkevich" <iii@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>, "Eric
+ Farman" <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>, "Harsh Prateek
+ Bora" <harshpb@linux.ibm.com>, John Snow <jsnow@redhat.com>,
+ <qemu-block@nongnu.org>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, =?UTF-8?B?TWFyYy1BbmRy?=
+ =?UTF-8?B?w6k=?= Lureau <marcandre.lureau@redhat.com>, Stefan Weil
+ <sw@weilnetz.de>, <qemu-arm@nongnu.org>, Jason Wang <jasowang@redhat.com>,
+ Corey Minyard <minyard@acm.org>, Leonardo Bras <leobras@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, "Michael
+ S. Tsirkin" <mst@redhat.com>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
+ <clg@kaod.org>, David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
+ <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: Re: [PATCH 07/13] RFC migration: icp/server is a mess
+Message-ID: <20231019233958.17abb488@bahia>
+In-Reply-To: <20231019190831.20363-8-quintela@redhat.com>
+References: <20231019190831.20363-1-quintela@redhat.com>
+ <20231019190831.20363-8-quintela@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3 0/7] hw/ppc: SysBus simplifications
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- David Gibson <david@gibson.dropbear.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-References: <20231019131647.19690-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231019131647.19690-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.106]
+X-ClientProxiedBy: DAG1EX1.mxp5.local (172.16.2.1) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 788fb555-ab1a-435b-9d14-6f76b08a239c
+X-Ovh-Tracer-Id: 11686841037111007607
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrjeejgddtudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeegkeejtdevgeekieelffdvtedvvdegtdduudeigffhhffgvdfhgeejteekheefkeenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtiedpkeekrddujeelrdelrdduheegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehquhhinhhtvghlrgesrhgvughhrghtrdgtohhmpdgurghvihgusehgihgsshhonhdrughrohhpsggvrghrrdhiugdrrghupdhmshhtsehrvgguhhgrthdrtghomhdpphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorhhgpdhthhhuthhhsehrvgguhhgrthdrtghomhdplhgvohgsrhgrshesrhgvughhrghtrdgtohhmpdhmihhnhigrrhgusegrtghmrdhorhhgpdhjrghsohifrghnghesrhgvughhrghtrdgtohhmpdhqvghmuhdqrghrmhesnhhonh
+ hgnhhurdhorhhgpdhsfiesfigvihhlnhgvthiirdguvgdpmhgrrhgtrghnughrvgdrlhhurhgvrghusehrvgguhhgrthdrtghomhdpsghorhhnthhrrggvghgvrheslhhinhhugidrihgsmhdrtghomhdpmhgrrhhkrdgtrghvvgdqrgihlhgrnhgusehilhgrnhguvgdrtghordhukhdpqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrghdpjhhsnhhofiesrhgvughhrghtrdgtohhmpdhprghsihgtsehlihhnuhigrdhisghmrdgtohhmpdhhrghrshhhphgssehlihhnuhigrdhisghmrdgtohhmpdhfrghrmhgrnheslhhinhhugidrihgsmhdrtghomhdpfhgrrhhoshgrshesshhushgvrdguvgdpihhiiheslhhinhhugidrihgsmhdrtghomhdpuggrvhhiugesrhgvughhrghtrdgtohhmpdhrihgthhgrrhgurdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdpshgrmhhuvghlrdhthhhisggruhhlthesvghnshdqlhihohhnrdhorhhgpdgtmhhinhihrghrugesmhhvihhsthgrrdgtohhmpdhkrhgrgigvlhesrhgvughhrghtrdgtohhmpdhqvghmuhdqshefledtgiesnhhonhhgnhhurdhorhhgpdhnphhighhgihhnsehgmhgrihhlrdgtohhmpdhqvghmuhdqphhptgesnhhonhhgnhhurdhorhhgpdhmrghrtggvlhdrrghpfhgvlhgsrghumhesghhmrghilhdrtghomhdpshhtvghfrghnsgeslhhinhhugidrvhhnvghtrdhisghmrdgtohhmpdhqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhpvghtvghrgie
+ srhgvughhrghtrdgtohhmpdgurghnihgvlhhhsgegudefsehgmhgrihhlrdgtohhmpdfovfetjfhoshhtpehmohehgeekpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=188.165.58.48; envelope-from=groug@kaod.org;
+ helo=6.mo548.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,18 +90,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/10/23 15:16, Philippe Mathieu-Daudé wrote:
+On Thu, 19 Oct 2023 21:08:25 +0200
+Juan Quintela <quintela@redhat.com> wrote:
 
-> Philippe Mathieu-Daudé (7):
->    hw/ppc/spapr_vio: Realize SPAPR_VIO_BRIDGE device before accessing it
->    hw/ppc/pnv_xscom: Rename pnv_xscom_realize(Error **) ->
->      pnv_xscom_init()
->    hw/ppc/pnv_xscom: Move sysbus_mmio_map() call within pnv_xscom_init()
->    hw/ppc/pnv_xscom: Do not use SysBus API to map local MMIO region
->    hw/ppc/pnv: Do not use SysBus API to map local MMIO region
->    hw/intc/spapr_xive: Move sysbus_init_mmio() calls around
->    hw/intc/spapr_xive: Do not use SysBus API to map local MMIO region
+> Current code does:
+> - register pre_2_10_vmstate_dummy_icp with "icp/server" and instance
+>   dependinfg on cpu number
+> - for newer machines, it register vmstate_icp with "icp/server" name
+>   and instance 0
+> - now it unregisters "icp/server" for the 1st instance.
+> 
+> This is wrong at many levels:
+> - we shouldn't have two VMSTATEDescriptions with the same name
+> - In case this is the only solution that we can came with, it needs to
+>   be:
+>   * register pre_2_10_vmstate_dummy_icp
+>   * unregister pre_2_10_vmstate_dummy_icp
+>   * register real vmstate_icp
+> 
+> As the initialization of this machine is already complex enough, I
+> need help from PPC maintainers to fix this.
+> 
+> Volunteers?
+> 
+> CC: Cedric Le Goater <clg@kaod.org>
+> CC: Daniel Henrique Barboza <danielhb413@gmail.com>
+> CC: David Gibson <david@gibson.dropbear.id.au>
+> CC: Greg Kurz <groug@kaod.org>
+> 
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> ---
+>  hw/ppc/spapr.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index cb840676d3..8531d13492 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -143,7 +143,12 @@ static bool pre_2_10_vmstate_dummy_icp_needed(void *opaque)
+>  }
+>  
+>  static const VMStateDescription pre_2_10_vmstate_dummy_icp = {
+> -    .name = "icp/server",
+> +    /*
+> +     * Hack ahead.  We can't have two devices with the same name and
+> +     * instance id.  So I rename this to pass make check.
+> +     * Real help from people who knows the hardware is needed.
+> +     */
+> +    .name = "pre-2.10-icp/server",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = pre_2_10_vmstate_dummy_icp_needed,
 
-Series queued to hw-misc.
+I guess this fix is acceptable as well and a lot simpler than
+reverting the hack actually. Outcome is the same : drop
+compat with pseries-2.9 and older.
 
+Reviewed-by: Greg Kurz <groug@kaod.org>
+
+-- 
+Greg
 
