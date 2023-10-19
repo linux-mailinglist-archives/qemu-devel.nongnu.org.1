@@ -2,54 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB927CF242
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 10:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E04E7CF249
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 10:19:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtODD-0003ox-Jg; Thu, 19 Oct 2023 04:16:59 -0400
+	id 1qtOEy-000878-Ax; Thu, 19 Oct 2023 04:18:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=PA0m=GB=kaod.org=clg@ozlabs.org>)
- id 1qtODB-0003id-9b; Thu, 19 Oct 2023 04:16:57 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from
+ <BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qtOEu-00085r-RZ
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:18:44 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=PA0m=GB=kaod.org=clg@ozlabs.org>)
- id 1qtOD7-0003rc-AP; Thu, 19 Oct 2023 04:16:55 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SB0tR5XKkz4xcL;
- Thu, 19 Oct 2023 19:16:47 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SB0tN0MPgz4xc1;
- Thu, 19 Oct 2023 19:16:43 +1100 (AEDT)
-Message-ID: <cd99c52d-8232-4598-83cf-088a715a7a34@kaod.org>
-Date: Thu, 19 Oct 2023 10:16:40 +0200
+ (Exim 4.90_1) (envelope-from
+ <BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qtOEs-000436-Lu
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 04:18:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=u/b8xDxRURj+FneDBqO74VkAm3maivUuuKoOx5QaBNo=; b=c72NL2VTvdZAn8E6OZj+P0KiS+
+ d51epMavd6OF2+M91XXyU1I7A8Cs3rZipyhcYPtNJIzLVeDFajidfEMQmBxDmz3ejD9TXEkxFfA8p
+ ad6viKcw4Rt+ap7f9fTsGpOH2JAh5wdAfXlhx+tONxGG1WbUCof/xIJKCabxk4+SFdmoWqWJW0mSY
+ k2YDD1VCkyVc1FRM8uLAMciyK1RJgm1rVRDYPSPHvT52OZMgVJxFPgUpZKBqMIBu7Zqo0cetBUJCc
+ iM1uVheYRZHWS5df5Wjc7v8aVLbQqNBi0AW/bTsT+Z9Z5ncQwCpT9PADCRo2FyJNsmosn3ro2Fsay
+ ZHmsD23w==;
+Received: from [2001:8b0:10b:5:d4f9:734b:fde4:c827]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qtOET-005wLJ-84; Thu, 19 Oct 2023 08:18:17 +0000
+Message-ID: <c7e35408b5dbe01957f3cf6c89b7cf4916ce2abb.camel@infradead.org>
+Subject: Re: [PATCH v2] intel-iommu: Report interrupt remapping faults, fix
+ return value
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  qemu-devel
+ <qemu-devel@nongnu.org>
+Date: Thu, 19 Oct 2023 09:18:11 +0100
+In-Reply-To: <20231018114617-mutt-send-email-mst@kernel.org>
+References: <31bbfc9041690449d3ac891f4431ec82174ee1b4.camel@infradead.org>
+ <ZOYnraT/QyOUn4uP@x1n>
+ <c72aa2174f60f184e87636a0a3a0394ef8e7afd3.camel@infradead.org>
+ <20231017172812-mutt-send-email-mst@kernel.org>
+ <a62712bed8b86b6d4ebe1cc8deda6528d8e02032.camel@infradead.org>
+ <20231018114617-mutt-send-email-mst@kernel.org>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-tHcpZYTyWpxoE5c7N77S"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/10] Introduce model for IBM's FSI
-Content-Language: en-US
-To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20231011151339.2782132-1-ninad@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231011151339.2782132-1-ninad@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=PA0m=GB=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+06ae5fa416ae820d9d5a+7361+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,99 +84,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Ninad,
+
+--=-tHcpZYTyWpxoE5c7N77S
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 2023-10-18 at 11:46 -0400, Michael S. Tsirkin wrote:
+> I fixed some tab-indent issues and picked it up.
+
+Oops, sorry about that. That patch must date from a time before I
+taught emacs about qemu.
 
 
-On 10/11/23 17:13, Ninad Palsule wrote:
-> Hello,
-> 
-> Please review the patch-set version 5.
-> I have incorporated review comments from Cedric.
-> 
-> Ninad Palsule (10):
->    hw/fsi: Introduce IBM's Local bus
->    hw/fsi: Introduce IBM's scratchpad
->    hw/fsi: Introduce IBM's cfam,fsi-slave
->    hw/fsi: Introduce IBM's FSI
->    hw/fsi: IBM's On-chip Peripheral Bus
->    hw/fsi: Aspeed APB2OPB interface
->    hw/arm: Hook up FSI module in AST2600
->    hw/fsi: Added qtest
->    hw/fsi: Added FSI documentation
->    hw/fsi: Update MAINTAINER list
+--=-tHcpZYTyWpxoE5c7N77S
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-I made some comments, mostly on the bus models which need to be reworked.
-This is code reshuffling and it should simplify the models. Please consider
-reducing the amount of files.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMxMDE5MDgxODExWjAvBgkqhkiG9w0BCQQxIgQglJEMCZag
+5+1K1FYaCz/WfyHejDAGKEqd9NDkqtG+dzQwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAQqO0tDS0x7R5/6qhQJmvpuvPP1DVcJWPV
+PmKE7yTvOMPHLaJkWw74G7ypYld+LQCNu/0XBZu+CrwJk22fvZzfB1dbVtQMzHBewGxkhd7YN7Er
+eXZMSUSP1aiqJkc1cPXnYjvzRpGP36DsbkQFYQ14Uo51Mv1lR30M+FTXgYJTWeq6gJKUt0ZD/DLc
+qfbEYEiRJYt1VfNTgvvRYkr/6R0yjcE7NBRz/RiqCxuxBnytmfPZhV1dqGgC6ya4oDS2+apgc3x7
+kpLwdh7RSZSG1HvOiNQgLbAe8vX6SrCY3LfRUqzx9kyCsCXManl8ts0z2NtDjNu7P8o+KeVDcgiZ
+UadmE6SchCt5P0i260qTU4g5EdK5XH+RoayVETdhlp49ihRjNCslPCKmPMblGP1NtPlv7RLH02Ns
++yq9nECJE8GlOd+cFYXNys6cNUMCbOnfA+TBlXYX/oPlT5yWEfepxZHo0yyu+hE4X7b13VFFg6cn
+P6nFYsX7KOG7V3rROviS0ZwsZNPlTAl9WiHzHVKS+AxhuipnyN/wsDYQPN8bS7b3v34NpWleVhUg
+8M87xL042yw/moFDDo7AwGeBT5Ozb8wrqOxqSVts+/poZcIEhbcyHT62zdyJ/k9tHDAK85bk9qc7
+2gD9pSESc5D/NXbtpA8UiSBE2LXmshpVa5Nu7QBmewAAAAAAAA==
 
-Also, could please remove my Sob ?  I didn't write any of this, only did
-quick fixes over the years because I kept the series in my aspeed tree.
-And this would help me to add a Rb :)
 
-I expect one or two respins before merge. 8.2 freeze window is in less
-than 3 weeks. It could make it, else the next. No big issue since I think
-we have been dragging these models for at least 5/6 years.
-
-Thanks,
-
-C.
-
-
-> 
->   MAINTAINERS                        |   8 +
->   docs/specs/fsi.rst                 | 141 ++++++++++++
->   meson.build                        |   1 +
->   hw/fsi/trace.h                     |   1 +
->   include/hw/arm/aspeed_soc.h        |   4 +
->   include/hw/fsi/aspeed-apb2opb.h    |  33 +++
->   include/hw/fsi/cfam.h              |  58 +++++
->   include/hw/fsi/engine-scratchpad.h |  33 +++
->   include/hw/fsi/fsi-master.h        |  30 +++
->   include/hw/fsi/fsi-slave.h         |  29 +++
->   include/hw/fsi/fsi.h               |  37 +++
->   include/hw/fsi/lbus.h              |  51 +++++
->   include/hw/fsi/opb.h               |  43 ++++
->   include/qemu/bitops.h              |   6 +
->   hw/arm/aspeed_ast2600.c            |  19 ++
->   hw/fsi/aspeed-apb2opb.c            | 350 +++++++++++++++++++++++++++++
->   hw/fsi/cfam.c                      | 220 ++++++++++++++++++
->   hw/fsi/engine-scratchpad.c         |  99 ++++++++
->   hw/fsi/fsi-master.c                | 198 ++++++++++++++++
->   hw/fsi/fsi-slave.c                 |  96 ++++++++
->   hw/fsi/fsi.c                       |  54 +++++
->   hw/fsi/lbus.c                      |  87 +++++++
->   hw/fsi/opb.c                       | 185 +++++++++++++++
->   tests/qtest/fsi-test.c             | 210 +++++++++++++++++
->   hw/Kconfig                         |   1 +
->   hw/arm/Kconfig                     |   1 +
->   hw/fsi/Kconfig                     |  23 ++
->   hw/fsi/meson.build                 |   6 +
->   hw/fsi/trace-events                |  15 ++
->   hw/meson.build                     |   1 +
->   tests/qtest/meson.build            |   2 +
->   31 files changed, 2042 insertions(+)
->   create mode 100644 docs/specs/fsi.rst
->   create mode 100644 hw/fsi/trace.h
->   create mode 100644 include/hw/fsi/aspeed-apb2opb.h
->   create mode 100644 include/hw/fsi/cfam.h
->   create mode 100644 include/hw/fsi/engine-scratchpad.h
->   create mode 100644 include/hw/fsi/fsi-master.h
->   create mode 100644 include/hw/fsi/fsi-slave.h
->   create mode 100644 include/hw/fsi/fsi.h
->   create mode 100644 include/hw/fsi/lbus.h
->   create mode 100644 include/hw/fsi/opb.h
->   create mode 100644 hw/fsi/aspeed-apb2opb.c
->   create mode 100644 hw/fsi/cfam.c
->   create mode 100644 hw/fsi/engine-scratchpad.c
->   create mode 100644 hw/fsi/fsi-master.c
->   create mode 100644 hw/fsi/fsi-slave.c
->   create mode 100644 hw/fsi/fsi.c
->   create mode 100644 hw/fsi/lbus.c
->   create mode 100644 hw/fsi/opb.c
->   create mode 100644 tests/qtest/fsi-test.c
->   create mode 100644 hw/fsi/Kconfig
->   create mode 100644 hw/fsi/meson.build
->   create mode 100644 hw/fsi/trace-events
-> 
-
+--=-tHcpZYTyWpxoE5c7N77S--
 
