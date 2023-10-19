@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EAC7CF0E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 09:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA947CF0EA
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 09:17:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtNGv-0004s3-0J; Thu, 19 Oct 2023 03:16:45 -0400
+	id 1qtNHG-0005B5-7M; Thu, 19 Oct 2023 03:17:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNGt-0004rZ-25
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:16:43 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNH3-0004zQ-Kp
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:16:56 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNGq-0003Ao-Do
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:16:42 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32db8924201so3002238f8f.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 00:16:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNH0-0003CS-OP
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:16:53 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4083f61312eso10967625e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 00:16:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697699799; x=1698304599; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697699809; x=1698304609; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=31IMAee+VZo6+j+lZFd22FV62NKoWHWg3TvBlA119f8=;
- b=JiiiZJX2Ul0XFeys+tTH56OyMyqLueNy/2tqHDb0lNtj0AWpJiGsUTR1k3CXGVtbwV
- UUbQDwMxmtDknDnLBgaWXp+ByJ3RM3C750Bp1pFu1oWWbvmgrCGLxfCi4KmvaOam3iGK
- bsI8rxL/6a9kSuTNyCNY9eYarRW038iqRyfFn2Kq/cT+tYsaz5Iqkphu0yiG22EmyM8+
- hWs9p8Sio9fur8zvbrEEP0rIMc6V/GytAkHJZuJMK5nbWgGP9eP0twgyigFWKjxgmvcY
- c1Vpxcai1SPM825bZO94Dk58PbbWiIG4wW128/oAXEVh/+E5sOAby8BN/sl5R5KLtAw3
- CHPw==
+ bh=OG/eTeWn+OzUtyx8iBSPb0Amcuu5LlJ9K/x3TvIXfKM=;
+ b=LMTy28ilQ4PoOMyTvYA2M5rnGT0R0/HVQydI9FutXMXoovWq4qcPQPdg1iHItGy+jq
+ MoSI+taehZIBbjJEipGErf0Dnj5diwcPRzKeKg3vQs1S5MTw3LO2Hk6bDCqhleQMUX+C
+ 3Du3VQmlb7LZHow6U0p/xe6FC/AYRtbz2P9g2SrHxuNEGj7fW0DX5mHtNewToNZErJYG
+ abL+XtOh2VCBGFKdd2AKZp/b5jQsz9NX0Sgy7tWUbMgtSx3vs6QT5Xu1BEF3Y465YQdy
+ c56HjY18zGk7QQyn3dZFVPRJvSZPGtpC1H+P5yMLHWNjn/1V2eHNvqVs2RCVJHGs17jd
+ afnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697699799; x=1698304599;
+ d=1e100.net; s=20230601; t=1697699809; x=1698304609;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=31IMAee+VZo6+j+lZFd22FV62NKoWHWg3TvBlA119f8=;
- b=d4oGaHtqChv+kHwLp3oxkN3KenJ6Vb0kTMn+jqGWucAyoWhve8c2u6xnjghQR4udK9
- /dsKsGwVlq2GM2B/mI+EfMkO8oW668jUby/KTDcP4jQLl6VB6in7xmRQcEBhEg1psO14
- 3E1wjQBXQyu3hA8GIKTQgXXMftBEc1uwlkS6ze86/uUhOmPSEYsvrJCew4cuTlQQ5HLP
- RVrlGpooQJ1Do+hyaw1+uGN5B2ki/VnwVKIouHrBwm+DsNFqb8S/3jKodzonTfTLkavE
- 1HOL8pkU8G/a/6cVllK3Ht5Re+6QxLeIz+ru0Sm3WGpweU9O0FSFTa9UdEFzAf+jQ5xJ
- WGRg==
-X-Gm-Message-State: AOJu0Yzk4W+gHfUpWy+XtISNRdX9rrU/EOfY2LEZp2kIBcQZzEaUuM0W
- yFlFmW268JccaU87POsUiEfP+bizFCQdIiOwkW+AzA==
-X-Google-Smtp-Source: AGHT+IERqn/NQbTCifCYHB+iHBMzjhsCdd2ivdaD+3JecOOUjmqJGhXWHNvC+P8/U9mRQygROC4n1g==
-X-Received: by 2002:adf:f682:0:b0:32d:8cfd:5780 with SMTP id
- v2-20020adff682000000b0032d8cfd5780mr918954wrp.27.1697699798766; 
- Thu, 19 Oct 2023 00:16:38 -0700 (PDT)
+ bh=OG/eTeWn+OzUtyx8iBSPb0Amcuu5LlJ9K/x3TvIXfKM=;
+ b=U0a/xiu/e9Vyuitwic6hSczBHflMqY9uXK2UCvvIDHo+Kj7XBWgnZX6QpPJTIUFUyv
+ s+XMj39vqTSJ2Ghk5MH+usTZHXAaQs/6u2v1xXEDQuxkhjdTC2MAoMildUM+IZejptFV
+ UslpMXZM/ggTPyD7rgsswCEya2vAVb85FUQ3rNxShcgvZqmQtJkAoBLfOQb7N/yLwCC8
+ jms1/KRbHGkseCkY6bkmlYbt1a0ZS30+MVD8WrqFUtg0z1NJ+2JFZJVQSGgtdYE4Q2nc
+ tIIz5bappq2iBHfnqJ24+Gl5lXTy5SHhfp/KtRfVexPfF/N0F/C+6JLQVwCFQJRCnaOF
+ OG1w==
+X-Gm-Message-State: AOJu0Yx3q4eF3Ey7AB8k7QKv7LlCDj8tRX/PoVK0PWvgYokx26sVLC5T
+ RfgyXyqyKdmuKI4NU05E+hQgJWOd0+do9CflDMyjJw==
+X-Google-Smtp-Source: AGHT+IFRphPgz/cSzbKF11fcElSyD1nEqeTSRPuX8tC6CR1/f/6RFtKKwS3QnPhdBl0+B2RgyvnPCA==
+X-Received: by 2002:a05:600c:3587:b0:408:3a67:f6f5 with SMTP id
+ p7-20020a05600c358700b004083a67f6f5mr1130034wmq.18.1697699808913; 
+ Thu, 19 Oct 2023 00:16:48 -0700 (PDT)
 Received: from localhost.localdomain (92.red-88-28-12.dynamicip.rima-tde.net.
  [88.28.12.92]) by smtp.gmail.com with ESMTPSA id
- i3-20020a5d6303000000b0032db4e660d9sm3755308wru.56.2023.10.19.00.16.33
+ g14-20020a05600c310e00b0040813e14b49sm3620516wmo.30.2023.10.19.00.16.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 00:16:38 -0700 (PDT)
+ Thu, 19 Oct 2023 00:16:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -74,18 +74,18 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 02/12] hw/i386/intel_iommu: Do not use SysBus API to map
- local MMIO region
-Date: Thu, 19 Oct 2023 09:16:00 +0200
-Message-ID: <20231019071611.98885-3-philmd@linaro.org>
+Subject: [PATCH v2 03/12] hw/misc/allwinner-dramc: Move sysbus_mmio_map call
+ from init -> realize
+Date: Thu, 19 Oct 2023 09:16:01 +0200
+Message-ID: <20231019071611.98885-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019071611.98885-1-philmd@linaro.org>
 References: <20231019071611.98885-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,59 +108,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no point in exposing an internal MMIO region via
-SysBus and directly mapping it in the very same device.
-
-Just map it without using the SysBus API.
-
-Transformation done using the following coccinelle script:
-
-  @@
-  expression sbdev;
-  expression index;
-  expression addr;
-  expression subregion;
-  @@
-  -    sysbus_init_mmio(sbdev, subregion);
-       ... when != sbdev
-  -    sysbus_mmio_map(sbdev, index, addr);
-  +    memory_region_add_subregion(get_system_memory(), addr, subregion);
+In order to make the next commit trivial, move the sysbus_init_mmio()
+call in allwinner_r40_dramc_init() just before the corresponding
+sysbus_mmio_map_overlap() call in allwinner_r40_dramc_realize().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ hw/misc/allwinner-r40-dramc.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 2c832ab68b..e4f6cedcb1 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -4134,6 +4134,8 @@ static void vtd_realize(DeviceState *dev, Error **errp)
-     qemu_mutex_init(&s->iommu_lock);
-     memory_region_init_io(&s->csrmem, OBJECT(s), &vtd_mem_ops, s,
-                           "intel_iommu", DMAR_REG_SIZE);
-+    memory_region_add_subregion(get_system_memory(),
-+                                Q35_HOST_BRIDGE_IOMMU_ADDR, &s->csrmem);
+diff --git a/hw/misc/allwinner-r40-dramc.c b/hw/misc/allwinner-r40-dramc.c
+index 6944f84455..2cc0254a55 100644
+--- a/hw/misc/allwinner-r40-dramc.c
++++ b/hw/misc/allwinner-r40-dramc.c
+@@ -414,6 +414,7 @@ static void allwinner_r40_dramc_reset(DeviceState *dev)
+ static void allwinner_r40_dramc_realize(DeviceState *dev, Error **errp)
+ {
+     AwR40DramCtlState *s = AW_R40_DRAMC(dev);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
  
-     /* Create the shared memory regions by all devices */
-     memory_region_init(&s->mr_nodmar, OBJECT(s), "vtd-nodmar",
-@@ -4148,15 +4150,12 @@ static void vtd_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion_overlap(&s->mr_nodmar,
-                                         VTD_INTERRUPT_ADDR_FIRST,
-                                         &s->mr_ir, 1);
+     if (!get_match_ddr(s->ram_size)) {
+         error_report("%s: ram-size %u MiB is not supported",
+@@ -421,8 +422,12 @@ static void allwinner_r40_dramc_realize(DeviceState *dev, Error **errp)
+         exit(1);
+     }
+ 
+-    /* detect_cells */
+-    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(s), 3, s->ram_addr, 10);
++    /* R40 support max 2G memory but we only support up to 1G now. index 3 */
++    memory_region_init_io(&s->detect_cells, OBJECT(s),
++                          &allwinner_r40_detect_ops, s,
++                          "DRAMCELLS", 1 * GiB);
++    sysbus_init_mmio(sbd, &s->detect_cells);
++    sysbus_mmio_map_overlap(sbd, 3, s->ram_addr, 10);
+     memory_region_set_enabled(&s->detect_cells, false);
+ 
+     /*
+@@ -458,12 +463,6 @@ static void allwinner_r40_dramc_init(Object *obj)
+                           &allwinner_r40_dramphy_ops, s,
+                           "DRAMPHY", 4 * KiB);
+     sysbus_init_mmio(sbd, &s->dramphy_iomem);
 -
--    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->csrmem);
-     /* No corresponding destroy */
-     s->iotlb = g_hash_table_new_full(vtd_iotlb_hash, vtd_iotlb_equal,
-                                      g_free, g_free);
-     s->vtd_address_spaces = g_hash_table_new_full(vtd_as_hash, vtd_as_equal,
-                                       g_free, g_free);
-     vtd_init(s);
--    sysbus_mmio_map(SYS_BUS_DEVICE(s), 0, Q35_HOST_BRIDGE_IOMMU_ADDR);
-     pci_setup_iommu(bus, vtd_host_dma_iommu, dev);
-     /* Pseudo address space under root PCI bus. */
-     x86ms->ioapic_as = vtd_host_dma_iommu(bus, s, Q35_PSEUDO_DEVFN_IOAPIC);
+-    /* R40 support max 2G memory but we only support up to 1G now. index 3 */
+-    memory_region_init_io(&s->detect_cells, OBJECT(s),
+-                          &allwinner_r40_detect_ops, s,
+-                          "DRAMCELLS", 1 * GiB);
+-    sysbus_init_mmio(sbd, &s->detect_cells);
+ }
+ 
+ static Property allwinner_r40_dramc_properties[] = {
 -- 
 2.41.0
 
