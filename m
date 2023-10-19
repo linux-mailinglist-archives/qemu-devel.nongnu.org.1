@@ -2,79 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C11D7CFB50
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5DF7CFB55
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:39:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTCp-0003g2-L0; Thu, 19 Oct 2023 09:36:55 -0400
+	id 1qtTCr-0003oG-0H; Thu, 19 Oct 2023 09:36:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBw-0001zQ-9V
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:36:02 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBr-0001FG-C1
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:59 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-32ddfb38c02so244047f8f.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697722550; x=1698327350; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DCEBJydvw/gsEIeAPEKmaoZZ5w+fj2mZw0RxfZs5m5s=;
- b=vnvB20EIc7tXACRVRQyE26v4LieyahC/l5ZvIlmcCES2Ig1wKXs5RT/9fl2jXnx8ld
- kJHjho77NZEPe7ftw9WU94e84ILQEVtwWLHOksePBwfgf8b5z7kp26/7VlPRpSn3TvGf
- 2TdwmjlKKYVyfMww0Xj5QFyh7tlD8opQcBP+IS9IXx+2KwUT+G1AB+wKrXyVt1GE3k4O
- J8MAU+fRu6gxr2FRfWFhvYbAyjApM0ErAaAoRz1YLDrzsZUj4HDglVtUkB1yjYPzUbcu
- WHavIvoQkwP22ZbzXep5+UqHyx57f83JqzAboGyELCZLYcwJJyRZcpnw3AKpdLSdl2lH
- OsfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697722550; x=1698327350;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DCEBJydvw/gsEIeAPEKmaoZZ5w+fj2mZw0RxfZs5m5s=;
- b=GQ4kkJ4YMvJgNasfs4e30CP8Ic7o9mEBFXIKAPnpeuqE7VAeX1g6wobv1dO7O7h+yr
- emgyPXfgBKPPGAupqfyW/jlmJiBBC9fXt3CvhwwP5DT842mZCZnaDL9wpElDarpy1TNF
- pX/GWRRSMPEuE87TguZMy1b7NhPbw8pTlZ7K/405+GK2+deEF0wekUA/oTa9Ec2qlY/r
- edplJl0rnoBkZTLHdZxsm8ygkTqgLl6xxwUkzM5e++bmvHCkH5IigklYscyTpLbsubRs
- Q2MMw+hxgOYDLYyTw0pwoQtHIENLJNnTE3f5GGxjfWfIlBi97Vt/ep47ucac1tmY8LJX
- X3uA==
-X-Gm-Message-State: AOJu0YzCEbYqZ3ZTsPwxpvcJiA3Sy8Hf+KRTEYoreaAce806Vlr0j9JU
- aQby0z9K93bbcuvmYEdbqp/8jekz3v7bomNC+Ts=
-X-Google-Smtp-Source: AGHT+IEq0/Kd87UmRG7okGKg36g3dDacarUUkSMuvCPbBaptOa+Wne0RDQLZg+XD93WXVk7o8mtg6g==
-X-Received: by 2002:a5d:4b48:0:b0:314:1313:c3d6 with SMTP id
- w8-20020a5d4b48000000b003141313c3d6mr1457635wrs.33.1697722550271; 
- Thu, 19 Oct 2023 06:35:50 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.49
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 06:35:49 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 24/24] contrib/elf2dmp: Use g_malloc(), g_new() and g_free()
-Date: Thu, 19 Oct 2023 14:35:37 +0100
-Message-Id: <20231019133537.2114929-25-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231019133537.2114929-1-peter.maydell@linaro.org>
-References: <20231019133537.2114929-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qtTCL-0002L8-Fs
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:36:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qtTCJ-0001aA-0M
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:36:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697722581;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rTMfDiTUS7Qwi71vPyy/Q7P0sWJHK43vA9M62UrvKS4=;
+ b=MeNwjH9IyNZvRSWarSGBC0PebvrB/A69p9hIst/8nSXInSUU1WCBBrAUabWFhBwCSIZwda
+ BD56h1Su10Ww86UUGANpXKkIN5H6E8ro3V5LmdS29TpspIisAFwWdXOwl1DO9M3pngl58F
+ 90e1P+AM/nes6Zy5h2VGXdYMC4BFw9A=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-631-Hn8cuqhmN0W5Hb6IPJCaHA-1; Thu, 19 Oct 2023 09:36:18 -0400
+X-MC-Unique: Hn8cuqhmN0W5Hb6IPJCaHA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CCA4E886C6C;
+ Thu, 19 Oct 2023 13:36:17 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.120])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 34FB32166B29;
+ Thu, 19 Oct 2023 13:36:16 +0000 (UTC)
+Date: Thu, 19 Oct 2023 15:36:14 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
+ eblake@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
+ jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
+ alexander.ivanov@virtuozzo.com
+Subject: Re: [PATCH v3 0/9] mirror: allow switching from background to active
+ mode
+Message-ID: <ZTEwzi8x6cFfP9+e@redhat.com>
+References: <20231013092143.365296-1-f.ebner@proxmox.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231013092143.365296-1-f.ebner@proxmox.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,173 +79,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Suraj Shirvankar <surajshirvankar@gmail.com>
+Am 13.10.2023 um 11:21 hat Fiona Ebner geschrieben:
+> Changes in v3:
+>     * unlock the job mutex when calling the new block job driver
+>       'query' handler
+>     * squash patch adapting iotest output into patch that changes the
+>       output
+>     * turn accesses to copy_mode and actively_synced atomic
+>     * slightly rework error handling in mirror_change
+> 
+> Changes in v2:
+>     * move bitmap to filter which allows to avoid draining when
+>       changing the copy mode
+>     * add patch to determine copy_to_target only once
+>     * drop patches returning redundant information upon query
+>     * update QEMU version in QAPI
+>     * update indentation in QAPI
+>     * update indentation in QAPI (like in a937b6aa73 ("qapi: Reformat
+>       doc comments to conform to current conventions"))
+>     * add patch to adapt iotest output
+> 
+> Discussion of v2:
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg02290.html
+> 
+> Discussion of v1:
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-02/msg07216.html
+> 
+> With active mode, the guest write speed is limited by the synchronous
+> writes to the mirror target. For this reason, management applications
+> might want to start out in background mode and only switch to active
+> mode later, when certain conditions are met. This series adds a
+> block-job-change QMP command to achieve that, as well as
+> job-type-specific information when querying block jobs, which
+> can be used to decide when the switch should happen.
+> 
+> For now, only the direction background -> active is supported.
+> 
+> The information added upon querying is whether the target is actively
+> synced, the total data sent, and the remaining dirty bytes.
 
-QEMU coding style uses the glib memory allocation APIs, not
-the raw libc malloc/free. Switch the allocation and free
-calls in elf2dmp to use these functions (dropping the now-unneeded
-checks for failure).
+Most of this series looks good to me. Apart from the comments I made in
+the individual patches, I would like to see iotests coverage of changing
+the mirroring mode. At the least to show that the query result changes,
+but ideally also that requests really block after switchting to active.
+I think with a throttled target node and immediately reading the target
+when the write request completes we should be able to check this.
 
-Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
-Message-id: 169753938460.23804.11418813007617535750-1@git.sr.ht
-[PMM: also remove NULL checks from g_malloc() calls;
- beef up commit message]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- contrib/elf2dmp/addrspace.c |  7 ++-----
- contrib/elf2dmp/main.c      |  9 +++------
- contrib/elf2dmp/pdb.c       | 19 ++++++++-----------
- contrib/elf2dmp/qemu_elf.c  |  7 ++-----
- 4 files changed, 15 insertions(+), 27 deletions(-)
-
-diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
-index 64b5d680adc..6f608a517b1 100644
---- a/contrib/elf2dmp/addrspace.c
-+++ b/contrib/elf2dmp/addrspace.c
-@@ -72,10 +72,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
-         }
-     }
- 
--    ps->block = malloc(sizeof(*ps->block) * ps->block_nr);
--    if (!ps->block) {
--        return 1;
--    }
-+    ps->block = g_new(struct pa_block, ps->block_nr);
- 
-     for (i = 0; i < phdr_nr; i++) {
-         if (phdr[i].p_type == PT_LOAD) {
-@@ -97,7 +94,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
- void pa_space_destroy(struct pa_space *ps)
- {
-     ps->block_nr = 0;
--    free(ps->block);
-+    g_free(ps->block);
- }
- 
- void va_space_set_dtb(struct va_space *vs, uint64_t dtb)
-diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index 6de5c9808ef..cbc38a7c103 100644
---- a/contrib/elf2dmp/main.c
-+++ b/contrib/elf2dmp/main.c
-@@ -120,14 +120,11 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, struct pdb_reader *pdb,
-         }
-     }
- 
--    kdbg = malloc(kdbg_hdr.Size);
--    if (!kdbg) {
--        return NULL;
--    }
-+    kdbg = g_malloc(kdbg_hdr.Size);
- 
-     if (va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
-         eprintf("Failed to extract entire KDBG\n");
--        free(kdbg);
-+        g_free(kdbg);
-         return NULL;
-     }
- 
-@@ -643,7 +640,7 @@ int main(int argc, char *argv[])
-     }
- 
- out_kdbg:
--    free(kdbg);
-+    g_free(kdbg);
- out_pdb:
-     pdb_exit(&pdb);
- out_pdb_file:
-diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-index 8e3c18c82f7..40991f5f4c3 100644
---- a/contrib/elf2dmp/pdb.c
-+++ b/contrib/elf2dmp/pdb.c
-@@ -94,18 +94,18 @@ uint64_t pdb_resolve(uint64_t img_base, struct pdb_reader *r, const char *name)
- 
- static void pdb_reader_ds_exit(struct pdb_reader *r)
- {
--    free(r->ds.toc);
-+    g_free(r->ds.toc);
- }
- 
- static void pdb_exit_symbols(struct pdb_reader *r)
- {
--    free(r->modimage);
--    free(r->symbols);
-+    g_free(r->modimage);
-+    g_free(r->symbols);
- }
- 
- static void pdb_exit_segments(struct pdb_reader *r)
- {
--    free(r->segs);
-+    g_free(r->segs);
- }
- 
- static void *pdb_ds_read(const PDB_DS_HEADER *header,
-@@ -120,10 +120,7 @@ static void *pdb_ds_read(const PDB_DS_HEADER *header,
- 
-     nBlocks = (size + header->block_size - 1) / header->block_size;
- 
--    buffer = malloc(nBlocks * header->block_size);
--    if (!buffer) {
--        return NULL;
--    }
-+    buffer = g_malloc(nBlocks * header->block_size);
- 
-     for (i = 0; i < nBlocks; i++) {
-         memcpy(buffer + i * header->block_size, (const char *)header +
-@@ -206,7 +203,7 @@ static int pdb_init_symbols(struct pdb_reader *r)
-     return 0;
- 
- out_symbols:
--    free(symbols);
-+    g_free(symbols);
- 
-     return err;
- }
-@@ -263,7 +260,7 @@ static int pdb_reader_init(struct pdb_reader *r, void *data)
- out_sym:
-     pdb_exit_symbols(r);
- out_root:
--    free(r->ds.root);
-+    g_free(r->ds.root);
- out_ds:
-     pdb_reader_ds_exit(r);
- 
-@@ -274,7 +271,7 @@ static void pdb_reader_exit(struct pdb_reader *r)
- {
-     pdb_exit_segments(r);
-     pdb_exit_symbols(r);
--    free(r->ds.root);
-+    g_free(r->ds.root);
-     pdb_reader_ds_exit(r);
- }
- 
-diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-index de6ad744c6d..055e6f8792e 100644
---- a/contrib/elf2dmp/qemu_elf.c
-+++ b/contrib/elf2dmp/qemu_elf.c
-@@ -94,10 +94,7 @@ static int init_states(QEMU_Elf *qe)
- 
-     printf("%zu CPU states has been found\n", cpu_nr);
- 
--    qe->state = malloc(sizeof(*qe->state) * cpu_nr);
--    if (!qe->state) {
--        return 1;
--    }
-+    qe->state = g_new(QEMUCPUState*, cpu_nr);
- 
-     cpu_nr = 0;
- 
-@@ -115,7 +112,7 @@ static int init_states(QEMU_Elf *qe)
- 
- static void exit_states(QEMU_Elf *qe)
- {
--    free(qe->state);
-+    g_free(qe->state);
- }
- 
- static bool check_ehdr(QEMU_Elf *qe)
--- 
-2.34.1
+Kevin
 
 
