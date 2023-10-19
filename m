@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EDD7D039B
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 806387D0409
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:29:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaQ2-00054N-Ki; Thu, 19 Oct 2023 17:19:02 -0400
+	id 1qtaQA-0005Fl-38; Thu, 19 Oct 2023 17:19:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQ0-00053c-9c
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:00 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQ7-0005BQ-OR
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:07 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaPy-0004pO-9y
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:00 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-32dc918d454so98987f8f.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:18:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQ5-0004wo-CR
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:07 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-32d9effe314so105220f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:19:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750336; x=1698355136; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750343; x=1698355143; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mJLA18pFybXFPbUpHy1W5xTRic5xRcDchoEnbbPwZSQ=;
- b=I7V+krl9RNg3YV2256XidtTIQ6ogq1G7jL/8xJbHjPeIsgr8zdyF2tQAmngX00WRD0
- KpBSM+Qenkm+n3qiu6wPdShv3phLHyRs2VJFEohZQSmsjcqNTpzilqqSUp/TMMfjGYNR
- AVkWt7cgHbanJwzPmHRfan7NgmDRXV2g1gFH3V1tsl+udylWsMpgJDGyQxbZHgHXQUMb
- TGySfgHy8Cd8n6UIkf819NEESsEOc4OIdqm/t7Bx0oPUqHcvgnopMcnD8dGNnPqUi14L
- LIAtXj891WvH9hKmhLjV1vNAk724ct+u4rDXPMCjXnDWSCI5ZbNm8C7ZPft7Nzn6oWFQ
- EaRg==
+ bh=CDOh9aTp1V6NdKCqXsAlRdEiv+EPu9d2PQpbnuZZmkw=;
+ b=ijlTvkQhrA3R7DrCIJnjQNsHxaS17/o7LvU/mECsrx3oBkl3Ep/PbuEaUfNcjOgYLl
+ 9MVo7MlAIVHmhSC3tlKcWB4WEPfzPNV0ptPV8ZUXeJ4+CRQy3mKUhxbvSWW2a+IIImbE
+ 6xf4C04VFGe13A5CPWMbkplORssUc4+5TMzH+qXqCEIy8V2Ly/mDD/U8NKZu6P//0hAj
+ qQF26hcN/3VQcDHQfG5fj0MlHapuRD00ykRupgigccoeAx5PCynLrj8p7WDufnHAg5CD
+ 7aChIhWOhdtzqfrqZOK7jiZJ2YSHZ0nrXRfpya38F7KCSfS7Y330GTfRM3RUziZDrGNo
+ in8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750336; x=1698355136;
+ d=1e100.net; s=20230601; t=1697750343; x=1698355143;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mJLA18pFybXFPbUpHy1W5xTRic5xRcDchoEnbbPwZSQ=;
- b=PupFsqm1AixORGUrQwJ1epNhfw3vVIY8fQVhC79aYOGHnz9Uko3OPuNn+KH9gp3Tz9
- ZdkdI3hXVeZcOZ/RqU/CXxEhR99a1wUd2jjOkr5zMKoHz9tPy2ml3F7f4ZND6sNopSdN
- 0F+bvRAtL/5l6CmLnSefue5HGdNXdPpKSmBsaFod7EGwma4H+TQV40aNS9J5uOrMbQPP
- PHf6Z25IBhHFyn7iTJ/4jB7fnwcGPibY+Oy8RmMtuvNL7OA4vmFh6xlhpB3FJn9ySWwR
- S+VLSjT76+nXbnzBObN3N8n531EC6G1hXa1X8JgWtAn342T/NlG5sqqzgCGwlBXHuMUL
- whiw==
-X-Gm-Message-State: AOJu0Yy6z+vhGz/vzgr78C8Z/rOe24MU/aM1oezrx3Lt7N7W3CKICmEF
- 9HvNeqwMye9TLi/3EGUoeaubY3ABfJLLmjjmhtjIdg==
-X-Google-Smtp-Source: AGHT+IEYxWT0/VN73qTkcI+k4L0ezgqbag9tFvKitM7rP1hBYGa7aeUSvgAPV0mPyJyklzoxMG38ZA==
-X-Received: by 2002:a5d:4530:0:b0:32d:b8f8:2b18 with SMTP id
- j16-20020a5d4530000000b0032db8f82b18mr2544187wra.32.1697750336705; 
- Thu, 19 Oct 2023 14:18:56 -0700 (PDT)
+ bh=CDOh9aTp1V6NdKCqXsAlRdEiv+EPu9d2PQpbnuZZmkw=;
+ b=tHlQSGKRMSHKQZnrZAqFfAwGvpVcxR9WAlNnHTPTlOJuBRnk4C3o4DlSK7Up8JlC35
+ Y0G3nR+QHCvOTvC0X/FprVZwkRhiADlgS/XcZ9PQWPRUMk1EzHqQAAgqUOM79fkZcTw7
+ J+pAzkpwDBWaefCRid7jhFd/U1vJHp6R7NuA//7RJrZ1TnYZyJ/aECaV667btboC4mAT
+ eH9AH9olJswt2yccLs/QWaxRAdZAQ901TNfGbu3InwzsSusQYYzTp9xbb2eZsBtuXqMN
+ wV658arlCVumkIe/22bt5UBkZRnm1oI/dKOyY0mwwUCeR3LB5QFhgsl3yhUKcSdkRCEt
+ Gisg==
+X-Gm-Message-State: AOJu0YwNTETfb3fqCXjjlJ306ABjtMP7K2QXDFseAc9Nk9y8/nSq0XCY
+ OXAghtfssyiDJFgUBpHKSBVgz4TSXEMuMX+U73oDGw==
+X-Google-Smtp-Source: AGHT+IGF4II5OHXhGE0cqNO3Jdq+VR1QOLcL/iQ2jZdOa0CFlnSKMH+o99Ds04Ae6z+AHCKJR4ZZOQ==
+X-Received: by 2002:a5d:6189:0:b0:327:e073:d604 with SMTP id
+ j9-20020a5d6189000000b00327e073d604mr2005103wru.45.1697750343472; 
+ Thu, 19 Oct 2023 14:19:03 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- r6-20020a5d6946000000b0032da4c98ab2sm219159wrw.35.2023.10.19.14.18.55
+ y10-20020a5d470a000000b0032d9efeccd8sm220126wrq.51.2023.10.19.14.19.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:18:56 -0700 (PDT)
+ Thu, 19 Oct 2023 14:19:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
- qemu-arm@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/46] cutils: Fix get_relocated_path on Windows
-Date: Thu, 19 Oct 2023 23:17:31 +0200
-Message-ID: <20231019211814.30576-7-philmd@linaro.org>
+ qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 07/46] buildsys: Only display Objective-C information when
+ Objective-C is used
+Date: Thu, 19 Oct 2023 23:17:32 +0200
+Message-ID: <20231019211814.30576-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,72 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+When configuring with '--disable-cocoa --disable-coreaudio'
+on Darwin, we get:
 
-get_relocated_path() did not have error handling for PathCchSkipRoot()
-because a path given to get_relocated_path() was expected to be a valid
-path containing a drive letter or UNC server/share path elements on
-Windows, but sometimes it turned out otherwise.
+ meson.build:4081:58: ERROR: Tried to access compiler for language "objc", not specified for host machine.
+ meson.build:4097:47: ERROR: Tried to access unknown option 'objc_args'.
 
-The paths passed to get_relocated_path() are defined by macros generated
-by Meson. Meson in turn uses a prefix given by the configure script to
-generate them. For Windows, the script passes /qemu as a prefix to
-Meson by default.
+Instead of unconditionally display Objective-C informations
+on Darwin, display them when Objective-C is discovered.
 
-As documented in docs/about/build-platforms.rst, typically MSYS2 is used
-for the build system, but it is also possible to use Linux as well. When
-MSYS2 is used, its Bash variant recognizes /qemu as a MSYS2 path, and
-converts it to a Windows path, adding the MSYS2 prefix including a drive
-letter or UNC server/share path elements. Such a conversion does not
-happen on a shell on Linux however, and /qemu will be passed as is in
-the case.
-
-Implement a proper error handling of PathCchSkipRoot() in
-get_relocated_path() so that it can handle a path without a drive letter
-or UNC server/share path elements.
-
-Reported-by: Stefan Weil <sw@weilnetz.de>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231005064726.6945-1-akihiko.odaki@daynix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20231009093812.52915-1-philmd@linaro.org>
 ---
- util/cutils.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ meson.build | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/util/cutils.c b/util/cutils.c
-index 64f817b477..42364039a5 100644
---- a/util/cutils.c
-+++ b/util/cutils.c
-@@ -1163,17 +1163,21 @@ char *get_relocated_path(const char *dir)
-     g_string_append(result, "/qemu-bundle");
-     if (access(result->str, R_OK) == 0) {
- #ifdef G_OS_WIN32
--        size_t size = mbsrtowcs(NULL, &dir, 0, &(mbstate_t){0}) + 1;
-+        const char *src = dir;
-+        size_t size = mbsrtowcs(NULL, &src, 0, &(mbstate_t){0}) + 1;
-         PWSTR wdir = g_new(WCHAR, size);
--        mbsrtowcs(wdir, &dir, size, &(mbstate_t){0});
-+        mbsrtowcs(wdir, &src, size, &(mbstate_t){0});
- 
-         PCWSTR wdir_skipped_root;
--        PathCchSkipRoot(wdir, &wdir_skipped_root);
-+        if (PathCchSkipRoot(wdir, &wdir_skipped_root) == S_OK) {
-+            size = wcsrtombs(NULL, &wdir_skipped_root, 0, &(mbstate_t){0});
-+            char *cursor = result->str + result->len;
-+            g_string_set_size(result, result->len + size);
-+            wcsrtombs(cursor, &wdir_skipped_root, size + 1, &(mbstate_t){0});
-+        } else {
-+            g_string_append(result, dir);
-+        }
- 
--        size = wcsrtombs(NULL, &wdir_skipped_root, 0, &(mbstate_t){0});
--        char *cursor = result->str + result->len;
--        g_string_set_size(result, result->len + size);
--        wcsrtombs(cursor, &wdir_skipped_root, size + 1, &(mbstate_t){0});
-         g_free(wdir);
- #else
-         g_string_append(result, dir);
+diff --git a/meson.build b/meson.build
+index 259dc5f308..4961c82a6b 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4087,8 +4087,10 @@ if 'cpp' in all_languages
+ else
+   summary_info += {'C++ compiler':      false}
+ endif
+-if targetos == 'darwin'
++if 'objc' in all_languages
+   summary_info += {'Objective-C compiler': ' '.join(meson.get_compiler('objc').cmd_array())}
++else
++  summary_info += {'Objective-C compiler': false}
+ endif
+ option_cflags = (get_option('debug') ? ['-g'] : [])
+ if get_option('optimization') != 'plain'
+@@ -4098,7 +4100,7 @@ summary_info += {'CFLAGS':            ' '.join(get_option('c_args') + option_cfl
+ if 'cpp' in all_languages
+   summary_info += {'CXXFLAGS':        ' '.join(get_option('cpp_args') + option_cflags)}
+ endif
+-if targetos == 'darwin'
++if 'objc' in all_languages
+   summary_info += {'OBJCFLAGS':       ' '.join(get_option('objc_args') + option_cflags)}
+ endif
+ link_args = get_option('c_link_args')
 -- 
 2.41.0
 
