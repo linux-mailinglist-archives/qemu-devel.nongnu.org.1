@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DAF7CF0F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 09:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1D17CF101
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 09:19:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtNIf-0006PC-4p; Thu, 19 Oct 2023 03:18:37 -0400
+	id 1qtNIv-0007Sl-6N; Thu, 19 Oct 2023 03:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNHW-0005bz-W3
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:17:23 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNHj-0005vP-AW
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:17:37 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNHV-0003HV-3J
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:17:22 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-32db188e254so3105832f8f.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 00:17:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNHg-0003J5-Bh
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:17:34 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40839652b97so15423025e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 00:17:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697699839; x=1698304639; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697699850; x=1698304650; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U89S9kSKuyZ/3CV61Or9NVPwfS9oQzSn+IyXDgGKbBI=;
- b=lxAwCtZgYcfK3pY1DoFeS/QZcZxNGrAS1zjJY2p0FJ1W8ebdFmEoAE1/4gEpHYt9JM
- q1IAkUbTr+ATcY+/acJLhPNOW8cf7xygf4KpKxBp0M7DSUM/u3G7dJ2LqUKRSTpbTxFe
- tO8aA2bryf/+UOL6aF8y8fKuO4LzQGJu2nZPLuDRmU0KsKDCB8JSUQBg+xJ/KVjoFcte
- 3O3DVa0SRtxKzwkRih/9uEV4UzeIINs/q+7CRxWl5j/af2YO6BvDPPVxYtVKuIoqjJYB
- Urxk05P7l3pYFhWMmXUw+/Ot8pZmI3ciyeiyblfrfoztv86X9GIwyCwtPmj7E0TLfpNH
- H7OQ==
+ bh=fHmBGLBbzcVN7N0Yqtsp1sIeIJxOxMcSEmxWkKW9TOQ=;
+ b=MD9Ap+wCuXyISoKoAZvrgqqrD5fv6eebi5aVPiOYU/wGM2yvcJ+Z8+9Qqi6iEWtx5H
+ WomqtbfuDOQJvogQoA6wCc/DXIjdNr/NKrpOJ6HSfidwWVIcqa0SLjWzO0xiK5iGAUFh
+ /VAV0ioefxIMy8UZ5+clEKUbqEBp1kOlsrWgXlmOujRsxJiR9cZ3XnA4oTCKKAiM+tdJ
+ +3qu7/+VdGVIFtKeHO/XSOGjDsQMF8l4PUM//LB+4sPLMr8Quu8OFxKpbRvvYh3Q9eQO
+ V1zVeosjJfFu/hHep0st1QsRCt+er+WdqLrAbweigKAmTePrvDcmnqPEG4p1KD+1ObOg
+ jdcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697699839; x=1698304639;
+ d=1e100.net; s=20230601; t=1697699850; x=1698304650;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U89S9kSKuyZ/3CV61Or9NVPwfS9oQzSn+IyXDgGKbBI=;
- b=v2iXbpPGInPSar5NxLHWpoxBhcf1saJqlR40/esx7fO9m3bDmgPfY+VxMS/IHKhz3A
- OlnyR8OtvhKTp7XJ++seHaaccs+aBnnkOb3QgzZaNbY/+fnxnBsMgjE6dx2+HxiAZjRK
- UPUfbA5dLqHE/qNfHSDX3PXs4YM6h333qF4mdoM0w81G4sjbCl0rtEpfTTGsiF9ARcJ4
- M8oDcCCfTcCiN++MwsB3Ay7VD3cDpZt0udN1yr786SGgQhBgkVPh5JTfjf5WD+5tTT4w
- It0zySg9SZS8ikAh6nhNh9ADCgJal0fkvOsZFMu3nNyTNV1hjfFp1aJiJGEv0XGtoXs1
- BD9A==
-X-Gm-Message-State: AOJu0YyQcNv6IlAT4WvHX0/6WS59F4WMlAUkxAy9nFbD9RoedZXZeBBY
- lnlxY5WyzRU6//fJaRB4DNXgzRnzOgm6RuCvzNHNIw==
-X-Google-Smtp-Source: AGHT+IFaHkNJUYCsbixe1AIqoj4FtZdLSMRwcOlgosJtCxO6BgbZd32vHdPzP216ECFF1kIdkO45IA==
-X-Received: by 2002:adf:f50d:0:b0:32d:b114:fc96 with SMTP id
- q13-20020adff50d000000b0032db114fc96mr790162wro.37.1697699839316; 
- Thu, 19 Oct 2023 00:17:19 -0700 (PDT)
+ bh=fHmBGLBbzcVN7N0Yqtsp1sIeIJxOxMcSEmxWkKW9TOQ=;
+ b=OOik9K68wm5eJdtRuF0W63CsbU3BVeW12iB/v3kE1+broWNEn7F34iA3sy825YFhsU
+ YiUu2qnRawlAAW9LlTGvOl19KVqm/Pg8wuahZ54ocXqUgrbPN7Jv6aEM4s5aa2qqlNXE
+ /qCCsDUvBmb1GhZZPYsjZx/V6otInjIKaypdf9eKfSARKkazi+t8L7rCtOCtNtSsgoJr
+ 2cap0iiFIwKDP9koQYlIf2NFdVYoVvv87G7HSYGiFuVnrfJwYNKXGYqXsNSSmVLO3fQ9
+ zN4PV/qZGJdk5IN6zfBLvtebMZ1iDOeAIi7GEwQU0JGZRXnOjZY9p+dzXx1jkvRkz+Wu
+ M8sw==
+X-Gm-Message-State: AOJu0YzMEbYQd38bROlBcHJXlZNrRt+JnlLZjzs1Bofq0/3nBONl8vOO
+ 2h6HmhKdFWRlEPQqDQkQyqZWXMn4HtqImCgYpMj2oQ==
+X-Google-Smtp-Source: AGHT+IGkDp4jnFiZaR5gynL8fveFHHh70nzeiWVPHLgpYlazdOE5lcUI9X+2hk/3o5JzvM01pi88Zw==
+X-Received: by 2002:adf:fe8f:0:b0:32d:ba78:d60e with SMTP id
+ l15-20020adffe8f000000b0032dba78d60emr849091wrr.65.1697699849994; 
+ Thu, 19 Oct 2023 00:17:29 -0700 (PDT)
 Received: from localhost.localdomain (92.red-88-28-12.dynamicip.rima-tde.net.
  [88.28.12.92]) by smtp.gmail.com with ESMTPSA id
- e11-20020adffd0b000000b0032dbf26e7aesm3754965wrr.65.2023.10.19.00.17.15
+ f5-20020a5d50c5000000b003140f47224csm3796543wrt.15.2023.10.19.00.17.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 00:17:18 -0700 (PDT)
+ Thu, 19 Oct 2023 00:17:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -74,18 +74,18 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 06/12] hw/acpi: Realize ACPI_GED sysbus device before
+Subject: [PATCH v2 07/12] hw/arm/virt: Realize ARM_GICV2M sysbus device before
  accessing it
-Date: Thu, 19 Oct 2023 09:16:04 +0200
-Message-ID: <20231019071611.98885-7-philmd@linaro.org>
+Date: Thu, 19 Oct 2023 09:16:05 +0200
+Message-ID: <20231019071611.98885-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019071611.98885-1-philmd@linaro.org>
 References: <20231019071611.98885-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,70 +112,26 @@ sysbus_mmio_map() should not be called on unrealized device.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/arm/virt.c       | 3 +--
- hw/i386/microvm.c   | 2 +-
- hw/loongarch/virt.c | 2 +-
- 3 files changed, 3 insertions(+), 4 deletions(-)
+ hw/arm/virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 15e74249f9..02c7a7ff3c 100644
+index 02c7a7ff3c..5b08a98f07 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -647,13 +647,12 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
+@@ -690,10 +690,10 @@ static void create_v2m(VirtMachineState *vms)
+     DeviceState *dev;
  
-     dev = qdev_new(TYPE_ACPI_GED);
-     qdev_prop_set_uint32(dev, "ged-event", event);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+     dev = qdev_new("arm-gicv2m");
+-    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, vms->memmap[VIRT_GIC_V2M].base);
+     qdev_prop_set_uint32(dev, "base-spi", irq);
+     qdev_prop_set_uint32(dev, "num-spi", NUM_GICV2M_SPIS);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, vms->memmap[VIRT_GIC_V2M].base);
  
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, vms->memmap[VIRT_ACPI_GED].base);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, vms->memmap[VIRT_PCDIMM_ACPI].base);
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(vms->gic, irq));
- 
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--
-     return dev;
- }
- 
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index b9c93039e2..ca55aecc3b 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -206,12 +206,12 @@ static void microvm_devices_init(MicrovmMachineState *mms)
-     if (x86_machine_is_acpi_enabled(x86ms)) {
-         DeviceState *dev = qdev_new(TYPE_ACPI_GED);
-         qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_EVT);
-+        sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
-         /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_MEMHP); */
-         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, GED_MMIO_BASE_REGS);
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
-                            x86ms->gsi[GED_MMIO_IRQ]);
--        sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-         x86ms->acpi_dev = HOTPLUG_HANDLER(dev);
-     }
- 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 2952fe452e..4b7dc67a2d 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -412,6 +412,7 @@ static DeviceState *create_acpi_ged(DeviceState *pch_pic, LoongArchMachineState
-     }
-     dev = qdev_new(TYPE_ACPI_GED);
-     qdev_prop_set_uint32(dev, "ged-event", event);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-     /* ged event */
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, VIRT_GED_EVT_ADDR);
-@@ -422,7 +423,6 @@ static DeviceState *create_acpi_ged(DeviceState *pch_pic, LoongArchMachineState
- 
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
-                        qdev_get_gpio_in(pch_pic, VIRT_SCI_IRQ - VIRT_GSI_BASE));
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     return dev;
- }
- 
+     for (i = 0; i < NUM_GICV2M_SPIS; i++) {
+         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
 -- 
 2.41.0
 
