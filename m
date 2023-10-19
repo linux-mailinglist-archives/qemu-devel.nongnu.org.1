@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A651F7D0354
+	by mail.lfdr.de (Postfix) with ESMTPS id F27077D0356
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZw7-0007Jz-Kj; Thu, 19 Oct 2023 16:48:07 -0400
+	id 1qtZw9-0007Pb-2d; Thu, 19 Oct 2023 16:48:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qtZvx-0007F9-8C
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:58 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1qtZvz-0007G4-4p
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:59 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qtZvt-0003SL-3W
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:56 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ id 1qtZvu-0003To-IP
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:47:58 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKiHE3019519; Thu, 19 Oct 2023 20:47:50 GMT
+ 39JKi5RF028662; Thu, 19 Oct 2023 20:47:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=jyjZH7lnZYqjTB8ETp07/j47pckjaXH1CgbR4xTwVlM=;
- b=oxOYjra7l4s5sNiojXq+UrWK1nmTk2jcd+QmWnMe20QWF9XiPyOuG3ufI/OAyD6Z6p90
- gYLkSChlZsqWoNtJy6G5jsAiOJ9E/8Lrz4G0ASCs2nq9PE/2BArOf/r11oG5XZ92YolX
- rAjUYZsb1/HfPJ1acAsb4vR+I5139abHtXZdNDSPkfv4ZnEFksTXGpFsh7iXi9uAKDln
- REHwEA9JtGUWF21cYRT6/Dnc1cwBKXlRGerwPp0uM4XFhCl1HAc8UBDiS2nYUZn78/Ra
- H6ZZKiUZZwnH3Jy1AL3Rq9JXtQB5IcXcwhBkvOR8whbonGih5dak6riwHkHLUSC7YGfd +w== 
+ bh=q8E4V2n2dPrbJ5dVbcfm802wPss1Ul4Z/5tl9bw+K7I=;
+ b=dT/Tz02zCaRePHme6C7rRtPTDL04F+qPscTn+qEbG11NE/JfZ+dtnRwCQvO+xnDtjL+n
+ h9MpIpTUGu1gUSXNSNumHLS2uAUEkWh4pnsb5Ww0HGjmQ7Y2Yv4NEff6+s7S9xeni4GV
+ lBNaJqrWyBKa6jum8yY43EclaoZrIdjdpj679DwjFIuh4QedHxPYkB3TR+Gxo8PlBLhO
+ Ckvm4fXipe4EjWTry7G/jhW9kv37Ep47vDwehYwxUeRxPA+8++N52omGzWxR6RshpYBy
+ GQEMvueLbGTgqfPtVNvLimYFQbAsJmQGm3+3DChUkl7szr4u3/714AgqBCB65np/XKFE GA== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqk1d3q4d-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqkhubuga-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:47:49 +0000
+ Thu, 19 Oct 2023 20:47:51 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 39JJFmpJ040757; Thu, 19 Oct 2023 20:47:49 GMT
+ with ESMTP id 39JJtgbX040431; Thu, 19 Oct 2023 20:47:50 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3trfyqqahg-1
+ 3trfyqqaj0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:47:49 +0000
+ Thu, 19 Oct 2023 20:47:50 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKllWI014514;
- Thu, 19 Oct 2023 20:47:48 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKllWK014514;
+ Thu, 19 Oct 2023 20:47:49 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3trfyqqafy-2; Thu, 19 Oct 2023 20:47:48 +0000
+ ESMTP id 3trfyqqafy-3; Thu, 19 Oct 2023 20:47:49 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 1/4] migration: mode parameter
-Date: Thu, 19 Oct 2023 13:47:43 -0700
-Message-Id: <1697748466-373230-2-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 2/4] migration: per-mode blockers
+Date: Thu, 19 Oct 2023 13:47:44 -0700
+Message-Id: <1697748466-373230-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
 References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
@@ -70,10 +70,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  phishscore=0 spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310190176
-X-Proofpoint-GUID: tCcvPBVoOhN6Ng6u3FUj2lwDtJ61vZc9
-X-Proofpoint-ORIG-GUID: tCcvPBVoOhN6Ng6u3FUj2lwDtJ61vZc9
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: BT8CdHFrqyiwIxAlTJOo35VG_Tm9npJV
+X-Proofpoint-ORIG-GUID: BT8CdHFrqyiwIxAlTJOo35VG_Tm9npJV
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -96,266 +96,274 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a mode migration parameter that can be used to select alternate
-migration algorithms.  The default mode is normal, representing the
-current migration algorithm, and does not need to be explicitly set.
+Extend the blocker interface so that a blocker can be registered for
+one or more migration modes.  The existing interfaces register a
+blocker for all modes, and the new interfaces take a varargs list
+of modes.
 
-No functional change until a new mode is added, except that the mode is
-shown by the 'info migrate' command.
+Internally, maintain a separate blocker list per mode.  The same Error
+object may be added to multiple lists.  When a block is deleted, it is
+removed from every list, and the Error is freed.
+
+No functional change until a new mode is added.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/core/qdev-properties-system.c    | 12 ++++++++++++
- include/hw/qdev-properties-system.h |  4 ++++
- include/migration/misc.h            |  1 +
- migration/migration-hmp-cmds.c      |  8 ++++++++
- migration/options.c                 | 21 +++++++++++++++++++++
- migration/options.h                 |  1 +
- qapi/migration.json                 | 27 ++++++++++++++++++++++++---
- 7 files changed, 71 insertions(+), 3 deletions(-)
+ include/migration/blocker.h | 44 +++++++++++++++++++--
+ migration/migration.c       | 95 ++++++++++++++++++++++++++++++++++++++-------
+ stubs/migr-blocker.c        | 10 +++++
+ 3 files changed, 132 insertions(+), 17 deletions(-)
 
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 6883406..c6fd430 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -673,6 +673,18 @@ const PropertyInfo qdev_prop_multifd_compression = {
-     .set_default_value = qdev_propinfo_set_default_value_enum,
- };
+diff --git a/include/migration/blocker.h b/include/migration/blocker.h
+index b048f30..a687ac0 100644
+--- a/include/migration/blocker.h
++++ b/include/migration/blocker.h
+@@ -14,8 +14,12 @@
+ #ifndef MIGRATION_BLOCKER_H
+ #define MIGRATION_BLOCKER_H
  
-+/* --- MigMode --- */
-+
-+const PropertyInfo qdev_prop_mig_mode = {
-+    .name = "MigMode",
-+    .description = "mig_mode values, "
-+                   "normal/exec",
-+    .enum_table = &MigMode_lookup,
-+    .get = qdev_propinfo_get_enum,
-+    .set = qdev_propinfo_set_enum,
-+    .set_default_value = qdev_propinfo_set_default_value_enum,
-+};
-+
- /* --- Reserved Region --- */
- 
- /*
-diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
-index 0ac327a..1418801 100644
---- a/include/hw/qdev-properties-system.h
-+++ b/include/hw/qdev-properties-system.h
-@@ -7,6 +7,7 @@ extern const PropertyInfo qdev_prop_chr;
- extern const PropertyInfo qdev_prop_macaddr;
- extern const PropertyInfo qdev_prop_reserved_region;
- extern const PropertyInfo qdev_prop_multifd_compression;
-+extern const PropertyInfo qdev_prop_mig_mode;
- extern const PropertyInfo qdev_prop_losttickpolicy;
- extern const PropertyInfo qdev_prop_blockdev_on_error;
- extern const PropertyInfo qdev_prop_bios_chs_trans;
-@@ -41,6 +42,9 @@ extern const PropertyInfo qdev_prop_pcie_link_width;
- #define DEFINE_PROP_MULTIFD_COMPRESSION(_n, _s, _f, _d) \
-     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_multifd_compression, \
-                        MultiFDCompression)
-+#define DEFINE_PROP_MIG_MODE(_n, _s, _f, _d) \
-+    DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_mig_mode, \
-+                       MigMode)
- #define DEFINE_PROP_LOSTTICKPOLICY(_n, _s, _f, _d) \
-     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_losttickpolicy, \
-                         LostTickPolicy)
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 673ac49..1bc8902 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -15,6 +15,7 @@
- #define MIGRATION_MISC_H
- 
- #include "qemu/notify.h"
 +#include "qapi/qapi-types-migration.h"
- #include "qapi/qapi-types-net.h"
++
++#define MIG_MODE_ALL MIG_MODE__MAX
++
+ /**
+- * @migrate_add_blocker - prevent migration from proceeding
++ * @migrate_add_blocker - prevent all modes of migration from proceeding
+  *
+  * @reasonp - address of an error to be returned whenever migration is attempted
+  *
+@@ -30,8 +34,8 @@
+ int migrate_add_blocker(Error **reasonp, Error **errp);
  
- /* migration/ram.c */
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index a82597f..d8ad429 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -274,6 +274,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "%s: %" PRIu64 " ms\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_ANNOUNCE_STEP),
-             params->announce_step);
-+        assert(params->has_mode);
-+        monitor_printf(mon, "%s: %s\n",
-+            MigrationParameter_str(MIGRATION_PARAMETER_MODE),
-+            qapi_enum_lookup(&MigMode_lookup, params->mode));
-         assert(params->has_compress_level);
-         monitor_printf(mon, "%s: %u\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_COMPRESS_LEVEL),
-@@ -514,6 +518,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-     }
+ /**
+- * @migrate_add_blocker_internal - prevent migration from proceeding without
+- *                                 only-migrate implications
++ * @migrate_add_blocker_internal - prevent all modes of migration from
++ *                                 proceeding, but ignore -only-migratable
+  *
+  * @reasonp - address of an error to be returned whenever migration is attempted
+  *
+@@ -50,7 +54,7 @@ int migrate_add_blocker(Error **reasonp, Error **errp);
+ int migrate_add_blocker_internal(Error **reasonp, Error **errp);
  
-     switch (val) {
-+    case MIGRATION_PARAMETER_MODE:
-+        p->has_mode = true;
-+        visit_type_MigMode(v, param, &p->mode, &err);
-+        break;
-     case MIGRATION_PARAMETER_COMPRESS_LEVEL:
-         p->has_compress_level = true;
-         visit_type_uint8(v, param, &p->compress_level, &err);
-diff --git a/migration/options.c b/migration/options.c
-index 42fb818..4f26515 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -101,6 +101,9 @@ Property migration_properties[] = {
-                      preempt_pre_7_2, false),
+ /**
+- * @migrate_del_blocker - remove a blocking error from migration and free it.
++ * @migrate_del_blocker - remove a migration blocker from all modes and free it.
+  *
+  * @reasonp - address of the error blocking migration
+  *
+@@ -58,4 +62,36 @@ int migrate_add_blocker_internal(Error **reasonp, Error **errp);
+  */
+ void migrate_del_blocker(Error **reasonp);
  
-     /* Migration parameters */
-+    DEFINE_PROP_MIG_MODE("mode", MigrationState,
-+                      parameters.mode,
-+                      MIG_MODE_NORMAL),
-     DEFINE_PROP_UINT8("x-compress-level", MigrationState,
-                       parameters.compress_level,
-                       DEFAULT_MIGRATE_COMPRESS_LEVEL),
-@@ -867,6 +870,13 @@ uint64_t migrate_xbzrle_cache_size(void)
-     return s->parameters.xbzrle_cache_size;
++/**
++ * @migrate_add_blocker_normal - prevent normal migration mode from proceeding
++ *
++ * @reasonp - address of an error to be returned whenever migration is attempted
++ *
++ * @errp - [out] The reason (if any) we cannot block migration right now.
++ *
++ * @returns - 0 on success, -EBUSY/-EACCES on failure, with errp set.
++ *
++ * *@reasonp is freed and set to NULL if failure is returned.
++ * On success, the caller must not free @reasonp, except by
++ *   calling migrate_del_blocker.
++ */
++int migrate_add_blocker_normal(Error **reasonp, Error **errp);
++
++/**
++ * @migrate_add_blocker_modes - prevent some modes of migration from proceeding
++ *
++ * @reasonp - address of an error to be returned whenever migration is attempted
++ *
++ * @errp - [out] The reason (if any) we cannot block migration right now.
++ *
++ * @mode - one or more migration modes to be blocked.  The list is terminated
++ *         by -1 or MIG_MODE_ALL.  For the latter, all modes are blocked.
++ *
++ * @returns - 0 on success, -EBUSY/-EACCES on failure, with errp set.
++ *
++ * *@reasonp is freed and set to NULL if failure is returned.
++ * On success, the caller must not free *@reasonp before the blocker is removed.
++ */
++int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...);
++
+ #endif
+diff --git a/migration/migration.c b/migration/migration.c
+index 67547eb..b8b54e6 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -92,7 +92,7 @@ enum mig_rp_message_type {
+ static MigrationState *current_migration;
+ static MigrationIncomingState *current_incoming;
+ 
+-static GSList *migration_blockers;
++static GSList *migration_blockers[MIG_MODE__MAX];
+ 
+ static bool migration_object_check(MigrationState *ms, Error **errp);
+ static int migration_maybe_pause(MigrationState *s,
+@@ -1011,7 +1011,7 @@ static void fill_source_migration_info(MigrationInfo *info)
+ {
+     MigrationState *s = migrate_get_current();
+     int state = qatomic_read(&s->state);
+-    GSList *cur_blocker = migration_blockers;
++    GSList *cur_blocker = migration_blockers[migrate_mode()];
+ 
+     info->blocked_reasons = NULL;
+ 
+@@ -1475,38 +1475,105 @@ int migrate_init(MigrationState *s, Error **errp)
+     return 0;
  }
  
-+MigMode migrate_mode(void)
-+{
-+    MigrationState *s = migrate_get_current();
+-int migrate_add_blocker_internal(Error **reasonp, Error **errp)
++static bool is_busy(Error **reasonp, Error **errp)
+ {
++    ERRP_GUARD();
 +
-+    return s->parameters.mode;
+     /* Snapshots are similar to migrations, so check RUN_STATE_SAVE_VM too. */
+     if (runstate_check(RUN_STATE_SAVE_VM) || !migration_is_idle()) {
+         error_propagate_prepend(errp, *reasonp,
+                                 "disallowing migration blocker "
+                                 "(migration/snapshot in progress) for: ");
+         *reasonp = NULL;
+-        return -EBUSY;
++        return true;
+     }
+-
+-    migration_blockers = g_slist_prepend(migration_blockers, *reasonp);
+-    return 0;
++    return false;
+ }
+ 
+-int migrate_add_blocker(Error **reasonp, Error **errp)
++static bool is_only_migratable(Error **reasonp, Error **errp, int modes)
+ {
+-    if (only_migratable) {
++    ERRP_GUARD();
++
++    if (only_migratable && (modes & BIT(MIG_MODE_NORMAL))) {
+         error_propagate_prepend(errp, *reasonp,
+                                 "disallowing migration blocker "
+                                 "(--only-migratable) for: ");
+         *reasonp = NULL;
++        return true;
++    }
++    return false;
 +}
 +
- /* parameter setters */
- 
- void migrate_set_block_incremental(bool value)
-@@ -911,6 +921,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
- 
-     /* TODO use QAPI_CLONE() instead of duplicating it inline */
-     params = g_malloc0(sizeof(*params));
-+    params->has_mode = true;
-+    params->mode = s->parameters.mode;
-     params->has_compress_level = true;
-     params->compress_level = s->parameters.compress_level;
-     params->has_compress_threads = true;
-@@ -985,6 +997,7 @@ void migrate_params_init(MigrationParameters *params)
-     params->tls_creds = g_strdup("");
- 
-     /* Set has_* up only for parameter checks */
-+    params->has_mode = true;
-     params->has_compress_level = true;
-     params->has_compress_threads = true;
-     params->has_compress_wait_thread = true;
-@@ -1206,6 +1219,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
- 
-     /* TODO use QAPI_CLONE() instead of duplicating it inline */
- 
-+    if (params->has_mode) {
-+        dest->mode = params->mode;
++static int get_modes(MigMode mode, va_list ap)
++{
++    int modes = 0;
++
++    while (mode != -1 && mode != MIG_MODE_ALL) {
++        assert(mode >= MIG_MODE_NORMAL && mode < MIG_MODE__MAX);
++        modes |= BIT(mode);
++        mode = va_arg(ap, MigMode);
 +    }
-+
-     if (params->has_compress_level) {
-         dest->compress_level = params->compress_level;
-     }
-@@ -1315,6 +1332,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
- 
-     /* TODO use QAPI_CLONE() instead of duplicating it inline */
- 
-+    if (params->has_mode) {
-+        s->parameters.mode = params->mode;
++    if (mode == MIG_MODE_ALL) {
++        modes = BIT(MIG_MODE__MAX) - 1;
 +    }
++    return modes;
++}
 +
-     if (params->has_compress_level) {
-         s->parameters.compress_level = params->compress_level;
++static int add_blockers(Error **reasonp, Error **errp, int modes)
++{
++    for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
++        if (modes & BIT(mode)) {
++            migration_blockers[mode] = g_slist_prepend(migration_blockers[mode],
++                                                       *reasonp);
++        }
++    }
++    return 0;
++}
++
++int migrate_add_blocker(Error **reasonp, Error **errp)
++{
++    return migrate_add_blocker_modes(reasonp, errp, MIG_MODE_ALL);
++}
++
++int migrate_add_blocker_normal(Error **reasonp, Error **errp)
++{
++    return migrate_add_blocker_modes(reasonp, errp, MIG_MODE_NORMAL, -1);
++}
++
++int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...)
++{
++    int modes;
++    va_list ap;
++
++    va_start(ap, mode);
++    modes = get_modes(mode, ap);
++    va_end(ap);
++
++    if (is_only_migratable(reasonp, errp, modes)) {
+         return -EACCES;
++    } else if (is_busy(reasonp, errp)) {
++        return -EBUSY;
      }
-diff --git a/migration/options.h b/migration/options.h
-index 237f2d6..d9ec873 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -92,6 +92,7 @@ const char *migrate_tls_authz(void);
- const char *migrate_tls_creds(void);
- const char *migrate_tls_hostname(void);
- uint64_t migrate_xbzrle_cache_size(void);
-+MigMode migrate_mode(void);
++    return add_blockers(reasonp, errp, modes);
++}
  
- /* parameters setters */
- 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index db3df12..184fb78 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -616,6 +616,15 @@
-             { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
- 
- ##
-+# @MigMode:
-+#
-+# @normal: the original form of migration. (since 8.2)
-+#
-+##
-+{ 'enum': 'MigMode',
-+  'data': [ 'normal' ] }
+-    return migrate_add_blocker_internal(reasonp, errp);
++int migrate_add_blocker_internal(Error **reasonp, Error **errp)
++{
++    int modes = BIT(MIG_MODE__MAX) - 1;
 +
-+##
- # @BitmapMigrationBitmapAliasTransform:
- #
- # @persistent: If present, the bitmap will be made persistent or
-@@ -675,6 +684,9 @@
- #
- # Migration parameters enumeration
- #
-+# @mode: Migration mode. See description in @MigMode. Default is 'normal'.
-+#        (Since 8.2)
-+#
- # @announce-initial: Initial delay (in milliseconds) before sending
- #     the first announce (Since 4.0)
- #
-@@ -841,7 +853,8 @@
- # Since: 2.4
- ##
- { 'enum': 'MigrationParameter',
--  'data': ['announce-initial', 'announce-max',
-+  'data': ['mode',
-+           'announce-initial', 'announce-max',
-            'announce-rounds', 'announce-step',
-            'compress-level', 'compress-threads', 'decompress-threads',
-            'compress-wait-thread', 'throttle-trigger-threshold',
-@@ -862,6 +875,9 @@
- ##
- # @MigrateSetParameters:
- #
-+# @mode: Migration mode. See description in @MigMode. Default is 'normal'.
-+#        (Since 8.2)
-+#
- # @announce-initial: Initial delay (in milliseconds) before sending
- #     the first announce (Since 4.0)
- #
-@@ -1020,7 +1036,8 @@
- # Since: 2.4
- ##
- { 'struct': 'MigrateSetParameters',
--  'data': { '*announce-initial': 'size',
-+  'data': { '*mode': 'MigMode',
-+            '*announce-initial': 'size',
-             '*announce-max': 'size',
-             '*announce-rounds': 'size',
-             '*announce-step': 'size',
-@@ -1074,6 +1091,9 @@
- #
- # The optional members aren't actually optional.
- #
-+# @mode: Migration mode. See description in @MigMode. Default is 'normal'.
-+#        (Since 8.2)
-+#
- # @announce-initial: Initial delay (in milliseconds) before sending
- #     the first announce (Since 4.0)
- #
-@@ -1231,7 +1251,8 @@
- # Since: 2.4
- ##
- { 'struct': 'MigrationParameters',
--  'data': { '*announce-initial': 'size',
-+  'data': { '*mode': 'MigMode',
-+            '*announce-initial': 'size',
-             '*announce-max': 'size',
-             '*announce-rounds': 'size',
-             '*announce-step': 'size',
++    if (is_busy(reasonp, errp)) {
++        return -EBUSY;
++    }
++    return add_blockers(reasonp, errp, modes);
+ }
+ 
+ void migrate_del_blocker(Error **reasonp)
+ {
+     if (*reasonp) {
+-        migration_blockers = g_slist_remove(migration_blockers, *reasonp);
++        for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
++            migration_blockers[mode] = g_slist_remove(migration_blockers[mode],
++                                                      *reasonp);
++        }
+         error_free(*reasonp);
+         *reasonp = NULL;
+     }
+@@ -1602,12 +1669,14 @@ void qmp_migrate_pause(Error **errp)
+ 
+ bool migration_is_blocked(Error **errp)
+ {
++    GSList *blockers = migration_blockers[migrate_mode()];
++
+     if (qemu_savevm_state_blocked(errp)) {
+         return true;
+     }
+ 
+-    if (migration_blockers) {
+-        error_propagate(errp, error_copy(migration_blockers->data));
++    if (blockers) {
++        error_propagate(errp, error_copy(blockers->data));
+         return true;
+     }
+ 
+diff --git a/stubs/migr-blocker.c b/stubs/migr-blocker.c
+index 17a5dbf..11cbff2 100644
+--- a/stubs/migr-blocker.c
++++ b/stubs/migr-blocker.c
+@@ -6,6 +6,16 @@ int migrate_add_blocker(Error **reasonp, Error **errp)
+     return 0;
+ }
+ 
++int migrate_add_blocker_normal(Error **reasonp, Error **errp)
++{
++    return 0;
++}
++
++int migrate_add_blocker_modes(Error **reasonp, Error **errp, MigMode mode, ...)
++{
++    return 0;
++}
++
+ void migrate_del_blocker(Error **reasonp)
+ {
+ }
 -- 
 1.8.3.1
 
