@@ -2,81 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE387CF535
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1016A7CF55B
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:30:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQFq-0001Xi-6Z; Thu, 19 Oct 2023 06:27:50 -0400
+	id 1qtQH1-0003zX-24; Thu, 19 Oct 2023 06:29:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qtQFl-0001VX-2L; Thu, 19 Oct 2023 06:27:45 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtQGr-0003eg-3a
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:28:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qtQFh-0006xB-QO; Thu, 19 Oct 2023 06:27:44 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB3jT0f7fz6HJMR;
- Thu, 19 Oct 2023 18:24:13 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 19 Oct 2023 11:27:37 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Thu, 19 Oct 2023 11:27:37 +0100
-To: =?utf-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>, Jonathan Cameron
- <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
- <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V6 4/9] hw/acpi: Init GED framework with CPU hotplug events
-Thread-Topic: [PATCH V6 4/9] hw/acpi: Init GED framework with CPU hotplug
- events
-Thread-Index: AQHZ/cN5nupvt1X/j0S+fZufTSL4urBQ3j+AgAATTTA=
-Date: Thu, 19 Oct 2023 10:27:37 +0000
-Message-ID: <a7025265329d486f8684f43a573acaa4@huawei.com>
-References: <20231013105129.25648-1-salil.mehta@huawei.com>
- <20231013105129.25648-5-salil.mehta@huawei.com> <87fs26apcd.fsf@linaro.org>
-In-Reply-To: <87fs26apcd.fsf@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.171.120]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtQGp-0007Bu-6V
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:28:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697711329;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=tneNM1XuIMOzOm3QJiTs/N6HyS35VchsfJFWb4Nf+RI=;
+ b=X/M/6KbjKqPmAqskal6sy2G1AWeeevNuHWZp8BHHT+lcGqvDqvPKIeYvBpITo2o1yxUaGH
+ 4OSuZ1jlf7k41lK09Vylo87PeCzeWmrditsl0aRUXZlHyeUAcOB3QOwenc6JSQAh+z6fHL
+ xOBvgd6X8TzB98aktjOkj+E3vzpSNds=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-569-u__1etECO62LuvngxvB50Q-1; Thu, 19 Oct 2023 06:28:42 -0400
+X-MC-Unique: u__1etECO62LuvngxvB50Q-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32d33e3aea5so4957670f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:28:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697711321; x=1698316121;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tneNM1XuIMOzOm3QJiTs/N6HyS35VchsfJFWb4Nf+RI=;
+ b=jQTo6VXdupfHklg1mvgptuLvj0sqxStchk19Kz4uPmhcARYm8z7cALtj7Pa6E8g73K
+ VEmnAyqrUxleJJOpyTak7wuThzlYSU47Mpa3TqAWMHLTVOLV2cwpUqJBPXiPY4//DXFl
+ nTsmmLRAcsC9Q06denqqndTFXSqeshBRFFFU9VsHn9cyp74H+fqbehvfILtpiy6KA4yp
+ jNxhJxHKTWd2mG239ze8JPNW11f/ElXK7YAfCAvsdEg8BP5f9i0UgIYeHjkXE68etE0a
+ LCVOedRmCyTuHDSpyt2epj4TmQ+qTGQDpg/EnEJY+SEX43VTBSZLdUhx46hfSfo6/Q/T
+ BX4g==
+X-Gm-Message-State: AOJu0Yy/Kh8vpl2aYW/FeBR/1oggLSJn8JPJoaYdgOEA2T3burHxQfF+
+ hJiBUZMCQdkLUTDYaOqGsM1IECYXWUAJZVpH89DugMiFDOHKa6irA//UtEQUMOWrnQi9gCrlPJF
+ rd6SoKHI26UMP9Qs=
+X-Received: by 2002:adf:fccc:0:b0:32d:8e54:29fa with SMTP id
+ f12-20020adffccc000000b0032d8e5429famr1118226wrs.44.1697711321568; 
+ Thu, 19 Oct 2023 03:28:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEAgOVsy8M5SLP6zpItFczC0OMHpHEL/c8CxNqKqOsS8axFKmJojQPqOCM3phwiEv6Jy+H1pw==
+X-Received: by 2002:adf:fccc:0:b0:32d:8e54:29fa with SMTP id
+ f12-20020adffccc000000b0032d8e5429famr1118212wrs.44.1697711321150; 
+ Thu, 19 Oct 2023 03:28:41 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ v7-20020adfebc7000000b003196b1bb528sm4139311wrn.64.2023.10.19.03.28.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 03:28:40 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH v2 3/6] migration/multifd: Decouple control flow
+ from the SYNC packet
+In-Reply-To: <20231012140651.13122-4-farosas@suse.de> (Fabiano Rosas's message
+ of "Thu, 12 Oct 2023 11:06:48 -0300")
+References: <20231012140651.13122-1-farosas@suse.de>
+ <20231012140651.13122-4-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Thu, 19 Oct 2023 12:28:39 +0200
+Message-ID: <87fs267voo.fsf@secure.mitica>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,97 +98,145 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgQWxleCwNCg0KPiBGcm9tOiBBbGV4IEJlbm7DqWUgPGFsZXguYmVubmVlQGxpbmFyby5vcmc+
-DQo+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVyIDE5LCAyMDIzIDExOjE2IEFNDQo+IFRvOiBTYWxp
-bCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4NCj4gQ2M6IHFlbXUtZGV2ZWxAbm9uZ251
-Lm9yZzsgcWVtdS1hcm1Abm9uZ251Lm9yZzsgbWF6QGtlcm5lbC5vcmc7IGplYW4tDQo+IHBoaWxp
-cHBlQGxpbmFyby5vcmc7IEpvbmF0aGFuIENhbWVyb24gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2Vp
-LmNvbT47DQo+IGxwaWVyYWxpc2lAa2VybmVsLm9yZzsgcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3Jn
-Ow0KPiByaWNoYXJkLmhlbmRlcnNvbkBsaW5hcm8ub3JnOyBpbWFtbWVkb0ByZWRoYXQuY29tOyBh
-bmRyZXcuam9uZXNAbGludXguZGV2Ow0KPiBkYXZpZEByZWRoYXQuY29tOyBwaGlsbWRAbGluYXJv
-Lm9yZzsgZXJpYy5hdWdlckByZWRoYXQuY29tOw0KPiBvbGl2ZXIudXB0b25AbGludXguZGV2OyBw
-Ym9uemluaUByZWRoYXQuY29tOyBtc3RAcmVkaGF0LmNvbTsNCj4gd2lsbEBrZXJuZWwub3JnOyBn
-c2hhbkByZWRoYXQuY29tOyByYWZhZWxAa2VybmVsLm9yZzsNCj4gbGludXhAYXJtbGludXgub3Jn
-LnVrOyBkYXJyZW5Ab3MuYW1wZXJlY29tcHV0aW5nLmNvbTsNCj4gaWxra2FAb3MuYW1wZXJlY29t
-cHV0aW5nLmNvbTsgdmlzaG51QG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IGthcmwuaGV1YmF1
-bUBvcmFjbGUuY29tOyBtaWd1ZWwubHVpc0BvcmFjbGUuY29tOyBzYWxpbC5tZWh0YUBvcG5zcmMu
-bmV0Ow0KPiB6aHVrZXFpYW4gPHpodWtlcWlhbjFAaHVhd2VpLmNvbT47IHdhbmd4aW9uZ2Zlbmcg
-KEMpDQo+IDx3YW5neGlvbmdmZW5nMkBodWF3ZWkuY29tPjsgd2FuZ3lhbmFuIChZKSA8d2FuZ3lh
-bmFuNTVAaHVhd2VpLmNvbT47DQo+IGppYWtlcm5lbDJAZ21haWwuY29tOyBtYW9iaWJvQGxvb25n
-c29uLmNuOyBsaXhpYW5nbGFpQGxvb25nc29uLmNuOyBMaW51eGFybQ0KPiA8bGludXhhcm1AaHVh
-d2VpLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBWNiA0LzldIGh3L2FjcGk6IEluaXQgR0VE
-IGZyYW1ld29yayB3aXRoIENQVSBob3RwbHVnDQo+IGV2ZW50cw0KPiANCj4gDQo+IFNhbGlsIE1l
-aHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPiB3cml0ZXM6DQo+IA0KPiA+IEFDUEkgR0VEKGFz
-IGRlc2NyaWJlZCBpbiB0aGUgQUNQSSA2LjIgc3BlYykgY2FuIGJlIHVzZWQgdG8gZ2VuZXJhdGUg
-QUNQSSBldmVudHMNCj4gPiB3aGVuIE9TUE0vZ3Vlc3QgcmVjZWl2ZXMgYW4gaW50ZXJydXB0IGxp
-c3RlZCBpbiB0aGUgX0NSUyBvYmplY3Qgb2YgR0VELiBPU1BNDQo+ID4gdGhlbiBtYXBzIG9yIGRl
-bXVsdGlwbGV4ZXMgdGhlIGV2ZW50IGJ5IGV2YWx1YXRpbmcgX0VWVCBtZXRob2QuDQo+ID4NCj4g
-PiBUaGlzIGNoYW5nZSBhZGRzIHRoZSBzdXBwb3J0IG9mIENQVSBob3RwbHVnIGV2ZW50IGluaXRp
-YWxpemF0aW9uIGluIHRoZQ0KPiA+IGV4aXN0aW5nIEdFRCBmcmFtZXdvcmsuDQo+IA0KPiBTaG91
-bGQgd2UgYWxzbyB1cGRhdGUgdGhlIGRvY3MgaGVyZToNCj4gDQo+ICAgaHR0cHM6Ly9xZW11LnJl
-YWR0aGVkb2NzLmlvL2VuL21hc3Rlci9zcGVjcy9hY3BpX2h3X3JlZHVjZWRfaG90cGx1Zy5odG1s
-DQo+IA0KPiAoc2VlIGRvY3Mvc3BlY3MvYWNwaV9od19yZWR1Y2VkX2hvdHBsdWcucnN0KQ0KDQoN
-Ckdvb2QgcG9pbnQuIFdpbGwgZG8uDQoNCg0KPiB0byBhZGQgdGhlIG5ldyBiaXRzPyBPciBtYXli
-ZSBhbiB1cGRhdGUgdG8gZG9jdW1lbnRhdGlvbiBhcyB0aGUgbGFzdA0KPiBjb21taXQ/DQoNCldp
-bGwgYWRkIG9uZSBtb3JlIHBhdGNoIGF0IHRoZSBsYXN0IGZvciB0aGlzIGRvY3VtZW50YXRpb24g
-Y2hhbmdlLg0KDQpUaGFua3MgZm9yIGlkZW50aWZ5aW5nIHRoaXMuDQoNCkNoZWVycw0KU2FsaWwu
-DQoNCg0KPiANCj4gPg0KPiA+IENvLWRldmVsb3BlZC1ieTogS2VxaWFuIFpodSA8emh1a2VxaWFu
-MUBodWF3ZWkuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEtlcWlhbiBaaHUgPHpodWtlcWlhbjFA
-aHVhd2VpLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFA
-aHVhd2VpLmNvbT4NCj4gPiBSZXZpZXdlZC1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9uYXRoYW4u
-Q2FtZXJvbkBodWF3ZWkuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBHYXZpbiBTaGFuIDxnc2hhbkBy
-ZWRoYXQuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVk
-aGF0LmNvbT4NCj4gPiBUZXN0ZWQtYnk6IFZpc2hudSBQYWpqdXJpIDx2aXNobnVAb3MuYW1wZXJl
-Y29tcHV0aW5nLmNvbT4NCj4gPiBUZXN0ZWQtYnk6IFhpYW5nbGFpIExpIDxsaXhpYW5nbGFpQGxv
-b25nc29uLmNuPg0KPiA+IC0tLQ0KPiA+ICBody9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmMg
-ICAgICAgICB8IDggKysrKysrKysNCj4gPiAgaW5jbHVkZS9ody9hY3BpL2dlbmVyaWNfZXZlbnRf
-ZGV2aWNlLmggfCA1ICsrKysrDQo+ID4gIDIgZmlsZXMgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygr
-KQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2h3L2FjcGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuYw0K
-PiBiL2h3L2FjcGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuYw0KPiA+IGluZGV4IGEzZDMxNjMxZmUu
-LmQyZmExZDBlNGEgMTAwNjQ0DQo+ID4gLS0tIGEvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2Rldmlj
-ZS5jDQo+ID4gKysrIGIvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2RldmljZS5jDQo+ID4gQEAgLTI1
-LDYgKzI1LDcgQEAgc3RhdGljIGNvbnN0IHVpbnQzMl90IGdlZF9zdXBwb3J0ZWRfZXZlbnRzW10g
-PSB7DQo+ID4gICAgICBBQ1BJX0dFRF9NRU1fSE9UUExVR19FVlQsDQo+ID4gICAgICBBQ1BJX0dF
-RF9QV1JfRE9XTl9FVlQsDQo+ID4gICAgICBBQ1BJX0dFRF9OVkRJTU1fSE9UUExVR19FVlQsDQo+
-ID4gKyAgICBBQ1BJX0dFRF9DUFVfSE9UUExVR19FVlQsDQo+ID4gIH07DQo+ID4NCj4gPiAgLyoN
-Cj4gPiBAQCAtNDAwLDYgKzQwMSwxMyBAQCBzdGF0aWMgdm9pZCBhY3BpX2dlZF9pbml0Zm4oT2Jq
-ZWN0ICpvYmopDQo+ID4gICAgICBtZW1vcnlfcmVnaW9uX2luaXRfaW8oJmdlZF9zdC0+cmVncywg
-b2JqLCAmZ2VkX3JlZ3Nfb3BzLCBnZWRfc3QsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgVFlQRV9BQ1BJX0dFRCAiLXJlZ3MiLCBBQ1BJX0dFRF9SRUdfQ09VTlQpOw0KPiA+ICAgICAg
-c3lzYnVzX2luaXRfbW1pbyhzYmQsICZnZWRfc3QtPnJlZ3MpOw0KPiA+ICsNCj4gPiArICAgIHMt
-PmNwdWhwLmRldmljZSA9IE9CSkVDVChzKTsNCj4gPiArICAgIG1lbW9yeV9yZWdpb25faW5pdCgm
-cy0+Y29udGFpbmVyX2NwdWhwLCBPQkpFQ1QoZGV2KSwgImNwdWhwDQo+IGNvbnRhaW5lciIsDQo+
-ID4gKyAgICAgICAgICAgICAgICAgICAgICAgQUNQSV9DUFVfSE9UUExVR19SRUdfTEVOKTsNCj4g
-PiArICAgIHN5c2J1c19pbml0X21taW8oU1lTX0JVU19ERVZJQ0UoZGV2KSwgJnMtPmNvbnRhaW5l
-cl9jcHVocCk7DQo+ID4gKyAgICBjcHVfaG90cGx1Z19od19pbml0KCZzLT5jb250YWluZXJfY3B1
-aHAsIE9CSkVDVChkZXYpLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAmcy0+Y3B1aHBf
-c3RhdGUsIDApOw0KPiA+ICB9DQo+ID4NCj4gPiAgc3RhdGljIHZvaWQgYWNwaV9nZWRfY2xhc3Nf
-aW5pdChPYmplY3RDbGFzcyAqY2xhc3MsIHZvaWQgKmRhdGEpDQo+ID4gZGlmZiAtLWdpdCBhL2lu
-Y2x1ZGUvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2RldmljZS5oDQo+IGIvaW5jbHVkZS9ody9hY3Bp
-L2dlbmVyaWNfZXZlbnRfZGV2aWNlLmgNCj4gPiBpbmRleCBiYTg0Y2UwMjE0Li5hODAzZWE4MThl
-IDEwMDY0NA0KPiA+IC0tLSBhL2luY2x1ZGUvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2RldmljZS5o
-DQo+ID4gKysrIGIvaW5jbHVkZS9ody9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmgNCj4gPiBA
-QCAtNjAsNiArNjAsNyBAQA0KPiA+ICAjZGVmaW5lIEhXX0FDUElfR0VORVJJQ19FVkVOVF9ERVZJ
-Q0VfSA0KPiA+DQo+ID4gICNpbmNsdWRlICJody9zeXNidXMuaCINCj4gPiArI2luY2x1ZGUgImh3
-L2FjcGkvY3B1X2hvdHBsdWcuaCINCj4gPiAgI2luY2x1ZGUgImh3L2FjcGkvbWVtb3J5X2hvdHBs
-dWcuaCINCj4gPiAgI2luY2x1ZGUgImh3L2FjcGkvZ2hlcy5oIg0KPiA+ICAjaW5jbHVkZSAicW9t
-L29iamVjdC5oIg0KPiA+IEBAIC05NSw2ICs5Niw3IEBAIE9CSkVDVF9ERUNMQVJFX1NJTVBMRV9U
-WVBFKEFjcGlHZWRTdGF0ZSwgQUNQSV9HRUQpDQo+ID4gICNkZWZpbmUgQUNQSV9HRURfTUVNX0hP
-VFBMVUdfRVZUICAgMHgxDQo+ID4gICNkZWZpbmUgQUNQSV9HRURfUFdSX0RPV05fRVZUICAgICAg
-MHgyDQo+ID4gICNkZWZpbmUgQUNQSV9HRURfTlZESU1NX0hPVFBMVUdfRVZUIDB4NA0KPiA+ICsj
-ZGVmaW5lIEFDUElfR0VEX0NQVV9IT1RQTFVHX0VWVCAgICAweDgNCj4gPg0KPiA+ICB0eXBlZGVm
-IHN0cnVjdCBHRURTdGF0ZSB7DQo+ID4gICAgICBNZW1vcnlSZWdpb24gZXZ0Ow0KPiA+IEBAIC0x
-MDYsNiArMTA4LDkgQEAgc3RydWN0IEFjcGlHZWRTdGF0ZSB7DQo+ID4gICAgICBTeXNCdXNEZXZp
-Y2UgcGFyZW50X29iajsNCj4gPiAgICAgIE1lbUhvdHBsdWdTdGF0ZSBtZW1ocF9zdGF0ZTsNCj4g
-PiAgICAgIE1lbW9yeVJlZ2lvbiBjb250YWluZXJfbWVtaHA7DQo+ID4gKyAgICBDUFVIb3RwbHVn
-U3RhdGUgY3B1aHBfc3RhdGU7DQo+ID4gKyAgICBNZW1vcnlSZWdpb24gY29udGFpbmVyX2NwdWhw
-Ow0KPiA+ICsgICAgQWNwaUNwdUhvdHBsdWcgY3B1aHA7DQo+ID4gICAgICBHRURTdGF0ZSBnZWRf
-c3RhdGU7DQo+ID4gICAgICB1aW50MzJfdCBnZWRfZXZlbnRfYml0bWFwOw0KPiA+ICAgICAgcWVt
-dV9pcnEgaXJxOw0KPiANCj4gDQo+IC0tDQo+IEFsZXggQmVubsOpZQ0KPiBWaXJ0dWFsaXNhdGlv
-biBUZWNoIExlYWQgQCBMaW5hcm8NCg0K
+Fabiano Rosas <farosas@suse.de> wrote:
+> We currently use the 'sem_sync' semaphore on the sending side:
+>
+> 1) to know when the multifd_send_thread() has finished sending the
+>    MULTIFD_FLAG_SYNC packet;
+>
+>   This is unnecessary. Multifd sends packets one by one and completion
+>   is already bound by the 'sem' semaphore. The SYNC packet has nothing
+>   special that would require it to have a separate semaphore on the
+>   sending side.
+
+What migration basically does is:
+
+sync_dirty_bitmap()
+while (too_much_dirty_memory)
+   foreach(dirty_page)
+      send(dirty_page)
+   sync_dirty_bitmap()
+
+I know, this is an over simplification, but it is enough to explain the
+problem that this code tries to fix.
+
+Once that we have multifd, we can have several channels, each of one
+going through a different network connection.  Yes, networks are a black
+box and there is no guarantees about how packets arrive on different
+sockets.
+
+In one iteration, page 99 is dirty.  We send it through channel 0.
+We end the iteration and we synchronize the bitmap again.
+We send the SYNC packet in both channels.
+Page 99 is dirty again, and this time it gets sent through channel 1.
+
+What we want, we want the communication to be:
+
+    Channel 0          migration thread    Channel 1
+
+(1) sent page 99
+(2)                    sync bitmap
+(3)                                        sent page 99
+
+And we want destination to make sure that it never gets packet with page
+99 from channel 0 AFTER page 99 from channel 1.
+
+Notice, this is something that it is highly improbable to happen, but it
+_can_ happen (and zero copy increases the probability of it).
+
+So we create this SYNC packet that does that:
+
+foreach (channel)
+   create_job_to_send_sync() packet
+foreach (channel)
+   wait_until_it_has_sent_the_sync_packet()
+
+Notice that this is the main migration thread, it will net send new work
+to any channel until it receives the sem_sync for every channel.
+
+Now, how do we deal on the target:
+
+foreach (channel)
+   wait(sem_sync)
+foreach (channel)
+   send(sem_sync)
+
+So, trying to do my best at ASCII art, what happens when we end a round
+of memory iteration
+
+MigrationThread(send)           MigrationThread(recv)   channel_n (send)         channel_n(recv)
+
+sync_bitmap()
+foreach(channel)
+   create_job_with_SYNC
+   post(channel->sem)
+                                                        wait(channel->sem)
+                                                        write(SYNC)
+                                                        post(channel->sem_sync)
+foreach(channel)
+   wait(channel->sem_sync)
+
+write(MULTIFD_FLUSH)
+                                                                                  read(SYNC)
+                                                                                  post(main->sem_sync)
+                                                                                  wait(channel->sem_sync)
+                                read(MULTIFD_FLUSH)
+                                foreach(channel)
+                                   wait(main->sem_sync)
+                                foreach(channel)
+                                   post(channel->sem_sync)
+
+Interesting points:
+
+1- We guarantee that packets inside the same channel are in order.
+
+2- Migration send thread don't send a MULTIFD_FLUSH packet until every
+   channel has sent a SYNC packet
+
+3- After reception of a SYNC packet.  A channel:
+   a -> communicates to the main migration thread that it has received
+        it (post(main->sem_sync))
+   b -> it waits on (channel->sem_sync)
+
+4- Main recv thread receives a MULTIFD_FLUSH
+   a -> waits for every channel to say that it has received a SYNC
+        packet
+   b -> communicates to every channel that they can continue.
+
+Send channels can send new data after the main channel does a
+write(MULTIFD_FLUSH).  But reception channels will not read it until the
+main recv thread is sure that every reception channel has received a
+SYNC, so we are sure that (in the previous example) page 99 from thread
+0 is already written.
+
+Is it clearer now?
+
+And yes, after discussion I will convert this email in documentation.
+
+> 2) to wait for the multifd threads to finish before cleaning up;
+>
+>    This happens because multifd_send_sync_main() blocks
+>    ram_save_complete() from finishing until the semaphore is
+>    posted. This is surprising and not documented.
+>
+> Clarify the above situation by renaming 'sem_sync' to 'sem_done' and
+> making the #2 usage the main one. Post to 'sem_sync' only when there's
+> no more pending_jobs.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+> I remove the parts about the receiving side. I wasn't sure about them
+> and we don't need to mix the two. Potentially we need the sem_sync on
+> the recv to ensure all channels wait before becoming available to read
+> once again after a FLUSH.
+
+I think this is not needed.  It is the source how decides when it is
+needed to wait for all the packets in the middle.
+
+Later, Juan.
+
 
