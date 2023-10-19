@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801A07CFD92
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7967CFDA1
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:16:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtUag-0002MM-6b; Thu, 19 Oct 2023 11:05:38 -0400
+	id 1qtUkN-0003QM-Qi; Thu, 19 Oct 2023 11:15:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtUad-0002M9-Ts
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:05:35 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qtUkE-0003OT-TL
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:15:37 -0400
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtUac-0001J0-DQ
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:05:35 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6b201a93c9cso5528217b3a.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:05:33 -0700 (PDT)
+ id 1qtUkB-0007ev-Tc
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:15:30 -0400
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-581d487f8dbso1646750eaf.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:15:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697727933; x=1698332733; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697728524; x=1698333324; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yKZF/uRaQUJBO9T+TMdFThONHyKPGc1tx90zbhDeoFI=;
- b=Ou7S7ny/W7EXaPVp4D3MvkTSPAPJQ6fPimIKVAYArvN64dAEhdCDtworQakWbEhGim
- s/6BfamqGRnCFESzmFcTkVKWo9sQXbG4Tvn8N0k1XS28ZP5HAVdKKq8mPFK01U8l0Zmi
- VgrdzBN7Tw/vfyXP2Z0OtGZUnjWTVGM2mDMeUAlo9KJNkPDxHm8mwK9sfE1sYWBcyCXA
- N42E/+kXKTcDnxvN8Bkfw49tjD9HfhddrQnDHO/APUZZuws056kBF5UWbFeQLMRPBmXK
- ZFFxh4a8Es2/vVzeMROs8U+knonjvr/pXxaDSBFXV9f7kLuIgq5rPIAYYJnBTII6dQd4
- AaEA==
+ bh=+YAh5yqrWTAaX6Bi/8N4uS88qtaIbH/5KsDodf00cyg=;
+ b=iGqbobmU3NOSj3JfBo02H7UIhaRKcQc821+DEtLLoznkYRSYkKHJTSKBVaw+zbkvZo
+ 85EyRBZcFM/t6L4bR/puGxQbc0+yppRn/u3r4UQyd40byeGNLPbQ8y9mvcSk4qe2gj/O
+ BGDVHLiVKm/TYrycLU4QNZPWPjzVpl8WpD1q+qeAMcdv0U0YkhE7josebOYtbH33DudQ
+ adXPZxTuIm/p0mrI7loBqa4pnQxZRlpeg0J0OmnL82ZuEsAc8h2VW3Bd7CgpTD9G6Xof
+ XCwKZHywnAG0LYmsylTQTeaiYxlJMztYtqR0+U/VtkRFIGvNv+eY2MrmvPmAOtgnJfwt
+ /gQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697727933; x=1698332733;
+ d=1e100.net; s=20230601; t=1697728524; x=1698333324;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yKZF/uRaQUJBO9T+TMdFThONHyKPGc1tx90zbhDeoFI=;
- b=gu99zX9BtVV4vxht98AG1YT+i6GHHnkjY+1yx45653SVjq7QXskiY06foRr1VCBhDF
- QUPTDQHZUP6r3hT/qyni28N3ExZYF1dxL4edKV9oD7FX3nRqFfjeyXkHqO9XIqycjY1g
- b1+X7oVThikpxPrN8zX6rC/OztQV1fxN+Uz5vDZvUZyvb8OVP4Kijv8W/FSTTrKpBS1q
- elCViSKhEzfq09tgdAcneXvczXkgrDR8+4NTX0akOaJx+zDHNQd3eYb94Jl2os2OKpAd
- umcc7iwzYfvJMuX1irzGITZziuZmNp7ugiDqyG/2AbGwQqJBnaHPY/QwyKX9saymX/ov
- /c4g==
-X-Gm-Message-State: AOJu0Ywe8pbGaQOJzzQapBc3Ltb8eMFe+OxZCYZeUEFBJfBbWPadndf9
- 15eOqYKDmQ7q0AgJ0PH5npYd7w==
-X-Google-Smtp-Source: AGHT+IE82MV0jaE0qya3omJ4aKSzULKLvNm0U/xGenVEbPY7SQbnAbIdTU1l7hQMRrKsgRjyZVs3mQ==
-X-Received: by 2002:a05:6a20:da83:b0:163:2dc7:d077 with SMTP id
- iy3-20020a056a20da8300b001632dc7d077mr2882052pzb.55.1697727932787; 
- Thu, 19 Oct 2023 08:05:32 -0700 (PDT)
+ bh=+YAh5yqrWTAaX6Bi/8N4uS88qtaIbH/5KsDodf00cyg=;
+ b=VitV0iWUFsW15zMlXMRBP9qlWDX9PB5Oo2yCjthwJGVzJew+ziijgXp5x9xYiH0XP/
+ wdhID95eLi4oiPb8Z4rnm1AoqMaEX4iuLRK10kyEKrIYrvVSBTMLO340zyGFx/PqXbVd
+ dO35afXhfzQOfb4FGoFvloghh46mkM9ZKY7u+S7eiQVC7NgbEW96JxL09FrkDXZDPigU
+ Ch/ks1Xbu87L3SoWHTYuvIJJqN6PnhDII3/fALVD6yciIhYVzgyUeixPFcqlMZzIg8Ry
+ kIknO0tDhuGaB2Vc3sLKOAORaQqQ5yKrs91bSqrt6ux9lUOUgIQ+HZRXUOm598q6Y2yl
+ Ef0A==
+X-Gm-Message-State: AOJu0YyVrceUUfmrgXGXiGsF3XT15gaDk3tZEZqJQWazqsjbHd5+Hw15
+ iJkcgjAeHQlQZLGIBwoZpWQHLw==
+X-Google-Smtp-Source: AGHT+IExzD7dkm4Yu6sRXXyXx4RpkzP30ntRzyoqBeV6TspCmwM7Mf4IgbDGB9XGZf4xMpcVNkEYFw==
+X-Received: by 2002:a05:6359:3015:b0:166:dcf6:cd82 with SMTP id
+ rf21-20020a056359301500b00166dcf6cd82mr2089580rwb.14.1697728524475; 
+ Thu, 19 Oct 2023 08:15:24 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- x13-20020aa79a4d000000b006be0bd6a4d8sm5213528pfj.36.2023.10.19.08.05.32
+ z13-20020a62d10d000000b0068e49cb1692sm5400716pfg.1.2023.10.19.08.15.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 08:05:32 -0700 (PDT)
-Message-ID: <00b05b3f-10c9-4e93-b0e7-e11cef45fc65@linaro.org>
-Date: Thu, 19 Oct 2023 08:05:30 -0700
+ Thu, 19 Oct 2023 08:15:24 -0700 (PDT)
+Message-ID: <6949786d-b5f3-4be8-a561-0b659c4e86f8@linaro.org>
+Date: Thu, 19 Oct 2023 08:15:22 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/18] target/i386: move remaining conditional operations
- to new decoder
+Subject: Re: [PATCH 17/18] target/i386: remove now converted opcodes from old
+ decoder
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20231014100121.109817-1-pbonzini@redhat.com>
- <20231014100121.109817-17-pbonzini@redhat.com>
+ <20231014100121.109817-18-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231014100121.109817-17-pbonzini@redhat.com>
+In-Reply-To: <20231014100121.109817-18-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,19 +95,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/14/23 03:01, Paolo Bonzini wrote:
-> Move long-displacement Jcc, SETcc and CMOVcc to the new decoder.
-> While filling in the tables makes the code seem longer, the new
-> emitters are all just one line of code.
-> 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   target/i386/tcg/decode-new.c.inc | 56 ++++++++++++++++++++++++++++++++
->   target/i386/tcg/decode-new.h     |  1 +
->   target/i386/tcg/emit.c.inc       | 10 ++++++
->   target/i386/tcg/translate.c      |  4 ++-
->   4 files changed, 70 insertions(+), 1 deletion(-)
+>   target/i386/tcg/translate.c | 705 +-----------------------------------
+>   1 file changed, 4 insertions(+), 701 deletions(-)
+
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
