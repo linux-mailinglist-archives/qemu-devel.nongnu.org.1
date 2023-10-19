@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3FF7D039C
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD24F7D03E4
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:24:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaQF-0005el-Vi; Thu, 19 Oct 2023 17:19:16 -0400
+	id 1qtaQM-0005s6-Rz; Thu, 19 Oct 2023 17:19:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQE-0005dq-H5
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:14 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQL-0005rA-RK
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:21 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQB-0004zs-Te
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:14 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40837ebba42so1064675e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:19:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQI-00051T-Ms
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:21 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4083cd3917eso999885e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750350; x=1698355150; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750357; x=1698355157; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TF53WRurKJJRsNtHQwV6C2hpFVA8ru1RM8pOdggQzFc=;
- b=XGL9SjUjp4RnXicJhvC+Ia522Nuzf4htD5YZRDyh7oiHHG+rBaTKeV9CqLwTaVZ5C9
- AbzzAlWHFyWH7xp1oY/SKqDojRrbE6JUnZjSMHY7Cct6Xvrsetjzqrhm7J320TD7pGgE
- j15vucvuJ37+TmOn3sGBLfi/6JTMRoiGrOZKy6qQ4UWqmhpD6PHBo8kHtFg/2Px1bJZX
- sZ04RIi27tpnWHsokv5Ygnt2GLYb4pLjlUjP4Y4vlleSii7Qtnt2hquEQwC0sT4ZnJ2S
- Pt0ddurjj/VgMAUgHSzDet4lX1WsPeqSPKw29Eznf00sMy+s4dadeCilIsxqi0BoyRf/
- WAVQ==
+ bh=fejYroQSsxnLZIKfcKraO7+R46FW2xsffxb069wCoCk=;
+ b=huNWD51/eCLMiYcpAtfNCK3faHAPLcfBRHa5k+wFx+QgaaflRFf5veWrEXPx8JHOVT
+ 1AbAyU1DGSWEqXVbd7SG3nu0GUVqJOJn8biTZb9KxIiguuVe8SQqn/NOTbmv3qJ+Zm8x
+ eFitUUa+Hqd9lgdwUJjr86eNeqxQJuaoEKVUTuJJqSUgxBxXsjRD4yh376vv+do732oD
+ zP0/TWnuYokXEdkbrZubAXYAD3RWJsMPYbtyzbjSao9vin+VQNP20NQNwYKVWC68exQq
+ D3LvDpiV86vcS849caPMx73hQ2ZJZqj9bra56dsgqdTYZxO5JeqZZTMy36scxLycbxnq
+ oRMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750350; x=1698355150;
+ d=1e100.net; s=20230601; t=1697750357; x=1698355157;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TF53WRurKJJRsNtHQwV6C2hpFVA8ru1RM8pOdggQzFc=;
- b=qHsqIiSH3d4xe9cqvK13YzYxdukeaZqP6BDTgpe8uqdMzqQE2qZ/5n+XRV7B9CKy6m
- rbBdo43J17RzZaDvX5HV2zjfEGgl0XM00vaL06LPJOAqK5duyrJhxb/tOPInRJWGEYIP
- uA7hsSi8dQHmDpwT2pUlhmIs9noAizgFOUVQ2bsG0LHuRncdpZUc3DXKYTvkcVDE//cq
- Cy/5lawaw3Lj0b2nGqX4wS2RYKzuDLdLIF3Axlk/4dVZwcx6YICNJEFtrnZCrdsnQXam
- IUiVDYfxJXS4BuURQ1EoZ4NEVPJX4gC00IHtZwSRvfgOVq/sCqh4oKxaZsmIqLe0a+yK
- +YpA==
-X-Gm-Message-State: AOJu0YwCA6z3SmwmoypZAdWEf+v/BwTscxe+YULVQlM9yx6aDfyKwzrX
- GLGV7FlRhATeaMxpcHA6tTeeFucH4/57wLeun0ixeg==
-X-Google-Smtp-Source: AGHT+IE/yEI8tIP6eI9Kg7MbK2xVvooO0cuDCQtLnLLzKppYnICOhJpRIDm7mcCUPkMCDbIJG5v5DA==
-X-Received: by 2002:a05:600c:3b20:b0:405:4f78:e128 with SMTP id
- m32-20020a05600c3b2000b004054f78e128mr63402wms.4.1697750350299; 
- Thu, 19 Oct 2023 14:19:10 -0700 (PDT)
+ bh=fejYroQSsxnLZIKfcKraO7+R46FW2xsffxb069wCoCk=;
+ b=dR27Hq6x30sBVRNgFzbBpaLRs8SMzeVmj8Dkc77yQeBBjowTxyhI8C0I0EzGU7gBmj
+ qt4Ki10BA9HKZXDTg6NQtaz/BUnYOFOudKUDKhOlCHrJdHA6dC0oaeNoX1sqtwpNFxO2
+ MrkltPGTsncPvu7la0T7wk9IpynLvqpxaI3gg2dwmmETMq8kxWLSoR5Vc1Z+1ETuLwC0
+ 9TXnEtvSYyrJcpmLrQbv3NKC+1bAshGgw/2wtMlceL5kTjYdA1Qhco2YcllNoErX8tR8
+ G0hxM2DA/zsk06ZnqUj9fmwJhHCKkwO3WALpwlGwbL244ZAekExP/8BXkLi3Spb8NUtj
+ BcOQ==
+X-Gm-Message-State: AOJu0YwZ9syVhOX55ASuN0JhLW0eKbr+kfYUn8vyhQOvgApKnVlpsPBm
+ 7duKL5hX0EhRKcxVveMnXnElWR6FhWMk0ZSZBM8Lag==
+X-Google-Smtp-Source: AGHT+IHB0BCBGz71FLJ+5Qj3hw3mtlZMyOMYYAArWiWHpwzcmivH12djbd8eBqXxRjPqQ45qtyaFYg==
+X-Received: by 2002:adf:f30b:0:b0:32d:cd02:d4f3 with SMTP id
+ i11-20020adff30b000000b0032dcd02d4f3mr2998039wro.40.1697750357189; 
+ Thu, 19 Oct 2023 14:19:17 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- p5-20020a05600c358500b004053a6b8c41sm515635wmq.12.2023.10.19.14.19.08
+ n15-20020adfe78f000000b003197869bcd7sm228642wrm.13.2023.10.19.14.19.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:19:09 -0700 (PDT)
+ Thu, 19 Oct 2023 14:19:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
@@ -61,18 +61,21 @@ Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: [PULL 08/46] memory: drop needless argument
-Date: Thu, 19 Oct 2023 23:17:33 +0200
-Message-ID: <20231019211814.30576-9-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PULL 09/46] memory: follow Error API guidelines
+Date: Thu, 19 Oct 2023 23:17:34 +0200
+Message-ID: <20231019211814.30576-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,39 +100,176 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The argument is unused since commit bdc44640c ("cpu: Use QTAILQ for CPU list").
+Return true/false on success/failure.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231009075231.150568-1-marcandre.lureau@redhat.com>
+Message-ID: <20231009075310.153617-1-marcandre.lureau@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/memory_mapping.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/hw/core/cpu.h             |  4 +++-
+ include/hw/core/sysemu-cpu-ops.h  |  2 +-
+ include/sysemu/memory_mapping.h   |  2 +-
+ target/i386/cpu.h                 |  2 +-
+ hw/core/cpu-sysemu.c              |  6 +++---
+ system/memory_mapping.c           | 13 ++++++-------
+ target/i386/arch_memory_mapping.c |  6 ++++--
+ 7 files changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/system/memory_mapping.c b/system/memory_mapping.c
-index d7f1d096e0..8ba9968f8c 100644
---- a/system/memory_mapping.c
-+++ b/system/memory_mapping.c
-@@ -291,7 +291,7 @@ void guest_phys_blocks_append(GuestPhysBlockList *list)
-     memory_listener_unregister(&g.listener);
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 3968369554..18593db5b2 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -618,8 +618,10 @@ bool cpu_paging_enabled(const CPUState *cpu);
+  * @cpu: The CPU whose memory mappings are to be obtained.
+  * @list: Where to write the memory mappings to.
+  * @errp: Pointer for reporting an #Error.
++ *
++ * Returns: %true on success, %false otherwise.
+  */
+-void cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
++bool cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
+                             Error **errp);
+ 
+ #if !defined(CONFIG_USER_ONLY)
+diff --git a/include/hw/core/sysemu-cpu-ops.h b/include/hw/core/sysemu-cpu-ops.h
+index ee169b872c..24d003fe04 100644
+--- a/include/hw/core/sysemu-cpu-ops.h
++++ b/include/hw/core/sysemu-cpu-ops.h
+@@ -19,7 +19,7 @@ typedef struct SysemuCPUOps {
+     /**
+      * @get_memory_mapping: Callback for obtaining the memory mappings.
+      */
+-    void (*get_memory_mapping)(CPUState *cpu, MemoryMappingList *list,
++    bool (*get_memory_mapping)(CPUState *cpu, MemoryMappingList *list,
+                                Error **errp);
+     /**
+      * @get_paging_enabled: Callback for inquiring whether paging is enabled.
+diff --git a/include/sysemu/memory_mapping.h b/include/sysemu/memory_mapping.h
+index 3bbeb1bcb4..021e0a6230 100644
+--- a/include/sysemu/memory_mapping.h
++++ b/include/sysemu/memory_mapping.h
+@@ -71,7 +71,7 @@ void guest_phys_blocks_free(GuestPhysBlockList *list);
+ void guest_phys_blocks_init(GuestPhysBlockList *list);
+ void guest_phys_blocks_append(GuestPhysBlockList *list);
+ 
+-void qemu_get_guest_memory_mapping(MemoryMappingList *list,
++bool qemu_get_guest_memory_mapping(MemoryMappingList *list,
+                                    const GuestPhysBlockList *guest_phys_blocks,
+                                    Error **errp);
+ 
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e1875466b9..471e71dbc5 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2055,7 +2055,7 @@ int x86_cpu_write_elf64_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
+ int x86_cpu_write_elf32_qemunote(WriteCoreDumpFunction f, CPUState *cpu,
+                                  DumpState *s);
+ 
+-void x86_cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
++bool x86_cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
+                                 Error **errp);
+ 
+ void x86_cpu_dump_state(CPUState *cs, FILE *f, int flags);
+diff --git a/hw/core/cpu-sysemu.c b/hw/core/cpu-sysemu.c
+index 5eaf2e79e6..d0d6a910f9 100644
+--- a/hw/core/cpu-sysemu.c
++++ b/hw/core/cpu-sysemu.c
+@@ -34,17 +34,17 @@ bool cpu_paging_enabled(const CPUState *cpu)
+     return false;
  }
  
--static CPUState *find_paging_enabled_cpu(CPUState *start_cpu)
-+static CPUState *find_paging_enabled_cpu(void)
+-void cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
++bool cpu_get_memory_mapping(CPUState *cpu, MemoryMappingList *list,
+                             Error **errp)
  {
-     CPUState *cpu;
+     CPUClass *cc = CPU_GET_CLASS(cpu);
  
-@@ -312,7 +312,7 @@ void qemu_get_guest_memory_mapping(MemoryMappingList *list,
+     if (cc->sysemu_ops->get_memory_mapping) {
+-        cc->sysemu_ops->get_memory_mapping(cpu, list, errp);
+-        return;
++        return cc->sysemu_ops->get_memory_mapping(cpu, list, errp);
+     }
+ 
+     error_setg(errp, "Obtaining memory mappings is unsupported on this CPU.");
++    return false;
+ }
+ 
+ hwaddr cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
+diff --git a/system/memory_mapping.c b/system/memory_mapping.c
+index 8ba9968f8c..6f884c5b90 100644
+--- a/system/memory_mapping.c
++++ b/system/memory_mapping.c
+@@ -304,10 +304,11 @@ static CPUState *find_paging_enabled_cpu(void)
+     return NULL;
+ }
+ 
+-void qemu_get_guest_memory_mapping(MemoryMappingList *list,
++bool qemu_get_guest_memory_mapping(MemoryMappingList *list,
+                                    const GuestPhysBlockList *guest_phys_blocks,
+                                    Error **errp)
+ {
++    ERRP_GUARD();
+     CPUState *cpu, *first_paging_enabled_cpu;
      GuestPhysBlock *block;
      ram_addr_t offset, length;
- 
--    first_paging_enabled_cpu = find_paging_enabled_cpu(first_cpu);
-+    first_paging_enabled_cpu = find_paging_enabled_cpu();
+@@ -316,14 +317,11 @@ void qemu_get_guest_memory_mapping(MemoryMappingList *list,
      if (first_paging_enabled_cpu) {
          for (cpu = first_paging_enabled_cpu; cpu != NULL;
               cpu = CPU_NEXT(cpu)) {
+-            Error *err = NULL;
+-            cpu_get_memory_mapping(cpu, list, &err);
+-            if (err) {
+-                error_propagate(errp, err);
+-                return;
++            if (!cpu_get_memory_mapping(cpu, list, errp)) {
++                return false;
+             }
+         }
+-        return;
++        return true;
+     }
+ 
+     /*
+@@ -335,6 +333,7 @@ void qemu_get_guest_memory_mapping(MemoryMappingList *list,
+         length = block->target_end - block->target_start;
+         create_new_memory_mapping(list, offset, offset, length);
+     }
++    return true;
+ }
+ 
+ void qemu_get_guest_simple_memory_mapping(MemoryMappingList *list,
+diff --git a/target/i386/arch_memory_mapping.c b/target/i386/arch_memory_mapping.c
+index 271cb5e41b..d1ff659128 100644
+--- a/target/i386/arch_memory_mapping.c
++++ b/target/i386/arch_memory_mapping.c
+@@ -266,7 +266,7 @@ static void walk_pml5e(MemoryMappingList *list, AddressSpace *as,
+ }
+ #endif
+ 
+-void x86_cpu_get_memory_mapping(CPUState *cs, MemoryMappingList *list,
++bool x86_cpu_get_memory_mapping(CPUState *cs, MemoryMappingList *list,
+                                 Error **errp)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+@@ -275,7 +275,7 @@ void x86_cpu_get_memory_mapping(CPUState *cs, MemoryMappingList *list,
+ 
+     if (!cpu_paging_enabled(cs)) {
+         /* paging is disabled */
+-        return;
++        return true;
+     }
+ 
+     a20_mask = x86_get_a20_mask(env);
+@@ -310,5 +310,7 @@ void x86_cpu_get_memory_mapping(CPUState *cs, MemoryMappingList *list,
+         pse = !!(env->cr[4] & CR4_PSE_MASK);
+         walk_pde2(list, cs->as, pde_addr, a20_mask, pse);
+     }
++
++    return true;
+ }
+ 
 -- 
 2.41.0
 
