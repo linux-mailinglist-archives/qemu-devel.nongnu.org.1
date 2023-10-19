@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB46B7CFBD1
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D027CFBF0
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:04:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTWR-0001Qi-Fc; Thu, 19 Oct 2023 09:57:11 -0400
+	id 1qtTbs-0005YR-Fw; Thu, 19 Oct 2023 10:02:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtTWP-0001Oi-J9
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:57:09 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtTWN-00055e-Um
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:57:09 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 1B8C721899;
- Thu, 19 Oct 2023 13:57:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697723826; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtTbn-0005Xz-6s
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:02:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtTbi-0007Rg-Ta
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:02:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697724157;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ItQB6qyG3KQo882AsOsn6Sb531yo+Grcjmos5PE2nZM=;
- b=zyDuOhvzzXEh7fgGI8cY5JP1MoPBm5M8jBSXs95cHVG08w1zEZKP8RU1l6Ell6aVqTeFC7
- I+c44Kmm6epBo8iHr0J3XI1be0R7cn0qXyC1C8BgDArZFyWVA9lK1rucSDvoNiOtsJdV49
- 7GBvU7fNPlOilzBMd78IYMJNCZ2SyqA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697723826;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ItQB6qyG3KQo882AsOsn6Sb531yo+Grcjmos5PE2nZM=;
- b=vlgTvwJjdsw6H4BLS2H/Z9yvj4gh2lmtemdaYp9VkXxL3nnzxhFSsiRxYCeE7xzbb+6O6G
- SVr3DNjg3R7xT3Bw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A46EA139C2;
- Thu, 19 Oct 2023 13:57:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id d/Y2HLE1MWVhbwAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 13:57:05 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Mikhail Tyutin
- <m.tyutin@yadro.com>, Aleksandr Anenkov <a.anenkov@yadro.com>,
- qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH v5 1/6] gdbstub: Check if gdb_regs is NULL
-In-Reply-To: <20231019101030.128431-2-akihiko.odaki@daynix.com>
-References: <20231019101030.128431-1-akihiko.odaki@daynix.com>
- <20231019101030.128431-2-akihiko.odaki@daynix.com>
-Date: Thu, 19 Oct 2023 10:57:03 -0300
-Message-ID: <871qdqzpe8.fsf@suse.de>
+ bh=hd8qDkV5MhWsL/MpplvE5Oo9ct+HWtsusiuACxcgRF4=;
+ b=bwWOM2djvvCIx/doU1702McxS58jgUdKwaTohmkM+kgxuRWtwPYpQnG/Z5bzjk2UMjLDbJ
+ IQCrwQsEny8N0B6aD0jDmrUzGq26AyVX5PyDGPWuGFhNT/qD1RPxlL8e+IyY/mSqAcM8Ag
+ xSbuXuv0YdwgBeN5avWFNU5RtxYEqPQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-uZOse6ZCNhCX0wzHy20w-A-1; Thu, 19 Oct 2023 10:02:35 -0400
+X-MC-Unique: uZOse6ZCNhCX0wzHy20w-A-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-775842dc945so149915085a.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 07:02:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697724154; x=1698328954;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hd8qDkV5MhWsL/MpplvE5Oo9ct+HWtsusiuACxcgRF4=;
+ b=qmJ9UnJOQKMxXEodEiS7CUNdsl9+PBH+ifJxcntjoSF4O8EhYcA+oi0D9P2+8LzA+j
+ i35ZXknx8asiQEjQfe3ZYrBOQnuUZnv+mkHtum0TAZS7W+gBecSLMGb1/bFcgst+uL06
+ 2sszpJ/dOyS19LNnmYrLdwxtVxdONAAiPL43Zxq8bGGiinkeA52q+T1Wkfi+oulVDoHP
+ fzfNbrPjcYjYbPyfa2k3d2M0zFmbUb2c+7U44c0isWcaF+El+r1Rj0HTxBh47vSAXNeW
+ wJ2MbW59rX/ASy+EdsiyfxdxbNG8SU6SbsRL6IaFHHRLU1DgV971ow3k+o+lV+g/z9TM
+ ec8w==
+X-Gm-Message-State: AOJu0YxAVB97mzIrpme9G3MOZN1rP01CKUBJ1gRNGTV051+OjsAoNWBk
+ ypWl6ChN20tocwM6tHANa2lJDEZW0FcV69ZXPgcPjrPBCHEmXQRafBoFWnuCaKC05ZOq/7Ebagp
+ Ikvum+6rqb+fLoGSYbZEm6yg=
+X-Received: by 2002:ac8:4b52:0:b0:41c:c844:e078 with SMTP id
+ e18-20020ac84b52000000b0041cc844e078mr1703746qts.4.1697724154409; 
+ Thu, 19 Oct 2023 07:02:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH06qE3XzC9B4ZN7yhWcuWwKkiyT0J1hdUxxujeMgMQg0ZSs5mCanQ7V1wDGAKn6HC/Wd9/Uw==
+X-Received: by 2002:ac8:4b52:0:b0:41c:c844:e078 with SMTP id
+ e18-20020ac84b52000000b0041cc844e078mr1703714qts.4.1697724154034; 
+ Thu, 19 Oct 2023 07:02:34 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ h20-20020ac87774000000b004180fb5c6adsm751907qtu.25.2023.10.19.07.02.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 07:02:33 -0700 (PDT)
+Date: Thu, 19 Oct 2023 10:02:32 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: quintela@redhat.com, farosas@suse.de, leobras@redhat.com,
+ qemu-devel@nongnu.org, nanhai.zou@intel.com
+Subject: Re: [PATCH 2/5] qapi/migration: Introduce compress-with-iaa
+ migration parameter
+Message-ID: <ZTE2+Cj2WypqeC5x@x1n>
+References: <20231018221224.599065-1-yuan1.liu@intel.com>
+ <20231018221224.599065-3-yuan1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -6.79
-X-Spamd-Result: default: False [-6.79 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.69)[98.64%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231018221224.599065-3-yuan1.liu@intel.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,12 +98,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+On Thu, Oct 19, 2023 at 06:12:21AM +0800, Yuan Liu wrote:
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 8843e74b59..8edc622dd9 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -835,7 +835,7 @@
+>  { 'enum': 'MigrationParameter',
+>    'data': ['announce-initial', 'announce-max',
+>             'announce-rounds', 'announce-step',
+> -           'compress-level', 'compress-threads', 'decompress-threads',
+> +           'compress-level', 'compress-threads', 'compress-with-iaa', 'decompress-threads',
+>             'compress-wait-thread', 'throttle-trigger-threshold',
+>             'cpu-throttle-initial', 'cpu-throttle-increment',
+>             'cpu-throttle-tailslow',
+> @@ -1008,6 +1008,7 @@
+>              '*announce-step': 'size',
+>              '*compress-level': 'uint8',
+>              '*compress-threads': 'uint8',
+> +            '*compress-with-iaa': 'bool',
+>              '*compress-wait-thread': 'bool',
+>              '*decompress-threads': 'uint8',
+>              '*throttle-trigger-threshold': 'uint8',
+> @@ -1208,6 +1209,7 @@
+>              '*announce-step': 'size',
+>              '*compress-level': 'uint8',
+>              '*compress-threads': 'uint8',
+> +            '*compress-with-iaa': 'bool',
+>              '*compress-wait-thread': 'bool',
+>              '*decompress-threads': 'uint8',
+>              '*throttle-trigger-threshold': 'uint8',
 
-> cpu->gdb_regs may be NULL if no coprocessor is registered.
->
-> Fixes: 73c392c26b ("gdbstub: Replace gdb_regs with an array")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Please add comments for the new fields too in qapi/, thanks.
 
-Tested-by: Fabiano Rosas <farosas@suse.de>
+-- 
+Peter Xu
+
 
