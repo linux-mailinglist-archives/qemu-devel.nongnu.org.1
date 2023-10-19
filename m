@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E277CF0EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 09:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A897CF0E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 09:17:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtNGe-0004nw-VP; Thu, 19 Oct 2023 03:16:28 -0400
+	id 1qtNGk-0004ps-Bi; Thu, 19 Oct 2023 03:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNGZ-0004n4-8q
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:16:23 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNGh-0004pL-Ak
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:16:31 -0400
 Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNGX-00038i-BZ
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:16:23 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtNGf-00039b-OT
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 03:16:31 -0400
 Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40651a726acso66550385e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 00:16:20 -0700 (PDT)
+ 5b1f17b1804b1-4083f61322fso10557825e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 00:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697699778; x=1698304578; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=+EoZC8QJYohplZssBUca1igR4l0fxuTHI687dh8zUaA=;
- b=nzjFG+hA/e77ESZnnCjeiEBKAItftXlWew6k/3xW8BoBAO+pN6ApLbAHY2Zl58V5nW
- yaxOnG3vKnoZ1LqiRSTx5hi2iW5Xojof+p/35NvL7vFQfOKPb4mOiOkQAZ5MjMIs5vIO
- rIvECmMus9y/EJ0IoKr1FtvDB0fqCGcPnuYwdPya8GvVuIiBG+9etvBeWGXLaAK7vZT2
- gsXzLfeRzEjhw+c0iRiMq6mi7Uw7/OlJA7avd3pcaJZrF6YDd2mTr6k2NAfuzBpMumdZ
- yd7r4wJW2/XElbfLleYVMPwrAtGDDRd8Ae+nUAcCCZWCbB5blFemoHmX0zGkx0ceIZat
- X/PA==
+ d=linaro.org; s=google; t=1697699788; x=1698304588; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VOvC+JkvU7gWETYwa7wI+/RczFUNZ/p1uyKYV90ynnc=;
+ b=FX42EUgYGnz64T4a6ETBEonvlxQ+wSJEokfTz2/Ct03NP74jOP04yLpc0Vqi9x8RVg
+ GJAcR6izmRcWU+h8ApoN9KvziRmhi47x18Uiso75cXAt+1VqYydGu2b17Q6GB9Letp/O
+ 8AxOyTVrOsAuTvAp+FHRF/IbWMfFWNkS10mGPtlJF3N3CDWqpkBqmRGZ5nwoYQBqW08m
+ N9io0GOvDGB2bJ7YhqiT/urbPMiyW72zLO3nQWFxA/b7dkecNbbI4o6WswephuEBBNqe
+ v0SFiR2cQc1/BkdeUZdpX1ryn7rgiAEzK73O5tVvtv/Zl2VpNvv/7PbSrjMTGtj2/pDL
+ V4/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697699778; x=1698304578;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+EoZC8QJYohplZssBUca1igR4l0fxuTHI687dh8zUaA=;
- b=YPoc/nNtq2lJD55HXBU1p1e1ZAc8UkyS/vyDAu3maTi5zHoTStN/uYfeO/eqyygfHz
- O2xjYJc33iBGCS/MwmwKzbUXwy6NWmJKBu27GLSU6CQRkFh7n89iw7vARJEJTUFCI3oG
- jyETWNmQW45n+3bZ6z3i2kzXFo2S3rUzFeYreDZGE294lNOSWy7BIQVpCUsNb3P/+3GX
- zXspOK4phEVt3PVDHLPyVf++YYY+gQ734cdXPMvhX1j8E9SAUK6VY7UZyU4VgKo3EUGk
- DqUzreplaRIxka3DX4T6Mtw9mkOpoGMQKqm0G58fNqJuh0zCn94NOG6ZjNLnJRaHSWjB
- vlAA==
-X-Gm-Message-State: AOJu0Yy6GAHIiQBuTYJgLJfaGy1yiG+pfnLKMIp3RdClSaYaEf9lNKd0
- bCU/IFN4o1pJXfd+40KcNjIbhoF4sCRDipnRFiuJTQ==
-X-Google-Smtp-Source: AGHT+IF86TUbf1XVu3YTbpCEDIkIam0X3XBKgfsRlwv1dBN2VJ7fKpVHvjultYNKTYMnA/zLyXOMrg==
-X-Received: by 2002:adf:e8ca:0:b0:32d:9395:dec6 with SMTP id
- k10-20020adfe8ca000000b0032d9395dec6mr915133wrn.67.1697699778520; 
- Thu, 19 Oct 2023 00:16:18 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697699788; x=1698304588;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VOvC+JkvU7gWETYwa7wI+/RczFUNZ/p1uyKYV90ynnc=;
+ b=dYRLrCUp6qph+dnVNhClV3iqhE7w2h5yKHiF0lR7DWz9EYwHvvsH7ACv/tock2rRh3
+ eiseQ/8+lKJEpIBHsVk7i0xUOL5EqSKIZSNeCQeU1oVJSXr8KnYLD7ckwEYSy1FMD1H1
+ V0Qon+gzoIgbyFKj4hhOJzk/a9sVrfvM9s4PQzSMCtn4/uriC87eTzaXWdNzX0jGPGMO
+ l/XsdllnfpdCjjJunaV8e72IUT6lg5ow/xY19GR1LU+pO5D7lEgax+ZCsWqPPTeJtsIZ
+ 343pcCyQ1wf+SCbqMAxMo7rUI6RmWK3OgucG8BjuQISPVP0yXxLXJvCddp4Az8os6Agn
+ Nu9Q==
+X-Gm-Message-State: AOJu0YzcagEBwWMxo4m+CtwL8sdW7C19QYXKzEkwEG/qPVw4uDSdgr1I
+ FENUgrGLldADeHt0J7EwLn7ZbVCOGQRKgH0cn6MYvQ==
+X-Google-Smtp-Source: AGHT+IE18ZMdzK+JVmE9u4qq1be+E0MHtStE9Zinp/YaKTYKz2xARZ5x7ooF8oLui45pFY713988Bw==
+X-Received: by 2002:a05:600c:358b:b0:403:cc79:44f3 with SMTP id
+ p11-20020a05600c358b00b00403cc7944f3mr1168643wmq.19.1697699788230; 
+ Thu, 19 Oct 2023 00:16:28 -0700 (PDT)
 Received: from localhost.localdomain (92.red-88-28-12.dynamicip.rima-tde.net.
  [88.28.12.92]) by smtp.gmail.com with ESMTPSA id
- n15-20020a5d4c4f000000b0032dc24ae625sm3763417wrt.12.2023.10.19.00.16.13
+ h19-20020a05600c315300b004064741f855sm3609993wmo.47.2023.10.19.00.16.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 00:16:18 -0700 (PDT)
+ Thu, 19 Oct 2023 00:16:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -73,12 +74,15 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 00/12] hw: Strengthen SysBus & QBus API
-Date: Thu, 19 Oct 2023 09:15:58 +0200
-Message-ID: <20231019071611.98885-1-philmd@linaro.org>
+Subject: [PATCH v2 01/12] hw/i386/amd_iommu: Do not use SysBus API to map
+ local MMIO region
+Date: Thu, 19 Oct 2023 09:15:59 +0200
+Message-ID: <20231019071611.98885-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231019071611.98885-1-philmd@linaro.org>
+References: <20231019071611.98885-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::334;
  envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
@@ -104,63 +108,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+There is no point in exposing an internal MMIO region via
+SysBus and directly mapping it in the very same device.
 
-This series ensure:
+Just map it without using the SysBus API.
 
-- qbus_new() and sysbus_init_mmio() are called *before*
-  a device is realized,
-- sysbus_mmio_map() is called *after* it is realized.
+Transformation done using the following coccinelle script:
 
-First we fix some abuse, then we enforce in qdev/sysbus
-core code.
+  @@
+  expression sbdev;
+  expression index;
+  expression addr;
+  expression subregion;
+  @@
+  -    sysbus_init_mmio(sbdev, subregion);
+       ... when != sbdev
+  -    sysbus_mmio_map(sbdev, index, addr);
+  +    memory_region_add_subregion(get_system_memory(), addr, subregion);
 
-There is still a failure in PXA2xx:
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ hw/i386/amd_iommu.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-  qemu-system-aarch64: sysbus_init_mmio(type:pxa2xx_pic) but object is realized
-
-Apparently it cames from commit 3f6c925f37 ("Use i2c_slave_init() to
-allocate the PXA (dummy) I2C slave"), which I presume was how to model
-slave<->master transactions *before* I2C bus modelling.
-
-Based-on: <20231018133059.85765-1-philmd@linaro.org>
-          "hw/ppc: SysBus simplifications" [1]
-Based-on: <20231018131220.84380-1-philmd@linaro.org>
-          "hw/arm/pxa2xx: SysBus/QDev fixes" [2]
-
-v1: https://lore.kernel.org/qemu-devel/20231018141151.87466-1-philmd@linaro.org/
-[1] https://lore.kernel.org/qemu-devel/20231018133059.85765-1-philmd@linaro.org/
-[2] https://lore.kernel.org/qemu-devel/20231018131220.84380-1-philmd@linaro.org/
-
-Philippe Mathieu-Daudé (12):
-  hw/i386/amd_iommu: Do not use SysBus API to map local MMIO region
-  hw/i386/intel_iommu: Do not use SysBus API to map local MMIO region
-  hw/misc/allwinner-dramc: Move sysbus_mmio_map call from init ->
-    realize
-  hw/misc/allwinner-dramc: Do not use SysBus API to map local MMIO
-    region
-  hw/pci-host/bonito: Do not use SysBus API to map local MMIO region
-  hw/acpi: Realize ACPI_GED sysbus device before accessing it
-  hw/arm/virt: Realize ARM_GICV2M sysbus device before accessing it
-  hw/isa: Realize ISA BUS sysbus device before accessing it
-  hw/s390x/css-bridge: Realize sysbus device before accessing it
-  hw/qdev: Ensure parent device is not realized before adding bus
-  hw/sysbus: Ensure device is not realized before adding MMIO region
-  hw/sysbus: Ensure device is realized before mapping it
-
- hw/arm/virt.c                 |  5 ++---
- hw/core/bus.c                 |  7 +++++++
- hw/core/sysbus.c              | 13 +++++++++++++
- hw/i386/amd_iommu.c           |  5 ++---
- hw/i386/intel_iommu.c         |  5 ++---
- hw/i386/microvm.c             |  2 +-
- hw/isa/isa-bus.c              | 11 +++++++++--
- hw/loongarch/virt.c           |  2 +-
- hw/misc/allwinner-r40-dramc.c | 20 +++++++++-----------
- hw/pci-host/bonito.c          | 32 ++++++++++++++++----------------
- hw/s390x/css-bridge.c         |  7 +++----
- 11 files changed, 65 insertions(+), 44 deletions(-)
-
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 8d0f2f99dd..7965415b47 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1579,9 +1579,8 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+     /* set up MMIO */
+     memory_region_init_io(&s->mmio, OBJECT(s), &mmio_mem_ops, s, "amdvi-mmio",
+                           AMDVI_MMIO_SIZE);
+-
+-    sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->mmio);
+-    sysbus_mmio_map(SYS_BUS_DEVICE(s), 0, AMDVI_BASE_ADDR);
++    memory_region_add_subregion(get_system_memory(), AMDVI_BASE_ADDR,
++                                &s->mmio);
+     pci_setup_iommu(bus, amdvi_host_dma_iommu, s);
+     amdvi_init(s);
+ }
 -- 
 2.41.0
 
