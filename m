@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9577CFE8F
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 742D77CFE93
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVDZ-0002pX-G3; Thu, 19 Oct 2023 11:45:49 -0400
+	id 1qtVDm-0004GY-N1; Thu, 19 Oct 2023 11:46:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtVCu-0002aM-GE
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:45:08 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qtVDj-00044V-3a
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:45:59 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtVCs-0004Da-No
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:45:08 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1ca816f868fso34140975ad.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:45:06 -0700 (PDT)
+ id 1qtVDf-0005tZ-Uo
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:45:57 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1c9e072472bso54965055ad.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 08:45:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697730304; x=1698335104; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697730354; x=1698335154; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=2tyu+uobvgc+v7UEIcS0cjzdqxdnr89I+W4/teIo3Hw=;
- b=AaM0mt9Zr6+DgsMhJyNH2PQRscD1bJoJ7xTu1pxammYp8qoO3Fj4A2Y6+gu/zxuWBr
- cC/v14jRlbG9jKn+970rJlPy6JLxv2MpaE0RhMveufsbNzddo3NOwm1sOs6pGnXaohOL
- qTl8d3CwzfFxKFYXiLxoi/wAAatnu8zm3uQqlsss9RKnGlI4V06OKWyTEAJW+MoF7Wid
- Vopizoxzom32HHuiCn23+K4WBFRWzzijBhfrtRGVVk2YgOSwBxZomZvVZgpydZy72CuA
- HqfK6bUYZtUD6lctj7ivIu5/WU+RLM1sz3mnl5BErFkEuXMBjyXejQQ7YFq9ZpLJI+Wl
- +ibQ==
+ bh=GuAc9kSj4YLsBsc1JVRwx0MdmnsqUv3ZryRcVdzPB/Y=;
+ b=Jp2RNTXd12Vr+WzeteZhSIT2rS+ezX2yJNUIq4ig50jlvG9T1amjjem64tmlstpUsv
+ XGE7lAL3Qpn9dn38cMIFepD2bV0ynu7xHlU2EwvlcERCizSpzDVJNzMzSyjXKrriKeqi
+ 3nG7N4ETfF8fLfWft4SzYlwZoP17lMzr9lgqwAjLOagUL/WdPc5JwqhPk6b6mqccWoML
+ /j5t/voAR6bjaQ9FE5avMogzCB3k1/+Nul0DcSCQI7tXte6BhxL80bPvYpiZPJORnMG6
+ QxIs1A5z84R4sBm6nVkrbagflkduR4BoweyN14eiGEx41O5zrrr7nz7d8NiaAZZEP6tk
+ fJaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697730304; x=1698335104;
+ d=1e100.net; s=20230601; t=1697730354; x=1698335154;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2tyu+uobvgc+v7UEIcS0cjzdqxdnr89I+W4/teIo3Hw=;
- b=XSPAjL2a9QAYx/5YJkY3m1ovCpXmVkKfSrFgSs6RK5gPmerieW4nP5Y+Q08HSNL2yI
- rKKRs2EGrQTJ81t9gG8Gr4z7rr+PzgPpK2cqExAj17O+bAUYIp0HmgDT2AyEmD5pbqrh
- 658vdx/tn/1DE5VuUQqO3tpP0Qu2sforrMrCAGBEuQqfvD+fDXfDlgrNGPD+8055fX0c
- 7+2o2Z+w//cXKz+4YKBdzgbUVodK2iHQHeslxbTiVPoG7vsSCLvlpGWkkhh6KK+VJxm0
- pOQenawo+QzZiwaTR5BgOSvMvvaHCovD59JciziPlXYqlzNZZ3EmQt6gzy1LUYTgjPSU
- cEEg==
-X-Gm-Message-State: AOJu0YxyJO6Gjf5QAjaUEq3smPzbfrtXMH8vU/OUaIJfLPDLnkZlLvQU
- smINYF3NbC2C63na3Xnvwr+oP0HBUFhlK16u+II=
-X-Google-Smtp-Source: AGHT+IFOjyyMNeHOtidOJ5G54fGTbl68Ad/jJPAlvOTMm+WMnlC7mJb4D8T+JO03ViEtNhpvBRnVcQ==
-X-Received: by 2002:a17:903:11c9:b0:1c9:bca1:d70b with SMTP id
- q9-20020a17090311c900b001c9bca1d70bmr3036172plh.39.1697730303957; 
- Thu, 19 Oct 2023 08:45:03 -0700 (PDT)
+ bh=GuAc9kSj4YLsBsc1JVRwx0MdmnsqUv3ZryRcVdzPB/Y=;
+ b=Z9wzb/ej5Ap7YM8kUq4Yv3lh9JKCd+5wBu8cwccSyRiUQwzlhM/Byu4n+GbsCp7ZhF
+ h6Fkmrhx5292zkdETUeEDlLkfh5xYXvpVFUIAHGZ1KkVVoO0UH+Updm9FwSrSLruok5s
+ XjA3wUAplh2Z0yMr/zxPdVFO85fUtqoL08emD5T5B41qW75kvV5XWnDJZJ3Njqenb2RX
+ KSZhVM0pQk5CqmVvIRHjVTnMET2H9xK2fAhLbAcnGZxufOIyNvoXdeaCihNP/4DHEg/m
+ 0aLF9X8oyxY8VNIln+E7l2vPDAGSVPeTl2bWZqX70Z4hGZZEOkytCpU4mbthLS2ChT+E
+ bKTg==
+X-Gm-Message-State: AOJu0Yz/7DBzp5JIeTzvL1J42K1HBT/7Gu/K5cTuMU2jwRStFQwQIpmo
+ I5toOEtMQgzgwdD/8G5JQ4J6xZkiaqRSHf8mtlM=
+X-Google-Smtp-Source: AGHT+IHNrurIUvWjdnosPI9bWKYZIcW3ep9ghpVj/b4QjZlHXiIsOuhuWxs9jurfTmIpJ3gOP6Rg/g==
+X-Received: by 2002:a17:902:e5cb:b0:1c9:bfd3:1f4a with SMTP id
+ u11-20020a170902e5cb00b001c9bfd31f4amr2821905plf.66.1697730354344; 
+ Thu, 19 Oct 2023 08:45:54 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- j9-20020a170902da8900b001c62b9a51c0sm2094758plx.103.2023.10.19.08.45.03
+ j9-20020a170902da8900b001c62b9a51c0sm2094758plx.103.2023.10.19.08.45.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 Oct 2023 08:45:03 -0700 (PDT)
-Message-ID: <01b9162f-37d5-4bd8-b58d-f7f2ec735b88@linaro.org>
-Date: Thu, 19 Oct 2023 08:45:02 -0700
+ Thu, 19 Oct 2023 08:45:53 -0700 (PDT)
+Message-ID: <da5752ef-9b9b-420f-9831-ac62358f9b7d@linaro.org>
+Date: Thu, 19 Oct 2023 08:45:52 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/19] target/i386: group common checks in the decoding
- phase
+Subject: Re: [PATCH v2 02/19] target/i386: validate VEX.W for AVX instructions
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20231019104648.389942-1-pbonzini@redhat.com>
- <20231019104648.389942-2-pbonzini@redhat.com>
+ <20231019104648.389942-3-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231019104648.389942-2-pbonzini@redhat.com>
+In-Reply-To: <20231019104648.389942-3-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,21 +94,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 10/19/23 03:46, Paolo Bonzini wrote:
-> In preparation for adding more similar checks, move the VEX.L=0 check
-> and several X86_SPECIAL_* checks to a new field, where each bit represent
-> a common check on unused bits, or a restriction on the processor mode.
+> Instructions in VEX exception class 6 generally look at the value of
+> VEX.W.  Note that the manual places some instructions incorrectly in
+> class 4, for example VPERMQ which has no non-VEX encoding and no legacy
+> SSE analogue.  AMD does a mess of its own, as documented in the comment
+> that this patch adds.
 > 
-> Likewise, many SVM intercepts can be checked during the decoding phase,
-> the main exception being the selective CR0 write, MSR and IOIO intercepts.
+> Most of them are checked for VEX.W=0, and are listed in the manual
+> (though with an omission) in table 2-16; VPERMQ and VPERMPD check for
+> VEX.W=1, which is only listed in the instruction description.  Others,
+> such as VPSRLV, VPSLLV and the FMA3 instructions, use VEX.W to switch
+> between a 32-bit and 64-bit operation.
+> 
+> Fix more of the class 4/class 6 mismatches, and implement the check for
+> VEX.W in TCG.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   target/i386/tcg/decode-new.c.inc | 79 +++++++++++++++++++++++---------
->   target/i386/tcg/decode-new.h     | 25 +++++++---
->   target/i386/tcg/emit.c.inc       |  8 ----
->   3 files changed, 76 insertions(+), 36 deletions(-)
+>   target/i386/tcg/decode-new.c.inc | 133 +++++++++++++++++++++----------
+>   target/i386/tcg/decode-new.h     |   6 ++
+>   2 files changed, 99 insertions(+), 40 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
