@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BC97CEF3E
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 07:46:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 557367CEF4E
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 07:47:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtLqz-0001J4-6v; Thu, 19 Oct 2023 01:45:53 -0400
+	id 1qtLs9-0002K7-Dz; Thu, 19 Oct 2023 01:47:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLqw-0001FO-Jo
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:45:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLs4-0002Ji-2x
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:47:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLqu-0007Mh-6Q
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:45:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtLrx-00014s-RB
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 01:46:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697694328;
+ s=mimecast20190719; t=1697694402;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=jJydT9i5tsAWGNCf+sck7pu/49OXjN1IIdnoQSV7hno=;
- b=EdRogM+PVTNkDcGuLNpFqckLDwv2hso+oMRucUNHQ0delGTBePiRHHChwG/OTd14h3RfVT
- JHeJtgbbiyDSGqKAMZXuFKo7CMdVnVGrTvl9EBKZkGNOPuTnWckwMLHClvHgDcdEPnNeis
- 852qsiESRxC6htpw0YVGrj1xh8r+2y4=
+ bh=gi5P+zMrtpiKskmUFt+Rl5U7vy/Mx2/SlUMaFfKOEKg=;
+ b=BRG1+PQb6lRJHpQTjbCFEzEW2iC1eoF9WpvJ0B8UpthWznDTd8OX20QU2F+OGqFai5zm2u
+ aNlt2/SbXm5sDrENwwDQRgNHitAJyqgHpvfmZ+2e5PS88Gsx5smblyuec537F+BfVztIeZ
+ KyebXepmpqa+zTg4IfFoZJ2NAkymPDo=
 Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
  [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-xPMKulXcMj-KfI5SO-4XTg-1; Thu, 19 Oct 2023 01:45:25 -0400
-X-MC-Unique: xPMKulXcMj-KfI5SO-4XTg-1
+ us-mta-636-lTR0YoNxPrKUEBO6UwIfKg-1; Thu, 19 Oct 2023 01:46:40 -0400
+X-MC-Unique: lTR0YoNxPrKUEBO6UwIfKg-1
 Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-66d75988385so23659526d6.2
- for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 22:45:25 -0700 (PDT)
+ 6a1803df08f44-66d0ceb78cbso85486986d6.1
+ for <qemu-devel@nongnu.org>; Wed, 18 Oct 2023 22:46:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697694325; x=1698299125;
+ d=1e100.net; s=20230601; t=1697694399; x=1698299199;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jJydT9i5tsAWGNCf+sck7pu/49OXjN1IIdnoQSV7hno=;
- b=E8v0sJbIErNTawTN8Ek1KKt6FRZ8ZAN7ePc+y45/c6BwC8YPFLXj0sFM1ghaIhHlWg
- y8xDhkR7GTH45ZmA4lVFf6217u7wNNBbfbta7cte8Forjl7YDBc+yVHP4zbNaVAFLn4F
- oYYQKfAn9XvNatnxeUIfRHP5xUvsTsbNFum81UaFUBGOQCPkaWYDVD5fOugnyWrxI3A0
- kK1PrGXkSY0yEE5lA5v3yXt6zN1lHvqGbNUhf6VdpvFcrUvidkY7OeI1mdnb7yUWhg2c
- X1gHwsm2LQOk/VsT9j2A13F3vD2jWFlU6chEDXpngeTMcUe0lXBl8Y4iWdZoCpzcEmaL
- KGFA==
-X-Gm-Message-State: AOJu0Ywf9OFdLCx8drfxOdUoH+QEdqNfS3Isu2CwCX3V4mF9HgdQF9s1
- RVJgtyh1rxcvNR6AJPmBFP8XrjL/YpnKky5hoPOpb/JCVyRHHQC6GQz+2BZlfJGBeIbco6hUSfH
- jP5tsEkQlYDpL5cY=
-X-Received: by 2002:a05:6214:f29:b0:66d:59da:d225 with SMTP id
- iw9-20020a0562140f2900b0066d59dad225mr1636310qvb.15.1697694325166; 
- Wed, 18 Oct 2023 22:45:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2L3tSJCuFbk8EBJK6K5VVSGyTdvMqAzxSMnmnxUX/pilLBKxqkzKWMZhqKIRbbOfZd6O0Jw==
-X-Received: by 2002:a05:6214:f29:b0:66d:59da:d225 with SMTP id
- iw9-20020a0562140f2900b0066d59dad225mr1636293qvb.15.1697694324919; 
- Wed, 18 Oct 2023 22:45:24 -0700 (PDT)
+ bh=gi5P+zMrtpiKskmUFt+Rl5U7vy/Mx2/SlUMaFfKOEKg=;
+ b=WvIISt5YkgLApP8JaRJGU7+0LBvkJ/OkRh1VIXFO8RkXsLE+QxVVylwFSe6oxzq5D0
+ mKiiL1t8S4H51OAwJNLg62p92lxU/CvTMnNrVVaDJCMNcgiARRG6aXzU0OkGN+ijHGeh
+ xsGbf9QDaA45msFuA+PCRp65ak1waty97b0Z7/4af5BmjtavZcAjcQ2r94EVV3+HbVLf
+ N2BCXjUDLZwHo0ORbt922UaPWFoUy0ya9gTjnxWDa+zBlXyqcAEudgeXSpFdBy3FIA2V
+ dg8pnWI+9QbKu4WPx77NXodK8Ve0TKAA29ji9MvgfoOvYIDn26j1m3L5QyLJ8aGp8jel
+ IaMg==
+X-Gm-Message-State: AOJu0YzwXWlexo67SzJDpLHwMLYrOuq9icAPc6emgnHr9TquPQKop7Vw
+ visOszlG4WTgbp/Zp7war2Y8A1B4cHVW+1gzlQQekpezlk7aQPg167pR97pi9GkLHs0/OgyqFNX
+ 18ojjH2Wsixkp5AjMJu7gbYM=
+X-Received: by 2002:a05:6214:1c49:b0:66d:59da:d221 with SMTP id
+ if9-20020a0562141c4900b0066d59dad221mr1463806qvb.21.1697694399467; 
+ Wed, 18 Oct 2023 22:46:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEy8cVU+RSWmi7Ava28slslcm2oT7hReEqtso6UZiFZ6PoRdDFTjxKiG309LXYE01udFloAcA==
+X-Received: by 2002:a05:6214:1c49:b0:66d:59da:d221 with SMTP id
+ if9-20020a0562141c4900b0066d59dad221mr1463787qvb.21.1697694399231; 
+ Wed, 18 Oct 2023 22:46:39 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
  [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
- p18-20020a0cfad2000000b006564afc5908sm535103qvo.111.2023.10.18.22.45.22
+ p18-20020a0cfad2000000b006564afc5908sm535103qvo.111.2023.10.18.22.46.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 Oct 2023 22:45:24 -0700 (PDT)
-Message-ID: <add787ae-a2cf-4692-906f-bbfe5fa201a6@redhat.com>
-Date: Thu, 19 Oct 2023 07:45:22 +0200
+ Wed, 18 Oct 2023 22:46:39 -0700 (PDT)
+Message-ID: <b6d5e8ee-54e6-417e-b57d-6f65b2e0176b@redhat.com>
+Date: Thu, 19 Oct 2023 07:46:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6] hw/intc/spapr_xive: Move sysbus_init_mmio() calls
- around
+Subject: Re: [PATCH 6/6] hw/intc/spapr_xive: Do not use SysBus API to map
+ local MMIO region
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -77,7 +77,7 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
  Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org
 References: <20231018133059.85765-1-philmd@linaro.org>
- <20231018133059.85765-6-philmd@linaro.org>
+ <20231018133059.85765-7-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -121,17 +121,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231018133059.85765-6-philmd@linaro.org>
+In-Reply-To: <20231018133059.85765-7-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -149,14 +149,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18/10/2023 15.30, Philippe Mathieu-Daudé wrote:
-> In order to make the next commit trivial, move sysbus_init_mmio()
-> calls just before the corresponding sysbus_mmio_map() calls.
+> There is no point in exposing an internal MMIO region via
+> SysBus and directly mapping it in the very same device.
+> 
+> Just map it without using the SysBus API.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/intc/spapr_xive.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   hw/intc/spapr_xive.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
