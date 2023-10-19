@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24A47CF387
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD4D7CF38F
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 11:08:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtOzO-0005Fr-OC; Thu, 19 Oct 2023 05:06:47 -0400
+	id 1qtP0A-0006wo-AB; Thu, 19 Oct 2023 05:07:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtOz3-0005Dm-58
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:06:25 -0400
+ (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
+ id 1qtP08-0006wU-AV
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:07:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtOz1-0000XH-CT
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:06:24 -0400
+ (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
+ id 1qtP06-0000jw-Jh
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 05:07:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697706375;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=pbSYvyuyEPZugfJGSMk6Dma+H1+O9xQqUavGitpyqN8=;
- b=TCOsS51l/LU8ONkIRnKBwQiyAPNi2mkJoyvbWfRS8jy6hP3niBV9/g3UN+m5U4cCxMB870
- USAEQ++4wfeB/HG65OZdWPiaPPG+nX+VK8jTenLulp91iy0QryGPJREwx5SCsbRUwjpwI7
- 4Qi+fGtfd5521gT9RFf+AcTFsS1VUBA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697706449;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=otrf+KyCMw/Ydvi/gAU7O3+mROmgl3QS9I3TKAF2hCY=;
+ b=XHxOb9bzn378emFvarY/3HEI6ARWWAkWpMSqKHYbSXmnn9Q2JiV36h8SdhnKontv/B1iau
+ W5RADzGhiLCdky+k2w3kAIPhr6spx9TLDXVdEtj4bzjCICY9OaKbmVdINc0Bvt7zkpXnyL
+ gUi3Yct4apaMmfY2cmd7DS5+DgO8ugg=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-cCUaKzdfN1ee-QkYcCnnig-1; Thu, 19 Oct 2023 05:06:09 -0400
-X-MC-Unique: cCUaKzdfN1ee-QkYcCnnig-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-406710d9a4aso55043025e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 02:06:08 -0700 (PDT)
+ us-mta-628-Ehkw11uwOPOL4Uj7uXjVVw-1; Thu, 19 Oct 2023 05:07:24 -0400
+X-MC-Unique: Ehkw11uwOPOL4Uj7uXjVVw-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b6ff15946fso73405951fa.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 02:07:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697706368; x=1698311168;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1697706443; x=1698311243;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pbSYvyuyEPZugfJGSMk6Dma+H1+O9xQqUavGitpyqN8=;
- b=xHNc2AYA9CXnNiE7icDFXWbWpRGSYPBO8xcOU9dOuo692cJBIGmuUIsZ9z9pk7R6dd
- PDHYcjhHPr83X2ns7saejR0jYcqIgOcO1gvHN5B6uSH9d+iA/74sPWXG5tW+R7y8fc8z
- hBv1mHdTdUVKz7yE7JTjJv4AAk20cd/rGOOzy+QV5OQYTmQHlgd+STXIymYkavR7XF/d
- 1YkojvO/E0UAnG9YFF7sZC26ZIAf8VVoRWObWBwV3FHki4HMZCJE2mSJKnAm3h5Vmzqc
- 3Tb1mtVhO/8wSDT4Qn+Ja/NACwjVnPKSPo+65Xt6/06+XfvCu1onX59/8wqBjHiBe6u1
- 0xbA==
-X-Gm-Message-State: AOJu0YztbyHERjEAJ/5Hons/jm5wZiGsLex8otIb0Z6RXqECMCv2AWg5
- 3d7IUS8dn4/VmcK84eONutEFzPdV+RAWSKRSkhlfq1xiBHRvI/osvqIKF+t7cIaOlzk6U0WOKj8
- bD9tyNbqOnW7mmwM=
-X-Received: by 2002:a5d:5444:0:b0:32d:a405:b6b7 with SMTP id
- w4-20020a5d5444000000b0032da405b6b7mr1112746wrv.32.1697706367910; 
- Thu, 19 Oct 2023 02:06:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHAVDsNOj7/PxlZNnBY1mXjcC+mRfUx6ybYc9EMq6PEZtGSoKhEDA2v2R1agGXEM7xfRHrY1Q==
-X-Received: by 2002:a5d:5444:0:b0:32d:a405:b6b7 with SMTP id
- w4-20020a5d5444000000b0032da405b6b7mr1112728wrv.32.1697706367464; 
- Thu, 19 Oct 2023 02:06:07 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- k1-20020a5d66c1000000b0032dbf99bf4fsm3974083wrw.89.2023.10.19.02.06.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 02:06:06 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
- semaphore
-In-Reply-To: <20231012140651.13122-2-farosas@suse.de> (Fabiano Rosas's message
- of "Thu, 12 Oct 2023 11:06:46 -0300")
-References: <20231012140651.13122-1-farosas@suse.de>
- <20231012140651.13122-2-farosas@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 19 Oct 2023 11:06:06 +0200
-Message-ID: <87sf676kxt.fsf@secure.mitica>
+ bh=otrf+KyCMw/Ydvi/gAU7O3+mROmgl3QS9I3TKAF2hCY=;
+ b=TU+lwRYdrHKceKh7sLEKHJ1AwmzTESQzjl12jxWMClGDOsQDLleLXRJdbI25QXhMOB
+ pH9vrUKK+Uf4DY88EX/slbrjE6jY89sKFtPhYFzkxzk8zSzp6t4Ij5XY5iO9xziZoVta
+ 6YlqxLfNIvIhl8kX7hwagjI25xOVPRMSnpN5pLmoD1NKWvzbyLJycJajpZ+GctVfB3AL
+ 6QZTw6g2wQ4wUXbOJvYXC4oirFuDrhI4wbuAAjhY1Y46UQVkyIEKk534veTQhHoN0Sc6
+ FT02WS+2HHzoCU+iMcgF8IZG1WnGdKuStShwq2oqnwz+qLyPWNbwAEGALVcirtYEi/AI
+ POZw==
+X-Gm-Message-State: AOJu0YyX5TnhW4pE/8gjzzvkhCfrGl5MDgiO0wmJJ5Fo3MJhJJdSqorI
+ zTYoE0uHF5fcdWdGfYhFgM2MT1hvAZcM5JwRc88Y+xqBCv8jows0yWwbv4S7FSNfeCasdHovKgv
+ AF8tl6VVg1UqffdnIfSaYdgEWcc4AEEY=
+X-Received: by 2002:a05:651c:2109:b0:2c5:fde:e457 with SMTP id
+ a9-20020a05651c210900b002c50fdee457mr1099803ljq.3.1697706443171; 
+ Thu, 19 Oct 2023 02:07:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFUOvnv1nyQr4Y6Wx+zk9m4LTIcPSDmB79o87mZulhgrBRwrLueTrz1AuqJgVOp8C/gg+ml8Cbhv5YfVCHpOQg=
+X-Received: by 2002:a05:651c:2109:b0:2c5:fde:e457 with SMTP id
+ a9-20020a05651c210900b002c50fdee457mr1099781ljq.3.1697706442781; Thu, 19 Oct
+ 2023 02:07:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+References: <20231011175516.541374-1-eric.auger@redhat.com>
+ <20231018093723-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231018093723-mutt-send-email-mst@kernel.org>
+From: YangHang Liu <yanghliu@redhat.com>
+Date: Thu, 19 Oct 2023 17:07:11 +0800
+Message-ID: <CAGYh1E_RQOWkDP+rxfTV-AoVekw_SpuOxOVCZ0V7Gj+keZWXLw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/13] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org, alex.williamson@redhat.com, clg@redhat.com, 
+ jean-philippe@linaro.org, pbonzini@redhat.com, peter.maydell@linaro.org, 
+ peterx@redhat.com, david@redhat.com, philmd@linaro.org, 
+ zhenzhong.duan@intel.com, yi.l.liu@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=yanghliu@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,7 +83,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,172 +96,132 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> The channels_ready semaphore is a global variable not linked to any
-> single multifd channel. Waiting on it only means that "some" channel
-> has become ready to send data. Since we need to address the channels
-> by index (multifd_send_state->params[i]), that information adds
-> nothing of value.
+The original issue I found : After starting a VM which has two ice PFs
+and a virtio-iommu device, qemu-kvm and VM guest dmesg throw lots of
+duplicate VFIO_MAP_DMA errors
 
-NAK.
+After testing with Eric's build, the  original issue is gone and the
+Tier1 regression test against ice PF and virtio iommu device gets PASS
+as well.
 
-I disagree here O:-)
+Tested-by: Yanghang Liu <yanghliu@redhat.com>
 
-the reason why that channel exist is for multifd_send_pages()
 
-And simplifying the function what it does is:
-
-sem_wait(channels_ready);
-
-for_each_channel()
-   look if it is empty()
-
-But with the semaphore, we guarantee that when we go to the loop, there
-is a channel ready, so we know we donat busy wait searching for a
-channel that is free.
-
-Notice that I fully agree that the sem is not needed for locking.
-Locking is done with the mutex.  It is just used to make sure that we
-don't busy loop on that loop.
-
-And we use a sem, because it is the easiest way to know how many
-channels are ready (even when we only care if there is one when we
-arrive to that code).
-
-We lost count of that counter, and we fixed that here:
-
-commit d2026ee117147893f8d80f060cede6d872ecbd7f
-Author: Juan Quintela <quintela@redhat.com>
-Date:   Wed Apr 26 12:20:36 2023 +0200
-
-    multifd: Fix the number of channels ready
-
-    We don't wait in the sem when we are doing a sync_main.  Make it
-
-And we were addressing the problem that some users where finding that we
-were busy waiting on that loop.
-
-> The channel being addressed is not necessarily the
-> one that just released the semaphore.
-
-We only care that there is at least one free.  We are going to search
-the next one.
-
-Does this explanation makes sense?
-
-Later, Juan.
-
-> The only usage of this semaphore that makes sense is to wait for it in
-> a loop that iterates for the number of channels. That could mean: all
-> channels have been setup and are operational OR all channels have
-> finished their work and are idle.
+On Wed, Oct 18, 2023 at 9:45=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
 >
-> Currently all code that waits on channels_ready is redundant. There is
-> always a subsequent lock or semaphore that does the actual data
-> protection/synchronization.
+> On Wed, Oct 11, 2023 at 07:52:16PM +0200, Eric Auger wrote:
+> > This applies on top of vfio-next:
+> > https://github.com/legoater/qemu/, vfio-next branch
 >
-> - at multifd_send_pages: Waiting on channels_ready doesn't mean the
->   'next_channel' is ready, it could be any other channel. So there are
->   already cases where this code runs as if no semaphore was there.
-
->   Waiting outside of the loop is also incorrect because if the current
->   channel already has a pending_job, then it will loop into the next
->   one without waiting the semaphore and the count will be greater than
->   zero at the end of the execution.
+> virtio things make sense
 >
->   Checking that "any" channel is ready as a proxy for all channels
->   being ready would work, but it's not what the code is doing and not
->   really needed because the channel lock and 'sem' would be enough.
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 >
-> - at multifd_send_sync: This usage is correct, but it is made
->   redundant by the wait on sem_sync. What this piece of code is doing
->   is making sure all channels have sent the SYNC packet and became
->   idle afterwards.
+> let me know how you want to merge all this.
 >
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  migration/multifd.c | 10 ----------
->  1 file changed, 10 deletions(-)
 >
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index 0f6b203877..e26f5f246d 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -362,8 +362,6 @@ struct {
->      MultiFDPages_t *pages;
->      /* global number of generated multifd packets */
->      uint64_t packet_num;
-> -    /* send channels ready */
-> -    QemuSemaphore channels_ready;
->      /*
->       * Have we already run terminate threads.  There is a race when it
->       * happens that we got one error while we are exiting.
-> @@ -403,7 +401,6 @@ static int multifd_send_pages(QEMUFile *f)
->          return -1;
->      }
->  
-> -    qemu_sem_wait(&multifd_send_state->channels_ready);
->      /*
->       * next_channel can remain from a previous migration that was
->       * using more channels, so ensure it doesn't overflow if the
-> @@ -554,7 +551,6 @@ void multifd_save_cleanup(void)
->              error_free(local_err);
->          }
->      }
-> -    qemu_sem_destroy(&multifd_send_state->channels_ready);
->      g_free(multifd_send_state->params);
->      multifd_send_state->params = NULL;
->      multifd_pages_clear(multifd_send_state->pages);
-> @@ -630,7 +626,6 @@ int multifd_send_sync_main(QEMUFile *f)
->      for (i = 0; i < migrate_multifd_channels(); i++) {
->          MultiFDSendParams *p = &multifd_send_state->params[i];
->  
-> -        qemu_sem_wait(&multifd_send_state->channels_ready);
->          trace_multifd_send_sync_main_wait(p->id);
->          qemu_sem_wait(&p->sem_sync);
->  
-> @@ -664,7 +659,6 @@ static void *multifd_send_thread(void *opaque)
->      p->num_packets = 1;
->  
->      while (true) {
-> -        qemu_sem_post(&multifd_send_state->channels_ready);
->          qemu_sem_wait(&p->sem);
->  
->          if (qatomic_read(&multifd_send_state->exiting)) {
-> @@ -759,7 +753,6 @@ out:
->       */
->      if (ret != 0) {
->          qemu_sem_post(&p->sem_sync);
-> -        qemu_sem_post(&multifd_send_state->channels_ready);
->      }
->  
->      qemu_mutex_lock(&p->mutex);
-> @@ -796,7 +789,6 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
->           * is not created, and then tell who pay attention to me.
->           */
->          p->quit = true;
-> -        qemu_sem_post(&multifd_send_state->channels_ready);
->          qemu_sem_post(&p->sem_sync);
->      }
->  }
-> @@ -874,7 +866,6 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
->  {
->       migrate_set_error(migrate_get_current(), err);
->       /* Error happen, we need to tell who pay attention to me */
-> -     qemu_sem_post(&multifd_send_state->channels_ready);
->       qemu_sem_post(&p->sem_sync);
->       /*
->        * Although multifd_send_thread is not created, but main migration
-> @@ -919,7 +910,6 @@ int multifd_save_setup(Error **errp)
->      multifd_send_state = g_malloc0(sizeof(*multifd_send_state));
->      multifd_send_state->params = g_new0(MultiFDSendParams, thread_count);
->      multifd_send_state->pages = multifd_pages_init(page_count);
-> -    qemu_sem_init(&multifd_send_state->channels_ready, 0);
->      qatomic_set(&multifd_send_state->exiting, 0);
->      multifd_send_state->ops = multifd_ops[migrate_multifd_compression()];
+>
+> > On x86, when assigning VFIO-PCI devices protected with virtio-iommu
+> > we encounter the case where the guest tries to map IOVAs beyond 48b
+> > whereas the physical VTD IOMMU only supports 48b. This ends up with
+> > VFIO_MAP_DMA failures at qemu level because at kernel level,
+> > vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
+> >
+> > This is due to the fact the virtio-iommu currently unconditionally
+> > exposes an IOVA range of 64b through its config input range fields.
+> >
+> > This series removes this assumption by retrieving the usable IOVA
+> > regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
+> > a VFIO device is attached. This info is communicated to the
+> > virtio-iommu memory region, transformed into the inversed info, ie.
+> > the host reserved IOVA regions. Then those latter are combined with the
+> > reserved IOVA regions set though the virtio-iommu reserved-regions
+> > property. That way, the guest virtio-iommu driver, unchanged, is
+> > able to probe the whole set of reserved regions and prevent any IOVA
+> > belonging to those ranges from beeing used, achieving the original goal=
+.
+> >
+> > Best Regards
+> >
+> > Eric
+> >
+> > This series can be found at:
+> > https://github.com/eauger/qemu/tree/vfio-next-iommu_geometry-v3
+> >
+> > History:
+> > v2 -> v3:
+> > - rebase on top of vfio-next (including iommufd prereq)
+> > - take into account IOVA range info capability may not be offered by
+> >   old kernel and use nr_iovas =3D -1 to encode that [Alex]
+> > - use GList * everywhere instead of arrays (in the range_inverse_array)
+> >   with the benefice it sorts ranges retrieved from the kernel which are
+> >   not garanteed to be sorted. Rework the tests accordingly [Alex]
+> > - Make sure resv_regions GList is build before the probe() [Jean]
+> >   per device list is first populated with prop resv regions on
+> >   IOMMUDevice creation and then rebuilt on set_iova()
+> > - Add a warning if set_iova builds a valid list after probe was
+> >   called [Jean]
+> > - Build host windows on top of IOVA valid ranges if this info can
+> >   be retrieved from the kernel. As many windows are created as
+> >   valid ranges
+> > v1 -> v2:
+> > - Remove "[PATCH 12/13] virtio-iommu: Resize memory region according
+> >   to the max iova info" which causes way too much trouble: trigger
+> >   a coredump in vhost, causes duplication of IOMMU notifiers causing
+> >   EEXIST vfio_dma_map errors, ... This looks like a bad usage of the
+> >   memory API so I prefer removing this from this series. So I was
+> >   also obliged to remove the vfio_find_hostwin() check in the case
+> >   of an IOMMU.
+> > - Let range_inverse_array() take low/high args instead of hardcoding
+> >   0, UINT64_MAX which both complexifies the algo and the tests.
+> > - Move range function description in header.
+> > - Check that if set_iova_ranges is called several times, new resv
+> >   regions are included in previous ones
+> >
+> > Eric Auger (13):
+> >   memory: Let ReservedRegion use Range
+> >   memory: Introduce memory_region_iommu_set_iova_ranges
+> >   vfio: Collect container iova range info
+> >   virtio-iommu: Rename reserved_regions into prop_resv_regions
+> >   range: Make range_compare() public
+> >   util/reserved-region: Add new ReservedRegion helpers
+> >   virtio-iommu: Introduce per IOMMUDevice reserved regions
+> >   range: Introduce range_inverse_array()
+> >   virtio-iommu: Record whether a probe request has been issued
+> >   virtio-iommu: Implement set_iova_ranges() callback
+> >   virtio-iommu: Consolidate host reserved regions and property set ones
+> >   test: Add some tests for range and resv-mem helpers
+> >   vfio: Remove 64-bit IOVA address space assumption
+> >
+> >  include/exec/memory.h            |  34 +++-
+> >  include/hw/vfio/vfio-common.h    |   2 +
+> >  include/hw/virtio/virtio-iommu.h |   7 +-
+> >  include/qemu/range.h             |  14 ++
+> >  include/qemu/reserved-region.h   |  32 ++++
+> >  hw/core/qdev-properties-system.c |   9 +-
+> >  hw/vfio/common.c                 |  23 ++-
+> >  hw/vfio/container.c              |  67 ++++++-
+> >  hw/virtio/virtio-iommu-pci.c     |   8 +-
+> >  hw/virtio/virtio-iommu.c         | 155 +++++++++++++--
+> >  system/memory.c                  |  13 ++
+> >  tests/unit/test-resv-mem.c       | 318 +++++++++++++++++++++++++++++++
+> >  util/range.c                     |  61 +++++-
+> >  util/reserved-region.c           |  91 +++++++++
+> >  hw/virtio/trace-events           |   1 +
+> >  tests/unit/meson.build           |   1 +
+> >  util/meson.build                 |   1 +
+> >  17 files changed, 791 insertions(+), 46 deletions(-)
+> >  create mode 100644 include/qemu/reserved-region.h
+> >  create mode 100644 tests/unit/test-resv-mem.c
+> >  create mode 100644 util/reserved-region.c
+> >
+> > --
+> > 2.41.0
+>
+>
 
 
