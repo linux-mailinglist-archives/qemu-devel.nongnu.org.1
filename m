@@ -2,122 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A4D7D0319
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE787D0321
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 22:25:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtZVU-0006pP-62; Thu, 19 Oct 2023 16:20:36 -0400
+	id 1qtZZh-0000PH-FE; Thu, 19 Oct 2023 16:24:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qtZVR-0006nC-74; Thu, 19 Oct 2023 16:20:33 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qtZVP-0008LM-IO; Thu, 19 Oct 2023 16:20:32 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JKHIPv010550; Thu, 19 Oct 2023 20:20:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=ztRYCBysnSriCmZVtZ2FhzbB0XgQY+Jj5Gzo1L0B3fU=;
- b=koD0R+bHxA2UXmPGp1qn/ljvoM8KbF2XjcdK1tm+6XYizp1wgWwpkL+FsoBK6eycBzoS
- okr9X0AU01oZxLITSgP/5OF78kzk2wgCBvVCtr11KIRvqL20TDKkO9KxDbL/HIQ8ExRZ
- BdiOGLkGnW9UNVh1h1q5r6WSt3KwsvzLlW9SBlvKljahZkr6GhNAM0P0g8rgVdDAJRzF
- sIllHtkv+q8jKOiZIivAKN6mfi2+6edoHUrI6gwgkehoETnUKZJUl3uoBBZZaQIL45pc
- Vxu2Pdb50y5K13WEuOgI81my6j3BgyIL4XK9NkXZPidZSI6qU7cBP/uM67L06kItvM9+ rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubc1g3gk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:20:14 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JKHQsQ011668;
- Thu, 19 Oct 2023 20:20:13 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tubc1g3fn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:20:13 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39JK13wA027154; Thu, 19 Oct 2023 20:20:11 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tku5je-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Oct 2023 20:20:11 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39JKKA7017695276
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Oct 2023 20:20:11 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5F81158058;
- Thu, 19 Oct 2023 20:20:10 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 82A125805D;
- Thu, 19 Oct 2023 20:20:08 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 19 Oct 2023 20:20:08 +0000 (GMT)
-Message-ID: <8eaa395b-3c42-ace3-9013-72ea80c2a1e8@linux.ibm.com>
-Date: Thu, 19 Oct 2023 16:20:07 -0400
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtZZf-0000Ol-Bk
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:24:55 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qtZZd-0000gW-8S
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 16:24:55 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-406609df1a6so610525e9.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 13:24:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697747091; x=1698351891; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TgzOY1mpwueJDG3rHA5K/iwtnkdPyxsrxzEAjXze2Ew=;
+ b=IPgyGkQ+KJRV4vZBDD3a6+ndvJz4F0cl7axyZprUWthEZ5548HIundJeCVZ22onM6e
+ sIJphjizlrxxMd7kw04XmIN6uNCtsISuBG/Qn/EG9Jd7bLpLp5bt0GpDGb0pbIfbAExR
+ iWLAcg8/eUxEppRZoXRigy6JPL7guMKdt+FkXPJv4TePRi1rGrJuiIMenae/CbO3g+io
+ IPWPtfD3N/N3c4vK2tzhDnSE3ZaW4a9K6owz3mNKDyxpc/mQUULzJHkarH6MwUIPmbSi
+ 2WtkhrfFBsmUzl8Xt9YsP+n/dutfpRD7w7gbyYPKUQJjL3m6YZ1mzmGScGHXdznhl+S2
+ GQwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697747091; x=1698351891;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=TgzOY1mpwueJDG3rHA5K/iwtnkdPyxsrxzEAjXze2Ew=;
+ b=m8seorkeJL9BeCsmHyGl+45Q9/e4Kre0ahskUzF8y6CnaiWRwB97268YO7z+zgviK1
+ 9BbfuF8LD1HhrZDeYomrF/dxLL+AjcZi9vUBS7WPtgrqYaUmgjl667PK5hqI1lusRrGe
+ 72WCEywJZAGHT1W+2vE+sgS3kYhrcuUXMNpW55SDGAGjByqlQlwZuLqvBuJkP5ichX99
+ bZT/Z6znZpzxAAB7TjUY8m0FXfdNcaJX48zUlKXovRb7fP3lSHX5Ahi9ggbxvgCzyQdf
+ 624VxiFbXiWUw+cxLD4M2tdArPZDvT+einhM3paqgZF8M+nSxkQMsXZqjHfKv+cHVaZA
+ a34A==
+X-Gm-Message-State: AOJu0YxRlLTFXF2JUYFzGs5Pgvk8gsKJNC5np8ySC06sxrkGF61XkMwP
+ LfC+xd3BreObhgItJxyw1vE8Nw==
+X-Google-Smtp-Source: AGHT+IEYsFYr7O6RjI+rJCAB+T/wDMTi7ww765HK0iM+p1XMoqmp3EPr80KBK43rsTWP1FxxCAL0WQ==
+X-Received: by 2002:a05:600c:4f90:b0:405:1baf:cedf with SMTP id
+ n16-20020a05600c4f9000b004051bafcedfmr2539457wmq.24.1697747091206; 
+ Thu, 19 Oct 2023 13:24:51 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n15-20020a7bcbcf000000b004060f0a0fdbsm5204826wmi.41.2023.10.19.13.24.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 13:24:50 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 64C741FFBB;
+ Thu, 19 Oct 2023 21:24:50 +0100 (BST)
+References: <20231019101030.128431-1-akihiko.odaki@daynix.com>
+ <20231019101030.128431-7-akihiko.odaki@daynix.com>
+User-agent: mu4e 1.11.22; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
+ =?utf-8?Q?Daud=C3=A9?=
+ <philmd@linaro.org>, Fabiano Rosas <farosas@suse.de>, Richard Henderson
+ <richard.henderson@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v5 6/6] plugins: Remove an extra parameter
+Date: Thu, 19 Oct 2023 21:24:44 +0100
+In-reply-to: <20231019101030.128431-7-akihiko.odaki@daynix.com>
+Message-ID: <87cyxa8inh.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 04/13] migration: Use vmstate_register_any() for ipmi-bt*
-Content-Language: en-US
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, qemu-s390x@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Stefan Weil <sw@weilnetz.de>, qemu-arm@nongnu.org,
- Jason Wang <jasowang@redhat.com>, Corey Minyard <minyard@acm.org>,
- Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
- <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20231019190831.20363-1-quintela@redhat.com>
- <20231019190831.20363-5-quintela@redhat.com>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20231019190831.20363-5-quintela@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: MEjCY6TciJCsgIvapVqiRskCyNWz59yA
-X-Proofpoint-GUID: N9tpfNFMKk6SV7gk5BVl8gsTMmbFNXfl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_20,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- malwarescore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
- mlxlogscore=999 priorityscore=1501 spamscore=0 clxscore=1015
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310190173
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -135,74 +101,58 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 10/19/23 15:08, Juan Quintela wrote:
-> Otherwise device-introspection-test fails.
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+
+> copy_call() has an unused parameter so remove it.
 >
-> $ ./tests/qtest/device-introspect-test
-> ...
-> Broken pipe
-> ../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
-> Aborted (core dumped)
->
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+
+Queued to plugins/next, thanks.
+
 > ---
->   hw/ipmi/ipmi_bmc_extern.c | 2 +-
->   hw/ipmi/ipmi_bmc_sim.c    | 2 +-
->   hw/ipmi/isa_ipmi_bt.c     | 2 +-
->   hw/ipmi/isa_ipmi_kcs.c    | 2 +-
->   4 files changed, 4 insertions(+), 4 deletions(-)
+>  accel/tcg/plugin-gen.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
 >
-> diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-> index e232d35ba2..324a2c8835 100644
-> --- a/hw/ipmi/ipmi_bmc_extern.c
-> +++ b/hw/ipmi/ipmi_bmc_extern.c
-> @@ -504,7 +504,7 @@ static void ipmi_bmc_extern_init(Object *obj)
->       IPMIBmcExtern *ibe = IPMI_BMC_EXTERN(obj);
->
->       ibe->extern_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, extern_timeout, ibe);
-> -    vmstate_register(NULL, 0, &vmstate_ipmi_bmc_extern, ibe);
-> +    vmstate_register_any(NULL, &vmstate_ipmi_bmc_extern, ibe);
->   }
->
->   static void ipmi_bmc_extern_finalize(Object *obj)
-> diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
-> index 905e091094..404db5d5bc 100644
-> --- a/hw/ipmi/ipmi_bmc_sim.c
-> +++ b/hw/ipmi/ipmi_bmc_sim.c
-> @@ -2188,7 +2188,7 @@ static void ipmi_sim_realize(DeviceState *dev, Error **errp)
->
->       ibs->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, ipmi_timeout, ibs);
->
-> -    vmstate_register(NULL, 0, &vmstate_ipmi_sim, ibs);
-> +    vmstate_register_any(NULL, &vmstate_ipmi_sim, ibs);
->   }
->
->   static Property ipmi_sim_properties[] = {
-> diff --git a/hw/ipmi/isa_ipmi_bt.c b/hw/ipmi/isa_ipmi_bt.c
-> index a83e7243d6..afb76b548a 100644
-> --- a/hw/ipmi/isa_ipmi_bt.c
-> +++ b/hw/ipmi/isa_ipmi_bt.c
-> @@ -125,7 +125,7 @@ static void isa_ipmi_bt_init(Object *obj)
->
->       ipmi_bmc_find_and_link(obj, (Object **) &iib->bt.bmc);
->
-> -    vmstate_register(NULL, 0, &vmstate_ISAIPMIBTDevice, iib);
-> +    vmstate_register_any(NULL, &vmstate_ISAIPMIBTDevice, iib);
->   }
->
->   static void *isa_ipmi_bt_get_backend_data(IPMIInterface *ii)
-> diff --git a/hw/ipmi/isa_ipmi_kcs.c b/hw/ipmi/isa_ipmi_kcs.c
-> index b2ed70b9da..5ab63b2fcf 100644
-> --- a/hw/ipmi/isa_ipmi_kcs.c
-> +++ b/hw/ipmi/isa_ipmi_kcs.c
-> @@ -132,7 +132,7 @@ static void isa_ipmi_kcs_init(Object *obj)
->        * IPMI device, so receive it, but transmit a different
->        * version.
->        */
-> -    vmstate_register(NULL, 0, &vmstate_ISAIPMIKCSDevice, iik);
-> +    vmstate_register_any(NULL, &vmstate_ISAIPMIKCSDevice, iik);
->   }
->
->   static void *isa_ipmi_kcs_get_backend_data(IPMIInterface *ii)
+> diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+> index 39b3c9351f..78b331b251 100644
+> --- a/accel/tcg/plugin-gen.c
+> +++ b/accel/tcg/plugin-gen.c
+> @@ -327,8 +327,7 @@ static TCGOp *copy_st_ptr(TCGOp **begin_op, TCGOp *op)
+>      return op;
+>  }
+>=20=20
+> -static TCGOp *copy_call(TCGOp **begin_op, TCGOp *op, void *empty_func,
+> -                        void *func, int *cb_idx)
+> +static TCGOp *copy_call(TCGOp **begin_op, TCGOp *op, void *func, int *cb=
+_idx)
+>  {
+>      TCGOp *old_op;
+>      int func_idx;
+> @@ -372,8 +371,7 @@ static TCGOp *append_udata_cb(const struct qemu_plugi=
+n_dyn_cb *cb,
+>      }
+>=20=20
+>      /* call */
+> -    op =3D copy_call(&begin_op, op, HELPER(plugin_vcpu_udata_cb),
+> -                   cb->f.vcpu_udata, cb_idx);
+> +    op =3D copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
+>=20=20
+>      return op;
+>  }
+> @@ -420,8 +418,7 @@ static TCGOp *append_mem_cb(const struct qemu_plugin_=
+dyn_cb *cb,
+>=20=20
+>      if (type =3D=3D PLUGIN_GEN_CB_MEM) {
+>          /* call */
+> -        op =3D copy_call(&begin_op, op, HELPER(plugin_vcpu_mem_cb),
+> -                       cb->f.vcpu_udata, cb_idx);
+> +        op =3D copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
+>      }
+>=20=20
+>      return op;
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
