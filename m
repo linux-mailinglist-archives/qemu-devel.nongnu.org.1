@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BBD7CF72A
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8FE7CF73B
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:43:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtROE-0004df-5w; Thu, 19 Oct 2023 07:40:34 -0400
+	id 1qtRQe-0006Hf-TK; Thu, 19 Oct 2023 07:43:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtROB-0004bq-6y
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:40:31 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qtRQJ-0006Es-UD
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:42:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtRO8-0000Jx-Fu
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:40:30 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qtRQI-0000gj-Iq
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:42:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697715627;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=6Cy+4LW6+tEFG7oSWEYyib070mePeApvTeuWzcQgmqk=;
- b=MzIYuJYgB4BGXS0w0HmghWQ8YCZApmEjq6dpjgUse2IDjmfsWmiQfmmi4dPPnS8t1gNa9O
- f3Kbf2LM5l7iagPk6dLm06/OXPGkTx3GqKQw6IJR9jqPooRYLI4cToI8+50C8123wUh26x
- oKQuvy68IIxSobWe0AVWNg2ezPeedwU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1697715761;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JlWu4cfsU+g+WfaTewPxPGqmzTpLHhNOBt7yEzfQKZI=;
+ b=ZLe/EOCNUDDQMAJIXWDyjECAnnzFZ4MRI5zZax6aWPJ1WDOIsmVMpTpJc5gmt1IFuK3CJZ
+ ktWVaJfBHoOGWQbNw6hmd1XiH8ftUi8/U7GXlgX6BEAnWRFMj17ESXHnizUxLJfQVROXsC
+ SRY4NlKUk+dqjq+I/p+DCJtLEWUID+E=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-bL3-vDNwM6uSMRGnbyY2UA-1; Thu, 19 Oct 2023 07:40:26 -0400
-X-MC-Unique: bL3-vDNwM6uSMRGnbyY2UA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-407558fe418so52593215e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 04:40:26 -0700 (PDT)
+ us-mta-168-hGit-EzdNoaTEAeJQXvTGw-1; Thu, 19 Oct 2023 07:42:40 -0400
+X-MC-Unique: hGit-EzdNoaTEAeJQXvTGw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-99bcb13d8ddso580512566b.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 04:42:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697715625; x=1698320425;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6Cy+4LW6+tEFG7oSWEYyib070mePeApvTeuWzcQgmqk=;
- b=B56ncimlOlwvum2q6IUzvBDS5YAZnF+iZQLSBECPkvNOEj9oXFqhVb5jKA+dchGLQr
- iirJPkrdCG1mDuyBD0jIEQ1QuIVLjey3LwbLKsEpi6/YRGFnq7xHouKlML/F7dNSRnT6
- VjjVswETzVuGLxhfETgmmyiwcIgSjlfzSEolOxgfhw93SRH0CuDXrI87pEeLBxqhBjKy
- 1paUAI/xbgdcekplJnSwL02JWfI5AKFfUdG5Tdjz7XXAINthDb85SqdXZiQByDLJLVYX
- 8idbCoSxtnmXeC7QUQagyc0wPHiI0/aA4KacoxxhTi49RmcNDqpWiAV0AfQ8/uqu/7ei
- i7Iw==
-X-Gm-Message-State: AOJu0YzyTiVN0nJnakeYkQXBKosP/YpvSwjg4qZ8QA5DyPs0E5LW345y
- gdvIg/fh0EuHrFailrPGSmEwhkeTZCEZc2cjcjIRCsvrSMVO5ko0/T4FBcZ2ulxe7CiWPMhKKrk
- Aghk/fcZkBMx5bUw=
-X-Received: by 2002:a05:600c:1709:b0:3fc:dd9:91fd with SMTP id
- c9-20020a05600c170900b003fc0dd991fdmr1565020wmn.40.1697715625251; 
- Thu, 19 Oct 2023 04:40:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGWYrp4FnkSDtJ6h9+q2f2fYV6/fXq3eMCtxvg62PHi4c9k29mx1oGF1H+ddX+a4PPJctK7Vw==
-X-Received: by 2002:a05:600c:1709:b0:3fc:dd9:91fd with SMTP id
- c9-20020a05600c170900b003fc0dd991fdmr1565007wmn.40.1697715624928; 
- Thu, 19 Oct 2023 04:40:24 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- bg14-20020a05600c3c8e00b00401e32b25adsm4361535wmb.4.2023.10.19.04.40.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 04:40:24 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Yuan Liu <yuan1.liu@intel.com>
-Cc: peterx@redhat.com,  farosas@suse.de,  leobras@redhat.com,
- qemu-devel@nongnu.org,  nanhai.zou@intel.com
-Subject: Re: [PATCH 0/5] Live Migration Acceleration with IAA Compression
-In-Reply-To: <20231018221224.599065-1-yuan1.liu@intel.com> (Yuan Liu's message
- of "Thu, 19 Oct 2023 06:12:19 +0800")
-References: <20231018221224.599065-1-yuan1.liu@intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 19 Oct 2023 13:40:23 +0200
-Message-ID: <87cyxa6dso.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1697715758; x=1698320558;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JlWu4cfsU+g+WfaTewPxPGqmzTpLHhNOBt7yEzfQKZI=;
+ b=AVu/Gyu+NVhxCtanC3dqrdPSSGkAzba6GGg1wbVpuMQ0Ey4JfwMR1FlC3bN4VUjCss
+ g5ld23Tlb9Wa1jBR8k6K/oc0V8jhcA/pTFWwIQNqs8+OCmYiMXXJ4qDHI5TB5vxHn1G4
+ B/cVj1diI9jWdb8f+Wje9WsL/1KJm9v0VWLFBWs52LZlvAXYN/bF13tUrF7CJ8hG3LWY
+ Fy/aIw0dMdTDQ3UWJEFoPqVGlsRvJEQJ495PUZdktGHTPl5ECMCYZdnbdrKOBg0C8FI3
+ YD9Hzd12oKV87/UwvxZlxdgS7Tbhpk+H385zTbTtHAONfHwOn7l/nwxFrlSnnhp4ZKSW
+ v4/w==
+X-Gm-Message-State: AOJu0Yw/dOgjzSQ7FL7OAXorMTOXcn3grtQKTJ4SI+aRjDRN9uoAtFHd
+ 8i9vD2iU571yHespQjEtNmBHSAhkf/jwzJ9ZK1+C+z3ehknJW23IaJN9vrf8jYa5b7xE2vUHomc
+ Q13wvS1QZs4AUltDGKspo6+E=
+X-Received: by 2002:a17:907:3603:b0:9be:6ff7:1287 with SMTP id
+ bk3-20020a170907360300b009be6ff71287mr1376931ejc.57.1697715758656; 
+ Thu, 19 Oct 2023 04:42:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3vgrCW+AHikOa/59zllMk/qAJHmvy5gj/BOjMSP64aZtL+31VDM2UZ/KEaFqifOh1L9ycfw==
+X-Received: by 2002:a17:907:3603:b0:9be:6ff7:1287 with SMTP id
+ bk3-20020a170907360300b009be6ff71287mr1376917ejc.57.1697715758335; 
+ Thu, 19 Oct 2023 04:42:38 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e?
+ ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.googlemail.com with ESMTPSA id
+ mm27-20020a170906cc5b00b00993cc1242d4sm3371556ejb.151.2023.10.19.04.42.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 04:42:37 -0700 (PDT)
+Message-ID: <31f8e6fc-d3d0-4ed4-b2bc-622b8d2378d2@redhat.com>
+Date: Thu, 19 Oct 2023 13:42:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/19] target/i386: implement SHA instructions
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Ard Biesheuvel <ardb@kernel.org>
+References: <20231019104648.389942-1-pbonzini@redhat.com>
+ <20231019104648.389942-4-pbonzini@redhat.com>
+ <1261e3b2-fc10-c37b-c19d-ac78f5912fc2@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <1261e3b2-fc10-c37b-c19d-ac78f5912fc2@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,56 +102,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Yuan Liu <yuan1.liu@intel.com> wrote:
-> Hi,
->
-> I am writing to submit a code change aimed at enhancing live migration
-> acceleration by leveraging the compression capability of the Intel
-> In-Memory Analytics Accelerator (IAA).
->
-> Enabling compression functionality during the live migration process can
-> enhance performance, thereby reducing downtime and network bandwidth
-> requirements. However, this improvement comes at the cost of additional
-> CPU resources, posing a challenge for cloud service providers in terms of
-> resource allocation. To address this challenge, I have focused on offloading
-> the compression overhead to the IAA hardware, resulting in performance gains.
->
-> The implementation of the IAA (de)compression code is based on Intel Query
-> Processing Library (QPL), an open-source software project designed for
-> IAA high-level software programming.
->
-> Best regards,
-> Yuan Liu
+On 10/19/23 12:59, Philippe Mathieu-Daudé wrote:
+>>
+>> +    /* Even round */
+>> +    t = SHA256_CH(E, F, G) + SHA256_RNDS1(E) + wk0 + H;
+>> +    AA = t + SHA256_MAJ(A, B, C) + SHA256_RNDS0(A);
+>> +    EE = t + D;
+>> +
+>> +    /* These will be B and F at the end of the odd round */
+>> +    d->L(2) = AA;
+>> +    d->L(0) = EE;
+>> +
+>> +    D = C, C = B, B = A, A = AA;
+>> +    H = G, G = F, F = E, E = EE;
+>> +
+>> +    /* Odd round */
+>> +    t = SHA256_CH(E, F, G) + SHA256_RNDS1(E) + wk1 + H;
+>> +    AA = t + SHA256_MAJ(A, B, C) + SHA256_RNDS0(A);
+>> +    EE = t + D;
+> 
+> Better would be to implement that generically, so we can reuse
+> host crypto accelerators when available. Can be done later...
+> (See commit range fb250c59aa..ff494c8e2a for example.)
 
-After reviewing the patches:
+ARM extensions are probably too different from x86.  ARM does four 
+rounds per instructions, while x86 does two.  And Intel passes ABEF/CDGH 
+in the arguments, while ARM passes ABCD/EFGH.
 
-- why are you doing this on top of old compression code, that is
-  obsolete, deprecated and buggy
-
-- why are you not doing it on top of multifd.
-
-You just need to add another compression method on top of multifd.
-See how it was done for zstd:
-
-commit 87dc6f5f665f581923536a1346220c7dcebe5105
-Author: Juan Quintela <quintela@redhat.com>
-Date:   Fri Dec 13 13:47:14 2019 +0100
-
-    multifd: Add zstd compression multifd support
-    
-    Signed-off-by: Juan Quintela <quintela@redhat.com>
-    Acked-by: Markus Armbruster <armbru@redhat.com>
-    Reviewed-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
-
-
-You will get 512KB buffers to compress, and it could be faster.
-The way it is done today, every channel waits for its compression.  But
-you could do a list of pending requests and be asynchronous there.
-
-Later, Juan.
+Paolo
 
 
