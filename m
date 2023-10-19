@@ -2,97 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DC57CF4F3
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD0C7CF4F2
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:18:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQ5v-0005eM-3q; Thu, 19 Oct 2023 06:17:35 -0400
+	id 1qtQ6C-0005fG-S6; Thu, 19 Oct 2023 06:17:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qtQ5o-0005bo-MF
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:17:30 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qtQ5z-0005ep-7z
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:17:40 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qtQ5l-0001EH-TD
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:17:28 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40790b0a224so23372985e9.0
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:17:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qtQ5t-0001Ff-W5
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:17:37 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1c9e072472bso52014475ad.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:17:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697710644; x=1698315444; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DuH5D7kyFrR0KYPFHg1lLKdvYtdK1Ff5bxPYZFtGDOE=;
- b=cFhnXMYK6DTiyJmPpFEPFFT2M81es2auGbCrN7VmHHPzEyt2s7ftUoUbg1/qG7Cvec
- ROIoxOZLU18CMJ1PVl0noNurEIdsAxitp1z/R8FosKkZHcZ+1cPEzxUlGQYUl7qQtbyj
- azUB0gD8wYUYZNrGeoXputuXe82x6ZUxMWcX7mOBABGvEfE13Q71HbkMRX4c3SMioQu9
- DB+eX8ycakvaW+MKucRqGb034ENi+a0BLzh3VrvNpzKhU5vLEMogliLeX7zHezTEjBzF
- Qzzk6ngwVnHMO/iZkEOYlJG9Gfaxa3azE3UpuaytmI7REwJ6/Nr7CSQ7ZXS0k1K+687q
- bUjA==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1697710652; x=1698315452;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=43ITPoUUF/xKfnM/vZJRGDRmtPTbadQHPjaCAxxIxqo=;
+ b=uL750ag+YPSMymNz9nfvNggX31g2Rm7pasezCxGDj0DjGMqJBIG3HQjddAlNDp3SY/
+ +Ixw9uSzPTreccNAWcVdEGwdC0DLReyJQftfHO9KRNSIh1ZNwmnoYyb9yKdNgI5/MfLv
+ 2HE5dQgrHsNpDAeT1u59LLYnOtEnEs9zU5rRdTu+Vvu5TBb86oMYrn+BNL9BGgLzCyyK
+ kDt6a7uWNG9wGdnysYrhjGGKAO7kZQnLAe5cx4lOBIBFZ+IiZCplPid+XDB0S1BXSqC4
+ +qbHQ7Ih5aJYEDGdCxPalu/Y55Vj/WdlZGLFSYL5mJz3JuqNegtrzIyszIlCBLE/IQFY
+ WHDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697710644; x=1698315444;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=DuH5D7kyFrR0KYPFHg1lLKdvYtdK1Ff5bxPYZFtGDOE=;
- b=F9h7wxRiF8ZLOhDTMmh9TDSqX7Qzj6IbZ6kbhVR2dREhqmk13hxwBVAwilKZ4eB5Yn
- ugVqvK8o0/0gBOgq8P+KurJt7sgeUkNRuIWS01HbP5jZ2/Y+W1WhpaaNZWT8BcNsdz9C
- 75v0erKeSWa2arnN0CwOlhz5dgH6N+caOgr9bL0goixkcjN4zz/vurmBwxy/SHZKiOYK
- CnMLTKTyt71lG+QIATiOqSIhBXyyV8JP7+qGDw6JCRhGnh60KkkdPN2NL1pLnhfIfCrv
- 4Ju2BMHF2PGta4fyoNNxcBG9XQdutXx76m/jvZsnmta5ThGcwPb5rjjjtZlT24LKCwPU
- d5Gg==
-X-Gm-Message-State: AOJu0Yw87yFC9EwRrkT55qlne5u5zWeevkTJ7lMH7n/ahqGaI81ab1kC
- weGEZl5vB849ZI7u2n5OG9hXxg==
-X-Google-Smtp-Source: AGHT+IFnCsGcjcb3wK9dfhfI0X3I4CDIGgOoXl4WhbUggYCjpW6xr/rZXDw9hq9GVOlXDkwKplzRog==
-X-Received: by 2002:a05:600c:4eca:b0:408:3ab3:a05e with SMTP id
- g10-20020a05600c4eca00b004083ab3a05emr1448715wmq.38.1697710643822; 
- Thu, 19 Oct 2023 03:17:23 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20230601; t=1697710652; x=1698315452;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=43ITPoUUF/xKfnM/vZJRGDRmtPTbadQHPjaCAxxIxqo=;
+ b=hl9dJvsTs/tIYPyRj8O/R9d5jMFaOyuJ55A2li+5ZJJ6rcRIUPQNEvmWu98cKgUmTu
+ eNj3YfItahqIhoujdaExk3nRvNbs/EqZg/sDbDAKTS+3D6lGS/fLjRm4Nwrg+K/nQ+Xw
+ HW7ylV48Y4Rdi5xewIX0/0GieBNvvEGDvYSCKGS7nkr52FZQ9TaDg4YUantFX0gXuliq
+ 9K7h69NVu0ZwEjDlxwezYKS72mcgZD8bfAVoCIoXadh2Uok0xnxmgXbU664I9JVfG/L3
+ TtXSXoiWdX/um8Z2eR9r5ZyYgH9rXBT1AtDsJFxvOqi7+rrT7XJ0KvqRqNbnC7g5+HkK
+ gGbw==
+X-Gm-Message-State: AOJu0YzvwNgz1XsMVrm8qZ1fmVK9wLHDpbBeQImbHdmI70dUS2Oa5Dsx
+ fKizlHiPzUzomhJPPFhHeFdFKA==
+X-Google-Smtp-Source: AGHT+IFyazvGdtKbkG6GjzpMvg2ZyGtxJYyG9hUdBa+xwNXUBQuBvJCH/Bon4VjCJWMC/D2osrz6iQ==
+X-Received: by 2002:a17:903:449:b0:1c7:3558:721a with SMTP id
+ iw9-20020a170903044900b001c73558721amr1721199plb.58.1697710652516; 
+ Thu, 19 Oct 2023 03:17:32 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- t17-20020a05600001d100b0032d8034724esm4091443wrx.94.2023.10.19.03.17.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 03:17:23 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 0CB4D1FFBB;
- Thu, 19 Oct 2023 11:17:23 +0100 (BST)
-References: <20231013105129.25648-1-salil.mehta@huawei.com>
- <20231013105129.25648-5-salil.mehta@huawei.com>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, maz@kernel.org,
- jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com,
- oliver.upton@linux.dev, pbonzini@redhat.com, mst@redhat.com,
- will@kernel.org, gshan@redhat.com, rafael@kernel.org,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- karl.heubaum@oracle.com, miguel.luis@oracle.com, salil.mehta@opnsrc.net,
- zhukeqian1@huawei.com, wangxiongfeng2@huawei.com, wangyanan55@huawei.com,
- jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
- linuxarm@huawei.com
-Subject: Re: [PATCH V6 4/9] hw/acpi: Init GED framework with CPU hotplug events
-Date: Thu, 19 Oct 2023 11:16:05 +0100
-In-reply-to: <20231013105129.25648-5-salil.mehta@huawei.com>
-Message-ID: <87fs26apcd.fsf@linaro.org>
+ ji4-20020a170903324400b001b016313b1dsm1571815plb.86.2023.10.19.03.17.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 03:17:32 -0700 (PDT)
+Message-ID: <867e1c2f-8e7e-4f87-a08d-5a1f849a3210@daynix.com>
+Date: Thu, 19 Oct 2023 19:17:28 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/5] target/riscv: Move misa_mxl_max to class
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
+References: <20231017185406.13381-1-akihiko.odaki@daynix.com>
+ <20231017185406.13381-4-akihiko.odaki@daynix.com>
+ <a829aa4c-0b6f-40b9-a357-99c43d066f3b@ventanamicro.com>
+ <ebb52078-2182-4656-a224-928b65124cd3@daynix.com>
+ <f1b4af6c-dc83-4d48-bf3f-c4ae408539cd@ventanamicro.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <f1b4af6c-dc83-4d48-bf3f-c4ae408539cd@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::633;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,103 +105,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 2023/10/18 23:23, Daniel Henrique Barboza wrote:
+> 
+> 
+> On 10/18/23 10:31, Akihiko Odaki wrote:
+>> On 2023/10/18 22:01, Daniel Henrique Barboza wrote:
+>>>
+>>>
+>>> On 10/17/23 15:53, Akihiko Odaki wrote:
+>>>> misa_mxl_max is common for all instances of a RISC-V CPU class so they
+>>>> are better put into class.
+>>>>
+>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>> ---
+>>>
+>>> I'll repeat what I said in the v1: this patch is adding an extra 
+>>> class parameter,
+>>> an extra param required to each class_init, and an extra CPUClass 
+>>> cast every time
+>>> we want to read misa_mxl_max, all of that because we want to assign 
+>>> gdb_core_xml_file
+>>> earlier.
+>>>
+>>> If my previous suggestion of assigning gdb_core directly into 
+>>> riscv_cpu_class_init()
+>>> doesn't work necause we need misa_mxl_max to do it, a good 
+>>> alternative is setting
+>>> gdb_core_xml_file in riscv_cpu_post_init(), which is executed after 
+>>> all cpu_init()
+>>> functions where we already have env->misa_mxl_max set properly.
+>>
+>> We want to assign gdb_core_xml_file *earlier* so assigning it after 
+>> cpu_init() is not OK. In general it should be considered unsafe to 
+>> initialize a class variable after class_init(); otherwise other 
+>> subsystems cannot know when it becomes available.
+> 
+> There's no difference in assigning it during .instance_init (cpu_init()) 
+> and
+> .instance_post_init. The callbacks are called one after the other during
+> init time. See qom/object.c,  object_initialize_with_type().
+> 
+> Now, if we want to be strict with only initializing class variables 
+> during class_init(),
+> which is something that I will defer to the maintainers, we want to 
+> minimize the use
+> of env->misa_mxl_max in the code before converting it to a class 
+> variable. env->misa_mxl
+> is always equal to env->misa_mxl_max, and they are being used 
+> interchangeably, but if
+> misa_mxl_max is going to be a class variable then we want to use 
+> env->misa_mxl instead
+> to avoid the RISCV_CPU_GET_CLASS() overhead.
+> 
+> I suggest a pre-patch to change the uses of env->misa_mxl_max to 
+> env->misa_mxl in
+> riscv_is_32bit(), riscv_cpu_gdb_read_register(), 
+> riscv_cpu_gdb_write_register() and
+> so on (there are quite a few places). And then apply this patch on top 
+> of it. This would
+> at least minimize the amount of casts being done.
 
-Salil Mehta <salil.mehta@huawei.com> writes:
+misa_mxl and misa_mxl_max may be same for now, but they exist because 
+they will be different in the future; otherwise there is no reason to 
+have misa_mxl_max at the first place. misa_mxl represents the current 
+effective value and misa_mxl_max represents the maximum value the 
+emulated CPU supports.
 
-> ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACPI =
-events
-> when OSPM/guest receives an interrupt listed in the _CRS object of GED. O=
-SPM
-> then maps or demultiplexes the event by evaluating _EVT method.
->
-> This change adds the support of CPU hotplug event initialization in the
-> existing GED framework.
+So we need to preserve the existing choice of misa_mxl and misa_mxl_max 
+in general. riscv_cpu_gdb_read_register() and 
+riscv_cpu_gdb_write_register(), for example, must use misa_mxl_max 
+instead of misa_mxl since GDB doesn't support changing register width at 
+runtime, and the register width should match with the feature 
+description provided by gdb_core_xml_file.
 
-Should we also update the docs here:
+The use of env->misa_mxl_max in riscv_is_32bit(), however, looks not 
+good to me. If a 64-bit processor is in 32-bit mode, the 32-bit kernel 
+should be loaded. I added a patch to change it to env->misa_mxl in v5.
 
-  https://qemu.readthedocs.io/en/master/specs/acpi_hw_reduced_hotplug.html
+> 
+> All this considered, there's still one extra class cast that we will 
+> have to deal with
+> in riscv_tr_init_disas_context(). I am not sure how hot this function is 
+> but, taking a
+> look at other .init_disas_context implementations from other archs and 
+> not finding class
+> casts in them, I'm worried about the overhead it'll add. It seems like 
+> we can just do
+> "ctx->misa_mxl_max = env->misa_mxl" to avoid it.
 
-(see docs/specs/acpi_hw_reduced_hotplug.rst)
-
-to add the new bits? Or maybe an update to documentation as the last
-commit?
-
->
-> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> Tested-by: Xianglai Li <lixianglai@loongson.cn>
-> ---
->  hw/acpi/generic_event_device.c         | 8 ++++++++
->  include/hw/acpi/generic_event_device.h | 5 +++++
->  2 files changed, 13 insertions(+)
->
-> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_devic=
-e.c
-> index a3d31631fe..d2fa1d0e4a 100644
-> --- a/hw/acpi/generic_event_device.c
-> +++ b/hw/acpi/generic_event_device.c
-> @@ -25,6 +25,7 @@ static const uint32_t ged_supported_events[] =3D {
->      ACPI_GED_MEM_HOTPLUG_EVT,
->      ACPI_GED_PWR_DOWN_EVT,
->      ACPI_GED_NVDIMM_HOTPLUG_EVT,
-> +    ACPI_GED_CPU_HOTPLUG_EVT,
->  };
->=20=20
->  /*
-> @@ -400,6 +401,13 @@ static void acpi_ged_initfn(Object *obj)
->      memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
->                            TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
->      sysbus_init_mmio(sbd, &ged_st->regs);
-> +
-> +    s->cpuhp.device =3D OBJECT(s);
-> +    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp containe=
-r",
-> +                       ACPI_CPU_HOTPLUG_REG_LEN);
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
-> +    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
-> +                        &s->cpuhp_state, 0);
->  }
->=20=20
->  static void acpi_ged_class_init(ObjectClass *class, void *data)
-> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/gen=
-eric_event_device.h
-> index ba84ce0214..a803ea818e 100644
-> --- a/include/hw/acpi/generic_event_device.h
-> +++ b/include/hw/acpi/generic_event_device.h
-> @@ -60,6 +60,7 @@
->  #define HW_ACPI_GENERIC_EVENT_DEVICE_H
->=20=20
->  #include "hw/sysbus.h"
-> +#include "hw/acpi/cpu_hotplug.h"
->  #include "hw/acpi/memory_hotplug.h"
->  #include "hw/acpi/ghes.h"
->  #include "qom/object.h"
-> @@ -95,6 +96,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
->  #define ACPI_GED_MEM_HOTPLUG_EVT   0x1
->  #define ACPI_GED_PWR_DOWN_EVT      0x2
->  #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
-> +#define ACPI_GED_CPU_HOTPLUG_EVT    0x8
->=20=20
->  typedef struct GEDState {
->      MemoryRegion evt;
-> @@ -106,6 +108,9 @@ struct AcpiGedState {
->      SysBusDevice parent_obj;
->      MemHotplugState memhp_state;
->      MemoryRegion container_memhp;
-> +    CPUHotplugState cpuhp_state;
-> +    MemoryRegion container_cpuhp;
-> +    AcpiCpuHotplug cpuhp;
->      GEDState ged_state;
->      uint32_t ged_event_bitmap;
->      qemu_irq irq;
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+The cost of the class type check should be negligible considering that 
+init_disas_context() is followed by the TCG translation, which takes 
+most of execution time.
 
