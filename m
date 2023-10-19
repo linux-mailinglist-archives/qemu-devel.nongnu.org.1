@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8197D023C
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 21:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C317D0239
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 21:09:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtYOA-0007KC-VK; Thu, 19 Oct 2023 15:08:58 -0400
+	id 1qtYOK-0007Yb-L7; Thu, 19 Oct 2023 15:09:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtYO9-0007Ix-8Q
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:08:57 -0400
+ id 1qtYOI-0007TK-M9
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:09:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtYO7-0003Yv-OU
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:08:56 -0400
+ id 1qtYOG-0003b4-KL
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:09:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697742534;
+ s=mimecast20190719; t=1697742541;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5FFDsfzGBip3Izgt9zKYcrufFp3lptG0SYMaVEvY+Uw=;
- b=VWOeY+8R8T5R+wjDILH8Km7xRHaQGn89GLF2yqAMvr2UJGvVfv+clDZPwFIdO7qWVvxhAg
- +tCd1YhdRWyyulfkkx+0H5bPbWpmZ8zAqRITIh5s7kk0/7akxI40pS8ntFMljWTsxFSqaj
- R7MNs6eeoIlWv61C1oUyyV0JmGfRHUo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-317-h1J-yMgWMyCWJmXUb0-6Hg-1; Thu, 19 Oct 2023 15:08:45 -0400
-X-MC-Unique: h1J-yMgWMyCWJmXUb0-6Hg-1
+ bh=BWujscRM8+aWcF0nTSqKgyNKyjeFasRA2h8oLoqgdv8=;
+ b=glsiIkWwSpOWWiHwpTxC/lCpbmh05iQUZ5ep55lWWGiGnpujgBsMRiIhdco96st6UEDSC9
+ xwUpFO5T2WH2ViyEM5L8LJJqC3k6NlsS4YZYEMRJdbHeO5fxO5cNuVtVPBHwmnJmXrQxXy
+ Ve3JIqvH5SPCnboOy7x6S4+nMhUf8F0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-199-0BfHBklaNhmTmbzqSSvhQA-1; Thu, 19 Oct 2023 15:08:53 -0400
+X-MC-Unique: 0BfHBklaNhmTmbzqSSvhQA-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D5B82812940;
- Thu, 19 Oct 2023 19:08:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9078710201F4;
+ Thu, 19 Oct 2023 19:08:49 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6E3871121314;
- Thu, 19 Oct 2023 19:08:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A27781121314;
+ Thu, 19 Oct 2023 19:08:44 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
@@ -66,9 +66,9 @@ Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Halil Pasic <pasic@linux.ibm.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH 01/13] migration: Create vmstate_register_any()
-Date: Thu, 19 Oct 2023 21:08:19 +0200
-Message-ID: <20231019190831.20363-2-quintela@redhat.com>
+Subject: [PATCH 02/13] migration: Use vmstate_register_any()
+Date: Thu, 19 Oct 2023 21:08:20 +0200
+Message-ID: <20231019190831.20363-3-quintela@redhat.com>
 In-Reply-To: <20231019190831.20363-1-quintela@redhat.com>
 References: <20231019190831.20363-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -82,7 +82,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,45 +98,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have lots of cases where we are using an instance_id==0 when we
-should be using VMSTATE_INSTANCE_ID_ANY (-1).  Basically everything
-that can have more than one needs to have a proper instance_id or -1
-and the system will take one for it.
-
-vmstate_register_any(): We register with -1.
+This are the easiest cases, where we were already using
+VMSTATE_INSTANCE_ID_ANY.
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- include/migration/vmstate.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ backends/dbus-vmstate.c     | 3 +--
+ backends/tpm/tpm_emulator.c | 3 +--
+ hw/i2c/core.c               | 2 +-
+ hw/input/adb.c              | 2 +-
+ hw/input/ads7846.c          | 2 +-
+ hw/input/stellaris_input.c  | 3 +--
+ hw/net/eepro100.c           | 3 +--
+ hw/pci/pci.c                | 2 +-
+ hw/ppc/spapr_nvdimm.c       | 3 +--
+ hw/timer/arm_timer.c        | 2 +-
+ hw/virtio/virtio-mem.c      | 4 ++--
+ 11 files changed, 12 insertions(+), 17 deletions(-)
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 1a31fb7293..9ca7e9cc48 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -1230,6 +1230,23 @@ static inline int vmstate_register(VMStateIf *obj, int instance_id,
-                                           opaque, -1, 0, NULL);
+diff --git a/backends/dbus-vmstate.c b/backends/dbus-vmstate.c
+index 57369ec0f2..a9d8cb0acd 100644
+--- a/backends/dbus-vmstate.c
++++ b/backends/dbus-vmstate.c
+@@ -426,8 +426,7 @@ dbus_vmstate_complete(UserCreatable *uc, Error **errp)
+         return;
+     }
+ 
+-    if (vmstate_register(VMSTATE_IF(self), VMSTATE_INSTANCE_ID_ANY,
+-                         &dbus_vmstate, self) < 0) {
++    if (vmstate_register_any(VMSTATE_IF(self), &dbus_vmstate, self) < 0) {
+         error_setg(errp, "Failed to register vmstate");
+     }
+ }
+diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
+index 402a2d6312..8920b75251 100644
+--- a/backends/tpm/tpm_emulator.c
++++ b/backends/tpm/tpm_emulator.c
+@@ -978,8 +978,7 @@ static void tpm_emulator_inst_init(Object *obj)
+         qemu_add_vm_change_state_handler(tpm_emulator_vm_state_change,
+                                          tpm_emu);
+ 
+-    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
+-                     &vmstate_tpm_emulator, obj);
++    vmstate_register_any(NULL, &vmstate_tpm_emulator, obj);
  }
  
-+/**
-+ * vmstate_register_any() - legacy function to register state
-+ * serialisation description and let the function choose the id
-+ *
-+ * New code shouldn't be using this function as QOM-ified devices have
-+ * dc->vmsd to store the serialisation description.
-+ *
-+ * Returns: 0 on success, -1 on failure
-+ */
-+static inline int vmstate_register_any(VMStateIf *obj,
-+                                       const VMStateDescription *vmsd,
-+                                       void *opaque)
-+{
-+    return vmstate_register_with_alias_id(obj, VMSTATE_INSTANCE_ID_ANY, vmsd,
-+                                          opaque, -1, 0, NULL);
-+}
-+
- void vmstate_unregister(VMStateIf *obj, const VMStateDescription *vmsd,
-                         void *opaque);
+ /*
+diff --git a/hw/i2c/core.c b/hw/i2c/core.c
+index bed594fe59..879a1d45cb 100644
+--- a/hw/i2c/core.c
++++ b/hw/i2c/core.c
+@@ -64,7 +64,7 @@ I2CBus *i2c_init_bus(DeviceState *parent, const char *name)
+     bus = I2C_BUS(qbus_new(TYPE_I2C_BUS, parent, name));
+     QLIST_INIT(&bus->current_devs);
+     QSIMPLEQ_INIT(&bus->pending_masters);
+-    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_i2c_bus, bus);
++    vmstate_register_any(NULL, &vmstate_i2c_bus, bus);
+     return bus;
+ }
+ 
+diff --git a/hw/input/adb.c b/hw/input/adb.c
+index 214ae6f42b..8aed0da2cd 100644
+--- a/hw/input/adb.c
++++ b/hw/input/adb.c
+@@ -247,7 +247,7 @@ static void adb_bus_realize(BusState *qbus, Error **errp)
+     adb_bus->autopoll_timer = timer_new_ms(QEMU_CLOCK_VIRTUAL, adb_autopoll,
+                                            adb_bus);
+ 
+-    vmstate_register(NULL, -1, &vmstate_adb_bus, adb_bus);
++    vmstate_register_any(NULL, &vmstate_adb_bus, adb_bus);
+ }
+ 
+ static void adb_bus_unrealize(BusState *qbus)
+diff --git a/hw/input/ads7846.c b/hw/input/ads7846.c
+index dc0998ac79..91116c6bdb 100644
+--- a/hw/input/ads7846.c
++++ b/hw/input/ads7846.c
+@@ -158,7 +158,7 @@ static void ads7846_realize(SSIPeripheral *d, Error **errp)
+ 
+     ads7846_int_update(s);
+ 
+-    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_ads7846, s);
++    vmstate_register_any(NULL, &vmstate_ads7846, s);
+ }
+ 
+ static void ads7846_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/input/stellaris_input.c b/hw/input/stellaris_input.c
+index e6ee5e11f1..a58721c8cd 100644
+--- a/hw/input/stellaris_input.c
++++ b/hw/input/stellaris_input.c
+@@ -88,6 +88,5 @@ void stellaris_gamepad_init(int n, qemu_irq *irq, const int *keycode)
+     }
+     s->num_buttons = n;
+     qemu_add_kbd_event_handler(stellaris_gamepad_put_key, s);
+-    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
+-                     &vmstate_stellaris_gamepad, s);
++    vmstate_register_any(NULL, &vmstate_stellaris_gamepad, s);
+ }
+diff --git a/hw/net/eepro100.c b/hw/net/eepro100.c
+index dc07984ae9..94ce9e18ff 100644
+--- a/hw/net/eepro100.c
++++ b/hw/net/eepro100.c
+@@ -1883,8 +1883,7 @@ static void e100_nic_realize(PCIDevice *pci_dev, Error **errp)
+ 
+     s->vmstate = g_memdup(&vmstate_eepro100, sizeof(vmstate_eepro100));
+     s->vmstate->name = qemu_get_queue(s->nic)->model;
+-    vmstate_register(VMSTATE_IF(&pci_dev->qdev), VMSTATE_INSTANCE_ID_ANY,
+-                     s->vmstate, s);
++    vmstate_register_any(VMSTATE_IF(&pci_dev->qdev), s->vmstate, s);
+ }
+ 
+ static void eepro100_instance_init(Object *obj)
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index b0d21bf43a..294c3c38ea 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -147,7 +147,7 @@ static void pci_bus_realize(BusState *qbus, Error **errp)
+     bus->machine_done.notify = pcibus_machine_done;
+     qemu_add_machine_init_done_notifier(&bus->machine_done);
+ 
+-    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_pcibus, bus);
++    vmstate_register_any(NULL, &vmstate_pcibus, bus);
+ }
+ 
+ static void pcie_bus_realize(BusState *qbus, Error **errp)
+diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
+index b2f009c816..ad7afe7544 100644
+--- a/hw/ppc/spapr_nvdimm.c
++++ b/hw/ppc/spapr_nvdimm.c
+@@ -876,8 +876,7 @@ static void spapr_nvdimm_realize(NVDIMMDevice *dimm, Error **errp)
+         s_nvdimm->hcall_flush_required = true;
+     }
+ 
+-    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
+-                     &vmstate_spapr_nvdimm_states, dimm);
++    vmstate_register_any(NULL, &vmstate_spapr_nvdimm_states, dimm);
+ }
+ 
+ static void spapr_nvdimm_unrealize(NVDIMMDevice *dimm)
+diff --git a/hw/timer/arm_timer.c b/hw/timer/arm_timer.c
+index 69c8863472..9afe8da831 100644
+--- a/hw/timer/arm_timer.c
++++ b/hw/timer/arm_timer.c
+@@ -181,7 +181,7 @@ static arm_timer_state *arm_timer_init(uint32_t freq)
+     s->control = TIMER_CTRL_IE;
+ 
+     s->timer = ptimer_init(arm_timer_tick, s, PTIMER_POLICY_LEGACY);
+-    vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_arm_timer, s);
++    vmstate_register_any(NULL, &vmstate_arm_timer, s);
+     return s;
+ }
+ 
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index 9dc3c61b5a..a5ea3be414 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -1119,8 +1119,8 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
+     host_memory_backend_set_mapped(vmem->memdev, true);
+     vmstate_register_ram(&vmem->memdev->mr, DEVICE(vmem));
+     if (vmem->early_migration) {
+-        vmstate_register(VMSTATE_IF(vmem), VMSTATE_INSTANCE_ID_ANY,
+-                         &vmstate_virtio_mem_device_early, vmem);
++        vmstate_register_any(VMSTATE_IF(vmem),
++                             &vmstate_virtio_mem_device_early, vmem);
+     }
+     qemu_register_reset(virtio_mem_system_reset, vmem);
  
 -- 
 2.41.0
