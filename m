@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7227CFB63
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9367CFB3E
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 15:37:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTCr-0003tk-S5; Thu, 19 Oct 2023 09:36:57 -0400
+	id 1qtTCS-0002Qz-0w; Thu, 19 Oct 2023 09:36:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBm-0001rK-DD
+ id 1qtTBn-0001rO-H1
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:54 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtTBf-0001CR-Fv
+ id 1qtTBf-0001CW-GC
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 09:35:47 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-32caaa1c493so6148779f8f.3
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-32da4ffd7e5so493703f8f.0
  for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 06:35:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697722541; x=1698327341; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ICHuBkhBDHp2nAsvOB6Lae37rGAGJ+oc5E/gIMwOSBg=;
- b=i27D//zsxYExSx7mlnFqX3k2e5rbrBcwCqXwrAtnXmIu6Bw4v5QZ1f3zHMb06o8nTE
- FHAC+E0/kZBe/Y8CO43qxJfKA0OsfjCoUstKlHgvTTJhXzLsNxoAqzWPjrtLXZMt68gi
- M2qM4WPoNM2pNh0DGrJMwb5gLHnh3Ru0M0ESqzYEBFSayMmPLN6Z+pwLM1SKGqORtLfm
- 7g34dG5++O+vEhDV3nOJwmWU+6swV+gF8Gj+NItbruAf/Q6tvz0MdT4EHoppSUKz5mvI
- 91sBPvK1x2DO3HLIP5SBtZfk1v8l4ucWVR1UdNr2Tu63tSYyn5womnmh7+V3f2WeIC1/
- h2kQ==
+ :reply-to; bh=wgV06AYPc/Ma/kmEzls3TmWz3gALsYetmR08HC+n1XI=;
+ b=XtrOpMPIKI7giLqs6A7XAHALfPPXxzjf1HgI2jwXegLrkSjYspOr4/QnNOiy9SE0VP
+ +6Y+jtlV5DVIPaSiExS9tuPS8tdS2DxD6C37USiy+DjeRy8FHK3x1LCCwG5uoQjyjcRh
+ +kVtrevCBy1R6lFUNJ/++Z5ODVp1mUBay3dHYmIaAcXY4O7CI+cp0xhWOWZpxIs5sDbt
+ B6G4dmgbAiHOppfHxDfK35yTbqLFbvmfSpGDTsVnVfoQt3gydJE+wZIDYiWG8D0/sHV9
+ jldaoJOrLpb9ioUBHVXXEPUtWc6gP8b8qvEE8ujGm+1lCGzVmAU9JZdOodPtreHy5wVO
+ ltjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697722541; x=1698327341;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ICHuBkhBDHp2nAsvOB6Lae37rGAGJ+oc5E/gIMwOSBg=;
- b=u54DsRgRHJ2ZQoqkl2z8+b5ay2SWxa4od9Klbp+iL9IhUyprTeS9LuD6EjkN9ApGQK
- 9CfaYwJK7n1XYw6CEVlecSwOfBPVwuSYIdQTtznmLu7Tx9BwaSzYa5tiKGMZbvKJtwaa
- zAk+qEk8gNvWjPCOIVS9BOsqyyCiSZZRO/MXiuFt3n55FXyeADcf4zIT/gUFibtyi/Yx
- V9vk3qHlk1OUcjxqAmeLiDWkLG0ThfwnGWjSiG9lHE7hsaSX10UzFarVN6jGt4TPLdNp
- 0Psar8c3muc8NQkMSD42qI+vvsJ45Zo7s/zFvzIsHpA0PQN9rrZj1ln0LHcNpSdHtGtr
- 7y+w==
-X-Gm-Message-State: AOJu0YxNolh+RwxyCx1yaVXFWjfVUaL65s5mtiyX2HV3gyORmLsnF7tp
- Pl79lxj4nkAwVl/xrk9rvXOJwf19ZPHRtjSk8Ys=
-X-Google-Smtp-Source: AGHT+IFwezIUbI3wEYe4Qz9v/rY9s7KwxVPkHUraChP8r3uXmQvf/ItbbU0ABgwoX2u+wUWN+OKATw==
-X-Received: by 2002:adf:e387:0:b0:32d:a686:dedf with SMTP id
- e7-20020adfe387000000b0032da686dedfmr1661786wrm.57.1697722541149; 
+ bh=wgV06AYPc/Ma/kmEzls3TmWz3gALsYetmR08HC+n1XI=;
+ b=wfcRKA4RA0sPquQu5jUI4/ycPEnWp3RvlMM8vKi4I4QHW66KTYgQu2ufmklR6yRyK1
+ 0fDUtd5MrzRY5XjJxNW+S3642ue/TwmRSzT1R/15INsap/tJcECF+gcSFxSciV6eNKoH
+ MH14OCCQXG2C1N8oIG99ex33PYh1jBYhdvDvlwZuG2BiFCve/k9KehZhL3bi8sIvUrxL
+ 2UMlKuHiyp+c6edvP+XkqzoOr746sWtzw+PXyzoRvpAG7aPK/KYAnE9UqTuGuNhho3KR
+ gCF6ANJOl+cdwvtlUSBKAumoht1uSzOVRzbZZJvc4tyK9G9aGbc+9MlMM+kLnKOdxKk6
+ coWw==
+X-Gm-Message-State: AOJu0YzhDlCzyp1uB5gUdhJUAMO0eJSalTA57Ru7gZdK+obT5bBvWeLN
+ ZZSG5mcblQI/tnlShLOfMYZgf0wx6sjtTiZ8dB8=
+X-Google-Smtp-Source: AGHT+IHQTqwbSqatmdamSnYmFtYYPTrdxkRA8j18RHPDbztkCpCCTeEYcC68Dwic8wtf9YjJeUVY8A==
+X-Received: by 2002:a5d:46c5:0:b0:32d:a129:3b6e with SMTP id
+ g5-20020a5d46c5000000b0032da1293b6emr2144344wrs.14.1697722541547; 
  Thu, 19 Oct 2023 06:35:41 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.40
+ d28-20020adf9b9c000000b0031f3ad17b2csm4512690wrc.52.2023.10.19.06.35.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 06:35:40 -0700 (PDT)
+ Thu, 19 Oct 2023 06:35:41 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/24] xlnx-zynqmp-efuse: hw/nvram: Remove deprecated device
+Subject: [PULL 05/24] xlnx-versal-efuse: hw/nvram: Remove deprecated device
  reset
-Date: Thu, 19 Oct 2023 14:35:17 +0100
-Message-Id: <20231019133537.2114929-5-peter.maydell@linaro.org>
+Date: Thu, 19 Oct 2023 14:35:18 +0100
+Message-Id: <20231019133537.2114929-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231019133537.2114929-1-peter.maydell@linaro.org>
 References: <20231019133537.2114929-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,47 +97,47 @@ This change implements the ResettableClass interface for the device.
 
 Signed-off-by: Tong Ho <tong.ho@amd.com>
 Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
-Message-id: 20231004055713.324009-1-tong.ho@amd.com
+Message-id: 20231004055339.323833-1-tong.ho@amd.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/nvram/xlnx-zynqmp-efuse.c | 8 +++++---
+ hw/nvram/xlnx-versal-efuse-ctrl.c | 8 +++++---
  1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/hw/nvram/xlnx-zynqmp-efuse.c b/hw/nvram/xlnx-zynqmp-efuse.c
-index 228ba0bbfaf..3db5f98ec1a 100644
---- a/hw/nvram/xlnx-zynqmp-efuse.c
-+++ b/hw/nvram/xlnx-zynqmp-efuse.c
+diff --git a/hw/nvram/xlnx-versal-efuse-ctrl.c b/hw/nvram/xlnx-versal-efuse-ctrl.c
+index b35ba65ab57..beb5661c35f 100644
+--- a/hw/nvram/xlnx-versal-efuse-ctrl.c
++++ b/hw/nvram/xlnx-versal-efuse-ctrl.c
 @@ -2,6 +2,7 @@
-  * QEMU model of the ZynqMP eFuse
+  * QEMU model of the Versal eFuse controller
   *
-  * Copyright (c) 2015 Xilinx Inc.
+  * Copyright (c) 2020 Xilinx Inc.
 + * Copyright (c) 2023 Advanced Micro Devices, Inc.
   *
-  * Written by Edgar E. Iglesias <edgari@xilinx.com>
-  *
-@@ -769,9 +770,9 @@ static void zynqmp_efuse_register_reset(RegisterInfo *reg)
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  * of this software and associated documentation files (the "Software"), to deal
+@@ -657,9 +658,9 @@ static void efuse_ctrl_register_reset(RegisterInfo *reg)
      register_reset(reg);
  }
  
--static void zynqmp_efuse_reset(DeviceState *dev)
-+static void zynqmp_efuse_reset_hold(Object *obj)
+-static void efuse_ctrl_reset(DeviceState *dev)
++static void efuse_ctrl_reset_hold(Object *obj)
  {
--    XlnxZynqMPEFuse *s = XLNX_ZYNQMP_EFUSE(dev);
-+    XlnxZynqMPEFuse *s = XLNX_ZYNQMP_EFUSE(obj);
+-    XlnxVersalEFuseCtrl *s = XLNX_VERSAL_EFUSE_CTRL(dev);
++    XlnxVersalEFuseCtrl *s = XLNX_VERSAL_EFUSE_CTRL(obj);
      unsigned int i;
  
      for (i = 0; i < ARRAY_SIZE(s->regs_info); ++i) {
-@@ -837,8 +838,9 @@ static Property zynqmp_efuse_props[] = {
- static void zynqmp_efuse_class_init(ObjectClass *klass, void *data)
+@@ -749,8 +750,9 @@ static Property efuse_ctrl_props[] = {
+ static void efuse_ctrl_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
 +    ResettableClass *rc = RESETTABLE_CLASS(klass);
  
--    dc->reset = zynqmp_efuse_reset;
-+    rc->phases.hold = zynqmp_efuse_reset_hold;
-     dc->realize = zynqmp_efuse_realize;
-     dc->vmsd = &vmstate_efuse;
-     device_class_set_props(dc, zynqmp_efuse_props);
+-    dc->reset = efuse_ctrl_reset;
++    rc->phases.hold = efuse_ctrl_reset_hold;
+     dc->realize = efuse_ctrl_realize;
+     dc->vmsd = &vmstate_efuse_ctrl;
+     device_class_set_props(dc, efuse_ctrl_props);
 -- 
 2.34.1
 
