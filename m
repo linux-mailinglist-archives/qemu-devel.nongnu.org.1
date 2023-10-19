@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B6E7CF59D
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D877CF5A0
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:48:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQYa-0006Yz-Im; Thu, 19 Oct 2023 06:47:12 -0400
+	id 1qtQZ9-0006vT-7J; Thu, 19 Oct 2023 06:47:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtQYY-0006YV-Pz
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:10 -0400
+ id 1qtQYf-0006ZV-Bo
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtQYW-0006Dt-OD
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:10 -0400
+ id 1qtQYd-0006El-9X
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697712428;
+ s=mimecast20190719; t=1697712434;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QKWaLD3NI87qdlaeYUXambR1Z2tAzEBYr1xgMGdEWOk=;
- b=PPDroQJuHVnxeO4JoSvKC4bg0KlVISvWOM3KP+bYgkxReA5pJ4PH9e/j/GXuM8N6BNtTxE
- GZKXmBl6xc2hC5ZwLvekz5sWtgOIagVuVEGVYbE3ZcRhhI4Lw2+gPA+Dufmxp534ztUpGQ
- UTspH6e6YbInysq5dDJvDW2GzFMtb9k=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DuoXc2BU+ZIapePNKXerF9ciZjLeynT5HD0XoYbHuRI=;
+ b=UibnAj5adNBbqDAhqkzdZHITNcg9drs85GF/knDzx1L8ZFgZ26jUZxt0839j1eMwgDknlQ
+ VjCh+ASoXX2Bt/C7toNDDThsuEs9kcnonmzrpKJMI0q7c3IqSucS1P+DlElAr97+glY9L6
+ uTdl2FUvFUAZ4ZGqaNa0VAoRIIGsEEM=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-9UWnqmzyM6mDIuxpq-4xJA-1; Thu, 19 Oct 2023 06:47:06 -0400
-X-MC-Unique: 9UWnqmzyM6mDIuxpq-4xJA-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-533d8a785a5so6305283a12.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:47:06 -0700 (PDT)
+ us-mta-120-oUewJLerO8m1y_6NnY-Ppw-1; Thu, 19 Oct 2023 06:47:08 -0400
+X-MC-Unique: oUewJLerO8m1y_6NnY-Ppw-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-507cee14477so928364e87.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:47:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697712425; x=1698317225;
+ d=1e100.net; s=20230601; t=1697712426; x=1698317226;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QKWaLD3NI87qdlaeYUXambR1Z2tAzEBYr1xgMGdEWOk=;
- b=NR/2Z1KsJXGAB3kCG5qUSPxU9rmWoojSybJ8gvQJLy3PsLym19bzi/bThf0wBa9KmH
- 4tDE8nt7u0ac6UwM8SQ+sJi7Txb5etuO2wYcqYXabpvf6REbCdWYTuxV/22ubkdQAgH2
- N9VkpKGJ2SDDvpjE7MwwAwllFwWfUyGogzkWQrN8uypnOlzZRZRo78Sh9N1uihZJ1V5U
- SVNshqrPkzCu3iCh3QTmvW9SoK+LhIlZjS1l9a1dPHqHdTbvWDWqh/TI0kAoma3OddaN
- ZeIA5CA6X3Lr/UnNvH4hSZQjO5kHMQdFBz26PVrEhNWgxDlcGZT6QqNy1BBUZ1i1TAtz
- ajJg==
-X-Gm-Message-State: AOJu0YyyBhOlCn3FxfTq7wSvL/ABxJAfrbqNJJSecf0kAIaIUyxeKyg/
- fKS45SC/Ww1moodL2kye+R1QR7CyjTctdz/e483BLTNpcKfDr41qJidXhu3Z2dI0BTFh3IDCu7h
- lQVvttFp/digWDR5/fcJ232Eavp7R7d5+aCRnVj4U6hlq/6Jz/sQYOWwba/VPxiDGJkOyIE60tZ
- U=
-X-Received: by 2002:a17:906:d552:b0:9c6:64be:a3c9 with SMTP id
- cr18-20020a170906d55200b009c664bea3c9mr1325320ejc.39.1697712424869; 
- Thu, 19 Oct 2023 03:47:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHM++O382ORZPRaq4XqvfIixcgckYoXPdlJZqes6/iSzwdHkX9PlrtDgPz81C/Zv4mMRYeEbg==
-X-Received: by 2002:a17:906:d552:b0:9c6:64be:a3c9 with SMTP id
- cr18-20020a170906d55200b009c664bea3c9mr1325305ejc.39.1697712424476; 
- Thu, 19 Oct 2023 03:47:04 -0700 (PDT)
+ bh=DuoXc2BU+ZIapePNKXerF9ciZjLeynT5HD0XoYbHuRI=;
+ b=Sk1sE0vdHqi+4DR/1r1HgWoZlAgslH9fCGwfujz9hzAbh4H6hIjEnikgMlhbhIzkHJ
+ hyhboZJXJvCOcKYGZsmxTOZcu6AFcOQxxxnTWPLnBa/lGkZB8CzbW5jFHO7kmsTVMh2a
+ ETtzeu/2ZbPzN3NWzYZ/AgTf2OXfkdZWDCfpP0OzbJk9Y2A8lV+auV/sAGDQHq/Gl7mz
+ 8Ivwb7k4J51zu8W3YHeBZ7Hk581RrQBtGDM8K2aDM2febMHzpOkZuNEP8S444HyoacLX
+ QT5Rh2g75ocuqt+7WkL702t9LlGIu1LVbRUHkd+RBbPuqN8AcTHTyAcC+mvFroY4FDyW
+ 9GHg==
+X-Gm-Message-State: AOJu0YzYDSXZxGpCxnf5zKPXv75IUKFBsFgijvtsO2cTcWFrZSMZDeLC
+ qtiu54P98XVBMa72APVtDjFuBXtda3jz9J/0fZVOu3Un2s7QmFiD/yOV91v6IDmEuOUqGyrJZsX
+ Y/hj9k42HKFYcxbLUOp13EWeh0Y3NCblAEhTzC8SENoO/ovOUS35o/gt5/c0k5rKg+hcdPRAnko
+ 8=
+X-Received: by 2002:ac2:5f9b:0:b0:507:b988:7c3c with SMTP id
+ r27-20020ac25f9b000000b00507b9887c3cmr1081067lfe.65.1697712426608; 
+ Thu, 19 Oct 2023 03:47:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCN7JquQHbRCb9Pu+7Jdj9f/4XHtpCQkbDZsvmTHPjLnONdj+IidQQ3tlEqzPJh5brZKWi/A==
+X-Received: by 2002:ac2:5f9b:0:b0:507:b988:7c3c with SMTP id
+ r27-20020ac25f9b000000b00507b9887c3cmr1081052lfe.65.1697712426234; 
+ Thu, 19 Oct 2023 03:47:06 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- gh6-20020a170906e08600b00977cad140a8sm3312456ejb.218.2023.10.19.03.47.03
+ u27-20020a50a41b000000b0053dd798e38asm4293050edb.69.2023.10.19.03.47.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 03:47:03 -0700 (PDT)
+ Thu, 19 Oct 2023 03:47:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 08/19] target/i386: implement CMPccXADD
-Date: Thu, 19 Oct 2023 12:46:37 +0200
-Message-ID: <20231019104648.389942-9-pbonzini@redhat.com>
+Subject: [PATCH v2 09/19] target/i386: do not clobber A0 in POP translation
+Date: Thu, 19 Oct 2023 12:46:38 +0200
+Message-ID: <20231019104648.389942-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019104648.389942-1-pbonzini@redhat.com>
 References: <20231019104648.389942-1-pbonzini@redhat.com>
@@ -100,241 +100,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The main difficulty here is that a page fault when writing to the destination
-must not overwrite the flags.  Therefore, the compute-flags helper must be
-called with a temporary destination instead of using gen_jcc1*.
-
-For simplicity, I am using an unconditional cmpxchg operation, that becomes
-a NOP if the comparison fails.
+The new decoder likes to compute the address in A0 very early, so the
+gen_lea_v_seg in gen_pop_T0 would clobber the address of the memory
+operand.  Instead use T0 since it is already available and will be
+overwritten immediately after.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c                |  2 +-
- target/i386/tcg/decode-new.c.inc | 30 ++++++++++
- target/i386/tcg/decode-new.h     |  2 +
- target/i386/tcg/emit.c.inc       | 98 ++++++++++++++++++++++++++++++++
- target/i386/tcg/translate.c      |  2 +
- 5 files changed, 133 insertions(+), 1 deletion(-)
+ target/i386/tcg/translate.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 070c02000fe..15fc9d44e35 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -738,7 +738,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
- #define TCG_7_0_EDX_FEATURES (CPUID_7_0_EDX_FSRM | CPUID_7_0_EDX_KERNEL_FEATURES)
- 
- #define TCG_7_1_EAX_FEATURES (CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | \
--          CPUID_7_1_EAX_FSRC)
-+          CPUID_7_1_EAX_FSRC | CPUID_7_1_EAX_CMPCCXADD)
- #define TCG_7_1_EDX_FEATURES 0
- #define TCG_7_2_EDX_FEATURES 0
- #define TCG_APM_FEATURES 0
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 0a2aebf2ebb..57a5014bc8a 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -516,6 +516,28 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0xdd] = X86_OP_ENTRY3(VAESENCLAST, V,x,  H,x,       W,x,  vex4 cpuid(AES) p_66),
-     [0xde] = X86_OP_ENTRY3(VAESDEC,     V,x,  H,x,       W,x,  vex4 cpuid(AES) p_66),
-     [0xdf] = X86_OP_ENTRY3(VAESDECLAST, V,x,  H,x,       W,x,  vex4 cpuid(AES) p_66),
-+
-+    /*
-+     * REG selects srcdest2 operand, VEX.vvvv selects src3.  VEX class not found
-+     * in manual, assumed to be 13 from the VEX.L0 = constraint.
-+     */
-+    [0xe0] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xe1] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xe2] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xe3] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xe4] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xe5] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xe6] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xe7] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+
-+    [0xe8] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xe9] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xea] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xeb] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xec] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xed] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xee] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
-+    [0xef] = X86_OP_ENTRY3(CMPccXADD,   EM,y, G,y, B,y,  vex13 xchg chk(o64) cpuid(CMPCCXADD) p_66),
- };
- 
- /* five rows for no prefix, 66, F3, F2, 66+F2  */
-@@ -1273,8 +1295,13 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
- 
-     case X86_TYPE_WM:  /* modrm byte selects an XMM/YMM memory operand */
-         op->unit = X86_OP_SSE;
-+        goto get_modrm_mem;
-+
-+    case X86_TYPE_EM:  /* modrm byte selects an ALU memory operand */
-+        op->unit = X86_OP_INT;
-         /* fall through */
-     case X86_TYPE_M:  /* modrm byte selects a memory operand */
-+    get_modrm_mem:
-         modrm = get_modrm(s, env);
-         if ((modrm >> 6) == 3) {
-             return false;
-@@ -1511,6 +1538,9 @@ static bool has_cpuid_feature(DisasContext *s, X86CPUIDFeature cpuid)
-         return (s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_AVX2);
-     case X86_FEAT_SHA_NI:
-         return (s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_SHA_NI);
-+
-+    case X86_FEAT_CMPCCXADD:
-+        return (s->cpuid_7_1_eax_features & CPUID_7_1_EAX_CMPCCXADD);
-     }
-     g_assert_not_reached();
- }
-diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index 4258db19899..15233fad62f 100644
---- a/target/i386/tcg/decode-new.h
-+++ b/target/i386/tcg/decode-new.h
-@@ -47,6 +47,7 @@ typedef enum X86OpType {
-     X86_TYPE_Y, /* string destination */
- 
-     /* Custom */
-+    X86_TYPE_EM, /* modrm byte selects an ALU memory operand */
-     X86_TYPE_WM, /* modrm byte selects an XMM/YMM memory operand */
-     X86_TYPE_2op, /* 2-operand RMW instruction */
-     X86_TYPE_LoBits, /* encoded in bits 0-2 of the operand + REX.B */
-@@ -104,6 +105,7 @@ typedef enum X86CPUIDFeature {
-     X86_FEAT_AVX2,
-     X86_FEAT_BMI1,
-     X86_FEAT_BMI2,
-+    X86_FEAT_CMPCCXADD,
-     X86_FEAT_F16C,
-     X86_FEAT_FMA,
-     X86_FEAT_MOVBE,
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 90da1401745..dd77a8c5511 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1172,6 +1172,104 @@ static void gen_BZHI(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     prepare_update1_cc(decode, s, CC_OP_BMILGB + ot);
- }
- 
-+static void gen_CMPccXADD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    TCGv z_tl = tcg_constant_tl(0);
-+    TCGLabel *label_top = gen_new_label();
-+    TCGLabel *label_bottom = gen_new_label();
-+    TCGv oldv = tcg_temp_new();
-+    TCGv newv = tcg_temp_new();
-+    TCGv cmpv = tcg_temp_new();
-+    TCGv tmp_cc = tcg_temp_new();
-+
-+    TCGv cmp_lhs, cmp_rhs;
-+    MemOp ot, ot_full;
-+
-+    int jcc_op = (decode->b >> 1) & 7;
-+    static const uint8_t cond[16] = {
-+        TCG_COND_NE,  /* o, just test OF=1 */
-+        TCG_COND_EQ,  /* no, just test OF=0 */
-+        TCG_COND_LTU, /* b */
-+        TCG_COND_GEU, /* ae (nb) */
-+        TCG_COND_EQ,  /* z */
-+        TCG_COND_NE,  /* nz */
-+        TCG_COND_LEU, /* be */
-+        TCG_COND_GTU, /* a (nbe) */
-+        TCG_COND_LT,  /* s, compares result against 0 */
-+        TCG_COND_GE,  /* ns, compares result against 0 */
-+        TCG_COND_NE,  /* p, just test PF=1 */
-+        TCG_COND_EQ,  /* np, just test PF=0 */
-+        TCG_COND_LT,  /* l */
-+        TCG_COND_GE,  /* ge (nl) */
-+        TCG_COND_LE,  /* le */
-+        TCG_COND_GT,  /* g (nle) */
-+    };
-+
-+    ot = decode->op[0].ot;
-+    ot_full = ot | MO_LE;
-+    if (jcc_op >= JCC_S) {
-+        /*
-+         * Sign-extend values before subtracting for S, P (zero/sign extension
-+         * does not matter there) L, LE and their inverses.
-+         */
-+        ot_full |= MO_SIGN;
-+    }
-+
-+    gen_ext_tl(cmpv, cpu_regs[decode->op[1].n], ot_full);
-+
-+    /*
-+     * Cmpxchg loop starts here.
-+     * - s->T1: addition operand (from decoder)
-+     * - s->A0: dest address (from decoder)
-+     * - s->cc_srcT: memory operand (lhs for comparison)
-+     * - cmpv: rhs for comparison (will be in cc_src except for o/no/p/np);
-+     */
-+    gen_set_label(label_top);
-+    gen_op_ld_v(s, ot_full, s->cc_srcT, s->A0);
-+    tcg_gen_sub_tl(s->T0, s->cc_srcT, cmpv);
-+
-+    /* Compute comparison result but do not clobber cc_* yet.  */
-+    switch (jcc_op) {
-+    case JCC_O:
-+    case JCC_P:
-+        gen_helper_cc_compute_all(tmp_cc, s->T0, cmpv, z_tl,
-+                                  tcg_constant_i32(CC_OP_SUBB + ot));
-+        decode->cc_src = tmp_cc;
-+        decode->cc_op = CC_OP_EFLAGS;
-+
-+        tcg_gen_andi_tl(s->T0, tmp_cc, (jcc_op == JCC_O ? CC_O : CC_P));
-+        cmp_lhs = s->T0, cmp_rhs = z_tl;
-+        break;
-+
-+    case JCC_S:
-+        cmp_lhs = s->T0, cmp_rhs = z_tl;
-+        goto cc_sub;
-+
-+    default:
-+        cmp_lhs = s->cc_srcT, cmp_rhs = cmpv;
-+    cc_sub:
-+        decode->cc_dst = s->T0;
-+        decode->cc_src = cmpv;
-+        decode->cc_op = CC_OP_SUBB + ot;
-+        break;
-+    }
-+
-+    /* Compute new value: if condition does not hold, just store back s->cc_srcT */
-+    tcg_gen_add_tl(newv, s->cc_srcT, s->T1);
-+    tcg_gen_movcond_tl(cond[decode->b & 15], newv, cmp_lhs, cmp_rhs, newv, s->cc_srcT);
-+    tcg_gen_atomic_cmpxchg_tl(oldv, s->A0, s->cc_srcT, newv, s->mem_index, ot_full);
-+
-+    /* Exit unconditionally if cmpxchg succeeded.  */
-+    tcg_gen_brcond_tl(TCG_COND_EQ, oldv, s->cc_srcT, label_bottom);
-+
-+    /* Try again if there was actually a store to make.  */
-+    tcg_gen_brcond_tl(cond[decode->b & 15], cmp_lhs, cmp_rhs, label_top);
-+    gen_set_label(label_bottom);
-+
-+    /* Store old value to registers only after a successful store.  */
-+    gen_writeback(s, decode, 1, s->cc_srcT);
-+}
-+
- static void gen_CRC32(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- {
-     MemOp ot = decode->op[2].ot;
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index d7d6c85877d..038151a8c3e 100644
+index 038151a8c3e..39b5752e780 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -122,6 +122,7 @@ typedef struct DisasContext {
-     int cpuid_ext3_features;
-     int cpuid_7_0_ebx_features;
-     int cpuid_7_0_ecx_features;
-+    int cpuid_7_1_eax_features;
-     int cpuid_xsave_features;
+@@ -628,17 +628,17 @@ static TCGv eip_cur_tl(DisasContext *s)
+     }
+ }
  
-     /* TCG local temps */
-@@ -6957,6 +6958,7 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
-     dc->cpuid_ext3_features = env->features[FEAT_8000_0001_ECX];
-     dc->cpuid_7_0_ebx_features = env->features[FEAT_7_0_EBX];
-     dc->cpuid_7_0_ecx_features = env->features[FEAT_7_0_ECX];
-+    dc->cpuid_7_1_eax_features = env->features[FEAT_7_1_EAX];
-     dc->cpuid_xsave_features = env->features[FEAT_XSAVE];
-     dc->jmp_opt = !((cflags & CF_NO_GOTO_TB) ||
-                     (flags & (HF_TF_MASK | HF_INHIBIT_IRQ_MASK)));
+-/* Compute SEG:REG into A0.  SEG is selected from the override segment
++/* Compute SEG:REG into DEST.  SEG is selected from the override segment
+    (OVR_SEG) and the default segment (DEF_SEG).  OVR_SEG may be -1 to
+    indicate no override.  */
+-static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
+-                          int def_seg, int ovr_seg)
++static void gen_lea_v_seg_dest(DisasContext *s, MemOp aflag, TCGv dest, TCGv a0,
++                               int def_seg, int ovr_seg)
+ {
+     switch (aflag) {
+ #ifdef TARGET_X86_64
+     case MO_64:
+         if (ovr_seg < 0) {
+-            tcg_gen_mov_tl(s->A0, a0);
++            tcg_gen_mov_tl(dest, a0);
+             return;
+         }
+         break;
+@@ -649,14 +649,14 @@ static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
+             ovr_seg = def_seg;
+         }
+         if (ovr_seg < 0) {
+-            tcg_gen_ext32u_tl(s->A0, a0);
++            tcg_gen_ext32u_tl(dest, a0);
+             return;
+         }
+         break;
+     case MO_16:
+         /* 16 bit address */
+-        tcg_gen_ext16u_tl(s->A0, a0);
+-        a0 = s->A0;
++        tcg_gen_ext16u_tl(dest, a0);
++        a0 = dest;
+         if (ovr_seg < 0) {
+             if (ADDSEG(s)) {
+                 ovr_seg = def_seg;
+@@ -673,17 +673,23 @@ static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
+         TCGv seg = cpu_seg_base[ovr_seg];
+ 
+         if (aflag == MO_64) {
+-            tcg_gen_add_tl(s->A0, a0, seg);
++            tcg_gen_add_tl(dest, a0, seg);
+         } else if (CODE64(s)) {
+-            tcg_gen_ext32u_tl(s->A0, a0);
+-            tcg_gen_add_tl(s->A0, s->A0, seg);
++            tcg_gen_ext32u_tl(dest, a0);
++            tcg_gen_add_tl(dest, dest, seg);
+         } else {
+-            tcg_gen_add_tl(s->A0, a0, seg);
+-            tcg_gen_ext32u_tl(s->A0, s->A0);
++            tcg_gen_add_tl(dest, a0, seg);
++            tcg_gen_ext32u_tl(dest, dest);
+         }
+     }
+ }
+ 
++static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
++                          int def_seg, int ovr_seg)
++{
++    gen_lea_v_seg_dest(s, aflag, s->A0, a0, def_seg, ovr_seg);
++}
++
+ static inline void gen_string_movl_A0_ESI(DisasContext *s)
+ {
+     gen_lea_v_seg(s, s->aflag, cpu_regs[R_ESI], R_DS, s->override);
+@@ -2590,8 +2596,8 @@ static MemOp gen_pop_T0(DisasContext *s)
+ {
+     MemOp d_ot = mo_pushpop(s, s->dflag);
+ 
+-    gen_lea_v_seg(s, mo_stacksize(s), cpu_regs[R_ESP], R_SS, -1);
+-    gen_op_ld_v(s, d_ot, s->T0, s->A0);
++    gen_lea_v_seg_dest(s, mo_stacksize(s), s->T0, cpu_regs[R_ESP], R_SS, -1);
++    gen_op_ld_v(s, d_ot, s->T0, s->T0);
+ 
+     return d_ot;
+ }
 -- 
 2.41.0
 
