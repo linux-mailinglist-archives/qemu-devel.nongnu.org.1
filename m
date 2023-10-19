@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C037D03F5
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EDB7D03F9
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:26:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaQs-0006sG-Nb; Thu, 19 Oct 2023 17:19:54 -0400
+	id 1qtaQx-000701-Gm; Thu, 19 Oct 2023 17:19:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQm-0006iB-6d
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:49 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQr-0006q4-H5
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:53 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQj-00056o-ST
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:47 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40806e4106dso938345e9.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:19:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaQp-00059T-NL
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:19:53 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4079ed65582so1012695e9.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:19:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750384; x=1698355184; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750390; x=1698355190; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MEQ8PJ+7/tWDp1e1acSYNFj06Phs17Z7XzBWfANn630=;
- b=yDViE9tQp/gicWUGWWdsRr1qTN+E5FmiOiHU/JDklz1PZSTagLoPj2z+4vxHlrpTtb
- 1YmOacRZGynauV5AFHqK8ZnWXRZTEQoWOiqMvWpOr/jsk9yWed86kPLhVopuPM4WKcT7
- pjp/fneWJM25xnadFndmf7W5aCCQpUTafpjByR5WubaPVWI6dAC/NiPP2P9VbHa1Z93U
- d3rfRWE3HSKkqDrdhCf5ELTVylBgJELfzBGPPWvz8XrpffVDjKwF1Fbgx8YCXVusyzO6
- VwrXb2xUth1IdHfCKTB3a8yS+v4AFqrEJJgi8nG7jNIs8tcFaGwN8Mf8GkTys8NVrjvn
- AG8g==
+ bh=8cFSDOivNgHcSX8AYNeAVwR9ly4r/Wc+Ax9HhfRkEQg=;
+ b=XcKljRmtB2u3/ZGfT6kCgCtsyjNX+rIcWuRmdx54JpRfxhT8cL5tCtKc42R/zcwkcZ
+ TePWU9cq/EeAkWH0NP/DznUJnFYQKUoQmjWVZ5/KEUE7W4L1XCZ6Bt2Os+QDhuZP48W9
+ quAY7f9skv4DzOVDcgMtk/E6WOjipKBZLmN31NPs+/czeHv8bVv7MrUqho6WTXB/oYM6
+ 20TjSXYxRl2eabpTcMcKWsEoqvOSd8LgUhjafxiQlpuSowVv3KPzdT8ReQHpcyuxTNnv
+ FkVPEiDbZpp9jaEQLAY3155FaEUmuo27PXPlqAkKr3t+xHV0awkFR8aQJiH3OveYbTP/
+ LtFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750384; x=1698355184;
+ d=1e100.net; s=20230601; t=1697750390; x=1698355190;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MEQ8PJ+7/tWDp1e1acSYNFj06Phs17Z7XzBWfANn630=;
- b=jmDyyeZYQ0rL0kWaftF9QmtIbaaxf8XB1LFdJZfjbcVw09EkwY5g7MogCOGF1ER+R8
- vl121o/27eMH+JCGSKaXa72gWiMT3CJiOwQMtcB4g/ZTH6Hey+HHqk4+0XBxUY5aQ/uB
- gWc34VuMMa9JtJJ5w8ZLVcWSSIWIOMYbMNwiiqRcihAQ7/GGEEaHi6L2Z4fO5BAEPl+a
- dsJJ1UHu90C5+8+RDch4soW0/512ipfLMUUm4ZS45OD2AUIYniPwKPVm57RU1v0Anz++
- SU7fdF9l5cMbC5s898Cj9K69LwCP30RUerhUu++CMgwbx5edC3ULR63duHstHKID/H0l
- Do1w==
-X-Gm-Message-State: AOJu0Yx+C9Kr1P/faPkKXtzK1hZG62vmiLdgYjet4PkgiQAklQ0Fot+V
- gf/r022l4ZGDfSML0Vq6kUeSS00s9xG/OW5Ilf1v8Q==
-X-Google-Smtp-Source: AGHT+IHGW8tdsnslQuA5SeoNb3+2SxI2qTdy2Moze5rnGaD/CEaIzdQttIMSg1XOvdEc91qE5zXw9A==
-X-Received: by 2002:a05:600c:3b20:b0:402:f91e:df80 with SMTP id
- m32-20020a05600c3b2000b00402f91edf80mr2978322wms.3.1697750384014; 
- Thu, 19 Oct 2023 14:19:44 -0700 (PDT)
+ bh=8cFSDOivNgHcSX8AYNeAVwR9ly4r/Wc+Ax9HhfRkEQg=;
+ b=OL8PVZb2gLdnou1dxMc7fMEu1efb2QPF91aYa+YreDC24Ell89hGzCTqZVtVv2SJLp
+ FMZzPb6Tzy24iPspkEnV/WHK6axp91YwSCoVyiatNKIrKRnGCRVkCH500oE2uOsrZi2z
+ h3+z7+HzCS96YjFKIAZRUzxfrSjNvCAf2VA9KRGTQ1xHtonpTAWoh5VTbXgiFwDkVhOs
+ YYgfUWj9oPsYANflcgObNzpcoQc7Pr+c0ji7grB0W9ZM6AFoUvPx7L+6BwflpdrWn7US
+ 9UQLMvrb1+7mzhBfCk4QY3362Rl0hZ4jiUXV8HbzPGtAOTcMqAddB4XzOwq6km5yM9FM
+ yFqA==
+X-Gm-Message-State: AOJu0YwsiLqiCvnCqZRXpJLBU9272hOE1tiwo8ZmReRTpM1UumjUvKSH
+ ajYP+JSzJo4zqHTgviV1EABWParWz9YAp3KT3n41sw==
+X-Google-Smtp-Source: AGHT+IEuyiYEdZ0+ynIic1gJW+sfNYKiP0HuMZcZWCh5Z79qNf42KrrVrExBF8FgN1KH+VzrQ0LPog==
+X-Received: by 2002:a05:600c:4f8d:b0:401:a0b1:aef6 with SMTP id
+ n13-20020a05600c4f8d00b00401a0b1aef6mr67528wmq.2.1697750390242; 
+ Thu, 19 Oct 2023 14:19:50 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- e16-20020adfe390000000b0032dab20e773sm214722wrm.69.2023.10.19.14.19.42
+ n16-20020a05600c3b9000b003fee6e170f9sm496411wms.45.2023.10.19.14.19.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:19:43 -0700 (PDT)
+ Thu, 19 Oct 2023 14:19:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PULL 13/46] hw/misc/mips_itu: Declare itc_reconfigure() in
- 'hw/misc/mips_itu.h'
-Date: Thu, 19 Oct 2023 23:17:38 +0200
-Message-ID: <20231019211814.30576-14-philmd@linaro.org>
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PULL 14/46] hw/misc/mips_itu: Make MIPSITUState target agnostic
+Date: Thu, 19 Oct 2023 23:17:39 +0200
+Message-ID: <20231019211814.30576-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,56 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We already provide "hw/misc/mips_itu.h" to declare prototype
-related to MIPSITUState. Move itc_reconfigure() declaration
-there.
+When prototyping a heterogenous machine including the ITU,
+we get:
+
+  include/hw/misc/mips_itu.h:76:5: error: unknown type name 'MIPSCPU'
+      MIPSCPU *cpu0;
+      ^
+
+MIPSCPU is declared in the target specific "cpu.h" header,
+but we don't want to include it, because "cpu.h" is target
+specific and its inclusion taints all files including
+"mips_itu.h", which become target specific too. We can
+however use the 'ArchCPU *' type in the public header.
+By keeping the TYPE_MIPS_CPU QOM type check in the link
+property declaration, QOM core code will still check the
+property is a correct MIPS CPU.
+
+TYPE_MIPS_ITU is still built per-(MIPS)target, but its header
+can now be included by other targets.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231009171443.12145-3-philmd@linaro.org>
+Message-Id: <20231009171443.12145-4-philmd@linaro.org>
 ---
- include/hw/misc/mips_itu.h          | 2 ++
- target/mips/cpu.h                   | 3 ---
- target/mips/tcg/sysemu/cp0_helper.c | 1 +
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ include/hw/misc/mips_itu.h | 2 +-
+ hw/misc/mips_itu.c         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/include/hw/misc/mips_itu.h b/include/hw/misc/mips_itu.h
-index 35218b2d14..a413789151 100644
+index a413789151..5caed6cc36 100644
 --- a/include/hw/misc/mips_itu.h
 +++ b/include/hw/misc/mips_itu.h
-@@ -79,4 +79,6 @@ struct MIPSITUState {
+@@ -73,7 +73,7 @@ struct MIPSITUState {
+ 
+     /* SAAR */
+     uint64_t *saar;
+-    MIPSCPU *cpu0;
++    ArchCPU *cpu0;
+ };
+ 
  /* Get ITC Configuration Tag memory region. */
- MemoryRegion *mips_itu_get_tag_region(MIPSITUState *itu);
+diff --git a/hw/misc/mips_itu.c b/hw/misc/mips_itu.c
+index 0eda302db4..5a83ccc4e8 100644
+--- a/hw/misc/mips_itu.c
++++ b/hw/misc/mips_itu.c
+@@ -532,7 +532,7 @@ static void mips_itu_realize(DeviceState *dev, Error **errp)
+         return;
+     }
  
-+void itc_reconfigure(struct MIPSITUState *tag);
-+
- #endif /* MIPS_ITU_H */
-diff --git a/target/mips/cpu.h b/target/mips/cpu.h
-index fb44defc93..5fddceff3a 100644
---- a/target/mips/cpu.h
-+++ b/target/mips/cpu.h
-@@ -1350,9 +1350,6 @@ void cpu_mips_soft_irq(CPUMIPSState *env, int irq, int level);
- void cpu_mips_irq_init_cpu(MIPSCPU *cpu);
- void cpu_mips_clock_init(MIPSCPU *cpu);
+-    env = &s->cpu0->env;
++    env = &MIPS_CPU(s->cpu0)->env;
+     if (env->saarp) {
+         s->saar = env->CP0_SAAR;
+     }
+@@ -563,7 +563,7 @@ static Property mips_itu_properties[] = {
+                       ITC_FIFO_NUM_MAX),
+     DEFINE_PROP_UINT32("num-semaphores", MIPSITUState, num_semaphores,
+                       ITC_SEMAPH_NUM_MAX),
+-    DEFINE_PROP_LINK("cpu[0]", MIPSITUState, cpu0, TYPE_MIPS_CPU, MIPSCPU *),
++    DEFINE_PROP_LINK("cpu[0]", MIPSITUState, cpu0, TYPE_MIPS_CPU, ArchCPU *),
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
--/* mips_itu.c */
--void itc_reconfigure(struct MIPSITUState *tag);
--
- #endif /* !CONFIG_USER_ONLY */
- 
- /* helper.c */
-diff --git a/target/mips/tcg/sysemu/cp0_helper.c b/target/mips/tcg/sysemu/cp0_helper.c
-index 5da1124589..d349548743 100644
---- a/target/mips/tcg/sysemu/cp0_helper.c
-+++ b/target/mips/tcg/sysemu/cp0_helper.c
-@@ -28,6 +28,7 @@
- #include "qemu/host-utils.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
-+#include "hw/misc/mips_itu.h"
- 
- 
- /* SMP helpers.  */
 -- 
 2.41.0
 
