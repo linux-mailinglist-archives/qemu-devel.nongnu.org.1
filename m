@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EC27D03EF
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D317D0407
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:28:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaTx-0005wI-33; Thu, 19 Oct 2023 17:23:05 -0400
+	id 1qtaU3-0006mQ-IO; Thu, 19 Oct 2023 17:23:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaTu-0005r5-Tk
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:23:02 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaTz-0006UK-Qw
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:23:07 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaTr-0001cC-RD
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:23:02 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2c5056059e0so1653571fa.3
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:22:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtaTx-0001eK-V5
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:23:07 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2c50906f941so1671461fa.2
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 14:23:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697750578; x=1698355378; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697750584; x=1698355384; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Nv3oXKxb944zUzl3WXXH7IJvjD+TPF87yEqv4BjuzRw=;
- b=BeRAsNlfvYPxkzMfcnN/gLLY7KvJNgc8/5ESA9X398IwnjspAJ5cH81GiPRahC7nkA
- sucAqtNMiSnJf7ZzfjqROmf2gQaRO8SFP5xTLHoobsbcQsqnBGxtGde2Joy4B9avEsJD
- lr0ijXUar0+tIoHWx239B5A2gTpVgW9uoQo2g2WQaVWqsr6RVFH2LHcW4YpDXmsBQGkw
- RQ2T7ubeegmpq4lrNJ+6UQFa7eviyXzar6UKk9ZNjUC+TFyz5v8o/quU1YjVyv66PB4m
- 0rqzC1FDBPloMjXYsWfds0lW6pIvZ6buqXwmrJYazbob5UJD3Zaty16GfDcVRGebPzEP
- 5RqQ==
+ bh=uPCUA2oPZ2wdqytvwya118q0tpbF9WOJR99LmJrLuIo=;
+ b=JP4C1oN+LQvxxbPv8VJkBWDbdbs4ScUaXh9CrmLprg9YobphcGcE4sNpJMGhR1kY99
+ t10f1OP3NqCxE7xnisWUJyjdItsKm9gINbADv3qJA5NaGNmCXP4ZK0dm4Zkfh4luT+g+
+ ptYyMHFuGHcrT+qGPW5s3iJ6x47viHsLXh3KGGDalqlhLYagU17UhnA9ltWgkUSNUgEM
+ aziaFi+OZiV6e1/BsaoDC9RZfatuYzn05IhXEWKQ14P8bYCsSJkwILTClLvSKFZkp0E7
+ qGVxFzJAS7ufO2Z8OsHI1rICwJctrCoeBI4dmhikzfPCjOqP3M94uqmtyCMfr6VuOOoe
+ kViA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697750578; x=1698355378;
+ d=1e100.net; s=20230601; t=1697750584; x=1698355384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Nv3oXKxb944zUzl3WXXH7IJvjD+TPF87yEqv4BjuzRw=;
- b=C9gfNEZHQiqGF5lIRzVdsvURo/Bcz76xbp6/OCUOIqu4jajG1NpjYL6vE2xTkNclLZ
- EoERfHmoR9HIwq41iE6mGV/upA76NQXESIzHf5qIh/tRPJje3lOSAfheKneF0TBMQklp
- fz0JJH3lCrACV0RPgkfoWyLOfwqFJ3aXf3/p5Ri+DLQInuTu07NBEgQvbyTKHKBgfWNW
- x+9Zg65/ZqwWGcTui29+RuLCPcPLyb+fSFBXiDqZpuzSy6uNskrV5mVXZjK+wUbPpFo6
- Fhr4yuZVhBUFz4DzKp6pnIqlDnvDH2nHyFmVFsDIItlx+q0+ZAD/mzLSeBxc4rqoobf0
- C8qg==
-X-Gm-Message-State: AOJu0YyE9ZVChnAyATPI5cxIQCdlVgWOl44u7V+j5Ca0EHi9xkPxd7Xg
- DRTqogOmiEmejDW5qRMq3Y1zVG7Q9q/MaFJW555NcA==
-X-Google-Smtp-Source: AGHT+IFxk1WYvD1zqsYrCDDPp/ZY4XIJIwKdzFOuGvNcmTnA+VeU325cYvdNOwqMxsrHQDh4Z1Cayg==
-X-Received: by 2002:a05:651c:4c6:b0:2c0:14e2:1f5c with SMTP id
- e6-20020a05651c04c600b002c014e21f5cmr114228lji.5.1697750578071; 
- Thu, 19 Oct 2023 14:22:58 -0700 (PDT)
+ bh=uPCUA2oPZ2wdqytvwya118q0tpbF9WOJR99LmJrLuIo=;
+ b=ts2vF4RunYFs1PjEU3OVWgxZYRnYVSUgVB0lCRtNaPmRaALVXWkONkG0dOMY5nyGAH
+ 3Bf+mje8fVQE4NfGOeTuVTN0b9YX36xWhCYtvX1DrUVeDViSoFgY72KlnP4LO/J1ff+B
+ s0z44oZgpiqVoG4YQP7siSVBzKcD6Dq7DFgAcvNZabJBwG2nM7iNe2qBzoZLcWjsMwwi
+ fCmgOO269CzO9R71Uw4c9KBdn4U2HhOB3FJfAlXyqo5jlxxQFeXCc36pzolnDVC/DXfy
+ li0wyoO8tCcSXijciGjPy4OvQt+TXsz8gMJPILtZnfXrObOsTHmFGtdqXpKkp9+2KiRj
+ sxMA==
+X-Gm-Message-State: AOJu0YzSszBjAAMKxJa1Lrd7vupnmRbAY/b7DK7TM6i8u9KW0q1ktHA8
+ gd4SFjRPR2NesSk8FJkmavVxNV+Ie6K8AGAwgCyjPQ==
+X-Google-Smtp-Source: AGHT+IG2XhW5456/XiUHlU63rrpy3Vx8TiDaL3+bQ4US5wvSn5Gj7EL0pS8tnTdVUuTtivtr9dqftA==
+X-Received: by 2002:a2e:b712:0:b0:2c5:47f:8ff7 with SMTP id
+ j18-20020a2eb712000000b002c5047f8ff7mr109874ljo.18.1697750583934; 
+ Thu, 19 Oct 2023 14:23:03 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-216-177.abo.bbox.fr. [176.131.216.177])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a05600c488600b004080f0376a0sm497964wmp.42.2023.10.19.14.22.56
+ j20-20020a05600c1c1400b004065daba6casm5434839wms.46.2023.10.19.14.23.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 19 Oct 2023 14:22:57 -0700 (PDT)
+ Thu, 19 Oct 2023 14:23:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
@@ -62,25 +62,25 @@ Cc: qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 42/46] hw/display/virtio-gpu: Use VIRTIO_DEVICE() macro
-Date: Thu, 19 Oct 2023 23:18:07 +0200
-Message-ID: <20231019211814.30576-43-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PULL 43/46] hw/scsi/virtio-scsi: Use VIRTIO_SCSI_COMMON() macro
+Date: Thu, 19 Oct 2023 23:18:08 +0200
+Message-ID: <20231019211814.30576-44-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019211814.30576-1-philmd@linaro.org>
 References: <20231019211814.30576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,30 +96,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Access QOM parent with the proper QOM VIRTIO_DEVICE() macro.
+Access QOM parent with the proper QOM VIRTIO_SCSI_COMMON() macro.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20231017140150.44995-4-philmd@linaro.org>
+Message-Id: <20231017140150.44995-5-philmd@linaro.org>
 ---
- hw/display/virtio-gpu.c | 2 +-
+ hw/scsi/virtio-scsi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 6efd15b6ae..4265316cbb 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1128,7 +1128,7 @@ static void virtio_gpu_ctrl_bh(void *opaque)
-     VirtIOGPU *g = opaque;
-     VirtIOGPUClass *vgc = VIRTIO_GPU_GET_CLASS(g);
+diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 45b95ea070..fa53f0902c 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -761,7 +761,7 @@ static void virtio_scsi_fail_cmd_req(VirtIOSCSIReq *req)
  
--    vgc->handle_ctrl(&g->parent_obj.parent_obj, g->ctrl_vq);
-+    vgc->handle_ctrl(VIRTIO_DEVICE(g), g->ctrl_vq);
- }
+ static int virtio_scsi_handle_cmd_req_prepare(VirtIOSCSI *s, VirtIOSCSIReq *req)
+ {
+-    VirtIOSCSICommon *vs = &s->parent_obj;
++    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(s);
+     SCSIDevice *d;
+     int rc;
  
- static void virtio_gpu_handle_cursor(VirtIODevice *vdev, VirtQueue *vq)
 -- 
 2.41.0
 
