@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C7E7D0385
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6826D7D038D
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 23:13:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtaGf-0003F5-EW; Thu, 19 Oct 2023 17:09:21 -0400
+	id 1qtaJq-0004AJ-Vq; Thu, 19 Oct 2023 17:12:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtaGe-00036Y-1D
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:09:20 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtaJn-0003xo-JS
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:12:35 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtaGc-0002JX-9S
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:09:19 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtaJm-0002sZ-1n
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 17:12:35 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id BCE5A1FD82;
- Thu, 19 Oct 2023 21:09:14 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id F02FE21864;
+ Thu, 19 Oct 2023 21:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1697749754; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1697749951; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DMBWKXa539XnlF4/5fu/qOcA4ub2oAWTI4Rybrkn4o8=;
- b=njwErqwAC4ou9TziN2F7n/Mi5BE5fOpmBmr2yEBXgndhR6PhvhxOs5CPZsjJU8lpuTa6OW
- Ga+tN7kIsijwc1SfvMUyNSXX4fDzQJIKCDWSFPu8Q04sTJ024OrDdfzQpHDKUJ5V/EqaYN
- Ms9FfPrO/+IUwcd9pT0CW2zuMtZGi4Y=
+ bh=+XWqeskCCsd3lYI7pO9dCwfpJfk5N8yey+HVNxyB+x8=;
+ b=vBPFyOV/E3swd6xjqLegpa4pY0kc8F9ABCg4dyXQcUUtJlaI2AQPN4UMpNxKK8Dadwq9o5
+ 6PDTe2CwsDVn7BpXLS9ypn++zRgwT8TXGWRAEqojNQSkSdvbeOQjoposQq8wbviu8nqPh1
+ GchOORrcFNQAHmWq4T6D9Osp1HL7Qdg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1697749754;
+ s=susede2_ed25519; t=1697749951;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DMBWKXa539XnlF4/5fu/qOcA4ub2oAWTI4Rybrkn4o8=;
- b=4ySYtqT13D138pN60LVIcl+Bn1uClQFEHUNYW/dU7eFF3GgBsPpBG9/c8ataFKfN7RnJhU
- ziOrrD3W/Pv9SQAA==
+ bh=+XWqeskCCsd3lYI7pO9dCwfpJfk5N8yey+HVNxyB+x8=;
+ b=9l8MzN8RPoWyx/J7J16Ab2if3P/+YOp+yY0eK043gTMXl41rB6pElKqRZ5htYUNo5fSUq8
+ TktE7xnhtcA9YTAQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 51D75139C2;
- Thu, 19 Oct 2023 21:09:14 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 844D2139C2;
+ Thu, 19 Oct 2023 21:12:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id fMa6B/qaMWVPQAAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 21:09:14 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id N7wWFL+bMWWtQQAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 21:12:31 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v4 1/5] migration: Refactor error handling in source
- return path
-In-Reply-To: <20231017202633.296756-2-peterx@redhat.com>
+Subject: Re: [PATCH v4 4/5] migration: Change ram_dirty_bitmap_reload()
+ retval to bool
+In-Reply-To: <20231017202633.296756-5-peterx@redhat.com>
 References: <20231017202633.296756-1-peterx@redhat.com>
- <20231017202633.296756-2-peterx@redhat.com>
-Date: Thu, 19 Oct 2023 18:09:11 -0300
-Message-ID: <87o7gu5ngo.fsf@suse.de>
+ <20231017202633.296756-5-peterx@redhat.com>
+Date: Thu, 19 Oct 2023 18:12:29 -0300
+Message-ID: <87leby5nb6.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: -5.05
-X-Spamd-Result: default: False [-5.05 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-0.95)[86.59%];
+X-Spam-Score: -7.00
+X-Spamd-Result: default: False [-7.00 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.90)[99.58%];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
@@ -72,8 +75,8 @@ X-Spamd-Result: default: False [-5.05 / 50.00]; ARC_NA(0.00)[];
  NEURAL_HAM_SHORT(-1.00)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
  RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -98,27 +101,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Peter Xu <peterx@redhat.com> writes:
 
-> rp_state.error was a boolean used to show error happened in return path
-> thread.  That's not only duplicating error reporting (migrate_set_error),
-> but also not good enough in that we only do error_report() and set it to
-> true, we never can keep a history of the exact error and show it in
-> query-migrate.
+> Now we have a Error** passed into the return path thread stack, which is
+> even clearer than an int retval.  Change ram_dirty_bitmap_reload() and the
+> callers to use a bool instead to replace errnos.
 >
-> To make this better, a few things done:
->
->   - Use error_setg() rather than error_report() across the whole lifecycle
->     of return path thread, keeping the error in an Error*.
->
->   - With above, no need to have mark_source_rp_bad(), remove it, alongside
->     with rp_state.error itself.
->
->   - Use migrate_set_error() to apply that captured error to the global
->     migration object when error occured in this thread.
->
->   - Do the same when detected qemufile error in source return path
->
-> We need to re-export qemu_file_get_error_obj() to do the last one.
->
+> Suggested-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > Signed-off-by: Peter Xu <peterx@redhat.com>
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
