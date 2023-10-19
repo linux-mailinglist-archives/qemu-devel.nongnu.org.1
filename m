@@ -2,56 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BBE7CFBF8
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 188AD7CFC0E
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:07:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtTdW-00079o-VA; Thu, 19 Oct 2023 10:04:31 -0400
+	id 1qtTfU-0000Jz-F2; Thu, 19 Oct 2023 10:06:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qtTdU-00072O-0r
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:04:28 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qtTdR-0008F5-3G
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:04:27 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SB8WX2TZHz6HJdv;
- Thu, 19 Oct 2023 22:00:56 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 19 Oct
- 2023 15:04:21 +0100
-Date: Thu, 19 Oct 2023 15:04:19 +0100
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: "Michael S. Tsirkin" <mst@redhat.com>, <qemu-devel@nongnu.org>, Fan Ni
- <fan.ni@samsung.com>
-Subject: Re: [PULL v2 38/53] hw/cxl: Support 4 HDM decoders at all levels of
- topology
-Message-ID: <20231019150419.00001a9a@Huawei.com>
-In-Reply-To: <CAFEAcA9VQ8KBCT7+CbY-1so5KVDUfydwP=MEJfc+1rkddFaq4A@mail.gmail.com>
-References: <cover.1696477105.git.mst@redhat.com>
- <e967413fe0f2f3fe022658bb279aef95d24210ec.1696477105.git.mst@redhat.com>
- <CAFEAcA9VQ8KBCT7+CbY-1so5KVDUfydwP=MEJfc+1rkddFaq4A@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtTfS-0000JH-3g
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:06:30 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtTfQ-0000jy-D1
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:06:29 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 411701F45B;
+ Thu, 19 Oct 2023 14:06:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697724386; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Pb3pIMVuAI7ym7iUexfGdolhi6SAgvoGd1vbEJM5n4g=;
+ b=E2qhYZZXwbWACEDm2Rt2z5acU1QqtVq+2jz4pnPGCH3YURom1pCZJET62lHcNBMkNoOnRo
+ 8hUsurxLEsNxvPunUJ5ZsD965YVSk4Vc1T8ulLFoKyG82MXw9+U+L2S9ttMcE4dVrH//Q+
+ 3t5G2TxNUpvyT7/tGXd4JyZoWM7C2s0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697724386;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Pb3pIMVuAI7ym7iUexfGdolhi6SAgvoGd1vbEJM5n4g=;
+ b=evkSv7wbGPvhBtgX5ugKS2DxomvJfrvlTTpbL+PJ7HO4Bp8m6iEERFl0+Q0mYFCtZ2AAcz
+ +zAuJbxJHBISrVBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C5AFC139C2;
+ Thu, 19 Oct 2023 14:06:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id pxLtI+E3MWWndAAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 14:06:25 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Alex
+ =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 10/12] tests/qtest/migration: Support more than one
+ QEMU binary
+In-Reply-To: <e4645bfb-9ded-41cb-adc5-6c81effea275@redhat.com>
+References: <20231018192741.25885-1-farosas@suse.de>
+ <20231018192741.25885-11-farosas@suse.de>
+ <e4645bfb-9ded-41cb-adc5-6c81effea275@redhat.com>
+Date: Thu, 19 Oct 2023 11:06:23 -0300
+Message-ID: <87y1fyyae8.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -7.10
+X-Spamd-Result: default: False [-7.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-3.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_SEVEN(0.00)[10];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,114 +99,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Oct 2023 13:31:05 +0100
-Peter Maydell <peter.maydell@linaro.org> wrote:
+Thomas Huth <thuth@redhat.com> writes:
 
-> On Thu, 5 Oct 2023 at 04:45, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Support these decoders in CXL host bridges (pxb-cxl), CXL Switch USP
-> > and CXL Type 3 end points.
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >  
-> 
-> 
-> 
-> > -/* TODO: Support multiple HDM decoders and DPA skip */
-> >  static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
-> >  {
-> >      int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-> >      uint32_t *cache_mem = ct3d->cxl_cstate.crb.cache_mem_registers;
-> > -    uint64_t decoder_base, decoder_size, hpa_offset;
-> > -    uint32_t hdm0_ctrl;
-> > -    int ig, iw;
-> > -    int i = 0;
-> > +    unsigned int hdm_count;
-> > +    uint32_t cap;
-> > +    uint64_t dpa_base = 0;
-> > +    int i;
-> >
-> > -    decoder_base =
-> > -        (((uint64_t)cache_mem[R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc] << 32) |
-> > -                    cache_mem[R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc]);
-> > -    if ((uint64_t)host_addr < decoder_base) {
-> > -        return false;
-> > +    cap = ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
-> > +    hdm_count = cxl_decoder_count_dec(FIELD_EX32(cap,
-> > +                                                 CXL_HDM_DECODER_CAPABILITY,
-> > +                                                 DECODER_COUNT));
-> > +
-> > +    for (i = 0; i < hdm_count; i++) {
-> > +        uint64_t decoder_base, decoder_size, hpa_offset, skip;
-> > +        uint32_t hdm_ctrl, low, high;
-> > +        int ig, iw;
-> > +
-> > +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc);
-> > +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc);
-> > +        decoder_base = ((uint64_t)high << 32) | (low & 0xf0000000);
-> > +
-> > +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc);
-> > +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc);
-> > +        decoder_size = ((uint64_t)high << 32) | (low & 0xf0000000);
-> > +
-> > +        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_LO +
-> > +                       i * hdm_inc);
-> > +        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_HI +
-> > +                        i * hdm_inc);
-> > +        skip = ((uint64_t)high << 32) | (low & 0xf0000000);
-> > +        dpa_base += skip;
-> > +
-> > +        hpa_offset = (uint64_t)host_addr - decoder_base;
-> > +
-> > +        hdm_ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i * hdm_inc);
-> > +        iw = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IW);
-> > +        ig = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IG);
-> > +        if (!FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
-> > +            return false;
-> > +        }
-> > +        if (((uint64_t)host_addr < decoder_base) ||
-> > +            (hpa_offset >= decoder_size)) {
-> > +            dpa_base += decoder_size /
-> > +                cxl_interleave_ways_dec(iw, &error_fatal);  
-> 
-> I noticed this because of a Coverity false-positive, but should
-> this really be using error_fatal? It looks like a guest program
-> writing bogus values to registers could trip this, and generally
-> we don't like to let the guest make QEMU exit.
+> On 18/10/2023 21.27, Fabiano Rosas wrote:
+>> We have strict rules around migration compatibility between different
+>> QEMU versions but no test to validate the migration state between
+>> different binaries.
+>> 
+>> Add infrastructure to allow running the migration tests with two
+>> different QEMU binaries as migration source and destination.
+>> 
+>> The code now recognizes two new environment variables
+>> QTEST_QEMU_BINARY_SRC and QTEST_QEMU_BINARY_DST. In the absence of
+>> either of them, the test will use the QTEST_QEMU_BINARY variable. If
+>> both are missing then the tests are run with single binary as
+>> previously.
+>> 
+>> The machine type is selected automatically as the latest machine type
+>> version that works with both binaries.
+>> 
+>> Usage (only one of SRC|DST is allowed):
+>> 
+>> QTEST_QEMU_BINARY_SRC=../build-8.2.0/qemu-system-x86_64 \
+>> QTEST_QEMU_BINARY=../build-8.1.0/qemu-system-x86_64 \
+>> ./tests/qtest/migration-test
+>> 
+>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>   tests/qtest/migration-test.c | 28 ++++++++++++++++++++++++----
+>>   1 file changed, 24 insertions(+), 4 deletions(-)
+>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>
+> I wonder whether we could test this in the gitlab-CI, too, e.g. by using a 
+> Debian container and installing the qemu-system-x86_64 from the Debian 
+> distro there (since this should be close enough to an older version of an 
+> upstream release), then run the test with that version from Debian and the 
+> one that has just been compiled from the master branch? Anyway, just an 
+> idea, this can certainly be done later.
 
-I have on my list adding a bunch of verification to the HDM decoder
-commit path that will make this harder to hit, but in theory not prevent
-it unless we make a decision to paper over the problem. I'll aim to do
-that sooner rather than later.
+Yes, something like this is the goal. It's not in this series because my
+docker-fu is a bit rusty, so I didn't want to delay the qtest part.
 
-Changing this after commit is specifically called out as 'undefined behavior' 
-8.2.4.19.13
-"Reprogramming the decoder while the Commit bit is set results in undefined
-behavior".  We should probably choose the behavior to not be fatal but we do
-want to scream very very loudly if a guest does this as it indicates something
-that may well bring down a real system.
+I think taking a built-from-tree QEMU would be better than a
+distro-shipped one.
 
-I get your point on not letting a guest do nasty things though so perhaps
-we should user error_warn instead?
-
-Making it die here was deliberate as I really really want to know if someone
-hits it and they tend to tell me if QEMU quits on them.
-I take your point though about it not being a good idea when looking at
-it from a broader point of view!
-
-Jonathan
-
-
-> 
-> thanks
-> -- PMM
-> 
-
+I also think that we should have this disabled in CI, due to the issues
+I described in the other thread. And possibly enable it with fewer
+migration-test tests. I don't see the need to run *all* of the
+migration-tests in this "compat testing" scheme.
 
