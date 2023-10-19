@@ -2,79 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7737D0215
+	by mail.lfdr.de (Postfix) with ESMTPS id 2920F7D0214
 	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 20:51:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtY65-0007Hw-Vr; Thu, 19 Oct 2023 14:50:18 -0400
+	id 1qtY6u-0007r3-2Z; Thu, 19 Oct 2023 14:51:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qtY64-0007HX-Hx
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:50:16 -0400
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qtY62-00081R-GA
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:50:16 -0400
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-581cb88f645so11074eaf.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:50:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1697741412; x=1698346212; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Fip/cGBcwRorh4K6xzMOlRVOKxywtad9Q+8WzIseqdw=;
- b=MscvJGHkVW11iLiUue7yl7hBVQkY3qLhHlAnIMFUE7/HQOnofS2zEYA6+K6SQ/s/nV
- XkSvTFITLG6mbbjpNvc7UKswDYc6uD0Gl8NgbKssqiRRrvg5vKZTZHpZmBDafOZfALSP
- 1ZfBkIsmHoLQLdebzTXZcFFNYScCnTdprxdLj5KmhJzehlZYOx/FsTk4r83jMf//inua
- dGeWWBsGhM5jM9eD8U4LFtkl416HN6pnehAJnDKlgvCCY1Z4vX27BNsQ8aWkVHhTTjMx
- PGGBX99CR8dYGPj5UrdM00RZ3DR3QODXk5oQbycH7tXKQ37KOk6kLpWjyuKBONaUOb2t
- wDIA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtY6q-0007mv-Sb
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:51:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtY6p-0008B5-At
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 14:51:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697741462;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5vEaCopLSIRKJR9XHZSObv6fp79XMSTcyXJH49UqJFA=;
+ b=NrslMEF413CpgbdOQfH/UyptC25SdNmdy92EcDNRe62vur7ORDCk9KhW794dGPtS75BcLl
+ 1hA/BXsXNjDmuSIs6/IMBakYuK5fbQMHZrYVkpa9A8N3Eiwptc3rkAHCQHd316cRrPTD6V
+ xCorZonToXrKIqyIbK55LGQdiKLUW+c=
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
+ [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-205-Jm08mapcMLqe54K1AigiZw-1; Thu, 19 Oct 2023 14:50:55 -0400
+X-MC-Unique: Jm08mapcMLqe54K1AigiZw-1
+Received: by mail-vs1-f71.google.com with SMTP id
+ ada2fe7eead31-457d696b0cbso389453137.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 11:50:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697741412; x=1698346212;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Fip/cGBcwRorh4K6xzMOlRVOKxywtad9Q+8WzIseqdw=;
- b=ezUukI9iWSsHQvyHJR1Um0VS1ps5oJCIsoMMzXB6cD6EZMHQjnbCFnwRdtoKPrMYJR
- 5SPeXxhN1DIkRuXoYPmAgWTkDcJ5jcdMpuQIiYjjaaH1Sf3M580PnCB49Sh+wqnTe9sA
- S1q9Z3Kd5zguVP9n9gxISrb/5Jo0cyAsBfQ4ZX3+ZyEEPpsmmTPfQB1YzhJI3va9ucxm
- ecwuB8qajkL0YghALFd02LVyOytCUG2JsfPbH2ZFKeE/B4uy/7l0VetonARySFYMMnNB
- 8iFYd3YB7pK4vgoSQvW+EhznLbmLbz9UC8FMRF2d5Kle3M+jBbR5I++5yD/6Fq/m4L89
- 44kQ==
-X-Gm-Message-State: AOJu0YwH72tRCKnDsT1vYhtvaBHEgZgZ5DhKheeQzToteiRVp1IN6FdC
- YY7P8IO9UJeqWQGLgfUQyuH8WjvqoM3MURYBM5Q=
-X-Google-Smtp-Source: AGHT+IHtraIPqXetxIqY0TrWmOGLArOohRkHEqoqCmlDchcy3zN6aNiiKY4TEY4b7pF0fMeoTXaK1JXtgZweSfzocMc=
-X-Received: by 2002:a4a:b441:0:b0:581:ea96:f7f3 with SMTP id
- h1-20020a4ab441000000b00581ea96f7f3mr3314538ooo.7.1697741411955; Thu, 19 Oct
- 2023 11:50:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697741455; x=1698346255;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5vEaCopLSIRKJR9XHZSObv6fp79XMSTcyXJH49UqJFA=;
+ b=bpMIE69R3BYaGC1cpCjvqeTkL4SZs56qJU4lsOEGHDWghawCiNNLICiqAMXCkiLJkG
+ htA5PclR92vtoK+wQVwkwLs+k2gJF21IuaL7uYTU4cccgK99+LU4c1zO93vrzFXBWl4U
+ ZyvGROXv7yffd9FespwKz3d4KHHsjiLIaISUUSYksQNOPJb296txdH+xT3IX3zc6BaJz
+ zE6sd1MMhSR1seFXK8wL55VxsnNM7ppK6uGN0LIdgwZjUQi7f9eCsJKoPfrz5LI3VS/b
+ I6HrESsQOQO9YVIDFKYNp1j3oOfTIJjR0BJz2GLP/+oY3lYjxVhfx5RsnAURRdj/hhz4
+ IxrA==
+X-Gm-Message-State: AOJu0Yxj1B2GiOE1eo2NBDvvf1F8dU8gxQB0r5USKPj/FqWzl6zQCCUH
+ FwkTDtJM+hX8PTR4aJhqWZViX+5tYcvYzySEpfMV43RYmYsAxWNVgAA9ch/pH28pKmSVfySB8wo
+ cddaG7hP+I0zU0bM=
+X-Received: by 2002:a05:6102:3236:b0:457:eca8:2d with SMTP id
+ x22-20020a056102323600b00457eca8002dmr2207704vsf.1.1697741455136; 
+ Thu, 19 Oct 2023 11:50:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGsJFNGTvae9cXjaIUSdjz/NH7FCeix4hFx6bf30cHaLD8Nhunga6JatPjZC+ozJh6aUc5ATg==
+X-Received: by 2002:a05:6102:3236:b0:457:eca8:2d with SMTP id
+ x22-20020a056102323600b00457eca8002dmr2207695vsf.1.1697741454845; 
+ Thu, 19 Oct 2023 11:50:54 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ x17-20020ac87a91000000b0041818df8a0dsm21550qtr.36.2023.10.19.11.50.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 11:50:54 -0700 (PDT)
+Date: Thu, 19 Oct 2023 14:50:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Leonardo Bras <leobras@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
+ semaphore
+Message-ID: <ZTF6jWsOZe5+f+8v@x1n>
+References: <20231012140651.13122-1-farosas@suse.de>
+ <20231012140651.13122-2-farosas@suse.de>
+ <87sf676kxt.fsf@secure.mitica> <ZTE+lmbvtYNDU80q@x1n>
+ <871qdq4pzh.fsf@secure.mitica> <ZTFPUUdJ5Y8/szaA@x1n>
+ <87h6mm31sa.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <cover.1697644299.git.mst@redhat.com>
- <1908cfd6e1748d94680e468b9df6321087b8fcf2.1697644299.git.mst@redhat.com>
- <CAJSP0QVTi2QxMdzmPoPF2w5xm-r19W_0GtTaqJzGnoibT9iDNg@mail.gmail.com>
- <20231019143240-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231019143240-mutt-send-email-mst@kernel.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 19 Oct 2023 11:49:59 -0700
-Message-ID: <CAJSP0QUH70gF04XR4KcAXcwmGaxD8AK0c=8e7t95_wZoT_uuuw@mail.gmail.com>
-Subject: Re: [PULL 08/83] vdpa: Restore hash calculation state
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
- Hawkins Jiawei <yin31149@gmail.com>, Jason Wang <jasowang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87h6mm31sa.fsf@secure.mitica>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,198 +103,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 19 Oct 2023 at 11:34, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> On Thu, Oct 19, 2023 at 09:32:28AM -0700, Stefan Hajnoczi wrote:
-> > On Wed, 18 Oct 2023 at 08:56, Michael S. Tsirkin <mst@redhat.com> wrote=
-:
-> > >
-> > > From: Hawkins Jiawei <yin31149@gmail.com>
-> > >
-> > > This patch introduces vhost_vdpa_net_load_rss() to restore
-> > > the hash calculation state at device's startup.
-> > >
-> > > Note that vhost_vdpa_net_load_rss() has `do_rss` argument,
-> > > which allows future code to reuse this function to restore
-> > > the receive-side scaling state when the VIRTIO_NET_F_RSS
-> > > feature is enabled in SVQ. Currently, vhost_vdpa_net_load_rss()
-> > > could only be invoked when `do_rss` is set to false.
-> > >
-> > > Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> > > Message-Id: <f5ffad10699001107022851e0560cb394039d6b0.1693297766.git.=
-yin31149@gmail.com>
-> > > Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > ---
-> > >  net/vhost-vdpa.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++=
-++
-> > >  1 file changed, 91 insertions(+)
-> > >
-> > > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > > index 4b7c3b81b8..40d0bcbc0b 100644
-> > > --- a/net/vhost-vdpa.c
-> > > +++ b/net/vhost-vdpa.c
-> > > @@ -817,6 +817,88 @@ static int vhost_vdpa_net_load_mac(VhostVDPAStat=
-e *s, const VirtIONet *n,
-> > >      return 0;
-> > >  }
-> > >
-> > > +static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONe=
-t *n,
-> > > +                                   struct iovec *out_cursor,
-> > > +                                   struct iovec *in_cursor, bool do_=
-rss)
-> > > +{
-> > > +    struct virtio_net_rss_config cfg;
-> > > +    ssize_t r;
-> > > +    g_autofree uint16_t *table =3D NULL;
-> > > +
-> > > +    /*
-> > > +     * According to VirtIO standard, "Initially the device has all h=
-ash
-> > > +     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE."=
-.
-> > > +     *
-> > > +     * Therefore, there is no need to send this CVQ command if the
-> > > +     * driver disable the all hash types, which aligns with
-> > > +     * the device's defaults.
-> > > +     *
-> > > +     * Note that the device's defaults can mismatch the driver's
-> > > +     * configuration only at live migration.
-> > > +     */
-> > > +    if (!n->rss_data.enabled ||
-> > > +        n->rss_data.hash_types =3D=3D VIRTIO_NET_HASH_REPORT_NONE) {
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    cfg.hash_types =3D cpu_to_le32(n->rss_data.hash_types);
-> > > +
-> > > +    /*
-> > > +     * According to VirtIO standard, "Field reserved MUST contain ze=
-roes.
-> > > +     * It is defined to make the structure to match the layout of
-> > > +     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
-> > > +     *
-> > > +     * Therefore, we need to zero the fields in struct virtio_net_rs=
-s_config,
-> > > +     * which corresponds the `reserved` field in
-> > > +     * struct virtio_net_hash_config.
-> > > +     */
-> > > +    memset(&cfg.indirection_table_mask, 0,
-> > > +           sizeof_field(struct virtio_net_hash_config, reserved));
+On Thu, Oct 19, 2023 at 08:28:05PM +0200, Juan Quintela wrote:
+> Peter Xu <peterx@redhat.com> wrote:
+> > On Thu, Oct 19, 2023 at 05:00:02PM +0200, Juan Quintela wrote:
+> >> Peter Xu <peterx@redhat.com> wrote:
+> >> > Fabiano,
+> >> >
+> >> > Sorry to look at this series late; I messed up my inbox after I reworked my
+> >> > arrangement methodology of emails. ;)
+> >> >
+> >> > On Thu, Oct 19, 2023 at 11:06:06AM +0200, Juan Quintela wrote:
+> >> >> Fabiano Rosas <farosas@suse.de> wrote:
+> >> >> > The channels_ready semaphore is a global variable not linked to any
+> >> >> > single multifd channel. Waiting on it only means that "some" channel
+> >> >> > has become ready to send data. Since we need to address the channels
+> >> >> > by index (multifd_send_state->params[i]), that information adds
+> >> >> > nothing of value.
+> 
+> >> And that is what we do here.
+> >> We didn't had this last line (not needed for making sure the channels
+> >> are ready here).
+> >> 
+> >> But needed to make sure that we are maintaining channels_ready exact.
 > >
-> > Please take a look at the following CI failure:
+> > I didn't expect it to be exact, I think that's the major part of confusion.
+> > For example, I see this comment:
 > >
-> > In file included from /usr/include/string.h:495,
-> > from /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/include/qe=
-mu/osdep.h:116,
-> > from ../net/vhost-vdpa.c:12:
-> > In function =E2=80=98memset=E2=80=99,
-> > inlined from =E2=80=98vhost_vdpa_net_load_rss=E2=80=99 at ../net/vhost-=
-vdpa.c:874:9:
-> > /usr/include/s390x-linux-gnu/bits/string_fortified.h:71:10: error:
-> > =E2=80=98__builtin_memset=E2=80=99 offset [7, 12] from the object at =
-=E2=80=98cfg=E2=80=99 is out of
-> > the bounds of referenced subobject =E2=80=98indirection_table_mask=E2=
-=80=99 with type
-> > =E2=80=98short unsigned int=E2=80=99 at offset 4 [-Werror=3Darray-bound=
-s]
-> > 71 | return __builtin___memset_chk (__dest, __ch, __len, __bos0 (__dest=
-));
-> > | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > cc1: all warnings being treated as errors
-> >
-> > https://gitlab.com/qemu-project/qemu/-/jobs/5329820077
->
-> I wonder how come CI passed for me with this commit included:
->
-> https://gitlab.com/mstredhat/qemu/-/pipelines/1041296083
->
-> do you know?
+> > static void *multifd_send_thread(void *opaque)
+> >        ...
+> >         } else {
+> >             qemu_mutex_unlock(&p->mutex);
+> >             /* sometimes there are spurious wakeups */
+> >         }
+> 
+> I put that there during development, and let it there just to be safe.
+> Years later I put an assert() there and did lots of migrations, never
+> hit it.
+> 
+> > So do we have spurious wakeup anywhere for either p->sem or channels_ready?
+> > They are related, because if we got spurious p->sem wakeups, then we'll
+> > boost channels_ready one more time too there.
+> 
+> I think that we can change that for g_assert_not_reached()
 
-The failing ubuntu-20.04-s390x-all only runs on an s390 private
-runner. That private runner was not available to you, so the test was
-skipped and the failure did not occur in your run.
+Sounds good.  We can also use an error_erport_once(), depending on your
+confidence of that. :)  Dropping that comment definitely helps.
 
-Stefan
+I had a quick look, indeed I think it's safe even with assert.  We may want
+to put some more comment on when one should kick p->sem; IIUC it can only
+be kicked in either (1) pending_job increased, or (2) set exiting=1.  Then
+it seems all guaranteed.
 
->
->
-> > > +
-> > > +    table =3D g_malloc_n(n->rss_data.indirections_len,
-> > > +                       sizeof(n->rss_data.indirections_table[0]));
-> > > +    for (int i =3D 0; i < n->rss_data.indirections_len; ++i) {
-> > > +        table[i] =3D cpu_to_le16(n->rss_data.indirections_table[i]);
-> > > +    }
-> > > +
-> > > +    /*
-> > > +     * Consider that virtio_net_handle_rss() currently does not rest=
-ore the
-> > > +     * hash key length parsed from the CVQ command sent from the gue=
-st into
-> > > +     * n->rss_data and uses the maximum key length in other code, so=
- we also
-> > > +     * employthe the maxium key length here.
-> > > +     */
-> > > +    cfg.hash_key_length =3D sizeof(n->rss_data.key);
-> > > +
-> > > +    const struct iovec data[] =3D {
-> > > +        {
-> > > +            .iov_base =3D &cfg,
-> > > +            .iov_len =3D offsetof(struct virtio_net_rss_config,
-> > > +                                indirection_table),
-> > > +        }, {
-> > > +            .iov_base =3D table,
-> > > +            .iov_len =3D n->rss_data.indirections_len *
-> > > +                       sizeof(n->rss_data.indirections_table[0]),
-> > > +        }, {
-> > > +            .iov_base =3D &cfg.max_tx_vq,
-> > > +            .iov_len =3D offsetof(struct virtio_net_rss_config, hash=
-_key_data) -
-> > > +                       offsetof(struct virtio_net_rss_config, max_tx=
-_vq),
-> > > +        }, {
-> > > +            .iov_base =3D (void *)n->rss_data.key,
-> > > +            .iov_len =3D sizeof(n->rss_data.key),
-> > > +        }
-> > > +    };
-> > > +
-> > > +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> > > +                                VIRTIO_NET_CTRL_MQ,
-> > > +                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
-> > > +                                data, ARRAY_SIZE(data));
-> > > +    if (unlikely(r < 0)) {
-> > > +        return r;
-> > > +    }
-> > > +
-> > > +    return 0;
-> > > +}
-> > > +
-> > >  static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-> > >                                    const VirtIONet *n,
-> > >                                    struct iovec *out_cursor,
-> > > @@ -842,6 +924,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState=
- *s,
-> > >          return r;
-> > >      }
-> > >
-> > > +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_R=
-EPORT)) {
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    r =3D vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false=
-);
-> > > +    if (unlikely(r < 0)) {
-> > > +        return r;
-> > > +    }
-> > > +
-> > >      return 0;
-> > >  }
-> > >
-> > > --
-> > > MST
-> > >
-> > >
->
+Thanks,
+
+-- 
+Peter Xu
+
 
