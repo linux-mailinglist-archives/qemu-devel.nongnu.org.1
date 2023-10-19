@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B77B7CF5A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2937CF5A8
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 12:49:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtQYW-0006X4-KR; Thu, 19 Oct 2023 06:47:08 -0400
+	id 1qtQYX-0006Y0-C6; Thu, 19 Oct 2023 06:47:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtQYP-0006FO-Uo
+ id 1qtQYR-0006FS-QW
  for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtQYN-0006CE-99
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:01 -0400
+ id 1qtQYP-0006CY-Ft
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 06:47:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697712417;
+ s=mimecast20190719; t=1697712420;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QFLukNUS7TwhCPaS3HQhDICPcAy2Wkea09tTCaxB9eE=;
- b=UU5wuzu3pPl6nbtKXihkHM0sn7huKlreMgBHthY4aFyX+Ri0r1tATrR+M10bN2fEYuIbpA
- BC/W3PjQeHvdRmsJNimohY2r8V1h4ELYqgZ5YpezAcyezM1JHy+FwRZBbpaym6W3vGyQHS
- D01TJLymw46gbAhsBgjW9wfQDIUXJqU=
+ bh=8s7wHI4CkLj7mZOBGLOqYoTTD0JqgSZM75M93R4VQu8=;
+ b=Ip3Gs28vTJRixs3Fy+aId2D+PMybIv9OuddQhsqbbTqIg5SGkqb2zGn8XZzIv+r9SwLyt6
+ fUAPC3Hv0V7PTDhac6Ubj7cUNVGYMrYDXvHHZmHXCBFnwjbmQS7HQc8jpRnlIYEx1JKLw7
+ TZCjjwrkIjQnu8tWtvkd/a+EeJuBLLg=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-En7GdAJlMc-SHW-j_WbPRQ-1; Thu, 19 Oct 2023 06:46:56 -0400
-X-MC-Unique: En7GdAJlMc-SHW-j_WbPRQ-1
+ us-mta-668-61wEotYOM9KVxfTlHIbwKA-1; Thu, 19 Oct 2023 06:46:58 -0400
+X-MC-Unique: 61wEotYOM9KVxfTlHIbwKA-1
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9ba247e03aeso548530166b.1
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:46:56 -0700 (PDT)
+ a640c23a62f3a-997c891a88dso576286066b.3
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 03:46:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697712414; x=1698317214;
+ d=1e100.net; s=20230601; t=1697712416; x=1698317216;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QFLukNUS7TwhCPaS3HQhDICPcAy2Wkea09tTCaxB9eE=;
- b=HHtw5vGKMnkOcv5smGqODCNCAtV5boalcMB5D3FvL7DsC2gKrq9Qy1/h+irIYBlDZ2
- vvtliPEb/GaR0pFmmp6+PO4islElAGmSe4IzMf5Y8mGj/YIptp1nMYEHoGiIoAIxi50t
- Y7xFuJNUOXIUD0kAGvlYJDyrUN3+ysQilXV7wDOrB8wyrUi1+WrcsZ0hsRvLbcyK7XMM
- BeHPdO14mn2y9IAyikFiJ1dYU20+rUQn8/vGQy3V3UXQUMBvdOG8CC3/nyFzabm4g7Te
- F5l2gSc0XntP9/z/RBdxzoBxXSOelQo4vYYb/8wHs/iUeqACeD/ZCkJ6XO72UC+ly+Kh
- VZHw==
-X-Gm-Message-State: AOJu0Yyc8TXAgqzM4Fw1zv1ByRzEiksC4QY3jRJrdu8uOZO5A+Dnzd+9
- PXUYi3CxPxLPdKKRbDODQsEsqMfJ6TKbu0QRBy7RXwF2uRtToPpI9XHmbVdykmMLB5rB9i/TjHj
- 9CsBnaZ0OOsVFXmsBurLOlYM9OdJvrlG8ABUzKW9EtvwtcGli/zApzM2UUycwrtPUfAU4OawKL+
- U=
-X-Received: by 2002:a17:907:a0b:b0:9c3:e158:316a with SMTP id
- bb11-20020a1709070a0b00b009c3e158316amr1421015ejc.68.1697712414275; 
- Thu, 19 Oct 2023 03:46:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMEykUrgLruNoEpOvG6cKU6BjQGmBhr2HT4ovXHzZPrU9xcBFHiFwn8kKjnfw89WYlr0LRBw==
-X-Received: by 2002:a17:907:a0b:b0:9c3:e158:316a with SMTP id
- bb11-20020a1709070a0b00b009c3e158316amr1420988ejc.68.1697712413553; 
- Thu, 19 Oct 2023 03:46:53 -0700 (PDT)
+ bh=8s7wHI4CkLj7mZOBGLOqYoTTD0JqgSZM75M93R4VQu8=;
+ b=P6o1VhlSzeNInN6tg3tcoB45UflTjcA0YFB8ip+dcU/XpfjJmWkAGb379Rb66wD7B+
+ cQcCN5ng/vy7ZtV46rNralIstdqPRqaz13LU7JMiuQREZ5qiP2dNq8rh8xvY3/4kE2TU
+ lJEWoodVVOccCCeibsaQpIvHqdFcLiKSd4hKVuqiM1+VGe+grFUBDrGOzjnuVG/6mP8M
+ UW8GInI6wDqjB2KcK1BJ7I/2OPc0sWILwksW3zShxbUfd8PXfGS3tXvRX3Ww/ZhTGlBY
+ wWlvps9eXmo31uBZ/VpGammtllbayreNYfHB1CjaWLHIspq31KZ+LH8k+y9lPaiWxmgr
+ Sphg==
+X-Gm-Message-State: AOJu0Yzz9teD9LEXoSfLgVpDAWbXFhptdF3qpkyYNqvs13Xm9D5BzVBw
+ BjRUCiD58QMRdvjuKquSboAo+nCpOaglTP4p1WSVababuSFWlcPwg7Zj8ewfhO3RAc0TtBUNhfz
+ 4XjKr3CYI1WpQykTKcELs+IwvoZb9IHirqAY8Xk/R7rHZLilRcPuj5Oj3DI34JoSS8LAXWZPhhH
+ k=
+X-Received: by 2002:a17:906:4fcd:b0:9bf:30e8:5bfb with SMTP id
+ i13-20020a1709064fcd00b009bf30e85bfbmr1624019ejw.48.1697712416539; 
+ Thu, 19 Oct 2023 03:46:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7h4jYNMM6NtDuhC4D0IVMyKX4+4rJMbV5p2SlkD9I6WdPfXEo4pDpoku8ySkG4R5QOmAPZQ==
+X-Received: by 2002:a17:906:4fcd:b0:9bf:30e8:5bfb with SMTP id
+ i13-20020a1709064fcd00b009bf30e85bfbmr1624000ejw.48.1697712416055; 
+ Thu, 19 Oct 2023 03:46:56 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- lh22-20020a170906f8d600b009b94c545678sm3270289ejb.153.2023.10.19.03.46.52
+ 25-20020a170906225900b0098f99048053sm3371537ejr.148.2023.10.19.03.46.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 03:46:53 -0700 (PDT)
+ Thu, 19 Oct 2023 03:46:55 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 02/19] target/i386: validate VEX.W for AVX instructions
-Date: Thu, 19 Oct 2023 12:46:31 +0200
-Message-ID: <20231019104648.389942-3-pbonzini@redhat.com>
+Subject: [PATCH v2 03/19] target/i386: implement SHA instructions
+Date: Thu, 19 Oct 2023 12:46:32 +0200
+Message-ID: <20231019104648.389942-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231019104648.389942-1-pbonzini@redhat.com>
 References: <20231019104648.389942-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,278 +100,314 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instructions in VEX exception class 6 generally look at the value of
-VEX.W.  Note that the manual places some instructions incorrectly in
-class 4, for example VPERMQ which has no non-VEX encoding and no legacy
-SSE analogue.  AMD does a mess of its own, as documented in the comment
-that this patch adds.
+The implementation was validated with OpenSSL and with the test vectors in
+https://github.com/rust-lang/stdarch/blob/master/crates/core_arch/src/x86/sha.rs.
 
-Most of them are checked for VEX.W=0, and are listed in the manual
-(though with an omission) in table 2-16; VPERMQ and VPERMPD check for
-VEX.W=1, which is only listed in the instruction description.  Others,
-such as VPSRLV, VPSLLV and the FMA3 instructions, use VEX.W to switch
-between a 32-bit and 64-bit operation.
-
-Fix more of the class 4/class 6 mismatches, and implement the check for
-VEX.W in TCG.
+The instructions provide a ~25% improvement on hashing a 64 MiB file:
+runtime goes down from 1.8 seconds to 1.4 seconds; instruction count on
+the host goes down from 5.8 billion to 4.8 billion with slightly better
+IPC too.  Good job Intel. ;)
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.c.inc | 133 +++++++++++++++++++++----------
- target/i386/tcg/decode-new.h     |   6 ++
- 2 files changed, 99 insertions(+), 40 deletions(-)
+ target/i386/cpu.c                    |   2 +-
+ target/i386/ops_sse.h                | 128 +++++++++++++++++++++++++++
+ target/i386/tcg/decode-new.c.inc     |  11 +++
+ target/i386/tcg/decode-new.h         |   1 +
+ target/i386/tcg/emit.c.inc           |  54 +++++++++++
+ target/i386/tcg/ops_sse_header.h.inc |  14 +++
+ 6 files changed, 209 insertions(+), 1 deletion(-)
 
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index bdca901dfaa..070c02000fe 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -714,7 +714,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+           CPUID_7_0_EBX_PCOMMIT | CPUID_7_0_EBX_CLFLUSHOPT |            \
+           CPUID_7_0_EBX_CLWB | CPUID_7_0_EBX_MPX | CPUID_7_0_EBX_FSGSBASE | \
+           CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_RDSEED | \
+-          CPUID_7_0_EBX_KERNEL_FEATURES)
++          CPUID_7_0_EBX_SHA_NI | CPUID_7_0_EBX_KERNEL_FEATURES)
+           /* missing:
+           CPUID_7_0_EBX_HLE
+           CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM */
+diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
+index 33908c0691f..6a465a35fdb 100644
+--- a/target/i386/ops_sse.h
++++ b/target/i386/ops_sse.h
+@@ -2527,6 +2527,134 @@ SSE_HELPER_FMAP(helper_fma4ps,  ZMM_S, 2 << SHIFT, float32_muladd)
+ SSE_HELPER_FMAP(helper_fma4pd,  ZMM_D, 1 << SHIFT, float64_muladd)
+ #endif
+ 
++#if SHIFT == 1
++#define SSE_HELPER_SHA1RNDS4(name, F, K) \
++    void name(Reg *d, Reg *a, Reg *b)                                       \
++    {                                                                       \
++        uint32_t A, B, C, D, E, t, i;                                       \
++                                                                            \
++        A = a->L(3);                                                        \
++        B = a->L(2);                                                        \
++        C = a->L(1);                                                        \
++        D = a->L(0);                                                        \
++        E = 0;                                                              \
++                                                                            \
++        for (i = 0; i <= 3; i++) {                                          \
++            t = F(B, C, D) + rol32(A, 5) + b->L(3 - i) + E + K;             \
++            E = D;                                                          \
++            D = C;                                                          \
++            C = rol32(B, 30);                                               \
++            B = A;                                                          \
++            A = t;                                                          \
++        }                                                                   \
++                                                                            \
++        d->L(3) = A;                                                        \
++        d->L(2) = B;                                                        \
++        d->L(1) = C;                                                        \
++        d->L(0) = D;                                                        \
++    }
++
++#define SHA1_F0(b, c, d) (((b) & (c)) ^ (~(b) & (d)))
++#define SHA1_F1(b, c, d) ((b) ^ (c) ^ (d))
++#define SHA1_F2(b, c, d) (((b) & (c)) ^ ((b) & (d)) ^ ((c) & (d)))
++
++SSE_HELPER_SHA1RNDS4(helper_sha1rnds4_f0, SHA1_F0, 0x5A827999)
++SSE_HELPER_SHA1RNDS4(helper_sha1rnds4_f1, SHA1_F1, 0x6ED9EBA1)
++SSE_HELPER_SHA1RNDS4(helper_sha1rnds4_f2, SHA1_F2, 0x8F1BBCDC)
++SSE_HELPER_SHA1RNDS4(helper_sha1rnds4_f3, SHA1_F1, 0xCA62C1D6)
++
++void helper_sha1nexte(Reg *d, Reg *a, Reg *b)
++{
++    d->L(3) = b->L(3) + rol32(a->L(3), 30);
++    d->L(2) = b->L(2);
++    d->L(1) = b->L(1);
++    d->L(0) = b->L(0);
++}
++
++void helper_sha1msg1(Reg *d, Reg *a, Reg *b)
++{
++    /* These could be overwritten by the first two assignments, save them.  */
++    uint32_t b3 = b->L(3);
++    uint32_t b2 = b->L(2);
++
++    d->L(3) = a->L(3) ^ a->L(1);
++    d->L(2) = a->L(2) ^ a->L(0);
++    d->L(1) = a->L(1) ^ b3;
++    d->L(0) = a->L(0) ^ b2;
++}
++
++void helper_sha1msg2(Reg *d, Reg *a, Reg *b)
++{
++    d->L(3) = rol32(a->L(3) ^ b->L(2), 1);
++    d->L(2) = rol32(a->L(2) ^ b->L(1), 1);
++    d->L(1) = rol32(a->L(1) ^ b->L(0), 1);
++    d->L(0) = rol32(a->L(0) ^ d->L(3), 1);
++}
++
++#define SHA256_CH(e, f, g)  (((e) & (f)) ^ (~(e) & (g)))
++#define SHA256_MAJ(a, b, c) (((a) & (b)) ^ ((a) & (c)) ^ ((b) & (c)))
++
++#define SHA256_RNDS0(w) (ror32((w), 2) ^ ror32((w), 13) ^ ror32((w), 22))
++#define SHA256_RNDS1(w) (ror32((w), 6) ^ ror32((w), 11) ^ ror32((w), 25))
++#define SHA256_MSGS0(w) (ror32((w), 7) ^ ror32((w), 18) ^ ((w) >> 3))
++#define SHA256_MSGS1(w) (ror32((w), 17) ^ ror32((w), 19) ^ ((w) >> 10))
++
++void helper_sha256rnds2(Reg *d, Reg *a, Reg *b, uint32_t wk0, uint32_t wk1)
++{
++    uint32_t t, AA, EE;
++
++    uint32_t A = b->L(3);
++    uint32_t B = b->L(2);
++    uint32_t C = a->L(3);
++    uint32_t D = a->L(2);
++    uint32_t E = b->L(1);
++    uint32_t F = b->L(0);
++    uint32_t G = a->L(1);
++    uint32_t H = a->L(0);
++
++    /* Even round */
++    t = SHA256_CH(E, F, G) + SHA256_RNDS1(E) + wk0 + H;
++    AA = t + SHA256_MAJ(A, B, C) + SHA256_RNDS0(A);
++    EE = t + D;
++
++    /* These will be B and F at the end of the odd round */
++    d->L(2) = AA;
++    d->L(0) = EE;
++
++    D = C, C = B, B = A, A = AA;
++    H = G, G = F, F = E, E = EE;
++
++    /* Odd round */
++    t = SHA256_CH(E, F, G) + SHA256_RNDS1(E) + wk1 + H;
++    AA = t + SHA256_MAJ(A, B, C) + SHA256_RNDS0(A);
++    EE = t + D;
++
++    d->L(3) = AA;
++    d->L(1) = EE;
++}
++
++void helper_sha256msg1(Reg *d, Reg *a, Reg *b)
++{
++    /* b->L(0) could be overwritten by the first assignment, save it.  */
++    uint32_t b0 = b->L(0);
++
++    d->L(0) = a->L(0) + SHA256_MSGS0(a->L(1));
++    d->L(1) = a->L(1) + SHA256_MSGS0(a->L(2));
++    d->L(2) = a->L(2) + SHA256_MSGS0(a->L(3));
++    d->L(3) = a->L(3) + SHA256_MSGS0(b0);
++}
++
++void helper_sha256msg2(Reg *d, Reg *a, Reg *b)
++{
++    /* Earlier assignments cannot overwrite any of the two operands.  */
++    d->L(0) = a->L(0) + SHA256_MSGS1(b->L(2));
++    d->L(1) = a->L(1) + SHA256_MSGS1(b->L(3));
++    /* Yes, this reuses the previously computed values.  */
++    d->L(2) = a->L(2) + SHA256_MSGS1(d->L(0));
++    d->L(3) = a->L(3) + SHA256_MSGS1(d->L(1));
++}
++#endif
++
+ #undef SSE_HELPER_S
+ 
+ #undef LANE_WIDTH
 diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 790339eaf25..850271e0898 100644
+index 850271e0898..eb2400095f8 100644
 --- a/target/i386/tcg/decode-new.c.inc
 +++ b/target/i386/tcg/decode-new.c.inc
-@@ -43,6 +43,47 @@
-  * There are a couple cases in which instructions (e.g. MOVD) write the
-  * whole XMM or MM register but are established incorrectly in the manual
-  * as "d" or "q".  These have to be fixed for the decoder to work correctly.
-+ *
-+ * Speaking about imprecisions in the manual, the decoder treats all
-+ * exception-class 4 instructions as having an optional VEX prefix, and
-+ * all exception-class 6 instructions as having a mandatory VEX prefix.
-+ * This is true except for a dozen instructions; these are in exception
-+ * class 4 but do not ignore the VEX.W bit (which does not even exist
-+ * without a VEX prefix).  These instructions are mostly listed in Intel's
-+ * table 2-16, but with a few exceptions.
-+ *
-+ * The AMD manual has more precise subclasses for exceptions, and unlike Intel
-+ * they list the VEX.W requirements in the exception classes as well (except
-+ * when they don't).  AMD describes class 6 as "AVX Mixed Memory Argument"
-+ * without defining what a mixed memory argument is, but still use 4 as the
-+ * primary exception class... except when they don't.
-+ *
-+ * The summary is:
-+ *                       Intel     AMD         VEX.W           note
-+ * -------------------------------------------------------------------
-+ * vpblendd              4         4J          0
-+ * vpblendvb             4         4E-X        0               (*)
-+ * vpbroadcastq          6         6D          0               (+)
-+ * vpermd/vpermps        4         4H          0               (§)
-+ * vpermq/vpermpd        4         4H-1        1               (§)
-+ * vpermilpd/vpermilps   4         6E          0               (^)
-+ * vpmaskmovd            6         4K          significant     (^)
-+ * vpsllv                4         4K          significant
-+ * vpsrav                4         4J          0
-+ * vpsrlv                4         4K          significant
-+ * vtestps/vtestpd       4         4G          0
-+ *
-+ *    (*)  AMD lists VPBLENDVB as related to SSE4.1 PBLENDVB, which may
-+ *         explain why it is considered exception class 4.  However,
-+ *         Intel says that VEX-only instructions should be in class 6...
-+ *
-+ *    (+)  Not found in Intel's table 2-16
-+ *
-+ *    (§)  4H and 4H-1 do not mention VEX.W requirements, which are
-+ *         however present in the description of the instruction
-+ *
-+ *    (^)  these are the two cases in which Intel and AMD disagree on the
-+ *         primary exception class
-  */
+@@ -504,6 +504,13 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
+     [0xbe] = X86_OP_ENTRY3(VFNMSUB231Px, V,x,  H,x, W,x,  vex6 cpuid(FMA) p_66),
+     [0xbf] = X86_OP_ENTRY3(VFNMSUB231Sx, V,x,  H,x, W,x,  vex6 cpuid(FMA) p_66),
  
- #define X86_OP_NONE { 0 },
-@@ -338,11 +379,11 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0x07] = X86_OP_ENTRY3(PHSUBSW,   V,x,  H,x,   W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
++    [0xc8] = X86_OP_ENTRY2(SHA1NEXTE,   V,dq, W,dq, cpuid(SHA_NI)),
++    [0xc9] = X86_OP_ENTRY2(SHA1MSG1,    V,dq, W,dq, cpuid(SHA_NI)),
++    [0xca] = X86_OP_ENTRY2(SHA1MSG2,    V,dq, W,dq, cpuid(SHA_NI)),
++    [0xcb] = X86_OP_ENTRY2(SHA256RNDS2, V,dq, W,dq, cpuid(SHA_NI)),
++    [0xcc] = X86_OP_ENTRY2(SHA256MSG1,  V,dq, W,dq, cpuid(SHA_NI)),
++    [0xcd] = X86_OP_ENTRY2(SHA256MSG2,  V,dq, W,dq, cpuid(SHA_NI)),
++
+     [0xdb] = X86_OP_ENTRY3(VAESIMC,     V,dq, None,None, W,dq, vex4 cpuid(AES) p_66),
+     [0xdc] = X86_OP_ENTRY3(VAESENC,     V,x,  H,x,       W,x,  vex4 cpuid(AES) p_66),
+     [0xdd] = X86_OP_ENTRY3(VAESENCLAST, V,x,  H,x,       W,x,  vex4 cpuid(AES) p_66),
+@@ -653,6 +660,8 @@ static const X86OpEntry opcodes_0F3A[256] = {
+     [0x4b] = X86_OP_ENTRY4(VBLENDVPD, V,x,  H,x,  W,x,   vex6 chk(W0) cpuid(AVX) p_66),
+     [0x4c] = X86_OP_ENTRY4(VPBLENDVB, V,x,  H,x,  W,x,   vex6 chk(W0) cpuid(AVX) p_66 avx2_256),
  
-     [0x10] = X86_OP_ENTRY2(PBLENDVB,  V,x,         W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
--    [0x13] = X86_OP_ENTRY2(VCVTPH2PS, V,x,         W,xh, vex11 cpuid(F16C) p_66),
-+    [0x13] = X86_OP_ENTRY2(VCVTPH2PS, V,x,         W,xh, vex11 chk(W0) cpuid(F16C) p_66),
-     [0x14] = X86_OP_ENTRY2(BLENDVPS,  V,x,         W,x,  vex4 cpuid(SSE41) p_66),
-     [0x15] = X86_OP_ENTRY2(BLENDVPD,  V,x,         W,x,  vex4 cpuid(SSE41) p_66),
-     /* Listed incorrectly as type 4 */
--    [0x16] = X86_OP_ENTRY3(VPERMD,    V,qq, H,qq,      W,qq,  vex6 cpuid(AVX2) p_66),
-+    [0x16] = X86_OP_ENTRY3(VPERMD,    V,qq, H,qq,      W,qq,  vex6 chk(W0) cpuid(AVX2) p_66), /* vpermps */
-     [0x17] = X86_OP_ENTRY3(VPTEST,    None,None, V,x,  W,x,   vex4 cpuid(SSE41) p_66),
- 
-     /*
-@@ -363,14 +404,14 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0x33] = X86_OP_ENTRY3(VPMOVZXWD, V,x,  None,None, W,q,   vex5 cpuid(SSE41) avx_movx avx2_256 p_66),
-     [0x34] = X86_OP_ENTRY3(VPMOVZXWQ, V,x,  None,None, W,d,   vex5 cpuid(SSE41) avx_movx avx2_256 p_66),
-     [0x35] = X86_OP_ENTRY3(VPMOVZXDQ, V,x,  None,None, W,q,   vex5 cpuid(SSE41) avx_movx avx2_256 p_66),
--    [0x36] = X86_OP_ENTRY3(VPERMD,    V,qq, H,qq,      W,qq,  vex6 cpuid(AVX2) p_66),
-+    [0x36] = X86_OP_ENTRY3(VPERMD,    V,qq, H,qq,      W,qq,  vex6 chk(W0) cpuid(AVX2) p_66),
-     [0x37] = X86_OP_ENTRY3(PCMPGTQ,   V,x,  H,x,       W,x,   vex4 cpuid(SSE42) avx2_256 p_66),
- 
-     [0x40] = X86_OP_ENTRY3(PMULLD,      V,x,  H,x,       W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
-     [0x41] = X86_OP_ENTRY3(VPHMINPOSUW, V,dq, None,None, W,dq, vex4 cpuid(SSE41) p_66),
-     /* Listed incorrectly as type 4 */
-     [0x45] = X86_OP_ENTRY3(VPSRLV,      V,x,  H,x,       W,x,  vex6 cpuid(AVX2) p_66),
--    [0x46] = X86_OP_ENTRY3(VPSRAV,      V,x,  H,x,       W,x,  vex6 cpuid(AVX2) p_66),
-+    [0x46] = X86_OP_ENTRY3(VPSRAV,      V,x,  H,x,       W,x,  vex6 chk(W0) cpuid(AVX2) p_66),
-     [0x47] = X86_OP_ENTRY3(VPSLLV,      V,x,  H,x,       W,x,  vex6 cpuid(AVX2) p_66),
- 
-     [0x90] = X86_OP_ENTRY3(VPGATHERD, V,x,  H,x,  M,d,  vex12 cpuid(AVX2) p_66), /* vpgatherdd/q */
-@@ -392,14 +433,15 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0x09] = X86_OP_ENTRY3(PSIGNW,    V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
-     [0x0a] = X86_OP_ENTRY3(PSIGND,    V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
-     [0x0b] = X86_OP_ENTRY3(PMULHRSW,  V,x,        H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
--    [0x0c] = X86_OP_ENTRY3(VPERMILPS, V,x,        H,x,  W,x,  vex4 cpuid(AVX) p_00_66),
--    [0x0d] = X86_OP_ENTRY3(VPERMILPD, V,x,        H,x,  W,x,  vex4 cpuid(AVX) p_66),
--    [0x0e] = X86_OP_ENTRY3(VTESTPS,   None,None,  V,x,  W,x,  vex4 cpuid(AVX) p_66),
--    [0x0f] = X86_OP_ENTRY3(VTESTPD,   None,None,  V,x,  W,x,  vex4 cpuid(AVX) p_66),
-+    /* Listed incorrectly as type 4 */
-+    [0x0c] = X86_OP_ENTRY3(VPERMILPS, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_00_66),
-+    [0x0d] = X86_OP_ENTRY3(VPERMILPD, V,x,        H,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x0e] = X86_OP_ENTRY3(VTESTPS,   None,None,  V,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x0f] = X86_OP_ENTRY3(VTESTPD,   None,None,  V,x,  W,x,  vex6 chk(W0) cpuid(AVX) p_66),
- 
--    [0x18] = X86_OP_ENTRY3(VPBROADCASTD,   V,x,  None,None, W,d,  vex6 cpuid(AVX) p_66), /* vbroadcastss */
--    [0x19] = X86_OP_ENTRY3(VPBROADCASTQ,   V,qq, None,None, W,q,  vex6 cpuid(AVX) p_66), /* vbroadcastsd */
--    [0x1a] = X86_OP_ENTRY3(VBROADCASTx128, V,qq, None,None, WM,dq,vex6 cpuid(AVX) p_66),
-+    [0x18] = X86_OP_ENTRY3(VPBROADCASTD,   V,x,  None,None, W,d,  vex6 chk(W0) cpuid(AVX) p_66), /* vbroadcastss */
-+    [0x19] = X86_OP_ENTRY3(VPBROADCASTQ,   V,qq, None,None, W,q,  vex6 chk(W0) cpuid(AVX) p_66), /* vbroadcastsd */
-+    [0x1a] = X86_OP_ENTRY3(VBROADCASTx128, V,qq, None,None, WM,dq,vex6 chk(W0) cpuid(AVX) p_66),
-     [0x1c] = X86_OP_ENTRY3(PABSB,          V,x,  None,None, W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
-     [0x1d] = X86_OP_ENTRY3(PABSW,          V,x,  None,None, W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
-     [0x1e] = X86_OP_ENTRY3(PABSD,          V,x,  None,None, W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
-@@ -408,11 +450,11 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0x29] = X86_OP_ENTRY3(PCMPEQQ,       V,x, H,x,       W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
-     [0x2a] = X86_OP_ENTRY3(MOVDQ,         V,x, None,None, WM,x, vex1 cpuid(SSE41) avx2_256 p_66), /* movntdqa */
-     [0x2b] = X86_OP_ENTRY3(VPACKUSDW,     V,x, H,x,       W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
--    [0x2c] = X86_OP_ENTRY3(VMASKMOVPS,    V,x, H,x,       WM,x, vex6 cpuid(AVX) p_66),
--    [0x2d] = X86_OP_ENTRY3(VMASKMOVPD,    V,x, H,x,       WM,x, vex6 cpuid(AVX) p_66),
-+    [0x2c] = X86_OP_ENTRY3(VMASKMOVPS,    V,x, H,x,       WM,x, vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x2d] = X86_OP_ENTRY3(VMASKMOVPD,    V,x, H,x,       WM,x, vex6 chk(W0) cpuid(AVX) p_66),
-     /* Incorrectly listed as Mx,Hx,Vx in the manual */
--    [0x2e] = X86_OP_ENTRY3(VMASKMOVPS_st, M,x, V,x,       H,x,  vex6 cpuid(AVX) p_66),
--    [0x2f] = X86_OP_ENTRY3(VMASKMOVPD_st, M,x, V,x,       H,x,  vex6 cpuid(AVX) p_66),
-+    [0x2e] = X86_OP_ENTRY3(VMASKMOVPS_st, M,x, V,x,       H,x,  vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x2f] = X86_OP_ENTRY3(VMASKMOVPD_st, M,x, V,x,       H,x,  vex6 chk(W0) cpuid(AVX) p_66),
- 
-     [0x38] = X86_OP_ENTRY3(PMINSB,        V,x,  H,x, W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
-     [0x39] = X86_OP_ENTRY3(PMINSD,        V,x,  H,x, W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
-@@ -423,12 +465,13 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0x3e] = X86_OP_ENTRY3(PMAXUW,        V,x,  H,x, W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
-     [0x3f] = X86_OP_ENTRY3(PMAXUD,        V,x,  H,x, W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
- 
--    [0x58] = X86_OP_ENTRY3(VPBROADCASTD,   V,x,  None,None, W,d,  vex6 cpuid(AVX2) p_66),
--    [0x59] = X86_OP_ENTRY3(VPBROADCASTQ,   V,x,  None,None, W,q,  vex6 cpuid(AVX2) p_66),
--    [0x5a] = X86_OP_ENTRY3(VBROADCASTx128, V,qq, None,None, WM,dq,vex6 cpuid(AVX2) p_66),
-+    /* VPBROADCASTQ not listed as W0 in table 2-16 */
-+    [0x58] = X86_OP_ENTRY3(VPBROADCASTD,   V,x,  None,None, W,d,  vex6 chk(W0) cpuid(AVX2) p_66),
-+    [0x59] = X86_OP_ENTRY3(VPBROADCASTQ,   V,x,  None,None, W,q,  vex6 chk(W0) cpuid(AVX2) p_66),
-+    [0x5a] = X86_OP_ENTRY3(VBROADCASTx128, V,qq, None,None, WM,dq,vex6 chk(W0) cpuid(AVX2) p_66),
- 
--    [0x78] = X86_OP_ENTRY3(VPBROADCASTB,   V,x,  None,None, W,b,  vex6 cpuid(AVX2) p_66),
--    [0x79] = X86_OP_ENTRY3(VPBROADCASTW,   V,x,  None,None, W,w,  vex6 cpuid(AVX2) p_66),
-+    [0x78] = X86_OP_ENTRY3(VPBROADCASTB,   V,x,  None,None, W,b,  vex6 chk(W0) cpuid(AVX2) p_66),
-+    [0x79] = X86_OP_ENTRY3(VPBROADCASTW,   V,x,  None,None, W,w,  vex6 chk(W0) cpuid(AVX2) p_66),
- 
-     [0x8c] = X86_OP_ENTRY3(VPMASKMOV,    V,x,  H,x, WM,x, vex6 cpuid(AVX2) p_66),
-     [0x8e] = X86_OP_ENTRY3(VPMASKMOV_st, M,x,  V,x, H,x,  vex6 cpuid(AVX2) p_66),
-@@ -555,18 +598,18 @@ static const X86OpEntry opcodes_0F3A[256] = {
-      * Also the "qq" instructions are sometimes omitted by Table 2-17, but are VEX256
-      * only.
-      */
--    [0x00] = X86_OP_ENTRY3(VPERMQ,      V,qq, W,qq, I,b,  vex6 cpuid(AVX2) p_66),
--    [0x01] = X86_OP_ENTRY3(VPERMQ,      V,qq, W,qq, I,b,  vex6 cpuid(AVX2) p_66), /* VPERMPD */
--    [0x02] = X86_OP_ENTRY4(VBLENDPS,    V,x,  H,x,  W,x,  vex6 cpuid(AVX2) p_66), /* VPBLENDD */
--    [0x04] = X86_OP_ENTRY3(VPERMILPS_i, V,x,  W,x,  I,b,  vex6 cpuid(AVX) p_66),
--    [0x05] = X86_OP_ENTRY3(VPERMILPD_i, V,x,  W,x,  I,b,  vex6 cpuid(AVX) p_66),
--    [0x06] = X86_OP_ENTRY4(VPERM2x128,  V,qq, H,qq, W,qq, vex6 cpuid(AVX) p_66),
-+    [0x00] = X86_OP_ENTRY3(VPERMQ,      V,qq, W,qq, I,b,  vex6 chk(W1) cpuid(AVX2) p_66),
-+    [0x01] = X86_OP_ENTRY3(VPERMQ,      V,qq, W,qq, I,b,  vex6 chk(W1) cpuid(AVX2) p_66), /* VPERMPD */
-+    [0x02] = X86_OP_ENTRY4(VBLENDPS,    V,x,  H,x,  W,x,  vex6 chk(W0) cpuid(AVX2) p_66), /* VPBLENDD */
-+    [0x04] = X86_OP_ENTRY3(VPERMILPS_i, V,x,  W,x,  I,b,  vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x05] = X86_OP_ENTRY3(VPERMILPD_i, V,x,  W,x,  I,b,  vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x06] = X86_OP_ENTRY4(VPERM2x128,  V,qq, H,qq, W,qq, vex6 chk(W0) cpuid(AVX) p_66),
- 
-     [0x14] = X86_OP_ENTRY3(PEXTRB,     E,b,  V,dq, I,b,  vex5 cpuid(SSE41) zext0 p_66),
-     [0x15] = X86_OP_ENTRY3(PEXTRW,     E,w,  V,dq, I,b,  vex5 cpuid(SSE41) zext0 p_66),
-     [0x16] = X86_OP_ENTRY3(PEXTR,      E,y,  V,dq, I,b,  vex5 cpuid(SSE41) p_66),
-     [0x17] = X86_OP_ENTRY3(VEXTRACTPS, E,d,  V,dq, I,b,  vex5 cpuid(SSE41) p_66),
--    [0x1d] = X86_OP_ENTRY3(VCVTPS2PH,  W,xh, V,x,  I,b,  vex11 cpuid(F16C) p_66),
-+    [0x1d] = X86_OP_ENTRY3(VCVTPS2PH,  W,xh, V,x,  I,b,  vex11 chk(W0) cpuid(F16C) p_66),
- 
-     [0x20] = X86_OP_ENTRY4(PINSRB,     V,dq, H,dq, E,b,  vex5 cpuid(SSE41) zext2 p_66),
-     [0x21] = X86_OP_GROUP0(VINSERTPS),
-@@ -576,7 +619,7 @@ static const X86OpEntry opcodes_0F3A[256] = {
-     [0x41] = X86_OP_ENTRY4(VDDPD,      V,dq, H,dq, W,dq, vex2 cpuid(SSE41) p_66),
-     [0x42] = X86_OP_ENTRY4(VMPSADBW,   V,x,  H,x,  W,x,  vex2 cpuid(SSE41) avx2_256 p_66),
-     [0x44] = X86_OP_ENTRY4(PCLMULQDQ,  V,dq, H,dq, W,dq, vex4 cpuid(PCLMULQDQ) p_66),
--    [0x46] = X86_OP_ENTRY4(VPERM2x128, V,qq, H,qq, W,qq, vex6 cpuid(AVX2) p_66),
-+    [0x46] = X86_OP_ENTRY4(VPERM2x128, V,qq, H,qq, W,qq, vex6 chk(W0) cpuid(AVX2) p_66),
- 
-     [0x60] = X86_OP_ENTRY4(PCMPESTRM,  None,None, V,dq, W,dq, vex4_unal cpuid(SSE42) p_66),
-     [0x61] = X86_OP_ENTRY4(PCMPESTRI,  None,None, V,dq, W,dq, vex4_unal cpuid(SSE42) p_66),
-@@ -599,16 +642,16 @@ static const X86OpEntry opcodes_0F3A[256] = {
-     [0x0e] = X86_OP_ENTRY4(VPBLENDW,   V,x,  H,x,  W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
-     [0x0f] = X86_OP_ENTRY4(PALIGNR,    V,x,  H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
- 
--    [0x18] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,qq, vex6 cpuid(AVX) p_66),
--    [0x19] = X86_OP_ENTRY3(VEXTRACTx128, W,dq, V,qq, I,b,  vex6 cpuid(AVX) p_66),
-+    [0x18] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,qq, vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x19] = X86_OP_ENTRY3(VEXTRACTx128, W,dq, V,qq, I,b,  vex6 chk(W0) cpuid(AVX) p_66),
- 
--    [0x38] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,qq, vex6 cpuid(AVX2) p_66),
--    [0x39] = X86_OP_ENTRY3(VEXTRACTx128, W,dq, V,qq, I,b,  vex6 cpuid(AVX2) p_66),
-+    [0x38] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,qq, vex6 chk(W0) cpuid(AVX2) p_66),
-+    [0x39] = X86_OP_ENTRY3(VEXTRACTx128, W,dq, V,qq, I,b,  vex6 chk(W0) cpuid(AVX2) p_66),
- 
-     /* Listed incorrectly as type 4 */
--    [0x4a] = X86_OP_ENTRY4(VBLENDVPS, V,x,  H,x,  W,x,   vex6 cpuid(AVX) p_66),
--    [0x4b] = X86_OP_ENTRY4(VBLENDVPD, V,x,  H,x,  W,x,   vex6 cpuid(AVX) p_66),
--    [0x4c] = X86_OP_ENTRY4(VPBLENDVB, V,x,  H,x,  W,x,   vex6 cpuid(AVX) p_66 avx2_256),
-+    [0x4a] = X86_OP_ENTRY4(VBLENDVPS, V,x,  H,x,  W,x,   vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x4b] = X86_OP_ENTRY4(VBLENDVPD, V,x,  H,x,  W,x,   vex6 chk(W0) cpuid(AVX) p_66),
-+    [0x4c] = X86_OP_ENTRY4(VPBLENDVB, V,x,  H,x,  W,x,   vex6 chk(W0) cpuid(AVX) p_66 avx2_256),
- 
++    [0xcc] = X86_OP_ENTRY3(SHA1RNDS4,  V,dq, W,dq, I,b,  cpuid(SHA_NI)),
++
      [0xdf] = X86_OP_ENTRY3(VAESKEYGEN, V,dq, W,dq, I,b,  vex4 cpuid(AES) p_66),
  
-@@ -1494,8 +1537,6 @@ static bool validate_vex(DisasContext *s, X86DecodedInsn *decode)
-         }
+     [0xF0] = X86_OP_ENTRY3(RORX, G,y, E,y, I,b, vex13 cpuid(BMI2) p_f2),
+@@ -1500,6 +1509,8 @@ static bool has_cpuid_feature(DisasContext *s, X86CPUIDFeature cpuid)
+         return (s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_BMI2);
+     case X86_FEAT_AVX2:
+         return (s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_AVX2);
++    case X86_FEAT_SHA_NI:
++        return (s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_SHA_NI);
      }
- 
--    /* TODO: instructions that require VEX.W=0 (Table 2-16) */
--
-     switch (e->vex_class) {
-     case 0:
-         if (s->prefix & PREFIX_VEX) {
-@@ -1581,9 +1622,21 @@ static bool validate_vex(DisasContext *s, X86DecodedInsn *decode)
-         goto illegal;
-     }
- 
--    if (e->check & X86_CHECK_VEX128) {
--        if (s->vex_l) {
--            goto illegal;
-+    if (e->check) {
-+        if (e->check & X86_CHECK_VEX128) {
-+            if (s->vex_l) {
-+                goto illegal;
-+            }
-+        }
-+        if (e->check & X86_CHECK_W0) {
-+            if (s->vex_w) {
-+                goto illegal;
-+            }
-+        }
-+        if (e->check & X86_CHECK_W1) {
-+            if (!s->vex_w) {
-+                goto illegal;
-+            }
-         }
-     }
-     return true;
+     g_assert_not_reached();
+ }
 diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index 631d39220bb..ae987dfe0ba 100644
+index ae987dfe0ba..ab21fa6db97 100644
 --- a/target/i386/tcg/decode-new.h
 +++ b/target/i386/tcg/decode-new.h
-@@ -144,6 +144,12 @@ typedef enum X86InsnCheck {
+@@ -108,6 +108,7 @@ typedef enum X86CPUIDFeature {
+     X86_FEAT_FMA,
+     X86_FEAT_MOVBE,
+     X86_FEAT_PCLMULQDQ,
++    X86_FEAT_SHA_NI,
+     X86_FEAT_SSE,
+     X86_FEAT_SSE2,
+     X86_FEAT_SSE3,
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 7c36cf8a6df..82da5488d47 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -1796,6 +1796,60 @@ static void gen_SARX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     tcg_gen_sar_tl(s->T0, s->T0, s->T1);
+ }
  
-     /* Fault if VEX.L=1 */
-     X86_CHECK_VEX128 = 32,
++static void gen_SHA1NEXTE(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_sha1nexte(OP_PTR0, OP_PTR1, OP_PTR2);
++}
 +
-+    /* Fault if VEX.W=1 */
-+    X86_CHECK_W0 = 64,
++static void gen_SHA1MSG1(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_sha1msg1(OP_PTR0, OP_PTR1, OP_PTR2);
++}
 +
-+    /* Fault if VEX.W=0 */
-+    X86_CHECK_W1 = 128,
- } X86InsnCheck;
++static void gen_SHA1MSG2(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_sha1msg2(OP_PTR0, OP_PTR1, OP_PTR2);
++}
++
++static void gen_SHA1RNDS4(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    switch(decode->immediate & 3) {
++    case 0:
++        gen_helper_sha1rnds4_f0(OP_PTR0, OP_PTR0, OP_PTR1);
++        break;
++    case 1:
++        gen_helper_sha1rnds4_f1(OP_PTR0, OP_PTR0, OP_PTR1);
++        break;
++    case 2:
++        gen_helper_sha1rnds4_f2(OP_PTR0, OP_PTR0, OP_PTR1);
++        break;
++    case 3:
++        gen_helper_sha1rnds4_f3(OP_PTR0, OP_PTR0, OP_PTR1);
++        break;
++    }
++}
++
++static void gen_SHA256MSG1(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_sha256msg1(OP_PTR0, OP_PTR1, OP_PTR2);
++}
++
++static void gen_SHA256MSG2(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_sha256msg2(OP_PTR0, OP_PTR1, OP_PTR2);
++}
++
++static void gen_SHA256RNDS2(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    TCGv_i32 wk0 = tcg_temp_new_i32();
++    TCGv_i32 wk1 = tcg_temp_new_i32();
++
++    tcg_gen_ld_i32(wk0, tcg_env, ZMM_OFFSET(0) + offsetof(ZMMReg, ZMM_L(0)));
++    tcg_gen_ld_i32(wk1, tcg_env, ZMM_OFFSET(0) + offsetof(ZMMReg, ZMM_L(1)));
++
++    gen_helper_sha256rnds2(OP_PTR0, OP_PTR1, OP_PTR2, wk0, wk1);
++}
++
+ static void gen_SHLX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     MemOp ot = decode->op[0].ot;
+diff --git a/target/i386/tcg/ops_sse_header.h.inc b/target/i386/tcg/ops_sse_header.h.inc
+index 8a7b2f4e2f6..d92c6faf6d6 100644
+--- a/target/i386/tcg/ops_sse_header.h.inc
++++ b/target/i386/tcg/ops_sse_header.h.inc
+@@ -399,6 +399,20 @@ DEF_HELPER_3(vpermq_ymm, void, Reg, Reg, i32)
+ #endif
+ #endif
  
- typedef enum X86InsnSpecial {
++/* SHA helpers */
++#if SHIFT == 1
++DEF_HELPER_3(sha1rnds4_f0, void, Reg, Reg, Reg)
++DEF_HELPER_3(sha1rnds4_f1, void, Reg, Reg, Reg)
++DEF_HELPER_3(sha1rnds4_f2, void, Reg, Reg, Reg)
++DEF_HELPER_3(sha1rnds4_f3, void, Reg, Reg, Reg)
++DEF_HELPER_3(sha1nexte, void, Reg, Reg, Reg)
++DEF_HELPER_3(sha1msg1, void, Reg, Reg, Reg)
++DEF_HELPER_3(sha1msg2, void, Reg, Reg, Reg)
++DEF_HELPER_5(sha256rnds2, void, Reg, Reg, Reg, i32, i32)
++DEF_HELPER_3(sha256msg1, void, Reg, Reg, Reg)
++DEF_HELPER_3(sha256msg2, void, Reg, Reg, Reg)
++#endif
++
+ #undef SHIFT
+ #undef Reg
+ #undef SUFFIX
 -- 
 2.41.0
 
