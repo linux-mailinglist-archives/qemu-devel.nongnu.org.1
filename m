@@ -2,53 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DAC7CFEFE
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:03:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16FDA7CFF00
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:05:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVUN-0002SB-4u; Thu, 19 Oct 2023 12:03:11 -0400
+	id 1qtVVp-0007gi-6d; Thu, 19 Oct 2023 12:04:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=PA0m=GB=kaod.org=clg@ozlabs.org>)
- id 1qtVUJ-0002OH-Vk; Thu, 19 Oct 2023 12:03:07 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVVn-0007dC-4a
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:04:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=PA0m=GB=kaod.org=clg@ozlabs.org>)
- id 1qtVUH-0002vh-RA; Thu, 19 Oct 2023 12:03:07 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SBCDN3nX1z4xc0;
- Fri, 20 Oct 2023 03:03:00 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SBCDL07Zlz4xbr;
- Fri, 20 Oct 2023 03:02:57 +1100 (AEDT)
-Message-ID: <60462d22-4f56-4096-9c90-4e86fc686995@kaod.org>
-Date: Thu, 19 Oct 2023 18:02:55 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVVl-0003Bs-Lt
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:04:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697731475;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=w89cLQNT8CFTOlsKFZKNdV5vAE9T44gnZpusnIdfVEQ=;
+ b=X6FmxwKNamQNTD30eB7t+uBzFFIk9DjwFnVlEfryyavSMcsp/g5KK7EsB6WCxfv13ZNo7+
+ G95fCNujKtZeC4/iWByra1l8dqGcP0yp/Jei9tbqrp0HEL7dWCSxza24vENBGGZAvcVJUO
+ kEa3p+SFdwTlBRM03JDUgtQm0lyMX3U=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-154-qJ75ynqYP1yIUtZGsfjnFg-1; Thu, 19 Oct 2023 12:04:33 -0400
+X-MC-Unique: qJ75ynqYP1yIUtZGsfjnFg-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4180bc4227bso15243841cf.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:04:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697731473; x=1698336273;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=w89cLQNT8CFTOlsKFZKNdV5vAE9T44gnZpusnIdfVEQ=;
+ b=OljeZzUGZ4zGILvBcG3zyVKW35J8uDnmezjDruxrMwfSjm/Pk1hQCEBoG8fdkSJwGZ
+ yUA956qACYNrdvT7EJRQoXP+WiXcIdhmsKAGjmtBSJAKVAroxSM3M8tpUaHFkhmFy5UI
+ jgZ3Ge8gg8eBUnnSkLcjZnIrYJWS0Z9lrnnqC/EqV8dhxAJc9h26rxBJxeWfGhjoRH8U
+ RevT779eomSn7Cwfdduasr6+SW/HOQ2tQY8MuDMYnmbOJb6NTFu/ofQEOVtyr2yHKsXR
+ srrdZZqqia4xxskvPNgTbJwHDkQXZvRdjG9C0By5vAY9+t/z+v6RVBg35fv4LZip6J72
+ XbtQ==
+X-Gm-Message-State: AOJu0YwxUFzQzFfCf6qHbhIRX8b4G/5qwcOzySN/lmk17EM62Gvh3US/
+ afxCHF7h8hqaVSDBeziCB3fSmxO0jubejHRtLOIxzSNqY3Nm5ITfNPC5nAlB99sq9jrzJFbzGqr
+ bzF1nDmaDGCIZxho=
+X-Received: by 2002:a05:622a:1790:b0:41c:c27e:f8f6 with SMTP id
+ s16-20020a05622a179000b0041cc27ef8f6mr2991545qtk.23.1697731472596; 
+ Thu, 19 Oct 2023 09:04:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFA0WJxiQyRYNRjTLTBGekjT5LKRggFgI0ViUU9BD3mziAVkmy+PrFnEimug34P4IdDHKqAaQ==
+X-Received: by 2002:a05:622a:1790:b0:41c:c27e:f8f6 with SMTP id
+ s16-20020a05622a179000b0041cc27ef8f6mr2991505qtk.23.1697731472185; 
+ Thu, 19 Oct 2023 09:04:32 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-141.web.vodafone.de.
+ [109.43.176.141]) by smtp.gmail.com with ESMTPSA id
+ y12-20020ac8128c000000b004196d75d79csm828688qti.46.2023.10.19.09.04.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 09:04:31 -0700 (PDT)
+Message-ID: <05b8d889-4dc1-49b5-9a2c-3e809aa8a931@redhat.com>
+Date: Thu, 19 Oct 2023 18:04:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Fix typo in openpic_kvm.c entry
+Subject: Re: [PATCH v2 2/9] hw/sd/pxa2xx: Do not open-code
+ sysbus_create_simple()
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
-References: <20231019155822.499027-1-thuth@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231019155822.499027-1-thuth@redhat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
+References: <20231019130925.18744-1-philmd@linaro.org>
+ <20231019130925.18744-3-philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231019130925.18744-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=PA0m=GB=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,36 +143,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/19/23 17:58, Thomas Huth wrote:
-> It's a .c file, not a header!
-> 
-> Fixes: ff8cdbbd7e ("MAINTAINERS: Add information for OpenPIC")
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
+On 19/10/2023 15.09, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/sd/pxa2xx_mmci.c | 7 +------
+>   1 file changed, 1 insertion(+), 6 deletions(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c12511c73b..a110a0c7a4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1418,7 +1418,7 @@ F: hw/pci-host/ppce500.c
->   F: include/hw/ppc/ppc_e500.h
->   F: include/hw/pci-host/ppce500.h
->   F: pc-bios/u-boot.e500
-> -F: hw/intc/openpic_kvm.h
-> +F: hw/intc/openpic_kvm.c
->   F: include/hw/ppc/openpic_kvm.h
->   F: docs/system/ppc/ppce500.rst
+> diff --git a/hw/sd/pxa2xx_mmci.c b/hw/sd/pxa2xx_mmci.c
+> index 9f7a880bac..4749e935d8 100644
+> --- a/hw/sd/pxa2xx_mmci.c
+> +++ b/hw/sd/pxa2xx_mmci.c
+> @@ -479,13 +479,8 @@ PXA2xxMMCIState *pxa2xx_mmci_init(MemoryRegion *sysmem,
+>                   qemu_irq irq, qemu_irq rx_dma, qemu_irq tx_dma)
+>   {
+>       DeviceState *dev;
+> -    SysBusDevice *sbd;
 >   
+> -    dev = qdev_new(TYPE_PXA2XX_MMCI);
+> -    sbd = SYS_BUS_DEVICE(dev);
+> -    sysbus_realize_and_unref(sbd, &error_fatal);
+> -    sysbus_mmio_map(sbd, 0, base);
+> -    sysbus_connect_irq(sbd, 0, irq);
+> +    dev = sysbus_create_simple(TYPE_PXA2XX_MMCI, base, irq);
+>       qdev_connect_gpio_out_named(dev, "rx-dma", 0, rx_dma);
+>       qdev_connect_gpio_out_named(dev, "tx-dma", 0, tx_dma);
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
