@@ -2,66 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F271A7CFCE3
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D404F7CFCEC
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 16:37:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtU89-0007Rt-SK; Thu, 19 Oct 2023 10:36:10 -0400
+	id 1qtU7L-0006hO-Rp; Thu, 19 Oct 2023 10:35:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qtU84-0007P5-MR
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:36:04 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtU7F-0006fY-Hu
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qtU82-0000Uy-6w
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:36:03 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qtU7C-0000EA-1Q
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 10:35:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697726161;
+ s=mimecast20190719; t=1697726105;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZYh//+UpSrN6kDA92jv+M1BuDh+/qH7Cfxyqscd0nfA=;
- b=D1DoiW4o8zY5kZdSJ15PSRjixHmuXr05H38zsGulvRT9cnxXQz1d7mzI3spYP2uJT3EO2j
- 95n41BXdS9dVTh9XqghXF/VlcQuzVulI7LpaIV+zl4mrICBZhiNoKicYhmj8D+YTgcQ3O+
- iDJhR13gj4XlmiRmwFXnBYqtb4cWUvw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-104-APuC0QntNnWAhJdPgizY2Q-1; Thu, 19 Oct 2023 10:35:45 -0400
-X-MC-Unique: APuC0QntNnWAhJdPgizY2Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 370A08EB36A;
- Thu, 19 Oct 2023 14:35:45 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.192.162])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 06523C15BB8;
- Thu, 19 Oct 2023 14:35:41 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Shannon <shannon.nelson@amd.com>, Parav Pandit <parav@mellanox.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, yin31149@gmail.com,
- Jason Wang <jasowang@redhat.com>, Yajun Wu <yajunw@nvidia.com>,
- Zhu Lingshan <lingshan.zhu@intel.com>, Lei Yang <leiyang@redhat.com>,
- Dragos Tatulea <dtatulea@nvidia.com>, Juan Quintela <quintela@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, si-wei.liu@oracle.com,
- Gautam Dawar <gdawar@xilinx.com>
-Subject: [RFC PATCH 18/18] virtio_net: register incremental migration handlers
-Date: Thu, 19 Oct 2023 16:34:55 +0200
-Message-Id: <20231019143455.2377694-19-eperezma@redhat.com>
-In-Reply-To: <20231019143455.2377694-1-eperezma@redhat.com>
-References: <20231019143455.2377694-1-eperezma@redhat.com>
+ bh=7EQ5lRMNvxuEPJB2lJA801QdMaEc/FnxMTJjrxKPung=;
+ b=Oq0vlEdZIp6bz8j4LgPNDzuF7D4lt35UWkPNSFjEmaWm7ZBGuBbs0ab8SRcstuO0XBhTLU
+ JAwoL39p443kggtNCPI3HUBaqzhMn99CwCEftzXTLwy49m/u9u2d+BOKddOkmg/g1yIPr0
+ HavTCC7wSpUP3qMycQxEfkKQQgvu70E=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-KQQuItPjPR-rC8kwEk-mAw-1; Thu, 19 Oct 2023 10:35:04 -0400
+X-MC-Unique: KQQuItPjPR-rC8kwEk-mAw-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-66d2fdf80beso15310566d6.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 07:35:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697726104; x=1698330904;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7EQ5lRMNvxuEPJB2lJA801QdMaEc/FnxMTJjrxKPung=;
+ b=IU3gHlwZyHCU1oMqrjV31mK9b5KxEC7/CoWcytVy8hbnRc1rdeRd5M+hDshmLcnKrJ
+ bQEN7TBz79GXEfMIi3D66Pe4lVOYWaGKRKiTO3NvrYhf/IXMHKsdzU2NvQCCsAkX/QNH
+ O7gvmJL3qkUFPmEV5oyEI9igT+96ddBnhubXrjPQ0EcH/NIAgZyM97pX+/beToshcZcm
+ vpuj3B/giO08xkmN9pii+PBnlJGCwBiaY7GgtwhmiI9/SX7BtdVB4dubrXt7EOmRQMGK
+ 5tdEVsEAtP/GUJEW9JFZYDPULAJsCQfSHh54NX2cZso7wvlKtk3mYateYE3lqy+RYnqp
+ kaWA==
+X-Gm-Message-State: AOJu0YwvvWyxFdxSezgHWi4qWJQaUL8ni/FdQL1RWMQXlLKaZvR0hpW+
+ s2tjGLDzIrxTjel32uPKfocCfiBamhNchyELGz0PUAdrkWTLItIU6YlMXNZsqdFnbQjq9i0UDc6
+ +p+hmRx++co0xZT8=
+X-Received: by 2002:a05:6214:4001:b0:66d:5d31:999b with SMTP id
+ kd1-20020a056214400100b0066d5d31999bmr2463124qvb.3.1697726103886; 
+ Thu, 19 Oct 2023 07:35:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFeKgT1PXshEbS2Q0LAQ23eqLDogxjzGd6M3mZcxj4GVNsSwcV9HsyY7eolBgvOAXjRt7tXTQ==
+X-Received: by 2002:a05:6214:4001:b0:66d:5d31:999b with SMTP id
+ kd1-20020a056214400100b0066d5d31999bmr2463106qvb.3.1697726103633; 
+ Thu, 19 Oct 2023 07:35:03 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ et10-20020a056214176a00b0064906cfe430sm815725qvb.135.2023.10.19.07.35.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 07:35:03 -0700 (PDT)
+Date: Thu, 19 Oct 2023 10:35:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Leonardo Bras <leobras@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Subject: Re: [RFC PATCH v2 1/6] migration/multifd: Remove channels_ready
+ semaphore
+Message-ID: <ZTE+lmbvtYNDU80q@x1n>
+References: <20231012140651.13122-1-farosas@suse.de>
+ <20231012140651.13122-2-farosas@suse.de>
+ <87sf676kxt.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87sf676kxt.fsf@secure.mitica>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,76 +100,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This way VirtIONet can detect when the incoming migration starts.
+Fabiano,
 
-While registering in the backend (nc->peer) seems more logical, we need
-nic dma address space, and we cannot get it from the backend.
+Sorry to look at this series late; I messed up my inbox after I reworked my
+arrangement methodology of emails. ;)
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
----
-This could be done in vhost_vdpa or VirtIODevice struct, but future
-series will add state restore through CVQ so it's easier to start in
-VirtIONEt directly.  If we need to make this more generic, we can move
-to VirtIODevice and expose callbacks from VirtIONet class.
+On Thu, Oct 19, 2023 at 11:06:06AM +0200, Juan Quintela wrote:
+> Fabiano Rosas <farosas@suse.de> wrote:
+> > The channels_ready semaphore is a global variable not linked to any
+> > single multifd channel. Waiting on it only means that "some" channel
+> > has become ready to send data. Since we need to address the channels
+> > by index (multifd_send_state->params[i]), that information adds
+> > nothing of value.
+> 
+> NAK.
+> 
+> I disagree here O:-)
+> 
+> the reason why that channel exist is for multifd_send_pages()
+> 
+> And simplifying the function what it does is:
+> 
+> sem_wait(channels_ready);
+> 
+> for_each_channel()
+>    look if it is empty()
+> 
+> But with the semaphore, we guarantee that when we go to the loop, there
+> is a channel ready, so we know we donat busy wait searching for a
+> channel that is free.
+> 
+> Notice that I fully agree that the sem is not needed for locking.
+> Locking is done with the mutex.  It is just used to make sure that we
+> don't busy loop on that loop.
+> 
+> And we use a sem, because it is the easiest way to know how many
+> channels are ready (even when we only care if there is one when we
+> arrive to that code).
+> 
+> We lost count of that counter, and we fixed that here:
+> 
+> commit d2026ee117147893f8d80f060cede6d872ecbd7f
+> Author: Juan Quintela <quintela@redhat.com>
+> Date:   Wed Apr 26 12:20:36 2023 +0200
+> 
+>     multifd: Fix the number of channels ready
+> 
+>     We don't wait in the sem when we are doing a sync_main.  Make it
+> 
+> And we were addressing the problem that some users where finding that we
+> were busy waiting on that loop.
 
-Also, the pointer may not be the best id, but there are not a lot of
-things initialized in n.
----
- hw/net/virtio-net.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+Juan,
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 29e33ea5ed..470338fa7c 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -38,6 +38,7 @@
- #include "qapi/qapi-events-migration.h"
- #include "hw/virtio/virtio-access.h"
- #include "migration/misc.h"
-+#include "migration/register.h"
- #include "standard-headers/linux/ethtool.h"
- #include "sysemu/sysemu.h"
- #include "trace.h"
-@@ -3808,9 +3809,27 @@ static void virtio_net_device_unrealize(DeviceState *dev)
-     virtio_cleanup(vdev);
- }
- 
-+static int virtio_net_load_setup(QEMUFile *f, void *opaque)
-+{
-+    VirtIONet *n = opaque;
-+    NetClientState *nc = qemu_get_subqueue(n->nic, 0);
-+
-+    if (nc->peer->info->load_setup) {
-+        return nc->peer->info->load_setup(nc->peer, n->nic);
-+    }
-+
-+    return 0;
-+}
-+
-+static const SaveVMHandlers savevm_virtio_net_handlers = {
-+    .load_setup = virtio_net_load_setup,
-+};
-+
-+
- static void virtio_net_instance_init(Object *obj)
- {
-     VirtIONet *n = VIRTIO_NET(obj);
-+    g_autoptr(GString) id = g_string_new(NULL);
- 
-     /*
-      * The default config_size is sizeof(struct virtio_net_config).
-@@ -3822,6 +3841,10 @@ static void virtio_net_instance_init(Object *obj)
-                                   DEVICE(n));
- 
-     ebpf_rss_init(&n->ebpf_rss);
-+
-+    g_string_printf(id, "%p", n);
-+    register_savevm_live(id->str, VMSTATE_INSTANCE_ID_ANY, 1,
-+                         &savevm_virtio_net_handlers, n);
- }
- 
- static int virtio_net_pre_save(void *opaque)
+I can understand why send_pages needs that sem, but not when sync main.
+IOW, why multifd_send_sync_main() needs:
+
+        qemu_sem_wait(&multifd_send_state->channels_ready);
+
+If it has:
+
+        qemu_sem_wait(&p->sem_sync);
+
+How does a busy loop happen?
+
+Thanks,
+
 -- 
-2.39.3
+Peter Xu
 
 
