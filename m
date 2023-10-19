@@ -2,65 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C8C7CFEE8
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 17:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA477CFEF3
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 18:01:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtVQ5-0005JO-PI; Thu, 19 Oct 2023 11:58:45 -0400
+	id 1qtVRg-0006sE-Eq; Thu, 19 Oct 2023 12:00:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVQ4-0005Il-9O
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:58:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qtVQ2-0001vv-P6
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 11:58:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697731118;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=ZcOP1lA8HWTfx+Eo3ICubUBQXDWQYDG5uQalFHTKJAc=;
- b=Hfn38YxtoVzEE/TsbiPWiDKkSzHI3U7D9ZMqtf5W2s0RVO5XEORiEDbZKKYt5LYyx+rvNb
- OsBE7P+e4i/6QCwswvC4LIpXgYMDEcrjZ8CXHauOREmC1xDwPa/JIB7d6VIrDk+FO4k9ZP
- wSrkEEyLbMc9KurxgYIyHysuphhPWaI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-20-wZKDcaIQP_KGZbhCJE8kAg-1; Thu, 19 Oct 2023 11:58:27 -0400
-X-MC-Unique: wZKDcaIQP_KGZbhCJE8kAg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 747761C29B08;
- Thu, 19 Oct 2023 15:58:24 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.68])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E35C82026D66;
- Thu, 19 Oct 2023 15:58:22 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>
-Subject: [PATCH] MAINTAINERS: Fix typo in openpic_kvm.c entry
-Date: Thu, 19 Oct 2023 17:58:22 +0200
-Message-ID: <20231019155822.499027-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qtVRc-0006rE-Vu
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:00:21 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qtVRa-0002Oy-Cw
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 12:00:20 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5a9bc2ec556so4636405a12.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 09:00:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697731216; x=1698336016; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jpB2UUK3rXwMef8/0D7EGmoaiLKvaTfr8l4NhVfttds=;
+ b=NxxX96HJka4sJPT8oIvTycTaUF7DlxPpPMVKnocI6fpxEQqmIgKL6JbjOWFqVTT/vV
+ O3PRT86dPlGQ/DnO57NtsvjnXBJSrEPtnrtdjszZvxQ2gWdcMhofKvBS7cxRgbD6HUpw
+ LDV5RT22wCsDCqJQjAEfwbuestJMRe9/2Nt5aVlFQizoEJb0SeZdSiF2dY2zFcQbDlH/
+ 2D/qhTU+WCiS7qDXI2BbCOz+C+GuzPllFgpDTjZMrmWUJpHvNgviMvJDRKqmPFmsVI4v
+ JuGYZbyHFa0s5PJVMpN+4U1+r5Kptcu8hYpFyYEnh6Ga+UYFb3b4GoRtgzrFanF4dTsP
+ CVAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697731216; x=1698336016;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jpB2UUK3rXwMef8/0D7EGmoaiLKvaTfr8l4NhVfttds=;
+ b=HFvKn793yUyElJWvLM3RKaOZHUJDG1BZWfSnn2F1KPdO7vl7WQe96fQeoY4z1ngHwU
+ Fv5MV7F+g9tp1kxL0vq8mOWUi0lB8UoqFh8CLfg6iKyHGCgywxiU5jNAJmk6AIs/MoEL
+ x71Ej2+v5dLoUYA3cJ6SbxpKJLawAjqSxr/RtqaYFKBEWQZl2T/NR6KdpsBPTwAGSnEH
+ 1M6f8rLFejDliidjS2gxbP46w3g2A2tBB7NlAyEhhNgDcMeQK+HHuw03FLFd0elDQETX
+ gLzyuHyFylsqYxujX0+FcWBZz+zpD6S96EBgrtLxvf+bFyhmiTbN970lKAu3l8DDhASo
+ nH+A==
+X-Gm-Message-State: AOJu0YwEcfqeOTPr0UUwLUgXIzKu+Ymgwn2M6F/zBz3AnlqSMYgMvupH
+ dDoFx6u45x/3eKQK1hFy7Tnv35QAXCukfkocDZU=
+X-Google-Smtp-Source: AGHT+IF8NWIgy4WkjnG8GLDtYfLMzwTjksxaCzFVpua9aCC2WuMrtt3/0LlzLk4alHYNFv8JqJC5Ng==
+X-Received: by 2002:a17:90a:fd17:b0:27d:24ec:4fcf with SMTP id
+ cv23-20020a17090afd1700b0027d24ec4fcfmr2283328pjb.22.1697731216241; 
+ Thu, 19 Oct 2023 09:00:16 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ o14-20020a17090ab88e00b002636dfcc6f5sm1729799pjr.3.2023.10.19.09.00.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 19 Oct 2023 09:00:15 -0700 (PDT)
+Message-ID: <7814eedc-930b-430f-ad36-09f95809ab37@linaro.org>
+Date: Thu, 19 Oct 2023 09:00:14 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 14/19] tcg: add negsetcondi
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20231019104648.389942-1-pbonzini@redhat.com>
+ <20231019104648.389942-15-pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231019104648.389942-15-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,28 +93,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's a .c file, not a header!
+On 10/19/23 03:46, Paolo Bonzini wrote:
+> This can be useful to write a shift bit extraction that does not
+> depend on TARGET_LONG_BITS.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   include/tcg/tcg-op-common.h |  4 ++++
+>   include/tcg/tcg-op.h        |  2 ++
+>   tcg/tcg-op.c                | 12 ++++++++++++
+>   3 files changed, 18 insertions(+)
 
-Fixes: ff8cdbbd7e ("MAINTAINERS: Add information for OpenPIC")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c12511c73b..a110a0c7a4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1418,7 +1418,7 @@ F: hw/pci-host/ppce500.c
- F: include/hw/ppc/ppc_e500.h
- F: include/hw/pci-host/ppce500.h
- F: pc-bios/u-boot.e500
--F: hw/intc/openpic_kvm.h
-+F: hw/intc/openpic_kvm.c
- F: include/hw/ppc/openpic_kvm.h
- F: docs/system/ppc/ppce500.rst
- 
--- 
-2.41.0
+I'll cherry-pick this to tcg-next.
 
+
+r~
 
