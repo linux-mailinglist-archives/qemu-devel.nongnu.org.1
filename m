@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47B67CF7B8
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 13:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB7F7CF7D3
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 14:00:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtRey-0007Kr-Iw; Thu, 19 Oct 2023 07:57:52 -0400
+	id 1qtRgd-0008Kt-I7; Thu, 19 Oct 2023 07:59:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtRew-0007Jv-KR
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:57:50 -0400
+ id 1qtRgY-0008Kl-Hf
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:59:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtRev-0007L8-2k
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:57:50 -0400
+ id 1qtRgX-0000k9-3v
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 07:59:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697716668;
+ s=mimecast20190719; t=1697716768;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=knRh9ausW9Yco1S/La/mUIZuDxb5hui2n5SC8mwSfII=;
- b=Q85hhWyP+EGcfVXqf9Tv1Zg1WMRX7FyED07Qw9IIxvgEDxAj71/BtasEEb6iZNMZaTdy2I
- XBz8RW7e9YqHTKDORkAHkfVV4eLyqA0XWa1fwcrEDiO7KJ8mye6IUIjCKWGMYPaS1HcG0H
- ARrB3FdRt183XfVpW6yhZEXxZs9zrd8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=79OxlhpDYwebVjoSykBYH/PpLUSzzewznhMTb5li9IM=;
+ b=KFovoOjQ+VHmK6chej76tMQvDgg8O6lpd8HUynt2zgzefvJPQ5m6tVWC2YmRwiKA7SkTfU
+ of7wqr04sze00mHpCH0IgbWpK8KB/HYdygEmsKGBbV7ii5k1aJZ5vtWSy3ZW2ddOUqgFuK
+ gAvJnPtEG7lKLk+A8BGa493M/YuwCzQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-WyVl6f9RP_GMQB00JVTkhQ-1; Thu, 19 Oct 2023 07:57:47 -0400
-X-MC-Unique: WyVl6f9RP_GMQB00JVTkhQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4083c9b426fso9658245e9.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 04:57:46 -0700 (PDT)
+ us-mta-623-jUvvBC2vMdWASxBuw98w6A-1; Thu, 19 Oct 2023 07:59:20 -0400
+X-MC-Unique: jUvvBC2vMdWASxBuw98w6A-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32da47641b5so3162704f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 04:59:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697716665; x=1698321465;
+ d=1e100.net; s=20230601; t=1697716759; x=1698321559;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=knRh9ausW9Yco1S/La/mUIZuDxb5hui2n5SC8mwSfII=;
- b=nTj8/JC7iZSYTx8nrpqdsTz85+Ae0hQ/3OPy3kpDPE++PSPAO+QKXD+e4RW/mvFDO3
- 44OxGljqp8iZoVaeBwlophNWCrd9lfv/w2qTWGhF5PKHIgCTjxM750slrJBcNqTfX761
- GaRqjoZhAxHgYClWT2X1yH5nGlc9urdLkxdzYa3Rz5jFNyVO8AelxBgyhfXYWyXSQ3bR
- U+57JpF/WvDc1YIfqt1s3y98FEUg3wZ8ysKH1hN93/ZUcgrgrhMIfWBbLLKHHARVQ8Sk
- 1FxaCisETWjcCoWzK9/CU2Z6s6uqPTbr1IB2rMRC3+S7IFzIAEzKSMiHNf2hXE25q/n4
- t1Fw==
-X-Gm-Message-State: AOJu0Yww0hP0fDk3plyxrlFXWqM3XPNATYsthVhhwaUvcmckmhhnIvdy
- aLdlJUS2PJj0EMmRYqvtj1dVQ53Qpih79JNbcQ3dpteJGYR2sINRZu2DVTpAgj6xcyv2p/XernX
- 76r5lwb2l7z/aE6dfQ1BjErCRbQ==
-X-Received: by 2002:a05:600c:4715:b0:405:39b4:313e with SMTP id
- v21-20020a05600c471500b0040539b4313emr1564785wmo.13.1697716665675; 
- Thu, 19 Oct 2023 04:57:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF3gPVo/okq5e/qx7h9ylyqUTs3SOh/l5t/1Q/VMUL7UU02DsCUWHJp6ZoO7FK6DC2zLBl5lA==
-X-Received: by 2002:a05:600c:4715:b0:405:39b4:313e with SMTP id
- v21-20020a05600c471500b0040539b4313emr1564774wmo.13.1697716665328; 
- Thu, 19 Oct 2023 04:57:45 -0700 (PDT)
+ bh=79OxlhpDYwebVjoSykBYH/PpLUSzzewznhMTb5li9IM=;
+ b=ZtduBeYAaEP8tnEV1B2h0K9ez4WZ9dnxASd9AmyJ2A5NPwD2NxVIK//Fc9+c5kC0CJ
+ iEqxSEM+APeQ48UO+WwxI9QO/2MhMdk1pzfxJf/icIbX/nN2wEx0zHM16On7CQO7XvR9
+ Nzzjny8HrZaD2ic5z9rQK5Z23u/qym6p1pMfXetRBxfv93jh5iK5QbsfZs7oHXIbPe8K
+ Un8d30Y09P09+Nlpwhkyk8VZS2fwSUZCoE9dMbzj1j0tai7N3aCkDSFpqfgBFbMNJpxt
+ qcy+hx3IcD71zmaENqwihW+8GCTYYFWub4aC4Rf05x76lyfzipFp1oLuQxELT9uSUol0
+ 0buQ==
+X-Gm-Message-State: AOJu0YzkroHszCQaFDJ7Cp2vseLTAGrH0AJ7CPPDT5CcQ1NAJHu2mN7p
+ jbYjTl0z5jwhYUEXp3mHPrHn05f5y1dzAMNklqijUrA2e5yAmeLwZ+VjldvNKHCX4exhLQEnput
+ eoNWu1LiT2GZDhU8=
+X-Received: by 2002:adf:fc91:0:b0:329:6e92:8d77 with SMTP id
+ g17-20020adffc91000000b003296e928d77mr1635862wrr.51.1697716759406; 
+ Thu, 19 Oct 2023 04:59:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFb6TdVsGuRB9F42LmumESsxtUtaBUxLIEbaQleAH3mL+HieBPYRBGUKngVbUE2Y66zHAj0rA==
+X-Received: by 2002:adf:fc91:0:b0:329:6e92:8d77 with SMTP id
+ g17-20020adffc91000000b003296e928d77mr1635843wrr.51.1697716759047; 
+ Thu, 19 Oct 2023 04:59:19 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- m36-20020a05600c3b2400b00405bbfd5d16sm4328963wms.7.2023.10.19.04.57.44
+ n13-20020adffe0d000000b0031ad2f9269dsm4313336wrr.40.2023.10.19.04.59.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Oct 2023 04:57:44 -0700 (PDT)
+ Thu, 19 Oct 2023 04:59:18 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
@@ -71,15 +71,15 @@ Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
  =?utf-8?Q?=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 07/12] tests/qtest/migration: Define a machine for
- all architectures
-In-Reply-To: <20231018192741.25885-8-farosas@suse.de> (Fabiano Rosas's message
- of "Wed, 18 Oct 2023 16:27:36 -0300")
+Subject: Re: [PATCH v4 08/12] tests/qtest/migration: Specify the geometry of
+ the bootsector
+In-Reply-To: <20231018192741.25885-9-farosas@suse.de> (Fabiano Rosas's message
+ of "Wed, 18 Oct 2023 16:27:37 -0300")
 References: <20231018192741.25885-1-farosas@suse.de>
- <20231018192741.25885-8-farosas@suse.de>
+ <20231018192741.25885-9-farosas@suse.de>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 19 Oct 2023 13:57:44 +0200
-Message-ID: <87zg0e4yfb.fsf@secure.mitica>
+Date: Thu, 19 Oct 2023 13:59:18 +0200
+Message-ID: <87v8b24ycp.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
@@ -108,17 +108,26 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fabiano Rosas <farosas@suse.de> wrote:
-> Stop relying on defaults and select a machine explicitly for every
-> architecture.
+> We're about to enable the x86_64 tests to run with the q35 machine,
+> but that machine does not work with the program we use to dirty the
+> memory for the tests.
 >
-> This is a prerequisite for being able to select machine types for
-> migration using different QEMU binaries for source and destination.
+> The issue is that QEMU needs to guess the geometry of the "disk" we
+> give to it and the guessed geometry doesn't pass the sanity checks
+> done by SeaBIOS. This causes SeaBIOS to interpret the geometry as if
+> needing a translation from LBA to CHS and SeaBIOS ends up miscomputing
+> the number of cylinders and aborting due to that.
+>
+> The reason things work with the "pc" machine is that is uses ATA
+> instead of AHCI like q35 and SeaBIOS has an exception for ATA that
+> ends up skipping the sanity checks and ignoring translation
+> altogether.
+>
+> Workaround this situation by specifying a geometry in the command
+> line.
 >
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-
-
-I have patches to simplify this, but will rebase on top of yours.
 
 
