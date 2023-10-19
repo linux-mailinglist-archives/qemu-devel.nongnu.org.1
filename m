@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339D87D0242
-	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 21:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1ADE7D0288
+	for <lists+qemu-devel@lfdr.de>; Thu, 19 Oct 2023 21:27:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtYOI-0007Sb-VE; Thu, 19 Oct 2023 15:09:06 -0400
+	id 1qtYcn-00064s-RP; Thu, 19 Oct 2023 15:24:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtYOG-0007Ps-KY
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:09:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qtYOF-0003bB-0A
- for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:09:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697742542;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=01He6B9eozaaeE5WVJNLhSBI/aCxj+PrRNnaRZ9qsWE=;
- b=CAS3U330bhOvOlGnbT7NSvRDNwTlfj4B/B1+VpT09mmCqLbqGgu9o1PtfpT9uQbpaUnpHC
- oSM4JjJGs6EPsfOBGGWotafn9X4a8Yj9rUyPGqdgj7SDCzPvjHQdjZ3lVzOP8gqYWLbXI/
- IoqrIure1Af1EDKBd5UPWo/sDP4vezo=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-HkrOgG6INam3vSYEafvLBg-1; Thu, 19 Oct 2023 15:09:00 -0400
-X-MC-Unique: HkrOgG6INam3vSYEafvLBg-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-7b68d0e9be4so5459241.2
- for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 12:09:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697742539; x=1698347339;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=01He6B9eozaaeE5WVJNLhSBI/aCxj+PrRNnaRZ9qsWE=;
- b=gU1y6fsNJlmoDPtUUZI5MbsIe9KH/MtVLsCUYJOB5Uudga9eGtCeYMV3czQ9ZAC5Rf
- pYz+1m+r38NB1V6bPy29iWbdzS1K5cINlgNYiH5vFVt1SXUNcJ9+mqWBSZAHmT1hI85m
- Na6gwQGOJyB5QqZCeXVYFAfqIT9+JWwf0qkSDOlDg3oXnqitPWpy34XRWTGpHiDcFYEE
- 5T/YsDkxyGZL910XcsGRdstT8ZSAHcLaP1UhfgPW3Dyr6NhRrT8FIN5a+ecSks3ZCjFb
- UHBKWj2e/sOyC7C8j1PgnpOlHWCx2AANnqpCbA+TAVvSqft0JZOV4rJWQ9AXChma2b3F
- l4WQ==
-X-Gm-Message-State: AOJu0YzzFORc2t/KjDXL3w6Z4dubheZCXH4bOUnzbGcD4w29tJmVFYSb
- sUxFAmtIihEdIypV8PziN450Sc6OwU+H/0ZhLb2HHaCPK05AVNFCYTQ3N1Vi16aAYUHzslsHFiE
- P6pYcEvd7D+5sHklQlqn+Ygm3ZIfdfaLfZVNmiVo=
-X-Received: by 2002:a67:c18e:0:b0:457:dbe3:ef45 with SMTP id
- h14-20020a67c18e000000b00457dbe3ef45mr3201968vsj.19.1697742539341; 
- Thu, 19 Oct 2023 12:08:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxIpKziFb07fxQB+YHD2hNEGFuD3C5FMSda7fnCNDyww+VhneRRfAyqXr6DE0XgByCZyVpbaMwSyZzuV7M+f0=
-X-Received: by 2002:a67:c18e:0:b0:457:dbe3:ef45 with SMTP id
- h14-20020a67c18e000000b00457dbe3ef45mr3201958vsj.19.1697742539130; Thu, 19
- Oct 2023 12:08:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtYcl-00061g-Pm
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:24:03 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qtYck-0004ry-3M
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 15:24:03 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id CC5DE21A63;
+ Thu, 19 Oct 2023 19:23:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1697743438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mrGSzXr+Xw8NneZiJOrBrc+5keAbMKby0ZStEj+MOCI=;
+ b=jYs4m16ONdizyGxzoWU/fGc6N8B6jfTFn9wy5LXCq9LvtwSpN/SOk9059W/tifQrpkTJ7B
+ 8aatKYi5479XoPDBiTS+fSAPKa7aEFQNDIt7C4b7hImVPU/ymnf2CQCGdKFQCYZ9Yii/1i
+ 3eJ412gHUYheJm+ZKn3gC3K+FtjmNBo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1697743438;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mrGSzXr+Xw8NneZiJOrBrc+5keAbMKby0ZStEj+MOCI=;
+ b=Q1vH3WMOGnFs5GWQRAMhnhp/YyjstegofC0Ty5lV2AXkYmN8Bfn/CaHpE1As62DKQC7ANH
+ kc8/OnkRcXA2DKCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8C4EA1357F;
+ Thu, 19 Oct 2023 19:23:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id G7MVFUuCMWWWEwAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 19 Oct 2023 19:23:55 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, dgilbert@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, armbru@redhat.com, eblake@redhat.com,
+ manish.mishra@nutanix.com, aravind.retnakaran@nutanix.com,
+ Het Gala <het.gala@nutanix.com>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: [PATCH v14 00/14] migration: Modify 'migrate' and 'migrate-incoming'
+ QAPI commands for migration
+Date: Thu, 19 Oct 2023 16:23:39 -0300
+Message-Id: <20231019192353.31500-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-References: <20231019104648.389942-1-pbonzini@redhat.com>
- <20231019104648.389942-8-pbonzini@redhat.com>
- <3cb64878-7f3c-46b4-b423-0c5a31aba797@linaro.org>
-In-Reply-To: <3cb64878-7f3c-46b4-b423-0c5a31aba797@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 19 Oct 2023 21:08:46 +0200
-Message-ID: <CABgObfaJDd7YS7g_iyFmfr=PCBt3cGK4xDdV8TicVKJ2FqbMAg@mail.gmail.com>
-Subject: Re: [PATCH v2 07/19] target/i386: introduce flags writeback mechanism
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="000000000000f729a30608167c18"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -6.10
+X-Spamd-Result: default: False [-6.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ NEURAL_HAM_LONG(-3.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-1.00)[-1.000]; RCPT_COUNT_TWELVE(0.00)[13];
+ MID_CONTAINS_FROM(1.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[99.99%]
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,126 +98,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f729a30608167c18
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Il gio 19 ott 2023, 19:44 Richard Henderson <richard.henderson@linaro.org>
-ha scritto:
+I had to make this a new version because the file: tests are already
+merged and Het's patches break them unless we also convert the file
+transport to the new API.
 
-> On 10/19/23 03:46, Paolo Bonzini wrote:
-> > +    /*
-> > +     * Write back flags after last memory access.  Some newer ALU
-> instructions, as
-> > +     * well as SSE instructions, write flags in the gen_* function, but
-> that can
-> > +     * cause incorrect tracking of CC_OP for instructions that write to
-> both memory
-> > +     * and flags.
-> > +     */
-> > +    if (decode.cc_op != -1) {
-> > +        if (decode.cc_dst) {
-> > +            tcg_gen_mov_tl(cpu_cc_dst, decode.cc_dst);
-> > +        }
-> > +        if (decode.cc_src) {
-> > +            tcg_gen_mov_tl(cpu_cc_src, decode.cc_src);
-> > +        }
-> > +        if (decode.cc_src2) {
-> > +            tcg_gen_mov_tl(cpu_cc_src2, decode.cc_src2);
-> > +        }
-> > +        if (decode.cc_op == CC_OP_DYNAMIC) {
-> > +            tcg_gen_mov_i32(cpu_cc_op, decode.cc_op_dynamic);
-> > +        } else {
-> > +            assert(!decode.cc_op_dynamic);
-> > +        }
-> > +        set_cc_op(s, decode.cc_op);
-> > +    } else {
-> > +        assert(!decode.cc_dst);
-> > +        assert(!decode.cc_src);
-> > +        assert(!decode.cc_src2);
-> > +        assert(!decode.cc_op_dynamic);
-> > +    }
->
-> I suggest you use cc_op_live[] to ensure that each output is present if
-> USES_CC_* is set,
-> and absent otherwise. Obviously that's not possible for CC_OP_DYNAMIC, but
-> for everything else...
->
+I did the conversion and added separate patches as fixups so we can
+review my additions separately.
 
-I tried but it didn't work very well. I have shuffled things a bit and I
-don't remember why :) so I will give it another go.
+Het's series untouched aside from conflict resolution.
 
-Paolo
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1043006299
 
+v13 by Het Gala:
+https://lore.kernel.org/r/20231012151052.154106-1-het.gala@nutanix.com
 
->
-> r~
->
->
+Fabiano Rosas (4):
+  fixup! migration: New QAPI type 'MigrateAddress'
+  fixup! migration: convert migration 'uri' into 'MigrateAddress'
+  migration: Convert the file backend the new QAPI syntax
+  fixup! migration: New migrate and migrate-incoming argument 'channels'
 
---000000000000f729a30608167c18
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Het Gala (10):
+  migration: New QAPI type 'MigrateAddress'
+  migration: convert migration 'uri' into 'MigrateAddress'
+  migration: convert socket backend to accept MigrateAddress
+  migration: convert rdma backend to accept MigrateAddress
+  migration: convert exec backend to accept MigrateAddress.
+  migration: New migrate and migrate-incoming argument 'channels'
+  migration: modify migration_channels_and_uri_compatible() for new QAPI
+    syntax
+  migration: Implement MigrateChannelList to qmp migration flow.
+  migration: Implement MigrateChannelList to hmp migration flow.
+  migration: modify test_multifd_tcp_none() to use new QAPI syntax.
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il gio 19 ott 2023, 19:44 Richard Henderson &lt;<a hre=
-f=3D"mailto:richard.henderson@linaro.org">richard.henderson@linaro.org</a>&=
-gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
-0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On 10/19/23 03:46, =
-Paolo Bonzini wrote:<br>
-&gt; +=C2=A0 =C2=A0 /*<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* Write back flags after last memory access.=C2=
-=A0 Some newer ALU instructions, as<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* well as SSE instructions, write flags in the ge=
-n_* function, but that can<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* cause incorrect tracking of CC_OP for instructi=
-ons that write to both memory<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0* and flags.<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0*/<br>
-&gt; +=C2=A0 =C2=A0 if (decode.cc_op !=3D -1) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (decode.cc_dst) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_gen_mov_tl(cpu_cc_dst, =
-decode.cc_dst);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (decode.cc_src) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_gen_mov_tl(cpu_cc_src, =
-decode.cc_src);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (decode.cc_src2) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_gen_mov_tl(cpu_cc_src2,=
- decode.cc_src2);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (decode.cc_op =3D=3D CC_OP_DYNAMIC) {<=
-br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tcg_gen_mov_i32(cpu_cc_op, =
-decode.cc_op_dynamic);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(!decode.cc_op_dynami=
-c);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 set_cc_op(s, decode.cc_op);<br>
-&gt; +=C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(!decode.cc_dst);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(!decode.cc_src);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(!decode.cc_src2);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(!decode.cc_op_dynamic);<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-<br>
-I suggest you use cc_op_live[] to ensure that each output is present if USE=
-S_CC_* is set, <br>
-and absent otherwise. Obviously that&#39;s not possible for CC_OP_DYNAMIC, =
-but for everything else...<br></blockquote></div></div><div dir=3D"auto"><b=
-r></div><div dir=3D"auto">I tried but it didn&#39;t work very well. I have =
-shuffled things a bit and I don&#39;t remember why :) so I will give it ano=
-ther go.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div=
- dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><block=
-quote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc=
- solid;padding-left:1ex">
-<br>
-<br>
-r~<br>
-<br>
-</blockquote></div></div></div>
+ migration/exec.c               |  74 ++++++++----
+ migration/exec.h               |   8 +-
+ migration/file.c               |  24 ++--
+ migration/file.h               |  10 +-
+ migration/migration-hmp-cmds.c |  27 ++++-
+ migration/migration.c          | 203 ++++++++++++++++++++++++++-------
+ migration/migration.h          |   3 +-
+ migration/rdma.c               |  33 ++----
+ migration/rdma.h               |   6 +-
+ migration/socket.c             |  39 ++-----
+ migration/socket.h             |   7 +-
+ qapi/migration.json            | 174 +++++++++++++++++++++++++++-
+ system/vl.c                    |   2 +-
+ tests/qtest/migration-test.c   |   7 +-
+ 14 files changed, 467 insertions(+), 150 deletions(-)
 
---000000000000f729a30608167c18--
+-- 
+2.35.3
 
 
