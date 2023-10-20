@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42827D090B
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 09:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39ABC7D091D
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 09:01:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtjT7-0002g4-TP; Fri, 20 Oct 2023 02:58:49 -0400
+	id 1qtjTO-00034e-Ti; Fri, 20 Oct 2023 02:59:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtjT4-0002cR-Ia
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 02:58:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qtjTF-0002uc-JZ
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 02:58:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtjT2-0003XQ-Kr
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 02:58:46 -0400
+ id 1qtjTC-0003ZN-Vx
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 02:58:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697785124;
+ s=mimecast20190719; t=1697785132;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+qBebYea9Sc/9cMZRnCZCUgrDnNVvTWKR5tveNx55zQ=;
- b=bhV6GYV/INmeHN/PN5xfLU5vC2dCWGoFG6lvSyHdyp/feck3YKrtPLU2CmpQ7VrtoWdN6o
- tpvddbEDSl/F9baPKRo8bmpBANQcUMtz3rQe5vbgDwB+niVGDMOUzOGP04DRks78gHOQ+Q
- Y2Y3a5lUr9JFTEDZis7zJBVRwhbs+8U=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-35-7H8ooKsVMY2eM27BdPrgIg-1; Fri, 20 Oct 2023 02:58:37 -0400
-X-MC-Unique: 7H8ooKsVMY2eM27BdPrgIg-1
+ bh=DXWEVBlIcLBd6yDALjVLIhuAbVizKeUEyowRi41q+m0=;
+ b=FWpnYVy6wF68a89KRfp29EQHQ346hKpFGdmtx+4O4GFW3QAgDg/9MTacW+ebMGyKL/k+9d
+ peILxnhcjxF1gPkfm/jUbUPH4IEsgDLtiU48w+bHxK4BdeKFrcqrgOBCfoYsGqIjnXOqNc
+ qNLflGwCh18d2JQEgBu5nSr1ls5K2KA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-246-zbzUsfckNCi7Kw-aqmSPxQ-1; Fri, 20 Oct 2023 02:58:45 -0400
+X-MC-Unique: zbzUsfckNCi7Kw-aqmSPxQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D16F1C05154;
- Fri, 20 Oct 2023 06:58:36 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FC6C869ECC;
+ Fri, 20 Oct 2023 06:58:43 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6E9C725C0;
- Fri, 20 Oct 2023 06:58:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9EACA25C0;
+ Fri, 20 Oct 2023 06:58:36 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org,
@@ -75,23 +75,23 @@ Cc: qemu-s390x@nongnu.org,
  Leonardo Bras <leobras@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Greg Kurz <groug@kaod.org>, qemu-block@nongnu.org
-Subject: [PULL 05/17] migration/multifd: Stop checking p->quit in
- multifd_send_thread
-Date: Fri, 20 Oct 2023 08:57:39 +0200
-Message-ID: <20231020065751.26047-6-quintela@redhat.com>
+Subject: [PULL 06/17] tests/qtest: Allow qtest_qemu_binary to use a custom
+ environment variable
+Date: Fri, 20 Oct 2023 08:57:40 +0200
+Message-ID: <20231020065751.26047-7-quintela@redhat.com>
 In-Reply-To: <20231020065751.26047-1-quintela@redhat.com>
 References: <20231020065751.26047-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,40 +110,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-We don't need to check p->quit in the multifd_send_thread() because it
-is shadowed by the 'exiting' flag. Ever since that flag was added
-p->quit became obsolete as a way to stop the thread.
+We're adding support for testing migration using two different QEMU
+binaries. We'll provide the second binary in a new environment
+variable.
 
-Since p->quit is set at multifd_send_terminate_threads() under the
-p->mutex lock, the thread will only see it once it loops, so 'exiting'
-will always be seen first.
+Allow qtest_qemu_binary() to receive the name of the new variable. If
+the new environment variable is not set, that's not an error, we use
+QTEST_QEMU_BINARY as a fallback.
 
-Note that setting p->quit at multifd_send_terminate_threads() still
-makes sense because we need a way to inform multifd_send_pages() that
-the channel has stopped.
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <20231012140651.13122-3-farosas@suse.de>
+Message-ID: <20231018192741.25885-2-farosas@suse.de>
 ---
- migration/multifd.c | 3 ---
- 1 file changed, 3 deletions(-)
+ tests/qtest/libqtest.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 1fe53d3b98..e2a45c667a 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -743,9 +743,6 @@ static void *multifd_send_thread(void *opaque)
-             if (flags & MULTIFD_FLAG_SYNC) {
-                 qemu_sem_post(&p->sem_sync);
-             }
--        } else if (p->quit) {
--            qemu_mutex_unlock(&p->mutex);
--            break;
-         } else {
-             qemu_mutex_unlock(&p->mutex);
-             /* sometimes there are spurious wakeups */
+diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+index dc7a55634c..03fa644663 100644
+--- a/tests/qtest/libqtest.c
++++ b/tests/qtest/libqtest.c
+@@ -336,10 +336,17 @@ void qtest_remove_abrt_handler(void *data)
+     }
+ }
+ 
+-static const char *qtest_qemu_binary(void)
++static const char *qtest_qemu_binary(const char *var)
+ {
+     const char *qemu_bin;
+ 
++    if (var) {
++        qemu_bin = getenv(var);
++        if (qemu_bin) {
++            return qemu_bin;
++        }
++    }
++
+     qemu_bin = getenv("QTEST_QEMU_BINARY");
+     if (!qemu_bin) {
+         fprintf(stderr, "Environment variable QTEST_QEMU_BINARY required\n");
+@@ -392,7 +399,7 @@ static QTestState *G_GNUC_PRINTF(1, 2) qtest_spawn_qemu(const char *fmt, ...)
+ 
+     va_start(ap, fmt);
+     g_string_append_printf(command, CMD_EXEC "%s %s",
+-                           qtest_qemu_binary(), tracearg);
++                           qtest_qemu_binary(NULL), tracearg);
+     g_string_append_vprintf(command, fmt, ap);
+     va_end(ap);
+ 
+@@ -905,7 +912,7 @@ char *qtest_hmp(QTestState *s, const char *fmt, ...)
+ 
+ const char *qtest_get_arch(void)
+ {
+-    const char *qemu = qtest_qemu_binary();
++    const char *qemu = qtest_qemu_binary(NULL);
+     const char *end = strrchr(qemu, '-');
+ 
+     if (!end) {
 -- 
 2.41.0
 
