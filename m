@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70C67D0B28
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA307D0B22
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:09:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtlUl-00043j-IH; Fri, 20 Oct 2023 05:08:39 -0400
+	id 1qtlUi-0003m6-Nz; Fri, 20 Oct 2023 05:08:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlUS-0003NV-Dd
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:21 -0400
+ id 1qtlUU-0003Ta-6o
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlUL-0005Fg-CF
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:18 -0400
+ id 1qtlUQ-0005IY-2O
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:08:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697792889;
+ s=mimecast20190719; t=1697792895;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d9ROGmImGcNEhlqZIjyhd4kZVRhSXS7if8/sbCOuTpk=;
- b=SvEERbH6yr8O0+dXhisj0C6L1eibEbvIXG4ToTcn5EfBNLxC36C2Le8koP+I+RugAlYFn6
- cT8fTcObVGacus9zENh8z1+z6JZWoQGKuhs9PefGnx99z0oG0W7on/CbslcvnV1TNPEbV/
- CAWTqeCA9Rc1Wb1l1ETcXW9l9ZKqUD8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-522-szTGTDK9P6K8xKR6v5qjCg-1; Fri, 20 Oct 2023 05:08:06 -0400
-X-MC-Unique: szTGTDK9P6K8xKR6v5qjCg-1
+ bh=Kgz7p6yDeHNJMfBQZRC1/7r8AHjBikV0rY5ziFkuiRo=;
+ b=BQ1YsFUBiUk4Tg3/dcNh29wf4WAhium3T0XvRXxI5pukH9cB1ppOkS5JWYIw9zee7G6zAO
+ IwYD6vo3W9ipQqETiiGSWuZNsDTQrA5q01cWqyRDAQzjJ4Xbu/x2D9UOvUmh/uHVBj33Zn
+ xqU6JAerp/ROxpPtFXvQxKL0AN7AC5A=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-150-9BhV5DbuOCmfZteR575eGA-1; Fri, 20 Oct 2023 05:08:11 -0400
+X-MC-Unique: 9BhV5DbuOCmfZteR575eGA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7365380664F;
- Fri, 20 Oct 2023 09:08:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3643088B777;
+ Fri, 20 Oct 2023 09:08:10 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B5A342166B26;
- Fri, 20 Oct 2023 09:07:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0A86C2166B26;
+ Fri, 20 Oct 2023 09:08:04 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,9 +68,10 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Stefan Weil <sw@weilnetz.de>, Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH v2 05/13] migration: Use VMSTATE_INSTANCE_ID_ANY for slirp
-Date: Fri, 20 Oct 2023 11:07:23 +0200
-Message-ID: <20231020090731.28701-6-quintela@redhat.com>
+Subject: [PATCH v2 06/13] migration: Use VMSTATE_INSTANCE_ID_ANY for s390
+ devices
+Date: Fri, 20 Oct 2023 11:07:24 +0200
+Message-ID: <20231020090731.28701-7-quintela@redhat.com>
 In-Reply-To: <20231020090731.28701-1-quintela@redhat.com>
 References: <20231020090731.28701-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -84,7 +85,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,10 +101,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Each user network conection create a new slirp instance.  We register
-more than one slirp instance for number 0.
+Just with make check I can see that we can have more than one of this
+devices, so use ANY.
 
-qemu-system-x86_64: -netdev user,id=hs1: savevm_state_handler_insert: Detected duplicate SaveStateEntry: id=slirp, instance_id=0x0
+ok 5 /s390x/device/introspect/abstract-interfaces
+...
 Broken pipe
 ../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:195: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
 Aborted (core dumped)
@@ -111,32 +113,52 @@ Aborted (core dumped)
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- net/slirp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/s390x/s390-skeys.c    | 3 ++-
+ hw/s390x/s390-stattrib.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/slirp.c b/net/slirp.c
-index c33b3e02e7..25b49c4526 100644
---- a/net/slirp.c
-+++ b/net/slirp.c
-@@ -46,6 +46,7 @@
- #include "qapi/qmp/qdict.h"
- #include "util.h"
+diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
+index 5024faf411..ef089e1967 100644
+--- a/hw/s390x/s390-skeys.c
++++ b/hw/s390x/s390-skeys.c
+@@ -22,6 +22,7 @@
+ #include "sysemu/kvm.h"
+ #include "migration/qemu-file-types.h"
  #include "migration/register.h"
 +#include "migration/vmstate.h"
- #include "migration/qemu-file-types.h"
  
- static int get_str_sep(char *buf, int buf_size, const char **pp, int sep)
-@@ -659,8 +660,8 @@ static int net_slirp_init(NetClientState *peer, const char *model,
-      * specific version?
-      */
-     g_assert(slirp_state_version() == 4);
--    register_savevm_live("slirp", 0, slirp_state_version(),
--                         &savevm_slirp_state, s->slirp);
-+    register_savevm_live("slirp", VMSTATE_INSTANCE_ID_ANY,
-+                         slirp_state_version(), &savevm_slirp_state, s->slirp);
+ #define S390_SKEYS_BUFFER_SIZE (128 * KiB)  /* Room for 128k storage keys */
+ #define S390_SKEYS_SAVE_FLAG_EOS 0x01
+@@ -457,7 +458,7 @@ static inline void s390_skeys_set_migration_enabled(Object *obj, bool value,
+     ss->migration_enabled = value;
  
-     s->poll_notifier.notify = net_slirp_poll_notify;
-     main_loop_poll_add_notifier(&s->poll_notifier);
+     if (ss->migration_enabled) {
+-        register_savevm_live(TYPE_S390_SKEYS, 0, 1,
++        register_savevm_live(TYPE_S390_SKEYS, VMSTATE_INSTANCE_ID_ANY, 1,
+                              &savevm_s390_storage_keys, ss);
+     } else {
+         unregister_savevm(VMSTATE_IF(ss), TYPE_S390_SKEYS, ss);
+diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
+index 220e845d12..055d382c3c 100644
+--- a/hw/s390x/s390-stattrib.c
++++ b/hw/s390x/s390-stattrib.c
+@@ -13,6 +13,7 @@
+ #include "qemu/units.h"
+ #include "migration/qemu-file.h"
+ #include "migration/register.h"
++#include "migration/vmstate.h"
+ #include "hw/s390x/storage-attributes.h"
+ #include "qemu/error-report.h"
+ #include "exec/ram_addr.h"
+@@ -380,7 +381,7 @@ static void s390_stattrib_instance_init(Object *obj)
+ {
+     S390StAttribState *sas = S390_STATTRIB(obj);
+ 
+-    register_savevm_live(TYPE_S390_STATTRIB, 0, 0,
++    register_savevm_live(TYPE_S390_STATTRIB, VMSTATE_INSTANCE_ID_ANY, 0,
+                          &savevm_s390_stattrib_handlers, sas);
+ 
+     object_property_add_bool(obj, "migration-enabled",
 -- 
 2.41.0
 
