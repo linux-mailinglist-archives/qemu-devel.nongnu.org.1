@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFB27D13AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9839B7D13B4
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:08:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qts1w-0006pn-27; Fri, 20 Oct 2023 12:07:20 -0400
+	id 1qts2Z-0007Ek-U0; Fri, 20 Oct 2023 12:08:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qts1t-0006nw-Ro
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:07:17 -0400
+ id 1qts2E-00073j-CI
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:07:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qts1s-0001a1-Ex
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:07:17 -0400
+ id 1qts2C-0001c1-R3
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:07:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697818035;
+ s=mimecast20190719; t=1697818055;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=M5jUhmxfA6feUUiyMRgQyezTB1l5fcY0jBRGDTSTlag=;
- b=gGHCRIY7xt6C3645z2bS5U3iWKUcI8vWz6S2TFbujlq8w/yFF1vApskKd7rLc5Of9keC95
- sykvgz+0pgg7PKgOLbpOQSeYPtVVRILznJlt8VB0PEsTSIA90Q0D9Uq04D/oRz2gFAIfM/
- CXHePKqeNTWfuQ/i3Lri3WYYzA0FPek=
+ bh=Cq+etduv7qOzxvFdmfoSrscLSR41IfXQ+wypbO81FwY=;
+ b=Lpqd8aC9/b4zutVYoBJkagjh6b1HJr66a8rOzekrKSFDwNuIBMGtzu9OIRmQ24cf6xMvM3
+ 42iM7lHmoQ8qYUizr+vvKr8wfQV+3XdV1Ey2VmwEl6XpWqoy8LFf69FhDHEq/vl9Fpfbap
+ fhW4JPaZShtkbosX469cIY/3tTMIVAI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-83-Bme8E-ZqOv-UcdXxmG34Ag-1; Fri, 20 Oct 2023 12:07:13 -0400
-X-MC-Unique: Bme8E-ZqOv-UcdXxmG34Ag-1
+ us-mta-311-12EQnv9UOGygAvqUNBjejA-1; Fri, 20 Oct 2023 12:07:27 -0400
+X-MC-Unique: 12EQnv9UOGygAvqUNBjejA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD23C87AA02;
- Fri, 20 Oct 2023 16:07:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4567488B78C;
+ Fri, 20 Oct 2023 16:07:26 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.57])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 17A4B503C;
- Fri, 20 Oct 2023 16:07:11 +0000 (UTC)
-Date: Fri, 20 Oct 2023 09:07:10 -0700
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9C09D8CEF;
+ Fri, 20 Oct 2023 16:07:25 +0000 (UTC)
+Date: Fri, 20 Oct 2023 09:07:23 -0700
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: deller@kernel.org
-Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org,
- Helge Deller <deller@gmx.de>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PULL 00/11] C3700 patches
-Message-ID: <20231020160710.GA472129@fedora>
-References: <20231019225257.383071-1-deller@kernel.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Subject: Re: [PULL v2 00/24] s390x patches
+Message-ID: <20231020160723.GA472157@fedora>
+References: <20231020052055.519460-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="T1/fPxNXIMFlA+Yu"
+ protocol="application/pgp-signature"; boundary="zqZOFDvcNc30uU2w"
 Content-Disposition: inline
-In-Reply-To: <20231019225257.383071-1-deller@kernel.org>
+In-Reply-To: <20231020052055.519460-1-thuth@redhat.com>
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -81,7 +80,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---T1/fPxNXIMFlA+Yu
+--zqZOFDvcNc30uU2w
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -89,21 +88,21 @@ Applied, thanks.
 
 Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
 
---T1/fPxNXIMFlA+Yu
+--zqZOFDvcNc30uU2w
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUypa4ACgkQnKSrs4Gr
-c8jj3Af+KQLO826sECvOhi1RApHwctoWTv4lEko1tjkeJW+ATTWRw+Qibs6Nc1hO
-iBShmpLitDHUrUbCteXWGOdctuCOgvpW8/xun5n0O43OPR52yB5qfubAQxsmnhzA
-hsv/EAowFxtO9GOTPBPcaLOKSV+Zp/TSZdZ7Xv8IBE4UWQTloOWtRvE0+mQiZLpp
-iXO6VSKqLMvOXgtcDFEoibFwpSrCDKhBY6AOxg6VxFGA9tr12DCAd0ttl7sQ+jMk
-FPScGOtBLWAy8pfwu4vIuFK6WTnEAJSgsoWC+zuuqI+fe2yagziLIEQp8ga5jT5A
-koFYuVpuw+7IlQ/v7Mb4V9Dgy0NjMg==
-=Dw7J
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUypbsACgkQnKSrs4Gr
+c8hI7gf9HosuqQu17f/EfyjiVvKMOkc1b47RCG2ZKKM1lQObImdUOUaE0239r3Ye
+9mhgYSV2/tUMk53LEc2LHofS282m6c/fzufQW6lFWvJUYK46Yb5TpUmiczcuaOVM
+yUpvfDqwh9q0YHeQP5a4xyQhZushSZUDXaiJL0GDuK/ky30UTGD2nx16hYd0DYIY
+6+FqzNWKGKH3Z0GSSXWEglAAtc2newN4gIkhk5fvXtlLUzD/z/E7D1sG24N50jht
+BWpkQvyGX/7VtHWwaDuwyxhiIP7T4u4z4Cs6nZDcfoX6yOv1aCX77CWC4+Rh9ccj
+mwaE6Nu0za0ms9PVXL28ku9wnSKYAA==
+=86Mm
 -----END PGP SIGNATURE-----
 
---T1/fPxNXIMFlA+Yu--
+--zqZOFDvcNc30uU2w--
 
 
