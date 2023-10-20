@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF957D1741
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FEC7D173A
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:45:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwLK-0007em-V1; Fri, 20 Oct 2023 16:43:38 -0400
+	id 1qtwLM-0007fT-5t; Fri, 20 Oct 2023 16:43:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLJ-0007eV-4d
+ id 1qtwLJ-0007ef-Jq
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:37 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLH-000880-D8
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:36 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6ba54c3ed97so1175958b3a.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:34 -0700 (PDT)
+ id 1qtwLH-000884-QV
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:37 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6b77ab73c6fso996491b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697834613; x=1698439413; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yGgH1h0sKyG0MUFLHGWTfqEo1rXRrhi6xJz7d40ZK7w=;
- b=HkrPF56uEaPte/dtm615s9eK3nyrFITSoCaksd+ieUXzJByoZNBw/H3jVl8InCJ44r
- tzgVjSY72PLFv1mbaLRccyukNQwDRMPneIExsjp6Ne69rS26+8Z5WoKm61cIvT0uSfbo
- JytBoytRGKTaJhmWaCmFB5T4+9eJH+QiJT3E3ojkiTF6k6M/ihIsnuMzYd/phmMIUvRl
- mJ2EoulH6IuJ7mvjPQXVRz+s7pjq6wMReNmv0PtG/AX50Uz5DNT7p/qJ5jUyWWY7SeqR
- pMu+/a2yyKSVzocfOtH67r+pUu9sMTRNh3QLJYMZo5Ty8f9MRM2JT1jc1+jV2BJJqC9A
- nNaw==
+ d=linaro.org; s=google; t=1697834614; x=1698439414; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=J3OQEiXHHMGRWFPueeKCKBwMI85PiFBLtHqDQ0TceE8=;
+ b=j/h+rT+K17RJJ0J0tLcUmY3pXxuv+YNNE3tT8J7p2pes6ltTCKR5gDq7lEjTZ71XEG
+ 1s3vr3w/KsPYPe71YwocADV0P1SmfqG2YebS+zoTg7I9mOxaFXP8PNmoY5Ul+mIhdb0T
+ SaeiN/nz+Gseb8nk0/7qcKFixwX25zN0oPKbdnz90bRkvwkYkP+gmUhx4tmOcsXmqBxa
+ ugQsxgtU1AUgvXGdFY5sSKMaog20eTGTP4AEm4vb82RbjVUiUecJ/ulBCC4qt8kfKhLF
+ p5/AEOSXHL8efxodvy4qgnKSeeAVEk3zF6Gsm+YzlfSV4I+CG8Cg8P3KaNGtRXmu9n7J
+ Sf+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697834613; x=1698439413;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yGgH1h0sKyG0MUFLHGWTfqEo1rXRrhi6xJz7d40ZK7w=;
- b=uyHCRjlnatWpsjEV/6Vte5AxGM7awI/5nd4i/Dw0IXMUjHhFENpZw1HOUAU5VWd2QT
- ZzPJ5BSSuVMQNKunUFq2aoRbL/qJ87K/Qzttgr6F1fjSU1h+9qYWh8iKM8DeWUCIlA8L
- 5tI+BVQHLpbsBPI35zhVXl4lGwHf3spCCBb+pv/0yVEyYUZki14weOden1xzhxkFvJ4j
- BK7FPJO3x6I3ArGFxD8LhYYOYbuJfXCdB/x1twy/YlID/nYmzmfb0g9chE5r26oUIzp9
- XrJY+cSWaZp17IvWfxDgY56EwbTO6kpqgMkmFCQymLdxDzep1bCV6rrFOQfeoHfnGpKv
- TYFQ==
-X-Gm-Message-State: AOJu0Yz++4QiMpl975jW6QihRYsqQuNBBhvwoGJswKv5thsNjZdy1PhO
- hYg6roqizqML1GwE10k8tkT79ZpV0HfXlz33U/4=
-X-Google-Smtp-Source: AGHT+IHiZe/8nw4ysHo7S3Rmi2XYEEQQEWTqHH34Pq4ksBVkJtsIfxaIlESP649yptL/YbRpu26mgg==
-X-Received: by 2002:a62:f245:0:b0:6be:4df:2c9c with SMTP id
- y5-20020a62f245000000b006be04df2c9cmr2504257pfl.28.1697834613173; 
- Fri, 20 Oct 2023 13:43:33 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1697834614; x=1698439414;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=J3OQEiXHHMGRWFPueeKCKBwMI85PiFBLtHqDQ0TceE8=;
+ b=HdJLOqvwAzs/VDm0rLUfURDGXrIDRStHTA9pKoM7D/z/anGYiWZV7s3pUHCU8/O61p
+ MvTEjeR93ptZ6FQhz8pYNA2zjo+0gNGOcQ2NzPWuBRuIgsrGG19Rlqbcko/5QbwSmQF0
+ /o5Cx+wdG8fPta+6SXMx4DtmPCQIGroMXpjY4XIvS/Xa+o6a5g/sKEjObN0QHZCBODV1
+ NiCYimPIznSt9mUEBaZzbUDl0JqGr0ZkEJYHL6S1sskkvCIdQKixwPbKQ2wBqX7TecAE
+ MVDkzxtpUa+r43Xj8uh/n3pRuDgEd6+K5BVR5WXQu++Z7nkbr00xx8NKD3P7AFzFjABt
+ sfTw==
+X-Gm-Message-State: AOJu0YyxlpV+sjGLdu4KNW2q54to1Q2+U1S+SW8UXt8HtC5agbI4Jw+/
+ RQKlZG7u8R38kaYG7GliYfUjuKsDFpjSJ0AhJMY=
+X-Google-Smtp-Source: AGHT+IHY5gQsHQSYD+RUopRh4y+KWBG/a5CPdnmXVVnH12SqTy+Kn5dx0nWJfXBp7QIesIKrV8RMCQ==
+X-Received: by 2002:a05:6a00:1c8c:b0:68f:cdb8:ae33 with SMTP id
+ y12-20020a056a001c8c00b0068fcdb8ae33mr8909450pfw.10.1697834614185; 
+ Fri, 20 Oct 2023 13:43:34 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.32
+ k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 13:43:32 -0700 (PDT)
+ Fri, 20 Oct 2023 13:43:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 00/65] target/hppa: Implement hppa64-cpu
-Date: Fri, 20 Oct 2023 13:42:26 -0700
-Message-Id: <20231020204331.139847-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 01/65] tcg: Improve expansion of deposit of constant
+Date: Fri, 20 Oct 2023 13:42:27 -0700
+Message-Id: <20231020204331.139847-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
+References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,119 +90,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the pa2.0 cpu that should populate Helge's C3700 workstation.
+The extract2 expansion is too difficult for the optimizer to
+simplify.  If we have an immediate input, use and+or instead,
+skipping the and if the field becomes all 1's.
 
-I have adjusted both user and system binaries to always support the
-64-bit cpu but default to the 32-bit cpu.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/tcg-op.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-I have not yet copied the linux kernel sigframe hackery to save
-the upper halves of the registers across signals.  I couldn't get
-hppa-linux-gcc to produce 64-bit code with -march=2.0.  I did some
-some manual testing with hppa64-linux-gnu, but that expects lp64
-and a full 64-bit system library, so the tests has to be small
-and self-contained and also required some manual adjustment for
-the .got pointer references.
-
-Changes for v2:
-  * Rebased, fixing conflicts with the now merged C3700.
-  * hppa_is_pa20 uses classes, like riscv_cpu_is_dynamic.
-
-
-r~
-
-
-Helge Deller (2):
-  target/hppa: sar register allows only 5 bits on 32-bit CPU
-  target/hppa: Fix interruption based on default PSW
-
-Richard Henderson (63):
-  tcg: Improve expansion of deposit of constant
-  tcg: Improve expansion of deposit into a constant
-  target/hppa: Remove get_temp
-  target/hppa: Remove get_temp_tl
-  target/hppa: Remove load_const
-  target/hppa: Fix hppa64 case in machine.c
-  target/hppa: Fix load in do_load_32
-  target/hppa: Truncate rotate count in trans_shrpw_sar
-  target/hppa: Fix trans_ds for hppa64
-  target/hppa: Fix do_add, do_sub for hppa64
-  target/hppa: Fix bb_sar for hppa64
-  target/hppa: Fix extrw and depw with sar for hppa64
-  target/hppa: Introduce TYPE_HPPA64_CPU
-  target/hppa: Make HPPA_BTLB_ENTRIES variable
-  target/hppa: Implement cpu_list
-  target/hppa: Implement hppa_cpu_class_by_name
-  target/hppa: Update cpu_hppa_get/put_psw for hppa64
-  target/hppa: Handle absolute addresses for pa2.0
-  target/hppa: Adjust hppa_cpu_dump_state for hppa64
-  target/hppa: Fix hppa64 addressing
-  target/hppa: Pass d to do_cond
-  target/hppa: Pass d to do_sub_cond
-  target/hppa: Pass d to do_log_cond
-  target/hppa: Pass d to do_sed_cond
-  target/hppa: Pass d to do_unit_cond
-  linux-user/hppa: Fixes for TARGET_ABI32
-  target/hppa: Drop attempted gdbstub support for hppa64
-  target/hppa: Remove TARGET_HPPA64
-  target/hppa: Decode d for logical instructions
-  target/hppa: Decode d for unit instructions
-  target/hppa: Decode d for cmpclr instructions
-  target/hppa: Decode d for add instructions
-  target/hppa: Decode d for sub instructions
-  target/hppa: Decode d for bb instructions
-  target/hppa: Decode d for cmpb instructions
-  target/hppa: Decode CMPIB double-word
-  target/hppa: Decode ADDB double-word
-  target/hppa: Implement LDD, LDCD, LDDA, STD, STDA
-  target/hppa: Implement DEPD, DEPDI
-  target/hppa: Implement EXTRD
-  target/hppa: Implement SHRPD
-  target/hppa: Implement CLRBTS, POPBTS, PUSHBTS, PUSHNOM
-  target/hppa: Implement STDBY
-  target/hppa: Implement IDTLBT, IITLBT
-  hw/hppa: Use uint32_t instead of target_ureg
-  target/hppa: Remove TARGET_REGISTER_BITS
-  target/hppa: Remove most of the TARGET_REGISTER_BITS redirections
-  target/hppa: Remove remaining TARGET_REGISTER_BITS redirections
-  target/hppa: Use tcg_temp_new_i64 not tcg_temp_new
-  target/hppa: Replace tcg_gen_*_tl with tcg_gen_*_i64
-  target/hppa: Implement HADD
-  target/hppa: Implement HSUB
-  target/hppa: Implement HAVG
-  target/hppa: Implement HSHL, HSHR
-  target/hppa: Implement HSHLADD, HSHRADD
-  target/hppa: Implement MIXH, MIXW
-  target/hppa: Implement PERMH
-  target/hppa: Precompute zero into DisasContext
-  target/hppa: Return zero for r0 from load_gpr
-  target/hppa: Simplify trans_dep*_imm
-  include/hw/elf: Remove truncating signed casts
-  hw/hppa: Translate phys addresses for the cpu
-  linux-user/hppa: Drop EXCP_DUMP from handled exceptions
-
- configs/targets/hppa-linux-user.mak |    1 +
- include/hw/elf_ops.h                |   17 +-
- linux-user/hppa/target_elf.h        |    2 +-
- target/hppa/cpu-param.h             |   22 +-
- target/hppa/cpu-qom.h               |    1 +
- target/hppa/cpu.h                   |  100 +-
- target/hppa/helper.h                |   53 +-
- target/hppa/insns.decode            |  169 ++-
- hw/hppa/machine.c                   |  126 +-
- linux-user/hppa/cpu_loop.c          |    4 -
- linux-user/hppa/signal.c            |    6 +-
- target/hppa/cpu.c                   |   70 +-
- target/hppa/gdbstub.c               |   32 +-
- target/hppa/helper.c                |   99 +-
- target/hppa/int_helper.c            |   31 +-
- target/hppa/machine.c               |   13 +-
- target/hppa/mem_helper.c            |  142 +-
- target/hppa/op_helper.c             |  310 +++-
- target/hppa/sys_helper.c            |   13 +-
- target/hppa/translate.c             | 2029 +++++++++++++++------------
- tcg/tcg-op.c                        |  323 +++--
- 21 files changed, 2194 insertions(+), 1369 deletions(-)
-
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index 393dbcd01c..2ef4b866e2 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -602,6 +602,7 @@ void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
+ {
+     uint32_t mask;
+     TCGv_i32 t1;
++    TCGTemp *ts;
+ 
+     tcg_debug_assert(ofs < 32);
+     tcg_debug_assert(len > 0);
+@@ -617,6 +618,19 @@ void tcg_gen_deposit_i32(TCGv_i32 ret, TCGv_i32 arg1, TCGv_i32 arg2,
+         return;
+     }
+ 
++    /* Deposit of a constant into a value. */
++    ts = tcgv_i32_temp(arg2);
++    if (ts->kind == TEMP_CONST) {
++        uint32_t mask0 = deposit32(-1, ofs, len, 0);
++        uint32_t maski = deposit32(0, ofs, len, ts->val);
++
++        if (mask0 != ~maski) {
++            tcg_gen_andi_i32(ret, arg1, mask0);
++        }
++        tcg_gen_ori_i32(ret, ret, maski);
++        return;
++    }
++
+     t1 = tcg_temp_ebb_new_i32();
+ 
+     if (TCG_TARGET_HAS_extract2_i32) {
+@@ -2217,6 +2231,7 @@ void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
+ {
+     uint64_t mask;
+     TCGv_i64 t1;
++    TCGTemp *ts;
+ 
+     tcg_debug_assert(ofs < 64);
+     tcg_debug_assert(len > 0);
+@@ -2232,6 +2247,19 @@ void tcg_gen_deposit_i64(TCGv_i64 ret, TCGv_i64 arg1, TCGv_i64 arg2,
+         return;
+     }
+ 
++    /* Deposit of a constant into a value. */
++    ts = tcgv_i64_temp(arg2);
++    if (ts->kind == TEMP_CONST) {
++        uint64_t mask0 = deposit64(-1, ofs, len, 0);
++        uint64_t maski = deposit64(0, ofs, len, ts->val);
++
++        if (mask0 != ~maski) {
++            tcg_gen_andi_i64(ret, arg1, mask0);
++        }
++        tcg_gen_ori_i64(ret, ret, maski);
++        return;
++    }
++
+     if (TCG_TARGET_REG_BITS == 32) {
+         if (ofs >= 32) {
+             tcg_gen_deposit_i32(TCGV_HIGH(ret), TCGV_HIGH(arg1),
 -- 
 2.34.1
 
