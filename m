@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A277D176C
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7FC7D1787
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:51:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwLs-0007pG-JI; Fri, 20 Oct 2023 16:44:12 -0400
+	id 1qtwLt-0007pO-NI; Fri, 20 Oct 2023 16:44:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLU-0007jO-Dj
+ id 1qtwLU-0007jP-Du
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:51 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLQ-0008A0-DB
+ id 1qtwLS-0008AD-Lt
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:48 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6b709048d8eso1082101b3a.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:43 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6b709048f32so1136118b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697834622; x=1698439422; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697834623; x=1698439423; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vj5Zj+Bw57JH4E175sUuTw9SkCPkXc9sWUiIDH26gck=;
- b=enH7rGJb+3DB9sJMVEgD+exnNafObOJfJKbLWTeia8Ssb5b3w6rToSXFOq/Dh8umAx
- tae8x8ddcnEBiLLpXdXQKupb8i5YFRhd01eqjgTR8CeYCPMhPvCHOFFQSPJhQRjFvu2e
- ZU7DCHb65I2sbZ97V1vbp6YgsLes4Zp8B6kdmwOG9s08Ull1yiPr11hhdaamK4k6r3aW
- 0m1nS4Zrb5NXLqasSu043ZwShouPHK/Ntsxibhr5UBa0rY7mROFgmyz2Voip0LYHVetF
- OUtnuPe8/Q3+J29BdLPtGwPhmka6rI6fQLzmWXHnU7gnaRyKA6vvA8rc0gbVFXxyCYRy
- yzvQ==
+ bh=+3Cca9a0dUfxOMmsrbDZSCnt4BuRnsfCclCPiSMy9B8=;
+ b=ikUtBKj+/5QIBQ8z8gMQcGNZow41MD5jPJqIkK00UwMACNaeEoPlkWGsbP1qvW0R1+
+ eKDze6xwHSKC0cnUq+OA1KWzV9VdcKBgdzolDMYyBUDFnz/kGbIU1FP1pIyEJQ4BUH31
+ qiFT079IDJQAYAQEVdgpIvxPxB4Yl9SUnwP/W0+zZQki+wBS8p/xI6netdKDC3Z95USg
+ zfnepvNpI++tdsVja3MpY8o1HFOc/Zt2uKw0OABYLRiszFpJVwFKCDu0SKNupnnj9kCD
+ CCRRjrugcl7qsQXDUK+Q8XIu05Hf7Ya5yykQaLCprwPoLhqnc8URvWIPDT8mHYGI8ulj
+ 8YFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697834622; x=1698439422;
+ d=1e100.net; s=20230601; t=1697834623; x=1698439423;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vj5Zj+Bw57JH4E175sUuTw9SkCPkXc9sWUiIDH26gck=;
- b=oL7Pl2l4Aj/1fMdPq4ZfDmxtF7lvQAf8bchkKD2VrOkdWmXVgOONr9GD4kfA49E0IE
- x8wgPPNIzde2+VcqPF1cjjGSJfsRVqvPz1tuIwOpzEIOwPOCgCdrzdGxSH6Ky7vMmmXV
- XXJJYFI9mmYgSkpMsm37iL4dB1q1DigOEVZ27CtzY/1QfgjcLs8PQFW419zwQf+JJrEz
- CDQOQOcqZr7wO3sHXo0CAGsDqK9vIj9ivSK/EhkSWlfZzKs+ksE5P/OC0aGF+xJHTtvF
- jdDtbmutyZ2GR/75qmH+DC11EgVdajlHT5PM4W8c2R+ct+WXu5GsPGL1uIPQPortpL9J
- DFDQ==
-X-Gm-Message-State: AOJu0Yw1y6YpTDyoMi9guTdSJvLaXBNjHDZEsQ/X7EdbXBg/YV69k7vW
- ZFKngXpnZAbpbMYvYbUbREbRgZSMiusXwWubqYQ=
-X-Google-Smtp-Source: AGHT+IH/mrDpKNwmCG2mQMKMC6ffKpRFf7JQe6WGYDPrM5+djX73VlIdwTtQdb66sUM1WrqnLAOIrQ==
-X-Received: by 2002:a05:6a00:99e:b0:6be:265:1bf5 with SMTP id
- u30-20020a056a00099e00b006be02651bf5mr3314607pfg.24.1697834622534; 
- Fri, 20 Oct 2023 13:43:42 -0700 (PDT)
+ bh=+3Cca9a0dUfxOMmsrbDZSCnt4BuRnsfCclCPiSMy9B8=;
+ b=OSQrE1FEt3RLkI0KpiahwcDy1hxv3ULcI2ObInVug3gkFmIk2zGD1hkg5em3IwXpuW
+ juKGF+HQrnVZXb1IeUk7rmusca5z3Y0Kqhc7XbJJ1GC8pzEXFb1IOWyvdVta9HO3xMHm
+ b9vqoZqSBj/U+ldoQf7Qs2kc+8Fo0yjpx2lz1k/1qcN87Lw/j0QT9JEj6dvWIZWcz8VW
+ MmdoHR7u0m+76F/cWry1xKYHuFCjaZZ0meM4DD15suKxcqRfKg/9Za5QgyIXyVhdmtE3
+ SAevbDZNkiw2GHLmFI3iO5v7+eMO7FGKqpeMO8Lgk+UY092OhNupQ7+0UjRts8rOL6Qt
+ iooQ==
+X-Gm-Message-State: AOJu0YwAEzEqeOlKLec8fuV35z7yIPbU8iqXN2ov1F3sCUJ/f9EtDGCc
+ NRFJS6DGVE1IQyBFMDkmtIJl9P7vwsx6Cv4IRBE=
+X-Google-Smtp-Source: AGHT+IEgHVms0FprHai/z+q6cUO5mRdGHx2R5gxSBQlvfFv2K9sKW8seRJhEmG+9aqNPyUQKAn8tpw==
+X-Received: by 2002:a05:6a20:4924:b0:14c:5dc3:f1c9 with SMTP id
+ ft36-20020a056a20492400b0014c5dc3f1c9mr2380653pzb.49.1697834623353; 
+ Fri, 20 Oct 2023 13:43:43 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.41
+ k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 20 Oct 2023 13:43:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 10/65] target/hppa: Fix do_add, do_sub for hppa64
-Date: Fri, 20 Oct 2023 13:42:36 -0700
-Message-Id: <20231020204331.139847-11-richard.henderson@linaro.org>
+Subject: [PATCH v2 11/65] target/hppa: Fix bb_sar for hppa64
+Date: Fri, 20 Oct 2023 13:42:37 -0700
+Message-Id: <20231020204331.139847-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,150 +90,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Select the proper carry bit for input to the arithmetic
-and for output for the condition.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 50 ++++++++++++++++++++++++++---------------
- 1 file changed, 32 insertions(+), 18 deletions(-)
+ target/hppa/translate.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index fb7a295367..8ebe7523a7 100644
+index 8ebe7523a7..119422870c 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -1094,13 +1094,15 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_reg in1,
-                    TCGv_reg in2, unsigned shift, bool is_l,
-                    bool is_tsv, bool is_tc, bool is_c, unsigned cf)
+@@ -3073,14 +3073,21 @@ static bool trans_bb_sar(DisasContext *ctx, arg_bb_sar *a)
  {
--    TCGv_reg dest, cb, cb_msb, sv, tmp;
-+    TCGv_reg dest, cb, cb_msb, cb_cond, sv, tmp;
-     unsigned c = cf >> 1;
+     TCGv_reg tmp, tcg_r;
      DisasCond cond;
 +    bool d = false;
  
-     dest = tcg_temp_new();
-     cb = NULL;
-     cb_msb = NULL;
-+    cb_cond = NULL;
+     nullify_over(ctx);
  
-     if (shift) {
-         tmp = tcg_temp_new();
-@@ -1111,19 +1113,22 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_reg in1,
-     if (!is_l || cond_need_cb(c)) {
-         TCGv_reg zero = tcg_constant_reg(0);
-         cb_msb = tcg_temp_new();
-+        cb = tcg_temp_new();
-+
-         tcg_gen_add2_reg(dest, cb_msb, in1, zero, in2, zero);
-         if (is_c) {
--            tcg_gen_add2_reg(dest, cb_msb, dest, cb_msb, cpu_psw_cb_msb, zero);
-+            tcg_gen_add2_reg(dest, cb_msb, dest, cb_msb,
-+                             get_psw_carry(ctx, d), zero);
-         }
--        if (!is_l) {
--            cb = tcg_temp_new();
--            tcg_gen_xor_reg(cb, in1, in2);
--            tcg_gen_xor_reg(cb, cb, dest);
-+        tcg_gen_xor_reg(cb, in1, in2);
-+        tcg_gen_xor_reg(cb, cb, dest);
-+        if (cond_need_cb(c)) {
-+            cb_cond = get_carry(ctx, d, cb, cb_msb);
-         }
-     } else {
-         tcg_gen_add_reg(dest, in1, in2);
-         if (is_c) {
--            tcg_gen_add_reg(dest, dest, cpu_psw_cb_msb);
-+            tcg_gen_add_reg(dest, dest, get_psw_carry(ctx, d));
-         }
-     }
+     tmp = tcg_temp_new();
+     tcg_r = load_gpr(ctx, a->r);
+-    tcg_gen_shl_reg(tmp, tcg_r, cpu_sar);
++    if (cond_need_ext(ctx, d)) {
++        /* Force shift into [32,63] */
++        tcg_gen_ori_reg(tmp, cpu_sar, 32);
++        tcg_gen_shl_reg(tmp, tcg_r, tmp);
++    } else {
++        tcg_gen_shl_reg(tmp, tcg_r, cpu_sar);
++    }
  
-@@ -1138,7 +1143,7 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_reg in1,
-     }
- 
-     /* Emit any conditional trap before any writeback.  */
--    cond = do_cond(cf, dest, cb_msb, sv);
-+    cond = do_cond(cf, dest, cb_cond, sv);
-     if (is_tc) {
-         tmp = tcg_temp_new();
-         tcg_gen_setcond_reg(cond.c, tmp, cond.a0, cond.a1);
-@@ -1192,6 +1197,7 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_reg in1,
-     TCGv_reg dest, sv, cb, cb_msb, zero, tmp;
-     unsigned c = cf >> 1;
-     DisasCond cond;
-+    bool d = false;
- 
-     dest = tcg_temp_new();
-     cb = tcg_temp_new();
-@@ -1201,15 +1207,17 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_reg in1,
-     if (is_b) {
-         /* DEST,C = IN1 + ~IN2 + C.  */
-         tcg_gen_not_reg(cb, in2);
--        tcg_gen_add2_reg(dest, cb_msb, in1, zero, cpu_psw_cb_msb, zero);
-+        tcg_gen_add2_reg(dest, cb_msb, in1, zero, get_psw_carry(ctx, d), zero);
-         tcg_gen_add2_reg(dest, cb_msb, dest, cb_msb, cb, zero);
-         tcg_gen_xor_reg(cb, cb, in1);
-         tcg_gen_xor_reg(cb, cb, dest);
-     } else {
--        /* DEST,C = IN1 + ~IN2 + 1.  We can produce the same result in fewer
--           operations by seeding the high word with 1 and subtracting.  */
--        tcg_gen_movi_reg(cb_msb, 1);
--        tcg_gen_sub2_reg(dest, cb_msb, in1, cb_msb, in2, zero);
-+        /*
-+         * DEST,C = IN1 + ~IN2 + 1.  We can produce the same result in fewer
-+         * operations by seeding the high word with 1 and subtracting.
-+         */
-+        TCGv_reg one = tcg_constant_reg(1);
-+        tcg_gen_sub2_reg(dest, cb_msb, in1, one, in2, zero);
-         tcg_gen_eqv_reg(cb, in1, in2);
-         tcg_gen_xor_reg(cb, cb, dest);
-     }
-@@ -1227,7 +1235,7 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_reg in1,
-     if (!is_b) {
-         cond = do_sub_cond(cf, dest, in1, in2, sv);
-     } else {
--        cond = do_cond(cf, dest, cb_msb, sv);
-+        cond = do_cond(cf, dest, get_carry(ctx, d, cb, cb_msb), sv);
-     }
- 
-     /* Emit any conditional trap before any writeback.  */
-@@ -3019,18 +3027,24 @@ static bool trans_cmpbi(DisasContext *ctx, arg_cmpbi *a)
- static bool do_addb(DisasContext *ctx, unsigned r, TCGv_reg in1,
-                     unsigned c, unsigned f, unsigned n, int disp)
- {
--    TCGv_reg dest, in2, sv, cb_msb;
-+    TCGv_reg dest, in2, sv, cb_cond;
-     DisasCond cond;
-+    bool d = false;
- 
-     in2 = load_gpr(ctx, r);
-     dest = tcg_temp_new();
-     sv = NULL;
--    cb_msb = NULL;
-+    cb_cond = NULL;
- 
-     if (cond_need_cb(c)) {
--        cb_msb = tcg_temp_new();
-+        TCGv_reg cb = tcg_temp_new();
-+        TCGv_reg cb_msb = tcg_temp_new();
-+
-         tcg_gen_movi_reg(cb_msb, 0);
-         tcg_gen_add2_reg(dest, cb_msb, in1, cb_msb, in2, cb_msb);
-+        tcg_gen_xor_reg(cb, in1, in2);
-+        tcg_gen_xor_reg(cb, cb, dest);
-+        cb_cond = get_carry(ctx, d, cb, cb_msb);
-     } else {
-         tcg_gen_add_reg(dest, in1, in2);
-     }
-@@ -3038,7 +3052,7 @@ static bool do_addb(DisasContext *ctx, unsigned r, TCGv_reg in1,
-         sv = do_add_sv(ctx, dest, in1, in2);
-     }
- 
--    cond = do_cond(c * 2 + f, dest, cb_msb, sv);
-+    cond = do_cond(c * 2 + f, dest, cb_cond, sv);
-     save_gpr(ctx, r, dest);
-     return do_cbranch(ctx, disp, n, &cond);
+-    cond = cond_make_0(a->c ? TCG_COND_GE : TCG_COND_LT, tmp);
++    cond = cond_make_0_tmp(a->c ? TCG_COND_GE : TCG_COND_LT, tmp);
+     return do_cbranch(ctx, a->disp, a->n, &cond);
  }
+ 
+@@ -3088,12 +3095,15 @@ static bool trans_bb_imm(DisasContext *ctx, arg_bb_imm *a)
+ {
+     TCGv_reg tmp, tcg_r;
+     DisasCond cond;
++    bool d = false;
++    int p;
+ 
+     nullify_over(ctx);
+ 
+     tmp = tcg_temp_new();
+     tcg_r = load_gpr(ctx, a->r);
+-    tcg_gen_shli_reg(tmp, tcg_r, a->p);
++    p = a->p | (cond_need_ext(ctx, d) ? 32 : 0);
++    tcg_gen_shli_reg(tmp, tcg_r, p);
+ 
+     cond = cond_make_0(a->c ? TCG_COND_GE : TCG_COND_LT, tmp);
+     return do_cbranch(ctx, a->disp, a->n, &cond);
 -- 
 2.34.1
 
