@@ -2,58 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F310D7D10DE
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 15:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD3E7D11A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 16:33:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtpvb-00010L-7h; Fri, 20 Oct 2023 09:52:39 -0400
+	id 1qtqYb-00006j-1l; Fri, 20 Oct 2023 10:32:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qtpvY-0000yX-Iu; Fri, 20 Oct 2023 09:52:36 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1qtqYX-00005f-73; Fri, 20 Oct 2023 10:32:53 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qtpvW-0003ZD-37; Fri, 20 Oct 2023 09:52:36 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 788724369E;
- Fri, 20 Oct 2023 15:52:23 +0200 (CEST)
-Message-ID: <e13b488e-bf13-44f2-acca-e724d14f43fd@proxmox.com>
-Date: Fri, 20 Oct 2023 15:52:22 +0200
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1qtqYV-0007cp-HT; Fri, 20 Oct 2023 10:32:52 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39KEJYTD018672; Fri, 20 Oct 2023 14:32:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=zNR1NXyQCG58AJ4YU2+rln2CrEhQqwTWZ70vkvEObkA=;
+ b=e6iwD+PgJYlj526z5i2O3lxUkVH72bLEp/2Ut5eZKug0XYqcC7i7zWgg9hBTFiQD6kj/
+ uR2mwiYiP+mhnt7sX8ZRhvrnDdgQCz64FkreBgWxL5N94UuCb8chpPemb9mQbZ5+h/Bp
+ Rq2JJlzd+IjSk2FUJrzDEOPux2W2CjPP5lQ7OW/KxVlPaf1OYLo0PBL4huUMSng4RRbS
+ hBc/0S5gS0I+xo4YdT8r7dz7HP6u9FSaz2ZY5FBpriUPZpa1yQoeR4U2nu0pkOZ3d69V
+ xCckU//TDz2xLY7Qs26q+yyQLHvBIx+KXvUUq0CRnbjgXqP2oJKuVDd4Gao3NaUhysZj 9w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuu7bghuw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Oct 2023 14:32:48 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39KESgcs015588;
+ Fri, 20 Oct 2023 14:32:48 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuu7bghf8-18
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Oct 2023 14:32:48 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39KCMqSQ019404; Fri, 20 Oct 2023 14:05:50 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc454ypg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Oct 2023 14:05:50 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39KE5nTC50332132
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Oct 2023 14:05:49 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 885445805B;
+ Fri, 20 Oct 2023 14:05:49 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8DF2A5805C;
+ Fri, 20 Oct 2023 14:05:48 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.43.147]) by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Oct 2023 14:05:48 +0000 (GMT)
+Message-ID: <1e2021e9ab87d68ac2628ecfa33b2fb14c8088fd.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/3] hw/s390x: Don't call register_savevm_live() during
+ instance_init()
+From: Eric Farman <farman@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, Christian
+ Borntraeger <borntraeger@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>, David
+ Hildenbrand <david@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Juan Quintela <quintela@redhat.com>
+Date: Fri, 20 Oct 2023 10:05:48 -0400
+In-Reply-To: <20231020125728.579747-1-thuth@redhat.com>
+References: <20231020125728.579747-1-thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: deadlock when using iothread during backup_clean()
-Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, QEMU Developers
- <qemu-devel@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
- John Snow <jsnow@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>,
- Thomas Lamprecht <t.lamprecht@proxmox.com>
-References: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
- <dd12f39d-a364-b186-2ad7-04343ea85e3f@redhat.com>
- <44ff810b-8ec6-0f11-420a-6efa2c7c2475@proxmox.com>
- <2ca4eb06-75c3-7bd8-972b-b37af47743dc@yandex-team.ru>
- <71e3112d-3d3f-fd55-4099-6765d4f22205@proxmox.com>
- <76f9678d-ed92-418e-8d1e-c6dc55f83279@proxmox.com>
- <ZS56FzuqZSApXBbc@redhat.com>
- <c2a6c1b6-0438-488f-bba3-1014ffdadbce@proxmox.com>
- <ZS6YFtYKyFLbfrrP@redhat.com>
- <3e1c941b-2b76-4f85-88cb-4a2a968eb3e6@proxmox.com>
- <ZTEdk5gKXlIrKNm8@redhat.com>
- <b8007a25-10e1-483c-81c4-9d7dc3c67ed9@proxmox.com>
-In-Reply-To: <b8007a25-10e1-483c-81c4-9d7dc3c67ed9@proxmox.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: m7VqlQfLD1PSzVr5wO3waZOH6PkF7sXm
+X-Proofpoint-ORIG-GUID: hxnHizUjklNZNPWxcJd8gbt2SWhSEfz8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-20_10,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=854 adultscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310200119
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,175 +115,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 19.10.23 um 15:53 schrieb Fiona Ebner:
-> Am 19.10.23 um 14:14 schrieb Kevin Wolf:
->> Am 18.10.2023 um 11:42 hat Fiona Ebner geschrieben:
->>> Am 17.10.23 um 16:20 schrieb Kevin Wolf:
->>>> Am 17.10.2023 um 15:37 hat Fiona Ebner geschrieben:
->>>>> Am 17.10.23 um 14:12 schrieb Kevin Wolf:
->>>>>> Am 17.10.2023 um 12:18 hat Fiona Ebner geschrieben:
->>>>>>> I ran into similar issues now with mirror, (both deadlocks and stuck
->>>>>>> guest IO at other times), and interestingly, also during job start.
->>>>>>>
->>>>>>> Also had a backtrace similar to [0] once, so I took a closer look.
->>>>>>> Probably was obvious to others already, but for the record:
->>>>>>>
->>>>>>> 1. the graph is locked by the main thread
->>>>>>> 2. the iothread holds the AioContext lock
->>>>>>> 3. the main thread waits on the AioContext lock
->>>>>>> 4. the iothread waits for coroutine spawned by blk_is_available()
->>>>>>
->>>>>> Where does this blk_is_available() in the iothread come from? Having it
->>>>>> wait without dropping the AioContext lock sounds like something that
->>>>>> we'd want to avoid. Ideally, devices using iothreads shouldn't use
->>>>>> synchronous requests at all, but I think scsi-disk might have some of
->>>>>> them.
->>>>>>
->>>>>
->>>>> It's part of the request handling in virtio-scsi:
->>>>>
->>>>>> #0  0x00007ff7f5f55136 in __ppoll (fds=0x7ff7e40030c0, nfds=8, timeout=<optimized out>, sigmask=0x0) at ../sysdeps/unix/sysv/linux/ppoll.c:42
->>>>>> #1  0x00005587132615ab in qemu_poll_ns (fds=0x7ff7e40030c0, nfds=8, timeout=-1) at ../util/qemu-timer.c:339
->>>>>> #2  0x000055871323e8b1 in fdmon_poll_wait (ctx=0x55871598d5e0, ready_list=0x7ff7f288ebe0, timeout=-1) at ../util/fdmon-poll.c:79
->>>>>> #3  0x000055871323e1ed in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:670
->>>>>> #4  0x0000558713089efa in bdrv_poll_co (s=0x7ff7f288ec90) at /home/febner/repos/qemu/block/block-gen.h:43
->>>>>> #5  0x000055871308c362 in blk_is_available (blk=0x55871599e2f0) at block/block-gen.c:1426
->>>>>> #6  0x0000558712f6843b in virtio_scsi_ctx_check (s=0x558716c049c0, d=0x55871581cd30) at ../hw/scsi/virtio-scsi.c:290
->>>>
->>>> Oh... So essentially for an assertion.
->>>>
->>>> I wonder if the blk_is_available() check introduced in 2a2d69f490c is
->>>> even necessary any more, because BlockBackend has its own AioContext
->>>> now. And if blk_bs(blk) != NULL isn't what we actually want to check if
->>>> the check is necessary, because calling bdrv_is_inserted() doesn't seem
->>>> to have been intended. blk_bs() wouldn't have to poll.
->>>>
->>>
->>> Could virtio_scsi_hotunplug() be an issue with removing or modifying
->>> the check? There's a call there which sets the blk's AioContext to
->>> qemu_get_aio_context(). Or are we sure that the assert in
->>> virtio_scsi_ctx_check() can't be reached after that?
->>
->> I think that would be the kind of bug that the assertion tries to
->> catch, because then we would be sending requests to blk from a thread
->> that doesn't match its AioContext (which will be allowed soon, but not
->> quite yet).
->>
->> Before resetting the AioContext, virtio_scsi_hotunplug() calls
->> qdev_simple_device_unplug_cb(), which unrealizes the SCSI device. This
->> calls scsi_qdev_unrealize() -> scsi_device_purge_requests(), which in
->> turn drains blk and cancels all pending requests. So there should be
->> nothing left that could call into virtio_scsi_ctx_check() any more.
->>
->> The other argument is that after unrealize, virtio_scsi_device_get()
->> would return NULL anyway, so even if a request were still pending, it
->> would just fail instead of accessing the unplugged device.
->>
-> 
-> Okay, sounds like a way to get around that deadlock issue then :)
-> 
+On Fri, 2023-10-20 at 14:57 +0200, Thomas Huth wrote:
+> We must not call register_savevm_live() during instance_init()
+> since instances can be created at any time, e.g. during introspection
+> of a device. We must register the savevm handler during realize()
+> instead. Fix it now in the s390x devices.
+>=20
+> Thomas Huth (3):
+> =C2=A0 hw/s390x/s390-skeys: Don't call register_savevm_live() during
+> =C2=A0=C2=A0=C2=A0 instance_init()
+> =C2=A0 hw/s390x/s390-stattrib: Simplify handling of the "migration-
+> enabled"
+> =C2=A0=C2=A0=C2=A0 property
+> =C2=A0 hw/s390x/s390-stattrib: Don't call register_savevm_live() during
+> =C2=A0=C2=A0=C2=A0 instance_init()
+>=20
+> =C2=A0hw/s390x/s390-skeys.c=C2=A0=C2=A0=C2=A0 | 35 ++++++----------------=
+----
+> =C2=A0hw/s390x/s390-stattrib.c | 54 +++++++++++++++----------------------=
+-
+> --
+> =C2=A02 files changed, 28 insertions(+), 61 deletions(-)
 
-Unfortunately, scsi_dma_command() also has a blk_is_available() call and
-I ran into a similar deadlock with that once.
+Man, this makes it a lot easier to read too. With the amended patch 3:
 
-> (...)
-> 
->>>>
->>>> What does the stuck I/O look like? Is it stuck in the backend, i.e. the
->>>> device started requests that never complete? Or stuck from the guest
->>>> perspective, i.e. the device never checks for new requests?
->>>>
->>>
->>> AFAICT, from the guest perspective.
->>>
->>>> I don't really have an idea immediately, we'd have to find out where the
->>>> stuck I/O stops being processed.
->>>>
->>>
->>> I've described it in an earlier mail in this thread:
->>> https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg01900.html
->>>
->>> Quoting from there:
->>>
->>>> After the IO was stuck in the guest, I used bdrv_next_all_states() to
->>>> iterate over the states and there's only the bdrv_raw and the
->>>> bdrv_host_device. For both, tracked_requests was empty.
->>
->> And bs->in_flight and blk->in_flight are 0, too?
->>
-> 
-> Yes. And queued_requests in the BlockBackend is also empty.
-> 
->> Is anything quiesced?
-> 
-> No. quiesce_counter is 0 for both BlockDriverState instances as well as
-> for the BlockBackend. quiesced_parent is false for both parents (i.e.
-> child_root for the bdrv_raw and child_of_bds for the bdrv_file (this
-> time I used VirtIO SCSI, in the quote it was VirtIO block)).
-> 
->>>> What is also very interesting is that the IO isn't always dead
->>>> immediately. It can be that the fio command still runs with lower speed
->>>> for a while (sometimes even up to about a minute, but most often about
->>>> 10-15 seconds or so). During that time, I still can see calls to
->>>> virtio_scsi_handle_cmd() and blk_aio_write_entry(). Then they suddenly stop.
->>>
->>> Noting again that (at least for backup) it happens with both virtio-blk
->>> and virtio-scsi and with both aio=io_uring and aio=threads. I also tried
->>> different host kernels 5.15, 6.2 and 6.5 and guest kernels 5.10 and 6.1.
->>
->> You say "at least for backup". Did you see the bug for other job types,
->> too?
->>
-> 
-> Yes, sorry. I meant to say that I only tested it for the backup
-> canceling with all those configurations. I did run into the stuck guest
-> IO issue in three different scenarios: canceling backup, canceling
-> mirror and starting mirror:
-> 
->>>>>> Am 17.10.2023 um 12:18 hat Fiona Ebner geschrieben:
->>>>>>> I ran into similar issues now with mirror, (both deadlocks and stuck
->>>>>>> guest IO at other times), and interestingly, also during job start.
-> 
-> But for mirror, I only used VirtIO SCSI and aio=io_uring and didn't test
-> other configurations.
-> 
-
-I should also mention that I used drive-mirror and drive-backup. I can
-also trigger the issue with blockdev-mirror when canceling, but didn't
-run into it when starting with blockdev-mirror yet.
-
-And I found that with drive-mirror, the issue during starting seems to
-manifest with the bdrv_open() call. Adding a return before it, the guest
-IO didn't get stuck in my testing, but adding a return after it, it can
-get stuck. I'll try to see if I can further narrow it down next week,
-but maybe that's already a useful hint?
-
-> diff --git a/blockdev.c b/blockdev.c
-> index a01c62596b..156915d15d 100644
-> --- a/blockdev.c
-> +++ b/blockdev.c
-> @@ -3126,6 +3126,8 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
->      }
->      aio_context_release(aio_context);
->  
-> +    // return; // GOOD
-> +
->      /* Mirroring takes care of copy-on-write using the source's backing
->       * file.
->       */
-> @@ -3133,6 +3135,8 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
->      target_bs = bdrv_open(arg->target, NULL, options, flags, errp);
->      aio_context_release(qemu_get_aio_context());
->  
-> +    // return; // BAD
-> +
->      if (!target_bs) {
->          return;
->      }
-
-
-Best Regards,
-Fiona
-
-
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
 
