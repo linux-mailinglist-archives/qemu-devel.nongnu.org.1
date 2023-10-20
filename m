@@ -2,57 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53CD57D06A4
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 04:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5077D06C4
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 05:15:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtfcT-000162-As; Thu, 19 Oct 2023 22:52:13 -0400
+	id 1qtfxq-0006Af-4c; Thu, 19 Oct 2023 23:14:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
- id 1qtfcQ-00015U-EZ; Thu, 19 Oct 2023 22:52:10 -0400
-Received: from pi.codeconstruct.com.au ([203.29.241.158]
- helo=codeconstruct.com.au)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
- id 1qtfcK-0004x1-PH; Thu, 19 Oct 2023 22:52:10 -0400
-Received: from [192.168.68.112]
- (ppp118-210-136-142.adl-adc-lon-bras33.tpg.internode.on.net
- [118.210.136.142])
- by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 173DA20052;
- Fri, 20 Oct 2023 10:51:50 +0800 (AWST)
+ (Exim 4.90_1) (envelope-from <viresh.kumar@linaro.org>)
+ id 1qtfxn-00069n-Ou
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 23:14:15 -0400
+Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <viresh.kumar@linaro.org>)
+ id 1qtfxm-0004DZ-3v
+ for qemu-devel@nongnu.org; Thu, 19 Oct 2023 23:14:15 -0400
+Received: by mail-ua1-x92c.google.com with SMTP id
+ a1e0cc1a2514c-7b6043d0b82so155162241.1
+ for <qemu-devel@nongnu.org>; Thu, 19 Oct 2023 20:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=codeconstruct.com.au; s=2022a; t=1697770313;
- bh=Z2pgugpF/CIcSQgJJthKo3fKGouwMrYw7wApHyRvrZs=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References;
- b=DOF5EGhiZVN3KfcIhKf/SKnVtWCroJW3LcPpIbOkJIe0kzA8tWX1f538vvGlKXPmK
- XOF7zsrKHaPd2CyO20I895aXjg4V25edQjMpidbAmyE2SbOSJlWYqCXSpgIc/9LTIn
- lQG65OmKmD0+n4Z7OOSawCzLo7PT4LGUK93qRKkki/2mJ+r6MBqX/jwNCpC7ke6FcQ
- KxvFJ4r//FXQYobVVhytiiO2vaNXNJvTKoHb4sw1M0qHgHAoS5YV3zYdmqkO6mt6WM
- pndbb5hfr0k27Mn1TZq6E7C4+xeCFPNblEPHPUowwPWixwS+SJrOsBEu1KvJrn9K7i
- h7fflYlZldhWQ==
-Message-ID: <e0f36ef6336df26d5c123c5861d6a779c94e3eb9.camel@codeconstruct.com.au>
-Subject: Re: [PATCH 1/2] misc/pca9552: Fix inverted input status
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-To: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, f4bug@amsat.org
-Date: Fri, 20 Oct 2023 13:21:48 +1030
-In-Reply-To: <20231019204011.3174115-2-milesg@linux.vnet.ibm.com>
-References: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
- <20231019204011.3174115-2-milesg@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+ d=linaro.org; s=google; t=1697771652; x=1698376452; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=SmIOwafm690ltH7DS0hp8tl/3mX+luN9DZkRrNK/BHc=;
+ b=po1TvuylTb767BN4eRsz3az9b2sYkJ0JEdyTFD1c7tsG2+cR8Jpii6UoJ+JNQCXwAT
+ VsbuUhR3Y2nSkicicwzoY3eVTi6RA4RrkYE+7rQsAZgmqsVGGXaRhwNlm3HHGHKVnM6t
+ s7Ad+FntYA7IU278PeV8BqZ3iD6PUgiqKNmLcSUssmIyXXFWohOnoKtG8lPYHayFSWpy
+ oLsmjkae4kqIoObepdhdh0EefStYIQofdujR8H6gQ0xk2U2ZBZPMG2w0KX+qvJZxZvik
+ DcQaFc/J1YXxn/l3gcAlsDI1siDXsaPEuXldyXh0inQ8oRwHt6pyrunluifj5lWHbJrm
+ Lpog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697771652; x=1698376452;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SmIOwafm690ltH7DS0hp8tl/3mX+luN9DZkRrNK/BHc=;
+ b=IA8wWA0jS2u10hUY6bO5UdFEM8PW2zYNE+UnjheJUgn9i6ZlkeJ2V+AHdddnLvP2so
+ e4G32ZL7tv/sm4Gwxr5uzOS9wsH1uLeLXGr/jbj/Qt9o0wwlPaz+dGkliE/Ny1TW3K1R
+ nSAhqRfR8ewjrQunDrY3qpCJMvjbRAwV36UEdStluqKx0acZRFXzPbyWumNGWN3MlGfN
+ NC+z0co89ldAEuGETzpkfFD0+ycglDHv/FyZ826kYEq8tIE3qJDKsEa4NiI0mGsH+XOB
+ XPT/RBC9hmfP0MOonJq1+bxd8ztFaEC9fji5CFV81P9XzK4d43ncdP4BHvH/yxx5XZgb
+ 4WEg==
+X-Gm-Message-State: AOJu0Yx2qIxuAl17nW/C3IbIWgUu187/6vkxb20GLjR4Njvm6zgEh311
+ CKsDKXRaOzL4ffNK7u90xjzSWw==
+X-Google-Smtp-Source: AGHT+IFk6uuV4TqJiznEMS381fAcEVlixbb0ghWNqEzuTanFfK5wmLSPOegcRaL88iMyrjJT8atHvw==
+X-Received: by 2002:a67:b241:0:b0:457:d55a:cbc6 with SMTP id
+ s1-20020a67b241000000b00457d55acbc6mr890221vsh.5.1697771652347; 
+ Thu, 19 Oct 2023 20:14:12 -0700 (PDT)
+Received: from localhost ([122.172.80.14]) by smtp.gmail.com with ESMTPSA id
+ y66-20020a62ce45000000b00690ca4356f1sm506556pfg.198.2023.10.19.20.14.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Oct 2023 20:14:11 -0700 (PDT)
+Date: Fri, 20 Oct 2023 08:44:07 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ virtio-fs@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
+ Fam Zheng <fam@euphon.net>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Erik Schilling <erik.schilling@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH v5 5/6] hw/virtio: add vhost-user-snd and virtio-snd-pci
+ devices
+Message-ID: <20231020031407.xd4ykc4msfdmoav5@vireshk-i7>
+References: <20231019095610.2818087-1-alex.bennee@linaro.org>
+ <20231019095610.2818087-6-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=203.29.241.158;
- envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231019095610.2818087-6-alex.bennee@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
+ envelope-from=viresh.kumar@linaro.org; helo=mail-ua1-x92c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,105 +110,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-10-19 at 15:40 -0500, Glenn Miles wrote:
-> > The pca9552 INPUT0 and INPUT1 registers are supposed to
-> > hold the logical values of the LED pins.  A logical 0
-> > should be seen in the INPUT0/1 registers for a pin when
-> > its corresponding LSn bits are set to 0, which is also
-> > the state needed for turning on an LED in a typical
-> > usage scenario.  Existing code was doing the opposite
-> > and setting INPUT0/1 bit to a 1 when the LSn bit was
-> > set to 0, so this commit fixes that.
-> >=20
-> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > ---
-> >=20
-> > Changes from prior version:
-> >     - Added comment regarding pca953X
-> >     - Added cover letter
-> >=20
-> >  hw/misc/pca9552.c          | 18 +++++++++++++-----
-> >  tests/qtest/pca9552-test.c |  6 +++---
-> >  2 files changed, 16 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-> > index fff19e369a..445f56a9e8 100644
-> > --- a/hw/misc/pca9552.c
-> > +++ b/hw/misc/pca9552.c
-> > @@ -36,7 +36,10 @@ typedef struct PCA955xClass PCA955xClass;
-> > =20
-> >  DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
-> >                         TYPE_PCA955X)
-> > -
-> > +/*
-> > + * Note:  The LED_ON and LED_OFF configuration values for the PCA955X
-> > + *        chips are the reverse of the PCA953X family of chips.
-> > + */
-> >  #define PCA9552_LED_ON   0x0
-> >  #define PCA9552_LED_OFF  0x1
-> >  #define PCA9552_LED_PWM0 0x2
-> > @@ -112,13 +115,18 @@ static void pca955x_update_pin_input(PCA955xState=
- *s)
-> > =20
-> >          switch (config) {
-> >          case PCA9552_LED_ON:
-> > -            qemu_set_irq(s->gpio[i], 1);
-> > -            s->regs[input_reg] |=3D 1 << input_shift;
-> > -            break;
-> > -        case PCA9552_LED_OFF:
-> > +            /* Pin is set to 0V to turn on LED */
-> >              qemu_set_irq(s->gpio[i], 0);
-> >              s->regs[input_reg] &=3D ~(1 << input_shift);
-> >              break;
-> > +        case PCA9552_LED_OFF:
-> > +            /*
-> > +             * Pin is set to Hi-Z to turn off LED and
-> > +             * pullup sets it to a logical 1.
-> > +             */
-> > +            qemu_set_irq(s->gpio[i], 1);
-> > +            s->regs[input_reg] |=3D 1 << input_shift;
-> > +            break;
+On 19-10-23, 10:56, Alex Bennée wrote:
+> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> 
+> Tested with rust-vmm vhost-user-sound daemon:
+> 
+>     RUST_LOG=trace cargo run --bin vhost-user-sound -- --socket /tmp/snd.sock --backend null
+> 
+> Invocation:
+> 
+>     qemu-system-x86_64  \
+>             -qmp unix:./qmp-sock,server,wait=off  \
+>             -m 4096 \
+>             -numa node,memdev=mem \
+>             -object memory-backend-file,id=mem,size=4G,mem-path=/dev/shm,share=on \
+>             -D qemu.log \
+>             -d guest_errors,trace:\*snd\*,trace:\*sound\*,trace:\*vhost\* \
+>             -chardev socket,id=vsnd,path=/tmp/snd.sock \
+>             -device vhost-user-snd-pci,chardev=vsnd,id=snd \
+>             /path/to/disk
+> 
+> [AJB: imported from https://github.com/epilys/qemu-virtio-snd/commit/54ae1cdd15fef2d88e9e387a175f099a38c636f4.patch]
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-So the witherspoon-bmc machine was a user of the PCA9552 outputs as
-LEDs. I guess its LEDs were in the wrong state the whole time? That
-looks like the only user though, and shouldn't be negatively affected.
+Missing SOB from Manos ?
 
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+> Message-Id: <20231009095937.195728-6-alex.bennee@linaro.org>
 
-> >          case PCA9552_LED_PWM0:
-> >          case PCA9552_LED_PWM1:
-> >              /* TODO */
-> > diff --git a/tests/qtest/pca9552-test.c b/tests/qtest/pca9552-test.c
-> > index d80ed93cd3..ccca2b3d91 100644
-> > --- a/tests/qtest/pca9552-test.c
-> > +++ b/tests/qtest/pca9552-test.c
-> > @@ -60,7 +60,7 @@ static void send_and_receive(void *obj, void *data, Q=
-GuestAllocator *alloc)
-> >      g_assert_cmphex(value, =3D=3D, 0x55);
-> > =20
-> >      value =3D i2c_get8(i2cdev, PCA9552_INPUT0);
-> > -    g_assert_cmphex(value, =3D=3D, 0x0);
-> > +    g_assert_cmphex(value, =3D=3D, 0xFF);
-> > =20
-> >      pca9552_init(i2cdev);
-> > =20
-> > @@ -68,13 +68,13 @@ static void send_and_receive(void *obj, void *data,=
- QGuestAllocator *alloc)
-> >      g_assert_cmphex(value, =3D=3D, 0x54);
-> > =20
-> >      value =3D i2c_get8(i2cdev, PCA9552_INPUT0);
-> > -    g_assert_cmphex(value, =3D=3D, 0x01);
-> > +    g_assert_cmphex(value, =3D=3D, 0xFE);
-> > =20
-> >      value =3D i2c_get8(i2cdev, PCA9552_LS3);
-> >      g_assert_cmphex(value, =3D=3D, 0x54);
-> > =20
-> >      value =3D i2c_get8(i2cdev, PCA9552_INPUT1);
-> > -    g_assert_cmphex(value, =3D=3D, 0x10);
-> > +    g_assert_cmphex(value, =3D=3D, 0xEF);
-> >  }
-> > =20
-> >  static void pca9552_register_nodes(void)
-
-
+-- 
+viresh
 
