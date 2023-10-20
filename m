@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8647D7D102F
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 15:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6637D1036
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 15:03:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtp8J-0006BK-KI; Fri, 20 Oct 2023 09:01:43 -0400
+	id 1qtpAD-0000Do-0l; Fri, 20 Oct 2023 09:03:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtp7K-00063V-8g
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 09:00:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtp7C-0004TI-VX
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 09:00:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697806832;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NJIySRtNCp38Hmx09wCIFor1YWd+eY+vcX31qBpyLp0=;
- b=cvFX13Zx5bws7X7cW0VKZK3GnqCrzJwZ0NQNlmbIypvAi79hN+G90n9YubxpgJtHmBQjp9
- j5whdoIwq1nMFIHT/dM1HUunQVCyIt/uvZPNMeL4ENmCGSVRaL6GRWmJPCscrK5vwOy8jV
- LCBpV+wvZ1Pu37TRM7CN8racfeAO9jE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-152-D872OM3kM-2XaiD9O6Aqbg-1; Fri, 20 Oct 2023 09:00:25 -0400
-X-MC-Unique: D872OM3kM-2XaiD9O6Aqbg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 904BF81156E;
- Fri, 20 Oct 2023 13:00:24 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D1861C060B1;
- Fri, 20 Oct 2023 13:00:24 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 807B021E6A1F; Fri, 20 Oct 2023 15:00:23 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,
- qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,  qemu-block@nongnu.org,
- qemu-s390x@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>
-Subject: Re: [PATCH v2 18/22] qapi: Inline and remove
- QERR_PROPERTY_VALUE_BAD definition
-References: <20231005045041.52649-1-philmd@linaro.org>
- <20231005045041.52649-19-philmd@linaro.org>
-Date: Fri, 20 Oct 2023 15:00:23 +0200
-In-Reply-To: <20231005045041.52649-19-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 5 Oct 2023 06:50:35
- +0200")
-Message-ID: <87bkct1mag.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtpAA-0000DI-CT
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 09:03:38 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtpA8-0005F5-NZ
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 09:03:38 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-53dfc28a2afso1084520a12.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 06:03:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697807014; x=1698411814; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SDBJ3mrLth7e5T3Pd/8WVxgBRrRT5m1C71LOIXG9CdU=;
+ b=tYEth7sA0ihQKgYkpASSUOJqsKR8mZhSSrWLTbGaHJWVTpFfLSYxv7UkToH/EVmm0F
+ ZNx2M1Tf6/QvMsmTQzPS5hlHCJkjk904US5Wuno3WKJXT+E+msbTCWDTK1MRvifpgPY6
+ OPgMfM16bEYM9tOUgLXcu+sfNAH/kvPmFIFeTnbT1pyNSH+OoHg9CKn49OwBqUnspZBe
+ N11RlVmVu4843Gta6SFvh+oLtUPU4mNDnb5M1YLZsd4yKo1mYK3EFMwzNhJ/B3IDCwjj
+ Ib9kCy7sDP0w91zUFB1o00icVBTt6zGAB98PMvCE/w4MGJue7yxCBLoSm1Oh0+JXJ6A8
+ Gz0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697807014; x=1698411814;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SDBJ3mrLth7e5T3Pd/8WVxgBRrRT5m1C71LOIXG9CdU=;
+ b=D9ULHnmQsYkCHc6N7tLJA2ADQ0YF4quvLS5nQnlUSUvG/3tg5bVF7zY3giQvI7TxGW
+ 4dEjoM9Cn0LbD9FaoluIaU0YDJcCmhHu+fNCXP+nzStjFXBzR5t/D3niJQ+S4Ufb0V9X
+ K5bk7fGb9zEcKHseIJibnYNcIAlYmsnxPdw477sWgRB1nsLRpb6ybPWR8etEs8FBuKJ+
+ RxC3ZRR8U8J46VO06QGlbShUo4FQxhwXH9Y2yv19nudEj/XF426Y/itHKTYzNjLFQnz/
+ rTdPmkB0i1ZsGvCEMuUXwj8+i3okmkWyu/J8fjuG3CBwmwpWmn5LwXTWEmdFDmAEqW8H
+ gIrg==
+X-Gm-Message-State: AOJu0YyHZ4PbFkCglRRV8JWC6ZYj7XIbIEKN+syuxx1pmibKkpHlLSmG
+ nQymEOZURAzGDnJ+jXMGa6bv59JxJcX7PSlFA/Y=
+X-Google-Smtp-Source: AGHT+IG4GC7sLoyvj4v1rbVa8oPN+en8HFEtEHRZhRchV9y+p1dMzx2deXWqcCVHHy+6KF4exJ4+8g==
+X-Received: by 2002:a05:6402:26d4:b0:53d:e1d9:a11 with SMTP id
+ x20-20020a05640226d400b0053de1d90a11mr1666469edd.35.1697807014109; 
+ Fri, 20 Oct 2023 06:03:34 -0700 (PDT)
+Received: from m1x-phil.lan (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
+ [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
+ bx14-20020a0564020b4e00b0052ff9bae873sm1415053edb.5.2023.10.20.06.03.32
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 20 Oct 2023 06:03:33 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/9] hw/arm/pxa2xx: SysBus/QDev fixes
+Date: Fri, 20 Oct 2023 15:03:21 +0200
+Message-ID: <20231020130331.50048-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,72 +89,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Missing review: 6-9
 
-> Address the comment added in commit 4629ed1e98
-> ("qerror: Finally unused, clean up"), from 2015:
->
->   /*
->    * These macros will go away, please don't use
->    * in new code, and do not add new ones!
->    */
->
-> Manual change. Remove the definition in
-> include/qapi/qmp/qerror.h.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  include/qapi/qmp/qerror.h | 3 ---
->  hw/core/qdev-properties.c | 2 +-
->  target/i386/cpu.c         | 2 +-
->  3 files changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-> index b0f48f22fe..7862ac55a1 100644
-> --- a/include/qapi/qmp/qerror.h
-> +++ b/include/qapi/qmp/qerror.h
-> @@ -17,9 +17,6 @@
->   * add new ones!
->   */
->=20=20
-> -#define QERR_PROPERTY_VALUE_BAD \
-> -    "Property '%s.%s' doesn't take value '%s'"
-> -
->  #define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
->      "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 "=
-, maximum: %" PRId64 ")"
->=20=20
-> diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-> index 357b8761b5..44fc1686e0 100644
-> --- a/hw/core/qdev-properties.c
-> +++ b/hw/core/qdev-properties.c
-> @@ -682,7 +682,7 @@ void error_set_from_qdev_prop_error(Error **errp, int=
- ret, Object *obj,
->          break;
->      default:
->      case -EINVAL:
-> -        error_setg(errp, QERR_PROPERTY_VALUE_BAD,
-> +        error_setg(errp, "Property '%s.%s' doesn't take value '%s'",
->                     object_get_typename(obj), name, value);
->          break;
->      case -ENOENT:
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index ed72883bf3..e5a14885ed 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -5190,7 +5190,7 @@ static void x86_cpuid_set_vendor(Object *obj, const=
- char *value,
->      int i;
->=20=20
->      if (strlen(value) !=3D CPUID_VENDOR_SZ) {
-> -        error_setg(errp, QERR_PROPERTY_VALUE_BAD, "", "vendor", value);
+Hi,
 
-Reporting the actual problem would be better: we need the value to be
-exactly CPUID_VENDOR_SZ characters long.
+Extracted from a bigger series which enforce QDev state machine
+(qdev instance must be realized before external API is used on
+it).
 
-> +        error_setg(errp, "Property 'vendor' doesn't take value '%s'", va=
-lue);
->          return;
->      }
+While here, pxa2xx i2c/intc devices received some qdev fondness.
+
+Since v3:
+- Added Thomas R-b tags
+
+Since v2:
+- Fixed i2c_init_bus() call in pxa2xx_i2c_init() (new patch)
+
+Philippe Mathieu-Daudé (9):
+  hw/sd/pxa2xx: Realize sysbus device before accessing it
+  hw/sd/pxa2xx: Do not open-code sysbus_create_simple()
+  hw/pcmcia/pxa2xx: Realize sysbus device before accessing it
+  hw/pcmcia/pxa2xx: Do not open-code sysbus_create_simple()
+  hw/pcmcia/pxa2xx: Inline pxa2xx_pcmcia_init()
+  hw/intc/pxa2xx: Convert to Resettable interface
+  hw/intc/pxa2xx: Pass CPU reference using QOM link property
+  hw/intc/pxa2xx: Factor pxa2xx_pic_realize() out of pxa2xx_pic_init()
+  hw/arm/pxa2xx: Realize PXA2XX_I2C device before accessing it
+
+ include/hw/arm/pxa.h |  2 --
+ hw/arm/pxa2xx.c      | 17 +++++++++++------
+ hw/arm/pxa2xx_pic.c  | 38 +++++++++++++++++++++++++++++---------
+ hw/pcmcia/pxa2xx.c   | 15 ---------------
+ hw/sd/pxa2xx_mmci.c  |  7 +------
+ 5 files changed, 41 insertions(+), 38 deletions(-)
+
+-- 
+2.41.0
 
 
