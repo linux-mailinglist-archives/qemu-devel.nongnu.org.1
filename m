@@ -2,100 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CEE7D0B15
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 154DD7D0B16
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:04:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtlQg-0005qn-FX; Fri, 20 Oct 2023 05:04:27 -0400
+	id 1qtlQU-0005fk-6h; Fri, 20 Oct 2023 05:04:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qtlQV-0005hd-RT
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:04:17 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qtlQT-0004YP-OP
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:04:15 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40850b244beso3647695e9.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:04:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697792652; x=1698397452; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=LV+TTpoR2W5z/eLtMV7w5gTIRRPNVNLtDhd8ldgJh+U=;
- b=DvYqrQWoay0sxsUMokMYOa0HKEqkz4/YEPbkJSUsVx8NLjZHpaapRlpEHhmloiXpYq
- hYBIBcyDUZSt6JD8CdC0p07JEYm4DkZdMfUedsyvqGLHYc1rAAFQOeXPq4r5Q7PVWNk4
- +N3yYQrN4hW410dJm+uEmOBBqJZp1ieKQVQ2GpcBbTlZ3n6QGWOrlLWM8w8qyOlzz4iC
- eUUmQLcgeG2Z8Nb2pz+HgktnDBGVPAXtiU+cbutL5ToOGly+/9wd97/3W8cW7pi8uYiW
- IHFbSGSA0RwfIxRZjsBd5P4bQQPRxYz4hqeunDZXPxPZLK2IDN8MIaMtthXyQVu9IUeL
- kAUA==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtlQO-0005ag-Nk
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:04:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtlQL-0004Wb-R9
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:04:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697792643;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=s7iOD38ZQAWCDHfMChkcturqXvPftdRJcTPsjG9smas=;
+ b=V1RQwzRJpu7WJ3fuQkQt48uIJRQHeWeLX05sdyqGxzN7hLuTtyyRBabkxwAPL77eFdUEeb
+ pFtetOM8VmO18qkYCuS3odhLQzWcz06lPTiPj77pwQqhdao3QJZWt1U+WqgX9VJjIWcmHM
+ A3IA2I/cE5c7Fpz2x9mP2gXPbRoQhFs=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-287--A1roAHFMN2NfETkAKQySg-1; Fri, 20 Oct 2023 05:04:02 -0400
+X-MC-Unique: -A1roAHFMN2NfETkAKQySg-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2c5073588cbso4258211fa.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:04:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697792652; x=1698397452;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LV+TTpoR2W5z/eLtMV7w5gTIRRPNVNLtDhd8ldgJh+U=;
- b=P657oE+JlTP48vemFJ+rlaHC3RtBBnD0+5OUuhEtWK1SfRGuT8HmuAIac9Z8LpgVdS
- WMYCJJrGigmOkrQn4nDNOF5koZlqPsLIJz+GhJKsHORx49UsY4AJnvVgVLeNrJONBiTW
- La/VDxFVe0denuLW7UgvsD7ZQi5Cm7BjIBRTOXG5v4Chi1ulQQrS4NHzjr+Hq9EPB8Dx
- Te8mp9V1nGt7DLunAVa6Nup9+HBsSBw4mgErhQyHdD9PxvwztkuhZmy25/ruLzECrx0r
- xDz1xTr2ufrlhfQZDFUuddEA0kNFVegP6DvecGG+Yrxi25kSzEQnwYp6Ndrk19lwbBgJ
- CbgA==
-X-Gm-Message-State: AOJu0YypBttY0BjlzuYSxQfOSfrzn6c5PJZZkV+Mfy4VqZ5F6bwGO6xy
- HUH9YNQJ4acAvcgAXpb5FPR7wg==
-X-Google-Smtp-Source: AGHT+IHYmK5Gs42IL/m+dDi4TyVIb7k5zNXb/HiU9Sw+1v0uiB7U/snGKbQaC4AOS21a4VDtSFlpjw==
-X-Received: by 2002:a05:600c:1546:b0:405:770b:e90a with SMTP id
- f6-20020a05600c154600b00405770be90amr911988wmg.34.1697792651790; 
- Fri, 20 Oct 2023 02:04:11 -0700 (PDT)
-Received: from meli.delivery (adsl-21.109.242.226.tellas.gr. [109.242.226.21])
- by smtp.gmail.com with ESMTPSA id
- v18-20020a05600c15d200b004063d8b43e7sm6416897wmf.48.2023.10.20.02.04.10
+ d=1e100.net; s=20230601; t=1697792641; x=1698397441;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=s7iOD38ZQAWCDHfMChkcturqXvPftdRJcTPsjG9smas=;
+ b=czqMe94ue9c2pBZ4kKaLCxtkbNLTDGQU/dx1eWkt1Gm/qCw2NsvyrcLkEz9Bx4ONa4
+ r4ZGQ1JzvBnb3u22FoJ/2/7TQn2OY6RFEMlrefoI96xCaAbz8A0O8515ONOryj0Rlr7l
+ MfHgHQWsv8gSpmscEd+q6I2FfftcMffn5U0sZhOpQcHEPQZzrkCfK9VfgQITjSe71XXt
+ gk7no30NeurGiBzofTVERugHREFT2FLfIGnef3K1reOJ+zsDnVAzkNjSDG2JJFXT24UZ
+ XuUgoIdcIgwsAL51PCHvYUWpc/yvkoiKeI2oRvd3pSEQTY2TA0x09LpmChDga+RfsxG8
+ FbHA==
+X-Gm-Message-State: AOJu0YwcBLNdcBzhiIFXkUByHSCOsJad9VAvPhz1tahWqonVGlGmUWlp
+ R3yzcRAq1JWp2GoHpNOHmIRdyeFFAx8rYJ6BEIEpqldyPf9zVLSLymVb6xhkS1goIJ3aDeuWJPq
+ An1nQHXnZ6DXEJQ0=
+X-Received: by 2002:a2e:a22c:0:b0:2c5:1bd3:5658 with SMTP id
+ i12-20020a2ea22c000000b002c51bd35658mr851910ljm.28.1697792640857; 
+ Fri, 20 Oct 2023 02:04:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkaiweh5iqJMVBscdQZTW94gUX6yR/iNpwTsVA3OFSN4B0SDaaubRpGxr1P0+jzSwWVTsWtw==
+X-Received: by 2002:a2e:a22c:0:b0:2c5:1bd3:5658 with SMTP id
+ i12-20020a2ea22c000000b002c51bd35658mr851872ljm.28.1697792640483; 
+ Fri, 20 Oct 2023 02:04:00 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ 17-20020a05600c231100b00401d8181f8bsm6437426wmo.25.2023.10.20.02.03.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 02:04:11 -0700 (PDT)
-Date: Fri, 20 Oct 2023 12:03:50 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, qemu-devel@nongnu.org,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- virtio-fs@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
- Fam Zheng <fam@euphon.net>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Gonglei (Arei) <arei.gonglei@huawei.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: Re: [PATCH v5 5/6] hw/virtio: add vhost-user-snd and virtio-snd-pci
- devices
-User-Agent: meli 0.8.2
-References: <20231019095610.2818087-1-alex.bennee@linaro.org>
- <20231019095610.2818087-6-alex.bennee@linaro.org>
- <20231020031407.xd4ykc4msfdmoav5@vireshk-i7> <878r7x90a0.fsf@linaro.org>
- <20231020050210-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231020050210-mutt-send-email-mst@kernel.org>
-Message-ID: <2tl6x.csk4mc5p2sx@linaro.org>
+ Fri, 20 Oct 2023 02:04:00 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: qemu-devel@nongnu.org,  Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  qemu-ppc@nongnu.org,
+ Nicholas Piggin <npiggin@gmail.com>,  qemu-s390x@nongnu.org,  Gerd
+ Hoffmann <kraxel@redhat.com>,  Corey Minyard <cminyard@mvista.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,  Richard Henderson
+ <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,  Fabiano Rosas <farosas@suse.de>,
+ Eric Farman <farman@linux.ibm.com>,  Peter Xu <peterx@redhat.com>,  Harsh
+ Prateek Bora <harshpb@linux.ibm.com>,  John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org,  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,  =?utf-8?Q?Marc-Andr?=
+ =?utf-8?Q?=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Stefan Weil <sw@weilnetz.de>,
+ qemu-arm@nongnu.org,  Jason Wang <jasowang@redhat.com>,  Corey Minyard
+ <minyard@acm.org>,  Leonardo Bras <leobras@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  "Michael
+ S. Tsirkin" <mst@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@kaod.org>,  David
+ Gibson <david@gibson.dropbear.id.au>,  Halil Pasic <pasic@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: Re: [PATCH 10/13] migration: Improve example and documentation of
+ vmstate_register()
+In-Reply-To: <8b7a67bf-6d45-374c-13ee-fbb85b4b21bc@linux.ibm.com> (Stefan
+ Berger's message of "Thu, 19 Oct 2023 16:38:15 -0400")
+References: <20231019190831.20363-1-quintela@redhat.com>
+ <20231019190831.20363-11-quintela@redhat.com>
+ <8b7a67bf-6d45-374c-13ee-fbb85b4b21bc@linux.ibm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Fri, 20 Oct 2023 11:03:59 +0200
+Message-ID: <87bkct1x8g.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x330.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,43 +120,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 20 Oct 2023 12:02, "Michael S. Tsirkin" <mst@redhat.com> wrote:
->On Fri, Oct 20, 2023 at 09:16:03AM +0100, Alex Bennée wrote:
->> 
->> Viresh Kumar <viresh.kumar@linaro.org> writes:
->> 
->> > On 19-10-23, 10:56, Alex Bennée wrote:
->> >> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->> >> 
->> >> Tested with rust-vmm vhost-user-sound daemon:
->> >> 
->> >>     RUST_LOG=trace cargo run --bin vhost-user-sound -- --socket /tmp/snd.sock --backend null
->> >> 
->> >> Invocation:
->> >> 
->> >>     qemu-system-x86_64  \
->> >>             -qmp unix:./qmp-sock,server,wait=off  \
->> >>             -m 4096 \
->> >>             -numa node,memdev=mem \
->> >>             -object memory-backend-file,id=mem,size=4G,mem-path=/dev/shm,share=on \
->> >>             -D qemu.log \
->> >>             -d guest_errors,trace:\*snd\*,trace:\*sound\*,trace:\*vhost\* \
->> >>             -chardev socket,id=vsnd,path=/tmp/snd.sock \
->> >>             -device vhost-user-snd-pci,chardev=vsnd,id=snd \
->> >>             /path/to/disk
->> >> 
->> >> [AJB: imported from https://github.com/epilys/qemu-virtio-snd/commit/54ae1cdd15fef2d88e9e387a175f099a38c636f4.patch]
->> >> 
->> >> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->> >
->> > Missing SOB from Manos ?
->> 
->> oops, guess I need a respin then ;-)
+Stefan Berger <stefanb@linux.ibm.com> wrote:
+> On 10/19/23 15:08, Juan Quintela wrote:
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> ---
+>>   docs/devel/migration.rst | 12 ++++++++----
+>>   1 file changed, 8 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+>> index c3e1400c0c..a9fde75862 100644
+>> --- a/docs/devel/migration.rst
+>> +++ b/docs/devel/migration.rst
+>> @@ -165,13 +165,17 @@ An example (from hw/input/pckbd.c)
+>>         }
+>>     };
+>>
+>> -We are declaring the state with name "pckbd".
+>> -The ``version_id`` is 3, and the fields are 4 uint8_t in a KBDState str=
+ucture.
+>> -We registered this with:
+>> +We are declaring the state with name "pckbd".  The ``version_id`` is
+>> +3, and the fields are 4 uint8_t in a KBDState structure.  We
 >
->Just ask Manos to send his S.O.B in a reply.
+> and there are 4=C2=A0 uint8_t fields in the KBDState structure.
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Done thanks.
+
+>
+>> +registered this with one of those.  The first one will generate a
+>
+> I am not sure what this means 'We registered this with one of
+> those'. What is 'one of those'?
+
+Changed to:
+
+We
+registered this ``VMSTATEDescription`` with one of the following
+functions.
+
+> Maybe you mean: We register the KBDState with one of the following
+> functions.
+>
+>> +device ``instance_id`` different for each registration.  Use the
+>> +second one if you already have an id different for each instance of
+>> +the device:
+> ... have an id that is is different for each ...
+
+Done
+
+>>
+>>   .. code:: c
+>>
+>> -    vmstate_register(NULL, 0, &vmstate_kbd, s);
+>> +    vmstate_register_any(NULL, &vmstate_kbd, s);
+>> +    vmstate_register(NULL, instance_id, &vmstate_kbd, s);
+>>
+>>   For devices that are ``qdev`` based, we can register the device in the=
+ class
+>>   init function:
+
+Thanks
+
 
