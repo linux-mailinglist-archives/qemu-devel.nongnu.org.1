@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D267D0A3D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 10:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 936137D0A3E
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 10:07:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtkVu-0003QN-Qd; Fri, 20 Oct 2023 04:05:48 -0400
+	id 1qtkWs-0005YD-7f; Fri, 20 Oct 2023 04:06:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1qtkVm-0003Bt-RB
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 04:05:38 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1qtkVi-0001nR-Ue
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 04:05:37 -0400
-Received: from loongson.cn (unknown [10.20.42.173])
- by gateway (Coremail) with SMTP id _____8DxxPDANDJlBW0zAA--.35354S3;
- Fri, 20 Oct 2023 16:05:21 +0800 (CST)
-Received: from [10.20.42.173] (unknown [10.20.42.173])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dx_y+9NDJlBhUsAA--.27772S3; 
- Fri, 20 Oct 2023 16:05:19 +0800 (CST)
-Subject: Re: [PATCH v2 2/4] target/loongarch: Add cpu feature flags
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, philmd@redhat.com,
- peter.maydell@linaro.org, eblake@redhat.com, armbru@redhat.com
-References: <20231019125853.3436531-1-gaosong@loongson.cn>
- <20231019125853.3436531-3-gaosong@loongson.cn>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <a3448f95-bcb5-f4ba-2cb0-65a80501ef5a@loongson.cn>
-Date: Fri, 20 Oct 2023 16:05:18 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>)
+ id 1qtkWp-0005An-JV; Fri, 20 Oct 2023 04:06:43 -0400
+Received: from 6.mo552.mail-out.ovh.net ([188.165.49.222])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>)
+ id 1qtkWk-0001zI-O5; Fri, 20 Oct 2023 04:06:43 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.146.208])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 2B2C02D3DE;
+ Fri, 20 Oct 2023 08:06:30 +0000 (UTC)
+Received: from kaod.org (37.59.142.107) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 20 Oct
+ 2023 10:06:28 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-107S001e6886de3-6b4c-417e-bc6f-1385705d3717,
+ C3DE39B25D4A09A1EA5644DCEB8289D547B4AEB9) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 88.179.9.154
+Date: Fri, 20 Oct 2023 10:06:26 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Juan Quintela <quintela@redhat.com>
+CC: <qemu-devel@nongnu.org>, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, <qemu-ppc@nongnu.org>,
+ Nicholas Piggin <npiggin@gmail.com>, <qemu-s390x@nongnu.org>, Gerd Hoffmann
+ <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>, Samuel Thibault
+ <samuel.thibault@ens-lyon.org>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, "Ilya
+ Leoshkevich" <iii@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>, "Eric
+ Farman" <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>, "Harsh Prateek
+ Bora" <harshpb@linux.ibm.com>, John Snow <jsnow@redhat.com>,
+ <qemu-block@nongnu.org>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, =?UTF-8?B?TWFyYy1BbmRy?=
+ =?UTF-8?B?w6k=?= Lureau <marcandre.lureau@redhat.com>, Stefan Weil
+ <sw@weilnetz.de>, <qemu-arm@nongnu.org>, Jason Wang <jasowang@redhat.com>,
+ Corey Minyard <minyard@acm.org>, Leonardo Bras <leobras@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, "Michael
+ S. Tsirkin" <mst@redhat.com>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
+ <clg@kaod.org>, David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
+ <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: Re: [PATCH 07/13] RFC migration: icp/server is a mess
+Message-ID: <20231020100626.57debfa4@bahia>
+In-Reply-To: <875y313g4b.fsf@secure.mitica>
+References: <20231019190831.20363-1-quintela@redhat.com>
+ <20231019190831.20363-8-quintela@redhat.com>
+ <20231019233958.17abb488@bahia> <875y313g4b.fsf@secure.mitica>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20231019125853.3436531-3-gaosong@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dx_y+9NDJlBhUsAA--.27772S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7AF4UAw1UZrW8AF4xtr13Awc_yoW8Kry3p3
- 47AFn09FWUJrW3Can3J3y5ZFn8Xw4xGa12ga1ak3s7Ca1UGryxZr18KanrCFWDJ345Ww1I
- gFyFgryUCF1UX3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
- VUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-3.339, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.107]
+X-ClientProxiedBy: DAG8EX1.mxp5.local (172.16.2.71) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 6ec39e93-68a1-4c19-9ab7-ca81b40e15a1
+X-Ovh-Tracer-Id: 3820459861057902967
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedrjeejgdduvdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepgeekjedtveegkeeileffvdetvddvgedtudduiefghffhgfdvhfegjeetkeehfeeknecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutdejpdekkedrudejledrledrudehgeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehgrhhouhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepqhhuihhnthgvlhgrsehrvgguhhgrthdrtghomhdpuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdpmhhsthesrhgvughhrghtrdgtohhmpdhpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdpthhhuhhthhesrhgvughhrghtrdgtohhmpdhlvghosghrrghssehrvgguhhgrthdrtghomhdpmhhinhihrghrugesrggtmhdrohhrghdpjhgrshhofigrnhhgsehrvgguhhgrthdrtghomhdpqhgvmhhuqdgrrhhmsehnoh
+ hnghhnuhdrohhrghdpshifseifvghilhhnvghtiidruggvpdhmrghrtggrnhgurhgvrdhluhhrvggruhesrhgvughhrghtrdgtohhmpdgsohhrnhhtrhgrvghgvghrsehlihhnuhigrdhisghmrdgtohhmpdhmrghrkhdrtggrvhgvqdgrhihlrghnugesihhlrghnuggvrdgtohdruhhkpdhqvghmuhdqsghlohgtkhesnhhonhhgnhhurdhorhhgpdhjshhnohifsehrvgguhhgrthdrtghomhdpphgrshhitgeslhhinhhugidrihgsmhdrtghomhdphhgrrhhshhhpsgeslhhinhhugidrihgsmhdrtghomhdpfhgrrhhmrghnsehlihhnuhigrdhisghmrdgtohhmpdhfrghrohhsrghssehsuhhsvgdruggvpdhiihhisehlihhnuhigrdhisghmrdgtohhmpdgurghvihgusehrvgguhhgrthdrtghomhdprhhitghhrghrugdrhhgvnhguvghrshhonheslhhinhgrrhhordhorhhgpdhsrghmuhgvlhdrthhhihgsrghulhhtsegvnhhsqdhlhihonhdrohhrghdptghmihhnhigrrhgusehmvhhishhtrgdrtghomhdpkhhrrgigvghlsehrvgguhhgrthdrtghomhdpqhgvmhhuqdhsfeeltdigsehnohhnghhnuhdrohhrghdpnhhpihhgghhinhesghhmrghilhdrtghomhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdpmhgrrhgtvghlrdgrphhfvghlsggruhhmsehgmhgrihhlrdgtohhmpdhsthgvfhgrnhgssehlihhnuhigrdhvnhgvthdrihgsmhdrtghomhdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpphgvthgvrhi
+ gsehrvgguhhgrthdrtghomhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpoffvtefjohhsthepmhhoheehvddpmhhouggvpehsmhhtphhouhht
+Received-SPF: pass client-ip=188.165.49.222; envelope-from=groug@kaod.org;
+ helo=6.mo552.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,92 +90,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, 20 Oct 2023 09:30:44 +0200
+Juan Quintela <quintela@redhat.com> wrote:
 
-
-ÔÚ 2023/10/19 ÏÂÎç8:58, Song Gao Ð´µÀ:
-> CPULoongArchState adds cpu feature flags features.
-> Intrduce loongarch_feature() to check feature and
-> set_feature() to set feature.
+> Greg Kurz <groug@kaod.org> wrote:
+> > On Thu, 19 Oct 2023 21:08:25 +0200
+> > Juan Quintela <quintela@redhat.com> wrote:
+> >
+> >> Current code does:
+> >> - register pre_2_10_vmstate_dummy_icp with "icp/server" and instance
+> >>   dependinfg on cpu number
+> >> - for newer machines, it register vmstate_icp with "icp/server" name
+> >>   and instance 0
+> >> - now it unregisters "icp/server" for the 1st instance.
+> >> 
+> >> This is wrong at many levels:
+> >> - we shouldn't have two VMSTATEDescriptions with the same name
+> >> - In case this is the only solution that we can came with, it needs to
+> >>   be:
+> >>   * register pre_2_10_vmstate_dummy_icp
+> >>   * unregister pre_2_10_vmstate_dummy_icp
+> >>   * register real vmstate_icp
+> >> 
+> >> As the initialization of this machine is already complex enough, I
+> >> need help from PPC maintainers to fix this.
+> >> 
+> >> Volunteers?
+> >> 
+> >> CC: Cedric Le Goater <clg@kaod.org>
+> >> CC: Daniel Henrique Barboza <danielhb413@gmail.com>
+> >> CC: David Gibson <david@gibson.dropbear.id.au>
+> >> CC: Greg Kurz <groug@kaod.org>
+> >> 
+> >> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> >> ---
+> >>  hw/ppc/spapr.c | 7 ++++++-
+> >>  1 file changed, 6 insertions(+), 1 deletion(-)
+> >> 
+> >> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> >> index cb840676d3..8531d13492 100644
+> >> --- a/hw/ppc/spapr.c
+> >> +++ b/hw/ppc/spapr.c
+> >> @@ -143,7 +143,12 @@ static bool pre_2_10_vmstate_dummy_icp_needed(void *opaque)
+> >>  }
+> >>  
+> >>  static const VMStateDescription pre_2_10_vmstate_dummy_icp = {
+> >> -    .name = "icp/server",
+> >> +    /*
+> >> +     * Hack ahead.  We can't have two devices with the same name and
+> >> +     * instance id.  So I rename this to pass make check.
+> >> +     * Real help from people who knows the hardware is needed.
+> >> +     */
+> >> +    .name = "pre-2.10-icp/server",
+> >>      .version_id = 1,
+> >>      .minimum_version_id = 1,
+> >>      .needed = pre_2_10_vmstate_dummy_icp_needed,
+> >
+> > I guess this fix is acceptable as well and a lot simpler than
+> > reverting the hack actually. Outcome is the same : drop
+> > compat with pseries-2.9 and older.
+> >
+> > Reviewed-by: Greg Kurz <groug@kaod.org>
 > 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/cpu.c |  4 ++++
->   target/loongarch/cpu.h | 32 ++++++++++++++++++++++++++++++++
->   2 files changed, 36 insertions(+)
-> 
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index ef6922e812..87fcd08110 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -366,6 +366,10 @@ static void loongarch_la464_initfn(Object *obj)
->       CPULoongArchState *env = &cpu->env;
->       int i;
->   
-> +    env->features = 0;
-> +    set_feature(env, CPU_FEATURE_LSX);
-> +    set_feature(env, CPU_FEATURE_LASX);
-> +
->       for (i = 0; i < 21; i++) {
->           env->cpucfg[i] = 0x0;
->       }
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index 8b54cf109c..b98064945a 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -295,6 +295,8 @@ typedef struct CPUArchState {
->       uint64_t lladdr; /* LL virtual address compared against SC */
->       uint64_t llval;
->   
-> +    uint64_t features;
-Like what Richard says, it is not necessary to use features here,
-cpucfg2 can be used directly.
+> I fully agree with you here.
+> The other options given on this thread is deprecate that machines, but I
+> would like to have this series sooner than 2 releases.
 
-> +
->       /* LoongArch CSRs */
->       uint64_t CSR_CRMD;
->       uint64_t CSR_PRMD;
-> @@ -364,6 +366,36 @@ typedef struct CPUArchState {
->   #endif
->   } CPULoongArchState;
->   
-> +/*
-> + * See arch/loongarch/include/asm/cpu.h
-> + * and arch/loongarch/include/uapi/asm/hwcap.h
-> + */
-> +enum loongarch_features {
-> +    CPU_FEATURE_CPUCFG,
-> +    CPU_FEATURE_LAM,
-> +    CPU_FEATURE_UAL,
-> +    CPU_FEATURE_FPU,
-> +    CPU_FEATURE_LSX,
-> +    CPU_FEATURE_LASX,
-> +    CPU_FEATURE_CRC32,
-> +    CPU_FEATURE_COMPLEX,
-> +    CPU_FEATURE_CRYPTO,
-> +    CPU_FEATURE_LVZ,
-> +    CPU_FEATURE_LBT_X86,
-> +    CPU_FEATURE_LBT_ARM,
-> +    CPU_FEATURE_LBT_MIPS,
-> +};
-Suggest to only list features which can be set on/off from QEMU command 
-line.
+Yeah and, especially, the deprecation of all these machine types is
+itself a massive chunk of work as it will call to identify and
+remove other related workarounds as well. Given that pretty much
+everyone working in PPC/PAPR moved away, can the community handle
+such a big change ?
 
-Regards
-Bibo, Mao
-> +
-> +static inline int loongarch_feature(CPULoongArchState *env, int feature)
-> +{
-> +    return (env->features & (1ULL << feature)) != 0;
-> +}
-> +
-> +static inline void set_feature(CPULoongArchState *env, int feature)
-> +{
-> +    env->features |= 1ULL << feature;
-> +}
-> +
->   /**
->    * LoongArchCPU:
->    * @env: #CPULoongArchState
+>  And what ppc is
+> doing here is (and has always been) a hack and an abuse about how
+> vmstate registrations is supposed to work.
 > 
 
+Sorry again... We should have involved migration experts at the time. :-)
+
+> Thanks, Juan.
+> 
+
+Cheers,
+
+-- 
+Greg
 
