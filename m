@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66C07D178D
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2819B7D178B
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:51:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwOq-0001lK-9s; Fri, 20 Oct 2023 16:47:16 -0400
+	id 1qtwOr-0001nC-To; Fri, 20 Oct 2023 16:47:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwOn-0001fv-SF
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:13 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1qtwOo-0001h6-A0
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:14 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwOm-0001AB-15
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:13 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6b709048d8eso1084316b3a.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:47:11 -0700 (PDT)
+ id 1qtwOm-0001AF-Ou
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:14 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6b36e1fcee9so1239532b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:47:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1697834831; x=1698439631; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BhzrhB16C9PweWmZVzgb1Vp7AhWyTVscP3gbZpvYFDM=;
- b=SUTxvSYoguvpHgN1y3GpbwOV0FWAE+rIC7ascr+kTs2HMknfDjKFTNpCXtCruZmRH1
- /PcHsjjvS9BaCP32cULrZT7GugXHBwA6YATrgHTM+XENjXpktvw7cQA9aKx2ODkTX5Aq
- m2psBQyJCZyBjQaUp5801icEj/SOsrsqVA7i6jFVyDLGBA9gf45h+Zdcq1bRK3+xr5FP
- TnTndWyAmqL93ZQWR8fXOxLOHMm045Xc02hqr7hGXNgCaaEOgQgM2apBMmyMOoclkWZh
- TB9amJpdaDcDFZFIiNiX1fm0FHRt0Sknlol5p4czT8RmQjFfjmnfZrcVE8kDIMUwxI1t
- Vc8g==
+ bh=Eb3lHT3qpP27fmh9TI6JGY9d7TBx7N43aA+xXi4r9Co=;
+ b=TFs8g1IMaDKU5O77WWQ5PquWmkqvplZs54zCixeiBIkSuWfAqoqvikGQLymYvw7iI+
+ sMi4/5MIDeDLi6w4Govl9wLZ+HppFEh0wLcVS+1C26pT8ORVjmPfTOowhBIfn5SQ3/9u
+ R9DHwZIDKakdFO12PKP7Wd0SEj7kllKTT064EV4Juv0icw574kpBp3YsVB12E4VWoMwR
+ 30eZmyTECWNSYdugi44ssuTn1TOSXE5e1t7HnKpyUbZzBgnCoL+eAqYZH7QtBHQZwBUe
+ FURx/RDKdIT0wMDW7sRJS7HzYdlaUKLlTk8VTUezvQaWhiiZDMy90gyxQYHl2WEujnf1
+ nwNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1697834831; x=1698439631;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BhzrhB16C9PweWmZVzgb1Vp7AhWyTVscP3gbZpvYFDM=;
- b=Uulx/uV30aooYIvHxAaIuO5SjAxg3vWH9aq1B8RWka1XutSI1GtUakhSXEMHVHWz9T
- Xm/DBDJ3CvGS4uPUWuJFQa2PjyrXjgEDv6vkY1aWfZI8NqJRylCT03thnxtitP/g5+Iy
- +xWvuSaIT7u2awE1qqlCf+n8t2u/Cs+JhK159usAIm6eEg8bLChmalmRU6LC+iOHRWN6
- vlYyN5BFkjH8t6G51iTq16g56aruwUxxZ3b8r/u+SaYngb9hd8mZqUc4Op7QumZlK2zL
- Mfs14GGfOBVSAX2B3CyuS68pcSBvg7p7TwJk/PpDMSYyj7s6YRehZDpBlBVS7M3prc+c
- gJnw==
-X-Gm-Message-State: AOJu0YxxLenBJ6lCywmWu0cSqCdLPpm23ADJSRdSgFzzSWY4fazQd2L/
- gAq/xOtalUKBs2sPVxk8MafXnqTOrxG60sY/Z9Q=
-X-Google-Smtp-Source: AGHT+IFRgzlDaTpfJmYIQs4qtS9QMOTBbHHb8nM7jSXjYp3Et6LJAsejW3Bin8b6u4zWgwoCLPnXag==
-X-Received: by 2002:a05:6a21:a103:b0:16b:abad:87c5 with SMTP id
- aq3-20020a056a21a10300b0016babad87c5mr2663180pzc.10.1697834830748; 
- Fri, 20 Oct 2023 13:47:10 -0700 (PDT)
+ bh=Eb3lHT3qpP27fmh9TI6JGY9d7TBx7N43aA+xXi4r9Co=;
+ b=n29p04AVBqCHaUAvqithDmZADlvXZV3RTf2GGiG91XK/s4epiS+lxOPz6HXxMJEKri
+ 7+zValMzKDQdAgNMBW8sjRHXzzumH57j1Opji7lkH9NKaPqTzPtMBQJWSPqurCzsyJXW
+ QECppOrB3fE+48cFaZnWxr/ix01wWLFYzKSVuEEERbsvXRtLzx+BDw9XviVIprMm0Lib
+ x904ZtlpfFmgo2KTdtJaggKKK8Vae9d93IBj4YqfB1zovCzzoC2vNkgcixH5/9cI0aiO
+ EPYVdZLpNofw182FIECyRy/khJT8GFIgObalJIhhgPUaXp0cZJNtSz2JQ1sE/Ux5rBfu
+ 5r5A==
+X-Gm-Message-State: AOJu0YxGswlB74Aa6Nbo0jwZSuqlcDCDk3LhFZMUpP8UdHeDxiD2p/S5
+ 2ER2Sc0FpKnzb+3bZjPbeDLx0oRPqbTQWiD7+xI=
+X-Google-Smtp-Source: AGHT+IG4yKJYOGUNP9IlchSxtzOqeKdDjQdQsdVhUx91FzMmiMx6RDbTAUK7GvoCQksyuYfv7/vCWQ==
+X-Received: by 2002:a05:6a20:7fa5:b0:15e:b8a1:57b9 with SMTP id
+ d37-20020a056a207fa500b0015eb8a157b9mr3609527pzj.24.1697834831469; 
+ Fri, 20 Oct 2023 13:47:11 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  u7-20020aa78487000000b00694fee1011asm1946775pfn.208.2023.10.20.13.47.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 13:47:10 -0700 (PDT)
+ Fri, 20 Oct 2023 13:47:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 42/65] target/hppa: Implement SHRPD
-Date: Fri, 20 Oct 2023 13:43:08 -0700
-Message-Id: <20231020204331.139847-43-richard.henderson@linaro.org>
+Subject: [PATCH v2 43/65] target/hppa: Implement CLRBTS, POPBTS, PUSHBTS,
+ PUSHNOM
+Date: Fri, 20 Oct 2023 13:43:09 -0700
+Message-Id: <20231020204331.139847-44-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,152 +93,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode |  6 ++-
- target/hppa/translate.c  | 79 ++++++++++++++++++++++++++++------------
- 2 files changed, 60 insertions(+), 25 deletions(-)
+ target/hppa/insns.decode | 2 ++
+ target/hppa/translate.c  | 6 ++++++
+ 2 files changed, 8 insertions(+)
 
 diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 7b51f39b9e..6f0c3f6ea5 100644
+index 6f0c3f6ea5..ba7731b517 100644
 --- a/target/hppa/insns.decode
 +++ b/target/hppa/insns.decode
-@@ -332,8 +332,10 @@ addbi           101011 ..... ..... ... ........... . .  @rib_cf f=1
- # Shift, Extract, Deposit
- ####
- 
--shrpw_sar       110100 r2:5 r1:5 c:3 00 0    00000  t:5
--shrpw_imm       110100 r2:5 r1:5 c:3 01 0    cpos:5 t:5
-+shrp_sar        110100 r2:5 r1:5 c:3 00 0 d:1 0000  t:5
-+shrp_imm        110100 r2:5 r1:5 c:3 01 0 cpos:5    t:5       d=0
-+shrp_imm        110100 r2:5 r1:5 c:3 0. 1 .....  t:5          \
-+                d=1 cpos=%cpos6_11
- 
- extr_sar        110100 r:5  t:5  c:3 10 se:1 00 000 .....     d=0 len=%len5
- extr_sar        110100 r:5  t:5  c:3 10 se:1 1. 000 .....     d=1 len=%len6_8
+@@ -381,6 +381,8 @@ bl              111010 ..... ..... 101 ........... n:1 .        &BL l=2 \
+                 disp=%assemble_22
+ b_gate          111010 ..... ..... 001 ........... .   .        @bl
+ blr             111010 l:5   x:5   010 00000000000 n:1 0
++nopbts          111010 00000 00000 010 0---------1   0 1    # clrbts/popbts
++nopbts          111010 00000 ----- 010 00000000000   0 1    # pushbts/pushnom
+ bv              111010 b:5   x:5   110 00000000000 n:1 0
+ bve             111010 b:5   00000 110 10000000000 n:1 -        l=0
+ bve             111010 b:5   00000 111 10000000000 n:1 -        l=2
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 99b7622841..05fe5bf7fe 100644
+index 05fe5bf7fe..4dccaff687 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -3258,32 +3258,56 @@ static bool trans_movbi(DisasContext *ctx, arg_movbi *a)
-     return do_cbranch(ctx, a->disp, a->n, &cond);
+@@ -3746,6 +3746,12 @@ static bool trans_bve(DisasContext *ctx, arg_bve *a)
+ #endif
  }
  
--static bool trans_shrpw_sar(DisasContext *ctx, arg_shrpw_sar *a)
-+static bool trans_shrp_sar(DisasContext *ctx, arg_shrp_sar *a)
- {
--    TCGv_reg dest;
-+    TCGv_reg dest, tmp;
- 
-+    if (!ctx->is_pa20 && a->d) {
-+        return false;
-+    }
-     if (a->c) {
-         nullify_over(ctx);
-     }
- 
-     dest = dest_gpr(ctx, a->t);
-     if (a->r1 == 0) {
--        tcg_gen_ext32u_reg(dest, load_gpr(ctx, a->r2));
--        tcg_gen_shr_reg(dest, dest, cpu_sar);
-+        if (a->d) {
-+            tcg_gen_shr_reg(dest, dest, cpu_sar);
-+        } else {
-+            tcg_gen_ext32u_reg(dest, load_gpr(ctx, a->r2));
-+            tmp = tcg_temp_new();
-+            tcg_gen_andi_reg(tmp, cpu_sar, 31);
-+            tcg_gen_shr_reg(dest, dest, tmp);
-+        }
-     } else if (a->r1 == a->r2) {
--        TCGv_i32 t32 = tcg_temp_new_i32();
--        TCGv_i32 s32 = tcg_temp_new_i32();
-+        if (a->d) {
-+            tcg_gen_rotr_reg(dest, load_gpr(ctx, a->r2), cpu_sar);
-+        } else {
-+            TCGv_i32 t32 = tcg_temp_new_i32();
-+            TCGv_i32 s32 = tcg_temp_new_i32();
- 
--        tcg_gen_trunc_reg_i32(t32, load_gpr(ctx, a->r2));
--        tcg_gen_trunc_reg_i32(s32, cpu_sar);
--        tcg_gen_rotr_i32(t32, t32, s32);
--        tcg_gen_extu_i32_reg(dest, t32);
-+            tcg_gen_trunc_reg_i32(t32, load_gpr(ctx, a->r2));
-+            tcg_gen_trunc_reg_i32(s32, cpu_sar);
-+            tcg_gen_andi_i32(s32, s32, 31);
-+            tcg_gen_rotr_i32(t32, t32, s32);
-+            tcg_gen_extu_i32_reg(dest, t32);
-+        }
-+    } else if (a->d) {
-+        TCGv_reg t = tcg_temp_new();
-+        TCGv_reg n = tcg_temp_new();
++static bool trans_nopbts(DisasContext *ctx, arg_nopbts *a)
++{
++    /* All branch target stack instructions implement as nop. */
++    return ctx->is_pa20;
++}
 +
-+        tcg_gen_xori_reg(n, cpu_sar, 63);
-+        tcg_gen_shl_reg(t, load_gpr(ctx, a->r2), n);
-+        tcg_gen_shli_reg(t, t, 1);
-+        tcg_gen_shr_reg(dest, load_gpr(ctx, a->r1), cpu_sar);
-+        tcg_gen_or_reg(dest, dest, t);
-     } else {
-         TCGv_i64 t = tcg_temp_new_i64();
-         TCGv_i64 s = tcg_temp_new_i64();
- 
-         tcg_gen_concat_reg_i64(t, load_gpr(ctx, a->r2), load_gpr(ctx, a->r1));
-         tcg_gen_extu_reg_i64(s, cpu_sar);
-+        tcg_gen_andi_i64(s, s, 31);
-         tcg_gen_shr_i64(t, t, s);
-         tcg_gen_trunc_i64_reg(dest, t);
-     }
-@@ -3297,31 +3321,40 @@ static bool trans_shrpw_sar(DisasContext *ctx, arg_shrpw_sar *a)
-     return nullify_end(ctx);
- }
- 
--static bool trans_shrpw_imm(DisasContext *ctx, arg_shrpw_imm *a)
-+static bool trans_shrp_imm(DisasContext *ctx, arg_shrp_imm *a)
- {
--    unsigned sa = 31 - a->cpos;
-+    unsigned width, sa;
-     TCGv_reg dest, t2;
- 
-+    if (!ctx->is_pa20 && a->d) {
-+        return false;
-+    }
-     if (a->c) {
-         nullify_over(ctx);
-     }
- 
-+    width = a->d ? 64 : 32;
-+    sa = width - 1 - a->cpos;
-+
-     dest = dest_gpr(ctx, a->t);
-     t2 = load_gpr(ctx, a->r2);
-     if (a->r1 == 0) {
--        tcg_gen_extract_reg(dest, t2, sa, 32 - sa);
--    } else if (TARGET_REGISTER_BITS == 32) {
-+        tcg_gen_extract_reg(dest, t2, sa, width - sa);
-+    } else if (width == TARGET_REGISTER_BITS) {
-         tcg_gen_extract2_reg(dest, t2, cpu_gr[a->r1], sa);
--    } else if (a->r1 == a->r2) {
--        TCGv_i32 t32 = tcg_temp_new_i32();
--        tcg_gen_trunc_reg_i32(t32, t2);
--        tcg_gen_rotri_i32(t32, t32, sa);
--        tcg_gen_extu_i32_reg(dest, t32);
-     } else {
--        TCGv_i64 t64 = tcg_temp_new_i64();
--        tcg_gen_concat_reg_i64(t64, t2, cpu_gr[a->r1]);
--        tcg_gen_shri_i64(t64, t64, sa);
--        tcg_gen_trunc_i64_reg(dest, t64);
-+        assert(!a->d);
-+        if (a->r1 == a->r2) {
-+            TCGv_i32 t32 = tcg_temp_new_i32();
-+            tcg_gen_trunc_reg_i32(t32, t2);
-+            tcg_gen_rotri_i32(t32, t32, sa);
-+            tcg_gen_extu_i32_reg(dest, t32);
-+        } else {
-+            TCGv_i64 t64 = tcg_temp_new_i64();
-+            tcg_gen_concat_reg_i64(t64, t2, cpu_gr[a->r1]);
-+            tcg_gen_shri_i64(t64, t64, sa);
-+            tcg_gen_trunc_i64_reg(dest, t64);
-+        }
-     }
-     save_gpr(ctx, a->t, dest);
- 
+ /*
+  * Float class 0
+  */
 -- 
 2.34.1
 
