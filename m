@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98F07D1773
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BAB7D1752
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:46:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwLu-0007pW-PF; Fri, 20 Oct 2023 16:44:14 -0400
+	id 1qtwM0-0007wL-Lw; Fri, 20 Oct 2023 16:44:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLl-0007lt-8N
+ id 1qtwLl-0007lu-8a
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:44:09 -0400
 Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLg-0008EJ-3G
+ id 1qtwLh-0008EV-8j
  for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:44:04 -0400
 Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6ba172c5f3dso1169952b3a.0
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:58 -0700 (PDT)
+ d2e1a72fcca58-6b497c8575aso1218027b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697834637; x=1698439437; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697834638; x=1698439438; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xtkaJF9+gMYoqpzUR8ATyW8aKIy9V4St1iGFcMEqLNY=;
- b=Q1kQJfKi0tLI6b2j2sfX3Ct8L/VNVY4Leijjc9HzBwts34D7JovNpFb/F9PNb9Imxd
- sbYN1kUL81zZRKscpn3mmWHdSoAACULSeZzwsqedrKLeizHhnbBXit5u1VxwFB4yaVSO
- nqOwbnqxZfpsmSW6UnZ1ydxt/kC0yFPpEQXTp78+ZgyVpNb5WsBj+d1zZF3oa3NiaL7U
- FcxhrBadfuGHAsLCsokyQFjgAt3zxD2X5gzNH82U10ZEH0LMoNGD59EVN/JhujWL5igX
- SdNjQpMzIQYF2Zfy4wi2fRFkyhJfZsxBAYWn2/CxHtrNRkVMGwG/UPoCx40hhfQ8RjOH
- MS8A==
+ bh=fDB1iCB7dFrTdi+sskzC1+DL914HNFrtvGBOgbigGUk=;
+ b=TpMVXKfGaKEaDH6VFA+Vv4ks6+LaEGg3C2JeHcCwJPsbo/0JP0/YvZOg3zXvf0MVG4
+ DPyH6tssDXF5B9BOBNL8MmQnoemL9ilgZLN2tMookuisAxrc6qay7/+gZWcRZZEpJo1p
+ 9VKfwXScwTjUxsmRreu16jC4Ki+EH+HHGdyqEyBk9B6thWPGUITclaXXPhV6ZdYkAM2y
+ zKr03RAT7UK7TiP1VLywFohThBgGnn7SLGyQD+I0ctqwDYXZosDVp9wgxWN8ypwp0dtr
+ fQL5/k2XJxCHAaYBs9Sto1iGyaE+m4MGFKG1F4m9eaUXnPUL3JJGnvpQ3tNhnPXPMR9o
+ XbVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697834637; x=1698439437;
+ d=1e100.net; s=20230601; t=1697834638; x=1698439438;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xtkaJF9+gMYoqpzUR8ATyW8aKIy9V4St1iGFcMEqLNY=;
- b=ad9zRFLH+8L5YdEBz9lkt2mrg7zOT3vFlpCbnggG0Ev+9JgY5Uy//egrJURsGenMcO
- cTuoYTcX37IHbq+bBjf+huveKfFNgQySGxeXyEqH0P+p3vN0+PeKrQJIV8JAWuwaNsiR
- zmW0CkdyNO4AYyRczrdcHiSY5GvVJgI5AY7sJCPyJw0ebsv72gt2wT0DUIkCOjXAsY88
- +IFI8vyKZkNyoHKp4bEtkY8tUZeLm7X16PDiijr5WyeMIGaU5lEeX4HGXTLVzXGhVdTU
- ExlHI4p5AlDJaqSbTXs+ONZSnxUEr/DVbzDTWaQGg8uyik/lSN/4w9/10DFht8kBASfj
- GCuA==
-X-Gm-Message-State: AOJu0YwjVUcl5DeUAi5MnktahASDo/lb4EyD7C0kxm5Ijs5hRQ7+TJP7
- Vrelwwl+prhB5a7Q/ftC0FajEVyY3i/M70gI1WA=
-X-Google-Smtp-Source: AGHT+IGM//x5ApiXin/v3nGC26YxLavWQe1ptKNFzJjWZ1x/zIB48HDQf5DRgDfmhQmpXDq3+vPXeA==
-X-Received: by 2002:a05:6a21:47c6:b0:174:f06:34dc with SMTP id
- as6-20020a056a2147c600b001740f0634dcmr2418905pzc.28.1697834637418; 
- Fri, 20 Oct 2023 13:43:57 -0700 (PDT)
+ bh=fDB1iCB7dFrTdi+sskzC1+DL914HNFrtvGBOgbigGUk=;
+ b=D0oXCps+ml1rMhlsPvAl7M2z1U1jGOjNyUcI3rqHbX6Sqj25EsCNfrEPQjGeMkl3VO
+ it9x7Xp985iSdDl2YsPN6XtJE6yooroJgoy6zqqTxyt3Bf3e9CbTXu1OS2/WT12yQNnb
+ d9IJMGiJgAegHFK+6NLr9uV7kFFjJaUazHKJipsQAc8AaH/DbdfCug4trXD+RSFAs+G1
+ uPknCZ0b0UW4mz8iH6zUYGK00UENnOjIlTGo3+tP5MGsJF+wOw14Vk2hB9yE8v4hnNEA
+ peAivPw1rvDye/yF96LR1NWTaMaVFuj8h/K1cXPES1BkWG6USbZAveXgUt7hAb9WNao3
+ E82Q==
+X-Gm-Message-State: AOJu0YwXvLu5eAtmynHtTQ6CkvrUKaf2VSnDxAZ1MKVPIzp7WMEAP5MU
+ QfCkb6w8eWFW1KZCJrLkKASbSW5S+aasdGzHb5Q=
+X-Google-Smtp-Source: AGHT+IFkCHfsiIGJL1VO1KrPzgOMlehNMxV2i6uFxPVpEKbcrLZTg12WSlHq1IjSmGdqr2CNtaAkFQ==
+X-Received: by 2002:a05:6a00:24c6:b0:690:1c1b:aefd with SMTP id
+ d6-20020a056a0024c600b006901c1baefdmr3062144pfv.5.1697834638209; 
+ Fri, 20 Oct 2023 13:43:58 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.56
+ k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 13:43:56 -0700 (PDT)
+ Fri, 20 Oct 2023 13:43:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: deller@gmx.de,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 27/65] linux-user/hppa: Fixes for TARGET_ABI32
-Date: Fri, 20 Oct 2023 13:42:53 -0700
-Message-Id: <20231020204331.139847-28-richard.henderson@linaro.org>
+Cc: deller@gmx.de
+Subject: [PATCH v2 28/65] target/hppa: Drop attempted gdbstub support for
+ hppa64
+Date: Fri, 20 Oct 2023 13:42:54 -0700
+Message-Id: <20231020204331.139847-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
  envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
@@ -92,40 +91,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid target_ulong and use abi_* types.
+There is no support for hppa64 in gdb.  Any attempt to provide the
+data for the larger hppa64 registers results in an error from gdb.
+Mask CR_SAR writes to the width of the register: 5 or 6 bits.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/hppa/signal.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/hppa/gdbstub.c | 32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/linux-user/hppa/signal.c b/linux-user/hppa/signal.c
-index ec5f5412d1..4400ce4df4 100644
---- a/linux-user/hppa/signal.c
-+++ b/linux-user/hppa/signal.c
-@@ -72,7 +72,7 @@ static void setup_sigcontext(struct target_sigcontext *sc, CPUArchState *env)
+diff --git a/target/hppa/gdbstub.c b/target/hppa/gdbstub.c
+index 48a514384f..4a965b38d7 100644
+--- a/target/hppa/gdbstub.c
++++ b/target/hppa/gdbstub.c
+@@ -21,11 +21,16 @@
+ #include "cpu.h"
+ #include "gdbstub/helpers.h"
  
- static void restore_sigcontext(CPUArchState *env, struct target_sigcontext *sc)
++/*
++ * GDB 15 only supports PA1.0 via the remote protocol, and ignores
++ * any provided xml.  Which means that any attempt to provide more
++ * data results in "Remote 'g' packet reply is too long".
++ */
++
+ int hppa_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
  {
--    target_ulong psw;
-+    abi_ulong psw;
-     int i;
+-    HPPACPU *cpu = HPPA_CPU(cs);
+-    CPUHPPAState *env = &cpu->env;
+-    target_ureg val;
++    CPUHPPAState *env = cpu_env(cs);
++    uint32_t val;
  
-     __get_user(psw, &sc->sc_gr[0]);
-@@ -146,10 +146,10 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
-     haddr = ka->_sa_handler;
-     if (haddr & 2) {
-         /* Function descriptor.  */
--        target_ulong *fdesc, dest;
-+        abi_ptr *fdesc, dest;
+     switch (n) {
+     case 0:
+@@ -139,24 +144,13 @@ int hppa_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+         break;
+     }
  
-         haddr &= -4;
--        fdesc = lock_user(VERIFY_READ, haddr, 2 * sizeof(target_ulong), 1);
-+        fdesc = lock_user(VERIFY_READ, haddr, 2 * sizeof(abi_ptr), 1);
-         if (!fdesc) {
-             goto give_sigsegv;
+-    if (TARGET_REGISTER_BITS == 64) {
+-        return gdb_get_reg64(mem_buf, val);
+-    } else {
+-        return gdb_get_reg32(mem_buf, val);
+-    }
++    return gdb_get_reg32(mem_buf, val);
+ }
+ 
+ int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+-    HPPACPU *cpu = HPPA_CPU(cs);
+-    CPUHPPAState *env = &cpu->env;
+-    target_ureg val;
+-
+-    if (TARGET_REGISTER_BITS == 64) {
+-        val = ldq_p(mem_buf);
+-    } else {
+-        val = ldl_p(mem_buf);
+-    }
++    CPUHPPAState *env = cpu_env(cs);
++    uint32_t val = ldl_p(mem_buf);
+ 
+     switch (n) {
+     case 0:
+@@ -166,7 +160,7 @@ int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         env->gr[n] = val;
+         break;
+     case 32:
+-        env->cr[CR_SAR] = val;
++        env->cr[CR_SAR] = val & (hppa_is_pa20(env) ? 63 : 31);
+         break;
+     case 33:
+         env->iaoq_f = val;
+@@ -278,5 +272,5 @@ int hppa_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
          }
+         break;
+     }
+-    return sizeof(target_ureg);
++    return 4;
+ }
 -- 
 2.34.1
 
