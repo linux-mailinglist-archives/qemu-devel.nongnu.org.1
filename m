@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5397D1234
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 17:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBA77D1242
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 17:08:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtr5P-0005cv-0y; Fri, 20 Oct 2023 11:06:51 -0400
+	id 1qtr5X-0005so-Qi; Fri, 20 Oct 2023 11:06:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtr5M-0005cS-PR
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:06:49 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtr5W-0005j1-5e
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:06:58 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtr5L-0001M2-2B
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:06:48 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-9be3b66f254so140839766b.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 08:06:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtr5Q-0001Ma-AW
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:06:57 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9c75ceea588so142262666b.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 08:06:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697814405; x=1698419205; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697814410; x=1698419210; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=68n6n0mII6+P8wsMRhocKE/9XK5lu0Lo0YDMzSDC/I4=;
- b=xIl831Hh8E603sIVCyxP6Gsy6PszG+v9WNJBJQU6s9peNbHvXsN0DW6kbwWEYG3bUL
- fpeAwhavwc+weo3nTBthoCOZudS6sEZbH8MHEjjl0TBhU+oUea2o87g14mtBUNKoWYXh
- 7OOBR4oyBWFfw5fowHdioFCEKxcD9Y53B+WYL3xA/ZnEzsXmsDJJDXeqw5QZ2cbUFCRv
- Y7e8CQHUeAb9YlqzduvtKY/ElJ3U8GPR8Dj6YEIJVibQrm3jOjIO90jvKOXyWBafaexh
- 1hifWZbG3E4n77sjuC9F47VsuNuzOkVDApruvTAFBWP+C/wwGw9DAF4xqhj1izFz1Bk8
- sGJg==
+ bh=5z5NktVu9Z3pjJNFKKbdLfwCXi08dnJZpEWAcQaa1vg=;
+ b=r1YIj93WUSMi2ovpYgFOf6NZfLwK7fczygGvAZ/3OKiTXzoQBid4lN0RWd0gfPzoFA
+ UGO3ipZmYImqH0trxXAfQ/gtutuqk3eaWtWi8+g0eUujAAX40N/mlYL+W8ibzXsoc6cN
+ 0rrqRuLkUp6J31LZnXkEJPUXydHX3iU0zbc1cYEL6ixwGytJp7IaMZYb0KE4r5T3flQJ
+ AaOlaQDMFZEaqEvCYaVWMF/5lXFvzj+StR7pb4hBMfXhE4y87WrElvgqjGH4dz9ZgcuV
+ OVnkF+ZPpr6iiZ2rTGxZ8JB35fJj/f3yRdeCezywaNqC8IxhpZV1cu3bSr8Kfs/G7Zuf
+ qqyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697814405; x=1698419205;
+ d=1e100.net; s=20230601; t=1697814410; x=1698419210;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=68n6n0mII6+P8wsMRhocKE/9XK5lu0Lo0YDMzSDC/I4=;
- b=XrPxvzuqEqqdJ1I/+BQQoEusWd76IhrHE5ZcJJuU8wLlbYMHFm8XZK1XtmruE0zDh5
- M7YXPI4wtb30P4stok+x7j2f3fZJukJfk0hdYnGxfrS0TgNU6am0l0PDj0aOm31es6bY
- haBI4sgqfgNbYggGiPZ6LPITzY7RMqdqoXHniLjD6QT1iJaJlqR7EXM44XxmGiFDyk4u
- Hjo/vtoZhgy4rBEw+D//GiHVOfFt7jgTlAvEhSrOUZv/ix/WqNWTWeqtx3RALluJbmk9
- e+OzONcAMmf+nZXi6JzFosDLEVtH5e2yx0r9TQPc3hEvH+uvOgmp4tSYQsG4kQDOQWM/
- xRvw==
-X-Gm-Message-State: AOJu0YySXj1YDSj6c2hrSy4M0boJF+F/rCsQlFrxPwEOZ9/I8NQaZxH2
- gkGRcKrzVPZoG7WVLoFn8eqi8ajQoyV1zPcRQDA=
-X-Google-Smtp-Source: AGHT+IHagumdG3cBzEcHgi4cKaEgJkrvbg8lVtmvbKHa82clsV15H0jHS6G2xWqZkwHShh9tTqGozQ==
-X-Received: by 2002:a17:906:7315:b0:9be:71ab:fb5e with SMTP id
- di21-20020a170906731500b009be71abfb5emr1908651ejc.22.1697814404882; 
- Fri, 20 Oct 2023 08:06:44 -0700 (PDT)
+ bh=5z5NktVu9Z3pjJNFKKbdLfwCXi08dnJZpEWAcQaa1vg=;
+ b=dm5nrPpKGZ3sAdXlvn/vXxsdrXGhf6Dqcir3nuRNiTe0NSyouiw2aJkvdklEgTCqh7
+ kdQ0Nhv04clts5WWnjlM4atJdaS5wgwnkz1pFAzdRW09i7wkDqcMvdKBfTPNl0Axmh11
+ cknO6TpdxfgTX25iuQNJ2k1QRTW9BP8blHp+cfLlJpeyslGgAUen/9KoC/df+/IT9inB
+ Qrhp9ewVM6ObnmzC3Vxm6aItCjUSXbUEiuukROoVJRnDFhRuvmTdG5irL6rlaLMTNcWB
+ 6PJBfs3336AVhG5Xg90jf+85pTG0jD7BNDcUkFubVQEIXyW/vuyyrK2zkDJfo67NeZYK
+ BSgA==
+X-Gm-Message-State: AOJu0YyY71HUVsXqhbA9nwKEtGPp4rtRJ9/iRHeN8TJYgWCGQC0GEgzL
+ 2H7riAZdP/0tAD19sSgZdd4CXEj7vbddHbbbJtg=
+X-Google-Smtp-Source: AGHT+IGq6+JLTNqAIQfuz3/8ppC+sJgAJ38w9hpdZhuNF+7s3+tPWebnqTxNKqdDJX8G8LjLqqOxOA==
+X-Received: by 2002:a17:907:3d94:b0:9ba:fe6:225 with SMTP id
+ he20-20020a1709073d9400b009ba0fe60225mr1518327ejc.55.1697814410576; 
+ Fri, 20 Oct 2023 08:06:50 -0700 (PDT)
 Received: from m1x-phil.lan (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
  [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
- u10-20020a17090657ca00b009b8dbdd5203sm1666524ejr.107.2023.10.20.08.06.42
+ d11-20020a170906040b00b0099bd046170fsm1672198eja.104.2023.10.20.08.06.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Oct 2023 08:06:43 -0700 (PDT)
+ Fri, 20 Oct 2023 08:06:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Laurent Vivier <laurent@vivier.eu>, Thomas Huth <huth@tuxfamily.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/6] hw/m68k/mcf5206: Pass CPU using QOM link property
-Date: Fri, 20 Oct 2023 17:06:22 +0200
-Message-ID: <20231020150627.56893-3-philmd@linaro.org>
+Subject: [PATCH 3/6] hw/m68k/mcf_intc: Expose MMIO region via SysBus API
+Date: Fri, 20 Oct 2023 17:06:23 +0200
+Message-ID: <20231020150627.56893-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231020150627.56893-1-philmd@linaro.org>
 References: <20231020150627.56893-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,61 +92,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid the interrupt controller directly access the first cpu
-via the qemu_get_cpu() call. Pass it from the board code.
+QOM objects shouldn't access each other internals fields
+except using the QOM API.
+
+Here the caller of mcf_intc_init() access the MMIO region from
+the MCF_INTC state. Avoid that by exposing that region via
+sysbus_init_mmio(), then get it with sysbus_mmio_get_region().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/m68k/an5206.c  | 2 ++
- hw/m68k/mcf5206.c | 9 ++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ hw/m68k/mcf_intc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/m68k/an5206.c b/hw/m68k/an5206.c
-index 11ae4c9795..f51c93088f 100644
---- a/hw/m68k/an5206.c
-+++ b/hw/m68k/an5206.c
-@@ -26,6 +26,8 @@ static void mcf5206_init(MemoryRegion *sysmem, uint32_t base)
-     SysBusDevice *s;
+diff --git a/hw/m68k/mcf_intc.c b/hw/m68k/mcf_intc.c
+index 4cd30188c0..1f74ea0e14 100644
+--- a/hw/m68k/mcf_intc.c
++++ b/hw/m68k/mcf_intc.c
+@@ -173,6 +173,7 @@ static void mcf_intc_instance_init(Object *obj)
+     mcf_intc_state *s = MCF_INTC(obj);
  
-     dev = qdev_new(TYPE_MCF5206_MBAR);
-+    object_property_set_link(OBJECT(dev), "m68k-cpu",
-+                             OBJECT(first_cpu), &error_abort);
-     s = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(s, &error_fatal);
- 
-diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
-index 2ab1b4f059..f920ca2ceb 100644
---- a/hw/m68k/mcf5206.c
-+++ b/hw/m68k/mcf5206.c
-@@ -10,6 +10,7 @@
- #include "qemu/error-report.h"
- #include "qemu/log.h"
- #include "cpu.h"
-+#include "hw/qdev-properties.h"
- #include "hw/boards.h"
- #include "hw/irq.h"
- #include "hw/m68k/mcf.h"
-@@ -601,13 +602,19 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
-     s->timer[1] = m5206_timer_init(s->pic[10]);
-     s->uart[0] = mcf_uart_init(s->pic[12], serial_hd(0));
-     s->uart[1] = mcf_uart_init(s->pic[13], serial_hd(1));
--    s->cpu = M68K_CPU(qemu_get_cpu(0));
+     memory_region_init_io(&s->iomem, obj, &mcf_intc_ops, s, "mcf", 0x100);
++    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->iomem);
  }
  
-+static Property mcf5206_mbar_properties[] = {
-+    DEFINE_PROP_LINK("m68k-cpu", m5206_mbar_state, cpu,
-+                     TYPE_M68K_CPU, M68kCPU *),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static void mcf5206_mbar_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
+ static void mcf_intc_class_init(ObjectClass *oc, void *data)
+@@ -211,7 +212,8 @@ qemu_irq *mcf_intc_init(MemoryRegion *sysmem,
+     s = MCF_INTC(dev);
+     s->cpu = cpu;
  
-+    device_class_set_props(dc, mcf5206_mbar_properties);
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->desc = "MCF5206 system integration module";
-     dc->realize = mcf5206_mbar_realize;
+-    memory_region_add_subregion(sysmem, base, &s->iomem);
++    memory_region_add_subregion(sysmem, base,
++                                sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0));
+ 
+     return qemu_allocate_irqs(mcf_intc_set_irq, s, 64);
+ }
 -- 
 2.41.0
 
