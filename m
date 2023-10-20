@@ -2,68 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61B57D094A
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 09:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F38FF7D0959
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 09:22:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtjmE-0002fl-7R; Fri, 20 Oct 2023 03:18:38 -0400
+	id 1qtjpP-00007y-LX; Fri, 20 Oct 2023 03:21:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtjly-0002aW-NN
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 03:18:19 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qtjpJ-000072-9R
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 03:21:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtjlw-0002cM-So
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 03:18:18 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qtjpF-0003fC-LN
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 03:21:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697786296;
+ s=mimecast20190719; t=1697786500;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4BHNx2oGqo2h+C7htmK4wjJWDS9SWxiXaCc5HOS5trw=;
- b=K4240XmJeDr3Kuu7UPqEIUzEcyFTCThOginpGGe2PjXN2aXposZgXsdY19FvCgb7rbxFsS
- /X8Q1W1eEQeHR/RCemxIdm4LVBAAlUdqFKWecEcpoKPnq6oJrZRPnAYysen0NnjTds8rbL
- FQxtOKXzqwrSLz0evCp11GCfVKVJw9I=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-615-GENI1ZWbNtSEPUb0aXpq6w-1; Fri, 20 Oct 2023 03:18:12 -0400
-X-MC-Unique: GENI1ZWbNtSEPUb0aXpq6w-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 279343806655;
- Fri, 20 Oct 2023 07:18:11 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 037FC10828;
- Fri, 20 Oct 2023 07:18:11 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C8B9821E6A1F; Fri, 20 Oct 2023 09:18:09 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,
- qemu-block@nongnu.org,  qemu-s390x@nongnu.org,  Thomas Huth
- <thuth@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Richard
- Henderson <richard.henderson@linaro.org>,  David Hildenbrand
- <david@redhat.com>,  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: Re: [PATCH v2 07/22] qapi: Inline QERR_INVALID_PARAMETER_TYPE
- definition (constant param)
-References: <20231005045041.52649-1-philmd@linaro.org>
- <20231005045041.52649-8-philmd@linaro.org>
-Date: Fri, 20 Oct 2023 09:18:09 +0200
-In-Reply-To: <20231005045041.52649-8-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 5 Oct 2023 06:50:24
- +0200")
-Message-ID: <87mswd92z2.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OlNWLkTTFD8gDImZgaHtyzT5EX9N3BacUBXGIw6j+8Q=;
+ b=gWVV4MBcPXTEODEO7PqnmvnklCT9gtnyuAeh3+c0N26w+uJWPTdF6MqtRb9GT6/nA6p8BA
+ m80fCGNX85jw/N5wjoRgtgY3o4IStsL6Jq3Q0SZXc7BraWwMwWQG5RtKCn1mw8r61IcI4j
+ V31XsjuPr9Unop3Hfe3poq/In0OrRyE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-619-gYxnnB1pMC-jtZUmRk7j3Q-1; Fri, 20 Oct 2023 03:21:39 -0400
+X-MC-Unique: gYxnnB1pMC-jtZUmRk7j3Q-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9c6a4a60033so32054766b.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 00:21:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697786497; x=1698391297;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OlNWLkTTFD8gDImZgaHtyzT5EX9N3BacUBXGIw6j+8Q=;
+ b=NyF/hYc0JjA4/8FfpfOEv6FF6uy+0X1YGC+ey8j/f7UAqR8UHEB5fSC0Em0p0dTY7S
+ Ux1qU8O6mbRMIggSsHdctiCKs4hP4c1LaCt12vvovByo/iavA92VrUqEl6OW5/o5hvxv
+ VenQnHYam5AMwrXHuXKFM2ND+/eQk/WQ57dP7s9AGDfT44Kof7yAYvwl+psRbGn+ATbt
+ XTSzxsp5wF4SMPGmd48rZKdhJoB1SRG2DE+s/NGqTlwG7ox9nIMYMVP/QW29W5ITMJOA
+ At5QhfpKLFkYsM+beCajg1TidQMl/xXdopL440WYJeABJukEXiQLxMNIbAJkOKkFl2Ay
+ MShw==
+X-Gm-Message-State: AOJu0Yw31AtImmAiJf6vj6OjmPqLlTBASiNMgnxWA36TzbUFLXwiq/w8
+ O/bV46msNhaHm88jA9sbmD/CrUlH+qGqfGhURfHSMMec3kRx3OAuZEn6v+BxiqFNZNWWRjbZeHT
+ x3KVa7RGuj4YqdMog5z23GgyWdyiu4R+TbanYM2582vdm0oz5tqT9X+CjwNzzGFV58wXw7HMoQG
+ o=
+X-Received: by 2002:a17:907:d29:b0:9bd:f902:9a61 with SMTP id
+ gn41-20020a1709070d2900b009bdf9029a61mr742346ejc.18.1697786497606; 
+ Fri, 20 Oct 2023 00:21:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeroumZyxKluHy4LNNEfU2NeOyTSGeBpl7HsDtF500J5BYtdCfTP4JIk2bdIeekmWR4LH92Q==
+X-Received: by 2002:a17:907:d29:b0:9bd:f902:9a61 with SMTP id
+ gn41-20020a1709070d2900b009bdf9029a61mr742332ejc.18.1697786497067; 
+ Fri, 20 Oct 2023 00:21:37 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.gmail.com with ESMTPSA id
+ g15-20020a170906348f00b009c387ff67bdsm922190ejb.22.2023.10.20.00.21.36
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Oct 2023 00:21:36 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] tests/tcg: fix out-of-bounds access in test-avx
+Date: Fri, 20 Oct 2023 09:21:35 +0200
+Message-ID: <20231020072135.450301-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,88 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+This can cause differences between native and QEMU execution, due
+to ASLR.
 
-> Address the comment added in commit 4629ed1e98
-> ("qerror: Finally unused, clean up"), from 2015:
->
->   /*
->    * These macros will go away, please don't use
->    * in new code, and do not add new ones!
->    */
->
-> Mechanical transformation using the following
-> coccinelle semantic patch:
->
->     @match@
->     expression errp;
->     constant param;
->     constant value;
->     @@
->          error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
->
->     @script:python strformat depends on match@
->     param << match.param;
->     value << match.value;
->     fixedfmt; // new var
->     @@
->     fixedfmt =3D f'"Invalid parameter type for \'{param[1:-1]}\', expecte=
-d: {value[1:-1]}"'
->     coccinelle.fixedfmt =3D cocci.make_ident(fixedfmt)
->
->     @replace@
->     expression match.errp;
->     constant match.param;
->     constant match.value;
->     identifier strformat.fixedfmt;
->     @@
->     -    error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
->     +    error_setg(errp, fixedfmt);
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Acked-by: Thomas Huth <thuth@redhat.com>
-> ---
->  target/arm/arm-qmp-cmds.c        | 3 ++-
->  target/s390x/cpu_models_sysemu.c | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-> index b53d5efe13..3c99fd8222 100644
-> --- a/target/arm/arm-qmp-cmds.c
-> +++ b/target/arm/arm-qmp-cmds.c
-> @@ -154,7 +154,8 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(=
-CpuModelExpansionType type,
->      if (model->props) {
->          qdict_in =3D qobject_to(QDict, model->props);
->          if (!qdict_in) {
-> -            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, "props", "dict=
-");
-> +            error_setg(errp,
-> +                       "Invalid parameter type for 'props', expected: di=
-ct");
->              return NULL;
->          }
->      }
-> diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_s=
-ysemu.c
-> index 63981bf36b..4507714493 100644
-> --- a/target/s390x/cpu_models_sysemu.c
-> +++ b/target/s390x/cpu_models_sysemu.c
-> @@ -111,7 +111,8 @@ static void cpu_model_from_info(S390CPUModel *model, =
-const CpuModelInfo *info,
->      if (info->props) {
->          qdict =3D qobject_to(QDict, info->props);
->          if (!qdict) {
-> -            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, "props", "dict=
-");
-> +            error_setg(errp,
-> +                       "Invalid parameter type for 'props', expected: di=
-ct");
->              return;
->          }
->      }
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ tests/tcg/i386/test-avx.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-The error messages are awful.  Your patch makes their awfulness more
-visible.  Improvement of sorts ;)
+diff --git a/tests/tcg/i386/test-avx.c b/tests/tcg/i386/test-avx.c
+index c39c0e5bce8..910b0673535 100644
+--- a/tests/tcg/i386/test-avx.c
++++ b/tests/tcg/i386/test-avx.c
+@@ -236,12 +236,15 @@ v4di val_i64[] = {
+ 
+ v4di deadbeef = {0xa5a5a5a5deadbeefull, 0xa5a5a5a5deadbeefull,
+                  0xa5a5a5a5deadbeefull, 0xa5a5a5a5deadbeefull};
+-v4di indexq = {0x000000000000001full, 0x000000000000008full,
+-               0xffffffffffffffffull, 0xffffffffffffff5full};
+-v4di indexd = {0x00000002000000efull, 0xfffffff500000010ull,
+-               0x0000000afffffff0ull, 0x000000000000000eull};
++/* &gather_mem[0x10] is 512 bytes from the base; indices must be >=-64, <64
++ * to account for scaling by 8 */
++v4di indexq = {0x000000000000001full, 0x000000000000003dull,
++               0xffffffffffffffffull, 0xffffffffffffffdfull};
++v4di indexd = {0x00000002ffffffcdull, 0xfffffff500000010ull,
++               0x0000003afffffff0ull, 0x000000000000000eull};
+ 
+ v4di gather_mem[0x20];
++_Static_assert(sizeof(gather_mem) == 1024);
+ 
+ void init_f16reg(v4di *r)
+ {
+-- 
+2.41.0
 
 
