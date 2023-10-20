@@ -2,147 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEEF7D1599
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 20:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8D87D15C4
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 20:25:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtu7P-0006PB-K8; Fri, 20 Oct 2023 14:21:07 -0400
+	id 1qtuAT-0004Fb-Mh; Fri, 20 Oct 2023 14:24:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ayan.kumar.halder@amd.com>)
- id 1qtu7D-0006EN-Qz
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 14:20:56 -0400
-Received: from mail-mw2nam12on2085.outbound.protection.outlook.com
- ([40.107.244.85] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1qtuAR-0004FF-9j; Fri, 20 Oct 2023 14:24:15 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ayan.kumar.halder@amd.com>)
- id 1qtu6z-0004XA-0V
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 14:20:54 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZvZYDQop1RcHR/8xcJZhvCbUsprz7z3D37Muy3vKLsq91D1be2I7qCD8tqq4ufeAWuwcaKln99NpcECIaoMpQHjKWTwuTZtXqgR2IIXktSqD1Te3o3quZ7BtEAeHJAarccaX7WPuezn6MMYUKD0oCCU5p7PlHgRiA/Y7HlDg2sRTsx1Gmp6xyvyPcGZGI5zL51cmaVwjiQOBtn2mqtyJC449zmVaJ4X24xDiECARUxj7ogVJqsvUUgSECJSARA7qfsPp8J8CZ7++zJ7E7kPi4QI3hK5kfbFGV75YcH9MNqThS7ccmY1YOYGx+Kb/RbCgdoUdRwXP7sou6AQO0TmV7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YmwKfZa/DtF6GybwdS3XlOJuFOpxQ+yAxfoJ4CmS64A=;
- b=Y+tRSKtuXCOXxvaS4SG1R0fFf6WfEjQaNpusQSwZA0dIiTYC5BEPpViYMNUFHu1dTih/f1LvS7VD4MCAEw4CxzMaDILp3sJiPzB6UZn63SG08MCHDl6uwgNcf9mUzD7+gF2e6NRQ+hBp1MlealdCOUh9b+gPH82j/hmeFG7DyKQMrmTsqj8GSlCluojgzzrJ6JIOnzf+EpgBp9Vvn+h1N/YcHzmZl1hev5NxQ27SkndFtcug7QrnfjbdEa1X+p/3TrAPROVIx0/NMPBTysJN5DE6gNqZXhIA1vY+EMQE2o9IaW8NDWAVtC/l3Q0KUvLi0pLBJApNO2UlCb7vOqCyqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YmwKfZa/DtF6GybwdS3XlOJuFOpxQ+yAxfoJ4CmS64A=;
- b=qQ68o6UvNjAlP3SZ8Q/L6ow/9chm7Hqlpsjs33YGbWkYt8vl2Qz28R62xOkbv0wuwNx/rFhom1mITtVwHmIzfalrs3tGEaMZEEgfuNLJHLTFLBUFICD+HmHe+K5d3BXEQ92lKuqfraMUxdEjxmWfhF/AfV391VHEMoWp0vmF/V4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2621.namprd12.prod.outlook.com (2603:10b6:805:73::15)
- by DM6PR12MB4515.namprd12.prod.outlook.com (2603:10b6:5:2a1::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.26; Fri, 20 Oct
- 2023 18:15:32 +0000
-Received: from SN6PR12MB2621.namprd12.prod.outlook.com
- ([fe80::7364:56e9:5097:3562]) by SN6PR12MB2621.namprd12.prod.outlook.com
- ([fe80::7364:56e9:5097:3562%4]) with mapi id 15.20.6907.025; Fri, 20 Oct 2023
- 18:15:32 +0000
-Message-ID: <4c01b3d0-3163-4379-9faf-c48229ea1d00@amd.com>
-Date: Fri, 20 Oct 2023 19:15:25 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: QEMU features useful for Xen development?
-Content-Language: en-GB
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Xen-devel <xen-devel@lists.xenproject.org>,
- Stewart Hildebrand <stewart.hildebrand@amd.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- Sergiy Kibrik <Sergiy_Kibrik@epam.com>,
- QEMU Developers <qemu-devel@nongnu.org>,
- Vikram Garhwal <vikram.garhwal@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-References: <87y1hspiyh.fsf@linaro.org>
- <alpine.DEB.2.22.394.2308301745530.6458@ubuntu-linux-20-04-desktop>
- <CAFEAcA8Ziov9vA9dW+4vzFE=KkSUqfMNNMZOtvQhqCXyjRytzQ@mail.gmail.com>
- <87cyz3pmgz.fsf@linaro.org>
- <CAFEAcA-m8G1kfTw52kOGPEvQwWPph0NWc0URVY1aQ2WwVeB_OQ@mail.gmail.com>
- <799b1754-7529-0538-1b5a-d94a362eb74d@amd.com> <87r0lp720d.fsf@linaro.org>
-From: Ayan Kumar Halder <ayankuma@amd.com>
-In-Reply-To: <87r0lp720d.fsf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0137.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9e::12) To SN6PR12MB2621.namprd12.prod.outlook.com
- (2603:10b6:805:73::15)
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1qtuAP-00064n-JO; Fri, 20 Oct 2023 14:24:15 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39KICGT2013620; Fri, 20 Oct 2023 18:23:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=FGpBSLiDh0G95YsLFw7VXZ643zHThN06uzYIMozy9Yg=;
+ b=D3vLS+K+WX5H4xGW44ST25h/eQttXikAKDjh0VRrocB1C3yi7aaan3Mgoa/kqQY7+iEn
+ jFHgnxgb/bNHd2dA1Vjs5uOX8yMky9QssSbzFeVEav7SIbs5OX6TUGHzMDDX7J+3EgZi
+ j+5xYxNT7zUPtcudqPASvIz5fINCDkeF2x/x8XOox2qDisHPu0o7lX5vx7iYeKizjNcy
+ zU8gu+4aZ8Hi5411SqKlbIO+i327xYSk0n73EkBYggdZOmXIJrxizhrRcG7r7ZAhA5GZ
+ eKN7HcuCPevxcZp0ROL58TnXb4y8Rzlp1lvBi4f0jr/8EQZ7ECE/hsT4Sd5r8dR7sMZ8 SA== 
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuxme0hkx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Oct 2023 18:23:57 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39KHcKVc019377; Fri, 20 Oct 2023 18:23:56 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc456dye-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 Oct 2023 18:23:56 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 39KINtiw10617472
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 Oct 2023 18:23:55 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7697A58050;
+ Fri, 20 Oct 2023 18:23:55 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E0FB558045;
+ Fri, 20 Oct 2023 18:23:54 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 20 Oct 2023 18:23:54 +0000 (GMT)
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ andrew@codeconstruct.com.au, Joel Stanley <joel@jms.id.au>,
+ philmd@linaro.org
+Subject: [PATCH v2 0/3] misc/pca9552: Changes to support powernv10
+Date: Fri, 20 Oct 2023 13:23:18 -0500
+Message-Id: <20231020182321.163109-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2621:EE_|DM6PR12MB4515:EE_
-X-MS-Office365-Filtering-Correlation-Id: 347d3cec-c72e-4ad2-ec81-08dbd1988c4c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: BmvffvNXK8lqbNg4pWWebYGcXkQ+FYVcPoFhsHiriEj3xT3vwIlcCun8PaVPWW3EnjjG7OqPkTlhEdBY5+4gUV1buN0e4WbFsi0bNGWF41YbXsdmrFT/+X+6u5eg7bBS+y+Ls8kNmO9/q5EEUDUcWsMeCTA3jtsXBDGs2SmocuTziofL3vV0sHXTG/sXiYe/4KceUYPk4kohCpSwazstqH2HjcCGCp4xL19ptFOHJBDqtmxlQKtZNLn0Z/BNP8GQG1FTcEWuAoVsv3vczw8J1myYQOE3Mm+RannghziItyXSidZef8r1hopANRg2WxOhIXROEp0L9FVhxbqxAOGgWkEzdSJ2+ucmdtYxAgLz6phTaRfvs8kS97zyqmaJZ5yVp+rk6ghGy3byHwpMdlbmZMuIFAgHz8s+Y5yLOGCis/Rea7hRsGPn/B5f6+tqxFGCX7h3ry9CBkfjKc3q0YJDSeFjIoa9Njc1gGVZv3xUvkrrrG40yV/LSMteUu9vFFbgGz6uTP06/lL/qNfmbnuvR58n5fp5kQIk9r6trrMtH/YP2Bp9caQ8JZDDUH/X9bEKhfD8CJGa4nT56lckhnQzl+dgZedXCF9mJThAwTD6aMcSMtfxewndQXYPVjt2kFW/FokI9/PH8URgx8Mw5n31BA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SN6PR12MB2621.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(396003)(376002)(366004)(346002)(136003)(230922051799003)(186009)(64100799003)(451199024)(1800799009)(6916009)(31686004)(41300700001)(478600001)(66476007)(66946007)(66556008)(54906003)(5660300002)(6666004)(6506007)(6512007)(53546011)(38100700002)(7416002)(2906002)(2616005)(316002)(26005)(8936002)(8676002)(4326008)(66574015)(83380400001)(6486002)(966005)(31696002)(36756003)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RjlxSWpSYlU0UGdZaDJBS29MK0tXWjJKNmNZQW9nYnpkMCswVDE3NUI5UUlv?=
- =?utf-8?B?OExzdGxvSSt2eFJLYUFuanVjY2JZa05UcnFUZVRIdVVsZWlTS2V2Q2c5TWpj?=
- =?utf-8?B?Z3FodEM5cStpWjVnUzZLMXpJMHRMZTFuNm1mOEJma1Y3NG14N1RqT0pQbzda?=
- =?utf-8?B?NkZ5YTltRzRFVEMvQnJlSjB3UjF2ek5Ea1lRM01DLzdNQlZhTWJya3Y5SlF3?=
- =?utf-8?B?Mlhtd0t6Q2JKdi9WTzZTY2VkN2dWamlYUEc3Ky91Qm1aZXpRL0swTWRlN3Zw?=
- =?utf-8?B?MEtqSUhaanZ4UWxrS2s0eGU1SXhlaGV6S0VVa1NEWHk2VUFLcXVKZ1hPbjh5?=
- =?utf-8?B?TXlPd1h0SWt0ejJ0aXFNRUM0cXluRUhxcG52STFwaWV2QzBHNlVaQ0FQVUlO?=
- =?utf-8?B?U1dXcmVpeEhTaWl1WlhtWkdTUnd2SHVGUWR0MnRxV2NqSEJMb0xILzZiZGkv?=
- =?utf-8?B?UzlFdzQ3WDQ1aGx5eE1CdnBMeGwxTjVMRk0xaXFzeGxsVHAvQTJwVHN0OEUz?=
- =?utf-8?B?TlhDTmlWRkxoQUl6OGpqWE9qY1hkdE9tSGV3TmVvRGczZlFXTFF3NlA3ZDNB?=
- =?utf-8?B?NW10bm1FUjMwVyt4Zy9Wb3k3a1gxM1lTZ09NZC85cEdzMHBrMGJyeTNXKzFJ?=
- =?utf-8?B?dHBVSXB5dlAvTHBoRmRzb2ZKb2RLMkkvLzF0QndoUjFFSC8rd2R1aUp1M1ZN?=
- =?utf-8?B?ZGRkMEZYcHVkbi9mNXVxeFNuUnFNYnVUb3J2a3F0UlJ5cGNTdDNFVmxUTjV4?=
- =?utf-8?B?U3BhdUMvQ0tNT2JKTXBZWCtEM2lJUTdVRGxva1lBZ2tVZ2hMTWowV0VGRDVG?=
- =?utf-8?B?Yk5WRGpzczZSSFBTemNZSEY4ckt3ZG5OckRJekt5QnkvVmlpWUw2bTVEM09k?=
- =?utf-8?B?OVJ4RDFHYVZEcUZKcFF0Z2E3QW93Mkw1OW00QjhkbUVIUnlHbnl6RHlDTFF3?=
- =?utf-8?B?NVlTbnBWVnErS2Y0QUVUb0RaVm9JckI0OG9ib2pnVHJoVXFueHNib3ZPUy9Y?=
- =?utf-8?B?ZTFwRnFBREk3ZHJCY2FWa3AwQjUwdEEySS91MC84Q3lIWEV0Q3dlL096N2Vr?=
- =?utf-8?B?akJxYlJYS0NHemZRWWxFOHowYmlFaFBoaTBEVFcwb2hSTG9FTkhzRzlpRXkv?=
- =?utf-8?B?Kzk4dmp5UkF4alVVUGpSMzZBNHlUeGc5b0gzb0VvblR0ZFNWSW9yYnYweno5?=
- =?utf-8?B?WHJlTEp0dW1FT1RZUjYwZzdnZmx6LzNNUVFCRE9ZN3NwMlZ0OGZNNm40SGdU?=
- =?utf-8?B?UlpBRzR6NWZaWkYycHdSclg0V214LzNselRiVE5ZV1EwWHQvbmlCcnlvV3Z5?=
- =?utf-8?B?VVlMbGdibkhsK0xjNExENUw1VnBkcU96UU4wVHcvbkY0ZVptaU1SblZWVVMy?=
- =?utf-8?B?dW44OFIyays0b2tiRi9aVmd5SkwrWTVSeFlXOXNud1JBNWlpZU5Nb3F0RHlV?=
- =?utf-8?B?Q0xtOEwrQmswUWdOYzBxYm5vczFjUnIxWGxKT0cxVmczT0Z5OGVleTErMFdp?=
- =?utf-8?B?SmhUYU1HM3U5YXF1WEp6V1FxbWtJNU5ma3B3Ry92MlYxaUQvQ0VXbWRIRE9R?=
- =?utf-8?B?SlNvVUJJRzF5eDRTVll0Q2Y0QnNzZVcxd01IMmtkNkJtK1MyYjg4Q1lldUxI?=
- =?utf-8?B?ZkpwSEkvTW9QeG9UeXpLVVdhTEJWT2dNV1ZiUEViZEtEbWJUbUFySHk4SGJm?=
- =?utf-8?B?cXpGMmtianJLbkVHN1lRRDBYYlgydDJrekdGWEc5QmpRS2pWajVKeDhteVV6?=
- =?utf-8?B?UjVFUmtNazZsdmxlR0c1dGhDZWlrWDNveFZZeTJCVWVMd1VmTjJxQ3N0YUIw?=
- =?utf-8?B?eW5jUGsvWkNydWx4YXlMci81UUlGNi9jUnVxZXg5ZWk2UlBnamJyTW1OQmFm?=
- =?utf-8?B?cDRvcWxqWkgvNTFuaktJYVNlUXJaYUtGYTUzaHcrWEtSenRyWlQ5L29GM0Nn?=
- =?utf-8?B?ZGl5V3NkOUhlTmQrSGRJNFdsZklKcWtNYmthMk83T0wwcE9Cb3krQ280UjVu?=
- =?utf-8?B?NCtkNUpybmwwV3BLZU51Z2NwczlzVytqU2p5bVBUQk56d1VrRlg2UE5CRGVs?=
- =?utf-8?B?ZGRvWVFWRi9CdjQrSURKSmc3MExNOVc2MDQwYytBTFlqYjQvbmwzTytFUExP?=
- =?utf-8?Q?5ca3TJc937oc9kJ4wd+WOfCCF?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 347d3cec-c72e-4ad2-ec81-08dbd1988c4c
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2621.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2023 18:15:32.5017 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8ueYigUsBmEJ4WCHzFKd6VfwsnYW+G6MitDSHR5j8kIMvWDGnbDYOPn/cRrmkjL6lS9hmr60tZ1D5nI1JSuIFQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4515
-Received-SPF: softfail client-ip=40.107.244.85;
- envelope-from=ayan.kumar.halder@amd.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: LlisD8eEXKI0lIPuoe4xIV2mnvTzg5aj
+X-Proofpoint-ORIG-GUID: LlisD8eEXKI0lIPuoe4xIV2mnvTzg5aj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-20_10,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0
+ mlxscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ adultscore=0 malwarescore=0 suspectscore=0 clxscore=1015 mlxlogscore=747
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
+ definitions=main-2310200154
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,81 +103,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alex,
+This is a series of patches targeted at getting the pca9552
+model ready for use by the powernv10 machine.
 
-On 20/10/2023 16:15, Alex Bennée wrote:
-> Ayan Kumar Halder <ayankuma@amd.com> writes:
->
->> Hi Peter/Alex,
->>
->> Appreciate your help. :)
->>
->> On 31/08/2023 11:03, Peter Maydell wrote:
->>> CAUTION: This message has originated from an External Source. Please
->>> use proper judgment and caution when opening attachments, clicking
->>> links, or responding to this email.
->>>
->>>
->>> On Thu, 31 Aug 2023 at 10:53, Alex Bennée <alex.bennee@linaro.org> wrote:
->>>> Peter Maydell <peter.maydell@linaro.org> writes:
->>>>
->>>>> On Thu, 31 Aug 2023 at 01:57, Stefano Stabellini <sstabellini@kernel.org> wrote:
->>>>>> As Xen is gaining R52 and R82 support, it would be great to be able to
->>>>>> use QEMU for development and testing there as well, but I don't think
->>>>>> QEMU can emulate EL2 properly for the Cortex-R architecture. We would
->>>>>> need EL2 support in the GIC/timer for R52/R82 as well.
->>>>> We do actually have a Cortex-R52 model which at least in theory
->>>>> should include EL2 support, though as usual with newer QEMU
->>>>> stuff it quite likely has lurking bugs; I'm not sure how much
->>>>> testing it's had. Also there is currently no board model which
->>>>> will work with the Cortex-R52 so it's a bit tricky to use in practice.
->>>>> (What sort of board model would Xen want to use it with?)
->>>> We already model a bunch of the mps2/mps3 images so I'm assuming adding
->>>> the mps3-an536 would be a fairly simple step to do (mps2tz.c is mostly
->>>> tweaking config values). The question is would it be a useful target for
->>>> Xen?
->>> All our MPS2/MPS3 boards are M-profile. That means we have the
->>> device models for all the interesting devices on the board, but
->>> it would be simpler to write the an536 board model separately.
->>> (In particular, the M-profile boards are wrappers around an
->>> "ARMSSE" sort-of-like-an-SoC component; there's no equivalent
->>> for the Cortex-R52.)
->>>
->>>>     https://developer.arm.com/documentation/dai0536/latest/
->> Yes, it will be helpful if Qemu can model this board. We have a
->> downstream port of Xen on R52 (upstreaming is in progress).
->>
->> So, we can test the Qemu model with Xen.
->>
->> Also if all works fine, we might consider adding this to the upstream
->> Xen CI docker.
-> We wrote up whats required on our JIRA:
->
->    https://linaro.atlassian.net/browse/QEMU-598
->
-> Given we have most of the bits already it shouldn't take long to build a
-> model for it. However I want to draw every ones attention to the notes:
->
->    The real FPGA image does not have a global monitor that can support
->    LDREX/STREX between the two CPUs for accesses in the DDR4 RAM or BRAM.
->    This means that effectively guest software will only be able to use
->    one CPU (the local monitor within the CPU works fine). This
->    restriction won’t apply to the QEMU model, but is important to be
->    aware of if you’re writing guest software on the QEMU model that you
->    also want to be able to run on the FPGA board.
->
-> However if that meets the requirements for Xen testing and no one tries
-> to run SMP loads on real HW then I can try and find space on our roadmap
-> to do it (rough guess 9.1 or 9.2?).
+Changes from v1:
+ - Added check to only update output GPIO if state changed
 
-Yes, this meets the requirements for Xen testing.
+Glenn Miles (3):
+  misc/pca9552: Fix inverted input status
+  misc/pca9552: Let external devices set pca9552 inputs
+  misc/pca9552: Only update output GPIOs if state changed
 
-It will be great to use Qemu for Xen testing.
+ hw/misc/pca9552.c          | 64 +++++++++++++++++++++++++++++++++-----
+ include/hw/misc/pca9552.h  |  3 +-
+ tests/qtest/pca9552-test.c |  6 ++--
+ 3 files changed, 62 insertions(+), 11 deletions(-)
 
-Please keep me posted on this feature as I am plumbing the R52 bits in 
-upstream Xen.
+-- 
+2.31.1
 
-- Ayan
-
->
 
