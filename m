@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68397D176B
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA627D1755
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:46:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwLt-0007pL-72; Fri, 20 Oct 2023 16:44:13 -0400
+	id 1qtwLs-0007pI-Kl; Fri, 20 Oct 2023 16:44:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLY-0007jc-2d
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:59 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qtwLd-0007kQ-M3
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:44:01 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwLV-0008B2-Mo
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:51 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6ba54c3ed97so1176085b3a.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:49 -0700 (PDT)
+ id 1qtwLW-0008BJ-M2
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:43:53 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6b6f4c118b7so1179584b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697834628; x=1698439428; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697834629; x=1698439429; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Td/Ysv7eoH4uj7r0UKubRW7kAk7MGHOo1UhYXHuswg=;
- b=jW/ul2Slp828MP+g9H2aGmAcE6rfJS84M1qrSQhvBpG9uDxMxzfg43tzMCzGnWyFUh
- RHKB1r52nWEtu7EHS7aFf+lyuoB7vXUdf9YZu0+OqGzDLC0/16rIgpmOxxywcpp/tq6z
- dn7C1LJEn9tJg7zRmyl/VA/32Pd9BV/tts21SyCy5ssoYTqHWCCUr7RSfodtv7Yn2Orv
- xnCEJ/+hve8m8miHpCIjTjo2IWfTMgm6jnMDQR5fZZlyy4tdC6QY4aIB8qdO2tgxr4eW
- mJyv1Ms2+ZeaCWQGBhe7CJ+/o1JvB7KwExvNrKx/djw7qJb7A2m+vYKCbQuvC60Df0/M
- mR4g==
+ bh=Bc0q97Cx2QaZpbCyXU6bCv+F4YXYfta8rMxuf/N3B78=;
+ b=rW/kjKelHxED4dVZpxbclHoxpPgzeOVW9Bx3NWCM7cHYvBKjrHTn2+K4Lp73se4As/
+ HcWVShCzKZDjSlrGpyrhKrjW6kgsomJwSClOM8cpFZgIIulhBu/vXXNYvw1C8lzWjgaq
+ DF23daqYyVf7xwMBZSaANpjZ6Y7lLV8X1lar6xwn2Fy14I1tvN4Q6HeFtnlRrnZbujQM
+ q+c5RUsX5GtvF/qLV1L7zh2aJL3Oh5pEXPPYaPCDr23GJAxBLQ/bWMU8+tHhk2QgkSOZ
+ dWW97c+5ZvWvICQJ47Y+GS1gHVwG8Zx0ox02VqONvS/EvvwDJRieNTFWQzgqWUEm3c2M
+ dU/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697834628; x=1698439428;
+ d=1e100.net; s=20230601; t=1697834629; x=1698439429;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/Td/Ysv7eoH4uj7r0UKubRW7kAk7MGHOo1UhYXHuswg=;
- b=acuBzn0V4onwTRhABNmHkC7npzKjJA7Y5tcmUmBU1PjN5LzM4OdzDybLyHryUDFMGR
- /WU+Kt+QTgTUFxgFjasTMRWLSIhCc/ZOiaUKHPQZoa65IXehHJ1uz10nm3Dzasq9w1CC
- LFxeUeq7Yg0czLsZ4Oj7YvUFYTpBnX5xaoflDUR4PEYoUXESDtUN+jXi6AXVKNgxwbzo
- J1wuvFSKjznQ8Y7CcPPZrIEmUV4pPHPGXvkQ3qBIbqBK/XbUHTXVaEyuRd3jP3pBaXq+
- vfbwOI/M1Uzc5xznVJQbZBM7k5b2vnpk77qt3yDdF6QyDZZXOdgfMtGDm/vsgY+7lYjP
- YB3A==
-X-Gm-Message-State: AOJu0YyNKxF84YboBHUv1peRFlDnuvatNCsDil2UPvVdTXaUHwOO59DQ
- Zbmml2aW+5Tba5cgUR7qbcHS5eYpk/B6JSKLIH8=
-X-Google-Smtp-Source: AGHT+IEzM4bAcBvwJOt0gYevFx0yP49REFNMh2Bqnh409jBtYHB7nDYtH4N1EmfXAU3BnAR+/5UU/A==
-X-Received: by 2002:a05:6a20:7fa6:b0:17a:eddb:ac6a with SMTP id
- d38-20020a056a207fa600b0017aeddbac6amr4113829pzj.6.1697834628432; 
- Fri, 20 Oct 2023 13:43:48 -0700 (PDT)
+ bh=Bc0q97Cx2QaZpbCyXU6bCv+F4YXYfta8rMxuf/N3B78=;
+ b=lZ68XeQRv39RPora6Ka4SSaONAZkOw5ji98iyF8gkwjMoSsTO96HEg3JvTYtZ0fWFK
+ 1dX95lPdZJN2yVIE/N+JwBGMSlJ2VF9NRZ32TnYIOnUj+qtfSWzsBPYl780WyxEOvWq2
+ Kfp3XNqeo6XsCRcX+xMrQZ7zaWNEO0BYwc0z6ar0Uh1aLK+SpGtXl+H/qx+nsCN9WAgy
+ 2a+6WWpLQW18kOX3eVjMBap2Uk67UYFLBXAKCuKyWnrShqjB0Qu+Cmzxhz2agKmiGh9+
+ RdhGumuOQ00PZR0khgQniIXvbBRUR+uM8Bssc/olBVRxx/xg3pgSFmoDmyY7zA4wBiwY
+ iQnw==
+X-Gm-Message-State: AOJu0YxPRP1U0SqUMaNFnuTdgsbgAlbGR4YwQz8CSjrBafh+aDmTX7SM
+ BM3I2G68rZrdYK5x0yVKNgVBxdBg3Wdc1oAESXw=
+X-Google-Smtp-Source: AGHT+IFRrUqCi4F4ezaQ5obwJH+7vkAaJBNwK2avlftUHjM+h601fXnyGJAU6V9UNZwqhhAf6x9dFw==
+X-Received: by 2002:a05:6a20:918e:b0:179:f81b:12d9 with SMTP id
+ v14-20020a056a20918e00b00179f81b12d9mr3080473pzd.11.1697834629239; 
+ Fri, 20 Oct 2023 13:43:49 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.47
+ k15-20020aa7998f000000b00688965c5227sm1944975pfh.120.2023.10.20.13.43.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 20 Oct 2023 13:43:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 17/65] target/hppa: Update cpu_hppa_get/put_psw for hppa64
-Date: Fri, 20 Oct 2023 13:42:43 -0700
-Message-Id: <20231020204331.139847-18-richard.henderson@linaro.org>
+Subject: [PATCH v2 18/65] target/hppa: Handle absolute addresses for pa2.0
+Date: Fri, 20 Oct 2023 13:42:44 -0700
+Message-Id: <20231020204331.139847-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,105 +90,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With 64-bit registers, there are 16 carry bits in the PSW.
-Clear reserved bits based on cpu revision.
+With pa2.0, absolute addresses are not the same as physical addresses,
+and undergo a transformation based on PSW_W.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/helper.c | 63 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 52 insertions(+), 11 deletions(-)
+ target/hppa/cpu.h        |  3 +++
+ target/hppa/helper.c     |  4 ++--
+ target/hppa/mem_helper.c | 49 +++++++++++++++++++++++++++++++++++++---
+ target/hppa/sys_helper.c |  9 ++++++++
+ 4 files changed, 60 insertions(+), 5 deletions(-)
 
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index e087879399..622b4af890 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -284,6 +284,9 @@ static inline target_ulong hppa_form_gva(CPUHPPAState *env, uint64_t spc,
+     return hppa_form_gva_psw(env->psw, spc, off);
+ }
+ 
++hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr);
++hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr);
++
+ /*
+  * Since PSW_{I,CB} will never need to be in tb->flags, reuse them.
+  * TB_FLAG_SR_SAME indicates that SR4 through SR7 all contain the
 diff --git a/target/hppa/helper.c b/target/hppa/helper.c
-index a8d3f456ee..534a9e374c 100644
+index 534a9e374c..6a00085dae 100644
 --- a/target/hppa/helper.c
 +++ b/target/hppa/helper.c
-@@ -28,19 +28,35 @@
- target_ureg cpu_hppa_get_psw(CPUHPPAState *env)
- {
-     target_ureg psw;
-+    target_ureg mask1 = (target_ureg)-1 / 0xf;
-+    target_ureg maskf = (target_ureg)-1 / 0xffff * 0xf;
+@@ -109,8 +109,8 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ureg psw)
+     cb |= ((psw >>  8) & 1) <<  4;
+     env->psw_cb = cb;
  
-     /* Fold carry bits down to 8 consecutive bits.  */
--    /* ??? Needs tweaking for hppa64.  */
--    /* .......b...c...d...e...f...g...h */
--    psw = (env->psw_cb >> 4) & 0x01111111;
--    /* .......b..bc..cd..de..ef..fg..gh */
-+    /* ^^^b^^^c^^^d^^^e^^^f^^^g^^^h^^^i^^^j^^^k^^^l^^^m^^^n^^^o^^^p^^^^ */
-+    /*                                 ^^^b^^^c^^^d^^^e^^^f^^^g^^^h^^^^ */
-+    psw = (env->psw_cb >> 4) & mask1;
-+    /* .......b...c...d...e...f...g...h...i...j...k...l...m...n...o...p */
-+    /*                                 .......b...c...d...e...f...g...h */
-     psw |= psw >> 3;
--    /* .............bcd............efgh */
--    psw |= (psw >> 6) & 0x000f000f;
--    /* .........................bcdefgh */
--    psw |= (psw >> 12) & 0xf;
--    psw |= env->psw_cb_msb << 7;
--    psw = (psw & 0xff) << 8;
-+    /* .......b..bc..cd..de..ef..fg..gh..hi..ij..jk..kl..lm..mn..no..op */
-+    /*                                 .......b..bc..cd..de..ef..fg..gh */
-+    psw |= psw >> 6;
-+    psw &= maskf;
-+    /* .............bcd............efgh............ijkl............mnop */
-+    /*                                 .............bcd............efgh */
-+    psw |= psw >> 12;
-+    /* .............bcd.........bcdefgh........efghijkl........ijklmnop */
-+    /*                                 .............bcd.........bcdefgh */
-+    psw |= env->psw_cb_msb << (TARGET_REGISTER_BITS == 64 ? 39 : 7);
-+    /* .............bcd........abcdefgh........efghijkl........ijklmnop */
-+    /*                                 .............bcd........abcdefgh */
-+
-+    /* For hppa64, the two 8-bit fields are discontiguous. */
-+    if (hppa_is_pa20(env)) {
-+        psw = (psw & 0xff00000000ull) | ((psw & 0xff) << 8);
-+    } else {
-+        psw = (psw & 0xff) << 8;
+-    /* If PSW_P changes, it affects how we translate addresses.  */
+-    if ((psw ^ old_psw) & PSW_P) {
++    /* If P or W changes, it affects how we translate addresses.  */
++    if ((psw ^ old_psw) & (PSW_P | PSW_W)) {
+ #ifndef CONFIG_USER_ONLY
+         tlb_flush_by_mmuidx(env_cpu(env), HPPA_MMU_FLUSH_MASK);
+ #endif
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 48cb5b0d76..1a63717571 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -25,6 +25,45 @@
+ #include "hw/core/cpu.h"
+ #include "trace.h"
+ 
++hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr)
++{
++    if (likely(extract64(addr, 58, 4) != 0xf)) {
++        /* Memory address space */
++        return addr & MAKE_64BIT_MASK(0, 62);
 +    }
- 
-     psw |= env->psw_n * PSW_N;
-     psw |= (env->psw_v < 0) * PSW_V;
-@@ -51,14 +67,39 @@ target_ureg cpu_hppa_get_psw(CPUHPPAState *env)
- 
- void cpu_hppa_put_psw(CPUHPPAState *env, target_ureg psw)
- {
-+    uint64_t reserved;
-     target_ureg old_psw = env->psw;
-     target_ureg cb = 0;
- 
-+    /* Do not allow reserved bits to be set. */
-+    if (hppa_is_pa20(env)) {
-+        reserved = MAKE_64BIT_MASK(40, 24) | MAKE_64BIT_MASK(28, 4);
-+        reserved |= PSW_G;                  /* PA1.x only */
-+        reserved |= PSW_E;                  /* not implemented */
-+    } else {
-+        reserved = MAKE_64BIT_MASK(32, 32) | MAKE_64BIT_MASK(28, 2);
-+        reserved |= PSW_O | PSW_W;          /* PA2.0 only */
-+        reserved |= PSW_E | PSW_Y | PSW_Z;  /* not implemented */
++    if (extract64(addr, 54, 4) != 0) {
++        /* I/O address space */
++        return addr | MAKE_64BIT_MASK(62, 2);
 +    }
-+    psw &= ~reserved;
++    /* PDC address space */
++    return (addr & MAKE_64BIT_MASK(0, 54)) | MAKE_64BIT_MASK(60, 4);
++}
 +
-     env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
-     env->psw_n = (psw / PSW_N) & 1;
-     env->psw_v = -((psw / PSW_V) & 1);
--    env->psw_cb_msb = (psw >> 15) & 1;
++hwaddr hppa_abs_to_phys_pa2_w0(vaddr addr)
++{
++    if (likely(extract32(addr, 28, 4) != 0xf)) {
++        /* Memory address space */
++        return addr & MAKE_64BIT_MASK(0, 32);
++    }
++    if (extract32(addr, 24, 4) != 0) {
++        /* I/O address space */
++        return addr | MAKE_64BIT_MASK(32, 32);
++    }
++    /* PDC address space */
++    return (addr & MAKE_64BIT_MASK(0, 24)) | MAKE_64BIT_MASK(60, 4);
++}
++
++static hwaddr hppa_abs_to_phys(CPUHPPAState *env, vaddr addr)
++{
++    if (!hppa_is_pa20(env)) {
++        return addr;
++    } else if (env->psw & PSW_W) {
++        return hppa_abs_to_phys_pa2_w1(addr);
++    } else {
++        return hppa_abs_to_phys_pa2_w0(addr);
++    }
++}
++
+ static hppa_tlb_entry *hppa_find_tlb(CPUHPPAState *env, vaddr addr)
+ {
+     int i;
+@@ -99,7 +138,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
  
-+#if TARGET_REGISTER_BITS == 32
-+    env->psw_cb_msb = (psw >> 15) & 1;
-+#else
-+    env->psw_cb_msb = (psw >> 39) & 1;
-+    cb |= ((psw >> 38) & 1) << 60;
-+    cb |= ((psw >> 37) & 1) << 56;
-+    cb |= ((psw >> 36) & 1) << 52;
-+    cb |= ((psw >> 35) & 1) << 48;
-+    cb |= ((psw >> 34) & 1) << 44;
-+    cb |= ((psw >> 33) & 1) << 40;
-+    cb |= ((psw >> 32) & 1) << 36;
-+    cb |= ((psw >> 15) & 1) << 32;
-+#endif
-     cb |= ((psw >> 14) & 1) << 28;
-     cb |= ((psw >> 13) & 1) << 24;
-     cb |= ((psw >> 12) & 1) << 20;
+     /* Virtual translation disabled.  Direct map virtual to physical.  */
+     if (mmu_idx == MMU_PHYS_IDX) {
+-        phys = addr;
++        phys = hppa_abs_to_phys(env, addr);
+         prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+         goto egress;
+     }
+@@ -213,7 +252,7 @@ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+     /* ??? We really ought to know if the code mmu is disabled too,
+        in order to get the correct debugging dumps.  */
+     if (!(cpu->env.psw & PSW_D)) {
+-        return addr;
++        return hppa_abs_to_phys(&cpu->env, addr);
+     }
+ 
+     excp = hppa_get_physical_address(&cpu->env, addr, MMU_KERNEL_IDX, 0,
+@@ -299,7 +338,11 @@ void HELPER(itlba)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
+     /* Note that empty->entry_valid == 0 already.  */
+     empty->va_b = addr & TARGET_PAGE_MASK;
+     empty->va_e = empty->va_b + TARGET_PAGE_SIZE - 1;
+-    empty->pa = extract32(reg, 5, 20) << TARGET_PAGE_BITS;
++    /*
++     * FIXME: This is wrong, as this is a pa1.1 function.
++     * But for the moment translate abs address for pa2.0.
++     */
++    empty->pa = hppa_abs_to_phys(env, extract32(reg, 5, 20) << TARGET_PAGE_BITS);
+     trace_hppa_tlb_itlba(env, empty, empty->va_b, empty->va_e, empty->pa);
+ }
+ 
+diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
+index 4bb4cf611c..f0dd5a08e7 100644
+--- a/target/hppa/sys_helper.c
++++ b/target/hppa/sys_helper.c
+@@ -71,6 +71,15 @@ target_ureg HELPER(swap_system_mask)(CPUHPPAState *env, target_ureg nsm)
+      * so let this go without comment.
+      */
+     env->psw = (psw & ~PSW_SM) | (nsm & PSW_SM);
++
++    /*
++     * Changes to PSW_W change the translation of absolute to physical.
++     * This currently (incorrectly) affects all translations.
++     */
++    if ((psw ^ env->psw) & (PSW_P | PSW_W)) {
++        tlb_flush(env_cpu(env));
++    }
++
+     return psw & PSW_SM;
+ }
+ 
 -- 
 2.34.1
 
