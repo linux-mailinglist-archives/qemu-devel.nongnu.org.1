@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DDA7D0FC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 14:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC557D0FC9
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 14:44:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtokt-00036i-S0; Fri, 20 Oct 2023 08:37:31 -0400
+	id 1qtopv-0000Ru-I3; Fri, 20 Oct 2023 08:42:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtoks-00036a-7E
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:37:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qtokq-0005SB-Bt
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:37:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697805447;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Vw5HHwy+3ACYrngRedow77181px4ZIEUbHuD94FuzBM=;
- b=E4kI07yTC7M3GF01JWHoIkuyW2o2T0Gp51quj/nUsM5n+w8TCIdK0A9jw7apDZOVi9w/ev
- c3wGHQ1GSwWfBe36fpdWgIgxpQX5XSbQlvOS2J1e0BRSxL2GF25gZV3eguCVTgF+adpmZs
- R/aLtG1P2F7BQeDxUr7On3RCKf0+t98=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-28-yOMVm0NdPj-hZIfiuDCz-A-1; Fri, 20 Oct 2023 08:37:23 -0400
-X-MC-Unique: yOMVm0NdPj-hZIfiuDCz-A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B3627280C29F;
- Fri, 20 Oct 2023 12:37:17 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9053E2166B26;
- Fri, 20 Oct 2023 12:37:17 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 846F721E6A1F; Fri, 20 Oct 2023 14:37:16 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  dgilbert@redhat.com,
- pbonzini@redhat.com,  berrange@redhat.com,  eblake@redhat.com,
- manish.mishra@nutanix.com,  aravind.retnakaran@nutanix.com,  Het Gala
- <het.gala@nutanix.com>,  Juan Quintela <quintela@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v14 02/14] fixup! migration: New QAPI type 'MigrateAddress'
-References: <20231019192353.31500-1-farosas@suse.de>
- <20231019192353.31500-3-farosas@suse.de> <87y1fxc27m.fsf@pond.sub.org>
- <87wmvhh4zm.fsf@suse.de>
-Date: Fri, 20 Oct 2023 14:37:16 +0200
-In-Reply-To: <87wmvhh4zm.fsf@suse.de> (Fabiano Rosas's message of "Fri, 20 Oct
- 2023 09:07:25 -0300")
-Message-ID: <87o7gt1ncz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtopr-0000Pn-IZ
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:42:39 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtopp-0006FX-Dl
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 08:42:39 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-53b32dca0bfso1739869a12.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 05:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697805754; x=1698410554; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uWxVZgE+Mx8LGqBqzleKmtV2pfMxP70GBwRM1li0jQU=;
+ b=RcFjLilDzVDH4k6A/xB/6kzSMIwH9MuQYuNGHsGxV5QigYSzR2uMCqOJwQgGywLHWP
+ ilJxdwZ5L17R4gyT+A+4D3eq4Ve63yJJ7VJdSHWEaxDt2+RYfwl+v4g2I9cfMbs2AwP1
+ BGBPjlbME5BcJ3AvHDa1Z8hlsaIqxMyuROfLG4f+IRmRyxsGeO7UQ+bA0Kuv+JqQPCGE
+ I0LgsATw27e0y718Pf30Jy4PuYJXun2yi0XM5zryEyOZcAoKTgF+7Kl7jH6cIHsKnFeo
+ 0FFZfGU2iSjUbAxWsOXUbd69wTGhrZQDNuqFJGgjFlgdQN3KtafjFrk+/hPGg912rKo/
+ YpxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697805754; x=1698410554;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uWxVZgE+Mx8LGqBqzleKmtV2pfMxP70GBwRM1li0jQU=;
+ b=we26JnweELnihT1N7Jvyan+NUkcfq0d4djxHIhcbMRbIn+pWC8kIcwQZLjG+aEnLDD
+ 2aY2MOVPxSEYOmgtJmrLnw3oo/0PO51jp0cBrUojzykTIIhL6K6/T68O4guxBZUBdZ7/
+ Mh7Umjw425i1R8bf2No0fTVhrDevcVB8HWI7QShHuVjO4aKGu1HB0XCnfsNkWVDTivT5
+ u/OH1xThyscdjQagp/C1fy+vDVGxnfTV/CyMwhWiTC9KGmY+xn4/7rn2BOPYYHWoOaKu
+ 8lkUGbW+C74vPtjHcDUK7JXQNWZHYsnzk2z/vLxccfLSevXCbqUAaBYhxBJ/i7WR7Qg1
+ Ij9A==
+X-Gm-Message-State: AOJu0YzT1mNhRYfDiZD60ST51dmQ1i2E9iqslglPf+tJIidM+OKaHM0u
+ fP6L/SE/JFbDRULgapTl/nntBQ==
+X-Google-Smtp-Source: AGHT+IEF5YWnOYr+PGiXsrNe58SI6rcyLafdBx71c88M3qauX3sYmLSfZHg3GAgRPmIrOAU+8ZPWjA==
+X-Received: by 2002:a50:a414:0:b0:52f:a763:aab4 with SMTP id
+ u20-20020a50a414000000b0052fa763aab4mr1426587edb.5.1697805754411; 
+ Fri, 20 Oct 2023 05:42:34 -0700 (PDT)
+Received: from [192.168.69.115] (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
+ [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
+ h28-20020a50cddc000000b0053e589016a7sm1408013edj.16.2023.10.20.05.42.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 20 Oct 2023 05:42:34 -0700 (PDT)
+Message-ID: <74d96828-dae9-64fe-5947-ba83ce54206d@linaro.org>
+Date: Fri, 20 Oct 2023 14:42:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/1] stm32f2xx_usart: implement TX interrupts
+Content-Language: en-US
+To: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
+Cc: Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "open list:STM32F205" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+References: <20231020111428.3260965-1-hans-erik.floryd@rt-labs.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231020111428.3260965-1-hans-erik.floryd@rt-labs.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,71 +97,279 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+Hi Hans-Erik,
 
-> Markus Armbruster <armbru@redhat.com> writes:
->
->> Fabiano Rosas <farosas@suse.de> writes:
->>
->>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>> ---
->>>  qapi/migration.json | 20 ++++++++++++++++++--
->>>  1 file changed, 18 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/qapi/migration.json b/qapi/migration.json
->>> index c352c7ac52..602cb706e3 100644
->>> --- a/qapi/migration.json
->>> +++ b/qapi/migration.json
->>> @@ -1519,10 +1519,25 @@
->>>  #
->>>  # @rdma: Migrate via RDMA.
->>>  #
->>> +# @file: Direct the migration stream to a file.
->>> +#
->>>  # Since 8.2
->>>  ##
->>>  { 'enum': 'MigrationAddressType',
->>> -  'data': ['socket', 'exec', 'rdma'] }
->>> +  'data': ['socket', 'exec', 'rdma', 'file'] }
->>
->> I don't like our use of spaces around parenthesis in the QAPI schema,
->> but I like inconsistency even less: please insert a space after '['.
->>
->
-> Yes. But,
->
-> a contributor today has to guess what is the preferred syntax. Could we
-> have a checkpatch rule for this? Or should I send a patch to make the
-> whole file consistent at once?
->
-> Side question: are we using valid JSON at all? I threw this in a random
-> online linter and it complains about the single quotes. We could have a
-> proper tool doing the validation in CI.
+On 20/10/23 13:14, Hans-Erik Floryd wrote:
+> Generate interrupt if either of the TXE, TC or RXNE bits are active
+> and the corresponding interrupt enable bit is set.
+> 
+> Signed-off-by: Hans-Erik Floryd <hans-erik.floryd@rt-labs.com>
+> ---
+>   hw/char/stm32f2xx_usart.c         | 29 +++++++++++++++++------------
+>   include/hw/char/stm32f2xx_usart.h | 10 ++++++----
+>   2 files changed, 23 insertions(+), 16 deletions(-)
+> 
+> diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
+> index fde67f4f03..2947c3a260 100644
+> --- a/hw/char/stm32f2xx_usart.c
+> +++ b/hw/char/stm32f2xx_usart.c
+> @@ -53,6 +53,16 @@ static int stm32f2xx_usart_can_receive(void *opaque)
+>       return 0;
+>   }
+>   
+> +static void stm32f2xx_update(STM32F2XXUsartState *s)
+> +{
+> +    uint32_t mask = s->usart_sr & s->usart_cr1;
+> +    if (mask & (USART_SR_TXE | USART_SR_TC | USART_SR_RXNE)) {
+> +        qemu_set_irq(s->irq, 1);
+> +    } else {
+> +        qemu_set_irq(s->irq, 0);
+> +    }
+> +}
+> +
+>   static void stm32f2xx_usart_receive(void *opaque, const uint8_t *buf, int size)
+>   {
+>       STM32F2XXUsartState *s = opaque;
+> @@ -66,9 +76,7 @@ static void stm32f2xx_usart_receive(void *opaque, const uint8_t *buf, int size)
+>       s->usart_dr = *buf;
+>       s->usart_sr |= USART_SR_RXNE;
+>   
+> -    if (s->usart_cr1 & USART_CR1_RXNEIE) {
+> -        qemu_set_irq(s->irq, 1);
+> -    }
+> +    stm32f2xx_update(s);
+>   
+>       DB_PRINT("Receiving: %c\n", s->usart_dr);
+>   }
+> @@ -85,7 +93,7 @@ static void stm32f2xx_usart_reset(DeviceState *dev)
+>       s->usart_cr3 = 0x00000000;
+>       s->usart_gtpr = 0x00000000;
+>   
+> -    qemu_set_irq(s->irq, 0);
+> +    stm32f2xx_update(s);
+>   }
+>   
+>   static uint64_t stm32f2xx_usart_read(void *opaque, hwaddr addr,
+> @@ -100,13 +108,14 @@ static uint64_t stm32f2xx_usart_read(void *opaque, hwaddr addr,
+>       case USART_SR:
+>           retvalue = s->usart_sr;
+>           qemu_chr_fe_accept_input(&s->chr);
+> +        stm32f2xx_update(s);
+>           return retvalue;
+>       case USART_DR:
+>           DB_PRINT("Value: 0x%" PRIx32 ", %c\n", s->usart_dr, (char) s->usart_dr);
+>           retvalue = s->usart_dr & 0x3FF;
+>           s->usart_sr &= ~USART_SR_RXNE;
+>           qemu_chr_fe_accept_input(&s->chr);
+> -        qemu_set_irq(s->irq, 0);
+> +        stm32f2xx_update(s);
+>           return retvalue;
+>       case USART_BRR:
+>           return s->usart_brr;
+> @@ -145,9 +154,7 @@ static void stm32f2xx_usart_write(void *opaque, hwaddr addr,
+>           } else {
+>               s->usart_sr &= value;
+>           }
+> -        if (!(s->usart_sr & USART_SR_RXNE)) {
+> -            qemu_set_irq(s->irq, 0);
+> -        }
+> +        stm32f2xx_update(s);
+>           return;
+>       case USART_DR:
+>           if (value < 0xF000) {
+> @@ -161,6 +168,7 @@ static void stm32f2xx_usart_write(void *opaque, hwaddr addr,
+>                  clear TC by writing 0 to the SR register, so set it again
+>                  on each write. */
+>               s->usart_sr |= USART_SR_TC;
+> +            stm32f2xx_update(s);
+>           }
+>           return;
+>       case USART_BRR:
+> @@ -168,10 +176,7 @@ static void stm32f2xx_usart_write(void *opaque, hwaddr addr,
+>           return;
+>       case USART_CR1:
+>           s->usart_cr1 = value;
+> -            if (s->usart_cr1 & USART_CR1_RXNEIE &&
+> -                s->usart_sr & USART_SR_RXNE) {
+> -                qemu_set_irq(s->irq, 1);
+> -            }
+> +        stm32f2xx_update(s);
+>           return;
+>       case USART_CR2:
+>           s->usart_cr2 = value;
+> diff --git a/include/hw/char/stm32f2xx_usart.h b/include/hw/char/stm32f2xx_usart.h
+> index 65bcc85470..fdfa7424a7 100644
+> --- a/include/hw/char/stm32f2xx_usart.h
+> +++ b/include/hw/char/stm32f2xx_usart.h
+> @@ -48,10 +48,12 @@
+>   #define USART_SR_TC   (1 << 6)
+>   #define USART_SR_RXNE (1 << 5)
+>   
+> -#define USART_CR1_UE  (1 << 13)
+> -#define USART_CR1_RXNEIE  (1 << 5)
+> -#define USART_CR1_TE  (1 << 3)
+> -#define USART_CR1_RE  (1 << 2)
+> +#define USART_CR1_UE     (1 << 13)
+> +#define USART_CR1_TXEIE  (1 << 7)
+> +#define USART_CR1_TCEIE  (1 << 6)
+> +#define USART_CR1_RXNEIE (1 << 5)
+> +#define USART_CR1_TE     (1 << 3)
+> +#define USART_CR1_RE     (1 << 2)
+>   
+>   #define TYPE_STM32F2XX_USART "stm32f2xx-usart"
+>   OBJECT_DECLARE_SIMPLE_TYPE(STM32F2XXUsartState, STM32F2XX_USART)
 
-You've come a sad, sad place.
+To keep your changes trivial to review, I split your patch in 4:
 
-docs/devel/qapi-code-gen.rst:
+1/ Extract stm32f2xx_update_irq()
 
-    Schema syntax
-    -------------
+-- >8 --
+diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
+index fde67f4f03..519d3461a3 100644
+--- a/hw/char/stm32f2xx_usart.c
++++ b/hw/char/stm32f2xx_usart.c
+@@ -53,6 +53,17 @@ static int stm32f2xx_usart_can_receive(void *opaque)
+      return 0;
+  }
 
-    Syntax is loosely based on `JSON <http://www.ietf.org/rfc/rfc8259.txt>`_.
-    Differences:
++static void stm32f2xx_update_irq(STM32F2XXUsartState *s)
++{
++    uint32_t mask = s->usart_sr & s->usart_cr1;
++
++    if (mask & (USART_SR_TXE | USART_SR_TC | USART_SR_RXNE)) {
++        qemu_set_irq(s->irq, 1);
++    } else {
++        qemu_set_irq(s->irq, 0);
++    }
++}
++
+  static void stm32f2xx_usart_receive(void *opaque, const uint8_t *buf, 
+int size)
+  {
+      STM32F2XXUsartState *s = opaque;
+@@ -66,9 +77,7 @@ static void stm32f2xx_usart_receive(void *opaque, 
+const uint8_t *buf, int size)
+      s->usart_dr = *buf;
+      s->usart_sr |= USART_SR_RXNE;
 
-    * Comments: start with a hash character (``#``) that is not part of a
-      string, and extend to the end of the line.
+-    if (s->usart_cr1 & USART_CR1_RXNEIE) {
+-        qemu_set_irq(s->irq, 1);
+-    }
++    stm32f2xx_update_irq(s);
 
-    * Strings are enclosed in ``'single quotes'``, not ``"double quotes"``.
+      DB_PRINT("Receiving: %c\n", s->usart_dr);
+  }
+@@ -85,7 +94,7 @@ static void stm32f2xx_usart_reset(DeviceState *dev)
+      s->usart_cr3 = 0x00000000;
+      s->usart_gtpr = 0x00000000;
 
-    * Strings are restricted to printable ASCII, and escape sequences to
-      just ``\\``.
+-    qemu_set_irq(s->irq, 0);
++    stm32f2xx_update_irq(s);
+  }
 
-    * Numbers and ``null`` are not supported.
+  static uint64_t stm32f2xx_usart_read(void *opaque, hwaddr addr,
+@@ -106,7 +115,7 @@ static uint64_t stm32f2xx_usart_read(void *opaque, 
+hwaddr addr,
+          retvalue = s->usart_dr & 0x3FF;
+          s->usart_sr &= ~USART_SR_RXNE;
+          qemu_chr_fe_accept_input(&s->chr);
+-        qemu_set_irq(s->irq, 0);
++        stm32f2xx_update_irq(s);
+          return retvalue;
+      case USART_BRR:
+          return s->usart_brr;
+@@ -145,9 +154,7 @@ static void stm32f2xx_usart_write(void *opaque, 
+hwaddr addr,
+          } else {
+              s->usart_sr &= value;
+          }
+-        if (!(s->usart_sr & USART_SR_RXNE)) {
+-            qemu_set_irq(s->irq, 0);
+-        }
++        stm32f2xx_update_irq(s);
+          return;
+      case USART_DR:
+          if (value < 0xF000) {
+@@ -168,10 +175,7 @@ static void stm32f2xx_usart_write(void *opaque, 
+hwaddr addr,
+          return;
+      case USART_CR1:
+          s->usart_cr1 = value;
+-            if (s->usart_cr1 & USART_CR1_RXNEIE &&
+-                s->usart_sr & USART_SR_RXNE) {
+-                qemu_set_irq(s->irq, 1);
+-            }
++        stm32f2xx_update_irq(s);
+          return;
+      case USART_CR2:
+          s->usart_cr2 = value;
+---
 
-If your reaction to item 2 is "this is stupid", you'd be exactly right.
+2/ Update IRQ when SR is read
 
-Here's the conclusion of a discussion on possible improvements we had in
-2020:
-https://lore.kernel.org/qemu-devel/877dt5ofoi.fsf@dusky.pond.sub.org/
+-- >8 --
+diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
+index 519d3461a3..46e29089bc 100644
+--- a/hw/char/stm32f2xx_usart.c
++++ b/hw/char/stm32f2xx_usart.c
+@@ -109,6 +109,7 @@ static uint64_t stm32f2xx_usart_read(void *opaque, 
+hwaddr addr,
+      case USART_SR:
+          retvalue = s->usart_sr;
+          qemu_chr_fe_accept_input(&s->chr);
++        stm32f2xx_update_irq(s);
+          return retvalue;
+      case USART_DR:
+          DB_PRINT("Value: 0x%" PRIx32 ", %c\n", s->usart_dr, (char) 
+s->usart_dr);
+---
+
+Why is this required?
+
+3/ Update IRQ when DR is written
+
+-- >8 --
+diff --git a/hw/char/stm32f2xx_usart.c b/hw/char/stm32f2xx_usart.c
+index 46e29089bc..74f007591a 100644
+--- a/hw/char/stm32f2xx_usart.c
++++ b/hw/char/stm32f2xx_usart.c
+@@ -169,6 +169,7 @@ static void stm32f2xx_usart_write(void *opaque, 
+hwaddr addr,
+                 clear TC by writing 0 to the SR register, so set it again
+                 on each write. */
+              s->usart_sr |= USART_SR_TC;
++            stm32f2xx_update_irq(s);
+          }
+          return;
+      case USART_BRR:
+---
+
+This change makes sense
+
+4/ Add more CR1 bit definitions
+
+-- >8 --
+diff --git a/include/hw/char/stm32f2xx_usart.h 
+b/include/hw/char/stm32f2xx_usart.h
+index 65bcc85470..fdfa7424a7 100644
+--- a/include/hw/char/stm32f2xx_usart.h
++++ b/include/hw/char/stm32f2xx_usart.h
+@@ -49,6 +49,8 @@
+  #define USART_SR_RXNE (1 << 5)
+
+  #define USART_CR1_UE     (1 << 13)
++#define USART_CR1_TXEIE  (1 << 7)
++#define USART_CR1_TCEIE  (1 << 6)
+  #define USART_CR1_RXNEIE (1 << 5)
+  #define USART_CR1_TE     (1 << 3)
+  #define USART_CR1_RE     (1 << 2)
+---
+
+These are not used, why add them?
+
+Regards,
+
+Phil.
+
 
 
