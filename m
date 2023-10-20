@@ -2,96 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B517D0F1E
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 13:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F267D0F22
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 13:51:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qto13-0001i1-IK; Fri, 20 Oct 2023 07:50:10 -0400
+	id 1qto1o-0002Cm-Qp; Fri, 20 Oct 2023 07:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qto0R-0001Wb-AZ
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 07:49:32 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qto0P-0006hc-IZ
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 07:49:31 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6ce2ee17cb5so432205a34.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 04:49:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697802567; x=1698407367; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Pj5vVO1o9ClGbMGR1eaFqeit54Yl97Rne7g8J9WfOVA=;
- b=DYsMOMJkleSJHH2pifbL0zgHZKGu7M8WyrYziEB1pHc93e7M9OqhJkruE9XDsw6R/0
- yj0TwsuyGvqmFDdDacHjaNdCL/tWwxELDIvL35fbmQHa0a4Q+FN9gojRdxGxzcnH7OJS
- 8f/DG5f4VY/3SjljBBHf1dSBDmkLtpAY7NRx+ZfwO2dqp1qozOW2yXtN4UWZX1D+fUTk
- bBLrlMyC4xeCXbc8pOhsgI0on03lLrIDwNEzn/o+c4webWGEwaBRIIK0564/7cBkMDpn
- jhNGvLHC2X4ZPah5NiRMZl4jyeApnQ08PtR85bTp80ZS6dOlzYpR7DwrXCYgE9agvE41
- KD7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697802567; x=1698407367;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Pj5vVO1o9ClGbMGR1eaFqeit54Yl97Rne7g8J9WfOVA=;
- b=fq/WxuazB6uBDPblfPk/UTRuP+brh9uW5C9Y6VXAgxIpOmFuJ8bZuaZ4WYVmgHKe8N
- GfCtoo9K/DYVLHEZCC6CDEq7VauoePPO7NdIRz8/p8CrkfsqhuuZrTqAA9wiCZD2K2Kf
- CBKTeyORVVoTv8Hz7ApN4XrFk65vB+aKN4I8azRUXUGFPHgL59I476NM8ODJ+0tLOCFW
- 3AXD92fXOaHQq5J4r4rPMC13K7YWhPXhJDaHbhP3e8PlAKpX+Gvr5+/jJS3VDUM0KdfM
- XFYsHuqZ5ml1FqqIINaEXNMpB+p1JrcUjp5sj++tE91zEkfMw5iGnNirQriY1uItkDZA
- CusQ==
-X-Gm-Message-State: AOJu0Yzds6eeL79BcwmdEWYa7DtsPhrfUa/ij9Dc0os3/dRqj6CMGTFq
- 29t+hH7IDCdKYg55ixi3yqrbFg==
-X-Google-Smtp-Source: AGHT+IH0w1uo0gRCkOtbKeu6qbAJa1MOK+EjUbAcG6/IGDO/5DL//6qTW9FyC2DX4iGFWIlkXJut1w==
-X-Received: by 2002:a05:6830:440b:b0:6bd:9fa:34ff with SMTP id
- q11-20020a056830440b00b006bd09fa34ffmr1616905otv.9.1697802567672; 
- Fri, 20 Oct 2023 04:49:27 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:bdcd:fb00:6501:2693:db52:c621?
- ([2804:7f0:bdcd:fb00:6501:2693:db52:c621])
- by smtp.gmail.com with ESMTPSA id
- 22-20020a631256000000b00528db73ed70sm1288984pgs.3.2023.10.20.04.49.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Oct 2023 04:49:27 -0700 (PDT)
-Message-ID: <bdaa5804-eff0-4d5e-ba61-c277aa3195cd@ventanamicro.com>
-Date: Fri, 20 Oct 2023 08:49:20 -0300
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qto1S-00024u-3f
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 07:50:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qto1O-0006zd-Rh
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 07:50:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697802629;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CYgcAkSAR957BdA+0448FHo6zd07oCrkdPxOxAN5IrU=;
+ b=BdHIfkCfAKpk0WqiDn6MrH822HxcBt07pBi5lfgGD+JwetbEYTcmhM7KwS+RFIQ+t3GI7J
+ EPHFVXyhR1KJUKZkAMkvnDbwD5BphyHlqDCt2+TtHSgrRrG26Bp2Dk/zkvOG0VEJK1IzbA
+ 2U721885hYEfmbTiwY3dcDoOPHvQBQk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-84-Yh8B0O6BNDaY5vxkcJK1Gg-1; Fri, 20 Oct 2023 07:50:27 -0400
+X-MC-Unique: Yh8B0O6BNDaY5vxkcJK1Gg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E9FE0889064;
+ Fri, 20 Oct 2023 11:50:26 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BF0AF40C6F7E;
+ Fri, 20 Oct 2023 11:50:26 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id CB47721E6A1F; Fri, 20 Oct 2023 13:50:25 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,
+ qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,  qemu-block@nongnu.org,
+ qemu-s390x@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Fam Zheng
+ <fam@euphon.net>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Reitz
+ <hreitz@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Peter Xu <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>
+Subject: Re: [PATCH v2 14/22] qapi: Inline and remove QERR_IO_ERROR definition
+References: <20231005045041.52649-1-philmd@linaro.org>
+ <20231005045041.52649-15-philmd@linaro.org>
+Date: Fri, 20 Oct 2023 13:50:25 +0200
+In-Reply-To: <20231005045041.52649-15-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 5 Oct 2023 06:50:31
+ +0200")
+Message-ID: <875y314iny.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/12] hw/riscv/virt-acpi-build.c: Add PLIC in MADT
-Content-Language: en-US
-To: Sunil V L <sunilvl@ventanamicro.com>, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: Shannon Zhao <shannon.zhaosl@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Anup Patel <apatel@ventanamicro.com>, Andrew Jones
- <ajones@ventanamicro.com>, Atish Kumar Patra <atishp@rivosinc.com>,
- Haibo Xu <haibo1.xu@intel.com>
-References: <20231019132648.23703-1-sunilvl@ventanamicro.com>
- <20231019132648.23703-13-sunilvl@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231019132648.23703-13-sunilvl@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x331.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,67 +90,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-
-On 10/19/23 10:26, Sunil V L wrote:
-> Add PLIC structures for each socket in the MADT when system is configured
-> with PLIC as the external interrupt controller.
-> 
-> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Address the comment added in commit 4629ed1e98
+> ("qerror: Finally unused, clean up"), from 2015:
+>
+>   /*
+>    * These macros will go away, please don't use
+>    * in new code, and do not add new ones!
+>    */
+>
+> Mechanical transformation using:
+>
+>   $ sed -i -e 's/QERR_IO_ERROR/"An IO error has occurred"/' \
+>     $(git grep -wl QERR_IO_ERROR)
+>
+> then manually removing the definition in include/qapi/qmp/qerror.h.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 > ---
+>  include/qapi/qmp/qerror.h | 3 ---
+>  block/vmdk.c              | 8 ++++----
+>  blockdev.c                | 2 +-
+>  dump/win_dump.c           | 4 ++--
+>  migration/savevm.c        | 4 ++--
+>  softmmu/cpus.c            | 4 ++--
+>  6 files changed, 11 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
+> index ac727d1c2d..d95c4b84b9 100644
+> --- a/include/qapi/qmp/qerror.h
+> +++ b/include/qapi/qmp/qerror.h
+> @@ -17,9 +17,6 @@
+>   * add new ones!
+>   */
+>=20=20
+> -#define QERR_IO_ERROR \
+> -    "An IO error has occurred"
+> -
+>  #define QERR_MIGRATION_ACTIVE \
+>      "There's a migration process in progress"
+>=20=20
+> diff --git a/block/vmdk.c b/block/vmdk.c
+> index e90649c8bf..6779a181f0 100644
+> --- a/block/vmdk.c
+> +++ b/block/vmdk.c
+> @@ -2246,12 +2246,12 @@ vmdk_init_extent(BlockBackend *blk, int64_t files=
+ize, bool flat, bool compress,
+>      /* write all the data */
+>      ret =3D blk_co_pwrite(blk, 0, sizeof(magic), &magic, 0);
+>      if (ret < 0) {
+> -        error_setg(errp, QERR_IO_ERROR);
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+As far as I can tell, blk_co_pwrite() returns a negative errno code.
+Which we throw away, and claim "IO error".  I expect that to be
+misleading at least sometimes.
 
+I suspect the other uses of QERR_IO_ERROR are similarly problematic more
+often than not.
 
->   hw/riscv/virt-acpi-build.c | 29 +++++++++++++++++++++++++++++
->   1 file changed, 29 insertions(+)
-> 
-> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-> index 2f1cc92f75..d1761ddddf 100644
-> --- a/hw/riscv/virt-acpi-build.c
-> +++ b/hw/riscv/virt-acpi-build.c
-> @@ -85,6 +85,12 @@ static void riscv_acpi_madt_add_rintc(uint32_t uid,
->                                         arch_ids->cpus[uid].props.node_id,
->                                         local_cpu_id),
->                                     4);
-> +    } else if (aia_type == VIRT_AIA_TYPE_NONE) {
-> +        build_append_int_noprefix(entry,
-> +                                  ACPI_BUILD_INTC_ID(
-> +                                      arch_ids->cpus[uid].props.node_id,
-> +                                      2 * local_cpu_id + 1),
-> +                                  4);
->       } else {
->           build_append_int_noprefix(entry, 0, 4);
->       }
-> @@ -513,6 +519,29 @@ static void build_madt(GArray *table_data,
->               build_append_int_noprefix(table_data,
->                                         s->memmap[VIRT_APLIC_S].size, 4);
->           }
-> +    } else {
-> +        /* PLICs */
-> +        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
-> +            aplic_addr = s->memmap[VIRT_PLIC].base +
-> +                         s->memmap[VIRT_PLIC].size * socket;
-> +            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
-> +            build_append_int_noprefix(table_data, 0x1B, 1);   /* Type */
-> +            build_append_int_noprefix(table_data, 36, 1);     /* Length */
-> +            build_append_int_noprefix(table_data, 1, 1);      /* Version */
-> +            build_append_int_noprefix(table_data, socket, 1); /* PLIC ID */
-> +            build_append_int_noprefix(table_data, 0, 8);      /* Hardware ID */
-> +            /* Total External Interrupt Sources Supported */
-> +            build_append_int_noprefix(table_data,
-> +                                      VIRT_IRQCHIP_NUM_SOURCES - 1, 2);
-> +            build_append_int_noprefix(table_data, 0, 2);     /* Max priority */
-> +            build_append_int_noprefix(table_data, 0, 4);     /* Flags */
-> +            /* PLIC Size */
-> +            build_append_int_noprefix(table_data, s->memmap[VIRT_PLIC].size, 4);
-> +            /* PLIC Address */
-> +            build_append_int_noprefix(table_data, aplic_addr, 8);
-> +            /* Global System Interrupt Vector Base */
-> +            build_append_int_noprefix(table_data, gsi_base, 4);
-> +        }
->       }
->   
->       acpi_table_end(linker, &table);
+Not your patch's problem, of course.
+
+> +        error_setg(errp, "An IO error has occurred");
+
+We should spell it "I/O", unless we're reporting trouble with Jupiter's
+moon.
+
+>          goto exit;
+>      }
+>      ret =3D blk_co_pwrite(blk, sizeof(magic), sizeof(header), &header, 0=
+);
+>      if (ret < 0) {
+> -        error_setg(errp, QERR_IO_ERROR);
+> +        error_setg(errp, "An IO error has occurred");
+>          goto exit;
+>      }
+>=20=20
+
+[...]
+
 
