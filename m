@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896677D0BBF
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F607D0C16
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:38:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtlpS-0000VA-3i; Fri, 20 Oct 2023 05:30:02 -0400
+	id 1qtlwJ-00029D-Qe; Fri, 20 Oct 2023 05:37:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlpJ-0000Tl-RR
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:29:54 -0400
+ id 1qtlw7-0001wU-HJ
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:36:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlpH-0004Ek-VG
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:29:53 -0400
+ id 1qtlw4-0005zQ-Pa
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:36:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697794190;
+ s=mimecast20190719; t=1697794611;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=4s9JIQQzXCYoDjM1fNs4AqFhS2ha0vXmxD+yRrYS1Cg=;
- b=hrJOzaqxkrIygSKgtCKIW/qhypyK34w/wPugih5twWmkA2EzaGMIwc4FtdfyIeDA5IdRv/
- M73/NKMkBFb28sAwunpYUqgMmLsD6GazOrrpQqBmjgV+sRVAZ/D4ugtcBKu/S2IA/+d0tk
- nLPrARRVvIcCfihDSd9HzxTuePLhoJ0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nfWmUUHautbwx+ub3OaRUVzn5Y+NAhmUX4YslbaaGt0=;
+ b=LSwJNCuRzs1R/NpGPvUFY7ITGejRxd9jBjeL6WQz2tkYFgQTywDMi5E0x7sH1rJgOIWj7y
+ ciAZsgBWdNs5TUEBGeVAPfQjAf5TLt0tFGAmiaO+AcDeGhc9anGKEHlyiQ89pug7328sQk
+ xM1dEUvAykh+n6I1LUUz8Navaj0MTlU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-598j9KkNMFGo3U5C4V2m7Q-1; Fri, 20 Oct 2023 05:29:49 -0400
-X-MC-Unique: 598j9KkNMFGo3U5C4V2m7Q-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4084e4ce543so3782715e9.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:29:48 -0700 (PDT)
+ us-mta-524-mHJ747bjMTWrW0cm4cmrQA-1; Fri, 20 Oct 2023 05:36:30 -0400
+X-MC-Unique: mHJ747bjMTWrW0cm4cmrQA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40845fe2d1cso3707725e9.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:36:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697794188; x=1698398988;
+ d=1e100.net; s=20230601; t=1697794589; x=1698399389;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4s9JIQQzXCYoDjM1fNs4AqFhS2ha0vXmxD+yRrYS1Cg=;
- b=rHBKpe7Sfv3oeLzNFSG7WtgOIgVth5xrh0/c+BM2dyt2D35z8MIjY00XUYPIXEhZ0H
- 0n1y+PwA39IeZyqYOdi9whXa4ZZ+ztjAFErzrtalwTBUwmGMM3DkexdhNe8+mUEs4b47
- 26LWh9JwEMkXtQ7SVuw0UF3iRcBj5CiYAz085bRF0gm4HF7OCTD3sR+VD8T3rNc5/bsR
- wB9KIsJ0swpNIH9c7JrwdO1s3caIOuhovzAgKUkqC2F9KnPfpyIUr3viLoMXwXg5Zzjs
- /74LxEfC9/6VBu4SlUz2CitkM28IDcAQWUEastQ9eaHbdlHMHb4f/OnHNhIchOp2LLLB
- RiLw==
-X-Gm-Message-State: AOJu0YzjoeyFsj7kpqf+RRft4jN+g+PDmfg0C0p5dsVRO9ABmpWQSAX+
- 93DnqUWj5qzFwBwhJTkSLSHrXO1Hfk3fj4c2xB/wVbejiyeD2Q4DNm6uQkPIlj5ZMYVkeQTb26w
- FvQWmxS+1ujdJQXM=
-X-Received: by 2002:a05:600c:19d1:b0:405:3955:5881 with SMTP id
- u17-20020a05600c19d100b0040539555881mr999866wmq.36.1697794187858; 
- Fri, 20 Oct 2023 02:29:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGGGnXlCVddoEsrz2J58wEqp2YXXLmmzC1WcSzLEsfIz5gbUpDTm/SWu9qT1Gov96Kgxo/ULg==
-X-Received: by 2002:a05:600c:19d1:b0:405:3955:5881 with SMTP id
- u17-20020a05600c19d100b0040539555881mr999857wmq.36.1697794187474; 
- Fri, 20 Oct 2023 02:29:47 -0700 (PDT)
+ bh=nfWmUUHautbwx+ub3OaRUVzn5Y+NAhmUX4YslbaaGt0=;
+ b=qyqe3XTuJV9iyIvYmGuaVd3XT/u/1upD1JzpXVzUF91aWWvvm8AsvzQDYlBE4gJn5n
+ YpR0zSp4hFEwTf6+YWCtO5Irmzp27hlYmWlok4b0waMiWYbzJzpFvTMQIli0up2oEf57
+ tzl3oWtS8SRReb+DY2FbI3fZLXZHUugVQMIKyp/0CjDWAzFNT3cNKhCn5SfQ0c1WCn9/
+ 8Kpb21XwH62uRt+4L6xp6F+RvIZvEh0ZYg5ONYQ9elmKK7MF3uN6UQACRmvWtQUP3Jw+
+ nHoICwZ3Er6cgjt2Dy8XaZ4jmA62CCbuoGjTmYfFSRxh2Q5Q2xhche/oadpVcPQ8r40h
+ G2NQ==
+X-Gm-Message-State: AOJu0YxFuLyE4oruLnR9AjC8SnnOTfI5ZDoVLD2y3jLU1nPudKm8LHVM
+ f00apYhB7mUhUKciDwqqXAcdCWS6lfn//tDJzyxGr8R8VjNCK6wOeCnXXIsmRH4y9QbkwpCxCA8
+ UM5Dbpeu/IZ70RkE=
+X-Received: by 2002:adf:e7c5:0:b0:32d:83b7:bdb9 with SMTP id
+ e5-20020adfe7c5000000b0032d83b7bdb9mr928084wrn.21.1697794588961; 
+ Fri, 20 Oct 2023 02:36:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4+cMlrtHkKbS54vUlg4Ifzqs/wvNJV6+3lv6KaTj8c8bKQbqqCM8uq2CuUva9DWmQFeYW2A==
+X-Received: by 2002:adf:e7c5:0:b0:32d:83b7:bdb9 with SMTP id
+ e5-20020adfe7c5000000b0032d83b7bdb9mr928073wrn.21.1697794588628; 
+ Fri, 20 Oct 2023 02:36:28 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- s10-20020a05600c45ca00b00407752f5ab6sm1746495wmo.6.2023.10.20.02.29.46
+ v3-20020adff683000000b0032d9523de65sm1283606wrp.48.2023.10.20.02.36.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 02:29:47 -0700 (PDT)
+ Fri, 20 Oct 2023 02:36:27 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Steve Sistare <steven.sistare@oracle.com>
 Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
  <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH V1 1/4] migration: mode parameter
-In-Reply-To: <1697748466-373230-2-git-send-email-steven.sistare@oracle.com>
- (Steve Sistare's message of "Thu, 19 Oct 2023 13:47:43 -0700")
+Subject: Re: [PATCH V1 2/4] migration: per-mode blockers
+In-Reply-To: <1697748466-373230-3-git-send-email-steven.sistare@oracle.com>
+ (Steve Sistare's message of "Thu, 19 Oct 2023 13:47:44 -0700")
 References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
- <1697748466-373230-2-git-send-email-steven.sistare@oracle.com>
+ <1697748466-373230-3-git-send-email-steven.sistare@oracle.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Fri, 20 Oct 2023 11:29:46 +0200
-Message-ID: <8734y51w1h.fsf@secure.mitica>
+Date: Fri, 20 Oct 2023 11:36:27 +0200
+Message-ID: <87y1fxzld0.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
@@ -102,75 +102,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Steve Sistare <steven.sistare@oracle.com> wrote:
-> Create a mode migration parameter that can be used to select alternate
-> migration algorithms.  The default mode is normal, representing the
-> current migration algorithm, and does not need to be explicitly set.
+> Extend the blocker interface so that a blocker can be registered for
+> one or more migration modes.  The existing interfaces register a
+> blocker for all modes, and the new interfaces take a varargs list
+> of modes.
 >
-> No functional change until a new mode is added, except that the mode is
-> shown by the 'info migrate' command.
+> Internally, maintain a separate blocker list per mode.  The same Error
+> object may be added to multiple lists.  When a block is deleted, it is
+> removed from every list, and the Error is freed.
+>
+> No functional change until a new mode is added.
 >
 > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-[... qdev definition ...]
-
-Looks legit, but I am not an expert here.
-
-
-> @@ -867,6 +870,13 @@ uint64_t migrate_xbzrle_cache_size(void)
->      return s->parameters.xbzrle_cache_size;
->  }
->  
-> +MigMode migrate_mode(void)
-> +{
-> +    MigrationState *s = migrate_get_current();
-> +
-> +    return s->parameters.mode;
-> +}
-> +
-
-Inside parameters, I try to get the functions sorted by name.  the same
-for options.h
-
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index db3df12..184fb78 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -616,6 +616,15 @@
->              { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
->  
->  ##
-> +# @MigMode:
-> +#
-> +# @normal: the original form of migration. (since 8.2)
-> +#
-> +##
-> +{ 'enum': 'MigMode',
-> +  'data': [ 'normal' ] }
-> +
-> +##
-
-Here you only have normal, but in qdev you also have exec.
-
-
->  # @BitmapMigrationBitmapAliasTransform:
->  #
->  # @persistent: If present, the bitmap will be made persistent or
-> @@ -675,6 +684,9 @@
->  #
->  # Migration parameters enumeration
->  #
-> +# @mode: Migration mode. See description in @MigMode. Default is 'normal'.
-> +#        (Since 8.2)
-> +#
-
-You normally put comments and values at the end of the comments and
-sections. Your sshould be last.
-
-Feel free to use a single line in the json.  More than one value for
-line make it a bit more compress, but makes changes more complicated.
-
-Rest of the patch feels right.
-
-Thanks, Juan.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 
