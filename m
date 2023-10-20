@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC8E7D0C28
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647D27D0C2B
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:42:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtm0I-0007VK-NZ; Fri, 20 Oct 2023 05:41:14 -0400
+	id 1qtm1T-0000cq-Nf; Fri, 20 Oct 2023 05:42:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qtm0C-0007Pz-UH
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:41:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qtm0B-000789-1R
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:41:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697794865;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KO20cYPImi98gRA4QIIH8lCNaP6ocvnsVSI7wp3e4cg=;
- b=frzmYV+KYy/m/zfHGbXsaSrwxeHA6uMYN1PfapfQ2obIQ601+s9FPUT3ZJzitd+bHDs1da
- LJ2sWqAbqQfFLatmRso7dUIxRLYOZ3TztsYwnXeIrPlMoBmGpNeAVaHo0VxQC1SCIXTVwz
- 7G3PoYZw7rn8pZqw1n0fgibIsjzmvi8=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-LVUqQEX-OmCsXI_1pVkvLg-1; Fri, 20 Oct 2023 05:41:04 -0400
-X-MC-Unique: LVUqQEX-OmCsXI_1pVkvLg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66d75988385so6114496d6.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:41:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtm1Q-0000Po-U9
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:42:24 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtm1O-0007H5-W3
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:42:24 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9ae2cc4d17eso93442566b.1
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:42:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697794940; x=1698399740; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YMn2rh6OV3qGjuaQmaohJ4fHx7mahKsjDzRImXo7FVw=;
+ b=xzMO3u4Pxk1EdGTRmmAntcmCl3R2dXHJ4nPLB2oGTo6bcbwu33KiunZtQJovx7v8dA
+ 7vfpc/8jLjTDuV6ug4YeP52Kiy+ICKUcSdsI7QaKrEQKo0JP52alvrsqgGyHizCLN97R
+ AbOOQ9svlKkwaW6+lA5BuMK1DaIXOcX4L9JGORnEWqNQ/+dq+PNV1/CpGlFDe+XmkEpt
+ uZmZKkUbXGID7HhHzxQOHz6mNJV1opYogq9+JLuQFrp4SVhYeA4L7pueHfBKeCokIAcV
+ 2gyrGSaEWzIf28oTcVFs1lPIimYLz/gcEsgTlK19oBRyEKzVtTr74+cvJZ58DbWMoNn6
+ FVDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697794864; x=1698399664;
+ d=1e100.net; s=20230601; t=1697794940; x=1698399740;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KO20cYPImi98gRA4QIIH8lCNaP6ocvnsVSI7wp3e4cg=;
- b=G5RcVLP8UuqDM5Fxcd5/HE2V3e2icbJhuaz7KaalEbeMPMnGP4cQFuZ3zEyrb4+uTe
- 9h5ARvLDyDNtTLIU/WqnBgFJxv+iBYc7VpdwXzaVblkZutA3pSAwOzxsp3C5AmQwwbOl
- vuIdmn++mAD6BS1xxsw3AYRVTbY1qvR/S1Vy6G+IPZxp0GdOhxQYPxIVE7BLLk2mllqd
- NPln9mgR54NKRoOdBm5swl1rOyEsFD3W4k3QESntIpNFRl2COVsUzCPTsTbB8hL9jSCJ
- uKbyWDREforKQzXZfIAKFkQHl0xCItmt/X6+lk21YM32Sficp9c/qXfBzqhQaV1bO3h2
- 1arw==
-X-Gm-Message-State: AOJu0YyJrc7Nkwe0qtQymCsADZGfryLUKzN/DVUCfZXQMTVXXpnIkVMW
- 9yMihsJqScx8vx1vsaTNJM2vWRFjyaghL1N05s1TZW4rHnsWtlrsxsMtwXsYhY88+HZvBiFmA4W
- AfHinCCPMoQjf4v4=
-X-Received: by 2002:a0c:aa5c:0:b0:66d:55da:191d with SMTP id
- e28-20020a0caa5c000000b0066d55da191dmr1217961qvb.37.1697794863866; 
- Fri, 20 Oct 2023 02:41:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHUYq/qbDtTWgid5vNiO1uCrV1Oj22wPcQMepfvvZB5MRP5GBF6TJP2ygnNJ67zLP9Z+RMvfQ==
-X-Received: by 2002:a0c:aa5c:0:b0:66d:55da:191d with SMTP id
- e28-20020a0caa5c000000b0066d55da191dmr1217953qvb.37.1697794863543; 
- Fri, 20 Oct 2023 02:41:03 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- ec19-20020ad44e73000000b0065b151d5d12sm535852qvb.126.2023.10.20.02.41.02
+ bh=YMn2rh6OV3qGjuaQmaohJ4fHx7mahKsjDzRImXo7FVw=;
+ b=gcP4FKEq8Lfzt0oc7QZZ7ZCT4UC0U6P/DhCPWDV3B10oCmQ943q6YisBZ4gmF6/M1z
+ cLp4DyBFMca3aL1w0IDM1TZ3iO2QqzDEszrI9OowiXim0PB9wFbvmKA/zSOVFUjuRNJX
+ 8iHlMtwhonLeVnPsWCrbsnYXlfN9orlc6YTSyPa1WYb1EhVs1fDTTIcGzdt4yIDgs8sA
+ I8RdKKdmOkQSjhqvgiPIHaIY4KMGvinKPvdrprp/6iu9s9JzsgEMjwxnr2hTR3GyLEZU
+ JJKjjgkbmF5XKfBbalLMP0RxH6vtmV/BiaasW8QI18ZmkGI0Dl6NRO9qT/8bgabn2Le+
+ J3UA==
+X-Gm-Message-State: AOJu0YzQECvOImGLwv3BvZKyAfCl29ZAp3C5iKDTrbAX1BN63+ss86zJ
+ wIbn/+VcR6T8sEyDjm03ZlJC9Q==
+X-Google-Smtp-Source: AGHT+IGNPqlEXm17bajM1uLIA7uMMO4mFQ2gAVbSnSh8/zyRxQq3VKkt7v+nWet4RbPGL34vfe1/RA==
+X-Received: by 2002:a17:907:26c8:b0:9bf:4e0b:fb05 with SMTP id
+ bp8-20020a17090726c800b009bf4e0bfb05mr910404ejc.11.1697794940397; 
+ Fri, 20 Oct 2023 02:42:20 -0700 (PDT)
+Received: from [192.168.69.115] (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
+ [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
+ s19-20020a170906bc5300b009b957d5237asm1130015ejv.80.2023.10.20.02.42.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Oct 2023 02:41:03 -0700 (PDT)
-Message-ID: <b744bd42-0b46-44ce-8d60-28d4d31427e0@redhat.com>
-Date: Fri, 20 Oct 2023 11:41:00 +0200
+ Fri, 20 Oct 2023 02:42:19 -0700 (PDT)
+Message-ID: <01edf713-6bec-adec-5fa5-5195b5dd4273@linaro.org>
+Date: Fri, 20 Oct 2023 11:42:17 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] igb: Add Function Level Reset to PF and VF
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/2] misc/pca9552: Fix inverted input status
 Content-Language: en-US
-To: Jason Wang <jasowang@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>
-References: <20230829090529.184438-1-clg@kaod.org>
- <20230829090529.184438-3-clg@kaod.org>
- <CACGkMEu6nznVGTyk8gjrZ3jE=bEAd2bDDi9PPwjDKNFkXnVhSQ@mail.gmail.com>
- <d9df1c95-f681-4962-be74-671cef90e908@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <d9df1c95-f681-4962-be74-671cef90e908@redhat.com>
+To: Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Joel Stanley <joel@jms.id.au>, f4bug@amsat.org
+References: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
+ <20231019204011.3174115-2-milesg@linux.vnet.ibm.com>
+ <e0f36ef6336df26d5c123c5861d6a779c94e3eb9.camel@codeconstruct.com.au>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <e0f36ef6336df26d5c123c5861d6a779c94e3eb9.camel@codeconstruct.com.au>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,123 +96,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/20/23 09:40, Cédric Le Goater wrote:
-> On 10/20/23 06:24, Jason Wang wrote:
->> On Tue, Aug 29, 2023 at 5:06 PM Cédric Le Goater <clg@kaod.org> wrote:
+On 20/10/23 04:51, Andrew Jeffery wrote:
+> On Thu, 2023-10-19 at 15:40 -0500, Glenn Miles wrote:
+>>> The pca9552 INPUT0 and INPUT1 registers are supposed to
+>>> hold the logical values of the LED pins.  A logical 0
+>>> should be seen in the INPUT0/1 registers for a pin when
+>>> its corresponding LSn bits are set to 0, which is also
+>>> the state needed for turning on an LED in a typical
+>>> usage scenario.  Existing code was doing the opposite
+>>> and setting INPUT0/1 bit to a 1 when the LSn bit was
+>>> set to 0, so this commit fixes that.
 >>>
->>> From: Cédric Le Goater <clg@redhat.com>
->>>
->>> The Intel 82576EB GbE Controller say that the Physical and Virtual
->>> Functions support Function Level Reset. Add the capability to each
->>> device model.
->>>
->>
->> Do we need to do migration compatibility for this?
-> 
-> Yes. it does. the config space is now different.
-
-Jason,
-
-To avoid an extra compat property, would it be ok to let the VF peek into
-the PF capabilities to set FLR or not ? Something like below.
-
-Thanks,
-
-C.
-
-
-@@ -238,6 +238,12 @@ static const MemoryRegionOps mmio_ops =
-      },
-  };
-  
-+static bool igbvf_check_pf_flr(PCIDevice *dev)
-+{
-+    return !!(pci_get_long(dev->config + dev->exp.exp_cap + PCI_EXP_DEVCAP)
-+              & PCI_EXP_DEVCAP_FLR);
-+}
-+
-  static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
-  {
-      IgbVfState *s = IGBVF(dev);
-@@ -267,7 +273,9 @@ static void igbvf_pci_realize(PCIDevice
-          hw_error("Failed to initialize PCIe capability");
-      }
-  
--    pcie_cap_flr_init(dev);
-+    if (igbvf_check_pf_flr(pcie_sriov_get_pf(dev))) {
-+        pcie_cap_flr_init(dev);
-+    }
-  
-      if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
-          hw_error("Failed to initialize AER capability");
-
-
-> 
-> Thanks,
-> 
-> C.
-> 
-> 
->>
->> Thanks
->>
->>> Cc:  Sriram Yagnaraman <sriram.yagnaraman@est.tech>
->>> Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
->>> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>>> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 >>> ---
->>>   hw/net/igb.c   | 3 +++
->>>   hw/net/igbvf.c | 3 +++
->>>   2 files changed, 6 insertions(+)
 >>>
->>> diff --git a/hw/net/igb.c b/hw/net/igb.c
->>> index e70a66ee038e..b8c170ad9b1a 100644
->>> --- a/hw/net/igb.c
->>> +++ b/hw/net/igb.c
->>> @@ -101,6 +101,7 @@ static void igb_write_config(PCIDevice *dev, uint32_t addr,
+>>> Changes from prior version:
+>>>      - Added comment regarding pca953X
+>>>      - Added cover letter
 >>>
->>>       trace_igb_write_config(addr, val, len);
->>>       pci_default_write_config(dev, addr, val, len);
->>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+>>>   hw/misc/pca9552.c          | 18 +++++++++++++-----
+>>>   tests/qtest/pca9552-test.c |  6 +++---
+>>>   2 files changed, 16 insertions(+), 8 deletions(-)
 >>>
->>>       if (range_covers_byte(addr, len, PCI_COMMAND) &&
->>>           (dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
->>> @@ -433,6 +434,8 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
->>>       }
->>>
->>>       /* PCIe extended capabilities (in order) */
->>> +    pcie_cap_flr_init(pci_dev);
->>> +
->>>       if (pcie_aer_init(pci_dev, 1, 0x100, 0x40, errp) < 0) {
->>>           hw_error("Failed to initialize AER capability");
->>>       }
->>> diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
->>> index 07343fa14a89..55e321e4ec20 100644
->>> --- a/hw/net/igbvf.c
->>> +++ b/hw/net/igbvf.c
->>> @@ -204,6 +204,7 @@ static void igbvf_write_config(PCIDevice *dev, uint32_t addr, uint32_t val,
->>>   {
->>>       trace_igbvf_write_config(addr, val, len);
->>>       pci_default_write_config(dev, addr, val, len);
->>> +    pcie_cap_flr_write_config(dev, addr, val, len);
->>>   }
->>>
->>>   static uint64_t igbvf_mmio_read(void *opaque, hwaddr addr, unsigned size)
->>> @@ -266,6 +267,8 @@ static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
->>>           hw_error("Failed to initialize PCIe capability");
->>>       }
->>>
->>> +    pcie_cap_flr_init(dev);
->>> +
->>>       if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
->>>           hw_error("Failed to initialize AER capability");
->>>       }
->>> -- 
->>> 2.41.0
->>>
->>>
->>
+>>> diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+>>> index fff19e369a..445f56a9e8 100644
+>>> --- a/hw/misc/pca9552.c
+>>> +++ b/hw/misc/pca9552.c
+>>> @@ -36,7 +36,10 @@ typedef struct PCA955xClass PCA955xClass;
+>>>   
+>>>   DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
+>>>                          TYPE_PCA955X)
+>>> -
+>>> +/*
+>>> + * Note:  The LED_ON and LED_OFF configuration values for the PCA955X
+>>> + *        chips are the reverse of the PCA953X family of chips.
+>>> + */
+>>>   #define PCA9552_LED_ON   0x0
+>>>   #define PCA9552_LED_OFF  0x1
+>>>   #define PCA9552_LED_PWM0 0x2
+>>> @@ -112,13 +115,18 @@ static void pca955x_update_pin_input(PCA955xState *s)
+>>>   
+>>>           switch (config) {
+>>>           case PCA9552_LED_ON:
+>>> -            qemu_set_irq(s->gpio[i], 1);
+>>> -            s->regs[input_reg] |= 1 << input_shift;
+>>> -            break;
+>>> -        case PCA9552_LED_OFF:
+>>> +            /* Pin is set to 0V to turn on LED */
+>>>               qemu_set_irq(s->gpio[i], 0);
+>>>               s->regs[input_reg] &= ~(1 << input_shift);
+>>>               break;
+>>> +        case PCA9552_LED_OFF:
+>>> +            /*
+>>> +             * Pin is set to Hi-Z to turn off LED and
+>>> +             * pullup sets it to a logical 1.
+>>> +             */
+>>> +            qemu_set_irq(s->gpio[i], 1);
+>>> +            s->regs[input_reg] |= 1 << input_shift;
+>>> +            break;
 > 
+> So the witherspoon-bmc machine was a user of the PCA9552 outputs as
+> LEDs. I guess its LEDs were in the wrong state the whole time? That
+> looks like the only user though, and shouldn't be negatively affected.
+
+Usually GPIO polarity is a machine/board property, not a device
+one.
+
+We could use the LED API (hw/misc/led.h) which initialize each
+output with GpioPolarity.
 
 
