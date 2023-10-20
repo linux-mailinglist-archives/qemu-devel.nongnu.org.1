@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501BC7D0B2A
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E146F7D0B13
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:04:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtlVA-0005NE-FY; Fri, 20 Oct 2023 05:09:04 -0400
+	id 1qtlPL-0003RK-GU; Fri, 20 Oct 2023 05:03:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlV8-0005Kf-31
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:09:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qtlPJ-0003Mo-4M; Fri, 20 Oct 2023 05:03:01 -0400
+Received: from mgamail.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qtlV6-0005XS-Nd
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:09:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697792940;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ONi19ukrfLVEQNheMMhkhQmgHLo3FAgxA5+kb+4Y7a8=;
- b=LL0j2eL2GYOd8o1QZbOZnfE879umibkluUAC40vZ36QwqZVmqxGJvOhtPYCbQdwmCGB3LH
- 8C9DHCigKepMgYc74yVqrcafjM89IlY/AJIkL8P2lCnwmM7XAsXG4KoQ+ReHsiR0Fi6q71
- WAyXZJwoIejafN+fKUJuPuN1S2IX1pc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-257-0SyCRSCYPCyV-wVxyDG2uA-1; Fri, 20 Oct 2023 05:08:49 -0400
-X-MC-Unique: 0SyCRSCYPCyV-wVxyDG2uA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2451C3813BD5;
- Fri, 20 Oct 2023 09:08:48 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BDA442166B26;
- Fri, 20 Oct 2023 09:08:42 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Eric Farman <farman@linux.ibm.com>, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- David Gibson <david@gibson.dropbear.id.au>,
- Corey Minyard <cminyard@mvista.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Xu <peterx@redhat.com>, Corey Minyard <minyard@acm.org>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Juan Quintela <quintela@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Halil Pasic <pasic@linux.ibm.com>, Leonardo Bras <leobras@redhat.com>,
- John Snow <jsnow@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Jason Wang <jasowang@redhat.com>,
- qemu-block@nongnu.org, qemu-s390x@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qtlPG-0004Ob-FY; Fri, 20 Oct 2023 05:03:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1697792578; x=1729328578;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=CT/skQFWwUuGW+Ebbnz9CM6Enc+zjShQGF93iIdOLTg=;
+ b=Gvybvyy+RJj3FShc1MfE/k0gHJWFdmaXHmepvDzxfuEEvpoIKjneQIjC
+ UUhuHkOomTEl5hsDVTXkLMC+BLepvA+4CLmnBRgxg/mPXyGMsIXRLLjT2
+ 2TZwbXZOevcr/npt8B2r+KMJCwAo1FmwOmMbC1G7KB9AkX5bu6ccM2M/A
+ 43sszA4U0pEUZQXp5gROM7F4rO9WpTlRHdo/Z3pe5kFpX48ZaMnP2yDfA
+ VN+QsPi7KZmTFwlME3VMgKyKchzLoIoonykmfeB5t3sMiq6OKE0cUFfCG
+ Z0y9E8gZ7XvxC87/WXAILbpcoCmWgsp4QQeI9ACzGyPmCHabHq29GnQue w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="371533234"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; d="scan'208";a="371533234"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2023 02:02:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="848024456"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; d="scan'208";a="848024456"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by FMSMGA003.fm.intel.com with ESMTP; 20 Oct 2023 02:02:48 -0700
+Date: Fri, 20 Oct 2023 17:14:26 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Bin Meng <bin.meng@windriver.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Cameron Esfahani <dirty@apple.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-riscv@nongnu.org, Max Filippov <jcmvbkbc@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Stefan Weil <sw@weilnetz.de>, Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH v2 13/13] migration: Use vmstate_register_any() for vmware_vga
-Date: Fri, 20 Oct 2023 11:07:31 +0200
-Message-ID: <20231020090731.28701-14-quintela@redhat.com>
-In-Reply-To: <20231020090731.28701-1-quintela@redhat.com>
-References: <20231020090731.28701-1-quintela@redhat.com>
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 6/6] target/i386: Use env_archcpu() in
+ simulate_[rdmsr/wrmsr]()
+Message-ID: <ZTJE8kPBnCn3luEE@intel.com>
+References: <20231009110239.66778-1-philmd@linaro.org>
+ <20231009110239.66778-7-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20231009110239.66778-7-philmd@linaro.org>
+Received-SPF: pass client-ip=134.134.136.126; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,29 +89,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I have no idea if we can have more than one vmware_vga device, so play
-it safe.
+On Mon, Oct 09, 2023 at 01:02:39PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Mon,  9 Oct 2023 13:02:39 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH 6/6] target/i386: Use env_archcpu() in
+>  simulate_[rdmsr/wrmsr]()
+> X-Mailer: git-send-email 2.41.0
+> 
+> When CPUArchState* is available (here CPUX86State*), we can
+> use the fast env_archcpu() macro to get ArchCPU* (here X86CPU*).
+> The QOM cast X86_CPU() macro will be slower when building with
+> --enable-qom-cast-debug.
+> 
+> Pass CPUX86State* as argument to simulate_rdmsr / simulate_wrmsr
+> instead of a CPUState* to avoid an extra cast.
+> 
+> simulate_rdmsr/simulate_rdmsr(CPUX86State
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> RFC: Not even build-tested.
+> ---
+>  target/i386/hvf/x86_emu.h |  4 ++--
+>  target/i386/hvf/hvf.c     |  4 ++--
+>  target/i386/hvf/x86_emu.c | 21 ++++++++++-----------
+>  3 files changed, 14 insertions(+), 15 deletions(-)
+> 
+> diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
+> index 640da90b30..4b846ba80e 100644
+> --- a/target/i386/hvf/x86_emu.h
+> +++ b/target/i386/hvf/x86_emu.h
+> @@ -29,8 +29,8 @@ bool exec_instruction(CPUX86State *env, struct x86_decode *ins);
+>  void load_regs(struct CPUState *cpu);
+>  void store_regs(struct CPUState *cpu);
+>  
+> -void simulate_rdmsr(struct CPUState *cpu);
+> -void simulate_wrmsr(struct CPUState *cpu);
+> +void simulate_rdmsr(CPUX86State *env);
+> +void simulate_wrmsr(CPUX86State *env);
+>  
+>  target_ulong read_reg(CPUX86State *env, int reg, int size);
+>  void write_reg(CPUX86State *env, int reg, target_ulong val, int size);
+> diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+> index cb2cd0b02f..20b9ca3ef5 100644
+> --- a/target/i386/hvf/hvf.c
+> +++ b/target/i386/hvf/hvf.c
+> @@ -591,9 +591,9 @@ int hvf_vcpu_exec(CPUState *cpu)
+>          {
+>              load_regs(cpu);
+>              if (exit_reason == EXIT_REASON_RDMSR) {
+> -                simulate_rdmsr(cpu);
+> +                simulate_rdmsr(env);
+>              } else {
+> -                simulate_wrmsr(cpu);
+> +                simulate_wrmsr(env);
+>              }
+>              env->eip += ins_len;
+>              store_regs(cpu);
+> diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
+> index af1f205ecf..b1f8a685d1 100644
+> --- a/target/i386/hvf/x86_emu.c
+> +++ b/target/i386/hvf/x86_emu.c
+> @@ -663,11 +663,10 @@ static void exec_lods(CPUX86State *env, struct x86_decode *decode)
+>      env->eip += decode->len;
+>  }
+>  
+> -void simulate_rdmsr(struct CPUState *cpu)
+> +void simulate_rdmsr(CPUX86State *env)
+>  {
+> -    X86CPU *x86_cpu = X86_CPU(cpu);
+> -    CPUX86State *env = &x86_cpu->env;
+> -    CPUState *cs = env_cpu(env);
+> +    X86CPU *x86_cpu = env_archcpu(env);
+> +    CPUState *cpu = env_cpu(env);
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- hw/display/vmware_vga.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I find these names are confusing since in other i386 file
+(target/i386/cpu.c), the "X86CPU" is called "cpu", and the "CPUState" is
+called "cs".
 
-diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
-index 09591fbd39..7490d43881 100644
---- a/hw/display/vmware_vga.c
-+++ b/hw/display/vmware_vga.c
-@@ -1264,7 +1264,7 @@ static void vmsvga_init(DeviceState *dev, struct vmsvga_state_s *s,
- 
-     vga_common_init(&s->vga, OBJECT(dev), &error_fatal);
-     vga_init(&s->vga, OBJECT(dev), address_space, io, true);
--    vmstate_register(NULL, 0, &vmstate_vga_common, &s->vga);
-+    vmstate_register_any(NULL, &vmstate_vga_common, &s->vga);
-     s->new_depth = 32;
- }
- 
--- 
-2.41.0
+Regarding this naming, it may be worthy of cleanup to unify the naming
+for i386. ;-)
 
+>      uint32_t msr = ECX(env);
+>      uint64_t val = 0;
+>  
+> @@ -746,8 +745,8 @@ void simulate_rdmsr(struct CPUState *cpu)
+>          val = env->mtrr_deftype;
+>          break;
+>      case MSR_CORE_THREAD_COUNT:
+> -        val = cs->nr_threads * cs->nr_cores; /* thread count, bits 15..0 */
+> -        val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
+> +        val = cpu->nr_threads * cpu->nr_cores;  /* thread count, bits 15..0 */
+> +        val |= ((uint32_t)cpu->nr_cores << 16); /* core count, bits 31..16 */
+>          break;
+>      default:
+>          /* fprintf(stderr, "%s: unknown msr 0x%x\n", __func__, msr); */
+> @@ -761,14 +760,14 @@ void simulate_rdmsr(struct CPUState *cpu)
+>  
+>  static void exec_rdmsr(CPUX86State *env, struct x86_decode *decode)
+>  {
+> -    simulate_rdmsr(env_cpu(env));
+> +    simulate_rdmsr(env);
+>      env->eip += decode->len;
+>  }
+>  
+> -void simulate_wrmsr(struct CPUState *cpu)
+> +void simulate_wrmsr(CPUX86State *env)
+>  {
+> -    X86CPU *x86_cpu = X86_CPU(cpu);
+> -    CPUX86State *env = &x86_cpu->env;
+> +    X86CPU *x86_cpu = env_archcpu(env);
+> +    CPUState *cpu = env_cpu(env);
+>      uint32_t msr = ECX(env);
+>      uint64_t data = ((uint64_t)EDX(env) << 32) | EAX(env);
+>  
+> @@ -856,7 +855,7 @@ void simulate_wrmsr(struct CPUState *cpu)
+>  
+>  static void exec_wrmsr(CPUX86State *env, struct x86_decode *decode)
+>  {
+> -    simulate_wrmsr(env_cpu(env));
+> +    simulate_wrmsr(env);
+>      env->eip += decode->len;
+>  }
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+-Zhao
+
+>  
+> -- 
+> 2.41.0
+> 
+> 
+> 
 
