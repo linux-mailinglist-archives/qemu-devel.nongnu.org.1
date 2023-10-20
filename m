@@ -2,98 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E972A7D1404
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:33:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 477FF7D142C
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:37:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtsQY-0005mZ-8K; Fri, 20 Oct 2023 12:32:46 -0400
+	id 1qtsUf-00026A-2j; Fri, 20 Oct 2023 12:37:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qtsQV-0005m7-Rd; Fri, 20 Oct 2023 12:32:43 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1qtsQT-0000Lb-IE; Fri, 20 Oct 2023 12:32:43 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39KGAYsc027709; Fri, 20 Oct 2023 16:32:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=aTEWIniqsxNQl9kkNX1vfgGsunuySo1qaZrG+lN3pOc=;
- b=A63o5gmR4eOkTpSeZi4wKHBI5EFirMnCmnz14lUFoHMT69PfdA7pi/SOyosgUJHutUZB
- QSO9c/uWCcm9SnrV3io57w8B8Ciga+0MBdYSz7pDUl7JlXZYHQ5bwCKeh5DhCPAUHB3i
- TpBGCVcecI0GyAFNRDeR7wdfSmv+aq4XxqvxlKbSDNsh/sg7Tw1r5GVzBERBZh/3jufF
- JtfFGb+yYka0z2KNBu73egLOe/1jFNpwRW6ibL0LYl1IHX12sAtHn18ak+mvYjL8F0Zx
- +ejgTLJE7F2gmXu7r1D73hLgQCZP98iyWshoKIfhLQKEF03CECWAeTOsi2WQeg4D5Bx0 1A== 
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuvubgvs6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Oct 2023 16:32:21 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 39KEwDuh002779; Fri, 20 Oct 2023 16:32:09 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc44dsbe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 Oct 2023 16:32:09 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 39KGW8s820710010
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 Oct 2023 16:32:09 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E55D58067;
- Fri, 20 Oct 2023 16:32:08 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5545F58064;
- Fri, 20 Oct 2023 16:32:08 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 20 Oct 2023 16:32:08 +0000 (GMT)
-Message-ID: <53fccc103ab72cfd93e98fd28bd0a869a43b6a83.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] misc/pca9552: Fix inverted input status
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Andrew
- Jeffery <andrew@codeconstruct.com.au>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, f4bug@amsat.org
-Date: Fri, 20 Oct 2023 11:32:08 -0500
-In-Reply-To: <01edf713-6bec-adec-5fa5-5195b5dd4273@linaro.org>
-References: <20231019204011.3174115-1-milesg@linux.vnet.ibm.com>
- <20231019204011.3174115-2-milesg@linux.vnet.ibm.com>
- <e0f36ef6336df26d5c123c5861d6a779c94e3eb9.camel@codeconstruct.com.au>
- <01edf713-6bec-adec-5fa5-5195b5dd4273@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsUb-0001z7-Gl
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:36:57 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsUU-0002Ko-8B
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:36:57 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-507a55302e0so1302720e87.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:36:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1697819808; x=1698424608; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=pI/ALohNTygjWYZJ4KNy3EfaYpASbA7YyWD5BbOrL9M=;
+ b=j4JYzmVS3e9D3QS/gZO/ZVhca/wFwswI8ebdmZ+UN8Y2LQoY2ezKdnZX5l+FC/rDzb
+ ejBC60bK4O++xdhisLElenm7GtVlCF4f9Wgt/Cke2PPl0RKdVJpMkqev7Qa4CAXXiBBD
+ JhZoV4HAd5JC7pEEpH+RBzLNRy9MdMiYB0MfIW9oPV6HJX7BqFY/dEdfg0X8xJibQOgc
+ 7l1aLE5Mz6cKnpA4koeu8fAa4zBb0CyypduamPOjsWQ2rCc9WWAEjmhtcxDhlseUyo/9
+ dFJTw7b73j+U2QgJVn+IouG222mox1mLHKEvYcK6X48eZPXabHoAskfe/Hfiz7EjeHA2
+ 5CMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697819808; x=1698424608;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pI/ALohNTygjWYZJ4KNy3EfaYpASbA7YyWD5BbOrL9M=;
+ b=k+uw7ZR21v1D6Cm07dlSyOWna3ZAae6jl5VIKxFb0Dq4wArf/YNiS9rsVOwWyd3jdx
+ Z+z2Vhrsm3PyIZRf7nV02Nhq8XR/Qr32g1bHC7hf9xOLoLNsdmGfyW7YBP5h8Wqwf/Zp
+ idGSv5f+pyQERddy1aCwE8vwWN1mISN0VoB3u6YUvihGhVrv4koouPfsQy3hgaM1ETiz
+ IYaq2Lhm+vfXAPwr3OKr8DSjcPgsQ8/7nrltOWxgnIPu8IoQKjYF/lK0KooEJGiXDVvK
+ 9WCAwedWc4zZAZiTrCnWhVCKpKf3b4NOdyYGq+NjGzSeOkQe3EKIJrWAHFY5nUBBAV4X
+ NdxQ==
+X-Gm-Message-State: AOJu0YwiQM1BYCc6l281+ILQxJo0+s+Z6ONXmzEyDfliwUcBjyevjP4v
+ /pFjFL0Q2LKA0K91iL/ZDCJYZ/+lqRuDmOGU/jk=
+X-Google-Smtp-Source: AGHT+IH0HRtoxlheJWXcmfBy89wfyR4Dsk5kkRuvmKyASg/Ju/Aq5DB8mWvv9dxFiHpTNX0LSxHRnw==
+X-Received: by 2002:a05:6512:78f:b0:507:bb8e:b644 with SMTP id
+ x15-20020a056512078f00b00507bb8eb644mr1603987lfr.12.1697819808219; 
+ Fri, 20 Oct 2023 09:36:48 -0700 (PDT)
+Received: from m1x-phil.lan (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
+ [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
+ p14-20020ac24ece000000b004fdde1db756sm429709lfr.26.2023.10.20.09.36.45
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 20 Oct 2023 09:36:47 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>, qemu-arm@nongnu.org,
+ qemu-riscv@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ qemu-ppc@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-s390x@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/19] cpus: Step toward removing global 'first_cpu'
+Date: Fri, 20 Oct 2023 18:36:22 +0200
+Message-ID: <20231020163643.86105-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SrAi1bOEb5-NC0bUlzMDxGDbmJu1cRj-
-X-Proofpoint-ORIG-GUID: SrAi1bOEb5-NC0bUlzMDxGDbmJu1cRj-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-20_10,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011
- malwarescore=0 phishscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310200138
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,122 +97,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-10-20 at 11:42 +0200, Philippe Mathieu-Daudé wrote:
-> On 20/10/23 04:51, Andrew Jeffery wrote:
-> > On Thu, 2023-10-19 at 15:40 -0500, Glenn Miles wrote:
-> > > > The pca9552 INPUT0 and INPUT1 registers are supposed to
-> > > > hold the logical values of the LED pins.  A logical 0
-> > > > should be seen in the INPUT0/1 registers for a pin when
-> > > > its corresponding LSn bits are set to 0, which is also
-> > > > the state needed for turning on an LED in a typical
-> > > > usage scenario.  Existing code was doing the opposite
-> > > > and setting INPUT0/1 bit to a 1 when the LSn bit was
-> > > > set to 0, so this commit fixes that.
-> > > > 
-> > > > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > > > ---
-> > > > 
-> > > > Changes from prior version:
-> > > >      - Added comment regarding pca953X
-> > > >      - Added cover letter
-> > > > 
-> > > >   hw/misc/pca9552.c          | 18 +++++++++++++-----
-> > > >   tests/qtest/pca9552-test.c |  6 +++---
-> > > >   2 files changed, 16 insertions(+), 8 deletions(-)
-> > > > 
-> > > > diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-> > > > index fff19e369a..445f56a9e8 100644
-> > > > --- a/hw/misc/pca9552.c
-> > > > +++ b/hw/misc/pca9552.c
-> > > > @@ -36,7 +36,10 @@ typedef struct PCA955xClass PCA955xClass;
-> > > >   
-> > > >   DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
-> > > >                          TYPE_PCA955X)
-> > > > -
-> > > > +/*
-> > > > + * Note:  The LED_ON and LED_OFF configuration values for the
-> > > > PCA955X
-> > > > + *        chips are the reverse of the PCA953X family of
-> > > > chips.
-> > > > + */
-> > > >   #define PCA9552_LED_ON   0x0
-> > > >   #define PCA9552_LED_OFF  0x1
-> > > >   #define PCA9552_LED_PWM0 0x2
-> > > > @@ -112,13 +115,18 @@ static void
-> > > > pca955x_update_pin_input(PCA955xState *s)
-> > > >   
-> > > >           switch (config) {
-> > > >           case PCA9552_LED_ON:
-> > > > -            qemu_set_irq(s->gpio[i], 1);
-> > > > -            s->regs[input_reg] |= 1 << input_shift;
-> > > > -            break;
-> > > > -        case PCA9552_LED_OFF:
-> > > > +            /* Pin is set to 0V to turn on LED */
-> > > >               qemu_set_irq(s->gpio[i], 0);
-> > > >               s->regs[input_reg] &= ~(1 << input_shift);
-> > > >               break;
-> > > > +        case PCA9552_LED_OFF:
-> > > > +            /*
-> > > > +             * Pin is set to Hi-Z to turn off LED and
-> > > > +             * pullup sets it to a logical 1.
-> > > > +             */
-> > > > +            qemu_set_irq(s->gpio[i], 1);
-> > > > +            s->regs[input_reg] |= 1 << input_shift;
-> > > > +            break;
-> > 
-> > So the witherspoon-bmc machine was a user of the PCA9552 outputs as
-> > LEDs. I guess its LEDs were in the wrong state the whole time? That
-> > looks like the only user though, and shouldn't be negatively
-> > affected.
-> 
-> Usually GPIO polarity is a machine/board property, not a device
-> one.
-> 
-> We could use the LED API (hw/misc/led.h) which initialize each
-> output with GpioPolarity.
-> 
+Heterogeneous machines have different type of CPU.
+In that context, both 'first_cpu' and qemu_get_cpu(index)
+don't make much sense.
 
-Thanks for your comments!   This piqued my curiosity so I decided to
-run a test with the witherspoon-bmc machine.  Without my changes, I ran
-the following command to turn off LED13 on the pca9552 which I had
-previously set to "on":
+This series first add a 'filter CPU type' argument to
+qemu_get_cpu(), so the behavior respects what we currently
+expect, then replace 'first_cpu' by a qemu_get_cpu(0) call.
 
-  qom-set /machine/unattached/device[18] led13 off
+Testing pass, but I'm still unsure about performance impact.
 
-I had GDB connected at the time with a breakpoint set on
-led_set_state() so that I could see what was happening.  Due to the
-inversion bug, I expected the pca9552 code to set the pin low and also
-set the irq low, which it did.  The connected LED's on this pca9552
-were all configured as GPIO_POLARITY_ACTIVE_LOW, so I expected that
-setting the irq state low would actually turn on the LED.  Instead it
-turned off the LED.
+With this series applied, what is left is:
 
-Reviewing the LED code, I believe the problem lies here:
+[OK]
 
-static void led_set_state_gpio_handler(void *opaque, int line, int
-new_state)
-{
-    LEDState *s = LED(opaque);
+ -  hw/core/generic-loader.c:127:        s->cpu = qemu_get_cpu(s->cpu_num, NULL);
+ -  linux-user/syscall.c:8990:        if (CPU_NEXT(first_cpu)) {
+ -  monitor/hmp-cmds-target.c:106:        cs = vcpu >= 0 ? qemu_get_cpu(vcpu, NULL) : mon_get_cpu(mon);
+ -  stats/stats-hmp-cmds.c:150:        CPUState *cpu = qemu_get_cpu(cpu_index, NULL);
+ -  system/cpus.c:754:    cpu = qemu_get_cpu(cpu_index, NULL);
 
-    assert(line == 0);
-    led_set_state(s, !!new_state != s->gpio_active_high);
-}
+[likely OK, we don't support heterogeneous accelerators]
 
+ -  accel/kvm/kvm-all.c:3581:    kvm_arch_on_sigbus_vcpu(first_cpu, code, addr);
+ -  accel/kvm/kvm-all.c:4255:    if (first_cpu) {
+ -  accel/kvm/kvm-all.c:4258:        query_stats_schema_vcpu(first_cpu, &stats_args);
 
-In my test, new_state was 0 and gpio_active_high was 0, resulting in
-the boolean expression of ( 0 != 0 ) which is false and results in
-turning off the LED.  So, this looks like a bug to me.
+[need some toughts...]
 
-For another simpler example, if the LED polarity was set to
-GPIO_POLARITY_ACTIVE_HIGH, then s->gpio_active_high would be 1.  Then,
-if we set the irq line to 1, wouldn't we expect the LED to turn on? 
-However, as the code stands, it would actually turn the LED off.  So, I
-think we can remove one of the "!"'s from in front of new_state.  Then,
-if the LED is active high and the irq line is set high, it would turn
-on the LED.  Correct?
+ -  accel/tcg/tcg-accel-ops-rr.c:114:        qemu_cond_wait_iothread(first_cpu->halt_cond);
+ -  accel/tcg/tcg-accel-ops-rr.c:200:    while (first_cpu->stopped) {
+ -  accel/tcg/tcg-accel-ops-rr.c:201:        qemu_cond_wait_iothread(first_cpu->halt_cond);
+ -  accel/tcg/tcg-accel-ops-rr.c:212:    cpu = first_cpu;
+ -  accel/tcg/tcg-accel-ops-rr.c:242:            cpu = first_cpu;
+ -  accel/tcg/tcg-accel-ops-rr.c:336:        cpu->thread_id = first_cpu->thread_id;
+ -  accel/tcg/tcg-accel-ops-rr.c:92:    if (!rr_kick_vcpu_timer && CPU_NEXT(first_cpu)) {
+ -  dump/win_dump.c:115:    if (cpu_memory_rw_debug(first_cpu,
+ -  dump/win_dump.c:128:    if (cpu_read_ptr(x64, first_cpu,
+ -  dump/win_dump.c:135:    if (cpu_memory_rw_debug(first_cpu, KiBugcheckData,
+ -  dump/win_dump.c:210:    if (cpu_memory_rw_debug(first_cpu,
+ -  dump/win_dump.c:258:    if (cpu_read_ptr(x64, first_cpu,
+ -  dump/win_dump.c:265:    if (cpu_memory_rw_debug(first_cpu,
+ -  dump/win_dump.c:286:        if (cpu_read_ptr(x64, first_cpu,
+ -  dump/win_dump.c:294:        if (cpu_read_ptr(x64, first_cpu,
+ -  dump/win_dump.c:378:        if (cpu_memory_rw_debug(first_cpu, Context,
+ -  dump/win_dump.c:384:        if (cpu_memory_rw_debug(first_cpu, Context,
+ -  dump/win_dump.c:400:        if (cpu_memory_rw_debug(first_cpu, saved_ctx[i].addr,
+ -  dump/win_dump.c:410:    X86CPU *first_x86_cpu = X86_CPU(first_cpu);
+ -  gdbstub/gdbstub.c:1521:    cc = CPU_GET_CLASS(first_cpu);
+ -  gdbstub/gdbstub.c:298:    CPUState *cpu = first_cpu;
+ -  gdbstub/system.c:338:    if (!first_cpu) {
+ -  hw/acpi/cpu.c:138:            if (!cdev->cpu || cdev->cpu == first_cpu) {
+ -  hw/acpi/cpu.c:150:            if (!cdev->cpu || cdev->cpu == first_cpu) {
+ -  hw/acpi/cpu.c:671:            if (CPU(arch_ids->cpus[i].cpu) != first_cpu) {
+ -  hw/core/generic-loader.c:134:        s->cpu = first_cpu;
+ -  monitor/hmp-cmds-target.c:39:    cpu = qemu_get_cpu(cpu_index, NULL);
+ -  monitor/hmp-cmds-target.c:62:        if (!first_cpu) {
+ -  monitor/hmp-cmds-target.c:65:        monitor_set_cpu(mon, first_cpu->cpu_index);
+ -  monitor/hmp-cmds-target.c:66:        cpu = first_cpu;
+ -  replay/replay-events.c:130:    qemu_cpu_kick(first_cpu);
+ -  system/cpu-timers.c:254:    } else if (first_cpu) {
+ -  system/cpu-timers.c:263:        async_run_on_cpu(first_cpu, do_nothing, RUN_ON_CPU_NULL);
+ -  system/memory_mapping.c:315:    first_paging_enabled_cpu = find_paging_enabled_cpu(first_cpu);
+ -  system/qtest.c:548:            address_space_write(first_cpu->as, ...
+ -  system/qtest.c:553:            address_space_write(first_cpu->as, ...
+ -  system/qtest.c:558:            address_space_write(first_cpu->as, ...
+ -  system/qtest.c:563:            address_space_write(first_cpu->as, ...
+ -  system/qtest.c:582:            address_space_read(first_cpu->as, ...
+ -  system/qtest.c:587:            address_space_read(first_cpu->as, ...
+ -  system/qtest.c:592:            address_space_read(first_cpu->as, ...
+ -  system/qtest.c:596:            address_space_read(first_cpu->as, ...
+ -  system/qtest.c:617:        address_space_read(first_cpu->as, ...
+ -  system/qtest.c:643:        address_space_read(first_cpu->as, ...
+ -  system/qtest.c:678:        address_space_write(first_cpu->as, ...
+ -  system/qtest.c:701:            address_space_write(first_cpu->as, ...
+ -  system/qtest.c:735:        address_space_write(first_cpu->as, ...
+ -  tests/qtest/fuzz/generic_fuzz.c:241:        mr1 = address_space_translate(first_cpu->as,
+ -  tests/qtest/fuzz/qtest_wrappers.c:110:        address_space_read(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:122:        address_space_read(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:134:        address_space_read(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:146:        address_space_read(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:157:        address_space_write(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:167:        address_space_write(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:177:        address_space_write(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:187:        address_space_write(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:197:        address_space_read(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:207:        address_space_read(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:218:        address_space_write(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:229:        address_space_write(first_cpu->as, ...
+ -  tests/qtest/fuzz/qtest_wrappers.c:242:        address_space_write(first_cpu->as, ...
 
-Thanks,
+Regards,
 
-Glenn
+Phil.
+
+Based-on: <20231013140116.255-1-philmd@linaro.org>
+          "target: Make 'cpu-qom.h' really target agnostic" v2
+
+Philippe Mathieu-Daudé (19):
+  cpus: Add argument to qemu_get_cpu() to filter CPUs by QOM type
+  cpus: Filter for target specific CPU (generic)
+  cpus: Filter for target specific CPU (arm)
+  cpus: Filter for target specific CPU (loongarch)
+  cpus: Filter for target specific CPU (mips)
+  cpus: Filter for target specific CPU (s390x)
+  cpus: Filter for target specific CPU (riscv)
+  cpus: Filter for target specific CPU (ppc)
+  cpus: Filter for target specific CPU (x86)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_ARM_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_POWERPC_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_MIPS_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_M68K_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_S390X_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_RISCV_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_TRICORE_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_SUPERH_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_RX_CPU)
+  cpus: Replace first_cpu by qemu_get_cpu(0, TYPE_X86_CPU)
+
+ include/hw/core/cpu.h               |  3 ++-
+ target/mips/internal.h              |  2 +-
+ cpu-common.c                        |  5 ++++-
+ hw/arm/aspeed.c                     |  5 +++--
+ hw/arm/bananapi_m2u.c               |  3 ++-
+ hw/arm/boot.c                       | 14 +++++++-------
+ hw/arm/exynos4_boards.c             |  6 ++++--
+ hw/arm/fsl-imx7.c                   |  2 +-
+ hw/arm/highbank.c                   |  3 ++-
+ hw/arm/microbit.c                   |  3 ++-
+ hw/arm/mps2-tz.c                    |  3 ++-
+ hw/arm/mps2.c                       |  3 ++-
+ hw/arm/msf2-som.c                   |  3 ++-
+ hw/arm/musca.c                      |  3 ++-
+ hw/arm/netduino2.c                  |  3 ++-
+ hw/arm/netduinoplus2.c              |  2 +-
+ hw/arm/olimex-stm32-h405.c          |  2 +-
+ hw/arm/orangepi.c                   |  3 ++-
+ hw/arm/pxa2xx_gpio.c                |  2 +-
+ hw/arm/realview.c                   |  5 +++--
+ hw/arm/sbsa-ref.c                   |  7 ++++---
+ hw/arm/stellaris.c                  |  3 ++-
+ hw/arm/stm32vldiscovery.c           |  2 +-
+ hw/arm/vexpress.c                   |  5 +++--
+ hw/arm/virt-acpi-build.c            |  2 +-
+ hw/arm/virt.c                       | 25 ++++++++++++++-----------
+ hw/arm/xilinx_zynq.c                |  3 ++-
+ hw/arm/xlnx-versal-virt.c           |  2 +-
+ hw/core/generic-loader.c            |  2 +-
+ hw/cpu/a15mpcore.c                  |  4 ++--
+ hw/cpu/a9mpcore.c                   |  2 +-
+ hw/hyperv/hyperv.c                  |  2 +-
+ hw/i386/kvm/clock.c                 |  4 ++--
+ hw/i386/kvm/xen_evtchn.c            |  8 ++++----
+ hw/i386/kvmvapic.c                  |  3 ++-
+ hw/i386/microvm.c                   |  2 +-
+ hw/i386/pc.c                        |  7 ++++---
+ hw/i386/pc_piix.c                   |  3 ++-
+ hw/i386/x86.c                       |  2 +-
+ hw/intc/arm_gicv3_common.c          |  3 ++-
+ hw/intc/arm_gicv3_cpuif.c           |  2 +-
+ hw/intc/arm_gicv3_kvm.c             |  2 +-
+ hw/intc/m68k_irqc.c                 |  2 +-
+ hw/intc/mips_gic.c                  |  2 +-
+ hw/intc/riscv_aclint.c              |  2 +-
+ hw/intc/sh_intc.c                   |  6 ++++--
+ hw/intc/sifive_plic.c               |  4 ++--
+ hw/isa/lpc_ich9.c                   |  2 +-
+ hw/loongarch/virt.c                 | 10 +++++-----
+ hw/m68k/mcf5206.c                   |  2 +-
+ hw/mips/bootloader.c                |  3 ++-
+ hw/mips/cps.c                       |  5 +++--
+ hw/mips/loongson3_bootp.c           |  2 +-
+ hw/mips/loongson3_virt.c            |  7 ++++---
+ hw/mips/malta.c                     |  2 +-
+ hw/misc/mips_cpc.c                  |  4 ++--
+ hw/ppc/e500.c                       |  4 ++--
+ hw/ppc/ppc.c                        |  4 ++--
+ hw/ppc/ppce500_spin.c               |  2 +-
+ hw/ppc/prep_systemio.c              |  2 +-
+ hw/ppc/spapr.c                      | 11 ++++++-----
+ hw/ppc/spapr_caps.c                 | 10 +++++-----
+ hw/ppc/spapr_rtas.c                 |  2 +-
+ hw/ppc/spapr_vof.c                  |  2 +-
+ hw/ppc/vof.c                        |  3 ++-
+ hw/riscv/boot.c                     |  4 ++--
+ hw/riscv/opentitan.c                |  4 ++--
+ hw/rx/rx-gdbsim.c                   |  4 ++--
+ hw/s390x/ipl.c                      |  4 ++--
+ hw/s390x/s390-virtio-ccw.c          |  2 +-
+ hw/tricore/triboard.c               |  2 +-
+ monitor/hmp-cmds-target.c           |  4 ++--
+ stats/stats-hmp-cmds.c              |  2 +-
+ system/cpus.c                       |  2 +-
+ target/arm/arch_dump.c              |  6 +++---
+ target/i386/arch_dump.c             |  6 +++---
+ target/i386/kvm/kvm.c               |  6 +++---
+ target/i386/kvm/xen-emu.c           | 15 ++++++++-------
+ target/i386/monitor.c               |  2 +-
+ target/i386/tcg/sysemu/fpu_helper.c |  4 ++--
+ target/mips/cpu.c                   |  2 +-
+ target/mips/tcg/sysemu/cp0_helper.c | 10 +++++-----
+ target/mips/tcg/sysemu/tlb_helper.c |  2 +-
+ target/ppc/arch_dump.c              |  4 ++--
+ target/riscv/arch_dump.c            |  4 ++--
+ target/s390x/cpu_models.c           | 10 +++++-----
+ 86 files changed, 199 insertions(+), 163 deletions(-)
+
+-- 
+2.41.0
 
 
