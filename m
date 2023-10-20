@@ -2,100 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E15A7D14A6
+	by mail.lfdr.de (Postfix) with ESMTPS id B11727D14A7
 	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 19:16:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtt5d-0000kh-5D; Fri, 20 Oct 2023 13:15:13 -0400
+	id 1qtt5i-0000lX-8i; Fri, 20 Oct 2023 13:15:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtt5a-0000ij-R8
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 13:15:10 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtt5f-0000l3-UF
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 13:15:15 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qtt5X-0004PT-Fr
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 13:15:10 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-53e751aeb3cso1585164a12.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 10:15:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtt5e-0004RD-9O
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 13:15:15 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2c515527310so15330291fa.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 10:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697822105; x=1698426905; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XJY3Ry6FtyEI3t3XZXdMiTi8tAQ17I99btx+L90/ieE=;
- b=sr2sjdYbf7bon3ONPN1PJ7+0G7LJ3+Q1rByITalVmkRotcYVN1Xai+xKYus97vcG+l
- T5AEp1yfMl9KZBLuquYuGQpsfY8NyQulQZs8DF5C+/0uyRUg17SZYa/XGZDxb871CFUd
- kh0nR2rL3J11QLxgPObDvU+NKBcz0oIEdXP054epFHzbYeEAgQh7lKGewkmqArSQFQnS
- tt5KJvKhgXwMYKcHrQ3aDDzmbVPVLCOTjU9ipC9SYgyFNYHBX6rXUBg6e6N9QYhOl/XV
- xksoKCDaL8GNCaauFLtBhAJ3/688QoOus9PHIlzb9HLPF/NBWpTZKQb5JWLEzFP5MafQ
- X+vg==
+ d=linaro.org; s=google; t=1697822112; x=1698426912; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FOnrF4PFjqlwbRpkGw7aaEfcztV2JQ5uSHjglSueDhU=;
+ b=m4Ex2Kl3IxnAQIp+ZaR/2MeolTaTOynofEb+sgzPLDnZjXzlxYRSNNxsW7zowSEYTL
+ 4+9312KS0//aoeB0imBlVqru1dzjQjilfCw7SmkEpwK4usk5yyNOsBVI5hHXWSl21Rjd
+ uCoDtN7WGFMn2IC/2TaD6VlmX8R9O0yQ3yrXqK1hURJK3od0eDvOBLoqO23Wlx8zhv43
+ 1LbTeggSL4hmL1rT3a9ZS3s23OtH3Lfc5r5p8vX6PxXFqL0MEWPqi2QtrPmmnzMQfCaV
+ FD+TQTQJBWjgV4Qi0N67pLuwooCZpOgS25u4AcxKYwtN6HyM63u62tlZagGJKBTp3fjR
+ wgwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697822105; x=1698426905;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XJY3Ry6FtyEI3t3XZXdMiTi8tAQ17I99btx+L90/ieE=;
- b=pN6oP/vfEtQ7eyzoxM4No49+MgYeu7UWIWspA2WMec75F5HtQ3KNEC0oejeW3+7ZLR
- yBEmKqhR8YXdVQKg3FshDG1crDn5fOMGJBI6bVVzJl8F7TVh87ZEJc0qtdB+dkpIJJq5
- 1rcyCD8QHGCXt6sWvvIDoYaMIwrEHc5Z7br6FycC7HrZ64mNwoTUuKqqIlhWElmkRP5W
- LnJWXvoojyNKVfU2UkCzruO14/QuE/JH1xtzu4N/7ecEsho/pqbgFkuBXYouWC39csDG
- ohmh6FR0p9krurkY4ickQMRSBwSBGwjDLvV6n4UWWAimKtrs8ZoRf6PsWlZoCSWqRsf5
- nFpA==
-X-Gm-Message-State: AOJu0YxSOQvL1KlfvwrXl/D7P2Di7TW83q27n28OHU0SRQX6rzGodlox
- 3rto16kJR6HvG4vjmqJQEry11JVL45YMOumaZwxZgQ==
-X-Google-Smtp-Source: AGHT+IH5/JR5VVSrQGkiUAnBpgum7umVYRelaDbiWsj0/ab1+EHOinqsQQviwnMGDCLcf+X7qbrpmHsOx5yYi3ZZx2I=
-X-Received: by 2002:a50:ccc6:0:b0:53e:197d:a4d with SMTP id
- b6-20020a50ccc6000000b0053e197d0a4dmr1963231edj.4.1697822104818; Fri, 20 Oct
- 2023 10:15:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231020163643.86105-1-philmd@linaro.org>
- <20231020163643.86105-2-philmd@linaro.org>
-In-Reply-To: <20231020163643.86105-2-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 20 Oct 2023 18:14:53 +0100
-Message-ID: <CAFEAcA9FT+QMyQSLCeLjd7tEfaoS9JazmkYWQE++s1AmF7Nfvw@mail.gmail.com>
-Subject: Re: [RFC PATCH 01/19] cpus: Add argument to qemu_get_cpu() to filter
- CPUs by QOM type
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
+ d=1e100.net; s=20230601; t=1697822112; x=1698426912;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FOnrF4PFjqlwbRpkGw7aaEfcztV2JQ5uSHjglSueDhU=;
+ b=UEih910VY5Gy4KNrCZhcuXc0zEvSMeR0qWDL9W6ssLJpNySB5WQ+T4s2AjWYvNoJaP
+ EdverIFEeLPik5CxD1wt9NoDz+LSmVSpMkLsjrNSKSuuczGvMr2qtqOHXJfKUwjinYZX
+ UN4EljT7kAtqwdI3oBhmUDUGnBee+dEiw4/ogcekESSHc/TGtAYuAICHB32pTNIL9FP8
+ 4kVvM2bPrZZkW66mloO98AOuPQWTaqK7IgFYD/wnToNl+yDV3ZY7juhBJnPLls1293fv
+ fHZgoOLvmyZofRbidHAdS2XdtzOxgmL6U/QbT7oCuSDcHqyJGHdxepP3qanNsCmbneXw
+ 4ihA==
+X-Gm-Message-State: AOJu0Yz7JvJGwftyuHoPxOL4CkbGjG7k2GUM2QQQqJPySj3EJTHUo5fQ
+ hdKLPDbH6vzgcG1xamCRg7fBbM04gYSwd3Y3lGg=
+X-Google-Smtp-Source: AGHT+IHeo0i+li/bobBBASUGSKmGyF7UCLaC5r5qK4qmALat+3Mfn1qa/yuKmxBsn/sN7pOzf+hWkQ==
+X-Received: by 2002:a2e:9c8c:0:b0:2c5:70f:614a with SMTP id
+ x12-20020a2e9c8c000000b002c5070f614amr1712003lji.17.1697822111903; 
+ Fri, 20 Oct 2023 10:15:11 -0700 (PDT)
+Received: from m1x-phil.lan (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
+ [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
+ p15-20020a05600c1d8f00b00402d34ea099sm7454062wms.29.2023.10.20.10.15.10
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 20 Oct 2023 10:15:11 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Alistair Francis <alistair.francis@wdc.com>, qemu-arm@nongnu.org,
- qemu-riscv@nongnu.org, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org, 
- Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-s390x@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Zhao Liu <zhao1.liu@intel.com>, Andrey Smirnov <andrew.smirnov@gmail.com>, 
- Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, 
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Alistair Francis <alistair@alistair23.me>,
- David Woodhouse <dwmw2@infradead.org>, 
- Paul Durrant <paul@xen.org>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>, 
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Song Gao <gaosong@loongson.cn>, 
- Thomas Huth <huth@tuxfamily.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, 
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
- Yanan Wang <wangyanan55@huawei.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>, 
- Marcelo Tosatti <mtosatti@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+ Markus Armbruster <armbru@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 0/4] hw/audio/pcspk: Inline pcspk_init()
+Date: Fri, 20 Oct 2023 19:15:04 +0200
+Message-ID: <20231020171509.87839-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,146 +94,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 20 Oct 2023 at 17:36, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Heterogeneous machines have different type of CPU.
-> qemu_get_cpu() returning unfiltered CPUs doesn't make
-> sense anymore. Add a 'type' argument to filter CPU by
-> QOM type.
+Unfortunately v2 was merged as commit 40f8214fcd,
+so adapt v3 to clean the mess.
 
-I'm not sure "filter by CPU type" is ever really the
-correct answer to this problem, though.
+Philippe Mathieu-Daudé (4):
+  hw/i386/pc: Pass Error** argument to pc_basic_device_init()
+  hw/i386/pc: Propagate error if HPET device creation failed
+  hw/i386/pc: Propagate error if PC_SPEAKER device creation failed
+  hw/isa/i82378: Propagate error if PC_SPEAKER device creation failed
 
-Picking out a handful of arm-related parts to this patchset
-as examples of different situations where we're currently
-using qemu_get_cpu():
+ include/hw/i386/pc.h |  5 +++--
+ hw/i386/pc.c         | 15 +++++++++++----
+ hw/i386/pc_piix.c    |  2 +-
+ hw/i386/pc_q35.c     |  2 +-
+ hw/isa/i82378.c      |  4 +++-
+ 5 files changed, 19 insertions(+), 9 deletions(-)
 
-> diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
-> index 474cfdc87c..1c1585f3e1 100644
-> --- a/hw/arm/fsl-imx7.c
-> +++ b/hw/arm/fsl-imx7.c
-> @@ -212,7 +212,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error =
-**errp)
->
->      for (i =3D 0; i < smp_cpus; i++) {
->          SysBusDevice *sbd =3D SYS_BUS_DEVICE(&s->a7mpcore);
-> -        DeviceState  *d   =3D DEVICE(qemu_get_cpu(i));
-> +        DeviceState  *d   =3D DEVICE(qemu_get_cpu(i, NULL));
->
->          irq =3D qdev_get_gpio_in(d, ARM_CPU_IRQ);
->          sysbus_connect_irq(sbd, i, irq);
+-- 
+2.41.0
 
-This is an Arm SoC object. What it wants is not "the i'th Arm
-CPU in the whole system", but "the i'th CPU in this SoC object".
-Conveniently, it has easy access to that: s->cpu[i].
-
-> diff --git a/hw/arm/pxa2xx_gpio.c b/hw/arm/pxa2xx_gpio.c
-> index e7c3d99224..0a698171ab 100644
-> --- a/hw/arm/pxa2xx_gpio.c
-> +++ b/hw/arm/pxa2xx_gpio.c
-> @@ -303,7 +303,7 @@ static void pxa2xx_gpio_realize(DeviceState *dev, Err=
-or **errp)
->  {
->      PXA2xxGPIOInfo *s =3D PXA2XX_GPIO(dev);
->
-> -    s->cpu =3D ARM_CPU(qemu_get_cpu(s->ncpu));
-> +    s->cpu =3D ARM_CPU(qemu_get_cpu(s->ncpu, NULL));
->
->      qdev_init_gpio_in(dev, pxa2xx_gpio_set, s->lines);
->      qdev_init_gpio_out(dev, s->handler, s->lines);
-
-This is grabbing a private pointer to the CPU object[*], which
-we can do more cleanly by setting a link property, and getting
-the board code to pass a pointer to the CPU.
-
-[*] it then uses that pointer to mess with the internals of
-the CPU to implement wake-up-on-GPIO in a completely horrible
-way, but let's assume we don't want to try to clean that up now...
-
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index 3c7dfcd6dc..3571d5038f 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -275,7 +275,7 @@ static void create_fdt(SBSAMachineState *sms)
->
->      for (cpu =3D sms->smp_cpus - 1; cpu >=3D 0; cpu--) {
->          char *nodename =3D g_strdup_printf("/cpus/cpu@%d", cpu);
-> -        ARMCPU *armcpu =3D ARM_CPU(qemu_get_cpu(cpu));
-> +        ARMCPU *armcpu =3D ARM_CPU(qemu_get_cpu(cpu, NULL));
->          CPUState *cs =3D CPU(armcpu);
->          uint64_t mpidr =3D sbsa_ref_cpu_mp_affinity(sms, cpu);
-
-This is in a board model. By definition the board model for a
-non-heterogenous board knows it isn't in a heterogenous system
-model, and it doesn't need to say "specifically the first Arm CPU".
-So I think we should be able to leave it alone...
-
-> diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
-> index bfd8aa5644..8c9098d5d3 100644
-> --- a/hw/cpu/a15mpcore.c
-> +++ b/hw/cpu/a15mpcore.c
-> @@ -65,7 +65,7 @@ static void a15mp_priv_realize(DeviceState *dev, Error =
-**errp)
->          /* Make the GIC's TZ support match the CPUs. We assume that
->           * either all the CPUs have TZ, or none do.
->           */
-> -        cpuobj =3D OBJECT(qemu_get_cpu(0));
-> +        cpuobj =3D OBJECT(qemu_get_cpu(0, NULL));
->          has_el3 =3D object_property_find(cpuobj, "has_el3") &&
->              object_property_get_bool(cpuobj, "has_el3", &error_abort);
->          qdev_prop_set_bit(gicdev, "has-security-extensions", has_el3);
-> @@ -90,7 +90,7 @@ static void a15mp_priv_realize(DeviceState *dev, Error =
-**errp)
->       * appropriate GIC PPI inputs
->       */
->      for (i =3D 0; i < s->num_cpu; i++) {
-> -        DeviceState *cpudev =3D DEVICE(qemu_get_cpu(i));
-> +        DeviceState *cpudev =3D DEVICE(qemu_get_cpu(i, NULL));
->          int ppibase =3D s->num_irq - 32 + i * 32;
->          int irq;
->          /* Mapping from the output timer irq lines from the CPU to the
-
-This is another case where what we want is "the Nth CPU
-associated with this peripheral block", not the Nth CPU of
-some particular architecture. (It's not as easy to figure
-out where we would get that from as it is in the fsl-imx7
-case, though -- perhaps we would need to tweak the API
-these objects have somehow to pass in pointers to the CPUs?)
-
-> diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-> index 2ebf880ead..cdf21dfc11 100644
-> --- a/hw/intc/arm_gicv3_common.c
-> +++ b/hw/intc/arm_gicv3_common.c
-> @@ -392,7 +392,7 @@ static void arm_gicv3_common_realize(DeviceState *dev=
-, Error **errp)
->      s->cpu =3D g_new0(GICv3CPUState, s->num_cpu);
->
->      for (i =3D 0; i < s->num_cpu; i++) {
-> -        CPUState *cpu =3D qemu_get_cpu(i);
-> +        CPUState *cpu =3D qemu_get_cpu(i, NULL);
->          uint64_t cpu_affid;
->
->          s->cpu[i].cpu =3D cpu;
-
-These gicv3 uses of qemu_get_cpu() are because instead of doing
-the theoretical Right Thing and having the GIC object have to
-be told which CPUs it is responsible for, we took a shortcut
-and said "there's only one GIC, and it's connected to all the CPUs".
-The fix is, again, not filtering by CPU type, but having the
-board and SoC models do the work to explicitly represent
-"this GIC object is attached to these CPU objects" (via link
-properties or otherwise).
-
-
-So overall there are some places where figuring out the right
-replacement for qemu_get_cpu() is tricky, and some places where
-it's probably fairly straightforward but just an annoying
-amount of extra code to write, and some places where we don't
-care because we know the board model is not heterogenous.
-But I don't think "filter by CPU architecture type" is usually
-going to be what we want.
-
-thanks
--- PMM
 
