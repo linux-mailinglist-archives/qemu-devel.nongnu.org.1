@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06CC7D1433
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4274D7D1438
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 18:40:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtsVv-0004e4-Kz; Fri, 20 Oct 2023 12:38:19 -0400
+	id 1qtsW6-00054l-4T; Fri, 20 Oct 2023 12:38:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVt-0004TR-3l
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:38:17 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsW3-0004xd-2P
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:38:27 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVq-0002eC-R4
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:38:16 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-533d31a8523so1502118a12.1
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:38:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtsVy-0002fZ-92
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 12:38:26 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-53d82bea507so1550436a12.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 09:38:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697819893; x=1698424693; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697819900; x=1698424700; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sWVSb4kJOx4Py9xCdpLQSCowqDiVUo6mKEdRlRPdC3M=;
- b=QoIN9rxYdoTVZr/OPJ98bL3VmrRNN2M+XkPFoo7H0pBFnWRoj7iYpM04asbzZHJPgA
- u1KDev6JxV1nc/k5X1mKWV90mhAsWRaorlE1rNDx89zvqiMuOD3UkcxKzc+NfLMxNcHS
- kVq3FK/1+no9GPWZO2z53R9VvyD5E7jQOjKuBMjyiCV6ohqcGb7CCxCgYWDnQi1Jnm6K
- vYhr5iTHmMQ9QKkARE/m04g4OP4LArm2CA3K/sy9WA+ROijNafMa3DNvXuG5iE5lD9Px
- UvzkRss/oxr52nUmDxL1DItkq+iKWSVAinRSpEigcK2X+rlqn56tkeJryMv83gmqASbd
- Do/A==
+ bh=gyJaNaz+yQUi1oc2/ICF5HBrjSZAS7PKSP5aD7nnSG8=;
+ b=W4ccIbXSN5MmJu8TJ+Qu/tXEu26M5QMRDBAD0leJi39k4EoHy3D0N/U7Kfwiw9yv/N
+ dvh0EnloGrn6EqAHx/HKNuMnvCPfBTFo/98qLYAHqFFhB6kONdDLC1T7+i4zyHznK3rJ
+ iVUY4qjCyeedOcSB3Z7U4hkyf107J3RspKUjEuhzHHf0BBUk9B5h6tc1EXZkbILtNc4P
+ MPEdqioy3dIptlIxAJdsA0Qlt40pWRg8EbslOLBh6IwoPPHTYG3SMlRWcIFY561/GxO3
+ ZrsAnWaGepDmaoONutvYLpW9s1uPyxFAcUftQFa/J1MkooHifQuljVx2wsWrPZZLJIFp
+ G/Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697819893; x=1698424693;
+ d=1e100.net; s=20230601; t=1697819900; x=1698424700;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sWVSb4kJOx4Py9xCdpLQSCowqDiVUo6mKEdRlRPdC3M=;
- b=ard4nuKZfPiRAJGDcYQCPl1mPrN6ZUheHTej4Vhva4ePdgJXoxzyX5xdA9UlQAxAWO
- 322oq4j5STlhQP3yydxVw798sHFh8Yc6OpcYiNxErHNMX5+W95ni0U4xTX+Easb8Nko9
- PPa7k5h7gnm1CLKWsEFdk9y9Xya2sbYaBWVwXGdJMCSpt1mX68/22mEETkDq9sPGo8XF
- 8UjJ1aly9kOafA5MxRZISOySqxfpO0zF102L3Qbctb3P9pGKx6YNAhxb9JSJAN8Ki0Vl
- 4cCGyhN3xhVxGZgbgcbWBkVXGTWMQJTWhbNcOMOZsKnAPBq4DPydUkY4Xirb1dapG1Rw
- ziXg==
-X-Gm-Message-State: AOJu0YywVUzJFWvm8eKI07y1LGbBZSbLdZUtwgTo5e79yBRlkmM6OHe6
- O+5J0vEBR8BGkhUqmzmoK9otQr6B2Gn7VlXUIuc=
-X-Google-Smtp-Source: AGHT+IEMqrtne6Pvcq15oEXxD3gxQ67/Vyyv98aCsGT08pg/OfAYRxDc6BbyAqJ31WIn3cQ2nejFNA==
-X-Received: by 2002:a17:907:948e:b0:9bf:9c58:e91e with SMTP id
- dm14-20020a170907948e00b009bf9c58e91emr1600709ejc.56.1697819892970; 
- Fri, 20 Oct 2023 09:38:12 -0700 (PDT)
+ bh=gyJaNaz+yQUi1oc2/ICF5HBrjSZAS7PKSP5aD7nnSG8=;
+ b=rpfCzUBss+X89k3Fu/HDclhjImgjOKtPBgfCtUFnHaaTg1t4kVY+baJfHoi59nka3L
+ ikxTxYpcQGDlDUIiKzjXDJ904NJOwbozriwYHZfcaLt8NhmzqaZSsZY4EYzAOACthMfZ
+ N5W9YAlDIC3sQJrlxn4d8IEHSksU/kPGZ3S9B5jN7oK60Dv7X01zGnDUVW9JY5u3fYh3
+ HSs0dXn6ELjZx26zudYIsEdHa2+5E7QuBZ7E/1LdBAiEmu5Hm6lQ6rkSAO97uMk7uVGa
+ qQZmZQydvTsKftm5QtVaSGWDlkxm/rAkrMX0b10UkAfSSxStZ0ZpQ8xrE5ETBbjcMM9c
+ DTjQ==
+X-Gm-Message-State: AOJu0YxDwQNG/vyRPxO1mu1QZqGQll80PNVhMrqPjq8LoLu+uGdklRHt
+ dZliHQzYksoo5K1He9ZlkF26oYUA36UttPyPON8=
+X-Google-Smtp-Source: AGHT+IFBfKbQwH9V3tIztlCgedZL06X6xkpxRSX0F2ztCJXYo/UXY7UYQxkYQktWmALhyqPrbSACzw==
+X-Received: by 2002:a50:f683:0:b0:53f:2128:ff4f with SMTP id
+ d3-20020a50f683000000b0053f2128ff4fmr1999564edn.17.1697819900211; 
+ Fri, 20 Oct 2023 09:38:20 -0700 (PDT)
 Received: from m1x-phil.lan (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
  [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
- w21-20020a170907271500b009ad81554c1bsm1780965ejk.55.2023.10.20.09.38.10
+ y90-20020a50bb63000000b0053e8bb112adsm1775109ede.53.2023.10.20.09.38.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Oct 2023 09:38:12 -0700 (PDT)
+ Fri, 20 Oct 2023 09:38:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -67,25 +67,21 @@ Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH 11/19] cpus: Replace first_cpu by qemu_get_cpu(0,
- TYPE_POWERPC_CPU)
-Date: Fri, 20 Oct 2023 18:36:33 +0200
-Message-ID: <20231020163643.86105-12-philmd@linaro.org>
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: [PATCH 12/19] cpus: Replace first_cpu by qemu_get_cpu(0,
+ TYPE_MIPS_CPU)
+Date: Fri, 20 Oct 2023 18:36:34 +0200
+Message-ID: <20231020163643.86105-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231020163643.86105-1-philmd@linaro.org>
 References: <20231020163643.86105-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,226 +108,218 @@ Mechanical change using the following coccinelle script:
 
   @@ @@
   -   first_cpu
-  +   qemu_get_cpu(0, TYPE_POWERPC_CPU)
+  +   qemu_get_cpu(0, TYPE_MIPS_CPU)
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/e500.c          |  2 +-
- hw/ppc/ppc.c           |  4 ++--
- hw/ppc/prep_systemio.c |  2 +-
- hw/ppc/spapr.c         | 11 ++++++-----
- hw/ppc/spapr_caps.c    | 10 +++++-----
- hw/ppc/spapr_rtas.c    |  2 +-
- hw/ppc/spapr_vof.c     |  2 +-
- hw/ppc/vof.c           |  3 ++-
- target/ppc/arch_dump.c |  4 ++--
- 9 files changed, 21 insertions(+), 19 deletions(-)
+ target/mips/internal.h              | 2 +-
+ hw/intc/mips_gic.c                  | 2 +-
+ hw/mips/bootloader.c                | 3 ++-
+ hw/mips/cps.c                       | 5 +++--
+ hw/mips/loongson3_bootp.c           | 2 +-
+ hw/mips/loongson3_virt.c            | 7 ++++---
+ hw/mips/malta.c                     | 2 +-
+ hw/misc/mips_cpc.c                  | 4 ++--
+ target/mips/tcg/sysemu/cp0_helper.c | 8 ++++----
+ target/mips/tcg/sysemu/tlb_helper.c | 2 +-
+ 10 files changed, 20 insertions(+), 17 deletions(-)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index c4bf3fef32..02d14404d9 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -373,7 +373,7 @@ static int ppce500_load_device_tree(PPCE500MachineState *pms,
-     MachineState *machine = MACHINE(pms);
-     unsigned int smp_cpus = machine->smp.cpus;
-     const PPCE500MachineClass *pmc = PPCE500_MACHINE_GET_CLASS(pms);
--    CPUPPCState *env = cpu_env(first_cpu);
-+    CPUPPCState *env = cpu_env(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     int ret = -1;
-     uint64_t mem_reg_property[] = { 0, cpu_to_be64(machine->ram_size) };
-     int fdt_size;
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index be167710a3..be0b1536f5 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -970,7 +970,7 @@ void cpu_ppc_store_purr(CPUPPCState *env, uint64_t value)
- static void timebase_save(PPCTimebase *tb)
+diff --git a/target/mips/internal.h b/target/mips/internal.h
+index 1d0c026c7d..d373063fd0 100644
+--- a/target/mips/internal.h
++++ b/target/mips/internal.h
+@@ -270,7 +270,7 @@ static inline int mips_vpe_active(CPUMIPSState *env)
+ 
+ static inline int mips_vp_active(CPUMIPSState *env)
  {
-     uint64_t ticks = cpu_get_host_ticks();
--    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
+-    CPUState *other_cs = first_cpu;
++    CPUState *other_cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
  
-     if (!first_ppc_cpu->env.tb_env) {
-         error_report("No timebase object");
-@@ -998,7 +998,7 @@ static void timebase_save(PPCTimebase *tb)
- static void timebase_load(PPCTimebase *tb)
+     /* Check if the VP disabled other VPs (which means the VP is enabled) */
+     if ((env->CP0_VPControl >> CP0VPCtl_DIS) & 1) {
+diff --git a/hw/intc/mips_gic.c b/hw/intc/mips_gic.c
+index 77ba7348a3..4c4791aefa 100644
+--- a/hw/intc/mips_gic.c
++++ b/hw/intc/mips_gic.c
+@@ -406,7 +406,7 @@ static void mips_gic_init(Object *obj)
+ static void mips_gic_realize(DeviceState *dev, Error **errp)
  {
-     CPUState *cpu;
--    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     int64_t tb_off_adj, tb_off;
-     unsigned long freq;
+     MIPSGICState *s = MIPS_GIC(dev);
+-    CPUState *cs = first_cpu;
++    CPUState *cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
+     int i;
  
-diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
-index c96cefb13d..0431cde91c 100644
---- a/hw/ppc/prep_systemio.c
-+++ b/hw/ppc/prep_systemio.c
-@@ -261,7 +261,7 @@ static void prep_systemio_realize(DeviceState *dev, Error **errp)
-     s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
-     qemu_set_irq(s->non_contiguous_io_map_irq,
-                  s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS);
--    cpu = POWERPC_CPU(first_cpu);
-+    cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     s->softreset_irq = qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_HRESET);
+     if (s->num_vps > GIC_MAX_VPS) {
+diff --git a/hw/mips/bootloader.c b/hw/mips/bootloader.c
+index 1dd6ef2096..c4943f193f 100644
+--- a/hw/mips/bootloader.c
++++ b/hw/mips/bootloader.c
+@@ -51,7 +51,8 @@ typedef enum bl_reg {
  
-     isa_register_portio_list(isa, &s->portio, 0x0, ppc_io800_port_list, s,
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index cb840676d3..a5006eaa5e 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -981,7 +981,7 @@ static void spapr_dt_rtas(SpaprMachineState *spapr, void *fdt)
- static void spapr_dt_ov5_platform_support(SpaprMachineState *spapr, void *fdt,
-                                           int chosen)
+ static bool bootcpu_supports_isa(uint64_t isa_mask)
  {
--    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
+-    return cpu_supports_isa(&MIPS_CPU(first_cpu)->env, isa_mask);
++    return cpu_supports_isa(&MIPS_CPU(qemu_get_cpu(0, TYPE_MIPS_CPU))->env,
++                            isa_mask);
+ }
  
-     char val[2 * 4] = {
-         23, 0x00, /* XICS / XIVE mode */
-@@ -1125,7 +1125,7 @@ static void spapr_dt_hypervisor(SpaprMachineState *spapr, void *fdt)
-          * Older KVM versions with older guest kernels were broken
-          * with the magic page, don't allow the guest to map it.
-          */
--        if (!kvmppc_get_hypercall(cpu_env(first_cpu), hypercall,
-+        if (!kvmppc_get_hypercall(cpu_env(qemu_get_cpu(0, TYPE_POWERPC_CPU)), hypercall,
-                                   sizeof(hypercall))) {
-             _FDT(fdt_setprop(fdt, hypervisor, "hcall-instructions",
-                              hypercall, sizeof(hypercall)));
-@@ -1669,7 +1669,7 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
-     pef_kvm_reset(machine->cgs, &error_fatal);
-     spapr_caps_apply(spapr);
+ static void st_nm32_p(void **ptr, uint32_t insn)
+diff --git a/hw/mips/cps.c b/hw/mips/cps.c
+index 2b5269ebf1..d2f72cbf90 100644
+--- a/hw/mips/cps.c
++++ b/hw/mips/cps.c
+@@ -107,7 +107,8 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+     if (itu_present) {
+         object_initialize_child(OBJECT(dev), "itu", &s->itu, TYPE_MIPS_ITU);
+         object_property_set_link(OBJECT(&s->itu), "cpu[0]",
+-                                 OBJECT(first_cpu), &error_abort);
++                                 OBJECT(qemu_get_cpu(0, TYPE_MIPS_CPU)),
++                                 &error_abort);
+         object_property_set_uint(OBJECT(&s->itu), "num-fifo", 16,
+                                 &error_abort);
+         object_property_set_uint(OBJECT(&s->itu), "num-semaphores", 16,
+@@ -147,7 +148,7 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+                             sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->gic), 0));
  
--    first_ppc_cpu = POWERPC_CPU(first_cpu);
-+    first_ppc_cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     if (kvm_enabled() && kvmppc_has_cap_mmu_radix() &&
-         ppc_type_check_compat(machine->cpu_type, CPU_POWERPC_LOGICAL_3_00, 0,
-                               spapr->max_compat_pvr)) {
-@@ -1845,7 +1845,7 @@ static int spapr_post_load(void *opaque, int version_id)
-     }
+     /* Global Configuration Registers */
+-    gcr_base = MIPS_CPU(first_cpu)->env.CP0_CMGCRBase << 4;
++    gcr_base = MIPS_CPU(qemu_get_cpu(0, TYPE_MIPS_CPU))->env.CP0_CMGCRBase << 4;
  
-     if (kvm_enabled() && spapr->patb_entry) {
--        PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+        PowerPCCPU *cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-         bool radix = !!(spapr->patb_entry & PATE1_GR);
-         bool gtse = !!(cpu->env.spr[SPR_LPCR] & LPCR_GTSE);
+     object_initialize_child(OBJECT(dev), "gcr", &s->gcr, TYPE_MIPS_GCR);
+     object_property_set_uint(OBJECT(&s->gcr), "num-vp", s->num_vp,
+diff --git a/hw/mips/loongson3_bootp.c b/hw/mips/loongson3_bootp.c
+index f99af22932..3ad9cf2f0c 100644
+--- a/hw/mips/loongson3_bootp.c
++++ b/hw/mips/loongson3_bootp.c
+@@ -32,7 +32,7 @@ static void init_cpu_info(void *g_cpuinfo, uint64_t cpu_freq)
+     struct efi_cpuinfo_loongson *c = g_cpuinfo;
  
-@@ -4014,7 +4014,8 @@ static void spapr_core_plug(HotplugHandler *hotplug_dev, DeviceState *dev)
-      */
-     if (hotplugged) {
-         for (i = 0; i < cc->nr_threads; i++) {
--            ppc_set_compat(core->threads[i], POWERPC_CPU(first_cpu)->compat_pvr,
-+            ppc_set_compat(core->threads[i],
-+                           POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU))->compat_pvr,
-                            &error_abort);
+     c->cputype = cpu_to_le32(Loongson_3A);
+-    c->processor_id = cpu_to_le32(MIPS_CPU(first_cpu)->env.CP0_PRid);
++    c->processor_id = cpu_to_le32(MIPS_CPU(qemu_get_cpu(0, TYPE_MIPS_CPU))->env.CP0_PRid);
+     if (cpu_freq > UINT_MAX) {
+         c->cpu_clock_freq = cpu_to_le32(UINT_MAX);
+     } else {
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index b74b358874..9dd943d477 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -159,7 +159,8 @@ static uint64_t get_cpu_freq_hz(void)
+     };
+ 
+     if (kvm_enabled()) {
+-        ret = kvm_vcpu_ioctl(first_cpu, KVM_GET_ONE_REG, &freq_reg);
++        ret = kvm_vcpu_ioctl(qemu_get_cpu(0, TYPE_MIPS_CPU), KVM_GET_ONE_REG,
++                             &freq_reg);
+         if (ret >= 0) {
+             return freq * 2;
+         }
+@@ -387,7 +388,7 @@ static void main_cpu_reset(void *opaque)
+ 
+     /* Loongson-3 reset stuff */
+     if (loaderparams.kernel_filename) {
+-        if (cpu == MIPS_CPU(first_cpu)) {
++        if (cpu == MIPS_CPU(qemu_get_cpu(0, TYPE_MIPS_CPU))) {
+             env->active_tc.gpr[4] = loaderparams.a0;
+             env->active_tc.gpr[5] = loaderparams.a1;
+             env->active_tc.gpr[6] = loaderparams.a2;
+@@ -543,7 +544,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
+                                pin, cpu->env.irq[ip + 2]);
          }
      }
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index 5a0755d34f..0c1f00d869 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -194,7 +194,7 @@ static void cap_htm_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
- static void cap_vsx_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
- {
-     ERRP_GUARD();
--    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     CPUPPCState *env = &cpu->env;
+-    env = &MIPS_CPU(first_cpu)->env;
++    env = &MIPS_CPU(qemu_get_cpu(0, TYPE_MIPS_CPU))->env;
  
-     if (!val) {
-@@ -213,7 +213,7 @@ static void cap_vsx_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
- static void cap_dfp_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
- {
-     ERRP_GUARD();
--    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     CPUPPCState *env = &cpu->env;
- 
-     if (!val) {
-@@ -440,7 +440,7 @@ static void cap_nested_kvm_hv_apply(SpaprMachineState *spapr,
-                                     uint8_t val, Error **errp)
- {
-     ERRP_GUARD();
--    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     CPUPPCState *env = &cpu->env;
- 
-     if (!val) {
-@@ -494,7 +494,7 @@ static void cap_large_decr_apply(SpaprMachineState *spapr,
-                                  uint8_t val, Error **errp)
- {
-     ERRP_GUARD();
--    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
- 
-     if (!val) {
-@@ -632,7 +632,7 @@ static void cap_ail_mode_3_apply(SpaprMachineState *spapr,
-                                      uint8_t val, Error **errp)
- {
-     ERRP_GUARD();
--    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
-     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
- 
-     if (!val) {
-diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
-index 7df21581c2..3d4e93a188 100644
---- a/hw/ppc/spapr_rtas.c
-+++ b/hw/ppc/spapr_rtas.c
-@@ -539,7 +539,7 @@ uint64_t qtest_rtas_call(char *cmd, uint32_t nargs, uint64_t args,
-     for (token = 0; token < RTAS_TOKEN_MAX - RTAS_TOKEN_BASE; token++) {
-         if (strcmp(cmd, rtas_table[token].name) == 0) {
-             SpaprMachineState *spapr = SPAPR_MACHINE(qdev_get_machine());
--            PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
-+            PowerPCCPU *cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
- 
-             rtas_table[token].fn(cpu, spapr, token + RTAS_TOKEN_BASE,
-                                  nargs, args, nret, rets);
-diff --git a/hw/ppc/spapr_vof.c b/hw/ppc/spapr_vof.c
-index 09f29be0b9..301b3cd433 100644
---- a/hw/ppc/spapr_vof.c
-+++ b/hw/ppc/spapr_vof.c
-@@ -58,7 +58,7 @@ void spapr_vof_reset(SpaprMachineState *spapr, void *fdt, Error **errp)
- {
-     target_ulong stack_ptr;
-     Vof *vof = spapr->vof;
--    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(first_cpu);
-+    PowerPCCPU *first_ppc_cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
- 
-     vof_init(vof, spapr->rma_size, errp);
- 
-diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
-index e3b430a81f..9fa1cd9e19 100644
---- a/hw/ppc/vof.c
-+++ b/hw/ppc/vof.c
-@@ -797,7 +797,8 @@ static uint32_t vof_call_method(MachineState *ms, Vof *vof, uint32_t methodaddr,
-                 VofMachineIfClass *vmc = VOF_MACHINE_GET_CLASS(vmo);
- 
-                 g_assert(vmc->client_architecture_support);
--                ret = (uint32_t)vmc->client_architecture_support(ms, first_cpu,
-+                ret = (uint32_t)vmc->client_architecture_support(ms,
-+                                                                 qemu_get_cpu(0, TYPE_POWERPC_CPU),
-                                                                  param1);
-             }
- 
-diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
-index a8315659d9..be2a78d01f 100644
---- a/target/ppc/arch_dump.c
-+++ b/target/ppc/arch_dump.c
-@@ -228,11 +228,11 @@ int cpu_get_dump_info(ArchDumpInfo *info,
- {
-     PowerPCCPU *cpu;
- 
--    if (first_cpu == NULL) {
-+    if (qemu_get_cpu(0, TYPE_POWERPC_CPU) == NULL) {
-         return -1;
+     /* Allocate RAM/BIOS, 0x00000000~0x10000000 is alias of 0x80000000~0x90000000 */
+     memory_region_init_rom(bios, NULL, "loongson3.bios",
+diff --git a/hw/mips/malta.c b/hw/mips/malta.c
+index dac27fad9d..2e26b8a26d 100644
+--- a/hw/mips/malta.c
++++ b/hw/mips/malta.c
+@@ -1044,7 +1044,7 @@ static void create_cpu_without_cps(MachineState *ms, MaltaState *s,
+         qemu_register_reset(main_cpu_reset, cpu);
      }
  
--    cpu = POWERPC_CPU(first_cpu);
-+    cpu = POWERPC_CPU(qemu_get_cpu(0, TYPE_POWERPC_CPU));
+-    cpu = MIPS_CPU(first_cpu);
++    cpu = MIPS_CPU(qemu_get_cpu(0, TYPE_MIPS_CPU));
+     env = &cpu->env;
+     *i8259_irq = env->irq[2];
+     *cbus_irq = env->irq[4];
+diff --git a/hw/misc/mips_cpc.c b/hw/misc/mips_cpc.c
+index 4a94c87054..583081cdeb 100644
+--- a/hw/misc/mips_cpc.c
++++ b/hw/misc/mips_cpc.c
+@@ -44,7 +44,7 @@ static void mips_cpu_reset_async_work(CPUState *cs, run_on_cpu_data data)
  
-     info->d_machine = PPC_ELF_MACHINE;
-     info->d_class = ELFCLASS;
+ static void cpc_run_vp(MIPSCPCState *cpc, uint64_t vp_run)
+ {
+-    CPUState *cs = first_cpu;
++    CPUState *cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
+ 
+     CPU_FOREACH(cs) {
+         uint64_t i = 1ULL << cs->cpu_index;
+@@ -62,7 +62,7 @@ static void cpc_run_vp(MIPSCPCState *cpc, uint64_t vp_run)
+ 
+ static void cpc_stop_vp(MIPSCPCState *cpc, uint64_t vp_stop)
+ {
+-    CPUState *cs = first_cpu;
++    CPUState *cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
+ 
+     CPU_FOREACH(cs) {
+         uint64_t i = 1ULL << cs->cpu_index;
+diff --git a/target/mips/tcg/sysemu/cp0_helper.c b/target/mips/tcg/sysemu/cp0_helper.c
+index af0cd60829..bf934be58a 100644
+--- a/target/mips/tcg/sysemu/cp0_helper.c
++++ b/target/mips/tcg/sysemu/cp0_helper.c
+@@ -1633,7 +1633,7 @@ target_ulong helper_emt(void)
+ 
+ target_ulong helper_dvpe(CPUMIPSState *env)
+ {
+-    CPUState *other_cs = first_cpu;
++    CPUState *other_cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
+     target_ulong prev = env->mvp->CP0_MVPControl;
+ 
+     CPU_FOREACH(other_cs) {
+@@ -1649,7 +1649,7 @@ target_ulong helper_dvpe(CPUMIPSState *env)
+ 
+ target_ulong helper_evpe(CPUMIPSState *env)
+ {
+-    CPUState *other_cs = first_cpu;
++    CPUState *other_cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
+     target_ulong prev = env->mvp->CP0_MVPControl;
+ 
+     CPU_FOREACH(other_cs) {
+@@ -1669,7 +1669,7 @@ target_ulong helper_evpe(CPUMIPSState *env)
+ /* R6 Multi-threading */
+ target_ulong helper_dvp(CPUMIPSState *env)
+ {
+-    CPUState *other_cs = first_cpu;
++    CPUState *other_cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
+     target_ulong prev = env->CP0_VPControl;
+ 
+     if (!((env->CP0_VPControl >> CP0VPCtl_DIS) & 1)) {
+@@ -1687,7 +1687,7 @@ target_ulong helper_dvp(CPUMIPSState *env)
+ 
+ target_ulong helper_evp(CPUMIPSState *env)
+ {
+-    CPUState *other_cs = first_cpu;
++    CPUState *other_cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
+     target_ulong prev = env->CP0_VPControl;
+ 
+     if ((env->CP0_VPControl >> CP0VPCtl_DIS) & 1) {
+diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
+index 7dbc2e24c4..2d31c8e17f 100644
+--- a/target/mips/tcg/sysemu/tlb_helper.c
++++ b/target/mips/tcg/sysemu/tlb_helper.c
+@@ -344,7 +344,7 @@ void helper_ginvt(CPUMIPSState *env, target_ulong arg, uint32_t type)
+     uint32_t invMsgVPN2 = arg & (TARGET_PAGE_MASK << 1);
+     uint8_t invMsgR = 0;
+     uint32_t invMsgMMid = env->CP0_MemoryMapID;
+-    CPUState *other_cs = first_cpu;
++    CPUState *other_cs = qemu_get_cpu(0, TYPE_MIPS_CPU);
+ 
+ #ifdef TARGET_MIPS64
+     invMsgR = extract64(arg, 62, 2);
 -- 
 2.41.0
 
