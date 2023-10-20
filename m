@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E146F7D0B13
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0FE7D0BA5
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 11:25:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtlPL-0003RK-GU; Fri, 20 Oct 2023 05:03:03 -0400
+	id 1qtljX-0004l7-Up; Fri, 20 Oct 2023 05:23:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1qtlPJ-0003Mo-4M; Fri, 20 Oct 2023 05:03:01 -0400
-Received: from mgamail.intel.com ([134.134.136.126])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtljV-0004h1-2W
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:23:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1qtlPG-0004Ob-FY; Fri, 20 Oct 2023 05:03:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1697792578; x=1729328578;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=CT/skQFWwUuGW+Ebbnz9CM6Enc+zjShQGF93iIdOLTg=;
- b=Gvybvyy+RJj3FShc1MfE/k0gHJWFdmaXHmepvDzxfuEEvpoIKjneQIjC
- UUhuHkOomTEl5hsDVTXkLMC+BLepvA+4CLmnBRgxg/mPXyGMsIXRLLjT2
- 2TZwbXZOevcr/npt8B2r+KMJCwAo1FmwOmMbC1G7KB9AkX5bu6ccM2M/A
- 43sszA4U0pEUZQXp5gROM7F4rO9WpTlRHdo/Z3pe5kFpX48ZaMnP2yDfA
- VN+QsPi7KZmTFwlME3VMgKyKchzLoIoonykmfeB5t3sMiq6OKE0cUFfCG
- Z0y9E8gZ7XvxC87/WXAILbpcoCmWgsp4QQeI9ACzGyPmCHabHq29GnQue w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="371533234"
-X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; d="scan'208";a="371533234"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2023 02:02:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="848024456"
-X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; d="scan'208";a="848024456"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by FMSMGA003.fm.intel.com with ESMTP; 20 Oct 2023 02:02:48 -0700
-Date: Fri, 20 Oct 2023 17:14:26 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, Bin Meng <bin.meng@windriver.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Cameron Esfahani <dirty@apple.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-riscv@nongnu.org, Max Filippov <jcmvbkbc@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 6/6] target/i386: Use env_archcpu() in
- simulate_[rdmsr/wrmsr]()
-Message-ID: <ZTJE8kPBnCn3luEE@intel.com>
-References: <20231009110239.66778-1-philmd@linaro.org>
- <20231009110239.66778-7-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qtljK-0003KP-Vj
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 05:23:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697793820;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=z7SfVjMSbSJ+yobELIuZ7BO5xH7UYcQtHIBS0XP9T0Q=;
+ b=c61UFjhdzH+H4mbwot9c3MgdAsL94aRMpZLaqlTxyJKUKIZ/XF7cL0VV4TObV1DkuTy0fx
+ npiBIUKNMB2z/XCWfM3tGRVjKiRBzma6qVWgul0zmEBPFc0iY9bbppzcj1BG21jrMS8c6a
+ WKmOoKYTwIHKudxb+MzzA5+p2pd3nxI=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-408-w9xm-M57MbKnf1_wkrjYTQ-1; Fri, 20 Oct 2023 05:23:29 -0400
+X-MC-Unique: w9xm-M57MbKnf1_wkrjYTQ-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-507a3ae32b2so570942e87.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 02:23:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697793807; x=1698398607;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=z7SfVjMSbSJ+yobELIuZ7BO5xH7UYcQtHIBS0XP9T0Q=;
+ b=KWwXcNEsrHv5HOzQLgLSJ1lAhnHnCWYH6yOpkm6+NnAKnha9xIApgJ6KTNLabrAIqy
+ zTopi17tN3IMlCEWadyVsTshG8AFNMFKKHjNcEDY89nrysuh2k/jSUcXOhKX9VD5iH1D
+ br1n0lbUvhZ6bcV190fmSxUnHZt0zaAd3ZpUUqQDprPaaQEVqsc+u60/05VPhFPdI01C
+ 87DJP/got1MVIXCqcZi8tVaUjDkAjosTTTFL0vUjmdBcX0HG9jbEE36DnFpMFfBXiHed
+ Jrs7+YDUXm0PLu3r7QKYzUZLK+4JZADiCfcDSbpa8Jbi/D5cVF7ChO6tcMIu/JCsgsse
+ Za3A==
+X-Gm-Message-State: AOJu0YxL8OR1dkrlPcwgy9zKsWuWbIskjgHaFzqltDqvedk1KN3N1lkh
+ T5kMeZ5mDaf9WuIJZF+aFJkJYNaML8WGiCSCts6sE3vkOvtLEyKeQnXHkJLcA8cdC+8/H16fn3+
+ V/JGCcsO4vDPVcL0=
+X-Received: by 2002:ac2:485a:0:b0:500:a08e:2fcf with SMTP id
+ 26-20020ac2485a000000b00500a08e2fcfmr809883lfy.47.1697793807601; 
+ Fri, 20 Oct 2023 02:23:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGidAucsshTR87AsxTqYA7xoYgWFHbc1LBPscq0xA2V/OZjT1dwz2jxsODTZEKkLpJLdHZUqw==
+X-Received: by 2002:ac2:485a:0:b0:500:a08e:2fcf with SMTP id
+ 26-20020ac2485a000000b00500a08e2fcfmr809869lfy.47.1697793807163; 
+ Fri, 20 Oct 2023 02:23:27 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ b16-20020a5d5510000000b0032d2489a399sm1250291wrv.49.2023.10.20.02.23.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Oct 2023 02:23:26 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
+ <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH V1 0/4] Live Update reboot mode
+In-Reply-To: <26e34256-4b80-4b14-927b-47191c4586ce@oracle.com> (Steven
+ Sistare's message of "Thu, 19 Oct 2023 17:18:06 -0400")
+References: <1697748466-373230-1-git-send-email-steven.sistare@oracle.com>
+ <26e34256-4b80-4b14-927b-47191c4586ce@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Fri, 20 Oct 2023 11:23:26 +0200
+Message-ID: <877cnh1wc1.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231009110239.66778-7-philmd@linaro.org>
-Received-SPF: pass client-ip=134.134.136.126; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,140 +97,16 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 09, 2023 at 01:02:39PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Mon,  9 Oct 2023 13:02:39 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH 6/6] target/i386: Use env_archcpu() in
->  simulate_[rdmsr/wrmsr]()
-> X-Mailer: git-send-email 2.41.0
-> 
-> When CPUArchState* is available (here CPUX86State*), we can
-> use the fast env_archcpu() macro to get ArchCPU* (here X86CPU*).
-> The QOM cast X86_CPU() macro will be slower when building with
-> --enable-qom-cast-debug.
-> 
-> Pass CPUX86State* as argument to simulate_rdmsr / simulate_wrmsr
-> instead of a CPUState* to avoid an extra cast.
-> 
-> simulate_rdmsr/simulate_rdmsr(CPUX86State
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> RFC: Not even build-tested.
-> ---
->  target/i386/hvf/x86_emu.h |  4 ++--
->  target/i386/hvf/hvf.c     |  4 ++--
->  target/i386/hvf/x86_emu.c | 21 ++++++++++-----------
->  3 files changed, 14 insertions(+), 15 deletions(-)
-> 
-> diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
-> index 640da90b30..4b846ba80e 100644
-> --- a/target/i386/hvf/x86_emu.h
-> +++ b/target/i386/hvf/x86_emu.h
-> @@ -29,8 +29,8 @@ bool exec_instruction(CPUX86State *env, struct x86_decode *ins);
->  void load_regs(struct CPUState *cpu);
->  void store_regs(struct CPUState *cpu);
->  
-> -void simulate_rdmsr(struct CPUState *cpu);
-> -void simulate_wrmsr(struct CPUState *cpu);
-> +void simulate_rdmsr(CPUX86State *env);
-> +void simulate_wrmsr(CPUX86State *env);
->  
->  target_ulong read_reg(CPUX86State *env, int reg, int size);
->  void write_reg(CPUX86State *env, int reg, target_ulong val, int size);
-> diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-> index cb2cd0b02f..20b9ca3ef5 100644
-> --- a/target/i386/hvf/hvf.c
-> +++ b/target/i386/hvf/hvf.c
-> @@ -591,9 +591,9 @@ int hvf_vcpu_exec(CPUState *cpu)
->          {
->              load_regs(cpu);
->              if (exit_reason == EXIT_REASON_RDMSR) {
-> -                simulate_rdmsr(cpu);
-> +                simulate_rdmsr(env);
->              } else {
-> -                simulate_wrmsr(cpu);
-> +                simulate_wrmsr(env);
->              }
->              env->eip += ins_len;
->              store_regs(cpu);
-> diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-> index af1f205ecf..b1f8a685d1 100644
-> --- a/target/i386/hvf/x86_emu.c
-> +++ b/target/i386/hvf/x86_emu.c
-> @@ -663,11 +663,10 @@ static void exec_lods(CPUX86State *env, struct x86_decode *decode)
->      env->eip += decode->len;
->  }
->  
-> -void simulate_rdmsr(struct CPUState *cpu)
-> +void simulate_rdmsr(CPUX86State *env)
->  {
-> -    X86CPU *x86_cpu = X86_CPU(cpu);
-> -    CPUX86State *env = &x86_cpu->env;
-> -    CPUState *cs = env_cpu(env);
-> +    X86CPU *x86_cpu = env_archcpu(env);
-> +    CPUState *cpu = env_cpu(env);
+Steven Sistare <steven.sistare@oracle.com> wrote:
+> BTW, this series depends on the patch "migration: simplify blockers".
 
-I find these names are confusing since in other i386 file
-(target/i386/cpu.c), the "X86CPU" is called "cpu", and the "CPUState" is
-called "cs".
+simplify blockers and simplify notifiers are in the PULL request just
+sent.
 
-Regarding this naming, it may be worthy of cleanup to unify the naming
-for i386. ;-)
+Later, Juan.
 
->      uint32_t msr = ECX(env);
->      uint64_t val = 0;
->  
-> @@ -746,8 +745,8 @@ void simulate_rdmsr(struct CPUState *cpu)
->          val = env->mtrr_deftype;
->          break;
->      case MSR_CORE_THREAD_COUNT:
-> -        val = cs->nr_threads * cs->nr_cores; /* thread count, bits 15..0 */
-> -        val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
-> +        val = cpu->nr_threads * cpu->nr_cores;  /* thread count, bits 15..0 */
-> +        val |= ((uint32_t)cpu->nr_cores << 16); /* core count, bits 31..16 */
->          break;
->      default:
->          /* fprintf(stderr, "%s: unknown msr 0x%x\n", __func__, msr); */
-> @@ -761,14 +760,14 @@ void simulate_rdmsr(struct CPUState *cpu)
->  
->  static void exec_rdmsr(CPUX86State *env, struct x86_decode *decode)
->  {
-> -    simulate_rdmsr(env_cpu(env));
-> +    simulate_rdmsr(env);
->      env->eip += decode->len;
->  }
->  
-> -void simulate_wrmsr(struct CPUState *cpu)
-> +void simulate_wrmsr(CPUX86State *env)
->  {
-> -    X86CPU *x86_cpu = X86_CPU(cpu);
-> -    CPUX86State *env = &x86_cpu->env;
-> +    X86CPU *x86_cpu = env_archcpu(env);
-> +    CPUState *cpu = env_cpu(env);
->      uint32_t msr = ECX(env);
->      uint64_t data = ((uint64_t)EDX(env) << 32) | EAX(env);
->  
-> @@ -856,7 +855,7 @@ void simulate_wrmsr(struct CPUState *cpu)
->  
->  static void exec_wrmsr(CPUX86State *env, struct x86_decode *decode)
->  {
-> -    simulate_wrmsr(env_cpu(env));
-> +    simulate_wrmsr(env);
->      env->eip += decode->len;
->  }
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
--Zhao
-
->  
-> -- 
-> 2.41.0
-> 
-> 
-> 
 
