@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3960A7D1238
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 17:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5397D1234
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 17:07:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtr5I-0005cB-LX; Fri, 20 Oct 2023 11:06:44 -0400
+	id 1qtr5P-0005cv-0y; Fri, 20 Oct 2023 11:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtr5G-0005bk-DQ
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:06:42 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtr5M-0005cS-PR
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:06:49 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtr5E-0001Ld-Ly
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:06:42 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-99c3d3c3db9so143366966b.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 08:06:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qtr5L-0001M2-2B
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:06:48 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-9be3b66f254so140839766b.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 08:06:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697814398; x=1698419198; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697814405; x=1698419205; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LfVWFHCjBq/tqfdnBzt5xPqvbfwJpX/7kEv+608Z6sg=;
- b=ypt5z6ocfHBqyCc0dp68ZNG392QWtMEhfs5qReu/yi25XtdsHRMuhMQYywJ5tL/DAs
- YkvtKqGTeaej1BfOLjO6xqxkp8XNvLwmEzEe9hqNeLRIgMJ0ydfQJEnhxeCoqGyyTcKB
- Ng+48sz7KqyG7h9Il+gWPp0JyMZpVFpRHcCdEa32jbpN8pLTky2d1JTMfSC9gWPG7d0B
- mApjlc/ijuV/zcEuSDP4EWlanaOGuMdyUI20uAO9aqJxr/rN3BiMX7Y1pJkeb0J0j5RG
- m5gfBPoPsRMrVhkhEGSo4gUWkoqhMucq79YDSYYym97DkzfVHmVXZdG2nLEHYRhCiUFE
- 1yVA==
+ bh=68n6n0mII6+P8wsMRhocKE/9XK5lu0Lo0YDMzSDC/I4=;
+ b=xIl831Hh8E603sIVCyxP6Gsy6PszG+v9WNJBJQU6s9peNbHvXsN0DW6kbwWEYG3bUL
+ fpeAwhavwc+weo3nTBthoCOZudS6sEZbH8MHEjjl0TBhU+oUea2o87g14mtBUNKoWYXh
+ 7OOBR4oyBWFfw5fowHdioFCEKxcD9Y53B+WYL3xA/ZnEzsXmsDJJDXeqw5QZ2cbUFCRv
+ Y7e8CQHUeAb9YlqzduvtKY/ElJ3U8GPR8Dj6YEIJVibQrm3jOjIO90jvKOXyWBafaexh
+ 1hifWZbG3E4n77sjuC9F47VsuNuzOkVDApruvTAFBWP+C/wwGw9DAF4xqhj1izFz1Bk8
+ sGJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697814398; x=1698419198;
+ d=1e100.net; s=20230601; t=1697814405; x=1698419205;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LfVWFHCjBq/tqfdnBzt5xPqvbfwJpX/7kEv+608Z6sg=;
- b=RGxQbD65oDpCuy+1pIggrNFOETP5P+VFhg5g2Dl5MmwmYDWzAJsmQ9tiwGEhe6hFN/
- 7dilNLBIAwDLS0bpyx06Pqw+oMqgqgeVkr+PuMqXvb6DjfPia+NJvipgtwMpKpc0dhRy
- uefNeQnuAS+EUBpAJRLkOsRO+PVhFWzFNq12QaQgm4wO9zPNcJdYAXfVq7Ahar8G8eFV
- u++sfdetrxJCs0DfeDtvTzFgaecZo8PZH8geibmtXiwQd/DCQJQQ8RzrOE2QwpmmVyu0
- UzQbxt4zHa++BANl+7wD6m+EOuBduJZg66+HGP6ZrLLuc6CkysNI7jfCUYs8R6s3ZxYP
- Wdlw==
-X-Gm-Message-State: AOJu0YyqhSPIEWtxU9Ok9BWzzIHcLkM45PjJLndT0h+LhFxIYZ+N3dpj
- jt86R3CD3wLNFURcSANkJsSwO6jzwnlFW5xz4Fk=
-X-Google-Smtp-Source: AGHT+IGr3083arpP587iLw/EQFuJZL+OBVggqZxv2z3Y77UCbPj8JX1yKLi+IORS+eKuxomJKKUmuw==
-X-Received: by 2002:a17:907:948e:b0:9bf:9c58:e91e with SMTP id
- dm14-20020a170907948e00b009bf9c58e91emr1397181ejc.56.1697814396835; 
- Fri, 20 Oct 2023 08:06:36 -0700 (PDT)
+ bh=68n6n0mII6+P8wsMRhocKE/9XK5lu0Lo0YDMzSDC/I4=;
+ b=XrPxvzuqEqqdJ1I/+BQQoEusWd76IhrHE5ZcJJuU8wLlbYMHFm8XZK1XtmruE0zDh5
+ M7YXPI4wtb30P4stok+x7j2f3fZJukJfk0hdYnGxfrS0TgNU6am0l0PDj0aOm31es6bY
+ haBI4sgqfgNbYggGiPZ6LPITzY7RMqdqoXHniLjD6QT1iJaJlqR7EXM44XxmGiFDyk4u
+ Hjo/vtoZhgy4rBEw+D//GiHVOfFt7jgTlAvEhSrOUZv/ix/WqNWTWeqtx3RALluJbmk9
+ e+OzONcAMmf+nZXi6JzFosDLEVtH5e2yx0r9TQPc3hEvH+uvOgmp4tSYQsG4kQDOQWM/
+ xRvw==
+X-Gm-Message-State: AOJu0YySXj1YDSj6c2hrSy4M0boJF+F/rCsQlFrxPwEOZ9/I8NQaZxH2
+ gkGRcKrzVPZoG7WVLoFn8eqi8ajQoyV1zPcRQDA=
+X-Google-Smtp-Source: AGHT+IHagumdG3cBzEcHgi4cKaEgJkrvbg8lVtmvbKHa82clsV15H0jHS6G2xWqZkwHShh9tTqGozQ==
+X-Received: by 2002:a17:906:7315:b0:9be:71ab:fb5e with SMTP id
+ di21-20020a170906731500b009be71abfb5emr1908651ejc.22.1697814404882; 
+ Fri, 20 Oct 2023 08:06:44 -0700 (PDT)
 Received: from m1x-phil.lan (tbo33-h01-176-171-212-97.dsl.sta.abo.bbox.fr.
  [176.171.212.97]) by smtp.gmail.com with ESMTPSA id
- m19-20020a1709066d1300b0099bd453357esm1645245ejr.41.2023.10.20.08.06.35
+ u10-20020a17090657ca00b009b8dbdd5203sm1666524ejr.107.2023.10.20.08.06.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 20 Oct 2023 08:06:36 -0700 (PDT)
+ Fri, 20 Oct 2023 08:06:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Laurent Vivier <laurent@vivier.eu>, Thomas Huth <huth@tuxfamily.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/6] hw/m68k/irqc: Pass CPU using QOM link property
-Date: Fri, 20 Oct 2023 17:06:21 +0200
-Message-ID: <20231020150627.56893-2-philmd@linaro.org>
+Subject: [PATCH 2/6] hw/m68k/mcf5206: Pass CPU using QOM link property
+Date: Fri, 20 Oct 2023 17:06:22 +0200
+Message-ID: <20231020150627.56893-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231020150627.56893-1-philmd@linaro.org>
 References: <20231020150627.56893-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,82 +92,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid the interrupt controller directly access the 'first_cpu'
-global. Pass it from the board code.
+Avoid the interrupt controller directly access the first cpu
+via the qemu_get_cpu() call. Pass it from the board code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/intc/m68k_irqc.h |  1 +
- hw/intc/m68k_irqc.c         | 10 +++++++++-
- hw/m68k/virt.c              |  2 ++
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ hw/m68k/an5206.c  | 2 ++
+ hw/m68k/mcf5206.c | 9 ++++++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/intc/m68k_irqc.h b/include/hw/intc/m68k_irqc.h
-index ef91f21812..693e33b0aa 100644
---- a/include/hw/intc/m68k_irqc.h
-+++ b/include/hw/intc/m68k_irqc.h
-@@ -33,6 +33,7 @@ typedef struct M68KIRQCState {
-     SysBusDevice parent_obj;
+diff --git a/hw/m68k/an5206.c b/hw/m68k/an5206.c
+index 11ae4c9795..f51c93088f 100644
+--- a/hw/m68k/an5206.c
++++ b/hw/m68k/an5206.c
+@@ -26,6 +26,8 @@ static void mcf5206_init(MemoryRegion *sysmem, uint32_t base)
+     SysBusDevice *s;
  
-     uint8_t ipr;
-+    ArchCPU *cpu;
+     dev = qdev_new(TYPE_MCF5206_MBAR);
++    object_property_set_link(OBJECT(dev), "m68k-cpu",
++                             OBJECT(first_cpu), &error_abort);
+     s = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(s, &error_fatal);
  
-     /* statistics */
-     uint64_t stats_irq_count[M68K_IRQC_LEVEL_NUM];
-diff --git a/hw/intc/m68k_irqc.c b/hw/intc/m68k_irqc.c
-index 0c515e4ecb..e09705eeaf 100644
---- a/hw/intc/m68k_irqc.c
-+++ b/hw/intc/m68k_irqc.c
-@@ -11,6 +11,7 @@
+diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
+index 2ab1b4f059..f920ca2ceb 100644
+--- a/hw/m68k/mcf5206.c
++++ b/hw/m68k/mcf5206.c
+@@ -10,6 +10,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/log.h"
  #include "cpu.h"
- #include "migration/vmstate.h"
- #include "monitor/monitor.h"
 +#include "hw/qdev-properties.h"
- #include "hw/nmi.h"
- #include "hw/intc/intc.h"
- #include "hw/intc/m68k_irqc.h"
-@@ -35,7 +36,7 @@ static void m68k_irqc_print_info(InterruptStatsProvider *obj, Monitor *mon)
- static void m68k_set_irq(void *opaque, int irq, int level)
- {
-     M68KIRQCState *s = opaque;
--    M68kCPU *cpu = M68K_CPU(first_cpu);
-+    M68kCPU *cpu = M68K_CPU(s->cpu);
-     int i;
+ #include "hw/boards.h"
+ #include "hw/irq.h"
+ #include "hw/m68k/mcf.h"
+@@ -601,13 +602,19 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
+     s->timer[1] = m5206_timer_init(s->pic[10]);
+     s->uart[0] = mcf_uart_init(s->pic[12], serial_hd(0));
+     s->uart[1] = mcf_uart_init(s->pic[13], serial_hd(1));
+-    s->cpu = M68K_CPU(qemu_get_cpu(0));
+ }
  
-     if (level) {
-@@ -85,12 +86,19 @@ static const VMStateDescription vmstate_m68k_irqc = {
-     }
- };
- 
-+static Property m68k_irqc_properties[] = {
-+    DEFINE_PROP_LINK("m68k-cpu", M68KIRQCState, cpu,
-+                     TYPE_M68K_CPU, ArchCPU *),
++static Property mcf5206_mbar_properties[] = {
++    DEFINE_PROP_LINK("m68k-cpu", m5206_mbar_state, cpu,
++                     TYPE_M68K_CPU, M68kCPU *),
 +    DEFINE_PROP_END_OF_LIST(),
 +};
 +
- static void m68k_irqc_class_init(ObjectClass *oc, void *data)
-  {
+ static void mcf5206_mbar_class_init(ObjectClass *oc, void *data)
+ {
      DeviceClass *dc = DEVICE_CLASS(oc);
-     NMIClass *nc = NMI_CLASS(oc);
-     InterruptStatsProviderClass *ic = INTERRUPT_STATS_PROVIDER_CLASS(oc);
  
-+    device_class_set_props(dc, m68k_irqc_properties);
-     nc->nmi_monitor_handler = m68k_nmi;
-     dc->reset = m68k_irqc_reset;
-     dc->vmsd = &vmstate_m68k_irqc;
-diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-index 2dd3c99894..da35e74bd9 100644
---- a/hw/m68k/virt.c
-+++ b/hw/m68k/virt.c
-@@ -155,6 +155,8 @@ static void virt_init(MachineState *machine)
-     /* IRQ Controller */
- 
-     irqc_dev = qdev_new(TYPE_M68K_IRQC);
-+    object_property_set_link(OBJECT(irqc_dev), "m68k-cpu",
-+                             OBJECT(first_cpu), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(irqc_dev), &error_fatal);
- 
-     /*
++    device_class_set_props(dc, mcf5206_mbar_properties);
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     dc->desc = "MCF5206 system integration module";
+     dc->realize = mcf5206_mbar_realize;
 -- 
 2.41.0
 
