@@ -2,74 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089397D09A6
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0C07D09A7
 	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 09:41:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtk76-0007xD-5R; Fri, 20 Oct 2023 03:40:08 -0400
+	id 1qtk7W-0008An-Rd; Fri, 20 Oct 2023 03:40:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=+bN6=GC=kaod.org=clg@ozlabs.org>)
- id 1qtk70-0007ui-Sr; Fri, 20 Oct 2023 03:40:03 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qtk7U-00083n-0w
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 03:40:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=+bN6=GC=kaod.org=clg@ozlabs.org>)
- id 1qtk6x-0001aU-My; Fri, 20 Oct 2023 03:40:02 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SBc1H4lgxz4wd0;
- Fri, 20 Oct 2023 18:39:47 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SBc125h03z4xbx;
- Fri, 20 Oct 2023 18:39:34 +1100 (AEDT)
-Message-ID: <e6a55f60-dd77-4758-a9e2-0fa5c33a6798@kaod.org>
-Date: Fri, 20 Oct 2023 09:39:27 +0200
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qtk7O-0001ty-Ve
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 03:40:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1697787625;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mOKUQ2eGWqBnsabEIYhOlwbYaFXW6rUjkW+ZuwRzQpk=;
+ b=YbGUt5GZSt/0vH6E2NEVe7fO3d8dAcfh7I4aJlt6DGoEVNFb9rN+wrB1xGoPnklJLVDfw2
+ xBxIYZkv4RrHmgJmAyhIZG3ETAOLMkxqKAkG3J7s6A1p86xZCW6D+TPO06YadJDMJ7Ztv6
+ 6ghtiBwATplOyY+vb4wTcirGCzevv78=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-IerhZZ5GNYeMUu5jaOadCw-1; Fri, 20 Oct 2023 03:40:23 -0400
+X-MC-Unique: IerhZZ5GNYeMUu5jaOadCw-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-66d7b90c8ecso7107486d6.3
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 00:40:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1697787623; x=1698392423;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mOKUQ2eGWqBnsabEIYhOlwbYaFXW6rUjkW+ZuwRzQpk=;
+ b=YyBO7cMV8ghg6zJJSflZzYJt/Wh7RLoVycdDN8p+nmF76iBV0xe7XLaKmHQINqhS0N
+ Yo/B7Eb1GRFWa6E+XhaUgr2Qg5JWJwOX7ZWS5bA57mjrOscZZjQA95UDvyPCxf/6cf/A
+ AVo8LVjGsirxel8qyAaVz4m+b0+NAv//O64CQ1yX/87yGhNo/b6ObP5C7YTSV1uwY5y0
+ VU+lgq/qtM8XcXKU2rx5CyRv6kwXF+e2GFWtXezBNRV4sk+ljzgosjofL04BThSH8iBF
+ IMVMm58V5v5R03aDga80LcBMs3nEZh3fNPbK9X7+kYulaKLES3rP1UGWFqzyi1xNAGVD
+ XcoQ==
+X-Gm-Message-State: AOJu0YytcdwvA9xX9qN2W+DJ91gTuvH7OK7R5q26K7o7tZ8fxNAK0Ojp
+ 7H/KAP4HYVAYZgkbSlgflvW6YMuNQtUifrK5fIfNpfdOXJiXx5muomXNSnkcpbZUuBa3VgNsU5c
+ 1xfE3dOoK2CgIzF4=
+X-Received: by 2002:a05:6214:212b:b0:66d:33d2:4ff5 with SMTP id
+ r11-20020a056214212b00b0066d33d24ff5mr1271059qvc.41.1697787623227; 
+ Fri, 20 Oct 2023 00:40:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqru8cH/StfvHGq/u1buFw3+slBLnsIqjth07W8CJDvmUm6vunLHh7ABq1E70arY3wetrayQ==
+X-Received: by 2002:a05:6214:212b:b0:66d:33d2:4ff5 with SMTP id
+ r11-20020a056214212b00b0066d33d24ff5mr1271047qvc.41.1697787622924; 
+ Fri, 20 Oct 2023 00:40:22 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ oj2-20020a056214440200b006577e289d37sm491354qvb.2.2023.10.20.00.40.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 20 Oct 2023 00:40:22 -0700 (PDT)
+Message-ID: <d9df1c95-f681-4962-be74-671cef90e908@redhat.com>
+Date: Fri, 20 Oct 2023 09:40:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/13] RFC migration: icp/server is a mess
+Subject: Re: [PATCH 2/2] igb: Add Function Level Reset to PF and VF
+To: Jason Wang <jasowang@redhat.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+References: <20230829090529.184438-1-clg@kaod.org>
+ <20230829090529.184438-3-clg@kaod.org>
+ <CACGkMEu6nznVGTyk8gjrZ3jE=bEAd2bDDi9PPwjDKNFkXnVhSQ@mail.gmail.com>
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Greg Kurz <groug@kaod.org>,
- Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, qemu-s390x@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>, Corey Minyard <cminyard@mvista.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Fabiano Rosas <farosas@suse.de>, Eric Farman <farman@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Stefan Weil <sw@weilnetz.de>, qemu-arm@nongnu.org,
- Jason Wang <jasowang@redhat.com>, Corey Minyard <minyard@acm.org>,
- Leonardo Bras <leobras@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>, Halil Pasic
- <pasic@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20231019190831.20363-1-quintela@redhat.com>
- <20231019190831.20363-8-quintela@redhat.com> <20231019224935.03232495@bahia>
- <f5245b42-2a0a-430c-b10c-e9d3530af80b@kaod.org>
- <81b1bcb8-4217-4324-8bb5-8edde40a1838@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <81b1bcb8-4217-4324-8bb5-8edde40a1838@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <CACGkMEu6nznVGTyk8gjrZ3jE=bEAd2bDDi9PPwjDKNFkXnVhSQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=+bN6=GC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,59 +103,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/20/23 07:10, Thomas Huth wrote:
-> On 19/10/2023 23.15, Cédric Le Goater wrote:
->> On 10/19/23 22:49, Greg Kurz wrote:
->>> Hi Juan,
->>>
->>> On Thu, 19 Oct 2023 21:08:25 +0200
->>> Juan Quintela <quintela@redhat.com> wrote:
->>>
->>>> Current code does:
->>>> - register pre_2_10_vmstate_dummy_icp with "icp/server" and instance
->>>>    dependinfg on cpu number
->>>> - for newer machines, it register vmstate_icp with "icp/server" name
->>>>    and instance 0
->>>> - now it unregisters "icp/server" for the 1st instance.
->>>>
->>>
->>> Heh I remember about this hack... it was caused by some rework in
->>> the interrupt controller that broke migration.
->>>
->>>> This is wrong at many levels:
->>>> - we shouldn't have two VMSTATEDescriptions with the same name
->>>
->>> I don't know how bad it is. The idea here is to send extra
->>> state in the stream because older QEMU expect it (but won't use
->>> it), so it made sense to keep the same name.
->>>
->>>> - In case this is the only solution that we can came with, it needs to
->>>>    be:
->>>>    * register pre_2_10_vmstate_dummy_icp
->>>>    * unregister pre_2_10_vmstate_dummy_icp
->>>>    * register real vmstate_icp
->>>>
->>>> As the initialization of this machine is already complex enough, I
->>>> need help from PPC maintainers to fix this.
->>>>
->>>
->>> What about dropping all this code, i.e. basically reverting 46f7afa37096 ("spapr:
->>> fix migration of ICPState objects from/to older QEMU") ?
+On 10/20/23 06:24, Jason Wang wrote:
+> On Tue, Aug 29, 2023 at 5:06 PM Cédric Le Goater <clg@kaod.org> wrote:
 >>
->> I'd vote for removing the dummy ICP states for pre-2.10 pseries machines.
->> Migration compatibility would be broken for these old versions but, with
->> a clear error report, it should be more than enough. I doubt anyone will
->> need such a feature now days.
+>> From: Cédric Le Goater <clg@redhat.com>
+>>
+>> The Intel 82576EB GbE Controller say that the Physical and Virtual
+>> Functions support Function Level Reset. Add the capability to each
+>> device model.
+>>
 > 
-> In that case: Please also put the pseries-2.1 machine up to pseries-2.9 onto the deprecation list, so that they can finally get removed after two releases. It does not make sense to keep compat machines around if the compatibility is not available anymore.
+> Do we need to do migration compatibility for this?
 
-This would be a really good cleanup for PPC to deprecate pseries-2.1/2.9.
-We did a few workarounds in that time frame which wouldn't be necessary
-anymore.
+Yes. it does. the config space is now different.
 
 Thanks,
 
 C.
 
+
+> 
+> Thanks
+> 
+>> Cc:  Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+>> Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
+>> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+>>   hw/net/igb.c   | 3 +++
+>>   hw/net/igbvf.c | 3 +++
+>>   2 files changed, 6 insertions(+)
+>>
+>> diff --git a/hw/net/igb.c b/hw/net/igb.c
+>> index e70a66ee038e..b8c170ad9b1a 100644
+>> --- a/hw/net/igb.c
+>> +++ b/hw/net/igb.c
+>> @@ -101,6 +101,7 @@ static void igb_write_config(PCIDevice *dev, uint32_t addr,
+>>
+>>       trace_igb_write_config(addr, val, len);
+>>       pci_default_write_config(dev, addr, val, len);
+>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+>>
+>>       if (range_covers_byte(addr, len, PCI_COMMAND) &&
+>>           (dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
+>> @@ -433,6 +434,8 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
+>>       }
+>>
+>>       /* PCIe extended capabilities (in order) */
+>> +    pcie_cap_flr_init(pci_dev);
+>> +
+>>       if (pcie_aer_init(pci_dev, 1, 0x100, 0x40, errp) < 0) {
+>>           hw_error("Failed to initialize AER capability");
+>>       }
+>> diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
+>> index 07343fa14a89..55e321e4ec20 100644
+>> --- a/hw/net/igbvf.c
+>> +++ b/hw/net/igbvf.c
+>> @@ -204,6 +204,7 @@ static void igbvf_write_config(PCIDevice *dev, uint32_t addr, uint32_t val,
+>>   {
+>>       trace_igbvf_write_config(addr, val, len);
+>>       pci_default_write_config(dev, addr, val, len);
+>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+>>   }
+>>
+>>   static uint64_t igbvf_mmio_read(void *opaque, hwaddr addr, unsigned size)
+>> @@ -266,6 +267,8 @@ static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
+>>           hw_error("Failed to initialize PCIe capability");
+>>       }
+>>
+>> +    pcie_cap_flr_init(dev);
+>> +
+>>       if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
+>>           hw_error("Failed to initialize AER capability");
+>>       }
+>> --
+>> 2.41.0
+>>
+>>
+> 
 
 
