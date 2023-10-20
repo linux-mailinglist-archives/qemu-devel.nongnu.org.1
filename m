@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069427D12A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 17:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACBF37D12A3
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 17:27:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtrOI-0003QR-VQ; Fri, 20 Oct 2023 11:26:22 -0400
+	id 1qtrOL-0003UU-80; Fri, 20 Oct 2023 11:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qtrOG-0003Pz-4X
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:26:20 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qtrOJ-0003Ra-6X
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:26:23 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qtrOE-00068K-0y
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:26:19 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6b7f0170d7bso869340b3a.2
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 08:24:17 -0700 (PDT)
+ id 1qtrOH-0006Bu-Kc
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 11:26:22 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1c9d3a21f7aso7556045ad.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 08:24:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1697815456; x=1698420256;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1697815460; x=1698420260;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zK7JUPjMc/eda4hGQUyZLj9/LbQ1yYC1yTNO8lriRFA=;
- b=dRwF9cSXB6omQUX0+DLNXA/aUtH+Y4w9z8rVdFT2LrO8TzjW9uVI0x/Y9FT7KhdYgh
- AvbswkR7A+UHOzGTT+OfrOFq2j4OTKauo7DHl/FHiMv2RyuI01WZt80bWGDbHLqTTSlU
- SW2fk5LXDIk5n6HVnDnoKk06su+9oWSZR4ON+6XPxsohCBErDMNKSKPgDGooJDOsehrg
- 39gdV2m2iAUO3ZhPUgW0ef7+ufw3/4gezNi3qjSh0oICv64q+lqKcUTyhUEOb4UzDDn/
- hWXb7svWtXATH56KGLnu/CnFg/7OomqKhCNlsxfpkQVpzeXm+jMF3C31ph8uDsTotFyy
- fEuQ==
+ bh=r3LoJaZtBc7uIbn5BRVxl3tXOWLKI1Lh4C9OuQJm92w=;
+ b=poGcqkFmr/Lcjy1Ib9QEk7czk5yScCyBRZHoRj6Xy5Zlxm+VrpNdFdL8+7JxfNXBOa
+ 63bHNF6i5kk5DuwQbcIUNVX279wIDFUjbra7cu4MbESRm+/DgmXniurJXvXtlBIzae5h
+ O970c6i59NEN0IsYy7p/Kr9N16nVBFo4YN9Q11OwzeB2CWy08vmGG2m+D2Reot+yntQp
+ SnNkAt5Bf+mjH3IQn2aeq69kxMueDnKgur8yb4oKdmcLD+NJ+sasY1O5ur8w7csXY7F1
+ 4suxU+6JpXPlNGUwS3YWVj+x1O+3JXD204rVvObrQOcXPcbVM+S5Kkw4QF0OPJsFBht/
+ JUvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697815456; x=1698420256;
+ d=1e100.net; s=20230601; t=1697815460; x=1698420260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zK7JUPjMc/eda4hGQUyZLj9/LbQ1yYC1yTNO8lriRFA=;
- b=X18Ix31H0/43gphxghNDTttGKCbB0aSnkENxbl33FgKdMaRMhGGmqGmIql1SyitYUj
- 138yFLD0BRQ3ppKEiVgWyu5+L/AHKpA7GAlJ008lfI7Y07vFfX1AIcbtMS91qcd9oFii
- SUDBdcVLk4L1RCYCLbSb7U2kGCpdQ0Ngp6JPaZlgQi/5h3TzcXh86BWnKDg1eYOcnBgo
- 73IrdPP8VL2bEVNZUAQ0uh0TzV8SqSIdGFX+D7HbRpp0mfc8UpNH9J75Ziz6CmG4pUpL
- SCp60dqVaiF1noyHS6NnXrYIQdlu9t8Nak3ym9lM6RzWOYyNxyHfkoYesRTkaH1kewWf
- i/dw==
-X-Gm-Message-State: AOJu0YwTJ1AyrD1CdrXbWkP0MX5LkuXu93wUfdQ9Ax7C54gv/ZD45IOK
- KIBE/2H55L3r3ghGJ8P1sBvzKOAX3Q6lh4qp/sAgfYae
-X-Google-Smtp-Source: AGHT+IEWNG3f9g+31r4C0ODlsqEeJbkYO/LM7MN1vxdTRT0Xn+i/1mOGeyoFgrB081pI6vVE50BBFw==
-X-Received: by 2002:a05:6a20:7483:b0:17b:e0a3:f6f4 with SMTP id
- p3-20020a056a20748300b0017be0a3f6f4mr2300471pzd.25.1697815456215; 
- Fri, 20 Oct 2023 08:24:16 -0700 (PDT)
+ bh=r3LoJaZtBc7uIbn5BRVxl3tXOWLKI1Lh4C9OuQJm92w=;
+ b=l8SQYuXSJN+tqVGRKSnYdgoHdwwfpFuXkiaIdA0A+qlkJiKvyJRUYE8a3U0OlVEmbw
+ xQH93AnW/kJK8Sg0HS7tbVYFw2dj9AjY/rjk4FXW66HW5xMAjkwm2Ur2DWDDtQTY6I6U
+ 0HuZBfHvifHu/MF1ENecUtxG4R8Lme4oaCH/lTxoVcuWJA+Lgr3buEfTmLTfmuX+Xpj9
+ 10TPV2m6ZkGWdvzMAbY96pkxS+8pVD98pac5U/QHrgykfIJVlhdar8J/VOqy2q67/zGr
+ Cfwsfdc5pO/TayezS9XSOCLw/RyBilkHsaYmg1rxAoLiLYg1Ed5M/feARQlB6XiwWaRS
+ pu1g==
+X-Gm-Message-State: AOJu0Yy5xp121nEbxjD3x60MZLLeJnI7R4jZBQV9Ri3Xh2pfFmkHyu3Q
+ 7G//O/LH38Jzkj2RAf6pO3az1+mXge24LZ9t35cuxBJ3
+X-Google-Smtp-Source: AGHT+IEuhN7ylgU5q4JOOmGhMQiVI/ybNca1TU7QpNQJG0Qs2Drijy7gZE4AjK7Y0ypAKYPmA/Q0iA==
+X-Received: by 2002:a17:902:e551:b0:1c9:d358:b3cd with SMTP id
+ n17-20020a170902e55100b001c9d358b3cdmr2469461plf.42.1697815460108; 
+ Fri, 20 Oct 2023 08:24:20 -0700 (PDT)
 Received: from localhost.localdomain ([171.216.79.181])
  by smtp.gmail.com with ESMTPSA id
- d4-20020a170902cec400b001c60d0a6d84sm1644824plg.127.2023.10.20.08.24.13
+ d4-20020a170902cec400b001c60d0a6d84sm1644824plg.127.2023.10.20.08.24.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 08:24:15 -0700 (PDT)
+ Fri, 20 Oct 2023 08:24:19 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Hyman Huang <yong.huang@smartx.com>
-Subject: [v2 5/6] tests/migration: Introduce dirty-limit into guestperf
-Date: Fri, 20 Oct 2023 23:23:47 +0800
-Message-Id: <516e7a55dfc6e33d33510be37eb24223de5dc072.1697815117.git.yong.huang@smartx.com>
+Subject: [v2 6/6] docs/migration: Add the dirty limit section
+Date: Fri, 20 Oct 2023 23:23:48 +0800
+Message-Id: <36194a8a23d937392bf13d9fff8e898030c827a3.1697815117.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1697815117.git.yong.huang@smartx.com>
 References: <cover.1697815117.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::435;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x435.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,218 +94,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, guestperf does not cover the dirty-limit
-migration, support this feature.
-
-Note that dirty-limit requires 'dirty-ring-size' set.
-
-To enable dirty-limit, setting x-vcpu-dirty-limit-period
-as 500ms and x-vcpu-dirty-limit as 10MB/s:
-$ ./tests/migration/guestperf.py \
-    --dirty-ring-size 4096 \
-    --dirty-limit --x-vcpu-dirty-limit-period 500 \
-    --vcpu-dirty-limit 10 --output output.json \
-
-To run the entire standardized set of dirty-limit-enabled
-comparisons, with unix migration:
-$ ./tests/migration/guestperf-batch.py \
-    --dirty-ring-size 4096 \
-    --dst-host localhost --transport unix \
-    --filter compr-dirty-limit* --output outputdir
+The dirty limit feature has been introduced since the 8.1
+QEMU release but has not reflected in the document, add a
+section for that.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- tests/migration/guestperf/comparison.py | 23 +++++++++++++++++++++++
- tests/migration/guestperf/engine.py     | 17 +++++++++++++++++
- tests/migration/guestperf/progress.py   | 16 ++++++++++++++--
- tests/migration/guestperf/scenario.py   | 11 ++++++++++-
- tests/migration/guestperf/shell.py      | 18 +++++++++++++++++-
- 5 files changed, 81 insertions(+), 4 deletions(-)
+ docs/devel/migration.rst | 71 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
-diff --git a/tests/migration/guestperf/comparison.py b/tests/migration/guestperf/comparison.py
-index c03b3f6d7e..42cc0372d1 100644
---- a/tests/migration/guestperf/comparison.py
-+++ b/tests/migration/guestperf/comparison.py
-@@ -135,4 +135,27 @@ def __init__(self, name, scenarios):
-         Scenario("compr-multifd-channels-64",
-                  multifd=True, multifd_channels=64),
-     ]),
+diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+index c3e1400c0c..347244af89 100644
+--- a/docs/devel/migration.rst
++++ b/docs/devel/migration.rst
+@@ -588,6 +588,77 @@ path.
+      Return path  - opened by main thread, written by main thread AND postcopy
+      thread (protected by rp_mutex)
+ 
++Dirty limit
++=====================
++The dirty limit, short for dirty page rate upper limit, is a new capability
++introduced in the 8.1 QEMU release that uses a new algorithm based on the KVM
++dirty ring to throttle down the guest during live migration.
 +
-+    # Looking at effect of dirty-limit with
-+    # varying x_vcpu_dirty_limit_period
-+    Comparison("compr-dirty-limit-period", scenarios = [
-+        Scenario("compr-dirty-limit-period-500",
-+                 dirty_limit=True, x_vcpu_dirty_limit_period=500),
-+        Scenario("compr-dirty-limit-period-800",
-+                 dirty_limit=True, x_vcpu_dirty_limit_period=800),
-+        Scenario("compr-dirty-limit-period-1000",
-+                 dirty_limit=True, x_vcpu_dirty_limit_period=1000),
-+    ]),
++The algorithm framework is as follows:
 +
++::
 +
-+    # Looking at effect of dirty-limit with
-+    # varying vcpu_dirty_limit
-+    Comparison("compr-dirty-limit", scenarios = [
-+        Scenario("compr-dirty-limit-10MB",
-+                 dirty_limit=True, vcpu_dirty_limit=10),
-+        Scenario("compr-dirty-limit-20MB",
-+                 dirty_limit=True, vcpu_dirty_limit=20),
-+        Scenario("compr-dirty-limit-50MB",
-+                 dirty_limit=True, vcpu_dirty_limit=50),
-+    ]),
- ]
-diff --git a/tests/migration/guestperf/engine.py b/tests/migration/guestperf/engine.py
-index aabf6de4d9..608d7270f6 100644
---- a/tests/migration/guestperf/engine.py
-+++ b/tests/migration/guestperf/engine.py
-@@ -102,6 +102,8 @@ def _migrate_progress(self, vm):
-             info.get("expected-downtime", 0),
-             info.get("setup-time", 0),
-             info.get("cpu-throttle-percentage", 0),
-+            info.get("dirty-limit-throttle-time-per-round", 0),
-+            info.get("dirty-limit-ring-full-time", 0),
-         )
- 
-     def _migrate(self, hardware, scenario, src, dst, connect_uri):
-@@ -203,6 +205,21 @@ def _migrate(self, hardware, scenario, src, dst, connect_uri):
-             resp = dst.cmd("migrate-set-parameters",
-                            multifd_channels=scenario._multifd_channels)
- 
-+        if scenario._dirty_limit:
-+            if not hardware._dirty_ring_size:
-+                raise Exception("dirty ring size must be configured when "
-+                                "testing dirty limit migration")
++  ------------------------------------------------------------------------------
++  main   --------------> throttle thread ------------> PREPARE(1) <--------
++  thread  \                                                |              |
++           \                                               |              |
++            \                                              V              |
++             -\                                        CALCULATE(2)       |
++               \                                           |              |
++                \                                          |              |
++                 \                                         V              |
++                  \                                    SET PENALTY(3) -----
++                   -\                                      |
++                     \                                     |
++                      \                                    V
++                       -> virtual CPU thread -------> ACCEPT PENALTY(4)
++  ------------------------------------------------------------------------------
 +
-+            resp = src.cmd("migrate-set-capabilities",
-+                           capabilities = [
-+                               { "capability": "dirty-limit",
-+                                 "state": True }
-+                           ])
-+            resp = src.cmd("migrate-set-parameters",
-+                x_vcpu_dirty_limit_period=scenario._x_vcpu_dirty_limit_period)
-+            resp = src.cmd("migrate-set-parameters",
-+                           vcpu_dirty_limit=scenario._vcpu_dirty_limit)
++When the qmp command qmp_set_vcpu_dirty_limit is called for the first time,
++the QEMU main thread starts the throttle thread. The throttle thread, once
++launched, executes the loop, which consists of three steps:
 +
-         resp = src.cmd("migrate", uri=connect_uri)
- 
-         post_copy = False
-diff --git a/tests/migration/guestperf/progress.py b/tests/migration/guestperf/progress.py
-index ab1ee57273..d490584217 100644
---- a/tests/migration/guestperf/progress.py
-+++ b/tests/migration/guestperf/progress.py
-@@ -81,7 +81,9 @@ def __init__(self,
-                  downtime,
-                  downtime_expected,
-                  setup_time,
--                 throttle_pcent):
-+                 throttle_pcent,
-+                 dirty_limit_throttle_time_per_round,
-+                 dirty_limit_ring_full_time):
- 
-         self._status = status
-         self._ram = ram
-@@ -91,6 +93,10 @@ def __init__(self,
-         self._downtime_expected = downtime_expected
-         self._setup_time = setup_time
-         self._throttle_pcent = throttle_pcent
-+        self._dirty_limit_throttle_time_per_round = \
-+            dirty_limit_throttle_time_per_round
-+        self._dirty_limit_ring_full_time = \
-+            dirty_limit_ring_full_time
- 
-     def serialize(self):
-         return {
-@@ -102,6 +108,10 @@ def serialize(self):
-             "downtime_expected": self._downtime_expected,
-             "setup_time": self._setup_time,
-             "throttle_pcent": self._throttle_pcent,
-+            "dirty_limit_throttle_time_per_round":
-+                self._dirty_limit_throttle_time_per_round,
-+            "dirty_limit_ring_full_time":
-+                self._dirty_limit_ring_full_time,
-         }
- 
-     @classmethod
-@@ -114,4 +124,6 @@ def deserialize(cls, data):
-             data["downtime"],
-             data["downtime_expected"],
-             data["setup_time"],
--            data["throttle_pcent"])
-+            data["throttle_pcent"],
-+            data["dirty_limit_throttle_time_per_round"],
-+            data["dirty_limit_ring_full_time"])
-diff --git a/tests/migration/guestperf/scenario.py b/tests/migration/guestperf/scenario.py
-index de70d9b2f5..154c4f5d5f 100644
---- a/tests/migration/guestperf/scenario.py
-+++ b/tests/migration/guestperf/scenario.py
-@@ -30,7 +30,9 @@ def __init__(self, name,
-                  auto_converge=False, auto_converge_step=10,
-                  compression_mt=False, compression_mt_threads=1,
-                  compression_xbzrle=False, compression_xbzrle_cache=10,
--                 multifd=False, multifd_channels=2):
-+                 multifd=False, multifd_channels=2,
-+                 dirty_limit=False, x_vcpu_dirty_limit_period=500,
-+                 vcpu_dirty_limit=1):
- 
-         self._name = name
- 
-@@ -60,6 +62,10 @@ def __init__(self, name,
-         self._multifd = multifd
-         self._multifd_channels = multifd_channels
- 
-+        self._dirty_limit = dirty_limit
-+        self._x_vcpu_dirty_limit_period = x_vcpu_dirty_limit_period
-+        self._vcpu_dirty_limit = vcpu_dirty_limit
++  - PREPARE (1)
 +
-     def serialize(self):
-         return {
-             "name": self._name,
-@@ -79,6 +85,9 @@ def serialize(self):
-             "compression_xbzrle_cache": self._compression_xbzrle_cache,
-             "multifd": self._multifd,
-             "multifd_channels": self._multifd_channels,
-+            "dirty_limit": self._dirty_limit,
-+            "x_vcpu_dirty_limit_period": self._x_vcpu_dirty_limit_period,
-+            "vcpu_dirty_limit": self._vcpu_dirty_limit,
-         }
- 
-     @classmethod
-diff --git a/tests/migration/guestperf/shell.py b/tests/migration/guestperf/shell.py
-index 7d6b8cd7cf..c85d89efec 100644
---- a/tests/migration/guestperf/shell.py
-+++ b/tests/migration/guestperf/shell.py
-@@ -131,6 +131,17 @@ def __init__(self):
-         parser.add_argument("--multifd-channels", dest="multifd_channels",
-                             default=2, type=int)
- 
-+        parser.add_argument("--dirty-limit", dest="dirty_limit", default=False,
-+                            action="store_true")
++     The entire work of PREPARE (1) is preparation for the second stage,
++     CALCULATE(2), as the name implies. It involves preparing the dirty
++     page rate value and the corresponding upper limit of the VM:
++     The dirty page rate is calculated via the KVM dirty ring mechanism,
++     which tells QEMU how many dirty pages a virtual CPU has had since the
++     last KVM_EXIT_DIRTY_RING_FULL exception; The dirty page rate upper
++     limit is specified by caller, therefore fetch it directly.
 +
-+        parser.add_argument("--x-vcpu-dirty-limit-period",
-+                            dest="x_vcpu_dirty_limit_period",
-+                            default=500, type=int)
++  - CALCULATE (2)
 +
-+        parser.add_argument("--vcpu-dirty-limit",
-+                            dest="vcpu_dirty_limit",
-+                            default=1, type=int)
++     Calculate a suitable sleep period for each virtual CPU, which will be
++     used to determine the penalty for the target virtual CPU. The
++     computation must be done carefully in order to reduce the dirty page
++     rate progressively down to the upper limit without oscillation. To
++     achieve this, two strategies are provided: the first is to add or
++     subtract sleep time based on the ratio of the current dirty page rate
++     to the limit, which is used when the current dirty page rate is far
++     from the limit; the second is to add or subtract a fixed time when
++     the current dirty page rate is close to the limit.
 +
-     def get_scenario(self, args):
-         return Scenario(name="perfreport",
-                         downtime=args.downtime,
-@@ -154,7 +165,12 @@ def get_scenario(self, args):
-                         compression_xbzrle_cache=args.compression_xbzrle_cache,
++  - SET PENALTY (3)
++
++     Set the sleep time for each virtual CPU that should be penalized based
++     on the results of the calculation supplied by step CALCULATE (2).
++
++After completing the three above stages, the throttle thread loops back
++to step PREPARE (1) until the dirty limit is reached.
++
++On the other hand, each virtual CPU thread reads the sleep duration and
++sleeps in the path of the KVM_EXIT_DIRTY_RING_FULL exception handler, that
++is ACCEPT PENALTY (4). Virtual CPUs tied with writing processes will
++obviously exit to the path and get penalized, whereas virtual CPUs involved
++with read processes will not.
++
++In summary, thanks to the KVM dirty ring technology, the dirty limit
++algorithm will restrict virtual CPUs as needed to keep their dirty page
++rate inside the limit. This leads to more steady reading performance during
++live migration and can aid in improving large guest responsiveness.
++
+ Postcopy
+ ========
  
-                         multifd=args.multifd,
--                        multifd_channels=args.multifd_channels)
-+                        multifd_channels=args.multifd_channels,
-+
-+                        dirty_limit=args.dirty_limit,
-+                        x_vcpu_dirty_limit_period=\
-+                            args.x_vcpu_dirty_limit_period,
-+                        vcpu_dirty_limit=args.vcpu_dirty_limit)
- 
-     def run(self, argv):
-         args = self._parser.parse_args(argv)
 -- 
 2.39.1
 
