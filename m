@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA03E7D0F1C
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 13:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B517D0F1E
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 13:50:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtnzD-0007mb-Sw; Fri, 20 Oct 2023 07:48:17 -0400
+	id 1qto13-0001i1-IK; Fri, 20 Oct 2023 07:50:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtnyw-0007Zr-Vo
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 07:47:59 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qto0R-0001Wb-AZ
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 07:49:32 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qtnyr-000599-Is
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 07:47:56 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bf55a81eeaso5367215ad.0
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 04:47:40 -0700 (PDT)
+ id 1qto0P-0006hc-IZ
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 07:49:31 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6ce2ee17cb5so432205a34.2
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 04:49:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1697802459; x=1698407259; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1697802567; x=1698407367; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Y85EpA4qfM/Xl7cuFTNb/PevodubnQnKmuyXDqJie4c=;
- b=lpHum43RoKbGYsx/VINc/M1KH6qx32H1nZ1obxA1AU/nVAHXcMnvP3ExGnpjbM8BgC
- Cn8fG6Lt4BOnTwbmWSahzzWFClflNpdKso9o5OOLJFQqAGUFGT/O5g44TNWLz4+G93TZ
- B446tsArrjMo6sJ0aWs3+dBxftucMd6kAJtTPRl9Gda7bU5pkm0YszTxVgSMIpBB1Hbb
- JTbsqP+upzuFZ3GK8LTYhaRWsUA+ejWhse/ID04TFKJ+OzMpZT/PgyN/5micmJpXP0wf
- t+x2NBnzk2P6hYa9PzZ8zyy6HVAwu6wrqPHMOcIkRITNUH0uS8OZnzYuaOfyTK+9lkNe
- lhKg==
+ bh=Pj5vVO1o9ClGbMGR1eaFqeit54Yl97Rne7g8J9WfOVA=;
+ b=DYsMOMJkleSJHH2pifbL0zgHZKGu7M8WyrYziEB1pHc93e7M9OqhJkruE9XDsw6R/0
+ yj0TwsuyGvqmFDdDacHjaNdCL/tWwxELDIvL35fbmQHa0a4Q+FN9gojRdxGxzcnH7OJS
+ 8f/DG5f4VY/3SjljBBHf1dSBDmkLtpAY7NRx+ZfwO2dqp1qozOW2yXtN4UWZX1D+fUTk
+ bBLrlMyC4xeCXbc8pOhsgI0on03lLrIDwNEzn/o+c4webWGEwaBRIIK0564/7cBkMDpn
+ jhNGvLHC2X4ZPah5NiRMZl4jyeApnQ08PtR85bTp80ZS6dOlzYpR7DwrXCYgE9agvE41
+ KD7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697802459; x=1698407259;
+ d=1e100.net; s=20230601; t=1697802567; x=1698407367;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y85EpA4qfM/Xl7cuFTNb/PevodubnQnKmuyXDqJie4c=;
- b=ad//CRVhG6XmC1GpAxkAB4hbzkigLEycL0ngcYpGR5Bpt2+iO8T/m1PgQwKWw71SwX
- Wfmm5AKEd7kmZprtuPg2paAyTwH2F+Mm6/zE+WFk19AYODx459Am1dxcKYGy326a+rID
- x3zetUSuqVShSWQeGbFNfGBxM3q0fhdXtY0xxQBmjBb0vIF+OjTMZuElCklOjsE3ZZ6F
- hQF+LoCQPNboFJpAvMlxV91zffqKU/JR6ecwBHe7pXMQeA2/m2/p+KcoFNqHE2FtzaY0
- dajs1RGnRFRXxboKeHoqDhOUXmBgUcF2/KNzD04YI7SJbL4kxmJmLQsPyKV7h3hPOgjp
- +u3w==
-X-Gm-Message-State: AOJu0Yw2oYkG1EVE8HiYPlHl3oC7rHcoB3P1O4BAOJuCv55WEzkl9h+k
- I8lhLk9ROctB3nMCYUW7yZEWJFbm0FYNpj4E9gA=
-X-Google-Smtp-Source: AGHT+IE0M1vNEqP+7nAMn84pWn7D3grfUwTo9bylbnVIwbmTA1w1E9Akgl+sBShISkO5MECzkG9jqw==
-X-Received: by 2002:a17:902:db11:b0:1ca:8cb0:7ff5 with SMTP id
- m17-20020a170902db1100b001ca8cb07ff5mr1947567plx.9.1697802459150; 
- Fri, 20 Oct 2023 04:47:39 -0700 (PDT)
+ bh=Pj5vVO1o9ClGbMGR1eaFqeit54Yl97Rne7g8J9WfOVA=;
+ b=fq/WxuazB6uBDPblfPk/UTRuP+brh9uW5C9Y6VXAgxIpOmFuJ8bZuaZ4WYVmgHKe8N
+ GfCtoo9K/DYVLHEZCC6CDEq7VauoePPO7NdIRz8/p8CrkfsqhuuZrTqAA9wiCZD2K2Kf
+ CBKTeyORVVoTv8Hz7ApN4XrFk65vB+aKN4I8azRUXUGFPHgL59I476NM8ODJ+0tLOCFW
+ 3AXD92fXOaHQq5J4r4rPMC13K7YWhPXhJDaHbhP3e8PlAKpX+Gvr5+/jJS3VDUM0KdfM
+ XFYsHuqZ5ml1FqqIINaEXNMpB+p1JrcUjp5sj++tE91zEkfMw5iGnNirQriY1uItkDZA
+ CusQ==
+X-Gm-Message-State: AOJu0Yzds6eeL79BcwmdEWYa7DtsPhrfUa/ij9Dc0os3/dRqj6CMGTFq
+ 29t+hH7IDCdKYg55ixi3yqrbFg==
+X-Google-Smtp-Source: AGHT+IH0w1uo0gRCkOtbKeu6qbAJa1MOK+EjUbAcG6/IGDO/5DL//6qTW9FyC2DX4iGFWIlkXJut1w==
+X-Received: by 2002:a05:6830:440b:b0:6bd:9fa:34ff with SMTP id
+ q11-20020a056830440b00b006bd09fa34ffmr1616905otv.9.1697802567672; 
+ Fri, 20 Oct 2023 04:49:27 -0700 (PDT)
 Received: from ?IPV6:2804:7f0:bdcd:fb00:6501:2693:db52:c621?
  ([2804:7f0:bdcd:fb00:6501:2693:db52:c621])
  by smtp.gmail.com with ESMTPSA id
- i17-20020a17090332d100b001c32fd9e412sm1349188plr.58.2023.10.20.04.47.34
+ 22-20020a631256000000b00528db73ed70sm1288984pgs.3.2023.10.20.04.49.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Oct 2023 04:47:38 -0700 (PDT)
-Message-ID: <7e5ca488-4fc4-4a53-a092-28740adae806@ventanamicro.com>
-Date: Fri, 20 Oct 2023 08:47:32 -0300
+ Fri, 20 Oct 2023 04:49:27 -0700 (PDT)
+Message-ID: <bdaa5804-eff0-4d5e-ba61-c277aa3195cd@ventanamicro.com>
+Date: Fri, 20 Oct 2023 08:49:20 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/12] hw/riscv/virt: Update GPEX MMIO related
- properties
+Subject: Re: [PATCH v3 12/12] hw/riscv/virt-acpi-build.c: Add PLIC in MADT
 Content-Language: en-US
 To: Sunil V L <sunilvl@ventanamicro.com>, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org, qemu-devel@nongnu.org
@@ -79,20 +78,20 @@ Cc: Shannon Zhao <shannon.zhaosl@gmail.com>,
  <ajones@ventanamicro.com>, Atish Kumar Patra <atishp@rivosinc.com>,
  Haibo Xu <haibo1.xu@intel.com>
 References: <20231019132648.23703-1-sunilvl@ventanamicro.com>
- <20231019132648.23703-11-sunilvl@ventanamicro.com>
+ <20231019132648.23703-13-sunilvl@ventanamicro.com>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231019132648.23703-11-sunilvl@ventanamicro.com>
+In-Reply-To: <20231019132648.23703-13-sunilvl@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,110 +110,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/19/23 10:26, Sunil V L wrote:
-> Update the GPEX host bridge properties related to MMIO ranges with values
-> set for the virt machine.
+> Add PLIC structures for each socket in the MADT when system is configured
+> with PLIC as the external interrupt controller.
 > 
-> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > ---
 
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
->   hw/riscv/virt.c         | 47 ++++++++++++++++++++++++++++-------------
->   include/hw/riscv/virt.h |  1 +
->   2 files changed, 33 insertions(+), 15 deletions(-)
+
+>   hw/riscv/virt-acpi-build.c | 29 +++++++++++++++++++++++++++++
+>   1 file changed, 29 insertions(+)
 > 
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 085654ab2f..e64886a4d8 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -1049,21 +1049,45 @@ static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
->   }
->   
->   static inline DeviceState *gpex_pcie_init(MemoryRegion *sys_mem,
-> -                                          hwaddr ecam_base, hwaddr ecam_size,
-> -                                          hwaddr mmio_base, hwaddr mmio_size,
-> -                                          hwaddr high_mmio_base,
-> -                                          hwaddr high_mmio_size,
-> -                                          hwaddr pio_base,
-> -                                          DeviceState *irqchip)
-> +                                          DeviceState *irqchip,
-> +                                          RISCVVirtState *s)
->   {
->       DeviceState *dev;
->       MemoryRegion *ecam_alias, *ecam_reg;
->       MemoryRegion *mmio_alias, *high_mmio_alias, *mmio_reg;
-> +    hwaddr ecam_base = s->memmap[VIRT_PCIE_ECAM].base;
-> +    hwaddr ecam_size = s->memmap[VIRT_PCIE_ECAM].size;
-> +    hwaddr mmio_base = s->memmap[VIRT_PCIE_MMIO].base;
-> +    hwaddr mmio_size = s->memmap[VIRT_PCIE_MMIO].size;
-> +    hwaddr high_mmio_base = virt_high_pcie_memmap.base;
-> +    hwaddr high_mmio_size = virt_high_pcie_memmap.size;
-> +    hwaddr pio_base = s->memmap[VIRT_PCIE_PIO].base;
-> +    hwaddr pio_size = s->memmap[VIRT_PCIE_PIO].size;
->       qemu_irq irq;
->       int i;
->   
->       dev = qdev_new(TYPE_GPEX_HOST);
->   
-> +    /* Set GPEX object properties for the virt machine */
-> +    object_property_set_uint(OBJECT(GPEX_HOST(dev)), PCI_HOST_ECAM_BASE,
-> +                            ecam_base, NULL);
-> +    object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_ECAM_SIZE,
-> +                            ecam_size, NULL);
-> +    object_property_set_uint(OBJECT(GPEX_HOST(dev)),
-> +                             PCI_HOST_BELOW_4G_MMIO_BASE,
-> +                             mmio_base, NULL);
-> +    object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_BELOW_4G_MMIO_SIZE,
-> +                            mmio_size, NULL);
-> +    object_property_set_uint(OBJECT(GPEX_HOST(dev)),
-> +                             PCI_HOST_ABOVE_4G_MMIO_BASE,
-> +                             high_mmio_base, NULL);
-> +    object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_ABOVE_4G_MMIO_SIZE,
-> +                            high_mmio_size, NULL);
-> +    object_property_set_uint(OBJECT(GPEX_HOST(dev)), PCI_HOST_PIO_BASE,
-> +                            pio_base, NULL);
-> +    object_property_set_int(OBJECT(GPEX_HOST(dev)), PCI_HOST_PIO_SIZE,
-> +                            pio_size, NULL);
-> +
->       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->   
->       ecam_alias = g_new0(MemoryRegion, 1);
-> @@ -1094,6 +1118,7 @@ static inline DeviceState *gpex_pcie_init(MemoryRegion *sys_mem,
->           gpex_set_irq_num(GPEX_HOST(dev), i, PCIE_IRQ + i);
+> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+> index 2f1cc92f75..d1761ddddf 100644
+> --- a/hw/riscv/virt-acpi-build.c
+> +++ b/hw/riscv/virt-acpi-build.c
+> @@ -85,6 +85,12 @@ static void riscv_acpi_madt_add_rintc(uint32_t uid,
+>                                         arch_ids->cpus[uid].props.node_id,
+>                                         local_cpu_id),
+>                                     4);
+> +    } else if (aia_type == VIRT_AIA_TYPE_NONE) {
+> +        build_append_int_noprefix(entry,
+> +                                  ACPI_BUILD_INTC_ID(
+> +                                      arch_ids->cpus[uid].props.node_id,
+> +                                      2 * local_cpu_id + 1),
+> +                                  4);
+>       } else {
+>           build_append_int_noprefix(entry, 0, 4);
+>       }
+> @@ -513,6 +519,29 @@ static void build_madt(GArray *table_data,
+>               build_append_int_noprefix(table_data,
+>                                         s->memmap[VIRT_APLIC_S].size, 4);
+>           }
+> +    } else {
+> +        /* PLICs */
+> +        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
+> +            aplic_addr = s->memmap[VIRT_PLIC].base +
+> +                         s->memmap[VIRT_PLIC].size * socket;
+> +            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
+> +            build_append_int_noprefix(table_data, 0x1B, 1);   /* Type */
+> +            build_append_int_noprefix(table_data, 36, 1);     /* Length */
+> +            build_append_int_noprefix(table_data, 1, 1);      /* Version */
+> +            build_append_int_noprefix(table_data, socket, 1); /* PLIC ID */
+> +            build_append_int_noprefix(table_data, 0, 8);      /* Hardware ID */
+> +            /* Total External Interrupt Sources Supported */
+> +            build_append_int_noprefix(table_data,
+> +                                      VIRT_IRQCHIP_NUM_SOURCES - 1, 2);
+> +            build_append_int_noprefix(table_data, 0, 2);     /* Max priority */
+> +            build_append_int_noprefix(table_data, 0, 4);     /* Flags */
+> +            /* PLIC Size */
+> +            build_append_int_noprefix(table_data, s->memmap[VIRT_PLIC].size, 4);
+> +            /* PLIC Address */
+> +            build_append_int_noprefix(table_data, aplic_addr, 8);
+> +            /* Global System Interrupt Vector Base */
+> +            build_append_int_noprefix(table_data, gsi_base, 4);
+> +        }
 >       }
 >   
-> +    GPEX_HOST(dev)->gpex_cfg.bus = PCI_HOST_BRIDGE(GPEX_HOST(dev))->bus;
->       return dev;
->   }
->   
-> @@ -1492,15 +1517,7 @@ static void virt_machine_init(MachineState *machine)
->               qdev_get_gpio_in(virtio_irqchip, VIRTIO_IRQ + i));
->       }
->   
-> -    gpex_pcie_init(system_memory,
-> -                   memmap[VIRT_PCIE_ECAM].base,
-> -                   memmap[VIRT_PCIE_ECAM].size,
-> -                   memmap[VIRT_PCIE_MMIO].base,
-> -                   memmap[VIRT_PCIE_MMIO].size,
-> -                   virt_high_pcie_memmap.base,
-> -                   virt_high_pcie_memmap.size,
-> -                   memmap[VIRT_PCIE_PIO].base,
-> -                   pcie_irqchip);
-> +    gpex_pcie_init(system_memory, pcie_irqchip, s);
->   
->       create_platform_bus(s, mmio_irqchip);
->   
-> diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-> index 5b03575ed3..f89790fd58 100644
-> --- a/include/hw/riscv/virt.h
-> +++ b/include/hw/riscv/virt.h
-> @@ -61,6 +61,7 @@ struct RISCVVirtState {
->       char *oem_table_id;
->       OnOffAuto acpi;
->       const MemMapEntry *memmap;
-> +    struct GPEXHost *gpex_host;
->   };
->   
->   enum {
+>       acpi_table_end(linker, &table);
 
