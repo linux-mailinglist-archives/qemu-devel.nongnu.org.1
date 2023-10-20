@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478097D1797
-	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 560C67D1799
+	for <lists+qemu-devel@lfdr.de>; Fri, 20 Oct 2023 22:54:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qtwP4-00023V-KK; Fri, 20 Oct 2023 16:47:30 -0400
+	id 1qtwP4-00023b-Pt; Fri, 20 Oct 2023 16:47:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwP1-00020d-Hy
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:27 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1qtwP2-00022P-NT
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:28 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qtwOz-0001Df-TW
- for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:27 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6b20577ef7bso1115545b3a.3
- for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:47:25 -0700 (PDT)
+ id 1qtwP0-0001Dt-TU
+ for qemu-devel@nongnu.org; Fri, 20 Oct 2023 16:47:28 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6b6f4c118b7so1182084b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 20 Oct 2023 13:47:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1697834844; x=1698439644; darn=nongnu.org;
+ d=linaro.org; s=google; t=1697834845; x=1698439645; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wM6oyD2tzl0dJH7FSQ0obv2SUstAr+kC/PKso0mR/f4=;
- b=q9J1mEZKolsO6/7XmrUFsT34HsbqbORm7fg+kk24XJCVTOAf7XW84i8Uzx9dqJ04Rv
- /nLdNIDjvp8lm+d6zP7NDCc+J/gyBgIHxe6tQvq/+YAcLj2XryXh7ZL0AelPzcaP7VJR
- cDcnX/OVqJFnuI/HlONwa8l0giHiFdGczv1zt2KkyK2z5VK2HLAP1bIpm4s6Wyt7yNbc
- br6r1x18MRCheTAYUTB1evqi6Hbn9MBGUV6X5fyY5sBHH0vs4gXzw6KS6JTLTmmOPImh
- SE/qzuU5ZmvU4pyQ02+K5jwUL69cBiEVqTvwhfYx2b2QPLLY1VdkB33kpjqnHsRK8sWc
- MH7w==
+ bh=F7SjukT8MkZFkJ3ExB67ZCgDVB5vB1uA1Vxc0UPcY5M=;
+ b=Wd6zEQjK9XYvKTmVQHYP47ko5V4Q9dwE1ExYNtRAkjhw2pihaFgqllh8WzVfFjtTxO
+ A3P3y9vAcPfVF4qZX+DyT20Kfgsyczcjvzl1h+W6DJ0WoSctsvhhgbLo4FPEm4XBW3TA
+ EapbZfNoJZivVy3lV1LByH1byScJH65Q7GLZOYGO8vE1W1bqYAMwiBmbKedtW7TI2hiR
+ 23RLKvLSmuGqldf36TgjllJxpi8rGzw095S4pJKy0b4LhqrhBpZvwgATE9RG6n1sKZmV
+ 63J2Sl2IDJEsCl8xNO0ivLSTv0vmn1+Or8PS17RgFpf3YAsiWRe5WLTNt0DYyibS7S23
+ bxmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1697834844; x=1698439644;
+ d=1e100.net; s=20230601; t=1697834845; x=1698439645;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wM6oyD2tzl0dJH7FSQ0obv2SUstAr+kC/PKso0mR/f4=;
- b=OqFAPBYvI9Giw/FS+YOlJQewZ1C+59Wnr6MQsa27o3p0brUQst3vqSxssxbJVbygy0
- 8pL5sfpgZhRlFtoJprUQsIQ9f5vGzF1uy0URm9UveyWa8JClyA79R1dBZml67xoR3Jzk
- Z47uGBaoLosXcqwzKcBynhFHiB2kGQlTy2tSSgdIdT2q/OdfM1vE6vrvEmTqeHTnbqV8
- CSGgzlL9mYQT3OE3jFAdW+HMYu9gTDO20BL0sW0hv62tgINkceDnNA/t8IoMJoHXl0cQ
- 3RUwg+nW4RFXRW1YA/Eamkuoi054HrHlsaOKQ82lbh8WXF7wi5eCara41lURtH9r7y9M
- uMJw==
-X-Gm-Message-State: AOJu0YwldJMGonYqR3w9skaNVjCOCKlWs9SfxQvuYaOAiK9yHUt3kWr/
- USngwE/T6nqsulJGqKZbwJvggLg6UqpvfdM9+sk=
-X-Google-Smtp-Source: AGHT+IGgedYkJ4+aYJ0ItGSgAnG8FqxW+rR5zzjI95FeHd3wpNqTvo0SsIvh+QoM5LijD5kKqK8FZg==
-X-Received: by 2002:a05:6a00:1389:b0:68f:d35d:217e with SMTP id
- t9-20020a056a00138900b0068fd35d217emr3115072pfg.2.1697834844678; 
- Fri, 20 Oct 2023 13:47:24 -0700 (PDT)
+ bh=F7SjukT8MkZFkJ3ExB67ZCgDVB5vB1uA1Vxc0UPcY5M=;
+ b=u/TyQ443f6xTMaImtLBu+Ye2a2nBZSGKHvLdBvK4SgwQXkTYm9q1QR5PQlc6ApcrIu
+ NV1/mnJlJsFkqiU7tN9ccIY6nWyqkSO6rbHBXtriQgYD4jmipiM4mhwOgSSQHslxzA1w
+ +c/nT4n5ltJM+6JgTq5nsT/OVBzwTKKKvEs+idohvD7jNMkwTaruFv5x9n+ds6fnPFl4
+ sbe7N3tbgVsjHt9Cew0/QDrTGOqhae3zQiu84QFNhzKeLEu5rA/R7lmkUDQoBkYMChvx
+ wKW0JBGpXzeCmf5HCjV3IZGWtGrr7IsW1x6wA0L6o0VP3jKQGsj1MUdCHDHA2PRzeyf1
+ HS+g==
+X-Gm-Message-State: AOJu0YwhosRnT4QzIf0z/eDeMi8YW4eOFz88fuI1iTRg4DI6Gg07b5mq
+ EtOutKNzAA4JwK6ADjrBMwuqUGI85P5kuOj1ywg=
+X-Google-Smtp-Source: AGHT+IFwtF5UxrHInrf5vQ59AXDFyDdf4tB55t/WQlUQj+N5s3TKmVa4M30sJvYW1VNcojuZMtOMFg==
+X-Received: by 2002:a05:6a21:66c7:b0:16b:9285:69f5 with SMTP id
+ ze7-20020a056a2166c700b0016b928569f5mr2544162pzb.35.1697834845498; 
+ Fri, 20 Oct 2023 13:47:25 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
  u7-20020aa78487000000b00694fee1011asm1946775pfn.208.2023.10.20.13.47.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Oct 2023 13:47:24 -0700 (PDT)
+ Fri, 20 Oct 2023 13:47:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 59/65] target/hppa: Fix interruption based on default PSW
-Date: Fri, 20 Oct 2023 13:43:25 -0700
-Message-Id: <20231020204331.139847-60-richard.henderson@linaro.org>
+Subject: [PATCH v2 60/65] target/hppa: Precompute zero into DisasContext
+Date: Fri, 20 Oct 2023 13:43:26 -0700
+Message-Id: <20231020204331.139847-61-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231020204331.139847-1-richard.henderson@linaro.org>
 References: <20231020204331.139847-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,70 +90,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+Reduce the number of times we look for the constant 0.
 
-The default PSW is set by the operating system with the PDC_PSW
-firmware call.  Use that setting to decide if wide mode is to be
-enabled for interruptions and EIRR usage.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        |  2 ++
- target/hppa/int_helper.c | 18 ++++++++++++++----
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ target/hppa/translate.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index c9a9b9d3be..4aea46442a 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -124,6 +124,8 @@
- #define PSW_SM_W         0x200      /* PA2.0 only : Enable Wide Mode */
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index a79cf52fcc..9b60924057 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -53,6 +53,8 @@ typedef struct DisasContext {
+     DisasCond null_cond;
+     TCGLabel *null_lab;
  
- #define CR_RC            0
-+#define CR_PSW_DEFAULT   6          /* see SeaBIOS PDC_PSW firmware call */
-+#define  PDC_PSW_WIDE_BIT 2
- #define CR_PID1          8
- #define CR_PID2          9
- #define CR_PID3          12
-diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
-index f355c4c76b..a11d607b31 100644
---- a/target/hppa/int_helper.c
-+++ b/target/hppa/int_helper.c
-@@ -52,9 +52,17 @@ static void io_eir_write(void *opaque, hwaddr addr,
-                          uint64_t data, unsigned size)
- {
-     HPPACPU *cpu = opaque;
--    int le_bit = ~data & 31;
-+    CPUHPPAState *env = &cpu->env;
-+    int widthm1 = 31;
-+    int le_bit;
- 
--    cpu->env.cr[CR_EIRR] |= (target_ulong)1 << le_bit;
-+    /* The default PSW.W controls the width of EIRR. */
-+    if (hppa_is_pa20(env) && env->cr[CR_PSW_DEFAULT] & PDC_PSW_WIDE_BIT) {
-+        widthm1 = 63;
-+    }
-+    le_bit = ~data & widthm1;
++    TCGv_i64 zero;
 +
-+    env->cr[CR_EIRR] |= 1ull << le_bit;
-     eval_interrupt(cpu);
- }
+     uint32_t insn;
+     uint32_t tb_flags;
+     int mmu_idx;
+@@ -1004,14 +1006,13 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+     }
  
-@@ -104,8 +112,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
-     /* step 1 */
-     env->cr[CR_IPSW] = old_psw = cpu_hppa_get_psw(env);
+     if (!is_l || cond_need_cb(c)) {
+-        TCGv_i64 zero = tcg_constant_i64(0);
+         cb_msb = tcg_temp_new_i64();
+         cb = tcg_temp_new_i64();
  
--    /* step 2 -- note PSW_W == 0 for !HPPA64.  */
--    cpu_hppa_put_psw(env, PSW_W | (i == EXCP_HPMC ? PSW_M : 0));
-+    /* step 2 -- Note PSW_W is masked out again for pa1.x */
-+    cpu_hppa_put_psw(env,
-+                     (env->cr[CR_PSW_DEFAULT] & PDC_PSW_WIDE_BIT ? PSW_W : 0) |
-+                     (i == EXCP_HPMC ? PSW_M : 0));
+-        tcg_gen_add2_i64(dest, cb_msb, in1, zero, in2, zero);
++        tcg_gen_add2_i64(dest, cb_msb, in1, ctx->zero, in2, ctx->zero);
+         if (is_c) {
+             tcg_gen_add2_i64(dest, cb_msb, dest, cb_msb,
+-                             get_psw_carry(ctx, d), zero);
++                             get_psw_carry(ctx, d), ctx->zero);
+         }
+         tcg_gen_xor_i64(cb, in1, in2);
+         tcg_gen_xor_i64(cb, cb, dest);
+@@ -1089,7 +1090,7 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+                    TCGv_i64 in2, bool is_tsv, bool is_b,
+                    bool is_tc, unsigned cf, bool d)
+ {
+-    TCGv_i64 dest, sv, cb, cb_msb, zero, tmp;
++    TCGv_i64 dest, sv, cb, cb_msb, tmp;
+     unsigned c = cf >> 1;
+     DisasCond cond;
  
-     /* step 3 */
-     env->cr[CR_IIASQ] = iasq_f >> 32;
+@@ -1097,12 +1098,12 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+     cb = tcg_temp_new_i64();
+     cb_msb = tcg_temp_new_i64();
+ 
+-    zero = tcg_constant_i64(0);
+     if (is_b) {
+         /* DEST,C = IN1 + ~IN2 + C.  */
+         tcg_gen_not_i64(cb, in2);
+-        tcg_gen_add2_i64(dest, cb_msb, in1, zero, get_psw_carry(ctx, d), zero);
+-        tcg_gen_add2_i64(dest, cb_msb, dest, cb_msb, cb, zero);
++        tcg_gen_add2_i64(dest, cb_msb, in1, ctx->zero,
++                         get_psw_carry(ctx, d), ctx->zero);
++        tcg_gen_add2_i64(dest, cb_msb, dest, cb_msb, cb, ctx->zero);
+         tcg_gen_xor_i64(cb, cb, in1);
+         tcg_gen_xor_i64(cb, cb, dest);
+     } else {
+@@ -1111,7 +1112,7 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+          * operations by seeding the high word with 1 and subtracting.
+          */
+         TCGv_i64 one = tcg_constant_i64(1);
+-        tcg_gen_sub2_i64(dest, cb_msb, in1, one, in2, zero);
++        tcg_gen_sub2_i64(dest, cb_msb, in1, one, in2, ctx->zero);
+         tcg_gen_eqv_i64(cb, in1, in2);
+         tcg_gen_xor_i64(cb, cb, dest);
+     }
+@@ -2430,7 +2431,7 @@ static bool trans_lci(DisasContext *ctx, arg_lci *a)
+        physical address.  Two addresses with the same CI have a coherent
+        view of the cache.  Our implementation is to return 0 for all,
+        since the entire address space is coherent.  */
+-    save_gpr(ctx, a->t, tcg_constant_i64(0));
++    save_gpr(ctx, a->t, ctx->zero);
+ 
+     cond_free(&ctx->null_cond);
+     return true;
+@@ -2639,7 +2640,7 @@ static bool trans_dcor_i(DisasContext *ctx, arg_rr_cf_d *a)
+ 
+ static bool trans_ds(DisasContext *ctx, arg_rrr_cf *a)
+ {
+-    TCGv_i64 dest, add1, add2, addc, zero, in1, in2;
++    TCGv_i64 dest, add1, add2, addc, in1, in2;
+     TCGv_i64 cout;
+ 
+     nullify_over(ctx);
+@@ -2651,7 +2652,6 @@ static bool trans_ds(DisasContext *ctx, arg_rrr_cf *a)
+     add2 = tcg_temp_new_i64();
+     addc = tcg_temp_new_i64();
+     dest = tcg_temp_new_i64();
+-    zero = tcg_constant_i64(0);
+ 
+     /* Form R1 << 1 | PSW[CB]{8}.  */
+     tcg_gen_add_i64(add1, in1, in1);
+@@ -2667,8 +2667,9 @@ static bool trans_ds(DisasContext *ctx, arg_rrr_cf *a)
+     tcg_gen_xor_i64(add2, in2, addc);
+     tcg_gen_andi_i64(addc, addc, 1);
+ 
+-    tcg_gen_add2_i64(dest, cpu_psw_cb_msb, add1, zero, add2, zero);
+-    tcg_gen_add2_i64(dest, cpu_psw_cb_msb, dest, cpu_psw_cb_msb, addc, zero);
++    tcg_gen_add2_i64(dest, cpu_psw_cb_msb, add1, ctx->zero, add2, ctx->zero);
++    tcg_gen_add2_i64(dest, cpu_psw_cb_msb, dest, cpu_psw_cb_msb,
++                     addc, ctx->zero);
+ 
+     /* Write back the result register.  */
+     save_gpr(ctx, a->t, dest);
+@@ -2968,7 +2969,7 @@ static bool trans_st(DisasContext *ctx, arg_ldst *a)
+ static bool trans_ldc(DisasContext *ctx, arg_ldst *a)
+ {
+     MemOp mop = MO_TE | MO_ALIGN | a->size;
+-    TCGv_i64 zero, dest, ofs;
++    TCGv_i64 dest, ofs;
+     TCGv_i64 addr;
+ 
+     if (!ctx->is_pa20 && a->size > MO_32) {
+@@ -2998,8 +2999,7 @@ static bool trans_ldc(DisasContext *ctx, arg_ldst *a)
+      */
+     gen_helper_ldc_check(addr);
+ 
+-    zero = tcg_constant_i64(0);
+-    tcg_gen_atomic_xchg_i64(dest, addr, zero, ctx->mmu_idx, mop);
++    tcg_gen_atomic_xchg_i64(dest, addr, ctx->zero, ctx->mmu_idx, mop);
+ 
+     if (a->m) {
+         save_gpr(ctx, a->b, ofs);
+@@ -4336,6 +4336,8 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->iaoq_n = -1;
+     ctx->iaoq_n_var = NULL;
+ 
++    ctx->zero = tcg_constant_i64(0);
++
+     /* Bound the number of instructions by those left on the page.  */
+     bound = -(ctx->base.pc_first | TARGET_PAGE_MASK) / 4;
+     ctx->base.max_insns = MIN(ctx->base.max_insns, bound);
 -- 
 2.34.1
 
